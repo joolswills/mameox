@@ -51,6 +51,13 @@ Version 0.70.2b
     - main.cpp
        - Signed driver.list file to prevent corruption
 
+    - ROMList.cpp
+       - Signed rom.list file to prevent corruption
+       - Put in a progress bar for the second half of ROM list
+         generation
+       - Changed ROM checking code to use std::find instead of
+         simple linear search.
+
   -------------------------------------------------------------
   - \Desectionize.pl
   - \Sectionize.pl

@@ -114,17 +114,6 @@ public:
 	virtual void Draw( BOOL opaque = TRUE, BOOL flipOnCompletion = TRUE );
 
 		//------------------------------------------------------------
-		// DrawZipData
-		//! \brief		Present some indication that a new zip file has
-		//!            been found to the user
-		//!
-		//! \param		fileName - The filename of the zip file
-		//! \param		index - The 0 based index of the zip file
-		//------------------------------------------------------------
-	virtual void DrawZipData( const char *fileName, DWORD index );
-	
-
-		//------------------------------------------------------------
 		// GetCurrentGameIndex
 		//! \brief		Returns the index into the global drivers array
 		//!            of the currently selected item.
@@ -173,6 +162,33 @@ public:
   BOOL ShouldGenerateROMList( void ) { return m_shouldGenerateROMList; }
 
 protected:
+    // Helper functions to save/load the rom list, with integrity checks
+  BOOL SaveROMListFile( void );
+  BOOL LoadROMListFile( void );
+
+
+		//------------------------------------------------------------
+		// DrawZipData
+		//! \brief		Present some indication that a new zip file has
+		//!            been found to the user
+		//!
+		//! \param		fileName - The filename of the zip file
+		//! \param		index - The 0 based index of the zip file
+		//------------------------------------------------------------
+	void DrawZipData( const char *fileName, DWORD index );
+
+
+		//------------------------------------------------------------
+		// DrawZipCheckProgress
+		//! \brief		Present some indication that a zip file is
+		//!            being checked against known zips (this
+    //!            operation is bounded, unlike DrawZipData,
+    //!            so we can show a real progressbar)
+		//!
+		//! \param		index - The 0 based index of the zip file
+		//------------------------------------------------------------
+	void DrawZipCheckProgress( DWORD index );
+
 
     // Cursor movement helper functions
   void SuperScrollModeMoveCursor( CGamepad &gp, FLOAT elapsedTime );

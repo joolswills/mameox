@@ -14,6 +14,8 @@
 #include "smbhandler.h"
 
 #include <string>
+#include <vector>
+#include <algorithm>
 
 extern "C" {
 #include "osdepend.h"
@@ -72,68 +74,28 @@ BOOL CROMList::LoadROMList( BOOL bGenerate, BOOL allowClones )
   m_ROMListNoClones.clear();
   m_allowClones = allowClones;
 
-	std::string		romListFile = g_ROMListPath;
-	romListFile += "\\";
-	romListFile += ROMLISTFILENAME;
 
-	PRINTMSG( T_INFO, "Load rom list: %s", romListFile.c_str() );
-	HANDLE hFile = CreateFile(	romListFile.c_str(),
-															GENERIC_READ,
-															0,
-															NULL,
-															OPEN_EXISTING,
-															FILE_ATTRIBUTE_NORMAL,
-															NULL );
+	m_displayDevice->Clear(	0L,																// Count
+													NULL,															// Rects to clear
+													D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+													D3DCOLOR_XRGB(0,0,0),							// Color
+													1.0f,															// Z
+													0L );															// Stencil
+	m_font.Begin();
+	m_font.DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Loading ROM list", XBFONT_CENTER_X );
+	m_font.End();
+	m_displayDevice->Present( NULL, NULL, NULL, NULL );	
 
-	if( hFile != INVALID_HANDLE_VALUE )
-	{
-			// Display the error to the user
-		m_displayDevice->Clear(	0L,																// Count
-														NULL,															// Rects to clear
-														D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
-														D3DCOLOR_XRGB(0,0,0),							// Color
-														1.0f,															// Z
-														0L );															// Stencil
-		m_font.Begin();
-		m_font.DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Loading ROM list", XBFONT_CENTER_X );
-		m_font.End();
-		m_displayDevice->Present( NULL, NULL, NULL, NULL );	
 
-  
-    char signature[8] = {0};
-		DWORD BytesRead = 0;
-    ReadFile( hFile, signature, 6, &BytesRead, NULL );
-    if( BytesRead != 6 || strcmp( signature, "MAMEoX" ) )
-    {
-      CloseHandle( hFile );
-	    if( bGenerate )
-        return GenerateROMList();		
-      return FALSE;
-    }
-
-			// Read in the ROM list
-		while( 1 )
-		{
-			DWORD idx;
-			ReadFile( hFile, &idx, sizeof(idx), &BytesRead, NULL );
-			if( BytesRead != sizeof(idx) )
-				break;
-
-			m_ROMListWithClones.push_back( idx );
-      if( !m_driverInfoList[idx].m_isClone )
-        m_ROMListNoClones.push_back( idx );
-		}
-
-		CloseHandle( hFile );
-    GenerateSuperscrollJumpTable();
-		return TRUE;
-	}
-	else if( bGenerate )
+  if( LoadROMListFile() )
   {
-    return GenerateROMList();		
+    GenerateSuperscrollJumpTable();
+    return TRUE;
   }
+  else if( bGenerate )
+    return GenerateROMList();
 
-	return FALSE;
+  return FALSE;
 }
 
 //---------------------------------------------------------------------
@@ -165,8 +127,8 @@ BOOL CROMList::GenerateROMList( void )
                                         &findData );
     if( findHandle == INVALID_HANDLE_VALUE )
     {
-      PRINTMSG( T_ERROR, "Could not find files!" );
-      return TRUE;
+      PRINTMSG( T_INFO, "Could not find files!" );
+      return TRUE;  // This is not really an error
     }
 
     DWORD i = 0;
@@ -197,26 +159,45 @@ BOOL CROMList::GenerateROMList( void )
   // Check the zip files against the list of all known zip files
 	for(DWORD i = 0; i < m_numDrivers; ++i )
 	{
-    DrawZipData( m_driverInfoList[i].m_description, i );
-		std::vector<CStdString>::iterator it = zipFileNames.begin();
-		for( ; it != zipFileNames.end(); ++it )
-		{
-      if( it->CompareNoCase(m_driverInfoList[i].m_romFileName) == 0 )
-			{
-        if( !m_driverInfoList[i].m_isClone )
-          m_ROMListNoClones.push_back( i );
-        m_ROMListWithClones.push_back( i );
-			}
-		}
+    DrawZipCheckProgress( i );
+    CStdString driverFileName = m_driverInfoList[i].m_romFileName;
+    driverFileName.ToLower();
+
+    std::vector<CStdString>::iterator it = std::find( zipFileNames.begin(), 
+                                                      zipFileNames.end(), 
+                                                      driverFileName );
+    if( it != zipFileNames.end() )
+    {
+      if( !m_driverInfoList[i].m_isClone )
+        m_ROMListNoClones.push_back( i );
+      m_ROMListWithClones.push_back( i );
+    }
 	}
 
 	PRINTMSG( T_INFO, "Found %lu games, %lu unique!", m_ROMListWithClones.size(), m_ROMListNoClones.size() );
 
+  if( !SaveROMListFile() )
+  {
+    PRINTMSG( T_INFO, "Failed to store the ROM list file!" );
+    return FALSE;
+  }
 
+    // Create the superscroll jump table
+  GenerateSuperscrollJumpTable();
+	return TRUE;
+}
+
+//-------------------------------------------------------------
+//  SaveROMListFile
+//-------------------------------------------------------------
+BOOL CROMList::SaveROMListFile( void )
+{
 		// Write the indices to the ROM list file
 	std::string	romListFile = g_ROMListPath;
 	romListFile += "\\";
 	romListFile += ROMLISTFILENAME;
+
+	PRINTMSG( T_INFO, "Store ROM list: %s", romListFile.c_str() );
 
 	HANDLE hFile = CreateFile(	romListFile.c_str(),
 															GENERIC_READ | GENERIC_WRITE,
@@ -231,9 +212,10 @@ BOOL CROMList::GenerateROMList( void )
 		return FALSE;
 	}
 
+    // Sign the file
   DWORD bytesWritten;
-  WriteFile( hFile, "MAMEoX", 6, &bytesWritten, NULL );
-  if( bytesWritten != 6 )
+  if( !WriteFile( hFile, DRIVERLIST_FILESTAMP, sizeof(DRIVERLIST_FILESTAMP) - 1, &bytesWritten, NULL ) ||
+      bytesWritten != sizeof(DRIVERLIST_FILESTAMP) - 1 )
 	{
 		PRINTMSG( T_ERROR, "Write failed!" );
 		CloseHandle( hFile );
@@ -243,27 +225,248 @@ BOOL CROMList::GenerateROMList( void )
 		return FALSE;
 	}
 
+
+    // Calculate a signature for the list, so we can validate it when reading
+    //  to eliminate corrupt data
+  HANDLE sigHandle = XCalculateSignatureBegin( XCALCSIG_FLAG_SAVE_GAME );
+  if( sigHandle == INVALID_HANDLE_VALUE )
+  {
+    CloseHandle( hFile );
+		DeleteFile( romListFile.c_str() );
+    PRINTMSG( T_ERROR, "Could not calculate driver list signature!" );
+    return FALSE;
+  }
+
+  DWORD sigSize = XCalculateSignatureGetSize( XCALCSIG_FLAG_SAVE_GAME );
+  void *sigData = calloc( 1, sigSize );
+  if( !sigData )
+  {
+    CloseHandle( hFile );
+		DeleteFile( romListFile.c_str() );
+    PRINTMSG( T_ERROR, "Could not allocate memory for driver list signature!" );
+    return FALSE;
+  }
+
+    // Write in a blank signature
+  if( !WriteFile( hFile, sigData, sigSize, &bytesWritten, NULL ) || bytesWritten != sigSize )
+  {
+    free( sigData );
+    CloseHandle( hFile );
+		DeleteFile( romListFile.c_str() );
+    PRINTMSG( T_ERROR, "Failed writing blank signature!" );
+    return FALSE;
+  }
+
+
+    // Define a macro to write a block of data and calculate the data signature
+  #define WRITEDATA( _data__, _dataSize__ ) \
+    if( XCalculateSignatureUpdate( sigHandle, (const BYTE *)(_data__), (_dataSize__) ) != ERROR_SUCCESS || \
+        !WriteFile( hFile, (_data__), (_dataSize__), &bytesWritten, NULL ) || \
+        bytesWritten != (_dataSize__) ) \
+    { \
+      PRINTMSG( T_ERROR, "Write failed!" ); \
+      free( sigData ); \
+      CloseHandle( hFile ); \
+      DeleteFile( romListFile.c_str() ); \
+      return FALSE; \
+    }
+
+    // Write the number of indices
+  DWORD numROMs = m_ROMListWithClones.size();
+  WRITEDATA( &numROMs, sizeof(numROMs) );
+
+    // Write the indices
 	std::vector<UINT32>::iterator it = m_ROMListWithClones.begin();
 	for( ; it != m_ROMListWithClones.end(); ++it )
 	{
 		DWORD idx = (*it);
-		WriteFile( hFile, &idx, sizeof(idx), &bytesWritten, NULL );
-		if( bytesWritten != sizeof(idx) )
-		{
-			PRINTMSG( T_ERROR, "Write failed!" );
-			CloseHandle( hFile );
-
-				// Delete the file
-			DeleteFile( romListFile.c_str() );
-			return FALSE;
-		}
+    WRITEDATA( &idx, sizeof(idx) );
 	}
 
-	CloseHandle( hFile );
+    // Grab the signature
+  if( XCalculateSignatureEnd( sigHandle, sigData ) != ERROR_SUCCESS )
+  {
+    free( sigData );
+    CloseHandle( hFile );
+		DeleteFile( romListFile.c_str() );
+    PRINTMSG( T_ERROR, "Failed getting signature!" );
+    return FALSE;
+  }
 
-    // Create the superscroll jump table
-  GenerateSuperscrollJumpTable();
-	return TRUE;
+    // Write in the real signature
+  SetFilePointer( hFile, sizeof(DRIVERLIST_FILESTAMP) - 1, NULL, FILE_BEGIN );
+  if( !WriteFile( hFile, sigData, sigSize, &bytesWritten, NULL ) || bytesWritten != sigSize )
+  {
+    free( sigData );
+    CloseHandle( hFile );
+		DeleteFile( romListFile.c_str() );
+    PRINTMSG( T_ERROR, "Failed writing signature!" );
+    return FALSE;
+  }
+
+  free( sigData );
+	CloseHandle( hFile );
+  return TRUE;
+}
+
+
+//---------------------------------------------------------------------
+//  LoadROMListFile
+//---------------------------------------------------------------------
+BOOL CROMList::LoadROMListFile( void )
+{
+	std::string		romListFile = g_ROMListPath;
+	romListFile += "\\";
+	romListFile += ROMLISTFILENAME;
+
+	PRINTMSG( T_INFO, "Load ROM list: %s", romListFile.c_str() );
+	HANDLE hFile = CreateFile(	romListFile.c_str(),
+															GENERIC_READ,
+															0,
+															NULL,
+															OPEN_EXISTING,
+															FILE_ATTRIBUTE_NORMAL,
+															NULL );
+
+	if( hFile == INVALID_HANDLE_VALUE )
+	{
+    PRINTMSG( T_ERROR, "Failed to open ROM list file %s!", romListFile.c_str() );
+    return FALSE;
+  }
+
+    // Grab the entire file at once so we can check its signature
+  LARGE_INTEGER fileSize;
+  if( !GetFileSizeEx( hFile, &fileSize ) || fileSize.HighPart )
+  {
+    CloseHandle( hFile );
+		DeleteFile( romListFile.c_str() );
+    PRINTMSG( T_ERROR, "Could not get filesize for %s!", romListFile.c_str() );
+    return FALSE;
+  }
+  
+  UCHAR *fileData = (UCHAR*)malloc( fileSize.LowPart );
+  if( !fileData )
+  {
+    CloseHandle( hFile );
+		DeleteFile( romListFile.c_str() );
+    PRINTMSG( T_ERROR, 
+              "Could not malloc space for %s (%lu bytes required)!", 
+              romListFile.c_str(), 
+              fileSize.LowPart );
+    return FALSE;
+  }
+
+    // Read the entire file into memory
+  DWORD BytesRead;
+  if( !ReadFile( hFile, fileData, fileSize.LowPart, &BytesRead, NULL ) || BytesRead != fileSize.LowPart )
+  {
+    free( fileData );
+    CloseHandle( hFile );
+		DeleteFile( romListFile.c_str() );
+    PRINTMSG( T_ERROR, "Failed to read file %s!", romListFile.c_str() );
+    return FALSE;
+  }
+  CloseHandle( hFile );
+
+    // Check the signature
+  if( memcmp( fileData, DRIVERLIST_FILESTAMP, sizeof(DRIVERLIST_FILESTAMP) - 1 ) )
+  {
+    free( fileData );
+		DeleteFile( romListFile.c_str() );
+    PRINTMSG( T_ERROR, "Bad file signature!" );
+    return FALSE;
+  }
+
+    // Test the data signature
+  HANDLE sigHandle = XCalculateSignatureBegin( XCALCSIG_FLAG_SAVE_GAME );
+  if( sigHandle == INVALID_HANDLE_VALUE )
+  {
+    free( fileData );
+		DeleteFile( romListFile.c_str() );
+    PRINTMSG( T_ERROR, "Could not calculate driver list signature!" );
+    return FALSE;
+  }
+
+  DWORD sigSize = XCalculateSignatureGetSize( XCALCSIG_FLAG_SAVE_GAME );
+  void *sigData = calloc( 1, sigSize );
+  if( !sigData )
+  {
+    free( fileData );
+		DeleteFile( romListFile.c_str() );
+    PRINTMSG( T_ERROR, "Could not allocate memory for driver list signature!" );
+    return FALSE;
+  }
+
+  const BYTE *listData = fileData + ((sizeof(DRIVERLIST_FILESTAMP) - 1) + sigSize);
+  DWORD listDataSize = fileSize.LowPart - ((sizeof(DRIVERLIST_FILESTAMP) - 1) + sigSize);
+  if( XCalculateSignatureUpdate( sigHandle, listData, listDataSize ) != ERROR_SUCCESS )
+  {
+    free( fileData );
+    free( sigData );
+		DeleteFile( romListFile.c_str() );
+    PRINTMSG( T_ERROR, "Failed to calculate data signature!" );
+    return FALSE;
+  }
+  
+    // Grab the signature
+  if( XCalculateSignatureEnd( sigHandle, sigData ) != ERROR_SUCCESS )
+  {
+    free( fileData );
+    free( sigData );
+		DeleteFile( romListFile.c_str() );
+    PRINTMSG( T_ERROR, "Failed getting signature!" );
+    return FALSE;
+  }
+
+    // Test the signature
+  if( memcmp( (fileData + (sizeof(DRIVERLIST_FILESTAMP)-1)), sigData, sigSize ) )
+  {
+    free( fileData );
+    free( sigData );
+		DeleteFile( romListFile.c_str() );
+    PRINTMSG( T_ERROR, "Data signature mismatch!" );
+    return FALSE;
+  }
+  free( sigData );
+
+  #define READDATA_NOMALLOC( _data__, _dataSize__ ) \
+    if( (DWORD)((listData + (_dataSize__)) - fileData) > fileSize.LowPart ) \
+    { \
+      free( fileData ); \
+      DeleteFile( romListFile.c_str() ); \
+      PRINTMSG( T_ERROR, "Attempt to read beyond the end of the file!" ); \
+      return FALSE; \
+    } \
+    else \
+    { \
+    if( !(_data__) ) \
+      { \
+        free( fileData ); \
+        DeleteFile( romListFile.c_str() ); \
+        PRINTMSG( T_ERROR, "Attempt to read into NULL destination buffer!" ); \
+        return FALSE; \
+      } \
+      memcpy( (_data__), listData, (_dataSize__) ); \
+      listData += (_dataSize__); \
+    }
+
+
+    // Read in the number of items
+  DWORD numItems;
+  READDATA_NOMALLOC( &numItems, sizeof(numItems) );
+
+  for( DWORD i = 0; i < numItems; ++i )
+  {
+    DWORD idx;
+    READDATA_NOMALLOC( &idx, sizeof(idx) );
+
+		m_ROMListWithClones.push_back( idx );
+    if( !m_driverInfoList[idx].m_isClone )
+      m_ROMListNoClones.push_back( idx );
+  }
+  free( fileData );
+
+  return TRUE;
 }
 
 //---------------------------------------------------------------------
@@ -744,8 +947,6 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
 //---------------------------------------------------------------------
 void CROMList::DrawZipData( const char *fileName, DWORD index )
 {
-	PRINTMSG( T_TRACE, "DrawZipData" );
-
 		// Each index value is 1/4th of a *
 		// The *'s scroll between the < >'s
 	INT cursorPos = ( (INT)((FLOAT)index / 4.0f) & 15) - 7;
@@ -760,18 +961,60 @@ void CROMList::DrawZipData( const char *fileName, DWORD index )
 
 	m_font.Begin();
 	
-	m_font.DrawText( 320, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Searching for ROM files", XBFONT_CENTER_X );
+	  m_font.DrawText( 320, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Searching for ROM files", XBFONT_CENTER_X );
 
-		// Draw some progress dots
-	WCHAR wBuf[256];
+		  // Draw some progress dots
+	  WCHAR wBuf[256];
+  	
+	  wcscpy( wBuf, L"<                >" );
+	  wBuf[8 + cursorPos] = L'*';
+	  m_font.DrawText( 320, 80, D3DCOLOR_RGBA( 255, 125, 125, 255), wBuf, XBFONT_CENTER_X );
+
+		  // Draw the current filename
+	  mbstowcs( wBuf, fileName, 256 );
+	  m_font.DrawText( 320, 100, D3DCOLOR_RGBA( 60, 100, 255, 255 ), wBuf, XBFONT_CENTER_X );
+
+	m_font.End();
+	m_displayDevice->Present( NULL, NULL, NULL, NULL );
+
+}
+
+//---------------------------------------------------------------------
+//	DrawZipCheckProgress
+//---------------------------------------------------------------------
+void CROMList::DrawZipCheckProgress( DWORD index )
+{
+		// Each index value is 1/4th of a *
+		// The *'s scroll between the < >'s
+	INT cursorPos = ( (INT)((FLOAT)index / 4.0f) & 15) - 7;
+
+		// Display the error to the user
+	m_displayDevice->Clear(	0L,																// Count
+													NULL,															// Rects to clear
+													D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+													D3DCOLOR_XRGB(0,0,0),							// Color
+													1.0f,															// Z
+													0L );															// Stencil
+
+	m_font.Begin();
 	
-	wcscpy( wBuf, L"<                >" );
-	wBuf[8 + cursorPos] = L'*';
-	m_font.DrawText( 320, 80, D3DCOLOR_RGBA( 255, 125, 125, 255), wBuf, XBFONT_CENTER_X );
+	m_font.DrawText( 320, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Checking against known ROM files", XBFONT_CENTER_X );
 
-		// Draw the current filename
-	mbstowcs( wBuf, fileName, 256 );
-	m_font.DrawText( 320, 100, D3DCOLOR_RGBA( 60, 100, 255, 255 ), wBuf, XBFONT_CENTER_X );
+		  // Draw a progress bar
+    UINT32 percentage = (UINT32)( (FLOAT)index * (25.0f / (FLOAT)m_numDrivers) + 0.5f ); 
+    UINT32 i = 0;
+	  WCHAR wBuf[256] = L"[";
+    for( ; i < percentage; ++i )
+      wcscat( wBuf, L"|" );
+    for( ; i < 25; ++i )
+      wcscat( wBuf, L" " );
+    wcscat( wBuf, L"]" );
+
+	  m_font.DrawText( 320, 80, D3DCOLOR_XRGB( 255, 125, 125 ), wBuf, XBFONT_CENTER_X );
+
+		  // Draw the current filename
+	  mbstowcs( wBuf, m_driverInfoList[index].m_description, 256 );
+	  m_font.DrawText( 320, 100, D3DCOLOR_XRGB( 60, 100, 255 ), wBuf, XBFONT_CENTER_X );
 
 	m_font.End();
 	m_displayDevice->Present( NULL, NULL, NULL, NULL );

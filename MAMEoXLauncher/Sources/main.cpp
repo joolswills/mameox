@@ -993,7 +993,7 @@ static BOOL Helper_LoadDriverInfoFile( void )
           free( g_driverData ); \
         free( fileData ); \
         DeleteFile( driverListFile.c_str() ); \
-        PRINTMSG( T_ERROR, "Failed to malloc data array. %lu bytes requested!", (_dataSize__) ); \
+        PRINTMSG( T_ERROR, "Attempt to read into NULL destination buffer!" ); \
         return FALSE; \
       } \
       memcpy( (_data__), listData, (_dataSize__) ); \
