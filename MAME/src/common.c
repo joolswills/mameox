@@ -1468,15 +1468,15 @@ static int process_rom_entries(struct rom_load_data *romdata, const struct RomMo
 	{
 		/* if this is a continue entry, it's invalid */
 		if (ROMENTRY_ISCONTINUE(romp))
-		{
-			printf("Error in RomModule definition: ROM_CONTINUE not preceded by ROM_LOAD\n");
+		{      
+			osd_print_error("Error in RomModule definition: ROM_CONTINUE not preceded by ROM_LOAD\n");
 			goto fatalerror;
 		}
 
 		/* if this is a reload entry, it's invalid */
 		if (ROMENTRY_ISRELOAD(romp))
 		{
-			printf("Error in RomModule definition: ROM_RELOAD not preceded by ROM_LOAD\n");
+			osd_print_error("Error in RomModule definition: ROM_RELOAD not preceded by ROM_LOAD\n");
 			goto fatalerror;
 		}
 
