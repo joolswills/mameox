@@ -14,6 +14,8 @@
 #include "InputManager.h"
 #include "FontSet.h"
 
+#include "xbox_png.h"
+
 
 //= D E F I N E S ======================================================
 
@@ -78,7 +80,7 @@ protected:
     //! \param    retRect - [OUT] pointer to a RECT structure to
     //!                     receive the dimensions of the image
 		//------------------------------------------------------------
-  virtual BOOL LoadPNGToTexture( const CStdString &filename, LPDIRECT3DTEXTURE8 *ret, RECT *retRect );
+  BOOL LoadPNGToTexture( const CStdString &filename, LPDIRECT3DTEXTURE8 *ret, RECT *retRect );
 
 		//------------------------------------------------------------
 		// RenderBackdrop
@@ -104,3 +106,26 @@ protected:
 
   RenderToTextureToken_t    m_renderToTextureToken;     //!< Token for texture rendering
 };
+
+
+
+typedef struct PNGFile_t {
+	UINT						m_imageWidth;
+	UINT						m_imageHeight;
+  png_structp			m_pngPtr;
+	png_infop				m_infoPtr;
+	png_bytep				*m_data;
+} PNGFile_t;
+
+//= P R O T O T Y P E S  ===============================================
+
+	//------------------------------------------------------------
+	//	LoadPNGFile
+	//------------------------------------------------------------
+BOOL LoadPNGFile(	const CStdString &filename, PNGFile_t *ret );
+
+	//------------------------------------------------------------
+	//	ClosePNGFile
+	//------------------------------------------------------------
+void ClosePNGFile( PNGFile_t &file );
+

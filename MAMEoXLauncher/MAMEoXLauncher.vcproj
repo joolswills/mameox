@@ -195,10 +195,16 @@
 				RelativePath=".\Sources\ScreensaverScreen.cpp">
 			</File>
 			<File
+				RelativePath=".\Sources\SkinChooserView.cpp">
+			</File>
+			<File
+				RelativePath=".\Sources\SkinResource.cpp">
+			</File>
+			<File
 				RelativePath="..\MAMEoX\Sources\SMBHandler.cpp">
 			</File>
 			<File
-				RelativePath=".\Sources\StartMenu.cpp">
+				RelativePath=".\Sources\StartMenuView.cpp">
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Sources\System_IniFile.cpp">
@@ -207,7 +213,7 @@
 				RelativePath=".\Sources\TVCalibrationScreen.cpp">
 			</File>
 			<File
-				RelativePath="Sources\VirtualKeyboard.cpp">
+				RelativePath=".\Sources\VirtualKeyboardView.cpp">
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Sources\VirtualMemoryManager.cpp">
@@ -292,10 +298,16 @@
 				RelativePath=".\Includes\ScreensaverScreen.h">
 			</File>
 			<File
+				RelativePath=".\Includes\SkinChooserView.h">
+			</File>
+			<File
+				RelativePath=".\Includes\SkinResource.h">
+			</File>
+			<File
 				RelativePath="..\MAMEoX\Includes\SMBHandler.h">
 			</File>
 			<File
-				RelativePath=".\Includes\StartMenu.h">
+				RelativePath=".\Includes\StartMenuView.h">
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Includes\StdString.h">
@@ -310,7 +322,7 @@
 				RelativePath=".\Includes\TVCalibrationScreen.h">
 			</File>
 			<File
-				RelativePath="Includes\VirtualKeyboard.h">
+				RelativePath=".\Includes\VirtualKeyboardView.h">
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Includes\VirtualMemoryManager.h">

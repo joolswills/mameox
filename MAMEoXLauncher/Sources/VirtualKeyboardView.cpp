@@ -5,7 +5,7 @@
 	*/
 
 //= I N C L U D E S ====================================================
-#include "VirtualKeyboard.h"
+#include "VirtualKeyboardView.h"
 #include "DebugLogger.h"
 #include "XBFont.h"
 

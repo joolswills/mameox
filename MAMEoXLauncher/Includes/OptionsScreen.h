@@ -10,7 +10,7 @@
 //= I N C L U D E S ====================================================
 #include "ListView.h"
 #include "BaseMenuView.h"
-#include "VirtualKeyboard.h"
+#include "VirtualKeyboardView.h"
 #include "TextureSet.h"
 
 extern "C" {

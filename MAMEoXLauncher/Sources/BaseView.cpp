@@ -1,6 +1,6 @@
 /**
-	* \file			StartMenu.cpp
-	* \brief		Modal start menu
+	* \file			BaseView.cpp
+	* \brief		Base class for views
 	*
 	*/
 
@@ -9,7 +9,6 @@
 #include "DebugLogger.h"
 #include "XBFont.h"
 #include "xbox_FileIO.h"
-#include "xbox_png.h"
 
 
 #include <string>
@@ -48,157 +47,21 @@ BOOL CBaseView::LoadPNGToTexture( const CStdString &filename, LPDIRECT3DTEXTURE8
   if( !ret )
     return FALSE;
 
-    // Release the old screenshot data
-  SAFE_RELEASE( *ret );
-
   if( filename == "" || !retRect )
     return FALSE;
 
-  osd_file *file = osd_fopen( FILETYPE_MAMEOX_FULLPATH, 0, filename.c_str(), "r" );
-  if( !file )
-    return FALSE;
-
-    // Read the png signature
-  {
-    #define PNG_BYTES_TO_CHECK 4 
-    char buf[PNG_BYTES_TO_CHECK];
-
-   if( osd_fread( file, buf, PNG_BYTES_TO_CHECK ) != PNG_BYTES_TO_CHECK )
-   {
-     osd_fclose( file );
-     return FALSE;
-   }
-
-   if( png_sig_cmp( (png_bytep)buf, (png_size_t)0, PNG_BYTES_TO_CHECK ) )
-   {
-     osd_fclose( file );
-     return FALSE;
-   }
-  }
-
-  png_structp  png_ptr;
-  png_infop    info_ptr;
-
-  /* Create and initialize the png_struct with the desired error handler
-    * functions.  If you want to use the default stderr and longjump method,
-    * you can supply NULL for the last three parameters.  We also supply the
-    * the compiler header file version, so that we know if the application
-    * was compiled with a compatible version of the library.  REQUIRED
-    */
-  png_ptr = png_create_read_struct( PNG_LIBPNG_VER_STRING, NULL, NULL, NULL );
-  if( !png_ptr )
-  {
-    osd_fclose( file );
-    return FALSE;
-  }
-
-  /* Allocate/initialize the memory for image information.  REQUIRED. */
-  info_ptr = png_create_info_struct( png_ptr );
-  if( !info_ptr )
-  {
-    osd_fclose( file );
-    png_destroy_read_struct( &png_ptr, png_infopp_NULL, png_infopp_NULL );
-    return FALSE;
-  }
-
-  /* Set error handling if you are using the setjmp/longjmp method (this is
-  * the normal method of doing things with libpng).  REQUIRED unless you
-  * set up your own error handlers in the png_create_read_struct() earlier.
-  */
-
-  if( setjmp( png_jmpbuf(png_ptr) ) )
-  {
-    /* Free all of the memory associated with the png_ptr and info_ptr */
-    png_destroy_read_struct( &png_ptr, &info_ptr, png_infopp_NULL );
-    osd_fclose( file );
-
-      /* If we get here, we had a problem reading the file */
-    return FALSE;
-  }
-
-  /* If you are using replacement read functions, instead of calling
-  * png_init_io() here you would call:
-  */
-  png_set_read_fn( png_ptr, (void *)file, Helper_PNGRead );
-  /* where user_io_ptr is a structure you want available to the callbacks */
 
 
-  /* If we have already read some of the signature */
-  png_set_sig_bytes( png_ptr, PNG_BYTES_TO_CHECK );
+	PNGFile_t pngFile;
+	if( !LoadPNGFile( filename, &pngFile ) )
+		return FALSE;
 
-  memset( retRect, 0, sizeof(*retRect) );
-  int bit_depth, color_type, interlace_type;
-  /* The call to png_read_info() gives us all of the information from the
-  * PNG file before the first IDAT (image data chunk).  REQUIRED
-  */
-  png_read_info(png_ptr, info_ptr);
+    // Release the old screenshot data
+  SAFE_RELEASE( *ret );
 
-  png_get_IHDR( png_ptr, 
-                info_ptr, 
-                (png_uint_32*)&retRect->right, 
-                (png_uint_32*)&retRect->bottom, 
-                &bit_depth, 
-                &color_type,
-                &interlace_type, 
-                int_p_NULL, 
-                int_p_NULL );
-
-
-  /* Some suggestions as to how to get a screen gamma value */
-  DOUBLE screen_gamma = 1.0;  /* A good guess for Mac systems */
-
-  /* Tell libpng to handle the gamma conversion for you.  The final call
-  * is a good guess for PC generated images, but it should be configurable
-  * by the user at run time by the user.  It is strongly suggested that
-  * your application support gamma correction.
-  */
-
-  int intent;
-
-  if (png_get_sRGB(png_ptr, info_ptr, &intent))
-    png_set_gamma(png_ptr, screen_gamma, 0.45455);
-  else
-  {
-    double image_gamma;
-    if (png_get_gAMA(png_ptr, info_ptr, &image_gamma))
-        png_set_gamma(png_ptr, screen_gamma, image_gamma);
-    else
-        png_set_gamma(png_ptr, screen_gamma, 0.45455);
-  }
-
-
-  /* Optional call to gamma correct and add the background to the palette
-  * and update info structure.  REQUIRED if you are expecting libpng to
-  * update the palette for you (ie you selected such a transform above).
-  */
-  png_read_update_info(png_ptr, info_ptr);
-
-  png_bytep *row_pointers = (png_bytep*)calloc( 1, retRect->bottom * sizeof(png_bytep) );
-  if( !row_pointers )
-  {
-    PRINTMSG(( T_ERROR, "Out of memory allocating row_pointers array!" ));
-    png_destroy_read_struct( &png_ptr, &info_ptr, png_infopp_NULL );
-    osd_fclose( file );
-    return FALSE;
-  }
-
-  UINT32 y;
-  for( y = 0; y < retRect->bottom; ++y )
-  {
-    if( !(row_pointers[y] = (png_bytep)malloc( png_get_rowbytes(png_ptr,info_ptr))) )
-    {
-      PRINTMSG(( T_ERROR, "Out of memory allocating row_pointers[%lu]!", y ));
-      png_destroy_read_struct( &png_ptr, &info_ptr, png_infopp_NULL );
-      osd_fclose( file );
-      return FALSE;
-    }
-  }
-
-
-  png_read_image(png_ptr, row_pointers );
-
-    /* read rest of file, and get additional chunks in info_ptr - REQUIRED */
-  png_read_end( png_ptr, info_ptr );
+	memset( retRect, 0, sizeof(*retRect) );
+	retRect->right = pngFile.m_imageWidth;
+	retRect->bottom = pngFile.m_imageHeight;
 
     // Create a new texture and read the data into it
   if( (D3DXCreateTexture( m_displayDevice,
@@ -225,8 +88,7 @@ BOOL CBaseView::LoadPNGToTexture( const CStdString &filename, LPDIRECT3DTEXTURE8
     PRINTMSG(( T_INFO, "         Avail: %lu", memStatus.dwAvailVirtual ));
     PRINTMSG(( T_INFO, "         Total: %lu", memStatus.dwTotalVirtual ));
 
-    png_destroy_read_struct( &png_ptr, &info_ptr, png_infopp_NULL );
-    osd_fclose( file );
+		ClosePNGFile( pngFile );
 		return FALSE;
 	}
 
@@ -240,12 +102,13 @@ BOOL CBaseView::LoadPNGToTexture( const CStdString &filename, LPDIRECT3DTEXTURE8
 	(*ret)->LockRect(	0, &lockedRect, NULL, 0 );
   memset( lockedRect.pBits, 0, desc.Width * desc.Height * sizeof(DWORD) );
 
-  switch( info_ptr->color_type )
+  UINT32 y;
+	switch( pngFile.m_infoPtr->color_type )
   {
     // *** PNG_COLOR_TYPE_PALETTE *** //
   case PNG_COLOR_TYPE_PALETTE:
     {
-      switch( info_ptr->bit_depth )
+      switch( pngFile.m_infoPtr->bit_depth )
       {
         // Monochrome
       case 1:
@@ -254,20 +117,20 @@ BOOL CBaseView::LoadPNGToTexture( const CStdString &filename, LPDIRECT3DTEXTURE8
           for( y = 0; y < retRect->bottom; ++y )
           {
             D3DCOLOR *dest = destRow;
-            BYTE *src = (BYTE*)row_pointers[y];
+            BYTE *src = (BYTE*)pngFile.m_data[y];
             for( UINT32 x = 0; x < (retRect->right >> 3); ++x )
             {      
               for( INT32 i = 7; i >= 0; --i )
               {
                 BOOL palIndex = (*src & (1 << i)) ? 1 : 0;
-                png_color &color = info_ptr->palette[palIndex];
+                png_color &color = pngFile.m_infoPtr->palette[palIndex];
                 *(dest++) = D3DCOLOR_XRGB( color.red, color.green, color.blue );
               }
 
               ++src;
             }
-            free( row_pointers[y] );
-            row_pointers[y] = NULL;
+            free( pngFile.m_data[y] );
+            pngFile.m_data[y] = NULL;
             destRow += desc.Width;
           }
         }
@@ -279,29 +142,29 @@ BOOL CBaseView::LoadPNGToTexture( const CStdString &filename, LPDIRECT3DTEXTURE8
           for( y = 0; y < retRect->bottom; ++y )
           {
             D3DCOLOR *dest = destRow;
-            BYTE *src = (BYTE*)row_pointers[y];
+            BYTE *src = (BYTE*)pngFile.m_data[y];
             for( UINT32 x = 0; x < (retRect->right >> 2); ++x )
             {      
               BYTE palIndex = (*src >> 6) & 0x03;
-              png_color color = info_ptr->palette[palIndex];
+              png_color color = pngFile.m_infoPtr->palette[palIndex];
               *(dest++) = D3DCOLOR_XRGB( color.red, color.green, color.blue );
 
               palIndex = (*src >> 4) & 0x03;
-              color = info_ptr->palette[palIndex];
+              color = pngFile.m_infoPtr->palette[palIndex];
               *(dest++) = D3DCOLOR_XRGB( color.red, color.green, color.blue );
 
               palIndex = (*src >> 2) & 0x03;
-              color = info_ptr->palette[palIndex];
+              color = pngFile.m_infoPtr->palette[palIndex];
               *(dest++) = D3DCOLOR_XRGB( color.red, color.green, color.blue );
 
               palIndex = *src & 0x03;
-              color = info_ptr->palette[palIndex];
+              color = pngFile.m_infoPtr->palette[palIndex];
               *(dest++) = D3DCOLOR_XRGB( color.red, color.green, color.blue );
 
               ++src;
             }
-            free( row_pointers[y] );
-            row_pointers[y] = NULL;
+            free( pngFile.m_data[y] );
+            pngFile.m_data[y] = NULL;
             destRow += desc.Width;
           }
         }
@@ -313,21 +176,21 @@ BOOL CBaseView::LoadPNGToTexture( const CStdString &filename, LPDIRECT3DTEXTURE8
           for( y = 0; y < retRect->bottom; ++y )
           {
             D3DCOLOR *dest = destRow;
-            BYTE *src = (BYTE*)row_pointers[y];
+            BYTE *src = (BYTE*)pngFile.m_data[y];
             for( UINT32 x = 0; x < (retRect->right >> 1); ++x )
             {
               BYTE palIndex = (*src >> 4) & 0x07;
-              png_color &color = info_ptr->palette[palIndex];
+              png_color &color = pngFile.m_infoPtr->palette[palIndex];
               *(dest++) = D3DCOLOR_XRGB( color.red, color.green, color.blue );
 
               palIndex = *src & 0x07;
-              png_color &color2 = info_ptr->palette[palIndex];
+              png_color &color2 = pngFile.m_infoPtr->palette[palIndex];
               *(dest++) = D3DCOLOR_XRGB( color2.red, color2.green, color2.blue );
 
               ++src;
             }
-            free( row_pointers[y] );
-            row_pointers[y] = NULL;
+            free( pngFile.m_data[y] );
+            pngFile.m_data[y] = NULL;
             destRow += desc.Width;
           }
         }
@@ -339,14 +202,14 @@ BOOL CBaseView::LoadPNGToTexture( const CStdString &filename, LPDIRECT3DTEXTURE8
           for( y = 0; y < retRect->bottom; ++y )
           {
             D3DCOLOR *dest = destRow;
-            BYTE *src = (BYTE*)row_pointers[y];
+            BYTE *src = (BYTE*)pngFile.m_data[y];
             for( UINT32 x = 0; x < retRect->right; ++x )
             {      
-              png_color &color = info_ptr->palette[*(src++)];
+              png_color &color = pngFile.m_infoPtr->palette[*(src++)];
               *(dest++) = D3DCOLOR_XRGB( color.red, color.green, color.blue );
             }
-            free( row_pointers[y] );
-            row_pointers[y] = NULL;
+            free( pngFile.m_data[y] );
+            pngFile.m_data[y] = NULL;
             destRow += desc.Width;
           }
         }
@@ -362,28 +225,23 @@ BOOL CBaseView::LoadPNGToTexture( const CStdString &filename, LPDIRECT3DTEXTURE8
       for( y = 0; y < retRect->bottom; ++y )
       {
         D3DCOLOR *dest = destRow;
-        BYTE *src = (BYTE*)row_pointers[y];
+        BYTE *src = (BYTE*)pngFile.m_data[y];
         for( UINT32 x = 0; x < retRect->right; ++x )
         {      
           *(dest++) = D3DCOLOR_XRGB( *(src), *(src+1), *(src+2) );
           src += 3;
         }
-        free( row_pointers[y] );
-        row_pointers[y] = NULL;
+        free( pngFile.m_data[y] );
+        pngFile.m_data[y] = NULL;
         destRow += desc.Width;
       }
     }
     break;
   }
-  free( row_pointers );
-  row_pointers = NULL;
 
-    /* clean up after the read, and free any memory allocated - REQUIRED */
-  png_destroy_read_struct( &png_ptr, &info_ptr, png_infopp_NULL );
+	ClosePNGFile( pngFile );
 
-  osd_fclose( file );
-
-  return TRUE;
+	return TRUE;
 }
 
 //---------------------------------------------------------------------
@@ -431,6 +289,195 @@ void CBaseView::RenderToTextureStop( void )
 {
   ::RenderToTextureStop( m_renderToTextureToken );
 }
+
+
+
+
+
+
+
+
+
+
+//---------------------------------------------------------------------
+//  LoadPNGFile
+//---------------------------------------------------------------------
+BOOL LoadPNGFile(	const CStdString &filename, PNGFile_t *ret )
+{
+	if( filename == "" || !ret )
+		return FALSE;
+
+
+  osd_file *file = osd_fopen( FILETYPE_MAMEOX_FULLPATH, 0, filename.c_str(), "r" );
+  if( !file )
+    return FALSE;
+
+    // Read the png signature
+  {
+    #define PNG_BYTES_TO_CHECK 4 
+    char buf[PNG_BYTES_TO_CHECK];
+
+   if( osd_fread( file, buf, PNG_BYTES_TO_CHECK ) != PNG_BYTES_TO_CHECK )
+   {
+     osd_fclose( file );
+     return FALSE;
+   }
+
+   if( png_sig_cmp( (png_bytep)buf, (png_size_t)0, PNG_BYTES_TO_CHECK ) )
+   {
+     osd_fclose( file );
+     return FALSE;
+   }
+  }
+
+
+  /* Create and initialize the png_struct with the desired error handler
+    * functions.  If you want to use the default stderr and longjump method,
+    * you can supply NULL for the last three parameters.  We also supply the
+    * the compiler header file version, so that we know if the application
+    * was compiled with a compatible version of the library.  REQUIRED
+    */
+  ret->m_pngPtr = png_create_read_struct( PNG_LIBPNG_VER_STRING, NULL, NULL, NULL );
+  if( !ret->m_pngPtr )
+  {
+    osd_fclose( file );
+    return FALSE;
+  }
+
+  /* Allocate/initialize the memory for image information.  REQUIRED. */
+  ret->m_infoPtr = png_create_info_struct( ret->m_pngPtr );
+  if( !ret->m_infoPtr )
+  {
+    osd_fclose( file );
+    png_destroy_read_struct( &ret->m_pngPtr, png_infopp_NULL, png_infopp_NULL );
+    return FALSE;
+  }
+
+  /* Set error handling if you are using the setjmp/longjmp method (this is
+  * the normal method of doing things with libpng).  REQUIRED unless you
+  * set up your own error handlers in the png_create_read_struct() earlier.
+  */
+
+  if( setjmp( png_jmpbuf(ret->m_pngPtr) ) )
+  {
+    /* Free all of the memory associated with the ret->m_pngPtr and ret->m_infoPtr */
+    png_destroy_read_struct( &ret->m_pngPtr, &ret->m_infoPtr, png_infopp_NULL );
+    osd_fclose( file );
+
+      /* If we get here, we had a problem reading the file */
+    return FALSE;
+  }
+
+  /* If you are using replacement read functions, instead of calling
+  * png_init_io() here you would call:
+  */
+  png_set_read_fn( ret->m_pngPtr, (void *)file, Helper_PNGRead );
+  /* where user_io_ptr is a structure you want available to the callbacks */
+
+
+  /* If we have already read some of the signature */
+  png_set_sig_bytes( ret->m_pngPtr, PNG_BYTES_TO_CHECK );
+
+  int bit_depth, color_type, interlace_type;
+  /* The call to png_read_info() gives us all of the information from the
+  * PNG file before the first IDAT (image data chunk).  REQUIRED
+  */
+  png_read_info(ret->m_pngPtr, ret->m_infoPtr);
+
+  png_get_IHDR( ret->m_pngPtr, 
+                ret->m_infoPtr, 
+                (png_uint_32*)&ret->m_imageWidth, 
+                (png_uint_32*)&ret->m_imageHeight, 
+                &bit_depth, 
+                &color_type,
+                &interlace_type, 
+                int_p_NULL, 
+                int_p_NULL );
+
+
+  /* Some suggestions as to how to get a screen gamma value */
+  DOUBLE screen_gamma = 1.0;  /* A good guess for Mac systems */
+
+  /* Tell libpng to handle the gamma conversion for you.  The final call
+  * is a good guess for PC generated images, but it should be configurable
+  * by the user at run time by the user.  It is strongly suggested that
+  * your application support gamma correction.
+  */
+
+  int intent;
+
+  if (png_get_sRGB(ret->m_pngPtr, ret->m_infoPtr, &intent))
+    png_set_gamma(ret->m_pngPtr, screen_gamma, 0.45455);
+  else
+  {
+    double image_gamma;
+    if (png_get_gAMA(ret->m_pngPtr, ret->m_infoPtr, &image_gamma))
+        png_set_gamma(ret->m_pngPtr, screen_gamma, image_gamma);
+    else
+        png_set_gamma(ret->m_pngPtr, screen_gamma, 0.45455);
+  }
+
+
+  /* Optional call to gamma correct and add the background to the palette
+  * and update info structure.  REQUIRED if you are expecting libpng to
+  * update the palette for you (ie you selected such a transform above).
+  */
+  png_read_update_info(ret->m_pngPtr, ret->m_infoPtr);
+
+  ret->m_data = (png_bytep*)calloc( 1, ret->m_imageHeight * sizeof(png_bytep) );
+  if( !ret->m_data )
+  {
+    PRINTMSG(( T_ERROR, "Out of memory allocating pngFile.m_data array!" ));
+    png_destroy_read_struct( &ret->m_pngPtr, &ret->m_infoPtr, png_infopp_NULL );
+    osd_fclose( file );
+    return FALSE;
+  }
+
+		// Allocate all the data rows
+  UINT32 y;
+  for( y = 0; y < ret->m_imageHeight; ++y )
+  {
+    if( !(ret->m_data[y] = (png_bytep)malloc( png_get_rowbytes( ret->m_pngPtr, ret->m_infoPtr ))) )
+    {
+      PRINTMSG(( T_ERROR, "Out of memory allocating ret->m_data[%lu]!", y ));
+      png_destroy_read_struct( &ret->m_pngPtr, &ret->m_infoPtr, png_infopp_NULL );
+      osd_fclose( file );
+      return FALSE;
+    }
+  }
+
+
+  png_read_image(ret->m_pngPtr, ret->m_data );
+
+    /* read rest of file, and get additional chunks in ret->m_infoPtr - REQUIRED */
+  png_read_end( ret->m_pngPtr, ret->m_infoPtr );
+  osd_fclose( file );
+
+  return TRUE;
+}
+
+//------------------------------------------------------------
+//	ClosePNGFile
+//------------------------------------------------------------
+void ClosePNGFile( PNGFile_t &file ) 
+{
+	if( file.m_data )
+	{
+		for( int i = 0; i < file.m_imageHeight; ++i )
+		{
+			if( file.m_data[i] )
+				free( file.m_data[i] );
+		}
+
+		free( file.m_data );
+	}
+
+    /* clean up after the read, and free any memory allocated - REQUIRED */
+	png_destroy_read_struct( &file.m_pngPtr, &file.m_infoPtr, png_infopp_NULL );
+
+	memset( &file, 0, sizeof(file) );
+}
+
 
 //---------------------------------------------------------------------
 //  Helper_PNGRead

@@ -33,7 +33,7 @@
 #include "HelpScreen.h"
 #include "OptionsScreen.h"
 #include "LightgunCalibratorScreen.h"
-#include "StartMenu.h"
+#include "StartMenuView.h"
 #include "ScreensaverScreen.h"
 #include "TVCalibrationScreen.h"
 
@@ -72,7 +72,8 @@ typedef enum startmenuitemdata
   MI_REFRESHROMMETADATA,
   MI_COPYSYSTEMFILESFROMDVD,
   MI_ROMLIST,
-  MI_SCREENSETUP
+  MI_SCREENSETUP,
+	MI_SKINMENU
 } startmenuitemdata;
 
 //= S T R U C T U R E S ===============================================
@@ -1166,6 +1167,9 @@ static void Helper_SetStartMenuItems( CStartMenu &startMenu, viewmode currentVie
       // on readonly media)
     if( g_FileIOConfig.m_ConfigPath[0] == g_FileIOConfig.m_ALTDrive[0] )
       startMenu.AddMenuItem( "Copy system files from DVD", MI_COPYSYSTEMFILESFROMDVD );
+
+		startMenu.AddMenuItem( "Choose Skin", MI_SKINMENU );
+
     break;
 
     // *** VIEW_OPTIONS *** //

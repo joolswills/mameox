@@ -1,18 +1,18 @@
 /**
-	* \file			StartMenu.cpp
+	* \file			SkinChooserView.cpp
 	* \brief		Modal start menu
 	*
 	*/
 
 //= I N C L U D E S ====================================================
-#include "StartMenu.h"
+#include "SkinChooserView.h"
 #include "DebugLogger.h"
 #include "XBFont.h"
 
 #include <string>
 
 //= D E F I N E S ======================================================
-
+#if 0
 
   //--- Layout defines -----------------------------------------
 #define HEADER_COLOR            D3DCOLOR_XRGB( 0, 0, 0 )
@@ -43,7 +43,7 @@
 //---------------------------------------------------------------------
 //	MoveCursor
 //---------------------------------------------------------------------
-void CStartMenu::MoveCursor( CInputManager &gp, BOOL unused )
+void CSkinChooserView::MoveCursor( CInputManager &gp, BOOL unused )
 {
 	static UINT64		lastTime = 0;
 	UINT64 curTime = osd_cycles();
@@ -107,7 +107,7 @@ void CStartMenu::MoveCursor( CInputManager &gp, BOOL unused )
 //---------------------------------------------------------------------
 //	Draw
 //---------------------------------------------------------------------
-void CStartMenu::Draw( BOOL clearScreen, BOOL flipOnCompletion )
+void CSkinChooserView::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 {
   if( clearScreen )  
 	  m_displayDevice->Clear(	0L,																// Count
@@ -178,5 +178,5 @@ void CStartMenu::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
 
 
-
+#endif
 
