@@ -1,5 +1,9 @@
 Version 0.79.2b
 
+	Note: Henceforth I will not be providing a full file changelog (that's
+	      what CVS is for). Instead this doc will be used to track feature
+				changes/fixes and MAME core updates.
+
    -------------------------------------------------------------
   - \MAMEoX:
     - MAMEoX.h
@@ -13,14 +17,8 @@ Version 0.79.2b
     - main.cpp
       - Added message while saving settings before returning to
         the dashboard.
-
 		- Renamed a few files for consistency
-
-		- SkinChooserView.cpp, SkinChooserView.h
-		  - Added, provides preview/selection of skins
-
-		- SkinResource.cpp, SkinResource.h
-		  - Added, provides INI parsing and SKIN texture creation
+    - Skin support
 
   - Skins
 	  - Added skins directory w/ "Original" skin		  
