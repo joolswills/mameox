@@ -1901,16 +1901,16 @@ void CROMListScreen::DrawVerboseList( void )
     }
 
       // Manufacturer
-    DRAWSPACER( MANUFACTURER_COLUMN - 4 )
+    DRAWSPACER( MANUFACTURER_COLUMN - 6 )
 
       // Year column
-    DRAWSPACER( YEAR_COLUMN - 4 )
+    DRAWSPACER( YEAR_COLUMN - 6 )
 
       // Number of players column
-    DRAWSPACER( NUMPLAYERS_COLUMN - 4 )
+    DRAWSPACER( NUMPLAYERS_COLUMN - 6 )
 
       // Clone column
-    DRAWSPACER( CLONE_COLUMN - 4 )
+    DRAWSPACER( CLONE_COLUMN - 6 )
 
   m_displayDevice->End();
 
@@ -2260,6 +2260,12 @@ void CROMListScreen::DrawDetailedList( void )
 
   FLOAT textHeight = m_fontSet.SmallThinFontHeight();
   FLOAT selectedItemYPos = (textHeight * (ULONG)m_cursorPosition);
+
+
+    // Display the screenshot if there is one
+    // romname.png
+    // Todo: mode to display full screen screenshots
+
 
 	m_fontSet.SmallThinFont().Begin();
 
