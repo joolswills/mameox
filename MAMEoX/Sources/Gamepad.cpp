@@ -307,7 +307,10 @@ BOOL CGamepad::IsOneOfButtonsPressed( UINT32 buttonID ) const
 //------------------------------------------------------
 const XINPUT_GAMEPAD *CGamepad::GetGamepadDeviceState( void ) const 
 {
-	return &m_state.Gamepad;
+  if( IsConnected() )
+	  return &m_state.Gamepad;
+
+  return NULL;
 }
 
 //------------------------------------------------------
@@ -315,7 +318,10 @@ const XINPUT_GAMEPAD *CGamepad::GetGamepadDeviceState( void ) const
 //------------------------------------------------------
 const XINPUT_CAPABILITIES *CGamepad::GetGamepadDeviceCaps( void ) const 
 {
-	return &m_caps;
+	if( IsConnected() )
+    return &m_caps;
+
+  return NULL;
 }
 
 

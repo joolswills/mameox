@@ -172,7 +172,10 @@ public:
 		if( device > 3 )
 			return NULL;
 
-    return &m_gamepads[device];
+    if( m_gamepads[device].IsConnected() )
+      return &m_gamepads[device];
+
+    return NULL;
   }
 
 		//------------------------------------------------------
