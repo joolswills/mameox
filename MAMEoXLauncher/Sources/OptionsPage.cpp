@@ -361,8 +361,7 @@ void COptionsPage::DrawVideoPage( void )
 */
 
   WCHAR text[256] = {0};
-  const WCHAR filterNames[][16] = { L"None", 
-                                    L"Point", 
+  const WCHAR filterNames[][16] = { L"Point", 
                                     L"Linear", 
                                     L"Anisotropic", 
                                     L"Quincunx", 
@@ -683,7 +682,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
   case 6:
     if( !direction )
     {
-      if( g_rendererOptions.m_minFilter > D3DTEXF_NONE )
+      if( g_rendererOptions.m_minFilter > D3DTEXF_POINT )
         g_rendererOptions.m_minFilter = (D3DTEXTUREFILTERTYPE)( (LONG)g_rendererOptions.m_minFilter - 1 );
       else
         g_rendererOptions.m_minFilter = D3DTEXF_GAUSSIANCUBIC;
@@ -693,7 +692,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
       if( g_rendererOptions.m_minFilter < D3DTEXF_GAUSSIANCUBIC )
         g_rendererOptions.m_minFilter = (D3DTEXTUREFILTERTYPE)( (LONG)g_rendererOptions.m_minFilter + 1 );
       else
-        g_rendererOptions.m_minFilter = D3DTEXF_NONE;
+        g_rendererOptions.m_minFilter = D3DTEXF_POINT;
     }
     break;
 
@@ -701,7 +700,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
   case 7:
     if( !direction )
     {
-      if( g_rendererOptions.m_magFilter > D3DTEXF_NONE )
+      if( g_rendererOptions.m_magFilter > D3DTEXF_POINT )
         g_rendererOptions.m_magFilter = (D3DTEXTUREFILTERTYPE)( (LONG)g_rendererOptions.m_magFilter - 1 );
       else
         g_rendererOptions.m_magFilter = D3DTEXF_GAUSSIANCUBIC;
@@ -711,7 +710,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
       if( g_rendererOptions.m_magFilter < D3DTEXF_GAUSSIANCUBIC )
         g_rendererOptions.m_magFilter = (D3DTEXTUREFILTERTYPE)( (LONG)g_rendererOptions.m_magFilter + 1 );
       else
-        g_rendererOptions.m_magFilter = D3DTEXF_NONE;
+        g_rendererOptions.m_magFilter = D3DTEXF_POINT;
     }
     break;
   }

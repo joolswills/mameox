@@ -123,9 +123,9 @@ void LoadOptions( void )
 	// int		ui_orientation;	        // orientation of the UI relative to the video
   
     // Validate some of the video options to keep them from ripping shit up
-  if( g_rendererOptions.m_minFilter > D3DTEXF_GAUSSIANCUBIC )
+  if( g_rendererOptions.m_minFilter > D3DTEXF_GAUSSIANCUBIC || g_rendererOptions.m_minFilter < D3DTEXF_POINT )
     g_rendererOptions.m_minFilter = D3DTEXF_LINEAR;
-  if( g_rendererOptions.m_magFilter > D3DTEXF_GAUSSIANCUBIC )
+  if( g_rendererOptions.m_magFilter > D3DTEXF_GAUSSIANCUBIC || g_rendererOptions.m_magFilter < D3DTEXF_POINT )
     g_rendererOptions.m_magFilter = D3DTEXF_LINEAR;
   if( g_rendererOptions.m_screenRotation > SR_270 )
     g_rendererOptions.m_screenRotation = SR_0;
