@@ -106,6 +106,12 @@ X) This step is currently unnecessary, as the source distribution includes the
 	 from within the program, such as filenames and directory paths. This
 	 will change in the near future)
 
+   !!!IMPORTANT!!!
+     DO NOT RENAME OR MOVE EITHER OF THE XBE FILES! MAMEoX (as, I believe,
+     any XBOX executable) is _very_ picky about where its files are and
+     what they are named. Renaming or moving either file will cause MAMEoX
+     to fail!
+
 ---------------------------------------------------------------------------
 Compilation Errors:
 
