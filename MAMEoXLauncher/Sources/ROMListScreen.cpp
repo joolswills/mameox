@@ -32,7 +32,7 @@ extern "C" {
 #define HELPITEM_COLOR        D3DCOLOR_XRGB( 20, 20, 20 )
 #define ITEM_COLOR			      D3DCOLOR_XRGB( 1, 1, 1 )
 #define ITEM_WARNING_COLOR    D3DCOLOR_XRGB( 100, 100, 0 )
-#define ITEM_NONWORKING_COLOR D3DCOLOR_XRGB( 100, 1, 1 )
+#define ITEM_NONWORKING_COLOR D3DCOLOR_XRGB( 240, 20, 20 )
 
 #define HIGHLIGHTBAR_COLOR      D3DCOLOR_ARGB( 180, 175, 179, 212 )
 #define SCROLLICON_COLOR        D3DCOLOR_XRGB( 255, 255, 255 )
@@ -44,7 +44,7 @@ extern "C" {
 #define FIRSTDATA_ROW         124
 
 #define HIGHLIGHTBAR_LEFT     34
-#define HIGHLIGHTBAR_RIGHT    606
+#define HIGHLIGHTBAR_RIGHT    605
 
 #define SPACER_WIDTH          2
 
@@ -2049,13 +2049,13 @@ void CROMListScreen::DrawVerboseList( void )
 
     #define DRAWSPACER( spacerLeft ) { \
       m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SPACER_COLOR ); \
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft), LISTPOS_TOP, 1.0f, 1.0f ); \
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft), LISTPOS_TOP + 1, 1.0f, 1.0f ); \
       m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SPACER_COLOR ); \
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft) + SPACER_WIDTH, LISTPOS_TOP, 1.0f, 1.0f ); \
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft) + SPACER_WIDTH, LISTPOS_TOP + 1, 1.0f, 1.0f ); \
       m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SPACER_COLOR ); \
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft) + SPACER_WIDTH, LISTPOS_BOTTOM, 1.0f, 1.0f ); \
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft) + SPACER_WIDTH, LISTPOS_BOTTOM - 1, 1.0f, 1.0f ); \
       m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SPACER_COLOR ); \
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft), LISTPOS_BOTTOM, 1.0f, 1.0f ); \
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft), LISTPOS_BOTTOM - 1, 1.0f, 1.0f ); \
     }
 
       // Manufacturer

@@ -44,14 +44,17 @@ extern "C" {
 #define HIGHLIGHTBAR_COLOR    D3DCOLOR_ARGB( 180, 175, 179, 212 )
 #define HELPICON_COLOR        D3DCOLOR_XRGB( 255, 255, 255 )
 #define HELPBACKDROP_COLOR    D3DCOLOR_ARGB( 127, 255, 255, 255 )
+#define SPACER_COLOR          D3DCOLOR_ARGB( 100, 255, 255, 255 )
 
 #define TITLEBAR_ROW          99
 #define FIRSTDATA_ROW         124
 
+#define SPACER_WIDTH          2
+
 #define HIGHLIGHTBAR_LEFT     34
-#define HIGHLIGHTBAR_RIGHT    606
+#define HIGHLIGHTBAR_RIGHT    605
 #define NAME_START            42
-#define VALUE_START           240
+#define VALUE_START           248
 #define TEXTBOX_RIGHT         604   // The right edge of the text box
 #define COLUMN_PADDING        9     // Number of pixels to subtract from the column width before truncating text
 
@@ -352,7 +355,24 @@ void COptionsScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos + fontHeight, 1.0f, 1.0f );
   m_displayDevice->End();
 
+    // Draw the vertical spacers
+  m_displayDevice->Begin( D3DPT_QUADLIST );
 
+    #define DRAWSPACER( spacerLeft ) { \
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SPACER_COLOR ); \
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft), LISTPOS_TOP + 1, 1.0f, 1.0f ); \
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SPACER_COLOR ); \
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft) + SPACER_WIDTH, LISTPOS_TOP + 1, 1.0f, 1.0f ); \
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SPACER_COLOR ); \
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft) + SPACER_WIDTH, LISTPOS_BOTTOM - 1, 1.0f, 1.0f ); \
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SPACER_COLOR ); \
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft), LISTPOS_BOTTOM - 1, 1.0f, 1.0f ); \
+    }
+
+      // Value
+    DRAWSPACER( VALUE_START - 6 )
+
+  m_displayDevice->End();
 
     //-- Render the page's text -----------------------------------------------------------
 	m_fontSet.SmallThinFont().Begin();
