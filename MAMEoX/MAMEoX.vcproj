@@ -138,7 +138,7 @@
 			<Tool
 				Name="XboxImageTool"
 				AdditionalOptions="/testid:0x4D414D45"
-				StackSize="0x10000"
+				StackSize="0x10400"
 				IncludeDebugInfo="TRUE"
 				LimitAvailableMemoryTo64MB="FALSE"
 				SuppressStartupBanner="TRUE"

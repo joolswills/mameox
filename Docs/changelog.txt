@@ -79,12 +79,21 @@ Version 0.73.1b
                            Dep on m72.c
   - Roc'n Rope (rocnrope.c): Dep on timeplt.c
   - China Gate (chinagat.c): Dep on ddragon.c
+  - US AAF Mustang (Japan) (nmk16.c): There was a bug in the core 
+               driver code where the initialization code partially
+               set up a sound CPU even though the stock mustang 
+               driver has no sound CPU. I changed it to remove the
+               offending initialization and reported the problem.
+  - Clowns, Dog Patch (8080bw.c): Dep on circus.c
+
 
   ** Thanks to the rom status reporters for these **
   - Juno First (junofrst.c): Dep on tutankhm.c
   - Gladiator 1984 (sgladiat.c): Dep on snk.c
   - Escape from the Planet of the Robot Monsters (eprom.c): Dep on
                              thunderj.c
+  - Batman Part 2 (galaxian.c): Dep on phoenix.c
+  - Beastie Feastie (pacman.c): Dep on epos.c
 
  --- Integrated pong and monaco gp from PatchMAME 0.62.1 ------------
 

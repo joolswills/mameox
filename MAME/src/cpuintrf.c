@@ -787,7 +787,7 @@ INLINE void set_cpu_context(int cpunum)
 	memory_set_context(cpunum);
 
 	/* if the new CPU's context is not swapped in, do it now */
-	if (oldcontext != cpunum)
+	if (oldcontext != cpunum && cpu[cpunum].intf.set_context )
 	{
 		(*cpu[cpunum].intf.set_context)(cpu[cpunum].context);
 		cpu_active_context[newfamily] = cpunum;

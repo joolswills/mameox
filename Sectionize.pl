@@ -361,7 +361,8 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 @SNKFamily = ( "snk.c", "hal21.c", "marvins.c", "sgladiat.c" );				# ASO - Armored Scrum Object, Athena, Marvin's Maze, Gladiator 1984
 @AmidarFamily = ( "galaxian.c", "scramble.c", "scobra.c", 
                   "amidar.c", "frogger.c", "pacman.c",
-				  "pengo.c", "cclimber.c", "dkong.c", "yamato.c" );			# Amidar, Frog (Galaxian Hardware), Pac-Man (Galaxian Hardware), eyes, Moon Shuttle (US?), Special Forces, Special Forces II, Yamato
+				  "pengo.c", "cclimber.c", "dkong.c", "yamato.c",				  
+				  "phoenix.c", "epos.c" );									# Amidar, Frog (Galaxian Hardware), Pac-Man (Galaxian Hardware), eyes, Moon Shuttle (US?), Special Forces, Special Forces II, Yamato, Batman Part 2, Beastie Feastie
 @RampartFamily = ( "rampart.c", "arcadecl.c" );								# Arcade Classics
 @RastanFamily = ( "rastan.c", "asuka.c", "opwolf.c", "rainbow.c", 
                   "topspeed.c" );			                                # Asuka & Asuka, Operation Wolf, Rainbow Islands, Top Speed, Full Throttle
@@ -393,7 +394,7 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 
 @WipingFamily = ( "wiping.c", "clshroad.c" );								# Fire Battle, Clash-Road
 
-@D8080bwFamily = ( "8080bw.c", "rotaryf.c" );								# Rotary Fighter
+@D8080bwFamily = ( "8080bw.c", "rotaryf.c", "circus.c" );					# Rotary Fighter, Clowns, Dog Patch
 
 @BuggyChallengeFamily = ( "buggychl.c", "40love.c" );						# Forty-Love
 
