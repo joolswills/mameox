@@ -492,6 +492,7 @@ static BOOL Helper_RunRom( UINT32 romIndex )
   LoadDriverSectionByName( "src\\drivers\\hal21.c" );     // Athena
   LoadDriverSectionByName( "src\\drivers\\espial.c" );    // battle cruiser
   LoadDriverSectionByName( "src\\drivers\\bzone.c" );     // gravitar
+  LoadDriverSectionByName( "src\\drivers\\nova2001.c" );  // Penguin-Kun War
 
   if( !LoadDriverSectionByName( DriverName.c_str() ) )
   {
