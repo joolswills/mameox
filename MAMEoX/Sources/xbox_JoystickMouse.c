@@ -308,6 +308,10 @@ int osd_joystick_needs_calibration( void )
 /* Joystick calibration routines BW 19981216 */
 /* Do we need to calibrate the joystick at all? */
 
+  // Disabled for now, calibration should be done
+  // via the vastly superior LightgunCalibrator in
+  // the ROM listing.
+/*
   const XINPUT_CAPABILITIES *gp;
   UINT32 i = 0;
 
@@ -318,6 +322,7 @@ int osd_joystick_needs_calibration( void )
     if( gp && gp->SubType == XINPUT_DEVSUBTYPE_GC_LIGHTGUN )
       return 1;
   }
+*/
   return 0;
 }
 
@@ -354,9 +359,9 @@ const char *osd_joystick_calibrate_next( void )
 /* (e.g. "move to upper left") */
   static char retString[128];
 
-    // When we hit 3, switch over to the next gun to be calibrated,
+    // When we hit 2, switch over to the next gun to be calibrated,
     //  or return NULL to exit the process
-  if( g_calibrationStep == 3 )
+  if( g_calibrationStep == 2 )
   {
     const XINPUT_CAPABILITIES *gp;
     ++g_calibrationJoynum;
@@ -385,10 +390,6 @@ const char *osd_joystick_calibrate_next( void )
   case 1:
     strcat( retString, "Center" );
     break;
-
-  case 2:
-    strcat( retString, "Lower right" );
-    break;
   }
 
 	return retString;
@@ -401,7 +402,7 @@ void osd_joystick_calibrate( void )
 {
 /* Get the actual joystick calibration data for the current position */
 
-  if( g_calibrationStep && g_calibrationStep < 4 )
+  if( g_calibrationStep && g_calibrationStep < 3 )
   {
 	  const XINPUT_GAMEPAD *gp;
     if( (gp = GetGamepadState( g_calibrationJoynum )) )
@@ -419,18 +420,6 @@ void osd_joystick_calibrate( void )
 void osd_joystick_end_calibration( void )
 {
 /* Postprocessing (e.g. saving joystick data to config) */
-  UINT32 i = 0;
-
-  for( ; i < 3; ++i )
-  {
-    g_calibrationData[i].m_xData[0] -= g_calibrationData[i].m_xData[1];
-    g_calibrationData[i].m_xData[2] -= g_calibrationData[i].m_xData[1];
-    g_calibrationData[i].m_xData[0] *= -1;  //!< Negate so that < 0 values stay < 0
-
-    g_calibrationData[i].m_yData[0] -= g_calibrationData[i].m_yData[1];
-    g_calibrationData[i].m_yData[2] -= g_calibrationData[i].m_yData[1];
-    g_calibrationData[i].m_yData[2] *= -1;  //!< Negate so that < 0 values stay < 0
-  }
 }
 
 //---------------------------------------------------------------------
@@ -439,35 +428,50 @@ void osd_joystick_end_calibration( void )
 void osd_lightgun_read(int player, int *deltax, int *deltay)
 {
 	const XINPUT_GAMEPAD *gp;
+  assert( deltax && deltay );
 
 	if( (gp = GetGamepadState( player )) )
   {
     lightgunCalibration_t *calibData = &g_calibrationData[player];
+    FLOAT calibratedX, calibratedY, xMap, yMap;
 
-    *deltax = gp->sThumbLX - calibData->m_xData[1];
-    *deltay = -1 * (gp->sThumbLY - calibData->m_yData[1]);
+    *deltax = gp->sThumbLX;
+    *deltay = gp->sThumbLY;
+
+      // Don't bother if we're not pointing at the screen
+    if( !(*deltax) && !(*deltay) )
+      return;
+
+    calibratedX = (*deltax);// + calibData->m_xData[1];
+    calibratedY = (*deltay);// + calibData->m_yData[1]);
 
       // Map from -128 to 128
-    if( gp->sThumbLX < 0 )
-      *deltax = (int)((FLOAT)*deltax * 128.0f / ((FLOAT)calibData->m_xData[0]+1.0f));
-    else
-      *deltax = (int)((FLOAT)*deltax * 128.0f / ((FLOAT)calibData->m_xData[2]+1.0f));
+    xMap = calibData->m_xData[0] + calibData->m_xData[1]; // left X is negative, so add center to bring it closer to the middle
+    yMap = calibData->m_yData[0] - calibData->m_yData[1]; // top Y is positive, so sub center to bring it closer to the middle
 
-    if( gp->sThumbLY > 0 )
-      *deltay = (int)((FLOAT)*deltay * 128.0f / ((FLOAT)calibData->m_yData[0]+1.0f));
+    if( xMap )
+      calibratedX = (int)((FLOAT)calibratedX * 128.0f / -xMap );
     else
-      *deltay = (int)((FLOAT)*deltay * 128.0f / ((FLOAT)calibData->m_yData[2]+1.0f));
+      calibratedX = 0;
+
+    if( yMap )
+      calibratedY = (int)((FLOAT)calibratedY * 128.0f / yMap );
+    else
+      calibratedY = 0;
 
       // Lock to the expected range
-    if( *deltax > 128 )
-      *deltax = 128;
-    else if( *deltax < -128 )
-      *deltax = -128;
+    if( calibratedX > 128 )
+      calibratedX = 128;
+    else if( calibratedX < -128 )
+      calibratedX = -128;
 
-    if( *deltay > 128 )
-      *deltay = 128;
-    else if( *deltay < -128 )
-      *deltay = -128;
+    if( calibratedY > 128 )
+      calibratedY = 128;
+    else if( calibratedY < -128 )
+      calibratedY = -128;
+
+    *deltax = calibratedX;
+    *deltay = calibratedY;
   }
   else  
 	  *deltax = *deltay = 0;
@@ -682,7 +686,7 @@ CHECKRAM();
 			continue;
 		}
 
-		analog_axis[i] = ((float)analog_axis[i] * 128.0f / analogDivisor);
+		analog_axis[i] = ((FLOAT)analog_axis[i] * 128.0f / analogDivisor);
 		if (analog_axis[i] < -128) 
 			analog_axis[i] = -128;
 		if (analog_axis[i] >  128) 
@@ -818,10 +822,11 @@ static void Helper_CustomizeInputPortDefaults( struct ipd *defaults )
 
 			// *** IPT_UI_SELECT *** //
     case IPT_UI_SELECT:
-      REMAP_SEQ_7( JOYCODE_1_BUTTON1, CODE_OR,
+      REMAP_SEQ_7(  JOYCODE_1_BUTTON1, CODE_OR,
                     JOYCODE_2_BUTTON1, CODE_OR,
                     JOYCODE_3_BUTTON1, CODE_OR,
                     JOYCODE_4_BUTTON1 );
+      break;
 
 			// *** IPT_UI_CANCEL *** //
 		case IPT_UI_CANCEL:
