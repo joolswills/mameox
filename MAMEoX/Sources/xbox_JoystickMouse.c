@@ -243,7 +243,7 @@ int osd_is_joy_pressed( int joycode )
 	gamepad = GetGamepadState( joynum );
 	if( !gamepad )
 	{
-		PRINTMSG( T_ERROR, "Invalid joynum %lu!", joynum );
+//		PRINTMSG( T_ERROR, "Invalid joynum %lu!", joynum );
 		return 0;
 	}
 
@@ -556,7 +556,7 @@ void osd_analogjoy_read(	int player,
 	gamepad = GetGamepadState( player );
 	if( !gamepad )
 	{
-		PRINTMSG( T_ERROR, "Invalid joynum %lu!", player );
+//		PRINTMSG( T_ERROR, "Invalid joynum %lu!", player );
 		return;
 	}
 
