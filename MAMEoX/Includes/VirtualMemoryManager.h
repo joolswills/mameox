@@ -82,13 +82,26 @@ public:
 		//------------------------------------------------------
   BOOL AccessAddressRange( void *ptr, UINT32 size );
 
+		//------------------------------------------------------
+		//	UnloadLRUPage
+    //! \brief    Unload the least recently used page from
+    //!           RAM in order to free some memory back to
+    //!           the system
+    //!
+    //! \return   BOOL - Whether or not a RAM block was
+    //!                   released.
+		//------------------------------------------------------
+  BOOL UnloadLRUPage( void );
 
 
   UINT32 GetNumVirtualPages( void ) const { return m_virtualPages.size(); }
-  UINT32 GetNumCommittedPages( void ) const { return m_committedPages.size(); }
+  UINT32 GetNumCommittedPages( void ) const { return m_committedAddresses.size(); }
 
 protected:
   std::vector<vmmpage_t>      m_virtualPages;   //!<  The vmmpage_t structs describing virtual memory
-  std::list<vmmpage_t*>       m_committedPages; //!<  The vmmpage_t structs describing the committed virtual pages
+
+    //!  The address param from vmmpage_t structs describing the committed virtual pages
+    //!   This is sorted such that the LRU page is at the head of the list
+  std::list<UINT32>           m_committedAddresses; 
 };
 

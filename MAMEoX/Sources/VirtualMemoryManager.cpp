@@ -15,7 +15,7 @@
 #define FINDPAGE( _addr__ )          (void*)(((UINT32)(_addr__)) - (((UINT32)(_addr__)) & 4096))
 
   // Define to print log info on every VMM call
-#define LOGVMM
+//#define LOGVMM
 
 //= P R O T O T Y P E S =======================================================
 extern "C" int fatalerror( const char *fmt, ... );
@@ -85,10 +85,9 @@ void CVirtualMemoryManager::Free( void *base )
 
   if( virtualPage.m_committed )
   {
-    std::list<vmmpage_t*>::iterator j;
-    j = std::find( m_committedPages.begin(), m_committedPages.end(), &virtualPage );
-    if( j != m_committedPages.end() )
-      m_committedPages.erase( j );
+    std::list<UINT32>::iterator j = std::find( m_committedAddresses.begin(), m_committedAddresses.end(), (UINT32)(virtualPage.m_address) );
+    if( j != m_committedAddresses.end() )
+      m_committedAddresses.erase( j );
   }
 
   if( !VirtualFree( virtualPage.m_address, 0, MEM_RELEASE ) )
@@ -129,15 +128,15 @@ BOOL CVirtualMemoryManager::AccessAddressRange( void *base, UINT32 size )
   vmmpage_t &virtualPage = (*i);
   if( !virtualPage.m_committed )
   {
-    std::list<vmmpage_t*>::iterator j;
-    j = std::find( m_committedPages.begin(), m_committedPages.end(), &virtualPage );
-    if( j != m_committedPages.end() )
+    std::list<UINT32>::iterator j = std::find(  m_committedAddresses.begin(), 
+                                                m_committedAddresses.end(), 
+                                                (UINT32)(virtualPage.m_address) );
+    if( j != m_committedAddresses.end() )
     {
-        // The page is already committed, move it to the head of the list to tag
-        // this access.
-      m_committedPages.erase( j );
-      m_committedPages.push_front( &virtualPage );
-      return TRUE;
+        // Something has gone terribly wrong, as this page is marked not committed, yet
+        // is in the list...
+      m_committedAddresses.erase( j );
+      PRINTMSG( T_ERROR, "Page in committed list marked as decommitted! 0x%X", virtualPage.m_address );
     }
 
       // The page has not been committed, increment the fault counter, release a
@@ -151,20 +150,10 @@ BOOL CVirtualMemoryManager::AccessAddressRange( void *base, UINT32 size )
                                   virtualPage.m_size,                        // size of region
                                   MEM_COMMIT | MEM_TOP_DOWN | MEM_NOZERO,    // type of allocation
                                   PAGE_READWRITE )) && 
-           m_committedPages.size() )
+           m_committedAddresses.size() )
     {
-        // The commit failed, so unload the least recently used page
-      if( !m_committedPages.size() )
+      if( !UnloadLRUPage() )
         fatalerror( "Out of Memory: VirtualAlloc failed and\nthere are no valid pages to unload!" );
-
-      j = m_committedPages.end();
-      --j;
-  
-      if( !VirtualFree( (*j)->m_address, (*j)->m_size, MEM_DECOMMIT ) )
-        fatalerror( "Failed to free virtual page with address\n0x%X", (*j)->m_address );
-
-      (*j)->m_committed = FALSE;
-      m_committedPages.pop_back();
     }
 
     if( !ptr )
@@ -176,9 +165,23 @@ BOOL CVirtualMemoryManager::AccessAddressRange( void *base, UINT32 size )
       return FALSE;
     }
 
-      // The page has been successfully committed, add it to the head of the
+      // The page has been successfully committed, add it to the tail (MRU) of the
       // committedPages list
-    m_committedPages.push_front( &virtualPage );
+    m_committedAddresses.push_back( (UINT32)virtualPage.m_address );
+    virtualPage.m_committed = TRUE;
+  }
+  else
+  {
+      // The item is already committed, just move it to the tail of the list
+    std::list<UINT32>::iterator j = std::find(  m_committedAddresses.begin(), 
+                                                m_committedAddresses.end(), 
+                                                (UINT32)(virtualPage.m_address) );
+    if( j == m_committedAddresses.end() )
+      PRINTMSG( T_ERROR, "Page in marked as committed but not in committed list! 0x%X", virtualPage.m_address );
+    else
+      m_committedAddresses.erase( j );
+
+    m_committedAddresses.push_back( (UINT32)(virtualPage.m_address) );
   }
 
   #if (defined LOGVMM && defined _DEBUG)
@@ -191,6 +194,51 @@ BOOL CVirtualMemoryManager::AccessAddressRange( void *base, UINT32 size )
 
 
 
+//------------------------------------------------------
+//  UnloadLRUPage
+//------------------------------------------------------
+BOOL CVirtualMemoryManager::UnloadLRUPage( void )
+{
+  #if (defined LOGVMM && defined _DEBUG)
+  PRINTMSG( T_INFO, "UnloadLRUPage %lu pages allocated", m_committedAddresses.size() );
+  DEBUGGERCHECKRAM();
+  #endif
+
+    // The commit failed, so unload the least recently used page
+  if( !m_committedAddresses.size() )
+  {
+    PRINTMSG( T_INFO, "UnloadLRUPage called but no pages allocated" );
+    return FALSE;
+  }
+
+  std::list<UINT32>::iterator j = m_committedAddresses.begin();
+
+  vmmpage_t page;
+  page.m_address = (void*)(*j);
+  std::vector<vmmpage_t>::iterator it = std::find( m_virtualPages.begin(), m_virtualPages.end(), page );
+  if( it == m_virtualPages.end() )
+  {
+    PRINTMSG( T_ERROR, "Failed to lookup vmmpage_t for committed address 0x%X!", *j );
+    m_committedAddresses.pop_back();
+    return FALSE;
+  }
+
+  if( !VirtualFree( (*it).m_address, (*it).m_size, MEM_DECOMMIT ) )
+  {
+    PRINTMSG( T_ERROR, "Failed to free virtual page with address\n0x%X", (*it).m_address );
+    return FALSE;
+  }
+
+  (*it).m_committed = FALSE;
+  m_committedAddresses.pop_front();
+
+  #if (defined LOGVMM && defined _DEBUG)
+  PRINTMSG( T_INFO, "UnloadLRUPage %lu pages allocated after free", m_committedAddresses.size() );
+  DEBUGGERCHECKRAM();
+  #endif
+
+  return TRUE;
+}
 
 
 
