@@ -1582,7 +1582,7 @@ void COptionsScreen::ChangeROMListPage( BOOL movingRight )
 {
   switch( (DWORD)m_cursorPosition )
   {
-    // Verbose mode
+    // Display mode
   case 0:
     if( !movingRight )
     {
@@ -1593,7 +1593,7 @@ void COptionsScreen::ChangeROMListPage( BOOL movingRight )
     }
     else
     {
-      if( g_romListOptions.m_displayMode != DM_LAST )
+      if( g_romListOptions.m_displayMode != (ROMListDisplayMode)(DM_LAST - 1) )
         g_romListOptions.m_displayMode = (ROMListDisplayMode)(g_romListOptions.m_displayMode + 1);
       else
         g_romListOptions.m_displayMode = DM_VERBOSELIST;
