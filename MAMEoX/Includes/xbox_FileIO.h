@@ -32,6 +32,7 @@ extern "C" {
 #define ROMPATH						  "D:\\ROMS"
 #define AUDIOPATH           "D:\\SAMPLES"
 #define DEFAULTROMLISTPATH  "D:\\ROMS"
+#define ROMBACKUPPATH       "D:\\ROMS\\BACKUP"
 #define HDIMAGEPATH         "D:\\HDIMAGES"
 #define HISCOREPATH         "D:\\HISCORES"
   
@@ -47,6 +48,7 @@ extern "C" {
 
 //= G L O B A L = V A R S ==============================================
 extern const char *g_ROMListPath;
+extern const char *g_ROMBackupPath;
 
 //= P R O T O T Y P E S ================================================
 	//--------------------------------------------------------------------------

@@ -44,6 +44,7 @@ typedef struct _osd_file {
 
 //= G L O B A L = V A R S ==============================================
 const char *g_ROMListPath = NULL;
+const char *g_ROMBackupPath = NULL;
 const char *g_pathNames[FILETYPE_end] = {NULL};
 
 
@@ -98,6 +99,9 @@ void InitializeFileIO( void )
 
   CREATEOROPENPATH( DEFAULTROMLISTPATH, TRUE );
   g_ROMListPath = tempStr;
+
+  CREATEOROPENPATH( ROMBACKUPPATH, TRUE );
+  g_ROMBackupPath = tempStr;
 
   CREATEOROPENPATH( ROMPATH, FALSE );
 	g_pathNames[FILETYPE_RAW] = g_pathNames[FILETYPE_ROM] = 

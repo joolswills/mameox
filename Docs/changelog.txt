@@ -7,6 +7,15 @@ Version 0.65b
   - \MAMEoX\Includes\MAMEoX.h:
     - Updated version number
 
+  - \MAMEoX\Includes\xbox_FileIO.h:
+    - Made the ROM backup path writeRequired
+      
+  - \MAMEoX\Sources\xbox_FileIO.h:
+    - Made the ROM backup path writeRequired
+
+  - \MAMEoXLauncher\sources\ROMList.cpp:
+    - Made the ROM backup path writeRequired
+
   - \MAMEoXLauncher\Sources\main.cpp:
     - Bugfix for the backup (X+B) feature
 
