@@ -8,23 +8,9 @@ out_packedresource ..\..\Media\Resource.xpr
 out_error          Resource.err
 out_prefix         resource
 
-Texture ROMListScreenBackdrop
-{
-  Source        mox-romlistscreen.bmp
-  Format        D3DFMT_X8R8G8B8
-  Levels        1
-}
-
 Texture BasicBackdrop
 {
   Source        mox-basicbackdrop.bmp
-  Format        D3DFMT_X8R8G8B8
-  Levels        1
-}
-
-Texture OptionsScreenBackdrop
-{
-  Source        mox-optionsscreen.bmp
   Format        D3DFMT_X8R8G8B8
   Levels        1
 }

@@ -29,13 +29,17 @@
 #include "FontSet.h"
 #include "TextureSet.h"
 
-#include "ROMList.h"
-#include "Help.h"
-#include "OptionsPage.h"
-#include "LightgunCalibrator.h"
+#include "ROMListScreen.h"
+#include "HelpScreen.h"
+#include "OptionsScreen.h"
+#include "LightgunCalibratorScreen.h"
 #include "StartMenu.h"
 
 //= D E F I N E S =====================================================
+
+  // Width of the START menu in pixels
+#define STARTMENU_WIDTH     215
+
 
   // The maximum number of times to attempt to generate a working driver.list file
 #define MAX_DRIVERLIST_GENERATION_ATTEMPTS    2
@@ -51,6 +55,21 @@ typedef enum viewmode
   VIEW_LIGHTGUNCALIBRATOR,
   VIEW_HELP
 } viewmode;
+
+
+  // User data tags for the start menu
+typedef enum startmenuitemdata
+{
+  MI_REBOOT,
+  MI_HELP,
+  MI_OPTIONS,
+  MI_LIGHTGUNCALIBRATION,
+  MI_REMOVESELECTEDROM,
+  MI_SCANFORROMS,
+  MI_REFRESHROMMETADATA,
+  MI_COPYSYSTEMFILESFROMDVD,
+  MI_ROMLIST
+} startmenuitemdata;
 
 //= S T R U C T U R E S ===============================================
 struct CUSTOMVERTEX
@@ -100,7 +119,7 @@ extern "C" void DrawProgressbarMessage( LPDIRECT3DDEVICE8 pD3DDevice, const char
 static BOOL Helper_LoadDriverInfoFile( void );
 static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice );
 static void Helper_SetStartMenuItems( CStartMenu &startMenu, viewmode currentViewMode );
-static void Helper_SaveOptionsAndReboot( LPDIRECT3DDEVICE8 pD3DDevice, CROMList & );
+static void Helper_SaveOptionsAndReboot( LPDIRECT3DDEVICE8 pD3DDevice, CROMListScreen & );
 static BOOL Helper_CopySystemFilesFromDVD( LPDIRECT3DDEVICE8 pD3DDevice );
 
 //= F U N C T I O N S =================================================
@@ -251,7 +270,7 @@ void __cdecl main( void )
 
 
     //--- Create the views -------------------------------------------------------
-  CHelp help( pD3DDevice, 
+  CHelpScreen help( pD3DDevice, 
               g_fontSet, 
               g_textureSet );
 	if( !help.LoadHelpFile() )
@@ -265,7 +284,7 @@ void __cdecl main( void )
   }
 
 		// Load/Generate the ROM listing
-  CROMList romList( pD3DDevice, 
+  CROMListScreen romList( pD3DDevice, 
                     g_fontSet,
                     g_textureSet,
                     g_driverData, 
@@ -285,18 +304,20 @@ void __cdecl main( void )
   GetScreenUsage( &xPercentage, &yPercentage );
   CreateBackdrop( xPos, yPos, xPercentage, yPercentage );
 
-  COptionsPage optionsPage( pD3DDevice,
-                            g_fontSet,
-                            g_textureSet,
-                            options );
+  COptionsScreen optionsPage( pD3DDevice,
+                              g_fontSet,
+                              g_textureSet,
+                              options );
 
-  CLightgunCalibrator lightgunCalibrator( pD3DDevice,
-                                          g_fontSet,
-                                          g_textureSet );
+  CLightgunCalibratorScreen lightgunCalibrator( pD3DDevice,
+                                                g_fontSet,
+                                                g_textureSet );
 
+  RECT area = { 320 - (STARTMENU_WIDTH>>1), 0, 320 + (STARTMENU_WIDTH>>1), 480 };
   CStartMenu startMenu( pD3DDevice,
                         g_fontSet,
-                        g_textureSet );
+                        g_textureSet, 
+                        area );
   Helper_SetStartMenuItems( startMenu, VIEW_ROMLIST );
 
     //-- Initialize the rendering engine -------------------------------
@@ -558,95 +579,56 @@ void __cdecl main( void )
         showStartMenu = FALSE;
         if( startMenu.IsInputAccepted() )
         {
-            // This could probably be implemented more elegantly...
-            // The problem is that the menu is context sensitive,
-            // so what action we should do for the selected item
-            // is dependent on the view we opened the menu from.
-            // Reboot is always the last item in the menu
-          if( startMenu.GetCursorPosition() == startMenu.GetNumBodyLines() - 1 )
-            Helper_SaveOptionsAndReboot( pD3DDevice, romList );
-          else
+          switch( startMenu.GetUserDataAtCursorPosition() )
           {
-            switch( currentView )
-            {
-              // *** VIEW_ROMLIST *** //
-            case VIEW_ROMLIST:
-              switch( startMenu.GetCursorPosition() )
-              {
-                // "Help"
-              case 0:
-                currentView = VIEW_HELP;
-                break;
+            // *** MI_REBOOT *** //
+          case MI_REBOOT:
+            Helper_SaveOptionsAndReboot( pD3DDevice, romList );
+            break;
 
-                // Options Menu
-              case 1:
-                  // Update the rom list options for display in the options page
-                g_romListOptions = romList.GetOptions();
-                currentView = VIEW_OPTIONS;
-                break;
+            // *** MI_HELP *** //
+          case MI_HELP:
+            currentView = VIEW_HELP;
+            break;
 
-                // Lightgun Calibration
-              case 2:
-                currentView = VIEW_LIGHTGUNCALIBRATOR;
-                break;
+            // *** MI_OPTIONS *** //
+          case MI_OPTIONS:
+              // Update the rom list options for display in the options page
+            g_romListOptions = romList.GetOptions();
+            currentView = VIEW_OPTIONS;
+            break;
 
-                // Remove Selected ROM
-              case 3:
-                romList.MoveCurrentGameToBackupDir();
-                break;
+            // *** MI_LIGHTGUNCALIBRATION *** //
+          case MI_LIGHTGUNCALIBRATION:
+            currentView = VIEW_LIGHTGUNCALIBRATOR;
+            break;
 
-                // Scan for ROMs
-              case 4:
-                romList.GenerateROMList();
-                break;
+            // *** MI_REMOVESELECTEDROM *** //
+          case MI_REMOVESELECTEDROM:
+            romList.MoveCurrentGameToBackupDir();
+            break;
 
-                // Refresh ROM Status file
-              case 5:
-                romList.RefreshROMStatus();
-                break;
+            // *** MI_SCANFORROMS *** //
+          case MI_SCANFORROMS:
+            romList.GenerateROMList();
+            break;
 
-                // Copy system files from DVD
-              case 6:
-                Helper_CopySystemFilesFromDVD( pD3DDevice );
-                break;
-              }
-              break;
+            // *** MI_REFRESHROMMETADATA *** //
+          case MI_REFRESHROMMETADATA:
+            romList.RefreshROMStatus();
+            romList.ImportCatverINI();
+            break;
 
-              // *** VIEW_OPTIONS *** //
-            case VIEW_OPTIONS:
-              switch( startMenu.GetCursorPosition() )
-              {
-              case 0:
-                romList.SetOptions( g_romListOptions );
-                currentView = VIEW_ROMLIST;
-                break;
+            // *** MI_COPYSYSTEMFILESFROMDVD *** //
+          case MI_COPYSYSTEMFILESFROMDVD:
+            Helper_CopySystemFilesFromDVD( pD3DDevice );
+            break;  
 
-              case 1:
-                romList.SetOptions( g_romListOptions );
-                currentView = VIEW_HELP;
-                break;
-              }
-              break;
-
-              // *** VIEW_LIGHTGUNCALIBRATOR *** //
-            case VIEW_LIGHTGUNCALIBRATOR:
-              switch( startMenu.GetCursorPosition() )
-              {
-              case 0:
-                currentView = VIEW_ROMLIST;
-                break;
-
-              case 1:
-                currentView = VIEW_HELP;
-                break;
-              }
-              break;
-
-              // *** VIEW_HELP *** //
-            case VIEW_HELP:
-              currentView = VIEW_ROMLIST;
-              break;
-            }
+            // *** MI_ROMLIST *** //
+          case MI_ROMLIST:
+            romList.SetOptions( g_romListOptions );
+            currentView = VIEW_ROMLIST;
+            break;
           }
         }
         startMenu.Reset();
@@ -704,40 +686,60 @@ static void Helper_SetStartMenuItems( CStartMenu &startMenu, viewmode currentVie
     // *** VIEW_ROMLIST *** //
   case VIEW_ROMLIST:
     startMenu.SetTitle( ":: ROM List ::" );
-    startMenu.AddMenuItem( "Help" );
-    startMenu.AddMenuItem( "Options Menu" );
-    startMenu.AddMenuItem( "Lightgun Calibration" );
-    startMenu.AddMenuItem( "Remove Selected ROM" );
-    startMenu.AddMenuItem( "Scan for ROMs" );
-    startMenu.AddMenuItem( "Refresh ROM Status file" );
+    startMenu.AddMenuItem( "Help", MI_HELP );
+    startMenu.AddMenuItem( "Options Menu", MI_OPTIONS );
+
+      // Check to see if a lightgun is inserted at all
+    {
+      BOOL showLightgunCalibratorOpt = FALSE;
+      for( UINT32 i = 0; i < 4; ++i )
+      {
+        CGamepad *gp = g_inputManager.GetGamepad( i );
+        if( gp && gp->IsLightgun() )
+        {
+          showLightgunCalibratorOpt = TRUE;
+          break;
+        }
+      }
+      if( showLightgunCalibratorOpt )
+        startMenu.AddMenuItem( "Lightgun Calibration", MI_LIGHTGUNCALIBRATION );
+    }
+
+    startMenu.AddMenuItem( "Remove Selected ROM", MI_REMOVESELECTEDROM );
+    startMenu.AddMenuItem( "Scan for ROMs", MI_SCANFORROMS );
+    startMenu.AddMenuItem( "Refresh ROM metadata", MI_REFRESHROMMETADATA );
 
       // Check to see if we're running off a DVD
-    if( 1 )
-      startMenu.AddMenuItem( "Copy system files from DVD" );
+      // This is sort of a hack, we depend on the config path
+      // being set to the ALTDrive, as it's one of the directories
+      // that must be writable (and will be reassigned if we're running
+      // on readonly media)
+    if( g_FileIOConfig.m_ConfigPath[0] == g_FileIOConfig.m_ALTDrive[0] )
+      startMenu.AddMenuItem( "Copy system files from DVD", MI_COPYSYSTEMFILESFROMDVD );
     break;
 
     // *** VIEW_OPTIONS *** //
   case VIEW_OPTIONS:
     startMenu.SetTitle( ":: Options Menu ::" );
-    startMenu.AddMenuItem( "ROM List" );
-    startMenu.AddMenuItem( "Help" );
+    startMenu.AddMenuItem( "ROM List", MI_ROMLIST );
+    startMenu.AddMenuItem( "Help", MI_HELP );
     break;
 
     // *** VIEW_LIGHTGUNCALIBRATOR *** //
   case VIEW_LIGHTGUNCALIBRATOR:
     startMenu.SetTitle( ":: Lightgun Calibrator ::" );
-    startMenu.AddMenuItem( "ROM List" );
-    startMenu.AddMenuItem( "Help" );
+    startMenu.AddMenuItem( "ROM List", MI_ROMLIST );
+    startMenu.AddMenuItem( "Help", MI_HELP );
     break;
 
     // *** VIEW_HELP *** //
   case VIEW_HELP:
     startMenu.SetTitle( ":: Help ::" );
-    startMenu.AddMenuItem( "ROM List" );
+    startMenu.AddMenuItem( "ROM List", MI_ROMLIST );
     break;
   }
 
-  startMenu.AddMenuItem( "Return to dashboard" );
+  startMenu.AddMenuItem( "Return to dashboard", MI_REBOOT );
 }
 
 
@@ -1295,7 +1297,7 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 //-------------------------------------------------------------
 //	Helper_SaveOptionsAndReboot
 //-------------------------------------------------------------
-static void Helper_SaveOptionsAndReboot( LPDIRECT3DDEVICE8 pD3DDevice, CROMList &romList )
+static void Helper_SaveOptionsAndReboot( LPDIRECT3DDEVICE8 pD3DDevice, CROMListScreen &romList )
 {
   g_romListOptions = romList.GetOptions();
   romList.GetCursorPosition(  &g_persistentLaunchData.m_cursorPosition, 

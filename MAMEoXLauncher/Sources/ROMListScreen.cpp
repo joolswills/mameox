@@ -1,17 +1,18 @@
 /**
-	* \file			ROMList.cpp
+	* \file			ROMListScreen.cpp
 	* \brief		Helper class which takes care of generating/loading/displaying
 	*           a list of all available ROMs
 	*/
 
 //= I N C L U D E S ====================================================
-#include "ROMList.h"
+#include "ROMListScreen.h"
 #include "DebugLogger.h"
 #include "XBFont.h"
 
 #include "xbox_FileIO.h"		// for path info
 #include "xbox_Direct3DRenderer.h" // For Set/GetScreenUsage
 #include "smbhandler.h"
+#include "System_IniFile.h"
 
 #include <string>
 #include <vector>
@@ -40,7 +41,7 @@ extern "C" {
 
 #define HIGHLIGHTBAR_LEFT     34
 #define HIGHLIGHTBAR_RIGHT    607
-#define NAME_COLUMN           40
+#define NAME_COLUMN           42
 #define MANUFACTURER_COLUMN   305
 #define YEAR_COLUMN           437
 #define NUMPLAYERS_COLUMN     506
@@ -86,10 +87,10 @@ extern "C" {
 
 //= G L O B A L = V A R S ==============================================
   // Static member initialization
-MAMEDriverData_t                        *CROMList::m_driverInfoList = NULL;
-UINT32                                  CROMList::m_numDrivers = 0;
-std::vector<ROMStatus>                  CROMList::m_ROMStatus;
-std::vector<MAMEoXDriverMetadata_t>     CROMList::m_driverMetadata;
+MAMEDriverData_t                        *CROMListScreen::m_driverInfoList = NULL;
+UINT32                                  CROMListScreen::m_numDrivers = 0;
+std::vector<ROMStatus>                  CROMListScreen::m_ROMStatus;
+std::vector<MAMEoXDriverMetadata_t>     CROMListScreen::m_driverMetadata;
 
 //= P R O T O T Y P E S ================================================
 extern "C" void DrawProgressbarMessage( LPDIRECT3DDEVICE8 pD3DDevice, const char *message, const char *itemName, DWORD currentItem, DWORD totalItems ); // Defined in main.cpp
@@ -113,7 +114,7 @@ static BOOL Helper_ReadXMLTag( osd_file *file, CStdString *tagName );
 //---------------------------------------------------------------------
 //	LoadROMList
 //---------------------------------------------------------------------
-BOOL CROMList::LoadROMList( BOOL bGenerate, BOOL allowClones )
+BOOL CROMListScreen::LoadROMList( BOOL bGenerate, BOOL allowClones )
 {
 	PRINTMSG( T_TRACE, "LoadROMList" );
 
@@ -150,7 +151,7 @@ BOOL CROMList::LoadROMList( BOOL bGenerate, BOOL allowClones )
 //---------------------------------------------------------------------
 //	GenerateROMList
 //---------------------------------------------------------------------
-BOOL CROMList::GenerateROMList( void )
+BOOL CROMListScreen::GenerateROMList( void )
 {
 	PRINTMSG( T_TRACE, "GenerateROMList" );
 
@@ -207,7 +208,7 @@ BOOL CROMList::GenerateROMList( void )
 //---------------------------------------------------------------------
 //	Helper_GenerateROMList
 //---------------------------------------------------------------------
-BOOL CROMList::Helper_GenerateROMList( CStdString &path )
+BOOL CROMListScreen::Helper_GenerateROMList( CStdString &path )
 {
 	std::vector< CStdString > zipFileNames;
 	WIN32_FIND_DATA findData;
@@ -295,7 +296,7 @@ BOOL CROMList::Helper_GenerateROMList( CStdString &path )
 //-------------------------------------------------------------
 //  SaveROMListFile
 //-------------------------------------------------------------
-BOOL CROMList::SaveROMListFile( void )
+BOOL CROMListScreen::SaveROMListFile( void )
 {
 		// Write the indices to the ROM list file
 	CStdString romListFile = DEFAULT_MAMEOXSYSTEMPATH "\\" ROMLISTFILENAME;
@@ -413,7 +414,7 @@ BOOL CROMList::SaveROMListFile( void )
 //---------------------------------------------------------------------
 //  LoadROMListFile
 //---------------------------------------------------------------------
-BOOL CROMList::LoadROMListFile( void )
+BOOL CROMListScreen::LoadROMListFile( void )
 {
   m_ROMListFull.clear();
   m_ROMStatus.clear();
@@ -598,7 +599,7 @@ BOOL CROMList::LoadROMListFile( void )
 //---------------------------------------------------------------------
 //	SaveROMMetadataFile
 //---------------------------------------------------------------------
-BOOL CROMList::SaveROMMetadataFile( void )
+BOOL CROMListScreen::SaveROMMetadataFile( void )
 {
   CStdString romMetadataFile = DEFAULT_MAMEOXSYSTEMPATH "\\" ROMMETADATAFILENAME;
 
@@ -683,13 +684,26 @@ BOOL CROMList::SaveROMMetadataFile( void )
       // Write the filename
     len = strlen( (*it).m_romFileName );
     METADATA_WRITEDATA( &len, sizeof(len) );
-    METADATA_WRITEDATA( (*it).m_romFileName, len );
+    if( len )
+      METADATA_WRITEDATA( (*it).m_romFileName, len );
 
       // Write the favorite status
     METADATA_WRITEDATA( &(*it).m_favoriteStatus, sizeof((*it).m_favoriteStatus) );
 
       // Write the number of times played
     METADATA_WRITEDATA( &(*it).m_timesPlayed, sizeof((*it).m_timesPlayed) );
+
+      // Write the catver.ini [Category] 
+    len = strlen( (*it).m_genre );
+    METADATA_WRITEDATA( &len, sizeof(len) );
+    if( len )
+      METADATA_WRITEDATA( (*it).m_genre, len );
+
+      // Write the catver.ini [VersionAdded] 
+    len = strlen( (*it).m_versionAdded );
+    METADATA_WRITEDATA( &len, sizeof(len) );
+    if( len )
+      METADATA_WRITEDATA( (*it).m_versionAdded, len );
 	}
 
 
@@ -722,7 +736,7 @@ BOOL CROMList::SaveROMMetadataFile( void )
 //---------------------------------------------------------------------
 //	LoadROMMetadataFile
 //---------------------------------------------------------------------
-BOOL CROMList::LoadROMMetadataFile( void )
+BOOL CROMListScreen::LoadROMMetadataFile( void )
 {
 	CStdString romMetadataFile = DEFAULT_MAMEOXSYSTEMPATH "\\" ROMMETADATAFILENAME;
   UINT32 i = 0;
@@ -733,8 +747,7 @@ BOOL CROMList::LoadROMMetadataFile( void )
   m_driverMetadata.clear();
   for( ; i < m_numDrivers; ++i )
   {
-      // Don't free this string,, as we don't dup it
-    emptyMetadata.m_romFileName = m_driverInfoList[i].m_romFileName;
+    emptyMetadata.m_romFileName = strdup( m_driverInfoList[i].m_romFileName );
     emptyMetadata.m_romIndex = i;
     m_driverMetadata.push_back( emptyMetadata );
   }
@@ -905,6 +918,15 @@ BOOL CROMList::LoadROMMetadataFile( void )
 
     METADATA_READDATA_NOMALLOC( &metadata.m_timesPlayed, sizeof(metadata.m_timesPlayed) );
 
+      // Read the catver.ini [Category] 
+    METADATA_READDATA_NOMALLOC( &len, sizeof(len) );
+    METADATA_READDATA( metadata.m_genre, len, char );
+
+      // Read the catver.ini [VersionAdded] 
+    METADATA_READDATA_NOMALLOC( &len, sizeof(len) );
+    METADATA_READDATA( metadata.m_versionAdded, len, char );
+
+
       // Add the loaded data to the metadata list
     m_driverMetadata[metadata.m_romIndex] = metadata;
   }
@@ -916,7 +938,7 @@ BOOL CROMList::LoadROMMetadataFile( void )
 //---------------------------------------------------------------------
 //	UpdateROMMetadataFile
 //---------------------------------------------------------------------
-BOOL CROMList::UpdateROMMetadataFile( void )
+BOOL CROMListScreen::UpdateROMMetadataFile( void )
 {
 	CStdString romMetadataFile = DEFAULT_MAMEOXSYSTEMPATH "\\" ROMMETADATAFILENAME;
   UINT32 i = 0;
@@ -1089,6 +1111,14 @@ BOOL CROMList::UpdateROMMetadataFile( void )
 
     METADATA_READDATA_NOMALLOC( &metadata.m_timesPlayed, sizeof(metadata.m_timesPlayed) );
 
+      // Read the catver.ini [Category] 
+    METADATA_READDATA_NOMALLOC( &len, sizeof(len) );
+    METADATA_READDATA( metadata.m_genre, len, char );
+
+      // Read the catver.ini [VersionAdded] 
+    METADATA_READDATA_NOMALLOC( &len, sizeof(len) );
+    METADATA_READDATA( metadata.m_versionAdded, len, char );
+
     DrawProgressbarMessage( m_displayDevice, 
                             "Updating metadata file", 
                             metadata.m_romFileName, 
@@ -1109,9 +1139,42 @@ BOOL CROMList::UpdateROMMetadataFile( void )
 }
 
 //---------------------------------------------------------------------
+//	ImportCatverINI
+//---------------------------------------------------------------------
+BOOL CROMListScreen::ImportCatverINI( void )
+{
+  CStdString iniFileName = g_FileIOConfig.m_GeneralPath;
+  iniFileName += "\\catver.ini";
+  CSystem_IniFile iniFile( iniFileName );
+
+  std::vector<MAMEoXDriverMetadata_t>::iterator it = m_driverMetadata.begin();
+  for( ; it != m_driverMetadata.end(); ++it )
+  {
+    if( (*it).m_romFileName )
+    {
+      CStdString tempStr;
+      
+        // Grab the category
+      tempStr = iniFile.GetProfileString( "Category", (*it).m_romFileName, "[Unknown]" );
+      if( (*it).m_genre )
+        free( (*it).m_genre );
+      (*it).m_genre = strdup( tempStr.c_str() );
+
+        // Grab the version added
+      tempStr = iniFile.GetProfileString( "VerAdded", (*it).m_romFileName, "[Unknown]" );
+      if( (*it).m_versionAdded )
+        free( (*it).m_versionAdded );
+      (*it).m_versionAdded = strdup( tempStr.c_str() );
+    }
+  }
+
+  return TRUE;
+}
+
+//---------------------------------------------------------------------
 //	RefreshROMStatus
 //---------------------------------------------------------------------
-BOOL CROMList::RefreshROMStatus( void )
+BOOL CROMListScreen::RefreshROMStatus( void )
 {
   if( !LoadROMStatusFile() )
   {
@@ -1138,7 +1201,7 @@ BOOL CROMList::RefreshROMStatus( void )
 //---------------------------------------------------------------------
 //	LoadROMStatusFile
 //---------------------------------------------------------------------
-BOOL CROMList::LoadROMStatusFile( void )
+BOOL CROMListScreen::LoadROMStatusFile( void )
 {
   m_ROMStatus.clear();
 
@@ -1258,7 +1321,7 @@ findEndTag:
 //---------------------------------------------------------------------
 //	MoveCursor
 //---------------------------------------------------------------------
-void CROMList::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
+void CROMListScreen::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
 {
    	// Handle user input
   if(  gp.IsButtonPressed( GP_B | GP_A ) )
@@ -1340,7 +1403,7 @@ void CROMList::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
 //---------------------------------------------------------------------
 //	SuperScrollModeMoveCursor
 //---------------------------------------------------------------------
-void CROMList::SuperScrollModeMoveCursor( CInputManager &gp, FLOAT elapsedTime )
+void CROMListScreen::SuperScrollModeMoveCursor( CInputManager &gp, FLOAT elapsedTime )
 {
   if( gp.IsOneOfButtonsPressed( GP_DPAD_DOWN | GP_LA_DOWN ) && m_dpadCursorDelay == 0.0f )
 	{
@@ -1374,7 +1437,7 @@ void CROMList::SuperScrollModeMoveCursor( CInputManager &gp, FLOAT elapsedTime )
 //---------------------------------------------------------------------
 //  NormalModeMoveCursor
 //---------------------------------------------------------------------
-void CROMList::NormalModeMoveCursor( CInputManager &gp, FLOAT elapsedTime )
+void CROMListScreen::NormalModeMoveCursor( CInputManager &gp, FLOAT elapsedTime )
 {
 		// General idea taken from XMAME
 
@@ -1568,7 +1631,7 @@ void CROMList::NormalModeMoveCursor( CInputManager &gp, FLOAT elapsedTime )
 //---------------------------------------------------------------------
 //	Draw
 //---------------------------------------------------------------------
-void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
+void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 {
 	WCHAR name[512];
 
@@ -1583,13 +1646,9 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
   FLOAT textHeight = m_fontSet.SmallThinFontHeight();
 
-  if( m_options.m_verboseMode )
-    m_backdropTexture = m_textureSet.GetROMListScreenBackdrop();
-  else
-    m_backdropTexture = m_textureSet.GetBasicBackdrop();    
-
     // Render the backdrop texture
   RenderBackdrop();
+  m_menuRenderer->Draw( FALSE, FALSE );
 
   FLOAT selectedItemYPos = (textHeight * (ULONG)m_cursorPosition);
 
@@ -1792,7 +1851,7 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 //---------------------------------------------------------------------
 //	RemoveCurrentGameIndex
 //---------------------------------------------------------------------
-BOOL CROMList::RemoveCurrentGameIndex( void )
+BOOL CROMListScreen::RemoveCurrentGameIndex( void )
 {
 	UINT32 curCursorPos = (ULONG)m_pageOffset + (ULONG)m_cursorPosition;
 	std::vector<UINT32>::iterator it = m_currentSortedList.begin();
@@ -1826,7 +1885,7 @@ BOOL CROMList::RemoveCurrentGameIndex( void )
 //---------------------------------------------------------------------
 //	GenerateSuperscrollJumpTable
 //---------------------------------------------------------------------
-BOOL CROMList::MoveCurrentGameToBackupDir( void )
+BOOL CROMListScreen::MoveCurrentGameToBackupDir( void )
 {
   if( Helper_MoveCurrentGameToBackupDir( g_FileIOConfig.m_RomPath0 ) ||
       Helper_MoveCurrentGameToBackupDir( g_FileIOConfig.m_RomPath1 ) ||
@@ -1839,7 +1898,7 @@ BOOL CROMList::MoveCurrentGameToBackupDir( void )
 //---------------------------------------------------------------------
 //	Helper_MoveCurrentGameToBackupDir
 //---------------------------------------------------------------------
-BOOL CROMList::Helper_MoveCurrentGameToBackupDir( CStdString &path )
+BOOL CROMListScreen::Helper_MoveCurrentGameToBackupDir( CStdString &path )
 {
 		// Move the currently selected game to the backup dir
 	UINT32 romIDX = GetCurrentGameIndex();
@@ -1881,7 +1940,7 @@ BOOL CROMList::Helper_MoveCurrentGameToBackupDir( CStdString &path )
 //---------------------------------------------------------------------
 //	GenerateSuperscrollJumpTable
 //---------------------------------------------------------------------
-void CROMList::GenerateSuperscrollJumpTable( void )
+void CROMListScreen::GenerateSuperscrollJumpTable( void )
 {
     // Invalidate the jump table
   m_superscrollJumpTable.clear();
@@ -1906,7 +1965,7 @@ void CROMList::GenerateSuperscrollJumpTable( void )
 //---------------------------------------------------------------------
 //	UpdateSortedList
 //---------------------------------------------------------------------
-void CROMList::UpdateSortedList( void )
+void CROMListScreen::UpdateSortedList( void )
 {
   UINT32 oldDriverIndex = GetCurrentGameIndex();
 
@@ -2011,7 +2070,7 @@ void CROMList::UpdateSortedList( void )
 //---------------------------------------------------------------------
 //  UpdateFilteredList
 //---------------------------------------------------------------------
-void CROMList::UpdateFilteredList( void )
+void CROMListScreen::UpdateFilteredList( void )
 {
   m_ROMListFiltered.clear();
 
@@ -2062,7 +2121,7 @@ void CROMList::UpdateFilteredList( void )
 //---------------------------------------------------------------------
 //  SetAbsoluteCursorPosition
 //---------------------------------------------------------------------
-void CROMList::SetAbsoluteCursorPosition( UINT32 pos )
+void CROMListScreen::SetAbsoluteCursorPosition( UINT32 pos )
 {
   if( pos == INVALID_ROM_INDEX )
     return;
@@ -2093,7 +2152,7 @@ void CROMList::SetAbsoluteCursorPosition( UINT32 pos )
 //---------------------------------------------------------------------
 //  GetFriendlySuperscrollIndexStringForJumpTableIndex
 //---------------------------------------------------------------------
-void CROMList::GetFriendlySuperscrollIndexStringForJumpTableIndex( CStdString *ret, UINT32 superscrollTableIndex )
+void CROMListScreen::GetFriendlySuperscrollIndexStringForJumpTableIndex( CStdString *ret, UINT32 superscrollTableIndex )
 {
   UINT32 jumpIndex;
 
@@ -2111,7 +2170,7 @@ void CROMList::GetFriendlySuperscrollIndexStringForJumpTableIndex( CStdString *r
 //---------------------------------------------------------------------
 //  GetFriendlySuperscrollIndexValue
 //---------------------------------------------------------------------
-void CROMList::GetFriendlySuperscrollIndexStringForROM( CStdString *ret, UINT32 sortedListIndex )
+void CROMListScreen::GetFriendlySuperscrollIndexStringForROM( CStdString *ret, UINT32 sortedListIndex )
 {
   UINT32 romIndex;
   if( sortedListIndex >= m_currentSortedList.size() || 
@@ -2251,8 +2310,8 @@ void CROMList::GetFriendlySuperscrollIndexStringForROM( CStdString *ret, UINT32 
 //---------------------------------------------------------------------
 static BOOL Compare_Description( UINT32 a, UINT32 b )
 {
-  MAMEDriverData_t &aDriver = CROMList::m_driverInfoList[a];
-  MAMEDriverData_t &bDriver = CROMList::m_driverInfoList[b];
+  MAMEDriverData_t &aDriver = CROMListScreen::m_driverInfoList[a];
+  MAMEDriverData_t &bDriver = CROMListScreen::m_driverInfoList[b];
 
   int cmp = stricmp( aDriver.m_description, bDriver.m_description );
 
@@ -2265,8 +2324,8 @@ static BOOL Compare_Description( UINT32 a, UINT32 b )
 //---------------------------------------------------------------------
 static BOOL Compare_Manufacturer( UINT32 a, UINT32 b )
 {
-  MAMEDriverData_t &aDriver = CROMList::m_driverInfoList[a];
-  MAMEDriverData_t &bDriver = CROMList::m_driverInfoList[b];
+  MAMEDriverData_t &aDriver = CROMListScreen::m_driverInfoList[a];
+  MAMEDriverData_t &bDriver = CROMListScreen::m_driverInfoList[b];
 
     // Compare the manufacturer string, sorting by name if they're equal
   int cmp = stricmp( aDriver.m_manufacturer, bDriver.m_manufacturer );
@@ -2281,8 +2340,8 @@ static BOOL Compare_Manufacturer( UINT32 a, UINT32 b )
 //---------------------------------------------------------------------
 static BOOL Compare_Year( UINT32 a, UINT32 b )
 {
-  MAMEDriverData_t &aDriver = CROMList::m_driverInfoList[a];
-  MAMEDriverData_t &bDriver = CROMList::m_driverInfoList[b];
+  MAMEDriverData_t &aDriver = CROMListScreen::m_driverInfoList[a];
+  MAMEDriverData_t &bDriver = CROMListScreen::m_driverInfoList[b];
 
     // Compare the year string, sorting by name if they're equal
   int cmp = stricmp( aDriver.m_year, bDriver.m_year );
@@ -2297,8 +2356,8 @@ static BOOL Compare_Year( UINT32 a, UINT32 b )
 //---------------------------------------------------------------------
 static BOOL Compare_ParentROM( UINT32 a, UINT32 b )
 {
-  MAMEDriverData_t &aDriver = CROMList::m_driverInfoList[a];
-  MAMEDriverData_t &bDriver = CROMList::m_driverInfoList[b];
+  MAMEDriverData_t &aDriver = CROMListScreen::m_driverInfoList[a];
+  MAMEDriverData_t &bDriver = CROMListScreen::m_driverInfoList[b];
 
     // Compare the parent rom string, sorting by name if they're equal
   int cmp = stricmp( aDriver.m_cloneFileName, bDriver.m_cloneFileName );
@@ -2313,8 +2372,8 @@ static BOOL Compare_ParentROM( UINT32 a, UINT32 b )
 //---------------------------------------------------------------------
 static BOOL Compare_Genre( UINT32 a, UINT32 b )
 {
-  MAMEDriverData_t &aDriver = CROMList::m_driverInfoList[a];
-  MAMEDriverData_t &bDriver = CROMList::m_driverInfoList[b];
+  MAMEDriverData_t &aDriver = CROMListScreen::m_driverInfoList[a];
+  MAMEDriverData_t &bDriver = CROMListScreen::m_driverInfoList[b];
 
     // There is no genre available yet, just sort by name
   int cmp = 0; //stricmp( aDriver.m_cloneFileName, bDriver.m_cloneFileName );
@@ -2329,8 +2388,8 @@ static BOOL Compare_Genre( UINT32 a, UINT32 b )
 //---------------------------------------------------------------------
 static BOOL Compare_NumPlayers( UINT32 a, UINT32 b )
 {
-  MAMEDriverData_t &aDriver = CROMList::m_driverInfoList[a];
-  MAMEDriverData_t &bDriver = CROMList::m_driverInfoList[b];
+  MAMEDriverData_t &aDriver = CROMListScreen::m_driverInfoList[a];
+  MAMEDriverData_t &bDriver = CROMListScreen::m_driverInfoList[b];
 
     // Sort by number of players or name string (more players go
     // towards the bottom)
@@ -2346,10 +2405,10 @@ static BOOL Compare_NumPlayers( UINT32 a, UINT32 b )
 //---------------------------------------------------------------------
 static BOOL Compare_ROMStatus( UINT32 a, UINT32 b )
 {
-  MAMEDriverData_t &aDriver = CROMList::m_driverInfoList[a];
-  MAMEDriverData_t &bDriver = CROMList::m_driverInfoList[b];
-  ROMStatus        &aStatus = CROMList::m_ROMStatus[a];
-  ROMStatus        &bStatus = CROMList::m_ROMStatus[b];
+  MAMEDriverData_t &aDriver = CROMListScreen::m_driverInfoList[a];
+  MAMEDriverData_t &bDriver = CROMListScreen::m_driverInfoList[b];
+  ROMStatus        &aStatus = CROMListScreen::m_ROMStatus[a];
+  ROMStatus        &bStatus = CROMListScreen::m_ROMStatus[b];
 
     // Sort by the rom status, putting lower (better working) numbers first
   int cmp = bStatus - aStatus;
@@ -2364,10 +2423,10 @@ static BOOL Compare_ROMStatus( UINT32 a, UINT32 b )
 //---------------------------------------------------------------------
 static BOOL Compare_NumTimesPlayed( UINT32 a, UINT32 b )
 {
-  MAMEDriverData_t        &aDriver = CROMList::m_driverInfoList[a];
-  MAMEDriverData_t        &bDriver = CROMList::m_driverInfoList[b];
-  MAMEoXDriverMetadata_t  &aStatus = CROMList::m_driverMetadata[a];
-  MAMEoXDriverMetadata_t  &bStatus = CROMList::m_driverMetadata[b];
+  MAMEDriverData_t        &aDriver = CROMListScreen::m_driverInfoList[a];
+  MAMEDriverData_t        &bDriver = CROMListScreen::m_driverInfoList[b];
+  MAMEoXDriverMetadata_t  &aStatus = CROMListScreen::m_driverMetadata[a];
+  MAMEoXDriverMetadata_t  &bStatus = CROMListScreen::m_driverMetadata[b];
 
     // Sort by the rom status, putting higher (more often played) numbers first
   int cmp = bStatus.m_timesPlayed - aStatus.m_timesPlayed;
@@ -2382,10 +2441,10 @@ static BOOL Compare_NumTimesPlayed( UINT32 a, UINT32 b )
 //---------------------------------------------------------------------
 static BOOL Compare_FavoriteStatus( UINT32 a, UINT32 b )
 {
-  MAMEDriverData_t        &aDriver = CROMList::m_driverInfoList[a];
-  MAMEDriverData_t        &bDriver = CROMList::m_driverInfoList[b];
-  MAMEoXDriverMetadata_t  &aStatus = CROMList::m_driverMetadata[a];
-  MAMEoXDriverMetadata_t  &bStatus = CROMList::m_driverMetadata[b];
+  MAMEDriverData_t        &aDriver = CROMListScreen::m_driverInfoList[a];
+  MAMEDriverData_t        &bDriver = CROMListScreen::m_driverInfoList[b];
+  MAMEoXDriverMetadata_t  &aStatus = CROMListScreen::m_driverMetadata[a];
+  MAMEoXDriverMetadata_t  &bStatus = CROMListScreen::m_driverMetadata[b];
 
     // Sort by the rom favorite status, putting better rated first
   if( aStatus.m_favoriteStatus != bStatus.m_favoriteStatus )

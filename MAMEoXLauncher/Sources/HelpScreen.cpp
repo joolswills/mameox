@@ -1,11 +1,11 @@
 /**
-	* \file			Help.cpp
+	* \file			HelpScreen.cpp
 	* \brief		Helper class which display the help.txt
 	*
 	*/
 
 //= I N C L U D E S ====================================================
-#include "Help.h"
+#include "HelpScreen.h"
 #include "DebugLogger.h"
 #include "XBFont.h"
 
@@ -29,10 +29,10 @@ extern "C" {
 #define HIGHLIGHTBAR_COLOR    D3DCOLOR_ARGB( 180, 175, 179, 212 )
 #define SCROLLICON_COLOR      D3DCOLOR_XRGB( 255, 255, 255 )
 
-#define TITLEBAR_ROW          101
+#define TITLEBAR_ROW          100
 #define FIRSTDATA_ROW         126
 
-#define NAME_COLUMN           40
+#define NAME_COLUMN           42
 #define MANUFACTURER_COLUMN   305
 #define YEAR_COLUMN           460
 #define CLONE_COLUMN          530 
@@ -62,7 +62,7 @@ void Die( LPDIRECT3DDEVICE8 m_displayDevice, const char *fmt, ... ); // Defined 
 //---------------------------------------------------------------------
 //	LoadHelpFile
 //---------------------------------------------------------------------
-BOOL CHelp::LoadHelpFile( void )
+BOOL CHelpScreen::LoadHelpFile( void )
 {
 	PRINTMSG( T_TRACE, "LoadHelpFile" );
 
@@ -121,7 +121,7 @@ BOOL CHelp::LoadHelpFile( void )
 //---------------------------------------------------------------------
 //	FileGets
 //---------------------------------------------------------------------
-BOOL CHelp::FileGets( HANDLE file, char *buffer, UINT32 length )
+BOOL CHelpScreen::FileGets( HANDLE file, char *buffer, UINT32 length )
 {
 	char c;
 	int i = 0;
@@ -151,7 +151,7 @@ BOOL CHelp::FileGets( HANDLE file, char *buffer, UINT32 length )
 //---------------------------------------------------------------------
 //	MoveCursor
 //---------------------------------------------------------------------
-void CHelp::MoveCursor( CInputManager &gp, BOOL unused )
+void CHelpScreen::MoveCursor( CInputManager &gp, BOOL unused )
 {
     // Keep the cursor situated at the halfway point so that any
     // DPAD movement will move the entire screen
@@ -164,7 +164,7 @@ void CHelp::MoveCursor( CInputManager &gp, BOOL unused )
 //---------------------------------------------------------------------
 //	Draw
 //---------------------------------------------------------------------
-void CHelp::Draw( BOOL clearScreen, BOOL flipOnCompletion )
+void CHelpScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 {
   if( clearScreen )  
 	  m_displayDevice->Clear(	0L,																// Count
@@ -178,6 +178,7 @@ void CHelp::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
     // Render the backdrop texture
   RenderBackdrop();
+  m_menuRenderer->Draw( FALSE, FALSE );
 
 	m_fontSet.SmallThinFont().Begin();
 

@@ -154,19 +154,87 @@ typedef struct MAMEDriverData_t
   UINT32                  m_numPlayers;     //!<  Number of players
 } MAMEDriverData_t;
 
+#ifdef __cplusplus
   //! \struct MAMEoXDriverMetadata_t
   //! \brief  Contains MAMEoX specific data about ROMs
 typedef struct MAMEoXDriverMetadata_t
 {
-  UINT32                  m_romIndex;       //!<  The rom index, used as the ID unless there's a core upgrade
-    //!         The ROM filename, used as the fallback "ID" for this ROM as it's more stable than an index
-    //! \note   In the current implementation we don't recover this string on exit, as it's automatically
-    //!         done when launching the core XBE.
-  char                    *m_romFileName;   
-  MAMEoXFavoriteStatus    m_favoriteStatus; //!<  Favorite status for this ROM
-  UINT32                  m_timesPlayed;    //!<  The number of times this ROM has been played
+    //-----------------------------------------------------------
+    // Constructor
+    //-----------------------------------------------------------
+  MAMEoXDriverMetadata_t( void ) :
+    m_romIndex( 0 ),
+    m_romFileName( NULL ),
+    m_favoriteStatus( FS_INDIFFERENT ),
+    m_timesPlayed( 0 ),
+    m_genre( NULL ),
+    m_versionAdded( NULL ) {
+  }
+
+    //-----------------------------------------------------------
+    // Constructor (const MAMEoXDriverMetadata_t &)
+    //-----------------------------------------------------------
+  MAMEoXDriverMetadata_t( const MAMEoXDriverMetadata_t &a ) :
+    m_romIndex( 0 ),
+    m_romFileName( NULL ),
+    m_favoriteStatus( FS_INDIFFERENT ),
+    m_timesPlayed( 0 ),
+    m_genre( NULL ),
+    m_versionAdded( NULL ) {
+
+    *this = a;
+  }
+
+    //-----------------------------------------------------------
+    // Destructor
+    //-----------------------------------------------------------
+  ~MAMEoXDriverMetadata_t( void ) {
+    if( m_romFileName )
+      free( m_romFileName );
+    if( m_genre )
+      free( m_genre );
+    if( m_versionAdded )
+      free( m_versionAdded );
+    m_romFileName = m_genre = m_versionAdded = NULL;
+  }
+
+    //-----------------------------------------------------------
+    // operator=
+    //-----------------------------------------------------------
+  MAMEoXDriverMetadata_t &operator=( const MAMEoXDriverMetadata_t &a ) {
+    m_romIndex = a.m_romIndex;
+    m_favoriteStatus = a.m_favoriteStatus;
+    m_timesPlayed = a.m_timesPlayed;
+
+    if( m_versionAdded )
+      free( m_versionAdded );
+    if( m_genre )
+      free( m_genre );
+    if( m_romFileName )
+      free( m_romFileName );
+    m_versionAdded = m_genre = m_romFileName = NULL;
+
+    if( a.m_romFileName )
+      m_romFileName = strdup( a.m_romFileName );
+
+    if( a.m_genre )
+      m_genre = strdup( a.m_genre );
+
+    if( a.m_versionAdded )
+      m_versionAdded = strdup( a.m_versionAdded );
+    return *this;
+  }
+
+  UINT32                  m_romIndex;         //!<  The rom index, used as the ID unless there's a core upgrade  
+  char                    *m_romFileName;     //!<  The ROM filename, used as the fallback "ID" for this ROM as it's more stable than an index
+  MAMEoXFavoriteStatus    m_favoriteStatus;   //!<  Favorite status for this ROM
+  UINT32                  m_timesPlayed;      //!<  The number of times this ROM has been played
+
+  char                    *m_genre;           //!<  [Category] from catver.ini
+  char                    *m_versionAdded;    //!<  [VerAdded] from catver.ini
 } MAMEoXDriverMetadata_t;
 
+#endif // __cplusplus
 
 typedef struct lightgunCalibration_t
 {

@@ -44,21 +44,22 @@ extern "C" {
 
 
   //-- Position of assets within the conglomerate "menu parts" texture ---
+#define ASSET_MENUITEM_LEFT_LEFT        0.0f
+#define ASSET_MENUITEM_LEFT_RIGHT       19.0f
+#define ASSET_MENUITEM_CENTER_LEFT      21.0f
+#define ASSET_MENUITEM_CENTER_RIGHT     35.0f
+#define ASSET_MENUITEM_RIGHT_LEFT       37.0f
+#define ASSET_MENUITEM_RIGHT_RIGHT      55.0f
 
-#define ASSET_MENUTITLEBAR_LEFT     0.0f
-#define ASSET_MENUTITLEBAR_TOP      0.0f
-#define ASSET_MENUTITLEBAR_RIGHT    243.0f
-#define ASSET_MENUTITLEBAR_BOTTOM   27.0f
+#define ASSET_MENUITEM_TITLEBAR_TOP     0.0f
+#define ASSET_MENUITEM_TITLEBAR_BOTTOM  28.0f
 
-#define ASSET_MENUBODY_LEFT         0.0f
-#define ASSET_MENUBODY_TOP          30.0f
-#define ASSET_MENUBODY_RIGHT        243.0f
-#define ASSET_MENUBODY_BOTTOM       39.0f
+#define ASSET_MENUITEM_BODY_TOP         30.0f
+#define ASSET_MENUITEM_BODY_BOTTOM      39.0f
 
-#define ASSET_MENUBOTTOM_LEFT       0.0f
-#define ASSET_MENUBOTTOM_TOP        42.0f
-#define ASSET_MENUBOTTOM_RIGHT      243.0f
-#define ASSET_MENUBOTTOM_BOTTOM     56.0f
+#define ASSET_MENUITEM_FOOTER_TOP       42.0f
+#define ASSET_MENUITEM_FOOTER_BOTTOM    56.0f
+
 
 
 //= C L A S S E S =============================================================
@@ -79,10 +80,6 @@ public:
   }
 
     //--- Texture data functions --------------------------------------------
-  LPDIRECT3DTEXTURE8 GetROMListScreenBackdrop( void ) {    
-    return (LPDIRECT3DTEXTURE8)&m_pResourceSysMemData[resource_ROMListScreenBackdrop_OFFSET];
-  }
-
   LPDIRECT3DTEXTURE8 GetBasicBackdrop( void ) {    
     return (LPDIRECT3DTEXTURE8)&m_pResourceSysMemData[resource_BasicBackdrop_OFFSET];
   }
@@ -105,10 +102,6 @@ public:
 
   LPDIRECT3DTEXTURE8 GetMenuParts( void ) {    
     return (LPDIRECT3DTEXTURE8)&m_pResourceSysMemData[resource_MenuParts_OFFSET];
-  }
-
-  LPDIRECT3DTEXTURE8 GetOptionsScreenBackdrop( void ) {    
-    return (LPDIRECT3DTEXTURE8)&m_pResourceSysMemData[resource_OptionsScreenBackdrop_OFFSET];
   }
 
     //--- Asset position functions -------------------------------------
@@ -143,26 +136,65 @@ public:
   FLOAT GetTriggerIconTailHeight( void ) const { return ASSET_TRIGGERICONTAIL_BOTTOM - ASSET_TRIGGERICONTAIL_TOP; }
 
     // MenuParts positions
-  FLOAT GetMenuTitleBarLeft( void ) const { return ASSET_MENUTITLEBAR_LEFT; }
-  FLOAT GetMenuTitleBarTop( void ) const { return ASSET_MENUTITLEBAR_TOP; }
-  FLOAT GetMenuTitleBarRight( void ) const { return ASSET_MENUTITLEBAR_RIGHT; }
-  FLOAT GetMenuTitleBarBottom( void ) const { return ASSET_MENUTITLEBAR_BOTTOM; }
-  FLOAT GetMenuTitleWidth( void ) const { return ASSET_MENUTITLEBAR_RIGHT - ASSET_MENUTITLEBAR_LEFT; }
-  FLOAT GetMenuTitleHeight( void ) const { return ASSET_MENUTITLEBAR_BOTTOM - ASSET_MENUTITLEBAR_TOP; }
+  FLOAT GetMenuTitleBarLeftLeft( void )   const { return ASSET_MENUITEM_LEFT_LEFT; }
+  FLOAT GetMenuTitleBarLeftRight( void )  const { return ASSET_MENUITEM_LEFT_RIGHT; }
+  FLOAT GetMenuTitleBarLeftTop( void )    const { return ASSET_MENUITEM_TITLEBAR_TOP; }
+  FLOAT GetMenuTitleBarLeftBottom( void ) const { return ASSET_MENUITEM_TITLEBAR_BOTTOM; }
+  FLOAT GetMenuTitleBarLeftWidth( void )  const { return ASSET_MENUITEM_LEFT_RIGHT - ASSET_MENUITEM_LEFT_LEFT; }
+  FLOAT GetMenuTitleBarHeight( void )     const { return ASSET_MENUITEM_TITLEBAR_BOTTOM - ASSET_MENUITEM_TITLEBAR_TOP; }
 
-  FLOAT GetMenuBodyLeft( void ) const { return ASSET_MENUBODY_LEFT; }
-  FLOAT GetMenuBodyTop( void ) const { return ASSET_MENUBODY_TOP; }
-  FLOAT GetMenuBodyRight( void ) const { return ASSET_MENUBODY_RIGHT; }
-  FLOAT GetMenuBodyBottom( void ) const { return ASSET_MENUBODY_BOTTOM; }
-  FLOAT GetMenuBodyWidth( void ) const { return ASSET_MENUBODY_RIGHT - ASSET_MENUBODY_LEFT; }
-  FLOAT GetMenuBodyHeight( void ) const { return ASSET_MENUBODY_BOTTOM - ASSET_MENUBODY_TOP; }
+  FLOAT GetMenuTitleBarCenterLeft( void )   const { return ASSET_MENUITEM_CENTER_LEFT; }
+  FLOAT GetMenuTitleBarCenterRight( void )  const { return ASSET_MENUITEM_CENTER_RIGHT; }
+  FLOAT GetMenuTitleBarCenterTop( void )    const { return ASSET_MENUITEM_TITLEBAR_TOP; }
+  FLOAT GetMenuTitleBarCenterBottom( void ) const { return ASSET_MENUITEM_TITLEBAR_BOTTOM; }
+  FLOAT GetMenuTitleBarCenterWidth( void )  const { return ASSET_MENUITEM_CENTER_RIGHT - ASSET_MENUITEM_CENTER_LEFT; }
 
-  FLOAT GetMenuBottomLeft( void ) const { return ASSET_MENUBOTTOM_LEFT; }
-  FLOAT GetMenuBottomTop( void ) const { return ASSET_MENUBOTTOM_TOP; }
-  FLOAT GetMenuBottomRight( void ) const { return ASSET_MENUBOTTOM_RIGHT; }
-  FLOAT GetMenuBottomBottom( void ) const { return ASSET_MENUBOTTOM_BOTTOM; }
-  FLOAT GetMenuBottomWidth( void ) const { return ASSET_MENUBOTTOM_RIGHT - ASSET_MENUBOTTOM_LEFT; }
-  FLOAT GetMenuBottomHeight( void ) const { return ASSET_MENUBOTTOM_BOTTOM - ASSET_MENUBOTTOM_TOP; }
+  FLOAT GetMenuTitleBarRightLeft( void )   const { return ASSET_MENUITEM_RIGHT_LEFT; }
+  FLOAT GetMenuTitleBarRightRight( void )  const { return ASSET_MENUITEM_RIGHT_RIGHT; }
+  FLOAT GetMenuTitleBarRightTop( void )    const { return ASSET_MENUITEM_TITLEBAR_TOP; }
+  FLOAT GetMenuTitleBarRightBottom( void ) const { return ASSET_MENUITEM_TITLEBAR_BOTTOM; }
+  FLOAT GetMenuTitleBarRightWidth( void )  const { return ASSET_MENUITEM_RIGHT_RIGHT - ASSET_MENUITEM_RIGHT_LEFT; }
+
+    // menu body sections
+  FLOAT GetMenuBodyLeftLeft( void )   const { return ASSET_MENUITEM_LEFT_LEFT; }
+  FLOAT GetMenuBodyLeftRight( void )  const { return ASSET_MENUITEM_LEFT_RIGHT; }
+  FLOAT GetMenuBodyLeftTop( void )    const { return ASSET_MENUITEM_BODY_TOP; }
+  FLOAT GetMenuBodyLeftBottom( void ) const { return ASSET_MENUITEM_BODY_BOTTOM; }
+  FLOAT GetMenuBodyLeftWidth( void )  const { return ASSET_MENUITEM_LEFT_RIGHT - ASSET_MENUITEM_LEFT_LEFT; }
+  FLOAT GetMenuBodyHeight( void )     const { return ASSET_MENUITEM_BODY_BOTTOM - ASSET_MENUITEM_BODY_TOP; }
+
+  FLOAT GetMenuBodyCenterLeft( void )   const { return ASSET_MENUITEM_CENTER_LEFT; }
+  FLOAT GetMenuBodyCenterRight( void )  const { return ASSET_MENUITEM_CENTER_RIGHT; }
+  FLOAT GetMenuBodyCenterTop( void )    const { return ASSET_MENUITEM_BODY_TOP; }
+  FLOAT GetMenuBodyCenterBottom( void ) const { return ASSET_MENUITEM_BODY_BOTTOM; }
+  FLOAT GetMenuBodyCenterWidth( void )  const { return ASSET_MENUITEM_CENTER_RIGHT - ASSET_MENUITEM_CENTER_LEFT; }
+
+  FLOAT GetMenuBodyRightLeft( void )   const { return ASSET_MENUITEM_RIGHT_LEFT; }
+  FLOAT GetMenuBodyRightRight( void )  const { return ASSET_MENUITEM_RIGHT_RIGHT; }
+  FLOAT GetMenuBodyRightTop( void )    const { return ASSET_MENUITEM_BODY_TOP; }
+  FLOAT GetMenuBodyRightBottom( void ) const { return ASSET_MENUITEM_BODY_BOTTOM; }
+  FLOAT GetMenuBodyRightWidth( void )  const { return ASSET_MENUITEM_RIGHT_RIGHT - ASSET_MENUITEM_RIGHT_LEFT; }
+
+    // menu footer sections
+  FLOAT GetMenuFooterLeftLeft( void )   const { return ASSET_MENUITEM_LEFT_LEFT; }
+  FLOAT GetMenuFooterLeftRight( void )  const { return ASSET_MENUITEM_LEFT_RIGHT; }
+  FLOAT GetMenuFooterLeftTop( void )    const { return ASSET_MENUITEM_FOOTER_TOP; }
+  FLOAT GetMenuFooterLeftBottom( void ) const { return ASSET_MENUITEM_FOOTER_BOTTOM; }
+  FLOAT GetMenuFooterLeftWidth( void )  const { return ASSET_MENUITEM_LEFT_RIGHT - ASSET_MENUITEM_LEFT_LEFT; }
+  FLOAT GetMenuFooterHeight( void )     const { return ASSET_MENUITEM_FOOTER_BOTTOM - ASSET_MENUITEM_FOOTER_TOP; }
+
+  FLOAT GetMenuFooterCenterLeft( void )   const { return ASSET_MENUITEM_CENTER_LEFT; }
+  FLOAT GetMenuFooterCenterRight( void )  const { return ASSET_MENUITEM_CENTER_RIGHT; }
+  FLOAT GetMenuFooterCenterTop( void )    const { return ASSET_MENUITEM_FOOTER_TOP; }
+  FLOAT GetMenuFooterCenterBottom( void ) const { return ASSET_MENUITEM_FOOTER_BOTTOM; }
+  FLOAT GetMenuFooterCenterWidth( void )  const { return ASSET_MENUITEM_CENTER_RIGHT - ASSET_MENUITEM_CENTER_LEFT; }
+
+  FLOAT GetMenuFooterRightLeft( void )   const { return ASSET_MENUITEM_RIGHT_LEFT; }
+  FLOAT GetMenuFooterRightRight( void )  const { return ASSET_MENUITEM_RIGHT_RIGHT; }
+  FLOAT GetMenuFooterRightTop( void )    const { return ASSET_MENUITEM_FOOTER_TOP; }
+  FLOAT GetMenuFooterRightBottom( void ) const { return ASSET_MENUITEM_FOOTER_BOTTOM; }
+  FLOAT GetMenuFooterRightWidth( void )  const { return ASSET_MENUITEM_RIGHT_RIGHT - ASSET_MENUITEM_RIGHT_LEFT; }
+
 
 protected:
 

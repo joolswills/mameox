@@ -1,5 +1,5 @@
 /**
-	* \file			Help.h
+	* \file			HelpScreen.h
 	* \brief		Helper class which display the help.txt
 	*
 	*/
@@ -10,25 +10,51 @@
 #include <vector>
 
 #include "ListView.h"
+#include "BaseMenuView.h"
 #include "TextureSet.h"
 #include "StdString.h"
+
+
+//= D E F I N E S ======================================================
+
+  // Layout for the list rendering
+#undef LISTPOS_LEFT
+#undef LISTPOS_TOP
+#undef LISTPOS_RIGHT
+#undef LISTPOS_BOTTOM
+
+#define LISTPOS_LEFT    31
+#define LISTPOS_TOP     95
+#define LISTPOS_RIGHT   608
+#define LISTPOS_BOTTOM  451
+
 
 //= C L A S S E S ======================================================
 
 /**
-	* \class		CHelp
+	* \class		CHelpScreen
 	* \brief		The help viewer class
 	*/
-class CHelp : public CListView
+class CHelpScreen : public CListView
 {
 public:
 
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-	CHelp( LPDIRECT3DDEVICE8 displayDevice, CFontSet &fontSet, CTextureSet &textureSet ) :
+	CHelpScreen( LPDIRECT3DDEVICE8 displayDevice, CFontSet &fontSet, CTextureSet &textureSet ) :
       CListView( displayDevice, fontSet, textureSet.GetBasicBackdrop() ),
       m_textureSet( textureSet ) {
+    RECT area = { LISTPOS_LEFT, LISTPOS_TOP, LISTPOS_RIGHT, LISTPOS_BOTTOM };
+    m_menuRenderer = new CBaseMenuView( displayDevice, fontSet, textureSet, area );
+    assert( m_menuRenderer );
+  }
+
+		//------------------------------------------------------------
+		// Destructor
+		//------------------------------------------------------------
+  ~CHelpScreen( void ) {
+    delete m_menuRenderer;
   }
 
 		//------------------------------------------------------------
@@ -57,7 +83,7 @@ protected:
 		//------------------------------------------------------------
 	BOOL FileGets( HANDLE file, char *buffer, UINT32 length );
 
-
   CTextureSet                 &m_textureSet;
+  CBaseMenuView               *m_menuRenderer;                //!<  Resizable menu renderer
 	std::vector<CStdString>		  m_data;
 };

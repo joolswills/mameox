@@ -23,7 +23,7 @@ Purpose:
 class CSystem_IniFile
 {
 public:
-	CSystem_IniFile( const std::string &filename );
+	CSystem_IniFile( const CStdString &IniFilenameAndPath );
 	~CSystem_IniFile( void );
 
 	// Write an int to the file

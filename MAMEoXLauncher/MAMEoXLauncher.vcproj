@@ -22,7 +22,7 @@
 				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories=".\Includes;..\MAMEoX\Includes;..\MAME\src;..\;&quot;$(XDK)\Samples\XBox\Common\Include&quot;;&quot;..\libsmb++\src&quot;"
 				PreprocessorDefinitions="_DEBUG;_XBOX;DEBUG_KEYBOARD"
-				MinimalRebuild="TRUE"
+				MinimalRebuild="FALSE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="5"
 				BufferSecurityCheck="TRUE"
@@ -140,7 +140,10 @@
 			Name="Source Files"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm">
 			<File
-				RelativePath=".\Sources\BasePopupView.cpp">
+				RelativePath=".\Sources\BaseMenuView.cpp">
+			</File>
+			<File
+				RelativePath=".\Sources\BasePopupMenuView.cpp">
 			</File>
 			<File
 				RelativePath=".\Sources\BaseView.cpp">
@@ -155,13 +158,13 @@
 				RelativePath="..\MAMEoX\Sources\GraphicsManager.cpp">
 			</File>
 			<File
-				RelativePath="Sources\Help.cpp">
+				RelativePath=".\Sources\HelpScreen.cpp">
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Sources\InputManager.cpp">
 			</File>
 			<File
-				RelativePath=".\Sources\LightgunCalibrator.cpp">
+				RelativePath=".\Sources\LightgunCalibratorScreen.cpp">
 			</File>
 			<File
 				RelativePath=".\Sources\ListView.cpp">
@@ -173,10 +176,10 @@
 				RelativePath="..\MAMEoX\Sources\MAMEoXUtil.cpp">
 			</File>
 			<File
-				RelativePath="Sources\OptionsPage.cpp">
+				RelativePath=".\Sources\OptionsScreen.cpp">
 			</File>
 			<File
-				RelativePath="Sources\ROMList.cpp">
+				RelativePath=".\Sources\ROMListScreen.cpp">
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Sources\SMBHandler.cpp">
@@ -213,7 +216,10 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc">
 			<File
-				RelativePath=".\Includes\BasePopupView.h">
+				RelativePath=".\Includes\BaseMenuView.h">
+			</File>
+			<File
+				RelativePath=".\Includes\BasePopupMenuView.h">
 			</File>
 			<File
 				RelativePath=".\Includes\BaseView.h">
@@ -231,7 +237,7 @@
 				RelativePath="..\MAMEoX\Includes\GraphicsManager.h">
 			</File>
 			<File
-				RelativePath="Includes\Help.h">
+				RelativePath=".\Includes\HelpScreen.h">
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Includes\InputDevice.h">
@@ -243,7 +249,7 @@
 				RelativePath="..\MAMEoX\Includes\Keyboard.h">
 			</File>
 			<File
-				RelativePath=".\Includes\LightgunCalibrator.h">
+				RelativePath=".\Includes\LightgunCalibratorScreen.h">
 			</File>
 			<File
 				RelativePath=".\Includes\ListView.h">
@@ -252,13 +258,13 @@
 				RelativePath="..\MAMEoX\Includes\MAMEoX.h">
 			</File>
 			<File
-				RelativePath="Includes\OptionsPage.h">
+				RelativePath=".\Includes\OptionsScreen.h">
 			</File>
 			<File
 				RelativePath="Includes\Resource.h">
 			</File>
 			<File
-				RelativePath="Includes\ROMList.h">
+				RelativePath=".\Includes\ROMListScreen.h">
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Includes\SMBHandler.h">

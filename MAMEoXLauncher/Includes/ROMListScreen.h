@@ -9,6 +9,7 @@
 
 //= I N C L U D E S ====================================================
 #include "ListView.h"
+#include "BaseMenuView.h"
 #include "TextureSet.h"
 #include "MAMEoX.h"
 
@@ -16,6 +17,18 @@
 
 //= D E F I N E S ======================================================
 #define INVALID_ROM_INDEX               0xFFFFFFFF
+
+
+  // Layout for the list rendering
+#undef LISTPOS_LEFT
+#undef LISTPOS_TOP
+#undef LISTPOS_RIGHT
+#undef LISTPOS_BOTTOM
+#define LISTPOS_LEFT    31
+#define LISTPOS_TOP     95
+#define LISTPOS_RIGHT   608
+#define LISTPOS_BOTTOM  451
+
 
   //! \enum   ROMStatus
   //! \brief  Enumerates the various working states for the ROMs
@@ -36,22 +49,22 @@ typedef enum ROMStatus
 //= C L A S S E S ======================================================
 
 /**
-	* \class		CROMList
+	* \class		CROMListScreen
 	* \brief		The ROM listing class
 	*/
-class CROMList : public CListView
+class CROMListScreen : public CListView
 {
 public:
 
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-	CROMList( LPDIRECT3DDEVICE8	displayDevice, 
+	CROMListScreen( LPDIRECT3DDEVICE8	displayDevice, 
             CFontSet &fontSet, 
             CTextureSet &textureSet,
             MAMEDriverData_t *drivers, 
             UINT32 numDrivers ) :
-    CListView( displayDevice, fontSet, NULL ),
+    CListView( displayDevice, fontSet, textureSet.GetBasicBackdrop() ),
     m_textureSet( textureSet ),
     m_superscrollMode( FALSE ),
     m_gameSelected( FALSE ),
@@ -69,7 +82,18 @@ public:
       m_numDrivers = numDrivers;
     if( !m_driverInfoList )
       m_driverInfoList = drivers;
+
+    RECT area = { LISTPOS_LEFT, LISTPOS_TOP, LISTPOS_RIGHT, LISTPOS_BOTTOM };
+    m_menuRenderer = new CBaseMenuView( displayDevice, fontSet, textureSet, area );
+    assert( m_menuRenderer );
 	}
+
+		//------------------------------------------------------------
+		// Destructor
+		//------------------------------------------------------------
+  ~CROMListScreen( void ) {
+    delete m_menuRenderer;
+  }
 
 		//------------------------------------------------------------
 		// SetOptions
@@ -163,8 +187,7 @@ public:
     //! \return   BOOL - TRUE if the item was removed and the cache file updated
     //!                  FALSE otherwise
 		//------------------------------------------------------------
-	BOOL RemoveCurrentGameIndex( void );
-	
+	BOOL RemoveCurrentGameIndex( void );	
   BOOL MoveCurrentGameToBackupDir( void );
 
 		//------------------------------------------------------------
@@ -208,6 +231,13 @@ public:
 		//! \brief		Save ROM metadata to a file, should be done before exiting the ROM list
 		//------------------------------------------------------------
   BOOL SaveROMMetadataFile( void );
+
+		//------------------------------------------------------------
+		// ImportCatverINI
+		//! \brief		Load the catver.ini file and merge it into
+    //!           the ROM metadata
+		//------------------------------------------------------------
+  BOOL ImportCatverINI( void );
 
 
     //! Vector of ROMStatus types marking the status of each entry in
@@ -286,6 +316,9 @@ protected:
   BOOL                  m_shouldGenerateROMList;    //!<  Whether or not the main() funct should call GenerateROMList for us (to render directly to the screen)
 
   CTextureSet           &m_textureSet;              //!<  The texture set object storing all the useable textures (and their info) for the game
+  CBaseMenuView         *m_menuRenderer;            //!<  Resizable menu renderer
+
+
 
 		//! Vector of integers into the MAME driver array
 		//!  defining the set of available ROMs

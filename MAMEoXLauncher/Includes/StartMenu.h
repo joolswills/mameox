@@ -10,7 +10,7 @@
 #include "MAMEoX.h"
 #include <vector>
 
-#include "BasePopupView.h"
+#include "BasePopupMenuView.h"
 
 
 //= D E F I N E S ======================================================
@@ -30,8 +30,8 @@ public:
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-  CStartMenu( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CTextureSet &textureSet ) :
-    CBasePopupView( displayDevice, fontSet, textureSet ) {
+  CStartMenu( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CTextureSet &textureSet, const RECT &area ) :
+    CBasePopupView( displayDevice, fontSet, textureSet, area ) {
       Reset();
     }
 
@@ -39,8 +39,12 @@ public:
 	// AddMenuItem
 	//! \brief		Add a menu string to the menu
 	//------------------------------------------------------------
-  void AddMenuItem( const CStdString &str ) {
-    m_menuItems.push_back( str );
+  void AddMenuItem( const CStdString &str, UINT32 userData ) {    
+    std::pair<CStdString,UINT32> dataItem;
+    dataItem.first = str;
+    dataItem.second = userData;
+
+    m_menuItems.push_back( dataItem );
   }
 
 		//------------------------------------------------------------
@@ -84,14 +88,12 @@ public:
   UINT32 GetNumBodyLines( void ) const { return m_menuItems.size(); }
   
   UINT32 GetCursorPosition( void ) const { return m_cursorPosition; }
+  UINT32 GetUserDataAtCursorPosition( void ) { return m_menuItems[m_cursorPosition].second; }
 
 protected:
-
-	FLOAT									    m_dpadCursorDelay;
-	FLOAT									    m_buttonDelay;
-
-  UINT32                    m_cursorPosition;
-
-  std::vector<CStdString>   m_menuItems;      //!< Strings to be displayed as menu items
+	FLOAT									                        m_dpadCursorDelay;
+	FLOAT									                        m_buttonDelay;
+  UINT32                                        m_cursorPosition;
+  std::vector< std::pair<CStdString,UINT32> >   m_menuItems;      //!< Strings to be displayed as menu items
 };
 

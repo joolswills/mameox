@@ -19,12 +19,12 @@
 #define ITEM_COLOR			        D3DCOLOR_XRGB( 0, 0, 0 )
 #define HIGHLIGHTBAR_COLOR      D3DCOLOR_ARGB( 180, 165, 169, 202 )
 
-#define TITLEBAR_ROW            m_titleArea.top
+#define TITLEBAR_ROW            m_titleArea.top + 4
 #define FIRSTDATA_ROW           m_bodyArea.top
 
-#define HIGHLIGHTBAR_LEFT       m_bodyArea.left
-#define HIGHLIGHTBAR_RIGHT      m_bodyArea.right
-#define NAME_START              m_bodyArea.left + 7
+#define HIGHLIGHTBAR_LEFT       m_bodyArea.left + 4
+#define HIGHLIGHTBAR_RIGHT      m_bodyArea.right - 4
+#define NAME_START              m_bodyArea.left + 9
 #define TEXTBOX_RIGHT           HIGHLIGHTBAR_RIGHT   // The right edge of the text box
 #define COLUMN_PADDING          9     // Number of pixels to subtract from the column width before truncating text
 
@@ -164,10 +164,10 @@ void CStartMenu::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
     // Render the menu items
   m_fontSet.SmallThinFont().Begin();
-    std::vector<CStdString>::iterator i = m_menuItems.begin();
+    std::vector< std::pair<CStdString,UINT32> >::iterator i = m_menuItems.begin();
     for( UINT32 y = 0; i != m_menuItems.end(); ++i, y += fontHeight )
     {
-      mbstowcs( wBuf, (*i).c_str(), 256 );
+      mbstowcs( wBuf, (*i).first.c_str(), 256 );
       m_fontSet.SmallThinFont().DrawText( NAME_START,
                                           FIRSTDATA_ROW + y,
                                           ITEM_COLOR,

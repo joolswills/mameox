@@ -1,5 +1,5 @@
 /**
-	* \file			OptionsPage.h
+	* \file			OptionsScreen.h
 	* \brief		Helper class which takes care of displaying
 	*           the INI file options and allowing the user to change them
 	*
@@ -9,6 +9,7 @@
 
 //= I N C L U D E S ====================================================
 #include "ListView.h"
+#include "BaseMenuView.h"
 #include "VirtualKeyboard.h"
 #include "TextureSet.h"
 
@@ -33,50 +34,50 @@ typedef enum PageID
 } PageID;
 
 //= S T R U C T U R E S ================================================
-class COptionsPage;
+class COptionsScreen;
 
 typedef struct optionsPageData_t
 {
   WCHAR   m_title[64];
-  void    (*m_drawFunct)( COptionsPage * );
-  void    (*m_changeFunct)( COptionsPage *, BOOL );
+  void    (*m_drawFunct)( COptionsScreen * );
+  void    (*m_changeFunct)( COptionsScreen *, BOOL );
   UINT32  m_numItems;
 } optionsPageData_t;
 
 
 //= P R O T O T Y P E S ================================================
-void DrawGeneralPage( COptionsPage * );
-void DrawSoundPage( COptionsPage * );
-void DrawVideoPage( COptionsPage * );
-void DrawVectorPage( COptionsPage * );
-void DrawNetworkPage( COptionsPage * );
-void DrawDirectoryPathPage1( COptionsPage * );
-void DrawDirectoryPathPage2( COptionsPage * );
-void DrawROMListPage( COptionsPage * );
+void DrawGeneralPage( COptionsScreen * );
+void DrawSoundPage( COptionsScreen * );
+void DrawVideoPage( COptionsScreen * );
+void DrawVectorPage( COptionsScreen * );
+void DrawNetworkPage( COptionsScreen * );
+void DrawDirectoryPathPage1( COptionsScreen * );
+void DrawDirectoryPathPage2( COptionsScreen * );
+void DrawROMListPage( COptionsScreen * );
 
-void ChangeGeneralPage( COptionsPage *, BOOL direction );
-void ChangeSoundPage( COptionsPage *, BOOL direction );
-void ChangeVideoPage( COptionsPage *, BOOL direction );
-void ChangeVectorPage( COptionsPage *, BOOL direction );
-void ChangeNetworkPage( COptionsPage *, BOOL direction );
-void ChangeDirectoryPathPage1( COptionsPage *, BOOL direction );
-void ChangeDirectoryPathPage2( COptionsPage *, BOOL direction );
-void ChangeROMListPage( COptionsPage *, BOOL direction );
+void ChangeGeneralPage( COptionsScreen *, BOOL direction );
+void ChangeSoundPage( COptionsScreen *, BOOL direction );
+void ChangeVideoPage( COptionsScreen *, BOOL direction );
+void ChangeVectorPage( COptionsScreen *, BOOL direction );
+void ChangeNetworkPage( COptionsScreen *, BOOL direction );
+void ChangeDirectoryPathPage1( COptionsScreen *, BOOL direction );
+void ChangeDirectoryPathPage2( COptionsScreen *, BOOL direction );
+void ChangeROMListPage( COptionsScreen *, BOOL direction );
 
 //= C L A S S E S ======================================================
 
 /**
-	* \class		COptionsPage
+	* \class		COptionsScreen
 	* \brief		The options page class
 	*/
-class COptionsPage : public CListView
+class COptionsScreen : public CListView
 {
 public:
 
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-  COptionsPage( LPDIRECT3DDEVICE8	displayDevice, 
+  COptionsScreen( LPDIRECT3DDEVICE8	displayDevice, 
                 CFontSet &fontSet, 
                 CTextureSet &textureSet,
                 GameOptions &options );
@@ -84,7 +85,7 @@ public:
 		//------------------------------------------------------------
     // Destructor
 		//------------------------------------------------------------
-  ~COptionsPage( void );
+  ~COptionsScreen( void );
 
 		//------------------------------------------------------------
 		// MoveCursor
@@ -133,6 +134,7 @@ protected:
   CVirtualKeyboard          *m_virtualKeyboard;             //!< Virtual keyboard instance
 
   CTextureSet               &m_textureSet;
+  CBaseMenuView             *m_menuRenderer;                //!<  Resizable menu renderer
 
   optionsPageData_t         m_pageData[OPTPAGE_LAST];
 };

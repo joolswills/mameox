@@ -10,7 +10,7 @@
 #include "MAMEoX.h"
 #include <vector>
 
-#include "BasePopupView.h"
+#include "BasePopupMenuView.h"
 
 //= D E F I N E S ======================================================
 
@@ -27,7 +27,7 @@ public:
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-	CVirtualKeyboard( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CTextureSet &textureSet );
+	CVirtualKeyboard( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CTextureSet &textureSet, const RECT &area );
 
 		//------------------------------------------------------------
 		// Reset
@@ -44,7 +44,7 @@ public:
     m_maxChars = 1024;
     m_data = "";
 
-    m_maxDisplayableChars = (m_textureSet.GetMenuTitleWidth() - 12.0f) / m_fontSet.FixedWidthFont().GetTextWidth( L"W" );
+    m_maxDisplayableChars = ((m_titleArea.right - m_titleArea.left) - 12.0f) / m_fontSet.FixedWidthFont().GetTextWidth( L"W" );
   }
 
 		//------------------------------------------------------------

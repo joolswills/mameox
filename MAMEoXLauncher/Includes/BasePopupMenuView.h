@@ -9,7 +9,7 @@
 //= I N C L U D E S ====================================================
 #include "MAMEoX.h"
 
-#include "BaseView.h"
+#include "BaseMenuView.h"
 #include "StdString.h"
 #include "TextureSet.h"
 
@@ -27,16 +27,15 @@ typedef enum MenuState
 	* \class		CBasePopupView
 	* \brief		The base class for "popup" style views
 	*/
-class CBasePopupView : public CBaseView
+class CBasePopupView : public CBaseMenuView
 {
 public:
 
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-  CBasePopupView( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CTextureSet &textureSet ) :
-      CBaseView( displayDevice, fontSet, NULL ),
-      m_textureSet( textureSet ) {
+  CBasePopupView( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CTextureSet &textureSet, const RECT &area ) :
+      CBaseMenuView( displayDevice, fontSet, textureSet, area ) {
     Reset();
   }
 
@@ -78,10 +77,6 @@ protected:
 		//------------------------------------------------------------
 	virtual void RenderBackdrop( FLOAT fontHeight );
 
-  RECT                      m_titleArea;      //!<  Rect enclosing the are to be used for title rendering
-  RECT                      m_bodyArea;       //!<  Rect enclosing the area to be used for the body text
-
-  CTextureSet               &m_textureSet;
   MenuState                 m_inputState;     //!<  Input state (accepted, cancelled, in progress)
   CStdString                m_title;          //!<  String to render as the title bar
 };

@@ -30,19 +30,11 @@ Purpose:
 //-----------------------------------
 // Constructor
 //-----------------------------------
-CSystem_IniFile::CSystem_IniFile( const std::string &filename ) :
+CSystem_IniFile::CSystem_IniFile( const CStdString &strFullPath ) :
 	m_dirtyFlag( FALSE )
 {
-	if( filename == "" )
+	if( strFullPath == "" )
 		return;
-
-//  char fullpath[256];
-//  sprintf( fullpath, "%s\\%s", g_FileIOConfig.m_IniPath, filename.c_str() );
-//  if( !ComposeFilePath( fullpath, 255, FILETYPE_INI, 0, filename.c_str() ) )
-//    return;
-
-  CStdString strFullPath;
-  strFullPath.Format("%s\\%s", g_FileIOConfig.m_IniPath, filename.c_str());
   
   m_fileName = strFullPath;
 

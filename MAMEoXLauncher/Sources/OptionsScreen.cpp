@@ -1,12 +1,12 @@
 /**
-	* \file			OptionsPage.cpp
+	* \file			OptionsScreen.cpp
 	* \brief		Helper class which takes care of displaying
 	*           the INI file options and allowing the user to change them
 	*
 	*/
 
 //= I N C L U D E S ====================================================
-#include "OptionsPage.h"
+#include "OptionsScreen.h"
 #include "DebugLogger.h"
 #include "XBFont.h"
 #include "xbox_FileIO.h"
@@ -27,6 +27,17 @@ extern "C" {
 
 
   //--- Layout defines -----------------------------------------
+#define VIRTUALKEYBOARD_WIDTH     215
+#define VIRTUALKEYBOARD_HEIGHT    143
+
+
+  // Layout for the list rendering
+#define LISTPOS_LEFT    31
+#define LISTPOS_TOP     95
+#define LISTPOS_RIGHT   608
+#define LISTPOS_BOTTOM  451
+
+
 #define HEADER_COLOR          D3DCOLOR_XRGB( 0, 0, 0 )
 #define ITEM_COLOR			      D3DCOLOR_XRGB( 0, 0, 0 )
 #define HIGHLIGHTBAR_COLOR    D3DCOLOR_ARGB( 180, 175, 179, 212 )
@@ -38,7 +49,7 @@ extern "C" {
 
 #define HIGHLIGHTBAR_LEFT     34
 #define HIGHLIGHTBAR_RIGHT    607
-#define NAME_START            40
+#define NAME_START            42
 #define VALUE_START           240
 #define TEXTBOX_RIGHT         604   // The right edge of the text box
 #define COLUMN_PADDING        9     // Number of pixels to subtract from the column width before truncating text
@@ -105,11 +116,11 @@ void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... );
 //------------------------------------------------------------
 // Constructor
 //------------------------------------------------------------
-COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice, 
+COptionsScreen::COptionsScreen( LPDIRECT3DDEVICE8	displayDevice, 
                             CFontSet &fontSet, 
                             CTextureSet &textureSet, 
                             GameOptions &options ) :
-  CListView( displayDevice, fontSet, textureSet.GetOptionsScreenBackdrop() ),
+  CListView( displayDevice, fontSet, textureSet.GetBasicBackdrop() ),
   m_textureSet( textureSet ),
   m_optToggleDelay( 0.0f ),
   m_triggerDelay( 0.0f ),
@@ -156,22 +167,33 @@ COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice,
   m_pageData[OPTPAGE_ROMLIST].m_changeFunct = ::ChangeROMListPage;
   m_pageData[OPTPAGE_ROMLIST].m_numItems = 9;
 
-  m_virtualKeyboard = new CVirtualKeyboard( displayDevice, m_fontSet, m_textureSet );
+  RECT area = { 320 - (VIRTUALKEYBOARD_WIDTH>>1), 240 - (VIRTUALKEYBOARD_HEIGHT >> 1), 
+                320 + (VIRTUALKEYBOARD_WIDTH>>1), 240 + (VIRTUALKEYBOARD_HEIGHT >> 1) };
+  m_virtualKeyboard = new CVirtualKeyboard( displayDevice, m_fontSet, m_textureSet, area );
+
+  area.left = LISTPOS_LEFT;
+  area.top = LISTPOS_TOP;
+  area.right = LISTPOS_RIGHT;
+  area.bottom = LISTPOS_BOTTOM;
+  m_menuRenderer = new CBaseMenuView( displayDevice, fontSet, textureSet, area );
+  assert( m_menuRenderer );
 }
 
 //---------------------------------------------------------------------
 //	Destructor
 //---------------------------------------------------------------------
-COptionsPage::~COptionsPage( void ) 
+COptionsScreen::~COptionsScreen( void ) 
 {
   if( m_virtualKeyboard )
     delete m_virtualKeyboard;
+
+  delete m_menuRenderer;
 }
 
 //---------------------------------------------------------------------
 //	MoveCursor
 //---------------------------------------------------------------------
-void COptionsPage::MoveCursor( CInputManager &gp, BOOL useSpeedbanding )
+void COptionsScreen::MoveCursor( CInputManager &gp, BOOL useSpeedbanding )
 {
 	static UINT64		lastTime = 0;
 	UINT64 curTime = osd_cycles();
@@ -281,7 +303,7 @@ void COptionsPage::MoveCursor( CInputManager &gp, BOOL useSpeedbanding )
 //---------------------------------------------------------------------
 //	Draw
 //---------------------------------------------------------------------
-void COptionsPage::Draw( BOOL clearScreen, BOOL flipOnCompletion )
+void COptionsScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 {
   if( clearScreen )  
 	  m_displayDevice->Clear(	0L,																// Count
@@ -292,6 +314,7 @@ void COptionsPage::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 						  							0L );															// Stencil
 
   RenderBackdrop();
+  m_menuRenderer->Draw( FALSE, FALSE );
 
 
   FLOAT fontHeight = m_fontSet.SmallThinFontHeight();
@@ -526,7 +549,7 @@ void COptionsPage::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 //---------------------------------------------------------------------
 //	DrawGeneralPage
 //---------------------------------------------------------------------
-void COptionsPage::DrawGeneralPage( void )
+void COptionsScreen::DrawGeneralPage( void )
 {
 /*
   options.cheat = iniFile.GetProfileInt( "General", "CheatsEnabled", FALSE );
@@ -562,7 +585,7 @@ void COptionsPage::DrawGeneralPage( void )
 //---------------------------------------------------------------------
 //	DrawSoundPage
 //---------------------------------------------------------------------
-void COptionsPage::DrawSoundPage( void )
+void COptionsScreen::DrawSoundPage( void )
 {
 /*
     // sound sample playback rate, in Hz
@@ -592,7 +615,7 @@ void COptionsPage::DrawSoundPage( void )
 //---------------------------------------------------------------------
 //	DrawVideoPage
 //---------------------------------------------------------------------
-void COptionsPage::DrawVideoPage( void )
+void COptionsScreen::DrawVideoPage( void )
 {
 /*
   g_rendererOptions.m_vsync = iniFile.GetProfileInt( "Video", "VSYNC", FALSE );       // Enable VSYNC for game rendering
@@ -670,7 +693,7 @@ void COptionsPage::DrawVideoPage( void )
 //---------------------------------------------------------------------
 //	DrawVectorPage
 //---------------------------------------------------------------------
-void COptionsPage::DrawVectorPage( void )
+void COptionsScreen::DrawVectorPage( void )
 {
 /*
 	options.beam = iniFile.GetProfileInt( "VectorOptions", "BeamWidth", 2 );			            // vector beam width
@@ -706,7 +729,7 @@ void COptionsPage::DrawVectorPage( void )
 //---------------------------------------------------------------------
 //	DrawNetworkPage
 //---------------------------------------------------------------------
-void COptionsPage::DrawNetworkPage( void )
+void COptionsScreen::DrawNetworkPage( void )
 {
 /*
   g_NetworkConfig.m_networkDisabled = iniFile.GetProfileInt( "Network", "DisableNetworking",  FALSE );
@@ -739,7 +762,7 @@ void COptionsPage::DrawNetworkPage( void )
 //---------------------------------------------------------------------
 //	DrawDirectoryPathPage1
 //---------------------------------------------------------------------
-void COptionsPage::DrawDirectoryPathPage1( void )
+void COptionsScreen::DrawDirectoryPathPage1( void )
 {
 /*
   g_FileIOConfig.m_ALTDrive           = iniFile.GetProfileString("Directories", "ALTDrive",            DEFAULT_ALTDRIVE);
@@ -778,7 +801,7 @@ void COptionsPage::DrawDirectoryPathPage1( void )
 //---------------------------------------------------------------------
 //	DrawDirectoryPathPage2
 //---------------------------------------------------------------------
-void COptionsPage::DrawDirectoryPathPage2( void )
+void COptionsScreen::DrawDirectoryPathPage2( void )
 {
 /*
   g_FileIOConfig.m_ArtPath            = iniFile.GetProfileString("Directories", "ArtPath",             DEFAULT_ARTPATH);
@@ -842,7 +865,7 @@ void COptionsPage::DrawDirectoryPathPage2( void )
 //---------------------------------------------------------------------
 //	DrawROMListPage
 //---------------------------------------------------------------------
-void COptionsPage::DrawROMListPage( void )
+void COptionsScreen::DrawROMListPage( void )
 {
   static WCHAR *sortMode[] = {  L"By name", 
                                 L"By ROM status",
@@ -882,7 +905,7 @@ void COptionsPage::DrawROMListPage( void )
 //---------------------------------------------------------------------
 //  ChangeGeneralPage
 //---------------------------------------------------------------------
-void COptionsPage::ChangeGeneralPage( BOOL movingRight )
+void COptionsScreen::ChangeGeneralPage( BOOL movingRight )
 {
   switch( (DWORD)m_cursorPosition )
   {
@@ -946,7 +969,7 @@ void COptionsPage::ChangeGeneralPage( BOOL movingRight )
 //---------------------------------------------------------------------
 //  ChangeSoundPage
 //---------------------------------------------------------------------
-void COptionsPage::ChangeSoundPage( BOOL movingRight )
+void COptionsScreen::ChangeSoundPage( BOOL movingRight )
 {
   switch( (DWORD)m_cursorPosition )
   {
@@ -978,7 +1001,7 @@ void COptionsPage::ChangeSoundPage( BOOL movingRight )
 //---------------------------------------------------------------------
 //  ChangeVideoPage
 //---------------------------------------------------------------------
-void COptionsPage::ChangeVideoPage( BOOL movingRight )
+void COptionsScreen::ChangeVideoPage( BOOL movingRight )
 {
   switch( (DWORD)m_cursorPosition )
   {
@@ -1178,7 +1201,7 @@ void COptionsPage::ChangeVideoPage( BOOL movingRight )
 //---------------------------------------------------------------------
 //  ChangeVectorPage
 //---------------------------------------------------------------------
-void COptionsPage::ChangeVectorPage( BOOL movingRight )
+void COptionsScreen::ChangeVectorPage( BOOL movingRight )
 {
   switch( (DWORD)m_cursorPosition )
   {
@@ -1248,7 +1271,7 @@ void COptionsPage::ChangeVectorPage( BOOL movingRight )
 //---------------------------------------------------------------------
 //  ChangeNetworkPage
 //---------------------------------------------------------------------
-void COptionsPage::ChangeNetworkPage( BOOL movingRight )
+void COptionsScreen::ChangeNetworkPage( BOOL movingRight )
 {
   if( !m_cursorPosition )
   {
@@ -1317,7 +1340,7 @@ void COptionsPage::ChangeNetworkPage( BOOL movingRight )
 //---------------------------------------------------------------------
 //  ChangeDirectoryPathPage1
 //---------------------------------------------------------------------
-void COptionsPage::ChangeDirectoryPathPage1( BOOL movingRight )
+void COptionsScreen::ChangeDirectoryPathPage1( BOOL movingRight )
 {
   if( !m_virtualKeyboardMode )
   {
@@ -1399,7 +1422,7 @@ void COptionsPage::ChangeDirectoryPathPage1( BOOL movingRight )
 //---------------------------------------------------------------------
 //  ChangeDirectoryPathPage2
 //---------------------------------------------------------------------
-void COptionsPage::ChangeDirectoryPathPage2( BOOL movingRight )
+void COptionsScreen::ChangeDirectoryPathPage2( BOOL movingRight )
 {
   if( !m_virtualKeyboardMode )
   {
@@ -1551,7 +1574,7 @@ void COptionsPage::ChangeDirectoryPathPage2( BOOL movingRight )
 //---------------------------------------------------------------------
 //  ChangeROMListPage
 //---------------------------------------------------------------------
-void COptionsPage::ChangeROMListPage( BOOL movingRight )
+void COptionsScreen::ChangeROMListPage( BOOL movingRight )
 {
   switch( (DWORD)m_cursorPosition )
   {
@@ -1646,7 +1669,7 @@ void COptionsPage::ChangeROMListPage( BOOL movingRight )
 //---------------------------------------------------------------------
 //  DrawGeneralPage
 //---------------------------------------------------------------------
-void DrawGeneralPage( COptionsPage *ptr )
+void DrawGeneralPage( COptionsScreen *ptr )
 {
   ptr->DrawGeneralPage();
 }
@@ -1654,7 +1677,7 @@ void DrawGeneralPage( COptionsPage *ptr )
 //---------------------------------------------------------------------
 //  DrawSoundPage
 //---------------------------------------------------------------------
-void DrawSoundPage( COptionsPage *ptr )
+void DrawSoundPage( COptionsScreen *ptr )
 {
   ptr->DrawSoundPage();
 }
@@ -1662,7 +1685,7 @@ void DrawSoundPage( COptionsPage *ptr )
 //---------------------------------------------------------------------
 //  DrawVideoPage
 //---------------------------------------------------------------------
-void DrawVideoPage( COptionsPage *ptr )
+void DrawVideoPage( COptionsScreen *ptr )
 {
   ptr->DrawVideoPage();
 }
@@ -1670,7 +1693,7 @@ void DrawVideoPage( COptionsPage *ptr )
 //---------------------------------------------------------------------
 //  DrawVectorPage
 //---------------------------------------------------------------------
-void DrawVectorPage( COptionsPage *ptr )
+void DrawVectorPage( COptionsScreen *ptr )
 {
   ptr->DrawVectorPage();
 }
@@ -1678,7 +1701,7 @@ void DrawVectorPage( COptionsPage *ptr )
 //---------------------------------------------------------------------
 //  DrawNetworkPage
 //---------------------------------------------------------------------
-void DrawNetworkPage( COptionsPage *ptr )
+void DrawNetworkPage( COptionsScreen *ptr )
 {
   ptr->DrawNetworkPage();
 }
@@ -1686,7 +1709,7 @@ void DrawNetworkPage( COptionsPage *ptr )
 //---------------------------------------------------------------------
 //  DrawDirectoryPathPage1
 //---------------------------------------------------------------------
-void DrawDirectoryPathPage1( COptionsPage *ptr )
+void DrawDirectoryPathPage1( COptionsScreen *ptr )
 {
   ptr->DrawDirectoryPathPage1();
 }
@@ -1694,7 +1717,7 @@ void DrawDirectoryPathPage1( COptionsPage *ptr )
 //---------------------------------------------------------------------
 //  DrawDirectoryPathPage2
 //---------------------------------------------------------------------
-void DrawDirectoryPathPage2( COptionsPage *ptr )
+void DrawDirectoryPathPage2( COptionsScreen *ptr )
 {
   ptr->DrawDirectoryPathPage2();
 }
@@ -1702,7 +1725,7 @@ void DrawDirectoryPathPage2( COptionsPage *ptr )
 //---------------------------------------------------------------------
 //  DrawROMListPage
 //---------------------------------------------------------------------
-void DrawROMListPage( COptionsPage *ptr )
+void DrawROMListPage( COptionsScreen *ptr )
 {
   ptr->DrawROMListPage();
 }
@@ -1712,7 +1735,7 @@ void DrawROMListPage( COptionsPage *ptr )
 //---------------------------------------------------------------------
 //  ChangeGeneralPage
 //---------------------------------------------------------------------
-void ChangeGeneralPage( COptionsPage *ptr, BOOL movingRight )
+void ChangeGeneralPage( COptionsScreen *ptr, BOOL movingRight )
 {
   ptr->ChangeGeneralPage( movingRight );
 }
@@ -1720,7 +1743,7 @@ void ChangeGeneralPage( COptionsPage *ptr, BOOL movingRight )
 //---------------------------------------------------------------------
 //  ChangeSoundPage
 //---------------------------------------------------------------------
-void ChangeSoundPage( COptionsPage *ptr, BOOL movingRight )
+void ChangeSoundPage( COptionsScreen *ptr, BOOL movingRight )
 {
   ptr->ChangeSoundPage( movingRight );
 }
@@ -1728,7 +1751,7 @@ void ChangeSoundPage( COptionsPage *ptr, BOOL movingRight )
 //---------------------------------------------------------------------
 //  ChangeVideoPage
 //---------------------------------------------------------------------
-void ChangeVideoPage( COptionsPage *ptr, BOOL movingRight )
+void ChangeVideoPage( COptionsScreen *ptr, BOOL movingRight )
 {
   ptr->ChangeVideoPage( movingRight );
 }
@@ -1736,7 +1759,7 @@ void ChangeVideoPage( COptionsPage *ptr, BOOL movingRight )
 //---------------------------------------------------------------------
 //  ChangeVectorPage
 //---------------------------------------------------------------------
-void ChangeVectorPage( COptionsPage *ptr, BOOL movingRight )
+void ChangeVectorPage( COptionsScreen *ptr, BOOL movingRight )
 {
   ptr->ChangeVectorPage( movingRight );
 }
@@ -1744,7 +1767,7 @@ void ChangeVectorPage( COptionsPage *ptr, BOOL movingRight )
 //---------------------------------------------------------------------
 //  ChangeNetworkPage
 //---------------------------------------------------------------------
-void ChangeNetworkPage( COptionsPage *ptr, BOOL movingRight )
+void ChangeNetworkPage( COptionsScreen *ptr, BOOL movingRight )
 {
   ptr->ChangeNetworkPage( movingRight );
 }
@@ -1752,7 +1775,7 @@ void ChangeNetworkPage( COptionsPage *ptr, BOOL movingRight )
 //---------------------------------------------------------------------
 //  ChangeDirectoryPathPage1
 //---------------------------------------------------------------------
-void ChangeDirectoryPathPage1( COptionsPage *ptr, BOOL movingRight )
+void ChangeDirectoryPathPage1( COptionsScreen *ptr, BOOL movingRight )
 {
   ptr->ChangeDirectoryPathPage1( movingRight );
 }
@@ -1760,7 +1783,7 @@ void ChangeDirectoryPathPage1( COptionsPage *ptr, BOOL movingRight )
 //---------------------------------------------------------------------
 //  ChangeDirectoryPathPage2
 //---------------------------------------------------------------------
-void ChangeDirectoryPathPage2( COptionsPage *ptr, BOOL movingRight )
+void ChangeDirectoryPathPage2( COptionsScreen *ptr, BOOL movingRight )
 {
   ptr->ChangeDirectoryPathPage2( movingRight );
 }
@@ -1768,7 +1791,7 @@ void ChangeDirectoryPathPage2( COptionsPage *ptr, BOOL movingRight )
 //---------------------------------------------------------------------
 //  ChangeROMListPage
 //---------------------------------------------------------------------
-void ChangeROMListPage( COptionsPage *ptr, BOOL movingRight )
+void ChangeROMListPage( COptionsScreen *ptr, BOOL movingRight )
 {
   ptr->ChangeROMListPage( movingRight );
 }

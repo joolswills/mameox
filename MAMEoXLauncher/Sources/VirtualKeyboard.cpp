@@ -19,12 +19,12 @@
 #define DARKENBACKGROUND_COLOR  D3DCOLOR_ARGB( 160, 0, 0, 0 )
 #define HIGHLIGHTBAR_COLOR      D3DCOLOR_ARGB( 255, 125, 129, 162 )
 
-#define TITLEBAR_ROW            m_titleArea.top
-#define FIRSTDATA_ROW           m_bodyArea.top
+#define TITLEBAR_ROW            m_titleArea.top + 6
+#define FIRSTDATA_ROW           m_bodyArea.top + 3
 
-#define HIGHLIGHTBAR_LEFT       m_bodyArea.left
-#define HIGHLIGHTBAR_RIGHT      m_bodyArea.right
-#define NAME_START              m_bodyArea.left + 7
+#define HIGHLIGHTBAR_LEFT       m_bodyArea.left + 4
+#define HIGHLIGHTBAR_RIGHT      m_bodyArea.right - 4
+#define NAME_START              m_bodyArea.left + 9
 #define DATA_START              NAME_START + 4
 #define TEXTBOX_RIGHT           HIGHLIGHTBAR_RIGHT   // The right edge of the text box
 #define COLUMN_PADDING          9     // Number of pixels to subtract from the column width before truncating text
@@ -49,8 +49,8 @@ static WCHAR  *g_keyboardData[4] = { L"1234567890",
 //------------------------------------------------------------
 // Constructor
 //------------------------------------------------------------
-CVirtualKeyboard::CVirtualKeyboard( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CTextureSet &textureSet ) :
-  CBasePopupView( displayDevice, fontSet, textureSet )
+CVirtualKeyboard::CVirtualKeyboard( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CTextureSet &textureSet, const RECT &area ) :
+  CBasePopupView( displayDevice, fontSet, textureSet, area )
 {
   Reset();
 }

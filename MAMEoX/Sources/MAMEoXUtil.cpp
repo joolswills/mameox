@@ -92,7 +92,9 @@ int vsnprintf( char *buf, size_t count, const char *fmt, va_list lst )
 //-------------------------------------------------------------
 void LoadOptions( void )
 {
-  CSystem_IniFile iniFile( INIFILENAME );
+  CStdString iniFileName = g_FileIOConfig.m_IniPath;
+  iniFileName += "\\" INIFILENAME;
+  CSystem_IniFile iniFile( iniFileName );
 
 /*
 	int		mame_debug;		          1 to enable debugging
@@ -248,7 +250,9 @@ void LoadOptions( void )
 //-------------------------------------------------------------
 void SaveOptions( void )
 {
-  CSystem_IniFile iniFile( INIFILENAME );
+  CStdString iniFileName = g_FileIOConfig.m_IniPath;
+  iniFileName += "\\" INIFILENAME;
+  CSystem_IniFile iniFile( iniFileName );
 
   iniFile.WriteProfileInt( "General", "CheatsEnabled", options.cheat );
   if( cheatfile )

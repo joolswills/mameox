@@ -26,7 +26,7 @@ Version 0.71.3b (CVS)
 
    -------------------------------------------------------------
   - \MAMEoXLauncher\Sources:
-    - ROMList.cpp
+    - ROMListScreen.cpp
       - Added favorite status/num times played support
       - Added handling for MAMEoX system files to apply speed
         buffering to all writes/reads
@@ -36,10 +36,14 @@ Version 0.71.3b (CVS)
         from anywhere in the launcher
       - Added filter by "disliked" favorite status
 
-    - OptionsPage.cpp
+    - OptionsScreen.cpp
       - Added sort by favorite status and sort by number of times 
         played
       - Added filter by "disliked" favorite status
+
+    - StartMenu.cpp
+      - Made menu functions token based instead of cursor position 
+        based. This makes it much easier to have fully dynamic menus
 
     - main.cpp
       - Added handling for MAMEoX system files to apply speed
@@ -48,6 +52,14 @@ Version 0.71.3b (CVS)
         from anywhere in the launcher
       - Added "Copy system files from DVD" menu item to allow CD/DVD
         users to copy over hiscore.dat, samples, etc...
+      - Made menu functions token based instead of cursor position 
+        based. This makes it much easier to have fully dynamic menus
+
+    - Renamed ROMList, OptionsPage, Help, LightgunCalibrator to 
+      xxxxScreen format to increase "findability"
+    - Added new class "CBaseMenuView" which takes care of drawing a
+      fully resizable menu backdrop. Also removed the old static
+      image backdrops.
 
    -------------------------------------------------------------
   - \Sectionize.pl
