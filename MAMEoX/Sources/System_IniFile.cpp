@@ -102,7 +102,7 @@ CSystem_IniFile::CSystem_IniFile( const CStdString &strFullPath ) :
 			// Check to see if the current string is a new section
 		if( (*it)[0] == '[' )
 		{
-			std::string sectionHeader = (*it++);
+			std::string sectionHeader = (*it);
 			std::vector<std::string> temp;
 
 			for( ;(it+1) != inputVector.end() && (*(it+1))[0] != '['; ++it )
@@ -259,7 +259,8 @@ BOOL CSystem_IniFile::GetValueString( const std::string &section,
 	std::vector<std::string>::const_iterator i = (*sectionData).second.begin();
 	for( ; i != (*sectionData).second.end(); ++i )
 	{
-		if( !strncasecmp( (*i).c_str(), entryName.c_str(), entryName.size() ) )
+    PRINTMSG( T_INFO, "%s =? %s", (*i).c_str(), entryName.c_str() );
+		if( !strncasecmp( (*i).c_str(), entryName.c_str(), entryName.length() ) )
 		{
 			char *front = strstr( (*i).c_str(), "=" );
 			if( !front )
