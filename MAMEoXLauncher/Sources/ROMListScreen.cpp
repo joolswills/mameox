@@ -121,9 +121,9 @@ BOOL CROMListScreen::GenerateROMList( void )
     Helper_GenerateROMList( g_FileIOConfig.m_romPath2 );
   }
 
-  if( g_FileIOConfig.m_romPath2 != g_FileIOConfig.m_romPath2 &&
-      g_FileIOConfig.m_romPath2 != g_FileIOConfig.m_romPath1 &&
-      g_FileIOConfig.m_romPath2 != g_FileIOConfig.m_romPath0 )
+  if( g_FileIOConfig.m_romPath3 != g_FileIOConfig.m_romPath2 &&
+      g_FileIOConfig.m_romPath3 != g_FileIOConfig.m_romPath1 &&
+      g_FileIOConfig.m_romPath3 != g_FileIOConfig.m_romPath0 )
   {
 	  PRINTMSG(( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_romPath3.c_str() ));
     Helper_GenerateROMList( g_FileIOConfig.m_romPath3 );
