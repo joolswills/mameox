@@ -1,16 +1,24 @@
 Version 0.79.2b
 
    -------------------------------------------------------------
-  - \MAMEoX\Includes: 
+  - \MAMEoX:
     - MAMEoX.h
       - Upped version number
 
-
-  - \MAMEoX\Includes:
     - DebugLogger.h
       - Changed PRINTMSG macro to be totally removed in retail
         builds.
 
+  - \MAMEoXLauncher:
+    - main.cpp
+      - Added message while saving settings before returning to
+        the dashboard.
+
+
+  - Doc changes -----------------------------
+
+  - Updated the readme.txt
+  - Updated the merge checklist
 
   - Script changes --------------------------
 

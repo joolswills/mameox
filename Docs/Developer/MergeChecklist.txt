@@ -1,84 +1,101 @@
-1) Tag the main branch (ex: "T_PRE_MAME_068_MERGE")
+1) Tag the main branch (ex: "PRE_MAME_068_MERGE")
 
 
+
+
+
+-------------------------------------------------------------------------------- 
 2) Checkout a fresh copy of the repository with using branch tag "B_MAME"
 
-	create->Checkout Module
-	Checkout Settings tab:
-		Module name: MAMEoX
-	Checkout Options tab:
-		By revision/tag/branch, set the name to "B_MAME"
+create->Checkout Module Checkout Settings tab: Module name: MAMEoX Checkout 
+Options tab: By revision/tag/branch, set the name to "B_MAME"
+
+-------------------------------------------------------------------------------- 
+3) Merge the new release into the checked out code. You should also compile the 
+Windows binary to verify that the source release is OK, and to have something to 
+benchmark against. 
+
+Detailed walkthrough:
+
+Checkout the branch into a directory called "MAMEoX_Merge." giving a path like 
+g:\MAMEoX_Merge\MAMEoX, which contains the core branch. Place the latest core 
+source into the same directory, giving a path like g:\MAMEoX_Merge\MAME Use 
+Araxis Merge's Folder Comparison function to find the differences between the 
+sources. Find out what files have been added or removed and to add this 
+information to the changelog.txt file in the normal MAMEoX tree. This can be 
+easily done in Araxis by setting your Visibility Filters to show only 
+Removed/Inserted, then doing a directory comparison between 
+G:\MAMEoX_Merge\MAMEoX\MAME\src and G:\MAMEoX_Merge\MAME\src. Copy all the 
+changed (and unchanged, it makes no difference) files from the new core release 
+into the MAMEoX\MAME directory, completing the merge. 
+
+-------------------------------------------------------------------------------- 
+4) Commit the changes and create a tag on the merged dir. This tag should start 
+w/ "I" for "Integrated" ("I_MAME_068", for example) Make sure you do a "cvs add" 
+on any newly created files, and a "cvs remove" on any obsolete files. Failure to 
+do this will create an incomplete merge, forcing you to go back and tag again 
+after adding/removing the files.
+
+Note that it is vitally important that you tag the merged code! Failure to tag 
+at this point will make it extremely difficult to merge in the next core 
+release.
 
 
 
-3) Merge the new release into the checked out code. You should also compile the Windows
-	binary to verify that the source release is OK, and to have something to benchmark
-	against.
+-------------------------------------------------------------------------------- 
+5a) If this is the first merge ever: (It's not, so skip to 5b) Checkout a clean 
+copy of the head branch (no sticky tags) with the -j option to merge in the 
+branch: CMDLINE: cvs checkout -kk -d -j B_MAME MAMEoX WinCVS: create->Checkout 
+Module Checkout Settings tab: Module name: MAMEoX Merge Options tab: "Only this 
+rev./tag", set the name to "B_MAME"
 
+Note that it's very important to pass the -d option (create missing directories) 
+to ensure a proper merge! 
+-------------------------------------------------------------------------------- 
+5b) If this is the 2nd+ merge of the branch: Checkout a clean copy of the head 
+branch (no sticky tags) CMDLINE: cvs update -kk -d -j -j B_MAME WinCVS: Merge 
+Options tab, "Plus w/ this tag" putting the second most recent I_* tag first, 
+B_MAME second. Note: You can find the tag from the last merge by doing a cvs log 
+on the MAMEoX.sln file and taking the most recent I_* tag) 
 
+Note that it's very important to pass the -d option (create missing directories) 
+to ensure a proper merge! 
+-------------------------------------------------------------------------------- 
+6) Resolve any conflicts in the merge. This step will often require input from a 
+programmer, though some conflicts are mundane and easy to fix. 
+-------------------------------------------------------------------------------- 
+7) If files have been added/removed from the MAME core, run 
+MAMEoX/MAME/GenerateVCPROJFiles.pl to import the new files. Note: Not all files 
+in the MAME core are meant to be compiled. After you run GenerateVCPROJFiles, 
+you may have to exclude some files from the build. This is done by editing the 
+perl script and adding the files to be excluded to the @ExcludedFiles or 
+@ExcludedDirectories arrays.
 
-4) Commit the changes and create a tag on the merged dir. This tag should start w/ "I" for "Integrated"
-	("I_MAME_068", for example) Note that it is vitally important that you tag the merged code! 
-	Also, make sure you do a "cvs add" on any newly created files, and a "cvs remove" on any obsolete
-	files.
+Run MAMEoX/ChangeMallocs.pl to change any new stock *alloc() calls into 
+osd_*alloc() variants. This is necessary to allow the program to gracefully 
+handle out of memory conditions (as the MAME core is very bad about checking for 
+*alloc failures).
 
-
-
-
-5a) If this is the first merge ever: (It's not :))
-	Checkout a clean copy of the head branch (no sticky tags) with the -j option to merge in the
-	branch:
-
-	CMDLINE: cvs checkout -kk -d -j B_MAME MAMEoX
-
-	================================================================================
-	WinCVS: 
-		create->Checkout Module
-		Checkout Settings tab:
-			Module name: MAMEoX
-		Merge Options tab: 
-			"Only this rev./tag", set the name to "B_MAME"
-	================================================================================
-
-	Note that it's very important to pass the -d option (create missing directories) to ensure
-	a proper merge!
-
-
-
-
-5b) If this is the 2nd+ merge of the branch:
-	Checkout a clean copy of the head branch (no sticky tags)
-
-	Then:
-	CMDLINE: cvs update -kk -d -j <Tag from last merge on the B_MAME branch> -j B_MAME
-
-	================================================================================
-	WinCVS:
-		Merge Options tab, "Plus w/ this tag" putting the second most recent 
-		milestone tag first, B_MAME second.
-
-	(You can find the tag from the last merge by doing a cvs log on the sln file and
-		taking the second most recent I_* tag)
-	================================================================================
-
-	Note that it's very important to pass the -d option (create missing directories) to ensure
-	a proper merge!
-
-
-
-6) Resolve any conflicts
-
-
-
-7) TEST THE FULLY MERGED BUILD!
-
-
-
-8) Commit the verified changes
-
-
-
-9) Tag the merged tree with the "M_" prefix (for "Merged") (ex: "M_MAME_068"). 
-	Again, it is very important that you remember to tag!
-
-
+Run MAMEoX/Sectionize.pl to put any new CPU's/Drivers into XBE sections. This 
+allows MAMEoX to load only required code at runtime, saving a huge amount of 
+memory. Note: The Sectionize script does not resolve inter-driver dependencies. 
+During the course of testing you may find that attempting to play games using a 
+certain driver file causes a crash. If you have the ability to remotely debug, 
+you will often notice that the crash occurs in some driver/vidhrdw/whatever file 
+with an XBE section other than the driver primarily used by the game. These 
+silent dependencies are handled by adding the codependent files to the 
+Sectionize.pl script as "families." Once the file (or files) is added to the 
+Sectionize.pl script, you must run the Desectionize.pl script to remove the 
+current, incorrect section, then run Sectionize.pl again to place the file into 
+the correct section. Note that running Desectionize.pl w/out any arguments will 
+cause it to remove the section headers from all files, which is most likely not 
+what you want to do (as it will require a practically full rebuild). You 
+therefore can (and should) pass the name of the file (or files) that you wish to 
+remove the section headers from as arguments to the script. 
+-------------------------------------------------------------------------------- 
+8) TEST THE FULLY MERGED BUILD! 
+-------------------------------------------------------------------------------- 
+9) Commit the verified changes. 
+-------------------------------------------------------------------------------- 
+10) Tag the merged, committed tree with the "M_" prefix (for "Merged") (ex: 
+"M_MAME_068"). Again, it is very important that you remember to tag! 

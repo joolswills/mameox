@@ -1,15 +1,16 @@
 
+More project information and help can be found on the MAMEoX website
+http://mameox.sourceforge.net or the MAMEoX sourceforge project page
+http://sourceforge.net/projects/mameox
+
+---------------------------------------------------------------------------
+Compilation requirements:
+
+  Visual Studio .NET 2003
+  ZLIB source (http://www.gzip.org/zlib/)
 
 ---------------------------------------------------------------------------
 Installation:
-
-
-X) This step is currently unnecessary, as the source distribution includes the
-   latest supported MAME core.
-
-   XX Unzip MAME 0.67 (or later, this document was written at the time of 0.67)
-   XX into the MAME directory.
-
 
 1) Unzip ZLIB to the ZLIB directory. You only need the following files:
 	adler32.c
@@ -41,15 +42,11 @@ X) This step is currently unnecessary, as the source distribution includes the
 
 	(Also the project files, and any license text files)
 
-X) This step is currently unnecessary, as the source distribution includes the
-   latest supported MAME core, pre patched w/ Sectionize.pl
+   ZLIB can be downloaded for free off the web, the homepage is currently
+    http://www.gzip.org/zlib/
 
 
-   Run the Sectionize.pl script to break the various ROMs into XBE sections
-    (this is done to reduce runtime memory requirements)
-
-2) Open the MAMEoX.sln (Visual Studio.NET 2003) or MAMEoX.NET2002.sln 
-   (Visual Studio .NET 2002) file and build the solution for Release mode 
+2) Open the MAMEoX.sln file and build the solution for Release mode 
    (or Debug mode if you're doing actual development). 
     
     This can be done via the following steps:
@@ -66,53 +63,49 @@ X) This step is currently unnecessary, as the source distribution includes the
     set does not execute debug files.
 
 
-3) Create a directory for the program on your box. The directory must match
-   the following structure:
-
+3) Create a directory for the program on your Xbox. The default directory 
+   structure is:
+   
   - <Your Directory Name>
-    - general  : This is where cfg files, cheat file, and other general files 
-                 are stored
     - Media
-      XX Font.xpr : This should be taken from the SDK. The project currently
-                   has no fonts (or graphics in general, see "Contributions")
-        NOTE: Font.xpr is no longer required as of 0.70.1b
       > All of the resource files from the MAMEoX\Media directory in the source
         package, including help.txt and Resource.xpr (created during the build
 	process)
+
+    default.xbe : The Launcher executable file
+    MAMEoX.xbe : The helper executable file
+
+
     - roms : This is where you should put all of your ROM files/directories.
              NOTE: There is currently a speed hack that _requires_ all ROMs
 	           to be zipped! Unzipped files will not be read at all!
       - backup : Directory where "deleted" ROMs are stored
+    - artwork: This is where you put bezels, overlays, etc...
     - samples : This is where you should put all of your audio sample zips
     - hdimages : This is where you should place your CHD hard disk image 
                  directories
-    default.xbe : The executable file
+    - general  : This is where cfg files, cheat file, and other general files 
+                 are stored. When in doubt as to where to put a 3rd party file,
+		 this is probably the place.
 
-   UPDATE: You shouldn't have to actually create any of the sub directories (except
+
+   NOTE: You shouldn't have to actually create any of the sub directories (except
    roms, roms/backup, and other directories with data you provide (hdimages, audio
    samples, etc...)) as of v0.5a. They will be automatically created when you
    first run MAMEoX.
-
-   NOTE: Starting w/ version 0.63b, there are _two_ XBE files that must be 
-         copied over, default.xbe and MAMEoX.xbe. Failure to copy both files will
-	 result in error messages.
 
    NOTE: Starting with version 0.64b, if you are playing MAMEoX off of a CD/DVD,
          most of these directories will be created on the U:, which is probably
 	 mapped from E:\UDATA\4d414d45 (MAME in hex)
 
-   NOTE: Starting with version 0.65b the INI file will only be read from 
-         e:\UDATA\4d414d45. Any INI directory on the D: will be ignored. The
-	 INI can be modified from within MAME by pressing B + Y on the ROMList
-	 screen. (As of 0.66b there are still some things that can't be changed
-	 from within the program, such as filenames and directory paths. This
-	 will change in the near future)
 
    !!!IMPORTANT!!!
      DO NOT RENAME OR MOVE EITHER OF THE XBE FILES! MAMEoX (as, I believe,
      any XBOX executable) is _very_ picky about where its files are and
      what they are named. Renaming or moving either file will cause MAMEoX
      to fail!
+
+
 
 ---------------------------------------------------------------------------
 Compilation Errors:
@@ -121,7 +114,7 @@ Compilation Errors:
 NOTE: If you use the SourceForge distribution you shouldn't get any compiler
 	errors. If you do, please submit them as a bug.
 
-Chances are good that you'll see some compile errors:
+Compilation errors that I've dealt with in the past:
   a) png_get_info is defined multiple times: You can safely #ifdef this
      function out of the MAME source, it is not called.
   b) Internal compiler errors
@@ -198,70 +191,14 @@ Chances are good that you'll see some compile errors:
 
 
 ---------------------------------------------------------------------------
-Usage:
+Usage Help:
 
-  Available ROMs screen:
-    X - Show Help file (the readme.txt isn't kept up to date, except
-                        for this one key :))
-
-
-
-  MAME input mappings:
-    As of version 0.5a, there is no INI file to reconfigure the keypad mappings.
-    Reconfiguration can be done via editing the osd_customize_inputport_defaults
-    function in xbox_JoystickMouse.c.
-
-
-	All UI config utilizes the "back" (coin 1) button, as this is (hopefully)
-	the least disruptive during normal play.
-    "Cancel" :		  Joypad 1, BACK and START
-    "Toggle Crosshair" :  Joypad 1, BACK and Left Analog button
-    "UI Configure" :	  Joypad 1, BACK and White button
-    "Pause" :		  Joypad 1, BACK and Black button
-    "On screen display" : Joypad 1, BACK and Right Analog Button
-    "Reset ROM" :	  Joypad 1, BACK, Left Trigger, and Right Trigger
-    "Load State" :        Joypad 1, BACK, Right Analog button, and Left trigger
-    "Save State" :        Joypad 1, BACK, Right Analog button, and Right trigger
-
-		Player Controls
-    Button 1   - A
-    Button 2   - X
-    Button 3   - B
-    Button 4   - Y
-    Button 5   - Left Trigger
-    Button 6   - Right Trigger
-    Button 7   - Left Analog button
-    Button 8   - Right Analog button
-    Button 9   - White
-    Button 10  - Black
-    Enter Coin - Back
-    Start      - Start
-
-
-  Enabling cheats:
-1) Edit your INI file and set the CheatsEnabled field to 1. 
-   (Version 0.64b (CVS) has an INI editor built in, so this 
-    will become easier in the future)
-   UPDATE: With the release of 0.64b it is now easier to enable
-           cheats by pressing B + Y in the ROMList screen and
-	   pressing right or left on the dpad on the appropriate
-	   option.
-
-2) Copy your cheat.dat file to the GENERAL directory 
-
-Cheats in general are now enabled, you can enable/disable 
-specific cheats through the in game MAME menu (back+white). 
+  Read the help screen from within the MAMEoX launcher (press START to
+  bring up the menu from which you can read the screen)
 
 
 ---------------------------------------------------------------------------
 Contributions:
-
-  - The project is currently in need of some decent artwork for the splash
-    screen and initial UI. Feel free to contribute files, you won't be paid,
-    but you'll at least get your name on the thing :) More information
-    can be found on the project website. Be sure not to send any copyrighted
-    material (unless you own the copyright and are willing to allow us to use
-    the image(s))
 
   - Any reports of bugs, crashes, etc... that you can file would be great.
     Just be sure never to send any copyrighted materials (ROMs, compiled 
