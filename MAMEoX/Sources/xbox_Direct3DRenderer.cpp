@@ -405,10 +405,6 @@ static void Helper_RenderDirect32( void *dest, struct mame_bitmap *bitmap, const
     return;
   }
 
-  osd_file *out = osd_fopen( FILETYPE_SCREENSHOT, 0, "image.raw", "w" );
-  osd_fwrite( out, bitmap->base, bitmap->rowbytes * bitmap->height );
-  osd_fclose( out );
-
   	// Destination buffer is in 32 bit X8R8G8B8
 	if( g_createParams.orientation & ORIENTATION_SWAP_XY )
   {
