@@ -208,6 +208,26 @@ void SaveOptions( void )
   iniFile.WriteProfileFloat( "Video", "ScreenUsage_Y", yPercentage );
 
 
+    //-- Write the network settings ---------------------------------------------
+  iniFile.WriteProfileString( "Network", "IPAddress",  g_NetworkConfig.m_IPAddr );
+  iniFile.WriteProfileString( "Network", "Gateway",    g_NetworkConfig.m_Gateway );
+  iniFile.WriteProfileString( "Network", "Subnet",     g_NetworkConfig.m_SubnetMask );
+  iniFile.WriteProfileString( "Network", "NameServer", g_NetworkConfig.m_NameServer );
+
+    //-- Write the directory settings -------------------------------------------
+  iniFile.WriteProfileString( "Directories", "ALTDrive",           g_FileIOConfig.m_ALTDrive );
+  iniFile.WriteProfileString("Directories", "ArtPath",             g_FileIOConfig.m_ArtPath );
+  iniFile.WriteProfileString("Directories", "AudioPath",           g_FileIOConfig.m_AudioPath );
+  iniFile.WriteProfileString("Directories", "ConfigPath",          g_FileIOConfig.m_ConfigPath );
+  iniFile.WriteProfileString("Directories", "DefaultRomsListPath", g_FileIOConfig.m_DefaultRomListPath );
+  iniFile.WriteProfileString("Directories", "GeneralPath",         g_FileIOConfig.m_GeneralPath );
+  iniFile.WriteProfileString("Directories", "HDImagePath",         g_FileIOConfig.m_HDImagePath );
+  iniFile.WriteProfileString("Directories", "HiScoresPath",        g_FileIOConfig.m_HiScorePath );
+  iniFile.WriteProfileString("Directories", "NVRamPath",           g_FileIOConfig.m_NVramPath );
+  iniFile.WriteProfileString("Directories", "BackupPath",          g_FileIOConfig.m_RomBackupPath );
+  iniFile.WriteProfileString("Directories", "RomsPath",            g_FileIOConfig.m_RomPath );
+
+
     //-- Lightgun calibration -----------------------------------------------
   iniFile.WriteProfileInt( "Input", "Lightgun1_Left", g_calibrationData[0].m_xData[0] );
   iniFile.WriteProfileInt( "Input", "Lightgun1_CenterX", g_calibrationData[0].m_xData[1] );
