@@ -33,6 +33,7 @@ extern "C" {
 #define AUDIOPATH           "D:\\SAMPLES"
 #define DEFAULTROMLISTPATH  "D:\\ROMS"
 #define HDIMAGEPATH         "D:\\HDIMAGES"
+#define HISCOREPATH         "D:\\HISCORES"
   
 #define DRIVERLISTFILENAME  "DRIVERS.list"
 #define ROMLISTFILENAME		  "ROMS.list"

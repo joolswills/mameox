@@ -106,8 +106,11 @@ void InitializeFileIO( void )
   CREATEOROPENPATH( INIPATH, TRUE );
 	g_pathNames[FILETYPE_INI] = tempStr;
 
-  CREATEOROPENPATH( NVRAMPATH, TRUE );
+  CREATEOROPENPATH( HISCOREPATH, TRUE );
 	g_pathNames[FILETYPE_HIGHSCORE] = g_pathNames[FILETYPE_HIGHSCORE_DB] = 
+                                    tempStr;
+
+  CREATEOROPENPATH( NVRAMPATH, TRUE );
 																		g_pathNames[FILETYPE_NVRAM] = 
 																		g_pathNames[FILETYPE_STATE] =
 																		g_pathNames[FILETYPE_MEMCARD] = 
