@@ -599,7 +599,7 @@ static READ32_HANDLER( sound020_r )
 //	logerror("020: read %x from sound reg %d (PC=%lx, mask=%x)\n", rv, reg, activecpu_get_pc(), mem_mask);
 	rv = sndto020[reg]<<24 | sndto020[reg+1]<<8;
 
-	/* we clearly have some problem because some games require these hacks */
+	/* we clearly have some problem because some games require these hacks */
 
 	/* perhaps 68000/68020 timing is skewed? */
 	if (!strcmp(Machine->gamedrv->name, "le2"))
@@ -608,52 +608,52 @@ static READ32_HANDLER( sound020_r )
 	}
 	if (!strcmp(Machine->gamedrv->name, "winspike"))
 	{
-		if (activecpu_get_pc() == 0x2026fe) rv = 0xc0c0c0c0;
+		if (activecpu_get_pc() == 0x2026fe) rv = 0xc0c0c0c0;
 
-	}
+	}
 
 	if (!strcmp(Machine->gamedrv->name, "tkmmpzdm"))
-	{
+	{
 
-		if (activecpu_get_pc() == 0x20360a) rv = 0;
+		if (activecpu_get_pc() == 0x20360a) rv = 0;
 
-		if (activecpu_get_pc() == 0x203680) rv = 0x0f000000;
+		if (activecpu_get_pc() == 0x203680) rv = 0x0f000000;
 
-		if (activecpu_get_pc() == 0x20370a) rv = 0;
+		if (activecpu_get_pc() == 0x20370a) rv = 0;
 
-		if (activecpu_get_pc() == 0x203710) rv = 0;
+		if (activecpu_get_pc() == 0x203710) rv = 0;
 
-		if (activecpu_get_pc() == 0x2037c8) rv = 0xff00;
+		if (activecpu_get_pc() == 0x2037c8) rv = 0xff00;
 
-		if (activecpu_get_pc() == 0x2037d0) rv = 0;
+		if (activecpu_get_pc() == 0x2037d0) rv = 0;
 
-		if (activecpu_get_pc() == 0x203858) rv = 0xaa00;
+		if (activecpu_get_pc() == 0x203858) rv = 0xaa00;
 
-		if (activecpu_get_pc() == 0x203860) rv = 0x55000000;
+		if (activecpu_get_pc() == 0x203860) rv = 0x55000000;
 
-		if (activecpu_get_pc() == 0x2038e8) rv = 0x5500;
+		if (activecpu_get_pc() == 0x2038e8) rv = 0x5500;
 
-		if (activecpu_get_pc() == 0x2038f0) rv = 0xaa000000;
+		if (activecpu_get_pc() == 0x2038f0) rv = 0xaa000000;
 
-		if (activecpu_get_pc() == 0x203978) rv = 0;
+		if (activecpu_get_pc() == 0x203978) rv = 0;
 
-		if (activecpu_get_pc() == 0x203980) rv = 0xff000000;
+		if (activecpu_get_pc() == 0x203980) rv = 0xff000000;
 
-		if (activecpu_get_pc() == 0x2039ea) rv = 0;
+		if (activecpu_get_pc() == 0x2039ea) rv = 0;
 
-		if (activecpu_get_pc() == 0x203a2e) rv = 0x0f000000;
+		if (activecpu_get_pc() == 0x203a2e) rv = 0x0f000000;
 
-		if (activecpu_get_pc() == 0x203ae4) rv = 0;
+		if (activecpu_get_pc() == 0x203ae4) rv = 0;
 
-		if (activecpu_get_pc() == 0x203b7c) rv = 0xff000000;
+		if (activecpu_get_pc() == 0x203b7c) rv = 0xff000000;
 
-		if (activecpu_get_pc() == 0x203b90) rv = 0xff00;
+		if (activecpu_get_pc() == 0x203b90) rv = 0xff00;
 
-		if (activecpu_get_pc() == 0x203bb6) rv = 0;
+		if (activecpu_get_pc() == 0x203bb6) rv = 0;
 
-		if (activecpu_get_pc() == 0x203c6a) rv = 0;
+		if (activecpu_get_pc() == 0x203c6a) rv = 0;
 
-	}
+	}
 
 	if (reg == 2) rv = 0;	/* hack */
 
@@ -719,24 +719,24 @@ static READ32_HANDLER( players_r )
 }
 
 static READ32_HANDLER( le2_gun_H_r )
-{
+{
 
-	int p1x = readinputport(9)*287/0xff+24;
+	int p1x = readinputport(9)*287/0xff+24;
 
-	int p2x = readinputport(11)*287/0xff+24;
+	int p2x = readinputport(11)*287/0xff+24;
 
-	return (p1x<<16)|p2x;
+	return (p1x<<16)|p2x;
 
 }
 
 static READ32_HANDLER( le2_gun_V_r )
-{
+{
 
-	int p1y = readinputport(10)*223/0xff;
+	int p1y = readinputport(10)*223/0xff;
 
-	int p2y = readinputport(12)*223/0xff;
+	int p2y = readinputport(12)*223/0xff;
 
-	return (p1y<<16)|p2y;
+	return (p1y<<16)|p2y;
 
 }
 
@@ -841,7 +841,7 @@ static INTERRUPT_GEN(konamigx_interrupt)
 
 	// IRQ 1 happens at 60 hz and is the main vbl
 	if ((cpu_getiloops() == 0) && (gx_irqregister & 0x01))
-	{
+	{
 
 		cpu_set_irq_line(0, 1, HOLD_LINE);
 	}
@@ -858,9 +858,9 @@ static INTERRUPT_GEN(konamigx_interrupt)
 	{
 		cpu_set_irq_line(0, 3, HOLD_LINE);
 	}
-}
+}
 
-
+
 
 static INTERRUPT_GEN(gxtype1_interrupt)
 {
@@ -871,7 +871,7 @@ static INTERRUPT_GEN(gxtype1_interrupt)
 
 	// IRQ 1 happens at 60 hz and is the main vbl
 	if ((cpu_getiloops() == 0) && (gx_irqregister & 0x01))
-	{
+	{
 
 		cpu_set_irq_line(0, 1, HOLD_LINE);
 	}
@@ -888,119 +888,119 @@ static INTERRUPT_GEN(gxtype1_interrupt)
 	{
 		cpu_set_irq_line(0, 3, HOLD_LINE);
 	}
-}
+}
 
 
-static int analog_ctl;
+static int analog_ctl;
 
-
 
-static int analog_val = 0;
 
-static int analog_latch;
+static int analog_val = 0;
 
-static int analog_state = 0;
+static int analog_latch;
+
+static int analog_state = 0;
 
 
 static READ32_HANDLER( gxanalog_r )
-{
+{
 
 	return analog_val;
 }
-
+
 
 // selects which port? to read
 static WRITE32_HANDLER( gxanalog_w )
-{
+{
 
-	int new_ctl = (data >> 24) & 0xf;
+	int new_ctl = (data >> 24) & 0xf;
 
 
-	// guaranteed resync
+	// guaranteed resync
 
-	if ((new_ctl == 4) && (analog_ctl == 1))
+	if ((new_ctl == 4) && (analog_ctl == 1))
 
-	{
+	{
 
-		analog_state = 1;
+		analog_state = 1;
 
-	}
+	}
 
-
 
-	switch (analog_state)
 
-	{
+	switch (analog_state)
 
-		case 0:	  // initial state
+	{
 
-			break;
+		case 0:	  // initial state
 
-
+			break;
 
-		case 1:	// got a 4, check next
 
-			if ((new_ctl == 4) && (analog_ctl == 4))
 
-			{
+		case 1:	// got a 4, check next
 
-				analog_latch = readinputport(10);	// gas
+			if ((new_ctl == 4) && (analog_ctl == 4))
 
-				analog_state = 2;
+			{
 
-			}
+				analog_latch = readinputport(10);	// gas
 
-
+				analog_state = 2;
 
-			if ((new_ctl == 2) && (analog_ctl == 4))
+			}
 
-			{
 
-				analog_latch = readinputport(9);	// steer
 
-				analog_state = 3;
+			if ((new_ctl == 2) && (analog_ctl == 4))
 
-			}
+			{
 
-			break;
+				analog_latch = readinputport(9);	// steer
 
-
+				analog_state = 3;
 
-		case 2:
+			}
 
-			if ((new_ctl == 1) && (analog_ctl == 0))
+			break;
 
-			{
 
-				analog_val = (analog_latch & 0x200)<<15;
 
-				analog_latch <<= 1;
+		case 2:
 
-			}
+			if ((new_ctl == 1) && (analog_ctl == 0))
 
-			break;
+			{
 
-
+				analog_val = (analog_latch & 0x200)<<15;
 
-		case 3:
+				analog_latch <<= 1;
 
-			if ((new_ctl == 1) && (analog_ctl == 0))
+			}
 
-			{
+			break;
 
-				analog_val = (analog_latch & 0x400)<<14;
 
-				analog_latch <<= 1;
 
-			}
+		case 3:
 
-			break;
+			if ((new_ctl == 1) && (analog_ctl == 0))
 
-	}
+			{
 
-
+				analog_val = (analog_latch & 0x400)<<14;
 
-	analog_ctl = new_ctl;
+				analog_latch <<= 1;
+
+			}
+
+			break;
+
+	}
+
+
+
+	analog_ctl = new_ctl;
 
 }
 
@@ -1262,13 +1262,13 @@ static struct K054539interface k054539_interface =
 };
 
 /**********************************************************************************/
-
 
-/* i think we could reduce the number of machine drivers with different visible areas by adjusting the sprite
 
-   positioning on a per game basis too */
+/* i think we could reduce the number of machine drivers with different visible areas by adjusting the sprite
 
-
+   positioning on a per game basis too */
+
+
 
 static MACHINE_DRIVER_START( konamigx )
 	/* basic machine hardware */
@@ -1292,7 +1292,7 @@ static MACHINE_DRIVER_START( konamigx )
 	/* video hardware */
 	MDRV_VIDEO_ATTRIBUTES(VIDEO_TYPE_RASTER | VIDEO_NEEDS_6BITS_PER_GUN | VIDEO_RGB_DIRECT | VIDEO_HAS_SHADOWS | VIDEO_HAS_HIGHLIGHTS)
 	MDRV_SCREEN_SIZE(64*8, 32*8)
-	MDRV_VISIBLE_AREA(18, 36*8-1+18, 15, 28*8-1+15 )
+	MDRV_VISIBLE_AREA(18, 36*8-1+18, 15, 28*8-1+15 )
 
 	MDRV_PALETTE_LENGTH(8192)
 
@@ -1303,17 +1303,17 @@ static MACHINE_DRIVER_START( konamigx )
 	MDRV_SOUND_ATTRIBUTES(SOUND_SUPPORTS_STEREO)
 	MDRV_SOUND_ADD(K054539, k054539_interface)
 MACHINE_DRIVER_END
-
 
-static MACHINE_DRIVER_START( tbyahhoo )
 
-	MDRV_IMPORT_FROM(konamigx)
+static MACHINE_DRIVER_START( tbyahhoo )
 
-	MDRV_SCREEN_SIZE(64*8, 32*8)
+	MDRV_IMPORT_FROM(konamigx)
 
-	MDRV_VISIBLE_AREA(0+2, 36*8-1+2, 15, 15+224-1 )
+	MDRV_SCREEN_SIZE(64*8, 32*8)
 
-MACHINE_DRIVER_END
+	MDRV_VISIBLE_AREA(0+2, 36*8-1+2, 15, 15+224-1 )
+
+MACHINE_DRIVER_END
 
 
 static MACHINE_DRIVER_START( tokkae )
@@ -1326,14 +1326,14 @@ MACHINE_DRIVER_END
 static MACHINE_DRIVER_START( puzzle )
 	MDRV_IMPORT_FROM(konamigx)
 	MDRV_SCREEN_SIZE(64*8, 32*8)
-	MDRV_VISIBLE_AREA(21, 21+288-1, 15, 15+224-1 )
+	MDRV_VISIBLE_AREA(21, 21+288-1, 15, 15+224-1 )
 
 MACHINE_DRIVER_END
 
 static MACHINE_DRIVER_START( daiskiss )
 	MDRV_IMPORT_FROM(konamigx)
 	MDRV_SCREEN_SIZE(64*8, 32*8)
-	MDRV_VISIBLE_AREA(3, 3+288-1, 16, 16+224-1 )
+	MDRV_VISIBLE_AREA(3, 3+288-1, 16, 16+224-1 )
 
 MACHINE_DRIVER_END
 
@@ -1507,7 +1507,7 @@ INPUT_PORTS_START( konamigx )
 	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( On ) )
 INPUT_PORTS_END
-
+
 
 INPUT_PORTS_START( racinfrc )
 	PORT_START
@@ -1628,7 +1628,7 @@ INPUT_PORTS_START( racinfrc )
 	PORT_ANALOG( 0xff, 0x80, IPT_AD_STICK_X | IPF_CENTER, 35, 5, 0x38, 0xc8 )
 
 	PORT_START
-	PORT_ANALOGX( 0xff, 0x00, IPT_PEDAL, 35, 5, 0, 0x68, KEYCODE_LCONTROL, IP_JOY_DEFAULT, IP_KEY_DEFAULT, IP_JOY_DEFAULT )
+	PORT_ANALOGX( 0xff, 0x00, IPT_PEDAL, 35, 5, 0, 0x68, KEYCODE_LCONTROL, IP_JOY_DEFAULT, IP_KEY_DEFAULT, IP_JOY_DEFAULT )
 
 INPUT_PORTS_END
 
@@ -1697,11 +1697,11 @@ INPUT_PORTS_START( le2 )
 	PORT_DIPNAME( 0x01, 0x01, "Stereo")
 	PORT_DIPSETTING(    0x01, "Stereo")
 	PORT_DIPSETTING(    0x00, "Mono")
-	PORT_DIPNAME( 0x02, 0x02, "Coin Mechanism")
+	PORT_DIPNAME( 0x02, 0x02, "Coin Mechanism")
 
-	PORT_DIPSETTING(    0x02, "Common")
+	PORT_DIPSETTING(    0x02, "Common")
 
-	PORT_DIPSETTING(    0x00, "Independant")
+	PORT_DIPSETTING(    0x00, "Independant")
 
 	PORT_DIPNAME( 0x04, 0x04, "Stage Select" )
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
@@ -2034,7 +2034,7 @@ ROM_END
 #define ROM_LOADTILE_BYTES2(name,offset,length,crc) ROMX_LOAD(name, offset, length, crc, ROM_GROUPWORD | ROM_SKIP(4))
 
 #define ROM_LOAD48_WORD(name,offset,length,crc)	ROMX_LOAD(name, offset, length, crc, ROM_GROUPWORD | ROM_SKIP(4))
-#define ROM_LOAD64_WORD(name,offset,length,crc)	ROMX_LOAD(name, offset, length, crc, ROM_GROUPWORD | ROM_SKIP(6))
+#define ROM_LOAD64_WORD(name,offset,length,crc)	ROMX_LOAD(name, offset, length, crc, ROM_GROUPWORD | ROM_SKIP(6))
 
 
 /* Gokujou Parodius */
@@ -2279,7 +2279,7 @@ ROM_START( tokkae )
 	ROM_LOAD32_WORD( "615a17.25g", 0x000000, 2*1024*1024, 0xb864654b )
 	ROM_LOAD32_WORD( "615a13.28g", 0x000002, 2*1024*1024, 0x4e8afa1a )
 	ROM_LOAD32_WORD( "615a16.18h", 0x400000, 2*1024*1024, 0xdfa0f0fe )
-	ROM_LOAD32_WORD( "615a12.27g", 0x400002, 2*1024*1024, 0xfbc563fd )
+	ROM_LOAD32_WORD( "615a12.27g", 0x400002, 2*1024*1024, 0xfbc563fd )
 
 	ROM_LOAD( "615a11.30g", 0x800000, 2*1024*1024, 0xf25946e4 )
 
