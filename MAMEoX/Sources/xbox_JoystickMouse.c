@@ -494,16 +494,54 @@ void osd_customize_inputport_defaults( struct ipd *defaults )
 
 			// *** IPT_UI_CANCEL *** //
 		case IPT_UI_CANCEL:
-				// Remap cancel to gamepad0 start+select
-      REMAP_SEQ_2( JOYCODE_1_START, JOYCODE_1_SELECT );
+				// Remap cancel to gamepad0 back + start
+      REMAP_SEQ_2( JOYCODE_1_SELECT, JOYCODE_1_START );
 			break;
 
 			// *** IPT_UI_TOGGLE_CROSSHAIR *** //
     case IPT_UI_TOGGLE_CROSSHAIR:
-        // Don't do this if we're loading state
-      REMAP_SEQ_5(  BUTTONCODE( 0, BUTTON_LA ), 
+      REMAP_SEQ_2( JOYCODE_1_SELECT, BUTTONCODE( 0, BUTTON_LA ) );
+      break;
+
+			// *** IPT_UI_CONFIGURE *** //
+    case IPT_UI_CONFIGURE:
+      REMAP_SEQ_2( JOYCODE_1_SELECT, BUTTONCODE( 0, BUTTON_WHITE ) );
+      break;
+
+			// *** IPT_UI_PAUSE *** //
+    case IPT_UI_PAUSE:
+      REMAP_SEQ_2( JOYCODE_1_SELECT, BUTTONCODE( 0, BUTTON_BLACK ) );
+      break;
+
+			// *** IPT_UI_ON_SCREEN_DISPLAY *** //
+    case IPT_UI_ON_SCREEN_DISPLAY:
+        // Make sure we don't do this while loading or saving state
+      REMAP_SEQ_6(  JOYCODE_1_SELECT, 
+                    BUTTONCODE( 0, BUTTON_RA ), 
                     CODE_NOT, JOYCODE_1_BUTTON5,
                     CODE_NOT, JOYCODE_1_BUTTON6 ); 
+      break;
+
+			// *** IPT_UI_RESET_MACHINE *** //
+    case IPT_UI_RESET_MACHINE:
+      REMAP_SEQ_5(  JOYCODE_1_SELECT, 
+                    JOYCODE_1_BUTTON5, 
+                    JOYCODE_1_BUTTON6, 
+                    CODE_NOT, BUTTONCODE( 0, BUTTON_RA ) );
+      break;
+
+			// *** IPT_UI_SAVE_STATE *** //
+    case IPT_UI_SAVE_STATE:
+      REMAP_SEQ_3(  JOYCODE_1_SELECT, 
+                    BUTTONCODE( 0, BUTTON_RA ), 
+                    JOYCODE_1_BUTTON6 );
+      break;
+
+			// *** IPT_UI_LOAD_STATE *** //
+    case IPT_UI_LOAD_STATE:
+      REMAP_SEQ_3(  JOYCODE_1_SELECT, 
+                    BUTTONCODE( 0, BUTTON_RA ), 
+                    JOYCODE_1_BUTTON5 );
       break;
 
 			// *** IPT_UI_UP *** //
@@ -526,38 +564,6 @@ void osd_customize_inputport_defaults( struct ipd *defaults )
       REMAP_SEQ_3( JOYCODE_1_RIGHT, CODE_OR, AXISCODE( 0, JT_LSTICK_RIGHT ) );
       break;
 
-			// *** IPT_UI_CONFIGURE *** //
-    case IPT_UI_CONFIGURE:
-      REMAP_SEQ_1( BUTTONCODE( 0, BUTTON_WHITE ) );
-      break;
-
-			// *** IPT_UI_PAUSE *** //
-    case IPT_UI_PAUSE:
-      REMAP_SEQ_1( BUTTONCODE( 0, BUTTON_BLACK ) );
-      break;
-
-			// *** IPT_UI_ON_SCREEN_DISPLAY *** //
-    case IPT_UI_ON_SCREEN_DISPLAY:
-      // Don't do this if we're really saving state
-      REMAP_SEQ_5(  BUTTONCODE( 0, BUTTON_RA ), 
-                    CODE_NOT, JOYCODE_1_BUTTON5,
-                    CODE_NOT, JOYCODE_1_BUTTON6 ); 
-      break;
-
-			// *** IPT_UI_RESET_MACHINE *** //
-    case IPT_UI_RESET_MACHINE:
-      REMAP_SEQ_3( JOYCODE_1_SELECT, JOYCODE_1_BUTTON5, JOYCODE_1_BUTTON6 );
-      break;
-
-			// *** IPT_UI_SAVE_STATE *** //
-    case IPT_UI_SAVE_STATE:
-      REMAP_SEQ_3( BUTTONCODE( 0, BUTTON_RA ), JOYCODE_1_BUTTON5, JOYCODE_1_BUTTON6 );
-      break;
-
-			// *** IPT_UI_LOAD_STATE *** //
-    case IPT_UI_LOAD_STATE:
-      REMAP_SEQ_3( BUTTONCODE( 0, BUTTON_LA ), JOYCODE_1_BUTTON5, JOYCODE_1_BUTTON6 );
-      break;
 
 
       //-- PLAYER 1 CONTROLS ----------------------------------------------------------------------------

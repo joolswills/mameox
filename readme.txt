@@ -144,22 +144,34 @@ Usage:
         of the screen, a letter (or #) will appear. Using the DPAD up and 
 	down buttons, you can change the letter, skipping to the section of
 	the list starting with that letter.
+    Black - Search for ROM files, culling out clones
+    White - Search for ROM files, keeping clones
+
+    Left Analog Stick - Used to set the screen usage percentage for MAME rendering.
+			Moving the stick will resize the green background (which is
+			where the game screen will be rendered). This should be 
+			sized such that a very small black border is revealed all
+			around the green. Failure to do this will cause clipping
+			(where the parts of the screen are not visibile) or suboptimal
+			usage (where there is a big black border around the game screen)
 
 
   MAME input mappings:
-    As of version 0.4, there is no INI file to reconfigure the keypad mappings.
+    As of version 0.5, there is no INI file to reconfigure the keypad mappings.
     Reconfiguration can be done via editing the osd_customize_inputport_defaults
     function in xbox_JoystickMouse.c.
 
 
-    "Cancel" :		  Joypad 1, START and BACK
-    "Toggle Crosshair" :  Joypad 1, Left Analog button
-    "UI Configure" :	  Joypad 1, White button
-    "Pause" :		  Joypad 1, Black button
-    "On screen display" : Joypad 1, Right Analog Button
+	All UI config utilizes the "back" (coin 1) button, as this is (hopefully)
+	the least disruptive during normal play.
+    "Cancel" :		  Joypad 1, BACK and START
+    "Toggle Crosshair" :  Joypad 1, BACK and Left Analog button
+    "UI Configure" :	  Joypad 1, BACK and White button
+    "Pause" :		  Joypad 1, BACK and Black button
+    "On screen display" : Joypad 1, BACK and Right Analog Button
     "Reset ROM" :	  Joypad 1, BACK, Left Trigger, and Right Trigger
-    "Save State" :        Joypad 1, Right Analog button, Left, and Right triggers
-    "Load State" :        Joypad 1, Left Analog button, Left, and Right triggers
+    "Load State" :        Joypad 1, BACK, Right Analog button, and Left trigger
+    "Save State" :        Joypad 1, BACK, Right Analog button, and Right trigger
 
 		Player Controls
     Button 1   - A
