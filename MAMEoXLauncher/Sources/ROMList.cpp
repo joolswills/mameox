@@ -32,8 +32,8 @@ extern "C" {
 #define HIGHLIGHTBAR_COLOR    D3DCOLOR_ARGB( 180, 175, 179, 212 )
 #define SCROLLICON_COLOR      D3DCOLOR_XRGB( 255, 255, 255 )
 
-#define TITLEBAR_ROW          116
-#define FIRSTDATA_ROW         142
+#define TITLEBAR_ROW          114
+#define FIRSTDATA_ROW         140
 
 #define HIGHLIGHTBAR_LEFT     34
 #define HIGHLIGHTBAR_RIGHT    607
@@ -73,7 +73,7 @@ extern "C" {
 	// Analog trigger deadzone
 #define DEADZONE								0.25f
 #define DEADZONE_RECTIFIER			1.0f / (1.0f - DEADZONE)
-#define CURSOR_SPEED            0.3f                // The cursor velocity modifier
+#define CURSOR_SPEED            0.8f                // The cursor velocity modifier
 
 	// Number of seconds between valid DPAD readings
 #define DPADCURSORMOVE_TIMEOUT	0.20f
@@ -190,7 +190,10 @@ BOOL CROMList::GenerateROMList( void )
   // Check the zip files against the list of all known zip files
 	for(DWORD i = 0; i < m_numDrivers; ++i )
 	{
-    DrawZipCheckProgress( i );
+      // Only redraw every 16th ROM, as rendering takes up
+      // the vast majority of the overall time
+    if( !(i & 0x0F) )
+      DrawZipCheckProgress( i );
     CStdString driverFileName = m_driverInfoList[i].m_romFileName;
     driverFileName.ToLower();
 

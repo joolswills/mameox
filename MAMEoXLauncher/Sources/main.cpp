@@ -113,7 +113,7 @@ void __cdecl main( void )
 	DebugLoggerInit();
 
 		// Initialize the graphics subsystem
-	g_graphicsManager.Create();
+	g_graphicsManager.Create( TRUE );
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
 
     // Create the fonts or die
@@ -1135,7 +1135,7 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 
   #define TEXTFADE_MINIMUM            0.0f
   #define TEXTFADE_MAXIMUM            110.0f
-  #define TEXTFADE_FRAMES_PER_STEP    10.0f
+  #define TEXTFADE_FRAMES_PER_STEP    0.35f
   FLOAT textFadeColor = TEXTFADE_MINIMUM;
   FLOAT fadeDirection = 1.0f;
 
@@ -1144,7 +1144,7 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
                         
 
     //-- Set up the credits ------------------------------------------
-  #define CREDITS_FRAMES_PER_STEP     10.0f;
+  #define CREDITS_FRAMES_PER_STEP     0.5f;
   const WCHAR credits[] = L"       The MAMEoX team:"\
                           L"       Programming - Erik Abair, opcode, luckyMIC, ips" \
                           L"       Testing - falz, enkak, noodle1009" \

@@ -118,6 +118,8 @@ void LoadOptions( void )
     // 1 to enable FIR filter on final mixer output
   options.use_filter = iniFile.GetProfileInt( "Sound", "UseFilter", TRUE );
 
+  g_rendererOptions.m_vsync =               iniFile.GetProfileInt( "Video", "VSYNC", FALSE );       // Enable VSYNC for game rendering
+  g_rendererOptions.m_syncOnlyToVSYNC =     iniFile.GetProfileInt( "Video", "SyncRefresh", FALSE ); // Sync only to vsync
   g_rendererOptions.m_preserveAspectRatio = iniFile.GetProfileInt( "Video", "AspectRatioCorrection", TRUE );  // aspect ratio correction code
   g_rendererOptions.m_screenRotation =      (screenrotation_t)iniFile.GetProfileInt( "Video", "ScreenRotation", SR_0 );
   g_rendererOptions.m_minFilter =           (D3DTEXTUREFILTERTYPE)iniFile.GetProfileInt( "Video", "MinificationFilter", D3DTEXF_LINEAR );
@@ -254,6 +256,10 @@ void SaveOptions( void )
   iniFile.WriteProfileInt( "Sound", "SampleRate", options.samplerate );
   iniFile.WriteProfileInt( "Sound", "UseSamples", options.use_samples );
   iniFile.WriteProfileInt( "Sound", "UseFilter", options.use_filter );
+
+
+  iniFile.WriteProfileInt( "Video", "VSYNC", g_rendererOptions.m_vsync );       // Enable VSYNC for game rendering
+  iniFile.WriteProfileInt( "Video", "SyncRefresh", g_rendererOptions.m_syncOnlyToVSYNC ); // Sync only to vsync
   iniFile.WriteProfileInt( "Video", "AspectRatioCorrection", g_rendererOptions.m_preserveAspectRatio );
   iniFile.WriteProfileInt( "Video", "MinificationFilter", g_rendererOptions.m_minFilter );
   iniFile.WriteProfileInt( "Video", "MagnificationFilter", g_rendererOptions.m_magFilter );

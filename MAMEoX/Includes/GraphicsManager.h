@@ -26,7 +26,7 @@ public:
 		//------------------------------------------------------
 		//	Create
 		//------------------------------------------------------
-	BOOL Create( void ) {
+	BOOL Create( BOOL enableVSYNC ) {
 		if( m_created )
 			return FALSE;
 
@@ -45,7 +45,7 @@ public:
     params.AutoDepthStencilFormat = D3DFMT_D24S8;
     params.SwapEffect							= D3DSWAPEFFECT_FLIP;
     params.FullScreen_RefreshRateInHz = 60;
-    params.FullScreen_PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE; //D3DPRESENT_INTERVAL_ONE_OR_IMMEDIATE;
+    params.FullScreen_PresentationInterval = enableVSYNC ? D3DPRESENT_INTERVAL_ONE_OR_IMMEDIATE : D3DPRESENT_INTERVAL_IMMEDIATE;
 
 
       // Since many games run at 60Hz, it's easier to be at 60Hz for proper sound emulation

@@ -85,7 +85,7 @@ void __cdecl main( void )
   MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
 
 		// Initialize the graphics subsystem
-	g_graphicsManager.Create();
+  g_graphicsManager.Create( g_rendererOptions.m_vsync );
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
 
     // Create the fonts or die

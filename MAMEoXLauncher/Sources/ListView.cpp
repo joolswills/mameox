@@ -34,7 +34,7 @@ extern "C" {
 	// Analog trigger deadzone
 #define DEADZONE								0.25f
 #define DEADZONE_RECTIFIER			1.0f / (1.0f - DEADZONE)
-#define CURSOR_SPEED            0.3f                // The cursor velocity modifier
+#define CURSOR_SPEED            0.8f                // The cursor velocity modifier
 
 	// Number of seconds between valid DPAD readings
 #define DPADCURSORMOVE_TIMEOUT	0.20f

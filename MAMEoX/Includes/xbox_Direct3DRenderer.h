@@ -74,6 +74,12 @@ typedef struct RendererOptions_t
     //! Whether or not to use aspect ratio correction code
   BOOL                  m_preserveAspectRatio;    
 
+    //! Whether or not to sync to vertical retrace
+  BOOL                  m_vsync;
+
+    //! Whether or not we should try to stay at the games desired refresh rate
+  BOOL                  m_syncOnlyToVSYNC;
+
     //! Level of screen rotation
   screenrotation_t      m_screenRotation;
 
@@ -82,10 +88,19 @@ typedef struct RendererOptions_t
 
     //! Maximization filter op
   D3DTEXTUREFILTERTYPE  m_magFilter;
+
 } RendererOptions_t;
 
 //= G L O B A L = V A R S ==============================================
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern RendererOptions_t    g_rendererOptions;
+
+#ifdef __cplusplus
+}
+#endif
 
 //= P R O T O T Y P E S ================================================
 #ifdef __cplusplus

@@ -261,7 +261,11 @@ void osd_update_video_and_audio(struct mame_display *display)
 
 
       // Wait out the remaining time for this frame
-    if( lastFrameEndTime && !g_frameskip && performance->game_speed_percent >= 99.5f && g_desiredFPS != 0.0f )
+    if( lastFrameEndTime && 
+        !g_frameskip && 
+        performance->game_speed_percent >= 99.5f && 
+        g_desiredFPS != 0.0f && 
+        !g_rendererOptions.m_syncOnlyToVSYNC )
     {
       cycles_t targetFrameCycles = (cycles_t)(((double)osd_cycles_per_second()) / g_desiredFPS);
       cycles_t actualFrameCycles = osd_cycles() - lastFrameEndTime;

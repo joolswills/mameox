@@ -236,7 +236,7 @@ COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice,
   wcscpy( m_pageData[OPTPAGE_VIDEO].m_title, L"Video Options" );
   m_pageData[OPTPAGE_VIDEO].m_drawFunct = ::DrawVideoPage;
   m_pageData[OPTPAGE_VIDEO].m_changeFunct = ::ChangeVideoPage;
-  m_pageData[OPTPAGE_VIDEO].m_numItems = 8;
+  m_pageData[OPTPAGE_VIDEO].m_numItems = 10;
 
   wcscpy( m_pageData[OPTPAGE_VECTOR].m_title, L"Vector Options" );
   m_pageData[OPTPAGE_VECTOR].m_drawFunct = ::DrawVectorPage;
@@ -693,7 +693,9 @@ void COptionsPage::DrawSoundPage( void )
 void COptionsPage::DrawVideoPage( void )
 {
 /*
-	options.brightness = iniFile.GetProfileFloat( "Video", "Brightness", 1.0f );		    // brightness of the display
+  g_rendererOptions.m_vsync = iniFile.GetProfileInt( "Video", "VSYNC", FALSE );       // Enable VSYNC for game rendering
+  g_rendererOptions.m_syncOnlyToVSYNC
+  options.brightness = iniFile.GetProfileFloat( "Video", "Brightness", 1.0f );		    // brightness of the display
   options.pause_bright = iniFile.GetProfileFloat( "Video", "PauseBrightness", 0.65f );     // brightness when in pause
 	options.gamma = iniFile.GetProfileFloat( "Video", "Gamma", 1.0f );			        // gamma correction of the display
 	options.color_depth = iniFile.GetProfileInt( "Video", "ColorDepth", 32 );
@@ -709,6 +711,10 @@ void COptionsPage::DrawVideoPage( void )
                                     L"Gaussian Cubic" };
 
   STARTPAGE();
+
+  DRAWITEM( L"VSYNC", g_rendererOptions.m_vsync ? L"Enabled" : L"Disabled" );
+    
+  DRAWITEM( L"Framerate throttling", g_rendererOptions.m_syncOnlyToVSYNC ? L"Disabled" : L"Enabled" );
 
   DRAWITEM( L"Aspect ratio correction", g_rendererOptions.m_preserveAspectRatio ? L"Enabled" : L"Disabled" );
 
@@ -1006,13 +1012,24 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
 {
   switch( (DWORD)m_cursorPosition )
   {
-     // Preserve aspect ratio
+
+      // VSYNC
   case 0:
+    g_rendererOptions.m_vsync = !g_rendererOptions.m_vsync;
+    break;
+
+     // Framerate throttling
+  case 1:
+    g_rendererOptions.m_syncOnlyToVSYNC = !g_rendererOptions.m_syncOnlyToVSYNC;
+    break;
+
+     // Preserve aspect ratio
+  case 2:
     g_rendererOptions.m_preserveAspectRatio = !g_rendererOptions.m_preserveAspectRatio;
     break;
 
     // Screen rotation
-  case 1:
+  case 3:
     if( !direction )
     {
       if( g_rendererOptions.m_screenRotation > SR_0 )
@@ -1030,7 +1047,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
     break;
 
     // Brightness
-  case 2:
+  case 4:
     {
       if( !direction )
         options.brightness -= 0.01f;
@@ -1045,7 +1062,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
     break;
 
     // Paused brightness
-  case 3:
+  case 5:
     {
       if( !direction )
         options.pause_bright -= 0.01f;
@@ -1060,7 +1077,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
     break;
 
     // Gamma
-  case 4:
+  case 6:
     {
       if( !direction )
         options.gamma -= 0.01f;
@@ -1086,7 +1103,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
 */
 
     // Minification filter
-  case 5:
+  case 7:
     if( !direction )
     {
       if( g_rendererOptions.m_minFilter > D3DTEXF_POINT )
@@ -1104,7 +1121,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
     break;
 
     // Magnification filter
-  case 6:
+  case 8:
     if( !direction )
     {
       if( g_rendererOptions.m_magFilter > D3DTEXF_POINT )
@@ -1122,7 +1139,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
     break;
 
     // Artwork usage
-  case 7:
+  case 9:
     {
       DWORD artworkState[8] = { 0, 
                                 ARTWORK_USE_BACKDROPS, 

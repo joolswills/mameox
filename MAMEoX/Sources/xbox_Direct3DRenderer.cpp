@@ -56,14 +56,14 @@ static LPDIRECT3DVERTEXBUFFER8    g_pD3DVertexBuffer = NULL;
   // This rect is converted to TU/TV values in CreateRenderingQuad()
 static RECT                       g_textureRenderingArea = {0,0,0,0};
 
-  //! Generic D3D Renderer options
-RendererOptions_t                 g_rendererOptions;
-
 		//! The locked region for us to render to
 static D3DLOCKED_RECT             g_d3dLockedRect;
 
 
 extern "C" {
+  //! Generic D3D Renderer options
+RendererOptions_t                 g_rendererOptions;
+
 extern UINT32	g_pal32Lookup[65536];
 }
 
