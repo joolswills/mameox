@@ -1,0 +1,24 @@
+Split XBE debugging HOWTO:
+
+
+1) Add a CHECKRAM() call (make sure it's all caps)
+   to the top of MAMEoXLauncher (main.cpp) and/or MAMEoX
+   (xbox_Main.cpp).
+ 
+2) Start up the XBE that you want to debug (play a ROM
+   to debug MAMEoX, quit a ROM to debug MAMEoXLauncher).
+   It will immediately print out the available memory 
+   on the screen and wait for gamepad input. Don't press 
+   anything yet.
+ 
+3) Set breakpoint for just after the CHECKRAM() call so
+   the debugger will stop immediately after being attached.
+
+4) Set the startup project to the project you wish to debug.
+   Press the RUN button (or F5) and choose to Attach to
+   the running XBE.
+ 
+5) Press a button on the gamepad (note that it may take
+   a few seconds while the debugger is loading up) 
+   and debug away.
+ 
