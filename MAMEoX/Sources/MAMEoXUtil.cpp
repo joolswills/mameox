@@ -731,6 +731,14 @@ void RenderProgressBar( INT32 left,
   }
 }
 
+//-------------------------------------------------------------
+//  PresentFrame
+//-------------------------------------------------------------
+void PresentFrame( void )
+{
+  g_graphicsManager.GetD3DDevice()->Present( NULL, NULL, NULL, NULL );
+}
+
 
 #ifdef _DEBUG
 //-------------------------------------------------------------

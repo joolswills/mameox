@@ -136,7 +136,7 @@ int osd_display_loading_rom_message( const char *name, struct rom_load_data *rom
   swprintf( memory, L"Available: %lu / Total: %lu", memStatus.dwAvailPhys, memStatus.dwTotalPhys );
 
 	BeginFontRender( TRUE, FONTTYPE_DEFAULT );
-	  FontRender( 70, 220, D3DCOLOR_XRGB( 230, 230, 230 ), title, 0 );
+	  FontRender( 70, 195, D3DCOLOR_XRGB( 230, 230, 230 ), title, 0 );
     FontRender( 320, 140, D3DCOLOR_XRGB( 60, 105, 225 ), L"MAMEoX version " LVERSION_STRING, 2 );
     FontRender( 320, 340, D3DCOLOR_XRGB( 60, 105, 225 ), L"Memory Status", 2 );
     FontRender( 320, 360, D3DCOLOR_XRGB( 60, 105, 225 ), memory, 2 );
@@ -146,7 +146,7 @@ int osd_display_loading_rom_message( const char *name, struct rom_load_data *rom
   #define PROGRESSBAR_CAP_COLOR     D3DCOLOR_XRGB( 101, 197, 247 )
   #define PROGRESSBAR_BAR_COLOR     D3DCOLOR_XRGB( 16, 80, 124 )
 
-  #define PROGRESSBAR_WIDTH         410
+  #define PROGRESSBAR_WIDTH         500
   #define PROGRESSBAR_HEIGHT        20
 
   if( name )
@@ -167,6 +167,8 @@ int osd_display_loading_rom_message( const char *name, struct rom_load_data *rom
                         100, 
                         PROGRESSBAR_BAR_COLOR, 
                         PROGRESSBAR_CAP_COLOR );
+
+  PresentFrame();
 
 	return 0;
 }

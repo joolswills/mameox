@@ -396,6 +396,12 @@ void RenderProgressBar( INT32 left,
                         D3DCOLOR borderColor );
 
 	//-------------------------------------------------------------------
+	//	PresentFrame
+	//! \brief		Present the backbuffer to the user
+	//-------------------------------------------------------------------
+void PresentFrame( void );
+
+	//-------------------------------------------------------------------
 	//	WaitForAnyButton
 	//! \brief		Block until any button is pressed on any gamepad
 	//-------------------------------------------------------------------
