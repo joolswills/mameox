@@ -202,7 +202,7 @@ BOOL CROMListScreen::LoadROMList( BOOL bGenerate, BOOL allowClones )
 													1.0f,															// Z
 													0L );															// Stencil
 	m_fontSet.DefaultFont().Begin();
-	  m_fontSet.DefaultFont().DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Loading ROM list", XBFONT_CENTER_X );
+	  m_fontSet.DefaultFont().DrawText( 320, 230, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Loading ROM list", XBFONT_CENTER_X );
   m_fontSet.DefaultFont().End();
 
 	m_displayDevice->Present( NULL, NULL, NULL, NULL );	

@@ -95,11 +95,11 @@ BOOL CHelpScreen::LoadHelpFile( void )
 														0L );				                      // Stencil
 
 		m_fontSet.FixedWidthFont().Begin();
-		  m_fontSet.FixedWidthFont().DrawText( 320, 
-                                        60, 
-                                        D3DCOLOR_RGBA( 255, 255, 255, 255 ), 
-                                        L"Loading Help file", 
-                                        XBFONT_CENTER_X );
+		  m_fontSet.FixedWidthFont().DrawText(	320, 
+																						230, 
+																						D3DCOLOR_RGBA( 255, 255, 255, 255 ), 
+																						L"Loading Help file", 
+																						XBFONT_CENTER_X );
 		  m_fontSet.FixedWidthFont().End();
 		m_displayDevice->Present( NULL, NULL, NULL, NULL );	
 

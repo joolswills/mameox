@@ -1091,8 +1091,8 @@ void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 	  WCHAR wBuf[1024];
 	  mbstowcs( wBuf, buf, strlen(buf) + 1 );
 
-	  g_fontSet.DefaultFont().DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
-	  g_fontSet.DefaultFont().DrawText( 320, 320, D3DCOLOR_RGBA( 255, 125, 125, 255), L"Press any button to reboot.", XBFONT_CENTER_X );
+		g_fontSet.DefaultFont().DrawText( 320, 50, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+		g_fontSet.DefaultFont().DrawText( 320, 408, D3DCOLOR_RGBA( 255, 255, 255, 255), L"Press any button to reboot.", XBFONT_CENTER_X );
 
 	g_fontSet.DefaultFont().End();
 	pD3DDevice->Present( NULL, NULL, NULL, NULL );
@@ -1107,8 +1107,8 @@ void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 
   g_fontSet.DefaultFont().Begin();
     swprintf( wBuf, L"Failed to launch the dashboard! 0x%X", retVal );
-	  g_fontSet.DefaultFont().DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
-	  g_fontSet.DefaultFont().DrawText( 320, 320, D3DCOLOR_RGBA( 255, 125, 125, 255), L"You need to power off manually!", XBFONT_CENTER_X );
+		g_fontSet.DefaultFont().DrawText( 320, 50, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+		g_fontSet.DefaultFont().DrawText( 320, 408, D3DCOLOR_RGBA( 255, 255, 255, 255), L"You need to power off manually!", XBFONT_CENTER_X );
 	g_fontSet.DefaultFont().End();
 	pD3DDevice->Present( NULL, NULL, NULL, NULL );
 }
@@ -1392,13 +1392,13 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
     g_fontSet.DefaultFont().End();
 
     g_fontSet.LargeThinFont().Begin();
-      g_fontSet.LargeThinFont().DrawText( 130, 240, NORMAL_TEXT_COLOR, L"MAME is distributed under the MAME license." ); 
-      g_fontSet.LargeThinFont().DrawText( 130, 260, IMPORTANT_TEXT_COLOR, L"See www.mame.net/readme.html or" );
-      g_fontSet.LargeThinFont().DrawText( 140, 280, IMPORTANT_TEXT_COLOR, L"MAME/docs/mame.txt for details" );
-        
-      g_fontSet.LargeThinFont().DrawText( 130, 316, NORMAL_TEXT_COLOR, L"Portions of MAMEoX based on:" );
-      g_fontSet.LargeThinFont().DrawText( 130, 334, IMPORTANT_TEXT_COLOR, L"\"MAMEX(b5): updated by superfro," );
-      g_fontSet.LargeThinFont().DrawText( 140, 354, IMPORTANT_TEXT_COLOR, L"original port by opcode\"" );
+			g_fontSet.LargeThinFont().DrawText( 320, 245, NORMAL_TEXT_COLOR, L"MAME is distributed under the MAME license.", XBFONT_CENTER_X ); 
+			g_fontSet.LargeThinFont().DrawText( 320, 265, IMPORTANT_TEXT_COLOR, L"See www.mame.net/readme.html or", XBFONT_CENTER_X );
+			g_fontSet.LargeThinFont().DrawText( 320, 285, IMPORTANT_TEXT_COLOR, L"MAME/docs/mame.txt for details", XBFONT_CENTER_X );
+	        
+			g_fontSet.LargeThinFont().DrawText( 320, 315, NORMAL_TEXT_COLOR, L"Portions of MAMEoX based on:", XBFONT_CENTER_X );
+			g_fontSet.LargeThinFont().DrawText( 320, 335, IMPORTANT_TEXT_COLOR, L"\"MAMEX(b5): updated by superfro,", XBFONT_CENTER_X );
+			g_fontSet.LargeThinFont().DrawText( 320, 355, IMPORTANT_TEXT_COLOR, L"original port by opcode\"", XBFONT_CENTER_X );
     g_fontSet.LargeThinFont().End();
 
 
@@ -1584,7 +1584,7 @@ void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 	RenderMessageBackdrop( pD3DDevice );
 
   g_fontSet.DefaultFont().Begin();
-  g_fontSet.DefaultFont().DrawText( 320, 240, D3DCOLOR_XRGB( 0, 0, 0 ),   L"Loading. Please wait...", XBFONT_CENTER_X );
+		g_fontSet.DefaultFont().DrawText( 320, 230, D3DCOLOR_XRGB( 0, 0, 0 ),   L"Loading. Please wait...", XBFONT_CENTER_X );
   g_fontSet.DefaultFont().End();
 
 
@@ -1619,15 +1619,16 @@ void DrawProgressbarMessage( LPDIRECT3DDEVICE8 pD3DDevice, const char *message, 
     if( itemName )
     {
 	    mbstowcs( wBuf, itemName, 256 );
-	    g_fontSet.DefaultFont().DrawText( 320, 260, D3DCOLOR_XRGB( 60, 100, 255 ), wBuf, XBFONT_CENTER_X );
+	    g_fontSet.DefaultFont().DrawText( 320, 258, D3DCOLOR_XRGB( 0, 0, 0 ), wBuf, XBFONT_CENTER_X );
     }
 	g_fontSet.DefaultFont().End();
 
 
   if( currentItem != 0xFFFFFFFF )
   {
-    #define PROGRESSBAR_CAP_COLOR     D3DCOLOR_XRGB( 101, 197, 247 )
-    #define PROGRESSBAR_BAR_COLOR     D3DCOLOR_XRGB( 16, 80, 124 )
+    #define PROGRESSBAR_CAP_COLOR     D3DCOLOR_XRGB( 255, 255, 255 )
+    #define PROGRESSBAR_BAR_COLOR     D3DCOLOR_XRGB( 110, 120, 200 )
+    #define PROGRESSBAR_BCK_COLOR     D3DCOLOR_RGBA( 190, 190, 190, 100 )
 
     #define PROGRESSBAR_WIDTH         410
     #define PROGRESSBAR_HEIGHT        20
@@ -1639,7 +1640,8 @@ void DrawProgressbarMessage( LPDIRECT3DDEVICE8 pD3DDevice, const char *message, 
                        currentItem, 
                        (!totalItems ? BUBBLEBAR : totalItems), 
                        PROGRESSBAR_BAR_COLOR, 
-                       PROGRESSBAR_CAP_COLOR );
+                       PROGRESSBAR_CAP_COLOR, 
+											 PROGRESSBAR_BCK_COLOR );
   }
 
 	pD3DDevice->Present( NULL, NULL, NULL, NULL );
@@ -1678,10 +1680,10 @@ int fatalerror( const char *fmt, ... )
 
 	  g_fontSet.DefaultFont().Begin();
   	
-      g_fontSet.DefaultFont().DrawText( 320, 60, D3DCOLOR_RGBA( 255, 200, 200, 255 ), L"Fatal Error:", XBFONT_CENTER_X );
-	    g_fontSet.DefaultFont().DrawText( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255 ), wBuf, XBFONT_CENTER_X );
-	    g_fontSet.DefaultFont().DrawText( 320, 320, D3DCOLOR_RGBA( 70, 235, 125, 255), L"Press any button to continue.", XBFONT_CENTER_X );
-	  g_fontSet.DefaultFont().End();
+      g_fontSet.DefaultFont().DrawText( 320, 50, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Fatal Error:", XBFONT_CENTER_X );
+			g_fontSet.DefaultFont().DrawText( 320, 75, D3DCOLOR_RGBA( 255, 255, 255, 255 ), wBuf, XBFONT_CENTER_X );
+			g_fontSet.DefaultFont().DrawText( 320, 408, D3DCOLOR_RGBA( 255, 255, 255, 255), L"Press any button to continue.", XBFONT_CENTER_X );
+		g_fontSet.DefaultFont().End();
 
 	  pD3DDevice->Present( NULL, NULL, NULL, NULL );
   }

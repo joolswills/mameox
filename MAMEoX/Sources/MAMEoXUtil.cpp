@@ -679,14 +679,20 @@ void RenderProgressBar( INT32 left,
                         UINT32 curValue, 
                         UINT32 maxValue, 
                         D3DCOLOR barColor, 
-                        D3DCOLOR borderColor )
+                        D3DCOLOR borderColor,
+												D3DCOLOR backgroundColor )
 {
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
 
-  pD3DDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     FALSE );
-  pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    FALSE );
-  pD3DDevice->SetTexture( 0, NULL );
+  pD3DDevice->SetRenderState( D3DRS_ALPHATESTENABLE,  FALSE );
+	pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
+  pD3DDevice->SetRenderState( D3DRS_SRCBLEND,					D3DBLEND_SRCALPHA );
+  pD3DDevice->SetRenderState( D3DRS_DESTBLEND,				D3DBLEND_INVSRCALPHA );
   pD3DDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
+
+	pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
+	pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
+  pD3DDevice->SetTexture( 0, NULL );
 
   #define PROGRESSBAR_CAP_WIDTH     2
 
@@ -701,6 +707,10 @@ void RenderProgressBar( INT32 left,
           pD3DDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, color ); \
           pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, left, bottom, 1.0f, 1.0f ); \
         pD3DDevice->End();
+
+    // Render background for the bar
+  DRAWQUAD( left, top, right, bottom, backgroundColor );
+
 
     // Draw left "cap"
   DRAWQUAD( left, 

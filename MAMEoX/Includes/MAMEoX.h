@@ -393,6 +393,7 @@ void EndFontRender( BOOL present );
   //!                      draw a bubblebar
   //! \param    barColor - The color of the "bar" or "bubble" itself
   //! \param    borderColor - The color of the capsule for the bar
+	//! \param		backgroundColor - The color of the unfilled portion of the bar
 	//-------------------------------------------------------------------
 void RenderProgressBar( INT32 left, 
                         INT32 top, 
@@ -401,7 +402,8 @@ void RenderProgressBar( INT32 left,
                         UINT32 curValue, 
                         UINT32 maxValue, 
                         D3DCOLOR barColor, 
-                        D3DCOLOR borderColor );
+                        D3DCOLOR borderColor,
+												D3DCOLOR backgroundColor );
 
 	//-------------------------------------------------------------------
 	//	PresentFrame

@@ -323,8 +323,8 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 
 	  g_fontSet.DefaultFont().Begin();    	
 	    mbstowcs( wBuf, buf, strlen(buf) + 1 );
-	    g_fontSet.DefaultFont().DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
-	    g_fontSet.DefaultFont().DrawText( 320, 320, D3DCOLOR_RGBA( 255, 125, 125, 255), L"Press any button to reboot.", XBFONT_CENTER_X );
+	    g_fontSet.DefaultFont().DrawText( 320, 50, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+	    g_fontSet.DefaultFont().DrawText( 320, 408, D3DCOLOR_RGBA( 255, 125, 125, 255), L"Press any button to reboot.", XBFONT_CENTER_X );
 
 	  g_fontSet.DefaultFont().End();
 	  pD3DDevice->Present( NULL, NULL, NULL, NULL );
@@ -353,8 +353,8 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 											  0L );															// Stencil
     g_fontSet.DefaultFont().Begin();
       swprintf( wBuf, L"Failed to launch d:\\default.xbe! 0x%X", retVal );
-	    g_fontSet.DefaultFont().DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
-	    g_fontSet.DefaultFont().DrawText( 320, 320, D3DCOLOR_RGBA( 255, 125, 125, 255), L"Press any button to reboot.", XBFONT_CENTER_X );
+	    g_fontSet.DefaultFont().DrawText( 320, 50, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+	    g_fontSet.DefaultFont().DrawText( 320, 408, D3DCOLOR_RGBA( 255, 125, 125, 255), L"Press any button to reboot.", XBFONT_CENTER_X );
 	  g_fontSet.DefaultFont().End();
 	  pD3DDevice->Present( NULL, NULL, NULL, NULL );
   }
@@ -366,8 +366,8 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 
   g_fontSet.DefaultFont().Begin();
     swprintf( wBuf, L"Failed to launch the dashboard! 0x%X", retVal );
-	  g_fontSet.DefaultFont().DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
-	  g_fontSet.DefaultFont().DrawText( 320, 320, D3DCOLOR_RGBA( 255, 125, 125, 255), L"You need to power off manually!", XBFONT_CENTER_X );
+  g_fontSet.DefaultFont().DrawText( 320, 50, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+  g_fontSet.DefaultFont().DrawText( 320, 408, D3DCOLOR_RGBA( 255, 255, 255, 255), L"You need to power off manually!", XBFONT_CENTER_X );
 	g_fontSet.DefaultFont().End();
 	pD3DDevice->Present( NULL, NULL, NULL, NULL );
 }
@@ -588,19 +588,20 @@ static void DrawDriverProgressData( const char *fileName, DWORD index, DWORD tot
 
 	g_fontSet.DefaultFont().Begin();
 	
-    g_fontSet.DefaultFont().DrawText( 320, 140, D3DCOLOR_XRGB( 255, 255, 255 ), L"A new version of MAME has been", XBFONT_CENTER_X );
-    g_fontSet.DefaultFont().DrawText( 320, 160, D3DCOLOR_XRGB( 255, 255, 255 ), L"detected.", XBFONT_CENTER_X );
-  	g_fontSet.DefaultFont().DrawText( 320, 195, D3DCOLOR_XRGB( 255, 255, 255 ), L"Dumping driver data", XBFONT_CENTER_X );
+    g_fontSet.DefaultFont().DrawText( 320, 125, D3DCOLOR_XRGB( 255, 255, 255 ), L"A new version of MAME has been", XBFONT_CENTER_X );
+    g_fontSet.DefaultFont().DrawText( 320, 150, D3DCOLOR_XRGB( 255, 255, 255 ), L"detected.", XBFONT_CENTER_X );
+  	g_fontSet.DefaultFont().DrawText( 320, 200, D3DCOLOR_XRGB( 255, 255, 255 ), L"Dumping driver data", XBFONT_CENTER_X );
 
 		  // Draw the current filename
 	  WCHAR wBuf[256];
 	  mbstowcs( wBuf, fileName, 256 );
-	  g_fontSet.DefaultFont().DrawText( 320, 260, D3DCOLOR_XRGB( 60, 100, 255 ), wBuf, XBFONT_CENTER_X );
+	g_fontSet.DefaultFont().DrawText( 320, 258, D3DCOLOR_XRGB( 0, 0, 0 ), wBuf, XBFONT_CENTER_X );
 
 	g_fontSet.DefaultFont().End();
 
-  #define PROGRESSBAR_CAP_COLOR     D3DCOLOR_XRGB( 101, 197, 247 )
-  #define PROGRESSBAR_BAR_COLOR     D3DCOLOR_XRGB( 16, 80, 124 )
+  #define PROGRESSBAR_CAP_COLOR     D3DCOLOR_XRGB( 255, 255, 255 )
+  #define PROGRESSBAR_BAR_COLOR     D3DCOLOR_XRGB( 110, 120, 200 )
+  #define PROGRESSBAR_BCK_COLOR     D3DCOLOR_RGBA( 190, 190, 190, 100 )
 
   #define PROGRESSBAR_WIDTH         410
   #define PROGRESSBAR_HEIGHT        20
@@ -612,7 +613,8 @@ static void DrawDriverProgressData( const char *fileName, DWORD index, DWORD tot
                       index, 
                       total, 
                       PROGRESSBAR_BAR_COLOR, 
-                      PROGRESSBAR_CAP_COLOR );
+											PROGRESSBAR_CAP_COLOR,
+											PROGRESSBAR_BCK_COLOR );
 
 
 	pD3DDevice->Present( NULL, NULL, NULL, NULL );
@@ -727,9 +729,9 @@ int fatalerror( const char *fmt, ... )
 
 	  g_fontSet.DefaultFont().Begin();
   	
-      g_fontSet.DefaultFont().DrawText( 320, 60, D3DCOLOR_RGBA( 255, 200, 200, 255 ), L"Fatal Error:", XBFONT_CENTER_X );
-	    g_fontSet.DefaultFont().DrawText( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255 ), wBuf, XBFONT_CENTER_X );
-	    g_fontSet.DefaultFont().DrawText( 320, 320, D3DCOLOR_RGBA( 70, 235, 125, 255), L"Press any button to continue.", XBFONT_CENTER_X );
+      g_fontSet.DefaultFont().DrawText( 320, 50, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Fatal Error:", XBFONT_CENTER_X );
+	  g_fontSet.DefaultFont().DrawText( 320, 75, D3DCOLOR_RGBA( 255, 255, 255, 255 ), wBuf, XBFONT_CENTER_X );
+	  g_fontSet.DefaultFont().DrawText( 320, 408, D3DCOLOR_RGBA( 255, 255, 255, 255), L"Press any button to continue.", XBFONT_CENTER_X );
 	  g_fontSet.DefaultFont().End();
 
 	  pD3DDevice->Present( NULL, NULL, NULL, NULL );
@@ -766,7 +768,7 @@ void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 											0L );															// Stencil
 
   g_fontSet.DefaultFont().Begin();
-  g_fontSet.DefaultFont().DrawText( 320, 240, D3DCOLOR_RGBA( 255, 255, 255, 255),   L"Loading. Please wait...", XBFONT_CENTER_X );
+  g_fontSet.DefaultFont().DrawText( 320, 230, D3DCOLOR_RGBA( 255, 255, 255, 255),   L"Loading. Please wait...", XBFONT_CENTER_X );
   g_fontSet.DefaultFont().End();
 
   pD3DDevice->Present( NULL, NULL, NULL, NULL );

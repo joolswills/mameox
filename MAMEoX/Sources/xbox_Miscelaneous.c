@@ -213,17 +213,20 @@ int osd_display_loading_rom_message( const char *name, struct rom_load_data *rom
   swprintf( memory, L"Available: %lu / Total: %lu", memStatus.dwAvailPhys, memStatus.dwTotalPhys );
 
 	BeginFontRender( TRUE, FONTTYPE_DEFAULT );
-	  FontRender( 70, 195, D3DCOLOR_XRGB( 230, 230, 230 ), title, 0 );
-    FontRender( 320, 140, D3DCOLOR_XRGB( 60, 105, 225 ), L"MAMEoX version " LVERSION_STRING, 2 );
-    FontRender( 320, 340, D3DCOLOR_XRGB( 60, 105, 225 ), L"Memory Status", 2 );
-    FontRender( 320, 360, D3DCOLOR_XRGB( 60, 105, 225 ), memory, 2 );
+		#ifdef _DEBUG
+			FontRender( 320, 50, D3DCOLOR_XRGB( 255, 255, 255 ), L"MAMEoX version " LVERSION_STRING, 2 );
+		#endif
+		FontRender( 320, 200, D3DCOLOR_XRGB( 255, 255, 255 ), title, 2 );
+    FontRender( 320, 383, D3DCOLOR_XRGB( 255, 255, 255 ), L"Memory Status", 2 );
+    FontRender( 320, 408, D3DCOLOR_XRGB( 255, 255, 255 ), memory, 2 );
   EndFontRender( FALSE );
 
 
-  #define PROGRESSBAR_CAP_COLOR     D3DCOLOR_XRGB( 101, 197, 247 )
-  #define PROGRESSBAR_BAR_COLOR     D3DCOLOR_XRGB( 16, 80, 124 )
+  #define PROGRESSBAR_CAP_COLOR     D3DCOLOR_XRGB( 255, 255, 255 )
+  #define PROGRESSBAR_BAR_COLOR     D3DCOLOR_XRGB( 110, 120, 200 )
+  #define PROGRESSBAR_BCK_COLOR     D3DCOLOR_XRGB( 0, 0, 0 )
 
-  #define PROGRESSBAR_WIDTH         500
+  #define PROGRESSBAR_WIDTH         410
   #define PROGRESSBAR_HEIGHT        20
 
   if( name )
@@ -234,7 +237,8 @@ int osd_display_loading_rom_message( const char *name, struct rom_load_data *rom
                         romdata->romsloaded, 
                         romdata->romstotal, 
                         PROGRESSBAR_BAR_COLOR, 
-                        PROGRESSBAR_CAP_COLOR );
+                       PROGRESSBAR_CAP_COLOR, 
+                       PROGRESSBAR_BCK_COLOR );
   else
     RenderProgressBar( 320 - (PROGRESSBAR_WIDTH>>1),
                         240 - (PROGRESSBAR_HEIGHT >> 1), 
@@ -243,7 +247,8 @@ int osd_display_loading_rom_message( const char *name, struct rom_load_data *rom
                         100, 
                         100, 
                         PROGRESSBAR_BAR_COLOR, 
-                        PROGRESSBAR_CAP_COLOR );
+                       PROGRESSBAR_CAP_COLOR, 
+                       PROGRESSBAR_BCK_COLOR );
 
   PresentFrame();
 
@@ -291,9 +296,9 @@ void osd_print_error( const char *fmt, ... )
 
     // Display the error to the user
 	BeginFontRender( TRUE, FONTTYPE_DEFAULT );
-    FontRender( 320, 60, D3DCOLOR_RGBA( 255, 200, 200, 255 ), L"Error:", 2 /*XBFONT_CENTER_X*/ );
-	  FontRender( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255 ), wBuf, 2 /*XBFONT_CENTER_X*/ );
-	  FontRender( 320, 320, D3DCOLOR_RGBA( 70, 235, 125, 255), L"Press any button to continue.", 2 /*XBFONT_CENTER_X*/ );
+    FontRender( 320, 50, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Error:", 2 /*XBFONT_CENTER_X*/ );
+	FontRender( 320, 75, D3DCOLOR_RGBA( 255, 255, 255, 255 ), wBuf, 2 /*XBFONT_CENTER_X*/ );
+	FontRender( 320, 408, D3DCOLOR_RGBA( 255, 255, 255, 255), L"Press any button to continue.", 2 /*XBFONT_CENTER_X*/ );
 	EndFontRender( TRUE );
 
   WaitForNoButton();     // Ensure that the user sees the message
