@@ -75,7 +75,9 @@ X) This step is currently unnecessary, as the source distribution includes the
     - Media
       > Font.xpr : This should be taken from the SDK. The project currently
                    has no fonts (or graphics in general, see "Contributions")
-      > All of the resource files from the MAMEoX\Media directory
+      > All of the resource files from the MAMEoX\Media directory in the source
+        package, including help.txt and Resource.xpr (created during the build
+	process)
     - roms : This is where you should put all of your ROM files/directories.
              NOTE: There is currently a speed hack that _requires_ all ROMs
 	           to be zipped! Unzipped files will not be read at all!
