@@ -6,8 +6,8 @@
 
 //= I N C L U D E S ====================================================
 #include "ROMList.h"
-#include "XBFont.h"
 #include "DebugLogger.h"
+#include "XBFont.h"
 
 #include "xbox_FileIO.h"		// for path info
 
@@ -295,10 +295,7 @@ void CROMList::MoveCursor( const XINPUT_GAMEPAD	&gp )
 //---------------------------------------------------------------------
 void CROMList::SuperScrollModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapsedTime )
 {
-
-
-		// DPAD overrides the triggers
-  if( (gp.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) && m_dpadCursorDelay == 0.0f )
+  if( ((gp.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) || gp.sThumbLY < (-32767.0f * DEADZONE)) && m_dpadCursorDelay == 0.0f )
 	{
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
     UINT32 startPos = m_superscrollCharacterIdx;
@@ -312,7 +309,7 @@ void CROMList::SuperScrollModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapse
         return;
     }
 	}
-  else if( (gp.wButtons & XINPUT_GAMEPAD_DPAD_UP) && m_dpadCursorDelay == 0.0f )
+  else if( ((gp.wButtons & XINPUT_GAMEPAD_DPAD_UP) || gp.sThumbLY > (32767.0f * DEADZONE)) && m_dpadCursorDelay == 0.0f )
 	{
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
     UINT32 startPos = m_superscrollCharacterIdx;
@@ -377,7 +374,7 @@ void CROMList::NormalModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapsedTime
 	}
 
 		// DPAD overrides the triggers
-  if( (gp.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) && m_dpadCursorDelay == 0.0f )
+  if( ((gp.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) || gp.sThumbLY < (-32767.0f * DEADZONE)) && m_dpadCursorDelay == 0.0f )
 	{
 			// Round the cursor position down to a integer so that adding 1 will move to the next item
     m_gameListPageOffset = (LONG)m_gameListPageOffset;
@@ -385,7 +382,7 @@ void CROMList::NormalModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapsedTime
     cursorVelocity = 1.0f;
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
 	}
-  else if( (gp.wButtons & XINPUT_GAMEPAD_DPAD_UP) && m_dpadCursorDelay == 0.0f )
+  else if( ((gp.wButtons & XINPUT_GAMEPAD_DPAD_UP) || gp.sThumbLY > (32767.0f * DEADZONE)) && m_dpadCursorDelay == 0.0f )
 	{
 			// Round the cursor position down to a integer so that subtracting 1 will move to the next item
     m_gameListPageOffset = (LONG)m_gameListPageOffset;

@@ -1,4 +1,19 @@
+Version 0.63b
 
+  - \MAMEoX\Sources\xbox_Main.cpp:
+    - Increased button sensitivity
+    - Switched Left Analog screen resize control to right analog 
+      (usability testing)
+    
+  - \MAMEoX\Sources\xbox_Sound.cpp:
+    - Fixed sound crackles
+
+  - \MAMEoX\Sources\ROMList.cpp:
+    - Made left analog stick act like the DPAD
+      (usability testing)
+
+  - \MAMEoX\Docs\Readme.txt:
+    - Changed control notes to reflect new controls
 
 Version 0.62b
   

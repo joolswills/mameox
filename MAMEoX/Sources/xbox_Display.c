@@ -266,7 +266,7 @@ void osd_update_video_and_audio(struct mame_display *display)
       cycles_t targetFrameCycles = (cycles_t)(((double)osd_cycles_per_second()) / g_desiredFPS);
       cycles_t actualFrameCycles = osd_cycles() - lastFrameEndTime;
 
-      _RPT3( _CRT_WARN, "Frame time: %9.9lu cycles, Target: %lu (%f FPS)\n", (DWORD)actualFrameCycles, (DWORD)targetFrameCycles, (double)osd_cycles_per_second() / (double)actualFrameCycles );
+      //_RPT3( _CRT_WARN, "Frame time: %9.9lu cycles, Target: %lu (%f FPS)\n", (DWORD)actualFrameCycles, (DWORD)targetFrameCycles, (double)osd_cycles_per_second() / (double)actualFrameCycles );
         // Note that this loop could easily be "optimized" to be
         //  a while( statement ) ; - style loop, but I'm worried that the
         //  optimizing compiler would thing that it's not doing anything

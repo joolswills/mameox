@@ -179,7 +179,11 @@ Usage:
     Black - Search for ROM files, culling out clones
     White - Search for ROM files, keeping clones
 
-    Left Analog Stick - Used to set the screen usage percentage for MAME rendering.
+    Left Trigger - Move the current ROM cursor up fast
+    Right Trigger - Move the current ROM cursor down fast
+    DPAD/Left Analog Stick - Move the current ROM cursor slowly
+
+    Right Analog Stick - Used to set the screen usage percentage for MAME rendering.
 			Moving the stick will resize the green background (which is
 			where the game screen will be rendered). This should be 
 			sized such that a very small black border is revealed all

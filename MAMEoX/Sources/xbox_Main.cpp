@@ -154,9 +154,9 @@ void __cdecl main( void )
 		g_inputManager.PollDevices();
 
 			// Reboot on LT+RT+Black
-		if( gp0.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] > 200 &&
-				gp0.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] > 200 &&
-				gp0.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 200 )
+		if( gp0.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] > 150 &&
+				gp0.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] > 150 &&
+				gp0.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 150 )
 		{
         // Strangely enough, we need XGRPH to use ifstream
       XLoadSection( "XGRPH" );    
@@ -168,7 +168,7 @@ void __cdecl main( void )
 
 
 			// Handle user input
-		if( gp0.bAnalogButtons[XINPUT_GAMEPAD_A] > 100 )
+		if( gp0.bAnalogButtons[XINPUT_GAMEPAD_A] > 50 )
 		{
 				// Run the selected ROM
       UINT32 romIndex = romList.GetCurrentGameIndex();
@@ -179,8 +179,8 @@ void __cdecl main( void )
         CreateBackdrop( xPercentage, yPercentage );
       }
 		}
-		else if( gp0.bAnalogButtons[XINPUT_GAMEPAD_X] > 200 &&
-						 gp0.bAnalogButtons[XINPUT_GAMEPAD_B] > 200 )
+		else if( gp0.bAnalogButtons[XINPUT_GAMEPAD_X] > 150 &&
+						 gp0.bAnalogButtons[XINPUT_GAMEPAD_B] > 150 )
 		{				
 				// Move the currently selected game to the backup dir
 			UINT32 romIDX = romList.GetCurrentGameIndex();
@@ -205,27 +205,27 @@ void __cdecl main( void )
 			g_inputManager.WaitForNoKeys( 0 );
 			romList.RemoveCurrentGameIndex();
 		}
-		else if( gp0.bAnalogButtons[XINPUT_GAMEPAD_WHITE] > 200 )
+		else if( gp0.bAnalogButtons[XINPUT_GAMEPAD_WHITE] > 150 )
 		{
 				// Regenerate the rom listing, allowing clones
 			romList.GenerateROMList();
 		}
-    else if( gp0.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 200 )
+    else if( gp0.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 150 )
     {
         // Regenerate the rom listing, hiding clones
       romList.GenerateROMList( FALSE );
     }
-    else if(  gp0.sThumbLX < -SCREENRANGE_DEADZONE || gp0.sThumbLX > SCREENRANGE_DEADZONE || 
-              gp0.sThumbLY < -SCREENRANGE_DEADZONE || gp0.sThumbLY > SCREENRANGE_DEADZONE )
+    else if(  gp0.sThumbRX < -SCREENRANGE_DEADZONE || gp0.sThumbRX > SCREENRANGE_DEADZONE || 
+              gp0.sThumbRY < -SCREENRANGE_DEADZONE || gp0.sThumbRY > SCREENRANGE_DEADZONE )
     {
-      if( gp0.sThumbLX < -SCREENRANGE_DEADZONE )
+      if( gp0.sThumbRX < -SCREENRANGE_DEADZONE )
         xPercentage -= 0.00025f;
-      else if( gp0.sThumbLX > SCREENRANGE_DEADZONE )
+      else if( gp0.sThumbRX > SCREENRANGE_DEADZONE )
         xPercentage += 0.00025f;
 
-      if( gp0.sThumbLY < -SCREENRANGE_DEADZONE )
+      if( gp0.sThumbRY < -SCREENRANGE_DEADZONE )
         yPercentage -= 0.00025f;
-      else if( gp0.sThumbLY > SCREENRANGE_DEADZONE )
+      else if( gp0.sThumbRY > SCREENRANGE_DEADZONE )
         yPercentage += 0.00025f;
 
       if( xPercentage < 0.25f )
@@ -290,7 +290,7 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 
   g_font.Begin();
 	
-  g_font.DrawText( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255),   L"MAMEoX v0.62b", XBFONT_CENTER_X );
+  g_font.DrawText( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255),   L"MAMEoX v0.63b", XBFONT_CENTER_X );
   g_font.DrawText( 320, 100, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Uses MAME version 0.67", XBFONT_CENTER_X );
   g_font.DrawText( 320, 260, D3DCOLOR_RGBA( 240, 240, 240, 255 ), L"Portions based on:", XBFONT_CENTER_X );
   g_font.DrawText( 320, 280, D3DCOLOR_RGBA( 240, 240, 240, 255 ), L"\"MAMEX(b5): updated by superfro, original port by opcode\"", XBFONT_CENTER_X );
@@ -504,14 +504,12 @@ static BOOL Helper_RunRom( UINT32 romIndex )
   LoadDriverSectionByName( "src\\drivers\\timeplt.c" );   // Loco-Motion
   LoadDriverSectionByName( "src\\drivers\\exidy.c" );     // Victory
 
-// VC6 seems to be calling this with the full path so strstr just trims down the path
-// appropriately. NOTE: we probably don't need this to conditionally compile and could
-// just leave the first call but would like someone with VS.net to test first just in case :)
-#ifdef _VC6
+    // VC6 seems to be calling this with the full path so strstr just trims down the path
+    // appropriately. NOTE: we probably don't need this to conditionally compile and could
+    // just leave the first call but would like someone with VS.net to test first just in case :)
+    //
+    // Should be perfectly fine w/ the strstr
   if( !LoadDriverSectionByName( strstr(DriverName.c_str(),"src\\drivers\\") ) )
-#else
-  if( !LoadDriverSectionByName( DriverName.c_str() ) )
-#endif
   {
     _RPT1( _CRT_WARN, "Failed to load section for file %s!", DriverName.c_str() );
     PRINTMSG( T_ERROR, "Failed to load section for file %s!", DriverName.c_str() );

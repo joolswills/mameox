@@ -109,7 +109,7 @@ INT32 osd_start_audio_stream( INT32 stereo )
   //of samples (or couples of samples, when using stereo) required for next frame.
   //This will be around Machine->sample_rate / Machine->drv->frames_per_second,
   //the code may adjust it by SMALL AMOUNTS to keep timing accurate and to
-  //maINT32ain audio and video in sync when using vsync. Note that sound emulation,
+  //maintain audio and video in sync when using vsync. Note that sound emulation,
   //especially when DACs are involved, greatly depends on the number of samples
   //per frame to be roughly constant, so the returned value must always stay close
   //to the reference value of Machine->sample_rate / Machine->drv->frames_per_second.
@@ -129,6 +129,10 @@ INT32 osd_start_audio_stream( INT32 stereo )
   _RPT1( _CRT_WARN, "Samples per frame: %f\n", g_samplesPerFrame );
   _RPT1( _CRT_WARN, "Consumed per frame: %f\n", (DOUBLE)Machine->sample_rate / 60.0 );
 
+
+g_samplesPerFrame = (DOUBLE)Machine->sample_rate / 60.0;
+
+ 
 	// compute how many samples to generate the first frame
 	g_samplesLeftOver = g_samplesPerFrame;
 	g_samplesThisFrame = (UINT32)g_samplesLeftOver;
@@ -437,9 +441,9 @@ static __inline INT32 Helper_BytesInStreamBuffer( void )
     return 0;
   }
   
-  #ifdef LOG_SOUND
-    _RPT2( _CRT_WARN, "WCursor: %-6.6lu, PlayPos: %-6.6lu\n", g_streamBufferWriteCursor, play_position );
-  #endif
+  //#ifdef LOG_SOUND
+  //  _RPT2( _CRT_WARN, "WCursor: %-6.6lu, PlayPos: %-6.6lu\n", g_streamBufferWriteCursor, play_position );
+  //#endif
 
     // Case 1: Write cursor is past the play_position, so the valid area is
     //          simply between the two
@@ -461,10 +465,11 @@ static void Helper_UpdateSampleAdjustment( void )
 	static UINT32 consecutive_lows = 0;
 	static UINT32 consecutive_mids = 0;
 	static UINT32 consecutive_highs = 0;
-  UINT32        buffered = Helper_BytesInStreamBuffer();
+  UINT32        buffered = Helper_BytesInStreamBuffer(); 
+buffered = g_lowerThresh;
 
   #ifdef LOG_SOUND
-    _RPT1( _CRT_WARN, "Helper_UpdateSampleAdjustment: %d\n", buffered );
+    _RPT1( _CRT_WARN, "Helper_UpdateSampleAdjustment: %d buffered\n", buffered );
   #endif
 
 	if( buffered < g_lowerThresh )
@@ -530,7 +535,12 @@ static void Helper_CopySampleData( INT16 *data, UINT32 totalToCopy )
   UINT32 bytesToCopy = 0;
   DWORD playCursor, writeCursor;
   HRESULT result = IDirectSoundBuffer_GetCurrentPosition( g_pStreamBuffer, &playCursor, &writeCursor );
-g_streamBufferWriteCursor = writeCursor;
+_RPT3( _CRT_WARN, "R: %-8.8lu W: %-8.8lu SB: %-8.8lu\n", playCursor, writeCursor, g_streamBufferWriteCursor );
+
+if( (g_streamBufferWriteCursor > writeCursor && g_streamBufferWriteCursor - writeCursor > 10) || 
+    (g_streamBufferWriteCursor < writeCursor && writeCursor - g_streamBufferWriteCursor > 10 ) )
+    g_streamBufferWriteCursor = writeCursor;
+
     // 1) If playCursor < g_streamBufferWriteCursor < writeCursor, an underflow has ocurred
   if( playCursor < g_streamBufferWriteCursor && g_streamBufferWriteCursor < writeCursor )
   {
@@ -560,12 +570,12 @@ g_streamBufferWriteCursor = writeCursor;
     // Check for an overflow
   if( length1 + length2 < totalToCopy )
   {
-    ++g_bufferOverflows;
+    ++g_bufferOverflows; 
     totalToCopy = length1 + length2;
   }
 
 	  // adjust the write cursor, wrapping around the end of the buffer if necessary
-	g_streamBufferWriteCursor = (g_streamBufferWriteCursor + totalToCopy) % g_streamBufferSize;
+	writeCursor = (g_streamBufferWriteCursor + totalToCopy) % g_streamBufferSize;
 
 	  // copy the first chunk
 	bytesToCopy = (totalToCopy > length1) ? length1 : totalToCopy;
@@ -579,6 +589,7 @@ g_streamBufferWriteCursor = writeCursor;
 	  data = (INT16*)((UINT8*)data + bytesToCopy);
 		memcpy( buffer2, data, totalToCopy );       // Overflow was handled above, so using totalToCopy will be safe
 	}
+  g_streamBufferWriteCursor = writeCursor; 
 }
 
 
