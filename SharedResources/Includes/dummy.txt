@@ -1,0 +1,6 @@
+The bundler tool doesn't seem to know enough to create directories,
+therefore I need this dir to be committed (and kept) by CVS. If
+it's empty, it's possible that it will not be created by the client,
+hence this file.
+
+ - Erik
