@@ -36,11 +36,15 @@ CSystem_IniFile::CSystem_IniFile( const std::string &filename ) :
 	if( filename == "" )
 		return;
 
-  char fullpath[256];
-  if( !ComposeFilePath( fullpath, 255, FILETYPE_INI, 0, filename.c_str() ) )
-    return;
+//  char fullpath[256];
+//  sprintf( fullpath, "%s\\%s", g_FileIOConfig.m_IniPath, filename.c_str() );
+//  if( !ComposeFilePath( fullpath, 255, FILETYPE_INI, 0, filename.c_str() ) )
+//    return;
 
-  m_fileName = fullpath;
+  CStdString strFullPath;
+  strFullPath.Format("%s\\%s", g_FileIOConfig.m_IniPath, filename.c_str());
+  
+  m_fileName = strFullPath;
 
 	std::ifstream is( m_fileName.c_str() );
 	if( is.fail() )
@@ -77,7 +81,7 @@ CSystem_IniFile::CSystem_IniFile( const std::string &filename ) :
 			for( ;(i+1) != inputVector.end() && (*(i+1))[0] != '['; ++i )
 			{
 				if( (*i).size() )	// Don't bother storing blank lines
-					temp.push_back( (*i) );
+          temp.push_back( (*i) );
 			}
 
 			m_data[sectionHeader] = temp;
