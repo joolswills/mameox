@@ -1582,6 +1582,58 @@ void DrawProgressbarMessage( LPDIRECT3DDEVICE8 pD3DDevice, const char *message, 
 	pD3DDevice->Present( NULL, NULL, NULL, NULL );
 }
 
+//---------------------------------------------------------------------
+//	fatalerror
+//---------------------------------------------------------------------
+int fatalerror( const char *fmt, ... )
+{
+  wchar_t wBuf[1024];
+  char buf[1024];
+
+  va_list arg;
+  va_start( arg, fmt );
+  vsprintf( buf, fmt, arg );
+  va_end( arg );
+
+  mbstowcs( wBuf, buf, 1023 );
+
+	g_inputManager.WaitForNoButton();
+
+	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
+
+  while( !(g_inputManager.IsAnyButtonPressed() || g_inputManager.IsAnyKeyPressed()) )
+  {
+    g_inputManager.PollDevices();
+
+		  // Display the error to the user
+	  pD3DDevice->Clear(	0L,																// Count
+											  NULL,															// Rects to clear
+											  D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+											  D3DCOLOR_XRGB(0,0,0),							// Color
+											  1.0f,															// Z
+											  0L );															// Stencil
+
+	  g_fontSet.DefaultFont().Begin();
+  	
+      g_fontSet.DefaultFont().DrawText( 320, 60, D3DCOLOR_RGBA( 255, 200, 200, 255 ), L"Fatal Error:", XBFONT_CENTER_X );
+	    g_fontSet.DefaultFont().DrawText( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255 ), wBuf, XBFONT_CENTER_X );
+	    g_fontSet.DefaultFont().DrawText( 320, 320, D3DCOLOR_RGBA( 70, 235, 125, 255), L"Press any button to continue.", XBFONT_CENTER_X );
+	  g_fontSet.DefaultFont().End();
+
+	  pD3DDevice->Present( NULL, NULL, NULL, NULL );
+  }
+
+  g_inputManager.WaitForNoButton();
+
+    // Go to the dashboard
+  LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
+  DWORD retVal = XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
+  Die( pD3DDevice, "Failed to launch the dashboard! 0x%X", retVal );
+
+    // Execution should never get here
+  return 0;
+}
+
 }	// End Extern "C"
 
 

@@ -60,6 +60,7 @@ Version 0.71.3b (CVS)
 
     - MAMEoXUtil.cpp
       - Fixed bezels (artwork)
+      - Added virtual memory access/allocation functions
 
     - xbox_Direct3DRenderer.cpp
       - Fixed an off by 1 error when setting texture coords that

@@ -13,6 +13,7 @@
 #include "DebugLogger.h"
 #include "Sections.h"
 #include "FontSet.h"
+#include "VirtualMemoryManager.h"
 
 #include "System_IniFile.h"
 #include "xbox_Timing.h"
@@ -44,14 +45,17 @@ typedef struct _UNICODE_STRING
 } UNICODE_STRING, *PUNICODE_STRING;
 
 //= G L O B A L = V A R S =============================================
-CInputManager			  g_inputManager;
-CGraphicsManager	  g_graphicsManager;
-CFontSet            g_fontSet;  // The global font manager
+CInputManager			    g_inputManager;
+CGraphicsManager	    g_graphicsManager;
+CFontSet              g_fontSet;          // The global font manager
+CVirtualMemoryManager g_vmManager;        // The global memory manager
 
-extern BOOL         g_soundEnabled;   // Sound processing override (defined in xbox_Main.cpp)
-ROMListOptions_t    g_romListOptions;
-MAMEoXLaunchData_t  g_persistentLaunchData;   //!<  Launch data that persists via the INI
-extern UINT32       g_screensaverTimeout;     //!<  Time before the Launcher screensaver kicks in
+extern BOOL           g_soundEnabled;   // Sound processing override (defined in xbox_Main.cpp)
+ROMListOptions_t      g_romListOptions;
+MAMEoXLaunchData_t    g_persistentLaunchData;   //!<  Launch data that persists via the INI
+extern UINT32         g_screensaverTimeout;     //!<  Time before the Launcher screensaver kicks in
+
+extern "C" int fatalerror( const char *fmt, ... );
 
 extern "C" {
 
@@ -74,6 +78,42 @@ XBOXAPI DWORD WINAPI IoDeleteSymbolicLink( PUNICODE_STRING symLinkName );
 
 
 //= F U N C T I O N S =================================================
+
+
+
+//-------------------------------------------------------------
+//  osd_vmm_malloc
+//-------------------------------------------------------------
+void *osd_vmm_malloc( size_t size )
+{
+  void *ret = g_vmManager.Malloc( size );
+  if( !ret )
+  {
+    MEMORYSTATUS memStatus;
+    GlobalMemoryStatus( &memStatus );
+    fatalerror( "Virtual Malloc failed! (Out of Memory)\nRequested %lu bytes, %lu free", size, memStatus.dwAvailPhys );
+  }
+
+  return ret;
+}
+
+//-------------------------------------------------------------
+//  osd_vmm_free
+//-------------------------------------------------------------
+void osd_vmm_free( void *ptr )
+{
+  g_vmManager.Free( ptr );
+}
+
+//-------------------------------------------------------------
+//  osd_vmm_accessaddress
+//-------------------------------------------------------------
+BOOL osd_vmm_accessaddress( void *ptr )
+{
+  return g_vmManager.AccessAddressRange( ptr, 0 );
+}
+
+
 
 //-------------------------------------------------------------
 //  vsnprintf
