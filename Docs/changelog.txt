@@ -7,6 +7,9 @@ Version 0.65b
   - \MAMEoX\Includes\MAMEoX.h:
     - Updated version number
 
+  - \MAMEoXLauncher\Sources\main.cpp:
+    - Bugfix for the backup (X+B) feature
+
 Version 0.64b
 
   - \Docs\readme.txt:
