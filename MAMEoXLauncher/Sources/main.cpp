@@ -395,6 +395,21 @@ void __cdecl main( void )
       Helper_SaveOptionsAndReboot( pD3DDevice, romList );
 
 
+    if( g_inputManager.IsOnlyButtonPressed( GP_LEFT_ANALOG ) )
+    {
+      static UINT32 screenshotIndex = 0;
+
+        // Take a screenshot
+      LPDIRECT3DSURFACE8 target;
+      pD3DDevice->GetRenderTarget( &target );
+
+      CStdString filename;
+      filename.Format( "D:\\screenshots\\_%lu.bmp", screenshotIndex++ );
+      XGWriteSurfaceToFile( target, filename.c_str() );
+
+      SAFE_RELEASE( target );
+    }
+
     if( !showStartMenu && g_inputManager.IsOnlyButtonPressed( GP_START ) )
     {
         // Enter the main menu
