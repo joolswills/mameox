@@ -282,6 +282,10 @@ Contributions:
   of this project is to make it easier for anybody w/ the right tools and 
   a little bit of coding experience to compile and run this port of MAME.
 
+---------------------------------------------------------------------------
+
+  Special thanks to Klaus of www.wolfsoft.de for donating 128 meg upgrade
+  chips to allow me to profile and test larger ROMs!
 
 ---------------------------------------------------------------------------
 Licensing:
