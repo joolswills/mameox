@@ -491,10 +491,7 @@ void CROMList::NormalModeMoveCursor( CGamepad &gp, FLOAT elapsedTime )
     cursorVelocity *= CURSOR_SPEED;
 	}
 
-
-
-
-		// Apply speed bands
+	  // Apply speed bands
 	if( m_gameListCursorSpeedBandTimeout == SBTIMEOUT_FASTEST )
 		cursorVelocity *= SBMULTIPLIER_FASTEST;
 	else if( m_gameListCursorSpeedBandTimeout > SBTIMEOUT_FASTER )
@@ -641,8 +638,8 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
 	m_font.DrawText(  70, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), name );
 	if( m_additionalinfo )
 	{
-		m_font.DrawText( 440, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Rate" );
-		m_font.DrawText( 498, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Favorite" );
+		m_font.DrawText( 440, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Year" );
+		m_font.DrawText( 498, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Clone" );
 		m_font.DrawText(  65, 50, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"----------------------------------------------------" );
 		m_font.DrawText( 435, 50, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"--------" );
 		m_font.DrawText( 495, 50, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"------------" );
@@ -667,8 +664,6 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
 
 	for( DWORD i = 0; i < pageSize; ++i )
 	{
-		mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[absListIDX++] ].m_description, 255 );
-
 			// Render the selected item as bright white
 		xPos = 70;
 		xDelta = 0;
@@ -679,11 +674,15 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
 		}
 		else
 			color = NORMAL_ITEM_COLOR;
+
+		mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX++ ] ].m_description, 255 );
 		m_font.DrawText( xPos + xDelta, yPos, color, name, XBFONT_TRUNCATED, ( m_additionalinfo ? 365 : 500 ) - xDelta );
 		if( m_additionalinfo )
 		{
-			m_font.DrawText( 445, yPos, color, L"100" );
-			m_font.DrawText( 518, yPos, color, L"Yes" );
+			mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX - 1 ] ].m_year, 255 );
+			m_font.DrawText( 440, yPos, color, name );
+			mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX - 1 ] ].m_cloneFileName, 255 );
+			m_font.DrawText( 500, yPos, color, name );
 		}
 
 			// Inc the Y position
