@@ -3,7 +3,7 @@
 # Auto generate an 8 character unique name for each file
 local $autoNameNumber = 0;
 local @newFILEs;
-local @FILEs = `find ./MAME/src/*.c`;
+local @FILEs = `find ./src -name *.c`;
 
 
 print "Converting all stock malloc() calls to osd_malloc...\n";
