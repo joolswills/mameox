@@ -12,6 +12,7 @@
 #include "DebugLogger.h"
 
 #include "mame.h"
+#include "cpuexec.h"
 #include "palette.h"
 #include "common.h"
 
@@ -190,4 +191,30 @@ void osd_print_error( const char *fmt, ... )
   WaitForNoButton();     // Ensure that the user sees the message
   WaitForAnyButton();
   WaitForNoButton();     // Ensure that we don't bounce right back into the ROM that brought up the error
+}
+
+//---------------------------------------------------------------------
+//	osd_autobootsavestate
+//---------------------------------------------------------------------
+void osd_autobootsavestate( const char *gameName )
+{
+    // This function is called by the MAME core as soon
+    // as a ROM is up and running. It check to see if
+    // an autoboot state exists for the passed gameName,
+    // and schedule a load if one does exist.
+  static char filename[64];
+  UINT32 i = 0;
+  sprintf( filename, "%s-autoboot.sta", gameName );
+
+    // Check all of the registered STATE directories for
+    // the autoboot file.
+  for( ; i < osd_get_path_count( FILETYPE_STATE ); ++i )
+  {
+    if( osd_get_path_info( FILETYPE_STATE, i, filename ) == PATH_IS_FILE )
+    {
+        // Schedule a load
+	    cpu_loadsave_schedule_file( LOADSAVE_LOAD, filename );
+      return;
+    }
+  }
 }

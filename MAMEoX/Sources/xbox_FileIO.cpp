@@ -150,6 +150,11 @@ void InitializeFileIO( void )
   CREATEOROPENPATH( g_FileIOConfig.m_ScreenshotPath.c_str(), TRUE );
   g_pathNames[FILETYPE_SCREENSHOT][0] = tempStr;
 
+    // The MAME core will look for autoboot save states as FILETYPE_STATE
+    // so add a second path for save states.
+  CREATEOROPENPATH( g_FileIOConfig.m_AutoBootSavePath.c_str(), TRUE );
+  g_pathNames[FILETYPE_STATE][1] = tempStr;
+
   CREATEOROPENPATH( DEFAULT_MAMEOXSYSTEMPATH, TRUE );
   g_pathNames[FILETYPE_MAMEOX_SYSTEM][0] = tempStr;
 
@@ -182,7 +187,6 @@ int osd_get_path_count( int pathtype )
 	case FILETYPE_HIGHSCORE_DB:
 	case FILETYPE_CONFIG:
 	case FILETYPE_INPUTLOG:
-	case FILETYPE_STATE:
 	case FILETYPE_MEMCARD:
 	case FILETYPE_SCREENSHOT:
 	case FILETYPE_HISTORY:
@@ -192,10 +196,16 @@ int osd_get_path_count( int pathtype )
 	case FILETYPE_INI:
 		return 1;
 
+    // Save states are in the standard NVRAM dir,
+    // as well as the autobootstate dir
+	case FILETYPE_STATE:
+    return 2;
+
     // Internal MAMEoX system files
   case FILETYPE_MAMEOX_SYSTEM:
     return 1;
 
+    // The full path is given as the filename
   case FILETYPE_MAMEOX_FULLPATH:
     return 0;
 	}

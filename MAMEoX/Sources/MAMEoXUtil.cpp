@@ -195,6 +195,7 @@ void LoadOptions( void )
   g_FileIOConfig.m_HiScorePath        = iniFile.GetProfileString( "Directories", "HiScoresPath",        DEFAULT_HISCOREPATH );
   g_FileIOConfig.m_NVramPath          = iniFile.GetProfileString( "Directories", "NVRamPath",           DEFAULT_NVRAMPATH );
   g_FileIOConfig.m_ScreenshotPath     = iniFile.GetProfileString( "Directories", "ScreenshotPath",      DEFAULT_SCREENSHOTPATH );
+  g_FileIOConfig.m_AutoBootSavePath   = iniFile.GetProfileString( "Directories", "AutoBootSavePath",    DEFAULT_BOOTSAVESTATE );
   // There's no reason to allow this to be changed, it's totally internal
   //  g_FileIOConfig.m_DefaultRomListPath = iniFile.GetProfileString("Directories", "DefaultRomsListPath", DEFAULT_DEFAULTROMLISTPATH);
   g_FileIOConfig.MakeLower();
@@ -329,6 +330,7 @@ void SaveOptions( void )
   iniFile.WriteProfileString("Directories", "NVRamPath",           g_FileIOConfig.m_NVramPath );
   iniFile.WriteProfileString("Directories", "BackupPath",          g_FileIOConfig.m_RomBackupPath );
   iniFile.WriteProfileString("Directories", "ScreenshotPath",      g_FileIOConfig.m_ScreenshotPath );
+  iniFile.WriteProfileString("Directories", "AutoBootSavePath",    g_FileIOConfig.m_AutoBootSavePath );
   // There's no reason to allow this to be changed, it's totally internal
   //iniFile.WriteProfileString("Directories", "DefaultRomsListPath", g_FileIOConfig.m_DefaultRomListPath );
 

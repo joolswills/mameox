@@ -12,6 +12,9 @@ Version 0.71.3b (CVS)
       - Increased SEQ_MAX to 20 to allow commands to be defined
         for all 4 gamepads + the keyboard
 
+    - mame.c
+      - Added hook for automatic bootup save state loading
+
    -------------------------------------------------------------
   - \MAMEoX\Includes: 
     - MAMEoX.h
@@ -33,6 +36,7 @@ Version 0.71.3b (CVS)
         doing so breaks fwrites)
       - Added FILETYPE_MAMEOX_FULLPATH filetype to allow the full
         path of a file to be passed directly to the osd_f* functions
+      - Added path for automatic bootup save states
 
     - xbox_Main.cpp
       - Added handling for MAMEoX system files to apply speed
@@ -68,6 +72,10 @@ Version 0.71.3b (CVS)
     - xbox_Keyboard.cpp
       - Renamed xbox_Keyboard.c to xbox_Keyboard.cpp
       - Implemented missing keyboard functionality
+
+    - xbox_Miscelaneous.c
+      - Added osd_autobootsavestate() function to facilitate automatic
+        booting of save states when a ROM has finished loading.
 
     Added xbox_Input.c to do default key mapping and input subsystem
       initialization

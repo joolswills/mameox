@@ -162,7 +162,7 @@ COptionsScreen::COptionsScreen( LPDIRECT3DDEVICE8	displayDevice,
   wcscpy( m_pageData[OPTPAGE_DIRECTORIES_2].m_title, L"Directory Path Options [2/2]" );
   m_pageData[OPTPAGE_DIRECTORIES_2].m_drawFunct = ::DrawDirectoryPathPage2;
   m_pageData[OPTPAGE_DIRECTORIES_2].m_changeFunct = ::ChangeDirectoryPathPage2;
-  m_pageData[OPTPAGE_DIRECTORIES_2].m_numItems = 13;
+  m_pageData[OPTPAGE_DIRECTORIES_2].m_numItems = 14;
 
   wcscpy( m_pageData[OPTPAGE_ROMLIST].m_title, L"ROM List Options" );
   m_pageData[OPTPAGE_ROMLIST].m_drawFunct = ::DrawROMListPage;
@@ -832,6 +832,7 @@ void COptionsScreen::DrawDirectoryPathPage2( void )
   g_FileIOConfig.m_RomPath2           = iniFile.GetProfileString("Directories", "RomsPath2",           DEFAULT_ROMPATH);
   g_FileIOConfig.m_RomPath3           = iniFile.GetProfileString("Directories", "RomsPath3",           DEFAULT_ROMPATH);
   g_FileIOConfig.m_ScreenshotPath     = iniFile.GetProfileString( "Directories", "ScreenshotPath",     DEFAULT_SCREENSHOTPATH );
+  g_FileIOConfig.m_AutoBootSavePath   = iniFile.GetProfileString( "Directories", "AutoBootSavePath",    DEFAULT_BOOTSAVESTATE );
 */
   WCHAR text[256] = {0};
 
@@ -872,6 +873,9 @@ void COptionsScreen::DrawDirectoryPathPage2( void )
 
   mbstowcs( text, g_FileIOConfig.m_ScreenshotPath.c_str(), 255 );
   DRAWITEM( L"Screenshots", text );
+
+  mbstowcs( text, g_FileIOConfig.m_AutoBootSavePath.c_str(), 255 );
+  DRAWITEM( L"Autoboot save states", text );
 
   ENDPAGE();
 }
@@ -1529,6 +1533,11 @@ void COptionsScreen::ChangeDirectoryPathPage2( BOOL movingRight )
     case 12:
       m_virtualKeyboard->SetData( g_FileIOConfig.m_ScreenshotPath );
       break;
+
+      // Autoboot save states
+    case 13:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_AutoBootSavePath );
+      break;
     }
   }
   else
@@ -1600,6 +1609,11 @@ void COptionsScreen::ChangeDirectoryPathPage2( BOOL movingRight )
         // Screenshots
       case 12:
         g_FileIOConfig.m_ScreenshotPath = m_virtualKeyboard->GetData();
+        break;
+
+        // Autoboot save states
+      case 13:
+        g_FileIOConfig.m_AutoBootSavePath = m_virtualKeyboard->GetData();
         break;
       }
     }

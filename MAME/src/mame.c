@@ -540,6 +540,9 @@ void run_machine_core(void)
 						mame_fclose(nvram_file);
 				}
 
+          // [EBA] Autoboot a save state
+        osd_autobootsavestate( Machine->gamedrv->name );
+
 				/* run the emulation! */
 				cpu_run();
 

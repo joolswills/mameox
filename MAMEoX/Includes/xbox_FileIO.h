@@ -41,6 +41,9 @@
 #define DEFAULT_GMAPPING            "\\Device\\Cdrom0"
 #define DEFAULT_HMAPPING            "\\Device\\Harddisk0\\Partition6"
 
+  // Path in which "auto boot" save states are stored.
+#define DEFAULT_BOOTSAVESTATE       "D:\\AUTOBOOTSAVES"
+
   // Path for internal files (should always be on the T or U drive)
 #define DEFAULT_MAMEOXSYSTEMPATH    "T:\\SYSTEM"
 
@@ -58,8 +61,8 @@
 
 
   // Special filetype for 
-#define FILETYPE_MAMEOX_FULLPATH      FILETYPE_end                //!<  The entire filepath is passed, not just the filename
-#define FILETYPE_MAMEOX_SYSTEM        FILETYPE_end + 1            //!<  Use the DEFAULT_MAMEOXSYSTEMPATH as the path
+#define FILETYPE_MAMEOX_FULLPATH      FILETYPE_end                  //!<  The entire filepath is passed, not just the filename
+#define FILETYPE_MAMEOX_SYSTEM        FILETYPE_MAMEOX_FULLPATH + 1    //!<  Use the DEFAULT_MAMEOXSYSTEMPATH as the path
 #define FILETYPE_MAMEOX_END           FILETYPE_MAMEOX_SYSTEM + 1
 
 //= S T R U C T U R E S ===============================================
@@ -80,6 +83,7 @@ struct FileIOConfig_t
   CStdString m_HDImagePath;
   CStdString m_HiScorePath;
   CStdString m_ScreenshotPath;
+  CStdString m_AutoBootSavePath;
 
   CStdString m_LetterCMapping;
   CStdString m_LetterEMapping;
@@ -106,6 +110,7 @@ struct FileIOConfig_t
     m_HDImagePath         = DEFAULT_HDIMAGEPATH;
     m_HiScorePath         = DEFAULT_HISCOREPATH;
     m_ScreenshotPath      = DEFAULT_SCREENSHOTPATH;
+    m_AutoBootSavePath    = DEFAULT_BOOTSAVESTATE;
 
     m_LetterCMapping      = DEFAULT_CMAPPING;
     m_LetterEMapping      = DEFAULT_EMAPPING;
@@ -130,6 +135,7 @@ struct FileIOConfig_t
     m_HDImagePath.MakeLower();
     m_HiScorePath.MakeLower();
     m_ScreenshotPath.MakeLower();
+    m_AutoBootSavePath.MakeLower();
 
     m_LetterCMapping.MakeLower();
     m_LetterEMapping.MakeLower();
