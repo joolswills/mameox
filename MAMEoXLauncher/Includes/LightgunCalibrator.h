@@ -34,6 +34,15 @@ public:
   {
   }
 
+		//------------------------------------------------------------
+    //  Reset
+		//------------------------------------------------------------
+  void Reset( void ) {
+    m_currentInputDeviceIndex = 0;
+    m_calibrationStep = 0;
+    m_calibrationCompleted = FALSE;
+  }
+
     // Declared in ListView.h
   virtual void MoveCursor( CInputManager &inputManager, BOOL unused = FALSE );
 	virtual void Draw( BOOL clearScreen = TRUE, BOOL flipOnCompletion = TRUE );

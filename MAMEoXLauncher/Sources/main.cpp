@@ -485,7 +485,10 @@ void __cdecl main( void )
       lightgunCalibrator.MoveCursor( g_inputManager );
       lightgunCalibrator.DrawToTexture( renderTargetTexture );
       if( lightgunCalibrator.IsCalibrationCompleted() )
+      {
         lightgunCalibrationMode = FALSE;
+        lightgunCalibrator.Reset();
+      }
     }
     else
     {
