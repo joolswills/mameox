@@ -427,56 +427,9 @@ void osd_joystick_end_calibration( void )
 //---------------------------------------------------------------------
 void osd_lightgun_read(int player, int *deltax, int *deltay)
 {
-	const XINPUT_GAMEPAD *gp;
-  const XINPUT_CAPABILITIES *gpCaps;
-
   assert( deltax && deltay );
-
-	if( (gpCaps = GetGamepadCaps( player )) && 
-      gpCaps->SubType == XINPUT_DEVSUBTYPE_GC_LIGHTGUN &&
-      (gp = GetGamepadState( player )) )
-  {
-    lightgunCalibration_t *calibData = &g_calibrationData[player];
-    FLOAT calibratedX, calibratedY, xMap, yMap;
-
-    *deltax = gp->sThumbLX;
-    *deltay = gp->sThumbLY;
-if( !player )
-  PRINTMSG( T_INFO, "%d %d", gp->sThumbLX, gp->sThumbLY );
-      // Don't bother if we're not pointing at the screen
-    if( !(*deltax) && !(*deltay) )
-      return;
-
-    calibratedX = (*deltax);// + calibData->m_xData[1];
-    calibratedY = (*deltay);// + calibData->m_yData[1]);
-
-      // Map from -128 to 128
-    xMap = calibData->m_xData[0] + calibData->m_xData[1]; // left X is negative, so add center to bring it closer to the middle
-    yMap = calibData->m_yData[0] - calibData->m_yData[1]; // top Y is positive, so sub center to bring it closer to the middle
-
-    if( xMap )
-      *deltax = (int)((FLOAT)calibratedX * 128.0f / -xMap );
-    else
-      *deltax = 0;
-
-    if( yMap )
-      calibratedY = (int)((FLOAT)calibratedY * 128.0f / yMap );
-    else
-      calibratedY = 0;
-
-      // Lock to the expected range
-    if( *deltax > 128 )
-      *deltax = 128;
-    else if( *deltax < -128 )
-      *deltax = -128;
-
-    if( *deltax > 128 )
-      *deltax = 128;
-    else if( *deltax < -128 )
-      *deltax = -128;
-  }
-  else  
-	  *deltax = *deltay = 0;
+  GetLightgunCalibratedPosition( player, deltax, deltay );
+  PRINTMSG( T_INFO, "x: %d y: %d", *deltax, *deltay );
 }
 
 //---------------------------------------------------------------------
@@ -1155,12 +1108,12 @@ static void Helper_CustomizeInputPortDefaults( struct ipd *defaults )
 
 			// *** IPT_LIGHTGUN_X|IPF_PLAYER1 *** //
     case (IPT_LIGHTGUN_X|IPF_PLAYER1):
-      REMAP_SEQ_1( AXISCODE( 0, JT_RSTICK_LEFT ) );
+      REMAP_SEQ_1( AXISCODE( 0, JT_LSTICK_LEFT ) );
       break;
 
 			// *** IPT_LIGHTGUN_X|IPF_PLAYER1+IPT_EXTENSION *** //
     case (IPT_LIGHTGUN_X|IPF_PLAYER1)+IPT_EXTENSION:
-      REMAP_SEQ_1( AXISCODE( 0, JT_RSTICK_RIGHT ) );
+      REMAP_SEQ_1( AXISCODE( 0, JT_LSTICK_RIGHT ) );
       break;
 
 			// *** IPT_LIGHTGUN_Y|IPF_PLAYER1 *** //
@@ -1393,12 +1346,12 @@ static void Helper_CustomizeInputPortDefaults( struct ipd *defaults )
 
 			// *** IPT_LIGHTGUN_X|IPF_PLAYER2 *** //
     case (IPT_LIGHTGUN_X|IPF_PLAYER2):
-      REMAP_SEQ_1( AXISCODE( 1, JT_RSTICK_LEFT ) );
+      REMAP_SEQ_1( AXISCODE( 1, JT_LSTICK_LEFT ) );
       break;
 
 			// *** IPT_LIGHTGUN_X|IPF_PLAYER2+IPT_EXTENSION *** //
     case (IPT_LIGHTGUN_X|IPF_PLAYER2)+IPT_EXTENSION:
-      REMAP_SEQ_1( AXISCODE( 1, JT_RSTICK_RIGHT ) );
+      REMAP_SEQ_1( AXISCODE( 1, JT_LSTICK_RIGHT ) );
       break;
 
 			// *** IPT_LIGHTGUN_Y|IPF_PLAYER2 *** //
@@ -1631,12 +1584,12 @@ static void Helper_CustomizeInputPortDefaults( struct ipd *defaults )
 
 			// *** IPT_LIGHTGUN_X|IPF_PLAYER3 *** //
     case (IPT_LIGHTGUN_X|IPF_PLAYER3):
-      REMAP_SEQ_1( AXISCODE( 2, JT_RSTICK_LEFT ) );
+      REMAP_SEQ_1( AXISCODE( 2, JT_LSTICK_LEFT ) );
       break;
 
 			// *** IPT_LIGHTGUN_X|IPF_PLAYER3+IPT_EXTENSION *** //
     case (IPT_LIGHTGUN_X|IPF_PLAYER3)+IPT_EXTENSION:
-      REMAP_SEQ_1( AXISCODE( 2, JT_RSTICK_RIGHT ) );
+      REMAP_SEQ_1( AXISCODE( 2, JT_LSTICK_RIGHT ) );
       break;
 
 			// *** IPT_LIGHTGUN_Y|IPF_PLAYER3 *** //
@@ -1869,12 +1822,12 @@ static void Helper_CustomizeInputPortDefaults( struct ipd *defaults )
 
 			// *** IPT_LIGHTGUN_X|IPF_PLAYER4 *** //
     case (IPT_LIGHTGUN_X|IPF_PLAYER4):
-      REMAP_SEQ_1( AXISCODE( 3, JT_RSTICK_LEFT ) );
+      REMAP_SEQ_1( AXISCODE( 3, JT_LSTICK_LEFT ) );
       break;
 
 			// *** IPT_LIGHTGUN_X|IPF_PLAYER4+IPT_EXTENSION *** //
     case (IPT_LIGHTGUN_X|IPF_PLAYER4)+IPT_EXTENSION:
-      REMAP_SEQ_1( AXISCODE( 3, JT_RSTICK_RIGHT ) );
+      REMAP_SEQ_1( AXISCODE( 3, JT_LSTICK_RIGHT ) );
       break;
 
 			// *** IPT_LIGHTGUN_Y|IPF_PLAYER4 *** //
