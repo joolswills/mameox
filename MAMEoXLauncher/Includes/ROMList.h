@@ -195,9 +195,9 @@ public:
     //! the MAME driver array. Therefore, to access this, take the
     //! UINT32 index for any given position in the currentSortedList
     //! and use that number as the index in the status array
-  static std::vector<ROMStatus>  m_ROMStatus;
-  static MAMEDriverData_t      *m_driverInfoList;          //!<  Drivers supported by the MAME core
-  static UINT32                m_numDrivers;               //!<  The total number of drivers supported by the core
+  static std::vector<ROMStatus>   m_ROMStatus;
+  static MAMEDriverData_t         *m_driverInfoList;          //!<  Drivers supported by the MAME core
+  static UINT32                   m_numDrivers;               //!<  The total number of drivers supported by the core
 
 protected:
 

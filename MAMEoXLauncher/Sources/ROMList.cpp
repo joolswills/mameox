@@ -135,7 +135,6 @@ BOOL CROMList::LoadROMList( BOOL bGenerate, BOOL allowClones )
   if( LoadROMListFile() )
   {
     UpdateSortedList();
-    LoadROMStatusFile();
     m_numLinesInList = m_currentSortedList.size();
     return TRUE;
   }
@@ -222,6 +221,9 @@ BOOL CROMList::GenerateROMList( void )
 
 	PRINTMSG( T_INFO, "Found %lu games!", m_ROMListFull.size() );
 
+    // Load the XML status file
+  LoadROMStatusFile();
+
   if( !SaveROMListFile() )
   {
     PRINTMSG( T_INFO, "Failed to store the ROM list file!" );
@@ -230,7 +232,6 @@ BOOL CROMList::GenerateROMList( void )
 
     // Create the superscroll jump table
   UpdateSortedList();
-  LoadROMStatusFile();
   m_numLinesInList = m_currentSortedList.size();
 	return TRUE;
 }
@@ -329,6 +330,9 @@ BOOL CROMList::SaveROMListFile( void )
 	{
 		DWORD idx = (*it);
     WRITEDATA( &idx, sizeof(idx) );
+
+      // Write the ROM status
+    WRITEDATA( &m_ROMStatus[idx], sizeof(m_ROMStatus[idx]) );
 	}
 
     // Grab the signature
@@ -363,6 +367,8 @@ BOOL CROMList::SaveROMListFile( void )
 //---------------------------------------------------------------------
 BOOL CROMList::LoadROMListFile( void )
 {
+  m_ROMListFull.clear();
+  m_ROMStatus.clear();
 	std::string		romListFile = g_ROMListPath;
 	romListFile += "\\";
 	romListFile += ROMLISTFILENAME;
@@ -505,10 +511,14 @@ BOOL CROMList::LoadROMListFile( void )
 
   for( DWORD i = 0; i < numItems; ++i )
   {
-    DWORD idx;
-    READDATA_NOMALLOC( &idx, sizeof(idx) );
+    DWORD val;
+      // Read the ROM index
+    READDATA_NOMALLOC( &val, sizeof(val) );
+		m_ROMListFull.push_back( val );
 
-		m_ROMListFull.push_back( idx );
+      // Read the ROM status
+    READDATA_NOMALLOC( &val, sizeof(val) );
+    m_ROMStatus.push_back( (ROMStatus)val );
   }
   free( fileData );
 

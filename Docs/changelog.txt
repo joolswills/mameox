@@ -26,6 +26,15 @@ Version 0.71.2b (CVS)
         "DIFFUSE" after rendering the lightgun cursor, which led
         to an unusable calibration screen.
 
+    - ROMList.cpp
+      - Changed it so romstatus.xml file is only parsed when scanning
+        for new ROMs. This decreases load time between ROMs for large
+        XML files.
+
+   -------------------------------------------------------------
+  - \Sectionize.pl
+    - Fixed dep for Operation Wolf
+
 *********************************************************************
 Version 0.71.1b
 
