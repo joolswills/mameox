@@ -1,11 +1,11 @@
-#pragma code_seg("C195")
-#pragma data_seg("D195")
-#pragma bss_seg("B195")
-#pragma const_seg("K195")
-#pragma comment(linker, "/merge:D195=195")
-#pragma comment(linker, "/merge:C195=195")
-#pragma comment(linker, "/merge:B195=195")
-#pragma comment(linker, "/merge:K195=195")
+#pragma code_seg("C264")
+#pragma data_seg("D264")
+#pragma bss_seg("B264")
+#pragma const_seg("K264")
+#pragma comment(linker, "/merge:D264=264")
+#pragma comment(linker, "/merge:C264=264")
+#pragma comment(linker, "/merge:B264=264")
+#pragma comment(linker, "/merge:K264=264")
 /***************************************************************************
 
 Atari Fire Truck + Super Bug + Monte Carlo video emulation

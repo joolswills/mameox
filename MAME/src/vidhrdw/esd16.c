@@ -1,11 +1,11 @@
-#pragma code_seg("C179")
-#pragma data_seg("D179")
-#pragma bss_seg("B179")
-#pragma const_seg("K179")
-#pragma comment(linker, "/merge:D179=179")
-#pragma comment(linker, "/merge:C179=179")
-#pragma comment(linker, "/merge:B179=179")
-#pragma comment(linker, "/merge:K179=179")
+#pragma code_seg("C246")
+#pragma data_seg("D246")
+#pragma bss_seg("B246")
+#pragma const_seg("K246")
+#pragma comment(linker, "/merge:D246=246")
+#pragma comment(linker, "/merge:C246=246")
+#pragma comment(linker, "/merge:B246=246")
+#pragma comment(linker, "/merge:K246=246")
 /***************************************************************************
 
 						  -= ESD 16 Bit Games =-

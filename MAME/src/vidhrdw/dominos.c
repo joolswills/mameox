@@ -1,11 +1,11 @@
-#pragma code_seg("C167")
-#pragma data_seg("D167")
-#pragma bss_seg("B167")
-#pragma const_seg("K167")
-#pragma comment(linker, "/merge:D167=167")
-#pragma comment(linker, "/merge:C167=167")
-#pragma comment(linker, "/merge:B167=167")
-#pragma comment(linker, "/merge:K167=167")
+#pragma code_seg("C233")
+#pragma data_seg("D233")
+#pragma bss_seg("B233")
+#pragma const_seg("K233")
+#pragma comment(linker, "/merge:D233=233")
+#pragma comment(linker, "/merge:C233=233")
+#pragma comment(linker, "/merge:B233=233")
+#pragma comment(linker, "/merge:K233=233")
 /***************************************************************************
 
 	Atari Dominos hardware

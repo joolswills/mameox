@@ -1,11 +1,11 @@
-#pragma code_seg("C102")
-#pragma data_seg("D102")
-#pragma bss_seg("B102")
-#pragma const_seg("K102")
-#pragma comment(linker, "/merge:D102=102")
-#pragma comment(linker, "/merge:C102=102")
-#pragma comment(linker, "/merge:B102=102")
-#pragma comment(linker, "/merge:K102=102")
+#pragma code_seg("C168")
+#pragma data_seg("D168")
+#pragma bss_seg("B168")
+#pragma const_seg("K168")
+#pragma comment(linker, "/merge:D168=168")
+#pragma comment(linker, "/merge:C168=168")
+#pragma comment(linker, "/merge:B168=168")
+#pragma comment(linker, "/merge:K168=168")
 /***************************************************************************
 
 							  -= Cave Hardware =-

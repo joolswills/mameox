@@ -1,3 +1,11 @@
+#pragma code_seg("C8")
+#pragma data_seg("D8")
+#pragma bss_seg("B8")
+#pragma const_seg("K8")
+#pragma comment(linker, "/merge:D8=8")
+#pragma comment(linker, "/merge:C8=8")
+#pragma comment(linker, "/merge:B8=8")
+#pragma comment(linker, "/merge:K8=8")
 /***************************************************************************
 
   Galaxian hardware family
@@ -1884,3 +1892,7 @@ VIDEO_UPDATE( galaxian )
 		draw_sprites(bitmap, galaxian_spriteram2, galaxian_spriteram2_size);
 	}
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

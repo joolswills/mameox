@@ -1,11 +1,11 @@
-#pragma code_seg("C39")
-#pragma data_seg("D39")
-#pragma bss_seg("B39")
-#pragma const_seg("K39")
-#pragma comment(linker, "/merge:D39=39")
-#pragma comment(linker, "/merge:C39=39")
-#pragma comment(linker, "/merge:B39=39")
-#pragma comment(linker, "/merge:K39=39")
+#pragma code_seg("C103")
+#pragma data_seg("D103")
+#pragma bss_seg("B103")
+#pragma const_seg("K103")
+#pragma comment(linker, "/merge:D103=103")
+#pragma comment(linker, "/merge:C103=103")
+#pragma comment(linker, "/merge:B103=103")
+#pragma comment(linker, "/merge:K103=103")
 /***************************************************************************
 
 	Art & Magic hardware

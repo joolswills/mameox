@@ -1,11 +1,11 @@
-#pragma code_seg("C210")
-#pragma data_seg("D210")
-#pragma bss_seg("B210")
-#pragma const_seg("K210")
-#pragma comment(linker, "/merge:D210=210")
-#pragma comment(linker, "/merge:C210=210")
-#pragma comment(linker, "/merge:B210=210")
-#pragma comment(linker, "/merge:K210=210")
+#pragma code_seg("C279")
+#pragma data_seg("D279")
+#pragma bss_seg("B279")
+#pragma const_seg("K279")
+#pragma comment(linker, "/merge:D279=279")
+#pragma comment(linker, "/merge:C279=279")
+#pragma comment(linker, "/merge:B279=279")
+#pragma comment(linker, "/merge:K279=279")
 /***************************************************************************
 
   Gaelco Type CG-1V/GAE1 Video Hardware

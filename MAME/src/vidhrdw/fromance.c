@@ -1,3 +1,11 @@
+#pragma code_seg("C23")
+#pragma data_seg("D23")
+#pragma bss_seg("B23")
+#pragma const_seg("K23")
+#pragma comment(linker, "/merge:D23=23")
+#pragma comment(linker, "/merge:C23=23")
+#pragma comment(linker, "/merge:B23=23")
+#pragma comment(linker, "/merge:K23=23")
 /******************************************************************************
 
 	Video Hardware for Video System Mahjong series and Pipe Dream.
@@ -427,3 +435,7 @@ VIDEO_UPDATE( pipedrm )
 	draw_sprites(bitmap,cliprect, 0);
 	draw_sprites(bitmap,cliprect, 1);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

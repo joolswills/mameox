@@ -1,11 +1,11 @@
-#pragma code_seg("C50")
-#pragma data_seg("D50")
-#pragma bss_seg("B50")
-#pragma const_seg("K50")
-#pragma comment(linker, "/merge:D50=50")
-#pragma comment(linker, "/merge:C50=50")
-#pragma comment(linker, "/merge:B50=50")
-#pragma comment(linker, "/merge:K50=50")
+#pragma code_seg("C114")
+#pragma data_seg("D114")
+#pragma bss_seg("B114")
+#pragma const_seg("K114")
+#pragma comment(linker, "/merge:D114=114")
+#pragma comment(linker, "/merge:C114=114")
+#pragma comment(linker, "/merge:B114=114")
+#pragma comment(linker, "/merge:K114=114")
 /***************************************************************************
 
 	Atari GX2 hardware

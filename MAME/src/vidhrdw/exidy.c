@@ -1,3 +1,11 @@
+#pragma code_seg("C18")
+#pragma data_seg("D18")
+#pragma bss_seg("B18")
+#pragma const_seg("K18")
+#pragma comment(linker, "/merge:D18=18")
+#pragma comment(linker, "/merge:C18=18")
+#pragma comment(linker, "/merge:B18=18")
+#pragma comment(linker, "/merge:K18=18")
 /*************************************************************************
 
 	Exidy 6502 hardware
@@ -488,3 +496,7 @@ VIDEO_UPDATE( exidy )
 	/* indicate that we already updated the background */
 	update_complete = 1;
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

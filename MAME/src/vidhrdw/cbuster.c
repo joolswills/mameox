@@ -1,11 +1,11 @@
-#pragma code_seg("C104")
-#pragma data_seg("D104")
-#pragma bss_seg("B104")
-#pragma const_seg("K104")
-#pragma comment(linker, "/merge:D104=104")
-#pragma comment(linker, "/merge:C104=104")
-#pragma comment(linker, "/merge:B104=104")
-#pragma comment(linker, "/merge:K104=104")
+#pragma code_seg("C170")
+#pragma data_seg("D170")
+#pragma bss_seg("B170")
+#pragma const_seg("K170")
+#pragma comment(linker, "/merge:D170=170")
+#pragma comment(linker, "/merge:C170=170")
+#pragma comment(linker, "/merge:B170=170")
+#pragma comment(linker, "/merge:K170=170")
 /***************************************************************************
 
    Crude Buster Video emulation - Bryan McPhail, mish@tendril.co.uk

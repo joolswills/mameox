@@ -1,11 +1,11 @@
-#pragma code_seg("C111")
-#pragma data_seg("D111")
-#pragma bss_seg("B111")
-#pragma const_seg("K111")
-#pragma comment(linker, "/merge:D111=111")
-#pragma comment(linker, "/merge:C111=111")
-#pragma comment(linker, "/merge:B111=111")
-#pragma comment(linker, "/merge:K111=111")
+#pragma code_seg("C177")
+#pragma data_seg("D177")
+#pragma bss_seg("B177")
+#pragma const_seg("K177")
+#pragma comment(linker, "/merge:D177=177")
+#pragma comment(linker, "/merge:C177=177")
+#pragma comment(linker, "/merge:B177=177")
+#pragma comment(linker, "/merge:K177=177")
 /*************************************************************************
  Universal Cheeky Mouse Driver
  (c)Lee Taylor May 1998, All rights reserved.

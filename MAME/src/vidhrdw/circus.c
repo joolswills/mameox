@@ -1,11 +1,11 @@
-#pragma code_seg("C116")
-#pragma data_seg("D116")
-#pragma bss_seg("B116")
-#pragma const_seg("K116")
-#pragma comment(linker, "/merge:D116=116")
-#pragma comment(linker, "/merge:C116=116")
-#pragma comment(linker, "/merge:B116=116")
-#pragma comment(linker, "/merge:K116=116")
+#pragma code_seg("C182")
+#pragma data_seg("D182")
+#pragma bss_seg("B182")
+#pragma const_seg("K182")
+#pragma comment(linker, "/merge:D182=182")
+#pragma comment(linker, "/merge:C182=182")
+#pragma comment(linker, "/merge:B182=182")
+#pragma comment(linker, "/merge:K182=182")
 /***************************************************************************
 
   vidhrdw.c

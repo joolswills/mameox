@@ -1,11 +1,11 @@
-#pragma code_seg("C147")
-#pragma data_seg("D147")
-#pragma bss_seg("B147")
-#pragma const_seg("K147")
-#pragma comment(linker, "/merge:D147=147")
-#pragma comment(linker, "/merge:C147=147")
-#pragma comment(linker, "/merge:B147=147")
-#pragma comment(linker, "/merge:K147=147")
+#pragma code_seg("C213")
+#pragma data_seg("D213")
+#pragma bss_seg("B213")
+#pragma const_seg("K213")
+#pragma comment(linker, "/merge:D213=213")
+#pragma comment(linker, "/merge:C213=213")
+#pragma comment(linker, "/merge:B213=213")
+#pragma comment(linker, "/merge:K213=213")
 /***************************************************************************
 
 	D-Con video hardware.

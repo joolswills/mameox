@@ -1,3 +1,11 @@
+#pragma code_seg("C11")
+#pragma data_seg("D11")
+#pragma bss_seg("B11")
+#pragma const_seg("K11")
+#pragma comment(linker, "/merge:D11=11")
+#pragma comment(linker, "/merge:C11=11")
+#pragma comment(linker, "/merge:B11=11")
+#pragma comment(linker, "/merge:K11=11")
 /***************************************************************************
 
   vidhrdw.c
@@ -258,3 +266,7 @@ VIDEO_UPDATE( espial )
 
 	draw_sprites(bitmap, cliprect);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,11 +1,11 @@
-#pragma code_seg("C108")
-#pragma data_seg("D108")
-#pragma bss_seg("B108")
-#pragma const_seg("K108")
-#pragma comment(linker, "/merge:D108=108")
-#pragma comment(linker, "/merge:C108=108")
-#pragma comment(linker, "/merge:B108=108")
-#pragma comment(linker, "/merge:K108=108")
+#pragma code_seg("C174")
+#pragma data_seg("D174")
+#pragma bss_seg("B174")
+#pragma const_seg("K174")
+#pragma comment(linker, "/merge:D174=174")
+#pragma comment(linker, "/merge:C174=174")
+#pragma comment(linker, "/merge:B174=174")
+#pragma comment(linker, "/merge:K174=174")
 /*************************************************************************
 
 	Atari Centipede hardware

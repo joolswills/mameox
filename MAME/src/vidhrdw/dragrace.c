@@ -1,11 +1,11 @@
-#pragma code_seg("C170")
-#pragma data_seg("D170")
-#pragma bss_seg("B170")
-#pragma const_seg("K170")
-#pragma comment(linker, "/merge:D170=170")
-#pragma comment(linker, "/merge:C170=170")
-#pragma comment(linker, "/merge:B170=170")
-#pragma comment(linker, "/merge:K170=170")
+#pragma code_seg("C236")
+#pragma data_seg("D236")
+#pragma bss_seg("B236")
+#pragma const_seg("K236")
+#pragma comment(linker, "/merge:D236=236")
+#pragma comment(linker, "/merge:C236=236")
+#pragma comment(linker, "/merge:B236=236")
+#pragma comment(linker, "/merge:K236=236")
 /***************************************************************************
 
 Atari Drag Race video emulation

@@ -1,11 +1,11 @@
-#pragma code_seg("C52")
-#pragma data_seg("D52")
-#pragma bss_seg("B52")
-#pragma const_seg("K52")
-#pragma comment(linker, "/merge:D52=52")
-#pragma comment(linker, "/merge:C52=52")
-#pragma comment(linker, "/merge:B52=52")
-#pragma comment(linker, "/merge:K52=52")
+#pragma code_seg("C116")
+#pragma data_seg("D116")
+#pragma bss_seg("B116")
+#pragma const_seg("K116")
+#pragma comment(linker, "/merge:D116=116")
+#pragma comment(linker, "/merge:C116=116")
+#pragma comment(linker, "/merge:B116=116")
+#pragma comment(linker, "/merge:K116=116")
 /***************************************************************************
 
 	Atari System 2 hardware

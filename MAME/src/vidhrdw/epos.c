@@ -1,11 +1,11 @@
-#pragma code_seg("C176")
-#pragma data_seg("D176")
-#pragma bss_seg("B176")
-#pragma const_seg("K176")
-#pragma comment(linker, "/merge:D176=176")
-#pragma comment(linker, "/merge:C176=176")
-#pragma comment(linker, "/merge:B176=176")
-#pragma comment(linker, "/merge:K176=176")
+#pragma code_seg("C243")
+#pragma data_seg("D243")
+#pragma bss_seg("B243")
+#pragma const_seg("K243")
+#pragma comment(linker, "/merge:D243=243")
+#pragma comment(linker, "/merge:C243=243")
+#pragma comment(linker, "/merge:B243=243")
+#pragma comment(linker, "/merge:K243=243")
 /***************************************************************************
 
 	Epos games

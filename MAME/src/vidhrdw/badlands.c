@@ -1,11 +1,11 @@
-#pragma code_seg("C58")
-#pragma data_seg("D58")
-#pragma bss_seg("B58")
-#pragma const_seg("K58")
-#pragma comment(linker, "/merge:D58=58")
-#pragma comment(linker, "/merge:C58=58")
-#pragma comment(linker, "/merge:B58=58")
-#pragma comment(linker, "/merge:K58=58")
+#pragma code_seg("C122")
+#pragma data_seg("D122")
+#pragma bss_seg("B122")
+#pragma const_seg("K122")
+#pragma comment(linker, "/merge:D122=122")
+#pragma comment(linker, "/merge:C122=122")
+#pragma comment(linker, "/merge:B122=122")
+#pragma comment(linker, "/merge:K122=122")
 /***************************************************************************
 
 	Atari Bad Lands hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C60")
-#pragma data_seg("D60")
-#pragma bss_seg("B60")
-#pragma const_seg("K60")
-#pragma comment(linker, "/merge:D60=60")
-#pragma comment(linker, "/merge:C60=60")
-#pragma comment(linker, "/merge:B60=60")
-#pragma comment(linker, "/merge:K60=60")
+#pragma code_seg("C124")
+#pragma data_seg("D124")
+#pragma bss_seg("B124")
+#pragma const_seg("K124")
+#pragma comment(linker, "/merge:D124=124")
+#pragma comment(linker, "/merge:C124=124")
+#pragma comment(linker, "/merge:B124=124")
+#pragma comment(linker, "/merge:K124=124")
 /***************************************************************************
 
   vidhrdw/balsente.c

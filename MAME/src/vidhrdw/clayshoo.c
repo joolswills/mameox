@@ -1,11 +1,11 @@
-#pragma code_seg("C120")
-#pragma data_seg("D120")
-#pragma bss_seg("B120")
-#pragma const_seg("K120")
-#pragma comment(linker, "/merge:D120=120")
-#pragma comment(linker, "/merge:C120=120")
-#pragma comment(linker, "/merge:B120=120")
-#pragma comment(linker, "/merge:K120=120")
+#pragma code_seg("C186")
+#pragma data_seg("D186")
+#pragma bss_seg("B186")
+#pragma const_seg("K186")
+#pragma comment(linker, "/merge:D186=186")
+#pragma comment(linker, "/merge:C186=186")
+#pragma comment(linker, "/merge:B186=186")
+#pragma comment(linker, "/merge:K186=186")
 /***************************************************************************
 
 	Atari Clay Shoot hardware

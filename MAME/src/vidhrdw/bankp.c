@@ -1,11 +1,11 @@
-#pragma code_seg("C61")
-#pragma data_seg("D61")
-#pragma bss_seg("B61")
-#pragma const_seg("K61")
-#pragma comment(linker, "/merge:D61=61")
-#pragma comment(linker, "/merge:C61=61")
-#pragma comment(linker, "/merge:B61=61")
-#pragma comment(linker, "/merge:K61=61")
+#pragma code_seg("C125")
+#pragma data_seg("D125")
+#pragma bss_seg("B125")
+#pragma const_seg("K125")
+#pragma comment(linker, "/merge:D125=125")
+#pragma comment(linker, "/merge:C125=125")
+#pragma comment(linker, "/merge:B125=125")
+#pragma comment(linker, "/merge:K125=125")
 /***************************************************************************
 
   vidhrdw.c
@@ -229,3 +229,7 @@ VIDEO_UPDATE( bankp )
 		break;
 	}
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()
