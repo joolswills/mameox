@@ -1,4 +1,8 @@
 Version 0.65b
+  - Fixed a slight glitch in rendering where a grey/white
+    bar would show on the left and right of the rendered
+    frame. (opcode)
+
   - Fixed Sound, I think sound is nearly if not 100%
     correct, it sounds exactly like my win32 port
     of MAME as far as I can tell anyway.  Also, sound
