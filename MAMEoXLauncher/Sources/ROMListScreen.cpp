@@ -1230,11 +1230,13 @@ BOOL CROMListScreen::ImportCatverINI( void )
       CStdString tempStr;
       
 
-      DrawProgressbarMessage( m_displayDevice, 
-                              "Importing catver.ini file", 
-                              (*it).m_romFileName, 
-                              i, 
-                              m_driverMetadata.size() );
+        // Only draw every 8th item
+      if( !(i & 0x07) ) 
+        DrawProgressbarMessage( m_displayDevice, 
+                                "Importing catver.ini file", 
+                                (*it).m_romFileName, 
+                                i, 
+                                m_driverMetadata.size() );
 
         // Grab the category
       tempStr = iniFile.GetProfileString( "Category", (*it).m_romFileName, "[Unknown]" );
