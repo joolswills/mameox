@@ -1,11 +1,11 @@
-#pragma code_seg("C626")
-#pragma data_seg("D626")
-#pragma bss_seg("B626")
-#pragma const_seg("K626")
-#pragma comment(linker, "/merge:D626=626")
-#pragma comment(linker, "/merge:C626=626")
-#pragma comment(linker, "/merge:B626=626")
-#pragma comment(linker, "/merge:K626=626")
+#pragma code_seg("C672")
+#pragma data_seg("D672")
+#pragma bss_seg("B672")
+#pragma const_seg("K672")
+#pragma comment(linker, "/merge:D672=672")
+#pragma comment(linker, "/merge:C672=672")
+#pragma comment(linker, "/merge:B672=672")
+#pragma comment(linker, "/merge:K672=672")
 /******************************************************************************
 
 Super Locomotive

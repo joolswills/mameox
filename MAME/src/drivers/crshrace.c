@@ -1,11 +1,11 @@
-#pragma code_seg("C206")
-#pragma data_seg("D206")
-#pragma bss_seg("B206")
-#pragma const_seg("K206")
-#pragma comment(linker, "/merge:D206=206")
-#pragma comment(linker, "/merge:C206=206")
-#pragma comment(linker, "/merge:B206=206")
-#pragma comment(linker, "/merge:K206=206")
+#pragma code_seg("C218")
+#pragma data_seg("D218")
+#pragma bss_seg("B218")
+#pragma const_seg("K218")
+#pragma comment(linker, "/merge:D218=218")
+#pragma comment(linker, "/merge:C218=218")
+#pragma comment(linker, "/merge:B218=218")
+#pragma comment(linker, "/merge:K218=218")
 /***************************************************************************
 
 Crash Race       (c) 1993 Video System Co.

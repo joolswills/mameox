@@ -1,11 +1,11 @@
-#pragma code_seg("C381")
-#pragma data_seg("D381")
-#pragma bss_seg("B381")
-#pragma const_seg("K381")
-#pragma comment(linker, "/merge:D381=381")
-#pragma comment(linker, "/merge:C381=381")
-#pragma comment(linker, "/merge:B381=381")
-#pragma comment(linker, "/merge:K381=381")
+#pragma code_seg("C404")
+#pragma data_seg("D404")
+#pragma bss_seg("B404")
+#pragma const_seg("K404")
+#pragma comment(linker, "/merge:D404=404")
+#pragma comment(linker, "/merge:C404=404")
+#pragma comment(linker, "/merge:B404=404")
+#pragma comment(linker, "/merge:K404=404")
 /*****************************************************************************
 
 	Irem M92 video hardware, Bryan McPhail, mish@tendril.co.uk

@@ -1,11 +1,11 @@
-#pragma code_seg("C485")
-#pragma data_seg("D485")
-#pragma bss_seg("B485")
-#pragma const_seg("K485")
-#pragma comment(linker, "/merge:D485=485")
-#pragma comment(linker, "/merge:C485=485")
-#pragma comment(linker, "/merge:B485=485")
-#pragma comment(linker, "/merge:K485=485")
+#pragma code_seg("C516")
+#pragma data_seg("D516")
+#pragma bss_seg("B516")
+#pragma const_seg("K516")
+#pragma comment(linker, "/merge:D516=516")
+#pragma comment(linker, "/merge:C516=516")
+#pragma comment(linker, "/merge:B516=516")
+#pragma comment(linker, "/merge:K516=516")
 #include "driver.h"
 
 static int channel;

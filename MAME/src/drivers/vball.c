@@ -1,11 +1,11 @@
-#pragma code_seg("C702")
-#pragma data_seg("D702")
-#pragma bss_seg("B702")
-#pragma const_seg("K702")
-#pragma comment(linker, "/merge:D702=702")
-#pragma comment(linker, "/merge:C702=702")
-#pragma comment(linker, "/merge:B702=702")
-#pragma comment(linker, "/merge:K702=702")
+#pragma code_seg("C751")
+#pragma data_seg("D751")
+#pragma bss_seg("B751")
+#pragma const_seg("K751")
+#pragma comment(linker, "/merge:D751=751")
+#pragma comment(linker, "/merge:C751=751")
+#pragma comment(linker, "/merge:B751=751")
+#pragma comment(linker, "/merge:K751=751")
 /**********************************************************************************************************************
  Championship VBall
  Driver by Paul "TBBle" Hampson

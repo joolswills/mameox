@@ -1,11 +1,11 @@
-#pragma code_seg("C725")
-#pragma data_seg("D725")
-#pragma bss_seg("B725")
-#pragma const_seg("K725")
-#pragma comment(linker, "/merge:D725=725")
-#pragma comment(linker, "/merge:C725=725")
-#pragma comment(linker, "/merge:B725=725")
-#pragma comment(linker, "/merge:K725=725")
+#pragma code_seg("C775")
+#pragma data_seg("D775")
+#pragma bss_seg("B775")
+#pragma const_seg("K775")
+#pragma comment(linker, "/merge:D775=775")
+#pragma comment(linker, "/merge:C775=775")
+#pragma comment(linker, "/merge:B775=775")
+#pragma comment(linker, "/merge:K775=775")
 /***************************************************************************
 
 Atari Wolf Pack (prototype) driver

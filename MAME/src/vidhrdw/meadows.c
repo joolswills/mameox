@@ -1,11 +1,11 @@
-#pragma code_seg("C399")
-#pragma data_seg("D399")
-#pragma bss_seg("B399")
-#pragma const_seg("K399")
-#pragma comment(linker, "/merge:D399=399")
-#pragma comment(linker, "/merge:C399=399")
-#pragma comment(linker, "/merge:B399=399")
-#pragma comment(linker, "/merge:K399=399")
+#pragma code_seg("C425")
+#pragma data_seg("D425")
+#pragma bss_seg("B425")
+#pragma const_seg("K425")
+#pragma comment(linker, "/merge:D425=425")
+#pragma comment(linker, "/merge:C425=425")
+#pragma comment(linker, "/merge:B425=425")
+#pragma comment(linker, "/merge:K425=425")
 /***************************************************************************
 
 	Meadows S2650 driver

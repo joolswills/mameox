@@ -1,11 +1,11 @@
-#pragma code_seg("C260")
-#pragma data_seg("D260")
-#pragma bss_seg("B260")
-#pragma const_seg("K260")
-#pragma comment(linker, "/merge:D260=260")
-#pragma comment(linker, "/merge:C260=260")
-#pragma comment(linker, "/merge:B260=260")
-#pragma comment(linker, "/merge:K260=260")
+#pragma code_seg("C275")
+#pragma data_seg("D275")
+#pragma bss_seg("B275")
+#pragma const_seg("K275")
+#pragma comment(linker, "/merge:D275=275")
+#pragma comment(linker, "/merge:C275=275")
+#pragma comment(linker, "/merge:B275=275")
+#pragma comment(linker, "/merge:K275=275")
 /***************************************************************************
 
 Fast Lane(GX752) (c) 1987 Konami

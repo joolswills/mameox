@@ -1,11 +1,11 @@
-#pragma code_seg("C235")
-#pragma data_seg("D235")
-#pragma bss_seg("B235")
-#pragma const_seg("K235")
-#pragma comment(linker, "/merge:D235=235")
-#pragma comment(linker, "/merge:C235=235")
-#pragma comment(linker, "/merge:B235=235")
-#pragma comment(linker, "/merge:K235=235")
+#pragma code_seg("C248")
+#pragma data_seg("D248")
+#pragma bss_seg("B248")
+#pragma const_seg("K248")
+#pragma comment(linker, "/merge:D248=248")
+#pragma comment(linker, "/merge:C248=248")
+#pragma comment(linker, "/merge:B248=248")
+#pragma comment(linker, "/merge:K248=248")
 /***************************************************************************
 
 Dooyong games

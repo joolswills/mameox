@@ -1,11 +1,11 @@
-#pragma code_seg("C689")
-#pragma data_seg("D689")
-#pragma bss_seg("B689")
-#pragma const_seg("K689")
-#pragma comment(linker, "/merge:D689=689")
-#pragma comment(linker, "/merge:C689=689")
-#pragma comment(linker, "/merge:B689=689")
-#pragma comment(linker, "/merge:K689=689")
+#pragma code_seg("C737")
+#pragma data_seg("D737")
+#pragma bss_seg("B737")
+#pragma const_seg("K737")
+#pragma comment(linker, "/merge:D737=737")
+#pragma comment(linker, "/merge:C737=737")
+#pragma comment(linker, "/merge:B737=737")
+#pragma comment(linker, "/merge:K737=737")
 /***************************************************************************
 
   Tumblepop (World)     (c) 1991 Data East Corporation

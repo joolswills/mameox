@@ -1,11 +1,11 @@
-#pragma code_seg("C312")
-#pragma data_seg("D312")
-#pragma bss_seg("B312")
-#pragma const_seg("K312")
-#pragma comment(linker, "/merge:D312=312")
-#pragma comment(linker, "/merge:C312=312")
-#pragma comment(linker, "/merge:B312=312")
-#pragma comment(linker, "/merge:K312=312")
+#pragma code_seg("C328")
+#pragma data_seg("D328")
+#pragma bss_seg("B328")
+#pragma const_seg("K328")
+#pragma comment(linker, "/merge:D328=328")
+#pragma comment(linker, "/merge:C328=328")
+#pragma comment(linker, "/merge:B328=328")
+#pragma comment(linker, "/merge:K328=328")
 /* Great Swordsman (Taito) 1984
 
 TODO:

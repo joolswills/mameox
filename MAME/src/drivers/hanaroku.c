@@ -1,11 +1,11 @@
-#pragma code_seg("C321")
-#pragma data_seg("D321")
-#pragma bss_seg("B321")
-#pragma const_seg("K321")
-#pragma comment(linker, "/merge:D321=321")
-#pragma comment(linker, "/merge:C321=321")
-#pragma comment(linker, "/merge:B321=321")
-#pragma comment(linker, "/merge:K321=321")
+#pragma code_seg("C337")
+#pragma data_seg("D337")
+#pragma bss_seg("B337")
+#pragma const_seg("K337")
+#pragma comment(linker, "/merge:D337=337")
+#pragma comment(linker, "/merge:C337=337")
+#pragma comment(linker, "/merge:B337=337")
+#pragma comment(linker, "/merge:K337=337")
 /* Hanaroku */
 
 /*

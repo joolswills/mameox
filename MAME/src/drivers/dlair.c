@@ -1,11 +1,11 @@
-#pragma code_seg("C231")
-#pragma data_seg("D231")
-#pragma bss_seg("B231")
-#pragma const_seg("K231")
-#pragma comment(linker, "/merge:D231=231")
-#pragma comment(linker, "/merge:C231=231")
-#pragma comment(linker, "/merge:B231=231")
-#pragma comment(linker, "/merge:K231=231")
+#pragma code_seg("C245")
+#pragma data_seg("D245")
+#pragma bss_seg("B245")
+#pragma const_seg("K245")
+#pragma comment(linker, "/merge:D245=245")
+#pragma comment(linker, "/merge:C245=245")
+#pragma comment(linker, "/merge:B245=245")
+#pragma comment(linker, "/merge:K245=245")
 /* the way I hooked up the CTC is most likely completely wrong */
 
 #include "driver.h"

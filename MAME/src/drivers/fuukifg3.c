@@ -1,11 +1,11 @@
-#pragma code_seg("C759")
-#pragma data_seg("D759")
-#pragma bss_seg("B759")
-#pragma const_seg("K759")
-#pragma comment(linker, "/merge:D759=759")
-#pragma comment(linker, "/merge:C759=759")
-#pragma comment(linker, "/merge:B759=759")
-#pragma comment(linker, "/merge:K759=759")
+#pragma code_seg("C295")
+#pragma data_seg("D295")
+#pragma bss_seg("B295")
+#pragma const_seg("K295")
+#pragma comment(linker, "/merge:D295=295")
+#pragma comment(linker, "/merge:C295=295")
+#pragma comment(linker, "/merge:B295=295")
+#pragma comment(linker, "/merge:K295=295")
 /***************************************************************************
 
 						  -= Fuuki 32 Bit Games (FG-3) =-

@@ -1,11 +1,11 @@
-#pragma code_seg("C661")
-#pragma data_seg("D661")
-#pragma bss_seg("B661")
-#pragma const_seg("K661")
-#pragma comment(linker, "/merge:D661=661")
-#pragma comment(linker, "/merge:C661=661")
-#pragma comment(linker, "/merge:B661=661")
-#pragma comment(linker, "/merge:K661=661")
+#pragma code_seg("C708")
+#pragma data_seg("D708")
+#pragma bss_seg("B708")
+#pragma const_seg("K708")
+#pragma comment(linker, "/merge:D708=708")
+#pragma comment(linker, "/merge:C708=708")
+#pragma comment(linker, "/merge:B708=708")
+#pragma comment(linker, "/merge:K708=708")
 /******************************************************************
 
 Shark Attack

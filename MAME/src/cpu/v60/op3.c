@@ -6,8 +6,6 @@
 #pragma comment(linker, "/merge:CC8=CPU8")
 #pragma comment(linker, "/merge:CB8=CPU8")
 #pragma comment(linker, "/merge:CK8=CPU8")
-
-
 UINT32 opINCB(void) /* TRUSTED */
 {
 	UINT8 appb;

@@ -1,11 +1,11 @@
-#pragma code_seg("C757")
-#pragma data_seg("D757")
-#pragma bss_seg("B757")
-#pragma const_seg("K757")
-#pragma comment(linker, "/merge:D757=757")
-#pragma comment(linker, "/merge:C757=757")
-#pragma comment(linker, "/merge:B757=757")
-#pragma comment(linker, "/merge:K757=757")
+#pragma code_seg("C783")
+#pragma data_seg("D783")
+#pragma bss_seg("B783")
+#pragma const_seg("K783")
+#pragma comment(linker, "/merge:D783=783")
+#pragma comment(linker, "/merge:C783=783")
+#pragma comment(linker, "/merge:B783=783")
+#pragma comment(linker, "/merge:K783=783")
 /***************************************************************************
 
 XOR WORLD (c) 1990 Gaelco

@@ -1,11 +1,11 @@
-#pragma code_seg("C296")
-#pragma data_seg("D296")
-#pragma bss_seg("B296")
-#pragma const_seg("K296")
-#pragma comment(linker, "/merge:D296=296")
-#pragma comment(linker, "/merge:C296=296")
-#pragma comment(linker, "/merge:B296=296")
-#pragma comment(linker, "/merge:K296=296")
+#pragma code_seg("C312")
+#pragma data_seg("D312")
+#pragma bss_seg("B312")
+#pragma const_seg("K312")
+#pragma comment(linker, "/merge:D312=312")
+#pragma comment(linker, "/merge:C312=312")
+#pragma comment(linker, "/merge:B312=312")
+#pragma comment(linker, "/merge:K312=312")
 /***************************************************************************
 
 							Ginga NinkyouDen

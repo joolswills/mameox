@@ -1,11 +1,11 @@
-#pragma code_seg("C370")
-#pragma data_seg("D370")
-#pragma bss_seg("B370")
-#pragma const_seg("K370")
-#pragma comment(linker, "/merge:D370=370")
-#pragma comment(linker, "/merge:C370=370")
-#pragma comment(linker, "/merge:B370=370")
-#pragma comment(linker, "/merge:K370=370")
+#pragma code_seg("C392")
+#pragma data_seg("D392")
+#pragma bss_seg("B392")
+#pragma const_seg("K392")
+#pragma comment(linker, "/merge:D392=392")
+#pragma comment(linker, "/merge:C392=392")
+#pragma comment(linker, "/merge:B392=392")
+#pragma comment(linker, "/merge:K392=392")
 /***************************************************************************
 
 	Atari Liberator hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C612")
-#pragma data_seg("D612")
-#pragma bss_seg("B612")
-#pragma const_seg("K612")
-#pragma comment(linker, "/merge:D612=612")
-#pragma comment(linker, "/merge:C612=612")
-#pragma comment(linker, "/merge:B612=612")
-#pragma comment(linker, "/merge:K612=612")
+#pragma code_seg("C655")
+#pragma data_seg("D655")
+#pragma bss_seg("B655")
+#pragma const_seg("K655")
+#pragma comment(linker, "/merge:D655=655")
+#pragma comment(linker, "/merge:C655=655")
+#pragma comment(linker, "/merge:B655=655")
+#pragma comment(linker, "/merge:K655=655")
 /***************************************************************************
 
 Atari Starship 1 video emulation

@@ -1,11 +1,11 @@
-#pragma code_seg("C787")
-#pragma data_seg("D787")
-#pragma bss_seg("B787")
-#pragma const_seg("K787")
-#pragma comment(linker, "/merge:D787=787")
-#pragma comment(linker, "/merge:C787=787")
-#pragma comment(linker, "/merge:B787=787")
-#pragma comment(linker, "/merge:K787=787")
+#pragma code_seg("C470")
+#pragma data_seg("D470")
+#pragma bss_seg("B470")
+#pragma const_seg("K470")
+#pragma comment(linker, "/merge:D470=470")
+#pragma comment(linker, "/merge:C470=470")
+#pragma comment(linker, "/merge:B470=470")
+#pragma comment(linker, "/merge:K470=470")
 /***************************************************************************
 
   Namco System 10 - Arcade PSX Hardware

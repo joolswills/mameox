@@ -1,11 +1,11 @@
-#pragma code_seg("C687")
-#pragma data_seg("D687")
-#pragma bss_seg("B687")
-#pragma const_seg("K687")
-#pragma comment(linker, "/merge:D687=687")
-#pragma comment(linker, "/merge:C687=687")
-#pragma comment(linker, "/merge:B687=687")
-#pragma comment(linker, "/merge:K687=687")
+#pragma code_seg("C735")
+#pragma data_seg("D735")
+#pragma bss_seg("B735")
+#pragma const_seg("K735")
+#pragma comment(linker, "/merge:D735=735")
+#pragma comment(linker, "/merge:C735=735")
+#pragma comment(linker, "/merge:B735=735")
+#pragma comment(linker, "/merge:K735=735")
 /***************************************************************************
 
 Tube Panic

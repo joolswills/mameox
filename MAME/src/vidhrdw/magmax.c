@@ -1,11 +1,11 @@
-#pragma code_seg("C384")
-#pragma data_seg("D384")
-#pragma bss_seg("B384")
-#pragma const_seg("K384")
-#pragma comment(linker, "/merge:D384=384")
-#pragma comment(linker, "/merge:C384=384")
-#pragma comment(linker, "/merge:B384=384")
-#pragma comment(linker, "/merge:K384=384")
+#pragma code_seg("C407")
+#pragma data_seg("D407")
+#pragma bss_seg("B407")
+#pragma const_seg("K407")
+#pragma comment(linker, "/merge:D407=407")
+#pragma comment(linker, "/merge:C407=407")
+#pragma comment(linker, "/merge:B407=407")
+#pragma comment(linker, "/merge:K407=407")
 /***************************************************************************
 
 Video Hardware for MAGMAX.

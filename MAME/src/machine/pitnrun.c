@@ -1,11 +1,11 @@
-#pragma code_seg("C751")
-#pragma data_seg("D751")
-#pragma bss_seg("B751")
-#pragma const_seg("K751")
-#pragma comment(linker, "/merge:D751=751")
-#pragma comment(linker, "/merge:C751=751")
-#pragma comment(linker, "/merge:B751=751")
-#pragma comment(linker, "/merge:K751=751")
+#pragma code_seg("C524")
+#pragma data_seg("D524")
+#pragma bss_seg("B524")
+#pragma const_seg("K524")
+#pragma comment(linker, "/merge:D524=524")
+#pragma comment(linker, "/merge:C524=524")
+#pragma comment(linker, "/merge:B524=524")
+#pragma comment(linker, "/merge:K524=524")
 /***************************************************************************
 
 	Pit&Run  

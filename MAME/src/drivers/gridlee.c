@@ -1,11 +1,11 @@
-#pragma code_seg("C307")
-#pragma data_seg("D307")
-#pragma bss_seg("B307")
-#pragma const_seg("K307")
-#pragma comment(linker, "/merge:D307=307")
-#pragma comment(linker, "/merge:C307=307")
-#pragma comment(linker, "/merge:B307=307")
-#pragma comment(linker, "/merge:K307=307")
+#pragma code_seg("C324")
+#pragma data_seg("D324")
+#pragma bss_seg("B324")
+#pragma const_seg("K324")
+#pragma comment(linker, "/merge:D324=324")
+#pragma comment(linker, "/merge:C324=324")
+#pragma comment(linker, "/merge:B324=324")
+#pragma comment(linker, "/merge:K324=324")
 /***************************************************************************
 
 	Videa Gridlee hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C145")
-#pragma data_seg("D145")
-#pragma bss_seg("B145")
-#pragma const_seg("K145")
-#pragma comment(linker, "/merge:D145=145")
-#pragma comment(linker, "/merge:C145=145")
-#pragma comment(linker, "/merge:B145=145")
-#pragma comment(linker, "/merge:K145=145")
+#pragma code_seg("C156")
+#pragma data_seg("D156")
+#pragma bss_seg("B156")
+#pragma const_seg("K156")
+#pragma comment(linker, "/merge:D156=156")
+#pragma comment(linker, "/merge:C156=156")
+#pragma comment(linker, "/merge:B156=156")
+#pragma comment(linker, "/merge:K156=156")
 /***************************************************************************
 
 Block Hole (GX973) (c) 1989 Konami

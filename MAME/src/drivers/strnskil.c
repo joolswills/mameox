@@ -1,11 +1,11 @@
-#pragma code_seg("C617")
-#pragma data_seg("D617")
-#pragma bss_seg("B617")
-#pragma const_seg("K617")
-#pragma comment(linker, "/merge:D617=617")
-#pragma comment(linker, "/merge:C617=617")
-#pragma comment(linker, "/merge:B617=617")
-#pragma comment(linker, "/merge:K617=617")
+#pragma code_seg("C660")
+#pragma data_seg("D660")
+#pragma bss_seg("B660")
+#pragma const_seg("K660")
+#pragma comment(linker, "/merge:D660=660")
+#pragma comment(linker, "/merge:C660=660")
+#pragma comment(linker, "/merge:B660=660")
+#pragma comment(linker, "/merge:K660=660")
 /*****************************************************************************
 
 Strength & Skill (c) 1984 Sun Electronics

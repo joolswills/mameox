@@ -1,11 +1,11 @@
-#pragma code_seg("C564")
-#pragma data_seg("D564")
-#pragma bss_seg("B564")
-#pragma const_seg("K564")
-#pragma comment(linker, "/merge:D564=564")
-#pragma comment(linker, "/merge:C564=564")
-#pragma comment(linker, "/merge:B564=564")
-#pragma comment(linker, "/merge:K564=564")
+#pragma code_seg("C602")
+#pragma data_seg("D602")
+#pragma bss_seg("B602")
+#pragma const_seg("K602")
+#pragma comment(linker, "/merge:D602=602")
+#pragma comment(linker, "/merge:C602=602")
+#pragma comment(linker, "/merge:B602=602")
+#pragma comment(linker, "/merge:K602=602")
 /***************************************************************************
 
 Shanghai

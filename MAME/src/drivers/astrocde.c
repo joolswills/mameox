@@ -1,11 +1,11 @@
-#pragma code_seg("C108")
-#pragma data_seg("D108")
-#pragma bss_seg("B108")
-#pragma const_seg("K108")
-#pragma comment(linker, "/merge:D108=108")
-#pragma comment(linker, "/merge:C108=108")
-#pragma comment(linker, "/merge:B108=108")
-#pragma comment(linker, "/merge:K108=108")
+#pragma code_seg("C118")
+#pragma data_seg("D118")
+#pragma bss_seg("B118")
+#pragma const_seg("K118")
+#pragma comment(linker, "/merge:D118=118")
+#pragma comment(linker, "/merge:C118=118")
+#pragma comment(linker, "/merge:B118=118")
+#pragma comment(linker, "/merge:K118=118")
 /****************************************************************************
 
 Bally Astrocade style games

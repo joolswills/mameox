@@ -1,11 +1,11 @@
-#pragma code_seg("C674")
-#pragma data_seg("D674")
-#pragma bss_seg("B674")
-#pragma const_seg("K674")
-#pragma comment(linker, "/merge:D674=674")
-#pragma comment(linker, "/merge:C674=674")
-#pragma comment(linker, "/merge:B674=674")
-#pragma comment(linker, "/merge:K674=674")
+#pragma code_seg("C721")
+#pragma data_seg("D721")
+#pragma bss_seg("B721")
+#pragma const_seg("K721")
+#pragma comment(linker, "/merge:D721=721")
+#pragma comment(linker, "/merge:C721=721")
+#pragma comment(linker, "/merge:B721=721")
+#pragma comment(linker, "/merge:K721=721")
 /***************************************************************************
 
 	Atari Toobin' hardware

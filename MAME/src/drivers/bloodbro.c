@@ -1,11 +1,11 @@
-#pragma code_seg("C147")
-#pragma data_seg("D147")
-#pragma bss_seg("B147")
-#pragma const_seg("K147")
-#pragma comment(linker, "/merge:D147=147")
-#pragma comment(linker, "/merge:C147=147")
-#pragma comment(linker, "/merge:B147=147")
-#pragma comment(linker, "/merge:K147=147")
+#pragma code_seg("C158")
+#pragma data_seg("D158")
+#pragma bss_seg("B158")
+#pragma const_seg("K158")
+#pragma comment(linker, "/merge:D158=158")
+#pragma comment(linker, "/merge:C158=158")
+#pragma comment(linker, "/merge:B158=158")
+#pragma comment(linker, "/merge:K158=158")
 /**************************************************************************
 
 Blood Bros, West Story [+Sky Smasher]

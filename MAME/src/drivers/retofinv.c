@@ -1,11 +1,11 @@
-#pragma code_seg("C530")
-#pragma data_seg("D530")
-#pragma bss_seg("B530")
-#pragma const_seg("K530")
-#pragma comment(linker, "/merge:D530=530")
-#pragma comment(linker, "/merge:C530=530")
-#pragma comment(linker, "/merge:B530=530")
-#pragma comment(linker, "/merge:K530=530")
+#pragma code_seg("C564")
+#pragma data_seg("D564")
+#pragma bss_seg("B564")
+#pragma const_seg("K564")
+#pragma comment(linker, "/merge:D564=564")
+#pragma comment(linker, "/merge:C564=564")
+#pragma comment(linker, "/merge:B564=564")
+#pragma comment(linker, "/merge:K564=564")
 /***************************************************************************
 
 Return of the Invaders

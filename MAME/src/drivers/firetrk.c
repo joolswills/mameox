@@ -1,11 +1,11 @@
-#pragma code_seg("C265")
-#pragma data_seg("D265")
-#pragma bss_seg("B265")
-#pragma const_seg("K265")
-#pragma comment(linker, "/merge:D265=265")
-#pragma comment(linker, "/merge:C265=265")
-#pragma comment(linker, "/merge:B265=265")
-#pragma comment(linker, "/merge:K265=265")
+#pragma code_seg("C280")
+#pragma data_seg("D280")
+#pragma bss_seg("B280")
+#pragma const_seg("K280")
+#pragma comment(linker, "/merge:D280=280")
+#pragma comment(linker, "/merge:C280=280")
+#pragma comment(linker, "/merge:B280=280")
+#pragma comment(linker, "/merge:K280=280")
 /***************************************************************************
 
 Atari Fire Truck + Super Bug + Monte Carlo driver

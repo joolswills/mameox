@@ -1,11 +1,11 @@
-#pragma code_seg("C510")
-#pragma data_seg("D510")
-#pragma bss_seg("B510")
-#pragma const_seg("K510")
-#pragma comment(linker, "/merge:D510=510")
-#pragma comment(linker, "/merge:C510=510")
-#pragma comment(linker, "/merge:B510=510")
-#pragma comment(linker, "/merge:K510=510")
+#pragma code_seg("C542")
+#pragma data_seg("D542")
+#pragma bss_seg("B542")
+#pragma const_seg("K542")
+#pragma comment(linker, "/merge:D542=542")
+#pragma comment(linker, "/merge:C542=542")
+#pragma comment(linker, "/merge:B542=542")
+#pragma comment(linker, "/merge:K542=542")
 /*
 
 Psikyo PS6406B (PS3v1/PS5/PS5v2):

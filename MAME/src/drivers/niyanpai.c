@@ -1,11 +1,11 @@
-#pragma code_seg("C459")
-#pragma data_seg("D459")
-#pragma bss_seg("B459")
-#pragma const_seg("K459")
-#pragma comment(linker, "/merge:D459=459")
-#pragma comment(linker, "/merge:C459=459")
-#pragma comment(linker, "/merge:B459=459")
-#pragma comment(linker, "/merge:K459=459")
+#pragma code_seg("C489")
+#pragma data_seg("D489")
+#pragma bss_seg("B489")
+#pragma const_seg("K489")
+#pragma comment(linker, "/merge:D489=489")
+#pragma comment(linker, "/merge:C489=489")
+#pragma comment(linker, "/merge:B489=489")
+#pragma comment(linker, "/merge:K489=489")
 /******************************************************************************
 
 	Game Driver for Nichibutsu Mahjong series.

@@ -1,11 +1,11 @@
-#pragma code_seg("C540")
-#pragma data_seg("D540")
-#pragma bss_seg("B540")
-#pragma const_seg("K540")
-#pragma comment(linker, "/merge:D540=540")
-#pragma comment(linker, "/merge:C540=540")
-#pragma comment(linker, "/merge:B540=540")
-#pragma comment(linker, "/merge:K540=540")
+#pragma code_seg("C574")
+#pragma data_seg("D574")
+#pragma bss_seg("B574")
+#pragma const_seg("K574")
+#pragma comment(linker, "/merge:D574=574")
+#pragma comment(linker, "/merge:C574=574")
+#pragma comment(linker, "/merge:B574=574")
+#pragma comment(linker, "/merge:K574=574")
 /****************************************************************************
 
 Royal Mahjong (c) 1982 Falcon

@@ -15,7 +15,7 @@
   #include <xbdm.h>
 #endif
 
-#include "Sections.h"
+#include "XBESectionUtil.h"
 
 #include "MAMEoX.h"
 #include "InputManager.h"
@@ -228,15 +228,18 @@ static BOOL Helper_RunRom( UINT32 romIndex )
 
   std::string DriverName = drivers[romIndex]->source_file;
   
-  PRINTMSG( T_INFO, "*** Driver name: %s\n", drivers[romIndex]->source_file );
+  PRINTMSG(( T_INFO, "*** Driver name: %s\n", drivers[romIndex]->source_file ));
 
     // VC6 seems to be calling this with the full path so strstr just trims down the path
     // appropriately. NOTE: we probably don't need this to conditionally compile and could
     // just leave the first call but would like someone with VS.net to test first just in case :)
     //
     // Should be perfectly fine w/ the strstr
+PRINTMSG(( T_INFO, "LoadDriverSectionByName" ));
   if( !LoadDriverSectionByName( strstr(DriverName.c_str(),"src\\drivers\\") ) )
-    PRINTMSG( T_ERROR, "Failed to load section for file %s!", DriverName.c_str() );
+    PRINTMSG(( T_ERROR, "Failed to load section for file %s!", DriverName.c_str() ));
+PRINTMSG(( T_INFO, "LoadDriverSectionByName Done" ));
+
 
     // Unload all the other XBE data sections, as we'll only be using the one
     // for the file we're loading
@@ -244,12 +247,16 @@ static BOOL Helper_RunRom( UINT32 romIndex )
     // This increments the refcount on the driver causing the system 
     // not to release anything allocated by the segment back to the heap
     // (MAME shouldn't allocate anything at this point, but it's good to be safe)
+PRINTMSG(( T_INFO, "UnloadDriverSections" ));
   UnloadDriverSections();
-  //UnloadCPUSections();  // Sections are unloaded in mame/src/cpuexec.c
+  //UnloadCPUSections();          // CPU sections are unloaded in mame/src/cpuexec.c
+PRINTMSG(( T_INFO, "UnloadDriverSections Done" ));
 
     // Free up unneeded sectionizer memory
+PRINTMSG(( T_INFO, "TerminateDriverSectionizer" ));
   TerminateDriverSectionizer();
-//  TerminateCPUSectionizer();
+PRINTMSG(( T_INFO, "TerminateDriverSectionizer done" ));
+//  TerminateCPUSectionizer();    // CPU sectionizer is unloaded in mame/src/cpuexec.c
 
     // Override sound processing
   DWORD samplerate = options.samplerate;
@@ -258,19 +265,22 @@ static BOOL Helper_RunRom( UINT32 romIndex )
 
 
     // Unload the "STARTUP" section
+PRINTMSG(( T_INFO, "XFreeSection" ));
   XFreeSection( "STARTUP" );
+PRINTMSG(( T_INFO, "XFreeSection Done" ));
 
-  #ifdef _DEBUG
+//  #ifdef _DEBUG
   {
     MEMORYSTATUS memStatus;
     GlobalMemoryStatus(  &memStatus );
-    PRINTMSG( T_INFO, 
+    PRINTMSG(( T_INFO, 
               "Memory: %lu/%lu",
               memStatus.dwAvailPhys, 
-              memStatus.dwTotalPhys );
+              memStatus.dwTotalPhys ));
   }
-  #endif
+//  #endif
 
+PRINTMSG(( T_INFO, "run_game" ));
 	ret = run_game( romIndex );
 
     // Restore the old value, just in case somebody writes to the INI
@@ -296,7 +306,7 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
   vsprintf( buf, fmt, arg );
   va_end( arg );
 
-	PRINTMSG( T_ERROR, "Die: %s", buf );
+	PRINTMSG(( T_ERROR, "Die: %s", buf ));
 	g_inputManager.WaitForNoButton();
 
   while( !(g_inputManager.IsAnyButtonPressed() || g_inputManager.IsAnyKeyPressed()) )
@@ -371,18 +381,18 @@ static BOOL Helper_SaveDriverInfoFile( void )
 {
 	DWORD len;
 	CStdString driverListFile = DEFAULT_MAMEOXSYSTEMPATH "\\" DRIVERLISTFILENAME;
-	PRINTMSG( T_INFO, "Store driver list: %s", driverListFile.c_str() );
+	PRINTMSG(( T_INFO, "Store driver list: %s", driverListFile.c_str() ));
 
   osd_file *file = osd_fopen( FILETYPE_MAMEOX_SYSTEM, 0, DRIVERLISTFILENAME, "w" );
 	if( !file )
 	{
-		PRINTMSG( T_ERROR, "Could not create file %s!", driverListFile.c_str() );
+		PRINTMSG(( T_ERROR, "Could not create file %s!", driverListFile.c_str() ));
 		return FALSE;
 	}
 
   if( osd_fwrite( file, DRIVERLIST_FILESTAMP, sizeof(DRIVERLIST_FILESTAMP) - 1 ) != sizeof(DRIVERLIST_FILESTAMP) - 1 )
 	{
-		PRINTMSG( T_ERROR, "Write failed!" );
+		PRINTMSG(( T_ERROR, "Write failed!" ));
 		osd_fclose( file );
 
 			// Delete the file
@@ -399,7 +409,7 @@ static BOOL Helper_SaveDriverInfoFile( void )
   {
     osd_fclose( file );
 		DeleteFile( driverListFile.c_str() );
-    PRINTMSG( T_ERROR, "Could not calculate driver list signature!" );
+    PRINTMSG(( T_ERROR, "Could not calculate driver list signature!" ));
     Die( g_graphicsManager.GetD3DDevice(), "Could not calculate driver list signature!" );
   }
 
@@ -409,7 +419,7 @@ static BOOL Helper_SaveDriverInfoFile( void )
   {
     osd_fclose( file );
 		DeleteFile( driverListFile.c_str() );
-    PRINTMSG( T_ERROR, "Could not allocate memory for driver list signature!" );
+    PRINTMSG(( T_ERROR, "Could not allocate memory for driver list signature!" ));
     Die( g_graphicsManager.GetD3DDevice(), "Could not allocate memory for driver list signature!" );
   }
 
@@ -419,7 +429,7 @@ static BOOL Helper_SaveDriverInfoFile( void )
     free( sigData );
     osd_fclose( file );
 		DeleteFile( driverListFile.c_str() );
-    PRINTMSG( T_ERROR, "Failed writing blank signature!" );
+    PRINTMSG(( T_ERROR, "Failed writing blank signature!" ));
     Die( g_graphicsManager.GetD3DDevice(), "Failed writing blank signature!" );
   }
 
@@ -430,7 +440,7 @@ static BOOL Helper_SaveDriverInfoFile( void )
     if( XCalculateSignatureUpdate( sigHandle, (const BYTE *)(_data__), (_dataSize__) ) != ERROR_SUCCESS || \
         osd_fwrite( file, (_data__), (_dataSize__) ) != (_dataSize__) ) \
     { \
-      PRINTMSG( T_ERROR, "Write failed!" ); \
+      PRINTMSG(( T_ERROR, "Write failed!" )); \
       free( sigData ); \
       osd_fclose( file ); \
       DeleteFile( driverListFile.c_str() ); \
@@ -541,7 +551,7 @@ static BOOL Helper_SaveDriverInfoFile( void )
     free( sigData );
     osd_fclose( file );
 		DeleteFile( driverListFile.c_str() );
-    PRINTMSG( T_ERROR, "Failed getting signature!" );
+    PRINTMSG(( T_ERROR, "Failed getting signature!" ));
     Die( g_graphicsManager.GetD3DDevice(), "Failed getting signature!" );
   }
 
@@ -552,7 +562,7 @@ static BOOL Helper_SaveDriverInfoFile( void )
     free( sigData );
     osd_fclose( file );
 		DeleteFile( driverListFile.c_str() );
-    PRINTMSG( T_ERROR, "Failed writing signature!" );
+    PRINTMSG(( T_ERROR, "Failed writing signature!" ));
     Die( g_graphicsManager.GetD3DDevice(), "Failed writing signature!" );
   }
 

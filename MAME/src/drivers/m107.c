@@ -1,11 +1,11 @@
-#pragma code_seg("C376")
-#pragma data_seg("D376")
-#pragma bss_seg("B376")
-#pragma const_seg("K376")
-#pragma comment(linker, "/merge:D376=376")
-#pragma comment(linker, "/merge:C376=376")
-#pragma comment(linker, "/merge:B376=376")
-#pragma comment(linker, "/merge:K376=376")
+#pragma code_seg("C399")
+#pragma data_seg("D399")
+#pragma bss_seg("B399")
+#pragma const_seg("K399")
+#pragma comment(linker, "/merge:D399=399")
+#pragma comment(linker, "/merge:C399=399")
+#pragma comment(linker, "/merge:B399=399")
+#pragma comment(linker, "/merge:K399=399")
 /*******************************************************************************
 
 	Irem M107 games:

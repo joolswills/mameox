@@ -1,11 +1,11 @@
-#pragma code_seg("C598")
-#pragma data_seg("D598")
-#pragma bss_seg("B598")
-#pragma const_seg("K598")
-#pragma comment(linker, "/merge:D598=598")
-#pragma comment(linker, "/merge:C598=598")
-#pragma comment(linker, "/merge:B598=598")
-#pragma comment(linker, "/merge:K598=598")
+#pragma code_seg("C637")
+#pragma data_seg("D637")
+#pragma bss_seg("B637")
+#pragma const_seg("K637")
+#pragma comment(linker, "/merge:D637=637")
+#pragma comment(linker, "/merge:C637=637")
+#pragma comment(linker, "/merge:B637=637")
+#pragma comment(linker, "/merge:K637=637")
 /***************************************************************************
 
 Splash! (c) 1992 Gaelco

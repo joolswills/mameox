@@ -1,11 +1,11 @@
-#pragma code_seg("C467")
-#pragma data_seg("D467")
-#pragma bss_seg("B467")
-#pragma const_seg("K467")
-#pragma comment(linker, "/merge:D467=467")
-#pragma comment(linker, "/merge:C467=467")
-#pragma comment(linker, "/merge:B467=467")
-#pragma comment(linker, "/merge:K467=467")
+#pragma code_seg("C498")
+#pragma data_seg("D498")
+#pragma bss_seg("B498")
+#pragma const_seg("K498")
+#pragma comment(linker, "/merge:D498=498")
+#pragma comment(linker, "/merge:C498=498")
+#pragma comment(linker, "/merge:B498=498")
+#pragma comment(linker, "/merge:K498=498")
 /***************************************************************************
 
 Oli-Boo-Chu

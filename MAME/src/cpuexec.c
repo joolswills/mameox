@@ -13,7 +13,7 @@
 #include "mamedbg.h"
 #include "hiscore.h"
 
-#include "Sections.h"
+#include "XBESectionUtil.h"
 #include "DebugLogger.h"
 
 #if (HAS_M68000 || HAS_M68010 || HAS_M68020 || HAS_M68EC020)
@@ -270,16 +270,16 @@ int cpu_init(void)
 			return 1;
 	}
 
-  #ifdef _DEBUG
+  //#ifdef _DEBUG
   {
     MEMORYSTATUS memStatus;
     GlobalMemoryStatus(  &memStatus );
-    PRINTMSG( T_INFO, 
+    PRINTMSG(( T_INFO, 
               "Memory before unloading CPUs: %lu/%lu",
               memStatus.dwAvailPhys, 
-              memStatus.dwTotalPhys );
+              memStatus.dwTotalPhys ));
   }
-  #endif
+//  #endif
 
     // Now we can release the cpu sections that we are not going to use [EBA]
 
@@ -299,16 +299,16 @@ int cpu_init(void)
   UnloadCPUSections();
   TerminateCPUSectionizer();  // We'll never need to sectionize CPU stuff again
 
-  #ifdef _DEBUG
+//  #ifdef _DEBUG
   {
     MEMORYSTATUS memStatus;
     GlobalMemoryStatus(  &memStatus );
-    PRINTMSG( T_INFO, 
+    PRINTMSG(( T_INFO, 
               "Memory after unloading CPUs: %lu/%lu",
               memStatus.dwAvailPhys, 
-              memStatus.dwTotalPhys );
+              memStatus.dwTotalPhys ));
   }
-  #endif
+//  #endif
 
 
 	/* compute the perfect interleave factor */

@@ -1,11 +1,11 @@
-#pragma code_seg("C215")
-#pragma data_seg("D215")
-#pragma bss_seg("B215")
-#pragma const_seg("K215")
-#pragma comment(linker, "/merge:D215=215")
-#pragma comment(linker, "/merge:C215=215")
-#pragma comment(linker, "/merge:B215=215")
-#pragma comment(linker, "/merge:K215=215")
+#pragma code_seg("C227")
+#pragma data_seg("D227")
+#pragma bss_seg("B227")
+#pragma const_seg("K227")
+#pragma comment(linker, "/merge:D227=227")
+#pragma comment(linker, "/merge:C227=227")
+#pragma comment(linker, "/merge:B227=227")
+#pragma comment(linker, "/merge:K227=227")
 /***************************************************************************
 
 D-Day

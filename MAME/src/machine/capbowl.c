@@ -1,11 +1,11 @@
-#pragma code_seg("C166")
-#pragma data_seg("D166")
-#pragma bss_seg("B166")
-#pragma const_seg("K166")
-#pragma comment(linker, "/merge:D166=166")
-#pragma comment(linker, "/merge:C166=166")
-#pragma comment(linker, "/merge:B166=166")
-#pragma comment(linker, "/merge:K166=166")
+#pragma code_seg("C177")
+#pragma data_seg("D177")
+#pragma bss_seg("B177")
+#pragma const_seg("K177")
+#pragma comment(linker, "/merge:D177=177")
+#pragma comment(linker, "/merge:C177=177")
+#pragma comment(linker, "/merge:B177=177")
+#pragma comment(linker, "/merge:K177=177")
 /***************************************************************************
 
 	Coors Light Bowling/Bowl-O-Rama hardware

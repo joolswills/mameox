@@ -1,11 +1,11 @@
-#pragma code_seg("C669")
-#pragma data_seg("D669")
-#pragma bss_seg("B669")
-#pragma const_seg("K669")
-#pragma comment(linker, "/merge:D669=669")
-#pragma comment(linker, "/merge:C669=669")
-#pragma comment(linker, "/merge:B669=669")
-#pragma comment(linker, "/merge:K669=669")
+#pragma code_seg("C716")
+#pragma data_seg("D716")
+#pragma bss_seg("B716")
+#pragma const_seg("K716")
+#pragma comment(linker, "/merge:D716=716")
+#pragma comment(linker, "/merge:C716=716")
+#pragma comment(linker, "/merge:B716=716")
+#pragma comment(linker, "/merge:K716=716")
 #include "driver.h"
 #include "state.h"
 #include "machine/eeprom.h"

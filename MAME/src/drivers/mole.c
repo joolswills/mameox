@@ -1,11 +1,11 @@
-#pragma code_seg("C420")
-#pragma data_seg("D420")
-#pragma bss_seg("B420")
-#pragma const_seg("K420")
-#pragma comment(linker, "/merge:D420=420")
-#pragma comment(linker, "/merge:C420=420")
-#pragma comment(linker, "/merge:B420=420")
-#pragma comment(linker, "/merge:K420=420")
+#pragma code_seg("C447")
+#pragma data_seg("D447")
+#pragma bss_seg("B447")
+#pragma const_seg("K447")
+#pragma comment(linker, "/merge:D447=447")
+#pragma comment(linker, "/merge:C447=447")
+#pragma comment(linker, "/merge:B447=447")
+#pragma comment(linker, "/merge:K447=447")
 //	MOLE ATTACK    YACHIYO  1982
 //	known clones: "Holy Moly"
 //

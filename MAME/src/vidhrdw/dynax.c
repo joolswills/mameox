@@ -1,11 +1,11 @@
-#pragma code_seg("C241")
-#pragma data_seg("D241")
-#pragma bss_seg("B241")
-#pragma const_seg("K241")
-#pragma comment(linker, "/merge:D241=241")
-#pragma comment(linker, "/merge:C241=241")
-#pragma comment(linker, "/merge:B241=241")
-#pragma comment(linker, "/merge:K241=241")
+#pragma code_seg("C255")
+#pragma data_seg("D255")
+#pragma bss_seg("B255")
+#pragma const_seg("K255")
+#pragma comment(linker, "/merge:D255=255")
+#pragma comment(linker, "/merge:C255=255")
+#pragma comment(linker, "/merge:B255=255")
+#pragma comment(linker, "/merge:K255=255")
 /***************************************************************************
 
 	The CPU controls a video blitter that can read data from the ROMs

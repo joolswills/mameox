@@ -1,11 +1,11 @@
-#pragma code_seg("C700")
-#pragma data_seg("D700")
-#pragma bss_seg("B700")
-#pragma const_seg("K700")
-#pragma comment(linker, "/merge:D700=700")
-#pragma comment(linker, "/merge:C700=700")
-#pragma comment(linker, "/merge:B700=700")
-#pragma comment(linker, "/merge:K700=700")
+#pragma code_seg("C749")
+#pragma data_seg("D749")
+#pragma bss_seg("B749")
+#pragma const_seg("K749")
+#pragma comment(linker, "/merge:D749=749")
+#pragma comment(linker, "/merge:C749=749")
+#pragma comment(linker, "/merge:B749=749")
+#pragma comment(linker, "/merge:K749=749")
 /***************************************************************************
 
   Vapor Trail (World version)  (c) 1989 Data East Corporation

@@ -1,11 +1,11 @@
-#pragma code_seg("C469")
-#pragma data_seg("D469")
-#pragma bss_seg("B469")
-#pragma const_seg("K469")
-#pragma comment(linker, "/merge:D469=469")
-#pragma comment(linker, "/merge:C469=469")
-#pragma comment(linker, "/merge:B469=469")
-#pragma comment(linker, "/merge:K469=469")
+#pragma code_seg("C500")
+#pragma data_seg("D500")
+#pragma bss_seg("B500")
+#pragma const_seg("K500")
+#pragma comment(linker, "/merge:D500=500")
+#pragma comment(linker, "/merge:C500=500")
+#pragma comment(linker, "/merge:B500=500")
+#pragma comment(linker, "/merge:K500=500")
 /***************************************************************************
 
 	Midway Omega Race hardware

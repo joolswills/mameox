@@ -1,11 +1,11 @@
-#pragma code_seg("C122")
-#pragma data_seg("D122")
-#pragma bss_seg("B122")
-#pragma const_seg("K122")
-#pragma comment(linker, "/merge:D122=122")
-#pragma comment(linker, "/merge:C122=122")
-#pragma comment(linker, "/merge:B122=122")
-#pragma comment(linker, "/merge:K122=122")
+#pragma code_seg("C131")
+#pragma data_seg("D131")
+#pragma bss_seg("B131")
+#pragma const_seg("K131")
+#pragma comment(linker, "/merge:D131=131")
+#pragma comment(linker, "/merge:C131=131")
+#pragma comment(linker, "/merge:B131=131")
+#pragma comment(linker, "/merge:K131=131")
 /***************************************************************************
 
 	Centuri Aztarac hardware

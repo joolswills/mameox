@@ -1,11 +1,11 @@
-#pragma code_seg("C351")
-#pragma data_seg("D351")
-#pragma bss_seg("B351")
-#pragma const_seg("K351")
-#pragma comment(linker, "/merge:D351=351")
-#pragma comment(linker, "/merge:C351=351")
-#pragma comment(linker, "/merge:B351=351")
-#pragma comment(linker, "/merge:K351=351")
+#pragma code_seg("C371")
+#pragma data_seg("D371")
+#pragma bss_seg("B371")
+#pragma const_seg("K371")
+#pragma comment(linker, "/merge:D371=371")
+#pragma comment(linker, "/merge:C371=371")
+#pragma comment(linker, "/merge:B371=371")
+#pragma comment(linker, "/merge:K371=371")
 /* Driver Info
 
 Kick Goal (c)1995 TCH

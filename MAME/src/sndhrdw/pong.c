@@ -1,11 +1,11 @@
-#pragma code_seg("C766")
-#pragma data_seg("D766")
-#pragma bss_seg("B766")
-#pragma const_seg("K766")
-#pragma comment(linker, "/merge:D766=766")
-#pragma comment(linker, "/merge:C766=766")
-#pragma comment(linker, "/merge:B766=766")
-#pragma comment(linker, "/merge:K766=766")
+#pragma code_seg("C532")
+#pragma data_seg("D532")
+#pragma bss_seg("B532")
+#pragma const_seg("K532")
+#pragma comment(linker, "/merge:D532=532")
+#pragma comment(linker, "/merge:C532=532")
+#pragma comment(linker, "/merge:B532=532")
+#pragma comment(linker, "/merge:K532=532")
 /***************************************************************************
 	pong.c
 	Sound handler

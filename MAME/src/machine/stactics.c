@@ -1,11 +1,11 @@
-#pragma code_seg("C608")
-#pragma data_seg("D608")
-#pragma bss_seg("B608")
-#pragma const_seg("K608")
-#pragma comment(linker, "/merge:D608=608")
-#pragma comment(linker, "/merge:C608=608")
-#pragma comment(linker, "/merge:B608=608")
-#pragma comment(linker, "/merge:K608=608")
+#pragma code_seg("C651")
+#pragma data_seg("D651")
+#pragma bss_seg("B651")
+#pragma const_seg("K651")
+#pragma comment(linker, "/merge:D651=651")
+#pragma comment(linker, "/merge:C651=651")
+#pragma comment(linker, "/merge:B651=651")
+#pragma comment(linker, "/merge:K651=651")
 #include "driver.h"
 
 /* needed in vidhrdw/stactics.c */

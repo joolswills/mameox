@@ -1,11 +1,11 @@
-#pragma code_seg("C148")
-#pragma data_seg("D148")
-#pragma bss_seg("B148")
-#pragma const_seg("K148")
-#pragma comment(linker, "/merge:D148=148")
-#pragma comment(linker, "/merge:C148=148")
-#pragma comment(linker, "/merge:B148=148")
-#pragma comment(linker, "/merge:K148=148")
+#pragma code_seg("C159")
+#pragma data_seg("D159")
+#pragma bss_seg("B159")
+#pragma const_seg("K159")
+#pragma comment(linker, "/merge:D159=159")
+#pragma comment(linker, "/merge:C159=159")
+#pragma comment(linker, "/merge:B159=159")
+#pragma comment(linker, "/merge:K159=159")
 /***************************************************************************
 
 	Atari Blasteroids hardware

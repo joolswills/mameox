@@ -1,11 +1,11 @@
-#pragma code_seg("C527")
-#pragma data_seg("D527")
-#pragma bss_seg("B527")
-#pragma const_seg("K527")
-#pragma comment(linker, "/merge:D527=527")
-#pragma comment(linker, "/merge:C527=527")
-#pragma comment(linker, "/merge:B527=527")
-#pragma comment(linker, "/merge:K527=527")
+#pragma code_seg("C561")
+#pragma data_seg("D561")
+#pragma bss_seg("B561")
+#pragma const_seg("K561")
+#pragma comment(linker, "/merge:D561=561")
+#pragma comment(linker, "/merge:C561=561")
+#pragma comment(linker, "/merge:B561=561")
+#pragma comment(linker, "/merge:K561=561")
 /***************************************************************************
 
 Zero Hour / Red Clash

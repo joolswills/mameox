@@ -1,11 +1,11 @@
-#pragma code_seg("C188")
-#pragma data_seg("D188")
-#pragma bss_seg("B188")
-#pragma const_seg("K188")
-#pragma comment(linker, "/merge:D188=188")
-#pragma comment(linker, "/merge:C188=188")
-#pragma comment(linker, "/merge:B188=188")
-#pragma comment(linker, "/merge:K188=188")
+#pragma code_seg("C199")
+#pragma data_seg("D199")
+#pragma bss_seg("B199")
+#pragma const_seg("K199")
+#pragma comment(linker, "/merge:D199=199")
+#pragma comment(linker, "/merge:C199=199")
+#pragma comment(linker, "/merge:B199=199")
+#pragma comment(linker, "/merge:K199=199")
 /***************************************************************************
 
 	Atari Cloak & Dagger hardware

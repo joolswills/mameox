@@ -1,11 +1,11 @@
-#pragma code_seg("C644")
-#pragma data_seg("D644")
-#pragma bss_seg("B644")
-#pragma const_seg("K644")
-#pragma comment(linker, "/merge:D644=644")
-#pragma comment(linker, "/merge:C644=644")
-#pragma comment(linker, "/merge:B644=644")
-#pragma comment(linker, "/merge:K644=644")
+#pragma code_seg("C683")
+#pragma data_seg("D683")
+#pragma bss_seg("B683")
+#pragma const_seg("K683")
+#pragma comment(linker, "/merge:D683=683")
+#pragma comment(linker, "/merge:C683=683")
+#pragma comment(linker, "/merge:B683=683")
+#pragma comment(linker, "/merge:K683=683")
 /***************************************************************************
 
 Functions to emulate the video hardware of the machine.

@@ -1,11 +1,11 @@
-#pragma code_seg("C641")
-#pragma data_seg("D641")
-#pragma bss_seg("B641")
-#pragma const_seg("K641")
-#pragma comment(linker, "/merge:D641=641")
-#pragma comment(linker, "/merge:C641=641")
-#pragma comment(linker, "/merge:B641=641")
-#pragma comment(linker, "/merge:K641=641")
+#pragma code_seg("C689")
+#pragma data_seg("D689")
+#pragma bss_seg("B689")
+#pragma const_seg("K689")
+#pragma comment(linker, "/merge:D689=689")
+#pragma comment(linker, "/merge:C689=689")
+#pragma comment(linker, "/merge:B689=689")
+#pragma comment(linker, "/merge:K689=689")
 /*
   Taito L-System
 

@@ -1,11 +1,11 @@
-#pragma code_seg("C85")
-#pragma data_seg("D85")
-#pragma bss_seg("B85")
-#pragma const_seg("K85")
-#pragma comment(linker, "/merge:D85=85")
-#pragma comment(linker, "/merge:C85=85")
-#pragma comment(linker, "/merge:B85=85")
-#pragma comment(linker, "/merge:K85=85")
+#pragma code_seg("C94")
+#pragma data_seg("D94")
+#pragma bss_seg("B94")
+#pragma const_seg("K94")
+#pragma comment(linker, "/merge:D94=94")
+#pragma comment(linker, "/merge:C94=94")
+#pragma comment(linker, "/merge:B94=94")
+#pragma comment(linker, "/merge:K94=94")
 /*******************************************************************************
 
 	actfancr - Bryan McPhail, mish@tendril.co.uk

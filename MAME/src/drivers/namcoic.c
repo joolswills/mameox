@@ -6,8 +6,6 @@
 #pragma comment(linker, "/merge:C2=2")
 #pragma comment(linker, "/merge:B2=2")
 #pragma comment(linker, "/merge:K2=2")
-
-
 #include "state.h"
 #include "driver.h"
 #include "vidhrdw/generic.h"

@@ -1,11 +1,11 @@
-#pragma code_seg("C135")
-#pragma data_seg("D135")
-#pragma bss_seg("B135")
-#pragma const_seg("K135")
-#pragma comment(linker, "/merge:D135=135")
-#pragma comment(linker, "/merge:C135=135")
-#pragma comment(linker, "/merge:B135=135")
-#pragma comment(linker, "/merge:K135=135")
+#pragma code_seg("C144")
+#pragma data_seg("D144")
+#pragma bss_seg("B144")
+#pragma const_seg("K144")
+#pragma comment(linker, "/merge:D144=144")
+#pragma comment(linker, "/merge:C144=144")
+#pragma comment(linker, "/merge:B144=144")
+#pragma comment(linker, "/merge:K144=144")
 /***************************************************************************
 
 	Atari "Stella on Steroids" hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C164")
-#pragma data_seg("D164")
-#pragma bss_seg("B164")
-#pragma const_seg("K164")
-#pragma comment(linker, "/merge:D164=164")
-#pragma comment(linker, "/merge:C164=164")
-#pragma comment(linker, "/merge:B164=164")
-#pragma comment(linker, "/merge:K164=164")
+#pragma code_seg("C175")
+#pragma data_seg("D175")
+#pragma bss_seg("B175")
+#pragma const_seg("K175")
+#pragma comment(linker, "/merge:D175=175")
+#pragma comment(linker, "/merge:C175=175")
+#pragma comment(linker, "/merge:B175=175")
+#pragma comment(linker, "/merge:K175=175")
 /******************************************************************
 
 Cabal  (c)1998 Tad

@@ -1,11 +1,11 @@
-#pragma code_seg("C720")
-#pragma data_seg("D720")
-#pragma bss_seg("B720")
-#pragma const_seg("K720")
-#pragma comment(linker, "/merge:D720=720")
-#pragma comment(linker, "/merge:C720=720")
-#pragma comment(linker, "/merge:B720=720")
-#pragma comment(linker, "/merge:K720=720")
+#pragma code_seg("C770")
+#pragma data_seg("D770")
+#pragma bss_seg("B770")
+#pragma const_seg("K770")
+#pragma comment(linker, "/merge:D770=770")
+#pragma comment(linker, "/merge:C770=770")
+#pragma comment(linker, "/merge:B770=770")
+#pragma comment(linker, "/merge:K770=770")
 /***************************************************************************
 
 World Grand Prix	(c) Taito Corporation 1989

@@ -1,11 +1,11 @@
-#pragma code_seg("C162")
-#pragma data_seg("D162")
-#pragma bss_seg("B162")
-#pragma const_seg("K162")
-#pragma comment(linker, "/merge:D162=162")
-#pragma comment(linker, "/merge:C162=162")
-#pragma comment(linker, "/merge:B162=162")
-#pragma comment(linker, "/merge:K162=162")
+#pragma code_seg("C173")
+#pragma data_seg("D173")
+#pragma bss_seg("B173")
+#pragma const_seg("K173")
+#pragma comment(linker, "/merge:D173=173")
+#pragma comment(linker, "/merge:C173=173")
+#pragma comment(linker, "/merge:B173=173")
+#pragma comment(linker, "/merge:K173=173")
 /*****************************************************************************
 
 B-Wings  (c) 1984 Data East Corporation

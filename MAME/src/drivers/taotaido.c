@@ -1,11 +1,11 @@
-#pragma code_seg("C648")
-#pragma data_seg("D648")
-#pragma bss_seg("B648")
-#pragma const_seg("K648")
-#pragma comment(linker, "/merge:D648=648")
-#pragma comment(linker, "/merge:C648=648")
-#pragma comment(linker, "/merge:B648=648")
-#pragma comment(linker, "/merge:K648=648")
+#pragma code_seg("C694")
+#pragma data_seg("D694")
+#pragma bss_seg("B694")
+#pragma const_seg("K694")
+#pragma comment(linker, "/merge:D694=694")
+#pragma comment(linker, "/merge:C694=694")
+#pragma comment(linker, "/merge:B694=694")
+#pragma comment(linker, "/merge:K694=694")
 /***************************************************************************
 
   Tao Taido             (c) 1993 Video System

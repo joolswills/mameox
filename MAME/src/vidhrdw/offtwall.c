@@ -1,11 +1,11 @@
-#pragma code_seg("C464")
-#pragma data_seg("D464")
-#pragma bss_seg("B464")
-#pragma const_seg("K464")
-#pragma comment(linker, "/merge:D464=464")
-#pragma comment(linker, "/merge:C464=464")
-#pragma comment(linker, "/merge:B464=464")
-#pragma comment(linker, "/merge:K464=464")
+#pragma code_seg("C495")
+#pragma data_seg("D495")
+#pragma bss_seg("B495")
+#pragma const_seg("K495")
+#pragma comment(linker, "/merge:D495=495")
+#pragma comment(linker, "/merge:C495=495")
+#pragma comment(linker, "/merge:B495=495")
+#pragma comment(linker, "/merge:K495=495")
 /***************************************************************************
 
 	Atari "Round" hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C114")
-#pragma data_seg("D114")
-#pragma bss_seg("B114")
-#pragma const_seg("K114")
-#pragma comment(linker, "/merge:D114=114")
-#pragma comment(linker, "/merge:C114=114")
-#pragma comment(linker, "/merge:B114=114")
-#pragma comment(linker, "/merge:K114=114")
+#pragma code_seg("C124")
+#pragma data_seg("D124")
+#pragma bss_seg("B124")
+#pragma const_seg("K124")
+#pragma comment(linker, "/merge:D124=124")
+#pragma comment(linker, "/merge:C124=124")
+#pragma comment(linker, "/merge:B124=124")
+#pragma comment(linker, "/merge:K124=124")
 /***************************************************************************
 
 	Atari GT hardware
@@ -697,4 +697,3 @@ VIDEO_UPDATE( atarigt )
 #pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()
-

@@ -795,4 +795,3 @@ void z8000_get_info(UINT32 state, union cpuinfo *info)
 #pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()
-

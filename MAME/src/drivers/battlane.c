@@ -1,11 +1,11 @@
-#pragma code_seg("C129")
-#pragma data_seg("D129")
-#pragma bss_seg("B129")
-#pragma const_seg("K129")
-#pragma comment(linker, "/merge:D129=129")
-#pragma comment(linker, "/merge:C129=129")
-#pragma comment(linker, "/merge:B129=129")
-#pragma comment(linker, "/merge:K129=129")
+#pragma code_seg("C138")
+#pragma data_seg("D138")
+#pragma bss_seg("B138")
+#pragma const_seg("K138")
+#pragma comment(linker, "/merge:D138=138")
+#pragma comment(linker, "/merge:C138=138")
+#pragma comment(linker, "/merge:B138=138")
+#pragma comment(linker, "/merge:K138=138")
 /***************************************************************************
 
 	Battle Lane Vol. 5

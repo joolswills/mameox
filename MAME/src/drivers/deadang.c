@@ -1,11 +1,11 @@
-#pragma code_seg("C220")
-#pragma data_seg("D220")
-#pragma bss_seg("B220")
-#pragma const_seg("K220")
-#pragma comment(linker, "/merge:D220=220")
-#pragma comment(linker, "/merge:C220=220")
-#pragma comment(linker, "/merge:B220=220")
-#pragma comment(linker, "/merge:K220=220")
+#pragma code_seg("C232")
+#pragma data_seg("D232")
+#pragma bss_seg("B232")
+#pragma const_seg("K232")
+#pragma comment(linker, "/merge:D232=232")
+#pragma comment(linker, "/merge:C232=232")
+#pragma comment(linker, "/merge:B232=232")
+#pragma comment(linker, "/merge:K232=232")
 /***************************************************************************
 
 	Dead Angle							(c) 1988 Seibu Kaihatsu

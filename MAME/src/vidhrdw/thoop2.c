@@ -1,11 +1,11 @@
-#pragma code_seg("C662")
-#pragma data_seg("D662")
-#pragma bss_seg("B662")
-#pragma const_seg("K662")
-#pragma comment(linker, "/merge:D662=662")
-#pragma comment(linker, "/merge:C662=662")
-#pragma comment(linker, "/merge:B662=662")
-#pragma comment(linker, "/merge:K662=662")
+#pragma code_seg("C709")
+#pragma data_seg("D709")
+#pragma bss_seg("B709")
+#pragma const_seg("K709")
+#pragma comment(linker, "/merge:D709=709")
+#pragma comment(linker, "/merge:C709=709")
+#pragma comment(linker, "/merge:B709=709")
+#pragma comment(linker, "/merge:K709=709")
 /***************************************************************************
 
   Gaelco Type 1 Video Hardware Rev B

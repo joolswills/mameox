@@ -1,11 +1,11 @@
-#pragma code_seg("C504")
-#pragma data_seg("D504")
-#pragma bss_seg("B504")
-#pragma const_seg("K504")
-#pragma comment(linker, "/merge:D504=504")
-#pragma comment(linker, "/merge:C504=504")
-#pragma comment(linker, "/merge:B504=504")
-#pragma comment(linker, "/merge:K504=504")
+#pragma code_seg("C536")
+#pragma data_seg("D536")
+#pragma bss_seg("B536")
+#pragma const_seg("K536")
+#pragma comment(linker, "/merge:D536=536")
+#pragma comment(linker, "/merge:C536=536")
+#pragma comment(linker, "/merge:B536=536")
+#pragma comment(linker, "/merge:K536=536")
 /*
 Popper
 

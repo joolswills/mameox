@@ -1,11 +1,11 @@
-#pragma code_seg("C760")
-#pragma data_seg("D760")
-#pragma bss_seg("B760")
-#pragma const_seg("K760")
-#pragma comment(linker, "/merge:D760=760")
-#pragma comment(linker, "/merge:C760=760")
-#pragma comment(linker, "/merge:B760=760")
-#pragma comment(linker, "/merge:K760=760")
+#pragma code_seg("C446")
+#pragma data_seg("D446")
+#pragma bss_seg("B446")
+#pragma const_seg("K446")
+#pragma comment(linker, "/merge:D446=446")
+#pragma comment(linker, "/merge:C446=446")
+#pragma comment(linker, "/merge:B446=446")
+#pragma comment(linker, "/merge:K446=446")
 /* Mogura Desse */
 
 #include "driver.h"

@@ -1,11 +1,11 @@
-#pragma code_seg("C520")
-#pragma data_seg("D520")
-#pragma bss_seg("B520")
-#pragma const_seg("K520")
-#pragma comment(linker, "/merge:D520=520")
-#pragma comment(linker, "/merge:C520=520")
-#pragma comment(linker, "/merge:B520=520")
-#pragma comment(linker, "/merge:K520=520")
+#pragma code_seg("C554")
+#pragma data_seg("D554")
+#pragma bss_seg("B554")
+#pragma const_seg("K554")
+#pragma comment(linker, "/merge:D554=554")
+#pragma comment(linker, "/merge:C554=554")
+#pragma comment(linker, "/merge:B554=554")
+#pragma comment(linker, "/merge:K554=554")
 /*******************************************************************************
 
 Raiders5 (c) 1985 Taito / UPL

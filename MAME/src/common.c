@@ -14,9 +14,7 @@
 #include <ctype.h>
 
 
-//#define LOG_LOAD
-
-
+#define LOG_LOAD
 
 /***************************************************************************
 
@@ -309,7 +307,11 @@ unsigned char *memory_region(int num)
 		for (i = 0;i < MAX_MEMORY_REGIONS;i++)
 		{
 			if (Machine->memory_region[i].type == num)
+      {
+        // [EBA] Load the address if it happens to be virtual
+//        osd_vmm_accessaddress( Machine->memory_region[i].base );
 				return Machine->memory_region[i].base;
+      }
 		}
 	}
 
@@ -352,9 +354,13 @@ int new_memory_region(int num, size_t length, UINT32 flags)
 
     if (num < MAX_MEMORY_REGIONS)
     {
-        Machine->memory_region[num].length = length;
+        // [EBA]: Put GFX regions into virtual ram
+      Machine->memory_region[num].length = length;
+//      if( num == REGION_GFX1 )
+//        Machine->memory_region[num].base = osd_vmm_malloc(length);
+//      else
         Machine->memory_region[num].base = osd_malloc(length);
-        return (Machine->memory_region[num].base == NULL) ? 1 : 0;
+      return (Machine->memory_region[num].base == NULL) ? 1 : 0;
     }
     else
     {
@@ -365,7 +371,12 @@ int new_memory_region(int num, size_t length, UINT32 flags)
                 Machine->memory_region[i].length = length;
                 Machine->memory_region[i].type = num;
                 Machine->memory_region[i].flags = flags;
-                Machine->memory_region[i].base = osd_malloc(length);
+
+                  // [EBA]: Put GFX regions into virtual ram
+//                if( num == REGION_GFX1 )
+//                  Machine->memory_region[i].base = osd_vmm_malloc(length);
+//                else
+                  Machine->memory_region[i].base = osd_malloc(length);
                 return (Machine->memory_region[i].base == NULL) ? 1 : 0;
             }
         }
@@ -998,8 +1009,10 @@ void CLIB_DECL debugload(const char *string, ...)
 	va_list arg;
 	FILE *f;
 
-	f = fopen("romload.log", opened++ ? "a" : "w");
-	if (f)
+//	f = fopen("romload.log", opened++ ? "a" : "w");
+
+	f = fopen("D:\\debug.log", "a");
+  if (f)
 	{
 		va_start(arg, string);
 		vfprintf(f, string, arg);

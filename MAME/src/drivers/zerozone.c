@@ -1,11 +1,11 @@
-#pragma code_seg("C744")
-#pragma data_seg("D744")
-#pragma bss_seg("B744")
-#pragma const_seg("K744")
-#pragma comment(linker, "/merge:D744=744")
-#pragma comment(linker, "/merge:C744=744")
-#pragma comment(linker, "/merge:B744=744")
-#pragma comment(linker, "/merge:K744=744")
+#pragma code_seg("C796")
+#pragma data_seg("D796")
+#pragma bss_seg("B796")
+#pragma const_seg("K796")
+#pragma comment(linker, "/merge:D796=796")
+#pragma comment(linker, "/merge:C796=796")
+#pragma comment(linker, "/merge:B796=796")
+#pragma comment(linker, "/merge:K796=796")
 /***************************************************************************
 
 Zero Zone memory map

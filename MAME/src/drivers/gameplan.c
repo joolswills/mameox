@@ -1,11 +1,11 @@
-#pragma code_seg("C288")
-#pragma data_seg("D288")
-#pragma bss_seg("B288")
-#pragma const_seg("K288")
-#pragma comment(linker, "/merge:D288=288")
-#pragma comment(linker, "/merge:C288=288")
-#pragma comment(linker, "/merge:B288=288")
-#pragma comment(linker, "/merge:K288=288")
+#pragma code_seg("C305")
+#pragma data_seg("D305")
+#pragma bss_seg("B305")
+#pragma const_seg("K305")
+#pragma comment(linker, "/merge:D305=305")
+#pragma comment(linker, "/merge:C305=305")
+#pragma comment(linker, "/merge:B305=305")
+#pragma comment(linker, "/merge:K305=305")
 /***************************************************************************
 
 GAME PLAN driver, used for games like MegaTack, Killer Comet, Kaos, Challenger

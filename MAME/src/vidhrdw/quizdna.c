@@ -1,11 +1,11 @@
-#pragma code_seg("C516")
-#pragma data_seg("D516")
-#pragma bss_seg("B516")
-#pragma const_seg("K516")
-#pragma comment(linker, "/merge:D516=516")
-#pragma comment(linker, "/merge:C516=516")
-#pragma comment(linker, "/merge:B516=516")
-#pragma comment(linker, "/merge:K516=516")
+#pragma code_seg("C548")
+#pragma data_seg("D548")
+#pragma bss_seg("B548")
+#pragma const_seg("K548")
+#pragma comment(linker, "/merge:D548=548")
+#pragma comment(linker, "/merge:C548=548")
+#pragma comment(linker, "/merge:B548=548")
+#pragma comment(linker, "/merge:K548=548")
 /******************************************************************************
 
 Quiz DNA no Hanran (c) 1992 Face

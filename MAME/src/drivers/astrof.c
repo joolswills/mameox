@@ -1,11 +1,11 @@
-#pragma code_seg("C109")
-#pragma data_seg("D109")
-#pragma bss_seg("B109")
-#pragma const_seg("K109")
-#pragma comment(linker, "/merge:D109=109")
-#pragma comment(linker, "/merge:C109=109")
-#pragma comment(linker, "/merge:B109=109")
-#pragma comment(linker, "/merge:K109=109")
+#pragma code_seg("C119")
+#pragma data_seg("D119")
+#pragma bss_seg("B119")
+#pragma const_seg("K119")
+#pragma comment(linker, "/merge:D119=119")
+#pragma comment(linker, "/merge:C119=119")
+#pragma comment(linker, "/merge:B119=119")
+#pragma comment(linker, "/merge:K119=119")
 /*
     Driver For DECO   ASTRO FIGHTER/TOMAHAWK 777
 

@@ -1,11 +1,11 @@
-#pragma code_seg("C367")
-#pragma data_seg("D367")
-#pragma bss_seg("B367")
-#pragma const_seg("K367")
-#pragma comment(linker, "/merge:D367=367")
-#pragma comment(linker, "/merge:C367=367")
-#pragma comment(linker, "/merge:B367=367")
-#pragma comment(linker, "/merge:K367=367")
+#pragma code_seg("C389")
+#pragma data_seg("D389")
+#pragma bss_seg("B389")
+#pragma const_seg("K389")
+#pragma comment(linker, "/merge:D389=389")
+#pragma comment(linker, "/merge:C389=389")
+#pragma comment(linker, "/merge:B389=389")
+#pragma comment(linker, "/merge:K389=389")
 /***************************************************************************
 
  Leprechaun/Pot of Gold

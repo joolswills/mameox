@@ -1,3 +1,11 @@
+#pragma code_seg("C409")
+#pragma data_seg("D409")
+#pragma bss_seg("B409")
+#pragma const_seg("K409")
+#pragma comment(linker, "/merge:D409=409")
+#pragma comment(linker, "/merge:C409=409")
+#pragma comment(linker, "/merge:B409=409")
+#pragma comment(linker, "/merge:K409=409")
 #include "driver.h"
 
 static unsigned char bg_color,  old_bg_color;
@@ -198,3 +206,7 @@ VIDEO_UPDATE(mainsnk)
 	update_palette(1);
 }
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

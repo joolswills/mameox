@@ -1,11 +1,11 @@
-#pragma code_seg("C706")
-#pragma data_seg("D706")
-#pragma bss_seg("B706")
-#pragma const_seg("K706")
-#pragma comment(linker, "/merge:D706=706")
-#pragma comment(linker, "/merge:C706=706")
-#pragma comment(linker, "/merge:B706=706")
-#pragma comment(linker, "/merge:K706=706")
+#pragma code_seg("C755")
+#pragma data_seg("D755")
+#pragma bss_seg("B755")
+#pragma const_seg("K755")
+#pragma comment(linker, "/merge:D755=755")
+#pragma comment(linker, "/merge:C755=755")
+#pragma comment(linker, "/merge:B755=755")
+#pragma comment(linker, "/merge:K755=755")
 /*************************************************************************
 
 	Atari Video Pinball driver

@@ -1,11 +1,11 @@
-#pragma code_seg("C542")
-#pragma data_seg("D542")
-#pragma bss_seg("B542")
-#pragma const_seg("K542")
-#pragma comment(linker, "/merge:D542=542")
-#pragma comment(linker, "/merge:C542=542")
-#pragma comment(linker, "/merge:B542=542")
-#pragma comment(linker, "/merge:K542=542")
+#pragma code_seg("C577")
+#pragma data_seg("D577")
+#pragma bss_seg("B577")
+#pragma const_seg("K577")
+#pragma comment(linker, "/merge:D577=577")
+#pragma comment(linker, "/merge:C577=577")
+#pragma comment(linker, "/merge:B577=577")
+#pragma comment(linker, "/merge:K577=577")
 /*
    Run and Gun
    (c) 1993 Konami

@@ -1,11 +1,11 @@
-#pragma code_seg("C98")
-#pragma data_seg("D98")
-#pragma bss_seg("B98")
-#pragma const_seg("K98")
-#pragma comment(linker, "/merge:D98=98")
-#pragma comment(linker, "/merge:C98=98")
-#pragma comment(linker, "/merge:B98=98")
-#pragma comment(linker, "/merge:K98=98")
+#pragma code_seg("C107")
+#pragma data_seg("D107")
+#pragma bss_seg("B107")
+#pragma const_seg("K107")
+#pragma comment(linker, "/merge:D107=107")
+#pragma comment(linker, "/merge:C107=107")
+#pragma comment(linker, "/merge:B107=107")
+#pragma comment(linker, "/merge:K107=107")
 /* Aquarium */
 
 #include "driver.h"

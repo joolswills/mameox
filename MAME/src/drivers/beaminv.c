@@ -1,11 +1,11 @@
-#pragma code_seg("C134")
-#pragma data_seg("D134")
-#pragma bss_seg("B134")
-#pragma const_seg("K134")
-#pragma comment(linker, "/merge:D134=134")
-#pragma comment(linker, "/merge:C134=134")
-#pragma comment(linker, "/merge:B134=134")
-#pragma comment(linker, "/merge:K134=134")
+#pragma code_seg("C143")
+#pragma data_seg("D143")
+#pragma bss_seg("B143")
+#pragma const_seg("K143")
+#pragma comment(linker, "/merge:D143=143")
+#pragma comment(linker, "/merge:C143=143")
+#pragma comment(linker, "/merge:B143=143")
+#pragma comment(linker, "/merge:K143=143")
 /***************************************************************************
 
 	Tekunon Kougyou Beam Invader hardware

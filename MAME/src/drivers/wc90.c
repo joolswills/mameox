@@ -1,11 +1,11 @@
-#pragma code_seg("C716")
-#pragma data_seg("D716")
-#pragma bss_seg("B716")
-#pragma const_seg("K716")
-#pragma comment(linker, "/merge:D716=716")
-#pragma comment(linker, "/merge:C716=716")
-#pragma comment(linker, "/merge:B716=716")
-#pragma comment(linker, "/merge:K716=716")
+#pragma code_seg("C766")
+#pragma data_seg("D766")
+#pragma bss_seg("B766")
+#pragma const_seg("K766")
+#pragma comment(linker, "/merge:D766=766")
+#pragma comment(linker, "/merge:C766=766")
+#pragma comment(linker, "/merge:B766=766")
+#pragma comment(linker, "/merge:K766=766")
 /*
 World Cup 90 ( Tecmo ) driver
 -----------------------------

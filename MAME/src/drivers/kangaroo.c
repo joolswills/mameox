@@ -1,11 +1,11 @@
-#pragma code_seg("C348")
-#pragma data_seg("D348")
-#pragma bss_seg("B348")
-#pragma const_seg("K348")
-#pragma comment(linker, "/merge:D348=348")
-#pragma comment(linker, "/merge:C348=348")
-#pragma comment(linker, "/merge:B348=348")
-#pragma comment(linker, "/merge:K348=348")
+#pragma code_seg("C368")
+#pragma data_seg("D368")
+#pragma bss_seg("B368")
+#pragma const_seg("K368")
+#pragma comment(linker, "/merge:D368=368")
+#pragma comment(linker, "/merge:C368=368")
+#pragma comment(linker, "/merge:B368=368")
+#pragma comment(linker, "/merge:K368=368")
 /***************************************************************************
 
 	Sun Electronics Kangaroo hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C137")
-#pragma data_seg("D137")
-#pragma bss_seg("B137")
-#pragma const_seg("K137")
-#pragma comment(linker, "/merge:D137=137")
-#pragma comment(linker, "/merge:C137=137")
-#pragma comment(linker, "/merge:B137=137")
-#pragma comment(linker, "/merge:K137=137")
+#pragma code_seg("C146")
+#pragma data_seg("D146")
+#pragma bss_seg("B146")
+#pragma const_seg("K146")
+#pragma comment(linker, "/merge:D146=146")
+#pragma comment(linker, "/merge:C146=146")
+#pragma comment(linker, "/merge:B146=146")
+#pragma comment(linker, "/merge:K146=146")
 /***************************************************************************
 
  Berzerk Driver by Zsolt Vasvari

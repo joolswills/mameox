@@ -1,11 +1,11 @@
-#pragma code_seg("C671")
-#pragma data_seg("D671")
-#pragma bss_seg("B671")
-#pragma const_seg("K671")
-#pragma comment(linker, "/merge:D671=671")
-#pragma comment(linker, "/merge:C671=671")
-#pragma comment(linker, "/merge:B671=671")
-#pragma comment(linker, "/merge:K671=671")
+#pragma code_seg("C718")
+#pragma data_seg("D718")
+#pragma bss_seg("B718")
+#pragma const_seg("K718")
+#pragma comment(linker, "/merge:D718=718")
+#pragma comment(linker, "/merge:C718=718")
+#pragma comment(linker, "/merge:B718=718")
+#pragma comment(linker, "/merge:K718=718")
 /***************************************************************************
 				ToaPlan game hardware from 1988-1991
 				------------------------------------

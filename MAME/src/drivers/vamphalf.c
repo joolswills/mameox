@@ -1,11 +1,11 @@
-#pragma code_seg("C764")
-#pragma data_seg("D764")
-#pragma bss_seg("B764")
-#pragma const_seg("K764")
-#pragma comment(linker, "/merge:D764=764")
-#pragma comment(linker, "/merge:C764=764")
-#pragma comment(linker, "/merge:B764=764")
-#pragma comment(linker, "/merge:K764=764")
+#pragma code_seg("C748")
+#pragma data_seg("D748")
+#pragma bss_seg("B748")
+#pragma const_seg("K748")
+#pragma comment(linker, "/merge:D748=748")
+#pragma comment(linker, "/merge:C748=748")
+#pragma comment(linker, "/merge:B748=748")
+#pragma comment(linker, "/merge:K748=748")
 /********************************************************************
 
  Vampire 1/2 and other Hyperstone-based games

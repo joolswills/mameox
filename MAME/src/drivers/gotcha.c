@@ -1,11 +1,11 @@
-#pragma code_seg("C302")
-#pragma data_seg("D302")
-#pragma bss_seg("B302")
-#pragma const_seg("K302")
-#pragma comment(linker, "/merge:D302=302")
-#pragma comment(linker, "/merge:C302=302")
-#pragma comment(linker, "/merge:B302=302")
-#pragma comment(linker, "/merge:K302=302")
+#pragma code_seg("C319")
+#pragma data_seg("D319")
+#pragma bss_seg("B319")
+#pragma const_seg("K319")
+#pragma comment(linker, "/merge:D319=319")
+#pragma comment(linker, "/merge:C319=319")
+#pragma comment(linker, "/merge:B319=319")
+#pragma comment(linker, "/merge:K319=319")
 /***************************************************************************
 
 Gotcha  (c) 1997 Dongsung

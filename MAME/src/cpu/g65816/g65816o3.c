@@ -1,11 +1,11 @@
-#pragma code_seg("CC44")
-#pragma data_seg("CD44")
-#pragma bss_seg("CB44")
-#pragma const_seg("CK44")
-#pragma comment(linker, "/merge:CD44=CPU44")
-#pragma comment(linker, "/merge:CC44=CPU44")
-#pragma comment(linker, "/merge:CB44=CPU44")
-#pragma comment(linker, "/merge:CK44=CPU44")
+#pragma code_seg("CC88")
+#pragma data_seg("CD88")
+#pragma bss_seg("CB88")
+#pragma const_seg("CK88")
+#pragma comment(linker, "/merge:CD88=CPU88")
+#pragma comment(linker, "/merge:CC88=CPU88")
+#pragma comment(linker, "/merge:CB88=CPU88")
+#pragma comment(linker, "/merge:CK88=CPU88")
 #include "g65816cm.h"
 #define EXECUTION_MODE EXECUTION_MODE_M1X1
 #include "g65816op.h"

@@ -1,11 +1,11 @@
-#pragma code_seg("C774")
-#pragma data_seg("D774")
-#pragma bss_seg("B774")
-#pragma const_seg("K774")
-#pragma comment(linker, "/merge:D774=774")
-#pragma comment(linker, "/merge:C774=774")
-#pragma comment(linker, "/merge:B774=774")
-#pragma comment(linker, "/merge:K774=774")
+#pragma code_seg("C363")
+#pragma data_seg("D363")
+#pragma bss_seg("B363")
+#pragma const_seg("K363")
+#pragma comment(linker, "/merge:D363=363")
+#pragma comment(linker, "/merge:C363=363")
+#pragma comment(linker, "/merge:B363=363")
+#pragma comment(linker, "/merge:K363=363")
 /*
 Jumping Cross - (c) 1984 SNK
 driver by Tomasz Slanina

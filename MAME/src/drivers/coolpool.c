@@ -1,11 +1,11 @@
-#pragma code_seg("C197")
-#pragma data_seg("D197")
-#pragma bss_seg("B197")
-#pragma const_seg("K197")
-#pragma comment(linker, "/merge:D197=197")
-#pragma comment(linker, "/merge:C197=197")
-#pragma comment(linker, "/merge:B197=197")
-#pragma comment(linker, "/merge:K197=197")
+#pragma code_seg("C208")
+#pragma data_seg("D208")
+#pragma bss_seg("B208")
+#pragma const_seg("K208")
+#pragma comment(linker, "/merge:D208=208")
+#pragma comment(linker, "/merge:C208=208")
+#pragma comment(linker, "/merge:B208=208")
+#pragma comment(linker, "/merge:K208=208")
 /***************************************************************************
 
 AmeriDarts      (c) 1989 Ameri Corporation

@@ -1,11 +1,11 @@
-#pragma code_seg("C167")
-#pragma data_seg("D167")
-#pragma bss_seg("B167")
-#pragma const_seg("K167")
-#pragma comment(linker, "/merge:D167=167")
-#pragma comment(linker, "/merge:C167=167")
-#pragma comment(linker, "/merge:B167=167")
-#pragma comment(linker, "/merge:K167=167")
+#pragma code_seg("C178")
+#pragma data_seg("D178")
+#pragma bss_seg("B178")
+#pragma const_seg("K178")
+#pragma comment(linker, "/merge:D178=178")
+#pragma comment(linker, "/merge:C178=178")
+#pragma comment(linker, "/merge:B178=178")
+#pragma comment(linker, "/merge:K178=178")
 /*
 Car Jamboree
 Omori Electric CAD (OEC) 1981

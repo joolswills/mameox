@@ -1,11 +1,11 @@
-#pragma code_seg("C767")
-#pragma data_seg("D767")
-#pragma bss_seg("B767")
-#pragma const_seg("K767")
-#pragma comment(linker, "/merge:D767=767")
-#pragma comment(linker, "/merge:C767=767")
-#pragma comment(linker, "/merge:B767=767")
-#pragma comment(linker, "/merge:K767=767")
+#pragma code_seg("C352")
+#pragma data_seg("D352")
+#pragma bss_seg("B352")
+#pragma const_seg("K352")
+#pragma comment(linker, "/merge:D352=352")
+#pragma comment(linker, "/merge:C352=352")
+#pragma comment(linker, "/merge:B352=352")
+#pragma comment(linker, "/merge:K352=352")
 /******************************************************************************
 
 	Video Hardware for Video System Games.

@@ -1,11 +1,11 @@
-#pragma code_seg("C311")
-#pragma data_seg("D311")
-#pragma bss_seg("B311")
-#pragma const_seg("K311")
-#pragma comment(linker, "/merge:D311=311")
-#pragma comment(linker, "/merge:C311=311")
-#pragma comment(linker, "/merge:B311=311")
-#pragma comment(linker, "/merge:K311=311")
+#pragma code_seg("C327")
+#pragma data_seg("D327")
+#pragma bss_seg("B327")
+#pragma const_seg("K327")
+#pragma comment(linker, "/merge:D327=327")
+#pragma comment(linker, "/merge:C327=327")
+#pragma comment(linker, "/merge:B327=327")
+#pragma comment(linker, "/merge:K327=327")
 /*** DRIVER INFO **************************************************************
 
 Grand Striker, V Goal Soccer, World Cup '94

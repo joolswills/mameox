@@ -1,11 +1,11 @@
-#pragma code_seg("C779")
-#pragma data_seg("D779")
-#pragma bss_seg("B779")
-#pragma const_seg("K779")
-#pragma comment(linker, "/merge:D779=779")
-#pragma comment(linker, "/merge:C779=779")
-#pragma comment(linker, "/merge:B779=779")
-#pragma comment(linker, "/merge:K779=779")
+#pragma code_seg("C114")
+#pragma data_seg("D114")
+#pragma bss_seg("B114")
+#pragma const_seg("K114")
+#pragma comment(linker, "/merge:D114=114")
+#pragma comment(linker, "/merge:C114=114")
+#pragma comment(linker, "/merge:B114=114")
+#pragma comment(linker, "/merge:K114=114")
 /***************************************************************************
 
 Ashita no Joe (Success Joe) [Wave]

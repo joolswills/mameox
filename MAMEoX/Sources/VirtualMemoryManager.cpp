@@ -3,6 +3,7 @@
   * \brief    Generic virtual memory manager class
   *
   */
+#define _LOGDEBUGMESSAGES
 
 //= I N C L U D E S ===========================================================
 #include "VirtualMemoryManager.h"
@@ -40,7 +41,7 @@ void *CVirtualMemoryManager::Malloc( UINT32 size )
 
   page.m_address = VirtualAlloc(  NULL,                       // Region to reserve or commit (NULL = system defined)
                                   size,                       // Size of the region
-                                  MEM_RESERVE,                // Flags (just reserve the address space)
+                                  MEM_RESERVE | MEM_NOZERO,   // Flags (just reserve the address space)
                                   PAGE_READWRITE );           // Access protection (rw)
   page.m_size = size;
 
@@ -48,11 +49,11 @@ void *CVirtualMemoryManager::Malloc( UINT32 size )
   std::sort( m_virtualPages.begin(), m_virtualPages.end() );
 
   #ifdef LOGVMM
-  PRINTMSG( T_INFO, "Malloc: %lu bytes: 0x%X", size, page.m_address );
+  PRINTMSG(( T_INFO, "Malloc: %lu bytes: 0x%X", size, page.m_address ));
   #endif
 
   if( !page.m_address )
-    PRINTMSG( T_ERROR, "VirtualAlloc failed: 0x%X", GetLastError() );
+    PRINTMSG(( T_ERROR, "VirtualAlloc failed: 0x%X", GetLastError() ));
 
   return page.m_address;
 }
@@ -77,7 +78,7 @@ void CVirtualMemoryManager::Free( void *base )
 
   if( i == m_virtualPages.end() )
   {
-    PRINTMSG( T_ERROR, "Attempt to Free nonvirtual address 0x%X!", base );
+    PRINTMSG(( T_ERROR, "Attempt to Free nonvirtual address 0x%X!", base ));
     return;
   }
 
@@ -96,7 +97,7 @@ void CVirtualMemoryManager::Free( void *base )
   m_virtualPages.erase( i );
 
   #ifdef LOGVMM
-  PRINTMSG( T_INFO, "Free: 0x%X", base );
+  PRINTMSG(( T_INFO, "Free: 0x%X", base ));
   #endif
 }
 
@@ -106,13 +107,13 @@ void CVirtualMemoryManager::Free( void *base )
 BOOL CVirtualMemoryManager::AccessAddressRange( void *base, UINT32 size )
 {
   #ifdef LOGVMM
-  PRINTMSG( T_INFO, "AccessAddressRange: Base 0x%X, size: %lu", base, size );
+  PRINTMSG(( T_INFO, "AccessAddressRange: Base 0x%X, size: %lu", base, size ));
   #endif
 
 
   if( !base )
   {
-    PRINTMSG( T_ERROR, "AccessAddressRange called on NULL base!" );
+    PRINTMSG(( T_ERROR, "AccessAddressRange called on NULL base!" ));
     return FALSE;
   }
 
@@ -129,7 +130,7 @@ BOOL CVirtualMemoryManager::AccessAddressRange( void *base, UINT32 size )
 
   if( i == m_virtualPages.end() )
   {
-    PRINTMSG( T_ERROR, "AccessAddressRange called on invalid address 0x%X!", base );
+    PRINTMSG(( T_ERROR, "AccessAddressRange called on invalid address 0x%X!", base ));
     return FALSE;
   }
 
@@ -146,7 +147,7 @@ BOOL CVirtualMemoryManager::AccessAddressRange( void *base, UINT32 size )
         // Something has gone terribly wrong, as this page is marked not committed, yet
         // is in the list...
       m_committedAddresses.erase( j );
-      PRINTMSG( T_ERROR, "Page in committed list marked as decommitted! 0x%X", virtualPage.m_address );
+      PRINTMSG(( T_ERROR, "Page in committed list marked as decommitted! 0x%X", virtualPage.m_address ));
     }
 
       // The page has not been committed, increment the fault counter, release a
@@ -168,10 +169,10 @@ BOOL CVirtualMemoryManager::AccessAddressRange( void *base, UINT32 size )
 
     if( !ptr )
     {
-      PRINTMSG( T_INFO, 
+      PRINTMSG(( T_INFO, 
                 "Out of Memory: Failed to load virtual page w/ address 0x%X, size 0x%X", 
                 virtualPage.m_address,
-                virtualPage.m_size );
+                virtualPage.m_size ));
       return FALSE;
     }
 
@@ -187,7 +188,7 @@ BOOL CVirtualMemoryManager::AccessAddressRange( void *base, UINT32 size )
                                                 m_committedAddresses.end(), 
                                                 (UINT32)(virtualPage.m_address) );
     if( j == m_committedAddresses.end() )
-      PRINTMSG( T_ERROR, "Page in marked as committed but not in committed list! 0x%X", virtualPage.m_address );
+      PRINTMSG(( T_ERROR, "Page in marked as committed but not in committed list! 0x%X", virtualPage.m_address ));
     else
       m_committedAddresses.erase( j );
 
@@ -195,7 +196,7 @@ BOOL CVirtualMemoryManager::AccessAddressRange( void *base, UINT32 size )
   }
 
   #ifdef LOGVMM
-  PRINTMSG( T_INFO, "AccessAddressRange: 0x%X, num page faults: %lu", virtualPage.m_address, virtualPage.m_pageFaultCount );
+  PRINTMSG(( T_INFO, "AccessAddressRange: 0x%X, num page faults: %lu", virtualPage.m_address, virtualPage.m_pageFaultCount ));
   DEBUGGERCHECKRAM();
   #endif
 
@@ -211,7 +212,7 @@ BOOL CVirtualMemoryManager::MakePageReadOnly( void *base )
 {
   if( !base )
   {
-    PRINTMSG( T_ERROR, "MakePageReadOnly called on NULL base!" );
+    PRINTMSG(( T_ERROR, "MakePageReadOnly called on NULL base!" ));
     return FALSE;
   }
 
@@ -227,7 +228,7 @@ BOOL CVirtualMemoryManager::MakePageReadOnly( void *base )
 
   if( i == m_virtualPages.end() )
   {
-    PRINTMSG( T_ERROR, "MakePageReadOnly called on invalid address 0x%X!", base );
+    PRINTMSG(( T_ERROR, "MakePageReadOnly called on invalid address 0x%X!", base ));
     return FALSE;
   }
 
@@ -249,7 +250,7 @@ BOOL CVirtualMemoryManager::MakePageReadWrite( void *base )
 {
   if( !base )
   {
-    PRINTMSG( T_ERROR, "MakePageReadWrite called on NULL base!" );
+    PRINTMSG(( T_ERROR, "MakePageReadWrite called on NULL base!" ));
     return FALSE;
   }
 
@@ -264,7 +265,7 @@ BOOL CVirtualMemoryManager::MakePageReadWrite( void *base )
 
   if( i == m_virtualPages.end() )
   {
-    PRINTMSG( T_ERROR, "MakePageReadWrite called on invalid address 0x%X!", base );
+    PRINTMSG(( T_ERROR, "MakePageReadWrite called on invalid address 0x%X!", base ));
     return FALSE;
   }
 
@@ -285,14 +286,14 @@ BOOL CVirtualMemoryManager::MakePageReadWrite( void *base )
 BOOL CVirtualMemoryManager::UnloadLRUPage( void )
 {
   #ifdef LOGVMM
-  PRINTMSG( T_INFO, "UnloadLRUPage %lu pages allocated", m_committedAddresses.size() );
+  PRINTMSG(( T_INFO, "UnloadLRUPage %lu pages allocated", m_committedAddresses.size() ));
   DEBUGGERCHECKRAM();
   #endif
 
     // The commit failed, so unload the least recently used page
   if( !m_committedAddresses.size() )
   {
-    PRINTMSG( T_INFO, "UnloadLRUPage called but no pages allocated" );
+    PRINTMSG(( T_INFO, "UnloadLRUPage called but no pages allocated" ));
     return FALSE;
   }
 
@@ -303,14 +304,14 @@ BOOL CVirtualMemoryManager::UnloadLRUPage( void )
   std::vector<vmmpage_t>::iterator it = std::find( m_virtualPages.begin(), m_virtualPages.end(), page );
   if( it == m_virtualPages.end() )
   {
-    PRINTMSG( T_ERROR, "Failed to lookup vmmpage_t for committed address 0x%X!", *j );
+    PRINTMSG(( T_ERROR, "Failed to lookup vmmpage_t for committed address 0x%X!", *j ));
     m_committedAddresses.pop_back();
     return FALSE;
   }
 
   if( !VirtualFree( (*it).m_address, (*it).m_size, MEM_DECOMMIT ) )
   {
-    PRINTMSG( T_ERROR, "Failed to free virtual page with address\n0x%X", (*it).m_address );
+    PRINTMSG(( T_ERROR, "Failed to free virtual page with address\n0x%X", (*it).m_address ));
     return FALSE;
   }
 
@@ -318,7 +319,7 @@ BOOL CVirtualMemoryManager::UnloadLRUPage( void )
   m_committedAddresses.pop_front();
 
   #ifdef LOGVMM
-  PRINTMSG( T_INFO, "UnloadLRUPage %lu pages allocated after free", m_committedAddresses.size() );
+  PRINTMSG(( T_INFO, "UnloadLRUPage %lu pages allocated after free", m_committedAddresses.size() ));
   DEBUGGERCHECKRAM();
   #endif
 
@@ -333,17 +334,17 @@ BOOL CVirtualMemoryManager::UnloadLRUPage( void )
 void CVirtualMemoryManager::PrintInfo( void )
 {
   DEBUGGERCHECKRAM();
-  PRINTMSG( T_INFO, "Total pages: %lu Committed pages: %lu", m_virtualPages.size(), m_committedAddresses.size() );
+  PRINTMSG(( T_INFO, "Total pages: %lu Committed pages: %lu", m_virtualPages.size(), m_committedAddresses.size() ));
 
   std::vector<vmmpage_t>::iterator i = m_virtualPages.begin();
   for( ; i != m_virtualPages.end(); ++i )
   {
-    PRINTMSG( T_INFO, 
+    PRINTMSG(( T_INFO, 
               "Addr: 0x%X  Size: %lu   Committed: %d   Faults: %lu",
               (*i).m_address,
               (*i).m_size,
               (*i).m_committed,
-              (*i).m_pageFaultCount );
+              (*i).m_pageFaultCount ));
   }
 }
 #endif

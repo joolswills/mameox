@@ -1,11 +1,11 @@
-#pragma code_seg("C685")
-#pragma data_seg("D685")
-#pragma bss_seg("B685")
-#pragma const_seg("K685")
-#pragma comment(linker, "/merge:D685=685")
-#pragma comment(linker, "/merge:C685=685")
-#pragma comment(linker, "/merge:B685=685")
-#pragma comment(linker, "/merge:K685=685")
+#pragma code_seg("C733")
+#pragma data_seg("D733")
+#pragma bss_seg("B733")
+#pragma const_seg("K733")
+#pragma comment(linker, "/merge:D733=733")
+#pragma comment(linker, "/merge:C733=733")
+#pragma comment(linker, "/merge:B733=733")
+#pragma comment(linker, "/merge:K733=733")
 /****************************************************************************
 
 	Preliminary driver for Samurai, Nunchackun, Yuke Yuke Yamaguchi-kun

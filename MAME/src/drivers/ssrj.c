@@ -1,11 +1,11 @@
-#pragma code_seg("C755")
-#pragma data_seg("D755")
-#pragma bss_seg("B755")
-#pragma const_seg("K755")
-#pragma comment(linker, "/merge:D755=755")
-#pragma comment(linker, "/merge:C755=755")
-#pragma comment(linker, "/merge:B755=755")
-#pragma comment(linker, "/merge:K755=755")
+#pragma code_seg("C649")
+#pragma data_seg("D649")
+#pragma bss_seg("B649")
+#pragma const_seg("K649")
+#pragma comment(linker, "/merge:D649=649")
+#pragma comment(linker, "/merge:C649=649")
+#pragma comment(linker, "/merge:B649=649")
+#pragma comment(linker, "/merge:K649=649")
 /***********************************
  Super Speed Race Jr (c) 1985 Taito
  driver by  Tomasz Slanina

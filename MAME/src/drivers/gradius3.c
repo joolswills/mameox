@@ -1,11 +1,11 @@
-#pragma code_seg("C305")
-#pragma data_seg("D305")
-#pragma bss_seg("B305")
-#pragma const_seg("K305")
-#pragma comment(linker, "/merge:D305=305")
-#pragma comment(linker, "/merge:C305=305")
-#pragma comment(linker, "/merge:B305=305")
-#pragma comment(linker, "/merge:K305=305")
+#pragma code_seg("C322")
+#pragma data_seg("D322")
+#pragma bss_seg("B322")
+#pragma const_seg("K322")
+#pragma comment(linker, "/merge:D322=322")
+#pragma comment(linker, "/merge:C322=322")
+#pragma comment(linker, "/merge:B322=322")
+#pragma comment(linker, "/merge:K322=322")
 /***************************************************************************
 
 Gradius 3 (GX945) (c) 1989 Konami

@@ -1,11 +1,11 @@
-#pragma code_seg("C678")
-#pragma data_seg("D678")
-#pragma bss_seg("B678")
-#pragma const_seg("K678")
-#pragma comment(linker, "/merge:D678=678")
-#pragma comment(linker, "/merge:C678=678")
-#pragma comment(linker, "/merge:B678=678")
-#pragma comment(linker, "/merge:K678=678")
+#pragma code_seg("C725")
+#pragma data_seg("D725")
+#pragma bss_seg("B725")
+#pragma const_seg("K725")
+#pragma comment(linker, "/merge:D725=725")
+#pragma comment(linker, "/merge:C725=725")
+#pragma comment(linker, "/merge:B725=725")
+#pragma comment(linker, "/merge:K725=725")
 /****************************************
 
 Libble Rabble (c) 1983 Namco

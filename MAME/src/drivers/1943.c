@@ -1,11 +1,11 @@
-#pragma code_seg("C78")
-#pragma data_seg("D78")
-#pragma bss_seg("B78")
-#pragma const_seg("K78")
-#pragma comment(linker, "/merge:D78=78")
-#pragma comment(linker, "/merge:C78=78")
-#pragma comment(linker, "/merge:B78=78")
-#pragma comment(linker, "/merge:K78=78")
+#pragma code_seg("C87")
+#pragma data_seg("D87")
+#pragma bss_seg("B87")
+#pragma const_seg("K87")
+#pragma comment(linker, "/merge:D87=87")
+#pragma comment(linker, "/merge:C87=87")
+#pragma comment(linker, "/merge:B87=87")
+#pragma comment(linker, "/merge:K87=87")
 /*
 
 TODO: 1943 is almost identical to GunSmoke (one more scrolling playfield). We

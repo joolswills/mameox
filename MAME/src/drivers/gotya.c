@@ -1,11 +1,11 @@
-#pragma code_seg("C304")
-#pragma data_seg("D304")
-#pragma bss_seg("B304")
-#pragma const_seg("K304")
-#pragma comment(linker, "/merge:D304=304")
-#pragma comment(linker, "/merge:C304=304")
-#pragma comment(linker, "/merge:B304=304")
-#pragma comment(linker, "/merge:K304=304")
+#pragma code_seg("C321")
+#pragma data_seg("D321")
+#pragma bss_seg("B321")
+#pragma const_seg("K321")
+#pragma comment(linker, "/merge:D321=321")
+#pragma comment(linker, "/merge:C321=321")
+#pragma comment(linker, "/merge:B321=321")
+#pragma comment(linker, "/merge:K321=321")
 /****************************************************************************
 
 	Gotya / The Hand driver by Zsolt Vasvari

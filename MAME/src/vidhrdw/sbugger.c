@@ -1,11 +1,11 @@
-#pragma code_seg("C547")
-#pragma data_seg("D547")
-#pragma bss_seg("B547")
-#pragma const_seg("K547")
-#pragma comment(linker, "/merge:D547=547")
-#pragma comment(linker, "/merge:C547=547")
-#pragma comment(linker, "/merge:B547=547")
-#pragma comment(linker, "/merge:K547=547")
+#pragma code_seg("C583")
+#pragma data_seg("D583")
+#pragma bss_seg("B583")
+#pragma const_seg("K583")
+#pragma comment(linker, "/merge:D583=583")
+#pragma comment(linker, "/merge:C583=583")
+#pragma comment(linker, "/merge:B583=583")
+#pragma comment(linker, "/merge:K583=583")
 /* Space Bugger - Video Hardware */
 
 #include "driver.h"

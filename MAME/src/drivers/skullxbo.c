@@ -1,11 +1,11 @@
-#pragma code_seg("C576")
-#pragma data_seg("D576")
-#pragma bss_seg("B576")
-#pragma const_seg("K576")
-#pragma comment(linker, "/merge:D576=576")
-#pragma comment(linker, "/merge:C576=576")
-#pragma comment(linker, "/merge:B576=576")
-#pragma comment(linker, "/merge:K576=576")
+#pragma code_seg("C614")
+#pragma data_seg("D614")
+#pragma bss_seg("B614")
+#pragma const_seg("K614")
+#pragma comment(linker, "/merge:D614=614")
+#pragma comment(linker, "/merge:C614=614")
+#pragma comment(linker, "/merge:B614=614")
+#pragma comment(linker, "/merge:K614=614")
 /***************************************************************************
 
 	Atari Skull & Crossbones hardware

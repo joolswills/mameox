@@ -1,11 +1,11 @@
-#pragma code_seg("C780")
-#pragma data_seg("D780")
-#pragma bss_seg("B780")
-#pragma const_seg("K780")
-#pragma comment(linker, "/merge:D780=780")
-#pragma comment(linker, "/merge:C780=780")
-#pragma comment(linker, "/merge:B780=780")
-#pragma comment(linker, "/merge:K780=780")
+#pragma code_seg("C217")
+#pragma data_seg("D217")
+#pragma bss_seg("B217")
+#pragma const_seg("K217")
+#pragma comment(linker, "/merge:D217=217")
+#pragma comment(linker, "/merge:C217=217")
+#pragma comment(linker, "/merge:B217=217")
+#pragma comment(linker, "/merge:K217=217")
 /*
 
   Cross Pang

@@ -1,11 +1,11 @@
-#pragma code_seg("C277")
-#pragma data_seg("D277")
-#pragma bss_seg("B277")
-#pragma const_seg("K277")
-#pragma comment(linker, "/merge:D277=277")
-#pragma comment(linker, "/merge:C277=277")
-#pragma comment(linker, "/merge:B277=277")
-#pragma comment(linker, "/merge:K277=277")
+#pragma code_seg("C292")
+#pragma data_seg("D292")
+#pragma bss_seg("B292")
+#pragma const_seg("K292")
+#pragma comment(linker, "/merge:D292=292")
+#pragma comment(linker, "/merge:C292=292")
+#pragma comment(linker, "/merge:B292=292")
+#pragma comment(linker, "/merge:K292=292")
 /***************************************************************************
 
   Funky Jet                               (c) 1992 Mitchell Corporation

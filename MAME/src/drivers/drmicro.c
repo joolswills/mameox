@@ -1,11 +1,11 @@
-#pragma code_seg("C240")
-#pragma data_seg("D240")
-#pragma bss_seg("B240")
-#pragma const_seg("K240")
-#pragma comment(linker, "/merge:D240=240")
-#pragma comment(linker, "/merge:C240=240")
-#pragma comment(linker, "/merge:B240=240")
-#pragma comment(linker, "/merge:K240=240")
+#pragma code_seg("C254")
+#pragma data_seg("D254")
+#pragma bss_seg("B254")
+#pragma const_seg("K254")
+#pragma comment(linker, "/merge:D254=254")
+#pragma comment(linker, "/merge:C254=254")
+#pragma comment(linker, "/merge:B254=254")
+#pragma comment(linker, "/merge:K254=254")
 /*****************************************************************************
 
 Dr. Micro (c) 1983 Sanritsu

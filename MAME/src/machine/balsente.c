@@ -1,11 +1,11 @@
-#pragma code_seg("C125")
-#pragma data_seg("D125")
-#pragma bss_seg("B125")
-#pragma const_seg("K125")
-#pragma comment(linker, "/merge:D125=125")
-#pragma comment(linker, "/merge:C125=125")
-#pragma comment(linker, "/merge:B125=125")
-#pragma comment(linker, "/merge:K125=125")
+#pragma code_seg("C134")
+#pragma data_seg("D134")
+#pragma bss_seg("B134")
+#pragma const_seg("K134")
+#pragma comment(linker, "/merge:D134=134")
+#pragma comment(linker, "/merge:C134=134")
+#pragma comment(linker, "/merge:B134=134")
+#pragma comment(linker, "/merge:K134=134")
 /***************************************************************************
 
 	Bally/Sente SAC-1 system

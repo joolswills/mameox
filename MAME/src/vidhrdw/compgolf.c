@@ -1,3 +1,11 @@
+#pragma code_seg("C206")
+#pragma data_seg("D206")
+#pragma bss_seg("B206")
+#pragma const_seg("K206")
+#pragma comment(linker, "/merge:D206=206")
+#pragma comment(linker, "/merge:C206=206")
+#pragma comment(linker, "/merge:B206=206")
+#pragma comment(linker, "/merge:K206=206")
 /****************************************************************************************
 
  Competition Golf Final Round
@@ -135,3 +143,7 @@ VIDEO_UPDATE( compgolf )
 	tilemap_draw(bitmap, cliprect, text_tilemap, 0, 0);
 	draw_sprites(bitmap,cliprect);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,11 +1,11 @@
-#pragma code_seg("C501")
-#pragma data_seg("D501")
-#pragma bss_seg("B501")
-#pragma const_seg("K501")
-#pragma comment(linker, "/merge:D501=501")
-#pragma comment(linker, "/merge:C501=501")
-#pragma comment(linker, "/merge:B501=501")
-#pragma comment(linker, "/merge:K501=501")
+#pragma code_seg("C533")
+#pragma data_seg("D533")
+#pragma bss_seg("B533")
+#pragma const_seg("K533")
+#pragma comment(linker, "/merge:D533=533")
+#pragma comment(linker, "/merge:C533=533")
+#pragma comment(linker, "/merge:B533=533")
+#pragma comment(linker, "/merge:K533=533")
 /***************************************************************************
 
 Atari Poolshark Driver

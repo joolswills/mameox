@@ -1,11 +1,11 @@
-#pragma code_seg("C650")
-#pragma data_seg("D650")
-#pragma bss_seg("B650")
-#pragma const_seg("K650")
-#pragma comment(linker, "/merge:D650=650")
-#pragma comment(linker, "/merge:C650=650")
-#pragma comment(linker, "/merge:B650=650")
-#pragma comment(linker, "/merge:K650=650")
+#pragma code_seg("C696")
+#pragma data_seg("D696")
+#pragma bss_seg("B696")
+#pragma const_seg("K696")
+#pragma comment(linker, "/merge:D696=696")
+#pragma comment(linker, "/merge:C696=696")
+#pragma comment(linker, "/merge:B696=696")
+#pragma comment(linker, "/merge:K696=696")
 /***************************************************************************
 
 Taxi Driver  (c) 1984 Graphic Techno

@@ -1,11 +1,11 @@
-#pragma code_seg("C226")
-#pragma data_seg("D226")
-#pragma bss_seg("B226")
-#pragma const_seg("K226")
-#pragma comment(linker, "/merge:D226=226")
-#pragma comment(linker, "/merge:C226=226")
-#pragma comment(linker, "/merge:B226=226")
-#pragma comment(linker, "/merge:K226=226")
+#pragma code_seg("C239")
+#pragma data_seg("D239")
+#pragma bss_seg("B239")
+#pragma const_seg("K239")
+#pragma comment(linker, "/merge:D239=239")
+#pragma comment(linker, "/merge:C239=239")
+#pragma comment(linker, "/merge:B239=239")
+#pragma comment(linker, "/merge:K239=239")
 /***************************************************************************
 
 Atari Destroyer Driver

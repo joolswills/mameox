@@ -1,11 +1,11 @@
-#pragma code_seg("C333")
-#pragma data_seg("D333")
-#pragma bss_seg("B333")
-#pragma const_seg("K333")
-#pragma comment(linker, "/merge:D333=333")
-#pragma comment(linker, "/merge:C333=333")
-#pragma comment(linker, "/merge:B333=333")
-#pragma comment(linker, "/merge:K333=333")
+#pragma code_seg("C350")
+#pragma data_seg("D350")
+#pragma bss_seg("B350")
+#pragma const_seg("K350")
+#pragma comment(linker, "/merge:D350=350")
+#pragma comment(linker, "/merge:C350=350")
+#pragma comment(linker, "/merge:B350=350")
+#pragma comment(linker, "/merge:K350=350")
 /* based on driver from vidhrdw/metro.c by Luca Elia */
 /* modified by Eisuke Watanabe */
 

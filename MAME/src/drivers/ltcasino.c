@@ -1,11 +1,11 @@
-#pragma code_seg("C748")
-#pragma data_seg("D748")
-#pragma bss_seg("B748")
-#pragma const_seg("K748")
-#pragma comment(linker, "/merge:D748=748")
-#pragma comment(linker, "/merge:C748=748")
-#pragma comment(linker, "/merge:B748=748")
-#pragma comment(linker, "/merge:K748=748")
+#pragma code_seg("C397")
+#pragma data_seg("D397")
+#pragma bss_seg("B397")
+#pragma const_seg("K397")
+#pragma comment(linker, "/merge:D397=397")
+#pragma comment(linker, "/merge:C397=397")
+#pragma comment(linker, "/merge:B397=397")
+#pragma comment(linker, "/merge:K397=397")
 /*
 
 Little Casino

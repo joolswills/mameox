@@ -1,11 +1,11 @@
-#pragma code_seg("C681")
-#pragma data_seg("D681")
-#pragma bss_seg("B681")
-#pragma const_seg("K681")
-#pragma comment(linker, "/merge:D681=681")
-#pragma comment(linker, "/merge:C681=681")
-#pragma comment(linker, "/merge:B681=681")
-#pragma comment(linker, "/merge:K681=681")
+#pragma code_seg("C728")
+#pragma data_seg("D728")
+#pragma bss_seg("B728")
+#pragma const_seg("K728")
+#pragma comment(linker, "/merge:D728=728")
+#pragma comment(linker, "/merge:C728=728")
+#pragma comment(linker, "/merge:B728=728")
+#pragma comment(linker, "/merge:K728=728")
 /****************************************************************************
 
 Traverse USA / Zippy Race  (c) 1983 Irem

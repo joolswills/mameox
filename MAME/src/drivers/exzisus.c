@@ -1,11 +1,11 @@
-#pragma code_seg("C256")
-#pragma data_seg("D256")
-#pragma bss_seg("B256")
-#pragma const_seg("K256")
-#pragma comment(linker, "/merge:D256=256")
-#pragma comment(linker, "/merge:C256=256")
-#pragma comment(linker, "/merge:B256=256")
-#pragma comment(linker, "/merge:K256=256")
+#pragma code_seg("C271")
+#pragma data_seg("D271")
+#pragma bss_seg("B271")
+#pragma const_seg("K271")
+#pragma comment(linker, "/merge:D271=271")
+#pragma comment(linker, "/merge:C271=271")
+#pragma comment(linker, "/merge:B271=271")
+#pragma comment(linker, "/merge:K271=271")
 /***************************************************************************
 
 Exzisus

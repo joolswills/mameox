@@ -1,11 +1,11 @@
-#pragma code_seg("C788")
-#pragma data_seg("D788")
-#pragma bss_seg("B788")
-#pragma const_seg("K788")
-#pragma comment(linker, "/merge:D788=788")
-#pragma comment(linker, "/merge:C788=788")
-#pragma comment(linker, "/merge:B788=788")
-#pragma comment(linker, "/merge:K788=788")
+#pragma code_seg("C472")
+#pragma data_seg("D472")
+#pragma bss_seg("B472")
+#pragma const_seg("K472")
+#pragma comment(linker, "/merge:D472=472")
+#pragma comment(linker, "/merge:C472=472")
+#pragma comment(linker, "/merge:B472=472")
+#pragma comment(linker, "/merge:K472=472")
 /***************************************************************************
 
   Namco System 12 - Arcade PSX Hardware

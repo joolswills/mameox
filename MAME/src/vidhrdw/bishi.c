@@ -1,11 +1,11 @@
-#pragma code_seg("C768")
-#pragma data_seg("D768")
-#pragma bss_seg("B768")
-#pragma const_seg("K768")
-#pragma comment(linker, "/merge:D768=768")
-#pragma comment(linker, "/merge:C768=768")
-#pragma comment(linker, "/merge:B768=768")
-#pragma comment(linker, "/merge:K768=768")
+#pragma code_seg("C150")
+#pragma data_seg("D150")
+#pragma bss_seg("B150")
+#pragma const_seg("K150")
+#pragma comment(linker, "/merge:D150=150")
+#pragma comment(linker, "/merge:C150=150")
+#pragma comment(linker, "/merge:B150=150")
+#pragma comment(linker, "/merge:K150=150")
 /***************************************************************************
 
  Bishi Bashi Champ Mini Game Senshuken

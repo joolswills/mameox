@@ -1,11 +1,11 @@
-#pragma code_seg("C387")
-#pragma data_seg("D387")
-#pragma bss_seg("B387")
-#pragma const_seg("K387")
-#pragma comment(linker, "/merge:D387=387")
-#pragma comment(linker, "/merge:C387=387")
-#pragma comment(linker, "/merge:B387=387")
-#pragma comment(linker, "/merge:K387=387")
+#pragma code_seg("C411")
+#pragma data_seg("D411")
+#pragma bss_seg("B411")
+#pragma const_seg("K411")
+#pragma comment(linker, "/merge:D411=411")
+#pragma comment(linker, "/merge:C411=411")
+#pragma comment(linker, "/merge:B411=411")
+#pragma comment(linker, "/merge:K411=411")
 /***************************************************************************
 
 Several Namco games from 1982-1985

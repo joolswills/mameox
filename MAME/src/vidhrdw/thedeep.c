@@ -1,11 +1,11 @@
-#pragma code_seg("C659")
-#pragma data_seg("D659")
-#pragma bss_seg("B659")
-#pragma const_seg("K659")
-#pragma comment(linker, "/merge:D659=659")
-#pragma comment(linker, "/merge:C659=659")
-#pragma comment(linker, "/merge:B659=659")
-#pragma comment(linker, "/merge:K659=659")
+#pragma code_seg("C706")
+#pragma data_seg("D706")
+#pragma bss_seg("B706")
+#pragma const_seg("K706")
+#pragma comment(linker, "/merge:D706=706")
+#pragma comment(linker, "/merge:C706=706")
+#pragma comment(linker, "/merge:B706=706")
+#pragma comment(linker, "/merge:K706=706")
 /***************************************************************************
 
 							-= Run Deep / The Deep =-

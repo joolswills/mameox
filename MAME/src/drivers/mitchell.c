@@ -1,11 +1,11 @@
-#pragma code_seg("C416")
-#pragma data_seg("D416")
-#pragma bss_seg("B416")
-#pragma const_seg("K416")
-#pragma comment(linker, "/merge:D416=416")
-#pragma comment(linker, "/merge:C416=416")
-#pragma comment(linker, "/merge:B416=416")
-#pragma comment(linker, "/merge:K416=416")
+#pragma code_seg("C442")
+#pragma data_seg("D442")
+#pragma bss_seg("B442")
+#pragma const_seg("K442")
+#pragma comment(linker, "/merge:D442=442")
+#pragma comment(linker, "/merge:C442=442")
+#pragma comment(linker, "/merge:B442=442")
+#pragma comment(linker, "/merge:K442=442")
 /***************************************************************************
 
 "Mitchell hardware". Actually used mostly by Capcom.

@@ -1,11 +1,11 @@
-#pragma code_seg("C781")
-#pragma data_seg("D781")
-#pragma bss_seg("B781")
-#pragma const_seg("K781")
-#pragma comment(linker, "/merge:D781=781")
-#pragma comment(linker, "/merge:C781=781")
-#pragma comment(linker, "/merge:B781=781")
-#pragma comment(linker, "/merge:K781=781")
+#pragma code_seg("C237")
+#pragma data_seg("D237")
+#pragma bss_seg("B237")
+#pragma const_seg("K237")
+#pragma comment(linker, "/merge:D237=237")
+#pragma comment(linker, "/merge:C237=237")
+#pragma comment(linker, "/merge:B237=237")
+#pragma comment(linker, "/merge:K237=237")
 /*
 	The MLC graphics hardware is quite complicated - the usual method of having 'object ram' that
 	controls sprites is expanded into object ram that controls sprite blocks that may be stored

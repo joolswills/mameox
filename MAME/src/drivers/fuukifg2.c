@@ -1,11 +1,11 @@
-#pragma code_seg("C758")
-#pragma data_seg("D758")
-#pragma bss_seg("B758")
-#pragma const_seg("K758")
-#pragma comment(linker, "/merge:D758=758")
-#pragma comment(linker, "/merge:C758=758")
-#pragma comment(linker, "/merge:B758=758")
-#pragma comment(linker, "/merge:K758=758")
+#pragma code_seg("C294")
+#pragma data_seg("D294")
+#pragma bss_seg("B294")
+#pragma const_seg("K294")
+#pragma comment(linker, "/merge:D294=294")
+#pragma comment(linker, "/merge:C294=294")
+#pragma comment(linker, "/merge:B294=294")
+#pragma comment(linker, "/merge:K294=294")
 /***************************************************************************
 
 						  -= Fuuki 16 Bit Games =-

@@ -1,11 +1,11 @@
-#pragma code_seg("C587")
-#pragma data_seg("D587")
-#pragma bss_seg("B587")
-#pragma const_seg("K587")
-#pragma comment(linker, "/merge:D587=587")
-#pragma comment(linker, "/merge:C587=587")
-#pragma comment(linker, "/merge:B587=587")
-#pragma comment(linker, "/merge:K587=587")
+#pragma code_seg("C625")
+#pragma data_seg("D625")
+#pragma bss_seg("B625")
+#pragma const_seg("K625")
+#pragma comment(linker, "/merge:D625=625")
+#pragma comment(linker, "/merge:C625=625")
+#pragma comment(linker, "/merge:B625=625")
+#pragma comment(linker, "/merge:K625=625")
 /***************************************************************************
 
   Snow Brothers (Toaplan) / SemiCom Hardware

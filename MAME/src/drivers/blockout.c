@@ -1,11 +1,11 @@
-#pragma code_seg("C146")
-#pragma data_seg("D146")
-#pragma bss_seg("B146")
-#pragma const_seg("K146")
-#pragma comment(linker, "/merge:D146=146")
-#pragma comment(linker, "/merge:C146=146")
-#pragma comment(linker, "/merge:B146=146")
-#pragma comment(linker, "/merge:K146=146")
+#pragma code_seg("C157")
+#pragma data_seg("D157")
+#pragma bss_seg("B157")
+#pragma const_seg("K157")
+#pragma comment(linker, "/merge:D157=157")
+#pragma comment(linker, "/merge:C157=157")
+#pragma comment(linker, "/merge:B157=157")
+#pragma comment(linker, "/merge:K157=157")
 /***************************************************************************
 
 Block Out

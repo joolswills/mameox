@@ -1,11 +1,11 @@
-#pragma code_seg("C797")
-#pragma data_seg("D797")
-#pragma bss_seg("B797")
-#pragma const_seg("K797")
-#pragma comment(linker, "/merge:D797=797")
-#pragma comment(linker, "/merge:C797=797")
-#pragma comment(linker, "/merge:B797=797")
-#pragma comment(linker, "/merge:K797=797")
+#pragma code_seg("C758")
+#pragma data_seg("D758")
+#pragma bss_seg("B758")
+#pragma const_seg("K758")
+#pragma comment(linker, "/merge:D758=758")
+#pragma comment(linker, "/merge:C758=758")
+#pragma comment(linker, "/merge:B758=758")
+#pragma comment(linker, "/merge:K758=758")
 /*
 
 Varia Metal

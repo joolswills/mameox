@@ -1,11 +1,11 @@
-#pragma code_seg("C130")
-#pragma data_seg("D130")
-#pragma bss_seg("B130")
-#pragma const_seg("K130")
-#pragma comment(linker, "/merge:D130=130")
-#pragma comment(linker, "/merge:C130=130")
-#pragma comment(linker, "/merge:B130=130")
-#pragma comment(linker, "/merge:K130=130")
+#pragma code_seg("C139")
+#pragma data_seg("D139")
+#pragma bss_seg("B139")
+#pragma const_seg("K139")
+#pragma comment(linker, "/merge:D139=139")
+#pragma comment(linker, "/merge:C139=139")
+#pragma comment(linker, "/merge:B139=139")
+#pragma comment(linker, "/merge:K139=139")
 /*******************************************************************************
 
 	Battle Rangers - Bryan McPhail, mish@tendril.co.uk

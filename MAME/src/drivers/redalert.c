@@ -1,11 +1,11 @@
-#pragma code_seg("C526")
-#pragma data_seg("D526")
-#pragma bss_seg("B526")
-#pragma const_seg("K526")
-#pragma comment(linker, "/merge:D526=526")
-#pragma comment(linker, "/merge:C526=526")
-#pragma comment(linker, "/merge:B526=526")
-#pragma comment(linker, "/merge:K526=526")
+#pragma code_seg("C560")
+#pragma data_seg("D560")
+#pragma bss_seg("B560")
+#pragma const_seg("K560")
+#pragma comment(linker, "/merge:D560=560")
+#pragma comment(linker, "/merge:C560=560")
+#pragma comment(linker, "/merge:B560=560")
+#pragma comment(linker, "/merge:K560=560")
 /***************************************************************************
 
 Irem Red Alert Driver

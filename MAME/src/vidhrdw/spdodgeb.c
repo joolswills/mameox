@@ -1,11 +1,11 @@
-#pragma code_seg("C594")
-#pragma data_seg("D594")
-#pragma bss_seg("B594")
-#pragma const_seg("K594")
-#pragma comment(linker, "/merge:D594=594")
-#pragma comment(linker, "/merge:C594=594")
-#pragma comment(linker, "/merge:B594=594")
-#pragma comment(linker, "/merge:K594=594")
+#pragma code_seg("C632")
+#pragma data_seg("D632")
+#pragma bss_seg("B632")
+#pragma const_seg("K632")
+#pragma comment(linker, "/merge:D632=632")
+#pragma comment(linker, "/merge:C632=632")
+#pragma comment(linker, "/merge:B632=632")
+#pragma comment(linker, "/merge:K632=632")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "cpu/m6502/m6502.h"

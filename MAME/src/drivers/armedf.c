@@ -1,11 +1,11 @@
-#pragma code_seg("C103")
-#pragma data_seg("D103")
-#pragma bss_seg("B103")
-#pragma const_seg("K103")
-#pragma comment(linker, "/merge:D103=103")
-#pragma comment(linker, "/merge:C103=103")
-#pragma comment(linker, "/merge:B103=103")
-#pragma comment(linker, "/merge:K103=103")
+#pragma code_seg("C112")
+#pragma data_seg("D112")
+#pragma bss_seg("B112")
+#pragma const_seg("K112")
+#pragma comment(linker, "/merge:D112=112")
+#pragma comment(linker, "/merge:C112=112")
+#pragma comment(linker, "/merge:B112=112")
+#pragma comment(linker, "/merge:K112=112")
 /**********************************************************************
 
 Legion

@@ -1,11 +1,11 @@
-#pragma code_seg("C508")
-#pragma data_seg("D508")
-#pragma bss_seg("B508")
-#pragma const_seg("K508")
-#pragma comment(linker, "/merge:D508=508")
-#pragma comment(linker, "/merge:C508=508")
-#pragma comment(linker, "/merge:B508=508")
-#pragma comment(linker, "/merge:K508=508")
+#pragma code_seg("C540")
+#pragma data_seg("D540")
+#pragma bss_seg("B540")
+#pragma const_seg("K540")
+#pragma comment(linker, "/merge:D540=540")
+#pragma comment(linker, "/merge:C540=540")
+#pragma comment(linker, "/merge:B540=540")
+#pragma comment(linker, "/merge:K540=540")
 /***************************************************************************
 
 							-= Psikyo Games =-

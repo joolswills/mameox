@@ -1,11 +1,11 @@
-#pragma code_seg("C733")
-#pragma data_seg("D733")
-#pragma bss_seg("B733")
-#pragma const_seg("K733")
-#pragma comment(linker, "/merge:D733=733")
-#pragma comment(linker, "/merge:C733=733")
-#pragma comment(linker, "/merge:B733=733")
-#pragma comment(linker, "/merge:K733=733")
+#pragma code_seg("C784")
+#pragma data_seg("D784")
+#pragma bss_seg("B784")
+#pragma const_seg("K784")
+#pragma comment(linker, "/merge:D784=784")
+#pragma comment(linker, "/merge:C784=784")
+#pragma comment(linker, "/merge:B784=784")
+#pragma comment(linker, "/merge:K784=784")
 /*******************************************************************************
 
 XX Mission (c) 1986 UPL

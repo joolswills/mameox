@@ -1,11 +1,11 @@
-#pragma code_seg("C182")
-#pragma data_seg("D182")
-#pragma bss_seg("B182")
-#pragma const_seg("K182")
-#pragma comment(linker, "/merge:D182=182")
-#pragma comment(linker, "/merge:C182=182")
-#pragma comment(linker, "/merge:B182=182")
-#pragma comment(linker, "/merge:K182=182")
+#pragma code_seg("C193")
+#pragma data_seg("D193")
+#pragma bss_seg("B193")
+#pragma const_seg("K193")
+#pragma comment(linker, "/merge:D193=193")
+#pragma comment(linker, "/merge:C193=193")
+#pragma comment(linker, "/merge:B193=193")
+#pragma comment(linker, "/merge:K193=193")
 /***************************************************************************
 
 	Cinematronics vector hardware

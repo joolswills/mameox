@@ -1,11 +1,11 @@
-#pragma code_seg("C152")
-#pragma data_seg("D152")
-#pragma bss_seg("B152")
-#pragma const_seg("K152")
-#pragma comment(linker, "/merge:D152=152")
-#pragma comment(linker, "/merge:C152=152")
-#pragma comment(linker, "/merge:B152=152")
-#pragma comment(linker, "/merge:K152=152")
+#pragma code_seg("C163")
+#pragma data_seg("D163")
+#pragma bss_seg("B163")
+#pragma const_seg("K163")
+#pragma comment(linker, "/merge:D163=163")
+#pragma comment(linker, "/merge:C163=163")
+#pragma comment(linker, "/merge:B163=163")
+#pragma comment(linker, "/merge:K163=163")
 /***************************************************************************
 
 Bosconian

@@ -1,11 +1,11 @@
-#pragma code_seg("C761")
-#pragma data_seg("D761")
-#pragma bss_seg("B761")
-#pragma const_seg("K761")
-#pragma comment(linker, "/merge:D761=761")
-#pragma comment(linker, "/merge:C761=761")
-#pragma comment(linker, "/merge:B761=761")
-#pragma comment(linker, "/merge:K761=761")
+#pragma code_seg("C633")
+#pragma data_seg("D633")
+#pragma bss_seg("B633")
+#pragma const_seg("K633")
+#pragma comment(linker, "/merge:D633=633")
+#pragma comment(linker, "/merge:C633=633")
+#pragma comment(linker, "/merge:B633=633")
+#pragma comment(linker, "/merge:K633=633")
 /*****************************************************************************************
 
  Speed Attack video hardware emulation

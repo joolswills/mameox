@@ -1,11 +1,11 @@
-#pragma code_seg("C735")
-#pragma data_seg("D735")
-#pragma bss_seg("B735")
-#pragma const_seg("K735")
-#pragma comment(linker, "/merge:D735=735")
-#pragma comment(linker, "/merge:C735=735")
-#pragma comment(linker, "/merge:B735=735")
-#pragma comment(linker, "/merge:K735=735")
+#pragma code_seg("C786")
+#pragma data_seg("D786")
+#pragma bss_seg("B786")
+#pragma const_seg("K786")
+#pragma comment(linker, "/merge:D786=786")
+#pragma comment(linker, "/merge:C786=786")
+#pragma comment(linker, "/merge:B786=786")
+#pragma comment(linker, "/merge:K786=786")
 /* Xyonix *********************************************************************
 
 driver by David Haywood and Stephh

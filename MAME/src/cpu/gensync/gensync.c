@@ -1,11 +1,11 @@
-#pragma code_seg("CC49")
-#pragma data_seg("CD49")
-#pragma bss_seg("CB49")
-#pragma const_seg("CK49")
-#pragma comment(linker, "/merge:CD49=CPU49")
-#pragma comment(linker, "/merge:CC49=CPU49")
-#pragma comment(linker, "/merge:CB49=CPU49")
-#pragma comment(linker, "/merge:CK49=CPU49")
+#pragma code_seg("CC89")
+#pragma data_seg("CD89")
+#pragma bss_seg("CB89")
+#pragma const_seg("CK89")
+#pragma comment(linker, "/merge:CD89=CPU89")
+#pragma comment(linker, "/merge:CC89=CPU89")
+#pragma comment(linker, "/merge:CB89=CPU89")
+#pragma comment(linker, "/merge:CK89=CPU89")
 /*****************************************************************************
  * Generic Video Synchronization CPU replacement for non-CPU games
  * It does nothing but count horizontal and vertical synchronization,

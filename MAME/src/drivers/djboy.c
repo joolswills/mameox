@@ -1,11 +1,11 @@
-#pragma code_seg("C229")
-#pragma data_seg("D229")
-#pragma bss_seg("B229")
-#pragma const_seg("K229")
-#pragma comment(linker, "/merge:D229=229")
-#pragma comment(linker, "/merge:C229=229")
-#pragma comment(linker, "/merge:B229=229")
-#pragma comment(linker, "/merge:K229=229")
+#pragma code_seg("C242")
+#pragma data_seg("D242")
+#pragma bss_seg("B242")
+#pragma const_seg("K242")
+#pragma comment(linker, "/merge:D242=242")
+#pragma comment(linker, "/merge:C242=242")
+#pragma comment(linker, "/merge:B242=242")
+#pragma comment(linker, "/merge:K242=242")
 /*
 DJ Boy (c)1989 Kanako
 

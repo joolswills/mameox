@@ -1,11 +1,11 @@
-#pragma code_seg("C792")
-#pragma data_seg("D792")
-#pragma bss_seg("B792")
-#pragma const_seg("K792")
-#pragma comment(linker, "/merge:D792=792")
-#pragma comment(linker, "/merge:C792=792")
-#pragma comment(linker, "/merge:B792=792")
-#pragma comment(linker, "/merge:K792=792")
+#pragma code_seg("C587")
+#pragma data_seg("D587")
+#pragma bss_seg("B587")
+#pragma const_seg("K587")
+#pragma comment(linker, "/merge:D587=587")
+#pragma comment(linker, "/merge:C587=587")
+#pragma comment(linker, "/merge:B587=587")
+#pragma comment(linker, "/merge:K587=587")
 /*************************************************************************
 
 	Driver for Atari/Midway Seattle hardware games

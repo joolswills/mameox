@@ -1,11 +1,11 @@
-#pragma code_seg("C518")
-#pragma data_seg("D518")
-#pragma bss_seg("B518")
-#pragma const_seg("K518")
-#pragma comment(linker, "/merge:D518=518")
-#pragma comment(linker, "/merge:C518=518")
-#pragma comment(linker, "/merge:B518=518")
-#pragma comment(linker, "/merge:K518=518")
+#pragma code_seg("C552")
+#pragma data_seg("D552")
+#pragma bss_seg("B552")
+#pragma const_seg("K552")
+#pragma comment(linker, "/merge:D552=552")
+#pragma comment(linker, "/merge:C552=552")
+#pragma comment(linker, "/merge:B552=552")
+#pragma comment(linker, "/merge:K552=552")
 /***************************************************************************
 
 	Raiden							(c) 1990 Seibu Kaihatsu

@@ -1,11 +1,11 @@
-#pragma code_seg("C480")
-#pragma data_seg("D480")
-#pragma bss_seg("B480")
-#pragma const_seg("K480")
-#pragma comment(linker, "/merge:D480=480")
-#pragma comment(linker, "/merge:C480=480")
-#pragma comment(linker, "/merge:B480=480")
-#pragma comment(linker, "/merge:K480=480")
+#pragma code_seg("C511")
+#pragma data_seg("D511")
+#pragma bss_seg("B511")
+#pragma const_seg("K511")
+#pragma comment(linker, "/merge:D511=511")
+#pragma comment(linker, "/merge:C511=511")
+#pragma comment(linker, "/merge:B511=511")
+#pragma comment(linker, "/merge:K511=511")
 /***************************************************************************
 
 							  -= Paradise / Target Ball =-

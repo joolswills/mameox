@@ -1,11 +1,11 @@
-#pragma code_seg("C794")
-#pragma data_seg("D794")
-#pragma bss_seg("B794")
-#pragma const_seg("K794")
-#pragma comment(linker, "/merge:D794=794")
-#pragma comment(linker, "/merge:C794=794")
-#pragma comment(linker, "/merge:B794=794")
-#pragma comment(linker, "/merge:K794=794")
+#pragma code_seg("C663")
+#pragma data_seg("D663")
+#pragma bss_seg("B663")
+#pragma const_seg("K663")
+#pragma comment(linker, "/merge:D663=663")
+#pragma comment(linker, "/merge:C663=663")
+#pragma comment(linker, "/merge:B663=663")
+#pragma comment(linker, "/merge:K663=663")
 /* ST-V SpeedUp Hacks */
 
 /*

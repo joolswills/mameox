@@ -1,11 +1,11 @@
-#pragma code_seg("C389")
-#pragma data_seg("D389")
-#pragma bss_seg("B389")
-#pragma const_seg("K389")
-#pragma comment(linker, "/merge:D389=389")
-#pragma comment(linker, "/merge:C389=389")
-#pragma comment(linker, "/merge:B389=389")
-#pragma comment(linker, "/merge:K389=389")
+#pragma code_seg("C414")
+#pragma data_seg("D414")
+#pragma bss_seg("B414")
+#pragma const_seg("K414")
+#pragma comment(linker, "/merge:D414=414")
+#pragma comment(linker, "/merge:C414=414")
+#pragma comment(linker, "/merge:B414=414")
+#pragma comment(linker, "/merge:K414=414")
 /***************************************************************************
 
 Mario Bros memory map (preliminary):

@@ -1,11 +1,11 @@
-#pragma code_seg("C769")
-#pragma data_seg("D769")
-#pragma bss_seg("B769")
-#pragma const_seg("K769")
-#pragma comment(linker, "/merge:D769=769")
-#pragma comment(linker, "/merge:C769=769")
-#pragma comment(linker, "/merge:B769=769")
-#pragma comment(linker, "/merge:K769=769")
+#pragma code_seg("C206")
+#pragma data_seg("D206")
+#pragma bss_seg("B206")
+#pragma const_seg("K206")
+#pragma comment(linker, "/merge:D206=206")
+#pragma comment(linker, "/merge:C206=206")
+#pragma comment(linker, "/merge:B206=206")
+#pragma comment(linker, "/merge:K206=206")
 /****************************************************************************************
 
 Competition Golf Final Round (c) 1986 / 1985 Data East

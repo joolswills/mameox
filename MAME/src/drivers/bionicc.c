@@ -1,11 +1,11 @@
-#pragma code_seg("C139")
-#pragma data_seg("D139")
-#pragma bss_seg("B139")
-#pragma const_seg("K139")
-#pragma comment(linker, "/merge:D139=139")
-#pragma comment(linker, "/merge:C139=139")
-#pragma comment(linker, "/merge:B139=139")
-#pragma comment(linker, "/merge:K139=139")
+#pragma code_seg("C149")
+#pragma data_seg("D149")
+#pragma bss_seg("B149")
+#pragma const_seg("K149")
+#pragma comment(linker, "/merge:D149=149")
+#pragma comment(linker, "/merge:C149=149")
+#pragma comment(linker, "/merge:B149=149")
+#pragma comment(linker, "/merge:K149=149")
 /********************************************************************
 
 			  Bionic Commando

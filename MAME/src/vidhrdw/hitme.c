@@ -1,11 +1,11 @@
-#pragma code_seg("C327")
-#pragma data_seg("D327")
-#pragma bss_seg("B327")
-#pragma const_seg("K327")
-#pragma comment(linker, "/merge:D327=327")
-#pragma comment(linker, "/merge:C327=327")
-#pragma comment(linker, "/merge:B327=327")
-#pragma comment(linker, "/merge:K327=327")
+#pragma code_seg("C343")
+#pragma data_seg("D343")
+#pragma bss_seg("B343")
+#pragma const_seg("K343")
+#pragma comment(linker, "/merge:D343=343")
+#pragma comment(linker, "/merge:C343=343")
+#pragma comment(linker, "/merge:B343=343")
+#pragma comment(linker, "/merge:K343=343")
 #include "driver.h"
 
 extern data8_t *hitme_vidram;
