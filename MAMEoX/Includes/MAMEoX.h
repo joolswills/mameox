@@ -44,12 +44,20 @@ void PollGamepads( void );
 	//-------------------------------------------------------------------
 	//	BeginFontRender
 	//! \brief		Set up a font rendering batch
+  //!
+  //! \param    clearScreen - Whether or not to clear the backbuffer to black
 	//-------------------------------------------------------------------
 void BeginFontRender( BOOL clearScreen );
 
 	//-------------------------------------------------------------------
 	//	FontRender
 	//! \brief		Render some text to the backbuffer
+  //!
+  //! \param    x - The x coordinate to begin rendering at
+  //! \param    y - The y coordinate to begin rendering at
+  //! \param    color - The color (RGBA) to render with
+  //! \param    str - The string to be rendered
+  //! \param    flags - Positional flags (see xbfont.h)
 	//-------------------------------------------------------------------
 void FontRender( INT32 x, INT32 y, UINT32 color, const WCHAR *str, UINT32 flags );
 

@@ -61,7 +61,10 @@ extern "C" {
 	//-------------------------------------------------------------
 	//	InitializeD3DRenderer
 	//! \brief		Initializes the D3DRenderer subsystem. Must be
-	//!            called before any other D3DRenderer calls
+	//!            called before any other D3DRenderer calls.
+  //!
+  //! \param    gman - A CGraphicsManager instance for the output device
+  //! \param    fnt - A pointer to the font to be used for output
 	//-------------------------------------------------------------
 void InitializeD3DRenderer( CGraphicsManager &gman, CXBFont *fnt );
 
@@ -79,8 +82,8 @@ void SetScreenUsage( FLOAT xPercentage = DEFAULT_SCREEN_X_PERCENTAGE, FLOAT yPer
 	//	GetScreenUsage
 	//! \brief		Query how much of the screen is utilized
   //!
-  //! \param    xPercentage - Usage in the X direction
-  //! \param    yPercentage - Usage in the Y direction
+  //! \param    xPercentage - [OUT] Usage in the X direction
+  //! \param    yPercentage - [OUT] Usage in the Y direction
 	//-------------------------------------------------------------
 void GetScreenUsage( FLOAT *xPercentage, FLOAT *yPercentage );
 
@@ -91,6 +94,13 @@ extern "C" {
 	//-------------------------------------------------------------
 	//	D3DRendererCreateSession
 	//! \brief		Create a D3D rendering session
+  //!
+  //! \param    params - The osd_create_params struct passed to
+  //!                    osd_create_display()
+  //!
+  //! \return   BOOL - Operation status
+  //! \retval   TRUE - Operation succeded
+  //! \retval   FALSE - Operation failed
 	//-------------------------------------------------------------
 BOOL D3DRendererCreateSession( struct osd_create_params *params );
 
@@ -104,6 +114,11 @@ void D3DRendererDestroySession( void );
 	//-------------------------------------------------------------
 	//	D3DRendererSetOutputRect
 	//! \brief		Set a new desired output rectangle
+  //!
+  //! \param    left - The left hand side
+  //! \param    top - The top side
+  //! \param    right - The right hand side, inclusive
+  //! \param    bottom - The bottom side, inclusive
 	//-------------------------------------------------------------
 void D3DRendererSetOutputRect( INT32 left, INT32 top, INT32 right, INT32 bottom );
 
@@ -111,6 +126,11 @@ void D3DRendererSetOutputRect( INT32 left, INT32 top, INT32 right, INT32 bottom 
 	//-------------------------------------------------------------
 	//	D3DRendererRender
 	//! \brief		Render the passed bitmap
+  //!
+  //! \param    bitmap - The bitmap passed via the osd_update_video_and_audio
+  //!                    mame_display parameter.
+  //! \param    bounds - The bounds rectangle passed via the mame_display parameter.
+  //! \param    vector_dirty_pixels - List of dirty pixels for vector rendering, or NULL
 	//-------------------------------------------------------------
 BOOL D3DRendererRender(	struct mame_bitmap *bitmap,
 												const struct rectangle *bounds,

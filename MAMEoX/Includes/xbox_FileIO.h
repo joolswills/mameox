@@ -18,7 +18,7 @@ extern "C" {
 
   // NOTE: Since are set to the D:, if the program is running from
   //        the DVD drive, any file write op's will fail (eg. nvram).
-  //       Therefore, in InitializeFileIO, these paths may be remapped
+  //       Therefore, in InitializeFileIO(), these paths may be remapped
   //        programmatically to the Z:
 #define GENERALPATH				"D:\\GENERAL"
 #define ARTPATH						"D:\\ART"
@@ -36,26 +36,29 @@ extern "C" {
   //!<  we don't waste any time searching for files that are definitely not there
 #define ALL_ROMS_ZIPPED
 
+
+
 //= P R O T O T Y P E S ================================================
-	//-------------------------------------
+	//--------------------------------------------------------------------------
 	//	InitializeFileIO
 	//! \brief		Initializes the FileIO 
 	//!            subsystem
-	//-------------------------------------
+	//--------------------------------------------------------------------------
 void InitializeFileIO( void );
 
 
-	//-------------------------------------
+	//--------------------------------------------------------------------------
 	//	Helper_CreateDirectoryPath
 	//! \brief		Create a directory path on the XBOX HDD
 	//!
 	//!	\param		path - The path to create (note that this is temporarily 
-	//!                   modified by the function!)
+	//!                   modified by the function, but set back to the original
+  //!                   value on exit.)
 	//!	\param		hasFilename - Whether or not "path" includes the name of a file
-	//-------------------------------------
+	//--------------------------------------------------------------------------
 void Helper_CreateDirectoryPath( char *path, BOOL hasFilename );
 
-	//-------------------------------------
+	//--------------------------------------------------------------------------
 	//	ComposeFilePath
 	//! \brief		Returns the full file path for the given options
 	//!
@@ -68,7 +71,7 @@ void Helper_CreateDirectoryPath( char *path, BOOL hasFilename );
   //! \return   BOOL - Operation status
   //! \retval   TRUE - Valid path returned
   //! \retval   FALSE - No path returned
-	//-------------------------------------
+	//--------------------------------------------------------------------------
 BOOL ComposeFilePath( char *buf, UINT32 maxLen, UINT32 pathtype, UINT32 pathindex, const char *filename );
 
 #ifdef __cplusplus

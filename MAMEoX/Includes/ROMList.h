@@ -115,9 +115,6 @@ public:
 		// GetCurrentGameIndex
 		//! \brief		Returns the index into the global drivers array
 		//!            of the currently selected item.
-		//!
-		//! \param		fileName - The filename of the zip file
-		//! \param		index - The 0 based index of the zip file
 		//------------------------------------------------------------
 	UINT32 GetCurrentGameIndex( void ) { 
     if( m_ROMList.size() )

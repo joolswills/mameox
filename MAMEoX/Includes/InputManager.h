@@ -25,6 +25,13 @@ public:
 
 		//------------------------------------------------------
 		//	Create
+    //! Set up the InputManager instance
+    //!
+    //! \param    maxGamepads - The maximum number of gamepads
+    //!                         supported by the app.
+    //!
+    //! \param    maxMemUnits - The maximum number of memory
+    //!                         units supported by the app.
 		//------------------------------------------------------
 	BOOL Create( DWORD maxGamepads, DWORD maxMemUnits ) {
 		if( m_created )
@@ -111,6 +118,12 @@ public:
 
 		//------------------------------------------------------
 		//	GetGamepadDeviceState
+    //! Return the current state of a given gamepad
+    //!
+    //! \param    device - The device number to query (0-3)
+    //!
+    //! \retval   const XINPUT_GAMEPAD & - The requested
+    //!                                    gamepad state object
 		//------------------------------------------------------
 	const XINPUT_GAMEPAD &GetGamepadDeviceState( DWORD device ) const {
 		if( device > 3 )
@@ -124,6 +137,10 @@ public:
 
 		//------------------------------------------------------
 		//	SetGamepadFeedbackState
+    //! Send a force feedback effect to a gamepad
+    //!
+    //! \param  deviceNumber - The gamepad to send to (0-3)
+    //! \param  feedback - Struct describing the effect to send
 		//------------------------------------------------------
 	inline BOOL SetGamepadFeedbackState( DWORD deviceNumber, const XINPUT_FEEDBACK &feedback ) {
 			// Make sure an op isn't already in progress
