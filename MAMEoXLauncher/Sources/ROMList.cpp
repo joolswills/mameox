@@ -598,8 +598,10 @@ void CROMList::NormalModeMoveCursor( CGamepad &gp, FLOAT elapsedTime )
 	}
 
 
-    // Make the superscroll char index == whatever we're on now  
-  char CurrentGameSuperscrollChar = toupper( m_driverInfoList[GetCurrentGameIndex()].m_description[0] );
+    // Make the superscroll char index == whatever we're on now 
+  char CurrentGameSuperscrollChar = '#';
+  if( GetCurrentGameIndex() != INVALID_ROM_INDEX )
+    CurrentGameSuperscrollChar = toupper( m_driverInfoList[GetCurrentGameIndex()].m_description[0] );
   if( !(CurrentGameSuperscrollChar >= 'A' && CurrentGameSuperscrollChar <= 'Z') )
     CurrentGameSuperscrollChar = '#';
 
