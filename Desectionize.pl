@@ -37,8 +37,6 @@ if( @ARGV ) {
 	}
 }
 else {
-	die "BLAH!\n";
-
 	local @FILEs = `find ./MAME/src/drivers/*.c`;
 
 	print "Removing sections from drivers, sound hardware, and video hardware...\n";
