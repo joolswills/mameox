@@ -24,7 +24,7 @@
 #define DEFAULT_ALTDRIVE            "T"
 
 #define DEFAULT_GENERALPATH				  "D:\\GENERAL"
-#define DEFAULT_ARTPATH						  "D:\\ART"
+#define DEFAULT_ARTPATH						  "D:\\ARTWORK"
 #define DEFAULT_INIPATH						  "U:\\INI"
 #define DEFAULT_NVRAMPATH					  "D:\\NVRAM"
 #define DEFAULT_CONFIGPATH          "D:\\CFG"
