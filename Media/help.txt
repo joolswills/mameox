@@ -1,44 +1,50 @@
-=============================================================
+=======================================
                         MAMEoX Help
-=============================================================
+=======================================
 
  A - Play selected ROM
- X + B - Move ROM to the "BACKUP" directory (this is to 
-         allow the user to "permanently" remove a ROM 
-         from the listing, without really deleting the 
-         file. Note that there is no way, currently, of 
-         adding the file back to the list. You'd have to 
-         manually move it back to the ROMs directory
+ X + B - Move ROM to the "BACKUP" directory (this 
+         allows the user to "permanently" remove a
+         ROM from the listing, without really deleting 
+	 the file. Note that there is currently no way
+	 to add the file back to the list from within
+	 MAMEoX. You will have to manually move it 
+	 back to the ROMs directory.
  Y + B - Toggle Option screen
  X     - Show Help file
- Y     - Hold to enter "Super Scroll" mode. In the upper 
-         left hand corner of the screen, a letter (or #) 
-         will appear. Using the DPAD up and down buttons, 
-         you can change the letter, skipping to the 
-         section of the list starting with that letter.
+ Y     - Hold to enter "Super Scroll" mode. At the top
+         of the screen, a letter (or # symbol) will 
+         appear. Using the DPAD up and down 
+         buttons, you can change the letter; 
+         skipping to the section of the list 
+         starting with that letter.
  Black - Search for ROM files, culling out clones / 
          keeping clones
- White - Toggle game list (w/o rating and favorite)
+ White - Toggle extended list mode (with 
+         rating and favorite columns)
 
- Left Trigger - Move the current ROM cursor up fast
- Right Trigger - Move the current ROM cursor down fast
- DPAD/Left Analog Stick - Move the current ROM cursor 
+ Left Trigger - Move the ROM cursor up fast
+ Right Trigger - Move the ROM cursor down fast
+ DPAD/Left Analog Stick - Move the ROM cursor 
                           slowly
 
  Right Analog Stick - Used to set the screen usage 
                      percentage for MAME rendering.
 
- Moving the stick will resize the green background (which
- is where the game screen will be rendered). This should 
- be sized such that a very small black border is revealed 
- all around the green. Failure to do this will cause 
- clipping (where the parts of the screen are not visibile) 
- or suboptimal usage (where there is a big black border 
- around the game screen)
+ Moving the stick will resize the gold border
+ (which denotes the area into which the
+ game screen will be rendered). This should 
+ be sized such that the entire border just
+ barely fits on the screen. Failure to do 
+ this may cause clipping (where the parts 
+ of the screen are not visibile) or 
+ suboptimal usage (where there is a larger 
+ than necessary black border around the 
+ game screen)
 
- Pressing Left Trigger, Right Trigger, and the Black button
- on Joypad 1 will jump to the dashboard.
+ Pressing Left Trigger, Right Trigger, 
+ and the Black button on Gamepad 1 
+ will jump to the dashboard.
 
  
-
-=============================================================
+=======================================
