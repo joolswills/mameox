@@ -162,7 +162,7 @@ static void internal_scale2x_32_def(u32* dst0,
   dst1[1] = src1[0];
 }
 
-static void internal_scale2x_16_mmx_single(u16* dst, const u16* src0, const u16* src1, const u16* src2, unsigned count) {
+static __inline void internal_scale2x_16_mmx_single(u16* dst, const u16* src0, const u16* src1, const u16* src2, unsigned count) {
   /* always do the first and last run */
   count -= 2*4;
 
@@ -539,7 +539,7 @@ static void internal_scale2x_16_mmx_single(u16* dst, const u16* src0, const u16*
   }
 }
 
-static void internal_scale2x_32_mmx_single(u32* dst, const u32* src0, const u32* src1, const u32* src2, unsigned count) {
+static __inline void internal_scale2x_32_mmx_single(u32* dst, const u32* src0, const u32* src1, const u32* src2, unsigned count) {
   /* always do the first and last run */
   count -= 2*2;
 
@@ -916,13 +916,13 @@ label1:
 #endif
 }
 
-static void internal_scale2x_16_mmx(u16* dst0, u16* dst1, const u16* src0, const u16* src1, const u16* src2, unsigned count) {
+static __inline void internal_scale2x_16_mmx(u16* dst0, u16* dst1, const u16* src0, const u16* src1, const u16* src2, unsigned count) {
   //	assert( count >= 2*4 );
   internal_scale2x_16_mmx_single(dst0, src0, src1, src2, count);
   internal_scale2x_16_mmx_single(dst1, src2, src1, src0, count);
 }
 
-static void internal_scale2x_32_mmx(u32* dst0, u32* dst1, const u32* src0, const u32* src1, const u32* src2, unsigned count) {
+static __inline void internal_scale2x_32_mmx(u32* dst0, u32* dst1, const u32* src0, const u32* src1, const u32* src2, unsigned count) {
   //	assert( count >= 2*2 );
   internal_scale2x_32_mmx_single(dst0, src0, src1, src2, count);
   internal_scale2x_32_mmx_single(dst1, src2, src1, src0, count);
