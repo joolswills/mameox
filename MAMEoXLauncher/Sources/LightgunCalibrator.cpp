@@ -206,7 +206,7 @@ void CLightgunCalibrator::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
 
-  m_displayDevice->SetTexture( 0, m_cursorTexture );
+  m_displayDevice->SetTexture( 0, m_textureSet.GetLightgunCursorMask() );
   m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
 
     // Display a target/cursor if the gun is pointed at the screen

@@ -9,6 +9,7 @@
 
 //= I N C L U D E S ====================================================
 #include "ListView.h"
+#include "TextureSet.h"
 #include "MAMEoX.h"
 #include <vector>
 
@@ -35,17 +36,11 @@ public:
 		//------------------------------------------------------------
 	CROMList( LPDIRECT3DDEVICE8	displayDevice, 
             CFontSet &fontSet, 
-            LPDIRECT3DTEXTURE8 verboseModeBackdropTexture,  
-            LPDIRECT3DTEXTURE8 simpleModeBackdropTexture,  
-            LPDIRECT3DTEXTURE8 scrollUpIconTexture,
-            LPDIRECT3DTEXTURE8 scrollDownIconTexture,
+            CTextureSet &textureSet,
             MAMEDriverData_t *drivers, 
             UINT32 numDrivers ) :
-    CListView( displayDevice, fontSet, verboseModeBackdropTexture ),
-    m_verboseModeBackdropTexture( verboseModeBackdropTexture ),
-    m_simpleModeBackdropTexture( simpleModeBackdropTexture ),
-    m_scrollUpIconTexture( scrollUpIconTexture ),
-    m_scrollDownIconTexture( scrollDownIconTexture ),
+    CListView( displayDevice, fontSet, NULL ),
+    m_textureSet( textureSet ),
     m_superscrollMode( FALSE ),
     m_superscrollCharacterIdx( 0 ),
     m_driverInfoList( drivers ),
@@ -219,10 +214,7 @@ protected:
   BOOL                  m_gameSelected;             //!<  Whether or not the user has selected a game
   BOOL                  m_shouldGenerateROMList;    //!<  Whether or not the main() funct should call GenerateROMList for us (to render directly to the screen)
 
-  LPDIRECT3DTEXTURE8    m_verboseModeBackdropTexture;   //!< Texture to display in additional info mode
-  LPDIRECT3DTEXTURE8    m_simpleModeBackdropTexture;    //!< Texture to display in no additional info mode
-  LPDIRECT3DTEXTURE8    m_scrollUpIconTexture;      //!<  Scroll up icon
-  LPDIRECT3DTEXTURE8    m_scrollDownIconTexture;    //!<  Scroll down icon
+  CTextureSet           &m_textureSet;              //!<  The texture set object storing all the useable textures (and their info) for the game
 
 		//! Vector of integers into the MAME driver array
 		//!  defining the set of available ROMs

@@ -6,6 +6,22 @@ Version 0.70.4b
     - MAMEoX.h
       - Upped version number
 
+   -------------------------------------------------------------
+  - \MAMEoXLauncher\Sources:
+
+    - main.cpp
+      - Put all textures in a texture set helper class
+
+    - Help.cpp
+      - Put all textures in a texture set helper class
+
+    - ROMList.cpp
+      - Put all textures in a texture set helper class
+      - Repositioned (very slightly) the scroll icons
+
+    - OptionsPage.cpp
+      - Integrated new gfx from r4dius
+
 
 *********************************************************************
 Version 0.70.3b

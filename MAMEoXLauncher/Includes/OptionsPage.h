@@ -10,6 +10,7 @@
 //= I N C L U D E S ====================================================
 #include "ListView.h"
 #include "VirtualKeyboard.h"
+#include "TextureSet.h"
 
 extern "C" {
 #include "mame.h"
@@ -71,7 +72,7 @@ public:
 		//------------------------------------------------------------
   COptionsPage( LPDIRECT3DDEVICE8	displayDevice, 
                 CFontSet &fontSet, 
-                LPDIRECT3DTEXTURE8 backdropTexture,
+                CTextureSet &textureSet,
                 GameOptions &options );
 
 		//------------------------------------------------------------
@@ -121,6 +122,8 @@ protected:
   BOOL                      m_virtualKeyboardMode;          //!< Whether or not to show the virtual keyboard
   CVirtualKeyboard          *m_virtualKeyboard;             //!< Virtual keyboard instance
   LPDIRECT3DVERTEXBUFFER8   m_virtualKeyboardVertexBuffer;
+
+  CTextureSet               &m_textureSet;
 
   optionsPageData_t         m_pageData[OPTPAGE_LAST];
 };

@@ -8,6 +8,7 @@
 
 //= I N C L U D E S ====================================================
 #include "ListView.h"
+#include "TextureSet.h"
 
 //= C L A S S E S ======================================================
 
@@ -23,11 +24,10 @@ public:
     // Constructor
 		//------------------------------------------------------------
 	CLightgunCalibrator(  LPDIRECT3DDEVICE8 displayDevice, 
-                        CFontSet &fontSet, 
-                        LPDIRECT3DTEXTURE8 backdropTexture, 
-                        LPDIRECT3DTEXTURE8 cursorTexture ) :
-    CListView( displayDevice, fontSet, backdropTexture ),
-    m_cursorTexture( cursorTexture ),
+                        CFontSet &fontSet,
+                        CTextureSet &textureSet ) :
+    CListView( displayDevice, fontSet, textureSet.GetBasicBackdrop() ),
+    m_textureSet( textureSet ),
     m_currentInputDeviceIndex( 0 ),
     m_calibrationStep( 0 ),
     m_calibrationCompleted( FALSE ),
@@ -64,8 +64,8 @@ protected:
 
   void GetCalibratedCursorPosition( CInputManager &inputManager );
 
-    // Texture to use for the cursor
-  LPDIRECT3DTEXTURE8  m_cursorTexture;
+    // Contains texture to use for the cursor
+  CTextureSet         m_textureSet;
 
     //! Current position of the gun pointer
   INT32               m_currentGunX;

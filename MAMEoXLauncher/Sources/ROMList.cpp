@@ -869,25 +869,25 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   #define MANUFACTURER_COLUMN   305
   #define YEAR_COLUMN           460
   #define CLONE_COLUMN          530 
+  #define TEXTBOX_RIGHT         604   // The right edge of the text box
   #define COLUMN_PADDING        9     // Number of pixels to subtract from the column width before truncating text
 
   #define SCROLLUP_TOP          137
-  #define SCROLLUP_RIGHT        607
+  #define SCROLLUP_RIGHT        608
   #define SCROLLUP_LEFT         SCROLLUP_RIGHT - 32
   #define SCROLLUP_BOTTOM       SCROLLUP_TOP + 32
 
   #define SCROLLDOWN_BOTTOM     448
   #define SCROLLDOWN_TOP        SCROLLDOWN_BOTTOM - 32
-  #define SCROLLDOWN_RIGHT      607
+  #define SCROLLDOWN_RIGHT      608
   #define SCROLLDOWN_LEFT       SCROLLDOWN_RIGHT - 32
 
-  FLOAT textWidth, textHeight;
-  m_fontSet.SmallThinFont().GetTextExtent( L"i^jg", &textWidth, &textHeight );
+  FLOAT textHeight = m_fontSet.SmallThinFontHeight();
 
   if( m_options.m_verboseMode )
-    m_backdropTexture = m_verboseModeBackdropTexture;
+    m_backdropTexture = m_textureSet.GetROMListScreenBackdrop();
   else
-    m_backdropTexture = m_simpleModeBackdropTexture;
+    m_backdropTexture = m_textureSet.GetBasicBackdrop();    
 
     // Render the backdrop texture
   RenderBackdrop();
@@ -948,7 +948,7 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
                                           ITEM_COLOR,
                                           name,
                                           XBFONT_TRUNCATED,
-                                          ( m_options.m_verboseMode ? MANUFACTURER_COLUMN : 600 ) - (NAME_COLUMN + COLUMN_PADDING) );
+                                          ( m_options.m_verboseMode ? MANUFACTURER_COLUMN : TEXTBOX_RIGHT ) - (NAME_COLUMN + COLUMN_PADDING) );
 
 		  if( m_options.m_verboseMode )
 		  {
@@ -974,7 +974,7 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
                                             ITEM_COLOR,
                                             name,
                                             XBFONT_TRUNCATED,
-                                            600 - (CLONE_COLUMN + COLUMN_PADDING) );
+                                            TEXTBOX_RIGHT - (CLONE_COLUMN + COLUMN_PADDING) );
 		  }
 
 			  // Inc the Y position
@@ -1012,44 +1012,44 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     // Draw scroll up icon
   if( (DWORD)m_pageOffset )
   {
-	  m_displayDevice->SetTexture( 0, m_scrollUpIconTexture );
-    m_displayDevice->Begin( D3DPT_QUADLIST );
+	  m_displayDevice->SetTexture( 0, m_textureSet.GetScrollIconMasks() );
+    m_displayDevice->Begin( D3DPT_QUADLIST );      
       m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 0.0f );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconLeft(), m_textureSet.GetScrollUpIconTop() );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_LEFT, SCROLLUP_TOP, 1.0f, 1.0f );
       
       m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 0.0f );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconRight(), m_textureSet.GetScrollUpIconTop() );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_RIGHT, SCROLLUP_TOP, 1.0f, 1.0f );
       
       m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 1.0f );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconRight(), m_textureSet.GetScrollUpIconBottom() );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_RIGHT, SCROLLUP_BOTTOM, 1.0f, 1.0f );
 
       m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 1.0f );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconLeft(), m_textureSet.GetScrollUpIconBottom() );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_LEFT, SCROLLUP_BOTTOM, 1.0f, 1.0f );
     m_displayDevice->End();
   }
 
   if( (DWORD)m_pageOffset < (m_numLinesInList - (DWORD)pageSize) )
   {
-	  m_displayDevice->SetTexture( 0, m_scrollDownIconTexture );
+	  m_displayDevice->SetTexture( 0, m_textureSet.GetScrollIconMasks() );
     m_displayDevice->Begin( D3DPT_QUADLIST );
       m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 0.0f );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconLeft(), m_textureSet.GetScrollDownIconTop() );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_LEFT, SCROLLDOWN_TOP, 1.0f, 1.0f );
       
       m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 0.0f );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconRight(), m_textureSet.GetScrollDownIconTop() );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_RIGHT, SCROLLDOWN_TOP, 1.0f, 1.0f );
       
       m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 1.0f );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconRight(), m_textureSet.GetScrollDownIconBottom() );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_RIGHT, SCROLLDOWN_BOTTOM, 1.0f, 1.0f );
 
       m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 1.0f );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconLeft(), m_textureSet.GetScrollDownIconBottom() );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_LEFT, SCROLLDOWN_BOTTOM, 1.0f, 1.0f );
     m_displayDevice->End();
   }

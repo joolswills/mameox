@@ -8,78 +8,55 @@ out_packedresource ..\..\Media\Resource.xpr
 out_error          Resource.err
 out_prefix         resource
 
-
-//Texture MAMEoXLogo
-//{
-//   Source mox-blue.bmp
-//   Format D3DFMT_X8R8G8B8
-//   Levels 1
-//}
-
 Texture ROMListScreenBackdrop
 {
-  Source mox-romlistscreen.bmp
-  Format D3DFMT_X8R8G8B8
-  Levels 1
+  Source        mox-romlistscreen.bmp
+  Format        D3DFMT_X8R8G8B8
+  Levels        1
 }
 
-Texture ROMListScreenBackdrop_NoAdditionalInfo
+Texture BasicBackdrop
 {
-  Source mox-romlistscreen-noadditionalinfo.bmp
-  Format D3DFMT_X8R8G8B8
-  Levels 1
+  Source        mox-basicbackdrop.bmp
+  Format        D3DFMT_X8R8G8B8
+  Levels        1
 }
 
-Texture ROMListScrollUpMask
+Texture ScrollIconMasks
 {
-  Source      mox-romlist-scrollupmask.bmp
-  Alphasource mox-romlist-scrollupmask.bmp
-  Format      D3DFMT_A8R8G8B8
-  Levels      1
-}
-
-Texture ROMListScrollDownMask
-{
-  Source      mox-romlist-scrolldownmask.bmp
-  Alphasource mox-romlist-scrolldownmask.bmp
-  Format      D3DFMT_A8R8G8B8
-  Levels      1
+  Source        mox-scrollicon-masks.bmp
+  Alphasource   mox-scrollicon-masks.bmp
+  Format        D3DFMT_LIN_A8R8G8B8
+  Levels        1
 }
 
 Texture SplashScreenBackdrop
 {
-  Source mox-splashscreen.bmp
-  Format D3DFMT_X8R8G8B8
-  Levels 1
+  Source        mox-splashscreen.bmp
+  Format        D3DFMT_X8R8G8B8
+  Levels        1
 }
 
 Texture MessageScreenBackdrop
 {
-  Source mox-messagescreen.bmp
-  Format D3DFMT_X8R8G8B8
-  Levels 1
-}
-
-Texture OptionsScreenBackdrop
-{
-  Source mox-optionsscreen.bmp
-  Format D3DFMT_X8R8G8B8
-  Levels 1
-}
-
-Texture HelpScreenBackdrop
-{
-  Source mox-helpscreen.bmp
-  Format D3DFMT_X8R8G8B8
-  Levels 1
+  Source        mox-messagescreen.bmp
+  Format        D3DFMT_X8R8G8B8
+  Levels        1
 }
 
 Texture LightgunCursorMask
 {
-  Source      mox-lightgun-cursormask.bmp
-  Alphasource mox-lightgun-cursormask.bmp
-  Format      D3DFMT_A8R8G8B8
-  Levels      1
+  Source        mox-lightgun-cursormask.bmp
+  Alphasource   mox-lightgun-cursormask.bmp
+  Format        D3DFMT_A8R8G8B8
+  Levels        1
 }
-  
+
+Texture StartMenu
+{
+  Source        mox-startmenu.bmp
+  Alphasource   mox-startmenu-mask.bmp
+  Format        D3DFMT_A8R8G8B8
+  Levels        1
+}
 

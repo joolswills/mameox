@@ -28,6 +28,7 @@
 #include "DebugLogger.h"
 #include "xbox_Network.h"
 #include "FontSet.h"
+#include "TextureSet.h"
 
 #include "ROMList.h"
 #include "Help.h"
@@ -62,9 +63,7 @@ extern CFontSet           g_fontSet;
 static DWORD              g_launchDataType;
 static LAUNCH_DATA        g_launchData;
 
-BYTE                      *g_pResourceSysMemData = NULL;
-BYTE                      *g_pResourceVidMemData = NULL;
-
+static CTextureSet        g_textureSet;
 
 static LPDIRECT3DVERTEXBUFFER8    g_pD3DVertexBuffer = NULL;
 
@@ -92,7 +91,6 @@ BOOL CreateBackdrop( FLOAT xPosition, FLOAT yPosition, FLOAT xUsage, FLOAT yUsag
 void DestroyBackdrop( void );
 void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... );
 static BOOL Helper_LoadDriverInfoFile( void );
-static HRESULT LoadPackedResources( void );
 static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice );
 
 //= F U N C T I O N S =================================================
@@ -167,7 +165,7 @@ void __cdecl main( void )
   SaveOptions(); 
 
 
-  if( FAILED( LoadPackedResources() ) )
+  if( !g_textureSet.Create() )
   {
     Die( pD3DDevice, 
          "The Media/Resource.xpr file is missing\n"
@@ -243,7 +241,7 @@ void __cdecl main( void )
 		// Load the Help file
   CHelp help( pD3DDevice, 
               g_fontSet, 
-              (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_HelpScreenBackdrop_OFFSET] );
+              NULL );
 	if( !help.LoadHelpFile() )
   {
     Die( pD3DDevice, 
@@ -257,10 +255,7 @@ void __cdecl main( void )
 		// Load/Generate the ROM listing
   CROMList romList( pD3DDevice, 
                     g_fontSet,
-                    (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_ROMListScreenBackdrop_OFFSET],
-                    (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_ROMListScreenBackdrop_NoAdditionalInfo_OFFSET],
-                    (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_ROMListScrollUpMask_OFFSET],
-                    (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_ROMListScrollDownMask_OFFSET],
+                    g_textureSet,
                     g_driverData, 
                     mameoxLaunchData->m_totalMAMEGames );
 	if( !romList.LoadROMList( TRUE ) )
@@ -280,14 +275,12 @@ void __cdecl main( void )
 
   COptionsPage optionsPage( pD3DDevice,
                             g_fontSet,
-                            (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_OptionsScreenBackdrop_OFFSET],
+                            g_textureSet,
                             options );
 
   CLightgunCalibrator lightgunCalibrator( pD3DDevice,
                                           g_fontSet,
-                                          NULL,
-                                          (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_LightgunCursorMask_OFFSET] );
-
+                                          g_textureSet );
 
     //-- Initialize the rendering engine -------------------------------
   D3DXMATRIX matWorld;
@@ -960,90 +953,7 @@ void DestroyBackdrop( void )
   }
 }
 
-//-----------------------------------------------------------------------------
-// LoadPackedResources
-//-----------------------------------------------------------------------------
-static HRESULT LoadPackedResources( void )
-{
-  FILE *file = fopen( "D:\\Media\\Resource.xpr", "rb" );
-  if( !file )
-    return E_FAIL;
 
-    // Read in and verify the XPR magic header
-  XPR_HEADER xprh;
-  if( fread( &xprh, sizeof(XPR_HEADER), 1, file ) != 1 )
-  {
-    fclose( file );
-    return E_FAIL;
-  }
-
-  if( xprh.dwMagic != XPR_MAGIC_VALUE )
-  {
-    PRINTMSG( T_INFO, "ERROR: Invalid Xbox Packed Resource (.xpr) file" );
-    fclose( file );
-    return E_INVALIDARG;
-  }
-
-    // Compute memory requirements
-  DWORD dwSysMemDataSize = xprh.dwHeaderSize - sizeof(XPR_HEADER);
-  DWORD dwVidMemDataSize = xprh.dwTotalSize - xprh.dwHeaderSize;
-
-    // Allocate memory
-  g_pResourceSysMemData = new BYTE[dwSysMemDataSize];
-  g_pResourceVidMemData = (BYTE*)D3D_AllocContiguousMemory( dwVidMemDataSize, D3DTEXTURE_ALIGNMENT );
-
-    // Read in the data from the file
-  if( fread( g_pResourceSysMemData, dwSysMemDataSize, 1, file ) != 1 ||
-      fread( g_pResourceVidMemData, dwVidMemDataSize, 1, file ) != 1 )
-  {
-    delete[] g_pResourceSysMemData;
-    D3D_FreeContiguousMemory( g_pResourceVidMemData );
-    fclose( file );
-    return E_FAIL;
-  }
-
-  fclose( file );
-  
-    // Loop over resources, calling Register()
-  BYTE *pData = g_pResourceSysMemData;
-
-  for( DWORD i = 0; i < resource_NUM_RESOURCES; ++i )
-  {
-    LPDIRECT3DRESOURCE8 pResource = (LPDIRECT3DRESOURCE8)pData;
-    pResource->Register( g_pResourceVidMemData );
-
-    switch( pResource->GetType() )
-    {
-      case D3DRTYPE_TEXTURE:       
-        pData += sizeof(D3DTexture);       
-        break;
-
-      case D3DRTYPE_VOLUMETEXTURE: 
-        pData += sizeof(D3DVolumeTexture); 
-        break;
-
-      case D3DRTYPE_CUBETEXTURE:   
-        pData += sizeof(D3DCubeTexture);   
-        break;
-
-      case D3DRTYPE_VERTEXBUFFER:  
-        pData += sizeof(D3DVertexBuffer);  
-        break;
-
-      case D3DRTYPE_INDEXBUFFER:   
-        pData += sizeof(D3DIndexBuffer);   
-        break;
-
-      case D3DRTYPE_PALETTE:       
-        pData += sizeof(D3DPalette);       
-        break;
-
-      default:
-        return E_FAIL;
-    }
-  }
-  return S_OK;
-}
 
 //-------------------------------------------------------------
 //	ShowSplashScreen
@@ -1075,7 +985,6 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
   pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP );
   pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSW, D3DTADDRESS_CLAMP );
 
-  LPDIRECT3DTEXTURE8 pTexture = (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_SplashScreenBackdrop_OFFSET];
   #define TEXTFADE_MINIMUM            0.0f
   #define TEXTFADE_MAXIMUM            110.0f
   #define TEXTFADE_FRAMES_PER_STEP    10.0f
@@ -1138,7 +1047,7 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 
     pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
 	  pD3DDevice->SetRenderState( D3DRS_ALPHATESTENABLE, FALSE );
-	  pD3DDevice->SetTexture( 0, pTexture );
+	  pD3DDevice->SetTexture( 0, g_textureSet.GetSplashScreenBackdrop() );
     pD3DDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
     pD3DDevice->Begin( D3DPT_QUADLIST );
       pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 0.0f );
@@ -1295,8 +1204,6 @@ void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice )
     pVertices[3].tv = 1.0f;
 	pVertexBuffer->Unlock();
 
-  LPDIRECT3DTEXTURE8 pTexture = (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_MessageScreenBackdrop_OFFSET];
-
 	pD3DDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
 	pD3DDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
 	pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
@@ -1320,7 +1227,7 @@ void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice )
   pD3DDevice->SetStreamSource(	0,												// Stream number
 																pVertexBuffer,					// Stream data
 																sizeof(CUSTOMVERTEX) );		// Vertex stride
-	pD3DDevice->SetTexture( 0, pTexture );
+	pD3DDevice->SetTexture( 0, g_textureSet.GetMessageScreenBackdrop() );
   pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
 
   g_fontSet.DefaultFont().Begin();

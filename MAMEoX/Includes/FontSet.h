@@ -75,7 +75,19 @@ public:
   CXBFont &SmallThinFont( void ) { return m_fonts[2]; }
   CXBFont &LargeThinFont( void ) { return m_fonts[3]; }
 
+
+  FLOAT DefaultFontHeight( void ) const { return GetFontHeight( 0 ); }
+  FLOAT FixedWidthFontHeight( void ) const { return GetFontHeight( 1 ); }
+  FLOAT SmallThinFontHeight( void ) const { return GetFontHeight( 2 ); }
+  FLOAT LargeThinFontHeight( void ) const { return GetFontHeight( 3 ); }
+
 protected:
+  FLOAT GetFontHeight( UINT32 index ) const {
+    FLOAT textWidth, textHeight; 
+    m_fonts[index].GetTextExtent( L"kg^@i!", &textWidth, &textHeight );
+    return textHeight;
+  }
+
   CXBFont     m_fonts[4];
 };
 

@@ -25,38 +25,63 @@ extern "C" {
 
 //= D E F I N E S ======================================================
 
-#define NORMAL_ITEM_COLOR				D3DCOLOR_XRGB( 100, 255, 100 )
-#define SELECTED_ITEM_COLOR			D3DCOLOR_XRGB( 255, 255, 255 )
-#define HELP_TEXT_COLOR         D3DCOLOR_XRGB( 100, 220, 220 )
-#define ITEMCOLOR()             i == (ULONG)m_cursorPosition ? SELECTED_ITEM_COLOR : NORMAL_ITEM_COLOR
+
+  //--- Layout defines -----------------------------------------
+#define HEADER_COLOR          D3DCOLOR_XRGB( 0, 0, 0 )
+#define ITEM_COLOR			      D3DCOLOR_XRGB( 0, 0, 0 )
+#define HIGHLIGHTBAR_COLOR    D3DCOLOR_ARGB( 180, 175, 179, 212 )
+#define HELPICON_COLOR        D3DCOLOR_XRGB( 255, 255, 255 )
+#define HELPBACKDROP_COLOR    D3DCOLOR_ARGB( 127, 255, 255, 255 )
+
+#define TITLEBAR_ROW          116
+#define FIRSTDATA_ROW         140
+
+#define HIGHLIGHTBAR_LEFT     34
+#define HIGHLIGHTBAR_RIGHT    607
+#define NAME_START            40
+#define VALUE_START           240
+#define TEXTBOX_RIGHT         604   // The right edge of the text box
+#define COLUMN_PADDING        9     // Number of pixels to subtract from the column width before truncating text
+
+
+#define TRIGGER_TOP           422
+#define LEFTTRIGGER_LEFT      30
+#define RIGHTTRIGGER_RIGHT    608
+
+
+  // Text offsets for left/right trigger help messages
+/*
+#define LEFTTRIGGER_LINEONE_START     58
+#define LEFTTRIGGERTEXT_START     65
+
+#define RIGHTTRIGGER_LINEONE_END      582
+#define RIGHTTRIGGER_LINETWO_END      574
+
+#define TRIGGERTEXT_LINEONE_ROW       419
+#define TRIGGERTEXT_LINETWO_ROW       432
+*/
+
+#define LEFTTRIGGERTEXT_START             62
+#define RIGHTTRIGGERTEXT_END              579
+#define TRIGGERTEXT_ROW               426
+
+#define STARTPAGE()                       DWORD i = 0; FLOAT fontHeight = m_fontSet.SmallThinFontHeight()
+#define DRAWITEM( _name__, _val__ )       m_fontSet.SmallThinFont().DrawText( NAME_START,   FIRSTDATA_ROW+(i*fontHeight), ITEM_COLOR, _name__, XBFONT_TRUNCATED, VALUE_START - (NAME_START+COLUMN_PADDING) ); \
+                                          m_fontSet.SmallThinFont().DrawText( VALUE_START,  FIRSTDATA_ROW+(i*fontHeight), ITEM_COLOR, _val__, XBFONT_TRUNCATED, TEXTBOX_RIGHT - (VALUE_START+COLUMN_PADDING) ); \
+                                          ++i;
+#define ENDPAGE()
+
+
 
 	// Maximum number of items to render on the screen at once
 #define MAXPAGESIZE							18
 
-	// Analog trigger deadzone
-#define DEADZONE								0.25f
-#define DEADZONE_RECTIFIER			1.0f / (1.0f - DEADZONE)
-#define CURSOR_SPEED            0.3f                // The cursor velocity modifier
 
 	// Number of seconds between valid DPAD readings
 #define DPADCURSORMOVE_TIMEOUT	0.20f
 
   // Number of seconds between valid left/right trigger readings
 #define TRIGGERSWITCH_TIMEOUT   0.5f
-
-
-
-#define X_POS		( 10 )
-#define Y_POS		( 25 )
-#define WIDTH		( 640 - (X_POS<<1) )
-#define HEIGHT  ( 480 - (Y_POS<<1) )
-
-
-#define STARTPAGE()                       DWORD i = 0
-#define DRAWITEM( _name__, _val__ )       m_fontSet.SmallThinFont().DrawText( X_POS,  (i*18)+Y_POS+20, ITEMCOLOR(), _name__, XBFONT_TRUNCATED, WIDTH ); \
-                                          m_fontSet.SmallThinFont().DrawText( X_POS + 200, (i*18)+Y_POS+20, ITEMCOLOR(), _val__, XBFONT_TRUNCATED, WIDTH ); \
-                                          ++i;
-#define ENDPAGE()
 
 
 //= G L O B A L = V A R S ==============================================
@@ -189,9 +214,10 @@ void ChangeDirectoryPathPage( COptionsPage *ptr, BOOL direction )
 //------------------------------------------------------------
 COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice, 
                             CFontSet &fontSet, 
-                            LPDIRECT3DTEXTURE8 backdropTexture, 
+                            CTextureSet &textureSet, 
                             GameOptions &options ) :
-  CListView( displayDevice, fontSet, backdropTexture ),
+  CListView( displayDevice, fontSet, textureSet.GetBasicBackdrop() ),
+  m_textureSet( textureSet ),
   m_optToggleDelay( 0.0f ),
   m_triggerDelay( 0.0f ),
   m_pageNumber( 0 ),
@@ -394,10 +420,9 @@ void COptionsPage::MoveCursor( CInputManager &gp, BOOL useSpeedbanding )
 //---------------------------------------------------------------------
 //	Draw
 //---------------------------------------------------------------------
-void COptionsPage::Draw( BOOL opaque, BOOL flipOnCompletion )
+void COptionsPage::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 {
-		// Display the error to the user
-  if( opaque )  
+  if( clearScreen )  
 	  m_displayDevice->Clear(	0L,																// Count
 		  											NULL,															// Rects to clear
 			  										D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
@@ -407,28 +432,230 @@ void COptionsPage::Draw( BOOL opaque, BOOL flipOnCompletion )
 
   RenderBackdrop();
 
+
+  FLOAT fontHeight = m_fontSet.SmallThinFontHeight();
+  FLOAT selectedItemYPos = (fontHeight * (ULONG)m_cursorPosition);
+
+    //-- Render the highlight bar for the selected item -------------------------------------
+  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
+  m_displayDevice->SetRenderState( D3DRS_SRCBLEND,         D3DBLEND_SRCALPHA );
+  m_displayDevice->SetRenderState( D3DRS_DESTBLEND,        D3DBLEND_INVSRCALPHA );
+  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
+
+  m_displayDevice->Begin( D3DPT_QUADLIST );
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
+    
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
+    
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos + fontHeight, 1.0f, 1.0f );
+
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos + fontHeight, 1.0f, 1.0f );
+  m_displayDevice->End();
+
+
+
+    //-- Render the page's text -----------------------------------------------------------
 	m_fontSet.SmallThinFont().Begin();
-    m_fontSet.SmallThinFont().DrawText( (WIDTH >> 1) + X_POS, Y_POS, D3DCOLOR_XRGB( 255, 255, 255 ), m_pageData[m_pageNumber].m_title, XBFONT_CENTER_X );
-    WCHAR underline[128] = {0};    
-    for( UINT32 i = 0; i < wcslen(m_pageData[m_pageNumber].m_title) + 4; ++i )
-      underline[i] = L'_';
-    m_fontSet.SmallThinFont().DrawText( (WIDTH >> 1) + X_POS, Y_POS + 4, D3DCOLOR_XRGB( 255, 255, 255 ), underline, XBFONT_CENTER_X );
+
+    m_fontSet.SmallThinFont().DrawText( NAME_START,
+                                        TITLEBAR_ROW,
+                                        HEADER_COLOR,
+                                        m_pageData[m_pageNumber].m_title,
+                                        XBFONT_TRUNCATED,
+                                        TEXTBOX_RIGHT - (NAME_START+COLUMN_PADDING) );
+
+
     m_pageData[m_pageNumber].m_drawFunct( this );
 
-    UINT32 prev = m_pageNumber ? m_pageNumber - 1 : OPTPAGE_LAST - 1;
-    UINT32 next = m_pageNumber < OPTPAGE_LAST - 1 ? m_pageNumber + 1 : 0;
-
-    m_fontSet.SmallThinFont().DrawText( X_POS + 30, HEIGHT - 15, HELP_TEXT_COLOR, L"Left Trigger", 0 );
-    m_fontSet.SmallThinFont().DrawText( X_POS + 10, HEIGHT, HELP_TEXT_COLOR, L"<-", 0 );
-    m_fontSet.SmallThinFont().DrawText( X_POS + 30, HEIGHT, SELECTED_ITEM_COLOR, m_pageData[prev].m_title, 0 );
-
-    m_fontSet.SmallThinFont().DrawText( WIDTH + X_POS - 30, HEIGHT - 15, HELP_TEXT_COLOR, L"Right Trigger", XBFONT_RIGHT );
-    m_fontSet.SmallThinFont().DrawText( WIDTH + X_POS - 10, HEIGHT, HELP_TEXT_COLOR, L"->", XBFONT_RIGHT );
-    m_fontSet.SmallThinFont().DrawText( WIDTH + X_POS - 30, HEIGHT, SELECTED_ITEM_COLOR, m_pageData[next].m_title, XBFONT_RIGHT );  
 	m_fontSet.SmallThinFont().End();
 
 
-  
+    // Calculate the previous and next page indices
+  UINT32 prevPageIndex = m_pageNumber ? m_pageNumber - 1 : OPTPAGE_LAST - 1;
+  UINT32 nextPageIndex = m_pageNumber < OPTPAGE_LAST - 1 ? m_pageNumber + 1 : 0;
+
+    // Calculate the width of each trigger text item
+/*
+  UINT32 leftTriggerLineOneLength = m_fontSet.SmallThinFont().GetTextWidth( L"Left Trigger" );
+  UINT32 leftTriggerLineTwoLength = m_fontSet.SmallThinFont().GetTextWidth( m_pageData[prevPageIndex].m_title );
+  UINT32 rightTriggerLineOneLength = m_fontSet.SmallThinFont().GetTextWidth( L"Right Trigger" );
+  UINT32 rightTriggerLineTwoLength = m_fontSet.SmallThinFont().GetTextWidth( m_pageData[nextPageIndex].m_title );
+
+  FLOAT leftTriggerLength = max( leftTriggerLineOneLength, leftTriggerLineTwoLength );
+  FLOAT rightTriggerLength = max( rightTriggerLineOneLength, rightTriggerLineTwoLength );
+*/
+
+  FLOAT leftTriggerLength = m_fontSet.SmallThinFont().GetTextWidth( m_pageData[prevPageIndex].m_title );
+  FLOAT rightTriggerLength = m_fontSet.SmallThinFont().GetTextWidth( m_pageData[nextPageIndex].m_title );
+
+    //-- Render the left/right trigger icons ------------------------------------------------------
+  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
+
+	m_displayDevice->SetTexture( 0, m_textureSet.GetScrollIconMasks() );
+  m_displayDevice->Begin( D3DPT_QUADLIST );      
+
+      // Draw left trigger "head"
+    FLOAT leftTriggerIconRight  = LEFTTRIGGER_LEFT + (m_textureSet.GetTriggerIconRight() - m_textureSet.GetTriggerIconLeft());
+    FLOAT triggerIconBottom     = TRIGGER_TOP + (m_textureSet.GetTriggerIconBottom() - m_textureSet.GetTriggerIconTop());
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconLeft(), m_textureSet.GetTriggerIconTop() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, LEFTTRIGGER_LEFT, TRIGGER_TOP, 1.0f, 1.0f );
+
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconRight(), m_textureSet.GetTriggerIconTop() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, leftTriggerIconRight, TRIGGER_TOP, 1.0f, 1.0f );
+    
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconRight(), m_textureSet.GetTriggerIconBottom() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, leftTriggerIconRight, triggerIconBottom, 1.0f, 1.0f );
+
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconLeft(), m_textureSet.GetTriggerIconBottom() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, LEFTTRIGGER_LEFT, triggerIconBottom, 1.0f, 1.0f );
+
+      // Draw the "tail"
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconTailLeft(), m_textureSet.GetTriggerIconTailTop() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, LEFTTRIGGERTEXT_START + leftTriggerLength, TRIGGER_TOP, 1.0f, 1.0f );
+
+    FLOAT leftTriggerIconTailRight = (LEFTTRIGGERTEXT_START + leftTriggerLength) + m_textureSet.GetTriggerIconTailRight() - m_textureSet.GetTriggerIconTailLeft();
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconTailRight(), m_textureSet.GetTriggerIconTailTop() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, leftTriggerIconTailRight, TRIGGER_TOP, 1.0f, 1.0f );
+    
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconTailRight(), m_textureSet.GetTriggerIconTailBottom() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, leftTriggerIconTailRight, triggerIconBottom, 1.0f, 1.0f );
+
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconTailLeft(), m_textureSet.GetTriggerIconTailBottom() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, LEFTTRIGGERTEXT_START + leftTriggerLength, triggerIconBottom, 1.0f, 1.0f );
+
+
+
+      // Right trigger, same deal, but flip the textures
+    FLOAT rightTriggerIconLeft = RIGHTTRIGGER_RIGHT - (m_textureSet.GetTriggerIconRight() - m_textureSet.GetTriggerIconLeft());
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconRight(), m_textureSet.GetTriggerIconTop() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, rightTriggerIconLeft, TRIGGER_TOP, 1.0f, 1.0f );
+
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconLeft(), m_textureSet.GetTriggerIconTop() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, RIGHTTRIGGER_RIGHT, TRIGGER_TOP, 1.0f, 1.0f );
+    
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconLeft(), m_textureSet.GetTriggerIconBottom() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, RIGHTTRIGGER_RIGHT, triggerIconBottom, 1.0f, 1.0f );
+
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconRight(), m_textureSet.GetTriggerIconBottom() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, rightTriggerIconLeft, triggerIconBottom, 1.0f, 1.0f );
+
+      // Draw the "tail"
+    FLOAT rightTriggerIconTailLeft = (RIGHTTRIGGERTEXT_END - rightTriggerLength) - (m_textureSet.GetTriggerIconTailRight() - m_textureSet.GetTriggerIconTailLeft());
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconTailRight(), m_textureSet.GetTriggerIconTailTop() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, rightTriggerIconTailLeft, TRIGGER_TOP, 1.0f, 1.0f );
+
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconTailLeft(), m_textureSet.GetTriggerIconTailTop() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, RIGHTTRIGGERTEXT_END - rightTriggerLength, TRIGGER_TOP, 1.0f, 1.0f );
+    
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconTailLeft(), m_textureSet.GetTriggerIconTailBottom() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, RIGHTTRIGGERTEXT_END - rightTriggerLength, triggerIconBottom, 1.0f, 1.0f );
+
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconTailRight(), m_textureSet.GetTriggerIconTailBottom() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, rightTriggerIconTailLeft, triggerIconBottom, 1.0f, 1.0f );
+
+
+
+  m_displayDevice->End();
+
+    //--- Draw the text backdrops -----------------------------------------------------------------------------
+  m_displayDevice->SetTexture( 0, NULL );
+  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );  
+
+  m_displayDevice->Begin( D3DPT_QUADLIST );      
+
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPBACKDROP_COLOR );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, leftTriggerIconRight, TRIGGER_TOP + 1, 1.0f, 1.0f );
+    
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPBACKDROP_COLOR );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, LEFTTRIGGERTEXT_START + leftTriggerLength + 1, TRIGGER_TOP + 1, 1.0f, 1.0f );
+    
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPBACKDROP_COLOR );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, LEFTTRIGGERTEXT_START + leftTriggerLength + 1, triggerIconBottom + 1, 1.0f, 1.0f );
+
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPBACKDROP_COLOR );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, leftTriggerIconRight, triggerIconBottom + 1, 1.0f, 1.0f );
+
+
+
+
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPBACKDROP_COLOR );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, RIGHTTRIGGERTEXT_END - rightTriggerLength, TRIGGER_TOP + 1, 1.0f, 1.0f );
+    
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPBACKDROP_COLOR );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, rightTriggerIconLeft, TRIGGER_TOP + 1, 1.0f, 1.0f );
+    
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPBACKDROP_COLOR );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, rightTriggerIconLeft, triggerIconBottom + 1, 1.0f, 1.0f );
+
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPBACKDROP_COLOR );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, RIGHTTRIGGERTEXT_END - rightTriggerLength, triggerIconBottom + 1, 1.0f, 1.0f );
+
+  m_displayDevice->End();
+
+
+
+
+    // Finally, draw the text for the left/right trigger
+	m_fontSet.SmallThinFont().Begin();
+/*
+    m_fontSet.SmallThinFont().DrawText( LEFTTRIGGER_LINEONE_START, 
+                                        TRIGGERTEXT_LINEONE_ROW, 
+                                        HEADER_COLOR, 
+                                        L"Left Trigger", 
+                                        0 );
+*/
+    m_fontSet.SmallThinFont().DrawText( LEFTTRIGGERTEXT_START, 
+                                        TRIGGERTEXT_ROW, 
+                                        HEADER_COLOR, 
+                                        m_pageData[prevPageIndex].m_title, 
+                                        0 );
+/*
+    m_fontSet.SmallThinFont().DrawText( RIGHTTRIGGER_LINEONE_END - rightTriggerLineOneLength, 
+                                        TRIGGERTEXT_LINEONE_ROW, 
+                                        HEADER_COLOR, 
+                                        L"Right Trigger", 
+                                        XBFONT_RIGHT );
+*/
+    m_fontSet.SmallThinFont().DrawText( RIGHTTRIGGERTEXT_END, 
+                                        TRIGGERTEXT_ROW, 
+                                        HEADER_COLOR, 
+                                        m_pageData[nextPageIndex].m_title, 
+                                        XBFONT_RIGHT );  
+
+	m_fontSet.SmallThinFont().End();
+
+
+    // Clean up settings
+  m_displayDevice->SetTexture( 0, NULL );
+  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
+
 
   if( m_virtualKeyboardMode )
   {
@@ -438,6 +665,7 @@ void COptionsPage::Draw( BOOL opaque, BOOL flipOnCompletion )
     m_displayDevice->SetStreamSource(	0, m_virtualKeyboardVertexBuffer, sizeof(CUSTOMVERTEX) );
     m_displayDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
   }
+
 
   if( flipOnCompletion )
 	  m_displayDevice->Present( NULL, NULL, NULL, NULL );	
