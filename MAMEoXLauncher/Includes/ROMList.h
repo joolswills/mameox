@@ -204,7 +204,7 @@ protected:
     // Set the cursorPosition and pageOffset such that
     // the cursor is displayed at the passed position
   void SetAbsoluteCursorPosition( UINT32 pos );
-  UINT32 GetAbsoluteCursorPosition( void ) const { return (ULONG)m_pageOffset + (ULONG)m_cursorPosition; }
+  UINT32 GetAbsoluteCursorPosition( void ) const { return (UINT32)m_pageOffset + (UINT32)m_cursorPosition; }
 
 
     // Helper functions to save/load the rom list, with integrity checks

@@ -1026,7 +1026,12 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 		  swprintf( &name[wcslen(name)], L"[%s]", displayString );
     }
 
-	  m_fontSet.SmallThinFont().DrawText( NAME_COLUMN, TITLEBAR_ROW, HEADER_COLOR, name );
+	  m_fontSet.SmallThinFont().DrawText( NAME_COLUMN, 
+                                        TITLEBAR_ROW, 
+                                        HEADER_COLOR, 
+                                        name, 
+                                        XBFONT_TRUNCATED,
+                                        ( m_options.m_verboseMode ? MANUFACTURER_COLUMN : TEXTBOX_RIGHT ) - (NAME_COLUMN + COLUMN_PADDING) );
 	  if( m_options.m_verboseMode )
 	  {
 		  m_fontSet.SmallThinFont().DrawText( MANUFACTURER_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"Manufacturer" );
@@ -1034,7 +1039,6 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
       m_fontSet.SmallThinFont().DrawText( NUMPLAYERS_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"#P" );
 		  m_fontSet.SmallThinFont().DrawText( CLONE_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"Clone" );
 	  }
-
 
 		  // Render the ROM info
 	  FLOAT yPos = 0.0f;
@@ -1506,6 +1510,11 @@ void CROMList::SetAbsoluteCursorPosition( UINT32 pos )
     m_pageOffset = 0.0f;
     m_cursorPosition = (FLOAT)pos;
   }
+  else if( pos - pageHalfwayPoint > maxPageOffset )
+  {
+    m_pageOffset = maxPageOffset;
+    m_cursorPosition = pos - maxPageOffset;
+  }
   else
   {
     m_pageOffset = (FLOAT)(pos - pageHalfwayPoint);
@@ -1523,7 +1532,10 @@ void CROMList::GetFriendlySuperscrollIndexStringForJumpTableIndex( CStdString *r
   assert( ret );
   if( superscrollTableIndex >= m_superscrollJumpTable.size() || 
       (jumpIndex = m_superscrollJumpTable[superscrollTableIndex]) == INVALID_ROM_INDEX )
+  {
     *ret = "Invalid";
+    return;
+  }
 
   GetFriendlySuperscrollIndexStringForROM( ret, jumpIndex );
 }
@@ -1536,7 +1548,10 @@ void CROMList::GetFriendlySuperscrollIndexStringForROM( CStdString *ret, UINT32 
   UINT32 romIndex;
   if( sortedListIndex >= m_currentSortedList.size() || 
       (romIndex = m_currentSortedList[sortedListIndex]) == INVALID_ROM_INDEX )
+  {
     *ret = "Invalid";
+    return;
+  }
 
   MAMEDriverData_t &driver = m_driverInfoList[romIndex];
   ROMStatus        &status = m_ROMStatus[romIndex];
@@ -1558,26 +1573,26 @@ void CROMList::GetFriendlySuperscrollIndexStringForROM( CStdString *ret, UINT32 
 
     // *** SM_BYMANUFACTURER *** //
   case SM_BYMANUFACTURER:
-    if( driver.m_manufacturer )
+    if( driver.m_manufacturer && driver.m_manufacturer[0] )
       *ret = driver.m_manufacturer;
     else
-      *ret = "Unknown";
+      *ret = "-Unknown-";
     break;
 
     // *** SM_BYYEAR *** //
   case SM_BYYEAR:
-    if( driver.m_year )
+    if( driver.m_year && driver.m_year[0] )
       *ret = driver.m_year;
     else
-      *ret = "Unknown";
+      *ret = "-Unknown-";
     break;
 
     // *** SM_BYPARENT *** //
   case SM_BYPARENT:
-    if( driver.m_cloneFileName )
+    if( driver.m_cloneFileName && driver.m_cloneFileName[0] )
       *ret = driver.m_cloneFileName;
     else
-      *ret = "No parent";
+      *ret = "-None-";
     break;
 
     // *** SM_BYGENRE *** //
@@ -1700,8 +1715,8 @@ static BOOL Compare_NumPlayers( UINT32 a, UINT32 b )
   MAMEDriverData_t &bDriver = CROMList::m_driverInfoList[b];
 
     // Sort by number of players or name string (more players go
-    // towards the top)
-  int cmp = aDriver.m_numPlayers < bDriver.m_numPlayers;
+    // towards the bottom)
+  int cmp = aDriver.m_numPlayers - bDriver.m_numPlayers;
   if( !cmp )
     cmp = stricmp( aDriver.m_description, bDriver.m_description );
 
@@ -1719,7 +1734,7 @@ static BOOL Compare_ROMStatus( UINT32 a, UINT32 b )
   ROMStatus        &bStatus = CROMList::m_ROMStatus[b];
 
     // Sort by the rom status, putting lower (better working) numbers first
-  int cmp = aStatus < bStatus;
+  int cmp = bStatus - aStatus;
   if( !cmp )
     return stricmp( aDriver.m_description, bDriver.m_description ) < 0;
 
