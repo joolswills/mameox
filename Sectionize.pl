@@ -349,29 +349,49 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 # Note: Watch on midxunit.c, it only seems to be for Revolution X, which 
 #       runs out of memory at the moment, there may be problems there in the
 #       future.
-@SkipDrivers = ( "jrcrypt.c", "mpatrol.c", "snk.c",
-                 "galaxian.c", "scramble.c", "scobra.c", 
-	             "rampart.c", "williams.c", "rastan.c", "hal21.c", 
-	             "espial.c", "bzone.c", "nova2001.c", "gottlieb.c", 
-	             "pengo.c",  "megasys1.c", "rallyx.c", "timeplt.c", 
-				 "exidy.c", "m72.c", "leland.c", "trackfld.c",
-				 "taito_f3.c", "fromance.c", "frogger.c", "midyunit.c",
-				 "midtunit.c", "konamigx.c", "segar.c", "zaxxon.c" );
+@SkipDrivers = ( "jrcrypt.c" );
 
 @TwinCobraFamily = ( "wardner.c", "twincobr.c" );
-
-@MidwayMCRFamily = ( "mcr1.c", "mcr2.c", "mcr3.c", "mcr68.c" );
-
+@MidwayMCRFamily = ( "mcr1.c", "mcr2.c", "mcr3.c", "mcr68.c", "williams.c" ); # Arch rivals
 @CapcomFamily = ( "cps1.c", "cps2.c" );
-
 @NamcoFamily = ( "namcoic.c", "namcona1.c", "namconb1.c", "namcond1.c", "namcos1.c",
                  "namcos2.c", "namcos21.c", "namcos22.c", "namcos86.c", "namcos11.c" );
-
 @SegaFamily = ( "multi32.c", "system1.c", "system16.c", "system18.c", "system24.c", "system32.c",
 				"aburner.c", "sharrier.c", "outrun.c" );
 
-local @Families = ( \@CapcomFamily, \@NamcoFamily, \@SegaFamily, \@MidwayMCRFamily, \@TwinCobraFamily );
-$autoNameNumber = $#Families + 10;
+
+  # TEST Families for 0.71.1b
+@MoonPatrolFamily = ( "mpatrol.c", "yard.c" );								# 10 Yard Fight
+@SNKFamily = ( "snk.c", "hal121.c" );										# ASO - Armored Scrum Object, Athena
+@AmidarFamily = ( "galaxian.c", "scramble.c", "scobra.c", 
+                  "amidar.c", "frogger.c" );								# Amidar, Frog (Galaxian Hardware)
+@RampartFamily = ( "rampart.c", "arcadecl.c" );								# Arcade Classics
+@RastanFamily = ( "rastan.c", "asuka.c" );									# Asuka & Asuka
+@EspialFamily = ( "espial.c", "marineb.c" );								# Battle Cruiser M-12
+@BZoneFamily = ( "bzone.c", "bwidow.c" );									# Gravitar
+@Nova2001Family = ( "nova2001.c", "pkunwar.c" );							# Penguin-Kun War
+@GottLiebFamily = ( "gottlieb.c", "exterm.c" );							    # exterminator
+@PengoFamily = ( "pengo.c",  "pacman.c" );									# eyes
+@Megasys1Family = ( "megasys1.c", "cischeat.c" );							# F-1 Grand Prix Star II
+@LocoMotionFamily = ( "rallyx.c", "timeplt.c", "locomotn.c" );				# Loco-Motion
+@ExidyFamily = ( "exidy.c", "victory.c" );									# Victory
+@M72Family = ( "m72.c", "m90.c" );											# Bomber Man World (World)
+@LelandFamily = ( "leland.c", "ataxx.c" );									# Asylum (prototype)
+@TrackFldFamily = ( "trackfld.c", "hyperspt.c" );							# Hyper Sports, Hyper Olympics '84
+@Taito_F3Family = ( "taito_f3.c", "superchs.c" );							# Super Chase
+@FromanceFamily = ( "fromance.c", "pipedrm.c" );							# Pipe Dream
+@MidYUnitFamily = ( "midyunit.c", "midtunit.c", "midwunit.c" );				# Mortal Kombat II, WWF: Wrestlemania (rev 1.30 08/10/95)
+@KonamiGXFamily = ( "konamigx.c", "mystwarr.c" );							# Metamorphic Force
+@SegarFamily = ( "segar.c", "sega.c" );										# Star Trek
+@ZaxxonFamily = ( "zaxxon.c", "congo.c" );									# Congo Bongo
+
+local @Families = ( \@CapcomFamily, \@NamcoFamily, \@SegaFamily, \@MidwayMCRFamily, \@TwinCobraFamily,
+					\@MoonPatrolFamily, \@SNKFamily, \@AmidarFamily, \@RampartFamily, \@RastanFamily,
+					\@EspialFamily, \@BZoneFamily, \@Nova2001Family, \@GottLiebFamily, \@PengoFamily,
+					\@Megasys1Family, \@LocoMotionFamily, \@ExidyFamily, \@M72Family, \@LelandFamily,
+					\@TrackFldFamily, \@Taito_F3Family, \@FromanceFamily, \@MidYUnitFamily, \@KonamiGXFamily,
+					\@SegarFamily, \@ZaxxonFamily );
+$autoNameNumber = $#Families + 50;
 
 
 print GENERATEDFILE "\n//-------------------------------------------------------------\n";
