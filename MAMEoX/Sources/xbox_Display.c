@@ -207,6 +207,7 @@ void osd_update_video_and_audio(struct mame_display *display)
 	if( input_ui_pressed( IPT_UI_THROTTLE ) )
 	{
     g_rendererOptions.m_throttleFramerate = !g_rendererOptions.m_throttleFramerate;
+    usrintf_showmessage_secs( 2, "Throttle %s", g_rendererOptions.m_throttleFramerate ? "On" : "Off" );
 	}
 
 
@@ -242,55 +243,51 @@ void osd_update_video_and_audio(struct mame_display *display)
 
 
       // Update autoframeskip
-    if( g_rendererOptions.m_frameskip == AUTO_FRAMESKIP )
+    if( g_rendererOptions.m_frameskip == AUTO_FRAMESKIP && cpu_getcurrentframe() > (FRAMESKIP_LEVELS << 1) )
     {
-      if( cpu_getcurrentframe() > (FRAMESKIP_LEVELS << 1) )
-      {
+		    // if we're too fast, decrease the frameskip
+		  if( performance->game_speed_percent >= 99.5f )
+		  {
+			  ++g_frameskipAdjust;
 
-		      // if we're too fast, attempt to decrease the frameskip
-		    if( performance->game_speed_percent >= 99.5f )
-		    {
-			    ++g_frameskipAdjust;
-
-			      // but only after 3 consecutive frames where we are too fast
-			    if( g_frameskipAdjust >= 3 )
-			    {
-				    g_frameskipAdjust = 0;
-				    if( g_frameskip )
-            {
-              --g_frameskip;
-              PRINTMSG( T_INFO, "Decreasing frameskip level to %lu\n", g_frameskip );
-            }
-			    }
-		    }
-		    else
-		    {
-			      // if below 80% speed, be more aggressive
-			    if( performance->game_speed_percent < 80.0f )
-				    g_frameskipAdjust -= (INT32)((90.0f - performance->game_speed_percent) / 5.0f);			  
-			    else if( g_frameskip < 8 ) 
+			    // but only after 3 consecutive frames where we are too fast
+			  if( g_frameskipAdjust >= 3 )
+			  {
+				  g_frameskipAdjust = 0;
+				  if( g_frameskip )
           {
-              // if we're close, only force it up to frameskip 8
-				    --g_frameskipAdjust;
+            --g_frameskip;
+            PRINTMSG( T_INFO, "Decreasing frameskip level to %lu\n", g_frameskip );
           }
-
-			      // perform the adjustment
-			    while( g_frameskipAdjust <= -2 )
-			    {
-				    g_frameskipAdjust += 2;
-				    if( g_frameskip < FRAMESKIP_LEVELS - 1 )
-					    ++g_frameskip;
-            else
-            {
-              g_frameskipAdjust = 0;
-              break;
-            }
-			    }
-          PRINTMSG( T_INFO, "Increasing frameskip level to %lu\n", g_frameskip );
+			  }
+		  }
+		  else
+		  {
+			    // if below 80% speed, be more aggressive
+			  if( performance->game_speed_percent < 80.0f )
+				  g_frameskipAdjust -= (INT32)((90.0f - performance->game_speed_percent) / 5.0f);			  
+			  else if( g_frameskip < 8 ) 
+        {
+            // if we're close, only force it up to frameskip 8
+				  --g_frameskipAdjust;
         }
-      }
+
+			    // perform the adjustment
+			  while( g_frameskipAdjust <= -2 )
+			  {
+				  g_frameskipAdjust += 2;
+				  if( g_frameskip < FRAMESKIP_LEVELS - 1 )
+					  ++g_frameskip;
+          else
+          {
+            g_frameskipAdjust = 0;
+            break;
+          }
+			  }
+        PRINTMSG( T_INFO, "Increasing frameskip level to %lu\n", g_frameskip );
+      }     
     }
-    else
+    else if( g_rendererOptions.m_frameskip != AUTO_FRAMESKIP )
     {
       #ifdef _DEBUG
       if( g_frameskip != g_rendererOptions.m_frameskip )
@@ -301,14 +298,17 @@ void osd_update_video_and_audio(struct mame_display *display)
       
     }
 
+
       // Wait out the remaining time for this frame
     if( lastFrameEndTime && 
         (!g_frameskip || g_rendererOptions.m_frameskip != AUTO_FRAMESKIP) && 
-        performance->game_speed_percent >= 99.5f && 
+        performance->game_speed_percent >= 99.0f &&
         g_desiredFPS != 0.0f && 
         g_rendererOptions.m_throttleFramerate )
     {
-      cycles_t targetFrameCycles = (cycles_t)(((double)osd_cycles_per_second()) / g_desiredFPS);
+        // Only wait for 99% of the frame time to elapse, as there's still some stuff that
+        // needs to be done before we return to MAME
+      cycles_t targetFrameCycles = (cycles_t)( (DOUBLE)osd_cycles_per_second() / (g_desiredFPS*1.1));
       cycles_t actualFrameCycles = osd_cycles() - lastFrameEndTime;
 
         // Note that this loop could easily be "optimized" to be
@@ -368,29 +368,27 @@ const char *osd_get_fps_text( const struct performance_info *performance )
 	// display the FPS, frameskip, percent, fps and target fps
   if( g_rendererOptions.m_frameskip == AUTO_FRAMESKIP )
 	  dest += sprintf(dest, 
-                    "Auto(%2d)%4d%%%4d/%d fps",
+                    "Auto(%2d) %4d%%%s %4d/%d fps",
 			              g_frameskip,
 			              (int)(performance->game_speed_percent + 0.5),
+                    g_rendererOptions.m_throttleFramerate ? "(Throttled)" : "",
 			              (int)(performance->frames_per_second + 0.5),
 			              (int)(Machine->drv->frames_per_second + 0.5));
   else
 	  dest += sprintf(dest, 
-                    "%2d%4d%%%4d/%d fps",
+                    "Level %2d %4d%%%s %4d/%d fps",
 			              g_frameskip,
 			              (int)(performance->game_speed_percent + 0.5),
-			              (int)(performance->frames_per_second + 0.5),
+                    g_rendererOptions.m_throttleFramerate ? "(Throttled)" : "",
+                    (int)(performance->frames_per_second + 0.5),
 			              (int)(Machine->drv->frames_per_second + 0.5));
 
 
-	/* for vector games, add the number of vector updates */
-	if (Machine->drv->video_attributes & VIDEO_TYPE_VECTOR)
-	{
+	  // for vector games, add the number of vector updates
+	if( Machine->drv->video_attributes & VIDEO_TYPE_VECTOR )
 		dest += sprintf(dest, "\n %d vector updates", performance->vector_updates_last_second);
-	}
-	else if (performance->partial_updates_this_frame > 1)
-	{
+	else if( performance->partial_updates_this_frame > 1 )
 		dest += sprintf(dest, "\n %d partial updates", performance->partial_updates_this_frame);
-	}
 
 	/* return a pointer to the static buffer */
 	return buffer;
@@ -420,7 +418,7 @@ static void Helper_UpdatePalette( struct mame_display *display )
 {
 	UINT32 i, j;
 
-	PRINTMSG( T_TRACE, "Helper_UpdatePalette" );
+//	PRINTMSG( T_TRACE, "Helper_UpdatePalette" );
 
 		// The game_palette_dirty entry is a bitflag specifying which
 		// palette entries need to be updated
