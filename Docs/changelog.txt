@@ -93,6 +93,9 @@ Version 0.70.3b
     - ListView.cpp
       - Added list view base class
 
+    - LightgunCalibrator.cpp
+      - Added lightgun calibration class
+
    -------------------------------------------------------------
   - \MAMEoXLauncher\MediaFiles:
 

@@ -21,9 +21,6 @@
 
 #include "InputManager.h"
 #include "GraphicsManager.h"
-#include "ROMList.h"
-#include "Help.h"
-#include "OptionsPage.h"
 #include "System_IniFile.h"
 #include "xbox_FileIO.h"
 #include "xbox_Direct3DRenderer.h"
@@ -31,6 +28,11 @@
 #include "DebugLogger.h"
 #include "xbox_Network.h"
 #include "FontSet.h"
+
+#include "ROMList.h"
+#include "Help.h"
+#include "OptionsPage.h"
+#include "LightgunCalibrator.h"
 
 //= D E F I N E S =====================================================
 
@@ -94,10 +96,6 @@ static HRESULT LoadPackedResources( void );
 static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice );
 
 //= F U N C T I O N S =================================================
-
-
-#define TEST_LIGHTGUN 0
-
 
 //-------------------------------------------------------------
 //	main
@@ -238,129 +236,6 @@ void __cdecl main( void )
     // Wait for controller 0 to be inserted
   RequireController( 0 );
 
-#if TEST_LIGHTGUN
-
-    // Create the vertex buffer
-  g_graphicsManager.GetD3DDevice()->CreateVertexBuffer( (sizeof(CUSTOMVERTEX) << 2),
-																		                    D3DUSAGE_WRITEONLY,
-																		                    D3DFVF_XYZ | D3DFVF_TEX1,
-																		                    D3DPOOL_MANAGED,
-																		                    &g_pD3DVertexBuffer );
-
-	CUSTOMVERTEX *pVertices;
-
-
-  while( 1 )
-  {
-  	WCHAR wBuf[1024];
-    WCHAR calibBuf[1024];
-
-		g_inputManager.PollDevices();
-    RequireController( 0 );
-
-    pD3DDevice->Clear(	0L,																// Count
-											  NULL,															// Rects to clear
-											  D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
-                        D3DCOLOR_XRGB(105,105,105),				// Color
-											  1.0f,															// Z
-											  0L );															// Stencil
-
-		g_pD3DVertexBuffer->Lock( 0,										// Offset to lock
-															0,										// Size to lock
-															(BYTE**)&pVertices,		// ppbData
-															0 );									// Flags
-
-      FLOAT lx = (FLOAT)((g_inputManager.sThumbLX - 300)) / 32767.0f;
-      FLOAT rx = (FLOAT)((g_inputManager.sThumbLX + 300)) / 32767.0f;
-
-      FLOAT ty = (FLOAT)((g_inputManager.sThumbLY - 300)) / 32767.0f;
-      FLOAT by = (FLOAT)((g_inputManager.sThumbLY + 300)) / 32767.0f;
-
-        //-- Draw the backdrop -------------------------------------------------
-		  pVertices[0].pos.x = lx;
-		  pVertices[0].pos.y = ty;
-		  pVertices[0].pos.z = 1.0f;
-      pVertices[0].tu = 0.0f;
-      pVertices[0].tv = 0.0f;
-
-		  pVertices[1].pos.x = rx;
-		  pVertices[1].pos.y = ty;
-		  pVertices[1].pos.z = 1.0f;
-      pVertices[1].tu = 1.0f;
-      pVertices[1].tv = 0.0f;
-  		
-		  pVertices[2].pos.x = rx;
-		  pVertices[2].pos.y = by;
-		  pVertices[2].pos.z = 1.0f;
-      pVertices[2].tu = 1.0f;
-      pVertices[2].tv = 1.0f;
-  		
-		  pVertices[3].pos.x = lx;
-		  pVertices[3].pos.y = by;
-		  pVertices[3].pos.z = 1.0f;
-      pVertices[3].tu = 0.0f;
-      pVertices[3].tv = 1.0f;
-
-    g_pD3DVertexBuffer->Unlock();
-
-    g_fontSet.DefaultFont().Begin();
-
-    if( g_inputManager.bAnalogButtons[XINPUT_GAMEPAD_B] > 10 )
-    {
-      osd_joystick_start_calibration();
-      WaitForNoButton();
-      const char *ptr = osd_joystick_calibrate_next();
-      if( !ptr )
-        osd_joystick_end_calibration();
-      else
-     	  mbstowcs( calibBuf, ptr, strlen(ptr) + 1 );
-    }
-    if( g_inputManager.bAnalogButtons[XINPUT_GAMEPAD_A] > 10 && g_calibrationStep )
-    {
-      osd_joystick_calibrate();
-      WaitForNoButton();
-      const char *ptr = osd_joystick_calibrate_next();
-      if( !ptr )
-        osd_joystick_end_calibration();
-      else
-     	  mbstowcs( calibBuf, ptr, strlen(ptr) + 1 );
-    }
-    if( g_inputManager.bAnalogButtons[XINPUT_GAMEPAD_X] > 10 )
-    {
-      SaveOptions();
-    }
-
-      g_fontSet.DefaultFont().DrawText( 320, 180, D3DCOLOR_RGBA( 255, 255, 255, 255), calibBuf, XBFONT_CENTER_X );
-
-      swprintf( wBuf, L"LX: %d", g_inputManager.sThumbLX );
-	    g_fontSet.DefaultFont().DrawText( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
-
-      swprintf( wBuf, L"LY: %d", g_inputManager.sThumbLY );
-	    g_fontSet.DefaultFont().DrawText( 320, 100, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
-
-
-
-      int deltaX, deltaY;
-      osd_lightgun_read( 0, &deltaX, &deltaY );
-
-      swprintf( wBuf, L"LX: %d", deltaX );
-	    g_fontSet.DefaultFont().DrawText( 320, 280, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
-
-      swprintf( wBuf, L"LY: %d", deltaY );
-	    g_fontSet.DefaultFont().DrawText( 320, 300, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
-
-    g_fontSet.DefaultFont().End();
-
-    pD3DDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX1 );
-    pD3DDevice->SetStreamSource(	0,												  // Stream number
-																	g_pD3DVertexBuffer,					// Stream data
-																	sizeof(CUSTOMVERTEX) );		  // Vertex stride
-
-    pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
-
-    g_graphicsManager.GetD3DDevice()->Present( NULL, NULL, NULL, NULL );
-  }
-#endif
 
 
 
@@ -408,6 +283,12 @@ void __cdecl main( void )
                             (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_OptionsScreenBackdrop_OFFSET],
                             options );
 
+  CLightgunCalibrator lightgunCalibrator( pD3DDevice,
+                                          g_fontSet,
+                                          NULL,
+                                          (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_LightgunCursorMask_OFFSET] );
+
+
     //-- Initialize the rendering engine -------------------------------
   D3DXMATRIX matWorld;
   D3DXMatrixIdentity( &matWorld );
@@ -429,9 +310,9 @@ void __cdecl main( void )
     // Toggle for whether or not we're in a given mode
   BOOL optionsMode = FALSE;
   BOOL helpMode = FALSE;
+  BOOL lightgunCalibrationMode = FALSE;
 	FLOAT toggleButtonTimeout = 0.0f;
 	UINT64 lastTime = osd_cycles();
-
 
     // Store the current screen rotation value so we can
     // rotate as soon as we notice that the option is changed
@@ -485,6 +366,12 @@ void __cdecl main( void )
     {
         // Toggle help mode
       helpMode = !helpMode;
+      toggleButtonTimeout = TOGGLEBUTTON_TIMEOUT;
+    }
+    else if( g_inputManager.IsOnlyButtonPressed( GP_BACK ) && toggleButtonTimeout == 0.0f )
+    {
+        // Toggle lightgun calibration mode
+      lightgunCalibrationMode = !lightgunCalibrationMode;
       toggleButtonTimeout = TOGGLEBUTTON_TIMEOUT;
     }
     else if( g_inputManager.IsButtonPressed( GP_RIGHT_ANALOG ) && toggleButtonTimeout == 0.0f )
@@ -592,6 +479,13 @@ void __cdecl main( void )
     {
       help.MoveCursor( g_inputManager );
       help.DrawToTexture( renderTargetTexture );
+    }
+    else if( lightgunCalibrationMode )
+    {
+      lightgunCalibrator.MoveCursor( g_inputManager );
+      lightgunCalibrator.DrawToTexture( renderTargetTexture );
+      if( lightgunCalibrator.IsCalibrationCompleted() )
+        lightgunCalibrationMode = FALSE;
     }
     else
     {
@@ -1437,156 +1331,3 @@ void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-#if TEST_LIGHTGUN
-
-static UINT32                   g_calibrationStep = 0;
-static UINT32                   g_calibrationJoynum = 0;
-
-void osd_joystick_start_calibration( void )
-{
-/* Preprocessing for joystick calibration. Returns 0 on success */
-  const XINPUT_CAPABILITIES *gp;
-  UINT32 i = 0;
-
-  g_calibrationStep = 0;
-
-    // Search for the first connected gun
-  for( ; i < 4; ++i )
-  {
-    gp = GetGamepadCaps( 0 );  
-    if( gp && gp->SubType == XINPUT_DEVSUBTYPE_GC_LIGHTGUN )
-    {
-      g_calibrationJoynum = i;
-      return;
-    }
-  }
-}
-
-const char *osd_joystick_calibrate_next( void )
-{
-/* Prepare the next calibration step. Return a description of this step. */
-/* (e.g. "move to upper left") */
-  char retString[128];
-
-    // When we hit 3, switch over to the next gun to be calibrated,
-    //  or return NULL to exit the process
-  if( g_calibrationStep == 3 )
-  {
-    const XINPUT_CAPABILITIES *gp;
-    ++g_calibrationJoynum;
-    for( ; g_calibrationJoynum < 4; ++g_calibrationJoynum )
-    {
-      gp = GetGamepadCaps( g_calibrationJoynum );
-      if( gp && gp->SubType == XINPUT_DEVSUBTYPE_GC_LIGHTGUN )
-      {
-          // Found another gun
-        g_calibrationStep = 0;
-        break;
-      }
-    }
-
-    if( g_calibrationJoynum == 4 )
-      return NULL;
-  }
-
-  sprintf( retString, "Gun %d: ", g_calibrationJoynum + 1 );
-  switch( g_calibrationStep++ )
-  {
-  case 0:
-    strcat( retString, "Upper left" );
-    break;
-
-  case 1:
-    strcat( retString, "Center" );
-    break;
-
-  case 2:
-    strcat( retString, "Lower right" );
-    break;
-  }
-
-	return retString;
-}
-
-void osd_joystick_calibrate( void )
-{
-/* Get the actual joystick calibration data for the current position */
-
-  if( g_calibrationStep && g_calibrationStep < 4 )
-  {
-	  const XINPUT_GAMEPAD *gp;
-    if( (gp = GetGamepadState( g_calibrationJoynum )) )
-    {
-      g_calibrationData[g_calibrationJoynum].m_xData[g_calibrationStep-1] = gp->sThumbLX;
-      g_calibrationData[g_calibrationJoynum].m_yData[g_calibrationStep-1] = gp->sThumbLY;
-    }
-    PRINTMSG( T_INFO, "CALIB: STEP %d: %d, %d\n", g_calibrationStep - 1, gp->sThumbLX, gp->sThumbLY );
-  }
-}
-
-void osd_joystick_end_calibration( void )
-{
-/* Postprocessing (e.g. saving joystick data to config) */
-  UINT32 i = 0;
-
-  for( ; i < 3; ++i )
-  {
-    g_calibrationData[i].m_xData[0] -= g_calibrationData[i].m_xData[1];
-    g_calibrationData[i].m_xData[2] -= g_calibrationData[i].m_xData[1];
-    g_calibrationData[i].m_xData[0] *= -1;  //!< Negate so that < 0 values stay < 0
-
-    g_calibrationData[i].m_yData[0] -= g_calibrationData[i].m_yData[1];
-    g_calibrationData[i].m_yData[2] -= g_calibrationData[i].m_yData[1];
-    g_calibrationData[i].m_yData[2] *= -1;  //!< Negate so that < 0 values stay < 0
-  }
-}
-
-void osd_lightgun_read(int player, int *deltax, int *deltay)
-{
-	const XINPUT_GAMEPAD *gp;
-
-	if( (gp = GetGamepadState( player )) )
-  {
-    lightgunCalibration_t *calibData = &g_calibrationData[player];
-
-    *deltax = gp->sThumbLX - calibData->m_xData[1];
-    *deltay = -1 * (gp->sThumbLY - calibData->m_yData[1]);
-
-      // Map from -128 to 128
-    if( gp->sThumbLX < 0 )
-      *deltax = (int)((FLOAT)*deltax * 128.0f / ((FLOAT)calibData->m_xData[0]+1.0f));
-    else
-      *deltax = (int)((FLOAT)*deltax * 128.0f / ((FLOAT)calibData->m_xData[2]+1.0f));
-
-    if( gp->sThumbLY > 0 )
-      *deltay = (int)((FLOAT)*deltay * 128.0f / ((FLOAT)calibData->m_yData[0]+1.0f));
-    else
-      *deltay = (int)((FLOAT)*deltay * 128.0f / ((FLOAT)calibData->m_yData[2]+1.0f));
-
-      // Lock to the expected range
-    if( *deltax > 128 )
-      *deltax = 128;
-    else if( *deltax < -128 )
-      *deltax = -128;
-
-    if( *deltay > 128 )
-      *deltay = 128;
-    else if( *deltay < -128 )
-      *deltay = -128;
-  }
-  else  
-	  *deltax = *deltay = 0;
-}
-
-#endif
