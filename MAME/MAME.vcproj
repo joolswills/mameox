@@ -3,6 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="MAME"
+	ProjectGUID="{68BEC3C4-1080-47F1-8C64-CF49ADD183A4}"
 	SccProjectName=""
 	SccLocalPath="">
 	<Platforms>

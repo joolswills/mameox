@@ -1,11 +1,11 @@
 /**
-	* \file			SkinChooserView.cpp
+	* \file			SkinChooserScreen.cpp
 	* \brief		Modal start menu
 	*
 	*/
 
 //= I N C L U D E S ====================================================
-#include "SkinChooserView.h"
+#include "SkinChooserScreen.h"
 #include "DebugLogger.h"
 #include "XBFont.h"
 
@@ -43,7 +43,7 @@
 //---------------------------------------------------------------------
 //	MoveCursor
 //---------------------------------------------------------------------
-void CSkinChooserView::MoveCursor( CInputManager &gp, BOOL unused )
+void CSkinChooserScreen::MoveCursor( CInputManager &gp, BOOL unused )
 {
 	static UINT64		lastTime = 0;
 	UINT64 curTime = osd_cycles();
@@ -107,7 +107,7 @@ void CSkinChooserView::MoveCursor( CInputManager &gp, BOOL unused )
 //---------------------------------------------------------------------
 //	Draw
 //---------------------------------------------------------------------
-void CSkinChooserView::Draw( BOOL clearScreen, BOOL flipOnCompletion )
+void CSkinChooserScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 {
   if( clearScreen )  
 	  m_displayDevice->Clear(	0L,																// Count

@@ -36,7 +36,7 @@
 #include "StartMenuView.h"
 #include "ScreensaverScreen.h"
 #include "TVCalibrationScreen.h"
-#include "SkinChooserView.h"
+#include "SkinChooserScreen.h"
 
 //= D E F I N E S =====================================================
 
@@ -136,383 +136,6 @@ static void Helper_SaveOptionsAndReboot( LPDIRECT3DDEVICE8 pD3DDevice, CROMListS
 static BOOL Helper_CopySystemFilesFromDVD( LPDIRECT3DDEVICE8 pD3DDevice );
 
 //= F U N C T I O N S =================================================
-
-/*
-
-  // Virtual memory available
-#define VIRTUAL_MEMORY_SIZE       256 * (1024 * 1024) 
-
-  // Total physical memory usage (including page tables + padding)
-#define PHYSICAL_MEMORY_SIZE      32 * (1024 * 1024)
-
-
-#pragma pack( push, 1 )
-struct IDT_t
-{
-  WORD    m_limit;
-  DWORD   m_baseAddress;
-};
-
-struct interruptVector_t
-{
-  WORD      m_offsetLow;
-  WORD      m_selector;
-  BYTE      m_access;
-  BYTE      RESERVED;
-  WORD      m_offsetHigh;
-};
-
-struct pageDirectoryEntry_t
-{
-  UINT      m_pagePresent : 1;
-  UINT      m_readWrite : 1;
-  UINT      m_userSupervisor : 1;
-  UINT      m_pageWriteThrough : 1;
-  UINT      m_pageCacheDisable : 1;
-  UINT      m_accessed : 1;
-  UINT      RESERVED_6 : 1;
-  UINT      m_pageSize : 1;
-  UINT      RESERVED_8 : 1;
-  UINT      m_osReserved : 3;
-  UINT      m_pageTableBaseAddress : 20;
-};
-
-struct pageTableEntry_t
-{
-  UINT      m_pagePresent : 1;
-  UINT      m_readWrite : 1;
-  UINT      m_userSupervisor : 1;
-  UINT      m_pageWriteThrough : 1;
-  UINT      m_pageCacheDisable : 1;
-  UINT      m_accessed : 1;
-  UINT      m_dirty : 1;
-  UINT      RESERVED_78 : 2;
-  UINT      m_osReserved : 3;
-  UINT      m_pageBaseAddress : 20;
-};
-#pragma pack( pop )
-  // The base of the reserved physical memory block
-BYTE                  *g_physicalMemoryBlock;
-pageDirectoryEntry_t  *g_pageDirectoryTableBase;
-pageTableEntry_t      *g_pageTableBase;
-
-BYTE                  *g_physicalPageBase;
-UINT                  g_numPhysicalPages = 0;
-
-
-//------------------------------------------------------------------------
-//------------------------------------------------------------------------
-void __cdecl PageFaultISR( void )
-{
-  __asm {
-    iret
-  }
-}
-
-
-//------------------------------------------------------------------------
-//------------------------------------------------------------------------
-BOOL AlignPointerTo4KBoundary( void **ret, UINT *sz )
-{
-	BYTE *ptr = (BYTE*)*ret;
-	if( ((UINT)ptr) & 0x0FFF )
-	{
-		UINT bytesToShift = (4096 - (((UINT)ptr) & 0x0FFF));
-		if( *sz <= bytesToShift )
-			return FALSE;
-
-		*sz -= bytesToShift;
-		ptr += bytesToShift;
-	}
-	*ret = ptr;
-
-	return TRUE;
-}
-
-//------------------------------------------------------------------------
-//------------------------------------------------------------------------
-void DemandPagingTest( LPDIRECT3DDEVICE8 pD3DDevice )
-{
-  char buf[1024];
-  DrawProgressbarMessage( pD3DDevice, 
-                          "Demand paging test.\n\n"
-                          "Press any key to continue.\n",
-                          NULL, 
-                          0xFFFFFFFF, 
-                          0 );
-  g_inputManager.WaitForAnyButton();
-  g_inputManager.WaitForNoButton();
-
-    // Allocate all of our physical memory
-  if( !(g_physicalMemoryBlock = (BYTE*)malloc( PHYSICAL_MEMORY_SIZE )) )
-  {
-      // Error
-    Die( pD3DDevice, "Failed to malloc!" );
-    return;
-  }
-
-    // The page directory table consists of 1024 entries
-    // and must be aligned on a 4096 byte boundary
-  UINT physicalMemoryAvailable = PHYSICAL_MEMORY_SIZE;
-  g_pageDirectoryTableBase = (pageDirectoryEntry_t*)g_physicalMemoryBlock;
-  AlignPointerTo4KBoundary( (void**)&g_pageDirectoryTableBase, &physicalMemoryAvailable );
-
-    // Each page table consists of 1024 entries and must be aligned
-    // on a 4096 byte boundary
-    // Since we know that the page directory base is on a 4k boundary and is itself
-    // 4k, we can simply increment and grab all the pages we need
-  UINT numPageTableEntries = VIRTUAL_MEMORY_SIZE >> 12;
-  g_pageTableBase = (pageTableEntry_t*)(((BYTE*)g_pageDirectoryTableBase) + 4096);
-  g_physicalPageBase = ((BYTE*)g_pageTableBase) + (sizeof(pageTableEntry_t) * numPageTableEntries);
-
-
-    // Fill in the page directory
-    // Each directory entry is an enhanced pointer to the base of an array of 1024
-    // page table entries.
-  UINT i = 0, pageTableOffset = 0;
-  for( pageDirectoryEntry_t *curEntry = g_pageDirectoryTableBase; i < 1024; ++i, ++curEntry, pageTableOffset += 1024 )
-  {
-      // See if this is a valid entry or not
-    memset( curEntry, 0, sizeof(*curEntry) );
-    if( (i * 1024) < numPageTableEntries )
-    {
-      curEntry->m_pageTableBaseAddress = ((UINT)(g_pageTableBase + pageTableOffset)) >> 12;
-      curEntry->m_readWrite = 1;
-      curEntry->m_pagePresent = 1;
-    }
-  }
-
-    // Fill in the page tables
-  i = 0;
-  int pageOffset = 0;
-  for( pageTableEntry_t *curEntry = g_pageTableBase; i < numPageTableEntries; ++i, ++curEntry, pageOffset += 4096 )
-  {
-    memset( curEntry, 0, sizeof(*curEntry) );
-    curEntry->m_pageBaseAddress = ((UINT)(g_physicalPageBase + pageOffset)) >> 12;
-    curEntry->m_readWrite = 1;
-    curEntry->m_pagePresent = 1;
-  }
-
-    // The number of physical 4k pages is equal to the
-    // physical memory size - 4096 bytes for the page directory
-    // plus 4 bytes for each page table entry (rounding up to make sure
-    // the physical pages start on a 4k border).
-  UINT numReservedPages = ((numPageTableEntries + 4095) >> 12) + 1;
-  g_numPhysicalPages = (physicalMemoryAvailable >> 12) - numReservedPages;
-
-  UINT virtualMemoryAvailable = numPageTableEntries * 4096;
-
-  void *ptr = g_testMemManager.Malloc( 32 );
-  sprintf( buf, "About to grab IDT, press any key.\nVMM malloc'd in range 0x%X\n", ptr );
-  DrawProgressbarMessage( pD3DDevice, buf, NULL, 0xFFFFFFFF, 0 );
-  g_inputManager.WaitForAnyButton();
-  g_inputManager.WaitForNoButton();
-
-    // VMM in range: 0x21d0000
-
-      // Register our page fault ISR at 0Eh in
-      // the IDT.
-      // The IDT is made up of 64 bit entries, the lower
-      // 32 bits of each being the ISR address.
-  IDT_t idtBase;
-  __asm {
-    sidt  idtBase             // Grab the IDT base
-  }
-
-
-    // Test: Grab the current page fault ISR
-  interruptVector_t *pageFaultISREntry = (interruptVector_t*)(idtBase.m_baseAddress + (0x0E * sizeof(interruptVector_t)));
-  sprintf( buf, 
-           "IDT: 0x%X\nPageFaultISR: 0x%X\nWill install ISR at: 0x%X\n", 
-            idtBase.m_baseAddress, 
-            pageFaultISREntry->m_offsetLow | pageFaultISREntry->m_offsetHigh << 16,
-            PageFaultISR );
-  DrawProgressbarMessage( pD3DDevice, buf, NULL, 0xFFFFFFFF, 0 );
-  g_inputManager.WaitForAnyButton();
-  g_inputManager.WaitForNoButton();
-
-  // IDT:   0x80035f80
-  // PFISR: 0x8001B7C0
-
-  __asm  {
-    pushfd
-    cli           // Disable interrupts while we monkey w/ the IDT
-  }
-  pageFaultISREntry->m_offsetLow = ((UINT32)PageFaultISR & 0x0000FFFF);
-  pageFaultISREntry->m_offsetHigh = ((UINT32)PageFaultISR & 0xFFFF0000) >> 16;
-  __asm {
-    popfd
-  }
-
-  sprintf( buf, 
-            "Installed new ISR\nIDT: 0x%X\nPageFaultISR: 0x%X\n\nEnabling paging w/ page directory base at 0x%X", 
-            idtBase.m_baseAddress, 
-            pageFaultISREntry->m_offsetLow | pageFaultISREntry->m_offsetHigh << 16,
-            g_pageDirectoryTableBase );
-  DrawProgressbarMessage( pD3DDevice, buf, NULL, 0xFFFFFFFF, 0 );
-  g_inputManager.WaitForAnyButton();
-  g_inputManager.WaitForNoButton();
-
-  __asm {
-      // Set the page directory base
-    mov   eax, g_pageDirectoryTableBase
-    and   eax, 0xFFFFF000     // Mask off the unused bits
-    mov   cr3, eax
-
-      // Enable paging
-    mov   eax, cr0
-    or    eax, 0x80000000
-    mov   cr0, eax
-  }
-
-
-
-  sprintf( buf, "Paging enabled!" );
-  DrawProgressbarMessage( pD3DDevice, buf, NULL, 0xFFFFFFFF, 0 );
-  g_inputManager.WaitForAnyButton();
-  g_inputManager.WaitForNoButton();
-
-
-
-  #define PAGE_SIZE     (4 * 1024 * 1024)
-  MEMORYSTATUS memStatus;
-  GlobalMemoryStatus( &memStatus );
-
-  std::vector<void *> ptrVector;
-  UINT32    cycle;
-  while( 1 )
-  {
-    ++cycle;
-    CHECKRAM();
-    GlobalMemoryStatus( &memStatus );
-    sprintf( buf, "Demand paging test.\n\n"
-                  "Press BACK to exit\n"
-                  "Press any other key to malloc one page at a time.\n\n"
-                  "Memory: %lu/%lu",memStatus.dwAvailPhys, memStatus.dwTotalPhys );
-    DrawProgressbarMessage( pD3DDevice, buf, NULL, cycle, 0 );
-
-    if( g_inputManager.IsButtonPressed( GP_BACK ) )
-      break;
-    //else if( g_inputManager.IsAnyButtonPressed() )
-    //ptrVector.push_back( malloc( PAGE_SIZE ) );
-  }
-
-  g_inputManager.WaitForNoButton();
-}
-
-
-
-
-
-
-
-
-
-
-
-#include "VirtualMemoryManager.h"
-CVirtualMemoryManager g_testMemManager;
-
-//-------------------------------------------------------------
-//-------------------------------------------------------------
-void VMMTest( LPDIRECT3DDEVICE8 pD3DDevice )
-{
-  char buf[1024];
-  DrawProgressbarMessage( pD3DDevice, 
-                          "VMM paging test.\n\n"
-                          "Press any key to continue.\n",
-                          NULL, 
-                          0xFFFFFFFF, 
-                          0 );
-  g_inputManager.WaitForAnyButton();
-  g_inputManager.WaitForNoButton();
-
-
-  MEMORYSTATUS memStatus;
-  GlobalMemoryStatus( &memStatus );
-
-    // Eat up RAM so we can't keep all the pages loaded at once
-  void *garbage = malloc( memStatus.dwAvailPhys - (4 * 1024 * 1024) );
-
-  GlobalMemoryStatus( &memStatus );
-
-  std::vector<void *> ptrVector;
-  UINT32    cycle = 0;
-
-  sprintf( buf, "Press any key to malloc 64k pages up to 8M.\n\n"
-                "Allocated virtual bytes: %lu\n"
-                "Physical Memory: %lu/%lu",
-                ptrVector.size() * 256 * 1024,
-                memStatus.dwAvailPhys, 
-                memStatus.dwTotalPhys );
-  DrawProgressbarMessage( pD3DDevice, buf, NULL, cycle, 0 );
-  g_inputManager.WaitForAnyButton();
-  g_inputManager.WaitForNoButton();
-
-  for( int i = 0; i < 8 * 1024 / 64; ++i )
-  {
-    GlobalMemoryStatus( &memStatus );
-    sprintf( buf, "Allocated virtual bytes: %lu\n"
-                  "Physical Memory: %lu/%lu",
-                  ptrVector.size() * 256 * 1024,
-                  memStatus.dwAvailPhys, 
-                  memStatus.dwTotalPhys );
-    DrawProgressbarMessage( pD3DDevice, buf, NULL, cycle, 0 );
-    ptrVector.push_back( g_testMemManager.Malloc( 64 * 1024 ) );
-  }
-
-  DrawProgressbarMessage( pD3DDevice, 
-                          "8 megs allocated.\n\n"
-                          "Press any key to start contiguous access test.\n",
-                          NULL, 
-                          0xFFFFFFFF, 
-                          0 );
-  g_inputManager.WaitForAnyButton();
-  g_inputManager.WaitForNoButton();
-
-
-
-  for( int y = 0; y < ptrVector.size(); ++y )
-  {
-    for( int x = 0; x < 64 * 1024; x += 2048 )
-    {
-      sprintf( buf, "Semi-contiguous access test.\n\n"
-                    "Accessing page: %lu, byte %lu\n",
-                    y, x );
-      DrawProgressbarMessage( pD3DDevice, buf, NULL, y, ptrVector.size() );
-
-      g_testMemManager.AccessAddressRange( (BYTE*)ptrVector[y] + x, 1 );
-      *((BYTE*)ptrVector[y] + x) = 1;
-    }
-  }
-
-  DrawProgressbarMessage( pD3DDevice, 
-                          "Test completed.\n\n"
-                          "Press any key to start random access test.\n",
-                          NULL, 
-                          0xFFFFFFFF, 
-                          0 );
-  g_inputManager.WaitForAnyButton();
-  g_inputManager.WaitForNoButton();
-
-  for( int i = 0; i < 1024; ++i )
-  {
-    UINT32 index = rand() % ptrVector.size();
-    UINT32 offset = (rand() % (64 * 1024));
-
-    sprintf( buf, "Random access test.\n\n"
-                  "Accessing page: %lu, byte %lu\n",
-                   index, offset );
-    DrawProgressbarMessage( pD3DDevice, buf, NULL, i, 1024 );
-
-    g_testMemManager.AccessAddressRange( (BYTE*)ptrVector[index] + offset, 1 );
-    *((BYTE*)ptrVector[index] + offset) = 2;
-  }
-
-  free( garbage );
-}
-*/
-
 
 //-------------------------------------------------------------
 //	main
@@ -617,18 +240,13 @@ void __cdecl main( void )
          "Media directory of the MAMEoX package\n"
          "(it is autogenerated during the build\n"
          "process, so you may have to rebuild\n"
-         "to obtain it.\n"
+				 "to obtain it.)\n"
          "Please place the correct file in the\n"
          "Media directory on your XBOX and restart." );
   }
 
     // Wait for input to give the debugger a chance to attach
   CHECKRAM();
-
-
-    // Demand paging test
-//  DemandPagingTest( pD3DDevice );
-//  VMMTest( pD3DDevice );
 
     // Get the launch data
   DWORD ret = XGetLaunchInfo( &g_launchDataType, &g_launchData );
@@ -769,7 +387,7 @@ void __cdecl main( void )
   CTVCalibrationScreen TVCalibrationScreen( pD3DDevice, g_fontSet, g_textureSet );
 
 		// Skin chooser
-	CSkinChooserView skinChooser( pD3DDevice, g_fontSet, g_textureSet, area );
+	CSkinChooserScreen skinChooser( pD3DDevice, g_fontSet, g_textureSet, area );
 
     //-- Initialize the rendering engine -------------------------------
   D3DXMATRIX matWorld;
@@ -984,11 +602,9 @@ void __cdecl main( void )
 
       // *** VIEW_SKINCHOOSER *** //
 		case VIEW_SKINCHOOSER:
-/*
       if( !showStartMenu )
-        help.MoveCursor( g_inputManager );
-      help.DrawToTexture( renderTargetTexture );
-*/
+        skinChooser.MoveCursor( g_inputManager );
+      skinChooser.DrawToTexture( renderTargetTexture );
 			break;
     }
 
@@ -1216,6 +832,13 @@ static void Helper_SetStartMenuItems( CStartMenuView &startMenu, viewmode curren
     startMenu.SetTitle( ":: Screen Setup ::" );
     startMenu.AddMenuItem( "ROM List", MI_ROMLIST );
     startMenu.AddMenuItem( "Help", MI_HELP );
+    break;
+
+
+    // *** VIEW_SKINCHOOSER *** //
+  case VIEW_SKINCHOOSER:
+    startMenu.SetTitle( ":: Skin Chooser ::" );
+    startMenu.AddMenuItem( "ROM List", MI_ROMLIST );
     break;
   }
 

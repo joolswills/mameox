@@ -1,5 +1,5 @@
 /**
-	* \file			SkinChooserView.h
+	* \file			SkinChooserScreen.h
 	* \brief		Modal skin chooser menu
 	*
 	*/
@@ -20,17 +20,17 @@
 //= C L A S S E S ======================================================
 
 /**
-	* \class		CSkinChooserView
+	* \class		CSkinChooserScreen
 	* \brief		Skin preview and selection menu
 	*/
-class CSkinChooserView : public CBasePopupView
+class CSkinChooserScreen : public CBasePopupView
 {
 public:
 
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-  CSkinChooserView( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CTextureSet &textureSet, const RECT &area ) :
+  CSkinChooserScreen( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CTextureSet &textureSet, const RECT &area ) :
     CBasePopupView( displayDevice, fontSet, textureSet, area ) {
       Reset();
     }

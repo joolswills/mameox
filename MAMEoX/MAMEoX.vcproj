@@ -3,6 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="MAMEoX"
+	ProjectGUID="{ECD98028-8A8F-4CD9-997B-BD87E6D313E7}"
 	SccProjectName=""
 	SccLocalPath="">
 	<Platforms>
