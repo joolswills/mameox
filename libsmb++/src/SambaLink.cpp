@@ -1,3 +1,11 @@
+#pragma code_seg("CSAMBA")
+#pragma data_seg("DSAMBA")
+#pragma bss_seg("BSAMBA")
+#pragma const_seg("KSAMBA")
+#pragma comment(linker, "/merge:DSAMBA=SAMBA")
+#pragma comment(linker, "/merge:CSAMBA=SAMBA")
+#pragma comment(linker, "/merge:BSAMBA=SAMBA")
+#pragma comment(linker, "/merge:KSAMBA=SAMBA")
 /*
 
     This file is part of the smb++ library
@@ -2518,4 +2526,9 @@ void unbecome_root(BOOL restore_dir)
 }
 
 #endif
+
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()
 

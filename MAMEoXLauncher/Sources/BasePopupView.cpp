@@ -13,7 +13,7 @@
 
 //= D E F I N E S ======================================================
   //--- Layout defines -----------------------------------------
-#define DARKENBACKGROUND_COLOR  D3DCOLOR_ARGB( 160, 0, 0, 0 )
+#define DARKENBACKGROUND_COLOR  D3DCOLOR_ARGB( 120, 0, 0, 0 )
 
 #define TITLEBAR_ROW            menuTop + 5
 #define FIRSTDATA_ROW           bodyTop + 3

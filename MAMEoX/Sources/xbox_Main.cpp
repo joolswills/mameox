@@ -147,6 +147,15 @@ void __cdecl main( void )
       // Bring up the network
     if( !g_NetworkConfig.m_networkDisabled )
       InitializeNetwork();
+    else
+    {
+      CHECKRAM();
+        // Unload all the samba and networking stuff
+//      XFreeSection( "NETWORK" );
+      XFreeSection( "MOXNET" );
+      XFreeSection( "SAMBA" );
+      CHECKRAM();
+    }
 
       // Unload the XGRAPHICS section, as we won't be using it at all
     XFreeSection( "XGRPH" );

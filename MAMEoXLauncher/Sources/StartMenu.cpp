@@ -17,7 +17,6 @@
   //--- Layout defines -----------------------------------------
 #define HEADER_COLOR            D3DCOLOR_XRGB( 0, 0, 0 )
 #define ITEM_COLOR			        D3DCOLOR_XRGB( 0, 0, 0 )
-#define DARKENBACKGROUND_COLOR  D3DCOLOR_ARGB( 160, 0, 0, 0 )
 #define HIGHLIGHTBAR_COLOR      D3DCOLOR_ARGB( 180, 165, 169, 202 )
 
 #define TITLEBAR_ROW            m_titleArea.top

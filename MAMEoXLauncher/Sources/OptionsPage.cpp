@@ -46,7 +46,7 @@ extern "C" {
 
 #define TRIGGER_BOTTOM        451
 #define TRIGGER_TOP           TRIGGER_BOTTOM - m_textureSet.GetTriggerIconHeight()
-#define LEFTTRIGGER_LEFT      30
+#define LEFTTRIGGER_LEFT      32
 #define RIGHTTRIGGER_RIGHT    608
 
 
@@ -364,7 +364,7 @@ void COptionsPage::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   m_displayDevice->Begin( D3DPT_QUADLIST );      
 
       // Draw left trigger "head"
-    FLOAT leftTriggerIconRight  = LEFTTRIGGER_LEFT + (m_textureSet.GetTriggerIconRight() - m_textureSet.GetTriggerIconLeft());
+    FLOAT leftTriggerIconRight  = LEFTTRIGGER_LEFT + (m_textureSet.GetTriggerIconRight() - m_textureSet.GetTriggerIconLeft()) + 1.0f;
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
     m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconLeft(), m_textureSet.GetTriggerIconTop() );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, LEFTTRIGGER_LEFT, TRIGGER_TOP, 1.0f, 1.0f );
@@ -384,7 +384,7 @@ void COptionsPage::Draw( BOOL clearScreen, BOOL flipOnCompletion )
       // Draw the "tail"
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
     m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconTailLeft(), m_textureSet.GetTriggerIconTailTop() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, LEFTTRIGGERTEXT_START + leftTriggerLength, TRIGGER_TOP, 1.0f, 1.0f );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, LEFTTRIGGERTEXT_START + leftTriggerLength + 1.0f, TRIGGER_TOP, 1.0f, 1.0f );
 
     FLOAT leftTriggerIconTailRight = (LEFTTRIGGERTEXT_START + leftTriggerLength) + m_textureSet.GetTriggerIconTailRight() - m_textureSet.GetTriggerIconTailLeft();
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
@@ -397,7 +397,7 @@ void COptionsPage::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
     m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconTailLeft(), m_textureSet.GetTriggerIconTailBottom() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, LEFTTRIGGERTEXT_START + leftTriggerLength, TRIGGER_BOTTOM, 1.0f, 1.0f );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, LEFTTRIGGERTEXT_START + leftTriggerLength + 1.0f, TRIGGER_BOTTOM, 1.0f, 1.0f );
 
 
 

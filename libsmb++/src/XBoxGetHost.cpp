@@ -1,3 +1,12 @@
+#pragma code_seg("CSAMBA")
+#pragma data_seg("DSAMBA")
+#pragma bss_seg("BSAMBA")
+#pragma const_seg("KSAMBA")
+#pragma comment(linker, "/merge:DSAMBA=SAMBA")
+#pragma comment(linker, "/merge:CSAMBA=SAMBA")
+#pragma comment(linker, "/merge:BSAMBA=SAMBA")
+#pragma comment(linker, "/merge:KSAMBA=SAMBA")
+
 #include "defines.h"
 #include "util.h"
 #include <xtl.h>
@@ -68,5 +77,11 @@ struct hostent* gethostbyname(const char* _name)
 	return 0;
 }
 
+
+
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()
 
 

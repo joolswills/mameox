@@ -16,6 +16,8 @@
 
 #include <XTL.h>
 
+
+
 //= G L O B A L = V A R S ==============================================
 SNetworkConfig g_NetworkConfig; // Holds network config from ini file
 CStdString g_szTitleIPAddr;    // IP Address after initialzing net
@@ -165,3 +167,5 @@ BOOL IsEthernetConnected()
 
   return TRUE;
 }
+
+
