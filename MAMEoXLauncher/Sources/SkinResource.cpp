@@ -40,6 +40,8 @@ typedef enum SkinINISectionID_t {
 	SECTION_SKINCHOOSERSCREEN_OPTIONS,
 	SECTION_STARTMENU_OPTIONS,
 	SECTION_VIRTUALKEYBOARD_OPTIONS,
+	SECTION_MESSAGESCREEN_OPTIONS,
+	SECTION_SPLASHSCREEN_OPTIONS,
 
 	SECTION_INVALID = 0x7FFFFFFF
 } SkinINISectionID_t;
@@ -67,7 +69,9 @@ const char *g_skinINISections[] = { "SplashBackdrop",							// SECTION_SPLASH_BA
 																		"ScreensaverOptions",					// SECTION_SCREENSAVER_OPTIONS
 																		"SkinChooserScreenOptions",		// SECTION_SKINCHOOSERSCREEN_OPTIONS
 																		"StartMenuOptions",						// SECTION_STARTMENU_OPTIONS
-																		"VirtualKeyboardOptions"			// SECTION_VIRTUALKEYBOARD_OPTIONS
+																		"VirtualKeyboardOptions",			// SECTION_VIRTUALKEYBOARD_OPTIONS
+																		"MessageScreenOptions",				// SECTION_MESSAGESCREEN_OPTIONS
+																		"SplashScreenOptions"					// SECTION_SPLASHSCREEN_OPTIONS
 };
 
 
@@ -158,6 +162,15 @@ static const char *g_colorIDToINIEntry[] = {
 	"TitleBar.TextColor",								// COLOR_VIRTUALKEYBOARD_TITLEBAR_TEXT
 	"Body.TextColor",										// COLOR_VIRTUALKEYBOARD_BODY_TEXT
 	"Body.HighlightBarColor",						// COLOR_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR
+
+	"TextColor",												// COLOR_MESSAGESCREEN_TEXT
+	"ProgressBar.EndColor",							// COLOR_MESSAGESCREEN_PROGRESSBAR_END
+	"ProgressBar.BarColor",							// COLOR_MESSAGESCREEN_PROGRESSBAR_BAR
+	"ProgressBar.BackgroundColor",			// COLOR_MESSAGESCREEN_PROGRESSBAR_BACKGROUND
+
+	"TextColor",												// COLOR_SPLASHSCREEN_TEXT
+	"ImportantTextColor"								// COLOR_SPLASHSCREEN_IMPORTANT_TEXT
+
 };
 
 
@@ -445,6 +458,12 @@ inline SkinINISectionID_t ColorIDToSectionID( SkinColorID_t idToMap )
 
 	if( idToMap >= COLOR_VIRTUALKEYBOARD_TITLEBAR_TEXT && idToMap <= COLOR_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR )
 		return SECTION_VIRTUALKEYBOARD_OPTIONS;
+
+	if( idToMap >= COLOR_MESSAGESCREEN_TEXT && idToMap <= COLOR_MESSAGESCREEN_PROGRESSBAR_BACKGROUND )
+		return SECTION_MESSAGESCREEN_OPTIONS;
+
+	if( idToMap >= COLOR_SPLASHSCREEN_TEXT && idToMap <= COLOR_SPLASHSCREEN_IMPORTANT_TEXT )
+		return SECTION_SPLASHSCREEN_OPTIONS;
 
 	return SECTION_INVALID;
 }
