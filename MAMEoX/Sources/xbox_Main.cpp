@@ -91,9 +91,6 @@ void __cdecl main( void )
   DWORD getLaunchInfoRet = XGetLaunchInfo( &g_launchDataType, &g_launchData );
   MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
 
-		// Mount the utility drive for storage of the ROM list cache file
-	//XMountUtilityDrive( FALSE );
-
 		// Initialize the graphics subsystem
 	g_graphicsManager.Create();
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
@@ -155,7 +152,7 @@ void __cdecl main( void )
       InitializeNetwork();
 
       // Unload the XGRAPHICS section, as we won't be using it at all
-    //XFreeSection( "XGRPH" );
+    XFreeSection( "XGRPH" );
 
       // Sort the game drivers and run the ROM
     qsort( drivers, mameoxLaunchData->m_totalMAMEGames, sizeof(drivers[0]), compareDriverNames );

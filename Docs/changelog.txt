@@ -1,9 +1,51 @@
 Version 0.70.2b
 
+ Note: I finally figured out exactly why 0.66b went bad.
+       Everything before and after 0.66b didn't actually
+       unload any of the driver sections. When 0.66b unloaded
+       the sections, release mode was compiled w/ String Pooling
+       enabled. I believe that this allowed code in a given 
+       section to become dependent on the string data in another 
+       section, creating new silent XBE dependencies that could
+       not be resolved. I've disabled String Pooling, and 
+       everything seems OK now. Make certain that it is never
+       enabled again.
+
+   -------------------------------------------------------------
+  - \MAME\src:
+    - cpuexec.c
+      - Realized that unloading a section releases all malloc'd
+        memory back to the heap. Fixed by first loading the CPU
+        to be used, then unloading all CPU sections. This way
+        the CPU's that we're using have a refcount of 2, so
+        they stay resident.
+
+    - usrintrf.c
+      - Simplified section load/unload (merged sections don't
+        require separate data/code loads
+
    -------------------------------------------------------------
   - \MAMEoX\Includes: 
     - MAMEoX.h
       - Upped version number
+
+
+   -------------------------------------------------------------
+  - \MAMEoX\Sources: 
+    - xbox_JoystickMouse.c
+      - Put initialization code in a section that is unloaded
+        as soon as it's completed (for a gain of 12k or so)
+
+    - xbox_Main.cpp:
+      - Reordered LoadDriverSectionByName to be before the 
+        UnloadDriverSections, just in case something was malloc'd
+        by the section (and for consistency w/ cpuexec.c).
+
+   -------------------------------------------------------------
+  - \Desectionize.pl
+  - \Sectionize.pl
+    - Updated to merge data + code sections
+    
 
 Version 0.70.1b
 
