@@ -83,8 +83,8 @@ void LoadOptions( void )
   options.pause_bright = iniFile.GetProfileFloat( "Video", "PauseBrightness", 0.65f );     // brightness when in pause
 	options.gamma = iniFile.GetProfileFloat( "Video", "Gamma", 1.0f );			        // gamma correction of the display
 	options.color_depth = iniFile.GetProfileInt( "Video", "ColorDepth", 32 );
-	options.vector_width = iniFile.GetProfileInt( "Video", "VectorWidth", 640 );	      // requested width for vector games; 0 means default (640)
-	options.vector_height = iniFile.GetProfileInt( "Video", "VectorHeight", 480 );	    // requested height for vector games; 0 means default (480)
+	options.vector_width = iniFile.GetProfileInt( "VectorOptions", "VectorWidth", 640 );	      // requested width for vector games; 0 means default (640)
+	options.vector_height = iniFile.GetProfileInt( "VectorOptions", "VectorHeight", 480 );	    // requested height for vector games; 0 means default (480)
 	// int		ui_orientation;	        // orientation of the UI relative to the video
 
 	options.beam = iniFile.GetProfileInt( "VectorOptions", "BeamWidth", 2 );			            // vector beam width
@@ -127,8 +127,8 @@ void SaveOptions( void )
   iniFile.WriteProfileFloat( "Video", "PauseBrightness", options.pause_bright );     // brightness when in pause
 	iniFile.WriteProfileFloat( "Video", "Gamma", options.gamma );			        // gamma correction of the display
 	iniFile.WriteProfileInt( "Video", "ColorDepth", options.color_depth );
-	iniFile.WriteProfileInt( "Video", "VectorWidth", options.vector_width );	      // requested width for vector games; 0 means default (640)
-	iniFile.WriteProfileInt( "Video", "VectorHeight", options.vector_height );	    // requested height for vector games; 0 means default (480)
+	iniFile.WriteProfileInt( "VectorOptions", "VectorWidth", options.vector_width );	      // requested width for vector games; 0 means default (640)
+	iniFile.WriteProfileInt( "VectorOptions", "VectorHeight", options.vector_height );	    // requested height for vector games; 0 means default (480)
 	iniFile.WriteProfileInt( "VectorOptions", "BeamWidth", options.beam );			            // vector beam width
 	iniFile.WriteProfileFloat( "VectorOptions", "FlickerEffect", options.vector_flicker );	  // vector beam flicker effect control
 	iniFile.WriteProfileFloat( "VectorOptions", "BeamIntensity", options.vector_intensity );  // vector beam intensity
@@ -183,7 +183,7 @@ void WaitForKey( void )
 //-------------------------------------------------------------
 void WaitForNoKey( void )
 {
-	g_inputManager.WaitForNoKeys( 0 );
+	g_inputManager.WaitForNoKey( 0 );
 }
 
 //-------------------------------------------------------------
@@ -246,9 +246,9 @@ void CheckRAM( void )
   FontRender( 320, 300, D3DCOLOR_RGBA(255,255,255,255), memStr, 2 );
   EndFontRender();
 
-	g_inputManager.WaitForNoKeys( 0 );
+	g_inputManager.WaitForNoKey( 0 );
 	g_inputManager.WaitForAnyKey( 0 );
-	g_inputManager.WaitForNoKeys( 0 );
+	g_inputManager.WaitForNoKey( 0 );
 }
 #endif
 

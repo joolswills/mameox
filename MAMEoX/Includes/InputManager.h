@@ -243,13 +243,13 @@ public:
 	}
 
 		//------------------------------------------------------
-		//	WaitForNoKeys
+		//	WaitForNoKey
 		//! \brief		Wait for all button to be released on the
 		//!            selected joypad
 		//!
 		//! \param		gamepadNum - Joypad to test (0xFF = all)
 		//------------------------------------------------------
-	void WaitForNoKeys( DWORD gamepadNum = 0xFF ) {
+	void WaitForNoKey( DWORD gamepadNum = 0xFF ) {
 		BOOL keyPressed = FALSE;
 		do
 		{

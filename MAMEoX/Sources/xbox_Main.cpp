@@ -331,9 +331,9 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 	pD3DDevice->Present( NULL, NULL, NULL, NULL );
 
 
-	g_inputManager.WaitForNoKeys( 0 );
+	g_inputManager.WaitForNoKey( 0 );
 	g_inputManager.WaitForAnyKey( 0 );
-	g_inputManager.WaitForNoKeys( 0 );
+	g_inputManager.WaitForNoKey( 0 );
 
     // Relaunch MAMEoXLauncher
   ShowLoadingScreen( pD3DDevice );
