@@ -22,7 +22,7 @@ extern "C" {
   //        programmatically to the ALTDRIVE drive
 
   //! Alternate drive letter if the D: is not writable
-#define ALTDRIVE            'U'
+#define ALTDRIVE            'T'
 
 #define GENERALPATH				  "D:\\GENERAL"
 #define ARTPATH						  "D:\\ART"
