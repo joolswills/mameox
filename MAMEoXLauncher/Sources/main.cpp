@@ -1304,7 +1304,7 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
   #define CREDITS_FRAMES_PER_STEP     10.0f;
   const WCHAR credits[] = L"       The MAMEoX team:"\
                           L"       Programming - Erik Abair, opcode, luckyMIC, ips" \
-                          L"       Testing - falz, enkak" \
+                          L"       Testing - falz, enkak, noodle1009" \
                           L"       Graphical design - r4dius" \
                           L"       Special thanks to MAME developers everywhere";
 
