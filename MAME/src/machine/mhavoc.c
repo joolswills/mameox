@@ -1,11 +1,11 @@
-#pragma code_seg("C330")
-#pragma data_seg("D330")
-#pragma bss_seg("B330")
-#pragma const_seg("K330")
-#pragma comment(linker, "/merge:D330=330")
-#pragma comment(linker, "/merge:C330=330")
-#pragma comment(linker, "/merge:B330=330")
-#pragma comment(linker, "/merge:K330=330")
+#pragma code_seg("C405")
+#pragma data_seg("D405")
+#pragma bss_seg("B405")
+#pragma const_seg("K405")
+#pragma comment(linker, "/merge:D405=405")
+#pragma comment(linker, "/merge:C405=405")
+#pragma comment(linker, "/merge:B405=405")
+#pragma comment(linker, "/merge:K405=405")
 /***************************************************************************
 
 	Atari Major Havoc hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C285")
-#pragma data_seg("D285")
-#pragma bss_seg("B285")
-#pragma const_seg("K285")
-#pragma comment(linker, "/merge:D285=285")
-#pragma comment(linker, "/merge:C285=285")
-#pragma comment(linker, "/merge:B285=285")
-#pragma comment(linker, "/merge:K285=285")
+#pragma code_seg("C357")
+#pragma data_seg("D357")
+#pragma bss_seg("B357")
+#pragma const_seg("K357")
+#pragma comment(linker, "/merge:D357=357")
+#pragma comment(linker, "/merge:C357=357")
+#pragma comment(linker, "/merge:B357=357")
+#pragma comment(linker, "/merge:K357=357")
 /***************************************************************************
 
 	Kyugo hardware games

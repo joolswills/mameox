@@ -1,3 +1,11 @@
+#pragma code_seg("C25")
+#pragma data_seg("D25")
+#pragma bss_seg("B25")
+#pragma const_seg("K25")
+#pragma comment(linker, "/merge:D25=25")
+#pragma comment(linker, "/merge:C25=25")
+#pragma comment(linker, "/merge:B25=25")
+#pragma comment(linker, "/merge:K25=25")
 #define VERBOSE 0
 #define GX_DEBUG 0
 
@@ -2281,3 +2289,7 @@ if((data1=obj[0])&0x80000000)\
 #undef EXTRACT_ODD
 #undef EXTRACT_EVEN
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,11 @@
+#pragma code_seg("C8")
+#pragma data_seg("D8")
+#pragma bss_seg("B8")
+#pragma const_seg("K8")
+#pragma comment(linker, "/merge:D8=8")
+#pragma comment(linker, "/merge:C8=8")
+#pragma comment(linker, "/merge:B8=8")
+#pragma comment(linker, "/merge:K8=8")
 /***************************************************************************
 
   machine.c
@@ -1413,3 +1421,7 @@ INTERRUPT_GEN( gmgalax_vh_interrupt )
 		cpu_set_reset_line(0, ASSERT_LINE);
 	}
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()
