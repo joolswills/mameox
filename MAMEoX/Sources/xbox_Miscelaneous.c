@@ -26,6 +26,19 @@
 
 //= F U N C T I O N S ==================================================
 
+// [EBA] - "Safe" malloc, exits the program if the malloc fails, rather than
+// relying on MAME to actually check for failure (which it does not, in numerous
+// places)
+void *osd_malloc( size_t sz )
+{
+  void *ret = malloc( sz );
+  if( !ret )
+    fatalerror( "Malloc failed! (Out of Memory)" );
+
+  return ret;
+}
+
+
 //---------------------------------------------------------------------
 //	osd_display_loading_rom_message
 //---------------------------------------------------------------------
