@@ -263,7 +263,7 @@ void CLightgunCalibrator::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
       case (NUM_CALIBRATIONSTEPS - 1):
         {
-          FLOAT x = -m_currentGunCalibratedX;
+          FLOAT x = m_currentGunCalibratedX;
           FLOAT y = -m_currentGunCalibratedY;  // Y values are negated for MAME
 
             // Map the cursor to screen coords
@@ -329,7 +329,7 @@ void CLightgunCalibrator::GetCalibratedCursorPosition( CInputManager &inputManag
     return;
   }
 
-  m_currentGunCalibratedX = (int)((FLOAT)m_currentGunX * 128.0f / (FLOAT)XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_X );
+  m_currentGunCalibratedX = -1 * (int)((FLOAT)m_currentGunX * 128.0f / (FLOAT)XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_X );
   m_currentGunCalibratedY = (int)((FLOAT)m_currentGunY * 128.0f / (FLOAT)XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_Y );
 
     // Lock to the expected range
