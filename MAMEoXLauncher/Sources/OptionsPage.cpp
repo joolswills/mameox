@@ -209,7 +209,7 @@ COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice,
   wcscpy( m_pageData[OPTPAGE_VIDEO].m_title, L"Video Options" );
   m_pageData[OPTPAGE_VIDEO].m_drawFunct = ::DrawVideoPage;
   m_pageData[OPTPAGE_VIDEO].m_changeFunct = ::ChangeVideoPage;
-  m_pageData[OPTPAGE_VIDEO].m_numItems = 8;
+  m_pageData[OPTPAGE_VIDEO].m_numItems = 7;
 
   wcscpy( m_pageData[OPTPAGE_VECTOR].m_title, L"Vector Options" );
   m_pageData[OPTPAGE_VECTOR].m_drawFunct = ::DrawVectorPage;
@@ -544,8 +544,8 @@ void COptionsPage::DrawVideoPage( void )
   swprintf( text, L"%f", options.gamma );
   DRAWITEM( L"Gamma", text );
 
-  swprintf( text, L"%lu", options.color_depth );
-  DRAWITEM( L"Color depth", text );
+//  swprintf( text, L"%lu", options.color_depth );
+//  DRAWITEM( L"Color depth", text );
 
   DRAWITEM( L"Minification filter", filterNames[g_rendererOptions.m_minFilter] );
 
@@ -845,7 +845,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
         options.gamma = 2.0f;
     }
     break;
-
+/*
     // Color depth
   case 5:
     {
@@ -855,10 +855,10 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
         options.color_depth = 32;
     }
     break;    
-
+*/
 
     // Minification filter
-  case 6:
+  case 5:
     if( !direction )
     {
       if( g_rendererOptions.m_minFilter > D3DTEXF_POINT )
@@ -876,7 +876,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
     break;
 
     // Magnification filter
-  case 7:
+  case 6:
     if( !direction )
     {
       if( g_rendererOptions.m_magFilter > D3DTEXF_POINT )

@@ -123,7 +123,7 @@ void LoadOptions( void )
 	options.brightness =    iniFile.GetProfileFloat( "Video", "Brightness", 1.0f );		    // brightness of the display
   options.pause_bright =  iniFile.GetProfileFloat( "Video", "PauseBrightness", 0.65f );     // brightness when in pause
 	options.gamma =         iniFile.GetProfileFloat( "Video", "Gamma", 1.0f );			        // gamma correction of the display
-	options.color_depth =   iniFile.GetProfileInt( "Video", "ColorDepth", 15 );
+	options.color_depth =   0;//iniFile.GetProfileInt( "Video", "ColorDepth", 15 );
 	// int		ui_orientation;	        // orientation of the UI relative to the video
   
     // Validate some of the video options to keep them from ripping shit up
@@ -255,7 +255,7 @@ void SaveOptions( void )
   iniFile.WriteProfileFloat( "Video", "Brightness", options.brightness );		    // brightness of the display
   iniFile.WriteProfileFloat( "Video", "PauseBrightness", options.pause_bright );     // brightness when in pause
 	iniFile.WriteProfileFloat( "Video", "Gamma", options.gamma );			        // gamma correction of the display
-	iniFile.WriteProfileInt( "Video", "ColorDepth", options.color_depth );
+//	iniFile.WriteProfileInt( "Video", "ColorDepth", options.color_depth );
 	iniFile.WriteProfileInt( "VectorOptions", "VectorWidth", options.vector_width );	      // requested width for vector games; 0 means default (640)
 	iniFile.WriteProfileInt( "VectorOptions", "VectorHeight", options.vector_height );	    // requested height for vector games; 0 means default (480)
 	iniFile.WriteProfileInt( "VectorOptions", "BeamWidth", options.beam );			            // vector beam width
