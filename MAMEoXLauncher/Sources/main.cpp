@@ -563,6 +563,9 @@ void __cdecl main( void )
 	  pD3DDevice->SetTexture( 0, renderTargetTexture );
     pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
 
+      // Render the TV calibration screen (has to run fullscreen)
+    if( currentView == VIEW_SCREENSETUP )
+      TVCalibrationScreen.Draw( TRUE, FALSE );
 
       // Now render the start menu over that, if necessary
     if( showStartMenu )
@@ -635,11 +638,6 @@ void __cdecl main( void )
         Helper_SetStartMenuItems( startMenu, currentView );
       }
     }
-
-
-      // Render the TV calibration screen (has to run fullscreen)
-    if( currentView == VIEW_SCREENSETUP )
-      TVCalibrationScreen.Draw( TRUE, FALSE );
 
       // Render the screensaver
     if( screensaverTimeout == 0.0 && g_screensaverTimeout )
