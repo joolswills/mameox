@@ -679,7 +679,7 @@ static BOOL Helper_LoadDriverInfoFile( void )
 	driverListFile += "\\";
 	driverListFile += DRIVERLISTFILENAME;
 
-	PRINTMSG( T_INFO, "Store driver list: %s", driverListFile.c_str() );
+	PRINTMSG( T_INFO, "Load driver list: %s", driverListFile.c_str() );
 
 	HANDLE hFile = CreateFile(	driverListFile.c_str(),
 															GENERIC_READ,
