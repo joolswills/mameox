@@ -48,7 +48,7 @@ public:
 		m_gameListCursorSpeedBandTimeout( 0.0f ),
 		m_gameListPageOffset( 0.0f ),
     m_superscrollMode( FALSE ),
-		m_allowclones( FALSE ),
+		m_allowclones( TRUE ),
 		m_additionalinfo( FALSE ),
     m_superscrollCharacterIdx( 0 ),
     m_driverInfoList( drivers ),

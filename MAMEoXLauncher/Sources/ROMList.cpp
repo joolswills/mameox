@@ -307,8 +307,8 @@ void CROMList::MoveCursor( const XINPUT_GAMEPAD	&gp )
 	}
 	else if( gp.bAnalogButtons[XINPUT_GAMEPAD_WHITE] > 150 )
 	{
-//		m_additionalinfo = !m_additionalinfo;
-//		WaitForNoKey();
+		m_additionalinfo = !m_additionalinfo;
+		WaitForNoKey();
 	}
   else if( gp.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 150 )
   {
@@ -618,10 +618,10 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
 
 	m_font.Begin();
 
+	swprintf( name, L"Names %s", ( m_allowclones == FALSE ) ? L"(No Clones)" : L"(Clones)   " );
+	m_font.DrawText(  70, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), name );
 	if( m_additionalinfo )
 	{
-		swprintf( name, L"Names %s", ( m_allowclones == FALSE ) ? L"(No Clones)" : L"(Clones)   " );
-		m_font.DrawText(  70, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), name );
 		m_font.DrawText( 440, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Rate" );
 		m_font.DrawText( 498, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Favorite" );
 		m_font.DrawText(  65, 50, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"----------------------------------------------------" );
@@ -629,10 +629,7 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
 		m_font.DrawText( 495, 50, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"------------" );
 	}
 	else
-	{
-		swprintf( name, L"Available ROMs %s", ( m_allowclones == FALSE ) ? L"(No Clones)" : L"(Clones)" );
-		m_font.DrawText( 320, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), name, XBFONT_CENTER_X );
-	}
+		m_font.DrawText(  65, 50, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"-------------------------------------------------------------------------" );
 
 		// Render the titles
 	DWORD color;
@@ -693,13 +690,8 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
       // Display the superscroll character
     WCHAR displayString[2] = L"";
     mbtowc( displayString, &g_superscrollCharacterSet[m_superscrollCharacterIdx], 1 );
-		if( m_additionalinfo )
-		{
-			swprintf( name, L"Names %s [%s]", ( m_allowclones == FALSE ) ? L"(No Clones)" : L"(Clones)   ", displayString );
-			m_font.DrawText(  70, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), name );
-		}
-		else
-			m_font.DrawText( 70, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), displayString );
+		swprintf( name, L"Names %s [%s]", ( m_allowclones == FALSE ) ? L"(No Clones)" : L"(Clones)   ", displayString );
+		m_font.DrawText(  70, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), name );
   }
 
 	m_font.End();
