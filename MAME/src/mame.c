@@ -241,7 +241,13 @@ INLINE void bail_and_print(const char *message)
 	{
 		bailing = 1;
     logerror( "%s\n", message );
-    osd_print_error( "%s\n", message );
+    //osd_print_error( "%s\n", message );
+
+      // If we're bailing, just bail. No need to reclaim memory
+      // as it'll just get free'd automatically when we jump
+      // back to the launcher. This fixes a problem with namcos2 games
+      // crashing on shutdown in release mode [EBA]
+    fatalerror( "%s", message );
 	}
 }
 

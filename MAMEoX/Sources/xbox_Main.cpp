@@ -102,6 +102,7 @@ void __cdecl main( void )
     PRINTMSG_TO_LOG( T_ERROR, "Failed loading font Media/HawaiianPunk_16.xpr!" );
     LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
     XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
+    Die( pD3DDevice, "Failed to launch default.xbe!" );
   }
 
   LoadOptions();
@@ -171,6 +172,7 @@ void __cdecl main( void )
     // Relaunch MAMEoXLauncher
   ShowLoadingScreen( pD3DDevice );
   XLaunchNewImage( "D:\\default.xbe", &g_launchData );
+  Die( pD3DDevice, "Failed to launch default.xbe!" );
 }
 
 //-------------------------------------------------------------
@@ -597,7 +599,7 @@ void osd_exit( void )
 }
 
 //---------------------------------------------------------------------
-//	osd_print_error
+//	fatalerror
 //---------------------------------------------------------------------
 int fatalerror( const char *fmt, ... )
 {
@@ -647,6 +649,7 @@ int fatalerror( const char *fmt, ... )
     // Relaunch MAMEoXLauncher
   ShowLoadingScreen( pD3DDevice );
   XLaunchNewImage( "D:\\default.xbe", &g_launchData );
+  Die( pD3DDevice, "Failed to launch default.xbe!" );
 
     // Execution should never get here
   return 0;
