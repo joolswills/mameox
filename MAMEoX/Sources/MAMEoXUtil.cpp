@@ -591,7 +591,7 @@ void CheckRAM( void )
             memStatus.dwTotalPhys );
 
 
-	g_inputManager.WaitForNoButton( 0 );
+	g_inputManager.WaitForNoButton();
 
   while( !g_inputManager.IsAnyButtonPressed() )
   {
@@ -601,7 +601,7 @@ void CheckRAM( void )
       FontRender( 320, 300, D3DCOLOR_XRGB(255,255,255), memStr, 2 );
     EndFontRender( TRUE );
   }
-	g_inputManager.WaitForNoButton( 0 );
+	g_inputManager.WaitForNoButton();
 }
 #endif
 

@@ -281,7 +281,7 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
   va_end( arg );
 
 	PRINTMSG( T_ERROR, "Die: %s", buf );
-	g_inputManager.WaitForNoButton( 0 );
+	g_inputManager.WaitForNoButton();
 
   while( !g_inputManager.IsAnyButtonPressed() )
   {
@@ -302,7 +302,7 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 	  pD3DDevice->Present( NULL, NULL, NULL, NULL );
   }
 
-  g_inputManager.WaitForNoButton( 0 );
+  g_inputManager.WaitForNoButton();
 
     // Make sure MAMEoXLauncher acts as though it was launched from the dashboard
   MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
@@ -328,7 +328,7 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 	  g_fontSet.DefaultFont().End();
 	  pD3DDevice->Present( NULL, NULL, NULL, NULL );
   }
-  g_inputManager.WaitForNoButton( 0 );
+  g_inputManager.WaitForNoButton();
 
     // Attempt to get back to the dashboard
   LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
@@ -692,9 +692,7 @@ int fatalerror( const char *fmt, ... )
 
   mbstowcs( wBuf, buf, 1023 );
 
-  RequireController( 0 );
-  CGamepad *gp = g_inputManager.GetGamepad( 0 );
-	g_inputManager.WaitForNoButton( 0 );
+	g_inputManager.WaitForNoButton();
 
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
 
@@ -718,7 +716,7 @@ int fatalerror( const char *fmt, ... )
 	  pD3DDevice->Present( NULL, NULL, NULL, NULL );
   }
 
-  g_inputManager.WaitForNoButton( 0 );
+  g_inputManager.WaitForNoButton();
 
     // Make sure MAMEoXLauncher acts as though it was launched from the dashboard
 //  MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
