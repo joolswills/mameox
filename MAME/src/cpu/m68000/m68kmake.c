@@ -860,7 +860,7 @@ void set_opcode_struct(opcode_struct* src, opcode_struct* dst, int ea_mode)
 void generate_opcode_handler(FILE* filep, body_struct* body, replace_struct* replace, opcode_struct* opinfo, int ea_mode)
 {
 	char str[MAX_LINE_LENGTH+1];
-	opcode_struct* op = malloc(sizeof(opcode_struct));
+	opcode_struct* op = osd_malloc(sizeof(opcode_struct));
 
 	/* Set the opcode structure and write the tables, prototypes, etc */
 	set_opcode_struct(opinfo, op, ea_mode);
@@ -954,7 +954,7 @@ void generate_opcode_cc_variants(FILE* filep, body_struct* body, replace_struct*
 	char replnot[20];
 	int i;
 	int old_length = replace->length;
-	opcode_struct* op = malloc(sizeof(opcode_struct));
+	opcode_struct* op = osd_malloc(sizeof(opcode_struct));
 
 	*op = *op_in;
 
@@ -994,8 +994,8 @@ void process_opcode_handlers(void)
 	char oper_spec_proc[MAX_LINE_LENGTH+1];
 	char oper_spec_ea[MAX_LINE_LENGTH+1];
 	opcode_struct* opinfo;
-	replace_struct* replace = malloc(sizeof(replace_struct));
-	body_struct* body = malloc(sizeof(body_struct));
+	replace_struct* replace = osd_malloc(sizeof(replace_struct));
+	body_struct* body = osd_malloc(sizeof(body_struct));
 
 
 	output_file = g_ops_ac_file;

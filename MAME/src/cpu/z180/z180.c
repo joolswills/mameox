@@ -1864,8 +1864,8 @@ static void z180_reset(void *param)
 		int oldval, newval, val;
 		UINT8 *padd, *padc, *psub, *psbc;
 		/* allocate big flag arrays once */
-		SZHVC_add = (UINT8 *)malloc(2*256*256);
-		SZHVC_sub = (UINT8 *)malloc(2*256*256);
+		SZHVC_add = (UINT8 *)osd_malloc(2*256*256);
+		SZHVC_sub = (UINT8 *)osd_malloc(2*256*256);
 		if( !SZHVC_add || !SZHVC_sub )
 		{
 			LOG(("Z180: failed to allocate 2 * 128K flags arrays!!!\n"));

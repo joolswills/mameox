@@ -377,8 +377,8 @@ static void mips3_reset(void *param, int bigendian)
 	struct mips3_config *config = param;
 
 	/* allocate memory */
-	mips3.icache = malloc(config->icache);
-	mips3.dcache = malloc(config->dcache);
+	mips3.icache = osd_malloc(config->icache);
+	mips3.dcache = osd_malloc(config->dcache);
 	if (!mips3.icache || !mips3.dcache)
 	{
 		fprintf(stderr, "error: couldn't allocate cache for mips3!\n");
@@ -575,8 +575,8 @@ static void mips3drc_recompile(struct drccore *drc)
 /*
 	if (!ram_read_table)
 	{
-		ram_read_table = malloc(65536 * sizeof(void *));
-		ram_write_table = malloc(65536 * sizeof(void *));
+		ram_read_table = osd_malloc(65536 * sizeof(void *));
+		ram_write_table = osd_malloc(65536 * sizeof(void *));
 		if (ram_read_table && ram_write_table)
 			for (i = 0; i < 65536; i++)
 			{

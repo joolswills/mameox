@@ -73,14 +73,14 @@ int main(int argc,char *argv[])
 	printf("Length=%04Xh(words)  Offset=$%04Xh  filelength=%04Xh(words) %04Xh(bytes)\n",length/2,offset,filelength/2,filelength);
 	length_to_dump = length;
 	printf("Starting from %d, dumping %d opcodes (word size)\n",offset,length/2);
-	Buffer = calloc((filelength+1),sizeof(char));
+	Buffer = osd_calloc((filelength+1),sizeof(char));
 	if (Buffer==NULL)
 	{
 		printf("Out of Memory !!!");
 		fclose(F);
 		exit(3);
 	}
-	String_Output = calloc(80,sizeof(char));
+	String_Output = osd_calloc(80,sizeof(char));
 	if (String_Output==NULL)
 	{
 		printf("Out of Memory !!!");

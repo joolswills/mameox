@@ -443,8 +443,8 @@ static void mips3_reset(void *param, int bigendian)
 	struct mips3_config *config = param;
 
 	/* allocate memory */
-	mips3.icache = malloc(config->icache);
-	mips3.dcache = malloc(config->dcache);
+	mips3.icache = osd_malloc(config->icache);
+	mips3.dcache = osd_malloc(config->dcache);
 	if (!mips3.icache || !mips3.dcache)
 	{
 		fprintf(stderr, "error: couldn't allocate cache for mips3!\n");

@@ -4010,8 +4010,8 @@ static void z80_init(void)
 		int oldval, newval, val;
 		UINT8 *padd, *padc, *psub, *psbc;
 		/* allocate big flag arrays once */
-		SZHVC_add = (UINT8 *)malloc(2*256*256);
-		SZHVC_sub = (UINT8 *)malloc(2*256*256);
+		SZHVC_add = (UINT8 *)osd_malloc(2*256*256);
+		SZHVC_sub = (UINT8 *)osd_malloc(2*256*256);
 		if( !SZHVC_add || !SZHVC_sub )
 		{
 			osd_die("Z80: failed to allocate 2 * 128K flags arrays!!!\n");

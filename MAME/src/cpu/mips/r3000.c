@@ -369,8 +369,8 @@ static void r3000_reset(void *param, int bigendian)
 	struct r3000_config *config = param;
 
 	/* allocate memory */
-	r3000.icache = malloc(config->icache);
-	r3000.dcache = malloc(config->dcache);
+	r3000.icache = osd_malloc(config->icache);
+	r3000.dcache = osd_malloc(config->dcache);
 	if (!r3000.icache || !r3000.dcache)
 	{
 		fprintf(stderr, "error: couldn't allocate cache for r3000!\n");

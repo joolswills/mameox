@@ -396,7 +396,7 @@ static void init_tables(void)
 
 	/* allocate the mirror table */
 	if (!mirror_table)
-		mirror_table = malloc(65536 * sizeof(mirror_table[0]));
+		mirror_table = osd_malloc(65536 * sizeof(mirror_table[0]));
 
 	/* fill in the mirror table */
 	if (mirror_table)
@@ -412,7 +412,7 @@ static void init_tables(void)
 
 	/* allocate the condition table */
 	if (!condition_table)
-		condition_table = malloc(32 * 8 * sizeof(condition_table[0]));
+		condition_table = osd_malloc(32 * 8 * sizeof(condition_table[0]));
 
 	/* fill in the condition table */
 	if (condition_table)

@@ -2967,7 +2967,7 @@ static void sh2_init(void)
 	sh2.dma_timer[1] = timer_alloc(sh2_dmac_callback);
 	timer_adjust(sh2.dma_timer[1], TIME_NEVER, 0, 0);
 
-	sh2.m = malloc(0x200);
+	sh2.m = osd_malloc(0x200);
 	if (!sh2.m)
 	{
 		logerror("SH2 failed to malloc FREGS\n");

@@ -8172,7 +8172,7 @@ int main(int argc, char **argv)
 	comptab = argv[2];
 
 
-	CPUtype = malloc(64);
+	CPUtype = osd_malloc(64);
 
 	sprintf(CPUtype,"%sM680%s", PREF, argv[3]);
 

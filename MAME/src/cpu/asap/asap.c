@@ -447,7 +447,7 @@ static void init_tables(void)
 {
 	/* allocate opcode table */
 	if (!opcode)
-		opcode = malloc(32 * 32 * 2 * sizeof(void *));
+		opcode = osd_malloc(32 * 32 * 2 * sizeof(void *));
 
 	/* fill opcode table */
 	if (opcode)
@@ -471,7 +471,7 @@ static void init_tables(void)
 
 	/* allocate src2 table */
 	if (!src2val)
-		src2val = malloc(65536 * sizeof(UINT32));
+		src2val = osd_malloc(65536 * sizeof(UINT32));
 
 	/* fill scr2 table */
 	if (src2val)

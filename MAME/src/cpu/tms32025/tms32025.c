@@ -1713,7 +1713,7 @@ static void tms32025_reset (void *param)
 
 	S_OUT(TMS32025_XF,ASSERT_LINE);	/* XF flag is high. Must set the pin */
 
-	R.intRAM = malloc(0x800*2);
+	R.intRAM = osd_malloc(0x800*2);
 	/* Set the internal memory mapped registers */
 	GREG = 0;
 	TIM  = 0xffff;

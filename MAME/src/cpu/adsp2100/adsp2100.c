@@ -536,11 +536,11 @@ static int create_tables(void)
 
 	/* allocate the tables */
 	if (!reverse_table)
-		reverse_table = (UINT16 *)malloc(0x4000 * sizeof(UINT16));
+		reverse_table = (UINT16 *)osd_malloc(0x4000 * sizeof(UINT16));
 	if (!mask_table)
-		mask_table = (UINT16 *)malloc(0x4000 * sizeof(UINT16));
+		mask_table = (UINT16 *)osd_malloc(0x4000 * sizeof(UINT16));
 	if (!condition_table)
-		condition_table = (UINT8 *)malloc(0x1000 * sizeof(UINT8));
+		condition_table = (UINT8 *)osd_malloc(0x1000 * sizeof(UINT8));
 
 	/* handle errors */
 	if (!reverse_table || !mask_table || !condition_table)

@@ -902,7 +902,7 @@ static void tms34010_reset(void *param)
 	state.config = config;
 
 	/* allocate the shiftreg */
-	state.shiftreg = malloc(SHIFTREG_SIZE);
+	state.shiftreg = osd_malloc(SHIFTREG_SIZE);
 
 	/* fetch the initial PC and reset the state */
 	PC = RLONG(0xffffffe0) & 0xfffffff0;
