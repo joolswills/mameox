@@ -1,14 +1,17 @@
 #!/bin/perl
 
-local @FILEs = `find ./MAME/src/drivers/*.c`;
 
+require 5.0.0.0;
+use MAMEoXScriptConstants;
 
-foreach( @FILEs ) {
+$DRIVER_DIR = MAMEoXScriptConstants::MAME_DIR."/src/drivers";
 
-	$DriverFile = $_;
+local @FILEs = `find $DRIVER_DIR/*.c`;
+foreach $DriverFile ( @FILEs ) {
 	chomp( $DriverFile );
 	open( FILE, "<$DriverFile" ) || die "Failed to open file $DriverFileName!\n";
 	
+	$DriverFile =~ s/$DRIVER_DIR\///;
 	print "--- $DriverFile ---------------------------------------------\n";
 	while( <FILE> ) {
 		if( $_ =~ /GAME.*\(.*,(.*),.*,.*,.*,.*,.*,.*,.*\"(.*)\",?.*\)/ ) {
@@ -16,5 +19,5 @@ foreach( @FILEs ) {
 		}
 	}
 	close( FILE );
+	print "\n\n";
 }
-

@@ -1,0 +1,1543 @@
+#!/bin/perl
+
+
+require 5.0.0.0;
+use MAMEoXScriptConstants;
+
+
+$ROOT_DIR		= MAMEoXScriptConstants::ROOT_DIR;
+$MAMEoX_DIR = MAMEoXScriptConstants::MAMEoX_DIR;
+$MAME_DIR   = MAMEoXScriptConstants::MAME_DIR;
+$MAME_DRIVER_DIR = $MAME_DIR."/src/drivers";
+$MAME_CPU_DIR		 = $MAME_DIR."/src/cpu";
+
+
+
+# Auto generate an 8 character unique name for each file
+local $autoNameNumber = 0;
+local @newFILEs;
+local @FILEs = `find $MAME_DRIVER_DIR -name *.c`;
+
+use constant DATA_PREFIX  => 'D';
+use constant CODE_PREFIX  => 'C';
+use constant BSS_PREFIX   => 'B';
+use constant CONST_PREFIX => 'K';
+
+
+#@SkipCPUs = ( "DSP32", "I8085", "JAGUAR", "MIPS", "NEC", "PIC16C5X", "TMS9900" );
+
+
+
+  # Base name for the generated .h and .cpp files
+$GeneratedFileBaseName = "XBESectionUtil";
+
+print "Generating stub files...\n";
+CreateHeaderFile();
+CreateSwitchStubs();
+CreateSourceFileStub();
+
+
+
+
+print "Sectionizing drivers, sound hardware, and video hardware...\n";
+
+# Note: Watch on midxunit.c, it only seems to be for Revolution X, which 
+#       runs out of memory at the moment, there may be problems there in the
+#       future.
+@SkipDrivers = ( "jrcrypt.c" );
+
+@TwinCobraFamily = ( "wardner.c", "twincobr.c" );
+@CapcomFamily = ( "cps1.c", "cps2.c" );
+@NamcoFamily = ( "namcoic.c", "namcona1.c", "namconb1.c", "namcond1.c", "namcos1.c",
+                 "namcos2.c", "namcos21.c", "namcos22.c", "namcos86.c", "namcos11.c" );
+@SegaFamily = ( "multi32.c", "system1.c", "system16.c", "system18.c", "system24.c", "system32.c",
+				"aburner.c", "sharrier.c", "outrun.c", "segasyse.c", "segac2.c" );
+@MoonPatrolFamily = ( "mpatrol.c", "yard.c" );								# 10 Yard Fight07/07/2003
+@SNKFamily = ( "snk.c", "hal21.c", "marvins.c", "sgladiat.c" );				# ASO - Armored Scrum Object, Athena, Marvin's Maze, Gladiator 1984
+@AmidarFamily = ( "galaxian.c", "scramble.c", "scobra.c", 
+                  "amidar.c", "frogger.c", "pacman.c",
+				  "pengo.c", "cclimber.c", "dkong.c", "yamato.c",				  
+				  "phoenix.c", "epos.c" );									# Amidar, Frog (Galaxian Hardware), Pac-Man (Galaxian Hardware), eyes, Moon Shuttle (US?), Special Forces, Special Forces II, Yamato, Batman Part 2, Beastie Feastie
+@RampartFamily = ( "rampart.c", "arcadecl.c" );								# Arcade Classics
+@RastanFamily = ( "rastan.c", "asuka.c", "opwolf.c", "rainbow.c", 
+                  "topspeed.c" );			                                # Asuka & Asuka, Operation Wolf, Rainbow Islands, Top Speed, Full Throttle
+@EspialFamily = ( "espial.c", "marineb.c", "zodiack.c" );					# Battle Cruiser M-12, Zodiack
+@BZoneFamily = ( "bzone.c", "bwidow.c" );									# Gravitar
+@Nova2001Family = ( "nova2001.c", "pkunwar.c" );							# Penguin-Kun War
+@GottLiebFamily = ( "gottlieb.c", "exterm.c" );							    # exterminator
+@Megasys1Family = ( "megasys1.c", "cischeat.c" );							# F-1 Grand Prix Star II
+@LocoMotionFamily = ( "rallyx.c", "timeplt.c", "locomotn.c", 
+					  "tutankhm.c", "pooyan.c", "rocnrope.c", 
+					  "junofrst.c" );				                        # Loco-Motion, Tutankham, Pooyan, Roc'n Rope, Juno First
+@ExidyFamily = ( "exidy.c", "victory.c" );									# Victory
+@M72Family = ( "m72.c", "m90.c", "vigilant.c", "shisen.c" );			    # Bomber Man World (World), Vigilante, Sichuan II
+@LelandFamily = ( "leland.c", "ataxx.c" );									# Asylum (prototype)
+@TrackFldFamily = ( "trackfld.c", "hyperspt.c", "yiear.c", "sbasketb.c" );	# Hyper Sports, Hyper Olympics '84, Yie ar Kung Fu, Super Basketball
+@Taito_F3Family = ( "taito_f3.c", "superchs.c", "groundfx.c",
+					"gunbustr.c", "undrfire.c" );							# Super Chase, Ground Effects, Gunbuster, Under Fire
+@FromanceFamily = ( "fromance.c", "pipedrm.c" );							# Pipe Dream
+@MidwayMCRFamily = ( "mcr1.c", "mcr2.c", "mcr3.c", "mcr68.c", "williams.c",
+					 "midyunit.c", "midtunit.c", "midwunit.c", 
+					 "midvunit.c", "midxunit.c" );							# Arch rivals, Mortal Kombat II, WWF: Wrestlemania (rev 1.30 08/10/95), Mortal Kombat, Revolution X
+@KonamiGXFamily = ( "konamigx.c", "mystwarr.c" );							# Metamorphic Force
+@SegarFamily = ( "segar.c", "sega.c" );										# Star Trek
+@ZaxxonFamily = ( "zaxxon.c", "congo.c" );									# Congo Bongo
+
+@WizFamily = ( "wiz.c", "rollrace.c" );										# Fighting Roller
+
+@TetrisPlus2Family = ( "ms32.c", "tetrisp2.c" );							# Tetris Plus 2 (MegaSystem 32 Version)
+
+@WipingFamily = ( "wiping.c", "clshroad.c" );								# Fire Battle, Clash-Road
+
+@D8080bwFamily = ( "8080bw.c", "rotaryf.c", "circus.c" );					# Rotary Fighter, Clowns, Dog Patch
+
+@BuggyChallengeFamily = ( "buggychl.c", "40love.c" );						# Forty-Love
+
+@BurgerTimeFamily = ( "btime.c", "scregg.c" );								# Dommy, Scrambled Egg
+
+@PlaymarkFamily = ( "playmark.c", "sslam.c" );								# Super Slam
+
+@NYNYFamily = ( "nyny.c", "spiders.c" );									# Spiders
+@DoubleDragonFamily = ( "ddragon.c", "chinagat.c" );						# China Gate
+@ThunderJawsFamily = ( "thunderj.c", "eprom.c" );							# Escape from the Planet of the Robot Monsters
+
+
+local @Families = ( \@CapcomFamily, \@NamcoFamily, \@SegaFamily, \@MidwayMCRFamily, \@TwinCobraFamily,
+					\@MoonPatrolFamily, \@SNKFamily, \@AmidarFamily, \@RampartFamily, \@RastanFamily,
+					\@EspialFamily, \@BZoneFamily, \@Nova2001Family, \@GottLiebFamily, 
+					\@Megasys1Family, \@LocoMotionFamily, \@ExidyFamily, \@M72Family, \@LelandFamily,
+					\@TrackFldFamily, \@Taito_F3Family, \@FromanceFamily, \@MidYUnitFamily, \@KonamiGXFamily,
+					\@SegarFamily, \@ZaxxonFamily, \@WizFamily, \@TetrisPlus2Family, \@WipingFamily,
+					\@D8080bwFamily, \@BuggyChallengeFamily, \@BurgerTimeFamily, \@PlaymarkFamily,
+					\@NYNYFamily, \@DoubleDragonFamily, \@ThunderJawsFamily );
+$autoNameNumber = scalar( @Families ) + 50;
+
+
+
+print GENERATEDFILE "static const driverSectionRegistration_t			g_driverSectionRegistry[] = {\r\n";
+
+# Do two passes, one to find the last autoNameNumber, another to actually
+# modify the files
+print "Pass 1...\n";
+
+DRIVERPASSONENEXTDRIVERFILENAME:
+foreach $DriverFileName ( @FILEs ) {
+	chomp( $DriverFileName );
+
+		# Change the DriverName to what will be present in the actual MAME code
+		# Drop the ./MAME/ portion
+	$DriverFileName =~ /^$MAME_DRIVER_DIR\/(.*\.c)$/;
+	$DriverNoPath = $1;
+	$DriverName = "src\\\\drivers\\\\$1";
+
+		# Skip the fake jrcrypt.c file and all the hack files
+	foreach( @SkipDrivers ) {
+		if( ($DriverNoPath eq $_ ) ) {
+			print "Skipping $DriverNoPath.\n";
+			next DRIVERPASSONENEXTDRIVERFILENAME;
+		}
+	}
+
+	$Family = false;
+	$FamilyID = 0;
+	SEARCHFORFAMILY:
+	foreach $FamilyArrayRef ( @Families ) {
+		$FamilyID++;
+		foreach( @{$FamilyArrayRef} ) {
+			if( ($DriverNoPath eq $_ ) ) {
+				print "$DriverNoPath is in family $FamilyID.\n";
+				$Family = $FamilyID;
+				last SEARCHFORFAMILY;
+			}
+		}
+	}
+
+
+	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
+
+	open( FILE, "<$DriverFileName" ) || die "Failed to open file $DriverFileName!\n";
+	sysread( FILE, $File, $size );
+	close( FILE );
+
+	if( ($File =~ /\#pragma code_seg/) ) {
+			# this should only happen on the first pass
+		if( $Family ne false ) {
+			print PRELOADFILE "/NOPRELOAD:\"$myAutoNameNumber\"\n";
+			print DBGPRELOADFILE "/NOPRELOAD:\"$myAutoNameNumber\"\n";
+
+			print GENERATEDFILE "  REGISTER_DRIVERSECTION( \"$DriverName\", \"$Family\" )\n";
+			$myAutoNameNumber = 0;	# Don't increment (families should always be less anyway)
+		} else {
+			$File =~ /\#pragma code_seg\(\"C(\d+)\"\)/;
+			$myAutoNameNumber = $1;
+			print PRELOADFILE "/NOPRELOAD:\"$myAutoNameNumber\"\n";
+			print DBGPRELOADFILE "/NOPRELOAD:\"$myAutoNameNumber\"\n";
+			print GENERATEDFILE "  REGISTER_DRIVERSECTION( \"$DriverName\", \"$myAutoNameNumber\" )\n";
+		}
+
+
+		if( $myAutoNameNumber >= $autoNameNumber ) {
+			$autoNameNumber = $myAutoNameNumber + 1;
+		}		
+
+	} else {
+	   push @newFILEs, $DriverFileName;
+	}
+}
+
+
+# Second pass, write out the section headers
+print "Pass 2...\n";
+if( scalar( @newFILEs ) == 0 ) {
+	print "Nothing to do.\n";
+}
+
+DRIVERPASSTWONEXTDRIVERFILENAME:
+foreach $DriverFileName ( @newFILEs ) {
+	chomp( $DriverFileName );
+
+		# Change the DriverName to what will be present in the actual MAME code
+		# Drop the ./MAME/ portion
+	$DriverFileName =~ /^$MAME_DRIVER_DIR\/(.*\.c)$/;
+	$DriverNoPath = $1;
+	$DriverName = "src\\\\drivers\\\\$1";
+
+		# Skip the fake jrcrypt.c file and all the hack files
+	foreach( @SkipDrivers ) {
+		if( ($DriverNoPath eq $_ ) ) {
+			print "Skipping $DriverNoPath.\n";
+			next DRIVERPASSTWONEXTDRIVERFILENAME;
+		}
+	}
+
+	$Family = false;
+	$FamilyID = 0;
+	foreach $FamilyArrayRef ( @Families ) {
+		$FamilyID++;
+		foreach( @$FamilyArrayRef ) {
+			if( ($DriverNoPath eq $_ ) ) {
+				print "$DriverNoPath is in family $FamilyID.\n";
+				$Family = $FamilyID;
+				last;
+			}
+		}
+	}
+
+	if( $Family ne false ) {
+		print PRELOADFILE "/NOPRELOAD:\"$myAutoNameNumber\"\n";
+		print DBGPRELOADFILE "/NOPRELOAD:\"$myAutoNameNumber\"\n";
+		print GENERATEDFILE "  REGISTER_DRIVERSECTION( \"$DriverName\", \"$Family\" )\n";
+	} else {
+		print PRELOADFILE "/NOPRELOAD:\"$autoNameNumber\"\n";
+		print DBGPRELOADFILE "/NOPRELOAD:\"$autoNameNumber\"\n";
+		print GENERATEDFILE "  REGISTER_DRIVERSECTION( \"$DriverName\", \"$autoNameNumber\" )\n";
+	}
+
+	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
+
+	open( FILE, "<$DriverFileName" ) || die "Failed to open file $DriverFileName!\n";
+	sysread( FILE, $File, $size );
+	close( FILE );
+
+		# Write out the section header/footer
+	if( $Family ne false ) {
+		WriteSectionData( $DriverFileName, $File, $Family );
+	} else {
+		WriteSectionData( $DriverFileName, $File, $autoNameNumber );
+	}
+
+		# Also do the vidhdrw file, if one exists
+	$VidHardwareName = $DriverFileName;
+	$VidHardwareName =~ s/\/drivers\//\/vidhrdw\//;
+
+	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $VidHardwareName );
+
+	if( open( FILE, "<$VidHardwareName" ) ) {
+		$File = "";
+		sysread( FILE, $File, $size );
+		close( FILE );
+
+		if( !($File =~ /\#pragma code_seg/) ) {
+			if( $Family ne false ) {
+				WriteSectionData( $VidHardwareName, $File, $Family );
+			} else {
+				WriteSectionData( $VidHardwareName, $File, $autoNameNumber );
+			}
+		}
+	}
+
+		# Also do the sndhrdw file, if one exists
+	$SoundHardwareName = $DriverFileName;
+	$SoundHardwareName =~ s/\/drivers\//\/sndhrdw\//;
+
+	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $SoundHardwareName );
+
+	if( open( FILE, "<$SoundHardwareName" ) ) {
+		$File = "";
+		sysread( FILE, $File, $size );
+		close( FILE );
+
+		if( !($File =~ /\#pragma code_seg/) ) {
+			if( $Family ne false ) {
+				WriteSectionData( $SoundHardwareName, $File, $Family );
+			} else {
+				WriteSectionData( $SoundHardwareName, $File, $autoNameNumber );
+			}
+		}
+	}
+
+		# Also do the machine file, if one exists
+	$MachineHardwareName = $DriverFileName;
+	$MachineHardwareName =~ s/\/drivers\//\/machine\//;
+
+	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $MachineHardwareName );
+
+	if( open( FILE, "<$MachineHardwareName" ) ) {
+		$File = "";
+		sysread( FILE, $File, $size );
+		close( FILE );
+
+		if( !($File =~ /\#pragma code_seg/) ) {
+			if( $Family ne false ) {
+				WriteSectionData( $MachineHardwareName, $File, $Family );
+			} else {
+				WriteSectionData( $MachineHardwareName, $File, $autoNameNumber );
+			}
+		}
+	}
+
+	$autoNameNumber++;
+}
+
+
+print GENERATEDFILE << "EOF";
+  { NULL, NULL } };
+
+EOF
+
+
+
+print GENERATEDFILE << "EOF";
+
+//-------------------------------------------------------------
+//	LoadDriverSections
+//-------------------------------------------------------------
+BOOL LoadDriverSections( void )
+{
+	const driverSectionRegistration_t *entry = (const driverSectionRegistration_t *)g_driverSectionRegistry;
+	while( entry->m_driverName )
+	{
+      // Only load families once (all but the first member are skipped)
+EOF
+
+local $IsFirst = true;
+foreach $FamilyArrayRef ( @Families ) {
+	foreach( @$FamilyArrayRef ) {
+			# Skip the first (key) member of the family
+		if( $_ eq @{$FamilyArrayRef}[0] ) {
+			next;
+		}
+
+			# Print OR
+		if( $IsFirst ne true ) {
+			print GENERATEDFILE " ||\n        !strcmp( entry->m_driverName, ";
+		} else {
+			print GENERATEDFILE "    if( !strcmp( entry->m_driverName, ";
+			$IsFirst = false;
+		}
+
+			# Print code to ignore this member
+		print GENERATEDFILE "\"src\\\\drivers\\\\$_\" )";
+	}
+}
+
+
+print GENERATEDFILE << "EOF";
+        )
+		{  
+			++entry;
+      continue;
+    }
+
+		if( !XLoadSection( entry->m_sectionName ) )
+		{
+			UINT32 lastErr = GetLastError();
+			PRINTMSG(( T_ERROR, "XLoadSection failed! 0x%X", lastErr ));
+			//return FALSE;
+		}
+		++entry;
+  }
+  return TRUE;
+}
+
+
+//-------------------------------------------------------------
+//	UnloadDriverSections
+//-------------------------------------------------------------
+BOOL UnloadDriverSections( void )
+{
+	const driverSectionRegistration_t *entry = (const driverSectionRegistration_t *)g_driverSectionRegistry;
+	while( entry->m_driverName )
+	{
+      // Only unload families once (all but the first member are skipped)
+EOF
+
+
+local $IsFirst = true;
+foreach $FamilyArrayRef ( @Families ) {
+	foreach( @$FamilyArrayRef ) {
+			# Skip the first (key) member of the family
+		if( $_ eq @{$FamilyArrayRef}[0] ) {
+			next;
+		}
+
+			# Print OR
+		if( $IsFirst ne true ) {
+			print GENERATEDFILE " ||\n        !strcmp( entry->m_driverName, ";
+		} else {
+			print GENERATEDFILE "    if( !strcmp( entry->m_driverName, ";
+			$IsFirst = false;
+		}
+
+			# Print code to ignore this member
+		print GENERATEDFILE "\"src\\\\drivers\\\\$_\" )";
+	}
+}
+
+
+print GENERATEDFILE << "EOF";
+        )
+		{  
+			++entry;
+      continue;
+    }
+
+
+    XFreeSection( entry->m_sectionName );
+		++entry;
+  }
+  return TRUE;
+}
+
+
+//-------------------------------------------------------------
+//	LoadDriverSectionByName
+//-------------------------------------------------------------
+BOOL LoadDriverSectionByName( const char *DriverFileName )
+{
+	const driverSectionRegistration_t	*entry = (const driverSectionRegistration_t	*)g_driverSectionRegistry;
+	while( entry->m_driverName )
+	{
+		if( !strcmp( DriverFileName, entry->m_driverName ) )
+		{
+			PRINTMSG(( T_INFO, "Load section %s for driver %s", entry->m_sectionName, DriverFileName ));
+			if( !XLoadSection( entry->m_sectionName ) )
+			{
+				UINT32 lastErr = GetLastError();
+				PRINTMSG(( T_ERROR, "XLoadSection failed! 0x%X", lastErr ));
+				osd_print_error( "Failed to load section %s, dependency of %s!", entry->m_sectionName, DriverFileName );
+				return FALSE;
+			}
+
+			break;
+		}
+		++entry;
+	}
+
+  return TRUE;
+}
+
+
+//-------------------------------------------------------------
+//	UnloadDriverSectionByName
+//-------------------------------------------------------------
+BOOL UnloadDriverSectionByName( const char *DriverFileName )
+{
+	const driverSectionRegistration_t	*entry = (const driverSectionRegistration_t	*)g_driverSectionRegistry;
+	while( entry->m_driverName )
+	{
+		if( !strcmp( DriverFileName, entry->m_driverName ) )
+		{
+			if( !XFreeSection( entry->m_sectionName ) )
+			{
+				PRINTMSG(( T_ERROR, "XFreeSection failed for section %s!", entry->m_sectionName ));
+				return FALSE;
+			}
+
+			break;
+		}
+		++entry;
+	}
+	return TRUE;
+}
+
+#pragma code_seg()  // End of DRVSNIZE
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()
+
+EOF
+
+
+
+
+
+
+
+
+
+
+#------------------------------------------------------------------------------
+
+
+
+@SkipCPUs = ();
+
+	# Notes on CPU families:
+	# - Items on the first line have actual source files, 
+	#	the rest share the original sources
+	# - The families have been derived by reading cpuintrf.c, checking which
+	#	#if (HAS_)'s lead to which #includes. Sometimes this fails, in which case
+	#   the CPUx macros themselves need to be consulted (example HAS_R5000, provides CPUs
+	#   CPU_R5000BE and CPU_R5000LE, no CPU_R5000)
+
+	# The xxxFamily string defines the source directories of the CPU family
+	# The xxxClones array defines the list of all CPU_ #defines that use the source files in xxxFamily
+	# NOTE: it is very important that the family of the CPU be the first item in the Clones list,
+	#       if the family name is the name of a real CPU! (there are cases where it's not, like "MIPS" )
+
+$adsp2100Family = "ADSP2100";
+@adsp2100Clones = ( "ADSP2100", "ADSP2101", "ADSP2105", "ADSP2115" );
+
+$armFamily = "ARM";
+@armClones = ( "ARM" );
+
+$asapFamily = "ASAP";
+@asapClones = ( "ASAP" );
+
+$ccpuFamily = "CCPU";
+@ccpuClones = ( "CCPU" );
+
+$dsp32Family = "DSP32";
+@dsp32Clones = ( "DSP32C" );
+
+$h6280Family = "H6280";
+@h6280Clones = ( "H6280" );
+
+$hd6309Family = "HD6309";
+@hd6309Clones = ( "HD6309" );
+
+$i8039Family = "I8039";
+@i8039Clones = ( "I8035", "I8039", "I8048", "N7751" );
+
+$i8085Family = "I8085";
+@Z80Clones = ( "8080", "8085A" );
+
+$i86Family = "I86";
+@i86Clones = ( "I86", 
+#			   "I88",		# Disabled in VCPPMame.h
+			   "I186" );
+#			   "I188",		# Disabled in VCPPMame.h
+#			   "I286" );	# Disabled in VCPPMame.h
+
+$i8x41Family = "I8X41";
+@i8x41Clones = ( "I8X41" );
+
+$JaguarFamily = "JAGUAR";
+@JaguarClones = ( "JAGUARGPU", "JAGUARDSP" );
+
+$KonamiFamily = "KONAMI";
+@KonamiClones = ( "KONAMI" );
+
+$m6502Family = "M6502";
+@m6502Clones = ( "M6502", 
+				 "M65C02", 
+#				 "M65SC02", # Disabled in VCPPMame.h
+				 "M6510", 
+#				 "M6510T",	# Disabled in VCPPMame.h
+#				 "M7501",	# Disabled in VCPPMame.h
+#				 "M8502",	# Disabled in VCPPMame.h
+				 "N2A03", 
+				 "DECO16" );
+#				 "M4510" );	# Disabled in VCPPMame.h
+#				 "M65CE02",	# Disabled in VCPPMame.h
+#				 "M6509" ); # Disabled in VCPPMame.h
+
+$m6800Family = "M6800";
+@m6800Clones = ( "M6800", "M6801", "M6802", "M6803", "M6808", "HD63701", "NSC8105" );
+
+$m68000Family = "M68000";
+@m68000Clones = ( "M68000", "M68010", "M68020", "M68EC020" );
+
+$m6805Family = "M6805";
+@m6805Clones = ( "M6805", "M68705", "HD63705" );
+
+$m6809Family = "M6809";
+@m6809Clones = ( "M6809" );
+
+$mipsFamily = "MIPS";
+@mipsClones = (	"PSXCPU",
+				"R3000BE", 
+				"R3000LE", 
+				"R4600BE", 
+				"R4600LE", 
+				"R5000BE",
+				"R5000LE" );
+
+$NECFamily = "NEC";
+@NECClones = ( "V20", "V30", "V33" );
+
+$pic16c5xFamily = "PIC16C5X";
+@pic16c5xClones = ( "PIC16C54", "PIC16C55", "PIC16C56", "PIC16C57", "PIC16C58" );
+
+$s2650Family = "S2650";
+@s2650Clones = ( "S2650" );
+
+$sh2Family = "SH2";
+@sh2Clones = ( "SH2" );
+
+$t11Family = "T11";
+@t11Clones = ( "T11" );
+
+$tms32010Family = "TMS32010";
+@tms32010Clones = ( "TMS32010" );
+
+$tms32025Family = "TMS32025";
+@tms32025Clones = ( "TMS32025" );
+
+$tms32031Family = "TMS32031";
+@tms32031Clones = ( "TMS32031" );
+
+$tms34010Family = "TMS34010";
+@tms34010Clones = ( "TMS34010", "TMS34020" );
+
+$tms9900Family = "TMS9900";
+@tms9900Clones = (	#"TMS9900", # Disabled in VCPPMame.h
+					#"TMS9940", # Disabled in VCPPMame.h
+					"TMS9980", 
+					#"TMS9985", # Disabled in VCPPMame.h
+					#"TMS9989", # Disabled in VCPPMame.h
+					"TMS9995" );
+					#"TMS99105A",	# Disabled in VCPPMame.h
+					#"TMS99110A" );	# Disabled in VCPPMame.h
+
+$udp7810Family = "UPD7810";
+@udp7810Clones = ( "UPD7810", "UPD7807" );
+
+$v60Family = "V60";
+@v60Clones = ( "V60", "V70" );
+
+$Z180Family = "Z180";
+@Z180Clones = ( "Z180" );
+
+$Z80Family = "Z80";
+@Z80Clones = ( "Z80" );
+
+$z8000Family = "Z8000";
+@z8000Clones = ( "Z8000" );
+
+$g65816Family = "g65816";
+@g65816Clones = ( "g65816" );
+
+$spc700Family = "spc700";
+@spc700Clones = ( "spc700" );
+
+@Families = (	\$Z80Family, 
+				\$Z180Family, 
+				\$i8085Family,
+				\$m6502Family, 
+				\$h6280Family,
+				\$i86Family,
+				\$NECFamily,
+				\$v60Family,
+				\$i8039Family,
+				\$i8x41Family,
+				\$m6800Family,
+				\$m6805Family,
+				\$m6809Family,
+				\$hd6309Family,
+				\$KonamiFamily,
+				\$m68000Family,
+				\$t11Family,
+				\$s2650Family,
+				\$tms34010Family,
+				\$tms9900Family,
+				\$z8000Family,
+				\$tms32010Family,
+				\$tms32025Family,
+				\$tms32031Family,
+				\$ccpuFamily,
+				\$adsp2100Family,
+				\$mipsFamily,
+				\$asapFamily,
+				\$udp7810Family,
+				\$JaguarFamily,
+				\$armFamily,
+				\$sh2Family,
+				\$dsp32Family,
+				\$pic16c5xFamily,
+				\$g65816Family,
+				\$spc700Family );
+
+
+
+@Clones = ( \@Z80Clones,
+			\@Z180Clones,
+			\@Z80Clones,
+			\@m6502Clones,
+			\@h6280Clones,
+			\@i86Clones,
+			\@NECClones,
+			\@v60Clones,
+			\@i8039Clones,
+			\@i8x41Clones,
+			\@m6800Clones,
+			\@m6805Clones,
+			\@m6809Clones,
+			\@hd6309Clones,
+			\@KonamiClones,
+			\@m68000Clones,
+			\@t11Clones,
+			\@s2650Clones,
+			\@tms34010Clones,
+			\@tms9900Clones,
+			\@z8000Clones,
+			\@tms32010Clones,
+			\@tms32025Clones,
+			\@tms32031Clones,
+			\@ccpuClones,
+			\@adsp2100Clones,
+			\@mipsClones,
+			\@asapClones,
+			\@udp7810Clones,
+			\@JaguarClones,
+			\@armClones,
+			\@sh2Clones,
+			\@dsp32Clones,
+			\@pic16c5xClones,
+			\@g65816Clones,
+			\@spc700Clones );
+
+
+print "\n\nSectionizing CPU's...\n";
+
+@FILEs    = `find $MAME_CPU_DIR -name *.c`;
+@newFILEs = ();
+local $OldCPUName = "";
+
+
+
+$autoNameNumber = scalar( @Families ) + 50;
+
+
+WriteGENERATEDFILEStub();
+
+print GENERATEDFILE << "EOF";
+\n//-------------------------------------------------------------
+//	UnloadCPUSections
+//-------------------------------------------------------------
+BOOL UnloadCPUSections( void )
+{
+  std::map< UINT32, std::string >::iterator i = g_CPUIDToSectionMap.begin();
+  for( ; i != g_CPUIDToSectionMap.end(); ++i )
+  {
+      // Only unload clones once (all but the first member must be skipped)
+EOF
+
+local $IsFirst = true;
+foreach $CloneArrayRef ( @Clones ) {
+	for( $i = 1; $i < scalar( @$CloneArrayRef ); $i++ ) {
+		$Clone = @{$CloneArrayRef}[$i];
+			# Print OR
+		if( $IsFirst ne true ) {
+			print GENERATEDFILE " ||\n        (*i).first == ";
+		} else {
+			print GENERATEDFILE "    if( (*i).first == ";
+		}
+		$IsFirst = false;
+
+			# Print code to ignore this member
+		print GENERATEDFILE "CPU_$Clone";
+	}
+}
+
+
+print GENERATEDFILE << "EOF";
+ )
+        continue;
+    XFreeSection( (*i).second.c_str() );
+  }
+  return TRUE;
+}
+
+
+//-------------------------------------------------------------
+//	RegisterCPUSectionNames
+//-------------------------------------------------------------
+static void RegisterCPUSectionNames( void )
+{
+EOF
+
+
+
+# Do two passes, one to find the last autoNameNumber, another to actually
+# modify the files
+print "Pass 1...\n";
+
+foreach $DriverFileName ( @FILEs ) {
+	chomp( $DriverFileName );
+	$CPUName = $DriverFileName;
+
+		# Change the CPUName to what will be present in the actual code
+		# Drop the ./MAME/src/cpu portion
+	$CPUName =~ /^$MAME_CPU_DIR\/(.+)\/.+\.c$/;
+	$CPUName = $1;
+
+	$IsValid = true;
+
+		# Skip the fake jrcrypt.c file and all the hack files
+	foreach $CPUToSkip ( @SkipCPUs ) {
+		if( uc($CPUName) eq $CPUToSkip ) {
+			print "Skipping $CPUName.\n";
+			$IsValid = false;
+			last;
+		}
+	}
+	next if( $IsValid eq false );
+
+	$Family = false;
+	$FamilyID = 0;
+	foreach $FamilyRef ( @Families ) {
+		$FamilyID++;
+		if( uc($CPUName) eq $$FamilyRef ) {
+			print "$CPUName is in family $FamilyID.\n";
+			$Family = $FamilyID;
+			last;
+		}
+	}
+
+
+	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
+
+	open( FILE, "<$DriverFileName" ) || die "Failed to open file $DriverFileName!\n";
+	sysread( FILE, $File, $size );
+	close( FILE );
+
+	if( ($File =~ /\#pragma code_seg/) ) {
+			# this should only happen on the first pass
+		$File =~ /\#pragma code_seg\(\"CC(\d+)\"\)/;
+		$myAutoNameNumber = $1;
+
+			# Unlike the drivers, we want one name for an entire directory
+			# so only register on a new directory (CPUName)
+		if( $CPUName ne $OldCPUName ) {
+			$OldCPUName = $CPUName;
+			$ucaseCPUName = uc( $CPUName );
+			if( $Family ne false ) {
+				$myAutoNameNumber = 0;	# Don't increment (families should always be less anyway)
+				print PRELOADFILE "/NOPRELOAD:\"C$Family\"\n";
+				print DBGPRELOADFILE "/NOPRELOAD:\"C$Family\"\n";
+					# Each real CPU is also listed as a clone, so this would be a duplicate
+				#print GENERATEDFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"CPU$Family\" );\n";
+
+					# Register all the clones for this CPU
+				$CloneArray = @Clones[$Family-1];
+				foreach( @{$CloneArray} ) {
+					print GENERATEDFILE "  RegisterSectionID( CPU_$_, \"CPU$Family\" );\n";
+				}
+			}
+			else {
+				print PRELOADFILE "/NOPRELOAD:\"C$myAutoNameNumber\"\n";
+				print DBGPRELOADFILE "/NOPRELOAD:\"C$myAutoNameNumber\"\n";
+				print GENERATEDFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"CPU$myAutoNameNumber\" );\n";
+			}
+		}
+
+		if( $myAutoNameNumber >= $autoNameNumber ) {
+			$autoNameNumber = $myAutoNameNumber + 1;
+		}
+	} else {
+		push @newFILEs, $DriverFileName;
+	}
+}
+
+# Second pass, write out the section headers
+print "Pass 2...\n";
+if( scalar( @newFILEs ) == 0 ) {
+	print "Nothing to do.\n";
+}
+
+$OldCPUName = "";
+CPUPASS2DRIVER:
+foreach $DriverFileName ( @newFILEs ) {
+	chomp( $DriverFileName );
+	$CPUName = $DriverFileName;
+
+
+		# Change the CPUName to what will be present in the actual code
+		# Drop the ./MAME/src/cpu portion
+	$CPUName =~ /^$MAME_CPU_DIR\/(.+)\/.+\.c$/;
+	$CPUName = $1;
+
+		# Skip junk CPUs
+	foreach $CPUToSkip ( @SkipCPUs ) {
+		$CPUToSkip =~ s/\.c/\\.c/;
+		if( ($CPUName =~ /.*$CPUToSkip/ ) ) {
+			print "Skipping $CPUName.\n";
+			next CPUPASS2DRIVER;
+		}
+	}
+
+	$Family = false;
+	$FamilyID = 0;
+	foreach $FamilyNameRef ( @Families ) {
+		$FamilyID++;
+		if( uc($CPUName) eq $$FamilyNameRef ) {
+			print "$CPUName is in family $FamilyID.\n";
+			$Family = $FamilyID;
+			last;
+		}
+	}
+
+		# Unlike the drivers, we want one name for an entire directory
+		# so only register on a new directory (CPUName)
+	if( $CPUName ne $OldCPUName ) {
+		$OldCPUName = $CPUName;
+		$ucaseCPUName = uc( $CPUName );
+		if( $Family ne false ) {
+			print PRELOADFILE "/NOPRELOAD:\"C$Family\"\n";
+			print DBGPRELOADFILE "/NOPRELOAD:\"C$Family\"\n";
+				# Each real CPU is also listed as a clone, so this would be a duplicate
+			#print GENERATEDFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"CPU$Family\" );\n";
+
+				# Register all the clones for this CPU
+			$CloneArray = @Clones[$Family-1];
+			foreach( @{$CloneArray} ) {
+				print GENERATEDFILE "  RegisterSectionID( CPU_$_, \"CPU$Family\" );\n";
+			}
+		} else {
+			$autoNameNumber++;
+			print PRELOADFILE "/NOPRELOAD:\"C$autoNameNumber\"\n";
+			print DBGPRELOADFILE "/NOPRELOAD:\"C$autoNameNumber\"\n";
+			print GENERATEDFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"CPU$autoNameNumber\" );\n";
+		}
+	}
+
+
+	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
+
+	open( FILE, "<$DriverFileName" ) || die "Failed to open file $DriverFileName!\n";
+	sysread( FILE, $File, $size );
+	close( FILE );
+
+		# Write out the section header/footer
+	if( $Family ne false ) {
+		WriteCPUSectionData( $DriverFileName, $File, $Family );
+	} else {
+		WriteCPUSectionData( $DriverFileName, $File, $autoNameNumber );
+	}
+}
+
+print GENERATEDFILE << "EOF";
+}
+
+#pragma code_seg()  // End of CPUCSNZE
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()
+
+} // End extern "C"
+
+
+EOF
+close( GENERATEDFILE );
+close( PRELOADFILE );
+close( DBGPRELOADFILE );
+
+print "\n\n\nOperation complete!\n";
+
+
+
+
+
+
+
+
+
+#== F U N C T I O N S ===================================================
+
+
+#------------------------------------------------------------------------
+#	WriteSectionData
+#------------------------------------------------------------------------
+sub WriteSectionData( $$$ ) {
+	my $FileName = shift;
+	my $File = shift;
+	my $autoNameNumber = shift;
+	my $DataSectionName = "\"D$autoNameNumber\"";
+	my $CodeSectionName = "\"C$autoNameNumber\"";
+	my $BSSSectionName = "\"B$autoNameNumber\"";
+	my $ConstSectionName= "\"K$autoNameNumber\"";
+
+	open( FILE, ">$FileName" ) || die "Could not open $FileName for output!\n";
+
+		#open the segment
+	my $SegLine = "#pragma code_seg($CodeSectionName)\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma data_seg($DataSectionName)\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma bss_seg($BSSSectionName)\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma const_seg($ConstSectionName)\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+
+
+		# Merge all of the sections into one segment (identified by $autoNameNumber)
+		# Note: It is _very_ important to put the data section first, otherwise the
+		#       merged section will be read-only!
+	$SegLine = "#pragma comment(linker, \"/merge:D$autoNameNumber=$autoNameNumber\")\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma comment(linker, \"/merge:C$autoNameNumber=$autoNameNumber\")\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma comment(linker, \"/merge:B$autoNameNumber=$autoNameNumber\")\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma comment(linker, \"/merge:K$autoNameNumber=$autoNameNumber\")\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+
+
+		#write the old file data
+	syswrite( FILE, $File, $size );
+
+		#Close the segment
+	$SegLine = "#pragma code_seg()\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma data_seg()\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma bss_seg()\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma const_seg()\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+
+	close( FILE );
+}
+
+#------------------------------------------------------------------------
+#	WriteCPUSectionData
+#------------------------------------------------------------------------
+sub WriteCPUSectionData( $$$ ) {
+	my $FileName = shift;
+	my $File = shift;
+	my $autoNameNumber = shift;
+	my $CodeSectionName = "\"CC$autoNameNumber\"";
+	my $DataSectionName = "\"CD$autoNameNumber\"";
+	my $BSSSectionName = "\"CB$autoNameNumber\"";
+	my $ConstSectionName= "\"CK$autoNameNumber\"";
+
+	open( FILE, ">$FileName" ) || die "Could not open $FileName for output!\n";
+
+		#open the segment
+	my $SegLine = "#pragma code_seg($CodeSectionName)\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma data_seg($DataSectionName)\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma bss_seg($BSSSectionName)\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma const_seg($ConstSectionName)\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+
+		# Merge all of the sections into one segment (identified by C$autoNameNumber)
+		# Note: It is _very_ important to put the data section first, otherwise the
+		#       merged section will be read-only!
+	$SegLine = "#pragma comment(linker, \"/merge:CD$autoNameNumber=CPU$autoNameNumber\")\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma comment(linker, \"/merge:CC$autoNameNumber=CPU$autoNameNumber\")\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma comment(linker, \"/merge:CB$autoNameNumber=CPU$autoNameNumber\")\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma comment(linker, \"/merge:CK$autoNameNumber=CPU$autoNameNumber\")\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+
+
+		#write the old file data
+	syswrite( FILE, $File, $size );
+
+		#Close the segment
+	$SegLine = "#pragma code_seg()\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma data_seg()\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma bss_seg()\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma const_seg()\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+
+	close( FILE );
+}
+
+
+
+
+
+#------------------------------------------------------------------------
+#	CreateSwitchStubs
+#------------------------------------------------------------------------
+sub CreateSwitchStubs() {
+		# Create the imageblddbg.switch file
+	open( DBGPRELOADFILE, ">$ROOT_DIR/imageblddbg.switch" );
+	print DBGPRELOADFILE << "EOF";
+/IN:"Debug\\MAMEoX.exe"
+/OUT:"Debug\\MAMEoX.xbe"
+/STACK:"0x20000"
+/DEBUG
+/NOLOGO
+/nolibwarn
+/formatud
+/testname:"MAMEoX Util (Don't Run)"
+/testid:0x4D414D45
+/titleimage:"..\\Media\\mox-icon.xpr"
+/defaultsaveimage:"..\\Media\\mox-icon.xpr"
+EOF
+
+	open( PRELOADFILE, ">$ROOT_DIR/imagebld.switch" );
+	print PRELOADFILE << "EOF";
+/IN:"Release\\MAMEoX.exe"
+/OUT:"Release\\MAMEoX.xbe"
+/STACK:"0x20000"
+/NOLOGO
+/nolibwarn
+/formatud
+/testname:"MAMEoX Util (Don't Run)"
+/testid:0x4D414D45
+/titleimage:"..\\Media\\mox-icon.xpr"
+/defaultsaveimage:"..\\Media\\mox-icon.xpr"
+EOF
+}
+
+
+
+#------------------------------------------------------------------------
+#	CreateHeaderFile
+#------------------------------------------------------------------------
+sub CreateHeaderFile() {
+
+	open( FILE, ">$MAMEoX_DIR/includes/$GeneratedFileBaseName.h" );
+	print FILE << "EOF";
+/**
+  * \\file      $GeneratedFileBaseName.h
+  * \\brief     Registration of MAME files for creation and usage of XBOX
+  *             loadable sections.
+  *
+  * \\note      This file is autogenerated via Sectionize.pl DO NOT EDIT!
+  */
+#pragma once
+//= I N C L U D E S ====================================================
+#include "MAMEoX.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+#include "osd_cpu.h"
+//= P R O T O T Y P E S ================================================
+
+#ifdef _DEBUG
+//-------------------------------------------------------------
+//	CheckDriverSectionRAM
+//! \\brief    Prints the size of each driver/snd/vdeo segment
+//-------------------------------------------------------------
+void CheckDriverSectionRAM( void );
+
+//-------------------------------------------------------------
+//	CheckCPUSectionRAM
+//! \\brief    Prints the size of each CPU segment
+//-------------------------------------------------------------
+void CheckCPUSectionRAM( void );
+#endif
+
+//-------------------------------------------------------------
+//	InitDriverSectionizer
+//! \\brief    Initializes the DriverSectionizer subsystem
+//-------------------------------------------------------------
+void InitDriverSectionizer( void );
+
+//-------------------------------------------------------------
+//	TerminateDriverSectionizer
+//! \\brief    Terminates the DriverSectionizer subsystem
+//-------------------------------------------------------------
+void TerminateDriverSectionizer( void );
+
+//-------------------------------------------------------------
+//	LoadDriverSectionByName
+//! \\brief    Loads the section associated with the passed name
+//!
+//! \\param    DriverFileName - The name of the file whose section
+//!                             should be loaded
+//!
+//! \\return   BOOL - Operation status
+//! \\retval   TRUE - success
+//! \\return   FALSE - Failure
+//-------------------------------------------------------------
+BOOL LoadDriverSectionByName( const char *DriverFileName );
+
+//-------------------------------------------------------------
+//	UnloadDriverSectionByName
+//! \\brief    Unloads the section associated with the passed name
+//!
+//! \\param    DriverFileName - The name of the file whose section
+//!                             should be unloaded
+//!
+//! \\return   BOOL - Operation status
+//! \\retval   TRUE - success
+//! \\return   FALSE - Failure
+//-------------------------------------------------------------
+BOOL UnloadDriverSectionByName( const char *DriverFileName );
+
+//-------------------------------------------------------------
+//	LoadDriverSections
+//! \\brief    Loads all of the driver sections
+//!
+//! \\return   BOOL - Operation status
+//! \\retval   TRUE - success
+//! \\return   FALSE - Failure
+//-------------------------------------------------------------
+BOOL LoadDriverSections( void );
+
+//-------------------------------------------------------------
+//	UnloadDriverSections
+//! \\brief    Unloads all of the driver sections
+//!
+//! \\return   BOOL - Operation status
+//! \\retval   TRUE - success
+//! \\return   FALSE - Failure
+//-------------------------------------------------------------
+BOOL UnloadDriverSections( void );
+
+
+//-------------------------------------------------------------
+//	InitCPUSectionizer
+//! \\brief    Initializes the DriverSectionizer subsystem
+//-------------------------------------------------------------
+void InitCPUSectionizer( void );
+
+//-------------------------------------------------------------
+//	TerminateCPUSectionizer
+//! \\brief    Terminates the DriverSectionizer subsystem
+//-------------------------------------------------------------
+void TerminateCPUSectionizer( void );
+
+//-------------------------------------------------------------
+//	LoadCPUSectionByID
+//! \\brief    Loads the section associated with the passed name
+//!
+//! \\param    CPUID - The ID of the CPU whose section
+//!                    should be loaded
+//!
+//! \\return   BOOL - Operation status
+//! \\retval   TRUE - success
+//! \\return   FALSE - Failure
+//-------------------------------------------------------------
+BOOL LoadCPUSectionByID( UINT32 CPUID );
+
+//-------------------------------------------------------------
+//	UnloadCPUSectionByID
+//! \\brief    Unloads the section associated with the passed name
+//!
+//! \\param    CPUID - The ID of the CPU whose section
+//!                    should be loaded
+//!
+//! \\return   BOOL - Operation status
+//! \\retval   TRUE - success
+//! \\return   FALSE - Failure
+//-------------------------------------------------------------
+BOOL UnloadCPUSectionByID( UINT32 CPUID );
+
+//-------------------------------------------------------------
+//	LoadCPUSections
+//! \\brief    Loads all of the CPU sections
+//!
+//! \\return   BOOL - Operation status
+//! \\retval   TRUE - success
+//! \\return   FALSE - Failure
+//-------------------------------------------------------------
+BOOL LoadCPUSections( void );
+
+//-------------------------------------------------------------
+//	UnloadCPUSections
+//! \\brief    Unloads all of the CPU sections
+//!
+//! \\return   BOOL - Operation status
+//! \\retval   TRUE - success
+//! \\return   FALSE - Failure
+//-------------------------------------------------------------
+BOOL UnloadCPUSections( void );
+#ifdef __cplusplus
+} // End extern "C"
+#endif
+EOF
+
+	close( FILE );
+}
+
+
+
+#------------------------------------------------------------------------
+#	CreateSourceFileStub
+#------------------------------------------------------------------------
+sub CreateSourceFileStub() {
+
+
+
+	open( GENERATEDFILE, ">$MAMEoX_DIR/sources/$GeneratedFileBaseName.cpp" );
+	print GENERATEDFILE "/**\r\n";
+	print GENERATEDFILE "  * \\file      $GeneratedFileBaseName.cpp\r\n";
+	print GENERATEDFILE "  * \\brief     Registration of Driver/CPU files for creation and usage of XBOX\r\n";
+	print GENERATEDFILE "  *             loadable sections\r\n";
+	print GENERATEDFILE "  *\r\n";
+	print GENERATEDFILE "  * \\note      This file is autogenerated via Sectionize.pl, so any\r\n";
+	print GENERATEDFILE "  *               changes will probably be lost.\r\n";
+	print GENERATEDFILE "  */\r\n\r\n";
+
+
+	print GENERATEDFILE << "EOF";
+//= I N C L U D E S ====================================================
+#include "MAMEoX.h"
+#include <stdio.h>
+#include <map>
+#include <string>
+#include "DebugLogger.h"
+extern "C" {
+#include "osd_cpu.h"
+#include "cpuintrf.h"
+}
+
+
+//= D E F I N E S ======================================================
+EOF
+	print GENERATEDFILE "#define DRIVER_DATA_PREFIX      \"".DATA_PREFIX."\"\n";
+	print GENERATEDFILE "#define DRIVER_CODE_PREFIX      \"".CODE_PREFIX."\"\n";
+	print GENERATEDFILE "#define DRIVER_BSS_PREFIX       \"".BSS_PREFIX."\"\n";
+	print GENERATEDFILE "#define DRIVER_CONST_PREFIX     \"".CONST_PREFIX."\"\n";
+	print GENERATEDFILE "\n";
+	print GENERATEDFILE "#define CPU_DATA_PREFIX         \"C".DATA_PREFIX."\"\n";
+	print GENERATEDFILE "#define CPU_CODE_PREFIX         \"C".CODE_PREFIX."\"\n";
+	print GENERATEDFILE "#define CPU_BSS_PREFIX          \"C".BSS_PREFIX."\"\n";
+	print GENERATEDFILE "#define CPU_CONST_PREFIX        \"C".CONST_PREFIX."\"\n";
+	print GENERATEDFILE "\n\n";
+
+	print GENERATEDFILE << "EOF";
+
+struct driverSectionRegistration_t {
+  const char *m_driverName;
+  const char *m_sectionName;
+};
+
+
+#define REGISTER_DRIVERSECTION( driverName, sectionName )     { driverName, sectionName },
+
+//= G L O B A L = V A R S ==============================================
+	// Map from MAME CPUID's to section names
+static std::map< UINT32, std::string >        g_CPUIDToSectionMap;
+
+static BOOL																		g_driverSectionizerSectionLoaded = TRUE;
+static BOOL																		g_cpuSectionizerSectionLoaded = TRUE;
+
+//= P R O T O T Y P E S ================================================
+extern "C" {
+	static void RegisterCPUSectionNames( void );
+}
+
+
+//= F U N C T I O N S ==================================================
+extern "C" {
+
+//-------------------------------------------------------------
+//	InitDriverSectionizer
+//-------------------------------------------------------------
+void InitDriverSectionizer( void )
+{
+	if( !g_driverSectionizerSectionLoaded )
+	{
+		if( !XLoadSection( "DRVSNIZE" ) )
+		{
+			UINT32 lastErr = GetLastError();
+			PRINTMSG(( T_ERROR, "XLoadSection failed! 0x%X", lastErr ));
+		}
+		else
+			g_driverSectionizerSectionLoaded = TRUE;
+	}
+}
+
+//-------------------------------------------------------------
+//	InitCPUSectionizer
+//-------------------------------------------------------------
+void InitCPUSectionizer( void )
+{
+	if( !g_cpuSectionizerSectionLoaded )
+	{
+		if( !XLoadSection( "CPUSNIZE" ) )
+		{
+			UINT32 lastErr = GetLastError();
+			PRINTMSG(( T_ERROR, "XLoadSection failed! 0x%X", lastErr ));
+		}
+		else
+			g_cpuSectionizerSectionLoaded = TRUE;
+	}
+
+
+  g_CPUIDToSectionMap.clear();
+  RegisterCPUSectionNames();
+}
+
+
+//-------------------------------------------------------------
+//	TerminateDriverSectionizer
+//-------------------------------------------------------------
+void TerminateDriverSectionizer( void )
+{
+  if( !XFreeSection( "DRVSNIZE" ) )
+	{
+		PRINTMSG(( T_INFO, "Failed to unload DRVSNIZE section! 0x%X", GetLastError() ));
+	}
+	else
+		g_driverSectionizerSectionLoaded = FALSE;
+}
+
+//-------------------------------------------------------------
+//	TerminateCPUSectionizer
+//-------------------------------------------------------------
+void TerminateCPUSectionizer( void )
+{
+  g_CPUIDToSectionMap.clear();
+  if( !XFreeSection( "CPUSNIZE" ) )
+	{
+		PRINTMSG(( T_INFO, "Failed to unload CPUSNIZE section! 0x%X", GetLastError() ));
+	}
+	else
+		g_cpuSectionizerSectionLoaded = FALSE;
+}
+
+
+	// Driver section manipulation code
+#pragma code_seg("DRVCSNZE")
+#pragma data_seg("DRVDSNZE")
+#pragma bss_seg("DRVBSNZE")
+#pragma const_seg("DRVKSNZE")
+#pragma comment(linker, "/merge:DRVDSNZE=DRVSNIZE")
+#pragma comment(linker, "/merge:DRVCSNZE=DRVSNIZE")
+#pragma comment(linker, "/merge:DRVBSNZE=DRVSNIZE")
+#pragma comment(linker, "/merge:DRVKSNZE=DRVSNIZE")
+
+
+
+EOF
+}
+
+
+
+#------------------------------------------------------------------------
+#	WriteGENERATEDFILEStub
+#------------------------------------------------------------------------
+sub WriteGENERATEDFILEStub() {
+
+
+	print GENERATEDFILE << "EOF";
+#pragma code_seg("CPUCSNZE")
+#pragma data_seg("CPUDSNZE")
+#pragma bss_seg("CPUBSNZE")
+#pragma const_seg("CPUKSNZE")
+#pragma comment(linker, "/merge:CPUCSNZE=CPUSNIZE")
+#pragma comment(linker, "/merge:CPUDSNZE=CPUSNIZE")
+#pragma comment(linker, "/merge:CPUBSNZE=CPUSNIZE")
+#pragma comment(linker, "/merge:CPUKSNZE=CPUSNIZE")
+
+#ifdef _DEBUG
+//-------------------------------------------------------------
+//	CheckCPUSectionRAM
+//-------------------------------------------------------------
+void CheckCPUSectionRAM( void )
+{
+  DWORD total = 0;
+  std::map< UINT32, std::string >::iterator i = g_CPUIDToSectionMap.begin();
+  for( ; i != g_CPUIDToSectionMap.end(); ++i )
+  {
+    HANDLE h = XGetSectionHandle( (*i).second.c_str() );
+    if( h != INVALID_HANDLE_VALUE )
+    {
+      UINT32 sz = XGetSectionSize( h );
+      PRINTMSG(( T_INFO, "CPU%lu %lu", (*i).first, sz ));
+      total += sz;
+    }
+    else
+      PRINTMSG(( T_ERROR, "Invalid section %s for CPU%lu!", (*i).second.c_str(), (*i).first ));
+  }
+  PRINTMSG(( T_INFO, "Total %lu bytes\\n", total ));
+}
+#endif
+
+
+//-------------------------------------------------------------
+//	RegisterSectionID
+//-------------------------------------------------------------
+static void RegisterSectionID( UINT32 CPUID, const char *DataSectionName )
+{
+    // Add the section name to the map
+  g_CPUIDToSectionMap[ CPUID ] = DataSectionName;
+}
+
+
+//-------------------------------------------------------------
+//	LoadCPUSectionByID
+//-------------------------------------------------------------
+BOOL LoadCPUSectionByID( UINT32 CPUID )
+{
+  std::map< UINT32, std::string >::iterator i = g_CPUIDToSectionMap.find( CPUID );
+  if( i == g_CPUIDToSectionMap.end() )
+    return FALSE;
+  PRINTMSG(( T_INFO, "Load section CPU%lu, ID %s", CPUID, (*i).second.c_str() ));
+  if( !XLoadSection( (*i).second.c_str() ) )
+  {
+    PRINTMSG(( T_ERROR, "XLoadSection failed for section %s! 0x%X", (*i).second.c_str(), GetLastError() ));
+  }
+
+  return TRUE;
+}
+
+
+//-------------------------------------------------------------
+//	UnloadCPUSectionByID
+//-------------------------------------------------------------
+BOOL UnloadCPUSectionByID( UINT32 CPUID )
+{
+  std::map< UINT32, std::string >::iterator i = g_CPUIDToSectionMap.find( CPUID );
+  if( i == g_CPUIDToSectionMap.end() )
+    return FALSE;
+  return XFreeSection( (*i).second.c_str() );
+}
+
+
+//-------------------------------------------------------------
+//	LoadCPUSections
+//-------------------------------------------------------------
+BOOL LoadCPUSections( void )
+{
+  std::map< UINT32, std::string >::iterator i = g_CPUIDToSectionMap.begin();
+  for( ; i != g_CPUIDToSectionMap.end(); ++i )
+  {
+    if( !XLoadSection( (*i).second.c_str() ) )
+    {
+      PRINTMSG(( T_ERROR, "Failed to load section %s!", (*i).second.c_str() ));
+      //return FALSE;
+    }
+  }
+  return TRUE;
+}
+
+EOF
+}
+
+

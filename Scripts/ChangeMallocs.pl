@@ -1,17 +1,20 @@
 #!/bin/perl
 
-# Auto generate an 8 character unique name for each file
-local $autoNameNumber = 0;
-local @newFILEs;
-local @FILEs = `find ./src -name *.c`;
+
+require 5.0.0.0;
+use MAMEoXScriptConstants;
 
 
-print "Converting all stock malloc() calls to osd_malloc...\n";
+print "Searching for source files...\n";
 
-foreach( @FILEs ) {
-	chomp( $_ );
+$SrcDirectory = MAMEoXScriptConstants::MAME_DIR."/src";
+local @SourceFiles = `find $SrcDirectory -name *.c`;
 
-	$FileName = $_;
+
+print "Converting all stock *alloc() calls to osd_*alloc (".scalar(@SourceFiles)." files)\n";
+
+foreach $FileName ( @SourceFiles ) {
+	chomp( $FileName );
 
 	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
 	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $FileName );
