@@ -472,7 +472,7 @@ void osd_analogjoy_read(	int player,
       break;
 
 	  case JT_LSTICK_DOWN:
-CheckRAM();
+CHECKRAM();
       if( gamepad->sThumbLY > ANALOG_DEADZONE )
         analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLY - ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
       else if( gamepad->sThumbLY < -ANALOG_DEADZONE )
@@ -495,7 +495,7 @@ CheckRAM();
       break;
 
 	  case JT_LSTICK_RIGHT:
-CheckRAM();
+CHECKRAM();
       if( gamepad->sThumbLX < -ANALOG_DEADZONE )
         analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLX + ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
       else if( gamepad->sThumbLX > ANALOG_DEADZONE )
