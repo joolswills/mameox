@@ -33,7 +33,7 @@
   // this is the maximum number of extra samples we will ask for
   // per frame (I know this looks like a lot, but most of the
   // time it will generally be nowhere close to this)
-#define MAX_SAMPLE_ADJUST		16
+#define MAX_SAMPLE_ADJUST		32
 
   //! The number of frames where we're in the [g_lowerThresh,g_upperThresh]
   //!  range before we reset the g_currentAdjustment value to 0
@@ -474,7 +474,6 @@ static void Helper_UpdateSampleAdjustment( void )
 	static UINT32 consecutive_mids = 0;
 	static UINT32 consecutive_highs = 0;
   UINT32        buffered = Helper_BytesInStreamBuffer(); 
-  buffered = g_lowerThresh;
 
   #ifdef LOG_SOUND
     PRINTMSG( T_INFO, "Helper_UpdateSampleAdjustment: %d buffered\n", buffered );
