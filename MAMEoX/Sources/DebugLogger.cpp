@@ -366,6 +366,7 @@ void Helper_RenderDebugConsole( void *device )
 
 
     // Render a translucent quad for a backdrop
+  pD3DDevice->SetTexture( 0, NULL );
   pD3DDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
   pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
   pD3DDevice->SetRenderState( D3DRS_SRCBLEND,         D3DBLEND_SRCALPHA );
