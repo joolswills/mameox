@@ -129,6 +129,17 @@ void InitializeJoystickMouse( void )
 	{
     char name[32];
     
+
+      // Note on "CODE_OTHER" entries:
+      // The way that internal_code_find_joystick() (input.c) works is to check the standard
+      // code against CODE_OTHER, and then the "oscode" against whatever we set in the second parameter
+      // to the ADDENTRY macro. However, other places in input.c require us to have a valid 
+      // joyoscode_to_code() mapping for each "CODE_OTHER" entry. Therefore, we do an AXISCODE or
+      // BUTTONCODE just before the ADDENTRY call. This allows us to use the joycode_to_oscode() mapping
+      // to assign buttons to functions in osd_customize_inputport_defaults() below, while retaining
+      // the naming functionality in the UI "Input" menu. If we don't set the syscode (param 3 of AXISCODE)
+      // to CODE_OTHER, any extended entries will be named "n/a", which isn't such a great user experience
+
       // DPad
     ADDENTRY( "DPAD UP",      JOYCODE( stickIndex, JT_DPAD_UP, 0 ),        STDCODE( UP ) );
     ADDENTRY( "DPAD RIGHT",   JOYCODE( stickIndex, JT_DPAD_RIGHT , 0 ),    STDCODE( RIGHT ) );
@@ -136,18 +147,30 @@ void InitializeJoystickMouse( void )
     ADDENTRY( "DPAD LEFT",    JOYCODE( stickIndex, JT_DPAD_LEFT , 0 ),     STDCODE( LEFT ) );
 
       // Left analog
-    ADDENTRY( "LA UP",        JOYCODE( stickIndex, JT_LSTICK_UP, 0 ),      AXISCODE( stickIndex, JT_LSTICK_UP ) );
-    ADDENTRY( "LA RIGHT",     JOYCODE( stickIndex, JT_LSTICK_RIGHT , 0 ),  AXISCODE( stickIndex, JT_LSTICK_RIGHT ) );
-    ADDENTRY( "LA DOWN",      JOYCODE( stickIndex, JT_LSTICK_DOWN, 0 ),    AXISCODE( stickIndex, JT_LSTICK_DOWN ) );
-    ADDENTRY( "LA LEFT",      JOYCODE( stickIndex, JT_LSTICK_LEFT , 0 ),   AXISCODE( stickIndex, JT_LSTICK_LEFT ) );
+    AXISCODE( stickIndex, JT_LSTICK_UP );
+    AXISCODE( stickIndex, JT_LSTICK_RIGHT );
+    AXISCODE( stickIndex, JT_LSTICK_DOWN );
+    AXISCODE( stickIndex, JT_LSTICK_LEFT );
+    ADDENTRY( "LA UP",        JOYCODE( stickIndex, JT_LSTICK_UP, 0 ),     CODE_OTHER );
+    ADDENTRY( "LA RIGHT",     JOYCODE( stickIndex, JT_LSTICK_RIGHT , 0 ), CODE_OTHER );
+    ADDENTRY( "LA DOWN",      JOYCODE( stickIndex, JT_LSTICK_DOWN, 0 ),   CODE_OTHER );
+    ADDENTRY( "LA LEFT",      JOYCODE( stickIndex, JT_LSTICK_LEFT , 0 ),  CODE_OTHER );
 
       // Right analog
-    ADDENTRY( "RA UP",        JOYCODE( stickIndex, JT_RSTICK_UP, 0 ),      AXISCODE( stickIndex, JT_RSTICK_UP ) );
-    ADDENTRY( "RA RIGHT",     JOYCODE( stickIndex, JT_RSTICK_RIGHT , 0 ),  AXISCODE( stickIndex, JT_RSTICK_RIGHT ) );
-    ADDENTRY( "RA DOWN",      JOYCODE( stickIndex, JT_RSTICK_DOWN, 0 ),    AXISCODE( stickIndex, JT_RSTICK_DOWN ) );
-    ADDENTRY( "RA LEFT",      JOYCODE( stickIndex, JT_RSTICK_LEFT , 0 ),   AXISCODE( stickIndex, JT_RSTICK_LEFT ) );
+    AXISCODE( stickIndex, JT_RSTICK_UP );
+    AXISCODE( stickIndex, JT_RSTICK_RIGHT );
+    AXISCODE( stickIndex, JT_RSTICK_DOWN );
+    AXISCODE( stickIndex, JT_RSTICK_LEFT );
+    ADDENTRY( "RA UP",        JOYCODE( stickIndex, JT_RSTICK_UP, 0 ),     CODE_OTHER );
+    ADDENTRY( "RA RIGHT",     JOYCODE( stickIndex, JT_RSTICK_RIGHT , 0 ), CODE_OTHER );
+    ADDENTRY( "RA DOWN",      JOYCODE( stickIndex, JT_RSTICK_DOWN, 0 ),   CODE_OTHER );
+    ADDENTRY( "RA LEFT",      JOYCODE( stickIndex, JT_RSTICK_LEFT , 0 ),  CODE_OTHER );
 
       // Buttons
+    BUTTONCODE( stickIndex, BUTTON_WHITE );
+    BUTTONCODE( stickIndex, BUTTON_BLACK );
+    BUTTONCODE( stickIndex, BUTTON_LA );
+    BUTTONCODE( stickIndex, BUTTON_RA );
     ADDENTRY( "A",            JOYCODE( stickIndex, JT_BUTTON, BUTTON_A ),              STDCODE( BUTTON1 ) );
     ADDENTRY( "X",            JOYCODE( stickIndex, JT_BUTTON, BUTTON_X ),              STDCODE( BUTTON2 ) );
     ADDENTRY( "B",            JOYCODE( stickIndex, JT_BUTTON, BUTTON_B ),              STDCODE( BUTTON3 ) );
@@ -156,10 +179,10 @@ void InitializeJoystickMouse( void )
     ADDENTRY( "RTrig",        JOYCODE( stickIndex, JT_BUTTON, BUTTON_RIGHT_TRIGGER ),  STDCODE( BUTTON6 ) );
     ADDENTRY( "Start",        JOYCODE( stickIndex, JT_BUTTON, BUTTON_START ),          STDCODE( START ) );
     ADDENTRY( "Back",         JOYCODE( stickIndex, JT_BUTTON, BUTTON_BACK ),           STDCODE( SELECT ) );
-    ADDENTRY( "White",        JOYCODE( stickIndex, JT_BUTTON, BUTTON_WHITE ),          BUTTONCODE( stickIndex, BUTTON_WHITE ) );
-    ADDENTRY( "Black",        JOYCODE( stickIndex, JT_BUTTON, BUTTON_BLACK ),          BUTTONCODE( stickIndex, BUTTON_BLACK ) );    
-    ADDENTRY( "LA",           JOYCODE( stickIndex, JT_BUTTON, BUTTON_LA ),             BUTTONCODE( stickIndex, BUTTON_LA ) );
-    ADDENTRY( "RA",           JOYCODE( stickIndex, JT_BUTTON, BUTTON_RA ),             BUTTONCODE( stickIndex, BUTTON_RA ) );
+    ADDENTRY( "White",        JOYCODE( stickIndex, JT_BUTTON, BUTTON_WHITE ),          CODE_OTHER );
+    ADDENTRY( "Black",        JOYCODE( stickIndex, JT_BUTTON, BUTTON_BLACK ),          CODE_OTHER );
+    ADDENTRY( "LA",           JOYCODE( stickIndex, JT_BUTTON, BUTTON_LA ),             CODE_OTHER );
+    ADDENTRY( "RA",           JOYCODE( stickIndex, JT_BUTTON, BUTTON_RA ),             CODE_OTHER );
   }
 
   g_systemInitialized = TRUE;
@@ -653,6 +676,87 @@ void osd_customize_inputport_defaults( struct ipd *defaults )
       REMAP_SEQ_1( AXISCODE( 0, JT_LSTICK_RIGHT ) );
       break;
 
+			// *** IPT_PEDAL|IPF_PLAYER1 *** //
+    case (IPT_PEDAL|IPF_PLAYER1):
+      REMAP_SEQ_1( JOYCODE_1_BUTTON5 );
+      break;
+
+			// *** IPT_PEDAL|IPF_PLAYER1 *** //
+    case (IPT_PEDAL2|IPF_PLAYER1):
+      REMAP_SEQ_1( JOYCODE_1_BUTTON6 );
+      break;
+
+			// *** IPT_PADDLE|IPF_PLAYER1 *** //
+    case (IPT_PADDLE|IPF_PLAYER1):
+      REMAP_SEQ_1( JOYCODE_1_LEFT );
+      break;
+
+
+   //    For some reason this maps to 89 (IPT_UI_LOAD_STATE)
+			//// *** IPT_PADDLE|IPF_PLAYER1+IPT_EXTENSION *** //
+   // case ((IPT_PADDLE|IPF_PLAYER1)+IPT_EXTENSION):
+   //   REMAP_SEQ_1( JOYCODE_1_RIGHT );
+   //   break;
+
+			// *** IPT_PADDLE_V|IPF_PLAYER1 *** //
+    case (IPT_PADDLE_V|IPF_PLAYER1):
+      REMAP_SEQ_1( JOYCODE_1_UP );
+      break;
+
+			// *** IPT_PADDLE_V|IPF_PLAYER1+IPT_EXTENSION *** //
+    case ((IPT_PADDLE_V|IPF_PLAYER1)+IPT_EXTENSION):
+      REMAP_SEQ_1( JOYCODE_1_DOWN );
+      break;
+
+			// *** IPT_DIAL|IPF_PLAYER1 *** //
+    case (IPT_DIAL|IPF_PLAYER1):
+      REMAP_SEQ_1( JOYCODE_1_LEFT );
+      break;
+
+			// *** IPT_DIAL|IPF_PLAYER1+IPT_EXTENSION *** //
+    case ((IPT_DIAL|IPF_PLAYER1)+IPT_EXTENSION):
+      REMAP_SEQ_1( JOYCODE_1_RIGHT );
+      break;
+
+			// *** IPT_TRACKBALL_X|IPF_PLAYER1 *** //
+    case (IPT_TRACKBALL_X|IPF_PLAYER1):
+      REMAP_SEQ_1( JOYCODE_1_LEFT );
+      break;
+
+			// *** IPT_TRACKBALL_X|IPF_PLAYER1+IPT_EXTENSION *** //
+    case ((IPT_TRACKBALL_X|IPF_PLAYER1)+IPT_EXTENSION):
+      REMAP_SEQ_1( JOYCODE_1_RIGHT );
+      break;
+
+			// *** IPT_TRACKBALL_Y|IPF_PLAYER1 *** //
+    case (IPT_TRACKBALL_Y|IPF_PLAYER1):
+      REMAP_SEQ_1( JOYCODE_1_UP );
+      break;
+
+			// *** IPT_TRACKBALL_Y|IPF_PLAYER1+IPT_EXTENSION *** //
+    case ((IPT_TRACKBALL_Y|IPF_PLAYER1)+IPT_EXTENSION):
+      REMAP_SEQ_1( JOYCODE_1_DOWN );
+      break;
+
+
+
+/*
+	{ IPT_AD_STICK_X | IPF_PLAYER1, "AD Stick X",   SEQ_DEF_3(KEYCODE_LEFT, CODE_OR, JOYCODE_1_LEFT) },
+	{ (IPT_AD_STICK_X | IPF_PLAYER1)+IPT_EXTENSION,                "AD Stick X",   SEQ_DEF_3(KEYCODE_RIGHT, CODE_OR, JOYCODE_1_RIGHT) },
+
+	{ IPT_AD_STICK_Y | IPF_PLAYER1, "AD Stick Y",   SEQ_DEF_3(KEYCODE_UP, CODE_OR, JOYCODE_1_UP) },
+	{ (IPT_AD_STICK_Y | IPF_PLAYER1)+IPT_EXTENSION,                "AD Stick Y",   SEQ_DEF_3(KEYCODE_DOWN, CODE_OR, JOYCODE_1_DOWN) },
+
+	{ IPT_AD_STICK_Z | IPF_PLAYER1, "AD Stick Z",   SEQ_DEF_0 },
+	{ (IPT_AD_STICK_Z | IPF_PLAYER1)+IPT_EXTENSION,                "AD Stick Z",   SEQ_DEF_0 },
+
+	{ IPT_LIGHTGUN_X | IPF_PLAYER1, "Lightgun X",   SEQ_DEF_3(KEYCODE_LEFT, CODE_OR, JOYCODE_1_LEFT) },
+	{ (IPT_LIGHTGUN_X | IPF_PLAYER1)+IPT_EXTENSION,                "Lightgun X",   SEQ_DEF_3(KEYCODE_RIGHT, CODE_OR, JOYCODE_1_RIGHT) },
+
+	{ IPT_LIGHTGUN_Y | IPF_PLAYER1, "Lightgun Y",   SEQ_DEF_3(KEYCODE_UP, CODE_OR, JOYCODE_1_UP) },
+	{ (IPT_LIGHTGUN_Y | IPF_PLAYER1)+IPT_EXTENSION,                "Lightgun Y",   SEQ_DEF_3(KEYCODE_DOWN, CODE_OR, JOYCODE_1_DOWN) },
+*/
+
 
 
       //-- PLAYER 2 CONTROLS ----------------------------------------------------------------------------
@@ -771,6 +875,65 @@ void osd_customize_inputport_defaults( struct ipd *defaults )
       REMAP_SEQ_1( AXISCODE( 1, JT_LSTICK_RIGHT ) );
       break;
 
+			// *** IPT_PEDAL|IPF_PLAYER2 *** //
+    case (IPT_PEDAL|IPF_PLAYER2):
+      REMAP_SEQ_1( JOYCODE_2_BUTTON5 );
+      break;
+
+			// *** IPT_PEDAL2|IPF_PLAYER2 *** //
+    case (IPT_PEDAL2|IPF_PLAYER2):
+      REMAP_SEQ_1( JOYCODE_2_BUTTON6 );
+      break;
+
+			// *** IPT_PADDLE|IPF_PLAYER2 *** //
+    case (IPT_PADDLE|IPF_PLAYER2):
+      REMAP_SEQ_1( JOYCODE_2_LEFT );
+      break;
+
+			// *** IPT_PADDLE|IPF_PLAYER2+IPT_EXTENSION *** //
+    case ((IPT_PADDLE|IPF_PLAYER2)+IPT_EXTENSION):
+      REMAP_SEQ_1( JOYCODE_2_RIGHT );
+      break;
+
+			// *** IPT_PADDLE_V|IPF_PLAYER2 *** //
+    case (IPT_PADDLE_V|IPF_PLAYER2):
+      REMAP_SEQ_1( JOYCODE_2_UP );
+      break;
+
+			// *** IPT_PADDLE_V|IPF_PLAYER2+IPT_EXTENSION *** //
+    case ((IPT_PADDLE_V|IPF_PLAYER2)+IPT_EXTENSION):
+      REMAP_SEQ_1( JOYCODE_2_DOWN );
+      break;
+
+			// *** IPT_DIAL|IPF_PLAYER2 *** //
+    case (IPT_DIAL|IPF_PLAYER2):
+      REMAP_SEQ_1( JOYCODE_2_LEFT );
+      break;
+
+			// *** IPT_DIAL|IPF_PLAYER2+IPT_EXTENSION *** //
+    case ((IPT_DIAL|IPF_PLAYER2)+IPT_EXTENSION):
+      REMAP_SEQ_1( JOYCODE_2_RIGHT );
+      break;
+
+			// *** IPT_TRACKBALL_X|IPF_PLAYER2 *** //
+    case (IPT_TRACKBALL_X|IPF_PLAYER2):
+      REMAP_SEQ_1( JOYCODE_2_LEFT );
+      break;
+
+			// *** IPT_TRACKBALL_X|IPF_PLAYER2+IPT_EXTENSION *** //
+    case ((IPT_TRACKBALL_X|IPF_PLAYER2)+IPT_EXTENSION):
+      REMAP_SEQ_1( JOYCODE_2_RIGHT );
+      break;
+
+			// *** IPT_TRACKBALL_Y|IPF_PLAYER2 *** //
+    case (IPT_TRACKBALL_Y|IPF_PLAYER2):
+      REMAP_SEQ_1( JOYCODE_2_UP );
+      break;
+
+			// *** IPT_TRACKBALL_Y|IPF_PLAYER2+IPT_EXTENSION *** //
+    case ((IPT_TRACKBALL_Y|IPF_PLAYER2)+IPT_EXTENSION):
+      REMAP_SEQ_1( JOYCODE_2_DOWN );
+      break;
 
       //-- PLAYER 3 CONTROLS ----------------------------------------------------------------------------
 
@@ -888,6 +1051,65 @@ void osd_customize_inputport_defaults( struct ipd *defaults )
       REMAP_SEQ_1( AXISCODE( 2, JT_LSTICK_RIGHT ) );
       break;
 
+			// *** IPT_PEDAL|IPF_PLAYER3 *** //
+    case (IPT_PEDAL|IPF_PLAYER3):
+      REMAP_SEQ_1( JOYCODE_3_BUTTON5 );
+      break;
+
+			// *** IPT_PEDAL2|IPF_PLAYER3 *** //
+    case (IPT_PEDAL2|IPF_PLAYER3):
+      REMAP_SEQ_1( JOYCODE_3_BUTTON6 );
+      break;
+
+			// *** IPT_PADDLE|IPF_PLAYER3 *** //
+    case (IPT_PADDLE|IPF_PLAYER3):
+      REMAP_SEQ_1( JOYCODE_3_LEFT );
+      break;
+
+			// *** IPT_PADDLE|IPF_PLAYER3+IPT_EXTENSION *** //
+    case ((IPT_PADDLE|IPF_PLAYER3)+IPT_EXTENSION):
+      REMAP_SEQ_1( JOYCODE_3_RIGHT );
+      break;
+
+			// *** IPT_PADDLE_V|IPF_PLAYER3 *** //
+    case (IPT_PADDLE_V|IPF_PLAYER3):
+      REMAP_SEQ_1( JOYCODE_3_UP );
+      break;
+
+			// *** IPT_PADDLE_V|IPF_PLAYER3+IPT_EXTENSION *** //
+    case ((IPT_PADDLE_V|IPF_PLAYER3)+IPT_EXTENSION):
+      REMAP_SEQ_1( JOYCODE_3_DOWN );
+      break;
+
+			// *** IPT_DIAL|IPF_PLAYER3 *** //
+    case (IPT_DIAL|IPF_PLAYER3):
+      REMAP_SEQ_1( JOYCODE_3_LEFT );
+      break;
+
+			// *** IPT_DIAL|IPF_PLAYER3+IPT_EXTENSION *** //
+    case ((IPT_DIAL|IPF_PLAYER3)+IPT_EXTENSION):
+      REMAP_SEQ_1( JOYCODE_3_RIGHT );
+      break;
+
+			// *** IPT_TRACKBALL_X|IPF_PLAYER3 *** //
+    case (IPT_TRACKBALL_X|IPF_PLAYER3):
+      REMAP_SEQ_1( JOYCODE_3_LEFT );
+      break;
+
+			// *** IPT_TRACKBALL_X|IPF_PLAYER3+IPT_EXTENSION *** //
+    case ((IPT_TRACKBALL_X|IPF_PLAYER3)+IPT_EXTENSION):
+      REMAP_SEQ_1( JOYCODE_3_RIGHT );
+      break;
+
+			// *** IPT_TRACKBALL_Y|IPF_PLAYER3 *** //
+    case (IPT_TRACKBALL_Y|IPF_PLAYER3):
+      REMAP_SEQ_1( JOYCODE_3_UP );
+      break;
+
+			// *** IPT_TRACKBALL_Y|IPF_PLAYER3+IPT_EXTENSION *** //
+    case ((IPT_TRACKBALL_Y|IPF_PLAYER3)+IPT_EXTENSION):
+      REMAP_SEQ_1( JOYCODE_3_DOWN );
+      break;
 
       //-- PLAYER 2 CONTROLS ----------------------------------------------------------------------------
 
@@ -1003,6 +1225,66 @@ void osd_customize_inputport_defaults( struct ipd *defaults )
 			// *** IPT_JOYSTICKLEFT_RIGHT|IPF_PLAYER4 *** //
     case (IPT_JOYSTICKLEFT_RIGHT|IPF_PLAYER4):
       REMAP_SEQ_1( AXISCODE( 3, JT_LSTICK_RIGHT ) );
+      break;
+
+			// *** IPT_PEDAL|IPF_PLAYER4 *** //
+    case (IPT_PEDAL|IPF_PLAYER4):
+      REMAP_SEQ_1( JOYCODE_4_BUTTON5 );
+      break;
+
+			// *** IPT_PEDAL2|IPF_PLAYER4 *** //
+    case (IPT_PEDAL2|IPF_PLAYER4):
+      REMAP_SEQ_1( JOYCODE_4_BUTTON6 );
+      break;
+
+			// *** IPT_PADDLE|IPF_PLAYER4 *** //
+    case (IPT_PADDLE|IPF_PLAYER4):
+      REMAP_SEQ_1( JOYCODE_4_LEFT );
+      break;
+
+			// *** IPT_PADDLE|IPF_PLAYER4+IPT_EXTENSION *** //
+    case ((IPT_PADDLE|IPF_PLAYER4)+IPT_EXTENSION):
+      REMAP_SEQ_1( JOYCODE_4_RIGHT );
+      break;
+
+			// *** IPT_PADDLE_V|IPF_PLAYER4 *** //
+    case (IPT_PADDLE_V|IPF_PLAYER4):
+      REMAP_SEQ_1( JOYCODE_4_UP );
+      break;
+
+			// *** IPT_PADDLE_V|IPF_PLAYER4+IPT_EXTENSION *** //
+    case ((IPT_PADDLE_V|IPF_PLAYER4)+IPT_EXTENSION):
+      REMAP_SEQ_1( JOYCODE_4_DOWN );
+      break;
+
+			// *** IPT_DIAL|IPF_PLAYER4 *** //
+    case (IPT_DIAL|IPF_PLAYER4):
+      REMAP_SEQ_1( JOYCODE_4_LEFT );
+      break;
+
+			// *** IPT_DIAL|IPF_PLAYER4+IPT_EXTENSION *** //
+    case ((IPT_DIAL|IPF_PLAYER4)+IPT_EXTENSION):
+      REMAP_SEQ_1( JOYCODE_4_RIGHT );
+      break;
+
+			// *** IPT_TRACKBALL_X|IPF_PLAYER4 *** //
+    case (IPT_TRACKBALL_X|IPF_PLAYER4):
+      REMAP_SEQ_1( JOYCODE_4_LEFT );
+      break;
+
+			// *** IPT_TRACKBALL_X|IPF_PLAYER4+IPT_EXTENSION *** //
+    case ((IPT_TRACKBALL_X|IPF_PLAYER4)+IPT_EXTENSION):
+      REMAP_SEQ_1( JOYCODE_4_RIGHT );
+      break;
+
+			// *** IPT_TRACKBALL_Y|IPF_PLAYER4 *** //
+    case (IPT_TRACKBALL_Y|IPF_PLAYER4):
+      REMAP_SEQ_1( JOYCODE_4_UP );
+      break;
+
+			// *** IPT_TRACKBALL_Y|IPF_PLAYER4+IPT_EXTENSION *** //
+    case ((IPT_TRACKBALL_Y|IPF_PLAYER4)+IPT_EXTENSION):
+      REMAP_SEQ_1( JOYCODE_4_DOWN );
       break;
 		}
 	}
