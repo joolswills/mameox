@@ -94,10 +94,6 @@ void __cdecl main( void )
 		// Mount the utility drive for storage of the ROM list cache file
 	//XMountUtilityDrive( FALSE );
 
-    // Register the loadable section names for lookup at runtime
-  RegisterDriverSectionNames();
-  RegisterCPUSectionNames();
-
 		// Initialize the graphics subsystem
 	g_graphicsManager.Create();
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
@@ -119,7 +115,13 @@ void __cdecl main( void )
   
   SaveOptions();
 
-CHECKRAM();   
+  CHECKRAM();
+
+    // Register the loadable section names for lookup at runtime
+  InitDriverSectionizer();
+  InitCPUSectionizer();
+
+  DEBUGGERCHECKRAM()
 
     // Check the launch data to ensure that we've been started properly
   if( getLaunchInfoRet != ERROR_SUCCESS || g_launchDataType != LDT_TITLE )
@@ -153,21 +155,7 @@ CHECKRAM();
       InitializeNetwork();
 
       // Unload the XGRAPHICS section, as we won't be using it at all
-    XFreeSection( "XGRPH" );
-
-      // This shouldn't be necessary, IMAGEBLD should not load the non-data sections,
-      //  as they're defined /NOPRELOAD
-      // Update: I hacked it so that imagebld would not preload the sections
-      //         however, the hack was less than ideal, so I quickly profiled
-      //         this call, and it takes basically no time whatsoever, so I changed
-      //         everything back to the way it was before. [EBA]
-    UnloadDriverNonDataSections();    
-    //UnloadCPUNonDataSections();  // Sections are unloaded in mame/src/cpuexec.c
-
-      // This should only be necessary if IMAGEBLD doesn't load any sections
-      // Update: Taking out this line is what caused the 0.66b release to
-      //         crash in Release mode. Leave it be, or figure out why :) [EBA]
-    LoadDriverDataSections();
+    //XFreeSection( "XGRPH" );
 
       // Sort the game drivers and run the ROM
     qsort( drivers, mameoxLaunchData->m_totalMAMEGames, sizeof(drivers[0]), compareDriverNames );
@@ -528,11 +516,6 @@ static BOOL Helper_RunRom( UINT32 romIndex )
   
   PRINTMSG( T_INFO, "*** Driver name: %s\n", drivers[romIndex]->source_file );
 
-    // Unload all loaded XBE data sections, as we'll only be using the one
-    // for the file we're loading
-  UnloadDriverDataSections();
-  //UnloadCPUDataSections();  // Sections are unloaded in mame/src/cpuexec.c
-
     // VC6 seems to be calling this with the full path so strstr just trims down the path
     // appropriately. NOTE: we probably don't need this to conditionally compile and could
     // just leave the first call but would like someone with VS.net to test first just in case :)
@@ -541,10 +524,34 @@ static BOOL Helper_RunRom( UINT32 romIndex )
   if( !LoadDriverSectionByName( strstr(DriverName.c_str(),"src\\drivers\\") ) )
     PRINTMSG( T_ERROR, "Failed to load section for file %s!", DriverName.c_str() );
 
+    // Unload all the other XBE data sections, as we'll only be using the one
+    // for the file we're loading
+    // Note that we do this _after_ the LoadDriverSectionByName.
+    // This increments the refcount on the driver causing the system 
+    // not to release anything allocated by the segment back to the heap
+    // (MAME shouldn't allocate anything at this point, but it's good to be safe)
+  UnloadDriverSections();
+  //UnloadCPUSections();  // Sections are unloaded in mame/src/cpuexec.c
+
+    // Free up unneeded sectionizer memory
+  TerminateDriverSectionizer();
+//  TerminateCPUSectionizer();
+
     // Override sound processing
   DWORD samplerate = options.samplerate;
   if( !g_soundEnabled )
     options.samplerate = 0;
+
+  #ifdef _DEBUG
+  {
+    MEMORYSTATUS memStatus;
+    GlobalMemoryStatus(  &memStatus );
+    PRINTMSG( T_INFO, 
+              "Memory: %lu/%lu",
+              memStatus.dwAvailPhys, 
+              memStatus.dwTotalPhys );
+  }
+  #endif
 
 	ret = run_game( romIndex );
 
@@ -587,7 +594,7 @@ int osd_init( void )
 //-------------------------------------------------------------
 void osd_exit( void )
 {
-  TerminateJoystickMouse();
+//  TerminateJoystickMouse(); // Unnecessary as we'll just exit anyway
 }
 
 //---------------------------------------------------------------------

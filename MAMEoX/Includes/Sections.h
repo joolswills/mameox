@@ -28,13 +28,17 @@ void CheckDriverSectionRAM( void );
 void CheckCPUSectionRAM( void );
 #endif
 
+//-------------------------------------------------------------
+//	InitDriverSectionizer
+//! \brief    Initializes the DriverSectionizer subsystem
+//-------------------------------------------------------------
+void InitDriverSectionizer( void );
 
 //-------------------------------------------------------------
-//	RegisterDriverSectionNames
-//! \brief    Registers all of the segments for use by
-//!            LoadDriverSectionByName and UnloadDriverSectionByName
+//	TerminateDriverSectionizer
+//! \brief    Terminates the DriverSectionizer subsystem
 //-------------------------------------------------------------
-void RegisterDriverSectionNames( void );
+void TerminateDriverSectionizer( void );
 
 //-------------------------------------------------------------
 //	LoadDriverSectionByName
@@ -63,41 +67,37 @@ BOOL LoadDriverSectionByName( const char *DriverFileName );
 BOOL UnloadDriverSectionByName( const char *DriverFileName );
 
 //-------------------------------------------------------------
-//	LoadDriverDataSections
-//! \brief    Loads all of the driver data sections
+//	LoadDriverSections
+//! \brief    Loads all of the driver sections
 //!
 //! \return   BOOL - Operation status
 //! \retval   TRUE - success
 //! \return   FALSE - Failure
 //-------------------------------------------------------------
-BOOL LoadDriverDataSections( void );
+BOOL LoadDriverSections( void );
 
 //-------------------------------------------------------------
-//	UnloadDriverDataSections
-//! \brief    Unloads all of the driver data sections
+//	UnloadDriverSections
+//! \brief    Unloads all of the driver sections
 //!
 //! \return   BOOL - Operation status
 //! \retval   TRUE - success
 //! \return   FALSE - Failure
 //-------------------------------------------------------------
-BOOL UnloadDriverDataSections( void );
+BOOL UnloadDriverSections( void );
+
 
 //-------------------------------------------------------------
-//	UnloadDriverNonDataSections
-//! \brief    Unloads all non-data driver sections
-//!
-//! \return   BOOL - Operation status
-//! \retval   TRUE - success
-//! \return   FALSE - Failure
+//	InitCPUSectionizer
+//! \brief    Initializes the DriverSectionizer subsystem
 //-------------------------------------------------------------
-BOOL UnloadDriverNonDataSections( void );
+void InitCPUSectionizer( void );
 
 //-------------------------------------------------------------
-//	RegisterCPUSectionNames
-//! \brief    Registers all of the segments for use by
-//!            LoadCPUSectionByName and UnloadCPUSectionByName
+//	TerminateCPUSectionizer
+//! \brief    Terminates the DriverSectionizer subsystem
 //-------------------------------------------------------------
-void RegisterCPUSectionNames( void );
+void TerminateCPUSectionizer( void );
 
 //-------------------------------------------------------------
 //	LoadCPUSectionByID
@@ -126,34 +126,24 @@ BOOL LoadCPUSectionByID( UINT32 CPUID );
 BOOL UnloadCPUSectionByID( UINT32 CPUID );
 
 //-------------------------------------------------------------
-//	LoadCPUDataSections
-//! \brief    Loads all of the CPU data sections
+//	LoadCPUSections
+//! \brief    Loads all of the CPU sections
 //!
 //! \return   BOOL - Operation status
 //! \retval   TRUE - success
 //! \return   FALSE - Failure
 //-------------------------------------------------------------
-BOOL LoadCPUDataSections( void );
+BOOL LoadCPUSections( void );
 
 //-------------------------------------------------------------
-//	UnloadCPUDataSections
-//! \brief    Unloads all of the CPU data sections
+//	UnloadCPUSections
+//! \brief    Unloads all of the CPU sections
 //!
 //! \return   BOOL - Operation status
 //! \retval   TRUE - success
 //! \return   FALSE - Failure
 //-------------------------------------------------------------
-BOOL UnloadCPUDataSections( void );
-
-//-------------------------------------------------------------
-//	UnloadCPUNonDataSections
-//! \brief    Unloads all non-data CPU sections
-//!
-//! \return   BOOL - Operation status
-//! \retval   TRUE - success
-//! \return   FALSE - Failure
-//-------------------------------------------------------------
-BOOL UnloadCPUNonDataSections( void );
+BOOL UnloadCPUSections( void );
 #ifdef __cplusplus
 } // End extern "C"
 #endif

@@ -18,8 +18,14 @@ extern "C" {
 //= D E F I N E S ======================================================
 #ifdef _DEBUG
 #define CHECKRAM()    CheckRAM()
+#define DEBUGGERCHECKRAM() {\
+                              MEMORYSTATUS memStatus;\
+                              GlobalMemoryStatus(  &memStatus );\
+                              PRINTMSG( T_INFO, "Memory: %lu/%lu",memStatus.dwAvailPhys, memStatus.dwTotalPhys );\
+                            }
 #else
 #define CHECKRAM()
+#define DEBUGGERCHECKRAM()
 #endif
 
 #ifdef _DEBUG

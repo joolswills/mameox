@@ -25,8 +25,43 @@ extern "C" {
 
 //= G L O B A L = V A R S ==============================================
 static std::map< UINT32, std::string >  g_IDToSectionMap;
+
+//= P R O T O T Y P E S ================================================
+extern "C" static void RegisterCPUSectionNames( void );
+
 //= F U N C T I O N S ==================================================
 extern "C" {
+
+//-------------------------------------------------------------
+//	InitCPUSectionizer
+//-------------------------------------------------------------
+void InitCPUSectionizer( void )
+{
+  g_IDToSectionMap.clear();
+  void *addr;
+  addr = XLoadSection( "CPUSNIZE" );
+  if( !addr )
+  {
+    UINT32 lastErr = GetLastError();
+    PRINTMSG( T_ERROR, "XLoadSection failed! 0x%X\r\n", lastErr );
+  }
+  RegisterCPUSectionNames();
+}
+
+
+//-------------------------------------------------------------
+//	TerminateCPUSectionizer
+//-------------------------------------------------------------
+void TerminateCPUSectionizer( void )
+{
+  g_IDToSectionMap.clear();
+  XFreeSection( "CPUSNIZE" );
+}
+
+#pragma code_seg( "CPUCSNZE" )
+#pragma data_seg( "CPUDSNZE" )
+#pragma comment(linker, "/merge:CPUCSNZE=CPUSNIZE")
+#pragma comment(linker, "/merge:CPUDSNZE=CPUSNIZE")
 
 #ifdef _DEBUG
 //-------------------------------------------------------------
@@ -38,57 +73,15 @@ void CheckCPUSectionRAM( void )
   std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.begin();
   for( ; i != g_IDToSectionMap.end(); ++i )
   {
-    std::string sectionName;
-    sectionName = CODE_PREFIX;
-    sectionName += (*i).second.c_str();
-    HANDLE h = XGetSectionHandle( sectionName.c_str() );
+    HANDLE h = XGetSectionHandle( (*i).second.c_str() );
     if( h != INVALID_HANDLE_VALUE )
     {
       UINT32 sz = XGetSectionSize( h );
-      PRINTMSG( T_INFO, "CPU%lu [CODE]: %lu", (*i).first, sz );
+      PRINTMSG( T_INFO, "CPU%lu %lu", (*i).first, sz );
       total += sz;
     }
     else
       PRINTMSG( T_ERROR, "Invalid section %s for CPU%lu!", (*i).second.c_str(), (*i).first );
-
-    sectionName = DATA_PREFIX;
-    sectionName += (*i).second.c_str();
-    h = XGetSectionHandle( sectionName.c_str() );
-    if( h != INVALID_HANDLE_VALUE )
-    {
-      UINT32 sz = XGetSectionSize( h );
-      PRINTMSG( T_INFO, "CPU%lu [DATA]: %lu", (*i).first, sz );
-      total += sz;
-    }
-    else
-      PRINTMSG( T_ERROR, "Invalid section %s for CPU%lu!", (*i).second.c_str(), (*i).first );
-
-    sectionName = BSS_PREFIX;
-    sectionName += (*i).second.c_str();
-    h = XGetSectionHandle( sectionName.c_str() );
-    if( h != INVALID_HANDLE_VALUE )
-    {
-      UINT32 sz = XGetSectionSize( h );
-      PRINTMSG( T_INFO, "CPU%lu [BSS]: %lu", (*i).first, sz );
-      total += sz;
-    }
-    else
-    {
-      PRINTMSG( T_ERROR, "Invalid section %s for CPU%lu!", (*i).second.c_str(), (*i).first );
-    }
-
-    sectionName = CONST_PREFIX;
-    sectionName += (*i).second.c_str();
-    h = XGetSectionHandle( sectionName.c_str() );
-    if( h != INVALID_HANDLE_VALUE )
-    {
-      UINT32 sz = XGetSectionSize( h );
-      PRINTMSG( T_INFO, "CPU%lu [CONST]: %lu", (*i).first, sz );
-      total += sz;
-    }
-    else
-      PRINTMSG( T_ERROR, "Invalid section %s for CPU%lu!", (*i).second.c_str(), (*i).first );
-
   }
   PRINTMSG( T_INFO, "Total %lu bytes\n", total );
 }
@@ -113,51 +106,13 @@ BOOL LoadCPUSectionByID( UINT32 CPUID )
   std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.find( CPUID );
   if( i == g_IDToSectionMap.end() )
     return FALSE;
-  std::string sectionName;
   void *addr;
   PRINTMSG( T_INFO, "Load section CPU%lu, ID %s\n", CPUID, (*i).second.c_str() );
-  sectionName = DATA_PREFIX;
-  sectionName += (*i).second.c_str();
-  addr = XLoadSection( sectionName.c_str() );
+  addr = XLoadSection( (*i).second.c_str() );
   if( !addr )
   {
     UINT32 lastErr = GetLastError();
-    PRINTMSG( T_ERROR, "XLoadSection failed! 0x%X\r\n", lastErr );
-    //osd_print_error( "Failed to load section %s!", sectionName.c_str() );
-    //return FALSE;
-  }
-
-  sectionName = CODE_PREFIX;
-  sectionName += (*i).second.c_str();
-  addr = XLoadSection( sectionName.c_str() );
-  if( !addr )
-  {
-    UINT32 lastErr = GetLastError();
-    PRINTMSG( T_ERROR, "XLoadSection failed! 0x%X\r\n", lastErr );
-    //osd_print_error( "Failed to load section %s!", sectionName.c_str() );
-    //return FALSE;
-  }
-
-  sectionName = BSS_PREFIX;
-  sectionName += (*i).second.c_str();
-  addr = XLoadSection( sectionName.c_str() );
-  if( !addr )
-  {
-    UINT32 lastErr = GetLastError();
-    PRINTMSG( T_ERROR, "XLoadSection failed! 0x%X\r\n", lastErr );
-    //osd_print_error( "Failed to load section %s!", sectionName.c_str() );
-    //return FALSE;
-  }
-
-  sectionName = CONST_PREFIX;
-  sectionName += (*i).second.c_str();
-  addr = XLoadSection( sectionName.c_str() );
-  if( !addr )
-  {
-    UINT32 lastErr = GetLastError();
-    PRINTMSG( T_ERROR, "XLoadSection failed! 0x%X\r\n", lastErr );
-    //osd_print_error( "Failed to load section %s!", sectionName.c_str() );
-    //return FALSE;
+    PRINTMSG( T_ERROR, "XLoadSection failed for section %s! 0x%X\r\n", (*i).second.c_str(), lastErr );
   }
   return TRUE;
 }
@@ -171,50 +126,21 @@ BOOL UnloadCPUSectionByID( UINT32 CPUID )
   std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.find( CPUID );
   if( i == g_IDToSectionMap.end() )
     return FALSE;
-  BOOL dataRet, codeRet, bssRet, constRet;
-  std::string sectionName;
-  sectionName = DATA_PREFIX;
-  sectionName += (*i).second.c_str();
-  dataRet = XFreeSection( sectionName.c_str() );
-
-  sectionName = CODE_PREFIX;
-  sectionName += (*i).second.c_str();
-  codeRet = XFreeSection( sectionName.c_str() );
-
-  sectionName = BSS_PREFIX;
-  sectionName += (*i).second.c_str();
-  bssRet = XFreeSection( sectionName.c_str() );
-
-  sectionName = CONST_PREFIX;
-  sectionName += (*i).second.c_str();
-  constRet = XFreeSection( sectionName.c_str() );
-
-  return (dataRet && codeRet && bssRet && constRet);
+  return XFreeSection( (*i).second.c_str() );
 }
 
 
 //-------------------------------------------------------------
-//	LoadCPUDataSections
+//	LoadCPUSections
 //-------------------------------------------------------------
-BOOL LoadCPUDataSections( void )
+BOOL LoadCPUSections( void )
 {
   std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.begin();
   for( ; i != g_IDToSectionMap.end(); ++i )
   {
-    std::string sectionName;
-    sectionName = DATA_PREFIX;
-    sectionName += (*i).second.c_str();
-    if( !XLoadSection( sectionName.c_str() ) )
+    if( !XLoadSection( (*i).second.c_str() ) )
     {
-      PRINTMSG( T_ERROR, "Failed to load section %s!", sectionName.c_str() );
-      //return FALSE;
-    }
-
-    sectionName = CONST_PREFIX;
-    sectionName += (*i).second.c_str();
-    if( !XLoadSection( sectionName.c_str() ) )
-    {
-      PRINTMSG( T_ERROR, "Failed to load section %s!", sectionName.c_str() );
+      PRINTMSG( T_ERROR, "Failed to load section %s!", (*i).second.c_str() );
       //return FALSE;
     }
   }
@@ -223,51 +149,14 @@ BOOL LoadCPUDataSections( void )
 
 
 //-------------------------------------------------------------
-//	UnloadCPUNonDataSections
+//	UnloadCPUSections
 //-------------------------------------------------------------
-BOOL UnloadCPUNonDataSections( void )
+BOOL UnloadCPUSections( void )
 {
   std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.begin();
   for( ; i != g_IDToSectionMap.end(); ++i )
   {
-    std::string sectionName;
-    sectionName = CODE_PREFIX;
-    sectionName += (*i).second.c_str();
-    HANDLE h = XGetSectionHandle( sectionName.c_str() );
-    if( h != INVALID_HANDLE_VALUE )
-      XFreeSectionByHandle( h );
-
-    sectionName = BSS_PREFIX;
-    sectionName += (*i).second.c_str();
-    h = XGetSectionHandle( sectionName.c_str() );
-    if( h != INVALID_HANDLE_VALUE )
-      XFreeSectionByHandle( h );
-
-  }
-  return TRUE;
-}
-
-
-//-------------------------------------------------------------
-//	UnloadCPUDataSections
-//-------------------------------------------------------------
-BOOL UnloadCPUDataSections( void )
-{
-  std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.begin();
-  for( ; i != g_IDToSectionMap.end(); ++i )
-  {
-    std::string sectionName;
-    sectionName = DATA_PREFIX;
-    sectionName += (*i).second.c_str();
-    HANDLE h = XGetSectionHandle( sectionName.c_str() );
-    if( h != INVALID_HANDLE_VALUE )
-      XFreeSectionByHandle( h );
-
-    sectionName = CONST_PREFIX;
-    sectionName += (*i).second.c_str();
-    h = XGetSectionHandle( sectionName.c_str() );
-    if( h != INVALID_HANDLE_VALUE )
-      XFreeSectionByHandle( h );
+    XFreeSection( (*i).second.c_str() );
   }
   return TRUE;
 }
@@ -276,36 +165,38 @@ BOOL UnloadCPUDataSections( void )
 //-------------------------------------------------------------
 //	RegisterCPUSectionNames
 //-------------------------------------------------------------
-void RegisterCPUSectionNames( void )
+static void RegisterCPUSectionNames( void )
 {
-  RegisterSectionID( CPU_Z8000, "0" );
-  RegisterSectionID( CPU_Z80, "1" );
-  RegisterSectionID( CPU_Z180, "2" );
-  RegisterSectionID( CPU_V60, "3" );
-  RegisterSectionID( CPU_UPD7810, "4" );
-  RegisterSectionID( CPU_TMS34010, "6" );
-  RegisterSectionID( CPU_TMS32031, "7" );
-  RegisterSectionID( CPU_TMS32025, "8" );
-  RegisterSectionID( CPU_TMS32010, "9" );
-  RegisterSectionID( CPU_T11, "10" );
-  RegisterSectionID( CPU_SH2, "11" );
-  RegisterSectionID( CPU_S2650, "12" );
-  RegisterSectionID( CPU_M6809, "16" );
-  RegisterSectionID( CPU_M6805, "17" );
-  RegisterSectionID( CPU_M68000, "18" );
-  RegisterSectionID( CPU_M6800, "19" );
-  RegisterSectionID( CPU_M6502, "20" );
-  RegisterSectionID( CPU_KONAMI, "21" );
-  RegisterSectionID( CPU_I8X41, "23" );
-  RegisterSectionID( CPU_I86, "24" );
-  RegisterSectionID( CPU_I8039, "26" );
-  RegisterSectionID( CPU_HD6309, "27" );
-  RegisterSectionID( CPU_H6280, "28" );
-  RegisterSectionID( CPU_CCPU, "30" );
-  RegisterSectionID( CPU_ASAP, "31" );
-  RegisterSectionID( CPU_ARM, "32" );
-  RegisterSectionID( CPU_ADSP2100, "33" );
-} // End extern "C"
+  RegisterSectionID( CPU_Z8000, "CPU1" );
+  RegisterSectionID( CPU_Z80, "CPU2" );
+  RegisterSectionID( CPU_Z180, "CPU3" );
+  RegisterSectionID( CPU_V60, "CPU4" );
+  RegisterSectionID( CPU_UPD7810, "CPU5" );
+  RegisterSectionID( CPU_TMS34010, "CPU6" );
+  RegisterSectionID( CPU_TMS32031, "CPU7" );
+  RegisterSectionID( CPU_TMS32025, "CPU8" );
+  RegisterSectionID( CPU_TMS32010, "CPU9" );
+  RegisterSectionID( CPU_T11, "CPU10" );
+  RegisterSectionID( CPU_SH2, "CPU11" );
+  RegisterSectionID( CPU_S2650, "CPU12" );
+  RegisterSectionID( CPU_M6809, "CPU15" );
+  RegisterSectionID( CPU_M6805, "CPU15" );
+  RegisterSectionID( CPU_M68000, "CPU15" );
+  RegisterSectionID( CPU_M6800, "CPU15" );
+  RegisterSectionID( CPU_M6502, "CPU15" );
+  RegisterSectionID( CPU_KONAMI, "CPU18" );
+  RegisterSectionID( CPU_I8X41, "CPU19" );
+  RegisterSectionID( CPU_I86, "CPU20" );
+  RegisterSectionID( CPU_I8039, "CPU21" );
+  RegisterSectionID( CPU_HD6309, "CPU22" );
+  RegisterSectionID( CPU_H6280, "CPU23" );
+  RegisterSectionID( CPU_CCPU, "CPU24" );
+  RegisterSectionID( CPU_ASAP, "CPU25" );
+  RegisterSectionID( CPU_ARM, "CPU26" );
+  RegisterSectionID( CPU_ADSP2100, "CPU27" );
 }
+#pragma code_seg()
+#pragma data_seg()
+} // End extern "C"
 
 

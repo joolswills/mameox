@@ -103,7 +103,8 @@ static BOOL                     g_systemInitialized = FALSE;
 static UINT32                   g_calibrationStep = 0;
 static UINT32                   g_calibrationJoynum = 0;
 
-
+  //! Whether or not the "STARTUP" XBE section has been unloaded
+static BOOL                     g_STARTUPSectionUnloaded = FALSE;
 
 //= P R O T O T Y P E S ================================================
 	//------------------------------------------------------------------
@@ -120,82 +121,13 @@ static UINT32                   g_calibrationJoynum = 0;
 	//------------------------------------------------------------------
 static void Helper_AddEntry( const char *name, INT32 code, INT32 standardCode, INT32 *joycount );
 
+static void Helper_CustomizeInputPortDefaults( struct ipd *defaults );
+
 
 //= F U N C T I O N S ==================================================
 
 
-//---------------------------------------------------------------------
-//	InitializeJoystickMouse
-//---------------------------------------------------------------------
-void InitializeJoystickMouse( void )
-{
-	INT32 joycount = 0;
-	INT32 stickIndex = 0;
-
-	for( ; stickIndex < 4; ++stickIndex )
-	{
-    char name[32];
-    
-
-      // Note on "CODE_OTHER" entries:
-      // The way that internal_code_find_joystick() (input.c) works is to check the standard
-      // code against CODE_OTHER, and then the "oscode" against whatever we set in the second parameter
-      // to the ADDENTRY macro. However, other places in input.c require us to have a valid 
-      // joyoscode_to_code() mapping for each "CODE_OTHER" entry. Therefore, we do an AXISCODE or
-      // BUTTONCODE just before the ADDENTRY call. This allows us to use the joycode_to_oscode() mapping
-      // to assign buttons to functions in osd_customize_inputport_defaults() below, while retaining
-      // the naming functionality in the UI "Input" menu. If we don't set the syscode (param 3 of AXISCODE)
-      // to CODE_OTHER, any extended entries will be named "n/a", which isn't such a great user experience
-
-      // DPad
-    ADDENTRY( "DPAD UP",      JOYCODE( stickIndex, JT_DPAD_UP, 0 ),        STDCODE( UP ) );
-    ADDENTRY( "DPAD RIGHT",   JOYCODE( stickIndex, JT_DPAD_RIGHT , 0 ),    STDCODE( RIGHT ) );
-    ADDENTRY( "DPAD DOWN",    JOYCODE( stickIndex, JT_DPAD_DOWN, 0 ),      STDCODE( DOWN ) );
-    ADDENTRY( "DPAD LEFT",    JOYCODE( stickIndex, JT_DPAD_LEFT , 0 ),     STDCODE( LEFT ) );
-
-      // Left analog
-    AXISCODE( stickIndex, JT_LSTICK_UP );
-    AXISCODE( stickIndex, JT_LSTICK_RIGHT );
-    AXISCODE( stickIndex, JT_LSTICK_DOWN );
-    AXISCODE( stickIndex, JT_LSTICK_LEFT );
-    ADDENTRY( "LA UP",        JOYCODE( stickIndex, JT_LSTICK_UP, 0 ),     CODE_OTHER );
-    ADDENTRY( "LA RIGHT",     JOYCODE( stickIndex, JT_LSTICK_RIGHT , 0 ), CODE_OTHER );
-    ADDENTRY( "LA DOWN",      JOYCODE( stickIndex, JT_LSTICK_DOWN, 0 ),   CODE_OTHER );
-    ADDENTRY( "LA LEFT",      JOYCODE( stickIndex, JT_LSTICK_LEFT , 0 ),  CODE_OTHER );
-
-      // Right analog
-    AXISCODE( stickIndex, JT_RSTICK_UP );
-    AXISCODE( stickIndex, JT_RSTICK_RIGHT );
-    AXISCODE( stickIndex, JT_RSTICK_DOWN );
-    AXISCODE( stickIndex, JT_RSTICK_LEFT );
-    ADDENTRY( "RA UP",        JOYCODE( stickIndex, JT_RSTICK_UP, 0 ),     CODE_OTHER );
-    ADDENTRY( "RA RIGHT",     JOYCODE( stickIndex, JT_RSTICK_RIGHT , 0 ), CODE_OTHER );
-    ADDENTRY( "RA DOWN",      JOYCODE( stickIndex, JT_RSTICK_DOWN, 0 ),   CODE_OTHER );
-    ADDENTRY( "RA LEFT",      JOYCODE( stickIndex, JT_RSTICK_LEFT , 0 ),  CODE_OTHER );
-
-      // Buttons
-    BUTTONCODE( stickIndex, BUTTON_WHITE );
-    BUTTONCODE( stickIndex, BUTTON_BLACK );
-    BUTTONCODE( stickIndex, BUTTON_LA );
-    BUTTONCODE( stickIndex, BUTTON_RA );
-    ADDENTRY( "A",            JOYCODE( stickIndex, JT_BUTTON, BUTTON_A ),              STDCODE( BUTTON1 ) );
-    ADDENTRY( "X",            JOYCODE( stickIndex, JT_BUTTON, BUTTON_X ),              STDCODE( BUTTON2 ) );
-    ADDENTRY( "B",            JOYCODE( stickIndex, JT_BUTTON, BUTTON_B ),              STDCODE( BUTTON3 ) );
-    ADDENTRY( "Y",            JOYCODE( stickIndex, JT_BUTTON, BUTTON_Y ),              STDCODE( BUTTON4 ) );
-    ADDENTRY( "LTrig",        JOYCODE( stickIndex, JT_BUTTON, BUTTON_LEFT_TRIGGER ),   STDCODE( BUTTON5 ) );
-    ADDENTRY( "RTrig",        JOYCODE( stickIndex, JT_BUTTON, BUTTON_RIGHT_TRIGGER ),  STDCODE( BUTTON6 ) );
-    ADDENTRY( "Start",        JOYCODE( stickIndex, JT_BUTTON, BUTTON_START ),          STDCODE( START ) );
-    ADDENTRY( "Back",         JOYCODE( stickIndex, JT_BUTTON, BUTTON_BACK ),           STDCODE( SELECT ) );
-    ADDENTRY( "White",        JOYCODE( stickIndex, JT_BUTTON, BUTTON_WHITE ),          CODE_OTHER );
-    ADDENTRY( "Black",        JOYCODE( stickIndex, JT_BUTTON, BUTTON_BLACK ),          CODE_OTHER );
-    ADDENTRY( "LA",           JOYCODE( stickIndex, JT_BUTTON, BUTTON_LA ),             CODE_OTHER );
-    ADDENTRY( "RA",           JOYCODE( stickIndex, JT_BUTTON, BUTTON_RA ),             CODE_OTHER );
-  }
-
-  g_systemInitialized = TRUE;
-}
-
-
+/*
 //---------------------------------------------------------------------
 //	TerminateJoystickMouse
 //---------------------------------------------------------------------
@@ -211,6 +143,7 @@ void TerminateJoystickMouse( void )
 
   g_systemInitialized = FALSE;
 }
+*/
 
 //---------------------------------------------------------------------
 //	osd_get_joy_list
@@ -762,7 +695,102 @@ void osd_customize_inputport_defaults( struct ipd *defaults )
   This function is called on startup, before reading the configuration from disk.
   Scan the list, and change the keys/joysticks you want.
 */
-	UINT32 i = 0;
+  if( g_STARTUPSectionUnloaded )
+  {
+    XLoadSection( "STARTUP" );
+    g_STARTUPSectionUnloaded = FALSE;
+  }
+
+  Helper_CustomizeInputPortDefaults( defaults );
+
+  if( !g_STARTUPSectionUnloaded )
+  {
+    XFreeSection( "STARTUP" );
+    g_STARTUPSectionUnloaded = TRUE;
+  }
+}
+
+
+
+
+#pragma code_seg("STARTUP")
+//---------------------------------------------------------------------
+//	InitializeJoystickMouse
+//---------------------------------------------------------------------
+void InitializeJoystickMouse( void )
+{
+	INT32 joycount = 0;
+	INT32 stickIndex = 0;
+
+	for( ; stickIndex < 4; ++stickIndex )
+	{
+    char name[32];
+    
+
+      // Note on "CODE_OTHER" entries:
+      // The way that internal_code_find_joystick() (input.c) works is to check the standard
+      // code against CODE_OTHER, and then the "oscode" against whatever we set in the second parameter
+      // to the ADDENTRY macro. However, other places in input.c require us to have a valid 
+      // joyoscode_to_code() mapping for each "CODE_OTHER" entry. Therefore, we do an AXISCODE or
+      // BUTTONCODE just before the ADDENTRY call. This allows us to use the joycode_to_oscode() mapping
+      // to assign buttons to functions in osd_customize_inputport_defaults() below, while retaining
+      // the naming functionality in the UI "Input" menu. If we don't set the syscode (param 3 of AXISCODE)
+      // to CODE_OTHER, any extended entries will be named "n/a", which isn't such a great user experience
+
+      // DPad
+    ADDENTRY( "DPAD UP",      JOYCODE( stickIndex, JT_DPAD_UP, 0 ),        STDCODE( UP ) );
+    ADDENTRY( "DPAD RIGHT",   JOYCODE( stickIndex, JT_DPAD_RIGHT , 0 ),    STDCODE( RIGHT ) );
+    ADDENTRY( "DPAD DOWN",    JOYCODE( stickIndex, JT_DPAD_DOWN, 0 ),      STDCODE( DOWN ) );
+    ADDENTRY( "DPAD LEFT",    JOYCODE( stickIndex, JT_DPAD_LEFT , 0 ),     STDCODE( LEFT ) );
+
+      // Left analog
+    AXISCODE( stickIndex, JT_LSTICK_UP );
+    AXISCODE( stickIndex, JT_LSTICK_RIGHT );
+    AXISCODE( stickIndex, JT_LSTICK_DOWN );
+    AXISCODE( stickIndex, JT_LSTICK_LEFT );
+    ADDENTRY( "LA UP",        JOYCODE( stickIndex, JT_LSTICK_UP, 0 ),     CODE_OTHER );
+    ADDENTRY( "LA RIGHT",     JOYCODE( stickIndex, JT_LSTICK_RIGHT , 0 ), CODE_OTHER );
+    ADDENTRY( "LA DOWN",      JOYCODE( stickIndex, JT_LSTICK_DOWN, 0 ),   CODE_OTHER );
+    ADDENTRY( "LA LEFT",      JOYCODE( stickIndex, JT_LSTICK_LEFT , 0 ),  CODE_OTHER );
+
+      // Right analog
+    AXISCODE( stickIndex, JT_RSTICK_UP );
+    AXISCODE( stickIndex, JT_RSTICK_RIGHT );
+    AXISCODE( stickIndex, JT_RSTICK_DOWN );
+    AXISCODE( stickIndex, JT_RSTICK_LEFT );
+    ADDENTRY( "RA UP",        JOYCODE( stickIndex, JT_RSTICK_UP, 0 ),     CODE_OTHER );
+    ADDENTRY( "RA RIGHT",     JOYCODE( stickIndex, JT_RSTICK_RIGHT , 0 ), CODE_OTHER );
+    ADDENTRY( "RA DOWN",      JOYCODE( stickIndex, JT_RSTICK_DOWN, 0 ),   CODE_OTHER );
+    ADDENTRY( "RA LEFT",      JOYCODE( stickIndex, JT_RSTICK_LEFT , 0 ),  CODE_OTHER );
+
+      // Buttons
+    BUTTONCODE( stickIndex, BUTTON_WHITE );
+    BUTTONCODE( stickIndex, BUTTON_BLACK );
+    BUTTONCODE( stickIndex, BUTTON_LA );
+    BUTTONCODE( stickIndex, BUTTON_RA );
+    ADDENTRY( "A",            JOYCODE( stickIndex, JT_BUTTON, BUTTON_A ),              STDCODE( BUTTON1 ) );
+    ADDENTRY( "X",            JOYCODE( stickIndex, JT_BUTTON, BUTTON_X ),              STDCODE( BUTTON2 ) );
+    ADDENTRY( "B",            JOYCODE( stickIndex, JT_BUTTON, BUTTON_B ),              STDCODE( BUTTON3 ) );
+    ADDENTRY( "Y",            JOYCODE( stickIndex, JT_BUTTON, BUTTON_Y ),              STDCODE( BUTTON4 ) );
+    ADDENTRY( "LTrig",        JOYCODE( stickIndex, JT_BUTTON, BUTTON_LEFT_TRIGGER ),   STDCODE( BUTTON5 ) );
+    ADDENTRY( "RTrig",        JOYCODE( stickIndex, JT_BUTTON, BUTTON_RIGHT_TRIGGER ),  STDCODE( BUTTON6 ) );
+    ADDENTRY( "Start",        JOYCODE( stickIndex, JT_BUTTON, BUTTON_START ),          STDCODE( START ) );
+    ADDENTRY( "Back",         JOYCODE( stickIndex, JT_BUTTON, BUTTON_BACK ),           STDCODE( SELECT ) );
+    ADDENTRY( "White",        JOYCODE( stickIndex, JT_BUTTON, BUTTON_WHITE ),          CODE_OTHER );
+    ADDENTRY( "Black",        JOYCODE( stickIndex, JT_BUTTON, BUTTON_BLACK ),          CODE_OTHER );
+    ADDENTRY( "LA",           JOYCODE( stickIndex, JT_BUTTON, BUTTON_LA ),             CODE_OTHER );
+    ADDENTRY( "RA",           JOYCODE( stickIndex, JT_BUTTON, BUTTON_RA ),             CODE_OTHER );
+  }
+
+  g_systemInitialized = TRUE;
+}
+
+//---------------------------------------------------------------------
+//	Helper_CustomizeInputPortDefaults
+//---------------------------------------------------------------------
+static void Helper_CustomizeInputPortDefaults( struct ipd *defaults )
+{
+  UINT32 i = 0;
 
   if( !g_systemInitialized )
     InitializeJoystickMouse();
@@ -1619,8 +1647,6 @@ void osd_customize_inputport_defaults( struct ipd *defaults )
 	}
 }
 
-
-
 //-------------------------------------------------------
 //	Helper_AddEntry
 //-------------------------------------------------------
@@ -1671,5 +1697,6 @@ static void Helper_AddEntry( const char *name, INT32 code, INT32 standardCode, I
     ++(*joycount);
   }
 }
+#pragma code_seg()
 
 

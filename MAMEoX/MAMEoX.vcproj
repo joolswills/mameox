@@ -17,21 +17,23 @@
 			ConfigurationType="1"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			WholeProgramOptimization="FALSE">
+			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				GlobalOptimizations="TRUE"
 				InlineFunctionExpansion="1"
-				FavorSizeOrSpeed="1"
+				FavorSizeOrSpeed="2"
+				OmitFramePointers="TRUE"
 				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories=".\Includes;..\MAME\src;..\;&quot;$(XDK)\Samples\XBox\Common\Include\&quot;;&quot;..\libsmb++\src&quot;"
 				PreprocessorDefinitions="WIN32,_XBOX,NDEBUG"
-				StringPooling="TRUE"
+				StringPooling="FALSE"
 				ExceptionHandling="FALSE"
 				RuntimeLibrary="4"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
+				EnableEnhancedInstructionSet="1"
 				ForceConformanceInForLoopScope="TRUE"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\Release/MAMEoX.pch"
@@ -70,7 +72,8 @@
 				StackSize="0x10000"
 				LimitAvailableMemoryTo64MB="FALSE"
 				SuppressStartupBanner="TRUE"
-				FormatUD="TRUE"
+				FormatUD="FALSE"
+				NoLibWarn="TRUE"
 				TitleName="&quot;MAMEoX Util (Don&apos;t Run)&quot;"/>
 		</Configuration>
 		<Configuration
@@ -129,6 +132,8 @@
 				IncludeDebugInfo="TRUE"
 				LimitAvailableMemoryTo64MB="TRUE"
 				SuppressStartupBanner="TRUE"
+				FormatUD="FALSE"
+				NoLibWarn="TRUE"
 				TitleName="&quot;MAMEoX Util (Don&apos;t Run) [DBG]&quot;"/>
 		</Configuration>
 		<Configuration
@@ -184,6 +189,8 @@
 				IncludeDebugInfo="TRUE"
 				LimitAvailableMemoryTo64MB="TRUE"
 				SuppressStartupBanner="TRUE"
+				FormatUD="FALSE"
+				NoLibWarn="TRUE"
 				TitleName="&quot;MAMEoX Util (Don&apos;t Run)&quot;"/>
 		</Configuration>
 		<Configuration
@@ -239,6 +246,8 @@
 				IncludeDebugInfo="TRUE"
 				LimitAvailableMemoryTo64MB="TRUE"
 				SuppressStartupBanner="TRUE"
+				FormatUD="FALSE"
+				NoLibWarn="TRUE"
 				TitleName="&quot;MAMEoX Util (Don&apos;t Run)&quot;"/>
 		</Configuration>
 	</Configurations>

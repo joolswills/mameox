@@ -24,8 +24,43 @@ extern "C" {
 
 //= G L O B A L = V A R S ==============================================
 static std::map< std::string, std::string >  g_nameToSectionMap;
+
+//= P R O T O T Y P E S ================================================
+extern "C" static void RegisterDriverSectionNames( void );
+
 //= F U N C T I O N S ==================================================
 extern "C" {
+
+//-------------------------------------------------------------
+//	InitDriverSectionizer
+//-------------------------------------------------------------
+void InitDriverSectionizer( void )
+{
+  g_nameToSectionMap.clear();
+  void *addr;
+  addr = XLoadSection( "DRVSNIZE" );
+  if( !addr )
+  {
+    UINT32 lastErr = GetLastError();
+    PRINTMSG( T_ERROR, "XLoadSection failed! 0x%X\r\n", lastErr );
+  }
+  RegisterDriverSectionNames();
+}
+
+
+//-------------------------------------------------------------
+//	TerminateDriverSectionizer
+//-------------------------------------------------------------
+void TerminateDriverSectionizer( void )
+{
+  g_nameToSectionMap.clear();
+  XFreeSection( "DRVSNIZE" );
+}
+
+#pragma code_seg( "DRVCSNZE" )
+#pragma data_seg( "DRVDSNZE" )
+#pragma comment(linker, "/merge:DRVCSNZE=DRVSNIZE")
+#pragma comment(linker, "/merge:DRVDSNZE=DRVSNIZE")
 
 #ifdef _DEBUG
 //-------------------------------------------------------------
@@ -37,57 +72,15 @@ void CheckDriverSectionRAM( void )
   std::map< std::string, std::string >::iterator i = g_nameToSectionMap.begin();
   for( ; i != g_nameToSectionMap.end(); ++i )
   {
-    std::string sectionName;
-    sectionName = CODE_PREFIX;
-    sectionName += (*i).second.c_str();
-    HANDLE h = XGetSectionHandle( sectionName.c_str() );
+    HANDLE h = XGetSectionHandle( (*i).second.c_str() );
     if( h != INVALID_HANDLE_VALUE )
     {
       UINT32 sz = XGetSectionSize( h );
-      PRINTMSG( T_INFO, "Driver %s [CODE]: %lu", (*i).first.c_str(), sz );
+      PRINTMSG( T_INFO, "Driver %s %lu", (*i).first.c_str(), sz );
       total += sz;
     }
     else
       PRINTMSG( T_ERROR, "Invalid section %s for file %s!", (*i).second.c_str(), (*i).first.c_str() );
-
-    sectionName = DATA_PREFIX;
-    sectionName += (*i).second.c_str();
-    h = XGetSectionHandle( sectionName.c_str() );
-    if( h != INVALID_HANDLE_VALUE )
-    {
-      UINT32 sz = XGetSectionSize( h );
-      PRINTMSG( T_INFO, "Driver %s [DATA]: %lu", (*i).first.c_str(), sz );
-      total += sz;
-    }
-    else
-      PRINTMSG( T_ERROR, "Invalid section %s for file %s!", (*i).second.c_str(), (*i).first.c_str() );
-
-    sectionName = BSS_PREFIX;
-    sectionName += (*i).second.c_str();
-    h = XGetSectionHandle( sectionName.c_str() );
-    if( h != INVALID_HANDLE_VALUE )
-    {
-      UINT32 sz = XGetSectionSize( h );
-      PRINTMSG( T_INFO, "Driver %s [BSS]: %lu", (*i).first.c_str(), sz );
-      total += sz;
-    }
-    else
-    {
-      PRINTMSG( T_ERROR, "Invalid section %s for file %s!", (*i).second.c_str(), (*i).first.c_str() );
-    }
-
-    sectionName = CONST_PREFIX;
-    sectionName += (*i).second.c_str();
-    h = XGetSectionHandle( sectionName.c_str() );
-    if( h != INVALID_HANDLE_VALUE )
-    {
-      UINT32 sz = XGetSectionSize( h );
-      PRINTMSG( T_INFO, "Driver %s [CONST]: %lu", (*i).first.c_str(), sz );
-      total += sz;
-    }
-    else
-      PRINTMSG( T_ERROR, "Invalid section %s for file %s!", (*i).second.c_str(), (*i).first.c_str() );
-
   }
   PRINTMSG( T_INFO, "Total %lu bytes\n", total );
 }
@@ -97,10 +90,10 @@ void CheckDriverSectionRAM( void )
 //-------------------------------------------------------------
 //	RegisterSectionName
 //-------------------------------------------------------------
-static void RegisterSectionName( const char *DriverFileName, const char *DataSectionName )
+static void RegisterSectionName( const char *DriverFileName, const char *sectionName )
 {
     // Add the section name to the map
-  g_nameToSectionMap[ DriverFileName ] = DataSectionName;
+  g_nameToSectionMap[ DriverFileName ] = sectionName;
 }
 
 
@@ -112,50 +105,14 @@ BOOL LoadDriverSectionByName( const char *DriverFileName )
   std::map< std::string, std::string >::iterator i = g_nameToSectionMap.find( DriverFileName );
   if( i == g_nameToSectionMap.end() )
     return FALSE;
-  std::string sectionName;
   void *addr;
   PRINTMSG( T_INFO, "Load section %s, ID %s\n", DriverFileName, (*i).second.c_str() );
-  sectionName = DATA_PREFIX;
-  sectionName += (*i).second.c_str();
-  addr = XLoadSection( sectionName.c_str() );
+  addr = XLoadSection( (*i).second.c_str() );
   if( !addr )
   {
     UINT32 lastErr = GetLastError();
     PRINTMSG( T_ERROR, "XLoadSection failed! 0x%X\r\n", lastErr );
-    //osd_print_error( "Failed to load section %s!", sectionName.c_str() );
-    //return FALSE;
-  }
-
-  sectionName = CODE_PREFIX;
-  sectionName += (*i).second.c_str();
-  addr = XLoadSection( sectionName.c_str() );
-  if( !addr )
-  {
-    UINT32 lastErr = GetLastError();
-    PRINTMSG( T_ERROR, "XLoadSection failed! 0x%X\r\n", lastErr );
-    //osd_print_error( "Failed to load section %s!", sectionName.c_str() );
-    //return FALSE;
-  }
-
-  sectionName = BSS_PREFIX;
-  sectionName += (*i).second.c_str();
-  addr = XLoadSection( sectionName.c_str() );
-  if( !addr )
-  {
-    UINT32 lastErr = GetLastError();
-    PRINTMSG( T_ERROR, "XLoadSection failed! 0x%X\r\n", lastErr );
-    //osd_print_error( "Failed to load section %s!", sectionName.c_str() );
-    //return FALSE;
-  }
-
-  sectionName = CONST_PREFIX;
-  sectionName += (*i).second.c_str();
-  addr = XLoadSection( sectionName.c_str() );
-  if( !addr )
-  {
-    UINT32 lastErr = GetLastError();
-    PRINTMSG( T_ERROR, "XLoadSection failed! 0x%X\r\n", lastErr );
-    //osd_print_error( "Failed to load section %s!", sectionName.c_str() );
+    //osd_print_error( "Failed to load section %s!", (*i).second.c_str() );
     //return FALSE;
   }
   return TRUE;
@@ -170,50 +127,21 @@ BOOL UnloadDriverSectionByName( const char *DriverFileName )
   std::map< std::string, std::string >::iterator i = g_nameToSectionMap.find( DriverFileName );
   if( i == g_nameToSectionMap.end() )
     return FALSE;
-  BOOL dataRet, codeRet, bssRet, constRet;
-  std::string sectionName;
-  sectionName = DATA_PREFIX;
-  sectionName += (*i).second.c_str();
-  dataRet = XFreeSection( sectionName.c_str() );
-
-  sectionName = CODE_PREFIX;
-  sectionName += (*i).second.c_str();
-  codeRet = XFreeSection( sectionName.c_str() );
-
-  sectionName = BSS_PREFIX;
-  sectionName += (*i).second.c_str();
-  bssRet = XFreeSection( sectionName.c_str() );
-
-  sectionName = CONST_PREFIX;
-  sectionName += (*i).second.c_str();
-  constRet = XFreeSection( sectionName.c_str() );
-
-  return (dataRet && codeRet && bssRet && constRet);
+  return XFreeSection( (*i).second.c_str() );
 }
 
 
 //-------------------------------------------------------------
-//	LoadDriverDataSections
+//	LoadDriverSections
 //-------------------------------------------------------------
-BOOL LoadDriverDataSections( void )
+BOOL LoadDriverSections( void )
 {
   std::map< std::string, std::string >::iterator i = g_nameToSectionMap.begin();
   for( ; i != g_nameToSectionMap.end(); ++i )
   {
-    std::string sectionName;
-    sectionName = DATA_PREFIX;
-    sectionName += (*i).second.c_str();
-    if( !XLoadSection( sectionName.c_str() ) )
+    if( !XLoadSection( (*i).second.c_str() ) )
     {
-      PRINTMSG( T_ERROR, "Failed to load section %s!", sectionName.c_str() );
-      //return FALSE;
-    }
-
-    sectionName = CONST_PREFIX;
-    sectionName += (*i).second.c_str();
-    if( !XLoadSection( sectionName.c_str() ) )
-    {
-      PRINTMSG( T_ERROR, "Failed to load section %s!", sectionName.c_str() );
+      PRINTMSG( T_ERROR, "Failed to load section %s!", (*i).second.c_str() );
       //return FALSE;
     }
   }
@@ -222,52 +150,13 @@ BOOL LoadDriverDataSections( void )
 
 
 //-------------------------------------------------------------
-//	UnloadDriverNonDataSections
+//	UnloadDriverSections
 //-------------------------------------------------------------
-BOOL UnloadDriverNonDataSections( void )
+BOOL UnloadDriverSections( void )
 {
   std::map< std::string, std::string >::iterator i = g_nameToSectionMap.begin();
   for( ; i != g_nameToSectionMap.end(); ++i )
-  {
-    std::string sectionName;
-    sectionName = CODE_PREFIX;
-    sectionName += (*i).second.c_str();
-    HANDLE h = XGetSectionHandle( sectionName.c_str() );
-    if( h != INVALID_HANDLE_VALUE )
-      XFreeSectionByHandle( h );
-
-    sectionName = BSS_PREFIX;
-    sectionName += (*i).second.c_str();
-    h = XGetSectionHandle( sectionName.c_str() );
-    if( h != INVALID_HANDLE_VALUE )
-      XFreeSectionByHandle( h );
-
-  }
-  return TRUE;
-}
-
-
-//-------------------------------------------------------------
-//	UnloadDriverDataSections
-//-------------------------------------------------------------
-BOOL UnloadDriverDataSections( void )
-{
-  std::map< std::string, std::string >::iterator i = g_nameToSectionMap.begin();
-  for( ; i != g_nameToSectionMap.end(); ++i )
-  {
-    std::string sectionName;
-    sectionName = DATA_PREFIX;
-    sectionName += (*i).second.c_str();
-    HANDLE h = XGetSectionHandle( sectionName.c_str() );
-    if( h != INVALID_HANDLE_VALUE )
-      XFreeSectionByHandle( h );
-
-    sectionName = CONST_PREFIX;
-    sectionName += (*i).second.c_str();
-    h = XGetSectionHandle( sectionName.c_str() );
-    if( h != INVALID_HANDLE_VALUE )
-      XFreeSectionByHandle( h );
-  }
+    XFreeSection( (*i).second.c_str() );
   return TRUE;
 }
 
@@ -275,7 +164,7 @@ BOOL UnloadDriverDataSections( void )
 //-------------------------------------------------------------
 //	RegisterDriverSectionNames
 //-------------------------------------------------------------
-void RegisterDriverSectionNames( void )
+static void RegisterDriverSectionNames( void )
 {
   RegisterSectionName( "src\\drivers\\1942.c", "0" );
   RegisterSectionName( "src\\drivers\\1943.c", "1" );
@@ -617,307 +506,308 @@ void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\ms32.c", "337" );
   RegisterSectionName( "src\\drivers\\msisaac.c", "338" );
   RegisterSectionName( "src\\drivers\\mugsmash.c", "339" );
-  RegisterSectionName( "src\\drivers\\multi32.c", "340" );
-  RegisterSectionName( "src\\drivers\\munchmo.c", "341" );
-  RegisterSectionName( "src\\drivers\\mustache.c", "342" );
-  RegisterSectionName( "src\\drivers\\mystston.c", "343" );
-  RegisterSectionName( "src\\drivers\\mystwarr.c", "344" );
-  RegisterSectionName( "src\\drivers\\namcoic.c", "345" );
-  RegisterSectionName( "src\\drivers\\namcona1.c", "346" );
-  RegisterSectionName( "src\\drivers\\namconb1.c", "347" );
-  RegisterSectionName( "src\\drivers\\namcond1.c", "348" );
-  RegisterSectionName( "src\\drivers\\namcos2.c", "349" );
-  RegisterSectionName( "src\\drivers\\namcos21.c", "350" );
-  RegisterSectionName( "src\\drivers\\namcos22.c", "351" );
-  RegisterSectionName( "src\\drivers\\namcos86.c", "352" );
-  RegisterSectionName( "src\\drivers\\naughtyb.c", "353" );
-  RegisterSectionName( "src\\drivers\\nbmj8688.c", "354" );
-  RegisterSectionName( "src\\drivers\\nbmj8891.c", "355" );
-  RegisterSectionName( "src\\drivers\\nbmj8991.c", "356" );
-  RegisterSectionName( "src\\drivers\\nbmj9195.c", "357" );
-  RegisterSectionName( "src\\drivers\\nemesis.c", "358" );
-  RegisterSectionName( "src\\drivers\\neogeo.c", "359" );
-  RegisterSectionName( "src\\drivers\\news.c", "360" );
-  RegisterSectionName( "src\\drivers\\ninjakd2.c", "361" );
-  RegisterSectionName( "src\\drivers\\ninjakid.c", "362" );
-  RegisterSectionName( "src\\drivers\\ninjaw.c", "363" );
-  RegisterSectionName( "src\\drivers\\nitedrvr.c", "364" );
-  RegisterSectionName( "src\\drivers\\niyanpai.c", "365" );
-  RegisterSectionName( "src\\drivers\\nmk16.c", "366" );
-  RegisterSectionName( "src\\drivers\\nycaptor.c", "367" );
-  RegisterSectionName( "src\\drivers\\nyny.c", "368" );
-  RegisterSectionName( "src\\drivers\\offtwall.c", "369" );
-  RegisterSectionName( "src\\drivers\\ohmygod.c", "370" );
-  RegisterSectionName( "src\\drivers\\ojankohs.c", "371" );
-  RegisterSectionName( "src\\drivers\\olibochu.c", "372" );
-  RegisterSectionName( "src\\drivers\\omegaf.c", "373" );
-  RegisterSectionName( "src\\drivers\\omegrace.c", "374" );
-  RegisterSectionName( "src\\drivers\\oneshot.c", "375" );
-  RegisterSectionName( "src\\drivers\\opwolf.c", "376" );
-  RegisterSectionName( "src\\drivers\\orbit.c", "377" );
-  RegisterSectionName( "src\\drivers\\othldrby.c", "378" );
-  RegisterSectionName( "src\\drivers\\othunder.c", "379" );
-  RegisterSectionName( "src\\drivers\\outrun.c", "380" );
-  RegisterSectionName( "src\\drivers\\overdriv.c", "381" );
-  RegisterSectionName( "src\\drivers\\pacland.c", "382" );
-  RegisterSectionName( "src\\drivers\\pacman.c", "383" );
-  RegisterSectionName( "src\\drivers\\pandoras.c", "384" );
-  RegisterSectionName( "src\\drivers\\paradise.c", "385" );
-  RegisterSectionName( "src\\drivers\\parodius.c", "386" );
-  RegisterSectionName( "src\\drivers\\pass.c", "387" );
-  RegisterSectionName( "src\\drivers\\pastelgl.c", "388" );
-  RegisterSectionName( "src\\drivers\\pbaction.c", "389" );
-  RegisterSectionName( "src\\drivers\\pbillian.c", "390" );
-  RegisterSectionName( "src\\drivers\\pcktgal.c", "391" );
-  RegisterSectionName( "src\\drivers\\pgm.c", "392" );
-  RegisterSectionName( "src\\drivers\\phoenix.c", "393" );
-  RegisterSectionName( "src\\drivers\\phozon.c", "394" );
-  RegisterSectionName( "src\\drivers\\pingpong.c", "395" );
-  RegisterSectionName( "src\\drivers\\pipedrm.c", "396" );
-  RegisterSectionName( "src\\drivers\\pirates.c", "397" );
-  RegisterSectionName( "src\\drivers\\pkunwar.c", "398" );
-  RegisterSectionName( "src\\drivers\\playch10.c", "399" );
-  RegisterSectionName( "src\\drivers\\playmark.c", "400" );
-  RegisterSectionName( "src\\drivers\\plygonet.c", "401" );
-  RegisterSectionName( "src\\drivers\\polepos.c", "402" );
-  RegisterSectionName( "src\\drivers\\policetr.c", "403" );
-  RegisterSectionName( "src\\drivers\\polyplay.c", "404" );
-  RegisterSectionName( "src\\drivers\\poolshrk.c", "405" );
-  RegisterSectionName( "src\\drivers\\pooyan.c", "406" );
-  RegisterSectionName( "src\\drivers\\popeye.c", "407" );
-  RegisterSectionName( "src\\drivers\\popper.c", "408" );
-  RegisterSectionName( "src\\drivers\\portrait.c", "409" );
-  RegisterSectionName( "src\\drivers\\powerins.c", "410" );
-  RegisterSectionName( "src\\drivers\\prehisle.c", "411" );
-  RegisterSectionName( "src\\drivers\\psikyo.c", "412" );
-  RegisterSectionName( "src\\drivers\\psikyo4.c", "413" );
-  RegisterSectionName( "src\\drivers\\psikyosh.c", "414" );
-  RegisterSectionName( "src\\drivers\\psychic5.c", "415" );
-  RegisterSectionName( "src\\drivers\\punchout.c", "416" );
-  RegisterSectionName( "src\\drivers\\pushman.c", "417" );
-  RegisterSectionName( "src\\drivers\\qix.c", "418" );
-  RegisterSectionName( "src\\drivers\\quantum.c", "419" );
-  RegisterSectionName( "src\\drivers\\quizdna.c", "420" );
-  RegisterSectionName( "src\\drivers\\raiden.c", "421" );
-  RegisterSectionName( "src\\drivers\\raiden2.c", "422" );
-  RegisterSectionName( "src\\drivers\\raiders5.c", "423" );
-  RegisterSectionName( "src\\drivers\\rainbow.c", "424" );
-  RegisterSectionName( "src\\drivers\\realbrk.c", "425" );
-  RegisterSectionName( "src\\drivers\\redalert.c", "426" );
-  RegisterSectionName( "src\\drivers\\redclash.c", "427" );
-  RegisterSectionName( "src\\drivers\\relief.c", "428" );
-  RegisterSectionName( "src\\drivers\\renegade.c", "429" );
-  RegisterSectionName( "src\\drivers\\retofinv.c", "430" );
-  RegisterSectionName( "src\\drivers\\rmhaihai.c", "431" );
-  RegisterSectionName( "src\\drivers\\rockola.c", "432" );
-  RegisterSectionName( "src\\drivers\\rockrage.c", "433" );
-  RegisterSectionName( "src\\drivers\\rocnrope.c", "434" );
-  RegisterSectionName( "src\\drivers\\rohga.c", "435" );
-  RegisterSectionName( "src\\drivers\\rollerg.c", "436" );
-  RegisterSectionName( "src\\drivers\\rollrace.c", "437" );
-  RegisterSectionName( "src\\drivers\\rotaryf.c", "438" );
-  RegisterSectionName( "src\\drivers\\route16.c", "439" );
-  RegisterSectionName( "src\\drivers\\royalmah.c", "440" );
-  RegisterSectionName( "src\\drivers\\rpunch.c", "441" );
-  RegisterSectionName( "src\\drivers\\rungun.c", "442" );
-  RegisterSectionName( "src\\drivers\\safarir.c", "443" );
-  RegisterSectionName( "src\\drivers\\sauro.c", "444" );
-  RegisterSectionName( "src\\drivers\\sbasketb.c", "445" );
-  RegisterSectionName( "src\\drivers\\sbrkout.c", "446" );
-  RegisterSectionName( "src\\drivers\\sbugger.c", "447" );
-  RegisterSectionName( "src\\drivers\\scregg.c", "448" );
-  RegisterSectionName( "src\\drivers\\sega.c", "449" );
-  RegisterSectionName( "src\\drivers\\segac2.c", "450" );
-  RegisterSectionName( "src\\drivers\\segar.c", "451" );
-  RegisterSectionName( "src\\drivers\\segasyse.c", "452" );
-  RegisterSectionName( "src\\drivers\\seicross.c", "453" );
-  RegisterSectionName( "src\\drivers\\senjyo.c", "454" );
-  RegisterSectionName( "src\\drivers\\seta.c", "455" );
-  RegisterSectionName( "src\\drivers\\seta2.c", "456" );
-  RegisterSectionName( "src\\drivers\\sf1.c", "457" );
-  RegisterSectionName( "src\\drivers\\sg1000a.c", "458" );
-  RegisterSectionName( "src\\drivers\\sgladiat.c", "459" );
-  RegisterSectionName( "src\\drivers\\shadfrce.c", "460" );
-  RegisterSectionName( "src\\drivers\\shangha3.c", "461" );
-  RegisterSectionName( "src\\drivers\\shanghai.c", "462" );
-  RegisterSectionName( "src\\drivers\\shangkid.c", "463" );
-  RegisterSectionName( "src\\drivers\\shaolins.c", "464" );
-  RegisterSectionName( "src\\drivers\\sharrier.c", "465" );
-  RegisterSectionName( "src\\drivers\\shisen.c", "466" );
-  RegisterSectionName( "src\\drivers\\shootout.c", "467" );
-  RegisterSectionName( "src\\drivers\\shougi.c", "468" );
-  RegisterSectionName( "src\\drivers\\shuuz.c", "469" );
-  RegisterSectionName( "src\\drivers\\sidearms.c", "470" );
-  RegisterSectionName( "src\\drivers\\sidepckt.c", "471" );
-  RegisterSectionName( "src\\drivers\\silkroad.c", "472" );
-  RegisterSectionName( "src\\drivers\\simpsons.c", "473" );
-  RegisterSectionName( "src\\drivers\\skullxbo.c", "474" );
-  RegisterSectionName( "src\\drivers\\skyarmy.c", "475" );
-  RegisterSectionName( "src\\drivers\\skychut.c", "476" );
-  RegisterSectionName( "src\\drivers\\skydiver.c", "477" );
-  RegisterSectionName( "src\\drivers\\skyfox.c", "478" );
-  RegisterSectionName( "src\\drivers\\skykid.c", "479" );
-  RegisterSectionName( "src\\drivers\\skyraid.c", "480" );
-  RegisterSectionName( "src\\drivers\\slapfght.c", "481" );
-  RegisterSectionName( "src\\drivers\\slapshot.c", "482" );
-  RegisterSectionName( "src\\drivers\\snk68.c", "483" );
-  RegisterSectionName( "src\\drivers\\snowbros.c", "484" );
-  RegisterSectionName( "src\\drivers\\solomon.c", "485" );
-  RegisterSectionName( "src\\drivers\\sonson.c", "486" );
-  RegisterSectionName( "src\\drivers\\spacefb.c", "487" );
-  RegisterSectionName( "src\\drivers\\spbactn.c", "488" );
-  RegisterSectionName( "src\\drivers\\spcforce.c", "489" );
-  RegisterSectionName( "src\\drivers\\spdbuggy.c", "490" );
-  RegisterSectionName( "src\\drivers\\spdodgeb.c", "491" );
-  RegisterSectionName( "src\\drivers\\speedbal.c", "492" );
-  RegisterSectionName( "src\\drivers\\speedspn.c", "493" );
-  RegisterSectionName( "src\\drivers\\spiders.c", "494" );
-  RegisterSectionName( "src\\drivers\\splash.c", "495" );
-  RegisterSectionName( "src\\drivers\\sprcros2.c", "496" );
-  RegisterSectionName( "src\\drivers\\sprint2.c", "497" );
-  RegisterSectionName( "src\\drivers\\spy.c", "498" );
-  RegisterSectionName( "src\\drivers\\srmp2.c", "499" );
-  RegisterSectionName( "src\\drivers\\srumbler.c", "500" );
-  RegisterSectionName( "src\\drivers\\sshangha.c", "501" );
-  RegisterSectionName( "src\\drivers\\sslam.c", "502" );
-  RegisterSectionName( "src\\drivers\\ssozumo.c", "503" );
-  RegisterSectionName( "src\\drivers\\ssv.c", "504" );
-  RegisterSectionName( "src\\drivers\\stactics.c", "505" );
-  RegisterSectionName( "src\\drivers\\stadhero.c", "506" );
-  RegisterSectionName( "src\\drivers\\starcrus.c", "507" );
-  RegisterSectionName( "src\\drivers\\starfire.c", "508" );
-  RegisterSectionName( "src\\drivers\\starshp1.c", "509" );
-  RegisterSectionName( "src\\drivers\\starwars.c", "510" );
-  RegisterSectionName( "src\\drivers\\statriv2.c", "511" );
-  RegisterSectionName( "src\\drivers\\stfight.c", "512" );
-  RegisterSectionName( "src\\drivers\\stlforce.c", "513" );
-  RegisterSectionName( "src\\drivers\\strnskil.c", "514" );
-  RegisterSectionName( "src\\drivers\\stv.c", "515" );
-  RegisterSectionName( "src\\drivers\\subs.c", "516" );
-  RegisterSectionName( "src\\drivers\\suna16.c", "517" );
-  RegisterSectionName( "src\\drivers\\suna8.c", "518" );
-  RegisterSectionName( "src\\drivers\\supbtime.c", "519" );
-  RegisterSectionName( "src\\drivers\\superchs.c", "520" );
-  RegisterSectionName( "src\\drivers\\superpac.c", "521" );
-  RegisterSectionName( "src\\drivers\\superqix.c", "522" );
-  RegisterSectionName( "src\\drivers\\suprloco.c", "523" );
-  RegisterSectionName( "src\\drivers\\suprnova.c", "524" );
-  RegisterSectionName( "src\\drivers\\suprslam.c", "525" );
-  RegisterSectionName( "src\\drivers\\surpratk.c", "526" );
-  RegisterSectionName( "src\\drivers\\system1.c", "527" );
-  RegisterSectionName( "src\\drivers\\system18.c", "528" );
-  RegisterSectionName( "src\\drivers\\system24.c", "529" );
-  RegisterSectionName( "src\\drivers\\system32.c", "530" );
-  RegisterSectionName( "src\\drivers\\tagteam.c", "531" );
-  RegisterSectionName( "src\\drivers\\tail2nos.c", "532" );
-  RegisterSectionName( "src\\drivers\\taito_b.c", "533" );
-  RegisterSectionName( "src\\drivers\\taito_f2.c", "534" );
-  RegisterSectionName( "src\\drivers\\taito_f3.c", "535" );
-  RegisterSectionName( "src\\drivers\\taito_h.c", "536" );
-  RegisterSectionName( "src\\drivers\\taito_l.c", "537" );
-  RegisterSectionName( "src\\drivers\\taito_x.c", "538" );
-  RegisterSectionName( "src\\drivers\\taito_z.c", "539" );
-  RegisterSectionName( "src\\drivers\\taitoair.c", "540" );
-  RegisterSectionName( "src\\drivers\\taitosj.c", "541" );
-  RegisterSectionName( "src\\drivers\\tankbatt.c", "542" );
-  RegisterSectionName( "src\\drivers\\tankbust.c", "543" );
-  RegisterSectionName( "src\\drivers\\taotaido.c", "544" );
-  RegisterSectionName( "src\\drivers\\targeth.c", "545" );
-  RegisterSectionName( "src\\drivers\\taxidrvr.c", "546" );
-  RegisterSectionName( "src\\drivers\\tbowl.c", "547" );
-  RegisterSectionName( "src\\drivers\\tecmo.c", "548" );
-  RegisterSectionName( "src\\drivers\\tecmo16.c", "549" );
-  RegisterSectionName( "src\\drivers\\tecmosys.c", "550" );
-  RegisterSectionName( "src\\drivers\\tehkanwc.c", "551" );
-  RegisterSectionName( "src\\drivers\\tempest.c", "552" );
-  RegisterSectionName( "src\\drivers\\terracre.c", "553" );
-  RegisterSectionName( "src\\drivers\\tetrisp2.c", "554" );
-  RegisterSectionName( "src\\drivers\\thedeep.c", "555" );
-  RegisterSectionName( "src\\drivers\\thepit.c", "556" );
-  RegisterSectionName( "src\\drivers\\thief.c", "557" );
-  RegisterSectionName( "src\\drivers\\thoop2.c", "558" );
-  RegisterSectionName( "src\\drivers\\thunderj.c", "559" );
-  RegisterSectionName( "src\\drivers\\thunderx.c", "560" );
-  RegisterSectionName( "src\\drivers\\tickee.c", "561" );
-  RegisterSectionName( "src\\drivers\\tigeroad.c", "562" );
-  RegisterSectionName( "src\\drivers\\timelimt.c", "563" );
-  RegisterSectionName( "src\\drivers\\tmnt.c", "564" );
-  RegisterSectionName( "src\\drivers\\tnzs.c", "565" );
-  RegisterSectionName( "src\\drivers\\toaplan1.c", "566" );
-  RegisterSectionName( "src\\drivers\\toaplan2.c", "567" );
-  RegisterSectionName( "src\\drivers\\toki.c", "568" );
-  RegisterSectionName( "src\\drivers\\toobin.c", "569" );
-  RegisterSectionName( "src\\drivers\\topspeed.c", "570" );
-  RegisterSectionName( "src\\drivers\\toratora.c", "571" );
-  RegisterSectionName( "src\\drivers\\tourtabl.c", "572" );
-  RegisterSectionName( "src\\drivers\\toypop.c", "573" );
-  RegisterSectionName( "src\\drivers\\tp84.c", "574" );
-  RegisterSectionName( "src\\drivers\\travrusa.c", "575" );
-  RegisterSectionName( "src\\drivers\\triplhnt.c", "576" );
-  RegisterSectionName( "src\\drivers\\troangel.c", "577" );
-  RegisterSectionName( "src\\drivers\\truco.c", "578" );
-  RegisterSectionName( "src\\drivers\\tsamurai.c", "579" );
-  RegisterSectionName( "src\\drivers\\ttmahjng.c", "580" );
-  RegisterSectionName( "src\\drivers\\tubep.c", "581" );
-  RegisterSectionName( "src\\drivers\\tugboat.c", "582" );
-  RegisterSectionName( "src\\drivers\\tumblep.c", "583" );
-  RegisterSectionName( "src\\drivers\\tunhunt.c", "584" );
-  RegisterSectionName( "src\\drivers\\turbo.c", "585" );
-  RegisterSectionName( "src\\drivers\\tutankhm.c", "586" );
-  RegisterSectionName( "src\\drivers\\twin16.c", "587" );
-  RegisterSectionName( "src\\drivers\\twincobr.c", "588" );
-  RegisterSectionName( "src\\drivers\\ultraman.c", "589" );
-  RegisterSectionName( "src\\drivers\\ultratnk.c", "590" );
-  RegisterSectionName( "src\\drivers\\undrfire.c", "591" );
-  RegisterSectionName( "src\\drivers\\unico.c", "592" );
-  RegisterSectionName( "src\\drivers\\usgames.c", "593" );
-  RegisterSectionName( "src\\drivers\\vaportra.c", "594" );
-  RegisterSectionName( "src\\drivers\\vastar.c", "595" );
-  RegisterSectionName( "src\\drivers\\vball.c", "596" );
-  RegisterSectionName( "src\\drivers\\vendetta.c", "597" );
-  RegisterSectionName( "src\\drivers\\vicdual.c", "598" );
-  RegisterSectionName( "src\\drivers\\victory.c", "599" );
-  RegisterSectionName( "src\\drivers\\videopin.c", "600" );
-  RegisterSectionName( "src\\drivers\\vigilant.c", "601" );
-  RegisterSectionName( "src\\drivers\\vindictr.c", "602" );
-  RegisterSectionName( "src\\drivers\\volfied.c", "603" );
-  RegisterSectionName( "src\\drivers\\vsnes.c", "604" );
-  RegisterSectionName( "src\\drivers\\vulgus.c", "605" );
-  RegisterSectionName( "src\\drivers\\wallc.c", "606" );
-  RegisterSectionName( "src\\drivers\\wardner.c", "607" );
-  RegisterSectionName( "src\\drivers\\warpwarp.c", "608" );
-  RegisterSectionName( "src\\drivers\\warriorb.c", "609" );
-  RegisterSectionName( "src\\drivers\\wc90.c", "610" );
-  RegisterSectionName( "src\\drivers\\wc90b.c", "611" );
-  RegisterSectionName( "src\\drivers\\wecleman.c", "612" );
-  RegisterSectionName( "src\\drivers\\welltris.c", "613" );
-  RegisterSectionName( "src\\drivers\\wgp.c", "614" );
-  RegisterSectionName( "src\\drivers\\wilytowr.c", "615" );
-  RegisterSectionName( "src\\drivers\\wiping.c", "616" );
-  RegisterSectionName( "src\\drivers\\wiz.c", "617" );
-  RegisterSectionName( "src\\drivers\\wolfpack.c", "618" );
-  RegisterSectionName( "src\\drivers\\wrally.c", "619" );
-  RegisterSectionName( "src\\drivers\\wwfsstar.c", "620" );
-  RegisterSectionName( "src\\drivers\\wwfwfest.c", "621" );
-  RegisterSectionName( "src\\drivers\\xain.c", "622" );
-  RegisterSectionName( "src\\drivers\\xevious.c", "623" );
-  RegisterSectionName( "src\\drivers\\xexex.c", "624" );
-  RegisterSectionName( "src\\drivers\\xmen.c", "625" );
-  RegisterSectionName( "src\\drivers\\xxmissio.c", "626" );
-  RegisterSectionName( "src\\drivers\\xybots.c", "627" );
-  RegisterSectionName( "src\\drivers\\xyonix.c", "628" );
-  RegisterSectionName( "src\\drivers\\yamato.c", "629" );
-  RegisterSectionName( "src\\drivers\\yard.c", "630" );
-  RegisterSectionName( "src\\drivers\\yiear.c", "631" );
-  RegisterSectionName( "src\\drivers\\yunsun16.c", "632" );
-  RegisterSectionName( "src\\drivers\\yunsung8.c", "633" );
-  RegisterSectionName( "src\\drivers\\zac2650.c", "634" );
-  RegisterSectionName( "src\\drivers\\zaccaria.c", "635" );
-  RegisterSectionName( "src\\drivers\\zaxxon.c", "636" );
-  RegisterSectionName( "src\\drivers\\zerozone.c", "637" );
-  RegisterSectionName( "src\\drivers\\zn.c", "638" );
-  RegisterSectionName( "src\\drivers\\zodiack.c", "639" );
-} // End extern "C"
+  RegisterSectionName( "src\\drivers\\munchmo.c", "340" );
+  RegisterSectionName( "src\\drivers\\mustache.c", "341" );
+  RegisterSectionName( "src\\drivers\\mystston.c", "342" );
+  RegisterSectionName( "src\\drivers\\mystwarr.c", "343" );
+  RegisterSectionName( "src\\drivers\\namcoic.c", "344" );
+  RegisterSectionName( "src\\drivers\\namcona1.c", "345" );
+  RegisterSectionName( "src\\drivers\\namconb1.c", "346" );
+  RegisterSectionName( "src\\drivers\\namcond1.c", "347" );
+  RegisterSectionName( "src\\drivers\\namcos2.c", "348" );
+  RegisterSectionName( "src\\drivers\\namcos21.c", "349" );
+  RegisterSectionName( "src\\drivers\\namcos22.c", "350" );
+  RegisterSectionName( "src\\drivers\\namcos86.c", "351" );
+  RegisterSectionName( "src\\drivers\\naughtyb.c", "352" );
+  RegisterSectionName( "src\\drivers\\nbmj8688.c", "353" );
+  RegisterSectionName( "src\\drivers\\nbmj8891.c", "354" );
+  RegisterSectionName( "src\\drivers\\nbmj8991.c", "355" );
+  RegisterSectionName( "src\\drivers\\nbmj9195.c", "356" );
+  RegisterSectionName( "src\\drivers\\nemesis.c", "357" );
+  RegisterSectionName( "src\\drivers\\neogeo.c", "358" );
+  RegisterSectionName( "src\\drivers\\news.c", "359" );
+  RegisterSectionName( "src\\drivers\\ninjakd2.c", "360" );
+  RegisterSectionName( "src\\drivers\\ninjakid.c", "361" );
+  RegisterSectionName( "src\\drivers\\ninjaw.c", "362" );
+  RegisterSectionName( "src\\drivers\\nitedrvr.c", "363" );
+  RegisterSectionName( "src\\drivers\\niyanpai.c", "364" );
+  RegisterSectionName( "src\\drivers\\nmk16.c", "365" );
+  RegisterSectionName( "src\\drivers\\nycaptor.c", "366" );
+  RegisterSectionName( "src\\drivers\\nyny.c", "367" );
+  RegisterSectionName( "src\\drivers\\offtwall.c", "368" );
+  RegisterSectionName( "src\\drivers\\ohmygod.c", "369" );
+  RegisterSectionName( "src\\drivers\\ojankohs.c", "370" );
+  RegisterSectionName( "src\\drivers\\olibochu.c", "371" );
+  RegisterSectionName( "src\\drivers\\omegaf.c", "372" );
+  RegisterSectionName( "src\\drivers\\omegrace.c", "373" );
+  RegisterSectionName( "src\\drivers\\oneshot.c", "374" );
+  RegisterSectionName( "src\\drivers\\opwolf.c", "375" );
+  RegisterSectionName( "src\\drivers\\orbit.c", "376" );
+  RegisterSectionName( "src\\drivers\\othldrby.c", "377" );
+  RegisterSectionName( "src\\drivers\\othunder.c", "378" );
+  RegisterSectionName( "src\\drivers\\outrun.c", "379" );
+  RegisterSectionName( "src\\drivers\\overdriv.c", "380" );
+  RegisterSectionName( "src\\drivers\\pacland.c", "381" );
+  RegisterSectionName( "src\\drivers\\pacman.c", "382" );
+  RegisterSectionName( "src\\drivers\\pandoras.c", "383" );
+  RegisterSectionName( "src\\drivers\\paradise.c", "384" );
+  RegisterSectionName( "src\\drivers\\parodius.c", "385" );
+  RegisterSectionName( "src\\drivers\\pass.c", "386" );
+  RegisterSectionName( "src\\drivers\\pastelgl.c", "387" );
+  RegisterSectionName( "src\\drivers\\pbaction.c", "388" );
+  RegisterSectionName( "src\\drivers\\pbillian.c", "389" );
+  RegisterSectionName( "src\\drivers\\pcktgal.c", "390" );
+  RegisterSectionName( "src\\drivers\\pgm.c", "391" );
+  RegisterSectionName( "src\\drivers\\phoenix.c", "392" );
+  RegisterSectionName( "src\\drivers\\phozon.c", "393" );
+  RegisterSectionName( "src\\drivers\\pingpong.c", "394" );
+  RegisterSectionName( "src\\drivers\\pipedrm.c", "395" );
+  RegisterSectionName( "src\\drivers\\pirates.c", "396" );
+  RegisterSectionName( "src\\drivers\\pkunwar.c", "397" );
+  RegisterSectionName( "src\\drivers\\playch10.c", "398" );
+  RegisterSectionName( "src\\drivers\\playmark.c", "399" );
+  RegisterSectionName( "src\\drivers\\plygonet.c", "400" );
+  RegisterSectionName( "src\\drivers\\polepos.c", "401" );
+  RegisterSectionName( "src\\drivers\\policetr.c", "402" );
+  RegisterSectionName( "src\\drivers\\polyplay.c", "403" );
+  RegisterSectionName( "src\\drivers\\poolshrk.c", "404" );
+  RegisterSectionName( "src\\drivers\\pooyan.c", "405" );
+  RegisterSectionName( "src\\drivers\\popeye.c", "406" );
+  RegisterSectionName( "src\\drivers\\popper.c", "407" );
+  RegisterSectionName( "src\\drivers\\portrait.c", "408" );
+  RegisterSectionName( "src\\drivers\\powerins.c", "409" );
+  RegisterSectionName( "src\\drivers\\prehisle.c", "410" );
+  RegisterSectionName( "src\\drivers\\psikyo.c", "411" );
+  RegisterSectionName( "src\\drivers\\psikyo4.c", "412" );
+  RegisterSectionName( "src\\drivers\\psikyosh.c", "413" );
+  RegisterSectionName( "src\\drivers\\psychic5.c", "414" );
+  RegisterSectionName( "src\\drivers\\punchout.c", "415" );
+  RegisterSectionName( "src\\drivers\\pushman.c", "416" );
+  RegisterSectionName( "src\\drivers\\qix.c", "417" );
+  RegisterSectionName( "src\\drivers\\quantum.c", "418" );
+  RegisterSectionName( "src\\drivers\\quizdna.c", "419" );
+  RegisterSectionName( "src\\drivers\\raiden.c", "420" );
+  RegisterSectionName( "src\\drivers\\raiden2.c", "421" );
+  RegisterSectionName( "src\\drivers\\raiders5.c", "422" );
+  RegisterSectionName( "src\\drivers\\rainbow.c", "423" );
+  RegisterSectionName( "src\\drivers\\realbrk.c", "424" );
+  RegisterSectionName( "src\\drivers\\redalert.c", "425" );
+  RegisterSectionName( "src\\drivers\\redclash.c", "426" );
+  RegisterSectionName( "src\\drivers\\relief.c", "427" );
+  RegisterSectionName( "src\\drivers\\renegade.c", "428" );
+  RegisterSectionName( "src\\drivers\\retofinv.c", "429" );
+  RegisterSectionName( "src\\drivers\\rmhaihai.c", "430" );
+  RegisterSectionName( "src\\drivers\\rockola.c", "431" );
+  RegisterSectionName( "src\\drivers\\rockrage.c", "432" );
+  RegisterSectionName( "src\\drivers\\rocnrope.c", "433" );
+  RegisterSectionName( "src\\drivers\\rohga.c", "434" );
+  RegisterSectionName( "src\\drivers\\rollerg.c", "435" );
+  RegisterSectionName( "src\\drivers\\rollrace.c", "436" );
+  RegisterSectionName( "src\\drivers\\rotaryf.c", "437" );
+  RegisterSectionName( "src\\drivers\\route16.c", "438" );
+  RegisterSectionName( "src\\drivers\\royalmah.c", "439" );
+  RegisterSectionName( "src\\drivers\\rpunch.c", "440" );
+  RegisterSectionName( "src\\drivers\\rungun.c", "441" );
+  RegisterSectionName( "src\\drivers\\safarir.c", "442" );
+  RegisterSectionName( "src\\drivers\\sauro.c", "443" );
+  RegisterSectionName( "src\\drivers\\sbasketb.c", "444" );
+  RegisterSectionName( "src\\drivers\\sbrkout.c", "445" );
+  RegisterSectionName( "src\\drivers\\sbugger.c", "446" );
+  RegisterSectionName( "src\\drivers\\scregg.c", "447" );
+  RegisterSectionName( "src\\drivers\\sega.c", "448" );
+  RegisterSectionName( "src\\drivers\\segac2.c", "449" );
+  RegisterSectionName( "src\\drivers\\segar.c", "450" );
+  RegisterSectionName( "src\\drivers\\segasyse.c", "451" );
+  RegisterSectionName( "src\\drivers\\seicross.c", "452" );
+  RegisterSectionName( "src\\drivers\\senjyo.c", "453" );
+  RegisterSectionName( "src\\drivers\\seta.c", "454" );
+  RegisterSectionName( "src\\drivers\\seta2.c", "455" );
+  RegisterSectionName( "src\\drivers\\sf1.c", "456" );
+  RegisterSectionName( "src\\drivers\\sg1000a.c", "457" );
+  RegisterSectionName( "src\\drivers\\sgladiat.c", "458" );
+  RegisterSectionName( "src\\drivers\\shadfrce.c", "459" );
+  RegisterSectionName( "src\\drivers\\shangha3.c", "460" );
+  RegisterSectionName( "src\\drivers\\shanghai.c", "461" );
+  RegisterSectionName( "src\\drivers\\shangkid.c", "462" );
+  RegisterSectionName( "src\\drivers\\shaolins.c", "463" );
+  RegisterSectionName( "src\\drivers\\sharrier.c", "464" );
+  RegisterSectionName( "src\\drivers\\shisen.c", "465" );
+  RegisterSectionName( "src\\drivers\\shootout.c", "466" );
+  RegisterSectionName( "src\\drivers\\shougi.c", "467" );
+  RegisterSectionName( "src\\drivers\\shuuz.c", "468" );
+  RegisterSectionName( "src\\drivers\\sidearms.c", "469" );
+  RegisterSectionName( "src\\drivers\\sidepckt.c", "470" );
+  RegisterSectionName( "src\\drivers\\silkroad.c", "471" );
+  RegisterSectionName( "src\\drivers\\simpsons.c", "472" );
+  RegisterSectionName( "src\\drivers\\skullxbo.c", "473" );
+  RegisterSectionName( "src\\drivers\\skyarmy.c", "474" );
+  RegisterSectionName( "src\\drivers\\skychut.c", "475" );
+  RegisterSectionName( "src\\drivers\\skydiver.c", "476" );
+  RegisterSectionName( "src\\drivers\\skyfox.c", "477" );
+  RegisterSectionName( "src\\drivers\\skykid.c", "478" );
+  RegisterSectionName( "src\\drivers\\skyraid.c", "479" );
+  RegisterSectionName( "src\\drivers\\slapfght.c", "480" );
+  RegisterSectionName( "src\\drivers\\slapshot.c", "481" );
+  RegisterSectionName( "src\\drivers\\snk68.c", "482" );
+  RegisterSectionName( "src\\drivers\\snowbros.c", "483" );
+  RegisterSectionName( "src\\drivers\\solomon.c", "484" );
+  RegisterSectionName( "src\\drivers\\sonson.c", "485" );
+  RegisterSectionName( "src\\drivers\\spacefb.c", "486" );
+  RegisterSectionName( "src\\drivers\\spbactn.c", "487" );
+  RegisterSectionName( "src\\drivers\\spcforce.c", "488" );
+  RegisterSectionName( "src\\drivers\\spdbuggy.c", "489" );
+  RegisterSectionName( "src\\drivers\\spdodgeb.c", "490" );
+  RegisterSectionName( "src\\drivers\\speedbal.c", "491" );
+  RegisterSectionName( "src\\drivers\\speedspn.c", "492" );
+  RegisterSectionName( "src\\drivers\\spiders.c", "493" );
+  RegisterSectionName( "src\\drivers\\splash.c", "494" );
+  RegisterSectionName( "src\\drivers\\sprcros2.c", "495" );
+  RegisterSectionName( "src\\drivers\\sprint2.c", "496" );
+  RegisterSectionName( "src\\drivers\\spy.c", "497" );
+  RegisterSectionName( "src\\drivers\\srmp2.c", "498" );
+  RegisterSectionName( "src\\drivers\\srumbler.c", "499" );
+  RegisterSectionName( "src\\drivers\\sshangha.c", "500" );
+  RegisterSectionName( "src\\drivers\\sslam.c", "501" );
+  RegisterSectionName( "src\\drivers\\ssozumo.c", "502" );
+  RegisterSectionName( "src\\drivers\\ssv.c", "503" );
+  RegisterSectionName( "src\\drivers\\stactics.c", "504" );
+  RegisterSectionName( "src\\drivers\\stadhero.c", "505" );
+  RegisterSectionName( "src\\drivers\\starcrus.c", "506" );
+  RegisterSectionName( "src\\drivers\\starfire.c", "507" );
+  RegisterSectionName( "src\\drivers\\starshp1.c", "508" );
+  RegisterSectionName( "src\\drivers\\starwars.c", "509" );
+  RegisterSectionName( "src\\drivers\\statriv2.c", "510" );
+  RegisterSectionName( "src\\drivers\\stfight.c", "511" );
+  RegisterSectionName( "src\\drivers\\stlforce.c", "512" );
+  RegisterSectionName( "src\\drivers\\strnskil.c", "513" );
+  RegisterSectionName( "src\\drivers\\stv.c", "514" );
+  RegisterSectionName( "src\\drivers\\subs.c", "515" );
+  RegisterSectionName( "src\\drivers\\suna16.c", "516" );
+  RegisterSectionName( "src\\drivers\\suna8.c", "517" );
+  RegisterSectionName( "src\\drivers\\supbtime.c", "518" );
+  RegisterSectionName( "src\\drivers\\superchs.c", "519" );
+  RegisterSectionName( "src\\drivers\\superpac.c", "520" );
+  RegisterSectionName( "src\\drivers\\superqix.c", "521" );
+  RegisterSectionName( "src\\drivers\\suprloco.c", "522" );
+  RegisterSectionName( "src\\drivers\\suprnova.c", "523" );
+  RegisterSectionName( "src\\drivers\\suprslam.c", "524" );
+  RegisterSectionName( "src\\drivers\\surpratk.c", "525" );
+  RegisterSectionName( "src\\drivers\\system1.c", "526" );
+  RegisterSectionName( "src\\drivers\\system18.c", "527" );
+  RegisterSectionName( "src\\drivers\\system24.c", "528" );
+  RegisterSectionName( "src\\drivers\\system32.c", "529" );
+  RegisterSectionName( "src\\drivers\\tagteam.c", "530" );
+  RegisterSectionName( "src\\drivers\\tail2nos.c", "531" );
+  RegisterSectionName( "src\\drivers\\taito_b.c", "532" );
+  RegisterSectionName( "src\\drivers\\taito_f2.c", "533" );
+  RegisterSectionName( "src\\drivers\\taito_f3.c", "534" );
+  RegisterSectionName( "src\\drivers\\taito_h.c", "535" );
+  RegisterSectionName( "src\\drivers\\taito_l.c", "536" );
+  RegisterSectionName( "src\\drivers\\taito_x.c", "537" );
+  RegisterSectionName( "src\\drivers\\taito_z.c", "538" );
+  RegisterSectionName( "src\\drivers\\taitoair.c", "539" );
+  RegisterSectionName( "src\\drivers\\taitosj.c", "540" );
+  RegisterSectionName( "src\\drivers\\tankbatt.c", "541" );
+  RegisterSectionName( "src\\drivers\\tankbust.c", "542" );
+  RegisterSectionName( "src\\drivers\\taotaido.c", "543" );
+  RegisterSectionName( "src\\drivers\\targeth.c", "544" );
+  RegisterSectionName( "src\\drivers\\taxidrvr.c", "545" );
+  RegisterSectionName( "src\\drivers\\tbowl.c", "546" );
+  RegisterSectionName( "src\\drivers\\tecmo.c", "547" );
+  RegisterSectionName( "src\\drivers\\tecmo16.c", "548" );
+  RegisterSectionName( "src\\drivers\\tecmosys.c", "549" );
+  RegisterSectionName( "src\\drivers\\tehkanwc.c", "550" );
+  RegisterSectionName( "src\\drivers\\tempest.c", "551" );
+  RegisterSectionName( "src\\drivers\\terracre.c", "552" );
+  RegisterSectionName( "src\\drivers\\tetrisp2.c", "553" );
+  RegisterSectionName( "src\\drivers\\thedeep.c", "554" );
+  RegisterSectionName( "src\\drivers\\thepit.c", "555" );
+  RegisterSectionName( "src\\drivers\\thief.c", "556" );
+  RegisterSectionName( "src\\drivers\\thoop2.c", "557" );
+  RegisterSectionName( "src\\drivers\\thunderj.c", "558" );
+  RegisterSectionName( "src\\drivers\\thunderx.c", "559" );
+  RegisterSectionName( "src\\drivers\\tickee.c", "560" );
+  RegisterSectionName( "src\\drivers\\tigeroad.c", "561" );
+  RegisterSectionName( "src\\drivers\\timelimt.c", "562" );
+  RegisterSectionName( "src\\drivers\\tmnt.c", "563" );
+  RegisterSectionName( "src\\drivers\\tnzs.c", "564" );
+  RegisterSectionName( "src\\drivers\\toaplan1.c", "565" );
+  RegisterSectionName( "src\\drivers\\toaplan2.c", "566" );
+  RegisterSectionName( "src\\drivers\\toki.c", "567" );
+  RegisterSectionName( "src\\drivers\\toobin.c", "568" );
+  RegisterSectionName( "src\\drivers\\topspeed.c", "569" );
+  RegisterSectionName( "src\\drivers\\toratora.c", "570" );
+  RegisterSectionName( "src\\drivers\\tourtabl.c", "571" );
+  RegisterSectionName( "src\\drivers\\toypop.c", "572" );
+  RegisterSectionName( "src\\drivers\\tp84.c", "573" );
+  RegisterSectionName( "src\\drivers\\travrusa.c", "574" );
+  RegisterSectionName( "src\\drivers\\triplhnt.c", "575" );
+  RegisterSectionName( "src\\drivers\\troangel.c", "576" );
+  RegisterSectionName( "src\\drivers\\truco.c", "577" );
+  RegisterSectionName( "src\\drivers\\tsamurai.c", "578" );
+  RegisterSectionName( "src\\drivers\\ttmahjng.c", "579" );
+  RegisterSectionName( "src\\drivers\\tubep.c", "580" );
+  RegisterSectionName( "src\\drivers\\tugboat.c", "581" );
+  RegisterSectionName( "src\\drivers\\tumblep.c", "582" );
+  RegisterSectionName( "src\\drivers\\tunhunt.c", "583" );
+  RegisterSectionName( "src\\drivers\\turbo.c", "584" );
+  RegisterSectionName( "src\\drivers\\tutankhm.c", "585" );
+  RegisterSectionName( "src\\drivers\\twin16.c", "586" );
+  RegisterSectionName( "src\\drivers\\twincobr.c", "587" );
+  RegisterSectionName( "src\\drivers\\ultraman.c", "588" );
+  RegisterSectionName( "src\\drivers\\ultratnk.c", "589" );
+  RegisterSectionName( "src\\drivers\\undrfire.c", "590" );
+  RegisterSectionName( "src\\drivers\\unico.c", "591" );
+  RegisterSectionName( "src\\drivers\\usgames.c", "592" );
+  RegisterSectionName( "src\\drivers\\vaportra.c", "593" );
+  RegisterSectionName( "src\\drivers\\vastar.c", "594" );
+  RegisterSectionName( "src\\drivers\\vball.c", "595" );
+  RegisterSectionName( "src\\drivers\\vendetta.c", "596" );
+  RegisterSectionName( "src\\drivers\\vicdual.c", "597" );
+  RegisterSectionName( "src\\drivers\\victory.c", "598" );
+  RegisterSectionName( "src\\drivers\\videopin.c", "599" );
+  RegisterSectionName( "src\\drivers\\vigilant.c", "600" );
+  RegisterSectionName( "src\\drivers\\vindictr.c", "601" );
+  RegisterSectionName( "src\\drivers\\volfied.c", "602" );
+  RegisterSectionName( "src\\drivers\\vsnes.c", "603" );
+  RegisterSectionName( "src\\drivers\\vulgus.c", "604" );
+  RegisterSectionName( "src\\drivers\\wallc.c", "605" );
+  RegisterSectionName( "src\\drivers\\wardner.c", "606" );
+  RegisterSectionName( "src\\drivers\\warpwarp.c", "607" );
+  RegisterSectionName( "src\\drivers\\warriorb.c", "608" );
+  RegisterSectionName( "src\\drivers\\wc90.c", "609" );
+  RegisterSectionName( "src\\drivers\\wc90b.c", "610" );
+  RegisterSectionName( "src\\drivers\\wecleman.c", "611" );
+  RegisterSectionName( "src\\drivers\\welltris.c", "612" );
+  RegisterSectionName( "src\\drivers\\wgp.c", "613" );
+  RegisterSectionName( "src\\drivers\\wilytowr.c", "614" );
+  RegisterSectionName( "src\\drivers\\wiping.c", "615" );
+  RegisterSectionName( "src\\drivers\\wiz.c", "616" );
+  RegisterSectionName( "src\\drivers\\wolfpack.c", "617" );
+  RegisterSectionName( "src\\drivers\\wrally.c", "618" );
+  RegisterSectionName( "src\\drivers\\wwfsstar.c", "619" );
+  RegisterSectionName( "src\\drivers\\wwfwfest.c", "620" );
+  RegisterSectionName( "src\\drivers\\xain.c", "621" );
+  RegisterSectionName( "src\\drivers\\xevious.c", "622" );
+  RegisterSectionName( "src\\drivers\\xexex.c", "623" );
+  RegisterSectionName( "src\\drivers\\xmen.c", "624" );
+  RegisterSectionName( "src\\drivers\\xxmissio.c", "625" );
+  RegisterSectionName( "src\\drivers\\xybots.c", "626" );
+  RegisterSectionName( "src\\drivers\\xyonix.c", "627" );
+  RegisterSectionName( "src\\drivers\\yamato.c", "628" );
+  RegisterSectionName( "src\\drivers\\yard.c", "629" );
+  RegisterSectionName( "src\\drivers\\yiear.c", "630" );
+  RegisterSectionName( "src\\drivers\\yunsun16.c", "631" );
+  RegisterSectionName( "src\\drivers\\yunsung8.c", "632" );
+  RegisterSectionName( "src\\drivers\\zac2650.c", "633" );
+  RegisterSectionName( "src\\drivers\\zaccaria.c", "634" );
+  RegisterSectionName( "src\\drivers\\zaxxon.c", "635" );
+  RegisterSectionName( "src\\drivers\\zerozone.c", "636" );
+  RegisterSectionName( "src\\drivers\\zn.c", "637" );
+  RegisterSectionName( "src\\drivers\\zodiack.c", "638" );
 }
+#pragma code_seg()
+#pragma data_seg()
+} // End extern "C"
 
 

@@ -62,6 +62,7 @@
 				StackSize="65536"
 				IncludeDebugInfo="TRUE"
 				LimitAvailableMemoryTo64MB="TRUE"
+				FormatUD="TRUE"
 				NoLibWarn="TRUE"
 				TitleName="&quot;MAMEoX Launcher [DBG]&quot;"/>
 		</Configuration>
@@ -87,6 +88,7 @@
 				RuntimeLibrary="4"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
+				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="FALSE"
@@ -124,6 +126,8 @@
 				FileName="$(TargetDir)default.xbe"
 				StackSize="65536"
 				LimitAvailableMemoryTo64MB="FALSE"
+				FormatUD="TRUE"
+				NoLibWarn="TRUE"
 				TitleName="&quot;MAMEoX Launcher&quot;"/>
 		</Configuration>
 	</Configurations>
