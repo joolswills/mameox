@@ -109,7 +109,6 @@ void __cdecl main( void )
   InitializeTiming();
 	InitializeD3DRenderer( g_graphicsManager, &g_fontSet.DefaultFont() );
   
-  SaveOptions();
 
   CHECKRAM();
 
