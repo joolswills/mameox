@@ -95,11 +95,11 @@ void CLightgunCalibrator::MoveCursor( CInputManager &inputManager, BOOL unused )
   else if( gp->IsButtonPressed( GP_A ) )
   {
       // Store the value
-    if( m_calibrationStep < 3 )
+    if( m_calibrationStep < (NUM_CALIBRATIONSTEPS - 1) )
     {
       calibData.m_xData[m_calibrationStep] = m_currentGunX;
       calibData.m_yData[m_calibrationStep] = m_currentGunY;
-    }    
+    }
 
       // Move on to the next step
     if( ++m_calibrationStep == NUM_CALIBRATIONSTEPS )
@@ -118,6 +118,15 @@ void CLightgunCalibrator::MoveCursor( CInputManager &inputManager, BOOL unused )
     }
     else
       gp->WaitForNoButton();  // Wait for the trigger to be released
+
+    if( m_calibrationStep == (NUM_CALIBRATIONSTEPS - 1) )
+    {
+        // We've collected UL and center values, throw them to the gun
+      gp->SetLightgunCalibration( -calibData.m_xData[1], 
+                                  -calibData.m_yData[1], 
+                                  -calibData.m_xData[0], 
+                                  -calibData.m_yData[0] );
+    }
   }
 
   GetCalibratedCursorPosition( inputManager );
@@ -339,6 +348,7 @@ BOOL CLightgunCalibrator::FindNextGun( void )
 //---------------------------------------------------------------------
 void CLightgunCalibrator::GetCalibratedCursorPosition( CInputManager &inputManager )
 {
+  /*
   lightgunCalibration_t &calibData = g_calibrationData[m_currentInputDeviceIndex];
 
     // Don't bother if we're not pointing at the screen
@@ -375,4 +385,12 @@ void CLightgunCalibrator::GetCalibratedCursorPosition( CInputManager &inputManag
     m_currentGunCalibratedY = 128;
   else if( m_currentGunCalibratedY < -128 )
     m_currentGunCalibratedY = -128;
+  */
+
+  m_currentGunCalibratedX = ((FLOAT)m_currentGunX * 128.0f / (FLOAT)XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_X);
+  m_currentGunCalibratedY = ((FLOAT)m_currentGunY * 128.0 / (FLOAT)XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_Y);
 }
+
+
+
+

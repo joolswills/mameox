@@ -241,7 +241,16 @@ public:
 		//------------------------------------------------------
 	const XINPUT_CAPABILITIES *GetGamepadDeviceCaps( void ) const;
 
-
+		//------------------------------------------------------
+		//	SetLightgunCalibration
+    //! Set the calibration data for a lightgun device
+    //!
+    //! \param  cx - Center X offset
+    //! \param  cy - Center Y offset
+    //! \param  ulx - Upper left corner X offset
+    //! \param  uly - Upper left corner Y offset
+		//------------------------------------------------------
+  void SetLightgunCalibration( INT32 cx, INT32 cy, INT32 ulx, INT32 uly );
 
   protected:
 		//------------------------------------------------------

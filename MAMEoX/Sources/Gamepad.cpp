@@ -324,6 +324,22 @@ const XINPUT_CAPABILITIES *CGamepad::GetGamepadDeviceCaps( void ) const
   return NULL;
 }
 
+//------------------------------------------------------
+//	SetLightgunCalibration
+//------------------------------------------------------
+void CGamepad::SetLightgunCalibration( INT32 cx, INT32 cy, INT32 ulx, INT32 uly )
+{
+  if( IsConnected() )
+  {
+    XINPUT_LIGHTGUN_CALIBRATION_OFFSETS offsets;
+    offsets.wCenterX = cx;
+    offsets.wCenterY = cy;
+    offsets.wUpperLeftX = ulx;
+    offsets.wUpperLeftY = uly;
+
+    XInputSetLightgunCalibration( m_gamepadDeviceHandle, &offsets );
+  }
+}
 
 //------------------------------------------------------
 //	AttachRemoveDevices
