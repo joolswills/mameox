@@ -1,0 +1,360 @@
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@                           MAMEoX FAQ v 0.1                          @@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@                                                                     @@@
+@@@           MAMEoX v 0.70.b3, based on the MAME v 0.70 core           @@@
+@@@           Ported by eabair, opcode                                  @@@
+@@@           Portions based on MameX b5                                @@@
+@@@           original port by opcode, updated by superfro              @@@
+@@@                                                                     @@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+ 0.0 Change log:
+ ---------------
+
+ 07/07/2003 - Initial creation. 
+
+ 1.0 Purpose:
+ ------------
+
+ The purpose of this FAQ is to answer some very common questions
+ about MAMEoX.  This FAQ is in no way intended to address questions
+ about using MAME in general, as there is an excellent FAQ located at 
+ http://www.mame.net that address many of the common questions users
+ have when using MAME.  This FAQ specifically focuses on the X-Box 
+ flavor of MAME.
+
+ 1.1 About MAMEoX:
+ -----------------
+ MAMEoX is an effort to port MAME to the X-Box.  MAMEoX is open source.
+ MAME is distributed with MAMEoX under the MAME license.  Current source
+ code for MAMEoX can be found at it's home on SourceForge - 
+ 
+ http://sourceforge.net/projects/mameox/ 
+
+ Please note that only source code can be found on this website.  MAMEoX
+ was built with the official Microsoft XDK, so no compiled binaries of 
+ this source code are made available.
+
+ 1.2 Frequently Asked Questions About MAMEoX:
+ --------------------------------------------
+ Q.  The source code won't run on my X-Box!  How do I get the source code
+     to run on my X-Box?
+
+ A.  You need to compile the source code into binaries that will run on 
+     your X-Box.  To do so you will need Visual Studio.NET and the X-Box
+     XDK.  Follow the directions provided with the source code (in 
+     Docs\readme.txt of the MAMEoX root) to compile MAMEoX.
+ -------------------------------------------------------------------------
+ Q.  Where do I get the XDK and Visual Studio.NET?
+
+ A.  I don't know.
+ -------------------------------------------------------------------------
+ Q.  OK, so if I can't compile the source code, where do I get the 
+     compiled binaries, smart guy?
+
+ A.  I don't know.
+ -------------------------------------------------------------------------
+ Q.  Can you at least tell me where I can get roms for MAMEoX?
+
+ A.  Nope.  Dump the arcade board of the cabinet you own.
+ -------------------------------------------------------------------------
+ Q.  OK, I have MAMEoX binaries, yipee!  How do I get them to my X-Box
+     so I can use them?
+
+ A.  I don't know.  There are instructions for setting up MAMEoX and it's
+     directory structure in Docs/readme.txt, but getting the files to your
+     X-Box in the first place is your own business.
+ -------------------------------------------------------------------------
+ Q.  This is a FAQ, right?  
+
+ A.  Yup. :)
+ -------------------------------------------------------------------------
+ Q.  Ok!  I've got MAMEoX on my X-Box and it's running like a champ!  I 
+     have never been happier!  Where do I put my roms?
+
+ A.  In the roms subdirectory of the MAMEoX root directory.  If it's not
+     there already, create it.  Make sure your roms are zipped.
+ -------------------------------------------------------------------------
+ Q.  I've put my rom files in the roms directory, but they still don't
+     show up in the list. What's wrong?
+
+ Q.  I've just added some new rom files to the roms directory, but they
+     don't show up in the list. I can only see the files that I put into
+     the directory the first time I ran MAMEoX. What's going wrong?
+
+ A.  Try pressing START and selecting "Scan for ROMs" in the pop-up menu.
+     Anytime you add (or remove) rom files, you have to run this file to
+     let MAMEoX know that something has changed.
+     If that still doesn't work, make absolutely sure your rom files are
+     zipped. MAMEoX does not support unzipped roms.
+ -------------------------------------------------------------------------     
+ Q.  Does MAMEoX support samples?
+
+ A.  Yes, put them in the samples subdirectory of the MAMEoX root 
+     directory.  If it's not there already, create it.  Your samples 
+     should also be zipped.
+ -------------------------------------------------------------------------
+ Q.  Does MAMEoX support cheats?
+
+ A.  Yes, put them in the general subdirectory of the MAMEoX root
+     directory.  It should be there already.  Place your cheats.dat 
+     file in this directory.  Make sure cheats.dat is _not_ zipped.
+     Also, you may enable/disable the cheat function on the "General"
+     page of the options menu (press START and select "Options Menu" to
+     get there.
+ -------------------------------------------------------------------------
+ Q.  Does MAMEoX support screenshots?
+
+ A.  Support for taking screenshots has been added, but there is currently
+     no way to display them within MAMEoX. This feature will be implemented
+     in a future version.
+ -------------------------------------------------------------------------
+ Q.  Why won't a particular rom run?
+
+ A.  There are many reasons your rom might not run.  You might have a bad
+     rom.  You might have a rom that changed in a later version of MAME
+     that requires different files in the rom fileset.  You might not have
+     the required bios file the rom needs to run (neogeo bios being one of
+     the more popular 'forgotten rom files'). If you're sure that you have
+     a valid zip file, and that it contains all of the necessary files,
+     MAMEoX may just be running out of memory when loading the ROM.
+     One of the more common reasons MAMEoX cannot run your rom is 
+     because there is a limited amount of memory available to do so.  
+     If you get an out of memory error (malloc error), then the X-Box has
+     run out of memory trying to load your rom.
+ -------------------------------------------------------------------------
+ Q.  My rom loads, but MAMEoX still reports that it's out of memory and 
+     then kicks me back out to my rom list!  My zipped rom isn't that big!  
+     MAMEoX says the rom files loaded!  Why won't my rom run?
+
+ A.  If only things were as simple as just loading your rom!  Your rom is 
+     zipped, so MAMEoX has to decompress it.  It then has to decode 
+     graphics and start video and audio emulation within the same memory
+     space.  
+
+     A good analogy would be to imagine making bread.  All of the dry 
+     ingredients for bread can fit into a pretty tiny bag (your zipped
+     rom).  However to make bread, you need to add water and other 
+     ingredients to the dry mix.  When you have dough, you have to let
+     it rise a bit (at this stage we have uncompressed your zipped rom).
+     
+     At this point, everything that is going to go into the bread is 
+     there, but you certainly wouldn't want to eat it yet, would you?  
+     Additionally, the bread in it's current state isn't nearly as large
+     as it's going to get.  You put the dough in a bread pan and stick
+     it in the oven (your X-Box) to bake.  You quickly realize as the 
+     bread bakes that it is not going to fit in the pan, and it starts to 
+     rise above the edges (at this point the rom files are allocating 
+     the amount of RAM they will need to run).
+
+     Unfortunately, our oven (the X-Box) happens to be very small.  
+     Sometimes the pan can barely fit into it!  If the bread rises out 
+     of the pan and does not have room in the oven, it will most 
+     probably light on fire, destroying your oven, burning down your 
+     house, and probably horribly disfiguring you in the process.  At 
+     this point the last thing you want to do is bake more bread 
+     (you're kicked back out to the rom list menu).
+ 
+     There you go.  I hope we haven't terrified you.
+
+     A good test to see if a rom might work is to load it up in the latest
+     version of Mame32 and see how much memory it consumes in the task 
+     manager.  If it's over 64 MB, it is unlikely that your rom will run
+     in MAMEoX anytime in the near future (as it would require virtual 
+     memory support, which is very low on the developer's priority list).
+     MAMEoX loads drivers in "sections" to save memory, and unloads the 
+     ones it does not need.  If it were not for this fact, roms that 
+     consume over 32 MB in Mame32 would probably not work. As of the time
+     of this writing, MAMEoX can provide around 54 MB, but this number
+     changes as the MAMEoX wizards figure out how to squeeze more RAM 
+     out of the X-Box.
+ --------------------------------------------------------------------------
+ Q.  My X-Box isn't really going to light on fire and burn down my house, 
+     is it?
+
+ A.  If it does you can not hold us personally responsible ;)
+ --------------------------------------------------------------------------
+ Q.  I like eating bread dough!
+
+ A.  That isn't a question.
+ --------------------------------------------------------------------------
+ Q.  Everyone says creating a swap file for MAMEoX to use would solve the
+     problem of running larger roms in MAMEoX!  Windows uses a swap file!  
+     It must be really easy to implement!  Why don't you guys use 
+     virtual memory in MAMEoX?  It's probably easy to do!  What's the 
+     holdup?  By the way, I am not a coder and I have never looked at 
+     code in my entire life.
+
+ A.  First, while this is something that the coders might decide to tackle
+     in the far-flung future (and we're talking _far_ flung here) it's 
+     not likely this will work very well with MAME for a couple of reasons.
+     
+     MAME currently loads roms into RAM, so it can emulate games properly.
+     Rom information that is dumped into your rom file was originally 
+     present in memory to allow the arcade machine quick access to its 
+     contents.  Since the files were in memory, access to this information
+     was extremely quick from an I/O perspective (I/O is input/output
+     for the non-technical).  I/O to a hard drive, which is what would be
+     used in MAMEoX, because of lack of RAM to use, would be a _lot_
+     slower than memory I/O wait.  It's not even clear at this time if
+     the increased I/O time would work well or at all with roms loaded
+     in MAMEoX.  To make it work well (if at all), the MAME core would 
+     need to be investigated so we would know the proper things in each
+     rom to send to virtual memory.  It's likely the source code of 
+     MAME would need to be 'hacked' to accomplish this (which is 
+     something the coders are not excited about doing, MAME is already 
+     hacked enough by itself to begin with :) ).
+
+     This is beside the point that any sort of virtual memory system for
+     MAMEoX to use would have to be written from scratch.  There is no
+     'virtual memory' support that can be ported from the MAME core, and
+     MAMEoX is a port of MAME to the X-Box that is optimized to run as
+     many games as possible on your X-Box.  The developers, if they 
+     decide to investigate this in the future, will more than likely only
+     do so after they have milked every last byte out of the X-Box's RAM.
+
+     If you could not tell by the tone of the question, the MAMEoX team
+     is not fond of receiving 'demands' from it's users for this, 
+     especially when the tone of the question would have anyone believe
+     adding this sort of 'feature' is simple.
+
+     In closing, MAMEoX is open source.  If you think that implementing
+     virtual memory is easy, you're more than welcome to check the source
+     out of CVS and do the work for us. :)  Isn't the open source model
+     wonderful?
+           
+ --------------------------------------------------------------------------
+ Q.  I want to help the MAMEoX team!  What can I do?
+
+ A.  The MAMEoX team can always use the following:
+
+     - Testers.  If you can compile the CVS tree and make working binaries
+       for your X-Box, we _need_ your help.  Any testing the developers
+       have to do is time away from doing the coding they need to do to
+       make MAMEoX great!  Being a tester involves testing and submitting
+       bug reports.  We need people to submit proper bug reports, because
+       the coders work so hard coding that they seldom even have time to
+       play games in their rom collection.  Chances are that if a rom is
+       broken, the coders don't know.
+
+       As an added incentive, if you have the ability to compile the CVS
+       tree, and post 
+
+       Even if you can't compile CVS, we can still use your help.  Testing
+       with the latest release level is appreciated, just follow the 
+       proper procedures for reporting a bug (see below).
+
+     - Suggestions to make MAMEoX better.  Do you have an idea for an 
+       enhancement or feature that you think would make MAMEoX great?  We
+       want to know about it.  Check out the 'RFE' section of the main
+       MAMEoX Sourceforge site and let us know about it.       
+ --------------------------------------------------------------------------
+ Q.  How do I post a bug report?
+
+ A.  We're glad you asked :)  Bugs can be posted on the Sourceforge website
+     under the subheading, 'bugs'. If you take the time to post a "good"
+     report, it both saves the dev team a _lot_ of time (you'd be surprised
+     how quickly the time spent reading through bug reports adds up when
+     you need to open and read 50), and makes your bug a better candidate
+     for developer attention. Bad reports make it much harder for us to
+     find and fix the problems, and often take up time that we would 
+     otherwise spend fixing problems or adding features.
+
+     Here are some tips:
+
+	1.  Make sure you've looked at the pending and closed bug reports
+            before posting your bug.  Duplicate bug reports are annoying
+            and time consuming to process, even if we ignore it. You can
+            see these "hidden" reports by switching the "status" option
+            on the bug page to "any".
+
+        2.  Please post the following if you're posting a bug related to 
+            a specific game:
+
+		- Game name  (for example, Mortal Kombat)
+		- Rom name   (for example, mk.zip)
+		- Rom bios   (for example, neogeo.zip)
+		- Size  (please list size in zipped / unzipped)
+		- Post the problem in the subject with the game title
+		  (for example, Mortal Kombat - out of memory)
+		- Post a brief description of the problem in your
+		  comments
+		- Assign bug to eabair
+
+	3.  All other bugs should follow in principle the above format 
+            as it would apply to the bug you are reporting.  In general
+            please post a short description if possible in the subject
+	    line so we have an idea of what the bug is before we read
+            further. This allows us to prioritize bugs without eating up
+            alot of time, which allows the overall development to move
+            along much faster.
+
+	4.  Please, only post one bug per report.  Do not report 
+            multiple nonworking games in one bug report.  Please do not
+            report multiple bugs in one bug report.  Split them up as
+	    each bug is assigned a priority. Failing to do this will
+            often result in us missing bugs, as only the first item
+            mentioned in the report will be worked on.
+
+	5.  It always helps us if you're having a problem using MAMEoX
+	    if you respond to the forum topic on Sourceforge entitled, 
+	    'Poll for info about user's X-Box' so we know what your 
+	    setup is (very useful as sometimes we can not duplicate 
+            problems). If you don't do this, you'll probably just get
+            a reply from the team asking you to provide this info before
+            we can even start looking into it.
+ --------------------------------------------------------------------------           
+  Q.  I posted a bug/feature request/help item, and it disappeared!
+      What's going on?
+
+  A.  Check closed/pending items, as it's already fixed or marked as a
+      duplicate entry.  You can check 'closed' and 'pending' statuses
+      of the bugs and feature requests (RFE) pages of the Sourceforge 
+      MAMEoX site. 
+ --------------------------------------------------------------------------     
+      
+          
+
+ 1.3 Credits
+ -----------
+
+ Credit Info
+ -----------
+
+ Want your name in the credits?  Then submit a frequently asked question
+ along with a good answer!  All submitted questions are subject to editing
+ but you will receive credit for your submission in this section.  Help us
+ help the MAMEoX challenged!  Please submit your FAQ entries on the 
+ official MAMEoX forums found on the Sourceforge page:
+
+ http://sourceforge.net/projects/mameox
+
+ Please put 'FAQ addition' along with the name you'd like to be credited
+ under in the subject line of the post and we might add your submission.
+
+ We currently need people to work on the following sections:
+ -----------------------------------------------------------
+
+ Installing MAMEoX on your hard drive
+ Installing MAMEoX on CDRW / DVDR
+ 
+ If you can translate this FAQ for us into something that is readable in
+ another language (i.e. you're not just using Bablefish or an equivalent)
+ we will accept your help!
+ 
+ Contributing users
+ ------------------
+
+ noodle1009
+ ----------
+ Initial creation of the FAQ, initial entries in version 0.1. 
+
+ eabair
+ ------
+ For the wonderful bread making analogy ;)
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@                Thanks for reading, and enjoy MAMEoX!                @@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
