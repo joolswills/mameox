@@ -29,6 +29,7 @@
 #include "xbox_Direct3DRenderer.h"
 #include "xbox_Timing.h"
 #include "DebugLogger.h"
+#include "xbox_Network.h"
 
 	// Font class from the XDK
 #include "XBFont.h"
@@ -256,15 +257,17 @@ void __cdecl main( void )
 #else
 	g_font.Create( "Font.xpr", 0 );
 #endif
-		// Intialize the various MAME OSD-specific subsystems
+  LoadOptions();
+
+	// Intialize the various MAME OSD-specific subsystems
 	InitializeFileIO();
 	InitializeTiming();
+  InitializeNetwork();
+
+  SaveOptions(); 
 
 		// Initialize the input subsystem
 	g_inputManager.Create( 4, 8 );
-
-	LoadOptions();
-  SaveOptions();
 
   LoadPackedResources();
 
