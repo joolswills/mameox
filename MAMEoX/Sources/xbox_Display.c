@@ -216,7 +216,7 @@ void osd_update_video_and_audio(struct mame_display *display)
     if( g_autoFrameSkip && cpu_getcurrentframe() > (FRAMESKIP_LEVELS << 1) )
     {
 
-		    // if we're too fast, attempt to increase the frameskip
+		    // if we're too fast, attempt to decrease the frameskip
 		  if( performance->game_speed_percent >= 99.5f )
 		  {
 			  ++g_frameskipAdjust;
