@@ -1,11 +1,11 @@
-#pragma code_seg("C713")
-#pragma data_seg("D713")
-#pragma bss_seg("B713")
-#pragma const_seg("K713")
-#pragma comment(linker, "/merge:D713=713")
-#pragma comment(linker, "/merge:C713=713")
-#pragma comment(linker, "/merge:B713=713")
-#pragma comment(linker, "/merge:K713=713")
+#pragma code_seg("C712")
+#pragma data_seg("D712")
+#pragma bss_seg("B712")
+#pragma const_seg("K712")
+#pragma comment(linker, "/merge:D712=712")
+#pragma comment(linker, "/merge:C712=712")
+#pragma comment(linker, "/merge:B712=712")
+#pragma comment(linker, "/merge:K712=712")
 /***************************************************************************
 
 Tiger Road (C) 1987 Romstar/Capcom USA

@@ -1,11 +1,11 @@
-#pragma code_seg("C685")
-#pragma data_seg("D685")
-#pragma bss_seg("B685")
-#pragma const_seg("K685")
-#pragma comment(linker, "/merge:D685=685")
-#pragma comment(linker, "/merge:C685=685")
-#pragma comment(linker, "/merge:B685=685")
-#pragma comment(linker, "/merge:K685=685")
+#pragma code_seg("C682")
+#pragma data_seg("D682")
+#pragma bss_seg("B682")
+#pragma const_seg("K682")
+#pragma comment(linker, "/merge:D682=682")
+#pragma comment(linker, "/merge:C682=682")
+#pragma comment(linker, "/merge:B682=682")
+#pragma comment(linker, "/merge:K682=682")
 /***************************************************************************
 
 Taito B System

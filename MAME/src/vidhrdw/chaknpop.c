@@ -1,11 +1,11 @@
-#pragma code_seg("C187")
-#pragma data_seg("D187")
-#pragma bss_seg("B187")
-#pragma const_seg("K187")
-#pragma comment(linker, "/merge:D187=187")
-#pragma comment(linker, "/merge:C187=187")
-#pragma comment(linker, "/merge:B187=187")
-#pragma comment(linker, "/merge:K187=187")
+#pragma code_seg("C186")
+#pragma data_seg("D186")
+#pragma bss_seg("B186")
+#pragma const_seg("K186")
+#pragma comment(linker, "/merge:D186=186")
+#pragma comment(linker, "/merge:C186=186")
+#pragma comment(linker, "/merge:B186=186")
+#pragma comment(linker, "/merge:K186=186")
 /*
  *	Chack'n Pop (C) 1983 TAITO Corp.
  *	emulate video hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C207")
-#pragma data_seg("D207")
-#pragma bss_seg("B207")
-#pragma const_seg("K207")
-#pragma comment(linker, "/merge:D207=207")
-#pragma comment(linker, "/merge:C207=207")
-#pragma comment(linker, "/merge:B207=207")
-#pragma comment(linker, "/merge:K207=207")
+#pragma code_seg("C206")
+#pragma data_seg("D206")
+#pragma bss_seg("B206")
+#pragma const_seg("K206")
+#pragma comment(linker, "/merge:D206=206")
+#pragma comment(linker, "/merge:C206=206")
+#pragma comment(linker, "/merge:B206=206")
+#pragma comment(linker, "/merge:K206=206")
 /***************************************************************************
 
   gryzor: vidhrdw.c

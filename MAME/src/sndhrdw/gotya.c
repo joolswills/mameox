@@ -1,11 +1,11 @@
-#pragma code_seg("C321")
-#pragma data_seg("D321")
-#pragma bss_seg("B321")
-#pragma const_seg("K321")
-#pragma comment(linker, "/merge:D321=321")
-#pragma comment(linker, "/merge:C321=321")
-#pragma comment(linker, "/merge:B321=321")
-#pragma comment(linker, "/merge:K321=321")
+#pragma code_seg("C320")
+#pragma data_seg("D320")
+#pragma bss_seg("B320")
+#pragma const_seg("K320")
+#pragma comment(linker, "/merge:D320=320")
+#pragma comment(linker, "/merge:C320=320")
+#pragma comment(linker, "/merge:B320=320")
+#pragma comment(linker, "/merge:K320=320")
 #include "driver.h"
 
 struct gotya_sample

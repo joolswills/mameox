@@ -1,11 +1,11 @@
-#pragma code_seg("C560")
-#pragma data_seg("D560")
-#pragma bss_seg("B560")
-#pragma const_seg("K560")
-#pragma comment(linker, "/merge:D560=560")
-#pragma comment(linker, "/merge:C560=560")
-#pragma comment(linker, "/merge:B560=560")
-#pragma comment(linker, "/merge:K560=560")
+#pragma code_seg("C559")
+#pragma data_seg("D559")
+#pragma bss_seg("B559")
+#pragma const_seg("K559")
+#pragma comment(linker, "/merge:D559=559")
+#pragma comment(linker, "/merge:C559=559")
+#pragma comment(linker, "/merge:B559=559")
+#pragma comment(linker, "/merge:K559=559")
 /***************************************************************************
 
 Irem Red Alert sound hardware

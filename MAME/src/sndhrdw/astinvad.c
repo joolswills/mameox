@@ -1,11 +1,11 @@
-#pragma code_seg("C117")
-#pragma data_seg("D117")
-#pragma bss_seg("B117")
-#pragma const_seg("K117")
-#pragma comment(linker, "/merge:D117=117")
-#pragma comment(linker, "/merge:C117=117")
-#pragma comment(linker, "/merge:B117=117")
-#pragma comment(linker, "/merge:K117=117")
+#pragma code_seg("C116")
+#pragma data_seg("D116")
+#pragma bss_seg("B116")
+#pragma const_seg("K116")
+#pragma comment(linker, "/merge:D116=116")
+#pragma comment(linker, "/merge:C116=116")
+#pragma comment(linker, "/merge:B116=116")
+#pragma comment(linker, "/merge:K116=116")
 /***********************************
  updated: 1997-04-09 08:46 TT
  updated  20-3-1998 LT Added colour changes on base explosion

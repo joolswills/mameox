@@ -1,11 +1,11 @@
-#pragma code_seg("C747")
-#pragma data_seg("D747")
-#pragma bss_seg("B747")
-#pragma const_seg("K747")
-#pragma comment(linker, "/merge:D747=747")
-#pragma comment(linker, "/merge:C747=747")
-#pragma comment(linker, "/merge:B747=747")
-#pragma comment(linker, "/merge:K747=747")
+#pragma code_seg("C746")
+#pragma data_seg("D746")
+#pragma bss_seg("B746")
+#pragma const_seg("K746")
+#pragma comment(linker, "/merge:D746=746")
+#pragma comment(linker, "/merge:C746=746")
+#pragma comment(linker, "/merge:B746=746")
+#pragma comment(linker, "/merge:K746=746")
 #include "driver.h"
 
 data8_t *usg_videoram,*usg_charram;

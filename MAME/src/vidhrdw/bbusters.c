@@ -1,11 +1,11 @@
-#pragma code_seg("C142")
-#pragma data_seg("D142")
-#pragma bss_seg("B142")
-#pragma const_seg("K142")
-#pragma comment(linker, "/merge:D142=142")
-#pragma comment(linker, "/merge:C142=142")
-#pragma comment(linker, "/merge:B142=142")
-#pragma comment(linker, "/merge:K142=142")
+#pragma code_seg("C141")
+#pragma data_seg("D141")
+#pragma bss_seg("B141")
+#pragma const_seg("K141")
+#pragma comment(linker, "/merge:D141=141")
+#pragma comment(linker, "/merge:C141=141")
+#pragma comment(linker, "/merge:B141=141")
+#pragma comment(linker, "/merge:K141=141")
 /***************************************************************************
 
 	Emulation by Bryan McPhail, mish@tendril.co.uk

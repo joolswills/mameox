@@ -1,11 +1,11 @@
-#pragma code_seg("C543")
-#pragma data_seg("D543")
-#pragma bss_seg("B543")
-#pragma const_seg("K543")
-#pragma comment(linker, "/merge:D543=543")
-#pragma comment(linker, "/merge:C543=543")
-#pragma comment(linker, "/merge:B543=543")
-#pragma comment(linker, "/merge:K543=543")
+#pragma code_seg("C542")
+#pragma data_seg("D542")
+#pragma bss_seg("B542")
+#pragma const_seg("K542")
+#pragma comment(linker, "/merge:D542=542")
+#pragma comment(linker, "/merge:C542=542")
+#pragma comment(linker, "/merge:B542=542")
+#pragma comment(linker, "/merge:K542=542")
 /***************************************************************************
   Psychic 5
 

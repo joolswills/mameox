@@ -1,11 +1,11 @@
-#pragma code_seg("C772")
-#pragma data_seg("D772")
-#pragma bss_seg("B772")
-#pragma const_seg("K772")
-#pragma comment(linker, "/merge:D772=772")
-#pragma comment(linker, "/merge:C772=772")
-#pragma comment(linker, "/merge:B772=772")
-#pragma comment(linker, "/merge:K772=772")
+#pragma code_seg("C771")
+#pragma data_seg("D771")
+#pragma bss_seg("B771")
+#pragma const_seg("K771")
+#pragma comment(linker, "/merge:D771=771")
+#pragma comment(linker, "/merge:C771=771")
+#pragma comment(linker, "/merge:B771=771")
+#pragma comment(linker, "/merge:K771=771")
 /***************************************************************************
 
 Wily Tower   (c) 1984 Irem

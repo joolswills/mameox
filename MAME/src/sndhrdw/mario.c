@@ -1,11 +1,11 @@
-#pragma code_seg("C414")
-#pragma data_seg("D414")
-#pragma bss_seg("B414")
-#pragma const_seg("K414")
-#pragma comment(linker, "/merge:D414=414")
-#pragma comment(linker, "/merge:C414=414")
-#pragma comment(linker, "/merge:B414=414")
-#pragma comment(linker, "/merge:K414=414")
+#pragma code_seg("C413")
+#pragma data_seg("D413")
+#pragma bss_seg("B413")
+#pragma const_seg("K413")
+#pragma comment(linker, "/merge:D413=413")
+#pragma comment(linker, "/merge:C413=413")
+#pragma comment(linker, "/merge:B413=413")
+#pragma comment(linker, "/merge:K413=413")
 #include "driver.h"
 #include "cpu/i8039/i8039.h"
 

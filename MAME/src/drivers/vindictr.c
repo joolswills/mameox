@@ -1,11 +1,11 @@
-#pragma code_seg("C757")
-#pragma data_seg("D757")
-#pragma bss_seg("B757")
-#pragma const_seg("K757")
-#pragma comment(linker, "/merge:D757=757")
-#pragma comment(linker, "/merge:C757=757")
-#pragma comment(linker, "/merge:B757=757")
-#pragma comment(linker, "/merge:K757=757")
+#pragma code_seg("C756")
+#pragma data_seg("D756")
+#pragma bss_seg("B756")
+#pragma const_seg("K756")
+#pragma comment(linker, "/merge:D756=756")
+#pragma comment(linker, "/merge:C756=756")
+#pragma comment(linker, "/merge:B756=756")
+#pragma comment(linker, "/merge:K756=756")
 /***************************************************************************
 
 	Atari Vindicators hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C738")
-#pragma data_seg("D738")
-#pragma bss_seg("B738")
-#pragma const_seg("K738")
-#pragma comment(linker, "/merge:D738=738")
-#pragma comment(linker, "/merge:C738=738")
-#pragma comment(linker, "/merge:B738=738")
-#pragma comment(linker, "/merge:K738=738")
+#pragma code_seg("C737")
+#pragma data_seg("D737")
+#pragma bss_seg("B737")
+#pragma const_seg("K737")
+#pragma comment(linker, "/merge:D737=737")
+#pragma comment(linker, "/merge:C737=737")
+#pragma comment(linker, "/merge:B737=737")
+#pragma comment(linker, "/merge:K737=737")
 /***************************************************************************
 
 	Atari Tunnel Hunt hardware

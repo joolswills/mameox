@@ -1,11 +1,11 @@
-#pragma code_seg("C769")
-#pragma data_seg("D769")
-#pragma bss_seg("B769")
-#pragma const_seg("K769")
-#pragma comment(linker, "/merge:D769=769")
-#pragma comment(linker, "/merge:C769=769")
-#pragma comment(linker, "/merge:B769=769")
-#pragma comment(linker, "/merge:K769=769")
+#pragma code_seg("C768")
+#pragma data_seg("D768")
+#pragma bss_seg("B768")
+#pragma const_seg("K768")
+#pragma comment(linker, "/merge:D768=768")
+#pragma comment(linker, "/merge:C768=768")
+#pragma comment(linker, "/merge:B768=768")
+#pragma comment(linker, "/merge:K768=768")
 /*******************************************************************************
  Welltris (c)1991 Video System
 

@@ -1,11 +1,11 @@
-#pragma code_seg("C603")
-#pragma data_seg("D603")
-#pragma bss_seg("B603")
-#pragma const_seg("K603")
-#pragma comment(linker, "/merge:D603=603")
-#pragma comment(linker, "/merge:C603=603")
-#pragma comment(linker, "/merge:B603=603")
-#pragma comment(linker, "/merge:K603=603")
+#pragma code_seg("C602")
+#pragma data_seg("D602")
+#pragma bss_seg("B602")
+#pragma const_seg("K602")
+#pragma comment(linker, "/merge:D602=602")
+#pragma comment(linker, "/merge:C602=602")
+#pragma comment(linker, "/merge:B602=602")
+#pragma comment(linker, "/merge:K602=602")
 /*
 Dynamic Ski
 (c)1984 Taiyo

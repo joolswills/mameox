@@ -14,7 +14,7 @@
   // Uncomment this line to send PRINTMSG data to Debug.Log in
   // the MAMEoX root directory. Note that it only takes effect
   // in release mode
-#define _LOGDEBUGMESSAGES
+//#define _LOGDEBUGMESSAGES
 
 // Module types
 #define MT_OFF         0x00

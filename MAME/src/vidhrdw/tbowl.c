@@ -1,11 +1,11 @@
-#pragma code_seg("C697")
-#pragma data_seg("D697")
-#pragma bss_seg("B697")
-#pragma const_seg("K697")
-#pragma comment(linker, "/merge:D697=697")
-#pragma comment(linker, "/merge:C697=697")
-#pragma comment(linker, "/merge:B697=697")
-#pragma comment(linker, "/merge:K697=697")
+#pragma code_seg("C696")
+#pragma data_seg("D696")
+#pragma bss_seg("B696")
+#pragma const_seg("K696")
+#pragma comment(linker, "/merge:D696=696")
+#pragma comment(linker, "/merge:C696=696")
+#pragma comment(linker, "/merge:B696=696")
+#pragma comment(linker, "/merge:K696=696")
 /* vidhrdw/tbowl.c */
 
 /* see drivers/tbowl.c for more info */

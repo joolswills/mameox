@@ -1,11 +1,11 @@
-#pragma code_seg("C400")
-#pragma data_seg("D400")
-#pragma bss_seg("B400")
-#pragma const_seg("K400")
-#pragma comment(linker, "/merge:D400=400")
-#pragma comment(linker, "/merge:C400=400")
-#pragma comment(linker, "/merge:B400=400")
-#pragma comment(linker, "/merge:K400=400")
+#pragma code_seg("C399")
+#pragma data_seg("D399")
+#pragma bss_seg("B399")
+#pragma const_seg("K399")
+#pragma comment(linker, "/merge:D399=399")
+#pragma comment(linker, "/merge:C399=399")
+#pragma comment(linker, "/merge:B399=399")
+#pragma comment(linker, "/merge:K399=399")
 /***************************************************************************
 
 Video Hardware for Irem Games:

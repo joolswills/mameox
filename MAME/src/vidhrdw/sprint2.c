@@ -1,11 +1,11 @@
-#pragma code_seg("C639")
-#pragma data_seg("D639")
-#pragma bss_seg("B639")
-#pragma const_seg("K639")
-#pragma comment(linker, "/merge:D639=639")
-#pragma comment(linker, "/merge:C639=639")
-#pragma comment(linker, "/merge:B639=639")
-#pragma comment(linker, "/merge:K639=639")
+#pragma code_seg("C638")
+#pragma data_seg("D638")
+#pragma bss_seg("B638")
+#pragma const_seg("K638")
+#pragma comment(linker, "/merge:D638=638")
+#pragma comment(linker, "/merge:C638=638")
+#pragma comment(linker, "/merge:B638=638")
+#pragma comment(linker, "/merge:K638=638")
 /***************************************************************************
 
 	Atari Sprint 2 video emulation

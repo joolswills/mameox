@@ -1,11 +1,11 @@
-#pragma code_seg("C764")
-#pragma data_seg("D764")
-#pragma bss_seg("B764")
-#pragma const_seg("K764")
-#pragma comment(linker, "/merge:D764=764")
-#pragma comment(linker, "/merge:C764=764")
-#pragma comment(linker, "/merge:B764=764")
-#pragma comment(linker, "/merge:K764=764")
+#pragma code_seg("C763")
+#pragma data_seg("D763")
+#pragma bss_seg("B763")
+#pragma const_seg("K763")
+#pragma comment(linker, "/merge:D763=763")
+#pragma comment(linker, "/merge:C763=763")
+#pragma comment(linker, "/merge:B763=763")
+#pragma comment(linker, "/merge:K763=763")
 /****************************************************************************
  *
  * warpwarp.c

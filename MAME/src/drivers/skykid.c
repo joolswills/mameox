@@ -1,11 +1,11 @@
-#pragma code_seg("C619")
-#pragma data_seg("D619")
-#pragma bss_seg("B619")
-#pragma const_seg("K619")
-#pragma comment(linker, "/merge:D619=619")
-#pragma comment(linker, "/merge:C619=619")
-#pragma comment(linker, "/merge:B619=619")
-#pragma comment(linker, "/merge:K619=619")
+#pragma code_seg("C618")
+#pragma data_seg("D618")
+#pragma bss_seg("B618")
+#pragma const_seg("K618")
+#pragma comment(linker, "/merge:D618=618")
+#pragma comment(linker, "/merge:C618=618")
+#pragma comment(linker, "/merge:B618=618")
+#pragma comment(linker, "/merge:K618=618")
 /***************************************************************************
 
 Dragon Buster (c) Namco 1984

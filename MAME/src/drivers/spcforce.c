@@ -1,11 +1,11 @@
-#pragma code_seg("C630")
-#pragma data_seg("D630")
-#pragma bss_seg("B630")
-#pragma const_seg("K630")
-#pragma comment(linker, "/merge:D630=630")
-#pragma comment(linker, "/merge:C630=630")
-#pragma comment(linker, "/merge:B630=630")
-#pragma comment(linker, "/merge:K630=630")
+#pragma code_seg("C629")
+#pragma data_seg("D629")
+#pragma bss_seg("B629")
+#pragma const_seg("K629")
+#pragma comment(linker, "/merge:D629=629")
+#pragma comment(linker, "/merge:C629=629")
+#pragma comment(linker, "/merge:B629=629")
+#pragma comment(linker, "/merge:K629=629")
 /***************************************************************************
 
 Space Force Memory Map

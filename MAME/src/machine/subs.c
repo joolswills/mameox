@@ -1,11 +1,11 @@
-#pragma code_seg("C664")
-#pragma data_seg("D664")
-#pragma bss_seg("B664")
-#pragma const_seg("K664")
-#pragma comment(linker, "/merge:D664=664")
-#pragma comment(linker, "/merge:C664=664")
-#pragma comment(linker, "/merge:B664=664")
-#pragma comment(linker, "/merge:K664=664")
+#pragma code_seg("C663")
+#pragma data_seg("D663")
+#pragma bss_seg("B663")
+#pragma const_seg("K663")
+#pragma comment(linker, "/merge:D663=663")
+#pragma comment(linker, "/merge:C663=663")
+#pragma comment(linker, "/merge:B663=663")
+#pragma comment(linker, "/merge:K663=663")
 /***************************************************************************
 
 	Atari Subs hardware

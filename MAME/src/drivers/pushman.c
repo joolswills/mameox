@@ -1,11 +1,11 @@
-#pragma code_seg("C545")
-#pragma data_seg("D545")
-#pragma bss_seg("B545")
-#pragma const_seg("K545")
-#pragma comment(linker, "/merge:D545=545")
-#pragma comment(linker, "/merge:C545=545")
-#pragma comment(linker, "/merge:B545=545")
-#pragma comment(linker, "/merge:K545=545")
+#pragma code_seg("C544")
+#pragma data_seg("D544")
+#pragma bss_seg("B544")
+#pragma const_seg("K544")
+#pragma comment(linker, "/merge:D544=544")
+#pragma comment(linker, "/merge:C544=544")
+#pragma comment(linker, "/merge:B544=544")
+#pragma comment(linker, "/merge:K544=544")
 /***************************************************************************
 
 	Pushman							(c) 1990 Comad

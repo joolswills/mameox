@@ -1,11 +1,11 @@
-#pragma code_seg("C133")
-#pragma data_seg("D133")
-#pragma bss_seg("B133")
-#pragma const_seg("K133")
-#pragma comment(linker, "/merge:D133=133")
-#pragma comment(linker, "/merge:C133=133")
-#pragma comment(linker, "/merge:B133=133")
-#pragma comment(linker, "/merge:K133=133")
+#pragma code_seg("C132")
+#pragma data_seg("D132")
+#pragma bss_seg("B132")
+#pragma const_seg("K132")
+#pragma comment(linker, "/merge:D132=132")
+#pragma comment(linker, "/merge:C132=132")
+#pragma comment(linker, "/merge:B132=132")
+#pragma comment(linker, "/merge:K132=132")
 /***************************************************************************
 
   machine.c

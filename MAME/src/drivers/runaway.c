@@ -1,11 +1,11 @@
-#pragma code_seg("C576")
-#pragma data_seg("D576")
-#pragma bss_seg("B576")
-#pragma const_seg("K576")
-#pragma comment(linker, "/merge:D576=576")
-#pragma comment(linker, "/merge:C576=576")
-#pragma comment(linker, "/merge:B576=576")
-#pragma comment(linker, "/merge:K576=576")
+#pragma code_seg("C575")
+#pragma data_seg("D575")
+#pragma bss_seg("B575")
+#pragma const_seg("K575")
+#pragma comment(linker, "/merge:D575=575")
+#pragma comment(linker, "/merge:C575=575")
+#pragma comment(linker, "/merge:B575=575")
+#pragma comment(linker, "/merge:K575=575")
 /***************************************************************************
 
 	Atari Runaway hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C793")
-#pragma data_seg("D793")
-#pragma bss_seg("B793")
-#pragma const_seg("K793")
-#pragma comment(linker, "/merge:D793=793")
-#pragma comment(linker, "/merge:C793=793")
-#pragma comment(linker, "/merge:B793=793")
-#pragma comment(linker, "/merge:K793=793")
+#pragma code_seg("C792")
+#pragma data_seg("D792")
+#pragma bss_seg("B792")
+#pragma const_seg("K792")
+#pragma comment(linker, "/merge:D792=792")
+#pragma comment(linker, "/merge:C792=792")
+#pragma comment(linker, "/merge:B792=792")
+#pragma comment(linker, "/merge:K792=792")
 /*
  * Signetics 2650 CPU Games
  *

@@ -1,11 +1,11 @@
-#pragma code_seg("C785")
-#pragma data_seg("D785")
-#pragma bss_seg("B785")
-#pragma const_seg("K785")
-#pragma comment(linker, "/merge:D785=785")
-#pragma comment(linker, "/merge:C785=785")
-#pragma comment(linker, "/merge:B785=785")
-#pragma comment(linker, "/merge:K785=785")
+#pragma code_seg("C784")
+#pragma data_seg("D784")
+#pragma bss_seg("B784")
+#pragma const_seg("K784")
+#pragma comment(linker, "/merge:D784=784")
+#pragma comment(linker, "/merge:C784=784")
+#pragma comment(linker, "/merge:B784=784")
+#pragma comment(linker, "/merge:K784=784")
 /***************************************************************************
 
 	Atari Xybots hardware
