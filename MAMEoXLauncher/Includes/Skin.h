@@ -239,6 +239,16 @@ public:
 				m_spriteResourceArray[i] = NULL;
 			}
 		}
+
+			// Free the skin elements
+		for( int i = 0; i < SKINELEMENT_COUNT; ++i )
+		{
+			if( m_spriteElementArray[i] )
+			{
+				delete m_spriteElementArray[i];
+				m_spriteElementArray[i] = NULL;
+			}
+		}
 	}
 
 		//------------------------------------------------------
