@@ -12,6 +12,7 @@
 
 #include "BaseView.h"
 #include "StdString.h"
+#include "TextureSet.h"
 
 //= D E F I N E S ======================================================
 typedef enum MenuState
@@ -34,9 +35,24 @@ public:
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-  CStartMenu( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, LPDIRECT3DTEXTURE8 backdropTexture ) :
-    CBaseView( displayDevice, fontSet, backdropTexture ) {
+  CStartMenu( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CTextureSet &textureSet ) :
+    CBaseView( displayDevice, fontSet, NULL ),
+    m_textureSet( textureSet ) {
     Reset();
+  }
+
+	//------------------------------------------------------------
+	// SetMenuTitle
+	//! \brief		Set the title to be used for the menu
+	//------------------------------------------------------------
+  void SetMenuTitle( const CStdString &str ) { m_menuTitle = str; }
+
+	//------------------------------------------------------------
+	// AddMenuItem
+	//! \brief		Add a menu string to the menu
+	//------------------------------------------------------------
+  void AddMenuItem( const CStdString &str ) {
+    m_menuItems.push_back( str );
   }
 
 		//------------------------------------------------------------
@@ -49,6 +65,7 @@ public:
  		m_dpadCursorDelay = 0.0f;
     m_buttonDelay = 0.0f;
     m_inputState = MENU_INPROGRESS;
+    m_menuItems.clear();
   }
 
 		//------------------------------------------------------------
@@ -76,6 +93,8 @@ public:
   BOOL IsInputAccepted( void ) const { return m_inputState == MENU_ACCEPTED; }
   BOOL IsInputCancelled( void ) const { return m_inputState == MENU_CANCELLED; }
 
+  UINT32 GetCursorPosition( void ) const { return m_cursorPosition; }
+
 protected:
 
 	FLOAT									    m_dpadCursorDelay;
@@ -83,5 +102,10 @@ protected:
 
   UINT32                    m_cursorPosition;
 
+  CTextureSet               &m_textureSet;
   MenuState                 m_inputState;     //!< Input state (accepted, cancelled, in progress)
+
+  CStdString                m_menuTitle;      //!< String to render as the title bar
+  std::vector<CStdString>   m_menuItems;      //!< Strings to be displayed as menu items
 };
+
