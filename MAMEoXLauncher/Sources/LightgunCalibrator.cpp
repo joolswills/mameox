@@ -18,6 +18,22 @@ extern "C" {
 
 
 //= D E F I N E S ======================================================
+  // The number of calibration steps per device
+#define NUM_CALIBRATIONSTEPS    4
+
+  // Note: These values are halved for the cursor
+#define TARGET_WIDTH    64
+#define TARGET_HEIGHT   64
+
+#define TARGET_UL_X   20
+#define TARGET_UL_Y   15
+
+#define TARGET_C_X    320 - (TARGET_WIDTH>>1)
+#define TARGET_C_Y    240 - (TARGET_HEIGHT>>1)
+
+#define TARGET_LR_X   555
+#define TARGET_LR_Y   400
+
 
 //= G L O B A L = V A R S ==============================================
 
@@ -30,53 +46,12 @@ extern "C" {
 //---------------------------------------------------------------------
 void CLightgunCalibrator::MoveCursor( CInputManager &inputManager, BOOL unused )
 {
-/*
-  if( inputManager.IsButtonPressed( GP_B ) )
-    {
-      osd_joystick_start_calibration();
-      WaitForNoButton();
-      const char *ptr = osd_joystick_calibrate_next();
-      if( !ptr )
-        osd_joystick_end_calibration();
-      else
-     	  mbstowcs( calibBuf, ptr, strlen(ptr) + 1 );
-    }
-    if( g_inputManager.bAnalogButtons[XINPUT_GAMEPAD_A] > 10 && g_calibrationStep )
-    {
-      osd_joystick_calibrate();
-      WaitForNoButton();
-      const char *ptr = osd_joystick_calibrate_next();
-      if( !ptr )
-        osd_joystick_end_calibration();
-      else
-     	  mbstowcs( calibBuf, ptr, strlen(ptr) + 1 );
-    }
-    if( g_inputManager.bAnalogButtons[XINPUT_GAMEPAD_X] > 10 )
-    {
-      SaveOptions();
-*/
-
-  /*
-lightgunCalibration_t    g_calibrationData[4] = { {-32767,0,32767,32767,0,-32767},
-                                                  {-32767,0,32767,32767,0,-32767},
-                                                  {-32767,0,32767,32767,0,-32767},
-                                                  {-32767,0,32767,32767,0,-32767} };
-  */
-
-
-  const XINPUT_CAPABILITIES *gp;
-
+  const XINPUT_CAPABILITIES *gpCaps;
     // Make sure we've got a lightgun to calibrate
-  if( !(gp = GetGamepadCaps( m_currentInputDeviceIndex )) || gp->SubType != XINPUT_DEVSUBTYPE_GC_LIGHTGUN )
+  if( !(gpCaps = GetGamepadCaps( m_currentInputDeviceIndex )) || gpCaps->SubType != XINPUT_DEVSUBTYPE_GC_LIGHTGUN )
   {
-      // Find the first attached lightgun
-    for( m_currentInputDeviceIndex = 0; m_currentInputDeviceIndex < 4; ++m_currentInputDeviceIndex )
-    {
-      if( (gp = GetGamepadCaps( m_currentInputDeviceIndex )) && gp->SubType != XINPUT_DEVSUBTYPE_GC_LIGHTGUN )
-        break;
-    }
-
-    if( m_currentInputDeviceIndex == 4 )
+    m_currentInputDeviceIndex = 0;
+    if( !FindNextGun() )
     {
       m_currentInputDeviceIndex = 0;
       m_calibrationCompleted = TRUE;
@@ -84,14 +59,62 @@ lightgunCalibration_t    g_calibrationData[4] = { {-32767,0,32767,32767,0,-32767
     }
   }
 
-    // Update the cursor position
-  const XINPUT_GAMEPAD *gpState = inputManager.GetGamepadDeviceState( m_currentInputDeviceIndex );
-  if( gpState )
+  CGamepad *gp = inputManager.GetGamepad( m_currentInputDeviceIndex );
+  if( !gp )
   {
-    m_currentGunX = gpState->sThumbLX;
-    m_currentGunY = gpState->sThumbLY;
+    PRINTMSG( T_ERROR, "Could not retrieve CGamepad object for index %d", m_currentInputDeviceIndex );
+    return;
   }
 
+  lightgunCalibration_t &calibData = g_calibrationData[m_currentInputDeviceIndex];
+
+    // Update the cursor position
+  m_currentGunX = gp->GetAnalogAxisState( GP_ANALOG_LEFT, GP_AXIS_X );
+  m_currentGunY = gp->GetAnalogAxisState( GP_ANALOG_LEFT, GP_AXIS_Y );
+
+  if( gp->IsButtonPressed( GP_B ) )
+  {
+      // Throw away calibration data for this gun
+    calibData.m_xData[0] = -32767;
+    calibData.m_xData[1] = 0;
+    calibData.m_xData[2] = 32767;
+
+    calibData.m_yData[0] = 32767;
+    calibData.m_yData[1] = 0;
+    calibData.m_yData[2] = -32767;
+
+      // Reset calibration step to 0
+    m_calibrationStep = 0;
+  }
+  else if( gp->IsButtonPressed( GP_A ) )
+  {
+      // Store the value
+    if( m_calibrationStep < 3 )
+    {
+      calibData.m_xData[m_calibrationStep] = m_currentGunX;
+      calibData.m_yData[m_calibrationStep] = m_currentGunY;
+    }    
+
+      // Move on to the next step
+    if( ++m_calibrationStep == NUM_CALIBRATIONSTEPS )
+    {
+        // This gun is finished, try to find another one,
+        // quitting if we can't
+      m_calibrationStep = 0;
+      ++m_currentInputDeviceIndex;
+      if( !FindNextGun() )
+      {
+        m_currentInputDeviceIndex = 0;
+        m_calibrationCompleted = TRUE;
+        gp->WaitForNoButton();
+        return;        
+      }
+    }
+    else
+      gp->WaitForNoButton();  // Wait for the trigger to be released
+  }
+
+  GetCalibratedCursorPosition( inputManager );
 }
 
 //---------------------------------------------------------------------
@@ -103,7 +126,7 @@ void CLightgunCalibrator::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 	  m_displayDevice->Clear(	0L,																// Count
 		  											NULL,															// Rects to clear
 			  										D3DCLEAR_TARGET,	                // Flags
-				  									D3DCOLOR_XRGB(0,0,0),							// Color
+				  									D3DCOLOR_XRGB(128,128,128),				// Color
 					  								1.0f,															// Z
 						  							0L );															// Stencil
 
@@ -112,18 +135,26 @@ void CLightgunCalibrator::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
 
   #define CURSOR_COLOR                  D3DCOLOR_RGBA( 255, 100, 100, 255 )
-  static WCHAR *calibrationStepText[] = { L"Upper Left", L"Center", L"Lower Right" };
+  static WCHAR *calibrationStepText[NUM_CALIBRATIONSTEPS] = { L"Shoot the upper left corner", 
+                                                              L"Shoot the center", 
+                                                              L"Shoot the lower right corner",
+                                                              L"Shoot anywhere to accept" };
   WCHAR wBuf[256];
 
   m_fontSet.DefaultFont().Begin();
 
-    m_fontSet.DefaultFont().DrawText( 320, 180, D3DCOLOR_RGBA( 255, 255, 255, 255), calibrationStepText[m_calibrationStep], XBFONT_CENTER_X );
+    swprintf( wBuf, L"Gun in port %d", m_currentInputDeviceIndex );
+    m_fontSet.DefaultFont().DrawText( 320, 160, D3DCOLOR_XRGB( 255, 255, 255), wBuf, XBFONT_CENTER_X );
 
-    swprintf( wBuf, L"LX: %d", m_currentGunX );
-	  m_fontSet.DefaultFont().DrawText( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+    m_fontSet.DefaultFont().DrawText( 320, 180, D3DCOLOR_XRGB( 255, 255, 255), calibrationStepText[m_calibrationStep], XBFONT_CENTER_X );
 
-    swprintf( wBuf, L"LY: %d", m_currentGunX );
-	  m_fontSet.DefaultFont().DrawText( 320, 100, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+    m_fontSet.DefaultFont().DrawText( 320, 240, D3DCOLOR_XRGB( 255, 255, 255), L"Press B to discard changes.", XBFONT_CENTER_X );
+
+      swprintf( wBuf, L"X: %d maps to %d", m_currentGunX, m_currentGunCalibratedX );
+	    m_fontSet.DefaultFont().DrawText( 320, 80, D3DCOLOR_XRGB( 255, 255, 255), wBuf, XBFONT_CENTER_X );
+
+      swprintf( wBuf, L"Y: %d maps to %d", m_currentGunY, m_currentGunCalibratedY );
+	    m_fontSet.DefaultFont().DrawText( 320, 100, D3DCOLOR_XRGB( 255, 255, 255), wBuf, XBFONT_CENTER_X );
 
   m_fontSet.DefaultFont().End();
 
@@ -140,19 +171,100 @@ void CLightgunCalibrator::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   m_displayDevice->SetTexture( 0, m_cursorTexture );
   m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
 
-  m_displayDevice->Begin( D3DPT_QUADLIST );
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_currentGunX - 16, m_currentGunY - 16, 1.0f, 1.0f );
-    
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_currentGunX + 16, m_currentGunY - 16, 1.0f, 1.0f );
-    
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_currentGunX + 16, m_currentGunY + 16, 1.0f, 1.0f );
+    // Display a target/cursor if the gun is pointed at the screen
+  if( m_currentGunX || m_currentGunY )
+  {
+    m_displayDevice->Begin( D3DPT_QUADLIST );
 
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_currentGunX - 16, m_currentGunY + 16, 1.0f, 1.0f );
-  m_displayDevice->End();
+
+      switch( m_calibrationStep )
+      {
+      case 0:
+        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 0.0f );
+        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_UL_X, TARGET_UL_Y, 1.0f, 1.0f );
+        
+        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 0.0f );
+        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_UL_X + TARGET_WIDTH, TARGET_UL_Y, 1.0f, 1.0f );
+        
+        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 1.0f );
+        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_UL_X + TARGET_WIDTH, TARGET_UL_Y + TARGET_HEIGHT, 1.0f, 1.0f );
+
+        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 1.0f );
+        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_UL_X, TARGET_UL_Y + TARGET_HEIGHT, 1.0f, 1.0f );
+        break;
+
+      case 1:
+        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 0.0f );
+        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_C_X, TARGET_C_Y, 1.0f, 1.0f );
+        
+        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 0.0f );
+        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_C_X + TARGET_WIDTH, TARGET_C_Y, 1.0f, 1.0f );
+        
+        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 1.0f );
+        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_C_X + TARGET_WIDTH, TARGET_C_Y + TARGET_HEIGHT, 1.0f, 1.0f );
+
+        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 1.0f );
+        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_C_X, TARGET_C_Y + TARGET_HEIGHT, 1.0f, 1.0f );
+        break;
+
+      case 2:
+        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 0.0f );
+        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_LR_X, TARGET_LR_Y, 1.0f, 1.0f );
+        
+        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 0.0f );
+        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_LR_X + TARGET_WIDTH, TARGET_LR_Y, 1.0f, 1.0f );
+        
+        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 1.0f );
+        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_LR_X + TARGET_WIDTH, TARGET_LR_Y + TARGET_HEIGHT, 1.0f, 1.0f );
+
+        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 1.0f );
+        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_LR_X, TARGET_LR_Y + TARGET_HEIGHT, 1.0f, 1.0f );
+        break;
+
+      case 3:
+        {
+          FLOAT x = m_currentGunCalibratedX;
+          FLOAT y = -m_currentGunCalibratedY;  // Y values are negated for MAME
+
+            // Map the cursor to screen coords
+          x = ((x+128.0f) * 640.0f / 256.0f);
+          y = ((y+128.0f) * 480.0f / 256.0f);
+          
+          x -= (TARGET_WIDTH >> 2);
+          y -= (TARGET_HEIGHT >> 2);
+
+          m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+          m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 0.0f );
+          m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, x, y, 1.0f, 1.0f );
+          
+          m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+          m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 0.0f );
+          m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, x + (TARGET_WIDTH>>1), y, 1.0f, 1.0f );
+          
+          m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+          m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 1.0f );
+          m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, x + (TARGET_WIDTH>>1), y + (TARGET_HEIGHT>>1), 1.0f, 1.0f );
+
+          m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+          m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 1.0f );
+          m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, x, y + (TARGET_HEIGHT>>1), 1.0f, 1.0f );
+        }
+        break;
+      }
+    m_displayDevice->End();
+  }
 
   if( flipOnCompletion )
 	  m_displayDevice->Present( NULL, NULL, NULL, NULL );	
@@ -164,21 +276,21 @@ void CLightgunCalibrator::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 //---------------------------------------------------------------------
 void CLightgunCalibrator::UpdateLightgunCursorPosition( CInputManager &inputManager )
 {
-	const XINPUT_GAMEPAD *gp;
-  if( (gp = inputManager.GetGamepadDeviceState( m_currentInputDeviceIndex )) )
+	const XINPUT_GAMEPAD *gpCaps;
+  if( (gpCaps = inputManager.GetGamepadDeviceState( m_currentInputDeviceIndex )) )
   {
     lightgunCalibration_t &calibData = g_calibrationData[m_currentInputDeviceIndex];
 
-    m_currentGunX = gp->sThumbLX - calibData.m_xData[1];
-    m_currentGunY = -1 * (gp->sThumbLY - calibData.m_yData[1]);
+    m_currentGunX = gpCaps->sThumbLX - calibData.m_xData[1];
+    m_currentGunY = -1 * (gpCaps->sThumbLY - calibData.m_yData[1]);
 
       // Map from -128 to 128
-    if( gp->sThumbLX < 0 )
+    if( gpCaps->sThumbLX < 0 )
       m_currentGunX = (int)((FLOAT)m_currentGunX * 128.0f / ((FLOAT)calibData.m_xData[0]+1.0f));
     else
       m_currentGunX = (int)((FLOAT)m_currentGunX * 128.0f / ((FLOAT)calibData.m_xData[2]+1.0f));
 
-    if( gp->sThumbLY > 0 )
+    if( gpCaps->sThumbLY > 0 )
       m_currentGunY = (int)((FLOAT)m_currentGunY * 128.0f / ((FLOAT)calibData.m_yData[0]+1.0f));
     else
       m_currentGunY = (int)((FLOAT)m_currentGunY * 128.0f / ((FLOAT)calibData.m_yData[2]+1.0f));
@@ -198,88 +310,61 @@ void CLightgunCalibrator::UpdateLightgunCursorPosition( CInputManager &inputMana
 	  m_currentGunX = m_currentGunY = 0;
 }
 
-
-
-#if 0
-
-
-const char *osd_joystick_calibrate_next( void )
+//---------------------------------------------------------------------
+//  FindNextGun
+//---------------------------------------------------------------------
+BOOL CLightgunCalibrator::FindNextGun( void )
 {
-/* Prepare the next calibration step. Return a description of this step. */
-/* (e.g. "move to upper left") */
-  char retString[128];
-
-    // When we hit 3, switch over to the next gun to be calibrated,
-    //  or return NULL to exit the process
-  if( g_calibrationStep == 3 )
+    // Find the first attached lightgun
+  for( ; m_currentInputDeviceIndex < 4; ++m_currentInputDeviceIndex )
   {
-    const XINPUT_CAPABILITIES *gp;
-    ++g_calibrationJoynum;
-    for( ; g_calibrationJoynum < 4; ++g_calibrationJoynum )
-    {
-      gp = GetGamepadCaps( g_calibrationJoynum );
-      if( gp && gp->SubType == XINPUT_DEVSUBTYPE_GC_LIGHTGUN )
-      {
-          // Found another gun
-        g_calibrationStep = 0;
-        break;
-      }
-    }
-
-    if( g_calibrationJoynum == 4 )
-      return NULL;
+    const XINPUT_CAPABILITIES *gpCaps;
+    if( (gpCaps = GetGamepadCaps( m_currentInputDeviceIndex )) && gpCaps->SubType == XINPUT_DEVSUBTYPE_GC_LIGHTGUN )
+      return TRUE;
   }
 
-  sprintf( retString, "Gun %d: ", g_calibrationJoynum + 1 );
-  switch( g_calibrationStep++ )
-  {
-  case 0:
-    strcat( retString, "Upper left" );
-    break;
-
-  case 1:
-    strcat( retString, "Center" );
-    break;
-
-  case 2:
-    strcat( retString, "Lower right" );
-    break;
-  }
-
-	return retString;
+  return FALSE;
 }
 
-void osd_joystick_calibrate( void )
+//---------------------------------------------------------------------
+//  GetCalibratedCursorPosition
+//---------------------------------------------------------------------
+void CLightgunCalibrator::GetCalibratedCursorPosition( CInputManager &inputManager )
 {
-/* Get the actual joystick calibration data for the current position */
+  lightgunCalibration_t &calibData = g_calibrationData[m_currentInputDeviceIndex];
 
-  if( g_calibrationStep && g_calibrationStep < 4 )
+    // Don't bother if we're not pointing at the screen
+  if( !m_currentGunX && !m_currentGunY )
   {
-	  const XINPUT_GAMEPAD *gp;
-    if( (gp = GetGamepadState( g_calibrationJoynum )) )
-    {
-      g_calibrationData[g_calibrationJoynum].m_xData[g_calibrationStep-1] = gp->sThumbLX;
-      g_calibrationData[g_calibrationJoynum].m_yData[g_calibrationStep-1] = gp->sThumbLY;
-    }
-    PRINTMSG( T_INFO, "CALIB: STEP %d: %d, %d\n", g_calibrationStep - 1, gp->sThumbLX, gp->sThumbLY );
+    m_currentGunCalibratedX = m_currentGunCalibratedY = 0;
+    return;
   }
+
+  m_currentGunCalibratedX = m_currentGunX;// + calibData.m_xData[1];
+  m_currentGunCalibratedY = m_currentGunY;// + calibData.m_yData[1]);
+
+    // Map from -128 to 128
+  FLOAT xMap = calibData.m_xData[0] + calibData.m_xData[1]; // left X is negative, so add center to bring it closer to the middle
+  FLOAT yMap = calibData.m_yData[0] - calibData.m_yData[1]; // top Y is positive, so sub center to bring it closer to the middle
+
+  if( xMap )
+    m_currentGunCalibratedX = (int)((FLOAT)m_currentGunCalibratedX * 128.0f / -xMap );
+  else
+    m_currentGunCalibratedX = 0;
+
+  if( yMap )
+    m_currentGunCalibratedY = (int)((FLOAT)m_currentGunCalibratedY * 128.0f / yMap );
+  else
+    m_currentGunCalibratedY = 0;
+
+    // Lock to the expected range
+  if( m_currentGunCalibratedX > 128 )
+    m_currentGunCalibratedX = 128;
+  else if( m_currentGunCalibratedX < -128 )
+    m_currentGunCalibratedX = -128;
+
+  if( m_currentGunCalibratedY > 128 )
+    m_currentGunCalibratedY = 128;
+  else if( m_currentGunCalibratedY < -128 )
+    m_currentGunCalibratedY = -128;
 }
-
-void osd_joystick_end_calibration( void )
-{
-/* Postprocessing (e.g. saving joystick data to config) */
-  UINT32 i = 0;
-
-  for( ; i < 3; ++i )
-  {
-    g_calibrationData[i].m_xData[0] -= g_calibrationData[i].m_xData[1];
-    g_calibrationData[i].m_xData[2] -= g_calibrationData[i].m_xData[1];
-    g_calibrationData[i].m_xData[0] *= -1;  //!< Negate so that < 0 values stay < 0
-
-    g_calibrationData[i].m_yData[0] -= g_calibrationData[i].m_yData[1];
-    g_calibrationData[i].m_yData[2] -= g_calibrationData[i].m_yData[1];
-    g_calibrationData[i].m_yData[2] *= -1;  //!< Negate so that < 0 values stay < 0
-  }
-}
-#endif
-

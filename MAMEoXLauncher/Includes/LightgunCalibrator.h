@@ -43,6 +43,16 @@ protected:
 
   void UpdateLightgunCursorPosition( CInputManager &inputManager );
 
+		//------------------------------------------------------------
+		// FindNextGun
+		//! \brief		Search for a gun device w/ an index greater than
+    //!           m_currentInputDeviceIndex
+		//!
+		//! \return		BOOL - Whether or not a device was found
+		//------------------------------------------------------------
+  BOOL FindNextGun( void );
+
+  void GetCalibratedCursorPosition( CInputManager &inputManager );
 
     // Texture to use for the cursor
   LPDIRECT3DTEXTURE8  m_cursorTexture;
@@ -50,6 +60,8 @@ protected:
     //! Current position of the gun pointer
   INT32               m_currentGunX;
   INT32               m_currentGunY;
+  INT32               m_currentGunCalibratedX;
+  INT32               m_currentGunCalibratedY;
 
   UINT32              m_currentInputDeviceIndex;
   UINT32              m_calibrationStep;
