@@ -273,6 +273,40 @@ BOOL CBaseView::LoadPNGToTexture( const CStdString &filename, LPDIRECT3DTEXTURE8
         }
         break;
 
+      case 2:
+        {
+          D3DCOLOR *destRow = (D3DCOLOR*)lockedRect.pBits;
+          for( y = 0; y < retRect->bottom; ++y )
+          {
+            D3DCOLOR *dest = destRow;
+            BYTE *src = (BYTE*)row_pointers[y];
+            for( UINT32 x = 0; x < (retRect->right >> 2); ++x )
+            {      
+              BYTE palIndex = (*src >> 6) & 0x03;
+              png_color color = info_ptr->palette[palIndex];
+              *(dest++) = D3DCOLOR_XRGB( color.red, color.green, color.blue );
+
+              palIndex = (*src >> 4) & 0x03;
+              color = info_ptr->palette[palIndex];
+              *(dest++) = D3DCOLOR_XRGB( color.red, color.green, color.blue );
+
+              palIndex = (*src >> 2) & 0x03;
+              color = info_ptr->palette[palIndex];
+              *(dest++) = D3DCOLOR_XRGB( color.red, color.green, color.blue );
+
+              palIndex = *src & 0x03;
+              color = info_ptr->palette[palIndex];
+              *(dest++) = D3DCOLOR_XRGB( color.red, color.green, color.blue );
+
+              ++src;
+            }
+            free( row_pointers[y] );
+            row_pointers[y] = NULL;
+            destRow += desc.Width;
+          }
+        }
+        break;
+
       case 4:
         {
           D3DCOLOR *destRow = (D3DCOLOR*)lockedRect.pBits;
@@ -281,7 +315,7 @@ BOOL CBaseView::LoadPNGToTexture( const CStdString &filename, LPDIRECT3DTEXTURE8
             D3DCOLOR *dest = destRow;
             BYTE *src = (BYTE*)row_pointers[y];
             for( UINT32 x = 0; x < (retRect->right >> 1); ++x )
-            {      
+            {
               BYTE palIndex = (*src >> 4) & 0x07;
               png_color &color = info_ptr->palette[palIndex];
               *(dest++) = D3DCOLOR_XRGB( color.red, color.green, color.blue );

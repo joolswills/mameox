@@ -30,6 +30,11 @@ Version 0.73.1b
       - Fixed problem where disabling the screensaver would
         enter an infinite input-eating loop
 
+    - BaseView.cpp
+      - Fixed problem w/ 2bpp paletted PNG files (caused the
+        program to crash when certain monochrome screenshots
+        were loaded)
+
    -------------------------------------------------------------
   - \SharedResources:
     - Added dummy project to compile XPR resources outside of MAMEoXLauncher

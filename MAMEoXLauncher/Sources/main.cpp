@@ -225,7 +225,8 @@ void __cdecl main( void )
          "Media directory on your XBOX and restart." );
   }
 
-  DEBUGGERCHECKRAM();
+    // Wait for input to give the debugger a chance to attach
+  CHECKRAM();
 
 
     // Get the launch data
