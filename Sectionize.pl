@@ -650,7 +650,9 @@ local $OldCPUName = "";
 	# - Items on the first line have actual source files, 
 	#	the rest share the original sources
 	# - The families have been derived by reading cpuintrf.c, checking which
-	#	#if (HAS_)'s lead to which #includes
+	#	#if (HAS_)'s lead to which #includes. Sometimes this fails, in which case
+	#   the CPUx macros themselves need to be consulted (example HAS_R5000, provides CPUs
+	#   CPU_R5000BE and CPU_R5000LE, no CPU_R5000)
 
 	# The xxxFamily string defines the source directories of the CPU family
 	# The xxxClones array defines the list of all CPU_ #defines that use the source files in xxxFamily
@@ -678,33 +680,41 @@ $h6280Family = "H6280";
 $hd6309Family = "HD6309";
 @hd6309Clones = ( "HD6309" );
 
-$i8039Family = "i8039";
+$i8039Family = "I8039";
 @i8039Clones = ( "I8035", "I8039", "I8048", "N7751" );
 
-$i8085Family = "i8085";
+$i8085Family = "I8085";
 @Z80Clones = ( "8080", "8085A" );
 
 $i86Family = "I86";
 @i86Clones = ( "I86", 
-			   "I88",
-			   "I186",
-			   "I188",
-			   "I286" );
+#			   "I88",		# Disabled in VCPPMame.h
+			   "I186" );
+#			   "I188",		# Disabled in VCPPMame.h
+#			   "I286" );	# Disabled in VCPPMame.h
 
 $i8x41Family = "I8X41";
 @i8x41Clones = ( "I8X41" );
 
 $JaguarFamily = "JAGUAR";
-@JaguarClones = ( "JAGUAR" );
+@JaguarClones = ( "JAGUARGPU", "JAGUARDSP" );
 
 $KonamiFamily = "KONAMI";
 @KonamiClones = ( "KONAMI" );
 
 $m6502Family = "M6502";
-@m6502Clones = ( "M6502", "M65C02", "M65SC02", "M6510", "M6510T", "M7501", "M8502", "N2A03", "DECO16",
-				 "M4510",
-				 "M65CE02",
-				 "M6509" );
+@m6502Clones = ( "M6502", 
+				 "M65C02", 
+#				 "M65SC02", # Disabled in VCPPMame.h
+				 "M6510", 
+#				 "M6510T",	# Disabled in VCPPMame.h
+#				 "M7501",	# Disabled in VCPPMame.h
+#				 "M8502",	# Disabled in VCPPMame.h
+				 "N2A03", 
+				 "DECO16" );
+#				 "M4510" );	# Disabled in VCPPMame.h
+#				 "M65CE02",	# Disabled in VCPPMame.h
+#				 "M6509" ); # Disabled in VCPPMame.h
 
 $m6800Family = "M6800";
 @m6800Clones = ( "M6800", "M6801", "M6802", "M6803", "M6808", "HD63701" );
@@ -720,8 +730,12 @@ $m6809Family = "M6809";
 
 $mipsFamily = "MIPS";
 @mipsClones = (	"PSXCPU",
-				"R3000", 
-				"R4600", "R5000" );
+				"R3000BE", 
+				"R3000LE", 
+				"R4600BE", 
+				"R4600LE", 
+				"R5000BE",
+				"R5000LE" );
 
 $NECFamily = "NEC";
 @NECClones = ( "V20", "V30", "V33" );
@@ -751,7 +765,14 @@ $tms34010Family = "TMS34010";
 @tms34010Clones = ( "TMS34010", "TMS34020" );
 
 $tms9900Family = "TMS9900";
-@tms9900Clones = ( "TMS9900", "TMS9940", "TMS9980", "TMS9985", "TMS9989", "TMS9995", "TMS99105A", "TMS99110A" );
+@tms9900Clones = (	#"TMS9900", # Disabled in VCPPMame.h
+					#"TMS9940", # Disabled in VCPPMame.h
+					"TMS9980", 
+					#"TMS9985", # Disabled in VCPPMame.h
+					#"TMS9989", # Disabled in VCPPMame.h
+					"TMS9995" );
+					#"TMS99105A",	# Disabled in VCPPMame.h
+					#"TMS99110A" );	# Disabled in VCPPMame.h
 
 $udp7810Family = "UPD7810";
 @udp7810Clones = ( "UPD7810", "UPD7807" );
@@ -1007,7 +1028,7 @@ foreach( @Clones ) {
 		$IsFirst = false;
 
 			# Print code to ignore this member
-		print CPUFILE "CPU$_";
+		print CPUFILE "CPU_$_";
 	}
 }
 print CPUFILE " )\n";
@@ -1089,7 +1110,7 @@ foreach( @FILEs ) {
 				#print CPUFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"CPU$Family\" );\n";
 
 					# Register all the clones for this CPU
-				$CloneArray = @Clones[$Family];
+				$CloneArray = @Clones[$Family-1];
 				foreach( @{$CloneArray} ) {
 					print CPUFILE "  RegisterSectionID( CPU_$_, \"CPU$Family\" );\n";
 				}
@@ -1118,7 +1139,6 @@ if( scalar( @newFILEs ) == 0 ) {
 $OldCPUName = "";
 foreach( @newFILEs ) {
 	chomp( $_ );
-	print "$_\n";
 
 	$DriverFileName = $_;
 	$CPUName = $_;
@@ -1165,7 +1185,7 @@ foreach( @newFILEs ) {
 			#print CPUFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"CPU$Family\" );\n";
 
 				# Register all the clones for this CPU
-			$CloneArray = @Clones[$Family];
+			$CloneArray = @Clones[$Family-1];
 			foreach( @{$CloneArray} ) {
 				print CPUFILE "  RegisterSectionID( CPU_$_, \"CPU$Family\" );\n";
 			}
