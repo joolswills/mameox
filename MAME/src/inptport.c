@@ -1610,9 +1610,9 @@ void update_analog_port(int port)
 		case IPT_AD_STICK_Z:
 			axis = Z_AXIS; is_stick = 1; is_gun=0; check_bounds = 1; break;
 		case IPT_LIGHTGUN_X:
-			axis = X_AXIS; is_stick = 1; is_gun=1; check_bounds = 1; break;
+			axis = X_AXIS; is_stick = 1; is_gun=1; check_bounds = 0; break;
 		case IPT_LIGHTGUN_Y:
-			axis = Y_AXIS; is_stick = 1; is_gun=1; check_bounds = 1; break;
+			axis = Y_AXIS; is_stick = 1; is_gun=1; check_bounds = 0; break;
 		case IPT_PEDAL:
 			axis = PEDAL_AXIS; is_stick = 1; is_gun=0; check_bounds = 1; break;
 		case IPT_PEDAL2:
@@ -1685,7 +1685,43 @@ void update_analog_port(int port)
   }
 
 
-	if (is_stick)
+
+
+
+	if( is_gun && (lightgun_delta_axis[player][X_AXIS] || lightgun_delta_axis[player][Y_AXIS]) )
+	{
+		/* The OSD lightgun call should return the delta from the middle of the screen
+		when the gun is fired (not the absolute pixel value), and 0 when the gun is
+		inactive.  We take advantage of this to provide support for other controllers
+		in place of a physical lightgun.  When the OSD lightgun returns 0, then control
+		passes through to the analog joystick, and mouse, in that order.  When the OSD
+		lightgun returns a value it overrides both mouse & analog joystick.
+
+		The value returned by the OSD layer should be -128 to 128, same as analog
+		joysticks.
+
+		There is an ugly hack to stop scaling of lightgun returned values.  It really
+		needs rewritten...
+		*/
+		if (axis == X_AXIS) {
+			analog_previous_axis[player][X_AXIS]=0;
+			current=analog_current_axis[player][X_AXIS]=lightgun_delta_axis[player][X_AXIS];
+			input_analog_scale[port]=0;
+			sensitivity=100;
+		}
+		else
+		{
+			analog_previous_axis[player][Y_AXIS]=0;
+			current=analog_current_axis[player][Y_AXIS]=lightgun_delta_axis[player][Y_AXIS];
+			input_analog_scale[port]=0;
+			sensitivity=100;
+		}
+	}
+
+
+
+	if( is_stick ||
+	    is_gun && (lightgun_delta_axis[player][X_AXIS] || lightgun_delta_axis[player][Y_AXIS]) )
 	{
 		int new, prev;
 
@@ -1756,42 +1792,6 @@ void update_analog_port(int port)
 			}
 		}
 	}
-
-
-	if (is_gun)
-	{
-		/* The OSD lightgun call should return the delta from the middle of the screen
-		when the gun is fired (not the absolute pixel value), and 0 when the gun is
-		inactive.  We take advantage of this to provide support for other controllers
-		in place of a physical lightgun.  When the OSD lightgun returns 0, then control
-		passes through to the analog joystick, and mouse, in that order.  When the OSD
-		lightgun returns a value it overrides both mouse & analog joystick.
-
-		The value returned by the OSD layer should be -128 to 128, same as analog
-		joysticks.
-
-		There is an ugly hack to stop scaling of lightgun returned values.  It really
-		needs rewritten...
-		*/
-		if (axis == X_AXIS) {
-			if (lightgun_delta_axis[player][X_AXIS] || lightgun_delta_axis[player][Y_AXIS]) {
-				analog_previous_axis[player][X_AXIS]=0;
-				analog_current_axis[player][X_AXIS]=lightgun_delta_axis[player][X_AXIS];
-				input_analog_scale[port]=0;
-				sensitivity=100;
-			}
-		}
-		else
-		{
-			if (lightgun_delta_axis[player][X_AXIS] || lightgun_delta_axis[player][Y_AXIS]) {
-				analog_previous_axis[player][Y_AXIS]=0;
-				analog_current_axis[player][Y_AXIS]=lightgun_delta_axis[player][Y_AXIS];
-				input_analog_scale[port]=0;
-				sensitivity=100;
-			}
-		}
-	}
-
 
 	current += delta;
 
