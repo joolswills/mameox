@@ -28,7 +28,8 @@ extern "C" {
 #define ROMPATH						  "D:\\ROMS"
 #define AUDIOPATH           "D:\\SAMPLES"
 #define ROMLISTPATH				  "D:\\ROMS"
-
+#define HDIMAGEPATH         "D:\\HDIMAGES"
+  
 #define DRIVERLISTFILENAME  "DRIVERS.list"
 #define ROMLISTFILENAME		  "ROMS.list"
 #define INIFILENAME         "MAMEoX.ini"

@@ -113,10 +113,14 @@ void InitializeFileIO( void )
 																		g_pathNames[FILETYPE_MEMCARD] = 
 																		tempStr;
 
+  CREATEOROPENPATH( HDIMAGEPATH, FALSE );
+  g_pathNames[FILETYPE_IMAGE] = tempStr;
+
+  CREATEOROPENPATH( HDIMAGEPATH, TRUE );
+  g_pathNames[FILETYPE_IMAGE_DIFF] = tempStr;
+
   CREATEOROPENPATH( ARTPATH, FALSE );
-	g_pathNames[FILETYPE_IMAGE] = g_pathNames[FILETYPE_IMAGE_DIFF] =
-																g_pathNames[FILETYPE_ARTWORK] = 
-																tempStr;
+  g_pathNames[FILETYPE_ARTWORK] = tempStr;
 
   CREATEOROPENPATH( AUDIOPATH, FALSE );
   g_pathNames[FILETYPE_SAMPLE] = tempStr;

@@ -1,5 +1,7 @@
 Version 0.64b
- 
+  - \Docs\readme.txt:
+    - Noted new directory for CHD files
+
   - \MAME\cheat.c:
     - Disabled watch prints by default
 
@@ -9,6 +11,10 @@ Version 0.64b
   - \MAMEoX\Includes\xbox_FileIO.h:
     - Moved romlist and driverlist directory to default to the d:
       as there's no real reason to force it to Z.
+    - Added path for CHD files (Harddrive images)
+
+  - \MAMEoX\Sources\xbox_FileIO.cpp:
+    - Added path for CHD files
 
   - \MAMEoX\Sources\MAMEoXUtil.cpp:
     - Fixed a couple more INI bugs (improperly mapped options)
