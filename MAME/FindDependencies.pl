@@ -3,26 +3,30 @@
 # Usage:
 #   FindDependencies.pl BaseDirectoryContainingObjectFiles
 
+open( OUTFILE, ">Dependencies.txt" ) || die "Failed to create Dependencies.txt!\n";
 
 
 $ObjectDirectoryName = shift;
 @ObjectFiles = `find $ObjectDirectoryName -name *.obj`;
 
 @SystemSymbols = ( "_strcpy", "_sprintf", "_strlen", "_memset",
-									 "__RTC_CheckEsp", "__RTC_InitBase", "__RTC_Shutdown"
+									 "__RTC_CheckEsp", "__RTC_InitBase", "__RTC_Shutdown",
+									 "_free", '@_RTC_CheckStackVars@8', '@__security_check_cookie@4',
+									 "_memcmp", "_fclose", "_fopen", "_fseek", "_memcpy", "_memmove",
+									 "_qsort", "_sscanf", "_strchr", "_strcmp", "_strstr", "_tolower",
+									 "_fabs", "___security_cookie", "__chkstk", "__chvalidator", "__RTC_UninitUse",
+									 "_fprintf", "_strncmp"
 								 );
 
-@DefinedSymbolsPerObjectFile;
+%DefinedSymbolToObjectFileIndex;
 @UndefinedSymbolsPerObjectFile;
 
 
 
-$counter = 0;
-
-
 	# Pass 1: Figure out what each object file defines and imports
+print "Pass 1: Find defines/imports for each object file ($#ObjectFiles objects to parse)\n";
+$counter = 0;
 foreach $ObjectFile ( @ObjectFiles ) {
-	local( @DefinedSymbols );
 	local( @UndefinedSymbols );
 	local( @nmResults );
 
@@ -34,7 +38,7 @@ foreach $ObjectFile ( @ObjectFiles ) {
 
 		  # Defined symbol
 		if( $i =~ /\d+ [BCT] (.+)$/ ) {
-			push( @DefinedSymbols, $1 );
+			$DefinedSymbolToObjectFileIndex{ $1 } = $counter;
 		}
 
 		  # Undefined symbol
@@ -43,16 +47,14 @@ foreach $ObjectFile ( @ObjectFiles ) {
 		}
 	}
 
-	$ref = \@DefinedSymbols;
-	push( @DefinedSymbolsPerObjectFile, $ref );
-
 	$ref = \@UndefinedSymbols;
 	push( @UndefinedSymbolsPerObjectFile, $ref );
 
 	$counter++;
-	if( $counter > 50 ) {
-		last;
-	}
+	print ".";
+#	if( $counter > 200 ) {
+#		last;
+#	}
 }
 
 
@@ -60,12 +62,13 @@ foreach $ObjectFile ( @ObjectFiles ) {
 	#  dependency graph for each object file as much as possible.
 	#  Some symbols (in particular any stdlibc stuff) will be
 	#  totally undefined and ignored.
+print "\n\nPass 2: Resolve imports for each object file\n";
 $counter = 0;
 foreach $ObjectFile ( @ObjectFiles ) {
 		# UndefinedSymbolsRef is a reference to an array of undefined
 		# symbol names
 	chomp( $ObjectFile );
-	print "$ObjectFile depends on:\n";
+	print OUTFILE "$ObjectFile depends on:\n";
 
 	$UndefinedSymbolsRef = @UndefinedSymbolsPerObjectFile[$counter];
 
@@ -79,29 +82,27 @@ foreach $ObjectFile ( @ObjectFiles ) {
 			}
 		}
 
-		print "$UndefinedSymbol  - ";
+		print OUTFILE "$UndefinedSymbol  - ";
 
-			# Search through each define list until we
-			# find the symbol
-		$symbolFoundInFile = 0;
-		FOREACHSYMBOLTABLE:
-		foreach $DefinedSymbolTableRef (@DefinedSymbolsPerObjectFile) {
-			foreach $DefinedSymbol ( @$DefinedSymbolTableRef ) {
-				if( $DefinedSymbol eq $Symbol ) {
-					print "$ObjectFiles[$symbolFoundInFile]";
-					last FOREACHSYMBOLTABLE;
-				}
-			}
-			$symbolFoundInFile++;
+			# Lookup the symbol in the defined symbol hash
+		if( defined( $DefinedSymbolToObjectFileIndex{ $UndefinedSymbol } ) ) {
+			print OUTFILE $ObjectFiles[$DefinedSymbolToObjectFileIndex{ $UndefinedSymbol }];
+		} else {
+			printf OUTFILE "UNDEFINED";
 		}
 
-		print "\n";
+		print OUTFILE "\n";
 	}
 
-	print "\n\n=================================================\n\n";
+
+	print OUTFILE "\n\n=================================================\n\n";
 
 	$counter++;
-	if( $counter > 50 ) {
-		last;
-	}
+	print ".";
+#	if( $counter > 80 ) {
+#		last;
+#	}
 }
+
+
+print "Done!\n";
