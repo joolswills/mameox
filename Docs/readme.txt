@@ -76,7 +76,9 @@ X) This step is currently unnecessary, as the source distribution includes the
       > Font.xpr : This should be taken from the SDK. The project currently
                    has no fonts (or graphics in general, see "Contributions")
       > All of the resource files from the MAMEoX\Media directory
-    - roms : This is where you should put all of your ROM files/directories
+    - roms : This is where you should put all of your ROM files/directories.
+             NOTE: There is currently a speed hack that _requires_ all ROMs
+	           to be zipped! Unzipped files will not be read at all!
       - backup : Directory where "deleted" ROMs are stored
     - samples : This is where you should put all of your audio sample zips
     - hdimages : This is where you should place your CHD hard disk image 
