@@ -106,7 +106,7 @@ static void generate_gr_screen(
 	int w,int bitmap_width,int skip,
 	int start_color,int end_color, int source_size )
 {
-	UINT8 *buf = malloc( source_size );
+	UINT8 *buf = osd_malloc( source_size );
 	UINT8 *buf_base = buf;
 	if( buf ){
 		UINT8 *gr = memory_region(REGION_GFX3);

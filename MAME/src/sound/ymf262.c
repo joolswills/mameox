@@ -2342,7 +2342,7 @@ static OPL3 *OPL3Create(int type, int clock, int rate)
 	if (OPL3_LockTable() ==-1) return NULL;
 
 	/* allocate memory block */
-	chip = (OPL3 *)malloc(sizeof(OPL3));
+	chip = (OPL3 *)osd_malloc(sizeof(OPL3));
 
 	if (chip==NULL)
 		return NULL;

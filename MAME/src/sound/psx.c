@@ -150,7 +150,7 @@ int PSX_sh_start( const struct MachineSound *msound )
 		m_p_n_effect[ n_effect ] = 0;
 	}
 
-	m_p_n_spuram = malloc( 0x80000 );
+	m_p_n_spuram = osd_malloc( 0x80000 );
 	if( m_p_n_spuram == NULL )
 	{
 		return 1;

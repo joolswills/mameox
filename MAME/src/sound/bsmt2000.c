@@ -371,7 +371,7 @@ int BSMT2000_sh_start(const struct MachineSound *msound)
 	{
 		/* allocate the voices */
 		bsmt2000[i].voices = intf->voices[i];
-		bsmt2000[i].voice = malloc(bsmt2000[i].voices * sizeof(struct BSMT2000Voice));
+		bsmt2000[i].voice = osd_malloc(bsmt2000[i].voices * sizeof(struct BSMT2000Voice));
 		if (!bsmt2000[i].voice)
 			return 1;
 
@@ -403,8 +403,8 @@ int BSMT2000_sh_start(const struct MachineSound *msound)
 	}
 
 	/* allocate memory */
-	accumulator = malloc(sizeof(accumulator[0]) * 2 * MAX_SAMPLE_CHUNK);
-	scratch = malloc(sizeof(scratch[0]) * 2 * MAX_SAMPLE_CHUNK);
+	accumulator = osd_malloc(sizeof(accumulator[0]) * 2 * MAX_SAMPLE_CHUNK);
+	scratch = osd_malloc(sizeof(scratch[0]) * 2 * MAX_SAMPLE_CHUNK);
 	if (!accumulator || !scratch)
 		return 1;
 

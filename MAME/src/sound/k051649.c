@@ -54,7 +54,7 @@ static int make_mixer_table(int voices)
 	int gain = 8;
 
 	/* allocate memory */
-	mixer_table = malloc(512 * voices * sizeof(INT16));
+	mixer_table = osd_malloc(512 * voices * sizeof(INT16));
 	if (!mixer_table)
 		return 1;
 
@@ -131,7 +131,7 @@ int K051649_sh_start(const struct MachineSound *msound)
 	rate = Machine->sample_rate;
 
 	/* allocate a buffer to mix into - 1 second's worth should be more than enough */
-	if ((mixer_buffer = malloc(2 * sizeof(short) * Machine->sample_rate)) == 0)
+	if ((mixer_buffer = osd_malloc(2 * sizeof(short) * Machine->sample_rate)) == 0)
 		return 1;
 
 	/* build the mixer table */

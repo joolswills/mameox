@@ -862,7 +862,7 @@ static void init_dassault(void)
 {
 	const data8_t *src = memory_region(REGION_GFX1);
 	data8_t *dst = memory_region(REGION_GFX2);
-	data8_t *tmp = (data8_t *)malloc(0x80000);
+	data8_t *tmp = (data8_t *)osd_malloc(0x80000);
 
 	/* Playfield 4 also has access to the char graphics, make things easier
 	by just copying the chars to both banks (if I just used a different gfx
@@ -882,7 +882,7 @@ static void init_thndzone(void)
 {
 	const data8_t *src = memory_region(REGION_GFX1);
 	data8_t *dst = memory_region(REGION_GFX2);
-	data8_t *tmp = (data8_t *)malloc(0x80000);
+	data8_t *tmp = (data8_t *)osd_malloc(0x80000);
 
 	/* Playfield 4 also has access to the char graphics, make things easier
 	by just copying the chars to both banks (if I just used a different gfx

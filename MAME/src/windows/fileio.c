@@ -251,7 +251,7 @@ static char *copy_and_expand_variables(const char *path, int len)
 			length++;
 
 	/* allocate a string of the appropriate length */
-	result = malloc(length + 1);
+	result = osd_malloc(length + 1);
 	if (!result)
 		goto out_of_memory;
 
@@ -312,7 +312,7 @@ static void expand_pathlist(struct pathdata *list)
 	while (1)
 	{
 		// allocate space for the new pointer
-		list->path = realloc(list->path, (list->pathcount + 1) * sizeof(char *));
+		list->path = osd_realloc(list->path, (list->pathcount + 1) * sizeof(char *));
 		if (!list->path)
 			goto out_of_memory;
 
@@ -375,7 +375,7 @@ static const char *get_path_for_filetype(int filetype, int pathindex, DWORD *cou
 		{
 			// this may leak a little memory, but it's a hack anyway! :-P
 			const char *rawpath = (list->rawpath) ? list->rawpath : "";
-			char *newpath = malloc(strlen(rompath_extra) + strlen(rawpath) + 2);
+			char *newpath = osd_malloc(strlen(rompath_extra) + strlen(rawpath) + 2);
 			sprintf(newpath, "%s;%s", rompath_extra, rawpath);
 			list->rawpath = newpath;
 		}

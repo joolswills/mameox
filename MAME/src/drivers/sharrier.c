@@ -31,7 +31,7 @@ static void generate_gr_screen(
 	int source_size )
 {
 	/* preprocess road data, expanding it into a form more easily rendered */
-	UINT8 *buf = malloc( source_size );
+	UINT8 *buf = osd_malloc( source_size );
 	if( buf ){
 		UINT8 *buf0 = buf; /* remember so we can free and not leak memory */
 		UINT8 *gr = memory_region(REGION_GFX3); /* road gfx data */

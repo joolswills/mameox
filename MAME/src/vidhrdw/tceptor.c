@@ -292,7 +292,7 @@ static int decode_bg(int region)
 	int len = 0x8000;
 	int i;
 
-	if (!(buffer = malloc(len)))
+	if (!(buffer = osd_malloc(len)))
 		return 1;
 
 	/* expand rom tc2-19.10d */
@@ -356,7 +356,7 @@ static int decode_sprite16(int region)
 	data8_t *dst;
 	int i, y;
 
-	dst = (data8_t *)malloc(len);
+	dst = (data8_t *)osd_malloc(len);
 	if (!src || !dst)
 		return 1;
 
@@ -416,7 +416,7 @@ static int decode_sprite32(int region)
 	data8_t *dst;
 	int i;
 
-	dst = (data8_t *)malloc(len);
+	dst = (data8_t *)osd_malloc(len);
 	if (!src || !dst)
 		return 1;
 

@@ -461,7 +461,7 @@ static void K054539_init_chip(int chip, const struct MachineSound *msound)
 	K054539_flags |= K054539_UPDATE_AT_KEYON; //* make it default until proven otherwise
 
 	// Real size of 0x4000, the addon is to simplify the reverb buffer computations
-	K054539_chips.chip[chip].ram = malloc(0x4000*2+48000/55*2);
+	K054539_chips.chip[chip].ram = osd_malloc(0x4000*2+48000/55*2);
 	K054539_chips.chip[chip].reverb_pos = 0;
 	K054539_chips.chip[chip].cur_ptr = 0;
 	memset(K054539_chips.chip[chip].ram, 0, 0x4000*2+48000/55*2);

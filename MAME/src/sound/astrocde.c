@@ -180,7 +180,7 @@ int astrocade_sh_start(const struct MachineSound *msound)
 	/* reserve buffer */
 	for (i = 0;i < intf->num;i++)
 	{
-		if ((astrocade_buffer[i] = malloc(sizeof(INT16)*buffer_len)) == 0)
+		if ((astrocade_buffer[i] = osd_malloc(sizeof(INT16)*buffer_len)) == 0)
 		{
 			while (--i >= 0) free(astrocade_buffer[i]);
 			return 1;

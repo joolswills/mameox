@@ -620,8 +620,8 @@ int YMZ280B_sh_start(const struct MachineSound *msound)
 	}
 
 	/* allocate memory */
-	accumulator = malloc(sizeof(accumulator[0]) * 2 * MAX_SAMPLE_CHUNK);
-	scratch = malloc(sizeof(scratch[0]) * MAX_SAMPLE_CHUNK);
+	accumulator = osd_malloc(sizeof(accumulator[0]) * 2 * MAX_SAMPLE_CHUNK);
+	scratch = osd_malloc(sizeof(scratch[0]) * MAX_SAMPLE_CHUNK);
 	if (!accumulator || !scratch)
 		return 1;
 

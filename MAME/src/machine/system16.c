@@ -99,7 +99,7 @@ struct GfxDecodeInfo sys16_gfxdecodeinfo[] = {
 
 void sys16_interleave_sprite_data( int bank_size )
 {
-	unsigned char *temp = malloc( bank_size );
+	unsigned char *temp = osd_malloc( bank_size );
 	bank_size/=4;
 	if( temp ){
 		unsigned char *base = memory_region(REGION_GFX2);

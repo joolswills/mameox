@@ -2201,7 +2201,7 @@ int YM2203Init(int num, int clock, int rate,
 	YM2203NumChips = num;
 
 	/* allocate ym2203 state space */
-	if( (FM2203 = (YM2203 *)malloc(sizeof(YM2203) * YM2203NumChips))==NULL)
+	if( (FM2203 = (YM2203 *)osd_malloc(sizeof(YM2203) * YM2203NumChips))==NULL)
 		return (-1);
 	/* clear */
 	memset(FM2203,0,sizeof(YM2203) * YM2203NumChips);
@@ -3455,7 +3455,7 @@ int YM2608Init(int num, int clock, int rate,
 	YM2608NumChips = num;
 
 	/* allocate extend state space */
-	if( (FM2608 = (YM2608 *)malloc(sizeof(YM2608) * YM2608NumChips))==NULL)
+	if( (FM2608 = (YM2608 *)osd_malloc(sizeof(YM2608) * YM2608NumChips))==NULL)
 		return (-1);
 	/* clear */
 	memset(FM2608,0,sizeof(YM2608) * YM2608NumChips);
@@ -4169,7 +4169,7 @@ int YM2610Init(int num, int clock, int rate,
 	YM2610NumChips = num;
 
 	/* allocate extend state space */
-	if( (FM2610 = (YM2610 *)malloc(sizeof(YM2610) * YM2610NumChips))==NULL)
+	if( (FM2610 = (YM2610 *)osd_malloc(sizeof(YM2610) * YM2610NumChips))==NULL)
 		return (-1);
 	/* clear */
 	memset(FM2610,0,sizeof(YM2610) * YM2610NumChips);
@@ -4683,7 +4683,7 @@ int YM2612Init(int num, int clock, int rate,
 	YM2612NumChips = num;
 
 	/* allocate extend state space */
-	if( (FM2612 = (YM2612 *)malloc(sizeof(YM2612) * YM2612NumChips))==NULL)
+	if( (FM2612 = (YM2612 *)osd_malloc(sizeof(YM2612) * YM2612NumChips))==NULL)
 		return (-1);
 	/* clear */
 	memset(FM2612,0,sizeof(YM2612) * YM2612NumChips);
@@ -5360,7 +5360,7 @@ int OPMInit(int num, int clock, int rate,
 	YM2151NumChips = num;
 
 	/* allocate ym2151 state space */
-	if( (FMOPM = (YM2151 *)malloc(sizeof(YM2151) * YM2151NumChips))==NULL)
+	if( (FMOPM = (YM2151 *)osd_malloc(sizeof(YM2151) * YM2151NumChips))==NULL)
 		return (-1);
 
 	/* clear */

@@ -24,7 +24,7 @@ void *wav_open(const char *filename, int sample_rate, int channels)
 	UINT16 align, temp16;
 
 	/* allocate memory for the wav struct */
-	wav = malloc(sizeof(struct wav_data));
+	wav = osd_malloc(sizeof(struct wav_data));
 	if (!wav)
 		return NULL;
 
@@ -131,7 +131,7 @@ void wav_add_data_32(void *wavptr, INT32 *data, int samples, int shift)
 	int i;
 
 	/* allocate temp memory */
-	temp = malloc(samples * sizeof(temp[0]));
+	temp = osd_malloc(samples * sizeof(temp[0]));
 	if (!temp)
 		return;
 
@@ -158,7 +158,7 @@ void wav_add_data_16lr(void *wavptr, INT16 *left, INT16 *right, int samples)
 	int i;
 
 	/* allocate temp memory */
-	temp = malloc(samples * 2 * sizeof(temp[0]));
+	temp = osd_malloc(samples * 2 * sizeof(temp[0]));
 	if (!temp)
 		return;
 
@@ -182,7 +182,7 @@ void wav_add_data_32lr(void *wavptr, INT32 *left, INT32 *right, int samples, int
 	int i;
 
 	/* allocate temp memory */
-	temp = malloc(samples * 2 * sizeof(temp[0]));
+	temp = osd_malloc(samples * 2 * sizeof(temp[0]));
 	if (!temp)
 		return;
 

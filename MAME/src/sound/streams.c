@@ -191,7 +191,7 @@ int stream_init(const char *name,int default_mixing_level,
 
 	mixer_set_name(channel,name);
 
-	if ((stream_buffer[channel] = malloc(sizeof(INT16)*BUFFER_LEN)) == 0)
+	if ((stream_buffer[channel] = osd_malloc(sizeof(INT16)*BUFFER_LEN)) == 0)
 		return -1;
 
 	stream_sample_rate[channel] = sample_rate;
@@ -223,7 +223,7 @@ int stream_init_multi(int channels,const char **names,const int *default_mixing_
 	{
 		mixer_set_name(channel+i,names[i]);
 
-		if ((stream_buffer[channel+i] = malloc(sizeof(INT16)*BUFFER_LEN)) == 0)
+		if ((stream_buffer[channel+i] = osd_malloc(sizeof(INT16)*BUFFER_LEN)) == 0)
 			return -1;
 
 		stream_sample_rate[channel+i] = sample_rate;

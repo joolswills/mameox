@@ -447,7 +447,7 @@ DRIVER_INIT( silkroad )
 
 	src += tileoffset; len -=tileoffset;
 
-	if ((buffer = malloc(len)))
+	if ((buffer = osd_malloc(len)))
 	{
 		int i;
 		for (i = 0;i < len; i++)

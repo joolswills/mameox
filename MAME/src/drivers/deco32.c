@@ -2630,7 +2630,7 @@ static DRIVER_INIT( lockload )
 static DRIVER_INIT( tattass )
 {
 	data8_t *RAM = memory_region(REGION_GFX1);
-	data8_t *tmp = (data8_t *)malloc(0x80000);
+	data8_t *tmp = (data8_t *)osd_malloc(0x80000);
 
 	/* Reorder bitplanes to make decoding easier */
 	memcpy(tmp,RAM+0x80000,0x80000);
@@ -2653,7 +2653,7 @@ static DRIVER_INIT( tattass )
 static DRIVER_INIT( nslasher )
 {
 	data8_t *RAM = memory_region(REGION_GFX1);
-	data8_t *tmp = (data8_t *)malloc(0x80000);
+	data8_t *tmp = (data8_t *)osd_malloc(0x80000);
 
 	/* Reorder bitplanes to make decoding easier */
 	memcpy(tmp,RAM+0x80000,0x80000);

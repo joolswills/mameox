@@ -244,7 +244,7 @@ int TAITO8741_start(const struct TAITO8741interface *taito8741intf)
 
 	intf = taito8741intf;
 
-	//taito8741 = (I8741 *)malloc(intf->num*sizeof(I8741));
+	//taito8741 = (I8741 *)osd_malloc(intf->num*sizeof(I8741));
 	//if( taito8741 == 0 ) return 1;
 
 	for(i=0;i<intf->num;i++)

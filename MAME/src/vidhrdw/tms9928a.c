@@ -41,7 +41,7 @@
 **   screen build up are not shown.
 ** - Correctly emulate 4,8,16 kb VRAM if needed.
 ** - uses plot_pixel (...) in TMS_sprites (...), which is rended in
-**   in a back buffer created with malloc (). Hmm..
+**   in a back buffer created with osd_malloc (). Hmm..
 ** - Colours are incorrect. [fixed by R Nabet ?]
 */
 

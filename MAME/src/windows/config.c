@@ -894,7 +894,7 @@ static char *win_dirname(char *filename)
 		return NULL;
 
 	// allocate space for it
-	dirname = malloc(strlen(filename) + 1);
+	dirname = osd_malloc(strlen(filename) + 1);
 	if (!dirname)
 	{
 		fprintf(stderr, "error: malloc failed in win_dirname\n");
@@ -934,7 +934,7 @@ static char *win_strip_extension(char *filename)
 		return NULL;
 
 	// allocate space for it
-	newname = malloc(strlen(filename) + 1);
+	newname = osd_malloc(strlen(filename) + 1);
 	if (!newname)
 	{
 		fprintf(stderr, "error: malloc failed in win_strip_extension\n");

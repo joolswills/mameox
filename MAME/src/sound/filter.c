@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 static filter* filter_alloc(void) {
-	filter* f = malloc(sizeof(filter));
+	filter* f = osd_malloc(sizeof(filter));
 	return f;
 }
 
@@ -23,7 +23,7 @@ void filter_state_reset(filter* f, filter_state* s) {
 
 filter_state* filter_state_alloc(void) {
 	int i;
-        filter_state* s = malloc(sizeof(filter_state));
+        filter_state* s = osd_malloc(sizeof(filter_state));
 	s->prev_mac = 0;
 	for(i=0;i<FILTER_ORDER_MAX;++i)
 		s->xprev[i] = 0;

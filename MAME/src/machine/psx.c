@@ -1051,7 +1051,7 @@ void psx_driver_init( void )
 		m_p_n_sio_mode[ n ] = 0;
 		m_p_n_sio_control[ n ] = 0;
 		m_p_n_sio_baud[ n ] = 0;
-		m_p_p_n_sio_buf[ n ] = malloc( 256 );
+		m_p_p_n_sio_buf[ n ] = osd_malloc( 256 );
 		m_p_n_sio_rx[ n ] = 0;
 		m_p_n_sio_read[ n ] = 0;
 		m_p_f_sio_write[ n ] = NULL;

@@ -597,10 +597,10 @@ int pokey_sh_start(const struct MachineSound *msound)
 
 	memcpy(&intf, msound->sound_interface, sizeof(struct POKEYinterface));
 
-	poly9 = malloc(0x1ff+1);
-	rand9 = malloc(0x1ff+1);
-    poly17 = malloc(0x1ffff+1);
-    rand17 = malloc(0x1ffff+1);
+	poly9 = osd_malloc(0x1ff+1);
+	rand9 = osd_malloc(0x1ff+1);
+    poly17 = osd_malloc(0x1ffff+1);
+    rand17 = osd_malloc(0x1ffff+1);
 	if( !poly9 || !rand9 || !poly17 || !rand17 )
 	{
 		pokey_sh_stop();	/* free any allocated memory again */

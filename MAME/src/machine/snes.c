@@ -85,7 +85,7 @@ static void snes_load_sram(void)
 	UINT8 ii;
 	UINT8 *battery_ram, *ptr;
 
-	battery_ram = (UINT8 *)malloc( cart.sram_max );
+	battery_ram = (UINT8 *)osd_malloc( cart.sram_max );
 	ptr = battery_ram;
 	image_battery_load( image_from_devtype_and_index(IO_CARTSLOT,0), battery_ram, cart.sram_max );
 
@@ -115,7 +115,7 @@ static void snes_save_sram(void)
 	UINT8 ii;
 	UINT8 *battery_ram, *ptr;
 
-	battery_ram = (UINT8 *)malloc( cart.sram_max );
+	battery_ram = (UINT8 *)osd_malloc( cart.sram_max );
 	ptr = battery_ram;
 
 	if( cart.mode == SNES_MODE_20 )

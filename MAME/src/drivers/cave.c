@@ -3716,7 +3716,7 @@ DRIVER_INIT( mazinger )
 	int len = memory_region_length(REGION_GFX1);
 
 	/* decrypt sprites */
-	if ((buffer = malloc(len)))
+	if ((buffer = osd_malloc(len)))
 	{
 		int i;
 		for (i = 0;i < len; i++)
@@ -3763,7 +3763,7 @@ DRIVER_INIT( pwrinst2 )
 	cave_default_eeprom_length = 0;
 	cave_region_byte = -1;
 
-	if ((buffer = malloc(len)))
+	if ((buffer = osd_malloc(len)))
 	{
 		 for(i=0; i<len/2; i++) 		{
 			j = BITSWAP24(i,23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7, 2,4,6,1,5,3, 0);
@@ -3796,7 +3796,7 @@ DRIVER_INIT( sailormn )
 	int len = memory_region_length(REGION_GFX1);
 
 	/* decrypt sprites */
-	if ((buffer = malloc(len)))
+	if ((buffer = osd_malloc(len)))
 	{
 		int i;
 		for (i = 0;i < len; i++)

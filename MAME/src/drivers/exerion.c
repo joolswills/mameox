@@ -454,7 +454,7 @@ static DRIVER_INIT( exerion )
 	UINT8 *src, *dst, *temp;
 
 	/* allocate some temporary space */
-	temp = malloc(0x10000);
+	temp = osd_malloc(0x10000);
 	if (!temp)
 		return;
 

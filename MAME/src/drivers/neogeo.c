@@ -6043,7 +6043,7 @@ DRIVER_INIT( nitd )
 static void kof98P1decode(void)
 {
 	UINT8 *src = memory_region(REGION_CPU1);
-	UINT8 *dst = malloc(0x200000);
+	UINT8 *dst = osd_malloc(0x200000);
 	int i, j, k;
 	unsigned int sec[]={0x000000,0x100000,0x000004,0x100004,0x10000a,0x00000a,0x10000e,0x00000e};
 	unsigned int pos[]={0x000,0x004,0x00a,0x00e};

@@ -2121,7 +2121,7 @@ static void rearrange_sprites(void)
 	source_data = memory_region       ( REGION_GFX1 );
 	source_size = memory_region_length( REGION_GFX1 );
 
-	result_data = malloc(source_size);
+	result_data = osd_malloc(source_size);
 	if (!result_data) return;
 
 	for(i=0; i<source_size; i++)
@@ -2147,7 +2147,7 @@ static void decrypt_ms32_tx(int addr_xor,int data_xor)
 	source_data = memory_region       ( REGION_GFX4 );
 	source_size = memory_region_length( REGION_GFX4 );
 
-	result_data = malloc(source_size);
+	result_data = osd_malloc(source_size);
 	if (!result_data) return;
 
 	addr_xor ^= 0x1005d;
@@ -2202,7 +2202,7 @@ static void decrypt_ms32_bg(int addr_xor,int data_xor)
 	source_data = memory_region       ( REGION_GFX3 );
 	source_size = memory_region_length( REGION_GFX3 );
 
-	result_data = malloc(source_size);
+	result_data = osd_malloc(source_size);
 	if (!result_data) return;
 
 	addr_xor ^= 0xc1c5b;

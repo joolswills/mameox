@@ -482,7 +482,7 @@ static void neogeo_gfx_decrypt(int extra_xor)
 
 	rom_size = memory_region_length(REGION_GFX3);
 
-	buf = malloc(rom_size);
+	buf = osd_malloc(rom_size);
 
 	if (!buf) return;
 

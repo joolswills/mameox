@@ -383,7 +383,7 @@ static void pirates_decrypt_68k(void)
 
     rom_size = memory_region_length(REGION_CPU1);
 
-    buf = malloc(rom_size);
+    buf = osd_malloc(rom_size);
 
     if (!buf) return;
 
@@ -414,7 +414,7 @@ static void pirates_decrypt_p(void)
 
     rom_size = memory_region_length(REGION_GFX1);
 
-    buf = malloc(rom_size);
+    buf = osd_malloc(rom_size);
 
     if (!buf) return;
 
@@ -440,7 +440,7 @@ static void pirates_decrypt_s(void)
 
     rom_size = memory_region_length(REGION_GFX2);
 
-    buf = malloc(rom_size);
+    buf = osd_malloc(rom_size);
 
     if (!buf) return;
 
@@ -467,7 +467,7 @@ static void pirates_decrypt_oki(void)
 
     rom_size = memory_region_length(REGION_SOUND1);
 
-    buf = malloc(rom_size);
+    buf = osd_malloc(rom_size);
 
     if (!buf) return;
 

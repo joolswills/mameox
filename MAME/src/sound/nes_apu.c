@@ -748,7 +748,7 @@ int NESPSG_sh_start(const struct MachineSound *msound)
      memset(cur,0,sizeof(apu_t));
 
      /* Check for buffer allocation failure and bail out if necessary */
-     if ((cur->buffer = malloc(buffer_size))==NULL)
+     if ((cur->buffer = osd_malloc(buffer_size))==NULL)
      {
        while (--i >= 0) free(APU[i].buffer);
        return 1;

@@ -1061,7 +1061,7 @@ static void init_keylist(void)
 			// if it worked, assume we have a valid key
 
 			// copy the name
-			char *namecopy = malloc(strlen(instance.tszName) + 1);
+			char *namecopy = osd_malloc(strlen(instance.tszName) + 1);
 			if (namecopy)
 			{
 				unsigned code, standardcode;
@@ -1091,7 +1091,7 @@ static void init_keylist(void)
 				if ((num_osd_ik + 2) > size_osd_ik)
 				{
 					// attempt to allocate 16 more
-					temp = realloc (osd_input_keywords, (size_osd_ik + 16)*sizeof (struct ik));
+					temp = osd_realloc (osd_input_keywords, (size_osd_ik + 16)*sizeof (struct ik));
 
 					// if the realloc was successful
 					if (temp)
@@ -1108,7 +1108,7 @@ static void init_keylist(void)
 					const char *src;
 					char *dst;
 
-					osd_input_keywords[num_osd_ik].name = malloc (strlen(instance.tszName) + 4 + 1);
+					osd_input_keywords[num_osd_ik].name = osd_malloc (strlen(instance.tszName) + 4 + 1);
 
 					src = instance.tszName;
 					dst = (char *)osd_input_keywords[num_osd_ik].name;
@@ -1155,7 +1155,7 @@ static void add_joylist_entry(const char *name, int code, int *joycount)
  	struct ik *temp;
 
 	// copy the name
-	char *namecopy = malloc(strlen(name) + 1);
+	char *namecopy = osd_malloc(strlen(name) + 1);
 	if (namecopy)
 	{
 		int entry;
@@ -1177,7 +1177,7 @@ static void add_joylist_entry(const char *name, int code, int *joycount)
 		if ((num_osd_ik + 2) > size_osd_ik)
 		{
 			// attempt to allocate 16 more
-			temp = realloc (osd_input_keywords, (size_osd_ik + 16)*sizeof (struct ik));
+			temp = osd_realloc (osd_input_keywords, (size_osd_ik + 16)*sizeof (struct ik));
 
 			// if the realloc was successful
 			if (temp)
@@ -1194,7 +1194,7 @@ static void add_joylist_entry(const char *name, int code, int *joycount)
 			const char *src;
 			char *dst;
 
-			osd_input_keywords[num_osd_ik].name = malloc (strlen(name) + 1);
+			osd_input_keywords[num_osd_ik].name = osd_malloc (strlen(name) + 1);
 
 			src = name;
 			dst = (char *)osd_input_keywords[num_osd_ik].name;
@@ -1917,7 +1917,7 @@ void osd_customize_inputport_defaults(struct ipd *defaults)
 #endif
 
 	// create a structure for the input port options
-	if (!(ctrlr_input_opts = calloc (num_ik+num_osd_ik+1, sizeof(struct rc_option))))
+	if (!(ctrlr_input_opts = osd_calloc (num_ik+num_osd_ik+1, sizeof(struct rc_option))))
 	{
 		fprintf(stderr, "error on ctrlr_input_opts creation\n");
 		exit(1);

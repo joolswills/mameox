@@ -760,7 +760,7 @@ static int effects_rgb_init(void)
 	patternsize = pattern_xsize * pattern_ysize * 4;
 
 	// copy the pattern
-	pattern_rgb_data = (UINT8 *)malloc(patternsize);
+	pattern_rgb_data = (UINT8 *)osd_malloc(patternsize);
 
 	for (i = 0, internal_pattern = 0; builtin_patterns[i].name; i++)
 	{

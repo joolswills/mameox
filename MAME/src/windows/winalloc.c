@@ -95,7 +95,7 @@ INLINE void free_entry(memory_entry *entry)
 //	IMPLEMENTATION
 //============================================================
 
-void* CLIB_DECL malloc(size_t size)
+void* CLIB_DECL osd_malloc(size_t size)
 {
 	memory_entry *entry = allocate_entry();
 	UINT8 *page_base, *block_base;
@@ -129,10 +129,10 @@ void* CLIB_DECL malloc(size_t size)
 }
 
 
-void* CLIB_DECL calloc(size_t size, size_t count)
+void* CLIB_DECL osd_calloc(size_t size, size_t count)
 {
 	// first allocate the memory
-	void *memory = malloc(size * count);
+	void *memory = osd_malloc(size * count);
 	if (memory == NULL)
 		return NULL;
 
@@ -142,7 +142,7 @@ void* CLIB_DECL calloc(size_t size, size_t count)
 }
 
 
-void * CLIB_DECL realloc(void *memory, size_t size)
+void * CLIB_DECL osd_realloc(void *memory, size_t size)
 {
 	void *newmemory = NULL;
 
@@ -150,7 +150,7 @@ void * CLIB_DECL realloc(void *memory, size_t size)
 	if (size != 0)
 	{
 		// allocate space for the new amount
-		newmemory = malloc(size);
+		newmemory = osd_malloc(size);
 		if (newmemory == NULL)
 			return NULL;
 

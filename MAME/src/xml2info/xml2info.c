@@ -107,13 +107,13 @@ int container_add(char*** map, unsigned* mac, unsigned* max, const char* s, unsi
 {
 	if (*mac >= *mac) {
 		*max = 256 + *mac * 2;
-		*map = realloc(*map, *max * sizeof(char*));
+		*map = osd_realloc(*map, *max * sizeof(char*));
 		if (!*map) {
 			return -1;
 		}
 	}
 
-	(*map)[*mac] = malloc(len + 1);
+	(*map)[*mac] = osd_malloc(len + 1);
 	if (!(*map)[*mac]) {
 		return -1;
 	}
@@ -661,7 +661,7 @@ void data_handler(void* data, const XML_Char* s, int len)
 		if (state->error == 0) {
 			/* accumulate the data */
 			unsigned new_len = state->level[state->depth].len + len;
-			state->level[state->depth].data = realloc(state->level[state->depth].data, new_len);
+			state->level[state->depth].data = osd_realloc(state->level[state->depth].data, new_len);
 			if (!state->level[state->depth].data) {
 				process_error(state, state->level[state->depth].tag, "low memory");
 				return;

@@ -1152,7 +1152,7 @@ DRIVER_INIT( anteater )
 
 	RAM = memory_region(REGION_GFX1);
 
-	scratch = malloc(memory_region_length(REGION_GFX1));
+	scratch = osd_malloc(memory_region_length(REGION_GFX1));
 
 	if (scratch)
 	{
@@ -1191,7 +1191,7 @@ DRIVER_INIT( rescue )
 
 	RAM = memory_region(REGION_GFX1);
 
-	scratch = malloc(memory_region_length(REGION_GFX1));
+	scratch = osd_malloc(memory_region_length(REGION_GFX1));
 
 	if (scratch)
 	{
@@ -1229,7 +1229,7 @@ DRIVER_INIT( minefld )
 
 	RAM = memory_region(REGION_GFX1);
 
-	scratch = malloc(memory_region_length(REGION_GFX1));
+	scratch = osd_malloc(memory_region_length(REGION_GFX1));
 
 	if (scratch)
 	{
@@ -1269,7 +1269,7 @@ DRIVER_INIT( losttomb )
 
 	RAM = memory_region(REGION_GFX1);
 
-	scratch = malloc(memory_region_length(REGION_GFX1));
+	scratch = osd_malloc(memory_region_length(REGION_GFX1));
 
 	if (scratch)
 	{

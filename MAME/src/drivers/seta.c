@@ -8372,7 +8372,7 @@ DRIVER_INIT ( blandia )
 	int rpos;
 
 	rom_size = 0x80000;
-	buf = malloc(rom_size);
+	buf = osd_malloc(rom_size);
 
 	if (!buf) return;
 

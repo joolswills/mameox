@@ -1312,7 +1312,7 @@ void wecleman_unpack_sprites(void)
 
 static void bitswap(data8_t *src,size_t len,int _14,int _13,int _12,int _11,int _10,int _f,int _e,int _d,int _c,int _b,int _a,int _9,int _8,int _7,int _6,int _5,int _4,int _3,int _2,int _1,int _0)
 {
-	data8_t *buffer = malloc(len);
+	data8_t *buffer = osd_malloc(len);
 
 	if (buffer)
 	{
@@ -1429,7 +1429,7 @@ void hotchase_sprite_decode( int num16_banks, int bank_size )
 	int i;
 
 	base = memory_region(REGION_GFX1);	// sprites
-	temp = malloc( bank_size );
+	temp = osd_malloc( bank_size );
 	if( !temp ) return;
 
 	for( i = num16_banks; i >0; i-- ){

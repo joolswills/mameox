@@ -499,7 +499,7 @@ int tms36xx_sh_start(const struct MachineSound *msound)
 			sprintf(name, "MM6221AA #%d", i);
 		else
 			sprintf(name, "TMS36%02d #%d", intf->subtype[i], i);
-		tms36xx[i] = malloc(sizeof(struct TMS36XX));
+		tms36xx[i] = osd_malloc(sizeof(struct TMS36XX));
 		if( !tms36xx[i] )
 		{
 			logerror("%s failed to malloc struct TMS36XX\n", name);
@@ -508,7 +508,7 @@ int tms36xx_sh_start(const struct MachineSound *msound)
 		tms = tms36xx[i];
 		memset(tms, 0, sizeof(struct TMS36XX));
 
-		tms->subtype = malloc(strlen(name) + 1);
+		tms->subtype = osd_malloc(strlen(name) + 1);
 		strcpy(tms->subtype, name);
         tms->channel = stream_init(name, intf->mixing_level[i], Machine->sample_rate, i, tms36xx_sound_update);
 

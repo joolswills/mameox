@@ -655,7 +655,7 @@ static void decryptcode( int a23, int a22, int a21, int a20, int a19, int a18, i
 	int i;
 	data8_t *RAM = memory_region( REGION_CPU1 );
 	size_t  size = memory_region_length( REGION_CPU1 );
-	data8_t *buffer = malloc( size );
+	data8_t *buffer = osd_malloc( size );
 
 	if( buffer )
 	{

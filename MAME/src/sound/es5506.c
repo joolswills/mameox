@@ -196,7 +196,7 @@ static int compute_tables(void)
 
 	/* allocate ulaw lookup table */
 	if (!ulaw_lookup)
-		ulaw_lookup = malloc(sizeof(ulaw_lookup[0]) << ULAW_MAXBITS);
+		ulaw_lookup = osd_malloc(sizeof(ulaw_lookup[0]) << ULAW_MAXBITS);
 	if (!ulaw_lookup)
 		return 0;
 
@@ -218,7 +218,7 @@ static int compute_tables(void)
 
 	/* allocate volume lookup table */
 	if (!volume_lookup)
-		volume_lookup = malloc(sizeof(volume_lookup[0]) * 4096);
+		volume_lookup = osd_malloc(sizeof(volume_lookup[0]) * 4096);
 	if (!volume_lookup)
 		return 0;
 
@@ -960,8 +960,8 @@ int ES5506_sh_start(const struct MachineSound *msound)
 	accum_mask = 0xffffffff;
 
 	/* allocate memory */
-	accumulator = malloc(sizeof(accumulator[0]) * 2 * MAX_SAMPLE_CHUNK);
-	scratch = malloc(sizeof(scratch[0]) * 2 * MAX_SAMPLE_CHUNK);
+	accumulator = osd_malloc(sizeof(accumulator[0]) * 2 * MAX_SAMPLE_CHUNK);
+	scratch = osd_malloc(sizeof(scratch[0]) * 2 * MAX_SAMPLE_CHUNK);
 	if (!accumulator || !scratch)
 		return 1;
 

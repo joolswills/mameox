@@ -104,10 +104,10 @@ VIDEO_START( lemmings )
 	bitmap0 = bitmap_alloc(2048,256);
 	vram_tilemap = tilemap_create(get_tile_info,tilemap_scan_cols,TILEMAP_TRANSPARENT,8,8,64,32);
 
-	vram_buffer = (data8_t*)malloc(2048*64); /* 64 bytes per VRAM character */
-	vram_dirty = (data8_t*)malloc(2048);
-	sprite_triple_buffer_0 = (data16_t*)malloc(0x800);
-	sprite_triple_buffer_1 = (data16_t*)malloc(0x800);
+	vram_buffer = (data8_t*)osd_malloc(2048*64); /* 64 bytes per VRAM character */
+	vram_dirty = (data8_t*)osd_malloc(2048);
+	sprite_triple_buffer_0 = (data16_t*)osd_malloc(0x800);
+	sprite_triple_buffer_1 = (data16_t*)osd_malloc(0x800);
 
 	if (!bitmap0 || !vram_tilemap || !vram_buffer || !vram_dirty || !sprite_triple_buffer_0 || !sprite_triple_buffer_1)
 		return 1;

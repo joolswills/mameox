@@ -705,7 +705,7 @@ static DRIVER_INIT( toki )
 
 DRIVER_INIT( tokib )
 {
-	unsigned char *temp = malloc (65536 * 2);
+	unsigned char *temp = osd_malloc (65536 * 2);
 	int i, offs;
 
 	/* invert the sprite data in the ROMs */

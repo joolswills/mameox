@@ -503,7 +503,7 @@ int win_create_window(int width, int height, int depth, int attributes, double a
 		return 1;
 
 	// allocate a temporary bitmap in case we need it
-	converted_bitmap = malloc(MAX_VIDEO_WIDTH * MAX_VIDEO_HEIGHT * 4);
+	converted_bitmap = osd_malloc(MAX_VIDEO_WIDTH * MAX_VIDEO_HEIGHT * 4);
 	if (!converted_bitmap)
 		return 1;
 

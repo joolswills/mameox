@@ -124,7 +124,7 @@ struct rc_struct *rc_create(void)
 {
    struct rc_struct *rc = NULL;
 
-   if(!(rc = calloc(1, sizeof(struct rc_struct))))
+   if(!(rc = osd_calloc(1, sizeof(struct rc_struct))))
    {
       fprintf(stderr, "error: malloc failed for: struct rc_struct\n");
       return NULL;
@@ -157,7 +157,7 @@ int rc_register(struct rc_struct *rc, struct rc_option *option)
    /* do we have space to register this option list ? */
    if(i >= (rc->option_size-1))
    {
-      struct rc_option *tmp = realloc(rc->option,
+      struct rc_option *tmp = osd_realloc(rc->option,
          (rc->option_size + BUF_SIZE) * sizeof(struct rc_option));
       if (!tmp)
       {
@@ -527,7 +527,7 @@ int rc_parse_commandline(struct rc_struct *rc, int argc, char *argv[],
          /* do we have space to register the non-option arg */
          if(rc->args_registered >= (rc->arg_size))
          {
-            char **tmp = realloc(rc->arg, (rc->arg_size + BUF_SIZE) *
+            char **tmp = osd_realloc(rc->arg, (rc->arg_size + BUF_SIZE) *
                sizeof(char *));
             if (!tmp)
             {
@@ -732,7 +732,7 @@ int rc_set_option3(struct rc_option *option, const char *arg, int priority)
       case rc_string:
          {
             char *str;
-            if ( !( str = malloc(strlen(arg)+1) ) )
+            if ( !( str = osd_malloc(strlen(arg)+1) ) )
             {
                fprintf(stderr, "error: malloc failed for %s\n", option->name);
                return -1;

@@ -296,7 +296,7 @@ void identify_file(const char* name)
 	}
 
 	/* allocate space for entire file */
-	data = (char*)malloc(length);
+	data = (char*)osd_malloc(length);
 	if (!data) {
 		fclose(f);
 		return;
@@ -341,7 +341,7 @@ void identify_zip(const char* zipname)
 	while ((ent = readzip(zip))) {
 		/* Skip empty file and directory */
 		if (ent->uncompressed_size!=0) {
-			char* buf = (char*)malloc(strlen(zipname)+1+strlen(ent->name)+1);
+			char* buf = (char*)osd_malloc(strlen(zipname)+1+strlen(ent->name)+1);
 			char hash[HASH_BUF_SIZE];
 			UINT8 crcs[4];
 
@@ -356,7 +356,7 @@ void identify_zip(const char* zipname)
 
 			if (!options.crc_only)
 			{
-				UINT8* data =  (UINT8*)malloc(ent->uncompressed_size);
+				UINT8* data =  (UINT8*)osd_malloc(ent->uncompressed_size);
 				readuncompresszip(zip, ent, data);
 				hash_compute(hash, data, ent->uncompressed_size, HASH_SHA1);
 				free(data);
@@ -394,7 +394,7 @@ void identify_dir(const char* dirname)
 	while (ent) {
 		/* Skip special files */
 		if (ent->d_name[0]!='.') {
-			char* buf = (char*)malloc(strlen(dirname)+1+strlen(ent->d_name)+1);
+			char* buf = (char*)osd_malloc(strlen(dirname)+1+strlen(ent->d_name)+1);
 			sprintf(buf,"%s/%s",dirname,ent->d_name);
 			romident(buf,0);
 			free(buf);

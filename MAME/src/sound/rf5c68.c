@@ -55,7 +55,7 @@ int RF5C68_sh_start( const struct MachineSound *msound )
 	const char *name[2];
 	int vol[2];
 
-	rpcm.ram = malloc(0x10000);
+	rpcm.ram = osd_malloc(0x10000);
 
 	if(!rpcm.ram)
 		return 1;

@@ -736,7 +736,7 @@ NAMCONA_sh_stop( void )
 	FILE *f = fopen("snd.txt","w");
 	if( f )
 	{
-		unsigned char *special = malloc(0x10000);
+		unsigned char *special = osd_malloc(0x10000);
 		if( special )
 		{
 			int i,addr, table;

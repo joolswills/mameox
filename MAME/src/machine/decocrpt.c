@@ -602,7 +602,7 @@ static void deco_decrypt(int mem_region,const UINT8 *xor_table,const UINT16 *add
 {
 	data16_t *rom = (data16_t *)memory_region(mem_region);
 	int len = memory_region_length(mem_region)/2;
-	data16_t *buffer = malloc(len*2);
+	data16_t *buffer = osd_malloc(len*2);
 	int i;
 
 #ifdef LSB_FIRST

@@ -401,7 +401,7 @@ int C140_sh_start( const struct MachineSound *msound )
 	}
 
 	/* allocate a pair of buffers to mix into - 1 second's worth should be more than enough */
-	mixer_buffer_left = malloc(2 * sizeof(INT16)*sample_rate );
+	mixer_buffer_left = osd_malloc(2 * sizeof(INT16)*sample_rate );
 	if( mixer_buffer_left )
 	{
 		mixer_buffer_right = mixer_buffer_left + sample_rate;

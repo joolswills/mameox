@@ -859,7 +859,7 @@ VIDEO_UPDATE( metro )
 	data8_t *dirtyindex;
 	data16_t screenctrl = *metro_screenctrl;
 
-	dirtyindex = malloc(metro_tiletable_size/4);
+	dirtyindex = osd_malloc(metro_tiletable_size/4);
 	if (dirtyindex)
 	{
 		int dirty = 0;

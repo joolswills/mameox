@@ -2154,7 +2154,7 @@ static void expand_roms(UINT8 cd_rom_mask)
 	/* load EF           from 0x2e000-0x30000 */
 	/* ROM region must be 0x40000 total */
 
-	UINT8 *temp = malloc(0x20000);
+	UINT8 *temp = osd_malloc(0x20000);
 	if (temp)
 	{
 		UINT8 *rom = memory_region(REGION_CPU1);

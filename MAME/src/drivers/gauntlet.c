@@ -1602,7 +1602,7 @@ static DRIVER_INIT( gauntlet2 )
 static DRIVER_INIT( vindctr2 )
 {
 	UINT8 *gfx2_base = memory_region(REGION_GFX2);
-	UINT8 *data = malloc(0x8000);
+	UINT8 *data = osd_malloc(0x8000);
 	int i;
 
 	common_init(118, 1);

@@ -612,7 +612,7 @@ VIDEO_UPDATE( hyprduel )
 	data8_t *dirtyindex;
 	data16_t screenctrl = *hyprduel_screenctrl;
 
-	dirtyindex = malloc(hyprduel_tiletable_size/4);
+	dirtyindex = osd_malloc(hyprduel_tiletable_size/4);
 	if (dirtyindex)
 	{
 		int dirty = 0;

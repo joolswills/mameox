@@ -1459,7 +1459,7 @@ static void gfx_untangle( void )
 	// sprite, tile data
 
 	int i;
-	UINT16 *temp = malloc(0x200000);
+	UINT16 *temp = osd_malloc(0x200000);
 
 	if ( temp )
 	{
