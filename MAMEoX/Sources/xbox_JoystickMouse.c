@@ -914,6 +914,13 @@ static void Helper_CustomizeInputPortDefaults( struct ipd *defaults )
       break;
 
 
+			// *** IPT_UI_SNAPSHOT *** //
+    case IPT_UI_SNAPSHOT:
+      REMAP_SEQ_15( JOYCODE_1_SELECT, JOYCODE_1_BUTTON1, JOYCODE_1_BUTTON3, CODE_OR, 
+                    JOYCODE_2_SELECT, JOYCODE_2_BUTTON1, JOYCODE_2_BUTTON3, CODE_OR,
+                    JOYCODE_3_SELECT, JOYCODE_3_BUTTON1, JOYCODE_3_BUTTON3, CODE_OR,
+                    JOYCODE_4_SELECT, JOYCODE_4_BUTTON1, JOYCODE_4_BUTTON3 );
+      break;
 
       //-- PLAYER 1 CONTROLS ----------------------------------------------------------------------------
 

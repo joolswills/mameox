@@ -92,6 +92,8 @@ Load State        - BACK, Right Analog
 Save State        - BACK, Right Analog 
                     button, and Right 
                     trigger
+Save Screenshot   - BACK, A button, and B 
+                    button
 
  Default Player Controls
 -------------------------

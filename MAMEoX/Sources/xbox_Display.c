@@ -303,6 +303,7 @@ void osd_save_snapshot( struct mame_bitmap *bitmap, const struct rectangle *boun
   file name. This isn't scrictly necessary, so you can just call
   save_screen_snapshot() to let the core automatically pick a default name.
 */
+  save_screen_snapshot( bitmap, bounds );
 }
 
 
