@@ -1,7 +1,3 @@
-#pragma code_seg("CC13")
-#pragma bss_seg("CB13")
-#pragma data_seg("CD13")
-#pragma const_seg("CK13")
  /**************************************************************************\
  *						Microchip PIC16C5x Emulator							*
  *																			*

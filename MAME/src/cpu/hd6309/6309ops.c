@@ -1,7 +1,11 @@
-#pragma code_seg("CC27")
-#pragma bss_seg("CB27")
-#pragma data_seg("CD27")
-#pragma const_seg("CK27")
+#pragma code_seg("CC22")
+#pragma data_seg("CD22")
+#pragma bss_seg("CB22")
+#pragma const_seg("CK22")
+#pragma comment(linker, "/merge:CD22=CPU22")
+#pragma comment(linker, "/merge:CC22=CPU22")
+#pragma comment(linker, "/merge:CB22=CPU22")
+#pragma comment(linker, "/merge:CK22=CPU22")
 /*
 
 HNZVC
@@ -5639,3 +5643,7 @@ INLINE void pref11( void )
 	hd6309_ICount -= cycle_counts_page11[ireg2];
 }
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

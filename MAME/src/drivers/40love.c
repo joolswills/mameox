@@ -1,7 +1,11 @@
 #pragma code_seg("C2")
-#pragma bss_seg("B2")
 #pragma data_seg("D2")
+#pragma bss_seg("B2")
 #pragma const_seg("K2")
+#pragma comment(linker, "/merge:D2=2")
+#pragma comment(linker, "/merge:C2=2")
+#pragma comment(linker, "/merge:B2=2")
+#pragma comment(linker, "/merge:K2=2")
 /****************************************************************************
 
 	Forty-Love (c) Taito 1984
@@ -1376,7 +1380,7 @@ ROM_END
 GAMEX( 1984, 40love,   0,        40love,   40love,   40love,   ROT0, "Taito Corporation", "Forty-Love", GAME_IMPERFECT_GRAPHICS )
 GAME ( 1984, fieldday, 0,        undoukai, undoukai, undoukai, ROT0, "Taito Corporation", "Field Day" )
 GAME ( 1984, undoukai, fieldday, undoukai, undoukai, undoukai, ROT0, "Taito Corporation", "The Undoukai (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

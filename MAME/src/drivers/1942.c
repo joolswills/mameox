@@ -1,7 +1,11 @@
 #pragma code_seg("C0")
-#pragma bss_seg("B0")
 #pragma data_seg("D0")
+#pragma bss_seg("B0")
 #pragma const_seg("K0")
+#pragma comment(linker, "/merge:D0=0")
+#pragma comment(linker, "/merge:C0=0")
+#pragma comment(linker, "/merge:B0=0")
+#pragma comment(linker, "/merge:K0=0")
 /***************************************************************************
 
 1942
@@ -455,7 +459,7 @@ ROM_END
 GAME( 1984, 1942,  0,    1942, 1942, 0, ROT270, "Capcom", "1942 (set 1)" )
 GAME( 1984, 1942a, 1942, 1942, 1942, 0, ROT270, "Capcom", "1942 (set 2)" )
 GAME( 1984, 1942b, 1942, 1942, 1942, 0, ROT270, "Capcom", "1942 (set 3)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

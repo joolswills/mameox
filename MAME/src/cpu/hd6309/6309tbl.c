@@ -1,7 +1,11 @@
-#pragma code_seg("CC27")
-#pragma bss_seg("CB27")
-#pragma data_seg("CD27")
-#pragma const_seg("CK27")
+#pragma code_seg("CC22")
+#pragma data_seg("CD22")
+#pragma bss_seg("CB22")
+#pragma const_seg("CK22")
+#pragma comment(linker, "/merge:CD22=CPU22")
+#pragma comment(linker, "/merge:CC22=CPU22")
+#pragma comment(linker, "/merge:CB22=CPU22")
+#pragma comment(linker, "/merge:CK22=CPU22")
 INLINE void illegal( void );
 INLINE void neg_di( void );
 INLINE void oim_di( void );
@@ -816,3 +820,7 @@ static void (*hd6309_page11[0x100])(void) = {
 };
 
 #endif /* BIG_SWITCH */
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

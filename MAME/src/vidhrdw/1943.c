@@ -1,7 +1,11 @@
 #pragma code_seg("C1")
-#pragma bss_seg("B1")
 #pragma data_seg("D1")
+#pragma bss_seg("B1")
 #pragma const_seg("K1")
+#pragma comment(linker, "/merge:D1=1")
+#pragma comment(linker, "/merge:C1=1")
+#pragma comment(linker, "/merge:B1=1")
+#pragma comment(linker, "/merge:K1=1")
 /***************************************************************************
 
   vidhrdw.c
@@ -385,7 +389,7 @@ VIDEO_UPDATE( 1943 )
 		}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

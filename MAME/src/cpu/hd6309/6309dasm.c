@@ -1,7 +1,11 @@
-#pragma code_seg("CC27")
-#pragma bss_seg("CB27")
-#pragma data_seg("CD27")
-#pragma const_seg("CK27")
+#pragma code_seg("CC22")
+#pragma data_seg("CD22")
+#pragma bss_seg("CB22")
+#pragma const_seg("CK22")
+#pragma comment(linker, "/merge:CD22=CPU22")
+#pragma comment(linker, "/merge:CC22=CPU22")
+#pragma comment(linker, "/merge:CB22=CPU22")
+#pragma comment(linker, "/merge:CK22=CPU22")
 /* this code was hacked out of the fully-featured 6809 disassembler by Sean Riddle */
 /* and then mutliated into a 6309 disassembler by tim lindner					   */
 
@@ -1099,3 +1103,7 @@ unsigned Dasm6309 (char *buffer, unsigned pc)
 
 #endif
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C3")
-#pragma bss_seg("B3")
 #pragma data_seg("D3")
+#pragma bss_seg("B3")
 #pragma const_seg("K3")
+#pragma comment(linker, "/merge:D3=3")
+#pragma comment(linker, "/merge:C3=3")
+#pragma comment(linker, "/merge:B3=3")
+#pragma comment(linker, "/merge:K3=3")
 /***************************************************************************
 
 Driver by Tomasz Slanina  dox@space.pl
@@ -228,7 +232,7 @@ ROM_START( 4enraya )
 ROM_END
 
 GAME( 1990, 4enraya,  0,       4enraya,  4enraya,  0, ROT0, "IDSA", "4 En Raya" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

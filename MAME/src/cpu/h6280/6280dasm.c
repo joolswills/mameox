@@ -1,7 +1,11 @@
-#pragma code_seg("CC28")
-#pragma bss_seg("CB28")
-#pragma data_seg("CD28")
-#pragma const_seg("CK28")
+#pragma code_seg("CC23")
+#pragma data_seg("CD23")
+#pragma bss_seg("CB23")
+#pragma const_seg("CK23")
+#pragma comment(linker, "/merge:CD23=CPU23")
+#pragma comment(linker, "/merge:CC23=CPU23")
+#pragma comment(linker, "/merge:CB23=CPU23")
+#pragma comment(linker, "/merge:CK23=CPU23")
 /*****************************************************************************
 
 	6280dasm.c Hudsonsoft Hu6280 (HuC6280/Hu6280a) disassembler
@@ -253,3 +257,7 @@ int Dasm6280(char *buffer, int pc)
 }
 
 #endif
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

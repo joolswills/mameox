@@ -1,7 +1,11 @@
 #pragma code_seg("CC9")
-#pragma bss_seg("CB9")
 #pragma data_seg("CD9")
+#pragma bss_seg("CB9")
 #pragma const_seg("CK9")
+#pragma comment(linker, "/merge:CD9=CPU9")
+#pragma comment(linker, "/merge:CC9=CPU9")
+#pragma comment(linker, "/merge:CB9=CPU9")
+#pragma comment(linker, "/merge:CK9=CPU9")
  /**************************************************************************\
  *				  Texas Instruments TMS32010 DSP Disassembler				*
  *																			*
@@ -349,3 +353,7 @@ unsigned Dasm32010(char *str, unsigned pc)
 	}
 	return cnt;
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()
