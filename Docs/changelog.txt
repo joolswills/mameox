@@ -1,5 +1,8 @@
 Version 0.65b
 
+  - \MAMEoXLauncher\Sources\main.cpp:
+    - Reloading ROMS on button B+A now
+
   - \media\help.txt:
     - Help file
 
