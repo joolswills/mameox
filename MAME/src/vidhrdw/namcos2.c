@@ -723,6 +723,10 @@ VIDEO_START( luckywld )
 		namco_obj_init( 0, 0x0, NULL );
 		if( namcos2_gametype==NAMCOS2_LUCKY_AND_WILD )
 		{
+				// [EBA] - If this call isn't made, we'll have a crash in drivers/namcoic.c
+				// when mpRoadTilemap is used w/out being initialized (it'll crash on pSourceBitmap
+				// being NULL, but mpRoadTilemap not init'd is the root cause)
+			namco_road_init(3);  
 			return namco_roz_init( 1, REGION_GFX5 );
 		}
 		if( namcos2_gametype!=NAMCOS2_STEEL_GUNNER_2 )
