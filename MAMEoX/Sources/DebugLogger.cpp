@@ -1,19 +1,19 @@
 
 
 //= I N C L U D E S ==================================================
-#include "DebugLogger.h"
-
-#include "GraphicsManager.h"
-#include "FontSet.h"
-
 #include <xtl.h>
 #include <xbdm.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <io.h>
-
 #include <list>
+
+#include "DebugLogger.h"
+
+#include "GraphicsManager.h"
+#include "FontSet.h"
 #include "StdString.h"
+
 
 
 
@@ -346,22 +346,20 @@ void Helper_ConsolePrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNum
 //----------------------------------------------------------------------------
 void Helper_RenderDebugConsole( void *device )
 {
+  #define CONSOLECOLOR      D3DCOLOR_RGBA( 40, 40, 40, 200 )
+  #define CONSOLETEXTCOLOR  D3DCOLOR_XRGB( 255, 255, 255 )
+  #define X_POS             80
+  #define Y_POS             100
+  #define WIDTH             440
+
   if( !g_debugConsoleData.size() || !device || !g_enableDebugConsole )
     return;
 
   LPDIRECT3DDEVICE8 pD3DDevice = (LPDIRECT3DDEVICE8)device;
 
-  #define CONSOLECOLOR      D3DCOLOR_RGBA( 50, 80, 50, 190 )
-  #define CONSOLETEXTCOLOR  D3DCOLOR_XRGB( 255, 255, 255 )
-  #define X_POS             100
-  #define Y_POS             100
-  #define WIDTH             400
 
 
     // Store the values of options that we're going to change
-  IDirect3DBaseTexture8 *pTexture;
-  pD3DDevice->GetTexture( 0, &pTexture );
-
   DWORD vertexShader;
   pD3DDevice->GetVertexShader( &vertexShader );
 
@@ -374,14 +372,17 @@ void Helper_RenderDebugConsole( void *device )
   pD3DDevice->GetRenderState( D3DRS_SRCBLEND, &srcBlend );
   pD3DDevice->GetRenderState( D3DRS_DESTBLEND, &destBlend );
 
+  IDirect3DBaseTexture8 *pTexture;
+  pD3DDevice->GetTexture( 0, &pTexture );
+
 
 
     // Render a translucent quad for a backdrop
-  pD3DDevice->SetTexture( 0, NULL );
   pD3DDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
   pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
   pD3DDevice->SetRenderState( D3DRS_SRCBLEND,         D3DBLEND_SRCALPHA );
   pD3DDevice->SetRenderState( D3DRS_DESTBLEND,        D3DBLEND_INVSRCALPHA );
+  pD3DDevice->SetTexture( 0, NULL );
 
   pD3DDevice->Begin( D3DPT_QUADLIST );
     pD3DDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CONSOLECOLOR );

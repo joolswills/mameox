@@ -114,7 +114,7 @@ INT32 osd_start_audio_stream( INT32 stereo )
   //especially when DACs are involved, greatly depends on the number of samples
   //per frame to be roughly constant, so the returned value must always stay close
   //to the reference value of Machine->sample_rate / Machine->drv->frames_per_second.
-  //Of course that value is not necessarily an INT32eger so at least a +/- 1
+  //Of course that value is not necessarily an integer so at least a +/- 1
   //adjustment is necessary to avoid drifting over time.
 
   // Disable the XBOX's WaitForVoiceOff warning
@@ -123,9 +123,9 @@ INT32 osd_start_audio_stream( INT32 stereo )
   g_bufferUnderflows = 0;
   g_bufferOverflows = 0;
 
-	// determine the number of samples per frame
-  if( g_rendererOptions.m_throttleFramerate )
-	  g_samplesPerFrame = (DOUBLE)Machine->sample_rate / 60.0f;
+	  // determine the number of samples per frame    
+  if( g_rendererOptions.m_vsync )
+	  g_samplesPerFrame = (DOUBLE)Machine->sample_rate / 60.0;
   else
 	  g_samplesPerFrame = (DOUBLE)Machine->sample_rate / (DOUBLE)Machine->drv->frames_per_second;
 
@@ -164,9 +164,7 @@ void osd_stop_audio_stream( void )
 	// kill the buffers and g_pDSound
 	Helper_DirectSoundTerminate();
 
-  #ifdef LOG_SOUND
-    PRINTMSG( T_INFO, "Sound buffer: overflows=%d underflows=%d\n", g_bufferOverflows, g_bufferUnderflows );
-  #endif
+  PRINTMSG( T_INFO, "Sound buffer: overflows=%d underflows=%d\n", g_bufferOverflows, g_bufferUnderflows );
 }
 
 //---------------------------------------------------------------------
@@ -178,12 +176,15 @@ INT32 osd_update_audio_stream( INT16 *buffer )
   int input_bytes;
   int final_bytes;
 
+  static cycles_t lastFrameEndTime = 0;
+  cycles_t actualFrameCycles = osd_cycles() - lastFrameEndTime;
+
 	// if nothing to do, don't do it
-	if( Machine->sample_rate && g_pStreamBuffer)
+	if( Machine->sample_rate && g_pStreamBuffer )
 	{
     if( !g_soundPlaying )
     {
-      // Reset the play position = 0
+        // Reset the play position = 0
       IDirectSoundBuffer_SetCurrentPosition( g_pStreamBuffer, 0 );
       g_soundPlaying = TRUE;
     }
@@ -191,42 +192,47 @@ INT32 osd_update_audio_stream( INT16 *buffer )
     original_bytes = Helper_BytesInStreamBuffer();
     input_bytes = g_samplesThisFrame * g_streamFormat.nBlockAlign;
 
-		// update the sample adjustment
+		  // update the sample adjustment
 		Helper_UpdateSampleAdjustment();
 
-		// copy data into the sound buffer
+		  // copy data into the sound buffer
 		Helper_CopySampleData( buffer, input_bytes );
 
-    // check for overflows
+      // check for overflows
     final_bytes = Helper_BytesInStreamBuffer();
     if (final_bytes < original_bytes)
       ++g_bufferOverflows;
 
-    #ifdef LOG_SOUND
       // reset underflow/overflow tracking
-      if (++g_totalFrames == IGNORE_UNDERFLOW_FRAMES)
-        g_bufferOverflows = g_bufferUnderflows = 0;
-      else if( g_totalFrames > IGNORE_UNDERFLOW_FRAMES )
-        g_totalFrames = IGNORE_UNDERFLOW_FRAMES + 1;
+    if (++g_totalFrames == IGNORE_UNDERFLOW_FRAMES)
+      g_bufferOverflows = g_bufferUnderflows = 0;
+    else if( g_totalFrames > IGNORE_UNDERFLOW_FRAMES )
+      g_totalFrames = IGNORE_UNDERFLOW_FRAMES + 1;
 
+//    #ifdef LOG_SOUND
       {
         static int prev_overflows = 0, prev_underflows = 0;
         if( g_totalFrames > IGNORE_UNDERFLOW_FRAMES && (g_bufferOverflows != prev_overflows || g_bufferUnderflows != prev_underflows) )
         {
 	        prev_overflows = g_bufferOverflows;
 	        prev_underflows = g_bufferUnderflows;
-          PRINTMSG( T_INFO, "************************ overflows=%d underflows=%d\n", g_bufferOverflows, g_bufferUnderflows );
+          PRINTMSG_TO_CONSOLE( T_INFO, "overflows=%d underflows=%d\n", g_bufferOverflows, g_bufferUnderflows );
         }
       }
-    #endif
+//    #endif
 	}
 
-  // compute how many samples to generate next frame
+    // compute how many samples to generate next frame
 	g_samplesLeftOver += g_samplesPerFrame;
 	g_samplesThisFrame = (UINT32)g_samplesLeftOver;
 	g_samplesLeftOver -= (DOUBLE)g_samplesThisFrame;
 
 	g_samplesThisFrame += g_currentAdjustment;
+
+
+
+  lastFrameEndTime = osd_cycles();
+
 
 	  // return the samples to play this next frame
 	return g_samplesThisFrame;
@@ -480,9 +486,9 @@ static void Helper_UpdateSampleAdjustment( void )
     // adjust so that we generate more samples per frame to compensate
     g_currentAdjustment = (consecutive_lows < MAX_SAMPLE_ADJUST) ? consecutive_lows : MAX_SAMPLE_ADJUST;
 
-    #ifdef LOG_SOUND
-      PRINTMSG( T_INFO, "too low - adjusting to %d\n", g_currentAdjustment );
-    #endif
+    //#ifdef LOG_SOUND
+    PRINTMSG_TO_CONSOLE( T_INFO, "too low - adjusting to %d\n", g_currentAdjustment );
+    //#endif
 	}
 	else if( buffered > g_upperThresh )
 	{
@@ -494,9 +500,9 @@ static void Helper_UpdateSampleAdjustment( void )
     // adjust so that we generate more samples per frame to compensate
     g_currentAdjustment = (consecutive_highs < MAX_SAMPLE_ADJUST) ? -consecutive_highs : -MAX_SAMPLE_ADJUST;
 		
-    #ifdef LOG_SOUND
-    PRINTMSG( T_INFO, "too high - adjusting to %d\n", g_currentAdjustment );
-    #endif
+    //#ifdef LOG_SOUND
+    PRINTMSG_TO_CONSOLE( T_INFO, "too high - adjusting to %d\n", g_currentAdjustment );
+    //#endif
 	}
 	else
 	{
