@@ -30,7 +30,8 @@ public:
     m_cursorTexture( cursorTexture ),
     m_currentInputDeviceIndex( 0 ),
     m_calibrationStep( 0 ),
-    m_calibrationCompleted( FALSE )
+    m_calibrationCompleted( FALSE ),
+    m_isFirstFrame( TRUE )
   {
   }
 
@@ -41,6 +42,7 @@ public:
     m_currentInputDeviceIndex = 0;
     m_calibrationStep = 0;
     m_calibrationCompleted = FALSE;
+    m_isFirstFrame = TRUE;
   }
 
     // Declared in ListView.h
@@ -77,4 +79,5 @@ protected:
 
     //! Whether or not calibration is completely finished
   BOOL                m_calibrationCompleted;
+  BOOL                m_isFirstFrame; //!< Whether or not this is the first frame for the selected gun
 };

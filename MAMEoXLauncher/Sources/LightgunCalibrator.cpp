@@ -79,6 +79,17 @@ void CLightgunCalibrator::MoveCursor( CInputManager &inputManager, BOOL unused )
   else
     m_currentGunX = m_currentGunY = 0;
 
+
+    // If this is the first frame for the selected
+    // gun, and if the gun is already calibrated,
+    // start up at calibration step NUM_CALIBRATIONSTEPS - 1
+  if( m_isFirstFrame )
+  {
+    m_isFirstFrame = FALSE;
+    if( calibData.m_xData[2] == TRUE )
+      m_calibrationStep = NUM_CALIBRATIONSTEPS - 1;
+  }
+
   if( gp->IsButtonPressed( GP_B ) )
   {
       // Throw away calibration data for this gun
@@ -128,7 +139,8 @@ void CLightgunCalibrator::MoveCursor( CInputManager &inputManager, BOOL unused )
     else if( m_calibrationStep == (NUM_CALIBRATIONSTEPS - 1) )
     {
         // We've collected UL and center values, throw them to the gun
-      calibData.m_xData[2] = gp->GetLightgunFlags();
+      calibData.m_xData[2] = TRUE;
+      calibData.m_yData[2] = gp->GetLightgunFlags();
       gp->SetLightgunCalibration( XINPUT_LIGHTGUN_CALIBRATION_CENTER_X - calibData.m_xData[CALIB_C], 
                                   XINPUT_LIGHTGUN_CALIBRATION_CENTER_Y - calibData.m_yData[CALIB_C], 
                                   XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_X - calibData.m_xData[CALIB_UL], 
@@ -309,7 +321,10 @@ BOOL CLightgunCalibrator::FindNextGun( void )
   {
     const XINPUT_CAPABILITIES *gpCaps;
     if( (gpCaps = GetGamepadCaps( m_currentInputDeviceIndex )) && gpCaps->SubType == XINPUT_DEVSUBTYPE_GC_LIGHTGUN )
+    {
+      m_isFirstFrame = TRUE;
       return TRUE;
+    }
   }
 
   return FALSE;
