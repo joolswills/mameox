@@ -68,6 +68,17 @@ public:
   virtual void DrawToTexture( LPDIRECT3DTEXTURE8 targetTexture );
 
 protected:
+		//------------------------------------------------------------
+		// LoadPNGToTexture
+		//! \brief		Load a png file into a texture
+    //!
+    //! \param    filename - Filename to load (w/ full path!)
+    //! \param    ret - [OUT] pointer to a LPDIRECT3DTEXTURE8 to
+    //!                 receive the new texture
+    //! \param    retRect - [OUT] pointer to a RECT structure to
+    //!                     receive the dimensions of the image
+		//------------------------------------------------------------
+  virtual BOOL LoadPNGToTexture( const CStdString &filename, LPDIRECT3DTEXTURE8 *ret, RECT *retRect );
 
 		//------------------------------------------------------------
 		// RenderBackdrop

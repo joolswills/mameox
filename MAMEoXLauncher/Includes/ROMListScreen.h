@@ -94,6 +94,7 @@ public:
 		// Destructor
 		//------------------------------------------------------------
   ~CROMListScreen( void ) {
+    SAFE_RELEASE( m_screenshotTexture );
     delete m_menuRenderer;
   }
 

@@ -73,6 +73,9 @@ extern "C" {
 
 #define DRIVERLIST_FILESTAMP      "MAMEoX" VERSION_STRING
 
+  // Maximum delay before displaying the screensaver in the ROM list (in minutes)
+#define MAX_SCREENSAVER_TIMEOUT   15
+
   //! \enum   mameoxLaunchCommand
   //! \brief  Determines what the MAMEoX task should do
 typedef enum mameoxLaunchCommand

@@ -51,7 +51,7 @@ CFontSet            g_fontSet;  // The global font manager
 extern BOOL         g_soundEnabled;   // Sound processing override (defined in xbox_Main.cpp)
 ROMListOptions_t    g_romListOptions;
 MAMEoXLaunchData_t  g_persistentLaunchData;   //!<  Launch data that persists via the INI
-
+extern UINT32       g_screensaverTimeout;     //!<  Time before the Launcher screensaver kicks in
 
 extern "C" {
 
@@ -109,6 +109,7 @@ void LoadOptions( void )
   history_filename = NULL; //strdup( iniFile.GetProfileString( "General", "HistoryFilename", "history.dat" ).c_str() );  
   options.skip_disclaimer = iniFile.GetProfileInt( "General", "SkipDisclaimer", FALSE );   // 1 to skip the disclaimer screen at startup
 	options.skip_gameinfo = iniFile.GetProfileInt( "General", "SkipGameInfo", FALSE );    // 1 to skip the game info screen at startup
+  g_screensaverTimeout =  iniFile.GetProfileInt( "General", "ScreenSaverTimeout", 10 );    // Minutes before screensaver in Launcher kicks in
 
   g_soundEnabled = iniFile.GetProfileInt( "Sound", "SoundEnable", TRUE );
     // sound sample playback rate, in Hz
@@ -260,6 +261,9 @@ void SaveOptions( void )
 
   iniFile.WriteProfileInt( "General", "SkipDisclaimer", options.skip_disclaimer );
   iniFile.WriteProfileInt( "General", "SkipGameInfo", options.skip_gameinfo );
+  iniFile.WriteProfileInt( "General", "ScreenSaverTimeout", g_screensaverTimeout );
+
+
   iniFile.WriteProfileInt( "Sound", "SoundEnable", g_soundEnabled );
   iniFile.WriteProfileInt( "Sound", "SampleRate", options.samplerate );
   iniFile.WriteProfileInt( "Sound", "UseSamples", options.use_samples );

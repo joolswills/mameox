@@ -1,0 +1,331 @@
+/**
+	* \file			ScreensaverScreen.cpp
+	* \brief		Helper class which takes care of generating/loading/displaying
+	*           a list of all available ROMs
+	*/
+
+//= I N C L U D E S ====================================================
+#include "ScreensaverScreen.h"
+#include "DebugLogger.h"
+#include "XBFont.h"
+
+#include "xbox_FileIO.h"		// for path info
+#include "xbox_Direct3DRenderer.h" // For Set/GetScreenUsage
+#include "smbhandler.h"
+#include "System_IniFile.h"
+
+#include <string>
+#include <vector>
+#include <algorithm>
+
+extern "C" {
+#include "osdepend.h"
+#include "driver.h"
+}
+
+//= S T R U C T U R E S ===============================================
+
+//= D E F I N E S ======================================================
+#define TICKS_PER_SCREENSHOT      30 * osd_cycles_per_second()
+
+//= G L O B A L = V A R S ==============================================
+  // Static member initialization
+MAMEDriverData_t                        *CScreensaverScreen::m_driverInfoList = NULL;
+UINT32                                  CScreensaverScreen::m_numDrivers = 0;
+
+//= P R O T O T Y P E S ================================================
+inline BOOL Helper_FindScreenshotDriverName( const char *filename, const MAMEDriverData_t &driver );
+
+//= F U N C T I O N S ==================================================
+
+//---------------------------------------------------------------------
+//	Draw
+//---------------------------------------------------------------------
+void CScreensaverScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
+{
+  if( clearScreen )  
+	  m_displayDevice->Clear(	0L,																// Count
+		  											NULL,															// Rects to clear
+			  										D3DCLEAR_TARGET,	                // Flags
+				  									D3DCOLOR_XRGB(0,0,0),							// Color
+					  								1.0f,															// Z
+						  							0L );															// Stencil
+
+  static textMessageX = 0, textMessageY = 0;
+  static UINT64 lastTime = 0;
+	UINT64 curTime = osd_cycles();
+	UINT64 elapsedTime = curTime - lastTime;
+	lastTime = curTime;
+
+
+
+  if( elapsedTime >= m_displayTimeout )
+  {
+    if( m_screenshotFiles.size() )
+    {
+      UINT32 randIndex = rand() % m_screenshotFiles.size();
+      CStdString str = g_FileIOConfig.m_ScreenshotPath;
+      str += "\\";
+      str += m_screenshotFiles[ randIndex ];
+      LoadPNGToTexture( str, &m_backdropTexture, &m_screenshotRect );
+
+        // Look up the m_screenshotOrientation from the driver list
+        // Have to do a linear search as the list is not sorted at all
+      UINT32 i = 0;
+      for( ; i < m_numDrivers; ++i )
+      {
+        if( Helper_FindScreenshotDriverName( m_screenshotFiles[randIndex].c_str(), m_driverInfoList[i] ) )
+        {
+          m_screenshotOrientation = m_driverInfoList[i].m_screenOrientation;
+          break;
+        }
+      }
+    }
+    else
+    {
+      m_screenshotRect.left = m_screenshotRect.top = 0;
+      m_screenshotRect.right = 640;
+      m_screenshotRect.bottom = 480;
+      m_screenshotOrientation = 0;
+
+
+        // Move the text message around
+      textMessageX = rand() % 320 + 160;
+      textMessageY = rand() % 240 + 120;
+    }
+
+    CalculateRenderingQuad();
+    m_displayTimeout = TICKS_PER_SCREENSHOT;
+  }
+  else
+    m_displayTimeout -= elapsedTime;
+
+  if( m_backdropTexture )
+  {
+    m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+    m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+    m_displayDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX0 );
+	  m_displayDevice->SetTexture( 0, m_backdropTexture );
+
+    m_displayDevice->Begin( D3DPT_QUADLIST );      
+
+        // Apply screenshot rotations
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_renderingTextureCoords[0][0], m_renderingTextureCoords[0][1] );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_renderingQuadCoords[0][0], m_renderingQuadCoords[0][1], 1.0f, 1.0f );
+      
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_renderingTextureCoords[1][0], m_renderingTextureCoords[1][1] );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_renderingQuadCoords[1][0], m_renderingQuadCoords[1][1], 1.0f, 1.0f );
+      
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_renderingTextureCoords[2][0], m_renderingTextureCoords[2][1] );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_renderingQuadCoords[2][0], m_renderingQuadCoords[2][1], 1.0f, 1.0f );
+
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_renderingTextureCoords[3][0], m_renderingTextureCoords[3][1] );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_renderingQuadCoords[3][0], m_renderingQuadCoords[3][1], 1.0f, 1.0f );
+    m_displayDevice->End();
+  }
+
+  if( !m_screenshotFiles.size() )
+  {
+      // Render something
+    m_fontSet.DefaultFont().Begin();
+      m_fontSet.DefaultFont().DrawText( textMessageX,
+                                        textMessageY,
+                                        D3DCOLOR_XRGB( 255, 255, 255 ),
+                                        L"Screensaver active but there\nare no screenshots to display.",
+                                        XBFONT_CENTER_X );
+    m_fontSet.DefaultFont().End();
+  }
+
+  if( flipOnCompletion )
+	  m_displayDevice->Present( NULL, NULL, NULL, NULL );	
+}
+
+//---------------------------------------------------------------------
+//	FindScreenshots
+//---------------------------------------------------------------------
+void CScreensaverScreen::FindScreenshots( void )
+{
+  WIN32_FIND_DATA findData;
+
+  m_screenshotFiles.clear();
+
+  CStdString findPath = g_FileIOConfig.m_ScreenshotPath;
+  findPath += "\\*.png";
+
+  HANDLE h = FindFirstFile( findPath.c_str(), &findData );
+  if( h != INVALID_HANDLE_VALUE )
+  {
+    do {
+      PRINTMSG( T_INFO, "Found screenshot: %s", findData.cFileName );
+      m_screenshotFiles.push_back( findData.cFileName );
+    } while( FindNextFile( h, &findData ) );
+    FindClose( h );
+  }
+}
+
+
+
+//-------------------------------------------------------------
+//  CreateRenderingQuad
+//-------------------------------------------------------------
+void CScreensaverScreen::CalculateRenderingQuad( void )
+{
+    // Calculate the TU/TV coords based on the rendering area
+  FLOAT tu_l, tv_t, tu_r, tv_b;
+  tu_l = ORIENTATION_FLIP_X ? (FLOAT)m_screenshotRect.right : (FLOAT)m_screenshotRect.left;
+  tu_r = ORIENTATION_FLIP_X ? (FLOAT)m_screenshotRect.left : (FLOAT)m_screenshotRect.right;
+  tv_t = ORIENTATION_FLIP_Y ? (FLOAT)m_screenshotRect.bottom : (FLOAT)m_screenshotRect.top;
+  tv_b = ORIENTATION_FLIP_Y ? (FLOAT)m_screenshotRect.top : (FLOAT)m_screenshotRect.bottom;
+
+  FLOAT xpos, ypos;
+  GetScreenUsage( &xpos, &ypos );
+
+/*
+  if( g_rendererOptions.m_screenRotation == SR_0 || g_rendererOptions.m_screenRotation == SR_180 )
+  {
+    if( g_rendererOptions.m_preserveAspectRatio )
+    {
+        // Aspect ratio
+      double screenRatio = 640.0/480.0;
+
+        // The desired aspect ratio for the game
+	    double aspectRatio = (double)g_createParams.aspect_x / (double)g_createParams.aspect_y;
+      if( g_createParams.video_attributes & VIDEO_PIXEL_ASPECT_RATIO_1_2 )
+        aspectRatio /= 2.0;
+      else if( g_createParams.video_attributes & VIDEO_PIXEL_ASPECT_RATIO_2_1 )
+        aspectRatio *= 2.0;
+
+        // The native screenRatio is 4/3
+        // so multiplying x by the desired aspect ratio will actually give us (x*4/3)*(aspectRatio)
+        // Therefore we have to first counteract the real screen ratio before applying the desired aspect ratio
+
+      if( aspectRatio > screenRatio )
+      {
+          // scale down y
+        ypos /= aspectRatio * screenRatio; 
+      }
+      else if( aspectRatio < screenRatio )
+      {
+          // Scale down x
+        xpos *= aspectRatio / screenRatio;
+      }
+    }
+  }
+  else
+  {
+      // We're rendering sideways, so the aspect ratio of the monitor is different
+    if( g_rendererOptions.m_preserveAspectRatio )
+    {
+        // Aspect ratio
+      double screenRatio = 480.0/640.0;
+
+        // The desired aspect ratio for the game
+	    double aspectRatio = (double)g_createParams.aspect_x / (double)g_createParams.aspect_y;
+      if( g_createParams.video_attributes & VIDEO_PIXEL_ASPECT_RATIO_1_2 )
+        aspectRatio *= 2.0;
+      else if( g_createParams.video_attributes & VIDEO_PIXEL_ASPECT_RATIO_2_1 )
+        aspectRatio /= 2.0;
+
+        // The native screenRatio is 3/4
+        // so multiplying x by the desired aspect ratio will actually give us (x*3/4)*(aspectRatio)
+        // Therefore we have to first counteract the real screen ratio before applying the desired aspect ratio
+
+      if( aspectRatio > screenRatio )
+      {
+          // scale down y
+        xpos /= aspectRatio * screenRatio; 
+      }
+      else if( aspectRatio < screenRatio )
+      {
+          // Scale down x
+        ypos *= aspectRatio / screenRatio;
+      }
+    }
+  }
+*/
+
+    // Handle screen rotation and 
+  screenrotation_t rotation = g_rendererOptions.m_screenRotation;
+  if( m_screenshotOrientation & ORIENTATION_SWAP_XY )
+  {
+    if( rotation )
+      rotation = (screenrotation_t)(rotation - 1);
+    else
+      rotation = SR_270;
+  }
+
+  switch( rotation )
+  {
+  case SR_0:
+    m_renderingTextureCoords[0][0] = tu_l;
+    m_renderingTextureCoords[0][1] = tv_t;
+    m_renderingTextureCoords[1][0] = tu_r;
+    m_renderingTextureCoords[1][1] = tv_t;
+    m_renderingTextureCoords[2][0] = tu_r;
+    m_renderingTextureCoords[2][1] = tv_b;
+    m_renderingTextureCoords[3][0] = tu_l;
+    m_renderingTextureCoords[3][1] = tv_b;
+    break;
+
+  case SR_90:
+    m_renderingTextureCoords[0][0] = tu_r;
+    m_renderingTextureCoords[0][1] = tv_t;
+    m_renderingTextureCoords[1][0] = tu_r;
+    m_renderingTextureCoords[1][1] = tv_b;
+    m_renderingTextureCoords[2][0] = tu_l;
+    m_renderingTextureCoords[2][1] = tv_b;
+    m_renderingTextureCoords[3][0] = tu_l;
+    m_renderingTextureCoords[3][1] = tv_t;
+    break;
+
+  case SR_180:
+    m_renderingTextureCoords[0][0] = tu_r;
+    m_renderingTextureCoords[0][1] = tv_b;
+    m_renderingTextureCoords[1][0] = tu_l;
+    m_renderingTextureCoords[1][1] = tv_b;
+    m_renderingTextureCoords[2][0] = tu_l;
+    m_renderingTextureCoords[2][1] = tv_t;
+    m_renderingTextureCoords[3][0] = tu_r;
+    m_renderingTextureCoords[3][1] = tv_t;
+    break;
+
+  case SR_270:
+    m_renderingTextureCoords[0][0] = tu_l;
+    m_renderingTextureCoords[0][1] = tv_b;
+    m_renderingTextureCoords[1][0] = tu_l;
+    m_renderingTextureCoords[1][1] = tv_t;
+    m_renderingTextureCoords[2][0] = tu_r;
+    m_renderingTextureCoords[2][1] = tv_t;
+    m_renderingTextureCoords[3][0] = tu_r;
+    m_renderingTextureCoords[3][1] = tv_b;
+    break;
+  }
+
+	m_renderingQuadCoords[0][0] = -xpos;
+	m_renderingQuadCoords[0][1] = ypos;
+	m_renderingQuadCoords[1][0] = xpos;
+	m_renderingQuadCoords[1][1] = ypos;
+	m_renderingQuadCoords[2][0] = xpos;
+	m_renderingQuadCoords[2][1] = -ypos;
+	m_renderingQuadCoords[3][0] = -xpos;
+	m_renderingQuadCoords[3][1] = -ypos;
+
+	m_renderingQuadCoords[0][0] += g_rendererOptions.m_screenOffsetX;
+	m_renderingQuadCoords[0][1] += g_rendererOptions.m_screenOffsetY;
+	m_renderingQuadCoords[1][0] += g_rendererOptions.m_screenOffsetX;
+	m_renderingQuadCoords[1][1] += g_rendererOptions.m_screenOffsetY;
+	m_renderingQuadCoords[2][0] += g_rendererOptions.m_screenOffsetX;
+	m_renderingQuadCoords[2][1] += g_rendererOptions.m_screenOffsetY;
+	m_renderingQuadCoords[3][0] += g_rendererOptions.m_screenOffsetX;
+	m_renderingQuadCoords[3][1] += g_rendererOptions.m_screenOffsetY;
+}
+
+//---------------------------------------------------------------------
+//  Helper_FindScreenshotDriverName
+//---------------------------------------------------------------------
+inline BOOL Helper_FindScreenshotDriverName( const char *filename, const MAMEDriverData_t &driver )
+{
+  const char *extension = strrchr( filename, '.' );  
+  return !strnicmp( filename, driver.m_romFileName, extension - filename < 4 ? extension - filename : 4 );
+}
+

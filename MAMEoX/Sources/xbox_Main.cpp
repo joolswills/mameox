@@ -62,6 +62,10 @@ static LPDIRECT3DVERTEXBUFFER8    g_pD3DVertexBuffer = NULL;
   // Sound processing override
 BOOL g_soundEnabled = TRUE;
 
+
+  // Dummy screensaverTimeout value (only used in the Launcher)
+UINT32 g_screensaverTimeout;
+
 //= P R O T O T Y P E S ===============================================
 static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... );
 static BOOL Helper_RunRom( UINT32 romIndex );
@@ -155,7 +159,6 @@ void __cdecl main( void )
 //      XFreeSection( "NETWORK" );
       XFreeSection( "MOXNET" );
       XFreeSection( "SAMBA" );
-      CHECKRAM();
     }
 
       // Unload the XGRAPHICS section, as we won't be using it at all

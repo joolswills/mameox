@@ -34,6 +34,7 @@
 #include "OptionsScreen.h"
 #include "LightgunCalibratorScreen.h"
 #include "StartMenu.h"
+#include "ScreensaverScreen.h"
 
 //= D E F I N E S =====================================================
 
@@ -94,7 +95,7 @@ static LPDIRECT3DVERTEXBUFFER8    g_pD3DVertexBuffer = NULL;
 
   //! The data for each driver
 static MAMEDriverData_t   *g_driverData = NULL;
-
+UINT32                    g_screensaverTimeout = 0; //!< Time before the screensaver turns on
 
 extern "C" {
   // Fake options struct for load/store options
@@ -137,6 +138,8 @@ void __cdecl main( void )
   LoadOptions();      // Must be done before inputManager goes up (for lightgun calib data)
   SaveOptions();      // Write out a default INI if none existed
 	InitializeFileIO(); // Initialize fileIO (must be done after LoadOptions!)
+
+  srand( time(NULL) );
 
 		// Initialize the graphics subsystem
 	g_graphicsManager.Create( TRUE );
@@ -318,6 +321,12 @@ void __cdecl main( void )
                         area );
   Helper_SetStartMenuItems( startMenu, VIEW_ROMLIST );
 
+
+    // Screensaver object
+  CScreensaverScreen screenSaver( pD3DDevice, g_fontSet, g_driverData, mameoxLaunchData->m_totalMAMEGames );
+  screenSaver.FindScreenshots();
+
+
     //-- Initialize the rendering engine -------------------------------
   D3DXMATRIX matWorld;
   D3DXMatrixIdentity( &matWorld );
@@ -351,6 +360,9 @@ void __cdecl main( void )
     // stretches the screen. If true, it moves it.
   BOOL rightAnalogMovesScreen = FALSE;
 
+    // Note: Setting g_screensaverTimeout to 0 disables it
+  UINT64 screensaverDelayCycles = g_screensaverTimeout * 60 * osd_cycles_per_second();
+  UINT64 screensaverTimeout = screensaverDelayCycles;
 
 		//--- Main loop ------------------------------------------------------
 	while( 1 )
@@ -358,7 +370,18 @@ void __cdecl main( void )
 		g_inputManager.PollDevices();
 
 	  UINT64 curTime = osd_cycles();
-	  FLOAT elapsedTime = (FLOAT)(curTime - lastTime) / (FLOAT)osd_cycles_per_second();
+    UINT64 elapsedTicks = curTime - lastTime;
+	  DOUBLE elapsedTime = (DOUBLE)elapsedTicks / (DOUBLE)osd_cycles_per_second();
+
+    if( g_inputManager.IsAnyInput() )
+      screensaverTimeout = screensaverDelayCycles;
+    else if( screensaverTimeout && g_screensaverTimeout )
+    {
+      if( elapsedTicks >= screensaverTimeout )
+        screensaverTimeout = 0;
+      else
+        screensaverTimeout -= elapsedTicks;
+    }    
 	  lastTime = curTime;
 
 			// Reboot on LT+RT+Black
@@ -635,6 +658,10 @@ void __cdecl main( void )
     }
 
 
+
+      // Render the screensaver
+    if( screensaverTimeout == 0.0 && g_screensaverTimeout )
+      screenSaver.Draw( TRUE, FALSE );
 
       // Render the debug console
     RenderDebugConsole( pD3DDevice );
@@ -1175,10 +1202,10 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
     //-- Set up the credits ------------------------------------------
   #define CREDITS_FRAMES_PER_STEP     0.5f;
   const WCHAR credits[] = L"       The MAMEoX team:"\
-                          L"       Programming - Erik Abair, opcode, luckyMIC, ips" \
+                          L"       Programming - Erik Abair, opcode, luckyMIC" \
                           L"       Testing - falz, enkak, noodle1009, bmetz" \
                           L"       Graphical design - r4dius, Stephen Cameron" \
-                          L"       Special thanks to www.wolfsoft.de and to MAME developers everywhere";
+                          L"       Special thanks to Klaus of www.wolfsoft.de, mjbrand for .NET 2002 solution patches, and to MAME developers everywhere";
 
   FLOAT creditsPosition = 0.0f;
   FLOAT creditsLength, creditsHeight;

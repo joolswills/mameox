@@ -50,12 +50,14 @@ Version 0.71.3b (CVS)
       - Added sort by genre
       - Added catver.ini parsing
       - Added "detail" view which houses screenshots
+      - Moved screenshot loading to base class
 
     - OptionsScreen.cpp
       - Added sort by favorite status and sort by number of times 
         played
       - Added filter by "disliked" favorite status
       - Added sort by genre
+      - Added a simple screensaver (thanks to Noodle for the suggestion)
 
     - StartMenu.cpp
       - Made menu functions token based instead of cursor position 
@@ -70,6 +72,7 @@ Version 0.71.3b (CVS)
         users to copy over hiscore.dat, samples, etc...
       - Made menu functions token based instead of cursor position 
         based. This makes it much easier to have fully dynamic menus
+      - Added a simple screensaver (thanks to Noodle for the suggestion)
 
     - Renamed ROMList, OptionsPage, Help, LightgunCalibrator to 
       xxxxScreen format to increase "findability"
@@ -83,7 +86,7 @@ Version 0.71.3b (CVS)
     - Fixed dep for Tetris Plus 2 (MegaSystem 32 version)
     - Fixed dep for Pac-Man (Galaxian Hardware)
 
-  - Fixed the .NET 2k2 solution files
+  - Fixed the .NET 2k2 solution files (thanks go to Mathijs Brands)
 
 *********************************************************************
 Version 0.71.2b 

@@ -393,6 +393,21 @@ public:
 	}
 
 		//------------------------------------------------------
+		//	IsAnyInput
+		//! \brief		Checks whether or not any input is being
+    //!           given on the selected gamepad(s)
+		//!
+		//! \param		gamepadNum - Joypad to test (0xFF = all)
+		//------------------------------------------------------
+	BOOL IsAnyInput( DWORD gamepadNum = 0xFF ) {
+    PollDevices();
+    return  m_gamepads[0].GetInputState() ||
+            m_gamepads[1].GetInputState() ||
+            m_gamepads[2].GetInputState() ||
+            m_gamepads[3].GetInputState();
+	}
+
+		//------------------------------------------------------
 		//	IsAnyButtonPressed
     //! \brief    Returns TRUE if any button is pressed on any gamepad
     //!

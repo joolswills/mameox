@@ -105,6 +105,8 @@ extern "C" {
 extern BOOL g_soundEnabled; // Sound processing override, defined in xbox_Main.cpp
 //static UINT32 g_samplerates[2] = { 22700, 44100 };
 
+extern UINT32 g_screensaverTimeout; // Defined in main.cpp
+
 //= P R O T O T Y P E S ===============================================
 void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... );
 
@@ -130,7 +132,7 @@ COptionsScreen::COptionsScreen( LPDIRECT3DDEVICE8	displayDevice,
   wcscpy( m_pageData[OPTPAGE_GENERAL].m_title, L"General Options" );
   m_pageData[OPTPAGE_GENERAL].m_drawFunct = ::DrawGeneralPage;
   m_pageData[OPTPAGE_GENERAL].m_changeFunct = ::ChangeGeneralPage;
-  m_pageData[OPTPAGE_GENERAL].m_numItems = 4;
+  m_pageData[OPTPAGE_GENERAL].m_numItems = 5;
 
   wcscpy( m_pageData[OPTPAGE_SOUND].m_title, L"Sound Options" );
   m_pageData[OPTPAGE_SOUND].m_drawFunct = ::DrawSoundPage;
@@ -579,6 +581,9 @@ void COptionsScreen::DrawGeneralPage( void )
 
   DRAWITEM( L"Game Info", options.skip_gameinfo ? L"Skipped" : L"Shown" );
 
+  swprintf( name, L"After %lu minute%s", g_screensaverTimeout, g_screensaverTimeout > 1 ? "s" : "" );
+  DRAWITEM( L"Screensaver", g_screensaverTimeout ? name : L"Disabled" );
+
   ENDPAGE();
 }
 
@@ -967,6 +972,23 @@ void COptionsScreen::ChangeGeneralPage( BOOL movingRight )
   case 3:
     options.skip_gameinfo = !options.skip_gameinfo;
     break;
+
+    // Screensaver
+  case 4:
+    if( !movingRight )
+    {
+      if( g_screensaverTimeout )
+        --g_screensaverTimeout;
+      else
+        g_screensaverTimeout = MAX_SCREENSAVER_TIMEOUT;
+    }
+    else
+    {
+      if( g_screensaverTimeout < MAX_SCREENSAVER_TIMEOUT )
+        ++g_screensaverTimeout;
+      else
+        g_screensaverTimeout = 0;
+    }
   }
 }
 

@@ -20,7 +20,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories=".\Includes;..\MAMEoX\Includes;..\MAME\src;..\;&quot;$(XDK)\Samples\XBox\Common\Include&quot;;&quot;..\libsmb++\src&quot;"
+				AdditionalIncludeDirectories=".\Includes;..\MAMEoX\Includes;..\MAME\src;..\;&quot;$(XDK)\Samples\XBox\Common\Include&quot;;&quot;..\libsmb++\src&quot;;..\ZLIB"
 				PreprocessorDefinitions="_DEBUG;_XBOX;DEBUG_KEYBOARD"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -82,7 +82,7 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="TRUE"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories=".\Includes;..\MAMEoX\Includes;..\MAME\src;..\;&quot;$(XDK)\Samples\XBox\Common\Include&quot;;&quot;..\libsmb++\src&quot;"
+				AdditionalIncludeDirectories=".\Includes;..\MAMEoX\Includes;..\MAME\src;..\;&quot;$(XDK)\Samples\XBox\Common\Include&quot;;&quot;..\libsmb++\src&quot;;..\ZLIB"
 				PreprocessorDefinitions="NDEBUG;_XBOX;DEBUG_KEYBOARD"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
@@ -178,6 +178,9 @@
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Sources\SMBHandler.cpp">
+			</File>
+			<File
+				RelativePath="Sources\ScreensaverScreen.cpp">
 			</File>
 			<File
 				RelativePath="Sources\StartMenu.cpp">
@@ -328,6 +331,20 @@
 			</File>
 			<File
 				RelativePath="MediaFiles\FranklinGothicMedium_12.rdf">
+				<FileConfiguration
+					Name="Debug|Xbox">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="bundler &quot;$(InputPath)&quot;"
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Xbox">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="bundler &quot;$(InputPath)&quot;"
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="MediaFiles\HawaiianPunk_16.rdf">
