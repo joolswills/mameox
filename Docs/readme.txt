@@ -92,6 +92,10 @@ X) This step is currently unnecessary, as the source distribution includes the
          copied over, default.xbe and MAMEoX.xbe. Failure to copy both files will
 	 result in error messages.
 
+   NOTE: Starting with version 0.64b, if you are playing MAMEoX off of a CD/DVD,
+         most of these directories will be created on the U:, which is probably
+	 mapped from E:\UDATA\4d414d45 (MAME in hex)
+
 ---------------------------------------------------------------------------
 Compilation Errors:
 
