@@ -23,6 +23,13 @@ Texture ROMListScreenBackdrop
   Levels 1
 }
 
+Texture ROMListScreenBackdrop_NoAdditionalInfo
+{
+  Source mox-romlistscreen-noadditionalinfo.bmp
+  Format D3DFMT_X8R8G8B8
+  Levels 1
+}
+
 Texture ROMListScrollUpMask
 {
   Source      mox-romlist-scrollupmask.bmp

@@ -51,12 +51,11 @@ struct CUSTOMVERTEX
   // Defined in MAMEoXUtil.cpp
 extern CInputManager			g_inputManager;
 extern CGraphicsManager	  g_graphicsManager;
-  // The global font manager
-extern CFontSet                  g_fontSet;
+extern CFontSet           g_fontSet;
 
   // XBE Launch data
-DWORD             g_launchDataType;
-LAUNCH_DATA       g_launchData;
+DWORD                     g_launchDataType;
+LAUNCH_DATA               g_launchData;
 
 static LPDIRECT3DVERTEXBUFFER8    g_pD3DVertexBuffer = NULL;
 

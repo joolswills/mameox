@@ -37,7 +37,7 @@ int osd_display_loading_rom_message( const char *name, struct rom_load_data *rom
 
 	PRINTMSG( T_TRACE, "osd_display_loading_rom_message" );
 
-	swprintf( bar, L"[%25c]", L' ' );
+	swprintf( bar, L"[%50c]", L' ' );
 
 	if( name )
 	{
@@ -46,14 +46,14 @@ int osd_display_loading_rom_message( const char *name, struct rom_load_data *rom
 		mbstowcs( &title[wcslen(title)], name, 32 );
 		swprintf( &title[wcslen(title)], L"\" (%d/ %d)", romdata->romsloaded, romdata->romstotal );
 
-		for( ; i < (ULONG)(((FLOAT)romdata->romsloaded / (FLOAT)romdata->romstotal) * 25.0f); ++i )
+		for( ; i < (ULONG)(((FLOAT)romdata->romsloaded / (FLOAT)romdata->romstotal) * 50.0f); ++i )
 			bar[i+1] = L'|';
 	}
 	else
 	{
 		UINT32 i = 0;
 		wcscpy( title, L"Loading complete!" );
-		for( ; i < 25; ++i )
+		for( ; i < 50; ++i )
 			bar[i+1] = L'|';
 	}
 
@@ -61,12 +61,15 @@ int osd_display_loading_rom_message( const char *name, struct rom_load_data *rom
   GlobalMemoryStatus( &memStatus );
   swprintf( memory, L"Available: %lu / Total: %lu", memStatus.dwAvailPhys, memStatus.dwTotalPhys );
 
-	BeginFontRender( TRUE );
+	BeginFontRender( TRUE, FONTTYPE_DEFAULT );
 	  FontRender( 70, 220, D3DCOLOR_XRGB( 230, 230, 230 ), title, 0 );
-	  FontRender( 320, 240, D3DCOLOR_XRGB( 120, 230, 120 ), bar, 2 );
     FontRender( 320, 140, D3DCOLOR_XRGB( 60, 105, 225 ), L"MAMEoX version " LVERSION_STRING, 2 );
     FontRender( 320, 340, D3DCOLOR_XRGB( 60, 105, 225 ), L"Memory Status", 2 );
     FontRender( 320, 360, D3DCOLOR_XRGB( 60, 105, 225 ), memory, 2 );
+  EndFontRender();
+
+  BeginFontRender( FALSE, FONTTYPE_LARGETHIN );
+	  FontRender( 320, 240, D3DCOLOR_XRGB( 120, 230, 120 ), bar, 2 );
   EndFontRender();
 
 	return 0;
@@ -110,10 +113,10 @@ void osd_print_error( const char *fmt, ... )
   mbstowcs( wBuf, buf, 1023 );
 
     // Display the error to the user
-	BeginFontRender( TRUE );
-  FontRender( 320, 60, D3DCOLOR_RGBA( 255, 200, 200, 255 ), L"Error:", 2 /*XBFONT_CENTER_X*/ );
-	FontRender( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255 ), wBuf, 2 /*XBFONT_CENTER_X*/ );
-	FontRender( 320, 320, D3DCOLOR_RGBA( 70, 235, 125, 255), L"Press any button to continue.", 2 /*XBFONT_CENTER_X*/ );
+	BeginFontRender( TRUE, FONTTYPE_DEFAULT );
+    FontRender( 320, 60, D3DCOLOR_RGBA( 255, 200, 200, 255 ), L"Error:", 2 /*XBFONT_CENTER_X*/ );
+	  FontRender( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255 ), wBuf, 2 /*XBFONT_CENTER_X*/ );
+	  FontRender( 320, 320, D3DCOLOR_RGBA( 70, 235, 125, 255), L"Press any button to continue.", 2 /*XBFONT_CENTER_X*/ );
 	EndFontRender();
 
   WaitForNoButton();     // Ensure that the user sees the message

@@ -865,6 +865,11 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   FLOAT textWidth, textHeight;
   m_fontSet.SmallThinFont().GetTextExtent( L"i^jg", &textWidth, &textHeight );
 
+  if( m_additionalinfo )
+    m_backdropTexture = m_verboseModeBackdropTexture;
+  else
+    m_backdropTexture = m_simpleModeBackdropTexture;
+
     // Render the backdrop texture
   RenderBackdrop();
 

@@ -53,6 +53,16 @@ typedef enum mameoxLaunchCommand
   LAUNCH_RUN_AS_IF_REBOOTED               //!<  MAMEoXLauncher should act as though the system was totally rebooted
 } mameoxLaunchCommand;
 
+  //! \enum   fonttype
+  //! \brief  Font type enumeration
+typedef enum fonttype
+{
+  FONTTYPE_DEFAULT = 0x00,
+  FONTTYPE_FIXEDWIDTH,
+  FONTTYPE_SMALLTHIN,
+  FONTTYPE_LARGETHIN
+} fonttype;
+
 //= S T R U C T U R E S ================================================
 typedef struct MAMEoXLaunchData_t
 {
@@ -144,8 +154,9 @@ void PollGamepads( void );
 	//! \brief		Set up a font rendering batch
   //!
   //! \param    clearScreen - Whether or not to clear the backbuffer to black
+  //! \param    fontType - The font to use
 	//-------------------------------------------------------------------
-void BeginFontRender( BOOL clearScreen );
+void BeginFontRender( BOOL clearScreen, fonttype fontType );
 
 	//-------------------------------------------------------------------
 	//	FontRender

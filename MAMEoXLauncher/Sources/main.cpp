@@ -54,7 +54,7 @@ struct CUSTOMVERTEX
   // Defined in MAMEoXUtil.cpp
 extern CInputManager			g_inputManager;
 extern CGraphicsManager	  g_graphicsManager;
-extern CFontSet                  g_fontSet;
+extern CFontSet           g_fontSet;
 
   // XBE Launch data
 static DWORD              g_launchDataType;
@@ -377,6 +377,7 @@ void __cdecl main( void )
   CROMList romList( pD3DDevice, 
                     g_fontSet,
                     (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_ROMListScreenBackdrop_OFFSET],
+                    (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_ROMListScreenBackdrop_NoAdditionalInfo_OFFSET],
                     (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_ROMListScrollUpMask_OFFSET],
                     (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_ROMListScrollDownMask_OFFSET],
                     g_driverData, 

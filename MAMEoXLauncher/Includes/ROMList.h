@@ -35,12 +35,15 @@ public:
 		//------------------------------------------------------------
 	CROMList( LPDIRECT3DDEVICE8	displayDevice, 
             CFontSet &fontSet, 
-            LPDIRECT3DTEXTURE8 backdropTexture,  
+            LPDIRECT3DTEXTURE8 verboseModeBackdropTexture,  
+            LPDIRECT3DTEXTURE8 simpleModeBackdropTexture,  
             LPDIRECT3DTEXTURE8 scrollUpIconTexture,
             LPDIRECT3DTEXTURE8 scrollDownIconTexture,
             MAMEDriverData_t *drivers, 
             UINT32 numDrivers ) :
-    CListView( displayDevice, fontSet, backdropTexture ),
+    CListView( displayDevice, fontSet, verboseModeBackdropTexture ),
+    m_verboseModeBackdropTexture( verboseModeBackdropTexture ),
+    m_simpleModeBackdropTexture( simpleModeBackdropTexture ),
     m_scrollUpIconTexture( scrollUpIconTexture ),
     m_scrollDownIconTexture( scrollDownIconTexture ),
     m_superscrollMode( FALSE ),
@@ -195,6 +198,8 @@ protected:
   BOOL                  m_gameSelected;             //!<  Whether or not the user has selected a game
   BOOL                  m_shouldGenerateROMList;    //!<  Whether or not the main() funct should call GenerateROMList for us (to render directly to the screen)
 
+  LPDIRECT3DTEXTURE8    m_verboseModeBackdropTexture;   //!< Texture to display in additional info mode
+  LPDIRECT3DTEXTURE8    m_simpleModeBackdropTexture;    //!< Texture to display in no additional info mode
   LPDIRECT3DTEXTURE8    m_scrollUpIconTexture;      //!<  Scroll up icon
   LPDIRECT3DTEXTURE8    m_scrollDownIconTexture;    //!<  Scroll down icon
 

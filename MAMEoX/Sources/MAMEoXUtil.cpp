@@ -49,7 +49,6 @@ CInputManager			g_inputManager;
 CGraphicsManager	g_graphicsManager;
 CFontSet          g_fontSet;  // The global font manager
 
-
 extern BOOL g_soundEnabled;   // Sound processing override (defined in xbox_Main.cpp)
 
 
@@ -64,9 +63,8 @@ lightgunCalibration_t    g_calibrationData[4] = { {-32767,0,32767,32767,0,-32767
                                                   {-32767,0,32767,32767,0,-32767},
                                                   {-32767,0,32767,32767,0,-32767} };
 
-  //! Token to force rendering to screen
-static RenderToTextureToken_t   g_toScreenToken;
-
+  //! The fonttype to use for *FontRender
+static fonttype          g_fontType = FONTTYPE_DEFAULT;
 
 //= P R O T O T Y P E S ===============================================
 XBOXAPI DWORD WINAPI IoCreateSymbolicLink( PUNICODE_STRING symLinkName, PUNICODE_STRING devName );
@@ -384,7 +382,7 @@ void RequireController( DWORD number )
   WCHAR wBuf[256];
   swprintf( wBuf, L"Please insert a controller into slot %d!", number + 1 );
 
-  BeginFontRender( TRUE );
+  BeginFontRender( TRUE, FONTTYPE_DEFAULT );
     FontRender( 320, 180, D3DCOLOR_XRGB(255,255,255), wBuf, XBFONT_CENTER_X );
   EndFontRender();
   
@@ -436,9 +434,10 @@ void WaitForNoButton( void )
 //-------------------------------------------------------------
 //	BeginFontRender
 //-------------------------------------------------------------
-void BeginFontRender( BOOL ClearScreen )
+void BeginFontRender( BOOL ClearScreen, fonttype fontType )
 {
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
+  g_fontType = fontType;
 
   if( ClearScreen )
   {
@@ -451,8 +450,7 @@ void BeginFontRender( BOOL ClearScreen )
 											  0L );															// Stencil
   }
 
-  g_fontSet.DefaultFont().Begin();
-
+  g_fontSet.GetFont(g_fontType).Begin();
 }
 
 //-------------------------------------------------------------
@@ -460,7 +458,7 @@ void BeginFontRender( BOOL ClearScreen )
 //-------------------------------------------------------------
 void FontRender( INT32 x, INT32 y, UINT32 color, const WCHAR *str, UINT32 flags )
 {
-	g_fontSet.DefaultFont().DrawText( (FLOAT)x, (FLOAT)y, color, str, flags );
+	g_fontSet.GetFont(g_fontType).DrawText( (FLOAT)x, (FLOAT)y, color, str, flags );
 }
 
 //-------------------------------------------------------------
@@ -469,7 +467,7 @@ void FontRender( INT32 x, INT32 y, UINT32 color, const WCHAR *str, UINT32 flags 
 void EndFontRender( void )
 {
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
-  g_fontSet.DefaultFont().End();
+  g_fontSet.GetFont(g_fontType).End();
   pD3DDevice->Present( NULL, NULL, NULL, NULL );
 }
 
@@ -498,10 +496,10 @@ void CheckRAM( void )
   {
     RequireController( 0 );
 
-    BeginFontRender( TRUE );
-    FontRender( 320, 200, D3DCOLOR_XRGB(255,200,200), L"This is a DEBUG version of MAMEoX!", 2 );
-    FontRender( 320, 280, D3DCOLOR_XRGB(255,255,255), L"Mem: Avail/Total", 2 );
-    FontRender( 320, 300, D3DCOLOR_XRGB(255,255,255), memStr, 2 );
+    BeginFontRender( TRUE, FONTTYPE_DEFAULT );
+      FontRender( 320, 200, D3DCOLOR_XRGB(255,200,200), L"This is a DEBUG version of MAMEoX!", 2 );
+      FontRender( 320, 280, D3DCOLOR_XRGB(255,255,255), L"Mem: Avail/Total", 2 );
+      FontRender( 320, 300, D3DCOLOR_XRGB(255,255,255), memStr, 2 );
     EndFontRender();
   }
 	g_inputManager.WaitForNoButton( 0 );

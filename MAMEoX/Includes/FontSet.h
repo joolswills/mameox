@@ -9,6 +9,7 @@
 
 //= I N C L U D E S ===========================================================
 #include <Xtl.h>
+#include "MAMEoX.h"
 #include "osd_cpu.h"
 #include "xbfont.h"
 
@@ -21,6 +22,7 @@
 #define FIXEDWIDTH_FONT   "CourierNew_12.xpr"
 #define SMALLTHIN_FONT    "FranklinGothicMedium_12.xpr"
 #define LARGETHIN_FONT    "ArialNarrow_16.xpr"
+
 
 
 //= C L A S S E S =============================================================
@@ -65,6 +67,8 @@ public:
 
     return TRUE;
   }
+
+  CXBFont &GetFont( fonttype fType ) { assert(fType < 4); return m_fonts[fType]; }
 
   CXBFont &DefaultFont( void ) { return m_fonts[0]; }
   CXBFont &FixedWidthFont( void ) { return m_fonts[1]; }
