@@ -778,7 +778,7 @@ struct tilemap *tilemap_create(
 	UINT32 row;
 	int num_tiles;
 
-  CHECKRAM();
+  DEBUGGERCHECKRAM();
 
 
 	tilemap = calloc( 1,sizeof( struct tilemap ) );
@@ -818,16 +818,18 @@ struct tilemap *tilemap_create(
 		tilemap->tile_granularity = 0;
 		tilemap->tile_dirty_map = 0;
 
+    DEBUGGERCHECKRAM();
 		tilemap->cached_rowscroll	= calloc(tilemap->cached_height,sizeof(int));
 		tilemap->cached_colscroll	= calloc(tilemap->cached_width, sizeof(int));
 
+    DEBUGGERCHECKRAM();
 		tilemap->transparency_data = malloc( num_tiles );
 		tilemap->transparency_data_row = malloc( sizeof(UINT8 *)*num_rows );
 
+    DEBUGGERCHECKRAM();
 		tilemap->pixmap = bitmap_alloc_depth( tilemap->cached_width, tilemap->cached_height, -16 );
 		tilemap->transparency_bitmap = bitmap_alloc_depth( tilemap->cached_width, tilemap->cached_height, -8 );
-
-    CHECKRAM();
+    DEBUGGERCHECKRAM();
 
 		if( tilemap->logical_rowscroll && tilemap->cached_rowscroll &&
 			tilemap->logical_colscroll && tilemap->cached_colscroll &&
