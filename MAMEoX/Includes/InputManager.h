@@ -257,16 +257,16 @@ public:
 			PollDevices();
 
 			if( gamepadNum == 0 || gamepadNum == 0xFF )
-        keyPressed = m_gamepads[0].IsAnyButtonPressed();
+        keyPressed |= m_gamepads[0].IsAnyButtonPressed();
 
 			if( gamepadNum == 1 || gamepadNum == 0xFF )
-        keyPressed = m_gamepads[1].IsAnyButtonPressed();
+        keyPressed |= m_gamepads[1].IsAnyButtonPressed();
 
 			if( gamepadNum == 2 || gamepadNum == 0xFF )
-        keyPressed = m_gamepads[2].IsAnyButtonPressed();
+        keyPressed |= m_gamepads[2].IsAnyButtonPressed();
 
 			if( gamepadNum == 3 || gamepadNum == 0xFF )
-        keyPressed = m_gamepads[3].IsAnyButtonPressed();
+        keyPressed |= m_gamepads[3].IsAnyButtonPressed();
 
 		} while( keyPressed );
 	}
