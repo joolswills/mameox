@@ -177,7 +177,8 @@ BOOL UnloadDriverSections( void )
         (*i).first == "src\\drivers\\outrun.c" ||
         (*i).first == "src\\drivers\\mcr2.c" ||
         (*i).first == "src\\drivers\\mcr3.c" ||
-        (*i).first == "src\\drivers\\mcr68.c" )
+        (*i).first == "src\\drivers\\mcr68.c" ||
+        (*i).first == "src\\drivers\\twincobr.c" )
         continue;
     XFreeSection( (*i).second.c_str() );
   }
@@ -778,7 +779,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\turbo.c", "601" );
   RegisterSectionName( "src\\drivers\\tutankhm.c", "602" );
   RegisterSectionName( "src\\drivers\\twin16.c", "603" );
-  RegisterSectionName( "src\\drivers\\twincobr.c", "604" );
+  RegisterSectionName( "src\\drivers\\twincobr.c", "5" );
   RegisterSectionName( "src\\drivers\\ultraman.c", "605" );
   RegisterSectionName( "src\\drivers\\ultratnk.c", "606" );
   RegisterSectionName( "src\\drivers\\undrfire.c", "607" );
@@ -797,7 +798,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\vsnes.c", "620" );
   RegisterSectionName( "src\\drivers\\vulgus.c", "621" );
   RegisterSectionName( "src\\drivers\\wallc.c", "622" );
-  RegisterSectionName( "src\\drivers\\wardner.c", "623" );
+  RegisterSectionName( "src\\drivers\\wardner.c", "5" );
   RegisterSectionName( "src\\drivers\\warpwarp.c", "624" );
   RegisterSectionName( "src\\drivers\\warriorb.c", "625" );
   RegisterSectionName( "src\\drivers\\wc90.c", "626" );

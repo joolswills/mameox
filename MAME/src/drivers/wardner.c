@@ -1,11 +1,11 @@
-#pragma code_seg("C623")
-#pragma data_seg("D623")
-#pragma bss_seg("B623")
-#pragma const_seg("K623")
-#pragma comment(linker, "/merge:D623=623")
-#pragma comment(linker, "/merge:C623=623")
-#pragma comment(linker, "/merge:B623=623")
-#pragma comment(linker, "/merge:K623=623")
+#pragma code_seg("C5")
+#pragma data_seg("D5")
+#pragma bss_seg("B5")
+#pragma const_seg("K5")
+#pragma comment(linker, "/merge:D5=5")
+#pragma comment(linker, "/merge:C5=5")
+#pragma comment(linker, "/merge:B5=5")
+#pragma comment(linker, "/merge:K5=5")
 /***************************************************************************
 
 		ToaPlan game hardware from 1987
@@ -152,8 +152,8 @@ READ16_HANDLER( twincobr_BIO_r );
 extern int wardner_membank;
 extern int twincobr_intenable;
 
-static data8_t *wardner_sharedram;
-static data8_t *wardner_spare_pal_ram;
+static data8_t *wardner_sharedram = NULL;
+static data8_t *wardner_spare_pal_ram = NULL;
 
 extern data8_t *wardner_mainram;
 
