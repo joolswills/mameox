@@ -1,21 +1,42 @@
 Version 0.67b
 
-  - \MAMEoX\Includes\MAMEoX.h
-    - Upped version number to 0.67b
+  - \MAMEoX\Includes: 
+
+    - MAMEoX.h
+      - Upped version number to 0.67b
+      - Added symlink support (code based on submission from Redline)
+  
+    - xbox_FileIO.h
+      - Added symlink support (code based on submission from Redline)
+
+    - xbox_Direct3DRenderer.h
+      - Added Aspect Ratio Correction toggle option
+
+   -------------------------------------------------------------
+  - \MAMEoX\Sources:
+
+    - xbox_FileIO.cpp
+      - Added symlink support (code based on submission from Redline)
+
+  - MAMEoXUtil.cpp
     - Added symlink support (code based on submission from Redline)
 
-  - \MAMEoX\Includes\xbox_FileIO.h
-    - Added symlink support (code based on submission from Redline)
+    - xbox_Direct3DRenderer.cpp
+      - Added Aspect Ratio Correction toggle option
 
-  - \MAMEoX\Sources\xbox_FileIO.cpp
-    - Added symlink support (code based on submission from Redline)
+   -------------------------------------------------------------
+  - \MAMEoXLauncher\Sources
 
-  - \MAMEoX\Sources\MAMEoXUtil.cpp
-    - Added symlink support (code based on submission from Redline)
+    - OptionsPage.cpp
+      - Added read-only listing of symlinks to options
+      - Added Aspect Ratio Correction toggle option
 
-  - \MAMEoXLauncher\Sources\OptionsPage.cpp
-    - Added read-only listing of symlinks to options
+    - main.cpp
+      - Added Aspect Ratio Correction toggle option
 
+
+
+*********************************************************************
 Version 0.66b
 
   - \MAME\src\usrintrf.c

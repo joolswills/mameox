@@ -11,6 +11,7 @@
 #include "XBFont.h"
 #include "xbox_FileIO.h"
 #include "xbox_Network.h"
+#include "xbox_Direct3DRenderer.h"
 
 #include "xbox_FileIO.h"		// for path info
 
@@ -363,17 +364,19 @@ void COptionsPage::DrawVideoPage( void )
 
   STARTPAGE();
 
+  DRAWITEM( L"Aspect ratio correction", g_preserveAspectRatio ? L"Enabled" : L"Disabled" );
+
   swprintf( text, L"%f", options.brightness );
   DRAWITEM( L"Brightness", text );
 
   swprintf( text, L"%f", options.pause_bright );
-  DRAWITEM( L"Paused Brightness", text );
+  DRAWITEM( L"Paused brightness", text );
 
   swprintf( text, L"%f", options.gamma );
   DRAWITEM( L"Gamma", text );
 
   swprintf( text, L"%lu", options.color_depth );
-  DRAWITEM( L"Color Depth", text );
+  DRAWITEM( L"Color depth", text );
 
   ENDPAGE();
 }
@@ -580,6 +583,10 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
   switch( m_cursorPosition )
   {
   case 0:
+    g_preserveAspectRatio = !g_preserveAspectRatio;
+    break;
+
+  case 1:
     {
       if( !direction )
         options.brightness -= 0.01f;
@@ -593,7 +600,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
     }
     break;
 
-  case 1:
+  case 2:
     {
       if( !direction )
         options.pause_bright -= 0.01f;
@@ -607,7 +614,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
     }
     break;
 
-  case 2:
+  case 3:
     {
       if( !direction )
         options.gamma -= 0.01f;
@@ -621,7 +628,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
     }
     break;
 
-  case 3:
+  case 4:
     {
       if( options.color_depth == 32 )
         options.color_depth = 15;

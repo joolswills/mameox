@@ -62,6 +62,8 @@ static RECT                       g_textureRenderingArea = {0,0,0,0};
 static FLOAT                      g_screenXPercentage = DEFAULT_SCREEN_X_PERCENTAGE;
 static FLOAT                      g_screenYPercentage = DEFAULT_SCREEN_Y_PERCENTAGE;
 
+  //! Whether or not to use aspect ratio correction code
+BOOL g_preserveAspectRatio = TRUE;
 
 		//! The locked region for us to render to
 static D3DLOCKED_RECT             g_d3dLockedRect;
@@ -670,33 +672,34 @@ static BOOL CreateRenderingQuad( void )
   tv_b = (FLOAT)(g_textureRenderingArea.bottom+1);
 
 
-  // Aspect ratio
-  double screenRatio = 640.0/480.0;
   FLOAT xpos = g_screenXPercentage;
   FLOAT ypos = g_screenYPercentage;
 
-    // The desired aspect ratio for the game
-	double aspectRatio = (double)g_createParams.aspect_x / (double)g_createParams.aspect_y;
-  if( g_createParams.video_attributes & VIDEO_PIXEL_ASPECT_RATIO_1_2 )
-    aspectRatio /= 2.0;
-  else if( g_createParams.video_attributes & VIDEO_PIXEL_ASPECT_RATIO_2_1 )
-    aspectRatio *= 2.0;
-
-
-
-  // The native screenRatio is 4/3
-  // so multiplying x by the desired aspect ratio will actually give us (x*4/3)*(aspectRatio)
-  // Therefore we have to first counteract the real screen ratio before applying the desired aspect ratio
-
-  if( aspectRatio > screenRatio )
+  if( g_preserveAspectRatio )
   {
-      // scale down y
-    ypos /= aspectRatio * screenRatio; 
-  }
-  else if( aspectRatio < screenRatio )
-  {
-      // Scale down x
-    xpos *= aspectRatio / screenRatio;
+      // Aspect ratio
+    double screenRatio = 640.0/480.0;
+      // The desired aspect ratio for the game
+	  double aspectRatio = (double)g_createParams.aspect_x / (double)g_createParams.aspect_y;
+    if( g_createParams.video_attributes & VIDEO_PIXEL_ASPECT_RATIO_1_2 )
+      aspectRatio /= 2.0;
+    else if( g_createParams.video_attributes & VIDEO_PIXEL_ASPECT_RATIO_2_1 )
+      aspectRatio *= 2.0;
+
+    // The native screenRatio is 4/3
+    // so multiplying x by the desired aspect ratio will actually give us (x*4/3)*(aspectRatio)
+    // Therefore we have to first counteract the real screen ratio before applying the desired aspect ratio
+
+    if( aspectRatio > screenRatio )
+    {
+        // scale down y
+      ypos /= aspectRatio * screenRatio; 
+    }
+    else if( aspectRatio < screenRatio )
+    {
+        // Scale down x
+      xpos *= aspectRatio / screenRatio;
+    }
   }
 
 	CUSTOMVERTEX *pVertices;

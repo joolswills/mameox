@@ -55,6 +55,10 @@ extern "C" {
                                 (((UINT8)(_b__)) << WIN_COLOR32_BDST_SHIFT) )
 
 
+//= G L O B A L = V A R S ==============================================
+  //! Whether or not to use aspect ratio correction code
+extern BOOL g_preserveAspectRatio;
+
 //= P R O T O T Y P E S ================================================
 #ifdef __cplusplus
 

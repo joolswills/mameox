@@ -110,6 +110,7 @@ void LoadOptions( void )
     // 1 to enable FIR filter on final mixer output
   options.use_filter = iniFile.GetProfileInt( "Sound", "UseFilter", TRUE );
 
+  g_preserveAspectRatio = iniFile.GetProfileInt( "Video", "AspectRatioCorrection", TRUE );  // aspect ratio correction code
 	options.brightness = iniFile.GetProfileFloat( "Video", "Brightness", 1.0f );		    // brightness of the display
   options.pause_bright = iniFile.GetProfileFloat( "Video", "PauseBrightness", 0.65f );     // brightness when in pause
 	options.gamma = iniFile.GetProfileFloat( "Video", "Gamma", 1.0f );			        // gamma correction of the display
@@ -214,6 +215,7 @@ void SaveOptions( void )
   iniFile.WriteProfileInt( "Sound", "SampleRate", options.samplerate );
   iniFile.WriteProfileInt( "Sound", "UseSamples", options.use_samples );
   iniFile.WriteProfileInt( "Sound", "UseFilter", options.use_filter );
+  iniFile.WriteProfileInt( "Video", "AspectRatioCorrection", g_preserveAspectRatio );
   iniFile.WriteProfileFloat( "Video", "Brightness", options.brightness );		    // brightness of the display
   iniFile.WriteProfileFloat( "Video", "PauseBrightness", options.pause_bright );     // brightness when in pause
 	iniFile.WriteProfileFloat( "Video", "Gamma", options.gamma );			        // gamma correction of the display

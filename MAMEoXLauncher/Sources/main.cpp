@@ -82,6 +82,9 @@ GameOptions options;
 const char *cheatfile = NULL;
 }
 
+  // Fake preserveAspectRatio flag
+BOOL g_preserveAspectRatio = TRUE;
+
 //= P R O T O T Y P E S ===============================================
 BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage );
 void DestroyBackdrop( void );
