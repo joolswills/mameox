@@ -244,6 +244,63 @@ void osd_update_video_and_audio(struct mame_display *display)
       // Update autoframeskip
     if( g_rendererOptions.m_frameskip == AUTO_FRAMESKIP && cpu_getcurrentframe() > (FRAMESKIP_LEVELS << 1) )
     {
+
+        #define FRAMESKIP_SENSITIVITY     FRAMESKIP_LEVELS
+      if( performance->game_speed_percent >= 99.5f )
+      {
+          // Frameskip needs to be decreased
+        if( performance->game_speed_percent > 120.0f )
+          g_frameskipAdjust += (performance->game_speed_percent - 100) / 5;
+        else if( g_frameskip )
+          ++g_frameskipAdjust;
+
+
+			    // perform the adjustment
+			  while( g_frameskipAdjust >= FRAMESKIP_SENSITIVITY )
+			  {
+				  g_frameskipAdjust -= FRAMESKIP_SENSITIVITY;
+          if( g_frameskipAdjust < 0 )
+            g_frameskipAdjust = 0;
+
+				  if( g_frameskip )
+					  --g_frameskip;
+          else
+          {
+              // Already at min frameskip
+            g_frameskipAdjust = 0;
+            break;
+          }
+			  }
+        PRINTMSG( T_INFO, "Autosetting frameskip level to %lu\n", g_frameskip );
+      }
+      else
+      {
+          // Frameskip needs to be increased
+        if( performance->game_speed_percent < 80.0f )
+          g_frameskipAdjust -= (100 - performance->game_speed_percent) / 5;
+        else if( g_frameskip < 8 )
+          --g_frameskipAdjust;
+
+
+			    // perform the adjustment
+			  while( g_frameskipAdjust <= -FRAMESKIP_SENSITIVITY )
+			  {
+				  g_frameskipAdjust += FRAMESKIP_SENSITIVITY;
+          if( g_frameskipAdjust > 0 )
+            g_frameskipAdjust = 0;
+
+				  if( g_frameskip < FRAMESKIP_LEVELS - 1 )
+					  ++g_frameskip;
+          else
+          {
+              // Already at max frameskip
+            g_frameskipAdjust = 0;
+            break;
+          }
+			  }
+        PRINTMSG( T_INFO, "Autosetting frameskip level to %lu\n", g_frameskip );
+      }
+/*
 		    // if we're too fast, decrease the frameskip
 		  if( performance->game_speed_percent >= 99.5f )
 		  {
@@ -264,7 +321,7 @@ void osd_update_video_and_audio(struct mame_display *display)
 		  {
 			    // if below 80% speed, be more aggressive
 			  if( performance->game_speed_percent < 80.0f )
-				  g_frameskipAdjust -= (INT32)((90.0f - performance->game_speed_percent) / 5.0f);			  
+				  g_frameskipAdjust -= (90 - performance->game_speed_percent) / 5;			  
 			  else if( g_frameskip < 8 ) 
         {
             // if we're close, only force it up to frameskip 8
@@ -285,6 +342,7 @@ void osd_update_video_and_audio(struct mame_display *display)
 			  }
         PRINTMSG( T_INFO, "Increasing frameskip level to %lu\n", g_frameskip );
       }     
+*/
     }
     else if( g_rendererOptions.m_frameskip != AUTO_FRAMESKIP )
     {
@@ -305,9 +363,9 @@ void osd_update_video_and_audio(struct mame_display *display)
         g_desiredFPS != 0.0f && 
         g_rendererOptions.m_throttleFramerate )
     {
-        // Only wait for 99% of the frame time to elapse, as there's still some stuff that
+        // Only wait for 99.5% of the frame time to elapse, as there's still some stuff that
         // needs to be done before we return to MAME
-      cycles_t targetFrameCycles = (cycles_t)( (DOUBLE)osd_cycles_per_second() / (g_desiredFPS*1.1));
+      cycles_t targetFrameCycles = (cycles_t)( (DOUBLE)osd_cycles_per_second() / (g_desiredFPS*1.01));
       cycles_t actualFrameCycles = osd_cycles() - lastFrameEndTime;
 
         // Note that this loop could easily be "optimized" to be

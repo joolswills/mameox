@@ -124,9 +124,9 @@ INT32 osd_start_audio_stream( INT32 stereo )
   g_bufferOverflows = 0;
 
 	  // determine the number of samples per frame    
-  if( g_rendererOptions.m_vsync )
-	  g_samplesPerFrame = (DOUBLE)Machine->sample_rate / 60.0;
-  else
+//  if( g_rendererOptions.m_vsync )
+//	  g_samplesPerFrame = (DOUBLE)Machine->sample_rate / 60.0;
+// else
 	  g_samplesPerFrame = (DOUBLE)Machine->sample_rate / (DOUBLE)Machine->drv->frames_per_second;
 
   PRINTMSG( T_INFO, "Samples per frame: %f\n", g_samplesPerFrame );
@@ -176,8 +176,8 @@ INT32 osd_update_audio_stream( INT16 *buffer )
   int input_bytes;
   int final_bytes;
 
-  static cycles_t lastFrameEndTime = 0;
-  cycles_t actualFrameCycles = osd_cycles() - lastFrameEndTime;
+static cycles_t lastFrameEndTime = 0;
+cycles_t actualFrameCycles = osd_cycles() - lastFrameEndTime;
 
 	// if nothing to do, don't do it
 	if( Machine->sample_rate && g_pStreamBuffer )
@@ -231,7 +231,8 @@ INT32 osd_update_audio_stream( INT16 *buffer )
 
 
 
-  lastFrameEndTime = osd_cycles();
+PRINTMSG_TO_CONSOLE( T_INFO, "FPS: %f", ((DOUBLE)osd_cycles_per_second() / (DOUBLE)actualFrameCycles) );
+lastFrameEndTime = osd_cycles();
 
 
 	  // return the samples to play this next frame
@@ -423,7 +424,8 @@ static BOOL Helper_DirectSoundCreateBuffers( void )
   memset(buffer, 0, locked);
 
   // Unlock the buffer
-  IDirectSoundBuffer_Unlock( g_pStreamBuffer, &buffer, locked, NULL, 0 );
+  // EBA: Unlock is a noop on XBOX
+  //IDirectSoundBuffer_Unlock( g_pStreamBuffer, &buffer, locked, NULL, 0 );
 
 	return TRUE;
 }
@@ -531,10 +533,21 @@ static void Helper_CopySampleData( INT16 *data, UINT32 totalToCopy )
   void *buffer1, *buffer2;
   DWORD length1, length2;
   HRESULT result;
-  int cur_bytes;
+  UINT32 cur_bytes;
+
+  totalToCopy = (totalToCopy > g_streamBufferSize - Helper_BytesInStreamBuffer() ? g_streamBufferSize - Helper_BytesInStreamBuffer() : totalToCopy );
+  if( !totalToCopy )
+    return;
 
   // attempt to lock the stream buffer
-  result = IDirectSoundBuffer_Lock( g_pStreamBuffer, g_streamBufferIn, totalToCopy, &buffer1, &length1, &buffer2, &length2, 0 );
+  result = IDirectSoundBuffer_Lock( g_pStreamBuffer,
+                                    g_streamBufferIn, 
+                                    totalToCopy, 
+                                    &buffer1, 
+                                    &length1, 
+                                    &buffer2, 
+                                    &length2, 
+                                    0 );
   if ( result != DS_OK )
   {
     ++g_bufferUnderflows;
@@ -557,10 +570,15 @@ static void Helper_CopySampleData( INT16 *data, UINT32 totalToCopy )
   {
     cur_bytes = (totalToCopy > length2) ? length2 : totalToCopy;
     memcpy( buffer2, data, cur_bytes );
+
+    if( totalToCopy > length2 )
+      PRINTMSG_TO_CONSOLE( T_INFO, "Overflow!" );
   }
 
+
   // unlock
-  result = IDirectSoundBuffer_Unlock(g_pStreamBuffer, buffer1, length1, buffer2, length2);
+  // [EBA] Unlock is a noop on XBOX 
+  //result = IDirectSoundBuffer_Unlock(g_pStreamBuffer, buffer1, length1, buffer2, length2);
 }
 
 
