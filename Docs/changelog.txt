@@ -12,6 +12,9 @@ Version 0.67b
     - xbox_Direct3DRenderer.h
       - Added Aspect Ratio Correction toggle option
 
+    - DebugLogger.h
+      - Added support for dumping debug data to a file in Release mode
+
    -------------------------------------------------------------
   - \MAMEoX\Sources:
 
@@ -23,6 +26,9 @@ Version 0.67b
 
     - xbox_Direct3DRenderer.cpp
       - Added Aspect Ratio Correction toggle option
+
+    - DebugLogger.cpp
+      - Added support for dumping debug data to a file in Release mode
 
    -------------------------------------------------------------
   - \MAMEoXLauncher\Sources

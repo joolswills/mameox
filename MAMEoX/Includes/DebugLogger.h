@@ -11,39 +11,36 @@
 
 //= D E F I N E S ===============================================
 
+  // Uncomment this line to send PRINTMSG data to Debug.Log in
+  // the MAMEoX root directory. Note that it only takes effect
+  // in release mode
+#define _LOGDEBUGMESSAGES
+
 // Module types
 #define MT_OFF         0x00
 #define MT_TRACE       0x01
 #define MT_ERROR       0x02
 #define MT_INFO        0x04
-#define MT_ALL         0xFF
-
-// This is the default flag for each type
-#define MT_DEFAULT     MT_ALL
-
 
 #ifdef _DEBUG
+
   #define DebugLoggerFlush()							
   #define DebugLoggerWaitForLogClient()		
   #define PRINTMSG												Helper_OutputDebugStringPrintMsg
+
 #else
+
   #define DebugLoggerFlush()							
   #define DebugLoggerWaitForLogClient()		
-  #define PRINTMSG												Helper_InlineNOPDebugLoggerPrintMsg
+
+  #ifdef _LOGDEBUGMESSAGES
+    #define PRINTMSG												Helper_WriteToFilePrintMsg
+  #else
+    #define PRINTMSG												Helper_InlineNOPDebugLoggerPrintMsg
+  #endif
+
 #endif
 
-/*
-#ifdef _DEBUGLOGGER
-#define DebugLoggerFlush()							Helper_DebugLoggerFlush()
-#define DebugLoggerWaitForLogClient()		Helper_DebugLoggerWaitForLogClient()
-  // Don't send more than 850 chars or so
-#define PRINTMSG												Helper_DebugLoggerPrintMsg
-#else
-#define DebugLoggerFlush()							
-#define DebugLoggerWaitForLogClient()		
-#define PRINTMSG												Helper_InlineNOPDebugLoggerPrintMsg
-#endif
-*/
 
   // To kill an output type, just define it to T_NOLOG
 #define T_NOLOG        NEVERMODULE, LASTLOG, NULL, 0
@@ -79,6 +76,12 @@ void Helper_DebugLoggerPrintMsg( ULONG msgLevel, const char *fileName, ULONG lin
   //! \brief    Send a message to the debugger/xboxwatson tool
   //----------------------------------------------------------------------------
 void Helper_OutputDebugStringPrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNumber, const char *function, const char *fmt, ... );
+
+  //----------------------------------------------------------------------------
+  //  Helper_WriteToFilePrintMsg
+  //! \brief    Write a message to the debug.log file in the MAMEoX directory
+  //----------------------------------------------------------------------------
+void Helper_WriteToFilePrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNumber, const char *function, const char *fmt, ... );
 
   //----------------------------------------------------------------------------
   //  Helper_InlineNOPDebugLoggerPrintMsg

@@ -15,30 +15,16 @@
 #define DBG_FIFO_SZ       32    // Max of 32 items pending
 #define MAX_DBG_STRINGSZ  1024  // Max of 1023 printable chars
 
-
-#define XBX_LOG                   0x2B                                 //!< "Log this message" command
-
+#define DEBUG_LOG_FILE            "D:\\debug.log"
 
 //= G L O B A L = V A R S ============================================
+
+#if defined(_DEBUG) || defined(_LOGDEBUGMESSAGES)
 static const char   g_LevelName[][4] = {	"TRC",
                                           "INF", 
 																	        "ERR" };
 
-#if defined _DEBUGLOGGER
-  static char         g_debugLoggerStringFIFO[DBG_FIFO_SZ][MAX_DBG_STRINGSZ];
-  static ULONG        g_fifoWriteHead = 0;
-  static ULONG        g_fifoReadHead = 0;
-
-  static HANDLE       g_workerThread = INVALID_HANDLE_VALUE;
-  static DWORD        g_workerThreadID = 0;
-
-  const char          g_logClientConnected[] = "LogClntConnected";
-  const char          g_logClientFlushed[] = "LogClntFlushed";
-  static HANDLE       g_logClientConnectedEvent = NULL;
-  static HANDLE       g_logClientFlushedEvent = NULL;
-  static ULONG        g_messageID = 0;
-#else if defined _DEBUG
-  static char         g_debugLoggerString[MAX_DBG_STRINGSZ];
+static char         g_debugLoggerString[MAX_DBG_STRINGSZ];
 #endif
 
 
@@ -53,10 +39,8 @@ DWORD WINAPI debugloggermain( void *data );
 //-------------------------------------------------------
 extern "C" HRESULT DebugLoggerInit( void )
 {
-	#ifdef _DEBUGLOGGER
-
-#error "The debug logger requires a thread, the current C lib is single threaded!"
-
+/*
+  #error "The debug logger requires a thread, the current C lib is single threaded!"
     // Set up an unsecure connection to allow the PC logger to connect
   XNetStartupParams xnsp;
   memset( &xnsp, 0, sizeof( xnsp ) );
@@ -90,27 +74,15 @@ extern "C" HRESULT DebugLoggerInit( void )
 			return ERROR_INVALID_HANDLE;
 		}
 
-  #else
     // Debug logger isn't used, so unload the network XBE section to
     //  save memory 
   XFreeSection( "XTL" );
-	#endif
-
+*/
   return S_OK;
 }
 
-//-------------------------------------------------------
-//  DebugLoggerTerm
-//-------------------------------------------------------
-void DebugLoggerTerm( void )
-{
-    // Can't stop the debug logger! (ala Can't stop the music, god bless philips marketing)
-//  WSACleanup();
-//  XNetCleanup();
-}
 
-
-
+/*
 //-------------------------------------------------------
 //  Helper_TransmitDebugLog
 //-------------------------------------------------------
@@ -149,7 +121,6 @@ static BOOL Helper_TransmitDebugLog( SOCKET outputSock, const char *logString )
 //-------------------------------------------------------
 DWORD WINAPI debugloggermain( void *data )
 {
-	#ifdef _DEBUGLOGGER
   ULONG numSocks = 1;
   SOCKET listenSock = socket( AF_INET, SOCK_STREAM, 0 );
   SOCKET outputSock = -1;
@@ -225,39 +196,16 @@ sendingComplete:
       ;
     }
   }
-  #endif
-
   return 0;
 }
+*/
+
+
+
 
 extern "C" {
 
-
-#ifdef _DEBUG
-//-------------------------------------------------------
-//  Helper_OutputDebugStringPrintMsg
-//-------------------------------------------------------
-void Helper_OutputDebugStringPrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNumber, const char *function, const char *fmt, ... )
-{
-  sprintf(  g_debugLoggerString, 
-            "<%s %-24.24s [%6.6lu] %-24.24s> ", 
-            (msgLevel & MT_TRACE) ? g_LevelName[0] : ((msgLevel & MT_INFO) ? g_LevelName[1] : g_LevelName[2]),
-            strrchr(fileName, '\\') + 1, 
-            lineNumber,
-						function );
-
-  va_list arg;
-  va_start( arg, fmt );
-  vsprintf( &g_debugLoggerString[strlen(g_debugLoggerString)], fmt, arg );
-  va_end( arg );
-
-  strcat( g_debugLoggerString, "\n" );
-
-  OutputDebugString( g_debugLoggerString );
-}
-#endif
-
-#ifdef _DEBUGLOGGER
+/*
 //-------------------------------------------------------
 //  Helper_DebugLoggerPrintMsg
 //-------------------------------------------------------
@@ -323,10 +271,76 @@ void Helper_DebugLoggerFlush( void )
   WaitForSingleObject( g_logClientFlushedEvent, INFINITE );
 }
 
-#endif // _DEBUGLOGGER
+*/
 
+#ifdef _DEBUG
+//-------------------------------------------------------
+//  Helper_OutputDebugStringPrintMsg
+//-------------------------------------------------------
+void Helper_OutputDebugStringPrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNumber, const char *function, const char *fmt, ... )
+{
+  sprintf(  g_debugLoggerString, 
+            "<%s %-24.24s [%6.6lu] %-24.24s> ", 
+            (msgLevel & MT_TRACE) ? g_LevelName[0] : ((msgLevel & MT_INFO) ? g_LevelName[1] : g_LevelName[2]),
+            strrchr(fileName, '\\') + 1, 
+            lineNumber,
+						function );
 
+  va_list arg;
+  va_start( arg, fmt );
+  vsprintf( &g_debugLoggerString[strlen(g_debugLoggerString)], fmt, arg );
+  va_end( arg );
+
+  strcat( g_debugLoggerString, "\n" );
+
+  OutputDebugString( g_debugLoggerString );
 }
+#endif
+
+#if defined(_DEBUG) || defined(_LOGDEBUGMESSAGES)
+//-------------------------------------------------------
+//  Helper_WriteToFilePrintMsg
+//-------------------------------------------------------
+void Helper_WriteToFilePrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNumber, const char *function, const char *fmt, ... )
+{
+  sprintf(  g_debugLoggerString, 
+            "<%s %-24.24s [%6.6lu] %-24.24s> ", 
+            (msgLevel & MT_TRACE) ? g_LevelName[0] : ((msgLevel & MT_INFO) ? g_LevelName[1] : g_LevelName[2]),
+            strrchr(fileName, '\\') + 1, 
+            lineNumber,
+						function );
+
+  va_list arg;
+  va_start( arg, fmt );
+  vsprintf( &g_debugLoggerString[strlen(g_debugLoggerString)], fmt, arg );
+  va_end( arg );
+
+  strcat( g_debugLoggerString, "\n" );
+
+
+  HANDLE h = CreateFile(  DEBUG_LOG_FILE,
+                          GENERIC_WRITE,
+                          0,
+                          NULL,
+                          OPEN_ALWAYS,
+                          FILE_ATTRIBUTE_NORMAL,
+                          NULL );
+  if( h != INVALID_HANDLE_VALUE )
+  {
+      // Seek to the end of the file
+    LONG upperPos = 0;
+    SetFilePointer( h, 0, &upperPos, FILE_END );
+
+      // Write out the text
+    DWORD bytesWritten;
+    WriteFile( h, g_debugLoggerString, strlen(g_debugLoggerString), &bytesWritten, NULL );
+
+    CloseHandle( h );
+  }
+}
+#endif
+
+} // extern "C"
 
 
 
