@@ -128,9 +128,7 @@ void LoadOptions( void )
 	options.brightness =    iniFile.GetProfileFloat( "Video", "Brightness", 1.0f );		    // brightness of the display
   options.pause_bright =  iniFile.GetProfileFloat( "Video", "PauseBrightness", 0.65f );     // brightness when in pause
 	options.gamma =         iniFile.GetProfileFloat( "Video", "Gamma", 1.0f );			        // gamma correction of the display
-	options.color_depth =   iniFile.GetProfileInt( "Video", "ColorDepth", 32 );
-	options.vector_width =  iniFile.GetProfileInt( "VectorOptions", "VectorWidth", 640 );	      // requested width for vector games; 0 means default (640)
-	options.vector_height = iniFile.GetProfileInt( "VectorOptions", "VectorHeight", 480 );	    // requested height for vector games; 0 means default (480)
+	options.color_depth =   iniFile.GetProfileInt( "Video", "ColorDepth", 15 );
 	// int		ui_orientation;	        // orientation of the UI relative to the video
   
     // Validate some of the video options to keep them from ripping shit up
@@ -141,6 +139,16 @@ void LoadOptions( void )
   if( g_rendererOptions.m_screenRotation > SR_270 )
     g_rendererOptions.m_screenRotation = SR_0;
 
+  FLOAT xPercentage = iniFile.GetProfileFloat( "Video", "ScreenUsage_X", DEFAULT_SCREEN_X_PERCENTAGE );
+  FLOAT yPercentage = iniFile.GetProfileFloat( "Video", "ScreenUsage_Y", DEFAULT_SCREEN_Y_PERCENTAGE );
+  SetScreenUsage( xPercentage, yPercentage );
+
+  FLOAT xPosition = iniFile.GetProfileFloat( "Video", "ScreenPos_X", 0.0f );
+  FLOAT yPosition = iniFile.GetProfileFloat( "Video", "ScreenPos_Y", 0.0f );
+  SetScreenPosition( xPosition, yPosition );
+
+	options.vector_width =  iniFile.GetProfileInt( "VectorOptions", "VectorWidth", 640 );	      // requested width for vector games; 0 means default (640)
+	options.vector_height = iniFile.GetProfileInt( "VectorOptions", "VectorHeight", 480 );	    // requested height for vector games; 0 means default (480)
 
     //- Vector options ------------------------------------------------------------------------------------
 	options.beam = iniFile.GetProfileInt( "VectorOptions", "BeamWidth", 2 );			            // vector beam width
@@ -156,10 +164,6 @@ void LoadOptions( void )
 	//int		artwork_crop;	          1 to crop artwork to the game screen
 	//char	savegame;		            character representing a savegame to load
 
-
-  FLOAT xPercentage = iniFile.GetProfileFloat( "Video", "ScreenUsage_X", DEFAULT_SCREEN_X_PERCENTAGE );
-  FLOAT yPercentage = iniFile.GetProfileFloat( "Video", "ScreenUsage_Y", DEFAULT_SCREEN_Y_PERCENTAGE );
-  SetScreenUsage( xPercentage, yPercentage );
 
   // Grab the network settings
   g_NetworkConfig.m_networkDisabled = iniFile.GetProfileInt( "Network", "DisableNetworking",  FALSE );
@@ -262,6 +266,10 @@ void SaveOptions( void )
   iniFile.WriteProfileFloat( "Video", "ScreenUsage_X", xPercentage );
   iniFile.WriteProfileFloat( "Video", "ScreenUsage_Y", yPercentage );
 
+  FLOAT xPosition, yPosition;
+  GetScreenPosition( &xPosition, &yPosition );
+  iniFile.WriteProfileFloat( "Video", "ScreenPos_X", xPosition );
+  iniFile.WriteProfileFloat( "Video", "ScreenPos_Y", yPosition );
 
     //-- Write the network settings ---------------------------------------------
   iniFile.WriteProfileInt( "Network", "DisableNetworking",  g_NetworkConfig.m_networkDisabled );

@@ -66,6 +66,11 @@ typedef enum screenrotation_t
 //= S T R U C T U R E S ================================================
 typedef struct RendererOptions_t
 {
+  FLOAT                 m_screenUsageX;     //!< Screen usage along the X axis [0.25,1.0]
+  FLOAT                 m_screenUsageY;     //!< Screen usage along the Y axis [0.25,1.0]
+  FLOAT                 m_screenOffsetX;    //!< Offset of the screen from the upper left hand corner (0,0)
+  FLOAT                 m_screenOffsetY;    //!< Offset of the screen from the upper left hand corner (0,0)
+
     //! Whether or not to use aspect ratio correction code
   BOOL                  m_preserveAspectRatio;    
 
@@ -95,7 +100,9 @@ extern RendererOptions_t    g_rendererOptions;
 	//-------------------------------------------------------------
 void InitializeD3DRenderer( CGraphicsManager &gman, CXBFont *fnt );
 
-
+extern "C" {
+#endif
+	
 	//-------------------------------------------------------------
 	//	SetScreenUsage
 	//! \brief		Set how much of the screen is utilized
@@ -114,9 +121,25 @@ void SetScreenUsage( FLOAT xPercentage = DEFAULT_SCREEN_X_PERCENTAGE, FLOAT yPer
 	//-------------------------------------------------------------
 void GetScreenUsage( FLOAT *xPercentage, FLOAT *yPercentage );
 
-extern "C" {
-#endif
-	
+	//-------------------------------------------------------------
+	//	SetScreenPosition
+	//! \brief		Set the offset of the upper left hand corner of
+  //!            the rendering quad
+  //!
+  //! \param    xOffset - Offset from the left side of the screen
+  //! \param    yOffset - Offset from the top side of the screen
+	//-------------------------------------------------------------
+void SetScreenPosition( FLOAT xOffset = 0.0f, FLOAT yOffset = 0.0f );
+
+	//-------------------------------------------------------------
+	//	GetScreenPosition
+	//! \brief		Get the offset of the upper left hand corner of
+  //!            the rendering quad
+  //!
+  //! \param    xOffset - [OUT] Offset in the X direction
+  //! \param    yOffset - [OUT] Offset in the Y direction
+	//-------------------------------------------------------------
+void GetScreenPosition( FLOAT *xPercentage, FLOAT *yPercentage );
 
 	//-------------------------------------------------------------
 	//	D3DRendererCreateSession

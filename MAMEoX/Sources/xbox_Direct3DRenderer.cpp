@@ -56,14 +56,8 @@ static LPDIRECT3DVERTEXBUFFER8    g_pD3DVertexBuffer = NULL;
   // This rect is converted to TU/TV values in CreateRenderingQuad()
 static RECT                       g_textureRenderingArea = {0,0,0,0};
 
-  // Defines the percentage of the total screen area that should actually be used
-  // This is required because TV's have some overscan area that is not actually
-  // visible
-static FLOAT                      g_screenXPercentage = DEFAULT_SCREEN_X_PERCENTAGE;
-static FLOAT                      g_screenYPercentage = DEFAULT_SCREEN_Y_PERCENTAGE;
-
-  // Generic D3D Renderer options
-RendererOptions_t    g_rendererOptions;
+  //! Generic D3D Renderer options
+RendererOptions_t                 g_rendererOptions;
 
 		//! The locked region for us to render to
 static D3DLOCKED_RECT             g_d3dLockedRect;
@@ -85,6 +79,9 @@ static BOOL CreateRenderingQuad( void );
 
 //= F U N C T I O N S =================================================
 
+  // Unloaded in xbox_JoystickMouse.c
+#pragma code_seg( "STARTUP" )
+
 //-------------------------------------------------------------
 //	InitializeD3DRenderer
 //-------------------------------------------------------------
@@ -94,13 +91,15 @@ void InitializeD3DRenderer( CGraphicsManager &gman, CXBFont *fnt )
 	g_font = fnt;
 }
 
+extern "C" {
+
 //-------------------------------------------------------------
 //	SetScreenUsage
 //-------------------------------------------------------------
 void SetScreenUsage( FLOAT xPercentage, FLOAT yPercentage )
 {
-  g_screenXPercentage = xPercentage;
-  g_screenYPercentage = yPercentage;
+  g_rendererOptions.m_screenUsageX = xPercentage;
+  g_rendererOptions.m_screenUsageY = yPercentage;
 }
 
 //-------------------------------------------------------------
@@ -109,13 +108,31 @@ void SetScreenUsage( FLOAT xPercentage, FLOAT yPercentage )
 void GetScreenUsage( FLOAT *xPercentage, FLOAT *yPercentage )
 {
   if( xPercentage )
-    *xPercentage = g_screenXPercentage;
+    *xPercentage = g_rendererOptions.m_screenUsageX;
   if( yPercentage )
-    *yPercentage = g_screenYPercentage;
+    *yPercentage = g_rendererOptions.m_screenUsageY;
 }
 
+//-------------------------------------------------------------
+//	SetScreenPosition
+//-------------------------------------------------------------
+void SetScreenPosition( FLOAT xOffset, FLOAT yOffset )
+{
+  g_rendererOptions.m_screenOffsetX = xOffset;
+  g_rendererOptions.m_screenOffsetY = yOffset;
+}
 
-extern "C" {
+//-------------------------------------------------------------
+//	GetScreenPosition
+//-------------------------------------------------------------
+void GetScreenPosition( FLOAT *xOffset, FLOAT *yOffset )
+{
+  if( xOffset )
+    *xOffset = g_rendererOptions.m_screenOffsetX;
+  if( yOffset )
+    *yOffset = g_rendererOptions.m_screenOffsetY;
+}
+#pragma code_seg()
 
 //-------------------------------------------------------------
 //	D3DRendererCreateSession
@@ -672,8 +689,8 @@ static BOOL CreateRenderingQuad( void )
   tv_t = (FLOAT)g_textureRenderingArea.top;
   tv_b = (FLOAT)(g_textureRenderingArea.bottom+1);
 
-  FLOAT xpos = g_screenXPercentage;
-  FLOAT ypos = g_screenYPercentage;
+  FLOAT xpos = g_rendererOptions.m_screenUsageX;
+  FLOAT ypos = g_rendererOptions.m_screenUsageY;
 
   if( g_rendererOptions.m_screenRotation == SR_0 || g_rendererOptions.m_screenRotation == SR_180 )
   {
@@ -824,6 +841,17 @@ static BOOL CreateRenderingQuad( void )
       pVertices[2].pos.y *= -1.0f;
       pVertices[3].pos.y *= -1.0f;
     }
+
+
+	pVertices[0].pos.x += g_rendererOptions.m_screenOffsetX;
+	pVertices[0].pos.y += g_rendererOptions.m_screenOffsetY;
+	pVertices[1].pos.x += g_rendererOptions.m_screenOffsetX;
+	pVertices[1].pos.y += g_rendererOptions.m_screenOffsetY;
+	pVertices[2].pos.x += g_rendererOptions.m_screenOffsetX;
+	pVertices[2].pos.y += g_rendererOptions.m_screenOffsetY;
+	pVertices[3].pos.x += g_rendererOptions.m_screenOffsetX;
+	pVertices[3].pos.y += g_rendererOptions.m_screenOffsetY;
+
 
 	g_pD3DVertexBuffer->Unlock();
 

@@ -76,11 +76,6 @@ static LAUNCH_DATA        g_launchData;
 BYTE                      *g_pResourceSysMemData = NULL;
 BYTE                      *g_pResourceVidMemData = NULL;
 
-  // Defines the percentage of the total screen area that should actually be used
-  // This is required because TV's have some overscan area that is not actually
-  // visible
-static FLOAT                      g_screenXPercentage = DEFAULT_SCREEN_X_PERCENTAGE;
-static FLOAT                      g_screenYPercentage = DEFAULT_SCREEN_Y_PERCENTAGE;
 
 static LPDIRECT3DVERTEXBUFFER8    g_pD3DVertexBuffer = NULL;
 
@@ -107,7 +102,7 @@ RendererOptions_t    g_rendererOptions;
 BOOL g_soundEnabled = TRUE;
 
 //= P R O T O T Y P E S ===============================================
-BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage );
+BOOL CreateBackdrop( FLOAT xPosition, FLOAT yPosition, FLOAT xUsage, FLOAT yUsage );
 void DestroyBackdrop( void );
 void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... );
 static BOOL Helper_LoadDriverInfoFile( void );
@@ -431,9 +426,10 @@ void __cdecl main( void )
                               mameoxLaunchData->m_superscrollIndex );
 
     // Grab the current screen usage so we can render a border
-  FLOAT xPercentage, yPercentage;
+  FLOAT xPercentage, yPercentage, xPos, yPos;
+  GetScreenPosition( &xPos, &yPos );
   GetScreenUsage( &xPercentage, &yPercentage );
-  CreateBackdrop( xPercentage, yPercentage );
+  CreateBackdrop( xPos, yPos, xPercentage, yPercentage );
 
   COptionsPage optionsPage( pD3DDevice,
                             g_smallFont,
@@ -511,6 +507,9 @@ void __cdecl main( void )
     // rotate as soon as we notice that the option is changed
   screenrotation_t oldRotation = g_rendererOptions.m_screenRotation;
 
+    // Right analog movement mode. If this is false, right analog
+    // stretches the screen. If true, it moves it.
+  BOOL rightAnalogMovesScreen = FALSE;
 
 		//--- Main loop ------------------------------------------------------
 	while( 1 )
@@ -548,44 +547,82 @@ void __cdecl main( void )
       optionsMode = !optionsMode;
       toggleButtonTimeout = TOGGLEBUTTON_TIMEOUT;
     }
-    else if(  gp0->IsButtonPressed( GP_X ) && toggleButtonTimeout == 0.0f )
+    else if( gp0->IsButtonPressed( GP_X ) && toggleButtonTimeout == 0.0f )
     {
         // Toggle help mode
       helpMode = !helpMode;
       toggleButtonTimeout = TOGGLEBUTTON_TIMEOUT;
     }
-    else if(  gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) < -SCREENRANGE_DEADZONE || 
-              gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) > SCREENRANGE_DEADZONE || 
-              gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) < -SCREENRANGE_DEADZONE || 
-              gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) > SCREENRANGE_DEADZONE ||
-              oldRotation != g_rendererOptions.m_screenRotation )
+    else if( gp0->IsButtonPressed( GP_RIGHT_ANALOG ) && toggleButtonTimeout == 0.0f )
     {
+        // Toggle the right analog stick mode
+      rightAnalogMovesScreen = !rightAnalogMovesScreen;
+      toggleButtonTimeout = TOGGLEBUTTON_TIMEOUT;
+    }
+    else if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) < -SCREENRANGE_DEADZONE || 
+             gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) > SCREENRANGE_DEADZONE || 
+             gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) < -SCREENRANGE_DEADZONE || 
+             gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) > SCREENRANGE_DEADZONE ||
+             oldRotation != g_rendererOptions.m_screenRotation )
+    {
+      FLOAT xPos, yPos;
+      GetScreenPosition( &xPos, &yPos );
       FLOAT xPercentage, yPercentage;
       GetScreenUsage( &xPercentage, &yPercentage );
 
-      if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) < -SCREENRANGE_DEADZONE )
-        xPercentage -= 0.00025f;
-      else if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) > SCREENRANGE_DEADZONE )
-        xPercentage += 0.00025f;
+      if( rightAnalogMovesScreen )
+      {
 
-      if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) < -SCREENRANGE_DEADZONE )
-        yPercentage -= 0.00025f;
-      else if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) > SCREENRANGE_DEADZONE )
-        yPercentage += 0.00025f;
+        if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) < -SCREENRANGE_DEADZONE )
+          xPos -= 0.0005f;
+        else if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) > SCREENRANGE_DEADZONE )
+          xPos += 0.0005f;
 
-      if( xPercentage < 0.25f )
-        xPercentage = 0.25f;
-      else if( xPercentage > 1.0f )
-        xPercentage = 1.0f;
+        if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) < -SCREENRANGE_DEADZONE )
+          yPos -= 0.0005f;
+        else if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) > SCREENRANGE_DEADZONE )
+          yPos += 0.0005f;
 
-      if( yPercentage < 0.25f )
-        yPercentage = 0.25f;
-      else if( yPercentage > 1.0f )
-        yPercentage = 1.0f;
+        if( xPos < -0.5f )
+          xPos = -0.5f;
+        else if( xPos > 0.5f )
+          xPos = 0.5f;
 
-      SetScreenUsage( xPercentage, yPercentage );
+        if( yPos < -0.5f )
+          yPos = -0.5f;
+        else if( yPos > 0.5f )
+          yPos = 0.5f;
+
+        SetScreenPosition( xPos, yPos );
+      }
+      else
+      {
+
+        if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) < -SCREENRANGE_DEADZONE )
+          xPercentage -= 0.00025f;
+        else if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) > SCREENRANGE_DEADZONE )
+          xPercentage += 0.00025f;
+
+        if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) < -SCREENRANGE_DEADZONE )
+          yPercentage -= 0.00025f;
+        else if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) > SCREENRANGE_DEADZONE )
+          yPercentage += 0.00025f;
+
+        if( xPercentage < 0.25f )
+          xPercentage = 0.25f;
+        else if( xPercentage > 1.0f )
+          xPercentage = 1.0f;
+
+        if( yPercentage < 0.25f )
+          yPercentage = 0.25f;
+        else if( yPercentage > 1.0f )
+          yPercentage = 1.0f;
+
+        SetScreenUsage( xPercentage, yPercentage );
+      }
+
       DestroyBackdrop();
-      CreateBackdrop( xPercentage, yPercentage );
+      CreateBackdrop( xPos, yPos, xPercentage, yPercentage );
       oldRotation = g_rendererOptions.m_screenRotation;
     }
 		
@@ -979,7 +1016,7 @@ void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 //-------------------------------------------------------------
 //  CreateBackdrop
 //-------------------------------------------------------------
-BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage )
+BOOL CreateBackdrop( FLOAT xPos, FLOAT yPos, FLOAT xUsage, FLOAT yUsage )
 {
   if( g_pD3DVertexBuffer )
   {
@@ -1016,6 +1053,16 @@ BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage )
 		pVertices[3].pos.x = -xUsage;
 		pVertices[3].pos.y = -yUsage;
 		pVertices[3].pos.z = 1.0f;
+
+		pVertices[0].pos.x += xPos;
+		pVertices[0].pos.y += yPos;
+		pVertices[1].pos.x += xPos;
+		pVertices[1].pos.y += yPos;
+		pVertices[2].pos.x += xPos;
+		pVertices[2].pos.y += yPos;
+		pVertices[3].pos.x += xPos;
+		pVertices[3].pos.y += yPos;
+    
 
     FLOAT tu_l = 0.0f, tu_r = 512.0f, tv_t = 0.0f, tv_b = 512.0f;
 
@@ -1083,26 +1130,6 @@ void DestroyBackdrop( void )
     g_pD3DVertexBuffer->Release();
     g_pD3DVertexBuffer = NULL;
   }
-}
-
-//-------------------------------------------------------------
-//	SetScreenUsage
-//-------------------------------------------------------------
-void SetScreenUsage( FLOAT xPercentage, FLOAT yPercentage )
-{
-  g_screenXPercentage = xPercentage;
-  g_screenYPercentage = yPercentage;
-}
-
-//-------------------------------------------------------------
-//	GetScreenUsage
-//-------------------------------------------------------------
-void GetScreenUsage( FLOAT *xPercentage, FLOAT *yPercentage )
-{
-  if( xPercentage )
-    *xPercentage = g_screenXPercentage;
-  if( yPercentage )
-    *yPercentage = g_screenYPercentage;
 }
 
 //-----------------------------------------------------------------------------
@@ -1424,6 +1451,47 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 
 
 extern "C" {
+
+//-------------------------------------------------------------
+//	SetScreenUsage
+//-------------------------------------------------------------
+void SetScreenUsage( FLOAT xPercentage, FLOAT yPercentage )
+{
+  g_rendererOptions.m_screenUsageX = xPercentage;
+  g_rendererOptions.m_screenUsageY = yPercentage;
+}
+
+//-------------------------------------------------------------
+//	GetScreenUsage
+//-------------------------------------------------------------
+void GetScreenUsage( FLOAT *xPercentage, FLOAT *yPercentage )
+{
+  if( xPercentage )
+    *xPercentage = g_rendererOptions.m_screenUsageX;
+  if( yPercentage )
+    *yPercentage = g_rendererOptions.m_screenUsageY;
+}
+
+//-------------------------------------------------------------
+//	SetScreenPosition
+//-------------------------------------------------------------
+void SetScreenPosition( FLOAT xOffset, FLOAT yOffset )
+{
+  g_rendererOptions.m_screenOffsetX = xOffset;
+  g_rendererOptions.m_screenOffsetY = yOffset;
+}
+
+//-------------------------------------------------------------
+//	GetScreenPosition
+//-------------------------------------------------------------
+void GetScreenPosition( FLOAT *xOffset, FLOAT *yOffset )
+{
+  if( xOffset )
+    *xOffset = g_rendererOptions.m_screenOffsetX;
+  if( yOffset )
+    *yOffset = g_rendererOptions.m_screenOffsetY;
+}
+  
 //-------------------------------------------------------------
 //	osd_init
 //-------------------------------------------------------------
