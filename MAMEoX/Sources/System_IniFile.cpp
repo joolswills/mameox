@@ -65,8 +65,12 @@ CSystem_IniFile::CSystem_IniFile( const CStdString &strFullPath ) :
 	{
 		char buf[8192];
     UINT32 j = 0;
-    for( ; buffer[i] != '\n' && j < 8192; ++i, ++j )
+    for( ; buffer[i] != '\n' && buffer[i] != '\r' && j < 8192; ++i, ++j )
       buf[j] = buffer[i];
+
+      // Skip paired \r\n's
+    while( buffer[i+1] == '\n' || buffer[i+1] == '\r' )
+      ++i;
 
     if( j == 8192 )
     {
@@ -77,8 +81,9 @@ CSystem_IniFile::CSystem_IniFile( const CStdString &strFullPath ) :
       buf[j] = 0;
 
       // Catch no newline at end of file
-		if( buffer[i++] == '\n' )
+		if( buffer[i] == '\n' || buffer[i] == '\r' )
 		{
+      ++i;
 			std::string inputStr = buf;
 			inputVector.push_back( CSystem_StringModifier::KillLeadingWhitespaceStr( inputStr ) );
 		}
