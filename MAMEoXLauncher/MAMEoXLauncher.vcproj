@@ -54,7 +54,7 @@
 			<Tool
 				Name="XboxDeploymentTool"
 				RemotePath="xe:\MAMETEST\default.xbe"
-				AdditionalFiles="xe:\MAMETEST\Media=..\Media"/>
+				AdditionalFiles="xe:\MAMETEST\Media=..\Media;xe:\MAMETEST\Skins=..\Skins"/>
 			<Tool
 				Name="XboxImageTool"
 				AdditionalOptions="/testid:0x4D414D45"
@@ -123,7 +123,7 @@
 			<Tool
 				Name="XboxDeploymentTool"
 				RemotePath="xe:\MAMETEST\default.xbe"
-				AdditionalFiles="xe:\MAMETEST\Media=..\Media"/>
+				AdditionalFiles="xe:\MAMETEST\Media=..\Media;xe:\MAMETEST\Skins=..\Skins"/>
 			<Tool
 				Name="XboxImageTool"
 				AdditionalOptions="/testid:0x4D414D45"
