@@ -39,6 +39,7 @@ public:
 																								reversed ) 
 	{
 		m_text = NULL;
+		m_reversed = reversed;
 	}
 
 		//------------------------------------------------------
@@ -49,6 +50,8 @@ public:
 			m_text = new CSkinText( *a.m_text );
 		else
 			m_text = NULL;
+
+		m_reversed = a.m_reversed;
 	}
 
 		//------------------------------------------------------
@@ -71,6 +74,7 @@ public:
 
 
 	CSkinText						*m_text;
+	BOOL								m_reversed;
 };
 
 

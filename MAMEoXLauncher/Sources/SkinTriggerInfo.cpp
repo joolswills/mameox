@@ -27,7 +27,25 @@ void CSkinTriggerInfo::Render( LPDIRECT3DDEVICE8 displayDevice, const WCHAR *str
 		// Determine the size of the text string
 	FLOAT textWidth = 0;
 	if( m_text )
-		textWidth = m_text->GetTextWidth( str );
+		textWidth = m_text->GetTextWidth( str ) + m_text->m_left;
+
+	FLOAT headAndTailIconWidth = 0.0f;
+	FLOAT textBoxAdjustment = 0.0f;
+	const CSkinSpriteResource *icon = g_loadedSkin->GetSkinSpriteResource( SPRITE_LIST_TRIGGERICON_HEAD );
+	if( icon )
+	{
+		headAndTailIconWidth += icon->GetWidth();
+		if( !m_reversed )
+			textBoxAdjustment = icon->GetWidth();
+	}
+
+	icon = g_loadedSkin->GetSkinSpriteResource( SPRITE_LIST_TRIGGERICON_TAIL );
+	if( icon )
+	{
+		headAndTailIconWidth += icon->GetWidth();
+		if( m_reversed )
+			textBoxAdjustment = icon->GetWidth();
+	}
 
 		// Set the body area
 	FLOAT left = m_left;
@@ -36,9 +54,9 @@ void CSkinTriggerInfo::Render( LPDIRECT3DDEVICE8 displayDevice, const WCHAR *str
 
 		// Note that this will fail miserably if neither left nor right is set to a real val
 	if( left == VALUE_AUTO || left == VALUE_UNBOUNDED )
-		left = right - textWidth;
+		left = right - (textWidth + headAndTailIconWidth);
 	else if( right == VALUE_AUTO || right == VALUE_UNBOUNDED )
-		right = left + textWidth;
+		right = left + (textWidth + headAndTailIconWidth);
 
 	if( bottom == VALUE_AUTO || bottom == VALUE_UNBOUNDED && CheckResourceValidity(SPRITE_LIST_TRIGGERICON_CENTER) )
 		bottom = m_top + g_loadedSkin->GetSkinSpriteResource(SPRITE_LIST_TRIGGERICON_CENTER)->GetHeight();
@@ -46,9 +64,10 @@ void CSkinTriggerInfo::Render( LPDIRECT3DDEVICE8 displayDevice, const WCHAR *str
 		// Render the backdrop
 	CSkin3PartBackdrop::Render( displayDevice, left, m_top, right, bottom );
 
-		// Render the text
+		// Render the text, adjusted for the head icon width
+
 	if( m_text )
-		m_text->RenderAsOffset( displayDevice, str, left, m_top );
+		m_text->RenderAsOffset( displayDevice, str, left + textBoxAdjustment, m_top );
 }	
 
 //---------------------------------------------------------------------
@@ -84,6 +103,14 @@ BOOL CSkinTriggerInfo::ParseINI(	CSystem_IniFile &iniFile, const CStdString &sec
 	CSkinText temp;
 	if( temp.ParseINI( iniFile, sectionName, entryName ) )
 		m_text = new CSkinText( temp );
+
+		// Make sure we have valid offsets for the text widget
+	if( m_text->m_left == VALUE_INVALID )
+		m_text->m_left = 0.0f;
+	if( m_text->m_top == VALUE_INVALID )
+		m_text->m_top = 0.0f;
+	if( m_text->m_bottom <= m_text->m_top )
+		m_text->m_bottom = m_text->m_top + GetHeight();
 
 	return (m_left != VALUE_INVALID && m_top != VALUE_INVALID );
 }

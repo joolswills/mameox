@@ -47,7 +47,7 @@ void CSkinText::Render( LPDIRECT3DDEVICE8 displayDevice, const WCHAR *str, FLOAT
 	if( flags & XBFONT_TRUNCATED && m_right >= m_left )
 	{
 		maxWidth = m_right - m_left;
-		maxWidth -= g_fontSet.GetFont( m_fontType ).GetTextWidth( L" ..." );
+		maxWidth -= g_fontSet.GetFont( m_fontType ).GetTextWidth( L"." );
 	}
 	else
 		flags &= ~XBFONT_TRUNCATED;
@@ -84,7 +84,7 @@ void CSkinText::RenderAtRect(	LPDIRECT3DDEVICE8 displayDevice,
 	if( flags & XBFONT_TRUNCATED && m_right >= m_left )
 	{
 		maxWidth = m_right - m_left;
-		maxWidth -= g_fontSet.GetFont( m_fontType ).GetTextWidth( L" ..." );
+		maxWidth -= g_fontSet.GetFont( m_fontType ).GetTextWidth( L"." );
 	}
 	else
 		flags &= ~XBFONT_TRUNCATED;
