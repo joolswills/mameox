@@ -497,6 +497,10 @@ static BOOL Helper_RunRom( UINT32 romIndex )
   LoadDriverSectionByName( "src\\drivers\\pengo.c" );     // eyes
   LoadDriverSectionByName( "src\\drivers\\megasys1.c" );  // F1 Grand Prix Star
   LoadDriverSectionByName( "src\\drivers\\namcos1.c" );   // Face Off (Japan)
+  LoadDriverSectionByName( "src\\drivers\\rallyx.c" );    // Loco-Motion
+  LoadDriverSectionByName( "src\\drivers\\timeplt.c" );   // Loco-Motion
+  LoadDriverSectionByName( "src\\drivers\\exidy.c" );     // Victory
+
 
   if( !LoadDriverSectionByName( DriverName.c_str() ) )
   {
@@ -629,7 +633,7 @@ void PollGamepads( void )
 {
 	g_inputManager.PollDevices();
 	const XINPUT_GAMEPAD	&gp0 = g_inputManager.GetGamepadDeviceState( 0 );
-
+/*
 		// Reboot on LT+RT+Black
 	if( gp0.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] > 200 &&
 			gp0.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] > 200 &&
@@ -638,6 +642,7 @@ void PollGamepads( void )
     LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
     XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
 	}
+*/
 }
 
 
