@@ -3,20 +3,20 @@
 // The output will be a header file (.h) used at compile time,
 // and a packed resource file (.xpr) used at runtime.
 
-out_header         ..\Includes\FontAN10.h
-out_packedresource ..\..\Media\FontAN10.xpr
-out_error          FontAN10.err
+out_header         ..\Includes\CourierNew_12.h
+out_packedresource ..\..\Media\CourierNew_12.xpr
+out_error          CourierNew_12.err
 
 
 Texture Font
 {
-   Source      AN10.tga
+   Source      CourierNew_12.tga
    Format      D3DFMT_A4R4G4B4
    Levels      1
 }
 
 UserData FontData
 {
-   DataFile AN10.abc
+   DataFile CourierNew_12.abc
 }
 

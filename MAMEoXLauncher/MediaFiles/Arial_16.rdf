@@ -3,20 +3,20 @@
 // The output will be a header file (.h) used at compile time,
 // and a packed resource file (.xpr) used at runtime.
 
-out_header         ..\Includes\FontAN12.h
-out_packedresource ..\..\Media\FontAN12.xpr
-out_error          FontAN12.err
+out_header         ..\Includes\Arial_16.h
+out_packedresource ..\..\Media\Arial_16.xpr
+out_error          Arial_16.err
 
 
 Texture Font
 {
-   Source      AN12.tga
+   Source      Arial_16.tga
    Format      D3DFMT_A4R4G4B4
    Levels      1
 }
 
 UserData FontData
 {
-   DataFile AN12.abc
+   DataFile Arial_16.abc
 }
 
