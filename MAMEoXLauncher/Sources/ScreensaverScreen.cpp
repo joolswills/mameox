@@ -26,7 +26,7 @@ extern "C" {
 //= S T R U C T U R E S ===============================================
 
 //= D E F I N E S ======================================================
-#define TICKS_PER_SCREENSHOT      20 * osd_cycles_per_second()
+#define TICKS_PER_SCREENSHOT      15 * osd_cycles_per_second()
 
 //= G L O B A L = V A R S ==============================================
   // Static member initialization
@@ -193,7 +193,8 @@ void CScreensaverScreen::CalculateRenderingQuad( void )
         // Hack: Assume that swap XY means we're using 3:4 aspect, otherwise 4:3
 
         // Aspect ratio
-      double screenRatio = (640.0 * xPercentage) / (480.0 * yPercentage);
+      double screenRatio = 640.0/480.0;
+      //double screenRatio = (640.0 * xPercentage) / (480.0 * yPercentage);
 
         // The desired aspect ratio for the game
       double aspectRatio = ( m_screenshotOrientation & ORIENTATION_SWAP_XY ) ? (3.0/4.0) : (4.0/3.0);
@@ -217,7 +218,8 @@ void CScreensaverScreen::CalculateRenderingQuad( void )
     {
         // Hack: Assume that swap XY means we're using 3:4 aspect, otherwise 4:3
         // Aspect ratio
-      double screenRatio = (480.0 * yPercentage) / (640.0 * xPercentage);
+      double screenRatio = 480.0/640.0;
+      //double screenRatio = (480.0 * yPercentage) / (640.0 * xPercentage);
 
         // The desired aspect ratio for the game
       double aspectRatio = ( m_screenshotOrientation & ORIENTATION_SWAP_XY ) ? (3.0/4.0) : (4.0/3.0);
