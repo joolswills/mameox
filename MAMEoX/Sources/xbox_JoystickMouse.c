@@ -429,7 +429,6 @@ void osd_lightgun_read(int player, int *deltax, int *deltay)
 {
   assert( deltax && deltay );
   GetLightgunCalibratedPosition( player, deltax, deltay );
-  PRINTMSG( T_INFO, "x: %d y: %d", *deltax, *deltay );
 }
 
 //---------------------------------------------------------------------
