@@ -361,7 +361,7 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 
   # TEST Families for 0.71.1b
 @MoonPatrolFamily = ( "mpatrol.c", "yard.c" );								# 10 Yard Fight07/07/2003
-@SNKFamily = ( "snk.c", "ha121.c" );										# ASO - Armored Scrum Object, Athena
+@SNKFamily = ( "snk.c", "hal21.c" );										# ASO - Armored Scrum Object, Athena
 @AmidarFamily = ( "galaxian.c", "scramble.c", "scobra.c", 
                   "amidar.c", "frogger.c" );								# Amidar, Frog (Galaxian Hardware)
 @RampartFamily = ( "rampart.c", "arcadecl.c" );								# Arcade Classics

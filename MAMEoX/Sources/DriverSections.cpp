@@ -186,7 +186,7 @@ BOOL UnloadDriverSections( void )
         (*i).first == "src\\drivers\\midvunit.c" ||
         (*i).first == "src\\drivers\\twincobr.c" ||
         (*i).first == "src\\drivers\\yard.c" ||
-        (*i).first == "src\\drivers\\ha121.c" ||
+        (*i).first == "src\\drivers\\hal21.c" ||
         (*i).first == "src\\drivers\\scramble.c" ||
         (*i).first == "src\\drivers\\scobra.c" ||
         (*i).first == "src\\drivers\\amidar.c" ||
@@ -555,7 +555,11 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\metro.c", "403" );
   RegisterSectionName( "src\\drivers\\mexico86.c", "404" );
   RegisterSectionName( "src\\drivers\\mhavoc.c", "405" );
+  RegisterSectionName( "src\\drivers\\midtunit.c", "4" );
+  RegisterSectionName( "src\\drivers\\midvunit.c", "4" );
+  RegisterSectionName( "src\\drivers\\midwunit.c", "4" );
   RegisterSectionName( "src\\drivers\\midxunit.c", "409" );
+  RegisterSectionName( "src\\drivers\\midyunit.c", "4" );
   RegisterSectionName( "src\\drivers\\mikie.c", "411" );
   RegisterSectionName( "src\\drivers\\minivadr.c", "412" );
   RegisterSectionName( "src\\drivers\\missb2.c", "413" );
@@ -891,10 +895,6 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\zerozone.c", "743" );
   RegisterSectionName( "src\\drivers\\zn.c", "744" );
   RegisterSectionName( "src\\drivers\\zodiack.c", "745" );
-  RegisterSectionName( "src\\drivers\\midtunit.c", "4" );
-  RegisterSectionName( "src\\drivers\\midvunit.c", "4" );
-  RegisterSectionName( "src\\drivers\\midwunit.c", "4" );
-  RegisterSectionName( "src\\drivers\\midyunit.c", "4" );
 }
 #pragma code_seg()
 #pragma data_seg()
