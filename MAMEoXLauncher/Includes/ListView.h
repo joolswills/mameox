@@ -9,10 +9,7 @@
 //= I N C L U D E S ====================================================
 #include <Xtl.h>
 
-#include "XBFont.h"
-#include "MAMEoX.h"
-#include "InputManager.h"
-#include "FontSet.h"
+#include "BaseView.h"
 
 
 //= D E F I N E S ======================================================
@@ -24,17 +21,15 @@
 	* \class		CListView
 	* \brief		The list base class
 	*/
-class CListView
+class CListView : public CBaseView
 {
 public:
 
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-	CListView( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, LPDIRECT3DTEXTURE8 backdropTexture ) :
-		m_displayDevice( displayDevice ),
-		m_fontSet( fontSet ),
-    m_backdropTexture( backdropTexture ),
+	CListView( LPDIRECT3DDEVICE8 displayDevice, CFontSet &fontSet, LPDIRECT3DTEXTURE8 backdropTexture ) :
+    CBaseView( displayDevice, fontSet, backdropTexture ),
 		m_cursorPosition( 0.0f ),
 		m_dpadCursorDelay( 0.0f ),
 		m_pageOffset( 0.0f ),
@@ -55,22 +50,6 @@ public:
 		//------------------------------------------------------------
 	virtual void MoveCursor( CInputManager &inputManager, BOOL useSpeedBanding = FALSE );
 
-		//------------------------------------------------------------
-		// Draw
-		//! \brief		Render the list to the screen
-    //!
-    //! \param    clearScreen - Clear the screen before rendering
-    //! \param    flipOnCompletion - Call Present before leaving
-		//------------------------------------------------------------
-	virtual void Draw( BOOL clearScreen = TRUE, BOOL flipOnCompletion = TRUE ) = 0;
-
-		//------------------------------------------------------------
-		// DrawToTexture
-		//! \brief		Render the list to the passed texture
-    //!
-    //! \param    targetTexture - The texture to render to
-		//------------------------------------------------------------
-  virtual void DrawToTexture( LPDIRECT3DTEXTURE8 targetTexture );
 
 		//------------------------------------------------------------
 		// SetCursorPosition
@@ -121,30 +100,6 @@ protected:
 
     return pageSize;
   }
-
-		//------------------------------------------------------------
-		// RenderBackdrop
-		//! \brief		Render the backdrop texture to m_displayDevice
-		//------------------------------------------------------------
-	virtual void RenderBackdrop( void );
-
-		//------------------------------------------------------------
-		// RenderToTextureStart
-		//! \brief		Start rendering to the passed texture
-		//------------------------------------------------------------
-  virtual BOOL RenderToTextureStart( LPDIRECT3DTEXTURE8 targetTexture );
-
-		//------------------------------------------------------------
-		// RenderToTextureStop
-		//! \brief		Stop rendering to a texture
-		//------------------------------------------------------------
-  virtual void RenderToTextureStop( void );
-
-	LPDIRECT3DDEVICE8			    m_displayDevice;            //!<  Display device to use in rendering
-  CFontSet                  &m_fontSet;                 //!<  Set of available fonts
-  LPDIRECT3DTEXTURE8        m_backdropTexture;          //!<  Texture to render as the backdrop
-
-
    
   DWORD                     m_numLinesInList;           //!<  The total number of items in the list
   DWORD                     m_maxPageSize;              //!<  The maximum number of items to put on a page
@@ -155,6 +110,6 @@ protected:
   FLOAT                     m_timeElapsed;              //!< Time elapsed between MoveCursor calls
 
 	FLOAT									    m_cursorSpeedBandTimeout;   //!< Timeout value for determining the current speed band
-
-  RenderToTextureToken_t    m_renderToTextureToken;     //!< Token for texture rendering
 };
+
+
