@@ -152,6 +152,8 @@ Version 0.70.01b
 
  --- Specific Game fixes --------------------------------------------
   U.S. Championship V'ball
+  Cruis'n USA - Runs out of memory, now prints that and properly reboots
+  Cruis'n World - Runs out of memory, now prints that and properly reboots
 
 *********************************************************************
 

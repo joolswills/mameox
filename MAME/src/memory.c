@@ -185,7 +185,7 @@ offs_t encrypted_opcode_start[MAX_CPU],encrypted_opcode_end[MAX_CPU];
 	PROTOTYPES
 -------------------------------------------------*/
 
-static int CLIB_DECL fatalerror(const char *string, ...);
+//static int CLIB_DECL fatalerror(const char *string, ...);
 static UINT8 get_handler_index(struct handler_data *table, void *handler, offs_t start);
 static UINT8 alloc_new_subtable(const struct memport_data *memport, struct table_data *tabledata, UINT8 previous_value);
 static void populate_table(struct memport_data *memport, int iswrite, offs_t start, offs_t stop, UINT8 handler);
@@ -434,8 +434,8 @@ data8_t *install_mem_read_handler(int cpunum, offs_t start, offs_t end, mem_read
 	/* sanity check */
 	if (cpudata[cpunum].mem.dbits != 8)
 	{
-		printf("fatal: install_mem_read_handler called on %d-bit cpu\n",cpudata[cpunum].mem.dbits);
-		exit(1);
+      // Changed to fatalerror [EBA]
+    fatalerror( "fatal: install_mem_read_handler called on %d-bit cpu\n",cpudata[cpunum].mem.dbits);
 	}
 
 	/* install the handler */
@@ -458,8 +458,8 @@ data16_t *install_mem_read16_handler(int cpunum, offs_t start, offs_t end, mem_r
 	/* sanity check */
 	if (cpudata[cpunum].mem.dbits != 16)
 	{
-		printf("fatal: install_mem_read16_handler called on %d-bit cpu\n",cpudata[cpunum].mem.dbits);
-		exit(1);
+      // Changed to fatalerror [EBA]
+    fatalerror( "fatal: install_mem_read16_handler called on %d-bit cpu\n",cpudata[cpunum].mem.dbits);
 	}
 
 	/* install the handler */
@@ -482,8 +482,8 @@ data32_t *install_mem_read32_handler(int cpunum, offs_t start, offs_t end, mem_r
 	/* sanity check */
 	if (cpudata[cpunum].mem.dbits != 32)
 	{
-		printf("fatal: install_mem_read32_handler called on %d-bit cpu\n",cpudata[cpunum].mem.dbits);
-		exit(1);
+      // Changed to fatalerror [EBA]
+    fatalerror( "fatal: install_mem_read32_handler called on %d-bit cpu\n",cpudata[cpunum].mem.dbits);
 	}
 
 	/* install the handler */
@@ -506,8 +506,8 @@ data8_t *install_mem_write_handler(int cpunum, offs_t start, offs_t end, mem_wri
 	/* sanity check */
 	if (cpudata[cpunum].mem.dbits != 8)
 	{
-		printf("fatal: install_mem_write_handler called on %d-bit cpu\n",cpudata[cpunum].mem.dbits);
-		exit(1);
+		      // Changed to fatalerror [EBA]
+    fatalerror( "fatal: install_mem_write_handler called on %d-bit cpu\n",cpudata[cpunum].mem.dbits);
 	}
 
 	/* install the handler */
@@ -530,8 +530,8 @@ data16_t *install_mem_write16_handler(int cpunum, offs_t start, offs_t end, mem_
 	/* sanity check */
 	if (cpudata[cpunum].mem.dbits != 16)
 	{
-		printf("fatal: install_mem_write16_handler called on %d-bit cpu\n",cpudata[cpunum].mem.dbits);
-		exit(1);
+		      // Changed to fatalerror [EBA]
+    fatalerror( "fatal: install_mem_write16_handler called on %d-bit cpu\n",cpudata[cpunum].mem.dbits);
 	}
 
 	/* install the handler */
@@ -554,8 +554,8 @@ data32_t *install_mem_write32_handler(int cpunum, offs_t start, offs_t end, mem_
 	/* sanity check */
 	if (cpudata[cpunum].mem.dbits != 32)
 	{
-		printf("fatal: install_mem_write32_handler called on %d-bit cpu\n",cpudata[cpunum].mem.dbits);
-		exit(1);
+		      // Changed to fatalerror [EBA]
+    fatalerror( "fatal: install_mem_write32_handler called on %d-bit cpu\n",cpudata[cpunum].mem.dbits);
 	}
 
 	/* install the handler */
@@ -578,8 +578,8 @@ void install_port_read_handler(int cpunum, offs_t start, offs_t end, port_read_h
 	/* sanity check */
 	if (cpudata[cpunum].port.dbits != 8)
 	{
-		printf("fatal: install_port_read_handler called on %d-bit cpu\n",cpudata[cpunum].port.dbits);
-		exit(1);
+		      // Changed to fatalerror [EBA]
+    fatalerror( "fatal: install_port_read_handler called on %d-bit cpu\n",cpudata[cpunum].port.dbits);
 	}
 
 	/* install the handler */
@@ -601,8 +601,8 @@ void install_port_read16_handler(int cpunum, offs_t start, offs_t end, port_read
 	/* sanity check */
 	if (cpudata[cpunum].port.dbits != 16)
 	{
-		printf("fatal: install_port_read16_handler called on %d-bit cpu\n",cpudata[cpunum].port.dbits);
-		exit(1);
+		      // Changed to fatalerror [EBA]
+    fatalerror( "fatal: install_port_read16_handler called on %d-bit cpu\n",cpudata[cpunum].port.dbits);
 	}
 
 	/* install the handler */
@@ -624,8 +624,8 @@ void install_port_read32_handler(int cpunum, offs_t start, offs_t end, port_read
 	/* sanity check */
 	if (cpudata[cpunum].port.dbits != 32)
 	{
-		printf("fatal: install_port_read32_handler called on %d-bit cpu\n",cpudata[cpunum].port.dbits);
-		exit(1);
+		      // Changed to fatalerror [EBA]
+    fatalerror( "fatal: install_port_read32_handler called on %d-bit cpu\n",cpudata[cpunum].port.dbits);
 	}
 
 	/* install the handler */
@@ -647,8 +647,8 @@ void install_port_write_handler(int cpunum, offs_t start, offs_t end, port_write
 	/* sanity check */
 	if (cpudata[cpunum].port.dbits != 8)
 	{
-		printf("fatal: install_port_write_handler called on %d-bit cpu\n",cpudata[cpunum].port.dbits);
-		exit(1);
+		  // Changed to fatalerror [EBA]
+    fatalerror( "fatal: install_port_write_handler called on %d-bit cpu\n",cpudata[cpunum].port.dbits);
 	}
 
 	/* install the handler */
@@ -670,8 +670,8 @@ void install_port_write16_handler(int cpunum, offs_t start, offs_t end, port_wri
 	/* sanity check */
 	if (cpudata[cpunum].port.dbits != 16)
 	{
-		printf("fatal: install_port_write16_handler called on %d-bit cpu\n",cpudata[cpunum].port.dbits);
-		exit(1);
+				  // Changed to fatalerror [EBA]
+    fatalerror( "fatal: install_port_write16_handler called on %d-bit cpu\n",cpudata[cpunum].port.dbits);
 	}
 
 	/* install the handler */
@@ -693,8 +693,8 @@ void install_port_write32_handler(int cpunum, offs_t start, offs_t end, port_wri
 	/* sanity check */
 	if (cpudata[cpunum].port.dbits != 32)
 	{
-		printf("fatal: install_port_write32_handler called on %d-bit cpu\n",cpudata[cpunum].port.dbits);
-		exit(1);
+				  // Changed to fatalerror [EBA]
+    fatalerror( "fatal: install_port_write32_handler called on %d-bit cpu\n",cpudata[cpunum].port.dbits);
 	}
 
 	/* install the handler */
@@ -710,7 +710,7 @@ void install_port_write32_handler(int cpunum, offs_t start, offs_t end, port_wri
 	fatalerror - display an error message and
 	exit immediately
 -------------------------------------------------*/
-
+/*  // Defined to not use exit() in xbox_Main.cpp [EBA]
 int CLIB_DECL fatalerror(const char *string, ...)
 {
 	va_list arg;
@@ -720,6 +720,7 @@ int CLIB_DECL fatalerror(const char *string, ...)
 	exit(1);
 	return 0;
 }
+*/
 
 
 /*-------------------------------------------------
@@ -2500,7 +2501,6 @@ int mem_address_bits_of_cpu(int cputype)
 
 	/* this is a fatal error */
 	fatalerror("CPU #%d memory handlers don't have a table entry in readmem_to_bits!\n");
-	exit(1);
 	return 0;
 }
 

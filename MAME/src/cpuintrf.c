@@ -821,8 +821,8 @@ int cpuintrf_init(void)
 		/* make sure the index in the array matches the current index */
 		if (cpuintrf[cputype].cpu_num != cputype)
 		{
-			printf("CPU #%d [%s] wrong ID %d: check enum CPU_... in src/cpuintrf.h!\n", cputype, cputype_name(cputype), cpuintrf[cputype].cpu_num);
-			exit(1);
+			  // Changed to fatalerror [EBA]
+      fatalerror( "CPU #%d [%s] wrong ID %d: check enum CPU_... in src/cpuintrf.h!\n", cputype, cputype_name(cputype), cpuintrf[cputype].cpu_num);
 		}
 
 		/* also reset the active CPU context info */
@@ -1503,8 +1503,8 @@ void cpu_set_m68k_reset(int cpunum, void (*resetfn)(void))
 #endif
 		)
 	{
-		logerror("Trying to set m68k reset vector on non-68k cpu\n");
-		exit(1);
+		  // Changed to fatalerror [EBA]
+    fatalerror( "Trying to set m68k reset vector on non-68k cpu\n");
 	}
 
 	cpuintrf_push_context(cpunum);

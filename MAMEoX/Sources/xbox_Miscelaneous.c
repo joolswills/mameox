@@ -84,7 +84,6 @@ void __cdecl logerror( const char *fmt, ... )
   va_end( arg );
 
 	PRINTMSG( T_ERROR, buf );
-	DebugLoggerFlush();
 }
 
 //---------------------------------------------------------------------
@@ -92,18 +91,16 @@ void __cdecl logerror( const char *fmt, ... )
 //---------------------------------------------------------------------
 void osd_print_error( const char *fmt, ... )
 {
-	char buf[1024];
   wchar_t wBuf[1024];
 
   va_list arg;
   va_start( arg, fmt );
-  vsprintf( buf, fmt, arg );
+  vswprintf( wBuf, fmt, arg );
   va_end( arg );
 
 
     // Display the error to the user
 	BeginFontRender( TRUE );
-  mbstowcs( wBuf, buf, 1024 );
   FontRender( 320, 60, D3DCOLOR_RGBA( 255, 200, 200, 255 ), L"Error:", 2 /*XBFONT_CENTER_X*/ );
 	FontRender( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255 ), wBuf, 2 /*XBFONT_CENTER_X*/ );
 	FontRender( 320, 320, D3DCOLOR_RGBA( 70, 235, 125, 255), L"Press any button to continue.", 2 /*XBFONT_CENTER_X*/ );
@@ -113,4 +110,3 @@ void osd_print_error( const char *fmt, ... )
   WaitForAnyButton();
   WaitForNoButton();     // Ensure that we don't bounce right back into the ROM that brought up the error
 }
-
