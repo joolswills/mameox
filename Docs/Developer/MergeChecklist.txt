@@ -1,0 +1,87 @@
+1) Tag the main branch (ex: "PRE_MAME_068_MERGE")
+
+
+2) Checkout a fresh copy of the repository with using branch tag "B_MAME"
+
+	create->Checkout Module
+	Checkout Settings tab:
+		Module name: MAMEoX
+	Checkout Options tab:
+		By revision/tag/branch, set the name to "B_MAME"
+
+
+
+3) Merge the new release into the checked out code. You should also compile the Windows
+	binary to verify that the source release is OK, and to have something to benchmark
+	against.
+
+
+
+4) Commit the changes and create a tag on the merged dir. This tag should start w/ "I" for "Integrated"
+	("I_MAME_068", for example) Note that it is vitally important that you tag the merged code! 
+	Also, make sure you do a "cvs add" on any newly created files, and a "cvs remove" on any obsolete
+	files.
+
+
+
+
+7a) If this is the first merge ever: (It's not :))
+	Checkout a clean copy of the head branch (no sticky tags) with the -j option to merge in the
+	branch:
+
+	CMDLINE: cvs checkout -kk -d -j B_MAME MAMEoX
+
+	================================================================================
+	WinCVS: 
+		create->Checkout Module
+		Checkout Settings tab:
+			Module name: MAMEoX
+		Merge Options tab: 
+			"Only this rev./tag", set the name to "B_MAME"
+	================================================================================
+
+	Note that it's very important to pass the -d option (create missing directories) to ensure
+	a proper merge!
+
+
+
+
+7b) If this is the 2nd+ merge of the branch:
+	Checkout a clean copy of the head branch (no sticky tags)
+
+	Then:
+	CMDLINE: cvs update -kk -d -j <Tag from last merge on the B_MAME branch> -j B_MAME
+
+	================================================================================
+	WinCVS:
+		I'm not positive that this op can be done via wincvs
+		(without just using the admin->command line stuff). It's
+		possible that it could be done w/ the Merge Options tab,
+		doing a "Plus w/ ths tag" and putting the second most recent 
+		milestone tag first, B_MAME second. 
+
+	(You can find the tag from the last merge by doing a cvs log on the sln file and
+		taking the most recent M_* tag)
+	================================================================================
+
+	Note that it's very important to pass the -d option (create missing directories) to ensure
+	a proper merge!
+
+
+
+8) Resolve any conflicts
+
+
+
+9) TEST THE FULLY MERGED BUILD!
+
+
+
+10) Commit the verified changes
+
+
+
+11) Tag the merged tree with the "M_" prefix (for "Merged") (ex: "M_MAME_068"). 
+	Again, it is very important that you remember to tag!
+
+
