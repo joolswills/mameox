@@ -154,7 +154,7 @@ COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice,
   wcscpy( m_pageData[OPTPAGE_ROMLIST].m_title, L"ROM List Options" );
   m_pageData[OPTPAGE_ROMLIST].m_drawFunct = ::DrawROMListPage;
   m_pageData[OPTPAGE_ROMLIST].m_changeFunct = ::ChangeROMListPage;
-  m_pageData[OPTPAGE_ROMLIST].m_numItems = 8;
+  m_pageData[OPTPAGE_ROMLIST].m_numItems = 9;
 
   m_virtualKeyboard = new CVirtualKeyboard( displayDevice, m_fontSet, m_textureSet );
 }
@@ -850,6 +850,8 @@ void COptionsPage::DrawROMListPage( void )
                                 L"By year", 
                                 L"By parent ROM",
                                 L"By number of players", 
+                                L"By favorite status",
+                                L"By number of times played",
                                 L"By genre" };
 
   STARTPAGE();
@@ -865,6 +867,7 @@ void COptionsPage::DrawROMListPage( void )
   DRAWITEM( L"Filter \"out of memory\"",    g_romListOptions.m_filterMode & FM_ROMSTATUS_OUTOFMEM ? L"Yes" : L"No" );
   DRAWITEM( L"Filter \"crashes in game\"",  g_romListOptions.m_filterMode & FM_ROMSTATUS_CRASH ? L"Yes" : L"No" );
   DRAWITEM( L"Filter \"other nonworking\"", g_romListOptions.m_filterMode & FM_ROMSTATUS_NONWORKING ? L"Yes" : L"No" );
+  DRAWITEM( L"Filter \"disliked\"",         g_romListOptions.m_filterMode & FM_DISLIKED ? L"Yes" : L"No" );
 
   ENDPAGE();
 }
@@ -1569,11 +1572,11 @@ void COptionsPage::ChangeROMListPage( BOOL movingRight )
       if( g_romListOptions.m_sortMode != SM_BYNAME )
         g_romListOptions.m_sortMode = (ROMListSortMode)((UINT32)g_romListOptions.m_sortMode - 1);
       else
-        g_romListOptions.m_sortMode = SM_BYNUMPLAYERS;
+        g_romListOptions.m_sortMode = SM_BYNUMTIMESPLAYED;
     }
     else
     {
-      if( g_romListOptions.m_sortMode < SM_BYNUMPLAYERS )
+      if( g_romListOptions.m_sortMode < SM_BYNUMTIMESPLAYED )
         g_romListOptions.m_sortMode = (ROMListSortMode)((UINT32)g_romListOptions.m_sortMode + 1);
       else
         g_romListOptions.m_sortMode = SM_BYNAME;
@@ -1618,6 +1621,14 @@ void COptionsPage::ChangeROMListPage( BOOL movingRight )
       g_romListOptions.m_filterMode &= ~FM_ROMSTATUS_NONWORKING;
     else
       g_romListOptions.m_filterMode |= FM_ROMSTATUS_NONWORKING;
+    break;
+
+    // Filter "disliked"
+  case 8:
+    if( g_romListOptions.m_filterMode & FM_DISLIKED )
+      g_romListOptions.m_filterMode &= ~FM_DISLIKED;
+    else
+      g_romListOptions.m_filterMode |= FM_DISLIKED;
     break;
   }
 }

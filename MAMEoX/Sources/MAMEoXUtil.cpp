@@ -384,35 +384,36 @@ void RemapDriveLetters( void )
   MAPDRIVE( g_FileIOConfig.m_LetterGMapping.c_str(), "\\??\\G:" );
   MAPDRIVE( g_FileIOConfig.m_LetterHMapping.c_str(), "\\??\\H:" );
 
-  WIN32_FIND_DATA findData;
+  #ifdef _DEBUG
+    WIN32_FIND_DATA findData;
 
-  HANDLE h = FindFirstFile( "D:\\*", &findData );
-  if( h != INVALID_HANDLE_VALUE )
-  {
-    do {
-      PRINTMSG( T_INFO, "D:\\%s", findData.cFileName );
-    } while( FindNextFile( h, &findData ) );
-    FindClose( h );
-  }
+    HANDLE h = FindFirstFile( "D:\\*", &findData );
+    if( h != INVALID_HANDLE_VALUE )
+    {
+      do {
+        PRINTMSG( T_INFO, "D:\\%s", findData.cFileName );
+      } while( FindNextFile( h, &findData ) );
+      FindClose( h );
+    }
 
-  h = FindFirstFile( "E:\\*", &findData );
-  if( h != INVALID_HANDLE_VALUE )
-  {
-    do {
-      PRINTMSG( T_INFO, "E:\\%s", findData.cFileName );
-    } while( FindNextFile( h, &findData ) );
-    FindClose( h );
-  }
+    h = FindFirstFile( "E:\\*", &findData );
+    if( h != INVALID_HANDLE_VALUE )
+    {
+      do {
+        PRINTMSG( T_INFO, "E:\\%s", findData.cFileName );
+      } while( FindNextFile( h, &findData ) );
+      FindClose( h );
+    }
 
-  h = FindFirstFile( "G:\\*", &findData );
-  if( h != INVALID_HANDLE_VALUE )
-  {
-    do {
-      PRINTMSG( T_INFO, "G:\\%s", findData.cFileName );
-    } while( FindNextFile( h, &findData ) );
-    FindClose( h );
-  }
-
+    h = FindFirstFile( "G:\\*", &findData );
+    if( h != INVALID_HANDLE_VALUE )
+    {
+      do {
+        PRINTMSG( T_INFO, "G:\\%s", findData.cFileName );
+      } while( FindNextFile( h, &findData ) );
+      FindClose( h );
+    }
+  #endif
 }
 
 #pragma code_seg()

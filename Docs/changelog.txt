@@ -30,10 +30,22 @@ Version 0.71.3b (CVS)
       - Added favorite status/num times played support
       - Added handling for MAMEoX system files to apply speed
         buffering to all writes/reads
+      - Added sort by favorite status and sort by number of times 
+        played
+      - Moved progress bar stuff to a central point so it can be used
+        from anywhere in the launcher
+
+    - OptionsPage.cpp
+      - Added sort by favorite status and sort by number of times 
+        played
 
     - main.cpp
       - Added handling for MAMEoX system files to apply speed
         buffering to all writes/reads
+      - Moved progress bar stuff to a central point so it can be used
+        from anywhere in the launcher
+      - Added "Copy system files from DVD" menu item to allow CD/DVD
+        users to copy over hiscore.dat, samples, etc...
 
    -------------------------------------------------------------
   - \Sectionize.pl

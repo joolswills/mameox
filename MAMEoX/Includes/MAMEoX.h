@@ -102,6 +102,7 @@ typedef enum ROMListFilterMode
   FM_ROMSTATUS_OUTOFMEM     = (1<<4),     //!< Filter out "Out of Memory" games
   FM_ROMSTATUS_CRASH        = (1<<5),     //!< Filter out "Crash" games
   FM_ROMSTATUS_NONWORKING   = (1<<6),     //!< Filter out "Other nonworking" games
+  FM_DISLIKED               = (1<<7),     //!< Filter out roms w/ a favorite status < "average"
   FM_ROMSTATUS_UNPLAYABLE   = FM_ROMSTATUS_OUTOFMEM | FM_ROMSTATUS_CRASH | FM_ROMSTATUS_NONWORKING,  //!< Filter out any games that cannot be played
   FM_ROMSTATUS_IMPERFECT    = FM_ROMSTATUS_SLOW | FM_ROMSTATUS_UNPLAYABLE  //!< Filter all imperfect games
 } ROMListFilterMode;
@@ -114,6 +115,8 @@ typedef enum ROMListSortMode
   SM_BYYEAR,                      //!< Sort by the year
   SM_BYPARENT,                    //!< Sort by the parent for clones, alphabetically otherwise
   SM_BYNUMPLAYERS,                //!< Sort by the number of players
+  SM_BYFAVORITESTATUS,            //!< Sort by favorite status (best liked -> least liked)
+  SM_BYNUMTIMESPLAYED,            //!< Sort by number of times played (most played -> least played)
   SM_BYGENRE                      //!< Sort by genre
 } ROMListSortMode;
 

@@ -271,30 +271,6 @@ protected:
 		//------------------------------------------------------------
   void GetFriendlySuperscrollIndexStringForROM( CStdString *ret, UINT32 romIndex );
 
-
-		//------------------------------------------------------------
-		// DrawZipData
-		//! \brief		Present some indication that a new zip file has
-		//!            been found to the user
-		//!
-		//! \param		message - The general message to display (ex. "Searching for ROM files")
-		//! \param		fileName - The filename of the zip file
-		//! \param		index - The 0 based index of the zip file
-		//------------------------------------------------------------
-	void DrawZipData( const char *message, const char *fileName, DWORD index );
-
-
-		//------------------------------------------------------------
-		// DrawZipCheckProgress
-		//! \brief		Present some indication that a zip file is
-		//!            being checked against known zips (this
-    //!            operation is bounded, unlike DrawZipData,
-    //!            so we can show a real progressbar)
-		//!
-		//! \param		index - The 0 based index of the zip file
-		//------------------------------------------------------------
-	void DrawZipCheckProgress( DWORD index );
-
     // Helper for ROM finding
   BOOL Helper_GenerateROMList( CStdString &path );
   BOOL Helper_MoveCurrentGameToBackupDir( CStdString &path );

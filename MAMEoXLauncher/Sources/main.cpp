@@ -96,10 +96,12 @@ BOOL g_soundEnabled = TRUE;
 BOOL CreateBackdrop( FLOAT xPosition, FLOAT yPosition, FLOAT xUsage, FLOAT yUsage );
 void DestroyBackdrop( void );
 void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... );
+extern "C" void DrawProgressbarMessage( LPDIRECT3DDEVICE8 pD3DDevice, const char *message, const char *itemName, DWORD currentItem, DWORD totalItems );
 static BOOL Helper_LoadDriverInfoFile( void );
 static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice );
 static void Helper_SetStartMenuItems( CStartMenu &startMenu, viewmode currentViewMode );
 static void Helper_SaveOptionsAndReboot( LPDIRECT3DDEVICE8 pD3DDevice, CROMList & );
+static BOOL Helper_CopySystemFilesFromDVD( LPDIRECT3DDEVICE8 pD3DDevice );
 
 //= F U N C T I O N S =================================================
 
@@ -602,6 +604,11 @@ void __cdecl main( void )
               case 5:
                 romList.RefreshROMStatus();
                 break;
+
+                // Copy system files from DVD
+              case 6:
+                Helper_CopySystemFilesFromDVD( pD3DDevice );
+                break;
               }
               break;
 
@@ -703,6 +710,10 @@ static void Helper_SetStartMenuItems( CStartMenu &startMenu, viewmode currentVie
     startMenu.AddMenuItem( "Remove Selected ROM" );
     startMenu.AddMenuItem( "Scan for ROMs" );
     startMenu.AddMenuItem( "Refresh ROM Status file" );
+
+      // Check to see if we're running off a DVD
+    if( 1 )
+      startMenu.AddMenuItem( "Copy system files from DVD" );
     break;
 
     // *** VIEW_OPTIONS *** //
@@ -1297,6 +1308,51 @@ static void Helper_SaveOptionsAndReboot( LPDIRECT3DDEVICE8 pD3DDevice, CROMList 
   Die( pD3DDevice, "Failed to launch the dashboard! 0x%X", retVal );
 }
 
+//-------------------------------------------------------------
+//	Helper_CopySystemFilesFromDVD
+//-------------------------------------------------------------
+static BOOL Helper_CopySystemFilesFromDVD( LPDIRECT3DDEVICE8 pD3DDevice )
+{
+    // The DVD is linked as the "D:", so just copy files from there to
+    // the correct system path (which is already automatically set to
+    // use altdrive)
+
+  #define COPYDIR( dirName ) { \
+      CStdString sourceStr, tempStr; \
+      sourceStr = (dirName); \
+      if( sourceStr[0] == g_FileIOConfig.m_ALTDrive[0] ) { \
+        sourceStr[0] = 'd'; \
+        sourceStr += "\\*"; \
+        WIN32_FIND_DATA findData; \
+        HANDLE h = FindFirstFile( sourceStr.c_str(), &findData ); \
+        if( h != INVALID_HANDLE_VALUE ) { \
+          UINT32 i = 0; \
+          char message[128]; \
+          sprintf( message, "Copying %.32s directory...", dirName ); \
+          do { \
+            sourceStr = (dirName); \
+            sourceStr[0] = 'd'; \
+            sourceStr += "\\"; \
+            sourceStr += findData.cFileName; \
+            tempStr = (dirName); \
+            tempStr += findData.cFileName; \
+            DrawProgressbarMessage( pD3DDevice, message, findData.cFileName, i++, 0 ); \
+            CopyFile( sourceStr.c_str(), tempStr.c_str(), TRUE ); \
+            PRINTMSG( T_INFO, "%s", findData.cFileName ); \
+          } while( FindNextFile( h, &findData ) ); \
+          FindClose( h ); \
+        } \
+      } \
+    }
+
+  COPYDIR( g_FileIOConfig.m_ArtPath );
+  COPYDIR( g_FileIOConfig.m_GeneralPath );
+  COPYDIR( g_FileIOConfig.m_HiScorePath );
+  COPYDIR( g_FileIOConfig.m_AudioPath );
+  COPYDIR( g_FileIOConfig.m_ScreenshotPath );
+
+  return TRUE;
+}
 
 extern "C" {
 
@@ -1417,6 +1473,91 @@ void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 
   pD3DDevice->Present( NULL, NULL, NULL, NULL );
   pD3DDevice->PersistDisplay();
+}
+
+
+//---------------------------------------------------------------------
+//	DrawProgressbarMessage
+//---------------------------------------------------------------------
+void DrawProgressbarMessage( LPDIRECT3DDEVICE8 pD3DDevice, const char *message, const char *itemName, DWORD currentItem, DWORD totalItems )
+{
+		// Display the error to the user
+	pD3DDevice->Clear(	0L,																// Count
+											NULL,															// Rects to clear
+											D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+											D3DCOLOR_XRGB(0,0,0),							// Color
+											1.0f,															// Z
+											0L );															// Stencil
+
+    // Render the backdrop texture
+  
+    // Render the highlight bar for the selected item
+  pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
+	pD3DDevice->SetTexture( 0, g_textureSet.GetMessageScreenBackdrop() );
+  pD3DDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX0 );
+  pD3DDevice->Begin( D3DPT_QUADLIST );
+
+      // Write the diffuse color
+    FLOAT xPercentage, yPercentage;
+    GetScreenUsage( &xPercentage, &yPercentage );
+  
+
+
+    pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 0.0f );
+    pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, -xPercentage, yPercentage, 1.0f, 1.0f );
+    pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 0.0f );
+    pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, xPercentage, yPercentage, 1.0f, 1.0f );
+    pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 1.0f );
+    pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, xPercentage, -yPercentage, 1.0f, 1.0f );
+    pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 1.0f );
+    pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, -xPercentage, -yPercentage, 1.0f, 1.0f );
+  pD3DDevice->End();
+	pD3DDevice->SetTexture( 0, NULL );
+
+  WCHAR wBuf[256];
+
+	g_fontSet.DefaultFont().Begin();	
+    mbstowcs( wBuf, message, 256 );
+	  g_fontSet.DefaultFont().DrawText( 320, 200, D3DCOLOR_RGBA( 255, 255, 255, 255 ), wBuf, XBFONT_CENTER_X );
+ 	
+		  // Draw the current filename
+	  mbstowcs( wBuf, itemName, 256 );
+	  g_fontSet.DefaultFont().DrawText( 320, 270, D3DCOLOR_RGBA( 60, 100, 255, 255 ), wBuf, XBFONT_CENTER_X );
+	g_fontSet.DefaultFont().End();
+
+  if( currentItem != 0xFFFFFFFF )
+  {
+    if( !totalItems )
+    {
+		    // Each index value is 1/4th of a *
+		    // The *'s scroll between the < >'s
+	    INT cursorPos = ( (INT)((FLOAT)currentItem / 4.0f) & 15) - 7;
+      g_fontSet.LargeThinFont().Begin();
+	      wcscpy( wBuf, L"<                >" );
+	      wBuf[8 + cursorPos] = L'*';
+	      g_fontSet.LargeThinFont().DrawText( 320, 240, D3DCOLOR_RGBA( 255, 125, 125, 255), wBuf, XBFONT_CENTER_X );
+      g_fontSet.LargeThinFont().End();
+    }
+    else
+    {
+      g_fontSet.LargeThinFont().Begin();
+
+		      // Draw a progress bar
+        UINT32 percentage = (UINT32)( (FLOAT)currentItem * (25.0f / (FLOAT)totalItems) + 0.5f ); 
+        UINT32 i = 0;
+        wcscpy( wBuf, L"[" );
+        for( ; i < percentage; ++i )
+          wcscat( wBuf, L"|" );
+        for( ; i < 25; ++i )
+          wcscat( wBuf, L" " );
+        wcscat( wBuf, L"]" );
+
+	      g_fontSet.LargeThinFont().DrawText( 320, 240, D3DCOLOR_XRGB( 255, 125, 125 ), wBuf, XBFONT_CENTER_X );
+      g_fontSet.LargeThinFont().End();
+    }
+  }
+
+	pD3DDevice->Present( NULL, NULL, NULL, NULL );
 }
 
 }	// End Extern "C"

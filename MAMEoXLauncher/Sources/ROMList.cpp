@@ -92,9 +92,7 @@ std::vector<ROMStatus>                  CROMList::m_ROMStatus;
 std::vector<MAMEoXDriverMetadata_t>     CROMList::m_driverMetadata;
 
 //= P R O T O T Y P E S ================================================
-BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage );              // Defined in main.cpp
-void DestroyBackdrop( void );                                   // Defined in main.cpp
-void Die( LPDIRECT3DDEVICE8 m_displayDevice, const char *fmt, ... ); // Defined in main.cpp
+extern "C" void DrawProgressbarMessage( LPDIRECT3DDEVICE8 pD3DDevice, const char *message, const char *itemName, DWORD currentItem, DWORD totalItems ); // Defined in main.cpp
 
 
   // Compare functions for ROM List sorting
@@ -105,6 +103,8 @@ static BOOL Compare_ParentROM( UINT32 a, UINT32 b );
 static BOOL Compare_Genre( UINT32 a, UINT32 b );
 static BOOL Compare_NumPlayers( UINT32 a, UINT32 b );
 static BOOL Compare_ROMStatus( UINT32 a, UINT32 b );
+static BOOL Compare_FavoriteStatus( UINT32 a, UINT32 b );
+static BOOL Compare_NumTimesPlayed( UINT32 a, UINT32 b );
 
 static BOOL Helper_ReadXMLTag( osd_file *file, CStdString *tagName );
 
@@ -231,10 +231,12 @@ BOOL CROMList::Helper_GenerateROMList( CStdString &path )
     DWORD i = 0;
     for( ; ; ++i )
     {
-
-//g_FileIOConfig.m_recursiveSearching
-      // Notify the user that a new zip has been found
-      DrawZipData( "Searching for ROM files", findData.cFileName, i );
+        // Notify the user that a new zip has been found
+      DrawProgressbarMessage( m_displayDevice, 
+                              "Searching for ROM files", 
+                              findData.cFileName, 
+                              i, 
+                              0 );
 
       // Remove the extension
       CStdString filename = findData.cFileName;
@@ -261,7 +263,14 @@ BOOL CROMList::Helper_GenerateROMList( CStdString &path )
       // Only redraw every 8th ROM, as rendering takes up
       // the vast majority of the overall time
     if( !(i & 0x07) )
-      DrawZipCheckProgress( i );
+    {
+      DrawProgressbarMessage( m_displayDevice, 
+                              "Checking against known ROM files",
+                              m_driverInfoList[i].m_romFileName, 
+                              i, 
+                              m_numDrivers );
+    }
+
     CStdString driverFileName = m_driverInfoList[i].m_romFileName;
     driverFileName.ToLower();
 
@@ -1080,7 +1089,11 @@ BOOL CROMList::UpdateROMMetadataFile( void )
 
     METADATA_READDATA_NOMALLOC( &metadata.m_timesPlayed, sizeof(metadata.m_timesPlayed) );
 
-	  DrawZipData( "Updating metadata file", metadata.m_romFileName, i );
+    DrawProgressbarMessage( m_displayDevice, 
+                            "Updating metadata file", 
+                            metadata.m_romFileName, 
+                            i, 
+                            0 );
 
       // Find the index for this ROM
     UINT32 index;
@@ -1106,7 +1119,13 @@ BOOL CROMList::RefreshROMStatus( void )
     return FALSE;
   }
 
-  DrawZipData( "Saving cache file...", "", 0 );
+  DrawProgressbarMessage( m_displayDevice, 
+                          "Saving cache file...", 
+                          "", 
+                          0xFFFFFFFF, 
+                          0 );
+
+
   if( !SaveROMListFile() )
   {
     PRINTMSG( T_ERROR, "Failed to save the ROM list file" );
@@ -1166,8 +1185,11 @@ BOOL CROMList::LoadROMStatusFile( void )
         for( i = 0; i < m_numDrivers && stricmp( m_driverInfoList[i].m_romFileName, romName.c_str() ); ++i )
           ;
 
-
-	      DrawZipData( "Parsing status file", romName.c_str(), entryNumber++ );
+        DrawProgressbarMessage( m_displayDevice, 
+                                "Parsing status file", 
+                                romName.c_str(), 
+                                entryNumber++, 
+                                0 );
 
           // Set m_ROMStatus at the same index
         if( i != m_numDrivers )
@@ -1767,110 +1789,6 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 	  m_displayDevice->Present( NULL, NULL, NULL, NULL );	
 }
 
-
-//---------------------------------------------------------------------
-//	DrawZipData
-//---------------------------------------------------------------------
-void CROMList::DrawZipData( const char *message, const char *fileName, DWORD index )
-{
-		// Each index value is 1/4th of a *
-		// The *'s scroll between the < >'s
-	INT cursorPos = ( (INT)((FLOAT)index / 4.0f) & 15) - 7;
-
-		// Display the error to the user
-	m_displayDevice->Clear(	0L,																// Count
-													NULL,															// Rects to clear
-													D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
-													D3DCOLOR_XRGB(0,0,0),							// Color
-													1.0f,															// Z
-													0L );															// Stencil
-
-  m_backdropTexture = m_textureSet.GetMessageScreenBackdrop();
-
-    // Render the backdrop texture
-  RenderBackdrop();
-
-	m_fontSet.DefaultFont().Begin();
-	
-	  WCHAR wBuf[256];
-    mbstowcs( wBuf, message, 256 );
-	  m_fontSet.DefaultFont().DrawText( 320, 200, D3DCOLOR_RGBA( 255, 255, 255, 255 ), wBuf, XBFONT_CENTER_X );
-
-		  // Draw some progress dots
-  	
-		  // Draw the current filename
-	  mbstowcs( wBuf, fileName, 256 );
-	  m_fontSet.DefaultFont().DrawText( 320, 270, D3DCOLOR_RGBA( 60, 100, 255, 255 ), wBuf, XBFONT_CENTER_X );
-	m_fontSet.DefaultFont().End();
-
-  m_fontSet.LargeThinFont().Begin();
-	  wcscpy( wBuf, L"<                >" );
-	  wBuf[8 + cursorPos] = L'*';
-	  m_fontSet.LargeThinFont().DrawText( 320, 240, D3DCOLOR_RGBA( 255, 125, 125, 255), wBuf, XBFONT_CENTER_X );
-  m_fontSet.LargeThinFont().End();
-
-
-
-	m_displayDevice->Present( NULL, NULL, NULL, NULL );
-
-}
-
-//---------------------------------------------------------------------
-//	DrawZipCheckProgress
-//---------------------------------------------------------------------
-void CROMList::DrawZipCheckProgress( DWORD index )
-{
-		// Each index value is 1/4th of a *
-		// The *'s scroll between the < >'s
-	INT cursorPos = ( (INT)((FLOAT)index / 4.0f) & 15) - 7;
-
-		// Display the error to the user
-	m_displayDevice->Clear(	0L,																// Count
-													NULL,															// Rects to clear
-													D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
-													D3DCOLOR_XRGB(0,0,0),							// Color
-													1.0f,															// Z
-													0L );															// Stencil
-
-  
-
-  m_backdropTexture = m_textureSet.GetMessageScreenBackdrop();
-
-    // Render the backdrop texture
-  RenderBackdrop();
-
-
-
-	m_fontSet.DefaultFont().Begin();
-	
-	  m_fontSet.DefaultFont().DrawText( 320, 200, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Checking against known ROM files", XBFONT_CENTER_X );
-
-		    // Draw the current filename
-	    WCHAR wBuf[256];
-	    mbstowcs( wBuf, m_driverInfoList[index].m_description, 256 );
-	    m_fontSet.DefaultFont().DrawText( 320, 270, D3DCOLOR_XRGB( 60, 100, 255 ), wBuf, XBFONT_CENTER_X );
-
-	m_fontSet.DefaultFont().End();
-
-  m_fontSet.LargeThinFont().Begin();
-
-		  // Draw a progress bar
-    UINT32 percentage = (UINT32)( (FLOAT)index * (25.0f / (FLOAT)m_numDrivers) + 0.5f ); 
-    UINT32 i = 0;
-    wcscpy( wBuf, L"[" );
-    for( ; i < percentage; ++i )
-      wcscat( wBuf, L"|" );
-    for( ; i < 25; ++i )
-      wcscat( wBuf, L" " );
-    wcscat( wBuf, L"]" );
-
-	  m_fontSet.LargeThinFont().DrawText( 320, 240, D3DCOLOR_XRGB( 255, 125, 125 ), wBuf, XBFONT_CENTER_X );
-  m_fontSet.LargeThinFont().End();
-
-
-	m_displayDevice->Present( NULL, NULL, NULL, NULL );
-}
-
 //---------------------------------------------------------------------
 //	RemoveCurrentGameIndex
 //---------------------------------------------------------------------
@@ -2040,6 +1958,16 @@ void CROMList::UpdateSortedList( void )
   case SM_BYROMSTATUS:
     std::stable_sort( m_currentSortedList.begin(), m_currentSortedList.end(), Compare_ROMStatus );
     break;
+
+    // *** SM_BYFAVORITESTATUS *** //
+  case SM_BYFAVORITESTATUS:
+    std::stable_sort( m_currentSortedList.begin(), m_currentSortedList.end(), Compare_FavoriteStatus );
+    break;
+
+    // *** SM_BYNUMTIMESPLAYED *** //
+  case SM_BYNUMTIMESPLAYED:
+    std::stable_sort( m_currentSortedList.begin(), m_currentSortedList.end(), Compare_NumTimesPlayed );
+    break;
   }
 
     // Attempt to find the ROM that the user was on in the old sort mode
@@ -2188,8 +2116,9 @@ void CROMList::GetFriendlySuperscrollIndexStringForROM( CStdString *ret, UINT32 
     return;
   }
 
-  MAMEDriverData_t &driver = m_driverInfoList[romIndex];
-  ROMStatus        &status = m_ROMStatus[romIndex];
+  MAMEDriverData_t        &driver = m_driverInfoList[romIndex];
+  ROMStatus               &status = m_ROMStatus[romIndex];
+  MAMEoXDriverMetadata_t  &metadata = m_driverMetadata[romIndex];
 
   switch( m_options.m_sortMode )
   {
@@ -2271,6 +2200,42 @@ void CROMList::GetFriendlySuperscrollIndexStringForROM( CStdString *ret, UINT32 
     case STATUS_GENERAL_NONWORKING:
       *ret = "Other non-working";
       break;
+    }
+    break;
+
+
+    // *** SM_BYFAVORITESTATUS *** //
+  case SM_BYFAVORITESTATUS:
+    switch( metadata.m_favoriteStatus )
+    {
+    case FS_INDIFFERENT:
+      *ret = "Average";
+      break;
+
+    case FS_STRONGDISLIKE:
+      *ret = "Strongly disliked";
+      break;
+
+    case FS_DISLIKE:
+      *ret = "Disliked";
+      break;
+
+    case FS_LIKE:
+      *ret = "Liked";
+      break;
+
+    case FS_STRONGLIKE:
+      *ret = "Strongly liked";
+      break;
+    }
+    break;
+
+    // *** SM_BYNUMTIMESPLAYED *** //
+  case SM_BYNUMTIMESPLAYED:
+    {
+      char tempBuf[32] = {0};
+      sprintf( tempBuf, "%lu", metadata.m_timesPlayed );
+      *ret = tempBuf;
     }
     break;
   }
@@ -2387,6 +2352,85 @@ static BOOL Compare_ROMStatus( UINT32 a, UINT32 b )
     return stricmp( aDriver.m_description, bDriver.m_description ) < 0;
 
   return cmp > 0;
+}
+
+//---------------------------------------------------------------------
+//  Compare_NumTimesPlayed
+//---------------------------------------------------------------------
+static BOOL Compare_NumTimesPlayed( UINT32 a, UINT32 b )
+{
+  MAMEDriverData_t        &aDriver = CROMList::m_driverInfoList[a];
+  MAMEDriverData_t        &bDriver = CROMList::m_driverInfoList[b];
+  MAMEoXDriverMetadata_t  &aStatus = CROMList::m_driverMetadata[a];
+  MAMEoXDriverMetadata_t  &bStatus = CROMList::m_driverMetadata[b];
+
+    // Sort by the rom status, putting higher (more often played) numbers first
+  int cmp = bStatus.m_timesPlayed - aStatus.m_timesPlayed;
+  if( !cmp )
+    return stricmp( aDriver.m_description, bDriver.m_description ) < 0;
+
+  return cmp < 0;
+}
+
+//---------------------------------------------------------------------
+//  Compare_FavoriteStatus
+//---------------------------------------------------------------------
+static BOOL Compare_FavoriteStatus( UINT32 a, UINT32 b )
+{
+  MAMEDriverData_t        &aDriver = CROMList::m_driverInfoList[a];
+  MAMEDriverData_t        &bDriver = CROMList::m_driverInfoList[b];
+  MAMEoXDriverMetadata_t  &aStatus = CROMList::m_driverMetadata[a];
+  MAMEoXDriverMetadata_t  &bStatus = CROMList::m_driverMetadata[b];
+
+    // Sort by the rom favorite status, putting better rated first
+  if( aStatus.m_favoriteStatus != bStatus.m_favoriteStatus )
+  {
+      // Hack because 0 is actually neutral
+    UINT32 aNumericStatus, bNumericStatus;
+    switch( aStatus.m_favoriteStatus )
+    {
+    case FS_STRONGDISLIKE:
+      aNumericStatus = 0;
+      break;
+    case FS_DISLIKE:
+      aNumericStatus = 1;
+      break;
+    default:
+    case FS_INDIFFERENT:
+      aNumericStatus = 2;
+      break;
+    case FS_LIKE:
+      aNumericStatus = 3;
+      break;
+    case FS_STRONGLIKE:
+      aNumericStatus = 4;
+      break;
+    }
+
+    switch( bStatus.m_favoriteStatus )
+    {
+    case FS_STRONGDISLIKE:
+      bNumericStatus = 0;
+      break;
+    case FS_DISLIKE:
+      bNumericStatus = 1;
+      break;
+    default:
+    case FS_INDIFFERENT:
+      bNumericStatus = 2;
+      break;
+    case FS_LIKE:
+      bNumericStatus = 3;
+      break;
+    case FS_STRONGLIKE:
+      bNumericStatus = 4;
+      break;
+    }
+
+    return bNumericStatus < aNumericStatus;
+  }
+  
+  return stricmp( aDriver.m_description, bDriver.m_description ) < 0;
 }
 
 //---------------------------------------------------------------------
