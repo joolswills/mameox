@@ -111,6 +111,8 @@ void __cdecl main( void )
 		// Start up the debug logger thread
 	DebugLoggerInit();
 
+  Enable128MegCaching();
+
   LoadOptions();
 
 		// Initialize the graphics subsystem

@@ -80,6 +80,8 @@ void __cdecl main( void )
 		// Start up the debug logger thread
 	DebugLoggerInit();
 
+  Enable128MegCaching();
+
     // Get the launch data immediately, just in case Die() is called
   DWORD getLaunchInfoRet = XGetLaunchInfo( &g_launchDataType, &g_launchData );
   MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;

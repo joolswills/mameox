@@ -649,5 +649,28 @@ void RenderToTextureStop( RenderToTextureToken_t &token )
   SAFE_RELEASE( token.m_zBuffer );
   SAFE_RELEASE( token.m_textureSurface );
 }
+
+
+//-------------------------------------------------------------
+//  Enable128MegCaching
+//-------------------------------------------------------------
+void Enable128MegCaching( void )
+{
+  LARGE_INTEGER regVal;
+
+    // Verify that we have 128 megs available
+  MEMORYSTATUS memStatus;
+  GlobalMemoryStatus( &memStatus );
+  if( memStatus.dwTotalPhys < (100 * 1024 * 1024) )
+    return;
+
+    // Grab the existing default type
+  READMSRREG( IA32_MTRR_DEF_TYPE, &regVal );
+  
+    // Set the default to WriteBack (0x06)
+  regVal.LowPart = (regVal.LowPart & ~0xFF) | 0x06;
+  WRITEMSRREG( IA32_MTRR_DEF_TYPE, regVal );
+}
+
 #pragma code_seg()
 

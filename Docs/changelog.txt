@@ -19,6 +19,7 @@ Version 0.71.2b (CVS)
     - xbox_main.cpp
       - Moved LoadOptions above the graphics initialization so
         that the VSYNC option is actually used (doh!)
+      - Enabled writeback caching for > 64 megs
 
     - DebugLogger.cpp
       - Fixed: Release not called on vertex buffer after 
@@ -43,6 +44,7 @@ Version 0.71.2b (CVS)
         "DIFFUSE" after rendering the lightgun cursor, which led
         to an unusable calibration screen.
       - Added menu option to reload just the ROM status file
+      - Enabled writeback caching for > 64 megs
 
     - ROMList.cpp
       - Changed it so romstatus.xml file is only parsed when scanning
