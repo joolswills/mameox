@@ -12,6 +12,14 @@
 #include "Gamepad.h"
 #include "MAMEoX.h"
 
+//= D E F I N E S =============================================================
+  // Lighgun calibration step giving the UL corner numbers
+#define CALIB_UL    1
+
+  // Lightgun calibration step giving the center numbers
+#define CALIB_C     0
+
+
 //= C L A S S E S =============================================================
 class CInputManager
 {
@@ -87,10 +95,10 @@ public:
       m_gamepads[gpNum].AttachRemoveDevices(); \
       if( !gpAttached && m_gamepads[gpNum].IsConnected() ) {\
         lightgunCalibration_t &calibData = g_calibrationData[gpNum]; \
-        m_gamepads[gpNum].SetLightgunCalibration( XINPUT_LIGHTGUN_CALIBRATION_CENTER_X - calibData.m_xData[1], \
-                                  XINPUT_LIGHTGUN_CALIBRATION_CENTER_Y - calibData.m_yData[1], \
-                                  XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_X - calibData.m_xData[0],  \
-                                  XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_Y - calibData.m_yData[0] ); \
+        m_gamepads[gpNum].SetLightgunCalibration( XINPUT_LIGHTGUN_CALIBRATION_CENTER_X - calibData.m_xData[CALIB_C], \
+                                  XINPUT_LIGHTGUN_CALIBRATION_CENTER_Y - calibData.m_yData[CALIB_C], \
+                                  XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_X - calibData.m_xData[CALIB_UL],  \
+                                  XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_Y - calibData.m_yData[CALIB_UL] ); \
       }
 
     ATTACH_AND_RESTORE( 0 );

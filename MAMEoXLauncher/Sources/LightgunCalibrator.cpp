@@ -21,12 +21,6 @@ extern "C" {
   // The number of calibration steps per device
 #define NUM_CALIBRATIONSTEPS    3
 
-  // Calibration step giving the UL corner numbers
-#define CALIB_UL    1
-
-  // Calibration step giving the center numbers
-#define CALIB_C     0
-
   // Note: These values are halved for the cursor
 #define TARGET_WIDTH    64
 #define TARGET_HEIGHT   64
@@ -130,12 +124,6 @@ void CLightgunCalibrator::MoveCursor( CInputManager &inputManager, BOOL unused )
                                   XINPUT_LIGHTGUN_CALIBRATION_CENTER_Y - calibData.m_yData[CALIB_C], 
                                   0, 
                                   0 );
-/*
-      gp->SetLightgunCalibration( calibData.m_xData[CALIB_C], 
-                                  calibData.m_yData[CALIB_C], 
-                                  0, 
-                                  0 );
-*/
     }
     else if( m_calibrationStep == (NUM_CALIBRATIONSTEPS - 1) )
     {
@@ -145,12 +133,6 @@ void CLightgunCalibrator::MoveCursor( CInputManager &inputManager, BOOL unused )
                                   XINPUT_LIGHTGUN_CALIBRATION_CENTER_Y - calibData.m_yData[CALIB_C], 
                                   XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_X - calibData.m_xData[CALIB_UL], 
                                   XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_Y - calibData.m_yData[CALIB_UL] );
-/*
-      gp->SetLightgunCalibration( -calibData.m_xData[CALIB_C], 
-                                  -calibData.m_yData[CALIB_C], 
-                                  -calibData.m_xData[CALIB_UL], 
-                                  -calibData.m_yData[CALIB_UL] );
-*/
     }
   }
 
@@ -189,7 +171,7 @@ void CLightgunCalibrator::Draw( BOOL clearScreen, BOOL flipOnCompletion )
       swprintf( wBuf, L"X: %d maps to %d", m_currentGunX, m_currentGunCalibratedX );
 	    m_fontSet.DefaultFont().DrawText( 320, 80, TEXTCOLOR, wBuf, XBFONT_CENTER_X );
 
-      swprintf( wBuf, L"Y: %d maps to %d", m_currentGunY, m_currentGunCalibratedY );
+      swprintf( wBuf, L"Y: %d maps to %d", m_currentGunY, -m_currentGunCalibratedY );
 	    m_fontSet.DefaultFont().DrawText( 320, 100, TEXTCOLOR, wBuf, XBFONT_CENTER_X );
     }
 
@@ -282,7 +264,7 @@ void CLightgunCalibrator::Draw( BOOL clearScreen, BOOL flipOnCompletion )
       case (NUM_CALIBRATIONSTEPS - 1):
         {
           FLOAT x = -m_currentGunCalibratedX;
-          FLOAT y = m_currentGunCalibratedY;  // Y values are negated for MAME
+          FLOAT y = -m_currentGunCalibratedY;  // Y values are negated for MAME
 
             // Map the cursor to screen coords
           x = ((x+128.0f) * 640.0f / 256.0f);
@@ -347,22 +329,8 @@ void CLightgunCalibrator::GetCalibratedCursorPosition( CInputManager &inputManag
     return;
   }
 
-  m_currentGunCalibratedX = m_currentGunX;// + calibData.m_xData[CALIB_C];
-  m_currentGunCalibratedY = m_currentGunY;// + calibData.m_yData[CALIB_C]);
-
-    // Map from -128 to 128
-  FLOAT xMap = calibData.m_xData[CALIB_UL] - calibData.m_xData[CALIB_C];
-  FLOAT yMap = calibData.m_yData[CALIB_UL] - calibData.m_yData[CALIB_C];
-
-  if( xMap )
-    m_currentGunCalibratedX = (int)((FLOAT)m_currentGunCalibratedX * 128.0f / -xMap );
-  else
-    m_currentGunCalibratedX = 0;
-
-  if( yMap )
-    m_currentGunCalibratedY = (int)((FLOAT)m_currentGunCalibratedY * 128.0f / yMap );
-  else
-    m_currentGunCalibratedY = 0;
+  m_currentGunCalibratedX = (int)((FLOAT)m_currentGunX * 128.0f / (FLOAT)XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_X );
+  m_currentGunCalibratedY = (int)((FLOAT)m_currentGunY * 128.0f / (FLOAT)XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_Y );
 
     // Lock to the expected range
   if( m_currentGunCalibratedX > 128 )
@@ -374,11 +342,6 @@ void CLightgunCalibrator::GetCalibratedCursorPosition( CInputManager &inputManag
     m_currentGunCalibratedY = 128;
   else if( m_currentGunCalibratedY < -128 )
     m_currentGunCalibratedY = -128;
-
-/*
-  m_currentGunCalibratedX = ((FLOAT)m_currentGunX * 128.0f / (FLOAT)XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_X);
-  m_currentGunCalibratedY = ((FLOAT)m_currentGunY * 128.0f / (FLOAT)XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_Y);
-*/
 }
 
 

@@ -460,6 +460,39 @@ void WaitForNoButton( void )
 }
 
 //-------------------------------------------------------------
+//	GetLightgunCalibratedPosition
+//-------------------------------------------------------------
+void GetLightgunCalibratedPosition( UINT32 player, INT32 *deltax, INT32 *deltay )
+{
+  if( !deltax || !deltay || player > 3 )
+    return;
+
+  lightgunCalibration_t &calibData = g_calibrationData[player];
+  CGamepad *gp = g_inputManager.GetGamepad(player);
+
+    // Don't bother if we're not pointing at the screen
+  if( !gp || !gp->IsLightgunPointedAtScreen() )
+  {
+    *deltax = *deltay = 0;
+    return;
+  }
+
+  *deltax = (int)((FLOAT)gp->GetAnalogAxisState( GP_ANALOG_LEFT, GP_AXIS_X ) * 128.0f / (FLOAT)XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_X );
+  *deltay = (int)((FLOAT)gp->GetAnalogAxisState( GP_ANALOG_LEFT, GP_AXIS_Y ) * 128.0f / (FLOAT)XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_Y );
+
+    // Lock to the expected range
+  if( *deltax > 128 )
+    *deltax = 128;
+  else if( *deltax < -128 )
+    *deltax = -128;
+
+  if( *deltay > 128 )
+    *deltay = 128;
+  else if( *deltay < -128 )
+    *deltay = -128;
+}
+
+//-------------------------------------------------------------
 //	BeginFontRender
 //-------------------------------------------------------------
 void BeginFontRender( BOOL ClearScreen, fonttype fontType )
