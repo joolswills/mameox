@@ -1,0 +1,22 @@
+// List of resources to bundle.
+//
+// The output will be a header file (.h) used at compile time,
+// and a packed resource file (.xpr) used at runtime.
+
+out_header         ..\Includes\FranklinGothicMedium_14.h
+out_packedresource ..\..\Media\FranklinGothicMedium_14.xpr
+out_error          FranklinGothicMedium_14.err
+
+
+Texture Font
+{
+   Source      FranklinGothicMedium_14.tga
+   Format      D3DFMT_A4R4G4B4
+   Levels      1
+}
+
+UserData FontData
+{
+   DataFile FranklinGothicMedium_14.abc
+}
+

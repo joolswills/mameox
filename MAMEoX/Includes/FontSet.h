@@ -16,13 +16,10 @@
 
 #define CREATEFONT( fntObj, fntName )     fntObj.Create( fntName )
 
-
-#define DEFAULT_FONT      "Trebuchet_14.xpr"
+#define DEFAULT_FONT      "FranklinGothicMedium_14.xpr"
 #define FIXEDWIDTH_FONT   "FranklinGothicMedium_12.xpr"
 #define SMALLTHIN_FONT    "FranklinGothicMedium_12.xpr"
-#define LARGETHIN_FONT    "Trebuchet_12.xpr"
-
-
+#define LARGETHIN_FONT    "FranklinGothicMedium_13.xpr"
 
 
 //= C L A S S E S =============================================================

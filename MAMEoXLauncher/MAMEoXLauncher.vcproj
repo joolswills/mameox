@@ -357,41 +357,41 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\MediaFiles\FranklinGothicMedium_13.rdf">
+				<FileConfiguration
+					Name="Debug|Xbox">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="bundler &quot;$(InputPath)&quot;"
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Xbox">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="bundler &quot;$(InputPath)&quot;"
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\MediaFiles\FranklinGothicMedium_14.rdf">
+				<FileConfiguration
+					Name="Debug|Xbox">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="bundler &quot;$(InputPath)&quot;"
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Xbox">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="bundler &quot;$(InputPath)&quot;"
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="MediaFiles\resource.rdf">
-				<FileConfiguration
-					Name="Debug|Xbox">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Xbox">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\MediaFiles\Trebuchet_12.rdf">
-				<FileConfiguration
-					Name="Debug|Xbox">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Xbox">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\MediaFiles\Trebuchet_14.rdf">
 				<FileConfiguration
 					Name="Debug|Xbox">
 					<Tool
