@@ -1,15 +1,37 @@
+Version 0.68b
+
+  - \MAMEoX\Includes: 
+
+    - MAMEoX.h
+      - Upped version number
+
+    - Gamepad.h
+      - New function: GetButtonState which returns all GP_ flags of 
+        the pressed buttons, DPAD, etc.
+
+   -------------------------------------------------------------
+  - \MAMEoX\Sources:
+
+    - Gamepad.cpp
+      - Bugfix: IsButtonPressed returns TRUE if only the button of 
+        the params are pressed
+      - New function: GetButtonState which returns all GP_ flags of 
+        the pressed buttons, DPAD, etc.
+
+   -------------------------------------------------------------
+  - \MAMEoXLauncher\Includes:
+
+   -------------------------------------------------------------
+  - \MAMEoXLauncher\Sources:
+
+    - ROMList.cpp
+      - Bugfix: Additional info shows the files correct now
+      - Additional info shows year and clonefilename now
+
+
+*********************************************************************
+
 Version 0.67b
-
-  - \MAMEoXLauncher\Sources\ROMList.cpp
-    - Bugfix: Additional info shows the files correct now
-    - Additional info shows year and clonefilename now
-
-  - \MAMEoX\Includes\Gamepad.h
-  - \MAMEoX\Sources\Gamepad.cpp
-    - Bugfix: IsButtonPressed returns TRUE if only the button of the 
-      params are pressed
-    - New function: GetButtonState which returns all GP_ flags of the 
-      pressed buttons, DPAD, etc.
 
   - \MAMEoX\Includes: 
 
@@ -47,7 +69,7 @@ Version 0.67b
       - Added support for dumping debug data to a file in Release mode
 
    -------------------------------------------------------------
-  - \MAMEoXLauncher\Sources
+  - \MAMEoXLauncher\Sources:
 
     - OptionsPage.cpp
       - Added read-only listing of symlinks to options
@@ -57,7 +79,7 @@ Version 0.67b
       - Added Aspect Ratio Correction toggle option
 
    -------------------------------------------------------------
-  - libsmb++\src
+  - libsmb++\src:
 
     - SessionPacket.cpp
       - Added #undef errno to fix compiler issues
