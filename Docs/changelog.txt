@@ -29,6 +29,8 @@ Version 0.70.3b
 
     - main.cpp
       - Put in code to reposition the screen as well as resize
+      - Fixed: Backup (B+X) feature doesn't work anymore, just
+               shows help screen.
 
    -------------------------------------------------------------
   - \Sectionize.pl

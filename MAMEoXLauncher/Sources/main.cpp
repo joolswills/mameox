@@ -541,13 +541,13 @@ void __cdecl main( void )
 
 
 
-    if( gp0->IsButtonPressed( GP_B | GP_Y ) && toggleButtonTimeout == 0.0f )
+    if( gp0->IsOnlyButtonPressed( GP_B | GP_Y ) && toggleButtonTimeout == 0.0f )
     {
         // Toggle options mode
       optionsMode = !optionsMode;
       toggleButtonTimeout = TOGGLEBUTTON_TIMEOUT;
     }
-    else if( gp0->IsButtonPressed( GP_X ) && toggleButtonTimeout == 0.0f )
+    else if( gp0->IsOnlyButtonPressed( GP_X ) && toggleButtonTimeout == 0.0f )
     {
         // Toggle help mode
       helpMode = !helpMode;
