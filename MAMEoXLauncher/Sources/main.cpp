@@ -1548,38 +1548,86 @@ void DrawProgressbarMessage( LPDIRECT3DDEVICE8 pD3DDevice, const char *message, 
  	
 		  // Draw the current filename
 	  mbstowcs( wBuf, itemName, 256 );
-	  g_fontSet.DefaultFont().DrawText( 320, 270, D3DCOLOR_RGBA( 60, 100, 255, 255 ), wBuf, XBFONT_CENTER_X );
+	  g_fontSet.DefaultFont().DrawText( 320, 260, D3DCOLOR_RGBA( 60, 100, 255, 255 ), wBuf, XBFONT_CENTER_X );
 	g_fontSet.DefaultFont().End();
+
 
   if( currentItem != 0xFFFFFFFF )
   {
+    pD3DDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     FALSE );
+    pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    FALSE );
+    pD3DDevice->SetTexture( 0, NULL );
+    pD3DDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
+
+    #define PROGRESSBAR_CAP_COLOR     D3DCOLOR_XRGB( 101, 197, 247 )
+    #define PROGRESSBAR_BAR_COLOR     D3DCOLOR_XRGB( 16, 80, 124 )
+
+    #define PROGRESSBAR_WIDTH         410
+    #define PROGRESSBAR_HEIGHT        20
+    #define PROGRESSBAR_CAP_WIDTH     2
+
+    #define DRAWQUAD( left, top, right, bottom, color ) \
+          pD3DDevice->Begin( D3DPT_QUADLIST ); \
+            pD3DDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, color ); \
+            pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, left, top, 1.0f, 1.0f ); \
+            pD3DDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, color ); \
+            pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, right, top, 1.0f, 1.0f ); \
+            pD3DDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, color ); \
+            pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, right, bottom, 1.0f, 1.0f ); \
+            pD3DDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, color ); \
+            pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, left, bottom, 1.0f, 1.0f ); \
+          pD3DDevice->End();
+
+      // Draw left "cap"
+    DRAWQUAD( 320 - (PROGRESSBAR_WIDTH >> 1), 
+              240 - (PROGRESSBAR_HEIGHT >> 1),
+              320 - (PROGRESSBAR_WIDTH >> 1) + PROGRESSBAR_CAP_WIDTH,
+              240 + (PROGRESSBAR_HEIGHT >> 1),
+              PROGRESSBAR_CAP_COLOR );
+
+
+      // Draw right "cap"
+    DRAWQUAD( 320 + (PROGRESSBAR_WIDTH >> 1), 
+              240 - (PROGRESSBAR_HEIGHT >> 1),
+              320 + (PROGRESSBAR_WIDTH >> 1) - PROGRESSBAR_CAP_WIDTH,
+              240 + (PROGRESSBAR_HEIGHT >> 1),
+              PROGRESSBAR_CAP_COLOR );
+
+      // Draw an outline around the bar
+    DRAWQUAD( 320 - (PROGRESSBAR_WIDTH >> 1), 
+              240 - (PROGRESSBAR_HEIGHT >> 1),
+              320 + (PROGRESSBAR_WIDTH >> 1),
+              240 - (PROGRESSBAR_HEIGHT >> 1) + 2.0f,
+              PROGRESSBAR_CAP_COLOR );
+
+    DRAWQUAD( 320 - (PROGRESSBAR_WIDTH >> 1), 
+              240 + (PROGRESSBAR_HEIGHT >> 1) - 2.0f,
+              320 + (PROGRESSBAR_WIDTH >> 1),
+              240 + (PROGRESSBAR_HEIGHT >> 1),
+              PROGRESSBAR_CAP_COLOR );
+
     if( !totalItems )
     {
-		    // Each index value is 1/4th of a *
-		    // The *'s scroll between the < >'s
-	    INT cursorPos = ( (INT)((FLOAT)currentItem / 4.0f) & 15) - 7;
-      g_fontSet.LargeThinFont().Begin();
-	      wcscpy( wBuf, L"<                >" );
-	      wBuf[8 + cursorPos] = L'*';
-	      g_fontSet.LargeThinFont().DrawText( 320, 240, D3DCOLOR_RGBA( 255, 125, 125, 255), wBuf, XBFONT_CENTER_X );
-      g_fontSet.LargeThinFont().End();
+      #define PROGRESSBAR_BUBBLE_WIDTH   15
+
+        // Just have a "bubble" that scrolls from left to right, reappearing on the left when it scrolls
+        // off the edge
+      UINT32 left = (currentItem<<1) % ((PROGRESSBAR_WIDTH - (PROGRESSBAR_CAP_WIDTH<<1)) - PROGRESSBAR_BUBBLE_WIDTH);
+      DRAWQUAD( 320 - (PROGRESSBAR_WIDTH >> 1) + PROGRESSBAR_CAP_WIDTH + left, 
+                240 - (PROGRESSBAR_HEIGHT >> 1) + 2,
+                320 - (PROGRESSBAR_WIDTH >> 1) + PROGRESSBAR_CAP_WIDTH + left + PROGRESSBAR_BUBBLE_WIDTH,
+                240 + (PROGRESSBAR_HEIGHT >> 1) - 2,
+                PROGRESSBAR_BAR_COLOR );
     }
     else
     {
-      g_fontSet.LargeThinFont().Begin();
-
-		      // Draw a progress bar
-        UINT32 percentage = (UINT32)( (FLOAT)currentItem * (25.0f / (FLOAT)totalItems) + 0.5f ); 
-        UINT32 i = 0;
-        wcscpy( wBuf, L"[" );
-        for( ; i < percentage; ++i )
-          wcscat( wBuf, L"|" );
-        for( ; i < 25; ++i )
-          wcscat( wBuf, L" " );
-        wcscat( wBuf, L"]" );
-
-	      g_fontSet.LargeThinFont().DrawText( 320, 240, D3DCOLOR_XRGB( 255, 125, 125 ), wBuf, XBFONT_CENTER_X );
-      g_fontSet.LargeThinFont().End();
+        // Draw the bar
+      UINT32 right = (FLOAT)currentItem * ( ( (FLOAT)(PROGRESSBAR_WIDTH - (PROGRESSBAR_CAP_WIDTH<<1)) / (FLOAT)totalItems ) );
+      DRAWQUAD( 320 - (PROGRESSBAR_WIDTH >> 1) + PROGRESSBAR_CAP_WIDTH, 
+                240 - (PROGRESSBAR_HEIGHT >> 1) + 2,
+                320 - (PROGRESSBAR_WIDTH >> 1) + PROGRESSBAR_CAP_WIDTH + right,
+                240 + (PROGRESSBAR_HEIGHT >> 1) - 2,
+                PROGRESSBAR_BAR_COLOR );
     }
   }
 

@@ -1238,7 +1238,7 @@ BOOL CROMListScreen::UpdateROMMetadataFile( void )
     for( index = 0; index < m_numDrivers && stricmp( m_driverInfoList[index].m_romFileName, metadata.m_romFileName ); ++index )
       ;
 
-    m_driverMetadata[index] = metadata;
+    m_driverMetadata[i] = metadata;
   }
   free( fileData );
 
