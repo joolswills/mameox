@@ -35,11 +35,14 @@ extern "C" {
 #endif
 
   // Version number
-#define RELEASE_STRING        ".2b"
-#define LRELEASE_STRING       L".2b"
+#define RELEASE_STRING            ".2b"
+#define LRELEASE_STRING           L".2b"
 
-#define VERSION_STRING    "0.70" RELEASE_STRING
-#define LVERSION_STRING   L"0.70" LRELEASE_STRING
+#define VERSION_STRING            "0.70" RELEASE_STRING
+#define LVERSION_STRING           L"0.70" LRELEASE_STRING
+
+
+#define DRIVERLIST_FILESTAMP      "MAMEoX" VERSION_STRING
 
   //! \enum   mameoxLaunchCommand
   //! \brief  Determines what the MAMEoX task should do
@@ -53,9 +56,10 @@ typedef enum mameoxLaunchCommand
 //= S T R U C T U R E S ================================================
 typedef struct MAMEoXLaunchData_t
 {
-  mameoxLaunchCommand   m_command;        //!<  The function which should be performed by the MAMEoX task
-  DWORD                 m_totalMAMEGames; //!<  The total number of games supported by the MAME core
-  DWORD                 m_gameIndex;      //!<  The index of the currently selected game
+  mameoxLaunchCommand   m_command;                      //!<  The function which should be performed by the MAMEoX task
+  DWORD                 m_totalMAMEGames;               //!<  The total number of games supported by the MAME core
+  DWORD                 m_gameIndex;                    //!<  The index of the currently selected game
+  DWORD                 m_driverListGenerationAttempts; //!<  The number of attempts made at generating the driver list
 
   float                 m_cursorPosition;     //!<  Cursor position within the ROM list
   float                 m_pageOffset;         //!<  Page offset within the ROM list

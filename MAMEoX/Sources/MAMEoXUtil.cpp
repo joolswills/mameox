@@ -86,6 +86,10 @@ int vsnprintf( char *buf, size_t count, const char *fmt, va_list lst )
   return vsprintf( buf, fmt, lst );
 }
 
+
+// Note: The "STARTUP" segment is unloaded in xbox_JoystickMouse.c
+#pragma code_seg("STARTUP")
+
 //-------------------------------------------------------------
 //	LoadOptions
 //-------------------------------------------------------------
@@ -320,6 +324,50 @@ void SaveOptions( void )
 }
 
 //-------------------------------------------------------------
+// RemapDriveLetters
+//-------------------------------------------------------------
+void RemapDriveLetters( void )
+{
+  MAPDRIVE( g_FileIOConfig.m_LetterCMapping.c_str(), "\\??\\C:" );
+  MAPDRIVE( g_FileIOConfig.m_LetterEMapping.c_str(), "\\??\\E:" );
+  MAPDRIVE( g_FileIOConfig.m_LetterFMapping.c_str(), "\\??\\F:" );
+  MAPDRIVE( g_FileIOConfig.m_LetterGMapping.c_str(), "\\??\\G:" );
+  MAPDRIVE( g_FileIOConfig.m_LetterHMapping.c_str(), "\\??\\H:" );
+
+  WIN32_FIND_DATA findData;
+
+  HANDLE h = FindFirstFile( "D:\\*", &findData );
+  if( h != INVALID_HANDLE_VALUE )
+  {
+    do {
+      PRINTMSG( T_INFO, "D:\\%s", findData.cFileName );
+    } while( FindNextFile( h, &findData ) );
+    FindClose( h );
+  }
+
+  h = FindFirstFile( "E:\\*", &findData );
+  if( h != INVALID_HANDLE_VALUE )
+  {
+    do {
+      PRINTMSG( T_INFO, "E:\\%s", findData.cFileName );
+    } while( FindNextFile( h, &findData ) );
+    FindClose( h );
+  }
+
+  h = FindFirstFile( "G:\\*", &findData );
+  if( h != INVALID_HANDLE_VALUE )
+  {
+    do {
+      PRINTMSG( T_INFO, "G:\\%s", findData.cFileName );
+    } while( FindNextFile( h, &findData ) );
+    FindClose( h );
+  }
+
+}
+
+#pragma code_seg()
+
+//-------------------------------------------------------------
 //  RequireController
 //-------------------------------------------------------------
 void RequireController( DWORD number )
@@ -477,52 +525,10 @@ void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice )
   pD3DDevice->PersistDisplay();
 }
 
-
-//-------------------------------------------------------------
-// RemapDriveLetters
-//-------------------------------------------------------------
-void RemapDriveLetters( void )
-{
-  MAPDRIVE( g_FileIOConfig.m_LetterCMapping.c_str(), "\\??\\C:" );
-  MAPDRIVE( g_FileIOConfig.m_LetterEMapping.c_str(), "\\??\\E:" );
-  MAPDRIVE( g_FileIOConfig.m_LetterFMapping.c_str(), "\\??\\F:" );
-  MAPDRIVE( g_FileIOConfig.m_LetterGMapping.c_str(), "\\??\\G:" );
-  MAPDRIVE( g_FileIOConfig.m_LetterHMapping.c_str(), "\\??\\H:" );
-
-  WIN32_FIND_DATA findData;
-
-  HANDLE h = FindFirstFile( "D:\\*", &findData );
-  if( h != INVALID_HANDLE_VALUE )
-  {
-    do {
-      PRINTMSG( T_INFO, "D:\\%s", findData.cFileName );
-    } while( FindNextFile( h, &findData ) );
-    FindClose( h );
-  }
-
-  h = FindFirstFile( "E:\\*", &findData );
-  if( h != INVALID_HANDLE_VALUE )
-  {
-    do {
-      PRINTMSG( T_INFO, "E:\\%s", findData.cFileName );
-    } while( FindNextFile( h, &findData ) );
-    FindClose( h );
-  }
-
-  h = FindFirstFile( "G:\\*", &findData );
-  if( h != INVALID_HANDLE_VALUE )
-  {
-    do {
-      PRINTMSG( T_INFO, "G:\\%s", findData.cFileName );
-    } while( FindNextFile( h, &findData ) );
-    FindClose( h );
-  }
-
-}
-
 }	// End Extern "C"
 
-
+// Note: The "STARTUP" segment is unloaded in xbox_JoystickMouse.c
+#pragma code_seg("STARTUP")
 //-------------------------------------------------------------
 //  RenderToTextureStart
 //-------------------------------------------------------------
@@ -557,5 +563,5 @@ void RenderToTextureEnd( RenderToTextureToken_t &token )
   SAFE_RELEASE( token.m_zBuffer );
   SAFE_RELEASE( token.m_textureSurface );
 }
-
+#pragma code_seg()
 

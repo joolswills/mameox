@@ -74,7 +74,7 @@ BOOL g_soundEnabled = TRUE;
 static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... );
 static BOOL Helper_RunRom( UINT32 romIndex );
 static BOOL __cdecl compareDriverNames( const void *elem1, const void *elem2 );
-static BOOL Helper_SaveDriverList( void );
+static BOOL Helper_SaveDriverInfoFile( void );
 static void DrawDriverProgressData( const char *fileName, DWORD index, DWORD total );
 
 //= F U N C T I O N S =================================================
@@ -125,6 +125,7 @@ void __cdecl main( void )
   {
       // This XBE shouldn't be launched directly. Throw up a splash screen
       // saying so, then try to launch MAMEoxLauncher
+    memset( mameoxLaunchData, 0, sizeof(*mameoxLaunchData) );
     Die( pD3DDevice, "MAMEoX wasn't called from the launcher!\nPlease run default.xbe instead.\n" );
       // Die never returns
   }
@@ -143,7 +144,7 @@ void __cdecl main( void )
     qsort( drivers, mameoxLaunchData->m_totalMAMEGames, sizeof(drivers[0]), compareDriverNames );
 
       // Dump the drivers to a file
-    Helper_SaveDriverList();
+    Helper_SaveDriverInfoFile();
   }
   else
   {
@@ -166,323 +167,6 @@ void __cdecl main( void )
     // Relaunch MAMEoXLauncher
   ShowLoadingScreen( pD3DDevice );
   XLaunchNewImage( "D:\\default.xbe", &g_launchData );
-}
-
-//-------------------------------------------------------------
-//  Helper_SaveDriverList
-//-------------------------------------------------------------
-static BOOL Helper_SaveDriverList( void )
-{
-	DWORD len;
-	std::string		driverListFile = g_ROMListPath;
-	driverListFile += "\\";
-	driverListFile += DRIVERLISTFILENAME;
-
-	PRINTMSG( T_INFO, "Store driver list: %s", driverListFile.c_str() );
-
-	HANDLE hFile = CreateFile(	driverListFile.c_str(),
-															GENERIC_READ | GENERIC_WRITE,
-															0,
-															NULL,
-															CREATE_ALWAYS,
-															FILE_ATTRIBUTE_NORMAL,
-															NULL );
-	if( !hFile )
-	{
-		PRINTMSG( T_ERROR, "Could not create file %s!", driverListFile.c_str() );
-		return FALSE;
-	}
-
-  DWORD bytesWritten;
-  WriteFile( hFile, 
-             "MAMEoX" VERSION_STRING, 
-             6 + strlen(VERSION_STRING), 
-             &bytesWritten, 
-             NULL );
-  if( bytesWritten != 6 + strlen(VERSION_STRING) )
-	{
-		PRINTMSG( T_ERROR, "Write failed!" );
-		CloseHandle( hFile );
-
-			// Delete the file
-		DeleteFile( driverListFile.c_str() );
-		return FALSE;
-	}
-
-
-  MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
-
-    // Store the number of drivers
-  WriteFile(  hFile, 
-              &mameoxLaunchData->m_totalMAMEGames, 
-              sizeof(mameoxLaunchData->m_totalMAMEGames),
-              &bytesWritten, 
-              NULL );
-  if( bytesWritten != sizeof(mameoxLaunchData->m_totalMAMEGames) )
-	{
-		PRINTMSG( T_ERROR, "Write failed!" );
-		CloseHandle( hFile );
-
-			// Delete the file
-		DeleteFile( driverListFile.c_str() );
-		return FALSE;
-	}
-
-
-    // Write data for each driver
-  for( DWORD i = 0; i < mameoxLaunchData->m_totalMAMEGames; ++i )
-  {
-    DrawDriverProgressData( drivers[i]->name, i, mameoxLaunchData->m_totalMAMEGames );
-
-      // Write the index
-    WriteFile( hFile, &i, sizeof(i), &bytesWritten, NULL );
-    if( bytesWritten != sizeof(i) )
-		{
-			PRINTMSG( T_ERROR, "Write failed!" );
-			CloseHandle( hFile );
-
-				// Delete the file
-			DeleteFile( driverListFile.c_str() );
-			return FALSE;
-		}
-
-      // Write the length of the filename
-    len = strlen(drivers[i]->name) + 1;
-    WriteFile( hFile, &len, sizeof( len ), &bytesWritten, NULL );
-    if( bytesWritten != sizeof( len ) )
-		{
-			PRINTMSG( T_ERROR, "Write failed!" );
-			CloseHandle( hFile );
-
-				// Delete the file
-			DeleteFile( driverListFile.c_str() );
-			return FALSE;
-		}
-
-      // Write the filename
-    WriteFile( hFile, drivers[i]->name, len, &bytesWritten, NULL );
-    if( bytesWritten != len )
-		{
-			PRINTMSG( T_ERROR, "Write failed!" );
-			CloseHandle( hFile );
-
-				// Delete the file
-			DeleteFile( driverListFile.c_str() );
-			return FALSE;
-		}
-    
-      // Write the length of the filename
-    len = strlen(drivers[i]->description) + 1;
-    WriteFile( hFile, &len, sizeof( len ), &bytesWritten, NULL );
-    if( bytesWritten != sizeof( len ) )
-		{
-			PRINTMSG( T_ERROR, "Write failed!" );
-			CloseHandle( hFile );
-
-				// Delete the file
-			DeleteFile( driverListFile.c_str() );
-			return FALSE;
-		}
-
-      // Write the description
-    WriteFile( hFile, drivers[i]->description, len, &bytesWritten, NULL );
-    if( bytesWritten != len )
-		{
-			PRINTMSG( T_ERROR, "Write failed!" );
-			CloseHandle( hFile );
-
-				// Delete the file
-			DeleteFile( driverListFile.c_str() );
-			return FALSE;
-		}
-    
-      // Store whether or not this is a clone
-      // All drivers are clones of _driver_0, whose clone_of is NULL,
-      //  so check against that to decide whether this is a clone or not
-    BOOL isClone = (drivers[i]->clone_of && drivers[i]->clone_of->clone_of);
-    WriteFile( hFile, &isClone, sizeof( isClone ), &bytesWritten, NULL );
-    if( bytesWritten != sizeof(isClone) )
-		{
-			PRINTMSG( T_ERROR, "Write failed!" );
-			CloseHandle( hFile );
-
-				// Delete the file
-			DeleteFile( driverListFile.c_str() );
-			return FALSE;
-		}
-
-      // Write the length of the clonename
-    len = strlen( drivers[i]->clone_of->name ) + 1;
-    WriteFile( hFile, &len, sizeof( len ), &bytesWritten, NULL );
-    if( bytesWritten != sizeof( len ) )
-		{
-			PRINTMSG( T_ERROR, "Write failed!" );
-			CloseHandle( hFile );
-
-				// Delete the file
-			DeleteFile( driverListFile.c_str() );
-			return FALSE;
-		}
-
-			// Write the clonename
-    WriteFile( hFile, drivers[i]->clone_of->name, len, &bytesWritten, NULL );
-    if( bytesWritten != len )
-		{
-			PRINTMSG( T_ERROR, "Write failed!" );
-			CloseHandle( hFile );
-
-				// Delete the file
-			DeleteFile( driverListFile.c_str() );
-			return FALSE;
-		}
-
-      // Write the length of the manufacturer
-		len = strlen( drivers[i]->manufacturer ) + 1;
-    WriteFile( hFile, &len, sizeof( len ), &bytesWritten, NULL );
-    if( bytesWritten != sizeof( len ) )
-		{
-			PRINTMSG( T_ERROR, "Write failed!" );
-			CloseHandle( hFile );
-
-				// Delete the file
-			DeleteFile( driverListFile.c_str() );
-			return FALSE;
-		}
-
-			// Write the manufacturer
-    WriteFile( hFile, drivers[i]->manufacturer, len, &bytesWritten, NULL );
-    if( bytesWritten != len )
-		{
-			PRINTMSG( T_ERROR, "Write failed!" );
-			CloseHandle( hFile );
-
-				// Delete the file
-			DeleteFile( driverListFile.c_str() );
-			return FALSE;
-		}
-
-      // Write the length of the year
-		len = strlen( drivers[i]->year ) + 1;
-    WriteFile( hFile, &len, sizeof( len ), &bytesWritten, NULL );
-    if( bytesWritten != sizeof( len ) )
-		{
-			PRINTMSG( T_ERROR, "Write failed!" );
-			CloseHandle( hFile );
-
-				// Delete the file
-			DeleteFile( driverListFile.c_str() );
-			return FALSE;
-		}
-
-			// Write the year
-    WriteFile( hFile, drivers[i]->year, len, &bytesWritten, NULL );
-    if( bytesWritten != len )
-		{
-			PRINTMSG( T_ERROR, "Write failed!" );
-			CloseHandle( hFile );
-
-				// Delete the file
-			DeleteFile( driverListFile.c_str() );
-			return FALSE;
-		}
-	}
-
-	CloseHandle( hFile );
-  return TRUE;
-}
-
-//-------------------------------------------------------------
-//	Die
-//-------------------------------------------------------------
-static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
-{
-	char buf[1024];
-
-  va_list arg;
-  va_start( arg, fmt );
-  vsprintf( buf, fmt, arg );
-  va_end( arg );
-
-	PRINTMSG( T_ERROR, "Die: %s", buf );
-  RequireController( 0 );
-  CGamepad *gp = g_inputManager.GetGamepad( 0 );
-	g_inputManager.WaitForNoButton( 0 );
-
-  while( !gp->IsAnyButtonPressed() )
-  {
-    RequireController( 0 );
-		  // Display the error to the user
-	  pD3DDevice->Clear(	0L,																// Count
-											  NULL,															// Rects to clear
-											  D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
-											  D3DCOLOR_XRGB(0,0,0),							// Color
-											  1.0f,															// Z
-											  0L );															// Stencil
-
-	  g_font.Begin();
-  	
-	  WCHAR wBuf[1024];
-	  mbstowcs( wBuf, buf, strlen(buf) + 1 );
-
-	  g_font.DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
-	  g_font.DrawText( 320, 320, D3DCOLOR_RGBA( 255, 125, 125, 255), L"Press any button to reboot.", XBFONT_CENTER_X );
-
-	  g_font.End();
-	  pD3DDevice->Present( NULL, NULL, NULL, NULL );
-  }
-
-  g_inputManager.WaitForNoButton( 0 );
-
-    // Make sure MAMEoXLauncher acts as though it was launched from the dashboard
-  MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
-  mameoxLaunchData->m_command = LAUNCH_RUN_AS_IF_REBOOTED;
-
-    // Relaunch MAMEoXLauncher
-  ShowLoadingScreen( pD3DDevice );
-  XLaunchNewImage( "D:\\default.xbe", &g_launchData );
-}
-
-
-//-------------------------------------------------------------
-//  DrawDriverProgressData
-//-------------------------------------------------------------
-static void DrawDriverProgressData( const char *fileName, DWORD index, DWORD total )
-{
-	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
-
-		// Display the error to the user
-	pD3DDevice->Clear(	0L,																// Count
-											NULL,															// Rects to clear
-											D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
-											D3DCOLOR_XRGB(0,0,0),							// Color
-											1.0f,															// Z
-											0L );															// Stencil
-
-	g_font.Begin();
-	
-    g_font.DrawText( 320, 60, D3DCOLOR_XRGB( 255, 255, 255 ), L"A new version of MAME has been", XBFONT_CENTER_X );
-    g_font.DrawText( 320, 80, D3DCOLOR_XRGB( 255, 255, 255 ), L"detected.", XBFONT_CENTER_X );
-  	g_font.DrawText( 320, 120, D3DCOLOR_XRGB( 255, 255, 255 ), L"Dumping driver data", XBFONT_CENTER_X );
-
-		  // Draw a progress bar
-    UINT32 percentage = (UINT32)( (FLOAT)index * (25.0f / (FLOAT)total) + 0.5f ); 
-    UINT32 i = 0;
-	  WCHAR wBuf[256] = L"[";
-    for( ; i < percentage; ++i )
-      wcscat( wBuf, L"|" );
-    for( ; i < 25; ++i )
-      wcscat( wBuf, L" " );
-    wcscat( wBuf, L"]" );
-
-	  g_font.DrawText( 320, 140, D3DCOLOR_XRGB( 255, 125, 125 ), wBuf, XBFONT_CENTER_X );
-
-		  // Draw the current filename
-	  mbstowcs( wBuf, fileName, 256 );
-	  g_font.DrawText( 320, 170, D3DCOLOR_XRGB( 60, 100, 255 ), wBuf, XBFONT_CENTER_X );
-
-	g_font.End();
-
-	pD3DDevice->Present( NULL, NULL, NULL, NULL );
 }
 
 //-------------------------------------------------------------
@@ -563,6 +247,275 @@ static BOOL Helper_RunRom( UINT32 romIndex )
 }
 
 //-------------------------------------------------------------
+//	Die
+//-------------------------------------------------------------
+static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
+{
+	char buf[1024];
+
+  va_list arg;
+  va_start( arg, fmt );
+  vsprintf( buf, fmt, arg );
+  va_end( arg );
+
+	PRINTMSG( T_ERROR, "Die: %s", buf );
+  RequireController( 0 );
+  CGamepad *gp = g_inputManager.GetGamepad( 0 );
+	g_inputManager.WaitForNoButton( 0 );
+
+  while( !gp->IsAnyButtonPressed() )
+  {
+    RequireController( 0 );
+		  // Display the error to the user
+	  pD3DDevice->Clear(	0L,																// Count
+											  NULL,															// Rects to clear
+											  D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+											  D3DCOLOR_XRGB(0,0,0),							// Color
+											  1.0f,															// Z
+											  0L );															// Stencil
+
+	  g_font.Begin();
+  	
+	  WCHAR wBuf[1024];
+	  mbstowcs( wBuf, buf, strlen(buf) + 1 );
+
+	  g_font.DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+	  g_font.DrawText( 320, 320, D3DCOLOR_RGBA( 255, 125, 125, 255), L"Press any button to reboot.", XBFONT_CENTER_X );
+
+	  g_font.End();
+	  pD3DDevice->Present( NULL, NULL, NULL, NULL );
+  }
+
+  g_inputManager.WaitForNoButton( 0 );
+
+    // Make sure MAMEoXLauncher acts as though it was launched from the dashboard
+  MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
+  mameoxLaunchData->m_command = LAUNCH_RUN_AS_IF_REBOOTED;
+
+    // Relaunch MAMEoXLauncher
+  ShowLoadingScreen( pD3DDevice );
+  XLaunchNewImage( "D:\\default.xbe", &g_launchData );
+}
+
+// Note: The "STARTUP" segment is unloaded in xbox_JoystickMouse.c
+#pragma code_seg("STARTUP")
+//-------------------------------------------------------------
+//  Helper_SaveDriverInfoFile
+//-------------------------------------------------------------
+static BOOL Helper_SaveDriverInfoFile( void )
+{
+	DWORD len;
+	std::string		driverListFile = g_ROMListPath;
+	driverListFile += "\\";
+	driverListFile += DRIVERLISTFILENAME;
+
+	PRINTMSG( T_INFO, "Store driver list: %s", driverListFile.c_str() );
+
+
+	HANDLE hFile = CreateFile(	driverListFile.c_str(),
+															GENERIC_READ | GENERIC_WRITE,
+															0,
+															NULL,
+															CREATE_ALWAYS,
+															FILE_ATTRIBUTE_NORMAL,
+															NULL );
+	if( !hFile )
+	{
+		PRINTMSG( T_ERROR, "Could not create file %s!", driverListFile.c_str() );
+		return FALSE;
+	}
+
+  DWORD bytesWritten;
+  if( !WriteFile( hFile, DRIVERLIST_FILESTAMP, sizeof(DRIVERLIST_FILESTAMP) - 1, &bytesWritten, NULL ) ||
+      bytesWritten != sizeof(DRIVERLIST_FILESTAMP) - 1 )
+	{
+		PRINTMSG( T_ERROR, "Write failed!" );
+		CloseHandle( hFile );
+
+			// Delete the file
+		DeleteFile( driverListFile.c_str() );
+		return FALSE;
+	}
+
+
+  MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
+
+
+    // Calculate a signature for the list, so we can validate it when reading
+    //  to eliminate corrupt data
+  HANDLE sigHandle = XCalculateSignatureBegin( XCALCSIG_FLAG_SAVE_GAME );
+  if( sigHandle == INVALID_HANDLE_VALUE )
+  {
+    CloseHandle( hFile );
+		DeleteFile( driverListFile.c_str() );
+    PRINTMSG( T_ERROR, "Could not calculate driver list signature!" );
+    Die( g_graphicsManager.GetD3DDevice(), "Could not calculate driver list signature!" );
+  }
+
+  DWORD sigSize = XCalculateSignatureGetSize( XCALCSIG_FLAG_SAVE_GAME );
+  void *sigData = calloc( 1, sigSize );
+  if( !sigData )
+  {
+    CloseHandle( hFile );
+		DeleteFile( driverListFile.c_str() );
+    PRINTMSG( T_ERROR, "Could not allocate memory for driver list signature!" );
+    Die( g_graphicsManager.GetD3DDevice(), "Could not allocate memory for driver list signature!" );
+  }
+
+    // Write in a blank signature
+  if( !WriteFile( hFile, sigData, sigSize, &bytesWritten, NULL ) || bytesWritten != sigSize )
+  {
+    free( sigData );
+    CloseHandle( hFile );
+		DeleteFile( driverListFile.c_str() );
+    PRINTMSG( T_ERROR, "Failed writing blank signature!" );
+    Die( g_graphicsManager.GetD3DDevice(), "Failed writing blank signature!" );
+  }
+
+
+
+    // Define a macro to write a block of data and calculate the data signature
+  #define WRITEDATA( _data__, _dataSize__ ) \
+    if( XCalculateSignatureUpdate( sigHandle, (const BYTE *)(_data__), (_dataSize__) ) != ERROR_SUCCESS || \
+        !WriteFile( hFile, (_data__), (_dataSize__), &bytesWritten, NULL ) || \
+        bytesWritten != (_dataSize__) ) \
+    { \
+      PRINTMSG( T_ERROR, "Write failed!" ); \
+      free( sigData ); \
+      CloseHandle( hFile ); \
+      DeleteFile( driverListFile.c_str() ); \
+      return FALSE; \
+    }
+
+    // Store the number of drivers
+  WRITEDATA( &mameoxLaunchData->m_totalMAMEGames, sizeof(mameoxLaunchData->m_totalMAMEGames) )
+
+    // Write data for each driver
+  for( DWORD i = 0; i < mameoxLaunchData->m_totalMAMEGames; ++i )
+  {
+    DrawDriverProgressData( drivers[i]->name, i, mameoxLaunchData->m_totalMAMEGames );
+
+      // Write the index
+    WRITEDATA( &i, sizeof(i) );
+
+      // Write the length of the filename
+    len = strlen(drivers[i]->name) + 1;
+    WRITEDATA( &len, sizeof(len) );
+
+      // Write the filename
+    WRITEDATA( drivers[i]->name, len );
+    
+      // Write the length of the filename
+    len = strlen(drivers[i]->description) + 1;
+    WRITEDATA( &len, sizeof(len) );
+
+      // Write the description
+    WRITEDATA( drivers[i]->description, len );
+    
+      // Store whether or not this is a clone
+      // All drivers are clones of _driver_0, whose clone_of is NULL,
+      //  so check against that to decide whether this is a clone or not
+    BOOL isClone = (drivers[i]->clone_of && drivers[i]->clone_of->clone_of);
+    WRITEDATA( &isClone, sizeof( isClone ) );
+
+      // Write the length of the clonename
+    if( drivers[i]->clone_of )
+    {
+      len = strlen( drivers[i]->clone_of->name ) + 1;
+      WRITEDATA( &len, sizeof(len) );
+      WRITEDATA( drivers[i]->clone_of->name, len );
+    }
+    else
+    {
+      len = 1;
+      WRITEDATA( &len, sizeof(len) );
+      WRITEDATA( "", len );
+    }
+
+      // Write the length of the manufacturer
+		len = strlen( drivers[i]->manufacturer ) + 1;
+    WRITEDATA( &len, sizeof(len) );
+
+			// Write the manufacturer
+    WRITEDATA( drivers[i]->manufacturer, len );
+
+      // Write the length of the year
+		len = strlen( drivers[i]->year ) + 1;
+    WRITEDATA( &len, sizeof(len) );
+
+			// Write the year
+    WRITEDATA( drivers[i]->year, len );
+	}
+
+    // Grab the signature
+  if( XCalculateSignatureEnd( sigHandle, sigData ) != ERROR_SUCCESS )
+  {
+    free( sigData );
+    CloseHandle( hFile );
+		DeleteFile( driverListFile.c_str() );
+    PRINTMSG( T_ERROR, "Failed getting signature!" );
+    Die( g_graphicsManager.GetD3DDevice(), "Failed getting signature!" );
+  }
+
+    // Write in the real signature
+  SetFilePointer( hFile, sizeof(DRIVERLIST_FILESTAMP) - 1, NULL, FILE_BEGIN );
+  if( !WriteFile( hFile, sigData, sigSize, &bytesWritten, NULL ) || bytesWritten != sigSize )
+  {
+    free( sigData );
+    CloseHandle( hFile );
+		DeleteFile( driverListFile.c_str() );
+    PRINTMSG( T_ERROR, "Failed writing signature!" );
+    Die( g_graphicsManager.GetD3DDevice(), "Failed writing signature!" );
+  }
+
+  free( sigData );
+	CloseHandle( hFile );
+  return TRUE;
+}
+
+//-------------------------------------------------------------
+//  DrawDriverProgressData
+//-------------------------------------------------------------
+static void DrawDriverProgressData( const char *fileName, DWORD index, DWORD total )
+{
+	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
+
+		// Display the error to the user
+	pD3DDevice->Clear(	0L,																// Count
+											NULL,															// Rects to clear
+											D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+											D3DCOLOR_XRGB(0,0,0),							// Color
+											1.0f,															// Z
+											0L );															// Stencil
+
+	g_font.Begin();
+	
+    g_font.DrawText( 320, 60, D3DCOLOR_XRGB( 255, 255, 255 ), L"A new version of MAME has been", XBFONT_CENTER_X );
+    g_font.DrawText( 320, 80, D3DCOLOR_XRGB( 255, 255, 255 ), L"detected.", XBFONT_CENTER_X );
+  	g_font.DrawText( 320, 120, D3DCOLOR_XRGB( 255, 255, 255 ), L"Dumping driver data", XBFONT_CENTER_X );
+
+		  // Draw a progress bar
+    UINT32 percentage = (UINT32)( (FLOAT)index * (25.0f / (FLOAT)total) + 0.5f ); 
+    UINT32 i = 0;
+	  WCHAR wBuf[256] = L"[";
+    for( ; i < percentage; ++i )
+      wcscat( wBuf, L"|" );
+    for( ; i < 25; ++i )
+      wcscat( wBuf, L" " );
+    wcscat( wBuf, L"]" );
+
+	  g_font.DrawText( 320, 140, D3DCOLOR_XRGB( 255, 125, 125 ), wBuf, XBFONT_CENTER_X );
+
+		  // Draw the current filename
+	  mbstowcs( wBuf, fileName, 256 );
+	  g_font.DrawText( 320, 170, D3DCOLOR_XRGB( 60, 100, 255 ), wBuf, XBFONT_CENTER_X );
+
+	g_font.End();
+
+	pD3DDevice->Present( NULL, NULL, NULL, NULL );
+}
+
+//-------------------------------------------------------------
 //	compareDriverNames
 //-------------------------------------------------------------
 static BOOL __cdecl compareDriverNames( const void *elem1, const void *elem2 )
@@ -573,6 +526,7 @@ static BOOL __cdecl compareDriverNames( const void *elem1, const void *elem2 )
 		// Test the description field (game name)
 	return strcmp( drv1->description, drv2->description );
 }
+#pragma code_seg()
 
 
 extern "C" {

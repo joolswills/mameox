@@ -10,6 +10,7 @@ Version 0.70.2b
        not be resolved. I've disabled String Pooling, and 
        everything seems OK now. Make certain that it is never
        enabled again.
+ Note2: It's not just String Pooling, also global optimizations...
 
    -------------------------------------------------------------
   - \MAME\src:
@@ -34,14 +35,23 @@ Version 0.70.2b
   - \MAMEoX\Sources: 
     - xbox_JoystickMouse.c
       - Put initialization code in a section that is unloaded
-        as soon as it's completed (for a gain of 12k or so)
+        as soon as it's completed (for a gain of 50k or so)
 
     - xbox_Main.cpp:
       - Reordered LoadDriverSectionByName to be before the 
         UnloadDriverSections, just in case something was malloc'd
         by the section (and for consistency w/ cpuexec.c).
+      - Put initialization code in a section that is unloaded
+        as soon as it's completed (for a gain of 50k or so)
+      - Signed driver.list file to prevent corruption
 
    -------------------------------------------------------------
+  - \MAMEoXLauncher\Sources:
+
+    - main.cpp
+       - Signed driver.list file to prevent corruption
+
+  -------------------------------------------------------------
   - \Desectionize.pl
   - \Sectionize.pl
     - Updated to merge data + code sections

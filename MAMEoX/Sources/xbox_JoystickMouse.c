@@ -122,6 +122,7 @@ static BOOL                     g_STARTUPSectionUnloaded = FALSE;
 static void Helper_AddEntry( const char *name, INT32 code, INT32 standardCode, INT32 *joycount );
 
 static void Helper_CustomizeInputPortDefaults( struct ipd *defaults );
+void InitializeJoystickMouse( void );
 
 
 //= F U N C T I O N S ==================================================
@@ -341,7 +342,7 @@ const char *osd_joystick_calibrate_next( void )
 {
 /* Prepare the next calibration step. Return a description of this step. */
 /* (e.g. "move to upper left") */
-  char retString[128];
+  static char retString[128];
 
     // When we hit 3, switch over to the next gun to be calibrated,
     //  or return NULL to exit the process
@@ -697,14 +698,19 @@ void osd_customize_inputport_defaults( struct ipd *defaults )
 */
   if( g_STARTUPSectionUnloaded )
   {
+    PRINTMSG( T_INFO, "Loading startup section!" );
     XLoadSection( "STARTUP" );
     g_STARTUPSectionUnloaded = FALSE;
   }
+
+  if( !g_systemInitialized )
+    InitializeJoystickMouse();
 
   Helper_CustomizeInputPortDefaults( defaults );
 
   if( !g_STARTUPSectionUnloaded )
   {
+    PRINTMSG( T_INFO, "Unloading startup section!" );
     XFreeSection( "STARTUP" );
     g_STARTUPSectionUnloaded = TRUE;
   }
@@ -791,9 +797,6 @@ void InitializeJoystickMouse( void )
 static void Helper_CustomizeInputPortDefaults( struct ipd *defaults )
 {
   UINT32 i = 0;
-
-  if( !g_systemInitialized )
-    InitializeJoystickMouse();
 
 	for( ; defaults[i].type != IPT_END; ++i )
 	{

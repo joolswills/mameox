@@ -249,6 +249,9 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
 
 	PRINTMSG( T_TRACE, "osd_fopen" );
 
+    // The calloc is important here, if it's taken away
+    // it will cause odd behavior if the caller doesn't do
+    // a seek to set the file pointer (it's otherwise uninitialized)
 	ret = (osd_file*)calloc( 1, sizeof(osd_file) ); 
 	if( !ret )
 	{
@@ -506,7 +509,7 @@ UINT32 osd_fread( osd_file *file, void *buffer, UINT32 length )
     }
 
     // if we have a small read remaining, do it to the buffer and copy out the results
-    if (length < FILE_BUFFER_SIZE/2)
+    if (length < (FILE_BUFFER_SIZE >> 1))
     {
       // read as much of the buffer as we can
       file->m_bufferbase = file->m_offset;
