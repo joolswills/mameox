@@ -2598,7 +2598,13 @@ int showgamewarnings(struct mame_bitmap *bitmap)
 				}
 				i++;
 			}
+
+        // Unload the unnecessary data sections to save memory if possible
+      UnloadDriverDataSections();
+      LoadSilentDependencyDriverDataHacks();
+      LoadDriverSectionByName( strstr( maindrv->source_file, "src\\drivers\\" ) );
 		}
+
 
 		strcat(buf,"\n\n");
 		strcat(buf,ui_getstring (UI_typeok));
