@@ -22,6 +22,7 @@
 #include "InputManager.h"
 #include "GraphicsManager.h"
 #include "ROMList.h"
+#include "Help.h"
 #include "OptionsPage.h"
 #include "System_IniFile.h"
 #include "xbox_FileIO.h"
@@ -163,6 +164,12 @@ void __cdecl main( void )
   // At this point the MAMEoX process is guaranteed to have run, setting up
   // our totalMAMEGames member, as well as producing the driver info file
 
+		// Load the Help file
+  CHelp help( pD3DDevice, 
+                 g_font );
+	if( !help.LoadHelpFile() )
+		Die( pD3DDevice, "Could not load help file!" );
+
 		// Load/Generate the ROM listing
   CROMList romList( pD3DDevice, 
                     g_font, 
@@ -191,6 +198,7 @@ void __cdecl main( void )
 
     // Toggle for whether or not we're in options mode
   BOOL optionsMode = FALSE;
+  BOOL helpMode = FALSE;
 	FLOAT xButtonTimeout = 0.0f;
 	UINT64 lastTime = osd_cycles();
 
@@ -222,10 +230,16 @@ void __cdecl main( void )
       XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
 		}
 
-    if( gp0.bAnalogButtons[XINPUT_GAMEPAD_B] < 150 && gp0.bAnalogButtons[XINPUT_GAMEPAD_X] > 150 && xButtonTimeout == 0.0f )
+    if( gp0.bAnalogButtons[XINPUT_GAMEPAD_B] > 150 && gp0.bAnalogButtons[XINPUT_GAMEPAD_Y] > 150 && xButtonTimeout == 0.0f )
     {
         // Toggle options mode
       optionsMode = !optionsMode;
+      xButtonTimeout = XBUTTON_TIMEOUT;
+    }
+    else if( gp0.bAnalogButtons[XINPUT_GAMEPAD_B] < 150 && gp0.bAnalogButtons[XINPUT_GAMEPAD_X] > 150 && xButtonTimeout == 0.0f )
+    {
+        // Toggle help mode
+      helpMode = !helpMode;
       xButtonTimeout = XBUTTON_TIMEOUT;
     }
     else if(  gp0.sThumbRX < -SCREENRANGE_DEADZONE || gp0.sThumbRX > SCREENRANGE_DEADZONE || 
@@ -258,8 +272,6 @@ void __cdecl main( void )
       DestroyBackdrop();
       CreateBackdrop( xPercentage, yPercentage );
     }
-
-
 		
 			// Move the cursor position and render
     pD3DDevice->SetTransform( D3DTS_WORLD, &matWorld );
@@ -302,6 +314,11 @@ void __cdecl main( void )
     {
       optionsPage.MoveCursor( gp0 );
       optionsPage.Draw( FALSE, FALSE );
+    }
+    else if( helpMode )
+    {
+      help.MoveCursor( gp0 );
+      help.Draw( FALSE, FALSE );
     }
     else
     {
