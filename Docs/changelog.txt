@@ -108,6 +108,8 @@ Version 0.71.1b
       reported and thrown into the new families, but it gives up about a 
       meg of RAM.
 
+  - \Desectionize.pl
+    - Added commandline argument parsing to allow selective desectionization
 
  --- Integrated MAME version 0.71, changes follow -------------------
 
