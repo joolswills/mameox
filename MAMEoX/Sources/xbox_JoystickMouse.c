@@ -39,7 +39,7 @@
   // Helper macro, calls Helper_AddEntry in the InitializeJoystickMouse function
 #define ADDENTRY( _name__, _code__, _standardCode__ )    JOYNAME( _name__ ); Helper_AddEntry( name, (_code__), (_standardCode__), &joycount )
 
-#define STDCODE( cde )    (stickIndex == 0 ? JOYCODE_1_##cde : (stickIndex == 1 ? JOYCODE_2_##cde : (stickIndex == 3 ? JOYCODE_3_##cde : JOYCODE_4_##cde )))
+#define STDCODE( cde )    (stickIndex == 0 ? JOYCODE_1_##cde : (stickIndex == 1 ? JOYCODE_2_##cde : (stickIndex == 2 ? JOYCODE_3_##cde : JOYCODE_4_##cde )))
 
   //! The total number of JoystickInfo structures (= the total number of mapped buttons/axes on all joysticks)
 #define MAX_JOYSTICKINFO_ENTRIES      128
