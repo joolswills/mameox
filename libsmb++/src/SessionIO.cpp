@@ -133,7 +133,7 @@ int SessionIO::connect(uint32 IP, uint16 p)
     local.sin_family = AF_INET;
     local.sin_port = htons(port);
     uint32 bigIP=BIGEND32(IP);
-	memcpy(&local.sin_addr, &bigIP, sizeof(IP));
+	  memcpy(&local.sin_addr, &bigIP, sizeof(IP));
 
     if (::connect(sock, (sockaddr*)&local, sizeof(local)) < 0)
 	{

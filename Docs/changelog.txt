@@ -2,6 +2,11 @@
 Version 0.71.3b (CVS)
 
    -------------------------------------------------------------
+  - \libsmb++\src:
+    - SMBHandler.cpp
+      Fixed a bug in the password parsing code
+
+   -------------------------------------------------------------
   - \MAME\src:
     - input.h
       - Increased SEQ_MAX to 20 to allow commands to be defined

@@ -8,34 +8,35 @@
 //= I N C L U D E S ====================================================
 #include "smbhandler.h"
 #include "xbox_Network.h"
-
-//= G L O B A L = V A R S ==============================================
-static char szPassWd[128];
-
 //= C L A S S E S / S T R U C T U R E S ================================
-class MyCallback : public SmbAnswerCallback
+class CPasswordCallback : public SmbAnswerCallback
 {
-protected:
-  char buf[200];
 public:
-  char *getAnswer(int type, const char *optmessage) 
-  {
+  char *getAnswer( int type, const char *optmessage ) {
+    static char buf[128] = "";
     switch (type) 
     {
     case ANSWER_USER_NAME:
-      strcpy(buf, szPassWd);
+      buf[0] = 0;
+      strncat( buf, m_username.c_str(), 127 );
       break;
+
     case ANSWER_USER_PASSWORD:
-      strcpy(buf, szPassWd);
-      break;
     case ANSWER_SERVICE_PASSWORD:
-      strcpy(buf, szPassWd);
+      buf[0] = 0;
+      strncat( buf, m_password.c_str(), 127 );
       break;
     }
     
     return buf;
   }
-} cb;
+
+  CStdString    m_username;
+  CStdString    m_password;
+};
+
+//= G L O B A L = V A R S ==============================================
+static CPasswordCallback g_passwordCallback;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -47,7 +48,7 @@ CSMBHandler::CSMBHandler(void)
   if( g_NetworkConfig.m_NameServer[0] != 0x00 )
     m_pSMB->setNBNSAddress(g_NetworkConfig.m_NameServer.c_str());
 
-  m_pSMB->setPasswordCallback(&cb);
+  m_pSMB->setPasswordCallback(&g_passwordCallback);
   m_fd = -1;
 }
 
@@ -171,20 +172,21 @@ void CSMBHandler::ParsePasswd(const CStdString& strSMBPath)
 {
   // Parse the password from the path and copy into the global
   int iPassStartIdx = strSMBPath.Find(':', 5);
-  if (iPassStartIdx != -1)
+  if( iPassStartIdx != -1 && iPassStartIdx < strSMBPath.GetLength() - 1 )
   {
-    int iPassEndIdx = strSMBPath.Find('@', iPassStartIdx);
+    g_passwordCallback.m_username = strSMBPath.Mid( 5, iPassStartIdx );
+
+    int iPassEndIdx = strSMBPath.Find('@', iPassStartIdx) - 1;
     if (iPassEndIdx == -1)
-    {
       iPassEndIdx = strSMBPath.GetLength();
-    }
 
     // Copy the string back to the global
-    strcpy(szPassWd, strSMBPath.Mid(iPassEndIdx, iPassEndIdx-iPassStartIdx).c_str() );
+    g_passwordCallback.m_password = strSMBPath.Mid( iPassStartIdx + 1, iPassEndIdx - iPassStartIdx );
   }
   else
   {
-    strcpy(szPassWd, "");
+    g_passwordCallback.m_username = "";
+    g_passwordCallback.m_password = "";
   }
 }
 
