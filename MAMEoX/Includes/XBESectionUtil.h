@@ -1,5 +1,5 @@
 /**
-  * \file      Sections.h
+  * \file      XBESectionUtil.h
   * \brief     Registration of MAME files for creation and usage of XBOX
   *             loadable sections.
   *
