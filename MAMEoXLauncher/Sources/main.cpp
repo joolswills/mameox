@@ -13,7 +13,7 @@
 #include <crtdbg.h>
 
 #ifdef _PROFILER
-  #include <xbdm.h>
+#include <xbdm.h>
 #endif
 
 #include "MAMEoX.h"
@@ -222,7 +222,7 @@ void __cdecl main( void )
       XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
 		}
 
-    if( gp0.bAnalogButtons[XINPUT_GAMEPAD_X] > 150 && xButtonTimeout == 0.0f )
+    if( gp0.bAnalogButtons[XINPUT_GAMEPAD_B] < 150 && gp0.bAnalogButtons[XINPUT_GAMEPAD_X] > 150 && xButtonTimeout == 0.0f )
     {
         // Toggle options mode
       optionsMode = !optionsMode;
