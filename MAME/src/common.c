@@ -650,6 +650,8 @@ void *auto_malloc(size_t size)
 		info->tag = get_resource_tag();
 		info->ptr = result;
 	}
+  else
+    fatalerror( "Malloc failed! (Out of Memory)" );
 	return result;
 }
 
