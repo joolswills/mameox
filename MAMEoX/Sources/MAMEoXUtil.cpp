@@ -21,6 +21,7 @@
 #include "xbox_JoystickMouse.h"
 #include "xbox_Direct3DRenderer.h"
 #include "xbox_FileIO.h"
+#include "xbox_Network.h"
 
 extern "C" {
 #include "osd_cpu.h"
@@ -34,6 +35,7 @@ extern "C" {
 CInputManager			g_inputManager;
 CGraphicsManager	g_graphicsManager;
 CXBFont						g_font;
+
 
 extern "C" {
 
@@ -85,8 +87,6 @@ void LoadOptions( void )
     // 1 to skip the game info screen at startup
 	options.skip_gameinfo = iniFile.GetProfileInt( "General", "SkipGameInfo", FALSE );
   
-
-
     // sound sample playback rate, in Hz
   options.samplerate = iniFile.GetProfileInt( "Sound", "SampleRate", 44100 );
     // 1 to enable external .wav samples
@@ -119,6 +119,25 @@ void LoadOptions( void )
   FLOAT xPercentage = iniFile.GetProfileFloat( "Video", "ScreenUsage_X", DEFAULT_SCREEN_X_PERCENTAGE );
   FLOAT yPercentage = iniFile.GetProfileFloat( "Video", "ScreenUsage_Y", DEFAULT_SCREEN_Y_PERCENTAGE );
   SetScreenUsage( xPercentage, yPercentage );
+
+  // Grab the network settings
+  g_NetworkConfig.m_IPAddr     = iniFile.GetProfileString("Network", "IPAddress",  DEFAULT_IPADDR);
+  g_NetworkConfig.m_Gateway    = iniFile.GetProfileString("Network", "Gateway",    DEFAULT_GATEWAY);
+  g_NetworkConfig.m_SubnetMask = iniFile.GetProfileString("Network", "Subnet",     DEFAULT_SUBNETMASK);
+  g_NetworkConfig.m_NameServer = iniFile.GetProfileString("Network", "NameServer", DEFAULT_NAMESERVER);
+
+  // Grab the directory settings
+  g_FileIOConfig.m_ALTDrive           = iniFile.GetProfileString("Directories", "ALTDrive",            DEFAULT_ALTDRIVE);
+  g_FileIOConfig.m_ArtPath            = iniFile.GetProfileString("Directories", "ArtPath",             DEFAULT_ARTPATH);
+  g_FileIOConfig.m_AudioPath          = iniFile.GetProfileString("Directories", "AudioPath",           DEFAULT_AUDIOPATH);
+  g_FileIOConfig.m_ConfigPath         = iniFile.GetProfileString("Directories", "ConfigPath",          DEFAULT_CONFIGPATH);
+  g_FileIOConfig.m_DefaultRomListPath = iniFile.GetProfileString("Directories", "DefaultRomsListPath", DEFAULT_DEFAULTROMLISTPATH);
+  g_FileIOConfig.m_GeneralPath        = iniFile.GetProfileString("Directories", "GeneralPath",         DEFAULT_GENERALPATH);
+  g_FileIOConfig.m_HDImagePath        = iniFile.GetProfileString("Directories", "HDImagePath",         DEFAULT_HDIMAGEPATH);
+  g_FileIOConfig.m_HiScorePath        = iniFile.GetProfileString("Directories", "HiScoresPath",        DEFAULT_HISCOREPATH);
+  g_FileIOConfig.m_NVramPath          = iniFile.GetProfileString("Directories", "NVRamPath",           DEFAULT_NVRAMPATH);
+  g_FileIOConfig.m_RomBackupPath      = iniFile.GetProfileString("Directories", "BackupPath",          DEFAULT_ROMBACKUPPATH);
+  g_FileIOConfig.m_RomPath            = iniFile.GetProfileString("Directories", "RomsPath",            DEFAULT_ROMPATH);
 
     //-- Lightgun calibration -----------------------------------------------
   g_calibrationData[0].m_xData[0] = iniFile.GetProfileInt( "Input", "Lightgun1_Left", -32767 );
