@@ -84,7 +84,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories=".\Includes,..\MAME\src,..\,$(XDK_SAMPLES);&quot;..\libsmb++\src&quot;"
+				AdditionalIncludeDirectories=".\Includes;..\MAME\src;..\;&quot;$(XDK)\Samples\XBox\Common\Include\&quot;;&quot;..\libsmb++\src&quot;"
 				PreprocessorDefinitions="WIN32,_XBOX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"

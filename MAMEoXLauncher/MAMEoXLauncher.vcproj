@@ -20,7 +20,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories=".\Includes;..\MAMEoX\Includes;..\MAME\src;..\;$(XDK_SAMPLES);&quot;..\libsmb++\src&quot;"
+				AdditionalIncludeDirectories=".\Includes;..\MAMEoX\Includes;..\MAME\src;..\;&quot;$(XDK)\Samples\XBox\Common\Include&quot;;&quot;..\libsmb++\src&quot;"
 				PreprocessorDefinitions="_DEBUG;_XBOX"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
