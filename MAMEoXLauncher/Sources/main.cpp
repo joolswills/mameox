@@ -114,7 +114,8 @@ void __cdecl main( void )
   if( !g_fontSet.Create() )
   {
     LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
-    XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
+    DWORD retVal = XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
+    Die( pD3DDevice, "Failed to launch the dashboard! 0x%X", retVal );
   }
 
   LoadOptions();
@@ -213,8 +214,8 @@ void __cdecl main( void )
         Die( pD3DDevice, "Failed to generate the driver list file.\nPerhaps you're out of disk space?" );
 
       ShowLoadingScreen( pD3DDevice );
-      XLaunchNewImage( "D:\\MAMEoX.xbe", &g_launchData );
-		  Die( pD3DDevice, "Could not execute MAMEoX.xbe!" );
+      DWORD retVal = XLaunchNewImage( "D:\\MAMEoX.xbe", &g_launchData );
+      Die( pD3DDevice, "Failed to launch D:\\MAMEoX.xbe! 0x%X", retVal );
     }
 
       // If we get this far, we know that the driver list hasn't been regenerated,
@@ -467,7 +468,8 @@ void __cdecl main( void )
                                   &g_persistentLaunchData.m_superscrollIndex );
       SaveOptions();
       LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
-      XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
+      DWORD retVal = XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
+      Die( pD3DDevice, "Failed to launch the dashboard! 0x%X", retVal );
 		}
 
 
@@ -651,8 +653,8 @@ void __cdecl main( void )
                                   &g_persistentLaunchData.m_superscrollIndex );
       SaveOptions();
       ShowLoadingScreen( pD3DDevice );
-      XLaunchNewImage( "D:\\MAMEoX.xbe", &g_launchData );
-		  Die( pD3DDevice, "Could not execute MAMEoX.xbe!" );
+      DWORD retVal = XLaunchNewImage( "D:\\MAMEoX.xbe", &g_launchData );
+      Die( pD3DDevice, "Failed to launch D:\\MAMEoX.xbe! 0x%X", retVal );
     }
     else if( romList.ShouldGenerateROMList() )
     {
@@ -924,7 +926,14 @@ void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 
     // Reboot
   LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
-  XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
+  DWORD retVal = XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
+
+  g_fontSet.DefaultFont().Begin();
+    swprintf( wBuf, L"Failed to launch the dashboard! 0x%X", retVal );
+	  g_fontSet.DefaultFont().DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+	  g_fontSet.DefaultFont().DrawText( 320, 320, D3DCOLOR_RGBA( 255, 125, 125, 255), L"You need to power off manually!", XBFONT_CENTER_X );
+	g_fontSet.DefaultFont().End();
+	pD3DDevice->Present( NULL, NULL, NULL, NULL );
 }
 
 

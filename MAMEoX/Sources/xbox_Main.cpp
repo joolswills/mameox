@@ -312,7 +312,6 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
     // Attempt to get back to the dashboard
   LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
   retVal = XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
-  Die( pD3DDevice, "Failed to launch the dashboard! 0x%X", retVal );
 
   g_fontSet.DefaultFont().Begin();
     swprintf( wBuf, L"Failed to launch the dashboard! 0x%X", retVal );
