@@ -643,8 +643,8 @@ int fatalerror( const char *fmt, ... )
   g_inputManager.WaitForNoButton( 0 );
 
     // Make sure MAMEoXLauncher acts as though it was launched from the dashboard
-  MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
-  mameoxLaunchData->m_command = LAUNCH_RUN_AS_IF_REBOOTED;
+//  MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
+//  mameoxLaunchData->m_command = LAUNCH_RUN_AS_IF_REBOOTED;
 
     // Relaunch MAMEoXLauncher
   ShowLoadingScreen( pD3DDevice );
