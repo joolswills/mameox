@@ -126,7 +126,9 @@ BOOL osd_vmm_unloadLRUpage( void )
 //-------------------------------------------------------------
 void osd_vmm_printinfo( void )
 {
+#ifdef _DEBUG
   g_vmManager.PrintInfo();
+#endif
 }
 
 //-------------------------------------------------------------
