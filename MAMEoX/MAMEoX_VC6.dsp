@@ -124,10 +124,6 @@ SOURCE=.\Includes\osinline.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Includes\ROMList.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\Includes\Sections.h
 # End Source File
 # Begin Source File
@@ -164,11 +160,11 @@ SOURCE=.\Includes\xbox_Timing.h
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\Program Files\XboxSDK_June2002\Samples\Xbox\Common\Include\xbresource.h"
+SOURCE="..\..\..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbresource.h"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\Program Files\XboxSDK_June2002\Samples\Xbox\Common\Include\xbutil.h"
+SOURCE="..\..\..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbutil.h"
 # End Source File
 # End Group
 # Begin Group "Sources"
@@ -192,7 +188,7 @@ SOURCE=.\Sources\InputManager.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Sources\ROMList.cpp
+SOURCE=.\Sources\MAMEoXUtil.cpp
 # End Source File
 # Begin Source File
 
