@@ -75,80 +75,6 @@ static void DrawDriverProgressData( const char *fileName, DWORD index, DWORD tot
 static BOOL Helper_IsBIOS( const GameDriver *drv );
 
 //= F U N C T I O N S =================================================
-//#define VMMTEST
-
-
-#ifdef VMMTEST
-#include "VirtualMemoryManager.h"
-#include <vector>
-
-#define BLOCKSIZE   10 * 1024 * 1024
-
-void VMMTest( void )
-{
-  void *mem[64];
-  CVirtualMemoryManager mman;
-
-  srand( time( NULL ) );
-
-  
-
-  FLOAT elapsedTime;
-	UINT64 startTime;
-
-#define PROFILE_BEGIN() startTime = osd_cycles();
-#define PROFILE_END()   elapsedTime = (FLOAT)(osd_cycles() - startTime) / (FLOAT)osd_cycles_per_second(); \
-                        PRINTMSG( T_INFO, "Time: %f seconds", elapsedTime );
-
-  PRINTMSG( T_INFO, "Allocation test" );
-  DEBUGGERCHECKRAM();
-  PROFILE_BEGIN();
-
-  UINT32 i = 0;
-  for( ; i < 64; ++i )
-    mem[i] = mman.Malloc( BLOCKSIZE );
-
-  PROFILE_END();
-  PRINTMSG( T_INFO, "VPages: %lu. Allocated: %lu", mman.GetNumVirtualPages(), mman.GetNumCommittedPages() );
-
-  PRINTMSG( T_INFO, "Access test:" );
-  DEBUGGERCHECKRAM();
-  PROFILE_BEGIN();
-
-  for( i = 0; i < 1024; ++i )
-  {
-    UINT32 *ptr = (UINT32*)mem[rand() & 63];
-    mman.AccessAddressRange( ptr, BLOCKSIZE );
-    *ptr = 0;
-  }
-
-  PROFILE_END();
-  PRINTMSG( T_INFO, "VPages: %lu. Allocated: %lu", mman.GetNumVirtualPages(), mman.GetNumCommittedPages() );
-
-  PRINTMSG( T_INFO, "Free test:" );
-  DEBUGGERCHECKRAM();
-  PROFILE_BEGIN();
-
-  for( i = 0; i < 32; ++i )
-  {
-    mman.Free( mem[i] );
-    mem[i] = NULL;
-  }
-
-  PROFILE_END();
-  PRINTMSG( T_INFO, "VPages: %lu. Allocated: %lu", mman.GetNumVirtualPages(), mman.GetNumCommittedPages() );
-
-  PRINTMSG( T_INFO, "Access test 2:" );
-  PROFILE_BEGIN();
-
-  for( i = 0; i < 1024; ++i )
-    mman.AccessAddressRange( mem[rand() & 63], 1024*1024 );
-
-  PROFILE_END();
-  PRINTMSG( T_INFO, "VPages: %lu. Allocated: %lu", mman.GetNumVirtualPages(), mman.GetNumCommittedPages() );
-
-}
-#endif
 
 //-------------------------------------------------------------
 //	main
@@ -187,11 +113,6 @@ void __cdecl main( void )
   InitializeTiming();
 	InitializeD3DRenderer( g_graphicsManager, &g_fontSet.DefaultFont() );
   
-
-#ifdef VMMTEST
-VMMTest();
-#endif
-
   CHECKRAM();
 
     // Register the loadable section names for lookup at runtime
