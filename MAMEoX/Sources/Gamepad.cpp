@@ -340,14 +340,14 @@ void CGamepad::SetLightgunCalibration( INT32 cx, INT32 cy, INT32 ulx, INT32 uly 
     offsets.wUpperLeftX = ulx;
     offsets.wUpperLeftY = uly;
 
-    //XInputSetLightgunCalibration( m_gamepadDeviceHandle, &offsets );
+    XInputSetLightgunCalibration( m_gamepadDeviceHandle, &offsets );
   }
 }
 
 //------------------------------------------------------
 //	GetLightgunFlags
 //------------------------------------------------------
-DWORD CGamepad::GetLightgunFlags( void )
+DWORD CGamepad::GetLightgunFlags( void ) const
 {
   if( m_caps.SubType != XINPUT_DEVSUBTYPE_GC_LIGHTGUN )
     return 0;
@@ -357,6 +357,13 @@ DWORD CGamepad::GetLightgunFlags( void )
   return 0;
 }
 
+//------------------------------------------------------
+//	IsLightgunPointedAtScreen
+//------------------------------------------------------
+BOOL CGamepad::IsLightgunPointedAtScreen( void ) const
+{
+  return GetLightgunFlags() & XINPUT_LIGHTGUN_ONSCREEN;
+}
 
 //------------------------------------------------------
 //	AttachRemoveDevices

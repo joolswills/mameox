@@ -10,7 +10,7 @@
 //= I N C L U D E S ===========================================================
 #include <Xtl.h>
 #include "Gamepad.h"
-
+#include "MAMEoX.h"
 
 //= C L A S S E S =============================================================
 class CInputManager
@@ -80,10 +80,23 @@ public:
 		//------------------------------------------------------
 	inline void AttachRemoveDevices( void ) {
 			// Attach/Remove gamepads
-    m_gamepads[0].AttachRemoveDevices();
-    m_gamepads[1].AttachRemoveDevices();
-    m_gamepads[2].AttachRemoveDevices();
-    m_gamepads[3].AttachRemoveDevices();
+    BOOL gpAttached;
+
+    #define ATTACH_AND_RESTORE( gpNum ) \
+      gpAttached = m_gamepads[gpNum].IsConnected(); \
+      m_gamepads[gpNum].AttachRemoveDevices(); \
+      if( !gpAttached && m_gamepads[gpNum].IsConnected() ) {\
+        lightgunCalibration_t &calibData = g_calibrationData[gpNum]; \
+        m_gamepads[gpNum].SetLightgunCalibration( XINPUT_LIGHTGUN_CALIBRATION_CENTER_X - calibData.m_xData[1], \
+                                  XINPUT_LIGHTGUN_CALIBRATION_CENTER_Y - calibData.m_yData[1], \
+                                  XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_X - calibData.m_xData[0],  \
+                                  XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_Y - calibData.m_yData[0] ); \
+      }
+
+    ATTACH_AND_RESTORE( 0 );
+    ATTACH_AND_RESTORE( 1 );
+    ATTACH_AND_RESTORE( 2 );
+    ATTACH_AND_RESTORE( 3 );
 	}
 
 

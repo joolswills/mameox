@@ -258,7 +258,15 @@ public:
     //!
     //! \return  DWORD - wButtons masked to return only lightgun flags
 		//------------------------------------------------------
-  DWORD GetLightgunFlags( void );
+  DWORD GetLightgunFlags( void ) const;
+
+		//------------------------------------------------------
+		//	IsLightgunPointedAtScreen
+    //! Check whether or not the lightgun is pointed at the screen
+    //!
+    //! \return  BOOL - TRUE if the lightgun is pointed at the screen
+		//------------------------------------------------------
+  BOOL IsLightgunPointedAtScreen( void ) const;
 
   protected:
 		//------------------------------------------------------
