@@ -14,25 +14,15 @@ Y     - Hold to enter "Super Scroll" mode.
         change the letter; skipping to the 
         section of the list starting with 
         that letter.
-B + Y - Toggle the options screen
-B + A - Scan for new ROMs
-B + X - Move ROM to the "BACKUP" directory 
-        (this allows you to "permanently" 
-        remove a ROM from the listing, 
-        without really deleting the file. 
-        Note that there is currently no way 
-        to add the file back to the list 
-        from within MAMEoX. You will have to
-        manually move it back to the ROMs 
-        directory.
-        Note that files served off of a samba
-        share will not be moved, but the entry
-        will be removed from the ROM list.
 BLACK - Toggle between showing and hiding 
         clones
 WHITE - Toggle extended list mode (with 
         rating and favorite columns)
-BACK  - Toggle the lightgun calibration screen
+START - Toggle the start menu, from which
+        you can remove ROMs, scan for new
+        ROMs, switch to the Options menu,
+        the Lightgun calibration screen, 
+        etc...
 
 -- List Navigation -------------------------
 Left Trigger           - Move the ROM cursor
@@ -72,7 +62,8 @@ Right Analog Stick -
 -- Exiting MAMEoX --------------------------
 Pressing Left Trigger, Right Trigger, and 
 the Black button on Gamepad 1 will jump to
-the dashboard.
+the dashboard. You can also exit using the
+option in the START menu.
 
  
 ============================================
