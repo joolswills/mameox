@@ -501,14 +501,14 @@ void __cdecl main( void )
       {
 
         if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) < -SCREENRANGE_DEADZONE )
-          xPos -= 0.0005f;
+          xPos -= 0.00025f;
         else if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) > SCREENRANGE_DEADZONE )
           xPos += 0.0005f;
 
         if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) < -SCREENRANGE_DEADZONE )
-          yPos -= 0.0005f;
+          yPos -= 0.00025f;
         else if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) > SCREENRANGE_DEADZONE )
-          yPos += 0.0005f;
+          yPos += 0.00025f;
 
         if( xPos < -0.5f )
           xPos = -0.5f;
