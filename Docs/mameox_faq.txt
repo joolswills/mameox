@@ -1,9 +1,9 @@
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@@@                          MAMEoX FAQ v 0.14                          @@@
+@@@                          MAMEoX FAQ v 0.15                          @@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@                                                                     @@@
-@@@           MAMEoX v 0.71.b3, based on the MAME v 0.70 core           @@@
+@@@           MAMEoX v 0.71.3b, based on the MAME v 0.70 core           @@@
 @@@           Ported by eabair, opcode                                  @@@
 @@@           Portions based on MameX b5                                @@@
 @@@           original port by opcode, updated by superfro              @@@
@@ -21,7 +21,9 @@
  07/22/2003 - 0.13 Updated version, added question about what
                    do do if MAMEoX will not load up.  Also 
                    added a note about neogeo bios.
- 07/23/2003 - 0.14 Changed screenshot information.                                                
+ 07/23/2003 - 0.14 Changed screenshot information.
+ 07/24/2003 - 0.15 Added note regarding the calendar in the 
+                   M$ dash and neogeo games starting properly.                                                
 
  1.0 Purpose:
  ------------
@@ -42,8 +44,8 @@
  http://sourceforge.net/projects/mameox/ 
 
  Please note that only source code can be found on this website.  MAMEoX
- was built with the official Microsoft XDK, so no compiled binaries of 
- this source code are made available.
+ is built with an official Microsoft XDK, so no compiled binaries of this
+ source code are made available.
 
  1.2 Frequently Asked Questions About MAMEoX:
  --------------------------------------------
@@ -52,8 +54,9 @@
 
  A.  You need to compile the source code into binaries that will run on 
      your X-Box.  To do so you will need Visual Studio.NET and the X-Box
-     XDK.  Follow the directions provided with the source code (in 
-     Docs\readme.txt of the MAMEoX root) to compile MAMEoX.
+     XDK.  Currently it is suggested that you use Visual Studio.NET 2003
+     and the 5558 XDK.  Follow the directions provided with the source code
+     (in Docs\readme.txt of the MAMEoX root) to compile MAMEoX.
  -------------------------------------------------------------------------
  Q.  Where do I get the XDK and Visual Studio.NET?
 
@@ -73,7 +76,9 @@
 
  A.  I don't know.  There are instructions for setting up MAMEoX and it's
      directory structure in Docs/readme.txt, but getting the files to your
-     X-Box in the first place is your own business.
+     X-Box HD in the first place is your own business.  Moreover, there
+     are numerous ways to accomplish this, not one specific way - and some
+     people use CDRW / DVDR media instead of the hard drive.
  -------------------------------------------------------------------------
  Q.  This is a FAQ, right?  
 
@@ -85,18 +90,21 @@
      different things you might try:
      
      +  Update your dashboard or try a new one out.  Make sure it's one
-        that is somewhat current and is not outdated.
+        that is somewhat current and is not outdated.  Some people have
+        reported problems with older dashboards.
      +  Update your bios, and make sure IGR is disabled while you are at
         it.
      +  Check your binaries (make sure you're not attempting to run
         source code, if you have no xbe files in your distribution, you
         probably have the source code).
      +  Upgrade to a newer version of MAMEoX if you have not upgraded
-        in a while.
+        in a while.  Each new version of MAMEoX has numerous fixes to 
+        specific problems encountered in prior versions of MAMEoX.
      +  Reinstall MAMEoX completely.  Delete all MAMEoX binaries,
         subdirectories, and files.  Don't forget to delete everything in
         E:/TDATA/4d414d45/ as well, this includes subdirectories in this
-        directory.  
+        directory.  All of these files should be gone before attempting
+        a complete re-install of MAMEoX.
  --------------------------------------------------------------------------        
  Q.  Ok!  I've got MAMEoX on my X-Box and it's running like a champ!  I 
      have never been happier!  Where do I put my roms?
@@ -112,6 +120,12 @@
      or romcenter)?  As of this writing the neogeo bios had changed in
      v.70 of MAME.  Since MAMEoX is a port of MAME, it will require the 
      same up-to-date bios.
+     
+     It's also important to note that neogeo games require the calendar
+     to be set in your original M$ dash.  If you're having problems 
+     getting your neogeo roms to run you might boot to your M$ dash to be
+     sure that your clock is set.  Sometimes when power is disconnected to
+     your X-Box this requires resetting.
  --------------------------------------------------------------------------      
  Q.  I've put my rom files in the roms directory, but they still don't
      show up in the list. What's wrong?
@@ -124,7 +138,7 @@
      Anytime you add (or remove) rom files, you have to run this file to
      let MAMEoX know that something has changed.
      If that still doesn't work, make absolutely sure your rom files are
-     zipped. MAMEoX does not support unzipped roms.
+     zipped and named correctly. MAMEoX does not support unzipped roms.
  -------------------------------------------------------------------------     
  Q.  Does MAMEoX support samples?
 
@@ -140,6 +154,10 @@
      Also, you may enable/disable the cheat function on the "General"
      page of the options menu (press START and select "Options Menu" to
      get there.
+     
+     NOTE:  Using cheats requires more memory than not using cheats.  If
+            you are having difficulty running a specific rom with cheats
+            enabled, it's possible this is the reason why.
  -------------------------------------------------------------------------
  Q.  Does MAMEoX support screenshots?
 
@@ -181,14 +199,15 @@
      "smb://username:password@WorkGroup/ComputerName/MameShare/ROMs"
 
      You might also want to share the samples folder since some games 
-     might need them so you won't have to store them on your Xbox. i.e.; 
+     might need them, and so you won't have to store them on your Xbox. 
+     i.e.; 
 
      "smb://username:password@WorkGroup/ComputerName/MameShare/Samples"
 
-     You can share any of the read only folders also since Artwork is 
-     being implemented, but don't share any folder that MameoX must write 
-     to since MameoX can't write to a share yet.
-    
+     You can share any of the read only folders, but don't share any 
+     folder that MameoX must write to since MameoX won't write to a 
+     shared directory. 
+         
      NOTE:  Using Samba means that you have to enable network support
             within MAMEoX.  This results in more memory being consumed in 
             later versions of MAMEoX (v70.2b and thereafter).
