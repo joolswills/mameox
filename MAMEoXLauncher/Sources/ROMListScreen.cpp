@@ -1637,7 +1637,7 @@ void CROMListScreen::SuperScrollModeMoveCursor( CInputManager &gp, FLOAT elapsed
   GetFriendlySuperscrollIndexStringForROM( &curROMVal, GetAbsoluteCursorPosition() );
   GetFriendlySuperscrollIndexStringForJumpTableIndex( &curVal, m_currentSuperscrollIndex );
 
-  if( curVal != curROMVal )
+  if( curVal != curROMVal && curVal != "Invalid" )
     SetAbsoluteCursorPosition( m_superscrollJumpTable[m_currentSuperscrollIndex] );
 }
 
