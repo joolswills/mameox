@@ -436,8 +436,8 @@ static void Helper_RenderDirect16( void *dest, struct mame_bitmap *bitmap, const
   else
 	{ 
 	  sourceBuffer += (bounds.min_y * bitmap->rowpixels) + bounds.min_x;
-    
-    destBuffer += ((bounds.min_y * g_createParams.width) + bounds.min_x);
+    destBuffer += ((bounds.min_y * g_OrigRenderWidth) + bounds.min_x);
+
     UINT32 scanLen = (bounds.max_x - bounds.min_x) << 1;
 
 		for( UINT32 y = bounds.min_y; y < bounds.max_y; ++y )
@@ -451,7 +451,7 @@ static void Helper_RenderDirect16( void *dest, struct mame_bitmap *bitmap, const
 	if (g_FilterManger.GetActiveFilter().m_FilterType != eftNone)
 	{
 		g_FilterManger.FilterBitmap((u8*)dest, (u8*)g_pRenderBuffer, (g_OrigRenderWidth << 1), 
-			g_OrigRenderWidth-1, g_OrigRenderHeight-1);
+			g_OrigRenderWidth, g_OrigRenderHeight);
 	}
 }
 
@@ -524,7 +524,7 @@ static void Helper_RenderDirect32( void *dest, struct mame_bitmap *bitmap, const
 	if (g_FilterManger.GetActiveFilter().m_FilterType != eftNone)
 	{
 		g_FilterManger.FilterBitmap((u8*)dest, (u8*)g_pRenderBuffer, (g_OrigRenderWidth << 2), 
-			g_OrigRenderWidth-1, g_OrigRenderHeight-1);
+			g_OrigRenderWidth, g_OrigRenderHeight);
 	}
 }
 
