@@ -1761,12 +1761,18 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 //-------------------------------------------------------------
 static void Helper_SaveOptionsAndReboot( LPDIRECT3DDEVICE8 pD3DDevice, CROMListScreen &romList )
 {
+
+	DrawProgressbarMessage( pD3DDevice, "Saving settings...", NULL, 0xFFFFFFFF, 0xFFFFFFFF );
+
   g_romListOptions = romList.GetOptions();
   romList.GetCursorPosition(  &g_persistentLaunchData.m_cursorPosition, 
                               &g_persistentLaunchData.m_pageOffset,
                               &g_persistentLaunchData.m_superscrollIndex );
   SaveOptions();
   romList.SaveROMMetadataFile();
+
+	DrawProgressbarMessage( pD3DDevice, "Returning to dashboard...", NULL, 0xFFFFFFFF, 0xFFFFFFFF );
+
   LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
   DWORD retVal = XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
   Die( pD3DDevice, "Failed to launch the dashboard! 0x%X", retVal );
