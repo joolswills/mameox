@@ -718,10 +718,18 @@ BOOL CROMListScreen::SaveROMMetadataFile( void )
     METADATA_WRITEDATA( &(*it).m_romIndex, sizeof((*it).m_romIndex) );
 
       // Write the filename
-    len = strlen( (*it).m_romFileName );
-    METADATA_WRITEDATA( &len, sizeof(len) );
-    if( len )
+    if( (*it).m_romFileName )
+    {
+      len = strlen( (*it).m_romFileName ) + 1;
+      METADATA_WRITEDATA( &len, sizeof(len) );
       METADATA_WRITEDATA( (*it).m_romFileName, len );
+    }
+    else
+    {
+      len = 1;
+      METADATA_WRITEDATA( &len, sizeof(len) );
+      METADATA_WRITEDATA( "", 1 );
+    }
 
       // Write the favorite status
     METADATA_WRITEDATA( &(*it).m_favoriteStatus, sizeof((*it).m_favoriteStatus) );
@@ -732,20 +740,21 @@ BOOL CROMListScreen::SaveROMMetadataFile( void )
       // Write the catver.ini [Category] 
     if( (*it).m_genre )
     {
-      len = strlen( (*it).m_genre );
+      len = strlen( (*it).m_genre ) + 1;
       METADATA_WRITEDATA( &len, sizeof(len) );
       METADATA_WRITEDATA( (*it).m_genre, len );
     }
     else
     {
-      len = 0;
+      len = 1;
       METADATA_WRITEDATA( &len, sizeof(len) );
+      METADATA_WRITEDATA( "", 1 );
     }
 
       // Write the catver.ini [VersionAdded] 
     if( (*it).m_versionAdded )
     {
-      len = strlen( (*it).m_versionAdded );
+      len = strlen( (*it).m_versionAdded ) + 1;
       METADATA_WRITEDATA( &len, sizeof(len) );
       METADATA_WRITEDATA( (*it).m_versionAdded, len );
     }
