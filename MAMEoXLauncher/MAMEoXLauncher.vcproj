@@ -268,23 +268,6 @@
 			Name="Resources"
 			Filter="">
 			<File
-				RelativePath="MediaFiles\Arial_16.rdf">
-				<FileConfiguration
-					Name="Debug|Xbox">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Xbox">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="MediaFiles\ArialNarrow_16.rdf">
 				<FileConfiguration
 					Name="Debug|Xbox">
