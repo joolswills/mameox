@@ -28,9 +28,12 @@ Version 0.70.4b
 
     - xbox_Display.c:
       - Implemented MAME hooks for frameskip/throttle toggling
+      - Fixed a problem with the throttling code that seems to
+        greatly improve autoframeskip reliability.
 
     - MAMEoXUtil.cpp
       - Removed history.dat support
+
 
    -------------------------------------------------------------
   - \MAMEoXLauncher\Sources:
