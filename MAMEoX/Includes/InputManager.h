@@ -117,6 +117,20 @@ public:
 
 
 		//------------------------------------------------------
+		//	WaitForControllerInsertion
+    //! Wait until a given controller is inserted
+    //!
+    //! \param    device - The device number to query (0-3)
+		//------------------------------------------------------
+  void WaitForControllerInsertion( DWORD device ) {
+    if( device < 4 )
+    {
+      while( !m_gamepadDeviceHandles[device] )
+        PollDevices();
+    }
+  }
+
+		//------------------------------------------------------
 		//	GetGamepadDeviceState
     //! Return the current state of a given gamepad
     //!

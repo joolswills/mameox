@@ -217,6 +217,24 @@ void SaveOptions( void )
 }
 
 //-------------------------------------------------------------
+//  RequireController
+//-------------------------------------------------------------
+void RequireController( DWORD number )
+{
+  if( g_inputManager.GetGamepadDeviceState( number ) )
+    return;
+
+  WCHAR wBuf[256];
+  swprintf( wBuf, L"Please insert a controller into slot %d!", number + 1 );
+
+  BeginFontRender( TRUE );
+    FontRender( 320, 180, D3DCOLOR_XRGB(255,255,255), wBuf, XBFONT_CENTER_X );
+  EndFontRender();
+  
+  g_inputManager.WaitForControllerInsertion( number );
+}
+
+//-------------------------------------------------------------
 //	GetGamepadState
 //-------------------------------------------------------------
 const XINPUT_GAMEPAD *GetGamepadState( UINT32 joynum )

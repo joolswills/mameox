@@ -303,10 +303,15 @@ void __cdecl main( void )
 
   // At this point the MAMEoX process is guaranteed to have run, setting up
   // our totalMAMEGames member, as well as producing the driver info file
+
+    // Wait for controller 0 to be inserted
+  RequireController( 0 );
 	const XINPUT_GAMEPAD	*gp0 = g_inputManager.GetGamepadDeviceState( 0 );
-	const XINPUT_GAMEPAD	*gp1 = g_inputManager.GetGamepadDeviceState( 1 );
-	const XINPUT_GAMEPAD	*gp2 = g_inputManager.GetGamepadDeviceState( 2 );
-	const XINPUT_GAMEPAD	*gp3 = g_inputManager.GetGamepadDeviceState( 3 );
+//	const XINPUT_GAMEPAD	*gp1 = g_inputManager.GetGamepadDeviceState( 1 );
+//	const XINPUT_GAMEPAD	*gp2 = g_inputManager.GetGamepadDeviceState( 2 );
+//	const XINPUT_GAMEPAD	*gp3 = g_inputManager.GetGamepadDeviceState( 3 );
+
+
 
 #if TEST_LIGHTGUN
 
@@ -326,6 +331,8 @@ void __cdecl main( void )
     WCHAR calibBuf[1024];
 
 		g_inputManager.PollDevices();
+    RequireController( 0 );
+	  gp0 = g_inputManager.GetGamepadDeviceState( 0 );
 
     pD3DDevice->Clear(	0L,																// Count
 											  NULL,															// Rects to clear
@@ -477,6 +484,8 @@ void __cdecl main( void )
 	while( 1 )
 	{
 		g_inputManager.PollDevices();
+    RequireController( 0 );
+	  gp0 = g_inputManager.GetGamepadDeviceState( 0 );
 
 	  UINT64 curTime = osd_cycles();
 	  FLOAT elapsedTime = (FLOAT)(curTime - lastTime) / (FLOAT)osd_cycles_per_second();
@@ -585,17 +594,17 @@ void __cdecl main( void )
 	  pD3DDevice->SetTexture( 0, NULL );
     pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 4, 4 );
 
-    if( optionsMode && gp0 )
+    if( optionsMode )
     {
       optionsPage.MoveCursor( *gp0 );
       optionsPage.Draw( FALSE, FALSE );
     }
-    else if( helpMode && gp0 )
+    else if( helpMode )
     {
       help.MoveCursor( *gp0 );
       help.Draw( FALSE, FALSE );
     }
-    else if( gp0 )
+    else
     {
 		  romList.MoveCursor( *gp0 );
 		  romList.Draw( FALSE, FALSE );

@@ -13,6 +13,7 @@ Version 0.65b
 
   - \MAMEoX\Sources\MAMEoXUtilcpp:
     - Added gamepad capabilities checking for Lightgun support
+    - Added function to wait until a given gamepad is inserted
 
   - \MAMEoX\Sources\xbox_Sound.c:
     - Cosmetic changes to make debuggig easier
@@ -23,11 +24,13 @@ Version 0.65b
   - \MAMEoX\Includes\MAMEoX.h:
     - Updated version number
     - Added gamepad capabilities checking for Lightgun support
+    - Added function to wait until a given gamepad is inserted
 
   - \MAMEoX\Includes\InputManager.h:
     - Added gamepad capabilities checking for Lightgun support
     - Changed gamepad and capabilities over to pointers from
        const references
+    - Added function to wait until a given gamepad is inserted
 
   - \MAMEoX\Includes\xbox_FileIO.h:
     - Made the ROM backup path writeRequired
@@ -35,6 +38,7 @@ Version 0.65b
   - \MAMEoXLauncher\sources\main.cpp:
     - Help loading
     - Option mode on button B+Y now
+    - Added function to wait until a given gamepad is inserted
 
   - \MAMEoXLauncher\sources\Help.cpp:
 

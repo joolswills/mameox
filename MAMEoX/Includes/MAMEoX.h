@@ -75,7 +75,16 @@ typedef struct lightgunCalibration_t
 extern lightgunCalibration_t    g_calibrationData[4]; //!< Lightgun calibration data
 
 //= P R O T O T Y P E S ================================================
-	//-------------------------------------------------------------------
+  //-------------------------------------------------------------------
+	//	RequireController
+	//! \brief		Notifies the user that the given controller
+  //!           must be inserted, and waits until it is
+	//!
+	//! \param		joynum - The gamepad index (0-3)
+  //-------------------------------------------------------------------
+void RequireController( DWORD joynum );
+
+  //-------------------------------------------------------------------
 	//	GetGamepadState
 	//! \brief		Returns the XINPUT_GAMEPAD containing state
 	//!            info for joynum
