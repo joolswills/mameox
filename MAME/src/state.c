@@ -437,7 +437,7 @@ void state_save_save_continue(void)
 						ss_dump_array[e->offset+2] = v >> 16;
 						ss_dump_array[e->offset+3] = v >> 24;
 						TRACE(logerror("    %s.%d.%s: %x..%x\n", m->name, i, e->name, e->offset, e->offset+3));
-					} else {
+					} else if( e->data ) {
 						memcpy(ss_dump_array + e->offset, e->data, ss_size[e->type]*e->size);
 						TRACE(logerror("    %s.%d.%s: %x..%x\n", m->name, i, e->name, e->offset, e->offset+ss_size[e->type]*e->size-1));
 					}
