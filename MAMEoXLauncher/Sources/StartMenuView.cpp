@@ -18,8 +18,8 @@
 #define TITLEBAR_ROW            m_titleArea.top + 4
 #define FIRSTDATA_ROW           m_bodyArea.top
 
-#define HIGHLIGHTBAR_LEFT       m_bodyArea.left + 4
-#define HIGHLIGHTBAR_RIGHT      m_bodyArea.right - 4
+#define HIGHLIGHTBAR_LEFT       m_bodyArea.left + 3
+#define HIGHLIGHTBAR_RIGHT      m_bodyArea.right - 3
 #define NAME_START              m_bodyArea.left + 9
 #define TEXTBOX_RIGHT           HIGHLIGHTBAR_RIGHT   // The right edge of the text box
 #define COLUMN_PADDING          9     // Number of pixels to subtract from the column width before truncating text

@@ -449,7 +449,7 @@ void CSkinChooserScreen::DrawSkinList( void )
   m_displayDevice->SetTexture( 0, NULL );
 
 	FLOAT entryHeight = (DETAIL_SCREENSHOT_BOTTOM - DETAIL_SCREENSHOT_TOP + 10);
-  FLOAT selectedItemYPos = DETAIL_SCREENSHOT_TOP + entryHeight * (ULONG)m_cursorPosition;
+  FLOAT selectedItemYPos = FIRSTDATA_ROW + entryHeight * (ULONG)m_cursorPosition;
 
   m_displayDevice->Begin( D3DPT_QUADLIST );
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_BODY_HIGHLIGHTBAR) );
