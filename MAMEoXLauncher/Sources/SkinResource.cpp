@@ -148,16 +148,24 @@ BOOL CSkinResource::Create( const char *basePath, CStdString *errorReport )
 																						"ResourcesAlphaChannelFilename" );
 
 
-/*
-	for( int i = 0; i < ; ++i )
+	for( int i = 0; i < SPRITE_COUNT; ++i )
 	{
-		g_spriteIDToINIEntry
+		SkinSpriteInfo_t tempInfo;
+		CStdString sectionName = SpriteIDToINISection( (SkinSpriteID_t)i );
+		
+		CStdString entryName = g_spriteIDToINIEntry[i];
+		entryName += ".FileOffset.";
 
-  iniFile.GetProfileInt( "General", "CheatsEnabled", FALSE );
-  iniFile.GetProfileString( "General", "CheatFilename", "cheat.dat" ).c_str() );
-
+		tempInfo.m_left = iniFile.GetProfileInt( sectionName, entryName + "left", -1 );
+		tempInfo.m_right = iniFile.GetProfileInt( sectionName, entryName + "right", -1 );
+		tempInfo.m_top = iniFile.GetProfileInt( sectionName, entryName + "top", -1 );
+		tempInfo.m_bottom = iniFile.GetProfileInt( sectionName, entryName + "bottom", -1 );
+		if( tempInfo.m_left != -1 && tempInfo.m_right != -1 && tempInfo.m_top != -1 && tempInfo.m_bottom != -1 )
+		{
+			m_spriteInfoArray[i] = new SkinSpriteInfo_t;
+			memcpy( &m_spriteInfoArray[i], &tempInfo, sizeof(m_spriteInfoArray[i]) );
+		}
 	}
-*/
 
 	return TRUE;
 }
