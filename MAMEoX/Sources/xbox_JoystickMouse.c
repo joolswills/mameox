@@ -25,7 +25,13 @@
 
   //! The value of the analog axis must exceed this deadzone
   //!  when being treated as a digital control (valid values are from [0,32767])
-#define ANALOG_AS_DIGITAL_DEADZONE      10000
+#define ANALOG_AS_DIGITAL_DEADZONE          (32768 * 0.33f)
+#define ANALOG_BUTTON_AS_DIGITAL_DEADZONE   16
+
+	// Analog stick deadzone
+#define ANALOG_DEADZONE_PERCENTAGE      0.15f
+#define ANALOG_DEADZONE				          (32768 * ANALOG_DEADZONE_PERCENTAGE)
+#define DEADZONE_RECTIFIER			        1.0f / (1.0f - ANALOG_DEADZONE_PERCENTAGE)
 
 	// macros for building/mapping keycodes
 #define JOYCODE(joy, type, index)	      ((index) | ((type) << 8) | ((joy) << 12))
@@ -247,25 +253,25 @@ int osd_is_joy_pressed( int joycode )
 			switch( joyindex )
 			{
 				case BUTTON_A:
-					return (gamepad->bAnalogButtons[XINPUT_GAMEPAD_A] > 0);
+					return (gamepad->bAnalogButtons[XINPUT_GAMEPAD_A] > ANALOG_BUTTON_AS_DIGITAL_DEADZONE);
 				case BUTTON_X:
-					return (gamepad->bAnalogButtons[XINPUT_GAMEPAD_X] > 0);
+					return (gamepad->bAnalogButtons[XINPUT_GAMEPAD_X] > ANALOG_BUTTON_AS_DIGITAL_DEADZONE);
 				case BUTTON_B:
-					return (gamepad->bAnalogButtons[XINPUT_GAMEPAD_B] > 0);
+					return (gamepad->bAnalogButtons[XINPUT_GAMEPAD_B] > ANALOG_BUTTON_AS_DIGITAL_DEADZONE);
 				case BUTTON_Y:
-					return (gamepad->bAnalogButtons[XINPUT_GAMEPAD_Y] > 0);
+					return (gamepad->bAnalogButtons[XINPUT_GAMEPAD_Y] > ANALOG_BUTTON_AS_DIGITAL_DEADZONE);
 				case BUTTON_LEFT_TRIGGER:
-					return (gamepad->bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] > 0);
+					return (gamepad->bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] > ANALOG_BUTTON_AS_DIGITAL_DEADZONE);
 				case BUTTON_RIGHT_TRIGGER:
-					return (gamepad->bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] > 0);
+					return (gamepad->bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] > ANALOG_BUTTON_AS_DIGITAL_DEADZONE);
 				case BUTTON_START:
 					return (gamepad->wButtons & XINPUT_GAMEPAD_START);
 				case BUTTON_BACK:
 					return (gamepad->wButtons & XINPUT_GAMEPAD_BACK);
 				case BUTTON_WHITE:
-					return (gamepad->bAnalogButtons[XINPUT_GAMEPAD_WHITE] > 0);
+					return (gamepad->bAnalogButtons[XINPUT_GAMEPAD_WHITE] > ANALOG_BUTTON_AS_DIGITAL_DEADZONE);
 				case BUTTON_BLACK:
-					return (gamepad->bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 0);
+					return (gamepad->bAnalogButtons[XINPUT_GAMEPAD_BLACK] > ANALOG_BUTTON_AS_DIGITAL_DEADZONE);
 				case BUTTON_LA:
 					return (gamepad->wButtons & XINPUT_GAMEPAD_LEFT_THUMB);
 				case BUTTON_RA:
@@ -299,6 +305,7 @@ int osd_is_joy_pressed( int joycode )
 			return (gamepad->sThumbRX < -ANALOG_AS_DIGITAL_DEADZONE );
 		case JT_RSTICK_RIGHT:
 			return (gamepad->sThumbRX > ANALOG_AS_DIGITAL_DEADZONE );
+
 	}
 	
 	return 0;
@@ -324,7 +331,27 @@ int osd_is_joystick_axis_code( int joycode )
 	case JT_RSTICK_LEFT:
 	case JT_RSTICK_RIGHT:
 			return 1;
-	}
+
+  case JT_BUTTON:
+    {
+        // Most of the XBOX buttons are actually
+        // analog controls
+      switch( JOYINDEX( joycode ) )
+      {
+      case BUTTON_A:
+      case BUTTON_X:
+      case BUTTON_B:
+      case BUTTON_Y:
+      case BUTTON_LEFT_TRIGGER:
+      case BUTTON_RIGHT_TRIGGER:
+      case BUTTON_WHITE:
+      case BUTTON_BLACK:
+        return 1;
+      }
+    }
+    break;
+
+  }
 	return 0;
 }
 
@@ -398,7 +425,8 @@ void osd_analogjoy_read(	int player,
 													InputCode analogjoy_input[MAX_ANALOG_AXES] )
 {
 	/* return values in the range -128 .. 128 (yes, 128, not 127) */
-	ULONG i = 0;
+	UINT32 i = 0;
+  FLOAT analogDivisor = 32768.0f;
 	const XINPUT_GAMEPAD *gamepad;
 	
 //	PRINTMSG( T_TRACE, "osd_analogjoy_read" );
@@ -428,34 +456,132 @@ void osd_analogjoy_read(	int player,
 		if( joynum >= 4 )
 			continue;
 
+    switch( joytype )
+    {
+	  case JT_LSTICK_UP:
+      if( gamepad->sThumbLY > ANALOG_DEADZONE )
+        analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLY - ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+      else if( gamepad->sThumbLY < -ANALOG_DEADZONE )
+        analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLY + ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+      else
+        analog_axis[i] = 0;
 
-			// I have no clue if this is right or not, awesome documentation
-			// MAME! 
-		switch( joyindex )
-		{
-				// X Axis //
-		case 0:
-			analog_axis[i] = gamepad->sThumbLX;
+       // MAME seems to expect - values for Y axes to be "Up", so we need to
+       // negate
+      analog_axis[i] *= -1;
+      break;
+
+	  case JT_LSTICK_DOWN:
+CheckRAM();
+      if( gamepad->sThumbLY > ANALOG_DEADZONE )
+        analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLY - ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+      else if( gamepad->sThumbLY < -ANALOG_DEADZONE )
+        analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLY + ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+      else
+        analog_axis[i] = 0;
+
+       // MAME seems to expect - values for Y axes to be "Up", so we need to
+       // negate
+      analog_axis[i] *= -1;
 			break;
 
-				// Y Axis //
-		case 1:
-			analog_axis[i] = gamepad->sThumbLY;
-			break;
+    case JT_LSTICK_LEFT:
+      if( gamepad->sThumbLX < -ANALOG_DEADZONE )
+        analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLX + ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+      else if( gamepad->sThumbLX > ANALOG_DEADZONE )
+        analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLX - ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+      else
+        analog_axis[i] = 0;
+      break;
 
-		case 2:
-			analog_axis[i] = gamepad->sThumbRX;
-			break;
+	  case JT_LSTICK_RIGHT:
+CheckRAM();
+      if( gamepad->sThumbLX < -ANALOG_DEADZONE )
+        analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLX + ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+      else if( gamepad->sThumbLX > ANALOG_DEADZONE )
+        analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLX - ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+      else
+        analog_axis[i] = 0;
+      break;
 
-		case 3:
-			analog_axis[i] = gamepad->sThumbRY;
-			break;
+	  case JT_RSTICK_UP:
+    case JT_RSTICK_DOWN:
+      if( gamepad->sThumbRY > ANALOG_DEADZONE )
+        analog_axis[i] = (int)((FLOAT)(gamepad->sThumbRY - ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+      else if( gamepad->sThumbRY < -ANALOG_DEADZONE )
+        analog_axis[i] = (int)((FLOAT)(gamepad->sThumbRY + ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+      else
+        analog_axis[i] = 0;
+
+       // MAME seems to expect - values for Y axes to be "Up", so we need to
+       // negate
+      analog_axis[i] *= -1;
+      break;
+
+    case JT_RSTICK_LEFT:
+	  case JT_RSTICK_RIGHT:
+      if( gamepad->sThumbRX < -ANALOG_DEADZONE )
+        analog_axis[i] = (int)((FLOAT)(gamepad->sThumbRX + ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+      else if( gamepad->sThumbRX > ANALOG_DEADZONE )
+        analog_axis[i] = (int)((FLOAT)(gamepad->sThumbRX - ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+      else
+        analog_axis[i] = 0;
+      break;
+
+    case JT_BUTTON:
+      {
+        analogDivisor = 255.0f;
+          // Most of the XBOX buttons are actually
+          // analog controls, we map them from -128 to 128
+        switch( joyindex )
+        {
+        case BUTTON_A:
+          analog_axis[i] = (int)gamepad->bAnalogButtons[XINPUT_GAMEPAD_A] - 128;
+          break;
+
+        case BUTTON_X:
+          analog_axis[i] = (int)gamepad->bAnalogButtons[XINPUT_GAMEPAD_X] - 128;
+          break;
+
+        case BUTTON_B:
+          analog_axis[i] = (int)gamepad->bAnalogButtons[XINPUT_GAMEPAD_B] - 128;
+          break;
+
+        case BUTTON_Y:
+          analog_axis[i] = (int)gamepad->bAnalogButtons[XINPUT_GAMEPAD_Y] - 128;
+          break;
+
+        case BUTTON_LEFT_TRIGGER:
+          analog_axis[i] = (int)gamepad->bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] - 128;
+          break;
+
+        case BUTTON_RIGHT_TRIGGER:
+          analog_axis[i] = (int)gamepad->bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] - 128;
+          break;
+
+        case BUTTON_WHITE:
+          analog_axis[i] = (int)gamepad->bAnalogButtons[XINPUT_GAMEPAD_WHITE] - 128;
+          break;
+
+        case BUTTON_BLACK:
+          analog_axis[i] = (int)gamepad->bAnalogButtons[XINPUT_GAMEPAD_BLACK] - 128;
+          break;
+
+        default:
+          continue;
+        }
+      }
+
+        // MAME seems to expect pedals to go from 
+        // 128 (released) to -128 (pressed)
+      analog_axis[i] *= -1;
+      break;
 
 		default:
 			continue;
 		}
 
-		analog_axis[i] = analog_axis[i] * 257 / 65535;
+		analog_axis[i] = (analog_axis[i] * 128.0f / analogDivisor);
 		if (analog_axis[i] < -128) 
 			analog_axis[i] = -128;
 		if (analog_axis[i] >  128) 
