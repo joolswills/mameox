@@ -1,5 +1,8 @@
 Version 0.67b
 
+  - \MAMEoXLauncher\Sources\ROMList.cpp
+    - Bugfix: Additional info shows the files correct now
+    - Additional info shows year and clonefilename now
 
   - \MAMEoX\Includes\Gamepad.h
   - \MAMEoX\Sources\Gamepad.cpp
