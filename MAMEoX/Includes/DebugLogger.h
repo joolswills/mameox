@@ -54,7 +54,7 @@
 #define T_INFO         MT_INFO, __FILE__, __LINE__, __FUNCTION__
 #define T_NOPOSITION   MT_INFO, NULL, 0, NULL
 
-#define EZ_TRACE()		PRINTMSG(( T_TRACE, "" ));
+#define EZ_TRACE()		PRINTMSG(( T_TRACE, "" ))
 
 //= P R O T O T Y P E S ========================================
 
@@ -80,19 +80,19 @@ void ToggleDebugConsole( void );
   //  Helper_DebugLoggerPrintMsg
   //! \brief    Send a message to the debug logger
   //----------------------------------------------------------------------------
-void Helper_DebugLoggerPrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNumber, const char *function, const char *fmt, ... );
+void Helper_DebugLoggerPrintMsg( UINT32 msgLevel, const char *fileName, UINT32 lineNumber, const char *function, const char *fmt, ... );
 
   //----------------------------------------------------------------------------
   //  Helper_OutputDebugStringPrintMsg
   //! \brief    Send a message to the debugger/xboxwatson tool
   //----------------------------------------------------------------------------
-void Helper_OutputDebugStringPrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNumber, const char *function, const char *fmt, ... );
+void Helper_OutputDebugStringPrintMsg( UINT32 msgLevel, const char *fileName, UINT32 lineNumber, const char *function, const char *fmt, ... );
 
   //----------------------------------------------------------------------------
   //  Helper_ConsolePrintMsg
   //! \brief    Put a message on the debug console
   //----------------------------------------------------------------------------
-void Helper_ConsolePrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNumber, const char *function, const char *fmt, ... );
+void Helper_ConsolePrintMsg( UINT32 msgLevel, const char *fileName, UINT32 lineNumber, const char *function, const char *fmt, ... );
 
   //----------------------------------------------------------------------------
   //  Helper_RenderDebugConsole
@@ -105,13 +105,13 @@ void Helper_RenderDebugConsole( void *device );
   //  Helper_WriteToFilePrintMsg
   //! \brief    Write a message to the debug.log file in the MAMEoX directory
   //----------------------------------------------------------------------------
-void Helper_WriteToFilePrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNumber, const char *function, const char *fmt, ... );
+void Helper_WriteToFilePrintMsg( UINT32 msgLevel, const char *fileName, UINT32 lineNumber, const char *function, const char *fmt, ... );
 
   //----------------------------------------------------------------------------
   //  Helper_InlineNOPDebugLoggerPrintMsg
   //! \brief    NOP function for non-_DEBUGLOGGER builds
   //----------------------------------------------------------------------------
-__inline void Helper_InlineNOPDebugLoggerPrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNumber, const char *function, const char *fmt, ... ) {
+__inline void Helper_InlineNOPDebugLoggerPrintMsg( UINT32 msgLevel, const char *fileName, UINT32 lineNumber, const char *function, const char *fmt, ... ) {
 }
 
   //----------------------------------------------------------------------------
