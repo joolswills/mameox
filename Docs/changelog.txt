@@ -5,6 +5,9 @@ Version 0.64b
   - \MAME\cheat.c:
     - Disabled watch prints by default
 
+  - \MAMEoX\Includes\MAMEoX.h:
+    - Moved MAME core version string to header file
+
   - \MAMEoX\Includes\InputManager.h:
     - Renamed WaitForNoKeys to WaitForNoKey
 
@@ -24,9 +27,14 @@ Version 0.64b
     - Fixed a non-termination bug w/ the Die function.
     - Renamed WaitForNoKeys to WaitForNoKey
 
+  - \MAMEoXLauncher\MediaFiles:
+    - Added directory w/ Media files
+
   - \MAMEoXLauncher\Sources\main.cpp
     - Fixed a non-termination bug w/ the Die function.
-    - Moved all ROMList user input to the ROMList file    
+    - Moved all ROMList user input to the ROMList file.
+    - Updated splashscreen w/ graphical logo (thanks to r4dius)
+    - Added backdrop to ROM List screen (thanks to r4dius)
 
   - \MAMEoXLauncher\Sources\ROMList.cpp:
     - Moved all ROMList user input to the ROMList file
