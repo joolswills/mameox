@@ -24,7 +24,7 @@
 				InlineFunctionExpansion="1"
 				FavorSizeOrSpeed="1"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories=".\Includes,..\MAME\src,..\,C:\Program Files\XboxSDK_June2002\Samples\Xbox\Common\Include"
+				AdditionalIncludeDirectories=".\Includes,..\MAME\src,..\,C:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include"
 				PreprocessorDefinitions="WIN32,_XBOX,NDEBUG"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
@@ -82,7 +82,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories=".\Includes,..\MAME\src,..\,C:\Program Files\XboxSDK_June2002\Samples\Xbox\Common\Include"
+				AdditionalIncludeDirectories=".\Includes,..\MAME\src,..\,C:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include"
 				PreprocessorDefinitions="WIN32,_XBOX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
@@ -136,7 +136,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories=".\Includes,..\MAME\src,..\,C:\Program Files\XboxSDK_June2002\Samples\Xbox\Common\Include"
+				AdditionalIncludeDirectories=".\Includes,..\MAME\src,..\,C:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include"
 				PreprocessorDefinitions="WIN32,_XBOX,_DEBUG,_PROFILER"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
@@ -190,7 +190,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories=".\Includes,..\MAME\src,..\,C:\Program Files\XboxSDK_June2002\Samples\Xbox\Common\Include"
+				AdditionalIncludeDirectories=".\Includes,..\MAME\src,..\,C:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include"
 				PreprocessorDefinitions="WIN32,_XBOX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
@@ -275,7 +275,7 @@
 				RelativePath=".\Includes\osinline.h">
 			</File>
 			<File
-				RelativePath="..\..\Program Files\XboxSDK_June2002\Samples\Xbox\Common\Include\xbfont.h">
+				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbfont.h">
 			</File>
 			<File
 				RelativePath=".\Includes\xbox_Direct3DRenderer.h">
@@ -290,10 +290,10 @@
 				RelativePath=".\Includes\xbox_Timing.h">
 			</File>
 			<File
-				RelativePath="..\..\Program Files\XboxSDK_June2002\Samples\Xbox\Common\Include\xbresource.h">
+				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbresource.h">
 			</File>
 			<File
-				RelativePath="..\..\Program Files\XboxSDK_June2002\Samples\Xbox\Common\Include\xbutil.h">
+				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbutil.h">
 			</File>
 		</Filter>
 		<Filter
@@ -358,15 +358,7 @@
 				RelativePath="Sources\System_IniFile.cpp">
 			</File>
 			<File
-				RelativePath="..\..\Program Files\XboxSDK_June2002\Samples\Xbox\Common\Src\xbfont.cpp">
-				<FileConfiguration
-					Name="Profile|Xbox">
-					<Tool
-						Name="VCCLCompilerTool"
-						AssemblerListingLocation=".\Profile/"
-						ObjectFile=".\Profile/"
-						ProgramDataBaseFileName=".\Profile/"/>
-				</FileConfiguration>
+				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Src\xbfont.cpp">
 			</File>
 			<File
 				RelativePath=".\Sources\xbox_Direct3DRenderer.cpp">
@@ -468,26 +460,10 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\Program Files\XboxSDK_June2002\Samples\Xbox\Common\Src\xbresource.cpp">
-				<FileConfiguration
-					Name="Profile|Xbox">
-					<Tool
-						Name="VCCLCompilerTool"
-						AssemblerListingLocation=".\Profile/"
-						ObjectFile=".\Profile/"
-						ProgramDataBaseFileName=".\Profile/"/>
-				</FileConfiguration>
+				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Src\xbresource.cpp">
 			</File>
 			<File
-				RelativePath="..\..\Program Files\XboxSDK_June2002\Samples\Xbox\Common\Src\xbutil.cpp">
-				<FileConfiguration
-					Name="Profile|Xbox">
-					<Tool
-						Name="VCCLCompilerTool"
-						AssemblerListingLocation=".\Profile/"
-						ObjectFile=".\Profile/"
-						ProgramDataBaseFileName=".\Profile/"/>
-				</FileConfiguration>
+				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Src\xbutil.cpp">
 			</File>
 		</Filter>
 		<Filter
