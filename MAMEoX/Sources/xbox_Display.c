@@ -343,7 +343,10 @@ INLINE void Helper_UpdateAutoframeskip( const struct performance_info *performan
           g_frameskipAdjust = 0;
 
 				if( g_frameskip )
+        {
 					--g_frameskip;
+          PRINTMSG( T_INFO, "Autosetting frameskip level to %lu\n", g_frameskip );
+        }
         else
         {
             // Already at min frameskip
@@ -351,7 +354,6 @@ INLINE void Helper_UpdateAutoframeskip( const struct performance_info *performan
           break;
         }
 			}
-      PRINTMSG( T_INFO, "Autosetting frameskip level to %lu\n", g_frameskip );
     }
     else
     {
@@ -370,7 +372,10 @@ INLINE void Helper_UpdateAutoframeskip( const struct performance_info *performan
           g_frameskipAdjust = 0;
 
 				if( g_frameskip < FRAMESKIP_LEVELS - 1 )
+        {
 					++g_frameskip;
+          PRINTMSG( T_INFO, "Autosetting frameskip level to %lu\n", g_frameskip );
+        }
         else
         {
             // Already at max frameskip
@@ -378,7 +383,6 @@ INLINE void Helper_UpdateAutoframeskip( const struct performance_info *performan
           break;
         }
 			}
-      PRINTMSG( T_INFO, "Autosetting frameskip level to %lu\n", g_frameskip );
     }
   }
   else if( g_rendererOptions.m_frameskip != AUTO_FRAMESKIP )
