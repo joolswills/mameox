@@ -1,4 +1,14 @@
 Version 0.63b
+  
+  - \MAMEoX\MAMEoX_VC6.dsp
+    - Updated to support v0.63b changes
+    
+  - \MAMEoXLauncher\MAMEoXLauncher_VC6.dsp
+    - VC6 Project file MAMEoXLauncher required by main MAMEoX_VC.dsw
+      workspace file
+      
+  - \MAMEoX_VC6.dsw:
+    - Updated to add MAMEoXLauncher compile
 
   - \MAMEoX\Sources\xbox_FileIO.c:
     - Changed Helper_CreateOrOpenSystemPath() to allow the caller
