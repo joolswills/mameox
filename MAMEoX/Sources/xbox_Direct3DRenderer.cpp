@@ -289,6 +289,9 @@ BOOL D3DRendererRender(	struct mame_bitmap *bitmap,
 
 	if( !bitmap )
 	{
+      // Render the debug console
+    RenderDebugConsole( g_pD3DDevice );
+
 			// Present the cleared screen
 		g_pD3DDevice->Present( NULL, NULL, NULL, NULL );
 
@@ -325,8 +328,11 @@ BOOL D3DRendererRender(	struct mame_bitmap *bitmap,
     else
       fatalerror( "Attempt to render with unknown depth %lu!\nPlease report this game immediately!", bitmap->depth );
   }
-
   g_pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
+
+    // Render the debug console
+  RenderDebugConsole( g_pD3DDevice );
+
   g_pD3DDevice->Present( NULL, NULL, NULL, NULL );
 
 	return TRUE;

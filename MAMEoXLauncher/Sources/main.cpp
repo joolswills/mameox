@@ -532,6 +532,8 @@ void __cdecl main( void )
 	  pD3DDevice->SetTexture( 0, renderTargetTexture );
     pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
 
+
+    RenderDebugConsole( pD3DDevice );
     pD3DDevice->Present( NULL, NULL, NULL, NULL );
 
 

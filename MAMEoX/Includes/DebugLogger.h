@@ -26,17 +26,21 @@
 
   #define DebugLoggerFlush()							
   #define DebugLoggerWaitForLogClient()		
-  #define PRINTMSG												Helper_OutputDebugStringPrintMsg
-
+  #define RenderDebugConsole(dev)                         Helper_RenderDebugConsole( (void*)dev )
+  #define PRINTMSG												                Helper_OutputDebugStringPrintMsg
+  #define PRINTMSG_TO_CONSOLE                             Helper_ConsolePrintMsg
 #else
 
   #define DebugLoggerFlush()							
   #define DebugLoggerWaitForLogClient()		
+  #define RenderDebugConsole(dev)
 
   #ifdef _LOGDEBUGMESSAGES
-    #define PRINTMSG												Helper_WriteToFilePrintMsg
+    #define PRINTMSG												              Helper_WriteToFilePrintMsg
+    #define PRINTMSG_TO_CONSOLE                           Helper_WriteToFilePrintMsg
   #else
-    #define PRINTMSG												Helper_InlineNOPDebugLoggerPrintMsg
+    #define PRINTMSG												              Helper_InlineNOPDebugLoggerPrintMsg
+    #define PRINTMSG_TO_CONSOLE                           Helper_InlineNOPDebugLoggerPrintMsg
   #endif
 
 #endif
@@ -65,7 +69,7 @@ extern "C" {
   //----------------------------------------------------------------------------
 HRESULT DebugLoggerInit( void );
 
-
+#ifdef _DEBUG
   //----------------------------------------------------------------------------
   //  Helper_DebugLoggerPrintMsg
   //! \brief    Send a message to the debug logger
@@ -77,6 +81,19 @@ void Helper_DebugLoggerPrintMsg( ULONG msgLevel, const char *fileName, ULONG lin
   //! \brief    Send a message to the debugger/xboxwatson tool
   //----------------------------------------------------------------------------
 void Helper_OutputDebugStringPrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNumber, const char *function, const char *fmt, ... );
+
+  //----------------------------------------------------------------------------
+  //  Helper_ConsolePrintMsg
+  //! \brief    Put a message on the debug console
+  //----------------------------------------------------------------------------
+void Helper_ConsolePrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNumber, const char *function, const char *fmt, ... );
+
+  //----------------------------------------------------------------------------
+  //  Helper_RenderDebugConsole
+  //! \brief    Render the debug console to the device retrieved from g_graphicsManager
+  //----------------------------------------------------------------------------
+void Helper_RenderDebugConsole( void *device );
+#endif
 
   //----------------------------------------------------------------------------
   //  Helper_WriteToFilePrintMsg

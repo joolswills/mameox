@@ -3,11 +3,17 @@
 //= I N C L U D E S ==================================================
 #include "DebugLogger.h"
 
+#include "GraphicsManager.h"
+#include "FontSet.h"
+
 #include <xtl.h>
 #include <xbdm.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <io.h>
+
+#include <list>
+#include "StdString.h"
 
 
 
@@ -18,6 +24,9 @@
 #define DEBUG_LOG_FILE            "D:\\debug.log"
 
 //= G L O B A L = V A R S ============================================
+  // Defined in MAMEoXUtil.cpp
+extern CGraphicsManager	  g_graphicsManager;
+extern CFontSet           g_fontSet;
 
 //#if defined(_DEBUG) || defined(_LOGDEBUGMESSAGES)
 static const char   g_LevelName[][4] = {	"TRC",
@@ -27,7 +36,10 @@ static const char   g_LevelName[][4] = {	"TRC",
 static char         g_debugLoggerString[MAX_DBG_STRINGSZ];
 //#endif
 
-
+#ifdef _DEBUG
+#define DEBUGCONSOLE_MAXLINES   16
+std::list<CStdString> g_debugConsoleData;
+#endif
 
 //= P R O T O T Y P E S ===============================================
 DWORD WINAPI debugloggermain( void *data );
@@ -295,6 +307,107 @@ void Helper_OutputDebugStringPrintMsg( ULONG msgLevel, const char *fileName, ULO
 
   OutputDebugString( g_debugLoggerString );
 }
+
+//----------------------------------------------------------------------------
+//  Helper_ConsolePrintMsg
+//----------------------------------------------------------------------------
+void Helper_ConsolePrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNumber, const char *function, const char *fmt, ... )
+{
+  sprintf(  g_debugLoggerString, 
+            "%-16.16s> ", 
+						function );
+
+  va_list arg;
+  va_start( arg, fmt );
+  vsprintf( &g_debugLoggerString[strlen(g_debugLoggerString)], fmt, arg );
+  va_end( arg );
+
+  strcat( g_debugLoggerString, "\n" );
+
+  if( g_debugConsoleData.size() == DEBUGCONSOLE_MAXLINES )
+    g_debugConsoleData.pop_front();
+
+  g_debugConsoleData.push_back( g_debugLoggerString );
+}
+
+//----------------------------------------------------------------------------
+//  Helper_RenderDebugConsole
+//----------------------------------------------------------------------------
+void Helper_RenderDebugConsole( void *device )
+{
+  if( !g_debugConsoleData.size() || !device )
+    return;
+
+  LPDIRECT3DDEVICE8 pD3DDevice = (LPDIRECT3DDEVICE8)device;
+
+  #define CONSOLECOLOR      D3DCOLOR_RGBA( 50, 80, 50, 190 )
+  #define CONSOLETEXTCOLOR  D3DCOLOR_XRGB( 255, 255, 255 )
+  #define X_POS             100
+  #define Y_POS             100
+  #define WIDTH             400
+
+
+    // Store the values of options that we're going to change
+  IDirect3DBaseTexture8 *pTexture;
+  pD3DDevice->GetTexture( 0, &pTexture );
+
+  DWORD vertexShader;
+  pD3DDevice->GetVertexShader( &vertexShader );
+
+  IDirect3DVertexBuffer8 *pStreamData;
+  UINT stride;
+  pD3DDevice->GetStreamSource( 0, &pStreamData, &stride );
+
+  DWORD alphaState, srcBlend, destBlend;
+  pD3DDevice->GetRenderState( D3DRS_ALPHABLENDENABLE, &alphaState );
+  pD3DDevice->GetRenderState( D3DRS_SRCBLEND, &srcBlend );
+  pD3DDevice->GetRenderState( D3DRS_DESTBLEND, &destBlend );
+
+
+
+    // Render a translucent quad for a backdrop
+  pD3DDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
+  pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
+  pD3DDevice->SetRenderState( D3DRS_SRCBLEND,         D3DBLEND_SRCALPHA );
+  pD3DDevice->SetRenderState( D3DRS_DESTBLEND,        D3DBLEND_INVSRCALPHA );
+
+  pD3DDevice->Begin( D3DPT_QUADLIST );
+    pD3DDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CONSOLECOLOR );
+    pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, X_POS - 10, Y_POS - 10, 1.0f, 1.0f );
+    
+    pD3DDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CONSOLECOLOR );
+    pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, X_POS + WIDTH + 10, Y_POS - 10, 1.0f, 1.0f );
+    
+    pD3DDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CONSOLECOLOR );
+    pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, X_POS + WIDTH + 10, Y_POS + (14 * (g_debugConsoleData.size()+1) ), 1.0f, 1.0f );
+
+    pD3DDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CONSOLECOLOR );
+    pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, X_POS - 10, Y_POS + (14 * (g_debugConsoleData.size()+1) ), 1.0f, 1.0f );
+  pD3DDevice->End();
+
+    // Render the text
+  g_fontSet.SmallThinFont().Begin();
+
+    std::list<CStdString>::iterator i = g_debugConsoleData.begin();
+    for( UINT32 y = 0; i != g_debugConsoleData.end(); ++i, y += 14 )
+    {
+      WCHAR wBuf[256];
+      mbstowcs( wBuf, (*i).c_str(), 256 );
+	    g_fontSet.SmallThinFont().DrawText( X_POS, Y_POS + y, CONSOLETEXTCOLOR, wBuf, XBFONT_TRUNCATED, WIDTH );
+    }
+
+  g_fontSet.SmallThinFont().End();
+
+
+    // Restore settings
+  pD3DDevice->SetTexture( 0, pTexture );
+  pD3DDevice->SetVertexShader( vertexShader );
+  pD3DDevice->SetStreamSource( 0, pStreamData, stride );
+  pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, alphaState );
+  pD3DDevice->SetRenderState( D3DRS_SRCBLEND, srcBlend );
+  pD3DDevice->SetRenderState( D3DRS_DESTBLEND, destBlend );
+}
+
 #endif
 
 //-------------------------------------------------------
