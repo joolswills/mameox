@@ -1,11 +1,3 @@
-#pragma code_seg("C652")
-#pragma data_seg("D652")
-#pragma bss_seg("B652")
-#pragma const_seg("K652")
-#pragma comment(linker, "/merge:D652=652")
-#pragma comment(linker, "/merge:C652=652")
-#pragma comment(linker, "/merge:B652=652")
-#pragma comment(linker, "/merge:K652=652")
 /***************************************************************************
 
   vidhrdw.c
@@ -605,7 +597,3 @@ VIDEO_UPDATE( ixion )
 
 }
 
-#pragma code_seg()
-#pragma data_seg()
-#pragma bss_seg()
-#pragma const_seg()
