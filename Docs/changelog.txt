@@ -1,5 +1,10 @@
 Version 0.63b
 
+  - \MAMEoX\Sources\xbox_FileIO.c:
+    - Changed Helper_CreateOrOpenSystemPath() to allow the caller
+      to require that the directories checked be writeable (so that
+      nvram directories on a CD/DVD are not considered valid)
+
   - \MAMEoXLauncher:
     - Added directory with separate ROM list XBE
 

@@ -19,11 +19,11 @@
 //= D E F I N E S ======================================================
 
   //!<  Helper macro, calls Helper_CreateOrOpenSystemPath on the passed path
-#define CREATEOROPENPATH( _pth__ )  tempStr = strdup( _pth__ ); \
-                                    if( !Helper_CreateOrOpenSystemPath( &tempStr ) ) { \
-                                      PRINTMSG( T_ERROR, "Failed to create or open system path %s!", tempStr ); \
-                                      _RPT1( _CRT_ERROR, "Could not create or open system path %s!\n", tempStr ); \
-                                    }
+#define CREATEOROPENPATH( _pth__, _wtReq__ )  tempStr = strdup( _pth__ ); \
+                                              if( !Helper_CreateOrOpenSystemPath( &tempStr, (_wtReq__) ) ) { \
+                                                PRINTMSG( T_ERROR, "Failed to create or open system path %s!", tempStr ); \
+                                                _RPT1( _CRT_ERROR, "Could not create or open system path %s!\n", tempStr ); \
+                                              }
 
 
 //= S T R U C T U R E S ================================================
@@ -48,11 +48,30 @@ const char *g_pathNames[FILETYPE_end] = {NULL};
 
 
 //= P R O T O T Y P E S ================================================
+  //--------------------------------------------------------------------
+  //  Helper_CreateOrOpenSystemPath
   //! Create one of the system directories (GENERALPATH, etc...) or
   //!  open it if it already exists. Also, if the path cannot be created
   //!  on the D:, do so on the Z: instead
-static BOOL Helper_CreateOrOpenSystemPath( char **path );
+  //!
+  //! \param  path - [IN,OUT] Passed in as the path to create/verify,
+  //!                this value is set to the actual path on return.
+  //! \param  writeRequired - When set to TRUE, the path cannot be a
+  //!                         read-only directory or file.
+  //--------------------------------------------------------------------
+static BOOL Helper_CreateOrOpenSystemPath( char **path, BOOL writeRequired );
 
+  //--------------------------------------------------------------------
+  // Helper_CreateDirectoryPath
+  //! \brief  Ensures that the passed path is reachable, creating 
+  //!         directories when necessary.
+  //!
+  //! \param  path - The path to check, note that this will be modified
+  //!                in the function, but set back to the original on
+  //!                return
+  //! \param  has_filename - Whether or not "path" contains the name of
+  //!                        a file.
+  //--------------------------------------------------------------------
 void Helper_CreateDirectoryPath( char *path, BOOL has_filename );
 static void Helper_ConvertSlashToBackslash( char *path );
 static BOOL Helper_PreloadFile( _osd_file *dest, HANDLE openedFile );
@@ -76,36 +95,36 @@ void InitializeFileIO( void )
 
 
     // Make sure the rom list path is available
-  CREATEOROPENPATH( ROMLISTPATH );
+  CREATEOROPENPATH( ROMLISTPATH, TRUE );
   free( tempStr );
 
-  CREATEOROPENPATH( ROMPATH );
+  CREATEOROPENPATH( ROMPATH, FALSE );
 	g_pathNames[FILETYPE_RAW] = g_pathNames[FILETYPE_ROM] = 
 															g_pathNames[FILETYPE_ROM_NOCRC] = 
 															tempStr;
 
-  CREATEOROPENPATH( INIPATH );
+  CREATEOROPENPATH( INIPATH, TRUE );
 	g_pathNames[FILETYPE_INI] = tempStr;
 
-  CREATEOROPENPATH( NVRAMPATH );
+  CREATEOROPENPATH( NVRAMPATH, TRUE );
 	g_pathNames[FILETYPE_HIGHSCORE] = g_pathNames[FILETYPE_HIGHSCORE_DB] = 
 																		g_pathNames[FILETYPE_NVRAM] = 
 																		g_pathNames[FILETYPE_STATE] =
 																		g_pathNames[FILETYPE_MEMCARD] = 
 																		tempStr;
 
-  CREATEOROPENPATH( ARTPATH );
+  CREATEOROPENPATH( ARTPATH, FALSE );
 	g_pathNames[FILETYPE_IMAGE] = g_pathNames[FILETYPE_IMAGE_DIFF] =
 																g_pathNames[FILETYPE_ARTWORK] = 
 																tempStr;
 
-  CREATEOROPENPATH( AUDIOPATH );
+  CREATEOROPENPATH( AUDIOPATH, FALSE );
   g_pathNames[FILETYPE_SAMPLE] = tempStr;
 
-  CREATEOROPENPATH( CONFIGPATH );
+  CREATEOROPENPATH( CONFIGPATH, TRUE );
   g_pathNames[FILETYPE_CONFIG] = tempStr;
 
-  CREATEOROPENPATH( GENERALPATH );
+  CREATEOROPENPATH( GENERALPATH, TRUE );
 	g_pathNames[FILETYPE_INPUTLOG] =  g_pathNames[FILETYPE_SCREENSHOT] = 
 																	  g_pathNames[FILETYPE_HISTORY] = 
 																	  g_pathNames[FILETYPE_CHEAT] = 
@@ -336,7 +355,7 @@ INT32 osd_fseek( osd_file *file, INT64 offset, int whence )
   }
 
     // Validate arg
-  if( offset > file->m_fileSize || offset < 0)
+  if( (UINT32)offset > file->m_fileSize || offset < 0)
   {
     _RPT0( _CRT_WARN, "Offset value too high or low in osd_fseek\n" );
     PRINTMSG( T_ERROR, "Offset value too high or low in osd_fseek" );
@@ -570,7 +589,7 @@ static BOOL Helper_PreloadFile( _osd_file *dest, HANDLE openedFile )
   if( dest->m_fileSize )
   {
       // Read the file into memory
-    dest->m_data = (UINT8*)malloc( dest->m_fileSize );
+    dest->m_data = (UINT8*)malloc( (size_t)dest->m_fileSize );
     if( !dest->m_data )
     {
       PRINTMSG( T_ERROR, "Out of memory while loading file!" );
@@ -600,21 +619,21 @@ static BOOL Helper_PreloadFile( _osd_file *dest, HANDLE openedFile )
 //---------------------------------------------------------------------
 //  Helper_CreateOrOpenSystemPath
 //---------------------------------------------------------------------
-static BOOL Helper_CreateOrOpenSystemPath( char **path )
+static BOOL Helper_CreateOrOpenSystemPath( char **path, BOOL writeRequired )
 {
   DWORD attrib;
   if( !path || !(*path) )
     return FALSE;
 
   attrib = GetFileAttributes( *path );
-	if( attrib == PATH_NOT_FOUND || attrib == 0xFFFFFFFF )
+	if( attrib == PATH_NOT_FOUND || attrib == 0xFFFFFFFF || (writeRequired && (attrib & FILE_ATTRIBUTE_READONLY)) )
   {
     if( !CreateDirectory( *path, NULL ) )
     {
         // Attempt to create the directory on the Z: instead
       *path[0] = 'Z';
       attrib = GetFileAttributes( *path );
-	    if( attrib == PATH_NOT_FOUND || attrib == 0xFFFFFFFF )
+	    if( attrib == PATH_NOT_FOUND || attrib == 0xFFFFFFFF || (writeRequired && (attrib & FILE_ATTRIBUTE_READONLY)) )
       {
         if( !CreateDirectory( *path, NULL ) )
           return FALSE;
