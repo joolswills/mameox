@@ -6,7 +6,7 @@
 -------------------
 
 A     - Play selected ROM
-X     - Show Help file
+X     - Toggle this Help file
 Y     - Hold to enter "Super Scroll" mode. 
         At the top of the screen, a letter 
         (or # symbol) will appear. Using the
@@ -14,7 +14,7 @@ Y     - Hold to enter "Super Scroll" mode.
         change the letter; skipping to the 
         section of the list starting with 
         that letter.
-B + Y - Toggle Option screen
+B + Y - Toggle the options screen
 B + A - Scan for new ROMs
 B + X - Move ROM to the "BACKUP" directory 
         (this allows you to "permanently" 
@@ -28,10 +28,11 @@ B + X - Move ROM to the "BACKUP" directory
         Note that files served off of a samba
         share will not be moved, but the entry
         will be removed from the ROM list.
-Black - Toggle between showing and hiding 
+BLACK - Toggle between showing and hiding 
         clones
-White - Toggle extended list mode (with 
+WHITE - Toggle extended list mode (with 
         rating and favorite columns)
+BACK  - Toggle the lightgun calibration screen
 
 -- List Navigation -------------------------
 Left Trigger           - Move the ROM cursor
