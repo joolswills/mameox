@@ -7,14 +7,8 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
-
 //= I N C L U D E S ====================================================
-#include <Xtl.h>
-#include "XBFont.h"
-#include "MAMEoX.h"
-#include "Gamepad.h"
+#include "ListView.h"
 #include "VirtualKeyboard.h"
 
 extern "C" {
@@ -68,14 +62,17 @@ void ChangeDirectoryPathPage( COptionsPage *, BOOL direction );
 	* \class		COptionsPage
 	* \brief		The options page class
 	*/
-class COptionsPage
+class COptionsPage : public CListView
 {
 public:
 
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-	COptionsPage( LPDIRECT3DDEVICE8	displayDevice, CXBFont &varWidthFont, CXBFont &fixedWidthFont, GameOptions &options );
+  COptionsPage( LPDIRECT3DDEVICE8	displayDevice, 
+                CFontSet &fontSet, 
+                LPDIRECT3DTEXTURE8 backdropTexture,
+                GameOptions &options );
 
 		//------------------------------------------------------------
     // Destructor
@@ -88,17 +85,19 @@ public:
 		//!
 		//! \param		gp - The CGamepad containing the 
 		//!                current state of the user's joystick
+    //! \param    useSpeedBanding - Whether or not to enable
+    //!              "speed bands" (cursor acceleration)
 		//------------------------------------------------------------
-	void MoveCursor( CGamepad &gp );
+	virtual void MoveCursor( CGamepad &gp, BOOL useSpeedBanding = FALSE );
 
 		//------------------------------------------------------------
 		// Draw
-		//! \brief		Render the current list to the user
+		//! \brief		Render the list to the screen
     //!
-    //! \param    opaque - Clear the screen before rendering
+    //! \param    clearScreen - Clear the screen before rendering
     //! \param    flipOnCompletion - Call Present before leaving
 		//------------------------------------------------------------
-	virtual void Draw( BOOL opaque = TRUE, BOOL flipOnCompletion = TRUE );
+	virtual void Draw( BOOL clearScreen = TRUE, BOOL flipOnCompletion = TRUE );
 
   void DrawGeneralPage( void );
   void DrawSoundPage( void );
@@ -116,8 +115,6 @@ public:
 
 protected:
   UINT32                    m_pageNumber;                   //!< The options page number
-	UINT32								    m_cursorPosition;	              //!< Cursor position within the current list page
-	FLOAT									    m_dpadCursorDelay;              //!< Counter used to slow down the dpad repeat rate
   FLOAT                     m_triggerDelay;                 //!< Counter used to slow down the trigger repeat rate
   FLOAT                     m_optToggleDelay;               //!< Counter used to slow down option toggle buttons
 
@@ -126,15 +123,5 @@ protected:
   LPDIRECT3DVERTEXBUFFER8   m_virtualKeyboardVertexBuffer;
 
   optionsPageData_t         m_pageData[OPTPAGE_LAST];
-
-	LPDIRECT3DDEVICE8			    m_displayDevice;
-	CXBFont								    &m_varWidthFont;
-	CXBFont								    &m_fixedWidthFont;
 };
-
-
-
-#endif    // #ifdef __cplusplus
-
-
 

@@ -239,10 +239,10 @@ void RemapDriveLetters( void );
 BOOL RenderToTextureStart( RenderToTextureToken_t &token, LPDIRECT3DDEVICE8 pD3DDevice, LPDIRECT3DTEXTURE8 texture, D3DVIEWPORT8 &textureViewpoint );
 
 	//-------------------------------------------------------------------
-  // RenderToTextureEnd
+  // RenderToTextureStop
   //! \brief    Reset the renderer to output to the screen
 	//-------------------------------------------------------------------
-void RenderToTextureEnd( RenderToTextureToken_t &token );
+void RenderToTextureStop( RenderToTextureToken_t &token );
 
 #endif
 

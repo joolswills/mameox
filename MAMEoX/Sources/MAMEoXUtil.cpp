@@ -542,9 +542,9 @@ BOOL RenderToTextureStart( RenderToTextureToken_t &token, LPDIRECT3DDEVICE8 pD3D
 }
 
 //-------------------------------------------------------------
-//  RenderToTextureEnd
+//  RenderToTextureStop
 //-------------------------------------------------------------
-void RenderToTextureEnd( RenderToTextureToken_t &token )
+void RenderToTextureStop( RenderToTextureToken_t &token )
 {
   D3DVIEWPORT8 vpBackBuffer = { 0, 0, 640, 480, 0.0f, 1.0f };
   token.m_pD3DDevice->SetRenderTarget( token.m_backBuffer, token.m_zBuffer );

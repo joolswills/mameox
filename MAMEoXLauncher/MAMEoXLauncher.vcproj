@@ -155,6 +155,9 @@
 				RelativePath="..\MAMEoX\Sources\InputManager.cpp">
 			</File>
 			<File
+				RelativePath=".\Sources\ListView.cpp">
+			</File>
+			<File
 				RelativePath="Sources\main.cpp">
 			</File>
 			<File
@@ -201,6 +204,9 @@
 				RelativePath="..\MAMEoX\Includes\DebugLogger.h">
 			</File>
 			<File
+				RelativePath="..\MAMEoX\Includes\FontSet.h">
+			</File>
+			<File
 				RelativePath="..\MAMEoX\Includes\Gamepad.h">
 			</File>
 			<File
@@ -211,6 +217,9 @@
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Includes\InputManager.h">
+			</File>
+			<File
+				RelativePath=".\Includes\ListView.h">
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Includes\MAMEoX.h">
@@ -294,6 +303,23 @@
 			</File>
 			<File
 				RelativePath="MediaFiles\CourierNew_12.rdf">
+				<FileConfiguration
+					Name="Debug|Xbox">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="bundler &quot;$(InputPath)&quot;"
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Xbox">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="bundler &quot;$(InputPath)&quot;"
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\MediaFiles\FranklinGothicMedium_12.rdf">
 				<FileConfiguration
 					Name="Debug|Xbox">
 					<Tool

@@ -30,6 +30,7 @@
 #include "xbox_Timing.h"
 #include "DebugLogger.h"
 #include "xbox_Network.h"
+#include "FontSet.h"
 
 	// Font class from the XDK
 #include "XBFont.h"
@@ -38,14 +39,6 @@
 
   // The maximum number of times to attempt to generate a working driver.list file
 #define MAX_DRIVERLIST_GENERATION_ATTEMPTS    2
-
-// VC6 requires the 2 paramater call to create. _VC6 is defined in the VC6 dsp files
-#ifdef _VC6
-#define CREATEFONT( fntObj, fntName )     fntObj.Create( pD3DDevice, fntName )
-#else
-#define CREATEFONT( fntObj, fntName )     fntObj.Create( fntName )
-#endif
-
 
 	// Number of seconds between valid X button readings
 #define TOGGLEBUTTON_TIMEOUT	0.50f
@@ -64,10 +57,9 @@ struct CUSTOMVERTEX
   // Defined in MAMEoXUtil.cpp
 extern CInputManager			g_inputManager;
 extern CGraphicsManager	  g_graphicsManager;
-extern CXBFont						g_font;
-extern CXBFont            g_fixedWidthFont;
-extern CXBFont            g_smallFont;
-extern CXBFont            g_largeFont;
+
+  // The global font manager
+CFontSet                  g_fontSet;
 
   // XBE Launch data
 static DWORD              g_launchDataType;
@@ -81,10 +73,6 @@ static LPDIRECT3DVERTEXBUFFER8    g_pD3DVertexBuffer = NULL;
 
   //! The data for each driver
 static MAMEDriverData_t   *g_driverData = NULL;
-
-  // The token for rendering the various views to a texture
-static RenderToTextureToken_t   g_renderToTextureToken;
-
 
 
 extern "C" {
@@ -127,36 +115,12 @@ void __cdecl main( void )
 	g_graphicsManager.Create();
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
 
-		// Load the fonts, reboot if any are missing (without a font,
-    //  no error message is possible (as of today)
-  if( FAILED( CREATEFONT( g_font, "HawaiianPunk_16.xpr" ) ) )
+    // Create the fonts or die
+  if( !g_fontSet.Create() )
   {
-    PRINTMSG_TO_LOG( T_ERROR, "Failed loading font Media/HawaiianPunk_16.xpr!" );
     LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
     XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
   }
-
-  if( FAILED( CREATEFONT( g_fixedWidthFont, "CourierNew_12.xpr" ) ) )
-  {
-    PRINTMSG_TO_LOG( T_ERROR, "Failed loading font Media/CourierNew_12.xpr!" );
-    LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
-    XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
-  }
-
-  if( FAILED( CREATEFONT( g_smallFont, "ArialNarrow_12.xpr" ) ) )
-  {
-    PRINTMSG_TO_LOG( T_ERROR, "Failed loading font Media/ArialNarrow_12.xpr!" );
-    LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
-    XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
-  }
-
-  if( FAILED( CREATEFONT( g_largeFont, "ArialNarrow_16.xpr" ) ) )
-  {
-    PRINTMSG_TO_LOG( T_ERROR, "Failed loading font Media/ArialNarrow_16.xpr!" );
-    LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
-    XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
-  }
-  
 
   LoadOptions();
 
@@ -305,40 +269,40 @@ void __cdecl main( void )
 															(BYTE**)&pVertices,		// ppbData
 															0 );									// Flags
 
-    FLOAT lx = (FLOAT)((gp0->sThumbLX - 300)) / 32767.0f;
-    FLOAT rx = (FLOAT)((gp0->sThumbLX + 300)) / 32767.0f;
+      FLOAT lx = (FLOAT)((gp0->sThumbLX - 300)) / 32767.0f;
+      FLOAT rx = (FLOAT)((gp0->sThumbLX + 300)) / 32767.0f;
 
-    FLOAT ty = (FLOAT)((gp0->sThumbLY - 300)) / 32767.0f;
-    FLOAT by = (FLOAT)((gp0->sThumbLY + 300)) / 32767.0f;
+      FLOAT ty = (FLOAT)((gp0->sThumbLY - 300)) / 32767.0f;
+      FLOAT by = (FLOAT)((gp0->sThumbLY + 300)) / 32767.0f;
 
-      //-- Draw the backdrop -------------------------------------------------
-		pVertices[0].pos.x = lx;
-		pVertices[0].pos.y = ty;
-		pVertices[0].pos.z = 1.0f;
-    pVertices[0].tu = 0.0f;
-    pVertices[0].tv = 0.0f;
+        //-- Draw the backdrop -------------------------------------------------
+		  pVertices[0].pos.x = lx;
+		  pVertices[0].pos.y = ty;
+		  pVertices[0].pos.z = 1.0f;
+      pVertices[0].tu = 0.0f;
+      pVertices[0].tv = 0.0f;
 
-		pVertices[1].pos.x = rx;
-		pVertices[1].pos.y = ty;
-		pVertices[1].pos.z = 1.0f;
-    pVertices[1].tu = 1.0f;
-    pVertices[1].tv = 0.0f;
-		
-		pVertices[2].pos.x = rx;
-		pVertices[2].pos.y = by;
-		pVertices[2].pos.z = 1.0f;
-    pVertices[2].tu = 1.0f;
-    pVertices[2].tv = 1.0f;
-		
-		pVertices[3].pos.x = lx;
-		pVertices[3].pos.y = by;
-		pVertices[3].pos.z = 1.0f;
-    pVertices[3].tu = 0.0f;
-    pVertices[3].tv = 1.0f;
+		  pVertices[1].pos.x = rx;
+		  pVertices[1].pos.y = ty;
+		  pVertices[1].pos.z = 1.0f;
+      pVertices[1].tu = 1.0f;
+      pVertices[1].tv = 0.0f;
+  		
+		  pVertices[2].pos.x = rx;
+		  pVertices[2].pos.y = by;
+		  pVertices[2].pos.z = 1.0f;
+      pVertices[2].tu = 1.0f;
+      pVertices[2].tv = 1.0f;
+  		
+		  pVertices[3].pos.x = lx;
+		  pVertices[3].pos.y = by;
+		  pVertices[3].pos.z = 1.0f;
+      pVertices[3].tu = 0.0f;
+      pVertices[3].tv = 1.0f;
 
     g_pD3DVertexBuffer->Unlock();
 
-    g_font.Begin();
+    g_fontSet.DefaultFont().Begin();
 
     if( gp0->bAnalogButtons[XINPUT_GAMEPAD_B] > 10 )
     {
@@ -365,13 +329,13 @@ void __cdecl main( void )
       SaveOptions();
     }
 
-      g_font.DrawText( 320, 180, D3DCOLOR_RGBA( 255, 255, 255, 255), calibBuf, XBFONT_CENTER_X );
+      g_fontSet.DefaultFont().DrawText( 320, 180, D3DCOLOR_RGBA( 255, 255, 255, 255), calibBuf, XBFONT_CENTER_X );
 
       swprintf( wBuf, L"LX: %d", gp0->sThumbLX );
-	    g_font.DrawText( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+	    g_fontSet.DefaultFont().DrawText( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
 
       swprintf( wBuf, L"LY: %d", gp0->sThumbLY );
-	    g_font.DrawText( 320, 100, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+	    g_fontSet.DefaultFont().DrawText( 320, 100, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
 
 
 
@@ -379,12 +343,12 @@ void __cdecl main( void )
       osd_lightgun_read( 0, &deltaX, &deltaY );
 
       swprintf( wBuf, L"LX: %d", deltaX );
-	    g_font.DrawText( 320, 280, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+	    g_fontSet.DefaultFont().DrawText( 320, 280, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
 
       swprintf( wBuf, L"LY: %d", deltaY );
-	    g_font.DrawText( 320, 300, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+	    g_fontSet.DefaultFont().DrawText( 320, 300, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
 
-    g_font.End();
+    g_fontSet.DefaultFont().End();
 
     pD3DDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX1 );
     pD3DDevice->SetStreamSource(	0,												  // Stream number
@@ -401,7 +365,9 @@ void __cdecl main( void )
 
 
 		// Load the Help file
-  CHelp help( pD3DDevice, g_fixedWidthFont );
+  CHelp help( pD3DDevice, 
+              g_fontSet, 
+              (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_HelpScreenBackdrop_OFFSET] );
 	if( !help.LoadHelpFile() )
   {
     Die( pD3DDevice, 
@@ -414,7 +380,10 @@ void __cdecl main( void )
 
 		// Load/Generate the ROM listing
   CROMList romList( pD3DDevice, 
-                    g_smallFont, 
+                    g_fontSet,
+                    (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_ROMListScreenBackdrop_OFFSET],
+                    (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_ROMListScrollUpMask_OFFSET],
+                    (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_ROMListScrollDownMask_OFFSET],
                     g_driverData, 
                     mameoxLaunchData->m_totalMAMEGames );
 	if( !romList.LoadROMList( TRUE ) )
@@ -432,8 +401,8 @@ void __cdecl main( void )
   CreateBackdrop( xPos, yPos, xPercentage, yPercentage );
 
   COptionsPage optionsPage( pD3DDevice,
-                            g_smallFont,
-                            g_fixedWidthFont,
+                            g_fontSet,
+                            (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_OptionsScreenBackdrop_OFFSET],
                             options );
 
     //-- Initialize the rendering engine -------------------------------
@@ -443,8 +412,8 @@ void __cdecl main( void )
     // Create a texture for the render target
   LPDIRECT3DTEXTURE8 renderTargetTexture = NULL;
   if( FAILED( D3DXCreateTexture(  pD3DDevice,
-                                  512, 
-                                  512, 
+                                  640, 
+                                  480, 
                                   1, 
                                   0L, 
                                   D3DFMT_LIN_X8R8G8B8, 
@@ -453,48 +422,6 @@ void __cdecl main( void )
   {
     Die( pD3DDevice, "Fatal error while creating render target texture!" );
   }
-
-  LPDIRECT3DVERTEXBUFFER8    backdropVertexBuffer = NULL;
-
-    // Create a vertex buffer to render the backdrop image to the renderTargetTexture
-  pD3DDevice->CreateVertexBuffer( (sizeof(CUSTOMVERTEX) << 2),
-																  D3DUSAGE_WRITEONLY,
-																	D3DFVF_XYZ | D3DFVF_TEX1,
-																	D3DPOOL_MANAGED,
-																	&backdropVertexBuffer );
-
-	CUSTOMVERTEX *pVertices;
-	backdropVertexBuffer->Lock( 0,										// Offset to lock
-														  0,										// Size to lock
-														  (BYTE**)&pVertices,		// ppbData
-														  0 );									// Flags
-
-		pVertices[0].pos.x = -1.0f;
-		pVertices[0].pos.y = 1.0f;
-		pVertices[0].pos.z = 1.0f;
-    pVertices[0].tu = 0.0f;
-    pVertices[0].tv = 0.0f;
-
-		pVertices[1].pos.x = 1.0f;
-		pVertices[1].pos.y = 1.0f;
-		pVertices[1].pos.z = 1.0f;
-    pVertices[1].tu = 1.0f;
-    pVertices[1].tv = 0.0f;
-		
-		pVertices[2].pos.x = 1.0f;
-		pVertices[2].pos.y = -1.0f;
-		pVertices[2].pos.z = 1.0f;
-    pVertices[2].tu = 1.0f;
-    pVertices[2].tv = 1.0f;
-		
-		pVertices[3].pos.x = -1.0f;
-		pVertices[3].pos.y = -1.0f;
-		pVertices[3].pos.z = 1.0f;
-    pVertices[3].tu = 0.0f;
-    pVertices[3].tv = 1.0f;
-
-  backdropVertexBuffer->Unlock();
-
 
     // Toggle for whether or not we're in a given mode
   BOOL optionsMode = FALSE;
@@ -626,11 +553,6 @@ void __cdecl main( void )
       oldRotation = g_rendererOptions.m_screenRotation;
     }
 		
-
-      // Set up to render to texture
-    D3DVIEWPORT8 vp = { 0, 0, 512, 512, 0.0f, 1.0f };
-    RenderToTextureStart( g_renderToTextureToken, pD3DDevice, renderTargetTexture, vp );
-
 			// Move the cursor position and render
     pD3DDevice->SetTransform( D3DTS_WORLD, &matWorld );
     pD3DDevice->SetTransform( D3DTS_VIEW, &matWorld );
@@ -656,34 +578,25 @@ void __cdecl main( void )
 											  1.0f,															// Z
 											  0L );															// Stencil
 
-	  pD3DDevice->SetTexture( 0, (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_ROMListBackdrop_OFFSET] );
 
-    pD3DDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX1 );
-    pD3DDevice->SetStreamSource(	0,												  // Stream number
-																	backdropVertexBuffer,	      // Stream data
-																	sizeof(CUSTOMVERTEX) );		  // Vertex stride
-
-    pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
 
     if( optionsMode )
     {
       optionsPage.MoveCursor( *gp0 );
-      optionsPage.Draw( FALSE, FALSE );
+      optionsPage.DrawToTexture( renderTargetTexture );
     }
     else if( helpMode )
     {
       help.MoveCursor( *gp0 );
-      help.Draw( FALSE, FALSE );
+      help.DrawToTexture( renderTargetTexture );
     }
     else
     {
 		  romList.MoveCursor( *gp0 );
-		  romList.Draw( FALSE, FALSE );
+		  romList.DrawToTexture( renderTargetTexture );
     }
 
 
-      // Restore the render target
-    RenderToTextureEnd( g_renderToTextureToken );
 
       // Now render the texture to the screen 
     pD3DDevice->Clear(	0L,																// Count
@@ -717,7 +630,6 @@ void __cdecl main( void )
 																	g_pD3DVertexBuffer,	        // Stream data
 																	sizeof(CUSTOMVERTEX) );		  // Vertex stride
 	  pD3DDevice->SetTexture( 0, renderTargetTexture );
-//	  pD3DDevice->SetTexture( 0, (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_ROMListBackdrop_OFFSET] );
     pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
 
     pD3DDevice->Present( NULL, NULL, NULL, NULL );
@@ -991,15 +903,15 @@ void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 											1.0f,															// Z
 											0L );															// Stencil
 
-	g_font.Begin();
-	
-	WCHAR wBuf[1024];
-	mbstowcs( wBuf, buf, strlen(buf) + 1 );
+	g_fontSet.DefaultFont().Begin();
+  	
+	  WCHAR wBuf[1024];
+	  mbstowcs( wBuf, buf, strlen(buf) + 1 );
 
-	g_font.DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
-	g_font.DrawText( 320, 320, D3DCOLOR_RGBA( 255, 125, 125, 255), L"Press any button to reboot.", XBFONT_CENTER_X );
+	  g_fontSet.DefaultFont().DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+	  g_fontSet.DefaultFont().DrawText( 320, 320, D3DCOLOR_RGBA( 255, 125, 125, 255), L"Press any button to reboot.", XBFONT_CENTER_X );
 
-	g_font.End();
+	g_fontSet.DefaultFont().End();
 	pD3DDevice->Present( NULL, NULL, NULL, NULL );
 
 	g_inputManager.WaitForNoButton( 0 );
@@ -1064,52 +976,55 @@ BOOL CreateBackdrop( FLOAT xPos, FLOAT yPos, FLOAT xUsage, FLOAT yUsage )
 		pVertices[3].pos.y += yPos;
     
 
-    FLOAT tu_l = 0.0f, tu_r = 512.0f, tv_t = 0.0f, tv_b = 512.0f;
+    #define TU_LEFT       0.0f
+    #define TU_RIGHT      640.0f
+    #define TV_TOP        0.0f
+    #define TV_BOTTOM     480.0f
 
     switch( g_rendererOptions.m_screenRotation )
     {
     case SR_0:
-      pVertices[0].tu = tu_l;
-      pVertices[0].tv = tv_t;
-      pVertices[1].tu = tu_r;
-      pVertices[1].tv = tv_t;
-      pVertices[2].tu = tu_r;
-      pVertices[2].tv = tv_b;
-      pVertices[3].tu = tu_l;
-      pVertices[3].tv = tv_b;
+      pVertices[0].tu = TU_LEFT;
+      pVertices[0].tv = TV_TOP;
+      pVertices[1].tu = TU_RIGHT;
+      pVertices[1].tv = TV_TOP;
+      pVertices[2].tu = TU_RIGHT;
+      pVertices[2].tv = TV_BOTTOM;
+      pVertices[3].tu = TU_LEFT;
+      pVertices[3].tv = TV_BOTTOM;
       break;
 
     case SR_90:
-      pVertices[0].tu = tu_l;
-      pVertices[0].tv = tv_b;
-      pVertices[1].tu = tu_l;
-      pVertices[1].tv = tv_t;
-      pVertices[2].tu = tu_r;
-      pVertices[2].tv = tv_t;
-      pVertices[3].tu = tu_r;
-      pVertices[3].tv = tv_b;
+      pVertices[0].tu = TU_LEFT;
+      pVertices[0].tv = TV_BOTTOM;
+      pVertices[1].tu = TU_LEFT;
+      pVertices[1].tv = TV_TOP;
+      pVertices[2].tu = TU_RIGHT;
+      pVertices[2].tv = TV_TOP;
+      pVertices[3].tu = TU_RIGHT;
+      pVertices[3].tv = TV_BOTTOM;
       break;
 
     case SR_180:
-      pVertices[0].tu = tu_r;
-      pVertices[0].tv = tv_b;
-      pVertices[1].tu = tu_l;
-      pVertices[1].tv = tv_b;
-      pVertices[2].tu = tu_l;
-      pVertices[2].tv = tv_t;
-      pVertices[3].tu = tu_r;
-      pVertices[3].tv = tv_t;
+      pVertices[0].tu = TU_RIGHT;
+      pVertices[0].tv = TV_BOTTOM;
+      pVertices[1].tu = TU_LEFT;
+      pVertices[1].tv = TV_BOTTOM;
+      pVertices[2].tu = TU_LEFT;
+      pVertices[2].tv = TV_TOP;
+      pVertices[3].tu = TU_RIGHT;
+      pVertices[3].tv = TV_TOP;
       break;
 
     case SR_270:
-      pVertices[0].tu = tu_r;
-      pVertices[0].tv = tv_t;
-      pVertices[1].tu = tu_r;
-      pVertices[1].tv = tv_b;
-      pVertices[2].tu = tu_l;
-      pVertices[2].tv = tv_b;
-      pVertices[3].tu = tu_l;
-      pVertices[3].tv = tv_t;
+      pVertices[0].tu = TU_RIGHT;
+      pVertices[0].tv = TV_TOP;
+      pVertices[1].tu = TU_RIGHT;
+      pVertices[1].tv = TV_BOTTOM;
+      pVertices[2].tu = TU_LEFT;
+      pVertices[2].tv = TV_BOTTOM;
+      pVertices[3].tu = TU_LEFT;
+      pVertices[3].tv = TV_TOP;
       break;
     }
 
@@ -1222,7 +1137,6 @@ static HRESULT LoadPackedResources( void )
 //-------------------------------------------------------------
 static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 {
-  LPDIRECT3DVERTEXBUFFER8 pD3DVertexBuffer = NULL, pCreditsVertexBuffer = NULL;
   RequireController( 0 );
   CGamepad *gp = g_inputManager.GetGamepad( 0 );
 
@@ -1251,54 +1165,16 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
   pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP );
   pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSW, D3DTADDRESS_CLAMP );
 
-  pD3DDevice->CreateVertexBuffer( (sizeof(CUSTOMVERTEX) << 2),
-							                    D3DUSAGE_WRITEONLY,
-																	D3DFVF_XYZ | D3DFVF_TEX1,
-																	D3DPOOL_MANAGED,
-																	&pD3DVertexBuffer );
-
-  pD3DDevice->CreateVertexBuffer( (sizeof(CUSTOMVERTEX) << 2),
-							                    D3DUSAGE_WRITEONLY,
-																	D3DFVF_XYZ | D3DFVF_TEX1,
-																	D3DPOOL_MANAGED,
-																	&pCreditsVertexBuffer );
-
-	CUSTOMVERTEX *pVertices;
-	pD3DVertexBuffer->Lock( 0,										// Offset to lock
-												  0,										// Size to lock
-													(BYTE**)&pVertices,		// ppbData
-													0 );									// Flags
-		pVertices[0].pos.x = -1.0f;
-		pVertices[0].pos.y = 1.0f;
-		pVertices[0].pos.z = 1.0f;
-    pVertices[0].tu = 0.0f;
-    pVertices[0].tv = 0.0f;
-
-		pVertices[1].pos.x = 1.0f;
-		pVertices[1].pos.y = 1.0f;
-		pVertices[1].pos.z = 1.0f;
-    pVertices[1].tu = 1.0f;
-    pVertices[1].tv = 0.0f;
-
-		pVertices[2].pos.x = 1.0f;
-		pVertices[2].pos.y = -1.0f;
-		pVertices[2].pos.z = 1.0f;
-    pVertices[2].tu = 1.0f;
-    pVertices[2].tv = 1.0f;
-
-		pVertices[3].pos.x = -1.0f;
-		pVertices[3].pos.y = -1.0f;
-		pVertices[3].pos.z = 1.0f;
-    pVertices[3].tu = 0.0f;
-    pVertices[3].tv = 1.0f;
-	pD3DVertexBuffer->Unlock();
-
   LPDIRECT3DTEXTURE8 pTexture = (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_SplashScreenBackdrop_OFFSET];
-  #define TEXTFADE_MINIMUM            150.0f
-  #define TEXTFADE_MAXIMUM            255.0f
+  #define TEXTFADE_MINIMUM            0.0f
+  #define TEXTFADE_MAXIMUM            110.0f
   #define TEXTFADE_FRAMES_PER_STEP    10.0f
-  FLOAT textFadeColor = 255.0f;
-  FLOAT fadeDirection = -1.0f;
+  FLOAT textFadeColor = TEXTFADE_MINIMUM;
+  FLOAT fadeDirection = 1.0f;
+
+  #define NORMAL_TEXT_COLOR           D3DCOLOR_XRGB( 0, 0, 0 )
+  #define IMPORTANT_TEXT_COLOR        D3DCOLOR_XRGB( 90, 105, 195 )
+                        
 
     //-- Set up the credits ------------------------------------------
   #define CREDITS_FRAMES_PER_STEP     10.0f;
@@ -1310,10 +1186,10 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 
   FLOAT creditsPosition = 0.0f;
   FLOAT creditsLength, creditsHeight;
-  g_font.GetTextExtent( credits, &creditsLength, &creditsHeight );
+  g_fontSet.DefaultFont().GetTextExtent( credits, &creditsLength, &creditsHeight );
 
     // Create the credits texture
-  LPDIRECT3DTEXTURE8 creditsTexture = g_font.CreateTexture( credits, 
+  LPDIRECT3DTEXTURE8 creditsTexture = g_fontSet.DefaultFont().CreateTexture( credits, 
                                                             D3DCOLOR_ARGB( 0, 0, 0, 0 ), 
                                                             D3DCOLOR_ARGB( 0xFF, 0, 0, 0 ) );
 
@@ -1323,29 +1199,6 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
   #define CREDITSBOX_RIGHT      524.0f
   #define CREDITSBOX_TOP        208.0f
   #define CREDITSBOX_BOTTOM     228.0f
-
-	pCreditsVertexBuffer->Lock( 0, 0, (BYTE**)&pVertices, 0 );
-    FLOAT left = (CREDITSBOX_LEFT - 320.0f)/320.0f;
-    FLOAT right = (CREDITSBOX_RIGHT - 320.0f)/320.0f;
-    FLOAT top = -(CREDITSBOX_TOP - 240.0f)/240.0f;
-    FLOAT bottom = -(CREDITSBOX_BOTTOM - 240.0f)/240.0f;
-
-		pVertices[0].pos.x = left;
-		pVertices[0].pos.y = top;
-		pVertices[0].pos.z = 1.0f;
-
-		pVertices[1].pos.x = right;
-		pVertices[1].pos.y = top;
-		pVertices[1].pos.z = 1.0f;
-
-		pVertices[2].pos.x = right;
-		pVertices[2].pos.y = bottom;
-		pVertices[2].pos.z = 1.0f;
-
-		pVertices[3].pos.x = left;
-		pVertices[3].pos.y = bottom;
-		pVertices[3].pos.z = 1.0f;
-  pCreditsVertexBuffer->Unlock();
 
 
     //-- Display everything -------------------------------------------------------
@@ -1377,14 +1230,18 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 
     pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
 	  pD3DDevice->SetRenderState( D3DRS_ALPHATESTENABLE, FALSE );
-
-    pD3DDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX1 );
-    pD3DDevice->SetStreamSource(	0,												// Stream number
-																  pD3DVertexBuffer,					// Stream data
-																  sizeof(CUSTOMVERTEX) );		// Vertex stride
 	  pD3DDevice->SetTexture( 0, pTexture );
-    pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
-
+    pD3DDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
+    pD3DDevice->Begin( D3DPT_QUADLIST );
+      pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 0.0f );
+      pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, 0.0f, 0.0f, 1.0f, 1.0f );
+      pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 0.0f );
+      pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, 640.0f, 0.0f, 1.0f, 1.0f );
+      pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 1.0f );
+      pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, 640.0f, 480.0f, 1.0f, 1.0f );
+      pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 1.0f );
+      pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, 0.0f, 480.0f, 1.0f, 1.0f );
+    pD3DDevice->End();
 
 
       // Scroll the credits
@@ -1392,52 +1249,47 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
     if( creditsPosition >= creditsLength )
       creditsPosition = (-(CREDITSBOX_RIGHT - CREDITSBOX_LEFT) + 1.0f);
 
-	  pCreditsVertexBuffer->Lock( 0, 0, (BYTE**)&pVertices, 0 );
-      pVertices[0].tu = creditsPosition;
-      pVertices[0].tv = 0.0f;
-      pVertices[1].tu = creditsPosition + (CREDITSBOX_RIGHT - CREDITSBOX_LEFT);
-      pVertices[1].tv = 0.0f;
-      pVertices[2].tu = creditsPosition + (CREDITSBOX_RIGHT - CREDITSBOX_LEFT);
-      pVertices[2].tv = creditsHeight;
-      pVertices[3].tu = creditsPosition;
-      pVertices[3].tv = creditsHeight;
-    pCreditsVertexBuffer->Unlock();
-
-
-    pD3DDevice->SetStreamSource(	0,												// Stream number
-																  pCreditsVertexBuffer,					// Stream data
-																  sizeof(CUSTOMVERTEX) );		// Vertex stride
-	  pD3DDevice->SetTexture( 0, creditsTexture );
 	  pD3DDevice->SetRenderState( D3DRS_ALPHATESTENABLE,  TRUE );
     pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-    pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
+	  pD3DDevice->SetTexture( 0, creditsTexture );
+    pD3DDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
+    pD3DDevice->Begin( D3DPT_QUADLIST );
+      pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, creditsPosition, 0.0f );
+      pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, CREDITSBOX_LEFT, CREDITSBOX_TOP, 1.0f, 1.0f );
+      pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, creditsPosition + (CREDITSBOX_RIGHT - CREDITSBOX_LEFT), 0.0f );
+      pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, CREDITSBOX_RIGHT, CREDITSBOX_TOP, 1.0f, 1.0f );
+      pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, creditsPosition + (CREDITSBOX_RIGHT - CREDITSBOX_LEFT), creditsHeight );
+      pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, CREDITSBOX_RIGHT, CREDITSBOX_BOTTOM, 1.0f, 1.0f );
+      pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, creditsPosition, creditsHeight );
+      pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, CREDITSBOX_LEFT, CREDITSBOX_BOTTOM, 1.0f, 1.0f );
+    pD3DDevice->End();
 
 
 
 
-    g_font.Begin();    
-      g_font.DrawText(  548, 
+    g_fontSet.DefaultFont().Begin();    
+      g_fontSet.DefaultFont().DrawText(  548, 
                         150, 
-                        D3DCOLOR_XRGB( 255, 255, 255 ),
+                        NORMAL_TEXT_COLOR,
                         L"Version " LVERSION_STRING L" " LBUILDCONFIG_STRING, 
                         XBFONT_RIGHT );
 
-	    g_font.DrawText(  320, 
+	    g_fontSet.DefaultFont().DrawText(  320, 
                         410, 
                         D3DCOLOR_XRGB( (UINT8)textFadeColor, (UINT8)textFadeColor, (UINT8)textFadeColor ), 
                         L"Insert Coin", 
                         XBFONT_CENTER_X );
-    g_font.End();
+    g_fontSet.DefaultFont().End();
 
-    g_largeFont.Begin();
-      g_largeFont.DrawText( 130, 240, D3DCOLOR_XRGB( 255, 255, 255 ), L"MAME is distributed under the MAME license." ); 
-      g_largeFont.DrawText( 130, 260, D3DCOLOR_XRGB( 200, 240, 250 ), L"See www.mame.net/readme.html or" );
-      g_largeFont.DrawText( 135, 280, D3DCOLOR_XRGB( 200, 240, 250 ), L"MAME/docs/mame.txt for details" );
+    g_fontSet.LargeThinFont().Begin();
+      g_fontSet.LargeThinFont().DrawText( 130, 240, NORMAL_TEXT_COLOR, L"MAME is distributed under the MAME license." ); 
+      g_fontSet.LargeThinFont().DrawText( 130, 260, IMPORTANT_TEXT_COLOR, L"See www.mame.net/readme.html or" );
+      g_fontSet.LargeThinFont().DrawText( 135, 280, IMPORTANT_TEXT_COLOR, L"MAME/docs/mame.txt for details" );
         
-      g_largeFont.DrawText( 130, 316, D3DCOLOR_XRGB( 255, 255, 255 ), L"Portions of MAMEoX based on:" );
-      g_largeFont.DrawText( 130, 334, D3DCOLOR_XRGB( 200, 240, 250 ), L"\"MAMEX(b5): updated by superfro," );
-      g_largeFont.DrawText( 135, 354, D3DCOLOR_XRGB( 200, 240, 250 ), L"original port by opcode\"" );      
-    g_largeFont.End();
+      g_fontSet.LargeThinFont().DrawText( 130, 316, NORMAL_TEXT_COLOR, L"Portions of MAMEoX based on:" );
+      g_fontSet.LargeThinFont().DrawText( 130, 334, IMPORTANT_TEXT_COLOR, L"\"MAMEX(b5): updated by superfro," );
+      g_fontSet.LargeThinFont().DrawText( 135, 354, IMPORTANT_TEXT_COLOR, L"original port by opcode\"" );      
+    g_fontSet.LargeThinFont().End();
 
 
     pD3DDevice->Present( NULL, NULL, NULL, NULL );
@@ -1446,7 +1298,6 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 	g_inputManager.WaitForNoButton( 0 );
 
   SAFE_RELEASE( creditsTexture );
-  pD3DVertexBuffer->Release();
 }
 
 
@@ -1564,9 +1415,9 @@ void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 	pD3DDevice->SetTexture( 0, pTexture );
   pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
 
-  g_font.Begin();
-  g_font.DrawText( 320, 240, D3DCOLOR_RGBA( 255, 255, 255, 255),   L"Loading. Please wait...", XBFONT_CENTER_X );
-  g_font.End();
+  g_fontSet.DefaultFont().Begin();
+  g_fontSet.DefaultFont().DrawText( 320, 240, D3DCOLOR_RGBA( 255, 255, 255, 255),   L"Loading. Please wait...", XBFONT_CENTER_X );
+  g_fontSet.DefaultFont().End();
 
 
   pD3DDevice->Present( NULL, NULL, NULL, NULL );

@@ -52,9 +52,9 @@ void Die( LPDIRECT3DDEVICE8 m_displayDevice, const char *fmt, ... ); // Defined 
 //------------------------------------------------------------
 // Constructor
 //------------------------------------------------------------
-CVirtualKeyboard::CVirtualKeyboard( LPDIRECT3DDEVICE8	displayDevice, CXBFont &font ) :
+CVirtualKeyboard::CVirtualKeyboard( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet ) :
 	m_displayDevice( displayDevice ),
-	m_font( font ),
+	m_fontSet( fontSet ),
 	m_cursorPositionX( 0 ),
   m_cursorPositionY( 0 ),
 	m_dpadCursorDelay( 0.0f ),
@@ -63,8 +63,8 @@ CVirtualKeyboard::CVirtualKeyboard( LPDIRECT3DDEVICE8	displayDevice, CXBFont &fo
   m_minChars( 0 ),
   m_maxChars( 1024 )
 {
-  m_font.GetTextExtent( L"Wijg,", &m_textWidth, &m_textHeight );
-  m_textWidth = m_font.GetTextWidth( L"W" );
+  m_fontSet.FixedWidthFont().GetTextExtent( L"Wijg,", &m_textWidth, &m_textHeight );
+  m_textWidth = m_fontSet.FixedWidthFont().GetTextWidth( L"W" );
   m_maxDisplayableChars = (VK_SCREEN_WIDTH - 10) / m_textWidth;
 
     // Create a vertex buffer to render the backdrop image to the renderTargetTexture
@@ -276,13 +276,13 @@ void CVirtualKeyboard::Draw( void )
 																    sizeof(CUSTOMVERTEX) );		  // Vertex stride
   m_displayDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
 
-	m_font.Begin();
+	m_fontSet.FixedWidthFont().Begin();
 
     WCHAR buf[256];
     #define X_OFFSET    30
 
     mbstowcs( buf, m_data.c_str(), 255 );
-    m_font.DrawText( 15, 10, SELECTED_ITEM_COLOR, &buf[m_dataDrawStartPosition] );
+    m_fontSet.FixedWidthFont().DrawText( 15, 10, SELECTED_ITEM_COLOR, &buf[m_dataDrawStartPosition] );
 
     FLOAT keyWidth = m_textWidth + 4;
     FLOAT keyHeight = m_textHeight + 2;
@@ -297,22 +297,22 @@ void CVirtualKeyboard::Draw( void )
       for( UINT32 x = 0; x < wcslen(g_keyboardData[y]); ++x )
       {
         buf[0] = g_keyboardData[y][x];
-        m_font.DrawText( (x * keyWidth) + X_OFFSET, (y * keyHeight) + 35, ITEMCOLOR(), buf );
+        m_fontSet.FixedWidthFont().DrawText( (x * keyWidth) + X_OFFSET, (y * keyHeight) + 35, ITEMCOLOR(), buf );
       }
 
       
       
-    m_font.DrawText(  ((wcslen(g_keyboardData[3]) + 1) * keyWidth) + X_OFFSET, 
+    m_fontSet.FixedWidthFont().DrawText(  ((wcslen(g_keyboardData[3]) + 1) * keyWidth) + X_OFFSET, 
                       (3*keyHeight) + 35, 
                       ( m_cursorPositionY == 3 && m_cursorPositionX == wcslen(g_keyboardData[3]) ? SELECTED_ITEM_COLOR : NORMAL_ITEM_COLOR ),
                       L"OK" );
 
-    m_font.DrawText(  ((wcslen(g_keyboardData[3]) + 3) * keyWidth) + X_OFFSET, 
+    m_fontSet.FixedWidthFont().DrawText(  ((wcslen(g_keyboardData[3]) + 3) * keyWidth) + X_OFFSET, 
                       (3*keyHeight) + 35, 
                       ( m_cursorPositionY == 3 && m_cursorPositionX == wcslen(g_keyboardData[3]) + 1 ? SELECTED_ITEM_COLOR : NORMAL_ITEM_COLOR ), 
                       L"CANCEL" );
 
-	m_font.End();
+	m_fontSet.FixedWidthFont().End();
 
-  RenderToTextureEnd( token );
+  RenderToTextureStop( token );
 }

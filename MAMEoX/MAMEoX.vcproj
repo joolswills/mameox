@@ -265,6 +265,9 @@
 				RelativePath=".\Includes\DebugLogger.h">
 			</File>
 			<File
+				RelativePath=".\Includes\FontSet.h">
+			</File>
+			<File
 				RelativePath="Includes\Gamepad.h">
 			</File>
 			<File

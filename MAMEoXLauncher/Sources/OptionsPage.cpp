@@ -48,13 +48,13 @@ extern "C" {
 
 #define X_POS		( 10 )
 #define Y_POS		( 25 )
-#define WIDTH		( 512 - (X_POS<<1) )
-#define HEIGHT  ( 512 - (Y_POS<<1) )
+#define WIDTH		( 640 - (X_POS<<1) )
+#define HEIGHT  ( 480 - (Y_POS<<1) )
 
 
 #define STARTPAGE()                       DWORD i = 0
-#define DRAWITEM( _name__, _val__ )       m_varWidthFont.DrawText( X_POS,  (i*18)+Y_POS+20, ITEMCOLOR(), _name__, XBFONT_TRUNCATED, WIDTH ); \
-                                          m_varWidthFont.DrawText( X_POS + 200, (i*18)+Y_POS+20, ITEMCOLOR(), _val__, XBFONT_TRUNCATED, WIDTH ); \
+#define DRAWITEM( _name__, _val__ )       m_fontSet.SmallThinFont().DrawText( X_POS,  (i*18)+Y_POS+20, ITEMCOLOR(), _name__, XBFONT_TRUNCATED, WIDTH ); \
+                                          m_fontSet.SmallThinFont().DrawText( X_POS + 200, (i*18)+Y_POS+20, ITEMCOLOR(), _val__, XBFONT_TRUNCATED, WIDTH ); \
                                           ++i;
 #define ENDPAGE()
 
@@ -186,12 +186,11 @@ void ChangeDirectoryPathPage( COptionsPage *ptr, BOOL direction )
 //------------------------------------------------------------
 // Constructor
 //------------------------------------------------------------
-COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice, CXBFont &varWidthFont, CXBFont &fixedWidthFont, GameOptions &options ) :
-	m_displayDevice( displayDevice ),
-	m_varWidthFont( varWidthFont ),
-	m_fixedWidthFont( fixedWidthFont ),
-	m_cursorPosition( 0 ),
-	m_dpadCursorDelay( 0.0f ),
+COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice, 
+                            CFontSet &fontSet, 
+                            LPDIRECT3DTEXTURE8 backdropTexture, 
+                            GameOptions &options ) :
+  CListView( displayDevice, fontSet, backdropTexture ),
   m_optToggleDelay( 0.0f ),
   m_triggerDelay( 0.0f ),
   m_pageNumber( 0 ),
@@ -227,7 +226,7 @@ COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice, CXBFont &varWidthFo
   m_pageData[OPTPAGE_DIRECTORIES].m_changeFunct = ::ChangeDirectoryPathPage;
   m_pageData[OPTPAGE_DIRECTORIES].m_numItems = 15;
 
-  m_virtualKeyboard = new CVirtualKeyboard( displayDevice, m_fixedWidthFont );
+  m_virtualKeyboard = new CVirtualKeyboard( displayDevice, m_fontSet );
 
     // Create a vertex buffer to render the backdrop image to the renderTargetTexture
   m_displayDevice->CreateVertexBuffer(  (sizeof(CUSTOMVERTEX) << 2),
@@ -242,8 +241,8 @@ COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice, CXBFont &varWidthFo
 												                (BYTE**)&pVertices,		// ppbData
 												                0 );									// Flags
 
-    FLOAT posX = (VK_SCREEN_WIDTH / 512.0f);
-    FLOAT posY = (VK_SCREEN_HEIGHT / 512.0f);
+    FLOAT posX = (VK_SCREEN_WIDTH / 640.0f);
+    FLOAT posY = (VK_SCREEN_HEIGHT / 480.0f);
 		pVertices[0].pos.x = -posX;
 		pVertices[0].pos.y = posY;
 		pVertices[0].pos.z = 1.0f;
@@ -285,7 +284,7 @@ COptionsPage::~COptionsPage( void )
 //---------------------------------------------------------------------
 //	MoveCursor
 //---------------------------------------------------------------------
-void COptionsPage::MoveCursor( CGamepad	&gp )
+void COptionsPage::MoveCursor( CGamepad	&gp, BOOL useSpeedbanding )
 {
 	static UINT64		lastTime = 0;
 	UINT64 curTime = osd_cycles();
@@ -405,25 +404,27 @@ void COptionsPage::Draw( BOOL opaque, BOOL flipOnCompletion )
 					  								1.0f,															// Z
 						  							0L );															// Stencil
 
-	m_varWidthFont.Begin();
-    m_varWidthFont.DrawText( (WIDTH >> 1) + X_POS, Y_POS, D3DCOLOR_XRGB( 255, 255, 255 ), m_pageData[m_pageNumber].m_title, XBFONT_CENTER_X );
+  RenderBackdrop();
+
+	m_fontSet.SmallThinFont().Begin();
+    m_fontSet.SmallThinFont().DrawText( (WIDTH >> 1) + X_POS, Y_POS, D3DCOLOR_XRGB( 255, 255, 255 ), m_pageData[m_pageNumber].m_title, XBFONT_CENTER_X );
     WCHAR underline[128] = {0};    
     for( UINT32 i = 0; i < wcslen(m_pageData[m_pageNumber].m_title) + 4; ++i )
       underline[i] = L'_';
-    m_varWidthFont.DrawText( (WIDTH >> 1) + X_POS, Y_POS + 4, D3DCOLOR_XRGB( 255, 255, 255 ), underline, XBFONT_CENTER_X );
+    m_fontSet.SmallThinFont().DrawText( (WIDTH >> 1) + X_POS, Y_POS + 4, D3DCOLOR_XRGB( 255, 255, 255 ), underline, XBFONT_CENTER_X );
     m_pageData[m_pageNumber].m_drawFunct( this );
 
     UINT32 prev = m_pageNumber ? m_pageNumber - 1 : OPTPAGE_LAST - 1;
     UINT32 next = m_pageNumber < OPTPAGE_LAST - 1 ? m_pageNumber + 1 : 0;
 
-    m_varWidthFont.DrawText( X_POS + 30, HEIGHT - 15, HELP_TEXT_COLOR, L"Left Trigger", 0 );
-    m_varWidthFont.DrawText( X_POS + 10, HEIGHT, HELP_TEXT_COLOR, L"<-", 0 );
-    m_varWidthFont.DrawText( X_POS + 30, HEIGHT, SELECTED_ITEM_COLOR, m_pageData[prev].m_title, 0 );
+    m_fontSet.SmallThinFont().DrawText( X_POS + 30, HEIGHT - 15, HELP_TEXT_COLOR, L"Left Trigger", 0 );
+    m_fontSet.SmallThinFont().DrawText( X_POS + 10, HEIGHT, HELP_TEXT_COLOR, L"<-", 0 );
+    m_fontSet.SmallThinFont().DrawText( X_POS + 30, HEIGHT, SELECTED_ITEM_COLOR, m_pageData[prev].m_title, 0 );
 
-    m_varWidthFont.DrawText( WIDTH + X_POS - 30, HEIGHT - 15, HELP_TEXT_COLOR, L"Right Trigger", XBFONT_RIGHT );
-    m_varWidthFont.DrawText( WIDTH + X_POS - 10, HEIGHT, HELP_TEXT_COLOR, L"->", XBFONT_RIGHT );
-    m_varWidthFont.DrawText( WIDTH + X_POS - 30, HEIGHT, SELECTED_ITEM_COLOR, m_pageData[next].m_title, XBFONT_RIGHT );  
-	m_varWidthFont.End();
+    m_fontSet.SmallThinFont().DrawText( WIDTH + X_POS - 30, HEIGHT - 15, HELP_TEXT_COLOR, L"Right Trigger", XBFONT_RIGHT );
+    m_fontSet.SmallThinFont().DrawText( WIDTH + X_POS - 10, HEIGHT, HELP_TEXT_COLOR, L"->", XBFONT_RIGHT );
+    m_fontSet.SmallThinFont().DrawText( WIDTH + X_POS - 30, HEIGHT, SELECTED_ITEM_COLOR, m_pageData[next].m_title, XBFONT_RIGHT );  
+	m_fontSet.SmallThinFont().End();
 
 
   
@@ -704,7 +705,7 @@ void COptionsPage::DrawDirectoryPathPage( void )
 //---------------------------------------------------------------------
 void COptionsPage::ChangeGeneralPage( BOOL direction )
 {
-  switch( m_cursorPosition )
+  switch( (DWORD)m_cursorPosition )
   {
   case 0:
     options.cheat = !options.cheat;
@@ -743,7 +744,7 @@ void COptionsPage::ChangeGeneralPage( BOOL direction )
 //---------------------------------------------------------------------
 void COptionsPage::ChangeSoundPage( BOOL direction )
 {
-  switch( m_cursorPosition )
+  switch( (DWORD)m_cursorPosition )
   {
     // Sound Processing
   case 0:
@@ -775,7 +776,7 @@ void COptionsPage::ChangeSoundPage( BOOL direction )
 //---------------------------------------------------------------------
 void COptionsPage::ChangeVideoPage( BOOL direction )
 {
-  switch( m_cursorPosition )
+  switch( (DWORD)m_cursorPosition )
   {
      // Preserve aspect ratio
   case 0:
@@ -899,7 +900,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
 //---------------------------------------------------------------------
 void COptionsPage::ChangeVectorPage( BOOL direction )
 {
-  switch( m_cursorPosition )
+  switch( (DWORD)m_cursorPosition )
   {
   case 0:
     {
@@ -978,7 +979,7 @@ void COptionsPage::ChangeNetworkPage( BOOL direction )
     if( !m_virtualKeyboardMode )
     {
       m_virtualKeyboardMode = TRUE;
-      switch( m_cursorPosition )
+      switch( (DWORD)m_cursorPosition )
       {
         // IP address
       case 1:
@@ -1005,7 +1006,7 @@ void COptionsPage::ChangeNetworkPage( BOOL direction )
     {
       if( m_virtualKeyboard->IsInputAccepted() )
       {
-        switch( m_cursorPosition )
+        switch( (DWORD)m_cursorPosition )
         {
           // IP address
         case 1:
@@ -1040,7 +1041,7 @@ void COptionsPage::ChangeDirectoryPathPage( BOOL direction )
   if( !m_virtualKeyboardMode )
   {
     m_virtualKeyboardMode = TRUE;
-    switch( m_cursorPosition )
+    switch( (DWORD)m_cursorPosition )
     {
       // Alternate drive letter
     case 0:
@@ -1122,7 +1123,7 @@ void COptionsPage::ChangeDirectoryPathPage( BOOL direction )
   {
     if( m_virtualKeyboard->IsInputAccepted() )
     {
-      switch( m_cursorPosition )
+      switch( (DWORD)m_cursorPosition )
       {
         // Alternate drive letter
       case 0:

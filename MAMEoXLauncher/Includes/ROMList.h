@@ -8,10 +8,7 @@
 #pragma once
 
 //= I N C L U D E S ====================================================
-#include <Xtl.h>
-#include "XBFont.h"
-#include "MAMEoX.h"
-#include "Gamepad.h"
+#include "ListView.h"
 #include <vector>
 
 //= D E F I N E S ======================================================
@@ -20,13 +17,8 @@
 #define INVALID_ROM_INDEX               0xFFFFFFFF
 
 #define CURRENTROMLIST()                (m_allowClones ? m_ROMListWithClones : m_ROMListNoClones)
-/*
-typedef enum SortMethod {
-	BY_NAME = 0,
-	BY_DATE,
-	BY_GENRE
-} SortMethod;
-*/
+
+
 
 //= C L A S S E S ======================================================
 
@@ -34,20 +26,23 @@ typedef enum SortMethod {
 	* \class		CROMList
 	* \brief		The ROM listing class
 	*/
-class CROMList
+class CROMList : public CListView
 {
 public:
 
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-	CROMList( LPDIRECT3DDEVICE8	displayDevice, CXBFont &font, MAMEDriverData_t *drivers, UINT32 numDrivers ) :
-		m_displayDevice( displayDevice ),
-		m_font( font ),
-		m_gameListCursorPosition( 0.0f ),
-		m_dpadCursorDelay( 0.0f ),
-		m_gameListCursorSpeedBandTimeout( 0.0f ),
-		m_gameListPageOffset( 0.0f ),
+	CROMList( LPDIRECT3DDEVICE8	displayDevice, 
+            CFontSet &fontSet, 
+            LPDIRECT3DTEXTURE8 backdropTexture,  
+            LPDIRECT3DTEXTURE8 scrollUpIconTexture,
+            LPDIRECT3DTEXTURE8 scrollDownIconTexture,
+            MAMEDriverData_t *drivers, 
+            UINT32 numDrivers ) :
+    CListView( displayDevice, fontSet, backdropTexture ),
+    m_scrollUpIconTexture( scrollUpIconTexture ),
+    m_scrollDownIconTexture( scrollDownIconTexture ),
     m_superscrollMode( FALSE ),
 		m_allowClones( TRUE ),
 		m_additionalinfo( TRUE ),
@@ -90,19 +85,12 @@ public:
 		// MoveCursor
 		//! \brief		Move the cursor based on user input
 		//!
-		//! \param		gp - The CGamepad instance associated with
-		//!                the controlling gamepad
+		//! \param		gp - The CGamepad containing the 
+		//!                current state of the user's joystick
+    //! \param    useSpeedBanding - Whether or not to enable
+    //!              "speed bands" (cursor acceleration)
 		//------------------------------------------------------------
-	void MoveCursor( CGamepad	&gp );
-
-		//------------------------------------------------------------
-		// GetHeaderLine
-		//! \brief		Return a headerline with  specific size
-    //!
-    //! \param    size - Size of the header line
-    //! \return   Return the headerline
-		//------------------------------------------------------------
-	virtual WCHAR *GetHeaderLine( FLOAT width );
+	virtual void MoveCursor( CGamepad &gp, BOOL useSpeedBanding = TRUE );
 
 		//------------------------------------------------------------
 		// Draw
@@ -119,8 +107,8 @@ public:
 		//!            of the currently selected item.
 		//------------------------------------------------------------
 	UINT32 GetCurrentGameIndex( void ) { 
-    if( (ULONG)m_gameListPageOffset + (ULONG)m_gameListCursorPosition < CURRENTROMLIST().size() )
-		  return CURRENTROMLIST()[ (ULONG)m_gameListPageOffset + (ULONG)m_gameListCursorPosition ]; 
+    if( (ULONG)m_pageOffset + (ULONG)m_cursorPosition < CURRENTROMLIST().size() )
+		  return CURRENTROMLIST()[ (ULONG)m_pageOffset + (ULONG)m_cursorPosition ]; 
     return INVALID_ROM_INDEX;
 	}
 
@@ -131,20 +119,6 @@ public:
 	void RemoveCurrentGameIndex( void );
 	
 		//------------------------------------------------------------
-		// GetCursorPosition
-		//! \brief		Retrieves all cursor position information
-    //!
-    //! \param    pageOffset - [OUT] Pointer to var to receive the page offset
-    //! \param    cursorPos - [OUT] Pointer to var to receive the cursor position
-    //! \param    superscrollIndex - [OUT] Pointer to var to receive the superscroll index
-		//------------------------------------------------------------
-  void GetCursorPosition( FLOAT *pageOffset, FLOAT *cursorPos, UINT32 *superscrollIndex ) const {
-    *pageOffset = m_gameListPageOffset;
-    *cursorPos = m_gameListCursorPosition;
-    *superscrollIndex = m_superscrollCharacterIdx;
-  }
-
-		//------------------------------------------------------------
 		// SetCursorPosition
 		//! \brief		Sets all cursor position information
     //!
@@ -153,10 +127,25 @@ public:
     //! \param    superscrollIndex - superscroll index
 		//------------------------------------------------------------
   void SetCursorPosition( FLOAT pageOffset, FLOAT cursorPos, UINT32 superscrollIndex ) {
-    m_gameListPageOffset = pageOffset;
-    m_gameListCursorPosition = cursorPos;
+    m_pageOffset = pageOffset;
+    m_cursorPosition = cursorPos;
     m_superscrollCharacterIdx = superscrollIndex;
   }
+
+		//------------------------------------------------------------
+		// GetCursorPosition
+		//! \brief		Retrieves all cursor position information
+    //!
+    //! \param    pageOffset - [OUT] Pointer to var to receive the page offset
+    //! \param    cursorPos - [OUT] Pointer to var to receive the cursor position
+    //! \param    superscrollIndex - [OUT] Pointer to var to receive the superscroll index
+		//------------------------------------------------------------
+  void GetCursorPosition( FLOAT *pageOffset, FLOAT *cursorPos, UINT32 *superscrollIndex ) const {
+    *pageOffset = m_pageOffset;
+    *cursorPos = m_cursorPosition;
+    *superscrollIndex = m_superscrollCharacterIdx;
+  }
+
 
   BOOL IsGameSelected( void ) { return m_gameSelected; }
   BOOL ShouldGenerateROMList( void ) { return m_shouldGenerateROMList; }
@@ -203,18 +192,11 @@ protected:
   UINT32                m_superscrollCharacterIdx;  //!<  Character for superscroll mode
   UINT32                m_superscrollJumpTable[NUM_SUPERSCROLL_CHARS]; //!<  Jump indices for superscroll
 
-	FLOAT									m_gameListPageOffset;				//!< Offset of the first item from the top of the list
-	FLOAT									m_gameListCursorPosition;		//!< Cursor position within the current list page
-	FLOAT									m_dpadCursorDelay;
-
-	FLOAT									m_gameListCursorSpeedBandTimeout;
-
-
-	LPDIRECT3DDEVICE8			m_displayDevice;
-	CXBFont								&m_font;
-
   BOOL                  m_gameSelected;             //!<  Whether or not the user has selected a game
   BOOL                  m_shouldGenerateROMList;    //!<  Whether or not the main() funct should call GenerateROMList for us (to render directly to the screen)
+
+  LPDIRECT3DTEXTURE8    m_scrollUpIconTexture;      //!<  Scroll up icon
+  LPDIRECT3DTEXTURE8    m_scrollDownIconTexture;    //!<  Scroll down icon
 
 		//! Vector of integers into the MAME driver array
 		//!  defining the set of available ROMs

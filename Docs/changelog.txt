@@ -43,7 +43,27 @@ Version 0.70.3b
       - Put in code to reposition the screen as well as resize
       - Fixed: Backup (B+X) feature doesn't work anymore, just
                shows help screen.
-       - Put in new loading screen (thanks Stephen)
+      - Put in new loading screen (thanks Stephen)
+      - Changed all list views to use the new CListView base class
+      - Put in new gfx from r4dius
+
+    - Help.cpp
+      - Changed all list views to use the new CListView base class      
+
+    - ROMList.cpp
+      - Changed all list views to use the new CListView base class
+
+    - OptionsPage.cpp
+      - Changed all list views to use the new CListView base class
+
+    - ListView.cpp
+      - Added list view base class
+
+   -------------------------------------------------------------
+  - \MAMEoXLauncher\MediaFiles:
+
+    - Added a bunch of new resources from r4dius and one from
+      Stephen Cameron
 
    -------------------------------------------------------------
   - \Sectionize.pl

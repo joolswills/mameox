@@ -21,9 +21,7 @@
 #include "InputManager.h"
 #include "GraphicsManager.h"
 #include "DebugLogger.h"
-
-	// Font class from the XDK
-#include "XBFont.h"
+#include "FontSet.h"
 
 #include "System_IniFile.h"
 #include "xbox_Timing.h"
@@ -40,13 +38,6 @@ extern "C" {
 
 //= D E F I N E S =====================================================
 
-// VC6 requires the 2 paramater call to create. _VC6 is defined in the VC6 dsp files
-#ifdef _VC6
-#define CREATEFONT( fntObj, fntName )     fntObj.Create( pD3DDevice, fntName )
-#else
-#define CREATEFONT( fntObj, fntName )     fntObj.Create( fntName )
-#endif
-
 
 //= S T R U C T U R E S ===============================================
 struct CUSTOMVERTEX
@@ -57,9 +48,12 @@ struct CUSTOMVERTEX
 };
 
 //= G L O B A L = V A R S =============================================
+  // Defined in MAMEoXUtil.cpp
 extern CInputManager			g_inputManager;
 extern CGraphicsManager	  g_graphicsManager;
-extern CXBFont						g_font;
+
+  // The global font manager
+CFontSet                  g_fontSet;
 
   // XBE Launch data
 DWORD             g_launchDataType;
@@ -95,14 +89,11 @@ void __cdecl main( void )
 	g_graphicsManager.Create();
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
 
-		// Load the font, reboot if it's missing (without a font,
-    //  no error message is possible (as of today)
-  if( FAILED( CREATEFONT( g_font, "HawaiianPunk_16.xpr" ) ) )
+    // Create the fonts or die
+  if( !g_fontSet.Create() )
   {
-    PRINTMSG_TO_LOG( T_ERROR, "Failed loading font Media/HawaiianPunk_16.xpr!" );
     LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
     XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
-    Die( pD3DDevice, "Failed to launch default.xbe!" );
   }
 
   LoadOptions();
@@ -113,7 +104,7 @@ void __cdecl main( void )
 	  // Intialize the various MAMEoX subsystems
   InitializeTiming();
 	InitializeFileIO();
-	InitializeD3DRenderer( g_graphicsManager, &g_font );
+	InitializeD3DRenderer( g_graphicsManager, &g_fontSet.DefaultFont() );
   
   SaveOptions();
 
@@ -280,15 +271,15 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 											  1.0f,															// Z
 											  0L );															// Stencil
 
-	  g_font.Begin();
-  	
-	  WCHAR wBuf[1024];
-	  mbstowcs( wBuf, buf, strlen(buf) + 1 );
+	  g_fontSet.DefaultFont().Begin();
+    	
+	    WCHAR wBuf[1024];
+	    mbstowcs( wBuf, buf, strlen(buf) + 1 );
 
-	  g_font.DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
-	  g_font.DrawText( 320, 320, D3DCOLOR_RGBA( 255, 125, 125, 255), L"Press any button to reboot.", XBFONT_CENTER_X );
+	    g_fontSet.DefaultFont().DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+	    g_fontSet.DefaultFont().DrawText( 320, 320, D3DCOLOR_RGBA( 255, 125, 125, 255), L"Press any button to reboot.", XBFONT_CENTER_X );
 
-	  g_font.End();
+	  g_fontSet.DefaultFont().End();
 	  pD3DDevice->Present( NULL, NULL, NULL, NULL );
   }
 
@@ -494,11 +485,11 @@ static void DrawDriverProgressData( const char *fileName, DWORD index, DWORD tot
 											1.0f,															// Z
 											0L );															// Stencil
 
-	g_font.Begin();
+	g_fontSet.DefaultFont().Begin();
 	
-    g_font.DrawText( 320, 60, D3DCOLOR_XRGB( 255, 255, 255 ), L"A new version of MAME has been", XBFONT_CENTER_X );
-    g_font.DrawText( 320, 80, D3DCOLOR_XRGB( 255, 255, 255 ), L"detected.", XBFONT_CENTER_X );
-  	g_font.DrawText( 320, 120, D3DCOLOR_XRGB( 255, 255, 255 ), L"Dumping driver data", XBFONT_CENTER_X );
+    g_fontSet.DefaultFont().DrawText( 320, 60, D3DCOLOR_XRGB( 255, 255, 255 ), L"A new version of MAME has been", XBFONT_CENTER_X );
+    g_fontSet.DefaultFont().DrawText( 320, 80, D3DCOLOR_XRGB( 255, 255, 255 ), L"detected.", XBFONT_CENTER_X );
+  	g_fontSet.DefaultFont().DrawText( 320, 120, D3DCOLOR_XRGB( 255, 255, 255 ), L"Dumping driver data", XBFONT_CENTER_X );
 
 		  // Draw a progress bar
       // Temporary: The Hawaiian Punk font doesn't have a | character, so use 1 instead
@@ -511,13 +502,13 @@ static void DrawDriverProgressData( const char *fileName, DWORD index, DWORD tot
       wcscat( wBuf, L" " );
     wcscat( wBuf, L"]" );
 
-	  g_font.DrawText( 320, 140, D3DCOLOR_XRGB( 255, 125, 125 ), wBuf, XBFONT_CENTER_X );
+	  g_fontSet.DefaultFont().DrawText( 320, 140, D3DCOLOR_XRGB( 255, 125, 125 ), wBuf, XBFONT_CENTER_X );
 
 		  // Draw the current filename
 	  mbstowcs( wBuf, fileName, 256 );
-	  g_font.DrawText( 320, 170, D3DCOLOR_XRGB( 60, 100, 255 ), wBuf, XBFONT_CENTER_X );
+	  g_fontSet.DefaultFont().DrawText( 320, 170, D3DCOLOR_XRGB( 60, 100, 255 ), wBuf, XBFONT_CENTER_X );
 
-	g_font.End();
+	g_fontSet.DefaultFont().End();
 
 	pD3DDevice->Present( NULL, NULL, NULL, NULL );
 }
@@ -630,12 +621,12 @@ int fatalerror( const char *fmt, ... )
 											  1.0f,															// Z
 											  0L );															// Stencil
 
-	  g_font.Begin();
+	  g_fontSet.DefaultFont().Begin();
   	
-      g_font.DrawText( 320, 60, D3DCOLOR_RGBA( 255, 200, 200, 255 ), L"Fatal Error:", XBFONT_CENTER_X );
-	    g_font.DrawText( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255 ), wBuf, XBFONT_CENTER_X );
-	    g_font.DrawText( 320, 320, D3DCOLOR_RGBA( 70, 235, 125, 255), L"Press any button to continue.", XBFONT_CENTER_X );
-	  g_font.End();
+      g_fontSet.DefaultFont().DrawText( 320, 60, D3DCOLOR_RGBA( 255, 200, 200, 255 ), L"Fatal Error:", XBFONT_CENTER_X );
+	    g_fontSet.DefaultFont().DrawText( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255 ), wBuf, XBFONT_CENTER_X );
+	    g_fontSet.DefaultFont().DrawText( 320, 320, D3DCOLOR_RGBA( 70, 235, 125, 255), L"Press any button to continue.", XBFONT_CENTER_X );
+	  g_fontSet.DefaultFont().End();
 
 	  pD3DDevice->Present( NULL, NULL, NULL, NULL );
   }
@@ -670,9 +661,9 @@ void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 											1.0f,															// Z
 											0L );															// Stencil
 
-  g_font.Begin();
-  g_font.DrawText( 320, 240, D3DCOLOR_RGBA( 255, 255, 255, 255),   L"Loading. Please wait...", XBFONT_CENTER_X );
-  g_font.End();
+  g_fontSet.DefaultFont().Begin();
+  g_fontSet.DefaultFont().DrawText( 320, 240, D3DCOLOR_RGBA( 255, 255, 255, 255),   L"Loading. Please wait...", XBFONT_CENTER_X );
+  g_fontSet.DefaultFont().End();
 
   pD3DDevice->Present( NULL, NULL, NULL, NULL );
   pD3DDevice->PersistDisplay();

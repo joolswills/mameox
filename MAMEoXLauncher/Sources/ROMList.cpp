@@ -22,14 +22,16 @@ extern "C" {
 #include "driver.h"
 }
 
+//= S T R U C T U R E S ===============================================
+struct CUSTOMVERTEX
+{
+	D3DXVECTOR3   pos;      // The transformed position for the vertex
+};
 
 //= D E F I N E S ======================================================
 
-#define NORMAL_ITEM_COLOR				D3DCOLOR_RGBA( 100, 255, 100, 255 )
-#define SELECTED_ITEM_COLOR			D3DCOLOR_RGBA( 255, 255, 255, 255 )
-
 	// Maximum number of items to render on the screen at once
-#define MAXPAGESIZE							31
+#define MAXPAGESIZE							14
 
 	// Timeout values for the cursor movement acceleration bands
 	// Values are measured in seconds
@@ -52,6 +54,7 @@ extern "C" {
 #define DPADCURSORMOVE_TIMEOUT	0.20f
 
 
+
 //= G L O B A L = V A R S ==============================================
 const char g_superscrollCharacterSet[NUM_SUPERSCROLL_CHARS+1] = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -70,10 +73,10 @@ BOOL CROMList::LoadROMList( BOOL bGenerate, BOOL allowClones )
 {
 	PRINTMSG( T_TRACE, "LoadROMList" );
 
+  m_maxPageSize = MAXPAGESIZE;
 	m_ROMListWithClones.clear();
   m_ROMListNoClones.clear();
   m_allowClones = allowClones;
-
 
 	m_displayDevice->Clear(	0L,																// Count
 													NULL,															// Rects to clear
@@ -81,15 +84,18 @@ BOOL CROMList::LoadROMList( BOOL bGenerate, BOOL allowClones )
 													D3DCOLOR_XRGB(0,0,0),							// Color
 													1.0f,															// Z
 													0L );															// Stencil
-	m_font.Begin();
-	m_font.DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Loading ROM list", XBFONT_CENTER_X );
-	m_font.End();
+	m_fontSet.DefaultFont().Begin();
+	  m_fontSet.DefaultFont().DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Loading ROM list", XBFONT_CENTER_X );
+	  m_fontSet.DefaultFont().End();
+  m_fontSet.DefaultFont().End();
+
 	m_displayDevice->Present( NULL, NULL, NULL, NULL );	
 
 
   if( LoadROMListFile() )
   {
     GenerateSuperscrollJumpTable();
+    m_numLinesInList = CURRENTROMLIST().size();
     return TRUE;
   }
   else if( bGenerate )
@@ -184,6 +190,7 @@ BOOL CROMList::GenerateROMList( void )
 
     // Create the superscroll jump table
   GenerateSuperscrollJumpTable();
+  m_numLinesInList = CURRENTROMLIST().size();
 	return TRUE;
 }
 
@@ -472,7 +479,7 @@ BOOL CROMList::LoadROMListFile( void )
 //---------------------------------------------------------------------
 //	MoveCursor
 //---------------------------------------------------------------------
-void CROMList::MoveCursor( CGamepad &gp )
+void CROMList::MoveCursor( CGamepad &gp, BOOL useSpeedBanding )
 {
   	// Handle user input
   if(  gp.IsButtonPressed( GP_B | GP_A ) )
@@ -527,6 +534,7 @@ void CROMList::MoveCursor( CGamepad &gp )
       // No need to regenerate the list, just switch to
       // the noclones (or clones) list
 		m_allowClones = !m_allowClones;
+    m_numLinesInList = CURRENTROMLIST().size();
     gp.WaitForNoButton();
   }
 
@@ -620,13 +628,13 @@ void CROMList::SuperScrollModeMoveCursor( CGamepad &gp, FLOAT elapsedTime )
       // Put the page offset at absoluteCursorPos - pageHalwayPoint, or 0
     if( absCursorPos <= pageHalfwayPoint || CURRENTROMLIST().size() < MAXPAGESIZE )
     {
-      m_gameListPageOffset = 0.0f;
-      m_gameListCursorPosition = (FLOAT)absCursorPos;
+      m_pageOffset = 0.0f;
+      m_cursorPosition = (FLOAT)absCursorPos;
     }
     else
     {
-      m_gameListPageOffset = (FLOAT)(absCursorPos - pageHalfwayPoint);
-      m_gameListCursorPosition = (FLOAT)pageHalfwayPoint;
+      m_pageOffset = (FLOAT)(absCursorPos - pageHalfwayPoint);
+      m_cursorPosition = (FLOAT)pageHalfwayPoint;
     }
   }
 }
@@ -645,28 +653,28 @@ void CROMList::NormalModeMoveCursor( CGamepad &gp, FLOAT elapsedTime )
 
 		// Reset the speed band timeout
 	if( cursorVelocity < 0.99f && cursorVelocity > -0.99f )
-		m_gameListCursorSpeedBandTimeout = 0.0f;
+		m_cursorSpeedBandTimeout = 0.0f;
 	else
 	{
-		m_gameListCursorSpeedBandTimeout += elapsedTime;
-		if( m_gameListCursorSpeedBandTimeout > SBTIMEOUT_FASTEST )
-			m_gameListCursorSpeedBandTimeout = SBTIMEOUT_FASTEST;
+		m_cursorSpeedBandTimeout += elapsedTime;
+		if( m_cursorSpeedBandTimeout > SBTIMEOUT_FASTEST )
+			m_cursorSpeedBandTimeout = SBTIMEOUT_FASTEST;
 	}
 
 		// DPAD overrides the triggers
   if( gp.IsOneOfButtonsPressed( GP_DPAD_DOWN | GP_LA_DOWN ) && m_dpadCursorDelay == 0.0f )
 	{
 			// Round the cursor position down to a integer so that adding 1 will move to the next item
-    m_gameListPageOffset = (FLOAT)((LONG)m_gameListPageOffset);
-		m_gameListCursorPosition = (FLOAT)((LONG)m_gameListCursorPosition);
+    m_pageOffset = (FLOAT)((LONG)m_pageOffset);
+		m_cursorPosition = (FLOAT)((LONG)m_cursorPosition);
     cursorVelocity = 1.0f;
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
 	}
   else if( gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_LA_UP ) && m_dpadCursorDelay == 0.0f )
 	{
 			// Round the cursor position down to a integer so that subtracting 1 will move to the next item
-    m_gameListPageOffset = (FLOAT)((LONG)m_gameListPageOffset);
-		m_gameListCursorPosition = (FLOAT)((LONG)m_gameListCursorPosition);
+    m_pageOffset = (FLOAT)((LONG)m_pageOffset);
+		m_cursorPosition = (FLOAT)((LONG)m_cursorPosition);
     cursorVelocity = -1.0f;
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
 	}
@@ -686,11 +694,11 @@ void CROMList::NormalModeMoveCursor( CGamepad &gp, FLOAT elapsedTime )
 	}
 
 	  // Apply speed bands
-	if( m_gameListCursorSpeedBandTimeout == SBTIMEOUT_FASTEST )
+	if( m_cursorSpeedBandTimeout == SBTIMEOUT_FASTEST )
 		cursorVelocity *= SBMULTIPLIER_FASTEST;
-	else if( m_gameListCursorSpeedBandTimeout > SBTIMEOUT_FASTER )
+	else if( m_cursorSpeedBandTimeout > SBTIMEOUT_FASTER )
 		cursorVelocity *= SBMULTIPLIER_FASTER;
-	else if( m_gameListCursorSpeedBandTimeout > SBTIMEOUT_FAST )
+	else if( m_cursorSpeedBandTimeout > SBTIMEOUT_FAST )
 		cursorVelocity *= SBMULTIPLIER_FAST;
 
 
@@ -703,16 +711,16 @@ void CROMList::NormalModeMoveCursor( CGamepad &gp, FLOAT elapsedTime )
 			// Moving down in the list
 
 			// If the cursor position is not locked at the halfway point, move it towards there
-		if( (ULONG)m_gameListCursorPosition < pageHalfwayPoint )
+		if( (ULONG)m_cursorPosition < pageHalfwayPoint )
 		{
 				// See if the entire velocity is consumed in moving the cursor or not
-			if( (cursorVelocity + m_gameListCursorPosition) < pageHalfwayPoint )
-				m_gameListCursorPosition += cursorVelocity;
+			if( (cursorVelocity + m_cursorPosition) < pageHalfwayPoint )
+				m_cursorPosition += cursorVelocity;
 			else
 			{
-				cursorVelocity -= ((FLOAT)pageHalfwayPoint - m_gameListCursorPosition);
-				m_gameListCursorPosition = (FLOAT)pageHalfwayPoint;
-				m_gameListPageOffset += cursorVelocity;
+				cursorVelocity -= ((FLOAT)pageHalfwayPoint - m_cursorPosition);
+				m_cursorPosition = (FLOAT)pageHalfwayPoint;
+				m_pageOffset += cursorVelocity;
 			}
 		}
 		else
@@ -720,45 +728,45 @@ void CROMList::NormalModeMoveCursor( CGamepad &gp, FLOAT elapsedTime )
 				// The cursor is already at the halfway point
 
 				// If the page offset can be moved without going off the end of the list, do so
-			if( (ULONG)(cursorVelocity + m_gameListPageOffset) <= maxPageOffset )
+			if( (ULONG)(cursorVelocity + m_pageOffset) <= maxPageOffset )
 			{
-				m_gameListPageOffset += cursorVelocity;
+				m_pageOffset += cursorVelocity;
 			}
 			else
 			{
 					// See if the entire velocity is consumed in moving the page or not
-				if( (cursorVelocity + m_gameListPageOffset) <= (FLOAT)maxPageOffset )
-					m_gameListCursorPosition += cursorVelocity;
+				if( (cursorVelocity + m_pageOffset) <= (FLOAT)maxPageOffset )
+					m_cursorPosition += cursorVelocity;
 				else
 				{
-					cursorVelocity -= ((FLOAT)maxPageOffset - m_gameListPageOffset);
-					m_gameListPageOffset = (FLOAT)maxPageOffset;
-					m_gameListCursorPosition += cursorVelocity;
+					cursorVelocity -= ((FLOAT)maxPageOffset - m_pageOffset);
+					m_pageOffset = (FLOAT)maxPageOffset;
+					m_cursorPosition += cursorVelocity;
 				}
 			}
 		}
 
 			// Cap values
-		if( (ULONG)m_gameListPageOffset > maxPageOffset )
-			m_gameListPageOffset = (FLOAT)maxPageOffset;
-		if( (ULONG)m_gameListCursorPosition > (pageSize - 1) )
-			m_gameListCursorPosition = (FLOAT)(pageSize - 1);
+		if( (ULONG)m_pageOffset > maxPageOffset )
+			m_pageOffset = (FLOAT)maxPageOffset;
+		if( (ULONG)m_cursorPosition > (pageSize - 1) )
+			m_cursorPosition = (FLOAT)(pageSize - 1);
 	}
 	else
 	{
 			//--- Moving up in the list -----------------------------------------------
 
 			// If the cursor position is not locked at the halfway point, move it towards there
-		if( (ULONG)m_gameListCursorPosition > pageHalfwayPoint )
+		if( (ULONG)m_cursorPosition > pageHalfwayPoint )
 		{
 				// See if the entire velocity is consumed in moving the cursor or not
-			if( (cursorVelocity + m_gameListCursorPosition) > pageHalfwayPoint )
-				m_gameListCursorPosition += cursorVelocity;
+			if( (cursorVelocity + m_cursorPosition) > pageHalfwayPoint )
+				m_cursorPosition += cursorVelocity;
 			else
 			{
-				cursorVelocity -= ((FLOAT)pageHalfwayPoint - m_gameListCursorPosition);
-				m_gameListCursorPosition = (FLOAT)pageHalfwayPoint;
-				m_gameListPageOffset += cursorVelocity;
+				cursorVelocity -= ((FLOAT)pageHalfwayPoint - m_cursorPosition);
+				m_cursorPosition = (FLOAT)pageHalfwayPoint;
+				m_pageOffset += cursorVelocity;
 			}
 		}
 		else
@@ -766,29 +774,29 @@ void CROMList::NormalModeMoveCursor( CGamepad &gp, FLOAT elapsedTime )
 				// The cursor is already at the halfway point
 
 				// If the page offset can be moved without going off the end of the list, do so
-			if( (LONG)(cursorVelocity + m_gameListPageOffset) >= 0 )
+			if( (LONG)(cursorVelocity + m_pageOffset) >= 0 )
 			{
-				m_gameListPageOffset += cursorVelocity;
+				m_pageOffset += cursorVelocity;
 			}
 			else
 			{
 					// See if the entire velocity is consumed in moving the page or not
-				if( (cursorVelocity + m_gameListPageOffset) >= 0.0f )
-					m_gameListCursorPosition += cursorVelocity;
+				if( (cursorVelocity + m_pageOffset) >= 0.0f )
+					m_cursorPosition += cursorVelocity;
 				else
 				{
-					cursorVelocity += m_gameListPageOffset;
-					m_gameListPageOffset = 0.0f;
-					m_gameListCursorPosition += cursorVelocity;
+					cursorVelocity += m_pageOffset;
+					m_pageOffset = 0.0f;
+					m_cursorPosition += cursorVelocity;
 				}
 			}
 		}
 
 			// Cap values
-		if( (LONG)m_gameListPageOffset < 0 )
-			m_gameListPageOffset = 0.0f;
-		if( (LONG)m_gameListCursorPosition < 0 )
-			m_gameListCursorPosition = 0.0f;
+		if( (LONG)m_pageOffset < 0 )
+			m_pageOffset = 0.0f;
+		if( (LONG)m_cursorPosition < 0 )
+			m_cursorPosition = 0.0f;
 	}
 
 
@@ -812,130 +820,222 @@ void CROMList::NormalModeMoveCursor( CGamepad &gp, FLOAT elapsedTime )
   }
 }
 
-//---------------------------------------------------------------------
-//	GetHeaderLine
-//---------------------------------------------------------------------
-WCHAR *CROMList::GetHeaderLine( FLOAT width )
-{
-	static WCHAR hl[ 512 ];
-	FLOAT w, h;
-	std::string	headline;
-	m_font.GetTextExtent( L"-", &w, &h, FALSE );
-
-	for( int i = 0; i < width / w; i++ )
-		headline += '-';
-
-	mbstowcs( hl, headline.c_str(), 512 );
-
-	return( hl );
-}
 
 //---------------------------------------------------------------------
 //	Draw
 //---------------------------------------------------------------------
-void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
+void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 {
 	WCHAR name[512];
 
-	#define X_POS		( 10 )
-	#define Y_POS		( 25 )
-	#define WIDTH		( 512 - (X_POS<<1) )
-
-		// Display the error to the user
-  if( opaque )  
+  if( clearScreen )  
 	  m_displayDevice->Clear(	0L,																// Count
 		  											NULL,															// Rects to clear
-			  										D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+			  										D3DCLEAR_TARGET,	                // Flags
 				  									D3DCOLOR_XRGB(0,0,0),							// Color
 					  								1.0f,															// Z
 						  							0L );															// Stencil
 
-	m_font.Begin();
+  #define HEADER_COLOR          D3DCOLOR_XRGB( 0, 0, 0 )
+  #define ITEM_COLOR			      D3DCOLOR_XRGB( 0, 0, 0 )
+  #define HIGHLIGHTBAR_COLOR    D3DCOLOR_ARGB( 180, 175, 179, 212 )
+  #define SCROLLICON_COLOR      D3DCOLOR_XRGB( 255, 255, 255 )
 
-	swprintf( name, L"Names %s", ( m_allowClones == FALSE ) ? L"(No Clones)" : L"(Clones)   " );
-	m_font.DrawText(  X_POS + 0, Y_POS + 0, D3DCOLOR_RGBA( 255, 255, 255, 255 ), name );
-	if( m_additionalinfo )
-	{
-		m_font.DrawText( X_POS + 240, Y_POS +  0, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Manufacturer" );
-		m_font.DrawText( X_POS + 370, Y_POS +  0, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Year" );
-		m_font.DrawText( X_POS + 428, Y_POS +  0, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Clone" );
-		m_font.DrawText( X_POS +   0, Y_POS + 10, D3DCOLOR_RGBA( 255, 255, 255, 255 ), GetHeaderLine( 230 ) );
-		m_font.DrawText( X_POS + 240, Y_POS + 10, D3DCOLOR_RGBA( 255, 255, 255, 255 ), GetHeaderLine( 120 ) );
-		m_font.DrawText( X_POS + 370, Y_POS + 10, D3DCOLOR_RGBA( 255, 255, 255, 255 ), GetHeaderLine(  48 ) );
-		m_font.DrawText( X_POS + 428, Y_POS + 10, D3DCOLOR_RGBA( 255, 255, 255, 255 ), GetHeaderLine(  60 ) );
-	}
-	else
-		m_font.DrawText( X_POS +   0, Y_POS + 10, D3DCOLOR_RGBA( 255, 255, 255, 255 ), GetHeaderLine( WIDTH ) );
+  #define TITLEBAR_ROW          122
+  #define FIRSTDATA_ROW         148
 
-		// Render the titles
-	DWORD color;
-	FLOAT xPos, xDelta;
-	FLOAT yPos = 24;
-	DWORD pageSize = (CURRENTROMLIST().size() < MAXPAGESIZE ? CURRENTROMLIST().size() : MAXPAGESIZE);
-	ULONG absListIDX = (ULONG)m_gameListPageOffset;
-	if( absListIDX > (CURRENTROMLIST().size() - pageSize) )
-	{
-			// The current page offset is invalid (due to list shrinkage), reset it and
-			//  set the cursor position to the last item in the list
-    absListIDX = (CURRENTROMLIST().size() - pageSize);
-    m_gameListPageOffset = (FLOAT)absListIDX;
-		m_gameListCursorPosition = (FLOAT)(pageSize - 1);
-	}
+  #define HIGHLIGHTBAR_LEFT     34
+  #define HIGHLIGHTBAR_RIGHT    606
+  #define NAME_COLUMN           40
+  #define MANUFACTURER_COLUMN   305
+  #define YEAR_COLUMN           460
+  #define CLONE_COLUMN          530 
 
-	for( DWORD i = 0; i < pageSize; ++i )
-	{
-			// Render the selected item as bright white
-		xPos = 10;
-		xDelta = 0;
-		if( i == (ULONG)m_gameListCursorPosition )
-		{
-			color = SELECTED_ITEM_COLOR;
-			xDelta = 10;
-		}
-		else
-			color = NORMAL_ITEM_COLOR;
+  #define SCROLLUP_TOP          144
+  #define SCROLLUP_LEFT         32
+  #define SCROLLUP_RIGHT        SCROLLUP_LEFT + 32
+  #define SCROLLUP_BOTTOM       SCROLLUP_TOP + 32
 
-		mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX++ ] ].m_description, 255 );
-		m_font.DrawText( X_POS + xPos + xDelta, Y_POS + yPos, color, name, XBFONT_TRUNCATED, ( m_additionalinfo ? 230 : WIDTH ) - xDelta );
-		if( m_additionalinfo )
-		{
-			mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX - 1 ] ].m_manufacturer, 255 );
-			m_font.DrawText( X_POS + 240, Y_POS + yPos, color, name, XBFONT_TRUNCATED, 120 );
-			mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX - 1 ] ].m_year, 255 );
-			m_font.DrawText( X_POS + 370, Y_POS + yPos, color, name, XBFONT_TRUNCATED,  48 );
-			mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX - 1 ] ].m_cloneFileName, 255 );
-			m_font.DrawText( X_POS + 430, Y_POS + yPos, color, name, XBFONT_TRUNCATED,  60 );
-		}
+  #define SCROLLDOWN_TOP        421
+  #define SCROLLDOWN_LEFT       32
+  #define SCROLLDOWN_RIGHT      SCROLLDOWN_LEFT + 32
+  #define SCROLLDOWN_BOTTOM     SCROLLDOWN_TOP + 32
 
-			// Inc the Y position
-		yPos += 14;
-	}
+  FLOAT textWidth, textHeight;
+  m_fontSet.SmallThinFont().GetTextExtent( L"i^jg", &textWidth, &textHeight );
 
-  #if defined(_PROFILER) || defined(_DEBUG)
-    MEMORYSTATUS memStatus;
-    GlobalMemoryStatus( &memStatus );
+    // Render the backdrop texture
+  RenderBackdrop();
 
-    WCHAR memStr[256];
-    swprintf( memStr, 
-              L"Memory: %lu/%lu",
-              memStatus.dwAvailPhys, 
-              memStatus.dwTotalPhys );
+  FLOAT selectedItemYPos = (textHeight * (ULONG)m_cursorPosition);
 
-    m_font.DrawText( 256, Y_POS + yPos, D3DCOLOR_XRGB(100,220,220), memStr, XBFONT_CENTER_X );
-  #else
-    m_font.DrawText( 256, Y_POS + yPos, D3DCOLOR_XRGB(100,220,220), L"Press X for help", XBFONT_CENTER_X );
-  #endif
+    // Render the highlight bar for the selected item
+  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
+  m_displayDevice->SetRenderState( D3DRS_SRCBLEND,         D3DBLEND_SRCALPHA );
+  m_displayDevice->SetRenderState( D3DRS_DESTBLEND,        D3DBLEND_INVSRCALPHA );
+  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
 
-  if( m_superscrollMode )
+  m_displayDevice->Begin( D3DPT_QUADLIST );
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
+    
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
+    
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos + textHeight, 1.0f, 1.0f );
+
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos + textHeight, 1.0f, 1.0f );
+  m_displayDevice->End();
+
+	m_fontSet.SmallThinFont().Begin();
+
+    if( m_superscrollMode )
+    {
+        // Display the superscroll character
+      WCHAR displayString[2] = L"";
+      mbtowc( displayString, &g_superscrollCharacterSet[m_superscrollCharacterIdx], 1 );
+		  swprintf( name, L"Names %s [%s]", ( m_allowClones == FALSE ) ? L"(No Clones)" : L"(Clones)   ", displayString );
+    }
+    else
+  	  swprintf( name, L"Names %s", ( m_allowClones == FALSE ) ? L"(No Clones)" : L"(Clones)   " );
+
+	  m_fontSet.SmallThinFont().DrawText( NAME_COLUMN, TITLEBAR_ROW, HEADER_COLOR, name );
+	  if( m_additionalinfo )
+	  {
+		  m_fontSet.SmallThinFont().DrawText( MANUFACTURER_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"Manufacturer" );
+		  m_fontSet.SmallThinFont().DrawText( YEAR_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"Year" );
+		  m_fontSet.SmallThinFont().DrawText( CLONE_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"Clone" );
+	  }
+
+
+		  // Render the titles
+	  FLOAT yPos = 0.0f;
+    FLOAT pageSize = GetCurrentPageSize();
+	  ULONG absListIDX = (ULONG)m_pageOffset;
+
+	  for( DWORD i = 0; i < pageSize; ++i )
+	  {
+		  mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX++ ] ].m_description, 255 );
+		  m_fontSet.SmallThinFont().DrawText( NAME_COLUMN,
+                                          FIRSTDATA_ROW + yPos,
+                                          ITEM_COLOR,
+                                          name,
+                                          XBFONT_TRUNCATED,
+                                          ( m_additionalinfo ? MANUFACTURER_COLUMN : 600 ) - NAME_COLUMN );
+
+		  if( m_additionalinfo )
+		  {
+			  mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX - 1 ] ].m_manufacturer, 255 );
+			  m_fontSet.SmallThinFont().DrawText( MANUFACTURER_COLUMN,
+                                            FIRSTDATA_ROW + yPos,
+                                            ITEM_COLOR,
+                                            name,
+                                            XBFONT_TRUNCATED,
+                                            YEAR_COLUMN - MANUFACTURER_COLUMN );
+
+			  mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX - 1 ] ].m_year, 255 );
+			  m_fontSet.SmallThinFont().DrawText( YEAR_COLUMN, 
+                                            FIRSTDATA_ROW + yPos, 
+                                            ITEM_COLOR, 
+                                            name, 
+                                            XBFONT_TRUNCATED,
+                                            CLONE_COLUMN - YEAR_COLUMN );
+
+			  mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX - 1 ] ].m_cloneFileName, 255 );
+			  m_fontSet.SmallThinFont().DrawText( CLONE_COLUMN, 
+                                            FIRSTDATA_ROW + yPos,
+                                            ITEM_COLOR,
+                                            name,
+                                            XBFONT_TRUNCATED,
+                                            600 - CLONE_COLUMN );
+		  }
+
+			  // Inc the Y position
+		  yPos += textHeight;
+	  }
+
+  /*
+    #if defined(_PROFILER) || defined(_DEBUG)
+      MEMORYSTATUS memStatus;
+      GlobalMemoryStatus( &memStatus );
+
+      WCHAR memStr[256];
+      swprintf( memStr, 
+                L"Memory: %lu/%lu",
+                memStatus.dwAvailPhys, 
+                memStatus.dwTotalPhys );
+
+      m_fontSet.SmallThinFont().DrawText( 256, Y_POS + yPos, D3DCOLOR_XRGB(100,220,220), memStr, XBFONT_CENTER_X );
+    #else
+      m_fontSet.SmallThinFont().DrawText( 256, Y_POS + yPos, D3DCOLOR_XRGB(100,220,220), L"Press X for help", XBFONT_CENTER_X );
+    #endif
+  */
+
+	m_fontSet.SmallThinFont().End();
+
+
+
+    //-- Render the scroll up and/or scroll down icons --------------------------------------------
+  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
+
+    // Draw scroll up icon
+  if( m_pageOffset )
   {
-      // Display the superscroll character
-    WCHAR displayString[2] = L"";
-    mbtowc( displayString, &g_superscrollCharacterSet[m_superscrollCharacterIdx], 1 );
-		swprintf( name, L"Names %s [%s]", ( m_allowClones == FALSE ) ? L"(No Clones)" : L"(Clones)   ", displayString );
-		m_font.DrawText( X_POS +   0, Y_POS +  0, D3DCOLOR_RGBA( 255, 255, 255, 255 ), name );
+	  m_displayDevice->SetTexture( 0, m_scrollUpIconTexture );
+    m_displayDevice->Begin( D3DPT_QUADLIST );
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 0.0f );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_LEFT, SCROLLUP_TOP, 1.0f, 1.0f );
+      
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 0.0f );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_RIGHT, SCROLLUP_TOP, 1.0f, 1.0f );
+      
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 1.0f );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_RIGHT, SCROLLUP_BOTTOM, 1.0f, 1.0f );
+
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 1.0f );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_LEFT, SCROLLUP_BOTTOM, 1.0f, 1.0f );
+    m_displayDevice->End();
   }
 
-	m_font.End();
+  if( m_pageOffset < m_numLinesInList - pageSize )
+  {
+	  m_displayDevice->SetTexture( 0, m_scrollDownIconTexture );
+    m_displayDevice->Begin( D3DPT_QUADLIST );
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 0.0f );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_LEFT, SCROLLDOWN_TOP, 1.0f, 1.0f );
+      
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 0.0f );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_RIGHT, SCROLLDOWN_TOP, 1.0f, 1.0f );
+      
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 1.0f );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_RIGHT, SCROLLDOWN_BOTTOM, 1.0f, 1.0f );
+
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 1.0f );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_LEFT, SCROLLDOWN_BOTTOM, 1.0f, 1.0f );
+    m_displayDevice->End();
+  }
+
+  m_displayDevice->SetTexture( 0, NULL );
+  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
+
+
 
   if( flipOnCompletion )
 	  m_displayDevice->Present( NULL, NULL, NULL, NULL );	
@@ -959,22 +1059,22 @@ void CROMList::DrawZipData( const char *fileName, DWORD index )
 													1.0f,															// Z
 													0L );															// Stencil
 
-	m_font.Begin();
+	m_fontSet.DefaultFont().Begin();
 	
-	  m_font.DrawText( 320, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Searching for ROM files", XBFONT_CENTER_X );
+	  m_fontSet.DefaultFont().DrawText( 320, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Searching for ROM files", XBFONT_CENTER_X );
 
 		  // Draw some progress dots
 	  WCHAR wBuf[256];
   	
 	  wcscpy( wBuf, L"<                >" );
 	  wBuf[8 + cursorPos] = L'*';
-	  m_font.DrawText( 320, 80, D3DCOLOR_RGBA( 255, 125, 125, 255), wBuf, XBFONT_CENTER_X );
+	  m_fontSet.DefaultFont().DrawText( 320, 80, D3DCOLOR_RGBA( 255, 125, 125, 255), wBuf, XBFONT_CENTER_X );
 
 		  // Draw the current filename
 	  mbstowcs( wBuf, fileName, 256 );
-	  m_font.DrawText( 320, 100, D3DCOLOR_RGBA( 60, 100, 255, 255 ), wBuf, XBFONT_CENTER_X );
+	  m_fontSet.DefaultFont().DrawText( 320, 100, D3DCOLOR_RGBA( 60, 100, 255, 255 ), wBuf, XBFONT_CENTER_X );
 
-	m_font.End();
+	m_fontSet.DefaultFont().End();
 	m_displayDevice->Present( NULL, NULL, NULL, NULL );
 
 }
@@ -996,9 +1096,9 @@ void CROMList::DrawZipCheckProgress( DWORD index )
 													1.0f,															// Z
 													0L );															// Stencil
 
-	m_font.Begin();
+	m_fontSet.DefaultFont().Begin();
 	
-	m_font.DrawText( 320, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Checking against known ROM files", XBFONT_CENTER_X );
+	m_fontSet.DefaultFont().DrawText( 320, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Checking against known ROM files", XBFONT_CENTER_X );
 
 		  // Draw a progress bar
     UINT32 percentage = (UINT32)( (FLOAT)index * (25.0f / (FLOAT)m_numDrivers) + 0.5f ); 
@@ -1010,50 +1110,23 @@ void CROMList::DrawZipCheckProgress( DWORD index )
       wcscat( wBuf, L" " );
     wcscat( wBuf, L"]" );
 
-	  m_font.DrawText( 320, 80, D3DCOLOR_XRGB( 255, 125, 125 ), wBuf, XBFONT_CENTER_X );
+	  m_fontSet.DefaultFont().DrawText( 320, 80, D3DCOLOR_XRGB( 255, 125, 125 ), wBuf, XBFONT_CENTER_X );
 
 		  // Draw the current filename
 	  mbstowcs( wBuf, m_driverInfoList[index].m_description, 256 );
-	  m_font.DrawText( 320, 100, D3DCOLOR_XRGB( 60, 100, 255 ), wBuf, XBFONT_CENTER_X );
+	  m_fontSet.DefaultFont().DrawText( 320, 100, D3DCOLOR_XRGB( 60, 100, 255 ), wBuf, XBFONT_CENTER_X );
 
-	m_font.End();
+	m_fontSet.DefaultFont().End();
 	m_displayDevice->Present( NULL, NULL, NULL, NULL );
 
 }
-
-/*
-//---------------------------------------------------------------------
-//	SetCurrentGameIndex
-//---------------------------------------------------------------------
-void CROMList::SetCurrentGameIndex( UINT32 idx )
-{
-  if( idx < m_ROMList.size() )
-  {
-	  UINT32 pageSize = (m_ROMList.size() < MAXPAGESIZE ? m_ROMList.size() : MAXPAGESIZE);
-	  UINT32 pageHalfwayPoint = (pageSize >> 1);
-
-    if( idx > pageHalfwayPoint )
-    {
-      m_gameListPageOffset = (FLOAT)(idx - pageHalfwayPoint);
-      m_gameListCursorPosition = (FLOAT)pageHalfwayPoint;
-    }
-    else
-    {
-      m_gameListPageOffset = 0;
-      m_gameListCursorPosition = (FLOAT)idx;
-    }
-  }
-  else
-    m_gameListPageOffset = m_gameListCursorPosition = 0.0f;
-}
-*/
 
 //---------------------------------------------------------------------
 //	RemoveCurrentGameIndex
 //---------------------------------------------------------------------
 void CROMList::RemoveCurrentGameIndex( void )
 {
-	UINT32 curCursorPos = (ULONG)m_gameListPageOffset + (ULONG)m_gameListCursorPosition;
+	UINT32 curCursorPos = (ULONG)m_pageOffset + (ULONG)m_cursorPosition;
 	std::vector<UINT32>::iterator it = CURRENTROMLIST().begin();
 	for( UINT32 i = 0; i < curCursorPos; ++i )
 		++it;

@@ -8,11 +8,12 @@
 
 //= I N C L U D E S ====================================================
 #include <Xtl.h>
-#include "XBFont.h"
+#include <vector>
+
 #include "MAMEoX.h"
 #include "Gamepad.h"
 #include "StdString.h"
-#include <vector>
+#include "FontSet.h"
 
 //= D E F I N E S ======================================================
 #define VK_SCREEN_WIDTH         256.0f    //!< Width of the VK window
@@ -39,7 +40,7 @@ public:
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-	CVirtualKeyboard( LPDIRECT3DDEVICE8	displayDevice, CXBFont &font );
+	CVirtualKeyboard( LPDIRECT3DDEVICE8	displayDevice, CFontSet &font );
 
 		//------------------------------------------------------------
 		// Destructor
@@ -103,7 +104,7 @@ protected:
 	FLOAT									    m_dpadCursorDelay;
 	FLOAT									    m_buttonDelay;
 	LPDIRECT3DDEVICE8			    m_displayDevice;
-	CXBFont								    &m_font;
+	CFontSet							    &m_fontSet;
   FLOAT                     m_textHeight, m_textWidth;
 
   UINT32                    m_cursorPositionX;
