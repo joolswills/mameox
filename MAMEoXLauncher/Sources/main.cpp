@@ -134,7 +134,8 @@ void __cdecl main( void )
 
   Enable128MegCaching();
 
-  LoadOptions();
+	InitializeFileIO(); // Must be done before LoadOptions!
+  LoadOptions();      // Must be done before inputManager goes up (for lightgun calib data)
 
 		// Initialize the graphics subsystem
 	g_graphicsManager.Create( TRUE );
@@ -153,7 +154,6 @@ void __cdecl main( void )
 
 
 	// Intialize the various MAME OSD-specific subsystems
-	InitializeFileIO();
 	InitializeTiming();
 
   if( !g_NetworkConfig.m_networkDisabled )
