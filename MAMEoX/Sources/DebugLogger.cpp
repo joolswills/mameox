@@ -19,13 +19,13 @@
 
 //= G L O B A L = V A R S ============================================
 
-#if defined(_DEBUG) || defined(_LOGDEBUGMESSAGES)
+//#if defined(_DEBUG) || defined(_LOGDEBUGMESSAGES)
 static const char   g_LevelName[][4] = {	"TRC",
                                           "INF", 
 																	        "ERR" };
 
 static char         g_debugLoggerString[MAX_DBG_STRINGSZ];
-#endif
+//#endif
 
 
 

@@ -272,7 +272,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="MediaFiles\Arial_16.rdf">
+				RelativePath="MediaFiles\ArialNarrow_16.rdf">
 				<FileConfiguration
 					Name="Debug|Xbox">
 					<Tool
@@ -290,6 +290,23 @@
 			</File>
 			<File
 				RelativePath="MediaFiles\CourierNew_12.rdf">
+				<FileConfiguration
+					Name="Debug|Xbox">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="bundler &quot;$(InputPath)&quot;"
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Xbox">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="bundler &quot;$(InputPath)&quot;"
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="MediaFiles\HawaiianPunk_16.rdf">
 				<FileConfiguration
 					Name="Debug|Xbox">
 					<Tool

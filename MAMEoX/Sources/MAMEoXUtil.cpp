@@ -49,9 +49,11 @@ typedef struct _UNICODE_STRING
 //= G L O B A L = V A R S =============================================
 CInputManager			g_inputManager;
 CGraphicsManager	g_graphicsManager;
-CXBFont						g_font;
-CXBFont						g_fixedWidthFont;
-CXBFont           g_smallFont;
+
+CXBFont						g_font;             // Default font
+CXBFont						g_fixedWidthFont;   // Fixed width font for formatting specific text
+CXBFont           g_smallFont;        // Thin small font
+CXBFont           g_largeFont;        // Thin large font
 
 extern BOOL g_soundEnabled;   // Sound processing override (defined in xbox_Main.cpp)
 

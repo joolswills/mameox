@@ -9,16 +9,23 @@ out_error          Resource.err
 out_prefix         resource
 
 
-Texture MAMEoXLogo
-{
-   Source mox-blue.bmp
-   Format D3DFMT_X8R8G8B8
-   Levels 1
-}
+//Texture MAMEoXLogo
+//{
+//   Source mox-blue.bmp
+//   Format D3DFMT_X8R8G8B8
+//   Levels 1
+//}
 
 Texture ROMListBackdrop
 {
   Source mox-romlistbackdrop_dark.bmp
+  Format D3DFMT_X8R8G8B8
+  Levels 1
+}
+
+Texture SplashScreenBackdrop
+{
+  Source mox-splashscreen.bmp
   Format D3DFMT_X8R8G8B8
   Levels 1
 }

@@ -97,9 +97,9 @@ void __cdecl main( void )
 
 		// Load the font, reboot if it's missing (without a font,
     //  no error message is possible (as of today)
-  if( FAILED( CREATEFONT( g_font, "Arial_16.xpr" ) ) )
+  if( FAILED( CREATEFONT( g_font, "HawaiianPunk_16.xpr" ) ) )
   {
-    PRINTMSG_TO_LOG( T_ERROR, "Failed loading font Media/Arial_16.xpr!" );
+    PRINTMSG_TO_LOG( T_ERROR, "Failed loading font Media/HawaiianPunk_16.xpr!" );
     LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
     XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
   }
