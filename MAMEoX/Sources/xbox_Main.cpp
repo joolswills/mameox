@@ -91,7 +91,8 @@ void __cdecl main( void )
   if( !g_fontSet.Create() )
   {
     LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
-    XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
+    DWORD retVal = XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
+    Die( pD3DDevice, "Failed to launch the dashboard! 0x%X", retVal );
   }
 
   LoadOptions();
@@ -160,8 +161,8 @@ void __cdecl main( void )
 
     // Relaunch MAMEoXLauncher
   ShowLoadingScreen( pD3DDevice );
-  XLaunchNewImage( "D:\\default.xbe", &g_launchData );
-  Die( pD3DDevice, "Failed to launch default.xbe!" );
+  DWORD retVal = XLaunchNewImage( "D:\\default.xbe", &g_launchData );
+  Die( pD3DDevice, "Failed to launch D:\\default.xbe! 0x%X", retVal );
 }
 
 //-------------------------------------------------------------
@@ -247,6 +248,7 @@ static BOOL Helper_RunRom( UINT32 romIndex )
 static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 {
 	char buf[1024];
+  WCHAR wBuf[1024];
 
   va_list arg;
   va_start( arg, fmt );
@@ -269,11 +271,8 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 											  1.0f,															// Z
 											  0L );															// Stencil
 
-	  g_fontSet.DefaultFont().Begin();
-    	
-	    WCHAR wBuf[1024];
+	  g_fontSet.DefaultFont().Begin();    	
 	    mbstowcs( wBuf, buf, strlen(buf) + 1 );
-
 	    g_fontSet.DefaultFont().DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
 	    g_fontSet.DefaultFont().DrawText( 320, 320, D3DCOLOR_RGBA( 255, 125, 125, 255), L"Press any button to reboot.", XBFONT_CENTER_X );
 
@@ -289,7 +288,38 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 
     // Relaunch MAMEoXLauncher
   ShowLoadingScreen( pD3DDevice );
-  XLaunchNewImage( "D:\\default.xbe", &g_launchData );
+  DWORD retVal = XLaunchNewImage( "D:\\default.xbe", &g_launchData );
+
+  while( !gp->IsAnyButtonPressed() )
+  {
+    RequireController( 0 );
+		  // Display the error to the user
+	  pD3DDevice->Clear(	0L,																// Count
+											  NULL,															// Rects to clear
+											  D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+											  D3DCOLOR_XRGB(0,0,0),							// Color
+											  1.0f,															// Z
+											  0L );															// Stencil
+    g_fontSet.DefaultFont().Begin();
+      swprintf( wBuf, L"Failed to launch d:\\default.xbe! 0x%X", retVal );
+	    g_fontSet.DefaultFont().DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+	    g_fontSet.DefaultFont().DrawText( 320, 320, D3DCOLOR_RGBA( 255, 125, 125, 255), L"Press any button to reboot.", XBFONT_CENTER_X );
+	  g_fontSet.DefaultFont().End();
+	  pD3DDevice->Present( NULL, NULL, NULL, NULL );
+  }
+  g_inputManager.WaitForNoButton( 0 );
+
+    // Attempt to get back to the dashboard
+  LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
+  retVal = XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
+  Die( pD3DDevice, "Failed to launch the dashboard! 0x%X", retVal );
+
+  g_fontSet.DefaultFont().Begin();
+    swprintf( wBuf, L"Failed to launch the dashboard! 0x%X", retVal );
+	  g_fontSet.DefaultFont().DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+	  g_fontSet.DefaultFont().DrawText( 320, 320, D3DCOLOR_RGBA( 255, 125, 125, 255), L"You need to power off manually!", XBFONT_CENTER_X );
+	g_fontSet.DefaultFont().End();
+	pD3DDevice->Present( NULL, NULL, NULL, NULL );
 }
 
 // Note: The "STARTUP" segment is unloaded in xbox_JoystickMouse.c
@@ -637,8 +667,8 @@ int fatalerror( const char *fmt, ... )
 
     // Relaunch MAMEoXLauncher
   ShowLoadingScreen( pD3DDevice );
-  XLaunchNewImage( "D:\\default.xbe", &g_launchData );
-  Die( pD3DDevice, "Failed to launch default.xbe!" );
+  DWORD retVal = XLaunchNewImage( "D:\\default.xbe", &g_launchData );
+  Die( pD3DDevice, "Failed to launch D:\\default.xbe! 0x%X", retVal );
 
     // Execution should never get here
   return 0;
