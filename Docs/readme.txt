@@ -284,9 +284,10 @@ Contributions:
 ---------------------------------------------------------------------------
 Licensing:
   The contents of the MAME directory (other than the MAME.vcproj, MAME.plg,
-  and MAME.dsp files) are protected under the MAME licensing agreement. A
-  copy of this agreement may be found in the MAME/Docs directory, as "mame.txt".
-  This license may also be found online at www.mame.net/readme.html
+  and MAME.dsp files) and the c_m68000 directory are protected under the 
+  MAME licensing agreement. A copy of this agreement may be found in the 
+  MAME/Docs directory, as "mame.txt". This license may also be found 
+  online at www.mame.net/readme.html
 
   All other files distributed with this project are protected by the GNU Public
   License, unless otherwise noted within the file.
