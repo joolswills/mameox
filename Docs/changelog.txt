@@ -1,0 +1,16 @@
+
+
+
+
+
+
+
+
+	- xbox_JoystickMouse.c:
+		- Fixed a bug causing gamepad 3 buttons to be mapped
+			as gamepad 4 and vice versa.
+	- Added changelog
+
+Version 0.61b
+	- No changelog
+
