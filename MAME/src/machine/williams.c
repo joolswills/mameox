@@ -1,3 +1,11 @@
+#pragma code_seg("C4")
+#pragma data_seg("D4")
+#pragma bss_seg("B4")
+#pragma const_seg("K4")
+#pragma comment(linker, "/merge:D4=4")
+#pragma comment(linker, "/merge:C4=4")
+#pragma comment(linker, "/merge:B4=4")
+#pragma comment(linker, "/merge:K4=4")
 /***************************************************************************
 
   machine.c
@@ -955,3 +963,7 @@ static WRITE_HANDLER( joust2_snd_cmd_w )
 	williams_cvsd_data_w(joust2_current_sound_data);
 	timer_set(TIME_NOW, joust2_current_sound_data, joust2_deferred_snd_cmd_w);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

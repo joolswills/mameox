@@ -6,7 +6,6 @@
 #pragma comment(linker, "/merge:C5=5")
 #pragma comment(linker, "/merge:B5=5")
 #pragma comment(linker, "/merge:K5=5")
-
 /****************************************************************************
  *	Twin Cobra																*
  *	Communications and memory functions between shared CPU memory spaces	*
