@@ -1,3 +1,19 @@
+  - \MAMEoXLauncher\sources\ROMList.cpp:
+    - Black button to toogle clones on/off
+    - White button for advanced game list (not yet)
+    - Show Whith / whithout Clones in the header
+
+  - \media\help.txt:
+    - Help file
+
+  - \MAMEoXLauncher\sources\main.cpp:
+    - Help loading
+    - Option mode on button B+Y now
+
+  - \MAMEoXLauncher\sources\Help.cpp:
+  - \MAMEoXLauncher\includes\Help.h:
+    - Help functionality (Button X)
+
 Version 0.65b
 
   - \MAMEoX\Sources\xbox_JoystickMouse.c:
