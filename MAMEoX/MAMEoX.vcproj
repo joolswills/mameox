@@ -80,8 +80,8 @@
 				FormatUD="FALSE"
 				NoLibWarn="TRUE"
 				TitleName="&quot;MAMEoX Util (Don&apos;t Run)&quot;"
-				TitleImage="..\Media\MAMEoXIcon.xpr"
-				SaveGameImage="..\Media\MAMEoXIcon.xpr"/>
+				TitleImage="..\Media\mox-icon.xpr"
+				SaveGameImage="..\Media\mox-icon.xpr"/>
 		</Configuration>
 		<Configuration
 			Name="Debug|Xbox"
@@ -145,8 +145,8 @@
 				FormatUD="FALSE"
 				NoLibWarn="TRUE"
 				TitleName="&quot;MAMEoX Util (Don&apos;t Run) [DBG]&quot;"
-				TitleImage="..\Media\MAMEoXIcon.xpr"
-				SaveGameImage="..\Media\MAMEoXIcon.xpr"/>
+				TitleImage="..\Media\mox-icon.xpr"
+				SaveGameImage="..\Media\mox-icon.xpr"/>
 		</Configuration>
 		<Configuration
 			Name="Profile|Xbox"
@@ -204,8 +204,8 @@
 				FormatUD="FALSE"
 				NoLibWarn="TRUE"
 				TitleName="&quot;MAMEoX Util (Don&apos;t Run) [PRF]&quot;"
-				TitleImage="..\Media\MAMEoXIcon.xpr"
-				SaveGameImage="..\Media\MAMEoXIcon.xpr"/>
+				TitleImage="..\Media\mox-icon.xpr"
+				SaveGameImage="..\Media\mox-icon.xpr"/>
 		</Configuration>
 		<Configuration
 			Name="Debug_With_Retail_MAME|Xbox"
@@ -263,8 +263,8 @@
 				FormatUD="FALSE"
 				NoLibWarn="TRUE"
 				TitleName="&quot;MAMEoX Util (Don&apos;t Run) [DBG]&quot;"
-				TitleImage="..\Media\MAMEoXIcon.xpr"
-				SaveGameImage="..\Media\MAMEoXIcon.xpr"/>
+				TitleImage="..\Media\mox-icon.xpr"
+				SaveGameImage="..\Media\mox-icon.xpr"/>
 		</Configuration>
 	</Configurations>
 	<References>

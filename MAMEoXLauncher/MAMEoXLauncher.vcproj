@@ -65,8 +65,8 @@
 				FormatUD="TRUE"
 				NoLibWarn="TRUE"
 				TitleName="&quot;MAMEoX Launcher [DBG]&quot;"
-				TitleImage="..\Media\MAMEoXIcon.xpr"
-				SaveGameImage="..\Media\MAMEoXIcon.xpr"/>
+				TitleImage="..\Media\mox-icon.xpr"
+				SaveGameImage="..\Media\mox-icon.xpr"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Xbox"
@@ -133,8 +133,8 @@
 				FormatUD="TRUE"
 				NoLibWarn="TRUE"
 				TitleName="&quot;MAMEoX Launcher&quot;"
-				TitleImage="..\Media\MAMEoXIcon.xpr"
-				SaveGameImage="..\Media\MAMEoXIcon.xpr"/>
+				TitleImage="..\Media\mox-icon.xpr"
+				SaveGameImage="..\Media\mox-icon.xpr"/>
 		</Configuration>
 	</Configurations>
 	<References>
