@@ -495,6 +495,8 @@ static BOOL Helper_RunRom( UINT32 romIndex )
   LoadDriverSectionByName( "src\\drivers\\nova2001.c" );  // Penguin-Kun War
   LoadDriverSectionByName( "src\\drivers\\gottlieb.c" );  // exterminator
   LoadDriverSectionByName( "src\\drivers\\pengo.c" );     // eyes
+  LoadDriverSectionByName( "src\\drivers\\megasys1.c" );  // F1 Grand Prix Star
+  LoadDriverSectionByName( "src\\drivers\\namcos1.c" );   // Face Off (Japan)
 
   if( !LoadDriverSectionByName( DriverName.c_str() ) )
   {
