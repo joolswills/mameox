@@ -165,6 +165,8 @@ public:
 		//------------------------------------------------------------
 	BOOL RemoveCurrentGameIndex( void );
 	
+  BOOL MoveCurrentGameToBackupDir( void );
+
 		//------------------------------------------------------------
 		// SetCursorPosition
 		//! \brief		Sets all cursor position information

@@ -111,6 +111,8 @@ void __cdecl main( void )
 		// Start up the debug logger thread
 	DebugLoggerInit();
 
+  LoadOptions();
+
 		// Initialize the graphics subsystem
 	g_graphicsManager.Create( TRUE );
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
@@ -122,8 +124,6 @@ void __cdecl main( void )
     DWORD retVal = XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
     Die( pD3DDevice, "Failed to launch the dashboard! 0x%X", retVal );
   }
-
-  LoadOptions();
 
 		// Initialize the input subsystem
 	g_inputManager.Create( 4, 0 );  // 4 controllers, no memory cards
@@ -582,7 +582,7 @@ void __cdecl main( void )
 
                 // Remove Selected ROM
               case 3:
-                romList.RemoveCurrentGameIndex();
+                romList.MoveCurrentGameToBackupDir();
                 break;
 
                 // Scan for ROMs

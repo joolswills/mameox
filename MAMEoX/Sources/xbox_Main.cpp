@@ -84,6 +84,8 @@ void __cdecl main( void )
   DWORD getLaunchInfoRet = XGetLaunchInfo( &g_launchDataType, &g_launchData );
   MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
 
+  LoadOptions();
+
 		// Initialize the graphics subsystem
   g_graphicsManager.Create( g_rendererOptions.m_vsync );
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
@@ -96,7 +98,6 @@ void __cdecl main( void )
     Die( pD3DDevice, "Failed to launch the dashboard! 0x%X", retVal );
   }
 
-  LoadOptions();
 
 	  // Initialize the input subsystem
 	g_inputManager.Create( 4, 0 );  // 4 controllers, no memory cards

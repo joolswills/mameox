@@ -16,6 +16,10 @@ Version 0.71.2b (CVS)
    -------------------------------------------------------------
   - \MAMEoX\Sources: 
 
+    - xbox_main.cpp
+      - Moved LoadOptions above the graphics initialization so
+        that the VSYNC option is actually used (doh!)
+
    -------------------------------------------------------------
   - \MAMEoXLauncher\Includes:
 
@@ -38,6 +42,8 @@ Version 0.71.2b (CVS)
         for new ROMs. This decreases load time between ROMs for large
         XML files.
       - Added public function to force reload the rom status file
+      - Fixed Backup feature (yet again, this is what, the 3rd time
+        I broke it? I'm still surprised that people use it :))
 
    -------------------------------------------------------------
   - \Sectionize.pl

@@ -688,6 +688,7 @@ void CROMList::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
       m_gameSelected = TRUE;
     }
 	}
+/*
 	else if( gp.IsButtonPressed( GP_X | GP_B ) )
 	{				
 			// Move the currently selected game to the backup dir
@@ -718,6 +719,7 @@ void CROMList::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
     gp.WaitForNoButton();
 		RemoveCurrentGameIndex();
 	}
+*/
 	else if( gp.IsButtonPressed( GP_WHITE ) )
 	{
 		m_options.m_verboseMode = !m_options.m_verboseMode;
@@ -1365,6 +1367,42 @@ BOOL CROMList::RemoveCurrentGameIndex( void )
 
   return TRUE;
 }
+
+//---------------------------------------------------------------------
+//	GenerateSuperscrollJumpTable
+//---------------------------------------------------------------------
+BOOL CROMList::MoveCurrentGameToBackupDir( void )
+{
+		// Move the currently selected game to the backup dir
+	UINT32 romIDX = GetCurrentGameIndex();
+
+    // Don't allow removing from a samba share
+  if (g_FileIOConfig.m_RomPath.Left(5) != "smb:\\")
+  {
+    std::string oldPath = g_FileIOConfig.m_RomPath + "\\";
+    oldPath += m_driverInfoList[romIDX].m_romFileName;
+    oldPath += ".zip";
+
+    std::string newPath = g_ROMBackupPath;
+    newPath += "\\";
+    newPath += m_driverInfoList[romIDX].m_romFileName;
+    newPath += ".zip";
+
+    // Make sure the backup dir exists
+    CreateDirectory( g_ROMBackupPath, NULL );
+
+    PRINTMSG( T_INFO, "Moving ROM %s to %s!", oldPath.c_str(), newPath.c_str() );
+    if( !MoveFile( oldPath.c_str(), newPath.c_str() ) )
+    {
+      PRINTMSG( T_ERROR, "Failed moving ROM %s to %s!", oldPath.c_str(), newPath.c_str() );
+    }
+  }
+
+	RemoveCurrentGameIndex();
+
+  return TRUE;
+}
+
 
 //---------------------------------------------------------------------
 //	GenerateSuperscrollJumpTable
