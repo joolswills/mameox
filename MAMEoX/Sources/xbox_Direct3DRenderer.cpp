@@ -348,7 +348,7 @@ static void Helper_RenderDirect16( void *dest, struct mame_bitmap *bitmap, const
 	if( g_createParams.orientation & ORIENTATION_SWAP_XY )
   {
     UINT16	*sourceBuffer = (UINT16*)bitmap->base;
-	  sourceBuffer += (bounds.min_y * bitmap->rowpixels) + (bounds.min_x << 2);
+	  sourceBuffer += (bounds.min_y * bitmap->rowpixels) + bounds.min_x;
 
       // SwapXY 
     UINT16 *destBuffer = (UINT16*)dest;
@@ -409,7 +409,7 @@ static void Helper_RenderDirect32( void *dest, struct mame_bitmap *bitmap, const
 	if( g_createParams.orientation & ORIENTATION_SWAP_XY )
   {
     UINT32	*sourceBuffer = (UINT32*)bitmap->base;
-	  sourceBuffer += (bounds.min_y * bitmap->rowpixels) + (bounds.min_x << 2);
+	  sourceBuffer += (bounds.min_y * bitmap->rowpixels) + bounds.min_x;
 
       // SwapXY 
     UINT32 *destBuffer = (UINT32*)dest;
@@ -429,7 +429,7 @@ static void Helper_RenderDirect32( void *dest, struct mame_bitmap *bitmap, const
       }
 
       sourceBuffer += bitmap->rowpixels;
-      ++destBuffer;          // Come left ("down") one row
+      ++destBuffer;          // Move right ("down") one row
     }
   }
   else

@@ -1,5 +1,3 @@
-The latest version section is always the one currently in CVS
-(prerelease)
 
 Version 0.70.3b
 
@@ -52,6 +50,8 @@ Version 0.70.3b
       - Put in code to reposition the screen as well as resize
       - Moved resize variables from globals to members of the
         render setup struct
+      - Fixed bug for 16/32 bit direct rendering w/ SWAPXY flag
+        set and an update rectangle with a left hand side != 0
 
     - xbox_Miscelaneous.c
       - Switched back to | character now that it is supported
@@ -103,6 +103,18 @@ Version 0.70.3b
   - \Sectionize.pl
     - Fixed XBE dependency for Pipe Dream 
 
+
+ --- Specific Game fixes --------------------------------------------
+Gunlock - Display not centered properly
+NeoGeo games: Display half screen w/ messed up palette in 32 bit color
+The Simpsons (note that this game does not work in MAME for Windows 0.70)
+NBA Jam
+Mortal Kombat 1, 2
+Frog (Galaxian Hardware)
+Journey
+Salamander 2 (Out of memory, but doesn't crash)
+Martial Champion (and many other konami games)
+Pipe Dream
 
 *********************************************************************
 Version 0.70.2b
