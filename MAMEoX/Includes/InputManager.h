@@ -56,7 +56,7 @@ public:
 		m_gamepadDeviceBitmap = XGetDevices( XDEVICE_TYPE_GAMEPAD );
 		m_memunitDeviceBitmap = XGetDevices( XDEVICE_TYPE_MEMORY_UNIT );
 
-		AttachRemoveDevices();
+    PollDevices();
 
 		return TRUE;
 	}
@@ -122,17 +122,14 @@ public:
     //!
     //! \param    device - The device number to query (0-3)
     //!
-    //! \retval   const XINPUT_GAMEPAD & - The requested
+    //! \retval   const XINPUT_GAMEPAD * - The requested
     //!                                    gamepad state object
 		//------------------------------------------------------
-	const XINPUT_GAMEPAD &GetGamepadDeviceState( DWORD device ) const {
-		if( device > 3 )
-		{
-			//assert( 0 && "Invalid gamepad device number!" );
-			return m_gamepadDeviceState[0].Gamepad;
-		}
+	const XINPUT_GAMEPAD *GetGamepadDeviceState( DWORD device ) const {
+		if( device > 3 || !m_gamepadDeviceHandles[device] )
+			return NULL;
 
-		return m_gamepadDeviceState[device].Gamepad;
+		return &m_gamepadDeviceState[device].Gamepad;
 	}
 
 		//------------------------------------------------------
@@ -141,17 +138,14 @@ public:
     //!
     //! \param    device - The device number to query (0-3)
     //!
-    //! \retval   const XINPUT_CAPABILITIES & - The requested
+    //! \retval   const XINPUT_CAPABILITIES * - The requested
     //!                                    gamepad caps object
 		//------------------------------------------------------
-	const XINPUT_CAPABILITIES &GetGamepadDeviceCaps( DWORD device ) const {
-		if( device > 3 )
-		{
-			//assert( 0 && "Invalid gamepad device number!" );
-			return m_gamepadCaps[0];
-		}
+	const XINPUT_CAPABILITIES *GetGamepadDeviceCaps( DWORD device ) const {
+		if( device > 3 || !m_gamepadDeviceHandles[device] )
+			return NULL;
 
-		return m_gamepadCaps[device];
+		return &m_gamepadCaps[device];
 	}
 
 		//------------------------------------------------------

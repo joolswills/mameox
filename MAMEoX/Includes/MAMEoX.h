@@ -64,6 +64,16 @@ typedef struct MAMEDriverData_t
   BOOL  m_isClone;        //!<  Whether or not the game is a clone
 } MAMEDriverData_t;
 
+typedef struct lightgunCalibration_t
+{
+  SHORT   m_xData[3];   //!< X-Axis calibration data (left,center,right)
+  SHORT   m_yData[3];   //!< Y-Axis calibration data (top,center,bottom)
+} lightgunCalibration_t;
+
+
+//= G L O B A L = V A R S ==============================================
+extern lightgunCalibration_t    g_calibrationData[4]; //!< Lightgun calibration data
+
 //= P R O T O T Y P E S ================================================
 	//-------------------------------------------------------------------
 	//	GetGamepadState

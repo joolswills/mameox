@@ -40,6 +40,13 @@ extern "C" {
   // from MAME\cheat.c
 extern char *cheatfile;
 
+  //! Lightgun calibration data
+lightgunCalibration_t    g_calibrationData[4] = { {-32767,0,32767,32767,0,-32767},
+                                                  {-32767,0,32767,32767,0,-32767},
+                                                  {-32767,0,32767,32767,0,-32767},
+                                                  {-32767,0,32767,32767,0,-32767} };
+
+
 //= P R O T O T Y P E S ===============================================
 
 
@@ -104,6 +111,39 @@ void LoadOptions( void )
   FLOAT xPercentage = iniFile.GetProfileFloat( "Video", "ScreenUsage_X", DEFAULT_SCREEN_X_PERCENTAGE );
   FLOAT yPercentage = iniFile.GetProfileFloat( "Video", "ScreenUsage_Y", DEFAULT_SCREEN_Y_PERCENTAGE );
   SetScreenUsage( xPercentage, yPercentage );
+
+    //-- Lightgun calibration -----------------------------------------------
+  g_calibrationData[0].m_xData[0] = iniFile.GetProfileInt( "Input", "Lightgun1_Left", -32767 );
+  g_calibrationData[0].m_xData[1] = iniFile.GetProfileInt( "Input", "Lightgun1_CenterX", 0 );
+  g_calibrationData[0].m_xData[2] = iniFile.GetProfileInt( "Input", "Lightgun1_Right", 32767 );
+
+  g_calibrationData[0].m_yData[0] = iniFile.GetProfileInt( "Input", "Lightgun1_Top", 32767 );
+  g_calibrationData[0].m_yData[1] = iniFile.GetProfileInt( "Input", "Lightgun1_CenterY", 0 );
+  g_calibrationData[0].m_yData[2] = iniFile.GetProfileInt( "Input", "Lightgun1_Bottom", -32767 );
+
+  g_calibrationData[1].m_xData[0] = iniFile.GetProfileInt( "Input", "Lightgun2_Left", -32767 );
+  g_calibrationData[1].m_xData[1] = iniFile.GetProfileInt( "Input", "Lightgun2_CenterX", 0 );
+  g_calibrationData[1].m_xData[2] = iniFile.GetProfileInt( "Input", "Lightgun2_Right", 32767 );
+
+  g_calibrationData[1].m_yData[0] = iniFile.GetProfileInt( "Input", "Lightgun2_Top", 32767 );
+  g_calibrationData[1].m_yData[1] = iniFile.GetProfileInt( "Input", "Lightgun2_CenterY", 0 );
+  g_calibrationData[1].m_yData[2] = iniFile.GetProfileInt( "Input", "Lightgun2_Bottom", -32767 );
+
+  g_calibrationData[2].m_xData[0] = iniFile.GetProfileInt( "Input", "Lightgun3_Left", -32767 );
+  g_calibrationData[2].m_xData[1] = iniFile.GetProfileInt( "Input", "Lightgun3_CenterX", 0 );
+  g_calibrationData[2].m_xData[2] = iniFile.GetProfileInt( "Input", "Lightgun3_Right", 32767 );
+
+  g_calibrationData[2].m_yData[0] = iniFile.GetProfileInt( "Input", "Lightgun3_Top", 32767 );
+  g_calibrationData[2].m_yData[1] = iniFile.GetProfileInt( "Input", "Lightgun3_CenterY", 0 );
+  g_calibrationData[2].m_yData[2] = iniFile.GetProfileInt( "Input", "Lightgun3_Bottom", -32767 );
+
+  g_calibrationData[3].m_xData[0] = iniFile.GetProfileInt( "Input", "Lightgun4_Left", -32767 );
+  g_calibrationData[3].m_xData[1] = iniFile.GetProfileInt( "Input", "Lightgun4_CenterX", 0 );
+  g_calibrationData[3].m_xData[2] = iniFile.GetProfileInt( "Input", "Lightgun4_Right", 32767 );
+
+  g_calibrationData[3].m_yData[0] = iniFile.GetProfileInt( "Input", "Lightgun4_Top", 32767 );
+  g_calibrationData[3].m_yData[1] = iniFile.GetProfileInt( "Input", "Lightgun4_CenterY", 0 );
+  g_calibrationData[3].m_yData[2] = iniFile.GetProfileInt( "Input", "Lightgun4_Bottom", -32767 );
 }
 
 
@@ -139,6 +179,41 @@ void SaveOptions( void )
   GetScreenUsage( &xPercentage, &yPercentage );
   iniFile.WriteProfileFloat( "Video", "ScreenUsage_X", xPercentage );
   iniFile.WriteProfileFloat( "Video", "ScreenUsage_Y", yPercentage );
+
+
+    //-- Lightgun calibration -----------------------------------------------
+  iniFile.WriteProfileInt( "Input", "Lightgun1_Left", g_calibrationData[0].m_xData[0] );
+  iniFile.WriteProfileInt( "Input", "Lightgun1_CenterX", g_calibrationData[0].m_xData[1] );
+  iniFile.WriteProfileInt( "Input", "Lightgun1_Right", g_calibrationData[0].m_xData[2] );
+
+  iniFile.WriteProfileInt( "Input", "Lightgun1_Top", g_calibrationData[0].m_yData[0] );
+  iniFile.WriteProfileInt( "Input", "Lightgun1_CenterY", g_calibrationData[0].m_yData[1] );
+  iniFile.WriteProfileInt( "Input", "Lightgun1_Bottom", g_calibrationData[0].m_yData[2] );
+
+  iniFile.WriteProfileInt( "Input", "Lightgun2_Left", g_calibrationData[1].m_xData[0] );
+  iniFile.WriteProfileInt( "Input", "Lightgun2_CenterX", g_calibrationData[1].m_xData[1] );
+  iniFile.WriteProfileInt( "Input", "Lightgun2_Right", g_calibrationData[1].m_xData[2] );
+
+  iniFile.WriteProfileInt( "Input", "Lightgun2_Top", g_calibrationData[1].m_yData[0] );
+  iniFile.WriteProfileInt( "Input", "Lightgun2_CenterY", g_calibrationData[1].m_yData[1] );
+  iniFile.WriteProfileInt( "Input", "Lightgun2_Bottom", g_calibrationData[1].m_yData[2] );
+
+  iniFile.WriteProfileInt( "Input", "Lightgun3_Left", g_calibrationData[2].m_xData[0] );
+  iniFile.WriteProfileInt( "Input", "Lightgun3_CenterX", g_calibrationData[2].m_xData[1] );
+  iniFile.WriteProfileInt( "Input", "Lightgun3_Right", g_calibrationData[2].m_xData[2] );
+
+  iniFile.WriteProfileInt( "Input", "Lightgun3_Top", g_calibrationData[2].m_yData[0] );
+  iniFile.WriteProfileInt( "Input", "Lightgun3_CenterY", g_calibrationData[2].m_yData[1] );
+  iniFile.WriteProfileInt( "Input", "Lightgun3_Bottom", g_calibrationData[2].m_yData[2] );
+
+  iniFile.WriteProfileInt( "Input", "Lightgun4_Left", g_calibrationData[3].m_xData[0] );
+  iniFile.WriteProfileInt( "Input", "Lightgun4_CenterX", g_calibrationData[3].m_xData[1] );
+  iniFile.WriteProfileInt( "Input", "Lightgun4_Right", g_calibrationData[3].m_xData[2] );
+
+  iniFile.WriteProfileInt( "Input", "Lightgun4_Top", g_calibrationData[3].m_yData[0] );
+  iniFile.WriteProfileInt( "Input", "Lightgun4_CenterY", g_calibrationData[3].m_yData[1] );
+  iniFile.WriteProfileInt( "Input", "Lightgun4_Bottom", g_calibrationData[3].m_yData[2] );
+
 }
 
 //-------------------------------------------------------------
@@ -146,8 +221,7 @@ void SaveOptions( void )
 //-------------------------------------------------------------
 const XINPUT_GAMEPAD *GetGamepadState( UINT32 joynum )
 {
-	const XINPUT_GAMEPAD	&gp = g_inputManager.GetGamepadDeviceState( joynum );
-	return &gp;
+	return g_inputManager.GetGamepadDeviceState( joynum );
 }
 
 //-------------------------------------------------------------
@@ -155,8 +229,7 @@ const XINPUT_GAMEPAD *GetGamepadState( UINT32 joynum )
 //-------------------------------------------------------------
 const XINPUT_CAPABILITIES *GetGamepadCaps( UINT32 joynum )
 {
-  const XINPUT_CAPABILITIES &gp = g_inputManager.GetGamepadDeviceCaps( joynum );
-  return &gp;
+  return g_inputManager.GetGamepadDeviceCaps( joynum );
 }
 
 
@@ -166,17 +239,6 @@ const XINPUT_CAPABILITIES *GetGamepadCaps( UINT32 joynum )
 void PollGamepads( void )
 {
 	g_inputManager.PollDevices();
-	const XINPUT_GAMEPAD	&gp0 = g_inputManager.GetGamepadDeviceState( 0 );
-/*
-		// Reboot on LT+RT+Black
-	if( gp0.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] > 200 &&
-			gp0.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] > 200 &&
-			gp0.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 200 )
-	{
-    LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
-    XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
-	}
-*/
 }
 
 

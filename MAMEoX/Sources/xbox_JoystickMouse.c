@@ -95,13 +95,6 @@ typedef enum ButtonID {
   BUTTON_RA               // Right analog pressed
 };
 
-//= S T R U C T U R E S ================================================
-typedef struct lightgunCalibration_t
-{
-  SHORT   m_xData[3];   //!< X-Axis calibration data (left,center,right)
-  SHORT   m_yData[3];   //!< Y-Axis calibration data (top,center,bottom)
-} lightgunCalibration_t;
-
 //= G L O B A L = V A R S ==============================================
 static struct JoystickInfo			g_joystickInfo[MAX_JOYSTICKINFO_ENTRIES] = {0};
 static UINT32										g_numOSDInputKeywords = 0;
@@ -109,10 +102,6 @@ static BOOL                     g_systemInitialized = FALSE;
 
 static UINT32                   g_calibrationStep = 0;
 static UINT32                   g_calibrationJoynum = 0;
-static lightgunCalibration_t    g_calibrationData[4] = { {-32767,0,32767,32767,0,-32767},
-                                                         {-32767,0,32767,32767,0,-32767},
-                                                         {-32767,0,32767,32767,0,-32767},
-                                                         {-32767,0,32767,32767,0,-32767} };
 
 
 

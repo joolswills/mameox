@@ -99,10 +99,6 @@ void __cdecl main( void )
 
 		// Initialize the input subsystem
 	g_inputManager.Create( 4, 8 );
-	const XINPUT_GAMEPAD	&gp0 = g_inputManager.GetGamepadDeviceState( 0 );
-	const XINPUT_GAMEPAD	&gp1 = g_inputManager.GetGamepadDeviceState( 1 );
-	const XINPUT_GAMEPAD	&gp2 = g_inputManager.GetGamepadDeviceState( 2 );
-	const XINPUT_GAMEPAD	&gp3 = g_inputManager.GetGamepadDeviceState( 3 );
 
 	LoadOptions();
   SaveOptions();
@@ -148,6 +144,7 @@ void __cdecl main( void )
 
       // Sort the game drivers and run the ROM
     qsort( drivers, mameoxLaunchData->m_totalMAMEGames, sizeof(drivers[0]), compareDriverNames );
+
     Helper_RunRom( mameoxLaunchData->m_gameIndex );
   }
 

@@ -91,6 +91,150 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice );
 
 //= F U N C T I O N S =================================================
 
+#define TEST_LIGHTGUN 0
+#if TEST_LIGHTGUN
+
+static UINT32                   g_calibrationStep = 0;
+static UINT32                   g_calibrationJoynum = 0;
+
+void osd_joystick_start_calibration( void )
+{
+/* Preprocessing for joystick calibration. Returns 0 on success */
+  const XINPUT_CAPABILITIES *gp;
+  UINT32 i = 0;
+
+  g_calibrationStep = 0;
+
+    // Search for the first connected gun
+  for( ; i < 4; ++i )
+  {
+    gp = GetGamepadCaps( 0 );  
+    if( gp && gp->SubType == XINPUT_DEVSUBTYPE_GC_LIGHTGUN )
+    {
+      g_calibrationJoynum = i;
+      return;
+    }
+  }
+}
+
+const char *osd_joystick_calibrate_next( void )
+{
+/* Prepare the next calibration step. Return a description of this step. */
+/* (e.g. "move to upper left") */
+  char retString[128];
+
+    // When we hit 3, switch over to the next gun to be calibrated,
+    //  or return NULL to exit the process
+  if( g_calibrationStep == 3 )
+  {
+    const XINPUT_CAPABILITIES *gp;
+    ++g_calibrationJoynum;
+    for( ; g_calibrationJoynum < 4; ++g_calibrationJoynum )
+    {
+      gp = GetGamepadCaps( g_calibrationJoynum );
+      if( gp && gp->SubType == XINPUT_DEVSUBTYPE_GC_LIGHTGUN )
+      {
+          // Found another gun
+        g_calibrationStep = 0;
+        break;
+      }
+    }
+
+    if( g_calibrationJoynum == 4 )
+      return NULL;
+  }
+
+  sprintf( retString, "Gun %d: ", g_calibrationJoynum + 1 );
+  switch( g_calibrationStep++ )
+  {
+  case 0:
+    strcat( retString, "Upper left" );
+    break;
+
+  case 1:
+    strcat( retString, "Center" );
+    break;
+
+  case 2:
+    strcat( retString, "Lower right" );
+    break;
+  }
+
+	return retString;
+}
+
+void osd_joystick_calibrate( void )
+{
+/* Get the actual joystick calibration data for the current position */
+
+  if( g_calibrationStep && g_calibrationStep < 4 )
+  {
+	  const XINPUT_GAMEPAD *gp;
+    if( (gp = GetGamepadState( g_calibrationJoynum )) )
+    {
+      g_calibrationData[g_calibrationJoynum].m_xData[g_calibrationStep-1] = gp->sThumbLX;
+      g_calibrationData[g_calibrationJoynum].m_yData[g_calibrationStep-1] = gp->sThumbLY;
+    }
+    _RPT3( _CRT_WARN, "CALIB: STEP %d: %d, %d\n", g_calibrationStep - 1, gp->sThumbLX, gp->sThumbLY );
+  }
+}
+
+void osd_joystick_end_calibration( void )
+{
+/* Postprocessing (e.g. saving joystick data to config) */
+  UINT32 i = 0;
+
+  for( ; i < 3; ++i )
+  {
+    g_calibrationData[i].m_xData[0] -= g_calibrationData[i].m_xData[1];
+    g_calibrationData[i].m_xData[2] -= g_calibrationData[i].m_xData[1];
+    g_calibrationData[i].m_xData[0] *= -1;  //!< Negate so that < 0 values stay < 0
+
+    g_calibrationData[i].m_yData[0] -= g_calibrationData[i].m_yData[1];
+    g_calibrationData[i].m_yData[2] -= g_calibrationData[i].m_yData[1];
+    g_calibrationData[i].m_yData[2] *= -1;  //!< Negate so that < 0 values stay < 0
+  }
+}
+
+void osd_lightgun_read(int player, int *deltax, int *deltay)
+{
+	const XINPUT_GAMEPAD *gp;
+
+	if( (gp = GetGamepadState( player )) )
+  {
+    lightgunCalibration_t *calibData = &g_calibrationData[player];
+
+    *deltax = gp->sThumbLX - calibData->m_xData[1];
+    *deltay = -1 * (gp->sThumbLY - calibData->m_yData[1]);
+
+      // Map from -128 to 128
+    if( gp->sThumbLX < 0 )
+      *deltax = (int)((FLOAT)*deltax * 128.0f / ((FLOAT)calibData->m_xData[0]+1.0f));
+    else
+      *deltax = (int)((FLOAT)*deltax * 128.0f / ((FLOAT)calibData->m_xData[2]+1.0f));
+
+    if( gp->sThumbLY > 0 )
+      *deltay = (int)((FLOAT)*deltay * 128.0f / ((FLOAT)calibData->m_yData[0]+1.0f));
+    else
+      *deltay = (int)((FLOAT)*deltay * 128.0f / ((FLOAT)calibData->m_yData[2]+1.0f));
+
+      // Lock to the expected range
+    if( *deltax > 128 )
+      *deltax = 128;
+    else if( *deltax < -128 )
+      *deltax = -128;
+
+    if( *deltay > 128 )
+      *deltay = 128;
+    else if( *deltay < -128 )
+      *deltay = -128;
+  }
+  else  
+	  *deltax = *deltay = 0;
+}
+
+#endif
+
 
 
 //-------------------------------------------------------------
@@ -118,10 +262,6 @@ void __cdecl main( void )
 
 		// Initialize the input subsystem
 	g_inputManager.Create( 4, 8 );
-	const XINPUT_GAMEPAD	&gp0 = g_inputManager.GetGamepadDeviceState( 0 );
-	const XINPUT_GAMEPAD	&gp1 = g_inputManager.GetGamepadDeviceState( 1 );
-	const XINPUT_GAMEPAD	&gp2 = g_inputManager.GetGamepadDeviceState( 2 );
-	const XINPUT_GAMEPAD	&gp3 = g_inputManager.GetGamepadDeviceState( 3 );
 
 	LoadOptions();
   SaveOptions();
@@ -163,6 +303,137 @@ void __cdecl main( void )
 
   // At this point the MAMEoX process is guaranteed to have run, setting up
   // our totalMAMEGames member, as well as producing the driver info file
+	const XINPUT_GAMEPAD	*gp0 = g_inputManager.GetGamepadDeviceState( 0 );
+	const XINPUT_GAMEPAD	*gp1 = g_inputManager.GetGamepadDeviceState( 1 );
+	const XINPUT_GAMEPAD	*gp2 = g_inputManager.GetGamepadDeviceState( 2 );
+	const XINPUT_GAMEPAD	*gp3 = g_inputManager.GetGamepadDeviceState( 3 );
+
+#if TEST_LIGHTGUN
+
+    // Create the vertex buffer
+  g_graphicsManager.GetD3DDevice()->CreateVertexBuffer( (sizeof(CUSTOMVERTEX) << 2),
+																		                    D3DUSAGE_WRITEONLY,
+																		                    D3DFVF_XYZ | D3DFVF_DIFFUSE,
+																		                    D3DPOOL_MANAGED,
+																		                    &g_pD3DVertexBuffer );
+
+	CUSTOMVERTEX *pVertices;
+
+
+  while( 1 )
+  {
+  	WCHAR wBuf[1024];
+    WCHAR calibBuf[1024];
+
+		g_inputManager.PollDevices();
+
+    pD3DDevice->Clear(	0L,																// Count
+											  NULL,															// Rects to clear
+											  D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+                        D3DCOLOR_XRGB(105,105,105),				// Color
+											  1.0f,															// Z
+											  0L );															// Stencil
+
+	g_pD3DVertexBuffer->Lock( 0,										// Offset to lock
+														0,										// Size to lock
+														(BYTE**)&pVertices,		// ppbData
+														0 );									// Flags
+
+    FLOAT lx = (FLOAT)((gp0->sThumbLX - 300)) / 32767.0f;
+    FLOAT rx = (FLOAT)((gp0->sThumbLX + 300)) / 32767.0f;
+
+    FLOAT ty = (FLOAT)((gp0->sThumbLY - 300)) / 32767.0f;
+    FLOAT by = (FLOAT)((gp0->sThumbLY + 300)) / 32767.0f;
+
+      //-- Draw the backdrop -------------------------------------------------
+		pVertices[0].pos.x = lx;
+		pVertices[0].pos.y = ty;
+		pVertices[0].pos.z = 1.0f;
+    pVertices[0].diffuse = D3DCOLOR_RGBA( 0, 0, 0, 255 );
+    pVertices[0].tu = 0.0f;
+    pVertices[0].tv = 0.0f;
+
+		pVertices[1].pos.x = rx;
+		pVertices[1].pos.y = ty;
+		pVertices[1].pos.z = 1.0f;
+    pVertices[1].diffuse = D3DCOLOR_RGBA( 0, 0, 0, 255 );
+    pVertices[1].tu = 1.0f;
+    pVertices[1].tv = 0.0f;
+		
+		pVertices[2].pos.x = rx;
+		pVertices[2].pos.y = by;
+		pVertices[2].pos.z = 1.0f;
+    pVertices[2].diffuse = D3DCOLOR_RGBA( 0, 0, 0, 255 );
+    pVertices[2].tu = 1.0f;
+    pVertices[2].tv = 1.0f;
+		
+		pVertices[3].pos.x = lx;
+		pVertices[3].pos.y = by;
+		pVertices[3].pos.z = 1.0f;
+    pVertices[3].diffuse = D3DCOLOR_RGBA( 0, 0, 0, 255 );
+    pVertices[3].tu = 0.0f;
+    pVertices[3].tv = 1.0f;
+
+    g_pD3DVertexBuffer->Unlock();
+
+    g_font.Begin();
+
+    if( gp0->bAnalogButtons[XINPUT_GAMEPAD_B] > 10 )
+    {
+      osd_joystick_start_calibration();
+      WaitForNoKey();
+      const char *ptr = osd_joystick_calibrate_next();
+      if( !ptr )
+        osd_joystick_end_calibration();
+      else
+     	  mbstowcs( calibBuf, ptr, strlen(ptr) + 1 );
+    }
+    if( gp0->bAnalogButtons[XINPUT_GAMEPAD_A] > 10 && g_calibrationStep )
+    {
+      osd_joystick_calibrate();
+      WaitForNoKey();
+      const char *ptr = osd_joystick_calibrate_next();
+      if( !ptr )
+        osd_joystick_end_calibration();
+      else
+     	  mbstowcs( calibBuf, ptr, strlen(ptr) + 1 );
+    }
+    if( gp0->bAnalogButtons[XINPUT_GAMEPAD_X] > 10 )
+    {
+      SaveOptions();
+    }
+
+      g_font.DrawText( 320, 180, D3DCOLOR_RGBA( 255, 255, 255, 255), calibBuf, XBFONT_CENTER_X );
+
+      swprintf( wBuf, L"LX: %d", gp0->sThumbLX );
+	    g_font.DrawText( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+
+      swprintf( wBuf, L"LY: %d", gp0->sThumbLY );
+	    g_font.DrawText( 320, 100, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+
+
+
+      int deltaX, deltaY;
+      osd_lightgun_read( 0, &deltaX, &deltaY );
+
+      swprintf( wBuf, L"LX: %d", deltaX );
+	    g_font.DrawText( 320, 280, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+
+      swprintf( wBuf, L"LY: %d", deltaY );
+	    g_font.DrawText( 320, 300, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+
+    g_font.End();
+
+    pD3DDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1 );
+    pD3DDevice->SetStreamSource(	0,												  // Stream number
+																	g_pD3DVertexBuffer,					// Stream data
+																	sizeof(CUSTOMVERTEX) );		  // Vertex stride
+
+    pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
+
+    g_graphicsManager.GetD3DDevice()->Present( NULL, NULL, NULL, NULL );
+  }
+#endif
 
 		// Load the Help file
   CHelp help( pD3DDevice, 
@@ -221,41 +492,45 @@ void __cdecl main( void )
 
 
 			// Reboot on LT+RT+Black
-		if( gp0.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] > 150 &&
-				gp0.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] > 150 &&
-				gp0.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 150 )
+		if( gp0->bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] > 150 &&
+				gp0->bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] > 150 &&
+				gp0->bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 150 )
 		{
       SaveOptions();
       LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
       XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
 		}
 
-    if( gp0.bAnalogButtons[XINPUT_GAMEPAD_B] > 150 && gp0.bAnalogButtons[XINPUT_GAMEPAD_Y] > 150 && xButtonTimeout == 0.0f )
+    if( gp0->bAnalogButtons[XINPUT_GAMEPAD_B] > 150 && 
+        gp0->bAnalogButtons[XINPUT_GAMEPAD_Y] > 150 && 
+        xButtonTimeout == 0.0f )
     {
         // Toggle options mode
       optionsMode = !optionsMode;
       xButtonTimeout = XBUTTON_TIMEOUT;
     }
-    else if( gp0.bAnalogButtons[XINPUT_GAMEPAD_B] < 150 && gp0.bAnalogButtons[XINPUT_GAMEPAD_X] > 150 && xButtonTimeout == 0.0f )
+    else if(  gp0->bAnalogButtons[XINPUT_GAMEPAD_B] < 150 && 
+              gp0->bAnalogButtons[XINPUT_GAMEPAD_X] > 150 && 
+              xButtonTimeout == 0.0f )
     {
         // Toggle help mode
       helpMode = !helpMode;
       xButtonTimeout = XBUTTON_TIMEOUT;
     }
-    else if(  gp0.sThumbRX < -SCREENRANGE_DEADZONE || gp0.sThumbRX > SCREENRANGE_DEADZONE || 
-              gp0.sThumbRY < -SCREENRANGE_DEADZONE || gp0.sThumbRY > SCREENRANGE_DEADZONE )
+    else if(  gp0->sThumbRX < -SCREENRANGE_DEADZONE || gp0->sThumbRX > SCREENRANGE_DEADZONE || 
+              gp0->sThumbRY < -SCREENRANGE_DEADZONE || gp0->sThumbRY > SCREENRANGE_DEADZONE )
     {
       FLOAT xPercentage, yPercentage;
       GetScreenUsage( &xPercentage, &yPercentage );
 
-      if( gp0.sThumbRX < -SCREENRANGE_DEADZONE )
+      if( gp0->sThumbRX < -SCREENRANGE_DEADZONE )
         xPercentage -= 0.00025f;
-      else if( gp0.sThumbRX > SCREENRANGE_DEADZONE )
+      else if( gp0->sThumbRX > SCREENRANGE_DEADZONE )
         xPercentage += 0.00025f;
 
-      if( gp0.sThumbRY < -SCREENRANGE_DEADZONE )
+      if( gp0->sThumbRY < -SCREENRANGE_DEADZONE )
         yPercentage -= 0.00025f;
-      else if( gp0.sThumbRY > SCREENRANGE_DEADZONE )
+      else if( gp0->sThumbRY > SCREENRANGE_DEADZONE )
         yPercentage += 0.00025f;
 
       if( xPercentage < 0.25f )
@@ -310,19 +585,19 @@ void __cdecl main( void )
 	  pD3DDevice->SetTexture( 0, NULL );
     pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 4, 4 );
 
-    if( optionsMode )
+    if( optionsMode && gp0 )
     {
-      optionsPage.MoveCursor( gp0 );
+      optionsPage.MoveCursor( *gp0 );
       optionsPage.Draw( FALSE, FALSE );
     }
-    else if( helpMode )
+    else if( helpMode && gp0 )
     {
-      help.MoveCursor( gp0 );
+      help.MoveCursor( *gp0 );
       help.Draw( FALSE, FALSE );
     }
-    else
+    else if( gp0 )
     {
-		  romList.MoveCursor( gp0 );
+		  romList.MoveCursor( *gp0 );
 		  romList.Draw( FALSE, FALSE );
     }
 
