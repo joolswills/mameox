@@ -131,14 +131,32 @@ public:
 		//------------------------------------------------------------
 	void RemoveCurrentGameIndex( void );
 	
-  void GetCursorPosition( FLOAT *pageOffset, FLOAT *cursorPos ) const {
+		//------------------------------------------------------------
+		// GetCursorPosition
+		//! \brief		Retrieves all cursor position information
+    //!
+    //! \param    pageOffset - [OUT] Pointer to var to receive the page offset
+    //! \param    cursorPos - [OUT] Pointer to var to receive the cursor position
+    //! \param    superscrollIndex - [OUT] Pointer to var to receive the superscroll index
+		//------------------------------------------------------------
+  void GetCursorPosition( FLOAT *pageOffset, FLOAT *cursorPos, UINT32 *superscrollIndex ) const {
     *pageOffset = m_gameListPageOffset;
     *cursorPos = m_gameListCursorPosition;
+    *superscrollIndex = m_superscrollCharacterIdx;
   }
 
-  void SetCursorPosition( FLOAT pageOffset, FLOAT cursorPos ) {
+		//------------------------------------------------------------
+		// SetCursorPosition
+		//! \brief		Sets all cursor position information
+    //!
+    //! \param    pageOffset - page offset
+    //! \param    cursorPos - cursor position
+    //! \param    superscrollIndex - superscroll index
+		//------------------------------------------------------------
+  void SetCursorPosition( FLOAT pageOffset, FLOAT cursorPos, UINT32 superscrollIndex ) {
     m_gameListPageOffset = pageOffset;
     m_gameListCursorPosition = cursorPos;
+    m_superscrollCharacterIdx = superscrollIndex;
   }
 
 protected:

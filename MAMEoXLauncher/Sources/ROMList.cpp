@@ -287,7 +287,8 @@ void CROMList::MoveCursor( const XINPUT_GAMEPAD	&gp )
       MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)m_launchData->Data;
       mameoxLaunchData->m_gameIndex = GetCurrentGameIndex();
       GetCursorPosition(  &mameoxLaunchData->m_cursorPosition, 
-                                  &mameoxLaunchData->m_pageOffset );
+                          &mameoxLaunchData->m_pageOffset,
+                          &mameoxLaunchData->m_superscrollIndex );
       mameoxLaunchData->m_command = LAUNCH_RUN_GAME;
 
       SaveOptions();

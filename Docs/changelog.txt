@@ -9,6 +9,7 @@ Version 0.66b
 
   - \MAMEoX\Includes\MAMEoX.h
     - Updated version number
+    - Save superscroll index when launching the utility XBE
 
   - \MAMEoX\Sources\xbox_Main.cpp
     - Removed unloading of game sections after a game
@@ -57,6 +58,11 @@ Version 0.66b
   - \MAMEoXLauncher\Sources\main.cpp
     - Hopefully disabled memory card initialization, as it
       causes crashes
+    - Improved error messages for missing files
+
+  - \MAMEoXLauncher\Includes\ROMList.h
+  - \MAMEoXLauncher\Sources\ROMList.cpp
+    - Save superscroll index when launching the utility XBE
 
   - \ZLIB\ZLIB.vcproj
   - \MAMEoXLauncher\MAMEoXLauncher.vcproj

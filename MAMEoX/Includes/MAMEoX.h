@@ -60,8 +60,10 @@ typedef struct MAMEoXLaunchData_t
   mameoxLaunchCommand   m_command;        //!<  The function which should be performed by the MAMEoX task
   DWORD                 m_totalMAMEGames; //!<  The total number of games supported by the MAME core
   DWORD                 m_gameIndex;      //!<  The index of the currently selected game
-  FLOAT                 m_cursorPosition;
-  FLOAT                 m_pageOffset;
+
+  FLOAT                 m_cursorPosition;     //!<  Cursor position within the ROM list
+  FLOAT                 m_pageOffset;         //!<  Page offset within the ROM list
+  UINT32                m_superscrollIndex;   //!<  Superscroll index for the ROM list
 } MAMEoXLaunchData_t;
 
 typedef struct MAMEDriverData_t
