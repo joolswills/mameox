@@ -1,3 +1,7 @@
+#pragma code_seg("C660")
+#pragma bss_seg("B660")
+#pragma data_seg("D660")
+#pragma const_seg("K660")
 /***************************************************************************
 
 	Mustache Boy
@@ -260,3 +264,7 @@ static DRIVER_INIT( mustache )
 
 
 GAMEX( 1987, mustache,  0,       mustache, mustache, mustache, ROT270|ORIENTATION_FLIP_X, "March Electronics", "Mustache Boy",GAME_NO_SOUND|GAME_WRONG_COLORS|GAME_IMPERFECT_GRAPHICS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C663")
+#pragma bss_seg("B663")
+#pragma data_seg("D663")
+#pragma const_seg("K663")
 /*
 Portraits 1983 (c) Olympia
 
@@ -297,3 +301,7 @@ ROM_END
 
 GAMEX( 1983, portrait,  0,    portrait, portrait,  0, ROT270, "Olympia", "Portraits", GAME_NO_SOUND | GAME_IMPERFECT_GRAPHICS | GAME_WRONG_COLORS )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

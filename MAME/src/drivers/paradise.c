@@ -1,3 +1,7 @@
+#pragma code_seg("C661")
+#pragma bss_seg("B661")
+#pragma data_seg("D661")
+#pragma const_seg("K661")
 /***************************************************************************
 
 							  -= Paradise =-
@@ -332,3 +336,7 @@ ROM_END
 
 GAME( 1994+, paradise, 0, paradise, paradise, 0, ROT90, "Yun Sung", "Paradise" )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C662")
+#pragma bss_seg("B662")
+#pragma data_seg("D662")
+#pragma const_seg("K662")
 /*
 	Polygonet Commanders (Konami, 1993)
 
@@ -505,3 +509,7 @@ ROM_END
 
 /*          ROM        parent   machine    inp        init */
 GAMEX( 1993, plygonet, 0,       plygonet, polygonet, polygonet, ROT90, "Konami", "Polygonet Commanders (ver UAA)", GAME_NOT_WORKING )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

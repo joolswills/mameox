@@ -1,3 +1,7 @@
+#pragma code_seg("C663")
+#pragma bss_seg("B663")
+#pragma data_seg("D663")
+#pragma const_seg("K663")
 /***************************************************************************
 
   vidhrdw.c
@@ -119,3 +123,7 @@ VIDEO_UPDATE( portrait )
 	draw_sprites(bitmap);
 	tilemap_draw( bitmap, cliprect, foreground, 0, 0 );
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

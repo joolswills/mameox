@@ -1,3 +1,7 @@
+#pragma code_seg("C662")
+#pragma bss_seg("B662")
+#pragma data_seg("D662")
+#pragma const_seg("K662")
 /*
 	Polygonet Commanders (Konami, 1993)
 
@@ -109,3 +113,7 @@ VIDEO_UPDATE(polygonet_vh_screenrefresh)
 	tilemap_draw(bitmap, cliprect, ttl_tilemap, 0, 1<<0);
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

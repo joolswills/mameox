@@ -1,3 +1,7 @@
+#pragma code_seg("C661")
+#pragma bss_seg("B661")
+#pragma data_seg("D661")
+#pragma const_seg("K661")
 /***************************************************************************
 
 							  -= Paradise =-
@@ -269,3 +273,7 @@ if (keyboard_pressed(KEYCODE_Z))
 			if (layers_ctrl&16)	draw_sprites(bitmap,cliprect);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

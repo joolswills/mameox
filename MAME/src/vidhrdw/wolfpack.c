@@ -1,3 +1,7 @@
+#pragma code_seg("C664")
+#pragma bss_seg("B664")
+#pragma data_seg("D664")
+#pragma const_seg("K664")
 /***************************************************************************
 
 Atari Wolf Pack (prototype) video emulation
@@ -147,3 +151,7 @@ VIDEO_EOF( wolfpack )
 	}
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C660")
+#pragma bss_seg("B660")
+#pragma data_seg("D660")
+#pragma const_seg("K660")
 /***************************************************************************
 
 	Mustache Boy
@@ -283,3 +287,7 @@ VIDEO_UPDATE( mustache )
 }
 
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

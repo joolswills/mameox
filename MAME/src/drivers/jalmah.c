@@ -1,3 +1,7 @@
+#pragma code_seg("C659")
+#pragma bss_seg("B659")
+#pragma data_seg("D659")
+#pragma const_seg("K659")
 /* Jaleco Mahjong Games */
 /* Board:	MJ-8956 */
 
@@ -288,3 +292,7 @@ GAMEX( 1989, daireika, 0, jalmah, jalmah, 0, ROT0, "Jaleco / NMK", "Mahjong Dair
 GAMEX( 1990, mjzoomin, 0, jalmah, jalmah, 0, ROT0, "Jaleco",       "Mahjong Channel Zoom In", GAME_NO_SOUND | GAME_NOT_WORKING  )
 GAMEX( 1990, kakumei,  0, jalmah, jalmah, 0, ROT0, "Jaleco",       "Mahjong Kakumei", GAME_NO_SOUND | GAME_NOT_WORKING  )
 GAMEX( 1992, kakumei2, 0, jalmah, jalmah, 0, ROT0, "Jaleco",       "Mahjong Kakumei 2 - Princess League", GAME_NO_SOUND | GAME_NOT_WORKING  )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()
