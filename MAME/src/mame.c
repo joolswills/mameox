@@ -543,6 +543,9 @@ void run_machine_core(void)
 				/* run the emulation! */
 				cpu_run();
 
+          // [EBA] mute the sound to keep it from skipping
+        osd_sound_enable( 0 );
+
 				/* save the NVRAM */
 				if (Machine->drv->nvram_handler)
 				{
