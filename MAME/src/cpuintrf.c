@@ -880,7 +880,7 @@ int cpuintrf_init_cpu(int cpunum, int cputype)
 	}
 
 	/* allocate a context buffer for the CPU */
-	cpu[cpunum].context = malloc(size);
+	cpu[cpunum].context = osd_malloc(size);
 	if (cpu[cpunum].context == NULL)
 	{
 		/* that's really bad :( */

@@ -173,7 +173,7 @@ static void hs_load (void)
 		LOG(("loading...\n"));
 		while (mem_range)
 		{
-			UINT8 *data = malloc (mem_range->num_bytes);
+			UINT8 *data = osd_malloc (mem_range->num_bytes);
 			if (data)
 			{
 				/*	this buffer will almost certainly be small
@@ -200,7 +200,7 @@ static void hs_save (void)
 		LOG(("saving...\n"));
 		while (mem_range)
 		{
-			UINT8 *data = malloc (mem_range->num_bytes);
+			UINT8 *data = osd_malloc (mem_range->num_bytes);
 			if (data)
 			{
 				/*	this buffer will almost certainly be small
@@ -246,7 +246,7 @@ void hs_open (const char *name)
 			else if (is_mem_range (buffer))
 			{
 				const char *pBuf = buffer;
-				struct mem_range *mem_range = malloc(sizeof(struct mem_range));
+				struct mem_range *mem_range = osd_malloc(sizeof(struct mem_range));
 				if (mem_range)
 				{
 					mem_range->cpu = hexstr2num (&pBuf);

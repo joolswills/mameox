@@ -45,7 +45,7 @@ struct drccore *drc_init(UINT8 cpunum, struct drcconfig *config)
 	struct drccore *drc;
 
 	/* allocate memory */
-	drc = malloc(sizeof(*drc));
+	drc = osd_malloc(sizeof(*drc));
 	if (!drc)
 		return NULL;
 	memset(drc, 0, sizeof(*drc));
@@ -61,7 +61,7 @@ struct drccore *drc_init(UINT8 cpunum, struct drcconfig *config)
 	drc->uses_sse     = config->uses_sse;
 	
 	/* allocate cache */
-	drc->cache_base = malloc(config->cache_size);
+	drc->cache_base = osd_malloc(config->cache_size);
 	if (!drc->cache_base)
 		return NULL;
 	drc->cache_end = drc->cache_base + config->cache_size;
@@ -75,8 +75,8 @@ struct drccore *drc_init(UINT8 cpunum, struct drcconfig *config)
 	drc->l2scale = 4 >> config->lsbs_to_ignore;
 
 	/* allocate lookup tables */
-	drc->lookup_l1 = malloc(sizeof(*drc->lookup_l1) * (1 << drc->l1bits));
-	drc->lookup_l2_recompile = malloc(sizeof(*drc->lookup_l2_recompile) * (1 << drc->l2bits));
+	drc->lookup_l1 = osd_malloc(sizeof(*drc->lookup_l1) * (1 << drc->l1bits));
+	drc->lookup_l2_recompile = osd_malloc(sizeof(*drc->lookup_l2_recompile) * (1 << drc->l2bits));
 	if (!drc->lookup_l1 || !drc->lookup_l2_recompile)
 		return NULL;
 	memset(drc->lookup_l1, 0, sizeof(*drc->lookup_l1) * (1 << drc->l1bits));
@@ -84,9 +84,9 @@ struct drccore *drc_init(UINT8 cpunum, struct drcconfig *config)
 	
 	/* allocate the sequence and tentative lists */
 	drc->sequence_count_max = config->max_instructions;
-	drc->sequence_list = malloc(drc->sequence_count_max * sizeof(*drc->sequence_list));
+	drc->sequence_list = osd_malloc(drc->sequence_count_max * sizeof(*drc->sequence_list));
 	drc->tentative_count_max = config->max_instructions;
-	drc->tentative_list = malloc(drc->tentative_count_max * sizeof(*drc->tentative_list));
+	drc->tentative_list = osd_malloc(drc->tentative_count_max * sizeof(*drc->tentative_list));
 	if (!drc->sequence_list || !drc->tentative_list)
 		return NULL;
 	
@@ -202,7 +202,7 @@ void drc_begin_sequence(struct drccore *drc, UINT32 pc)
 	if (drc->lookup_l1[l1index] == drc->lookup_l2_recompile)
 	{
 		/* create a new copy of the recompile table */
-		drc->lookup_l1[l1index] = malloc(sizeof(*drc->lookup_l2_recompile) * (1 << drc->l2bits));
+		drc->lookup_l1[l1index] = osd_malloc(sizeof(*drc->lookup_l2_recompile) * (1 << drc->l2bits));
 		if (!drc->lookup_l1[l1index])
 			exit(1);
 		memcpy(drc->lookup_l1[l1index], drc->lookup_l2_recompile, sizeof(*drc->lookup_l2_recompile) * (1 << drc->l2bits));

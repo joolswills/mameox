@@ -850,7 +850,7 @@ UINT8 alloc_new_subtable(const struct memport_data *memport, struct table_data *
 	if (tabledata->subtable_count <= tabledata->subtable_alloc)
 	{
 		tabledata->subtable_alloc += SUBTABLE_ALLOC;
-		tabledata->table = realloc(tabledata->table, (1 << l1bits) + (tabledata->subtable_alloc << l2bits));
+		tabledata->table = osd_realloc(tabledata->table, (1 << l1bits) + (tabledata->subtable_alloc << l2bits));
 		if (!tabledata->table)
 			fatalerror("error: ran out of memory allocating memory subtable\n");
 	}
@@ -1115,8 +1115,8 @@ static int init_memport(int cpunum, struct memport_data *data, int abits, int db
 	data->mask = 0xffffffffUL >> (32 - abits);
 
 	/* allocate memory */
-	data->read.table = malloc(1 << LEVEL1_BITS(data->ebits));
-	data->write.table = malloc(1 << LEVEL1_BITS(data->ebits));
+	data->read.table = osd_malloc(1 << LEVEL1_BITS(data->ebits));
+	data->write.table = osd_malloc(1 << LEVEL1_BITS(data->ebits));
 	if (!data->read.table)
 		return fatalerror("cpu #%d couldn't allocate read table\n", cpunum);
 	if (!data->write.table)
@@ -1380,7 +1380,7 @@ static int allocate_memory(void)
 			ext->region = region;
 
 			/* allocate memory */
-			ext->data = malloc(end+1 - lowest);
+			ext->data = osd_malloc(end+1 - lowest);
 			if (!ext->data)
 				fatalerror("malloc(%d) failed (lowest: %x - end: %x)\n", end + 1 - lowest, lowest, end);
 
@@ -1534,7 +1534,7 @@ static void rg_add_entry(UINT32 start, UINT32 end, int mode)
 		int mask;
 		if(!*cur || ((*cur)->start > start))
 		{
-			rg_map_entry *e = malloc(sizeof(rg_map_entry));
+			rg_map_entry *e = osd_malloc(sizeof(rg_map_entry));
 			e->start = start;
 			e->end = *cur && (*cur)->start <= end ? (*cur)->start - 1 : end;
 			e->flags = mode;
@@ -1550,7 +1550,7 @@ static void rg_add_entry(UINT32 start, UINT32 end, int mode)
 
 		if((*cur)->start < start)
 		{
-			rg_map_entry *e = malloc(sizeof(rg_map_entry));
+			rg_map_entry *e = osd_malloc(sizeof(rg_map_entry));
 			e->start = (*cur)->start;
 			e->end = start - 1;
 			e->flags = (*cur)->flags;
@@ -1562,7 +1562,7 @@ static void rg_add_entry(UINT32 start, UINT32 end, int mode)
 
 		if((*cur)->end > end)
 		{
-			rg_map_entry *e = malloc(sizeof(rg_map_entry));
+			rg_map_entry *e = osd_malloc(sizeof(rg_map_entry));
 			e->start = start;
 			e->end = end;
 			e->flags = (*cur)->flags;

@@ -264,7 +264,7 @@ static void do_extract(int argc, char *argv[])
 	totalsectors = header.cylinders * header.heads * header.sectors;
 
 	/* allocate memory to hold a block */
-	block = malloc(header.blocksize * HARD_DISK_SECTOR_SIZE);
+	block = osd_malloc(header.blocksize * HARD_DISK_SECTOR_SIZE);
 	if (!block)
 	{
 		printf("Out of memory allocating block buffer!\n");

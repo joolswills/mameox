@@ -2853,9 +2853,9 @@ static int displayhistory (struct mame_bitmap *bitmap, int selected)
 	{
 		/* allocate a buffer for the text */
 		#ifndef MESS
-		buf = malloc (8192);
+		buf = osd_malloc (8192);
 		#else
-		buf = malloc (200*1024);
+		buf = osd_malloc (200*1024);
 		#endif
 		if (buf)
 		{

@@ -152,7 +152,7 @@ static int PenToPixel_Init( struct tilemap *tilemap )
 	lError = 0;
 	for( i=0; i<4; i++ )
 	{
-		pPenToPixel = malloc( tilemap->num_pens*sizeof(UINT32) );
+		pPenToPixel = osd_malloc( tilemap->num_pens*sizeof(UINT32) );
 		if( pPenToPixel==NULL )
 		{
 			lError = 1;
@@ -223,7 +223,7 @@ void tilemap_set_depth( struct tilemap *tilemap, int tile_depth, int tile_granul
 	{
 		free( tilemap->tile_dirty_map);
 	}
-	tilemap->tile_dirty_map = malloc( Machine->drv->total_colors >> tile_granularity );
+	tilemap->tile_dirty_map = osd_malloc( Machine->drv->total_colors >> tile_granularity );
 	if( tilemap->tile_dirty_map )
 	{
 		tilemap->tile_depth = tile_depth;
@@ -265,11 +265,11 @@ static int mappings_create( struct tilemap *tilemap )
 	max_memory_offset++;
 	tilemap->max_memory_offset = max_memory_offset;
 	/* logical to cached (tilemap_mark_dirty) */
-	tilemap->memory_offset_to_cached_indx = malloc( sizeof(int)*max_memory_offset );
+	tilemap->memory_offset_to_cached_indx = osd_malloc( sizeof(int)*max_memory_offset );
 	if( tilemap->memory_offset_to_cached_indx )
 	{
 		/* cached to logical (get_tile_info) */
-		tilemap->cached_indx_to_memory_offset = malloc( sizeof(UINT32)*tilemap->num_tiles );
+		tilemap->cached_indx_to_memory_offset = osd_malloc( sizeof(UINT32)*tilemap->num_tiles );
 		if( tilemap->cached_indx_to_memory_offset ) return 0; /* no error */
 		free( tilemap->memory_offset_to_cached_indx );
 	}
@@ -781,7 +781,7 @@ struct tilemap *tilemap_create(
   DEBUGGERCHECKRAM();
 
 
-	tilemap = calloc( 1,sizeof( struct tilemap ) );
+	tilemap = osd_calloc( 1,sizeof( struct tilemap ) );
 	if( tilemap )
 	{
 		num_tiles = num_cols*num_rows;
@@ -789,8 +789,8 @@ struct tilemap *tilemap_create(
 		tilemap->num_logical_rows = num_rows;
 		tilemap->logical_tile_width = tile_width;
 		tilemap->logical_tile_height = tile_height;
-		tilemap->logical_colscroll = calloc(num_cols*tile_width,sizeof(int));
-		tilemap->logical_rowscroll = calloc(num_rows*tile_height,sizeof(int));
+		tilemap->logical_colscroll = osd_calloc(num_cols*tile_width,sizeof(int));
+		tilemap->logical_rowscroll = osd_calloc(num_rows*tile_height,sizeof(int));
 		if( Machine->orientation & ORIENTATION_SWAP_XY )
 		{
 			SWAP( num_cols, num_rows )
@@ -819,12 +819,12 @@ struct tilemap *tilemap_create(
 		tilemap->tile_dirty_map = 0;
 
     DEBUGGERCHECKRAM();
-		tilemap->cached_rowscroll	= calloc(tilemap->cached_height,sizeof(int));
-		tilemap->cached_colscroll	= calloc(tilemap->cached_width, sizeof(int));
+		tilemap->cached_rowscroll	= osd_calloc(tilemap->cached_height,sizeof(int));
+		tilemap->cached_colscroll	= osd_calloc(tilemap->cached_width, sizeof(int));
 
     DEBUGGERCHECKRAM();
-		tilemap->transparency_data = malloc( num_tiles );
-		tilemap->transparency_data_row = malloc( sizeof(UINT8 *)*num_rows );
+		tilemap->transparency_data = osd_malloc( num_tiles );
+		tilemap->transparency_data_row = osd_malloc( sizeof(UINT8 *)*num_rows );
 
     DEBUGGERCHECKRAM();
 		tilemap->pixmap = bitmap_alloc_depth( tilemap->cached_width, tilemap->cached_height, -16 );

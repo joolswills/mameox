@@ -352,7 +352,7 @@ int new_memory_region(int num, size_t length, UINT32 flags)
     if (num < MAX_MEMORY_REGIONS)
     {
         Machine->memory_region[num].length = length;
-        Machine->memory_region[num].base = malloc(length);
+        Machine->memory_region[num].base = osd_malloc(length);
         return (Machine->memory_region[num].base == NULL) ? 1 : 0;
     }
     else
@@ -364,7 +364,7 @@ int new_memory_region(int num, size_t length, UINT32 flags)
                 Machine->memory_region[i].length = length;
                 Machine->memory_region[i].type = num;
                 Machine->memory_region[i].flags = flags;
-                Machine->memory_region[i].base = malloc(length);
+                Machine->memory_region[i].base = osd_malloc(length);
                 return (Machine->memory_region[i].base == NULL) ? 1 : 0;
             }
         }
@@ -519,7 +519,7 @@ struct mame_bitmap *bitmap_alloc_core(int width,int height,int depth,int use_aut
 	}
 
 	/* allocate memory for the bitmap struct */
-	bitmap = use_auto ? auto_malloc(sizeof(struct mame_bitmap)) : malloc(sizeof(struct mame_bitmap));
+	bitmap = use_auto ? auto_malloc(sizeof(struct mame_bitmap)) : osd_malloc(sizeof(struct mame_bitmap));
 	if (bitmap != NULL)
 	{
 		int i, rowlen, rdwidth, bitmapsize, linearraysize, pixelsize;
@@ -551,7 +551,7 @@ struct mame_bitmap *bitmap_alloc_core(int width,int height,int depth,int use_aut
 		linearraysize = (height + 2 * BITMAP_SAFETY) * sizeof(unsigned char *);
 
 		/* allocate the bitmap data plus an array of line pointers */
-		bitmap->line = use_auto ? auto_malloc(linearraysize + bitmapsize) : malloc(linearraysize + bitmapsize);
+		bitmap->line = use_auto ? auto_malloc(linearraysize + bitmapsize) : osd_malloc(linearraysize + bitmapsize);
 		if (bitmap->line == NULL)
 		{
 			if (!use_auto) free(bitmap);
@@ -633,7 +633,9 @@ void bitmap_free(struct mame_bitmap *bitmap)
 
 void *auto_malloc(size_t size)
 {
-	void *result = malloc(size);
+    // EBA: Since the switch to osd_malloc, this actually doesn't need to be
+    //  tested for failure, but do it anyway
+	void *result = osd_malloc(size);
 	if (result)
 	{
 		struct malloc_info *info;

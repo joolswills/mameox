@@ -131,7 +131,7 @@ static int internal_oscode_find(unsigned oscode, unsigned type)
 static int internal_oscode_add(unsigned oscode, unsigned type)
 {
 	struct code_info* new_code_map;
-	new_code_map = realloc( code_map, (code_mac+1) * sizeof(struct code_info) );
+	new_code_map = osd_realloc( code_map, (code_mac+1) * sizeof(struct code_info) );
 	if (new_code_map)
 	{
 		code_map = new_code_map;

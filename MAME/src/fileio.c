@@ -956,7 +956,7 @@ static mame_file *generic_fopen(int pathtype, const char *gamename, const char *
 		return NULL;
 
 	/* otherwise, duplicate the file */
-	newfile = malloc(sizeof(file));
+	newfile = osd_malloc(sizeof(file));
 	if (newfile)
 		*newfile = file;
 
@@ -996,7 +996,7 @@ static int checksum_file(int pathtype, int pathindex, const char *file, UINT8 **
 	}
 
 	/* allocate space for entire file */
-	data = malloc(length);
+	data = osd_malloc(length);
 	if (!data)
 	{
 		osd_fclose(f);

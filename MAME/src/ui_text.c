@@ -332,7 +332,7 @@ int uistring_init (mame_file *langfile)
 					ptr = strtok (transline, "\n\r");
 
 					/* Allocate storage and copy the string */
-					trans_text[i] = malloc (strlen(transline)+1);
+					trans_text[i] = osd_malloc (strlen(transline)+1);
 					strcpy (trans_text[i], transline);
 
 					/* Done searching */

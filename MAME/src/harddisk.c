@@ -330,13 +330,13 @@ void *hard_disk_open(const char *filename, int writeable, void *parent)
 		SET_ERROR_AND_CLEANUP(err);
 
 	/* allocate and init the block cache */
-	info.cache = malloc(info.header.blocksize * HARD_DISK_SECTOR_SIZE);
+	info.cache = osd_malloc(info.header.blocksize * HARD_DISK_SECTOR_SIZE);
 	if (!info.cache)
 		SET_ERROR_AND_CLEANUP(HDERR_OUT_OF_MEMORY);
 	info.cacheblock = -1;
 
 	/* allocate the temporary compressed buffer */
-	info.compressed = malloc(info.header.blocksize * HARD_DISK_SECTOR_SIZE);
+	info.compressed = osd_malloc(info.header.blocksize * HARD_DISK_SECTOR_SIZE);
 	if (!info.compressed)
 		SET_ERROR_AND_CLEANUP(HDERR_OUT_OF_MEMORY);
 
@@ -346,7 +346,7 @@ void *hard_disk_open(const char *filename, int writeable, void *parent)
 		SET_ERROR_AND_CLEANUP(err);
 
 	/* okay, now allocate our entry and copy it */
-	finalinfo = malloc(sizeof(info));
+	finalinfo = osd_malloc(sizeof(info));
 	if (!finalinfo)
 		SET_ERROR_AND_CLEANUP(HDERR_OUT_OF_MEMORY);
 	*finalinfo = info;
@@ -1143,7 +1143,7 @@ static int read_sector_map(struct hard_disk_info *info)
 	UINT32 count;
 
 	/* first allocate memory */
-	info->map = malloc(sizeof(info->map[0]) * info->header.totalblocks);
+	info->map = osd_malloc(sizeof(info->map[0]) * info->header.totalblocks);
 	if (!info->map)
 		return HDERR_OUT_OF_MEMORY;
 
@@ -1223,7 +1223,7 @@ static voidpf fast_alloc(voidpf opaque, uInt items, uInt size)
 	}
 
 	/* alloc a new one */
-	ptr = malloc(size + sizeof(UINT32));
+	ptr = osd_malloc(size + sizeof(UINT32));
 	if (!ptr)
 		return NULL;
 
@@ -1281,7 +1281,7 @@ static int init_codec(struct hard_disk_info *info)
 			struct zlib_codec_data *data;
 
 			/* allocate memory for the 2 stream buffers */
-			info->codecdata = malloc(sizeof(struct zlib_codec_data));
+			info->codecdata = osd_malloc(sizeof(struct zlib_codec_data));
 			if (!info->codecdata)
 				return HDERR_OUT_OF_MEMORY;
 

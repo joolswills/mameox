@@ -449,7 +449,7 @@ static void readfile(const char *path,struct fileinfo *file)
 	else fullname[0] = 0;
 	strcat(fullname,file->name);
 
-	if ((file->buf = malloc(file->size)) == 0)
+	if ((file->buf = osd_malloc(file->size)) == 0)
 	{
 		printf("%s: out of memory!\n",file->name);
 		return;
@@ -572,7 +572,7 @@ static int load_files(int i, int *found, const char *path)
 				else
 					strcpy(file->name,zipent->name);
 				file->size = zipent->uncompressed_size;
-				if ((file->buf = malloc(file->size)) == 0)
+				if ((file->buf = osd_malloc(file->size)) == 0)
 					printf("%s: out of memory!\n",file->name);
 				else
 				{

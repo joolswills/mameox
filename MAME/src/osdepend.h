@@ -349,6 +349,14 @@ cycles_t osd_profiling_ticks(void);
 
 ******************************************************************************/
 
+// [EBA] - "Safe" mallocs, exits the program if the malloc fails, rather than
+// relying on MAME to actually check for failure (which it does not, in numerous
+// places)
+void *osd_malloc( size_t );
+void *osd_calloc( size_t num, size_t size );
+void *osd_realloc( void *memblock, size_t size );
+
+
 /* called while loading ROMs. It is called a last time with name == 0 to signal */
 /* that the ROM loading process is finished. */
 /* return non-zero to abort loading */

@@ -214,7 +214,7 @@ struct GfxElement *decodegfx(const UINT8 *src,const struct GfxLayout *gl)
 	struct GfxElement *gfx;
 
 
-	if ((gfx = malloc(sizeof(struct GfxElement))) == 0)
+	if ((gfx = osd_malloc(sizeof(struct GfxElement))) == 0)
 		return 0;
 	memset(gfx,0,sizeof(struct GfxElement));
 
@@ -226,7 +226,7 @@ struct GfxElement *decodegfx(const UINT8 *src,const struct GfxLayout *gl)
 
 	gfx->pen_usage = 0; /* need to make sure this is NULL if the next test fails) */
 	if (gfx->color_granularity <= 32)	/* can't handle more than 32 pens */
-		gfx->pen_usage = malloc(gfx->total_elements * sizeof(int));
+		gfx->pen_usage = osd_malloc(gfx->total_elements * sizeof(int));
 		/* no need to check for failure, the code can work without pen_usage */
 
 	if (gl->planeoffset[0] == GFX_RAW)
@@ -254,7 +254,7 @@ struct GfxElement *decodegfx(const UINT8 *src,const struct GfxLayout *gl)
 			gfx->line_modulo = gfx->width;
 		gfx->char_modulo = gfx->line_modulo * gfx->height;
 
-		if ((gfx->gfxdata = malloc(gfx->total_elements * gfx->char_modulo * sizeof(UINT8))) == 0)
+		if ((gfx->gfxdata = osd_malloc(gfx->total_elements * gfx->char_modulo * sizeof(UINT8))) == 0)
 		{
 			free(gfx->pen_usage);
 			free(gfx);

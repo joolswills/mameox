@@ -101,7 +101,7 @@ memdbg_Alloc( size_t numBytes, const char *pModule, int line )
 	}
 	else
 	{
-		MemPtr *pMemPtr = malloc(sizeof(MemPtr)+numBytes+sizeof(mGuardData));
+		MemPtr *pMemPtr = osd_malloc(sizeof(MemPtr)+numBytes+sizeof(mGuardData));
 		if( !pMemPtr )
 		{
 			printf( "memdbg_Alloc failure: insufficient memory!\n" );

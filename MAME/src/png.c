@@ -158,7 +158,7 @@ int png_read_file(mame_file *fp, struct png_info *p)
 		UINT8 *data;
 	} *ihead, *pidat;
 
-	if ((ihead = malloc (sizeof(struct idat))) == 0)
+	if ((ihead = osd_malloc (sizeof(struct idat))) == 0)
 		return 0;
 
 	pidat = ihead;
@@ -252,7 +252,7 @@ int png_read_file(mame_file *fp, struct png_info *p)
 		case PNG_CN_IDAT:
 			pidat->data = chunk_data;
 			pidat->length = chunk_length;
-			if ((pidat->next = malloc (sizeof(struct idat))) == 0)
+			if ((pidat->next = osd_malloc (sizeof(struct idat))) == 0)
 				return 0;
 			pidat = pidat->next;
 			pidat->next = 0;
@@ -560,12 +560,12 @@ int png_add_text (const char *keyword, const char *text)
 {
 	struct png_text *pt;
 
-	pt = malloc (sizeof(struct png_text));
+	pt = osd_malloc (sizeof(struct png_text));
 	if (pt == 0)
 		return 0;
 
 	pt->length = strlen(keyword) + strlen(text) + 1;
-	pt->data = malloc (pt->length + 1);
+	pt->data = osd_malloc (pt->length + 1);
 	if (pt->data == 0)
 		return 0;
 

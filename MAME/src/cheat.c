@@ -1556,7 +1556,7 @@ static char * DoDynamicEditTextField(char * buf)
 
 				if(length > 1)
 				{
-					buf = realloc(buf, length);
+					buf = osd_realloc(buf, length);
 				}
 				else
 				{
@@ -1573,14 +1573,14 @@ static char * DoDynamicEditTextField(char * buf)
 		{
 			UINT32	length = strlen(buf);
 
-			buf = realloc(buf, length + 2);
+			buf = osd_realloc(buf, length + 2);
 
 			buf[length] = code;
 			buf[length + 1] = 0;
 		}
 		else
 		{
-			buf = malloc(2);
+			buf = osd_malloc(2);
 
 			buf[0] = code;
 			buf[1] = 0;
@@ -2015,12 +2015,12 @@ static void RebuildStringTables(void)
 
 	storageNeeded =				(menuStrings.mainStringLength + menuStrings.subStringLength) * menuStrings.numStrings;
 
-	menuStrings.mainList =		(const char **)	realloc((char *)	menuStrings.mainList,		sizeof(char *) * menuStrings.length);
-	menuStrings.subList =		(const char **)	realloc((char *)	menuStrings.subList,		sizeof(char *) * menuStrings.length);
-	menuStrings.flagList =						realloc(			menuStrings.flagList,		sizeof(char)   * menuStrings.length);
-	menuStrings.mainStrings =					realloc(			menuStrings.mainStrings,	sizeof(char *) * menuStrings.numStrings);
-	menuStrings.subStrings =					realloc(			menuStrings.subStrings,		sizeof(char *) * menuStrings.numStrings);
-	menuStrings.buf =							realloc(			menuStrings.buf,			sizeof(char)   * storageNeeded);
+	menuStrings.mainList =		(const char **)	osd_realloc((char *)	menuStrings.mainList,		sizeof(char *) * menuStrings.length);
+	menuStrings.subList =		(const char **)	osd_realloc((char *)	menuStrings.subList,		sizeof(char *) * menuStrings.length);
+	menuStrings.flagList =						osd_realloc(			menuStrings.flagList,		sizeof(char)   * menuStrings.length);
+	menuStrings.mainStrings =					osd_realloc(			menuStrings.mainStrings,	sizeof(char *) * menuStrings.numStrings);
+	menuStrings.subStrings =					osd_realloc(			menuStrings.subStrings,		sizeof(char *) * menuStrings.numStrings);
+	menuStrings.buf =							osd_realloc(			menuStrings.buf,			sizeof(char)   * storageNeeded);
 
 	if(	(!menuStrings.mainList && menuStrings.length) ||
 		(!menuStrings.subList && menuStrings.length) ||
@@ -3055,7 +3055,7 @@ static int EditCheatMenu(struct mame_bitmap * bitmap, CheatEntry * entry, int se
 	{
 		menuItemInfoLength = (kType_Max * entry->actionListLength) + 2;
 
-		menuItemInfo = realloc(menuItemInfo, menuItemInfoLength * sizeof(MenuItemInfoStruct));
+		menuItemInfo = osd_realloc(menuItemInfo, menuItemInfoLength * sizeof(MenuItemInfoStruct));
 	}
 
 	RequestStrings((kType_Max * entry->actionListLength) + 2, 7 * entry->actionListLength, 24, 0);
@@ -3768,7 +3768,7 @@ static int EditCheatMenu(struct mame_bitmap * bitmap, CheatEntry * entry, int se
 					}
 				}
 
-				entry->name = realloc(entry->name, strlen(kCheatNameTemplates[currentNameTemplate]) + 1);
+				entry->name = osd_realloc(entry->name, strlen(kCheatNameTemplates[currentNameTemplate]) + 1);
 				strcpy(entry->name, kCheatNameTemplates[currentNameTemplate]);
 				break;
 
@@ -4042,7 +4042,7 @@ static int EditCheatMenu(struct mame_bitmap * bitmap, CheatEntry * entry, int se
 					currentNameTemplate = 0;
 				}
 
-				entry->name = realloc(entry->name, strlen(kCheatNameTemplates[currentNameTemplate]) + 1);
+				entry->name = osd_realloc(entry->name, strlen(kCheatNameTemplates[currentNameTemplate]) + 1);
 				strcpy(entry->name, kCheatNameTemplates[currentNameTemplate]);
 				break;
 
@@ -7237,7 +7237,7 @@ static char * CreateStringCopy(char * buf)
 	{
 		UINT32	length = strlen(buf) + 1;
 
-		temp = malloc(length);
+		temp = osd_malloc(length);
 
 		if(temp)
 		{
@@ -7260,7 +7260,7 @@ static void ResizeCheatList(UINT32 newLength)
 				DisposeCheat(&cheatList[i]);
 		}
 
-		cheatList = realloc(cheatList, newLength * sizeof(CheatEntry));
+		cheatList = osd_realloc(cheatList, newLength * sizeof(CheatEntry));
 		if(!cheatList && (newLength != 0))
 		{
 			logerror("ResizeCheatList: out of memory resizing cheat list\n");
@@ -7291,7 +7291,7 @@ static void ResizeCheatListNoDispose(UINT32 newLength)
 {
 	if(newLength != cheatListLength)
 	{
-		cheatList = realloc(cheatList, newLength * sizeof(CheatEntry));
+		cheatList = osd_realloc(cheatList, newLength * sizeof(CheatEntry));
 		if(!cheatList && (newLength != 0))
 		{
 			logerror("ResizeCheatListNoDispose: out of memory resizing cheat list\n");
@@ -7390,7 +7390,7 @@ static void ResizeCheatActionList(CheatEntry * entry, UINT32 newLength)
 				DisposeAction(&entry->actionList[i]);
 		}
 
-		entry->actionList = realloc(entry->actionList, newLength * sizeof(CheatAction));
+		entry->actionList = osd_realloc(entry->actionList, newLength * sizeof(CheatAction));
 		if(!entry->actionList && (newLength != 0))
 		{
 			logerror("ResizeCheatActionList: out of memory resizing cheat action list\n");
@@ -7414,7 +7414,7 @@ static void ResizeCheatActionListNoDispose(CheatEntry * entry, UINT32 newLength)
 {
 	if(newLength != entry->actionListLength)
 	{
-		entry->actionList = realloc(entry->actionList, newLength * sizeof(CheatAction));
+		entry->actionList = osd_realloc(entry->actionList, newLength * sizeof(CheatAction));
 		if(!entry->actionList && (newLength != 0))
 		{
 			logerror("ResizeCheatActionList: out of memory resizing cheat action list\n");
@@ -7492,7 +7492,7 @@ static void ResizeWatchList(UINT32 newLength)
 				DisposeWatch(&watchList[i]);
 		}
 
-		watchList = realloc(watchList, newLength * sizeof(WatchInfo));
+		watchList = osd_realloc(watchList, newLength * sizeof(WatchInfo));
 		if(!watchList && (newLength != 0))
 		{
 			logerror("ResizeWatchList: out of memory resizing watch list\n");
@@ -7523,7 +7523,7 @@ static void ResizeWatchListNoDispose(UINT32 newLength)
 {
 	if(newLength != watchListLength)
 	{
-		watchList = realloc(watchList, newLength * sizeof(WatchInfo));
+		watchList = osd_realloc(watchList, newLength * sizeof(WatchInfo));
 		if(!watchList && (newLength != 0))
 		{
 			logerror("ResizeWatchList: out of memory resizing watch list\n");
@@ -7628,7 +7628,7 @@ static void AddCheatFromWatch(WatchInfo * watch)
 
 		tempStringLength = sprintf(tempString, "%.8X (%d) = %.*X", watch->address, watch->cpu, kSearchByteDigitsTable[watch->elementBytes], data);
 
-		entry->name = realloc(entry->name, tempStringLength + 1);
+		entry->name = osd_realloc(entry->name, tempStringLength + 1);
 		memcpy(entry->name, tempString, tempStringLength + 1);
 
 		SET_FIELD(action->type, LocationParameter, watch->cpu);
@@ -7657,7 +7657,7 @@ static void SetupCheatFromWatchAsWatch(CheatEntry * entry, WatchInfo * watch)
 
 		tempStringLength = sprintf(tempString, "Watch %.8X (%d)", watch->address, watch->cpu);
 
-		entry->name = realloc(entry->name, tempStringLength + 1);
+		entry->name = osd_realloc(entry->name, tempStringLength + 1);
 		memcpy(entry->name, tempString, tempStringLength + 1);
 
 		action->type = 0;
@@ -7675,7 +7675,7 @@ static void SetupCheatFromWatchAsWatch(CheatEntry * entry, WatchInfo * watch)
 		action->extendData = 0xFFFFFFFF;
 
 		tempStringLength = strlen(watch->label);
-		entry->comment = realloc(entry->comment, tempStringLength + 1);
+		entry->comment = osd_realloc(entry->comment, tempStringLength + 1);
 		memcpy(entry->comment, watch->label, tempStringLength + 1);
 
 		UpdateCheatInfo(entry, 0);
@@ -7694,7 +7694,7 @@ static void ResizeSearchList(UINT32 newLength)
 				DisposeSearch(i);
 		}
 
-		searchList = realloc(searchList, newLength * sizeof(SearchInfo));
+		searchList = osd_realloc(searchList, newLength * sizeof(SearchInfo));
 		if(!searchList && (newLength != 0))
 		{
 			logerror("ResizeSearchList: out of memory resizing search list\n");
@@ -7725,7 +7725,7 @@ static void ResizeSearchListNoDispose(UINT32 newLength)
 {
 	if(newLength != searchListLength)
 	{
-		searchList = realloc(searchList, newLength * sizeof(SearchInfo));
+		searchList = osd_realloc(searchList, newLength * sizeof(SearchInfo));
 		if(!searchList && (newLength != 0))
 		{
 			logerror("ResizeSearchList: out of memory resizing search list\n");
@@ -8081,11 +8081,11 @@ static void AllocateSearchRegions(SearchInfo * info)
 
 		if(region->flags & kRegionFlag_Enabled)
 		{
-			region->first =			malloc(region->length);
-			region->last =			malloc(region->length);
-			region->status =		malloc(region->length);
-			region->backupLast =	malloc(region->length);
-			region->backupStatus =	malloc(region->length);
+			region->first =			osd_malloc(region->length);
+			region->last =			osd_malloc(region->length);
+			region->status =		osd_malloc(region->length);
+			region->backupLast =	osd_malloc(region->length);
+			region->backupStatus =	osd_malloc(region->length);
 
 			if(	!region->first ||
 				!region->last ||
@@ -8134,7 +8134,7 @@ static void BuildSearchRegions(SearchInfo * info)
 				UINT32			length = cpuInfoList[info->targetIdx].addressMask + 1;
 				SearchRegion	* region;
 
-				info->regionList = calloc(sizeof(SearchRegion), 1);
+				info->regionList = osd_calloc(sizeof(SearchRegion), 1);
 				info->regionListLength = 1;
 				region = info->regionList;
 
@@ -8174,7 +8174,7 @@ static void BuildSearchRegions(SearchInfo * info)
 					mwa++;
 				}
 
-				info->regionList = calloc(sizeof(SearchRegion), count);
+				info->regionList = osd_calloc(sizeof(SearchRegion), count);
 				info->regionListLength = count;
 				traverse = info->regionList;
 
@@ -8814,7 +8814,7 @@ static void AddCheatFromResult(SearchInfo * search, SearchRegion * region, UINT3
 
 		tempStringLength = sprintf(tempString, "%.8X (%d) = %.*X", address, region->targetIdx, kSearchByteDigitsTable[search->bytes], data);
 
-		entry->name = realloc(entry->name, tempStringLength + 1);
+		entry->name = osd_realloc(entry->name, tempStringLength + 1);
 		memcpy(entry->name, tempString, tempStringLength + 1);
 
 		SET_FIELD(action->type, LocationParameter, region->targetIdx);
@@ -10444,7 +10444,7 @@ static void BuildCRCTable(void)
 	free(deviceCRCList);
 
 	// allocate list with single member (0x00000000)
-	deviceCRCList = calloc(1, sizeof(UINT32));
+	deviceCRCList = osd_calloc(1, sizeof(UINT32));
 	deviceCRCListLength = 1;
 
 	for(deviceType = 0; deviceType < IO_COUNT; deviceType++)
@@ -10470,7 +10470,7 @@ static void BuildCRCTable(void)
 				if(!thisGameCRC)
 					thisGameCRC = crc;
 
-				deviceCRCList = realloc(deviceCRCList, (deviceCRCListLength + 1) * sizeof(UINT32));
+				deviceCRCList = osd_realloc(deviceCRCList, (deviceCRCListLength + 1) * sizeof(UINT32));
 
 				deviceCRCList[deviceCRCListLength] = crc;
 				deviceCRCListLength++;

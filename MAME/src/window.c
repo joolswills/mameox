@@ -31,7 +31,7 @@
 
 INLINE void *MyMalloc( UINT32 size, const char *function )
 {
-	void *p = malloc( size );
+	void *p = osd_malloc( size );
     ASSERT( p );
 	memset( p, 0, size );
 	return p;
@@ -39,7 +39,7 @@ INLINE void *MyMalloc( UINT32 size, const char *function )
 
 INLINE void *MyReAlloc( void *p, UINT32 size, const char *function )
 {
-	p = realloc( p, size );
+	p = osd_realloc( p, size );
     ASSERT( p );
 	return p;
 }

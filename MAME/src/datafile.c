@@ -436,7 +436,7 @@ static int index_datafile (struct tDatafileIndex **_index)
         if (ParseSeek (0L, SEEK_SET)) return 0;
 
         /* allocate index */
-        idx = *_index = malloc (MAX_DATAFILE_ENTRIES * sizeof (struct tDatafileIndex));
+        idx = *_index = osd_malloc (MAX_DATAFILE_ENTRIES * sizeof (struct tDatafileIndex));
         if (NULL == idx) return 0;
 
         /* loop through datafile */

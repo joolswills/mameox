@@ -637,7 +637,7 @@ void cpu_loadsave_schedule_file(int type, const char *name)
 {
 	cpu_loadsave_reset();
 
-	loadsave_schedule_name = malloc(strlen(name) + 1);
+	loadsave_schedule_name = osd_malloc(strlen(name) + 1);
 	if (loadsave_schedule_name)
 	{
 		strcpy(loadsave_schedule_name, name);

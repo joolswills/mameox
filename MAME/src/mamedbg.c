@@ -3438,7 +3438,7 @@ static void cmd_help( void )
 {
 	UINT32 win = WIN_HELP;
 	const char *title = "";
-	char *help = malloc(4096+1), *dst;
+	char *help = osd_malloc(4096+1), *dst;
 	const char *src;
 	unsigned w, h;
 	int cmd = INVALID;

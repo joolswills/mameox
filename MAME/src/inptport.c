@@ -2469,7 +2469,7 @@ void seq_set_string(InputSeq* a, const char *buf)
 	int found;
 
 	// create a locale buffer to be parsed by strtok
-	lbuf = malloc (strlen(buf)+1);
+	lbuf = osd_malloc (strlen(buf)+1);
 
 	// copy the input string
 	strcpy (lbuf, buf);
