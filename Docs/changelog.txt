@@ -54,6 +54,9 @@ Version 0.70.3b
 
     - ROMList.cpp
       - Changed all list views to use the new CListView base class
+      - Fixed superscroll so it doesn't jump to the top of the
+        current section (i.e. tapping Y no longer does anything,
+        cause it was annoying me)
 
     - OptionsPage.cpp
       - Changed all list views to use the new CListView base class

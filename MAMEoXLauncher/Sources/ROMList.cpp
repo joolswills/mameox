@@ -617,8 +617,14 @@ void CROMList::SuperScrollModeMoveCursor( CGamepad &gp, FLOAT elapsedTime )
 
     // This should always succeed, as SuperScrollModeMoveCursor only presents valid
     // character indices to the user
+  char currentChar = toupper( m_driverInfoList[ GetCurrentGameIndex() ].m_description[0] );
+  if( !(currentChar >= 'A' && currentChar <= 'Z') )
+    currentChar = '#';
   UINT32 absCursorPos = m_superscrollJumpTable[m_superscrollCharacterIdx];
-  if( absCursorPos != INVALID_SUPERSCROLL_JUMP_IDX )
+  
+    // Jump if there's a place to jump to, and we're not already in the section starting
+    // with the selected superscroll letter
+  if( absCursorPos != INVALID_SUPERSCROLL_JUMP_IDX && currentChar != g_superscrollCharacterSet[m_superscrollCharacterIdx])
   {
       // Jump the cursor to the selected letter
 	  UINT32 pageSize = (CURRENTROMLIST().size() < MAXPAGESIZE ? CURRENTROMLIST().size() : MAXPAGESIZE);
@@ -850,7 +856,7 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   #define MANUFACTURER_COLUMN   305
   #define YEAR_COLUMN           460
   #define CLONE_COLUMN          530 
-  #define COLUMN_PADDING        5     // Number of pixels to subtract from the column width before truncating text
+  #define COLUMN_PADDING        9     // Number of pixels to subtract from the column width before truncating text
 
   #define SCROLLUP_TOP          137
   #define SCROLLUP_LEFT         32

@@ -1,11 +1,3 @@
-#pragma code_seg("C283")
-#pragma data_seg("D283")
-#pragma bss_seg("B283")
-#pragma const_seg("K283")
-#pragma comment(linker, "/merge:D283=283")
-#pragma comment(linker, "/merge:C283=283")
-#pragma comment(linker, "/merge:B283=283")
-#pragma comment(linker, "/merge:K283=283")
 #define VERBOSE 0
 #define GX_DEBUG 0
 
@@ -2289,7 +2281,3 @@ if((data1=obj[0])&0x80000000)\
 #undef EXTRACT_ODD
 #undef EXTRACT_EVEN
 }
-#pragma code_seg()
-#pragma data_seg()
-#pragma bss_seg()
-#pragma const_seg()
