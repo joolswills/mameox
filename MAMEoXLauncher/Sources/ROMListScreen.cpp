@@ -1862,9 +1862,12 @@ void CROMListScreen::DrawVerboseList( void )
   FLOAT selectedItemYPos = (textHeight * (ULONG)m_cursorPosition);
 
     // Render the highlight bar for the selected item
-  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-  m_displayDevice->SetRenderState( D3DRS_SRCBLEND,         D3DBLEND_SRCALPHA );
-  m_displayDevice->SetRenderState( D3DRS_DESTBLEND,        D3DBLEND_INVSRCALPHA );
+  m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
+  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
+  m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
+  m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
+  m_displayDevice->SetRenderState( D3DRS_SRCBLEND,            D3DBLEND_SRCALPHA );
+  m_displayDevice->SetRenderState( D3DRS_DESTBLEND,           D3DBLEND_INVSRCALPHA );
   m_displayDevice->SetTexture( 0, NULL );
   m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
 
@@ -2019,11 +2022,17 @@ void CROMListScreen::DrawVerboseList( void )
 
 
     //-- Render the scroll up and/or scroll down icons --------------------------------------------
-  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
+  m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
+  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
+  m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
+  m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
+  m_displayDevice->SetRenderState( D3DRS_SRCBLEND,            D3DBLEND_SRCALPHA );
+  m_displayDevice->SetRenderState( D3DRS_DESTBLEND,           D3DBLEND_INVSRCALPHA );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
+  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
 
     // Draw scroll up icon
   if( (DWORD)m_pageOffset )
@@ -2177,11 +2186,17 @@ void CROMListScreen::DrawSimpleList( void )
 
 
     //-- Render the scroll up and/or scroll down icons --------------------------------------------
-  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
+  m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
+  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
+  m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
+  m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
+  m_displayDevice->SetRenderState( D3DRS_SRCBLEND,            D3DBLEND_SRCALPHA );
+  m_displayDevice->SetRenderState( D3DRS_DESTBLEND,           D3DBLEND_INVSRCALPHA );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
+  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
 
     // Draw scroll up icon
   if( (DWORD)m_pageOffset )
@@ -2413,12 +2428,17 @@ void CROMListScreen::DrawDetailedList( void )
 
 
     //-- Render the scroll up and/or scroll down icons --------------------------------------------
-  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
+  m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
+  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
+  m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
+  m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
+  m_displayDevice->SetRenderState( D3DRS_SRCBLEND,            D3DBLEND_SRCALPHA );
+  m_displayDevice->SetRenderState( D3DRS_DESTBLEND,           D3DBLEND_INVSRCALPHA );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
-  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
+  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
 
     // Draw scroll up icon
   if( GetAbsoluteCursorPosition() )
