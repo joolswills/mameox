@@ -112,7 +112,7 @@ void __cdecl main( void )
   
   SaveOptions();
 
-//CHECKRAM();
+CHECKRAM();   
 
     // Check the launch data to ensure that we've been started properly
   if( getLaunchInfoRet != ERROR_SUCCESS || g_launchDataType != LDT_TITLE )
@@ -122,7 +122,6 @@ void __cdecl main( void )
     Die( pD3DDevice, "MAMEoX wasn't called from the launcher!\nPlease run default.xbe instead.\n" );
       // Die never returns
   }
- 
 
 
     // Create the sorted game listing and exit
@@ -540,7 +539,6 @@ static BOOL Helper_RunRom( UINT32 romIndex )
   if( !g_soundEnabled )
     options.samplerate = 0;
 
-CHECKRAM();
 	ret = run_game( romIndex );
 
     // Restore the old value, just in case somebody writes to the INI
