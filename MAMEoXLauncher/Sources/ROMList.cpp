@@ -46,7 +46,7 @@ extern "C" {
 #define CURSOR_SPEED            0.3f                // The cursor velocity modifier
 
   // Analog stick deadzone
-#define STICK_DEADZONE          0.45f
+#define STICK_DEADZONE          0.35f
 
 	// Number of seconds between valid DPAD readings
 #define DPADCURSORMOVE_TIMEOUT	0.20f
@@ -307,17 +307,13 @@ void CROMList::MoveCursor( const XINPUT_GAMEPAD	&gp )
 	}
 	else if( gp.bAnalogButtons[XINPUT_GAMEPAD_WHITE] > 150 )
 	{
-		m_additionalinfo = ( m_additionalinfo == FALSE );
-			// Changing ROMList w/o additional informations like rating, ...
-//		GenerateROMList( m_allowclones );
-		WaitForNoKey();
+			// Regenerate the rom listing, allowing clones
+		GenerateROMList();
 	}
   else if( gp.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 150 )
   {
-		m_allowclones = ( m_allowclones == FALSE );
       // Regenerate the rom listing, hiding clones
-    GenerateROMList( m_allowclones );
-		WaitForNoKey();
+    GenerateROMList( FALSE );
   }
 
 		// General idea taken from XMAME
@@ -607,8 +603,6 @@ void CROMList::NormalModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapsedTime
 //---------------------------------------------------------------------
 void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
 {
-	WCHAR name[256];
-
 		// Display the error to the user
   if( opaque )  
 	  m_displayDevice->Clear(	0L,																// Count
@@ -619,26 +613,10 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
 						  							0L );															// Stencil
 
 	m_font.Begin();
-
-	if( m_additionalinfo )
-	{
-		swprintf( name, L"Names %s", ( m_allowclones == FALSE ) ? L"(No Clones)" : L"(Clones)   " );
-		m_font.DrawText(  70, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), name );
-		m_font.DrawText( 440, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Rate" );
-		m_font.DrawText( 498, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Favorite" );
-		m_font.DrawText(  65, 50, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"----------------------------------------------------" );
-		m_font.DrawText( 435, 50, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"--------" );
-		m_font.DrawText( 495, 50, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"------------" );
-	}
-	else
-	{
-		swprintf( name, L"Available ROMs %s", ( m_allowclones == FALSE ) ? L"(No Clones)" : L"(Clones)" );
-		m_font.DrawText( 320, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), name, XBFONT_CENTER_X );
-	}
+	
+	m_font.DrawText( 320, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Available ROMs", XBFONT_CENTER_X );
 
 		// Render the titles
-	DWORD color;
-	FLOAT xPos, xDelta;
 	FLOAT yPos = 64;
 	DWORD pageSize = (m_ROMList.size() < MAXPAGESIZE ? m_ROMList.size() : MAXPAGESIZE);
 	ULONG absListIDX = (ULONG)m_gameListPageOffset;
@@ -653,24 +631,14 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
 
 	for( DWORD i = 0; i < pageSize; ++i )
 	{
+		WCHAR name[256];
 		mbstowcs( name, m_driverInfoList[ m_ROMList[absListIDX++] ].m_description, 255 );
 
 			// Render the selected item as bright white
-		xPos = 70;
-		xDelta = 0;
 		if( i == (ULONG)m_gameListCursorPosition )
-		{
-			color = SELECTED_ITEM_COLOR;
-			xDelta = 16;
-		}
+			m_font.DrawText( 96, yPos, SELECTED_ITEM_COLOR, name );
 		else
-			color = NORMAL_ITEM_COLOR;
-		m_font.DrawText( xPos + xDelta, yPos, color, name, XBFONT_TRUNCATED, ( m_additionalinfo ? 365 : 500 ) - xDelta );
-		if( m_additionalinfo )
-		{
-			m_font.DrawText( 445, yPos, color, L"100" );
-			m_font.DrawText( 518, yPos, color, L"Yes" );
-		}
+			m_font.DrawText( 80, yPos, NORMAL_ITEM_COLOR, name );
 
 			// Inc the Y position
 		yPos += 20;
@@ -678,7 +646,7 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
 
   #if defined(_PROFILER) || defined(_DEBUG)
     MEMORYSTATUS memStatus;
-    GlobalMemoryStatus( &memStatus );
+    GlobalMemoryStatus(  &memStatus );
 
     WCHAR memStr[256];
     swprintf( memStr, 
@@ -695,13 +663,7 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
       // Display the superscroll character
     WCHAR displayString[2] = L"";
     mbtowc( displayString, &g_superscrollCharacterSet[m_superscrollCharacterIdx], 1 );
-		if( m_additionalinfo )
-		{
-			swprintf( name, L"Names %s [%s]", ( m_allowclones == FALSE ) ? L"(No Clones)" : L"(Clones)   ", displayString );
-			m_font.DrawText(  70, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), name );
-		}
-		else
-			m_font.DrawText( 70, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), displayString );
+    m_font.DrawText( 80, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), displayString );
   }
 
 	m_font.End();
