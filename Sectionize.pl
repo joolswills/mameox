@@ -403,6 +403,8 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 
 @NYNYFamily = ( "nyny.c", "spiders.c" );									# Spiders
 @DoubleDragonFamily = ( "ddragon.c", "chinagat.c" );						# China Gate
+@ThunderJawsFamily = ( "thunderj.c", "eprom.c" );							# Escape from the Planet of the Robot Monsters
+
 
 local @Families = ( \@CapcomFamily, \@NamcoFamily, \@SegaFamily, \@MidwayMCRFamily, \@TwinCobraFamily,
 					\@MoonPatrolFamily, \@SNKFamily, \@AmidarFamily, \@RampartFamily, \@RastanFamily,
@@ -411,7 +413,7 @@ local @Families = ( \@CapcomFamily, \@NamcoFamily, \@SegaFamily, \@MidwayMCRFami
 					\@TrackFldFamily, \@Taito_F3Family, \@FromanceFamily, \@MidYUnitFamily, \@KonamiGXFamily,
 					\@SegarFamily, \@ZaxxonFamily, \@WizFamily, \@TetrisPlus2Family, \@WipingFamily,
 					\@D8080bwFamily, \@BuggyChallengeFamily, \@BurgerTimeFamily, \@PlaymarkFamily,
-					\@NYNYFamily, \@DoubleDragonFamily );
+					\@NYNYFamily, \@DoubleDragonFamily, \@ThunderJawsFamily );
 $autoNameNumber = $#Families + 50;
 
 
