@@ -504,7 +504,6 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\metro.c", "328" );
   RegisterSectionName( "src\\drivers\\mexico86.c", "329" );
   RegisterSectionName( "src\\drivers\\mhavoc.c", "330" );
-  RegisterSectionName( "src\\drivers\\midtunit.c", "331" );
   RegisterSectionName( "src\\drivers\\midvunit.c", "332" );
   RegisterSectionName( "src\\drivers\\midwunit.c", "333" );
   RegisterSectionName( "src\\drivers\\midxunit.c", "334" );

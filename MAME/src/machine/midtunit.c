@@ -1,11 +1,3 @@
-#pragma code_seg("C331")
-#pragma data_seg("D331")
-#pragma bss_seg("B331")
-#pragma const_seg("K331")
-#pragma comment(linker, "/merge:D331=331")
-#pragma comment(linker, "/merge:C331=331")
-#pragma comment(linker, "/merge:B331=331")
-#pragma comment(linker, "/merge:K331=331")
 /*************************************************************************
 
 	Driver for Midway T-unit games.
@@ -706,7 +698,3 @@ WRITE16_HANDLER( midtunit_sound_w )
 				break;
 		}
 }
-#pragma code_seg()
-#pragma data_seg()
-#pragma bss_seg()
-#pragma const_seg()
