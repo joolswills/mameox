@@ -343,6 +343,7 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 #  midyunit - Mortal Kombat 2
 #  midtunit - WWF Wrestlemania
 #  konamigx - Metaorphic Force
+#  segar.c - Star Trek
 
 # Note: Watch on midxunit.c, it only seems to be for Revolution X, which 
 #       runs out of memory at the moment, there may be problems there in the
@@ -354,7 +355,7 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 	             "pengo.c",  "megasys1.c", "rallyx.c", "timeplt.c", 
 				 "exidy.c", "m72.c", "leland.c", "trackfld.c",
 				 "taito_f3.c", "fromance.c", "frogger.c", "midyunit.c",
-				 "midtunit.c", "konamigx.c" );
+				 "midtunit.c", "konamigx.c", "segar.c" );
 
 @MidwayMCRFamily = ( "mcr1.c", "mcr2.c", "mcr3.c", "mcr68.c" );
 

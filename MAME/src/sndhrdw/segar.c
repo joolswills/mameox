@@ -1,11 +1,3 @@
-#pragma code_seg("C467")
-#pragma data_seg("D467")
-#pragma bss_seg("B467")
-#pragma const_seg("K467")
-#pragma comment(linker, "/merge:D467=467")
-#pragma comment(linker, "/merge:C467=467")
-#pragma comment(linker, "/merge:B467=467")
-#pragma comment(linker, "/merge:K467=467")
 /***************************************************************************
 
 	Sega G-80 raster hardware
@@ -540,7 +532,3 @@ WRITE_HANDLER( monsterb_sh_rom_select_w )
 		rom_offset |= 0x1000;
 }
 
-#pragma code_seg()
-#pragma data_seg()
-#pragma bss_seg()
-#pragma const_seg()
