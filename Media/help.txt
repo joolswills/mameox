@@ -40,6 +40,10 @@ DPAD/Left Analog Stick - Move the ROM cursor
 
 -- Screen Size -----------------------------
 Right Analog Stick - 
+        Click the stick to toggle between
+        Stretch and Move modes.
+
+        Stretch mode:
         Used to set the screen usage
         percentage for MAME rendering.
         Moving the stick will resize the
@@ -54,6 +58,12 @@ Right Analog Stick -
         (where there is a larger than 
         necessary black border around the
         game screen).
+
+        Move mode:
+        Used to set the screen position
+        for MAME rendering. Moving the 
+        stick will change the position of
+        the screen.
 
 -- Exiting MAMEoX --------------------------
 Pressing Left Trigger, Right Trigger, and 

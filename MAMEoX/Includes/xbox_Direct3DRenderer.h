@@ -101,8 +101,8 @@ extern RendererOptions_t    g_rendererOptions;
 void InitializeD3DRenderer( CGraphicsManager &gman, CXBFont *fnt );
 
 extern "C" {
-#endif
-	
+
+
 	//-------------------------------------------------------------
 	//	SetScreenUsage
 	//! \brief		Set how much of the screen is utilized
@@ -140,6 +140,9 @@ void SetScreenPosition( FLOAT xOffset = 0.0f, FLOAT yOffset = 0.0f );
   //! \param    yOffset - [OUT] Offset in the Y direction
 	//-------------------------------------------------------------
 void GetScreenPosition( FLOAT *xPercentage, FLOAT *yPercentage );
+
+#endif
+	
 
 	//-------------------------------------------------------------
 	//	D3DRendererCreateSession
