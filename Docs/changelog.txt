@@ -20,6 +20,11 @@ Version 0.73.1b
     - MAMEoXUtil.cpp
       - Moved graphical progressbar code to MAMEoXUtil
 
+    - xbox_Direct3DRenderer.cpp
+      - Fixed a problem w/ vector games with an initialized
+        boundary struct (it's apparently not supposed to be used by 
+        vector games)
+
     - xbox_Miscelaneous.c
       - Made progressbars graphical
 
@@ -37,8 +42,8 @@ Version 0.73.1b
 
    -------------------------------------------------------------
   - \SharedResources:
-    - Added dummy project to compile XPR resources outside of MAMEoXLauncher
-      (needed for XBE icon support)
+    - Added dummy project to compile XPR resources outside of 
+      MAMEoXLauncher (needed for XBE icon support)
 
  --- Integrated MAME version 0.73, changes follow -------------------
 
