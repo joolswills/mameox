@@ -9,9 +9,13 @@
 #include "VirtualMemoryManager.h"
 #include <algorithm>
 
+#include "DebugLogger.h"
+
 //= D E F I N E S =============================================================
 #define FINDPAGE( _addr__ )          (void*)(((UINT32)(_addr__)) - (((UINT32)(_addr__)) & 4096))
 
+  // Define to print log info on every VMM call
+#define LOGVMM
 
 //= P R O T O T Y P E S =======================================================
 extern "C" int fatalerror( const char *fmt, ... );
@@ -30,7 +34,7 @@ CVirtualMemoryManager::CVirtualMemoryManager( void )
 }
 
 //------------------------------------------------------
-//  Create
+//  Malloc
 //------------------------------------------------------
 void *CVirtualMemoryManager::Malloc( UINT32 size )
 {
@@ -45,6 +49,13 @@ void *CVirtualMemoryManager::Malloc( UINT32 size )
 
   m_virtualPages.push_back( page );
   std::sort( m_virtualPages.begin(), m_virtualPages.end() );
+
+  #if (defined LOGVMM && defined _DEBUG)
+  PRINTMSG( T_INFO, "Malloc: %lu bytes: 0x%X", size, page.m_address );
+  #endif
+
+  if( !page.m_address )
+    PRINTMSG( T_ERROR, "VirtualAlloc failed: 0x%X", GetLastError() );
 
   return page.m_address;
 }
@@ -85,6 +96,9 @@ void CVirtualMemoryManager::Free( void *base )
 
   m_virtualPages.erase( i );
 
+  #if (defined LOGVMM && defined _DEBUG)
+  PRINTMSG( T_INFO, "Free: 0x%X", base );
+  #endif
 }
 
 //------------------------------------------------------
@@ -93,7 +107,10 @@ void CVirtualMemoryManager::Free( void *base )
 BOOL CVirtualMemoryManager::AccessAddressRange( void *base, UINT32 size )
 {
   if( !base )
+  {
+    PRINTMSG( T_ERROR, "AccessAddressRange called on NULL base!" );
     return FALSE;
+  }
 
   vmmpage_t page;
   page.m_address = FINDPAGE( base );
@@ -120,7 +137,7 @@ BOOL CVirtualMemoryManager::AccessAddressRange( void *base, UINT32 size )
         // this access.
       m_committedPages.erase( j );
       m_committedPages.push_front( &virtualPage );
-      return FALSE;
+      return TRUE;
     }
 
       // The page has not been committed, increment the fault counter, release a
@@ -163,6 +180,11 @@ BOOL CVirtualMemoryManager::AccessAddressRange( void *base, UINT32 size )
       // committedPages list
     m_committedPages.push_front( &virtualPage );
   }
+
+  #if (defined LOGVMM && defined _DEBUG)
+  PRINTMSG( T_INFO, "AccessAddressRange: 0x%X, num page faults: %lu", virtualPage.m_address, virtualPage.m_pageFaultCount );
+  #endif
+
 
   return TRUE;
 }
