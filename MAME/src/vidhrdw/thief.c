@@ -1,11 +1,11 @@
-#pragma code_seg("C573")
-#pragma data_seg("D573")
-#pragma bss_seg("B573")
-#pragma const_seg("K573")
-#pragma comment(linker, "/merge:D573=573")
-#pragma comment(linker, "/merge:C573=573")
-#pragma comment(linker, "/merge:B573=573")
-#pragma comment(linker, "/merge:K573=573")
+#pragma code_seg("C660")
+#pragma data_seg("D660")
+#pragma bss_seg("B660")
+#pragma const_seg("K660")
+#pragma comment(linker, "/merge:D660=660")
+#pragma comment(linker, "/merge:C660=660")
+#pragma comment(linker, "/merge:B660=660")
+#pragma comment(linker, "/merge:K660=660")
 /*	video hardware for Pacific Novelty games:
 **	Thief/Nato Defense
 */

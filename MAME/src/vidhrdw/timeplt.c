@@ -1,3 +1,11 @@
+#pragma code_seg("C17")
+#pragma data_seg("D17")
+#pragma bss_seg("B17")
+#pragma const_seg("K17")
+#pragma comment(linker, "/merge:D17=17")
+#pragma comment(linker, "/merge:C17=17")
+#pragma comment(linker, "/merge:B17=17")
+#pragma comment(linker, "/merge:K17=17")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -236,3 +244,7 @@ INTERRUPT_GEN( timeplt_interrupt )
 	if (scanline == 255)
 		nmi_line_pulse();
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

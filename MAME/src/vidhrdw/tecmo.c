@@ -1,11 +1,11 @@
-#pragma code_seg("C564")
-#pragma data_seg("D564")
-#pragma bss_seg("B564")
-#pragma const_seg("K564")
-#pragma comment(linker, "/merge:D564=564")
-#pragma comment(linker, "/merge:C564=564")
-#pragma comment(linker, "/merge:B564=564")
-#pragma comment(linker, "/merge:K564=564")
+#pragma code_seg("C651")
+#pragma data_seg("D651")
+#pragma bss_seg("B651")
+#pragma const_seg("K651")
+#pragma comment(linker, "/merge:D651=651")
+#pragma comment(linker, "/merge:C651=651")
+#pragma comment(linker, "/merge:B651=651")
+#pragma comment(linker, "/merge:K651=651")
 /***************************************************************************
 
   video hardware for Tecmo games

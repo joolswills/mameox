@@ -1,11 +1,11 @@
-#pragma code_seg("C554")
-#pragma data_seg("D554")
-#pragma bss_seg("B554")
-#pragma const_seg("K554")
-#pragma comment(linker, "/merge:D554=554")
-#pragma comment(linker, "/merge:C554=554")
-#pragma comment(linker, "/merge:B554=554")
-#pragma comment(linker, "/merge:K554=554")
+#pragma code_seg("C641")
+#pragma data_seg("D641")
+#pragma bss_seg("B641")
+#pragma const_seg("K641")
+#pragma comment(linker, "/merge:D641=641")
+#pragma comment(linker, "/merge:C641=641")
+#pragma comment(linker, "/merge:B641=641")
+#pragma comment(linker, "/merge:K641=641")
 /***************************************************************************
 
   vidhrdw/superman.c

@@ -1,3 +1,11 @@
+#pragma code_seg("C22")
+#pragma data_seg("D22")
+#pragma bss_seg("B22")
+#pragma const_seg("K22")
+#pragma comment(linker, "/merge:D22=22")
+#pragma comment(linker, "/merge:C22=22")
+#pragma comment(linker, "/merge:B22=22")
+#pragma comment(linker, "/merge:K22=22")
 /***************************************************************************
 
    Taito F3 Video emulation - Bryan McPhail, mish@tendril.co.uk
@@ -3506,3 +3514,7 @@ if (!deb_enable || !keyboard_pressed(KEYCODE_M))
 	}
 #endif	//DEBUG_F3
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,11 +1,11 @@
-#pragma code_seg("C628")
-#pragma data_seg("D628")
-#pragma bss_seg("B628")
-#pragma const_seg("K628")
-#pragma comment(linker, "/merge:D628=628")
-#pragma comment(linker, "/merge:C628=628")
-#pragma comment(linker, "/merge:B628=628")
-#pragma comment(linker, "/merge:K628=628")
+#pragma code_seg("C717")
+#pragma data_seg("D717")
+#pragma bss_seg("B717")
+#pragma const_seg("K717")
+#pragma comment(linker, "/merge:D717=717")
+#pragma comment(linker, "/merge:C717=717")
+#pragma comment(linker, "/merge:B717=717")
+#pragma comment(linker, "/merge:K717=717")
 #include "driver.h"
 
 #define SPRITE_FLIPX                                    0x01

@@ -1,11 +1,11 @@
-#pragma code_seg("C578")
-#pragma data_seg("D578")
-#pragma bss_seg("B578")
-#pragma const_seg("K578")
-#pragma comment(linker, "/merge:D578=578")
-#pragma comment(linker, "/merge:C578=578")
-#pragma comment(linker, "/merge:B578=578")
-#pragma comment(linker, "/merge:K578=578")
+#pragma code_seg("C665")
+#pragma data_seg("D665")
+#pragma bss_seg("B665")
+#pragma const_seg("K665")
+#pragma comment(linker, "/merge:D665=665")
+#pragma comment(linker, "/merge:C665=665")
+#pragma comment(linker, "/merge:B665=665")
+#pragma comment(linker, "/merge:K665=665")
 #include "vidhrdw/generic.h"
 
 static int bgcharbank;

@@ -1,11 +1,11 @@
-#pragma code_seg("C615")
-#pragma data_seg("D615")
-#pragma bss_seg("B615")
-#pragma const_seg("K615")
-#pragma comment(linker, "/merge:D615=615")
-#pragma comment(linker, "/merge:C615=615")
-#pragma comment(linker, "/merge:B615=615")
-#pragma comment(linker, "/merge:K615=615")
+#pragma code_seg("C18")
+#pragma data_seg("D18")
+#pragma bss_seg("B18")
+#pragma const_seg("K18")
+#pragma comment(linker, "/merge:D18=18")
+#pragma comment(linker, "/merge:C18=18")
+#pragma comment(linker, "/merge:B18=18")
+#pragma comment(linker, "/merge:K18=18")
 /***************************************************************************
 
 	Victory video system

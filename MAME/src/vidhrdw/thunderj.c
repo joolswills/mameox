@@ -1,11 +1,11 @@
-#pragma code_seg("C575")
-#pragma data_seg("D575")
-#pragma bss_seg("B575")
-#pragma const_seg("K575")
-#pragma comment(linker, "/merge:D575=575")
-#pragma comment(linker, "/merge:C575=575")
-#pragma comment(linker, "/merge:B575=575")
-#pragma comment(linker, "/merge:K575=575")
+#pragma code_seg("C662")
+#pragma data_seg("D662")
+#pragma bss_seg("B662")
+#pragma const_seg("K662")
+#pragma comment(linker, "/merge:D662=662")
+#pragma comment(linker, "/merge:C662=662")
+#pragma comment(linker, "/merge:B662=662")
+#pragma comment(linker, "/merge:K662=662")
 /***************************************************************************
 
 	Atari ThunderJaws hardware

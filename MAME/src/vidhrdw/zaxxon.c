@@ -1,3 +1,11 @@
+#pragma code_seg("C27")
+#pragma data_seg("D27")
+#pragma bss_seg("B27")
+#pragma const_seg("K27")
+#pragma comment(linker, "/merge:D27=27")
+#pragma comment(linker, "/merge:C27=27")
+#pragma comment(linker, "/merge:B27=27")
+#pragma comment(linker, "/merge:K27=27")
 /***************************************************************************
 
   vidhrdw.c
@@ -597,3 +605,7 @@ VIDEO_UPDATE( ixion )
 
 }
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

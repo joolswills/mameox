@@ -1,11 +1,11 @@
-#pragma code_seg("C653")
-#pragma data_seg("D653")
-#pragma bss_seg("B653")
-#pragma const_seg("K653")
-#pragma comment(linker, "/merge:D653=653")
-#pragma comment(linker, "/merge:C653=653")
-#pragma comment(linker, "/merge:B653=653")
-#pragma comment(linker, "/merge:K653=653")
+#pragma code_seg("C743")
+#pragma data_seg("D743")
+#pragma bss_seg("B743")
+#pragma const_seg("K743")
+#pragma comment(linker, "/merge:D743=743")
+#pragma comment(linker, "/merge:C743=743")
+#pragma comment(linker, "/merge:B743=743")
+#pragma comment(linker, "/merge:K743=743")
 /***************************************************************************
 
   vidhrdw/zerozone.c

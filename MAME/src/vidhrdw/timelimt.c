@@ -1,11 +1,11 @@
-#pragma code_seg("C579")
-#pragma data_seg("D579")
-#pragma bss_seg("B579")
-#pragma const_seg("K579")
-#pragma comment(linker, "/merge:D579=579")
-#pragma comment(linker, "/merge:C579=579")
-#pragma comment(linker, "/merge:B579=579")
-#pragma comment(linker, "/merge:K579=579")
+#pragma code_seg("C666")
+#pragma data_seg("D666")
+#pragma bss_seg("B666")
+#pragma const_seg("K666")
+#pragma comment(linker, "/merge:D666=666")
+#pragma comment(linker, "/merge:C666=666")
+#pragma comment(linker, "/merge:B666=666")
+#pragma comment(linker, "/merge:K666=666")
 #include "vidhrdw/generic.h"
 
 /* globals */
