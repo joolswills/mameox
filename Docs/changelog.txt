@@ -24,6 +24,10 @@ Version 0.70.3b
     - MAMEoX.h
       - Upped version number
 
+    - DebugLogger.h
+      - Cobbed together a console debug logger, PRINTMSG_TO_CONSOLE,
+        render w/ RenderDebugConsole
+
     - xbox_Direct3DRenderer.h
       - Put in code to reposition the screen as well as resize
       - Moved resize variables from globals to members of the
@@ -40,6 +44,10 @@ Version 0.70.3b
 
    -------------------------------------------------------------
   - \MAMEoX\Sources: 
+
+    - DebugLogger.cpp
+      - Cobbed together a console debug logger, PRINTMSG_TO_CONSOLE,
+        render w/ RenderDebugConsole
 
     - MAMEoXUtil.cpp
       - Put in code to reposition the screen as well as resize
