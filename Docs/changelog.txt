@@ -3,15 +3,27 @@ Version 0.65b
   - \MAMEoX\Sources\xbox_JoystickMouse.c:
     - Improved analog controls
     - Added buttons as analogs
+    - Added partial lightgun support
+
+  - \MAMEoX\Sources\MAMEoXUtilcpp:
+    - Added gamepad capabilities checking for Lightgun support
+
+  - \MAMEoX\Sources\xbox_Sound.c:
+    - Cosmetic changes to make debuggig easier
+
+  - \MAMEoX\Sources\xbox_FileIO.c:
+    - Made the ROM backup path writeRequired
 
   - \MAMEoX\Includes\MAMEoX.h:
     - Updated version number
+    - Added gamepad capabilities checking for Lightgun support
+
+  - \MAMEoX\Includes\InputManager.h:
+    - Added gamepad capabilities checking for Lightgun support
 
   - \MAMEoX\Includes\xbox_FileIO.h:
     - Made the ROM backup path writeRequired
       
-  - \MAMEoX\Sources\xbox_FileIO.h:
-    - Made the ROM backup path writeRequired
 
   - \MAMEoXLauncher\sources\ROMList.cpp:
     - Made the ROM backup path writeRequired
