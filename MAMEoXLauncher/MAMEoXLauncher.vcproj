@@ -130,6 +130,9 @@
 				RelativePath="..\MAMEoX\Sources\GraphicsManager.cpp">
 			</File>
 			<File
+				RelativePath="Sources\Help.cpp">
+			</File>
+			<File
 				RelativePath="..\MAMEoX\Sources\InputManager.cpp">
 			</File>
 			<File
@@ -171,6 +174,9 @@
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Includes\GraphicsManager.h">
+			</File>
+			<File
+				RelativePath="Includes\Help.h">
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Includes\InputManager.h">
