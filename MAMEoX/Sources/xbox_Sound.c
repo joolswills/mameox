@@ -12,6 +12,7 @@
 
 #include <crtdbg.h>
 #include "DebugLogger.h"
+#include "xbox_Direct3DRenderer.h"
 
 
 
@@ -123,7 +124,11 @@ INT32 osd_start_audio_stream( INT32 stereo )
   g_bufferOverflows = 0;
 
 	// determine the number of samples per frame
-	g_samplesPerFrame = (DOUBLE)Machine->sample_rate / (DOUBLE)Machine->drv->frames_per_second;
+  if( g_rendererOptions.m_throttleFramerate )
+	  g_samplesPerFrame = (DOUBLE)Machine->sample_rate / 60.0f;
+  else
+	  g_samplesPerFrame = (DOUBLE)Machine->sample_rate / (DOUBLE)Machine->drv->frames_per_second;
+
   PRINTMSG( T_INFO, "Samples per frame: %f\n", g_samplesPerFrame );
   PRINTMSG( T_INFO, "Consumed per frame: %f\n", (DOUBLE)Machine->sample_rate / 60.0 );
  
