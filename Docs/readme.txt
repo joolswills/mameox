@@ -98,10 +98,6 @@ X) This step is currently unnecessary, as the source distribution includes the
          most of these directories will be created on the U:, which is probably
 	 mapped from E:\UDATA\4d414d45 (MAME in hex)
 
-   NOTE: Starting w/ version 0.65b you must set an environment variable
-         XDK_SAMPLES to the XDK samples/include directory (where xbfont.h
-	 is).
-
 ---------------------------------------------------------------------------
 Compilation Errors:
 
