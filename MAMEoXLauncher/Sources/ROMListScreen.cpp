@@ -2194,7 +2194,7 @@ void CROMListScreen::DrawDetailedList( void )
 	if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_HEADER_DETAIL_NAME_TEXT) )
 	{
 	  mbstowcs( name, driverData.m_description, 255 );
-    wcscat( name, m_options.m_hideFiltered ? L"    Filtered  " : L"    Full List  " );
+    wcscat( name, m_options.m_hideFiltered ? L" (Filtered)" : L" (Full List)" );
     if( m_superscrollMode )
     {
         // Display the superscroll character
