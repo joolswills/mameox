@@ -16,9 +16,8 @@ Version 0.65b
     base dir of the xdk (I think all current xdks
     do this). (opcode)
 
-  - Changed the include path for the
-    XDK files to an environment var
-    XDK_SAMPLES
+  - Removed all _RPTx macro calls as they apparently don't
+    properly send to xboxwatson.
 
     Opcode (5/25/03):
   ------------------
@@ -33,6 +32,10 @@ Version 0.65b
       rather load them like the mame core does (not sure if this saves
       memory or not, can't hurt though.)
   ------------------
+
+  - \MAMEoX\Includes\DebugLogger.h
+  - \MAMEoX\Sources\DebugLogger.cpp
+    - Switched PRINTMSG to use OutputDebugString if _DEBUG is defined
 
   - \MAMEoXLauncher\Sources\main.cpp:
     - Reloading ROMS on button B+A now
