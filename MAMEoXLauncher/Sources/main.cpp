@@ -134,8 +134,10 @@ void __cdecl main( void )
 
   Enable128MegCaching();
 
+
 	InitializeFileIO(); // Must be done before LoadOptions!
   LoadOptions();      // Must be done before inputManager goes up (for lightgun calib data)
+  SaveOptions();      // Write out a default INI if none existed
 
 		// Initialize the graphics subsystem
 	g_graphicsManager.Create( TRUE );
@@ -198,9 +200,6 @@ void __cdecl main( void )
     if( g_FileIOConfig.m_RomPath3.Left(6) == "smb://" )
       g_FileIOConfig.m_RomPath3 = DEFAULT_ROMPATH;
   }
-
-  SaveOptions(); 
-
 
   if( !g_textureSet.Create() )
   {
