@@ -129,7 +129,7 @@ INT32 osd_start_audio_stream( INT32 stereo )
   _RPT1( _CRT_WARN, "Samples per frame: %f\n", g_samplesPerFrame );
   _RPT1( _CRT_WARN, "Consumed per frame: %f\n", (DOUBLE)Machine->sample_rate / 60.0 );
 
-  g_samplesPerFrame = (DOUBLE)Machine->sample_rate / 60.0;
+  g_samplesPerFrame = (DOUBLE)Machine->sample_rate / (double)Machine->drv->frames_per_second/*60.0*/;
  
 	// compute how many samples to generate the first frame
 	g_samplesLeftOver = g_samplesPerFrame;
@@ -148,7 +148,7 @@ INT32 osd_start_audio_stream( INT32 stereo )
 	}
 
 	// return the samples to play the first frame
-	return g_samplesLeftOver;
+	return g_samplesThisFrame;
 }
 
 //---------------------------------------------------------------------
