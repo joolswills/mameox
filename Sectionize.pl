@@ -355,6 +355,8 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 				 "taito_f3.c", "fromance.c", "frogger.c", "midyunit.c",
 				 "midtunit.c" );
 
+@MidwayMCRFamily = ( "mcr1.c", "mcr2.c", "mcr3.c", "mcr68.c" );
+
 @CapcomFamily = ( "cps1.c", "cps2.c" );
 
 @NamcoFamily = ( "namcoic.c", "namcona1.c", "namconb1.c", "namcond1.c", "namcos1.c",
@@ -363,7 +365,7 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 @SegaFamily = ( "multi32.c", "system1.c", "system16.c", "system18.c", "system24.c", "system32.c",
 				"aburner.c", "sharrier.c", "outrun.c" );
 
-local @Families = ( \@CapcomFamily, \@NamcoFamily, \@SegaFamily );
+local @Families = ( \@CapcomFamily, \@NamcoFamily, \@SegaFamily, \@MidwayMCRFamily );
 $autoNameNumber = $#Families + 10;
 
 

@@ -1,11 +1,11 @@
-#pragma code_seg("C322")
-#pragma data_seg("D322")
-#pragma bss_seg("B322")
-#pragma const_seg("K322")
-#pragma comment(linker, "/merge:D322=322")
-#pragma comment(linker, "/merge:C322=322")
-#pragma comment(linker, "/merge:B322=322")
-#pragma comment(linker, "/merge:K322=322")
+#pragma code_seg("C4")
+#pragma data_seg("D4")
+#pragma bss_seg("B4")
+#pragma const_seg("K4")
+#pragma comment(linker, "/merge:D4=4")
+#pragma comment(linker, "/merge:C4=4")
+#pragma comment(linker, "/merge:B4=4")
+#pragma comment(linker, "/merge:K4=4")
 /***************************************************************************
 
 	Midway MCR-III system

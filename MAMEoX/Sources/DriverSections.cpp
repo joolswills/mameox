@@ -174,7 +174,10 @@ BOOL UnloadDriverSections( void )
         (*i).first == "src\\drivers\\system32.c" ||
         (*i).first == "src\\drivers\\aburner.c" ||
         (*i).first == "src\\drivers\\sharrier.c" ||
-        (*i).first == "src\\drivers\\outrun.c" )
+        (*i).first == "src\\drivers\\outrun.c" ||
+        (*i).first == "src\\drivers\\mcr2.c" ||
+        (*i).first == "src\\drivers\\mcr3.c" ||
+        (*i).first == "src\\drivers\\mcr68.c" )
         continue;
     XFreeSection( (*i).second.c_str() );
   }
@@ -493,10 +496,10 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\matmania.c", "317" );
   RegisterSectionName( "src\\drivers\\mayumi.c", "318" );
   RegisterSectionName( "src\\drivers\\mcatadv.c", "319" );
-  RegisterSectionName( "src\\drivers\\mcr1.c", "320" );
-  RegisterSectionName( "src\\drivers\\mcr2.c", "321" );
-  RegisterSectionName( "src\\drivers\\mcr3.c", "322" );
-  RegisterSectionName( "src\\drivers\\mcr68.c", "323" );
+  RegisterSectionName( "src\\drivers\\mcr1.c", "4" );
+  RegisterSectionName( "src\\drivers\\mcr2.c", "4" );
+  RegisterSectionName( "src\\drivers\\mcr3.c", "4" );
+  RegisterSectionName( "src\\drivers\\mcr68.c", "4" );
   RegisterSectionName( "src\\drivers\\meadows.c", "324" );
   RegisterSectionName( "src\\drivers\\megazone.c", "325" );
   RegisterSectionName( "src\\drivers\\mermaid.c", "326" );
