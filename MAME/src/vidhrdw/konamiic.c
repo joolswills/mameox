@@ -3469,6 +3469,8 @@ int K055673_vh_start(int gfx_memory_region, int layout, int dx, int dy, void (*c
 		/* set the # of tiles based on the 4bpp section */
 		spritelayout.total = size4 / 128;
 		K055673_rom = (data16_t *)auto_malloc(size4 * 5);
+    if( !K055673_rom )
+      return 1;
 		d = (data8_t *)K055673_rom;
 		// now combine the graphics together to form 5bpp
 		s1 = memory_region(gfx_memory_region); // 4bpp area
