@@ -35,6 +35,8 @@
 // HAS_CPU Declarations
 //
 // NOTE : If you change anything in this section, you must "Rebuild All"
+// These defines affect cpuintrf.h, which determines which CPU drivers 
+//  are available
 
 #define HAS_ADSP2101			1
 #define HAS_Z80						1
@@ -126,12 +128,16 @@
 #define HAS_PIC16C57    1   // New: 0.70
 #define HAS_PIC16C58    1   // New: 0.70
 
+#define HAS_G65816      1   // New: 0.72
+#define HAS_SPC700      1   // New: 0.72
 
 
 //---------------------------------------------------------------------------
 // HAS_SOUND Declarations
 //
 // NOTE : If you change anything in this section, you must "Rebuild All"
+// These defines affect sndintrf.h, which determines which sound drivers 
+//  are available
 
 #define HAS_CUSTOM 1
 #define HAS_SAMPLES 1
@@ -195,3 +201,5 @@
 #define HAS_C6280       1   // New: 0.67
 #define HAS_MULTIPCM    1   // New: 0.67
 #define HAS_TIA         1   // New: 0.68
+
+#define HAS_SP0250      1   // New 0.72

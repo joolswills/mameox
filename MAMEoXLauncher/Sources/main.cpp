@@ -108,12 +108,18 @@ GameOptions options;
 const char *cheatfile = NULL;
 const char *history_filename = NULL;
 }
-  
   // Fake D3D renderer options
 RendererOptions_t    g_rendererOptions;
 
   // Fake sound override toggle
 BOOL g_soundEnabled = TRUE;
+
+  // Fake filter functions for GFilterManager (so it can be used to list
+  //   filter names in the OptionsScreen)
+void AdMame2x32( UINT8 *, UINT32, UINT8 *, UINT8 *, UINT32, INT32, INT32 ) {}
+void AdMame2x( UINT8 *, UINT32, UINT8 *, UINT8 *, UINT32, INT32, INT32 ) {}
+
+
 
 //= P R O T O T Y P E S ===============================================
 BOOL CreateBackdrop( FLOAT xPosition, FLOAT yPosition, FLOAT xUsage, FLOAT yUsage );

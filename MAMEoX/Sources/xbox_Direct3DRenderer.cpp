@@ -2,7 +2,7 @@
 	* \file			xbox_Direct3DRenderer.cpp
 	* \brief		Direct3D rendering subsystem
 	*
-	*	\note			Major portions taken from XMAME
+	*	\note			Portions taken from XMAME
 	*/
 
 //= I N C L U D E S ====================================================
@@ -352,38 +352,41 @@ BOOL D3DRendererRender(	struct mame_bitmap *bitmap,
 
 } // End Extern "C"
 
-static void Helper_AllocFilterBuffer()
+
+
+//-------------------------------------------------------------
+//  Helper_AllocFilterBuffer
+//-------------------------------------------------------------
+static void Helper_AllocFilterBuffer( void )
 {
-	if (g_pRenderBuffer != NULL)
+	if( g_pRenderBuffer )
 	{
-		delete [] g_pRenderBuffer;
+		delete[] g_pRenderBuffer;
 		g_pRenderBuffer = NULL;
 	}
 
-	// Get the active filter info
+	  // Get the active filter info
 	SFilterInfo oActiveFilter = g_FilterManger.GetActiveFilter();
 
-	// Store our original width and height
+	  // Store our original width and height
 	g_OrigRenderWidth  = g_createParams.width/oActiveFilter.m_dwMagnificatonLvl;
 	g_OrigRenderHeight = g_createParams.height/oActiveFilter.m_dwMagnificatonLvl;
 
-	// Don't do anything if no filter is selected
-	if (oActiveFilter.m_FilterType == eftNone)
-	{
+	  // Don't do anything if no filter is selected
+	if( oActiveFilter.m_FilterType == eftNone )
 		return;
-	}
 
-	// Figure out our game byte depth 2 or 4 bytes (assume 2 check if it is 4)
+	  // Figure out our game bit-depth 2 or 4 bytes (assume 2 check if it is 4)
 	int iDepth = 2; 
 
-	// Use 32 bit color for palettized or 32 bit sessions
+	  // Use 32 bit color for palettized or 32 bit sessions
 	if( !(g_createParams.video_attributes & VIDEO_RGB_DIRECT) || g_createParams.depth >= 24 )
 		iDepth = 4;
 
-	// Calculate the original (pre scaled) bitmap size
+	  // Calculate the original (pre scaled) bitmap size
 	int iOrigBitampBytes = (g_OrigRenderWidth*g_OrigRenderHeight*iDepth);
 
-	// Allocate the render buffer large enough to hold a original sized game frame
+	  // Allocate the render buffer large enough to hold a original sized game frame
 	g_pRenderBuffer = new BYTE[iOrigBitampBytes];
 }
 
@@ -399,16 +402,12 @@ static void Helper_RenderDirect16( void *dest, struct mame_bitmap *bitmap, const
 	UINT16 *destBuffer;
 	UINT16 *sourceBuffer = (UINT16*)bitmap->base;
 
-	// If we a filtering render into a temp buffer then filter that buffer
-	// into the actual framebuffer
+	  // If we a filtering render into a temp buffer then filter that buffer
+	  // into the actual framebuffer
 	if (g_FilterManger.GetActiveFilter().m_FilterType != eftNone)
-	{
 		destBuffer = (UINT16*)g_pRenderBuffer;
-	}
 	else
-	{
 		destBuffer = (UINT16*)dest;
-	}
 
 	if( g_createParams.orientation & ORIENTATION_SWAP_XY )
   {
@@ -475,16 +474,12 @@ static void Helper_RenderDirect32( void *dest, struct mame_bitmap *bitmap, const
 	UINT32 *destBuffer;
 	UINT32 *sourceBuffer = (UINT32*)bitmap->base;
 
-	// If we a filtering render into a temp buffer then filter that buffer
-	// into the actual framebuffer
+	  // If we a filtering render into a temp buffer then filter that buffer
+	  // into the actual framebuffer
 	if (g_FilterManger.GetActiveFilter().m_FilterType != eftNone)
-	{
 		destBuffer = (UINT32*)g_pRenderBuffer;
-	}
 	else
-	{
 		destBuffer = (UINT32*)dest;
-	}
 
   	// Destination buffer is in 32 bit X8R8G8B8
 	if( g_createParams.orientation & ORIENTATION_SWAP_XY )
@@ -547,16 +542,12 @@ static void Helper_RenderPalettized16( void *dest, struct mame_bitmap *bitmap, c
 	UINT32 *destBuffer;
 	UINT16 *sourceBuffer = (UINT16*)bitmap->base;
 
-	// If we a filtering render into a temp buffer then filter that buffer
-	// into the actual framebuffer
+	  // If we a filtering render into a temp buffer then filter that buffer
+	  // into the actual framebuffer
 	if (g_FilterManger.GetActiveFilter().m_FilterType != eftNone)
-	{
 		destBuffer = (UINT32*)g_pRenderBuffer;
-	}
 	else
-	{
 		destBuffer = (UINT32*)dest;
-	}
 
 		// bitmap format is 16 bit indices into the palette
 		// Destination buffer is in 32 bit X8R8G8B8
@@ -977,25 +968,29 @@ static BOOL CreateRenderingQuad( void )
 //---------------------------------------------------------------------
 //	osd_save_snapshot
 //---------------------------------------------------------------------
-extern "C" void osd_save_snapshot( struct mame_bitmap *bitmap, const struct rectangle *bounds )
+
+
+//============================================================
+//	osd_override_snapshot
+//============================================================
+
+extern "C" struct mame_bitmap *osd_override_snapshot(struct mame_bitmap *bitmap, struct rectangle *bounds)
 {
-/*
-  Save a screen shot of the game display. It is suggested to use the core
-  function save_screen_snapshot() or save_screen_snapshot_as(), so the format
-  of the screen shots will be consistent across ports. This hook is provided
-  only to allow the display of a file requester to let the user choose the
-  file name. This isn't scrictly necessary, so you can just call
-  save_screen_snapshot() to let the core automatically pick a default name.
-*/
+    /*
+      Provides a hook to allow the OSD system to override processing of a
+      snapshot.  This function will either return a new bitmap, for which the
+      caller is responsible for freeing.
+    */
+
   if( !(g_createParams.orientation & ORIENTATION_FLIP_Y) &&
       !(g_createParams.orientation & ORIENTATION_FLIP_X) &&
       !(g_createParams.orientation & ORIENTATION_SWAP_XY) )
   {
-    save_screen_snapshot( bitmap, bounds );
+    return NULL;
   }
   else
   {
-      // Taken from video.c in the windows distribution
+      //-- Taken from video.c in the windows distribution --------------------------------
 	  struct rectangle newbounds;
 	  struct mame_bitmap *copy;
 	  int x, y, w, h, t;
@@ -1006,7 +1001,7 @@ extern "C" void osd_save_snapshot( struct mame_bitmap *bitmap, const struct rect
 	  copy = bitmap_alloc_depth(w, h, bitmap->depth);
 
 	  if( !copy )
-		  return;
+		  return NULL;
 
 	    // populate the copy
 	  for( y = bounds->min_y; y <= bounds->max_y; ++y)
@@ -1015,7 +1010,7 @@ extern "C" void osd_save_snapshot( struct mame_bitmap *bitmap, const struct rect
 		  {
 			  int tx = x, ty = y;
 
-			  // apply the rotation/flipping
+			    // apply the rotation/flipping
 			  if ((g_createParams.orientation & ORIENTATION_SWAP_XY))
 			  {
 				  t = tx; tx = ty; ty = t;
@@ -1025,7 +1020,7 @@ extern "C" void osd_save_snapshot( struct mame_bitmap *bitmap, const struct rect
 			  if ((g_createParams.orientation & ORIENTATION_FLIP_Y))
 				  ty = copy->height - ty - 1;
 
-			  // read the old pixel and copy to the new location
+			    // read the old pixel and copy to the new location
 			  switch (copy->depth)
 			  {
 				  case 15:
@@ -1042,17 +1037,17 @@ extern "C" void osd_save_snapshot( struct mame_bitmap *bitmap, const struct rect
 		  }
     }
 
-	  // compute the oriented bounds
+	    // compute the oriented bounds
 	  newbounds = *bounds;
 
-	  // apply X/Y swap first
+	    // apply X/Y swap first
 	  if ((g_createParams.orientation & ORIENTATION_SWAP_XY))
 	  {
 		  t = newbounds.min_x; newbounds.min_x = newbounds.min_y; newbounds.min_y = t;
 		  t = newbounds.max_x; newbounds.max_x = newbounds.max_y; newbounds.max_y = t;
 	  }
 
-	  // apply X flip
+	    // apply X flip
 	  if( (g_createParams.orientation & ORIENTATION_FLIP_X) )
 	  {
 		  t = copy->width - newbounds.min_x - 1;
@@ -1060,7 +1055,7 @@ extern "C" void osd_save_snapshot( struct mame_bitmap *bitmap, const struct rect
 		  newbounds.max_x = t;
 	  }
 
-	  // apply Y flip
+	    // apply Y flip
 	  if ((g_createParams.orientation & ORIENTATION_FLIP_Y))
 	  {
 		  t = copy->height - newbounds.min_y - 1;
@@ -1068,9 +1063,9 @@ extern "C" void osd_save_snapshot( struct mame_bitmap *bitmap, const struct rect
 		  newbounds.max_y = t;
 	  }
 
-	  // now save the copy and nuke it when done
-	  save_screen_snapshot(copy, &newbounds);
-	  bitmap_free(copy);
+    return copy;
   }
+
+  return NULL;
 }
 

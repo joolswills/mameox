@@ -67,20 +67,25 @@ extern "C" {
 #define SCROLLDOWN_LEFT       (SCROLLDOWN_RIGHT - 32)
 
   //-- Button help messages ------
-#define HELP_A_ICON_X      250
-#define HELP_A_ICON_Y      40
-#define HELP_A_TEXT_X      (HELP_A_ICON_X + m_textureSet.GetButtonWidth() + 4)
-#define HELP_A_TEXT_Y      (HELP_A_ICON_Y + 5)
+#define HELP_A_ICON_X       250
+#define HELP_A_ICON_Y       40
+#define HELP_A_TEXT_X       (HELP_A_ICON_X + m_textureSet.GetButtonWidth() + 4)
+#define HELP_A_TEXT_Y       (HELP_A_ICON_Y + 5)
 
-#define HELP_X_ICON_X      370
-#define HELP_X_ICON_Y      40
-#define HELP_X_TEXT_X      (HELP_X_ICON_X + m_textureSet.GetButtonWidth() + 4)
-#define HELP_X_TEXT_Y      (HELP_X_ICON_Y + 5)
+#define HELP_X_ICON_X       370
+#define HELP_X_ICON_Y       40
+#define HELP_X_TEXT_X       (HELP_X_ICON_X + m_textureSet.GetButtonWidth() + 4)
+#define HELP_X_TEXT_Y       (HELP_X_ICON_Y + 5)
 
-#define HELP_Y_ICON_X      450
-#define HELP_Y_ICON_Y      40
-#define HELP_Y_TEXT_X      (HELP_Y_ICON_X + m_textureSet.GetButtonWidth() + 4)
-#define HELP_Y_TEXT_Y      (HELP_Y_ICON_Y + 5)
+#define HELP_Y_ICON_X       450
+#define HELP_Y_ICON_Y       40
+#define HELP_Y_TEXT_X       (HELP_Y_ICON_X + m_textureSet.GetButtonWidth() + 4)
+#define HELP_Y_TEXT_Y       (HELP_Y_ICON_Y + 5)
+
+#define HELP_START_ICON_X   200
+#define HELP_START_ICON_Y   40
+#define HELP_START_TEXT_X   (HELP_START_ICON_X + m_textureSet.GetSTARTButtonWidth() + 4)
+#define HELP_START_TEXT_Y   (HELP_START_ICON_Y + 5)
 
 
 
@@ -1922,6 +1927,23 @@ void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX, ulY + m_textureSet.GetButtonHeight(), 1.0f, 1.0f );
   m_displayDevice->End();
 
+    //-- START button ------------------------------------------------
+  ulX = HELP_START_ICON_X;
+  ulY = HELP_START_ICON_Y;
+  m_displayDevice->Begin( D3DPT_QUADLIST );
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetSTARTButtonLeft(), m_textureSet.GetSTARTButtonTop() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX, ulY, 1.0f, 1.0f );
+    
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetSTARTButtonRight(), m_textureSet.GetSTARTButtonTop() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX + m_textureSet.GetSTARTButtonWidth(), ulY, 1.0f, 1.0f );
+    
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetSTARTButtonRight(), m_textureSet.GetSTARTButtonBottom() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX + m_textureSet.GetSTARTButtonWidth(), ulY + m_textureSet.GetSTARTButtonHeight(), 1.0f, 1.0f );
+
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetSTARTButtonLeft(), m_textureSet.GetSTARTButtonBottom() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX, ulY + m_textureSet.GetSTARTButtonHeight(), 1.0f, 1.0f );
+  m_displayDevice->End();
+
 
     // Now render the text messages
 	m_fontSet.LargeThinFont().Begin();
@@ -1939,6 +1961,11 @@ void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
                                         HELP_Y_TEXT_Y, 
                                         HELPITEM_COLOR, 
                                         L"Fast Jump" );
+
+    m_fontSet.LargeThinFont().DrawText( HELP_START_TEXT_X,
+                                        HELP_START_TEXT_Y,
+                                        HELPITEM_COLOR,
+                                        L"Menu" );
   m_fontSet.LargeThinFont().End();
 
 

@@ -188,9 +188,6 @@
 				RelativePath=".\Sources\ROMListScreen.cpp">
 			</File>
 			<File
-				RelativePath="..\MAMEoX\Sources\scale2x.cpp">
-			</File>
-			<File
 				RelativePath=".\Sources\ScreensaverScreen.cpp">
 			</File>
 			<File
@@ -286,9 +283,6 @@
 			</File>
 			<File
 				RelativePath=".\Includes\ROMListScreen.h">
-			</File>
-			<File
-				RelativePath="..\MAMEoX\Includes\scale2x.h">
 			</File>
 			<File
 				RelativePath=".\Includes\ScreensaverScreen.h">
