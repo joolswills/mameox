@@ -34,7 +34,7 @@ int fatalerror( const char *fmt, ... );   // Defined in xbox_Main.cpp
 //---------------------------------------------------------------------
 //  osd_malloc_debug
 //---------------------------------------------------------------------
-void *osd_malloc_debug( size_t size, const char **filename, unsigned int line, const char **function )
+void *osd_malloc_debug( size_t size, const char *filename, unsigned int line, const char *function )
 {
   // [EBA] - "Safe" malloc, exits the program if the malloc fails, rather than
   // relying on MAME to actually check for failure (which it does not, in numerous
@@ -60,7 +60,7 @@ void *osd_malloc_debug( size_t size, const char **filename, unsigned int line, c
 //---------------------------------------------------------------------
 //  osd_calloc_debug
 //---------------------------------------------------------------------
-void *osd_calloc_debug( size_t num, size_t size, const char **filename, unsigned int line, const char **function )
+void *osd_calloc_debug( size_t num, size_t size, const char *filename, unsigned int line, const char *function )
 {
   // [EBA] - "Safe" malloc, exits the program if the malloc fails, rather than
   // relying on MAME to actually check for failure (which it does not, in numerous
@@ -85,7 +85,7 @@ void *osd_calloc_debug( size_t num, size_t size, const char **filename, unsigned
 //---------------------------------------------------------------------
 //  osd_realloc_debug
 //---------------------------------------------------------------------
-void *osd_realloc_debug( void *memblock, size_t size, const char **filename, unsigned int line, const char **function )
+void *osd_realloc_debug( void *memblock, size_t size, const char *filename, unsigned int line, const char *function )
 {
   // [EBA] - "Safe" malloc, exits the program if the malloc fails, rather than
   // relying on MAME to actually check for failure (which it does not, in numerous
@@ -197,7 +197,7 @@ int osd_display_loading_rom_message( const char *name, struct rom_load_data *rom
   WCHAR memory[64];
   MEMORYSTATUS memStatus;
 
-	PRINTMSG( T_TRACE, "osd_display_loading_rom_message" );
+	PRINTMSG(( T_TRACE, "osd_display_loading_rom_message" ));
 
 	if( name )
 	{
@@ -270,7 +270,7 @@ void __cdecl logerror( const char *fmt, ... )
   vsnprintf( buf, 1023, fmt, arg );
   va_end( arg );
 
-	PRINTMSG( T_ERROR, buf );
+	PRINTMSG(( T_ERROR, buf ));
 #endif
 }
 
