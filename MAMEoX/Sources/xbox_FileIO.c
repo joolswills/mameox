@@ -399,7 +399,7 @@ UINT32 osd_fread( osd_file *file, void *buffer, UINT32 length )
 
     // Reduce the length param if the file is not large enough
   if( ((UINT64)file->m_filePointer - (UINT64)file->m_data) + length > file->m_fileSize )
-    length = file->m_fileSize - ((UINT64)file->m_filePointer - (UINT64)file->m_data);
+    length = file->m_fileSize - (UINT32)((UINT64)file->m_filePointer - (UINT64)file->m_data);
 
   memcpy( buffer, file->m_filePointer, length );
   file->m_filePointer += length;
