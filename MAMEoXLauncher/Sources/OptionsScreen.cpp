@@ -39,7 +39,7 @@ extern "C" {
 																						m_maxPageSize = area->GetHeight() / area->m_singleRowHeight;
 
 #define DRAWITEM( _name__, _val__ )					nameText->RenderAsOffset( m_displayDevice, _name__, area->m_left, area->m_top + (i * area->m_singleRowHeight) ); \
-																						nameText->RenderAsOffset( m_displayDevice, _val__, area->m_left, area->m_top + (i * area->m_singleRowHeight) ); \
+																						valText->RenderAsOffset( m_displayDevice, _val__, area->m_left, area->m_top + (i * area->m_singleRowHeight) ); \
 																						++i;
 
 #define ENDPAGE()													}
