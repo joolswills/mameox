@@ -855,7 +855,7 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   #define FIRSTDATA_ROW         142
 
   #define HIGHLIGHTBAR_LEFT     34
-  #define HIGHLIGHTBAR_RIGHT    606
+  #define HIGHLIGHTBAR_RIGHT    607
   #define NAME_COLUMN           40
   #define MANUFACTURER_COLUMN   305
   #define YEAR_COLUMN           460
@@ -863,14 +863,14 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   #define COLUMN_PADDING        9     // Number of pixels to subtract from the column width before truncating text
 
   #define SCROLLUP_TOP          137
-  #define SCROLLUP_LEFT         32
-  #define SCROLLUP_RIGHT        SCROLLUP_LEFT + 32
+  #define SCROLLUP_RIGHT        607
+  #define SCROLLUP_LEFT         SCROLLUP_RIGHT - 32
   #define SCROLLUP_BOTTOM       SCROLLUP_TOP + 32
 
   #define SCROLLDOWN_BOTTOM     448
   #define SCROLLDOWN_TOP        SCROLLDOWN_BOTTOM - 32
-  #define SCROLLDOWN_LEFT       32
-  #define SCROLLDOWN_RIGHT      SCROLLDOWN_LEFT + 32
+  #define SCROLLDOWN_RIGHT      607
+  #define SCROLLDOWN_LEFT       SCROLLDOWN_RIGHT - 32
 
   FLOAT textWidth, textHeight;
   m_fontSet.SmallThinFont().GetTextExtent( L"i^jg", &textWidth, &textHeight );
