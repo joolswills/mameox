@@ -45,7 +45,7 @@ local $autoNameNumber = 0;
 
 
   # Driver families --------------------------------------------
-@SkipDrivers = ( "jrcrypt.c" );
+@SkipDrivers = ( "jrcrypt.c", "monaco.c", "pong.c" );
 
 @TwinCobraFamily = ( "wardner.c", "twincobr.c" );
 @CapcomFamily = ( "cps1.c", "cps2.c" );
@@ -955,12 +955,19 @@ extern "C" {
 
 struct driverSectionRegistration_t 
 {
-  const char *m_driverName;
-  const char *m_sectionName;
+		// For some reason making these a const char, then unloading
+		// the DRVSNIZE will cause a crash in retail mode. I'm not at
+		// all sure exactly why this is yet, my only guess is that there
+		// is something odd about how quoted constants in initializers are
+		// placed into the XBE section.
+  //const char *m_driverName;
+  //const char *m_sectionName;
+	char	m_driverName[16];
+	char	m_sectionName[8];
 };
 
 
-#define REGISTER_DRIVERSECTION( driverName, sectionName )     { driverName, sectionName },
+#define REGISTER_DRIVERSECTION( driverName, sectionName )     { driverName, sectionName }
 
 
 
@@ -982,9 +989,7 @@ extern "C" {
 //-------------------------------------------------------------
 void InitDriverSectionizer( void )
 {
-	// For some reason everything crashes when the DRVSNIZE section (and/or CPUSNIZE)
-	// is unloaded. This needs to be investigated and fixed.
-//	if( !g_driverSectionizerLoaded )
+	if( !g_driverSectionizerLoaded )
 	{
 		if( !XLoadSection( "DRVSNIZE" ) )
 		{
@@ -1016,9 +1021,7 @@ void InitCPUSectionizer( void )
 {
   g_CPUIDToSectionMap.clear();
 
-	// For some reason everything crashes when the DRVSNIZE section (and/or CPUSNIZE)
-	// is unloaded. This needs to be investigated and fixed.
-//	if( !g_cpuSectionizerLoaded )
+	if( !g_cpuSectionizerLoaded )
 	{
 		if( !XLoadSection( "CPUSNIZE" ) )
 		{
@@ -1063,19 +1066,25 @@ sub WriteDriverFunctions() {
 #pragma comment(linker, "/merge:DRVBSNZE=DRVSNIZE")
 #pragma comment(linker, "/merge:DRVKSNZE=DRVSNIZE")
 
-static const driverSectionRegistration_t			g_driverSectionRegistry[] = {
 EOF
-
+	print GENERATEDFILE "#define   NUM_DRIVERSECTIONS				".scalar( keys( %DriverNameToSectionMap ) )."\r\n";
+	print GENERATEDFILE "static const driverSectionRegistration_t			g_driverSectionRegistry[NUM_DRIVERSECTIONS] = { \r\n";
 		# Register the driver sections
+	local $IsFirst = true;
 	foreach $File ( sort( keys( %DriverNameToSectionMap ) ) ) {
 		local $SectionID = $DriverNameToSectionMap{$File};
-		print PRELOADFILE "/NOPRELOAD:\"$SectionID\"\n";
-		print DBGPRELOADFILE "/NOPRELOAD:\"$SectionID\"\n";
-		print GENERATEDFILE "           REGISTER_DRIVERSECTION( \"$File\", \"$SectionID\" )\n";
+		print PRELOADFILE "/NOPRELOAD:\"$SectionID\"\r\n";
+		print DBGPRELOADFILE "/NOPRELOAD:\"$SectionID\"\r\n";
+
+		if( $IsFirst eq true ) {
+			print GENERATEDFILE "           REGISTER_DRIVERSECTION( \"$File\", \"$SectionID\" )";
+			$IsFirst = false;
+		} else {
+			print GENERATEDFILE ",\r\n           REGISTER_DRIVERSECTION( \"$File\", \"$SectionID\" )";
+		}
 	}
 
-	print GENERATEDFILE "           { NULL, NULL } };\r\n";
-	print GENERATEDFILE "#define   NUM_DRIVERSECTIONS				".scalar( keys( %DriverNameToSectionMap ) )."\r\n";
+	print GENERATEDFILE " };\r\n";
 
 
 	print GENERATEDFILE << "EOF";
@@ -1104,7 +1113,7 @@ EOF
 			}
 
 				# Print code to ignore this member
-			print GENERATEDFILE "\"src\\\\drivers\\\\$_\" )";
+			print GENERATEDFILE "\"$_\" )";
 		}
 	}
 
@@ -1122,7 +1131,7 @@ void CheckDriverSectionRAM( void )
   DWORD total = 0;
 
 	const driverSectionRegistration_t *entry = (const driverSectionRegistration_t *)g_driverSectionRegistry;
-	for( ; entry->m_driverName; ++entry )
+	for( int i = 0; i < NUM_DRIVERSECTIONS; ++entry, ++i )
 	{
       // Only test families once (all but the first member are skipped)
 		if( !IsDriverClone( entry->m_driverName ) )
@@ -1154,7 +1163,7 @@ EOF
 BOOL LoadDriverSections( void )
 {
 	const driverSectionRegistration_t *entry = (const driverSectionRegistration_t *)g_driverSectionRegistry;
-	for( ; entry->m_driverName; ++entry )
+	for( int i = 0; i < NUM_DRIVERSECTIONS; ++entry, ++i )
 	{
       // Only load families once (all but the first member are skipped)
 		if( !IsDriverClone( entry->m_driverName ) )
@@ -1175,7 +1184,7 @@ BOOL LoadDriverSections( void )
 BOOL UnloadDriverSections( void )
 {
 	const driverSectionRegistration_t *entry = (const driverSectionRegistration_t *)g_driverSectionRegistry;
-	for( ; entry->m_driverName; ++entry )
+	for( int i = 0; i < NUM_DRIVERSECTIONS; ++entry, ++i )
 	{
       // Only unload families once (all but the first member are skipped)
 		if( !IsDriverClone( entry->m_driverName ) )
@@ -1196,7 +1205,7 @@ BOOL UnloadDriverSections( void )
 BOOL LoadDriverSectionByName( const char *driverFileName )
 {
 	const driverSectionRegistration_t *entry = (const driverSectionRegistration_t *)g_driverSectionRegistry;
-	for( ; entry->m_driverName; ++entry )
+	for( int i = 0; i < NUM_DRIVERSECTIONS; ++entry, ++i )
 	{
 		if( !strcmp( entry->m_driverName, driverFileName ) )
 		{
@@ -1222,7 +1231,7 @@ BOOL LoadDriverSectionByName( const char *driverFileName )
 BOOL UnloadDriverSectionByName( const char *driverFileName )
 {
 	const driverSectionRegistration_t *entry = (const driverSectionRegistration_t *)g_driverSectionRegistry;
-	for( ; entry->m_driverName; ++entry )
+	for( int i = 0; i < NUM_DRIVERSECTIONS; ++entry, ++i )
 	{
 		if( !strcmp( entry->m_driverName, driverFileName ) )
 		{
@@ -1375,16 +1384,13 @@ sub BuildDriverMap() {
 	print "Pass 1...\n";
 
 	DRIVER_PASS1_NEXTFILE:
-	foreach( @FILEs ) {
-		chomp( $_ );
-
-		$DriverFileName = $_;
+	foreach $DriverFileName ( @FILEs ) {
+		chomp( $DriverFileName );
 
 			# Change the DriverName to what will be present in the actual MAME code
 			# Drop the ./MAME/ portion
 		$DriverFileName =~ /^$MAME_DRIVER_DIR\/(.*\.c)$/;
-		$DriverNoPath = $1;
-		$DriverName = "src\\\\drivers\\\\$1";
+		local $DriverNoPath = $1;
 
 			# Skip the fake jrcrypt.c file and all the hack files
 		foreach( @SkipDrivers ) {
@@ -1420,12 +1426,12 @@ sub BuildDriverMap() {
 		if( ($File =~ /\#pragma code_seg/) ) {
 				# this should only happen on the first pass
 			if( $Family ne false ) {
-				$DriverNameToSectionMap{$DriverName} = $Family;
+				$DriverNameToSectionMap{$DriverNoPath} = $Family;
 				$myAutoNameNumber = 0;	# Don't increment (families should always be less anyway)
 			} else {
 				$File =~ /\#pragma code_seg\(\"C(\d+)\"\)/;
 				$myAutoNameNumber = $1;
-				$DriverNameToSectionMap{$DriverName} = $myAutoNameNumber;
+				$DriverNameToSectionMap{$DriverNoPath} = $myAutoNameNumber;
 			}
 
 
@@ -1446,16 +1452,13 @@ sub BuildDriverMap() {
 	}
 
 	DRIVER_PASS2_NEXTFILE:
-	foreach( @newFILEs ) {
-		chomp( $_ );
-
-		$DriverFileName = $_;
+	foreach $DriverFileName ( @newFILEs ) {
+		chomp( $DriverFileName );
 
 			# Change the DriverName to what will be present in the actual MAME code
 			# Drop the ./MAME/ portion
 		$DriverFileName =~ /^$MAME_DRIVER_DIR\/(.*\.c)$/;
-		$DriverNoPath = $1;
-		$DriverName = "src\\\\drivers\\\\$1";
+		local $DriverNoPath = $1;
 
 			# Skip the fake jrcrypt.c file and all the hack files
 		foreach( @SkipDrivers ) {
@@ -1479,9 +1482,9 @@ sub BuildDriverMap() {
 		}
 
 		if( $Family ne false ) {
-				$DriverNameToSectionMap{$DriverName} = $Family;
+				$DriverNameToSectionMap{$DriverNoPath} = $Family;
 		} else {
-			$DriverNameToSectionMap{$DriverName} = $autoNameNumber;
+			$DriverNameToSectionMap{$DriverNoPath} = $autoNameNumber;
 		}
 
 		($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
