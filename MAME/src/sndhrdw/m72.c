@@ -1,3 +1,11 @@
+#pragma code_seg("C19")
+#pragma data_seg("D19")
+#pragma bss_seg("B19")
+#pragma const_seg("K19")
+#pragma comment(linker, "/merge:D19=19")
+#pragma comment(linker, "/merge:C19=19")
+#pragma comment(linker, "/merge:B19=19")
+#pragma comment(linker, "/merge:K19=19")
 /***************************************************************************
 
 IREM "M72" sound hardware
@@ -199,3 +207,7 @@ WRITE_HANDLER( m72_sample_w )
 	DAC_signed_data_w(0,data);
 	sample_addr = (sample_addr + 1) & (memory_region_length(REGION_SOUND1) - 1);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,11 @@
+#pragma code_seg("C18")
+#pragma data_seg("D18")
+#pragma bss_seg("B18")
+#pragma const_seg("K18")
+#pragma comment(linker, "/merge:D18=18")
+#pragma comment(linker, "/merge:C18=18")
+#pragma comment(linker, "/merge:B18=18")
+#pragma comment(linker, "/merge:K18=18")
 /*************************************************************************
 
 	Exidy 6502 hardware
@@ -786,3 +794,7 @@ READ_HANDLER( mtrap_voiceio_r )
 	}
 	return 0;
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,11 @@
+#pragma code_seg("C10")
+#pragma data_seg("D10")
+#pragma bss_seg("B10")
+#pragma const_seg("K10")
+#pragma comment(linker, "/merge:D10=10")
+#pragma comment(linker, "/merge:C10=10")
+#pragma comment(linker, "/merge:B10=10")
+#pragma comment(linker, "/merge:K10=10")
 #include "driver.h"
 
 /* Game writes here to set ADPCM ROM address */
@@ -30,3 +38,7 @@ WRITE_HANDLER( rastan_d000_w )
 		mixer_stop_sample(channel);
 #endif
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

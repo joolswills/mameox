@@ -1,3 +1,11 @@
+#pragma code_seg("C21")
+#pragma data_seg("D21")
+#pragma bss_seg("B21")
+#pragma const_seg("K21")
+#pragma comment(linker, "/merge:D21=21")
+#pragma comment(linker, "/merge:C21=21")
+#pragma comment(linker, "/merge:B21=21")
+#pragma comment(linker, "/merge:K21=21")
 #include "driver.h"
 
 
@@ -155,3 +163,7 @@ WRITE_HANDLER( hyprolyb_ADPCM_data_w )
     if (end > start)
         ADPCM_play(0,start,(end - start)*2);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

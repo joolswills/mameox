@@ -1,3 +1,11 @@
+#pragma code_seg("C27")
+#pragma data_seg("D27")
+#pragma bss_seg("B27")
+#pragma const_seg("K27")
+#pragma comment(linker, "/merge:D27=27")
+#pragma comment(linker, "/merge:C27=27")
+#pragma comment(linker, "/merge:B27=27")
+#pragma comment(linker, "/merge:K27=27")
 /*
  * Zaxxon Soundhardware Driver
  * Copyright Alex Judd 1997/98
@@ -176,3 +184,7 @@ WRITE_HANDLER( zaxxon_sound_w )
 		}
 	}
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,11 @@
+#pragma code_seg("C14")
+#pragma data_seg("D14")
+#pragma bss_seg("B14")
+#pragma const_seg("K14")
+#pragma comment(linker, "/merge:D14=14")
+#pragma comment(linker, "/merge:C14=14")
+#pragma comment(linker, "/merge:B14=14")
+#pragma comment(linker, "/merge:K14=14")
 #include "driver.h"
 #include "cpu/m6502/m6502.h"
 
@@ -346,3 +354,7 @@ WRITE16_HANDLER( gottlieb_sh_word_w )
 		gottlieb_sh_w(offset, data);
 }
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,11 @@
+#pragma code_seg("C8")
+#pragma data_seg("D8")
+#pragma bss_seg("B8")
+#pragma const_seg("K8")
+#pragma comment(linker, "/merge:D8=8")
+#pragma comment(linker, "/merge:C8=8")
+#pragma comment(linker, "/merge:B8=8")
+#pragma comment(linker, "/merge:K8=8")
 /***************************************************************************
 
   This file contains functions to emulate the sound hardware found on
@@ -262,3 +270,7 @@ WRITE_HANDLER( zigzag_8910_control_trigger_w )
 	AY8910_control_port_0_w(0,latch);
 }
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

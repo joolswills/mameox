@@ -1,3 +1,11 @@
+#pragma code_seg("C20")
+#pragma data_seg("D20")
+#pragma bss_seg("B20")
+#pragma const_seg("K20")
+#pragma comment(linker, "/merge:D20=20")
+#pragma comment(linker, "/merge:C20=20")
+#pragma comment(linker, "/merge:B20=20")
+#pragma comment(linker, "/merge:K20=20")
 /***************************************************************************
 
 	Cinemat/Leland driver
@@ -2259,3 +2267,7 @@ Memory configurations:
 		FFD9D:80186 middle P chip select = C0BC
 
 ************************************************************************/
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

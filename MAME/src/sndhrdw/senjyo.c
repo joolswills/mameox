@@ -1,11 +1,11 @@
-#pragma code_seg("C470")
-#pragma data_seg("D470")
-#pragma bss_seg("B470")
-#pragma const_seg("K470")
-#pragma comment(linker, "/merge:D470=470")
-#pragma comment(linker, "/merge:C470=470")
-#pragma comment(linker, "/merge:B470=470")
-#pragma comment(linker, "/merge:K470=470")
+#pragma code_seg("C555")
+#pragma data_seg("D555")
+#pragma bss_seg("B555")
+#pragma const_seg("K555")
+#pragma comment(linker, "/merge:D555=555")
+#pragma comment(linker, "/merge:C555=555")
+#pragma comment(linker, "/merge:B555=555")
+#pragma comment(linker, "/merge:K555=555")
 #include "driver.h"
 #include "machine/z80fmly.h"
 #include <math.h>

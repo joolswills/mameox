@@ -1,11 +1,11 @@
-#pragma code_seg("C90")
-#pragma data_seg("D90")
-#pragma bss_seg("B90")
-#pragma const_seg("K90")
-#pragma comment(linker, "/merge:D90=90")
-#pragma comment(linker, "/merge:C90=90")
-#pragma comment(linker, "/merge:B90=90")
-#pragma comment(linker, "/merge:K90=90")
+#pragma code_seg("C155")
+#pragma data_seg("D155")
+#pragma bss_seg("B155")
+#pragma const_seg("K155")
+#pragma comment(linker, "/merge:D155=155")
+#pragma comment(linker, "/merge:C155=155")
+#pragma comment(linker, "/merge:B155=155")
+#pragma comment(linker, "/merge:K155=155")
 /***************************************************************************
 
 	Atari Basketball hardware

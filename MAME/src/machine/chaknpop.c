@@ -1,11 +1,11 @@
-#pragma code_seg("C109")
-#pragma data_seg("D109")
-#pragma bss_seg("B109")
-#pragma const_seg("K109")
-#pragma comment(linker, "/merge:D109=109")
-#pragma comment(linker, "/merge:C109=109")
-#pragma comment(linker, "/merge:B109=109")
-#pragma comment(linker, "/merge:K109=109")
+#pragma code_seg("C175")
+#pragma data_seg("D175")
+#pragma bss_seg("B175")
+#pragma const_seg("K175")
+#pragma comment(linker, "/merge:D175=175")
+#pragma comment(linker, "/merge:C175=175")
+#pragma comment(linker, "/merge:B175=175")
+#pragma comment(linker, "/merge:K175=175")
 /*
  *	Chack'n Pop (C) 1983 TAITO Corp.
  *	simulate 68705 MCU
