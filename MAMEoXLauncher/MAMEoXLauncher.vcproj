@@ -20,7 +20,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories=".\Includes,..\MAMEoX\Includes,..\MAME\src,..\,C:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include"
+				AdditionalIncludeDirectories=".\Includes;..\MAMEoX\Includes;..\MAME\src;..\;&quot;e:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include&quot;;&quot;..\libsmb++\src&quot;"
 				PreprocessorDefinitions="_DEBUG;_XBOX"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -33,10 +33,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="xapilibd.lib d3d8d.lib d3dx8d.lib xgraphicsd.lib dsoundd.lib dmusicd.lib xnetd.lib xboxkrnl.lib "
+				AdditionalDependencies="xapilibd.lib d3d8d.lib d3dx8d.lib xgraphicsd.lib dsoundd.lib dmusicd.lib xnetd.lib xboxkrnl.lib libsmbd.lib"
 				OutputFile="../MAMEoX/Debug/MAMEoXLauncher.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories=""
+				AdditionalLibraryDirectories="&quot;..\libsmb++\Debug&quot;"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/$(ProjectName).pdb"
 				SubSystem="2"
@@ -74,7 +74,7 @@
 				InlineFunctionExpansion="1"
 				OmitFramePointers="TRUE"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories=".\Includes,..\MAMEoX\Includes,..\MAME\src,..\,C:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include"
+				AdditionalIncludeDirectories=".\Includes,..\MAMEoX\Includes,..\MAME\src,..\,e:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include;&quot;..\libsmb++\src&quot;"
 				PreprocessorDefinitions="NDEBUG;_XBOX"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
@@ -88,10 +88,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="xapilib.lib d3d8.lib d3dx8.lib xgraphics.lib dsound.lib dmusic.lib xboxkrnl.lib"
+				AdditionalDependencies="xapilib.lib d3d8.lib d3dx8.lib xgraphics.lib dsound.lib dmusic.lib xboxkrnl.lib Xnet.lib libsmb.lib"
 				OutputFile="../MAMEoX/Release/MAMEoXLauncher.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories=""
+				AdditionalLibraryDirectories="&quot;..\libsmb++\Release&quot;"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/$(ProjectName).pdb"
 				SubSystem="2"
@@ -115,7 +115,7 @@
 				AdditionalOptions="/testid:0x4D414D45"
 				FileName="$(TargetDir)default.xbe"
 				StackSize="65536"
-				LimitAvailableMemoryTo64MB="TRUE"
+				LimitAvailableMemoryTo64MB="FALSE"
 				TitleName="&quot;MAMEoX Launcher&quot;"/>
 		</Configuration>
 	</Configurations>
@@ -145,25 +145,31 @@
 				RelativePath="Sources\ROMList.cpp">
 			</File>
 			<File
+				RelativePath="..\MAMEoX\Sources\SMBHandler.cpp">
+			</File>
+			<File
 				RelativePath="..\MAMEoX\Sources\System_IniFile.cpp">
 			</File>
 			<File
 				RelativePath="Sources\main.cpp">
 			</File>
 			<File
-				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Src\xbfont.cpp">
+				RelativePath="e:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Src\xbfont.cpp">
 			</File>
 			<File
-				RelativePath="..\MAMEoX\Sources\xbox_FileIO.c">
+				RelativePath="..\MAMEoX\Sources\xbox_FileIO.cpp">
+			</File>
+			<File
+				RelativePath="..\MAMEoX\Sources\xbox_Network.cpp">
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Sources\xbox_Timing.c">
 			</File>
 			<File
-				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Src\xbresource.cpp">
+				RelativePath="e:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Src\xbresource.cpp">
 			</File>
 			<File
-				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Src\xbutil.cpp">
+				RelativePath="e:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Src\xbutil.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -194,22 +200,31 @@
 				RelativePath="Includes\Resource.h">
 			</File>
 			<File
+				RelativePath="..\MAMEoX\Includes\SMBHandler.h">
+			</File>
+			<File
+				RelativePath="..\MAMEoX\Includes\StdString.h">
+			</File>
+			<File
 				RelativePath="..\MAMEoX\Includes\System_IniFile.h">
 			</File>
 			<File
-				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbfont.h">
+				RelativePath="e:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbfont.h">
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Includes\xbox_FileIO.h">
 			</File>
 			<File
+				RelativePath="..\MAMEoX\Includes\xbox_Network.h">
+			</File>
+			<File
 				RelativePath="..\MAMEoX\Includes\xbox_Timing.h">
 			</File>
 			<File
-				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbresource.h">
+				RelativePath="e:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbresource.h">
 			</File>
 			<File
-				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbutil.h">
+				RelativePath="e:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbutil.h">
 			</File>
 		</Filter>
 		<Filter
