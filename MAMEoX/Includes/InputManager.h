@@ -126,17 +126,6 @@ public:
                                   XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_Y - calibData.m_yData[CALIB_UL] ); \
       }
 
-      gpAttached = m_gamepads[0].IsConnected(); 
-      m_gamepads[0].AttachRemoveDevices(); 
-      if( !gpAttached && m_gamepads[0].IsConnected() ) {
-        lightgunCalibration_t &calibData = g_calibrationData[0]; 
-        m_gamepads[0].SetLightgunCalibration( XINPUT_LIGHTGUN_CALIBRATION_CENTER_X - calibData.m_xData[CALIB_C], 
-                                  XINPUT_LIGHTGUN_CALIBRATION_CENTER_Y - calibData.m_yData[CALIB_C], 
-                                  XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_X - calibData.m_xData[CALIB_UL],  
-                                  XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_Y - calibData.m_yData[CALIB_UL] ); 
-      }
-
-
     ATTACH_AND_RESTORE( 0 );
     ATTACH_AND_RESTORE( 1 );
     ATTACH_AND_RESTORE( 2 );
