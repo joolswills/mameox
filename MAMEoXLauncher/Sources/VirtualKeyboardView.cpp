@@ -50,8 +50,8 @@ static WCHAR  *g_keyboardData[4] = { L"1234567890",
 //------------------------------------------------------------
 // Constructor
 //------------------------------------------------------------
-CVirtualKeyboardView::CVirtualKeyboardView( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CTextureSet &textureSet, const RECT &area ) :
-  CBasePopupView( displayDevice, fontSet, textureSet, area )
+CVirtualKeyboardView::CVirtualKeyboardView( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, const RECT &area ) :
+  CBasePopupView( displayDevice, fontSet, area )
 {
   Reset();
 }

@@ -13,8 +13,8 @@
 #include "MAMEoX.h"
 #include "InputManager.h"
 #include "FontSet.h"
+#include "SkinResource.h"
 
-#include "xbox_png.h"
 
 
 //= D E F I N E S ======================================================
@@ -33,10 +33,10 @@ public:
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-	CBaseView( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, LPDIRECT3DTEXTURE8 backdropTexture ) :
+	CBaseView( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, SkinResourceID_t backdropID ) :
 		m_displayDevice( displayDevice ),
 		m_fontSet( fontSet ),
-    m_backdropTexture( backdropTexture )
+		m_backdropTextureID( backdropID )
 	{
 	}
 
@@ -102,30 +102,10 @@ protected:
 
 	LPDIRECT3DDEVICE8			    m_displayDevice;            //!<  Display device to use in rendering
   CFontSet                  &m_fontSet;                 //!<  Set of available fonts
-  LPDIRECT3DTEXTURE8        m_backdropTexture;          //!<  Texture to render as the backdrop
+  SkinResourceID_t					m_backdropTextureID;        //!<  Texture to render as the backdrop
 
   RenderToTextureToken_t    m_renderToTextureToken;     //!< Token for texture rendering
 };
 
 
-
-typedef struct PNGFile_t {
-	UINT						m_imageWidth;
-	UINT						m_imageHeight;
-  png_structp			m_pngPtr;
-	png_infop				m_infoPtr;
-	png_bytep				*m_data;
-} PNGFile_t;
-
-//= P R O T O T Y P E S  ===============================================
-
-	//------------------------------------------------------------
-	//	LoadPNGFile
-	//------------------------------------------------------------
-BOOL LoadPNGFile(	const CStdString &filename, PNGFile_t *ret );
-
-	//------------------------------------------------------------
-	//	ClosePNGFile
-	//------------------------------------------------------------
-void ClosePNGFile( PNGFile_t &file );
 

@@ -27,8 +27,8 @@ public:
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-	CListView( LPDIRECT3DDEVICE8 displayDevice, CFontSet &fontSet, LPDIRECT3DTEXTURE8 backdropTexture ) :
-    CBaseView( displayDevice, fontSet, backdropTexture ),
+	CListView( LPDIRECT3DDEVICE8 displayDevice, CFontSet &fontSet, SkinResourceID_t backdropID ) :
+    CBaseView( displayDevice, fontSet, backdropID ),
 		m_cursorPosition( 0.0f ),
 		m_dpadCursorDelay( 0.0f ),
 		m_pageOffset( 0.0f ),

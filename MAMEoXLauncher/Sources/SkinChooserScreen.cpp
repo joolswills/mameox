@@ -65,7 +65,7 @@
   //-- Button help messages ------
 #define HELP_START_ICON_X   200
 #define HELP_START_ICON_Y   40
-#define HELP_START_TEXT_X   (HELP_START_ICON_X + m_textureSet.GetSTARTButtonWidth() + 4)
+#define HELP_START_TEXT_X   (HELP_START_ICON_X + desc->GetWidth() + 4)
 #define HELP_START_TEXT_Y   (HELP_START_ICON_Y + 5)
 
 
@@ -108,78 +108,14 @@ extern "C" void DrawProgressbarMessage( LPDIRECT3DDEVICE8 pD3DDevice, const char
 
 //= F U N C T I O N S ==================================================
 
-
-//---------------------------------------------------------------------
-//	FindSkins
-//---------------------------------------------------------------------
-BOOL CSkinChooserScreen::FindSkins( void )
-{
-	CStdString path = g_FileIOConfig.m_skinPath;
-
-	std::vector< CStdString > zipFileNames;
-	WIN32_FIND_DATA findData;
-
-  HANDLE findHandle = FindFirstFile( (path + "\\*").c_str(), &findData );
-  if( findHandle == INVALID_HANDLE_VALUE )
-  {
-    PRINTMSG(( T_INFO, "Could not find files!" ));
-    return FALSE;
-  }
-
-		// Search the subdirectories for skin.ini files and preview.png's
-	do {
-    CStdString basepath = findData.cFileName;
-		if( basepath[0] == '.' )
-			continue;
-
-		CStdString fullBasePath = path + "\\" + basepath;
-		CStdString iniFile = fullBasePath + "\\skin.ini";
-		
-			// See if there's a skin.ini file
-		osd_file *file = osd_fopen( FILETYPE_MAMEOX_FULLPATH, 0, iniFile.c_str(), "r" );
-		if( file )
-		{
-			osd_fclose( file );
-
-			PRINTMSG(( T_INFO, "Skin %s found!", basepath.c_str() ));
-
-				// Try to load a preview for this skin
-			RECT rct = { 0, 0, 0, 0 };
-			LPDIRECT3DTEXTURE8 texture = NULL;
-			CStdString previewFile = fullBasePath + "\\preview.png";
-
-		  if( !LoadPNGToTexture( previewFile, &texture, &rct ) )
-				texture = NULL;
-
-				// We have a skin on our hands
-			m_skinResourceVector.push_back( new CSkinResource( basepath.c_str(), texture, rct ) );
-		}
-
-	} while( FindNextFile( findHandle, &findData ) );
-  FindClose( findHandle );
-
-
-	m_numLinesInList = m_skinResourceVector.size();
-	PRINTMSG(( T_INFO, "Found %lu skins.", m_skinResourceVector.size() ));
-
-	SetCursorToSelectedSkin();
-	m_currentSkin = m_skinResourceVector[GetAbsoluteCursorPosition()];
-	if( m_currentSkin )
-		m_currentSkin->LoadSkin( NULL );	// Todo:Check the error code, etc...
-
-
-	return TRUE;
-}
-
-
 //---------------------------------------------------------------------
 //	SetCursorToSelectedSkin
 //---------------------------------------------------------------------
 void CSkinChooserScreen::SetCursorToSelectedSkin( void )
 {
-	for( int i = 0; i < m_skinResourceVector.size(); ++i )
+	for( int i = 0; i < m_skinChooser.m_skinResourceVector.size(); ++i )
 	{
-		if( m_options.m_currentSkin == m_skinResourceVector[i]->GetSkinName() )
+		if( m_skinChooser.m_options.g_loadedSkin == m_skinChooser.m_skinResourceVector[i]->GetSkinName() )
 		{
 			SetAbsoluteCursorPosition( i );
 			return;
@@ -228,16 +164,16 @@ void CSkinChooserScreen::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
   if( gp.IsButtonPressed( GP_A ) || gp.IsKeyPressed( VK_RETURN )  )
 	{
 			// Load the selected skin, if it's not the current one
-		CSkinResource *selectedSkin = m_skinResourceVector[GetAbsoluteCursorPosition()];
-		if( selectedSkin->GetSkinName() != m_options.m_currentSkin )
+		CSkinResource *selectedSkin = m_skinChooser.m_skinResourceVector[GetAbsoluteCursorPosition()];
+		if( selectedSkin->GetSkinName() != m_skinChooser.m_options.g_loadedSkin )
 		{
-			CSkinResource *oldSkin = m_currentSkin;
-			if( m_currentSkin )
-				m_currentSkin->UnloadSkin();
+			CSkinResource *oldSkin = g_loadedSkin;
+			if( g_loadedSkin )
+				g_loadedSkin->UnloadSkin();
 
-			m_currentSkin = selectedSkin;
-			m_currentSkin->LoadSkin( NULL );	// Todo:Check the error code, reload the old skin, etc...
-			m_options.m_currentSkin = selectedSkin->GetSkinName();
+			g_loadedSkin = selectedSkin;
+			g_loadedSkin->LoadSkin( NULL );	// Todo:Check the error code, reload the old skin, etc...
+			m_skinChooser.m_options.g_loadedSkin = selectedSkin->GetSkinName();
 		}
 	}
 
@@ -338,9 +274,9 @@ void CSkinChooserScreen::NormalModeMoveCursor( CInputManager &gp, FLOAT elapsedT
 		cursorVelocity *= SBMULTIPLIER_FAST;
 
 
-	DWORD pageSize = (m_skinResourceVector.size() < MAXPAGESIZE ? m_skinResourceVector.size() : MAXPAGESIZE);
+	DWORD pageSize = (m_skinChooser.m_skinResourceVector.size() < MAXPAGESIZE ? m_skinChooser.m_skinResourceVector.size() : MAXPAGESIZE);
 	ULONG pageHalfwayPoint = (pageSize >> 1);
-	ULONG maxPageOffset = m_skinResourceVector.size() - pageSize;
+	ULONG maxPageOffset = m_skinChooser.m_skinResourceVector.size() - pageSize;
 
 	if( cursorVelocity > 0 )
 	{
@@ -453,80 +389,43 @@ void CSkinChooserScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
 
     // Render the backdrop texture
-	if( m_currentSkin && m_currentSkin->GetListBackdropTexture() && m_currentSkin->GetSkinResourceInfo( ASSET_LIST_BACKDROP ) )
-	{
-		const SkinResourceInfo_t *desc = m_currentSkin->GetSkinResourceInfo( ASSET_LIST_BACKDROP );
-
-		m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-		m_displayDevice->SetTexture( 0, m_currentSkin->GetListBackdropTexture() );
-		m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
-		m_displayDevice->Begin( D3DPT_QUADLIST );
-
-			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_top );
-			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 0.0f, 0.0f, 1.0f, 1.0f );
-
-			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_right, desc->m_top );
-			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 640.0f, 0.0f, 1.0f, 1.0f );
-
-			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_right, desc->m_bottom );
-			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 640.0f, 480.0f, 1.0f, 1.0f );
-
-			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_bottom );
-			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 0.0f, 480.0f, 1.0f, 1.0f );
-		m_displayDevice->End();
-		m_displayDevice->SetTexture( 0, NULL );
-	}
-	else
-		RenderBackdrop();
+	RenderBackdrop();
   m_menuRenderer->Draw( FALSE, FALSE );
 
+	if( CheckResourceValidity( SPRITE_BUTTON_START ) )
+	{
 
-    //-- Draw the help text --------------------------------------------
-  m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
-  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
-  m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
-  m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
+			//-- Draw the help text --------------------------------------------
+		m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
+		m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
+		m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
+		m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
 
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
+		m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+		m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+		m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
+		m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
 
-  m_displayDevice->SetTexture( 0, m_textureSet.GetButtonIcons() );
-  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
-
-
-  FLOAT ulX, ulY;
-
-    //-- START button ------------------------------------------------
-  ulX = HELP_START_ICON_X;
-  ulY = HELP_START_ICON_Y;
-  m_displayDevice->Begin( D3DPT_QUADLIST );
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetSTARTButtonLeft(), m_textureSet.GetSTARTButtonTop() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX, ulY, 1.0f, 1.0f );
-    
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetSTARTButtonRight(), m_textureSet.GetSTARTButtonTop() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX + m_textureSet.GetSTARTButtonWidth(), ulY, 1.0f, 1.0f );
-    
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetSTARTButtonRight(), m_textureSet.GetSTARTButtonBottom() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX + m_textureSet.GetSTARTButtonWidth(), ulY + m_textureSet.GetSTARTButtonHeight(), 1.0f, 1.0f );
-
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetSTARTButtonLeft(), m_textureSet.GetSTARTButtonBottom() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX, ulY + m_textureSet.GetSTARTButtonHeight(), 1.0f, 1.0f );
-  m_displayDevice->End();
+		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_BUTTON_START );
+		m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
 
 
-    // Now render the text messages
-	m_fontSet.LargeThinFont().Begin();
-    m_fontSet.LargeThinFont().DrawText( HELP_START_TEXT_X,
-                                        HELP_START_TEXT_Y,
-                                        HELPITEM_COLOR,
-                                        L"Menu" );
-  m_fontSet.LargeThinFont().End();
+		FLOAT ulX, ulY;
 
-  m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     FALSE );
-  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    FALSE );
-  m_displayDevice->SetTexture( 0, NULL );
+			//-- START button ------------------------------------------------
+		ulX = HELP_START_ICON_X;
+		ulY = HELP_START_ICON_Y;
+		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_BUTTON_START );
+		desc->Render( m_displayDevice, ulX, ulY );
+
+			// Now render the text messages
+		m_fontSet.LargeThinFont().Begin();
+			m_fontSet.LargeThinFont().DrawText( HELP_START_TEXT_X,
+																					HELP_START_TEXT_Y,
+																					HELPITEM_COLOR,
+																					L"Menu" );
+		m_fontSet.LargeThinFont().End();
+	}
 
 	DrawSkinList();
 
@@ -577,23 +476,24 @@ void CSkinChooserScreen::DrawSkinList( void )
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, selectedItemYPos + entryHeight, 1.0f, 1.0f );
   m_displayDevice->End();
 
+
+
+		//-- Draw 3 screenshot + name pairs -------------------------------------------------
 	for( int i = (ULONG)m_pageOffset; i < (ULONG)m_pageOffset + GetCurrentPageSize(); ++i )
 	{
 
-		CSkinResource *currentResource = m_skinResourceVector[i];
-		LPDIRECT3DTEXTURE8 previewTexture = currentResource->GetPreviewTexture();
-
+		CSkinResource *currentResource = m_skinChooser.m_skinResourceVector[i];
 
 		FLOAT screenshotLeft = DETAIL_SCREENSHOT_LEFT;
 		FLOAT screenshotRight = DETAIL_SCREENSHOT_RIGHT;
-
 		FLOAT screenshotTop = DETAIL_SCREENSHOT_TOP + 5 + ((i - m_pageOffset) * entryHeight);
 		FLOAT screenshotBottom = screenshotTop + (DETAIL_SCREENSHOT_BOTTOM - DETAIL_SCREENSHOT_TOP);
-
 
 			// Display the screenshot
 		m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     FALSE );
 		m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    FALSE );
+
+		LPDIRECT3DTEXTURE8 previewTexture = currentResource->GetPreviewTexture();
 		if( previewTexture )
 		{
 			m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
@@ -680,49 +580,31 @@ void CSkinChooserScreen::DrawSkinList( void )
   m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
 
     // Draw scroll up icon
-  if( (UINT32)m_pageOffset )
+  if( (UINT32)m_pageOffset && CheckResourceValidity( SPRITE_LIST_SCROLLICON_UP ) )
   {
-	  m_displayDevice->SetTexture( 0, m_textureSet.GetScrollIconMasks() );
-    m_displayDevice->Begin( D3DPT_QUADLIST );      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconLeft(), m_textureSet.GetScrollUpIconTop() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_LEFT, SCROLLUP_TOP, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconRight(), m_textureSet.GetScrollUpIconTop() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_RIGHT, SCROLLUP_TOP, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconRight(), m_textureSet.GetScrollUpIconBottom() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_RIGHT, SCROLLUP_BOTTOM, 1.0f, 1.0f );
-
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconLeft(), m_textureSet.GetScrollUpIconBottom() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_LEFT, SCROLLUP_BOTTOM, 1.0f, 1.0f );
-    m_displayDevice->End();
+		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_UP );
+		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_UP );
+		desc->Render( m_displayDevice, 
+									D3DVSDE_DIFFUSE, 
+									SCROLLICON_COLOR, 
+									SCROLLUP_LEFT, 
+									SCROLLUP_TOP, 
+									SCROLLUP_RIGHT, 
+									SCROLLUP_BOTTOM );
   }
 
     // Draw scroll down icon
-  if( (UINT32)m_pageOffset + 3 < m_numLinesInList - 1 )
+  if( (UINT32)m_pageOffset + 3 < m_numLinesInList - 1 && CheckResourceValidity( SPRITE_LIST_SCROLLICON_DOWN ) )
   {
-	  m_displayDevice->SetTexture( 0, m_textureSet.GetScrollIconMasks() );
-    m_displayDevice->Begin( D3DPT_QUADLIST );
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconLeft(), m_textureSet.GetScrollDownIconTop() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_LEFT, SCROLLDOWN_TOP, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconRight(), m_textureSet.GetScrollDownIconTop() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_RIGHT, SCROLLDOWN_TOP, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconRight(), m_textureSet.GetScrollDownIconBottom() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_RIGHT, SCROLLDOWN_BOTTOM, 1.0f, 1.0f );
-
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconLeft(), m_textureSet.GetScrollDownIconBottom() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_LEFT, SCROLLDOWN_BOTTOM, 1.0f, 1.0f );
-    m_displayDevice->End();
+		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_DOWN );
+		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_DOWN );
+		desc->Render( m_displayDevice, 
+									D3DVSDE_DIFFUSE, 
+									SCROLLICON_COLOR, 
+									SCROLLDOWN_LEFT, 
+									SCROLLDOWN_TOP, 
+									SCROLLDOWN_RIGHT, 
+									SCROLLDOWN_BOTTOM );
   }
 
   m_displayDevice->SetTexture( 0, NULL );

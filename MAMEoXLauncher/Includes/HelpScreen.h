@@ -11,7 +11,7 @@
 
 #include "ListView.h"
 #include "BaseMenuView.h"
-#include "TextureSet.h"
+#include "SkinResource.h"
 #include "StdString.h"
 
 
@@ -42,11 +42,11 @@ public:
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-	CHelpScreen( LPDIRECT3DDEVICE8 displayDevice, CFontSet &fontSet, CTextureSet &textureSet ) :
-      CListView( displayDevice, fontSet, textureSet.GetBasicBackdrop() ),
-      m_textureSet( textureSet ) {
+	CHelpScreen( LPDIRECT3DDEVICE8 displayDevice, CFontSet &fontSet ) :
+      CListView( displayDevice, fontSet, ASSET_LIST_BACKDROP )
+	{
     RECT area = { LISTPOS_LEFT, LISTPOS_TOP, LISTPOS_RIGHT, LISTPOS_BOTTOM };
-    m_menuRenderer = new CBaseMenuView( displayDevice, fontSet, textureSet, area );
+    m_menuRenderer = new CBaseMenuView( displayDevice, fontSet, area );
     assert( m_menuRenderer );
   }
 
@@ -83,7 +83,6 @@ protected:
 		//------------------------------------------------------------
 	BOOL FileGets( HANDLE file, char *buffer, UINT32 length );
 
-  CTextureSet                 &m_textureSet;
   CBaseMenuView               *m_menuRenderer;                //!<  Resizable menu renderer
 	std::vector<CStdString>		  m_data;
 };

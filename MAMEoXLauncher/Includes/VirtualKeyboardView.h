@@ -27,7 +27,7 @@ public:
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-	CVirtualKeyboardView( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CTextureSet &textureSet, const RECT &area );
+	CVirtualKeyboardView( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, const RECT &area );
 
 		//------------------------------------------------------------
 		// Reset

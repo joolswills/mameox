@@ -53,17 +53,22 @@ CVirtualMemoryManager g_vmManager;        // The global memory manager
 
 extern BOOL           g_soundEnabled;   // Sound processing override (defined in xbox_Main.cpp)
 
+/*
+  TODO: Try putting these into the startup section to save some bytes
 #pragma data_seg("STRT.D")
 #pragma bss_seg("STRT.D")
 #pragma comment(linker, "/merge:STRT.D=STARTUP")
 #pragma comment(linker, "/merge:STRT.D=STARTUP")
 #pragma comment(linker, "/section:STARTUP,E,W,R")
+*/
+
 ROMListOptions_t      g_romListOptions;
 SkinOptions_t					g_skinOptions;
 MAMEoXLaunchData_t    g_persistentLaunchData;   //!<  Launch data that persists via the INI
+/*
 #pragma data_seg()
 #pragma bss_seg()
-
+*/
 
 extern UINT32         g_screensaverTimeout;     //!<  Time before the Launcher screensaver kicks in
 
@@ -315,7 +320,7 @@ void LoadOptions( void )
 
 
 		//-- Skin Options ------------------------------------------------------------------------
-	g_skinOptions.m_currentSkin = iniFile.GetProfileString( "SkinOptions", "SelectedSkin", "Original" );
+	g_skinOptions.g_loadedSkin = iniFile.GetProfileString( "SkinOptions", "SelectedSkin", "Original" );
 }
 
 
@@ -455,7 +460,7 @@ void SaveOptions( void )
   iniFile.WriteProfileInt(   "ROMListOptions", "SuperscrollIndex", g_persistentLaunchData.m_superscrollIndex );
 
 		//-- Skin Options ------------------------------------------------------------------------
-	iniFile.WriteProfileString( "SkinOptions", "SelectedSkin", g_skinOptions.m_currentSkin );
+	iniFile.WriteProfileString( "SkinOptions", "SelectedSkin", g_skinOptions.g_loadedSkin );
 }
 
 //-------------------------------------------------------------

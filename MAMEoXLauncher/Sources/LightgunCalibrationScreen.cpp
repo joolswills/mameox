@@ -206,105 +206,109 @@ void CLightgunCalibrationScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
 
-  m_displayDevice->SetTexture( 0, m_textureSet.GetLightgunCursorMask() );
-  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
+	if( CheckResourceValidity( SPRITE_LIGHTGUNCALIBRATION_CURSOR ) )
+	{
+		m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
+		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIGHTGUNCALIBRATION_CURSOR );
+		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIGHTGUNCALIBRATION_CURSOR );
 
-    // Display a target/cursor if the gun is pointed at the screen
-  if(  m_currentGunFlags & XINPUT_LIGHTGUN_ONSCREEN )
-  {
-    m_displayDevice->Begin( D3DPT_QUADLIST );
+			// Display a target/cursor if the gun is pointed at the screen
+		if(  m_currentGunFlags & XINPUT_LIGHTGUN_ONSCREEN )
+		{
+			m_displayDevice->Begin( D3DPT_QUADLIST );
 
 
-      switch( m_calibrationStep )
-      {
-      case 0:
-        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
-        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 0.0f );
-        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_C_X, TARGET_C_Y, 1.0f, 1.0f );
-        
-        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
-        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 0.0f );
-        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_C_X + TARGET_WIDTH, TARGET_C_Y, 1.0f, 1.0f );
-        
-        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
-        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 1.0f );
-        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_C_X + TARGET_WIDTH, TARGET_C_Y + TARGET_HEIGHT, 1.0f, 1.0f );
+				switch( m_calibrationStep )
+				{
+				case 0:
+					m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+					m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_top );
+					m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_C_X, TARGET_C_Y, 1.0f, 1.0f );
+	        
+					m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+					m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_right, desc->m_top );
+					m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_C_X + TARGET_WIDTH, TARGET_C_Y, 1.0f, 1.0f );
+	        
+					m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+					m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_right, desc->m_bottom );
+					m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_C_X + TARGET_WIDTH, TARGET_C_Y + TARGET_HEIGHT, 1.0f, 1.0f );
 
-        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
-        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 1.0f );
-        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_C_X, TARGET_C_Y + TARGET_HEIGHT, 1.0f, 1.0f );
-        break;
+					m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+					m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_bottom );
+					m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_C_X, TARGET_C_Y + TARGET_HEIGHT, 1.0f, 1.0f );
+					break;
 
-      case 1:
-        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
-        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 0.0f );
-        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_UL_X, TARGET_UL_Y, 1.0f, 1.0f );
-        
-        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
-        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 0.0f );
-        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_UL_X + TARGET_WIDTH, TARGET_UL_Y, 1.0f, 1.0f );
-        
-        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
-        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 1.0f );
-        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_UL_X + TARGET_WIDTH, TARGET_UL_Y + TARGET_HEIGHT, 1.0f, 1.0f );
+				case 1:
+					m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+					m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_top );
+					m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_UL_X, TARGET_UL_Y, 1.0f, 1.0f );
+	        
+					m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+					m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_right, desc->m_top );
+					m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_UL_X + TARGET_WIDTH, TARGET_UL_Y, 1.0f, 1.0f );
+	        
+					m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+					m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_right, desc->m_bottom );
+					m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_UL_X + TARGET_WIDTH, TARGET_UL_Y + TARGET_HEIGHT, 1.0f, 1.0f );
 
-        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
-        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 1.0f );
-        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_UL_X, TARGET_UL_Y + TARGET_HEIGHT, 1.0f, 1.0f );
-        break;
+					m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+					m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_bottom );
+					m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_UL_X, TARGET_UL_Y + TARGET_HEIGHT, 1.0f, 1.0f );
+					break;
 
-/*
-      case 2:
-        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
-        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 0.0f );
-        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_LR_X, TARGET_LR_Y, 1.0f, 1.0f );
-        
-        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
-        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 0.0f );
-        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_LR_X + TARGET_WIDTH, TARGET_LR_Y, 1.0f, 1.0f );
-        
-        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
-        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 1.0f );
-        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_LR_X + TARGET_WIDTH, TARGET_LR_Y + TARGET_HEIGHT, 1.0f, 1.0f );
+	/*
+				case 2:
+					m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+					m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_top );
+					m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_LR_X, TARGET_LR_Y, 1.0f, 1.0f );
+	        
+					m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+					m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_right, desc->m_top );
+					m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_LR_X + TARGET_WIDTH, TARGET_LR_Y, 1.0f, 1.0f );
+	        
+					m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+					m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_right, desc->m_bottom );
+					m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_LR_X + TARGET_WIDTH, TARGET_LR_Y + TARGET_HEIGHT, 1.0f, 1.0f );
 
-        m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
-        m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 1.0f );
-        m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_LR_X, TARGET_LR_Y + TARGET_HEIGHT, 1.0f, 1.0f );
-        break;
-*/
+					m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+					m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_bottom );
+					m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_LR_X, TARGET_LR_Y + TARGET_HEIGHT, 1.0f, 1.0f );
+					break;
+	*/
 
-      case (NUM_CALIBRATIONSTEPS - 1):
-        {
-          FLOAT x = m_currentGunCalibratedX;
-          FLOAT y = -m_currentGunCalibratedY;  // Y values are negated for MAME
+				case (NUM_CALIBRATIONSTEPS - 1):
+					{
+						FLOAT x = m_currentGunCalibratedX;
+						FLOAT y = -m_currentGunCalibratedY;  // Y values are negated for MAME
 
-            // Map the cursor to screen coords
-          x = ((x+128.0f) * 640.0f / 256.0f);
-          y = ((y+128.0f) * 480.0f / 256.0f);
-          
-          x -= (TARGET_WIDTH >> 2);
-          y -= (TARGET_HEIGHT >> 2);
+							// Map the cursor to screen coords
+						x = ((x+128.0f) * 640.0f / 256.0f);
+						y = ((y+128.0f) * 480.0f / 256.0f);
+	          
+						x -= (TARGET_WIDTH >> 2);
+						y -= (TARGET_HEIGHT >> 2);
 
-          m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
-          m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 0.0f );
-          m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, x, y, 1.0f, 1.0f );
-          
-          m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
-          m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 0.0f );
-          m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, x + (TARGET_WIDTH>>1), y, 1.0f, 1.0f );
-          
-          m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
-          m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 1.0f );
-          m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, x + (TARGET_WIDTH>>1), y + (TARGET_HEIGHT>>1), 1.0f, 1.0f );
+						m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+						m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_top );
+						m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, x, y, 1.0f, 1.0f );
+	          
+						m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+						m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_right, desc->m_top );
+						m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, x + (TARGET_WIDTH>>1), y, 1.0f, 1.0f );
+	          
+						m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+						m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_right, desc->m_bottom );
+						m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, x + (TARGET_WIDTH>>1), y + (TARGET_HEIGHT>>1), 1.0f, 1.0f );
 
-          m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
-          m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 1.0f );
-          m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, x, y + (TARGET_HEIGHT>>1), 1.0f, 1.0f );
-        }
-        break;
-      }
-    m_displayDevice->End();
-  }
+						m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
+						m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_bottom );
+						m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, x, y + (TARGET_HEIGHT>>1), 1.0f, 1.0f );
+					}
+					break;
+				}
+			m_displayDevice->End();
+		}
+	}
 
   if( flipOnCompletion )
 	  m_displayDevice->Present( NULL, NULL, NULL, NULL );	

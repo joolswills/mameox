@@ -8,7 +8,7 @@
 
 //= I N C L U D E S ====================================================
 #include "ListView.h"
-#include "TextureSet.h"
+#include "SkinResource.h"
 
 //= C L A S S E S ======================================================
 
@@ -23,11 +23,8 @@ public:
 		//------------------------------------------------------------
     // Constructor
 		//------------------------------------------------------------
-	CLightgunCalibrationScreen(  LPDIRECT3DDEVICE8 displayDevice, 
-                        CFontSet &fontSet,
-                        CTextureSet &textureSet ) :
-    CListView( displayDevice, fontSet, NULL ),
-    m_textureSet( textureSet ),
+	CLightgunCalibrationScreen(  LPDIRECT3DDEVICE8 displayDevice, CFontSet &fontSet ) :
+    CListView( displayDevice, fontSet, RESOURCE_INVALID ),
     m_currentInputDeviceIndex( 0 ),
     m_calibrationStep( 0 ),
     m_calibrationCompleted( FALSE ),
@@ -63,9 +60,6 @@ protected:
   BOOL FindNextGun( void );
 
   void GetCalibratedCursorPosition( CInputManager &inputManager );
-
-    // Contains texture to use for the cursor
-  CTextureSet         m_textureSet;
 
     //! Current position of the gun pointer
   INT32               m_currentGunX;

@@ -11,7 +11,7 @@
 
 #include "BaseMenuView.h"
 #include "StdString.h"
-#include "TextureSet.h"
+#include "SkinResource.h"
 
 //= D E F I N E S ======================================================
 typedef enum MenuState
@@ -34,8 +34,8 @@ public:
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-  CBasePopupView( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CTextureSet &textureSet, const RECT &area ) :
-      CBaseMenuView( displayDevice, fontSet, textureSet, area ) {
+  CBasePopupView( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, const RECT &area ) :
+      CBaseMenuView( displayDevice, fontSet, area ) {
     Reset();
   }
 

@@ -9,9 +9,11 @@
 #include "MAMEoX.h"
 #include "StdString.h"
 #include "System_IniFile.h"
+#include "PNGFunctions.h"
 
 #include <XBUtil.h>
 
+#ifdef __cplusplus
 
 //= D E F I N E S =====================================================
 typedef enum SkinResourceID_t {
@@ -55,7 +57,8 @@ typedef enum SkinResourceID_t {
 	SPRITE_BUTTON_LEFTANALOG,
 	SPRITE_BUTTON_RIGHTANALOG,
 
-	RESOURCE_COUNT		// Note: This must be the last member of the enum
+	RESOURCE_COUNT,		// Note: This must be the last "real" member of the enum
+	RESOURCE_INVALID = 0x7FFFFFFF
 } SkinResourceID_t;
 
 //= C L A S S E S ====================================================
@@ -85,6 +88,89 @@ typedef struct SkinResourceInfo_t
 		m_right = a.m_right;
 		m_bottom = a.m_bottom;
 	}
+
+
+		//------------------------------------------------------
+		//	Render 
+		//------------------------------------------------------
+	inline void Render( LPDIRECT3DDEVICE8 displayDevice, 
+											FLOAT left, 
+											FLOAT top ) const
+	{
+		Render( displayDevice, left, top, left + GetWidth(), top + GetHeight() );
+	}
+
+		//------------------------------------------------------
+		//	Render 
+		//------------------------------------------------------
+	inline void Render( LPDIRECT3DDEVICE8 displayDevice, 
+											FLOAT left, 
+											FLOAT top, 
+											FLOAT right, 
+											FLOAT bottom ) const
+	{
+    displayDevice->Begin( D3DPT_QUADLIST );      
+			displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_left, m_top );
+      displayDevice->SetVertexData4f( D3DVSDE_VERTEX, left, top, 1.0f, 1.0f );
+      
+      displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_right, m_top );
+      displayDevice->SetVertexData4f( D3DVSDE_VERTEX, right, top, 1.0f, 1.0f );
+      
+      displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_right, m_bottom );
+      displayDevice->SetVertexData4f( D3DVSDE_VERTEX, right, bottom, 1.0f, 1.0f );
+
+      displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_left, m_bottom );
+      displayDevice->SetVertexData4f( D3DVSDE_VERTEX, left, bottom, 1.0f, 1.0f );
+    displayDevice->End();
+	}
+
+		//------------------------------------------------------
+		//	Render  (Singe Diffuse variant)
+		//------------------------------------------------------
+	inline void Render( LPDIRECT3DDEVICE8 displayDevice, 
+											int colorRegister, 
+											D3DCOLOR color, 
+											FLOAT left, 
+											FLOAT top ) const
+	{
+		Render( displayDevice, colorRegister, color, left, top, left + GetWidth(), top + GetHeight() );
+	}
+
+		//------------------------------------------------------
+		//	Render  (Singe Diffuse variant)
+		//------------------------------------------------------
+	inline void Render( LPDIRECT3DDEVICE8 displayDevice, 
+											int colorRegister, 
+											D3DCOLOR color, 
+											FLOAT left, 
+											FLOAT top, 
+											FLOAT right, 
+											FLOAT bottom ) const
+	{
+    displayDevice->Begin( D3DPT_QUADLIST );      
+      displayDevice->SetVertexDataColor( colorRegister, color );
+			displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_left, m_top );
+      displayDevice->SetVertexData4f( D3DVSDE_VERTEX, left, top, 1.0f, 1.0f );
+      
+      displayDevice->SetVertexDataColor( colorRegister, color );
+      displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_right, m_top );
+      displayDevice->SetVertexData4f( D3DVSDE_VERTEX, right, top, 1.0f, 1.0f );
+      
+      displayDevice->SetVertexDataColor( colorRegister, color );
+      displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_right, m_bottom );
+      displayDevice->SetVertexData4f( D3DVSDE_VERTEX, right, bottom, 1.0f, 1.0f );
+
+      displayDevice->SetVertexDataColor( colorRegister, color );
+      displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_left, m_bottom );
+      displayDevice->SetVertexData4f( D3DVSDE_VERTEX, left, bottom, 1.0f, 1.0f );
+    displayDevice->End();
+	}
+
+
+
+
+	inline FLOAT GetWidth( void ) const { return m_right - m_left; }
+	inline FLOAT GetHeight( void ) const { return m_bottom - m_top; }
 
 	FLOAT			m_left;
 	FLOAT			m_top;
@@ -186,50 +272,26 @@ public:
 		//------------------------------------------------------
 	inline const SkinResourceInfo_t *GetSkinResourceInfo( SkinResourceID_t id ) const { return m_spriteInfoArray[id]; }
 
+		//------------------------------------------------------
+		// GetSkinResourceTexture
+		//------------------------------------------------------
+	LPDIRECT3DTEXTURE8 GetSkinResourceTexture( SkinResourceID_t id ) const;
 
 
+		//------------------------------------------------------
+		// SelectSkinResourceTexture
+		//------------------------------------------------------
+	void SelectSkinResourceTexture( LPDIRECT3DDEVICE8 displayDevice, SkinResourceID_t id ) const {
+			// Calling this everytime is terribly inefficient, but it's only
+			// done in the Launcher UI (which is not time-critical)
+		displayDevice->SetTextureStageState( 0, D3DTSS_ADDRESSU, D3DTADDRESS_CLAMP );
+		displayDevice->SetTextureStageState( 0, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP );
+		displayDevice->SetTextureStageState( 0, D3DTSS_ADDRESSW, D3DTADDRESS_CLAMP );
+		displayDevice->SetTextureStageState( 0, D3DTSS_MINFILTER, D3DTEXF_LINEAR );
+		displayDevice->SetTextureStageState( 0, D3DTSS_MAGFILTER, D3DTEXF_LINEAR );
 
-
-		//------------------------------------------------------
-		// GetSplashBackdropTexture
-		//------------------------------------------------------
-	inline LPDIRECT3DTEXTURE8 GetSplashBackdropTexture( void ) { return m_splashBackdropTexture; }
-
-		//------------------------------------------------------
-		// GetMessageBackdropTexture
-		//------------------------------------------------------
-	inline LPDIRECT3DTEXTURE8 GetMessageBackdropTexture( void ) { return m_messageBackdropTexture; }
-
-		//------------------------------------------------------
-		// GetListBackdropTexture
-		//------------------------------------------------------
-	inline LPDIRECT3DTEXTURE8 GetListBackdropTexture( void ) { return m_listBackdropTexture; }
-
-		//------------------------------------------------------
-		// GetTVCalibrationSpritesTexture
-		//------------------------------------------------------
-	inline LPDIRECT3DTEXTURE8 GetTVCalibrationSpritesTexture( void ) { return m_TVCalibrationSpritesTexture; }
-
-		//------------------------------------------------------
-		// GetLightgunCalibrationSpritesTexture
-		//------------------------------------------------------
-	inline LPDIRECT3DTEXTURE8 GetLightgunCalibrationSpritesTexture( void ) { return m_lightgunCalibrationSpritesTexture; }
-
-		//------------------------------------------------------
-		// GetListSpritesTexture
-		//------------------------------------------------------
-	inline LPDIRECT3DTEXTURE8 GetListSpritesTexture( void ) { return m_listSpritesTexture; }
-
-		//------------------------------------------------------
-		// GetMenuSpritesTexture
-		//------------------------------------------------------
-	inline LPDIRECT3DTEXTURE8 GetMenuSpritesTexture( void ) { return m_menuSpritesTexture; }
-
-		//------------------------------------------------------
-		// GetButtonSpritesTexture
-		//------------------------------------------------------
-	inline LPDIRECT3DTEXTURE8 GetButtonSpritesTexture( void ) { return m_buttonSpritesTexture; }
-
+		displayDevice->SetTexture( 0, GetSkinResourceTexture( id ) );
+	}
 
 protected:
 		//------------------------------------------------------
@@ -260,5 +322,26 @@ protected:
 
 
 //= G L O B A L = V A R S =============================================
+extern CSkinResource			*g_loadedSkin;
 
 //= P R O T O T Y P E S ===============================================
+
+
+//= F U N C T I O N S =================================================
+//------------------------------------------------------
+//	CheckResourceValidity
+//------------------------------------------------------
+inline BOOL CheckResourceValidity( SkinResourceID_t id ) {
+	return g_loadedSkin && g_loadedSkin->GetSkinResourceInfo( id ) && g_loadedSkin->GetSkinResourceTexture( id );
+}
+
+//------------------------------------------------------
+//	CheckResourceTextureValidity
+//------------------------------------------------------
+inline BOOL CheckResourceTextureValidity( SkinResourceID_t id ) {
+	return g_loadedSkin && g_loadedSkin->GetSkinResourceTexture( id );
+}
+
+
+#endif		// __cplusplus
+

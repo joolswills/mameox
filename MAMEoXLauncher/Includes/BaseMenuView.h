@@ -11,7 +11,7 @@
 
 #include "BaseView.h"
 #include "StdString.h"
-#include "TextureSet.h"
+#include "SkinResource.h"
 
 //= D E F I N E S ======================================================
 
@@ -28,9 +28,8 @@ public:
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-  CBaseMenuView( LPDIRECT3DDEVICE8 displayDevice, CFontSet &fontSet, CTextureSet &textureSet, const RECT &area ) :
-    CBaseView( displayDevice, fontSet, NULL ),
-    m_textureSet( textureSet ) {
+  CBaseMenuView( LPDIRECT3DDEVICE8 displayDevice, CFontSet &fontSet, const RECT &area ) :
+    CBaseView( displayDevice, fontSet, RESOURCE_INVALID ) {
       SetRect( area );
   }
 
@@ -40,16 +39,18 @@ public:
 		//! \brief		Sets the display position/size of the menu
 		//------------------------------------------------------------
   virtual void SetRect( const RECT &area ) {
-      // Make sure the area is big enough to display something useful
-    assert( area.bottom - area.top > m_textureSet.GetMenuTitleBarHeight() + m_textureSet.GetMenuFooterHeight() );
-    assert( area.right - area.left > m_textureSet.GetMenuTitleBarLeftRight() - m_textureSet.GetMenuTitleBarLeftLeft() );
 
-      // Determine the layout areas
-    m_titleArea.top = area.top;
-    m_titleArea.bottom = area.top + m_textureSet.GetMenuTitleBarHeight();
+		m_titleArea.top = area.top;
+		m_titleArea.bottom = area.top;
 
-    m_bodyArea.top = m_titleArea.bottom;
-    m_bodyArea.bottom = area.bottom - m_textureSet.GetMenuFooterHeight();
+		if( CheckResourceValidity( SPRITE_MENU_TITLEBAR_CENTER ) )
+			m_titleArea.bottom += g_loadedSkin->GetSkinResourceInfo( SPRITE_MENU_TITLEBAR_CENTER )->GetHeight();
+
+		m_bodyArea.top = m_titleArea.bottom;
+		m_bodyArea.bottom = area.bottom;
+
+		if( CheckResourceValidity( SPRITE_MENU_FOOTER_CENTER ) )
+			m_bodyArea.bottom -= g_loadedSkin->GetSkinResourceInfo( SPRITE_MENU_FOOTER_CENTER )->GetHeight();
 
     m_titleArea.left = m_bodyArea.left = area.left;
     m_titleArea.right = m_bodyArea.right = area.right;
@@ -91,7 +92,5 @@ protected:
 
   RECT                      m_titleArea;      //!<  Rect enclosing the are to be used for title rendering
   RECT                      m_bodyArea;       //!<  Rect enclosing the area to be used for the body text
-
-  CTextureSet               &m_textureSet;
 };
 

@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include <crtdbg.h>
 
+#include <XGraphics.h>		// For XGWriteSurfaceToFile
+
 #ifdef _PROFILER
 #include <xbdm.h>
 #endif
@@ -27,7 +29,6 @@
 #include "DebugLogger.h"
 #include "xbox_Network.h"
 #include "FontSet.h"
-#include "TextureSet.h"
 
 #include "ROMListScreen.h"
 #include "HelpScreen.h"
@@ -94,8 +95,6 @@ extern CFontSet           g_fontSet;
   // XBE Launch data
 static DWORD              g_launchDataType;
 static LAUNCH_DATA        g_launchData;
-
-static CTextureSet        g_textureSet;
 
 static LPDIRECT3DVERTEXBUFFER8    g_pD3DVertexBuffer = NULL;
 
@@ -232,7 +231,12 @@ void __cdecl main( void )
       g_FileIOConfig.m_romPath3 = DEFAULT_ROMPATH;
   }
 
-  if( !g_textureSet.Create() )
+		// Skin chooser
+		// NOTE: The skin chooser _must_ be initialized before any object that uses
+		//       the g_loadedSkin object!
+	CSkinChooser skinChooser;
+	skinChooser.m_options = g_skinOptions;
+	if( !skinChooser.FindSkins() || !g_loadedSkin )
   {
     Die( pD3DDevice, 
          "The Media/Resource.xpr file is missing\n"
@@ -245,6 +249,8 @@ void __cdecl main( void )
          "Please place the correct file in the\n"
          "Media directory on your XBOX and restart." );
   }
+
+
 
     // Wait for input to give the debugger a chance to attach
   CHECKRAM();
@@ -301,7 +307,6 @@ void __cdecl main( void )
   // At this point the MAMEoX process is guaranteed to have run, setting up
   // our totalMAMEGames member, as well as producing the driver info file
 
-
     // Check the clock and throw up a warning screen if it hasn't been set
     // A number of MAME ROMs require a valid clock setting to emulate correctly
 	time_t ltime;
@@ -329,9 +334,7 @@ void __cdecl main( void )
 
 
     //--- Create the views -------------------------------------------------------
-  CHelpScreen help( pD3DDevice, 
-              g_fontSet, 
-              g_textureSet );
+  CHelpScreen help( pD3DDevice, g_fontSet );
 	if( !help.LoadHelpFile() )
   {
     Die( pD3DDevice, 
@@ -342,10 +345,10 @@ void __cdecl main( void )
          "directory on your XBOX and restart." );
   }
 
+
 		// Load/Generate the ROM listing
   CROMListScreen romList( pD3DDevice, 
                     g_fontSet,
-                    g_textureSet,
                     g_driverData, 
                     mameoxLaunchData->m_totalMAMEGames );
 	if( !romList.LoadROMList( TRUE ) )
@@ -365,17 +368,13 @@ void __cdecl main( void )
 
   COptionsScreen optionsPage( pD3DDevice,
                               g_fontSet,
-                              g_textureSet,
                               options );
 
-  CLightgunCalibrationScreen lightgunCalibrator( pD3DDevice,
-                                                g_fontSet,
-                                                g_textureSet );
+  CLightgunCalibrationScreen lightgunCalibrator( pD3DDevice, g_fontSet );
 
   RECT area = { 320 - (STARTMENU_WIDTH>>1), 0, 320 + (STARTMENU_WIDTH>>1), 480 };
   CStartMenuView startMenu( pD3DDevice,
                         g_fontSet,
-                        g_textureSet, 
                         area );
   Helper_SetStartMenuItems( startMenu, VIEW_ROMLIST );
 
@@ -385,12 +384,13 @@ void __cdecl main( void )
   screenSaver.FindScreenshots();
 
     // TV calibration object
-  CTVCalibrationScreen TVCalibrationScreen( pD3DDevice, g_fontSet, g_textureSet );
+  CTVCalibrationScreen TVCalibrationScreen( pD3DDevice, g_fontSet );
 
-		// Skin chooser
-	CSkinChooserScreen skinChooser( pD3DDevice, g_fontSet, g_textureSet );
-  skinChooser.SetOptions( g_skinOptions );
-	skinChooser.FindSkins();
+		// Skin chooser view object
+	CSkinChooserScreen skinChooserScreen( pD3DDevice, g_fontSet, skinChooser );
+  skinChooserScreen.SetOptions( g_skinOptions );
+
+
 
     //-- Initialize the rendering engine -------------------------------
   D3DXMATRIX matWorld;
@@ -462,7 +462,7 @@ void __cdecl main( void )
     BYTE rebootSequence[3] = { VK_LMENU, VK_LCONTROL, VK_DELETE };
     if( g_inputManager.IsButtonPressed( GP_LEFT_TRIGGER | GP_RIGHT_TRIGGER | GP_BLACK ) ||
         g_inputManager.AreAllOfKeysPressed( rebootSequence, 3 ) )
-      Helper_SaveOptionsAndReboot( pD3DDevice, romList, skinChooser );
+      Helper_SaveOptionsAndReboot( pD3DDevice, romList, skinChooserScreen );
 
 
     if( g_inputManager.IsOnlyButtonPressed( GP_LEFT_ANALOG ) || g_inputManager.IsOnlyKeyPressed( VK_PRINT ) )
@@ -529,9 +529,9 @@ void __cdecl main( void )
     pD3DDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
     pD3DDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
     pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-    pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSU, D3DTADDRESS_CLAMP );
-    pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP );
-    pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSW, D3DTADDRESS_CLAMP );
+		pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSU, D3DTADDRESS_CLAMP );
+		pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP );
+		pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSW, D3DTADDRESS_CLAMP );
     
       // Render whatever screen happens to be active to the
       // texture
@@ -541,7 +541,6 @@ void __cdecl main( void )
                         D3DCOLOR_XRGB(105,105,105),				// Color
 											  1.0f,															// Z
 											  0L );															// Stencil
-
 
     switch( currentView )
     {
@@ -606,8 +605,8 @@ void __cdecl main( void )
       // *** VIEW_SKINCHOOSER *** //
 		case VIEW_SKINCHOOSER:
       if( !showStartMenu )
-        skinChooser.MoveCursor( g_inputManager );
-      skinChooser.DrawToTexture( renderTargetTexture );
+        skinChooserScreen.MoveCursor( g_inputManager );
+      skinChooserScreen.DrawToTexture( renderTargetTexture );
 			break;
     }
 
@@ -650,7 +649,7 @@ void __cdecl main( void )
           {
             // *** MI_REBOOT *** //
           case MI_REBOOT:
-            Helper_SaveOptionsAndReboot( pD3DDevice, romList, skinChooser );
+            Helper_SaveOptionsAndReboot( pD3DDevice, romList, skinChooserScreen );
             break;
 
             // *** MI_HELP *** //
@@ -750,7 +749,7 @@ void __cdecl main( void )
                                   &g_persistentLaunchData.m_pageOffset,
                                   &g_persistentLaunchData.m_superscrollIndex );
 
-			g_skinOptions = skinChooser.GetOptions();
+			g_skinOptions = skinChooserScreen.GetOptions();
 
       SaveOptions();
       romList.SaveROMMetadataFile();
@@ -1270,9 +1269,7 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
   pD3DDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
   pD3DDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
   pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSU, D3DTADDRESS_CLAMP );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSW, D3DTADDRESS_CLAMP );
+
 
   #define TEXTFADE_MINIMUM            0.0f
   #define TEXTFADE_MAXIMUM            110.0f
@@ -1338,17 +1335,24 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 
     pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
 	  pD3DDevice->SetRenderState( D3DRS_ALPHATESTENABLE, FALSE );
-	  pD3DDevice->SetTexture( 0, g_textureSet.GetSplashScreenBackdrop() );
+		g_loadedSkin->SelectSkinResourceTexture( pD3DDevice, ASSET_SPLASH_BACKDROP );
     pD3DDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
     pD3DDevice->Begin( D3DPT_QUADLIST );
-      pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 0.0f );
+		{
+			const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( ASSET_SPLASH_BACKDROP );
+
+      pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_top );
       pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, 0.0f, 0.0f, 1.0f, 1.0f );
-      pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 0.0f );
+
+      pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_right, desc->m_top );
       pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, 640.0f, 0.0f, 1.0f, 1.0f );
-      pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 1.0f );
+
+      pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_right, desc->m_bottom );
       pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, 640.0f, 480.0f, 1.0f, 1.0f );
-      pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 1.0f );
+
+      pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_bottom );
       pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, 0.0f, 480.0f, 1.0f, 1.0f );
+		}
     pD3DDevice->End();
 
 
@@ -1411,7 +1415,7 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 //-------------------------------------------------------------
 //	Helper_SaveOptionsAndReboot
 //-------------------------------------------------------------
-static void Helper_SaveOptionsAndReboot( LPDIRECT3DDEVICE8 pD3DDevice, CROMListScreen &romList, CSkinChooserScreen &skinChooser )
+static void Helper_SaveOptionsAndReboot( LPDIRECT3DDEVICE8 pD3DDevice, CROMListScreen &romList, CSkinChooserScreen &skinChooserScreen )
 {
 
 	DrawProgressbarMessage( pD3DDevice, "Saving settings...", NULL, 0xFFFFFFFF, 0xFFFFFFFF );
@@ -1421,7 +1425,7 @@ static void Helper_SaveOptionsAndReboot( LPDIRECT3DDEVICE8 pD3DDevice, CROMListS
                               &g_persistentLaunchData.m_pageOffset,
                               &g_persistentLaunchData.m_superscrollIndex );
 
-	g_skinOptions = skinChooser.GetOptions();
+	g_skinOptions = skinChooserScreen.GetOptions();
 
 
   SaveOptions();
@@ -1525,17 +1529,10 @@ void GetScreenPosition( FLOAT *xOffset, FLOAT *yOffset )
 
 
 //-------------------------------------------------------------
-//	ShowLoadingScreen
+//	RenderMessageBackdrop
 //-------------------------------------------------------------
-void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice )
+inline void RenderMessageBackdrop( LPDIRECT3DDEVICE8 pD3DDevice )
 {
-	pD3DDevice->Clear(	0L,																// Count
-											NULL,															// Rects to clear
-											D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
-											D3DCOLOR_XRGB(0,0,0),							// Color
-											1.0f,															// Z
-											0L );															// Stencil
-
   // Render the backdrop texture
 	pD3DDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
 	pD3DDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
@@ -1547,27 +1544,46 @@ void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice )
   pD3DDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
   pD3DDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
   pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSU, D3DTADDRESS_CLAMP );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSW, D3DTADDRESS_CLAMP );
 
-  pD3DDevice->SetTexture( 0, g_textureSet.GetMessageScreenBackdrop() );
+
+	g_loadedSkin->SelectSkinResourceTexture( pD3DDevice, ASSET_MESSAGE_BACKDROP );
   pD3DDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX0 );
   pD3DDevice->Begin( D3DPT_QUADLIST );
+	{
+		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( ASSET_MESSAGE_BACKDROP );
 
     FLOAT xPercentage, yPercentage;
     GetScreenUsage( &xPercentage, &yPercentage );
  
-    pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 0.0f );
+    pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_top );
     pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, -xPercentage, yPercentage, 1.0f, 1.0f );
-    pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 0.0f );
+
+    pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_right, desc->m_top );
     pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, xPercentage, yPercentage, 1.0f, 1.0f );
-    pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 1.0f );
+
+    pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_right, desc->m_bottom );
     pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, xPercentage, -yPercentage, 1.0f, 1.0f );
-    pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 1.0f );
+
+    pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_bottom );
     pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, -xPercentage, -yPercentage, 1.0f, 1.0f );
+	}
   pD3DDevice->End();
 	pD3DDevice->SetTexture( 0, NULL );
+}
+
+//-------------------------------------------------------------
+//	ShowLoadingScreen
+//-------------------------------------------------------------
+void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice )
+{
+	pD3DDevice->Clear(	0L,																// Count
+											NULL,															// Rects to clear
+											D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+											D3DCOLOR_XRGB(0,0,0),							// Color
+											1.0f,															// Z
+											0L );															// Stencil
+
+	RenderMessageBackdrop( pD3DDevice );
 
   g_fontSet.DefaultFont().Begin();
   g_fontSet.DefaultFont().DrawText( 320, 240, D3DCOLOR_XRGB( 0, 0, 0 ),   L"Loading. Please wait...", XBFONT_CENTER_X );
@@ -1591,38 +1607,7 @@ void DrawProgressbarMessage( LPDIRECT3DDEVICE8 pD3DDevice, const char *message, 
 											1.0f,															// Z
 											0L );															// Stencil
 
-  // Render the backdrop texture
-	pD3DDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
-	pD3DDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
-	pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-  pD3DDevice->SetRenderState( D3DRS_ZENABLE, FALSE );
-
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_MINFILTER, D3DTEXF_LINEAR );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_MAGFILTER, D3DTEXF_LINEAR );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSU, D3DTADDRESS_CLAMP );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSW, D3DTADDRESS_CLAMP );
-
-  pD3DDevice->SetTexture( 0, g_textureSet.GetMessageScreenBackdrop() );
-  pD3DDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX0 );
-  pD3DDevice->Begin( D3DPT_QUADLIST );
-
-    FLOAT xPercentage, yPercentage;
-    GetScreenUsage( &xPercentage, &yPercentage );
- 
-    pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 0.0f );
-    pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, -xPercentage, yPercentage, 1.0f, 1.0f );
-    pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 0.0f );
-    pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, xPercentage, yPercentage, 1.0f, 1.0f );
-    pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 1.0f );
-    pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, xPercentage, -yPercentage, 1.0f, 1.0f );
-    pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 1.0f );
-    pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, -xPercentage, -yPercentage, 1.0f, 1.0f );
-  pD3DDevice->End();
-	pD3DDevice->SetTexture( 0, NULL );
+	RenderMessageBackdrop( pD3DDevice );
 
   WCHAR wBuf[256];
 

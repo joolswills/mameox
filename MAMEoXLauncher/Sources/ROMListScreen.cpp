@@ -69,25 +69,25 @@ extern "C" {
   //-- Button help messages ------
 #define HELP_START_ICON_X   200
 #define HELP_START_ICON_Y   40
-#define HELP_START_TEXT_X   (HELP_START_ICON_X + m_textureSet.GetSTARTButtonWidth() + 4)
+#define HELP_START_TEXT_X   (HELP_START_ICON_X + desc->GetWidth() + 4)
 #define HELP_START_TEXT_Y   (HELP_START_ICON_Y + 5)
 
 //#define HELP_A_ICON_X       250
 #define HELP_A_ICON_X       285
 #define HELP_A_ICON_Y       40
-#define HELP_A_TEXT_X       (HELP_A_ICON_X + m_textureSet.GetButtonWidth() + 4)
+#define HELP_A_TEXT_X       (HELP_A_ICON_X + desc->GetWidth() + 4)
 #define HELP_A_TEXT_Y       (HELP_A_ICON_Y + 5)
 
 //#define HELP_X_ICON_X       370
 #define HELP_X_ICON_X       405
 #define HELP_X_ICON_Y       40
-#define HELP_X_TEXT_X       (HELP_X_ICON_X + m_textureSet.GetButtonWidth() + 4)
+#define HELP_X_TEXT_X       (HELP_X_ICON_X + desc->GetWidth() + 4)
 #define HELP_X_TEXT_Y       (HELP_X_ICON_Y + 5)
 
 //#define HELP_Y_ICON_X       450
 #define HELP_Y_ICON_X       485
 #define HELP_Y_ICON_Y       40
-#define HELP_Y_TEXT_X       (HELP_Y_ICON_X + m_textureSet.GetButtonWidth() + 4)
+#define HELP_Y_TEXT_X       (HELP_Y_ICON_X + desc->GetWidth() + 4)
 #define HELP_Y_TEXT_Y       (HELP_Y_ICON_Y + 5)
 
 
@@ -203,7 +203,6 @@ BOOL CROMListScreen::LoadROMList( BOOL bGenerate, BOOL allowClones )
 													0L );															// Stencil
 	m_fontSet.DefaultFont().Begin();
 	  m_fontSet.DefaultFont().DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Loading ROM list", XBFONT_CENTER_X );
-	  m_fontSet.DefaultFont().End();
   m_fontSet.DefaultFont().End();
 
 	m_displayDevice->Present( NULL, NULL, NULL, NULL );	
@@ -1878,123 +1877,120 @@ void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 					  								1.0f,															// Z
 						  							0L );															// Stencil
 
-
-
     // Render the backdrop texture
   RenderBackdrop();
   m_menuRenderer->Draw( FALSE, FALSE );
 
+	if( CheckResourceTextureValidity( SPRITE_BUTTON_A ) )
+	{
+			//-- A button -------------------------------------------------
+		if( CheckResourceValidity( SPRITE_BUTTON_A ) )
+		{
+			m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
+			m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
+			m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
+			m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
 
-    //-- Draw the help text --------------------------------------------
-  m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
-  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
-  m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
-  m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
+			m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+			m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+			m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
+			m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
 
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
+			g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_BUTTON_A );
+			m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
+			const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_BUTTON_A );
+			desc->Render( m_displayDevice, HELP_A_ICON_X, HELP_A_ICON_Y );
+			m_displayDevice->SetTexture( 0, NULL );
 
-  m_displayDevice->SetTexture( 0, m_textureSet.GetButtonIcons() );
-  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
+			m_fontSet.LargeThinFont().Begin();
+				m_fontSet.LargeThinFont().DrawText( HELP_A_TEXT_X, 
+																						HELP_A_TEXT_Y, 
+																						HELPITEM_COLOR, 
+																						L"Play ROM" );
+			m_fontSet.LargeThinFont().End();
+		}
 
+			//-- X button ------------------------------------------------
+		if( CheckResourceValidity( SPRITE_BUTTON_X ) )
+		{
+			m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
+			m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
+			m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
+			m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
 
-  FLOAT ulX, ulY;
+			m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+			m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+			m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
+			m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
 
-    //-- A button -------------------------------------------------
-  ulX = HELP_A_ICON_X;
-  ulY = HELP_A_ICON_Y;
-  m_displayDevice->Begin( D3DPT_QUADLIST );
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetAButtonLeft(), m_textureSet.GetAButtonTop() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX, ulY, 1.0f, 1.0f );
-    
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetAButtonRight(), m_textureSet.GetAButtonTop() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX + m_textureSet.GetButtonWidth(), ulY, 1.0f, 1.0f );
-    
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetAButtonRight(), m_textureSet.GetAButtonBottom() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX + m_textureSet.GetButtonWidth(), ulY + m_textureSet.GetButtonHeight(), 1.0f, 1.0f );
+			g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_BUTTON_X );
+			m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
+			const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_BUTTON_X );
+			desc->Render( m_displayDevice, HELP_X_ICON_X, HELP_X_ICON_Y );
+			m_displayDevice->SetTexture( 0, NULL );
 
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetAButtonLeft(), m_textureSet.GetAButtonBottom() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX, ulY + m_textureSet.GetButtonHeight(), 1.0f, 1.0f );
-  m_displayDevice->End();
+			m_fontSet.LargeThinFont().Begin();
+				m_fontSet.LargeThinFont().DrawText( HELP_X_TEXT_X, 
+																						HELP_X_TEXT_Y, 
+																						HELPITEM_COLOR, 
+																						L"Help" );
+			m_fontSet.LargeThinFont().End();
+		}
 
-    //-- X button ------------------------------------------------
-  ulX = HELP_X_ICON_X;
-  ulY = HELP_X_ICON_Y;
-  m_displayDevice->Begin( D3DPT_QUADLIST );
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetXButtonLeft(), m_textureSet.GetXButtonTop() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX, ulY, 1.0f, 1.0f );
-    
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetXButtonRight(), m_textureSet.GetXButtonTop() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX + m_textureSet.GetButtonWidth(), ulY, 1.0f, 1.0f );
-    
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetXButtonRight(), m_textureSet.GetXButtonBottom() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX + m_textureSet.GetButtonWidth(), ulY + m_textureSet.GetButtonHeight(), 1.0f, 1.0f );
+			//-- Y button ------------------------------------------------
+		if( CheckResourceValidity( SPRITE_BUTTON_Y ) )
+		{
+			m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
+			m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
+			m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
+			m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
 
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetXButtonLeft(), m_textureSet.GetXButtonBottom() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX, ulY + m_textureSet.GetButtonHeight(), 1.0f, 1.0f );
-  m_displayDevice->End();
+			m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+			m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+			m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
+			m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
 
-    //-- Y button ------------------------------------------------
-  ulX = HELP_Y_ICON_X;
-  ulY = HELP_Y_ICON_Y;
-  m_displayDevice->Begin( D3DPT_QUADLIST );
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetYButtonLeft(), m_textureSet.GetYButtonTop() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX, ulY, 1.0f, 1.0f );
-    
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetYButtonRight(), m_textureSet.GetYButtonTop() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX + m_textureSet.GetButtonWidth(), ulY, 1.0f, 1.0f );
-    
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetYButtonRight(), m_textureSet.GetYButtonBottom() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX + m_textureSet.GetButtonWidth(), ulY + m_textureSet.GetButtonHeight(), 1.0f, 1.0f );
+			g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_BUTTON_A );
+			m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
+			const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_BUTTON_Y );
+			desc->Render( m_displayDevice, HELP_Y_ICON_X, HELP_Y_ICON_Y );
+			m_displayDevice->SetTexture( 0, NULL );
 
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetYButtonLeft(), m_textureSet.GetYButtonBottom() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX, ulY + m_textureSet.GetButtonHeight(), 1.0f, 1.0f );
-  m_displayDevice->End();
+			m_fontSet.LargeThinFont().Begin();
+				m_fontSet.LargeThinFont().DrawText( HELP_Y_TEXT_X, 
+																						HELP_Y_TEXT_Y, 
+																						HELPITEM_COLOR, 
+																						L"Fast Jump" );
+			m_fontSet.LargeThinFont().End();
+		}
 
-    //-- START button ------------------------------------------------
-  ulX = HELP_START_ICON_X;
-  ulY = HELP_START_ICON_Y;
-  m_displayDevice->Begin( D3DPT_QUADLIST );
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetSTARTButtonLeft(), m_textureSet.GetSTARTButtonTop() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX, ulY, 1.0f, 1.0f );
-    
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetSTARTButtonRight(), m_textureSet.GetSTARTButtonTop() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX + m_textureSet.GetSTARTButtonWidth(), ulY, 1.0f, 1.0f );
-    
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetSTARTButtonRight(), m_textureSet.GetSTARTButtonBottom() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX + m_textureSet.GetSTARTButtonWidth(), ulY + m_textureSet.GetSTARTButtonHeight(), 1.0f, 1.0f );
+			//-- START button ------------------------------------------------
+		if( CheckResourceValidity( SPRITE_BUTTON_START ) )
+		{
+			m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
+			m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
+			m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
+			m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
 
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetSTARTButtonLeft(), m_textureSet.GetSTARTButtonBottom() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX, ulY + m_textureSet.GetSTARTButtonHeight(), 1.0f, 1.0f );
-  m_displayDevice->End();
+			m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+			m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+			m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
+			m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
 
+			g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_BUTTON_START );
+			m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
+			const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_BUTTON_START );
+			desc->Render( m_displayDevice, HELP_START_ICON_X, HELP_START_ICON_Y );
+			m_displayDevice->SetTexture( 0, NULL );
 
-    // Now render the text messages
-	m_fontSet.LargeThinFont().Begin();
-	  m_fontSet.LargeThinFont().DrawText( HELP_A_TEXT_X, 
-                                        HELP_A_TEXT_Y, 
-                                        HELPITEM_COLOR, 
-                                        L"Play ROM" );
-
-	  m_fontSet.LargeThinFont().DrawText( HELP_X_TEXT_X, 
-                                        HELP_X_TEXT_Y, 
-                                        HELPITEM_COLOR, 
-                                        L"Help" );
-
-	  m_fontSet.LargeThinFont().DrawText( HELP_Y_TEXT_X, 
-                                        HELP_Y_TEXT_Y, 
-                                        HELPITEM_COLOR, 
-                                        L"Fast Jump" );
-
-    m_fontSet.LargeThinFont().DrawText( HELP_START_TEXT_X,
-                                        HELP_START_TEXT_Y,
-                                        HELPITEM_COLOR,
-                                        L"Menu" );
-  m_fontSet.LargeThinFont().End();
-
-
+			m_fontSet.LargeThinFont().Begin();
+				m_fontSet.LargeThinFont().DrawText( HELP_START_TEXT_X,
+																						HELP_START_TEXT_Y,
+																						HELPITEM_COLOR,
+																						L"Menu" );
+			m_fontSet.LargeThinFont().End();
+		}
+	}
 
   m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     FALSE );
   m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    FALSE );
@@ -2022,7 +2018,7 @@ void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     }
   }
 
-  if( flipOnCompletion )
+	if( flipOnCompletion )
 	  m_displayDevice->Present( NULL, NULL, NULL, NULL );	
 }
 
@@ -2092,7 +2088,7 @@ void CROMListScreen::DrawVerboseList( void )
 
 
 	m_fontSet.SmallThinFont().Begin();
-
+	
 	  swprintf( name, L"Names (%s)  ", m_options.m_hideFiltered ? L"Filtered " : L"Full List" );
     if( m_superscrollMode )
     {
@@ -2194,6 +2190,7 @@ void CROMListScreen::DrawVerboseList( void )
 			  // Inc the Y position
 		  yPos += textHeight;
 	  }
+	
 	m_fontSet.SmallThinFont().End();
 
 
@@ -2211,48 +2208,30 @@ void CROMListScreen::DrawVerboseList( void )
   m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
 
     // Draw scroll up icon
-  if( (DWORD)m_pageOffset )
+  if( (DWORD)m_pageOffset && CheckResourceValidity( SPRITE_LIST_SCROLLICON_UP ) )
   {
-	  m_displayDevice->SetTexture( 0, m_textureSet.GetScrollIconMasks() );
-    m_displayDevice->Begin( D3DPT_QUADLIST );      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconLeft(), m_textureSet.GetScrollUpIconTop() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_LEFT, SCROLLUP_TOP, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconRight(), m_textureSet.GetScrollUpIconTop() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_RIGHT, SCROLLUP_TOP, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconRight(), m_textureSet.GetScrollUpIconBottom() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_RIGHT, SCROLLUP_BOTTOM, 1.0f, 1.0f );
-
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconLeft(), m_textureSet.GetScrollUpIconBottom() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_LEFT, SCROLLUP_BOTTOM, 1.0f, 1.0f );
-    m_displayDevice->End();
+		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_UP );
+		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_UP );
+		desc->Render( m_displayDevice, 
+									D3DVSDE_DIFFUSE, 
+									SCROLLICON_COLOR, 
+									SCROLLUP_LEFT, 
+									SCROLLUP_TOP, 
+									SCROLLUP_RIGHT, 
+									SCROLLUP_BOTTOM );
   }
 
-  if( (DWORD)m_pageOffset < (m_numLinesInList - (DWORD)pageSize) )
+  if( (DWORD)m_pageOffset < (m_numLinesInList - (DWORD)pageSize) && CheckResourceValidity( SPRITE_LIST_SCROLLICON_DOWN ) )
   {
-	  m_displayDevice->SetTexture( 0, m_textureSet.GetScrollIconMasks() );
-    m_displayDevice->Begin( D3DPT_QUADLIST );
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconLeft(), m_textureSet.GetScrollDownIconTop() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_LEFT, SCROLLDOWN_TOP, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconRight(), m_textureSet.GetScrollDownIconTop() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_RIGHT, SCROLLDOWN_TOP, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconRight(), m_textureSet.GetScrollDownIconBottom() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_RIGHT, SCROLLDOWN_BOTTOM, 1.0f, 1.0f );
-
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconLeft(), m_textureSet.GetScrollDownIconBottom() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_LEFT, SCROLLDOWN_BOTTOM, 1.0f, 1.0f );
-    m_displayDevice->End();
+		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_DOWN );
+		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_DOWN );
+		desc->Render( m_displayDevice, 
+									D3DVSDE_DIFFUSE, 
+									SCROLLICON_COLOR, 
+									SCROLLDOWN_LEFT, 
+									SCROLLDOWN_TOP, 
+									SCROLLDOWN_RIGHT, 
+									SCROLLDOWN_BOTTOM );
   }
 
   m_displayDevice->SetTexture( 0, NULL );
@@ -2294,7 +2273,7 @@ void CROMListScreen::DrawSimpleList( void )
   m_displayDevice->End();
 
 	m_fontSet.SmallThinFont().Begin();
-
+	
 	  swprintf( name, L"Names (%s)  ", m_options.m_hideFiltered ? L"Filtered " : L"Full List" );
     if( m_superscrollMode )
     {
@@ -2358,6 +2337,7 @@ void CROMListScreen::DrawSimpleList( void )
 			  // Inc the Y position
 		  yPos += textHeight;
 	  }
+	
 	m_fontSet.SmallThinFont().End();
 
 
@@ -2375,48 +2355,30 @@ void CROMListScreen::DrawSimpleList( void )
   m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
 
     // Draw scroll up icon
-  if( (DWORD)m_pageOffset )
+  if( (DWORD)m_pageOffset && CheckResourceValidity( SPRITE_LIST_SCROLLICON_UP ) )
   {
-	  m_displayDevice->SetTexture( 0, m_textureSet.GetScrollIconMasks() );
-    m_displayDevice->Begin( D3DPT_QUADLIST );      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconLeft(), m_textureSet.GetScrollUpIconTop() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_LEFT, SCROLLUP_TOP, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconRight(), m_textureSet.GetScrollUpIconTop() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_RIGHT, SCROLLUP_TOP, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconRight(), m_textureSet.GetScrollUpIconBottom() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_RIGHT, SCROLLUP_BOTTOM, 1.0f, 1.0f );
-
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconLeft(), m_textureSet.GetScrollUpIconBottom() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_LEFT, SCROLLUP_BOTTOM, 1.0f, 1.0f );
-    m_displayDevice->End();
+		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_UP );
+		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_UP );
+		desc->Render( m_displayDevice, 
+									D3DVSDE_DIFFUSE, 
+									SCROLLICON_COLOR, 
+									SCROLLUP_LEFT, 
+									SCROLLUP_TOP, 
+									SCROLLUP_RIGHT, 
+									SCROLLUP_BOTTOM );
   }
 
-  if( (DWORD)m_pageOffset < (m_numLinesInList - (DWORD)pageSize) )
+  if( (DWORD)m_pageOffset < (m_numLinesInList - (DWORD)pageSize) && CheckResourceValidity( SPRITE_LIST_SCROLLICON_DOWN ) )
   {
-	  m_displayDevice->SetTexture( 0, m_textureSet.GetScrollIconMasks() );
-    m_displayDevice->Begin( D3DPT_QUADLIST );
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconLeft(), m_textureSet.GetScrollDownIconTop() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_LEFT, SCROLLDOWN_TOP, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconRight(), m_textureSet.GetScrollDownIconTop() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_RIGHT, SCROLLDOWN_TOP, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconRight(), m_textureSet.GetScrollDownIconBottom() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_RIGHT, SCROLLDOWN_BOTTOM, 1.0f, 1.0f );
-
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconLeft(), m_textureSet.GetScrollDownIconBottom() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_LEFT, SCROLLDOWN_BOTTOM, 1.0f, 1.0f );
-    m_displayDevice->End();
+		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_DOWN );
+		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_DOWN );
+		desc->Render( m_displayDevice, 
+									D3DVSDE_DIFFUSE, 
+									SCROLLICON_COLOR, 
+									SCROLLDOWN_LEFT, 
+									SCROLLDOWN_TOP, 
+									SCROLLDOWN_RIGHT, 
+									SCROLLDOWN_BOTTOM );
   }
 
   m_displayDevice->SetTexture( 0, NULL );
@@ -2437,7 +2399,7 @@ void CROMListScreen::DrawDetailedList( void )
   FLOAT textHeight = m_fontSet.SmallThinFontHeight();
   FLOAT selectedItemYPos = (textHeight * (ULONG)m_cursorPosition);
 
-  MAMEDriverData_t        &driverData = m_driverInfoList[GetCurrentGameIndex()];
+	MAMEDriverData_t        &driverData = m_driverInfoList[GetCurrentGameIndex()];
   ROMStatus               &status     = m_ROMStatus[GetCurrentGameIndex()];
   MAMEoXDriverMetadata_t  &metadata   = m_driverMetadata[GetCurrentGameIndex()];
 
@@ -2596,8 +2558,12 @@ void CROMListScreen::DrawDetailedList( void )
   }
 
 
-	m_fontSet.SmallThinFont().Begin();
 
+
+
+
+	m_fontSet.SmallThinFont().Begin();
+	{
 	  mbstowcs( name, driverData.m_description, 255 );
     wcscat( name, m_options.m_hideFiltered ? L"    (Filtered)  " : L"    (Full List)  " );
     if( m_superscrollMode )
@@ -2803,8 +2769,11 @@ void CROMListScreen::DrawDetailedList( void )
                                         XBFONT_TRUNCATED, 
                                         screenshotLeft - (DETAIL_FILENAME_X + COLUMN_PADDING) );
 
-
+	}
 	m_fontSet.SmallThinFont().End();
+
+
+
 
 
     //-- Render the scroll up and/or scroll down icons --------------------------------------------
@@ -2821,49 +2790,31 @@ void CROMListScreen::DrawDetailedList( void )
   m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
 
     // Draw scroll up icon
-  if( GetAbsoluteCursorPosition() )
+  if( GetAbsoluteCursorPosition() && CheckResourceValidity( SPRITE_LIST_SCROLLICON_UP ) )
   {
-	  m_displayDevice->SetTexture( 0, m_textureSet.GetScrollIconMasks() );
-    m_displayDevice->Begin( D3DPT_QUADLIST );      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconLeft(), m_textureSet.GetScrollUpIconTop() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_LEFT, SCROLLUP_TOP, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconRight(), m_textureSet.GetScrollUpIconTop() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_RIGHT, SCROLLUP_TOP, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconRight(), m_textureSet.GetScrollUpIconBottom() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_RIGHT, SCROLLUP_BOTTOM, 1.0f, 1.0f );
-
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconLeft(), m_textureSet.GetScrollUpIconBottom() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_LEFT, SCROLLUP_BOTTOM, 1.0f, 1.0f );
-    m_displayDevice->End();
+		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_UP );
+		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_UP );
+		desc->Render( m_displayDevice, 
+									D3DVSDE_DIFFUSE, 
+									SCROLLICON_COLOR, 
+									SCROLLUP_LEFT, 
+									SCROLLUP_TOP, 
+									SCROLLUP_RIGHT, 
+									SCROLLUP_BOTTOM );
   }
 
     // Draw scroll down icon
-  if( GetAbsoluteCursorPosition() < m_numLinesInList - 1 )
+  if( GetAbsoluteCursorPosition() < m_numLinesInList - 1 && CheckResourceValidity( SPRITE_LIST_SCROLLICON_DOWN ) )
   {
-	  m_displayDevice->SetTexture( 0, m_textureSet.GetScrollIconMasks() );
-    m_displayDevice->Begin( D3DPT_QUADLIST );
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconLeft(), m_textureSet.GetScrollDownIconTop() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_LEFT, SCROLLDOWN_TOP, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconRight(), m_textureSet.GetScrollDownIconTop() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_RIGHT, SCROLLDOWN_TOP, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconRight(), m_textureSet.GetScrollDownIconBottom() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_RIGHT, SCROLLDOWN_BOTTOM, 1.0f, 1.0f );
-
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconLeft(), m_textureSet.GetScrollDownIconBottom() );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_LEFT, SCROLLDOWN_BOTTOM, 1.0f, 1.0f );
-    m_displayDevice->End();
+		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_DOWN );
+		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_DOWN );
+		desc->Render( m_displayDevice, 
+									D3DVSDE_DIFFUSE, 
+									SCROLLICON_COLOR, 
+									SCROLLDOWN_LEFT, 
+									SCROLLDOWN_TOP, 
+									SCROLLDOWN_RIGHT, 
+									SCROLLDOWN_BOTTOM );
   }
 
   m_displayDevice->SetTexture( 0, NULL );

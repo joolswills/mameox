@@ -167,7 +167,6 @@ int osd_get_path_count( int pathtype )
 {
 	/* Return the number of paths for a given type */
 	PRINTMSG(( T_TRACE, "osd_get_path_count: pathtype: %d", pathtype ));
-//EZ_TRACE();
 
 	switch( pathtype )
 	{

@@ -10,7 +10,7 @@
 //= I N C L U D E S ====================================================
 #include "ListView.h"
 #include "BaseMenuView.h"
-#include "TextureSet.h"
+#include "SkinResource.h"
 #include "MAMEoX.h"
 
 #include <vector>
@@ -61,11 +61,9 @@ public:
 		//------------------------------------------------------------
 	CROMListScreen( LPDIRECT3DDEVICE8	displayDevice, 
             CFontSet &fontSet, 
-            CTextureSet &textureSet,
             MAMEDriverData_t *drivers, 
             UINT32 numDrivers ) :
-    CListView( displayDevice, fontSet, textureSet.GetBasicBackdrop() ),
-    m_textureSet( textureSet ),
+    CListView( displayDevice, fontSet, ASSET_LIST_BACKDROP ),
     m_superscrollMode( FALSE ),
     m_gameSelected( FALSE ),
     m_shouldGenerateROMList( FALSE ),
@@ -86,7 +84,7 @@ public:
       m_driverInfoList = drivers;
 
     RECT area = { LISTPOS_LEFT, LISTPOS_TOP, LISTPOS_RIGHT, LISTPOS_BOTTOM };
-    m_menuRenderer = new CBaseMenuView( displayDevice, fontSet, textureSet, area );
+    m_menuRenderer = new CBaseMenuView( displayDevice, fontSet, area );
     assert( m_menuRenderer );
 	}
 
@@ -325,7 +323,6 @@ protected:
   BOOL                  m_gameSelected;             //!<  Whether or not the user has selected a game
   BOOL                  m_shouldGenerateROMList;    //!<  Whether or not the main() funct should call GenerateROMList for us (to render directly to the screen)
 
-  CTextureSet           &m_textureSet;              //!<  The texture set object storing all the useable textures (and their info) for the game
   CBaseMenuView         *m_menuRenderer;            //!<  Resizable menu renderer
 
   LPDIRECT3DTEXTURE8    m_screenshotTexture;          //!<  Texture for the currently loaded screenshot image

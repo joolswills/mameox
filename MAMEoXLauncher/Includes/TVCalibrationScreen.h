@@ -8,7 +8,7 @@
 
 //= I N C L U D E S ====================================================
 #include "BaseView.h"
-#include "TextureSet.h"
+#include "SkinResource.h"
 
 //= D E F I N E S ======================================================
 typedef enum tvcalibrationstep
@@ -35,11 +35,9 @@ public:
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-  CTVCalibrationScreen( LPDIRECT3DDEVICE8	displayDevice, 
-                        CFontSet &fontSet, 
-                        CTextureSet &textureSet ) :
-    CBaseView( displayDevice, fontSet, NULL ),
-    m_textureSet( textureSet ) {
+  CTVCalibrationScreen( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet ) :
+    CBaseView( displayDevice, fontSet, RESOURCE_INVALID )
+  {
       Reset();
   }
 
@@ -77,8 +75,9 @@ public:
   BOOL AreScreenSettingsChanged( void ) { return m_screenSettingsChangedFlag; }
 
   BOOL IsCalibrationCompleted( void ) const { return m_currentStep == TVCS_COMPLETED; }
+
+
 protected:
-  CTextureSet         &m_textureSet;                //!< Texture set containing the cursor mask
   FLOAT               m_dpadCursorDelay;            //!< Delay to slow down dpad input
   BOOL                m_screenSettingsChangedFlag;  //!< Whether or not the screen settings have changed
   tvcalibrationstep   m_currentStep;                //!< The step in the calibration sequence

@@ -1,7 +1,7 @@
 /**
 	* \file			SkinChooserScreen.h
-	* \brief		Helper class which takes care of generating/loading/displaying
-	*           a list of all available ROMs
+	* \brief		Helper class which takes care of displaying the list
+	*           of available skins
 	*
 	*/
 
@@ -11,8 +11,8 @@
 #include "ListView.h"
 #include "BaseMenuView.h"
 
+#include "SkinChooser.h"
 #include "SkinResource.h"
-#include "TextureSet.h"
 #include "MAMEoX.h"
 
 #include <vector>
@@ -34,10 +34,10 @@
 
 
 //= C L A S S E S ======================================================
-
 /**
 	* \class		CSkinChooserScreen
-	* \brief		The skin chooser class
+	* \brief		Helper class which takes care of displaying the list
+	*           of available skins
 	*/
 class CSkinChooserScreen : public CListView
 {
@@ -46,38 +46,27 @@ public:
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-	CSkinChooserScreen( LPDIRECT3DDEVICE8	displayDevice, 
-														CFontSet &fontSet, 
-														CTextureSet &textureSet ) :
-    CListView( displayDevice, fontSet, textureSet.GetBasicBackdrop() ),
-    m_textureSet( textureSet ),
-		m_currentSkin( NULL )
+	CSkinChooserScreen( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CSkinChooser &skinChooser ) :
+    CListView( displayDevice, fontSet, ASSET_LIST_BACKDROP ),
+		m_skinChooser( skinChooser )
 	{
 		m_maxPageSize = 3;
+		m_numLinesInList = m_skinChooser.m_skinResourceVector.size();
+
+
     RECT area = { LISTPOS_LEFT, LISTPOS_TOP, LISTPOS_RIGHT, LISTPOS_BOTTOM };
-    m_menuRenderer = new CBaseMenuView( displayDevice, fontSet, textureSet, area );
+    m_menuRenderer = new CBaseMenuView( displayDevice, fontSet, area );
     assert( m_menuRenderer );		
+
+		SetCursorToSelectedSkin();
 	}
 
 		//------------------------------------------------------------
 		// Destructor
 		//------------------------------------------------------------
   ~CSkinChooserScreen( void ) {
-		std::vector<CSkinResource*>::iterator i = m_skinResourceVector.begin();
-		for( ; i != m_skinResourceVector.end(); ++i )
-			delete (*i);
-
     delete m_menuRenderer;
   }
-		//------------------------------------------------------------
-		// FindSkins
-		//! \brief		Find any valid skins in the skin directory.
-		//!
-		//! \return		BOOL - Operation status
-		//! \retval		TRUE - Operation successful
-		//! \retval		FALSE - No skins could be found.
-		//------------------------------------------------------------
-	BOOL FindSkins( void );
 
 		//------------------------------------------------------------
 		// MoveCursor
@@ -107,7 +96,7 @@ public:
 		//! \param		opts - SkinOptions_t struct containing new options
 		//------------------------------------------------------------
   void SetOptions( const SkinOptions_t &opts ) { 
-    m_options = opts;
+    m_skinChooser.m_options = opts;
 		SetCursorToSelectedSkin();
   }
 
@@ -117,18 +106,7 @@ public:
 		//!
 		//! \return		const SkinOptions_t & - SkinOptions_t struct containing options
 		//------------------------------------------------------------
-  const SkinOptions_t &GetOptions( void ) { return m_options; }
-
-
-
-		//------------------------------------------------------------
-		// GetCurrentSkin
-		//! \brief		Get the currently loaded skin
-		//!
-		//! \return		const CSkinResource & - The CSkinResource containing the
-		//!																		currently selected skin.
-		//------------------------------------------------------------
-	const CSkinResource *GetCurrentSkin( void ) { return m_currentSkin; }
+  const SkinOptions_t &GetOptions( void ) { return m_skinChooser.m_options; }
 
 protected:
 
@@ -141,15 +119,9 @@ protected:
 
 	void SetCursorToSelectedSkin( void );	
 
-  CTextureSet											&m_textureSet;      //!<  The texture set object storing all the useable textures (and their info) for the game
   CBaseMenuView										*m_menuRenderer;    //!<  Resizable menu renderer
 
-	SkinOptions_t										m_options;
-
-	CSkinResource										*m_currentSkin;			//!<	The currently loaded skin
-	std::vector<CSkinResource*>			m_skinResourceVector;
+	CSkinChooser										&m_skinChooser;
 };
-
-
 
 

@@ -30,10 +30,6 @@ extern "C" {
 #define ICON_COLOR            D3DCOLOR_XRGB(245,245,245)
 #define SCREENOUTLINE_COLOR   D3DCOLOR_XRGB( 150, 150, 150 )
 
-#define CURSORTEXTURE_WIDTH   81.0f
-#define CURSORTEXTURE_HEIGHT  81.0f
-
-
 	// Number of seconds between valid DPAD readings
 #define DPADCURSORMOVE_TIMEOUT	  0.075f
 #define ANALOGCURSORMOVE_TIMEOUT	0.025f
@@ -173,45 +169,50 @@ void CTVCalibrationScreen::MoveCursor( CInputManager &gp, BOOL useSpeedbanding )
 
   if( gp.IsButtonPressed( GP_A ) || gp.IsKeyPressed( VK_RETURN ) )
   {
-    switch( m_currentStep )
-    {
-    default:
-      // *** TVCS_COMPLETED *** //
-    case TVCS_COMPLETED:
-      break;
+		if( CheckResourceValidity( SPRITE_TVCALIBRATION_CURSOR ) )
+		{
+			const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_TVCALIBRATION_CURSOR );
 
-      // *** TVCS_SET_UPPERLEFT *** //
-    case TVCS_SET_UPPERLEFT:
-      m_currentStep = TVCS_SET_LOWERRIGHT;
-      m_screenRect.left = m_cursorPos.x;
-      m_screenRect.top = m_cursorPos.y;
-      m_cursorPos.x = m_screenRect.right - CURSORTEXTURE_WIDTH;
-      m_cursorPos.y = m_screenRect.bottom - CURSORTEXTURE_HEIGHT;
-      break;
+			switch( m_currentStep )
+			{
+			default:
+				// *** TVCS_COMPLETED *** //
+			case TVCS_COMPLETED:
+				break;
 
-      // *** TVCS_SET_LOWERRIGHT *** //
-    case TVCS_SET_LOWERRIGHT:
-      {
-        m_currentStep = TVCS_COMPLETED;
-        m_screenRect.right = m_cursorPos.x + CURSORTEXTURE_WIDTH;
-        m_screenRect.bottom = m_cursorPos.y + CURSORTEXTURE_HEIGHT;
-        m_screenSettingsChangedFlag = TRUE;
+				// *** TVCS_SET_UPPERLEFT *** //
+			case TVCS_SET_UPPERLEFT:
+				m_currentStep = TVCS_SET_LOWERRIGHT;
+				m_screenRect.left = m_cursorPos.x;
+				m_screenRect.top = m_cursorPos.y;
+				m_cursorPos.x = m_screenRect.right - desc->GetWidth();
+				m_cursorPos.y = m_screenRect.bottom - desc->GetHeight();
+				break;
 
-          // Calculate the screen usage + position
-        FLOAT xPos, yPos;
-        FLOAT xPercentage, yPercentage;
+				// *** TVCS_SET_LOWERRIGHT *** //
+			case TVCS_SET_LOWERRIGHT:
+				{
+					m_currentStep = TVCS_COMPLETED;
+					m_screenRect.right = m_cursorPos.x + desc->GetWidth();
+					m_screenRect.bottom = m_cursorPos.y + desc->GetHeight();
+					m_screenSettingsChangedFlag = TRUE;
 
-        xPos = -(320.0f - ( m_screenRect.left + ((m_screenRect.right - m_screenRect.left) / 2.0f) )) / 320.0f;
-        yPos = (240.0f - ( m_screenRect.top + ((m_screenRect.bottom - m_screenRect.top) / 2.0f)  )) / 320.0f;
+						// Calculate the screen usage + position
+					FLOAT xPos, yPos;
+					FLOAT xPercentage, yPercentage;
 
-        xPercentage = (FLOAT)(m_screenRect.right - m_screenRect.left) / 640.0f;
-        yPercentage = (FLOAT)(m_screenRect.bottom - m_screenRect.top) / 480.0f;
+					xPos = -(320.0f - ( m_screenRect.left + ((m_screenRect.right - m_screenRect.left) / 2.0f) )) / 320.0f;
+					yPos = (240.0f - ( m_screenRect.top + ((m_screenRect.bottom - m_screenRect.top) / 2.0f)  )) / 320.0f;
 
-        SetScreenPosition( xPos, yPos );
-        SetScreenUsage( xPercentage, yPercentage );  
-      }
-      break;
-    }
+					xPercentage = (FLOAT)(m_screenRect.right - m_screenRect.left) / 640.0f;
+					yPercentage = (FLOAT)(m_screenRect.bottom - m_screenRect.top) / 480.0f;
+
+					SetScreenPosition( xPos, yPos );
+					SetScreenUsage( xPercentage, yPercentage );  
+				}
+				break;
+			}
+		}
 
     gp.WaitForNoButton();
   }
@@ -242,72 +243,79 @@ void CTVCalibrationScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   RenderBackdrop();
 
 
-    //-- Render a box for the screenspace -------------------------------------
-  if( m_currentStep == TVCS_SET_LOWERRIGHT )
-  {
-    m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-    m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
-    m_displayDevice->Begin( D3DPT_QUADLIST );
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCREENOUTLINE_COLOR );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_screenRect.left, m_screenRect.top, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCREENOUTLINE_COLOR );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_cursorPos.x + CURSORTEXTURE_WIDTH,  m_screenRect.top, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCREENOUTLINE_COLOR );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_cursorPos.x + CURSORTEXTURE_WIDTH,  m_cursorPos.y + CURSORTEXTURE_HEIGHT, 1.0f, 1.0f );
+	if( CheckResourceValidity( SPRITE_TVCALIBRATION_CURSOR ) )
+	{
+		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_TVCALIBRATION_CURSOR );
 
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCREENOUTLINE_COLOR );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_screenRect.left,  m_cursorPos.y + CURSORTEXTURE_HEIGHT, 1.0f, 1.0f );
-    m_displayDevice->End();
-  }
 
-    //-- Render the cursor ----------------------------------------------------
-  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-  m_displayDevice->SetRenderState( D3DRS_SRCBLEND,         D3DBLEND_SRCALPHA );
-  m_displayDevice->SetRenderState( D3DRS_DESTBLEND,        D3DBLEND_INVSRCALPHA );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
-  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
-  m_displayDevice->SetTexture( 0, m_textureSet.GetTVCalibrationCursorMask() );
+			//-- Render a box for the screenspace -------------------------------------
+		if( m_currentStep == TVCS_SET_LOWERRIGHT )
+		{
+			m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
+			m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
+			m_displayDevice->Begin( D3DPT_QUADLIST );
+				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCREENOUTLINE_COLOR );
+				m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_screenRect.left, m_screenRect.top, 1.0f, 1.0f );
+	      
+				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCREENOUTLINE_COLOR );
+				m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_cursorPos.x + desc->GetWidth(),  m_screenRect.top, 1.0f, 1.0f );
+	      
+				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCREENOUTLINE_COLOR );
+				m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_cursorPos.x + desc->GetWidth(),  m_cursorPos.y + desc->GetHeight(), 1.0f, 1.0f );
 
-  FLOAT tu_l, tv_t, tu_r, tv_b;
-  switch( m_currentStep )
-  {
-  case TVCS_SET_UPPERLEFT:
-    tu_l = 0.0f;
-    tv_t = 0.0f;
-    tu_r = 1.0f;
-    tv_b = 1.0f;
-    break;
+				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCREENOUTLINE_COLOR );
+				m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_screenRect.left,  m_cursorPos.y + desc->GetHeight(), 1.0f, 1.0f );
+			m_displayDevice->End();
+		}
 
-  case TVCS_SET_LOWERRIGHT:
-    tu_l = 1.0f;
-    tv_t = 1.0f;
-    tu_r = 0.0f;
-    tv_b = 0.0f;
-    break;
-  }
+	    //-- Render the cursor ----------------------------------------------------
+		m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
+		m_displayDevice->SetRenderState( D3DRS_SRCBLEND,         D3DBLEND_SRCALPHA );
+		m_displayDevice->SetRenderState( D3DRS_DESTBLEND,        D3DBLEND_INVSRCALPHA );
+		m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+		m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
+		m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
+		m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
+		m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
 
-  m_displayDevice->Begin( D3DPT_QUADLIST );
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, ICON_COLOR );
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, tu_l, tv_t );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_cursorPos.x, m_cursorPos.y, 1.0f, 1.0f );
-    
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, ICON_COLOR );
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, tu_r, tv_t );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_cursorPos.x + CURSORTEXTURE_WIDTH,  m_cursorPos.y, 1.0f, 1.0f );
-    
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, ICON_COLOR );
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, tu_r, tv_b );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_cursorPos.x + CURSORTEXTURE_WIDTH,  m_cursorPos.y + CURSORTEXTURE_HEIGHT, 1.0f, 1.0f );
+		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_TVCALIBRATION_CURSOR );
 
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, ICON_COLOR );
-    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, tu_l, tv_b );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_cursorPos.x,  m_cursorPos.y + CURSORTEXTURE_HEIGHT, 1.0f, 1.0f );
-  m_displayDevice->End();
+		FLOAT tu_l, tv_t, tu_r, tv_b;
+		switch( m_currentStep )
+		{
+		case TVCS_SET_UPPERLEFT:
+			tu_l = desc->m_left;
+			tv_t = desc->m_top;
+			tu_r = desc->m_right;
+			tv_b = desc->m_bottom;
+			break;
+
+		case TVCS_SET_LOWERRIGHT:
+			tu_l = desc->m_right;
+			tv_t = desc->m_bottom;
+			tu_r = desc->m_left;
+			tv_b = desc->m_top;
+			break;
+		}
+
+		m_displayDevice->Begin( D3DPT_QUADLIST );
+			m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, ICON_COLOR );
+			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, tu_l, tv_t );
+			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_cursorPos.x, m_cursorPos.y, 1.0f, 1.0f );
+	    
+			m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, ICON_COLOR );
+			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, tu_r, tv_t );
+			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_cursorPos.x + desc->GetWidth(),  m_cursorPos.y, 1.0f, 1.0f );
+	    
+			m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, ICON_COLOR );
+			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, tu_r, tv_b );
+			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_cursorPos.x + desc->GetWidth(),  m_cursorPos.y + desc->GetHeight(), 1.0f, 1.0f );
+
+			m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, ICON_COLOR );
+			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, tu_l, tv_b );
+			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_cursorPos.x,  m_cursorPos.y + desc->GetHeight(), 1.0f, 1.0f );
+		m_displayDevice->End();
+	}
 
   m_displayDevice->SetTexture( 0, NULL );
 

@@ -70,7 +70,7 @@ void CScreensaverScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
       CStdString str = g_FileIOConfig.m_screenshotPath;
       str += "\\";
       str += m_screenshotFiles[ randIndex ];
-      LoadPNGToTexture( str, &m_backdropTexture, &m_screenshotRect );
+      LoadPNGToTexture( str, &m_screenshotTexture, &m_screenshotRect );
 
         // Look up the m_screenshotOrientation from the driver list
         // Have to do a linear search as the list is not sorted at all
@@ -86,7 +86,7 @@ void CScreensaverScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     }
     else
     {
-      SAFE_RELEASE( m_backdropTexture );
+      SAFE_RELEASE( m_screenshotTexture );
       m_screenshotRect.left = m_screenshotRect.top = 0;
       m_screenshotRect.right = 640;
       m_screenshotRect.bottom = 480;
@@ -103,12 +103,12 @@ void CScreensaverScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   else
     m_displayTimeout -= elapsedTime;
 
-  if( m_backdropTexture )
+  if( m_screenshotTexture )
   {
     m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
     m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
     m_displayDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX0 );
-	  m_displayDevice->SetTexture( 0, m_backdropTexture );
+	  m_displayDevice->SetTexture( 0, m_screenshotTexture );
 
     m_displayDevice->Begin( D3DPT_QUADLIST );      
 

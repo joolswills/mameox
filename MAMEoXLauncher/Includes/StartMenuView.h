@@ -30,8 +30,8 @@ public:
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-  CStartMenuView( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CTextureSet &textureSet, const RECT &area ) :
-    CBasePopupView( displayDevice, fontSet, textureSet, area ) {
+  CStartMenuView( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, const RECT &area ) :
+    CBasePopupView( displayDevice, fontSet, area ) {
       Reset();
     }
 

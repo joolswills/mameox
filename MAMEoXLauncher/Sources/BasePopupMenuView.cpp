@@ -55,7 +55,14 @@ void CBasePopupView::RenderBackdrop( FLOAT fontHeight )
   
 
     // Use the fontHeight to calculate the correct area for the backdrop
-  UINT32 halfheight = (UINT32)(m_textureSet.GetMenuTitleBarHeight() + m_textureSet.GetMenuFooterHeight() + fontHeight * GetNumBodyLines()) >> 1;
+	UINT32 halfheight = fontHeight * GetNumBodyLines();
+	if( CheckResourceValidity( SPRITE_MENU_TITLEBAR_CENTER ) )
+		halfheight += (UINT32)g_loadedSkin->GetSkinResourceInfo( SPRITE_MENU_TITLEBAR_CENTER )->GetHeight();
+	
+	if( CheckResourceValidity( SPRITE_MENU_FOOTER_CENTER ) )
+		halfheight += (UINT32)g_loadedSkin->GetSkinResourceInfo( SPRITE_MENU_FOOTER_CENTER )->GetHeight();
+	halfheight >>= 1;
+	
   RECT area = { m_titleArea.left, 240 - halfheight,
                 m_titleArea.right, 240 + halfheight };
   SetRect( area );  
