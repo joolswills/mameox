@@ -155,6 +155,9 @@
 				RelativePath="..\MAMEoX\Sources\Gamepad.cpp">
 			</File>
 			<File
+				RelativePath="..\MAMEoX\Sources\GFilterManager.cpp">
+			</File>
+			<File
 				RelativePath="..\MAMEoX\Sources\GraphicsManager.cpp">
 			</File>
 			<File
@@ -183,6 +186,9 @@
 			</File>
 			<File
 				RelativePath=".\Sources\ROMListScreen.cpp">
+			</File>
+			<File
+				RelativePath="..\MAMEoX\Sources\scale2x.cpp">
 			</File>
 			<File
 				RelativePath=".\Sources\ScreensaverScreen.cpp">
@@ -246,6 +252,9 @@
 				RelativePath="..\MAMEoX\Includes\Gamepad.h">
 			</File>
 			<File
+				RelativePath="..\MAMEoX\Includes\GFilterManager.h">
+			</File>
+			<File
 				RelativePath="..\MAMEoX\Includes\GraphicsManager.h">
 			</File>
 			<File
@@ -277,6 +286,9 @@
 			</File>
 			<File
 				RelativePath=".\Includes\ROMListScreen.h">
+			</File>
+			<File
+				RelativePath="..\MAMEoX\Includes\scale2x.h">
 			</File>
 			<File
 				RelativePath=".\Includes\ScreensaverScreen.h">

@@ -274,6 +274,9 @@
 				RelativePath="Includes\Gamepad.h">
 			</File>
 			<File
+				RelativePath=".\Includes\GFilterManager.h">
+			</File>
+			<File
 				RelativePath=".\Includes\GraphicsManager.h">
 			</File>
 			<File
@@ -296,6 +299,9 @@
 			</File>
 			<File
 				RelativePath=".\Includes\osinline.h">
+			</File>
+			<File
+				RelativePath=".\Includes\scale2x.h">
 			</File>
 			<File
 				RelativePath="Includes\Sections.h">
@@ -381,6 +387,9 @@
 				RelativePath="Sources\Gamepad.cpp">
 			</File>
 			<File
+				RelativePath=".\Sources\GFilterManager.cpp">
+			</File>
+			<File
 				RelativePath=".\Sources\GraphicsManager.cpp">
 				<FileConfiguration
 					Name="Profile|Xbox">
@@ -409,6 +418,15 @@
 				RelativePath="Sources\MAMEoXUtil.cpp">
 			</File>
 			<File
+				RelativePath=".\Sources\scale2x.cpp">
+				<FileConfiguration
+					Name="Release|Xbox">
+					<Tool
+						Name="VCCLCompilerTool"
+						GlobalOptimizations="TRUE"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="Sources\SMBHandler.cpp">
 			</File>
 			<File
@@ -422,6 +440,12 @@
 			</File>
 			<File
 				RelativePath=".\Sources\xbox_Direct3DRenderer.cpp">
+				<FileConfiguration
+					Name="Release|Xbox">
+					<Tool
+						Name="VCCLCompilerTool"
+						GlobalOptimizations="FALSE"/>
+				</FileConfiguration>
 				<FileConfiguration
 					Name="Profile|Xbox">
 					<Tool
@@ -495,6 +519,12 @@
 			</File>
 			<File
 				RelativePath=".\Sources\xbox_Sound.c">
+				<FileConfiguration
+					Name="Release|Xbox">
+					<Tool
+						Name="VCCLCompilerTool"
+						GlobalOptimizations="TRUE"/>
+				</FileConfiguration>
 				<FileConfiguration
 					Name="Profile|Xbox">
 					<Tool
