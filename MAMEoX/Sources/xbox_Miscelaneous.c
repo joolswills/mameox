@@ -37,8 +37,9 @@ int osd_display_loading_rom_message( const char *name, struct rom_load_data *rom
 
 	PRINTMSG( T_TRACE, "osd_display_loading_rom_message" );
 
-	swprintf( bar, L"[%80c]", L' ' );
+	swprintf( bar, L"[%25c]", L' ' );
 
+      // Temporary: The Hawaiian Punk font doesn't have a | character, so use 1 instead
 	if( name )
 	{
 		UINT32 i = 0;
@@ -46,15 +47,15 @@ int osd_display_loading_rom_message( const char *name, struct rom_load_data *rom
 		mbstowcs( &title[wcslen(title)], name, 32 );
 		swprintf( &title[wcslen(title)], L"\" (%d/ %d)", romdata->romsloaded, romdata->romstotal );
 
-		for( ; i < (ULONG)(((FLOAT)romdata->romsloaded / (FLOAT)romdata->romstotal) * 80.0f); ++i )
-			bar[i+1] = L'|';
+		for( ; i < (ULONG)(((FLOAT)romdata->romsloaded / (FLOAT)romdata->romstotal) * 25.0f); ++i )
+			bar[i+1] = L'1';
 	}
 	else
 	{
 		UINT32 i = 0;
 		wcscpy( title, L"Loading complete!" );
-		for( ; i < 80; ++i )
-			bar[i+1] = L'|';
+		for( ; i < 25; ++i )
+			bar[i+1] = L'1';
 	}
 
 
@@ -68,7 +69,7 @@ int osd_display_loading_rom_message( const char *name, struct rom_load_data *rom
     FontRender( 320, 340, D3DCOLOR_XRGB( 60, 105, 225 ), L"Memory Status", 2 );
     FontRender( 320, 360, D3DCOLOR_XRGB( 60, 105, 225 ), memory, 2 );
   EndFontRender();
-	
+
 	return 0;
 }
 

@@ -499,11 +499,12 @@ static void DrawDriverProgressData( const char *fileName, DWORD index, DWORD tot
   	g_font.DrawText( 320, 120, D3DCOLOR_XRGB( 255, 255, 255 ), L"Dumping driver data", XBFONT_CENTER_X );
 
 		  // Draw a progress bar
+      // Temporary: The Hawaiian Punk font doesn't have a | character, so use 1 instead
     UINT32 percentage = (UINT32)( (FLOAT)index * (25.0f / (FLOAT)total) + 0.5f ); 
     UINT32 i = 0;
 	  WCHAR wBuf[256] = L"[";
     for( ; i < percentage; ++i )
-      wcscat( wBuf, L"|" );
+      wcscat( wBuf, L"1" );
     for( ; i < 25; ++i )
       wcscat( wBuf, L" " );
     wcscat( wBuf, L"]" );
