@@ -14,7 +14,8 @@ Version 0.71.1b
       - Upped version number
 
     - GraphicsManager.h
-      - Added VSYNC option
+      - Added VSYNC option, toggle between OFF and 
+        SYNC EVERY FRAME
 
    -------------------------------------------------------------
   - \MAMEoX\Sources: 
@@ -33,6 +34,11 @@ Version 0.71.1b
       - Added code to toggle the MAMEoX debug console on and off 
         (hold "BACK" for 2 seconds) Note that this only works in
         Debug builds.
+      - Reorganized the code a bit to make it nice (broke 
+        autoframeskip and UI input checking into separate INLINE
+        functions. Moved the input polling around so that throttling
+        is always the absolute last thing done in the update 
+        function.
 
     - MAMEoXUtil.cpp
       - Removed history.dat support
@@ -42,6 +48,7 @@ Version 0.71.1b
         (hold "BACK" for 2 seconds) Note that this only works in
         Debug builds.
       - Changed the size and color of the debug console
+      - Added option to print messages w/out function/file info
 
    -------------------------------------------------------------
   - \MAMEoXLauncher\Sources:

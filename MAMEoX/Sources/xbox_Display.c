@@ -53,6 +53,8 @@ UINT32	          g_pal32Lookup[65536] = {0};
 //= P R O T O T Y P E S ================================================
 static void InitializePalettes( void );
 static void Helper_UpdatePalette( struct mame_display *display );
+INLINE void Helper_HandleUIInput( void );
+INLINE void Helper_UpdateAutoframeskip( const struct performance_info *performance );
 
 
 
@@ -175,6 +177,78 @@ void osd_update_video_and_audio(struct mame_display *display)
   static cycles_t lastFrameEndTime = 0;
   const struct performance_info *performance = mame_get_performance_info();
 
+		// Poll input
+	PollGamepads();
+
+  Helper_HandleUIInput();
+
+	if( display->changed_flags & GAME_VISIBLE_AREA_CHANGED )
+	{
+		D3DRendererSetOutputRect( display->game_visible_area.min_x,
+															display->game_visible_area.min_y,
+															display->game_visible_area.max_x,
+															display->game_visible_area.max_y );
+
+			// Pass the new coords on to the UI
+		set_ui_visarea( display->game_visible_area.min_x,
+										display->game_visible_area.min_y,
+										display->game_visible_area.max_x,
+										display->game_visible_area.max_y );
+	}
+
+	if( display->changed_flags & GAME_PALETTE_CHANGED )
+		Helper_UpdatePalette( display );
+
+		//--- New bitmap data ---------------------------------------------
+	if( display->changed_flags & GAME_BITMAP_CHANGED )
+	{
+		if( display->changed_flags & VECTOR_PIXELS_CHANGED )
+			D3DRendererRender(	display->game_bitmap,
+													&display->game_bitmap_update,
+													display->vector_dirty_pixels );
+		else
+			D3DRendererRender(	display->game_bitmap,
+													&display->game_bitmap_update,
+													NULL );
+
+    Helper_UpdateAutoframeskip( performance );
+
+      // Wait out the remaining time for this frame
+    if( lastFrameEndTime && 
+        (!g_frameskip || g_rendererOptions.m_frameskip != AUTO_FRAMESKIP) && 
+        performance->game_speed_percent >= 99.0f &&
+        g_desiredFPS != 0.0f && 
+        g_rendererOptions.m_throttleFramerate )
+    {
+        // Only wait for 99.5% of the frame time to elapse, as there's still some stuff that
+        // needs to be done before we return to MAME
+      cycles_t targetFrameCycles = (cycles_t)( (DOUBLE)osd_cycles_per_second() / (g_desiredFPS*1.001));
+      cycles_t actualFrameCycles = osd_cycles() - lastFrameEndTime;
+
+        // Note that this loop could easily be "optimized" to be
+        //  a while( statement ) ; - style loop, but I'm worried that the
+        //  optimizing compiler would think that it's not doing anything
+        //  useful (after all, it's a busy wait) and throw it out altogether
+      while( actualFrameCycles < targetFrameCycles )
+      {
+          // Catch wraparound (which won't happen for a long time :))
+        if( osd_cycles() < lastFrameEndTime )
+          break;
+        actualFrameCycles = osd_cycles() - lastFrameEndTime;
+      }
+    }
+      // Tag the end of this frame
+    lastFrameEndTime = osd_cycles();
+  }
+
+	g_frameskipCounter = (g_frameskipCounter + 1) % FRAMESKIP_LEVELS;
+}
+
+//---------------------------------------------------------------------
+//	Helper_HandleUIInput
+//---------------------------------------------------------------------
+INLINE void Helper_HandleUIInput( void )
+{
     // Handle the special MAME core hook input IDs
 	if( input_ui_pressed( IPT_UI_FRAMESKIP_INC ) )
 	{
@@ -210,216 +284,115 @@ void osd_update_video_and_audio(struct mame_display *display)
 	}
 
 
-
-	if( display->changed_flags & GAME_VISIBLE_AREA_CHANGED )
-	{
-		D3DRendererSetOutputRect( display->game_visible_area.min_x,
-															display->game_visible_area.min_y,
-															display->game_visible_area.max_x,
-															display->game_visible_area.max_y );
-
-			// Pass the new coords on to the UI
-		set_ui_visarea( display->game_visible_area.min_x,
-										display->game_visible_area.min_y,
-										display->game_visible_area.max_x,
-										display->game_visible_area.max_y );
-	}
-
-	if( display->changed_flags & GAME_PALETTE_CHANGED )
-		Helper_UpdatePalette( display );
-
-		// New bitmap data
-	if( display->changed_flags & GAME_BITMAP_CHANGED )
-	{
-		if( display->changed_flags & VECTOR_PIXELS_CHANGED )
-			D3DRendererRender(	display->game_bitmap,
-													&display->game_bitmap_update,
-													display->vector_dirty_pixels );
-		else
-			D3DRendererRender(	display->game_bitmap,
-													&display->game_bitmap_update,
-													NULL );
-
-
-      // Update autoframeskip
-    if( g_rendererOptions.m_frameskip == AUTO_FRAMESKIP && cpu_getcurrentframe() > (FRAMESKIP_LEVELS << 1) )
-    {
-
-        #define FRAMESKIP_SENSITIVITY     FRAMESKIP_LEVELS
-      if( performance->game_speed_percent >= 99.5f )
-      {
-          // Frameskip needs to be decreased
-        if( performance->game_speed_percent > 120.0f )
-          g_frameskipAdjust += (performance->game_speed_percent - 100) / 5;
-        else if( g_frameskip )
-          ++g_frameskipAdjust;
-
-
-			    // perform the adjustment
-			  while( g_frameskipAdjust >= FRAMESKIP_SENSITIVITY )
-			  {
-				  g_frameskipAdjust -= FRAMESKIP_SENSITIVITY;
-          if( g_frameskipAdjust < 0 )
-            g_frameskipAdjust = 0;
-
-				  if( g_frameskip )
-					  --g_frameskip;
-          else
-          {
-              // Already at min frameskip
-            g_frameskipAdjust = 0;
-            break;
-          }
-			  }
-        PRINTMSG( T_INFO, "Autosetting frameskip level to %lu\n", g_frameskip );
-      }
-      else
-      {
-          // Frameskip needs to be increased
-        if( performance->game_speed_percent < 80.0f )
-          g_frameskipAdjust -= (100 - performance->game_speed_percent) / 5;
-        else if( g_frameskip < 8 )
-          --g_frameskipAdjust;
-
-
-			    // perform the adjustment
-			  while( g_frameskipAdjust <= -FRAMESKIP_SENSITIVITY )
-			  {
-				  g_frameskipAdjust += FRAMESKIP_SENSITIVITY;
-          if( g_frameskipAdjust > 0 )
-            g_frameskipAdjust = 0;
-
-				  if( g_frameskip < FRAMESKIP_LEVELS - 1 )
-					  ++g_frameskip;
-          else
-          {
-              // Already at max frameskip
-            g_frameskipAdjust = 0;
-            break;
-          }
-			  }
-        PRINTMSG( T_INFO, "Autosetting frameskip level to %lu\n", g_frameskip );
-      }
-/*
-		    // if we're too fast, decrease the frameskip
-		  if( performance->game_speed_percent >= 99.5f )
-		  {
-			  ++g_frameskipAdjust;
-
-			    // but only after 3 consecutive frames where we are too fast
-			  if( g_frameskipAdjust >= 3 )
-			  {
-				  g_frameskipAdjust = 0;
-				  if( g_frameskip )
-          {
-            --g_frameskip;
-            PRINTMSG( T_INFO, "Decreasing frameskip level to %lu\n", g_frameskip );
-          }
-			  }
-		  }
-		  else
-		  {
-			    // if below 80% speed, be more aggressive
-			  if( performance->game_speed_percent < 80.0f )
-				  g_frameskipAdjust -= (90 - performance->game_speed_percent) / 5;			  
-			  else if( g_frameskip < 8 ) 
-        {
-            // if we're close, only force it up to frameskip 8
-				  --g_frameskipAdjust;
-        }
-
-			    // perform the adjustment
-			  while( g_frameskipAdjust <= -2 )
-			  {
-				  g_frameskipAdjust += 2;
-				  if( g_frameskip < FRAMESKIP_LEVELS - 1 )
-					  ++g_frameskip;
-          else
-          {
-            g_frameskipAdjust = 0;
-            break;
-          }
-			  }
-        PRINTMSG( T_INFO, "Increasing frameskip level to %lu\n", g_frameskip );
-      }     
-*/
-    }
-    else if( g_rendererOptions.m_frameskip != AUTO_FRAMESKIP )
-    {
-      #ifdef _DEBUG
-      if( g_frameskip != g_rendererOptions.m_frameskip )
-        PRINTMSG( T_INFO, "Setting frameskip level to %lu\n", g_rendererOptions.m_frameskip );
-      #endif
-
-      g_frameskip = g_rendererOptions.m_frameskip;
-      
-    }
-
-
-      // Wait out the remaining time for this frame
-    if( lastFrameEndTime && 
-        (!g_frameskip || g_rendererOptions.m_frameskip != AUTO_FRAMESKIP) && 
-        performance->game_speed_percent >= 99.0f &&
-        g_desiredFPS != 0.0f && 
-        g_rendererOptions.m_throttleFramerate )
-    {
-        // Only wait for 99.5% of the frame time to elapse, as there's still some stuff that
-        // needs to be done before we return to MAME
-      cycles_t targetFrameCycles = (cycles_t)( (DOUBLE)osd_cycles_per_second() / (g_desiredFPS*1.01));
-      cycles_t actualFrameCycles = osd_cycles() - lastFrameEndTime;
-
-        // Note that this loop could easily be "optimized" to be
-        //  a while( statement ) ; - style loop, but I'm worried that the
-        //  optimizing compiler would think that it's not doing anything
-        //  useful (after all, it's a busy wait) and throw it out altogether
-      while( actualFrameCycles < targetFrameCycles )
-      {
-          // Catch wraparound (which won't happen for a long time :))
-        if( osd_cycles() < lastFrameEndTime )
-          break;
-        actualFrameCycles = osd_cycles() - lastFrameEndTime;
-      }
-    }
-      // Tag the end of this frame
-    lastFrameEndTime = osd_cycles();
-  }
-
-	g_frameskipCounter = (g_frameskipCounter + 1) % FRAMESKIP_LEVELS;
-
-
-		// Poll input
-	PollGamepads();
-
 #ifdef _DEBUG
   {
-        // Decide whether or not to show the MAMEoX debug console
-      static cycles_t       toggleAfterCycle = 0;
-      static BOOL           toggledThisPress = FALSE;
-      const XINPUT_GAMEPAD  *gp0 = GetGamepadState( 0 );
+      // Decide whether or not to show the MAMEoX debug console
+    static cycles_t       toggleAfterCycle = 0;
+    static BOOL           toggledThisPress = FALSE;
+    const XINPUT_GAMEPAD  *gp0 = GetGamepadState( 0 );
 
-      if( gp0 && (gp0->wButtons & XINPUT_GAMEPAD_BACK) )
+    if( gp0 && (gp0->wButtons & XINPUT_GAMEPAD_BACK) )
+    {
+      if( !toggleAfterCycle )
       {
-        if( !toggleAfterCycle )
-        {
-            // This is the first time we've noticed that the BACK button is
-            // held down. Calculate how long it needs to be held down before
-            // we should toggle the console
-          toggleAfterCycle = osd_cycles() + (osd_cycles_per_second() * DEBUGCONSOLE_TOGGLE_DELAY);
-        }
-        else if( !toggledThisPress && osd_cycles() >= toggleAfterCycle )
-        {
-          ToggleDebugConsole();
-          toggledThisPress = TRUE;
-        }
+          // This is the first time we've noticed that the BACK button is
+          // held down. Calculate how long it needs to be held down before
+          // we should toggle the console
+        toggleAfterCycle = osd_cycles() + (osd_cycles_per_second() * DEBUGCONSOLE_TOGGLE_DELAY);
       }
-      else
+      else if( !toggledThisPress && osd_cycles() >= toggleAfterCycle )
       {
-        toggleAfterCycle = 0;
-        toggledThisPress = FALSE;
+        ToggleDebugConsole();
+        toggledThisPress = TRUE;
       }
+    }
+    else
+    {
+      toggleAfterCycle = 0;
+      toggledThisPress = FALSE;
+    }
   }
 #endif
 }
+
+
+//---------------------------------------------------------------------
+//  Helper_UpdateAutoframeskip
+//---------------------------------------------------------------------
+INLINE void Helper_UpdateAutoframeskip( const struct performance_info *performance )
+{
+    // Update autoframeskip
+  if( g_rendererOptions.m_frameskip == AUTO_FRAMESKIP && cpu_getcurrentframe() > (FRAMESKIP_LEVELS << 1) )
+  {
+
+      #define FRAMESKIP_SENSITIVITY     FRAMESKIP_LEVELS
+    if( performance->game_speed_percent >= 99.5f )
+    {
+        // Frameskip needs to be decreased
+      if( performance->game_speed_percent > 120.0f )
+        g_frameskipAdjust += (performance->game_speed_percent - 100) / 5;
+      else if( g_frameskip )
+        ++g_frameskipAdjust;
+
+
+			  // perform the adjustment
+			while( g_frameskipAdjust >= FRAMESKIP_SENSITIVITY )
+			{
+				g_frameskipAdjust -= FRAMESKIP_SENSITIVITY;
+        if( g_frameskipAdjust < 0 )
+          g_frameskipAdjust = 0;
+
+				if( g_frameskip )
+					--g_frameskip;
+        else
+        {
+            // Already at min frameskip
+          g_frameskipAdjust = 0;
+          break;
+        }
+			}
+      PRINTMSG( T_INFO, "Autosetting frameskip level to %lu\n", g_frameskip );
+    }
+    else
+    {
+        // Frameskip needs to be increased
+      if( performance->game_speed_percent < 80.0f )
+        g_frameskipAdjust -= (100 - performance->game_speed_percent) / 5;
+      else if( g_frameskip < 8 )
+        --g_frameskipAdjust;
+
+
+			  // perform the adjustment
+			while( g_frameskipAdjust <= -FRAMESKIP_SENSITIVITY )
+			{
+				g_frameskipAdjust += FRAMESKIP_SENSITIVITY;
+        if( g_frameskipAdjust > 0 )
+          g_frameskipAdjust = 0;
+
+				if( g_frameskip < FRAMESKIP_LEVELS - 1 )
+					++g_frameskip;
+        else
+        {
+            // Already at max frameskip
+          g_frameskipAdjust = 0;
+          break;
+        }
+			}
+      PRINTMSG( T_INFO, "Autosetting frameskip level to %lu\n", g_frameskip );
+    }
+  }
+  else if( g_rendererOptions.m_frameskip != AUTO_FRAMESKIP )
+  {
+    #ifdef _DEBUG
+    if( g_frameskip != g_rendererOptions.m_frameskip )
+      PRINTMSG( T_INFO, "Setting frameskip level to %lu\n", g_rendererOptions.m_frameskip );
+    #endif
+
+    g_frameskip = g_rendererOptions.m_frameskip;
+    
+  }
+}
+
 
 //---------------------------------------------------------------------
 //	osd_save_snapshot

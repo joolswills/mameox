@@ -324,9 +324,12 @@ void Helper_OutputDebugStringPrintMsg( ULONG msgLevel, const char *fileName, ULO
 //----------------------------------------------------------------------------
 void Helper_ConsolePrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNumber, const char *function, const char *fmt, ... )
 {
-  sprintf(  g_debugLoggerString, 
-            "%-16.16s> ", 
-						function );
+  if( function )
+    sprintf(  g_debugLoggerString, 
+              "%-16.16s> ", 
+						  function );
+  else
+    g_debugLoggerString[0] = 0;
 
   va_list arg;
   va_start( arg, fmt );
