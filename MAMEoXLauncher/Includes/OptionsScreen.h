@@ -132,8 +132,6 @@ protected:
   BOOL                      m_virtualKeyboardMode;          //!< Whether or not to show the virtual keyboard
   CVirtualKeyboardView      *m_virtualKeyboard;             //!< Virtual keyboard instance
 
-  CBaseMenuView             *m_menuRenderer;                //!<  Resizable menu renderer
-
   optionsPageData_t         m_pageData[OPTPAGE_LAST];
 };
 

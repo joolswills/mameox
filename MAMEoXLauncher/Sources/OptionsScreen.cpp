@@ -135,8 +135,6 @@ COptionsScreen::~COptionsScreen( void )
 {
   if( m_virtualKeyboard )
     delete m_virtualKeyboard;
-
-  delete m_menuRenderer;
 }
 
 //---------------------------------------------------------------------
