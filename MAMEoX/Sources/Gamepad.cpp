@@ -375,6 +375,14 @@ void CGamepad::AttachRemoveDevices( void )
 //------------------------------------------------------
 void CGamepad::AttachRemoveGamepadDevice( void )
 {
+	if( !(m_inputManager->GetGamepadDeviceBitmap() & m_portMask ) && m_gamepadDeviceHandle )
+	{
+			// Detach
+		XInputClose( m_gamepadDeviceHandle );
+		m_gamepadDeviceHandle = NULL;
+		m_state.dwPacketNumber = 0;
+	}
+
 	if(	(m_inputManager->GetGamepadDeviceBitmap() & m_portMask ) && !m_gamepadDeviceHandle )
 	{
 			// Attach
@@ -383,13 +391,6 @@ void CGamepad::AttachRemoveGamepadDevice( void )
 																							            XDEVICE_NO_SLOT,			// Gamepad, so no slot
 																							            NULL );								// No special polling params
     XInputGetCapabilities( m_gamepadDeviceHandle, &m_caps );
-	}
-	else if( !(m_inputManager->GetGamepadDeviceBitmap() & m_portMask ) && m_gamepadDeviceHandle )
-	{
-			// Detach
-		XInputClose( m_gamepadDeviceHandle );
-		m_gamepadDeviceHandle = NULL;
-		m_state.dwPacketNumber = 0;
 	}
 }
 
@@ -400,6 +401,12 @@ void CGamepad::AttachRemoveMemUnitDevicePair( void )
 {
 
 		// -- Top --------------------------------
+	if( !(m_inputManager->GetMUDeviceBitmap() & m_topMemPortMask ) && m_memunitDeviceHandles[0] )
+	{
+			// Detach
+		XInputClose( m_memunitDeviceHandles[0] );
+		m_memunitDeviceHandles[0] = NULL;
+	}
 	if( (m_inputManager->GetMUDeviceBitmap() & m_topMemPortMask) && !m_memunitDeviceHandles[0] )
 	{
 			// Attach
@@ -408,14 +415,14 @@ void CGamepad::AttachRemoveMemUnitDevicePair( void )
 																						XDEVICE_TOP_SLOT,			// Gamepad, so no slot
 																						NULL );								// No special polling params
 	}
-	else if( !(m_inputManager->GetMUDeviceBitmap() & m_topMemPortMask ) && m_memunitDeviceHandles[0] )
-	{
-			// Detach
-		XInputClose( m_memunitDeviceHandles[0] );
-		m_memunitDeviceHandles[0] = NULL;
-	}
 
 		// -- Bottom --------------------------------
+	if( !(m_inputManager->GetMUDeviceBitmap() & m_bottomMemPortMask ) && m_memunitDeviceHandles[1] )
+	{
+			// Detach
+		XInputClose( m_memunitDeviceHandles[1] );
+		m_memunitDeviceHandles[1] = NULL;
+	}
 	if( (m_inputManager->GetMUDeviceBitmap() & m_bottomMemPortMask) && !m_memunitDeviceHandles[1] )
 	{
 			// Attach
@@ -423,12 +430,6 @@ void CGamepad::AttachRemoveMemUnitDevicePair( void )
 																						m_portName,				
 																						XDEVICE_BOTTOM_SLOT,			// Gamepad, so no slot
 																						NULL );								// No special polling params
-	}
-	else if( !(m_inputManager->GetMUDeviceBitmap() & m_bottomMemPortMask ) && m_memunitDeviceHandles[1] )
-	{
-			// Detach
-		XInputClose( m_memunitDeviceHandles[1] );
-		m_memunitDeviceHandles[1] = NULL;
 	}
 }
 
