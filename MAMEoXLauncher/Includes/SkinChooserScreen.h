@@ -102,15 +102,14 @@ protected:
 
   UINT32 GetAbsoluteCursorPosition( void ) const { return (UINT32)m_pageOffset + (UINT32)m_cursorPosition; }
 
-
      // Cursor movement helper functions
   void NormalModeMoveCursor( CInputManager &gp, FLOAT elapsedTime );
 	void DrawSkinList( void );
 
-  CTextureSet           &m_textureSet;              //!<  The texture set object storing all the useable textures (and their info) for the game
-  CBaseMenuView         *m_menuRenderer;            //!<  Resizable menu renderer
+  CTextureSet											&m_textureSet;      //!<  The texture set object storing all the useable textures (and their info) for the game
+  CBaseMenuView										*m_menuRenderer;    //!<  Resizable menu renderer
 
-	std::vector<CSkinResource*>					m_skinResourceVector;
+	std::vector<CSkinResource*>			m_skinResourceVector;
 };
 
 

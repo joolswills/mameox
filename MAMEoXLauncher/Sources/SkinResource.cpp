@@ -91,13 +91,11 @@ static LPDIRECT3DTEXTURE8 HelperCreateTextureFromPNGFile( PNGFile_t &colorFileDa
 //= F U N C T I O N S =================================================
 
 //---------------------------------------------------------------------
-//	Create
+//	LoadSkin
 //---------------------------------------------------------------------
-BOOL CSkinResource::Create( const char *basePath, CStdString *errorReport )
+BOOL CSkinResource::LoadSkin( CStdString *errorReport )
 {
-  m_skinBasePath = basePath;
-
-  CStdString iniFileName = basePath;
+  CStdString iniFileName = m_skinName;
   iniFileName += "\\" SKININIFILENAME;
   
   CStdString fullIniFilePath = "d:\\skins\\";
@@ -188,7 +186,7 @@ LPDIRECT3DTEXTURE8 CSkinResource::LoadSkinTexture(	CSystem_IniFile &iniFile,
 		return NULL;
 
 	PNGFile_t colorFileData;
-	if( !LoadPNGFile( m_skinBasePath + "\\" + textureColorFilename, &colorFileData ) )
+	if( !LoadPNGFile( m_skinName + "\\" + textureColorFilename, &colorFileData ) )
 	{
 		PRINTMSG(( T_ERROR, "Failed to load color channel for texture %s:%s[%s]!", sectionName.c_str(), colorChannelEntry.c_str(), alphaChannelEntry.c_str() ));
 		return NULL;
@@ -199,7 +197,7 @@ LPDIRECT3DTEXTURE8 CSkinResource::LoadSkinTexture(	CSystem_IniFile &iniFile,
 	if( textureAlphaFilename != "" )
 	{
 		PNGFile_t alphaFileData;
-		if( !LoadPNGFile( m_skinBasePath + "\\" + textureAlphaFilename, &alphaFileData ) )
+		if( !LoadPNGFile( m_skinName + "\\" + textureAlphaFilename, &alphaFileData ) )
 		{
 				// If the load fails, just print a warning and load as XRGB
 			PRINTMSG(( T_ERROR, "Failed to load alpha channel for texture %s:%s[%s]! Creating as XRGB instead...", sectionName.c_str(), colorChannelEntry.c_str(), alphaChannelEntry.c_str() ));

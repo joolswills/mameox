@@ -232,33 +232,33 @@ BOOL CROMListScreen::GenerateROMList( void )
 	m_ROMListFull.clear();
   m_ROMListFiltered.clear();
 
-  g_FileIOConfig.m_RomPath0.MakeLower();
-  g_FileIOConfig.m_RomPath1.MakeLower();
-  g_FileIOConfig.m_RomPath2.MakeLower();
-  g_FileIOConfig.m_RomPath3.MakeLower();
+  g_FileIOConfig.m_romPath0.MakeLower();
+  g_FileIOConfig.m_romPath1.MakeLower();
+  g_FileIOConfig.m_romPath2.MakeLower();
+  g_FileIOConfig.m_romPath3.MakeLower();
 
-	PRINTMSG(( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_RomPath0.c_str() ));
-  Helper_GenerateROMList( g_FileIOConfig.m_RomPath0 );
+	PRINTMSG(( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_romPath0.c_str() ));
+  Helper_GenerateROMList( g_FileIOConfig.m_romPath0 );
 
-  if( g_FileIOConfig.m_RomPath1 != g_FileIOConfig.m_RomPath0 )
+  if( g_FileIOConfig.m_romPath1 != g_FileIOConfig.m_romPath0 )
   {
-	  PRINTMSG(( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_RomPath1.c_str() ));
-    Helper_GenerateROMList( g_FileIOConfig.m_RomPath1 );
+	  PRINTMSG(( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_romPath1.c_str() ));
+    Helper_GenerateROMList( g_FileIOConfig.m_romPath1 );
   }
 
-  if( g_FileIOConfig.m_RomPath2 != g_FileIOConfig.m_RomPath1 &&
-      g_FileIOConfig.m_RomPath2 != g_FileIOConfig.m_RomPath0 )
+  if( g_FileIOConfig.m_romPath2 != g_FileIOConfig.m_romPath1 &&
+      g_FileIOConfig.m_romPath2 != g_FileIOConfig.m_romPath0 )
   {
-	  PRINTMSG(( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_RomPath2.c_str() ));
-    Helper_GenerateROMList( g_FileIOConfig.m_RomPath2 );
+	  PRINTMSG(( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_romPath2.c_str() ));
+    Helper_GenerateROMList( g_FileIOConfig.m_romPath2 );
   }
 
-  if( g_FileIOConfig.m_RomPath2 != g_FileIOConfig.m_RomPath2 &&
-      g_FileIOConfig.m_RomPath2 != g_FileIOConfig.m_RomPath1 &&
-      g_FileIOConfig.m_RomPath2 != g_FileIOConfig.m_RomPath0 )
+  if( g_FileIOConfig.m_romPath2 != g_FileIOConfig.m_romPath2 &&
+      g_FileIOConfig.m_romPath2 != g_FileIOConfig.m_romPath1 &&
+      g_FileIOConfig.m_romPath2 != g_FileIOConfig.m_romPath0 )
   {
-	  PRINTMSG(( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_RomPath3.c_str() ));
-    Helper_GenerateROMList( g_FileIOConfig.m_RomPath3 );
+	  PRINTMSG(( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_romPath3.c_str() ));
+    Helper_GenerateROMList( g_FileIOConfig.m_romPath3 );
   }
 
     // Load the XML status file
@@ -1267,7 +1267,7 @@ BOOL CROMListScreen::UpdateROMMetadataFile( void )
 //---------------------------------------------------------------------
 BOOL CROMListScreen::ImportCatverINI( void )
 {
-  CStdString iniFileName = g_FileIOConfig.m_GeneralPath;
+  CStdString iniFileName = g_FileIOConfig.m_generalPath;
   iniFileName += "\\catver.ini";
 
   DrawProgressbarMessage( m_displayDevice, 
@@ -2568,7 +2568,7 @@ void CROMListScreen::DrawDetailedList( void )
     m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
     m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
     m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
-	  m_displayDevice->SetTexture( 0, m_screenshotTexture );
+	  m_displayDevice->SetTexture( 0, NULL );
 
     m_displayDevice->Begin( D3DPT_QUADLIST );      
       m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, NOSCREENSHOT_COLOR );
@@ -2882,7 +2882,7 @@ BOOL CROMListScreen::LoadScreenshotFile( UINT32 index )
   SAFE_RELEASE( m_screenshotTexture );
 
   MAMEDriverData_t &driverData = m_driverInfoList[GetCurrentGameIndex()];
-  CStdString filename = g_FileIOConfig.m_ScreenshotPath;
+  CStdString filename = g_FileIOConfig.m_screenshotPath;
   filename += "\\";
   if( index )
   {
@@ -2937,10 +2937,10 @@ BOOL CROMListScreen::RemoveCurrentGameIndex( void )
 //---------------------------------------------------------------------
 BOOL CROMListScreen::MoveCurrentGameToBackupDir( void )
 {
-  if( Helper_MoveCurrentGameToBackupDir( g_FileIOConfig.m_RomPath0 ) ||
-      Helper_MoveCurrentGameToBackupDir( g_FileIOConfig.m_RomPath1 ) ||
-      Helper_MoveCurrentGameToBackupDir( g_FileIOConfig.m_RomPath2 ) ||
-      Helper_MoveCurrentGameToBackupDir( g_FileIOConfig.m_RomPath3 ) )
+  if( Helper_MoveCurrentGameToBackupDir( g_FileIOConfig.m_romPath0 ) ||
+      Helper_MoveCurrentGameToBackupDir( g_FileIOConfig.m_romPath1 ) ||
+      Helper_MoveCurrentGameToBackupDir( g_FileIOConfig.m_romPath2 ) ||
+      Helper_MoveCurrentGameToBackupDir( g_FileIOConfig.m_romPath3 ) )
       return TRUE;
   return FALSE;
 }

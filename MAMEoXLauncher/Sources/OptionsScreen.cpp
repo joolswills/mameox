@@ -806,11 +806,11 @@ void COptionsScreen::DrawDirectoryPathPage1( void )
 {
 /*
   g_FileIOConfig.m_ALTDrive           = iniFile.GetProfileString("Directories", "ALTDrive",            DEFAULT_ALTDRIVE);
-  g_FileIOConfig.m_LetterCMapping     = iniFile.GetProfileString( "Directories", "C_Mapping",           DEFAULT_CMAPPING );
-  g_FileIOConfig.m_LetterEMapping     = iniFile.GetProfileString( "Directories", "E_Mapping",           DEFAULT_EMAPPING );
-  g_FileIOConfig.m_LetterFMapping     = iniFile.GetProfileString( "Directories", "F_Mapping",           DEFAULT_FMAPPING );
-  g_FileIOConfig.m_LetterGMapping     = iniFile.GetProfileString( "Directories", "G_Mapping",           DEFAULT_GMAPPING );
-  g_FileIOConfig.m_LetterHMapping     = iniFile.GetProfileString( "Directories", "H_Mapping",           DEFAULT_HMAPPING );
+  g_FileIOConfig.m_letterCMapping     = iniFile.GetProfileString( "Directories", "C_Mapping",           DEFAULT_CMAPPING );
+  g_FileIOConfig.m_letterEMapping     = iniFile.GetProfileString( "Directories", "E_Mapping",           DEFAULT_EMAPPING );
+  g_FileIOConfig.m_letterFMapping     = iniFile.GetProfileString( "Directories", "F_Mapping",           DEFAULT_FMAPPING );
+  g_FileIOConfig.m_letterGMapping     = iniFile.GetProfileString( "Directories", "G_Mapping",           DEFAULT_GMAPPING );
+  g_FileIOConfig.m_letterHMapping     = iniFile.GetProfileString( "Directories", "H_Mapping",           DEFAULT_HMAPPING );
 */
   WCHAR text[256] = {0};
 
@@ -819,19 +819,19 @@ void COptionsScreen::DrawDirectoryPathPage1( void )
   mbstowcs( text, g_FileIOConfig.m_ALTDrive.c_str(), 255 );
   DRAWITEM( L"Alternate drive letter", text );
 
-  mbstowcs( text, g_FileIOConfig.m_LetterCMapping.c_str(), 255 );
+  mbstowcs( text, g_FileIOConfig.m_letterCMapping.c_str(), 255 );
   DRAWITEM( L"C:", text );
 
-  mbstowcs( text, g_FileIOConfig.m_LetterEMapping.c_str(), 255 );
+  mbstowcs( text, g_FileIOConfig.m_letterEMapping.c_str(), 255 );
   DRAWITEM( L"E:", text );
 
-  mbstowcs( text, g_FileIOConfig.m_LetterFMapping.c_str(), 255 );
+  mbstowcs( text, g_FileIOConfig.m_letterFMapping.c_str(), 255 );
   DRAWITEM( L"F:", text );
 
-  mbstowcs( text, g_FileIOConfig.m_LetterGMapping.c_str(), 255 );
+  mbstowcs( text, g_FileIOConfig.m_letterGMapping.c_str(), 255 );
   DRAWITEM( L"G:", text );
 
-  mbstowcs( text, g_FileIOConfig.m_LetterHMapping.c_str(), 255 );
+  mbstowcs( text, g_FileIOConfig.m_letterHMapping.c_str(), 255 );
   DRAWITEM( L"H:", text );
 
   ENDPAGE();
@@ -844,48 +844,48 @@ void COptionsScreen::DrawDirectoryPathPage1( void )
 void COptionsScreen::DrawDirectoryPathPage2( void )
 {
 /*
-  g_FileIOConfig.m_ArtPath            = iniFile.GetProfileString("Directories", "ArtPath",             DEFAULT_ARTPATH);
-  g_FileIOConfig.m_AudioPath          = iniFile.GetProfileString("Directories", "AudioPath",           DEFAULT_AUDIOPATH);
-  g_FileIOConfig.m_ConfigPath         = iniFile.GetProfileString("Directories", "ConfigPath",          DEFAULT_CONFIGPATH);
+  g_FileIOConfig.m_artPath            = iniFile.GetProfileString("Directories", "ArtPath",             DEFAULT_ARTPATH);
+  g_FileIOConfig.m_audioPath          = iniFile.GetProfileString("Directories", "AudioPath",           DEFAULT_AUDIOPATH);
+  g_FileIOConfig.m_configPath         = iniFile.GetProfileString("Directories", "ConfigPath",          DEFAULT_CONFIGPATH);
   g_FileIOConfig.m_DefaultRomListPath = iniFile.GetProfileString("Directories", "DefaultRomsListPath", DEFAULT_DEFAULTROMLISTPATH);
-  g_FileIOConfig.m_GeneralPath        = iniFile.GetProfileString("Directories", "GeneralPath",         DEFAULT_GENERALPATH);
+  g_FileIOConfig.m_generalPath        = iniFile.GetProfileString("Directories", "GeneralPath",         DEFAULT_GENERALPATH);
   g_FileIOConfig.m_HDImagePath        = iniFile.GetProfileString("Directories", "HDImagePath",         DEFAULT_HDIMAGEPATH);
   g_FileIOConfig.m_HiScorePath        = iniFile.GetProfileString("Directories", "HiScoresPath",        DEFAULT_HISCOREPATH);
   g_FileIOConfig.m_NVramPath          = iniFile.GetProfileString("Directories", "NVRamPath",           DEFAULT_NVRAMPATH);
-  g_FileIOConfig.m_RomBackupPath      = iniFile.GetProfileString("Directories", "BackupPath",          DEFAULT_ROMBACKUPPATH);
-  g_FileIOConfig.m_RomPath0           = iniFile.GetProfileString("Directories", "RomsPath0",           DEFAULT_ROMPATH);
-  g_FileIOConfig.m_RomPath1           = iniFile.GetProfileString("Directories", "RomsPath1",           DEFAULT_ROMPATH);
-  g_FileIOConfig.m_RomPath2           = iniFile.GetProfileString("Directories", "RomsPath2",           DEFAULT_ROMPATH);
-  g_FileIOConfig.m_RomPath3           = iniFile.GetProfileString("Directories", "RomsPath3",           DEFAULT_ROMPATH);
-  g_FileIOConfig.m_ScreenshotPath     = iniFile.GetProfileString( "Directories", "ScreenshotPath",     DEFAULT_SCREENSHOTPATH );
-  g_FileIOConfig.m_AutoBootSavePath   = iniFile.GetProfileString( "Directories", "AutoBootSavePath",    DEFAULT_BOOTSAVESTATE );
+  g_FileIOConfig.m_romBackupPath      = iniFile.GetProfileString("Directories", "BackupPath",          DEFAULT_ROMBACKUPPATH);
+  g_FileIOConfig.m_romPath0           = iniFile.GetProfileString("Directories", "RomsPath0",           DEFAULT_ROMPATH);
+  g_FileIOConfig.m_romPath1           = iniFile.GetProfileString("Directories", "RomsPath1",           DEFAULT_ROMPATH);
+  g_FileIOConfig.m_romPath2           = iniFile.GetProfileString("Directories", "RomsPath2",           DEFAULT_ROMPATH);
+  g_FileIOConfig.m_romPath3           = iniFile.GetProfileString("Directories", "RomsPath3",           DEFAULT_ROMPATH);
+  g_FileIOConfig.m_screenshotPath     = iniFile.GetProfileString( "Directories", "ScreenshotPath",     DEFAULT_SCREENSHOTPATH );
+  g_FileIOConfig.m_autoBootSavePath   = iniFile.GetProfileString( "Directories", "AutoBootSavePath",    DEFAULT_BOOTSAVESTATE );
 */
   WCHAR text[256] = {0};
 
   STARTPAGE();
 
-  mbstowcs( text, g_FileIOConfig.m_RomPath0.c_str(), 255 );
+  mbstowcs( text, g_FileIOConfig.m_romPath0.c_str(), 255 );
   DRAWITEM( L"ROM Files", text );
-  mbstowcs( text, g_FileIOConfig.m_RomPath1.c_str(), 255 );
+  mbstowcs( text, g_FileIOConfig.m_romPath1.c_str(), 255 );
   DRAWITEM( L"More ROM Files", text );
-  mbstowcs( text, g_FileIOConfig.m_RomPath2.c_str(), 255 );
+  mbstowcs( text, g_FileIOConfig.m_romPath2.c_str(), 255 );
   DRAWITEM( L"Yet More ROM Files", text );
-  mbstowcs( text, g_FileIOConfig.m_RomPath3.c_str(), 255 );
+  mbstowcs( text, g_FileIOConfig.m_romPath3.c_str(), 255 );
   DRAWITEM( L"Even More ROM Files", text );
 
-  mbstowcs( text, g_FileIOConfig.m_RomBackupPath.c_str(), 255 );
+  mbstowcs( text, g_FileIOConfig.m_romBackupPath.c_str(), 255 );
   DRAWITEM( L"Removed ROMs", text );
 
-  mbstowcs( text, g_FileIOConfig.m_GeneralPath.c_str(), 255 );
+  mbstowcs( text, g_FileIOConfig.m_generalPath.c_str(), 255 );
   DRAWITEM( L"General", text );
 
-  mbstowcs( text, g_FileIOConfig.m_ArtPath.c_str(), 255 );
+  mbstowcs( text, g_FileIOConfig.m_artPath.c_str(), 255 );
   DRAWITEM( L"Art", text );
 
-  mbstowcs( text, g_FileIOConfig.m_AudioPath.c_str(), 255 );
+  mbstowcs( text, g_FileIOConfig.m_audioPath.c_str(), 255 );
   DRAWITEM( L"Samples (Audio)", text );
 
-  mbstowcs( text, g_FileIOConfig.m_ConfigPath.c_str(), 255 );
+  mbstowcs( text, g_FileIOConfig.m_configPath.c_str(), 255 );
   DRAWITEM( L"Config (CFG's)", text );
 
   mbstowcs( text, g_FileIOConfig.m_HDImagePath.c_str(), 255 );
@@ -897,10 +897,10 @@ void COptionsScreen::DrawDirectoryPathPage2( void )
   mbstowcs( text, g_FileIOConfig.m_NVramPath.c_str(), 255 );
   DRAWITEM( L"NVRAM, state files", text );
 
-  mbstowcs( text, g_FileIOConfig.m_ScreenshotPath.c_str(), 255 );
+  mbstowcs( text, g_FileIOConfig.m_screenshotPath.c_str(), 255 );
   DRAWITEM( L"Screenshots", text );
 
-  mbstowcs( text, g_FileIOConfig.m_AutoBootSavePath.c_str(), 255 );
+  mbstowcs( text, g_FileIOConfig.m_autoBootSavePath.c_str(), 255 );
   DRAWITEM( L"Autoboot save states", text );
 
   ENDPAGE();
@@ -1444,27 +1444,27 @@ void COptionsScreen::ChangeDirectoryPathPage1( BOOL movingRight )
 
       // C:
     case 1:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_LetterCMapping );
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_letterCMapping );
       break;
 
       // E:
     case 2:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_LetterEMapping );
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_letterEMapping );
       break;
     
       // F:
     case 3:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_LetterFMapping );
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_letterFMapping );
       break;
 
       // G:
     case 4:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_LetterGMapping );
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_letterGMapping );
       break;
 
       // H:
     case 5:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_LetterHMapping );
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_letterHMapping );
       break;
     }
   }
@@ -1481,27 +1481,27 @@ void COptionsScreen::ChangeDirectoryPathPage1( BOOL movingRight )
 
         // C:
       case 1:
-        g_FileIOConfig.m_LetterCMapping = m_virtualKeyboard->GetData();
+        g_FileIOConfig.m_letterCMapping = m_virtualKeyboard->GetData();
         break;
 
         // E:
       case 2:
-        g_FileIOConfig.m_LetterEMapping = m_virtualKeyboard->GetData();
+        g_FileIOConfig.m_letterEMapping = m_virtualKeyboard->GetData();
         break;
       
         // F:
       case 3:
-        g_FileIOConfig.m_LetterFMapping = m_virtualKeyboard->GetData();
+        g_FileIOConfig.m_letterFMapping = m_virtualKeyboard->GetData();
         break;
 
         // G:
       case 4:
-        g_FileIOConfig.m_LetterGMapping = m_virtualKeyboard->GetData();
+        g_FileIOConfig.m_letterGMapping = m_virtualKeyboard->GetData();
         break;
 
         // H:
       case 5:
-        g_FileIOConfig.m_LetterHMapping = m_virtualKeyboard->GetData();
+        g_FileIOConfig.m_letterHMapping = m_virtualKeyboard->GetData();
         break;
       }
     }
@@ -1521,47 +1521,47 @@ void COptionsScreen::ChangeDirectoryPathPage2( BOOL movingRight )
     {
       // ROM Files
     case 0:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_RomPath0 );
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_romPath0 );
       break;
 
       // More ROM Files
     case 1:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_RomPath1 );
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_romPath1 );
       break;
 
       // Yet More ROM Files
     case 2:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_RomPath2 );
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_romPath2 );
       break;
 
       // Even More ROM Files
     case 3:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_RomPath3 );
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_romPath3 );
       break;
 
       // Removed ROMs
     case 4:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_RomBackupPath );
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_romBackupPath );
       break;
 
       // General
     case 5:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_GeneralPath );
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_generalPath );
       break;
 
       // Art
     case 6:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_ArtPath );
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_artPath );
       break;
 
       // Samples (Audio)
     case 7:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_AudioPath );
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_audioPath );
       break;
 
       // Config (CFG's)
     case 8:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_ConfigPath );
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_configPath );
       break;
 
       // HD images (CHD's)
@@ -1581,12 +1581,12 @@ void COptionsScreen::ChangeDirectoryPathPage2( BOOL movingRight )
 
       // Screenshots
     case 12:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_ScreenshotPath );
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_screenshotPath );
       break;
 
       // Autoboot save states
     case 13:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_AutoBootSavePath );
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_autoBootSavePath );
       break;
     }
   }
@@ -1598,47 +1598,47 @@ void COptionsScreen::ChangeDirectoryPathPage2( BOOL movingRight )
       {
         // ROM Files
       case 0:
-        g_FileIOConfig.m_RomPath0 = m_virtualKeyboard->GetData();
+        g_FileIOConfig.m_romPath0 = m_virtualKeyboard->GetData();
         break;
 
         // More ROM Files
       case 1:
-        g_FileIOConfig.m_RomPath1 = m_virtualKeyboard->GetData();
+        g_FileIOConfig.m_romPath1 = m_virtualKeyboard->GetData();
         break;
 
         // Yet More ROM Files
       case 2:
-        g_FileIOConfig.m_RomPath2 = m_virtualKeyboard->GetData();
+        g_FileIOConfig.m_romPath2 = m_virtualKeyboard->GetData();
         break;
 
         // Even More ROM Files
       case 3:
-        g_FileIOConfig.m_RomPath3 = m_virtualKeyboard->GetData();
+        g_FileIOConfig.m_romPath3 = m_virtualKeyboard->GetData();
         break;
 
         // Removed ROMs
       case 4:
-        g_FileIOConfig.m_RomBackupPath = m_virtualKeyboard->GetData();
+        g_FileIOConfig.m_romBackupPath = m_virtualKeyboard->GetData();
         break;
 
         // General
       case 5:
-        g_FileIOConfig.m_GeneralPath = m_virtualKeyboard->GetData();
+        g_FileIOConfig.m_generalPath = m_virtualKeyboard->GetData();
         break;
 
         // Art
       case 6:
-        g_FileIOConfig.m_ArtPath = m_virtualKeyboard->GetData();
+        g_FileIOConfig.m_artPath = m_virtualKeyboard->GetData();
         break;
 
         // Samples (Audio)
       case 7:
-        g_FileIOConfig.m_AudioPath = m_virtualKeyboard->GetData();
+        g_FileIOConfig.m_audioPath = m_virtualKeyboard->GetData();
         break;
 
         // Config (CFG's)
       case 8:
-        g_FileIOConfig.m_ConfigPath = m_virtualKeyboard->GetData();
+        g_FileIOConfig.m_configPath = m_virtualKeyboard->GetData();
         break;
 
         // HD images (CHD's)
@@ -1658,12 +1658,12 @@ void COptionsScreen::ChangeDirectoryPathPage2( BOOL movingRight )
 
         // Screenshots
       case 12:
-        g_FileIOConfig.m_ScreenshotPath = m_virtualKeyboard->GetData();
+        g_FileIOConfig.m_screenshotPath = m_virtualKeyboard->GetData();
         break;
 
         // Autoboot save states
       case 13:
-        g_FileIOConfig.m_AutoBootSavePath = m_virtualKeyboard->GetData();
+        g_FileIOConfig.m_autoBootSavePath = m_virtualKeyboard->GetData();
         break;
       }
     }

@@ -78,9 +78,11 @@ public:
 		//------------------------------------------------------
 		//	Constructor
 		//------------------------------------------------------
-	CSkinResource( void ) {
-		m_skinBasePath = "";
-
+	CSkinResource( const char *basePath, LPDIRECT3DTEXTURE8 previewTexture, const RECT &previewTextureSize ) : 
+			m_skinName( basePath ),
+			m_previewTexture( previewTexture ),
+			m_previewTextureRect( previewTextureSize )
+	{
 		m_splashBackdropTexture = m_messageBackdropTexture = m_listBackdropTexture = 
 			m_TVCalibrationSpritesTexture = m_lightgunCalibrationSpritesTexture = m_listSpritesTexture =	
 			m_menuSpritesTexture = m_buttonSpritesTexture = NULL;
@@ -92,6 +94,8 @@ public:
 		//	Destructor
 		//------------------------------------------------------
 	~CSkinResource( void ) {
+		SAFE_RELEASE( m_previewTexture );
+
 			// Free the textures
 		SAFE_RELEASE( m_splashBackdropTexture );
 		SAFE_RELEASE( m_messageBackdropTexture );
@@ -113,7 +117,7 @@ public:
 
 
 		//------------------------------------------------------
-		//	Create
+		//	LoadSkin
 		//!	\brief		Initialize this instance with the skin.ini
 		//!						 file to be found in basePath.
 		//!
@@ -122,7 +126,23 @@ public:
 		//!            into which detailed error information should
 		//!            be placed.
 		//------------------------------------------------------
-  BOOL Create( const char *basePath, CStdString *errorReport );
+  BOOL LoadSkin( CStdString *errorReport );
+
+
+		//------------------------------------------------------
+		// GetSkinName
+		//------------------------------------------------------
+	const CStdString &GetSkinName( void ) const { return m_skinName;	}
+
+		//------------------------------------------------------
+		// GetPreviewTexture
+		//------------------------------------------------------
+	LPDIRECT3DTEXTURE8 GetPreviewTexture( void ) { return m_previewTexture;	}
+
+		//------------------------------------------------------
+		// GetPreviewTexture
+		//------------------------------------------------------
+	const RECT &GetPreviewTextureRect( void ) { return m_previewTextureRect;	}
 
 protected:
 		//------------------------------------------------------
@@ -133,7 +153,9 @@ protected:
 																			const CStdString &colorChannelEntry, 
 																			const CStdString &alphaChannelEntry );
 
-	CStdString							m_skinBasePath;
+	CStdString							m_skinName;
+	LPDIRECT3DTEXTURE8			m_previewTexture;
+	RECT										m_previewTextureRect;
 
 	LPDIRECT3DTEXTURE8			m_splashBackdropTexture;
 	LPDIRECT3DTEXTURE8			m_messageBackdropTexture;

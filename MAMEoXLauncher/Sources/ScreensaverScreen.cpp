@@ -67,7 +67,7 @@ void CScreensaverScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     if( m_screenshotFiles.size() > 1 || (m_screenshotFiles.size() == 1 && rand() & 0x01) )
     {
       UINT32 randIndex = rand() % m_screenshotFiles.size();
-      CStdString str = g_FileIOConfig.m_ScreenshotPath;
+      CStdString str = g_FileIOConfig.m_screenshotPath;
       str += "\\";
       str += m_screenshotFiles[ randIndex ];
       LoadPNGToTexture( str, &m_backdropTexture, &m_screenshotRect );
@@ -152,7 +152,7 @@ void CScreensaverScreen::FindScreenshots( void )
 
   m_screenshotFiles.clear();
 
-  CStdString findPath = g_FileIOConfig.m_ScreenshotPath;
+  CStdString findPath = g_FileIOConfig.m_screenshotPath;
   findPath += "\\*.png";
 
   HANDLE h = FindFirstFile( findPath.c_str(), &findData );

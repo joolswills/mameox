@@ -194,17 +194,17 @@ void __cdecl main( void )
   {
       // If any paths have been set to samba, revert them
       // to the defaults
-    if( g_FileIOConfig.m_ArtPath.Left(6) == "smb://" )
-      g_FileIOConfig.m_ArtPath = DEFAULT_ARTPATH;
+    if( g_FileIOConfig.m_artPath.Left(6) == "smb://" )
+      g_FileIOConfig.m_artPath = DEFAULT_ARTPATH;
 
-    if( g_FileIOConfig.m_AudioPath.Left(6) == "smb://" )
-      g_FileIOConfig.m_AudioPath = DEFAULT_AUDIOPATH;
+    if( g_FileIOConfig.m_audioPath.Left(6) == "smb://" )
+      g_FileIOConfig.m_audioPath = DEFAULT_AUDIOPATH;
     
-    if( g_FileIOConfig.m_ConfigPath.Left(6) == "smb://" )
-      g_FileIOConfig.m_ConfigPath = DEFAULT_CONFIGPATH;
+    if( g_FileIOConfig.m_configPath.Left(6) == "smb://" )
+      g_FileIOConfig.m_configPath = DEFAULT_CONFIGPATH;
         
-    if( g_FileIOConfig.m_GeneralPath.Left(6) == "smb://" )
-      g_FileIOConfig.m_GeneralPath = DEFAULT_GENERALPATH;
+    if( g_FileIOConfig.m_generalPath.Left(6) == "smb://" )
+      g_FileIOConfig.m_generalPath = DEFAULT_GENERALPATH;
     
     if( g_FileIOConfig.m_HDImagePath.Left(6) == "smb://" )
       g_FileIOConfig.m_HDImagePath = DEFAULT_HDIMAGEPATH;
@@ -215,20 +215,20 @@ void __cdecl main( void )
     if( g_FileIOConfig.m_NVramPath.Left(6) == "smb://" )
       g_FileIOConfig.m_NVramPath = DEFAULT_NVRAMPATH;
     
-    if( g_FileIOConfig.m_RomBackupPath.Left(6) == "smb://" )
-      g_FileIOConfig.m_RomBackupPath = DEFAULT_ROMBACKUPPATH;
+    if( g_FileIOConfig.m_romBackupPath.Left(6) == "smb://" )
+      g_FileIOConfig.m_romBackupPath = DEFAULT_ROMBACKUPPATH;
     
-    if( g_FileIOConfig.m_RomPath0.Left(6) == "smb://" )
-      g_FileIOConfig.m_RomPath0 = DEFAULT_ROMPATH;
+    if( g_FileIOConfig.m_romPath0.Left(6) == "smb://" )
+      g_FileIOConfig.m_romPath0 = DEFAULT_ROMPATH;
 
-    if( g_FileIOConfig.m_RomPath1.Left(6) == "smb://" )
-      g_FileIOConfig.m_RomPath1 = DEFAULT_ROMPATH;
+    if( g_FileIOConfig.m_romPath1.Left(6) == "smb://" )
+      g_FileIOConfig.m_romPath1 = DEFAULT_ROMPATH;
 
-    if( g_FileIOConfig.m_RomPath2.Left(6) == "smb://" )
-      g_FileIOConfig.m_RomPath2 = DEFAULT_ROMPATH;
+    if( g_FileIOConfig.m_romPath2.Left(6) == "smb://" )
+      g_FileIOConfig.m_romPath2 = DEFAULT_ROMPATH;
 
-    if( g_FileIOConfig.m_RomPath3.Left(6) == "smb://" )
-      g_FileIOConfig.m_RomPath3 = DEFAULT_ROMPATH;
+    if( g_FileIOConfig.m_romPath3.Left(6) == "smb://" )
+      g_FileIOConfig.m_romPath3 = DEFAULT_ROMPATH;
   }
 
   if( !g_textureSet.Create() )
@@ -387,7 +387,8 @@ void __cdecl main( void )
   CTVCalibrationScreen TVCalibrationScreen( pD3DDevice, g_fontSet, g_textureSet );
 
 		// Skin chooser
-	CSkinChooserScreen skinChooser( pD3DDevice, g_fontSet, g_textureSet, area );
+	CSkinChooserScreen skinChooser( pD3DDevice, g_fontSet, g_textureSet );
+	skinChooser.FindSkins();
 
     //-- Initialize the rendering engine -------------------------------
   D3DXMATRIX matWorld;
@@ -800,7 +801,7 @@ static void Helper_SetStartMenuItems( CStartMenuView &startMenu, viewmode curren
       // being set to the ALTDrive, as it's one of the directories
       // that must be writable (and will be reassigned if we're running
       // on readonly media)
-    if( g_FileIOConfig.m_ConfigPath[0] == g_FileIOConfig.m_ALTDrive[0] )
+    if( g_FileIOConfig.m_configPath[0] == g_FileIOConfig.m_ALTDrive[0] )
       startMenu.AddMenuItem( "Copy system files from DVD", MI_COPYSYSTEMFILESFROMDVD );
 
 		startMenu.AddMenuItem( "Choose Skin", MI_SKINCHOOSER );
@@ -1462,11 +1463,11 @@ static BOOL Helper_CopySystemFilesFromDVD( LPDIRECT3DDEVICE8 pD3DDevice )
       } \
     }
 
-  COPYDIR( g_FileIOConfig.m_ArtPath );
-  COPYDIR( g_FileIOConfig.m_GeneralPath );
+  COPYDIR( g_FileIOConfig.m_artPath );
+  COPYDIR( g_FileIOConfig.m_generalPath );
   COPYDIR( g_FileIOConfig.m_HiScorePath );
-  COPYDIR( g_FileIOConfig.m_AudioPath );
-  COPYDIR( g_FileIOConfig.m_ScreenshotPath );
+  COPYDIR( g_FileIOConfig.m_audioPath );
+  COPYDIR( g_FileIOConfig.m_screenshotPath );
 
   return TRUE;
 }
