@@ -24,8 +24,9 @@
 #define __NETBIOS_PACKET_H__
 
 #include "defines.h"
-#ifndef USE_SAMBA
+#undef errno
 
+#ifndef USE_SAMBA
 class NetBIOSPacket
 {
 protected:
@@ -57,6 +58,5 @@ public:
 	virtual uint16 getDataLength() = 0;
 	virtual uint8 *getData() = 0;
 };
-
 #endif
 #endif //__NETBIOS_PACKET_H__

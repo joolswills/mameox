@@ -30,6 +30,8 @@
 #include <iostream.h>
 #endif
 
+#undef errno
+
 #pragma warning (disable:4309)
 SessionPacket::SessionPacket(int8 t, uint8* d, int32 l)
 {
