@@ -182,6 +182,7 @@ void LoadOptions( void )
   g_rendererOptions.m_frameskip =           iniFile.GetProfileInt( "Video", "Frameskip", AUTO_FRAMESKIP );
   g_rendererOptions.m_minFilter =           (D3DTEXTUREFILTERTYPE)iniFile.GetProfileInt( "Video", "MinificationFilter", D3DTEXF_LINEAR );
   g_rendererOptions.m_magFilter =           (D3DTEXTUREFILTERTYPE)iniFile.GetProfileInt( "Video", "MagnificationFilter", D3DTEXF_LINEAR );
+	g_rendererOptions.m_FilterType =          (EFilterType)iniFile.GetProfileInt("Video", "GraphicsFilter", eftNone);
 	options.brightness =    iniFile.GetProfileFloat( "Video", "Brightness", 1.0f );		    // brightness of the display
   options.pause_bright =  iniFile.GetProfileFloat( "Video", "PauseBrightness", 0.65f );     // brightness when in pause
 	options.gamma =         iniFile.GetProfileFloat( "Video", "Gamma", 1.0f );			        // gamma correction of the display
@@ -333,6 +334,7 @@ void SaveOptions( void )
   iniFile.WriteProfileInt( "Video", "MinificationFilter", g_rendererOptions.m_minFilter );
   iniFile.WriteProfileInt( "Video", "MagnificationFilter", g_rendererOptions.m_magFilter );
   iniFile.WriteProfileInt( "Video", "Frameskip", g_rendererOptions.m_frameskip );
+	iniFile.WriteProfileInt( "Video", "GraphicsFilter", g_rendererOptions.m_FilterType);
   iniFile.WriteProfileInt( "Video", "ScreenRotation", g_rendererOptions.m_screenRotation );
   iniFile.WriteProfileFloat( "Video", "Brightness", options.brightness );		    // brightness of the display
   iniFile.WriteProfileFloat( "Video", "PauseBrightness", options.pause_bright );     // brightness when in pause

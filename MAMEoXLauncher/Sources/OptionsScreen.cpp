@@ -12,6 +12,7 @@
 #include "xbox_FileIO.h"
 #include "xbox_Network.h"
 #include "xbox_Direct3DRenderer.h"
+#include "GFilterManager.h"
 
 #include "xbox_FileIO.h"		// for path info
 
@@ -142,7 +143,7 @@ COptionsScreen::COptionsScreen( LPDIRECT3DDEVICE8	displayDevice,
   wcscpy( m_pageData[OPTPAGE_VIDEO].m_title, L"Video Options" );
   m_pageData[OPTPAGE_VIDEO].m_drawFunct = ::DrawVideoPage;
   m_pageData[OPTPAGE_VIDEO].m_changeFunct = ::ChangeVideoPage;
-  m_pageData[OPTPAGE_VIDEO].m_numItems = 11;
+  m_pageData[OPTPAGE_VIDEO].m_numItems = 12;
 
   wcscpy( m_pageData[OPTPAGE_VECTOR].m_title, L"Vector Options" );
   m_pageData[OPTPAGE_VECTOR].m_drawFunct = ::DrawVectorPage;
@@ -650,6 +651,7 @@ void COptionsScreen::DrawVideoPage( void )
                                     L"Quincunx", 
                                     L"Gaussian Cubic" };
 
+
   STARTPAGE();
 
   DRAWITEM( L"VSYNC", g_rendererOptions.m_vsync ? L"Enabled" : L"Disabled" );
@@ -686,6 +688,10 @@ void COptionsScreen::DrawVideoPage( void )
   DRAWITEM( L"Minification filter", filterNames[g_rendererOptions.m_minFilter] );
 
   DRAWITEM( L"Magnification filter", filterNames[g_rendererOptions.m_magFilter] );
+
+	CGFilterManager oFilterManger;
+	MapFilters mapFilters = oFilterManger.GetAvailableFilters();
+	DRAWITEM( L"Scaling filter", mapFilters[(EFilterType)g_rendererOptions.m_FilterType].m_strName );
 
   if( !options.use_artwork )
     swprintf( text, L"None" );
@@ -1193,9 +1199,32 @@ void COptionsScreen::ChangeVideoPage( BOOL movingRight )
         g_rendererOptions.m_magFilter = D3DTEXF_POINT;
     }
     break;
+	case 10:
+		{
+			CGFilterManager oFilterMgr;
+			MapFilters mapFilters = oFilterMgr.GetAvailableFilters();
 
+			if (!movingRight)
+			{
+				g_rendererOptions.m_FilterType -= 1;
+			}
+			else
+			{
+				g_rendererOptions.m_FilterType += 1;
+			}
+
+			if (g_rendererOptions.m_FilterType > mapFilters.size()-1)
+			{
+				g_rendererOptions.m_FilterType = 0;
+			}
+			else if (g_rendererOptions.m_FilterType < 0)
+			{
+				g_rendererOptions.m_FilterType = mapFilters.size()-1;
+			}
+		}
+		break;
     // Artwork usage
-  case 10:
+  case 11:
     {
       DWORD artworkState[8] = { 0, 
                                 ARTWORK_USE_BACKDROPS, 
