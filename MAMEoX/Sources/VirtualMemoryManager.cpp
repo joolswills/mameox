@@ -4,7 +4,6 @@
   *
   */
 
-
 //= I N C L U D E S ===========================================================
 #include "VirtualMemoryManager.h"
 #include <algorithm>
@@ -12,17 +11,15 @@
 #include "DebugLogger.h"
 
 //= D E F I N E S =============================================================
-#define FINDPAGE( _addr__ )          (void*)(((UINT32)(_addr__)) - (((UINT32)(_addr__)) & 4096))
 
   // Define to print log info on every VMM call
 #define LOGVMM
+
 
 //= P R O T O T Y P E S =======================================================
 extern "C" int fatalerror( const char *fmt, ... );
 
 //= G L O B A L = V A R S =====================================================
-
-
 
 //= F U N C T I O N S =========================================================
 
@@ -50,7 +47,7 @@ void *CVirtualMemoryManager::Malloc( UINT32 size )
   m_virtualPages.push_back( page );
   std::sort( m_virtualPages.begin(), m_virtualPages.end() );
 
-  #if (defined LOGVMM && defined _DEBUG)
+  #ifdef LOGVMM
   PRINTMSG( T_INFO, "Malloc: %lu bytes: 0x%X", size, page.m_address );
   #endif
 
@@ -68,11 +65,15 @@ void CVirtualMemoryManager::Free( void *base )
   if( !base )
     return;
 
-  vmmpage_t page;
-  page.m_address = FINDPAGE( base );
 
-  std::vector<vmmpage_t>::iterator i;
-  i = std::find( m_virtualPages.begin(), m_virtualPages.end(), page );
+    // Todo: Change this to a binary search, as the 
+    // virtual pages vector is sorted by base address.
+  std::vector<vmmpage_t>::iterator i = m_virtualPages.begin();
+  for( ; i != m_virtualPages.end(); ++i )
+  {
+    if( (INT32)base < (INT32)(*i).m_address + (*i).m_size )
+      break;
+  }
 
   if( i == m_virtualPages.end() )
   {
@@ -82,7 +83,6 @@ void CVirtualMemoryManager::Free( void *base )
 
     // See if the page is committed and remove it from the committed list
   vmmpage_t &virtualPage = (*i);
-
   if( virtualPage.m_committed )
   {
     std::list<UINT32>::iterator j = std::find( m_committedAddresses.begin(), m_committedAddresses.end(), (UINT32)(virtualPage.m_address) );
@@ -95,7 +95,7 @@ void CVirtualMemoryManager::Free( void *base )
 
   m_virtualPages.erase( i );
 
-  #if (defined LOGVMM && defined _DEBUG)
+  #ifdef LOGVMM
   PRINTMSG( T_INFO, "Free: 0x%X", base );
   #endif
 }
@@ -105,17 +105,27 @@ void CVirtualMemoryManager::Free( void *base )
 //------------------------------------------------------
 BOOL CVirtualMemoryManager::AccessAddressRange( void *base, UINT32 size )
 {
+  #ifdef LOGVMM
+  PRINTMSG( T_INFO, "AccessAddressRange: Base 0x%X, size: %lu", base, size );
+  #endif
+
+
   if( !base )
   {
     PRINTMSG( T_ERROR, "AccessAddressRange called on NULL base!" );
     return FALSE;
   }
 
-  vmmpage_t page;
-  page.m_address = FINDPAGE( base );
+    // Todo: Change this to a binary search, as the 
+    // virtual pages vector is sorted by base address.
+  std::vector<vmmpage_t>::iterator i = m_virtualPages.begin();
+  for( ; i != m_virtualPages.end(); ++i )
+  {
+    if( (INT32)base < (INT32)(*i).m_address + (*i).m_size )
+      break;
+  }
 
-  std::vector<vmmpage_t>::iterator i;
-  i = std::find( m_virtualPages.begin(), m_virtualPages.end(), page );
+    // Todo: Make sure the size doesn't cross a page boundary
 
   if( i == m_virtualPages.end() )
   {
@@ -184,7 +194,7 @@ BOOL CVirtualMemoryManager::AccessAddressRange( void *base, UINT32 size )
     m_committedAddresses.push_back( (UINT32)(virtualPage.m_address) );
   }
 
-  #if (defined LOGVMM && defined _DEBUG)
+  #ifdef LOGVMM
   PRINTMSG( T_INFO, "AccessAddressRange: 0x%X, num page faults: %lu", virtualPage.m_address, virtualPage.m_pageFaultCount );
   DEBUGGERCHECKRAM();
   #endif
@@ -195,7 +205,7 @@ BOOL CVirtualMemoryManager::AccessAddressRange( void *base, UINT32 size )
 
 
 //------------------------------------------------------
-//  UnloadLRUPage
+//  MakePageReadOnly
 //------------------------------------------------------
 BOOL CVirtualMemoryManager::MakePageReadOnly( void *base )
 {
@@ -205,12 +215,16 @@ BOOL CVirtualMemoryManager::MakePageReadOnly( void *base )
     return FALSE;
   }
 
-  vmmpage_t page;
-  page.m_address = FINDPAGE( base );
 
-  std::vector<vmmpage_t>::iterator i = std::find( m_virtualPages.begin(), 
-                                                  m_virtualPages.end(), 
-                                                  page );
+    // Todo: Change this to a binary search, as the 
+    // virtual pages vector is sorted by base address.
+  std::vector<vmmpage_t>::iterator i = m_virtualPages.begin();
+  for( ; i != m_virtualPages.end(); ++i )
+  {
+    if( (INT32)base < (INT32)(*i).m_address + (*i).m_size )
+      break;
+  }
+
   if( i == m_virtualPages.end() )
   {
     PRINTMSG( T_ERROR, "MakePageReadOnly called on invalid address 0x%X!", base );
@@ -229,7 +243,7 @@ BOOL CVirtualMemoryManager::MakePageReadOnly( void *base )
 }
 
 //------------------------------------------------------
-//  UnloadLRUPage
+//  MakePageReadWrite
 //------------------------------------------------------
 BOOL CVirtualMemoryManager::MakePageReadWrite( void *base )
 {
@@ -239,12 +253,15 @@ BOOL CVirtualMemoryManager::MakePageReadWrite( void *base )
     return FALSE;
   }
 
-  vmmpage_t page;
-  page.m_address = FINDPAGE( base );
+    // Todo: Change this to a binary search, as the 
+    // virtual pages vector is sorted by base address.
+  std::vector<vmmpage_t>::iterator i = m_virtualPages.begin();
+  for( ; i != m_virtualPages.end(); ++i )
+  {
+    if( (INT32)base < (INT32)(*i).m_address + (*i).m_size )
+      break;
+  }
 
-  std::vector<vmmpage_t>::iterator i = std::find( m_virtualPages.begin(), 
-                                                  m_virtualPages.end(), 
-                                                  page );
   if( i == m_virtualPages.end() )
   {
     PRINTMSG( T_ERROR, "MakePageReadWrite called on invalid address 0x%X!", base );
@@ -267,7 +284,7 @@ BOOL CVirtualMemoryManager::MakePageReadWrite( void *base )
 //------------------------------------------------------
 BOOL CVirtualMemoryManager::UnloadLRUPage( void )
 {
-  #if (defined LOGVMM && defined _DEBUG)
+  #ifdef LOGVMM
   PRINTMSG( T_INFO, "UnloadLRUPage %lu pages allocated", m_committedAddresses.size() );
   DEBUGGERCHECKRAM();
   #endif
@@ -300,7 +317,7 @@ BOOL CVirtualMemoryManager::UnloadLRUPage( void )
   (*it).m_committed = FALSE;
   m_committedAddresses.pop_front();
 
-  #if (defined LOGVMM && defined _DEBUG)
+  #ifdef LOGVMM
   PRINTMSG( T_INFO, "UnloadLRUPage %lu pages allocated after free", m_committedAddresses.size() );
   DEBUGGERCHECKRAM();
   #endif
