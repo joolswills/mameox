@@ -1,11 +1,11 @@
-#pragma code_seg("C24")
-#pragma data_seg("D24")
-#pragma bss_seg("B24")
-#pragma const_seg("K24")
-#pragma comment(linker, "/merge:D24=24")
-#pragma comment(linker, "/merge:C24=24")
-#pragma comment(linker, "/merge:B24=24")
-#pragma comment(linker, "/merge:K24=24")
+#pragma code_seg("C4")
+#pragma data_seg("D4")
+#pragma bss_seg("B4")
+#pragma const_seg("K4")
+#pragma comment(linker, "/merge:D4=4")
+#pragma comment(linker, "/merge:C4=4")
+#pragma comment(linker, "/merge:B4=4")
+#pragma comment(linker, "/merge:K4=4")
 /*************************************************************************
 
 	Williams/Midway Y/Z-unit system

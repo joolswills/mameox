@@ -180,9 +180,13 @@ BOOL UnloadDriverSections( void )
         (*i).first == "src\\drivers\\mcr3.c" ||
         (*i).first == "src\\drivers\\mcr68.c" ||
         (*i).first == "src\\drivers\\williams.c" ||
+        (*i).first == "src\\drivers\\midyunit.c" ||
+        (*i).first == "src\\drivers\\midtunit.c" ||
+        (*i).first == "src\\drivers\\midwunit.c" ||
+        (*i).first == "src\\drivers\\midvunit.c" ||
         (*i).first == "src\\drivers\\twincobr.c" ||
         (*i).first == "src\\drivers\\yard.c" ||
-        (*i).first == "src\\drivers\\hal121.c" ||
+        (*i).first == "src\\drivers\\ha121.c" ||
         (*i).first == "src\\drivers\\scramble.c" ||
         (*i).first == "src\\drivers\\scobra.c" ||
         (*i).first == "src\\drivers\\amidar.c" ||
@@ -202,13 +206,13 @@ BOOL UnloadDriverSections( void )
         (*i).first == "src\\drivers\\ataxx.c" ||
         (*i).first == "src\\drivers\\hyperspt.c" ||
         (*i).first == "src\\drivers\\superchs.c" ||
+        (*i).first == "src\\drivers\\groundfx.c" ||
+        (*i).first == "src\\drivers\\gunbustr.c" ||
+        (*i).first == "src\\drivers\\undrfire.c" ||
         (*i).first == "src\\drivers\\pipedrm.c" ||
-        (*i).first == "src\\drivers\\midtunit.c" ||
-        (*i).first == "src\\drivers\\midwunit.c" ||
         (*i).first == "src\\drivers\\mystwarr.c" ||
         (*i).first == "src\\drivers\\sega.c" ||
-        (*i).first == "src\\drivers\\congo.c" ||
-        (*i).first == "src\\drivers\\hal21.c" )
+        (*i).first == "src\\drivers\\congo.c" )
         continue;
     XFreeSection( (*i).second.c_str() );
   }
@@ -453,12 +457,12 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\grchamp.c", "305" );
   RegisterSectionName( "src\\drivers\\gridlee.c", "306" );
   RegisterSectionName( "src\\drivers\\grobda.c", "307" );
-  RegisterSectionName( "src\\drivers\\groundfx.c", "308" );
+  RegisterSectionName( "src\\drivers\\groundfx.c", "22" );
   RegisterSectionName( "src\\drivers\\grtwall.c", "309" );
   RegisterSectionName( "src\\drivers\\gstriker.c", "310" );
   RegisterSectionName( "src\\drivers\\gsword.c", "311" );
   RegisterSectionName( "src\\drivers\\gumbo.c", "312" );
-  RegisterSectionName( "src\\drivers\\gunbustr.c", "313" );
+  RegisterSectionName( "src\\drivers\\gunbustr.c", "22" );
   RegisterSectionName( "src\\drivers\\gundealr.c", "314" );
   RegisterSectionName( "src\\drivers\\gunsmoke.c", "315" );
   RegisterSectionName( "src\\drivers\\gyruss.c", "316" );
@@ -551,11 +555,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\metro.c", "403" );
   RegisterSectionName( "src\\drivers\\mexico86.c", "404" );
   RegisterSectionName( "src\\drivers\\mhavoc.c", "405" );
-  RegisterSectionName( "src\\drivers\\midtunit.c", "24" );
-  RegisterSectionName( "src\\drivers\\midvunit.c", "407" );
-  RegisterSectionName( "src\\drivers\\midwunit.c", "24" );
   RegisterSectionName( "src\\drivers\\midxunit.c", "409" );
-  RegisterSectionName( "src\\drivers\\midyunit.c", "24" );
   RegisterSectionName( "src\\drivers\\mikie.c", "411" );
   RegisterSectionName( "src\\drivers\\minivadr.c", "412" );
   RegisterSectionName( "src\\drivers\\missb2.c", "413" );
@@ -841,7 +841,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\twincobr.c", "5" );
   RegisterSectionName( "src\\drivers\\ultraman.c", "694" );
   RegisterSectionName( "src\\drivers\\ultratnk.c", "695" );
-  RegisterSectionName( "src\\drivers\\undrfire.c", "696" );
+  RegisterSectionName( "src\\drivers\\undrfire.c", "22" );
   RegisterSectionName( "src\\drivers\\unico.c", "697" );
   RegisterSectionName( "src\\drivers\\usgames.c", "698" );
   RegisterSectionName( "src\\drivers\\vaportra.c", "699" );
@@ -891,6 +891,10 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\zerozone.c", "743" );
   RegisterSectionName( "src\\drivers\\zn.c", "744" );
   RegisterSectionName( "src\\drivers\\zodiack.c", "745" );
+  RegisterSectionName( "src\\drivers\\midtunit.c", "4" );
+  RegisterSectionName( "src\\drivers\\midvunit.c", "4" );
+  RegisterSectionName( "src\\drivers\\midwunit.c", "4" );
+  RegisterSectionName( "src\\drivers\\midyunit.c", "4" );
 }
 #pragma code_seg()
 #pragma data_seg()

@@ -352,7 +352,6 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 @SkipDrivers = ( "jrcrypt.c" );
 
 @TwinCobraFamily = ( "wardner.c", "twincobr.c" );
-@MidwayMCRFamily = ( "mcr1.c", "mcr2.c", "mcr3.c", "mcr68.c", "williams.c" ); # Arch rivals
 @CapcomFamily = ( "cps1.c", "cps2.c" );
 @NamcoFamily = ( "namcoic.c", "namcona1.c", "namconb1.c", "namcond1.c", "namcos1.c",
                  "namcos2.c", "namcos21.c", "namcos22.c", "namcos86.c", "namcos11.c" );
@@ -378,9 +377,12 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 @M72Family = ( "m72.c", "m90.c" );											# Bomber Man World (World)
 @LelandFamily = ( "leland.c", "ataxx.c" );									# Asylum (prototype)
 @TrackFldFamily = ( "trackfld.c", "hyperspt.c" );							# Hyper Sports, Hyper Olympics '84
-@Taito_F3Family = ( "taito_f3.c", "superchs.c" );							# Super Chase
+@Taito_F3Family = ( "taito_f3.c", "superchs.c", "groundfx.c",
+					"gunbustr.c", "undrfire.c" );							# Super Chase, Ground Effects, Gunbuster, Under Fire
 @FromanceFamily = ( "fromance.c", "pipedrm.c" );							# Pipe Dream
-@MidYUnitFamily = ( "midyunit.c", "midtunit.c", "midwunit.c" );				# Mortal Kombat II, WWF: Wrestlemania (rev 1.30 08/10/95)
+@MidwayMCRFamily = ( "mcr1.c", "mcr2.c", "mcr3.c", "mcr68.c", "williams.c",
+					 "midyunit.c", "midtunit.c", "midwunit.c", 
+					 "midvunit.c" );										# Arch rivals, Mortal Kombat II, WWF: Wrestlemania (rev 1.30 08/10/95), Mortal Kombat
 @KonamiGXFamily = ( "konamigx.c", "mystwarr.c" );							# Metamorphic Force
 @SegarFamily = ( "segar.c", "sega.c" );										# Star Trek
 @ZaxxonFamily = ( "zaxxon.c", "congo.c" );									# Congo Bongo

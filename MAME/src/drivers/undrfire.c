@@ -1,11 +1,11 @@
-#pragma code_seg("C696")
-#pragma data_seg("D696")
-#pragma bss_seg("B696")
-#pragma const_seg("K696")
-#pragma comment(linker, "/merge:D696=696")
-#pragma comment(linker, "/merge:C696=696")
-#pragma comment(linker, "/merge:B696=696")
-#pragma comment(linker, "/merge:K696=696")
+#pragma code_seg("C22")
+#pragma data_seg("D22")
+#pragma bss_seg("B22")
+#pragma const_seg("K22")
+#pragma comment(linker, "/merge:D22=22")
+#pragma comment(linker, "/merge:C22=22")
+#pragma comment(linker, "/merge:B22=22")
+#pragma comment(linker, "/merge:K22=22")
 /***************************************************************************
 
 	Underfire  							(c) 1993 Taito
