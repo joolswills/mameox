@@ -42,8 +42,7 @@ extern int fatalerror( const char *fmt, ... );
   // as the MAME core is very bad about catching failed mallocs.
   // This code acts as a bottleneck to catch malloc failures and
   // handle them gracefully.
-//#ifdef _DEBUG
-#if 1
+#ifdef _DEBUG
   // Debug versions w/ caller-logging
 #define osd_malloc(s)     osd_malloc_debug( (s), __FILE__, __LINE__, __FUNCTION__ )
 #define osd_calloc(n,s)   osd_calloc_debug( (n), (s), __FILE__, __LINE__, __FUNCTION__ )

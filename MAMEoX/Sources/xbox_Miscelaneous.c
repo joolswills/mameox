@@ -32,9 +32,85 @@ int fatalerror( const char *fmt, ... );   // Defined in xbox_Main.cpp
 //= F U N C T I O N S ==================================================
 
 //---------------------------------------------------------------------
-//  osd_malloc
+//  osd_malloc_debug
 //---------------------------------------------------------------------
-void *osd_malloc( size_t size )
+void *osd_malloc_debug( size_t size, const char **filename, unsigned int line, const char **function )
+{
+  // [EBA] - "Safe" malloc, exits the program if the malloc fails, rather than
+  // relying on MAME to actually check for failure (which it does not, in numerous
+  // places)
+
+  void *ret = malloc( size );
+
+    // Attempt to release a virtual page back to the system to free up some RAM
+  while( !ret && osd_vmm_unloadLRUpage()  )
+    ret = malloc( size );
+
+  if( !ret )
+  {
+    MEMORYSTATUS memStatus;
+    GlobalMemoryStatus( &memStatus );
+    fatalerror( "Malloc failed! (Out of Memory)\nRequested %lu bytes, %lu free\nCall made at %s() - %s:%lu", size, memStatus.dwAvailPhys, function, filename, line );
+  }
+
+  return ret;
+}
+
+
+//---------------------------------------------------------------------
+//  osd_calloc_debug
+//---------------------------------------------------------------------
+void *osd_calloc_debug( size_t num, size_t size, const char **filename, unsigned int line, const char **function )
+{
+  // [EBA] - "Safe" malloc, exits the program if the malloc fails, rather than
+  // relying on MAME to actually check for failure (which it does not, in numerous
+  // places)
+
+  void *ret = calloc( num, size );
+
+    // Attempt to release a virtual page back to the system to free up some RAM
+  while( !ret && osd_vmm_unloadLRUpage()  )
+    ret = calloc( num, size );
+
+  if( !ret )
+  {
+    MEMORYSTATUS memStatus;
+    GlobalMemoryStatus( &memStatus );
+    fatalerror( "Calloc failed! (Out of Memory)\nRequested %lu bytes, %lu free\nCall made at %s() - %s:%lu", size, memStatus.dwAvailPhys, function, filename, line );
+  }
+
+  return ret;
+}
+
+//---------------------------------------------------------------------
+//  osd_realloc_debug
+//---------------------------------------------------------------------
+void *osd_realloc_debug( void *memblock, size_t size, const char **filename, unsigned int line, const char **function )
+{
+  // [EBA] - "Safe" malloc, exits the program if the malloc fails, rather than
+  // relying on MAME to actually check for failure (which it does not, in numerous
+  // places)
+
+  void *ret = realloc( memblock, size );
+
+    // Attempt to release a virtual page back to the system to free up some RAM
+  while( !ret && osd_vmm_unloadLRUpage()  )
+    ret = realloc( memblock, size );
+
+  if( !ret )
+  {
+    MEMORYSTATUS memStatus;
+    GlobalMemoryStatus( &memStatus );
+    fatalerror( "Realloc failed! (Out of Memory)\nRequested %lu bytes, %lu free\nCall made at %s() - %s:%lu", size, memStatus.dwAvailPhys, function, filename, line );
+  }
+
+  return ret;
+}
+
+//---------------------------------------------------------------------
+//  osd_malloc_retail
+//---------------------------------------------------------------------
+void *osd_malloc_retail( size_t size )
 {
   // [EBA] - "Safe" malloc, exits the program if the malloc fails, rather than
   // relying on MAME to actually check for failure (which it does not, in numerous
@@ -58,9 +134,9 @@ void *osd_malloc( size_t size )
 
 
 //---------------------------------------------------------------------
-//  osd_calloc
+//  osd_calloc_retail
 //---------------------------------------------------------------------
-void *osd_calloc( size_t num, size_t size )
+void *osd_calloc_retail( size_t num, size_t size )
 {
   // [EBA] - "Safe" malloc, exits the program if the malloc fails, rather than
   // relying on MAME to actually check for failure (which it does not, in numerous
@@ -83,9 +159,9 @@ void *osd_calloc( size_t num, size_t size )
 }
 
 //---------------------------------------------------------------------
-//  osd_realloc
+//  osd_realloc_retail
 //---------------------------------------------------------------------
-void *osd_realloc( void *memblock, size_t size )
+void *osd_realloc_retail( void *memblock, size_t size )
 {
   // [EBA] - "Safe" malloc, exits the program if the malloc fails, rather than
   // relying on MAME to actually check for failure (which it does not, in numerous
@@ -106,6 +182,7 @@ void *osd_realloc( void *memblock, size_t size )
 
   return ret;
 }
+
 
 //---------------------------------------------------------------------
 //	osd_display_loading_rom_message

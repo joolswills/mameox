@@ -1,5 +1,20 @@
 Version 0.79.2b
 
+   -------------------------------------------------------------
+  - \MAMEoX\Includes: 
+    - MAMEoX.h
+      - Upped version number
+
+  - Fixed a major bug in the ChangeMallocs.pl script that caused
+    it to miss any MAME core files not in the root MAME/src directory.
+    This explains the infrequent crashes on certain games (where it
+    happens to die on a malloc in a cpu/sound/etc... driver). Moved
+    the ChangeMallocs.pl script to the MAME directory.
+
+  - Added FindDependencies.pl, a script used to find all symbol 
+    dependencies between the object files. This should plot out all
+    silent XBE dependencies, eliminating the simple crash case.
+
 
 *********************************************************************
 Version 0.79.1b
