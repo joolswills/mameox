@@ -3,11 +3,6 @@
 # Usage:
 #   FindDependencies.pl BaseDirectoryContainingObjectFiles
 
-open( OUTFILE, ">Dependencies.txt" ) || die "Failed to create Dependencies.txt!\n";
-
-
-$ObjectDirectoryName = shift;
-@ObjectFiles = `find $ObjectDirectoryName -name *.obj`;
 
 @SystemSymbols = ( "_strcpy", "_sprintf", "_strlen", "_memset",
 									 "__RTC_CheckEsp", "__RTC_InitBase", "__RTC_Shutdown",
@@ -15,13 +10,19 @@ $ObjectDirectoryName = shift;
 									 "_memcmp", "_fclose", "_fopen", "_fseek", "_memcpy", "_memmove",
 									 "_qsort", "_sscanf", "_strchr", "_strcmp", "_strstr", "_tolower",
 									 "_fabs", "___security_cookie", "__chkstk", "__chvalidator", "__RTC_UninitUse",
-									 "_fprintf", "_strncmp"
+									 "_fprintf", "_strncmp", "_exit", "_strcat"
+#									 "___mb_cur_max", "__fltused", "__ftol2", "__isctype",
+#									 "__allmul", "__allshl", "__aulldiv", "__aullshr", "_clock", 
 								 );
 
 %DefinedSymbolToObjectFileIndex;
 @UndefinedSymbolsPerObjectFile;
 
 
+$ObjectDirectoryName = shift;
+@ObjectFiles = `find $ObjectDirectoryName -name *.obj`;
+
+open( OUTFILE, ">Dependencies.txt" ) || die "Failed to create Dependencies.txt!\n";
 
 	# Pass 1: Figure out what each object file defines and imports
 print "Pass 1: Find defines/imports for each object file ($#ObjectFiles objects to parse)\n";
@@ -29,6 +30,7 @@ $counter = 0;
 foreach $ObjectFile ( @ObjectFiles ) {
 	local( @UndefinedSymbols );
 	local( @nmResults );
+	chomp( $ObjectFile );
 
 
 		# run nm on the object file
@@ -37,7 +39,9 @@ foreach $ObjectFile ( @ObjectFiles ) {
 		chomp( $i );
 
 		  # Defined symbol
-		if( $i =~ /\d+ [BCT] (.+)$/ ) {
+			# nm makes the type field for static variables lowercase
+			# so it's important to be case sensitive
+		if( $i =~ /[\dabcdefABCDEF]+ [RDBCT] (.+)$/ ) {
 			$DefinedSymbolToObjectFileIndex{ $1 } = $counter;
 		}
 
@@ -67,7 +71,6 @@ $counter = 0;
 foreach $ObjectFile ( @ObjectFiles ) {
 		# UndefinedSymbolsRef is a reference to an array of undefined
 		# symbol names
-	chomp( $ObjectFile );
 	print OUTFILE "$ObjectFile depends on:\n";
 
 	$UndefinedSymbolsRef = @UndefinedSymbolsPerObjectFile[$counter];
@@ -99,7 +102,7 @@ foreach $ObjectFile ( @ObjectFiles ) {
 
 	$counter++;
 	print ".";
-#	if( $counter > 80 ) {
+#	if( $counter > 200 ) {
 #		last;
 #	}
 }
