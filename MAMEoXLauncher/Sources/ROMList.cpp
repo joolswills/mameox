@@ -46,7 +46,7 @@ extern "C" {
 #define CURSOR_SPEED            0.3f                // The cursor velocity modifier
 
   // Analog stick deadzone
-#define STICK_DEADZONE          0.35f
+#define STICK_DEADZONE          0.45f
 
 	// Number of seconds between valid DPAD readings
 #define DPADCURSORMOVE_TIMEOUT	0.20f
