@@ -17,7 +17,7 @@
 
 //= D E F I N E S ======================================================
   // Whether or not to enable sound debug messages
-#define LOG_SOUND
+//#define LOG_SOUND
 
   // The number of audio updates to ignore underflow/overflows before
   //  reporting them
@@ -537,7 +537,10 @@ static void Helper_CopySampleData( INT16 *data, UINT32 totalToCopy )
   UINT32 bytesToCopy = 0;
   DWORD playCursor, writeCursor;
   HRESULT result = IDirectSoundBuffer_GetCurrentPosition( g_pStreamBuffer, &playCursor, &writeCursor );
+  
+  #ifdef LOG_SOUND
   _RPT3( _CRT_WARN, "R: %-8.8lu W: %-8.8lu SB: %-8.8lu\n", playCursor, writeCursor, g_streamBufferWriteCursor );
+  #endif
 
   if( (g_streamBufferWriteCursor > writeCursor && g_streamBufferWriteCursor - writeCursor > 10) || 
       (g_streamBufferWriteCursor < writeCursor && writeCursor - g_streamBufferWriteCursor > 10 ) )
