@@ -2497,7 +2497,7 @@ static int displaygameinfo(struct mame_bitmap *bitmap,int selected)
 
 int showgamewarnings(struct mame_bitmap *bitmap)
 {
-	int i;
+//	int i;
 	char buf[2048];
 
 	if (Machine->gamedrv->flags &
@@ -2558,7 +2558,7 @@ int showgamewarnings(struct mame_bitmap *bitmap)
 		if (Machine->gamedrv->flags & (GAME_NOT_WORKING | GAME_UNEMULATED_PROTECTION))
 		{
 			const struct GameDriver *maindrv;
-			int foundworking;
+//			int foundworking;
 
 			if (Machine->gamedrv->flags & GAME_NOT_WORKING)
 			{
