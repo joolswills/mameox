@@ -1,4 +1,16 @@
 Version 0.65b
+  - Fixed Sound, I think sound is nearly if not 100%
+    correct, it sounds exactly like my win32 port
+    of MAME as far as I can tell anyway.  Also, sound
+    will output to all available speakers, sounds better
+    if you have a 5.1 system IMHO. (opcode)
+
+  - Fixed the XDK file debacle, now any files
+    that the project references from the xdk will
+    now work on any xdk as long as the xdk defined
+    the environment variable XDK to point to the
+    base dir of the xdk (I think all current xdks
+    do this). (opcode)
 
   - Changed the include path for the
     XDK files to an environment var
