@@ -1,7 +1,11 @@
-#pragma code_seg("C437")
-#pragma bss_seg("B437")
-#pragma data_seg("D437")
-#pragma const_seg("K437")
+#pragma code_seg("C436")
+#pragma data_seg("D436")
+#pragma bss_seg("B436")
+#pragma const_seg("K436")
+#pragma comment(linker, "/merge:D436=436")
+#pragma comment(linker, "/merge:C436=436")
+#pragma comment(linker, "/merge:B436=436")
+#pragma comment(linker, "/merge:K436=436")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -172,7 +176,7 @@ VIDEO_UPDATE( rollrace )
 
 
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C449")
-#pragma bss_seg("B449")
-#pragma data_seg("D449")
-#pragma const_seg("K449")
+#pragma code_seg("C448")
+#pragma data_seg("D448")
+#pragma bss_seg("B448")
+#pragma const_seg("K448")
+#pragma comment(linker, "/merge:D448=448")
+#pragma comment(linker, "/merge:C448=448")
+#pragma comment(linker, "/merge:B448=448")
+#pragma comment(linker, "/merge:K448=448")
 /***************************************************************************
 
 	Sega vector hardware
@@ -1314,7 +1318,7 @@ GAME( 1981, elim2a,   elim2,    elim2,    elim2,    elim2,    ROT0,   "Gremlin",
 GAME( 1981, elim4,	  elim2,    elim2,    elim4,    elim4,    ROT0,   "Gremlin", "Eliminator (4 Players)" )
 GAME( 1982, startrek, 0,        startrek, startrek, startrek, ROT0,   "Sega", "Star Trek" )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

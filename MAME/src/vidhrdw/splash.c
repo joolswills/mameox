@@ -1,7 +1,11 @@
-#pragma code_seg("C495")
-#pragma bss_seg("B495")
-#pragma data_seg("D495")
-#pragma const_seg("K495")
+#pragma code_seg("C494")
+#pragma data_seg("D494")
+#pragma bss_seg("B494")
+#pragma const_seg("K494")
+#pragma comment(linker, "/merge:D494=494")
+#pragma comment(linker, "/merge:C494=494")
+#pragma comment(linker, "/merge:B494=494")
+#pragma comment(linker, "/merge:K494=494")
 /***************************************************************************
 
   vidhrdw.c
@@ -209,7 +213,7 @@ VIDEO_UPDATE( splash )
 	splash_draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,screen[0],0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

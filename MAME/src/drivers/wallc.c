@@ -1,7 +1,11 @@
-#pragma code_seg("C606")
-#pragma bss_seg("B606")
-#pragma data_seg("D606")
-#pragma const_seg("K606")
+#pragma code_seg("C605")
+#pragma data_seg("D605")
+#pragma bss_seg("B605")
+#pragma const_seg("K605")
+#pragma comment(linker, "/merge:D605=605")
+#pragma comment(linker, "/merge:C605=605")
+#pragma comment(linker, "/merge:B605=605")
+#pragma comment(linker, "/merge:K605=605")
 /****************************************************************************
 
 Wall Crash by Midcoin (c) 1984
@@ -382,7 +386,7 @@ ROM_START( wallc )
 ROM_END
 
 GAME( 1984, wallc, 0,      wallc,  wallc, wallc, ROT0, "Midcoin", "Wall Crash" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

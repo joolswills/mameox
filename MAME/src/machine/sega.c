@@ -1,3 +1,11 @@
+#pragma code_seg("C448")
+#pragma data_seg("D448")
+#pragma bss_seg("B448")
+#pragma const_seg("K448")
+#pragma comment(linker, "/merge:D448=448")
+#pragma comment(linker, "/merge:C448=448")
+#pragma comment(linker, "/merge:B448=448")
+#pragma comment(linker, "/merge:K448=448")
 /*************************************************************************
 
 	Sega vector hardware
@@ -181,3 +189,7 @@ READ_HANDLER( elim4_IN4_r )
 	return (0);
 }
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

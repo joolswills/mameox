@@ -1,7 +1,11 @@
-#pragma code_seg("C533")
-#pragma bss_seg("B533")
-#pragma data_seg("D533")
-#pragma const_seg("K533")
+#pragma code_seg("C532")
+#pragma data_seg("D532")
+#pragma bss_seg("B532")
+#pragma const_seg("K532")
+#pragma comment(linker, "/merge:D532=532")
+#pragma comment(linker, "/merge:C532=532")
+#pragma comment(linker, "/merge:B532=532")
+#pragma comment(linker, "/merge:K532=532")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -684,7 +688,7 @@ VIDEO_EOF( taitob )
   taitob_draw_sprites(framebuffer[framebuffer_page],&Machine->visible_area);
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

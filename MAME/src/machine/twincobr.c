@@ -1,3 +1,11 @@
+#pragma code_seg("C587")
+#pragma data_seg("D587")
+#pragma bss_seg("B587")
+#pragma const_seg("K587")
+#pragma comment(linker, "/merge:D587=587")
+#pragma comment(linker, "/merge:C587=587")
+#pragma comment(linker, "/merge:B587=587")
+#pragma comment(linker, "/merge:K587=587")
 /****************************************************************************
  *	Twin Cobra																*
  *	Communications and memory functions between shared CPU memory spaces	*
@@ -350,3 +358,7 @@ WRITE_HANDLER( wardner_coin_dsp_w )
 {
 	toaplan0_coin_dsp_w(offset, data);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

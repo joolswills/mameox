@@ -1,7 +1,11 @@
-#pragma code_seg("C543")
-#pragma bss_seg("B543")
-#pragma data_seg("D543")
-#pragma const_seg("K543")
+#pragma code_seg("C542")
+#pragma data_seg("D542")
+#pragma bss_seg("B542")
+#pragma const_seg("K542")
+#pragma comment(linker, "/merge:D542=542")
+#pragma comment(linker, "/merge:C542=542")
+#pragma comment(linker, "/merge:B542=542")
+#pragma comment(linker, "/merge:K542=542")
 /***************************************************************************
 
 Tank Busters memory map
@@ -458,7 +462,7 @@ ROM_END
 
 
 GAME(1985, tankbust,	 0, 	  tankbust, tankbust,  0, ROT90, "Valadon Automation", "Tank Busters" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

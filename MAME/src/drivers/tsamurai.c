@@ -1,7 +1,11 @@
-#pragma code_seg("C579")
-#pragma bss_seg("B579")
-#pragma data_seg("D579")
-#pragma const_seg("K579")
+#pragma code_seg("C578")
+#pragma data_seg("D578")
+#pragma bss_seg("B578")
+#pragma const_seg("K578")
+#pragma comment(linker, "/merge:D578=578")
+#pragma comment(linker, "/merge:C578=578")
+#pragma comment(linker, "/merge:B578=578")
+#pragma comment(linker, "/merge:K578=578")
 /****************************************************************************
 
 	Preliminary driver for Samurai, Nunchackun, Yuke Yuke Yamaguchi-kun
@@ -1408,7 +1412,7 @@ GAME( 1986, m660,     0,        m660,     m660,     0, ROT90, "[Wood Place] Tait
 GAME( 1986, m660j,    m660,     m660,     m660,     0, ROT90, "[Wood Place] Taito Corporation", "Mission 660 (Japan)" )
 GAME( 1986, m660b,    m660,     m660,     m660,     0, ROT90, "bootleg", "Mission 660 (bootleg)" )
 GAME( 1986, alphaxz,  m660,     m660,     m660,     0, ROT90, "Ed/Wood Place", "The Alphax Z (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

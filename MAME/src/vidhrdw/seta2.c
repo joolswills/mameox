@@ -1,7 +1,11 @@
-#pragma code_seg("C456")
-#pragma bss_seg("B456")
-#pragma data_seg("D456")
-#pragma const_seg("K456")
+#pragma code_seg("C455")
+#pragma data_seg("D455")
+#pragma bss_seg("B455")
+#pragma const_seg("K455")
+#pragma comment(linker, "/merge:D455=455")
+#pragma comment(linker, "/merge:C455=455")
+#pragma comment(linker, "/merge:B455=455")
+#pragma comment(linker, "/merge:K455=455")
 /***************************************************************************
 
 						  -= Newer Seta Hardware =-
@@ -387,7 +391,7 @@ VIDEO_UPDATE( seta2 )
 	seta2_draw_sprites(bitmap,cliprect);
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

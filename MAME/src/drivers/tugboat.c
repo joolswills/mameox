@@ -1,7 +1,11 @@
-#pragma code_seg("C582")
-#pragma bss_seg("B582")
-#pragma data_seg("D582")
-#pragma const_seg("K582")
+#pragma code_seg("C581")
+#pragma data_seg("D581")
+#pragma bss_seg("B581")
+#pragma const_seg("K581")
+#pragma comment(linker, "/merge:D581=581")
+#pragma comment(linker, "/merge:C581=581")
+#pragma comment(linker, "/merge:B581=581")
+#pragma comment(linker, "/merge:K581=581")
 /****************************************************************************
 
 Tug Boat
@@ -376,7 +380,7 @@ ROM_END
 
 
 GAMEX( 1982, tugboat, 0, tugboat, tugboat, 0, ROT90, "ETM", "Tugboat", GAME_IMPERFECT_GRAPHICS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

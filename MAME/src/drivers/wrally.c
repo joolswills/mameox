@@ -1,7 +1,11 @@
-#pragma code_seg("C619")
-#pragma bss_seg("B619")
-#pragma data_seg("D619")
-#pragma const_seg("K619")
+#pragma code_seg("C618")
+#pragma data_seg("D618")
+#pragma bss_seg("B618")
+#pragma const_seg("K618")
+#pragma comment(linker, "/merge:D618=618")
+#pragma comment(linker, "/merge:C618=618")
+#pragma comment(linker, "/merge:B618=618")
+#pragma comment(linker, "/merge:K618=618")
 /***************************************************************************
 
 World Rally (c) 1993 Gaelco (Designed & Developed by Zigurat. Produced by Gaelco)
@@ -310,7 +314,7 @@ ROM_END
 
 GAMEX( 1993, wrally,  0, 	  wrally, wrally, wrally, ROT0, "Gaelco", "World Rally (set 1)", GAME_NOT_WORKING )
 GAMEX( 1993, wrallya, wrally, wrally, wrally, wrally, ROT0, "Gaelco", "World Rally (set 2)", GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C555")
-#pragma bss_seg("B555")
-#pragma data_seg("D555")
-#pragma const_seg("K555")
+#pragma code_seg("C554")
+#pragma data_seg("D554")
+#pragma bss_seg("B554")
+#pragma const_seg("K554")
+#pragma comment(linker, "/merge:D554=554")
+#pragma comment(linker, "/merge:C554=554")
+#pragma comment(linker, "/merge:B554=554")
+#pragma comment(linker, "/merge:K554=554")
 /***************************************************************************
 
 							-= Run Deep / The Deep =-
@@ -254,7 +258,7 @@ VIDEO_UPDATE( thedeep )
 	draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,tilemap_1,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C482")
-#pragma bss_seg("B482")
-#pragma data_seg("D482")
-#pragma const_seg("K482")
+#pragma code_seg("C481")
+#pragma data_seg("D481")
+#pragma bss_seg("B481")
+#pragma const_seg("K481")
+#pragma comment(linker, "/merge:D481=481")
+#pragma comment(linker, "/merge:C481=481")
+#pragma comment(linker, "/merge:B481=481")
+#pragma comment(linker, "/merge:K481=481")
 #include "driver.h"
 #include "state.h"
 #include "vidhrdw/generic.h"
@@ -647,7 +651,7 @@ VIDEO_UPDATE( slapshot )
 	TC0480SCP_tilemap_draw(bitmap,cliprect,layer[4],0,0);
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C455")
-#pragma bss_seg("B455")
-#pragma data_seg("D455")
-#pragma const_seg("K455")
+#pragma code_seg("C454")
+#pragma data_seg("D454")
+#pragma bss_seg("B454")
+#pragma const_seg("K454")
+#pragma comment(linker, "/merge:D454=454")
+#pragma comment(linker, "/merge:C454=454")
+#pragma comment(linker, "/merge:B454=454")
+#pragma comment(linker, "/merge:K454=454")
 /***************************************************************************
 
 							-= Seta Hardware =-
@@ -8218,7 +8222,7 @@ GAME( 1995, gundhara, 0,        gundhara, gundhara, 0,        ROT270, "Banpresto
 GAMEX(1995, sokonuke, 0,        extdwnhl, sokonuke, 0,        ROT0,   "Sammy Industries",       "Sokonuke Taisen Game (Japan)", GAME_IMPERFECT_SOUND )
 GAMEX(1995, zombraid, 0,        gundhara, zombraid, zombraid, ROT0,   "American Sammy Corp.",   "Zombie Raid (US)", GAME_NO_COCKTAIL )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C501")
-#pragma bss_seg("B501")
-#pragma data_seg("D501")
-#pragma const_seg("K501")
+#pragma code_seg("C500")
+#pragma data_seg("D500")
+#pragma bss_seg("B500")
+#pragma const_seg("K500")
+#pragma comment(linker, "/merge:D500=500")
+#pragma comment(linker, "/merge:C500=500")
+#pragma comment(linker, "/merge:B500=500")
+#pragma comment(linker, "/merge:K500=500")
 /***************************************************************************
 
 	Uses Data East custom chip 55 for backgrounds, with a special 8bpp mode
@@ -270,7 +274,7 @@ VIDEO_UPDATE( sshangha )
 	sshangha_drawsprites(bitmap,spriteram16_2,0x0000,0x0000);
 	sshangha_drawsprites(bitmap,spriteram16,0x4000,0x0000);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

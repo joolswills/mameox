@@ -1,7 +1,11 @@
-#pragma code_seg("C467")
-#pragma bss_seg("B467")
-#pragma data_seg("D467")
-#pragma const_seg("K467")
+#pragma code_seg("C466")
+#pragma data_seg("D466")
+#pragma bss_seg("B466")
+#pragma const_seg("K466")
+#pragma comment(linker, "/merge:D466=466")
+#pragma comment(linker, "/merge:C466=466")
+#pragma comment(linker, "/merge:B466=466")
+#pragma comment(linker, "/merge:K466=466")
 /*******************************************************************************
 
 	Shoot Out (USA) 			(c) 1985 Data East USA		DE-0219
@@ -461,7 +465,7 @@ GAME( 1985, shootout, 0,		 shootout, shootout, shootout, ROT0, "Data East USA", 
 GAMEX( 1985, shootouj, shootout, shootouj, shootout, 0, 	   ROT0, "Data East USA", "Shoot Out (Japan)", GAME_NO_COCKTAIL )
 GAMEX( 1985, shootoub, shootout, shootouj, shootout, shootout, ROT0, "bootleg", "Shoot Out (Korean Bootleg)", GAME_NO_COCKTAIL )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

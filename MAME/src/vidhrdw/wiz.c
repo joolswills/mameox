@@ -1,7 +1,11 @@
-#pragma code_seg("C617")
-#pragma bss_seg("B617")
-#pragma data_seg("D617")
-#pragma const_seg("K617")
+#pragma code_seg("C616")
+#pragma data_seg("D616")
+#pragma bss_seg("B616")
+#pragma const_seg("K616")
+#pragma comment(linker, "/merge:D616=616")
+#pragma comment(linker, "/merge:C616=616")
+#pragma comment(linker, "/merge:B616=616")
+#pragma comment(linker, "/merge:K616=616")
 /***************************************************************************
 
   vidhrdw.c
@@ -311,7 +315,7 @@ VIDEO_UPDATE( stinger )
 	draw_sprites(bitmap, spriteram_2, 4, &Machine->visible_area);
 	draw_sprites(bitmap, spriteram  , 5, &Machine->visible_area);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,3 +1,11 @@
+#pragma code_seg("C540")
+#pragma data_seg("D540")
+#pragma bss_seg("B540")
+#pragma const_seg("K540")
+#pragma comment(linker, "/merge:D540=540")
+#pragma comment(linker, "/merge:C540=540")
+#pragma comment(linker, "/merge:B540=540")
+#pragma comment(linker, "/merge:K540=540")
 /***************************************************************************
 
   machine.c
@@ -306,3 +314,7 @@ READ_HANDLER( alpine_port_2_r )
 {
 	return input_port_2_r(offset) | protection_value;
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

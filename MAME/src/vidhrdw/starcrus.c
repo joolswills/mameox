@@ -1,7 +1,11 @@
-#pragma code_seg("C507")
-#pragma bss_seg("B507")
-#pragma data_seg("D507")
-#pragma const_seg("K507")
+#pragma code_seg("C506")
+#pragma data_seg("D506")
+#pragma bss_seg("B506")
+#pragma const_seg("K506")
+#pragma comment(linker, "/merge:D506=506")
+#pragma comment(linker, "/merge:C506=506")
+#pragma comment(linker, "/merge:B506=506")
+#pragma comment(linker, "/merge:K506=506")
 /* Ramtek - Star Cruiser */
 
 #include "driver.h"
@@ -578,7 +582,7 @@ READ_HANDLER( starcrus_coll_det_r )
 {
     return collision_reg ^ 0xff;
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C638")
-#pragma bss_seg("B638")
-#pragma data_seg("D638")
-#pragma const_seg("K638")
+#pragma code_seg("C637")
+#pragma data_seg("D637")
+#pragma bss_seg("B637")
+#pragma const_seg("K637")
+#pragma comment(linker, "/merge:D637=637")
+#pragma comment(linker, "/merge:C637=637")
+#pragma comment(linker, "/merge:B637=637")
+#pragma comment(linker, "/merge:K637=637")
 /***************************************************************************
 
   Sony ZN1/ZN2 - Arcade PSX Hardware
@@ -917,7 +921,7 @@ GAME( 1999, shiryu2,  0,		znqs, zn, 0, ROT0, "Capcom", "Strider Hiryu 2 (JAPAN 9
 GAMEX( 1996, sncwgltd,	0,	  zn, zn, 0, ROT0, "Video System Co.", "Sonic Wings Limited (JAPAN)", GAME_NO_SOUND )
 GAMEX( 1997, glpracr2,	0,	  zn, zn, 0, ROT0, "Tecmo", "Gallop Racer 2 (JAPAN)", GAME_NO_SOUND )
 GAMEX( 1998, doapp,		0,	  zn, zn, 0, ROT0, "Tecmo", "Dead Or Alive ++ (JAPAN)", GAME_NO_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

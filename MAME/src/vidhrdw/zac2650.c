@@ -1,7 +1,11 @@
-#pragma code_seg("C634")
-#pragma bss_seg("B634")
-#pragma data_seg("D634")
-#pragma const_seg("K634")
+#pragma code_seg("C633")
+#pragma data_seg("D633")
+#pragma bss_seg("B633")
+#pragma const_seg("K633")
+#pragma comment(linker, "/merge:D633=633")
+#pragma comment(linker, "/merge:C633=633")
+#pragma comment(linker, "/merge:B633=633")
+#pragma comment(linker, "/merge:K633=633")
 /*************************************************************/
 /*                                                           */
 /* Zaccaria/Zelco S2650 based games video                    */
@@ -253,7 +257,7 @@ VIDEO_UPDATE( tinvader )
     if(SpriteCollision(1,4)) CollisionSprite |= 0x02;
 //  if(SpriteCollision(2,4)) CollisionSprite |= 0x01;	/* Not Used */
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

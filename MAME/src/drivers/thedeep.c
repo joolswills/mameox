@@ -1,7 +1,11 @@
-#pragma code_seg("C555")
-#pragma bss_seg("B555")
-#pragma data_seg("D555")
-#pragma const_seg("K555")
+#pragma code_seg("C554")
+#pragma data_seg("D554")
+#pragma bss_seg("B554")
+#pragma const_seg("K554")
+#pragma comment(linker, "/merge:D554=554")
+#pragma comment(linker, "/merge:C554=554")
+#pragma comment(linker, "/merge:B554=554")
+#pragma comment(linker, "/merge:K554=554")
 /***************************************************************************
 
 							-= Run Deep / The Deep =-
@@ -502,7 +506,7 @@ ROM_END
 GAME( 1987, thedeep, 0,      thedeep, thedeep, 0, ROT270, "Woodplace", "The Deep (Japan)" )
 GAME( 1988, rundeep, thedeep,thedeep, thedeep, 0, ROT270, "Cream",     "Run Deep" )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

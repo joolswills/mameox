@@ -1,7 +1,11 @@
-#pragma code_seg("C575")
-#pragma bss_seg("B575")
-#pragma data_seg("D575")
-#pragma const_seg("K575")
+#pragma code_seg("C574")
+#pragma data_seg("D574")
+#pragma bss_seg("B574")
+#pragma const_seg("K574")
+#pragma comment(linker, "/merge:D574=574")
+#pragma comment(linker, "/merge:C574=574")
+#pragma comment(linker, "/merge:B574=574")
+#pragma comment(linker, "/merge:K574=574")
 /***************************************************************************
 
   vidhrdw.c
@@ -342,7 +346,7 @@ VIDEO_UPDATE( travrusa )
 	draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,bg_tilemap,TILEMAP_FRONT,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

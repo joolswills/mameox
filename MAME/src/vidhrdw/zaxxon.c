@@ -1,7 +1,11 @@
-#pragma code_seg("C636")
-#pragma bss_seg("B636")
-#pragma data_seg("D636")
-#pragma const_seg("K636")
+#pragma code_seg("C635")
+#pragma data_seg("D635")
+#pragma bss_seg("B635")
+#pragma const_seg("K635")
+#pragma comment(linker, "/merge:D635=635")
+#pragma comment(linker, "/merge:C635=635")
+#pragma comment(linker, "/merge:B635=635")
+#pragma comment(linker, "/merge:K635=635")
 /***************************************************************************
 
   vidhrdw.c
@@ -601,7 +605,7 @@ VIDEO_UPDATE( ixion )
 
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C591")
-#pragma bss_seg("B591")
-#pragma data_seg("D591")
-#pragma const_seg("K591")
+#pragma code_seg("C590")
+#pragma data_seg("D590")
+#pragma bss_seg("B590")
+#pragma const_seg("K590")
+#pragma comment(linker, "/merge:D590=590")
+#pragma comment(linker, "/merge:C590=590")
+#pragma comment(linker, "/merge:B590=590")
+#pragma comment(linker, "/merge:K590=590")
 /***************************************************************************
 
 	Underfire  							(c) 1993 Taito
@@ -721,7 +725,7 @@ DRIVER_INIT( undrfire )
 
 
 GAME( 1993, undrfire, 0, undrfire, undrfire, undrfire, ROT0, "Taito Corporation Japan", "Under Fire (World)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

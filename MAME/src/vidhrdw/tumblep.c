@@ -1,7 +1,11 @@
-#pragma code_seg("C583")
-#pragma bss_seg("B583")
-#pragma data_seg("D583")
-#pragma const_seg("K583")
+#pragma code_seg("C582")
+#pragma data_seg("D582")
+#pragma bss_seg("B582")
+#pragma const_seg("K582")
+#pragma comment(linker, "/merge:D582=582")
+#pragma comment(linker, "/merge:C582=582")
+#pragma comment(linker, "/merge:B582=582")
+#pragma comment(linker, "/merge:K582=582")
 /***************************************************************************
 
    Tumblepop Video emulation - Bryan McPhail, mish@tendril.co.uk
@@ -447,7 +451,7 @@ VIDEO_UPDATE( fncywld )
 		tilemap_draw(bitmap,cliprect,pf1_alt_tilemap,0,0);
 	fncywld_drawsprites(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

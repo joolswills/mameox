@@ -1,7 +1,11 @@
-#pragma code_seg("C504")
-#pragma bss_seg("B504")
-#pragma data_seg("D504")
-#pragma const_seg("K504")
+#pragma code_seg("C503")
+#pragma data_seg("D503")
+#pragma bss_seg("B503")
+#pragma const_seg("K503")
+#pragma comment(linker, "/merge:D503=503")
+#pragma comment(linker, "/merge:C503=503")
+#pragma comment(linker, "/merge:B503=503")
+#pragma comment(linker, "/merge:K503=503")
 /***************************************************************************
 
 					-= Seta, Sammy, Visco (SSV) System =-
@@ -789,7 +793,7 @@ VIDEO_UPDATE( ssv )
 	ssv_draw_layer(bitmap);		// "background layer"
 	ssv_draw_sprites(bitmap);	// sprites list
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

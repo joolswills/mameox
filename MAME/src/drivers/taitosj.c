@@ -1,7 +1,11 @@
-#pragma code_seg("C541")
-#pragma bss_seg("B541")
-#pragma data_seg("D541")
-#pragma const_seg("K541")
+#pragma code_seg("C540")
+#pragma data_seg("D540")
+#pragma bss_seg("B540")
+#pragma const_seg("K540")
+#pragma comment(linker, "/merge:D540=540")
+#pragma comment(linker, "/merge:C540=540")
+#pragma comment(linker, "/merge:B540=540")
+#pragma comment(linker, "/merge:K540=540")
 /***************************************************************************
 
 Taito SJ system memory map
@@ -2759,7 +2763,7 @@ GAME( 1983, bioatack, 0,        nomcu,    bioatack,   0,       ROT270, "Taito Co
 GAME( 1984, sfposeid, 0,        mcu,      sfposeid,   0,       ROT0,   "Taito Corporation", "Sea Fighter Poseidon" )
 GAME( 1983, hwrace,   0,        nomcu,    hwrace,     0,       ROT270, "Taito Corporation", "High Way Race" )
 GAME( 1984, kikstart, 0,        kikstart, kikstart,   kikstart,ROT0,   "Taito Corporation", "Kick Start Wheelie King" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

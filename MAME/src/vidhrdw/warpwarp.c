@@ -1,7 +1,11 @@
-#pragma code_seg("C608")
-#pragma bss_seg("B608")
-#pragma data_seg("D608")
-#pragma const_seg("K608")
+#pragma code_seg("C607")
+#pragma data_seg("D607")
+#pragma bss_seg("B607")
+#pragma const_seg("K607")
+#pragma comment(linker, "/merge:D607=607")
+#pragma comment(linker, "/merge:C607=607")
+#pragma comment(linker, "/merge:B607=607")
+#pragma comment(linker, "/merge:K607=607")
 /***************************************************************************
 
   vidhrdw.c
@@ -169,7 +173,7 @@ WRITE_HANDLER( warpwarp_flip_screen_w )
 	flip_screen_set(data & 1);
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C624")
-#pragma bss_seg("B624")
-#pragma data_seg("D624")
-#pragma const_seg("K624")
+#pragma code_seg("C623")
+#pragma data_seg("D623")
+#pragma bss_seg("B623")
+#pragma const_seg("K623")
+#pragma comment(linker, "/merge:D623=623")
+#pragma comment(linker, "/merge:C623=623")
+#pragma comment(linker, "/merge:B623=623")
+#pragma comment(linker, "/merge:K623=623")
 #define XE_DEBUG 0
 #define XE_SKIPIDLE 1
 #define XE_DMADELAY 256
@@ -606,7 +610,7 @@ static DRIVER_INIT( xexex )
 
 GAME( 1991, xexex,  0,     xexex, xexex, xexex, ROT0, "Konami", "Xexex (World)" )
 GAME( 1991, xexexj, xexex, xexex, xexex, xexex, ROT0, "Konami", "Xexex (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C433")
-#pragma bss_seg("B433")
-#pragma data_seg("D433")
-#pragma const_seg("K433")
+#pragma code_seg("C432")
+#pragma data_seg("D432")
+#pragma bss_seg("B432")
+#pragma const_seg("K432")
+#pragma comment(linker, "/merge:D432=432")
+#pragma comment(linker, "/merge:C432=432")
+#pragma comment(linker, "/merge:B432=432")
+#pragma comment(linker, "/merge:K432=432")
 /***************************************************************************
 
 Rock'n'Rage(GX620) (c) 1986 Konami
@@ -361,7 +365,7 @@ ROM_END
 
 GAME( 1986, rockrage, 0,        rockrage, rockrage, 0, ROT0, "Konami", "Rock 'n Rage (World?)" )
 GAME( 1986, rockragj, rockrage, rockrage, rockrage, 0, ROT0, "Konami", "Koi no Hotrock (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

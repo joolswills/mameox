@@ -1,7 +1,11 @@
-#pragma code_seg("C587")
-#pragma bss_seg("B587")
-#pragma data_seg("D587")
-#pragma const_seg("K587")
+#pragma code_seg("C586")
+#pragma data_seg("D586")
+#pragma bss_seg("B586")
+#pragma const_seg("K586")
+#pragma comment(linker, "/merge:D586=586")
+#pragma comment(linker, "/merge:C586=586")
+#pragma comment(linker, "/merge:B586=586")
+#pragma comment(linker, "/merge:K586=586")
 /*
 Konami "Twin16"
 
@@ -1634,7 +1638,7 @@ GAME( 1988, fround,   0,      fround,    fround,   fround, ROT0, "Konami", "The 
 GAME( 1988, froundl,  fround, fround,    fround,   fround, ROT0, "Konami", "The Final Round (version L)" )
 GAME( 1988, hpuncher, fround, twin16,    fround,   twin16, ROT0, "Konami", "Hard Puncher (Japan)" )
 GAME( 1989, miaj,     mia,    twin16,    miaj,     twin16, ROT0, "Konami", "Missing in Action (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

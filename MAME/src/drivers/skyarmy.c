@@ -1,7 +1,11 @@
-#pragma code_seg("C475")
-#pragma bss_seg("B475")
-#pragma data_seg("D475")
-#pragma const_seg("K475")
+#pragma code_seg("C474")
+#pragma data_seg("D474")
+#pragma bss_seg("B474")
+#pragma const_seg("K474")
+#pragma comment(linker, "/merge:D474=474")
+#pragma comment(linker, "/merge:C474=474")
+#pragma comment(linker, "/merge:B474=474")
+#pragma comment(linker, "/merge:K474=474")
 /*
  05/01/2003  MooglyGuy/Ryan Holtz
 	- Corrected second AY (shouldn't have been there)
@@ -321,7 +325,7 @@ ROM_START( skyarmy )
 ROM_END
 
 GAMEX( 1982, skyarmy, 0, skyarmy, skyarmy, 0, ROT90, "Shoei", "Sky Army", GAME_WRONG_COLORS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

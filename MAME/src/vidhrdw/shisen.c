@@ -1,7 +1,11 @@
-#pragma code_seg("C466")
-#pragma bss_seg("B466")
-#pragma data_seg("D466")
-#pragma const_seg("K466")
+#pragma code_seg("C465")
+#pragma data_seg("D465")
+#pragma bss_seg("B465")
+#pragma const_seg("K465")
+#pragma comment(linker, "/merge:D465=465")
+#pragma comment(linker, "/merge:C465=465")
+#pragma comment(linker, "/merge:B465=465")
+#pragma comment(linker, "/merge:K465=465")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -83,7 +87,7 @@ VIDEO_UPDATE( sichuan2 )
 	/* copy the character mapped graphics */
 	copybitmap(bitmap,tmpbitmap,0,0,0,0,&Machine->visible_area,TRANSPARENCY_NONE,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

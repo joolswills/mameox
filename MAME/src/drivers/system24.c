@@ -1,7 +1,11 @@
-#pragma code_seg("C529")
-#pragma bss_seg("B529")
-#pragma data_seg("D529")
-#pragma const_seg("K529")
+#pragma code_seg("C528")
+#pragma data_seg("D528")
+#pragma bss_seg("B528")
+#pragma const_seg("K528")
+#pragma comment(linker, "/merge:D528=528")
+#pragma comment(linker, "/merge:C528=528")
+#pragma comment(linker, "/merge:B528=528")
+#pragma comment(linker, "/merge:K528=528")
 /*
  * Preliminary Sega System 24
  *  Olivier Galibert
@@ -1107,7 +1111,7 @@ Quiz Shukudai Wo Wasuremashita - Encrypted, Disk Based (roms dumped, disk isn't)
 + a bunch of other Japanese Quiz Games
 
 */
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

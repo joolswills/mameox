@@ -1,7 +1,11 @@
-#pragma code_seg("C603")
-#pragma bss_seg("B603")
-#pragma data_seg("D603")
-#pragma const_seg("K603")
+#pragma code_seg("C602")
+#pragma data_seg("D602")
+#pragma bss_seg("B602")
+#pragma const_seg("K602")
+#pragma comment(linker, "/merge:D602=602")
+#pragma comment(linker, "/merge:C602=602")
+#pragma comment(linker, "/merge:B602=602")
+#pragma comment(linker, "/merge:K602=602")
 #include "driver.h"
 #include "state.h"
 #include "vidhrdw/generic.h"
@@ -172,7 +176,7 @@ VIDEO_UPDATE( volfied )
 
 	PC090OJ_draw_sprites(bitmap, cliprect, 0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

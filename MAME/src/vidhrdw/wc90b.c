@@ -1,7 +1,11 @@
-#pragma code_seg("C611")
-#pragma bss_seg("B611")
-#pragma data_seg("D611")
-#pragma const_seg("K611")
+#pragma code_seg("C610")
+#pragma data_seg("D610")
+#pragma bss_seg("B610")
+#pragma const_seg("K610")
+#pragma comment(linker, "/merge:D610=610")
+#pragma comment(linker, "/merge:C610=610")
+#pragma comment(linker, "/merge:B610=610")
+#pragma comment(linker, "/merge:K610=610")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -167,7 +171,7 @@ VIDEO_UPDATE( wc90b )
 	tilemap_draw(bitmap,cliprect,tx_tilemap,0,0);
 	draw_sprites( bitmap,cliprect, 0 );
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,3 +1,11 @@
+#pragma code_seg("C480")
+#pragma data_seg("D480")
+#pragma bss_seg("B480")
+#pragma const_seg("K480")
+#pragma comment(linker, "/merge:D480=480")
+#pragma comment(linker, "/merge:C480=480")
+#pragma comment(linker, "/merge:B480=480")
+#pragma comment(linker, "/merge:K480=480")
 /***************************************************************************
 
   machine.c
@@ -200,3 +208,7 @@ WRITE_HANDLER( getstar_port_04_w )
 {
 //	cpu_halt(0,0);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C450")
-#pragma bss_seg("B450")
-#pragma data_seg("D450")
-#pragma const_seg("K450")
+#pragma code_seg("C449")
+#pragma data_seg("D449")
+#pragma bss_seg("B449")
+#pragma const_seg("K449")
+#pragma comment(linker, "/merge:D449=449")
+#pragma comment(linker, "/merge:C449=449")
+#pragma comment(linker, "/merge:B449=449")
+#pragma comment(linker, "/merge:K449=449")
 /***********************************************************************************************
 
 	Sega System C/C2 Driver
@@ -2647,7 +2651,7 @@ GAMEX( 1995, pclubj,   0,        segac2, pclub,    pclub,    ROT0, "Atlus",     
 GAMEX( 1995, pclubjv2, pclubj,   segac2, pclub,    pclub,    ROT0, "Atlus",                   "Print Club (Japan Vol.2)", GAME_NOT_WORKING )
 GAMEX( 1996, pclubjv4, pclubj,   segac2, pclub,    pclub,    ROT0, "Atlus",                   "Print Club (Japan Vol.4)", GAME_NOT_WORKING )
 GAMEX( 1996, pclubjv5, pclubj,   segac2, pclub,    pclub,    ROT0, "Atlus",                   "Print Club (Japan Vol.5)", GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C561")
-#pragma bss_seg("B561")
-#pragma data_seg("D561")
-#pragma const_seg("K561")
+#pragma code_seg("C560")
+#pragma data_seg("D560")
+#pragma bss_seg("B560")
+#pragma const_seg("K560")
+#pragma comment(linker, "/merge:D560=560")
+#pragma comment(linker, "/merge:C560=560")
+#pragma comment(linker, "/merge:B560=560")
+#pragma comment(linker, "/merge:K560=560")
 /***************************************************************************
 
 	Raster Elite Tickee Tickats hardware
@@ -301,7 +305,7 @@ static DRIVER_INIT( tickee )
  *************************************/
 
 GAME( 1994, tickee, 0, tickee, tickee, tickee, ROT0, "Raster Elite", "Tickee Tickats" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C458")
-#pragma bss_seg("B458")
-#pragma data_seg("D458")
-#pragma const_seg("K458")
+#pragma code_seg("C457")
+#pragma data_seg("D457")
+#pragma bss_seg("B457")
+#pragma const_seg("K457")
+#pragma comment(linker, "/merge:D457=457")
+#pragma comment(linker, "/merge:C457=457")
+#pragma comment(linker, "/merge:B457=457")
+#pragma comment(linker, "/merge:K457=457")
 /*********************************************************
 Sega hardware based on their SG-1000 console
 Driver by Tomasz Slanina  dox@space.pl
@@ -196,7 +200,7 @@ DRIVER_INIT(chwrestl)
 GAME( 1984, chboxing, 0, sg1000a, chboxing, 0, ROT0, "Sega", "Champion Boxing")
 GAME( 1985, chwrestl, 0, sg1000a, chwrestl, chwrestl, ROT0, "Sega", "Champion Pro Wrestling")
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

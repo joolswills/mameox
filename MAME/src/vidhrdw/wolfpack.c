@@ -1,7 +1,11 @@
-#pragma code_seg("C618")
-#pragma bss_seg("B618")
-#pragma data_seg("D618")
-#pragma const_seg("K618")
+#pragma code_seg("C617")
+#pragma data_seg("D617")
+#pragma bss_seg("B617")
+#pragma const_seg("K617")
+#pragma comment(linker, "/merge:D617=617")
+#pragma comment(linker, "/merge:C617=617")
+#pragma comment(linker, "/merge:B617=617")
+#pragma comment(linker, "/merge:K617=617")
 /***************************************************************************
 
 Atari Wolf Pack (prototype) video emulation
@@ -151,7 +155,7 @@ VIDEO_EOF( wolfpack )
 	}
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

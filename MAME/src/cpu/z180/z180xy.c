@@ -1,7 +1,11 @@
-#pragma code_seg("CC2")
-#pragma bss_seg("CB2")
-#pragma data_seg("CD2")
-#pragma const_seg("CK2")
+#pragma code_seg("CC3")
+#pragma data_seg("CD3")
+#pragma bss_seg("CB3")
+#pragma const_seg("CK3")
+#pragma comment(linker, "/merge:CD3=CPU3")
+#pragma comment(linker, "/merge:CC3=CPU3")
+#pragma comment(linker, "/merge:CB3=CPU3")
+#pragma comment(linker, "/merge:CK3=CPU3")
 /**********************************************************
 * opcodes with DD/FD CB prefix
 * rotate, shift and bit operations with (IX+o)
@@ -294,3 +298,7 @@ OP(xycb,fd) { _L = SET(7, RM(EA) ); WM( EA,_L );					} /* SET  7,L=(XY+o)  */
 OP(xycb,fe) { WM( EA, SET(7,RM(EA)) );								} /* SET  7,(XY+o)	  */
 OP(xycb,ff) { _A = SET(7, RM(EA) ); WM( EA,_A );					} /* SET  7,A=(XY+o)  */
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

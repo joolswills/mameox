@@ -1,7 +1,11 @@
-#pragma code_seg("C489")
-#pragma bss_seg("B489")
-#pragma data_seg("D489")
-#pragma const_seg("K489")
+#pragma code_seg("C488")
+#pragma data_seg("D488")
+#pragma bss_seg("B488")
+#pragma const_seg("K488")
+#pragma comment(linker, "/merge:D488=488")
+#pragma comment(linker, "/merge:C488=488")
+#pragma comment(linker, "/merge:B488=488")
+#pragma comment(linker, "/merge:K488=488")
 /***************************************************************************
 
   vidhrdw.c
@@ -63,7 +67,7 @@ VIDEO_UPDATE( spcforce )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

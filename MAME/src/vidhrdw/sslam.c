@@ -1,7 +1,11 @@
-#pragma code_seg("C502")
-#pragma bss_seg("B502")
-#pragma data_seg("D502")
-#pragma const_seg("K502")
+#pragma code_seg("C501")
+#pragma data_seg("D501")
+#pragma bss_seg("B501")
+#pragma const_seg("K501")
+#pragma comment(linker, "/merge:D501=501")
+#pragma comment(linker, "/merge:C501=501")
+#pragma comment(linker, "/merge:B501=501")
+#pragma comment(linker, "/merge:K501=501")
 /* Super Slam - Video Hardware */
 
 #include "driver.h"
@@ -174,7 +178,7 @@ VIDEO_UPDATE(sslam)
 }
 
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C581")
-#pragma bss_seg("B581")
-#pragma data_seg("D581")
-#pragma const_seg("K581")
+#pragma code_seg("C580")
+#pragma data_seg("D580")
+#pragma bss_seg("B580")
+#pragma const_seg("K580")
+#pragma comment(linker, "/merge:D580=580")
+#pragma comment(linker, "/merge:C580=580")
+#pragma comment(linker, "/merge:B580=580")
+#pragma comment(linker, "/merge:K580=580")
 /***************************************************************************
 
 Tube Panic
@@ -990,7 +994,7 @@ ROM_END
 GAME( 1984, tubep,   0,      tubep,   tubep,   0, ROT0, "Nichibutsu + Fujitek", "Tube Panic" )
 GAME( 1984, rjammer, 0,      rjammer, rjammer, 0, ROT0, "Nichibutsu + Alice", "Roller Jammer" )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

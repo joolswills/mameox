@@ -1,7 +1,11 @@
-#pragma code_seg("C567")
-#pragma bss_seg("B567")
-#pragma data_seg("D567")
-#pragma const_seg("K567")
+#pragma code_seg("C566")
+#pragma data_seg("D566")
+#pragma bss_seg("B566")
+#pragma const_seg("K566")
+#pragma comment(linker, "/merge:D566=566")
+#pragma comment(linker, "/merge:C566=566")
+#pragma comment(linker, "/merge:B566=566")
+#pragma comment(linker, "/merge:K566=566")
 /***************************************************************************
 
   Functions to emulate the video hardware of some Toaplan games,
@@ -1594,7 +1598,7 @@ VIDEO_EOF( batrider_0 )
 	memcpy(spriteram16_next[0],spriteram16_new[0],TOAPLAN2_SPRITERAM_SIZE);
 	cpu_set_irq_line(0, MC68000_IRQ_4, HOLD_LINE);  /* Frame done */
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

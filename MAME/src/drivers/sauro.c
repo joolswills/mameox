@@ -1,7 +1,11 @@
-#pragma code_seg("C444")
-#pragma bss_seg("B444")
-#pragma data_seg("D444")
-#pragma const_seg("K444")
+#pragma code_seg("C443")
+#pragma data_seg("D443")
+#pragma bss_seg("B443")
+#pragma const_seg("K443")
+#pragma comment(linker, "/merge:D443=443")
+#pragma comment(linker, "/merge:C443=443")
+#pragma comment(linker, "/merge:B443=443")
+#pragma comment(linker, "/merge:K443=443")
 /***************************************************************************
 
 Sauro
@@ -458,7 +462,7 @@ static DRIVER_INIT( sauro )
 
 GAMEX( 1987, sauro,    0,     sauro,    sauro, sauro, ROT0, "Tecfri",  "Sauro", GAME_IMPERFECT_COLORS | GAME_IMPERFECT_SOUND )
 GAMEX( 1987, trckydoc, 0,     trckydoc, sauro, sauro, ROT0, "Tecfri",  "Tricky Doc", GAME_WRONG_COLORS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

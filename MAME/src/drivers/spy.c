@@ -1,7 +1,11 @@
-#pragma code_seg("C498")
-#pragma bss_seg("B498")
-#pragma data_seg("D498")
-#pragma const_seg("K498")
+#pragma code_seg("C497")
+#pragma data_seg("D497")
+#pragma bss_seg("B497")
+#pragma const_seg("K497")
+#pragma comment(linker, "/merge:D497=497")
+#pragma comment(linker, "/merge:C497=497")
+#pragma comment(linker, "/merge:B497=497")
+#pragma comment(linker, "/merge:K497=497")
 /***************************************************************************
 
 S.P.Y. (c) 1989 Konami
@@ -644,7 +648,7 @@ static DRIVER_INIT( spy )
 
 GAME( 1989, spy,  0,   spy, spy, spy, ROT0, "Konami", "S.P.Y. - Special Project Y (World ver. N)")
 GAME( 1989, spyu, spy, spy, spy, spy, ROT0, "Konami", "S.P.Y. - Special Project Y (US ver. M)")
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,3 +1,11 @@
+#pragma code_seg("C496")
+#pragma data_seg("D496")
+#pragma bss_seg("B496")
+#pragma const_seg("K496")
+#pragma comment(linker, "/merge:D496=496")
+#pragma comment(linker, "/merge:C496=496")
+#pragma comment(linker, "/merge:B496=496")
+#pragma comment(linker, "/merge:K496=496")
 /***************************************************************************
 
 	Atari Sprint 2 hardware
@@ -345,3 +353,7 @@ WRITE_HANDLER( sprint2_lamp2_w )
 	set_led_status(1,offset & 1);
 }
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

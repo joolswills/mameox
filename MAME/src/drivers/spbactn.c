@@ -1,7 +1,11 @@
-#pragma code_seg("C488")
-#pragma bss_seg("B488")
-#pragma data_seg("D488")
-#pragma const_seg("K488")
+#pragma code_seg("C487")
+#pragma data_seg("D487")
+#pragma bss_seg("B487")
+#pragma const_seg("K487")
+#pragma comment(linker, "/merge:D487=487")
+#pragma comment(linker, "/merge:C487=487")
+#pragma comment(linker, "/merge:B487=487")
+#pragma comment(linker, "/merge:K487=487")
 /*******************************************************************************
  Super Pinball Action (c) 1991 Tecmo
 ********************************************************************************
@@ -450,7 +454,7 @@ ROM_END
 
 GAMEX( 1991, spbactn, 0,        spbactn, spbactn, 0, ROT90, "Tecmo", "Super Pinball Action (US)", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1991, spbactnj, spbactn, spbactn, spbactn, 0, ROT90, "Tecmo", "Super Pinball Action (Japan)", GAME_IMPERFECT_GRAPHICS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("CC4")
-#pragma bss_seg("CB4")
-#pragma data_seg("CD4")
-#pragma const_seg("CK4")
+#pragma code_seg("CC5")
+#pragma data_seg("CD5")
+#pragma bss_seg("CB5")
+#pragma const_seg("CK5")
+#pragma comment(linker, "/merge:CD5=CPU5")
+#pragma comment(linker, "/merge:CC5=CPU5")
+#pragma comment(linker, "/merge:CB5=CPU5")
+#pragma comment(linker, "/merge:CK5=CPU5")
 /*****************************************************************************
  *
  *	 upd7810.c
@@ -1999,3 +2003,7 @@ unsigned upd7807_dasm(char *buffer, unsigned pc)
 	return 1;
 #endif
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

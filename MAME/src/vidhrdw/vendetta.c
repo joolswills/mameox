@@ -1,7 +1,11 @@
-#pragma code_seg("C597")
-#pragma bss_seg("B597")
-#pragma data_seg("D597")
-#pragma const_seg("K597")
+#pragma code_seg("C596")
+#pragma data_seg("D596")
+#pragma bss_seg("B596")
+#pragma const_seg("K596")
+#pragma comment(linker, "/merge:D596=596")
+#pragma comment(linker, "/merge:C596=596")
+#pragma comment(linker, "/merge:B596=596")
+#pragma comment(linker, "/merge:K596=596")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 
@@ -131,7 +135,7 @@ VIDEO_UPDATE( vendetta )
 
 	K053247_sprites_draw(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

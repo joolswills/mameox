@@ -1,7 +1,11 @@
-#pragma code_seg("C570")
-#pragma bss_seg("B570")
-#pragma data_seg("D570")
-#pragma const_seg("K570")
+#pragma code_seg("C569")
+#pragma data_seg("D569")
+#pragma bss_seg("B569")
+#pragma const_seg("K569")
+#pragma comment(linker, "/merge:D569=569")
+#pragma comment(linker, "/merge:C569=569")
+#pragma comment(linker, "/merge:B569=569")
+#pragma comment(linker, "/merge:K569=569")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/taitoic.h"
@@ -204,7 +208,7 @@ VIDEO_UPDATE( topspeed )
 }
 
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

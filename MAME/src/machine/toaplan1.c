@@ -1,3 +1,11 @@
+#pragma code_seg("C565")
+#pragma data_seg("D565")
+#pragma bss_seg("B565")
+#pragma const_seg("K565")
+#pragma comment(linker, "/merge:D565=565")
+#pragma comment(linker, "/merge:C565=565")
+#pragma comment(linker, "/merge:B565=565")
+#pragma comment(linker, "/merge:K565=565")
 /***************************************************************************
 				ToaPlan game hardware from 1988-1991
 				------------------------------------
@@ -311,3 +319,7 @@ WRITE16_HANDLER( samesame_coin_w )
 		logerror("PC:%04x  Writing unknown MSB data (%04x) to coin count/lockout port\n",activecpu_get_previouspc(),data);
 	}
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

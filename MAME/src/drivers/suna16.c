@@ -1,7 +1,11 @@
-#pragma code_seg("C517")
-#pragma bss_seg("B517")
-#pragma data_seg("D517")
-#pragma const_seg("K517")
+#pragma code_seg("C516")
+#pragma data_seg("D516")
+#pragma bss_seg("B516")
+#pragma const_seg("K516")
+#pragma comment(linker, "/merge:D516=516")
+#pragma comment(linker, "/merge:C516=516")
+#pragma comment(linker, "/merge:B516=516")
+#pragma comment(linker, "/merge:K516=516")
 /***************************************************************************
 
 							-=  SunA 16 Bit Games =-
@@ -818,7 +822,7 @@ DRIVER_INIT( uballoon )
 
 GAME( 1996, bssoccer, 0, bssoccer, bssoccer, 0,        ROT0, "SunA", "Back Street Soccer" )
 GAME( 1996, uballoon, 0, uballoon, uballoon, uballoon, ROT0, "SunA", "Ultra Balloon" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

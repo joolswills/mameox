@@ -1,7 +1,11 @@
-#pragma code_seg("C452")
-#pragma bss_seg("B452")
-#pragma data_seg("D452")
-#pragma const_seg("K452")
+#pragma code_seg("C451")
+#pragma data_seg("D451")
+#pragma bss_seg("B451")
+#pragma const_seg("K451")
+#pragma comment(linker, "/merge:D451=451")
+#pragma comment(linker, "/merge:C451=451")
+#pragma comment(linker, "/merge:B451=451")
+#pragma comment(linker, "/merge:K451=451")
 /*******************************************************************************
  Sega System E (834-5803) Driver (drivers/segasyse.c)
 ********************************************************************************
@@ -891,7 +895,7 @@ GAMEX(1986, astrofl,  transfrm, segae, transfrm, astrofl,  ROT0,  "Sega", "Astro
 GAME( 1986, ridleofp, 0,        segae, ridleofp, ridleofp, ROT90, "Sega / Nasco", "Riddle of Pythagoras (Japan)" )
 GAMEX(198?, fantzn2,  0,        segae, dummy,    segasyse, ROT0,  "????", "Fantasy Zone 2", GAME_NOT_WORKING )	/* encrypted */
 GAMEX(198?, opaopa,   0,        segae, dummy,    segasyse, ROT0,  "????", "Opa Opa", GAME_NOT_WORKING )	/* either encrypted or bad */
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

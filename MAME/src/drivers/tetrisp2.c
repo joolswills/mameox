@@ -1,7 +1,11 @@
-#pragma code_seg("C554")
-#pragma bss_seg("B554")
-#pragma data_seg("D554")
-#pragma const_seg("K554")
+#pragma code_seg("C553")
+#pragma data_seg("D553")
+#pragma bss_seg("B553")
+#pragma const_seg("K553")
+#pragma comment(linker, "/merge:D553=553")
+#pragma comment(linker, "/merge:C553=553")
+#pragma comment(linker, "/merge:B553=553")
+#pragma comment(linker, "/merge:K553=553")
 /***************************************************************************
 
 							  -= Tetris Plus 2 =-
@@ -1604,7 +1608,7 @@ GAME( 1999, rockn2,   0,        rockn2,   rockn1,   rockn2,  ROT270, "Jaleco", "
 GAMEX(1999, rocknms,  0,        rocknms,  rocknms,  rocknms, ROT270, "Jaleco", "Rock'n MegaSession (Japan)", GAME_IMPERFECT_GRAPHICS )
 GAME( 1999, rockn3,   0,        rockn2,   rockn1,   rockn3,  ROT270, "Jaleco", "Rock'n 3 (Japan)" )
 GAME( 2000, rockn4,   0,        rockn2,   rockn1,   rockn3,  ROT270, "Jaleco (PCCWJ)", "Rock'n 4 (Japan prototype version)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

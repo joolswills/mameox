@@ -1,7 +1,11 @@
-#pragma code_seg("C536")
-#pragma bss_seg("B536")
-#pragma data_seg("D536")
-#pragma const_seg("K536")
+#pragma code_seg("C535")
+#pragma data_seg("D535")
+#pragma bss_seg("B535")
+#pragma const_seg("K535")
+#pragma comment(linker, "/merge:D535=535")
+#pragma comment(linker, "/merge:C535=535")
+#pragma comment(linker, "/merge:B535=535")
+#pragma comment(linker, "/merge:K535=535")
 /***************************************************************************
 
 Functions to emulate the video hardware of the machine.
@@ -512,7 +516,7 @@ VIDEO_UPDATE( dleague )
 	TC0080VCO_tilemap_draw(bitmap,cliprect,2,0,0);
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

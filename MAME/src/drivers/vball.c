@@ -1,7 +1,11 @@
-#pragma code_seg("C596")
-#pragma bss_seg("B596")
-#pragma data_seg("D596")
-#pragma const_seg("K596")
+#pragma code_seg("C595")
+#pragma data_seg("D595")
+#pragma bss_seg("B595")
+#pragma const_seg("K595")
+#pragma comment(linker, "/merge:D595=595")
+#pragma comment(linker, "/merge:C595=595")
+#pragma comment(linker, "/merge:B595=595")
+#pragma comment(linker, "/merge:K595=595")
 /**********************************************************************************************************************
  Championship VBall
  Driver by Paul "TBBle" Hampson
@@ -640,7 +644,7 @@ ROM_END
 
 GAME( 1988, vball,    0,     vball,    vball,    0, ROT0, "Technos", "U.S. Championship V'ball (set 1)" )
 GAMEX(1988, vball2pj, vball, vball2pj, vball2pj, 0, ROT0, "Technos", "U.S. Championship V'ball (Japan)", GAME_IMPERFECT_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,3 +1,11 @@
+#pragma code_seg("C511")
+#pragma data_seg("D511")
+#pragma bss_seg("B511")
+#pragma const_seg("K511")
+#pragma comment(linker, "/merge:D511=511")
+#pragma comment(linker, "/merge:C511=511")
+#pragma comment(linker, "/merge:B511=511")
+#pragma comment(linker, "/merge:K511=511")
 /***************************************************************************
 
   machine.c
@@ -244,3 +252,7 @@ READ_HANDLER( stfight_fm_r )
 
     return( data );
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

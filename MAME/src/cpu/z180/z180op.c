@@ -1,7 +1,11 @@
-#pragma code_seg("CC2")
-#pragma bss_seg("CB2")
-#pragma data_seg("CD2")
-#pragma const_seg("CK2")
+#pragma code_seg("CC3")
+#pragma data_seg("CD3")
+#pragma bss_seg("CB3")
+#pragma const_seg("CK3")
+#pragma comment(linker, "/merge:CD3=CPU3")
+#pragma comment(linker, "/merge:CC3=CPU3")
+#pragma comment(linker, "/merge:CB3=CPU3")
+#pragma comment(linker, "/merge:CK3=CPU3")
 #if TIME_LOOP_HACKS
 
 #define CHECK_BC_LOOP												\
@@ -530,3 +534,7 @@ static void take_interrupt(int irq)
 	}
 }
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

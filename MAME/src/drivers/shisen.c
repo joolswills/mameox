@@ -1,7 +1,11 @@
-#pragma code_seg("C466")
-#pragma bss_seg("B466")
-#pragma data_seg("D466")
-#pragma const_seg("K466")
+#pragma code_seg("C465")
+#pragma data_seg("D465")
+#pragma bss_seg("B465")
+#pragma const_seg("K465")
+#pragma comment(linker, "/merge:D465=465")
+#pragma comment(linker, "/merge:C465=465")
+#pragma comment(linker, "/merge:B465=465")
+#pragma comment(linker, "/merge:K465=465")
 /***************************************************************************
 
 Shisen
@@ -421,7 +425,7 @@ GAME( 1989, sichuan2, 0,        shisen, shisen, 0, ROT0, "Tamtex", "Sichuan II (
 GAME( 1989, sichuana, sichuan2, shisen, shisen, 0, ROT0, "Tamtex", "Sichuan II (hack?) (set 2)" )
 GAME( 1989, shisen,   sichuan2, shisen, shisen, 0, ROT0, "Tamtex", "Shisensho - Joshiryo-Hen (Japan)" )
 GAME( 1989, matchit,  sichuan2, shisen, shisen, 0, ROT0, "Tamtex", "Match It" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C580")
-#pragma bss_seg("B580")
-#pragma data_seg("D580")
-#pragma const_seg("K580")
+#pragma code_seg("C579")
+#pragma data_seg("D579")
+#pragma bss_seg("B579")
+#pragma const_seg("K579")
+#pragma comment(linker, "/merge:D579=579")
+#pragma comment(linker, "/merge:C579=579")
+#pragma comment(linker, "/merge:B579=579")
+#pragma comment(linker, "/merge:K579=579")
 /***************************************************************************
 
 
@@ -240,7 +244,7 @@ ROM_END
 
 
 GAME( 1981, ttmahjng, 0, ttmahjng, ttmahjng, 0, ROT0, "Taito", "Mahjong" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

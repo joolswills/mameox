@@ -1,7 +1,11 @@
-#pragma code_seg("C602")
-#pragma bss_seg("B602")
-#pragma data_seg("D602")
-#pragma const_seg("K602")
+#pragma code_seg("C601")
+#pragma data_seg("D601")
+#pragma bss_seg("B601")
+#pragma const_seg("K601")
+#pragma comment(linker, "/merge:D601=601")
+#pragma comment(linker, "/merge:C601=601")
+#pragma comment(linker, "/merge:B601=601")
+#pragma comment(linker, "/merge:K601=601")
 /***************************************************************************
 
 	Atari Vindicators hardware
@@ -405,7 +409,7 @@ static DRIVER_INIT( vindictr )
 
 GAME( 1988, vindictr, 0,        vindictr, vindictr, vindictr, ROT0, "Atari Games", "Vindicators (4/26/88)" )
 GAME( 1988, vindicta, vindictr, vindictr, vindictr, vindictr, ROT0, "Atari Games", "Vindicators (4/20/88)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C584")
-#pragma bss_seg("B584")
-#pragma data_seg("D584")
-#pragma const_seg("K584")
+#pragma code_seg("C583")
+#pragma data_seg("D583")
+#pragma bss_seg("B583")
+#pragma const_seg("K583")
+#pragma comment(linker, "/merge:D583=583")
+#pragma comment(linker, "/merge:C583=583")
+#pragma comment(linker, "/merge:B583=583")
+#pragma comment(linker, "/merge:K583=583")
 /***************************************************************************
 
 	Atari Tunnel Hunt hardware
@@ -432,7 +436,7 @@ ROM_END
 /*         rom   parent  machine    inp       	init */
 GAME( 1979,tunhunt,  0,       tunhunt,   tunhunt,	0,  ORIENTATION_SWAP_XY, "Atari", "Tunnel Hunt" )
 GAME( 1981,tunhuntc, tunhunt, tunhunt,   tunhunt,	0,  ORIENTATION_SWAP_XY, "Atari (Centuri license)", "Tunnel Hunt (Centuri)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

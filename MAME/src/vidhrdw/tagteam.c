@@ -1,7 +1,11 @@
-#pragma code_seg("C531")
-#pragma bss_seg("B531")
-#pragma data_seg("D531")
-#pragma const_seg("K531")
+#pragma code_seg("C530")
+#pragma data_seg("D530")
+#pragma bss_seg("B530")
+#pragma const_seg("K530")
+#pragma comment(linker, "/merge:D530=530")
+#pragma comment(linker, "/merge:C530=530")
+#pragma comment(linker, "/merge:B530=530")
+#pragma comment(linker, "/merge:K530=530")
 /***************************************************************************
 
 	vidhrdw.c
@@ -207,7 +211,7 @@ VIDEO_UPDATE( tagteam )
 	drawsprites(bitmap,palettebank);
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

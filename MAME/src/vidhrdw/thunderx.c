@@ -1,7 +1,11 @@
-#pragma code_seg("C560")
-#pragma bss_seg("B560")
-#pragma data_seg("D560")
-#pragma const_seg("K560")
+#pragma code_seg("C559")
+#pragma data_seg("D559")
+#pragma bss_seg("B559")
+#pragma const_seg("K559")
+#pragma comment(linker, "/merge:D559=559")
+#pragma comment(linker, "/merge:C559=559")
+#pragma comment(linker, "/merge:B559=559")
+#pragma comment(linker, "/merge:K559=559")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 
@@ -96,7 +100,7 @@ VIDEO_UPDATE( scontra )
 
 	K051960_sprites_draw(bitmap,cliprect,-1,-1);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

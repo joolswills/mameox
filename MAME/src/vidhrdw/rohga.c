@@ -1,7 +1,11 @@
-#pragma code_seg("C435")
-#pragma bss_seg("B435")
-#pragma data_seg("D435")
-#pragma const_seg("K435")
+#pragma code_seg("C434")
+#pragma data_seg("D434")
+#pragma bss_seg("B434")
+#pragma const_seg("K434")
+#pragma comment(linker, "/merge:D434=434")
+#pragma comment(linker, "/merge:C434=434")
+#pragma comment(linker, "/merge:B434=434")
+#pragma comment(linker, "/merge:K434=434")
 /***************************************************************************
 
 	Rohga Video emulation - Bryan McPhail, mish@tendril.co.uk
@@ -501,7 +505,7 @@ VIDEO_UPDATE( nitrobal )
 
 	deco16_tilemap_1_draw(bitmap,cliprect,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

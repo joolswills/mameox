@@ -1,7 +1,11 @@
-#pragma code_seg("C633")
-#pragma bss_seg("B633")
-#pragma data_seg("D633")
-#pragma const_seg("K633")
+#pragma code_seg("C632")
+#pragma data_seg("D632")
+#pragma bss_seg("B632")
+#pragma const_seg("K632")
+#pragma comment(linker, "/merge:D632=632")
+#pragma comment(linker, "/merge:C632=632")
+#pragma comment(linker, "/merge:B632=632")
+#pragma comment(linker, "/merge:K632=632")
 /***************************************************************************
 
 						  -= Yun Sung 8 Bit Games =-
@@ -580,7 +584,7 @@ ROM_END
 
 GAMEX( 1995, cannball, 0, yunsung8, cannball, 0, ROT0, "Yun Sung / Soft Vision", "Cannon Ball",  GAME_IMPERFECT_SOUND )
 GAMEX( 1995, magix,    0, yunsung8, magix,    0, ROT0, "Yun Sung",               "Magix / Rock", GAME_IMPERFECT_SOUND ) // Title: DSW
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C438")
-#pragma bss_seg("B438")
-#pragma data_seg("D438")
-#pragma const_seg("K438")
+#pragma code_seg("C437")
+#pragma data_seg("D437")
+#pragma bss_seg("B437")
+#pragma const_seg("K437")
+#pragma comment(linker, "/merge:D437=437")
+#pragma comment(linker, "/merge:C437=437")
+#pragma comment(linker, "/merge:B437=437")
+#pragma comment(linker, "/merge:K437=437")
 /* Rotary Fighter
 
 driver by Barry Rodewald
@@ -163,7 +167,7 @@ ROM_START( rotaryf )
 ROM_END
 
 GAMEX(19??, rotaryf, 0,        rotaryf, rotaryf, 8080bw,	ROT270,   "Unknown", "Rotary Fighter", GAME_NO_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

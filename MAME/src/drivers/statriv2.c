@@ -1,7 +1,11 @@
-#pragma code_seg("C511")
-#pragma bss_seg("B511")
-#pragma data_seg("D511")
-#pragma const_seg("K511")
+#pragma code_seg("C510")
+#pragma data_seg("D510")
+#pragma bss_seg("B510")
+#pragma const_seg("K510")
+#pragma comment(linker, "/merge:D510=510")
+#pragma comment(linker, "/merge:C510=510")
+#pragma comment(linker, "/merge:B510=510")
+#pragma comment(linker, "/merge:K510=510")
 /****************************************************************\
 * Status Trivia 2 driver by David Haywood, MooglyGuy, and Stephh *
 * Super Trivia driver by MooglyGuy                               *
@@ -569,7 +573,7 @@ ROM_END
 GAMEX( 1984, trivquiz, 0, trivquiz, statriv2, 0, ROT0, "Status Games", "Triv Quiz", GAME_WRONG_COLORS )
 GAMEX( 1984, statriv2, 0, statriv2, statriv2, 0, ROT0, "Status Games", "(Status) Triv Two", GAME_WRONG_COLORS )
 GAMEX( 1986, supertr2, 0, supertr2, supertr2, 0, ROT0, "Status Games", "Super Triv II", GAME_WRONG_COLORS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

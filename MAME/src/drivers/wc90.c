@@ -1,7 +1,11 @@
-#pragma code_seg("C610")
-#pragma bss_seg("B610")
-#pragma data_seg("D610")
-#pragma const_seg("K610")
+#pragma code_seg("C609")
+#pragma data_seg("D609")
+#pragma bss_seg("B609")
+#pragma const_seg("K609")
+#pragma comment(linker, "/merge:D609=609")
+#pragma comment(linker, "/merge:C609=609")
+#pragma comment(linker, "/merge:B609=609")
+#pragma comment(linker, "/merge:K609=609")
 /*
 World Cup 90 ( Tecmo ) driver
 -----------------------------
@@ -491,7 +495,7 @@ ROM_END
 GAMEX( 1989, wc90,  0,    wc90, wc90, 0, ROT0, "Tecmo", "Tecmo World Cup '90 (set 1)", GAME_IMPERFECT_SOUND | GAME_NO_COCKTAIL )
 GAMEX( 1989, wc90a, wc90, wc90, wc90, 0, ROT0, "Tecmo", "Tecmo World Cup '90 (set 2)", GAME_IMPERFECT_SOUND | GAME_NO_COCKTAIL )
 GAMEX( 1989, wc90t, wc90, wc90, wc90, 0, ROT0, "Tecmo", "Tecmo World Cup '90 (trackball)", GAME_IMPERFECT_SOUND | GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

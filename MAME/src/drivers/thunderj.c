@@ -1,7 +1,11 @@
-#pragma code_seg("C559")
-#pragma bss_seg("B559")
-#pragma data_seg("D559")
-#pragma const_seg("K559")
+#pragma code_seg("C558")
+#pragma data_seg("D558")
+#pragma bss_seg("B558")
+#pragma const_seg("K558")
+#pragma comment(linker, "/merge:D558=558")
+#pragma comment(linker, "/merge:C558=558")
+#pragma comment(linker, "/merge:B558=558")
+#pragma comment(linker, "/merge:K558=558")
 /***************************************************************************
 
 	Atari ThunderJaws hardware
@@ -478,7 +482,7 @@ static DRIVER_INIT( thunderj )
  *************************************/
 
 GAME( 1990, thunderj, 0, thunderj, thunderj, thunderj, ROT0, "Atari Games", "ThunderJaws" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

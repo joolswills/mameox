@@ -1,7 +1,11 @@
-#pragma code_seg("C554")
-#pragma bss_seg("B554")
-#pragma data_seg("D554")
-#pragma const_seg("K554")
+#pragma code_seg("C553")
+#pragma data_seg("D553")
+#pragma bss_seg("B553")
+#pragma const_seg("K553")
+#pragma comment(linker, "/merge:D553=553")
+#pragma comment(linker, "/merge:C553=553")
+#pragma comment(linker, "/merge:B553=553")
+#pragma comment(linker, "/merge:K553=553")
 /***************************************************************************
 
 							  -= Tetris Plus 2 =-
@@ -782,7 +786,7 @@ VIDEO_UPDATE( rocknms )
 	copybitmap(bitmap, rocknms_main_tmpbitmap, 0, 0,   0, 224, &rocknms_rect_main, TRANSPARENCY_NONE, 0);
 //	copybitmap(bitmap, rocknms_sub_tmpbitmap,  0, 0,   0,   0, &rocknms_rect_sub,  TRANSPARENCY_NONE, 0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

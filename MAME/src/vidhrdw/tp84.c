@@ -1,7 +1,11 @@
-#pragma code_seg("C574")
-#pragma bss_seg("B574")
-#pragma data_seg("D574")
-#pragma const_seg("K574")
+#pragma code_seg("C573")
+#pragma data_seg("D573")
+#pragma bss_seg("B573")
+#pragma const_seg("K573")
+#pragma comment(linker, "/merge:D573=573")
+#pragma comment(linker, "/merge:C573=573")
+#pragma comment(linker, "/merge:B573=573")
+#pragma comment(linker, "/merge:K573=573")
 /***************************************************************************
 
 	vidhrdw.c
@@ -345,7 +349,7 @@ INTERRUPT_GEN( tp84_6809_interrupt )
 	if (scanline == 255)
 		irq0_line_hold();
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

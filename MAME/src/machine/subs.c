@@ -1,3 +1,11 @@
+#pragma code_seg("C515")
+#pragma data_seg("D515")
+#pragma bss_seg("B515")
+#pragma const_seg("K515")
+#pragma comment(linker, "/merge:D515=515")
+#pragma comment(linker, "/merge:C515=515")
+#pragma comment(linker, "/merge:B515=515")
+#pragma comment(linker, "/merge:K515=515")
 /***************************************************************************
 
 	Atari Subs hardware
@@ -215,3 +223,7 @@ WRITE_HANDLER( subs_noise_reset_w )
 	discrete_sound_w(6, 0);
 }
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

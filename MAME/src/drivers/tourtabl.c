@@ -1,7 +1,11 @@
-#pragma code_seg("C572")
-#pragma bss_seg("B572")
-#pragma data_seg("D572")
-#pragma const_seg("K572")
+#pragma code_seg("C571")
+#pragma data_seg("D571")
+#pragma bss_seg("B571")
+#pragma const_seg("K571")
+#pragma comment(linker, "/merge:D571=571")
+#pragma comment(linker, "/merge:C571=571")
+#pragma comment(linker, "/merge:B571=571")
+#pragma comment(linker, "/merge:K571=571")
 /***************************************************************************
 
   Atari Tournament Table driver
@@ -246,7 +250,7 @@ ROM_END
 
 GAME( 1978, tourtabl, 0,        tourtabl, tourtabl, NULL, ROT0, "Atari", "Tournament Table (set 1)" )
 GAME( 1978, tourtab2, tourtabl, tourtabl, tourtabl, NULL, ROT0, "Atari", "Tournament Table (set 2)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

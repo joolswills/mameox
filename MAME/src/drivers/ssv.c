@@ -1,7 +1,11 @@
-#pragma code_seg("C504")
-#pragma bss_seg("B504")
-#pragma data_seg("D504")
-#pragma const_seg("K504")
+#pragma code_seg("C503")
+#pragma data_seg("D503")
+#pragma bss_seg("B503")
+#pragma const_seg("K503")
+#pragma comment(linker, "/merge:D503=503")
+#pragma comment(linker, "/merge:C503=503")
+#pragma comment(linker, "/merge:B503=503")
+#pragma comment(linker, "/merge:K503=503")
 /***************************************************************************
 
 					-= Seta, Sammy, Visco (SSV) System =-
@@ -4178,7 +4182,7 @@ GAMEX( 1994,  twineag2, 0,        twineag2, twineag2, twineag2, ROT270, "Seta", 
 GAMEX( 1995,  ultrax,   0,        ultrax,   ultrax,   ultrax,   ROT270,	"Banpresto + Tsuburaya Prod.", "Ultra X Weapons / Ultra Keibitai",        GAME_NO_COCKTAIL | GAME_NOT_WORKING )
 GAMEX( 1997,  jsk,      0,        janjans1, janjans1, janjans1, ROT0,   "Visco",              "Joryuu Syougi Kyoushitsu (Japan)",                 GAME_NO_COCKTAIL | GAME_NOT_WORKING )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

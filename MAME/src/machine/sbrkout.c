@@ -1,3 +1,11 @@
+#pragma code_seg("C445")
+#pragma data_seg("D445")
+#pragma bss_seg("B445")
+#pragma const_seg("K445")
+#pragma comment(linker, "/merge:D445=445")
+#pragma comment(linker, "/merge:C445=445")
+#pragma comment(linker, "/merge:B445=445")
+#pragma comment(linker, "/merge:K445=445")
 /*************************************************************************
 
 	Atari Super Breakout hardware
@@ -107,3 +115,7 @@ WRITE_HANDLER( sbrkout_serve_led_w )
 	set_led_status(2,~offset & 1);
 }
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

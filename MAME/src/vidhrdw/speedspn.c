@@ -1,7 +1,11 @@
-#pragma code_seg("C493")
-#pragma bss_seg("B493")
-#pragma data_seg("D493")
-#pragma const_seg("K493")
+#pragma code_seg("C492")
+#pragma data_seg("D492")
+#pragma bss_seg("B492")
+#pragma const_seg("K492")
+#pragma comment(linker, "/merge:D492=492")
+#pragma comment(linker, "/merge:C492=492")
+#pragma comment(linker, "/merge:B492=492")
+#pragma comment(linker, "/merge:K492=492")
 /* Speed Spin Vidhrdw, see driver file for notes */
 
 #include "driver.h"
@@ -115,7 +119,7 @@ VIDEO_UPDATE(speedspn)
 	tilemap_draw(bitmap,cliprect,speedspn_tilemap,0,0);
 	speedspn_drawsprites(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

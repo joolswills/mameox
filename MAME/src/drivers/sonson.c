@@ -1,7 +1,11 @@
-#pragma code_seg("C486")
-#pragma bss_seg("B486")
-#pragma data_seg("D486")
-#pragma const_seg("K486")
+#pragma code_seg("C485")
+#pragma data_seg("D485")
+#pragma bss_seg("B485")
+#pragma const_seg("K485")
+#pragma comment(linker, "/merge:D485=485")
+#pragma comment(linker, "/merge:C485=485")
+#pragma comment(linker, "/merge:B485=485")
+#pragma comment(linker, "/merge:K485=485")
 /***************************************************************************
 
 Son Son memory map (preliminary)
@@ -351,7 +355,7 @@ ROM_END
 
 GAMEX( 1984, sonson,  0,      sonson, sonson, 0, ROT0, "Capcom", "Son Son", GAME_NO_COCKTAIL )
 GAMEX( 1984, sonsonj, sonson, sonson, sonson, 0, ROT0, "Capcom", "Son Son (Japan)", GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C488")
-#pragma bss_seg("B488")
-#pragma data_seg("D488")
-#pragma const_seg("K488")
+#pragma code_seg("C487")
+#pragma data_seg("D487")
+#pragma bss_seg("B487")
+#pragma const_seg("K487")
+#pragma comment(linker, "/merge:D487=487")
+#pragma comment(linker, "/merge:C487=487")
+#pragma comment(linker, "/merge:B487=487")
+#pragma comment(linker, "/merge:K487=487")
 /* vidhrdw/spbactn.c - see drivers/spbactn.c for more info */
 /* rather similar to galspnbl.c */
 
@@ -122,7 +126,7 @@ VIDEO_UPDATE( spbactn )
 
 	draw_sprites(bitmap,1);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

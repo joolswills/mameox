@@ -1,7 +1,11 @@
-#pragma code_seg("C501")
-#pragma bss_seg("B501")
-#pragma data_seg("D501")
-#pragma const_seg("K501")
+#pragma code_seg("C500")
+#pragma data_seg("D500")
+#pragma bss_seg("B500")
+#pragma const_seg("K500")
+#pragma comment(linker, "/merge:D500=500")
+#pragma comment(linker, "/merge:C500=500")
+#pragma comment(linker, "/merge:B500=500")
+#pragma comment(linker, "/merge:K500=500")
 /***************************************************************************
 
   Super Shanghai Dragon's Eye             (c) 1992 Hot-B
@@ -456,7 +460,7 @@ static DRIVER_INIT( sshangha )
 
 GAMEX( 1992, sshangha, 0,        sshangha, sshangha, sshangha, ROT0, "Hot-B",   "Super Shanghai Dragon's Eye (Japan)", GAME_UNEMULATED_PROTECTION | GAME_NO_SOUND )
 GAMEX( 1992, sshanghb, sshangha, sshangha, sshangha, sshangha, ROT0, "bootleg", "Super Shanghai Dragon's Eye (World, bootleg)", GAME_NO_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

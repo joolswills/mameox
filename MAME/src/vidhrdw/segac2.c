@@ -1,7 +1,11 @@
-#pragma code_seg("C450")
-#pragma bss_seg("B450")
-#pragma data_seg("D450")
-#pragma const_seg("K450")
+#pragma code_seg("C449")
+#pragma data_seg("D449")
+#pragma bss_seg("B449")
+#pragma const_seg("K449")
+#pragma comment(linker, "/merge:D449=449")
+#pragma comment(linker, "/merge:C449=449")
+#pragma comment(linker, "/merge:B449=449")
+#pragma comment(linker, "/merge:K449=449")
 /***********************************************************************************************
 
 	Sega System C/C2 Driver
@@ -1419,7 +1423,7 @@ XP = X Position of Sprite
 
 */
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

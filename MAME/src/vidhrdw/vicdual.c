@@ -1,7 +1,11 @@
-#pragma code_seg("C598")
-#pragma bss_seg("B598")
-#pragma data_seg("D598")
-#pragma const_seg("K598")
+#pragma code_seg("C597")
+#pragma data_seg("D597")
+#pragma bss_seg("B597")
+#pragma const_seg("K597")
+#pragma comment(linker, "/merge:D597=597")
+#pragma comment(linker, "/merge:C597=597")
+#pragma comment(linker, "/merge:B597=597")
+#pragma comment(linker, "/merge:K597=597")
 /***************************************************************************
 
   vidhrdw.c
@@ -194,7 +198,7 @@ VIDEO_UPDATE( vicdual )
 		if (dirtycharacter[offs] == 2) dirtycharacter[offs] = 0;
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

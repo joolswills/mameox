@@ -1,7 +1,11 @@
-#pragma code_seg("C436")
-#pragma bss_seg("B436")
-#pragma data_seg("D436")
-#pragma const_seg("K436")
+#pragma code_seg("C435")
+#pragma data_seg("D435")
+#pragma bss_seg("B435")
+#pragma const_seg("K435")
+#pragma comment(linker, "/merge:D435=435")
+#pragma comment(linker, "/merge:C435=435")
+#pragma comment(linker, "/merge:B435=435")
+#pragma comment(linker, "/merge:K435=435")
 /***************************************************************************
 
 Rollergames (GX999) (c) 1991 Konami
@@ -369,7 +373,7 @@ static DRIVER_INIT( rollerg )
 
 GAME( 1991, rollerg,  0,       rollerg, rollerg, rollerg, ROT0, "Konami", "Rollergames (US)" )
 GAME( 1991, rollergj, rollerg, rollerg, rollerg, rollerg, ROT0, "Konami", "Rollergames (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

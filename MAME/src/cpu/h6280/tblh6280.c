@@ -1,7 +1,11 @@
-#pragma code_seg("CC28")
-#pragma bss_seg("CB28")
-#pragma data_seg("CD28")
-#pragma const_seg("CK28")
+#pragma code_seg("CC23")
+#pragma data_seg("CD23")
+#pragma bss_seg("CB23")
+#pragma const_seg("CK23")
+#pragma comment(linker, "/merge:CD23=CPU23")
+#pragma comment(linker, "/merge:CC23=CPU23")
+#pragma comment(linker, "/merge:CB23=CPU23")
+#pragma comment(linker, "/merge:CK23=CPU23")
 /*****************************************************************************
 
     tblh6280.c
@@ -346,3 +350,7 @@ static void (*insnh6280[0x100])(void) = {
 	h6280_0f0,h6280_0f1,h6280_0f2,h6280_0f3,h6280_0f4,h6280_0f5,h6280_0f6,h6280_0f7,
 	h6280_0f8,h6280_0f9,h6280_0fa,h6280_0fb,h6280_0fc,h6280_0fd,h6280_0fe,h6280_0ff
 };
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

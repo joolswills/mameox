@@ -1,7 +1,11 @@
-#pragma code_seg("C583")
-#pragma bss_seg("B583")
-#pragma data_seg("D583")
-#pragma const_seg("K583")
+#pragma code_seg("C582")
+#pragma data_seg("D582")
+#pragma bss_seg("B582")
+#pragma const_seg("K582")
+#pragma comment(linker, "/merge:D582=582")
+#pragma comment(linker, "/merge:C582=582")
+#pragma comment(linker, "/merge:B582=582")
+#pragma comment(linker, "/merge:K582=582")
 /***************************************************************************
 
   Tumblepop (World)     (c) 1991 Data East Corporation
@@ -896,7 +900,7 @@ GAMEX(1991, tumblepb, tumblep, tumblepb,  tumblep,  tumblepb, ROT0, "bootleg", "
 GAMEX(1991, tumblep2, tumblep, tumblepb,  tumblep,  tumblepb, ROT0, "bootleg", "Tumble Pop (bootleg set 2)", GAME_IMPERFECT_SOUND )
 GAMEX(1993, jumpkids, 0,       jumpkids,  tumblep,  jumpkids, ROT0, "Comad", "Jump Kids", GAME_NO_SOUND )
 GAME (1996, fncywld,  0,       fncywld,   fncywld,  fncywld,  ROT0, "Unico", "Fancy World - Earth of Crisis" ) // game says 1996, testmode 1995?
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

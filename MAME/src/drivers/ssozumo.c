@@ -1,7 +1,11 @@
-#pragma code_seg("C503")
-#pragma bss_seg("B503")
-#pragma data_seg("D503")
-#pragma const_seg("K503")
+#pragma code_seg("C502")
+#pragma data_seg("D502")
+#pragma bss_seg("B502")
+#pragma const_seg("K502")
+#pragma comment(linker, "/merge:D502=502")
+#pragma comment(linker, "/merge:C502=502")
+#pragma comment(linker, "/merge:B502=502")
+#pragma comment(linker, "/merge:K502=502")
 /***************************************************************************
 
 Syusse Oozumou
@@ -341,7 +345,7 @@ ROM_END
 
 
 GAMEX( 1984, ssozumo, 0, ssozumo, ssozumo, 0, ROT270, "Technos", "Syusse Oozumou (Japan)", GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C603")
-#pragma bss_seg("B603")
-#pragma data_seg("D603")
-#pragma const_seg("K603")
+#pragma code_seg("C602")
+#pragma data_seg("D602")
+#pragma bss_seg("B602")
+#pragma const_seg("K602")
+#pragma comment(linker, "/merge:D602=602")
+#pragma comment(linker, "/merge:C602=602")
+#pragma comment(linker, "/merge:B602=602")
+#pragma comment(linker, "/merge:K602=602")
 /******************************************************************
 
 Volfied (c) 1989 Taito Corporation
@@ -439,7 +443,7 @@ ROM_END
 GAMEX( 1989, volfied,  0,       volfied, volfied,  volfied, ROT270, "Taito Corporation Japan", "Volfied (World)", GAME_UNEMULATED_PROTECTION )
 GAMEX( 1989, volfiedu, volfied, volfied, volfiedu, volfied, ROT270, "Taito America Corporation", "Volfied (US)", GAME_UNEMULATED_PROTECTION )
 GAMEX( 1989, volfiedj, volfied, volfied, volfiedj, volfied, ROT270, "Taito Corporation", "Volfied (Japan)", GAME_UNEMULATED_PROTECTION )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

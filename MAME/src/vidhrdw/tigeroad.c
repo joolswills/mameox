@@ -1,7 +1,11 @@
-#pragma code_seg("C562")
-#pragma bss_seg("B562")
-#pragma data_seg("D562")
-#pragma const_seg("K562")
+#pragma code_seg("C561")
+#pragma data_seg("D561")
+#pragma bss_seg("B561")
+#pragma const_seg("K561")
+#pragma comment(linker, "/merge:D561=561")
+#pragma comment(linker, "/merge:C561=561")
+#pragma comment(linker, "/merge:B561=561")
+#pragma comment(linker, "/merge:K561=561")
 #include "vidhrdw/generic.h"
 
 static data16_t tigeroad_scrollram[2];
@@ -187,7 +191,7 @@ VIDEO_EOF( tigeroad )
 {
 	buffer_spriteram16_w(0,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

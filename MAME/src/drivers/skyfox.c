@@ -1,7 +1,11 @@
-#pragma code_seg("C478")
-#pragma bss_seg("B478")
-#pragma data_seg("D478")
-#pragma const_seg("K478")
+#pragma code_seg("C477")
+#pragma data_seg("D477")
+#pragma bss_seg("B477")
+#pragma const_seg("K477")
+#pragma comment(linker, "/merge:D477=477")
+#pragma comment(linker, "/merge:C477=477")
+#pragma comment(linker, "/merge:B477=477")
+#pragma comment(linker, "/merge:K477=477")
 /***************************************************************************
 
 						-= Sky Fox / Exerizer =-
@@ -446,7 +450,7 @@ DRIVER_INIT( skyfox )
 
 GAME( 1987, skyfox,   0,      skyfox, skyfox, skyfox, ROT90, "Jaleco (Nichibutsu USA License)", "Sky Fox"  )
 GAME( 1987, exerizrb, skyfox, skyfox, skyfox, skyfox, ROT90, "Jaleco", "Exerizer (Japan) (bootleg)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

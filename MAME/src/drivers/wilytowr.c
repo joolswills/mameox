@@ -1,7 +1,11 @@
-#pragma code_seg("C615")
-#pragma bss_seg("B615")
-#pragma data_seg("D615")
-#pragma const_seg("K615")
+#pragma code_seg("C614")
+#pragma data_seg("D614")
+#pragma bss_seg("B614")
+#pragma const_seg("K614")
+#pragma comment(linker, "/merge:D614=614")
+#pragma comment(linker, "/merge:C614=614")
+#pragma comment(linker, "/merge:B614=614")
+#pragma comment(linker, "/merge:K614=614")
 /***************************************************************************
 
 Wily Towr   (c) 1984 Irem
@@ -503,7 +507,7 @@ ROM_END
 
 GAMEX( 1984, wilytowr, 0,        wilytowr, wilytowr, 0, ROT180, "Irem",                    "Wily Tower", GAME_NO_SOUND | GAME_NO_COCKTAIL )
 GAMEX( 1985, atomboy,  wilytowr, wilytowr, wilytowr, 0, ROT180, "Irem (Memetron license)", "Atomic Boy", GAME_NO_SOUND | GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

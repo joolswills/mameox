@@ -1,7 +1,11 @@
-#pragma code_seg("C597")
-#pragma bss_seg("B597")
-#pragma data_seg("D597")
-#pragma const_seg("K597")
+#pragma code_seg("C596")
+#pragma data_seg("D596")
+#pragma bss_seg("B596")
+#pragma const_seg("K596")
+#pragma comment(linker, "/merge:D596=596")
+#pragma comment(linker, "/merge:C596=596")
+#pragma comment(linker, "/merge:B596=596")
+#pragma comment(linker, "/merge:K596=596")
 /***************************************************************************
 
 Vendetta (GX081) (c) 1991 Konami
@@ -814,7 +818,7 @@ GAME( 1991, vendetas, vendetta, vendetta, vendetta, vendetta, ROT0, "Konami", "V
 GAME( 1991, vendtaso, vendetta, vendetta, vendetta, vendetta, ROT0, "Konami", "Vendetta (Asia 2 Players ver. D)" )
 GAME( 1991, vendettj, vendetta, vendetta, vendetta, vendetta, ROT0, "Konami", "Crime Fighters 2 (Japan 2 Players ver. P)" )
 GAME( 1991, esckids,  0,        esckids,  esckids,  vendetta, ROT0, "Konami", "Escape Kids (Japan 2 Players)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

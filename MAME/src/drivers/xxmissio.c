@@ -1,7 +1,11 @@
-#pragma code_seg("C626")
-#pragma bss_seg("B626")
-#pragma data_seg("D626")
-#pragma const_seg("K626")
+#pragma code_seg("C625")
+#pragma data_seg("D625")
+#pragma bss_seg("B625")
+#pragma const_seg("K625")
+#pragma comment(linker, "/merge:D625=625")
+#pragma comment(linker, "/merge:C625=625")
+#pragma comment(linker, "/merge:B625=625")
+#pragma comment(linker, "/merge:K625=625")
 /*****************************************************************************
 
 XX Mission (c) 1986 UPL
@@ -391,7 +395,7 @@ ROM_START( xxmissio )
 ROM_END
 
 GAME( 1986, xxmissio, 0, xxmissio, xxmissio, 0, ROT90, "UPL", "XX Mission" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

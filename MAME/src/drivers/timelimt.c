@@ -1,7 +1,11 @@
-#pragma code_seg("C563")
-#pragma bss_seg("B563")
-#pragma data_seg("D563")
-#pragma const_seg("K563")
+#pragma code_seg("C562")
+#pragma data_seg("D562")
+#pragma bss_seg("B562")
+#pragma const_seg("K562")
+#pragma comment(linker, "/merge:D562=562")
+#pragma comment(linker, "/merge:C562=562")
+#pragma comment(linker, "/merge:B562=562")
+#pragma comment(linker, "/merge:K562=562")
 /***************************************************************************
 
 Time Limit (c) 1983 Chuo
@@ -375,7 +379,7 @@ ROM_END
 
 GAMEX( 1983, timelimt, 0, timelimt, timelimt, 0, ROT90, "Chuo Co. Ltd", "Time Limit", GAME_IMPERFECT_COLORS )
 GAME ( 1984, progress, 0, progress, progress, 0, ROT90, "Chuo Co. Ltd", "Progress" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

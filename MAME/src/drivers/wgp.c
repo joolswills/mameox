@@ -1,7 +1,11 @@
-#pragma code_seg("C614")
-#pragma bss_seg("B614")
-#pragma data_seg("D614")
-#pragma const_seg("K614")
+#pragma code_seg("C613")
+#pragma data_seg("D613")
+#pragma bss_seg("B613")
+#pragma const_seg("K613")
+#pragma comment(linker, "/merge:D613=613")
+#pragma comment(linker, "/merge:C613=613")
+#pragma comment(linker, "/merge:B613=613")
+#pragma comment(linker, "/merge:K613=613")
 /***************************************************************************
 
 World Grand Prix	(c) Taito Corporation 1989
@@ -1494,7 +1498,7 @@ GAMEX( 1989, wgpjoy,   wgp,    wgp,    wgpjoy, wgp,    ROT0, "Taito Corporation"
 GAMEX( 1989, wgpjoya,  wgp,    wgp,    wgpjoy, wgp,    ROT0, "Taito Corporation", "World Grand Prix (joystick version set 2) (Japan)", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1990, wgp2,     wgp,    wgp2,   wgp2,   wgp2,   ROT0, "Taito Corporation", "World Grand Prix 2 (Japan)", GAME_IMPERFECT_GRAPHICS )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

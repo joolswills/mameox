@@ -1,7 +1,11 @@
-#pragma code_seg("C635")
-#pragma bss_seg("B635")
-#pragma data_seg("D635")
-#pragma const_seg("K635")
+#pragma code_seg("C634")
+#pragma data_seg("D634")
+#pragma bss_seg("B634")
+#pragma const_seg("K634")
+#pragma comment(linker, "/merge:D634=634")
+#pragma comment(linker, "/merge:C634=634")
+#pragma comment(linker, "/merge:B634=634")
+#pragma comment(linker, "/merge:K634=634")
 /***************************************************************************
 
   vidhrdw.c
@@ -303,7 +307,7 @@ VIDEO_UPDATE( zaccaria )
 
 	draw_sprites(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

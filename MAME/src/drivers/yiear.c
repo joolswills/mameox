@@ -1,7 +1,11 @@
-#pragma code_seg("C631")
-#pragma bss_seg("B631")
-#pragma data_seg("D631")
-#pragma const_seg("K631")
+#pragma code_seg("C630")
+#pragma data_seg("D630")
+#pragma bss_seg("B630")
+#pragma const_seg("K630")
+#pragma comment(linker, "/merge:D630=630")
+#pragma comment(linker, "/merge:C630=630")
+#pragma comment(linker, "/merge:B630=630")
+#pragma comment(linker, "/merge:K630=630")
 /***************************************************************************
 
 	Yie Ar Kung-Fu memory map (preliminary)
@@ -351,7 +355,7 @@ ROM_END
 
 GAME( 1985, yiear,  0,     yiear, yiear, 0, ROT0, "Konami", "Yie Ar Kung-Fu (set 1)" )
 GAME( 1985, yiear2, yiear, yiear, yiear, 0, ROT0, "Konami", "Yie Ar Kung-Fu (set 2)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

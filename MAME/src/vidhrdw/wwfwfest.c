@@ -1,7 +1,11 @@
-#pragma code_seg("C621")
-#pragma bss_seg("B621")
-#pragma data_seg("D621")
-#pragma const_seg("K621")
+#pragma code_seg("C620")
+#pragma data_seg("D620")
+#pragma bss_seg("B620")
+#pragma const_seg("K620")
+#pragma comment(linker, "/merge:D620=620")
+#pragma comment(linker, "/merge:C620=620")
+#pragma comment(linker, "/merge:B620=620")
+#pragma comment(linker, "/merge:K620=620")
 /*******************************************************************************
  WWF Wrestlefest (C) 1991 Technos Japan  (vidhrdw/wwfwfest.c)
 ********************************************************************************
@@ -284,7 +288,7 @@ VIDEO_UPDATE( wwfwfest )
 		tilemap_draw(bitmap,cliprect,fg0_tilemap,0,0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

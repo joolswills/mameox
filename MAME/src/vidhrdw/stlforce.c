@@ -1,7 +1,11 @@
-#pragma code_seg("C513")
-#pragma bss_seg("B513")
-#pragma data_seg("D513")
-#pragma const_seg("K513")
+#pragma code_seg("C512")
+#pragma data_seg("D512")
+#pragma bss_seg("B512")
+#pragma const_seg("K512")
+#pragma comment(linker, "/merge:D512=512")
+#pragma comment(linker, "/merge:C512=512")
+#pragma comment(linker, "/merge:B512=512")
+#pragma comment(linker, "/merge:K512=512")
 /* vidhrdw/stlforce.c - see main driver for other notes */
 
 #include "driver.h"
@@ -176,7 +180,7 @@ VIDEO_START( stlforce )
 
 	return 0;
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

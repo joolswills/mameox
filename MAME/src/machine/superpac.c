@@ -1,3 +1,11 @@
+#pragma code_seg("C520")
+#pragma data_seg("D520")
+#pragma bss_seg("B520")
+#pragma const_seg("K520")
+#pragma comment(linker, "/merge:D520=520")
+#pragma comment(linker, "/merge:C520=520")
+#pragma comment(linker, "/merge:B520=520")
+#pragma comment(linker, "/merge:K520=520")
 /***************************************************************************
 
   machine.c
@@ -265,3 +273,7 @@ WRITE_HANDLER( superpac_cpu_enable_w )
 {
 	cpu_set_halt_line(1, offset ? CLEAR_LINE : ASSERT_LINE);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

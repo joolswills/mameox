@@ -1,7 +1,11 @@
-#pragma code_seg("C629")
-#pragma bss_seg("B629")
-#pragma data_seg("D629")
-#pragma const_seg("K629")
+#pragma code_seg("C628")
+#pragma data_seg("D628")
+#pragma bss_seg("B628")
+#pragma const_seg("K628")
+#pragma comment(linker, "/merge:D628=628")
+#pragma comment(linker, "/merge:C628=628")
+#pragma comment(linker, "/merge:B628=628")
+#pragma comment(linker, "/merge:K628=628")
 /*
 
 TODO:
@@ -445,7 +449,7 @@ static DRIVER_INIT( yamato )
 
 GAME( 1983, yamato,  0,      yamato, yamato, yamato, ROT90, "Sega", "Yamato (US)" )
 GAME( 1983, yamato2, yamato, yamato, yamato, yamato, ROT90, "Sega", "Yamato (World?)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

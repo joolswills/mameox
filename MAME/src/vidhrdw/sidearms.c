@@ -1,7 +1,11 @@
-#pragma code_seg("C470")
-#pragma bss_seg("B470")
-#pragma data_seg("D470")
-#pragma const_seg("K470")
+#pragma code_seg("C469")
+#pragma data_seg("D469")
+#pragma bss_seg("B469")
+#pragma const_seg("K469")
+#pragma comment(linker, "/merge:D469=469")
+#pragma comment(linker, "/merge:C469=469")
+#pragma comment(linker, "/merge:B469=469")
+#pragma comment(linker, "/merge:K469=469")
 /***************************************************************************
 
   vidhrdw.c
@@ -300,7 +304,7 @@ VIDEO_EOF( sidearms )
 {
 	buffer_spriteram_w(0, 0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

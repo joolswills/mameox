@@ -1,7 +1,11 @@
-#pragma code_seg("C548")
-#pragma bss_seg("B548")
-#pragma data_seg("D548")
-#pragma const_seg("K548")
+#pragma code_seg("C547")
+#pragma data_seg("D547")
+#pragma bss_seg("B547")
+#pragma const_seg("K547")
+#pragma comment(linker, "/merge:D547=547")
+#pragma comment(linker, "/merge:C547=547")
+#pragma comment(linker, "/merge:B547=547")
+#pragma comment(linker, "/merge:K547=547")
 /***************************************************************************
 
 tecmo.c
@@ -852,7 +856,7 @@ GAME( 1986, rygarj,   rygar,    rygar,    rygar,    rygar,    ROT0,  "Tecmo", "A
 GAME( 1987, gemini,   0,        gemini,   gemini,   gemini,   ROT90, "Tecmo", "Gemini Wing" )
 GAME( 1988, silkworm, 0,        silkworm, silkworm, silkworm, ROT0,  "Tecmo", "Silk Worm (set 1)" )
 GAME( 1988, silkwrm2, silkworm, silkworm, silkworm, silkworm, ROT0,  "Tecmo", "Silk Worm (set 2)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

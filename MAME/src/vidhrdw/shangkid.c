@@ -1,7 +1,11 @@
-#pragma code_seg("C463")
-#pragma bss_seg("B463")
-#pragma data_seg("D463")
-#pragma const_seg("K463")
+#pragma code_seg("C462")
+#pragma data_seg("D462")
+#pragma bss_seg("B462")
+#pragma const_seg("K462")
+#pragma comment(linker, "/merge:D462=462")
+#pragma comment(linker, "/merge:C462=462")
+#pragma comment(linker, "/merge:B462=462")
+#pragma comment(linker, "/merge:K462=462")
 /* vidhrdw/shangkid */
 
 #include "driver.h"
@@ -309,7 +313,7 @@ VIDEO_UPDATE( dynamski )
 	dynamski_draw_sprites( bitmap,cliprect );
 	dynamski_draw_background( bitmap,cliprect, 1 );
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C563")
-#pragma bss_seg("B563")
-#pragma data_seg("D563")
-#pragma const_seg("K563")
+#pragma code_seg("C562")
+#pragma data_seg("D562")
+#pragma bss_seg("B562")
+#pragma const_seg("K562")
+#pragma comment(linker, "/merge:D562=562")
+#pragma comment(linker, "/merge:C562=562")
+#pragma comment(linker, "/merge:B562=562")
+#pragma comment(linker, "/merge:K562=562")
 #include "vidhrdw/generic.h"
 
 /* globals */
@@ -178,7 +182,7 @@ VIDEO_UPDATE( timelimt )
 
 	tilemap_draw(bitmap, &Machine->visible_area, fg_tilemap, 0, 0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

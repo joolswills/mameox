@@ -1,7 +1,11 @@
-#pragma code_seg("C479")
-#pragma bss_seg("B479")
-#pragma data_seg("D479")
-#pragma const_seg("K479")
+#pragma code_seg("C478")
+#pragma data_seg("D478")
+#pragma bss_seg("B478")
+#pragma const_seg("K478")
+#pragma comment(linker, "/merge:D478=478")
+#pragma comment(linker, "/merge:C478=478")
+#pragma comment(linker, "/merge:B478=478")
+#pragma comment(linker, "/merge:K478=478")
 /***************************************************************************
 
 Dragon Buster (c) Namco 1984
@@ -626,7 +630,7 @@ GAME( 1985, skykid,   0,      skykid, skykid,   0, ROT0, "Namco", "Sky Kid (New 
 GAME( 1985, skykido,  skykid, skykid, skykid,   0, ROT0, "Namco", "Sky Kid (Old Ver.)" )
 GAMEX(1985, skykidd,  skykid, skykid, skykid,   0, ROT0, "Namco", "Sky Kid (60A1 Ver.)", GAME_NOT_WORKING )
 GAME( 1984, drgnbstr, 0,      skykid, drgnbstr, 0, ROT0, "Namco", "Dragon Buster" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

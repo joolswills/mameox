@@ -1,7 +1,11 @@
-#pragma code_seg("C550")
-#pragma bss_seg("B550")
-#pragma data_seg("D550")
-#pragma const_seg("K550")
+#pragma code_seg("C549")
+#pragma data_seg("D549")
+#pragma bss_seg("B549")
+#pragma const_seg("K549")
+#pragma comment(linker, "/merge:D549=549")
+#pragma comment(linker, "/merge:C549=549")
+#pragma comment(linker, "/merge:B549=549")
+#pragma comment(linker, "/merge:K549=549")
 /* Tecmo System
  Driver by Farfetch & David Haywood
 
@@ -540,7 +544,7 @@ static DRIVER_INIT( deroon )
 GAMEX( 1996, deroon,      0, deroon, deroon, deroon,     ROT0, "Tecmo", "Deroon DeroDero", GAME_NOT_WORKING | GAME_NO_SOUND )
 GAMEX( 1996, tkdensho,    0, deroon, deroon, 0,          ROT0, "Tecmo", "Touki Denshou -Angel Eyes-", GAME_NOT_WORKING | GAME_NO_SOUND )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

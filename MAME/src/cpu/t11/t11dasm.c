@@ -1,7 +1,11 @@
 #pragma code_seg("CC10")
-#pragma bss_seg("CB10")
 #pragma data_seg("CD10")
+#pragma bss_seg("CB10")
 #pragma const_seg("CK10")
+#pragma comment(linker, "/merge:CD10=CPU10")
+#pragma comment(linker, "/merge:CC10=CPU10")
+#pragma comment(linker, "/merge:CB10=CPU10")
+#pragma comment(linker, "/merge:CK10=CPU10")
 /*
  *   A T11 disassembler
  *
@@ -556,3 +560,7 @@ unsigned DasmT11 (char *buffer, unsigned pc)
 }
 
 #endif
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

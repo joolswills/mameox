@@ -1,7 +1,11 @@
-#pragma code_seg("C444")
-#pragma bss_seg("B444")
-#pragma data_seg("D444")
-#pragma const_seg("K444")
+#pragma code_seg("C443")
+#pragma data_seg("D443")
+#pragma bss_seg("B443")
+#pragma const_seg("K443")
+#pragma comment(linker, "/merge:D443=443")
+#pragma comment(linker, "/merge:C443=443")
+#pragma comment(linker, "/merge:B443=443")
+#pragma comment(linker, "/merge:K443=443")
 /***************************************************************************
 
   vidhrdw.c
@@ -274,7 +278,7 @@ VIDEO_UPDATE( trckydoc )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

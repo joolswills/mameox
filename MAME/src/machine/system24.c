@@ -1,3 +1,11 @@
+#pragma code_seg("C528")
+#pragma data_seg("D528")
+#pragma bss_seg("B528")
+#pragma const_seg("K528")
+#pragma comment(linker, "/merge:D528=528")
+#pragma comment(linker, "/merge:C528=528")
+#pragma comment(linker, "/merge:B528=528")
+#pragma comment(linker, "/merge:K528=528")
 #include "driver.h"
 #include "system16.h"
 
@@ -106,3 +114,7 @@ WRITE16_HANDLER( system24temp_sys16_io_w )
 	if(offset >= 0x20 && system24temp_sys16_io_iod_w)
 		system24temp_sys16_io_iod_w(offset & 0x1f, data, mem_mask);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

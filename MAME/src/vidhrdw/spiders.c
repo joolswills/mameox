@@ -1,7 +1,11 @@
-#pragma code_seg("C494")
-#pragma bss_seg("B494")
-#pragma data_seg("D494")
-#pragma const_seg("K494")
+#pragma code_seg("C493")
+#pragma data_seg("D493")
+#pragma bss_seg("B493")
+#pragma const_seg("K493")
+#pragma comment(linker, "/merge:D493=493")
+#pragma comment(linker, "/merge:C493=493")
+#pragma comment(linker, "/merge:B493=493")
+#pragma comment(linker, "/merge:K493=493")
 /***************************************************************************
 
   vidhrdw.c
@@ -133,7 +137,7 @@ VIDEO_UPDATE( spiders )
 	/* Now copy the temp bitmap to the screen */
 	copybitmap(bitmap,tmpbitmap,0,0,0,0,&Machine->visible_area,TRANSPARENCY_NONE,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

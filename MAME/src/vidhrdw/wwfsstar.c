@@ -1,7 +1,11 @@
-#pragma code_seg("C620")
-#pragma bss_seg("B620")
-#pragma data_seg("D620")
-#pragma const_seg("K620")
+#pragma code_seg("C619")
+#pragma data_seg("D619")
+#pragma bss_seg("B619")
+#pragma const_seg("K619")
+#pragma comment(linker, "/merge:D619=619")
+#pragma comment(linker, "/merge:C619=619")
+#pragma comment(linker, "/merge:B619=619")
+#pragma comment(linker, "/merge:K619=619")
 /*******************************************************************************
  WWF Superstars (C) 1989 Technos Japan  (vidhrdw/wwfsstar.c)
 ********************************************************************************
@@ -233,7 +237,7 @@ VIDEO_UPDATE( wwfsstar )
 	wwfsstar_drawsprites( bitmap,cliprect );
 	tilemap_draw(bitmap,cliprect,fg0_tilemap,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

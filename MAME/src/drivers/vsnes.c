@@ -1,7 +1,11 @@
-#pragma code_seg("C604")
-#pragma bss_seg("B604")
-#pragma data_seg("D604")
-#pragma const_seg("K604")
+#pragma code_seg("C603")
+#pragma data_seg("D603")
+#pragma bss_seg("B603")
+#pragma const_seg("K603")
+#pragma comment(linker, "/merge:D603=603")
+#pragma comment(linker, "/merge:C603=603")
+#pragma comment(linker, "/merge:B603=603")
+#pragma comment(linker, "/merge:K603=603")
 /***************************************************************************
 
 Nintendo VS UniSystem and DualSystem - (c) 1984 Nintendo of America
@@ -2754,7 +2758,7 @@ GAMEX( 19??, supxevs,  0,        vsnes,   vsnes,	xevious,  ROT0, "Namco?",   "Vs
 GAMEX(1988?, vsfdf,    0,        vsnes,   vsfdf,    vsfdf   , ROT0, "Konami",   "Vs. Freedom Force", GAME_NOT_WORKING )
 GAMEX( 1985, smgolfb,  smgolf,   vsnes,   golf,     machridr, ROT0, "Nintendo", "Vs. Stroke and Match Golf (Men set 2)", GAME_NOT_WORKING )
 GAMEX( 1984, vsbbaljb, vsbball,  vsdual,  vsbballj, vsbball,  ROT0, "Nintendo of America",  "Vs. BaseBall (Japan set 3)", GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C472")
-#pragma bss_seg("B472")
-#pragma data_seg("D472")
-#pragma const_seg("K472")
+#pragma code_seg("C471")
+#pragma data_seg("D471")
+#pragma bss_seg("B471")
+#pragma const_seg("K471")
+#pragma comment(linker, "/merge:D471=471")
+#pragma comment(linker, "/merge:C471=471")
+#pragma comment(linker, "/merge:B471=471")
+#pragma comment(linker, "/merge:K471=471")
 #include "driver.h"
 
 /* Sprites probably need to be delayed */
@@ -193,7 +197,7 @@ VIDEO_UPDATE(silkroad)
 	);
 */
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

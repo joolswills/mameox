@@ -1,7 +1,11 @@
-#pragma code_seg("C551")
-#pragma bss_seg("B551")
-#pragma data_seg("D551")
-#pragma const_seg("K551")
+#pragma code_seg("C550")
+#pragma data_seg("D550")
+#pragma bss_seg("B550")
+#pragma const_seg("K550")
+#pragma comment(linker, "/merge:D550=550")
+#pragma comment(linker, "/merge:C550=550")
+#pragma comment(linker, "/merge:B550=550")
+#pragma comment(linker, "/merge:K550=550")
 /***************************************************************************
 
 Tehkan World Cup - (c) Tehkan 1985
@@ -231,7 +235,7 @@ VIDEO_UPDATE( tehkanwc )
 	gridiron_drawled(bitmap,led0,0);
 	gridiron_drawled(bitmap,led1,1);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C513")
-#pragma bss_seg("B513")
-#pragma data_seg("D513")
-#pragma const_seg("K513")
+#pragma code_seg("C512")
+#pragma data_seg("D512")
+#pragma bss_seg("B512")
+#pragma const_seg("K512")
+#pragma comment(linker, "/merge:D512=512")
+#pragma comment(linker, "/merge:C512=512")
+#pragma comment(linker, "/merge:B512=512")
+#pragma comment(linker, "/merge:K512=512")
 /*
 
 Steel Force
@@ -246,7 +250,7 @@ ROM_START( stlforce )
 ROM_END
 
 GAMEX(1994, stlforce, 0, stlforce, stlforce, 0, ROT0, "Electronic Devices (Italy) / Ecogames S.L. (Spain)", "Steel Force", GAME_IMPERFECT_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C584")
-#pragma bss_seg("B584")
-#pragma data_seg("D584")
-#pragma const_seg("K584")
+#pragma code_seg("C583")
+#pragma data_seg("D583")
+#pragma bss_seg("B583")
+#pragma const_seg("K583")
+#pragma comment(linker, "/merge:D583=583")
+#pragma comment(linker, "/merge:C583=583")
+#pragma comment(linker, "/merge:B583=583")
+#pragma comment(linker, "/merge:K583=583")
 /*************************************************************************
 
 	Atari Tunnel Hunt hardware
@@ -427,7 +431,7 @@ VIDEO_UPDATE( tunhunt )
 
 	draw_text( bitmap );
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

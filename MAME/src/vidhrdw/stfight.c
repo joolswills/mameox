@@ -1,7 +1,11 @@
-#pragma code_seg("C512")
-#pragma bss_seg("B512")
-#pragma data_seg("D512")
-#pragma const_seg("K512")
+#pragma code_seg("C511")
+#pragma data_seg("D511")
+#pragma bss_seg("B511")
+#pragma const_seg("K511")
+#pragma comment(linker, "/merge:D511=511")
+#pragma comment(linker, "/merge:C511=511")
+#pragma comment(linker, "/merge:B511=511")
+#pragma comment(linker, "/merge:K511=511")
 /***************************************************************************
 
   vidhrdw.c
@@ -313,7 +317,7 @@ VIDEO_UPDATE( stfight )
 
 	tilemap_draw(bitmap,cliprect,tx_tilemap,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

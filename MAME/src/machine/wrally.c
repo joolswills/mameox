@@ -1,3 +1,11 @@
+#pragma code_seg("C618")
+#pragma data_seg("D618")
+#pragma bss_seg("B618")
+#pragma const_seg("K618")
+#pragma comment(linker, "/merge:D618=618")
+#pragma comment(linker, "/merge:C618=618")
+#pragma comment(linker, "/merge:B618=618")
+#pragma comment(linker, "/merge:K618=618")
 /***************************************************************************
 
 	World Rally
@@ -152,3 +160,7 @@ DRIVER_INIT( wrally )
 		wrally_encr_table[1][i] = wrally_decode_vram(i);
 	}
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

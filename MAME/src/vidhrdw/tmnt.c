@@ -1,7 +1,11 @@
-#pragma code_seg("C564")
-#pragma bss_seg("B564")
-#pragma data_seg("D564")
-#pragma const_seg("K564")
+#pragma code_seg("C563")
+#pragma data_seg("D563")
+#pragma bss_seg("B563")
+#pragma const_seg("K563")
+#pragma comment(linker, "/merge:D563=563")
+#pragma comment(linker, "/merge:C563=563")
+#pragma comment(linker, "/merge:B563=563")
+#pragma comment(linker, "/merge:K563=563")
 #include "driver.h"
 #include "machine/eeprom.h"
 #include "vidhrdw/konamiic.h"
@@ -763,7 +767,7 @@ VIDEO_UPDATE( thndrx2 )
 
 	K051960_sprites_draw(bitmap,cliprect,-1,-1);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C497")
-#pragma bss_seg("B497")
-#pragma data_seg("D497")
-#pragma const_seg("K497")
+#pragma code_seg("C496")
+#pragma data_seg("D496")
+#pragma bss_seg("B496")
+#pragma const_seg("K496")
+#pragma comment(linker, "/merge:D496=496")
+#pragma comment(linker, "/merge:C496=496")
+#pragma comment(linker, "/merge:B496=496")
+#pragma comment(linker, "/merge:K496=496")
 /***************************************************************************
 
 	Atari Sprint 2 hardware
@@ -451,7 +455,7 @@ VIDEO_UPDATE( sprint1 )
 
 	draw_gear_indicator(sprint2_gear1, bitmap, 12, 1);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

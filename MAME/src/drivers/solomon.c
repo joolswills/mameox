@@ -1,7 +1,11 @@
-#pragma code_seg("C485")
-#pragma bss_seg("B485")
-#pragma data_seg("D485")
-#pragma const_seg("K485")
+#pragma code_seg("C484")
+#pragma data_seg("D484")
+#pragma bss_seg("B484")
+#pragma const_seg("K484")
+#pragma comment(linker, "/merge:D484=484")
+#pragma comment(linker, "/merge:C484=484")
+#pragma comment(linker, "/merge:B484=484")
+#pragma comment(linker, "/merge:K484=484")
 /***************************************************************************
 
 Solomon's Key
@@ -270,7 +274,7 @@ ROM_END
 
 
 GAME( 1986, solomon, 0, solomon, solomon, 0, ROT0, "Tecmo", "Solomon's Key (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

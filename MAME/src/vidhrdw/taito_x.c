@@ -1,7 +1,11 @@
-#pragma code_seg("C538")
-#pragma bss_seg("B538")
-#pragma data_seg("D538")
-#pragma const_seg("K538")
+#pragma code_seg("C537")
+#pragma data_seg("D537")
+#pragma bss_seg("B537")
+#pragma const_seg("K537")
+#pragma comment(linker, "/merge:D537=537")
+#pragma comment(linker, "/merge:C537=537")
+#pragma comment(linker, "/merge:B537=537")
+#pragma comment(linker, "/merge:K537=537")
 /***************************************************************************
 
   vidhrdw/superman.c
@@ -181,7 +185,7 @@ VIDEO_UPDATE( superman )
 #endif
 	superman_draw_sprites (bitmap,bankbase,cocktail);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

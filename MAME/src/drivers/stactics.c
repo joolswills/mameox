@@ -1,7 +1,11 @@
-#pragma code_seg("C505")
-#pragma bss_seg("B505")
-#pragma data_seg("D505")
-#pragma const_seg("K505")
+#pragma code_seg("C504")
+#pragma data_seg("D504")
+#pragma bss_seg("B504")
+#pragma const_seg("K504")
+#pragma comment(linker, "/merge:D504=504")
+#pragma comment(linker, "/merge:C504=504")
+#pragma comment(linker, "/merge:B504=504")
+#pragma comment(linker, "/merge:K504=504")
 /****************************************************************************
 
 Sega "Space Tactics" Driver
@@ -317,7 +321,7 @@ ROM_END
 
 GAMEX( 1981, stactics, 0, stactics, stactics, 0, ROT0, "Sega", "Space Tactics", GAME_NO_SOUND )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,3 +1,11 @@
+#pragma code_seg("C572")
+#pragma data_seg("D572")
+#pragma bss_seg("B572")
+#pragma const_seg("K572")
+#pragma comment(linker, "/merge:D572=572")
+#pragma comment(linker, "/merge:C572=572")
+#pragma comment(linker, "/merge:B572=572")
+#pragma comment(linker, "/merge:K572=572")
 /***************************************************************************
 
   machine.c
@@ -248,3 +256,7 @@ WRITE_HANDLER( toypop_m68000_assert_w )
 {
 	cpu_set_reset_line(2, ASSERT_LINE);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C484")
-#pragma bss_seg("B484")
-#pragma data_seg("D484")
-#pragma const_seg("K484")
+#pragma code_seg("C483")
+#pragma data_seg("D483")
+#pragma bss_seg("B483")
+#pragma const_seg("K483")
+#pragma comment(linker, "/merge:D483=483")
+#pragma comment(linker, "/merge:C483=483")
+#pragma comment(linker, "/merge:B483=483")
+#pragma comment(linker, "/merge:K483=483")
 /***************************************************************************
 
   Snow Brothers (Toaplan) / SemiCom Hardware
@@ -903,7 +907,7 @@ GAMEX(199?, moremorp, 0,        hyperpac, hyperpac, 0,        ROT0, "SemiCom", "
 GAMEX(1997, 3in1semi, 0,        hyperpac, hyperpac, 0,        ROT0, "SemiCom", "3-in-1 (SemiCom)", GAME_UNEMULATED_PROTECTION | GAME_NOT_WORKING )
 GAMEX(1996, cookbib2, 0,        hyperpac, hyperpac, 0,        ROT0, "SemiCom", "Cookie and Bibi 2", GAME_UNEMULATED_PROTECTION | GAME_NOT_WORKING )
 GAMEX(1995, htchctch, 0,        hyperpac, hyperpac, 0,        ROT0, "SemiCom", "Hatch Catch", GAME_UNEMULATED_PROTECTION | GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

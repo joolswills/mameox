@@ -1,7 +1,11 @@
-#pragma code_seg("C628")
-#pragma bss_seg("B628")
-#pragma data_seg("D628")
-#pragma const_seg("K628")
+#pragma code_seg("C627")
+#pragma data_seg("D627")
+#pragma bss_seg("B627")
+#pragma const_seg("K627")
+#pragma comment(linker, "/merge:D627=627")
+#pragma comment(linker, "/merge:C627=627")
+#pragma comment(linker, "/merge:B627=627")
+#pragma comment(linker, "/merge:K627=627")
 /* Xyonix *********************************************************************
 
 driver by David Haywood and Stephh
@@ -295,7 +299,7 @@ ROM_END
 /* GAME drivers **************************************************************/
 
 GAME( 1989, xyonix, 0, xyonix, xyonix, 0, ROT0, "Philko Corp.", "Xyonix" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

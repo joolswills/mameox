@@ -1,7 +1,11 @@
-#pragma code_seg("C456")
-#pragma bss_seg("B456")
-#pragma data_seg("D456")
-#pragma const_seg("K456")
+#pragma code_seg("C455")
+#pragma data_seg("D455")
+#pragma bss_seg("B455")
+#pragma const_seg("K455")
+#pragma comment(linker, "/merge:D455=455")
+#pragma comment(linker, "/merge:C455=455")
+#pragma comment(linker, "/merge:B455=455")
+#pragma comment(linker, "/merge:K455=455")
 /***************************************************************************
 
 						  -= Newer Seta Hardware =-
@@ -1402,7 +1406,7 @@ GAMEX( 1997, myangel2, 0, myangel2, myangel2, 0,        ROT0, "Namco",          
 GAMEX( 1999, pzlbowl,  0, pzlbowl,  pzlbowl,  pzlbowl,  ROT0, "Nihon System / Moss", "Puzzle De Bowling (Japan)",                    GAME_NO_COCKTAIL )
 GAMEX( 2000, penbros,  0, penbros,  penbros,  0,  		ROT0, "Subsino",             "Penguin Brothers (Japan)",                     GAME_NO_COCKTAIL )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

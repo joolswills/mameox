@@ -1,7 +1,11 @@
-#pragma code_seg("C480")
-#pragma bss_seg("B480")
-#pragma data_seg("D480")
-#pragma const_seg("K480")
+#pragma code_seg("C479")
+#pragma data_seg("D479")
+#pragma bss_seg("B479")
+#pragma const_seg("K479")
+#pragma comment(linker, "/merge:D479=479")
+#pragma comment(linker, "/merge:C479=479")
+#pragma comment(linker, "/merge:B479=479")
+#pragma comment(linker, "/merge:K479=479")
 /***************************************************************************
 
 Atari Sky Raider driver
@@ -335,7 +339,7 @@ ROM_END
 
 
 GAMEX( 1978, skyraid, 0, skyraid, skyraid, 0, ORIENTATION_FLIP_Y, "Atari", "Sky Raider", GAME_NO_SOUND | GAME_IMPERFECT_COLORS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

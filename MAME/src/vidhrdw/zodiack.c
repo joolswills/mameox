@@ -1,7 +1,11 @@
-#pragma code_seg("C639")
-#pragma bss_seg("B639")
-#pragma data_seg("D639")
-#pragma const_seg("K639")
+#pragma code_seg("C638")
+#pragma data_seg("D638")
+#pragma bss_seg("B638")
+#pragma const_seg("K638")
+#pragma comment(linker, "/merge:D638=638")
+#pragma comment(linker, "/merge:C638=638")
+#pragma comment(linker, "/merge:B638=638")
+#pragma comment(linker, "/merge:K638=638")
 /***************************************************************************
 
   vidhrdw.c
@@ -260,7 +264,7 @@ VIDEO_UPDATE( zodiack )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

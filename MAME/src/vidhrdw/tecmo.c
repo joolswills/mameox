@@ -1,7 +1,11 @@
-#pragma code_seg("C548")
-#pragma bss_seg("B548")
-#pragma data_seg("D548")
-#pragma const_seg("K548")
+#pragma code_seg("C547")
+#pragma data_seg("D547")
+#pragma bss_seg("B547")
+#pragma const_seg("K547")
+#pragma comment(linker, "/merge:D547=547")
+#pragma comment(linker, "/merge:C547=547")
+#pragma comment(linker, "/merge:B547=547")
+#pragma comment(linker, "/merge:K547=547")
 /***************************************************************************
 
   video hardware for Tecmo games
@@ -268,7 +272,7 @@ VIDEO_UPDATE( tecmo )
 
 	draw_sprites(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C558")
-#pragma bss_seg("B558")
-#pragma data_seg("D558")
-#pragma const_seg("K558")
+#pragma code_seg("C557")
+#pragma data_seg("D557")
+#pragma bss_seg("B557")
+#pragma const_seg("K557")
+#pragma comment(linker, "/merge:D557=557")
+#pragma comment(linker, "/merge:C557=557")
+#pragma comment(linker, "/merge:B557=557")
+#pragma comment(linker, "/merge:K557=557")
 /***************************************************************************
 
 Thunder Hoop II: Strikes Back (c) 1994 Gaelco
@@ -248,7 +252,7 @@ ROM_START( thoop2 )
 ROM_END
 
 GAMEX( 1994, thoop2,  0, thoop2, thoop2,  0, ROT0, "Gaelco", "TH Strikes Back", GAME_UNEMULATED_PROTECTION )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

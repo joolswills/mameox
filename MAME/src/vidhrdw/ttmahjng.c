@@ -1,7 +1,11 @@
-#pragma code_seg("C580")
-#pragma bss_seg("B580")
-#pragma data_seg("D580")
-#pragma const_seg("K580")
+#pragma code_seg("C579")
+#pragma data_seg("D579")
+#pragma bss_seg("B579")
+#pragma const_seg("K579")
+#pragma comment(linker, "/merge:D579=579")
+#pragma comment(linker, "/merge:C579=579")
+#pragma comment(linker, "/merge:B579=579")
+#pragma comment(linker, "/merge:K579=579")
 /***************************************************************************
 
   vidhrdw.c
@@ -252,7 +256,7 @@ static void modify_pen(int pen, int colorindex)
 
 	palette_set_color(pen,r,g,b);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C476")
-#pragma bss_seg("B476")
-#pragma data_seg("D476")
-#pragma const_seg("K476")
+#pragma code_seg("C475")
+#pragma data_seg("D475")
+#pragma bss_seg("B475")
+#pragma const_seg("K475")
+#pragma comment(linker, "/merge:D475=475")
+#pragma comment(linker, "/merge:C475=475")
+#pragma comment(linker, "/merge:B475=475")
+#pragma comment(linker, "/merge:K475=475")
 /***************************************************************************
 
   vidhrdw.c
@@ -169,7 +173,7 @@ VIDEO_UPDATE( iremm15 )
 	copybitmap(bitmap,tmpbitmap,0,0,0,0,&Machine->visible_area,TRANSPARENCY_NONE,0);
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

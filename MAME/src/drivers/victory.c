@@ -1,7 +1,11 @@
-#pragma code_seg("C599")
-#pragma bss_seg("B599")
-#pragma data_seg("D599")
-#pragma const_seg("K599")
+#pragma code_seg("C598")
+#pragma data_seg("D598")
+#pragma bss_seg("B598")
+#pragma const_seg("K598")
+#pragma comment(linker, "/merge:D598=598")
+#pragma comment(linker, "/merge:C598=598")
+#pragma comment(linker, "/merge:B598=598")
+#pragma comment(linker, "/merge:K598=598")
 /***************************************************************************
 
 	Victory system
@@ -481,7 +485,7 @@ ROM_END
 
 GAME( 1982, victory,  0,        victory, victory, 0,     ROT0, "Exidy", "Victory" )
 GAME( 1982, victorba, victory,  victory, victory, 0,     ROT0, "Exidy", "Victor Banana" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

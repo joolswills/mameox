@@ -1,7 +1,11 @@
-#pragma code_seg("C500")
-#pragma bss_seg("B500")
-#pragma data_seg("D500")
-#pragma const_seg("K500")
+#pragma code_seg("C499")
+#pragma data_seg("D499")
+#pragma bss_seg("B499")
+#pragma const_seg("K499")
+#pragma comment(linker, "/merge:D499=499")
+#pragma comment(linker, "/merge:C499=499")
+#pragma comment(linker, "/merge:B499=499")
+#pragma comment(linker, "/merge:K499=499")
 /***************************************************************************
 
   vidhrdw.c
@@ -186,7 +190,7 @@ VIDEO_EOF( srumbler )
 {
 	buffer_spriteram_w(0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

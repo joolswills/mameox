@@ -1,7 +1,11 @@
-#pragma code_seg("C612")
-#pragma bss_seg("B612")
-#pragma data_seg("D612")
-#pragma const_seg("K612")
+#pragma code_seg("C611")
+#pragma data_seg("D611")
+#pragma bss_seg("B611")
+#pragma const_seg("K611")
+#pragma comment(linker, "/merge:D611=611")
+#pragma comment(linker, "/merge:C611=611")
+#pragma comment(linker, "/merge:B611=611")
+#pragma comment(linker, "/merge:K611=611")
 /***************************************************************************
 						WEC Le Mans 24  &   Hot Chase
 
@@ -1801,7 +1805,7 @@ DRIVER_INIT( hotchase )
 
 GAME( 1986, wecleman, 0, wecleman, wecleman, wecleman, ROT0, "Konami", "WEC Le Mans 24" )
 GAME( 1988, hotchase, 0, hotchase, hotchase, hotchase, ROT0, "Konami", "Hot Chase" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

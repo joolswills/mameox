@@ -1,7 +1,11 @@
-#pragma code_seg("C436")
-#pragma bss_seg("B436")
-#pragma data_seg("D436")
-#pragma const_seg("K436")
+#pragma code_seg("C435")
+#pragma data_seg("D435")
+#pragma bss_seg("B435")
+#pragma const_seg("K435")
+#pragma comment(linker, "/merge:D435=435")
+#pragma comment(linker, "/merge:C435=435")
+#pragma comment(linker, "/merge:B435=435")
+#pragma comment(linker, "/merge:K435=435")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/konamiic.h"
@@ -81,7 +85,7 @@ VIDEO_UPDATE( rollerg )
 	K051316_zoom_draw_0(bitmap,cliprect,0,1);
 	K053245_sprites_draw(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

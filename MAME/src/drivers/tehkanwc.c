@@ -1,7 +1,11 @@
-#pragma code_seg("C551")
-#pragma bss_seg("B551")
-#pragma data_seg("D551")
-#pragma const_seg("K551")
+#pragma code_seg("C550")
+#pragma data_seg("D550")
+#pragma bss_seg("B550")
+#pragma const_seg("K550")
+#pragma comment(linker, "/merge:D550=550")
+#pragma comment(linker, "/merge:C550=550")
+#pragma comment(linker, "/merge:B550=550")
+#pragma comment(linker, "/merge:K550=550")
 /***************************************************************************
 
 Tehkan World Cup - (c) Tehkan 1985
@@ -993,7 +997,7 @@ ROM_END
 GAME( 1985, tehkanwc, 0, tehkanwc, tehkanwc, 0,        ROT0,  "Tehkan", "Tehkan World Cup" )
 GAME( 1985, gridiron, 0, gridiron, gridiron, 0,        ROT0,  "Tehkan", "Gridiron Fight" )
 GAMEX(1986, teedoff,  0, teedoff,  teedoff,  teedoff,  ROT90, "Tecmo", "Tee'd Off (Japan)", GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

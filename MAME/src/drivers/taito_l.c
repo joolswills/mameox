@@ -1,7 +1,11 @@
-#pragma code_seg("C537")
-#pragma bss_seg("B537")
-#pragma data_seg("D537")
-#pragma const_seg("K537")
+#pragma code_seg("C536")
+#pragma data_seg("D536")
+#pragma bss_seg("B536")
+#pragma const_seg("K536")
+#pragma comment(linker, "/merge:D536=536")
+#pragma comment(linker, "/merge:C536=536")
+#pragma comment(linker, "/merge:B536=536")
+#pragma comment(linker, "/merge:K536=536")
 /*
   Taito L-System
 
@@ -2772,7 +2776,7 @@ GAME( 1992, plgirls,  0,        cachat,   plgirls,  0,        ROT270, "Hot-B.", 
 GAME( 1993, plgirls2, 0,        cachat,   plgirls2, 0,        ROT270, "Hot-B.", "Play Girls 2" )
 
 GAME( 1990, evilston, 0,        evilston, evilston, evilston, ROT270, "Spacy Industrial, Ltd.", "Evil Stone" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

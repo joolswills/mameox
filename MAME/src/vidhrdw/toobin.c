@@ -1,7 +1,11 @@
-#pragma code_seg("C569")
-#pragma bss_seg("B569")
-#pragma data_seg("D569")
-#pragma const_seg("K569")
+#pragma code_seg("C568")
+#pragma data_seg("D568")
+#pragma bss_seg("B568")
+#pragma const_seg("K568")
+#pragma comment(linker, "/merge:D568=568")
+#pragma comment(linker, "/merge:C568=568")
+#pragma comment(linker, "/merge:B568=568")
+#pragma comment(linker, "/merge:K568=568")
 /***************************************************************************
 
 	Atari Toobin' hardware
@@ -278,7 +282,7 @@ VIDEO_UPDATE( toobin )
 	/* add the alpha on top */
 	tilemap_draw(bitmap, cliprect, atarigen_alpha_tilemap, 0, 0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C592")
-#pragma bss_seg("B592")
-#pragma data_seg("D592")
-#pragma const_seg("K592")
+#pragma code_seg("C591")
+#pragma data_seg("D591")
+#pragma bss_seg("B591")
+#pragma const_seg("K591")
+#pragma comment(linker, "/merge:D591=591")
+#pragma comment(linker, "/merge:C591=591")
+#pragma comment(linker, "/merge:B591=591")
+#pragma comment(linker, "/merge:K591=591")
 /***************************************************************************
 
 							  -= Unico Games =-
@@ -1126,7 +1130,7 @@ GAME( 1997, burglarx, 0, burglarx, burglarx, 0, ROT0, "Unico Electronics", "Burg
 GAME( 1998, zeropnt,  0, zeropnt,  zeropnt,  0, ROT0, "Unico Electronics", "Zero Point" )
 GAME( 1999, zeropnt2, 0, zeropnt2, zeropnt2, 0, ROT0, "Unico Electronics", "Zero Point 2" )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

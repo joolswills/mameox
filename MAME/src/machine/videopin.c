@@ -1,3 +1,11 @@
+#pragma code_seg("C599")
+#pragma data_seg("D599")
+#pragma bss_seg("B599")
+#pragma const_seg("K599")
+#pragma comment(linker, "/merge:D599=599")
+#pragma comment(linker, "/merge:C599=599")
+#pragma comment(linker, "/merge:B599=599")
+#pragma comment(linker, "/merge:K599=599")
 /*************************************************************************
 
 	Atari Video Pinball hardware
@@ -132,3 +140,7 @@ READ_HANDLER( videopin_in2_r )
 	return res;
 }
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

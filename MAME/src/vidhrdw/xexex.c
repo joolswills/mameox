@@ -1,7 +1,11 @@
-#pragma code_seg("C624")
-#pragma bss_seg("B624")
-#pragma data_seg("D624")
-#pragma const_seg("K624")
+#pragma code_seg("C623")
+#pragma data_seg("D623")
+#pragma bss_seg("B623")
+#pragma const_seg("K623")
+#pragma comment(linker, "/merge:D623=623")
+#pragma comment(linker, "/merge:C623=623")
+#pragma comment(linker, "/merge:B623=623")
+#pragma comment(linker, "/merge:K623=623")
 #include "driver.h"
 #include "state.h"
 #include "vidhrdw/generic.h"
@@ -143,7 +147,7 @@ VIDEO_UPDATE( xexex )
 
 	K056832_tilemap_draw(bitmap, cliprect, 0, 0, 0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C560")
-#pragma bss_seg("B560")
-#pragma data_seg("D560")
-#pragma const_seg("K560")
+#pragma code_seg("C559")
+#pragma data_seg("D559")
+#pragma bss_seg("B559")
+#pragma const_seg("K559")
+#pragma comment(linker, "/merge:D559=559")
+#pragma comment(linker, "/merge:C559=559")
+#pragma comment(linker, "/merge:B559=559")
+#pragma comment(linker, "/merge:K559=559")
 /***************************************************************************
 
 Super Contra / Thunder Cross
@@ -990,7 +994,7 @@ GAME( 1988, scontra,  0,        scontra,  scontra,  scontra, ROT90, "Konami", "S
 GAME( 1988, scontraj, scontra,  scontra,  scontra,  scontra, ROT90, "Konami", "Super Contra (Japan)" )
 GAME( 1988, thunderx, 0,        thunderx, thunderx, scontra, ROT0, "Konami", "Thunder Cross" )
 GAME( 1988, thnderxj, thunderx, thunderx, thunderx, scontra, ROT0, "Konami", "Thunder Cross (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

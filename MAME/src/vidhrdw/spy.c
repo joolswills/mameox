@@ -1,7 +1,11 @@
-#pragma code_seg("C498")
-#pragma bss_seg("B498")
-#pragma data_seg("D498")
-#pragma const_seg("K498")
+#pragma code_seg("C497")
+#pragma data_seg("D497")
+#pragma bss_seg("B497")
+#pragma const_seg("K497")
+#pragma comment(linker, "/merge:D497=497")
+#pragma comment(linker, "/merge:C497=497")
+#pragma comment(linker, "/merge:B497=497")
+#pragma comment(linker, "/merge:K497=497")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 
@@ -89,7 +93,7 @@ VIDEO_UPDATE( spy )
 	K051960_sprites_draw(bitmap,cliprect,-1,-1);
 	tilemap_draw(bitmap,cliprect,K052109_tilemap[0],0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

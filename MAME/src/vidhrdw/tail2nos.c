@@ -1,7 +1,11 @@
-#pragma code_seg("C532")
-#pragma bss_seg("B532")
-#pragma data_seg("D532")
-#pragma const_seg("K532")
+#pragma code_seg("C531")
+#pragma data_seg("D531")
+#pragma bss_seg("B531")
+#pragma const_seg("K531")
+#pragma comment(linker, "/merge:D531=531")
+#pragma comment(linker, "/merge:C531=531")
+#pragma comment(linker, "/merge:B531=531")
+#pragma comment(linker, "/merge:K531=531")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "konamiic.h"
@@ -225,7 +229,7 @@ VIDEO_UPDATE( tail2nos )
 	else
 		fillbitmap(bitmap,Machine->pens[0],cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

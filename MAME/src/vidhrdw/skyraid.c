@@ -1,7 +1,11 @@
-#pragma code_seg("C480")
-#pragma bss_seg("B480")
-#pragma data_seg("D480")
-#pragma const_seg("K480")
+#pragma code_seg("C479")
+#pragma data_seg("D479")
+#pragma bss_seg("B479")
+#pragma const_seg("K479")
+#pragma comment(linker, "/merge:D479=479")
+#pragma comment(linker, "/merge:C479=479")
+#pragma comment(linker, "/merge:B479=479")
+#pragma comment(linker, "/merge:K479=479")
 /***************************************************************************
 
 Atari Sky Raider video emulation
@@ -163,7 +167,7 @@ VIDEO_UPDATE( skyraid )
 	draw_trapezoid(bitmap, helper);
 	draw_text(bitmap, cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

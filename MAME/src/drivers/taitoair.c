@@ -1,7 +1,11 @@
-#pragma code_seg("C540")
-#pragma bss_seg("B540")
-#pragma data_seg("D540")
-#pragma const_seg("K540")
+#pragma code_seg("C539")
+#pragma data_seg("D539")
+#pragma bss_seg("B539")
+#pragma const_seg("K539")
+#pragma comment(linker, "/merge:D539=539")
+#pragma comment(linker, "/merge:C539=539")
+#pragma comment(linker, "/merge:B539=539")
+#pragma comment(linker, "/merge:K539=539")
 /***************************************************************************
 
 Taito Air System
@@ -782,7 +786,7 @@ static DRIVER_INIT( taitoair )
 /*   ( YEAR  NAME      PARENT    MACHINE   INPUT     INIT      MONITOR  COMPANY  FULLNAME */
 GAME( 1988, topland,  0,        airsys,   topland,  taitoair, ROT0,    "Taito Corporation Japan", "Top Landing (World)" )
 GAME( 1990, ainferno, 0,        airsys,   ainferno, taitoair, ROT0,    "Taito America Corporation", "Air Inferno (US)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C462")
-#pragma bss_seg("B462")
-#pragma data_seg("D462")
-#pragma const_seg("K462")
+#pragma code_seg("C461")
+#pragma data_seg("D461")
+#pragma bss_seg("B461")
+#pragma const_seg("K461")
+#pragma comment(linker, "/merge:D461=461")
+#pragma comment(linker, "/merge:C461=461")
+#pragma comment(linker, "/merge:B461=461")
+#pragma comment(linker, "/merge:K461=461")
 /***************************************************************************
 
 Shanghai
@@ -1083,7 +1087,7 @@ ROM_END
 
 GAMEX(1988, shanghai, 0, shanghai, shanghai, 0, ROT0, "Sunsoft", "Shanghai (Japan)", GAME_IMPERFECT_GRAPHICS )
 GAME( 1989, shangha2, 0, shangha2, shangha2, 0, ROT0, "Sunsoft", "Shanghai II (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

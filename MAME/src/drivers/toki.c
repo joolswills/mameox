@@ -1,7 +1,11 @@
-#pragma code_seg("C568")
-#pragma bss_seg("B568")
-#pragma data_seg("D568")
-#pragma const_seg("K568")
+#pragma code_seg("C567")
+#pragma data_seg("D567")
+#pragma bss_seg("B567")
+#pragma const_seg("K567")
+#pragma comment(linker, "/merge:D567=567")
+#pragma comment(linker, "/merge:C567=567")
+#pragma comment(linker, "/merge:B567=567")
+#pragma comment(linker, "/merge:K567=567")
 /***************************************************************************
 
 Toki
@@ -747,7 +751,7 @@ GAME( 1989, tokia, toki, toki,  toki,  toki,  ROT0, "Tad", "Toki (World set 2)" 
 GAME( 1989, tokij, toki, toki,  toki,  toki,  ROT0, "Tad", "JuJu Densetsu (Japan)" )
 GAME( 1989, tokiu, toki, toki,  toki,  toki,  ROT0, "Tad (Fabtek license)", "Toki (US)" )
 GAME( 1989, tokib, toki, tokib, tokib, tokib, ROT0, "bootleg", "Toki (bootleg)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

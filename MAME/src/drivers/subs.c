@@ -1,7 +1,11 @@
-#pragma code_seg("C516")
-#pragma bss_seg("B516")
-#pragma data_seg("D516")
-#pragma const_seg("K516")
+#pragma code_seg("C515")
+#pragma data_seg("D515")
+#pragma bss_seg("B515")
+#pragma const_seg("K515")
+#pragma comment(linker, "/merge:D515=515")
+#pragma comment(linker, "/merge:C515=515")
+#pragma comment(linker, "/merge:B515=515")
+#pragma comment(linker, "/merge:K515=515")
 /***************************************************************************
 
 	Atari Subs hardware
@@ -397,7 +401,7 @@ static DRIVER_INIT( subs )
  *************************************/
 
 GAMEX( 1977, subs, 0, subs, subs, subs, ROT0, "Atari", "Subs", GAME_IMPERFECT_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

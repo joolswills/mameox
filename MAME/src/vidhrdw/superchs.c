@@ -1,7 +1,11 @@
-#pragma code_seg("C520")
-#pragma bss_seg("B520")
-#pragma data_seg("D520")
-#pragma const_seg("K520")
+#pragma code_seg("C519")
+#pragma data_seg("D519")
+#pragma bss_seg("B519")
+#pragma const_seg("K519")
+#pragma comment(linker, "/merge:D519=519")
+#pragma comment(linker, "/merge:C519=519")
+#pragma comment(linker, "/merge:B519=519")
+#pragma comment(linker, "/merge:K519=519")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/taitoic.h"
@@ -258,7 +262,7 @@ VIDEO_UPDATE( superchs )
 	superchs_draw_sprites_16x16(bitmap,cliprect,primasks,48,-116);
 #endif
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

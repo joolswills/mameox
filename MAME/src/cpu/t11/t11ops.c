@@ -1,7 +1,11 @@
 #pragma code_seg("CC10")
-#pragma bss_seg("CB10")
 #pragma data_seg("CD10")
+#pragma bss_seg("CB10")
 #pragma const_seg("CK10")
+#pragma comment(linker, "/merge:CD10=CPU10")
+#pragma comment(linker, "/merge:CC10=CPU10")
+#pragma comment(linker, "/merge:CB10=CPU10")
+#pragma comment(linker, "/merge:CK10=CPU10")
 /*** t11: Portable DEC T-11 emulator ******************************************
 
 	Copyright (C) Aaron Giles 1998
@@ -1398,3 +1402,7 @@ static void sub_ixd_de(void)    { t11_ICount -= 30+15; { SUB_M(IXD,DE);  } }
 static void sub_ixd_ded(void)   { t11_ICount -= 30+21; { SUB_M(IXD,DED); } }
 static void sub_ixd_ix(void)    { t11_ICount -= 30+21; { SUB_M(IXD,IX);  } }
 static void sub_ixd_ixd(void)   { t11_ICount -= 30+27; { SUB_M(IXD,IXD); } }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

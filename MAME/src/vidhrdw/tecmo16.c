@@ -1,7 +1,11 @@
-#pragma code_seg("C549")
-#pragma bss_seg("B549")
-#pragma data_seg("D549")
-#pragma const_seg("K549")
+#pragma code_seg("C548")
+#pragma data_seg("D548")
+#pragma bss_seg("B548")
+#pragma const_seg("K548")
+#pragma comment(linker, "/merge:D548=548")
+#pragma comment(linker, "/merge:C548=548")
+#pragma comment(linker, "/merge:B548=548")
+#pragma comment(linker, "/merge:K548=548")
 /******************************************************************************
 
   Ganbare Ginkun  (Japan)  (c)1995 TECMO
@@ -264,7 +268,7 @@ VIDEO_UPDATE( tecmo16 )
 
 	draw_sprites(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

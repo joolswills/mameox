@@ -1,7 +1,11 @@
-#pragma code_seg("C589")
-#pragma bss_seg("B589")
-#pragma data_seg("D589")
-#pragma const_seg("K589")
+#pragma code_seg("C588")
+#pragma data_seg("D588")
+#pragma bss_seg("B588")
+#pragma const_seg("K588")
+#pragma comment(linker, "/merge:D588=588")
+#pragma comment(linker, "/merge:C588=588")
+#pragma comment(linker, "/merge:B588=588")
+#pragma comment(linker, "/merge:K588=588")
 #include "driver.h"
 #include "tilemap.h"
 #include "vidhrdw/generic.h"
@@ -147,7 +151,7 @@ VIDEO_UPDATE( ultraman )
 	K051316_zoom_draw_0(bitmap,cliprect,0,0);
 	K051960_sprites_draw(bitmap,cliprect,1,1);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

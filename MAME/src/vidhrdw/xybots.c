@@ -1,7 +1,11 @@
-#pragma code_seg("C627")
-#pragma bss_seg("B627")
-#pragma data_seg("D627")
-#pragma const_seg("K627")
+#pragma code_seg("C626")
+#pragma data_seg("D626")
+#pragma bss_seg("B626")
+#pragma const_seg("K626")
+#pragma comment(linker, "/merge:D626=626")
+#pragma comment(linker, "/merge:C626=626")
+#pragma comment(linker, "/merge:B626=626")
+#pragma comment(linker, "/merge:K626=626")
 /***************************************************************************
 
 	Atari Xybots hardware
@@ -173,7 +177,7 @@ VIDEO_UPDATE( xybots )
 	/* add the alpha on top */
 	tilemap_draw(bitmap, cliprect, atarigen_alpha_tilemap, 0, 0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C609")
-#pragma bss_seg("B609")
-#pragma data_seg("D609")
-#pragma const_seg("K609")
+#pragma code_seg("C608")
+#pragma data_seg("D608")
+#pragma bss_seg("B608")
+#pragma const_seg("K608")
+#pragma comment(linker, "/merge:D608=608")
+#pragma comment(linker, "/merge:C608=608")
+#pragma comment(linker, "/merge:B608=608")
+#pragma comment(linker, "/merge:K608=608")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/taitoic.h"
@@ -201,7 +205,7 @@ VIDEO_UPDATE( warriorb )
 	}
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

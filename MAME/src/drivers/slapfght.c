@@ -1,7 +1,11 @@
-#pragma code_seg("C481")
-#pragma bss_seg("B481")
-#pragma data_seg("D481")
-#pragma const_seg("K481")
+#pragma code_seg("C480")
+#pragma data_seg("D480")
+#pragma bss_seg("B480")
+#pragma const_seg("K480")
+#pragma comment(linker, "/merge:D480=480")
+#pragma comment(linker, "/merge:C480=480")
+#pragma comment(linker, "/merge:B480=480")
+#pragma comment(linker, "/merge:K480=480")
 /***************************************************************************
 
 Slap Fight driver by K.Wilkins Jan 1998
@@ -1386,7 +1390,7 @@ GAMEX( 1986, alcon,    slapfigh, slapfigh, slapfigh, 0, 	 ROT270, "<unknown>", "
 GAMEX( 1986, getstar,  0,        slapfigh, getstar,  0, 	 ROT0,   "Taito", "Guardian", GAME_NOT_WORKING | GAME_NO_COCKTAIL )
 GAMEX( 1986, getstarj, getstar,  slapfigh, getstar,  0, 	 ROT0,   "Taito", "Get Star (Japan)", GAME_NOT_WORKING | GAME_NO_COCKTAIL )
 GAMEX( 1986, getstarb, getstar,  slapfigh, getstar,  0, 	 ROT0,   "bootleg", "Get Star (bootleg)", GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

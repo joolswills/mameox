@@ -1,7 +1,11 @@
-#pragma code_seg("C494")
-#pragma bss_seg("B494")
-#pragma data_seg("D494")
-#pragma const_seg("K494")
+#pragma code_seg("C493")
+#pragma data_seg("D493")
+#pragma bss_seg("B493")
+#pragma const_seg("K493")
+#pragma comment(linker, "/merge:D493=493")
+#pragma comment(linker, "/merge:C493=493")
+#pragma comment(linker, "/merge:B493=493")
+#pragma comment(linker, "/merge:K493=493")
 /***************************************************************************
 
 Spiders driver by K.Wilkins May 1998
@@ -380,7 +384,7 @@ ROM_END
 /* this is a newer version with just one bug fix */
 GAMEX( 1981, spiders,  0,       spiders, spiders, 0, ROT270, "Sigma Ent. Inc.", "Spiders (set 1)", GAME_NO_SOUND | GAME_NO_COCKTAIL )
 GAMEX( 1981, spiders2, spiders, spiders, spiders, 0, ROT270, "Sigma Ent. Inc.", "Spiders (set 2)", GAME_NO_SOUND | GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

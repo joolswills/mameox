@@ -1,7 +1,11 @@
-#pragma code_seg("C613")
-#pragma bss_seg("B613")
-#pragma data_seg("D613")
-#pragma const_seg("K613")
+#pragma code_seg("C612")
+#pragma data_seg("D612")
+#pragma bss_seg("B612")
+#pragma const_seg("K612")
+#pragma comment(linker, "/merge:D612=612")
+#pragma comment(linker, "/merge:C612=612")
+#pragma comment(linker, "/merge:B612=612")
+#pragma comment(linker, "/merge:K612=612")
 #include "driver.h"
 
 
@@ -209,7 +213,7 @@ VIDEO_UPDATE( welltris )
 	wel_draw_sprites(bitmap,cliprect);
 
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

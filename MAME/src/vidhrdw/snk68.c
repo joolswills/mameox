@@ -1,7 +1,11 @@
-#pragma code_seg("C483")
-#pragma bss_seg("B483")
-#pragma data_seg("D483")
-#pragma const_seg("K483")
+#pragma code_seg("C482")
+#pragma data_seg("D482")
+#pragma bss_seg("B482")
+#pragma const_seg("K482")
+#pragma comment(linker, "/merge:D482=482")
+#pragma comment(linker, "/merge:C482=482")
+#pragma comment(linker, "/merge:B482=482")
+#pragma comment(linker, "/merge:K482=482")
 /***************************************************************************
 
 	SNK 68000 video routines
@@ -319,7 +323,7 @@ VIDEO_UPDATE( searchar )
 	tilemap_draw(bitmap,cliprect,fix_tilemap,0,0);
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

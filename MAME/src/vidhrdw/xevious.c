@@ -1,7 +1,11 @@
-#pragma code_seg("C623")
-#pragma bss_seg("B623")
-#pragma data_seg("D623")
-#pragma const_seg("K623")
+#pragma code_seg("C622")
+#pragma data_seg("D622")
+#pragma bss_seg("B622")
+#pragma const_seg("K622")
+#pragma comment(linker, "/merge:D622=622")
+#pragma comment(linker, "/merge:C622=622")
+#pragma comment(linker, "/merge:B622=622")
+#pragma comment(linker, "/merge:K622=622")
 /***************************************************************************
 
   vidhrdw.c
@@ -455,7 +459,7 @@ VIDEO_UPDATE( xevious )
 	draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,fg_tilemap,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

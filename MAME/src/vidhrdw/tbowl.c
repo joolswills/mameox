@@ -1,7 +1,11 @@
-#pragma code_seg("C547")
-#pragma bss_seg("B547")
-#pragma data_seg("D547")
-#pragma const_seg("K547")
+#pragma code_seg("C546")
+#pragma data_seg("D546")
+#pragma bss_seg("B546")
+#pragma const_seg("K546")
+#pragma comment(linker, "/merge:D546=546")
+#pragma comment(linker, "/merge:C546=546")
+#pragma comment(linker, "/merge:B546=546")
+#pragma comment(linker, "/merge:K546=546")
 /* vidhrdw/tbowl.c */
 
 /* see drivers/tbowl.c for more info */
@@ -246,7 +250,7 @@ VIDEO_UPDATE( tbowl )
 	tilemap_draw(bitmap,cliprect,bg2_tilemap,0,0);
 	tilemap_draw(bitmap,cliprect,tx_tilemap,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C526")
-#pragma bss_seg("B526")
-#pragma data_seg("D526")
-#pragma const_seg("K526")
+#pragma code_seg("C525")
+#pragma data_seg("D525")
+#pragma bss_seg("B525")
+#pragma const_seg("K525")
+#pragma comment(linker, "/merge:D525=525")
+#pragma comment(linker, "/merge:C525=525")
+#pragma comment(linker, "/merge:B525=525")
+#pragma comment(linker, "/merge:K525=525")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 
@@ -104,7 +108,7 @@ VIDEO_UPDATE( surpratk )
 
 	K053245_sprites_draw(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C625")
-#pragma bss_seg("B625")
-#pragma data_seg("D625")
-#pragma const_seg("K625")
+#pragma code_seg("C624")
+#pragma data_seg("D624")
+#pragma bss_seg("B624")
+#pragma const_seg("K624")
+#pragma comment(linker, "/merge:D624=624")
+#pragma comment(linker, "/merge:C624=624")
+#pragma comment(linker, "/merge:B624=624")
+#pragma comment(linker, "/merge:K624=624")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 
@@ -118,7 +122,7 @@ VIDEO_UPDATE( xmen )
 	pdrawgfx_shadow_lowpri = 1;	/* fix shadows of boulders in front of feet */
 	K053247_sprites_draw(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

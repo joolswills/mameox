@@ -1,7 +1,11 @@
-#pragma code_seg("CC0")
-#pragma bss_seg("CB0")
-#pragma data_seg("CD0")
-#pragma const_seg("CK0")
+#pragma code_seg("CC1")
+#pragma data_seg("CD1")
+#pragma bss_seg("CB1")
+#pragma const_seg("CK1")
+#pragma comment(linker, "/merge:CD1=CPU1")
+#pragma comment(linker, "/merge:CC1=CPU1")
+#pragma comment(linker, "/merge:CB1=CPU1")
+#pragma comment(linker, "/merge:CK1=CPU1")
 /*****************************************************************************
  *
  *	 z8000ops.c
@@ -6505,3 +6509,7 @@ static void ZF_dddd_1dsp7(void)
 }
 
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

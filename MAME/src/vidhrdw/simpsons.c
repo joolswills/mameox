@@ -1,7 +1,11 @@
-#pragma code_seg("C473")
-#pragma bss_seg("B473")
-#pragma data_seg("D473")
-#pragma const_seg("K473")
+#pragma code_seg("C472")
+#pragma data_seg("D472")
+#pragma bss_seg("B472")
+#pragma const_seg("K472")
+#pragma comment(linker, "/merge:D472=472")
+#pragma comment(linker, "/merge:C472=472")
+#pragma comment(linker, "/merge:B472=472")
+#pragma comment(linker, "/merge:K472=472")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/konamiic.h"
@@ -167,7 +171,7 @@ VIDEO_UPDATE( simpsons )
 
 	K053247_sprites_draw(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C568")
-#pragma bss_seg("B568")
-#pragma data_seg("D568")
-#pragma const_seg("K568")
+#pragma code_seg("C567")
+#pragma data_seg("D567")
+#pragma bss_seg("B567")
+#pragma const_seg("K567")
+#pragma comment(linker, "/merge:D567=567")
+#pragma comment(linker, "/merge:C567=567")
+#pragma comment(linker, "/merge:B567=567")
+#pragma comment(linker, "/merge:K567=567")
 /***************************************************************************
 
   vidhrdw.c
@@ -361,7 +365,7 @@ VIDEO_UPDATE( tokib )
 	tokib_draw_sprites (bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,text_layer,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

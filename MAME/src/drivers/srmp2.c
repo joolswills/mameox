@@ -1,7 +1,11 @@
-#pragma code_seg("C499")
-#pragma bss_seg("B499")
-#pragma data_seg("D499")
-#pragma const_seg("K499")
+#pragma code_seg("C498")
+#pragma data_seg("D498")
+#pragma bss_seg("B498")
+#pragma const_seg("K498")
+#pragma comment(linker, "/merge:D498=498")
+#pragma comment(linker, "/merge:C498=498")
+#pragma comment(linker, "/merge:B498=498")
+#pragma comment(linker, "/merge:K498=498")
 /***************************************************************************
 
 Super Real Mahjong P2
@@ -1352,7 +1356,7 @@ GAME( 1990, mjyuugi,   0,        mjyuugi,  mjyuugi,  0,       ROT0, "Visco", "Ma
 GAME( 1990, mjyuugia,  mjyuugi,  mjyuugi,  mjyuugi,  0,       ROT0, "Visco", "Mahjong Yuugi (Japan set 2)" )
 GAME( 1991, ponchin,   0,        mjyuugi,  ponchin,  0,       ROT0, "Visco", "Mahjong Pon Chin Kan (Japan set 1)" )
 GAME( 1991, ponchina,  ponchin,  mjyuugi,  ponchin,  0,       ROT0, "Visco", "Mahjong Pon Chin Kan (Japan set 2)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

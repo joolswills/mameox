@@ -1,7 +1,11 @@
-#pragma code_seg("C506")
-#pragma bss_seg("B506")
-#pragma data_seg("D506")
-#pragma const_seg("K506")
+#pragma code_seg("C505")
+#pragma data_seg("D505")
+#pragma bss_seg("B505")
+#pragma const_seg("K505")
+#pragma comment(linker, "/merge:D505=505")
+#pragma comment(linker, "/merge:C505=505")
+#pragma comment(linker, "/merge:B505=505")
+#pragma comment(linker, "/merge:K505=505")
 /***************************************************************************
 
 	Stadium Hero (Japan)			(c) 1988 Data East Corporation
@@ -368,7 +372,7 @@ ROM_END
 /******************************************************************************/
 
 GAME( 1988, stadhero, 0, stadhero, stadhero, 0, ROT0, "Data East Corporation", "Stadium Hero (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

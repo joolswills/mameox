@@ -1,7 +1,11 @@
-#pragma code_seg("C468")
-#pragma bss_seg("B468")
-#pragma data_seg("D468")
-#pragma const_seg("K468")
+#pragma code_seg("C467")
+#pragma data_seg("D467")
+#pragma bss_seg("B467")
+#pragma const_seg("K467")
+#pragma comment(linker, "/merge:D467=467")
+#pragma comment(linker, "/merge:C467=467")
+#pragma comment(linker, "/merge:B467=467")
+#pragma comment(linker, "/merge:K467=467")
 /***************************************************************************
 
 Driver by Jarek Burczynski, started by Tomasz Slanina  dox@space.pl
@@ -449,7 +453,7 @@ ROM_END
 
 GAMEX( 198?, shougi,  0,        shougi,  shougi,  0, ROT0, "Alpha Denshi", "Shougi", GAME_UNEMULATED_PROTECTION | GAME_NOT_WORKING )
 GAMEX( 198?, shougi2, shougi,   shougi,  shougi,  0, ROT0, "Alpha Denshi", "Shougi 2", GAME_UNEMULATED_PROTECTION | GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

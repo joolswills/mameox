@@ -1,7 +1,11 @@
-#pragma code_seg("C528")
-#pragma bss_seg("B528")
-#pragma data_seg("D528")
-#pragma const_seg("K528")
+#pragma code_seg("C527")
+#pragma data_seg("D527")
+#pragma bss_seg("B527")
+#pragma const_seg("K527")
+#pragma comment(linker, "/merge:D527=527")
+#pragma comment(linker, "/merge:C527=527")
+#pragma comment(linker, "/merge:B527=527")
+#pragma comment(linker, "/merge:K527=527")
 /*	System18 Hardware
 **
 **	MC68000 + Z80
@@ -1349,7 +1353,7 @@ GAMEX(1990, bloxeed,  0,        shdancer, shdancer, shdancer, ROT0, "Sega", "Blo
 GAMEX(19??, cltchitr, 0,        shdancer, shdancer, shdancer, ROT0, "Sega", "Clutch Hitter", GAME_NOT_WORKING )
 GAMEX(19??, ddcrew,   0,        shdancer, shdancer, shdancer, ROT0, "Sega", "DD Crew", GAME_NOT_WORKING )
 GAMEX(19??, lghost,   0,        shdancer, shdancer, shdancer, ROT0, "Sega", "Laser Ghost", GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

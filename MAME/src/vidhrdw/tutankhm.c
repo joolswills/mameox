@@ -1,7 +1,11 @@
-#pragma code_seg("C586")
-#pragma bss_seg("B586")
-#pragma data_seg("D586")
-#pragma const_seg("K586")
+#pragma code_seg("C585")
+#pragma data_seg("D585")
+#pragma bss_seg("B585")
+#pragma const_seg("K585")
+#pragma comment(linker, "/merge:D585=585")
+#pragma comment(linker, "/merge:C585=585")
+#pragma comment(linker, "/merge:B585=585")
+#pragma comment(linker, "/merge:K585=585")
 /***************************************************************************
 
   vidhrdw.c
@@ -204,7 +208,7 @@ WRITE_HANDLER( junofrst_blitter_w )
 		}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

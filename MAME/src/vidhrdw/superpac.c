@@ -1,7 +1,11 @@
-#pragma code_seg("C521")
-#pragma bss_seg("B521")
-#pragma data_seg("D521")
-#pragma const_seg("K521")
+#pragma code_seg("C520")
+#pragma data_seg("D520")
+#pragma bss_seg("B520")
+#pragma const_seg("K520")
+#pragma comment(linker, "/merge:D520=520")
+#pragma comment(linker, "/merge:C520=520")
+#pragma comment(linker, "/merge:B520=520")
+#pragma comment(linker, "/merge:K520=520")
 /***************************************************************************
 
   vidhrdw.c
@@ -297,7 +301,7 @@ VIDEO_UPDATE( superpac )
 	/* Color 31 still has priority over that (ghost eyes in Pac 'n Pal) */
 	draw_sprites(bitmap, &Machine->visible_area, TRANSPARENCY_PENS);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

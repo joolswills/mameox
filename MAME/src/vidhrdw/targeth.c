@@ -1,7 +1,11 @@
-#pragma code_seg("C545")
-#pragma bss_seg("B545")
-#pragma data_seg("D545")
-#pragma const_seg("K545")
+#pragma code_seg("C544")
+#pragma data_seg("D544")
+#pragma bss_seg("B544")
+#pragma const_seg("K544")
+#pragma comment(linker, "/merge:D544=544")
+#pragma comment(linker, "/merge:C544=544")
+#pragma comment(linker, "/merge:B544=544")
+#pragma comment(linker, "/merge:K544=544")
 /***************************************************************************
 
   Target Hits Video Hardware
@@ -173,7 +177,7 @@ VIDEO_UPDATE( targeth )
 		draw_crosshair(bitmap, posx - 0x17, posy + 1, cliprect);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C522")
-#pragma bss_seg("B522")
-#pragma data_seg("D522")
-#pragma const_seg("K522")
+#pragma code_seg("C521")
+#pragma data_seg("D521")
+#pragma bss_seg("B521")
+#pragma const_seg("K521")
+#pragma comment(linker, "/merge:D521=521")
+#pragma comment(linker, "/merge:C521=521")
+#pragma comment(linker, "/merge:B521=521")
+#pragma comment(linker, "/merge:K521=521")
 /***************************************************************************
 
   vidhrdw.c
@@ -263,7 +267,7 @@ VIDEO_UPDATE( superqix )
 
 	sqix_minx=1000;sqix_maxx=-1;sqix_miny=1000;sqix_maxy=-1;
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

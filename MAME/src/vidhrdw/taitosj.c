@@ -1,7 +1,11 @@
-#pragma code_seg("C541")
-#pragma bss_seg("B541")
-#pragma data_seg("D541")
-#pragma const_seg("K541")
+#pragma code_seg("C540")
+#pragma data_seg("D540")
+#pragma bss_seg("B540")
+#pragma const_seg("K540")
+#pragma comment(linker, "/merge:D540=540")
+#pragma comment(linker, "/merge:C540=540")
+#pragma comment(linker, "/merge:B540=540")
+#pragma comment(linker, "/merge:K540=540")
 /***************************************************************************
 
   vidhrdw.c
@@ -889,7 +893,7 @@ VIDEO_UPDATE( taitosj )
 
 	/*check_plane_plane_collision();*/	/*not implemented !!!*/
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

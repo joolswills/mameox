@@ -1,7 +1,11 @@
-#pragma code_seg("C588")
-#pragma bss_seg("B588")
-#pragma data_seg("D588")
-#pragma const_seg("K588")
+#pragma code_seg("C587")
+#pragma data_seg("D587")
+#pragma bss_seg("B587")
+#pragma const_seg("K587")
+#pragma comment(linker, "/merge:D587=587")
+#pragma comment(linker, "/merge:C587=587")
+#pragma comment(linker, "/merge:B587=587")
+#pragma comment(linker, "/merge:K587=587")
 /****************************************************************************
 
 		ToaPlan game hardware from 1987
@@ -1161,7 +1165,7 @@ GAME( 1987, skyshark, fshark,   twincobr, skyshark, fshark, ROT270, "[Toaplan] T
 GAME( 1987, hishouza, fshark,   twincobr, hishouza, fshark, ROT270, "[Toaplan] Taito Corporation", "Hishou Zame (Japan)" )
 GAME( 1987, fsharkbt, fshark,   twincobr, skyshark, fshark, ROT270, "bootleg", "Flying Shark (bootleg)" )
 GAME( 1991, gulfwar2, 0,        twincobr, gulfwar2, 0,      ROT270, "Comad", "Gulf War II" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,3 +1,11 @@
+#pragma code_seg("C450")
+#pragma data_seg("D450")
+#pragma bss_seg("B450")
+#pragma const_seg("K450")
+#pragma comment(linker, "/merge:D450=450")
+#pragma comment(linker, "/merge:C450=450")
+#pragma comment(linker, "/merge:B450=450")
+#pragma comment(linker, "/merge:K450=450")
 /***************************************************************************
 
 	Sega G-80 raster hardware
@@ -422,3 +430,7 @@ void sega_security(int chip)
 }
 
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

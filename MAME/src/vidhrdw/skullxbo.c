@@ -1,7 +1,11 @@
-#pragma code_seg("C474")
-#pragma bss_seg("B474")
-#pragma data_seg("D474")
-#pragma const_seg("K474")
+#pragma code_seg("C473")
+#pragma data_seg("D473")
+#pragma bss_seg("B473")
+#pragma const_seg("K473")
+#pragma comment(linker, "/merge:D473=473")
+#pragma comment(linker, "/merge:C473=473")
+#pragma comment(linker, "/merge:B473=473")
+#pragma comment(linker, "/merge:K473=473")
 /***************************************************************************
 
 	Atari Skull & Crossbones hardware
@@ -316,7 +320,7 @@ VIDEO_UPDATE( skullxbo )
 	/* add the alpha on top */
 	tilemap_draw(bitmap, cliprect, atarigen_alpha_tilemap, 0, 0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

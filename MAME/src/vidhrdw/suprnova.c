@@ -1,7 +1,11 @@
-#pragma code_seg("C524")
-#pragma bss_seg("B524")
-#pragma data_seg("D524")
-#pragma const_seg("K524")
+#pragma code_seg("C523")
+#pragma data_seg("D523")
+#pragma bss_seg("B523")
+#pragma const_seg("K523")
+#pragma comment(linker, "/merge:D523=523")
+#pragma comment(linker, "/merge:C523=523")
+#pragma comment(linker, "/merge:B523=523")
+#pragma comment(linker, "/merge:K523=523")
 /* Super Kaneko Nova System Vidhrdw */
 
 /*
@@ -793,7 +797,7 @@ VIDEO_EOF(skns)
 {
 	buffer_spriteram32_w(0,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

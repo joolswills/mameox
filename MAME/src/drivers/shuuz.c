@@ -1,7 +1,11 @@
-#pragma code_seg("C469")
-#pragma bss_seg("B469")
-#pragma data_seg("D469")
-#pragma const_seg("K469")
+#pragma code_seg("C468")
+#pragma data_seg("D468")
+#pragma bss_seg("B468")
+#pragma const_seg("K468")
+#pragma comment(linker, "/merge:D468=468")
+#pragma comment(linker, "/merge:C468=468")
+#pragma comment(linker, "/merge:B468=468")
+#pragma comment(linker, "/merge:K468=468")
 /***************************************************************************
 
 	Atari Shuuz hardware
@@ -401,7 +405,7 @@ static DRIVER_INIT( shuuz )
 
 GAME( 1990, shuuz,  0,     shuuz, shuuz,  shuuz, ROT0, "Atari Games", "Shuuz (version 8.0)" )
 GAME( 1990, shuuz2, shuuz, shuuz, shuuz2, shuuz, ROT0, "Atari Games", "Shuuz (version 7.1)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

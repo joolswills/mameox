@@ -1,7 +1,11 @@
-#pragma code_seg("C622")
-#pragma bss_seg("B622")
-#pragma data_seg("D622")
-#pragma const_seg("K622")
+#pragma code_seg("C621")
+#pragma data_seg("D621")
+#pragma bss_seg("B621")
+#pragma const_seg("K621")
+#pragma comment(linker, "/merge:D621=621")
+#pragma comment(linker, "/merge:C621=621")
+#pragma comment(linker, "/merge:B621=621")
+#pragma comment(linker, "/merge:K621=621")
 /***************************************************************************
 
   vidhrdw.c
@@ -219,7 +223,7 @@ VIDEO_UPDATE( xain )
 	draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,char_tilemap,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

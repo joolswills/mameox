@@ -1,7 +1,11 @@
-#pragma code_seg("C525")
-#pragma bss_seg("B525")
-#pragma data_seg("D525")
-#pragma const_seg("K525")
+#pragma code_seg("C524")
+#pragma data_seg("D524")
+#pragma bss_seg("B524")
+#pragma const_seg("K524")
+#pragma comment(linker, "/merge:D524=524")
+#pragma comment(linker, "/merge:C524=524")
+#pragma comment(linker, "/merge:B524=524")
+#pragma comment(linker, "/merge:K524=524")
 /*** DRIVER INFORMATION & NOTES ***********************************************
 
 Super Slams - Driver by David Haywood
@@ -398,7 +402,7 @@ ROM_END
 
 GAMEX( 1995, suprslam, 0, suprslam, suprslam, 0, ROT0, "Banpresto / Toei Animation", "Super Slams", GAME_IMPERFECT_GRAPHICS )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C595")
-#pragma bss_seg("B595")
-#pragma data_seg("D595")
-#pragma const_seg("K595")
+#pragma code_seg("C594")
+#pragma data_seg("D594")
+#pragma bss_seg("B594")
+#pragma const_seg("K594")
+#pragma comment(linker, "/merge:D594=594")
+#pragma comment(linker, "/merge:C594=594")
+#pragma comment(linker, "/merge:B594=594")
+#pragma comment(linker, "/merge:K594=594")
 /***************************************************************************
 
   vidhrdw.c
@@ -236,7 +240,7 @@ VIDEO_UPDATE( vastar )
 		break;
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -2573,13 +2573,14 @@ int showgamewarnings(struct mame_bitmap *bitmap)
 			else maindrv = Machine->gamedrv;
 
         /* 
-          [EBA] Have to load all driver data sections to allow parsing of
+          [EBA] Have to load all driver sections to allow parsing of
           the drivers array. The problem is that the ROM may already be
           loaded at this point, so it might fail to load all driver sections,
           causing a crash still... Will have to look into a better solution
           sometime in the future.
         */ 
-      LoadDriverDataSections();
+      InitDriverSectionizer();
+      LoadDriverSections();
 
 			foundworking = 0;
 			i = 0;
@@ -2603,9 +2604,10 @@ int showgamewarnings(struct mame_bitmap *bitmap)
 				i++;
 			}
 
-        // Unload the unnecessary data sections to save memory if possible
-      UnloadDriverDataSections();
+        // Unload the unnecessary sections to save memory if possible
+      UnloadDriverSections();
       LoadDriverSectionByName( strstr( maindrv->source_file, "src\\drivers\\" ) );
+      TerminateDriverSectionizer();
 		}
 
 

@@ -1,7 +1,11 @@
-#pragma code_seg("C455")
-#pragma bss_seg("B455")
-#pragma data_seg("D455")
-#pragma const_seg("K455")
+#pragma code_seg("C454")
+#pragma data_seg("D454")
+#pragma bss_seg("B454")
+#pragma const_seg("K454")
+#pragma comment(linker, "/merge:D454=454")
+#pragma comment(linker, "/merge:C454=454")
+#pragma comment(linker, "/merge:B454=454")
+#pragma comment(linker, "/merge:K454=454")
 /***************************************************************************
 
 							-= Seta Hardware =-
@@ -950,7 +954,7 @@ if (keyboard_pressed(KEYCODE_Z))
 		zombraid_drawcrosshairs(bitmap,cliprect);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

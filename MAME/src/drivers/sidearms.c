@@ -1,7 +1,11 @@
-#pragma code_seg("C470")
-#pragma bss_seg("B470")
-#pragma data_seg("D470")
-#pragma const_seg("K470")
+#pragma code_seg("C469")
+#pragma data_seg("D469")
+#pragma bss_seg("B469")
+#pragma const_seg("K469")
+#pragma comment(linker, "/merge:D469=469")
+#pragma comment(linker, "/merge:C469=469")
+#pragma comment(linker, "/merge:B469=469")
+#pragma comment(linker, "/merge:K469=469")
 /***************************************************************************
 
   Sidearms
@@ -811,7 +815,7 @@ GAMEX( 1986, sidearjp, sidearms, sidearms, sidearms, sidearms, ROT0,   "Capcom",
 GAMEX( 1988, turtship, 0,        turtship, turtship, turtship, ROT0,   "Philko", "Turtle Ship", GAME_NO_COCKTAIL )
 GAMEX( 1989, dyger,    0,        turtship, dyger,    dyger,    ROT270, "Philko", "Dyger (Korea set 1)", GAME_NO_COCKTAIL )
 GAMEX( 1989, dygera,   dyger,    turtship, dyger,    dyger,    ROT270, "Philko", "Dyger (Korea set 2)", GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

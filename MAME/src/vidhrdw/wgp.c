@@ -1,7 +1,11 @@
-#pragma code_seg("C614")
-#pragma bss_seg("B614")
-#pragma data_seg("D614")
-#pragma const_seg("K614")
+#pragma code_seg("C613")
+#pragma data_seg("D613")
+#pragma bss_seg("B613")
+#pragma const_seg("K613")
+#pragma comment(linker, "/merge:D613=613")
+#pragma comment(linker, "/merge:C613=613")
+#pragma comment(linker, "/merge:B613=613")
+#pragma comment(linker, "/merge:K613=613")
 #include "driver.h"
 #include "state.h"
 #include "vidhrdw/generic.h"
@@ -819,7 +823,7 @@ VIDEO_UPDATE( wgp )
 #endif
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

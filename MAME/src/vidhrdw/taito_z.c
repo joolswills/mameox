@@ -1,7 +1,11 @@
-#pragma code_seg("C539")
-#pragma bss_seg("B539")
-#pragma data_seg("D539")
-#pragma const_seg("K539")
+#pragma code_seg("C538")
+#pragma data_seg("D538")
+#pragma bss_seg("B538")
+#pragma const_seg("K538")
+#pragma comment(linker, "/merge:D538=538")
+#pragma comment(linker, "/merge:C538=538")
+#pragma comment(linker, "/merge:B538=538")
+#pragma comment(linker, "/merge:K538=538")
 #include "driver.h"
 #include "state.h"
 #include "vidhrdw/generic.h"
@@ -1124,7 +1128,7 @@ VIDEO_UPDATE( dblaxle )
 }
 
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

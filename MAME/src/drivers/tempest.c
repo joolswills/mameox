@@ -1,7 +1,11 @@
-#pragma code_seg("C552")
-#pragma bss_seg("B552")
-#pragma data_seg("D552")
-#pragma const_seg("K552")
+#pragma code_seg("C551")
+#pragma data_seg("D551")
+#pragma bss_seg("B551")
+#pragma const_seg("K551")
+#pragma comment(linker, "/merge:D551=551")
+#pragma comment(linker, "/merge:C551=551")
+#pragma comment(linker, "/merge:B551=551")
+#pragma comment(linker, "/merge:K551=551")
 /***************************************************************************
 
 	Atari Tempest hardware
@@ -558,7 +562,7 @@ GAME( 1980, tempest,  0,       tempest, tempest, 0, ROT270, "Atari", "Tempest (r
 GAME( 1980, tempest1, tempest, tempest, tempest, 0, ROT270, "Atari", "Tempest (rev 1)" )
 GAME( 1980, tempest2, tempest, tempest, tempest, 0, ROT270, "Atari", "Tempest (rev 2)" )
 GAME( 1980, temptube, tempest, tempest, tempest, 0, ROT270, "hack", "Tempest Tubes" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C589")
-#pragma bss_seg("B589")
-#pragma data_seg("D589")
-#pragma const_seg("K589")
+#pragma code_seg("C588")
+#pragma data_seg("D588")
+#pragma bss_seg("B588")
+#pragma const_seg("K588")
+#pragma comment(linker, "/merge:D588=588")
+#pragma comment(linker, "/merge:C588=588")
+#pragma comment(linker, "/merge:B588=588")
+#pragma comment(linker, "/merge:K588=588")
 /***************************************************************************
 
 Ultraman (c) 1991  Banpresto / Bandai
@@ -359,7 +363,7 @@ static DRIVER_INIT( ultraman )
 
 
 GAME( 1991, ultraman, 0, ultraman, ultraman, ultraman, ROT0, "Banpresto/Bandai", "Ultraman (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

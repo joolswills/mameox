@@ -1,7 +1,11 @@
-#pragma code_seg("C463")
-#pragma bss_seg("B463")
-#pragma data_seg("D463")
-#pragma const_seg("K463")
+#pragma code_seg("C462")
+#pragma data_seg("D462")
+#pragma bss_seg("B462")
+#pragma const_seg("K462")
+#pragma comment(linker, "/merge:D462=462")
+#pragma comment(linker, "/merge:C462=462")
+#pragma comment(linker, "/merge:B462=462")
+#pragma comment(linker, "/merge:K462=462")
 /*
 Dynamic Ski
 (c)1984 Taiyo
@@ -839,7 +843,7 @@ GAMEX( 1984, dynamski, 0,        dynamski, dynamski, 0,        ROT90, "Taiyo", "
 GAME ( 1984, chinhero, 0,        chinhero, chinhero, chinhero, ROT90, "Taiyo", "Chinese Hero" )
 GAMEX( 1985, shangkid, 0,        shangkid, shangkid, shangkid, ROT0,  "Taiyo (Data East license)", "Shanghai Kid", GAME_NO_COCKTAIL )
 GAMEX( 1985, hiryuken, shangkid, shangkid, shangkid, shangkid, ROT0,  "[Nihon Game] (Taito license)", "Hokuha Syourin Hiryu no Ken", GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

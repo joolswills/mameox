@@ -1,7 +1,11 @@
-#pragma code_seg("C564")
-#pragma bss_seg("B564")
-#pragma data_seg("D564")
-#pragma const_seg("K564")
+#pragma code_seg("C563")
+#pragma data_seg("D563")
+#pragma bss_seg("B563")
+#pragma const_seg("K563")
+#pragma comment(linker, "/merge:D563=563")
+#pragma comment(linker, "/merge:C563=563")
+#pragma comment(linker, "/merge:B563=563")
+#pragma comment(linker, "/merge:K563=563")
 /***************************************************************************
 
 This driver contains several Konami 68000 based games. For the most part they
@@ -3621,7 +3625,7 @@ GAME( 1991, thndrx2,  0,        thndrx2,  thndrx2,  gfx,      ROT0,  "Konami", "
 GAME( 1991, thndrx2a, thndrx2,  thndrx2,  thndrx2,  gfx,      ROT0,  "Konami", "Thunder Cross II (Asia)" )
 
 GAME( 1993, prmrsocr, 0,        prmrsocr, prmrsocr, glfgreat, ROT0,  "Konami", "Premier Soccer (Japan ver. JAB)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

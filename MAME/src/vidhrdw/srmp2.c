@@ -1,7 +1,11 @@
-#pragma code_seg("C499")
-#pragma bss_seg("B499")
-#pragma data_seg("D499")
-#pragma const_seg("K499")
+#pragma code_seg("C498")
+#pragma data_seg("D498")
+#pragma bss_seg("B498")
+#pragma const_seg("K498")
+#pragma comment(linker, "/merge:D498=498")
+#pragma comment(linker, "/merge:C498=498")
+#pragma comment(linker, "/merge:B498=498")
+#pragma comment(linker, "/merge:K498=498")
 /***************************************************************************
 
 Functions to emulate the video hardware of the machine.
@@ -479,7 +483,7 @@ VIDEO_UPDATE( mjyuugi )
 	fillbitmap(bitmap, Machine->pens[0x1f0], &Machine->visible_area);
 	mjyuugi_draw_sprites(bitmap);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

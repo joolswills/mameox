@@ -1,3 +1,11 @@
+#pragma code_seg("C602")
+#pragma data_seg("D602")
+#pragma bss_seg("B602")
+#pragma const_seg("K602")
+#pragma comment(linker, "/merge:D602=602")
+#pragma comment(linker, "/merge:C602=602")
+#pragma comment(linker, "/merge:B602=602")
+#pragma comment(linker, "/merge:K602=602")
 /*************************************************************************
 
   Volfied C-Chip Protection
@@ -144,3 +152,7 @@ void volfied_cchip_init(void)
 	state_save_register_int  ("volfied", 0, "cc_flag", &current_flag);
 	state_save_register_UINT8("volfied", 0, "cc_port", &cc_port, 1);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,11 @@
+#pragma code_seg("C622")
+#pragma data_seg("D622")
+#pragma bss_seg("B622")
+#pragma const_seg("K622")
+#pragma comment(linker, "/merge:D622=622")
+#pragma comment(linker, "/merge:C622=622")
+#pragma comment(linker, "/merge:B622=622")
+#pragma comment(linker, "/merge:K622=622")
 /***************************************************************************
 
   machine.c
@@ -617,3 +625,7 @@ INTERRUPT_GEN( battles_interrupt_4 )
 	cpu_set_irq_line(3, 0, HOLD_LINE);
 }
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C545")
-#pragma bss_seg("B545")
-#pragma data_seg("D545")
-#pragma const_seg("K545")
+#pragma code_seg("C544")
+#pragma data_seg("D544")
+#pragma bss_seg("B544")
+#pragma const_seg("K544")
+#pragma comment(linker, "/merge:D544=544")
+#pragma comment(linker, "/merge:C544=544")
+#pragma comment(linker, "/merge:B544=544")
+#pragma comment(linker, "/merge:K544=544")
 /***************************************************************************
 
 Target Hits (c) 1994 Gaelco (Designed & Developed by Zigurat. Produced by Gaelco)
@@ -242,7 +246,7 @@ ROM_START( targeth )
 ROM_END
 
 GAMEX( 1994, targeth, 0, targeth,targeth, 0, ROT0, "Gaelco", "Target Hits", GAME_UNEMULATED_PROTECTION )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

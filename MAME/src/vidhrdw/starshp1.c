@@ -1,7 +1,11 @@
-#pragma code_seg("C509")
-#pragma bss_seg("B509")
-#pragma data_seg("D509")
-#pragma const_seg("K509")
+#pragma code_seg("C508")
+#pragma data_seg("D508")
+#pragma bss_seg("B508")
+#pragma const_seg("K508")
+#pragma comment(linker, "/merge:D508=508")
+#pragma comment(linker, "/merge:C508=508")
+#pragma comment(linker, "/merge:B508=508")
+#pragma comment(linker, "/merge:K508=508")
 /***************************************************************************
 
 Atari Starship 1 video emulation
@@ -455,7 +459,7 @@ VIDEO_EOF( starshp1 )
 		starshp1_collision_latch |= 8;
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

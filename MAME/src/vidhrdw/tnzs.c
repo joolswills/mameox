@@ -1,7 +1,11 @@
-#pragma code_seg("C565")
-#pragma bss_seg("B565")
-#pragma data_seg("D565")
-#pragma const_seg("K565")
+#pragma code_seg("C564")
+#pragma data_seg("D564")
+#pragma bss_seg("B564")
+#pragma const_seg("K564")
+#pragma comment(linker, "/merge:D564=564")
+#pragma comment(linker, "/merge:C564=564")
+#pragma comment(linker, "/merge:B564=564")
+#pragma comment(linker, "/merge:K564=564")
 /***************************************************************************
 
   vidhrdw.c
@@ -204,7 +208,7 @@ VIDEO_UPDATE( tnzs )
 							tnzs_objram + 0x1000, /*   ctrl : d000 */
 							tnzs_objram + 0x1200); /* color : d200 */
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

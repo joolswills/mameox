@@ -1,7 +1,11 @@
-#pragma code_seg("C574")
-#pragma bss_seg("B574")
-#pragma data_seg("D574")
-#pragma const_seg("K574")
+#pragma code_seg("C573")
+#pragma data_seg("D573")
+#pragma bss_seg("B573")
+#pragma const_seg("K573")
+#pragma comment(linker, "/merge:D573=573")
+#pragma comment(linker, "/merge:C573=573")
+#pragma comment(linker, "/merge:B573=573")
+#pragma comment(linker, "/merge:K573=573")
 /***************************************************************************
 
 Time Pilot 84  (c) 1984 Konami
@@ -472,7 +476,7 @@ ROM_END
 
 GAMEX( 1984, tp84,  0,    tp84, tp84, 0, ROT90, "Konami", "Time Pilot '84 (set 1)", GAME_NO_COCKTAIL )
 GAMEX( 1984, tp84a, tp84, tp84, tp84, 0, ROT90, "Konami", "Time Pilot '84 (set 2)", GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C573")
-#pragma bss_seg("B573")
-#pragma data_seg("D573")
-#pragma const_seg("K573")
+#pragma code_seg("C572")
+#pragma data_seg("D572")
+#pragma bss_seg("B572")
+#pragma const_seg("K572")
+#pragma comment(linker, "/merge:D572=572")
+#pragma comment(linker, "/merge:C572=572")
+#pragma comment(linker, "/merge:B572=572")
+#pragma comment(linker, "/merge:K572=572")
 /***************************************************************************
 
   vidhrdw.c
@@ -240,7 +244,7 @@ VIDEO_UPDATE( toypop )
 		}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C587")
-#pragma bss_seg("B587")
-#pragma data_seg("D587")
-#pragma const_seg("K587")
+#pragma code_seg("C586")
+#pragma data_seg("D586")
+#pragma bss_seg("B586")
+#pragma const_seg("K586")
+#pragma comment(linker, "/merge:D586=586")
+#pragma comment(linker, "/merge:C586=586")
+#pragma comment(linker, "/merge:B586=586")
+#pragma comment(linker, "/merge:K586=586")
 /* vidhrdw/twin16.c
 
 	Known Issues:
@@ -492,7 +496,7 @@ VIDEO_UPDATE( twin16 )
 
 //	usrintf_showmessage("%08x",video_register);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C592")
-#pragma bss_seg("B592")
-#pragma data_seg("D592")
-#pragma const_seg("K592")
+#pragma code_seg("C591")
+#pragma data_seg("D591")
+#pragma bss_seg("B591")
+#pragma const_seg("K591")
+#pragma comment(linker, "/merge:D591=591")
+#pragma comment(linker, "/merge:C591=591")
+#pragma comment(linker, "/merge:B591=591")
+#pragma comment(linker, "/merge:K591=591")
 /***************************************************************************
 
 							  -= Unico Games =-
@@ -449,7 +453,7 @@ if ( keyboard_pressed(KEYCODE_Z) || keyboard_pressed(KEYCODE_X) )
 	}
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

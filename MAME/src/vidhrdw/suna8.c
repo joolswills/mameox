@@ -1,7 +1,11 @@
-#pragma code_seg("C518")
-#pragma bss_seg("B518")
-#pragma data_seg("D518")
-#pragma const_seg("K518")
+#pragma code_seg("C517")
+#pragma data_seg("D517")
+#pragma bss_seg("B517")
+#pragma const_seg("K517")
+#pragma comment(linker, "/merge:D517=517")
+#pragma comment(linker, "/merge:C517=517")
+#pragma comment(linker, "/merge:B517=517")
+#pragma comment(linker, "/merge:K517=517")
 /***************************************************************************
 
 							-=  SunA 8 Bit Games =-
@@ -464,7 +468,7 @@ VIDEO_UPDATE( suna8 )
 		suna8_draw_text_sprites(bitmap,cliprect);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

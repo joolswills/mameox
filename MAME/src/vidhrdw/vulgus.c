@@ -1,7 +1,11 @@
-#pragma code_seg("C605")
-#pragma bss_seg("B605")
-#pragma data_seg("D605")
-#pragma const_seg("K605")
+#pragma code_seg("C604")
+#pragma data_seg("D604")
+#pragma bss_seg("B604")
+#pragma const_seg("K604")
+#pragma comment(linker, "/merge:D604=604")
+#pragma comment(linker, "/merge:C604=604")
+#pragma comment(linker, "/merge:B604=604")
+#pragma comment(linker, "/merge:K604=604")
 /***************************************************************************
 
   vidhrdw.c
@@ -238,7 +242,7 @@ VIDEO_UPDATE( vulgus )
 	draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,fg_tilemap,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

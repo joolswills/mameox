@@ -1,7 +1,11 @@
-#pragma code_seg("C630")
-#pragma bss_seg("B630")
-#pragma data_seg("D630")
-#pragma const_seg("K630")
+#pragma code_seg("C629")
+#pragma data_seg("D629")
+#pragma bss_seg("B629")
+#pragma const_seg("K629")
+#pragma comment(linker, "/merge:D629=629")
+#pragma comment(linker, "/merge:C629=629")
+#pragma comment(linker, "/merge:B629=629")
+#pragma comment(linker, "/merge:K629=629")
 /****************************************************************************
 10 Yard Fight Driver.
 
@@ -439,7 +443,7 @@ ROM_END
 GAME( 1983, yard,    0,    yard, yard,   0, ROT0, "Irem", "10 Yard Fight (Japan)" )
 GAME( 1984, vsyard,  yard, yard, vsyard, 0, ROT0, "Irem", "10 Yard Fight (Vs. version World, 11/05/84)" )
 GAME( 1984, vsyard2, yard, yard, vsyard, 0, ROT0, "Irem", "10 Yard Fight (Vs. version Japan, set 2)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C546")
-#pragma bss_seg("B546")
-#pragma data_seg("D546")
-#pragma const_seg("K546")
+#pragma code_seg("C545")
+#pragma data_seg("D545")
+#pragma bss_seg("B545")
+#pragma const_seg("K545")
+#pragma comment(linker, "/merge:D545=545")
+#pragma comment(linker, "/merge:C545=545")
+#pragma comment(linker, "/merge:B545=545")
+#pragma comment(linker, "/merge:K545=545")
 #include "driver.h"
 #include "taxidrvr.h"
 
@@ -158,7 +162,7 @@ VIDEO_UPDATE( taxidrvr )
 				cliprect,TRANSPARENCY_PEN,0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,3 +1,11 @@
+#pragma code_seg("C472")
+#pragma data_seg("D472")
+#pragma bss_seg("B472")
+#pragma const_seg("K472")
+#pragma comment(linker, "/merge:D472=472")
+#pragma comment(linker, "/merge:C472=472")
+#pragma comment(linker, "/merge:B472=472")
+#pragma comment(linker, "/merge:K472=472")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/konamiic.h"
@@ -220,3 +228,7 @@ MACHINE_INIT( simpsons )
 
 	simpsons_video_banking( 0 );
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C445")
-#pragma bss_seg("B445")
-#pragma data_seg("D445")
-#pragma const_seg("K445")
+#pragma code_seg("C444")
+#pragma data_seg("D444")
+#pragma bss_seg("B444")
+#pragma const_seg("K444")
+#pragma comment(linker, "/merge:D444=444")
+#pragma comment(linker, "/merge:C444=444")
+#pragma comment(linker, "/merge:B444=444")
+#pragma comment(linker, "/merge:K444=444")
 /***************************************************************************
 
   vidhrdw.c
@@ -201,7 +205,7 @@ VIDEO_UPDATE( sbasketb )
 		}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

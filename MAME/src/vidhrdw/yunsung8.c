@@ -1,7 +1,11 @@
-#pragma code_seg("C633")
-#pragma bss_seg("B633")
-#pragma data_seg("D633")
-#pragma const_seg("K633")
+#pragma code_seg("C632")
+#pragma data_seg("D632")
+#pragma bss_seg("B632")
+#pragma const_seg("K632")
+#pragma comment(linker, "/merge:D632=632")
+#pragma comment(linker, "/merge:C632=632")
+#pragma comment(linker, "/merge:B632=632")
+#pragma comment(linker, "/merge:K632=632")
 /***************************************************************************
 
 						  -= Yun Sung 8 Bit Games =-
@@ -217,7 +221,7 @@ if (keyboard_pressed(KEYCODE_Z))
 
 	if (layers_ctrl&2)	tilemap_draw(bitmap,cliprect, tilemap_1, 0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C612")
-#pragma bss_seg("B612")
-#pragma data_seg("D612")
-#pragma const_seg("K612")
+#pragma code_seg("C611")
+#pragma data_seg("D611")
+#pragma bss_seg("B611")
+#pragma const_seg("K611")
+#pragma comment(linker, "/merge:D611=611")
+#pragma comment(linker, "/merge:C611=611")
+#pragma comment(linker, "/merge:B611=611")
+#pragma comment(linker, "/merge:K611=611")
 #include "driver.h"
 
 #define SPRITE_FLIPX                                    0x01
@@ -2299,7 +2303,7 @@ VIDEO_UPDATE( hotchase )
 	if (layers_ctrl & 4)
 		K051316_zoom_draw_1(bitmap,cliprect,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

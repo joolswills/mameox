@@ -1,7 +1,11 @@
-#pragma code_seg("C489")
-#pragma bss_seg("B489")
-#pragma data_seg("D489")
-#pragma const_seg("K489")
+#pragma code_seg("C488")
+#pragma data_seg("D488")
+#pragma bss_seg("B488")
+#pragma const_seg("K488")
+#pragma comment(linker, "/merge:D488=488")
+#pragma comment(linker, "/merge:C488=488")
+#pragma comment(linker, "/merge:B488=488")
+#pragma comment(linker, "/merge:K488=488")
 /***************************************************************************
 
 Space Force Memory Map
@@ -372,7 +376,7 @@ ROM_END
 GAMEX( 1980, spcforce, 0,        spcforce, spcforce, 0, ROT270, "Venture Line", "Space Force", GAME_IMPERFECT_COLORS )
 GAMEX( 19??, spcforc2, spcforce, spcforce, spcforc2, 0, ROT270, "Elcon (bootleg?)", "Space Force (set 2)", GAME_IMPERFECT_COLORS )
 GAMEX( 1981, meteor,   spcforce, spcforce, spcforc2, 0, ROT270, "Venture Line", "Meteoroids", GAME_IMPERFECT_COLORS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

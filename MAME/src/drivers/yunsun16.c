@@ -1,7 +1,11 @@
-#pragma code_seg("C632")
-#pragma bss_seg("B632")
-#pragma data_seg("D632")
-#pragma const_seg("K632")
+#pragma code_seg("C631")
+#pragma data_seg("D631")
+#pragma bss_seg("B631")
+#pragma const_seg("K631")
+#pragma comment(linker, "/merge:D631=631")
+#pragma comment(linker, "/merge:C631=631")
+#pragma comment(linker, "/merge:B631=631")
+#pragma comment(linker, "/merge:K631=631")
 /***************************************************************************
 
 						  -= Yun Sung 16 Bit Games =-
@@ -593,7 +597,7 @@ ROM_END
 
 GAMEX( 19??, magicbub, 0, magicbub, magicbub, magicbub, ROT0, "Yun Sung", "Magic Bubble", GAME_NO_COCKTAIL )
 GAMEX( 1997, shocking, 0, shocking, shocking, 0,        ROT0, "Yun Sung", "Shocking",     GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

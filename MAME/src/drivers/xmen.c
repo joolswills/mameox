@@ -1,7 +1,11 @@
-#pragma code_seg("C625")
-#pragma bss_seg("B625")
-#pragma data_seg("D625")
-#pragma const_seg("K625")
+#pragma code_seg("C624")
+#pragma data_seg("D624")
+#pragma bss_seg("B624")
+#pragma const_seg("K624")
+#pragma comment(linker, "/merge:D624=624")
+#pragma comment(linker, "/merge:C624=624")
+#pragma comment(linker, "/merge:B624=624")
+#pragma comment(linker, "/merge:K624=624")
 /***************************************************************************
 
 X-Men
@@ -494,7 +498,7 @@ GAME ( 1992, xmen,    0,    xmen, xmen,   xmen,   ROT0, "Konami", "X-Men (US 4 P
 GAME ( 1992, xmen2p,  xmen, xmen, xmen2p, xmen,   ROT0, "Konami", "X-Men (World 2 Players)" )
 GAME ( 1992, xmen2pj, xmen, xmen, xmen2p, xmen,   ROT0, "Konami", "X-Men (Japan 2 Players)" )
 GAMEX( 1992, xmen6p,  xmen, xmen, xmen,   xmen6p, ROT0, "Konami", "X-Men (US 6 Players)", GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C507")
-#pragma bss_seg("B507")
-#pragma data_seg("D507")
-#pragma const_seg("K507")
+#pragma code_seg("C506")
+#pragma data_seg("D506")
+#pragma bss_seg("B506")
+#pragma const_seg("K506")
+#pragma comment(linker, "/merge:D506=506")
+#pragma comment(linker, "/merge:C506=506")
+#pragma comment(linker, "/merge:B506=506")
+#pragma comment(linker, "/merge:K506=506")
 /***************************************************************************
 
 Ramtek Star Cruiser Driver
@@ -242,7 +246,7 @@ ROM_END
 
 
 GAME( 1977, starcrus, 0, starcrus, starcrus, 0, ROT0, "Ramtek", "Star Cruiser" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

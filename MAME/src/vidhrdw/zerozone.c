@@ -1,7 +1,11 @@
-#pragma code_seg("C637")
-#pragma bss_seg("B637")
-#pragma data_seg("D637")
-#pragma const_seg("K637")
+#pragma code_seg("C636")
+#pragma data_seg("D636")
+#pragma bss_seg("B636")
+#pragma const_seg("K636")
+#pragma comment(linker, "/merge:D636=636")
+#pragma comment(linker, "/merge:C636=636")
+#pragma comment(linker, "/merge:B636=636")
+#pragma comment(linker, "/merge:K636=636")
 /***************************************************************************
 
   vidhrdw/zerozone.c
@@ -57,7 +61,7 @@ VIDEO_UPDATE( zerozone )
 {
 	tilemap_draw(bitmap,cliprect,zerozone_tilemap,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

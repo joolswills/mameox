@@ -1,7 +1,11 @@
-#pragma code_seg("C611")
-#pragma bss_seg("B611")
-#pragma data_seg("D611")
-#pragma const_seg("K611")
+#pragma code_seg("C610")
+#pragma data_seg("D610")
+#pragma bss_seg("B610")
+#pragma const_seg("K610")
+#pragma comment(linker, "/merge:D610=610")
+#pragma comment(linker, "/merge:C610=610")
+#pragma comment(linker, "/merge:B610=610")
+#pragma comment(linker, "/merge:K610=610")
 /*
 World Cup 90 bootleg driver
 ---------------------------
@@ -448,7 +452,7 @@ DRIVER_INIT( wc90b )
 
 
 GAMEX( 1989, wc90b, wc90, wc90b, wc90b, wc90b, ROT0, "bootleg", "Euro League", GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

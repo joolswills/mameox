@@ -1,7 +1,11 @@
-#pragma code_seg("CC1")
-#pragma bss_seg("CB1")
-#pragma data_seg("CD1")
-#pragma const_seg("CK1")
+#pragma code_seg("CC2")
+#pragma data_seg("CD2")
+#pragma bss_seg("CB2")
+#pragma const_seg("CK2")
+#pragma comment(linker, "/merge:CD2=CPU2")
+#pragma comment(linker, "/merge:CC2=CPU2")
+#pragma comment(linker, "/merge:CB2=CPU2")
+#pragma comment(linker, "/merge:CK2=CPU2")
 /*****************************************************************************
  *
  *	 z80.c

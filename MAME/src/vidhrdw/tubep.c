@@ -1,7 +1,11 @@
-#pragma code_seg("C581")
-#pragma bss_seg("B581")
-#pragma data_seg("D581")
-#pragma const_seg("K581")
+#pragma code_seg("C580")
+#pragma data_seg("D580")
+#pragma bss_seg("B580")
+#pragma const_seg("K580")
+#pragma comment(linker, "/merge:D580=580")
+#pragma comment(linker, "/merge:C580=580")
+#pragma comment(linker, "/merge:B580=580")
+#pragma comment(linker, "/merge:K580=580")
 /***************************************************************************
 
   vidhrdw.c
@@ -933,7 +937,7 @@ VIDEO_UPDATE( rjammer )
 
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

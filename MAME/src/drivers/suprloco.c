@@ -1,7 +1,11 @@
-#pragma code_seg("C523")
-#pragma bss_seg("B523")
-#pragma data_seg("D523")
-#pragma const_seg("K523")
+#pragma code_seg("C522")
+#pragma data_seg("D522")
+#pragma bss_seg("B522")
+#pragma const_seg("K522")
+#pragma comment(linker, "/merge:D522=522")
+#pragma comment(linker, "/merge:C522=522")
+#pragma comment(linker, "/merge:B522=522")
+#pragma comment(linker, "/merge:K522=522")
 /******************************************************************************
 
 Super Locomotive
@@ -300,7 +304,7 @@ DRIVER_INIT( suprloco )
 
 
 GAME( 1982, suprloco, 0, suprloco, suprloco, suprloco, ROT0, "Sega", "Super Locomotive" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C448")
-#pragma bss_seg("B448")
-#pragma data_seg("D448")
-#pragma const_seg("K448")
+#pragma code_seg("C447")
+#pragma data_seg("D447")
+#pragma bss_seg("B447")
+#pragma const_seg("K447")
+#pragma comment(linker, "/merge:D447=447")
+#pragma comment(linker, "/merge:C447=447")
+#pragma comment(linker, "/merge:B447=447")
+#pragma comment(linker, "/merge:K447=447")
 /***************************************************************************
 
 Eggs & Dommy
@@ -322,7 +326,7 @@ ROM_END
 GAME( 198?, dommy,  0,      dommy,  scregg, 0, ROT270, "Technos", "Dommy" )
 GAME( 1983, scregg, 0,      scregg, scregg, 0, ROT270, "Technos", "Scrambled Egg" )
 GAME( 1983, eggs,   scregg, scregg, scregg, 0, ROT270, "[Technos] Universal USA", "Eggs" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

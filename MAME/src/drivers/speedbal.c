@@ -1,7 +1,11 @@
-#pragma code_seg("C492")
-#pragma bss_seg("B492")
-#pragma data_seg("D492")
-#pragma const_seg("K492")
+#pragma code_seg("C491")
+#pragma data_seg("D491")
+#pragma bss_seg("B491")
+#pragma const_seg("K491")
+#pragma comment(linker, "/merge:D491=491")
+#pragma comment(linker, "/merge:C491=491")
+#pragma comment(linker, "/merge:B491=491")
+#pragma comment(linker, "/merge:K491=491")
 /***************************************************************************
 
 Speed Ball map
@@ -330,7 +334,7 @@ static DRIVER_INIT( speedbal )
 
 
 GAME( 1987, speedbal, 0, speedbal, speedbal, speedbal, ROT270, "Tecfri", "Speed Ball" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

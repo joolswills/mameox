@@ -1,7 +1,11 @@
-#pragma code_seg("C447")
-#pragma bss_seg("B447")
-#pragma data_seg("D447")
-#pragma const_seg("K447")
+#pragma code_seg("C446")
+#pragma data_seg("D446")
+#pragma bss_seg("B446")
+#pragma const_seg("K446")
+#pragma comment(linker, "/merge:D446=446")
+#pragma comment(linker, "/merge:C446=446")
+#pragma comment(linker, "/merge:B446=446")
+#pragma comment(linker, "/merge:K446=446")
 /* Space Bugger */
 
 /* is the rom mapping ok, are the roms good? it jumps to the 0x800 region and I don't have a rom for there,
@@ -238,7 +242,7 @@ ROM_END
 
 GAMEX( 1981, sbugger, 0, sbugger, sbugger, 0, ROT270, "Game-A-Tron", "Space Bugger", GAME_NO_SOUND | GAME_NOT_WORKING )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

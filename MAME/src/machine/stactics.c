@@ -1,4 +1,11 @@
-
+#pragma code_seg("C504")
+#pragma data_seg("D504")
+#pragma bss_seg("B504")
+#pragma const_seg("K504")
+#pragma comment(linker, "/merge:D504=504")
+#pragma comment(linker, "/merge:C504=504")
+#pragma comment(linker, "/merge:B504=504")
+#pragma comment(linker, "/merge:K504=504")
 #include "driver.h"
 
 /* needed in vidhrdw/stactics.c */
@@ -90,3 +97,7 @@ WRITE_HANDLER( stactics_coin_lockout_w )
 	coin_lockout_w(offset, ~data & 0x01);
 }
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

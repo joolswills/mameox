@@ -1,7 +1,11 @@
-#pragma code_seg("C542")
-#pragma bss_seg("B542")
-#pragma data_seg("D542")
-#pragma const_seg("K542")
+#pragma code_seg("C541")
+#pragma data_seg("D541")
+#pragma bss_seg("B541")
+#pragma const_seg("K541")
+#pragma comment(linker, "/merge:D541=541")
+#pragma comment(linker, "/merge:C541=541")
+#pragma comment(linker, "/merge:B541=541")
+#pragma comment(linker, "/merge:K541=541")
 /***************************************************************************
 
   vidhrdw.c
@@ -128,7 +132,7 @@ VIDEO_UPDATE( tankbatt )
 
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

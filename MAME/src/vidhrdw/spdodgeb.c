@@ -1,7 +1,11 @@
-#pragma code_seg("C491")
-#pragma bss_seg("B491")
-#pragma data_seg("D491")
-#pragma const_seg("K491")
+#pragma code_seg("C490")
+#pragma data_seg("D490")
+#pragma bss_seg("B490")
+#pragma const_seg("K490")
+#pragma comment(linker, "/merge:D490=490")
+#pragma comment(linker, "/merge:C490=490")
+#pragma comment(linker, "/merge:B490=490")
+#pragma comment(linker, "/merge:K490=490")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "cpu/m6502/m6502.h"
@@ -236,7 +240,7 @@ VIDEO_UPDATE( spdodgeb )
 	tilemap_draw(bitmap,cliprect,bg_tilemap,0,0);
 	draw_sprites(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C585")
-#pragma bss_seg("B585")
-#pragma data_seg("D585")
-#pragma const_seg("K585")
+#pragma code_seg("C584")
+#pragma data_seg("D584")
+#pragma bss_seg("B584")
+#pragma const_seg("K584")
+#pragma comment(linker, "/merge:D584=584")
+#pragma comment(linker, "/merge:C584=584")
+#pragma comment(linker, "/merge:B584=584")
+#pragma comment(linker, "/merge:K584=584")
 /*************************************************************************
 
 	Sega Z80-3D system
@@ -1014,7 +1018,7 @@ WRITE_HANDLER( buckrog_bitmap_w )
 {
 	buckrog_bitmap_ram[offset] = data & 1;
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

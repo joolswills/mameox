@@ -1,7 +1,11 @@
-#pragma code_seg("C576")
-#pragma bss_seg("B576")
-#pragma data_seg("D576")
-#pragma const_seg("K576")
+#pragma code_seg("C575")
+#pragma data_seg("D575")
+#pragma bss_seg("B575")
+#pragma const_seg("K575")
+#pragma comment(linker, "/merge:D575=575")
+#pragma comment(linker, "/merge:C575=575")
+#pragma comment(linker, "/merge:B575=575")
+#pragma comment(linker, "/merge:K575=575")
 /***************************************************************************
 
 Atari Triple Hunt Driver
@@ -364,7 +368,7 @@ ROM_END
 
 
 GAMEX( 1977, triplhnt, 0, triplhnt, triplhnt, triplhnt, 0, "Atari", "Triple Hunt", GAME_NO_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

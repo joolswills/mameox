@@ -1,7 +1,11 @@
-#pragma code_seg("C544")
-#pragma bss_seg("B544")
-#pragma data_seg("D544")
-#pragma const_seg("K544")
+#pragma code_seg("C543")
+#pragma data_seg("D543")
+#pragma bss_seg("B543")
+#pragma const_seg("K543")
+#pragma comment(linker, "/merge:D543=543")
+#pragma comment(linker, "/merge:C543=543")
+#pragma comment(linker, "/merge:B543=543")
+#pragma comment(linker, "/merge:K543=543")
 /***************************************************************************
 
   Tao Taido             (c) 1993 Video System
@@ -462,7 +466,7 @@ ROM_END
 
 GAMEX( 1993, taotaido, 0,        taotaido, taotaido, 0, ROT0, "Video System Co.", "Tao Taido (set 1)", GAME_NO_COCKTAIL )
 GAMEX( 1993, taotaida, taotaido, taotaido, taotaido, 0, ROT0, "Video System Co.", "Tao Taido (set 2)", GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

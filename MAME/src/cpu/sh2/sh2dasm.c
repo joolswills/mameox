@@ -1,9 +1,11 @@
 #pragma code_seg("CC11")
-#pragma bss_seg("CB11")
 #pragma data_seg("CD11")
+#pragma bss_seg("CB11")
 #pragma const_seg("CK11")
-
-
+#pragma comment(linker, "/merge:CD11=CPU11")
+#pragma comment(linker, "/merge:CC11=CPU11")
+#pragma comment(linker, "/merge:CB11=CPU11")
+#pragma comment(linker, "/merge:CK11=CPU11")
 #include "driver.h"
 #ifdef	MAME_DEBUG
 #include "mamedbg.h"
@@ -699,3 +701,7 @@ unsigned DasmSH2(char *buffer, unsigned pc)
 
 #endif
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C619")
-#pragma bss_seg("B619")
-#pragma data_seg("D619")
-#pragma const_seg("K619")
+#pragma code_seg("C618")
+#pragma data_seg("D618")
+#pragma bss_seg("B618")
+#pragma const_seg("K618")
+#pragma comment(linker, "/merge:D618=618")
+#pragma comment(linker, "/merge:C618=618")
+#pragma comment(linker, "/merge:B618=618")
+#pragma comment(linker, "/merge:K618=618")
 /***************************************************************************
 
   World Rally Video Hardware
@@ -180,7 +184,7 @@ VIDEO_UPDATE( wrally )
 	tilemap_draw(bitmap,cliprect,pant[0],0,0);
 	gaelco_draw_sprites(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

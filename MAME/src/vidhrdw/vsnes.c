@@ -1,7 +1,11 @@
-#pragma code_seg("C604")
-#pragma bss_seg("B604")
-#pragma data_seg("D604")
-#pragma const_seg("K604")
+#pragma code_seg("C603")
+#pragma data_seg("D603")
+#pragma bss_seg("B603")
+#pragma const_seg("K603")
+#pragma comment(linker, "/merge:D603=603")
+#pragma comment(linker, "/merge:C603=603")
+#pragma comment(linker, "/merge:B603=603")
+#pragma comment(linker, "/merge:K603=603")
 #include "driver.h"
 #include "vidhrdw/ppu2c03b.h"
 
@@ -86,7 +90,7 @@ VIDEO_UPDATE( vsdual )
 	ppu2c03b_render( 0, bitmap, 0, 0, 0, 0 );
 	ppu2c03b_render( 1, bitmap, 0, 0, 32*8, 0 );
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

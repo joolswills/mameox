@@ -1,7 +1,11 @@
-#pragma code_seg("C565")
-#pragma bss_seg("B565")
-#pragma data_seg("D565")
-#pragma const_seg("K565")
+#pragma code_seg("C564")
+#pragma data_seg("D564")
+#pragma bss_seg("B564")
+#pragma const_seg("K564")
+#pragma comment(linker, "/merge:D564=564")
+#pragma comment(linker, "/merge:C564=564")
+#pragma comment(linker, "/merge:B564=564")
+#pragma comment(linker, "/merge:K564=564")
 /***************************************************************************
 
 The New Zealand Story driver, used for tnzs & tnzs2.
@@ -2327,7 +2331,7 @@ GAME( 1988, tnzs,     0,        tnzs,     tnzs,     tnzs,     ROT0,   "Taito Cor
 GAME( 1988, tnzsb,    tnzs,     tnzsb,    tnzsb,    tnzsb,    ROT0,   "bootleg", "The NewZealand Story (World, bootleg)" )
 GAME( 1988, tnzs2,    tnzs,     tnzs,     tnzs2,    tnzs,     ROT0,   "Taito Corporation Japan", "The NewZealand Story 2 (World)" )
 GAME( 1989, insectx,  0,        insectx,  insectx,  insectx,  ROT0,   "Taito Corporation Japan", "Insector X (World)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

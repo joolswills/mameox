@@ -1,7 +1,11 @@
-#pragma code_seg("C601")
-#pragma bss_seg("B601")
-#pragma data_seg("D601")
-#pragma const_seg("K601")
+#pragma code_seg("C600")
+#pragma data_seg("D600")
+#pragma bss_seg("B600")
+#pragma const_seg("K600")
+#pragma comment(linker, "/merge:D600=600")
+#pragma comment(linker, "/merge:C600=600")
+#pragma comment(linker, "/merge:B600=600")
+#pragma comment(linker, "/merge:K600=600")
 /***************************************************************************
 
   vidhrdw.c
@@ -356,7 +360,7 @@ VIDEO_UPDATE( kikcubic )
 
 	draw_sprites(bitmap,&Machine->visible_area);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

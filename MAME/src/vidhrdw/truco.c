@@ -1,7 +1,11 @@
-#pragma code_seg("C578")
-#pragma bss_seg("B578")
-#pragma data_seg("D578")
-#pragma const_seg("K578")
+#pragma code_seg("C577")
+#pragma data_seg("D577")
+#pragma bss_seg("B577")
+#pragma const_seg("K577")
+#pragma comment(linker, "/merge:D577=577")
+#pragma comment(linker, "/merge:C577=577")
+#pragma comment(linker, "/merge:B577=577")
+#pragma comment(linker, "/merge:K577=577")
 /***************************************************************************
 
   vidhrdw.c
@@ -55,7 +59,7 @@ VIDEO_UPDATE( truco )
 		vid += 0x80;
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

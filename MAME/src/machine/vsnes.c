@@ -1,3 +1,11 @@
+#pragma code_seg("C603")
+#pragma data_seg("D603")
+#pragma bss_seg("B603")
+#pragma const_seg("K603")
+#pragma comment(linker, "/merge:D603=603")
+#pragma comment(linker, "/merge:C603=603")
+#pragma comment(linker, "/merge:B603=603")
+#pragma comment(linker, "/merge:K603=603")
 /***************************************************************************
 
 Nintendo VS UniSystem and DualSystem - (c) 1984 Nintendo of America
@@ -1414,3 +1422,7 @@ DRIVER_INIT( vstetris )
 //remapped_colortable = rp2c04002_colortable;
 //remapped_colortable = rp2c04003_colortable;
 //remapped_colortable = rp2c05004_colortable;
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

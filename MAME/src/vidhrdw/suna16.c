@@ -1,7 +1,11 @@
-#pragma code_seg("C517")
-#pragma bss_seg("B517")
-#pragma data_seg("D517")
-#pragma const_seg("K517")
+#pragma code_seg("C516")
+#pragma data_seg("D516")
+#pragma bss_seg("B516")
+#pragma const_seg("K516")
+#pragma comment(linker, "/merge:D516=516")
+#pragma comment(linker, "/merge:C516=516")
+#pragma comment(linker, "/merge:B516=516")
+#pragma comment(linker, "/merge:K516=516")
 /***************************************************************************
 
 							-=  SunA 16 Bit Games =-
@@ -223,7 +227,7 @@ VIDEO_UPDATE( suna16 )
 	fillbitmap(bitmap,get_black_pen(),&Machine->visible_area);
 	suna16_draw_sprites(bitmap);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

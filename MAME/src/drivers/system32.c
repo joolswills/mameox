@@ -1,7 +1,11 @@
-#pragma code_seg("C530")
-#pragma bss_seg("B530")
-#pragma data_seg("D530")
-#pragma const_seg("K530")
+#pragma code_seg("C529")
+#pragma data_seg("D529")
+#pragma bss_seg("B529")
+#pragma const_seg("K529")
+#pragma comment(linker, "/merge:D529=529")
+#pragma comment(linker, "/merge:C529=529")
+#pragma comment(linker, "/merge:B529=529")
+#pragma comment(linker, "/merge:K529=529")
 /*
 	Sega System 32 hardware
 
@@ -2935,7 +2939,7 @@ GAMEX(1992, darkedge, 0,        sys32_hi, system32, s32,      ROT0, "Sega", "Dar
 GAMEX(199?, slipstrm, 0,        sys32_hi, f1en,     f1en,     ROT0, "Capcom", "Slipstream", GAME_NOT_WORKING ) /* unhandled v60 opcodes .... */
 /* Air Rescue */
 /* Loony Toons (maybe) */
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

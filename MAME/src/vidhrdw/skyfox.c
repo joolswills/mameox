@@ -1,7 +1,11 @@
-#pragma code_seg("C478")
-#pragma bss_seg("B478")
-#pragma data_seg("D478")
-#pragma const_seg("K478")
+#pragma code_seg("C477")
+#pragma data_seg("D477")
+#pragma bss_seg("B477")
+#pragma const_seg("K477")
+#pragma comment(linker, "/merge:D477=477")
+#pragma comment(linker, "/merge:C477=477")
+#pragma comment(linker, "/merge:B477=477")
+#pragma comment(linker, "/merge:K477=477")
 /***************************************************************************
 
 						-= Sky Fox / Exerizer =-
@@ -295,7 +299,7 @@ VIDEO_UPDATE( skyfox )
 	skyfox_draw_background(bitmap);
 	skyfox_draw_sprites(bitmap);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

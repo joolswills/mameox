@@ -1,7 +1,11 @@
-#pragma code_seg("C524")
-#pragma bss_seg("B524")
-#pragma data_seg("D524")
-#pragma const_seg("K524")
+#pragma code_seg("C523")
+#pragma data_seg("D523")
+#pragma bss_seg("B523")
+#pragma const_seg("K523")
+#pragma comment(linker, "/merge:D523=523")
+#pragma comment(linker, "/merge:C523=523")
+#pragma comment(linker, "/merge:B523=523")
+#pragma comment(linker, "/merge:K523=523")
 /* Super Kaneko Nova System */
 /* Original Driver by Sylvain Glaize */
 /* taken to pieces and attempted reconstruction by David Haywood */
@@ -1572,7 +1576,7 @@ GAMEX( 1997, sengekis, skns,    skns, skns,     sengekis, ROT90, "Kaneko / Waras
 GAMEX( 1997, vblokbrk, skns,    skns, skns,     sarukani, ROT0,  "Kaneko / Mediaworks", "VS Block Breaker (Asia)", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1997, sarukani, vblokbrk,skns, skns,     sarukani, ROT0,  "Kaneko / Mediaworks", "Saru-Kani-Hamu-Zou (Japan)", GAME_IMPERFECT_GRAPHICS )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C544")
-#pragma bss_seg("B544")
-#pragma data_seg("D544")
-#pragma const_seg("K544")
+#pragma code_seg("C543")
+#pragma data_seg("D543")
+#pragma bss_seg("B543")
+#pragma const_seg("K543")
+#pragma comment(linker, "/merge:D543=543")
+#pragma comment(linker, "/merge:C543=543")
+#pragma comment(linker, "/merge:B543=543")
+#pragma comment(linker, "/merge:K543=543")
 /* Tao Taido Video Hardware */
 
 /*
@@ -249,7 +253,7 @@ VIDEO_EOF( taotaido )
 	memcpy(taotaido_spriteram_older,taotaido_spriteram_old,0x2000);
 	memcpy(taotaido_spriteram_old,taotaido_spriteram,0x2000);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

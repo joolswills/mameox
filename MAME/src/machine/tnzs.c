@@ -1,3 +1,11 @@
+#pragma code_seg("C564")
+#pragma data_seg("D564")
+#pragma bss_seg("B564")
+#pragma const_seg("K564")
+#pragma comment(linker, "/merge:D564=564")
+#pragma comment(linker, "/merge:C564=564")
+#pragma comment(linker, "/merge:B564=564")
+#pragma comment(linker, "/merge:K564=564")
 /***************************************************************************
 
   machine.c
@@ -760,3 +768,7 @@ WRITE_HANDLER( tnzs_bankswitch1_w )
 	/* bits 0-1 select ROM bank */
 	cpu_setbank (2, &RAM[0x10000 + 0x2000 * (data & 3)]);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

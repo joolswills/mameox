@@ -1,7 +1,11 @@
-#pragma code_seg("C533")
-#pragma bss_seg("B533")
-#pragma data_seg("D533")
-#pragma const_seg("K533")
+#pragma code_seg("C532")
+#pragma data_seg("D532")
+#pragma bss_seg("B532")
+#pragma const_seg("K532")
+#pragma comment(linker, "/merge:D532=532")
+#pragma comment(linker, "/merge:C532=532")
+#pragma comment(linker, "/merge:B532=532")
+#pragma comment(linker, "/merge:K532=532")
 /***************************************************************************
 
 Taito B System
@@ -3662,7 +3666,7 @@ GAME( 1994, spacedxo, spacedx, spacedxo, spacedxo, 0, ROT0,   "Taito Corporation
  	the enemy.
 */
 GAME(  1990, sbm,      0,       sbm,      sbm,      0, ROT0,   "Taito Corporation", "Sonic Blast Man (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

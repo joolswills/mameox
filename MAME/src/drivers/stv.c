@@ -1,7 +1,11 @@
-#pragma code_seg("C515")
-#pragma bss_seg("B515")
-#pragma data_seg("D515")
-#pragma const_seg("K515")
+#pragma code_seg("C514")
+#pragma data_seg("D514")
+#pragma bss_seg("B514")
+#pragma const_seg("K514")
+#pragma comment(linker, "/merge:D514=514")
+#pragma comment(linker, "/merge:C514=514")
+#pragma comment(linker, "/merge:B514=514")
+#pragma comment(linker, "/merge:K514=514")
 /* Sega ST-V (Sega Titan Video)
 
 built to run the rom test mode only, don't consider anything here too accurate ;-)
@@ -1527,7 +1531,7 @@ GAMEX( 1995, mausuke,   stvbios, stv, stv,  stv,  ROT0, "Data East", "Mausuke no
 GAMEX( 199?, batmanfr,  stvbios, stv, stv,  stv,  ROT0, "Acclaim", "Batman Forever", GAME_NO_SOUND | GAME_NOT_WORKING )
 
 /* there are probably a bunch of other games (some fishing games with cd-rom etc.) */
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

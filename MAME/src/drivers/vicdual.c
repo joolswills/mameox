@@ -1,7 +1,11 @@
-#pragma code_seg("C598")
-#pragma bss_seg("B598")
-#pragma data_seg("D598")
-#pragma const_seg("K598")
+#pragma code_seg("C597")
+#pragma data_seg("D597")
+#pragma bss_seg("B597")
+#pragma const_seg("K597")
+#pragma comment(linker, "/merge:D597=597")
+#pragma comment(linker, "/merge:C597=597")
+#pragma comment(linker, "/merge:B597=597")
+#pragma comment(linker, "/merge:K597=597")
 /***************************************************************************
 
 VIC Dual Game board
@@ -1800,7 +1804,7 @@ GAMEX(1980, digger,   0,        3ports,   digger,   nosamples, ROT270, "Sega", "
 GAME( 1981, pulsar,   0,        pulsar,   pulsar,   pulsar,    ROT270, "Sega", "Pulsar" )
 GAMEX(1979, heiankyo, 0,        4ports,   heiankyo, nosamples, ROT270, "Denki Onkyo", "Heiankyo Alien", GAME_NO_SOUND )
 GAMEX(19??, alphaho,  0,        invinco4, alphaho,  invho2,    ROT270, "Data East Corporation", "Alpha Fighter / Head On", GAME_WRONG_COLORS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

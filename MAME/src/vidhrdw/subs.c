@@ -1,7 +1,11 @@
-#pragma code_seg("C516")
-#pragma bss_seg("B516")
-#pragma data_seg("D516")
-#pragma const_seg("K516")
+#pragma code_seg("C515")
+#pragma data_seg("D515")
+#pragma bss_seg("B515")
+#pragma const_seg("K515")
+#pragma comment(linker, "/merge:D515=515")
+#pragma comment(linker, "/merge:C515=515")
+#pragma comment(linker, "/merge:B515=515")
+#pragma comment(linker, "/merge:K515=515")
 /***************************************************************************
 
 	Atari Subs hardware
@@ -168,7 +172,7 @@ VIDEO_UPDATE( subs )
 	discrete_sound_w(2, spriteram[5] & 0x0f);		// Launch data
 	discrete_sound_w(3, (spriteram[5] >> 4) & 0x0f);	// Crash/explode data
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

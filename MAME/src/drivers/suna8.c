@@ -1,7 +1,11 @@
-#pragma code_seg("C518")
-#pragma bss_seg("B518")
-#pragma data_seg("D518")
-#pragma const_seg("K518")
+#pragma code_seg("C517")
+#pragma data_seg("D517")
+#pragma bss_seg("B517")
+#pragma const_seg("K517")
+#pragma comment(linker, "/merge:D517=517")
+#pragma comment(linker, "/merge:C517=517")
+#pragma comment(linker, "/merge:B517=517")
+#pragma comment(linker, "/merge:K517=517")
 /***************************************************************************
 
 							-=  SunA 8 Bit Games =-
@@ -2758,7 +2762,7 @@ GAMEX( 1991, hardhea2, 0,       hardhea2, hardhea2, hardhea2, ROT0,  "SunA",    
 GAMEX( 1992, brickzn,  0,       brickzn,  brickzn,  brickzn3, ROT90, "SunA",    "Brick Zone (v5.0)",             GAME_NOT_WORKING )
 GAMEX( 1992, brickzn3, brickzn, brickzn,  brickzn,  brickzn3, ROT90, "SunA",    "Brick Zone (v3.0)",             GAME_NOT_WORKING )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

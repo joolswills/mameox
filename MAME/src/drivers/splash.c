@@ -1,7 +1,11 @@
-#pragma code_seg("C495")
-#pragma bss_seg("B495")
-#pragma data_seg("D495")
-#pragma const_seg("K495")
+#pragma code_seg("C494")
+#pragma data_seg("D494")
+#pragma bss_seg("B494")
+#pragma const_seg("K494")
+#pragma comment(linker, "/merge:D494=494")
+#pragma comment(linker, "/merge:C494=494")
+#pragma comment(linker, "/merge:B494=494")
+#pragma comment(linker, "/merge:K494=494")
 /***************************************************************************
 
 Splash! (c) 1992 Gaelco
@@ -287,7 +291,7 @@ ROM_END
 
 
 GAME( 1992, splash, 0, splash, splash, 0, ROT0, "Gaelco", "Splash! (Ver. 1.2 World)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

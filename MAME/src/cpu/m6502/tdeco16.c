@@ -1,7 +1,11 @@
-#pragma code_seg("CC20")
-#pragma bss_seg("CB20")
-#pragma data_seg("CD20")
-#pragma const_seg("CK20")
+#pragma code_seg("CC17")
+#pragma data_seg("CD17")
+#pragma bss_seg("CB17")
+#pragma const_seg("CK17")
+#pragma comment(linker, "/merge:CD17=CPU17")
+#pragma comment(linker, "/merge:CC17=CPU17")
+#pragma comment(linker, "/merge:CB17=CPU17")
+#pragma comment(linker, "/merge:CK17=CPU17")
 /*****************************************************************************
  *  Deco CPU16 instructions - still very work in progress!
  *
@@ -433,3 +437,7 @@ static void (*insndeco16[0x100])(void) = {
 	deco16_f0,deco16_f1,deco16_f2,deco16_f3,deco16_f4,deco16_f5,deco16_f6,deco16_f7,
 	deco16_f8,deco16_f9,deco16_fa,deco16_fb,deco16_fc,deco16_fd,deco16_fe,deco16_ff
 };
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C579")
-#pragma bss_seg("B579")
-#pragma data_seg("D579")
-#pragma const_seg("K579")
+#pragma code_seg("C578")
+#pragma data_seg("D578")
+#pragma bss_seg("B578")
+#pragma const_seg("K578")
+#pragma comment(linker, "/merge:D578=578")
+#pragma comment(linker, "/merge:C578=578")
+#pragma comment(linker, "/merge:B578=578")
+#pragma comment(linker, "/merge:K578=578")
 /*
 **	Video Driver for Taito Samurai (1985)
 */
@@ -291,7 +295,7 @@ VIDEO_UPDATE( vsgongf )
 	tilemap_draw(bitmap,cliprect,foreground,0,0);
 	draw_sprites(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()
