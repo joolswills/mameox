@@ -138,6 +138,9 @@
 			Name="Source Files"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm">
 			<File
+				RelativePath="Sources\BaseView.cpp">
+			</File>
+			<File
 				RelativePath="..\MAMEoX\Sources\DebugLogger.cpp">
 			</File>
 			<File
@@ -171,6 +174,9 @@
 				RelativePath="..\MAMEoX\Sources\SMBHandler.cpp">
 			</File>
 			<File
+				RelativePath="Sources\StartMenu.cpp">
+			</File>
+			<File
 				RelativePath="..\MAMEoX\Sources\System_IniFile.cpp">
 			</File>
 			<File
@@ -201,6 +207,9 @@
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc">
+			<File
+				RelativePath="Includes\BaseView.h">
+			</File>
 			<File
 				RelativePath="..\MAMEoX\Includes\DebugLogger.h">
 			</File>
@@ -239,6 +248,9 @@
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Includes\SMBHandler.h">
+			</File>
+			<File
+				RelativePath="Includes\StartMenu.h">
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Includes\StdString.h">
