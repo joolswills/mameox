@@ -54,6 +54,10 @@ void CSkinScreenshot::RenderAtRect( LPDIRECT3DDEVICE8 displayDevice,
     screenshotLeft = screenshotRight - ( (FLOAT)(right - left) * 3.0f / 4.0f);
 	}
 
+  displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
+  displayDevice->SetRenderState( D3DRS_SRCBLEND,            D3DBLEND_SRCALPHA );
+  displayDevice->SetRenderState( D3DRS_DESTBLEND,           D3DBLEND_INVSRCALPHA );
+
   if( screenshot )
   {
 		displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
@@ -169,9 +173,17 @@ void CSkinScreenshot::RenderAtRect( LPDIRECT3DDEVICE8 displayDevice,
 //---------------------------------------------------------------------
 //	ParseINI
 //---------------------------------------------------------------------
-BOOL CSkinScreenshot::ParseINI(	CSystem_IniFile &iniFile, const CStdString &sectionName, const CStdString &entryName ) 
+BOOL CSkinScreenshot::ParseINI(	CSystem_IniFile &iniFile, const CStdString &sectionName, const CStdString &parentEntryName ) 
 {
-	RECT rct = StringToRect( iniFile.GetProfileString( sectionName, entryName + ".Screenshot.Area", "" ) );
+	CStdString entryName = parentEntryName;
+
+	if( entryName == "" )
+		entryName = "Screenshot";
+	else
+		entryName += ".Screenshot";
+
+
+	RECT rct = StringToRect( iniFile.GetProfileString( sectionName, entryName + ".Area", "" ) );
 	if( rct.left != VALUE_INVALID && rct.top != VALUE_INVALID && rct.right != VALUE_INVALID && rct.bottom != VALUE_INVALID )
 	{
 		m_left = rct.left;
@@ -181,28 +193,28 @@ BOOL CSkinScreenshot::ParseINI(	CSystem_IniFile &iniFile, const CStdString &sect
 	}
 
 		// Parse the color, allowing either one color for all 4 corners, or individual colors
-	CStdString temp = iniFile.GetProfileString( sectionName, entryName + ".Screenshot.Color", "" );
+	CStdString temp = iniFile.GetProfileString( sectionName, entryName + ".Color", "" );
 	if( temp != "" )
 	{
 		m_cornerColors[0] = m_cornerColors[1] = m_cornerColors[2] = m_cornerColors[3] = StringToColor( temp );
 	}
 	else
 	{
-		temp = iniFile.GetProfileString( sectionName, entryName + ".Screenshot.Color.UpperLeft", "" );
+		temp = iniFile.GetProfileString( sectionName, entryName + ".Color.UpperLeft", "" );
 		m_cornerColors[0] = StringToColor( temp );
 
-		temp = iniFile.GetProfileString( sectionName, entryName + ".Screenshot.Color.UpperRight", "" );
+		temp = iniFile.GetProfileString( sectionName, entryName + ".Color.UpperRight", "" );
 		m_cornerColors[1] = StringToColor( temp );
 
-		temp = iniFile.GetProfileString( sectionName, entryName + ".Screenshot.Color.LowerRight", "" );
+		temp = iniFile.GetProfileString( sectionName, entryName + ".Color.LowerRight", "" );
 		m_cornerColors[2] = StringToColor( temp );
 
-		temp = iniFile.GetProfileString( sectionName, entryName + ".Screenshot.Color.LowerLeft", "" );
+		temp = iniFile.GetProfileString( sectionName, entryName + ".Color.LowerLeft", "" );
 		m_cornerColors[3] = StringToColor( temp );
 	}
 
 	CSkinText text;
-	if( text.ParseINI( iniFile, sectionName, entryName + ".Screenshot" ) )
+	if( text.ParseINI( iniFile, sectionName, entryName ) )
 		m_text = new CSkinText( text );
 
 
