@@ -3874,18 +3874,22 @@ void do_loadsave(struct mame_bitmap *bitmap, int request_loadsave)
     {
       switch( code )
       {
+      case KEYCODE_A:
       case JOYCODE_1_BUTTON1:
         file = '0';
         break;
 
+      case KEYCODE_X:
       case JOYCODE_1_BUTTON2:
         file = '1';
         break;
 
+      case KEYCODE_B:
       case JOYCODE_1_BUTTON3:
         file = '2';
         break;
 
+      case KEYCODE_Y:
       case JOYCODE_1_BUTTON4:
         file = '3';
         break;
