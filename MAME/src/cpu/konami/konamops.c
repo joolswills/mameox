@@ -1,3 +1,7 @@
+#pragma code_seg("CC21")
+#pragma bss_seg("CB21")
+#pragma data_seg("CD21")
+#pragma const_seg("CK21")
 /*
 
 HNZVC
@@ -4428,3 +4432,7 @@ INLINE void opcode2( void )
 	}
 	(*konami_indexed[konami.ireg])();
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

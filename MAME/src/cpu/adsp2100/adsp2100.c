@@ -1,3 +1,7 @@
+#pragma code_seg("CC33")
+#pragma bss_seg("CB33")
+#pragma data_seg("CD33")
+#pragma const_seg("CK33")
 /*###################################################################################################
 **
 **
@@ -2119,3 +2123,7 @@ void adsp2115_load_boot_data(data8_t *srcdata, data32_t *dstdata)
 }
 
 #endif
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

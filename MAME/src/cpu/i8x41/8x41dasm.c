@@ -1,3 +1,7 @@
+#pragma code_seg("CC23")
+#pragma bss_seg("CB23")
+#pragma data_seg("CD23")
+#pragma const_seg("CK23")
 #include <stdio.h>
 
 #ifdef MAME_DEBUG
@@ -566,3 +570,7 @@ unsigned Dasm8x41(char *dst, unsigned pc)
 }
 
 #endif
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

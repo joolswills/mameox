@@ -1,3 +1,7 @@
+#pragma code_seg("CC3")
+#pragma bss_seg("CB3")
+#pragma data_seg("CD3")
+#pragma const_seg("CK3")
 
 // NOTE for bit string/field addressing
 // ************************************
@@ -100,3 +104,7 @@ UINT32 WriteAM(void)
 }
 
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("CC3")
+#pragma bss_seg("CB3")
+#pragma data_seg("CD3")
+#pragma const_seg("CK3")
 /*
  * Only STTASK missing
  *
@@ -609,3 +613,7 @@ UINT32 opPUSH_1(void) { modM=1; return opPUSH(); }
 
 UINT32 opPOP_0(void) { modM=0; return opPOP(); }
 UINT32 opPOP_1(void) { modM=1; return opPOP(); }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

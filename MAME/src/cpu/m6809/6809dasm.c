@@ -1,3 +1,7 @@
+#pragma code_seg("CC16")
+#pragma bss_seg("CB16")
+#pragma data_seg("CD16")
+#pragma const_seg("CK16")
 /* this code was hacked out of the fully-featured 6809 disassembler by Sean Riddle */
 
 
@@ -722,3 +726,7 @@ unsigned Dasm6809 (char *buffer, unsigned pc)
 }
 
 #endif
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("CC27")
+#pragma bss_seg("CB27")
+#pragma data_seg("CD27")
+#pragma const_seg("CK27")
 INLINE void illegal( void );
 INLINE void neg_di( void );
 INLINE void oim_di( void );
@@ -812,3 +816,7 @@ static void (*hd6309_page11[0x100])(void) = {
 };
 
 #endif /* BIG_SWITCH */
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("CC0")
+#pragma bss_seg("CB0")
+#pragma data_seg("CD0")
+#pragma const_seg("CK0")
 /*****************************************************************************
  *
  *	 z8000ops.c
@@ -6501,3 +6505,7 @@ static void ZF_dddd_1dsp7(void)
 }
 
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("CC19")
+#pragma bss_seg("CB19")
+#pragma data_seg("CD19")
+#pragma const_seg("CK19")
 /*
  *   A quick-hack 6803/6808 disassembler
  *
@@ -274,3 +278,7 @@ unsigned Dasm680x (int subtype, char *buf, unsigned pc)
 }
 
 #endif
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

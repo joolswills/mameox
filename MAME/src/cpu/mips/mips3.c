@@ -1,3 +1,7 @@
+#pragma code_seg("CC15")
+#pragma bss_seg("CB15")
+#pragma data_seg("CD15")
+#pragma const_seg("CK15")
 /*###################################################################################################
 **
 **
@@ -2228,3 +2232,7 @@ static void sdr_le(UINT32 op)
 		WDOUBLE(offs & ~7, (temp & (mask >> (56 - shift))) | (RTVAL64 << shift));
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

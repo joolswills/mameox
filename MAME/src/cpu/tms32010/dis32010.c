@@ -1,3 +1,7 @@
+#pragma code_seg("CC9")
+#pragma bss_seg("CB9")
+#pragma data_seg("CD9")
+#pragma const_seg("CK9")
  /**************************************************************************\
  *				 Texas Instruments TMS32010 DSP Disassembler				*
  *																			*
@@ -134,3 +138,7 @@ int main(int argc,char *argv[])
 	fclose(F);
 	return(0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

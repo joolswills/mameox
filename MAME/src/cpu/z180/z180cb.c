@@ -1,3 +1,7 @@
+#pragma code_seg("CC2")
+#pragma bss_seg("CB2")
+#pragma data_seg("CD2")
+#pragma const_seg("CK2")
 /**********************************************************
  * opcodes with CB prefix
  * rotate, shift and bit operations
@@ -291,3 +295,7 @@ OP(cb,fe) { WM( _HL, SET(7,RM(_HL)) );								} /* SET  7,(HL)	  */
 OP(cb,ff) { _A = SET(7,_A); 										} /* SET  7,A		  */
 
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

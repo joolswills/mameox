@@ -1,3 +1,7 @@
+#pragma code_seg("CC24")
+#pragma bss_seg("CB24")
+#pragma data_seg("CD24")
+#pragma const_seg("CK24")
 /****************************************************************************
 *			  real mode i286 emulator v1.4 by Fabrice Frances				*
 *				(initial work based on David Hedley's pcemu)                *
@@ -175,3 +179,7 @@ static void PREFIX186(_leave)(void)    /* Opcode 0xc9 */
 	I.regs.w[SP]=I.regs.w[BP];
 	POP(I.regs.w[BP]);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

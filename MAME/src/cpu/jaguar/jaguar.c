@@ -1,3 +1,7 @@
+#pragma code_seg("CC22")
+#pragma bss_seg("CB22")
+#pragma data_seg("CD22")
+#pragma const_seg("CK22")
 /*###################################################################################################
 **
 **
@@ -1826,3 +1830,7 @@ void jaguardsp_ctrl_w(int cpunum, offs_t offset, data32_t data, data32_t mem_mas
 	/* restore old context */
 	cpuintrf_pop_context();
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

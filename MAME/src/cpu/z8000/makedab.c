@@ -1,3 +1,7 @@
+#pragma code_seg("CC0")
+#pragma bss_seg("CB0")
+#pragma data_seg("CD0")
+#pragma const_seg("CK0")
 #include <stdio.h>
 
 #define CF	0x100
@@ -85,3 +89,7 @@ int main(int ac, char **av)
 
     return 0;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

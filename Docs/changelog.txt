@@ -66,6 +66,10 @@ Version 0.66b
       debug, one for release. Hopefully this can be used
       to eliminate the need to unload a ton of sections
       before executing each ROM
+    - Updated to also sectionize CPU files
+    - Fixed a stupid mistake that may have caused some
+      driver files not to be loaded when they should've
+      been.
 
   - \imageblddbg.switch
   - \imagebld.switch

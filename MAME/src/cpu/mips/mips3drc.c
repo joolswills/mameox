@@ -1,3 +1,7 @@
+#pragma code_seg("CC15")
+#pragma bss_seg("CB15")
+#pragma data_seg("CD15")
+#pragma const_seg("CK15")
 /*###################################################################################################
 **
 **
@@ -5326,3 +5330,7 @@ unsigned mips3_dasm(char *buffer, unsigned pc)
 #endif
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

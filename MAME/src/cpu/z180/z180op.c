@@ -1,3 +1,7 @@
+#pragma code_seg("CC2")
+#pragma bss_seg("CB2")
+#pragma data_seg("CD2")
+#pragma const_seg("CK2")
 #if TIME_LOOP_HACKS
 
 #define CHECK_BC_LOOP												\
@@ -526,3 +530,7 @@ static void take_interrupt(int irq)
 	}
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

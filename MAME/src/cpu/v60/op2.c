@@ -1,3 +1,7 @@
+#pragma code_seg("CC3")
+#pragma bss_seg("CB3")
+#pragma data_seg("CD3")
+#pragma const_seg("CK3")
 
 
 #define if2    if12
@@ -330,3 +334,7 @@ UINT32 op5C(void)
 	if2 = OpRead8(PC + 1);
 	return Op5CTable[if2&0x1F]();
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

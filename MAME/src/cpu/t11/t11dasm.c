@@ -1,3 +1,7 @@
+#pragma code_seg("CC10")
+#pragma bss_seg("CB10")
+#pragma data_seg("CD10")
+#pragma const_seg("CK10")
 /*
  *   A T11 disassembler
  *
@@ -552,3 +556,7 @@ unsigned DasmT11 (char *buffer, unsigned pc)
 }
 
 #endif
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("CC27")
+#pragma bss_seg("CB27")
+#pragma data_seg("CD27")
+#pragma const_seg("CK27")
 /*** hd6309: Portable 6309 emulator ******************************************
 
 	Copyright (C) John Butler 1997
@@ -1354,3 +1358,7 @@ INLINE void fetch_effective_address( void )
 	hd6309_ICount -= index_cycle[postbyte];
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

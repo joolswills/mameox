@@ -1,3 +1,7 @@
+#pragma code_seg("CC29")
+#pragma bss_seg("CB29")
+#pragma data_seg("CD29")
+#pragma const_seg("CK29")
 /*###################################################################################################
 **
 **
@@ -2968,3 +2972,7 @@ void (*dsp32ops[])(void) =
   939617 - OP 4C5
 
 */
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

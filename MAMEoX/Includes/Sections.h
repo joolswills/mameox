@@ -19,9 +19,15 @@ extern "C" {
 #ifdef _DEBUG
 //-------------------------------------------------------------
 //	CheckDriverSectionRAM
-//! \brief    Prints the size of each segment
+//! \brief    Prints the size of each driver/snd/vdeo segment
 //-------------------------------------------------------------
 void CheckDriverSectionRAM( void );
+
+//-------------------------------------------------------------
+//	CheckCPUSectionRAM
+//! \brief    Prints the size of each CPU segment
+//-------------------------------------------------------------
+void CheckCPUSectionRAM( void );
 #endif
 
 
@@ -69,7 +75,7 @@ BOOL UnloadDriverSectionByName( const char *DriverFileName );
 BOOL LoadDriverDataSections( void );
 
 //-------------------------------------------------------------
-//	LoadDriverDataSections
+//	UnloadDriverDataSections
 //! \brief    Unloads all of the driver data sections
 //!
 //! \return   BOOL - Operation status
@@ -87,3 +93,36 @@ BOOL UnloadDriverDataSections( void );
 //! \return   FALSE - Failure
 //-------------------------------------------------------------
 BOOL UnloadDriverNonDataSections( void );
+
+//-------------------------------------------------------------
+//	RegisterCPUSectionNames
+//! \brief    Registers all of the segments for use by
+//!            LoadCPUSectionByName and UnloadCPUSectionByName
+//-------------------------------------------------------------
+void RegisterCPUSectionNames( void );
+
+//-------------------------------------------------------------
+//	LoadCPUSectionByName
+//! \brief    Loads the section associated with the passed name
+//!
+//! \param    CPUFileName - The name of the file whose section
+//!                             should be loaded
+//!
+//! \return   BOOL - Operation status
+//! \retval   TRUE - success
+//! \return   FALSE - Failure
+//-------------------------------------------------------------
+BOOL LoadCPUSectionByName( const char *CPUFileName );
+
+//-------------------------------------------------------------
+//	UnloadCPUSectionByName
+//! \brief    Unloads the section associated with the passed name
+//!
+//! \param    CPUFileName - The name of the file whose section
+//!                             should be unloaded
+//!
+//! \return   BOOL - Operation status
+//! \retval   TRUE - success
+//! \return   FALSE - Failure
+//-------------------------------------------------------------
+BOOL UnloadCPUSectionByName( const char *CPUFileName );

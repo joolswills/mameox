@@ -1,3 +1,7 @@
+#pragma code_seg("CC26")
+#pragma bss_seg("CB26")
+#pragma data_seg("CD26")
+#pragma const_seg("CK26")
 /****************************************************************************
  *
  *      mcs48 disassembler
@@ -287,3 +291,7 @@ int Dasm8039(char *buffer, unsigned pc)
 
 	return cnt;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("CC30")
+#pragma bss_seg("CB30")
+#pragma data_seg("CD30")
+#pragma const_seg("CK30")
 /*** Glue Code (******************************************
 
 Glue code to hook up Retrocade's CCPU emulator to MAME's
@@ -2369,3 +2373,7 @@ void cGetContext(CONTEXTCCPU *c)
 	c -> eRegP = register_P;
 	c -> eCState = state;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

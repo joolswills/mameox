@@ -1,3 +1,7 @@
+#pragma code_seg("CC11")
+#pragma bss_seg("CB11")
+#pragma data_seg("CD11")
+#pragma const_seg("CK11")
 
 
 #include "driver.h"
@@ -695,3 +699,7 @@ unsigned DasmSH2(char *buffer, unsigned pc)
 
 #endif
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("CC26")
+#pragma bss_seg("CB26")
+#pragma data_seg("CD26")
+#pragma const_seg("CK26")
 /****************************************************************************
  *						Intel 8039 Portable Emulator						*
  *																			*
@@ -1149,3 +1153,7 @@ unsigned n7751_dasm(char *buffer, unsigned pc)
 }
 #endif
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

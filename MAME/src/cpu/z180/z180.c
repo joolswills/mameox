@@ -1,3 +1,7 @@
+#pragma code_seg("CC2")
+#pragma bss_seg("CB2")
+#pragma data_seg("CD2")
+#pragma const_seg("CK2")
 /*****************************************************************************
  *
  *	 z180.c
@@ -2528,3 +2532,7 @@ unsigned z180_dasm( char *buffer, unsigned pc )
 #endif
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

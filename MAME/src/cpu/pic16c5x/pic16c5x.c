@@ -1,3 +1,7 @@
+#pragma code_seg("CC13")
+#pragma bss_seg("CB13")
+#pragma data_seg("CD13")
+#pragma const_seg("CK13")
  /**************************************************************************\
  *						Microchip PIC16C5x Emulator							*
  *																			*
@@ -1266,3 +1270,7 @@ unsigned pic16C58_dasm(char *buffer, unsigned pc)
 }
 
 #endif
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

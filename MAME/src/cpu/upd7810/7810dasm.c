@@ -1,3 +1,7 @@
+#pragma code_seg("CC4")
+#pragma bss_seg("CB4")
+#pragma data_seg("CD4")
+#pragma const_seg("CK4")
 /*****************************************************************************
  *
  *	 Portable uPD7810/11, 7810H/11H, 78C10/C11/C14 disassembler
@@ -4065,3 +4069,7 @@ unsigned Dasm7807( char *buffer, unsigned pc )
 
 #endif	/* MAME_DEBUG */
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

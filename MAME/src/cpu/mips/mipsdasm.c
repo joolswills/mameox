@@ -1,3 +1,7 @@
+#pragma code_seg("CC15")
+#pragma bss_seg("CB15")
+#pragma data_seg("CD15")
+#pragma const_seg("CK15")
 /*
  * MIPS disassembler for the MAME project written by smf
  *
@@ -607,3 +611,7 @@ unsigned DasmMIPS( char *buffer, UINT32 oldpc )
 	}
 	return pc - oldpc;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("CC1")
+#pragma bss_seg("CB1")
+#pragma data_seg("CD1")
+#pragma const_seg("CK1")
 /*****************************************************************************
  *
  *	 z80dasm.c
@@ -595,3 +599,7 @@ unsigned DasmZ80( char *buffer, unsigned pc )
 
 #endif
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("CC19")
+#pragma bss_seg("CB19")
+#pragma data_seg("CD19")
+#pragma const_seg("CK19")
 /*** m6800: Portable 6800 class  emulator *************************************
 
 	m6800.c
@@ -2559,3 +2563,7 @@ WRITE_HANDLER( m6803_internal_registers_w )
 }
 #endif
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

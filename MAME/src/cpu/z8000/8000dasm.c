@@ -1,3 +1,7 @@
+#pragma code_seg("CC0")
+#pragma bss_seg("CB0")
+#pragma data_seg("CD0")
+#pragma const_seg("CK0")
 /*****************************************************************************
  *
  *	 8000dasm.c
@@ -292,3 +296,7 @@ int DasmZ8000(char *buff, int pc)
 	return new_pc - pc;
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

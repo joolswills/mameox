@@ -1,3 +1,7 @@
+#pragma code_seg("CC33")
+#pragma bss_seg("CB33")
+#pragma data_seg("CD33")
+#pragma const_seg("CK33")
 /*===========================================================================
 	ASTAT -- ALU/MAC status register
 ===========================================================================*/
@@ -1606,3 +1610,7 @@ void shift_op_imm(int op)
 			break;
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

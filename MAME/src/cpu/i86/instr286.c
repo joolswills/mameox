@@ -1,3 +1,7 @@
+#pragma code_seg("CC24")
+#pragma bss_seg("CB24")
+#pragma data_seg("CD24")
+#pragma const_seg("CK24")
 /* descriptor table format in memory
    UINT16 limit
    UINT24 addr
@@ -306,3 +310,7 @@ static void PREFIX286(_arpl)(void) /* 0x63 */
 		i286_trap2(ILLEGAL_INSTRUCTION);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

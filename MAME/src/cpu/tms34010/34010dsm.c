@@ -1,3 +1,7 @@
+#pragma code_seg("CC6")
+#pragma bss_seg("CB6")
+#pragma data_seg("CD6")
+#pragma const_seg("CK6")
 /*
  *   A TMS34010 disassembler
  *
@@ -1732,3 +1736,7 @@ unsigned Dasm34020(char *buff, UINT32 pc)
 	return Dasm340x0(buff, pc, 1);
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

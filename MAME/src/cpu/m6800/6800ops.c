@@ -1,3 +1,7 @@
+#pragma code_seg("CC19")
+#pragma bss_seg("CB19")
+#pragma data_seg("CD19")
+#pragma const_seg("CK19")
 
 /*
 
@@ -2208,3 +2212,7 @@ INLINE void stx_ex( void )
 	EXTENDED;
 	WM16(EAD,&m6808.x);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

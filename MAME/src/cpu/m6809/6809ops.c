@@ -1,3 +1,7 @@
+#pragma code_seg("CC16")
+#pragma bss_seg("CB16")
+#pragma data_seg("CD16")
+#pragma const_seg("CK16")
 /*
 
 HNZVC
@@ -3085,3 +3089,7 @@ INLINE void pref11( void )
 }
 
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

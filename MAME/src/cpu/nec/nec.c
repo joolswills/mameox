@@ -1,3 +1,7 @@
+#pragma code_seg("CC14")
+#pragma bss_seg("CB14")
+#pragma data_seg("CD14")
+#pragma const_seg("CK14")
 /****************************************************************************
 
 	NEC V20/V30/V33 emulator
@@ -1267,3 +1271,7 @@ const char *v33_info(void *context, int regnum)
     return v20_info(context,regnum);
 }
 unsigned v33_dasm(char *buffer, unsigned pc) { return nec_dasm(buffer,pc); }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

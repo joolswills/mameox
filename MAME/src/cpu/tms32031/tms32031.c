@@ -1,3 +1,7 @@
+#pragma code_seg("CC7")
+#pragma bss_seg("CB7")
+#pragma data_seg("CD7")
+#pragma const_seg("CK7")
 /*###################################################################################################
 **
 **
@@ -788,3 +792,7 @@ static UINT32 boot_loader(UINT32 boot_rom_addr)
 	/* keep the compiler happy */
 	return 0;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("CC3")
+#pragma bss_seg("CB3")
+#pragma data_seg("CD3")
+#pragma const_seg("CK3")
 
 #include "cpuintrf.h"
 #include "osd_cpu.h"
@@ -1231,3 +1235,7 @@ unsigned v70_dasm(char *buffer, unsigned pc)
 	return dasm_optable[readop(pc)](pc, pc+1, buffer);
 }
 #endif
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("CC9")
+#pragma bss_seg("CB9")
+#pragma data_seg("CD9")
+#pragma const_seg("CK9")
  /**************************************************************************\
  *				   Texas Instruments TMS32010 DSP Emulator					*
  *																			*
@@ -979,3 +983,7 @@ unsigned tms32010_dasm(char *buffer, unsigned pc)
 	return 2;
 #endif
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("CC21")
+#pragma bss_seg("CB21")
+#pragma data_seg("CD21")
+#pragma const_seg("CK21")
 INLINE void abx(void);
 INLINE void adca_di(void);
 INLINE void adca_ex(void);
@@ -489,3 +493,7 @@ static void (*konami_extended[0x100])(void) = {
 	illegal,illegal,illegal,illegal,illegal,illegal,illegal,illegal,	/* f0 */
 	illegal,illegal,illegal,illegal,illegal,illegal,illegal,illegal
 };
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

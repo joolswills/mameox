@@ -1,3 +1,7 @@
+#pragma code_seg("CC4")
+#pragma bss_seg("CB4")
+#pragma data_seg("CD4")
+#pragma const_seg("CK4")
 /*****************************************************************************
  *
  *	 upd7810.c
@@ -1995,3 +1999,7 @@ unsigned upd7807_dasm(char *buffer, unsigned pc)
 	return 1;
 #endif
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("CC30")
+#pragma bss_seg("CB30")
+#pragma data_seg("CD30")
+#pragma const_seg("CK30")
 #include <stdio.h>
 #include <string.h>
 #include "ccpu.h"
@@ -491,3 +495,7 @@ unsigned DasmCCPU(char *buffer, unsigned pc)
 
 	return opsize;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

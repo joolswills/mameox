@@ -83,6 +83,7 @@ void __cdecl main( void )
 
     // Register the loadable section names for lookup at runtime
   RegisterDriverSectionNames();
+  RegisterCPUSectionNames();
 
 		// Initialize the graphics subsystem
 	g_graphicsManager.Create();

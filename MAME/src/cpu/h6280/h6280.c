@@ -1,3 +1,7 @@
+#pragma code_seg("CC28")
+#pragma bss_seg("CB28")
+#pragma data_seg("CD28")
+#pragma const_seg("CK28")
 /*****************************************************************************
 
 	h6280.c - Portable HuC6280 emulator
@@ -496,3 +500,7 @@ WRITE_HANDLER( H6280_timer_w )
 }
 
 /*****************************************************************************/
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -329,6 +329,9 @@
 			Name="Sources"
 			Filter="*.c;*.cpp;*.asm">
 			<File
+				RelativePath="Sources\CPUSections.cpp">
+			</File>
+			<File
 				RelativePath=".\Sources\DebugLogger.cpp">
 				<FileConfiguration
 					Name="Profile|Xbox">

@@ -1,3 +1,7 @@
+#pragma code_seg("CC20")
+#pragma bss_seg("CB20")
+#pragma data_seg("CD20")
+#pragma const_seg("CK20")
 /*****************************************************************************
  *
  *	 tbl6510.c
@@ -371,3 +375,7 @@ static void (*insn6510[0x100])(void) = {
 	m6510_f8,m6510_f9,m6510_fa,m6510_fb,m6510_fc,m6510_fd,m6510_fe,m6510_ff
 };
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

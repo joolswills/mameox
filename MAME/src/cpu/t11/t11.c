@@ -1,3 +1,7 @@
+#pragma code_seg("CC10")
+#pragma bss_seg("CB10")
+#pragma data_seg("CD10")
+#pragma const_seg("CK10")
 /*** t11: Portable DEC T-11 emulator ******************************************
 
 	Copyright (C) Aaron Giles 1998-2001
@@ -602,3 +606,7 @@ unsigned t11_dasm(char *buffer, unsigned pc)
 	return 2;
 #endif
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

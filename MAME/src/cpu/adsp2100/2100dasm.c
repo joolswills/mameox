@@ -1,3 +1,7 @@
+#pragma code_seg("CC33")
+#pragma bss_seg("CB33")
+#pragma data_seg("CD33")
+#pragma const_seg("CK33")
 #include <stdio.h>
 
 #include "driver.h"
@@ -451,3 +455,7 @@ unsigned dasm2100(char *buffer, unsigned pc)
 
 	return 1;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

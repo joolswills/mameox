@@ -1,3 +1,7 @@
+#pragma code_seg("CC32")
+#pragma bss_seg("CB32")
+#pragma data_seg("CD32")
+#pragma const_seg("CK32")
 /*
 	ARM 2/3 disassembler
 
@@ -348,3 +352,7 @@ void arm_disasm( char *pBuf, data32_t pc, data32_t opcode )
 		pBuf += sprintf( pBuf, "Undefined" );
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("CC24")
+#pragma bss_seg("CB24")
+#pragma data_seg("CD24")
+#pragma const_seg("CK24")
 /*
  * 2asm: Convert binary files to 80*86 assembler. Version 1.00
  * Adapted by Andrea Mazzoleni for use with MAME
@@ -1627,3 +1631,7 @@ unsigned DasmI386(char* buffer, unsigned pc)
 
 #endif	/* MAME_DEBUG */
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

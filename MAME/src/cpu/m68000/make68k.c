@@ -1,3 +1,7 @@
+#pragma code_seg("CC18")
+#pragma bss_seg("CB18")
+#pragma data_seg("CD18")
+#pragma const_seg("CK18")
 /*---------------------------------------------------------------
  * Motorola 68000 32 Bit emulator
  *
@@ -8195,3 +8199,7 @@ int main(int argc, char **argv)
 
 	exit(0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

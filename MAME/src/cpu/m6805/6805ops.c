@@ -1,3 +1,7 @@
+#pragma code_seg("CC17")
+#pragma bss_seg("CB17")
+#pragma data_seg("CD17")
+#pragma const_seg("CK17")
 
 /*
 
@@ -1888,3 +1892,7 @@ INLINE void stx_ix( void )
 	INDEXED;
 	WM(EAD,X);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("CC18")
+#pragma bss_seg("CB18")
+#pragma data_seg("CD18")
+#pragma const_seg("CK18")
 #include <stdio.h>
 #include <stdlib.h>
 #include "m68k.h"
@@ -1244,3 +1248,7 @@ unsigned m68020_dasm(char *buffer, unsigned pc)
 #endif /* HAS_M68020 */
 
 #endif // A68K2
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("CC23")
+#pragma bss_seg("CB23")
+#pragma data_seg("CD23")
+#pragma const_seg("CK23")
 /*****************************************************************************
  *
  *	 i8x41.c
@@ -2280,3 +2284,7 @@ unsigned i8x41_dasm(char *buffer, unsigned pc)
 	return 1;
 #endif
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("CC15")
+#pragma bss_seg("CB15")
+#pragma data_seg("CD15")
+#pragma const_seg("CK15")
 /*
  * standalone MIPS disassembler by smf
  *
@@ -130,3 +134,7 @@ int main (int argc,char *argv[])
 	free (filebuf);
 	return 0;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("CC16")
+#pragma bss_seg("CB16")
+#pragma data_seg("CD16")
+#pragma const_seg("CK16")
 INLINE void abx(void);
 INLINE void adca_di(void);
 INLINE void adca_ex(void);
@@ -314,3 +318,7 @@ static void (*m6809_main[0x100])(void) = {
 	eorb_ex,adcb_ex,orb_ex, addb_ex,ldd_ex, std_ex, ldu_ex, stu_ex
 };
 #endif
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

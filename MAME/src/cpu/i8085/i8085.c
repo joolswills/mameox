@@ -1,3 +1,7 @@
+#pragma code_seg("CC25")
+#pragma bss_seg("CB25")
+#pragma data_seg("CD25")
+#pragma const_seg("CK25")
 /*****************************************************************************
  *
  *	 i8085.c
@@ -1754,3 +1758,7 @@ unsigned i8080_dasm(char *buffer, unsigned pc)
 }
 #endif
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

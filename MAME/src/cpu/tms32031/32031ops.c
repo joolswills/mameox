@@ -1,3 +1,7 @@
+#pragma code_seg("CC7")
+#pragma bss_seg("CB7")
+#pragma data_seg("CD7")
+#pragma const_seg("CK7")
 /*###################################################################################################
 **
 **
@@ -5983,3 +5987,7 @@ void (*tms32031ops[])(void) =
 	illegal,		illegal,		illegal,		illegal,
 	illegal,		illegal,		illegal,		illegal
 };
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("CC4")
+#pragma bss_seg("CB4")
+#pragma data_seg("CD4")
+#pragma const_seg("CK4")
 /*****************************************************************************
  *
  *	 Portable uPD7810/11, 7810H/11H, 78C10/C11/C14 emulator V0.2
@@ -3511,3 +3515,7 @@ static struct opcode_s opXX_7807[256] =
 	{JR,			1,10,10,L0|L1}	/* ff: 1111 1111								*/
 };
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

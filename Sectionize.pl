@@ -1,6 +1,9 @@
 #!/bin/perl
 
-my @FILEs = `find ./MAME/src/drivers/*.c`;
+# Auto generate an 8 character unique name for each file
+local $autoNameNumber = 0;
+local @newFILEs;
+local @FILEs = `find ./MAME/src/drivers/*.c`;
 
 use constant DATA_PREFIX  => 'D';
 use constant CODE_PREFIX  => 'C';
@@ -186,6 +189,7 @@ print GENERATEDFILE "//	CheckDriverSectionRAM\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
 print GENERATEDFILE "void CheckDriverSectionRAM( void )\n";
 print GENERATEDFILE "{\n";
+print GENERATEDFILE "  DWORD total = 0;\n";
 print GENERATEDFILE "  std::map< std::string, std::string >::iterator i = g_nameToSectionMap.begin();\n";
 print GENERATEDFILE "  for( ; i != g_nameToSectionMap.end(); ++i )\n";
 print GENERATEDFILE "  {\n";
@@ -197,6 +201,7 @@ print GENERATEDFILE "    if( h != INVALID_HANDLE_VALUE )\n";
 print GENERATEDFILE "    {\n";
 print GENERATEDFILE "      UINT32 sz = XGetSectionSize( h );\n";
 print GENERATEDFILE "      PRINTMSG( T_INFO, \"Driver %s [CODE]: %lu\", (*i).first.c_str(), sz );\n";
+print GENERATEDFILE "      total += sz;\n";
 print GENERATEDFILE "    }\n";
 print GENERATEDFILE "    else\n";
 print GENERATEDFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for file %s!\", (*i).second.c_str(), (*i).first.c_str() );\n";
@@ -208,6 +213,7 @@ print GENERATEDFILE "    if( h != INVALID_HANDLE_VALUE )\n";
 print GENERATEDFILE "    {\n";
 print GENERATEDFILE "      UINT32 sz = XGetSectionSize( h );\n";
 print GENERATEDFILE "      PRINTMSG( T_INFO, \"Driver %s [DATA]: %lu\", (*i).first.c_str(), sz );\n";
+print GENERATEDFILE "      total += sz;\n";
 print GENERATEDFILE "    }\n";
 print GENERATEDFILE "    else\n";
 print GENERATEDFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for file %s!\", (*i).second.c_str(), (*i).first.c_str() );\n";
@@ -219,6 +225,7 @@ print GENERATEDFILE "    if( h != INVALID_HANDLE_VALUE )\n";
 print GENERATEDFILE "    {\n";
 print GENERATEDFILE "      UINT32 sz = XGetSectionSize( h );\n";
 print GENERATEDFILE "      PRINTMSG( T_INFO, \"Driver %s [BSS]: %lu\", (*i).first.c_str(), sz );\n";
+print GENERATEDFILE "      total += sz;\n";
 print GENERATEDFILE "    }\n";
 print GENERATEDFILE "    else\n";
 print GENERATEDFILE "    {\n";
@@ -232,12 +239,13 @@ print GENERATEDFILE "    if( h != INVALID_HANDLE_VALUE )\n";
 print GENERATEDFILE "    {\n";
 print GENERATEDFILE "      UINT32 sz = XGetSectionSize( h );\n";
 print GENERATEDFILE "      PRINTMSG( T_INFO, \"Driver %s [CONST]: %lu\", (*i).first.c_str(), sz );\n";
+print GENERATEDFILE "      total += sz;\n";
 print GENERATEDFILE "    }\n";
 print GENERATEDFILE "    else\n";
 print GENERATEDFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for file %s!\", (*i).second.c_str(), (*i).first.c_str() );\n";
 print GENERATEDFILE "\n";
-print GENERATEDFILE "    DebugLoggerFlush();\n";
 print GENERATEDFILE "  }\n";
+print GENERATEDFILE "  PRINTMSG( T_INFO, \"Total %lu bytes\\n\", total );\n";
 print GENERATEDFILE "}\n";
 print GENERATEDFILE "#endif\n\n";
 print GENERATEDFILE "\n//-------------------------------------------------------------\n";
@@ -432,10 +440,10 @@ print CPUFILE "extern \"C\" {\n";
 print CPUFILE "#include \"osd_cpu.h\"\n";
 print CPUFILE "}\n";
 print CPUFILE "//= D E F I N E S ======================================================\n";
-print CPUFILE "#define DATA_PREFIX      \"".DATA_PREFIX."\"\n";
-print CPUFILE "#define CODE_PREFIX      \"".CODE_PREFIX."\"\n";
-print CPUFILE "#define BSS_PREFIX       \"".BSS_PREFIX."\"\n";
-print CPUFILE "#define CONST_PREFIX     \"".CONST_PREFIX."\"\n";
+print CPUFILE "#define DATA_PREFIX      \"C".DATA_PREFIX."\"\n";
+print CPUFILE "#define CODE_PREFIX      \"C".CODE_PREFIX."\"\n";
+print CPUFILE "#define BSS_PREFIX       \"C".BSS_PREFIX."\"\n";
+print CPUFILE "#define CONST_PREFIX     \"C".CONST_PREFIX."\"\n";
 print CPUFILE "\n";
 print CPUFILE "//= G L O B A L = V A R S ==============================================\n";
 print CPUFILE "static std::map< std::string, std::string >  g_nameToSectionMap;\n";
@@ -446,6 +454,7 @@ print CPUFILE "//	CheckCPUSectionRAM\n";
 print CPUFILE "//-------------------------------------------------------------\n";
 print CPUFILE "void CheckCPUSectionRAM( void )\n";
 print CPUFILE "{\n";
+print CPUFILE "  DWORD total = 0;\n";
 print CPUFILE "  std::map< std::string, std::string >::iterator i = g_nameToSectionMap.begin();\n";
 print CPUFILE "  for( ; i != g_nameToSectionMap.end(); ++i )\n";
 print CPUFILE "  {\n";
@@ -457,6 +466,7 @@ print CPUFILE "    if( h != INVALID_HANDLE_VALUE )\n";
 print CPUFILE "    {\n";
 print CPUFILE "      UINT32 sz = XGetSectionSize( h );\n";
 print CPUFILE "      PRINTMSG( T_INFO, \"CPU %s [CODE]: %lu\", (*i).first.c_str(), sz );\n";
+print CPUFILE "      total += sz;\n";
 print CPUFILE "    }\n";
 print CPUFILE "    else\n";
 print CPUFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for file %s!\", (*i).second.c_str(), (*i).first.c_str() );\n";
@@ -468,6 +478,7 @@ print CPUFILE "    if( h != INVALID_HANDLE_VALUE )\n";
 print CPUFILE "    {\n";
 print CPUFILE "      UINT32 sz = XGetSectionSize( h );\n";
 print CPUFILE "      PRINTMSG( T_INFO, \"CPU %s [DATA]: %lu\", (*i).first.c_str(), sz );\n";
+print CPUFILE "      total += sz;\n";
 print CPUFILE "    }\n";
 print CPUFILE "    else\n";
 print CPUFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for file %s!\", (*i).second.c_str(), (*i).first.c_str() );\n";
@@ -479,6 +490,7 @@ print CPUFILE "    if( h != INVALID_HANDLE_VALUE )\n";
 print CPUFILE "    {\n";
 print CPUFILE "      UINT32 sz = XGetSectionSize( h );\n";
 print CPUFILE "      PRINTMSG( T_INFO, \"CPU %s [BSS]: %lu\", (*i).first.c_str(), sz );\n";
+print CPUFILE "      total += sz;\n";
 print CPUFILE "    }\n";
 print CPUFILE "    else\n";
 print CPUFILE "    {\n";
@@ -492,12 +504,13 @@ print CPUFILE "    if( h != INVALID_HANDLE_VALUE )\n";
 print CPUFILE "    {\n";
 print CPUFILE "      UINT32 sz = XGetSectionSize( h );\n";
 print CPUFILE "      PRINTMSG( T_INFO, \"CPU %s [CONST]: %lu\", (*i).first.c_str(), sz );\n";
+print CPUFILE "      total += sz;\n";
 print CPUFILE "    }\n";
 print CPUFILE "    else\n";
 print CPUFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for file %s!\", (*i).second.c_str(), (*i).first.c_str() );\n";
 print CPUFILE "\n";
-print CPUFILE "    DebugLoggerFlush();\n";
 print CPUFILE "  }\n";
+print CPUFILE "  PRINTMSG( T_INFO, \"Total %lu bytes\\n\", total );\n";
 print CPUFILE "}\n";
 print CPUFILE "#endif\n\n";
 print CPUFILE "\n//-------------------------------------------------------------\n";
@@ -673,9 +686,6 @@ print CPUFILE "{\n";
 
 
 
-# Auto generate an 8 character unique name for each file
-local $autoNameNumber = 0;
-local @newFILEs;
 
 print "Sectionizing drivers, sound hardware, and video hardware...\n";
 
@@ -696,14 +706,6 @@ foreach( @FILEs ) {
 		$DriverName =~ /^\.\/MAME\/src\/drivers\/(.*\.c)$/;
 		$DriverName = "src\\\\drivers\\\\$1";
 
-		print PRELOADFILE "/NOPRELOAD:\"".CODE_PREFIX."$autoNameNumber\"\n";
-		print PRELOADFILE "/NOPRELOAD:\"".BSS_PREFIX."$autoNameNumber\"\n";
-		print DBGPRELOADFILE "/NOPRELOAD:\"".CODE_PREFIX."$autoNameNumber\"\n";
-		print DBGPRELOADFILE "/NOPRELOAD:\"".BSS_PREFIX."$autoNameNumber\"\n";
-#		print PRELOADFILE "/NOPRELOAD:\"".DATA_PREFIX."$autoNameNumber\"\n";
-#		print PRELOADFILE "/NOPRELOAD:\"".CONST_PREFIX."$autoNameNumber\"\n";
-		print GENERATEDFILE "  RegisterSectionName( \"$DriverName\", \"$autoNameNumber\" );\n";
-
 		($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
 		 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
 
@@ -714,9 +716,20 @@ foreach( @FILEs ) {
 		if( ($File =~ /\#pragma code_seg/) ) {
 				# this should only happen on the first pass
 			$File =~ /\#pragma code_seg\(\"C(\d+)\"\)/;
-			if( $1 >= $autoNameNumber ) {
-				$autoNameNumber = $1 + 1;
+			$myAutoNameNumber = $1;
+
+			print PRELOADFILE "/NOPRELOAD:\"".CODE_PREFIX."$myAutoNameNumber\"\n";
+			print PRELOADFILE "/NOPRELOAD:\"".BSS_PREFIX."$myAutoNameNumber\"\n";
+			print DBGPRELOADFILE "/NOPRELOAD:\"".CODE_PREFIX."$myAutoNameNumber\"\n";
+			print DBGPRELOADFILE "/NOPRELOAD:\"".BSS_PREFIX."$myAutoNameNumber\"\n";
+	#		print PRELOADFILE "/NOPRELOAD:\"".DATA_PREFIX."$myAutoNameNumber\"\n";
+	#		print PRELOADFILE "/NOPRELOAD:\"".CONST_PREFIX."$myAutoNameNumber\"\n";
+			print GENERATEDFILE "  RegisterSectionName( \"$DriverName\", \"$myAutoNameNumber\" );\n";
+
+			if( $myAutoNameNumber >= $autoNameNumber ) {
+				$autoNameNumber = $myAutoNameNumber + 1;
 			}		
+
 		} else {
 		   push @newFILEs, $DriverFileName;
 		}
@@ -800,22 +813,100 @@ close( GENERATEDFILE );
 
 print "Sectionizing CPU's...\n";
 
-my @CPUDirs = `find ./MAME/src/cpu -path \'*/CVS\' -prune -o -type d -a -print`;
-
+#local @CPUDirs = `find ./MAME/src/cpu -path \'*/CVS\' -prune -o -type d -a -print`;
+@FILEs    = `find ./MAME/src/cpu/ -name *.c`;
+@newFILEs = ();
 $autoNameNumber = 0;
+
+local $OldCPUName = "";
 
 # Do two passes, one to find the last autoNameNumber, another to actually
 # modify the files
 print "Pass 1...\n";
 
-foreach( @CPUDirs ) {
+foreach( @FILEs ) {
 	chomp( $_ );
-	print "$_\n";
+
+	$DriverFileName = $_;
+	$CPUName = $_;
+		# Change the CPUName to what will be present in the actual code
+		# Drop the ./MAME/src/cpu portion
+	$CPUName =~ /^\.\/MAME\/src\/cpu\/(.+)\/.+\.c$/;
+	$CPUName = $1;
+
+	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
+
+	open( FILE, "<$DriverFileName" ) || die "Failed to open file $DriverFileName!\n";
+	sysread( FILE, $File, $size );
+	close( FILE );
+
+	if( ($File =~ /\#pragma code_seg/) ) {
+			# this should only happen on the first pass
+		$File =~ /\#pragma code_seg\(\"CC(\d+)\"\)/;
+		$myAutoNameNumber = $1;
+
+			# Unlike the drivers, we want one name for an entire directory
+			# so only register on a new directory (CPUName)
+		if( $CPUName ne $OldCPUName ) {
+			$OldCPUName = $CPUName;
+			print PRELOADFILE "/NOPRELOAD:\"C".CODE_PREFIX."$myAutoNameNumber\"\n";
+			print PRELOADFILE "/NOPRELOAD:\"C".BSS_PREFIX."$myAutoNameNumber\"\n";
+			print DBGPRELOADFILE "/NOPRELOAD:\"C".CODE_PREFIX."$myAutoNameNumber\"\n";
+			print DBGPRELOADFILE "/NOPRELOAD:\"C".BSS_PREFIX."$myAutoNameNumber\"\n";
+			print CPUFILE "  RegisterSectionName( \"$CPUName\", \"$myAutoNameNumber\" );\n";
+		}
+
+		if( $myAutoNameNumber >= $autoNameNumber ) {
+			$autoNameNumber = $myAutoNameNumber + 1;
+		}
+	} else {
+		push @newFILEs, $DriverFileName;
+	}
 }
 
+# Second pass, write out the section headers
+print "Pass 2...\n";
+$OldCPUName = "";
+
+foreach( @newFILEs ) {
+	chomp( $_ );
+	print "$_\n";
+
+	$DriverFileName = $_;
+	$CPUName = $_;
+		# Change the CPUName to what will be present in the actual code
+		# Drop the ./MAME/src/cpu portion
+	$CPUName =~ /^\.\/MAME\/src\/cpu\/(.+)\/.+\.c$/;
+	$CPUName = $1;
+
+		# Unlike the drivers, we want one name for an entire directory
+		# so only register on a new directory (CPUName)
+	if( $CPUName ne $OldCPUName ) {
+		$autoNameNumber++;
+		$OldCPUName = $CPUName;
+		print PRELOADFILE "/NOPRELOAD:\"C".CODE_PREFIX."$autoNameNumber\"\n";
+		print PRELOADFILE "/NOPRELOAD:\"C".BSS_PREFIX."$autoNameNumber\"\n";
+		print DBGPRELOADFILE "/NOPRELOAD:\"C".CODE_PREFIX."$autoNameNumber\"\n";
+		print DBGPRELOADFILE "/NOPRELOAD:\"C".BSS_PREFIX."$autoNameNumber\"\n";
+		print CPUFILE "  RegisterSectionName( \"$CPUName\", \"$autoNameNumber\" );\n";
+	}
 
 
+	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
+
+	open( FILE, "<$DriverFileName" ) || die "Failed to open file $DriverFileName!\n";
+	sysread( FILE, $File, $size );
+	close( FILE );
+
+		# Write out the section header/footer
+	WriteCPUSectionData( $DriverFileName, $File, $autoNameNumber );
+}
+print CPUFILE "}\n\n\n";
 close( CPUFILE );
+
+
 close( PRELOADFILE );
 close( DBGPRELOADFILE );
 
@@ -833,7 +924,47 @@ sub WriteSectionData( $$$ ) {
 	my $BSSSectionName = "\"B$autoNameNumber\"";
 	my $ConstSectionName= "\"K$autoNameNumber\"";
 
-	open( FILE, ">$FileName" ) || die "Could not open %s for output!\n";
+	open( FILE, ">$FileName" ) || die "Could not open $FileName for output!\n";
+
+		#open the segment
+	my $SegLine = "#pragma code_seg($CodeSectionName)\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma bss_seg($BSSSectionName)\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma data_seg($DataSectionName)\n";
+				syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma const_seg($ConstSectionName)\n";
+				syswrite( FILE, $SegLine, length($SegLine) );
+
+		#write the old file data
+	syswrite( FILE, $File, $size );
+
+		#Close the segment
+	$SegLine = "#pragma data_seg()\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma code_seg()\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma bss_seg()\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma const_seg()\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+
+	close( FILE );
+}
+
+#------------------------------------------------------------------------
+#	WriteCPUSectionData
+#------------------------------------------------------------------------
+sub WriteCPUSectionData( $$$ ) {
+	my $FileName = $_[0];
+	my $File = $_[1];
+	my $autoNameNumber = $_[2];
+	my $DataSectionName = "\"CD$autoNameNumber\"";
+	my $CodeSectionName = "\"CC$autoNameNumber\"";
+	my $BSSSectionName = "\"CB$autoNameNumber\"";
+	my $ConstSectionName= "\"CK$autoNameNumber\"";
+
+	open( FILE, ">$FileName" ) || die "Could not open $FileName for output!\n";
 
 		#open the segment
 	my $SegLine = "#pragma code_seg($CodeSectionName)\n";

@@ -1,3 +1,7 @@
+#pragma code_seg("CC27")
+#pragma bss_seg("CB27")
+#pragma data_seg("CD27")
+#pragma const_seg("CK27")
 /*
 
 HNZVC
@@ -5635,3 +5639,7 @@ INLINE void pref11( void )
 	hd6309_ICount -= cycle_counts_page11[ireg2];
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

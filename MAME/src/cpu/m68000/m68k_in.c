@@ -1,3 +1,7 @@
+#pragma code_seg("CC18")
+#pragma bss_seg("CB18")
+#pragma data_seg("CD18")
+#pragma const_seg("CK18")
 /*
 must fix:
 	callm
@@ -10345,3 +10349,7 @@ M68KMAKE_OP(unpk, 16, mm, .)
 
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 M68KMAKE_END
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

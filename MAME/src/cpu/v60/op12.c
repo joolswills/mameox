@@ -1,3 +1,7 @@
+#pragma code_seg("CC3")
+#pragma bss_seg("CB3")
+#pragma data_seg("CD3")
+#pragma const_seg("CK3")
 /*
  * MUL* and MULU* do not set OV correctly
  * DIVX: the second operand should be treated as dword instead of word
@@ -2322,3 +2326,7 @@ UINT32 opMULUX(void)
 
 	F12END();
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("CC21")
+#pragma bss_seg("CB21")
+#pragma data_seg("CD21")
+#pragma const_seg("CK21")
 /*** konami: Portable Konami cpu emulator ******************************************
 
 	Copyright (C) The MAME Team 1999
@@ -702,3 +706,7 @@ int konami_execute(int cycles)
 	return cycles - konami_ICount;
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

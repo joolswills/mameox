@@ -1,3 +1,7 @@
+#pragma code_seg("CC2")
+#pragma bss_seg("CB2")
+#pragma data_seg("CD2")
+#pragma const_seg("CK2")
 OP(illegal,2)
 {
 	logerror("Z180 #%d ill. opcode $ed $%02x\n",
@@ -295,3 +299,7 @@ OP(ed,fd) { illegal_2();											} /* DB   ED		  */
 OP(ed,fe) { illegal_2();											} /* DB   ED		  */
 OP(ed,ff) { illegal_2();											} /* DB   ED		  */
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

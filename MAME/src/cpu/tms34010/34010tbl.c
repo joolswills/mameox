@@ -1,3 +1,7 @@
+#pragma code_seg("CC6")
+#pragma bss_seg("CB6")
+#pragma data_seg("CD6")
+#pragma const_seg("CK6")
 /*** TMS34010: Portable TMS34010 emulator ***********************************
 
 	Copyright (C) Alex Pasadyn/Zsolt Vasvari 1998
@@ -1165,3 +1169,7 @@ static void (*opcode_table[65536 >> 4])(void) =
 	unimpl,		unimpl,		unimpl,		unimpl,		unimpl,		unimpl,		unimpl,		unimpl,
 	unimpl,		unimpl,		unimpl,		unimpl,		unimpl,		unimpl,		unimpl,		unimpl
 };
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

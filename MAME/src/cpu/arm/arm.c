@@ -1,3 +1,7 @@
+#pragma code_seg("CC32")
+#pragma bss_seg("CB32")
+#pragma data_seg("CD32")
+#pragma const_seg("CK32")
 /* arm.c
 
 	ARM 2/3/6 Emulation
@@ -1371,3 +1375,7 @@ static data32_t decodeShift( data32_t insn, data32_t *pCarry)
 	logerror("%08x: Decodeshift error\n",R15);
 	return 0;
 } /* decodeShift */
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

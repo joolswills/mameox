@@ -1,3 +1,7 @@
+#pragma code_seg("CC20")
+#pragma bss_seg("CB20")
+#pragma data_seg("CD20")
+#pragma const_seg("CK20")
 /*****************************************************************************
  *
  *	 tbl65c02.c
@@ -355,3 +359,7 @@ static void (*insn65c02[0x100])(void) = {
 };
 
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

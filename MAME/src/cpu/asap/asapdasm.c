@@ -1,3 +1,7 @@
+#pragma code_seg("CC31")
+#pragma bss_seg("CB31")
+#pragma data_seg("CD31")
+#pragma const_seg("CK31")
 /*###################################################################################################
 **
 **
@@ -134,3 +138,7 @@ unsigned dasmasap(char *buffer, unsigned pc)
 	}
 	return 4;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

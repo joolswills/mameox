@@ -1,3 +1,7 @@
+#pragma code_seg("CC3")
+#pragma bss_seg("CB3")
+#pragma data_seg("CD3")
+#pragma const_seg("CK3")
 
 /*
  * CMPC: What happens to _S flag if the strings are identical?
@@ -1150,3 +1154,7 @@ UINT32 op59(void)
 
 	return Op59Table[subOp&0x1F]();
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

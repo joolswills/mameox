@@ -1,3 +1,7 @@
+#pragma code_seg("CC5")
+#pragma bss_seg("CB5")
+#pragma data_seg("CD5")
+#pragma const_seg("CK5")
 /*****************************************************************************
  *
  *	 9900dasm.c
@@ -241,3 +245,7 @@ int Dasm9900 (char *buffer, int pc)
 
 
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

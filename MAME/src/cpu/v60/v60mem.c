@@ -1,3 +1,7 @@
+#pragma code_seg("CC3")
+#pragma bss_seg("CB3")
+#pragma data_seg("CD3")
+#pragma const_seg("CK3")
 /****************************************************************/
 /* Structure defining all callbacks for different architectures */
 /****************************************************************/
@@ -386,3 +390,7 @@ static struct cpu_info v70_i =
 #endif
 
 #define ChangePC	v60.info.chpc
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

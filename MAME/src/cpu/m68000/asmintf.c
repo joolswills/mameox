@@ -1,3 +1,7 @@
+#pragma code_seg("CC18")
+#pragma bss_seg("CB18")
+#pragma data_seg("CD18")
+#pragma const_seg("CK18")
 /*
 	Interface routine for 68kem <-> Mame
 */
@@ -1225,3 +1229,7 @@ unsigned m68ec020_dasm(char *buffer, unsigned pc)
 #endif
 
 #endif // A68K2
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

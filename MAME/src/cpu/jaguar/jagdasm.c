@@ -1,3 +1,7 @@
+#pragma code_seg("CC22")
+#pragma bss_seg("CB22")
+#pragma data_seg("CD22")
+#pragma const_seg("CK22")
 /*###################################################################################################
 **
 **
@@ -188,3 +192,7 @@ unsigned dasmjag(int variant, char *buffer, unsigned pc)
 	}
 	return size;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("CC20")
+#pragma bss_seg("CB20")
+#pragma data_seg("CD20")
+#pragma const_seg("CK20")
 /*****************************************************************************
  *
  *	 m4510.c
@@ -499,3 +503,7 @@ unsigned m4510_dasm(char *buffer, unsigned pc)
 extern void m4510_init(void){ return; }
 
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

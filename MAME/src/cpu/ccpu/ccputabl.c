@@ -1,3 +1,7 @@
+#pragma code_seg("CC30")
+#pragma bss_seg("CB30")
+#pragma data_seg("CD30")
+#pragma const_seg("CK30")
 typedef CINESTATE (*opcode_func)(int);
 
 
@@ -463,3 +467,7 @@ static opcode_func cineops[4][256] =
 	}
 };
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

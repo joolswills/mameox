@@ -1,3 +1,7 @@
+#pragma code_seg("CC0")
+#pragma bss_seg("CB0")
+#pragma data_seg("CD0")
+#pragma const_seg("CK0")
 /*****************************************************************************
  *
  *	 z8000.c
@@ -750,3 +754,7 @@ unsigned z8000_dasm(char *buffer, unsigned pc)
 #endif
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

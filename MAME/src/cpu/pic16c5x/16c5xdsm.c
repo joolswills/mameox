@@ -1,3 +1,7 @@
+#pragma code_seg("CC13")
+#pragma bss_seg("CB13")
+#pragma data_seg("CD13")
+#pragma const_seg("CK13")
  /**************************************************************************\
  *						Microchip PIC16C5x Emulator							*
  *																			*
@@ -257,3 +261,7 @@ unsigned Dasm16C5x(char *str, unsigned pc)
 	}
 	return cnt;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

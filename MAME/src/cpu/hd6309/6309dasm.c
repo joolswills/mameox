@@ -1,3 +1,7 @@
+#pragma code_seg("CC27")
+#pragma bss_seg("CB27")
+#pragma data_seg("CD27")
+#pragma const_seg("CK27")
 /* this code was hacked out of the fully-featured 6809 disassembler by Sean Riddle */
 /* and then mutliated into a 6309 disassembler by tim lindner					   */
 
@@ -1095,3 +1099,7 @@ unsigned Dasm6309 (char *buffer, unsigned pc)
 
 #endif
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

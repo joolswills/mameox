@@ -1,3 +1,7 @@
+#pragma code_seg("CC12")
+#pragma bss_seg("CB12")
+#pragma data_seg("CD12")
+#pragma const_seg("CK12")
 /***************************************************************************
  *
  *	Portable Signetics 2650 disassembler
@@ -828,3 +832,7 @@ int Dasm2650(char * buff, int PC)
 	}
 	return pc - PC;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()
