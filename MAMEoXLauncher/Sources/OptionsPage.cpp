@@ -46,8 +46,8 @@ extern "C" {
 
 
 #define STARTPAGE()                       DWORD i = 0
-#define DRAWITEM( _name__, _val__ )       m_font.DrawText( 80,  (i*20)+64, ITEMCOLOR(), _name__, XBFONT_TRUNCATED, 500 ); \
-                                          m_font.DrawText( 360, (i*20)+64, ITEMCOLOR(), _val__, XBFONT_TRUNCATED, 500 ); \
+#define DRAWITEM( _name__, _val__ )       m_font.DrawText( 80,  (i*18)+64, ITEMCOLOR(), _name__, XBFONT_TRUNCATED, 500 ); \
+                                          m_font.DrawText( 300, (i*18)+64, ITEMCOLOR(), _val__, XBFONT_TRUNCATED, 500 ); \
                                           ++i;
 #define ENDPAGE()
 
@@ -361,10 +361,24 @@ void COptionsPage::DrawVideoPage( void )
 */
 
   WCHAR text[256] = {0};
+  const WCHAR filterNames[][16] = { L"None", 
+                                    L"Point", 
+                                    L"Linear", 
+                                    L"Anisotropic", 
+                                    L"Quincunx", 
+                                    L"Gaussian Cubic" };
 
   STARTPAGE();
 
-  DRAWITEM( L"Aspect ratio correction", g_preserveAspectRatio ? L"Enabled" : L"Disabled" );
+  DRAWITEM( L"Aspect ratio correction", g_rendererOptions.m_preserveAspectRatio ? L"Enabled" : L"Disabled" );
+
+  DRAWITEM( L"Screen rotation", 
+            g_rendererOptions.m_screenRotation == SR_0 ? L"None" : 
+            (g_rendererOptions.m_screenRotation == SR_90 ? L"90 degrees" :
+            (g_rendererOptions.m_screenRotation == SR_180 ? L"180 degrees" :
+            L"270 degrees")) );
+
+
 
   swprintf( text, L"%f", options.brightness );
   DRAWITEM( L"Brightness", text );
@@ -377,6 +391,10 @@ void COptionsPage::DrawVideoPage( void )
 
   swprintf( text, L"%lu", options.color_depth );
   DRAWITEM( L"Color depth", text );
+
+  DRAWITEM( L"Minification filter", filterNames[g_rendererOptions.m_minFilter] );
+
+  DRAWITEM( L"Magnification filter", filterNames[g_rendererOptions.m_magFilter] );
 
   ENDPAGE();
 }
@@ -582,11 +600,31 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
 {
   switch( m_cursorPosition )
   {
+     // Preserve aspect ratio
   case 0:
-    g_preserveAspectRatio = !g_preserveAspectRatio;
+    g_rendererOptions.m_preserveAspectRatio = !g_rendererOptions.m_preserveAspectRatio;
     break;
 
+    // Screen rotation
   case 1:
+    if( !direction )
+    {
+      if( g_rendererOptions.m_screenRotation > SR_0 )
+        g_rendererOptions.m_screenRotation = (screenrotation_t)( (LONG)g_rendererOptions.m_screenRotation - 1 );
+      else
+        g_rendererOptions.m_screenRotation = SR_270;
+    }
+    else
+    {
+      if( g_rendererOptions.m_screenRotation < SR_270 )
+        g_rendererOptions.m_screenRotation = (screenrotation_t)( (LONG)g_rendererOptions.m_screenRotation + 1 );
+      else
+        g_rendererOptions.m_screenRotation = SR_0;
+    }
+    break;
+
+    // Brightness
+  case 2:
     {
       if( !direction )
         options.brightness -= 0.01f;
@@ -600,7 +638,8 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
     }
     break;
 
-  case 2:
+    // Paused brightness
+  case 3:
     {
       if( !direction )
         options.pause_bright -= 0.01f;
@@ -614,7 +653,8 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
     }
     break;
 
-  case 3:
+    // Gamma
+  case 4:
     {
       if( !direction )
         options.gamma -= 0.01f;
@@ -628,7 +668,8 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
     }
     break;
 
-  case 4:
+    // Color depth
+  case 5:
     {
       if( options.color_depth == 32 )
         options.color_depth = 15;
@@ -636,6 +677,43 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
         options.color_depth = 32;
     }
     break;    
+
+
+    // Minification filter
+  case 6:
+    if( !direction )
+    {
+      if( g_rendererOptions.m_minFilter > D3DTEXF_NONE )
+        g_rendererOptions.m_minFilter = (D3DTEXTUREFILTERTYPE)( (LONG)g_rendererOptions.m_minFilter - 1 );
+      else
+        g_rendererOptions.m_minFilter = D3DTEXF_GAUSSIANCUBIC;
+    }
+    else
+    {
+      if( g_rendererOptions.m_minFilter < D3DTEXF_GAUSSIANCUBIC )
+        g_rendererOptions.m_minFilter = (D3DTEXTUREFILTERTYPE)( (LONG)g_rendererOptions.m_minFilter + 1 );
+      else
+        g_rendererOptions.m_minFilter = D3DTEXF_NONE;
+    }
+    break;
+
+    // Magnification filter
+  case 7:
+    if( !direction )
+    {
+      if( g_rendererOptions.m_magFilter > D3DTEXF_NONE )
+        g_rendererOptions.m_magFilter = (D3DTEXTUREFILTERTYPE)( (LONG)g_rendererOptions.m_magFilter - 1 );
+      else
+        g_rendererOptions.m_magFilter = D3DTEXF_GAUSSIANCUBIC;
+    }
+    else
+    {
+      if( g_rendererOptions.m_magFilter < D3DTEXF_GAUSSIANCUBIC )
+        g_rendererOptions.m_magFilter = (D3DTEXTUREFILTERTYPE)( (LONG)g_rendererOptions.m_magFilter + 1 );
+      else
+        g_rendererOptions.m_magFilter = D3DTEXF_NONE;
+    }
+    break;
   }
 }
 

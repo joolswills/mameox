@@ -55,9 +55,32 @@ extern "C" {
                                 (((UINT8)(_b__)) << WIN_COLOR32_BDST_SHIFT) )
 
 
+typedef enum screenrotation_t
+{
+  SR_0 = 0x00,      // 0 degrees (normal)
+  SR_90,            // 90 degrees CW
+  SR_180,           // 180 degrees
+  SR_270            // 270 degrees CW
+} screenrotation_t;
+
+//= S T R U C T U R E S ================================================
+typedef struct RendererOptions_t
+{
+    //! Whether or not to use aspect ratio correction code
+  BOOL                  m_preserveAspectRatio;    
+
+    //! Level of screen rotation
+  screenrotation_t      m_screenRotation;
+
+    //! Minimization filter op
+  D3DTEXTUREFILTERTYPE  m_minFilter;
+
+    //! Maximization filter op
+  D3DTEXTUREFILTERTYPE  m_magFilter;
+} RendererOptions_t;
+
 //= G L O B A L = V A R S ==============================================
-  //! Whether or not to use aspect ratio correction code
-extern BOOL g_preserveAspectRatio;
+extern RendererOptions_t    g_rendererOptions;
 
 //= P R O T O T Y P E S ================================================
 #ifdef __cplusplus

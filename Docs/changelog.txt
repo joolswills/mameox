@@ -18,6 +18,9 @@ Version 0.68b
       - New function: GetButtonState which returns all GP_ flags of the 
         pressed buttons, DPAD, etc.
 
+    - xbox_Direct3DRenderer.h
+      - Joined all D3D renderer opts into a struct
+
    -------------------------------------------------------------
   - \MAMEoX\Sources:
 
@@ -34,8 +37,20 @@ Version 0.68b
       - Fixed: Pressing right on LA now properly produces 128 for
         analog position
 
+    - xbox_Direct3DRenderer.cpp
+      - Added option for screen rotation
+      - Added option to select texture filters
+
    -------------------------------------------------------------
   - \MAMEoXLauncher\Includes:
+
+    - OptionsPage.h
+      - Added option for screen rotation
+      - Added option to select texture filters
+      - Fixed problem where not all options in Directories were
+        selectable
+      - Fixed problem where the cursor in Network Settings could
+        scroll past the end of the list
 
    -------------------------------------------------------------
   - \MAMEoXLauncher\Sources:
@@ -46,6 +61,13 @@ Version 0.68b
       - Use new font and added manufacturer in the game list
       - Additional info is default now
       - More lines (30 instead of 18) in the game list
+
+    - OptionsPage.cpp
+      - Added option for screen rotation
+      - Added option to select texture filters
+
+    - main.cpp
+      - Joined all D3D renderer opts into a struct
 
    -------------------------------------------------------------
   - \MAMEoX\src:

@@ -81,9 +81,9 @@ GameOptions options;
   // Fake cheatfile name for load/store options
 const char *cheatfile = NULL;
 }
-
-  // Fake preserveAspectRatio flag
-BOOL g_preserveAspectRatio = TRUE;
+  
+  // Fake D3D renderer options
+RendererOptions_t    g_rendererOptions;
 
 //= P R O T O T Y P E S ===============================================
 BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage );

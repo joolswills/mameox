@@ -96,7 +96,7 @@ public:
     wcscpy( m_pageData[OPTPAGE_VIDEO].m_title, L"Video Options" );
     m_pageData[OPTPAGE_VIDEO].m_drawFunct = ::DrawVideoPage;
     m_pageData[OPTPAGE_VIDEO].m_changeFunct = ::ChangeVideoPage;
-    m_pageData[OPTPAGE_VIDEO].m_numItems = 4;
+    m_pageData[OPTPAGE_VIDEO].m_numItems = 8;
 
     wcscpy( m_pageData[OPTPAGE_VECTOR].m_title, L"Vector Options" );
     m_pageData[OPTPAGE_VECTOR].m_drawFunct = ::DrawVectorPage;
@@ -106,12 +106,12 @@ public:
     wcscpy( m_pageData[OPTPAGE_NETWORK].m_title, L"Network Options" );
     m_pageData[OPTPAGE_NETWORK].m_drawFunct = ::DrawNetworkPage;
     m_pageData[OPTPAGE_NETWORK].m_changeFunct = ::ChangeNetworkPage;
-    m_pageData[OPTPAGE_NETWORK].m_numItems = 6;
+    m_pageData[OPTPAGE_NETWORK].m_numItems = 5;
 
     wcscpy( m_pageData[OPTPAGE_DIRECTORIES].m_title, L"Directory Path Options" );
     m_pageData[OPTPAGE_DIRECTORIES].m_drawFunct = ::DrawDirectoryPathPage;
     m_pageData[OPTPAGE_DIRECTORIES].m_changeFunct = ::ChangeDirectoryPathPage;
-    m_pageData[OPTPAGE_DIRECTORIES].m_numItems = 6;
+    m_pageData[OPTPAGE_DIRECTORIES].m_numItems = 15;
   }
 
 		//------------------------------------------------------------

@@ -110,15 +110,28 @@ void LoadOptions( void )
     // 1 to enable FIR filter on final mixer output
   options.use_filter = iniFile.GetProfileInt( "Sound", "UseFilter", TRUE );
 
-  g_preserveAspectRatio = iniFile.GetProfileInt( "Video", "AspectRatioCorrection", TRUE );  // aspect ratio correction code
-	options.brightness = iniFile.GetProfileFloat( "Video", "Brightness", 1.0f );		    // brightness of the display
-  options.pause_bright = iniFile.GetProfileFloat( "Video", "PauseBrightness", 0.65f );     // brightness when in pause
-	options.gamma = iniFile.GetProfileFloat( "Video", "Gamma", 1.0f );			        // gamma correction of the display
-	options.color_depth = iniFile.GetProfileInt( "Video", "ColorDepth", 32 );
-	options.vector_width = iniFile.GetProfileInt( "VectorOptions", "VectorWidth", 640 );	      // requested width for vector games; 0 means default (640)
+  g_rendererOptions.m_preserveAspectRatio = iniFile.GetProfileInt( "Video", "AspectRatioCorrection", TRUE );  // aspect ratio correction code
+  g_rendererOptions.m_screenRotation =      (screenrotation_t)iniFile.GetProfileInt( "Video", "ScreenRotation", SR_0 );
+  g_rendererOptions.m_minFilter =           (D3DTEXTUREFILTERTYPE)iniFile.GetProfileInt( "Video", "MinificationFilter", D3DTEXF_LINEAR );
+  g_rendererOptions.m_magFilter =           (D3DTEXTUREFILTERTYPE)iniFile.GetProfileInt( "Video", "MagnificationFilter", D3DTEXF_LINEAR );
+	options.brightness =    iniFile.GetProfileFloat( "Video", "Brightness", 1.0f );		    // brightness of the display
+  options.pause_bright =  iniFile.GetProfileFloat( "Video", "PauseBrightness", 0.65f );     // brightness when in pause
+	options.gamma =         iniFile.GetProfileFloat( "Video", "Gamma", 1.0f );			        // gamma correction of the display
+	options.color_depth =   iniFile.GetProfileInt( "Video", "ColorDepth", 32 );
+	options.vector_width =  iniFile.GetProfileInt( "VectorOptions", "VectorWidth", 640 );	      // requested width for vector games; 0 means default (640)
 	options.vector_height = iniFile.GetProfileInt( "VectorOptions", "VectorHeight", 480 );	    // requested height for vector games; 0 means default (480)
 	// int		ui_orientation;	        // orientation of the UI relative to the video
+  
+    // Validate some of the video options to keep them from ripping shit up
+  if( g_rendererOptions.m_minFilter > D3DTEXF_GAUSSIANCUBIC )
+    g_rendererOptions.m_minFilter = D3DTEXF_LINEAR;
+  if( g_rendererOptions.m_magFilter > D3DTEXF_GAUSSIANCUBIC )
+    g_rendererOptions.m_magFilter = D3DTEXF_LINEAR;
+  if( g_rendererOptions.m_screenRotation > SR_270 )
+    g_rendererOptions.m_screenRotation = SR_0;
 
+
+    //- Vector options ------------------------------------------------------------------------------------
 	options.beam = iniFile.GetProfileInt( "VectorOptions", "BeamWidth", 2 );			            // vector beam width
 	options.vector_flicker = iniFile.GetProfileFloat( "VectorOptions", "FlickerEffect", 0.5f );	  // vector beam flicker effect control
 	options.vector_intensity = iniFile.GetProfileFloat( "VectorOptions", "BeamIntensity", 1.5f );  // vector beam intensity
@@ -215,7 +228,10 @@ void SaveOptions( void )
   iniFile.WriteProfileInt( "Sound", "SampleRate", options.samplerate );
   iniFile.WriteProfileInt( "Sound", "UseSamples", options.use_samples );
   iniFile.WriteProfileInt( "Sound", "UseFilter", options.use_filter );
-  iniFile.WriteProfileInt( "Video", "AspectRatioCorrection", g_preserveAspectRatio );
+  iniFile.WriteProfileInt( "Video", "AspectRatioCorrection", g_rendererOptions.m_preserveAspectRatio );
+  iniFile.WriteProfileInt( "Video", "MinificationFilter", g_rendererOptions.m_minFilter );
+  iniFile.WriteProfileInt( "Video", "MagnificationFilter", g_rendererOptions.m_magFilter );
+  iniFile.WriteProfileInt( "Video", "ScreenRotation", g_rendererOptions.m_screenRotation );
   iniFile.WriteProfileFloat( "Video", "Brightness", options.brightness );		    // brightness of the display
   iniFile.WriteProfileFloat( "Video", "PauseBrightness", options.pause_bright );     // brightness when in pause
 	iniFile.WriteProfileFloat( "Video", "Gamma", options.gamma );			        // gamma correction of the display

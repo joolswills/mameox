@@ -62,8 +62,8 @@ static RECT                       g_textureRenderingArea = {0,0,0,0};
 static FLOAT                      g_screenXPercentage = DEFAULT_SCREEN_X_PERCENTAGE;
 static FLOAT                      g_screenYPercentage = DEFAULT_SCREEN_Y_PERCENTAGE;
 
-  //! Whether or not to use aspect ratio correction code
-BOOL g_preserveAspectRatio = TRUE;
+  // Generic D3D Renderer options
+RendererOptions_t    g_rendererOptions;
 
 		//! The locked region for us to render to
 static D3DLOCKED_RECT             g_d3dLockedRect;
@@ -625,8 +625,9 @@ static BOOL CreateTexture( void )
   g_createParams.height = desc.Height;
 
 	g_pD3DDevice->SetTexture( 0, g_pTexture );
-  g_pD3DDevice->SetTextureStageState( 0, D3DTSS_MINFILTER, D3DTEXF_LINEAR );
-  g_pD3DDevice->SetTextureStageState( 0, D3DTSS_MAGFILTER, D3DTEXF_LINEAR );
+
+  g_pD3DDevice->SetTextureStageState( 0, D3DTSS_MINFILTER, g_rendererOptions.m_minFilter );
+  g_pD3DDevice->SetTextureStageState( 0, D3DTSS_MAGFILTER, g_rendererOptions.m_magFilter );
   g_pD3DDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
   g_pD3DDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
   g_pD3DDevice->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_TEXTURE  );
@@ -671,36 +672,73 @@ static BOOL CreateRenderingQuad( void )
   tv_t = (FLOAT)g_textureRenderingArea.top;
   tv_b = (FLOAT)(g_textureRenderingArea.bottom+1);
 
-
   FLOAT xpos = g_screenXPercentage;
   FLOAT ypos = g_screenYPercentage;
 
-  if( g_preserveAspectRatio )
+  if( g_rendererOptions.m_screenRotation == SR_0 || g_rendererOptions.m_screenRotation == SR_180 )
   {
-      // Aspect ratio
-    double screenRatio = 640.0/480.0;
-      // The desired aspect ratio for the game
-	  double aspectRatio = (double)g_createParams.aspect_x / (double)g_createParams.aspect_y;
-    if( g_createParams.video_attributes & VIDEO_PIXEL_ASPECT_RATIO_1_2 )
-      aspectRatio /= 2.0;
-    else if( g_createParams.video_attributes & VIDEO_PIXEL_ASPECT_RATIO_2_1 )
-      aspectRatio *= 2.0;
 
-    // The native screenRatio is 4/3
-    // so multiplying x by the desired aspect ratio will actually give us (x*4/3)*(aspectRatio)
-    // Therefore we have to first counteract the real screen ratio before applying the desired aspect ratio
+    if( g_rendererOptions.m_preserveAspectRatio )
+    {
+        // Aspect ratio
+      double screenRatio = 640.0/480.0;
 
-    if( aspectRatio > screenRatio )
-    {
-        // scale down y
-      ypos /= aspectRatio * screenRatio; 
-    }
-    else if( aspectRatio < screenRatio )
-    {
-        // Scale down x
-      xpos *= aspectRatio / screenRatio;
+        // The desired aspect ratio for the game
+	    double aspectRatio = (double)g_createParams.aspect_x / (double)g_createParams.aspect_y;
+      if( g_createParams.video_attributes & VIDEO_PIXEL_ASPECT_RATIO_1_2 )
+        aspectRatio /= 2.0;
+      else if( g_createParams.video_attributes & VIDEO_PIXEL_ASPECT_RATIO_2_1 )
+        aspectRatio *= 2.0;
+
+        // The native screenRatio is 4/3
+        // so multiplying x by the desired aspect ratio will actually give us (x*4/3)*(aspectRatio)
+        // Therefore we have to first counteract the real screen ratio before applying the desired aspect ratio
+
+      if( aspectRatio > screenRatio )
+      {
+          // scale down y
+        ypos /= aspectRatio * screenRatio; 
+      }
+      else if( aspectRatio < screenRatio )
+      {
+          // Scale down x
+        xpos *= aspectRatio / screenRatio;
+      }
     }
   }
+  else
+  {
+      // We're rendering sideways, so the aspect ratio of the monitor is different
+    if( g_rendererOptions.m_preserveAspectRatio )
+    {
+        // Aspect ratio
+      double screenRatio = 480.0/640.0;
+
+        // The desired aspect ratio for the game
+	    double aspectRatio = (double)g_createParams.aspect_x / (double)g_createParams.aspect_y;
+      if( g_createParams.video_attributes & VIDEO_PIXEL_ASPECT_RATIO_1_2 )
+        aspectRatio *= 2.0;
+      else if( g_createParams.video_attributes & VIDEO_PIXEL_ASPECT_RATIO_2_1 )
+        aspectRatio /= 2.0;
+
+        // The native screenRatio is 3/4
+        // so multiplying x by the desired aspect ratio will actually give us (x*3/4)*(aspectRatio)
+        // Therefore we have to first counteract the real screen ratio before applying the desired aspect ratio
+
+      if( aspectRatio > screenRatio )
+      {
+          // scale down y
+        xpos /= aspectRatio * screenRatio; 
+      }
+      else if( aspectRatio < screenRatio )
+      {
+          // Scale down x
+        ypos *= aspectRatio / screenRatio;
+      }
+    }
+  }
+
+
 
 	CUSTOMVERTEX *pVertices;
 	g_pD3DVertexBuffer->Lock( 0,										// Offset to lock
@@ -708,29 +746,69 @@ static BOOL CreateRenderingQuad( void )
 														(BYTE**)&pVertices,		// ppbData
 														0 );									// Flags
 
+
+    switch( g_rendererOptions.m_screenRotation )
+    {
+    case SR_0:
+      pVertices[0].tu = tu_l;
+      pVertices[0].tv = tv_t;
+      pVertices[1].tu = tu_r;
+      pVertices[1].tv = tv_t;
+      pVertices[2].tu = tu_r;
+      pVertices[2].tv = tv_b;
+      pVertices[3].tu = tu_l;
+      pVertices[3].tv = tv_b;
+      break;
+
+    case SR_90:
+      pVertices[0].tu = tu_r;
+      pVertices[0].tv = tv_t;
+      pVertices[1].tu = tu_r;
+      pVertices[1].tv = tv_b;
+      pVertices[2].tu = tu_l;
+      pVertices[2].tv = tv_b;
+      pVertices[3].tu = tu_l;
+      pVertices[3].tv = tv_t;
+      break;
+
+    case SR_180:
+      pVertices[0].tu = tu_r;
+      pVertices[0].tv = tv_b;
+      pVertices[1].tu = tu_l;
+      pVertices[1].tv = tv_b;
+      pVertices[2].tu = tu_l;
+      pVertices[2].tv = tv_t;
+      pVertices[3].tu = tu_r;
+      pVertices[3].tv = tv_t;
+      break;
+
+    case SR_270:
+      pVertices[0].tu = tu_l;
+      pVertices[0].tv = tv_b;
+      pVertices[1].tu = tu_l;
+      pVertices[1].tv = tv_t;
+      pVertices[2].tu = tu_r;
+      pVertices[2].tv = tv_t;
+      pVertices[3].tu = tu_r;
+      pVertices[3].tv = tv_b;
+      break;
+    }
+
 		pVertices[0].pos.x = -xpos;
 		pVertices[0].pos.y = ypos;
 		pVertices[0].pos.z = 1.0f;
-    pVertices[0].tu = tu_l;
-    pVertices[0].tv = tv_t;
 
 		pVertices[1].pos.x = xpos;
 		pVertices[1].pos.y = ypos;
 		pVertices[1].pos.z = 1.0f;
-    pVertices[1].tu = tu_r;
-    pVertices[1].tv = tv_t;
 		
 		pVertices[2].pos.x = xpos;
 		pVertices[2].pos.y = -ypos;
 		pVertices[2].pos.z = 1.0f;
-    pVertices[2].tu = tu_r;
-    pVertices[2].tv = tv_b;
 		
 		pVertices[3].pos.x = -xpos;
 		pVertices[3].pos.y = -ypos;
 		pVertices[3].pos.z = 1.0f;
-    pVertices[3].tu = tu_l;
-    pVertices[3].tv = tv_b;
 
 	  if( g_createParams.orientation & ORIENTATION_FLIP_X )
     {
