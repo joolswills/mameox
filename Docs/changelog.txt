@@ -76,6 +76,15 @@ Version 0.68b
         rather than attempting to use the broken trackball
 	code. (Fixes trackball and steering wheel games)
 
+  - \MAME\src\vidhrdw
+    - vball.c
+      - Increased the size of array "scrollx" to 32 elements to
+        keep the vball_interrupt function from writing past the
+	end of the array.
+
+ --- Specific Game fixes --------------------------------------------
+  U.S. Championship V'ball
+
 *********************************************************************
 
 Version 0.67b
