@@ -41,7 +41,6 @@ public:
   BOOL IsCalibrationCompleted( void ) const { return m_calibrationCompleted; }
 protected:
 
-  void UpdateLightgunCursorPosition( CInputManager &inputManager );
 
 		//------------------------------------------------------------
 		// FindNextGun
@@ -62,6 +61,7 @@ protected:
   INT32               m_currentGunY;
   INT32               m_currentGunCalibratedX;
   INT32               m_currentGunCalibratedY;
+  DWORD               m_currentGunFlags;
 
   UINT32              m_currentInputDeviceIndex;
   UINT32              m_calibrationStep;
