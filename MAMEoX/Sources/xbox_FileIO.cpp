@@ -333,7 +333,7 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
   {
     Helper_ConvertSlashToBackslash( strFullPath.GetBuffer(strFullPath.GetLength()+10) );
 
-    PRINTMSG( T_INFO, "Opening file: %s", strFullPath );
+    PRINTMSG( T_INFO, "Opening file: %s", (LPCSTR)strFullPath );
 
     ret->m_handle = CreateFile(	strFullPath.c_str(),
       dwDesiredAccess,
