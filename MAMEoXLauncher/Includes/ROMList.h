@@ -17,6 +17,7 @@
 #define NUM_SUPERSCROLL_CHARS           27 //!< Each letter + #
 #define INVALID_SUPERSCROLL_JUMP_IDX    0xFFFFFFFF
 #define INVALID_ROM_INDEX               0xFFFFFFFF
+
 /*
 typedef enum SortMethod {
 	BY_NAME = 0,
@@ -24,8 +25,6 @@ typedef enum SortMethod {
 	BY_GENRE
 } SortMethod;
 */
-
-
 
 //= C L A S S E S ======================================================
 
