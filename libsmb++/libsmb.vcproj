@@ -64,7 +64,7 @@
 				OmitFramePointers="TRUE"
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories="../MAME/src;../MAMEoX/Includes"
+				AdditionalIncludeDirectories="../MAME/src;../MAMEoX/Includes;../"
 				PreprocessorDefinitions="WIN32,_XBOX,NDEBUG"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
@@ -78,7 +78,8 @@
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"/>
+				SuppressStartupBanner="TRUE"
+				ForcedIncludeFiles="VCPPMame.h"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
