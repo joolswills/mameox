@@ -851,10 +851,10 @@ void COptionsPage::DrawROMListPage( void )
 
   DRAWITEM( L"Sort mode", sortMode[(UINT32)g_romListOptions.m_sortMode] );
 
-  DRAWITEM( L"Filter clones",         g_romListOptions.m_filterMode & FM_CLONE ? L"Yes" : L"No" );
-  DRAWITEM( L"Filter \"slow\"",       g_romListOptions.m_filterMode & FM_ROMSTATUS_SLOW ? L"Yes" : L"No" );
-  DRAWITEM( L"Filter \"out of mem\"", g_romListOptions.m_filterMode & FM_ROMSTATUS_OUTOFMEM ? L"Yes" : L"No" );
-  DRAWITEM( L"Filter \"crashes\"", g_romListOptions.m_filterMode & FM_ROMSTATUS_CRASH ? L"Yes" : L"No" );
+  DRAWITEM( L"Filter clones",               g_romListOptions.m_filterMode & FM_CLONE ? L"Yes" : L"No" );
+  DRAWITEM( L"Filter \"slow/frameskip\"",   g_romListOptions.m_filterMode & FM_ROMSTATUS_SLOW ? L"Yes" : L"No" );
+  DRAWITEM( L"Filter \"out of memory\"",    g_romListOptions.m_filterMode & FM_ROMSTATUS_OUTOFMEM ? L"Yes" : L"No" );
+  DRAWITEM( L"Filter \"crashes in game\"",  g_romListOptions.m_filterMode & FM_ROMSTATUS_CRASH ? L"Yes" : L"No" );
   DRAWITEM( L"Filter \"other nonworking\"", g_romListOptions.m_filterMode & FM_ROMSTATUS_NONWORKING ? L"Yes" : L"No" );
 
   ENDPAGE();

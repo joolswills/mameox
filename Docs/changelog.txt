@@ -45,6 +45,9 @@ Version 0.71.2b (CVS)
       - Fixed Backup feature (yet again, this is what, the 3rd time
         I broke it? I'm still surprised that people use it :))
 
+    - OptionsPage.cpp
+      - Changed the text for "problem ROM" filters
+
    -------------------------------------------------------------
   - \Sectionize.pl
     - Fixed dep for Operation Wolf
