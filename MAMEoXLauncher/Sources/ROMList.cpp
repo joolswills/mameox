@@ -689,7 +689,7 @@ void CROMList::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
   {
       // No need to regenerate the list, just switch to
       // the noclones (or clones) list
-
+    m_options.m_hideFiltered = !m_options.m_hideFiltered;
 
     UpdateSortedList();
     m_numLinesInList = m_currentSortedList.size();
