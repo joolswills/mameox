@@ -140,6 +140,9 @@
 			Name="Source Files"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm">
 			<File
+				RelativePath=".\Sources\BasePopupView.cpp">
+			</File>
+			<File
 				RelativePath=".\Sources\BaseView.cpp">
 			</File>
 			<File
@@ -209,6 +212,9 @@
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc">
+			<File
+				RelativePath=".\Includes\BasePopupView.h">
+			</File>
 			<File
 				RelativePath=".\Includes\BaseView.h">
 			</File>

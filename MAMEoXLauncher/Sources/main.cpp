@@ -547,7 +547,7 @@ void __cdecl main( void )
             // so what action we should do for the selected item
             // is dependent on the view we opened the menu from.
             // Reboot is always the last item in the menu
-          if( startMenu.GetCursorPosition() == startMenu.GetNumMenuItems() - 1 )
+          if( startMenu.GetCursorPosition() == startMenu.GetNumBodyLines() - 1 )
             Helper_SaveOptionsAndReboot( pD3DDevice, romList );
           else
           {
@@ -653,7 +653,7 @@ static void Helper_SetStartMenuItems( CStartMenu &startMenu, viewmode currentVie
   {
     // *** VIEW_ROMLIST *** //
   case VIEW_ROMLIST:
-    startMenu.SetMenuTitle( ":: ROM List ::" );
+    startMenu.SetTitle( ":: ROM List ::" );
     startMenu.AddMenuItem( "Help" );
     startMenu.AddMenuItem( "Options Menu" );
     startMenu.AddMenuItem( "Lightgun Calibration" );
@@ -663,19 +663,19 @@ static void Helper_SetStartMenuItems( CStartMenu &startMenu, viewmode currentVie
 
     // *** VIEW_OPTIONS *** //
   case VIEW_OPTIONS:
-    startMenu.SetMenuTitle( ":: Options Menu ::" );
+    startMenu.SetTitle( ":: Options Menu ::" );
     startMenu.AddMenuItem( "ROM List" );
     break;
 
     // *** VIEW_LIGHTGUNCALIBRATOR *** //
   case VIEW_LIGHTGUNCALIBRATOR:
-    startMenu.SetMenuTitle( ":: Lightgun Calibrator ::" );
+    startMenu.SetTitle( ":: Lightgun Calibrator ::" );
     startMenu.AddMenuItem( "ROM List" );
     break;
 
     // *** VIEW_HELP *** //
   case VIEW_HELP:
-    startMenu.SetMenuTitle( ":: Help ::" );
+    startMenu.SetTitle( ":: Help ::" );
     startMenu.AddMenuItem( "ROM List" );
     break;
   }

@@ -32,6 +32,8 @@ Version 0.70.4b
     - BaseView.cpp
       - Added base view class
 
+    - BasePopupView.cpp
+      - Added base class for "popup" views (VirtualKeyboard/StartMenu)
 
 *********************************************************************
 Version 0.70.3b

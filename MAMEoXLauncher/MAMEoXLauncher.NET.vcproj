@@ -138,6 +138,9 @@
 			Name="Source Files"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm">
 			<File
+				RelativePath="Sources\BasePopupView.cpp">
+			</File>
+			<File
 				RelativePath="Sources\BaseView.cpp">
 			</File>
 			<File
@@ -207,6 +210,9 @@
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc">
+			<File
+				RelativePath="Includes\BasePopupView.h">
+			</File>
 			<File
 				RelativePath="Includes\BaseView.h">
 			</File>
@@ -284,23 +290,6 @@
 			Name="Resources"
 			Filter="">
 			<File
-				RelativePath="MediaFiles\ArialNarrow_12.rdf">
-				<FileConfiguration
-					Name="Debug|Xbox">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Xbox">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="MediaFiles\ArialNarrow_16.rdf">
 				<FileConfiguration
 					Name="Debug|Xbox">
@@ -333,6 +322,9 @@
 						CommandLine="bundler &quot;$(InputPath)&quot;"
 						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="MediaFiles\FranklinGothicMedium_12.rdf">
 			</File>
 			<File
 				RelativePath="MediaFiles\HawaiianPunk_16.rdf">
