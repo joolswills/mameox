@@ -2483,16 +2483,16 @@ void CROMListScreen::DrawDetailedList( void )
         }
       }
 
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, ul.x, ul.y );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_screenshotRect.left, m_screenshotRect.top );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotLeft, screenshotTop, 1.0f, 1.0f );
       
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, ur.x, ur.y );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_screenshotRect.right, m_screenshotRect.top );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotRight, screenshotTop, 1.0f, 1.0f );
       
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, br.x, br.y );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_screenshotRect.right, m_screenshotRect.bottom );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotRight, screenshotBottom, 1.0f, 1.0f );
 
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, bl.x, bl.y );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_screenshotRect.left, m_screenshotRect.bottom );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotLeft, screenshotBottom, 1.0f, 1.0f );
     m_displayDevice->End();
 

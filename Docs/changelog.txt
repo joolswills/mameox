@@ -30,6 +30,7 @@ Version 0.71.3b (CVS)
     - xbox_Direct3DRenderer.cpp
       - Fixed an off by 1 error when setting texture coords that
         caused clipping of a valid row of pixels
+      - Prerotate screenshots before saving the file
 
    -------------------------------------------------------------
   - \MAMEoXLauncher\Includes:
@@ -62,6 +63,7 @@ Version 0.71.3b (CVS)
     - StartMenu.cpp
       - Made menu functions token based instead of cursor position 
         based. This makes it much easier to have fully dynamic menus
+      - Made the B button back out of the menu
 
     - main.cpp
       - Added handling for MAMEoX system files to apply speed

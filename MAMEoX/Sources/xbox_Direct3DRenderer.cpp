@@ -859,3 +859,103 @@ static BOOL CreateRenderingQuad( void )
   return TRUE;
 }
 
+//---------------------------------------------------------------------
+//	osd_save_snapshot
+//---------------------------------------------------------------------
+extern "C" void osd_save_snapshot( struct mame_bitmap *bitmap, const struct rectangle *bounds )
+{
+/*
+  Save a screen shot of the game display. It is suggested to use the core
+  function save_screen_snapshot() or save_screen_snapshot_as(), so the format
+  of the screen shots will be consistent across ports. This hook is provided
+  only to allow the display of a file requester to let the user choose the
+  file name. This isn't scrictly necessary, so you can just call
+  save_screen_snapshot() to let the core automatically pick a default name.
+*/
+  if( !(g_createParams.orientation & ORIENTATION_FLIP_Y) &&
+      !(g_createParams.orientation & ORIENTATION_FLIP_X) &&
+      !(g_createParams.orientation & ORIENTATION_SWAP_XY) )
+  {
+    save_screen_snapshot( bitmap, bounds );
+  }
+  else
+  {
+      // Taken from video.c in the windows distribution
+	  struct rectangle newbounds;
+	  struct mame_bitmap *copy;
+	  int x, y, w, h, t;
+
+	    // allocate a copy
+	  w = (g_createParams.orientation & ORIENTATION_SWAP_XY) ? bitmap->height : bitmap->width;
+	  h = (g_createParams.orientation & ORIENTATION_SWAP_XY) ? bitmap->width : bitmap->height;
+	  copy = bitmap_alloc_depth(w, h, bitmap->depth);
+
+	  if( !copy )
+		  return;
+
+	    // populate the copy
+	  for( y = bounds->min_y; y <= bounds->max_y; ++y)
+    {
+		  for( x = bounds->min_x; x <= bounds->max_x; ++x )
+		  {
+			  int tx = x, ty = y;
+
+			  // apply the rotation/flipping
+			  if ((g_createParams.orientation & ORIENTATION_SWAP_XY))
+			  {
+				  t = tx; tx = ty; ty = t;
+			  }
+			  if ((g_createParams.orientation & ORIENTATION_FLIP_X))
+				  tx = copy->width - tx - 1;
+			  if ((g_createParams.orientation & ORIENTATION_FLIP_Y))
+				  ty = copy->height - ty - 1;
+
+			  // read the old pixel and copy to the new location
+			  switch (copy->depth)
+			  {
+				  case 15:
+				  case 16:
+					  *((UINT16 *)copy->base + ty * copy->rowpixels + tx) =
+							  *((UINT16 *)bitmap->base + y * bitmap->rowpixels + x);
+					  break;
+
+				  case 32:
+					  *((UINT32 *)copy->base + ty * copy->rowpixels + tx) =
+							  *((UINT32 *)bitmap->base + y * bitmap->rowpixels + x);
+					  break;
+			  }
+		  }
+    }
+
+	  // compute the oriented bounds
+	  newbounds = *bounds;
+
+	  // apply X/Y swap first
+	  if ((g_createParams.orientation & ORIENTATION_SWAP_XY))
+	  {
+		  t = newbounds.min_x; newbounds.min_x = newbounds.min_y; newbounds.min_y = t;
+		  t = newbounds.max_x; newbounds.max_x = newbounds.max_y; newbounds.max_y = t;
+	  }
+
+	  // apply X flip
+	  if( (g_createParams.orientation & ORIENTATION_FLIP_X) )
+	  {
+		  t = copy->width - newbounds.min_x - 1;
+		  newbounds.min_x = copy->width - newbounds.max_x - 1;
+		  newbounds.max_x = t;
+	  }
+
+	  // apply Y flip
+	  if ((g_createParams.orientation & ORIENTATION_FLIP_Y))
+	  {
+		  t = copy->height - newbounds.min_y - 1;
+		  newbounds.min_y = copy->height - newbounds.max_y - 1;
+		  newbounds.max_y = t;
+	  }
+
+	  // now save the copy and nuke it when done
+	  save_screen_snapshot(copy, &newbounds);
+	  bitmap_free(copy);
+  }
+}
+

@@ -397,23 +397,6 @@ INLINE void Helper_UpdateAutoframeskip( const struct performance_info *performan
 
 
 //---------------------------------------------------------------------
-//	osd_save_snapshot
-//---------------------------------------------------------------------
-void osd_save_snapshot( struct mame_bitmap *bitmap, const struct rectangle *bounds )
-{
-/*
-  Save a screen shot of the game display. It is suggested to use the core
-  function save_screen_snapshot() or save_screen_snapshot_as(), so the format
-  of the screen shots will be consistent across ports. This hook is provided
-  only to allow the display of a file requester to let the user choose the
-  file name. This isn't scrictly necessary, so you can just call
-  save_screen_snapshot() to let the core automatically pick a default name.
-*/
-  save_screen_snapshot( bitmap, bounds );
-}
-
-
-//---------------------------------------------------------------------
 //	osd_get_fps_text
 //---------------------------------------------------------------------
 const char *osd_get_fps_text( const struct performance_info *performance )

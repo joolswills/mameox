@@ -26,7 +26,7 @@ extern "C" {
 //= S T R U C T U R E S ===============================================
 
 //= D E F I N E S ======================================================
-#define TICKS_PER_SCREENSHOT      30 * osd_cycles_per_second()
+#define TICKS_PER_SCREENSHOT      20 * osd_cycles_per_second()
 
 //= G L O B A L = V A R S ==============================================
   // Static member initialization
@@ -61,7 +61,10 @@ void CScreensaverScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
   if( elapsedTime >= m_displayTimeout )
   {
-    if( m_screenshotFiles.size() )
+      // Load a screenshot file (the == 1 || rand() is so that we don't
+      // stick on a static image if there's only a single screenshot
+      // available (which would be a _bad_ screensaver :))
+    if( m_screenshotFiles.size() > 1 || (m_screenshotFiles.size() == 1 && rand() & 0x01) )
     {
       UINT32 randIndex = rand() % m_screenshotFiles.size();
       CStdString str = g_FileIOConfig.m_ScreenshotPath;
@@ -83,6 +86,7 @@ void CScreensaverScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     }
     else
     {
+      SAFE_RELEASE( m_backdropTexture );
       m_screenshotRect.left = m_screenshotRect.top = 0;
       m_screenshotRect.right = 640;
       m_screenshotRect.bottom = 480;
@@ -172,10 +176,10 @@ void CScreensaverScreen::CalculateRenderingQuad( void )
 {
     // Calculate the TU/TV coords based on the rendering area
   FLOAT tu_l, tv_t, tu_r, tv_b;
-  tu_l = ORIENTATION_FLIP_X ? (FLOAT)m_screenshotRect.right : (FLOAT)m_screenshotRect.left;
-  tu_r = ORIENTATION_FLIP_X ? (FLOAT)m_screenshotRect.left : (FLOAT)m_screenshotRect.right;
-  tv_t = ORIENTATION_FLIP_Y ? (FLOAT)m_screenshotRect.bottom : (FLOAT)m_screenshotRect.top;
-  tv_b = ORIENTATION_FLIP_Y ? (FLOAT)m_screenshotRect.top : (FLOAT)m_screenshotRect.bottom;
+  tu_l = (FLOAT)m_screenshotRect.left;
+  tu_r = (FLOAT)m_screenshotRect.right;
+  tv_t = (FLOAT)m_screenshotRect.top;
+  tv_b = (FLOAT)m_screenshotRect.bottom;
 
   FLOAT xpos, ypos;
   GetScreenUsage( &xpos, &ypos );
@@ -245,16 +249,7 @@ void CScreensaverScreen::CalculateRenderingQuad( void )
 */
 
     // Handle screen rotation and 
-  screenrotation_t rotation = g_rendererOptions.m_screenRotation;
-  if( m_screenshotOrientation & ORIENTATION_SWAP_XY )
-  {
-    if( rotation )
-      rotation = (screenrotation_t)(rotation - 1);
-    else
-      rotation = SR_270;
-  }
-
-  switch( rotation )
+  switch( g_rendererOptions.m_screenRotation )
   {
   case SR_0:
     m_renderingTextureCoords[0][0] = tu_l;

@@ -95,7 +95,7 @@ void CStartMenu::MoveCursor( CInputManager &gp, BOOL unused )
   }
 
 
-  if( gp.IsOneOfButtonsPressed( GP_BACK | GP_START ) )
+  if( gp.IsOneOfButtonsPressed( GP_BACK | GP_START | GP_B ) )
   {
       // Quit the menu
     m_inputState = MENU_CANCELLED;
