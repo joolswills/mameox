@@ -20,7 +20,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories=".\Includes;..\MAMEoX\Includes;..\MAME\src;..\;&quot;e:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include&quot;;&quot;..\libsmb++\src&quot;"
+				AdditionalIncludeDirectories=".\Includes;..\MAMEoX\Includes;..\MAME\src;..\;$(XDK_SAMPLES);&quot;..\libsmb++\src&quot;"
 				PreprocessorDefinitions="_DEBUG;_XBOX"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -28,7 +28,8 @@
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="FALSE"
-				DebugInformationFormat="4"/>
+				DebugInformationFormat="4"
+				ForcedIncludeFiles="VCPPMame.h"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -74,7 +75,7 @@
 				InlineFunctionExpansion="1"
 				OmitFramePointers="TRUE"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories=".\Includes,..\MAMEoX\Includes,..\MAME\src,..\,e:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include;&quot;..\libsmb++\src&quot;"
+				AdditionalIncludeDirectories=".\Includes,..\MAMEoX\Includes,..\MAME\src,..\,$(XDK_SAMPLES);&quot;..\libsmb++\src&quot;"
 				PreprocessorDefinitions="NDEBUG;_XBOX"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
@@ -83,7 +84,8 @@
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="FALSE"
-				DebugInformationFormat="3"/>
+				DebugInformationFormat="3"
+				ForcedIncludeFiles="VCPPMame.h"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -154,7 +156,7 @@
 				RelativePath="Sources\main.cpp">
 			</File>
 			<File
-				RelativePath="e:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Src\xbfont.cpp">
+				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Src\xbfont.cpp">
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Sources\xbox_FileIO.cpp">
@@ -166,10 +168,10 @@
 				RelativePath="..\MAMEoX\Sources\xbox_Timing.c">
 			</File>
 			<File
-				RelativePath="e:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Src\xbresource.cpp">
+				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Src\xbresource.cpp">
 			</File>
 			<File
-				RelativePath="e:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Src\xbutil.cpp">
+				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Src\xbutil.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -209,7 +211,7 @@
 				RelativePath="..\MAMEoX\Includes\System_IniFile.h">
 			</File>
 			<File
-				RelativePath="e:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbfont.h">
+				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbfont.h">
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Includes\xbox_FileIO.h">
@@ -221,10 +223,10 @@
 				RelativePath="..\MAMEoX\Includes\xbox_Timing.h">
 			</File>
 			<File
-				RelativePath="e:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbresource.h">
+				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbresource.h">
 			</File>
 			<File
-				RelativePath="e:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbutil.h">
+				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbutil.h">
 			</File>
 		</Filter>
 		<Filter

@@ -19,6 +19,10 @@ Opcode (5/25/03):
 
 Version 0.65b
 
+  - Changed the include path for the
+    XDK files to an environment var
+    XDK_SAMPLES
+
   - \MAMEoXLauncher\Sources\main.cpp:
     - Reloading ROMS on button B+A now
 
@@ -29,6 +33,7 @@ Version 0.65b
     - Removed unused gamepad references
     - Added progress bar for driver dumping sequence
     - Added MAME core version to driver file sig.
+    - Fixed some XBE dependencies
 
   - \MAMEoX\Sources\xbox_JoystickMouse.c:
     - Improved analog controls
@@ -79,6 +84,8 @@ Version 0.65b
   - \MAMEoXLauncher\Sources\main.cpp:
     - Bugfix for the backup (X+B) feature
 
+ --- Specific Game fixes --------------------------------------------
+  Bomber Man World (XBE dependency)
 
  --- Integrated MAME version 0.69, changes follow -------------------
 
