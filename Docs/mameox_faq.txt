@@ -1,9 +1,9 @@
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@@@                          MAMEoX FAQ v 0.12                          @@@
+@@@                          MAMEoX FAQ v 0.13                          @@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@                                                                     @@@
-@@@           MAMEoX v 0.70.b3, based on the MAME v 0.70 core           @@@
+@@@           MAMEoX v 0.71.b3, based on the MAME v 0.70 core           @@@
 @@@           Ported by eabair, opcode                                  @@@
 @@@           Portions based on MameX b5                                @@@
 @@@           original port by opcode, updated by superfro              @@@
@@ -17,7 +17,10 @@
  07/08/2003 - 0.11 Added info about bugs in the MAME core.
                    Added info about the MAMEoX ini file.
  07/10/2003 - 0.12 Added info about using Samba shares with
-                   MAMEoX. (Thanks GoDKiLLaX!)                   
+                   MAMEoX. (Thanks GoDKiLLaX!)      
+ 07/22/2003 - 0.13 Updated version, added question about what
+                   do do if MAMEoX will not load up.  Also 
+                   added a note about neogeo bios.                              
 
  1.0 Purpose:
  ------------
@@ -75,12 +78,40 @@
 
  A.  Yup. :)
  -------------------------------------------------------------------------
+ Q.  My MAMEoX hangs / won't run!  What is the deal here?
+ 
+ A.  If you can't seem to get MAMEoX to run, there are a number of 
+     different things you might try:
+     
+     +  Update your dashboard or try a new one out.  Make sure it's one
+        that is somewhat current and is not outdated.
+     +  Update your bios, and make sure IGR is disabled while you are at
+        it.
+     +  Check your binaries (make sure you're not attempting to run
+        source code, if you have no xbe files in your distribution, you
+        probably have the source code).
+     +  Upgrade to a newer version of MAMEoX if you have not upgraded
+        in a while.
+     +  Reinstall MAMEoX completely.  Delete all MAMEoX binaries,
+        subdirectories, and files.  Don't forget to delete everything in
+        E:/TDATA/4d414d45/ as well, this includes subdirectories in this
+        directory.  
+ --------------------------------------------------------------------------        
  Q.  Ok!  I've got MAMEoX on my X-Box and it's running like a champ!  I 
      have never been happier!  Where do I put my roms?
 
  A.  In the roms subdirectory of the MAMEoX root directory.  If it's not
      there already, create it.  Make sure your roms are zipped.
- -------------------------------------------------------------------------
+ --------------------------------------------------------------------------      
+ Q.  None of my neogeo roms will load!  Why?  MAMEoX tells me there are 
+     files missing!  All my neogeo roms can't be bad, can they?
+
+ A.  Do you have a neogeo bios in your roms directory?  Is it zipped?  Is
+     it current and up to date (use a rom checking utility like clrmamepro
+     or romcenter)?  As of this writing the neogeo bios had changed in
+     v.70 of MAME.  Since MAMEoX is a port of MAME, it will require the 
+     same up-to-date bios.
+ --------------------------------------------------------------------------      
  Q.  I've put my rom files in the roms directory, but they still don't
      show up in the list. What's wrong?
 
@@ -122,41 +153,42 @@
      when you use the editor it modifies the correct ini file.  The 
      in-game editor also keeps you from entering incorrect values.
  -------------------------------------------------------------------------
- Q. How do I set up samba support within MameoX?
+ Q.  How do I set up samba support within MameoX?
 
- A. Here it is in 3 steps (Courtesy of GoDKiLLaX).
+ A.  Here it is in 3 steps (Courtesy of GoDKiLLaX).
 
- 1. Setup a Samba share on your PC. I won't go into how to do that since 
-    it's been covered elsewhere (try the documentation for XBMP), but I 
-    will give you a tip. If you play Mame ROMs on your PC then share the 
-    folder where Mame is installed.. i.e.; "C:\mame32" When you do this,
-    you can share any other folder within that folder easily.  These
-    folders can be shared as 'read only'.
+ 1.  Setup a Samba share on your PC. I won't go into how to do that since 
+     it's been covered elsewhere (try the documentation for XBMP), but I 
+     will give you a tip. If you play Mame ROMs on your PC then share the 
+     folder where Mame is installed.. i.e.; "C:\mame32" When you do this,
+     you can share any other folder within that folder easily.  These
+     folders can be shared as 'read only'.
 
- 2. Get to the options menu in MameoX and setup the Network options.
-    Make sure you enable network support in this panel.  Input all your 
-    IP information for the machine that has the directory your are 
-    sharing. 
+ 2.  Get to the options menu in MameoX and setup the Network options.
+     Make sure you enable network support in this panel.  Input all your 
+     IP information for the machine that has the directory your are 
+     sharing. 
 
- 3. Next go to the Directory Path Options Page 2 (The one where you can set 
-    the directories for MameoX i.e.; ROMs, Samples, High score ect...) and 
-    set the ROMs directory to your Samba share. This is the share you 
-    created in the first step. The format is the same as in XBMP. i.e.; 
+ 3.  Next go to the Directory Path Options Page 2 (The one where you can 
+     set the directories for MameoX i.e.; ROMs, Samples, High score 
+     ect...) and set the ROMs directory to your Samba share. This is the 
+     share you created in the first step. The format is the same as in 
+     XBMP. i.e.; 
 
-    "smb://username:password@WorkGroup/ComputerName/MameShare/ROMs"
+     "smb://username:password@WorkGroup/ComputerName/MameShare/ROMs"
 
-    You might also want to share the samples folder since some games might 
-    need them so you won't have to store them on your Xbox. i.e.; 
+     You might also want to share the samples folder since some games 
+     might need them so you won't have to store them on your Xbox. i.e.; 
 
-    "smb://username:password@WorkGroup/ComputerName/MameShare/Samples"
+     "smb://username:password@WorkGroup/ComputerName/MameShare/Samples"
 
-    You can share any of the read only folders also since Artwork is being 
-    implemented, but don't share any folder that MameoX must write to since 
-    MameoX can't write to a share yet.
+     You can share any of the read only folders also since Artwork is 
+     being implemented, but don't share any folder that MameoX must write 
+     to since MameoX can't write to a share yet.
     
-    NOTE:  Using Samba means that you have to enable network support within
-           MAMEoX.  This results in more memory being consumed in later
-           versions of MAMEoX (v70.2b and thereafter).
+     NOTE:  Using Samba means that you have to enable network support
+            within MAMEoX.  This results in more memory being consumed in 
+            later versions of MAMEoX (v70.2b and thereafter).
  -------------------------------------------------------------------------
  Q.  Why won't a particular rom run?
 
@@ -407,6 +439,10 @@
  eabair
  ------
  For the wonderful bread making analogy ;)
+ 
+ GoDKiLLaX
+ ---------
+ For instructions for setting up samba support with MAMEoX.
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@                Thanks for reading, and enjoy MAMEoX!                @@@
