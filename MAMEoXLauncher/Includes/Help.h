@@ -7,8 +7,11 @@
 #pragma once
 
 //= I N C L U D E S ====================================================
-#include "ListView.h"
 #include <vector>
+
+#include "ListView.h"
+#include "TextureSet.h"
+#include "StdString.h"
 
 //= C L A S S E S ======================================================
 
@@ -20,8 +23,12 @@ class CHelp : public CListView
 {
 public:
 
-	CHelp( LPDIRECT3DDEVICE8 displayDevice, CFontSet &fontSet, LPDIRECT3DTEXTURE8 backdropTexture ) :
-      CListView( displayDevice, fontSet, backdropTexture ) {
+		//------------------------------------------------------------
+		// Constructor
+		//------------------------------------------------------------
+	CHelp( LPDIRECT3DDEVICE8 displayDevice, CFontSet &fontSet, CTextureSet &textureSet ) :
+      CListView( displayDevice, fontSet, textureSet.GetBasicBackdrop() ),
+      m_textureSet( textureSet ) {
   }
 
 		//------------------------------------------------------------
@@ -35,6 +42,7 @@ public:
 	BOOL LoadHelpFile( void );
 
     // Declared in ListView.h
+  virtual void MoveCursor( CInputManager &gp, BOOL unused = FALSE );
 	virtual void Draw( BOOL clearScreen = TRUE, BOOL flipOnCompletion = TRUE );
 
 protected:
@@ -49,7 +57,7 @@ protected:
 		//------------------------------------------------------------
 	BOOL FileGets( HANDLE file, char *buffer, UINT32 length );
 
-		//! Vector of integers into the MAME driver array
-		//!  defining the set of available ROMs
-	std::vector<std::string>		m_Help;
+
+  CTextureSet                 &m_textureSet;
+	std::vector<CStdString>		  m_data;
 };

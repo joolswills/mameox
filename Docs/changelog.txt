@@ -11,9 +11,11 @@ Version 0.70.4b
 
     - main.cpp
       - Put all textures in a texture set helper class
+      - Implemented Start Menu functionality
 
     - Help.cpp
       - Put all textures in a texture set helper class
+      - Integrated new gfx from r4dius
 
     - ROMList.cpp
       - Put all textures in a texture set helper class

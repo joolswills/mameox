@@ -23,12 +23,37 @@ extern "C" {
 }
 
 //= S T R U C T U R E S ===============================================
-struct CUSTOMVERTEX
-{
-	D3DXVECTOR3   pos;      // The transformed position for the vertex
-};
 
 //= D E F I N E S ======================================================
+
+  //--- Layout defines -----------------------------------------
+#define HEADER_COLOR          D3DCOLOR_XRGB( 0, 0, 0 )
+#define ITEM_COLOR			      D3DCOLOR_XRGB( 0, 0, 0 )
+#define HIGHLIGHTBAR_COLOR    D3DCOLOR_ARGB( 180, 175, 179, 212 )
+#define SCROLLICON_COLOR      D3DCOLOR_XRGB( 255, 255, 255 )
+
+#define TITLEBAR_ROW          116
+#define FIRSTDATA_ROW         142
+
+#define HIGHLIGHTBAR_LEFT     34
+#define HIGHLIGHTBAR_RIGHT    607
+#define NAME_COLUMN           40
+#define MANUFACTURER_COLUMN   305
+#define YEAR_COLUMN           460
+#define CLONE_COLUMN          530 
+#define TEXTBOX_RIGHT         604   // The right edge of the text box
+#define COLUMN_PADDING        9     // Number of pixels to subtract from the column width before truncating text
+
+#define SCROLLUP_TOP          137
+#define SCROLLUP_RIGHT        608
+#define SCROLLUP_LEFT         SCROLLUP_RIGHT - 32
+#define SCROLLUP_BOTTOM       SCROLLUP_TOP + 32
+
+#define SCROLLDOWN_BOTTOM     448
+#define SCROLLDOWN_TOP        SCROLLDOWN_BOTTOM - 32
+#define SCROLLDOWN_RIGHT      608
+#define SCROLLDOWN_LEFT       SCROLLDOWN_RIGHT - 32
+
 
 	// Maximum number of items to render on the screen at once
 #define MAXPAGESIZE							14
@@ -855,32 +880,6 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 					  								1.0f,															// Z
 						  							0L );															// Stencil
 
-  #define HEADER_COLOR          D3DCOLOR_XRGB( 0, 0, 0 )
-  #define ITEM_COLOR			      D3DCOLOR_XRGB( 0, 0, 0 )
-  #define HIGHLIGHTBAR_COLOR    D3DCOLOR_ARGB( 180, 175, 179, 212 )
-  #define SCROLLICON_COLOR      D3DCOLOR_XRGB( 255, 255, 255 )
-
-  #define TITLEBAR_ROW          116
-  #define FIRSTDATA_ROW         142
-
-  #define HIGHLIGHTBAR_LEFT     34
-  #define HIGHLIGHTBAR_RIGHT    607
-  #define NAME_COLUMN           40
-  #define MANUFACTURER_COLUMN   305
-  #define YEAR_COLUMN           460
-  #define CLONE_COLUMN          530 
-  #define TEXTBOX_RIGHT         604   // The right edge of the text box
-  #define COLUMN_PADDING        9     // Number of pixels to subtract from the column width before truncating text
-
-  #define SCROLLUP_TOP          137
-  #define SCROLLUP_RIGHT        608
-  #define SCROLLUP_LEFT         SCROLLUP_RIGHT - 32
-  #define SCROLLUP_BOTTOM       SCROLLUP_TOP + 32
-
-  #define SCROLLDOWN_BOTTOM     448
-  #define SCROLLDOWN_TOP        SCROLLDOWN_BOTTOM - 32
-  #define SCROLLDOWN_RIGHT      608
-  #define SCROLLDOWN_LEFT       SCROLLDOWN_RIGHT - 32
 
   FLOAT textHeight = m_fontSet.SmallThinFontHeight();
 

@@ -244,7 +244,7 @@ void __cdecl main( void )
     //--- Create the views -------------------------------------------------------
   CHelp help( pD3DDevice, 
               g_fontSet, 
-              g_textureSet.GetBasicBackdrop() );
+              g_textureSet );
 	if( !help.LoadHelpFile() )
   {
     Die( pD3DDevice, 
@@ -576,7 +576,7 @@ void __cdecl main( void )
 
                 // Remove Selected ROM
               case 3:
-                //currentView = VIEW_HELP;
+                romList.RemoveCurrentGameIndex();
                 break;
 
                 // Scan for ROMs
@@ -588,12 +588,28 @@ void __cdecl main( void )
 
               // *** VIEW_OPTIONS *** //
             case VIEW_OPTIONS:
-              currentView = VIEW_ROMLIST;
+              switch( startMenu.GetCursorPosition() )
+              {
+              case 0:
+                currentView = VIEW_ROMLIST;
+                break;
+              case 1:
+                currentView = VIEW_HELP;
+                break;
+              }
               break;
 
               // *** VIEW_LIGHTGUNCALIBRATOR *** //
             case VIEW_LIGHTGUNCALIBRATOR:
-              currentView = VIEW_ROMLIST;
+              switch( startMenu.GetCursorPosition() )
+              {
+              case 0:
+                currentView = VIEW_ROMLIST;
+                break;
+              case 1:
+                currentView = VIEW_HELP;
+                break;
+              }
               break;
 
               // *** VIEW_HELP *** //
@@ -667,12 +683,14 @@ static void Helper_SetStartMenuItems( CStartMenu &startMenu, viewmode currentVie
   case VIEW_OPTIONS:
     startMenu.SetTitle( ":: Options Menu ::" );
     startMenu.AddMenuItem( "ROM List" );
+    startMenu.AddMenuItem( "Help" );
     break;
 
     // *** VIEW_LIGHTGUNCALIBRATOR *** //
   case VIEW_LIGHTGUNCALIBRATOR:
     startMenu.SetTitle( ":: Lightgun Calibrator ::" );
     startMenu.AddMenuItem( "ROM List" );
+    startMenu.AddMenuItem( "Help" );
     break;
 
     // *** VIEW_HELP *** //
