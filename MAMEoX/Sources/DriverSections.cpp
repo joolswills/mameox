@@ -207,7 +207,8 @@ BOOL UnloadDriverSections( void )
         (*i).first == "src\\drivers\\midwunit.c" ||
         (*i).first == "src\\drivers\\mystwarr.c" ||
         (*i).first == "src\\drivers\\sega.c" ||
-        (*i).first == "src\\drivers\\congo.c" )
+        (*i).first == "src\\drivers\\congo.c" ||
+        (*i).first == "src\\drivers\\hal21.c" )
         continue;
     XFreeSection( (*i).second.c_str() );
   }
@@ -461,7 +462,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\gundealr.c", "314" );
   RegisterSectionName( "src\\drivers\\gunsmoke.c", "315" );
   RegisterSectionName( "src\\drivers\\gyruss.c", "316" );
-  RegisterSectionName( "src\\drivers\\hal21.c", "317" );
+  RegisterSectionName( "src\\drivers\\hal21.c", "7" );
   RegisterSectionName( "src\\drivers\\halleys.c", "318" );
   RegisterSectionName( "src\\drivers\\hanaawas.c", "319" );
   RegisterSectionName( "src\\drivers\\hanaroku.c", "320" );

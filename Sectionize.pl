@@ -317,7 +317,7 @@ print GENERATEDFILE "}\n\n";
 print "Sectionizing drivers, sound hardware, and video hardware...\n";
 
 #  LoadDriverSectionByName( "src\\drivers\\mpatrol.c" );   // 10 yard fight is dependent on the mpatrol vidhrdw
-#  LoadDriverSectionByName( "src\\drivers\\snk.c" );       // hal121.c is dependent on snk vidhrdw (ASO - Armored Scrum Object)
+#  LoadDriverSectionByName( "src\\drivers\\snk.c" );       // hal21.c is dependent on snk vidhrdw (ASO - Armored Scrum Object)
 #  LoadDriverSectionByName( "src\\drivers\\galaxian.c" );  // Amidar
 #  LoadDriverSectionByName( "src\\drivers\\scramble.c" );  // Amidar
 #  LoadDriverSectionByName( "src\\drivers\\scobra.c" );    // Amidar
@@ -361,8 +361,8 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 
 
   # TEST Families for 0.71.1b
-@MoonPatrolFamily = ( "mpatrol.c", "yard.c" );								# 10 Yard Fight
-@SNKFamily = ( "snk.c", "hal121.c" );										# ASO - Armored Scrum Object, Athena
+@MoonPatrolFamily = ( "mpatrol.c", "yard.c" );								# 10 Yard Fight07/07/2003
+@SNKFamily = ( "snk.c", "ha121.c" );										# ASO - Armored Scrum Object, Athena
 @AmidarFamily = ( "galaxian.c", "scramble.c", "scobra.c", 
                   "amidar.c", "frogger.c" );								# Amidar, Frog (Galaxian Hardware)
 @RampartFamily = ( "rampart.c", "arcadecl.c" );								# Arcade Classics
