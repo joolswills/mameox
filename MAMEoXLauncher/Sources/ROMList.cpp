@@ -96,6 +96,7 @@ void Die( LPDIRECT3DDEVICE8 m_displayDevice, const char *fmt, ... ); // Defined 
 
 
   // Compare functions for ROM List sorting
+static BOOL Compare_Description( UINT32 a, UINT32 b );
 static BOOL Compare_Manufacturer( UINT32 a, UINT32 b );
 static BOOL Compare_Year( UINT32 a, UINT32 b );
 static BOOL Compare_ParentROM( UINT32 a, UINT32 b );
@@ -1471,9 +1472,9 @@ void CROMList::UpdateSortedList( void )
   switch( m_options.m_sortMode )
   {
     // *** SM_BYNAME *** //
-  case SM_BYNAME:
   default:
-     // Nothing to do, it's sorted by name by default
+  case SM_BYNAME:
+    std::stable_sort( m_currentSortedList.begin(), m_currentSortedList.end(), Compare_Description );
     break;
 
     // *** SM_BYMANUFACTURER *** //
@@ -1739,6 +1740,19 @@ void CROMList::GetFriendlySuperscrollIndexStringForROM( CStdString *ret, UINT32 
     }
     break;
   }
+}
+
+//---------------------------------------------------------------------
+//  Compare_Description
+//---------------------------------------------------------------------
+static BOOL Compare_Description( UINT32 a, UINT32 b )
+{
+  MAMEDriverData_t &aDriver = CROMList::m_driverInfoList[a];
+  MAMEDriverData_t &bDriver = CROMList::m_driverInfoList[b];
+
+  int cmp = stricmp( aDriver.m_description, bDriver.m_description );
+
+  return cmp < 0;
 }
 
 
