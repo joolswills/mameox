@@ -395,8 +395,21 @@ int osd_joystick_needs_calibration( void )
 void osd_joystick_start_calibration( void )
 {
 /* Preprocessing for joystick calibration. Returns 0 on success */
+  const XINPUT_CAPABILITIES *gp;
+  UINT32 i = 0;
+
   g_calibrationStep = 0;
-  g_calibrationJoynum = 0;
+
+    // Search for the first connected gun
+  for( ; i < 4; ++i )
+  {
+    gp = GetGamepadCaps( 0 );  
+    if( gp && gp->SubType == XINPUT_DEVSUBTYPE_GC_LIGHTGUN )
+    {
+      g_calibrationJoynum = i;
+      return;
+    }
+  }
 }
 
 //---------------------------------------------------------------------
