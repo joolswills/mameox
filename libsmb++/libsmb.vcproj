@@ -22,6 +22,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
+				AdditionalIncludeDirectories="../MAME/src;../MAMEoX/Includes"
 				PreprocessorDefinitions="WIN32,_XBOX,_DEBUG"
 				RuntimeLibrary="5"
 				UsePrecompiledHeader="2"

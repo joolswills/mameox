@@ -24,7 +24,7 @@
 				PreprocessorDefinitions="_DEBUG;_XBOX"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="4"
+				RuntimeLibrary="5"
 				BufferSecurityCheck="TRUE"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="0"
@@ -90,7 +90,7 @@
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="FALSE"
-				DebugInformationFormat="3"
+				DebugInformationFormat="0"
 				ForcedIncludeFiles="VCPPMame.h"/>
 			<Tool
 				Name="VCCustomBuildTool"/>

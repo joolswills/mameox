@@ -106,11 +106,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 /FIXED:NO"
-				AdditionalDependencies="xapilibd.lib d3d8d.lib d3dx8d.lib xgraphicsd.lib dsoundd.lib dmusicd.lib xnetd.lib xboxkrnl.lib MAME.lib libsmb.lib"
+				AdditionalDependencies="xapilibd.lib d3d8d.lib d3dx8d.lib xgraphicsd.lib dsoundd.lib dmusicd.lib xnetd.lib xboxkrnl.lib MAME.lib libsmbd.lib"
 				OutputFile=".\Debug/MAMEoX.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="..\MAME\Debug;;&quot;..\libsmb++\Release&quot;"
+				AdditionalLibraryDirectories="..\MAME\Debug;;&quot;..\libsmb++\Debug&quot;"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug/MAMEoX.pdb"/>
 			<Tool
