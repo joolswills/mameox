@@ -22,8 +22,7 @@ extern "C" {
 
 //= D E F I N E S ======================================================
 
-#define NORMAL_ITEM_COLOR				D3DCOLOR_RGBA( 100, 255, 100, 255 )
-#define SELECTED_ITEM_COLOR			D3DCOLOR_RGBA( 255, 255, 255, 255 )
+#define NORMAL_ITEM_COLOR				D3DCOLOR_XRGB( 190, 215, 255 )
 
 	// Maximum number of items to render on the screen at once
 #define MAXPAGESIZE							18
@@ -44,9 +43,6 @@ extern "C" {
 #define DEADZONE								0.25f
 #define DEADZONE_RECTIFIER			1.0f / (1.0f - DEADZONE)
 #define CURSOR_SPEED            0.3f                // The cursor velocity modifier
-
-  // Analog stick deadzone
-#define STICK_DEADZONE          0.45f
 
 	// Number of seconds between valid DPAD readings
 #define DPADCURSORMOVE_TIMEOUT	0.20f
@@ -146,7 +142,7 @@ BOOL CHelp::LoadHelpFile()
 //---------------------------------------------------------------------
 //	MoveCursor
 //---------------------------------------------------------------------
-void CHelp::MoveCursor( const XINPUT_GAMEPAD	&gp )
+void CHelp::MoveCursor( CGamepad &gp )
 {
 		// General idea taken from XMAME
 	static UINT64		lastTime = 0;
@@ -170,8 +166,8 @@ void CHelp::MoveCursor( const XINPUT_GAMEPAD	&gp )
 
 		// General idea taken from XMAME
 		// The combined trigger offset, scaled to the range [-1.0f,1.0f]
-	FLOAT cursorVelocity =  ((FLOAT)gp.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] - 
-												  (FLOAT)gp.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER]) / 256.0f;
+	FLOAT cursorVelocity =  ((FLOAT)gp.GetAnalogButtonState(GP_RIGHT_TRIGGER) - 
+												  (FLOAT)gp.GetAnalogButtonState(GP_LEFT_TRIGGER)) / 256.0f;
 
 
 		// Reset the speed band timeout
@@ -185,7 +181,7 @@ void CHelp::MoveCursor( const XINPUT_GAMEPAD	&gp )
 	}
 
 		// DPAD overrides the triggers
-  if( ((gp.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) || gp.sThumbLY < (-32767.0f * STICK_DEADZONE)) && m_dpadCursorDelay == 0.0f )
+  if( gp.IsOneOfButtonsPressed( GP_DPAD_DOWN | GP_LA_DOWN ) && m_dpadCursorDelay == 0.0f )
 	{
 			// Round the cursor position down to a integer so that adding 1 will move to the next item
     m_helpPageOffset = (FLOAT)((LONG)m_helpPageOffset);
@@ -193,7 +189,7 @@ void CHelp::MoveCursor( const XINPUT_GAMEPAD	&gp )
     cursorVelocity = 1.0f;
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
 	}
-  else if( ((gp.wButtons & XINPUT_GAMEPAD_DPAD_UP) || gp.sThumbLY > (32767.0f * STICK_DEADZONE)) && m_dpadCursorDelay == 0.0f )
+  else if( gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_LA_UP ) && m_dpadCursorDelay == 0.0f )
 	{
 			// Round the cursor position down to a integer so that subtracting 1 will move to the next item
     m_helpPageOffset = (FLOAT)((LONG)m_helpPageOffset);
@@ -344,8 +340,7 @@ void CHelp::Draw( BOOL opaque, BOOL flipOnCompletion )
 
 	m_font.Begin();
 
-		// Render the titles
-	DWORD color;
+		// Render the text
 	FLOAT xPos;
 	FLOAT yPos = 64;
 	DWORD pageSize = (m_Help.size() < MAXPAGESIZE ? m_Help.size() : MAXPAGESIZE);
@@ -365,11 +360,7 @@ void CHelp::Draw( BOOL opaque, BOOL flipOnCompletion )
 
 			// Render the selected item as bright white
 		xPos = 70;
-		if( i == (ULONG)m_helpCursorPosition )
-			color = SELECTED_ITEM_COLOR;
-		else
-			color = NORMAL_ITEM_COLOR;
-		m_font.DrawText( xPos, yPos, color, name, XBFONT_TRUNCATED, 500 );
+		m_font.DrawText( xPos, yPos, NORMAL_ITEM_COLOR, name, XBFONT_TRUNCATED, 500 );
 
 			// Inc the Y position
 		yPos += 20;

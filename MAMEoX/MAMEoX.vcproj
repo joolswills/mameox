@@ -124,16 +124,18 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="XboxDeploymentTool"
-				ExcludedFromBuild="TRUE"
+				ExcludedFromBuild="FALSE"
 				RemotePath="xe:\MAMETEST\MAMEoX.xbe"/>
 			<Tool
 				Name="XboxImageTool"
+				AdditionalOptions="/testid:0x4D414D45"
 				FileName="$(TargetDir)$(TargetName).xbe"
 				StackSize="0x25000"
 				IncludeDebugInfo="TRUE"
 				LimitAvailableMemoryTo64MB="TRUE"
 				SuppressStartupBanner="TRUE"
 				FormatUD="FALSE"
+				NoLibWarn="TRUE"
 				TitleName=""/>
 		</Configuration>
 		<Configuration
@@ -257,6 +259,9 @@
 				RelativePath=".\Includes\DebugLogger.h">
 			</File>
 			<File
+				RelativePath="Includes\Gamepad.h">
+			</File>
+			<File
 				RelativePath=".\Includes\GraphicsManager.h">
 			</File>
 			<File
@@ -344,6 +349,9 @@
 						ObjectFile=".\Profile/"
 						ProgramDataBaseFileName=".\Profile/"/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="Sources\Gamepad.cpp">
 			</File>
 			<File
 				RelativePath=".\Sources\GraphicsManager.cpp">

@@ -310,19 +310,19 @@ void PollGamepads( void )
 
 
 //-------------------------------------------------------------
-// WaitForKey
+// WaitForAnyButton
 //-------------------------------------------------------------
-void WaitForKey( void )
+void WaitForAnyButton( void )
 {
-	g_inputManager.WaitForAnyKey( 0 );
+	g_inputManager.WaitForAnyButton( 0 );
 }
 
 //-------------------------------------------------------------
-// WaitForNoKey
+// WaitForNoButton
 //-------------------------------------------------------------
-void WaitForNoKey( void )
+void WaitForNoButton( void )
 {
-	g_inputManager.WaitForNoKey( 0 );
+	g_inputManager.WaitForNoButton( 0 );
 }
 
 //-------------------------------------------------------------
@@ -385,9 +385,10 @@ void CheckRAM( void )
   FontRender( 320, 300, D3DCOLOR_RGBA(255,255,255,255), memStr, 2 );
   EndFontRender();
 
-	g_inputManager.WaitForNoKey( 0 );
-	g_inputManager.WaitForAnyKey( 0 );
-	g_inputManager.WaitForNoKey( 0 );
+  RequireController( 0 );
+	g_inputManager.WaitForNoButton( 0 );
+	g_inputManager.WaitForAnyButton( 0 );
+	g_inputManager.WaitForNoButton( 0 );
 }
 #endif
 

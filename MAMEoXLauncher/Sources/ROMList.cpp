@@ -46,9 +46,6 @@ extern "C" {
 #define DEADZONE_RECTIFIER			1.0f / (1.0f - DEADZONE)
 #define CURSOR_SPEED            0.3f                // The cursor velocity modifier
 
-  // Analog stick deadzone
-#define STICK_DEADZONE          0.35f
-
 	// Number of seconds between valid DPAD readings
 #define DPADCURSORMOVE_TIMEOUT	0.20f
 
@@ -269,16 +266,15 @@ BOOL CROMList::GenerateROMList( void )
 //---------------------------------------------------------------------
 //	MoveCursor
 //---------------------------------------------------------------------
-void CROMList::MoveCursor( const XINPUT_GAMEPAD	&gp )
+void CROMList::MoveCursor( CGamepad &gp )
 {
   	// Handle user input
-  if(  gp.bAnalogButtons[XINPUT_GAMEPAD_B] > 50 && 
-       gp.bAnalogButtons[XINPUT_GAMEPAD_A] > 50 )
+  if(  gp.IsButtonPressed( GP_B | GP_A ) )
   {
     GenerateROMList();
-		WaitForNoKey();
+		WaitForNoButton();
   }
-  else if( gp.bAnalogButtons[XINPUT_GAMEPAD_A] > 50 || gp.wButtons & XINPUT_GAMEPAD_START )
+  else if( gp.IsOneOfButtonsPressed( GP_A | GP_START ) )
 	{
 			// Run the selected ROM
     if( GetCurrentGameIndex() != INVALID_ROM_INDEX  )
@@ -297,8 +293,7 @@ void CROMList::MoveCursor( const XINPUT_GAMEPAD	&gp )
 		  Die( m_displayDevice, "Could not execute MAMEoX.xbe!" );
     }
 	}
-	else if( gp.bAnalogButtons[XINPUT_GAMEPAD_X] > 150 &&
-					 gp.bAnalogButtons[XINPUT_GAMEPAD_B] > 150 )
+	else if( gp.IsButtonPressed( GP_X | GP_B ) )
 	{				
 			// Move the currently selected game to the backup dir
 		UINT32 romIDX = GetCurrentGameIndex();
@@ -325,20 +320,20 @@ void CROMList::MoveCursor( const XINPUT_GAMEPAD	&gp )
       }
     }
 
-		WaitForNoKey();
+    gp.WaitForNoButton();
 		RemoveCurrentGameIndex();
 	}
-	else if( gp.bAnalogButtons[XINPUT_GAMEPAD_WHITE] > 150 )
+	else if( gp.IsButtonPressed( GP_WHITE ) )
 	{
 		m_additionalinfo = !m_additionalinfo;
-		WaitForNoKey();
+    gp.WaitForNoButton();
 	}
-  else if( gp.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 150 )
+  else if( gp.IsButtonPressed( GP_BLACK ) )
   {
       // No need to regenerate the list, just switch to
       // the noclones (or clones) list
 		m_allowClones = !m_allowClones;
-		WaitForNoKey();
+    gp.WaitForNoButton();
   }
 
 		// General idea taken from XMAME
@@ -357,17 +352,18 @@ void CROMList::MoveCursor( const XINPUT_GAMEPAD	&gp )
 	if( m_dpadCursorDelay > 0.0f )
 	{
 		m_dpadCursorDelay -= elapsedTime;
-		if( m_dpadCursorDelay < 0.0f )
+    if( m_dpadCursorDelay < 0.0f || 
+        !gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_DPAD_DOWN | GP_LA_UP | GP_LA_DOWN ) )
 			m_dpadCursorDelay = 0.0f;
 	}
 
 
-  if( gp.bAnalogButtons[XINPUT_GAMEPAD_Y] > 100 && !m_superscrollMode )
+  if( gp.IsButtonPressed( GP_Y ) && !m_superscrollMode )
   {
     m_dpadCursorDelay = 0.0f;
     m_superscrollMode = TRUE;
   }
-  else if( m_superscrollMode && gp.bAnalogButtons[XINPUT_GAMEPAD_Y] <= 100 )
+  else if( m_superscrollMode && !gp.IsButtonPressed( GP_Y ) )
   {
       //Exit superscrollmode
     m_dpadCursorDelay = 0.0f;
@@ -383,9 +379,9 @@ void CROMList::MoveCursor( const XINPUT_GAMEPAD	&gp )
 //---------------------------------------------------------------------
 //	SuperScrollModeMoveCursor
 //---------------------------------------------------------------------
-void CROMList::SuperScrollModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapsedTime )
+void CROMList::SuperScrollModeMoveCursor( CGamepad &gp, FLOAT elapsedTime )
 {
-  if( ((gp.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) || gp.sThumbLY < (-32767.0f * STICK_DEADZONE)) && m_dpadCursorDelay == 0.0f )
+  if( gp.IsOneOfButtonsPressed( GP_DPAD_DOWN | GP_LA_DOWN ) && m_dpadCursorDelay == 0.0f )
 	{
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
     UINT32 startPos = m_superscrollCharacterIdx;
@@ -399,7 +395,7 @@ void CROMList::SuperScrollModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapse
         return;
     }
 	}
-  else if( ((gp.wButtons & XINPUT_GAMEPAD_DPAD_UP) || gp.sThumbLY > (32767.0f * STICK_DEADZONE)) && m_dpadCursorDelay == 0.0f )
+  else if( gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_LA_UP ) && m_dpadCursorDelay == 0.0f )
 	{
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
     UINT32 startPos = m_superscrollCharacterIdx;
@@ -444,13 +440,13 @@ void CROMList::SuperScrollModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapse
 //---------------------------------------------------------------------
 //  NormalModeMoveCursor
 //---------------------------------------------------------------------
-void CROMList::NormalModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapsedTime )
+void CROMList::NormalModeMoveCursor( CGamepad &gp, FLOAT elapsedTime )
 {
 		// General idea taken from XMAME
 
 		// The combined trigger offset, scaled to the range [-1.0f,1.0f]
-	FLOAT cursorVelocity =  ((FLOAT)gp.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] - 
-												  (FLOAT)gp.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER]) / 256.0f;
+  FLOAT cursorVelocity =  ((FLOAT)gp.GetAnalogButtonState( GP_RIGHT_TRIGGER ) - 
+												  (FLOAT)gp.GetAnalogButtonState( GP_LEFT_TRIGGER )) / 256.0f;
 
 
 		// Reset the speed band timeout
@@ -464,7 +460,7 @@ void CROMList::NormalModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapsedTime
 	}
 
 		// DPAD overrides the triggers
-  if( ((gp.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) || gp.sThumbLY < (-32767.0f * STICK_DEADZONE)) && m_dpadCursorDelay == 0.0f )
+  if( gp.IsOneOfButtonsPressed( GP_DPAD_DOWN | GP_LA_DOWN ) && m_dpadCursorDelay == 0.0f )
 	{
 			// Round the cursor position down to a integer so that adding 1 will move to the next item
     m_gameListPageOffset = (FLOAT)((LONG)m_gameListPageOffset);
@@ -472,7 +468,7 @@ void CROMList::NormalModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapsedTime
     cursorVelocity = 1.0f;
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
 	}
-  else if( ((gp.wButtons & XINPUT_GAMEPAD_DPAD_UP) || gp.sThumbLY > (32767.0f * STICK_DEADZONE)) && m_dpadCursorDelay == 0.0f )
+  else if( gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_LA_UP ) && m_dpadCursorDelay == 0.0f )
 	{
 			// Round the cursor position down to a integer so that subtracting 1 will move to the next item
     m_gameListPageOffset = (FLOAT)((LONG)m_gameListPageOffset);

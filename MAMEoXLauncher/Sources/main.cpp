@@ -56,8 +56,8 @@ extern CGraphicsManager	  g_graphicsManager;
 extern CXBFont						g_font;
 
   // XBE Launch data
-static DWORD              g_launchDataType;
-static LAUNCH_DATA        g_launchData;
+DWORD              g_launchDataType;
+LAUNCH_DATA        g_launchData;
 
 BYTE                      *g_pResourceSysMemData = NULL;
 BYTE                      *g_pResourceVidMemData = NULL;
@@ -318,20 +318,19 @@ void __cdecl main( void )
   }
 
     // Get the launch data
-  MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
   DWORD ret = XGetLaunchInfo( &g_launchDataType, &g_launchData );
+  MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
 
     // See who launched us
-  if( ret != ERROR_SUCCESS || g_launchDataType != LDT_TITLE )
+  if( ret != ERROR_SUCCESS || 
+      g_launchDataType != LDT_TITLE || 
+      mameoxLaunchData->m_command == LAUNCH_RUN_AS_IF_REBOOTED )
   {
 		  // Show a splash screen if we were started from the dashboard and not from MAMEoX
 	  ShowSplashScreen( pD3DDevice );
 
       // Create the MAME driver list
-    mameoxLaunchData->m_gameIndex = 0;
-    mameoxLaunchData->m_cursorPosition = 0.0f; 
-    mameoxLaunchData->m_pageOffset = 0.0f;
-    mameoxLaunchData->m_totalMAMEGames = 0;
+    memset( mameoxLaunchData, 0, sizeof(*mameoxLaunchData) );
     mameoxLaunchData->m_command = LAUNCH_CREATE_MAME_GAME_LIST;
 
       // Try to load the MAME driver info, asking MAMEoX to produce
@@ -355,12 +354,7 @@ void __cdecl main( void )
 
     // Wait for controller 0 to be inserted
   RequireController( 0 );
-	const XINPUT_GAMEPAD	*gp0 = g_inputManager.GetGamepadDeviceState( 0 );
-//	const XINPUT_GAMEPAD	*gp1 = g_inputManager.GetGamepadDeviceState( 1 );
-//	const XINPUT_GAMEPAD	*gp2 = g_inputManager.GetGamepadDeviceState( 2 );
-//	const XINPUT_GAMEPAD	*gp3 = g_inputManager.GetGamepadDeviceState( 3 );
-
-
+  CGamepad *gp0 = g_inputManager.GetGamepad( 0 );
 
 #if TEST_LIGHTGUN
 
@@ -437,7 +431,7 @@ void __cdecl main( void )
     if( gp0->bAnalogButtons[XINPUT_GAMEPAD_B] > 10 )
     {
       osd_joystick_start_calibration();
-      WaitForNoKey();
+      WaitForNoButton();
       const char *ptr = osd_joystick_calibrate_next();
       if( !ptr )
         osd_joystick_end_calibration();
@@ -447,7 +441,7 @@ void __cdecl main( void )
     if( gp0->bAnalogButtons[XINPUT_GAMEPAD_A] > 10 && g_calibrationStep )
     {
       osd_joystick_calibrate();
-      WaitForNoKey();
+      WaitForNoButton();
       const char *ptr = osd_joystick_calibrate_next();
       if( !ptr )
         osd_joystick_end_calibration();
@@ -490,6 +484,9 @@ void __cdecl main( void )
     g_graphicsManager.GetD3DDevice()->Present( NULL, NULL, NULL, NULL );
   }
 #endif
+
+
+
 
 		// Load the Help file
   CHelp help( pD3DDevice, g_font );
@@ -541,7 +538,7 @@ void __cdecl main( void )
 	{
 		g_inputManager.PollDevices();
     RequireController( 0 );
-	  gp0 = g_inputManager.GetGamepadDeviceState( 0 );
+	  gp0 = g_inputManager.GetGamepad( 0 );
 
 	  UINT64 curTime = osd_cycles();
 	  FLOAT elapsedTime = (FLOAT)(curTime - lastTime) / (FLOAT)osd_cycles_per_second();
@@ -557,9 +554,7 @@ void __cdecl main( void )
 
 
 			// Reboot on LT+RT+Black
-		if( gp0->bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] > 150 &&
-				gp0->bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] > 150 &&
-				gp0->bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 150 )
+    if( gp0->IsButtonPressed( GP_LEFT_TRIGGER | GP_RIGHT_TRIGGER | GP_BLACK ) )
 		{
       SaveOptions();
       LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
@@ -568,36 +563,34 @@ void __cdecl main( void )
 
 
 
-    if( gp0->bAnalogButtons[XINPUT_GAMEPAD_B] > 150 && 
-        gp0->bAnalogButtons[XINPUT_GAMEPAD_Y] > 150 && 
-        toggleButtonTimeout == 0.0f )
+    if( gp0->IsButtonPressed( GP_B | GP_Y ) && toggleButtonTimeout == 0.0f )
     {
         // Toggle options mode
       optionsMode = !optionsMode;
       toggleButtonTimeout = TOGGLEBUTTON_TIMEOUT;
     }
-    else if(  gp0->bAnalogButtons[XINPUT_GAMEPAD_B] < 150 && 
-              gp0->bAnalogButtons[XINPUT_GAMEPAD_X] > 150 && 
-              toggleButtonTimeout == 0.0f )
+    else if(  gp0->IsButtonPressed( GP_X ) && toggleButtonTimeout == 0.0f )
     {
         // Toggle help mode
       helpMode = !helpMode;
       toggleButtonTimeout = TOGGLEBUTTON_TIMEOUT;
     }
-    else if(  gp0->sThumbRX < -SCREENRANGE_DEADZONE || gp0->sThumbRX > SCREENRANGE_DEADZONE || 
-              gp0->sThumbRY < -SCREENRANGE_DEADZONE || gp0->sThumbRY > SCREENRANGE_DEADZONE )
+    else if(  gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) < -SCREENRANGE_DEADZONE || 
+              gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) > SCREENRANGE_DEADZONE || 
+              gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) < -SCREENRANGE_DEADZONE || 
+              gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) > SCREENRANGE_DEADZONE )
     {
       FLOAT xPercentage, yPercentage;
       GetScreenUsage( &xPercentage, &yPercentage );
 
-      if( gp0->sThumbRX < -SCREENRANGE_DEADZONE )
+      if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) < -SCREENRANGE_DEADZONE )
         xPercentage -= 0.00025f;
-      else if( gp0->sThumbRX > SCREENRANGE_DEADZONE )
+      else if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) > SCREENRANGE_DEADZONE )
         xPercentage += 0.00025f;
 
-      if( gp0->sThumbRY < -SCREENRANGE_DEADZONE )
+      if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) < -SCREENRANGE_DEADZONE )
         yPercentage -= 0.00025f;
-      else if( gp0->sThumbRY > SCREENRANGE_DEADZONE )
+      else if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) > SCREENRANGE_DEADZONE )
         yPercentage += 0.00025f;
 
       if( xPercentage < 0.25f )
@@ -837,9 +830,9 @@ void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 	g_font.End();
 	pD3DDevice->Present( NULL, NULL, NULL, NULL );
 
-	g_inputManager.WaitForNoKey( 0 );
-	g_inputManager.WaitForAnyKey( 0 );
-	g_inputManager.WaitForNoKey( 0 );
+	g_inputManager.WaitForNoButton( 0 );
+	g_inputManager.WaitForAnyButton( 0 );
+	g_inputManager.WaitForNoButton( 0 );
 
     // Reboot
   LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
@@ -1205,8 +1198,8 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 
   pD3DDevice->Present( NULL, NULL, NULL, NULL );
 
-	g_inputManager.WaitForAnyKey();
-	g_inputManager.WaitForNoKey( 0 );
+	g_inputManager.WaitForAnyButton();
+	g_inputManager.WaitForNoButton( 0 );
 
   pD3DVertexBuffer->Release();
 }

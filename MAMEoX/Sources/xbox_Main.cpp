@@ -75,7 +75,8 @@ void __cdecl main( void )
 	DebugLoggerInit();
 
     // Get the launch data immediately, just in case Die() is called
-  DWORD ret = XGetLaunchInfo( &g_launchDataType, &g_launchData );
+  DWORD getLaunchInfoRet = XGetLaunchInfo( &g_launchDataType, &g_launchData );
+  MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
 
 		// Mount the utility drive for storage of the ROM list cache file
 	//XMountUtilityDrive( FALSE );
@@ -106,9 +107,10 @@ void __cdecl main( void )
 
 	  // Initialize the input subsystem
 	g_inputManager.Create( 4, 0 );  // 4 controllers, no memory cards
+CHECKRAM();
 
     // Check the launch data to ensure that we've been started properly
-  if( ret != ERROR_SUCCESS || g_launchDataType != LDT_TITLE )
+  if( getLaunchInfoRet != ERROR_SUCCESS || g_launchDataType != LDT_TITLE )
   {
       // This XBE shouldn't be launched directly. Throw up a splash screen
       // saying so, then try to launch MAMEoxLauncher
@@ -116,9 +118,7 @@ void __cdecl main( void )
       // Die never returns
   }
  
-  MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
 
-CHECKRAM();
 
     // Create the sorted game listing and exit
   if( mameoxLaunchData->m_command == LAUNCH_CREATE_MAME_GAME_LIST )
@@ -344,9 +344,14 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 	pD3DDevice->Present( NULL, NULL, NULL, NULL );
 
 
-	g_inputManager.WaitForNoKey( 0 );
-	g_inputManager.WaitForAnyKey( 0 );
-	g_inputManager.WaitForNoKey( 0 );
+  RequireController( 0 );
+	g_inputManager.WaitForNoButton( 0 );
+	g_inputManager.WaitForAnyButton( 0 );
+	g_inputManager.WaitForNoButton( 0 );
+
+    // Make sure MAMEoXLauncher acts as though it was launched from the dashboard
+  MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
+  mameoxLaunchData->m_command = LAUNCH_RUN_AS_IF_REBOOTED;
 
     // Relaunch MAMEoXLauncher
   ShowLoadingScreen( pD3DDevice );

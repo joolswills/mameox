@@ -51,7 +51,8 @@ extern "C" {
 typedef enum mameoxLaunchCommand
 {
   LAUNCH_CREATE_MAME_GAME_LIST = 0x01,    //!<  Write the MAME supported game file and return
-  LAUNCH_RUN_GAME                         //!<  Run the gameIndex and return
+  LAUNCH_RUN_GAME,                        //!<  Run the gameIndex and return
+  LAUNCH_RUN_AS_IF_REBOOTED               //!<  MAMEoXLauncher should act as though the system was totally rebooted
 } mameoxLaunchCommand;
 
 //= S T R U C T U R E S ================================================
@@ -61,8 +62,8 @@ typedef struct MAMEoXLaunchData_t
   DWORD                 m_totalMAMEGames; //!<  The total number of games supported by the MAME core
   DWORD                 m_gameIndex;      //!<  The index of the currently selected game
 
-  FLOAT                 m_cursorPosition;     //!<  Cursor position within the ROM list
-  FLOAT                 m_pageOffset;         //!<  Page offset within the ROM list
+  float                 m_cursorPosition;     //!<  Cursor position within the ROM list
+  float                 m_pageOffset;         //!<  Page offset within the ROM list
   UINT32                m_superscrollIndex;   //!<  Superscroll index for the ROM list
 } MAMEoXLaunchData_t;
 
@@ -153,16 +154,16 @@ void FontRender( INT32 x, INT32 y, UINT32 color, const WCHAR *str, UINT32 flags 
 void EndFontRender( void );
 
 	//-------------------------------------------------------------------
-	//	WaitForKey
-	//! \brief		Block until any key is pressed
+	//	WaitForAnyButton
+	//! \brief		Block until any button is pressed on gamepad 1
 	//-------------------------------------------------------------------
-void WaitForKey( void );
+void WaitForAnyButton( void );
 
 	//-------------------------------------------------------------------
-	//	WaitForNoKey
-	//! \brief		Block until all keys are released
+	//	WaitForNoButton
+	//! \brief		Block until all buttons are released on gamepad 1
 	//-------------------------------------------------------------------
-void WaitForNoKey( void );
+void WaitForNoButton( void );
 
 
 #ifdef _DEBUG

@@ -14,6 +14,7 @@
 #include <Xtl.h>
 #include "XBFont.h"
 #include "MAMEoX.h"
+#include "Gamepad.h"
 
 extern "C" {
 #include "mame.h"
@@ -100,10 +101,10 @@ public:
 		// MoveCursor
 		//! \brief		Move the cursor based on user input
 		//!
-		//! \param		gp - The XINPUT_GAMEPAD struct containing the 
+		//! \param		gp - The CGamepad containing the 
 		//!                current state of the user's joystick
 		//------------------------------------------------------------
-	void MoveCursor( const XINPUT_GAMEPAD	&gp );
+	void MoveCursor( CGamepad &gp );
 
 		//------------------------------------------------------------
 		// Draw

@@ -11,6 +11,7 @@
 #include <Xtl.h>
 #include "XBFont.h"
 #include "MAMEoX.h"
+#include "Gamepad.h"
 #include <vector>
 
 //= D E F I N E S ======================================================
@@ -88,10 +89,10 @@ public:
 		// MoveCursor
 		//! \brief		Move the cursor based on user input
 		//!
-		//! \param		gp - The XINPUT_GAMEPAD struct containing the 
-		//!                current state of the user's joystick
+		//! \param		gp - The CGamepad instance associated with
+		//!                the controlling gamepad
 		//------------------------------------------------------------
-	void MoveCursor( const XINPUT_GAMEPAD	&gp );
+	void MoveCursor( CGamepad	&gp );
 
 
 		//------------------------------------------------------------
@@ -162,8 +163,8 @@ public:
 protected:
 
     // Cursor movement helper functions
-  void SuperScrollModeMoveCursor( const XINPUT_GAMEPAD	&gp, FLOAT elapsedTime );
-  void NormalModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapsedTime );
+  void SuperScrollModeMoveCursor( CGamepad &gp, FLOAT elapsedTime );
+  void NormalModeMoveCursor( CGamepad &gp, FLOAT elapsedTime );
   void GenerateSuperscrollJumpTable( void );
 
   UINT32                m_numDrivers;               //!<  The total number of drivers supported by the core

@@ -18,8 +18,7 @@
          buttons, you can change the letter; 
          skipping to the section of the list 
          starting with that letter.
- Black - Search for ROM files, culling out clones / 
-         keeping clones
+ Black - Toggle between showing and hiding clones
  White - Toggle extended list mode (with 
          rating and favorite columns)
 

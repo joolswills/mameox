@@ -34,9 +34,6 @@ extern "C" {
 #define DEADZONE_RECTIFIER			1.0f / (1.0f - DEADZONE)
 #define CURSOR_SPEED            0.3f                // The cursor velocity modifier
 
-  // Analog stick deadzone
-#define STICK_DEADZONE          0.35f
-
 	// Number of seconds between valid DPAD readings
 #define DPADCURSORMOVE_TIMEOUT	0.20f
 
@@ -118,7 +115,7 @@ void ChangeVectorPage( COptionsPage *ptr, BOOL direction )
 //---------------------------------------------------------------------
 //	MoveCursor
 //---------------------------------------------------------------------
-void COptionsPage::MoveCursor( const XINPUT_GAMEPAD	&gp )
+void COptionsPage::MoveCursor( CGamepad	&gp )
 {
 		// General idea taken from XMAME
 	static UINT64		lastTime = 0;
@@ -136,20 +133,19 @@ void COptionsPage::MoveCursor( const XINPUT_GAMEPAD	&gp )
 	if( m_dpadCursorDelay > 0.0f )
 	{
 		m_dpadCursorDelay -= elapsedTime;
-    if( m_dpadCursorDelay < 0.0f || !gp.wButtons )
+    if( m_dpadCursorDelay < 0.0f || 
+        !gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_DPAD_DOWN | GP_LA_UP | GP_LA_DOWN ) )
 			m_dpadCursorDelay = 0.0f;
 	}
 
   if( m_triggerDelay > 0.0f )
   {
     m_triggerDelay -= elapsedTime;
-    if( m_triggerDelay < 0.0f || 
-        (gp.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] <= 120 &&
-         gp.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] <= 120 ) )
+    if( m_triggerDelay < 0.0f || !gp.IsOneOfButtonsPressed( GP_LEFT_TRIGGER | GP_RIGHT_TRIGGER ) )
       m_triggerDelay = 0.0f;
   }
 
-  if( gp.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] > 120 && m_triggerDelay == 0.0f )
+  if( gp.IsButtonPressed( GP_LEFT_TRIGGER ) && m_triggerDelay == 0.0f )
   {
     if( m_pageNumber )
       --m_pageNumber;
@@ -159,7 +155,7 @@ void COptionsPage::MoveCursor( const XINPUT_GAMEPAD	&gp )
     m_triggerDelay = TRIGGERSWITCH_TIMEOUT;
     m_cursorPosition = 0;
   }
-  else if( gp.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] > 120 && m_triggerDelay == 0.0f )
+  else if( gp.IsButtonPressed( GP_RIGHT_TRIGGER ) && m_triggerDelay == 0.0f )
   {
     if( m_pageNumber < OPTPAGE_LAST - 1 )
       ++m_pageNumber;
@@ -169,13 +165,13 @@ void COptionsPage::MoveCursor( const XINPUT_GAMEPAD	&gp )
     m_triggerDelay = TRIGGERSWITCH_TIMEOUT;
     m_cursorPosition = 0;
   }
-  else if( ((gp.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) || gp.sThumbLY < (-32767.0f * STICK_DEADZONE)) && m_dpadCursorDelay == 0.0f )
+  else if( gp.IsOneOfButtonsPressed( GP_DPAD_DOWN | GP_LA_DOWN ) && m_dpadCursorDelay == 0.0f )
 	{
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
     if( ++m_cursorPosition >= m_pageData[m_pageNumber].m_numItems )
       m_cursorPosition = 0;
   }
-  else if( ((gp.wButtons & XINPUT_GAMEPAD_DPAD_UP) || gp.sThumbLY > (32767.0f * STICK_DEADZONE)) && m_dpadCursorDelay == 0.0f )
+  else if( gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_LA_UP ) && m_dpadCursorDelay == 0.0f )
 	{
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
     if( m_cursorPosition ) 
@@ -183,12 +179,12 @@ void COptionsPage::MoveCursor( const XINPUT_GAMEPAD	&gp )
     else
       m_cursorPosition = m_pageData[m_pageNumber].m_numItems - 1;
   }
-  else if( ((gp.wButtons & XINPUT_GAMEPAD_DPAD_LEFT) || gp.sThumbLX < (-32767.0f * STICK_DEADZONE)) && m_dpadCursorDelay == 0.0f )
+  else if( gp.IsOneOfButtonsPressed( GP_DPAD_LEFT | GP_LA_LEFT ) && m_dpadCursorDelay == 0.0f )
 	{
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
     m_pageData[m_pageNumber].m_changeFunct( this, FALSE );
   }
-  else if( ((gp.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT) || gp.sThumbLX > (32767.0f * STICK_DEADZONE)) && m_dpadCursorDelay == 0.0f )
+  else if( gp.IsOneOfButtonsPressed( GP_DPAD_RIGHT | GP_LA_RIGHT ) && m_dpadCursorDelay == 0.0f )
 	{
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
     m_pageData[m_pageNumber].m_changeFunct( this, TRUE );

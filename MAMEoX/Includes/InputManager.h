@@ -9,6 +9,7 @@
 
 //= I N C L U D E S ===========================================================
 #include <Xtl.h>
+#include "Gamepad.h"
 
 
 //= C L A S S E S =============================================================
@@ -55,6 +56,19 @@ public:
 			// Get the list of devices currently attached to the system
 		m_gamepadDeviceBitmap = XGetDevices( XDEVICE_TYPE_GAMEPAD );
 		m_memunitDeviceBitmap = XGetDevices( XDEVICE_TYPE_MEMORY_UNIT );
+    
+      // Create the gamepads
+    for( UINT32 i = 0; i < 4; ++i )
+    {
+      m_gamepads[i].Create( i, 
+                            maxMemUnits > 2 ? 2 : maxMemUnits, 
+                            &m_gamepadDeviceBitmap,
+                            &m_memunitDeviceBitmap );
+      if( maxMemUnits > 2 )
+        maxMemUnits -= 2;
+      else
+        maxMemUnits = 0;
+    }
 
     PollDevices();
 
@@ -65,18 +79,11 @@ public:
 		//	AttachRemoveDevices
 		//------------------------------------------------------
 	inline void AttachRemoveDevices( void ) {
-
 			// Attach/Remove gamepads
-		AttachRemoveGamepadDevice( 0 );
-		AttachRemoveGamepadDevice( 1 );
-		AttachRemoveGamepadDevice( 2 );
-		AttachRemoveGamepadDevice( 3 );
-
-			// Attach/Remove MemUnit sets
-		AttachRemoveMemUnitDevicePair( 0 );
-		AttachRemoveMemUnitDevicePair( 1 );
-		AttachRemoveMemUnitDevicePair( 2 );
-		AttachRemoveMemUnitDevicePair( 3 );
+    m_gamepads[0].AttachRemoveDevices();
+    m_gamepads[1].AttachRemoveDevices();
+    m_gamepads[2].AttachRemoveDevices();
+    m_gamepads[3].AttachRemoveDevices();
 	}
 
 
@@ -102,17 +109,10 @@ public:
 
 		AttachRemoveDevices();
 
-		if( m_gamepadDeviceHandles[0] )
-			XInputGetState( m_gamepadDeviceHandles[0], &m_gamepadDeviceState[0] );
-
-		if( m_gamepadDeviceHandles[1] )
-			XInputGetState( m_gamepadDeviceHandles[1], &m_gamepadDeviceState[1] );
-
-		if( m_gamepadDeviceHandles[2] )
-			XInputGetState( m_gamepadDeviceHandles[2], &m_gamepadDeviceState[2] );
-
-		if( m_gamepadDeviceHandles[3] )
-			XInputGetState( m_gamepadDeviceHandles[3], &m_gamepadDeviceState[3] );
+    m_gamepads[0].PollDevice();
+    m_gamepads[1].PollDevice();
+    m_gamepads[2].PollDevice();
+    m_gamepads[3].PollDevice();
 	}
 
 
@@ -125,9 +125,39 @@ public:
   void WaitForControllerInsertion( DWORD device ) {
     if( device < 4 )
     {
-      while( !m_gamepadDeviceHandles[device] )
+      while( !m_gamepads[0].IsConnected() )
         PollDevices();
     }
+  }
+
+		//------------------------------------------------------
+		//	GetGamepad
+    //! Return a given gamepad instance
+    //!
+    //! \param    device - The device number to query (0-3)
+    //!
+    //! \retval   CGamepad * - The requested gamepad object
+		//------------------------------------------------------
+  CGamepad *GetGamepad( DWORD device ) {
+		if( device > 3 )
+			return NULL;
+
+    return &m_gamepads[device];
+  }
+
+		//------------------------------------------------------
+		//	GetGamepad (const version)
+    //! Return a given gamepad instance
+    //!
+    //! \param    device - The device number to query (0-3)
+    //!
+    //! \retval   const CGamepad * - The requested gamepad object
+		//------------------------------------------------------
+  const CGamepad *GetGamepad( DWORD device ) const {
+		if( device > 3 )
+			return NULL;
+
+    return &m_gamepads[device];
   }
 
 		//------------------------------------------------------
@@ -140,10 +170,10 @@ public:
     //!                                    gamepad state object
 		//------------------------------------------------------
 	const XINPUT_GAMEPAD *GetGamepadDeviceState( DWORD device ) const {
-		if( device > 3 || !m_gamepadDeviceHandles[device] )
+		if( device > 3 )
 			return NULL;
 
-		return &m_gamepadDeviceState[device].Gamepad;
+    return m_gamepads[device].GetGamepadDeviceState();
 	}
 
 		//------------------------------------------------------
@@ -156,10 +186,10 @@ public:
     //!                                    gamepad caps object
 		//------------------------------------------------------
 	const XINPUT_CAPABILITIES *GetGamepadDeviceCaps( DWORD device ) const {
-		if( device > 3 || !m_gamepadDeviceHandles[device] )
+		if( device > 3 )
 			return NULL;
 
-		return &m_gamepadCaps[device];
+    return m_gamepads[device].GetGamepadDeviceCaps();
 	}
 
 		//------------------------------------------------------
@@ -170,113 +200,41 @@ public:
     //! \param  feedback - Struct describing the effect to send
 		//------------------------------------------------------
 	inline BOOL SetGamepadFeedbackState( DWORD deviceNumber, const XINPUT_FEEDBACK &feedback ) {
-			// Make sure an op isn't already in progress
-		if( m_gamepadFeedback[deviceNumber].Header.dwStatus == ERROR_IO_PENDING )
-			return FALSE;
+    if( deviceNumber > 3 )
+      return FALSE;
 
-			// Store the var to ensure persistency (XInputSetState is async)
-		m_gamepadFeedback[deviceNumber] = feedback;
-		if( m_gamepadDeviceHandles[deviceNumber] )
-		{
-			if( XInputSetState( m_gamepadDeviceHandles[deviceNumber], &m_gamepadFeedback[deviceNumber] ) != ERROR_IO_PENDING )
-				return FALSE;
-		}
-
-		return TRUE;
+    return m_gamepads[deviceNumber].SetGamepadFeedbackState( feedback );
 	}
 
 
 		//------------------------------------------------------
-		//	WaitForAnyKey
+		//	WaitForAnyButton
 		//! \brief		Wait for any button to be pressed on the
 		//!            selected joypad
 		//!
 		//! \param		gamepadNum - Joypad to test (0xFF = all)
 		//------------------------------------------------------
-	void WaitForAnyKey( DWORD gamepadNum = 0xFF ) {
+	void WaitForAnyButton( DWORD gamepadNum = 0xFF ) {
 		while( 1 )
 		{
 			PollDevices();
 
-			if( gamepadNum == 0 || gamepadNum == 0xFF )
-			{
-				const XINPUT_GAMEPAD	&gp = m_gamepadDeviceState[0].Gamepad;
-				if( gp.wButtons ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_A] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_B] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_X] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_Y] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_WHITE] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] > 100 )
-				{
-					return;
-				}
-			}
-
-
-			if( gamepadNum == 1 || gamepadNum == 0xFF )
-			{
-				const XINPUT_GAMEPAD	&gp = m_gamepadDeviceState[1].Gamepad;
-				if( gp.wButtons ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_A] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_B] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_X] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_Y] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_WHITE] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] > 100 )
-				{
-					return;
-				}
-			}
-
-			if( gamepadNum == 2 || gamepadNum == 0xFF )
-			{
-				const XINPUT_GAMEPAD	&gp = m_gamepadDeviceState[2].Gamepad;
-				if( gp.wButtons ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_A] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_B] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_X] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_Y] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_WHITE] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] > 100 )
-				{
-					return;
-				}
-			}
-
-			if( gamepadNum == 3 || gamepadNum == 0xFF )
-			{
-				const XINPUT_GAMEPAD	&gp = m_gamepadDeviceState[3].Gamepad;
-				if( gp.wButtons ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_A] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_B] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_X] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_Y] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_WHITE] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] > 100 )
-				{
-					return;
-				}
-			}
+			if( ((gamepadNum == 0 || gamepadNum == 0xFF) && m_gamepads[0].IsAnyButtonPressed()) ||
+          ((gamepadNum == 1 || gamepadNum == 0xFF) && m_gamepads[1].IsAnyButtonPressed()) ||
+          ((gamepadNum == 2 || gamepadNum == 0xFF) && m_gamepads[2].IsAnyButtonPressed()) ||
+          ((gamepadNum == 3 || gamepadNum == 0xFF) && m_gamepads[3].IsAnyButtonPressed()) )
+        return;
 		}
 	}
 
 		//------------------------------------------------------
-		//	WaitForNoKey
+		//	WaitForNoButton
 		//! \brief		Wait for all button to be released on the
 		//!            selected joypad
 		//!
 		//! \param		gamepadNum - Joypad to test (0xFF = all)
 		//------------------------------------------------------
-	void WaitForNoKey( DWORD gamepadNum = 0xFF ) {
+	void WaitForNoButton( DWORD gamepadNum = 0xFF ) {
 		BOOL keyPressed = FALSE;
 		do
 		{
@@ -284,215 +242,23 @@ public:
 			PollDevices();
 
 			if( gamepadNum == 0 || gamepadNum == 0xFF )
-			{
-				const XINPUT_GAMEPAD	&gp = m_gamepadDeviceState[0].Gamepad;
-				if( gp.wButtons ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_A] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_B] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_X] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_Y] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_WHITE] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] > 100 )
-				{
-					keyPressed = TRUE;
-				}
-			}
-
+        keyPressed = m_gamepads[0].IsAnyButtonPressed();
 
 			if( gamepadNum == 1 || gamepadNum == 0xFF )
-			{
-				const XINPUT_GAMEPAD	&gp = m_gamepadDeviceState[1].Gamepad;
-				if( gp.wButtons ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_A] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_B] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_X] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_Y] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_WHITE] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] > 100 )
-				{
-					keyPressed = TRUE;
-				}
-			}
+        keyPressed = m_gamepads[1].IsAnyButtonPressed();
 
 			if( gamepadNum == 2 || gamepadNum == 0xFF )
-			{
-				const XINPUT_GAMEPAD	&gp = m_gamepadDeviceState[2].Gamepad;
-				if( gp.wButtons ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_A] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_B] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_X] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_Y] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_WHITE] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] > 100 )
-				{
-					keyPressed = TRUE;
-				}
-			}
+        keyPressed = m_gamepads[2].IsAnyButtonPressed();
 
 			if( gamepadNum == 3 || gamepadNum == 0xFF )
-			{
-				const XINPUT_GAMEPAD	&gp = m_gamepadDeviceState[3].Gamepad;
-				if( gp.wButtons ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_A] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_B] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_X] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_Y] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_WHITE] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] > 100 ||
-						gp.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] > 100 )
-				{
-					keyPressed = TRUE;
-				}
-			}
+        keyPressed = m_gamepads[3].IsAnyButtonPressed();
+
 		} while( keyPressed );
 	}
 
 
 
 protected:
-
-		//------------------------------------------------------
-		//	AttachRemoveGamepadDevice
-		//------------------------------------------------------
-	inline void AttachRemoveGamepadDevice( DWORD portNumber ) {
-		DWORD portMask, portName;
-
-		switch( portNumber )
-		{
-		default:
-//			assert( 0 && "Invalid gamepad port number!" );
-			// fallthrough
-
-			// *** 0 *** //
-		case 0:
-			portMask = XDEVICE_PORT0_MASK;
-			portName = XDEVICE_PORT0;
-			break;
-
-			// *** 1 *** //
-		case 1:
-			portMask = XDEVICE_PORT1_MASK;
-			portName = XDEVICE_PORT1;
-			break;
-
-			// *** 2 *** //
-		case 2:
-			portMask = XDEVICE_PORT2_MASK;
-			portName = XDEVICE_PORT2;
-			break;
-
-			// *** 3 *** //
-		case 3:
-			portMask = XDEVICE_PORT3_MASK;
-			portName = XDEVICE_PORT3;
-			break;
-		}
-
-		if(	(m_gamepadDeviceBitmap & portMask ) && !m_gamepadDeviceHandles[portNumber] )
-		{
-				// Attach
-			m_gamepadDeviceHandles[portNumber] = XInputOpen( XDEVICE_TYPE_GAMEPAD,
-																							         portName,				
-																							         XDEVICE_NO_SLOT,			// Gamepad, so no slot
-																							         NULL );								// No special polling params
-      XInputGetCapabilities( m_gamepadDeviceHandles[portNumber], &m_gamepadCaps[portNumber] );
-		}
-		else if( !(m_gamepadDeviceBitmap & portMask ) && m_gamepadDeviceHandles[portNumber] )
-		{
-				// Detach
-			XInputClose( m_gamepadDeviceHandles[portNumber] );
-			m_gamepadDeviceHandles[portNumber] = NULL;
-			m_gamepadDeviceState[portNumber].dwPacketNumber = 0;
-		}
-	}
-
-		//------------------------------------------------------
-		//	AttachRemoveMemUnitDevicePair
-		//------------------------------------------------------
-	inline void AttachRemoveMemUnitDevicePair( DWORD portNumber ) {
-		DWORD topPortMask, bottomPortMask, portName;
-
-		switch( portNumber )
-		{
-		default:
-//			assert( 0 && "Invalid gamepad port number!" );
-			// fallthrough
-
-			// *** 0 *** //
-		case 0:
-			topPortMask = XDEVICE_PORT0_TOP_MASK;
-			bottomPortMask = XDEVICE_PORT0_BOTTOM_MASK;
-			portName = XDEVICE_PORT0;
-			break;
-
-			// *** 1 *** //
-		case 1:
-			topPortMask = XDEVICE_PORT1_TOP_MASK;
-			bottomPortMask = XDEVICE_PORT1_BOTTOM_MASK;
-			portName = XDEVICE_PORT1;
-			break;
-
-			// *** 2 *** //
-		case 2:
-			topPortMask = XDEVICE_PORT2_TOP_MASK;
-			bottomPortMask = XDEVICE_PORT2_BOTTOM_MASK;
-			topPortMask = XDEVICE_PORT0_MASK;
-			portName = XDEVICE_PORT2;
-			break;
-
-			// *** 3 *** //
-		case 3:
-			topPortMask = XDEVICE_PORT3_TOP_MASK;
-			bottomPortMask = XDEVICE_PORT3_BOTTOM_MASK;
-			topPortMask = XDEVICE_PORT0_MASK;
-			portName = XDEVICE_PORT3;
-			break;
-		}
-
-		DWORD top = (portNumber << 1);
-		DWORD bottom = top + 1;
-
-			// -- Top --------------------------------
-		if( (m_memunitDeviceBitmap & topPortMask) && !m_memunitDeviceHandles[top] )
-		{
-				// Attach
-			m_memunitDeviceHandles[top] = XInputOpen( XDEVICE_TYPE_MEMORY_UNIT,
-																								portName,				
-																								XDEVICE_TOP_SLOT,			// Gamepad, so no slot
-																								NULL );								// No special polling params
-		}
-		else if( !(m_memunitDeviceBitmap & topPortMask ) && m_memunitDeviceHandles[top] )
-		{
-				// Detach
-			XInputClose( m_memunitDeviceHandles[top] );
-			m_memunitDeviceHandles[top] = NULL;
-		}
-
-			// -- Bottom --------------------------------
-		if( (m_memunitDeviceBitmap & bottomPortMask) && !m_memunitDeviceHandles[bottom] )
-		{
-				// Attach
-			m_memunitDeviceHandles[bottom] = XInputOpen( XDEVICE_TYPE_MEMORY_UNIT,
-																								portName,				
-																								XDEVICE_BOTTOM_SLOT,			// Gamepad, so no slot
-																								NULL );								// No special polling params
-		}
-		else if( !(m_memunitDeviceBitmap & bottomPortMask ) && m_memunitDeviceHandles[bottom] )
-		{
-				// Detach
-			XInputClose( m_memunitDeviceHandles[bottom] );
-			m_memunitDeviceHandles[bottom] = NULL;
-		}
-
-	}
-
 
 	static BOOL			m_created;									//!<	Whether or not this singleton has been created
 
@@ -501,12 +267,8 @@ protected:
 
 	DWORD						m_gamepadDeviceBitmap;			//!<	Bitmap storing which gamepad devices are currently attached
 	DWORD						m_memunitDeviceBitmap;			//!<	Bitmap storing which mem unit devices are currently attached
-	HANDLE					m_gamepadDeviceHandles[4];	//!<	Input handles for gamepads
-	HANDLE					m_memunitDeviceHandles[8];	//!<	Input handles for mem units
 
-	XINPUT_STATE		    m_gamepadDeviceState[4];	//!<	Gamepad device state structs
-	XINPUT_FEEDBACK     m_gamepadFeedback[4];			//!<	Feedback struct for each gamepad
-  XINPUT_CAPABILITIES m_gamepadCaps[4];         //!<  Gamepad device capabilities
+  CGamepad        m_gamepads[4];
 };
 
 #endif

@@ -1,5 +1,10 @@
 Version 0.66b
 
+  - \MAMEoX\Includes\Gamepad.h
+  - \MAMEoX\Sources\Gamepad.cpp
+    - Added CGamepad class w/ helper functions for
+      button state checking
+
   - \MAMEoX\Includes\StdString.h:
     - Defined SS_NO_IMPLICIT_CAST to force us to
       use c_str(). Apparently the CStdString class
@@ -10,6 +15,10 @@ Version 0.66b
   - \MAMEoX\Includes\MAMEoX.h
     - Updated version number
     - Save superscroll index when launching the utility XBE
+    - Renamed WaitForNoKey and WaitForKey to WaitForNoButton and
+      WaitForAnyButton resp.
+    - Added LAUNCH_RUN_AS_IF_REBOOTED command to properly handle
+      case where MAMEoX.xbe is started instead of default.xbe
 
   - \MAMEoX\Sources\xbox_Main.cpp
     - Removed unloading of game sections after a game
@@ -22,6 +31,9 @@ Version 0.66b
       originally intended. This allows us to remove the Unload
       and Load general section calls and just load the individual
       sections that we need, speeding up load times.
+    - Adaptations for CGamepad addition
+    - Added LAUNCH_RUN_AS_IF_REBOOTED command to properly handle
+      case where MAMEoX.xbe is started instead of default.xbe
 
   - \MAMEoX\Sources\MAMEoXUtil.cpp
     - Added network and directory ini entries to SaveOptions
@@ -29,6 +41,9 @@ Version 0.66b
       is not started at all if not wanted. For some reason my
       current network setup takes about 40 seconds to boot in debug
       mode, this is a hack until I figure out why.
+    - Renamed WaitForNoKey and WaitForKey to WaitForNoButton and
+      WaitForAnyButton resp.
+    - Adaptations for CGamepad addition
 
   - \MAME\src\vidhrdw\namcos1.c
     - Reverted back to MAME 0.60 version of this file
@@ -59,10 +74,22 @@ Version 0.66b
     - Hopefully disabled memory card initialization, as it
       causes crashes
     - Improved error messages for missing files
+    - Adaptations for CGamepad addition
+    - Added LAUNCH_RUN_AS_IF_REBOOTED command to properly handle
+      case where MAMEoX.xbe is started instead of default.xbe
 
   - \MAMEoXLauncher\Includes\ROMList.h
   - \MAMEoXLauncher\Sources\ROMList.cpp
     - Save superscroll index when launching the utility XBE
+    - Adaptations for CGamepad addition
+
+  - \MAMEoXLauncher\Sources\Help.cpp
+    - Adaptations for CGamepad addition
+    - Turned off cursor highlighting
+    - Changed text color to blue from green
+
+  - \MAMEoXLauncher\Sources\OptionsPage.cpp
+      - Adaptations for CGamepad addition
 
   - \ZLIB\ZLIB.vcproj
   - \MAMEoXLauncher\MAMEoXLauncher.vcproj

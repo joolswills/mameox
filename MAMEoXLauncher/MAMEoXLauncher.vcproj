@@ -130,6 +130,9 @@
 				RelativePath="..\MAMEoX\Sources\DebugLogger.cpp">
 			</File>
 			<File
+				RelativePath="..\MAMEoX\Sources\Gamepad.cpp">
+			</File>
+			<File
 				RelativePath="..\MAMEoX\Sources\GraphicsManager.cpp">
 			</File>
 			<File
@@ -180,6 +183,9 @@
 			Filter="h;hpp;hxx;hm;inl;inc">
 			<File
 				RelativePath="..\MAMEoX\Includes\DebugLogger.h">
+			</File>
+			<File
+				RelativePath="..\MAMEoX\Includes\Gamepad.h">
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Includes\GraphicsManager.h">

@@ -109,8 +109,8 @@ void osd_print_error( const char *fmt, ... )
 	FontRender( 320, 320, D3DCOLOR_RGBA( 70, 235, 125, 255), L"Press any button to continue.", 2 /*XBFONT_CENTER_X*/ );
 	EndFontRender();
 
-  WaitForNoKey();     // Ensure that the user sees the message
-  WaitForKey();
-  WaitForNoKey();     // Ensure that we don't bounce right back into the ROM that brought up the error
+  WaitForNoButton();     // Ensure that the user sees the message
+  WaitForAnyButton();
+  WaitForNoButton();     // Ensure that we don't bounce right back into the ROM that brought up the error
 }
 
