@@ -81,6 +81,7 @@ Version 0.71.3b (CVS)
   - \Sectionize.pl
     - Fixed dep for Revolution X
     - Fixed dep for Tetris Plus 2 (MegaSystem 32 version)
+    - Fixed dep for Pac-Man (Galaxian Hardware)
 
   - Fixed the .NET 2k2 solution files
 

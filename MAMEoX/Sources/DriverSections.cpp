@@ -191,6 +191,7 @@ BOOL UnloadDriverSections( void )
         (*i).first == "src\\drivers\\scobra.c" ||
         (*i).first == "src\\drivers\\amidar.c" ||
         (*i).first == "src\\drivers\\frogger.c" ||
+        (*i).first == "src\\drivers\\puckman.c" ||
         (*i).first == "src\\drivers\\arcadecl.c" ||
         (*i).first == "src\\drivers\\asuka.c" ||
         (*i).first == "src\\drivers\\opwolf.c" ||
@@ -585,6 +586,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\mrdo.c", "425" );
   RegisterSectionName( "src\\drivers\\mrflea.c", "426" );
   RegisterSectionName( "src\\drivers\\mrjong.c", "427" );
+  RegisterSectionName( "src\\drivers\\ms32.c", "29" );
   RegisterSectionName( "src\\drivers\\msisaac.c", "429" );
   RegisterSectionName( "src\\drivers\\mugsmash.c", "430" );
   RegisterSectionName( "src\\drivers\\multi32.c", "3" );
@@ -633,7 +635,6 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\outrun.c", "3" );
   RegisterSectionName( "src\\drivers\\overdriv.c", "475" );
   RegisterSectionName( "src\\drivers\\pacland.c", "476" );
-  RegisterSectionName( "src\\drivers\\pacman.c", "15" );
   RegisterSectionName( "src\\drivers\\pandoras.c", "478" );
   RegisterSectionName( "src\\drivers\\paradise.c", "479" );
   RegisterSectionName( "src\\drivers\\parodius.c", "480" );
@@ -813,6 +814,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\tehkanwc.c", "654" );
   RegisterSectionName( "src\\drivers\\tempest.c", "655" );
   RegisterSectionName( "src\\drivers\\terracre.c", "656" );
+  RegisterSectionName( "src\\drivers\\tetrisp2.c", "29" );
   RegisterSectionName( "src\\drivers\\thedeep.c", "658" );
   RegisterSectionName( "src\\drivers\\thepit.c", "659" );
   RegisterSectionName( "src\\drivers\\thief.c", "660" );
@@ -901,8 +903,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\zerozone.c", "743" );
   RegisterSectionName( "src\\drivers\\zn.c", "744" );
   RegisterSectionName( "src\\drivers\\zodiack.c", "745" );
-  RegisterSectionName( "src\\drivers\\ms32.c", "29" );
-  RegisterSectionName( "src\\drivers\\tetrisp2.c", "29" );
+  RegisterSectionName( "src\\drivers\\pacman.c", "15" );
 }
 #pragma code_seg()
 #pragma data_seg()
