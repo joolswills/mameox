@@ -197,7 +197,7 @@ int osd_get_path_info( int pathtype, int pathindex, const char *filename )
 	/* Get information on the existence of a file */
 	DWORD attribs;
 	
-	PRINTMSG( T_TRACE, "osd_get_path_info" );
+	PRINTMSG( T_TRACE, "osd_get_path_info, pathtype %d, pathindex %d", pathtype, pathindex );
 
   #ifdef ALL_ROMS_ZIPPED
       // Don't bother searching for anything in the ROMs directory
@@ -226,7 +226,7 @@ int osd_get_path_info( int pathtype, int pathindex, const char *filename )
     attribs = GetFileAttributes( strPath.c_str() );
   }
 
-	if( attribs < 0 )
+	if( attribs == 0xFFFFFFFF )
 		return PATH_NOT_FOUND;
 	else if( attribs & FILE_ATTRIBUTE_DIRECTORY )
 		return PATH_IS_DIRECTORY;
