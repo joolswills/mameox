@@ -28,7 +28,7 @@ extern "C" {
 
 
   //--- Layout defines -----------------------------------------
-#define VIRTUALKEYBOARD_WIDTH     250
+#define VIRTUALKEYBOARD_WIDTH     257
 #define VIRTUALKEYBOARD_HEIGHT    143
 
 
