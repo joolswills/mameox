@@ -60,12 +60,12 @@ void CScreensaverScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 	UINT64 elapsedTime = curTime - lastTime;
 	lastTime = curTime;
 
-  if( elapsedTime >= m_displayTimeout )
+	if( elapsedTime >= m_displayTimeout )
   {
-      // Load a screenshot file (the == 1 || rand() is so that we don't
-      // stick on a static image if there's only a single screenshot
-      // available (which would be a _bad_ screensaver :))
-    if( m_screenshotFiles.size() > 1 || (m_screenshotFiles.size() == 1 && rand() & 0x01) )
+      // Load a screenshot file. The rand() allows us to display a
+			// black frame every so often, just in case all of the
+			// screenshots are the same image
+    if( m_screenshotFiles.size() && (rand() % (m_screenshotFiles.size() + 1)) )
     {
       UINT32 randIndex = rand() % m_screenshotFiles.size();
       CStdString str = g_FileIOConfig.m_screenshotPath;
@@ -130,13 +130,13 @@ void CScreensaverScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 	else
   {
       // Render something
-    m_fontSet.DefaultFont().Begin();
-      m_fontSet.DefaultFont().DrawText( textMessageX,
-                                        textMessageY,
-                                        g_loadedSkin->GetSkinColor( COLOR_SCREENSAVER_TEXT ),
-                                        L"Screensaver active but there\nare no screenshots to display.",
-                                        XBFONT_CENTER_X );
-    m_fontSet.DefaultFont().End();
+		m_fontSet.DefaultFont().Begin();
+			m_fontSet.DefaultFont().DrawText( textMessageX,
+																				textMessageY,
+																				g_loadedSkin->GetSkinColor( COLOR_SCREENSAVER_TEXT ),
+																				m_screenshotFiles.size() ? L"Screensaver mode" : L"Screensaver active but there\nare no screenshots to display.",
+																				XBFONT_CENTER_X );
+		m_fontSet.DefaultFont().End();
   }
 
   if( flipOnCompletion )
