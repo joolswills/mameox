@@ -521,6 +521,9 @@ static BOOL Helper_SaveDriverInfoFile( void )
     }
 
     WRITEDATA( &numPlayers, sizeof(numPlayers) );
+
+    UINT32 orientation = (drivers[i]->flags & ORIENTATION_MASK);
+    WRITEDATA( &orientation, sizeof(orientation) );
 	}
 
     // Grab the signature

@@ -49,7 +49,7 @@ Version 0.71.3b (CVS)
       - Added filter by "disliked" favorite status
       - Added sort by genre
       - Added catver.ini parsing
-      - Added "detail" view which will eventually house screenshots
+      - Added "detail" view which houses screenshots
 
     - OptionsScreen.cpp
       - Added sort by favorite status and sort by number of times 

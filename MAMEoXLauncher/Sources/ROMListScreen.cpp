@@ -8,6 +8,7 @@
 #include "ROMListScreen.h"
 #include "DebugLogger.h"
 #include "XBFont.h"
+#include "xbox_png.h"
 
 #include "xbox_FileIO.h"		// for path info
 #include "xbox_Direct3DRenderer.h" // For Set/GetScreenUsage
@@ -33,9 +34,11 @@ extern "C" {
 #define ITEM_WARNING_COLOR    D3DCOLOR_XRGB( 100, 100, 0 )
 #define ITEM_NONWORKING_COLOR D3DCOLOR_XRGB( 100, 0, 0 )
 
-#define HIGHLIGHTBAR_COLOR    D3DCOLOR_ARGB( 180, 175, 179, 212 )
-#define SCROLLICON_COLOR      D3DCOLOR_XRGB( 255, 255, 255 )
-#define SPACER_COLOR          D3DCOLOR_XRGB( 255, 255, 255 )
+#define HIGHLIGHTBAR_COLOR      D3DCOLOR_ARGB( 180, 175, 179, 212 )
+#define SCROLLICON_COLOR        D3DCOLOR_XRGB( 255, 255, 255 )
+#define SPACER_COLOR            D3DCOLOR_XRGB( 255, 255, 255 )
+#define NOSCREENSHOT_COLOR      D3DCOLOR_XRGB( 0, 0, 0 )
+#define NOSCREENSHOTTEXT_COLOR  D3DCOLOR_XRGB( 255, 255, 255 )
 
 #define TITLEBAR_ROW          101
 #define FIRSTDATA_ROW         125
@@ -55,50 +58,52 @@ extern "C" {
 
 #define SCROLLUP_TOP          122
 #define SCROLLUP_RIGHT        608
-#define SCROLLUP_LEFT         SCROLLUP_RIGHT - 32
-#define SCROLLUP_BOTTOM       SCROLLUP_TOP + 32
+#define SCROLLUP_LEFT         (SCROLLUP_RIGHT - 32)
+#define SCROLLUP_BOTTOM       (SCROLLUP_TOP + 32)
 
 #define SCROLLDOWN_BOTTOM     451
-#define SCROLLDOWN_TOP        SCROLLDOWN_BOTTOM - 32
+#define SCROLLDOWN_TOP        (SCROLLDOWN_BOTTOM - 32)
 #define SCROLLDOWN_RIGHT      608
-#define SCROLLDOWN_LEFT       SCROLLDOWN_RIGHT - 32
+#define SCROLLDOWN_LEFT       (SCROLLDOWN_RIGHT - 32)
 
   // Detailed view layout
 #define DETAIL_ROMSTATUS_X        NAME_COLUMN
 #define DETAIL_ROMSTATUS_Y        FIRSTDATA_ROW
 
 #define DETAIL_NUMPLAYERS_X       NAME_COLUMN
-#define DETAIL_NUMPLAYERS_Y       FIRSTDATA_ROW + 20
+#define DETAIL_NUMPLAYERS_Y       (FIRSTDATA_ROW + 20)
 
 #define DETAIL_MANUFACTURER_X     NAME_COLUMN
-#define DETAIL_MANUFACTURER_Y     FIRSTDATA_ROW + 40
+#define DETAIL_MANUFACTURER_Y     (FIRSTDATA_ROW + 40)
 
 #define DETAIL_YEAR_X             NAME_COLUMN
-#define DETAIL_YEAR_Y             FIRSTDATA_ROW + 60
+#define DETAIL_YEAR_Y             (FIRSTDATA_ROW + 60)
 
 #define DETAIL_PARENT_X           NAME_COLUMN
-#define DETAIL_PARENT_Y           FIRSTDATA_ROW + 80
+#define DETAIL_PARENT_Y           (FIRSTDATA_ROW + 80)
 
 #define DETAIL_GENRE_X            NAME_COLUMN
-#define DETAIL_GENRE_Y            FIRSTDATA_ROW + 100
+#define DETAIL_GENRE_Y            (FIRSTDATA_ROW + 100)
 
 #define DETAIL_VERSIONADDED_X     NAME_COLUMN
-#define DETAIL_VERSIONADDED_Y     FIRSTDATA_ROW + 120
+#define DETAIL_VERSIONADDED_Y     (FIRSTDATA_ROW + 120)
 
 #define DETAIL_TIMESPLAYED_X      NAME_COLUMN
-#define DETAIL_TIMESPLAYED_Y      FIRSTDATA_ROW + 140
+#define DETAIL_TIMESPLAYED_Y      (FIRSTDATA_ROW + 140)
 
 #define DETAIL_FAVORITESTATUS_X   NAME_COLUMN
-#define DETAIL_FAVORITESTATUS_Y   FIRSTDATA_ROW + 160
+#define DETAIL_FAVORITESTATUS_Y   (FIRSTDATA_ROW + 160)
 
 #define DETAIL_FILENAME_X         NAME_COLUMN
-#define DETAIL_FILENAME_Y         FIRSTDATA_ROW + 180
+#define DETAIL_FILENAME_Y         (FIRSTDATA_ROW + 180)
 
-#define DETAIL_SCREENSHOT_LEFT    0
-#define DETAIL_SCREENSHOT_TOP     0
-#define DETAIL_SCREENSHOT_RIGHT   1
-#define DETAIL_SCREENSHOT_BOTTOM  1
+#define DETAIL_SCREENSHOT_RIGHT   SCROLLUP_LEFT
+#define DETAIL_SCREENSHOT_TOP     127
+#define DETAIL_SCREENSHOT_LEFT    (DETAIL_SCREENSHOT_RIGHT - 320)
+#define DETAIL_SCREENSHOT_BOTTOM  (DETAIL_SCREENSHOT_TOP + ( (FLOAT)(DETAIL_SCREENSHOT_RIGHT - DETAIL_SCREENSHOT_LEFT) * 3.0f / 4.0f))
 
+#define DETAIL_SCREENSHOTCAPTION_X  (DETAIL_SCREENSHOT_LEFT + ((DETAIL_SCREENSHOT_RIGHT - DETAIL_SCREENSHOT_LEFT) >> 1))
+#define DETAIL_SCREENSHOTCAPTION_Y  (DETAIL_SCREENSHOT_BOTTOM + 5)
 
 	// Maximum number of items to render on the screen at once
 #define MAXPAGESIZE							15
@@ -148,6 +153,7 @@ static BOOL Compare_FavoriteStatus( UINT32 a, UINT32 b );
 static BOOL Compare_NumTimesPlayed( UINT32 a, UINT32 b );
 
 static BOOL Helper_ReadXMLTag( osd_file *file, CStdString *tagName );
+static void Helper_PNGRead( png_structp pngStruct, png_bytep buf, png_size_t size );
 
 //= F U N C T I O N S ==================================================
 
@@ -231,6 +237,7 @@ BOOL CROMListScreen::GenerateROMList( void )
     // Load the XML status file
   LoadROMStatusFile();
   LoadROMMetadataFile();
+  ImportCatverINI();
 
   if( !SaveROMListFile() )
   {
@@ -1828,22 +1835,25 @@ void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   RenderBackdrop();
   m_menuRenderer->Draw( FALSE, FALSE );
 
-  switch( m_options.m_displayMode )
+  if( GetCurrentGameIndex() != INVALID_ROM_INDEX )
   {
-    // *** DM_VERBOSELIST *** //
-  case DM_VERBOSELIST:
-    DrawVerboseList();
-    break;
+    switch( m_options.m_displayMode )
+    {
+      // *** DM_VERBOSELIST *** //
+    case DM_VERBOSELIST:
+      DrawVerboseList();
+      break;
 
-    // *** DM_SIMPLELIST *** //
-  case DM_SIMPLELIST:
-    DrawSimpleList();
-    break;
+      // *** DM_SIMPLELIST *** //
+    case DM_SIMPLELIST:
+      DrawSimpleList();
+      break;
 
-    // *** DM_DETAILED *** //
-  case DM_DETAILED:
-    DrawDetailedList();
-    break;
+      // *** DM_DETAILED *** //
+    case DM_DETAILED:
+      DrawDetailedList();
+      break;
+    }
   }
 
   if( flipOnCompletion )
@@ -2261,15 +2271,156 @@ void CROMListScreen::DrawDetailedList( void )
   FLOAT textHeight = m_fontSet.SmallThinFontHeight();
   FLOAT selectedItemYPos = (textHeight * (ULONG)m_cursorPosition);
 
+  MAMEDriverData_t        &driverData = m_driverInfoList[GetCurrentGameIndex()];
+  ROMStatus               &status     = m_ROMStatus[GetCurrentGameIndex()];
+  MAMEoXDriverMetadata_t  &metadata   = m_driverMetadata[GetCurrentGameIndex()];
 
-    // Display the screenshot if there is one
-    // romname.png
-    // Todo: mode to display full screen screenshots
+    // Sort of a hack, keep track of the last selected ROM
+    // so we can load a screenshot file whenever we change to
+    // a new ROM
+  static UINT32 lastGameIndex = INVALID_ROM_INDEX;
+  static UINT32 lastScreenshotIndex = 0;
+  if( GetCurrentGameIndex() != lastGameIndex )
+  {
+    lastGameIndex = GetCurrentGameIndex();
+
+      // Display the screenshot if there is one
+      // Todo: mode to display full screen screenshots
+    LoadScreenshotFile( 0 );
+  }
+
+    // Display the screenshot
+  m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     FALSE );
+  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    FALSE );
+
+  FLOAT screenshotLeft = DETAIL_SCREENSHOT_LEFT;
+  FLOAT screenshotRight = DETAIL_SCREENSHOT_RIGHT;
+  FLOAT screenshotTop = DETAIL_SCREENSHOT_TOP;
+  FLOAT screenshotBottom = DETAIL_SCREENSHOT_BOTTOM;
+
+		// Flip the width and height
+  if( driverData.m_screenOrientation & ORIENTATION_SWAP_XY )
+	{
+      // Set the height = to the standard width
+    screenshotBottom = screenshotTop + (DETAIL_SCREENSHOT_RIGHT-DETAIL_SCREENSHOT_LEFT);
+
+      // Calculate left based on the new aspect ratio
+    screenshotLeft = screenshotRight - ( (FLOAT)(DETAIL_SCREENSHOT_RIGHT - DETAIL_SCREENSHOT_LEFT) * 3.0f / 4.0f);
+	}
+
+
+
+
+  if( m_screenshotTexture )
+  {
+    m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+    m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+    m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
+	  m_displayDevice->SetTexture( 0, m_screenshotTexture );
+
+    m_displayDevice->Begin( D3DPT_QUADLIST );      
+
+        // Apply screenshot rotations
+      POINT ul, ur, br, bl;
+      if( driverData.m_screenOrientation & ORIENTATION_SWAP_XY )
+      {
+        ul.x = driverData.m_screenOrientation & ORIENTATION_FLIP_X ? m_screenshotRect.left : m_screenshotRect.right;
+        ul.y = driverData.m_screenOrientation & ORIENTATION_FLIP_Y ? m_screenshotRect.top : m_screenshotRect.bottom;
+
+        ur.x = driverData.m_screenOrientation & ORIENTATION_FLIP_X ? m_screenshotRect.left : m_screenshotRect.right;
+        ur.y = driverData.m_screenOrientation & ORIENTATION_FLIP_Y ? m_screenshotRect.bottom : m_screenshotRect.top;
+
+        br.x = driverData.m_screenOrientation & ORIENTATION_FLIP_X ? m_screenshotRect.right : m_screenshotRect.left;
+        br.y = driverData.m_screenOrientation & ORIENTATION_FLIP_Y ? m_screenshotRect.bottom : m_screenshotRect.top;
+
+        bl.x = driverData.m_screenOrientation & ORIENTATION_FLIP_X ? m_screenshotRect.right : m_screenshotRect.left;
+        bl.y = driverData.m_screenOrientation & ORIENTATION_FLIP_Y ? m_screenshotRect.top : m_screenshotRect.bottom;
+      }
+      else
+      {
+        bl.x = ul.x = m_screenshotRect.left;
+        ur.y = ul.y = m_screenshotRect.top;
+        
+        br.x = ur.x = m_screenshotRect.right; 
+        br.y = bl.y = m_screenshotRect.bottom;
+
+        if( driverData.m_screenOrientation & ORIENTATION_FLIP_X )
+        {
+          UINT32 temp = bl.x;
+          bl.x = ul.x = ur.x;
+          br.x = ur.x = temp;
+        }
+
+        if( driverData.m_screenOrientation & ORIENTATION_FLIP_Y )
+        {
+          UINT32 temp = bl.y;
+          bl.y = br.y = ul.y;
+          ul.y = ur.y = temp;
+        }
+      }
+
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, ul.x, ul.y );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotLeft, screenshotTop, 1.0f, 1.0f );
+      
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, ur.x, ur.y );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotRight, screenshotTop, 1.0f, 1.0f );
+      
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, br.x, br.y );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotRight, screenshotBottom, 1.0f, 1.0f );
+
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, bl.x, bl.y );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotLeft, screenshotBottom, 1.0f, 1.0f );
+    m_displayDevice->End();
+
+/*
+      // Draw the screenshot index
+	  m_fontSet.SmallThinFont().Begin();
+      swprintf( name, L"[%lu]", 0 );
+	    m_fontSet.SmallThinFont().DrawText( DETAIL_SCREENSHOTCAPTION_X, 
+                                          DETAIL_SCREENSHOTCAPTION_Y, 
+                                          ITEM_COLOR, 
+                                          name,
+                                          XBFONT_CENTER_X );
+*/
+    m_fontSet.SmallThinFont().End();
+  }
+  else
+  {
+      // Render a black rect where the screenshot would go and put "No Screenshot" text in it
+    m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+    m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
+    m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
+	  m_displayDevice->SetTexture( 0, m_screenshotTexture );
+
+    m_displayDevice->Begin( D3DPT_QUADLIST );      
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, NOSCREENSHOT_COLOR );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotLeft, screenshotTop, 1.0f, 1.0f );
+      
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, NOSCREENSHOT_COLOR );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotRight, screenshotTop, 1.0f, 1.0f );
+      
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, NOSCREENSHOT_COLOR );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotRight, screenshotBottom, 1.0f, 1.0f );
+
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, NOSCREENSHOT_COLOR );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotLeft, screenshotBottom, 1.0f, 1.0f );
+    m_displayDevice->End();
+
+      // Draw the screenshot index
+	  m_fontSet.SmallThinFont().Begin();
+      swprintf( name, L"[%lu]", 0 );
+	    m_fontSet.SmallThinFont().DrawText( screenshotLeft + ((screenshotRight - screenshotLeft) / 2.0f), 
+                                          screenshotTop + ((screenshotBottom - screenshotTop) / 2.0f), 
+                                          NOSCREENSHOTTEXT_COLOR, 
+                                          L"No Screenshots",
+                                          XBFONT_CENTER_X );
+    m_fontSet.SmallThinFont().End();
+  }
 
 
 	m_fontSet.SmallThinFont().Begin();
 
-	  mbstowcs( name, m_driverInfoList[m_currentSortedList[GetAbsoluteCursorPosition()]].m_description, 255 );
+	  mbstowcs( name, driverData.m_description, 255 );
     wcscat( name, m_options.m_hideFiltered ? L"    (Filtered)  " : L"    (Full List)  " );
     if( m_superscrollMode )
     {
@@ -2290,11 +2441,6 @@ void CROMListScreen::DrawDetailedList( void )
                                         TEXTBOX_RIGHT - (NAME_COLUMN + COLUMN_PADDING) );
 
 		  // Render the ROM info
-    MAMEDriverData_t        &driverData = m_driverInfoList[GetCurrentGameIndex()];
-    ROMStatus               &status     = m_ROMStatus[GetCurrentGameIndex()];
-    MAMEoXDriverMetadata_t  &metadata   = m_driverMetadata[GetCurrentGameIndex()];
-
-
 
       //--- Display the ROM status ---------------------------
     DWORD color = ITEM_COLOR;
@@ -2336,12 +2482,22 @@ void CROMListScreen::DrawDetailedList( void )
         color = ITEM_NONWORKING_COLOR;
         break;
     }
-    m_fontSet.SmallThinFont().DrawText( DETAIL_ROMSTATUS_X, DETAIL_ROMSTATUS_Y, ITEM_COLOR, name );
+    m_fontSet.SmallThinFont().DrawText( DETAIL_ROMSTATUS_X, 
+                                        DETAIL_ROMSTATUS_Y, 
+                                        ITEM_COLOR, 
+                                        name, 
+                                        XBFONT_TRUNCATED, 
+                                        screenshotLeft - (DETAIL_ROMSTATUS_X + COLUMN_PADDING) );
 
 
       //--- Display the number of players ---------------------------
     swprintf( name, L"Number of players: %lu", driverData.m_numPlayers );
-    m_fontSet.SmallThinFont().DrawText( DETAIL_NUMPLAYERS_X, DETAIL_NUMPLAYERS_Y, ITEM_COLOR, name );
+    m_fontSet.SmallThinFont().DrawText( DETAIL_NUMPLAYERS_X, 
+                                        DETAIL_NUMPLAYERS_Y, 
+                                        ITEM_COLOR, 
+                                        name, 
+                                        XBFONT_TRUNCATED, 
+                                        screenshotLeft - (DETAIL_NUMPLAYERS_X + COLUMN_PADDING) );
 
 
       //--- Display the manufacturer ---------------------------
@@ -2350,7 +2506,12 @@ void CROMListScreen::DrawDetailedList( void )
     else
       wcscpy( temp, L"Unknown" );
     swprintf( name, L"Manufacturer: %s", temp );
-    m_fontSet.SmallThinFont().DrawText( DETAIL_MANUFACTURER_X, DETAIL_MANUFACTURER_Y, ITEM_COLOR, name );
+    m_fontSet.SmallThinFont().DrawText( DETAIL_MANUFACTURER_X, 
+                                        DETAIL_MANUFACTURER_Y, 
+                                        ITEM_COLOR, 
+                                        name, 
+                                        XBFONT_TRUNCATED, 
+                                        screenshotLeft - (DETAIL_MANUFACTURER_X + COLUMN_PADDING) );
 
       //--- Display the year ---------------------------
     if( driverData.m_year )
@@ -2358,7 +2519,12 @@ void CROMListScreen::DrawDetailedList( void )
     else
       wcscpy( temp, L"Unknown" );
     swprintf( name, L"Year: %s", temp );
-    m_fontSet.SmallThinFont().DrawText( DETAIL_YEAR_X, DETAIL_YEAR_Y, ITEM_COLOR, name );
+    m_fontSet.SmallThinFont().DrawText( DETAIL_YEAR_X, 
+                                        DETAIL_YEAR_Y, 
+                                        ITEM_COLOR, 
+                                        name, 
+                                        XBFONT_TRUNCATED, 
+                                        screenshotLeft - (DETAIL_YEAR_X + COLUMN_PADDING) );
 
 
       //--- Display the parent ROM ---------------------------
@@ -2367,7 +2533,12 @@ void CROMListScreen::DrawDetailedList( void )
     else
       wcscpy( temp, L"None" );
     swprintf( name, L"Parent ROM filename: %s", temp );
-    m_fontSet.SmallThinFont().DrawText( DETAIL_PARENT_X, DETAIL_PARENT_Y, ITEM_COLOR, name );
+    m_fontSet.SmallThinFont().DrawText( DETAIL_PARENT_X, 
+                                        DETAIL_PARENT_Y, 
+                                        ITEM_COLOR, 
+                                        name, 
+                                        XBFONT_TRUNCATED, 
+                                        screenshotLeft - (DETAIL_PARENT_X + COLUMN_PADDING) );
 
 
       //--- Display the genre ---------------------------
@@ -2376,7 +2547,12 @@ void CROMListScreen::DrawDetailedList( void )
     else
       wcscpy( temp, L"Unknown" );
     swprintf( name, L"Genre: %s", temp );
-    m_fontSet.SmallThinFont().DrawText( DETAIL_GENRE_X, DETAIL_GENRE_Y, ITEM_COLOR, name );
+    m_fontSet.SmallThinFont().DrawText( DETAIL_GENRE_X, 
+                                        DETAIL_GENRE_Y, 
+                                        ITEM_COLOR, 
+                                        name, 
+                                        XBFONT_TRUNCATED, 
+                                        screenshotLeft - (DETAIL_GENRE_X + COLUMN_PADDING) );
 
       //--- Display the version this rom was added to MAME ---------------------------
     if( metadata.m_versionAdded )
@@ -2384,11 +2560,21 @@ void CROMListScreen::DrawDetailedList( void )
     else
       wcscpy( temp, L"Unknown" );
     swprintf( name, L"Version added: %s", temp );
-    m_fontSet.SmallThinFont().DrawText( DETAIL_VERSIONADDED_X, DETAIL_VERSIONADDED_Y, ITEM_COLOR, name );
+    m_fontSet.SmallThinFont().DrawText( DETAIL_VERSIONADDED_X, 
+                                        DETAIL_VERSIONADDED_Y, 
+                                        ITEM_COLOR, 
+                                        name, 
+                                        XBFONT_TRUNCATED, 
+                                        screenshotLeft - (DETAIL_VERSIONADDED_X + COLUMN_PADDING) );
 
       //--- Display the version this rom was added to MAME ---------------------------
     swprintf( name, L"Times played: %lu", metadata.m_timesPlayed );
-    m_fontSet.SmallThinFont().DrawText( DETAIL_TIMESPLAYED_X, DETAIL_TIMESPLAYED_Y, ITEM_COLOR, name );
+    m_fontSet.SmallThinFont().DrawText( DETAIL_TIMESPLAYED_X, 
+                                        DETAIL_TIMESPLAYED_Y, 
+                                        ITEM_COLOR, 
+                                        name, 
+                                        XBFONT_TRUNCATED, 
+                                        screenshotLeft - (DETAIL_TIMESPLAYED_X + COLUMN_PADDING) );
 
       //--- Display the version this rom was added to MAME ---------------------------
     switch( metadata.m_favoriteStatus )
@@ -2419,7 +2605,12 @@ void CROMListScreen::DrawDetailedList( void )
       break;
     }
     swprintf( name, L"Favorite status: %s", temp );
-    m_fontSet.SmallThinFont().DrawText( DETAIL_FAVORITESTATUS_X, DETAIL_FAVORITESTATUS_Y, ITEM_COLOR, name );
+    m_fontSet.SmallThinFont().DrawText( DETAIL_FAVORITESTATUS_X, 
+                                        DETAIL_FAVORITESTATUS_Y, 
+                                        ITEM_COLOR, 
+                                        name, 
+                                        XBFONT_TRUNCATED, 
+                                        screenshotLeft - (DETAIL_FAVORITESTATUS_X + COLUMN_PADDING) );
 
       //--- Display the filename ---------------------------
     if( driverData.m_romFileName )
@@ -2427,7 +2618,12 @@ void CROMListScreen::DrawDetailedList( void )
     else
       wcscpy( temp, L"Unknown" );
     swprintf( name, L"ROM filename: %s.zip", temp );
-    m_fontSet.SmallThinFont().DrawText( DETAIL_FILENAME_X, DETAIL_FILENAME_Y, ITEM_COLOR, name );
+    m_fontSet.SmallThinFont().DrawText( DETAIL_FILENAME_X, 
+                                        DETAIL_FILENAME_Y, 
+                                        ITEM_COLOR, 
+                                        name, 
+                                        XBFONT_TRUNCATED, 
+                                        screenshotLeft - (DETAIL_FILENAME_X + COLUMN_PADDING) );
 
 
 	m_fontSet.SmallThinFont().End();
@@ -2497,6 +2693,267 @@ void CROMListScreen::DrawDetailedList( void )
   m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
+}
+
+//---------------------------------------------------------------------
+//  LoadScreenshotFile
+//---------------------------------------------------------------------
+BOOL CROMListScreen::LoadScreenshotFile( UINT32 index )
+{
+    // Release the old screenshot data
+  SAFE_RELEASE( m_screenshotTexture );
+
+  MAMEDriverData_t &driverData = m_driverInfoList[GetCurrentGameIndex()];
+  CStdString filename = driverData.m_romFileName;
+  if( index )
+  {
+    char num[8];
+    sprintf( num, "%4.4lu", index - 1 );
+    filename += num;
+  }
+  filename += ".png";
+
+  osd_file *file = osd_fopen( FILETYPE_SCREENSHOT, 0, filename.c_str(), "r" );
+  if( !file )
+    return FALSE;
+
+    // Read the png signature
+  {
+    #define PNG_BYTES_TO_CHECK 4 
+    char buf[PNG_BYTES_TO_CHECK];
+
+   if( osd_fread( file, buf, PNG_BYTES_TO_CHECK ) != PNG_BYTES_TO_CHECK )
+   {
+     osd_fclose( file );
+     return FALSE;
+   }
+
+   if( png_sig_cmp( (png_bytep)buf, (png_size_t)0, PNG_BYTES_TO_CHECK ) )
+   {
+     osd_fclose( file );
+     return FALSE;
+   }
+  }
+
+  png_structp  png_ptr;
+  png_infop    info_ptr;
+
+  /* Create and initialize the png_struct with the desired error handler
+    * functions.  If you want to use the default stderr and longjump method,
+    * you can supply NULL for the last three parameters.  We also supply the
+    * the compiler header file version, so that we know if the application
+    * was compiled with a compatible version of the library.  REQUIRED
+    */
+  png_ptr = png_create_read_struct( PNG_LIBPNG_VER_STRING, NULL, NULL, NULL );
+  if( !png_ptr )
+  {
+    osd_fclose( file );
+    return FALSE;
+  }
+
+  /* Allocate/initialize the memory for image information.  REQUIRED. */
+  info_ptr = png_create_info_struct( png_ptr );
+  if( !info_ptr )
+  {
+    osd_fclose( file );
+    png_destroy_read_struct( &png_ptr, png_infopp_NULL, png_infopp_NULL );
+    return FALSE;
+  }
+
+  /* Set error handling if you are using the setjmp/longjmp method (this is
+  * the normal method of doing things with libpng).  REQUIRED unless you
+  * set up your own error handlers in the png_create_read_struct() earlier.
+  */
+
+  if( setjmp( png_jmpbuf(png_ptr) ) )
+  {
+    /* Free all of the memory associated with the png_ptr and info_ptr */
+    png_destroy_read_struct( &png_ptr, &info_ptr, png_infopp_NULL );
+    osd_fclose( file );
+
+      /* If we get here, we had a problem reading the file */
+    return FALSE;
+  }
+
+  /* If you are using replacement read functions, instead of calling
+  * png_init_io() here you would call:
+  */
+  png_set_read_fn( png_ptr, (void *)file, Helper_PNGRead );
+  /* where user_io_ptr is a structure you want available to the callbacks */
+
+
+  /* If we have already read some of the signature */
+  png_set_sig_bytes( png_ptr, PNG_BYTES_TO_CHECK );
+
+  memset( &m_screenshotRect, 0, sizeof(m_screenshotRect) );
+  int bit_depth, color_type, interlace_type;
+  /* The call to png_read_info() gives us all of the information from the
+  * PNG file before the first IDAT (image data chunk).  REQUIRED
+  */
+  png_read_info(png_ptr, info_ptr);
+
+  png_get_IHDR( png_ptr, 
+                info_ptr, 
+                (png_uint_32*)&m_screenshotRect.right, 
+                (png_uint_32*)&m_screenshotRect.bottom, 
+                &bit_depth, 
+                &color_type,
+                &interlace_type, 
+                int_p_NULL, 
+                int_p_NULL );
+
+
+  /* Some suggestions as to how to get a screen gamma value */
+  DOUBLE screen_gamma = 1.0;  /* A good guess for Mac systems */
+
+  /* Tell libpng to handle the gamma conversion for you.  The final call
+  * is a good guess for PC generated images, but it should be configurable
+  * by the user at run time by the user.  It is strongly suggested that
+  * your application support gamma correction.
+  */
+
+  int intent;
+
+  if (png_get_sRGB(png_ptr, info_ptr, &intent))
+    png_set_gamma(png_ptr, screen_gamma, 0.45455);
+  else
+  {
+    double image_gamma;
+    if (png_get_gAMA(png_ptr, info_ptr, &image_gamma))
+        png_set_gamma(png_ptr, screen_gamma, image_gamma);
+    else
+        png_set_gamma(png_ptr, screen_gamma, 0.45455);
+  }
+
+  /* Turn on interlace handling.  REQUIRED if you are not using
+  * png_read_image().  To see how to handle interlacing passes,
+  * see the png_read_row() method below:
+  */
+  INT32 number_passes = png_set_interlace_handling(png_ptr);
+
+  /* Optional call to gamma correct and add the background to the palette
+  * and update info structure.  REQUIRED if you are expecting libpng to
+  * update the palette for you (ie you selected such a transform above).
+  */
+  png_read_update_info(png_ptr, info_ptr);
+
+  png_bytep *row_pointers = (png_bytep*)calloc( 1, m_screenshotRect.bottom * sizeof(png_bytep) );
+  if( !row_pointers )
+  {
+    PRINTMSG( T_ERROR, "Out of memory allocating row_pointers array!" );
+    png_destroy_read_struct( &png_ptr, &info_ptr, png_infopp_NULL );
+    osd_fclose( file );
+    return FALSE;
+  }
+
+  UINT32 y;
+  for( y = 0; y < m_screenshotRect.bottom; ++y )
+  {
+    if( !(row_pointers[y] = (png_bytep)malloc( png_get_rowbytes(png_ptr,info_ptr))) )
+    {
+      PRINTMSG( T_ERROR, "Out of memory allocating row_pointers[%lu]!", y );
+      png_destroy_read_struct( &png_ptr, &info_ptr, png_infopp_NULL );
+      osd_fclose( file );
+      return FALSE;
+    }
+  }
+
+  png_read_image(png_ptr, row_pointers );
+
+    /* read rest of file, and get additional chunks in info_ptr - REQUIRED */
+  png_read_end( png_ptr, info_ptr );
+
+    // Create a new texture and read the data into it
+  if( (D3DXCreateTexture( m_displayDevice,
+                          m_screenshotRect.right,
+                          m_screenshotRect.bottom,
+													1,									// Mip levels
+                          0,                  // Usage
+													D3DFMT_LIN_X8R8G8B8,// Format
+													0,		              // Pool (unused)
+                          &m_screenshotTexture )) != S_OK )
+  {
+    MEMORYSTATUS memStatus;
+    GlobalMemoryStatus( &memStatus );
+
+    PRINTMSG( T_ERROR, "Failed to create texture for screenshot" );
+    PRINTMSG( T_INFO, "Memory status" );
+    PRINTMSG( T_INFO, "Physical:" );
+    PRINTMSG( T_INFO, "         Avail: %lu", memStatus.dwAvailPhys );
+    PRINTMSG( T_INFO, "         Total: %lu", memStatus.dwTotalPhys );
+    PRINTMSG( T_INFO, "Page File:" );
+    PRINTMSG( T_INFO, "         Avail: %lu", memStatus.dwAvailPageFile );
+    PRINTMSG( T_INFO, "         Total: %lu", memStatus.dwTotalPageFile );
+    PRINTMSG( T_INFO, "Virtual:" );
+    PRINTMSG( T_INFO, "         Avail: %lu", memStatus.dwAvailVirtual );
+    PRINTMSG( T_INFO, "         Total: %lu", memStatus.dwTotalVirtual );
+
+    png_destroy_read_struct( &png_ptr, &info_ptr, png_infopp_NULL );
+    osd_fclose( file );
+		return FALSE;
+	}
+
+
+		// Grab the surface description
+	D3DSURFACE_DESC desc;
+  m_screenshotTexture->GetLevelDesc( 0, &desc );
+
+    // Lock the region so we can render to it later
+  D3DLOCKED_RECT lockedRect;
+	m_screenshotTexture->LockRect(	0, &lockedRect, NULL, 0 );
+  memset( lockedRect.pBits, 0, desc.Width * desc.Height * sizeof(DWORD) );
+
+  switch( info_ptr->color_type )
+  {
+    // *** PNG_COLOR_TYPE_PALETTE *** //
+  case PNG_COLOR_TYPE_PALETTE:
+    {
+      D3DCOLOR *destRow = (D3DCOLOR*)lockedRect.pBits;
+      for( y = 0; y < m_screenshotRect.bottom; ++y )
+      {
+        D3DCOLOR *dest = destRow;
+        BYTE *src = (BYTE*)row_pointers[y];
+        for( UINT32 x = 0; x < m_screenshotRect.right; ++x )
+        {      
+          png_color &color = info_ptr->palette[*(src++)];
+          *(dest++) = D3DCOLOR_XRGB( color.red, color.green, color.blue );
+        }
+        free( row_pointers[y] );
+        row_pointers[y] = NULL;
+        destRow += desc.Width;
+      }
+    }
+    break;
+
+    // *** PNG_COLOR_TYPE_RGB *** //
+  case PNG_COLOR_TYPE_RGB:
+    {
+      D3DCOLOR *destRow = (D3DCOLOR*)lockedRect.pBits;
+      for( y = 0; y < m_screenshotRect.bottom; ++y )
+      {
+        D3DCOLOR *dest = destRow;
+        BYTE *src = (BYTE*)row_pointers[y];
+        for( UINT32 x = 0; x < m_screenshotRect.right; ++x )
+        {      
+          *(dest++) = D3DCOLOR_XRGB( *(src), *(src+1), *(src+2) );
+          src += 3;
+        }
+        free( row_pointers[y] );
+        row_pointers[y] = NULL;
+        destRow += desc.Width;
+      }
+    }
+    break;
+  }
+  free( row_pointers );
+  row_pointers = NULL;
+
+    /* clean up after the read, and free any memory allocated - REQUIRED */
+  png_destroy_read_struct( &png_ptr, &info_ptr, png_infopp_NULL );
+
+  osd_fclose( file );
+
+  return TRUE;
 }
 
 //---------------------------------------------------------------------
@@ -3180,6 +3637,14 @@ static BOOL Helper_ReadXMLTag( osd_file *file, CStdString *tagName )
   return TRUE;
 }
 
+//---------------------------------------------------------------------
+//  Helper_PNGRead
+//---------------------------------------------------------------------
+static void Helper_PNGRead( png_structp pngStruct, png_bytep buf, png_size_t size )
+{
+  osd_file *file = (osd_file*)png_get_io_ptr( pngStruct );
+  osd_fread( file, buf, size );
+}
 
 
 

@@ -153,14 +153,15 @@ typedef struct MAMEoXLaunchData_t
 
 typedef struct MAMEDriverData_t
 {
-  UINT32                  m_index;          //!<  The index of this driver in the sorted list
-  char                    *m_romFileName;   //!<  Main ROM zip file name
-  char                    *m_description;   //!<  Description from the MAME core
-  BOOL                    m_isClone;        //!<  Whether or not the game is a clone
-	char                    *m_cloneFileName;	//!<  Clone ROM zip file name
-	char                    *m_manufacturer;	//!<  Manufacturer name
-	char                    *m_year;					//!<  Year
-  UINT32                  m_numPlayers;     //!<  Number of players
+  UINT32                  m_index;              //!<  The index of this driver in the sorted list
+  char                    *m_romFileName;       //!<  Main ROM zip file name
+  char                    *m_description;       //!<  Description from the MAME core
+  BOOL                    m_isClone;            //!<  Whether or not the game is a clone
+	char                    *m_cloneFileName;	    //!<  Clone ROM zip file name
+	char                    *m_manufacturer;	    //!<  Manufacturer name
+	char                    *m_year;					    //!<  Year
+  UINT32                  m_numPlayers;         //!<  Number of players
+  UINT32                  m_screenOrientation;  //!<  Screen orientation (used to rotate screenshots correctly)
 } MAMEDriverData_t;
 
 #ifdef __cplusplus

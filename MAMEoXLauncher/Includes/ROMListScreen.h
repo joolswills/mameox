@@ -70,7 +70,8 @@ public:
     m_gameSelected( FALSE ),
     m_shouldGenerateROMList( FALSE ),
     m_currentSuperscrollIndex( 0 ),
-    m_favoriteStatusChangeDelay( 0.0f )
+    m_favoriteStatusChangeDelay( 0.0f ),
+    m_screenshotTexture( NULL )
 	{
     m_options.m_displayMode = DM_VERBOSELIST;
     m_options.m_sortMode = SM_BYNAME;
@@ -252,6 +253,8 @@ public:
 
 protected:
 
+  BOOL LoadScreenshotFile( UINT32 index );
+
     // Set the cursorPosition and pageOffset such that
     // the cursor is displayed at the passed position
   void SetAbsoluteCursorPosition( UINT32 pos );
@@ -324,6 +327,8 @@ protected:
   CTextureSet           &m_textureSet;              //!<  The texture set object storing all the useable textures (and their info) for the game
   CBaseMenuView         *m_menuRenderer;            //!<  Resizable menu renderer
 
+  LPDIRECT3DTEXTURE8    m_screenshotTexture;          //!<  Texture for the currently loaded screenshot image
+  RECT                  m_screenshotRect;             //!<  Rect containing the size of the screenshot
 
   FLOAT                 m_favoriteStatusChangeDelay;  //!<  Delay timer for favorite status changes
 

@@ -950,6 +950,8 @@ static BOOL Helper_LoadDriverInfoFile( void )
 
       // Read the number of players
     READDATA_NOMALLOC( &g_driverData[i].m_numPlayers, sizeof(g_driverData[i].m_numPlayers) );
+
+    READDATA_NOMALLOC( &g_driverData[i].m_screenOrientation, sizeof(g_driverData[i].m_screenOrientation) );
   }
   free( fileData );
 

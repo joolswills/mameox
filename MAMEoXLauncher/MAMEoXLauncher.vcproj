@@ -294,6 +294,12 @@
 				RelativePath="..\MAMEoX\Includes\xbox_Network.h">
 			</File>
 			<File
+				RelativePath=".\Includes\xbox_png.h">
+			</File>
+			<File
+				RelativePath=".\Includes\xbox_pngconf.h">
+			</File>
+			<File
 				RelativePath="..\MAMEoX\Includes\xbox_Timing.h">
 			</File>
 			<File
