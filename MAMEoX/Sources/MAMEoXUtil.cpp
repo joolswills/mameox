@@ -477,7 +477,7 @@ void GetLightgunCalibratedPosition( UINT32 player, INT32 *deltax, INT32 *deltay 
     return;
   }
 
-  *deltax = (int)((FLOAT)gp->GetAnalogAxisState( GP_ANALOG_LEFT, GP_AXIS_X ) * 128.0f / (FLOAT)XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_X );
+  *deltax = -1 * (int)((FLOAT)gp->GetAnalogAxisState( GP_ANALOG_LEFT, GP_AXIS_X ) * 128.0f / (FLOAT)XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_X );
   *deltay = (int)((FLOAT)gp->GetAnalogAxisState( GP_ANALOG_LEFT, GP_AXIS_Y ) * 128.0f / (FLOAT)XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_Y );
 
     // Lock to the expected range
@@ -490,6 +490,15 @@ void GetLightgunCalibratedPosition( UINT32 player, INT32 *deltax, INT32 *deltay 
     *deltay = 128;
   else if( *deltay < -128 )
     *deltay = -128;
+
+
+
+  PRINTMSG_TO_CONSOLE(  T_INFO, 
+                        "x: %d:%d y: %d:%d", 
+                        *deltax, 
+                        gp->GetAnalogAxisState( GP_ANALOG_LEFT, GP_AXIS_X ),
+                        *deltay,
+                        gp->GetAnalogAxisState( GP_ANALOG_LEFT, GP_AXIS_Y ));
 }
 
 //-------------------------------------------------------------
