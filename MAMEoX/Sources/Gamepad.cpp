@@ -258,7 +258,11 @@ BOOL CGamepad::IsAnyButtonPressed( void )
 	UINT32 state = GetButtonState();
 
 	  // Only Buttons
-	state &= ( GP_A | GP_B | GP_X | GP_Y | GP_BLACK | GP_WHITE | GP_LEFT_TRIGGER | GP_RIGHT_TRIGGER );
+	state &= ( GP_A | GP_B | GP_X | GP_Y | 
+             GP_BLACK | GP_WHITE | 
+             GP_LEFT_TRIGGER | GP_RIGHT_TRIGGER | 
+             GP_LEFT_ANALOG | GP_RIGHT_ANALOG );
+
 	return( state != 0 );
 }
 
