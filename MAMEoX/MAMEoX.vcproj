@@ -29,7 +29,7 @@
 				PreprocessorDefinitions="WIN32,_XBOX,NDEBUG"
 				StringPooling="TRUE"
 				ExceptionHandling="TRUE"
-				RuntimeLibrary="0"
+				RuntimeLibrary="4"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="TRUE"
 				ForceConformanceInForLoopScope="TRUE"
@@ -63,12 +63,13 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="XboxDeploymentTool"
-				RemotePath="xe:\MAMETEST\MAMEoX.xbe"/>
+				RemotePath="xe:\MAMETEST\MAMEoX.xbe"
+				Progress="TRUE"/>
 			<Tool
 				Name="XboxImageTool"
 				AdditionalOptions="/testid:0x4D414D45"
-				StackSize="0x10000"
-				LimitAvailableMemoryTo64MB="FALSE"
+				StackSize="0x20000"
+				LimitAvailableMemoryTo64MB="TRUE"
 				SuppressStartupBanner="TRUE"
 				FormatUD="TRUE"
 				TitleName="&quot;MAMEoX Util (Don&apos;t Run)&quot;"/>
@@ -122,10 +123,11 @@
 			<Tool
 				Name="XboxImageTool"
 				AdditionalOptions="/testid:0x4D414D45"
-				StackSize="0x10000"
+				StackSize="0x20000"
 				IncludeDebugInfo="TRUE"
 				LimitAvailableMemoryTo64MB="TRUE"
 				SuppressStartupBanner="TRUE"
+				FormatUD="TRUE"
 				TitleName="&quot;MAMEoX Util (Don&apos;t Run)&quot;"/>
 		</Configuration>
 		<Configuration
@@ -177,10 +179,11 @@
 			<Tool
 				Name="XboxImageTool"
 				AdditionalOptions="/testid:0x4D414D45"
-				StackSize="0x10000"
+				StackSize="0x20000"
 				IncludeDebugInfo="TRUE"
 				LimitAvailableMemoryTo64MB="TRUE"
 				SuppressStartupBanner="TRUE"
+				FormatUD="TRUE"
 				TitleName="&quot;MAMEoX Util (Don&apos;t Run)&quot;"/>
 		</Configuration>
 		<Configuration
@@ -232,10 +235,11 @@
 			<Tool
 				Name="XboxImageTool"
 				AdditionalOptions="/testid:0x4D414D45"
-				StackSize="0x10000"
+				StackSize="0x20000"
 				IncludeDebugInfo="TRUE"
 				LimitAvailableMemoryTo64MB="TRUE"
 				SuppressStartupBanner="TRUE"
+				FormatUD="TRUE"
 				TitleName="&quot;MAMEoX Util (Don&apos;t Run)&quot;"/>
 		</Configuration>
 	</Configurations>
