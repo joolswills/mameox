@@ -43,7 +43,7 @@ void *CVirtualMemoryManager::Malloc( UINT32 size )
 
   page.m_address = VirtualAlloc(  NULL,                       // Region to reserve or commit (NULL = system defined)
                                   size,                       // Size of the region
-                                  MEM_RESERVE | MEM_TOP_DOWN, // Flags (just reserve the address space, do it from the highest possible addr down)
+                                  MEM_RESERVE,                // Flags (just reserve the address space)
                                   PAGE_READWRITE );           // Access protection (rw)
   page.m_size = size;
 
@@ -146,9 +146,9 @@ BOOL CVirtualMemoryManager::AccessAddressRange( void *base, UINT32 size )
 
       // Try to commit the page, releasing a committed page everytime we fail
     void *ptr = NULL;
-    while( !(ptr = VirtualAlloc(  virtualPage.m_address,                     // region to reserve or commit
-                                  virtualPage.m_size,                        // size of region
-                                  MEM_COMMIT | MEM_TOP_DOWN | MEM_NOZERO,    // type of allocation
+    while( !(ptr = VirtualAlloc(  virtualPage.m_address,       // region to reserve or commit
+                                  virtualPage.m_size,          // size of region
+                                  MEM_COMMIT | MEM_NOZERO,     // type of allocation
                                   PAGE_READWRITE )) && 
            m_committedAddresses.size() )
     {
@@ -186,6 +186,7 @@ BOOL CVirtualMemoryManager::AccessAddressRange( void *base, UINT32 size )
 
   #if (defined LOGVMM && defined _DEBUG)
   PRINTMSG( T_INFO, "AccessAddressRange: 0x%X, num page faults: %lu", virtualPage.m_address, virtualPage.m_pageFaultCount );
+  DEBUGGERCHECKRAM();
   #endif
 
 
