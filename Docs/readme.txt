@@ -48,9 +48,9 @@ X) This step is currently unnecessary, as the source distribution includes the
    Run the Sectionize.pl script to break the various ROMs into XBE sections
     (this is done to reduce runtime memory requirements)
 
-2) Open the MAMEoX.sln (Visual Studio.NET 2003) or MAMEoX.NET.sln (Visual Studio)
-   file and build the solution for Release mode (or Debug mode if you're doing 
-   actual development). 
+2) Open the MAMEoX.sln (Visual Studio.NET 2003) or MAMEoX.NET2002.sln 
+   (Visual Studio .NET 2002) file and build the solution for Release mode 
+   (or Debug mode if you're doing actual development). 
     
     This can be done via the following steps:
 	a) Build menu -> Configuration Manager...

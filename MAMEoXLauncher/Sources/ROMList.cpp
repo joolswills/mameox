@@ -155,21 +155,68 @@ BOOL CROMList::GenerateROMList( void )
 	m_ROMListFull.clear();
   m_ROMListFiltered.clear();
 
+  g_FileIOConfig.m_RomPath0.MakeLower();
+  g_FileIOConfig.m_RomPath1.MakeLower();
+  g_FileIOConfig.m_RomPath2.MakeLower();
+  g_FileIOConfig.m_RomPath3.MakeLower();
+
+	PRINTMSG( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_RomPath0.c_str() );
+  Helper_GenerateROMList( g_FileIOConfig.m_RomPath0 );
+
+  if( g_FileIOConfig.m_RomPath1 != g_FileIOConfig.m_RomPath0 )
+  {
+	  PRINTMSG( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_RomPath1.c_str() );
+    Helper_GenerateROMList( g_FileIOConfig.m_RomPath1 );
+  }
+
+  if( g_FileIOConfig.m_RomPath2 != g_FileIOConfig.m_RomPath1 &&
+      g_FileIOConfig.m_RomPath2 != g_FileIOConfig.m_RomPath0 )
+  {
+	  PRINTMSG( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_RomPath2.c_str() );
+    Helper_GenerateROMList( g_FileIOConfig.m_RomPath2 );
+  }
+
+  if( g_FileIOConfig.m_RomPath2 != g_FileIOConfig.m_RomPath2 &&
+      g_FileIOConfig.m_RomPath2 != g_FileIOConfig.m_RomPath1 &&
+      g_FileIOConfig.m_RomPath2 != g_FileIOConfig.m_RomPath0 )
+  {
+	  PRINTMSG( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_RomPath3.c_str() );
+    Helper_GenerateROMList( g_FileIOConfig.m_RomPath3 );
+  }
+
+    // Load the XML status file
+  LoadROMStatusFile();
+
+  if( !SaveROMListFile() )
+  {
+    PRINTMSG( T_INFO, "Failed to store the ROM list file!" );
+    return FALSE;
+  }
+
+    // Create the superscroll jump table
+  UpdateSortedList();
+  m_numLinesInList = m_currentSortedList.size();
+
+  return TRUE;
+}
+
+//---------------------------------------------------------------------
+//	Helper_GenerateROMList
+//---------------------------------------------------------------------
+BOOL CROMList::Helper_GenerateROMList( CStdString &path )
+{
 	std::vector< CStdString > zipFileNames;
 	WIN32_FIND_DATA findData;
 
-  g_FileIOConfig.m_RomPath.MakeLower();
-	PRINTMSG( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_RomPath.c_str() );
-
-  // Check if the rom path is on a smb share
-  if (g_FileIOConfig.m_RomPath.Left(6) == "smb://")
+    // Check if the rom path is on a smb share
+  if( path.Left(6) == "smb://")
   {
     CSMBHandler smbHandler;
-    smbHandler.GetDirectory(g_FileIOConfig.m_RomPath, ".zip", zipFileNames, TRUE);
+    smbHandler.GetDirectory(path, ".zip", zipFileNames, TRUE);
   }
   else
   {
-    HANDLE findHandle = FindFirstFile( (g_FileIOConfig.m_RomPath + "\\*").c_str(),
+    HANDLE findHandle = FindFirstFile( (path + "\\*").c_str(),
                                         &findData );
     if( findHandle == INVALID_HANDLE_VALUE )
     {
@@ -180,6 +227,8 @@ BOOL CROMList::GenerateROMList( void )
     DWORD i = 0;
     for( ; ; ++i )
     {
+
+//g_FileIOConfig.m_recursiveSearching
       // Notify the user that a new zip has been found
       DrawZipData( "Searching for ROM files", findData.cFileName, i );
 
@@ -215,24 +264,14 @@ BOOL CROMList::GenerateROMList( void )
     std::vector<CStdString>::iterator it = std::find( zipFileNames.begin(), 
                                                       zipFileNames.end(), 
                                                       driverFileName );
+
     if( it != zipFileNames.end() )
-      m_ROMListFull.push_back( i );
+      if( std::find( m_ROMListFull.begin(), m_ROMListFull.end(), i ) == m_ROMListFull.end() )
+        m_ROMListFull.push_back( i );
 	}
 
 	PRINTMSG( T_INFO, "Found %lu games!", m_ROMListFull.size() );
 
-    // Load the XML status file
-  LoadROMStatusFile();
-
-  if( !SaveROMListFile() )
-  {
-    PRINTMSG( T_INFO, "Failed to store the ROM list file!" );
-    return FALSE;
-  }
-
-    // Create the superscroll jump table
-  UpdateSortedList();
-  m_numLinesInList = m_currentSortedList.size();
 	return TRUE;
 }
 
@@ -688,38 +727,6 @@ void CROMList::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
       m_gameSelected = TRUE;
     }
 	}
-/*
-	else if( gp.IsButtonPressed( GP_X | GP_B ) )
-	{				
-			// Move the currently selected game to the backup dir
-		UINT32 romIDX = GetCurrentGameIndex();
-
-    // Don't allow removing from a samba share
-    if (g_FileIOConfig.m_RomPath.Left(5) != "smb:\\")
-    {
-      std::string oldPath = g_FileIOConfig.m_RomPath + "\\";
-      oldPath += m_driverInfoList[romIDX].m_romFileName;
-      oldPath += ".zip";
-
-      std::string newPath = g_ROMBackupPath;
-      newPath += "\\";
-      newPath += m_driverInfoList[romIDX].m_romFileName;
-      newPath += ".zip";
-
-      // Make sure the backup dir exists
-      CreateDirectory( g_ROMBackupPath, NULL );
-
-      PRINTMSG( T_INFO, "Moving ROM %s to %s!", oldPath.c_str(), newPath.c_str() );
-      if( !MoveFile( oldPath.c_str(), newPath.c_str() ) )
-      {
-        PRINTMSG( T_ERROR, "Failed moving ROM %s to %s!", oldPath.c_str(), newPath.c_str() );
-      }
-    }
-
-    gp.WaitForNoButton();
-		RemoveCurrentGameIndex();
-	}
-*/
 	else if( gp.IsButtonPressed( GP_WHITE ) )
 	{
 		m_options.m_verboseMode = !m_options.m_verboseMode;
@@ -1373,13 +1380,26 @@ BOOL CROMList::RemoveCurrentGameIndex( void )
 //---------------------------------------------------------------------
 BOOL CROMList::MoveCurrentGameToBackupDir( void )
 {
+  if( Helper_MoveCurrentGameToBackupDir( g_FileIOConfig.m_RomPath0 ) ||
+      Helper_MoveCurrentGameToBackupDir( g_FileIOConfig.m_RomPath1 ) ||
+      Helper_MoveCurrentGameToBackupDir( g_FileIOConfig.m_RomPath2 ) ||
+      Helper_MoveCurrentGameToBackupDir( g_FileIOConfig.m_RomPath3 ) )
+      return TRUE;
+  return FALSE;
+}
+
+//---------------------------------------------------------------------
+//	Helper_MoveCurrentGameToBackupDir
+//---------------------------------------------------------------------
+BOOL CROMList::Helper_MoveCurrentGameToBackupDir( CStdString &path )
+{
 		// Move the currently selected game to the backup dir
 	UINT32 romIDX = GetCurrentGameIndex();
 
     // Don't allow removing from a samba share
-  if (g_FileIOConfig.m_RomPath.Left(5) != "smb:\\")
+  if( path.Left(5) != "smb:\\" )
   {
-    std::string oldPath = g_FileIOConfig.m_RomPath + "\\";
+    std::string oldPath = path + "\\";
     oldPath += m_driverInfoList[romIDX].m_romFileName;
     oldPath += ".zip";
 
@@ -1393,14 +1413,15 @@ BOOL CROMList::MoveCurrentGameToBackupDir( void )
 
     PRINTMSG( T_INFO, "Moving ROM %s to %s!", oldPath.c_str(), newPath.c_str() );
     if( !MoveFile( oldPath.c_str(), newPath.c_str() ) )
-    {
       PRINTMSG( T_ERROR, "Failed moving ROM %s to %s!", oldPath.c_str(), newPath.c_str() );
+    else
+    {
+    	RemoveCurrentGameIndex();
+      return TRUE;
     }
   }
 
-	RemoveCurrentGameIndex();
-
-  return TRUE;
+  return FALSE;
 }
 
 

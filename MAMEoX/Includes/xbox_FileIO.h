@@ -64,7 +64,10 @@ struct FileIOConfig_t
   CStdString m_IniPath;
   CStdString m_NVramPath;
   CStdString m_ConfigPath;
-  CStdString m_RomPath;
+  CStdString m_RomPath0;
+  CStdString m_RomPath1;
+  CStdString m_RomPath2;
+  CStdString m_RomPath3;
   CStdString m_AudioPath;
   CStdString m_RomBackupPath;
   CStdString m_HDImagePath;
@@ -78,6 +81,8 @@ struct FileIOConfig_t
   CStdString m_LetterGMapping;
   CStdString m_LetterHMapping;
 
+  BOOL       m_recursiveSearching;    //!< Whether or not to recursively search ROM/other paths
+
   FileIOConfig_t( void ) {
     // Default the paths
     m_ALTDrive            = DEFAULT_ALTDRIVE;
@@ -86,7 +91,10 @@ struct FileIOConfig_t
     m_IniPath             = DEFAULT_INIPATH;
     m_NVramPath           = DEFAULT_NVRAMPATH;
     m_ConfigPath          = DEFAULT_CONFIGPATH;
-    m_RomPath             = DEFAULT_ROMPATH;
+    m_RomPath0            = DEFAULT_ROMPATH;
+    m_RomPath1            = DEFAULT_ROMPATH;
+    m_RomPath2            = DEFAULT_ROMPATH;
+    m_RomPath3            = DEFAULT_ROMPATH;
     m_AudioPath           = DEFAULT_AUDIOPATH;
     m_DefaultRomListPath  = DEFAULT_DEFAULTROMLISTPATH;
     m_RomBackupPath       = DEFAULT_ROMBACKUPPATH;
@@ -108,7 +116,10 @@ struct FileIOConfig_t
     m_IniPath.MakeLower();
     m_NVramPath.MakeLower();
     m_ConfigPath.MakeLower();
-    m_RomPath.MakeLower();
+    m_RomPath0.MakeLower();
+    m_RomPath1.MakeLower();
+    m_RomPath2.MakeLower();
+    m_RomPath3.MakeLower();
     m_AudioPath.MakeLower();
     m_DefaultRomListPath.MakeLower();
     m_RomBackupPath.MakeLower();

@@ -166,8 +166,17 @@ void __cdecl main( void )
     if( g_FileIOConfig.m_RomBackupPath.Left(6) == "smb://" )
       g_FileIOConfig.m_RomBackupPath = DEFAULT_ROMBACKUPPATH;
     
-    if( g_FileIOConfig.m_RomPath.Left(6) == "smb://" )
-      g_FileIOConfig.m_RomPath = DEFAULT_ROMPATH;
+    if( g_FileIOConfig.m_RomPath0.Left(6) == "smb://" )
+      g_FileIOConfig.m_RomPath0 = DEFAULT_ROMPATH;
+
+    if( g_FileIOConfig.m_RomPath1.Left(6) == "smb://" )
+      g_FileIOConfig.m_RomPath1 = DEFAULT_ROMPATH;
+
+    if( g_FileIOConfig.m_RomPath2.Left(6) == "smb://" )
+      g_FileIOConfig.m_RomPath2 = DEFAULT_ROMPATH;
+
+    if( g_FileIOConfig.m_RomPath3.Left(6) == "smb://" )
+      g_FileIOConfig.m_RomPath3 = DEFAULT_ROMPATH;
   }
 
   SaveOptions(); 

@@ -24,6 +24,9 @@ Version 0.71.2b (CVS)
       - Fixed: Release not called on vertex buffer after 
         GetStreamSource() function.
 
+    - xbox_fileio.c
+      - Added code to allow 4 ROM paths
+
    -------------------------------------------------------------
   - \MAMEoXLauncher\Includes:
 
@@ -48,9 +51,11 @@ Version 0.71.2b (CVS)
       - Added public function to force reload the rom status file
       - Fixed Backup feature (yet again, this is what, the 3rd time
         I broke it? I'm still surprised that people use it :))
+      - Added code to allow 4 ROM paths
 
     - OptionsPage.cpp
       - Changed the text for "problem ROM" filters
+      - Added code to allow 4 ROM paths
 
    -------------------------------------------------------------
   - \Sectionize.pl
@@ -60,6 +65,7 @@ Version 0.71.2b (CVS)
     - Fixed dep for Tutankham
     - Fixed dep for Vigilante
     - Fixed dep for Yie ar kung fu
+    - Fixed dep for Pooyan
 
 *********************************************************************
 Version 0.71.1b

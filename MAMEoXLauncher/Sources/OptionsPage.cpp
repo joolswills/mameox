@@ -149,7 +149,7 @@ COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice,
   wcscpy( m_pageData[OPTPAGE_DIRECTORIES_2].m_title, L"Directory Path Options [2/2]" );
   m_pageData[OPTPAGE_DIRECTORIES_2].m_drawFunct = ::DrawDirectoryPathPage2;
   m_pageData[OPTPAGE_DIRECTORIES_2].m_changeFunct = ::ChangeDirectoryPathPage2;
-  m_pageData[OPTPAGE_DIRECTORIES_2].m_numItems = 10;
+  m_pageData[OPTPAGE_DIRECTORIES_2].m_numItems = 13;
 
   wcscpy( m_pageData[OPTPAGE_ROMLIST].m_title, L"ROM List Options" );
   m_pageData[OPTPAGE_ROMLIST].m_drawFunct = ::DrawROMListPage;
@@ -790,15 +790,24 @@ void COptionsPage::DrawDirectoryPathPage2( void )
   g_FileIOConfig.m_HiScorePath        = iniFile.GetProfileString("Directories", "HiScoresPath",        DEFAULT_HISCOREPATH);
   g_FileIOConfig.m_NVramPath          = iniFile.GetProfileString("Directories", "NVRamPath",           DEFAULT_NVRAMPATH);
   g_FileIOConfig.m_RomBackupPath      = iniFile.GetProfileString("Directories", "BackupPath",          DEFAULT_ROMBACKUPPATH);
-  g_FileIOConfig.m_RomPath            = iniFile.GetProfileString("Directories", "RomsPath",            DEFAULT_ROMPATH);
-  g_FileIOConfig.m_ScreenshotPath     = iniFile.GetProfileString( "Directories", "ScreenshotPath",      DEFAULT_SCREENSHOTPATH );
+  g_FileIOConfig.m_RomPath0           = iniFile.GetProfileString("Directories", "RomsPath0",           DEFAULT_ROMPATH);
+  g_FileIOConfig.m_RomPath1           = iniFile.GetProfileString("Directories", "RomsPath1",           DEFAULT_ROMPATH);
+  g_FileIOConfig.m_RomPath2           = iniFile.GetProfileString("Directories", "RomsPath2",           DEFAULT_ROMPATH);
+  g_FileIOConfig.m_RomPath3           = iniFile.GetProfileString("Directories", "RomsPath3",           DEFAULT_ROMPATH);
+  g_FileIOConfig.m_ScreenshotPath     = iniFile.GetProfileString( "Directories", "ScreenshotPath",     DEFAULT_SCREENSHOTPATH );
 */
   WCHAR text[256] = {0};
 
   STARTPAGE();
 
-  mbstowcs( text, g_FileIOConfig.m_RomPath.c_str(), 255 );
+  mbstowcs( text, g_FileIOConfig.m_RomPath0.c_str(), 255 );
   DRAWITEM( L"ROM Files", text );
+  mbstowcs( text, g_FileIOConfig.m_RomPath1.c_str(), 255 );
+  DRAWITEM( L"More ROM Files", text );
+  mbstowcs( text, g_FileIOConfig.m_RomPath2.c_str(), 255 );
+  DRAWITEM( L"Yet More ROM Files", text );
+  mbstowcs( text, g_FileIOConfig.m_RomPath3.c_str(), 255 );
+  DRAWITEM( L"Even More ROM Files", text );
 
   mbstowcs( text, g_FileIOConfig.m_RomBackupPath.c_str(), 255 );
   DRAWITEM( L"Removed ROMs", text );
@@ -1397,51 +1406,66 @@ void COptionsPage::ChangeDirectoryPathPage2( BOOL movingRight )
     {
       // ROM Files
     case 0:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_RomPath );
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_RomPath0 );
+      break;
+
+      // More ROM Files
+    case 1:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_RomPath1 );
+      break;
+
+      // Yet More ROM Files
+    case 2:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_RomPath2 );
+      break;
+
+      // Even More ROM Files
+    case 3:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_RomPath3 );
       break;
 
       // Removed ROMs
-    case 1:
+    case 4:
       m_virtualKeyboard->SetData( g_FileIOConfig.m_RomBackupPath );
       break;
 
       // General
-    case 2:
+    case 5:
       m_virtualKeyboard->SetData( g_FileIOConfig.m_GeneralPath );
       break;
 
       // Art
-    case 3:
+    case 6:
       m_virtualKeyboard->SetData( g_FileIOConfig.m_ArtPath );
       break;
 
       // Samples (Audio)
-    case 4:
+    case 7:
       m_virtualKeyboard->SetData( g_FileIOConfig.m_AudioPath );
       break;
 
       // Config (CFG's)
-    case 5:
+    case 8:
       m_virtualKeyboard->SetData( g_FileIOConfig.m_ConfigPath );
       break;
 
       // HD images (CHD's)
-    case 6:
+    case 9:
       m_virtualKeyboard->SetData( g_FileIOConfig.m_HDImagePath );
       break;
 
       // High scores (highscore.dat)
-    case 7:
+    case 10:
       m_virtualKeyboard->SetData( g_FileIOConfig.m_HiScorePath );
       break;
 
       // NVRAM, state files
-    case 8:
+    case 11:
       m_virtualKeyboard->SetData( g_FileIOConfig.m_NVramPath );
       break;
 
       // Screenshots
-    case 9:
+    case 12:
       m_virtualKeyboard->SetData( g_FileIOConfig.m_ScreenshotPath );
       break;
     }
@@ -1454,51 +1478,66 @@ void COptionsPage::ChangeDirectoryPathPage2( BOOL movingRight )
       {
         // ROM Files
       case 0:
-        g_FileIOConfig.m_RomPath = m_virtualKeyboard->GetData();
+        g_FileIOConfig.m_RomPath0 = m_virtualKeyboard->GetData();
+        break;
+
+        // More ROM Files
+      case 1:
+        g_FileIOConfig.m_RomPath1 = m_virtualKeyboard->GetData();
+        break;
+
+        // Yet More ROM Files
+      case 2:
+        g_FileIOConfig.m_RomPath2 = m_virtualKeyboard->GetData();
+        break;
+
+        // Even More ROM Files
+      case 3:
+        g_FileIOConfig.m_RomPath3 = m_virtualKeyboard->GetData();
         break;
 
         // Removed ROMs
-      case 1:
+      case 4:
         g_FileIOConfig.m_RomBackupPath = m_virtualKeyboard->GetData();
         break;
 
         // General
-      case 2:
+      case 5:
         g_FileIOConfig.m_GeneralPath = m_virtualKeyboard->GetData();
         break;
 
         // Art
-      case 3:
+      case 6:
         g_FileIOConfig.m_ArtPath = m_virtualKeyboard->GetData();
         break;
 
         // Samples (Audio)
-      case 4:
+      case 7:
         g_FileIOConfig.m_AudioPath = m_virtualKeyboard->GetData();
         break;
 
         // Config (CFG's)
-      case 5:
+      case 8:
         g_FileIOConfig.m_ConfigPath = m_virtualKeyboard->GetData();
         break;
 
         // HD images (CHD's)
-      case 6:
+      case 9:
         g_FileIOConfig.m_HDImagePath = m_virtualKeyboard->GetData();
         break;
 
         // High scores (highscore.dat)
-      case 7:
+      case 10:
         g_FileIOConfig.m_HiScorePath = m_virtualKeyboard->GetData();
         break;
 
         // NVRAM, state files
-      case 8:
+      case 11:
         g_FileIOConfig.m_NVramPath = m_virtualKeyboard->GetData();
         break;
 
         // Screenshots
-      case 9:
+      case 12:
         g_FileIOConfig.m_ScreenshotPath = m_virtualKeyboard->GetData();
         break;
       }

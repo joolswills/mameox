@@ -49,7 +49,7 @@ struct _osd_file
 const char            *g_ROMListPath = NULL;
 const char            *g_ROMBackupPath = NULL;
 FileIOConfig_t        g_FileIOConfig;
-const char            *g_pathNames[FILETYPE_end] = {NULL};
+const char            *g_pathNames[FILETYPE_end][4] = {NULL};
 std::set<CStdString>  g_setcSMBFilesCached;
 
 
@@ -109,46 +109,49 @@ void InitializeFileIO( void )
   CREATEOROPENPATH( g_FileIOConfig.m_RomBackupPath.c_str(), TRUE );
   g_ROMBackupPath = tempStr;
 
-  CREATEOROPENPATH( g_FileIOConfig.m_RomPath.c_str(), FALSE );
-	g_pathNames[FILETYPE_RAW] = g_pathNames[FILETYPE_ROM] = tempStr;
+  CREATEOROPENPATH( g_FileIOConfig.m_RomPath0.c_str(), FALSE );
+	g_pathNames[FILETYPE_RAW][0] = g_pathNames[FILETYPE_ROM][0] = tempStr;
+  CREATEOROPENPATH( g_FileIOConfig.m_RomPath1.c_str(), FALSE );
+	g_pathNames[FILETYPE_RAW][1] = g_pathNames[FILETYPE_ROM][1] = tempStr;
+  CREATEOROPENPATH( g_FileIOConfig.m_RomPath2.c_str(), FALSE );
+	g_pathNames[FILETYPE_RAW][2] = g_pathNames[FILETYPE_ROM][2] = tempStr;
+  CREATEOROPENPATH( g_FileIOConfig.m_RomPath3.c_str(), FALSE );
+	g_pathNames[FILETYPE_RAW][3] = g_pathNames[FILETYPE_ROM][3] = tempStr;
 
   CREATEOROPENPATH( g_FileIOConfig.m_IniPath.c_str(), TRUE );
-	g_pathNames[FILETYPE_INI] = tempStr;
+	g_pathNames[FILETYPE_INI][0] = tempStr;
 
   CREATEOROPENPATH( g_FileIOConfig.m_HiScorePath.c_str(), TRUE );
-	g_pathNames[FILETYPE_HIGHSCORE] = g_pathNames[FILETYPE_HIGHSCORE_DB] = 
+	g_pathNames[FILETYPE_HIGHSCORE][0] = g_pathNames[FILETYPE_HIGHSCORE_DB][0] = 
                                     tempStr;
 
   CREATEOROPENPATH( g_FileIOConfig.m_NVramPath.c_str(), TRUE );
-																		g_pathNames[FILETYPE_NVRAM] = 
-																		g_pathNames[FILETYPE_STATE] =
-																		g_pathNames[FILETYPE_MEMCARD] = 
-																		tempStr;
+	g_pathNames[FILETYPE_NVRAM][0] = g_pathNames[FILETYPE_STATE][0] =
+	                                 g_pathNames[FILETYPE_MEMCARD][0] = tempStr;
 
   CREATEOROPENPATH( g_FileIOConfig.m_HDImagePath.c_str(), FALSE );
-  g_pathNames[FILETYPE_IMAGE] = tempStr;
+  g_pathNames[FILETYPE_IMAGE][0] = tempStr;
 
   CREATEOROPENPATH( g_FileIOConfig.m_HDImagePath.c_str(), TRUE );
-  g_pathNames[FILETYPE_IMAGE_DIFF] = tempStr;
+  g_pathNames[FILETYPE_IMAGE_DIFF][0] = tempStr;
 
   CREATEOROPENPATH( g_FileIOConfig.m_ArtPath.c_str(), FALSE );
-  g_pathNames[FILETYPE_ARTWORK] = tempStr;
+  g_pathNames[FILETYPE_ARTWORK][0] = tempStr;
 
   CREATEOROPENPATH( g_FileIOConfig.m_AudioPath.c_str(), FALSE );
-  g_pathNames[FILETYPE_SAMPLE] = tempStr;
+  g_pathNames[FILETYPE_SAMPLE][0] = tempStr;
 
   CREATEOROPENPATH( g_FileIOConfig.m_ConfigPath.c_str(), TRUE );
-  g_pathNames[FILETYPE_CONFIG] = tempStr;
+  g_pathNames[FILETYPE_CONFIG][0] = tempStr;
 
   CREATEOROPENPATH( g_FileIOConfig.m_GeneralPath.c_str(), TRUE );
-	g_pathNames[FILETYPE_INPUTLOG] =  g_pathNames[FILETYPE_HISTORY] = 
-																	  g_pathNames[FILETYPE_CHEAT] = 
-																	  g_pathNames[FILETYPE_LANGUAGE] = 
-																	  g_pathNames[FILETYPE_CTRLR] = 
-                                    tempStr;
+	g_pathNames[FILETYPE_INPUTLOG][0] = g_pathNames[FILETYPE_HISTORY][0] = 
+																	    g_pathNames[FILETYPE_CHEAT][0] = 
+																	    g_pathNames[FILETYPE_LANGUAGE][0] = 
+																	    g_pathNames[FILETYPE_CTRLR][0] = tempStr;
 
   CREATEOROPENPATH( g_FileIOConfig.m_ScreenshotPath.c_str(), TRUE );
-  g_pathNames[FILETYPE_SCREENSHOT] = tempStr;
+  g_pathNames[FILETYPE_SCREENSHOT][0] = tempStr;
 }
 
 //---------------------------------------------------------------------
@@ -162,9 +165,12 @@ int osd_get_path_count( int pathtype )
 
 	switch( pathtype )
 	{
-	case FILETYPE_RAW:
+    // ROMs are allowed to be in multiple directories
+    // MAMEoX currently supports 4 ROM paths
 	case FILETYPE_ROM:
+    return 4;
 
+	case FILETYPE_RAW:
 	case FILETYPE_IMAGE:
 	case FILETYPE_IMAGE_DIFF:
 	case FILETYPE_SAMPLE:
@@ -212,7 +218,7 @@ int osd_get_path_info( int pathtype, int pathindex, const char *filename )
 
   // Check if the path points to a SMB share, we only support files
   // on smb shares so always return this is a file
-  CStdString strPath = g_pathNames[pathtype];
+  CStdString strPath = g_pathNames[pathtype][pathindex];
   strPath.MakeLower();
   if( strPath.Left(6) == "smb://" )
   {
@@ -276,7 +282,7 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
 		dwDesiredAccess = GENERIC_READ | GENERIC_WRITE;
 	}
 
-  CStdString strPath = g_pathNames[pathtype];
+  CStdString strPath = g_pathNames[pathtype][pathindex];
   strPath.MakeLower();
   CStdString strFullPath;
 
@@ -293,7 +299,7 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
       ret->m_bIsSMB = FALSE;
 
       // Format the full path to the smb shared file
-      strFullPath.Format( "%s/%s", g_pathNames[pathtype], filename );
+      strFullPath.Format( "%s/%s", g_pathNames[pathtype][pathindex], filename );
 
       // The file will be cached to the utility drive
       CStdString strCacheFilePath;
@@ -326,7 +332,7 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
   }
   else
   {
-    strFullPath.Format( "%s\\%s", g_pathNames[pathtype], filename );
+    strFullPath.Format( "%s\\%s", g_pathNames[pathtype][pathindex], filename );
   }
 
   // Only load the file from disk if it isn't a smb file
@@ -636,10 +642,10 @@ BOOL ComposeFilePath( char *buf, UINT32 maxLen, UINT32 pathtype, UINT32 pathinde
   if( !buf || !filename )
     return FALSE;
 
-  if( maxLen < strlen(g_pathNames[pathtype]) + strlen(filename) + 2 )
+  if( maxLen < strlen(g_pathNames[pathtype][pathindex]) + strlen(filename) + 2 )
     return FALSE;
 
-  sprintf( buf, "%s\\%s", g_pathNames[pathtype], filename );
+  sprintf( buf, "%s\\%s", g_pathNames[pathtype][pathindex], filename );
 	Helper_ConvertSlashToBackslash( buf );
 
   return TRUE;

@@ -286,8 +286,9 @@ protected:
 		//------------------------------------------------------------
 	void DrawZipCheckProgress( DWORD index );
 
-
-
+    // Helper for ROM finding
+  BOOL Helper_GenerateROMList( CStdString &path );
+  BOOL Helper_MoveCurrentGameToBackupDir( CStdString &path );
 
     // Cursor movement helper functions
   void SuperScrollModeMoveCursor( CInputManager &gp, FLOAT elapsedTime );
