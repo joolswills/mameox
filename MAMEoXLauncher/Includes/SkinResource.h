@@ -14,7 +14,13 @@
 
 
 //= D E F I N E S =====================================================
-typedef enum SkinSpriteID_t {
+typedef enum SkinResourceID_t {
+	ASSET_SPLASH_BACKDROP,
+
+	ASSET_MESSAGE_BACKDROP,
+
+	ASSET_LIST_BACKDROP,
+
 	SPRITE_TVCALIBRATION_CURSOR,
 
 	SPRITE_LIGHTGUNCALIBRATION_CURSOR,
@@ -49,23 +55,42 @@ typedef enum SkinSpriteID_t {
 	SPRITE_BUTTON_LEFTANALOG,
 	SPRITE_BUTTON_RIGHTANALOG,
 
-	SPRITE_COUNT		// Note: This must be the last member of the enum
-} SkinSpriteID_t;
-
+	RESOURCE_COUNT		// Note: This must be the last member of the enum
+} SkinResourceID_t;
 
 //= C L A S S E S ====================================================
 
 /**
- * \struct  SkinSpriteInfo_t
+ * \struct  SkinResourceInfo_t
  * \brief   Holds positioning info for a sprite
  */
-typedef struct SkinSpriteInfo_t
+typedef struct SkinResourceInfo_t
 {
+		//------------------------------------------------------
+		//	Constructor
+		//------------------------------------------------------
+	SkinResourceInfo_t( void ) : 
+		m_left( -1.0f ), 
+		m_top( -1.0f ), 
+		m_right( -1.0f ), 
+		m_bottom( -1.0f ) 
+	{	}
+
+		//------------------------------------------------------
+		//	Constructor (SkinResourceInfo_t)
+		//------------------------------------------------------
+	SkinResourceInfo_t( const SkinResourceInfo_t &a ) {	
+		m_left = a.m_left;
+		m_top = a.m_top;
+		m_right = a.m_right;
+		m_bottom = a.m_bottom;
+	}
+
 	FLOAT			m_left;
 	FLOAT			m_top;
 	FLOAT			m_right;
 	FLOAT			m_bottom;
-} SkinSpriteInfo_t;
+} SkinResourceInfo_t;
 
 /**
  * \class   CSkinResource
@@ -96,22 +121,7 @@ public:
 	~CSkinResource( void ) {
 		SAFE_RELEASE( m_previewTexture );
 
-			// Free the textures
-		SAFE_RELEASE( m_splashBackdropTexture );
-		SAFE_RELEASE( m_messageBackdropTexture );
-		SAFE_RELEASE( m_listBackdropTexture );
-		SAFE_RELEASE( m_TVCalibrationSpritesTexture );
-		SAFE_RELEASE( m_lightgunCalibrationSpritesTexture );
-		SAFE_RELEASE( m_listSpritesTexture );
-		SAFE_RELEASE( m_menuSpritesTexture );
-		SAFE_RELEASE( m_buttonSpritesTexture );
-
-			// Free the sprite info structs
-		for( int i = 0; i < SPRITE_COUNT; ++i )
-		{
-			if( m_spriteInfoArray[i] )
-				delete m_spriteInfoArray[i];
-		}
+		UnloadSkin();
 	}
 
 
@@ -128,6 +138,32 @@ public:
 		//------------------------------------------------------
   BOOL LoadSkin( CStdString *errorReport );
 
+		//------------------------------------------------------
+		//	UnloadSkin
+		//!	\brief		Unload skin data other than the preview
+		//!						and name.
+		//------------------------------------------------------
+	void UnloadSkin( void ) {
+			// Free the textures
+		SAFE_RELEASE( m_splashBackdropTexture );
+		SAFE_RELEASE( m_messageBackdropTexture );
+		SAFE_RELEASE( m_listBackdropTexture );
+		SAFE_RELEASE( m_TVCalibrationSpritesTexture );
+		SAFE_RELEASE( m_lightgunCalibrationSpritesTexture );
+		SAFE_RELEASE( m_listSpritesTexture );
+		SAFE_RELEASE( m_menuSpritesTexture );
+		SAFE_RELEASE( m_buttonSpritesTexture );
+
+			// Free the sprite info structs
+		for( int i = 0; i < RESOURCE_COUNT; ++i )
+		{
+			if( m_spriteInfoArray[i] )
+			{
+				delete m_spriteInfoArray[i];
+				m_spriteInfoArray[i] = NULL;
+			}
+		}
+	}
 
 		//------------------------------------------------------
 		// GetSkinName
@@ -140,9 +176,60 @@ public:
 	LPDIRECT3DTEXTURE8 GetPreviewTexture( void ) { return m_previewTexture;	}
 
 		//------------------------------------------------------
-		// GetPreviewTexture
+		// GetPreviewTextureRect
 		//------------------------------------------------------
-	const RECT &GetPreviewTextureRect( void ) { return m_previewTextureRect;	}
+	const RECT &GetPreviewTextureRect( void ) const { return m_previewTextureRect; }
+
+
+		//------------------------------------------------------
+		// GetSkinResourceInfo
+		//------------------------------------------------------
+	inline const SkinResourceInfo_t *GetSkinResourceInfo( SkinResourceID_t id ) const { return m_spriteInfoArray[id]; }
+
+
+
+
+
+		//------------------------------------------------------
+		// GetSplashBackdropTexture
+		//------------------------------------------------------
+	inline LPDIRECT3DTEXTURE8 GetSplashBackdropTexture( void ) { return m_splashBackdropTexture; }
+
+		//------------------------------------------------------
+		// GetMessageBackdropTexture
+		//------------------------------------------------------
+	inline LPDIRECT3DTEXTURE8 GetMessageBackdropTexture( void ) { return m_messageBackdropTexture; }
+
+		//------------------------------------------------------
+		// GetListBackdropTexture
+		//------------------------------------------------------
+	inline LPDIRECT3DTEXTURE8 GetListBackdropTexture( void ) { return m_listBackdropTexture; }
+
+		//------------------------------------------------------
+		// GetTVCalibrationSpritesTexture
+		//------------------------------------------------------
+	inline LPDIRECT3DTEXTURE8 GetTVCalibrationSpritesTexture( void ) { return m_TVCalibrationSpritesTexture; }
+
+		//------------------------------------------------------
+		// GetLightgunCalibrationSpritesTexture
+		//------------------------------------------------------
+	inline LPDIRECT3DTEXTURE8 GetLightgunCalibrationSpritesTexture( void ) { return m_lightgunCalibrationSpritesTexture; }
+
+		//------------------------------------------------------
+		// GetListSpritesTexture
+		//------------------------------------------------------
+	inline LPDIRECT3DTEXTURE8 GetListSpritesTexture( void ) { return m_listSpritesTexture; }
+
+		//------------------------------------------------------
+		// GetMenuSpritesTexture
+		//------------------------------------------------------
+	inline LPDIRECT3DTEXTURE8 GetMenuSpritesTexture( void ) { return m_menuSpritesTexture; }
+
+		//------------------------------------------------------
+		// GetButtonSpritesTexture
+		//------------------------------------------------------
+	inline LPDIRECT3DTEXTURE8 GetButtonSpritesTexture( void ) { return m_buttonSpritesTexture; }
+
 
 protected:
 		//------------------------------------------------------
@@ -168,7 +255,7 @@ protected:
 
 		// Array of sprite info structs defining where a particular sprite
 		// can be found within its asset texture
-	SkinSpriteInfo_t				*m_spriteInfoArray[SPRITE_COUNT];
+	SkinResourceInfo_t				*m_spriteInfoArray[RESOURCE_COUNT];
 };
 
 

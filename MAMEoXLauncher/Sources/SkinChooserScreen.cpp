@@ -148,17 +148,11 @@ BOOL CSkinChooserScreen::FindSkins( void )
 			LPDIRECT3DTEXTURE8 texture = NULL;
 			CStdString previewFile = fullBasePath + "\\preview.png";
 
-			PRINTMSG(( T_INFO, "Load texture: %s", previewFile.c_str() ));
-
 		  if( !LoadPNGToTexture( previewFile, &texture, &rct ) )
 				texture = NULL;
 
-			PRINTMSG(( T_INFO, "Texture addr 0x%X!", texture ));
-
 				// We have a skin on our hands
 			m_skinResourceVector.push_back( new CSkinResource( basepath.c_str(), texture, rct ) );
-
-			PRINTMSG(( T_INFO, "Added skin!" ));
 		}
 
 	} while( FindNextFile( findHandle, &findData ) );
@@ -168,8 +162,62 @@ BOOL CSkinChooserScreen::FindSkins( void )
 	m_numLinesInList = m_skinResourceVector.size();
 	PRINTMSG(( T_INFO, "Found %lu skins.", m_skinResourceVector.size() ));
 
+	SetCursorToSelectedSkin();
+	m_currentSkin = m_skinResourceVector[GetAbsoluteCursorPosition()];
+	if( m_currentSkin )
+		m_currentSkin->LoadSkin( NULL );	// Todo:Check the error code, etc...
+
+
 	return TRUE;
 }
+
+
+//---------------------------------------------------------------------
+//	SetCursorToSelectedSkin
+//---------------------------------------------------------------------
+void CSkinChooserScreen::SetCursorToSelectedSkin( void )
+{
+	for( int i = 0; i < m_skinResourceVector.size(); ++i )
+	{
+		if( m_options.m_currentSkin == m_skinResourceVector[i]->GetSkinName() )
+		{
+			SetAbsoluteCursorPosition( i );
+			return;
+		}
+	}
+}
+
+//---------------------------------------------------------------------
+//  SetAbsoluteCursorPosition
+//---------------------------------------------------------------------
+void CSkinChooserScreen::SetAbsoluteCursorPosition( UINT32 pos )
+{
+  if( pos >= m_numLinesInList )
+    return;
+
+    // Jump the cursor to the selected position
+	UINT32 pageSize = (m_numLinesInList < MAXPAGESIZE ? m_numLinesInList : MAXPAGESIZE);
+	UINT32 pageHalfwayPoint = (pageSize >> 1);
+	UINT32 maxPageOffset = m_numLinesInList - pageSize;
+
+    // Put the page offset at absoluteCursorPos - pageHalwayPoint, or 0
+  if( pos <= pageHalfwayPoint || m_numLinesInList < MAXPAGESIZE )
+  {
+    m_pageOffset = 0.0f;
+    m_cursorPosition = (FLOAT)pos;
+  }
+  else if( pos - pageHalfwayPoint > maxPageOffset )
+  {
+    m_pageOffset = maxPageOffset;
+    m_cursorPosition = pos - maxPageOffset;
+  }
+  else
+  {
+    m_pageOffset = (FLOAT)(pos - pageHalfwayPoint);
+    m_cursorPosition = (FLOAT)pageHalfwayPoint;
+  }
+}
+
 
 //---------------------------------------------------------------------
 //	MoveCursor
@@ -180,6 +228,17 @@ void CSkinChooserScreen::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
   if( gp.IsButtonPressed( GP_A ) || gp.IsKeyPressed( VK_RETURN )  )
 	{
 			// Load the selected skin, if it's not the current one
+		CSkinResource *selectedSkin = m_skinResourceVector[GetAbsoluteCursorPosition()];
+		if( selectedSkin->GetSkinName() != m_options.m_currentSkin )
+		{
+			CSkinResource *oldSkin = m_currentSkin;
+			if( m_currentSkin )
+				m_currentSkin->UnloadSkin();
+
+			m_currentSkin = selectedSkin;
+			m_currentSkin->LoadSkin( NULL );	// Todo:Check the error code, reload the old skin, etc...
+			m_options.m_currentSkin = selectedSkin->GetSkinName();
+		}
 	}
 
 		// General idea taken from XMAME
@@ -394,7 +453,31 @@ void CSkinChooserScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
 
     // Render the backdrop texture
-  RenderBackdrop();
+	if( m_currentSkin && m_currentSkin->GetListBackdropTexture() && m_currentSkin->GetSkinResourceInfo( ASSET_LIST_BACKDROP ) )
+	{
+		const SkinResourceInfo_t *desc = m_currentSkin->GetSkinResourceInfo( ASSET_LIST_BACKDROP );
+
+		m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
+		m_displayDevice->SetTexture( 0, m_currentSkin->GetListBackdropTexture() );
+		m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
+		m_displayDevice->Begin( D3DPT_QUADLIST );
+
+			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_top );
+			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 0.0f, 0.0f, 1.0f, 1.0f );
+
+			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_right, desc->m_top );
+			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 640.0f, 0.0f, 1.0f, 1.0f );
+
+			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_right, desc->m_bottom );
+			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 640.0f, 480.0f, 1.0f, 1.0f );
+
+			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_bottom );
+			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 0.0f, 480.0f, 1.0f, 1.0f );
+		m_displayDevice->End();
+		m_displayDevice->SetTexture( 0, NULL );
+	}
+	else
+		RenderBackdrop();
   m_menuRenderer->Draw( FALSE, FALSE );
 
 

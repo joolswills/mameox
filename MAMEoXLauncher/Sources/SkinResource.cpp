@@ -23,7 +23,9 @@
 
 	// Enum to give the g_skinINISections some friendly indices
 typedef enum SkinINISectionID_t {
-	SECTION_BACKDROPS,
+	SECTION_SPLASH_BACKDROP,
+	SECTION_MESSAGE_BACKDROP,
+	SECTION_LIST_BACKDROP,
 	SECTION_TVCALIBRATION_SPRITES,
 	SECTION_LIGHTGUNCALIBRATION_SPRITES,
 	SECTION_LIST_SPRITES,
@@ -31,11 +33,15 @@ typedef enum SkinINISectionID_t {
 	SECTION_BUTTON_SPRITES
 } SkinINISectionID_t;
 
+
+
 //= G L O B A L = V A R S =============================================
 extern CGraphicsManager	  g_graphicsManager;
 
 	// Array of INI sections containing sprites
-const char *g_skinINISections[] = { "Backdrops",
+const char *g_skinINISections[] = { "SplashBackdrop",
+																		"MessageBackdrop",
+																		"ListBackdrop",
 																		"TVCalibrationSprites", 
 																		"LightgunCalibrationSprites", 
 																		"ListSprites",
@@ -43,8 +49,14 @@ const char *g_skinINISections[] = { "Backdrops",
 																		"ButtonSprites" };
 
 
-	// Map of SkinSpriteID_t's to their name in the skin.ini file 
+	// Map of SkinResourceID_t's to their name in the skin.ini file 
 static const char *g_spriteIDToINIEntry[] = {
+	"Backdrop",									// ASSET_SPLASH_BACKDROP
+
+	"Backdrop",									// ASSET_MESSAGE_BACKDROP
+
+	"Backdrop",									// ASSET_LIST_BACKDROP
+
 	"Cursor",										// SPRITE_TVCALIBRATION_CURSOR
 
 	"Cursor",										// SPRITE_LIGHTGUNCALIBRATION_CURSOR
@@ -84,7 +96,7 @@ static const char *g_spriteIDToINIEntry[] = {
 
 
 //= P R O T O T Y P E S ===============================================
-static const char *SpriteIDToINISection( SkinSpriteID_t idToMap );
+static const char *ResourceIDToINISection( SkinResourceID_t idToMap );
 static LPDIRECT3DTEXTURE8 HelperCreateTextureFromPNGFile( PNGFile_t &colorFileData, BYTE *alphaChannel );
 
 
@@ -98,8 +110,11 @@ BOOL CSkinResource::LoadSkin( CStdString *errorReport )
   CStdString iniFileName = m_skinName;
   iniFileName += "\\" SKININIFILENAME;
   
-  CStdString fullIniFilePath = "d:\\skins\\";
-  fullIniFilePath += iniFileName;
+  CStdString fullIniFilePath = g_FileIOConfig.m_skinPath;
+  fullIniFilePath += "\\" + iniFileName;
+
+
+	PRINTMSG(( T_INFO, "LoadSkin from INI %s", fullIniFilePath.c_str() ));
 
     // Make sure there's a skin.ini file
   osd_file *file = osd_fopen( FILETYPE_MAMEOX_FULLPATH, 0, fullIniFilePath.c_str(), "r" );
@@ -107,18 +122,32 @@ BOOL CSkinResource::LoadSkin( CStdString *errorReport )
   {
     if( errorReport )
       *errorReport = "Missing \"" SKININIFILENAME "\"!";
+
+		PRINTMSG(( T_ERROR, "Failed to load INI file %s!", fullIniFilePath.c_str() ));
     return FALSE;
   }
   osd_fclose( file );
 
 
     // Parse the INI file
-  CSystem_IniFile iniFile( iniFileName );
+  CSystem_IniFile iniFile( fullIniFilePath );
 
-		// Grab the resource filenames
-	m_splashBackdropTexture		= LoadSkinTexture( iniFile, g_skinINISections[SECTION_BACKDROPS], "SplashBackdrop", "" );
-	m_messageBackdropTexture	= LoadSkinTexture( iniFile, g_skinINISections[SECTION_BACKDROPS], "MessageBackdrop", "" );
-	m_listBackdropTexture			= LoadSkinTexture( iniFile, g_skinINISections[SECTION_BACKDROPS], "ListBackdrop", "" );
+		// Grab the resource files
+	m_splashBackdropTexture = LoadSkinTexture(	iniFile, 
+																							g_skinINISections[SECTION_SPLASH_BACKDROP], 
+																							"ResourcesColorChannelFilename", 
+																							"" );
+
+	m_messageBackdropTexture = LoadSkinTexture(	iniFile, 
+																							g_skinINISections[SECTION_MESSAGE_BACKDROP], 
+																							"ResourcesColorChannelFilename", 
+																							"" );
+
+	m_listBackdropTexture = LoadSkinTexture(	iniFile, 
+																							g_skinINISections[SECTION_LIST_BACKDROP], 
+																							"ResourcesColorChannelFilename", 
+																							"" );
+
 
 	m_TVCalibrationSpritesTexture = LoadSkinTexture(	iniFile, 
 																										g_skinINISections[SECTION_TVCALIBRATION_SPRITES], 
@@ -146,23 +175,21 @@ BOOL CSkinResource::LoadSkin( CStdString *errorReport )
 																						"ResourcesAlphaChannelFilename" );
 
 
-	for( int i = 0; i < SPRITE_COUNT; ++i )
+	for( int i = 0; i < RESOURCE_COUNT; ++i )
 	{
-		SkinSpriteInfo_t tempInfo;
-		CStdString sectionName = SpriteIDToINISection( (SkinSpriteID_t)i );
+		SkinResourceInfo_t tempInfo;
+		CStdString sectionName = ResourceIDToINISection( (SkinResourceID_t)i );
 		
 		CStdString entryName = g_spriteIDToINIEntry[i];
 		entryName += ".FileOffset.";
 
-		tempInfo.m_left = iniFile.GetProfileInt( sectionName, entryName + "left", -1 );
-		tempInfo.m_right = iniFile.GetProfileInt( sectionName, entryName + "right", -1 );
-		tempInfo.m_top = iniFile.GetProfileInt( sectionName, entryName + "top", -1 );
+		tempInfo.m_left		= iniFile.GetProfileInt( sectionName, entryName + "left", -1 );
+		tempInfo.m_right	= iniFile.GetProfileInt( sectionName, entryName + "right", -1 );
+		tempInfo.m_top		= iniFile.GetProfileInt( sectionName, entryName + "top", -1 );
 		tempInfo.m_bottom = iniFile.GetProfileInt( sectionName, entryName + "bottom", -1 );
-		if( tempInfo.m_left != -1 && tempInfo.m_right != -1 && tempInfo.m_top != -1 && tempInfo.m_bottom != -1 )
-		{
-			m_spriteInfoArray[i] = new SkinSpriteInfo_t;
-			memcpy( &m_spriteInfoArray[i], &tempInfo, sizeof(m_spriteInfoArray[i]) );
-		}
+
+		if( tempInfo.m_left != -1.0f && tempInfo.m_right != -1.0f && tempInfo.m_top != -1.0f && tempInfo.m_bottom != -1.0f )
+			m_spriteInfoArray[i] = new SkinResourceInfo_t( tempInfo );
 	}
 
 	return TRUE;
@@ -177,16 +204,25 @@ LPDIRECT3DTEXTURE8 CSkinResource::LoadSkinTexture(	CSystem_IniFile &iniFile,
 																										const CStdString &colorChannelEntry, 
 																										const CStdString &alphaChannelEntry )
 {
-	CStdString textureColorFilename, textureAlphaFilename;
+	CStdString textureColorFilename, textureAlphaFilename = "";
 	textureColorFilename	= iniFile.GetProfileString( sectionName, colorChannelEntry, "" );
-	textureAlphaFilename	= iniFile.GetProfileString( sectionName, alphaChannelEntry, "" );
+
+	if( alphaChannelEntry.size() )
+		textureAlphaFilename	= iniFile.GetProfileString( sectionName, alphaChannelEntry, "" );
+
+	PRINTMSG(( T_INFO, "Load texture at %s:%s[%s]", sectionName.c_str(), colorChannelEntry.c_str(), alphaChannelEntry.c_str() ));
+	PRINTMSG(( T_INFO, "Files resolved to %s[%s]", textureColorFilename.c_str(), textureAlphaFilename.c_str() ));
+
 
 		// Don't continue at all if there's no color channel
 	if( textureColorFilename == "" )
 		return NULL;
 
+  CStdString fullResourceFilePath = g_FileIOConfig.m_skinPath;
+	fullResourceFilePath += "\\" + m_skinName + "\\";
+
 	PNGFile_t colorFileData;
-	if( !LoadPNGFile( m_skinName + "\\" + textureColorFilename, &colorFileData ) )
+	if( !LoadPNGFile( fullResourceFilePath + textureColorFilename, &colorFileData ) )
 	{
 		PRINTMSG(( T_ERROR, "Failed to load color channel for texture %s:%s[%s]!", sectionName.c_str(), colorChannelEntry.c_str(), alphaChannelEntry.c_str() ));
 		return NULL;
@@ -197,7 +233,7 @@ LPDIRECT3DTEXTURE8 CSkinResource::LoadSkinTexture(	CSystem_IniFile &iniFile,
 	if( textureAlphaFilename != "" )
 	{
 		PNGFile_t alphaFileData;
-		if( !LoadPNGFile( m_skinName + "\\" + textureAlphaFilename, &alphaFileData ) )
+		if( !LoadPNGFile( fullResourceFilePath + textureAlphaFilename, &alphaFileData ) )
 		{
 				// If the load fails, just print a warning and load as XRGB
 			PRINTMSG(( T_ERROR, "Failed to load alpha channel for texture %s:%s[%s]! Creating as XRGB instead...", sectionName.c_str(), colorChannelEntry.c_str(), alphaChannelEntry.c_str() ));
@@ -338,15 +374,27 @@ LPDIRECT3DTEXTURE8 CSkinResource::LoadSkinTexture(	CSystem_IniFile &iniFile,
 	ClosePNGFile( colorFileData );
 	if( alphaChannel )
 		free( alphaChannel );
+
+	PRINTMSG(( T_INFO, "Texture created: 0x%X", ret ));
+
 	return ret;		
 }
 
 
 //---------------------------------------------------------------------
-//	SpriteIDToINISection
+//	ResourceIDToINISection
 //---------------------------------------------------------------------
-static const char *SpriteIDToINISection( SkinSpriteID_t idToMap )
+static const char *ResourceIDToINISection( SkinResourceID_t idToMap )
 {
+	if( idToMap == ASSET_SPLASH_BACKDROP )
+		return g_skinINISections[SECTION_SPLASH_BACKDROP];
+
+	if( idToMap == ASSET_MESSAGE_BACKDROP )
+		return g_skinINISections[SECTION_MESSAGE_BACKDROP];
+
+	if( idToMap == ASSET_LIST_BACKDROP )
+		return g_skinINISections[SECTION_LIST_BACKDROP];
+
 	if( idToMap == SPRITE_TVCALIBRATION_CURSOR )
 		return g_skinINISections[SECTION_TVCALIBRATION_SPRITES];
 
@@ -362,7 +410,7 @@ static const char *SpriteIDToINISection( SkinSpriteID_t idToMap )
 	if( idToMap >= SPRITE_BUTTON_A && idToMap <= SPRITE_BUTTON_RIGHTANALOG )
 		return g_skinINISections[SECTION_BUTTON_SPRITES];
 
-	PRINTMSG(( T_ERROR, "Unknown SkinSpriteID_t entry %d!", idToMap ));
+	PRINTMSG(( T_ERROR, "Unknown SkinResourceID_t entry %d!", idToMap ));
 	return NULL;
 }
 
@@ -374,6 +422,8 @@ static const char *SpriteIDToINISection( SkinSpriteID_t idToMap )
 static LPDIRECT3DTEXTURE8 HelperCreateTextureFromPNGFile( PNGFile_t &colorFileData, BYTE *alphaChannel )
 {
 	LPDIRECT3DTEXTURE8 ret;
+
+	PRINTMSG(( T_INFO, "Create Texture from file w/ size %lux%lu", colorFileData.m_imageWidth, colorFileData.m_imageHeight ));
 
     // Create a new texture and read the data into it
   if( (D3DXCreateTexture( g_graphicsManager.GetD3DDevice(),

@@ -132,7 +132,7 @@ extern "C" void DrawProgressbarMessage( LPDIRECT3DDEVICE8 pD3DDevice, const char
 static BOOL Helper_LoadDriverInfoFile( void );
 static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice );
 static void Helper_SetStartMenuItems( CStartMenuView &startMenu, viewmode currentViewMode );
-static void Helper_SaveOptionsAndReboot( LPDIRECT3DDEVICE8 pD3DDevice, CROMListScreen & );
+static void Helper_SaveOptionsAndReboot( LPDIRECT3DDEVICE8 pD3DDevice, CROMListScreen &, CSkinChooserScreen & );
 static BOOL Helper_CopySystemFilesFromDVD( LPDIRECT3DDEVICE8 pD3DDevice );
 
 //= F U N C T I O N S =================================================
@@ -144,6 +144,7 @@ void __cdecl main( void )
 {
 		// Start up the debug logger thread
 	DebugLoggerInit();
+	PRINTMSG(( T_INFO, "\r\nStartup\r\n" ));
 
   Enable128MegCaching();
 
@@ -388,6 +389,7 @@ void __cdecl main( void )
 
 		// Skin chooser
 	CSkinChooserScreen skinChooser( pD3DDevice, g_fontSet, g_textureSet );
+  skinChooser.SetOptions( g_skinOptions );
 	skinChooser.FindSkins();
 
     //-- Initialize the rendering engine -------------------------------
@@ -460,7 +462,7 @@ void __cdecl main( void )
     BYTE rebootSequence[3] = { VK_LMENU, VK_LCONTROL, VK_DELETE };
     if( g_inputManager.IsButtonPressed( GP_LEFT_TRIGGER | GP_RIGHT_TRIGGER | GP_BLACK ) ||
         g_inputManager.AreAllOfKeysPressed( rebootSequence, 3 ) )
-      Helper_SaveOptionsAndReboot( pD3DDevice, romList );
+      Helper_SaveOptionsAndReboot( pD3DDevice, romList, skinChooser );
 
 
     if( g_inputManager.IsOnlyButtonPressed( GP_LEFT_ANALOG ) || g_inputManager.IsOnlyKeyPressed( VK_PRINT ) )
@@ -648,7 +650,7 @@ void __cdecl main( void )
           {
             // *** MI_REBOOT *** //
           case MI_REBOOT:
-            Helper_SaveOptionsAndReboot( pD3DDevice, romList );
+            Helper_SaveOptionsAndReboot( pD3DDevice, romList, skinChooser );
             break;
 
             // *** MI_HELP *** //
@@ -747,6 +749,9 @@ void __cdecl main( void )
       romList.GetCursorPosition(  &g_persistentLaunchData.m_cursorPosition, 
                                   &g_persistentLaunchData.m_pageOffset,
                                   &g_persistentLaunchData.m_superscrollIndex );
+
+			g_skinOptions = skinChooser.GetOptions();
+
       SaveOptions();
       romList.SaveROMMetadataFile();
       DWORD retVal = XLaunchNewImage( "D:\\MAMEoX.xbe", &g_launchData );
@@ -1406,7 +1411,7 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 //-------------------------------------------------------------
 //	Helper_SaveOptionsAndReboot
 //-------------------------------------------------------------
-static void Helper_SaveOptionsAndReboot( LPDIRECT3DDEVICE8 pD3DDevice, CROMListScreen &romList )
+static void Helper_SaveOptionsAndReboot( LPDIRECT3DDEVICE8 pD3DDevice, CROMListScreen &romList, CSkinChooserScreen &skinChooser )
 {
 
 	DrawProgressbarMessage( pD3DDevice, "Saving settings...", NULL, 0xFFFFFFFF, 0xFFFFFFFF );
@@ -1415,6 +1420,10 @@ static void Helper_SaveOptionsAndReboot( LPDIRECT3DDEVICE8 pD3DDevice, CROMListS
   romList.GetCursorPosition(  &g_persistentLaunchData.m_cursorPosition, 
                               &g_persistentLaunchData.m_pageOffset,
                               &g_persistentLaunchData.m_superscrollIndex );
+
+	g_skinOptions = skinChooser.GetOptions();
+
+
   SaveOptions();
   romList.SaveROMMetadataFile();
 

@@ -52,8 +52,19 @@ CFontSet              g_fontSet;          // The global font manager
 CVirtualMemoryManager g_vmManager;        // The global memory manager
 
 extern BOOL           g_soundEnabled;   // Sound processing override (defined in xbox_Main.cpp)
+
+#pragma data_seg("STRT.D")
+#pragma bss_seg("STRT.D")
+#pragma comment(linker, "/merge:STRT.D=STARTUP")
+#pragma comment(linker, "/merge:STRT.D=STARTUP")
+#pragma comment(linker, "/section:STARTUP,E,W,R")
 ROMListOptions_t      g_romListOptions;
+SkinOptions_t					g_skinOptions;
 MAMEoXLaunchData_t    g_persistentLaunchData;   //!<  Launch data that persists via the INI
+#pragma data_seg()
+#pragma bss_seg()
+
+
 extern UINT32         g_screensaverTimeout;     //!<  Time before the Launcher screensaver kicks in
 
 extern "C" int fatalerror( const char *fmt, ... );
@@ -301,6 +312,10 @@ void LoadOptions( void )
   g_persistentLaunchData.m_cursorPosition =            iniFile.GetProfileFloat( "ROMListOptions", "CursorPosition", 0.0f );
   g_persistentLaunchData.m_pageOffset =                iniFile.GetProfileFloat( "ROMListOptions", "PageOffset", 0.0f );
   g_persistentLaunchData.m_superscrollIndex =          iniFile.GetProfileInt(   "ROMListOptions", "SuperscrollIndex", 0 );
+
+
+		//-- Skin Options ------------------------------------------------------------------------
+	g_skinOptions.m_currentSkin = iniFile.GetProfileString( "SkinOptions", "SelectedSkin", "Original" );
 }
 
 
@@ -438,6 +453,9 @@ void SaveOptions( void )
   iniFile.WriteProfileFloat( "ROMListOptions", "CursorPosition", g_persistentLaunchData.m_cursorPosition );
   iniFile.WriteProfileFloat( "ROMListOptions", "PageOffset", g_persistentLaunchData.m_pageOffset );
   iniFile.WriteProfileInt(   "ROMListOptions", "SuperscrollIndex", g_persistentLaunchData.m_superscrollIndex );
+
+		//-- Skin Options ------------------------------------------------------------------------
+	iniFile.WriteProfileString( "SkinOptions", "SelectedSkin", g_skinOptions.m_currentSkin );
 }
 
 //-------------------------------------------------------------

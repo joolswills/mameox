@@ -281,6 +281,13 @@ typedef struct ROMListOptions_t
 //  UINT32              m_numPlayersFilter;
 //  CStdString          m_genreFilter;
 } ROMListOptions_t;
+
+
+
+typedef struct SkinOptions_t
+{
+	CStdString					m_currentSkin;				//!<  The currently loaded skin name
+} SkinOptions_t;
 #endif
 
 //= G L O B A L = V A R S ==============================================
@@ -289,6 +296,7 @@ extern MAMEoXLaunchData_t       g_persistentLaunchData;   //!<  Launch data that
 
 #ifdef __cplusplus
 extern ROMListOptions_t         g_romListOptions;         //!<  ROM List display options that persist via the INI
+extern SkinOptions_t						g_skinOptions;						//!<	Persistent skin options
 #endif
 
 //= P R O T O T Y P E S ================================================

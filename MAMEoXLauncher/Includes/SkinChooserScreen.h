@@ -50,7 +50,8 @@ public:
 														CFontSet &fontSet, 
 														CTextureSet &textureSet ) :
     CListView( displayDevice, fontSet, textureSet.GetBasicBackdrop() ),
-    m_textureSet( textureSet )
+    m_textureSet( textureSet ),
+		m_currentSkin( NULL )
 	{
 		m_maxPageSize = 3;
     RECT area = { LISTPOS_LEFT, LISTPOS_TOP, LISTPOS_RIGHT, LISTPOS_BOTTOM };
@@ -98,17 +99,54 @@ public:
 		//------------------------------------------------------------
 	virtual void Draw( BOOL opaque = TRUE, BOOL flipOnCompletion = TRUE );
 
+
+		//------------------------------------------------------------
+		// SetOptions
+		//! \brief		Set the display options
+		//!
+		//! \param		opts - SkinOptions_t struct containing new options
+		//------------------------------------------------------------
+  void SetOptions( const SkinOptions_t &opts ) { 
+    m_options = opts;
+		SetCursorToSelectedSkin();
+  }
+
+		//------------------------------------------------------------
+		// GetOptions
+		//! \brief		Get the current display options
+		//!
+		//! \return		const SkinOptions_t & - SkinOptions_t struct containing options
+		//------------------------------------------------------------
+  const SkinOptions_t &GetOptions( void ) { return m_options; }
+
+
+
+		//------------------------------------------------------------
+		// GetCurrentSkin
+		//! \brief		Get the currently loaded skin
+		//!
+		//! \return		const CSkinResource & - The CSkinResource containing the
+		//!																		currently selected skin.
+		//------------------------------------------------------------
+	const CSkinResource *GetCurrentSkin( void ) { return m_currentSkin; }
+
 protected:
 
+	void SetAbsoluteCursorPosition( UINT32 pos );
   UINT32 GetAbsoluteCursorPosition( void ) const { return (UINT32)m_pageOffset + (UINT32)m_cursorPosition; }
 
      // Cursor movement helper functions
   void NormalModeMoveCursor( CInputManager &gp, FLOAT elapsedTime );
 	void DrawSkinList( void );
 
+	void SetCursorToSelectedSkin( void );	
+
   CTextureSet											&m_textureSet;      //!<  The texture set object storing all the useable textures (and their info) for the game
   CBaseMenuView										*m_menuRenderer;    //!<  Resizable menu renderer
 
+	SkinOptions_t										m_options;
+
+	CSkinResource										*m_currentSkin;			//!<	The currently loaded skin
 	std::vector<CSkinResource*>			m_skinResourceVector;
 };
 

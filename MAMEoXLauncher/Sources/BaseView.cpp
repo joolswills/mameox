@@ -252,22 +252,24 @@ void CBaseView::RenderBackdrop( void )
   if( !m_backdropTexture )
     return;
 
-    // Render the highlight bar for the selected item
   m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
 	m_displayDevice->SetTexture( 0, m_backdropTexture );
   m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
-  m_displayDevice->Begin( D3DPT_QUADLIST );
 
-                    // Write the diffuse color
+	m_displayDevice->Begin( D3DPT_QUADLIST );
     m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 0.0f );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 0.0f, 0.0f, 1.0f, 1.0f );
+
     m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 0.0f );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 640.0f, 0.0f, 1.0f, 1.0f );
+
     m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 1.0f );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 640.0f, 480.0f, 1.0f, 1.0f );
+
     m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 1.0f );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 0.0f, 480.0f, 1.0f, 1.0f );
   m_displayDevice->End();
+
 	m_displayDevice->SetTexture( 0, NULL );
 }
 

@@ -215,7 +215,7 @@ void Helper_RenderDebugConsole( void *device )
 void Helper_WriteToFilePrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNumber, const char *function, const char *fmt, ... )
 {
   sprintf(  g_debugLoggerString, 
-            "<%s %-24.24s [%6.6lu] %-24.24s> ", 
+            "<%s %-24.24s [%6.6lu] %-32.32s> ", 
             (msgLevel & MT_TRACE) ? g_LevelName[0] : ((msgLevel & MT_INFO) ? g_LevelName[1] : g_LevelName[2]),
             strrchr(fileName, '\\') + 1, 
             lineNumber,
