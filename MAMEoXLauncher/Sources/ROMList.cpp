@@ -841,8 +841,8 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   #define HIGHLIGHTBAR_COLOR    D3DCOLOR_ARGB( 180, 175, 179, 212 )
   #define SCROLLICON_COLOR      D3DCOLOR_XRGB( 255, 255, 255 )
 
-  #define TITLEBAR_ROW          122
-  #define FIRSTDATA_ROW         148
+  #define TITLEBAR_ROW          116
+  #define FIRSTDATA_ROW         139
 
   #define HIGHLIGHTBAR_LEFT     34
   #define HIGHLIGHTBAR_RIGHT    606
@@ -850,16 +850,17 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   #define MANUFACTURER_COLUMN   305
   #define YEAR_COLUMN           460
   #define CLONE_COLUMN          530 
+  #define COLUMN_PADDING        5     // Number of pixels to subtract from the column width before truncating text
 
-  #define SCROLLUP_TOP          144
+  #define SCROLLUP_TOP          137
   #define SCROLLUP_LEFT         32
   #define SCROLLUP_RIGHT        SCROLLUP_LEFT + 32
   #define SCROLLUP_BOTTOM       SCROLLUP_TOP + 32
 
-  #define SCROLLDOWN_TOP        421
+  #define SCROLLDOWN_BOTTOM     448
+  #define SCROLLDOWN_TOP        SCROLLDOWN_BOTTOM - 32
   #define SCROLLDOWN_LEFT       32
   #define SCROLLDOWN_RIGHT      SCROLLDOWN_LEFT + 32
-  #define SCROLLDOWN_BOTTOM     SCROLLDOWN_TOP + 32
 
   FLOAT textWidth, textHeight;
   m_fontSet.SmallThinFont().GetTextExtent( L"i^jg", &textWidth, &textHeight );
@@ -923,7 +924,7 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
                                           ITEM_COLOR,
                                           name,
                                           XBFONT_TRUNCATED,
-                                          ( m_additionalinfo ? MANUFACTURER_COLUMN : 600 ) - NAME_COLUMN );
+                                          ( m_additionalinfo ? MANUFACTURER_COLUMN : 600 ) - (NAME_COLUMN + COLUMN_PADDING) );
 
 		  if( m_additionalinfo )
 		  {
@@ -933,7 +934,7 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
                                             ITEM_COLOR,
                                             name,
                                             XBFONT_TRUNCATED,
-                                            YEAR_COLUMN - MANUFACTURER_COLUMN );
+                                            YEAR_COLUMN - (MANUFACTURER_COLUMN + COLUMN_PADDING) );
 
 			  mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX - 1 ] ].m_year, 255 );
 			  m_fontSet.SmallThinFont().DrawText( YEAR_COLUMN, 
@@ -941,7 +942,7 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
                                             ITEM_COLOR, 
                                             name, 
                                             XBFONT_TRUNCATED,
-                                            CLONE_COLUMN - YEAR_COLUMN );
+                                            CLONE_COLUMN - (YEAR_COLUMN + COLUMN_PADDING) );
 
 			  mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX - 1 ] ].m_cloneFileName, 255 );
 			  m_fontSet.SmallThinFont().DrawText( CLONE_COLUMN, 
@@ -949,7 +950,7 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
                                             ITEM_COLOR,
                                             name,
                                             XBFONT_TRUNCATED,
-                                            600 - CLONE_COLUMN );
+                                            600 - (CLONE_COLUMN + COLUMN_PADDING) );
 		  }
 
 			  // Inc the Y position
@@ -985,7 +986,7 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
 
     // Draw scroll up icon
-  if( m_pageOffset )
+  if( (DWORD)m_pageOffset )
   {
 	  m_displayDevice->SetTexture( 0, m_scrollUpIconTexture );
     m_displayDevice->Begin( D3DPT_QUADLIST );
@@ -1007,7 +1008,7 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     m_displayDevice->End();
   }
 
-  if( m_pageOffset < m_numLinesInList - pageSize )
+  if( (DWORD)m_pageOffset < (m_numLinesInList - (DWORD)pageSize) )
   {
 	  m_displayDevice->SetTexture( 0, m_scrollDownIconTexture );
     m_displayDevice->Begin( D3DPT_QUADLIST );
