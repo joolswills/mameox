@@ -1,28 +1,47 @@
 
 
-
-
+Version 0.62b
+  
   - \MAME\MAME_VC6.dsp
     - MAME project file for VC6 users
     - File Added
+  
   - \MAMEoX\MAMEoX_VC6.dsp
     - MAMEoX project file for VC6 users
     - File Added
+  
   - \MAMEoX_VC6.dsw
     - Main project workspace file for VC6 users
     - file added
+
   - \MAMEoX\Sources\xbox_Main.cpp:
     - Added conditional compile code to make project VC6 friendly
     - Modified functions main and Helper_RunRom
-	- xbox_FileIO.h:
-		- Added AUDIOPATH for audio samples
-	- xbox_FileIO.c:
-		- Fixed: Audio samples were redirected to the "ART" dir
-	- xbox_JoystickMouse.c:
-		- Fixed a bug causing gamepad 3 buttons to be mapped
-			as gamepad 4 and vice versa.
-	- Added changelog
+    - Fixed: VectorWidth and VectorHeight ini option incorrectly use 
+             ColorDepth for values
+  
+  - \MAMEoX\Sources\xbox_Sound.c:
+    - Sound is now copied directly to the DSound write cursor, rather than
+      the MAMEoX one. This seems to resolve sound latency issues.
 
+  - \MAMEoX\Sources\xbox_Direct3DRenderer.cpp:
+    - Fixed: SWAPXY option improperly implemented for vector rendering
+  
+  - \MAMEoX\Sources\xbox_FileIO.h:
+    - Added AUDIOPATH for audio samples
+  
+  - \MAMEoX\Sources\xbox_FileIO.c:
+    - Fixed: Audio samples were redirected to the "ART" dir
+  
+  - \MAMEoX\Sources\xbox_JoystickMouse.c:
+    - Fixed a bug causing gamepad 3 buttons to be mapped
+      as gamepad 4 and vice versa.
+  
+  - \Docs\changelog.txt
+    - Added changelog
+
+
+===============================================================================
 Version 0.61b
 	- No changelog
 
