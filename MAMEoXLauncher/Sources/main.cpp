@@ -133,6 +133,90 @@ static void Helper_SaveOptionsAndReboot( LPDIRECT3DDEVICE8 pD3DDevice, CROMListS
 static BOOL Helper_CopySystemFilesFromDVD( LPDIRECT3DDEVICE8 pD3DDevice );
 
 //= F U N C T I O N S =================================================
+void DemandPagingTest( LPDIRECT3DDEVICE8 pD3DDevice )
+{
+  DrawProgressbarMessage( pD3DDevice, 
+                          "Demand paging test.\n\n"
+                          "Press BACK to exit\n"
+                          "Press any other key to malloc one page at a time.\n",
+                          NULL, 
+                          0xFFFFFFFF, 
+                          0 );
+
+    // Enable demand paging
+  void *pagedirectory = malloc( 4096 );
+  UINT32 reg_cr0 = 0;
+//  UINT32 reg_cr4;
+
+/*
+  __asm {
+    mov eax, pagedirectory
+    mov cr3, eax
+
+    mov eax, cr0
+    or eax, 80000000h   // Set bit 31 (PG) to true, enabling paging
+    mov cr0, eax        // Set cr0
+
+    mov reg_cr0, eax    // Store cr0's value for printing
+
+//    mov eax, cr4
+//    or eax, 10h         // Set bit 4 (PSE) to true, enabling 4M pages
+//    mov cr4, eax
+
+
+//    mov reg_cr4, eax
+  }
+*/
+
+
+
+  #define PAGE_SIZE     (4 * 1024 * 1024)
+  char buf[1024];
+  MEMORYSTATUS memStatus;
+  GlobalMemoryStatus( &memStatus );
+
+  sprintf( buf, "Demand paging test.\n\n"
+            "Press BACK to exit\n"
+            "Press any other key to malloc one page at a time.\n\n"
+            "CR0: %lu"
+            "Memory: %lu/%lu",
+            reg_cr0,
+            //reg_cr4,
+            memStatus.dwAvailPhys, 
+            memStatus.dwTotalPhys );
+
+  DrawProgressbarMessage( pD3DDevice, 
+                          buf,
+                          NULL, 
+                          0xFFFFFFFF, 
+                          0 );
+  std::vector<void *> ptrVector;
+  while( 1 )
+  {
+    CHECKRAM();
+    GlobalMemoryStatus( &memStatus );
+    sprintf( buf, "Demand paging test.\n\n"
+                  "Press BACK to exit\n"
+                  "Press any other key to malloc one page at a time.\n\n"
+                  "Memory: %lu/%lu",memStatus.dwAvailPhys, memStatus.dwTotalPhys );
+
+    DrawProgressbarMessage( pD3DDevice,
+                            buf,
+                            NULL, 
+                            0xFFFFFFFF, 
+                            0 );
+
+    if( g_inputManager.IsButtonPressed( GP_BACK ) )
+      break;
+    else if( g_inputManager.IsAnyButtonPressed() )
+      ptrVector.push_back( malloc( PAGE_SIZE ) );
+
+    g_inputManager.WaitForNoInput();        
+  }
+  g_inputManager.WaitForNoInput();        
+}
+
+
 
 //-------------------------------------------------------------
 //	main
@@ -153,6 +237,23 @@ void __cdecl main( void )
 		// Initialize the graphics subsystem
 	g_graphicsManager.Create( TRUE );
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
+	pD3DDevice->SetRenderState( D3DRS_CULLMODE,         D3DCULL_NONE );
+	pD3DDevice->SetRenderState( D3DRS_LIGHTING,         FALSE );
+  pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
+	pD3DDevice->SetRenderState( D3DRS_ALPHATESTENABLE,  FALSE );
+  pD3DDevice->SetRenderState( D3DRS_ZENABLE,          FALSE );
+
+    // Set up texture engine
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_MINFILTER, D3DTEXF_LINEAR );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_MAGFILTER, D3DTEXF_LINEAR );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSU, D3DTADDRESS_CLAMP );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSW, D3DTADDRESS_CLAMP );
+
+
 
     // Create the fonts or die
   if( !g_fontSet.Create() )
@@ -227,6 +328,10 @@ void __cdecl main( void )
 
     // Wait for input to give the debugger a chance to attach
   CHECKRAM();
+
+
+    // Demand paging test
+//  DemandPagingTest( pD3DDevice );
 
 
     // Get the launch data
@@ -304,6 +409,8 @@ void __cdecl main( void )
 	  g_inputManager.WaitForNoInput();        
   }
   
+
+
 
 
     //--- Create the views -------------------------------------------------------
@@ -1565,12 +1672,17 @@ void DrawProgressbarMessage( LPDIRECT3DDEVICE8 pD3DDevice, const char *message, 
   WCHAR wBuf[256];
 
 	g_fontSet.DefaultFont().Begin();	
-    mbstowcs( wBuf, message, 256 );
-	  g_fontSet.DefaultFont().DrawText( 320, 200, D3DCOLOR_XRGB( 0, 0, 0 ), wBuf, XBFONT_CENTER_X );
- 	
+    if( message )
+    {
+      mbstowcs( wBuf, message, 256 );
+	    g_fontSet.DefaultFont().DrawText( 320, 200, D3DCOLOR_XRGB( 0, 0, 0 ), wBuf, XBFONT_CENTER_X );
+    } 	
 		  // Draw the current filename
-	  mbstowcs( wBuf, itemName, 256 );
-	  g_fontSet.DefaultFont().DrawText( 320, 260, D3DCOLOR_XRGB( 60, 100, 255 ), wBuf, XBFONT_CENTER_X );
+    if( itemName )
+    {
+	    mbstowcs( wBuf, itemName, 256 );
+	    g_fontSet.DefaultFont().DrawText( 320, 260, D3DCOLOR_XRGB( 60, 100, 255 ), wBuf, XBFONT_CENTER_X );
+    }
 	g_fontSet.DefaultFont().End();
 
 

@@ -506,7 +506,7 @@ void Enable128MegCaching( void );
 inline void READMSRREG( UINT32 reg, LARGE_INTEGER *val ) 
 {
   UINT32 lowPart, highPart;
-  _asm {
+  __asm {
     mov   ecx, reg
     rdmsr
     mov   lowPart, eax
@@ -523,7 +523,7 @@ inline void READMSRREG( UINT32 reg, LARGE_INTEGER *val )
 	//-------------------------------------------------------------------
 inline void WRITEMSRREG( UINT32 reg, LARGE_INTEGER val ) 
 {
-  _asm {
+  __asm {
     mov   ecx, reg
     mov   eax, val.LowPart
     mov   edx, val.HighPart
