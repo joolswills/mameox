@@ -1,4 +1,11 @@
-Version 0.70.01b
+Version 0.70.2b
+
+   -------------------------------------------------------------
+  - \MAMEoX\Includes: 
+    - MAMEoX.h
+      - Upped version number
+
+Version 0.70.1b
 
   - General:
     - Added new fonts (Arial, Arial Narrow and Courier New)
