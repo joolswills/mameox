@@ -13,9 +13,7 @@
 #include "GraphicsManager.h"
 #include "DebugLogger.h"
 #include "Sections.h"
-
-	// Font class from the XDK
-#include "XBFont.h"
+#include "FontSet.h"
 
 #include "System_IniFile.h"
 #include "xbox_Timing.h"
@@ -49,11 +47,8 @@ typedef struct _UNICODE_STRING
 //= G L O B A L = V A R S =============================================
 CInputManager			g_inputManager;
 CGraphicsManager	g_graphicsManager;
+CFontSet          g_fontSet;  // The global font manager
 
-CXBFont						g_font;             // Default font
-CXBFont						g_fixedWidthFont;   // Fixed width font for formatting specific text
-CXBFont           g_smallFont;        // Thin small font
-CXBFont           g_largeFont;        // Thin large font
 
 extern BOOL g_soundEnabled;   // Sound processing override (defined in xbox_Main.cpp)
 
@@ -456,7 +451,7 @@ void BeginFontRender( BOOL ClearScreen )
 											  0L );															// Stencil
   }
 
-  g_font.Begin();
+  g_fontSet.DefaultFont().Begin();
 
 }
 
@@ -465,7 +460,7 @@ void BeginFontRender( BOOL ClearScreen )
 //-------------------------------------------------------------
 void FontRender( INT32 x, INT32 y, UINT32 color, const WCHAR *str, UINT32 flags )
 {
-	g_font.DrawText( (FLOAT)x, (FLOAT)y, color, str, flags );
+	g_fontSet.DefaultFont().DrawText( (FLOAT)x, (FLOAT)y, color, str, flags );
 }
 
 //-------------------------------------------------------------
@@ -474,7 +469,7 @@ void FontRender( INT32 x, INT32 y, UINT32 color, const WCHAR *str, UINT32 flags 
 void EndFontRender( void )
 {
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
-  g_font.End();
+  g_fontSet.DefaultFont().End();
   pD3DDevice->Present( NULL, NULL, NULL, NULL );
 }
 

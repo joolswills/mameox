@@ -51,9 +51,8 @@ struct CUSTOMVERTEX
   // Defined in MAMEoXUtil.cpp
 extern CInputManager			g_inputManager;
 extern CGraphicsManager	  g_graphicsManager;
-
   // The global font manager
-CFontSet                  g_fontSet;
+extern CFontSet                  g_fontSet;
 
   // XBE Launch data
 DWORD             g_launchDataType;

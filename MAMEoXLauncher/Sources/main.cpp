@@ -32,9 +32,6 @@
 #include "xbox_Network.h"
 #include "FontSet.h"
 
-	// Font class from the XDK
-#include "XBFont.h"
-
 //= D E F I N E S =====================================================
 
   // The maximum number of times to attempt to generate a working driver.list file
@@ -57,9 +54,7 @@ struct CUSTOMVERTEX
   // Defined in MAMEoXUtil.cpp
 extern CInputManager			g_inputManager;
 extern CGraphicsManager	  g_graphicsManager;
-
-  // The global font manager
-CFontSet                  g_fontSet;
+extern CFontSet                  g_fontSet;
 
   // XBE Launch data
 static DWORD              g_launchDataType;
