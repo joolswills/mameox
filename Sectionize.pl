@@ -339,14 +339,15 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 #  LoadDriverSectionByName( "src\\drivers\\trackfld.c" );  // Hyper Sports, Hyper Olympics '84?
 #  taito_f3 - Super Chase
 #  fromance - Pipe Dream
+#  frogger - Frog (Galaxian Hardware)
 
-@SkipDrivers = ( "jrcrypt.c", "mpatrol.c", "snk.c", 
+@SkipDrivers = ( "jrcrypt.c", "mpatrol.c", "snk.c",
                  "galaxian.c", "scramble.c", "scobra.c", 
 	             "rampart.c", "williams.c", "rastan.c", "hal21.c", 
 	             "espial.c", "bzone.c", "nova2001.c", "gottlieb.c", 
 	             "pengo.c",  "megasys1.c", "rallyx.c", "timeplt.c", 
 				 "exidy.c", "m72.c", "leland.c", "trackfld.c",
-				 "taito_f3.c", "fromance.c" );
+				 "taito_f3.c", "fromance.c", "frogger.c" );
 
 @CapcomFamily = ( "cps1.c", "cps2.c" );
 

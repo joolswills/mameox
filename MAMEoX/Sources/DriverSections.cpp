@@ -378,9 +378,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\flyball.c", "200" );
   RegisterSectionName( "src\\drivers\\foodf.c", "201" );
   RegisterSectionName( "src\\drivers\\freekick.c", "202" );
-  RegisterSectionName( "src\\drivers\\frogger.c", "203" );
   RegisterSectionName( "src\\drivers\\fromanc2.c", "204" );
-  RegisterSectionName( "src\\drivers\\fromance.c", "205" );
   RegisterSectionName( "src\\drivers\\funkybee.c", "206" );
   RegisterSectionName( "src\\drivers\\funkyjet.c", "207" );
   RegisterSectionName( "src\\drivers\\fuuki16.c", "208" );
