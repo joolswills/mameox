@@ -56,7 +56,9 @@ public:
 		//------------------------------------------------------
 		//	ParseINI
 		//------------------------------------------------------
-	virtual BOOL ParseINI(	CSystem_IniFile &iniFile, const CStdString &sectionName, const CStdString &entryName ) { return ParseINI( iniFile, sectionName, entryName, "HighlightBar" ); }
+	virtual BOOL ParseINI(	CSystem_IniFile &iniFile, const CStdString &sectionName, const CStdString &entryName ) { 
+		return ParseINI( iniFile, sectionName, entryName, "HighlightBar" ); 
+	}
 
 
 	D3DCOLOR			m_cornerColors[4];	// The color of each corner, starting from upper-left, in clockwise order
