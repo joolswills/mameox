@@ -531,7 +531,7 @@ static BOOL __cdecl compareDriverNames( const void *elem1, const void *elem2 )
 	struct GameDriver *drv2 = *(struct GameDriver **)elem2;
 
 		// Test the description field (game name)
-	return strcmp( drv1->description, drv2->description );
+	return strcasecmp( drv1->description, drv2->description );
 }
 #pragma code_seg()
 
