@@ -54,6 +54,9 @@ DWORD WINAPI debugloggermain( void *data );
 extern "C" HRESULT DebugLoggerInit( void )
 {
 	#ifdef _DEBUGLOGGER
+
+#error "The debug logger requires a thread, the current C lib is single threaded!"
+
     // Set up an unsecure connection to allow the PC logger to connect
   XNetStartupParams xnsp;
   memset( &xnsp, 0, sizeof( xnsp ) );
