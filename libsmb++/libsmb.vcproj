@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding = "Windows-1252"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.00"
+	Version="7.10"
 	Name="libsmb"
 	ProjectGUID="{6E91E5AE-9076-483E-9728-28D12259AA17}"
 	SccProjectName=""
@@ -94,6 +94,8 @@
 				Name="VCPreLinkEventTool"/>
 		</Configuration>
 	</Configurations>
+	<References>
+	</References>
 	<Files>
 		<Filter
 			Name="Source Files"
@@ -114,12 +116,6 @@
 				RelativePath=".\src\IOTypes.cpp">
 			</File>
 			<File
-				RelativePath=".\src\NBHostCache.cpp">
-			</File>
-			<File
-				RelativePath=".\src\NMBIO.cpp">
-			</File>
-			<File
 				RelativePath=".\src\NameQueryInterface.cpp">
 			</File>
 			<File
@@ -129,19 +125,19 @@
 				RelativePath=".\src\NativeNMB.cpp">
 			</File>
 			<File
+				RelativePath=".\src\NBHostCache.cpp">
+			</File>
+			<File
 				RelativePath=".\src\NetBIOSPacket.cpp">
+			</File>
+			<File
+				RelativePath=".\src\NMBIO.cpp">
 			</File>
 			<File
 				RelativePath=".\src\Options.cpp">
 			</File>
 			<File
 				RelativePath=".\src\Resolve.cpp">
-			</File>
-			<File
-				RelativePath=".\src\SMBIO.cpp">
-			</File>
-			<File
-				RelativePath=".\src\SMBPacket.cpp">
 			</File>
 			<File
 				RelativePath=".\src\SambaLink.cpp">
@@ -156,13 +152,19 @@
 				RelativePath=".\src\SessionPacket.cpp">
 			</File>
 			<File
+				RelativePath=".\src\SMBIO.cpp">
+			</File>
+			<File
+				RelativePath=".\src\SMBPacket.cpp">
+			</File>
+			<File
+				RelativePath=".\src\types.cpp">
+			</File>
+			<File
 				RelativePath=".\src\Util.cpp">
 			</File>
 			<File
 				RelativePath=".\src\XBoxGetHost.cpp">
-			</File>
-			<File
-				RelativePath=".\src\types.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -170,6 +172,12 @@
 			Filter="h;hpp;hxx;hm;inl">
 			<File
 				RelativePath=".\src\CharCnv.h">
+			</File>
+			<File
+				RelativePath=".\src\cursesHacks.h">
+			</File>
+			<File
+				RelativePath=".\src\defines.h">
 			</File>
 			<File
 				RelativePath=".\src\DES.h">
@@ -184,12 +192,6 @@
 				RelativePath=".\src\IOTypes.h">
 			</File>
 			<File
-				RelativePath=".\src\NBHostCache.h">
-			</File>
-			<File
-				RelativePath=".\src\NMBIO.h">
-			</File>
-			<File
 				RelativePath=".\src\NameQueryInterface.h">
 			</File>
 			<File
@@ -199,22 +201,19 @@
 				RelativePath=".\src\NativeNMB.h">
 			</File>
 			<File
+				RelativePath=".\src\NBHostCache.h">
+			</File>
+			<File
 				RelativePath=".\src\NetBIOSPacket.h">
+			</File>
+			<File
+				RelativePath=".\src\NMBIO.h">
 			</File>
 			<File
 				RelativePath=".\src\Options.h">
 			</File>
 			<File
 				RelativePath=".\src\Resolve.h">
-			</File>
-			<File
-				RelativePath=".\src\SMBCodes.h">
-			</File>
-			<File
-				RelativePath=".\src\SMBIO.h">
-			</File>
-			<File
-				RelativePath=".\src\SMBPacket.h">
 			</File>
 			<File
 				RelativePath=".\src\SambaDefs.h">
@@ -244,22 +243,25 @@
 				RelativePath=".\src\SessionPacket.h">
 			</File>
 			<File
-				RelativePath=".\src\Util.h">
-			</File>
-			<File
-				RelativePath=".\src\cursesHacks.h">
-			</File>
-			<File
-				RelativePath=".\src\defines.h">
-			</File>
-			<File
 				RelativePath=".\src\smb++.h">
+			</File>
+			<File
+				RelativePath=".\src\SMBCodes.h">
+			</File>
+			<File
+				RelativePath=".\src\SMBIO.h">
+			</File>
+			<File
+				RelativePath=".\src\SMBPacket.h">
 			</File>
 			<File
 				RelativePath=".\src\strtool.h">
 			</File>
 			<File
 				RelativePath=".\src\types.h">
+			</File>
+			<File
+				RelativePath=".\src\Util.h">
 			</File>
 		</Filter>
 	</Files>

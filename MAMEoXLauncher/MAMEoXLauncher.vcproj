@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding = "Windows-1252"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.00"
+	Version="7.10"
 	Name="MAMEoXLauncher"
 	ProjectGUID="{BEC3062C-78B0-4B2D-BE06-4177F71981BE}"
 	Keyword="XboxProj">
@@ -133,6 +133,8 @@
 				TitleName="&quot;MAMEoX Launcher&quot;"/>
 		</Configuration>
 	</Configurations>
+	<References>
+	</References>
 	<Files>
 		<Filter
 			Name="Source Files"
@@ -153,6 +155,9 @@
 				RelativePath="..\MAMEoX\Sources\InputManager.cpp">
 			</File>
 			<File
+				RelativePath="Sources\main.cpp">
+			</File>
+			<File
 				RelativePath="..\MAMEoX\Sources\MAMEoXUtil.cpp">
 			</File>
 			<File
@@ -169,9 +174,6 @@
 			</File>
 			<File
 				RelativePath="Sources\VirtualKeyboard.cpp">
-			</File>
-			<File
-				RelativePath="Sources\main.cpp">
 			</File>
 			<File
 				RelativePath="$(XDK)\Samples\Xbox\Common\Src\xbfont.cpp">
@@ -217,10 +219,10 @@
 				RelativePath="Includes\OptionsPage.h">
 			</File>
 			<File
-				RelativePath="Includes\ROMList.h">
+				RelativePath="Includes\Resource.h">
 			</File>
 			<File
-				RelativePath="Includes\Resource.h">
+				RelativePath="Includes\ROMList.h">
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Includes\SMBHandler.h">
@@ -257,7 +259,7 @@
 			Name="Resources"
 			Filter="">
 			<File
-				RelativePath="MediaFiles\ArialNarrow_12.rdf">
+				RelativePath="MediaFiles\Arial_16.rdf">
 				<FileConfiguration
 					Name="Debug|Xbox">
 					<Tool

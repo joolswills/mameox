@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding = "Windows-1252"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.00"
+	Version="7.10"
 	Name="MAME"
 	SccProjectName=""
 	SccLocalPath="">
@@ -139,6 +139,8 @@
 				Name="VCPreLinkEventTool"/>
 		</Configuration>
 	</Configurations>
+	<References>
+	</References>
 	<Files>
 		<Filter
 			Name="cpu"
@@ -36933,9 +36935,6 @@
 			</File>
 		</Filter>
 		<File
-			RelativePath="..\VCPPMame.h">
-		</File>
-		<File
 			RelativePath=".\src\artwork.c">
 		</File>
 		<File
@@ -37186,6 +37185,9 @@
 		</File>
 		<File
 			RelativePath=".\src\usrintrf.h">
+		</File>
+		<File
+			RelativePath="..\VCPPMame.h">
 		</File>
 		<File
 			RelativePath=".\src\version.c">
