@@ -5,14 +5,13 @@
 
 #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 //= I N C L U D E S ====================================================
+
 #include "osdepend.h"
 #include "osd_cpu.h"
 #include "fileio.h"
+#include "StdString.h"
+#include <xtl.h>
 
 //= D E F I N E S ======================================================
 
@@ -22,19 +21,19 @@ extern "C" {
   //        programmatically to the ALTDRIVE drive
 
   //! Alternate drive letter if the D: is not writable
-#define ALTDRIVE            'T'
+#define DEFAULT_ALTDRIVE            "T"
 
-#define GENERALPATH				  "D:\\GENERAL"
-#define ARTPATH						  "D:\\ART"
-#define INIPATH						  "D:\\INI"
-#define NVRAMPATH					  "D:\\NVRAM"
-#define CONFIGPATH          "D:\\CFG"
-#define ROMPATH						  "D:\\ROMS"
-#define AUDIOPATH           "D:\\SAMPLES"
-#define DEFAULTROMLISTPATH  "D:\\ROMS"
-#define ROMBACKUPPATH       "D:\\ROMS\\BACKUP"
-#define HDIMAGEPATH         "D:\\HDIMAGES"
-#define HISCOREPATH         "D:\\HISCORES"
+#define DEFAULT_GENERALPATH				  "D:\\GENERAL"
+#define DEFAULT_ARTPATH						  "D:\\ART"
+#define DEFAULT_INIPATH						  "U:\\INI"
+#define DEFAULT_NVRAMPATH					  "D:\\NVRAM"
+#define DEFAULT_CONFIGPATH          "D:\\CFG"
+#define DEFAULT_ROMPATH						  "D:\\ROMS"
+#define DEFAULT_AUDIOPATH           "D:\\SAMPLES"
+#define DEFAULT_DEFAULTROMLISTPATH  "D:\\ROMS"
+#define DEFAULT_ROMBACKUPPATH       "D:\\ROMS\\BACKUP"
+#define DEFAULT_HDIMAGEPATH         "D:\\HDIMAGES"
+#define DEFAULT_HISCOREPATH         "D:\\HISCORES"
   
 #define DRIVERLISTFILENAME  "DRIVERS.list"
 #define ROMLISTFILENAME		  "ROMS.list"
@@ -46,9 +45,44 @@ extern "C" {
   //!<  we don't waste any time searching for files that are definitely not there
 #define ALL_ROMS_ZIPPED
 
+//= S T R U C T U R E S ===============================================
+struct SFileIOConfig
+{
+  CStdString m_ALTDrive;
+  CStdString m_GeneralPath;
+  CStdString m_ArtPath;
+  CStdString m_IniPath;
+  CStdString m_NVramPath;
+  CStdString m_ConfigPath;
+  CStdString m_RomPath;
+  CStdString m_AudioPath;
+  CStdString m_DefaultRomListPath;
+  CStdString m_RomBackupPath;
+  CStdString m_HDImagePath;
+  CStdString m_HiScorePath;
+
+  SFileIOConfig()
+  {
+    // Default the paths
+    m_ALTDrive           = DEFAULT_ALTDRIVE;
+    m_GeneralPath        = DEFAULT_GENERALPATH;
+    m_ArtPath            = DEFAULT_ARTPATH;
+    m_IniPath            = DEFAULT_INIPATH;
+    m_NVramPath          = DEFAULT_NVRAMPATH;
+    m_ConfigPath         = DEFAULT_CONFIGPATH;
+    m_RomPath            = DEFAULT_ROMPATH;
+    m_AudioPath          = DEFAULT_AUDIOPATH;
+    m_DefaultRomListPath = DEFAULT_DEFAULTROMLISTPATH;
+    m_RomBackupPath      = DEFAULT_ROMBACKUPPATH;
+    m_HDImagePath        = DEFAULT_HDIMAGEPATH;
+    m_HiScorePath        = DEFAULT_HISCOREPATH;
+  }
+};
+
 //= G L O B A L = V A R S ==============================================
 extern const char *g_ROMListPath;
 extern const char *g_ROMBackupPath;
+extern SFileIOConfig g_FileIOConfig;
 
 //= P R O T O T Y P E S ================================================
 	//--------------------------------------------------------------------------
@@ -68,7 +102,7 @@ void InitializeFileIO( void );
   //!                   value on exit.)
 	//!	\param		hasFilename - Whether or not "path" includes the name of a file
 	//--------------------------------------------------------------------------
-void Helper_CreateDirectoryPath( char *path, BOOL hasFilename );
+void Helper_CreateDirectoryPath( const char *path, BOOL hasFilename );
 
 	//--------------------------------------------------------------------------
 	//	ComposeFilePath
@@ -85,9 +119,5 @@ void Helper_CreateDirectoryPath( char *path, BOOL hasFilename );
   //! \retval   FALSE - No path returned
 	//--------------------------------------------------------------------------
 BOOL ComposeFilePath( char *buf, UINT32 maxLen, UINT32 pathtype, UINT32 pathindex, const char *filename );
-
-#ifdef __cplusplus
-}
-#endif
 
 
