@@ -1,11 +1,11 @@
-#pragma code_seg("C440")
-#pragma data_seg("D440")
-#pragma bss_seg("B440")
-#pragma const_seg("K440")
-#pragma comment(linker, "/merge:D440=440")
-#pragma comment(linker, "/merge:C440=440")
-#pragma comment(linker, "/merge:B440=440")
-#pragma comment(linker, "/merge:K440=440")
+#pragma code_seg("C439")
+#pragma data_seg("D439")
+#pragma bss_seg("B439")
+#pragma const_seg("K439")
+#pragma comment(linker, "/merge:D439=439")
+#pragma comment(linker, "/merge:C439=439")
+#pragma comment(linker, "/merge:B439=439")
+#pragma comment(linker, "/merge:K439=439")
 /* Miss Bubble 2
 
 A rather odd bootleg of Bubble Bobble with level select, redesigned levels,

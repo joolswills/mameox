@@ -1,11 +1,11 @@
-#pragma code_seg("C537")
-#pragma data_seg("D537")
-#pragma bss_seg("B537")
-#pragma const_seg("K537")
-#pragma comment(linker, "/merge:D537=537")
-#pragma comment(linker, "/merge:C537=537")
-#pragma comment(linker, "/merge:B537=537")
-#pragma comment(linker, "/merge:K537=537")
+#pragma code_seg("C536")
+#pragma data_seg("D536")
+#pragma bss_seg("B536")
+#pragma const_seg("K536")
+#pragma comment(linker, "/merge:D536=536")
+#pragma comment(linker, "/merge:C536=536")
+#pragma comment(linker, "/merge:B536=536")
+#pragma comment(linker, "/merge:K536=536")
 /*
 Portraits 1983 (c) Olympia
 

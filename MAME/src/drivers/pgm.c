@@ -1,11 +1,11 @@
-#pragma code_seg("C519")
-#pragma data_seg("D519")
-#pragma bss_seg("B519")
-#pragma const_seg("K519")
-#pragma comment(linker, "/merge:D519=519")
-#pragma comment(linker, "/merge:C519=519")
-#pragma comment(linker, "/merge:B519=519")
-#pragma comment(linker, "/merge:K519=519")
+#pragma code_seg("C518")
+#pragma data_seg("D518")
+#pragma bss_seg("B518")
+#pragma const_seg("K518")
+#pragma comment(linker, "/merge:D518=518")
+#pragma comment(linker, "/merge:C518=518")
+#pragma comment(linker, "/merge:B518=518")
+#pragma comment(linker, "/merge:K518=518")
 /* PGM System (c)1997 IGS
 
 Based on Information from ElSemi

@@ -1,11 +1,11 @@
-#pragma code_seg("C235")
-#pragma data_seg("D235")
-#pragma bss_seg("B235")
-#pragma const_seg("K235")
-#pragma comment(linker, "/merge:D235=235")
-#pragma comment(linker, "/merge:C235=235")
-#pragma comment(linker, "/merge:B235=235")
-#pragma comment(linker, "/merge:K235=235")
+#pragma code_seg("C234")
+#pragma data_seg("D234")
+#pragma bss_seg("B234")
+#pragma const_seg("K234")
+#pragma comment(linker, "/merge:D234=234")
+#pragma comment(linker, "/merge:C234=234")
+#pragma comment(linker, "/merge:B234=234")
+#pragma comment(linker, "/merge:K234=234")
 /***************************************************************************
 
 	Data East 32 bit ARM based games:

@@ -1,11 +1,11 @@
-#pragma code_seg("C347")
-#pragma data_seg("D347")
-#pragma bss_seg("B347")
-#pragma const_seg("K347")
-#pragma comment(linker, "/merge:D347=347")
-#pragma comment(linker, "/merge:C347=347")
-#pragma comment(linker, "/merge:B347=347")
-#pragma comment(linker, "/merge:K347=347")
+#pragma code_seg("C346")
+#pragma data_seg("D346")
+#pragma bss_seg("B346")
+#pragma const_seg("K346")
+#pragma comment(linker, "/merge:D346=346")
+#pragma comment(linker, "/merge:C346=346")
+#pragma comment(linker, "/merge:B346=346")
+#pragma comment(linker, "/merge:K346=346")
 /*
  Moero Pro Yakyuu Homerun - (c) 1988 Jaleco
  Driver by Tomasz Slanina

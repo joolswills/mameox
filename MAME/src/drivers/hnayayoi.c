@@ -1,11 +1,11 @@
-#pragma code_seg("C344")
-#pragma data_seg("D344")
-#pragma bss_seg("B344")
-#pragma const_seg("K344")
-#pragma comment(linker, "/merge:D344=344")
-#pragma comment(linker, "/merge:C344=344")
-#pragma comment(linker, "/merge:B344=344")
-#pragma comment(linker, "/merge:K344=344")
+#pragma code_seg("C343")
+#pragma data_seg("D343")
+#pragma bss_seg("B343")
+#pragma const_seg("K343")
+#pragma comment(linker, "/merge:D343=343")
+#pragma comment(linker, "/merge:C343=343")
+#pragma comment(linker, "/merge:B343=343")
+#pragma comment(linker, "/merge:K343=343")
 /****************************************************************************
 
 Some Dynax games using the first version of their blitter

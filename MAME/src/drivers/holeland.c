@@ -1,11 +1,11 @@
-#pragma code_seg("C345")
-#pragma data_seg("D345")
-#pragma bss_seg("B345")
-#pragma const_seg("K345")
-#pragma comment(linker, "/merge:D345=345")
-#pragma comment(linker, "/merge:C345=345")
-#pragma comment(linker, "/merge:B345=345")
-#pragma comment(linker, "/merge:K345=345")
+#pragma code_seg("C344")
+#pragma data_seg("D344")
+#pragma bss_seg("B344")
+#pragma const_seg("K344")
+#pragma comment(linker, "/merge:D344=344")
+#pragma comment(linker, "/merge:C344=344")
+#pragma comment(linker, "/merge:B344=344")
+#pragma comment(linker, "/merge:K344=344")
 /***************************************************************************
 
 Hole Land

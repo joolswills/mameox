@@ -1,11 +1,11 @@
-#pragma code_seg("C361")
-#pragma data_seg("D361")
-#pragma bss_seg("B361")
-#pragma const_seg("K361")
-#pragma comment(linker, "/merge:D361=361")
-#pragma comment(linker, "/merge:C361=361")
-#pragma comment(linker, "/merge:B361=361")
-#pragma comment(linker, "/merge:K361=361")
+#pragma code_seg("C360")
+#pragma data_seg("D360")
+#pragma bss_seg("B360")
+#pragma const_seg("K360")
+#pragma comment(linker, "/merge:D360=360")
+#pragma comment(linker, "/merge:C360=360")
+#pragma comment(linker, "/merge:B360=360")
+#pragma comment(linker, "/merge:K360=360")
 /* Jaleco Mahjong Games */
 /* Board:	MJ-8956 */
 

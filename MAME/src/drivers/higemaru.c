@@ -1,11 +1,11 @@
-#pragma code_seg("C342")
-#pragma data_seg("D342")
-#pragma bss_seg("B342")
-#pragma const_seg("K342")
-#pragma comment(linker, "/merge:D342=342")
-#pragma comment(linker, "/merge:C342=342")
-#pragma comment(linker, "/merge:B342=342")
-#pragma comment(linker, "/merge:K342=342")
+#pragma code_seg("C341")
+#pragma data_seg("D341")
+#pragma bss_seg("B341")
+#pragma const_seg("K341")
+#pragma comment(linker, "/merge:D341=341")
+#pragma comment(linker, "/merge:C341=341")
+#pragma comment(linker, "/merge:B341=341")
+#pragma comment(linker, "/merge:K341=341")
 /****************************************************************************
 
 Higemaru

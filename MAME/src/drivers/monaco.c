@@ -1,11 +1,11 @@
-#pragma code_seg("C449")
-#pragma data_seg("D449")
-#pragma bss_seg("B449")
-#pragma const_seg("K449")
-#pragma comment(linker, "/merge:D449=449")
-#pragma comment(linker, "/merge:C449=449")
-#pragma comment(linker, "/merge:B449=449")
-#pragma comment(linker, "/merge:K449=449")
+#pragma code_seg("C448")
+#pragma data_seg("D448")
+#pragma bss_seg("B448")
+#pragma const_seg("K448")
+#pragma comment(linker, "/merge:D448=448")
+#pragma comment(linker, "/merge:C448=448")
+#pragma comment(linker, "/merge:B448=448")
+#pragma comment(linker, "/merge:K448=448")
 /*
 Monaco GP Simulator v0.1
 http://www.jps.net/camilty/monman.htm

@@ -1,11 +1,11 @@
-#pragma code_seg("C380")
-#pragma data_seg("D380")
-#pragma bss_seg("B380")
-#pragma const_seg("K380")
-#pragma comment(linker, "/merge:D380=380")
-#pragma comment(linker, "/merge:C380=380")
-#pragma comment(linker, "/merge:B380=380")
-#pragma comment(linker, "/merge:K380=380")
+#pragma code_seg("C379")
+#pragma data_seg("D379")
+#pragma bss_seg("B379")
+#pragma const_seg("K379")
+#pragma comment(linker, "/merge:D379=379")
+#pragma comment(linker, "/merge:C379=379")
+#pragma comment(linker, "/merge:B379=379")
+#pragma comment(linker, "/merge:K379=379")
 /***************************************************************************
 
 Labyrinth Runner (GX771) (c) 1987 Konami

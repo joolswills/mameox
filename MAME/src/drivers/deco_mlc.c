@@ -1,11 +1,11 @@
-#pragma code_seg("C237")
-#pragma data_seg("D237")
-#pragma bss_seg("B237")
-#pragma const_seg("K237")
-#pragma comment(linker, "/merge:D237=237")
-#pragma comment(linker, "/merge:C237=237")
-#pragma comment(linker, "/merge:B237=237")
-#pragma comment(linker, "/merge:K237=237")
+#pragma code_seg("C235")
+#pragma data_seg("D235")
+#pragma bss_seg("B235")
+#pragma const_seg("K235")
+#pragma comment(linker, "/merge:D235=235")
+#pragma comment(linker, "/merge:C235=235")
+#pragma comment(linker, "/merge:B235=235")
+#pragma comment(linker, "/merge:K235=235")
 /***************************************************************************
 
 	Data East MLC Hardware:

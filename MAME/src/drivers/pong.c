@@ -1,11 +1,11 @@
-#pragma code_seg("C532")
-#pragma data_seg("D532")
-#pragma bss_seg("B532")
-#pragma const_seg("K532")
-#pragma comment(linker, "/merge:D532=532")
-#pragma comment(linker, "/merge:C532=532")
-#pragma comment(linker, "/merge:B532=532")
-#pragma comment(linker, "/merge:K532=532")
+#pragma code_seg("C531")
+#pragma data_seg("D531")
+#pragma bss_seg("B531")
+#pragma const_seg("K531")
+#pragma comment(linker, "/merge:D531=531")
+#pragma comment(linker, "/merge:C531=531")
+#pragma comment(linker, "/merge:B531=531")
+#pragma comment(linker, "/merge:K531=531")
 /***************************************************************************
 	pong.c
 	Machine driver

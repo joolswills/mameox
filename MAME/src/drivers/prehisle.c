@@ -1,11 +1,11 @@
-#pragma code_seg("C539")
-#pragma data_seg("D539")
-#pragma bss_seg("B539")
-#pragma const_seg("K539")
-#pragma comment(linker, "/merge:D539=539")
-#pragma comment(linker, "/merge:C539=539")
-#pragma comment(linker, "/merge:B539=539")
-#pragma comment(linker, "/merge:K539=539")
+#pragma code_seg("C538")
+#pragma data_seg("D538")
+#pragma bss_seg("B538")
+#pragma const_seg("K538")
+#pragma comment(linker, "/merge:D538=538")
+#pragma comment(linker, "/merge:C538=538")
+#pragma comment(linker, "/merge:B538=538")
+#pragma comment(linker, "/merge:K538=538")
 /***************************************************************************
 
 	Prehistoric Isle in 1930 (World)		(c) 1989 SNK

@@ -1,11 +1,11 @@
-#pragma code_seg("C192")
-#pragma data_seg("D192")
-#pragma bss_seg("B192")
-#pragma const_seg("K192")
-#pragma comment(linker, "/merge:D192=192")
-#pragma comment(linker, "/merge:C192=192")
-#pragma comment(linker, "/merge:B192=192")
-#pragma comment(linker, "/merge:K192=192")
+#pragma code_seg("C191")
+#pragma data_seg("D191")
+#pragma bss_seg("B191")
+#pragma const_seg("K191")
+#pragma comment(linker, "/merge:D191=191")
+#pragma comment(linker, "/merge:C191=191")
+#pragma comment(linker, "/merge:B191=191")
+#pragma comment(linker, "/merge:K191=191")
 /***************************************************************************
 
 Chequered Flag / Checkered Flag (GX717) (c) Konami 1988
