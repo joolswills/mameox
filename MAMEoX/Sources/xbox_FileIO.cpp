@@ -244,6 +244,14 @@ int osd_get_path_info( int pathtype, int pathindex, const char *filename )
 	return PATH_IS_FILE;
 }
 
+
+
+
+
+
+
+
+
 //---------------------------------------------------------------------
 //	osd_fopen
 //---------------------------------------------------------------------
@@ -401,6 +409,29 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
 
 
 //---------------------------------------------------------------------
+//  osd_fflush
+//---------------------------------------------------------------------
+void osd_fflush( osd_file *file )
+{
+  if( !file )
+    return;
+
+    // Flush the write buffer
+  if( file->m_writeBufferBytes )
+  {
+    DWORD result;
+    if( !WriteFile( file->m_handle, file->m_writeBuffer, file->m_writeBufferBytes, &result, NULL ) )
+    {
+      PRINTMSG( T_ERROR, "WriteFile failed! 0x%X", GetLastError() );
+      return;
+    }
+    file->m_writeBufferBytes = 0;
+    file->m_filepos += result;
+  }
+}
+
+
+//---------------------------------------------------------------------
 //	osd_fseek
 //---------------------------------------------------------------------
 INT32 osd_fseek( osd_file *file, INT64 offset, int whence )
@@ -415,18 +446,7 @@ INT32 osd_fseek( osd_file *file, INT64 offset, int whence )
   }
   else
   {
-      // Flush the write buffer
-    if( file->m_writeBufferBytes )
-    {
-      DWORD result;
-      if( !WriteFile( file->m_handle, file->m_writeBuffer, file->m_writeBufferBytes, &result, NULL ) )
-      {
-        PRINTMSG( T_ERROR, "WriteFile failed! 0x%X", GetLastError() );
-        return 0;
-      }
-      file->m_writeBufferBytes = 0;
-      file->m_filepos += result;
-    }
+    osd_fflush( file );
 
     switch( whence )
     {
@@ -494,6 +514,8 @@ UINT32 osd_fread( osd_file *file, void *buffer, UINT32 length )
   UINT32 bytes_left = length;
   UINT32 bytes_to_copy;
   DWORD result;
+
+  osd_fflush( file );
 
   if ( file->m_bIsSMB )
   {
@@ -603,14 +625,7 @@ UINT32 osd_fwrite( osd_file *file, const void *buffer, UINT32 length )
   else
   {
       // Flush the buffer and then write the data
-    if( !WriteFile( file->m_handle, file->m_writeBuffer, file->m_writeBufferBytes, &result, NULL ) )
-    {
-      PRINTMSG( T_ERROR, "WriteFile failed! 0x%X", GetLastError() );
-      return 0;
-    }
-      // No need to adjust m_offset, it's already been done when the data was copied to the buffer
-    file->m_writeBufferBytes = 0;
-    file->m_filepos += result;
+    osd_fflush( file );
 
       // Write the requested data to the file as well
     if( !WriteFile( file->m_handle, buffer, length, &result, NULL ) )
@@ -640,17 +655,7 @@ void osd_fclose( osd_file *file )
   }
   else
   {
-      // Flush the write buffer
-    if( file->m_writeBufferBytes )
-    {
-      DWORD result;
-      if( !WriteFile( file->m_handle, file->m_writeBuffer, file->m_writeBufferBytes, &result, NULL ) )
-      {
-        PRINTMSG( T_ERROR, "WriteFile failed, data will be lost! 0x%X", GetLastError() );
-      }
-      file->m_writeBufferBytes = 0;
-      file->m_filepos += result;
-    }
+    osd_fflush( file );
 
       // close the handle and clear it out
     if (file->m_handle)
@@ -658,6 +663,9 @@ void osd_fclose( osd_file *file )
 
     file->m_handle = NULL;
   }
+
+    // Free the file
+  free( file );
 }
 
 //---------------------------------------------------------------------
