@@ -10,7 +10,8 @@ perl .\Desectionize.pl
 echo ================================================================
 perl .\FindDependencies.pl
 echo ================================================================
-perl .\Sectionize.pl
+echo Please run OldSectionize.pl, Sectionize is currently broken
+rem perl .\Sectionize.pl
 echo ================================================================
 echo Process completed.
 
