@@ -526,6 +526,11 @@ void __cdecl main( void )
 											  0L );															// Stencil
 
 
+
+
+    pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
     pD3DDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX1 );
     pD3DDevice->SetStreamSource(	0,												  // Stream number
 																	g_pD3DVertexBuffer,	        // Stream data

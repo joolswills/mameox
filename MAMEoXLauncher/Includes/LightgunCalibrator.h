@@ -26,7 +26,7 @@ public:
 	CLightgunCalibrator(  LPDIRECT3DDEVICE8 displayDevice, 
                         CFontSet &fontSet,
                         CTextureSet &textureSet ) :
-    CListView( displayDevice, fontSet, textureSet.GetBasicBackdrop() ),
+    CListView( displayDevice, fontSet, NULL ),
     m_textureSet( textureSet ),
     m_currentInputDeviceIndex( 0 ),
     m_calibrationStep( 0 ),

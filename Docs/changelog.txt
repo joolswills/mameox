@@ -11,7 +11,20 @@ Version 0.71.2b (CVS)
   - \MAMEoX\Sources: 
 
    -------------------------------------------------------------
+  - \MAMEoXLauncher\Includes:
+
+    - LightgunCalibrator.h
+      - Set the backdrop texture to NULL, like it's supposed
+        to be.
+
+   -------------------------------------------------------------
   - \MAMEoXLauncher\Sources:
+
+    - main.cpp
+      - Reset the texture colorop to "TEXTURE" after rendering
+        the subviews. Failure to do so caused it to be left to
+        "DIFFUSE" after rendering the lightgun cursor, which led
+        to an unusable calibration screen.
 
 *********************************************************************
 Version 0.71.1b
