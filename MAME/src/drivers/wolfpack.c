@@ -1,7 +1,7 @@
-#pragma code_seg("C664")
-#pragma bss_seg("B664")
-#pragma data_seg("D664")
-#pragma const_seg("K664")
+#pragma code_seg("C618")
+#pragma bss_seg("B618")
+#pragma data_seg("D618")
+#pragma const_seg("K618")
 /***************************************************************************
 
 Atari Wolf Pack (prototype) Driver

@@ -1,7 +1,7 @@
-#pragma code_seg("C464")
-#pragma bss_seg("B464")
-#pragma data_seg("D464")
-#pragma const_seg("K464")
+#pragma code_seg("C465")
+#pragma bss_seg("B465")
+#pragma data_seg("D465")
+#pragma const_seg("K465")
 /*	Space Harrier Hardware
 **
 **	2xMC68000 + Z80

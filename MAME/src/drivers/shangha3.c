@@ -1,7 +1,7 @@
-#pragma code_seg("C460")
-#pragma bss_seg("B460")
-#pragma data_seg("D460")
-#pragma const_seg("K460")
+#pragma code_seg("C461")
+#pragma bss_seg("B461")
+#pragma data_seg("D461")
+#pragma const_seg("K461")
 /***************************************************************************
 
 Shanghai 3           (c)1993 Sunsoft     (68000     AY8910 OKI6295)

@@ -1,7 +1,7 @@
-#pragma code_seg("C475")
-#pragma bss_seg("B475")
-#pragma data_seg("D475")
-#pragma const_seg("K475")
+#pragma code_seg("C478")
+#pragma bss_seg("B478")
+#pragma data_seg("D478")
+#pragma const_seg("K478")
 /***************************************************************************
 
 						-= Sky Fox / Exerizer =-

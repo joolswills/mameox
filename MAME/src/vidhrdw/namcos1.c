@@ -1,7 +1,3 @@
-#pragma code_seg("C349")
-#pragma bss_seg("B349")
-#pragma data_seg("D349")
-#pragma const_seg("K349")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -490,7 +486,3 @@ VIDEO_UPDATE( namcos1 )
 		draw_sprites(bitmap,cliprect,priority);
 	}
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

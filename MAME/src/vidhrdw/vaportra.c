@@ -1,7 +1,7 @@
-#pragma code_seg("C591")
-#pragma bss_seg("B591")
-#pragma data_seg("D591")
-#pragma const_seg("K591")
+#pragma code_seg("C594")
+#pragma bss_seg("B594")
+#pragma data_seg("D594")
+#pragma const_seg("K594")
 /***************************************************************************
 
    Vapour Trail Video emulation - Bryan McPhail, mish@tendril.co.uk

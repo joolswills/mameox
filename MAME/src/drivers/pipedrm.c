@@ -1,7 +1,7 @@
-#pragma code_seg("C397")
-#pragma bss_seg("B397")
-#pragma data_seg("D397")
-#pragma const_seg("K397")
+#pragma code_seg("C396")
+#pragma bss_seg("B396")
+#pragma data_seg("D396")
+#pragma const_seg("K396")
 /***************************************************************************
 
 	Pipe Dream

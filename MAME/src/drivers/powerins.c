@@ -1,7 +1,7 @@
-#pragma code_seg("C409")
-#pragma bss_seg("B409")
-#pragma data_seg("D409")
-#pragma const_seg("K409")
+#pragma code_seg("C410")
+#pragma bss_seg("B410")
+#pragma data_seg("D410")
+#pragma const_seg("K410")
 /***************************************************************************
 
 						  -= Power Instinct =-

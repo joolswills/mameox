@@ -1,7 +1,7 @@
-#pragma code_seg("C382")
-#pragma bss_seg("B382")
-#pragma data_seg("D382")
-#pragma const_seg("K382")
+#pragma code_seg("C380")
+#pragma bss_seg("B380")
+#pragma data_seg("D380")
+#pragma const_seg("K380")
 /*
 **	2xMC68000 + Z80
 **	YM2151 + Custom PCM

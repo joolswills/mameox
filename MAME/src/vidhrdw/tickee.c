@@ -1,7 +1,7 @@
-#pragma code_seg("C558")
-#pragma bss_seg("B558")
-#pragma data_seg("D558")
-#pragma const_seg("K558")
+#pragma code_seg("C561")
+#pragma bss_seg("B561")
+#pragma data_seg("D561")
+#pragma const_seg("K561")
 /***************************************************************************
 
 	Raster Elite Tickee Tickats hardware

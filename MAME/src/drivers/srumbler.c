@@ -1,7 +1,7 @@
-#pragma code_seg("C498")
-#pragma bss_seg("B498")
-#pragma data_seg("D498")
-#pragma const_seg("K498")
+#pragma code_seg("C500")
+#pragma bss_seg("B500")
+#pragma data_seg("D500")
+#pragma const_seg("K500")
 /***************************************************************************
 
   Speed Rumbler

@@ -1,7 +1,7 @@
-#pragma code_seg("C418")
-#pragma bss_seg("B418")
-#pragma data_seg("D418")
-#pragma const_seg("K418")
+#pragma code_seg("C419")
+#pragma bss_seg("B419")
+#pragma data_seg("D419")
+#pragma const_seg("K419")
 /***************************************************************************
 
 	Atari Quantum hardware

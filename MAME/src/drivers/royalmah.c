@@ -1,7 +1,7 @@
-#pragma code_seg("C439")
-#pragma bss_seg("B439")
-#pragma data_seg("D439")
-#pragma const_seg("K439")
+#pragma code_seg("C440")
+#pragma bss_seg("B440")
+#pragma data_seg("D440")
+#pragma const_seg("K440")
 /****************************************************************************
 
 Royal Mahjong (c) 1982 Falcon

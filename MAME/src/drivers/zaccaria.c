@@ -1,7 +1,7 @@
-#pragma code_seg("C631")
-#pragma bss_seg("B631")
-#pragma data_seg("D631")
-#pragma const_seg("K631")
+#pragma code_seg("C635")
+#pragma bss_seg("B635")
+#pragma data_seg("D635")
+#pragma const_seg("K635")
 /***************************************************************************
 
 Jack Rabbit memory map (preliminary)

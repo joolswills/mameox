@@ -1,7 +1,7 @@
-#pragma code_seg("C506")
-#pragma bss_seg("B506")
-#pragma data_seg("D506")
-#pragma const_seg("K506")
+#pragma code_seg("C508")
+#pragma bss_seg("B508")
+#pragma data_seg("D508")
+#pragma const_seg("K508")
 /***************************************************************************
 
 	Star Fire/Fire One system

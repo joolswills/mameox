@@ -369,7 +369,3 @@ static void (*insn65sc02[0x100])(void) = {
 	m65sc02_f8,m65sc02_f9,m65sc02_fa,m65sc02_fb,m65sc02_fc,m65sc02_fd,m65sc02_fe,m65sc02_ff
 };
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

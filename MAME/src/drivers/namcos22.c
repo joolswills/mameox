@@ -1,7 +1,7 @@
-#pragma code_seg("C352")
-#pragma bss_seg("B352")
-#pragma data_seg("D352")
-#pragma const_seg("K352")
+#pragma code_seg("C351")
+#pragma bss_seg("B351")
+#pragma data_seg("D351")
+#pragma const_seg("K351")
 /**
  * driver\namcos22.c
  *

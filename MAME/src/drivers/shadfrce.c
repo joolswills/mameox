@@ -1,7 +1,7 @@
-#pragma code_seg("C459")
-#pragma bss_seg("B459")
-#pragma data_seg("D459")
-#pragma const_seg("K459")
+#pragma code_seg("C460")
+#pragma bss_seg("B460")
+#pragma data_seg("D460")
+#pragma const_seg("K460")
 /*******************************************************************************
  Shadow Force (c)1993 Technos
  Preliminary Driver by David Haywood

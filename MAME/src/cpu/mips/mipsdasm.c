@@ -611,7 +611,3 @@ unsigned DasmMIPS( char *buffer, UINT32 oldpc )
 	}
 	return pc - oldpc;
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,7 @@
-#pragma code_seg("C458")
-#pragma bss_seg("B458")
-#pragma data_seg("D458")
-#pragma const_seg("K458")
+#pragma code_seg("C459")
+#pragma bss_seg("B459")
+#pragma data_seg("D459")
+#pragma const_seg("K459")
 /* "Gladiator"
  * (C) 1984 SNK
  */

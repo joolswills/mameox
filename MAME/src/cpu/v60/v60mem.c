@@ -390,7 +390,3 @@ static struct cpu_info v70_i =
 #endif
 
 #define ChangePC	v60.info.chpc
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

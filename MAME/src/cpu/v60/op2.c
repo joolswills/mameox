@@ -334,7 +334,3 @@ UINT32 op5C(void)
 	if2 = OpRead8(PC + 1);
 	return Op5CTable[if2&0x1F]();
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,3 @@
-#pragma code_seg("C392")
-#pragma bss_seg("B392")
-#pragma data_seg("D392")
-#pragma const_seg("K392")
 /***************************************************************************
 
 	Sega Pengo
@@ -538,7 +534,3 @@ GAME( 1982, pengo2,  pengo, pengo, pengo, pengo, ROT90, "Sega", "Pengo (set 2)" 
 GAME( 1982, pengo2u, pengo, pengo, pengo, 0,     ROT90, "Sega", "Pengo (set 2 not encrypted)" )
 GAME( 1982, pengob,  pengo, pengo, pengo, penta, ROT90, "bootleg", "Pengo (bootleg)" )
 GAME( 1982, penta,   pengo, pengo, pengo, penta, ROT90, "bootleg", "Penta" )
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,7 @@
-#pragma code_seg("C487")
-#pragma bss_seg("B487")
-#pragma data_seg("D487")
-#pragma const_seg("K487")
+#pragma code_seg("C489")
+#pragma bss_seg("B489")
+#pragma data_seg("D489")
+#pragma const_seg("K489")
 /***************************************************************************
 
 Space Force Memory Map

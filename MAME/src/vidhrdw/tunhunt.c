@@ -1,7 +1,7 @@
-#pragma code_seg("C581")
-#pragma bss_seg("B581")
-#pragma data_seg("D581")
-#pragma const_seg("K581")
+#pragma code_seg("C584")
+#pragma bss_seg("B584")
+#pragma data_seg("D584")
+#pragma const_seg("K584")
 /*************************************************************************
 
 	Atari Tunnel Hunt hardware

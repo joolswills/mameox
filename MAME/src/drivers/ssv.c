@@ -1,7 +1,7 @@
-#pragma code_seg("C502")
-#pragma bss_seg("B502")
-#pragma data_seg("D502")
-#pragma const_seg("K502")
+#pragma code_seg("C504")
+#pragma bss_seg("B504")
+#pragma data_seg("D504")
+#pragma const_seg("K504")
 /***************************************************************************
 
 					-= Seta, Sammy, Visco (SSV) System =-

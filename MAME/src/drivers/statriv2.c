@@ -1,7 +1,7 @@
-#pragma code_seg("C509")
-#pragma bss_seg("B509")
-#pragma data_seg("D509")
-#pragma const_seg("K509")
+#pragma code_seg("C511")
+#pragma bss_seg("B511")
+#pragma data_seg("D511")
+#pragma const_seg("K511")
 /****************************************************************\
 * Status Trivia 2 driver by David Haywood, MooglyGuy, and Stephh *
 * Super Trivia driver by MooglyGuy                               *

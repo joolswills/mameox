@@ -1,7 +1,7 @@
-#pragma code_seg("C560")
-#pragma bss_seg("B560")
-#pragma data_seg("D560")
-#pragma const_seg("K560")
+#pragma code_seg("C563")
+#pragma bss_seg("B563")
+#pragma data_seg("D563")
+#pragma const_seg("K563")
 #include "vidhrdw/generic.h"
 
 /* globals */

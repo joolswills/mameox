@@ -1,7 +1,7 @@
-#pragma code_seg("C532")
-#pragma bss_seg("B532")
-#pragma data_seg("D532")
-#pragma const_seg("K532")
+#pragma code_seg("C534")
+#pragma bss_seg("B534")
+#pragma data_seg("D534")
+#pragma const_seg("K534")
 #include "driver.h"
 #include "state.h"
 #include "vidhrdw/generic.h"

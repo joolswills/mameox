@@ -1,7 +1,3 @@
-#pragma code_seg("C561")
-#pragma bss_seg("B561")
-#pragma data_seg("D561")
-#pragma const_seg("K561")
 /***************************************************************************
 
 	This code is used by the following module:
@@ -125,7 +121,3 @@ WRITE_HANDLER( timeplt_sh_irqtrigger_w )
 	last = data;
 }
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

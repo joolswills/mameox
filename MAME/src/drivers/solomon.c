@@ -1,7 +1,7 @@
-#pragma code_seg("C483")
-#pragma bss_seg("B483")
-#pragma data_seg("D483")
-#pragma const_seg("K483")
+#pragma code_seg("C485")
+#pragma bss_seg("B485")
+#pragma data_seg("D485")
+#pragma const_seg("K485")
 /***************************************************************************
 
 Solomon's Key

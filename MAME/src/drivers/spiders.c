@@ -1,7 +1,7 @@
-#pragma code_seg("C492")
-#pragma bss_seg("B492")
-#pragma data_seg("D492")
-#pragma const_seg("K492")
+#pragma code_seg("C494")
+#pragma bss_seg("B494")
+#pragma data_seg("D494")
+#pragma const_seg("K494")
 /***************************************************************************
 
 Spiders driver by K.Wilkins May 1998

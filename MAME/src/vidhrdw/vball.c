@@ -1,7 +1,7 @@
-#pragma code_seg("C593")
-#pragma bss_seg("B593")
-#pragma data_seg("D593")
-#pragma const_seg("K593")
+#pragma code_seg("C596")
+#pragma bss_seg("B596")
+#pragma data_seg("D596")
+#pragma const_seg("K596")
 /***************************************************************************
 
   Video Hardware for Championship V'ball by Paul Hampson

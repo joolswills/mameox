@@ -1,7 +1,7 @@
-#pragma code_seg("C562")
-#pragma bss_seg("B562")
-#pragma data_seg("D562")
-#pragma const_seg("K562")
+#pragma code_seg("C564")
+#pragma bss_seg("B564")
+#pragma data_seg("D564")
+#pragma const_seg("K564")
 #include "driver.h"
 #include "machine/eeprom.h"
 #include "vidhrdw/konamiic.h"

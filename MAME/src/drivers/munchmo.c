@@ -1,7 +1,7 @@
-#pragma code_seg("C342")
-#pragma bss_seg("B342")
-#pragma data_seg("D342")
-#pragma const_seg("K342")
+#pragma code_seg("C341")
+#pragma bss_seg("B341")
+#pragma data_seg("D341")
+#pragma const_seg("K341")
 /***************************************************************************
   Munch Mobile
   (C) 1982 SNK

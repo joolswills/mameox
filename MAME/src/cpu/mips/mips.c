@@ -1991,7 +1991,3 @@ unsigned mips_dasm( char *buffer, UINT32 pc )
 	change_pc32lew( mipscpu.pc );
 	return ret;
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

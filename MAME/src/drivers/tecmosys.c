@@ -1,7 +1,7 @@
-#pragma code_seg("C548")
-#pragma bss_seg("B548")
-#pragma data_seg("D548")
-#pragma const_seg("K548")
+#pragma code_seg("C550")
+#pragma bss_seg("B550")
+#pragma data_seg("D550")
+#pragma const_seg("K550")
 /* Tecmo System
  Driver by Farfetch & David Haywood
 

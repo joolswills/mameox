@@ -1,7 +1,7 @@
-#pragma code_seg("C566")
-#pragma bss_seg("B566")
-#pragma data_seg("D566")
-#pragma const_seg("K566")
+#pragma code_seg("C568")
+#pragma bss_seg("B568")
+#pragma data_seg("D568")
+#pragma const_seg("K568")
 /***************************************************************************
 
 Toki

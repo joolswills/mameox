@@ -1,7 +1,7 @@
-#pragma code_seg("C546")
-#pragma bss_seg("B546")
-#pragma data_seg("D546")
-#pragma const_seg("K546")
+#pragma code_seg("C548")
+#pragma bss_seg("B548")
+#pragma data_seg("D548")
+#pragma const_seg("K548")
 /***************************************************************************
 
   video hardware for Tecmo games

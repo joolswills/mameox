@@ -1,7 +1,7 @@
-#pragma code_seg("C438")
-#pragma bss_seg("B438")
-#pragma data_seg("D438")
-#pragma const_seg("K438")
+#pragma code_seg("C439")
+#pragma bss_seg("B439")
+#pragma data_seg("D439")
+#pragma const_seg("K439")
 /***************************************************************************
 
  Route 16/Stratovox memory map (preliminary)

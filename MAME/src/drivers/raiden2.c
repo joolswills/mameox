@@ -1,7 +1,7 @@
-#pragma code_seg("C646")
-#pragma bss_seg("B646")
-#pragma data_seg("D646")
-#pragma const_seg("K646")
+#pragma code_seg("C422")
+#pragma bss_seg("B422")
+#pragma data_seg("D422")
+#pragma const_seg("K422")
 /*
 
 Raiden 2 Preliminary Driver

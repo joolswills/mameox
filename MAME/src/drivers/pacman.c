@@ -1,7 +1,7 @@
-#pragma code_seg("C385")
-#pragma bss_seg("B385")
-#pragma data_seg("D385")
-#pragma const_seg("K385")
+#pragma code_seg("C383")
+#pragma bss_seg("B383")
+#pragma data_seg("D383")
+#pragma const_seg("K383")
 /***************************************************************************
 
 	Namco PuckMan

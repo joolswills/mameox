@@ -1,7 +1,7 @@
-#pragma code_seg("C378")
-#pragma bss_seg("B378")
-#pragma data_seg("D378")
-#pragma const_seg("K378")
+#pragma code_seg("C376")
+#pragma bss_seg("B376")
+#pragma data_seg("D376")
+#pragma const_seg("K376")
 /****************************************************************************
 
 Operation Wolf  (c) Taito 1987

@@ -1,7 +1,7 @@
-#pragma code_seg("C556")
-#pragma bss_seg("B556")
-#pragma data_seg("D556")
-#pragma const_seg("K556")
+#pragma code_seg("C559")
+#pragma bss_seg("B559")
+#pragma data_seg("D559")
+#pragma const_seg("K559")
 /***************************************************************************
 
 	Atari ThunderJaws hardware

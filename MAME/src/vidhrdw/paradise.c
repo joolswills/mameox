@@ -1,7 +1,7 @@
-#pragma code_seg("C661")
-#pragma bss_seg("B661")
-#pragma data_seg("D661")
-#pragma const_seg("K661")
+#pragma code_seg("C385")
+#pragma bss_seg("B385")
+#pragma data_seg("D385")
+#pragma const_seg("K385")
 /***************************************************************************
 
 							  -= Paradise =-

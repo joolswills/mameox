@@ -11,7 +11,3 @@
 #define TMS99XX_MODEL TMS9900_ID
 
 #include "99xxcore.h"
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,7 @@
-#pragma code_seg("C442")
-#pragma bss_seg("B442")
-#pragma data_seg("D442")
-#pragma const_seg("K442")
+#pragma code_seg("C443")
+#pragma bss_seg("B443")
+#pragma data_seg("D443")
+#pragma const_seg("K443")
 /****************************************************************************
 
 Safari Rally by SNK/Taito

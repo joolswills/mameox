@@ -1,7 +1,7 @@
-#pragma code_seg("C621")
-#pragma bss_seg("B621")
-#pragma data_seg("D621")
-#pragma const_seg("K621")
+#pragma code_seg("C625")
+#pragma bss_seg("B625")
+#pragma data_seg("D625")
+#pragma const_seg("K625")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 

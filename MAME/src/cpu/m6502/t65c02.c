@@ -359,7 +359,3 @@ static void (*insn65c02[0x100])(void) = {
 };
 
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

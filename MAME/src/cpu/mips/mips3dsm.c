@@ -507,7 +507,3 @@ unsigned dasmmips3(char *buffer, unsigned pc)
 	}
 	return 4;
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

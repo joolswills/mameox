@@ -1,7 +1,7 @@
-#pragma code_seg("C374")
-#pragma bss_seg("B374")
-#pragma data_seg("D374")
-#pragma const_seg("K374")
+#pragma code_seg("C372")
+#pragma bss_seg("B372")
+#pragma data_seg("D372")
+#pragma const_seg("K372")
 /***************************************************************************
 
 Oli-Boo-Chu

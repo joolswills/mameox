@@ -1,7 +1,7 @@
-#pragma code_seg("C534")
-#pragma bss_seg("B534")
-#pragma data_seg("D534")
-#pragma const_seg("K534")
+#pragma code_seg("C536")
+#pragma bss_seg("B536")
+#pragma data_seg("D536")
+#pragma const_seg("K536")
 /***************************************************************************
 
 Taito H system

@@ -1,7 +1,7 @@
-#pragma code_seg("C375")
-#pragma bss_seg("B375")
-#pragma data_seg("D375")
-#pragma const_seg("K375")
+#pragma code_seg("C373")
+#pragma bss_seg("B373")
+#pragma data_seg("D373")
+#pragma const_seg("K373")
 /***************************************************************************
 
 Omega Fighter

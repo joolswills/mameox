@@ -1,7 +1,7 @@
-#pragma code_seg("C340")
-#pragma bss_seg("B340")
-#pragma data_seg("D340")
-#pragma const_seg("K340")
+#pragma code_seg("C339")
+#pragma bss_seg("B339")
+#pragma data_seg("D339")
+#pragma const_seg("K339")
 /* Mug Smashers (c)199? Electronic Devices (Italy) / 3D Games (England)
 	driver by David Haywood - Dip Switches and Inputs by Stephane Humbert
 

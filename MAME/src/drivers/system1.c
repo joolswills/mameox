@@ -1,7 +1,7 @@
-#pragma code_seg("C525")
-#pragma bss_seg("B525")
-#pragma data_seg("D525")
-#pragma const_seg("K525")
+#pragma code_seg("C527")
+#pragma bss_seg("B527")
+#pragma data_seg("D527")
+#pragma const_seg("K527")
 /******************************************************************************
 
 Sega System 1 / System 2

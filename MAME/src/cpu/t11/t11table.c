@@ -2411,7 +2411,3 @@ static void (*opcode_table[65536 >> 3])(void) =
 	illegal,	illegal,	illegal,	illegal,	illegal,	illegal,	illegal,	illegal,
 	illegal,	illegal,	illegal,	illegal,	illegal,	illegal,	illegal,	illegal
 };
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

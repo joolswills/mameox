@@ -1,7 +1,7 @@
-#pragma code_seg("C419")
-#pragma bss_seg("B419")
-#pragma data_seg("D419")
-#pragma const_seg("K419")
+#pragma code_seg("C420")
+#pragma bss_seg("B420")
+#pragma data_seg("D420")
+#pragma const_seg("K420")
 /******************************************************************************
 
 Quiz DNA no Hanran (c) 1992 Face

@@ -1,7 +1,7 @@
-#pragma code_seg("C440")
-#pragma bss_seg("B440")
-#pragma data_seg("D440")
-#pragma const_seg("K440")
+#pragma code_seg("C441")
+#pragma bss_seg("B441")
+#pragma data_seg("D441")
+#pragma const_seg("K441")
 /***************************************************************************
 
 	Rabbit Punch / Rabio Lepus

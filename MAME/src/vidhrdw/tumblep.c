@@ -1,7 +1,7 @@
-#pragma code_seg("C580")
-#pragma bss_seg("B580")
-#pragma data_seg("D580")
-#pragma const_seg("K580")
+#pragma code_seg("C583")
+#pragma bss_seg("B583")
+#pragma data_seg("D583")
+#pragma const_seg("K583")
 /***************************************************************************
 
    Tumblepop Video emulation - Bryan McPhail, mish@tendril.co.uk

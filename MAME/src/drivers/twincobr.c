@@ -1,7 +1,7 @@
-#pragma code_seg("C585")
-#pragma bss_seg("B585")
-#pragma data_seg("D585")
-#pragma const_seg("K585")
+#pragma code_seg("C588")
+#pragma bss_seg("B588")
+#pragma data_seg("D588")
+#pragma const_seg("K588")
 /****************************************************************************
 
 		ToaPlan game hardware from 1987

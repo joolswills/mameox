@@ -1,7 +1,7 @@
-#pragma code_seg("C495")
-#pragma bss_seg("B495")
-#pragma data_seg("D495")
-#pragma const_seg("K495")
+#pragma code_seg("C497")
+#pragma bss_seg("B497")
+#pragma data_seg("D497")
+#pragma const_seg("K497")
 /***************************************************************************
 
 	Atari Sprint 2 hardware

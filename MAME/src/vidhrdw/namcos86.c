@@ -1,7 +1,7 @@
-#pragma code_seg("C353")
-#pragma bss_seg("B353")
-#pragma data_seg("D353")
-#pragma const_seg("K353")
+#pragma code_seg("C352")
+#pragma bss_seg("B352")
+#pragma data_seg("D352")
+#pragma const_seg("K352")
 /*******************************************************************
 
 Rolling Thunder Video Hardware

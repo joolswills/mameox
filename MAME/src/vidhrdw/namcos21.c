@@ -1,7 +1,7 @@
-#pragma code_seg("C351")
-#pragma bss_seg("B351")
-#pragma data_seg("D351")
-#pragma const_seg("K351")
+#pragma code_seg("C350")
+#pragma bss_seg("B350")
+#pragma data_seg("D350")
+#pragma const_seg("K350")
 /***************************************************************************
 
 Namco System 21 Video Hardware

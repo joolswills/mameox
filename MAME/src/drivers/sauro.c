@@ -1,7 +1,7 @@
-#pragma code_seg("C443")
-#pragma bss_seg("B443")
-#pragma data_seg("D443")
-#pragma const_seg("K443")
+#pragma code_seg("C444")
+#pragma bss_seg("B444")
+#pragma data_seg("D444")
+#pragma const_seg("K444")
 /***************************************************************************
 
 Sauro

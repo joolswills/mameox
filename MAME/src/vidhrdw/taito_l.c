@@ -1,7 +1,7 @@
-#pragma code_seg("C535")
-#pragma bss_seg("B535")
-#pragma data_seg("D535")
-#pragma const_seg("K535")
+#pragma code_seg("C537")
+#pragma bss_seg("B537")
+#pragma data_seg("D537")
+#pragma const_seg("K537")
 #include "driver.h"
 
 

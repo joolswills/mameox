@@ -1,7 +1,7 @@
-#pragma code_seg("C519")
-#pragma bss_seg("B519")
-#pragma data_seg("D519")
-#pragma const_seg("K519")
+#pragma code_seg("C521")
+#pragma bss_seg("B521")
+#pragma data_seg("D521")
+#pragma const_seg("K521")
 /***************************************************************************
 
 Super Pac-Man memory map (preliminary)

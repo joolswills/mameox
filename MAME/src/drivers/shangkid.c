@@ -1,7 +1,7 @@
-#pragma code_seg("C462")
-#pragma bss_seg("B462")
-#pragma data_seg("D462")
-#pragma const_seg("K462")
+#pragma code_seg("C463")
+#pragma bss_seg("B463")
+#pragma data_seg("D463")
+#pragma const_seg("K463")
 /*
 Dynamic Ski
 (c)1984 Taiyo

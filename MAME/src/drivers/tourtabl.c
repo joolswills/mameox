@@ -1,7 +1,7 @@
-#pragma code_seg("C655")
-#pragma bss_seg("B655")
-#pragma data_seg("D655")
-#pragma const_seg("K655")
+#pragma code_seg("C572")
+#pragma bss_seg("B572")
+#pragma data_seg("D572")
+#pragma const_seg("K572")
 /***************************************************************************
 
   Atari Tournament Table driver

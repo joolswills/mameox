@@ -1,7 +1,7 @@
-#pragma code_seg("C583")
-#pragma bss_seg("B583")
-#pragma data_seg("D583")
-#pragma const_seg("K583")
+#pragma code_seg("C586")
+#pragma bss_seg("B586")
+#pragma data_seg("D586")
+#pragma const_seg("K586")
 /***************************************************************************
 
 Tutankham :  memory map (preliminary)

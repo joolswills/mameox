@@ -1235,7 +1235,3 @@ unsigned v70_dasm(char *buffer, unsigned pc)
 	return dasm_optable[readop(pc)](pc, pc+1, buffer);
 }
 #endif
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

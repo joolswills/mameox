@@ -1,7 +1,7 @@
-#pragma code_seg("C477")
-#pragma bss_seg("B477")
-#pragma data_seg("D477")
-#pragma const_seg("K477")
+#pragma code_seg("C480")
+#pragma bss_seg("B480")
+#pragma data_seg("D480")
+#pragma const_seg("K480")
 /***************************************************************************
 
 Atari Sky Raider video emulation

@@ -1,7 +1,7 @@
-#pragma code_seg("C609")
-#pragma bss_seg("B609")
-#pragma data_seg("D609")
-#pragma const_seg("K609")
+#pragma code_seg("C613")
+#pragma bss_seg("B613")
+#pragma data_seg("D613")
+#pragma const_seg("K613")
 /*******************************************************************************
  Welltris (c)1991 Video System
 ********************************************************************************

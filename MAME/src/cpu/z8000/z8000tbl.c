@@ -595,7 +595,3 @@ void z8000_deinit(void)
 	z8000_exec = 0;
 }
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,7 @@
-#pragma code_seg("C335")
-#pragma bss_seg("B335")
-#pragma data_seg("D335")
-#pragma const_seg("K335")
+#pragma code_seg("C334")
+#pragma bss_seg("B334")
+#pragma data_seg("D334")
+#pragma const_seg("K334")
 /***************************************************************************
 
 Mr Do!

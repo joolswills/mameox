@@ -1,7 +1,7 @@
-#pragma code_seg("C369")
-#pragma bss_seg("B369")
-#pragma data_seg("D369")
-#pragma const_seg("K369")
+#pragma code_seg("C367")
+#pragma bss_seg("B367")
+#pragma data_seg("D367")
+#pragma const_seg("K367")
 /***************************************************************************
     N.Y. Captor - Taito '85
 

@@ -1,7 +1,7 @@
-#pragma code_seg("C652")
-#pragma bss_seg("B652")
-#pragma data_seg("D652")
-#pragma const_seg("K652")
+#pragma code_seg("C475")
+#pragma bss_seg("B475")
+#pragma data_seg("D475")
+#pragma const_seg("K475")
 /*
  05/01/2003  MooglyGuy/Ryan Holtz
 	- Corrected second AY (shouldn't have been there)

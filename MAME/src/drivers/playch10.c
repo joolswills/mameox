@@ -1,7 +1,7 @@
-#pragma code_seg("C400")
-#pragma bss_seg("B400")
-#pragma data_seg("D400")
-#pragma const_seg("K400")
+#pragma code_seg("C399")
+#pragma bss_seg("B399")
+#pragma data_seg("D399")
+#pragma const_seg("K399")
 /***************************************************************************
 
 Playchoice 10 - (c) 1986 Nintendo of America

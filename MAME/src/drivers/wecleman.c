@@ -1,7 +1,7 @@
-#pragma code_seg("C608")
-#pragma bss_seg("B608")
-#pragma data_seg("D608")
-#pragma const_seg("K608")
+#pragma code_seg("C612")
+#pragma bss_seg("B612")
+#pragma data_seg("D612")
+#pragma const_seg("K612")
 /***************************************************************************
 						WEC Le Mans 24  &   Hot Chase
 

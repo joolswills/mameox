@@ -1,7 +1,7 @@
-#pragma code_seg("C376")
-#pragma bss_seg("B376")
-#pragma data_seg("D376")
-#pragma const_seg("K376")
+#pragma code_seg("C374")
+#pragma bss_seg("B374")
+#pragma data_seg("D374")
+#pragma const_seg("K374")
 /***************************************************************************
 
 	Midway Omega Race hardware

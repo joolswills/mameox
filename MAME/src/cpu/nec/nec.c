@@ -1271,7 +1271,3 @@ const char *v33_info(void *context, int regnum)
     return v20_info(context,regnum);
 }
 unsigned v33_dasm(char *buffer, unsigned pc) { return nec_dasm(buffer,pc); }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

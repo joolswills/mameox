@@ -1,7 +1,7 @@
-#pragma code_seg("C441")
-#pragma bss_seg("B441")
-#pragma data_seg("D441")
-#pragma const_seg("K441")
+#pragma code_seg("C442")
+#pragma bss_seg("B442")
+#pragma data_seg("D442")
+#pragma const_seg("K442")
 /*
    Run and Gun
    (c) 1993 Konami

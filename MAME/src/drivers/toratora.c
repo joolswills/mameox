@@ -1,7 +1,7 @@
-#pragma code_seg("C569")
-#pragma bss_seg("B569")
-#pragma data_seg("D569")
-#pragma const_seg("K569")
+#pragma code_seg("C571")
+#pragma bss_seg("B571")
+#pragma data_seg("D571")
+#pragma const_seg("K571")
 /***************************************************************************
 
 Tora Tora (c) 1980 GamePlan

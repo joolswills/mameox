@@ -1398,7 +1398,3 @@ static void sub_ixd_de(void)    { t11_ICount -= 30+15; { SUB_M(IXD,DE);  } }
 static void sub_ixd_ded(void)   { t11_ICount -= 30+21; { SUB_M(IXD,DED); } }
 static void sub_ixd_ix(void)    { t11_ICount -= 30+21; { SUB_M(IXD,IX);  } }
 static void sub_ixd_ixd(void)   { t11_ICount -= 30+27; { SUB_M(IXD,IXD); } }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

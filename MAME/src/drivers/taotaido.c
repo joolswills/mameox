@@ -1,7 +1,7 @@
-#pragma code_seg("C542")
-#pragma bss_seg("B542")
-#pragma data_seg("D542")
-#pragma const_seg("K542")
+#pragma code_seg("C544")
+#pragma bss_seg("B544")
+#pragma data_seg("D544")
+#pragma const_seg("K544")
 /***************************************************************************
 
   Tao Taido             (c) 1993 Video System

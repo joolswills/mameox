@@ -6505,7 +6505,3 @@ static void ZF_dddd_1dsp7(void)
 }
 
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

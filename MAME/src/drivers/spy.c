@@ -1,7 +1,7 @@
-#pragma code_seg("C496")
-#pragma bss_seg("B496")
-#pragma data_seg("D496")
-#pragma const_seg("K496")
+#pragma code_seg("C498")
+#pragma bss_seg("B498")
+#pragma data_seg("D498")
+#pragma const_seg("K498")
 /***************************************************************************
 
 S.P.Y. (c) 1989 Konami

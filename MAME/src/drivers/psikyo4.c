@@ -1,7 +1,7 @@
-#pragma code_seg("C412")
-#pragma bss_seg("B412")
-#pragma data_seg("D412")
-#pragma const_seg("K412")
+#pragma code_seg("C413")
+#pragma bss_seg("B413")
+#pragma data_seg("D413")
+#pragma const_seg("K413")
 /*----------------------------------------------------------------
    Psikyo PS4 SH-2 Based Systems
    driver by David Haywood (+ Paul Priest)

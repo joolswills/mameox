@@ -1,7 +1,7 @@
-#pragma code_seg("C523")
-#pragma bss_seg("B523")
-#pragma data_seg("D523")
-#pragma const_seg("K523")
+#pragma code_seg("C525")
+#pragma bss_seg("B525")
+#pragma data_seg("D525")
+#pragma const_seg("K525")
 /* Super Slams - vidhrdw, see notes in driver file */
 
 #include "driver.h"

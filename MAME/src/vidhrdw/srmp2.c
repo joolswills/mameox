@@ -1,7 +1,7 @@
-#pragma code_seg("C497")
-#pragma bss_seg("B497")
-#pragma data_seg("D497")
-#pragma const_seg("K497")
+#pragma code_seg("C499")
+#pragma bss_seg("B499")
+#pragma data_seg("D499")
+#pragma const_seg("K499")
 /***************************************************************************
 
 Functions to emulate the video hardware of the machine.

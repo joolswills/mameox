@@ -1,7 +1,7 @@
-#pragma code_seg("C508")
-#pragma bss_seg("B508")
-#pragma data_seg("D508")
-#pragma const_seg("K508")
+#pragma code_seg("C510")
+#pragma bss_seg("B510")
+#pragma data_seg("D510")
+#pragma const_seg("K510")
 /***************************************************************************
 
 	Atari Star Wars hardware

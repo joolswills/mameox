@@ -1,7 +1,7 @@
-#pragma code_seg("C504")
-#pragma bss_seg("B504")
-#pragma data_seg("D504")
-#pragma const_seg("K504")
+#pragma code_seg("C506")
+#pragma bss_seg("B506")
+#pragma data_seg("D506")
+#pragma const_seg("K506")
 /***************************************************************************
 
 	Stadium Hero (Japan)			(c) 1988 Data East Corporation

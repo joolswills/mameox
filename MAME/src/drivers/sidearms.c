@@ -1,7 +1,7 @@
-#pragma code_seg("C468")
-#pragma bss_seg("B468")
-#pragma data_seg("D468")
-#pragma const_seg("K468")
+#pragma code_seg("C470")
+#pragma bss_seg("B470")
+#pragma data_seg("D470")
+#pragma const_seg("K470")
 /***************************************************************************
 
   Sidearms

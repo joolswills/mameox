@@ -1,7 +1,7 @@
-#pragma code_seg("C634")
-#pragma bss_seg("B634")
-#pragma data_seg("D634")
-#pragma const_seg("K634")
+#pragma code_seg("C638")
+#pragma bss_seg("B638")
+#pragma data_seg("D638")
+#pragma const_seg("K638")
 /***************************************************************************
 
   Sony ZN1/ZN2 - Arcade PSX Hardware

@@ -1,7 +1,3 @@
-#pragma code_seg("C424")
-#pragma bss_seg("B424")
-#pragma data_seg("D424")
-#pragma const_seg("K424")
 /***************************************************************************
 
 	Atari Rampart hardware
@@ -222,7 +218,3 @@ void rampart_bitmap_render(struct mame_bitmap *bitmap, const struct rectangle *c
 	/* copy the cached bitmap */
 	copybitmap(bitmap, pfbitmap, 0, 0, 0, 0, cliprect, TRANSPARENCY_NONE, 0);
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

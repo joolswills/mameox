@@ -1,8 +1,7 @@
-#pragma code_seg("C624")
-#pragma bss_seg("B624")
-#pragma data_seg("D624")
-#pragma const_seg("K624")
-
+#pragma code_seg("C628")
+#pragma bss_seg("B628")
+#pragma data_seg("D628")
+#pragma const_seg("K628")
 #include "driver.h"
 
 extern data8_t *xyonix_vidram;

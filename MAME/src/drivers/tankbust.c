@@ -1,7 +1,7 @@
-#pragma code_seg("C541")
-#pragma bss_seg("B541")
-#pragma data_seg("D541")
-#pragma const_seg("K541")
+#pragma code_seg("C543")
+#pragma bss_seg("B543")
+#pragma data_seg("D543")
+#pragma const_seg("K543")
 /***************************************************************************
 
 Tank Busters memory map

@@ -1,7 +1,7 @@
-#pragma code_seg("C578")
-#pragma bss_seg("B578")
-#pragma data_seg("D578")
-#pragma const_seg("K578")
+#pragma code_seg("C581")
+#pragma bss_seg("B581")
+#pragma data_seg("D581")
+#pragma const_seg("K581")
 /***************************************************************************
 
 Tube Panic

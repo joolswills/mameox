@@ -1,7 +1,7 @@
-#pragma code_seg("C660")
-#pragma bss_seg("B660")
-#pragma data_seg("D660")
-#pragma const_seg("K660")
+#pragma code_seg("C342")
+#pragma bss_seg("B342")
+#pragma data_seg("D342")
+#pragma const_seg("K342")
 /***************************************************************************
 
 	Mustache Boy

@@ -1999,7 +1999,3 @@ unsigned upd7807_dasm(char *buffer, unsigned pc)
 	return 1;
 #endif
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

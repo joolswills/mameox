@@ -1,7 +1,7 @@
-#pragma code_seg("C537")
-#pragma bss_seg("B537")
-#pragma data_seg("D537")
-#pragma const_seg("K537")
+#pragma code_seg("C539")
+#pragma bss_seg("B539")
+#pragma data_seg("D539")
+#pragma const_seg("K539")
 /***************************************************************************
 
 Taito Z System [twin 68K with optional Z80]

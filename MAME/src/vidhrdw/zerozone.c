@@ -1,7 +1,7 @@
-#pragma code_seg("C633")
-#pragma bss_seg("B633")
-#pragma data_seg("D633")
-#pragma const_seg("K633")
+#pragma code_seg("C637")
+#pragma bss_seg("B637")
+#pragma data_seg("D637")
+#pragma const_seg("K637")
 /***************************************************************************
 
   vidhrdw/zerozone.c

@@ -1,7 +1,7 @@
-#pragma code_seg("C469")
-#pragma bss_seg("B469")
-#pragma data_seg("D469")
-#pragma const_seg("K469")
+#pragma code_seg("C471")
+#pragma bss_seg("B471")
+#pragma data_seg("D471")
+#pragma const_seg("K471")
 /***************************************************************************
 
 Side Pocket - (c) 1986 Data East

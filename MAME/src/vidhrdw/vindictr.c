@@ -1,7 +1,7 @@
-#pragma code_seg("C599")
-#pragma bss_seg("B599")
-#pragma data_seg("D599")
-#pragma const_seg("K599")
+#pragma code_seg("C602")
+#pragma bss_seg("B602")
+#pragma data_seg("D602")
+#pragma const_seg("K602")
 /***************************************************************************
 
 	Atari Vindicators hardware

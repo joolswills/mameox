@@ -1,7 +1,7 @@
-#pragma code_seg("C491")
-#pragma bss_seg("B491")
-#pragma data_seg("D491")
-#pragma const_seg("K491")
+#pragma code_seg("C493")
+#pragma bss_seg("B493")
+#pragma data_seg("D493")
+#pragma const_seg("K493")
 /*** DRIVER INFO & NOTES ******************************************************
  Speed Spin (c)1994 TCH
   driver by David Haywood & Farfetch'd

@@ -1,7 +1,7 @@
-#pragma code_seg("C338")
-#pragma bss_seg("B338")
-#pragma data_seg("D338")
-#pragma const_seg("K338")
+#pragma code_seg("C337")
+#pragma bss_seg("B337")
+#pragma data_seg("D337")
+#pragma const_seg("K337")
 /* Jaleco MegaSystem 32 (Preliminary Driver)
 
 

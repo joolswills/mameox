@@ -1,7 +1,7 @@
-#pragma code_seg("C552")
-#pragma bss_seg("B552")
-#pragma data_seg("D552")
-#pragma const_seg("K552")
+#pragma code_seg("C554")
+#pragma bss_seg("B554")
+#pragma data_seg("D554")
+#pragma const_seg("K554")
 /***************************************************************************
 
 							  -= Tetris Plus 2 =-

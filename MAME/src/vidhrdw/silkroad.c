@@ -1,7 +1,7 @@
-#pragma code_seg("C470")
-#pragma bss_seg("B470")
-#pragma data_seg("D470")
-#pragma const_seg("K470")
+#pragma code_seg("C472")
+#pragma bss_seg("B472")
+#pragma data_seg("D472")
+#pragma const_seg("K472")
 #include "driver.h"
 
 /* Sprites probably need to be delayed */

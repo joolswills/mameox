@@ -1,7 +1,7 @@
-#pragma code_seg("C465")
-#pragma bss_seg("B465")
-#pragma data_seg("D465")
-#pragma const_seg("K465")
+#pragma code_seg("C466")
+#pragma bss_seg("B466")
+#pragma data_seg("D466")
+#pragma const_seg("K466")
 /***************************************************************************
 
 Shisen

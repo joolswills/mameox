@@ -1,7 +1,7 @@
-#pragma code_seg("C356")
-#pragma bss_seg("B356")
-#pragma data_seg("D356")
-#pragma const_seg("K356")
+#pragma code_seg("C355")
+#pragma bss_seg("B355")
+#pragma data_seg("D355")
+#pragma const_seg("K355")
 /******************************************************************************
 
 	Game Driver for Nichibutsu Mahjong series.

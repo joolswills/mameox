@@ -1,7 +1,7 @@
-#pragma code_seg("C466")
-#pragma bss_seg("B466")
-#pragma data_seg("D466")
-#pragma const_seg("K466")
+#pragma code_seg("C467")
+#pragma bss_seg("B467")
+#pragma data_seg("D467")
+#pragma const_seg("K467")
 /*
 	Video Hardware for Shoot Out
 	prom GB09.K6 may be related to background tile-sprite priority

@@ -112,7 +112,7 @@ void __cdecl main( void )
   
   SaveOptions();
 
-CHECKRAM();
+//CHECKRAM();
 
     // Check the launch data to ensure that we've been started properly
   if( getLaunchInfoRet != ERROR_SUCCESS || g_launchDataType != LDT_TITLE )
@@ -156,6 +156,7 @@ CHECKRAM();
       //         this call, and it takes basically no time whatsoever, so I changed
       //         everything back to the way it was before. [EBA]
     UnloadDriverNonDataSections();    
+    //UnloadCPUNonDataSections();  // Sections are unloaded in mame/src/cpuexec.c
 
       // This should only be necessary if IMAGEBLD doesn't load any sections
       // Update: Taking out this line is what caused the 0.66b release to
@@ -524,10 +525,7 @@ static BOOL Helper_RunRom( UINT32 romIndex )
     // Unload all loaded XBE data sections, as we'll only be using the one
     // for the file we're loading
   UnloadDriverDataSections();
-
-    // Hack: Load up all the drivers necessary to fix the silent XBE dependencies
-    //       and avoid crashing.
-  LoadSilentDependencyDriverDataHacks();
+  //UnloadCPUDataSections();  // Sections are unloaded in mame/src/cpuexec.c
 
     // VC6 seems to be calling this with the full path so strstr just trims down the path
     // appropriately. NOTE: we probably don't need this to conditionally compile and could
@@ -536,18 +534,17 @@ static BOOL Helper_RunRom( UINT32 romIndex )
     // Should be perfectly fine w/ the strstr
   if( !LoadDriverSectionByName( strstr(DriverName.c_str(),"src\\drivers\\") ) )
     PRINTMSG( T_ERROR, "Failed to load section for file %s!", DriverName.c_str() );
-  else
-  {
-      // Override sound processing
-    DWORD samplerate = options.samplerate;
-    if( !g_soundEnabled )
-      options.samplerate = 0;
 
-		ret = run_game( romIndex );
+    // Override sound processing
+  DWORD samplerate = options.samplerate;
+  if( !g_soundEnabled )
+    options.samplerate = 0;
 
-      // Restore the old value, just in case somebody writes to the INI
-    options.samplerate = samplerate;
-  }
+CHECKRAM();
+	ret = run_game( romIndex );
+
+    // Restore the old value, just in case somebody writes to the INI
+  options.samplerate = samplerate;
 
   #ifdef _PROFILER
   DmStopProfiling();

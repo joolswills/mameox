@@ -1,7 +1,7 @@
-#pragma code_seg("C488")
-#pragma bss_seg("B488")
-#pragma data_seg("D488")
-#pragma const_seg("K488")
+#pragma code_seg("C490")
+#pragma bss_seg("B490")
+#pragma data_seg("D490")
+#pragma const_seg("K490")
 /***************************************************************************
 
 							Speed Buggy / Buggy Boy

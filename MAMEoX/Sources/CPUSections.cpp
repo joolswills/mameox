@@ -15,6 +15,7 @@
 #include "DebugLogger.h"
 extern "C" {
 #include "osd_cpu.h"
+#include "cpuintrf.h"
 }
 //= D E F I N E S ======================================================
 #define DATA_PREFIX      "CD"
@@ -23,7 +24,7 @@ extern "C" {
 #define CONST_PREFIX     "CK"
 
 //= G L O B A L = V A R S ==============================================
-static std::map< std::string, std::string >  g_nameToSectionMap;
+static std::map< UINT32, std::string >  g_IDToSectionMap;
 //= F U N C T I O N S ==================================================
 extern "C" {
 
@@ -34,8 +35,8 @@ extern "C" {
 void CheckCPUSectionRAM( void )
 {
   DWORD total = 0;
-  std::map< std::string, std::string >::iterator i = g_nameToSectionMap.begin();
-  for( ; i != g_nameToSectionMap.end(); ++i )
+  std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.begin();
+  for( ; i != g_IDToSectionMap.end(); ++i )
   {
     std::string sectionName;
     sectionName = CODE_PREFIX;
@@ -44,11 +45,11 @@ void CheckCPUSectionRAM( void )
     if( h != INVALID_HANDLE_VALUE )
     {
       UINT32 sz = XGetSectionSize( h );
-      PRINTMSG( T_INFO, "CPU %s [CODE]: %lu", (*i).first.c_str(), sz );
+      PRINTMSG( T_INFO, "CPU%lu [CODE]: %lu", (*i).first, sz );
       total += sz;
     }
     else
-      PRINTMSG( T_ERROR, "Invalid section %s for file %s!", (*i).second.c_str(), (*i).first.c_str() );
+      PRINTMSG( T_ERROR, "Invalid section %s for CPU%lu!", (*i).second.c_str(), (*i).first );
 
     sectionName = DATA_PREFIX;
     sectionName += (*i).second.c_str();
@@ -56,11 +57,11 @@ void CheckCPUSectionRAM( void )
     if( h != INVALID_HANDLE_VALUE )
     {
       UINT32 sz = XGetSectionSize( h );
-      PRINTMSG( T_INFO, "CPU %s [DATA]: %lu", (*i).first.c_str(), sz );
+      PRINTMSG( T_INFO, "CPU%lu [DATA]: %lu", (*i).first, sz );
       total += sz;
     }
     else
-      PRINTMSG( T_ERROR, "Invalid section %s for file %s!", (*i).second.c_str(), (*i).first.c_str() );
+      PRINTMSG( T_ERROR, "Invalid section %s for CPU%lu!", (*i).second.c_str(), (*i).first );
 
     sectionName = BSS_PREFIX;
     sectionName += (*i).second.c_str();
@@ -68,12 +69,12 @@ void CheckCPUSectionRAM( void )
     if( h != INVALID_HANDLE_VALUE )
     {
       UINT32 sz = XGetSectionSize( h );
-      PRINTMSG( T_INFO, "CPU %s [BSS]: %lu", (*i).first.c_str(), sz );
+      PRINTMSG( T_INFO, "CPU%lu [BSS]: %lu", (*i).first, sz );
       total += sz;
     }
     else
     {
-      PRINTMSG( T_ERROR, "Invalid section %s for file %s!", (*i).second.c_str(), (*i).first.c_str() );
+      PRINTMSG( T_ERROR, "Invalid section %s for CPU%lu!", (*i).second.c_str(), (*i).first );
     }
 
     sectionName = CONST_PREFIX;
@@ -82,11 +83,11 @@ void CheckCPUSectionRAM( void )
     if( h != INVALID_HANDLE_VALUE )
     {
       UINT32 sz = XGetSectionSize( h );
-      PRINTMSG( T_INFO, "CPU %s [CONST]: %lu", (*i).first.c_str(), sz );
+      PRINTMSG( T_INFO, "CPU%lu [CONST]: %lu", (*i).first, sz );
       total += sz;
     }
     else
-      PRINTMSG( T_ERROR, "Invalid section %s for file %s!", (*i).second.c_str(), (*i).first.c_str() );
+      PRINTMSG( T_ERROR, "Invalid section %s for CPU%lu!", (*i).second.c_str(), (*i).first );
 
   }
   PRINTMSG( T_INFO, "Total %lu bytes\n", total );
@@ -95,26 +96,26 @@ void CheckCPUSectionRAM( void )
 
 
 //-------------------------------------------------------------
-//	RegisterSectionName
+//	RegisterSectionID
 //-------------------------------------------------------------
-static void RegisterSectionName( const char *CPUFileName, const char *DataSectionName )
+static void RegisterSectionID( UINT32 CPUID, const char *DataSectionName )
 {
     // Add the section name to the map
-  g_nameToSectionMap[ CPUFileName ] = DataSectionName;
+  g_IDToSectionMap[ CPUID ] = DataSectionName;
 }
 
 
 //-------------------------------------------------------------
-//	LoadCPUSectionByName
+//	LoadCPUSectionByID
 //-------------------------------------------------------------
-BOOL LoadCPUSectionByName( const char *CPUFileName )
+BOOL LoadCPUSectionByID( UINT32 CPUID )
 {
-  std::map< std::string, std::string >::iterator i = g_nameToSectionMap.find( CPUFileName );
-  if( i == g_nameToSectionMap.end() )
+  std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.find( CPUID );
+  if( i == g_IDToSectionMap.end() )
     return FALSE;
   std::string sectionName;
   void *addr;
-  PRINTMSG( T_INFO, "Load section %s, ID %s\n", CPUFileName, (*i).second.c_str() );
+  PRINTMSG( T_INFO, "Load section CPU%lu, ID %s\n", CPUID, (*i).second.c_str() );
   sectionName = DATA_PREFIX;
   sectionName += (*i).second.c_str();
   addr = XLoadSection( sectionName.c_str() );
@@ -163,12 +164,12 @@ BOOL LoadCPUSectionByName( const char *CPUFileName )
 
 
 //-------------------------------------------------------------
-//	UnloadCPUSectionByName
+//	UnloadCPUSectionByID
 //-------------------------------------------------------------
-BOOL UnloadCPUSectionByName( const char *CPUFileName )
+BOOL UnloadCPUSectionByID( UINT32 CPUID )
 {
-  std::map< std::string, std::string >::iterator i = g_nameToSectionMap.find( CPUFileName );
-  if( i == g_nameToSectionMap.end() )
+  std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.find( CPUID );
+  if( i == g_IDToSectionMap.end() )
     return FALSE;
   BOOL dataRet, codeRet, bssRet, constRet;
   std::string sectionName;
@@ -197,8 +198,8 @@ BOOL UnloadCPUSectionByName( const char *CPUFileName )
 //-------------------------------------------------------------
 BOOL LoadCPUDataSections( void )
 {
-  std::map< std::string, std::string >::iterator i = g_nameToSectionMap.begin();
-  for( ; i != g_nameToSectionMap.end(); ++i )
+  std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.begin();
+  for( ; i != g_IDToSectionMap.end(); ++i )
   {
     std::string sectionName;
     sectionName = DATA_PREFIX;
@@ -226,8 +227,8 @@ BOOL LoadCPUDataSections( void )
 //-------------------------------------------------------------
 BOOL UnloadCPUNonDataSections( void )
 {
-  std::map< std::string, std::string >::iterator i = g_nameToSectionMap.begin();
-  for( ; i != g_nameToSectionMap.end(); ++i )
+  std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.begin();
+  for( ; i != g_IDToSectionMap.end(); ++i )
   {
     std::string sectionName;
     sectionName = CODE_PREFIX;
@@ -252,8 +253,8 @@ BOOL UnloadCPUNonDataSections( void )
 //-------------------------------------------------------------
 BOOL UnloadCPUDataSections( void )
 {
-  std::map< std::string, std::string >::iterator i = g_nameToSectionMap.begin();
-  for( ; i != g_nameToSectionMap.end(); ++i )
+  std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.begin();
+  for( ; i != g_IDToSectionMap.end(); ++i )
   {
     std::string sectionName;
     sectionName = DATA_PREFIX;
@@ -277,40 +278,33 @@ BOOL UnloadCPUDataSections( void )
 //-------------------------------------------------------------
 void RegisterCPUSectionNames( void )
 {
-  RegisterSectionName( "z8000", "0" );
-  RegisterSectionName( "z80", "1" );
-  RegisterSectionName( "z180", "2" );
-  RegisterSectionName( "v60", "3" );
-  RegisterSectionName( "upd7810", "4" );
-  RegisterSectionName( "tms9900", "5" );
-  RegisterSectionName( "tms34010", "6" );
-  RegisterSectionName( "tms32031", "7" );
-  RegisterSectionName( "tms32025", "8" );
-  RegisterSectionName( "tms32010", "9" );
-  RegisterSectionName( "t11", "10" );
-  RegisterSectionName( "sh2", "11" );
-  RegisterSectionName( "s2650", "12" );
-  RegisterSectionName( "pic16c5x", "13" );
-  RegisterSectionName( "nec", "14" );
-  RegisterSectionName( "mips", "15" );
-  RegisterSectionName( "m6809", "16" );
-  RegisterSectionName( "m6805", "17" );
-  RegisterSectionName( "m68000", "18" );
-  RegisterSectionName( "m6800", "19" );
-  RegisterSectionName( "m6502", "20" );
-  RegisterSectionName( "konami", "21" );
-  RegisterSectionName( "jaguar", "22" );
-  RegisterSectionName( "i8x41", "23" );
-  RegisterSectionName( "i86", "24" );
-  RegisterSectionName( "i8085", "25" );
-  RegisterSectionName( "i8039", "26" );
-  RegisterSectionName( "hd6309", "27" );
-  RegisterSectionName( "h6280", "28" );
-  RegisterSectionName( "dsp32", "29" );
-  RegisterSectionName( "ccpu", "30" );
-  RegisterSectionName( "asap", "31" );
-  RegisterSectionName( "arm", "32" );
-  RegisterSectionName( "adsp2100", "33" );
+  RegisterSectionID( CPU_Z8000, "0" );
+  RegisterSectionID( CPU_Z80, "1" );
+  RegisterSectionID( CPU_Z180, "2" );
+  RegisterSectionID( CPU_V60, "3" );
+  RegisterSectionID( CPU_UPD7810, "4" );
+  RegisterSectionID( CPU_TMS34010, "6" );
+  RegisterSectionID( CPU_TMS32031, "7" );
+  RegisterSectionID( CPU_TMS32025, "8" );
+  RegisterSectionID( CPU_TMS32010, "9" );
+  RegisterSectionID( CPU_T11, "10" );
+  RegisterSectionID( CPU_SH2, "11" );
+  RegisterSectionID( CPU_S2650, "12" );
+  RegisterSectionID( CPU_M6809, "16" );
+  RegisterSectionID( CPU_M6805, "17" );
+  RegisterSectionID( CPU_M68000, "18" );
+  RegisterSectionID( CPU_M6800, "19" );
+  RegisterSectionID( CPU_M6502, "20" );
+  RegisterSectionID( CPU_KONAMI, "21" );
+  RegisterSectionID( CPU_I8X41, "23" );
+  RegisterSectionID( CPU_I86, "24" );
+  RegisterSectionID( CPU_I8039, "26" );
+  RegisterSectionID( CPU_HD6309, "27" );
+  RegisterSectionID( CPU_H6280, "28" );
+  RegisterSectionID( CPU_CCPU, "30" );
+  RegisterSectionID( CPU_ASAP, "31" );
+  RegisterSectionID( CPU_ARM, "32" );
+  RegisterSectionID( CPU_ADSP2100, "33" );
 } // End extern "C"
 }
 

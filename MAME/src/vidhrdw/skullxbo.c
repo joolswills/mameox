@@ -1,7 +1,7 @@
-#pragma code_seg("C472")
-#pragma bss_seg("B472")
-#pragma data_seg("D472")
-#pragma const_seg("K472")
+#pragma code_seg("C474")
+#pragma bss_seg("B474")
+#pragma data_seg("D474")
+#pragma const_seg("K474")
 /***************************************************************************
 
 	Atari Skull & Crossbones hardware

@@ -1,7 +1,7 @@
-#pragma code_seg("C630")
-#pragma bss_seg("B630")
-#pragma data_seg("D630")
-#pragma const_seg("K630")
+#pragma code_seg("C634")
+#pragma bss_seg("B634")
+#pragma data_seg("D634")
+#pragma const_seg("K634")
 /*
  * Signetics 2650 CPU Games
  *

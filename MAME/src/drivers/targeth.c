@@ -1,7 +1,7 @@
-#pragma code_seg("C543")
-#pragma bss_seg("B543")
-#pragma data_seg("D543")
-#pragma const_seg("K543")
+#pragma code_seg("C545")
+#pragma bss_seg("B545")
+#pragma data_seg("D545")
+#pragma const_seg("K545")
 /***************************************************************************
 
 Target Hits (c) 1994 Gaelco (Designed & Developed by Zigurat. Produced by Gaelco)

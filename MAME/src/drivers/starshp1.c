@@ -1,7 +1,7 @@
-#pragma code_seg("C507")
-#pragma bss_seg("B507")
-#pragma data_seg("D507")
-#pragma const_seg("K507")
+#pragma code_seg("C509")
+#pragma bss_seg("B509")
+#pragma data_seg("D509")
+#pragma const_seg("K509")
 /***************************************************************************
 
 Atari Starship 1 driver

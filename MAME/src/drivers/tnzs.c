@@ -1,7 +1,7 @@
-#pragma code_seg("C563")
-#pragma bss_seg("B563")
-#pragma data_seg("D563")
-#pragma const_seg("K563")
+#pragma code_seg("C565")
+#pragma bss_seg("B565")
+#pragma data_seg("D565")
+#pragma const_seg("K565")
 /***************************************************************************
 
 The New Zealand Story driver, used for tnzs & tnzs2.

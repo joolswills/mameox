@@ -1,7 +1,7 @@
-#pragma code_seg("C596")
-#pragma bss_seg("B596")
-#pragma data_seg("D596")
-#pragma const_seg("K596")
+#pragma code_seg("C599")
+#pragma bss_seg("B599")
+#pragma data_seg("D599")
+#pragma const_seg("K599")
 /***************************************************************************
 
 	Victory video system

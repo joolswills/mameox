@@ -1,7 +1,7 @@
-#pragma code_seg("C461")
-#pragma bss_seg("B461")
-#pragma data_seg("D461")
-#pragma const_seg("K461")
+#pragma code_seg("C462")
+#pragma bss_seg("B462")
+#pragma data_seg("D462")
+#pragma const_seg("K462")
 /***************************************************************************
 
 Shanghai

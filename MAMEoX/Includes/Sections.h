@@ -7,6 +7,7 @@
   */
 #pragma once
 //= I N C L U D E S ====================================================
+#include <XTL.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -92,13 +93,6 @@ BOOL UnloadDriverDataSections( void );
 BOOL UnloadDriverNonDataSections( void );
 
 //-------------------------------------------------------------
-//	LoadSilentDependencyDriverDataHacks
-//! \brief    Load the driver data for all of the known
-//!            XBE silent dependencies
-//-------------------------------------------------------------
-void LoadSilentDependencyDriverDataHacks( void );
-
-//-------------------------------------------------------------
 //	RegisterCPUSectionNames
 //! \brief    Registers all of the segments for use by
 //!            LoadCPUSectionByName and UnloadCPUSectionByName
@@ -106,30 +100,60 @@ void LoadSilentDependencyDriverDataHacks( void );
 void RegisterCPUSectionNames( void );
 
 //-------------------------------------------------------------
-//	LoadCPUSectionByName
+//	LoadCPUSectionByID
 //! \brief    Loads the section associated with the passed name
 //!
-//! \param    CPUFileName - The name of the file whose section
-//!                             should be loaded
+//! \param    CPUID - The ID of the CPU whose section
+//!                    should be loaded
 //!
 //! \return   BOOL - Operation status
 //! \retval   TRUE - success
 //! \return   FALSE - Failure
 //-------------------------------------------------------------
-BOOL LoadCPUSectionByName( const char *CPUFileName );
+BOOL LoadCPUSectionByID( UINT32 CPUID );
 
 //-------------------------------------------------------------
-//	UnloadCPUSectionByName
+//	UnloadCPUSectionByID
 //! \brief    Unloads the section associated with the passed name
 //!
-//! \param    CPUFileName - The name of the file whose section
-//!                             should be unloaded
+//! \param    CPUID - The ID of the CPU whose section
+//!                    should be loaded
 //!
 //! \return   BOOL - Operation status
 //! \retval   TRUE - success
 //! \return   FALSE - Failure
 //-------------------------------------------------------------
-BOOL UnloadCPUSectionByName( const char *CPUFileName );
+BOOL UnloadCPUSectionByID( UINT32 CPUID );
+
+//-------------------------------------------------------------
+//	LoadCPUDataSections
+//! \brief    Loads all of the CPU data sections
+//!
+//! \return   BOOL - Operation status
+//! \retval   TRUE - success
+//! \return   FALSE - Failure
+//-------------------------------------------------------------
+BOOL LoadCPUDataSections( void );
+
+//-------------------------------------------------------------
+//	UnloadCPUDataSections
+//! \brief    Unloads all of the CPU data sections
+//!
+//! \return   BOOL - Operation status
+//! \retval   TRUE - success
+//! \return   FALSE - Failure
+//-------------------------------------------------------------
+BOOL UnloadCPUDataSections( void );
+
+//-------------------------------------------------------------
+//	UnloadCPUNonDataSections
+//! \brief    Unloads all non-data CPU sections
+//!
+//! \return   BOOL - Operation status
+//! \retval   TRUE - success
+//! \return   FALSE - Failure
+//-------------------------------------------------------------
+BOOL UnloadCPUNonDataSections( void );
 #ifdef __cplusplus
 } // End extern "C"
 #endif

@@ -1,7 +1,7 @@
-#pragma code_seg("C421")
-#pragma bss_seg("B421")
-#pragma data_seg("D421")
-#pragma const_seg("K421")
+#pragma code_seg("C423")
+#pragma bss_seg("B423")
+#pragma data_seg("D423")
+#pragma const_seg("K423")
 /*******************************************************************************
 
 Raiders5 (c) 1985 Taito / UPL

@@ -1,7 +1,7 @@
-#pragma code_seg("C632")
-#pragma bss_seg("B632")
-#pragma data_seg("D632")
-#pragma const_seg("K632")
+#pragma code_seg("C636")
+#pragma bss_seg("B636")
+#pragma data_seg("D636")
+#pragma const_seg("K636")
 /***************************************************************************
 
   vidhrdw.c

@@ -1,7 +1,7 @@
-#pragma code_seg("C571")
-#pragma bss_seg("B571")
-#pragma data_seg("D571")
-#pragma const_seg("K571")
+#pragma code_seg("C574")
+#pragma bss_seg("B574")
+#pragma data_seg("D574")
+#pragma const_seg("K574")
 /***************************************************************************
 
 Time Pilot 84  (c) 1984 Konami

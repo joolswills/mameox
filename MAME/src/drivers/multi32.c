@@ -1,7 +1,7 @@
-#pragma code_seg("C341")
-#pragma bss_seg("B341")
-#pragma data_seg("D341")
-#pragma const_seg("K341")
+#pragma code_seg("C340")
+#pragma bss_seg("B340")
+#pragma data_seg("D340")
+#pragma const_seg("K340")
 /*
 	Sega Multi System 32 hardware
 

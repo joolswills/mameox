@@ -1,7 +1,7 @@
-#pragma code_seg("C501")
-#pragma bss_seg("B501")
-#pragma data_seg("D501")
-#pragma const_seg("K501")
+#pragma code_seg("C503")
+#pragma bss_seg("B503")
+#pragma data_seg("D503")
+#pragma const_seg("K503")
 /***************************************************************************
 
 Syusse Oozumou

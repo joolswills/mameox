@@ -1,7 +1,7 @@
-#pragma code_seg("C515")
-#pragma bss_seg("B515")
-#pragma data_seg("D515")
-#pragma const_seg("K515")
+#pragma code_seg("C517")
+#pragma bss_seg("B517")
+#pragma data_seg("D517")
+#pragma const_seg("K517")
 /***************************************************************************
 
 							-=  SunA 16 Bit Games =-

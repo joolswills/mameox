@@ -1,7 +1,7 @@
-#pragma code_seg("C549")
-#pragma bss_seg("B549")
-#pragma data_seg("D549")
-#pragma const_seg("K549")
+#pragma code_seg("C551")
+#pragma bss_seg("B551")
+#pragma data_seg("D551")
+#pragma const_seg("K551")
 /***************************************************************************
 
 Tehkan World Cup - (c) Tehkan 1985

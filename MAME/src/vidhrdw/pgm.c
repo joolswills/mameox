@@ -1,7 +1,7 @@
-#pragma code_seg("C393")
-#pragma bss_seg("B393")
-#pragma data_seg("D393")
-#pragma const_seg("K393")
+#pragma code_seg("C392")
+#pragma bss_seg("B392")
+#pragma data_seg("D392")
+#pragma const_seg("K392")
 /*** Video *******************************************************************/
 /* see drivers/pgm.c for notes on where improvements can be made */
 

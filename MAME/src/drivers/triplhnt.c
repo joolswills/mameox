@@ -1,7 +1,7 @@
-#pragma code_seg("C574")
-#pragma bss_seg("B574")
-#pragma data_seg("D574")
-#pragma const_seg("K574")
+#pragma code_seg("C576")
+#pragma bss_seg("B576")
+#pragma data_seg("D576")
+#pragma const_seg("K576")
 /***************************************************************************
 
 Atari Triple Hunt Driver

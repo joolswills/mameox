@@ -1,7 +1,7 @@
-#pragma code_seg("C555")
-#pragma bss_seg("B555")
-#pragma data_seg("D555")
-#pragma const_seg("K555")
+#pragma code_seg("C558")
+#pragma bss_seg("B558")
+#pragma data_seg("D558")
+#pragma const_seg("K558")
 /***************************************************************************
 
   Gaelco Type 1 Video Hardware Rev B

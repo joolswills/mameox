@@ -1,7 +1,7 @@
-#pragma code_seg("C617")
-#pragma bss_seg("B617")
-#pragma data_seg("D617")
-#pragma const_seg("K617")
+#pragma code_seg("C621")
+#pragma bss_seg("B621")
+#pragma data_seg("D621")
+#pragma const_seg("K621")
 /*******************************************************************************
  WWF Wrestlefest (C) 1991 Technos Japan  (drivers/wwfwfest.c)
 ********************************************************************************

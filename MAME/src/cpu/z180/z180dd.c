@@ -298,7 +298,3 @@ OP(dd,fd) { illegal_1(); op_fd();									} /* DB   DD		  */
 OP(dd,fe) { illegal_1(); op_fe();									} /* DB   DD		  */
 OP(dd,ff) { illegal_1(); op_ff();									} /* DB   DD		  */
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

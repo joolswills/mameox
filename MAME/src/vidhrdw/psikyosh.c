@@ -1,7 +1,7 @@
-#pragma code_seg("C413")
-#pragma bss_seg("B413")
-#pragma data_seg("D413")
-#pragma const_seg("K413")
+#pragma code_seg("C414")
+#pragma bss_seg("B414")
+#pragma data_seg("D414")
+#pragma const_seg("K414")
 /*
 
 Psikyo PS6406B (PS3v1/PS5/PS5v2):

@@ -1,7 +1,7 @@
-#pragma code_seg("C601")
-#pragma bss_seg("B601")
-#pragma data_seg("D601")
-#pragma const_seg("K601")
+#pragma code_seg("C604")
+#pragma bss_seg("B604")
+#pragma data_seg("D604")
+#pragma const_seg("K604")
 #include "driver.h"
 #include "vidhrdw/ppu2c03b.h"
 

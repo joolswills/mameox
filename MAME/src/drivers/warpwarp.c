@@ -1,7 +1,7 @@
-#pragma code_seg("C604")
-#pragma bss_seg("B604")
-#pragma data_seg("D604")
-#pragma const_seg("K604")
+#pragma code_seg("C608")
+#pragma bss_seg("B608")
+#pragma data_seg("D608")
+#pragma const_seg("K608")
 /***************************************************************************
 
 Warp Warp memory map (preliminary)

@@ -1,7 +1,7 @@
-#pragma code_seg("C401")
-#pragma bss_seg("B401")
-#pragma data_seg("D401")
-#pragma const_seg("K401")
+#pragma code_seg("C400")
+#pragma bss_seg("B400")
+#pragma data_seg("D400")
+#pragma const_seg("K400")
 /***************************************************************************
 
 Big Twins

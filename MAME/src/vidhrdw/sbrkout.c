@@ -1,7 +1,7 @@
-#pragma code_seg("C445")
-#pragma bss_seg("B445")
-#pragma data_seg("D445")
-#pragma const_seg("K445")
+#pragma code_seg("C446")
+#pragma bss_seg("B446")
+#pragma data_seg("D446")
+#pragma const_seg("K446")
 /*************************************************************************
 
 	Atari Super Breakout hardware

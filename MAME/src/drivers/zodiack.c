@@ -1,7 +1,7 @@
-#pragma code_seg("C635")
-#pragma bss_seg("B635")
-#pragma data_seg("D635")
-#pragma const_seg("K635")
+#pragma code_seg("C639")
+#pragma bss_seg("B639")
+#pragma data_seg("D639")
+#pragma const_seg("K639")
 /***************************************************************************
 
 Zodiack/Dogfight Memory Map (preliminary)

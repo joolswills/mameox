@@ -1,7 +1,7 @@
-#pragma code_seg("C482")
-#pragma bss_seg("B482")
-#pragma data_seg("D482")
-#pragma const_seg("K482")
+#pragma code_seg("C484")
+#pragma bss_seg("B484")
+#pragma data_seg("D484")
+#pragma const_seg("K484")
 /***************************************************************************
 
   Snow Brothers (Toaplan) / SemiCom Hardware

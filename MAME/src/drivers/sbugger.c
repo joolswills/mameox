@@ -1,7 +1,7 @@
-#pragma code_seg("C649")
-#pragma bss_seg("B649")
-#pragma data_seg("D649")
-#pragma const_seg("K649")
+#pragma code_seg("C447")
+#pragma bss_seg("B447")
+#pragma data_seg("D447")
+#pragma const_seg("K447")
 /* Space Bugger */
 
 /* is the rom mapping ok, are the roms good? it jumps to the 0x800 region and I don't have a rom for there,

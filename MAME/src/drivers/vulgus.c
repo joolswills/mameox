@@ -1,7 +1,7 @@
-#pragma code_seg("C602")
-#pragma bss_seg("B602")
-#pragma data_seg("D602")
-#pragma const_seg("K602")
+#pragma code_seg("C605")
+#pragma bss_seg("B605")
+#pragma data_seg("D605")
+#pragma const_seg("K605")
 /***************************************************************************
 
 Vulgus memory map (preliminary)

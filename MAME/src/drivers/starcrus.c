@@ -1,7 +1,7 @@
-#pragma code_seg("C505")
-#pragma bss_seg("B505")
-#pragma data_seg("D505")
-#pragma const_seg("K505")
+#pragma code_seg("C507")
+#pragma bss_seg("B507")
+#pragma data_seg("D507")
+#pragma const_seg("K507")
 /***************************************************************************
 
 Ramtek Star Cruiser Driver

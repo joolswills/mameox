@@ -1,7 +1,7 @@
-#pragma code_seg("C388")
-#pragma bss_seg("B388")
-#pragma data_seg("D388")
-#pragma const_seg("K388")
+#pragma code_seg("C387")
+#pragma bss_seg("B387")
+#pragma data_seg("D387")
+#pragma const_seg("K387")
 /* Pass (c)1992, Oksan
 
  Driver by David Haywood

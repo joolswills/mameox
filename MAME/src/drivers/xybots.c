@@ -1,7 +1,7 @@
-#pragma code_seg("C623")
-#pragma bss_seg("B623")
-#pragma data_seg("D623")
-#pragma const_seg("K623")
+#pragma code_seg("C627")
+#pragma bss_seg("B627")
+#pragma data_seg("D627")
+#pragma const_seg("K627")
 /***************************************************************************
 
 	Atari Xybots hardware

@@ -1,7 +1,7 @@
-#pragma code_seg("C616")
-#pragma bss_seg("B616")
-#pragma data_seg("D616")
-#pragma const_seg("K616")
+#pragma code_seg("C620")
+#pragma bss_seg("B620")
+#pragma data_seg("D620")
+#pragma const_seg("K620")
 /*******************************************************************************
  WWF Superstars (C) 1989 Technos Japan  (drivers/wwfsstar.c)
 ********************************************************************************

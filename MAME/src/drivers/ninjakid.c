@@ -1,7 +1,7 @@
-#pragma code_seg("C363")
-#pragma bss_seg("B363")
-#pragma data_seg("D363")
-#pragma const_seg("K363")
+#pragma code_seg("C362")
+#pragma bss_seg("B362")
+#pragma data_seg("D362")
+#pragma const_seg("K362")
 /*******************************************************************************
  Ninja Kid / Ninjakun Majou no Bouken | (c) 1984 UPL / Taito
 ********************************************************************************

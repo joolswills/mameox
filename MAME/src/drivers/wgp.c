@@ -1,7 +1,7 @@
-#pragma code_seg("C610")
-#pragma bss_seg("B610")
-#pragma data_seg("D610")
-#pragma const_seg("K610")
+#pragma code_seg("C614")
+#pragma bss_seg("B614")
+#pragma data_seg("D614")
+#pragma const_seg("K614")
 /***************************************************************************
 
 World Grand Prix	(c) Taito Corporation 1989

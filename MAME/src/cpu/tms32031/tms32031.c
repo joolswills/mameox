@@ -792,7 +792,3 @@ static UINT32 boot_loader(UINT32 boot_rom_addr)
 	/* keep the compiler happy */
 	return 0;
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,7 @@
-#pragma code_seg("C473")
-#pragma bss_seg("B473")
-#pragma data_seg("D473")
-#pragma const_seg("K473")
+#pragma code_seg("C476")
+#pragma bss_seg("B476")
+#pragma data_seg("D476")
+#pragma const_seg("K476")
 /***************************************************************************
 
   vidhrdw.c

@@ -101,7 +101,3 @@ UINT32 opTRAPFL(void)
 
 
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

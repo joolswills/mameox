@@ -1,7 +1,7 @@
-#pragma code_seg("C658")
-#pragma bss_seg("B658")
-#pragma data_seg("D658")
-#pragma const_seg("K658")
+#pragma code_seg("C606")
+#pragma bss_seg("B606")
+#pragma data_seg("D606")
+#pragma const_seg("K606")
 /****************************************************************************
 
 Wall Crash by Midcoin (c) 1984

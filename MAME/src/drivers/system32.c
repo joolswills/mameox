@@ -1,7 +1,7 @@
-#pragma code_seg("C528")
-#pragma bss_seg("B528")
-#pragma data_seg("D528")
-#pragma const_seg("K528")
+#pragma code_seg("C530")
+#pragma bss_seg("B530")
+#pragma data_seg("D530")
+#pragma const_seg("K530")
 /*
 	Sega System 32 hardware
 

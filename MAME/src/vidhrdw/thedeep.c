@@ -1,7 +1,7 @@
-#pragma code_seg("C654")
-#pragma bss_seg("B654")
-#pragma data_seg("D654")
-#pragma const_seg("K654")
+#pragma code_seg("C555")
+#pragma bss_seg("B555")
+#pragma data_seg("D555")
+#pragma const_seg("K555")
 /***************************************************************************
 
 							-= Run Deep / The Deep =-

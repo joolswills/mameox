@@ -1,7 +1,7 @@
-#pragma code_seg("C414")
-#pragma bss_seg("B414")
-#pragma data_seg("D414")
-#pragma const_seg("K414")
+#pragma code_seg("C415")
+#pragma bss_seg("B415")
+#pragma data_seg("D415")
+#pragma const_seg("K415")
 /**************************
  *** PSYCHIC 5 hardware ***		(by Roberto Ventura)
  **************************

@@ -1,7 +1,7 @@
-#pragma code_seg("C365")
-#pragma bss_seg("B365")
-#pragma data_seg("D365")
-#pragma const_seg("K365")
+#pragma code_seg("C364")
+#pragma bss_seg("B364")
+#pragma data_seg("D364")
+#pragma const_seg("K364")
 /***************************************************************************
 
 	Atari Night Driver hardware

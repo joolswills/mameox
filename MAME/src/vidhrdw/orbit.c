@@ -1,7 +1,7 @@
-#pragma code_seg("C379")
-#pragma bss_seg("B379")
-#pragma data_seg("D379")
-#pragma const_seg("K379")
+#pragma code_seg("C377")
+#pragma bss_seg("B377")
+#pragma data_seg("D377")
+#pragma const_seg("K377")
 /***************************************************************************
 
 Atari Orbit video emulation

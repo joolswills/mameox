@@ -1,7 +1,7 @@
-#pragma code_seg("C422")
-#pragma bss_seg("B422")
-#pragma data_seg("D422")
-#pragma const_seg("K422")
+#pragma code_seg("C424")
+#pragma bss_seg("B424")
+#pragma data_seg("D424")
+#pragma const_seg("K424")
 /***************************************************************************
 
 Rainbow Islands  (c) Taito 1987   + Jumping

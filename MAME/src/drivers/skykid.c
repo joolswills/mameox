@@ -1,7 +1,7 @@
-#pragma code_seg("C476")
-#pragma bss_seg("B476")
-#pragma data_seg("D476")
-#pragma const_seg("K476")
+#pragma code_seg("C479")
+#pragma bss_seg("B479")
+#pragma data_seg("D479")
+#pragma const_seg("K479")
 /***************************************************************************
 
 Dragon Buster (c) Namco 1984

@@ -1,7 +1,7 @@
-#pragma code_seg("C499")
-#pragma bss_seg("B499")
-#pragma data_seg("D499")
-#pragma const_seg("K499")
+#pragma code_seg("C501")
+#pragma bss_seg("B501")
+#pragma data_seg("D501")
+#pragma const_seg("K501")
 /***************************************************************************
 
   Super Shanghai Dragon's Eye             (c) 1992 Hot-B

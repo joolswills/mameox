@@ -1,7 +1,7 @@
-#pragma code_seg("C647")
-#pragma bss_seg("B647")
-#pragma data_seg("D647")
-#pragma const_seg("K647")
+#pragma code_seg("C425")
+#pragma bss_seg("B425")
+#pragma data_seg("D425")
+#pragma const_seg("K425")
 /***************************************************************************
 
 					  -= Billiard Academy Real Break =-

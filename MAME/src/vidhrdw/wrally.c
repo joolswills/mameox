@@ -1,7 +1,7 @@
-#pragma code_seg("C615")
-#pragma bss_seg("B615")
-#pragma data_seg("D615")
-#pragma const_seg("K615")
+#pragma code_seg("C619")
+#pragma bss_seg("B619")
+#pragma data_seg("D619")
+#pragma const_seg("K619")
 /***************************************************************************
 
   World Rally Video Hardware

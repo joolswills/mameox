@@ -1,7 +1,7 @@
-#pragma code_seg("C474")
-#pragma bss_seg("B474")
-#pragma data_seg("D474")
-#pragma const_seg("K474")
+#pragma code_seg("C477")
+#pragma bss_seg("B477")
+#pragma data_seg("D477")
+#pragma const_seg("K477")
 /***************************************************************************
 
 	Atari Sky Diver hardware

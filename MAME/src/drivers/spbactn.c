@@ -1,7 +1,7 @@
-#pragma code_seg("C486")
-#pragma bss_seg("B486")
-#pragma data_seg("D486")
-#pragma const_seg("K486")
+#pragma code_seg("C488")
+#pragma bss_seg("B488")
+#pragma data_seg("D488")
+#pragma const_seg("K488")
 /*******************************************************************************
  Super Pinball Action (c) 1991 Tecmo
 ********************************************************************************

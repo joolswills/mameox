@@ -1,7 +1,7 @@
-#pragma code_seg("C371")
-#pragma bss_seg("B371")
-#pragma data_seg("D371")
-#pragma const_seg("K371")
+#pragma code_seg("C369")
+#pragma bss_seg("B369")
+#pragma data_seg("D369")
+#pragma const_seg("K369")
 /***************************************************************************
 
 	Atari "Round" hardware

@@ -1,7 +1,7 @@
-#pragma code_seg("C550")
-#pragma bss_seg("B550")
-#pragma data_seg("D550")
-#pragma const_seg("K550")
+#pragma code_seg("C552")
+#pragma bss_seg("B552")
+#pragma data_seg("D552")
+#pragma const_seg("K552")
 /***************************************************************************
 
 	Atari Tempest hardware

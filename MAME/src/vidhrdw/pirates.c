@@ -1,7 +1,7 @@
-#pragma code_seg("C398")
-#pragma bss_seg("B398")
-#pragma data_seg("D398")
-#pragma const_seg("K398")
+#pragma code_seg("C397")
+#pragma bss_seg("B397")
+#pragma data_seg("D397")
+#pragma const_seg("K397")
 #include "driver.h"
 
 

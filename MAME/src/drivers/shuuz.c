@@ -1,7 +1,7 @@
-#pragma code_seg("C467")
-#pragma bss_seg("B467")
-#pragma data_seg("D467")
-#pragma const_seg("K467")
+#pragma code_seg("C469")
+#pragma bss_seg("B469")
+#pragma data_seg("D469")
+#pragma const_seg("K469")
 /***************************************************************************
 
 	Atari Shuuz hardware

@@ -1,7 +1,7 @@
-#pragma code_seg("C607")
-#pragma bss_seg("B607")
-#pragma data_seg("D607")
-#pragma const_seg("K607")
+#pragma code_seg("C611")
+#pragma bss_seg("B611")
+#pragma data_seg("D611")
+#pragma const_seg("K611")
 /*
 World Cup 90 bootleg driver
 ---------------------------

@@ -1,7 +1,7 @@
-#pragma code_seg("C536")
-#pragma bss_seg("B536")
-#pragma data_seg("D536")
-#pragma const_seg("K536")
+#pragma code_seg("C538")
+#pragma bss_seg("B538")
+#pragma data_seg("D538")
+#pragma const_seg("K538")
 /***************************************************************************
 
 

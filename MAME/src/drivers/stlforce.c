@@ -1,7 +1,7 @@
-#pragma code_seg("C511")
-#pragma bss_seg("B511")
-#pragma data_seg("D511")
-#pragma const_seg("K511")
+#pragma code_seg("C513")
+#pragma bss_seg("B513")
+#pragma data_seg("D513")
+#pragma const_seg("K513")
 /*
 
 Steel Force

@@ -1,7 +1,7 @@
-#pragma code_seg("C494")
-#pragma bss_seg("B494")
-#pragma data_seg("D494")
-#pragma const_seg("K494")
+#pragma code_seg("C496")
+#pragma bss_seg("B496")
+#pragma data_seg("D496")
+#pragma const_seg("K496")
 /*
 Super Cross II (JPN Ver.)
 (c)1986 GM Shoji

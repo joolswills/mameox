@@ -1,7 +1,7 @@
-#pragma code_seg("C380")
-#pragma bss_seg("B380")
-#pragma data_seg("D380")
-#pragma const_seg("K380")
+#pragma code_seg("C378")
+#pragma bss_seg("B378")
+#pragma data_seg("D378")
+#pragma const_seg("K378")
 /***************************************************************************
 
 Othello Derby

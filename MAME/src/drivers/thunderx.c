@@ -1,7 +1,7 @@
-#pragma code_seg("C557")
-#pragma bss_seg("B557")
-#pragma data_seg("D557")
-#pragma const_seg("K557")
+#pragma code_seg("C560")
+#pragma bss_seg("B560")
+#pragma data_seg("D560")
+#pragma const_seg("K560")
 /***************************************************************************
 
 Super Contra / Thunder Cross

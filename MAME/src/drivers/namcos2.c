@@ -1,7 +1,7 @@
-#pragma code_seg("C350")
-#pragma bss_seg("B350")
-#pragma data_seg("D350")
-#pragma const_seg("K350")
+#pragma code_seg("C349")
+#pragma bss_seg("B349")
+#pragma data_seg("D349")
+#pragma const_seg("K349")
 /***************************************************************************
 
 Namco System II driver by K.Wilkins  (Jun1998, Oct1999)

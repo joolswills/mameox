@@ -1,7 +1,7 @@
-#pragma code_seg("C576")
-#pragma bss_seg("B576")
-#pragma data_seg("D576")
-#pragma const_seg("K576")
+#pragma code_seg("C579")
+#pragma bss_seg("B579")
+#pragma data_seg("D579")
+#pragma const_seg("K579")
 /****************************************************************************
 
 	Preliminary driver for Samurai, Nunchackun, Yuke Yuke Yamaguchi-kun

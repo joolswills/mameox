@@ -1,7 +1,7 @@
-#pragma code_seg("C651")
-#pragma bss_seg("B651")
-#pragma data_seg("D651")
-#pragma const_seg("K651")
+#pragma code_seg("C468")
+#pragma bss_seg("B468")
+#pragma data_seg("D468")
+#pragma const_seg("K468")
 /***************************************************************************
 
 Driver by Jarek Burczynski, started by Tomasz Slanina  dox@space.pl

@@ -1,7 +1,7 @@
-#pragma code_seg("C444")
-#pragma bss_seg("B444")
-#pragma data_seg("D444")
-#pragma const_seg("K444")
+#pragma code_seg("C445")
+#pragma bss_seg("B445")
+#pragma data_seg("D445")
+#pragma const_seg("K445")
 /***************************************************************************
 
 Super Basketball memory map (preliminary)

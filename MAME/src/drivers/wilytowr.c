@@ -1,7 +1,7 @@
-#pragma code_seg("C612")
-#pragma bss_seg("B612")
-#pragma data_seg("D612")
-#pragma const_seg("K612")
+#pragma code_seg("C615")
+#pragma bss_seg("B615")
+#pragma data_seg("D615")
+#pragma const_seg("K615")
 /***************************************************************************
 
 Wily Towr   (c) 1984 Irem

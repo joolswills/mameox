@@ -1,7 +1,7 @@
-#pragma code_seg("C568")
-#pragma bss_seg("B568")
-#pragma data_seg("D568")
-#pragma const_seg("K568")
+#pragma code_seg("C570")
+#pragma bss_seg("B570")
+#pragma data_seg("D570")
+#pragma const_seg("K570")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/taitoic.h"

@@ -1,7 +1,7 @@
-#pragma code_seg("C499")
-#pragma bss_seg("B499")
-#pragma data_seg("D499")
-#pragma const_seg("K499")
+#pragma code_seg("C501")
+#pragma bss_seg("B501")
+#pragma data_seg("D501")
+#pragma const_seg("K501")
 /***************************************************************************
 
 	Uses Data East custom chip 55 for backgrounds, with a special 8bpp mode

@@ -1,7 +1,7 @@
-#pragma code_seg("C544")
-#pragma bss_seg("B544")
-#pragma data_seg("D544")
-#pragma const_seg("K544")
+#pragma code_seg("C546")
+#pragma bss_seg("B546")
+#pragma data_seg("D546")
+#pragma const_seg("K546")
 /***************************************************************************
 
 Taxi Driver  (c) 1984 Graphic Techno

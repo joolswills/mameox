@@ -1,7 +1,7 @@
-#pragma code_seg("C493")
-#pragma bss_seg("B493")
-#pragma data_seg("D493")
-#pragma const_seg("K493")
+#pragma code_seg("C495")
+#pragma bss_seg("B495")
+#pragma data_seg("D495")
+#pragma const_seg("K495")
 /***************************************************************************
 
 Splash! (c) 1992 Gaelco

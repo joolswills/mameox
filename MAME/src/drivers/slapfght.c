@@ -1,7 +1,7 @@
-#pragma code_seg("C478")
-#pragma bss_seg("B478")
-#pragma data_seg("D478")
-#pragma const_seg("K478")
+#pragma code_seg("C481")
+#pragma bss_seg("B481")
+#pragma data_seg("D481")
+#pragma const_seg("K481")
 /***************************************************************************
 
 Slap Fight driver by K.Wilkins Jan 1998

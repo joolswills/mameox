@@ -256,7 +256,3 @@ UINT32 opC7(void) /* TRUSTED */
 	return OpC7Table[appb>>5](appb&0x1f);
 }
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

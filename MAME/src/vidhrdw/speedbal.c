@@ -1,7 +1,7 @@
-#pragma code_seg("C490")
-#pragma bss_seg("B490")
-#pragma data_seg("D490")
-#pragma const_seg("K490")
+#pragma code_seg("C492")
+#pragma bss_seg("B492")
+#pragma data_seg("D492")
+#pragma const_seg("K492")
  /****************************************************************************
  *									  *
  * vidhrdw.c								*

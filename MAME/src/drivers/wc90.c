@@ -1,7 +1,7 @@
-#pragma code_seg("C606")
-#pragma bss_seg("B606")
-#pragma data_seg("D606")
-#pragma const_seg("K606")
+#pragma code_seg("C610")
+#pragma bss_seg("B610")
+#pragma data_seg("D610")
+#pragma const_seg("K610")
 /*
 World Cup 90 ( Tecmo ) driver
 -----------------------------

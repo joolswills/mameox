@@ -1,7 +1,7 @@
-#pragma code_seg("C489")
-#pragma bss_seg("B489")
-#pragma data_seg("D489")
-#pragma const_seg("K489")
+#pragma code_seg("C491")
+#pragma bss_seg("B491")
+#pragma data_seg("D491")
+#pragma const_seg("K491")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "cpu/m6502/m6502.h"

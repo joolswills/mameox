@@ -1,7 +1,7 @@
-#pragma code_seg("C605")
-#pragma bss_seg("B605")
-#pragma data_seg("D605")
-#pragma const_seg("K605")
+#pragma code_seg("C609")
+#pragma bss_seg("B609")
+#pragma data_seg("D609")
+#pragma const_seg("K609")
 /***************************************************************************
 
 Taito Dual Screen Games

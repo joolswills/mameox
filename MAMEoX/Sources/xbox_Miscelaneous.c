@@ -58,7 +58,7 @@ int osd_display_loading_rom_message( const char *name, struct rom_load_data *rom
 	BeginFontRender( TRUE );
 	  FontRender( 70, 220, D3DCOLOR_XRGB( 230, 230, 230 ), title, 0 );
 	  FontRender( 320, 240, D3DCOLOR_XRGB( 120, 230, 120 ), bar, 2 );
-    FontRender( 320, 340, D3DCOLOR_XRGB( 60, 105, 225 ), L"MAMEoX version " LVERSION_STRING L" " LBUILDCONFIG_STRING, 2 );
+    FontRender( 320, 340, D3DCOLOR_XRGB( 60, 105, 225 ), L"MAMEoX version " LVERSION_STRING, 2 );
   EndFontRender();
 	
 	return 0;

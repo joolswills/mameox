@@ -1,7 +1,7 @@
-#pragma code_seg("C587")
-#pragma bss_seg("B587")
-#pragma data_seg("D587")
-#pragma const_seg("K587")
+#pragma code_seg("C590")
+#pragma bss_seg("B590")
+#pragma data_seg("D590")
+#pragma const_seg("K590")
 /***************************************************************************
 
 	Atari/Kee Ultra Tank hardware

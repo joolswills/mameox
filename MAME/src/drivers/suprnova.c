@@ -1,7 +1,7 @@
-#pragma code_seg("C522")
-#pragma bss_seg("B522")
-#pragma data_seg("D522")
-#pragma const_seg("K522")
+#pragma code_seg("C524")
+#pragma bss_seg("B524")
+#pragma data_seg("D524")
+#pragma const_seg("K524")
 /* Super Kaneko Nova System */
 /* Original Driver by Sylvain Glaize */
 /* taken to pieces and attempted reconstruction by David Haywood */

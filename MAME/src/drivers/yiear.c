@@ -1,7 +1,7 @@
-#pragma code_seg("C627")
-#pragma bss_seg("B627")
-#pragma data_seg("D627")
-#pragma const_seg("K627")
+#pragma code_seg("C631")
+#pragma bss_seg("B631")
+#pragma data_seg("D631")
+#pragma const_seg("K631")
 /***************************************************************************
 
 	Yie Ar Kung-Fu memory map (preliminary)

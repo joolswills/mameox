@@ -1,7 +1,7 @@
-#pragma code_seg("C622")
-#pragma bss_seg("B622")
-#pragma data_seg("D622")
-#pragma const_seg("K622")
+#pragma code_seg("C626")
+#pragma bss_seg("B626")
+#pragma data_seg("D626")
+#pragma const_seg("K626")
 /*******************************************************************************
 
 XX Mission (c) 1986 UPL

@@ -1,7 +1,7 @@
-#pragma code_seg("C503")
-#pragma bss_seg("B503")
-#pragma data_seg("D503")
-#pragma const_seg("K503")
+#pragma code_seg("C505")
+#pragma bss_seg("B505")
+#pragma data_seg("D505")
+#pragma const_seg("K505")
 /****************************************************************************
 
 Sega "Space Tactics" Driver

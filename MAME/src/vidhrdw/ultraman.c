@@ -1,7 +1,7 @@
-#pragma code_seg("C586")
-#pragma bss_seg("B586")
-#pragma data_seg("D586")
-#pragma const_seg("K586")
+#pragma code_seg("C589")
+#pragma bss_seg("B589")
+#pragma data_seg("D589")
+#pragma const_seg("K589")
 #include "driver.h"
 #include "tilemap.h"
 #include "vidhrdw/generic.h"

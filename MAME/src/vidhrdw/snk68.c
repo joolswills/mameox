@@ -1,7 +1,7 @@
-#pragma code_seg("C481")
-#pragma bss_seg("B481")
-#pragma data_seg("D481")
-#pragma const_seg("K481")
+#pragma code_seg("C483")
+#pragma bss_seg("B483")
+#pragma data_seg("D483")
+#pragma const_seg("K483")
 /***************************************************************************
 
 	SNK 68000 video routines

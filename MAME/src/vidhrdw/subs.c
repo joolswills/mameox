@@ -1,7 +1,7 @@
-#pragma code_seg("C514")
-#pragma bss_seg("B514")
-#pragma data_seg("D514")
-#pragma const_seg("K514")
+#pragma code_seg("C516")
+#pragma bss_seg("B516")
+#pragma data_seg("D516")
+#pragma const_seg("K516")
 /***************************************************************************
 
 	Atari Subs hardware

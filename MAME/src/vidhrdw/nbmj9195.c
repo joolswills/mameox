@@ -1,7 +1,7 @@
-#pragma code_seg("C358")
-#pragma bss_seg("B358")
-#pragma data_seg("D358")
-#pragma const_seg("K358")
+#pragma code_seg("C357")
+#pragma bss_seg("B357")
+#pragma data_seg("D357")
+#pragma const_seg("K357")
 /******************************************************************************
 
 	Video Hardware for Nichibutsu Mahjong series.

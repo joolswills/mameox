@@ -1,7 +1,7 @@
-#pragma code_seg("C645")
-#pragma bss_seg("B645")
-#pragma data_seg("D645")
-#pragma const_seg("K645")
+#pragma code_seg("C390")
+#pragma bss_seg("B390")
+#pragma data_seg("D390")
+#pragma const_seg("K390")
 #include "driver.h"
 
 static int channel;

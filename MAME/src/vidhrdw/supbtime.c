@@ -1,7 +1,7 @@
-#pragma code_seg("C517")
-#pragma bss_seg("B517")
-#pragma data_seg("D517")
-#pragma const_seg("K517")
+#pragma code_seg("C519")
+#pragma bss_seg("B519")
+#pragma data_seg("D519")
+#pragma const_seg("K519")
 /***************************************************************************
 
    Super Burger Time Video emulation - Bryan McPhail, mish@tendril.co.uk

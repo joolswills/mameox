@@ -1,7 +1,7 @@
-#pragma code_seg("C582")
-#pragma bss_seg("B582")
-#pragma data_seg("D582")
-#pragma const_seg("K582")
+#pragma code_seg("C585")
+#pragma bss_seg("B585")
+#pragma data_seg("D585")
+#pragma const_seg("K585")
 /*************************************************************************
 
 	Sega Z80-3D system

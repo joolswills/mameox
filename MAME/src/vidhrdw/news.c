@@ -1,7 +1,7 @@
-#pragma code_seg("C361")
-#pragma bss_seg("B361")
-#pragma data_seg("D361")
-#pragma const_seg("K361")
+#pragma code_seg("C360")
+#pragma bss_seg("B360")
+#pragma data_seg("D360")
+#pragma const_seg("K360")
 #include "driver.h"
 #include "news.h"
 

@@ -299,7 +299,3 @@ OP(ed,fd) { illegal_2();											} /* DB   ED		  */
 OP(ed,fe) { illegal_2();											} /* DB   ED		  */
 OP(ed,ff) { illegal_2();											} /* DB   ED		  */
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,7 @@
-#pragma code_seg("C648")
-#pragma bss_seg("B648")
-#pragma data_seg("D648")
-#pragma const_seg("K648")
+#pragma code_seg("C438")
+#pragma bss_seg("B438")
+#pragma data_seg("D438")
+#pragma const_seg("K438")
 /* Rotary Fighter
 
 driver by Barry Rodewald

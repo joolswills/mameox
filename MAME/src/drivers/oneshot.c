@@ -1,7 +1,7 @@
-#pragma code_seg("C377")
-#pragma bss_seg("B377")
-#pragma data_seg("D377")
-#pragma const_seg("K377")
+#pragma code_seg("C375")
+#pragma bss_seg("B375")
+#pragma data_seg("D375")
+#pragma const_seg("K375")
 /* One Shot One Kill & Maddonna
    Driver by David Haywood and Paul Priest
    Dip Switches and Inputs by Stephane Humbert

@@ -1,7 +1,7 @@
-#pragma code_seg("C417")
-#pragma bss_seg("B417")
-#pragma data_seg("D417")
-#pragma const_seg("K417")
+#pragma code_seg("C418")
+#pragma bss_seg("B418")
+#pragma data_seg("D418")
+#pragma const_seg("K418")
 /***************************************************************************
 
 	Taito Qix hardware

@@ -1,7 +1,7 @@
-#pragma code_seg("C629")
-#pragma bss_seg("B629")
-#pragma data_seg("D629")
-#pragma const_seg("K629")
+#pragma code_seg("C633")
+#pragma bss_seg("B633")
+#pragma data_seg("D633")
+#pragma const_seg("K633")
 /***************************************************************************
 
 						  -= Yun Sung 8 Bit Games =-

@@ -1,7 +1,7 @@
-#pragma code_seg("C590")
-#pragma bss_seg("B590")
-#pragma data_seg("D590")
-#pragma const_seg("K590")
+#pragma code_seg("C593")
+#pragma bss_seg("B593")
+#pragma data_seg("D593")
+#pragma const_seg("K593")
 /* US Games - Trivia / Quiz / 'Amusement Only' Gambling Games */
 
 /*

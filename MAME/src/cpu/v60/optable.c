@@ -210,7 +210,3 @@ void InitTables(void)
 	OpCodeTable[0xfb] = opRETIS_1;
 }
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

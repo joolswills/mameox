@@ -1,7 +1,7 @@
-#pragma code_seg("C479")
-#pragma bss_seg("B479")
-#pragma data_seg("D479")
-#pragma const_seg("K479")
+#pragma code_seg("C482")
+#pragma bss_seg("B482")
+#pragma data_seg("D482")
+#pragma const_seg("K482")
 /***************************************************************************
 
 Slapshot (c) Taito 1994

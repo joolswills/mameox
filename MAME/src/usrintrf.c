@@ -2605,7 +2605,6 @@ int showgamewarnings(struct mame_bitmap *bitmap)
 
         // Unload the unnecessary data sections to save memory if possible
       UnloadDriverDataSections();
-      LoadSilentDependencyDriverDataHacks();
       LoadDriverSectionByName( strstr( maindrv->source_file, "src\\drivers\\" ) );
 		}
 

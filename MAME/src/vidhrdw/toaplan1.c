@@ -1,7 +1,7 @@
-#pragma code_seg("C564")
-#pragma bss_seg("B564")
-#pragma data_seg("D564")
-#pragma const_seg("K564")
+#pragma code_seg("C566")
+#pragma bss_seg("B566")
+#pragma data_seg("D566")
+#pragma const_seg("K566")
 /***************************************************************************
 
   Functions to emulate the video hardware of some Toaplan games,

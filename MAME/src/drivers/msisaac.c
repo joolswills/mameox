@@ -1,7 +1,7 @@
-#pragma code_seg("C339")
-#pragma bss_seg("B339")
-#pragma data_seg("D339")
-#pragma const_seg("K339")
+#pragma code_seg("C338")
+#pragma bss_seg("B338")
+#pragma data_seg("D338")
+#pragma const_seg("K338")
 /****************************************************************************
 
 	Metal Soldier Isaac II	(c) Taito 1985

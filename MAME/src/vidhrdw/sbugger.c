@@ -1,7 +1,7 @@
-#pragma code_seg("C649")
-#pragma bss_seg("B649")
-#pragma data_seg("D649")
-#pragma const_seg("K649")
+#pragma code_seg("C447")
+#pragma bss_seg("B447")
+#pragma data_seg("D447")
+#pragma const_seg("K447")
 /* Space Bugger - Video Hardware */
 
 #include "driver.h"

@@ -1,7 +1,7 @@
-#pragma code_seg("C662")
-#pragma bss_seg("B662")
-#pragma data_seg("D662")
-#pragma const_seg("K662")
+#pragma code_seg("C401")
+#pragma bss_seg("B401")
+#pragma data_seg("D401")
+#pragma const_seg("K401")
 /*
 	Polygonet Commanders (Konami, 1993)
 

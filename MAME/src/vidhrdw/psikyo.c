@@ -1,7 +1,7 @@
-#pragma code_seg("C411")
-#pragma bss_seg("B411")
-#pragma data_seg("D411")
-#pragma const_seg("K411")
+#pragma code_seg("C412")
+#pragma bss_seg("B412")
+#pragma data_seg("D412")
+#pragma const_seg("K412")
 /***************************************************************************
 
 							-= Psikyo Games =-

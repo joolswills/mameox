@@ -1,7 +1,7 @@
-#pragma code_seg("C579")
-#pragma bss_seg("B579")
-#pragma data_seg("D579")
-#pragma const_seg("K579")
+#pragma code_seg("C582")
+#pragma bss_seg("B582")
+#pragma data_seg("D582")
+#pragma const_seg("K582")
 /****************************************************************************
 
 Tug Boat

@@ -1,7 +1,7 @@
-#pragma code_seg("C618")
-#pragma bss_seg("B618")
-#pragma data_seg("D618")
-#pragma const_seg("K618")
+#pragma code_seg("C622")
+#pragma bss_seg("B622")
+#pragma data_seg("D622")
+#pragma const_seg("K622")
 /***************************************************************************
 Xain'd Sleena (TECHNOS), Solar Warrior (TAITO).
 By Carlos A. Lozano & Rob Rosenbrock & Phil Stroffolino

@@ -1,7 +1,3 @@
-#pragma code_seg("C480")
-#pragma bss_seg("B480")
-#pragma data_seg("D480")
-#pragma const_seg("K480")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -608,7 +604,3 @@ VIDEO_UPDATE( gwar )
 	}
 }
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -2287,7 +2287,3 @@ int tms34010_host_r(int cpunum, int reg)
 
 	return result;
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,7 @@
-#pragma code_seg("C336")
-#pragma bss_seg("B336")
-#pragma data_seg("D336")
-#pragma const_seg("K336")
+#pragma code_seg("C335")
+#pragma bss_seg("B335")
+#pragma data_seg("D335")
+#pragma const_seg("K335")
 /******************************************************************
 
 Mr F Lea

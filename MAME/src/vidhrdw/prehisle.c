@@ -1,7 +1,7 @@
-#pragma code_seg("C410")
-#pragma bss_seg("B410")
-#pragma data_seg("D410")
-#pragma const_seg("K410")
+#pragma code_seg("C411")
+#pragma bss_seg("B411")
+#pragma data_seg("D411")
+#pragma const_seg("K411")
 /***************************************************************************
 
 	Prehistoric Isle video routines

@@ -1,7 +1,7 @@
-#pragma code_seg("C650")
-#pragma bss_seg("B650")
-#pragma data_seg("D650")
-#pragma const_seg("K650")
+#pragma code_seg("C458")
+#pragma bss_seg("B458")
+#pragma data_seg("D458")
+#pragma const_seg("K458")
 /*********************************************************
 Sega hardware based on their SG-1000 console
 Driver by Tomasz Slanina  dox@space.pl

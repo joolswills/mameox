@@ -1,7 +1,7 @@
-#pragma code_seg("C584")
-#pragma bss_seg("B584")
-#pragma data_seg("D584")
-#pragma const_seg("K584")
+#pragma code_seg("C587")
+#pragma bss_seg("B587")
+#pragma data_seg("D587")
+#pragma const_seg("K587")
 /*
 Konami "Twin16"
 

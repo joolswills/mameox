@@ -1,7 +1,7 @@
-#pragma code_seg("C533")
-#pragma bss_seg("B533")
-#pragma data_seg("D533")
-#pragma const_seg("K533")
+#pragma code_seg("C535")
+#pragma bss_seg("B535")
+#pragma data_seg("D535")
+#pragma const_seg("K535")
 /***************************************************************************
 
 	Taito F3 Package System (aka F3 Cybercore System)

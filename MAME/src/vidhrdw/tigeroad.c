@@ -1,7 +1,7 @@
-#pragma code_seg("C559")
-#pragma bss_seg("B559")
-#pragma data_seg("D559")
-#pragma const_seg("K559")
+#pragma code_seg("C562")
+#pragma bss_seg("B562")
+#pragma data_seg("D562")
+#pragma const_seg("K562")
 #include "vidhrdw/generic.h"
 
 static data16_t tigeroad_scrollram[2];

@@ -1,7 +1,7 @@
-#pragma code_seg("C545")
-#pragma bss_seg("B545")
-#pragma data_seg("D545")
-#pragma const_seg("K545")
+#pragma code_seg("C547")
+#pragma bss_seg("B547")
+#pragma data_seg("D547")
+#pragma const_seg("K547")
 /*** Tecmo Bowl (c)1987 Tecmo
 
 driver by David Haywood

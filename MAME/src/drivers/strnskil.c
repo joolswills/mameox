@@ -1,7 +1,7 @@
-#pragma code_seg("C512")
-#pragma bss_seg("B512")
-#pragma data_seg("D512")
-#pragma const_seg("K512")
+#pragma code_seg("C514")
+#pragma bss_seg("B514")
+#pragma data_seg("D514")
+#pragma const_seg("K514")
 /*****************************************************************************
 
 Strength & Skill (c) 1984 Sun Electronics

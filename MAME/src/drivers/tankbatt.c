@@ -1,7 +1,7 @@
-#pragma code_seg("C540")
-#pragma bss_seg("B540")
-#pragma data_seg("D540")
-#pragma const_seg("K540")
+#pragma code_seg("C542")
+#pragma bss_seg("B542")
+#pragma data_seg("D542")
+#pragma const_seg("K542")
 /***************************************************************************
 
 Tank Battalion memory map (preliminary)

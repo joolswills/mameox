@@ -1,7 +1,7 @@
-#pragma code_seg("C527")
-#pragma bss_seg("B527")
-#pragma data_seg("D527")
-#pragma const_seg("K527")
+#pragma code_seg("C528")
+#pragma bss_seg("B528")
+#pragma data_seg("D528")
+#pragma const_seg("K528")
 /*	System18 Hardware
 **
 **	MC68000 + Z80

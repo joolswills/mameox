@@ -1,7 +1,7 @@
-#pragma code_seg("C367")
-#pragma bss_seg("B367")
-#pragma data_seg("D367")
-#pragma const_seg("K367")
+#pragma code_seg("C366")
+#pragma bss_seg("B366")
+#pragma data_seg("D366")
+#pragma const_seg("K366")
 /********************************************************************
 
 Urashima Mahjong         UPL        68000 <unknown cpu> OKIM6295

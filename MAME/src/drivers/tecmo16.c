@@ -1,7 +1,7 @@
-#pragma code_seg("C547")
-#pragma bss_seg("B547")
-#pragma data_seg("D547")
-#pragma const_seg("K547")
+#pragma code_seg("C549")
+#pragma bss_seg("B549")
+#pragma data_seg("D549")
+#pragma const_seg("K549")
 /******************************************************************************
 
   Ganbare Ginkun  (Japan)  (c)1995 TECMO

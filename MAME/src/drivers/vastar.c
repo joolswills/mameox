@@ -1,7 +1,7 @@
-#pragma code_seg("C592")
-#pragma bss_seg("B592")
-#pragma data_seg("D592")
-#pragma const_seg("K592")
+#pragma code_seg("C595")
+#pragma bss_seg("B595")
+#pragma data_seg("D595")
+#pragma const_seg("K595")
 /***************************************************************************
 
 Vastar memory map (preliminary)
