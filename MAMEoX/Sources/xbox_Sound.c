@@ -126,8 +126,6 @@ INT32 osd_start_audio_stream( INT32 stereo )
 	g_samplesPerFrame = (DOUBLE)Machine->sample_rate / (DOUBLE)Machine->drv->frames_per_second;
   PRINTMSG( T_INFO, "Samples per frame: %f\n", g_samplesPerFrame );
   PRINTMSG( T_INFO, "Consumed per frame: %f\n", (DOUBLE)Machine->sample_rate / 60.0 );
-
-  g_samplesPerFrame = (DOUBLE)Machine->sample_rate / 60.0; /*(double)Machine->drv->frames_per_second*/;
  
 	// compute how many samples to generate the first frame
 	g_samplesLeftOver = g_samplesPerFrame;
@@ -302,7 +300,6 @@ static BOOL Helper_DirectSoundInitialize( void )
 	g_streamBufferSize = (g_streamBufferSize * g_streamFormat.nBlockAlign) / 4;
 	g_streamBufferSize = (g_streamBufferSize * 30) / Machine->drv->frames_per_second;
 	g_streamBufferSize = (g_streamBufferSize / 1024) * 1024;  // Drop remainder
-  g_streamBufferSize *= 2;
 
 	// compute the upper/lower thresholds
 	g_lowerThresh = g_streamBufferSize / 5;
@@ -472,9 +469,6 @@ static void Helper_UpdateSampleAdjustment( void )
 	{
     // keep track of how many consecutive times we get this condition
     consecutive_lows++;
-    consecutive_mids = 0;
-    consecutive_highs = 0;
-
 		consecutive_mids = 0;
 		consecutive_highs = 0;
 
@@ -507,7 +501,7 @@ static void Helper_UpdateSampleAdjustment( void )
     consecutive_highs = 0;
 
 		// after 10 or so of these, revert back to no adjustment
-		if( consecutive_mids >= NUM_TARGET_FRAMES_BEFORE_ADJUST_RESET && g_currentAdjustment )
+		if( consecutive_mids > NUM_TARGET_FRAMES_BEFORE_ADJUST_RESET && g_currentAdjustment )
     {
 			g_currentAdjustment = 0;
 
@@ -553,6 +547,9 @@ static void Helper_CopySampleData( INT16 *data, UINT32 totalToCopy )
     cur_bytes = (totalToCopy > length2) ? length2 : totalToCopy;
     memcpy( buffer2, data, cur_bytes );
   }
+
+  // unlock
+  result = IDirectSoundBuffer_Unlock(g_pStreamBuffer, buffer1, length1, buffer2, length2);
 }
 
 
