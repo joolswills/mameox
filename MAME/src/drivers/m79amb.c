@@ -189,7 +189,7 @@ ROM_END
 
 
 
-GAMEX( 1977, m79amb, 0, m79amb, m79amb, m79amb, ROT0, "Ramtek", "M79 Ambush", GAME_NO_SOUND )
+GAMEX( 1977, m79amb, 0, m79amb, m79amb, m79amb, ROT0, "RamTek", "M79 Ambush", GAME_NO_SOUND )
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

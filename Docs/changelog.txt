@@ -1,5 +1,5 @@
 
-Version 0.71.3b (CVS)
+Version 0.72.1b (CVS)
 
    -------------------------------------------------------------
   - \libsmb++\src:
@@ -116,7 +116,8 @@ Version 0.71.3b (CVS)
         played
       - Added filter by "disliked" favorite status
       - Added sort by genre
-      - Added a simple screensaver (thanks to Noodle for the suggestion)
+      - Added a simple screensaver (thanks to Noodle for the 
+        suggestion)
       - Added graphics option "scale filter".
 
     - StartMenu.cpp
@@ -137,7 +138,8 @@ Version 0.71.3b (CVS)
         users to copy over hiscore.dat, samples, etc...
       - Made menu functions token based instead of cursor position 
         based. This makes it much easier to have fully dynamic menus
-      - Added a simple screensaver (thanks to Noodle for the suggestion)
+      - Added a simple screensaver (thanks to Noodle for the 
+        suggestion)
       - Added screendump command (bound to left analog) for launcher
       - Changes for keyboard support
 
@@ -152,11 +154,12 @@ Version 0.71.3b (CVS)
     - Added new class "CBaseMenuView" which takes care of drawing a
       fully resizable menu backdrop. Also removed the old static
       image backdrops.
-    - Added new class "CTVCalibrationScreen" which takes care of screen
-      resizing/repositioning
-    - Added new class "CGFilterManager" which handles graphics filters/scalers
-      for smoothing game frames. (opcode)
-    - Added scale2x.cpp/.h to project to provide AdvanceMAME's Scale2x filter.
+    - Added new class "CTVCalibrationScreen" which takes care of 
+      screen resizing/repositioning
+    - Added new class "CGFilterManager" which handles graphics 
+      filters/scalers for smoothing game frames. (opcode)
+    - Added scale2x.cpp/.h to project to provide AdvanceMAME's 
+      Scale2x filter.
 
    -------------------------------------------------------------
   - \Sectionize.pl
@@ -165,6 +168,82 @@ Version 0.71.3b (CVS)
     - Fixed dep for Pac-Man (Galaxian Hardware)
 
   - Fixed the .NET 2k2 solution files (thanks go to Mathijs Brands)
+
+  - Added GenerateVCPROJFiles.pl to the MAME subdir, as I got sick of
+    setting the output file path for each new file (when there are 
+    several files in different subdirs w/ the same name one object file
+    would overwrite the other, causing undefined symbol errors)
+
+
+
+ --- Integrated MAME version 0.72, changes follow -------------------
+
+ Changes in the \MAME\src directory
+
+ Removals:
+   \
+   drivers\
+     dominos.c
+
+   includes\
+     sprint2.h
+
+   machine\
+     sprint2.c
+
+   vidhrdw\
+     dominos.c
+
+
+ Additions:
+   \
+
+   cpu\
+     g65816\*
+     spc700\*
+
+   drivers\
+     bigevglf.c
+     ltcasino.c
+     mazerbla.c
+     nss.c
+     pitnrun.c
+     sbowling.c
+     sengokmj.c
+     sprint4.c
+     ssrj.c
+     supdrapo.c
+     xorworld.c
+
+   includes\
+     snes.h
+     snk.h
+
+   machine\
+     bigevglf.c
+     pitnrun.c
+     snes.c
+
+   sndhrdw\
+     segasnd.c
+     segasnd.h
+     snes.c
+
+   sound\
+     sp0250.c
+     sp0250.h
+
+   vidhrdw\
+     bigevglf.c
+     matrix3d.c
+     matrix3d.h
+     pitnrun.c
+     sengokmj.c
+     snes.c
+     sprint4.c
+     ssrj.c
+     xorworld.c
+
 
 *********************************************************************
 Version 0.71.2b 

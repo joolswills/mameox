@@ -142,6 +142,7 @@
 
 #include "driver.h"
 #include "vidhrdw/vector.h"
+#include "sndhrdw/segasnd.h"
 #include "sega.h"
 
 
@@ -166,6 +167,13 @@ static MEMORY_WRITE_START( writemem )
 												/* here only to initialize the pointer */
 MEMORY_END
 
+static READ_HANDLER( sega_sh_r )
+{
+	/* 0x80 = universal sound board ready */
+	/* 0x01 = speech ready, theorically, but the schematics show it unconnected */
+
+	return 0x80;
+}
 
 static PORT_READ_START( readport )
 	{ 0x3f, 0x3f, sega_sh_r },
@@ -623,28 +631,6 @@ INPUT_PORTS_END
 static const char *spacfury_sample_names[] =
 {
 	"*spacfury",
-	/* Speech samples */
-	"sf01.wav",
-	"sf02.wav",
-	"sf03.wav",
-	"sf04.wav",
-	"sf05.wav",
-	"sf06.wav",
-	"sf07.wav",
-	"sf08.wav",
-	"sf09.wav",
-	"sf0a.wav",
-	"sf0b.wav",
-	"sf0c.wav",
-	"sf0d.wav",
-	"sf0e.wav",
-	"sf0f.wav",
-	"sf10.wav",
-	"sf11.wav",
-	"sf12.wav",
-	"sf13.wav",
-	"sf14.wav",
-	"sf15.wav",
 	/* Sound samples */
 	"sfury1.wav",
 	"sfury2.wav",
@@ -662,19 +648,10 @@ static const char *spacfury_sample_names[] =
 
 static struct Samplesinterface spacfury_samples_interface =
 {
-	9,	/* 9 channels */
-	100, /* volume */
+	8,	/* 8 channels */
+	10, /* volume */
 	spacfury_sample_names
 };
-
-
-static struct CustomSound_interface sega_custom_interface =
-{
-	sega_sh_start,
-	0,
-	sega_sh_update
-};
-
 
 
 /*************************************
@@ -686,36 +663,17 @@ static struct CustomSound_interface sega_custom_interface =
 static const char *zektor_sample_names[] =
 {
 	"*zektor",
-	"zk01.wav",  /* 1 */
-	"zk02.wav",
-	"zk03.wav",
-	"zk04.wav",
-	"zk05.wav",
-	"zk06.wav",
-	"zk07.wav",
-	"zk08.wav",
-	"zk09.wav",
-	"zk0a.wav",
-	"zk0b.wav",
-	"zk0c.wav",
-	"zk0d.wav",
-	"zk0e.wav",
-	"zk0f.wav",
-	"zk10.wav",
-	"zk11.wav",
-	"zk12.wav",
-	"zk13.wav",
-	"elim1.wav",  /* 19 fireball */
-	"elim2.wav",  /* 20 bounce */
-	"elim3.wav",  /* 21 Skitter */
-	"elim4.wav",  /* 22 Eliminator */
-	"elim5.wav",  /* 23 Electron */
-	"elim6.wav",  /* 24 fire */
-	"elim7.wav",  /* 25 thrust */
-	"elim8.wav",  /* 26 Electron */
-	"elim9.wav",  /* 27 small explosion */
-	"elim10.wav", /* 28 med explosion */
-	"elim11.wav", /* 29 big explosion */
+	"elim1.wav",  /*  0 fireball */
+	"elim2.wav",  /*  1 bounce */
+	"elim3.wav",  /*  2 Skitter */
+	"elim4.wav",  /*  3 Eliminator */
+	"elim5.wav",  /*  4 Electron */
+	"elim6.wav",  /*  5 fire */
+	"elim7.wav",  /*  6 thrust */
+	"elim8.wav",  /*  7 Electron */
+	"elim9.wav",  /*  8 small explosion */
+	"elim10.wav", /*  9 med explosion */
+	"elim11.wav", /* 10 big explosion */
 				  /* Missing Zizzer */
 				  /* Missing City fly by */
 				  /* Missing Rotation Rings */
@@ -727,8 +685,8 @@ static const char *zektor_sample_names[] =
 
 static struct Samplesinterface zektor_samples_interface =
 {
-	12, /* only speech for now */
-	100, /* volume */
+	8,
+	10, /* volume */
 	zektor_sample_names
 };
 
@@ -830,30 +788,6 @@ static struct Samplesinterface elim2_samples_interface =
 static const char *startrek_sample_names[] =
 {
 	"*startrek",
-	/* Speech samples */
-	"st01.wav",
-	"st02.wav",
-	"st03.wav",
-	"st04.wav",
-	"st05.wav",
-	"st06.wav",
-	"st07.wav",
-	"st08.wav",
-	"st09.wav",
-	"st0a.wav",
-	"st0b.wav",
-	"st0c.wav",
-	"st0d.wav",
-	"st0e.wav",
-	"st0f.wav",
-	"st10.wav",
-	"st11.wav",
-	"st12.wav",
-	"st13.wav",
-	"st14.wav",
-	"st15.wav",
-	"st16.wav",
-	"st17.wav",
 	/* Sound samples */
 	"trek1.wav",
 	"trek2.wav",
@@ -889,8 +823,8 @@ static const char *startrek_sample_names[] =
 
 static struct Samplesinterface startrek_samples_interface =
 {
-	10, /* 10 channels */
-	100, /* volume */
+	5, /* 5 channels */
+	10, /* volume */
 	startrek_sample_names
 };
 
@@ -923,7 +857,6 @@ static MACHINE_DRIVER_START( elim2 )
 
 	/* sound hardware */
 	MDRV_SOUND_ADD_TAG("samples", SAMPLES, elim2_samples_interface)
-	MDRV_SOUND_ADD_TAG("custom",  CUSTOM,  sega_custom_interface)
 MACHINE_DRIVER_END
 
 
@@ -932,9 +865,11 @@ static MACHINE_DRIVER_START( zektor )
 	/* basic machine hardware */
 	MDRV_IMPORT_FROM(elim2)
 
-	MDRV_CPU_ADD(I8035, 3120000/15)
+	MDRV_CPU_ADD(I8035, 3120000)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)
-	MDRV_CPU_MEMORY(speech_readmem,speech_writemem)
+	MDRV_CPU_MEMORY(sega_speechboard_readmem, sega_speechboard_writemem)
+	MDRV_CPU_PORTS (sega_speechboard_readport,sega_speechboard_writeport)
+	MDRV_SOUND_ADD(SP0250, sega_sp0250_interface)
 
 	/* video hardware */
 	MDRV_VISIBLE_AREA(512, 1536, 624, 1432)
@@ -954,7 +889,7 @@ static MACHINE_DRIVER_START( tacscan )
 
 	/* sound hardware */
 	MDRV_SOUND_REPLACE("samples", SAMPLES, tacscan_samples_interface)
-	MDRV_SOUND_REPLACE("custom",  CUSTOM,  tacscan_custom_interface)
+	MDRV_SOUND_ADD_TAG("custom",  CUSTOM,  tacscan_custom_interface)
 MACHINE_DRIVER_END
 
 
@@ -963,9 +898,11 @@ static MACHINE_DRIVER_START( spacfury )
 	/* basic machine hardware */
 	MDRV_IMPORT_FROM(elim2)
 
-	MDRV_CPU_ADD(I8035, 3120000/15)
+	MDRV_CPU_ADD(I8035, 3120000)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)
-	MDRV_CPU_MEMORY(speech_readmem,speech_writemem)
+	MDRV_CPU_MEMORY(sega_speechboard_readmem, sega_speechboard_writemem)
+	MDRV_CPU_PORTS (sega_speechboard_readport,sega_speechboard_writeport)
+	MDRV_SOUND_ADD(SP0250, sega_sp0250_interface)
 
 	/* video hardware */
 	MDRV_VISIBLE_AREA(512, 1536, 552, 1464)
@@ -980,9 +917,11 @@ static MACHINE_DRIVER_START( startrek )
 	/* basic machine hardware */
 	MDRV_IMPORT_FROM(elim2)
 
-	MDRV_CPU_ADD(I8035, 3120000/15)
+	MDRV_CPU_ADD(I8035, 3120000)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)
-	MDRV_CPU_MEMORY(speech_readmem,speech_writemem)
+	MDRV_CPU_MEMORY(sega_speechboard_readmem, sega_speechboard_writemem)
+	MDRV_CPU_PORTS (sega_speechboard_readport,sega_speechboard_writeport)
+	MDRV_SOUND_ADD(SP0250, sega_sp0250_interface)
 
 	/* video hardware */
 	MDRV_VISIBLE_AREA(512, 1536, 616, 1464)
@@ -1012,11 +951,7 @@ ROM_START( spacfury ) /* Revision C */
 	ROM_LOAD( "967c.u8",      0x4000, 0x0800, CRC(330f0751) SHA1(07ae52fdbfa2cc326f88dc76c3dc8e145b592863) )
 	ROM_LOAD( "968c.u9",      0x4800, 0x0800, CRC(8366eadb) SHA1(8e4cb30a730237da2e933370faf5eaa1a41cacbf) )
 
-/* I'm not sure where these roms are supposed to go, but they are speech */
-/* related (from what I've read), so I just took a wild guess here, */
-/* until their location is determined and speech is emulated, plus, it */
-/* helps make sure everyone has them for the future... MRH */
-	ROM_REGION( 0x10000, REGION_CPU2, 0 )     /* 64k for speech code */
+	ROM_REGION( 0x10000, REGION_CPU2, 0 )     /* 64k for speech code and data */
 	ROM_LOAD( "808c.u7",     0x0000, 0x0800, CRC(b779884b) SHA1(ac07e99717a1f51b79f3e43a5d873ebfa0559320) )
 	ROM_LOAD( "970c.u6",     0x0800, 0x1000, CRC(979d8535) SHA1(1ed097e563319ca6d2b7df9875ce7ee921eae468) )
 	ROM_LOAD( "971c.u5",     0x1800, 0x1000, CRC(022dbd32) SHA1(4e0504b5ccc28094078912673c49571cf83804ab) )
@@ -1037,11 +972,7 @@ ROM_START( spacfura ) /* Revision A */
 	ROM_LOAD( "967a.u8",      0x4000, 0x0800, CRC(d60f667d) SHA1(821271ec1918e22ed29a5b1f4b0182765ef5ba10) )
 	ROM_LOAD( "968a.u9",      0x4800, 0x0800, CRC(aea85b6a) SHA1(8778ff0be34cd4fd5b8f6f76c64bfca68d4d240e) )
 
-/* I'm not sure where these roms are supposed to go, but they are speech */
-/* related (from what I've read), so I just took a wild guess here, */
-/* until their location is determined and speech is emulated, plus, it */
-/* helps make sure everyone has them for the future... MRH */
-	ROM_REGION( 0x10000, REGION_CPU2, 0 )     /* 64k for speech code */
+	ROM_REGION( 0x10000, REGION_CPU2, 0 )     /* 64k for speech code and data */
 	ROM_LOAD( "808a.u7",     0x0000, 0x0800, CRC(5988c767) SHA1(3b91a8cd46aa7e714028cc40f700fea32287afb1) )
 	ROM_LOAD( "970.u6",      0x0800, 0x1000, CRC(f3b47b36) SHA1(6ae0b627349664140a7f70799645b368e452d69c) )
 	ROM_LOAD( "971.u5",      0x1800, 0x1000, CRC(e72bbe88) SHA1(efadf8aa448c289cf4d0cf1831255b9ac60820f2) )
@@ -1074,11 +1005,7 @@ ROM_START( zektor )
 	ROM_LOAD( "1605.rom",     0xa000, 0x0800, CRC(e27d7144) SHA1(5b82fda797d86e11882d1f9738a59092c5e3e7d8) )
 	ROM_LOAD( "1606.rom",     0xa800, 0x0800, CRC(7965f636) SHA1(5c8720beedab4979a813ce7f0e8961c863973ff7) )
 
-/* I'm not sure where these roms are supposed to go, but they are speech */
-/* related (from what I've read), so I just took a wild guess here, */
-/* until their location is determined and speech is emulated, plus, it */
-/* helps make sure everyone has them for the future... MRH */
-	ROM_REGION( 0x10000, REGION_CPU2, 0 )     /* 64k for speech code */
+	ROM_REGION( 0x10000, REGION_CPU2, 0 )     /* 64k for speech code and data */
 	ROM_LOAD( "1607.spc",    0x0000, 0x0800, CRC(b779884b) SHA1(ac07e99717a1f51b79f3e43a5d873ebfa0559320) )
 	ROM_LOAD( "1608.spc",    0x0800, 0x1000, CRC(637e2b13) SHA1(8a470f9a8a722f7ced340c4d32b4cf6f05b3e848) )
 	ROM_LOAD( "1609.spc",    0x1800, 0x1000, CRC(675ee8e5) SHA1(e314482028b8925ad02e833a1d22224533d0a683) )
@@ -1207,11 +1134,7 @@ ROM_START( startrek )
 	ROM_LOAD( "1869",         0xb000, 0x0800, CRC(e5663070) SHA1(735944c2b924964f72f3bb3d251a35ea2aef3d15) )
 	ROM_LOAD( "1870",         0xb800, 0x0800, CRC(4340616d) SHA1(e93686a29377933332523425532d102e30211111) )
 
-/* I'm not sure where these roms are supposed to go, but they are speech */
-/* related (from what I've read), so I just took a wild guess here, */
-/* until their location is determined and speech is emulated, plus, it */
-/* helps make sure everyone has them for the future... MRH */
-	ROM_REGION( 0x10000, REGION_CPU2, 0 )     /* 64k for speech code */
+	ROM_REGION( 0x10000, REGION_CPU2, 0 )     /* 64k for speech code and data */
 	ROM_LOAD ("1670",         0x0000, 0x0800, CRC(b779884b) SHA1(ac07e99717a1f51b79f3e43a5d873ebfa0559320) )
 	ROM_LOAD ("1871",         0x0800, 0x1000, CRC(03713920) SHA1(25a0158cab9983248e91133f96d1849c9e9bcbd2) )
 	ROM_LOAD ("1872",         0x1800, 0x1000, CRC(ebb5c3a9) SHA1(533b6f0499b311f561cf7aba14a7f48ca7c47321) )
@@ -1235,7 +1158,7 @@ DRIVER_INIT( spacfury )
 
 	install_port_read_handler(0, 0xfc, 0xfc, input_port_8_r);
 
-	install_port_write_handler(0, 0x38, 0x38, sega_sh_speech_w);
+	install_port_write_handler(0, 0x38, 0x38, sega_sh_speechboard_w);
 	install_port_write_handler(0, 0x3e, 0x3e, spacfury1_sh_w);
 	install_port_write_handler(0, 0x3f, 0x3f, spacfury2_sh_w);
 	install_port_write_handler(0, 0xf8, 0xf8, IOWP_NOP);
@@ -1249,7 +1172,7 @@ DRIVER_INIT( zektor )
 
 	install_port_read_handler(0, 0xfc, 0xfc, sega_IN4_r);
 
-	install_port_write_handler(0, 0x38, 0x38, sega_sh_speech_w);
+	install_port_write_handler(0, 0x38, 0x38, sega_sh_speechboard_w);
 	install_port_write_handler(0, 0x3e, 0x3e, zektor1_sh_w);
 	install_port_write_handler(0, 0x3f, 0x3f, zektor2_sh_w);
 }
@@ -1286,7 +1209,7 @@ DRIVER_INIT( startrek )
 
 	install_port_read_handler(0, 0xfc, 0xfc, sega_IN4_r);
 
-	install_port_write_handler(0, 0x38, 0x38, sega_sh_speech_w);
+	install_port_write_handler(0, 0x38, 0x38, sega_sh_speechboard_w);
 	install_port_write_handler(0, 0x3f, 0x3f, startrek_sh_w);
 }
 

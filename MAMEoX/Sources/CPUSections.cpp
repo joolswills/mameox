@@ -278,6 +278,8 @@ static void RegisterCPUSectionNames( void )
   RegisterSectionID( CPU_Z180, "CPU2" );
   RegisterSectionID( CPU_Z80, "CPU1" );
   RegisterSectionID( CPU_Z8000, "CPU21" );
+  RegisterSectionID( CPU_G65816, "CPU44" );
+  RegisterSectionID( CPU_SPC700, "CPU45" );
 }
 #pragma code_seg()
 #pragma data_seg()

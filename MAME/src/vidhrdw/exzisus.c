@@ -20,10 +20,10 @@ Functions to emulate the video hardware of the machine.
 #include "vidhrdw/generic.h"
 
 
-data8_t *exzisus_videoram0;
-data8_t *exzisus_videoram1;
-data8_t *exzisus_objectram0;
-data8_t *exzisus_objectram1;
+UINT8 *exzisus_videoram0;
+UINT8 *exzisus_videoram1;
+UINT8 *exzisus_objectram0;
+UINT8 *exzisus_objectram1;
 size_t  exzisus_objectram_size0;
 size_t  exzisus_objectram_size1;
 
@@ -147,10 +147,16 @@ VIDEO_UPDATE( exzisus )
 				x = (sx + (xc << 3)) & 0xff;
 				y = (sy + (yc << 3)) & 0xff;
 
+				if (flip_screen)
+				{
+					x = 248 - x;
+					y = 248 - y;
+				}
+
 				drawgfx(bitmap, Machine->gfx[0],
 						code & 0x3fff,
 						color,
-						0, 0,
+						flip_screen, flip_screen,
 						x, y,
 						&Machine->visible_area, TRANSPARENCY_PEN, 15);
 				goffs += 2;
@@ -211,10 +217,16 @@ VIDEO_UPDATE( exzisus )
 				x = (sx + (xc << 3)) & 0xff;
 				y = (sy + (yc << 3)) & 0xff;
 
+				if (flip_screen)
+				{
+					x = 248 - x;
+					y = 248 - y;
+				}
+
 				drawgfx(bitmap, Machine->gfx[1],
 						code & 0x3fff,
 						color,
-						0, 0,
+						flip_screen, flip_screen,
 						x, y,
 						&Machine->visible_area, TRANSPARENCY_PEN, 15);
 				goffs += 2;
@@ -223,8 +235,6 @@ VIDEO_UPDATE( exzisus )
 		}
 	}
 }
-
-
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

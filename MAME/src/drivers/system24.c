@@ -41,15 +41,6 @@ saving them time etc.
 #include "vidhrdw/segaic24.h"
 #include "sound/ym2151.h"
 
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-
-#ifndef _XBOX
-#include <unistd.h>
-#endif
-
 VIDEO_START(system24);
 VIDEO_UPDATE(system24);
 

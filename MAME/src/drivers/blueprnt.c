@@ -439,9 +439,9 @@ ROM_END
 
 
 
-GAME( 1982, blueprnt, 0,        blueprnt, blueprnt, 0, ROT270, "[Zilec] Bally Midway", "Blue Print (Midway)" )
-GAME( 1982, blueprnj, blueprnt, blueprnt, blueprnt, 0, ROT270, "[Zilec] Jaleco", "Blue Print (Jaleco)" )
-GAME( 1983, saturn,   0,        blueprnt, saturn,   0, ROT270, "[Zilec] Jaleco", "Saturn" )
+GAME( 1982, blueprnt, 0,        blueprnt, blueprnt, 0, ROT270, "[Zilec Electronics] Bally Midway", "Blue Print (Midway)" )
+GAME( 1982, blueprnj, blueprnt, blueprnt, blueprnt, 0, ROT270, "[Zilec Electronics] Jaleco", "Blue Print (Jaleco)" )
+GAME( 1983, saturn,   0,        blueprnt, saturn,   0, ROT270, "[Zilec Electronics] Jaleco", "Saturn" )
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

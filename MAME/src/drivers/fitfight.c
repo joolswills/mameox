@@ -1140,7 +1140,7 @@ static DRIVER_INIT( bbprot )
 
 GAMEX(199?, fitfight, 0, fitfight, fitfight, fitfight, ROT0, "bootleg", "Fit of Fighting", GAME_IMPERFECT_GRAPHICS | GAME_NO_SOUND )
 GAMEX(199?, histryma, 0, fitfight, histryma, histryma, ROT0, "bootleg", "The History of Martial Arts", GAME_IMPERFECT_GRAPHICS | GAME_NO_SOUND )
-GAMEX(199?, bbprot,   0, bbprot,   bbprot,   bbprot,   ROT0, "unknown", "Untitled Fighter 'BB' (prototype)", GAME_IMPERFECT_GRAPHICS | GAME_NO_SOUND )
+GAMEX(199?, bbprot,   0, bbprot,   bbprot,   bbprot,   ROT0, "<unknown>", "Untitled Fighter 'BB' (prototype)", GAME_IMPERFECT_GRAPHICS | GAME_NO_SOUND )
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

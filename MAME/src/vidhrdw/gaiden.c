@@ -386,102 +386,100 @@ static void draw_sprites(struct mame_bitmap *bitmap_bg, struct mame_bitmap *bitm
 
 		if (attributes & 0x04)
 		{
+			UINT32 priority = (attributes >> 6) & 3;
+			UINT32 flipx = (attributes & 1);
+			UINT32 flipy = (attributes & 2);
+
+			UINT32 color = source[2];
+			UINT32 sizex = 1 << ((color >> 0) & 3);						/* 1,2,4,8 */
+			UINT32 sizey = 1 << ((color >> gaiden_sprite_sizey) & 3);	/* 1,2,4,8 */
+
+			/* raiga needs something like this */
+			UINT32 number = (source[1] & (sizex > 2 ? 0x7ff8 : 0x7ffc));
+
+			int ypos = source[3] & 0x01ff;
+			int xpos = source[4] & 0x01ff;
+
 			if (!blend_support && (attributes & 0x20) && (cpu_getcurrentframe() & 1))
 				goto skip_sprite;
-      else
-      {
-			  UINT32 priority = (attributes >> 6) & 3;
-			  UINT32 flipx = (attributes & 1);
-			  UINT32 flipy = (attributes & 2);
 
-			  UINT32 color = source[2];
-			  UINT32 sizex = 1 << ((color >> 0) & 3);						/* 1,2,4,8 */
-			  UINT32 sizey = 1 << ((color >> gaiden_sprite_sizey) & 3);	/* 1,2,4,8 */
+			color = (color >> 4) & 0x0f;
 
-			  /* raiga needs something like this */
-			  UINT32 number = (source[1] & (sizex > 2 ? 0x7ff8 : 0x7ffc));
+			/* wraparound */
+			if (xpos >= 256)
+				xpos -= 512;
+			if (ypos >= 256)
+				ypos -= 512;
 
-			  int ypos = source[3] & 0x01ff;
-			  int xpos = source[4] & 0x01ff;
+			if (flip_screen)
+			{
+				flipx = !flipx;
+				flipy = !flipy;
 
-			  color = (color >> 4) & 0x0f;
+				xpos = 256 - (8 * sizex) - xpos;
+				ypos = 256 - (8 * sizey) - ypos;
 
-			  /* wraparound */
-			  if (xpos >= 256)
-				  xpos -= 512;
-			  if (ypos >= 256)
-				  ypos -= 512;
+				if (xpos <= -256)
+					xpos += 512;
+				if (ypos <= -256)
+					ypos += 512;
+			}
 
-			  if (flip_screen)
-			  {
-				  flipx = !flipx;
-				  flipy = !flipy;
+			/* bg: 1; fg:2; text: 4 */
+			switch( priority )
+			{
+				default:
+				case 0x0: priority_mask = 0;					break;
+				case 0x1: priority_mask = 0xf0;					break;	/* obscured by text layer */
+				case 0x2: priority_mask = 0xf0 | 0xcc;			break;	/* obscured by foreground */
+				case 0x3: priority_mask = 0xf0 | 0xcc | 0xaa;	break;	/* obscured by bg and fg  */
+			}
 
-				  xpos = 256 - (8 * sizex) - xpos;
-				  ypos = 256 - (8 * sizey) - ypos;
+			/* blending */
+			if (blend_support && (attributes & 0x20))
+			{
+				color |= 0x80;
 
-				  if (xpos <= -256)
-					  xpos += 512;
-				  if (ypos <= -256)
-					  ypos += 512;
-			  }
+				for (row = 0; row < sizey; row++)
+				{
+					for (col = 0; col < sizex; col++)
+					{
+						int sx = xpos + 8 * (flipx ? (sizex - 1 - col) : col);
+						int sy = ypos + 8 * (flipy ? (sizey - 1 - row) : row);
 
-			  /* bg: 1; fg:2; text: 4 */
-			  switch( priority )
-			  {
-				  default:
-				  case 0x0: priority_mask = 0;					break;
-				  case 0x1: priority_mask = 0xf0;					break;	/* obscured by text layer */
-				  case 0x2: priority_mask = 0xf0 | 0xcc;			break;	/* obscured by foreground */
-				  case 0x3: priority_mask = 0xf0 | 0xcc | 0xaa;	break;	/* obscured by bg and fg  */
-			  }
+						pdrawgfx(bitmap_sp, gfx,
+							number + layout[row][col],
+							color,
+							flipx, flipy,
+							sx, sy,
+							cliprect, TRANSPARENCY_PEN, 0,
+							priority_mask);
+					}
+				}
+			}
+			else
+			{
+				if (blend_support)
+					bitmap = (priority >= 2) ? bitmap_bg : bitmap_fg;
 
-			  /* blending */
-			  if (blend_support && (attributes & 0x20))
-			  {
-				  color |= 0x80;
+				for (row = 0; row < sizey; row++)
+				{
+					for (col = 0; col < sizex; col++)
+					{
+						int sx = xpos + 8 * (flipx ? (sizex - 1 - col) : col);
+						int sy = ypos + 8 * (flipy ? (sizey - 1 - row) : row);
 
-				  for (row = 0; row < sizey; row++)
-				  {
-					  for (col = 0; col < sizex; col++)
-					  {
-						  int sx = xpos + 8 * (flipx ? (sizex - 1 - col) : col);
-						  int sy = ypos + 8 * (flipy ? (sizey - 1 - row) : row);
-
-						  pdrawgfx(bitmap_sp, gfx,
-							  number + layout[row][col],
-							  color,
-							  flipx, flipy,
-							  sx, sy,
-							  cliprect, TRANSPARENCY_PEN, 0,
-							  priority_mask);
-					  }
-				  }
-			  }
-			  else
-			  {
-				  if (blend_support)
-					  bitmap = (priority >= 2) ? bitmap_bg : bitmap_fg;
-
-				  for (row = 0; row < sizey; row++)
-				  {
-					  for (col = 0; col < sizex; col++)
-					  {
-						  int sx = xpos + 8 * (flipx ? (sizex - 1 - col) : col);
-						  int sy = ypos + 8 * (flipy ? (sizey - 1 - row) : row);
-
-						  pdrawgfx(bitmap, gfx,
-							  number + layout[row][col],
-							  color,
-							  flipx, flipy,
-							  sx, sy,
-							  cliprect, TRANSPARENCY_PEN, 0,
-							  priority_mask);
-					  }
-				  }
-			  }
-		  }
-    }
+						pdrawgfx(bitmap, gfx,
+							number + layout[row][col],
+							color,
+							flipx, flipy,
+							sx, sy,
+							cliprect, TRANSPARENCY_PEN, 0,
+							priority_mask);
+					}
+				}
+			}
+		}
 skip_sprite:
 		source -= 8;
 	}
