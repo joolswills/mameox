@@ -74,7 +74,7 @@ static void Helper_RenderPalettized16( void *destination, struct mame_bitmap *bi
 static void Helper_RenderVectors( void *dest, struct mame_bitmap *bitmap, const struct rectangle *bnds, vector_pixel_t *vectorList );
 static BOOL CreateTexture( void );
 static BOOL CreateRenderingQuad( void );
-
+extern "C" int fatalerror( const char *fmt, ... );
 
 
 //= F U N C T I O N S =================================================
@@ -315,10 +315,15 @@ BOOL D3DRendererRender(	struct mame_bitmap *bitmap,
 			  Helper_RenderPalettized16( g_d3dLockedRect.pBits, bitmap, bounds );
 		  }
 	  }
-	  else
+    else if( bitmap->depth == 32 )
 	  {
-		  Helper_RenderDirect32( g_d3dLockedRect.pBits, bitmap, bounds );
+		  if( !(g_createParams.video_attributes & VIDEO_RGB_DIRECT) )
+        fatalerror( "Palettized 32 bit mode is not supported.\nPlease report this game immediately!" );
+      else
+		    Helper_RenderDirect32( g_d3dLockedRect.pBits, bitmap, bounds );
 	  }	
+    else
+      fatalerror( "Attempt to render with unknown depth %lu!\nPlease report this game immediately!", bitmap->depth );
   }
 
   g_pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
@@ -400,6 +405,11 @@ static void Helper_RenderDirect32( void *dest, struct mame_bitmap *bitmap, const
     return;
   }
 
+  osd_file *out = osd_fopen( FILETYPE_SCREENSHOT, 0, "image.raw", "w" );
+  osd_fwrite( out, bitmap->base, bitmap->rowbytes * bitmap->height );
+  osd_fclose( out );
+
+  	// Destination buffer is in 32 bit X8R8G8B8
 	if( g_createParams.orientation & ORIENTATION_SWAP_XY )
   {
     UINT32	*sourceBuffer = (UINT32*)bitmap->base;
@@ -428,7 +438,6 @@ static void Helper_RenderDirect32( void *dest, struct mame_bitmap *bitmap, const
   }
   else
 	{ 
-			// Destination buffer is in 32 bit X8R8G8B8
 	  UINT8		*sourceBuffer = (UINT8*)bitmap->base;
 	  sourceBuffer += (bounds.min_y * bitmap->rowbytes) + (bounds.min_x << 2);
     UINT8 *destBuffer = (UINT8*)dest;
