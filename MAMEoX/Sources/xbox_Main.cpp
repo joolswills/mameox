@@ -57,6 +57,9 @@ LAUNCH_DATA       g_launchData;
 
 static LPDIRECT3DVERTEXBUFFER8    g_pD3DVertexBuffer = NULL;
 
+  // Sound processing override
+BOOL g_soundEnabled = TRUE;
+
 //= P R O T O T Y P E S ===============================================
 static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... );
 static BOOL Helper_RunRom( UINT32 romIndex );
@@ -535,7 +538,15 @@ static BOOL Helper_RunRom( UINT32 romIndex )
     PRINTMSG( T_ERROR, "Failed to load section for file %s!", DriverName.c_str() );
   else
   {
+      // Override sound processing
+    DWORD samplerate = options.samplerate;
+    if( !g_soundEnabled )
+      options.samplerate = 0;
+
 		ret = run_game( romIndex );
+
+      // Restore the old value, just in case somebody writes to the INI
+    options.samplerate = samplerate;
   }
 
   #ifdef _PROFILER

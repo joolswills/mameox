@@ -279,18 +279,7 @@ void CROMList::MoveCursor( CGamepad &gp )
 			// Run the selected ROM
     if( GetCurrentGameIndex() != INVALID_ROM_INDEX  )
     {
-        // Pack info to be passed to MAMEoX
-      MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)m_launchData->Data;
-      mameoxLaunchData->m_gameIndex = GetCurrentGameIndex();
-      GetCursorPosition(  &mameoxLaunchData->m_cursorPosition, 
-                          &mameoxLaunchData->m_pageOffset,
-                          &mameoxLaunchData->m_superscrollIndex );
-      mameoxLaunchData->m_command = LAUNCH_RUN_GAME;
-
-      SaveOptions();
-      ShowLoadingScreen( m_displayDevice );
-      XLaunchNewImage( "D:\\MAMEoX.xbe", m_launchData );
-		  Die( m_displayDevice, "Could not execute MAMEoX.xbe!" );
+      m_gameSelected = TRUE;
     }
 	}
 	else if( gp.IsButtonPressed( GP_X | GP_B ) )

@@ -51,6 +51,10 @@ CInputManager			g_inputManager;
 CGraphicsManager	g_graphicsManager;
 CXBFont						g_font;
 CXBFont						g_fixedWidthFont;
+CXBFont           g_smallFont;
+
+extern BOOL g_soundEnabled;   // Sound processing override (defined in xbox_Main.cpp)
+
 
 extern "C" {
 
@@ -100,6 +104,7 @@ void LoadOptions( void )
   options.skip_disclaimer = iniFile.GetProfileInt( "General", "SkipDisclaimer", FALSE );   // 1 to skip the disclaimer screen at startup
 	options.skip_gameinfo = iniFile.GetProfileInt( "General", "SkipGameInfo", FALSE );    // 1 to skip the game info screen at startup
 
+  g_soundEnabled = iniFile.GetProfileInt( "Sound", "SoundEnable", TRUE );
     // sound sample playback rate, in Hz
   options.samplerate = iniFile.GetProfileInt( "Sound", "SampleRate", 44100 );
     // 1 to enable external .wav samples
@@ -222,6 +227,7 @@ void SaveOptions( void )
 
   iniFile.WriteProfileInt( "General", "SkipDisclaimer", options.skip_disclaimer );
   iniFile.WriteProfileInt( "General", "SkipGameInfo", options.skip_gameinfo );
+  iniFile.WriteProfileInt( "Sound", "SoundEnable", g_soundEnabled );
   iniFile.WriteProfileInt( "Sound", "SampleRate", options.samplerate );
   iniFile.WriteProfileInt( "Sound", "UseSamples", options.use_samples );
   iniFile.WriteProfileInt( "Sound", "UseFilter", options.use_filter );

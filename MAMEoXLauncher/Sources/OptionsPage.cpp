@@ -64,6 +64,9 @@ extern "C" {
   extern const char *cheatfile;
 }
 
+extern BOOL g_soundEnabled; // Sound processing override, defined in xbox_Main.cpp
+//static UINT32 g_samplerates[2] = { 22700, 44100 };
+
 //= S T R U C T U R E S ===============================================
 struct CUSTOMVERTEX
 {
@@ -71,6 +74,8 @@ struct CUSTOMVERTEX
   FLOAT         tu, tv;   // The texture coordinates
 };
 
+//= P R O T O T Y P E S ===============================================
+void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... );
 
 //= F U N C T I O N S ==================================================
 
@@ -199,7 +204,7 @@ COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice, CXBFont &font, Game
   wcscpy( m_pageData[OPTPAGE_SOUND].m_title, L"Sound Options" );
   m_pageData[OPTPAGE_SOUND].m_drawFunct = ::DrawSoundPage;
   m_pageData[OPTPAGE_SOUND].m_changeFunct = ::ChangeSoundPage;
-  m_pageData[OPTPAGE_SOUND].m_numItems = 3;
+  m_pageData[OPTPAGE_SOUND].m_numItems = 4;
 
   wcscpy( m_pageData[OPTPAGE_VIDEO].m_title, L"Video Options" );
   m_pageData[OPTPAGE_VIDEO].m_drawFunct = ::DrawVideoPage;
@@ -475,6 +480,8 @@ void COptionsPage::DrawSoundPage( void )
 
   STARTPAGE();
 
+  DRAWITEM( L"Sound Processing", g_soundEnabled ? L"Enabled" : L"Disabled" );
+
   swprintf( text, L"%lu", options.samplerate );
   DRAWITEM( L"Sample Rate", text );
 
@@ -693,6 +700,26 @@ void COptionsPage::ChangeGeneralPage( BOOL direction )
     break;
 
   case 1:
+    if( !m_virtualKeyboardMode )
+    {
+      m_virtualKeyboardMode = TRUE;
+	    m_virtualKeyboard->SetData( cheatfile );
+    }
+    else
+    {
+      if( m_virtualKeyboard->IsInputAccepted() )
+      {
+          // Free cheatfile, as it was strdup'd in MAMEoXUtil.cpp
+        free( (void*)cheatfile );
+        if( !(cheatfile = strdup( m_virtualKeyboard->GetData().c_str() )) )
+          Die( m_displayDevice, "Out of memory setting the cheatfile name!" );
+      }
+      if( m_virtualKeyboard->IsInputFinished() )
+      {
+        m_virtualKeyboard->Reset();
+        m_virtualKeyboardMode = FALSE;
+      }
+    }
     break;
 
   case 2:
@@ -712,14 +739,26 @@ void COptionsPage::ChangeSoundPage( BOOL direction )
 {
   switch( m_cursorPosition )
   {
+    // Sound Processing
   case 0:
+    g_soundEnabled = !g_soundEnabled;
     break;
 
+    // Sample Rate
   case 1:
+    if( options.samplerate == 44100 )
+      options.samplerate = 22700;
+    else
+      options.samplerate = 44100;
+    break;
+
+    // Audio Samples
+  case 2:
     options.use_samples = !options.use_samples;
     break;
 
-  case 2:
+    // Audio Filter
+  case 3:
     options.use_filter = !options.use_filter;
     break;
   }

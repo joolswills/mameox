@@ -50,10 +50,12 @@ struct CUSTOMVERTEX
 };
 
 //= G L O B A L = V A R S =============================================
+  // Defined in MAMEoXUtil.cpp
 extern CInputManager			g_inputManager;
 extern CGraphicsManager	  g_graphicsManager;
 extern CXBFont						g_font;
 extern CXBFont            g_fixedWidthFont;
+extern CXBFont            g_smallFont;
 
   // XBE Launch data
 static DWORD              g_launchDataType;
@@ -84,6 +86,9 @@ const char *cheatfile = NULL;
   
   // Fake D3D renderer options
 RendererOptions_t    g_rendererOptions;
+
+  // Fake sound override toggle
+BOOL g_soundEnabled = TRUE;
 
 //= P R O T O T Y P E S ===============================================
 BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage );
@@ -256,11 +261,13 @@ void __cdecl main( void )
 		// Create a general purpose font
 // VC6 requires the 2 paramater call to create. _VC6 is defined in the VC6 dsp files
 #ifdef _VC6
-	g_font.Create( pD3DDevice, "FontAN12.xpr" );
+	g_font.Create( pD3DDevice, "Font.xpr" );
   g_fixedWidthFont.Create( pD3DDevice, "FontCN10.xpr" );
+  g_smallFont.Create( pD3DDevice, "FontAN12.xpr" );
 #else
-	g_font.Create( "FontAN12.xpr", 0 );
+	g_font.Create( "Font.xpr" );
   g_fixedWidthFont.Create( "FontCN10.xpr" );
+  g_smallFont.Create( "FontAN12.xpr" );
 #endif
 
   LoadOptions();
@@ -506,10 +513,9 @@ void __cdecl main( void )
 
 		// Load/Generate the ROM listing
   CROMList romList( pD3DDevice, 
-                    g_font, 
+                    g_smallFont, 
                     g_driverData, 
-                    mameoxLaunchData->m_totalMAMEGames,
-                    &g_launchData );
+                    mameoxLaunchData->m_totalMAMEGames );
 	if( !romList.LoadROMList( TRUE ) )
 		Die( pD3DDevice, "Could not generate ROM list!" );
 
@@ -524,7 +530,7 @@ void __cdecl main( void )
   CreateBackdrop( xPercentage, yPercentage );
 
   COptionsPage optionsPage( pD3DDevice,
-                            g_font,
+                            g_smallFont,
                             options );
 
     //-- Initialize the rendering engine -------------------------------
@@ -772,6 +778,23 @@ void __cdecl main( void )
     pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
 
     pD3DDevice->Present( NULL, NULL, NULL, NULL );
+
+
+      // Run the user selected ROM
+    if( romList.IsGameSelected() )
+    {
+        // Pack info to be passed to MAMEoX
+      mameoxLaunchData->m_gameIndex = romList.GetCurrentGameIndex();
+      romList.GetCursorPosition(  &mameoxLaunchData->m_cursorPosition, 
+                                  &mameoxLaunchData->m_pageOffset,
+                                  &mameoxLaunchData->m_superscrollIndex );
+      mameoxLaunchData->m_command = LAUNCH_RUN_GAME;
+
+      SaveOptions();
+      ShowLoadingScreen( pD3DDevice );
+      XLaunchNewImage( "D:\\MAMEoX.xbe", &g_launchData );
+		  Die( pD3DDevice, "Could not execute MAMEoX.xbe!" );
+    }
 	}
 }
 

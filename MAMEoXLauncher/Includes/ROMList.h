@@ -41,7 +41,7 @@ public:
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-	CROMList( LPDIRECT3DDEVICE8	displayDevice, CXBFont &font, MAMEDriverData_t *drivers, UINT32 numDrivers, LAUNCH_DATA *launchData ) :
+	CROMList( LPDIRECT3DDEVICE8	displayDevice, CXBFont &font, MAMEDriverData_t *drivers, UINT32 numDrivers ) :
 		m_displayDevice( displayDevice ),
 		m_font( font ),
 		m_gameListCursorPosition( 0.0f ),
@@ -54,7 +54,7 @@ public:
     m_superscrollCharacterIdx( 0 ),
     m_driverInfoList( drivers ),
     m_numDrivers( numDrivers ),
-    m_launchData( launchData )
+    m_gameSelected( FALSE )
 	{
     for( UINT32 i = 0; i < NUM_SUPERSCROLL_CHARS; ++i )
       m_superscrollJumpTable[i] = INVALID_SUPERSCROLL_JUMP_IDX;
@@ -168,6 +168,8 @@ public:
     m_superscrollCharacterIdx = superscrollIndex;
   }
 
+  BOOL IsGameSelected( void ) { return m_gameSelected; }
+
 protected:
 
     // Cursor movement helper functions
@@ -192,7 +194,8 @@ protected:
 
 	LPDIRECT3DDEVICE8			m_displayDevice;
 	CXBFont								&m_font;
-  LAUNCH_DATA           *m_launchData;
+
+  BOOL                  m_gameSelected;             //!<  Whether or not the user has selected a game
 
 		//! Vector of integers into the MAME driver array
 		//!  defining the set of available ROMs
