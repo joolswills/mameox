@@ -73,8 +73,6 @@ CSystem_IniFile::CSystem_IniFile( const CStdString &strFullPath ) :
       PRINTMSG( T_ERROR, "Corrupt INI file, read 8k chars before finding a \\n!" );
       return;
     }
-    else if( j )
-      buf[j-1] = 0;
     else
       buf[j] = 0;
 
