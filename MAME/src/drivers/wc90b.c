@@ -1,11 +1,11 @@
-#pragma code_seg("C610")
-#pragma data_seg("D610")
-#pragma bss_seg("B610")
-#pragma const_seg("K610")
-#pragma comment(linker, "/merge:D610=610")
-#pragma comment(linker, "/merge:C610=610")
-#pragma comment(linker, "/merge:B610=610")
-#pragma comment(linker, "/merge:K610=610")
+#pragma code_seg("C627")
+#pragma data_seg("D627")
+#pragma bss_seg("B627")
+#pragma const_seg("K627")
+#pragma comment(linker, "/merge:D627=627")
+#pragma comment(linker, "/merge:C627=627")
+#pragma comment(linker, "/merge:B627=627")
+#pragma comment(linker, "/merge:K627=627")
 /*
 World Cup 90 bootleg driver
 ---------------------------

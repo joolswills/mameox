@@ -1,3 +1,11 @@
+#pragma code_seg("CC27")
+#pragma data_seg("CD27")
+#pragma bss_seg("CB27")
+#pragma const_seg("CK27")
+#pragma comment(linker, "/merge:CD27=CPU27")
+#pragma comment(linker, "/merge:CC27=CPU27")
+#pragma comment(linker, "/merge:CB27=CPU27")
+#pragma comment(linker, "/merge:CK27=CPU27")
 /*
  * MIPS disassembler for the MAME project written by smf
  *
@@ -607,3 +615,7 @@ unsigned DasmMIPS( char *buffer, UINT32 oldpc )
 	}
 	return pc - oldpc;
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,11 +1,11 @@
-#pragma code_seg("C599")
-#pragma data_seg("D599")
-#pragma bss_seg("B599")
-#pragma const_seg("K599")
-#pragma comment(linker, "/merge:D599=599")
-#pragma comment(linker, "/merge:C599=599")
-#pragma comment(linker, "/merge:B599=599")
-#pragma comment(linker, "/merge:K599=599")
+#pragma code_seg("C616")
+#pragma data_seg("D616")
+#pragma bss_seg("B616")
+#pragma const_seg("K616")
+#pragma comment(linker, "/merge:D616=616")
+#pragma comment(linker, "/merge:C616=616")
+#pragma comment(linker, "/merge:B616=616")
+#pragma comment(linker, "/merge:K616=616")
 /***************************************************************************
 
 	Atari Video Pinball hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C543")
-#pragma data_seg("D543")
-#pragma bss_seg("B543")
-#pragma const_seg("K543")
-#pragma comment(linker, "/merge:D543=543")
-#pragma comment(linker, "/merge:C543=543")
-#pragma comment(linker, "/merge:B543=543")
-#pragma comment(linker, "/merge:K543=543")
+#pragma code_seg("C560")
+#pragma data_seg("D560")
+#pragma bss_seg("B560")
+#pragma const_seg("K560")
+#pragma comment(linker, "/merge:D560=560")
+#pragma comment(linker, "/merge:C560=560")
+#pragma comment(linker, "/merge:B560=560")
+#pragma comment(linker, "/merge:K560=560")
 /* Tao Taido Video Hardware */
 
 /*

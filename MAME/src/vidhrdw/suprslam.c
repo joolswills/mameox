@@ -1,11 +1,11 @@
-#pragma code_seg("C524")
-#pragma data_seg("D524")
-#pragma bss_seg("B524")
-#pragma const_seg("K524")
-#pragma comment(linker, "/merge:D524=524")
-#pragma comment(linker, "/merge:C524=524")
-#pragma comment(linker, "/merge:B524=524")
-#pragma comment(linker, "/merge:K524=524")
+#pragma code_seg("C541")
+#pragma data_seg("D541")
+#pragma bss_seg("B541")
+#pragma const_seg("K541")
+#pragma comment(linker, "/merge:D541=541")
+#pragma comment(linker, "/merge:C541=541")
+#pragma comment(linker, "/merge:B541=541")
+#pragma comment(linker, "/merge:K541=541")
 /* Super Slams - vidhrdw, see notes in driver file */
 
 #include "driver.h"

@@ -1,3 +1,11 @@
+#pragma code_seg("C3")
+#pragma data_seg("D3")
+#pragma bss_seg("B3")
+#pragma const_seg("K3")
+#pragma comment(linker, "/merge:D3=3")
+#pragma comment(linker, "/merge:C3=3")
+#pragma comment(linker, "/merge:B3=3")
+#pragma comment(linker, "/merge:K3=3")
 // system 16 - 7751 emulation, based on monster bash code.
 #include "driver.h"
 #include "cpu/i8039/i8039.h"
@@ -110,3 +118,7 @@ WRITE_HANDLER( sys16_7751_sh_rom_select_w )
 
 }
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

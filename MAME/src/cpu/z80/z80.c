@@ -1,11 +1,11 @@
-#pragma code_seg("CC2")
-#pragma data_seg("CD2")
-#pragma bss_seg("CB2")
-#pragma const_seg("CK2")
-#pragma comment(linker, "/merge:CD2=CPU2")
-#pragma comment(linker, "/merge:CC2=CPU2")
-#pragma comment(linker, "/merge:CB2=CPU2")
-#pragma comment(linker, "/merge:CK2=CPU2")
+#pragma code_seg("CC1")
+#pragma data_seg("CD1")
+#pragma bss_seg("CB1")
+#pragma const_seg("CK1")
+#pragma comment(linker, "/merge:CD1=CPU1")
+#pragma comment(linker, "/merge:CC1=CPU1")
+#pragma comment(linker, "/merge:CB1=CPU1")
+#pragma comment(linker, "/merge:CK1=CPU1")
 /*****************************************************************************
  *
  *	 z80.c
@@ -4591,3 +4591,7 @@ unsigned z80_dasm( char *buffer, unsigned pc )
 #endif
 }
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

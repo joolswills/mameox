@@ -1,11 +1,11 @@
-#pragma code_seg("C589")
-#pragma data_seg("D589")
-#pragma bss_seg("B589")
-#pragma const_seg("K589")
-#pragma comment(linker, "/merge:D589=589")
-#pragma comment(linker, "/merge:C589=589")
-#pragma comment(linker, "/merge:B589=589")
-#pragma comment(linker, "/merge:K589=589")
+#pragma code_seg("C606")
+#pragma data_seg("D606")
+#pragma bss_seg("B606")
+#pragma const_seg("K606")
+#pragma comment(linker, "/merge:D606=606")
+#pragma comment(linker, "/merge:C606=606")
+#pragma comment(linker, "/merge:B606=606")
+#pragma comment(linker, "/merge:K606=606")
 /***************************************************************************
 
 	Atari/Kee Ultra Tank hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("CC6")
-#pragma data_seg("CD6")
-#pragma bss_seg("CB6")
-#pragma const_seg("CK6")
-#pragma comment(linker, "/merge:CD6=CPU6")
-#pragma comment(linker, "/merge:CC6=CPU6")
-#pragma comment(linker, "/merge:CB6=CPU6")
-#pragma comment(linker, "/merge:CK6=CPU6")
+#pragma code_seg("CC19")
+#pragma data_seg("CD19")
+#pragma bss_seg("CB19")
+#pragma const_seg("CK19")
+#pragma comment(linker, "/merge:CD19=CPU19")
+#pragma comment(linker, "/merge:CC19=CPU19")
+#pragma comment(linker, "/merge:CB19=CPU19")
+#pragma comment(linker, "/merge:CK19=CPU19")
 /*###################################################################################################
 **
 **	TMS34010: Portable Texas Instruments TMS34010 emulator

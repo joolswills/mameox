@@ -1,11 +1,11 @@
-#pragma code_seg("CC21")
-#pragma data_seg("CD21")
-#pragma bss_seg("CB21")
-#pragma const_seg("CK21")
-#pragma comment(linker, "/merge:CD21=CPU21")
-#pragma comment(linker, "/merge:CC21=CPU21")
-#pragma comment(linker, "/merge:CB21=CPU21")
-#pragma comment(linker, "/merge:CK21=CPU21")
+#pragma code_seg("CC9")
+#pragma data_seg("CD9")
+#pragma bss_seg("CB9")
+#pragma const_seg("CK9")
+#pragma comment(linker, "/merge:CD9=CPU9")
+#pragma comment(linker, "/merge:CC9=CPU9")
+#pragma comment(linker, "/merge:CB9=CPU9")
+#pragma comment(linker, "/merge:CK9=CPU9")
 /****************************************************************************
  *						Intel 8039 Portable Emulator						*
  *																			*

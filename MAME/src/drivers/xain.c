@@ -1,11 +1,11 @@
-#pragma code_seg("C621")
-#pragma data_seg("D621")
-#pragma bss_seg("B621")
-#pragma const_seg("K621")
-#pragma comment(linker, "/merge:D621=621")
-#pragma comment(linker, "/merge:C621=621")
-#pragma comment(linker, "/merge:B621=621")
-#pragma comment(linker, "/merge:K621=621")
+#pragma code_seg("C638")
+#pragma data_seg("D638")
+#pragma bss_seg("B638")
+#pragma const_seg("K638")
+#pragma comment(linker, "/merge:D638=638")
+#pragma comment(linker, "/merge:C638=638")
+#pragma comment(linker, "/merge:B638=638")
+#pragma comment(linker, "/merge:K638=638")
 /***************************************************************************
 Xain'd Sleena (TECHNOS), Solar Warrior (TAITO).
 By Carlos A. Lozano & Rob Rosenbrock & Phil Stroffolino

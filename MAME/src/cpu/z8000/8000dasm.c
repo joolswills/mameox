@@ -1,11 +1,11 @@
-#pragma code_seg("CC1")
-#pragma data_seg("CD1")
-#pragma bss_seg("CB1")
-#pragma const_seg("CK1")
-#pragma comment(linker, "/merge:CD1=CPU1")
-#pragma comment(linker, "/merge:CC1=CPU1")
-#pragma comment(linker, "/merge:CB1=CPU1")
-#pragma comment(linker, "/merge:CK1=CPU1")
+#pragma code_seg("CC21")
+#pragma data_seg("CD21")
+#pragma bss_seg("CB21")
+#pragma const_seg("CK21")
+#pragma comment(linker, "/merge:CD21=CPU21")
+#pragma comment(linker, "/merge:CC21=CPU21")
+#pragma comment(linker, "/merge:CB21=CPU21")
+#pragma comment(linker, "/merge:CK21=CPU21")
 /*****************************************************************************
  *
  *	 8000dasm.c

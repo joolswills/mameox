@@ -1,11 +1,11 @@
-#pragma code_seg("C553")
-#pragma data_seg("D553")
-#pragma bss_seg("B553")
-#pragma const_seg("K553")
-#pragma comment(linker, "/merge:D553=553")
-#pragma comment(linker, "/merge:C553=553")
-#pragma comment(linker, "/merge:B553=553")
-#pragma comment(linker, "/merge:K553=553")
+#pragma code_seg("C570")
+#pragma data_seg("D570")
+#pragma bss_seg("B570")
+#pragma const_seg("K570")
+#pragma comment(linker, "/merge:D570=570")
+#pragma comment(linker, "/merge:C570=570")
+#pragma comment(linker, "/merge:B570=570")
+#pragma comment(linker, "/merge:K570=570")
 /***************************************************************************
 
 							  -= Tetris Plus 2 =-

@@ -1,3 +1,11 @@
+#pragma code_seg("CC7")
+#pragma data_seg("CD7")
+#pragma bss_seg("CB7")
+#pragma const_seg("CK7")
+#pragma comment(linker, "/merge:CD7=CPU7")
+#pragma comment(linker, "/merge:CC7=CPU7")
+#pragma comment(linker, "/merge:CB7=CPU7")
+#pragma comment(linker, "/merge:CK7=CPU7")
 /*
  * 2asm: Convert binary files to 80*86 assembler. Version 1.00
  * Adapted by Andrea Mazzoleni for use with MAME
@@ -890,3 +898,7 @@ unsigned Dasmnec(char* buffer, unsigned pc)
 
 #endif	/* MAME_DEBUG */
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

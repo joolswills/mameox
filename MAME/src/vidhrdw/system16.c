@@ -1,3 +1,11 @@
+#pragma code_seg("C3")
+#pragma data_seg("D3")
+#pragma bss_seg("B3")
+#pragma const_seg("K3")
+#pragma comment(linker, "/merge:D3=3")
+#pragma comment(linker, "/merge:C3=3")
+#pragma comment(linker, "/merge:B3=3")
+#pragma comment(linker, "/merge:K3=3")
 /***************************************************************************
 
 Sega System 16 Video Hardware
@@ -1849,3 +1857,7 @@ VIDEO_UPDATE( aburner ){
 
 //	debug_draw( bitmap,cliprect, 8,8,sys16_roadram[0x1000] );
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,11 +1,11 @@
-#pragma code_seg("C566")
-#pragma data_seg("D566")
-#pragma bss_seg("B566")
-#pragma const_seg("K566")
-#pragma comment(linker, "/merge:D566=566")
-#pragma comment(linker, "/merge:C566=566")
-#pragma comment(linker, "/merge:B566=566")
-#pragma comment(linker, "/merge:K566=566")
+#pragma code_seg("C583")
+#pragma data_seg("D583")
+#pragma bss_seg("B583")
+#pragma const_seg("K583")
+#pragma comment(linker, "/merge:D583=583")
+#pragma comment(linker, "/merge:C583=583")
+#pragma comment(linker, "/merge:B583=583")
+#pragma comment(linker, "/merge:K583=583")
 /***************************************************************************
 
   Functions to emulate the video hardware of some Toaplan games,

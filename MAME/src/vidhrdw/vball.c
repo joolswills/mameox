@@ -1,11 +1,11 @@
-#pragma code_seg("C595")
-#pragma data_seg("D595")
-#pragma bss_seg("B595")
-#pragma const_seg("K595")
-#pragma comment(linker, "/merge:D595=595")
-#pragma comment(linker, "/merge:C595=595")
-#pragma comment(linker, "/merge:B595=595")
-#pragma comment(linker, "/merge:K595=595")
+#pragma code_seg("C612")
+#pragma data_seg("D612")
+#pragma bss_seg("B612")
+#pragma const_seg("K612")
+#pragma comment(linker, "/merge:D612=612")
+#pragma comment(linker, "/merge:C612=612")
+#pragma comment(linker, "/merge:B612=612")
+#pragma comment(linker, "/merge:K612=612")
 /***************************************************************************
 
   Video Hardware for Championship V'ball by Paul Hampson

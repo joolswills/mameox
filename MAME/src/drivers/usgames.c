@@ -1,11 +1,11 @@
-#pragma code_seg("C592")
-#pragma data_seg("D592")
-#pragma bss_seg("B592")
-#pragma const_seg("K592")
-#pragma comment(linker, "/merge:D592=592")
-#pragma comment(linker, "/merge:C592=592")
-#pragma comment(linker, "/merge:B592=592")
-#pragma comment(linker, "/merge:K592=592")
+#pragma code_seg("C609")
+#pragma data_seg("D609")
+#pragma bss_seg("B609")
+#pragma const_seg("K609")
+#pragma comment(linker, "/merge:D609=609")
+#pragma comment(linker, "/merge:C609=609")
+#pragma comment(linker, "/merge:B609=609")
+#pragma comment(linker, "/merge:K609=609")
 /* US Games - Trivia / Quiz / 'Amusement Only' Gambling Games */
 
 /*

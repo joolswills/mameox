@@ -1,11 +1,11 @@
-#pragma code_seg("C602")
-#pragma data_seg("D602")
-#pragma bss_seg("B602")
-#pragma const_seg("K602")
-#pragma comment(linker, "/merge:D602=602")
-#pragma comment(linker, "/merge:C602=602")
-#pragma comment(linker, "/merge:B602=602")
-#pragma comment(linker, "/merge:K602=602")
+#pragma code_seg("C619")
+#pragma data_seg("D619")
+#pragma bss_seg("B619")
+#pragma const_seg("K619")
+#pragma comment(linker, "/merge:D619=619")
+#pragma comment(linker, "/merge:C619=619")
+#pragma comment(linker, "/merge:B619=619")
+#pragma comment(linker, "/merge:K619=619")
 /*************************************************************************
 
   Volfied C-Chip Protection

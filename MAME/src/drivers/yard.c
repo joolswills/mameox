@@ -1,11 +1,11 @@
-#pragma code_seg("C629")
-#pragma data_seg("D629")
-#pragma bss_seg("B629")
-#pragma const_seg("K629")
-#pragma comment(linker, "/merge:D629=629")
-#pragma comment(linker, "/merge:C629=629")
-#pragma comment(linker, "/merge:B629=629")
-#pragma comment(linker, "/merge:K629=629")
+#pragma code_seg("C646")
+#pragma data_seg("D646")
+#pragma bss_seg("B646")
+#pragma const_seg("K646")
+#pragma comment(linker, "/merge:D646=646")
+#pragma comment(linker, "/merge:C646=646")
+#pragma comment(linker, "/merge:B646=646")
+#pragma comment(linker, "/merge:K646=646")
 /****************************************************************************
 10 Yard Fight Driver.
 

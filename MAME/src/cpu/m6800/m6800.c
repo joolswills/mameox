@@ -1,11 +1,11 @@
-#pragma code_seg("CC16")
-#pragma data_seg("CD16")
-#pragma bss_seg("CB16")
-#pragma const_seg("CK16")
-#pragma comment(linker, "/merge:CD16=CPU16")
-#pragma comment(linker, "/merge:CC16=CPU16")
-#pragma comment(linker, "/merge:CB16=CPU16")
-#pragma comment(linker, "/merge:CK16=CPU16")
+#pragma code_seg("CC11")
+#pragma data_seg("CD11")
+#pragma bss_seg("CB11")
+#pragma const_seg("CK11")
+#pragma comment(linker, "/merge:CD11=CPU11")
+#pragma comment(linker, "/merge:CC11=CPU11")
+#pragma comment(linker, "/merge:CB11=CPU11")
+#pragma comment(linker, "/merge:CK11=CPU11")
 /*** m6800: Portable 6800 class  emulator *************************************
 
 	m6800.c

@@ -1,11 +1,11 @@
-#pragma code_seg("C577")
-#pragma data_seg("D577")
-#pragma bss_seg("B577")
-#pragma const_seg("K577")
-#pragma comment(linker, "/merge:D577=577")
-#pragma comment(linker, "/merge:C577=577")
-#pragma comment(linker, "/merge:B577=577")
-#pragma comment(linker, "/merge:K577=577")
+#pragma code_seg("C594")
+#pragma data_seg("D594")
+#pragma bss_seg("B594")
+#pragma const_seg("K594")
+#pragma comment(linker, "/merge:D594=594")
+#pragma comment(linker, "/merge:C594=594")
+#pragma comment(linker, "/merge:B594=594")
+#pragma comment(linker, "/merge:K594=594")
 /*
 
   Truco-Tron - (c) 198? Playtronic SRL, Argentina

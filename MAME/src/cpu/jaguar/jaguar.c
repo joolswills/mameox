@@ -1,3 +1,11 @@
+#pragma code_seg("CC30")
+#pragma data_seg("CD30")
+#pragma bss_seg("CB30")
+#pragma const_seg("CK30")
+#pragma comment(linker, "/merge:CD30=CPU30")
+#pragma comment(linker, "/merge:CC30=CPU30")
+#pragma comment(linker, "/merge:CB30=CPU30")
+#pragma comment(linker, "/merge:CK30=CPU30")
 /*###################################################################################################
 **
 **
@@ -1826,3 +1834,7 @@ void jaguardsp_ctrl_w(int cpunum, offs_t offset, data32_t data, data32_t mem_mas
 	/* restore old context */
 	cpuintrf_pop_context();
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

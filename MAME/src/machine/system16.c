@@ -1,3 +1,11 @@
+#pragma code_seg("C3")
+#pragma data_seg("D3")
+#pragma bss_seg("B3")
+#pragma const_seg("K3")
+#pragma comment(linker, "/merge:D3=3")
+#pragma comment(linker, "/merge:C3=3")
+#pragma comment(linker, "/merge:B3=3")
+#pragma comment(linker, "/merge:K3=3")
 #include "driver.h"
 #include "system16.h"
 
@@ -2228,3 +2236,7 @@ struct YM2612interface sys18_ym3438_interface =
 			YM3012_VOL(40,MIXER_PAN_CENTER,40,MIXER_PAN_CENTER) },	/* Volume */
 	{ 0 },	{ 0 },	{ 0 },	{ 0 }
 };
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

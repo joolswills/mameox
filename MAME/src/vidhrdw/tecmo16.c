@@ -1,11 +1,11 @@
-#pragma code_seg("C548")
-#pragma data_seg("D548")
-#pragma bss_seg("B548")
-#pragma const_seg("K548")
-#pragma comment(linker, "/merge:D548=548")
-#pragma comment(linker, "/merge:C548=548")
-#pragma comment(linker, "/merge:B548=548")
-#pragma comment(linker, "/merge:K548=548")
+#pragma code_seg("C565")
+#pragma data_seg("D565")
+#pragma bss_seg("B565")
+#pragma const_seg("K565")
+#pragma comment(linker, "/merge:D565=565")
+#pragma comment(linker, "/merge:C565=565")
+#pragma comment(linker, "/merge:B565=565")
+#pragma comment(linker, "/merge:K565=565")
 /******************************************************************************
 
   Ganbare Ginkun  (Japan)  (c)1995 TECMO

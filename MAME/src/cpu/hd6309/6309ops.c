@@ -1,11 +1,11 @@
-#pragma code_seg("CC22")
-#pragma data_seg("CD22")
-#pragma bss_seg("CB22")
-#pragma const_seg("CK22")
-#pragma comment(linker, "/merge:CD22=CPU22")
-#pragma comment(linker, "/merge:CC22=CPU22")
-#pragma comment(linker, "/merge:CB22=CPU22")
-#pragma comment(linker, "/merge:CK22=CPU22")
+#pragma code_seg("CC14")
+#pragma data_seg("CD14")
+#pragma bss_seg("CB14")
+#pragma const_seg("CK14")
+#pragma comment(linker, "/merge:CD14=CPU14")
+#pragma comment(linker, "/merge:CC14=CPU14")
+#pragma comment(linker, "/merge:CB14=CPU14")
+#pragma comment(linker, "/merge:CK14=CPU14")
 /*
 
 HNZVC

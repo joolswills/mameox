@@ -1,11 +1,11 @@
-#pragma code_seg("C529")
-#pragma data_seg("D529")
-#pragma bss_seg("B529")
-#pragma const_seg("K529")
-#pragma comment(linker, "/merge:D529=529")
-#pragma comment(linker, "/merge:C529=529")
-#pragma comment(linker, "/merge:B529=529")
-#pragma comment(linker, "/merge:K529=529")
+#pragma code_seg("C3")
+#pragma data_seg("D3")
+#pragma bss_seg("B3")
+#pragma const_seg("K3")
+#pragma comment(linker, "/merge:D3=3")
+#pragma comment(linker, "/merge:C3=3")
+#pragma comment(linker, "/merge:B3=3")
+#pragma comment(linker, "/merge:K3=3")
 #define NEW_DRAWSPRITE 1
 /* System 32 Video Hardware */
 

@@ -1,3 +1,11 @@
+#pragma code_seg("CC34")
+#pragma data_seg("CD34")
+#pragma bss_seg("CB34")
+#pragma const_seg("CK34")
+#pragma comment(linker, "/merge:CD34=CPU34")
+#pragma comment(linker, "/merge:CC34=CPU34")
+#pragma comment(linker, "/merge:CB34=CPU34")
+#pragma comment(linker, "/merge:CK34=CPU34")
  /**************************************************************************\
  *						Microchip PIC16C5x Emulator							*
  *																			*
@@ -257,3 +265,7 @@ unsigned Dasm16C5x(char *str, unsigned pc)
 	}
 	return cnt;
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,11 +1,11 @@
-#pragma code_seg("CC14")
-#pragma data_seg("CD14")
-#pragma bss_seg("CB14")
-#pragma const_seg("CK14")
-#pragma comment(linker, "/merge:CD14=CPU14")
-#pragma comment(linker, "/merge:CC14=CPU14")
-#pragma comment(linker, "/merge:CB14=CPU14")
-#pragma comment(linker, "/merge:CK14=CPU14")
+#pragma code_seg("CC12")
+#pragma data_seg("CD12")
+#pragma bss_seg("CB12")
+#pragma const_seg("CK12")
+#pragma comment(linker, "/merge:CD12=CPU12")
+#pragma comment(linker, "/merge:CC12=CPU12")
+#pragma comment(linker, "/merge:CB12=CPU12")
+#pragma comment(linker, "/merge:CK12=CPU12")
 /*
  *   A quick-hack 68(7)05 disassembler
  *

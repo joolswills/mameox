@@ -1,11 +1,11 @@
-#pragma code_seg("CC26")
-#pragma data_seg("CD26")
-#pragma bss_seg("CB26")
-#pragma const_seg("CK26")
-#pragma comment(linker, "/merge:CD26=CPU26")
-#pragma comment(linker, "/merge:CC26=CPU26")
-#pragma comment(linker, "/merge:CB26=CPU26")
-#pragma comment(linker, "/merge:CK26=CPU26")
+#pragma code_seg("CC31")
+#pragma data_seg("CD31")
+#pragma bss_seg("CB31")
+#pragma const_seg("CK31")
+#pragma comment(linker, "/merge:CD31=CPU31")
+#pragma comment(linker, "/merge:CC31=CPU31")
+#pragma comment(linker, "/merge:CB31=CPU31")
+#pragma comment(linker, "/merge:CK31=CPU31")
 /*
 	ARM 2/3 disassembler
 

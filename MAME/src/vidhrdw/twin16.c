@@ -1,11 +1,11 @@
-#pragma code_seg("C586")
-#pragma data_seg("D586")
-#pragma bss_seg("B586")
-#pragma const_seg("K586")
-#pragma comment(linker, "/merge:D586=586")
-#pragma comment(linker, "/merge:C586=586")
-#pragma comment(linker, "/merge:B586=586")
-#pragma comment(linker, "/merge:K586=586")
+#pragma code_seg("C603")
+#pragma data_seg("D603")
+#pragma bss_seg("B603")
+#pragma const_seg("K603")
+#pragma comment(linker, "/merge:D603=603")
+#pragma comment(linker, "/merge:C603=603")
+#pragma comment(linker, "/merge:B603=603")
+#pragma comment(linker, "/merge:K603=603")
 /* vidhrdw/twin16.c
 
 	Known Issues:

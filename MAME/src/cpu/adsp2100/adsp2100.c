@@ -1,11 +1,11 @@
-#pragma code_seg("CC27")
-#pragma data_seg("CD27")
-#pragma bss_seg("CB27")
-#pragma const_seg("CK27")
-#pragma comment(linker, "/merge:CD27=CPU27")
-#pragma comment(linker, "/merge:CC27=CPU27")
-#pragma comment(linker, "/merge:CB27=CPU27")
-#pragma comment(linker, "/merge:CK27=CPU27")
+#pragma code_seg("CC26")
+#pragma data_seg("CD26")
+#pragma bss_seg("CB26")
+#pragma const_seg("CK26")
+#pragma comment(linker, "/merge:CD26=CPU26")
+#pragma comment(linker, "/merge:CC26=CPU26")
+#pragma comment(linker, "/merge:CB26=CPU26")
+#pragma comment(linker, "/merge:CK26=CPU26")
 /*###################################################################################################
 **
 **

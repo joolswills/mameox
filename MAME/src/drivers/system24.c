@@ -1,11 +1,11 @@
-#pragma code_seg("C528")
-#pragma data_seg("D528")
-#pragma bss_seg("B528")
-#pragma const_seg("K528")
-#pragma comment(linker, "/merge:D528=528")
-#pragma comment(linker, "/merge:C528=528")
-#pragma comment(linker, "/merge:B528=528")
-#pragma comment(linker, "/merge:K528=528")
+#pragma code_seg("C3")
+#pragma data_seg("D3")
+#pragma bss_seg("B3")
+#pragma const_seg("K3")
+#pragma comment(linker, "/merge:D3=3")
+#pragma comment(linker, "/merge:C3=3")
+#pragma comment(linker, "/merge:B3=3")
+#pragma comment(linker, "/merge:K3=3")
 /*
  * Preliminary Sega System 24
  *  Olivier Galibert

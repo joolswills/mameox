@@ -1,11 +1,11 @@
-#pragma code_seg("CC12")
-#pragma data_seg("CD12")
-#pragma bss_seg("CB12")
-#pragma const_seg("CK12")
-#pragma comment(linker, "/merge:CD12=CPU12")
-#pragma comment(linker, "/merge:CC12=CPU12")
-#pragma comment(linker, "/merge:CB12=CPU12")
-#pragma comment(linker, "/merge:CK12=CPU12")
+#pragma code_seg("CC18")
+#pragma data_seg("CD18")
+#pragma bss_seg("CB18")
+#pragma const_seg("CK18")
+#pragma comment(linker, "/merge:CD18=CPU18")
+#pragma comment(linker, "/merge:CC18=CPU18")
+#pragma comment(linker, "/merge:CB18=CPU18")
+#pragma comment(linker, "/merge:CK18=CPU18")
 /*************************************************************************
  *
  *      Portable Signetics 2650 cpu emulation

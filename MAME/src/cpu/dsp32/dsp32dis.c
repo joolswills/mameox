@@ -1,3 +1,11 @@
+#pragma code_seg("CC33")
+#pragma data_seg("CD33")
+#pragma bss_seg("CB33")
+#pragma const_seg("CK33")
+#pragma comment(linker, "/merge:CD33=CPU33")
+#pragma comment(linker, "/merge:CC33=CPU33")
+#pragma comment(linker, "/merge:CB33=CPU33")
+#pragma comment(linker, "/merge:CK33=CPU33")
 /*###################################################################################################
 **
 **
@@ -670,3 +678,7 @@ unsigned dasm_dsp32(char *buffer, unsigned pc)
 
 	return 4;
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

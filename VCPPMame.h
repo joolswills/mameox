@@ -114,11 +114,15 @@
 #define HAS_DSP32C			1		// New: 0.66?
 #define HAS_UPD7807			1
 #define HAS_R4600				1
+#define HAS_R5000       1   // New: 0.70
 #define HAS_DECO16			1
 #define HAS_V70					1
 #define HAS_NAMCONA			1
+#define HAS_PIC16C54    1   // New: 0.70
 #define HAS_PIC16C55    1   // New: 0.67
+#define HAS_PIC16C56    1   // New: 0.70
 #define HAS_PIC16C57    1   // New: 0.70
+#define HAS_PIC16C58    1   // New: 0.70
 
 
 

@@ -1,11 +1,11 @@
-#pragma code_seg("CC19")
-#pragma data_seg("CD19")
-#pragma bss_seg("CB19")
-#pragma const_seg("CK19")
-#pragma comment(linker, "/merge:CD19=CPU19")
-#pragma comment(linker, "/merge:CC19=CPU19")
-#pragma comment(linker, "/merge:CB19=CPU19")
-#pragma comment(linker, "/merge:CK19=CPU19")
+#pragma code_seg("CC10")
+#pragma data_seg("CD10")
+#pragma bss_seg("CB10")
+#pragma const_seg("CK10")
+#pragma comment(linker, "/merge:CD10=CPU10")
+#pragma comment(linker, "/merge:CC10=CPU10")
+#pragma comment(linker, "/merge:CB10=CPU10")
+#pragma comment(linker, "/merge:CK10=CPU10")
 /*****************************************************************************
  *
  *	 i8x41.c

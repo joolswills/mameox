@@ -1,11 +1,11 @@
-#pragma code_seg("C598")
-#pragma data_seg("D598")
-#pragma bss_seg("B598")
-#pragma const_seg("K598")
-#pragma comment(linker, "/merge:D598=598")
-#pragma comment(linker, "/merge:C598=598")
-#pragma comment(linker, "/merge:B598=598")
-#pragma comment(linker, "/merge:K598=598")
+#pragma code_seg("C615")
+#pragma data_seg("D615")
+#pragma bss_seg("B615")
+#pragma const_seg("K615")
+#pragma comment(linker, "/merge:D615=615")
+#pragma comment(linker, "/merge:C615=615")
+#pragma comment(linker, "/merge:B615=615")
+#pragma comment(linker, "/merge:K615=615")
 /***************************************************************************
 
 	Victory system

@@ -1,3 +1,11 @@
+#pragma code_seg("CC7")
+#pragma data_seg("CD7")
+#pragma bss_seg("CB7")
+#pragma const_seg("CK7")
+#pragma comment(linker, "/merge:CD7=CPU7")
+#pragma comment(linker, "/merge:CC7=CPU7")
+#pragma comment(linker, "/merge:CB7=CPU7")
+#pragma comment(linker, "/merge:CK7=CPU7")
 /****************************************************************************
 
 	NEC V20/V30/V33 emulator
@@ -1267,3 +1275,7 @@ const char *v33_info(void *context, int regnum)
     return v20_info(context,regnum);
 }
 unsigned v33_dasm(char *buffer, unsigned pc) { return nec_dasm(buffer,pc); }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

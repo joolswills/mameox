@@ -1,11 +1,11 @@
-#pragma code_seg("CC15")
-#pragma data_seg("CD15")
-#pragma bss_seg("CB15")
-#pragma const_seg("CK15")
-#pragma comment(linker, "/merge:CD15=CPU15")
-#pragma comment(linker, "/merge:CC15=CPU15")
-#pragma comment(linker, "/merge:CB15=CPU15")
-#pragma comment(linker, "/merge:CK15=CPU15")
+#pragma code_seg("CC16")
+#pragma data_seg("CD16")
+#pragma bss_seg("CB16")
+#pragma const_seg("CK16")
+#pragma comment(linker, "/merge:CD16=CPU16")
+#pragma comment(linker, "/merge:CC16=CPU16")
+#pragma comment(linker, "/merge:CB16=CPU16")
+#pragma comment(linker, "/merge:CK16=CPU16")
 #include <stdio.h>
 #include <stdlib.h>
 #include "m68k.h"

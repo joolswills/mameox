@@ -1,11 +1,11 @@
-#pragma code_seg("CC17")
-#pragma data_seg("CD17")
-#pragma bss_seg("CB17")
-#pragma const_seg("CK17")
-#pragma comment(linker, "/merge:CD17=CPU17")
-#pragma comment(linker, "/merge:CC17=CPU17")
-#pragma comment(linker, "/merge:CB17=CPU17")
-#pragma comment(linker, "/merge:CK17=CPU17")
+#pragma code_seg("CC4")
+#pragma data_seg("CD4")
+#pragma bss_seg("CB4")
+#pragma const_seg("CK4")
+#pragma comment(linker, "/merge:CD4=CPU4")
+#pragma comment(linker, "/merge:CC4=CPU4")
+#pragma comment(linker, "/merge:CB4=CPU4")
+#pragma comment(linker, "/merge:CK4=CPU4")
 /*****************************************************************************
  *
  *	 m6502.c
@@ -1017,7 +1017,7 @@ const char *deco16_info(void *context, int regnum)
 {
 	switch( regnum )
 	{
-		case CPU_INFO_NAME: return "DECO CPU16";
+		case CPU_INFO_NAME: return "DECO CPU15";
 		case CPU_INFO_FAMILY: return "DECO";
 		case CPU_INFO_VERSION: return "0.1";
 		case CPU_INFO_CREDITS:

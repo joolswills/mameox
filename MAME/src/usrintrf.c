@@ -14,6 +14,7 @@
 #include <math.h>
 #include "ui_text.h"
 #include "state.h"
+#include "common.h"
 
 #ifdef MESS
   #include "mess.h"
@@ -2578,7 +2579,12 @@ int showgamewarnings(struct mame_bitmap *bitmap)
           loaded at this point, so it might fail to load all driver sections,
           causing a crash still... Will have to look into a better solution
           sometime in the future.
+
+          Idea: Parse the driver array for clones in xbox_Main.cpp. Store this
+          in a data section that is immediately unloaded, load it here, and parse
+          as though it were the real drivers[] array.
         */ 
+#if 0
       InitDriverSectionizer();
       LoadDriverSections();
 
@@ -2605,11 +2611,11 @@ int showgamewarnings(struct mame_bitmap *bitmap)
 			}
 
         // Unload the unnecessary sections to save memory if possible
-      UnloadDriverSections();
       LoadDriverSectionByName( strstr( maindrv->source_file, "src\\drivers\\" ) );
+      UnloadDriverSections();
       TerminateDriverSectionizer();
+#endif
 		}
-
 
 		strcat(buf,"\n\n");
 		strcat(buf,ui_getstring (UI_typeok));

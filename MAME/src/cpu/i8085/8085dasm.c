@@ -1,3 +1,11 @@
+#pragma code_seg("CC3")
+#pragma data_seg("CD3")
+#pragma bss_seg("CB3")
+#pragma const_seg("CK3")
+#pragma comment(linker, "/merge:CD3=CPU3")
+#pragma comment(linker, "/merge:CC3=CPU3")
+#pragma comment(linker, "/merge:CB3=CPU3")
+#pragma comment(linker, "/merge:CK3=CPU3")
 /*****************************************************************************
  *
  *	 8085dasm.c
@@ -558,3 +566,7 @@ unsigned Dasm8085(char *buff, unsigned pc)
 	return pc - PC;
 }
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

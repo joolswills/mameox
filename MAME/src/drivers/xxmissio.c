@@ -1,11 +1,11 @@
-#pragma code_seg("C625")
-#pragma data_seg("D625")
-#pragma bss_seg("B625")
-#pragma const_seg("K625")
-#pragma comment(linker, "/merge:D625=625")
-#pragma comment(linker, "/merge:C625=625")
-#pragma comment(linker, "/merge:B625=625")
-#pragma comment(linker, "/merge:K625=625")
+#pragma code_seg("C642")
+#pragma data_seg("D642")
+#pragma bss_seg("B642")
+#pragma const_seg("K642")
+#pragma comment(linker, "/merge:D642=642")
+#pragma comment(linker, "/merge:C642=642")
+#pragma comment(linker, "/merge:B642=642")
+#pragma comment(linker, "/merge:K642=642")
 /*****************************************************************************
 
 XX Mission (c) 1986 UPL

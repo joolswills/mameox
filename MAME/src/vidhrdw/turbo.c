@@ -1,11 +1,11 @@
-#pragma code_seg("C584")
-#pragma data_seg("D584")
-#pragma bss_seg("B584")
-#pragma const_seg("K584")
-#pragma comment(linker, "/merge:D584=584")
-#pragma comment(linker, "/merge:C584=584")
-#pragma comment(linker, "/merge:B584=584")
-#pragma comment(linker, "/merge:K584=584")
+#pragma code_seg("C601")
+#pragma data_seg("D601")
+#pragma bss_seg("B601")
+#pragma const_seg("K601")
+#pragma comment(linker, "/merge:D601=601")
+#pragma comment(linker, "/merge:C601=601")
+#pragma comment(linker, "/merge:B601=601")
+#pragma comment(linker, "/merge:K601=601")
 /*************************************************************************
 
 	Sega Z80-3D system

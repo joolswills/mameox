@@ -1,11 +1,11 @@
-#pragma code_seg("C545")
-#pragma data_seg("D545")
-#pragma bss_seg("B545")
-#pragma const_seg("K545")
-#pragma comment(linker, "/merge:D545=545")
-#pragma comment(linker, "/merge:C545=545")
-#pragma comment(linker, "/merge:B545=545")
-#pragma comment(linker, "/merge:K545=545")
+#pragma code_seg("C562")
+#pragma data_seg("D562")
+#pragma bss_seg("B562")
+#pragma const_seg("K562")
+#pragma comment(linker, "/merge:D562=562")
+#pragma comment(linker, "/merge:C562=562")
+#pragma comment(linker, "/merge:B562=562")
+#pragma comment(linker, "/merge:K562=562")
 #include "driver.h"
 #include "taxidrvr.h"
 

@@ -1,11 +1,11 @@
-#pragma code_seg("C633")
-#pragma data_seg("D633")
-#pragma bss_seg("B633")
-#pragma const_seg("K633")
-#pragma comment(linker, "/merge:D633=633")
-#pragma comment(linker, "/merge:C633=633")
-#pragma comment(linker, "/merge:B633=633")
-#pragma comment(linker, "/merge:K633=633")
+#pragma code_seg("C650")
+#pragma data_seg("D650")
+#pragma bss_seg("B650")
+#pragma const_seg("K650")
+#pragma comment(linker, "/merge:D650=650")
+#pragma comment(linker, "/merge:C650=650")
+#pragma comment(linker, "/merge:B650=650")
+#pragma comment(linker, "/merge:K650=650")
 /*************************************************************/
 /*                                                           */
 /* Zaccaria/Zelco S2650 based games video                    */

@@ -1,11 +1,11 @@
-#pragma code_seg("C611")
-#pragma data_seg("D611")
-#pragma bss_seg("B611")
-#pragma const_seg("K611")
-#pragma comment(linker, "/merge:D611=611")
-#pragma comment(linker, "/merge:C611=611")
-#pragma comment(linker, "/merge:B611=611")
-#pragma comment(linker, "/merge:K611=611")
+#pragma code_seg("C628")
+#pragma data_seg("D628")
+#pragma bss_seg("B628")
+#pragma const_seg("K628")
+#pragma comment(linker, "/merge:D628=628")
+#pragma comment(linker, "/merge:C628=628")
+#pragma comment(linker, "/merge:B628=628")
+#pragma comment(linker, "/merge:K628=628")
 /***************************************************************************
 						WEC Le Mans 24  &   Hot Chase
 

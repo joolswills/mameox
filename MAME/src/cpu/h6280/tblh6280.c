@@ -1,11 +1,11 @@
-#pragma code_seg("CC23")
-#pragma data_seg("CD23")
-#pragma bss_seg("CB23")
-#pragma const_seg("CK23")
-#pragma comment(linker, "/merge:CD23=CPU23")
-#pragma comment(linker, "/merge:CC23=CPU23")
-#pragma comment(linker, "/merge:CB23=CPU23")
-#pragma comment(linker, "/merge:CK23=CPU23")
+#pragma code_seg("CC5")
+#pragma data_seg("CD5")
+#pragma bss_seg("CB5")
+#pragma const_seg("CK5")
+#pragma comment(linker, "/merge:CD5=CPU5")
+#pragma comment(linker, "/merge:CC5=CPU5")
+#pragma comment(linker, "/merge:CB5=CPU5")
+#pragma comment(linker, "/merge:CK5=CPU5")
 /*****************************************************************************
 
     tblh6280.c

@@ -1,11 +1,11 @@
-#pragma code_seg("CC8")
-#pragma data_seg("CD8")
-#pragma bss_seg("CB8")
-#pragma const_seg("CK8")
-#pragma comment(linker, "/merge:CD8=CPU8")
-#pragma comment(linker, "/merge:CC8=CPU8")
-#pragma comment(linker, "/merge:CB8=CPU8")
-#pragma comment(linker, "/merge:CK8=CPU8")
+#pragma code_seg("CC23")
+#pragma data_seg("CD23")
+#pragma bss_seg("CB23")
+#pragma const_seg("CK23")
+#pragma comment(linker, "/merge:CD23=CPU23")
+#pragma comment(linker, "/merge:CC23=CPU23")
+#pragma comment(linker, "/merge:CB23=CPU23")
+#pragma comment(linker, "/merge:CK23=CPU23")
  /**************************************************************************\
  *				  Texas Instruments TMS320x25 DSP Emulator					*
  *																			*

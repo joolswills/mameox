@@ -1,11 +1,11 @@
-#pragma code_seg("C603")
-#pragma data_seg("D603")
-#pragma bss_seg("B603")
-#pragma const_seg("K603")
-#pragma comment(linker, "/merge:D603=603")
-#pragma comment(linker, "/merge:C603=603")
-#pragma comment(linker, "/merge:B603=603")
-#pragma comment(linker, "/merge:K603=603")
+#pragma code_seg("C620")
+#pragma data_seg("D620")
+#pragma bss_seg("B620")
+#pragma const_seg("K620")
+#pragma comment(linker, "/merge:D620=620")
+#pragma comment(linker, "/merge:C620=620")
+#pragma comment(linker, "/merge:B620=620")
+#pragma comment(linker, "/merge:K620=620")
 /***************************************************************************
 
 Nintendo VS UniSystem and DualSystem - (c) 1984 Nintendo of America

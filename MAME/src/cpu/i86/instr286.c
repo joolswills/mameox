@@ -1,11 +1,11 @@
-#pragma code_seg("CC20")
-#pragma data_seg("CD20")
-#pragma bss_seg("CB20")
-#pragma const_seg("CK20")
-#pragma comment(linker, "/merge:CD20=CPU20")
-#pragma comment(linker, "/merge:CC20=CPU20")
-#pragma comment(linker, "/merge:CB20=CPU20")
-#pragma comment(linker, "/merge:CK20=CPU20")
+#pragma code_seg("CC6")
+#pragma data_seg("CD6")
+#pragma bss_seg("CB6")
+#pragma const_seg("CK6")
+#pragma comment(linker, "/merge:CD6=CPU6")
+#pragma comment(linker, "/merge:CC6=CPU6")
+#pragma comment(linker, "/merge:CB6=CPU6")
+#pragma comment(linker, "/merge:CK6=CPU6")
 /* descriptor table format in memory
    UINT16 limit
    UINT24 addr

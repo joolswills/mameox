@@ -1,11 +1,11 @@
-#pragma code_seg("C561")
-#pragma data_seg("D561")
-#pragma bss_seg("B561")
-#pragma const_seg("K561")
-#pragma comment(linker, "/merge:D561=561")
-#pragma comment(linker, "/merge:C561=561")
-#pragma comment(linker, "/merge:B561=561")
-#pragma comment(linker, "/merge:K561=561")
+#pragma code_seg("C578")
+#pragma data_seg("D578")
+#pragma bss_seg("B578")
+#pragma const_seg("K578")
+#pragma comment(linker, "/merge:D578=578")
+#pragma comment(linker, "/merge:C578=578")
+#pragma comment(linker, "/merge:B578=578")
+#pragma comment(linker, "/merge:K578=578")
 #include "vidhrdw/generic.h"
 
 static data16_t tigeroad_scrollram[2];

@@ -1,11 +1,11 @@
-#pragma code_seg("C572")
-#pragma data_seg("D572")
-#pragma bss_seg("B572")
-#pragma const_seg("K572")
-#pragma comment(linker, "/merge:D572=572")
-#pragma comment(linker, "/merge:C572=572")
-#pragma comment(linker, "/merge:B572=572")
-#pragma comment(linker, "/merge:K572=572")
+#pragma code_seg("C589")
+#pragma data_seg("D589")
+#pragma bss_seg("B589")
+#pragma const_seg("K589")
+#pragma comment(linker, "/merge:D589=589")
+#pragma comment(linker, "/merge:C589=589")
+#pragma comment(linker, "/merge:B589=589")
+#pragma comment(linker, "/merge:K589=589")
 /****************************************
 
 TOYPOP

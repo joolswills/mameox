@@ -1,11 +1,11 @@
-#pragma code_seg("C631")
-#pragma data_seg("D631")
-#pragma bss_seg("B631")
-#pragma const_seg("K631")
-#pragma comment(linker, "/merge:D631=631")
-#pragma comment(linker, "/merge:C631=631")
-#pragma comment(linker, "/merge:B631=631")
-#pragma comment(linker, "/merge:K631=631")
+#pragma code_seg("C648")
+#pragma data_seg("D648")
+#pragma bss_seg("B648")
+#pragma const_seg("K648")
+#pragma comment(linker, "/merge:D648=648")
+#pragma comment(linker, "/merge:C648=648")
+#pragma comment(linker, "/merge:B648=648")
+#pragma comment(linker, "/merge:K648=648")
 /***************************************************************************
 
 						  -= Yun Sung 16 Bit Games =-

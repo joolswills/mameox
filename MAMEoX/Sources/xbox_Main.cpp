@@ -583,6 +583,49 @@ int osd_init( void )
 {
   //InitializeJoystickMouse();    // Done in osd_customize_inputport_defaults(), as MAME does input system init _after_ osd_init
 
+        /* 
+          [EBA] Have to load all driver sections to allow parsing of
+          the drivers array. The problem is that the ROM may already be
+          loaded at this point, so it might fail to load all driver sections,
+          causing a crash still... Will have to look into a better solution
+          sometime in the future.
+
+          Idea: Parse the driver array for clones in xbox_Main.cpp. Store this
+          in a data section that is immediately unloaded, load it here, and parse
+          as though it were the real drivers[] array.
+        */ 
+#/*
+      InitDriverSectionizer();
+      LoadDriverSections();
+
+			foundworking = 0;
+			i = 0;
+			while (drivers[i])
+			{
+				if (drivers[i] == maindrv || drivers[i]->clone_of == maindrv)
+				{
+					if ((drivers[i]->flags & (GAME_NOT_WORKING | GAME_UNEMULATED_PROTECTION)) == 0)
+					{
+						if (foundworking == 0)
+						{
+							strcat(buf,"\n\n");
+							strcat(buf, ui_getstring (UI_workingclones));
+							strcat(buf,"\n\n");
+						}
+						foundworking = 1;
+
+						sprintf(&buf[strlen(buf)],"%s\n",drivers[i]->name);
+					}
+				}
+				i++;
+			}
+
+        // Unload the unnecessary sections to save memory if possible
+      LoadDriverSectionByName( strstr( maindrv->source_file, "src\\drivers\\" ) );
+      UnloadDriverSections();
+      TerminateDriverSectionizer();
+*/
+
 	return 0;
 }
 

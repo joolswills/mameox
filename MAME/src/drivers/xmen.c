@@ -1,11 +1,11 @@
-#pragma code_seg("C624")
-#pragma data_seg("D624")
-#pragma bss_seg("B624")
-#pragma const_seg("K624")
-#pragma comment(linker, "/merge:D624=624")
-#pragma comment(linker, "/merge:C624=624")
-#pragma comment(linker, "/merge:B624=624")
-#pragma comment(linker, "/merge:K624=624")
+#pragma code_seg("C641")
+#pragma data_seg("D641")
+#pragma bss_seg("B641")
+#pragma const_seg("K641")
+#pragma comment(linker, "/merge:D641=641")
+#pragma comment(linker, "/merge:C641=641")
+#pragma comment(linker, "/merge:B641=641")
+#pragma comment(linker, "/merge:K641=641")
 /***************************************************************************
 
 X-Men

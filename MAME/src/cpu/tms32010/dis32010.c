@@ -1,11 +1,11 @@
-#pragma code_seg("CC9")
-#pragma data_seg("CD9")
-#pragma bss_seg("CB9")
-#pragma const_seg("CK9")
-#pragma comment(linker, "/merge:CD9=CPU9")
-#pragma comment(linker, "/merge:CC9=CPU9")
-#pragma comment(linker, "/merge:CB9=CPU9")
-#pragma comment(linker, "/merge:CK9=CPU9")
+#pragma code_seg("CC22")
+#pragma data_seg("CD22")
+#pragma bss_seg("CB22")
+#pragma const_seg("CK22")
+#pragma comment(linker, "/merge:CD22=CPU22")
+#pragma comment(linker, "/merge:CC22=CPU22")
+#pragma comment(linker, "/merge:CB22=CPU22")
+#pragma comment(linker, "/merge:CK22=CPU22")
  /**************************************************************************\
  *				 Texas Instruments TMS32010 DSP Disassembler				*
  *																			*
