@@ -100,6 +100,7 @@ void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... );
 static BOOL Helper_LoadDriverInfoFile( void );
 static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice );
 static void Helper_SetStartMenuItems( CStartMenu &startMenu, viewmode currentViewMode );
+static void Helper_SaveOptionsAndReboot( LPDIRECT3DDEVICE8 pD3DDevice, CROMList & );
 
 //= F U N C T I O N S =================================================
 
@@ -334,16 +335,7 @@ void __cdecl main( void )
 
 			// Reboot on LT+RT+Black
     if( g_inputManager.IsButtonPressed( GP_LEFT_TRIGGER | GP_RIGHT_TRIGGER | GP_BLACK ) )
-		{
-      g_romListOptions = romList.GetOptions();
-      romList.GetCursorPosition(  &g_persistentLaunchData.m_cursorPosition, 
-                                  &g_persistentLaunchData.m_pageOffset,
-                                  &g_persistentLaunchData.m_superscrollIndex );
-      SaveOptions();
-      LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
-      DWORD retVal = XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
-      Die( pD3DDevice, "Failed to launch the dashboard! 0x%X", retVal );
-		}
+      Helper_SaveOptionsAndReboot( pD3DDevice, romList );
 
 
     if( !showStartMenu && g_inputManager.IsOnlyButtonPressed( GP_START ) )
@@ -510,6 +502,8 @@ void __cdecl main( void )
       {
         currentView = VIEW_ROMLIST;
         lightgunCalibrator.Reset();
+        startMenu.Reset();
+        Helper_SetStartMenuItems( startMenu, currentView );
       }      
       break;
 
@@ -547,7 +541,66 @@ void __cdecl main( void )
       {
         showStartMenu = FALSE;
         if( startMenu.IsInputAccepted() )
-          ; // Do something
+        {
+            // This could probably be implemented more elegantly...
+            // The problem is that the menu is context sensitive,
+            // so what action we should do for the selected item
+            // is dependent on the view we opened the menu from.
+            // Reboot is always the last item in the menu
+          if( startMenu.GetCursorPosition() == startMenu.GetNumMenuItems() - 1 )
+            Helper_SaveOptionsAndReboot( pD3DDevice, romList );
+          else
+          {
+            switch( currentView )
+            {
+              // *** VIEW_ROMLIST *** //
+            case VIEW_ROMLIST:
+              switch( startMenu.GetCursorPosition() )
+              {
+                // "Help"
+              case 0:
+                currentView = VIEW_HELP;
+                break;
+
+                // Options Menu
+              case 1:
+                currentView = VIEW_OPTIONS;
+                break;
+
+                // Lightgun Calibration
+              case 2:
+                currentView = VIEW_LIGHTGUNCALIBRATOR;
+                break;
+
+                // Remove Selected ROM
+              case 3:
+                //currentView = VIEW_HELP;
+                break;
+
+                // Scan for ROMs
+              case 4:
+                romList.GenerateROMList();
+                break;
+              }
+              break;
+
+              // *** VIEW_OPTIONS *** //
+            case VIEW_OPTIONS:
+              currentView = VIEW_ROMLIST;
+              break;
+
+              // *** VIEW_LIGHTGUNCALIBRATOR *** //
+            case VIEW_LIGHTGUNCALIBRATOR:
+              currentView = VIEW_ROMLIST;
+              break;
+
+              // *** VIEW_HELP *** //
+            case VIEW_HELP:
+              currentView = VIEW_ROMLIST;
+              break;
+            }
+          }
+        }
         startMenu.Reset();
         Helper_SetStartMenuItems( startMenu, currentView );
       }
@@ -601,6 +654,7 @@ static void Helper_SetStartMenuItems( CStartMenu &startMenu, viewmode currentVie
     // *** VIEW_ROMLIST *** //
   case VIEW_ROMLIST:
     startMenu.SetMenuTitle( ":: ROM List ::" );
+    startMenu.AddMenuItem( "Help" );
     startMenu.AddMenuItem( "Options Menu" );
     startMenu.AddMenuItem( "Lightgun Calibration" );
     startMenu.AddMenuItem( "Remove Selected ROM" );
@@ -610,16 +664,19 @@ static void Helper_SetStartMenuItems( CStartMenu &startMenu, viewmode currentVie
     // *** VIEW_OPTIONS *** //
   case VIEW_OPTIONS:
     startMenu.SetMenuTitle( ":: Options Menu ::" );
+    startMenu.AddMenuItem( "ROM List" );
     break;
 
     // *** VIEW_LIGHTGUNCALIBRATOR *** //
   case VIEW_LIGHTGUNCALIBRATOR:
     startMenu.SetMenuTitle( ":: Lightgun Calibrator ::" );
+    startMenu.AddMenuItem( "ROM List" );
     break;
 
     // *** VIEW_HELP *** //
   case VIEW_HELP:
     startMenu.SetMenuTitle( ":: Help ::" );
+    startMenu.AddMenuItem( "ROM List" );
     break;
   }
 
@@ -1186,6 +1243,21 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 	g_inputManager.WaitForNoButton( 0 );
 
   SAFE_RELEASE( creditsTexture );
+}
+
+//-------------------------------------------------------------
+//	Helper_SaveOptionsAndReboot
+//-------------------------------------------------------------
+static void Helper_SaveOptionsAndReboot( LPDIRECT3DDEVICE8 pD3DDevice, CROMList &romList )
+{
+  g_romListOptions = romList.GetOptions();
+  romList.GetCursorPosition(  &g_persistentLaunchData.m_cursorPosition, 
+                              &g_persistentLaunchData.m_pageOffset,
+                              &g_persistentLaunchData.m_superscrollIndex );
+  SaveOptions();
+  LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
+  DWORD retVal = XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
+  Die( pD3DDevice, "Failed to launch the dashboard! 0x%X", retVal );
 }
 
 

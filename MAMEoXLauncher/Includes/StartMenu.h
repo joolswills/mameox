@@ -93,6 +93,7 @@ public:
   BOOL IsInputCancelled( void ) const { return m_inputState == MENU_CANCELLED; }
 
   UINT32 GetCursorPosition( void ) const { return m_cursorPosition; }
+  UINT32 GetNumMenuItems( void ) const { return m_menuItems.size(); }
 
 protected:
 
