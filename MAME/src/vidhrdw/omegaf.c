@@ -1,11 +1,11 @@
-#pragma code_seg("C389")
-#pragma data_seg("D389")
-#pragma bss_seg("B389")
-#pragma const_seg("K389")
-#pragma comment(linker, "/merge:D389=389")
-#pragma comment(linker, "/merge:C389=389")
-#pragma comment(linker, "/merge:B389=389")
-#pragma comment(linker, "/merge:K389=389")
+#pragma code_seg("C467")
+#pragma data_seg("D467")
+#pragma bss_seg("B467")
+#pragma const_seg("K467")
+#pragma comment(linker, "/merge:D467=467")
+#pragma comment(linker, "/merge:C467=467")
+#pragma comment(linker, "/merge:B467=467")
+#pragma comment(linker, "/merge:K467=467")
 /***************************************************************************
 
 Functions to emulate the video hardware of the machine.

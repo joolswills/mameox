@@ -1,11 +1,11 @@
-#pragma code_seg("C329")
-#pragma data_seg("D329")
-#pragma bss_seg("B329")
-#pragma const_seg("K329")
-#pragma comment(linker, "/merge:D329=329")
-#pragma comment(linker, "/merge:C329=329")
-#pragma comment(linker, "/merge:B329=329")
-#pragma comment(linker, "/merge:K329=329")
+#pragma code_seg("C404")
+#pragma data_seg("D404")
+#pragma bss_seg("B404")
+#pragma const_seg("K404")
+#pragma comment(linker, "/merge:D404=404")
+#pragma comment(linker, "/merge:C404=404")
+#pragma comment(linker, "/merge:B404=404")
+#pragma comment(linker, "/merge:K404=404")
 #include "driver.h"
 
 unsigned char *mexico86_videoram,*mexico86_objectram;

@@ -1,3 +1,11 @@
+#pragma code_seg("C9")
+#pragma data_seg("D9")
+#pragma bss_seg("B9")
+#pragma const_seg("K9")
+#pragma comment(linker, "/merge:D9=9")
+#pragma comment(linker, "/merge:C9=9")
+#pragma comment(linker, "/merge:B9=9")
+#pragma comment(linker, "/merge:K9=9")
 /***************************************************************************
 
 	Atari Rampart hardware
@@ -218,3 +226,7 @@ void rampart_bitmap_render(struct mame_bitmap *bitmap, const struct rectangle *c
 	/* copy the cached bitmap */
 	copybitmap(bitmap, pfbitmap, 0, 0, 0, 0, cliprect, TRANSPARENCY_NONE, 0);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

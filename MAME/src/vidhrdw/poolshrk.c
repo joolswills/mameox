@@ -1,11 +1,11 @@
-#pragma code_seg("C421")
-#pragma data_seg("D421")
-#pragma bss_seg("B421")
-#pragma const_seg("K421")
-#pragma comment(linker, "/merge:D421=421")
-#pragma comment(linker, "/merge:C421=421")
-#pragma comment(linker, "/merge:B421=421")
-#pragma comment(linker, "/merge:K421=421")
+#pragma code_seg("C500")
+#pragma data_seg("D500")
+#pragma bss_seg("B500")
+#pragma const_seg("K500")
+#pragma comment(linker, "/merge:D500=500")
+#pragma comment(linker, "/merge:C500=500")
+#pragma comment(linker, "/merge:B500=500")
+#pragma comment(linker, "/merge:K500=500")
 /***************************************************************************
 
 Atari Poolshark video emulation

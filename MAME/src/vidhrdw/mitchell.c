@@ -1,11 +1,11 @@
-#pragma code_seg("C340")
-#pragma data_seg("D340")
-#pragma bss_seg("B340")
-#pragma const_seg("K340")
-#pragma comment(linker, "/merge:D340=340")
-#pragma comment(linker, "/merge:C340=340")
-#pragma comment(linker, "/merge:B340=340")
-#pragma comment(linker, "/merge:K340=340")
+#pragma code_seg("C415")
+#pragma data_seg("D415")
+#pragma bss_seg("B415")
+#pragma const_seg("K415")
+#pragma comment(linker, "/merge:D415=415")
+#pragma comment(linker, "/merge:C415=415")
+#pragma comment(linker, "/merge:B415=415")
+#pragma comment(linker, "/merge:K415=415")
 /***************************************************************************
 
  Pang Video Hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C391")
-#pragma data_seg("D391")
-#pragma bss_seg("B391")
-#pragma const_seg("K391")
-#pragma comment(linker, "/merge:D391=391")
-#pragma comment(linker, "/merge:C391=391")
-#pragma comment(linker, "/merge:B391=391")
-#pragma comment(linker, "/merge:K391=391")
+#pragma code_seg("C469")
+#pragma data_seg("D469")
+#pragma bss_seg("B469")
+#pragma const_seg("K469")
+#pragma comment(linker, "/merge:D469=469")
+#pragma comment(linker, "/merge:C469=469")
+#pragma comment(linker, "/merge:B469=469")
+#pragma comment(linker, "/merge:K469=469")
 /* One Shot One Kill Video Hardware */
 
 #include "driver.h"

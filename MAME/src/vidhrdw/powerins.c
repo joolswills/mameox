@@ -1,11 +1,11 @@
-#pragma code_seg("C426")
-#pragma data_seg("D426")
-#pragma bss_seg("B426")
-#pragma const_seg("K426")
-#pragma comment(linker, "/merge:D426=426")
-#pragma comment(linker, "/merge:C426=426")
-#pragma comment(linker, "/merge:B426=426")
-#pragma comment(linker, "/merge:K426=426")
+#pragma code_seg("C505")
+#pragma data_seg("D505")
+#pragma bss_seg("B505")
+#pragma const_seg("K505")
+#pragma comment(linker, "/merge:D505=505")
+#pragma comment(linker, "/merge:C505=505")
+#pragma comment(linker, "/merge:B505=505")
+#pragma comment(linker, "/merge:K505=505")
 /***************************************************************************
 
 						  -= Power Instinct =-

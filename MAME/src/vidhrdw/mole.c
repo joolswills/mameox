@@ -1,11 +1,11 @@
-#pragma code_seg("C344")
-#pragma data_seg("D344")
-#pragma bss_seg("B344")
-#pragma const_seg("K344")
-#pragma comment(linker, "/merge:D344=344")
-#pragma comment(linker, "/merge:C344=344")
-#pragma comment(linker, "/merge:B344=344")
-#pragma comment(linker, "/merge:K344=344")
+#pragma code_seg("C419")
+#pragma data_seg("D419")
+#pragma bss_seg("B419")
+#pragma const_seg("K419")
+#pragma comment(linker, "/merge:D419=419")
+#pragma comment(linker, "/merge:C419=419")
+#pragma comment(linker, "/merge:B419=419")
+#pragma comment(linker, "/merge:K419=419")
 /***************************************************************************
   vidhrdw/mole.c
   Functions to emulate the video hardware of Mole Attack!.

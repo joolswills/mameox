@@ -1,11 +1,11 @@
-#pragma code_seg("C342")
-#pragma data_seg("D342")
-#pragma bss_seg("B342")
-#pragma const_seg("K342")
-#pragma comment(linker, "/merge:D342=342")
-#pragma comment(linker, "/merge:C342=342")
-#pragma comment(linker, "/merge:B342=342")
-#pragma comment(linker, "/merge:K342=342")
+#pragma code_seg("C417")
+#pragma data_seg("D417")
+#pragma bss_seg("B417")
+#pragma const_seg("K417")
+#pragma comment(linker, "/merge:D417=417")
+#pragma comment(linker, "/merge:C417=417")
+#pragma comment(linker, "/merge:B417=417")
+#pragma comment(linker, "/merge:K417=417")
 /*****************************************************************************
 
 Mahjong Sisters (c) 1986 Toa Plan

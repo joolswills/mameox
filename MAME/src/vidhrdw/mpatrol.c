@@ -1,3 +1,11 @@
+#pragma code_seg("C6")
+#pragma data_seg("D6")
+#pragma bss_seg("B6")
+#pragma const_seg("K6")
+#pragma comment(linker, "/merge:D6=6")
+#pragma comment(linker, "/merge:C6=6")
+#pragma comment(linker, "/merge:B6=6")
+#pragma comment(linker, "/merge:K6=6")
 /***************************************************************************
 
   vidhrdw.c
@@ -496,3 +504,7 @@ VIDEO_UPDATE( mpatrol )
 				&Machine->visible_area,TRANSPARENCY_COLOR,128+32);
 	}
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

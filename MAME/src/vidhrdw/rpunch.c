@@ -1,11 +1,11 @@
-#pragma code_seg("C457")
-#pragma data_seg("D457")
-#pragma bss_seg("B457")
-#pragma const_seg("K457")
-#pragma comment(linker, "/merge:D457=457")
-#pragma comment(linker, "/merge:C457=457")
-#pragma comment(linker, "/merge:B457=457")
-#pragma comment(linker, "/merge:K457=457")
+#pragma code_seg("C540")
+#pragma data_seg("D540")
+#pragma bss_seg("B540")
+#pragma const_seg("K540")
+#pragma comment(linker, "/merge:D540=540")
+#pragma comment(linker, "/merge:C540=540")
+#pragma comment(linker, "/merge:B540=540")
+#pragma comment(linker, "/merge:K540=540")
 /***************************************************************************
 
   vidhrdw/rpunch.c

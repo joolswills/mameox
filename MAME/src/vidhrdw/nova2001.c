@@ -1,3 +1,11 @@
+#pragma code_seg("C13")
+#pragma data_seg("D13")
+#pragma bss_seg("B13")
+#pragma const_seg("K13")
+#pragma comment(linker, "/merge:D13=13")
+#pragma comment(linker, "/merge:C13=13")
+#pragma comment(linker, "/merge:B13=13")
+#pragma comment(linker, "/merge:K13=13")
 /*******************************************************************************
 
      Nova 2001 - Video Description:
@@ -227,3 +235,7 @@ VIDEO_UPDATE( nova2001 )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

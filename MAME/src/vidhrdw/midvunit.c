@@ -1,11 +1,11 @@
-#pragma code_seg("C332")
-#pragma data_seg("D332")
-#pragma bss_seg("B332")
-#pragma const_seg("K332")
-#pragma comment(linker, "/merge:D332=332")
-#pragma comment(linker, "/merge:C332=332")
-#pragma comment(linker, "/merge:B332=332")
-#pragma comment(linker, "/merge:K332=332")
+#pragma code_seg("C407")
+#pragma data_seg("D407")
+#pragma bss_seg("B407")
+#pragma const_seg("K407")
+#pragma comment(linker, "/merge:D407=407")
+#pragma comment(linker, "/merge:C407=407")
+#pragma comment(linker, "/merge:B407=407")
+#pragma comment(linker, "/merge:K407=407")
 /*************************************************************************
 
 	Driver for Midway V-Unit games

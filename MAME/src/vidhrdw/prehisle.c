@@ -1,11 +1,11 @@
-#pragma code_seg("C427")
-#pragma data_seg("D427")
-#pragma bss_seg("B427")
-#pragma const_seg("K427")
-#pragma comment(linker, "/merge:D427=427")
-#pragma comment(linker, "/merge:C427=427")
-#pragma comment(linker, "/merge:B427=427")
-#pragma comment(linker, "/merge:K427=427")
+#pragma code_seg("C506")
+#pragma data_seg("D506")
+#pragma bss_seg("B506")
+#pragma const_seg("K506")
+#pragma comment(linker, "/merge:D506=506")
+#pragma comment(linker, "/merge:C506=506")
+#pragma comment(linker, "/merge:B506=506")
+#pragma comment(linker, "/merge:K506=506")
 /***************************************************************************
 
 	Prehistoric Isle video routines

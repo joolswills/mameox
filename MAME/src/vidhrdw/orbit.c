@@ -1,11 +1,11 @@
-#pragma code_seg("C393")
-#pragma data_seg("D393")
-#pragma bss_seg("B393")
-#pragma const_seg("K393")
-#pragma comment(linker, "/merge:D393=393")
-#pragma comment(linker, "/merge:C393=393")
-#pragma comment(linker, "/merge:B393=393")
-#pragma comment(linker, "/merge:K393=393")
+#pragma code_seg("C471")
+#pragma data_seg("D471")
+#pragma bss_seg("B471")
+#pragma const_seg("K471")
+#pragma comment(linker, "/merge:D471=471")
+#pragma comment(linker, "/merge:C471=471")
+#pragma comment(linker, "/merge:B471=471")
+#pragma comment(linker, "/merge:K471=471")
 /***************************************************************************
 
 Atari Orbit video emulation

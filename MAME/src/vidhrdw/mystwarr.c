@@ -1,11 +1,11 @@
-#pragma code_seg("C359")
-#pragma data_seg("D359")
-#pragma bss_seg("B359")
-#pragma const_seg("K359")
-#pragma comment(linker, "/merge:D359=359")
-#pragma comment(linker, "/merge:C359=359")
-#pragma comment(linker, "/merge:B359=359")
-#pragma comment(linker, "/merge:K359=359")
+#pragma code_seg("C25")
+#pragma data_seg("D25")
+#pragma bss_seg("B25")
+#pragma const_seg("K25")
+#pragma comment(linker, "/merge:D25=25")
+#pragma comment(linker, "/merge:C25=25")
+#pragma comment(linker, "/merge:B25=25")
+#pragma comment(linker, "/merge:K25=25")
 #define MW_VERBOSE 0
 
 /*

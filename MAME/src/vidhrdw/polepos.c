@@ -1,11 +1,11 @@
-#pragma code_seg("C418")
-#pragma data_seg("D418")
-#pragma bss_seg("B418")
-#pragma const_seg("K418")
-#pragma comment(linker, "/merge:D418=418")
-#pragma comment(linker, "/merge:C418=418")
-#pragma comment(linker, "/merge:B418=418")
-#pragma comment(linker, "/merge:K418=418")
+#pragma code_seg("C497")
+#pragma data_seg("D497")
+#pragma bss_seg("B497")
+#pragma const_seg("K497")
+#pragma comment(linker, "/merge:D497=497")
+#pragma comment(linker, "/merge:C497=497")
+#pragma comment(linker, "/merge:B497=497")
+#pragma comment(linker, "/merge:K497=497")
 #include "driver.h"
 
 data16_t *polepos_view16_memory;
