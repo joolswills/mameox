@@ -139,7 +139,17 @@ void seq_read_async_start(void);
 int seq_read_async(InputSeq* code, int first);
 
 /* NOTE: It's very important that this sequence is EXACLY long SEQ_MAX */
-#define SEQ_DEF_6(a,b,c,d,e,f) { a, b, c, d, e, f, CODE_NONE, CODE_NONE, CODE_NONE, CODE_NONE, CODE_NONE, CODE_NONE, CODE_NONE, CODE_NONE, CODE_NONE, CODE_NONE }
+#define SEQ_DEF_16(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p) { a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p }
+#define SEQ_DEF_15(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o) SEQ_DEF_16(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,CODE_NONE)
+#define SEQ_DEF_14(a,b,c,d,e,f,g,h,i,j,k,l,m,n) SEQ_DEF_15(a,b,c,d,e,f,g,h,i,j,k,l,m,n,CODE_NONE)
+#define SEQ_DEF_13(a,b,c,d,e,f,g,h,i,j,k,l,m) SEQ_DEF_14(a,b,c,d,e,f,g,h,i,j,k,l,m,CODE_NONE)
+#define SEQ_DEF_12(a,b,c,d,e,f,g,h,i,j,k,l) SEQ_DEF_13(a,b,c,d,e,f,g,h,i,j,k,l,CODE_NONE)
+#define SEQ_DEF_11(a,b,c,d,e,f,g,h,i,j,k) SEQ_DEF_12(a,b,c,d,e,f,g,h,i,j,k,CODE_NONE)
+#define SEQ_DEF_10(a,b,c,d,e,f,g,h,i,j) SEQ_DEF_11(a,b,c,d,e,f,g,h,i,j,CODE_NONE)
+#define SEQ_DEF_9(a,b,c,d,e,f,g,h,i) SEQ_DEF_10(a,b,c,d,e,f,g,h,i,CODE_NONE)
+#define SEQ_DEF_8(a,b,c,d,e,f,g,h) SEQ_DEF_9(a,b,c,d,e,f,g,h,CODE_NONE)
+#define SEQ_DEF_7(a,b,c,d,e,f,g) SEQ_DEF_8(a,b,c,d,e,f,g,CODE_NONE)
+#define SEQ_DEF_6(a,b,c,d,e,f) SEQ_DEF_7(a,b,c,d,e,f,CODE_NONE)
 #define SEQ_DEF_5(a,b,c,d,e) SEQ_DEF_6(a,b,c,d,e,CODE_NONE)
 #define SEQ_DEF_4(a,b,c,d) SEQ_DEF_5(a,b,c,d,CODE_NONE)
 #define SEQ_DEF_3(a,b,c) SEQ_DEF_4(a,b,c,CODE_NONE)
