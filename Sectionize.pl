@@ -824,8 +824,11 @@ $Z80Family = "Z80";
 $z8000Family = "Z8000";
 @z8000Clones = ( "Z8000" );
 
+$g65816Family = "g65816";
+@g65816Clones = ( "g65816" );
 
-
+$spc700Family = "spc700";
+@spc700Clones = ( "spc700" );
 
 @Families = (	\$Z80Family, 
 				\$Z180Family, 
@@ -860,7 +863,9 @@ $z8000Family = "Z8000";
 				\$armFamily,
 				\$sh2Family,
 				\$dsp32Family,
-				\$pic16c5xFamily );
+				\$pic16c5xFamily,
+				\$g65816Family,
+				\$spc700Family );
 
 
 
@@ -897,7 +902,9 @@ $z8000Family = "Z8000";
 			\@armClones,
 			\@sh2Clones,
 			\@dsp32Clones,
-			\@pic16c5xClones );
+			\@pic16c5xClones,
+			\@g65816Clones,
+			\@spc700Clones );
 
 $autoNameNumber = $#Families + 10;
 
