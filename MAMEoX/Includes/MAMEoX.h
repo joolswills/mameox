@@ -170,6 +170,17 @@ const XINPUT_CAPABILITIES *GetGamepadCaps( UINT32 joynum );
 void PollGamepads( void );
 
 	//-------------------------------------------------------------------
+	//	GetLightgunCalibratedPosition
+	//! \brief		Returns the calibrated position of the selected lightgun
+  //!            mapped to [-128,128]
+  //!
+  //! \param    joynum - The 0 based index of the gameport containing a lightgun
+  //! \param    x - [OUT] variable to receive the X position
+  //! \param    y - [OUT] variable to receive the Y position
+	//-------------------------------------------------------------------
+void GetLightgunCalibratedPosition( UINT32 joynum, INT32 *x, INT32 *y );
+
+	//-------------------------------------------------------------------
 	//	BeginFontRender
 	//! \brief		Set up a font rendering batch
   //!
