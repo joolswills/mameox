@@ -261,7 +261,12 @@ BOOL CSystem_IniFile::GetValueString( const std::string &section,
 	{
 		if( !strncasecmp( (*i).c_str(), entryName.c_str(), entryName.length() ) )
 		{
-			char *front = strstr( (*i).c_str(), "=" );
+				// Make sure the entire INI entry matches, and that entryName is not just a substring of the entry
+			std::string temp = (*i);
+			if( strcasecmp( entryName.c_str(), CSystem_StringModifier::TokenStr( temp ).c_str() ) )
+				continue;
+
+			char *front = strchr( (*i).c_str(), '=' );
 			if( !front )
 				return FALSE;
 
