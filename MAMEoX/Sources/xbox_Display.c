@@ -175,7 +175,6 @@ void osd_update_video_and_audio(struct mame_display *display)
   static cycles_t lastFrameEndTime = 0;
   const struct performance_info *performance = mame_get_performance_info();
 
-
     // Handle the special MAME core hook input IDs
 	if( input_ui_pressed( IPT_UI_FRAMESKIP_INC ) )
 	{
@@ -332,7 +331,36 @@ void osd_update_video_and_audio(struct mame_display *display)
 
 		// Poll input
 	PollGamepads();
-	
+
+#ifdef _DEBUG
+  {
+        // Decide whether or not to show the MAMEoX debug console
+      static cycles_t       toggleAfterCycle = 0;
+      static BOOL           toggledThisPress = FALSE;
+      const XINPUT_GAMEPAD  *gp0 = GetGamepadState( 0 );
+
+      if( gp0 && (gp0->wButtons & XINPUT_GAMEPAD_BACK) )
+      {
+        if( !toggleAfterCycle )
+        {
+            // This is the first time we've noticed that the BACK button is
+            // held down. Calculate how long it needs to be held down before
+            // we should toggle the console
+          toggleAfterCycle = osd_cycles() + (osd_cycles_per_second() * DEBUGCONSOLE_TOGGLE_DELAY);
+        }
+        else if( !toggledThisPress && osd_cycles() >= toggleAfterCycle )
+        {
+          ToggleDebugConsole();
+          toggledThisPress = TRUE;
+        }
+      }
+      else
+      {
+        toggleAfterCycle = 0;
+        toggledThisPress = FALSE;
+      }
+  }
+#endif
 }
 
 //---------------------------------------------------------------------

@@ -22,6 +22,11 @@
 #define MT_ERROR       0x02
 #define MT_INFO        0x04
 
+  //! The number of seconds that the BACK button has to be
+  //! held down before the debug console is toggled (note that the
+  //! actual handling is done in xbox_Display.c and main.cpp, not here)
+#define DEBUGCONSOLE_TOGGLE_DELAY     2
+
 #ifdef _DEBUG
 
   #define DebugLoggerFlush()							
@@ -68,6 +73,13 @@ extern "C" {
   //! \brief    Initialize the debug system
   //----------------------------------------------------------------------------
 HRESULT DebugLoggerInit( void );
+
+
+  //----------------------------------------------------------------------------
+  //  ToggleDebugConsole
+  //! \brief    Toggle between showing and hiding the debug console
+  //----------------------------------------------------------------------------
+void ToggleDebugConsole( void );
 
 #ifdef _DEBUG
   //----------------------------------------------------------------------------

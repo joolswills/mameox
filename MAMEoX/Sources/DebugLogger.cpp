@@ -28,6 +28,9 @@
 extern CGraphicsManager	  g_graphicsManager;
 extern CFontSet           g_fontSet;
 
+  // Whether or not to enable the debug console
+static BOOL               g_enableDebugConsole = TRUE;
+
 //#if defined(_DEBUG) || defined(_LOGDEBUGMESSAGES)
 static const char   g_LevelName[][4] = {	"TRC",
                                           "INF", 
@@ -93,6 +96,14 @@ extern "C" HRESULT DebugLoggerInit( void )
   return S_OK;
 }
 
+
+//-------------------------------------------------------
+//  ToggleDebugConsole
+//-------------------------------------------------------
+void ToggleDebugConsole( void )
+{
+  g_enableDebugConsole = !g_enableDebugConsole;
+}
 
 /*
 //-------------------------------------------------------
@@ -335,7 +346,7 @@ void Helper_ConsolePrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNum
 //----------------------------------------------------------------------------
 void Helper_RenderDebugConsole( void *device )
 {
-  if( !g_debugConsoleData.size() || !device )
+  if( !g_debugConsoleData.size() || !device || !g_enableDebugConsole )
     return;
 
   LPDIRECT3DDEVICE8 pD3DDevice = (LPDIRECT3DDEVICE8)device;
