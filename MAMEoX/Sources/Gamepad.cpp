@@ -12,7 +12,7 @@
 
 
 //= D E F I N E S =============================================================
-#define STICK_DEADZONE              0.35f
+#define STICK_DEADZONE              0.38f
 
 //= G L O B A L = V A R S =====================================================
 
@@ -340,16 +340,6 @@ const XINPUT_GAMEPAD *CGamepad::GetGamepadDeviceState( void ) const
   return NULL;
 }
 
-//------------------------------------------------------
-//	GetGamepadDeviceCaps
-//------------------------------------------------------
-const XINPUT_CAPABILITIES *CGamepad::GetGamepadDeviceCaps( void ) const 
-{
-	if( IsConnected() )
-    return &m_caps;
-
-  return NULL;
-}
 
 //------------------------------------------------------
 //	SetLightgunCalibration
@@ -424,6 +414,7 @@ void CGamepad::AttachRemoveGamepadDevice( void )
 																							            m_portName,				
 																							            XDEVICE_NO_SLOT,			// Gamepad, so no slot
 																							            NULL );								// No special polling params
+    assert( m_deviceHandle );
     XInputGetCapabilities( m_deviceHandle, &m_caps );
 	}
 }

@@ -31,7 +31,8 @@
 
 
 	// Number of seconds between valid DPAD readings
-#define DPADCURSORMOVE_TIMEOUT	0.20f
+#define DPADCURSORMOVE_TIMEOUT	0.2f
+#define KEYBOARDINPUT_TIMEOUT   0.2f
 
 //= G L O B A L = V A R S ==============================================
 
@@ -83,11 +84,9 @@ void CVirtualKeyboard::MoveCursor( CInputManager &gp, BOOL unused )
   if( m_buttonDelay > 0.0f )
   {
     m_buttonDelay -= elapsedTime;
-    if( m_buttonDelay < 0.0f || !gp.IsOneOfButtonsPressed( GP_A | GP_B ) )
+    if( m_buttonDelay < 0.0f || !(gp.IsOneOfButtonsPressed( GP_A | GP_B ) || gp.IsAnyKeyPressed()) )
       m_buttonDelay = 0.0f;
   }
-
-
 
   if( m_dpadCursorDelay == 0.0f )
   {
@@ -188,11 +187,109 @@ void CVirtualKeyboard::MoveCursor( CInputManager &gp, BOOL unused )
           --m_dataDrawStartPosition;
       }
     }
+
+
+        // Check the keyboard
+    if( gp.IsKeyPressed( VK_BACK ) )
+    {
+      m_buttonDelay = KEYBOARDINPUT_TIMEOUT;
+      if( m_data.length() )
+      {
+        m_data = m_data.substr( 0, m_data.length() - 1 );
+        if( m_dataDrawStartPosition )
+          --m_dataDrawStartPosition;
+      }
+    }
+    else
+    {
+        // Colon (PERIOD on a German KB, Semicolon on a US)
+      BYTE keys[2] = { VK_OEM_PERIOD, VK_OEM_1 };
+      if( gp.IsOneOfKeysPressed( keys, 2 ) )
+      {
+        m_buttonDelay = KEYBOARDINPUT_TIMEOUT;
+        m_data += ":";
+        if( m_data.length() >= (m_maxDisplayableChars - 1) )
+          ++m_dataDrawStartPosition;
+      }
+
+        // Slash (German / is handled elsewhere)
+      if( gp.IsKeyPressed( VK_OEM_2 ) )
+      {
+        m_buttonDelay = KEYBOARDINPUT_TIMEOUT;
+        m_data += "/";
+        if( m_data.length() >= (m_maxDisplayableChars - 1) )
+          ++m_dataDrawStartPosition;
+      }
+
+        // Backslash (German: VK_OEM_MINUS, US: VK_OEM_5)
+      keys[0] = VK_OEM_MINUS;
+      keys[1] = VK_OEM_5;
+      if( gp.IsOneOfKeysPressed( keys, 2 ) )
+      {
+        m_buttonDelay = KEYBOARDINPUT_TIMEOUT;
+        m_data += "\\";
+        if( m_data.length() >= (m_maxDisplayableChars - 1) )
+          ++m_dataDrawStartPosition;
+      }
+
+
+      BYTE keyIndex = 'A';
+      for( ; keyIndex < 'Z'; ++keyIndex )
+      {
+        if( gp.IsKeyPressed( keyIndex ) )
+        {
+          m_buttonDelay = KEYBOARDINPUT_TIMEOUT;
+            // Add the new char
+          char newChar[2] = {0};
+          newChar[0] = (char)keyIndex;
+
+            // Handle the @ symbol (German KB)
+          if( keyIndex == 'Q' && gp.IsKeyPressed( VK_RMENU ) )
+            newChar[0] = '@';
+
+          m_data += newChar;
+
+          if( m_data.length() >= (m_maxDisplayableChars - 1) )
+            ++m_dataDrawStartPosition;
+          break;
+        }
+      }
+
+      keys[0] = VK_LSHIFT;
+      keys[1] = VK_RSHIFT;
+      for( keyIndex = '0'; keyIndex < '9'; ++keyIndex )
+      {
+        if( gp.IsKeyPressed( keyIndex ) )
+        {
+          m_buttonDelay = KEYBOARDINPUT_TIMEOUT;
+
+            // Add the new char
+          char newChar[2] = {0};
+          newChar[0] = (char)keyIndex;
+
+            // Handle the @ symbol
+          if( keyIndex == '2' && gp.IsOneOfKeysPressed( keys, 2 ) )
+            newChar[0] = '@';
+          else if( keyIndex == '7' && gp.IsOneOfKeysPressed( keys, 2 ) )
+          {
+              // German '/' key
+            newChar[0] = '/';
+          }
+
+          m_data += newChar;
+
+          if( m_data.length() >= (m_maxDisplayableChars - 1) )
+            ++m_dataDrawStartPosition;
+          break;
+        }
+      }
+    }
   }
 
-  if( gp.IsButtonPressed( GP_BACK ) )
+
+  if( gp.IsButtonPressed( GP_BACK ) || gp.IsKeyPressed( VK_DELETE ) )
     m_inputState = MENU_CANCELLED;
-  else if( gp.IsButtonPressed( GP_START ) )
+  else if( gp.IsButtonPressed( GP_START ) || gp.IsKeyPressed( VK_RETURN ) )
     m_inputState = MENU_ACCEPTED;
 }
 

@@ -5,66 +5,54 @@
  ROM List Controls
 -------------------
 
-A     - Play selected ROM
-X     - Toggle this Help file
-Y     - Hold to enter "Super Scroll" mode. 
-        At the top of the screen, a letter 
-        (or # symbol) will appear. Using the
-        DPAD up and down buttons, you can 
-        change the letter; skipping to the 
-        section of the list starting with 
-        that letter.
-BLACK - Toggle between showing and hiding 
-        clones
-WHITE - Cycle through the ROM listing modes
-        (Verbose list mode, simple list 
-        mode, and detailed mode)
-START - Toggle the start menu, from which
-        you can remove ROMs, scan for new
-        ROMs, switch to the Options menu,
-        the Lightgun calibration screen, 
-        etc...
+ The controls listed in brackets ([]) define
+the equivalent keyboard control for each
+function.
+
+A [Return]  - Play selected ROM
+X [F1]      - Toggle this Help file
+Y [L Shift] - Hold to enter "Fast Jump"
+              mode. 
+              Using the DPAD up and down 
+              buttons, you can quickly skip
+              around in the ROM list. The
+              skip method is determined by
+              the current sort mode.
+BLACK [Space]  - Toggle between showing and
+                 hiding clones
+WHITE [Tab]    - Cycle through the ROM 
+                 listing modes (Verbose 
+                 List, Simple List, and 
+                 Detailed)
+START [Escape] - Toggle the start menu, from
+                 which you can remove ROMs,
+                 scan for new ROMs, switch 
+                 to the Options menu, the
+                 Lightgun calibration 
+                 screen, etc...
 
 -- List Navigation -------------------------
 Left Trigger           - Move the ROM cursor
-                         up fast
+                         up fast.
 Right Trigger          - Move the ROM cursor
-                         down fast
-DPAD/Left Analog Stick - Move the ROM cursor
-                         up/down slowly
+                         down fast.
+DPAD [Arrow Keys]      - Move the ROM cursor 
+                         up/down slowly.
 
--- Screen Size -----------------------------
-Right Analog Stick - 
-        Click the stick to toggle between
-        Stretch and Move modes.
-
-        Stretch mode:
-        Used to set the screen usage
-        percentage for MAME rendering.
-        Moving the stick will resize the
-        selection screen (this area
-        corresponds to the area into which
-        the game screen will be rendered). 
-        This should be sized such that the 
-        blue border just barely fits on the
-        screen. Failure to do this may cause
-        clipping (where parts of the screen
-        are not visible) or suboptimal usage
-        (where there is a larger than 
-        necessary black border around the
-        game screen).
-
-        Move mode:
-        Used to set the screen position
-        for MAME rendering. Moving the 
-        stick will change the position of
-        the screen.
+-- Screen Shots -----------------------------
+Click Left Analog Stick [PrintScreen] - 
+        Click the stick to dump a screenshot
+        to the screenshots directory. Note
+        that this is really only for debugging
+        purposes, and there is no way to view
+        the screenshot within MAMEoX.
 
 -- Exiting MAMEoX --------------------------
-Pressing Left Trigger, Right Trigger, and 
-the Black button on Gamepad 1 will jump to
-the dashboard. You can also exit using the
-option in the START menu.
+Left Trigger + Right Trigger + BLACK
+[Left Ctrl + Left Alt + Delete] -
+                Exit to the dashboard. 
+                You can also exit using the
+                option in the START menu.
 
  
 ============================================

@@ -59,22 +59,17 @@ void CStartMenu::MoveCursor( CInputManager &gp, BOOL unused )
 		// Decrement the dpad movement timer
 	if( m_dpadCursorDelay > 0.0f )
 	{
+    BYTE arrowKeys[2] = { VK_UP, VK_DOWN };
 		m_dpadCursorDelay -= elapsedTime;
     
-		if( m_dpadCursorDelay < 0.0f || !gp.IsOneOfButtonsPressed( GP_DPAD_MASK | GP_LA_MASK ) )
+		if( m_dpadCursorDelay < 0.0f || 
+        !(gp.IsOneOfButtonsPressed( GP_DPAD_MASK | GP_LA_MASK ) || gp.IsOneOfKeysPressed( arrowKeys, 2 )) )
 			m_dpadCursorDelay = 0.0f;
 	}
 
-  if( m_buttonDelay > 0.0f )
-  {
-    m_buttonDelay -= elapsedTime;
-    if( m_buttonDelay < 0.0f || !gp.IsOneOfButtonsPressed( GP_A | GP_B ) )
-      m_buttonDelay = 0.0f;
-  }
-
   if( m_dpadCursorDelay == 0.0f )
   {
-    if( gp.IsOneOfButtonsPressed( GP_DPAD_DOWN | GP_LA_DOWN ) )
+    if( gp.IsOneOfButtonsPressed( GP_DPAD_DOWN | GP_LA_DOWN ) || gp.IsKeyPressed( VK_DOWN ) )
 	  {
       if( m_cursorPosition < (m_menuItems.size() - 1) )
         ++m_cursorPosition;
@@ -83,7 +78,7 @@ void CStartMenu::MoveCursor( CInputManager &gp, BOOL unused )
 		  
       m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
 	  }
-    else if( gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_LA_UP ) )
+    else if( gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_LA_UP ) || gp.IsKeyPressed( VK_UP )  )
 	  {
       if( m_cursorPosition )
         --m_cursorPosition;
@@ -95,13 +90,13 @@ void CStartMenu::MoveCursor( CInputManager &gp, BOOL unused )
   }
 
 
-  if( gp.IsOneOfButtonsPressed( GP_BACK | GP_START | GP_B ) )
+  if( gp.IsOneOfButtonsPressed( GP_BACK | GP_START | GP_B ) || gp.IsKeyPressed( VK_ESCAPE ) )
   {
       // Quit the menu
     m_inputState = MENU_CANCELLED;
     gp.WaitForNoButton();
   }
-  else if( gp.IsButtonPressed( GP_A ) )
+  else if( gp.IsButtonPressed( GP_A ) || gp.IsKeyPressed( VK_RETURN ) )
   {
       // Execute the selected item
     m_inputState = MENU_ACCEPTED;

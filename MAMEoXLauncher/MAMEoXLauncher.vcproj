@@ -164,6 +164,9 @@
 				RelativePath="..\MAMEoX\Sources\InputManager.cpp">
 			</File>
 			<File
+				RelativePath="..\MAMEoX\Sources\Keyboard.cpp">
+			</File>
+			<File
 				RelativePath=".\Sources\LightgunCalibratorScreen.cpp">
 			</File>
 			<File

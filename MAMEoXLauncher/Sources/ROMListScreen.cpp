@@ -1450,12 +1450,7 @@ findEndTag:
 void CROMListScreen::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
 {
    	// Handle user input
-  if(  gp.IsButtonPressed( GP_B | GP_A ) )
-  {
-    m_shouldGenerateROMList = TRUE;
-    gp.WaitForNoButton();
-  }
-  else if( gp.IsOneOfButtonsPressed( GP_A ) )
+  if( gp.IsButtonPressed( GP_A ) || gp.IsKeyPressed( VK_RETURN )  )
 	{
 			// Run the selected ROM
     if( GetCurrentGameIndex() != INVALID_ROM_INDEX  )
@@ -1468,7 +1463,7 @@ void CROMListScreen::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
       }
     }
 	}
-	else if( gp.IsButtonPressed( GP_WHITE ) )
+  else if( gp.IsButtonPressed( GP_WHITE ) || gp.IsKeyPressed( VK_TAB ) )
 	{
     if( m_options.m_displayMode < (DM_LAST - 1) )
       m_options.m_displayMode = (ROMListDisplayMode)(m_options.m_displayMode + 1);
@@ -1479,7 +1474,7 @@ void CROMListScreen::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
     m_numLinesInList = m_currentSortedList.size();
     gp.WaitForNoButton();
 	}
-  else if( gp.IsButtonPressed( GP_BLACK ) )
+  else if( gp.IsButtonPressed( GP_BLACK ) || gp.IsKeyPressed( VK_SPACE ) )
   {
       // No need to regenerate the list, just switch to
       // the noclones (or clones) list
@@ -1489,7 +1484,7 @@ void CROMListScreen::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
     m_numLinesInList = m_currentSortedList.size();
     gp.WaitForNoButton();
   }
-  else if( gp.IsButtonPressed( GP_DPAD_LEFT ) && m_favoriteStatusChangeDelay == 0.0f )
+  else if( (gp.IsButtonPressed( GP_DPAD_LEFT ) || gp.IsKeyPressed( VK_LEFT )) && m_favoriteStatusChangeDelay == 0.0f )
   {
     DWORD currentGameIdx = GetCurrentGameIndex();
     if( currentGameIdx != INVALID_ROM_INDEX )
@@ -1523,7 +1518,7 @@ void CROMListScreen::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
       m_favoriteStatusChangeDelay = DPADCURSORMOVE_TIMEOUT;
     }
   }
-  else if( gp.IsButtonPressed( GP_DPAD_RIGHT ) && m_favoriteStatusChangeDelay == 0.0f )
+  else if( (gp.IsButtonPressed( GP_DPAD_RIGHT ) || gp.IsKeyPressed( VK_RIGHT )) && m_favoriteStatusChangeDelay == 0.0f )
   {
     DWORD currentGameIdx = GetCurrentGameIndex();
     if( currentGameIdx != INVALID_ROM_INDEX )
@@ -1573,26 +1568,30 @@ void CROMListScreen::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
 		// Decrement the dpad movement timer
 	if( m_dpadCursorDelay > 0.0f )
 	{
+    BYTE vkArrowKeys[2] = { VK_UP, VK_DOWN };
 		m_dpadCursorDelay -= elapsedTime;
     if( m_dpadCursorDelay < 0.0f || 
-        !gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_DPAD_DOWN | GP_LA_UP | GP_LA_DOWN ) )
+        (!gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_DPAD_DOWN | GP_LA_UP | GP_LA_DOWN ) &&
+         !gp.IsOneOfKeysPressed( vkArrowKeys, 2 )) )
 			m_dpadCursorDelay = 0.0f;
 	}
 
   if( m_favoriteStatusChangeDelay > 0.0f )
   {
+    BYTE vkArrowKeys[2] = { VK_LEFT, VK_RIGHT };
 		m_favoriteStatusChangeDelay -= elapsedTime;
     if( m_favoriteStatusChangeDelay < 0.0f || 
-        !gp.IsOneOfButtonsPressed( GP_DPAD_LEFT | GP_DPAD_RIGHT ) )
+        (!gp.IsOneOfButtonsPressed( GP_DPAD_LEFT | GP_DPAD_RIGHT ) &&
+         !gp.IsOneOfKeysPressed( vkArrowKeys, 2 )) )
 			m_favoriteStatusChangeDelay = 0.0f;
   }
 
-  if( gp.IsButtonPressed( GP_Y ) && !m_superscrollMode )
+  if( (gp.IsButtonPressed( GP_Y ) || gp.IsKeyPressed( VK_LSHIFT )) && !m_superscrollMode )
   {
     m_dpadCursorDelay = 0.0f;
     m_superscrollMode = TRUE;
   }
-  else if( m_superscrollMode && !gp.IsButtonPressed( GP_Y ) )
+  else if( m_superscrollMode && !(gp.IsButtonPressed( GP_Y ) || gp.IsKeyPressed( VK_LSHIFT )) )
   {
       //Exit superscrollmode
     m_dpadCursorDelay = 0.0f;
@@ -1610,7 +1609,8 @@ void CROMListScreen::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
 //---------------------------------------------------------------------
 void CROMListScreen::SuperScrollModeMoveCursor( CInputManager &gp, FLOAT elapsedTime )
 {
-  if( gp.IsOneOfButtonsPressed( GP_DPAD_DOWN | GP_LA_DOWN ) && m_dpadCursorDelay == 0.0f )
+  if( (gp.IsOneOfButtonsPressed( GP_DPAD_DOWN | GP_LA_DOWN ) || gp.IsKeyPressed( VK_DOWN )) 
+       && m_dpadCursorDelay == 0.0f )
 	{
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
     UINT32 startPos = m_currentSuperscrollIndex;
@@ -1618,7 +1618,8 @@ void CROMListScreen::SuperScrollModeMoveCursor( CInputManager &gp, FLOAT elapsed
     if( ++m_currentSuperscrollIndex >= m_superscrollJumpTable.size() )
       m_currentSuperscrollIndex = 0;
 	}
-  else if( gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_LA_UP ) && m_dpadCursorDelay == 0.0f )
+  else if( (gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_LA_UP ) || gp.IsKeyPressed( VK_UP )) 
+            && m_dpadCursorDelay == 0.0f )
 	{
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
     UINT32 startPos = m_currentSuperscrollIndex;
@@ -1671,7 +1672,7 @@ void CROMListScreen::NormalModeMoveCursor( CInputManager &gp, FLOAT elapsedTime 
 	}
 
 		// DPAD overrides the triggers
-  if( gp.IsOneOfButtonsPressed( GP_DPAD_DOWN | GP_LA_DOWN ) && m_dpadCursorDelay == 0.0f )
+  if( (gp.IsOneOfButtonsPressed( GP_DPAD_DOWN | GP_LA_DOWN ) || gp.IsKeyPressed( VK_DOWN )) && m_dpadCursorDelay == 0.0f )
 	{
 			// Round the cursor position down to a integer so that adding 1 will move to the next item
     m_pageOffset = (FLOAT)((LONG)m_pageOffset);
@@ -1679,7 +1680,7 @@ void CROMListScreen::NormalModeMoveCursor( CInputManager &gp, FLOAT elapsedTime 
     cursorVelocity = 1.0f;
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
 	}
-  else if( gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_LA_UP ) && m_dpadCursorDelay == 0.0f )
+  else if( (gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_LA_UP ) || gp.IsKeyPressed( VK_UP )) && m_dpadCursorDelay == 0.0f )
 	{
 			// Round the cursor position down to a integer so that subtracting 1 will move to the next item
     m_pageOffset = (FLOAT)((LONG)m_pageOffset);

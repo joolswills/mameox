@@ -11,6 +11,8 @@
 
 
 //= D E F I N E S =============================================================
+  // Dummy port index to allow the keyboard to be inserted into any port
+#define KEYBOARD_AUTOSEARCH_PORT      0xFF
 
 //= C L A S S E S =============================================================
 class CInputManager;
@@ -55,6 +57,11 @@ public:
 	    default:
     //			assert( 0 && "Invalid gamepad port number!" );
 		    // fallthrough
+
+          // Special case for keyboard "autosearch" (there
+          // can be only one keyboard, but it can go into
+          // any port)
+      case KEYBOARD_AUTOSEARCH_PORT:
 
 		    // *** 0 *** //
 	    case 0:
@@ -148,7 +155,19 @@ public:
 		return TRUE;
 	}
 
+		//------------------------------------------------------
+		//	GetDeviceCaps
+    //! Return the capabilities of this device
+    //!
+    //! \retval   const XINPUT_CAPABILITIES * - The requested
+    //!                                         caps object
+		//------------------------------------------------------
+  const XINPUT_CAPABILITIES *GetDeviceCaps( void ) const {
+	  if( IsConnected() )
+      return &m_caps;
 
+    return NULL;
+  }
 
   protected:
 

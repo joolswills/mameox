@@ -25,14 +25,19 @@ public:
 
 		//------------------------------------------------------
 		//	Create
-    //! \brief    Sets up the gamepad instance, must be
+    //! \brief    Sets up the keyboard instance, must be
     //!           called before any other functions will become
     //!           valid.
     //!
     //! \param    inputManager - Pointer to the CInputManager parent
 		//------------------------------------------------------
   BOOL Create( CInputManager *inputManager ) {
-    return CInputDevice::Create( 0, inputManager );
+    m_numKeysPressed = 0;
+    memset( m_keystrokeVector, 0, sizeof(m_keystrokeVector) );
+
+      // We pass KEYBOARD_AUTOSEARCH_PORT as the gamepad index, as this
+      // allows us to just take the first port that contains a keyboard
+    return CInputDevice::Create( KEYBOARD_AUTOSEARCH_PORT, inputManager );
   }
 
 		//------------------------------------------------------
@@ -40,57 +45,101 @@ public:
     //! \brief    Poll the associated physical device for
     //!           its current state
 		//------------------------------------------------------
-  virtual void PollDevice( void ) {
-    // KB devices are not polled
-  }
-
+  virtual void PollDevice( void );
 
 		//------------------------------------------------------
-		//	GetInputState
-    //! \brief    Returns the input state of the gamepad
+		//	GetNumKeysPressed
+    //! \brief    Check the number of keys currently held down
     //!
-    //! \return   UINT32 - input state of the gamepad, made up
-    //!                    of or'd gamepadButtonID_t values
+    //! \return   The number of valid keypresses in the buffer
 		//------------------------------------------------------
-  UINT32 GetInputState( void ) const {
-    return 0;
-  }
+  UINT32 GetNumKeysPressed( void ) const { return m_numKeysPressed; }
 
 		//------------------------------------------------------
 		//	WaitForAnyButton
-		//! \brief		Wait for any button to be pressed on the
-		//!            gamepad
+		//! \brief		Wait for any key to be pressed on the
+		//!            keyboard
 		//------------------------------------------------------
-  void WaitForAnyButton( void ) {}
+  void WaitForAnyButton( void );
 
 		//------------------------------------------------------
 		//	WaitForNoButton
 		//! \brief		Wait for all buttons to be released on the
-		//!            gamepad
+		//!            keyboard
 		//------------------------------------------------------
-  void WaitForNoButton( void ) {}
+  void WaitForNoButton( void );
 
 		//------------------------------------------------------
 		//	WaitForAnyInput
-		//! \brief		Wait for anything to be pressed/moved on
-		//!            the gamepad
+		//! \brief		Wait for anything to be pressed on
+		//!            the keyboard
 		//------------------------------------------------------
-  void WaitForAnyInput( void ) {}
+  void WaitForAnyInput( void ) { WaitForAnyButton(); }
 
 		//------------------------------------------------------
 		//	WaitForNoInput
 		//! \brief		Wait for everything to be released on the
-		//!            gamepad
+		//!            keyboard
 		//------------------------------------------------------
-  void WaitForNoInput( void ) {}
+  void WaitForNoInput( void ) { WaitForNoButton(); }
+
+    //------------------------------------------------------
+    //	IsKeyPressed
+    //! \brief    Returns TRUE if the given key is pressed 
+    //!           on the gamepad
+    //!
+    //! \param    virtualKeyCode - The virtual keycode to check against
+    //!
+    //! \return   BOOL - TRUE if key is pressed, else FALSE
+    //------------------------------------------------------
+  BOOL IsKeyPressed( BYTE virtualKeyCode ) const;
+
+    //------------------------------------------------------
+    //	IsOnlyKeyPressed
+    //! \brief    Returns TRUE if the given key is pressed 
+    //!           on the keyboard, and no other keys are
+    //!           pressed
+    //!
+    //! \param    virtualKeyCode - The virtual keycode to check against
+    //!
+    //! \return   BOOL - TRUE if key is exclusively pressed, 
+    //!                  else FALSE
+    //------------------------------------------------------
+  BOOL IsOnlyKeyPressed( BYTE virtualKeyCode ) const;
+
+    //------------------------------------------------------
+    //	AreAllOfKeysPressed
+    //! \brief    Returns TRUE if all of the given keys
+    //!           are pressed
+    //!
+    //! \param    virtualKeyCodeArray - Array of virtual keycodes to check against
+    //! \param    numCodes - Number of valid entries in the virtualKeyCodeArray
+    //!
+    //! \return   BOOL - TRUE if key is pressed, else FALSE
+    //------------------------------------------------------
+  BOOL AreAllOfKeysPressed( const BYTE *virtualKeyCodeArray, UINT32 numCodes ) const;
+
+    //------------------------------------------------------
+    //	IsOneOfKeysPressed
+    //! \brief    Returns TRUE if any of the given keys
+    //!           is pressed
+    //!
+    //! \param    virtualKeyCodeArray - Array of virtual keycodes to check against
+    //! \param    numCodes - Number of valid entries in the virtualKeyCodeArray
+    //!
+    //! \return   BOOL - TRUE if key is pressed, else FALSE
+    //------------------------------------------------------
+  BOOL IsOneOfKeysPressed( const BYTE *virtualKeyCodeArray, UINT32 numCodes ) const;
 
 		//------------------------------------------------------
 		//	AttachRemoveDevices
     //! \brief    Attach or remove physical devices at
     //!           the associated gameport
 		//------------------------------------------------------
-  void AttachRemoveDevices( void ) {}
+  void AttachRemoveDevices( void );
 
-  protected:
+protected:
+  UINT8                     m_keystrokeVector[256 >> 3];  //!< Bit array for the keys
+  UINT32                    m_numKeysPressed;           //!< The number of keys that are pressed
 };
 

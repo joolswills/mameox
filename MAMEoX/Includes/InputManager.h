@@ -56,7 +56,6 @@ public:
 
 		m_maxGamepadDevices = maxGamepads;
 		m_maxMemUnitDevices = maxMemUnits;
-    m_maxKeyboardDevices = 0;
     m_maxKeyboardDevices = (useKeyboard ? 1 : 0);
 
 		XDEVICE_PREALLOC_TYPE preallocArray[] = { { XDEVICE_TYPE_GAMEPAD, 1 },
@@ -74,10 +73,10 @@ public:
     {
         // Set up the keyboard queue
       XINPUT_DEBUG_KEYQUEUE_PARAMETERS kbParams;
-      kbParams.dwFlags = XINPUT_DEBUG_KEYQUEUE_FLAG_KEYDOWN | XINPUT_DEBUG_KEYQUEUE_FLAG_KEYREPEAT;
-      kbParams.dwQueueSize = 13;
-      kbParams.dwRepeatDelay = 100;
-      kbParams.dwRepeatInterval = 100;
+      kbParams.dwFlags = XINPUT_DEBUG_KEYQUEUE_FLAG_KEYDOWN | XINPUT_DEBUG_KEYQUEUE_FLAG_KEYUP;
+      kbParams.dwQueueSize = 8;
+      kbParams.dwRepeatDelay = 0;
+      kbParams.dwRepeatInterval = 0;
       XInputDebugInitKeyboardQueue(&kbParams );
     }
 
@@ -140,7 +139,14 @@ public:
 		//	PollDevices
 		//------------------------------------------------------
 	void PollDevices( void ) {
-			// 1) Check for insertions/removals
+    PollGamepadDevices();
+    PollKeyboardDevice();
+	}
+
+		//------------------------------------------------------
+		//	PollGamepadDevices
+		//------------------------------------------------------
+  void PollGamepadDevices( void ) {
 		DWORD insertions = 0;
 		DWORD removals = 0;
 		XGetDeviceChanges( XDEVICE_TYPE_GAMEPAD,
@@ -156,6 +162,21 @@ public:
 		m_memunitDeviceBitmap &= ~removals;
 		m_memunitDeviceBitmap |= insertions;
 
+		AttachRemoveDevices();
+
+    m_gamepads[0].PollDevice();
+    m_gamepads[1].PollDevice();
+    m_gamepads[2].PollDevice();
+    m_gamepads[3].PollDevice();
+  }
+
+		//------------------------------------------------------
+		//	PollKeyboardDevice
+		//------------------------------------------------------
+  void PollKeyboardDevice( void ) {
+		DWORD insertions = 0;
+		DWORD removals = 0;
+
     if( m_maxKeyboardDevices )
     {
 		  XGetDeviceChanges( XDEVICE_TYPE_DEBUG_KEYBOARD,
@@ -167,13 +188,10 @@ public:
 
 		AttachRemoveDevices();
 
-    m_gamepads[0].PollDevice();
-    m_gamepads[1].PollDevice();
-    m_gamepads[2].PollDevice();
-    m_gamepads[3].PollDevice();
+    if( m_keyboard.IsConnected() )
+      m_keyboard.PollDevice();
+  }
 
-      // Keyboards do not poll
-	}
 
 
 		//------------------------------------------------------
@@ -185,8 +203,8 @@ public:
   void WaitForControllerInsertion( DWORD device ) {
     if( device < 4 )
     {
-      while( !m_gamepads[device].IsConnected() && (m_maxKeyboardDevices ? !m_keyboard.IsConnected() : TRUE) )
-        PollDevices();
+      while( !m_gamepads[device].IsConnected() )
+        PollGamepadDevices();
     }
   }
 
@@ -284,7 +302,6 @@ public:
     return m_gamepads[deviceNumber].SetDeviceFeedbackState( feedback );
 	}
 
-
 		//------------------------------------------------------
 		//	WaitForAnyButton
 		//! \brief		Wait for any button to be pressed on the
@@ -292,7 +309,7 @@ public:
 		//!
 		//! \param		gamepadNum - Joypad to test (0xFF = all)
 		//------------------------------------------------------
-	void WaitForAnyButton( DWORD gamepadNum = 0xFF ) {
+	void WaitForAnyButton( DWORD gamepadNum = 0xFF, BOOL checkKeyboard = TRUE ) {
 		while( 1 )
 		{
 			PollDevices();
@@ -300,7 +317,8 @@ public:
 			if( ((gamepadNum == 0 || gamepadNum == 0xFF) && m_gamepads[0].IsAnyButtonPressed()) ||
           ((gamepadNum == 1 || gamepadNum == 0xFF) && m_gamepads[1].IsAnyButtonPressed()) ||
           ((gamepadNum == 2 || gamepadNum == 0xFF) && m_gamepads[2].IsAnyButtonPressed()) ||
-          ((gamepadNum == 3 || gamepadNum == 0xFF) && m_gamepads[3].IsAnyButtonPressed()) )
+          ((gamepadNum == 3 || gamepadNum == 0xFF) && m_gamepads[3].IsAnyButtonPressed()) ||
+          (checkKeyboard && m_keyboard.IsConnected() && m_keyboard.GetNumKeysPressed()) )
         return;
 		}
 	}
@@ -312,7 +330,7 @@ public:
 		//!
 		//! \param		gamepadNum - Joypad to test (0xFF = all)
 		//------------------------------------------------------
-	void WaitForNoButton( DWORD gamepadNum = 0xFF ) {
+	void WaitForNoButton( DWORD gamepadNum = 0xFF, BOOL checkKeyboard = TRUE ) {
 		BOOL keyPressed = FALSE;
 		do
 		{
@@ -331,6 +349,9 @@ public:
 			if( gamepadNum == 3 || gamepadNum == 0xFF )
         keyPressed |= m_gamepads[3].IsAnyButtonPressed();
 
+      if( checkKeyboard && m_keyboard.IsConnected() )
+        keyPressed |= m_keyboard.GetNumKeysPressed();
+
 		} while( keyPressed );
 	}
 
@@ -341,7 +362,7 @@ public:
 		//!
 		//! \param		gamepadNum - Joypad to test (0xFF = all)
 		//------------------------------------------------------
-	void WaitForAnyInput( DWORD gamepadNum = 0xFF ) {
+	void WaitForAnyInput( DWORD gamepadNum = 0xFF, BOOL checkKeyboard = TRUE ) {
 		BOOL keyPressed = FALSE;
 		do
 		{
@@ -359,6 +380,9 @@ public:
 
 			if( gamepadNum == 3 || gamepadNum == 0xFF )
         keyPressed |= m_gamepads[3].GetInputState();
+
+      if( checkKeyboard && m_keyboard.IsConnected() )
+        keyPressed |= m_keyboard.GetNumKeysPressed();
 
 		} while( !keyPressed );
 	}
@@ -370,7 +394,7 @@ public:
 		//!
 		//! \param		gamepadNum - Joypad to test (0xFF = all)
 		//------------------------------------------------------
-	void WaitForNoInput( DWORD gamepadNum = 0xFF ) {
+	void WaitForNoInput( DWORD gamepadNum = 0xFF, BOOL checkkeyboard = TRUE ) {
 		BOOL keyPressed = FALSE;
 		do
 		{
@@ -389,6 +413,9 @@ public:
 			if( gamepadNum == 3 || gamepadNum == 0xFF )
         keyPressed |= m_gamepads[3].GetInputState();
 
+      if( checkkeyboard )
+        keyPressed |= m_keyboard.GetNumKeysPressed();
+
 		} while( keyPressed );
 	}
 
@@ -399,12 +426,20 @@ public:
 		//!
 		//! \param		gamepadNum - Joypad to test (0xFF = all)
 		//------------------------------------------------------
-	BOOL IsAnyInput( DWORD gamepadNum = 0xFF ) {
-    PollDevices();
-    return  m_gamepads[0].GetInputState() ||
-            m_gamepads[1].GetInputState() ||
-            m_gamepads[2].GetInputState() ||
-            m_gamepads[3].GetInputState();
+	BOOL IsAnyInput( DWORD gamepadNum = 0xFF, BOOL checkKeyboard = TRUE ) {
+    UINT32 ret = FALSE;
+    if( gamepadNum == 0 || gamepadNum == 0xFF )
+      ret |= m_gamepads[0].GetInputState();
+    if( gamepadNum == 1 || gamepadNum == 0xFF )
+      ret |= m_gamepads[1].GetInputState();
+    if( gamepadNum == 2 || gamepadNum == 0xFF )
+      ret |= m_gamepads[2].GetInputState();
+    if( gamepadNum == 3 || gamepadNum == 0xFF )
+      ret |= m_gamepads[3].GetInputState();
+    if( checkKeyboard )
+      ret |= m_keyboard.GetNumKeysPressed();
+
+    return (ret != 0);
 	}
 
 		//------------------------------------------------------
@@ -414,11 +449,22 @@ public:
     //! \return   BOOL - TRUE if any button is pressed, else FALSE
 		//------------------------------------------------------
   BOOL IsAnyButtonPressed( void ) {
-    PollDevices();
     return  m_gamepads[0].IsAnyButtonPressed() ||
             m_gamepads[1].IsAnyButtonPressed() ||
             m_gamepads[2].IsAnyButtonPressed() ||
             m_gamepads[3].IsAnyButtonPressed();
+  }
+
+		//------------------------------------------------------
+		//	IsAnyKeyPressed
+    //! \brief    Returns TRUE if any key is pressed on the keyboard
+    //!
+    //! \return   BOOL - TRUE if any key is pressed, else FALSE
+		//------------------------------------------------------
+  BOOL IsAnyKeyPressed( void ) {
+    if( m_keyboard.IsConnected() )
+      return m_keyboard.GetNumKeysPressed();
+    return FALSE;
   }
 
 		//------------------------------------------------------
@@ -429,7 +475,6 @@ public:
     //! \return   BOOL - TRUE if button is pressed, else FALSE
 		//------------------------------------------------------
   BOOL IsButtonPressed( UINT32 buttonID ) {
-    PollDevices();
     return  m_gamepads[0].IsButtonPressed(buttonID) ||
             m_gamepads[1].IsButtonPressed(buttonID) ||
             m_gamepads[2].IsButtonPressed(buttonID) ||
@@ -446,7 +491,6 @@ public:
     //!                  else FALSE
 		//------------------------------------------------------
   BOOL IsOnlyButtonPressed( UINT32 buttonID ) {
-    PollDevices();
     return  m_gamepads[0].IsOnlyButtonPressed(buttonID) ||
             m_gamepads[1].IsOnlyButtonPressed(buttonID) ||
             m_gamepads[2].IsOnlyButtonPressed(buttonID) ||
@@ -461,12 +505,78 @@ public:
     //! \return   BOOL - TRUE if button is pressed, else FALSE
 		//------------------------------------------------------
   BOOL IsOneOfButtonsPressed( UINT32 buttonID ) {
-    PollDevices();
     return  m_gamepads[0].IsOneOfButtonsPressed(buttonID) ||
             m_gamepads[1].IsOneOfButtonsPressed(buttonID) ||
             m_gamepads[2].IsOneOfButtonsPressed(buttonID) ||
             m_gamepads[3].IsOneOfButtonsPressed(buttonID);
   }
+
+
+    //------------------------------------------------------
+    //	IsKeyPressed
+    //! \brief    Returns TRUE if the given key is pressed 
+    //!           on the gamepad
+    //!
+    //! \param    virtualKeyCode - The virtual keycode to check against
+    //!
+    //! \return   BOOL - TRUE if key is pressed, else FALSE
+    //------------------------------------------------------
+  BOOL IsKeyPressed( BYTE virtualKeyCode ) const {
+    if( !m_keyboard.IsConnected() )
+      return FALSE;
+    return m_keyboard.IsKeyPressed( virtualKeyCode );
+  }
+
+    //------------------------------------------------------
+    //	IsOnlyKeyPressed
+    //! \brief    Returns TRUE if the given key is pressed 
+    //!           on the keyboard, and no other keys are
+    //!           pressed
+    //!
+    //! \param    virtualKeyCode - The virtual keycode to check against
+    //!
+    //! \return   BOOL - TRUE if key is exclusively pressed, 
+    //!                  else FALSE
+    //------------------------------------------------------
+  BOOL IsOnlyKeyPressed( BYTE virtualKeyCode ) const {
+    if( !m_keyboard.IsConnected() )
+      return FALSE;
+    return m_keyboard.IsOnlyKeyPressed( virtualKeyCode );
+  }
+
+    //------------------------------------------------------
+    //	AreAllOfKeysPressed
+    //! \brief    Returns TRUE if all of the given keys
+    //!           are pressed
+    //!
+    //! \param    virtualKeyCodeArray - Array of virtual keycodes to check against
+    //! \param    numCodes - Number of valid entries in the virtualKeyCodeArray
+    //!
+    //! \return   BOOL - TRUE if key is pressed, else FALSE
+    //------------------------------------------------------
+  BOOL AreAllOfKeysPressed( const BYTE *virtualKeyCodeArray, UINT32 numCodes ) const {
+    if( !m_keyboard.IsConnected() )
+      return FALSE;
+    return m_keyboard.AreAllOfKeysPressed( virtualKeyCodeArray, numCodes );
+  }
+
+    //------------------------------------------------------
+    //	IsOneOfKeysPressed
+    //! \brief    Returns TRUE if any of the given keys
+    //!           is pressed
+    //!
+    //! \param    virtualKeyCodeArray - Array of virtual keycodes to check against
+    //! \param    numCodes - Number of valid entries in the virtualKeyCodeArray
+    //!
+    //! \return   BOOL - TRUE if key is pressed, else FALSE
+    //------------------------------------------------------
+  BOOL IsOneOfKeysPressed( const BYTE *virtualKeyCodeArray, UINT32 numCodes ) const {
+    if( !m_keyboard.IsConnected() )
+      return FALSE;
+    return m_keyboard.IsOneOfKeysPressed( virtualKeyCodeArray, numCodes );
+  }
+
+
 
   DWORD GetGamepadDeviceBitmap( void ) const { return m_gamepadDeviceBitmap; }
   DWORD GetMUDeviceBitmap( void ) const { return m_memunitDeviceBitmap; }

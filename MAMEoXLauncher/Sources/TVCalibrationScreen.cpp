@@ -92,64 +92,67 @@ void CTVCalibrationScreen::MoveCursor( CInputManager &gp, BOOL useSpeedbanding )
 		// Decrement the movement timers
 	if( m_dpadCursorDelay > 0.0f )
 	{
+    BYTE arrowKeys[4] = { VK_LEFT, VK_RIGHT, VK_UP, VK_DOWN };
+
 		m_dpadCursorDelay -= elapsedTime;
     if( m_dpadCursorDelay < 0.0f || 
-        !gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_DPAD_DOWN | GP_LA_UP | GP_LA_DOWN | GP_DPAD_LEFT | GP_DPAD_RIGHT | GP_LA_LEFT | GP_LA_RIGHT ) )
+        !(gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_DPAD_DOWN | GP_LA_UP | GP_LA_DOWN | GP_DPAD_LEFT | GP_DPAD_RIGHT | GP_LA_LEFT | GP_LA_RIGHT ) ||
+          gp.IsOneOfKeysPressed( arrowKeys, 4 )) )
 			m_dpadCursorDelay = 0.0f;
 	}
   else
   {
-    if( gp.IsOneOfButtonsPressed( GP_LA_LEFT | GP_DPAD_LEFT  ) )
+    if( gp.IsOneOfButtonsPressed( GP_LA_LEFT | GP_DPAD_LEFT ) || gp.IsKeyPressed( VK_LEFT ) )
     {
       UINT32 bound = (m_currentStep == TVCS_SET_UPPERLEFT ? 0 : 320);
       if( m_cursorPos.x > bound )
         --m_cursorPos.x;
 
-      if( gp.IsButtonPressed( GP_DPAD_LEFT ) )
-        m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
-      else
+      if( gp.IsButtonPressed( GP_LA_LEFT ) )
         m_dpadCursorDelay = ANALOGCURSORMOVE_TIMEOUT;
+      else
+        m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
     }
 
-    if( gp.IsOneOfButtonsPressed( GP_LA_RIGHT | GP_DPAD_RIGHT ) )
+    if( gp.IsOneOfButtonsPressed( GP_LA_RIGHT | GP_DPAD_RIGHT ) || gp.IsKeyPressed( VK_RIGHT ) )
     {
       UINT32 bound = (m_currentStep == TVCS_SET_UPPERLEFT ? 320 : 640);
       if( m_cursorPos.x < bound )
         ++m_cursorPos.x;
 
-      if( gp.IsButtonPressed( GP_DPAD_RIGHT ) )
-        m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
-      else
+      if( gp.IsButtonPressed( GP_LA_RIGHT ) )
         m_dpadCursorDelay = ANALOGCURSORMOVE_TIMEOUT;
+      else
+        m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
     }
 
-    if( gp.IsOneOfButtonsPressed( GP_LA_UP | GP_DPAD_UP  ) )
+    if( gp.IsOneOfButtonsPressed( GP_LA_UP | GP_DPAD_UP ) || gp.IsKeyPressed( VK_UP ) )
     {
       UINT32 bound = (m_currentStep == TVCS_SET_UPPERLEFT ? 0 : 240);
       if( m_cursorPos.y > bound )
         --m_cursorPos.y;
 
-      if( gp.IsButtonPressed( GP_DPAD_UP ) )
-        m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
-      else
+      if( gp.IsButtonPressed( GP_LA_UP )  )
         m_dpadCursorDelay = ANALOGCURSORMOVE_TIMEOUT;
+      else
+        m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
     }
 
-    if( gp.IsOneOfButtonsPressed( GP_LA_DOWN | GP_DPAD_DOWN ) )
+    if( gp.IsOneOfButtonsPressed( GP_LA_DOWN | GP_DPAD_DOWN ) || gp.IsKeyPressed( VK_DOWN ) )
     {
       UINT32 bound = (m_currentStep == TVCS_SET_UPPERLEFT ? 240 : 480);
       if( m_cursorPos.y < bound )
         ++m_cursorPos.y;
 
-      if( gp.IsButtonPressed( GP_DPAD_DOWN ) )
-        m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
-      else
+      if( gp.IsButtonPressed( GP_LA_DOWN ) )
         m_dpadCursorDelay = ANALOGCURSORMOVE_TIMEOUT;
+      else
+        m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
     }
   }
 
     // Reset to the default values
-  if( gp.IsButtonPressed( GP_Y ) )
+  if( gp.IsButtonPressed( GP_Y ) || gp.IsKeyPressed( VK_TAB ) )
   {
     m_screenRect.left = (UINT32)(320 - (320*DEFAULT_SCREEN_X_PERCENTAGE));
     m_screenRect.right = (UINT32)(320 + (320*DEFAULT_SCREEN_X_PERCENTAGE));
@@ -164,7 +167,7 @@ void CTVCalibrationScreen::MoveCursor( CInputManager &gp, BOOL useSpeedbanding )
     gp.WaitForNoButton();
   }
 
-  if( gp.IsButtonPressed( GP_A ) )
+  if( gp.IsButtonPressed( GP_A ) || gp.IsKeyPressed( VK_RETURN ) )
   {
     switch( m_currentStep )
     {
@@ -210,7 +213,7 @@ void CTVCalibrationScreen::MoveCursor( CInputManager &gp, BOOL useSpeedbanding )
   }
 
     // Back out without storing changes
-  if( gp.IsOneOfButtonsPressed( GP_B | GP_BACK ) )
+  if( gp.IsOneOfButtonsPressed( GP_B | GP_BACK ) || gp.IsKeyPressed( VK_DELETE ) )
   {
     m_currentStep = TVCS_COMPLETED;
     gp.WaitForNoButton();

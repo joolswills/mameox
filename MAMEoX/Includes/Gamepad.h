@@ -222,7 +222,10 @@ public:
     //! \retval   const XINPUT_CAPABILITIES * - The requested
     //!                                    gamepad caps object
 		//------------------------------------------------------
-	const XINPUT_CAPABILITIES *GetGamepadDeviceCaps( void ) const;
+  const XINPUT_CAPABILITIES *GetGamepadDeviceCaps( void ) const {
+    return GetDeviceCaps();
+  }
+
 
 		//------------------------------------------------------
 		//	SetLightgunCalibration

@@ -157,8 +157,7 @@ void __cdecl main( void )
   }
 
 		// Initialize the input subsystem
-	g_inputManager.Create( 4, 0 );  // 4 controllers, no memory cards
-
+	g_inputManager.Create( 4, 0, TRUE );  // 4 controllers, no memory cards, keyboards allowed
 
 	// Intialize the various MAME OSD-specific subsystems
 	InitializeTiming();
@@ -391,11 +390,13 @@ void __cdecl main( void )
 	  lastTime = curTime;
 
 			// Reboot on LT+RT+Black
-    if( g_inputManager.IsButtonPressed( GP_LEFT_TRIGGER | GP_RIGHT_TRIGGER | GP_BLACK ) )
+    BYTE rebootSequence[3] = { VK_LMENU, VK_LCONTROL, VK_DELETE };
+    if( g_inputManager.IsButtonPressed( GP_LEFT_TRIGGER | GP_RIGHT_TRIGGER | GP_BLACK ) ||
+        g_inputManager.AreAllOfKeysPressed( rebootSequence, 3 ) )
       Helper_SaveOptionsAndReboot( pD3DDevice, romList );
 
 
-    if( g_inputManager.IsOnlyButtonPressed( GP_LEFT_ANALOG ) )
+    if( g_inputManager.IsOnlyButtonPressed( GP_LEFT_ANALOG ) || g_inputManager.IsOnlyKeyPressed( VK_PRINT ) )
     {
       static UINT32 screenshotIndex = 0;
 
@@ -410,13 +411,14 @@ void __cdecl main( void )
       SAFE_RELEASE( target );
     }
 
-    if( !showStartMenu && g_inputManager.IsOnlyButtonPressed( GP_START ) )
+    if( !showStartMenu && 
+        (g_inputManager.IsOnlyButtonPressed( GP_START ) || g_inputManager.IsOnlyKeyPressed( VK_ESCAPE )) )
     {
         // Enter the main menu
       showStartMenu = TRUE;
       g_inputManager.WaitForNoButton();
     }
-    else if( g_inputManager.IsOnlyButtonPressed( GP_X ) )
+    else if( g_inputManager.IsOnlyButtonPressed( GP_X ) || g_inputManager.IsOnlyKeyPressed( VK_F1 ) )
     {
       if( currentView != VIEW_HELP )
         currentView = VIEW_HELP;
@@ -1158,6 +1160,7 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
   pD3DDevice->SetRenderState( D3DRS_ALPHAFUNC,        D3DCMP_GREATEREQUAL );
   pD3DDevice->SetRenderState( D3DRS_ALPHAREF,         0x08 );
   pD3DDevice->SetRenderState( D3DRS_ZENABLE,          FALSE );
+
     // Set up texture engine
   pD3DDevice->SetTextureStageState( 0, D3DTSS_MINFILTER, D3DTEXF_LINEAR );
   pD3DDevice->SetTextureStageState( 0, D3DTSS_MAGFILTER, D3DTEXF_LINEAR );
@@ -1204,8 +1207,10 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 
 
     //-- Display everything -------------------------------------------------------
-  while( !g_inputManager.IsAnyButtonPressed() )
+  while( !g_inputManager.IsAnyButtonPressed() && !g_inputManager.IsAnyKeyPressed() )
   {
+    g_inputManager.PollDevices();
+
       // Bounce the fade color back and forth between MIN and MAX
     textFadeColor += fadeDirection / TEXTFADE_FRAMES_PER_STEP;
     if( textFadeColor <= TEXTFADE_MINIMUM )

@@ -230,30 +230,37 @@ void COptionsScreen::MoveCursor( CInputManager &gp, BOOL useSpeedbanding )
 		// Decrement the movement timers
 	if( m_dpadCursorDelay > 0.0f )
 	{
+    BYTE arrowKeys[2] = { VK_UP, VK_DOWN };
 		m_dpadCursorDelay -= elapsedTime;
     if( m_dpadCursorDelay < 0.0f || 
-        !gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_DPAD_DOWN | GP_LA_UP | GP_LA_DOWN ) )
+        !(gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_DPAD_DOWN | GP_LA_UP | GP_LA_DOWN ) ||
+          gp.IsOneOfKeysPressed( arrowKeys, 2 )) )
 			m_dpadCursorDelay = 0.0f;
 	}
 
 	if( m_optToggleDelay > 0.0f )
 	{
+    BYTE arrowKeys[4] = { VK_LEFT, VK_RIGHT, VK_RETURN, VK_BACK };
 		m_optToggleDelay -= elapsedTime;
     if( m_optToggleDelay < 0.0f || 
-        !gp.IsOneOfButtonsPressed( GP_DPAD_LEFT | GP_DPAD_RIGHT | GP_LA_LEFT | GP_LA_RIGHT | GP_A | GP_B ) )
+        !(gp.IsOneOfButtonsPressed( GP_DPAD_LEFT | GP_DPAD_RIGHT | GP_LA_LEFT | GP_LA_RIGHT | GP_A | GP_B ) ||
+          gp.IsOneOfKeysPressed( arrowKeys, 4 )) )
 			m_optToggleDelay = 0.0f;
 	}
 
   if( m_triggerDelay > 0.0f )
   {
+    BYTE pageKeys[2] = { VK_DELETE, VK_NEXT };
     m_triggerDelay -= elapsedTime;
-    if( m_triggerDelay < 0.0f || !gp.IsOneOfButtonsPressed( GP_LEFT_TRIGGER | GP_RIGHT_TRIGGER ) )
+    if( m_triggerDelay < 0.0f || 
+        !(gp.IsOneOfButtonsPressed( GP_LEFT_TRIGGER | GP_RIGHT_TRIGGER ) ||
+          gp.IsOneOfKeysPressed( pageKeys, 2 )) )
       m_triggerDelay = 0.0f;
   }
 
 
     //-- Check the button states ----------------------------------------------------------
-  if( gp.IsButtonPressed( GP_LEFT_TRIGGER ) && m_triggerDelay == 0.0f )
+  if( (gp.IsButtonPressed( GP_LEFT_TRIGGER ) || gp.IsKeyPressed( VK_DELETE )) && m_triggerDelay == 0.0f )
   {
     if( m_pageNumber )
       --m_pageNumber;
@@ -263,7 +270,7 @@ void COptionsScreen::MoveCursor( CInputManager &gp, BOOL useSpeedbanding )
     m_triggerDelay = TRIGGERSWITCH_TIMEOUT;
     m_cursorPosition = 0;
   }
-  else if( gp.IsButtonPressed( GP_RIGHT_TRIGGER ) && m_triggerDelay == 0.0f )
+  else if( (gp.IsButtonPressed( GP_RIGHT_TRIGGER ) || gp.IsKeyPressed( VK_NEXT )) && m_triggerDelay == 0.0f )
   {
     if( m_pageNumber < OPTPAGE_LAST - 1 )
       ++m_pageNumber;
@@ -273,13 +280,13 @@ void COptionsScreen::MoveCursor( CInputManager &gp, BOOL useSpeedbanding )
     m_triggerDelay = TRIGGERSWITCH_TIMEOUT;
     m_cursorPosition = 0;
   }
-  else if( gp.IsOneOfButtonsPressed( GP_DPAD_DOWN | GP_LA_DOWN ) && m_dpadCursorDelay == 0.0f )
+  else if( (gp.IsOneOfButtonsPressed( GP_DPAD_DOWN | GP_LA_DOWN ) || gp.IsKeyPressed( VK_DOWN )) && m_dpadCursorDelay == 0.0f )
 	{
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
     if( ++m_cursorPosition >= m_pageData[m_pageNumber].m_numItems )
       m_cursorPosition = 0;
   }
-  else if( gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_LA_UP ) && m_dpadCursorDelay == 0.0f )
+  else if( (gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_LA_UP ) || gp.IsKeyPressed( VK_UP )) && m_dpadCursorDelay == 0.0f )
 	{
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
     if( m_cursorPosition ) 
@@ -287,12 +294,14 @@ void COptionsScreen::MoveCursor( CInputManager &gp, BOOL useSpeedbanding )
     else
       m_cursorPosition = m_pageData[m_pageNumber].m_numItems - 1;
   }
-  else if( gp.IsOneOfButtonsPressed( GP_DPAD_LEFT | GP_LA_LEFT | GP_B ) && m_optToggleDelay == 0.0f )
+  else if( (gp.IsOneOfButtonsPressed( GP_DPAD_LEFT | GP_LA_LEFT | GP_B ) || gp.IsKeyPressed( VK_LEFT ) || gp.IsKeyPressed( VK_BACK )) && 
+            m_optToggleDelay == 0.0f )
 	{
 		m_optToggleDelay = TRIGGERSWITCH_TIMEOUT;
     m_pageData[m_pageNumber].m_changeFunct( this, FALSE );
   }
-  else if( gp.IsOneOfButtonsPressed( GP_DPAD_RIGHT | GP_LA_RIGHT | GP_A ) && m_optToggleDelay == 0.0f )
+  else if( (gp.IsOneOfButtonsPressed( GP_DPAD_RIGHT | GP_LA_RIGHT | GP_A ) || gp.IsKeyPressed( VK_RIGHT ) || gp.IsKeyPressed( VK_RETURN )) && 
+            m_optToggleDelay == 0.0f )
 	{
 		m_optToggleDelay = TRIGGERSWITCH_TIMEOUT;
     m_pageData[m_pageNumber].m_changeFunct( this, TRUE );

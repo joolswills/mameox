@@ -2,9 +2,21 @@
 Version 0.71.3b (CVS)
 
    -------------------------------------------------------------
+  - \MAME\src:
+    - input.h
+      - Increased SEQ_MAX to 20 to allow commands to be defined
+        for all 4 gamepads + the keyboard
+
+   -------------------------------------------------------------
   - \MAMEoX\Includes: 
     - MAMEoX.h
       - Upped version number
+
+    - Keyboard.h
+      - Finished off the debug keyboard reading routines
+
+    - InputManager.h
+      - Added keyboard device access functions
 
    -------------------------------------------------------------
   - \MAMEoX\Sources: 
@@ -32,6 +44,7 @@ Version 0.71.3b (CVS)
         game tries to boot at all, rather than waiting until the
         game is finished w/ the input code (the only thing in the
         STARTUP section that is needed after the run_rom call)
+      - Moved key mapping to xbox_Input.c
     
     - System_IniFile.cpp
       - Changed over to use buffered reads/writes to speed up parsing
@@ -43,6 +56,16 @@ Version 0.71.3b (CVS)
       - Fixed an off by 1 error when setting texture coords that
         caused clipping of a valid row of pixels
       - Prerotate screenshots before saving the file
+
+    - Keyboard.cpp
+      - Finished off the debug keyboard reading routines
+
+    - xbox_Keyboard.cpp
+      - Renamed xbox_Keyboard.c to xbox_Keyboard.cpp
+      - Implemented missing keyboard functionality
+
+    Added xbox_Input.c to do default key mapping and input subsystem
+      initialization
 
    -------------------------------------------------------------
   - \MAMEoXLauncher\Includes:
@@ -64,6 +87,7 @@ Version 0.71.3b (CVS)
       - Added catver.ini parsing
       - Added "detail" view which houses screenshots
       - Moved screenshot loading to base class
+      - Changes for keyboard support
 
     - OptionsScreen.cpp
       - Added sort by favorite status and sort by number of times 
@@ -76,7 +100,11 @@ Version 0.71.3b (CVS)
       - Made menu functions token based instead of cursor position 
         based. This makes it much easier to have fully dynamic menus
       - Made the B button back out of the menu
+      - Changes for keyboard support
 
+    - ListView.cpp
+      - Changes for keyboard support
+      
     - main.cpp
       - Added handling for MAMEoX system files to apply speed
         buffering to all writes/reads
@@ -88,6 +116,13 @@ Version 0.71.3b (CVS)
         based. This makes it much easier to have fully dynamic menus
       - Added a simple screensaver (thanks to Noodle for the suggestion)
       - Added screendump command (bound to left analog) for launcher
+      - Changes for keyboard support
+
+    - VirtualKeyboard.cpp
+      - Changes for keyboard support. Note that this has only been
+        tested on a German keyboard, and I wouldn't be surprised if
+        some keys (esp /, @, \, :) will be busted on an English 
+        keyboard. 
 
     - Renamed ROMList, OptionsPage, Help, LightgunCalibrator to 
       xxxxScreen format to increase "findability"

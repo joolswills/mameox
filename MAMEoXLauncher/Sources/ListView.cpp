@@ -98,7 +98,8 @@ void CListView::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
   }
 
 		// DPAD overrides the triggers
-  if( gp.IsOneOfButtonsPressed( GP_DPAD_DOWN | GP_LA_DOWN ) && m_dpadCursorDelay == 0.0f )
+  if( (gp.IsOneOfButtonsPressed( GP_DPAD_DOWN | GP_LA_DOWN ) || gp.IsKeyPressed( VK_DOWN )) 
+       && m_dpadCursorDelay == 0.0f )
 	{
 			// Round the cursor position down to a integer so that adding 1 will move to the next item
     m_pageOffset = (FLOAT)((LONG)m_pageOffset);
@@ -106,7 +107,8 @@ void CListView::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
     cursorVelocity = 1.0f;
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
 	}
-  else if( gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_LA_UP ) && m_dpadCursorDelay == 0.0f )
+  else if( (gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_LA_UP ) || gp.IsKeyPressed( VK_UP )) 
+            && m_dpadCursorDelay == 0.0f )
 	{
 			// Round the cursor position down to a integer so that subtracting 1 will move to the next item
     m_pageOffset = (FLOAT)((LONG)m_pageOffset);

@@ -107,7 +107,7 @@ void __cdecl main( void )
 
 
 	  // Initialize the input subsystem
-	g_inputManager.Create( 4, 0 );  // 4 controllers, no memory cards
+	g_inputManager.Create( 4, 0, TRUE );  // 4 controllers, no memory cards, allow keyboard
 
 	  // Intialize the various MAMEoX subsystems
   InitializeTiming();
@@ -300,8 +300,10 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 	PRINTMSG( T_ERROR, "Die: %s", buf );
 	g_inputManager.WaitForNoButton();
 
-  while( !g_inputManager.IsAnyButtonPressed() )
+  while( !(g_inputManager.IsAnyButtonPressed() || g_inputManager.IsAnyKeyPressed()) )
   {
+    g_inputManager.PollDevices();
+
 		  // Display the error to the user
 	  pD3DDevice->Clear(	0L,																// Count
 											  NULL,															// Rects to clear
@@ -329,8 +331,10 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
   ShowLoadingScreen( pD3DDevice );
   DWORD retVal = XLaunchNewImage( "D:\\default.xbe", &g_launchData );
 
-  while( !g_inputManager.IsAnyButtonPressed() )
+  while( !(g_inputManager.IsAnyButtonPressed() || g_inputManager.IsAnyKeyPressed()) )
   {
+    g_inputManager.PollDevices();
+
 		  // Display the error to the user
 	  pD3DDevice->Clear(	0L,																// Count
 											  NULL,															// Rects to clear
@@ -701,8 +705,10 @@ int fatalerror( const char *fmt, ... )
 
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
 
-  while( !g_inputManager.IsAnyButtonPressed() )
+  while( !(g_inputManager.IsAnyButtonPressed() || g_inputManager.IsAnyKeyPressed()) )
   {
+    g_inputManager.PollDevices();
+
 		  // Display the error to the user
 	  pD3DDevice->Clear(	0L,																// Count
 											  NULL,															// Rects to clear

@@ -468,7 +468,6 @@ void PollGamepads( void )
 	g_inputManager.PollDevices();
 }
 
-
 //-------------------------------------------------------------
 // WaitForAnyButton
 //-------------------------------------------------------------
@@ -605,8 +604,9 @@ void CheckRAM( void )
 
 	g_inputManager.WaitForNoButton();
 
-  while( !g_inputManager.IsAnyButtonPressed() )
+  while( !(g_inputManager.IsAnyButtonPressed() || g_inputManager.IsAnyKeyPressed()) )
   {
+    g_inputManager.PollDevices();
     BeginFontRender( TRUE, FONTTYPE_DEFAULT );
       FontRender( 320, 200, D3DCOLOR_XRGB(255,200,200), L"This is a DEBUG version of MAMEoX!", 2 );
       FontRender( 320, 280, D3DCOLOR_XRGB(255,255,255), L"Mem: Avail/Total", 2 );

@@ -119,7 +119,7 @@ INT8 code_read_hex_async(void);
 /* Sequence code funtions */
 
 /* NOTE: If you modify this value you need also to modify the SEQ_DEF declarations */
-#define SEQ_MAX 16
+#define SEQ_MAX 20
 
 typedef InputCode InputSeq[SEQ_MAX];
 
@@ -139,7 +139,11 @@ void seq_read_async_start(void);
 int seq_read_async(InputSeq* code, int first);
 
 /* NOTE: It's very important that this sequence is EXACLY long SEQ_MAX */
-#define SEQ_DEF_16(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p) { a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p }
+#define SEQ_DEF_20(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t) { a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t }
+#define SEQ_DEF_19(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s) SEQ_DEF_20(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,CODE_NONE)
+#define SEQ_DEF_18(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r) SEQ_DEF_19(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,CODE_NONE)
+#define SEQ_DEF_17(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q) SEQ_DEF_18(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,CODE_NONE)
+#define SEQ_DEF_16(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p) SEQ_DEF_17(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,CODE_NONE)
 #define SEQ_DEF_15(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o) SEQ_DEF_16(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,CODE_NONE)
 #define SEQ_DEF_14(a,b,c,d,e,f,g,h,i,j,k,l,m,n) SEQ_DEF_15(a,b,c,d,e,f,g,h,i,j,k,l,m,n,CODE_NONE)
 #define SEQ_DEF_13(a,b,c,d,e,f,g,h,i,j,k,l,m) SEQ_DEF_14(a,b,c,d,e,f,g,h,i,j,k,l,m,CODE_NONE)

@@ -454,6 +454,9 @@ struct ipd inputport_defaults_backup[sizeof(inputport_defaults)/sizeof(struct ip
 
 
 struct ik *osd_input_keywords = NULL;
+/*
+  // EBA: MAMEoX redefines _every_ key, so there is no
+  //      reason to keep this struct
 
 struct ik input_keywords[] =
 {
@@ -909,6 +912,7 @@ struct ik input_keywords[] =
 };
 
 int num_ik = sizeof(input_keywords)/sizeof(struct ik);
+*/
 
 /***************************************************************************/
 /* Generic IO */
@@ -1728,14 +1732,6 @@ void update_analog_port(int port)
 			logerror("Oops, polling non analog device in update_analog_port()????\n");
 	}
 
-	switch (in->type & IPF_PLAYERMASK)
-	{
-		case IPF_PLAYER2:          player = 1; break;
-		case IPF_PLAYER3:          player = 2; break;
-		case IPF_PLAYER4:          player = 3; break;
-		case IPF_PLAYER1: default: player = 0; break;
-	}
-
 
 	sensitivity = IP_GET_SENSITIVITY(in);
 	min = IP_GET_MIN(in);
@@ -1757,9 +1753,16 @@ void update_analog_port(int port)
 
 	current = input_analog_current_value[port];
 
+	delta = 0;
 
+	switch (in->type & IPF_PLAYERMASK)
+	{
+		case IPF_PLAYER2:          player = 1; break;
+		case IPF_PLAYER3:          player = 2; break;
+		case IPF_PLAYER4:          player = 3; break;
+		case IPF_PLAYER1: default: player = 0; break;
+	}
 
-/*
 	delta = mouse_delta_axis[player][axis];
 
 	if (seq_pressed(decseq)) delta -= keydelta;
@@ -1770,25 +1773,14 @@ void update_analog_port(int port)
 	}
 	else
 	{
-		// is this cheesy or what? 
+		/* is this cheesy or what? */
 		if (!delta && seq_get_1(incseq) == KEYCODE_Y) delta += keydelta;
 		delta = -delta;
 	}
-*/
 
-    // [EBA]
-  if( !is_gun && !is_stick )
-  {
-      // Remap the analog_current_axis range from [-128,128] to
-      // [-32,32], as adding 128 per frame is one hell of a spin
-      // on the steering wheel :)
-    delta = ((float)analog_current_axis[player][axis] * 32.0f / 128.0f);
-	  if( in->type & IPF_REVERSE ) 
-      delta = -delta;
-  }
+	if (in->type & IPF_REVERSE) delta = -delta;
 
-
-	if( is_gun && (lightgun_delta_axis[player][X_AXIS] || lightgun_delta_axis[player][Y_AXIS]) )
+	if (is_gun)
 	{
 		/* The OSD lightgun call should return the delta from the middle of the screen
 		when the gun is fired (not the absolute pixel value), and 0 when the gun is
@@ -1803,25 +1795,26 @@ void update_analog_port(int port)
 		There is an ugly hack to stop scaling of lightgun returned values.  It really
 		needs rewritten...
 		*/
-
-    #define LIGHTGUN_SENSITIVITY  100
-
 		if (axis == X_AXIS) {
+			if (lightgun_delta_axis[player][X_AXIS] || lightgun_delta_axis[player][Y_AXIS]) {
 			analog_previous_axis[player][X_AXIS]=0;
-			current=analog_current_axis[player][X_AXIS]=lightgun_delta_axis[player][X_AXIS];
+				analog_current_axis[player][X_AXIS]=lightgun_delta_axis[player][X_AXIS];
 			input_analog_scale[port]=0;
-			sensitivity=LIGHTGUN_SENSITIVITY;
+				sensitivity=100;
+			}
 		}
 		else
 		{
+			if (lightgun_delta_axis[player][X_AXIS] || lightgun_delta_axis[player][Y_AXIS]) {
 			analog_previous_axis[player][Y_AXIS]=0;
-			current=analog_current_axis[player][Y_AXIS]=lightgun_delta_axis[player][Y_AXIS];
+				analog_current_axis[player][Y_AXIS]=lightgun_delta_axis[player][Y_AXIS];
 			input_analog_scale[port]=0;
-			sensitivity=LIGHTGUN_SENSITIVITY;
+				sensitivity=100;
+			}
 		}
 	}
 
-	if( is_stick || is_gun )
+	if (is_stick)
 	{
 		int new, prev;
 
@@ -2587,7 +2580,7 @@ void seq_set_string(InputSeq* a, const char *buf)
 	while( arg != NULL )
 	{
 		found = 0;
-
+/*
 		pik = input_keywords;
 
 		while (!found && pik->name && pik->name[0] != 0)
@@ -2604,7 +2597,7 @@ void seq_set_string(InputSeq* a, const char *buf)
 			}
 			pik++;
 		}
-
+*/
 		pik = osd_input_keywords;
 
 		if (pik)
