@@ -22,6 +22,14 @@ Texture BasicBackdrop
   Levels        1
 }
 
+Texture MenuParts
+{
+  Source        mox-menuparts.bmp
+  Alphasource   mox-menuparts-mask.bmp
+  Format        D3DFMT_LIN_A8R8G8B8
+  Levels        1
+}
+
 Texture ScrollIconMasks
 {
   Source        mox-scrollicon-masks.bmp
@@ -48,14 +56,6 @@ Texture LightgunCursorMask
 {
   Source        mox-lightgun-cursormask.bmp
   Alphasource   mox-lightgun-cursormask.bmp
-  Format        D3DFMT_A8R8G8B8
-  Levels        1
-}
-
-Texture StartMenu
-{
-  Source        mox-startmenu.bmp
-  Alphasource   mox-startmenu-mask.bmp
   Format        D3DFMT_A8R8G8B8
   Levels        1
 }

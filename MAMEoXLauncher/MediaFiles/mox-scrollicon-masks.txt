@@ -1,7 +1,0 @@
-
-
-(0,0)->(31,29) Scroll Down icon
-(33,0,)->(63,26) Left/Right trigger icon for options view
-(0,31)->(31,60) Scroll Up icon
-(33,28)->(60,54) Left/Right tail icon for options view
-

@@ -42,6 +42,24 @@
 #define ASSET_TRIGGERICONTAIL_BOTTOM  54.0f
 
 
+  //-- Position of assets within the conglomerate "menu parts" texture ---
+
+#define ASSET_MENUTITLEBAR_LEFT     0.0f
+#define ASSET_MENUTITLEBAR_TOP      0.0f
+#define ASSET_MENUTITLEBAR_RIGHT    243.0f
+#define ASSET_MENUTITLEBAR_BOTTOM   27.0f
+
+#define ASSET_MENUBODY_LEFT         0.0f
+#define ASSET_MENUBODY_TOP          30.0f
+#define ASSET_MENUBODY_RIGHT        243.0f
+#define ASSET_MENUBODY_BOTTOM       39.0f
+
+#define ASSET_MENUBOTTOM_LEFT       0.0f
+#define ASSET_MENUBOTTOM_TOP        42.0f
+#define ASSET_MENUBOTTOM_RIGHT      243.0f
+#define ASSET_MENUBOTTOM_BOTTOM     56.0f
+
+
 //= C L A S S E S =============================================================
 
   //! \class    CTextureSet
@@ -84,32 +102,62 @@ public:
     return (LPDIRECT3DTEXTURE8)&m_pResourceSysMemData[resource_ScrollIconMasks_OFFSET];
   }
 
-  LPDIRECT3DTEXTURE8 GetStartMenu( void ) {    
-    return (LPDIRECT3DTEXTURE8)&m_pResourceSysMemData[resource_StartMenu_OFFSET];
+  LPDIRECT3DTEXTURE8 GetMenuParts( void ) {    
+    return (LPDIRECT3DTEXTURE8)&m_pResourceSysMemData[resource_MenuParts_OFFSET];
   }
 
     //--- Asset position functions -------------------------------------
+
+    // Scroll Icon Mask positions
   FLOAT GetScrollDownIconLeft( void ) const { return ASSET_SCROLLDOWN_LEFT; }
   FLOAT GetScrollDownIconTop( void ) const { return ASSET_SCROLLDOWN_TOP; }
   FLOAT GetScrollDownIconRight( void ) const { return ASSET_SCROLLDOWN_RIGHT; }
   FLOAT GetScrollDownIconBottom( void ) const { return ASSET_SCROLLDOWN_BOTTOM; }
+  FLOAT GetScrollDownIconWidth( void ) const { return ASSET_SCROLLDOWN_RIGHT - ASSET_SCROLLDOWN_LEFT; }
+  FLOAT GetScrollDownIconHeight( void ) const { return ASSET_SCROLLDOWN_BOTTOM - ASSET_SCROLLDOWN_TOP; }
 
   FLOAT GetTriggerIconLeft( void ) const { return ASSET_TRIGGERICON_LEFT; }
   FLOAT GetTriggerIconTop( void ) const { return ASSET_TRIGGERICON_TOP; }
   FLOAT GetTriggerIconRight( void ) const { return ASSET_TRIGGERICON_RIGHT; }
   FLOAT GetTriggerIconBottom( void ) const { return ASSET_TRIGGERICON_BOTTOM; }
+  FLOAT GetTriggerIconWidth( void ) const { return ASSET_TRIGGERICON_RIGHT - ASSET_TRIGGERICON_LEFT; }
+  FLOAT GetTriggerIconHeight( void ) const { return ASSET_TRIGGERICON_BOTTOM - ASSET_TRIGGERICON_TOP; }
 
   FLOAT GetScrollUpIconLeft( void ) const { return ASSET_SCROLLUP_LEFT; }
   FLOAT GetScrollUpIconTop( void ) const { return ASSET_SCROLLUP_TOP; }
   FLOAT GetScrollUpIconRight( void ) const { return ASSET_SCROLLUP_RIGHT; }
   FLOAT GetScrollUpIconBottom( void ) const { return ASSET_SCROLLUP_BOTTOM; }
+  FLOAT GetScrollUpIconWidth( void ) const { return ASSET_SCROLLUP_RIGHT - ASSET_SCROLLUP_LEFT; }
+  FLOAT GetScrollUpIconHeight( void ) const { return ASSET_SCROLLUP_BOTTOM - ASSET_SCROLLUP_TOP; }
 
   FLOAT GetTriggerIconTailLeft( void ) const { return ASSET_TRIGGERICONTAIL_LEFT; }
   FLOAT GetTriggerIconTailTop( void ) const { return ASSET_TRIGGERICONTAIL_TOP; }
   FLOAT GetTriggerIconTailRight( void ) const { return ASSET_TRIGGERICONTAIL_RIGHT; }
   FLOAT GetTriggerIconTailBottom( void ) const { return ASSET_TRIGGERICONTAIL_BOTTOM; }
+  FLOAT GetTriggerIconTailWidth( void ) const { return ASSET_TRIGGERICONTAIL_RIGHT - ASSET_TRIGGERICONTAIL_LEFT; }
+  FLOAT GetTriggerIconTailHeight( void ) const { return ASSET_TRIGGERICONTAIL_BOTTOM - ASSET_TRIGGERICONTAIL_TOP; }
 
+    // MenuParts positions
+  FLOAT GetMenuTitleBarLeft( void ) const { return ASSET_MENUTITLEBAR_LEFT; }
+  FLOAT GetMenuTitleBarTop( void ) const { return ASSET_MENUTITLEBAR_TOP; }
+  FLOAT GetMenuTitleBarRight( void ) const { return ASSET_MENUTITLEBAR_RIGHT; }
+  FLOAT GetMenuTitleBarBottom( void ) const { return ASSET_MENUTITLEBAR_BOTTOM; }
+  FLOAT GetMenuTitleWidth( void ) const { return ASSET_MENUTITLEBAR_RIGHT - ASSET_MENUTITLEBAR_LEFT; }
+  FLOAT GetMenuTitleHeight( void ) const { return ASSET_MENUTITLEBAR_BOTTOM - ASSET_MENUTITLEBAR_TOP; }
 
+  FLOAT GetMenuBodyLeft( void ) const { return ASSET_MENUBODY_LEFT; }
+  FLOAT GetMenuBodyTop( void ) const { return ASSET_MENUBODY_TOP; }
+  FLOAT GetMenuBodyRight( void ) const { return ASSET_MENUBODY_RIGHT; }
+  FLOAT GetMenuBodyBottom( void ) const { return ASSET_MENUBODY_BOTTOM; }
+  FLOAT GetMenuBodyWidth( void ) const { return ASSET_MENUBODY_RIGHT - ASSET_MENUBODY_LEFT; }
+  FLOAT GetMenuBodyHeight( void ) const { return ASSET_MENUBODY_BOTTOM - ASSET_MENUBODY_TOP; }
+
+  FLOAT GetMenuBottomLeft( void ) const { return ASSET_MENUBOTTOM_LEFT; }
+  FLOAT GetMenuBottomTop( void ) const { return ASSET_MENUBOTTOM_TOP; }
+  FLOAT GetMenuBottomRight( void ) const { return ASSET_MENUBOTTOM_RIGHT; }
+  FLOAT GetMenuBottomBottom( void ) const { return ASSET_MENUBOTTOM_BOTTOM; }
+  FLOAT GetMenuBottomWidth( void ) const { return ASSET_MENUBOTTOM_RIGHT - ASSET_MENUBOTTOM_LEFT; }
+  FLOAT GetMenuBottomHeight( void ) const { return ASSET_MENUBOTTOM_BOTTOM - ASSET_MENUBOTTOM_TOP; }
 
 protected:
 

@@ -34,17 +34,24 @@
 #include "Help.h"
 #include "OptionsPage.h"
 #include "LightgunCalibrator.h"
+#include "StartMenu.h"
 
 //= D E F I N E S =====================================================
 
   // The maximum number of times to attempt to generate a working driver.list file
 #define MAX_DRIVERLIST_GENERATION_ATTEMPTS    2
 
-	// Number of seconds between valid X button readings
-#define TOGGLEBUTTON_TIMEOUT	0.50f
-
   // The deadzone for the screen usage percentage control (right analog)
 #define SCREENRANGE_DEADZONE    15000
+
+
+typedef enum viewmode 
+{
+  VIEW_ROMLIST,
+  VIEW_OPTIONS,
+  VIEW_LIGHTGUNCALIBRATOR,
+  VIEW_HELP
+} viewmode;
 
 //= S T R U C T U R E S ===============================================
 struct CUSTOMVERTEX
@@ -92,6 +99,7 @@ void DestroyBackdrop( void );
 void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... );
 static BOOL Helper_LoadDriverInfoFile( void );
 static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice );
+static void Helper_SetStartMenuItems( CStartMenu &startMenu, viewmode currentViewMode );
 
 //= F U N C T I O N S =================================================
 
@@ -179,10 +187,6 @@ void __cdecl main( void )
          "Media directory on your XBOX and restart." );
   }
 
-
-
-CHECKRAM();
-
     // Get the launch data
   DWORD ret = XGetLaunchInfo( &g_launchDataType, &g_launchData );
   MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
@@ -235,14 +239,8 @@ CHECKRAM();
   // At this point the MAMEoX process is guaranteed to have run, setting up
   // our totalMAMEGames member, as well as producing the driver info file
 
-    // Wait for controller 0 to be inserted
-  RequireController( 0 );
 
-
-
-
-
-		// Load the Help file
+    //--- Create the views -------------------------------------------------------
   CHelp help( pD3DDevice, 
               g_fontSet, 
               NULL );
@@ -286,6 +284,11 @@ CHECKRAM();
                                           g_fontSet,
                                           g_textureSet );
 
+  CStartMenu startMenu( pD3DDevice,
+                        g_fontSet,
+                        g_textureSet );
+  Helper_SetStartMenuItems( startMenu, VIEW_ROMLIST );
+
     //-- Initialize the rendering engine -------------------------------
   D3DXMATRIX matWorld;
   D3DXMatrixIdentity( &matWorld );
@@ -304,11 +307,11 @@ CHECKRAM();
     Die( pD3DDevice, "Fatal error while creating render target texture!" );
   }
 
-    // Toggle for whether or not we're in a given mode
-  BOOL optionsMode = FALSE;
-  BOOL helpMode = FALSE;
-  BOOL lightgunCalibrationMode = FALSE;
-	FLOAT toggleButtonTimeout = 0.0f;
+
+    // The view that should be displayed
+  viewmode  currentView = VIEW_ROMLIST;
+  BOOL      showStartMenu = FALSE;
+
 	UINT64 lastTime = osd_cycles();
 
     // Store the current screen rotation value so we can
@@ -329,15 +332,6 @@ CHECKRAM();
 	  FLOAT elapsedTime = (FLOAT)(curTime - lastTime) / (FLOAT)osd_cycles_per_second();
 	  lastTime = curTime;
 
-		  // Decrement the dpad movement timer
-	  if( toggleButtonTimeout > 0.0f )
-	  {
-		  toggleButtonTimeout -= elapsedTime;
-		  if( toggleButtonTimeout < 0.0f )
-			  toggleButtonTimeout = 0.0f;
-	  }
-
-
 			// Reboot on LT+RT+Black
     if( g_inputManager.IsButtonPressed( GP_LEFT_TRIGGER | GP_RIGHT_TRIGGER | GP_BLACK ) )
 		{
@@ -352,38 +346,56 @@ CHECKRAM();
 		}
 
 
-    if( g_inputManager.IsOnlyButtonPressed( GP_START ) )
+    if( !showStartMenu && g_inputManager.IsOnlyButtonPressed( GP_START ) )
     {
         // Enter the main menu
-      //menuMode = TRUE;
+      showStartMenu = TRUE;
+      g_inputManager.WaitForNoButton();
     }
-    else if( g_inputManager.IsOnlyButtonPressed( GP_B | GP_Y ) && toggleButtonTimeout == 0.0f )
+    else if( g_inputManager.IsOnlyButtonPressed( GP_B | GP_Y ) )
     {
-        // Toggle options mode
-      optionsMode = !optionsMode;
-      toggleButtonTimeout = TOGGLEBUTTON_TIMEOUT;
+      if( currentView != VIEW_OPTIONS )
+        currentView = VIEW_OPTIONS;
+      else
+        currentView = VIEW_ROMLIST;
+
+      startMenu.Reset();
+      Helper_SetStartMenuItems( startMenu, currentView );
+      g_inputManager.WaitForNoButton();
     }
-    else if( g_inputManager.IsOnlyButtonPressed( GP_X ) && toggleButtonTimeout == 0.0f )
+    else if( g_inputManager.IsOnlyButtonPressed( GP_X ) )
     {
-        // Toggle help mode
-      helpMode = !helpMode;
-      toggleButtonTimeout = TOGGLEBUTTON_TIMEOUT;
+      if( currentView != VIEW_HELP )
+        currentView = VIEW_HELP;
+      else
+        currentView = VIEW_ROMLIST;
+
+      startMenu.Reset();
+      Helper_SetStartMenuItems( startMenu, currentView );
+      g_inputManager.WaitForNoButton();
     }
-    else if( g_inputManager.IsOnlyButtonPressed( GP_BACK ) && toggleButtonTimeout == 0.0f )
+    else if( g_inputManager.IsOnlyButtonPressed( GP_BACK ) )
     {
-        // Toggle lightgun calibration mode
-      lightgunCalibrationMode = !lightgunCalibrationMode;
-      toggleButtonTimeout = TOGGLEBUTTON_TIMEOUT;
+      if( currentView != VIEW_LIGHTGUNCALIBRATOR )
+        currentView = VIEW_LIGHTGUNCALIBRATOR;
+      else
+        currentView = VIEW_ROMLIST;
+
+      startMenu.Reset();
+      Helper_SetStartMenuItems( startMenu, currentView );
+      g_inputManager.WaitForNoButton();
     }
-    else if( g_inputManager.IsButtonPressed( GP_RIGHT_ANALOG ) && toggleButtonTimeout == 0.0f )
+    else if( g_inputManager.IsButtonPressed( GP_RIGHT_ANALOG ) )
     {
         // Toggle the right analog stick mode
       rightAnalogMovesScreen = !rightAnalogMovesScreen;
-      toggleButtonTimeout = TOGGLEBUTTON_TIMEOUT;
+
+      g_inputManager.WaitForNoButton();
     }
     else if( g_inputManager.IsOneOfButtonsPressed( GP_RA_LEFT | GP_RA_RIGHT | GP_RA_UP | GP_RA_DOWN ) ||
              oldRotation != g_rendererOptions.m_screenRotation )
     {
+        // Handle screen size/move/rotate
       FLOAT xPos, yPos;
       GetScreenPosition( &xPos, &yPos );
       FLOAT xPercentage, yPercentage;
@@ -473,34 +485,41 @@ CHECKRAM();
 											  0L );															// Stencil
 
 
+    switch( currentView )
+    {
+      // *** VIEW_ROMLIST *** //
+    case VIEW_ROMLIST:
+      if( !showStartMenu )
+  		  romList.MoveCursor( g_inputManager );
+		  romList.DrawToTexture( renderTargetTexture );
+      break;
 
-    if( optionsMode )
-    {
-      optionsPage.MoveCursor( g_inputManager );
+      // *** VIEW_OPTIONS *** //
+    case VIEW_OPTIONS:
+      if( !showStartMenu )
+        optionsPage.MoveCursor( g_inputManager );
       optionsPage.DrawToTexture( renderTargetTexture );
-    }
-    else if( helpMode )
-    {
-      help.MoveCursor( g_inputManager );
-      help.DrawToTexture( renderTargetTexture );
-    }
-    else if( lightgunCalibrationMode )
-    {
-      lightgunCalibrator.MoveCursor( g_inputManager );
+      break;
+
+      // *** VIEW_LIGHTGUNCALIBRATOR *** //
+    case VIEW_LIGHTGUNCALIBRATOR:
+      if( !showStartMenu )
+        lightgunCalibrator.MoveCursor( g_inputManager );
       lightgunCalibrator.DrawToTexture( renderTargetTexture );
       if( lightgunCalibrator.IsCalibrationCompleted() )
       {
-        lightgunCalibrationMode = FALSE;
+        currentView = VIEW_ROMLIST;
         lightgunCalibrator.Reset();
-      }
-    }
-    else
-    {
-		  romList.MoveCursor( g_inputManager );
-		  romList.DrawToTexture( renderTargetTexture );
-    }
+      }      
+      break;
 
-
+      // *** VIEW_HELP *** //
+    case VIEW_HELP:
+      if( !showStartMenu )
+        help.MoveCursor( g_inputManager );
+      help.DrawToTexture( renderTargetTexture );
+      break;
+    }
 
       // Now render the texture to the screen 
     pD3DDevice->Clear(	0L,																// Count
@@ -519,7 +538,26 @@ CHECKRAM();
     pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
 
 
+      // Now render the start menu over that, if necessary
+    if( showStartMenu )
+    {
+      startMenu.MoveCursor( g_inputManager );
+      startMenu.Draw( FALSE, FALSE );
+      if( startMenu.IsInputFinished() )
+      {
+        showStartMenu = FALSE;
+        if( startMenu.IsInputAccepted() )
+          ; // Do something
+        startMenu.Reset();
+        Helper_SetStartMenuItems( startMenu, currentView );
+      }
+    }
+
+
+
+      // Render the debug console
     RenderDebugConsole( pD3DDevice );
+
     pD3DDevice->Present( NULL, NULL, NULL, NULL );
 
 
@@ -547,8 +585,47 @@ CHECKRAM();
       romList.GenerateROMList();
 		  WaitForNoButton();
     }
+
 	}
 }
+
+
+
+//-------------------------------------------------------------
+// Helper_SetStartMenuItems
+//-------------------------------------------------------------
+static void Helper_SetStartMenuItems( CStartMenu &startMenu, viewmode currentView )
+{
+  switch( currentView )
+  {
+    // *** VIEW_ROMLIST *** //
+  case VIEW_ROMLIST:
+    startMenu.SetMenuTitle( ":: ROM List ::" );
+    startMenu.AddMenuItem( "Options Menu" );
+    startMenu.AddMenuItem( "Lightgun Calibration" );
+    startMenu.AddMenuItem( "Remove Selected ROM" );
+    startMenu.AddMenuItem( "Scan for ROMs" );
+    break;
+
+    // *** VIEW_OPTIONS *** //
+  case VIEW_OPTIONS:
+    startMenu.SetMenuTitle( ":: Options Menu ::" );
+    break;
+
+    // *** VIEW_LIGHTGUNCALIBRATOR *** //
+  case VIEW_LIGHTGUNCALIBRATOR:
+    startMenu.SetMenuTitle( ":: Lightgun Calibrator ::" );
+    break;
+
+    // *** VIEW_HELP *** //
+  case VIEW_HELP:
+    startMenu.SetMenuTitle( ":: Help ::" );
+    break;
+  }
+
+  startMenu.AddMenuItem( "Return to dashboard" );
+}
+
 
 //-------------------------------------------------------------
 // Helper_LoadDriverInfoFile

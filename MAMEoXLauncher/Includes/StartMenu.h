@@ -57,8 +57,7 @@ public:
 
 		//------------------------------------------------------------
 		// Reset
-		//! \brief		Reset (most) member vars to defaults to allow
-    //!           the VK to be reused for a different input session
+		//! \brief		Reset (most) member vars to defaults
 		//------------------------------------------------------------
   void Reset( void ) {
 		m_cursorPosition = 0;
