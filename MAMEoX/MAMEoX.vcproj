@@ -65,7 +65,7 @@
 				RemotePath="xe:\MAMETEST\MAMEoX.xbe"/>
 			<Tool
 				Name="XboxImageTool"
-				AdditionalOptions="@c:\MAMEoX\imagebld.switch"
+				AdditionalOptions="/testid:0x4D414D45"
 				StackSize="0x10000"
 				LimitAvailableMemoryTo64MB="TRUE"
 				SuppressStartupBanner="TRUE"
@@ -119,7 +119,7 @@
 				RemotePath="xe:\MAMETEST\MAMEoX.xbe"/>
 			<Tool
 				Name="XboxImageTool"
-				AdditionalOptions="@c:\MAMEoX\imagebld.switch"
+				AdditionalOptions="/testid:0x4D414D45"
 				StackSize="0x10000"
 				IncludeDebugInfo="TRUE"
 				LimitAvailableMemoryTo64MB="TRUE"
@@ -174,7 +174,7 @@
 				RemotePath="xe:\MAMETEST\MAMEoX.xbe"/>
 			<Tool
 				Name="XboxImageTool"
-				AdditionalOptions="@c:\MAMEoX\imagebld.switch"
+				AdditionalOptions="/testid:0x4D414D45"
 				StackSize="0x10000"
 				IncludeDebugInfo="TRUE"
 				LimitAvailableMemoryTo64MB="TRUE"
@@ -229,7 +229,7 @@
 				RemotePath="xe:\MAMETEST\MAMEoX.xbe"/>
 			<Tool
 				Name="XboxImageTool"
-				AdditionalOptions="@c:\MAMEoX\imagebld.switch"
+				AdditionalOptions="/testid:0x4D414D45"
 				StackSize="0x10000"
 				IncludeDebugInfo="TRUE"
 				LimitAvailableMemoryTo64MB="TRUE"
@@ -456,22 +456,6 @@
 			</File>
 			<File
 				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Src\xbutil.cpp">
-			</File>
-		</Filter>
-		<Filter
-			Name="Resources"
-			Filter="">
-			<File
-				RelativePath="Sources\resource.rdf">
-				<FileConfiguration
-					Name="Profile|Xbox"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Building resources"
-						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="$(ProjectDir)Media\$(InputName).xpr;$(ProjectDir)$(InputName).h"/>
-				</FileConfiguration>
 			</File>
 		</Filter>
 	</Files>

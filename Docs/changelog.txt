@@ -15,9 +15,13 @@ Version 0.64b
     - Moved romlist and driverlist directory to default to the d:
       as there's no real reason to force it to Z.
     - Added path for CHD files (Harddrive images)
+    - Changed Z: for writable data to U:
 
   - \MAMEoX\Sources\xbox_FileIO.cpp:
     - Added path for CHD files
+    - Changed ROMLISTPATH so that it can be properly remapped to
+      the U:
+    - Changed Z: for writable data to U:
 
   - \MAMEoX\Sources\MAMEoXUtil.cpp:
     - Fixed a couple more INI bugs (improperly mapped options)
@@ -26,6 +30,8 @@ Version 0.64b
   - \MAMEoX\Sources\xbox_main.cpp:
     - Fixed a non-termination bug w/ the Die function.
     - Renamed WaitForNoKeys to WaitForNoKey
+    - Changed ROMLISTPATH so that it can be properly remapped to
+      the U:
 
   - \MAMEoXLauncher\MediaFiles:
     - Added directory w/ Media files
@@ -35,9 +41,13 @@ Version 0.64b
     - Moved all ROMList user input to the ROMList file.
     - Updated splashscreen w/ graphical logo (thanks to r4dius)
     - Added backdrop to ROM List screen (thanks to r4dius)
+    - Changed ROMLISTPATH so that it can be properly remapped to
+      the U:
 
   - \MAMEoXLauncher\Sources\ROMList.cpp:
     - Moved all ROMList user input to the ROMList file
+    - Changed ROMLISTPATH so that it can be properly remapped to
+      the U:
 
   - \MAMEoXLauncher\Includes\OptionsPage.h:
     - Added INI options editing class

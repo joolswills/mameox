@@ -161,7 +161,7 @@ void __cdecl main( void )
 //-------------------------------------------------------------
 static BOOL Helper_SaveDriverList( void )
 {
-	std::string		driverListFile = ROMLISTPATH;
+	std::string		driverListFile = g_ROMListPath;
 	driverListFile += "\\";
 	driverListFile += DRIVERLISTFILENAME;
 

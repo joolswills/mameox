@@ -54,6 +54,7 @@
 				AdditionalFiles="xe:\MAMETEST\Media=..\Media"/>
 			<Tool
 				Name="XboxImageTool"
+				AdditionalOptions="/testid:0x4D414D45"
 				FileName="$(TargetDir)default.xbe"
 				StackSize="65536"
 				IncludeDebugInfo="TRUE"
@@ -111,6 +112,7 @@
 				AdditionalFiles="xe:\MAMETEST\Media=..\Media"/>
 			<Tool
 				Name="XboxImageTool"
+				AdditionalOptions="/testid:0x4D414D45"
 				FileName="$(TargetDir)default.xbe"
 				StackSize="65536"
 				LimitAvailableMemoryTo64MB="TRUE"

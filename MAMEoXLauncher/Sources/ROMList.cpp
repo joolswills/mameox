@@ -71,7 +71,7 @@ BOOL CROMList::LoadROMList( BOOL bGenerate, BOOL allowClones )
 
 	m_ROMList.clear();
 
-	std::string		romListFile = ROMLISTPATH;
+	std::string		romListFile = g_ROMListPath;
 	romListFile += "\\";
 	romListFile += ROMLISTFILENAME;
 
@@ -202,7 +202,7 @@ BOOL CROMList::GenerateROMList( BOOL allowClones )
 
 
 		// Write the indices to the ROM list file
-	std::string		romListFile = ROMLISTPATH;
+	std::string		romListFile = g_ROMListPath;
 	romListFile += "\\";
 	romListFile += ROMLISTFILENAME;
 

@@ -19,7 +19,11 @@ extern "C" {
   // NOTE: Since are set to the D:, if the program is running from
   //        the DVD drive, any file write op's will fail (eg. nvram).
   //       Therefore, in InitializeFileIO(), these paths may be remapped
-  //        programmatically to the Z:
+  //        programmatically to the ALTDRIVE drive
+
+  //! Alternate drive letter if the D: is not writable
+#define ALTDRIVE            'U'
+
 #define GENERALPATH				  "D:\\GENERAL"
 #define ARTPATH						  "D:\\ART"
 #define INIPATH						  "D:\\INI"
@@ -27,7 +31,7 @@ extern "C" {
 #define CONFIGPATH          "D:\\CFG"
 #define ROMPATH						  "D:\\ROMS"
 #define AUDIOPATH           "D:\\SAMPLES"
-#define ROMLISTPATH				  "D:\\ROMS"
+#define DEFAULTROMLISTPATH  "D:\\ROMS"
 #define HDIMAGEPATH         "D:\\HDIMAGES"
   
 #define DRIVERLISTFILENAME  "DRIVERS.list"
@@ -40,7 +44,8 @@ extern "C" {
   //!<  we don't waste any time searching for files that are definitely not there
 #define ALL_ROMS_ZIPPED
 
-
+//= G L O B A L = V A R S ==============================================
+extern const char *g_ROMListPath;
 
 //= P R O T O T Y P E S ================================================
 	//--------------------------------------------------------------------------

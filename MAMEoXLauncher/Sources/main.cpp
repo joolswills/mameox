@@ -319,7 +319,7 @@ void __cdecl main( void )
 //-------------------------------------------------------------
 static BOOL Helper_LoadDriverInfoFile( void )
 {
-	std::string		driverListFile = ROMLISTPATH;
+	std::string		driverListFile = g_ROMListPath;
 	driverListFile += "\\";
 	driverListFile += DRIVERLISTFILENAME;
 

@@ -43,7 +43,7 @@ typedef struct _osd_file {
 
 
 //= G L O B A L = V A R S ==============================================
-
+const char *g_ROMListPath = NULL;
 const char *g_pathNames[FILETYPE_end] = {NULL};
 
 
@@ -52,7 +52,7 @@ const char *g_pathNames[FILETYPE_end] = {NULL};
   //  Helper_CreateOrOpenSystemPath
   //! Create one of the system directories (GENERALPATH, etc...) or
   //!  open it if it already exists. Also, if the path cannot be created
-  //!  on the D:, do so on the Z: instead
+  //!  on the D:, do so on the ALTDRIVE instead
   //!
   //! \param  path - [IN,OUT] Passed in as the path to create/verify,
   //!                this value is set to the actual path on return.
@@ -90,13 +90,14 @@ void InitializeFileIO( void )
 
 
     // Try to create/open all of the paths. If any fail,
-    //     switch the drive letter to 'Z', as we must be
+    //     switch the drive letter to ALTDRIVE, as we must be
     //     running off of a DVD
 
 
     // Make sure the rom list path is available
-  CREATEOROPENPATH( ROMLISTPATH, TRUE );
-  free( tempStr );
+
+  CREATEOROPENPATH( DEFAULTROMLISTPATH, TRUE );
+  g_ROMListPath = tempStr;
 
   CREATEOROPENPATH( ROMPATH, FALSE );
 	g_pathNames[FILETYPE_RAW] = g_pathNames[FILETYPE_ROM] = 
@@ -634,8 +635,8 @@ static BOOL Helper_CreateOrOpenSystemPath( char **path, BOOL writeRequired )
   {
     if( !CreateDirectory( *path, NULL ) )
     {
-        // Attempt to create the directory on the Z: instead
-      *path[0] = 'Z';
+        // Attempt to create the directory on the ALTDRIVE instead
+      *path[0] = ALTDRIVE;
       attrib = GetFileAttributes( *path );
 	    if( attrib == PATH_NOT_FOUND || attrib == 0xFFFFFFFF || (writeRequired && (attrib & FILE_ATTRIBUTE_READONLY)) )
       {
