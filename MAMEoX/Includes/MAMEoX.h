@@ -63,6 +63,16 @@ typedef enum fonttype
   FONTTYPE_LARGETHIN
 } fonttype;
 
+typedef enum ROMListSortMode
+{
+  SM_BYNAME = 0x00,
+  SM_BYMANUFACTURER,
+  SM_BYYEAR,
+  SM_BYPARENT,
+  SM_BYGENRE,
+  SM_BYNUMPLAYERS
+} ROMListSortMode;
+
 //= S T R U C T U R E S ================================================
 typedef struct MAMEoXLaunchData_t
 {
@@ -104,8 +114,17 @@ typedef struct RenderToTextureToken_t
   LPDIRECT3DTEXTURE8  m_texture;
 } RenderToTextureToken_t;
 
+typedef struct ROMListOptions_t
+{
+  BOOL              m_verboseMode;      //!<  Whether or not to show verbose info (manufacturer, year, etc...)
+  BOOL              m_displayClones;    //!<  Whether or not to show clones
+  ROMListSortMode   m_sortMode;         //!<  The current sort mode
+} ROMListOptions_t;
+
+
 //= G L O B A L = V A R S ==============================================
 extern lightgunCalibration_t    g_calibrationData[4]; //!< Lightgun calibration data
+extern ROMListOptions_t         g_romListOptions;
 
 //= P R O T O T Y P E S ================================================
   //-------------------------------------------------------------------

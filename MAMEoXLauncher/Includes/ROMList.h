@@ -9,6 +9,7 @@
 
 //= I N C L U D E S ====================================================
 #include "ListView.h"
+#include "MAMEoX.h"
 #include <vector>
 
 //= D E F I N E S ======================================================
@@ -16,8 +17,7 @@
 #define INVALID_SUPERSCROLL_JUMP_IDX    0xFFFFFFFF
 #define INVALID_ROM_INDEX               0xFFFFFFFF
 
-#define CURRENTROMLIST()                (m_allowClones ? m_ROMListWithClones : m_ROMListNoClones)
-
+//= G L O B A L = V A R S ==============================================
 
 
 //= C L A S S E S ======================================================
@@ -47,8 +47,6 @@ public:
     m_scrollUpIconTexture( scrollUpIconTexture ),
     m_scrollDownIconTexture( scrollDownIconTexture ),
     m_superscrollMode( FALSE ),
-		m_allowClones( TRUE ),
-		m_additionalinfo( TRUE ),
     m_superscrollCharacterIdx( 0 ),
     m_driverInfoList( drivers ),
     m_numDrivers( numDrivers ),
@@ -57,7 +55,30 @@ public:
 	{
     for( UINT32 i = 0; i < NUM_SUPERSCROLL_CHARS; ++i )
       m_superscrollJumpTable[i] = INVALID_SUPERSCROLL_JUMP_IDX;
+
+    m_options.m_displayClones = TRUE;
+    m_options.m_verboseMode = TRUE;
+    m_options.m_sortMode = SM_BYNAME;
 	}
+
+		//------------------------------------------------------------
+		// SetOptions
+		//! \brief		Set the display options
+		//!
+		//! \param		opts - ROMListOptions_t struct containing new options
+		//------------------------------------------------------------
+  void SetOptions( const ROMListOptions_t &opts ) { 
+    m_options = opts;
+    UpdateSortedList();
+  }
+
+		//------------------------------------------------------------
+		// GetOptions
+		//! \brief		Get the current display options
+		//!
+		//! \return		const ROMListOptions_t & - ROMListOptions_t struct containing options
+		//------------------------------------------------------------
+  const ROMListOptions_t &GetOptions( void ) { return m_options; }
 
 		//------------------------------------------------------------
 		// LoadROMList
@@ -110,8 +131,8 @@ public:
 		//!            of the currently selected item.
 		//------------------------------------------------------------
 	UINT32 GetCurrentGameIndex( void ) { 
-    if( (ULONG)m_pageOffset + (ULONG)m_cursorPosition < CURRENTROMLIST().size() )
-		  return CURRENTROMLIST()[ (ULONG)m_pageOffset + (ULONG)m_cursorPosition ]; 
+    if( (ULONG)m_pageOffset + (ULONG)m_cursorPosition < m_currentSortedList.size() )
+		  return m_currentSortedList[ (ULONG)m_pageOffset + (ULONG)m_cursorPosition ]; 
     return INVALID_ROM_INDEX;
 	}
 
@@ -158,6 +179,8 @@ protected:
   BOOL SaveROMListFile( void );
   BOOL LoadROMListFile( void );
 
+  void UpdateSortedList( void );
+  void GenerateSuperscrollJumpTable( void );
 
 		//------------------------------------------------------------
 		// DrawZipData
@@ -185,13 +208,11 @@ protected:
     // Cursor movement helper functions
   void SuperScrollModeMoveCursor( CInputManager &gp, FLOAT elapsedTime );
   void NormalModeMoveCursor( CInputManager &gp, FLOAT elapsedTime );
-  void GenerateSuperscrollJumpTable( void );
 
   UINT32                m_numDrivers;               //!<  The total number of drivers supported by the core
   MAMEDriverData_t      *m_driverInfoList;          //!<  Drivers supported by the MAME core
   BOOL                  m_superscrollMode;          //!<  Whether or not to display in superscroll mode
-	BOOL									m_allowClones;							//!<	Whether or not to allow clones
-	BOOL									m_additionalinfo;						//!<	Game list with additional informations
+  ROMListOptions_t      m_options;                  //!<  Persistent options
   UINT32                m_superscrollCharacterIdx;  //!<  Character for superscroll mode
   UINT32                m_superscrollJumpTable[NUM_SUPERSCROLL_CHARS]; //!<  Jump indices for superscroll
 
@@ -207,6 +228,8 @@ protected:
 		//!  defining the set of available ROMs
 	std::vector<UINT32>		m_ROMListWithClones;		
   std::vector<UINT32>   m_ROMListNoClones;
+
+  std::vector<UINT32>   m_currentSortedList;
 };
 
 

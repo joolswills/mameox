@@ -56,7 +56,7 @@ struct CUSTOMVERTEX
 
 
 //= G L O B A L = V A R S ==============================================
-const char g_superscrollCharacterSet[NUM_SUPERSCROLL_CHARS+1] = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const char        g_superscrollCharacterSet[NUM_SUPERSCROLL_CHARS+1] = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 
 //= P R O T O T Y P E S ================================================
@@ -76,7 +76,7 @@ BOOL CROMList::LoadROMList( BOOL bGenerate, BOOL allowClones )
   m_maxPageSize = MAXPAGESIZE;
 	m_ROMListWithClones.clear();
   m_ROMListNoClones.clear();
-  m_allowClones = allowClones;
+  m_options.m_displayClones = allowClones;
 
 	m_displayDevice->Clear(	0L,																// Count
 													NULL,															// Rects to clear
@@ -94,8 +94,8 @@ BOOL CROMList::LoadROMList( BOOL bGenerate, BOOL allowClones )
 
   if( LoadROMListFile() )
   {
-    GenerateSuperscrollJumpTable();
-    m_numLinesInList = CURRENTROMLIST().size();
+    UpdateSortedList();
+    m_numLinesInList = m_currentSortedList.size();
     return TRUE;
   }
   else if( bGenerate )
@@ -189,8 +189,8 @@ BOOL CROMList::GenerateROMList( void )
   }
 
     // Create the superscroll jump table
-  GenerateSuperscrollJumpTable();
-  m_numLinesInList = CURRENTROMLIST().size();
+  UpdateSortedList();
+  m_numLinesInList = m_currentSortedList.size();
 	return TRUE;
 }
 
@@ -485,6 +485,7 @@ void CROMList::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
   if(  gp.IsButtonPressed( GP_B | GP_A ) )
   {
     m_shouldGenerateROMList = TRUE;
+    gp.WaitForNoButton();
   }
   else if( gp.IsOneOfButtonsPressed( GP_A | GP_START ) )
 	{
@@ -526,15 +527,18 @@ void CROMList::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
 	}
 	else if( gp.IsButtonPressed( GP_WHITE ) )
 	{
-		m_additionalinfo = !m_additionalinfo;
+		m_options.m_verboseMode = !m_options.m_verboseMode;
+    UpdateSortedList();
+    m_numLinesInList = m_currentSortedList.size();
     gp.WaitForNoButton();
 	}
   else if( gp.IsButtonPressed( GP_BLACK ) )
   {
       // No need to regenerate the list, just switch to
       // the noclones (or clones) list
-		m_allowClones = !m_allowClones;
-    m_numLinesInList = CURRENTROMLIST().size();
+		m_options.m_displayClones = !m_options.m_displayClones;
+    UpdateSortedList();
+    m_numLinesInList = m_currentSortedList.size();
     gp.WaitForNoButton();
   }
 
@@ -627,12 +631,12 @@ void CROMList::SuperScrollModeMoveCursor( CInputManager &gp, FLOAT elapsedTime )
   if( absCursorPos != INVALID_SUPERSCROLL_JUMP_IDX && currentChar != g_superscrollCharacterSet[m_superscrollCharacterIdx])
   {
       // Jump the cursor to the selected letter
-	  UINT32 pageSize = (CURRENTROMLIST().size() < MAXPAGESIZE ? CURRENTROMLIST().size() : MAXPAGESIZE);
+	  UINT32 pageSize = (m_currentSortedList.size() < MAXPAGESIZE ? m_currentSortedList.size() : MAXPAGESIZE);
 	  UINT32 pageHalfwayPoint = (pageSize >> 1);
-	  UINT32 maxPageOffset = CURRENTROMLIST().size() - pageSize;
+	  UINT32 maxPageOffset = m_currentSortedList.size() - pageSize;
 
       // Put the page offset at absoluteCursorPos - pageHalwayPoint, or 0
-    if( absCursorPos <= pageHalfwayPoint || CURRENTROMLIST().size() < MAXPAGESIZE )
+    if( absCursorPos <= pageHalfwayPoint || m_currentSortedList.size() < MAXPAGESIZE )
     {
       m_pageOffset = 0.0f;
       m_cursorPosition = (FLOAT)absCursorPos;
@@ -708,9 +712,9 @@ void CROMList::NormalModeMoveCursor( CInputManager &gp, FLOAT elapsedTime )
 		cursorVelocity *= SBMULTIPLIER_FAST;
 
 
-	DWORD pageSize = (CURRENTROMLIST().size() < MAXPAGESIZE ? CURRENTROMLIST().size() : MAXPAGESIZE);
+	DWORD pageSize = (m_currentSortedList.size() < MAXPAGESIZE ? m_currentSortedList.size() : MAXPAGESIZE);
 	ULONG pageHalfwayPoint = (pageSize >> 1);
-	ULONG maxPageOffset = CURRENTROMLIST().size() - pageSize;
+	ULONG maxPageOffset = m_currentSortedList.size() - pageSize;
 
 	if( cursorVelocity > 0 )
 	{
@@ -871,7 +875,7 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   FLOAT textWidth, textHeight;
   m_fontSet.SmallThinFont().GetTextExtent( L"i^jg", &textWidth, &textHeight );
 
-  if( m_additionalinfo )
+  if( m_options.m_verboseMode )
     m_backdropTexture = m_verboseModeBackdropTexture;
   else
     m_backdropTexture = m_simpleModeBackdropTexture;
@@ -908,13 +912,13 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
         // Display the superscroll character
       WCHAR displayString[2] = L"";
       mbtowc( displayString, &g_superscrollCharacterSet[m_superscrollCharacterIdx], 1 );
-		  swprintf( name, L"Names %s [%s]", ( m_allowClones == FALSE ) ? L"(No Clones)" : L"(Clones)   ", displayString );
+		  swprintf( name, L"Names %s [%s]", ( m_options.m_displayClones == FALSE ) ? L"(No Clones)" : L"(Clones)   ", displayString );
     }
     else
-  	  swprintf( name, L"Names %s", ( m_allowClones == FALSE ) ? L"(No Clones)" : L"(Clones)   " );
+  	  swprintf( name, L"Names %s", ( m_options.m_displayClones == FALSE ) ? L"(No Clones)" : L"(Clones)   " );
 
 	  m_fontSet.SmallThinFont().DrawText( NAME_COLUMN, TITLEBAR_ROW, HEADER_COLOR, name );
-	  if( m_additionalinfo )
+	  if( m_options.m_verboseMode )
 	  {
 		  m_fontSet.SmallThinFont().DrawText( MANUFACTURER_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"Manufacturer" );
 		  m_fontSet.SmallThinFont().DrawText( YEAR_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"Year" );
@@ -929,17 +933,17 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
 	  for( DWORD i = 0; i < pageSize; ++i )
 	  {
-		  mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX++ ] ].m_description, 255 );
+		  mbstowcs( name, m_driverInfoList[ m_currentSortedList[ absListIDX++ ] ].m_description, 255 );
 		  m_fontSet.SmallThinFont().DrawText( NAME_COLUMN,
                                           FIRSTDATA_ROW + yPos,
                                           ITEM_COLOR,
                                           name,
                                           XBFONT_TRUNCATED,
-                                          ( m_additionalinfo ? MANUFACTURER_COLUMN : 600 ) - (NAME_COLUMN + COLUMN_PADDING) );
+                                          ( m_options.m_verboseMode ? MANUFACTURER_COLUMN : 600 ) - (NAME_COLUMN + COLUMN_PADDING) );
 
-		  if( m_additionalinfo )
+		  if( m_options.m_verboseMode )
 		  {
-			  mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX - 1 ] ].m_manufacturer, 255 );
+			  mbstowcs( name, m_driverInfoList[ m_currentSortedList[ absListIDX - 1 ] ].m_manufacturer, 255 );
 			  m_fontSet.SmallThinFont().DrawText( MANUFACTURER_COLUMN,
                                             FIRSTDATA_ROW + yPos,
                                             ITEM_COLOR,
@@ -947,7 +951,7 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
                                             XBFONT_TRUNCATED,
                                             YEAR_COLUMN - (MANUFACTURER_COLUMN + COLUMN_PADDING) );
 
-			  mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX - 1 ] ].m_year, 255 );
+			  mbstowcs( name, m_driverInfoList[ m_currentSortedList[ absListIDX - 1 ] ].m_year, 255 );
 			  m_fontSet.SmallThinFont().DrawText( YEAR_COLUMN, 
                                             FIRSTDATA_ROW + yPos, 
                                             ITEM_COLOR, 
@@ -955,7 +959,7 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
                                             XBFONT_TRUNCATED,
                                             CLONE_COLUMN - (YEAR_COLUMN + COLUMN_PADDING) );
 
-			  mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX - 1 ] ].m_cloneFileName, 255 );
+			  mbstowcs( name, m_driverInfoList[ m_currentSortedList[ absListIDX - 1 ] ].m_cloneFileName, 255 );
 			  m_fontSet.SmallThinFont().DrawText( CLONE_COLUMN, 
                                             FIRSTDATA_ROW + yPos,
                                             ITEM_COLOR,
@@ -1139,11 +1143,11 @@ void CROMList::DrawZipCheckProgress( DWORD index )
 void CROMList::RemoveCurrentGameIndex( void )
 {
 	UINT32 curCursorPos = (ULONG)m_pageOffset + (ULONG)m_cursorPosition;
-	std::vector<UINT32>::iterator it = CURRENTROMLIST().begin();
+	std::vector<UINT32>::iterator it = m_currentSortedList.begin();
 	for( UINT32 i = 0; i < curCursorPos; ++i )
 		++it;
 
-	CURRENTROMLIST().erase( it );
+	m_currentSortedList.erase( it );
 
     // Note: This needs to be fixed to remove from both
     //       ROM lists, as well as write the list back
@@ -1160,9 +1164,9 @@ void CROMList::GenerateSuperscrollJumpTable( void )
     m_superscrollJumpTable[idx] = INVALID_SUPERSCROLL_JUMP_IDX;
   
   char charToLookFor = g_superscrollCharacterSet[0];
-  for( UINT32 j = 0, i = 0; j < CURRENTROMLIST().size() ; ++j )
+  for( UINT32 j = 0, i = 0; j < m_currentSortedList.size() ; ++j )
   {
-    char currentChar = toupper( m_driverInfoList[ CURRENTROMLIST()[j] ].m_description[0] );
+    char currentChar = toupper( m_driverInfoList[ m_currentSortedList[j] ].m_description[0] );
 
       // Map any non-alphanumerics to '#'
     if( !(currentChar >= 'A' && currentChar <= 'Z') )
@@ -1206,3 +1210,49 @@ void CROMList::GenerateSuperscrollJumpTable( void )
   }
 
 }
+
+
+//---------------------------------------------------------------------
+//	UpdateSortedList
+//---------------------------------------------------------------------
+void CROMList::UpdateSortedList( void )
+{
+  if( m_options.m_displayClones )
+    m_currentSortedList = m_ROMListWithClones;
+  else
+    m_currentSortedList = m_ROMListNoClones;
+/*
+  if( m_options.m_verboseMode && m_options.m_sortMode != SM_BYNAME )
+  {
+      // Sort the list in some different manner
+    switch( m_options.m_sortMode )
+    {
+    case SM_BYMANUFACTURER:
+      break;
+
+    case SM_BYPARENT:
+      break;
+
+    case SM_BYGENRE:
+        // This will require changes to the superscroll function
+      break;
+
+    case SM_BYNUMPLAYERS:
+        // This will require changes to the superscroll function
+      break;
+
+    case SM_BYYEAR: 
+        // This will require changes to the superscroll function
+      break;
+
+    default:
+      PRINTMSG( T_ERROR, "Invalid sort mode %lu", m_options.m_sortMode );
+      break;
+    }
+  }
+*/
+
+    // Generate the superscroll table from the new list
+  GenerateSuperscrollJumpTable();
+}
+

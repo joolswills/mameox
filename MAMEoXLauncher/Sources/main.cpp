@@ -382,6 +382,7 @@ void __cdecl main( void )
                     mameoxLaunchData->m_totalMAMEGames );
 	if( !romList.LoadROMList( TRUE ) )
 		Die( pD3DDevice, "Could not generate ROM list!" );
+  romList.SetOptions( g_romListOptions );
 
     // Reposition the romList cursor to its previous value
   romList.SetCursorPosition(  mameoxLaunchData->m_cursorPosition, 
@@ -454,6 +455,7 @@ void __cdecl main( void )
 			// Reboot on LT+RT+Black
     if( g_inputManager.IsButtonPressed( GP_LEFT_TRIGGER | GP_RIGHT_TRIGGER | GP_BLACK ) )
 		{
+      g_romListOptions = romList.GetOptions();
       SaveOptions();
       LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
       XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
@@ -634,6 +636,7 @@ void __cdecl main( void )
                                   &mameoxLaunchData->m_superscrollIndex );
       mameoxLaunchData->m_command = LAUNCH_RUN_GAME;
 
+      g_romListOptions = romList.GetOptions();
       SaveOptions();
       ShowLoadingScreen( pD3DDevice );
       XLaunchNewImage( "D:\\MAMEoX.xbe", &g_launchData );

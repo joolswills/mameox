@@ -40,6 +40,7 @@ Version 0.70.3b
 
     - MAMEoXUtil.cpp
       - Put in code to reposition the screen as well as resize
+      - Made ROM List settings persistent
 
     - xbox_Direct3DRenderer.cpp
       - Put in code to reposition the screen as well as resize
@@ -74,6 +75,7 @@ Version 0.70.3b
       - Fixed superscroll so it doesn't jump to the top of the
         current section (i.e. tapping Y no longer does anything,
         cause it was annoying me)
+      - Made ROM List settings persistent
 
     - OptionsPage.cpp
       - Changed all list views to use the new CListView base class

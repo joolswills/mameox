@@ -49,7 +49,8 @@ CInputManager			g_inputManager;
 CGraphicsManager	g_graphicsManager;
 CFontSet          g_fontSet;  // The global font manager
 
-extern BOOL g_soundEnabled;   // Sound processing override (defined in xbox_Main.cpp)
+extern BOOL       g_soundEnabled;   // Sound processing override (defined in xbox_Main.cpp)
+ROMListOptions_t  g_romListOptions;
 
 
 extern "C" {
@@ -218,6 +219,11 @@ void LoadOptions( void )
   g_calibrationData[3].m_yData[0] = iniFile.GetProfileInt( "Input", "Lightgun4_Top", 32767 );
   g_calibrationData[3].m_yData[1] = iniFile.GetProfileInt( "Input", "Lightgun4_CenterY", 0 );
   g_calibrationData[3].m_yData[2] = iniFile.GetProfileInt( "Input", "Lightgun4_Bottom", -32767 );
+
+    //-- ROM List Options --------------------------------------------------------------------
+  g_romListOptions.m_displayClones =             iniFile.GetProfileInt( "ROMListOptions", "DisplayClones", TRUE );
+  g_romListOptions.m_sortMode = (ROMListSortMode)iniFile.GetProfileInt( "ROMListOptions", "SortMode", (UINT32)SM_BYNAME );
+  g_romListOptions.m_verboseMode =               iniFile.GetProfileInt( "ROMListOptions", "VerboseMode", TRUE );
 }
 
 
@@ -324,6 +330,10 @@ void SaveOptions( void )
   iniFile.WriteProfileInt( "Input", "Lightgun4_CenterY", g_calibrationData[3].m_yData[1] );
   iniFile.WriteProfileInt( "Input", "Lightgun4_Bottom", g_calibrationData[3].m_yData[2] );
 
+    //-- ROM List Options --------------------------------------------------------------------
+  iniFile.WriteProfileInt( "ROMListOptions", "DisplayClones", g_romListOptions.m_displayClones );
+  iniFile.WriteProfileInt( "ROMListOptions", "SortMode", (UINT32)g_romListOptions.m_sortMode );
+  iniFile.WriteProfileInt( "ROMListOptions", "VerboseMode", g_romListOptions.m_verboseMode );
 }
 
 //-------------------------------------------------------------
