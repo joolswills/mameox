@@ -103,7 +103,7 @@ void CGamepad::WaitForAnyButton( void )
 {
   if( !m_deviceHandle )
   {
-    PRINTMSG( T_INFO, "WaitForAnyButton called on invalid gamepad!" );
+    PRINTMSG(( T_ERROR, "WaitForAnyButton called on invalid gamepad!" ));
     return;
   }
 
@@ -120,7 +120,7 @@ void CGamepad::WaitForNoButton( void )
 {
   if( !m_deviceHandle )
   {
-    PRINTMSG( T_INFO, "WaitForNoButton called on invalid gamepad!" );
+    PRINTMSG(( T_ERROR, "WaitForNoButton called on invalid gamepad!" ));
     return;
   }
 
@@ -137,7 +137,7 @@ void CGamepad::WaitForAnyInput( void )
 {
   if( !m_deviceHandle )
   {
-    PRINTMSG( T_INFO, "WaitForAnyInput called on invalid gamepad!" );
+    PRINTMSG(( T_ERROR, "WaitForAnyInput called on invalid gamepad!" ));
     return;
   }
 
@@ -154,7 +154,7 @@ void CGamepad::WaitForNoInput( void )
 {
   if( !m_deviceHandle )
   {
-    PRINTMSG( T_INFO, "WaitForNoInput called on invalid gamepad!" );
+    PRINTMSG(( T_ERROR, "WaitForNoInput called on invalid gamepad!" ));
     return;
   }
 

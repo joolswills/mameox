@@ -11,7 +11,7 @@
 #include "InputManager.h"
 #include "GraphicsManager.h"
 #include "DebugLogger.h"
-#include "Sections.h"
+#include "XBESectionUtil.h"
 #include "FontSet.h"
 #include "VirtualMemoryManager.h"
 
@@ -33,7 +33,7 @@ extern "C" {
                                                       UNICODE_STRING devName = { strlen(_drivePath__), strlen(_drivePath__) + 1, _drivePath__ }; \
                                                       UNICODE_STRING devLetter = { strlen(_driveLetter__), strlen(_driveLetter__) + 1, _driveLetter__ }; \
                                                       DWORD status = IoCreateSymbolicLink( &devLetter, &devName ); \
-                                                      PRINTMSG( T_INFO, "Map %s = %s, status %d", _driveLetter__, _drivePath__, status ); \
+                                                      PRINTMSG(( T_INFO, "Map %s = %s, status %d", _driveLetter__, _drivePath__, status )); \
                                                     }
 
 //= S T R U C T U R E S ===============================================
@@ -457,7 +457,7 @@ void RemapDriveLetters( void )
     if( h != INVALID_HANDLE_VALUE )
     {
       do {
-        PRINTMSG( T_INFO, "D:\\%s", findData.cFileName );
+        PRINTMSG(( T_INFO, "D:\\%s", findData.cFileName ));
       } while( FindNextFile( h, &findData ) );
       FindClose( h );
     }
@@ -466,7 +466,7 @@ void RemapDriveLetters( void )
     if( h != INVALID_HANDLE_VALUE )
     {
       do {
-        PRINTMSG( T_INFO, "E:\\%s", findData.cFileName );
+        PRINTMSG(( T_INFO, "E:\\%s", findData.cFileName ));
       } while( FindNextFile( h, &findData ) );
       FindClose( h );
     }
@@ -475,7 +475,7 @@ void RemapDriveLetters( void )
     if( h != INVALID_HANDLE_VALUE )
     {
       do {
-        PRINTMSG( T_INFO, "G:\\%s", findData.cFileName );
+        PRINTMSG(( T_INFO, "G:\\%s", findData.cFileName ));
       } while( FindNextFile( h, &findData ) );
       FindClose( h );
     }
@@ -595,12 +595,12 @@ void GetLightgunCalibratedPosition( UINT32 player, INT32 *deltax, INT32 *deltay 
 
 
 
-  PRINTMSG_TO_CONSOLE(  T_INFO, 
+  PRINTMSG_TO_CONSOLE((  T_INFO, 
                         "x: %d:%d y: %d:%d", 
                         *deltax, 
                         gp->GetAnalogAxisState( GP_ANALOG_LEFT, GP_AXIS_X ),
                         *deltay,
-                        gp->GetAnalogAxisState( GP_ANALOG_LEFT, GP_AXIS_Y ));
+                        gp->GetAnalogAxisState( GP_ANALOG_LEFT, GP_AXIS_Y )));
 }
 
 //-------------------------------------------------------------
