@@ -40,9 +40,12 @@ extern "C" {
 #define SBMULTIPLIER_FAST				1.5f
 
 	// Analog trigger deadzone
-#define DEADZONE								0.20f
+#define DEADZONE								0.25f
 #define DEADZONE_RECTIFIER			1.0f / (1.0f - DEADZONE)
 #define CURSOR_SPEED            0.3f                // The cursor velocity modifier
+
+  // Analog stick deadzone
+#define STICK_DEADZONE          0.35f
 
 	// Number of seconds between valid DPAD readings
 #define DPADCURSORMOVE_TIMEOUT	0.20f
@@ -174,16 +177,15 @@ BOOL CROMList::GenerateROMList( BOOL allowClones )
 
 
 		// Check the zip files against the list of all known zip files
-	for( i = 0; drivers[i]; ++i )
+	for( i = 0; i < m_numDrivers; ++i )
 	{
+    DrawZipData( m_driverInfoList[i].m_description, i );
 		std::vector<std::string>::iterator it = zipFileNames.begin();
 		for( ; it != zipFileNames.end(); ++it )
 		{
-			if( !stricmp( (*it).c_str(), drivers[i]->name ) )
+      if( !stricmp( (*it).c_str(), m_driverInfoList[i].m_romFileName ) )
 			{
-          // All drivers are clones of _driver_0, whose clone_of is NULL,
-          //  so check against that to decide whether this is a clone or not
-        if( allowClones || !drivers[i]->clone_of || !drivers[i]->clone_of->clone_of  )
+        if( allowClones || !m_driverInfoList[i].m_isClone )
 					m_ROMList.push_back( i );
 			}
 		}
@@ -295,7 +297,7 @@ void CROMList::MoveCursor( const XINPUT_GAMEPAD	&gp )
 //---------------------------------------------------------------------
 void CROMList::SuperScrollModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapsedTime )
 {
-  if( ((gp.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) || gp.sThumbLY < (-32767.0f * DEADZONE)) && m_dpadCursorDelay == 0.0f )
+  if( ((gp.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) || gp.sThumbLY < (-32767.0f * STICK_DEADZONE)) && m_dpadCursorDelay == 0.0f )
 	{
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
     UINT32 startPos = m_superscrollCharacterIdx;
@@ -309,7 +311,7 @@ void CROMList::SuperScrollModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapse
         return;
     }
 	}
-  else if( ((gp.wButtons & XINPUT_GAMEPAD_DPAD_UP) || gp.sThumbLY > (32767.0f * DEADZONE)) && m_dpadCursorDelay == 0.0f )
+  else if( ((gp.wButtons & XINPUT_GAMEPAD_DPAD_UP) || gp.sThumbLY > (32767.0f * STICK_DEADZONE)) && m_dpadCursorDelay == 0.0f )
 	{
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
     UINT32 startPos = m_superscrollCharacterIdx;
@@ -341,12 +343,12 @@ void CROMList::SuperScrollModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapse
     if( absCursorPos <= pageHalfwayPoint || m_ROMList.size() < MAXPAGESIZE )
     {
       m_gameListPageOffset = 0.0f;
-      m_gameListCursorPosition = absCursorPos;
+      m_gameListCursorPosition = (FLOAT)absCursorPos;
     }
     else
     {
-      m_gameListPageOffset = absCursorPos - pageHalfwayPoint;
-      m_gameListCursorPosition = pageHalfwayPoint;
+      m_gameListPageOffset = (FLOAT)(absCursorPos - pageHalfwayPoint);
+      m_gameListCursorPosition = (FLOAT)pageHalfwayPoint;
     }
   }
 }
@@ -374,19 +376,19 @@ void CROMList::NormalModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapsedTime
 	}
 
 		// DPAD overrides the triggers
-  if( ((gp.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) || gp.sThumbLY < (-32767.0f * DEADZONE)) && m_dpadCursorDelay == 0.0f )
+  if( ((gp.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) || gp.sThumbLY < (-32767.0f * STICK_DEADZONE)) && m_dpadCursorDelay == 0.0f )
 	{
 			// Round the cursor position down to a integer so that adding 1 will move to the next item
-    m_gameListPageOffset = (LONG)m_gameListPageOffset;
-		m_gameListCursorPosition = (LONG)m_gameListCursorPosition;
+    m_gameListPageOffset = (FLOAT)((LONG)m_gameListPageOffset);
+		m_gameListCursorPosition = (FLOAT)((LONG)m_gameListCursorPosition);
     cursorVelocity = 1.0f;
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
 	}
-  else if( ((gp.wButtons & XINPUT_GAMEPAD_DPAD_UP) || gp.sThumbLY > (32767.0f * DEADZONE)) && m_dpadCursorDelay == 0.0f )
+  else if( ((gp.wButtons & XINPUT_GAMEPAD_DPAD_UP) || gp.sThumbLY > (32767.0f * STICK_DEADZONE)) && m_dpadCursorDelay == 0.0f )
 	{
 			// Round the cursor position down to a integer so that subtracting 1 will move to the next item
-    m_gameListPageOffset = (LONG)m_gameListPageOffset;
-		m_gameListCursorPosition = (LONG)m_gameListCursorPosition;
+    m_gameListPageOffset = (FLOAT)((LONG)m_gameListPageOffset);
+		m_gameListCursorPosition = (FLOAT)((LONG)m_gameListCursorPosition);
     cursorVelocity = -1.0f;
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
 	}
@@ -434,7 +436,7 @@ void CROMList::NormalModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapsedTime
 			else
 			{
 				cursorVelocity -= ((FLOAT)pageHalfwayPoint - m_gameListCursorPosition);
-				m_gameListCursorPosition = pageHalfwayPoint;
+				m_gameListCursorPosition = (FLOAT)pageHalfwayPoint;
 				m_gameListPageOffset += cursorVelocity;
 			}
 		}
@@ -455,7 +457,7 @@ void CROMList::NormalModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapsedTime
 				else
 				{
 					cursorVelocity -= ((FLOAT)maxPageOffset - m_gameListPageOffset);
-					m_gameListPageOffset = maxPageOffset;
+					m_gameListPageOffset = (FLOAT)maxPageOffset;
 					m_gameListCursorPosition += cursorVelocity;
 				}
 			}
@@ -463,16 +465,16 @@ void CROMList::NormalModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapsedTime
 
 			// Cap values
 		if( (ULONG)m_gameListPageOffset > maxPageOffset )
-			m_gameListPageOffset = maxPageOffset;
+			m_gameListPageOffset = (FLOAT)maxPageOffset;
 		if( (ULONG)m_gameListCursorPosition > (pageSize - 1) )
-			m_gameListCursorPosition = (pageSize - 1);
+			m_gameListCursorPosition = (FLOAT)(pageSize - 1);
 	}
 	else
 	{
 			//--- Moving up in the list -----------------------------------------------
 
 			// If the cursor position is not locked at the halfway point, move it towards there
-		if( (LONG)m_gameListCursorPosition > pageHalfwayPoint )
+		if( (ULONG)m_gameListCursorPosition > pageHalfwayPoint )
 		{
 				// See if the entire velocity is consumed in moving the cursor or not
 			if( (cursorVelocity + m_gameListCursorPosition) > pageHalfwayPoint )
@@ -480,7 +482,7 @@ void CROMList::NormalModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapsedTime
 			else
 			{
 				cursorVelocity -= ((FLOAT)pageHalfwayPoint - m_gameListCursorPosition);
-				m_gameListCursorPosition = pageHalfwayPoint;
+				m_gameListCursorPosition = (FLOAT)pageHalfwayPoint;
 				m_gameListPageOffset += cursorVelocity;
 			}
 		}
@@ -516,7 +518,7 @@ void CROMList::NormalModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapsedTime
 
 
     // Make the superscroll char index == whatever we're on now  
-  char CurrentGameSuperscrollChar = toupper( drivers[GetCurrentGameIndex()]->description[0] );
+  char CurrentGameSuperscrollChar = toupper( m_driverInfoList[GetCurrentGameIndex()].m_description[0] );
   if( !(CurrentGameSuperscrollChar >= 'A' && CurrentGameSuperscrollChar <= 'Z') )
     CurrentGameSuperscrollChar = '#';
 
@@ -559,14 +561,15 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
 	{
 			// The current page offset is invalid (due to list shrinkage), reset it and
 			//  set the cursor position to the last item in the list
-		m_gameListPageOffset = absListIDX = (m_ROMList.size() - pageSize);
-		m_gameListCursorPosition = pageSize - 1;
+    absListIDX = (m_ROMList.size() - pageSize);
+    m_gameListPageOffset = (FLOAT)absListIDX;
+		m_gameListCursorPosition = (FLOAT)(pageSize - 1);
 	}
 
 	for( DWORD i = 0; i < pageSize; ++i )
 	{
 		WCHAR name[256];
-		mbstowcs( name, drivers[ m_ROMList[absListIDX++] ]->description, 255 );
+		mbstowcs( name, m_driverInfoList[ m_ROMList[absListIDX++] ].m_description, 255 );
 
 			// Render the selected item as bright white
 		if( i == (ULONG)m_gameListCursorPosition )
@@ -646,6 +649,32 @@ void CROMList::DrawZipData( const char *fileName, DWORD index )
 
 }
 
+/*
+//---------------------------------------------------------------------
+//	SetCurrentGameIndex
+//---------------------------------------------------------------------
+void CROMList::SetCurrentGameIndex( UINT32 idx )
+{
+  if( idx < m_ROMList.size() )
+  {
+	  UINT32 pageSize = (m_ROMList.size() < MAXPAGESIZE ? m_ROMList.size() : MAXPAGESIZE);
+	  UINT32 pageHalfwayPoint = (pageSize >> 1);
+
+    if( idx > pageHalfwayPoint )
+    {
+      m_gameListPageOffset = (FLOAT)(idx - pageHalfwayPoint);
+      m_gameListCursorPosition = (FLOAT)pageHalfwayPoint;
+    }
+    else
+    {
+      m_gameListPageOffset = 0;
+      m_gameListCursorPosition = (FLOAT)idx;
+    }
+  }
+  else
+    m_gameListPageOffset = m_gameListCursorPosition = 0.0f;
+}
+*/
 
 //---------------------------------------------------------------------
 //	RemoveCurrentGameIndex
@@ -661,7 +690,7 @@ void CROMList::RemoveCurrentGameIndex( void )
 }
 
 //---------------------------------------------------------------------
-//	RemoveCurrentGameIndex
+//	GenerateSuperscrollJumpTable
 //---------------------------------------------------------------------
 void CROMList::GenerateSuperscrollJumpTable( void )
 {
@@ -672,7 +701,7 @@ void CROMList::GenerateSuperscrollJumpTable( void )
   char charToLookFor = g_superscrollCharacterSet[0];
   for( UINT32 j = 0, i = 0; j < m_ROMList.size() ; ++j )
   {
-    char currentChar = toupper( drivers[ m_ROMList[j] ]->description[0] );
+    char currentChar = toupper( m_driverInfoList[ m_ROMList[j] ].m_description[0] );
 
       // Map any non-alphanumerics to '#'
     if( !(currentChar >= 'A' && currentChar <= 'Z') )

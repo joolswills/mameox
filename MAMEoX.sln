@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZLIB", "ZLIB\ZLIB.vcproj", 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "c_m68000", "c_m68000\c_m68000.vcproj", "{14C50E6F-F997-42D8-8B67-5994FF0C3AD1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MAMEoXLauncher", "MAMEoXLauncher\MAMEoXLauncher.vcproj", "{BEC3062C-78B0-4B2D-BE06-4177F71981BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		ConfigName.0 = Debug
@@ -51,6 +53,14 @@ Global
 		{14C50E6F-F997-42D8-8B67-5994FF0C3AD1}.Profile.Build.0 = Release|Win32
 		{14C50E6F-F997-42D8-8B67-5994FF0C3AD1}.Release.ActiveCfg = Release|Win32
 		{14C50E6F-F997-42D8-8B67-5994FF0C3AD1}.Release.Build.0 = Release|Win32
+		{BEC3062C-78B0-4B2D-BE06-4177F71981BE}.Debug.ActiveCfg = Debug|Xbox
+		{BEC3062C-78B0-4B2D-BE06-4177F71981BE}.Debug.Build.0 = Debug|Xbox
+		{BEC3062C-78B0-4B2D-BE06-4177F71981BE}.Debug_With_Retail_MAME.ActiveCfg = Debug|Xbox
+		{BEC3062C-78B0-4B2D-BE06-4177F71981BE}.Debug_With_Retail_MAME.Build.0 = Debug|Xbox
+		{BEC3062C-78B0-4B2D-BE06-4177F71981BE}.Profile.ActiveCfg = Release|Xbox
+		{BEC3062C-78B0-4B2D-BE06-4177F71981BE}.Profile.Build.0 = Release|Xbox
+		{BEC3062C-78B0-4B2D-BE06-4177F71981BE}.Release.ActiveCfg = Release|Xbox
+		{BEC3062C-78B0-4B2D-BE06-4177F71981BE}.Release.Build.0 = Release|Xbox
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

@@ -20,16 +20,18 @@ extern "C" {
   //        the DVD drive, any file write op's will fail (eg. nvram).
   //       Therefore, in InitializeFileIO(), these paths may be remapped
   //        programmatically to the Z:
-#define GENERALPATH				"D:\\GENERAL"
-#define ARTPATH						"D:\\ART"
-#define INIPATH						"D:\\INI"
-#define NVRAMPATH					"D:\\NVRAM"
-#define CONFIGPATH        "D:\\CFG"
-#define ROMPATH						"D:\\ROMS"
-#define AUDIOPATH         "D:\\SAMPLES"
-#define ROMLISTPATH				"Z:\\MAMEoX"
-#define ROMLISTFILENAME		"ROMS.list"
-#define INIFILENAME       "MAMEoX.ini"
+#define GENERALPATH				  "D:\\GENERAL"
+#define ARTPATH						  "D:\\ART"
+#define INIPATH						  "D:\\INI"
+#define NVRAMPATH					  "D:\\NVRAM"
+#define CONFIGPATH          "D:\\CFG"
+#define ROMPATH						  "D:\\ROMS"
+#define AUDIOPATH           "D:\\SAMPLES"
+#define ROMLISTPATH				  "Z:\\MAMEoX"
+
+#define DRIVERLISTFILENAME  "DRIVERS.list"
+#define ROMLISTFILENAME		  "ROMS.list"
+#define INIFILENAME         "MAMEoX.ini"
 
   //!<  Define this to force all open() calls on the ROM directory
   //!<  to fail if they do not end in the letters "zip"

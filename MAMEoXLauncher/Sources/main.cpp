@@ -1,0 +1,604 @@
+/**
+	* \file			xbox_Main.cpp
+	* \brief		MAMEoX entry point
+	*
+	*/
+
+
+//= I N C L U D E S ====================================================
+#include <Xtl.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <crtdbg.h>
+
+#ifdef _PROFILER
+  #include <xbdm.h>
+#endif
+
+#include "MAMEoX.h"
+
+#include "InputManager.h"
+#include "GraphicsManager.h"
+#include "ROMList.h"
+#include "System_IniFile.h"
+#include "xbox_FileIO.h"
+#include "xbox_Direct3DRenderer.h"
+#include "xbox_Timing.h"
+#include "DebugLogger.h"
+
+	// Font class from the XDK
+#include "XBFont.h"
+
+
+//= S T R U C T U R E S ===============================================
+struct CUSTOMVERTEX
+{
+	D3DXVECTOR3   pos;      // The transformed position for the vertex
+  DWORD         diffuse;  // The diffuse color of the vertex
+//  FLOAT         tu, tv;   // The texture coordinates
+};
+
+//= G L O B A L = V A R S =============================================
+extern CInputManager			g_inputManager;
+extern CGraphicsManager	  g_graphicsManager;
+extern CXBFont						g_font;
+
+  // XBE Launch data
+static DWORD              g_launchDataType;
+static LAUNCH_DATA        g_launchData;
+
+  // Defines the percentage of the total screen area that should actually be used
+  // This is required because TV's have some overscan area that is not actually
+  // visible
+static FLOAT                      g_screenXPercentage = DEFAULT_SCREEN_X_PERCENTAGE;
+static FLOAT                      g_screenYPercentage = DEFAULT_SCREEN_Y_PERCENTAGE;
+
+static LPDIRECT3DVERTEXBUFFER8    g_pD3DVertexBuffer = NULL;
+
+  //! The data for each driver
+static MAMEDriverData_t   *g_driverData = NULL;
+
+#define SCREENRANGE_DEADZONE    15000
+
+  // Fake options struct for load/store options
+GameOptions options;
+
+//= P R O T O T Y P E S ===============================================
+static BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage );
+static void DestroyBackdrop( void );
+static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... );
+static BOOL Helper_LoadDriverInfoFile( void );
+
+//= F U N C T I O N S =================================================
+
+//-------------------------------------------------------------
+//	ShowSplashScreen
+//-------------------------------------------------------------
+static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
+{
+		// Clear the backbuffer
+  pD3DDevice->Clear(	0L,																// Count
+											NULL,															// Rects to clear
+											D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+                      D3DCOLOR_XRGB(0,0,0),							// Color
+											1.0f,															// Z
+											0L );															// Stencil
+
+  g_font.Begin();
+	
+  g_font.DrawText( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255),   L"MAMEoX v" LVERSION_STRING, XBFONT_CENTER_X );
+  g_font.DrawText( 320, 100, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Uses MAME version 0.67", XBFONT_CENTER_X );
+  g_font.DrawText( 320, 260, D3DCOLOR_RGBA( 240, 240, 240, 255 ), L"Portions based on:", XBFONT_CENTER_X );
+  g_font.DrawText( 320, 280, D3DCOLOR_RGBA( 240, 240, 240, 255 ), L"\"MAMEX(b5): updated by superfro, original port by opcode\"", XBFONT_CENTER_X );
+	g_font.DrawText( 320, 320, D3DCOLOR_RGBA( 70, 235, 125, 255 ),  L"Press any button to continue.", XBFONT_CENTER_X );
+
+  g_font.End();
+  pD3DDevice->Present( NULL, NULL, NULL, NULL );
+
+	g_inputManager.WaitForAnyKey();
+	g_inputManager.WaitForNoKeys( 0 );
+}
+
+
+//-------------------------------------------------------------
+//	main
+//-------------------------------------------------------------
+void __cdecl main( void )
+{
+		// Start up the debug logger thread
+	DebugLoggerInit();
+
+		// Initialize the graphics subsystem
+	g_graphicsManager.Create();
+	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
+
+		// Create a general purpose font
+// VC6 requires the 2 paramater call to create. _VC6 is defined in the VC6 dsp files
+#ifdef _VC6
+	g_font.Create( pD3DDevice, "Font.xpr" );
+#else
+	g_font.Create( "Font.xpr", 0 );
+#endif
+		// Intialize the various MAME OSD-specific subsystems
+	InitializeFileIO();
+	InitializeTiming();
+
+		// Initialize the input subsystem
+	g_inputManager.Create( 4, 8 );
+	const XINPUT_GAMEPAD	&gp0 = g_inputManager.GetGamepadDeviceState( 0 );
+	const XINPUT_GAMEPAD	&gp1 = g_inputManager.GetGamepadDeviceState( 1 );
+	const XINPUT_GAMEPAD	&gp2 = g_inputManager.GetGamepadDeviceState( 2 );
+	const XINPUT_GAMEPAD	&gp3 = g_inputManager.GetGamepadDeviceState( 3 );
+
+	LoadOptions();
+  SaveOptions();
+
+    // Get the launch data
+  MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
+  DWORD ret = XGetLaunchInfo( &g_launchDataType, &g_launchData );
+
+    // See who launched us
+  if( ret != ERROR_SUCCESS || g_launchDataType != LDT_TITLE )
+  {
+		  // Show a splash screen if we were started from the dashboard and not from MAMEoX
+	  ShowSplashScreen( pD3DDevice );
+
+      // Create the MAME driver list
+    mameoxLaunchData->m_gameIndex = 0;
+    mameoxLaunchData->m_cursorPosition = 0.0f; 
+    mameoxLaunchData->m_pageOffset = 0.0f;
+    mameoxLaunchData->m_totalMAMEGames = 0;
+    mameoxLaunchData->m_command = LAUNCH_CREATE_MAME_GAME_LIST;
+
+      // Try to load the MAME driver info, asking MAMEoX to produce
+      // it if we can't
+    if( !Helper_LoadDriverInfoFile() )
+    {
+      ShowLoadingScreen( pD3DDevice );
+      XLaunchNewImage( "D:\\MAMEoX.xbe", &g_launchData );
+		  Die( pD3DDevice, "Could not execute MAMEoX.xbe!" );
+    }
+  }
+  else
+  {
+      // Load the driver info file
+    if( !Helper_LoadDriverInfoFile() )
+      Die( pD3DDevice, "Could not load driver info file!" );
+  }
+
+  // At this point the MAMEoX process is guaranteed to have run, setting up
+  // our totalMAMEGames member, as well as producing the driver info file
+
+		// Load/Generate the ROM listing
+  CROMList romList( pD3DDevice, g_font, g_driverData, mameoxLaunchData->m_totalMAMEGames );
+	if( !romList.LoadROMList( TRUE ) )
+		Die( pD3DDevice, "Could not generate ROM list!" );
+
+    // Reposition the romList cursor to its previous value
+  romList.SetCursorPosition(  mameoxLaunchData->m_cursorPosition, 
+                              mameoxLaunchData->m_pageOffset );
+
+    // Grab the current screen usage so we can render a border
+  FLOAT xPercentage, yPercentage;
+  xPercentage = g_screenXPercentage;
+  yPercentage = g_screenYPercentage;
+  CreateBackdrop( xPercentage, yPercentage );
+
+
+    //-- Initialize the rendering engine -------------------------------
+  D3DXMATRIX matWorld;
+  D3DXMatrixIdentity( &matWorld );
+
+		// Main loop
+	while( 1 )
+	{
+		g_inputManager.PollDevices();
+
+			// Reboot on LT+RT+Black
+		if( gp0.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] > 150 &&
+				gp0.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] > 150 &&
+				gp0.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 150 )
+		{
+      SaveOptions();
+      LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
+      XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
+		}
+
+			// Handle user input
+		if( gp0.bAnalogButtons[XINPUT_GAMEPAD_A] > 50 )
+		{
+				// Run the selected ROM
+      if( romList.GetCurrentGameIndex() != INVALID_ROM_INDEX  )
+      {
+          // Pack info to be passed to MAMEoX
+        mameoxLaunchData->m_gameIndex = romList.GetCurrentGameIndex();
+        romList.GetCursorPosition(  &mameoxLaunchData->m_cursorPosition, 
+                                    &mameoxLaunchData->m_pageOffset );
+        mameoxLaunchData->m_command = LAUNCH_RUN_GAME;
+
+        SaveOptions();
+        ShowLoadingScreen( pD3DDevice );
+        XLaunchNewImage( "D:\\MAMEoX.xbe", &g_launchData );
+		    Die( pD3DDevice, "Could not execute MAMEoX.xbe!" );
+      }
+		}
+		else if( gp0.bAnalogButtons[XINPUT_GAMEPAD_X] > 150 &&
+						 gp0.bAnalogButtons[XINPUT_GAMEPAD_B] > 150 )
+		{				
+				// Move the currently selected game to the backup dir
+			UINT32 romIDX = romList.GetCurrentGameIndex();
+
+			std::string oldPath = ROMPATH "\\";
+			oldPath += g_driverData[romIDX].m_romFileName;
+			oldPath += ".zip";
+
+			std::string newPath = ROMPATH "\\backup\\";
+			newPath += g_driverData[romIDX].m_romFileName;
+			newPath += ".zip";
+
+        // Make sure the backup dir exists
+      CreateDirectory( ROMPATH "\\backup", NULL );
+
+			PRINTMSG( T_INFO, "Moving ROM %s to %s!", oldPath.c_str(), newPath.c_str() );
+			if( !MoveFile( oldPath.c_str(), newPath.c_str() ) )
+			{
+				PRINTMSG( T_ERROR, "Failed moving ROM %s to %s!", oldPath.c_str(), newPath.c_str() );
+			}
+
+			g_inputManager.WaitForNoKeys( 0 );
+			romList.RemoveCurrentGameIndex();
+		}
+		else if( gp0.bAnalogButtons[XINPUT_GAMEPAD_WHITE] > 150 )
+		{
+				// Regenerate the rom listing, allowing clones
+			romList.GenerateROMList();
+		}
+    else if( gp0.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 150 )
+    {
+        // Regenerate the rom listing, hiding clones
+      romList.GenerateROMList( FALSE );
+    }
+    else if(  gp0.sThumbRX < -SCREENRANGE_DEADZONE || gp0.sThumbRX > SCREENRANGE_DEADZONE || 
+              gp0.sThumbRY < -SCREENRANGE_DEADZONE || gp0.sThumbRY > SCREENRANGE_DEADZONE )
+    {
+      if( gp0.sThumbRX < -SCREENRANGE_DEADZONE )
+        xPercentage -= 0.00025f;
+      else if( gp0.sThumbRX > SCREENRANGE_DEADZONE )
+        xPercentage += 0.00025f;
+
+      if( gp0.sThumbRY < -SCREENRANGE_DEADZONE )
+        yPercentage -= 0.00025f;
+      else if( gp0.sThumbRY > SCREENRANGE_DEADZONE )
+        yPercentage += 0.00025f;
+
+      if( xPercentage < 0.25f )
+        xPercentage = 0.25f;
+      else if( xPercentage > 1.0f )
+        xPercentage = 1.0f;
+
+      if( yPercentage < 0.25f )
+        yPercentage = 0.25f;
+      else if( yPercentage > 1.0f )
+        yPercentage = 1.0f;
+
+      g_screenXPercentage = xPercentage;
+      g_screenYPercentage = yPercentage;
+      DestroyBackdrop();
+      CreateBackdrop( xPercentage, yPercentage );
+    }
+
+		
+			// Move the cursor position and render
+    g_graphicsManager.GetD3DDevice()->SetTransform( D3DTS_WORLD, &matWorld );
+    g_graphicsManager.GetD3DDevice()->SetTransform( D3DTS_VIEW, &matWorld );
+    g_graphicsManager.GetD3DDevice()->SetTransform( D3DTS_PROJECTION, &matWorld );
+
+	  g_graphicsManager.GetD3DDevice()->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
+	  g_graphicsManager.GetD3DDevice()->SetRenderState( D3DRS_LIGHTING, FALSE );
+	  g_graphicsManager.GetD3DDevice()->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
+    g_graphicsManager.GetD3DDevice()->SetRenderState( D3DRS_ZENABLE, FALSE );
+    g_graphicsManager.GetD3DDevice()->Clear(	0L,																// Count
+											                        NULL,															// Rects to clear
+											                        D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+                                              D3DCOLOR_XRGB(0,0,0),							// Color
+											                        1.0f,															// Z
+											                        0L );															// Stencil
+    g_graphicsManager.GetD3DDevice()->SetVertexShader( D3DFVF_XYZ | D3DFVF_DIFFUSE );
+    g_graphicsManager.GetD3DDevice()->SetStreamSource(	0,												  // Stream number
+																	                      g_pD3DVertexBuffer,					// Stream data
+																	                      sizeof(CUSTOMVERTEX) );		  // Vertex stride
+
+    g_graphicsManager.GetD3DDevice()->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
+
+		romList.MoveCursor( gp0 );
+		romList.Draw( FALSE, FALSE );
+
+    g_graphicsManager.GetD3DDevice()->Present( NULL, NULL, NULL, NULL );
+
+	}
+}
+
+//-------------------------------------------------------------
+// Helper_LoadDriverInfoFile
+//-------------------------------------------------------------
+static BOOL Helper_LoadDriverInfoFile( void )
+{
+	std::string		driverListFile = ROMLISTPATH;
+	driverListFile += "\\";
+	driverListFile += DRIVERLISTFILENAME;
+
+	PRINTMSG( T_INFO, "Store driver list: %s", driverListFile.c_str() );
+
+	HANDLE hFile = CreateFile(	driverListFile.c_str(),
+															GENERIC_READ,
+															0,
+															NULL,
+															OPEN_EXISTING,
+															FILE_ATTRIBUTE_NORMAL,
+															NULL );
+	if( !hFile )
+	{
+		PRINTMSG( T_ERROR, "Could not open file %s!", driverListFile.c_str() );
+		return FALSE;
+	}
+
+    // Read in the signature
+	DWORD BytesRead = 0;
+  char signature[32] = {0};
+  ReadFile( hFile, signature, 6 + strlen(VERSION_STRING), &BytesRead, NULL );
+  if( BytesRead != 6 + strlen(VERSION_STRING) || strcmp( signature, "MAMEoX" VERSION_STRING ) )
+  {
+    CloseHandle( hFile );
+    return FALSE;
+  }
+
+
+  MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
+  ReadFile( hFile, 
+            &mameoxLaunchData->m_totalMAMEGames, 
+            sizeof(mameoxLaunchData->m_totalMAMEGames), 
+            &BytesRead, 
+            NULL );
+  if( BytesRead != sizeof(mameoxLaunchData->m_totalMAMEGames) )
+  {
+    CloseHandle( hFile );
+    return FALSE;
+  }
+
+    // Read in the driver info
+  g_driverData = new MAMEDriverData_t[ mameoxLaunchData->m_totalMAMEGames ];
+  for( DWORD i = 0; i < mameoxLaunchData->m_totalMAMEGames; ++i )
+  {
+    ReadFile( hFile, 
+              &g_driverData[i].m_index, 
+              sizeof(g_driverData[i].m_index), 
+              &BytesRead, 
+              NULL );
+    if( BytesRead != sizeof(g_driverData[i].m_index) )
+    {
+      CloseHandle( hFile );
+      return FALSE;
+    }
+
+      // Read the filename length
+    DWORD fileNameLen = 0;
+    ReadFile( hFile, 
+              &fileNameLen, 
+              sizeof(fileNameLen), 
+              &BytesRead, 
+              NULL );
+    if( BytesRead != sizeof(fileNameLen) )
+    {
+      CloseHandle( hFile );
+      return FALSE;
+    }
+
+      // Read the filename data
+    g_driverData[i].m_romFileName = new char[fileNameLen];
+    ReadFile( hFile, 
+              g_driverData[i].m_romFileName, 
+              fileNameLen, 
+              &BytesRead, 
+              NULL );
+    if( BytesRead != fileNameLen )
+    {
+      CloseHandle( hFile );
+      return FALSE;
+    }
+
+      // Read the description length
+    ReadFile( hFile, 
+              &fileNameLen, 
+              sizeof(fileNameLen), 
+              &BytesRead, 
+              NULL );
+    if( BytesRead != sizeof(fileNameLen) )
+    {
+      CloseHandle( hFile );
+      return FALSE;
+    }
+
+      // Read the description data
+    g_driverData[i].m_description = new char[fileNameLen];
+    ReadFile( hFile, 
+              g_driverData[i].m_description, 
+              fileNameLen, 
+              &BytesRead, 
+              NULL );
+    if( BytesRead != fileNameLen )
+    {
+      CloseHandle( hFile );
+      return FALSE;
+    }
+    
+    ReadFile( hFile, 
+              &g_driverData[i].m_isClone, 
+              sizeof(g_driverData[i].m_isClone), 
+              &BytesRead, 
+              NULL );
+    if( BytesRead != sizeof(g_driverData[i].m_isClone) )
+    {
+      CloseHandle( hFile );
+      return FALSE;
+    }
+  }
+
+  CloseHandle( hFile );
+
+  return TRUE;
+}
+
+//-------------------------------------------------------------
+//	Die
+//-------------------------------------------------------------
+static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
+{
+	char buf[1024];
+
+  va_list arg;
+  va_start( arg, fmt );
+  vsprintf( buf, fmt, arg );
+  va_end( arg );
+
+	PRINTMSG( T_ERROR, "Die: %s", buf );
+
+		// Display the error to the user
+	pD3DDevice->Clear(	0L,																// Count
+											NULL,															// Rects to clear
+											D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+											D3DCOLOR_XRGB(0,0,0),							// Color
+											1.0f,															// Z
+											0L );															// Stencil
+
+	g_font.Begin();
+	
+	WCHAR wBuf[1024];
+	mbstowcs( wBuf, buf, strlen(buf) );
+
+	g_font.DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+	g_font.DrawText( 320, 320, D3DCOLOR_RGBA( 255, 125, 125, 255), L"Press any button to reboot.", XBFONT_CENTER_X );
+
+	g_font.End();
+	pD3DDevice->Present( NULL, NULL, NULL, NULL );
+
+	g_inputManager.WaitForNoKeys( 0 );
+	g_inputManager.WaitForAnyKey( 0 );
+	g_inputManager.WaitForNoKeys( 0 );
+
+    // Reboot
+  LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
+  XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
+}
+
+
+
+//-------------------------------------------------------------
+//  CreateBackdrop
+//-------------------------------------------------------------
+static BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage )
+{
+  if( g_pD3DVertexBuffer )
+  {
+    g_pD3DVertexBuffer->Release();
+    g_pD3DVertexBuffer = NULL;
+  }
+
+    // Create the vertex buffer
+  g_graphicsManager.GetD3DDevice()->CreateVertexBuffer( sizeof(CUSTOMVERTEX) << 2,
+																		                    D3DUSAGE_WRITEONLY,
+																		                    D3DFVF_XYZ | D3DFVF_DIFFUSE,
+																		                    D3DPOOL_MANAGED,
+																		                    &g_pD3DVertexBuffer );
+
+	CUSTOMVERTEX *pVertices;
+	g_pD3DVertexBuffer->Lock( 0,										// Offset to lock
+														0,										// Size to lock
+														(BYTE**)&pVertices,		// ppbData
+														0 );									// Flags
+
+		pVertices[0].pos.x = -xUsage;
+		pVertices[0].pos.y = yUsage;
+		pVertices[0].pos.z = 1.0f;
+    pVertices[0].diffuse = D3DCOLOR_RGBA( 30, 50, 30, 255 );
+    //pVertices[0].tu = 0.0f;
+    //pVertices[0].tv = 0.0f;
+
+		pVertices[1].pos.x = xUsage;
+		pVertices[1].pos.y = yUsage;
+		pVertices[1].pos.z = 1.0f;
+    pVertices[1].diffuse = D3DCOLOR_RGBA( 30, 50, 30, 255 );
+    //pVertices[1].tu = 1.0f;
+    //pVertices[1].tv = 0.0f;
+		
+		pVertices[2].pos.x = xUsage;
+		pVertices[2].pos.y = -yUsage;
+		pVertices[2].pos.z = 1.0f;
+    pVertices[2].diffuse = D3DCOLOR_RGBA( 30, 50, 30, 255 );
+    //pVertices[2].tu = 1.0f;
+    //pVertices[2].tv = 1.0f;
+		
+		pVertices[3].pos.x = -xUsage;
+		pVertices[3].pos.y = -yUsage;
+		pVertices[3].pos.z = 1.0f;
+    pVertices[3].diffuse = D3DCOLOR_RGBA( 30, 50, 30, 255 );
+    //pVertices[3].tu = 0.0f;
+    //pVertices[3].tv = 1.0f;
+
+	g_pD3DVertexBuffer->Unlock();
+
+
+  return TRUE;
+}
+
+//-------------------------------------------------------------
+//  DestroyBackdrop
+//-------------------------------------------------------------
+static void DestroyBackdrop( void )
+{
+  if( g_pD3DVertexBuffer )
+  {
+    g_pD3DVertexBuffer->Release();
+    g_pD3DVertexBuffer = NULL;
+  }
+}
+
+//-------------------------------------------------------------
+//	SetScreenUsage
+//-------------------------------------------------------------
+void SetScreenUsage( FLOAT xPercentage, FLOAT yPercentage )
+{
+  g_screenXPercentage = xPercentage;
+  g_screenYPercentage = yPercentage;
+}
+
+//-------------------------------------------------------------
+//	GetScreenUsage
+//-------------------------------------------------------------
+void GetScreenUsage( FLOAT *xPercentage, FLOAT *yPercentage )
+{
+  if( xPercentage )
+    *xPercentage = g_screenXPercentage;
+  if( yPercentage )
+    *yPercentage = g_screenYPercentage;
+}
+
+
+
+extern "C" {
+//-------------------------------------------------------------
+//	osd_init
+//-------------------------------------------------------------
+int osd_init( void )
+{
+	return 0;
+}
+
+//-------------------------------------------------------------
+//	osd_exit
+//-------------------------------------------------------------
+void osd_exit( void )
+{
+}
+
+}	// End Extern "C"
+

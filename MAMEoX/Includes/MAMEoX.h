@@ -21,6 +21,36 @@ extern "C" {
 #define CHECKRAM()
 #endif
 
+  // Version number
+#define VERSION_STRING    "0.63b"
+#define LVERSION_STRING   L"0.63b"
+
+  //! \enum   mameoxLaunchCommand
+  //! \brief  Determines what the MAMEoX task should do
+typedef enum mameoxLaunchCommand
+{
+  LAUNCH_CREATE_MAME_GAME_LIST = 0x01,    //!<  Write the MAME supported game file and return
+  LAUNCH_RUN_GAME                         //!<  Run the gameIndex and return
+} mameoxLaunchCommand;
+
+//= S T R U C T U R E S ================================================
+typedef struct MAMEoXLaunchData_t
+{
+  mameoxLaunchCommand   m_command;        //!<  The function which should be performed by the MAMEoX task
+  DWORD                 m_totalMAMEGames; //!<  The total number of games supported by the MAME core
+  DWORD                 m_gameIndex;      //!<  The index of the currently selected game
+  FLOAT                 m_cursorPosition;
+  FLOAT                 m_pageOffset;
+} MAMEoXLaunchData_t;
+
+typedef struct MAMEDriverData_t
+{
+  DWORD m_index;          //!<  The index of this driver in the sorted list
+  char  *m_romFileName;   //!<  Main ROM zip file name
+  char  *m_description;   //!<  Description from the MAME core
+  BOOL  m_isClone;        //!<  Whether or not the game is a clone
+} MAMEDriverData_t;
+
 //= P R O T O T Y P E S ================================================
 	//-------------------------------------------------------------------
 	//	GetGamepadState
@@ -87,6 +117,26 @@ void WaitForNoKey( void );
 	//-------------------------------------------------------------------
 void CheckRAM( void );
 #endif
+
+	//-------------------------------------------------------------------
+	//	LoadOptions
+	//! \brief		Load options from the INI file
+	//-------------------------------------------------------------------
+void LoadOptions( void );
+
+	//-------------------------------------------------------------------
+	//	SaveOptions
+	//! \brief		Store options to the INI file
+	//-------------------------------------------------------------------
+void SaveOptions( void );
+
+
+	//-------------------------------------------------------------------
+	//	ShowLoadingScreen
+	//! \brief		Display a persistent loading screen for use when
+  //!           switching between XBEs
+	//-------------------------------------------------------------------
+void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice );
 
 #ifdef __cplusplus
 }

@@ -10,6 +10,7 @@
 //= I N C L U D E S ====================================================
 #include <Xtl.h>
 #include "XBFont.h"
+#include "MAMEoX.h"
 #include <vector>
 
 //= D E F I N E S ======================================================
@@ -39,7 +40,7 @@ public:
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-	CROMList( LPDIRECT3DDEVICE8	displayDevice, CXBFont &font ) :
+	CROMList( LPDIRECT3DDEVICE8	displayDevice, CXBFont &font, MAMEDriverData_t *drivers, UINT32 numDrivers ) :
 		m_displayDevice( displayDevice ),
 		m_font( font ),
 		m_gameListCursorPosition( 0.0f ),
@@ -47,7 +48,9 @@ public:
 		m_gameListCursorSpeedBandTimeout( 0.0f ),
 		m_gameListPageOffset( 0.0f ),
     m_superscrollMode( FALSE ),
-    m_superscrollCharacterIdx( 0 )
+    m_superscrollCharacterIdx( 0 ),
+    m_driverInfoList( drivers ),
+    m_numDrivers( numDrivers )
 	{
     for( UINT32 i = 0; i < NUM_SUPERSCROLL_CHARS; ++i )
       m_superscrollJumpTable[i] = INVALID_SUPERSCROLL_JUMP_IDX;
@@ -117,8 +120,9 @@ public:
 		//!            of the currently selected item.
 		//------------------------------------------------------------
 	UINT32 GetCurrentGameIndex( void ) { 
-    if( m_ROMList.size() )
-		  return m_ROMList[ (ULONG)m_gameListPageOffset + (ULONG)m_gameListCursorPosition]; 
+    if( m_ROMList.size() && 
+        (ULONG)m_gameListPageOffset + (ULONG)m_gameListCursorPosition < m_ROMList.size() )
+		  return m_ROMList[ (ULONG)m_gameListPageOffset + (ULONG)m_gameListCursorPosition ]; 
     return INVALID_ROM_INDEX;
 	}
 
@@ -128,6 +132,16 @@ public:
 		//------------------------------------------------------------
 	void RemoveCurrentGameIndex( void );
 	
+  void GetCursorPosition( FLOAT *pageOffset, FLOAT *cursorPos ) const {
+    *pageOffset = m_gameListPageOffset;
+    *cursorPos = m_gameListCursorPosition;
+  }
+
+  void SetCursorPosition( FLOAT pageOffset, FLOAT cursorPos ) {
+    m_gameListPageOffset = pageOffset;
+    m_gameListCursorPosition = cursorPos;
+  }
+
 protected:
 
     // Cursor movement helper functions
@@ -135,6 +149,8 @@ protected:
   void NormalModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapsedTime );
   void GenerateSuperscrollJumpTable( void );
 
+  UINT32                m_numDrivers;               //!<  The total number of drivers supported by the core
+  MAMEDriverData_t      *m_driverInfoList;          //!<  Drivers supported by the MAME core
   BOOL                  m_superscrollMode;          //!<  Whether or not to display in superscroll mode
   UINT32                m_superscrollCharacterIdx;  //!<  Character for superscroll mode
   UINT32                m_superscrollJumpTable[NUM_SUPERSCROLL_CHARS]; //!<  Jump indices for superscroll

@@ -89,6 +89,7 @@ static void Helper_DirectSoundDestroyBuffers( void );
 static __inline UINT32 Helper_BytesInStreamBuffer( void );
 static void Helper_UpdateSampleAdjustment( void );
 static void Helper_CopySampleData( INT16 *data, UINT32 bytes_to_copy );
+static void Helper_ClearSampleData( UINT32 amountToClear );
 
 //= F U N C T I O N S ==================================================
 
@@ -195,6 +196,7 @@ INT32 osd_update_audio_stream( INT16 *buffer )
 
 		  // copy data into the sound buffer
 		Helper_CopySampleData( buffer, g_samplesThisFrame * g_streamFormat.nBlockAlign );
+    Helper_ClearSampleData( g_samplesThisFrame * g_streamFormat.nBlockAlign );
 
     #ifdef LOG_SOUND
 	      // reset underflow/overflow tracking
@@ -431,7 +433,7 @@ static void Helper_DirectSoundDestroyBuffers( void )
 //---------------------------------------------------------------------
 //	Helper_BytesInStreamBuffer
 //---------------------------------------------------------------------
-static __inline INT32 Helper_BytesInStreamBuffer( void )
+static __inline UINT32 Helper_BytesInStreamBuffer( void )
 {
 	DWORD play_position;
 	if( IDirectSoundBuffer_GetCurrentPosition(  g_pStreamBuffer, 
@@ -535,11 +537,11 @@ static void Helper_CopySampleData( INT16 *data, UINT32 totalToCopy )
   UINT32 bytesToCopy = 0;
   DWORD playCursor, writeCursor;
   HRESULT result = IDirectSoundBuffer_GetCurrentPosition( g_pStreamBuffer, &playCursor, &writeCursor );
-_RPT3( _CRT_WARN, "R: %-8.8lu W: %-8.8lu SB: %-8.8lu\n", playCursor, writeCursor, g_streamBufferWriteCursor );
+  _RPT3( _CRT_WARN, "R: %-8.8lu W: %-8.8lu SB: %-8.8lu\n", playCursor, writeCursor, g_streamBufferWriteCursor );
 
-if( (g_streamBufferWriteCursor > writeCursor && g_streamBufferWriteCursor - writeCursor > 10) || 
-    (g_streamBufferWriteCursor < writeCursor && writeCursor - g_streamBufferWriteCursor > 10 ) )
-    g_streamBufferWriteCursor = writeCursor;
+  if( (g_streamBufferWriteCursor > writeCursor && g_streamBufferWriteCursor - writeCursor > 10) || 
+      (g_streamBufferWriteCursor < writeCursor && writeCursor - g_streamBufferWriteCursor > 10 ) )
+      g_streamBufferWriteCursor = writeCursor;
 
     // 1) If playCursor < g_streamBufferWriteCursor < writeCursor, an underflow has ocurred
   if( playCursor < g_streamBufferWriteCursor && g_streamBufferWriteCursor < writeCursor )
@@ -590,6 +592,58 @@ if( (g_streamBufferWriteCursor > writeCursor && g_streamBufferWriteCursor - writ
 		memcpy( buffer2, data, totalToCopy );       // Overflow was handled above, so using totalToCopy will be safe
 	}
   g_streamBufferWriteCursor = writeCursor; 
+
+}
+
+
+
+//---------------------------------------------------------------------
+//	Helper_ClearSampleData
+//---------------------------------------------------------------------
+static void Helper_ClearSampleData( UINT32 amountToClear )
+{	
+  UINT32 length1 = 0, length2 = 0;
+  void *buffer1 = NULL, *buffer2 = NULL;
+  UINT32 bytesToCopy = 0;
+  DWORD playCursor, writeCursor;
+  HRESULT result = IDirectSoundBuffer_GetCurrentPosition( g_pStreamBuffer, &playCursor, &writeCursor );
+
+    // Buffer1 will always start at the write cursor position
+  buffer1 = g_streamBufferData + g_streamBufferWriteCursor; 
+
+    // 2) Figure out where we should start copying data
+  if( playCursor <= g_streamBufferWriteCursor )
+  {
+      // We can write until the end of the buffer, and then from the beginning
+      // of the buffer up to the playCursor
+    length1 = g_streamBufferSize - g_streamBufferWriteCursor;
+
+    length2 = playCursor ? playCursor - 1 : 0;
+    buffer2 = g_streamBufferData;
+  }
+  else
+  {
+      // We can write up to the playCursor
+    length1 = playCursor - g_streamBufferWriteCursor;
+  }
+
+    // Check for an overflow
+  if( length1 + length2 < amountToClear )
+  {
+    amountToClear = length1 + length2;
+  }
+
+	  // copy the first chunk
+	bytesToCopy = (amountToClear > length1) ? length1 : amountToClear;
+	memset( buffer1, 0, bytesToCopy );
+	amountToClear -= bytesToCopy;
+	
+	  // copy the second chunk, if necessary
+	if( amountToClear )
+	{
+      // Advance past the data that was already copied
+		memset( buffer2, 0, amountToClear );       // Overflow was handled above, so using totalToCopy will be safe
+	}
 }
 
 

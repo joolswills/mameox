@@ -83,6 +83,11 @@ X) This step is currently unnecessary, as the source distribution includes the
    roms and roms/backup) as of v0.5a. They will be automatically created when you
    first run MAMEoX.
 
+   NOTE: Starting w/ version 0.63b, there are _two_ XBE files that must be 
+         copied over, default.xbe and MAMEoX.xbe. Failure to copy both files will
+	 result in error messages.
+  
+
 
 ---------------------------------------------------------------------------
 Compilation Errors:

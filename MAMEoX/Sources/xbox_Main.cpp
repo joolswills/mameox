@@ -20,7 +20,6 @@
 #include "MAMEoX.h"
 #include "InputManager.h"
 #include "GraphicsManager.h"
-#include "ROMList.h"
 #include "DebugLogger.h"
 
 	// Font class from the XDK
@@ -47,28 +46,21 @@ struct CUSTOMVERTEX
 };
 
 //= G L O B A L = V A R S =============================================
-CInputManager			g_inputManager;
-CGraphicsManager	g_graphicsManager;
-CXBFont						g_font;
+extern CInputManager			g_inputManager;
+extern CGraphicsManager	  g_graphicsManager;
+extern CXBFont						g_font;
+
+  // XBE Launch data
+DWORD             g_launchDataType;
+LAUNCH_DATA       g_launchData;
 
 static LPDIRECT3DVERTEXBUFFER8    g_pD3DVertexBuffer = NULL;
 
-
-#define SCREENRANGE_DEADZONE    15000
-
-
 //= P R O T O T Y P E S ===============================================
-static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice );
-static BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage );
-static void DestroyBackdrop( void );
 static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... );
-static BOOL __cdecl compareDriverNames( const void *elem1, const void *elem2 );
-static void LoadOptions( void );
-static void SaveOptions( void );
 static BOOL Helper_RunRom( UINT32 romIndex );
-
-
-
+static BOOL __cdecl compareDriverNames( const void *elem1, const void *elem2 );
+static BOOL Helper_SaveDriverList( void );
 
 //= F U N C T I O N S =================================================
 
@@ -79,6 +71,9 @@ void __cdecl main( void )
 {
 		// Start up the debug logger thread
 	DebugLoggerInit();
+
+    // Get the launch data immediately, just in case Die() is called
+  DWORD ret = XGetLaunchInfo( &g_launchDataType, &g_launchData );
 
 		// Mount the utility drive for storage of the ROM list cache file
 	//XMountUtilityDrive( FALSE );
@@ -112,9 +107,6 @@ void __cdecl main( void )
 	LoadOptions();
   SaveOptions();
 
-		// Show a splash screen
-	ShowSplashScreen( pD3DDevice );
-
     // Unload the XGRAPHICS section, as we won't be using it at all
   XFreeSection( "XGRPH" );
 
@@ -125,185 +117,185 @@ void __cdecl main( void )
     // This should only be necessary if IMAGEBLD doesn't load any sections
   LoadDriverDataSections();
 
-	  // Count and sort the game drivers (Taken from XMame)
-  DWORD totalMAMEGames = 0;
-	for( totalMAMEGames = 0; drivers[totalMAMEGames]; ++totalMAMEGames)
-		;
-	qsort( drivers, totalMAMEGames, sizeof(drivers[0]), compareDriverNames );
 
+    // Check the launch data to ensure that we've been started properly
+  if( ret != ERROR_SUCCESS || g_launchDataType != LDT_TITLE )
+  {
+      // This XBE shouldn't be launched directly. Throw up a splash screen
+      // saying so, then try to launch MAMEoxLauncher
+    Die( pD3DDevice, "MAMEoX wasn't called from the launcher!\nPlease run default.xbe instead." );
+      // Die never returns
+  }
+ 
+  MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
 
+    // Create the sorted game listing and exit
+  if( mameoxLaunchData->m_command == LAUNCH_CREATE_MAME_GAME_LIST )
+  {
+	    // Count and sort the game drivers (Taken from XMame)
+    DWORD totalMAMEGames = 0;
+	  for( totalMAMEGames = 0; drivers[totalMAMEGames]; ++totalMAMEGames)
+		  ;
+    mameoxLaunchData->m_totalMAMEGames = totalMAMEGames;
+    mameoxLaunchData->m_gameIndex = 0;
 
-		// Load/Generate the ROM listing
-	CROMList romList( pD3DDevice, g_font );
-	if( !romList.LoadROMList( TRUE ) )
-		Die( pD3DDevice, "Could not generate ROM list!" );
+    qsort( drivers, mameoxLaunchData->m_totalMAMEGames, sizeof(drivers[0]), compareDriverNames );
 
-    // Grab the current screen usage so we can render a border
-  FLOAT xPercentage, yPercentage;
-  GetScreenUsage( &xPercentage, &yPercentage );
-  CreateBackdrop( xPercentage, yPercentage );
+      // Dump the drivers to a file
+    Helper_SaveDriverList();
+  }
+  else
+  {
+      // Sort the game drivers and run the ROM
+    qsort( drivers, mameoxLaunchData->m_totalMAMEGames, sizeof(drivers[0]), compareDriverNames );
+    Helper_RunRom( mameoxLaunchData->m_gameIndex );
+  }
 
-
-    //-- Initialize the rendering engine -------------------------------
-  D3DXMATRIX matWorld;
-  D3DXMatrixIdentity( &matWorld );
-
-		// Main loop
-	while( 1 )
-	{
-		g_inputManager.PollDevices();
-
-			// Reboot on LT+RT+Black
-		if( gp0.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] > 150 &&
-				gp0.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] > 150 &&
-				gp0.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 150 )
-		{
-        // Strangely enough, we need XGRPH to use ifstream
-      XLoadSection( "XGRPH" );    
-      SaveOptions();
-      LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
-      XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
-		}
-
-
-
-			// Handle user input
-		if( gp0.bAnalogButtons[XINPUT_GAMEPAD_A] > 50 )
-		{
-				// Run the selected ROM
-      UINT32 romIndex = romList.GetCurrentGameIndex();
-      if( romIndex != INVALID_ROM_INDEX  )
-      {
-        DestroyBackdrop();
-        Helper_RunRom( romIndex );
-        CreateBackdrop( xPercentage, yPercentage );
-      }
-		}
-		else if( gp0.bAnalogButtons[XINPUT_GAMEPAD_X] > 150 &&
-						 gp0.bAnalogButtons[XINPUT_GAMEPAD_B] > 150 )
-		{				
-				// Move the currently selected game to the backup dir
-			UINT32 romIDX = romList.GetCurrentGameIndex();
-
-			std::string oldPath = ROMPATH "\\";
-			oldPath += drivers[romIDX]->name;
-			oldPath += ".zip";
-
-			std::string newPath = ROMPATH "\\backup\\";
-			newPath += drivers[romIDX]->name;
-			newPath += ".zip";
-
-        // Make sure the backup dir exists
-      CreateDirectory( ROMPATH "\\backup", NULL );
-
-			PRINTMSG( T_INFO, "Moving ROM %s to %s!", oldPath.c_str(), newPath.c_str() );
-			if( !MoveFile( oldPath.c_str(), newPath.c_str() ) )
-			{
-				PRINTMSG( T_ERROR, "Failed moving ROM %s to %s!", oldPath.c_str(), newPath.c_str() );
-			}
-
-			g_inputManager.WaitForNoKeys( 0 );
-			romList.RemoveCurrentGameIndex();
-		}
-		else if( gp0.bAnalogButtons[XINPUT_GAMEPAD_WHITE] > 150 )
-		{
-				// Regenerate the rom listing, allowing clones
-			romList.GenerateROMList();
-		}
-    else if( gp0.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 150 )
-    {
-        // Regenerate the rom listing, hiding clones
-      romList.GenerateROMList( FALSE );
-    }
-    else if(  gp0.sThumbRX < -SCREENRANGE_DEADZONE || gp0.sThumbRX > SCREENRANGE_DEADZONE || 
-              gp0.sThumbRY < -SCREENRANGE_DEADZONE || gp0.sThumbRY > SCREENRANGE_DEADZONE )
-    {
-      if( gp0.sThumbRX < -SCREENRANGE_DEADZONE )
-        xPercentage -= 0.00025f;
-      else if( gp0.sThumbRX > SCREENRANGE_DEADZONE )
-        xPercentage += 0.00025f;
-
-      if( gp0.sThumbRY < -SCREENRANGE_DEADZONE )
-        yPercentage -= 0.00025f;
-      else if( gp0.sThumbRY > SCREENRANGE_DEADZONE )
-        yPercentage += 0.00025f;
-
-      if( xPercentage < 0.25f )
-        xPercentage = 0.25f;
-      else if( xPercentage > 1.0f )
-        xPercentage = 1.0f;
-
-      if( yPercentage < 0.25f )
-        yPercentage = 0.25f;
-      else if( yPercentage > 1.0f )
-        yPercentage = 1.0f;
-
-      SetScreenUsage( xPercentage, yPercentage );
-      DestroyBackdrop();
-      CreateBackdrop( xPercentage, yPercentage );
-    }
-
-		
-			// Move the cursor position and render
-    g_graphicsManager.GetD3DDevice()->SetTransform( D3DTS_WORLD, &matWorld );
-    g_graphicsManager.GetD3DDevice()->SetTransform( D3DTS_VIEW, &matWorld );
-    g_graphicsManager.GetD3DDevice()->SetTransform( D3DTS_PROJECTION, &matWorld );
-
-	  g_graphicsManager.GetD3DDevice()->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
-	  g_graphicsManager.GetD3DDevice()->SetRenderState( D3DRS_LIGHTING, FALSE );
-	  g_graphicsManager.GetD3DDevice()->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-    g_graphicsManager.GetD3DDevice()->SetRenderState( D3DRS_ZENABLE, FALSE );
-    g_graphicsManager.GetD3DDevice()->Clear(	0L,																// Count
-											                        NULL,															// Rects to clear
-											                        D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
-                                              D3DCOLOR_XRGB(0,0,0),							// Color
-											                        1.0f,															// Z
-											                        0L );															// Stencil
-    g_graphicsManager.GetD3DDevice()->SetVertexShader( D3DFVF_XYZ | D3DFVF_DIFFUSE );
-    g_graphicsManager.GetD3DDevice()->SetStreamSource(	0,												  // Stream number
-																	                      g_pD3DVertexBuffer,					// Stream data
-																	                      sizeof(CUSTOMVERTEX) );		  // Vertex stride
-    g_graphicsManager.GetD3DDevice()->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
-
-		romList.MoveCursor( gp0 );
-		romList.Draw( FALSE, FALSE );
-
-    g_graphicsManager.GetD3DDevice()->Present( NULL, NULL, NULL, NULL );
-
-	}
+    // Relaunch MAMEoXLauncher
+  ShowLoadingScreen( pD3DDevice );
+  XLaunchNewImage( "D:\\default.xbe", &g_launchData );
 }
 
-
-
 //-------------------------------------------------------------
-//	ShowSplashScreen
+//  Helper_SaveDriverList
 //-------------------------------------------------------------
-static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
+static BOOL Helper_SaveDriverList( void )
 {
-		// Clear the backbuffer
-  pD3DDevice->Clear(	0L,																// Count
-											NULL,															// Rects to clear
-											D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
-                      D3DCOLOR_XRGB(0,0,0),							// Color
-											1.0f,															// Z
-											0L );															// Stencil
+	std::string		driverListFile = ROMLISTPATH;
+	driverListFile += "\\";
+	driverListFile += DRIVERLISTFILENAME;
 
-  g_font.Begin();
-	
-  g_font.DrawText( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255),   L"MAMEoX v0.63b", XBFONT_CENTER_X );
-  g_font.DrawText( 320, 100, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Uses MAME version 0.67", XBFONT_CENTER_X );
-  g_font.DrawText( 320, 260, D3DCOLOR_RGBA( 240, 240, 240, 255 ), L"Portions based on:", XBFONT_CENTER_X );
-  g_font.DrawText( 320, 280, D3DCOLOR_RGBA( 240, 240, 240, 255 ), L"\"MAMEX(b5): updated by superfro, original port by opcode\"", XBFONT_CENTER_X );
-	g_font.DrawText( 320, 320, D3DCOLOR_RGBA( 70, 235, 125, 255 ),  L"Press any button to continue.", XBFONT_CENTER_X );
+	PRINTMSG( T_INFO, "Store driver list: %s", driverListFile.c_str() );
 
-  g_font.End();
-  pD3DDevice->Present( NULL, NULL, NULL, NULL );
+	HANDLE hFile = CreateFile(	driverListFile.c_str(),
+															GENERIC_READ | GENERIC_WRITE,
+															0,
+															NULL,
+															CREATE_ALWAYS,
+															FILE_ATTRIBUTE_NORMAL,
+															NULL );
+	if( !hFile )
+	{
+		PRINTMSG( T_ERROR, "Could not create file %s!", driverListFile.c_str() );
+		return FALSE;
+	}
 
-	g_inputManager.WaitForAnyKey();
-	g_inputManager.WaitForNoKeys( 0 );
+  DWORD bytesWritten;
+  WriteFile( hFile, "MAMEoX" VERSION_STRING, 6 + strlen(VERSION_STRING), &bytesWritten, NULL );
+  if( bytesWritten != 6 + strlen(VERSION_STRING) )
+	{
+		PRINTMSG( T_ERROR, "Write failed!" );
+		CloseHandle( hFile );
+
+			// Delete the file
+		DeleteFile( driverListFile.c_str() );
+		return FALSE;
+	}
+
+
+  MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
+
+    // Store the number of drivers
+  WriteFile(  hFile, 
+              &mameoxLaunchData->m_totalMAMEGames, 
+              sizeof(mameoxLaunchData->m_totalMAMEGames),
+              &bytesWritten, 
+              NULL );
+  if( bytesWritten != sizeof(mameoxLaunchData->m_totalMAMEGames) )
+	{
+		PRINTMSG( T_ERROR, "Write failed!" );
+		CloseHandle( hFile );
+
+			// Delete the file
+		DeleteFile( driverListFile.c_str() );
+		return FALSE;
+	}
+
+
+    // Write data for each driver
+  for( DWORD i = 0; i < mameoxLaunchData->m_totalMAMEGames; ++i )
+  {
+      // Write the index
+    WriteFile( hFile, &i, sizeof(i), &bytesWritten, NULL );
+    if( bytesWritten != sizeof(i) )
+		{
+			PRINTMSG( T_ERROR, "Write failed!" );
+			CloseHandle( hFile );
+
+				// Delete the file
+			DeleteFile( driverListFile.c_str() );
+			return FALSE;
+		}
+
+      // Write the length of the filename
+    DWORD filenameLen = strlen(drivers[i]->name) + 1;
+    WriteFile( hFile, &filenameLen, sizeof(filenameLen), &bytesWritten, NULL );
+    if( bytesWritten != sizeof(filenameLen) )
+		{
+			PRINTMSG( T_ERROR, "Write failed!" );
+			CloseHandle( hFile );
+
+				// Delete the file
+			DeleteFile( driverListFile.c_str() );
+			return FALSE;
+		}
+
+      // Write the filename
+    WriteFile( hFile, drivers[i]->name, filenameLen, &bytesWritten, NULL );
+    if( bytesWritten != filenameLen )
+		{
+			PRINTMSG( T_ERROR, "Write failed!" );
+			CloseHandle( hFile );
+
+				// Delete the file
+			DeleteFile( driverListFile.c_str() );
+			return FALSE;
+		}
+    
+      // Write the length of the filename
+    filenameLen = strlen(drivers[i]->description) + 1;
+    WriteFile( hFile, &filenameLen, sizeof(filenameLen), &bytesWritten, NULL );
+    if( bytesWritten != sizeof(filenameLen) )
+		{
+			PRINTMSG( T_ERROR, "Write failed!" );
+			CloseHandle( hFile );
+
+				// Delete the file
+			DeleteFile( driverListFile.c_str() );
+			return FALSE;
+		}
+
+      // Write the description
+    WriteFile( hFile, drivers[i]->description, filenameLen, &bytesWritten, NULL );
+    if( bytesWritten != filenameLen )
+		{
+			PRINTMSG( T_ERROR, "Write failed!" );
+			CloseHandle( hFile );
+
+				// Delete the file
+			DeleteFile( driverListFile.c_str() );
+			return FALSE;
+		}
+    
+      // Store whether or not this is a clone
+      // All drivers are clones of _driver_0, whose clone_of is NULL,
+      //  so check against that to decide whether this is a clone or not
+    BOOL isClone = (drivers[i]->clone_of && drivers[i]->clone_of->clone_of);
+    WriteFile( hFile, &isClone, sizeof(isClone), &bytesWritten, NULL );
+    if( bytesWritten != sizeof(isClone) )
+		{
+			PRINTMSG( T_ERROR, "Write failed!" );
+			CloseHandle( hFile );
+
+				// Delete the file
+			DeleteFile( driverListFile.c_str() );
+			return FALSE;
+		}
+  }
+
+	CloseHandle( hFile );
+  return TRUE;
 }
-
-
 
 //-------------------------------------------------------------
 //	Die
@@ -317,10 +309,7 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
   vsprintf( buf, fmt, arg );
   va_end( arg );
 
-
 	PRINTMSG( T_ERROR, "Die: %s", buf );
-
-
 
 		// Display the error to the user
 	pD3DDevice->Clear(	0L,																// Count
@@ -346,104 +335,10 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 	g_inputManager.WaitForAnyKey( 0 );
 	g_inputManager.WaitForNoKeys( 0 );
 
-	
-		// Reboot
-  LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
-  XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
+    // Relaunch MAMEoXLauncher
+  ShowLoadingScreen( pD3DDevice );
+  XLaunchNewImage( "D:\\default.xbe", &g_launchData );
 }
-
-
-
-//-------------------------------------------------------------
-//	compareDriverNames
-//-------------------------------------------------------------
-static BOOL __cdecl compareDriverNames( const void *elem1, const void *elem2 )
-{
-	struct GameDriver *drv1 = *(struct GameDriver **)elem1;
-	struct GameDriver *drv2 = *(struct GameDriver **)elem2;
-
-		// Test the description field (game name)
-	return strcmp( drv1->description, drv2->description );
-}
-
-
-
-
-//-------------------------------------------------------------
-//	LoadOptions
-//-------------------------------------------------------------
-static void LoadOptions( void )
-{
-  CSystem_IniFile iniFile( INIFILENAME );
-
-/*
-	int		mame_debug;		          1 to enable debugging
-	int		cheat;			            1 to enable cheating
-	int 	gui_host;		            1 to tweak some UI-related things for better GUI integration
-	int 	skip_disclaimer;	      1 to skip the disclaimer screen at startup
-	int 	skip_gameinfo;		      1 to skip the game info screen at startup
-*/
-
-    // sound sample playback rate, in Hz
-  options.samplerate = iniFile.GetProfileInt( "Sound", "SampleRate", 44100 );
-    // 1 to enable external .wav samples
-  options.use_samples = iniFile.GetProfileInt( "Sound", "UseSamples", TRUE );
-    // 1 to enable FIR filter on final mixer output
-  options.use_filter = iniFile.GetProfileInt( "Sound", "UseFilter", TRUE );
-
-	options.brightness = iniFile.GetProfileFloat( "Video", "Brightness", 1.0f );		    // brightness of the display
-  options.pause_bright = iniFile.GetProfileFloat( "Video", "PauseBrightness", 0.65f );     // brightness when in pause
-	options.gamma = iniFile.GetProfileFloat( "Video", "Gamma", 1.0f );			        // gamma correction of the display
-	options.color_depth = iniFile.GetProfileInt( "Video", "ColorDepth", 32 );
-	options.vector_width = iniFile.GetProfileInt( "Video", "VectorWidth", 640 );	      // requested width for vector games; 0 means default (640)
-	options.vector_height = iniFile.GetProfileInt( "Video", "VectorHeight", 480 );	    // requested height for vector games; 0 means default (480)
-	// int		ui_orientation;	        // orientation of the UI relative to the video
-
-	options.beam = iniFile.GetProfileInt( "VectorOptions", "BeamWidth", 2 );			            // vector beam width
-	options.vector_flicker = iniFile.GetProfileFloat( "VectorOptions", "FlickerEffect", 0.5f );	  // vector beam flicker effect control
-	options.vector_intensity = iniFile.GetProfileFloat( "VectorOptions", "BeamIntensity", 1.5f );  // vector beam intensity
-	options.translucency = iniFile.GetProfileInt( "VectorOptions", "BeamWidth", TRUE );      // 1 to enable translucency on vectors
-	options.antialias = FALSE;		    // 1 to enable antialiasing on vectors
-
-	//int		use_artwork;	          bitfield indicating which artwork pieces to use
-	//int		artwork_res;	          1 for 1x game scaling, 2 for 2x
-	//int		artwork_crop;	          1 to crop artwork to the game screen
-	//char	savegame;		            character representing a savegame to load
-
-
-  FLOAT xPercentage = iniFile.GetProfileFloat( "Video", "ScreenUsage_X", DEFAULT_SCREEN_X_PERCENTAGE );
-  FLOAT yPercentage = iniFile.GetProfileFloat( "Video", "ScreenUsage_Y", DEFAULT_SCREEN_Y_PERCENTAGE );
-  SetScreenUsage( xPercentage, yPercentage );
-}
-
-
-//-------------------------------------------------------------
-//	SaveOptions
-//-------------------------------------------------------------
-static void SaveOptions( void )
-{
-  CSystem_IniFile iniFile( INIFILENAME );
-
-  iniFile.WriteProfileInt( "Sound", "SampleRate", options.samplerate );
-  iniFile.WriteProfileInt( "Sound", "UseSamples", options.use_samples );
-  iniFile.WriteProfileInt( "Sound", "UseFilter", options.use_filter );
-  iniFile.WriteProfileFloat( "Video", "Brightness", options.brightness );		    // brightness of the display
-  iniFile.WriteProfileFloat( "Video", "PauseBrightness", options.pause_bright );     // brightness when in pause
-	iniFile.WriteProfileFloat( "Video", "Gamma", options.gamma );			        // gamma correction of the display
-	iniFile.WriteProfileInt( "Video", "ColorDepth", options.color_depth );
-	iniFile.WriteProfileInt( "Video", "VectorWidth", options.vector_width );	      // requested width for vector games; 0 means default (640)
-	iniFile.WriteProfileInt( "Video", "VectorHeight", options.vector_height );	    // requested height for vector games; 0 means default (480)
-	iniFile.WriteProfileInt( "VectorOptions", "BeamWidth", options.beam );			            // vector beam width
-	iniFile.WriteProfileFloat( "VectorOptions", "FlickerEffect", options.vector_flicker );	  // vector beam flicker effect control
-	iniFile.WriteProfileFloat( "VectorOptions", "BeamIntensity", options.vector_intensity );  // vector beam intensity
-	iniFile.WriteProfileInt( "VectorOptions", "BeamWidth", options.translucency );      // 1 to enable translucency on vectors
-
-  FLOAT xPercentage, yPercentage;
-  GetScreenUsage( &xPercentage, &yPercentage );
-  iniFile.WriteProfileFloat( "Video", "ScreenUsage_X", xPercentage );
-  iniFile.WriteProfileFloat( "Video", "ScreenUsage_Y", yPercentage );
-}
-
 
 //-------------------------------------------------------------
 //  Helper_RunRom
@@ -451,9 +346,6 @@ static void SaveOptions( void )
 static BOOL Helper_RunRom( UINT32 romIndex )
 {
   BOOL ret;
-  if( romIndex == INVALID_ROM_INDEX )
-    return FALSE;
-
 	options.ui_orientation = drivers[romIndex]->flags & ORIENTATION_MASK;
 
     // Because the D3D renderer will be rotating the output into place, 
@@ -530,78 +422,17 @@ static BOOL Helper_RunRom( UINT32 romIndex )
   return (!ret);  // run_game works on inverted logic
 }
 
-
 //-------------------------------------------------------------
-//  CreateBackdrop
+//	compareDriverNames
 //-------------------------------------------------------------
-static BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage )
+static BOOL __cdecl compareDriverNames( const void *elem1, const void *elem2 )
 {
-  if( g_pD3DVertexBuffer )
-  {
-    g_pD3DVertexBuffer->Release();
-    g_pD3DVertexBuffer = NULL;
-  }
+	struct GameDriver *drv1 = *(struct GameDriver **)elem1;
+	struct GameDriver *drv2 = *(struct GameDriver **)elem2;
 
-    // Create the vertex buffer
-  g_graphicsManager.GetD3DDevice()->CreateVertexBuffer( sizeof(CUSTOMVERTEX) << 2,
-																		                    D3DUSAGE_WRITEONLY,
-																		                    D3DFVF_XYZ | D3DFVF_DIFFUSE,
-																		                    D3DPOOL_MANAGED,
-																		                    &g_pD3DVertexBuffer );
-
-	CUSTOMVERTEX *pVertices;
-	g_pD3DVertexBuffer->Lock( 0,										// Offset to lock
-														0,										// Size to lock
-														(BYTE**)&pVertices,		// ppbData
-														0 );									// Flags
-
-		pVertices[0].pos.x = -xUsage;
-		pVertices[0].pos.y = yUsage;
-		pVertices[0].pos.z = 1.0f;
-    pVertices[0].diffuse = D3DCOLOR_RGBA( 30, 50, 30, 255 );
-    //pVertices[0].tu = 0.0f;
-    //pVertices[0].tv = 0.0f;
-
-		pVertices[1].pos.x = xUsage;
-		pVertices[1].pos.y = yUsage;
-		pVertices[1].pos.z = 1.0f;
-    pVertices[1].diffuse = D3DCOLOR_RGBA( 30, 50, 30, 255 );
-    //pVertices[1].tu = 1.0f;
-    //pVertices[1].tv = 0.0f;
-		
-		pVertices[2].pos.x = xUsage;
-		pVertices[2].pos.y = -yUsage;
-		pVertices[2].pos.z = 1.0f;
-    pVertices[2].diffuse = D3DCOLOR_RGBA( 30, 50, 30, 255 );
-    //pVertices[2].tu = 1.0f;
-    //pVertices[2].tv = 1.0f;
-		
-		pVertices[3].pos.x = -xUsage;
-		pVertices[3].pos.y = -yUsage;
-		pVertices[3].pos.z = 1.0f;
-    pVertices[3].diffuse = D3DCOLOR_RGBA( 30, 50, 30, 255 );
-    //pVertices[3].tu = 0.0f;
-    //pVertices[3].tv = 1.0f;
-
-	g_pD3DVertexBuffer->Unlock();
-
-
-  return TRUE;
+		// Test the description field (game name)
+	return strcmp( drv1->description, drv2->description );
 }
-
-//-------------------------------------------------------------
-//  DestroyBackdrop
-//-------------------------------------------------------------
-static void DestroyBackdrop( void )
-{
-  if( g_pD3DVertexBuffer )
-  {
-    g_pD3DVertexBuffer->Release();
-    g_pD3DVertexBuffer = NULL;
-  }
-}
-
-
 
 
 extern "C" {
@@ -622,120 +453,6 @@ void osd_exit( void )
 {
   TerminateJoystickMouse();
 }
-
-
-//-------------------------------------------------------------
-//	GetGamepadState
-//-------------------------------------------------------------
-const XINPUT_GAMEPAD *GetGamepadState( UINT32 joynum )
-{
-	const XINPUT_GAMEPAD	&gp = g_inputManager.GetGamepadDeviceState( joynum );
-	return &gp;
-}
-
-//-------------------------------------------------------------
-//	PollGamepads
-//-------------------------------------------------------------
-void PollGamepads( void )
-{
-	g_inputManager.PollDevices();
-	const XINPUT_GAMEPAD	&gp0 = g_inputManager.GetGamepadDeviceState( 0 );
-/*
-		// Reboot on LT+RT+Black
-	if( gp0.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] > 200 &&
-			gp0.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] > 200 &&
-			gp0.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 200 )
-	{
-    LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
-    XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
-	}
-*/
-}
-
-
-//-------------------------------------------------------------
-// WaitForKey
-//-------------------------------------------------------------
-void WaitForKey( void )
-{
-	g_inputManager.WaitForAnyKey( 0 );
-}
-
-//-------------------------------------------------------------
-// WaitForNoKey
-//-------------------------------------------------------------
-void WaitForNoKey( void )
-{
-	g_inputManager.WaitForNoKeys( 0 );
-}
-
-//-------------------------------------------------------------
-//	BeginFontRender
-//-------------------------------------------------------------
-void BeginFontRender( BOOL ClearScreen )
-{
-	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
-
-  if( ClearScreen )
-  {
-		  // Clear the backbuffer
-    pD3DDevice->Clear(	0L,																// Count
-											  NULL,															// Rects to clear
-											  D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
-                        D3DCOLOR_XRGB(0,0,0),							// Color
-											  1.0f,															// Z
-											  0L );															// Stencil
-  }
-
-  g_font.Begin();
-
-}
-
-//-------------------------------------------------------------
-//	FontRender
-//-------------------------------------------------------------
-void FontRender( INT32 x, INT32 y, UINT32 color, const WCHAR *str, UINT32 flags )
-{
-	g_font.DrawText( x, y, color, str, flags );
-}
-
-//-------------------------------------------------------------
-//	EndFontRender
-//-------------------------------------------------------------
-void EndFontRender( void )
-{
-	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
-  g_font.End();
-  pD3DDevice->Present( NULL, NULL, NULL, NULL );
-}
-
-
-#ifdef _DEBUG
-//-------------------------------------------------------------
-//	CheckRAM
-//-------------------------------------------------------------
-void CheckRAM( void )
-{
-  WCHAR memStr[256];
-  MEMORYSTATUS memStatus;
-  GlobalMemoryStatus(  &memStatus );
-
-  swprintf( memStr, 
-            L"Memory: %lu/%lu",
-            memStatus.dwAvailPhys, 
-            memStatus.dwTotalPhys );
-
-  BeginFontRender( TRUE );
-  FontRender( 320, 300, D3DCOLOR_RGBA(255,255,255,255), memStr, 2 );
-  EndFontRender();
-
-	g_inputManager.WaitForNoKeys( 0 );
-	g_inputManager.WaitForAnyKey( 0 );
-	g_inputManager.WaitForNoKeys( 0 );
-}
-#endif
-
-
 
 }	// End Extern "C"
 

@@ -16,12 +16,7 @@ Purpose:
 #include <algorithm>
 #include <string>
 
-#ifdef WIN32
- #include <io.h>
-#else
- #include <unistd.h>
- #include <sys/types.h>
-#endif
+#include <io.h>
 
 //= D E F I N E S ========================================
 #define strcasecmp		stricmp

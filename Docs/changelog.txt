@@ -1,19 +1,39 @@
 Version 0.63b
 
+  - \MAMEoXLauncher:
+    - Added directory with separate ROM list XBE
+
+  - \MAMEoX\Includes\ROMList.h:
+    - Moved to MAMEoXLauncher directory
+
+  - \MAMEoX\Includes\xbox_FileIO.h:
+    - Added DriverList define
+
+  - \MAMEoX\Includes\MAMEoX.h:
+    - Added various helper prototypes
+    - Added version string #define
+
+  - \MAMEoX\Sources\ROMList.cpp:
+    - Made left analog stick act like the DPAD
+      (usability testing)
+    - Moved to MAMEoXLauncher directory
+
   - \MAMEoX\Sources\xbox_Main.cpp:
     - Increased button sensitivity
     - Switched Left Analog screen resize control to right analog 
       (usability testing)
     
   - \MAMEoX\Sources\xbox_Sound.cpp:
-    - Fixed sound crackles
+    - Reduced sound crackles
 
-  - \MAMEoX\Sources\ROMList.cpp:
-    - Made left analog stick act like the DPAD
-      (usability testing)
+  - \MAMEoX\Sources\MAMEoXUtil.cpp
+    - Added file
 
   - \MAMEoX\Docs\Readme.txt:
     - Changed control notes to reflect new controls
+    - Changed installation notes to mention new dual XBEs
+
+
 
 Version 0.62b
   
