@@ -26,6 +26,12 @@ Version 0.70.4b
       - Changed text from "Push B to discard changes" to
         "Push B to recalibrate"
 
+    - StartMenu.cpp
+      - Added start menu class
+
+    - BaseView.cpp
+      - Added base view class
+
 
 *********************************************************************
 Version 0.70.3b
