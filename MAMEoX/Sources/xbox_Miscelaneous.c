@@ -35,26 +35,6 @@ int osd_display_loading_rom_message( const char *name, struct rom_load_data *rom
 	PRINTMSG( T_TRACE, "osd_display_loading_rom_message" );
 
 	swprintf( bar, L"[%80c]", L' ' );
-#if 0
-struct rom_load_data
-{
-	int warnings;				/* warning count during processing */
-	int errors;				/* error count during processing */
-
-	int romsloaded;				/* current ROMs loaded count */
-	int romstotal;				/* total number of ROMs to read */
-
-	void * file;				/* current file */
-
-	UINT8 *	regionbase;			/* base of current region */
-	UINT32 regionlength;			/* length of current region */
-
-	char errorbuf[4096];			/* accumulated errors */
-	UINT8 tempbuf[65536];			/* temporary buffer */
-};
-#endif
-
-
 
 	if( name )
 	{
@@ -76,9 +56,10 @@ struct rom_load_data
 
 
 	BeginFontRender( TRUE );
-	FontRender( 70, 220, D3DCOLOR_RGBA( 230, 230, 230, 255 ), title, 0 );
-	FontRender( 320, 240, D3DCOLOR_RGBA( 120, 230, 120, 255 ), bar, 2 );
-	EndFontRender();
+	  FontRender( 70, 220, D3DCOLOR_XRGB( 230, 230, 230 ), title, 0 );
+	  FontRender( 320, 240, D3DCOLOR_XRGB( 120, 230, 120 ), bar, 2 );
+    FontRender( 320, 340, D3DCOLOR_XRGB( 60, 105, 225 ), L"MAMEoX version " LVERSION_STRING L" " LBUILDCONFIG_STRING, 2 );
+  EndFontRender();
 	
 	return 0;
 }

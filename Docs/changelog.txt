@@ -37,9 +37,6 @@ Version 0.65b
   - \MAMEoX\Sources\DebugLogger.cpp
     - Switched PRINTMSG to use OutputDebugString if _DEBUG is defined
 
-  - \MAMEoXLauncher\Sources\main.cpp:
-    - Reloading ROMS on button B+A now
-
   - \media\help.txt:
     - Help file
 
@@ -48,6 +45,9 @@ Version 0.65b
     - Added progress bar for driver dumping sequence
     - Added MAME core version to driver file sig.
     - Fixed some XBE dependencies
+
+  - \MAMEoX\Sources\xbox_Miscelaneous.c:
+    - Added Debug/Release mode notification to version string
 
   - \MAMEoX\Sources\xbox_JoystickMouse.c:
     - Improved analog controls
@@ -68,6 +68,7 @@ Version 0.65b
     - Updated version number
     - Added gamepad capabilities checking for Lightgun support
     - Added function to wait until a given gamepad is inserted
+    - Added Debug/Release mode notification to version string
 
   - \MAMEoX\Includes\InputManager.h:
     - Added gamepad capabilities checking for Lightgun support
@@ -83,6 +84,9 @@ Version 0.65b
     - Option mode on button B+Y now
     - Added function to wait until a given gamepad is inserted
     - Added MAME core version to driver file sig.
+    - Bugfix for the backup (X+B) feature
+    - Added Debug/Release mode notification to version string
+    - Reloading ROMS on button B+A now
 
   - \MAMEoXLauncher\sources\Help.cpp:
 
@@ -94,9 +98,6 @@ Version 0.65b
     - Black button to toggle clones on/off
     - White button for advanced game list (not yet)
     - Show With / without Clones in the header
-
-  - \MAMEoXLauncher\Sources\main.cpp:
-    - Bugfix for the backup (X+B) feature
 
  --- Specific Game fixes --------------------------------------------
   Bomber Man World (XBE dependency)

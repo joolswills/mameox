@@ -1156,11 +1156,11 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
   pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
 
   g_font.Begin();
-    g_font.DrawText( 320, 258, D3DCOLOR_RGBA( 0, 0, 80, 255),   L"Version " LVERSION_STRING, XBFONT_CENTER_X );
-    g_font.DrawText( 320, 282, D3DCOLOR_RGBA( 0, 0, 80, 255 ), L"Uses MAME version " LMAMEVERSION_STRING, XBFONT_CENTER_X );
-    g_font.DrawText( 320, 352, D3DCOLOR_RGBA( 10, 90, 100, 255 ), L"Portions based on:", XBFONT_CENTER_X );
-    g_font.DrawText( 320, 376, D3DCOLOR_RGBA( 10, 90, 100, 255 ), L"\"MAMEX(b5): updated by superfro, original port by opcode\"", XBFONT_CENTER_X );
-	  g_font.DrawText( 320, 400, D3DCOLOR_RGBA( 60, 105, 225, 255 ),  L"Press any button to continue.", XBFONT_CENTER_X );
+    g_font.DrawText( 320, 258, D3DCOLOR_XRGB( 0, 0, 80 ),     L"Version " LVERSION_STRING L" " LBUILDCONFIG_STRING, XBFONT_CENTER_X );
+    g_font.DrawText( 320, 282, D3DCOLOR_XRGB( 0, 0, 80 ),     L"Uses MAME version " LMAMEVERSION_STRING, XBFONT_CENTER_X );
+    g_font.DrawText( 320, 352, D3DCOLOR_XRGB( 10, 90, 100 ),  L"Portions based on:", XBFONT_CENTER_X );
+    g_font.DrawText( 320, 376, D3DCOLOR_XRGB( 10, 90, 100 ),  L"\"MAMEX(b5): updated by superfro, original port by opcode\"", XBFONT_CENTER_X );
+	  g_font.DrawText( 320, 400, D3DCOLOR_XRGB( 60, 105, 225 ), L"Press any button to continue.", XBFONT_CENTER_X );
   g_font.End();
 
   pD3DDevice->Present( NULL, NULL, NULL, NULL );

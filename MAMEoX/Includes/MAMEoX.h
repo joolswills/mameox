@@ -25,11 +25,17 @@ extern "C" {
 
   // Build string
 #ifdef _VC6
-#define BUILD_STRING         "::VC6"
-#define LBUILD_STRING        L"::VC6"
+  #define BUILD_STRING         "::VC6"
+  #define LBUILD_STRING        L"::VC6"
 #else
-#define BUILD_STRING         "::VC7"
-#define LBUILD_STRING        L"::VC7"
+  #define BUILD_STRING         "::VC7"
+  #define LBUILD_STRING        L"::VC7"
+#endif
+
+#ifdef _DEBUG
+  #define LBUILDCONFIG_STRING   L"[DEBUG]"
+#else
+  #define LBUILDCONFIG_STRING   L""
 #endif
 
   // Version number
