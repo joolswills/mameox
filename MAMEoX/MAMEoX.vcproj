@@ -139,7 +139,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories=".\Includes,..\MAME\src,..\,C:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include"
+				AdditionalIncludeDirectories=".\Includes;..\MAME\src;..\;&quot;C:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include&quot;;&quot;$(XDK)\Samples\XBox\Common\Include\&quot;"
 				PreprocessorDefinitions="WIN32,_XBOX,_DEBUG,_PROFILER"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
@@ -194,7 +194,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories=".\Includes,..\MAME\src,..\,C:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include;&quot;..\libsmb++\src&quot;"
+				AdditionalIncludeDirectories=".\Includes;..\MAME\src;..\;&quot;C:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include&quot;;&quot;..\libsmb++\src&quot;;&quot;$(XDK)\Samples\XBox\Common\Include\&quot;"
 				PreprocessorDefinitions="WIN32,_XBOX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
@@ -213,11 +213,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 /FIXED:NO"
-				AdditionalDependencies="xapilibd.lib d3d8d.lib d3dx8d.lib xgraphicsd.lib dsoundd.lib dmusicd.lib xnetd.lib xboxkrnl.lib MAME.lib"
+				AdditionalDependencies="xapilibd.lib d3d8d.lib d3dx8d.lib xgraphicsd.lib dsoundd.lib dmusicd.lib xnetd.lib xboxkrnl.lib MAME.lib libsmb.lib"
 				OutputFile=".\Debug/MAMEoX.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="..\MAME\Release"
+				AdditionalLibraryDirectories="..\MAME\Release;&quot;..\libsmb++\Release&quot;"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug/MAMEoX.pdb"/>
 			<Tool
