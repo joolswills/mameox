@@ -25,12 +25,19 @@ extern "C" {
 
 struct driverSectionRegistration_t 
 {
-  const char *m_driverName;
-  const char *m_sectionName;
+		// For some reason making these a const char, then unloading
+		// the DRVSNIZE will cause a crash in retail mode. I'm not at
+		// all sure exactly why this is yet, my only guess is that there
+		// is something odd about how quoted constants in initializers are
+		// placed into the XBE section.
+  //const char *m_driverName;
+  //const char *m_sectionName;
+	char	m_driverName[16];
+	char	m_sectionName[8];
 };
 
 
-#define REGISTER_DRIVERSECTION( driverName, sectionName )     { driverName, sectionName },
+#define REGISTER_DRIVERSECTION( driverName, sectionName )     { driverName, sectionName }
 
 
 
@@ -52,9 +59,7 @@ extern "C" {
 //-------------------------------------------------------------
 void InitDriverSectionizer( void )
 {
-	// For some reason everything crashes when the DRVSNIZE section (and/or CPUSNIZE)
-	// is unloaded. This needs to be investigated and fixed.
-//	if( !g_driverSectionizerLoaded )
+	if( !g_driverSectionizerLoaded )
 	{
 		if( !XLoadSection( "DRVSNIZE" ) )
 		{
@@ -86,9 +91,7 @@ void InitCPUSectionizer( void )
 {
   g_CPUIDToSectionMap.clear();
 
-	// For some reason everything crashes when the DRVSNIZE section (and/or CPUSNIZE)
-	// is unloaded. This needs to be investigated and fixed.
-//	if( !g_cpuSectionizerLoaded )
+	if( !g_cpuSectionizerLoaded )
 	{
 		if( !XLoadSection( "CPUSNIZE" ) )
 		{
@@ -124,722 +127,719 @@ void TerminateCPUSectionizer( void )
 #pragma comment(linker, "/merge:DRVBSNZE=DRVSNIZE")
 #pragma comment(linker, "/merge:DRVKSNZE=DRVSNIZE")
 
-static const driverSectionRegistration_t			g_driverSectionRegistry[] = {
-           REGISTER_DRIVERSECTION( "src\\drivers\\1942.c", "86" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\1943.c", "87" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\40love.c", "31" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\4enraya.c", "89" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\8080bw.c", "30" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\88games.c", "91" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\aburner.c", "3" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ace.c", "93" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\actfancr.c", "94" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\aeroboto.c", "95" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\aerofgt.c", "96" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\afega.c", "97" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\airbustr.c", "98" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ajax.c", "99" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\aliens.c", "100" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\alpha68k.c", "101" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ambush.c", "102" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\amidar.c", "8" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\amspdwy.c", "104" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\angelkds.c", "105" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\appoooh.c", "106" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\aquarium.c", "107" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\arabian.c", "108" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\arcadecl.c", "9" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\argus.c", "110" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\arkanoid.c", "111" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\armedf.c", "112" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\artmagic.c", "113" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ashnojoe.c", "114" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\asterix.c", "115" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\asteroid.c", "116" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\astinvad.c", "117" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\astrocde.c", "118" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\astrof.c", "119" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\asuka.c", "10" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\atarifb.c", "121" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\atarig1.c", "122" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\atarig42.c", "123" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\atarigt.c", "124" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\atarigx2.c", "125" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\atarisy1.c", "126" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\atarisy2.c", "127" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ataxx.c", "19" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\atetris.c", "129" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\avalnche.c", "130" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\aztarac.c", "131" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\badlands.c", "132" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\bagman.c", "133" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\balsente.c", "134" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\bankp.c", "135" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\baraduke.c", "136" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\batman.c", "137" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\battlane.c", "138" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\battlera.c", "139" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\battlex.c", "140" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\battlnts.c", "141" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\bbusters.c", "142" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\beaminv.c", "143" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\beathead.c", "144" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\beezer.c", "145" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\berzerk.c", "146" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\bigevglf.c", "147" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\bigstrkb.c", "148" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\bionicc.c", "149" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\bishi.c", "150" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\bking2.c", "151" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\bladestl.c", "152" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\blktiger.c", "153" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\blmbycar.c", "154" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\blockade.c", "155" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\blockhl.c", "156" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\blockout.c", "157" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\bloodbro.c", "158" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\blstroid.c", "159" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\blueprnt.c", "160" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\bogeyman.c", "161" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\bombjack.c", "162" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\bosco.c", "163" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\bottom9.c", "164" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\boxer.c", "165" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\brkthru.c", "166" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\bsktball.c", "167" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\btime.c", "32" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\btoads.c", "169" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\bublbobl.c", "170" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\buggychl.c", "31" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\bwidow.c", "12" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\bwing.c", "173" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\bzone.c", "12" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\cabal.c", "175" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\canyon.c", "176" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\capbowl.c", "177" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\carjmbre.c", "178" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\carpolo.c", "179" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\cave.c", "180" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\cbasebal.c", "181" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\cbuster.c", "182" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ccastles.c", "183" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\cchasm.c", "184" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\cclimber.c", "8" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\centiped.c", "186" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\chaknpop.c", "187" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\champbas.c", "188" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\cheekyms.c", "189" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\chinagat.c", "35" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\chindrag.c", "191" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\chqflag.c", "192" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\cinemat.c", "193" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\circus.c", "30" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\circusc.c", "195" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\cischeat.c", "15" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\citycon.c", "197" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\clayshoo.c", "198" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\cloak.c", "199" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\cloud9.c", "200" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\clshroad.c", "29" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\cninja.c", "202" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\cojag.c", "203" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\combatsc.c", "204" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\commando.c", "205" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\compgolf.c", "206" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\contra.c", "207" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\coolpool.c", "208" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\cop01.c", "209" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\copsnrob.c", "210" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\cosmic.c", "211" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\cps1.c", "1" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\cps2.c", "1" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\crbaloon.c", "214" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\crgolf.c", "215" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\crimfght.c", "216" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\crospang.c", "217" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\crshrace.c", "218" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\cshooter.c", "219" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\cvs.c", "220" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\cyberbal.c", "221" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\darius.c", "222" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\darkseal.c", "223" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\dassault.c", "224" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\dbz2.c", "225" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\dcon.c", "226" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\dday.c", "227" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ddenlovr.c", "228" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ddragon.c", "35" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ddragon3.c", "230" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ddrible.c", "231" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\deadang.c", "232" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\dec0.c", "233" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\dec8.c", "234" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\deco32.c", "235" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\deco_mlc.c", "236" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\decocass.c", "237" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\deniam.c", "238" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\destroyr.c", "239" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\digdug.c", "240" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\diverboy.c", "241" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\djboy.c", "242" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\djmain.c", "243" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\dkong.c", "8" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\dlair.c", "245" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\docastle.c", "246" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\dogfgt.c", "247" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\dooyong.c", "248" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\dorachan.c", "249" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\dotrikun.c", "250" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\dragrace.c", "251" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\drgnmst.c", "252" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\dribling.c", "253" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\drmicro.c", "254" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\dynax.c", "255" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\dynduke.c", "256" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\embargo.c", "257" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\enigma2.c", "258" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\epos.c", "8" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\eprom.c", "36" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\equites.c", "261" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\esd16.c", "262" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\espial.c", "11" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\exctsccr.c", "264" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\exedexes.c", "265" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\exerion.c", "266" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\exidy.c", "17" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\exidy440.c", "268" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\exprraid.c", "269" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\exterm.c", "14" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\exzisus.c", "271" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\f1gp.c", "272" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\fantland.c", "273" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\fastfred.c", "274" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\fastlane.c", "275" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\fcombat.c", "276" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\finalizr.c", "277" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\findout.c", "278" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\firetrap.c", "279" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\firetrk.c", "280" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\fitfight.c", "281" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\flkatck.c", "282" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\flower.c", "283" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\flstory.c", "284" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\flyball.c", "285" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\foodf.c", "286" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\freekick.c", "287" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\frogger.c", "8" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\fromanc2.c", "289" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\fromance.c", "22" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\funkybee.c", "291" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\funkyjet.c", "292" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\funybubl.c", "293" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\fuukifg2.c", "294" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\fuukifg3.c", "295" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gaelco.c", "296" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gaelco2.c", "297" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gaiden.c", "298" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\galaga.c", "299" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\galaxian.c", "8" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\galivan.c", "301" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\galpani2.c", "302" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\galpanic.c", "303" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\galspnbl.c", "304" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gameplan.c", "305" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gaplus.c", "306" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gauntlet.c", "307" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gberet.c", "308" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gbusters.c", "309" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gcpinbal.c", "310" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gijoe.c", "311" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ginganin.c", "312" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gladiatr.c", "313" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\glass.c", "314" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gng.c", "315" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\goal92.c", "316" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\goindol.c", "317" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gomoku.c", "318" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gotcha.c", "319" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gottlieb.c", "14" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gotya.c", "321" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gradius3.c", "322" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\grchamp.c", "323" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gridlee.c", "324" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\groundfx.c", "21" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\grtwall.c", "326" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gstriker.c", "327" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gsword.c", "328" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gumbo.c", "329" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gunbustr.c", "21" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gundealr.c", "331" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gunsmoke.c", "332" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\gyruss.c", "333" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\hal21.c", "7" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\halleys.c", "335" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\hanaawas.c", "336" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\hanaroku.c", "337" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\harddriv.c", "338" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\hcastle.c", "339" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\hexa.c", "340" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\hexion.c", "341" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\higemaru.c", "342" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\hitme.c", "343" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\hnayayoi.c", "344" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\holeland.c", "345" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\homedata.c", "346" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\homerun.c", "347" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\hyhoo.c", "348" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\hyperspt.c", "20" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\hyprduel.c", "350" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ikki.c", "351" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\inufuku.c", "352" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\iqblock.c", "353" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\irobot.c", "354" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ironhors.c", "355" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\itech32.c", "356" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\itech8.c", "357" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\jack.c", "358" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\jackal.c", "359" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\jailbrek.c", "360" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\jalmah.c", "361" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\jchan.c", "362" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\jcross.c", "363" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\jedi.c", "364" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\jrpacman.c", "365" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\junofrst.c", "16" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\kaneko16.c", "367" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\kangaroo.c", "368" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\karnov.c", "369" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\kchamp.c", "370" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\kickgoal.c", "371" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\kingobox.c", "372" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\kinst.c", "373" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\klax.c", "374" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\kncljoe.c", "375" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\konamigq.c", "376" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\konamigx.c", "24" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\kopunch.c", "378" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\kyugo.c", "379" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\labyrunr.c", "380" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ladybug.c", "381" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ladyfrog.c", "382" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\lasso.c", "383" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\lastduel.c", "384" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\lazercmd.c", "385" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\legionna.c", "386" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\leland.c", "19" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\lemmings.c", "388" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\leprechn.c", "389" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\lethalj.c", "390" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\liberate.c", "391" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\liberatr.c", "392" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\lkage.c", "393" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\locomotn.c", "16" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\looping.c", "395" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\lsasquad.c", "396" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ltcasino.c", "397" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\lwings.c", "398" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\m107.c", "399" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\m62.c", "400" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\m72.c", "18" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\m79amb.c", "402" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\m90.c", "18" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\m92.c", "404" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\macrossp.c", "405" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\madmotor.c", "406" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\magmax.c", "407" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mainevt.c", "408" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mainsnk.c", "409" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\malzak.c", "410" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mappy.c", "411" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\marineb.c", "11" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\marinedt.c", "413" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mario.c", "414" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\markham.c", "415" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\marvins.c", "7" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\matmania.c", "417" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mayumi.c", "418" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mazerbla.c", "419" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mcatadv.c", "420" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mcr1.c", "4" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mcr2.c", "4" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mcr3.c", "4" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mcr68.c", "4" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\meadows.c", "425" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\megasys1.c", "15" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\megazone.c", "427" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mermaid.c", "428" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\metlclsh.c", "429" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\metro.c", "430" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mexico86.c", "431" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mhavoc.c", "432" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\midtunit.c", "4" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\midvunit.c", "4" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\midwunit.c", "4" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\midxunit.c", "4" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\midyunit.c", "4" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mikie.c", "438" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\minivadr.c", "439" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\missb2.c", "440" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\missile.c", "441" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mitchell.c", "442" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mjkjidai.c", "443" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mjsister.c", "444" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mnight.c", "445" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mogura.c", "446" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mole.c", "447" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\momoko.c", "448" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\monaco.c", "449" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\moo.c", "450" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mosaic.c", "451" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mouser.c", "452" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mpatrol.c", "6" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mrdo.c", "454" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mrflea.c", "455" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mrjong.c", "456" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ms32.c", "28" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\msisaac.c", "458" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mugsmash.c", "459" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\multi32.c", "3" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\munchmo.c", "461" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mustache.c", "462" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mystston.c", "463" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\mystwarr.c", "24" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\namcoic.c", "2" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\namcona1.c", "2" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\namconb1.c", "2" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\namcond1.c", "2" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\namcos1.c", "2" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\namcos10.c", "470" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\namcos11.c", "2" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\namcos12.c", "472" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\namcos2.c", "2" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\namcos21.c", "2" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\namcos22.c", "2" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\namcos86.c", "2" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\naughtyb.c", "477" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\nbmj8688.c", "478" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\nbmj8891.c", "479" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\nbmj8991.c", "480" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\nbmj9195.c", "481" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\nemesis.c", "482" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\neogeo.c", "483" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\news.c", "484" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ninjakd2.c", "485" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ninjakid.c", "486" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ninjaw.c", "487" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\nitedrvr.c", "488" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\niyanpai.c", "489" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\nmk16.c", "490" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\nova2001.c", "13" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\nss.c", "492" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\nycaptor.c", "493" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\nyny.c", "34" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\offtwall.c", "495" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ohmygod.c", "496" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ojankohs.c", "497" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\olibochu.c", "498" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\omegaf.c", "499" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\omegrace.c", "500" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\oneshot.c", "501" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\opwolf.c", "10" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\orbit.c", "503" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\othldrby.c", "504" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\othunder.c", "505" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\outrun.c", "3" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\overdriv.c", "507" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\pacland.c", "508" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\pacman.c", "8" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\pandoras.c", "510" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\paradise.c", "511" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\parodius.c", "512" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\pass.c", "513" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\pastelgl.c", "514" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\pbaction.c", "515" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\pbillian.c", "516" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\pcktgal.c", "517" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\pengo.c", "8" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\pgm.c", "519" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\phoenix.c", "8" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\pingpong.c", "521" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\pipedrm.c", "22" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\pirates.c", "523" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\pitnrun.c", "524" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\pkunwar.c", "13" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\playch10.c", "526" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\playmark.c", "33" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\plygonet.c", "528" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\polepos.c", "529" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\policetr.c", "530" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\polyplay.c", "531" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\pong.c", "532" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\poolshrk.c", "533" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\pooyan.c", "16" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\popeye.c", "535" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\popper.c", "536" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\portrait.c", "537" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\powerins.c", "538" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\prehisle.c", "539" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\psikyo.c", "540" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\psikyo4.c", "541" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\psikyosh.c", "542" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\psychic5.c", "543" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\punchout.c", "544" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\pushman.c", "545" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\qix.c", "546" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\quantum.c", "547" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\quizdna.c", "548" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\quizpani.c", "549" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\r2dtank.c", "550" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\rabbit.c", "551" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\raiden.c", "552" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\raiden2.c", "553" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\raiders5.c", "554" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\rainbow.c", "10" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\rallyx.c", "16" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\rampart.c", "9" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\rastan.c", "10" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\realbrk.c", "559" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\redalert.c", "560" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\redclash.c", "561" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\relief.c", "562" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\renegade.c", "563" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\retofinv.c", "564" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\rmhaihai.c", "565" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\rockola.c", "566" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\rockrage.c", "567" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\rocnrope.c", "16" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\rohga.c", "569" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\rollerg.c", "570" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\rollrace.c", "27" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\rotaryf.c", "30" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\route16.c", "573" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\royalmah.c", "574" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\rpunch.c", "575" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\runaway.c", "576" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\rungun.c", "577" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\safarir.c", "578" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\sauro.c", "579" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\sbasketb.c", "20" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\sbowling.c", "581" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\sbrkout.c", "582" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\sbugger.c", "583" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\scobra.c", "8" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\scramble.c", "8" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\scregg.c", "32" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\seattle.c", "587" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\sega.c", "25" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\segac2.c", "3" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\segar.c", "25" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\segasyse.c", "3" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\seicross.c", "592" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\sengokmj.c", "593" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\senjyo.c", "594" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\seta.c", "595" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\seta2.c", "596" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\sf1.c", "597" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\sg1000a.c", "598" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\sgladiat.c", "7" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\shadfrce.c", "600" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\shangha3.c", "601" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\shanghai.c", "602" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\shangkid.c", "603" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\shaolins.c", "604" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\sharrier.c", "3" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\shisen.c", "18" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\shootout.c", "607" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\shougi.c", "608" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\shuuz.c", "609" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\sidearms.c", "610" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\sidepckt.c", "611" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\silkroad.c", "612" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\simpsons.c", "613" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\skullxbo.c", "614" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\skyarmy.c", "615" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\skychut.c", "616" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\skydiver.c", "617" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\skyfox.c", "618" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\skykid.c", "619" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\skyraid.c", "620" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\slapfght.c", "621" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\slapshot.c", "622" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\snk.c", "7" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\snk68.c", "624" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\snowbros.c", "625" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\solomon.c", "626" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\sonson.c", "627" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\spacefb.c", "628" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\spbactn.c", "629" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\spcforce.c", "630" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\spdbuggy.c", "631" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\spdodgeb.c", "632" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\speedatk.c", "633" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\speedbal.c", "634" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\speedspn.c", "635" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\spiders.c", "34" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\splash.c", "637" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\sprcros2.c", "638" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\sprint2.c", "639" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\sprint4.c", "640" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\sprint8.c", "641" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\spy.c", "642" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\srmp2.c", "643" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\srumbler.c", "644" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\sshangha.c", "645" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\sslam.c", "33" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ssozumo.c", "647" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\sspeedr.c", "648" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ssrj.c", "649" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ssv.c", "650" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\stactics.c", "651" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\stadhero.c", "652" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\starcrus.c", "653" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\starfire.c", "654" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\starshp1.c", "655" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\starwars.c", "656" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\statriv2.c", "657" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\stfight.c", "658" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\stlforce.c", "659" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\strnskil.c", "660" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\strvmstr.c", "661" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\stv.c", "662" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\stvhacks.c", "663" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\subs.c", "664" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\suna16.c", "665" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\suna8.c", "666" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\supbtime.c", "667" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\supdrapo.c", "668" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\superchs.c", "21" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\superqix.c", "670" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\supertnk.c", "671" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\suprloco.c", "672" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\suprnova.c", "673" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\suprslam.c", "674" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\surpratk.c", "675" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\system1.c", "3" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\system16.c", "3" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\system18.c", "3" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\system24.c", "3" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\system32.c", "3" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tagteam.c", "681" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tail2nos.c", "682" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\taito_b.c", "683" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\taito_f2.c", "684" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\taito_f3.c", "21" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\taito_h.c", "686" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\taito_l.c", "687" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\taito_x.c", "688" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\taito_z.c", "689" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\taitoair.c", "690" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\taitosj.c", "691" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tankbatt.c", "692" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tankbust.c", "693" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\taotaido.c", "694" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\targeth.c", "695" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\taxidrvr.c", "696" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tbowl.c", "697" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tceptor.c", "698" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tecmo.c", "699" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tecmo16.c", "700" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tecmosys.c", "701" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tehkanwc.c", "702" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tempest.c", "703" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\terracre.c", "704" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tetrisp2.c", "28" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\thedeep.c", "706" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\thepit.c", "707" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\thief.c", "708" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\thoop2.c", "709" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\thunderj.c", "36" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\thunderx.c", "711" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tickee.c", "712" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tigeroad.c", "713" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\timelimt.c", "714" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\timeplt.c", "16" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tmnt.c", "716" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tnzs.c", "717" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\toaplan1.c", "718" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\toaplan2.c", "719" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\toki.c", "720" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\toobin.c", "721" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\topspeed.c", "10" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\toratora.c", "723" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tourtabl.c", "724" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\toypop.c", "725" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tp84.c", "726" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\trackfld.c", "20" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\travrusa.c", "728" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\triplhnt.c", "729" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\troangel.c", "730" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\truco.c", "731" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tryout.c", "732" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tsamurai.c", "733" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ttmahjng.c", "734" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tubep.c", "735" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tugboat.c", "736" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tumblep.c", "737" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tunhunt.c", "738" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\turbo.c", "739" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\tutankhm.c", "16" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\twin16.c", "741" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\twincobr.c", "5" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ultraman.c", "743" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\ultratnk.c", "744" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\undrfire.c", "21" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\unico.c", "746" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\usgames.c", "747" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\vamphalf.c", "748" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\vaportra.c", "749" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\vastar.c", "750" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\vball.c", "751" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\vendetta.c", "752" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\vicdual.c", "753" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\victory.c", "17" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\videopin.c", "755" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\vigilant.c", "18" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\vindictr.c", "757" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\vmetal.c", "758" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\volfied.c", "759" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\vsnes.c", "760" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\vulgus.c", "761" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\wallc.c", "762" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\wardner.c", "5" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\warpwarp.c", "764" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\warriorb.c", "765" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\wc90.c", "766" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\wc90b.c", "767" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\wecleman.c", "768" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\welltris.c", "769" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\wgp.c", "770" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\williams.c", "4" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\wilytowr.c", "772" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\wiping.c", "29" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\wiz.c", "27" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\wolfpack.c", "775" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\wrally.c", "776" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\wwfsstar.c", "777" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\wwfwfest.c", "778" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\xain.c", "779" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\xevious.c", "780" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\xexex.c", "781" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\xmen.c", "782" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\xorworld.c", "783" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\xxmissio.c", "784" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\xybots.c", "785" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\xyonix.c", "786" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\yamato.c", "8" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\yard.c", "6" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\yiear.c", "20" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\yumefuda.c", "790" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\yunsun16.c", "791" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\yunsung8.c", "792" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\zac2650.c", "793" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\zaccaria.c", "794" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\zaxxon.c", "26" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\zerozone.c", "796" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\zn.c", "797" )
-           REGISTER_DRIVERSECTION( "src\\drivers\\zodiack.c", "11" )
-           { NULL, NULL } };
-#define   NUM_DRIVERSECTIONS				713
+#define   NUM_DRIVERSECTIONS				711
+static const driverSectionRegistration_t			g_driverSectionRegistry[NUM_DRIVERSECTIONS] = { 
+           REGISTER_DRIVERSECTION( "1942.c", "86" ),
+           REGISTER_DRIVERSECTION( "1943.c", "87" ),
+           REGISTER_DRIVERSECTION( "40love.c", "31" ),
+           REGISTER_DRIVERSECTION( "4enraya.c", "89" ),
+           REGISTER_DRIVERSECTION( "8080bw.c", "30" ),
+           REGISTER_DRIVERSECTION( "88games.c", "91" ),
+           REGISTER_DRIVERSECTION( "aburner.c", "3" ),
+           REGISTER_DRIVERSECTION( "ace.c", "93" ),
+           REGISTER_DRIVERSECTION( "actfancr.c", "94" ),
+           REGISTER_DRIVERSECTION( "aeroboto.c", "95" ),
+           REGISTER_DRIVERSECTION( "aerofgt.c", "96" ),
+           REGISTER_DRIVERSECTION( "afega.c", "97" ),
+           REGISTER_DRIVERSECTION( "airbustr.c", "98" ),
+           REGISTER_DRIVERSECTION( "ajax.c", "99" ),
+           REGISTER_DRIVERSECTION( "aliens.c", "100" ),
+           REGISTER_DRIVERSECTION( "alpha68k.c", "101" ),
+           REGISTER_DRIVERSECTION( "ambush.c", "102" ),
+           REGISTER_DRIVERSECTION( "amidar.c", "8" ),
+           REGISTER_DRIVERSECTION( "amspdwy.c", "104" ),
+           REGISTER_DRIVERSECTION( "angelkds.c", "105" ),
+           REGISTER_DRIVERSECTION( "appoooh.c", "106" ),
+           REGISTER_DRIVERSECTION( "aquarium.c", "107" ),
+           REGISTER_DRIVERSECTION( "arabian.c", "108" ),
+           REGISTER_DRIVERSECTION( "arcadecl.c", "9" ),
+           REGISTER_DRIVERSECTION( "argus.c", "110" ),
+           REGISTER_DRIVERSECTION( "arkanoid.c", "111" ),
+           REGISTER_DRIVERSECTION( "armedf.c", "112" ),
+           REGISTER_DRIVERSECTION( "artmagic.c", "113" ),
+           REGISTER_DRIVERSECTION( "ashnojoe.c", "114" ),
+           REGISTER_DRIVERSECTION( "asterix.c", "115" ),
+           REGISTER_DRIVERSECTION( "asteroid.c", "116" ),
+           REGISTER_DRIVERSECTION( "astinvad.c", "117" ),
+           REGISTER_DRIVERSECTION( "astrocde.c", "118" ),
+           REGISTER_DRIVERSECTION( "astrof.c", "119" ),
+           REGISTER_DRIVERSECTION( "asuka.c", "10" ),
+           REGISTER_DRIVERSECTION( "atarifb.c", "121" ),
+           REGISTER_DRIVERSECTION( "atarig1.c", "122" ),
+           REGISTER_DRIVERSECTION( "atarig42.c", "123" ),
+           REGISTER_DRIVERSECTION( "atarigt.c", "124" ),
+           REGISTER_DRIVERSECTION( "atarigx2.c", "125" ),
+           REGISTER_DRIVERSECTION( "atarisy1.c", "126" ),
+           REGISTER_DRIVERSECTION( "atarisy2.c", "127" ),
+           REGISTER_DRIVERSECTION( "ataxx.c", "19" ),
+           REGISTER_DRIVERSECTION( "atetris.c", "129" ),
+           REGISTER_DRIVERSECTION( "avalnche.c", "130" ),
+           REGISTER_DRIVERSECTION( "aztarac.c", "131" ),
+           REGISTER_DRIVERSECTION( "badlands.c", "132" ),
+           REGISTER_DRIVERSECTION( "bagman.c", "133" ),
+           REGISTER_DRIVERSECTION( "balsente.c", "134" ),
+           REGISTER_DRIVERSECTION( "bankp.c", "135" ),
+           REGISTER_DRIVERSECTION( "baraduke.c", "136" ),
+           REGISTER_DRIVERSECTION( "batman.c", "137" ),
+           REGISTER_DRIVERSECTION( "battlane.c", "138" ),
+           REGISTER_DRIVERSECTION( "battlera.c", "139" ),
+           REGISTER_DRIVERSECTION( "battlex.c", "140" ),
+           REGISTER_DRIVERSECTION( "battlnts.c", "141" ),
+           REGISTER_DRIVERSECTION( "bbusters.c", "142" ),
+           REGISTER_DRIVERSECTION( "beaminv.c", "143" ),
+           REGISTER_DRIVERSECTION( "beathead.c", "144" ),
+           REGISTER_DRIVERSECTION( "beezer.c", "145" ),
+           REGISTER_DRIVERSECTION( "berzerk.c", "146" ),
+           REGISTER_DRIVERSECTION( "bigevglf.c", "147" ),
+           REGISTER_DRIVERSECTION( "bigstrkb.c", "148" ),
+           REGISTER_DRIVERSECTION( "bionicc.c", "149" ),
+           REGISTER_DRIVERSECTION( "bishi.c", "150" ),
+           REGISTER_DRIVERSECTION( "bking2.c", "151" ),
+           REGISTER_DRIVERSECTION( "bladestl.c", "152" ),
+           REGISTER_DRIVERSECTION( "blktiger.c", "153" ),
+           REGISTER_DRIVERSECTION( "blmbycar.c", "154" ),
+           REGISTER_DRIVERSECTION( "blockade.c", "155" ),
+           REGISTER_DRIVERSECTION( "blockhl.c", "156" ),
+           REGISTER_DRIVERSECTION( "blockout.c", "157" ),
+           REGISTER_DRIVERSECTION( "bloodbro.c", "158" ),
+           REGISTER_DRIVERSECTION( "blstroid.c", "159" ),
+           REGISTER_DRIVERSECTION( "blueprnt.c", "160" ),
+           REGISTER_DRIVERSECTION( "bogeyman.c", "161" ),
+           REGISTER_DRIVERSECTION( "bombjack.c", "162" ),
+           REGISTER_DRIVERSECTION( "bosco.c", "163" ),
+           REGISTER_DRIVERSECTION( "bottom9.c", "164" ),
+           REGISTER_DRIVERSECTION( "boxer.c", "165" ),
+           REGISTER_DRIVERSECTION( "brkthru.c", "166" ),
+           REGISTER_DRIVERSECTION( "bsktball.c", "167" ),
+           REGISTER_DRIVERSECTION( "btime.c", "32" ),
+           REGISTER_DRIVERSECTION( "btoads.c", "169" ),
+           REGISTER_DRIVERSECTION( "bublbobl.c", "170" ),
+           REGISTER_DRIVERSECTION( "buggychl.c", "31" ),
+           REGISTER_DRIVERSECTION( "bwidow.c", "12" ),
+           REGISTER_DRIVERSECTION( "bwing.c", "173" ),
+           REGISTER_DRIVERSECTION( "bzone.c", "12" ),
+           REGISTER_DRIVERSECTION( "cabal.c", "175" ),
+           REGISTER_DRIVERSECTION( "canyon.c", "176" ),
+           REGISTER_DRIVERSECTION( "capbowl.c", "177" ),
+           REGISTER_DRIVERSECTION( "carjmbre.c", "178" ),
+           REGISTER_DRIVERSECTION( "carpolo.c", "179" ),
+           REGISTER_DRIVERSECTION( "cave.c", "180" ),
+           REGISTER_DRIVERSECTION( "cbasebal.c", "181" ),
+           REGISTER_DRIVERSECTION( "cbuster.c", "182" ),
+           REGISTER_DRIVERSECTION( "ccastles.c", "183" ),
+           REGISTER_DRIVERSECTION( "cchasm.c", "184" ),
+           REGISTER_DRIVERSECTION( "cclimber.c", "8" ),
+           REGISTER_DRIVERSECTION( "centiped.c", "186" ),
+           REGISTER_DRIVERSECTION( "chaknpop.c", "187" ),
+           REGISTER_DRIVERSECTION( "champbas.c", "188" ),
+           REGISTER_DRIVERSECTION( "cheekyms.c", "189" ),
+           REGISTER_DRIVERSECTION( "chinagat.c", "35" ),
+           REGISTER_DRIVERSECTION( "chindrag.c", "191" ),
+           REGISTER_DRIVERSECTION( "chqflag.c", "192" ),
+           REGISTER_DRIVERSECTION( "cinemat.c", "193" ),
+           REGISTER_DRIVERSECTION( "circus.c", "30" ),
+           REGISTER_DRIVERSECTION( "circusc.c", "195" ),
+           REGISTER_DRIVERSECTION( "cischeat.c", "15" ),
+           REGISTER_DRIVERSECTION( "citycon.c", "197" ),
+           REGISTER_DRIVERSECTION( "clayshoo.c", "198" ),
+           REGISTER_DRIVERSECTION( "cloak.c", "199" ),
+           REGISTER_DRIVERSECTION( "cloud9.c", "200" ),
+           REGISTER_DRIVERSECTION( "clshroad.c", "29" ),
+           REGISTER_DRIVERSECTION( "cninja.c", "202" ),
+           REGISTER_DRIVERSECTION( "cojag.c", "203" ),
+           REGISTER_DRIVERSECTION( "combatsc.c", "204" ),
+           REGISTER_DRIVERSECTION( "commando.c", "205" ),
+           REGISTER_DRIVERSECTION( "compgolf.c", "206" ),
+           REGISTER_DRIVERSECTION( "contra.c", "207" ),
+           REGISTER_DRIVERSECTION( "coolpool.c", "208" ),
+           REGISTER_DRIVERSECTION( "cop01.c", "209" ),
+           REGISTER_DRIVERSECTION( "copsnrob.c", "210" ),
+           REGISTER_DRIVERSECTION( "cosmic.c", "211" ),
+           REGISTER_DRIVERSECTION( "cps1.c", "1" ),
+           REGISTER_DRIVERSECTION( "cps2.c", "1" ),
+           REGISTER_DRIVERSECTION( "crbaloon.c", "214" ),
+           REGISTER_DRIVERSECTION( "crgolf.c", "215" ),
+           REGISTER_DRIVERSECTION( "crimfght.c", "216" ),
+           REGISTER_DRIVERSECTION( "crospang.c", "217" ),
+           REGISTER_DRIVERSECTION( "crshrace.c", "218" ),
+           REGISTER_DRIVERSECTION( "cshooter.c", "219" ),
+           REGISTER_DRIVERSECTION( "cvs.c", "220" ),
+           REGISTER_DRIVERSECTION( "cyberbal.c", "221" ),
+           REGISTER_DRIVERSECTION( "darius.c", "222" ),
+           REGISTER_DRIVERSECTION( "darkseal.c", "223" ),
+           REGISTER_DRIVERSECTION( "dassault.c", "224" ),
+           REGISTER_DRIVERSECTION( "dbz2.c", "225" ),
+           REGISTER_DRIVERSECTION( "dcon.c", "226" ),
+           REGISTER_DRIVERSECTION( "dday.c", "227" ),
+           REGISTER_DRIVERSECTION( "ddenlovr.c", "228" ),
+           REGISTER_DRIVERSECTION( "ddragon.c", "35" ),
+           REGISTER_DRIVERSECTION( "ddragon3.c", "230" ),
+           REGISTER_DRIVERSECTION( "ddrible.c", "231" ),
+           REGISTER_DRIVERSECTION( "deadang.c", "232" ),
+           REGISTER_DRIVERSECTION( "dec0.c", "233" ),
+           REGISTER_DRIVERSECTION( "dec8.c", "234" ),
+           REGISTER_DRIVERSECTION( "deco32.c", "235" ),
+           REGISTER_DRIVERSECTION( "deco_mlc.c", "236" ),
+           REGISTER_DRIVERSECTION( "decocass.c", "237" ),
+           REGISTER_DRIVERSECTION( "deniam.c", "238" ),
+           REGISTER_DRIVERSECTION( "destroyr.c", "239" ),
+           REGISTER_DRIVERSECTION( "digdug.c", "240" ),
+           REGISTER_DRIVERSECTION( "diverboy.c", "241" ),
+           REGISTER_DRIVERSECTION( "djboy.c", "242" ),
+           REGISTER_DRIVERSECTION( "djmain.c", "243" ),
+           REGISTER_DRIVERSECTION( "dkong.c", "8" ),
+           REGISTER_DRIVERSECTION( "dlair.c", "245" ),
+           REGISTER_DRIVERSECTION( "docastle.c", "246" ),
+           REGISTER_DRIVERSECTION( "dogfgt.c", "247" ),
+           REGISTER_DRIVERSECTION( "dooyong.c", "248" ),
+           REGISTER_DRIVERSECTION( "dorachan.c", "249" ),
+           REGISTER_DRIVERSECTION( "dotrikun.c", "250" ),
+           REGISTER_DRIVERSECTION( "dragrace.c", "251" ),
+           REGISTER_DRIVERSECTION( "drgnmst.c", "252" ),
+           REGISTER_DRIVERSECTION( "dribling.c", "253" ),
+           REGISTER_DRIVERSECTION( "drmicro.c", "254" ),
+           REGISTER_DRIVERSECTION( "dynax.c", "255" ),
+           REGISTER_DRIVERSECTION( "dynduke.c", "256" ),
+           REGISTER_DRIVERSECTION( "embargo.c", "257" ),
+           REGISTER_DRIVERSECTION( "enigma2.c", "258" ),
+           REGISTER_DRIVERSECTION( "epos.c", "8" ),
+           REGISTER_DRIVERSECTION( "eprom.c", "36" ),
+           REGISTER_DRIVERSECTION( "equites.c", "261" ),
+           REGISTER_DRIVERSECTION( "esd16.c", "262" ),
+           REGISTER_DRIVERSECTION( "espial.c", "11" ),
+           REGISTER_DRIVERSECTION( "exctsccr.c", "264" ),
+           REGISTER_DRIVERSECTION( "exedexes.c", "265" ),
+           REGISTER_DRIVERSECTION( "exerion.c", "266" ),
+           REGISTER_DRIVERSECTION( "exidy.c", "17" ),
+           REGISTER_DRIVERSECTION( "exidy440.c", "268" ),
+           REGISTER_DRIVERSECTION( "exprraid.c", "269" ),
+           REGISTER_DRIVERSECTION( "exterm.c", "14" ),
+           REGISTER_DRIVERSECTION( "exzisus.c", "271" ),
+           REGISTER_DRIVERSECTION( "f1gp.c", "272" ),
+           REGISTER_DRIVERSECTION( "fantland.c", "273" ),
+           REGISTER_DRIVERSECTION( "fastfred.c", "274" ),
+           REGISTER_DRIVERSECTION( "fastlane.c", "275" ),
+           REGISTER_DRIVERSECTION( "fcombat.c", "276" ),
+           REGISTER_DRIVERSECTION( "finalizr.c", "277" ),
+           REGISTER_DRIVERSECTION( "findout.c", "278" ),
+           REGISTER_DRIVERSECTION( "firetrap.c", "279" ),
+           REGISTER_DRIVERSECTION( "firetrk.c", "280" ),
+           REGISTER_DRIVERSECTION( "fitfight.c", "281" ),
+           REGISTER_DRIVERSECTION( "flkatck.c", "282" ),
+           REGISTER_DRIVERSECTION( "flower.c", "283" ),
+           REGISTER_DRIVERSECTION( "flstory.c", "284" ),
+           REGISTER_DRIVERSECTION( "flyball.c", "285" ),
+           REGISTER_DRIVERSECTION( "foodf.c", "286" ),
+           REGISTER_DRIVERSECTION( "freekick.c", "287" ),
+           REGISTER_DRIVERSECTION( "frogger.c", "8" ),
+           REGISTER_DRIVERSECTION( "fromanc2.c", "289" ),
+           REGISTER_DRIVERSECTION( "fromance.c", "22" ),
+           REGISTER_DRIVERSECTION( "funkybee.c", "291" ),
+           REGISTER_DRIVERSECTION( "funkyjet.c", "292" ),
+           REGISTER_DRIVERSECTION( "funybubl.c", "293" ),
+           REGISTER_DRIVERSECTION( "fuukifg2.c", "294" ),
+           REGISTER_DRIVERSECTION( "fuukifg3.c", "295" ),
+           REGISTER_DRIVERSECTION( "gaelco.c", "296" ),
+           REGISTER_DRIVERSECTION( "gaelco2.c", "297" ),
+           REGISTER_DRIVERSECTION( "gaiden.c", "298" ),
+           REGISTER_DRIVERSECTION( "galaga.c", "299" ),
+           REGISTER_DRIVERSECTION( "galaxian.c", "8" ),
+           REGISTER_DRIVERSECTION( "galivan.c", "301" ),
+           REGISTER_DRIVERSECTION( "galpani2.c", "302" ),
+           REGISTER_DRIVERSECTION( "galpanic.c", "303" ),
+           REGISTER_DRIVERSECTION( "galspnbl.c", "304" ),
+           REGISTER_DRIVERSECTION( "gameplan.c", "305" ),
+           REGISTER_DRIVERSECTION( "gaplus.c", "306" ),
+           REGISTER_DRIVERSECTION( "gauntlet.c", "307" ),
+           REGISTER_DRIVERSECTION( "gberet.c", "308" ),
+           REGISTER_DRIVERSECTION( "gbusters.c", "309" ),
+           REGISTER_DRIVERSECTION( "gcpinbal.c", "310" ),
+           REGISTER_DRIVERSECTION( "gijoe.c", "311" ),
+           REGISTER_DRIVERSECTION( "ginganin.c", "312" ),
+           REGISTER_DRIVERSECTION( "gladiatr.c", "313" ),
+           REGISTER_DRIVERSECTION( "glass.c", "314" ),
+           REGISTER_DRIVERSECTION( "gng.c", "315" ),
+           REGISTER_DRIVERSECTION( "goal92.c", "316" ),
+           REGISTER_DRIVERSECTION( "goindol.c", "317" ),
+           REGISTER_DRIVERSECTION( "gomoku.c", "318" ),
+           REGISTER_DRIVERSECTION( "gotcha.c", "319" ),
+           REGISTER_DRIVERSECTION( "gottlieb.c", "14" ),
+           REGISTER_DRIVERSECTION( "gotya.c", "321" ),
+           REGISTER_DRIVERSECTION( "gradius3.c", "322" ),
+           REGISTER_DRIVERSECTION( "grchamp.c", "323" ),
+           REGISTER_DRIVERSECTION( "gridlee.c", "324" ),
+           REGISTER_DRIVERSECTION( "groundfx.c", "21" ),
+           REGISTER_DRIVERSECTION( "grtwall.c", "326" ),
+           REGISTER_DRIVERSECTION( "gstriker.c", "327" ),
+           REGISTER_DRIVERSECTION( "gsword.c", "328" ),
+           REGISTER_DRIVERSECTION( "gumbo.c", "329" ),
+           REGISTER_DRIVERSECTION( "gunbustr.c", "21" ),
+           REGISTER_DRIVERSECTION( "gundealr.c", "331" ),
+           REGISTER_DRIVERSECTION( "gunsmoke.c", "332" ),
+           REGISTER_DRIVERSECTION( "gyruss.c", "333" ),
+           REGISTER_DRIVERSECTION( "hal21.c", "7" ),
+           REGISTER_DRIVERSECTION( "halleys.c", "335" ),
+           REGISTER_DRIVERSECTION( "hanaawas.c", "336" ),
+           REGISTER_DRIVERSECTION( "hanaroku.c", "337" ),
+           REGISTER_DRIVERSECTION( "harddriv.c", "338" ),
+           REGISTER_DRIVERSECTION( "hcastle.c", "339" ),
+           REGISTER_DRIVERSECTION( "hexa.c", "340" ),
+           REGISTER_DRIVERSECTION( "hexion.c", "341" ),
+           REGISTER_DRIVERSECTION( "higemaru.c", "342" ),
+           REGISTER_DRIVERSECTION( "hitme.c", "343" ),
+           REGISTER_DRIVERSECTION( "hnayayoi.c", "344" ),
+           REGISTER_DRIVERSECTION( "holeland.c", "345" ),
+           REGISTER_DRIVERSECTION( "homedata.c", "346" ),
+           REGISTER_DRIVERSECTION( "homerun.c", "347" ),
+           REGISTER_DRIVERSECTION( "hyhoo.c", "348" ),
+           REGISTER_DRIVERSECTION( "hyperspt.c", "20" ),
+           REGISTER_DRIVERSECTION( "hyprduel.c", "350" ),
+           REGISTER_DRIVERSECTION( "ikki.c", "351" ),
+           REGISTER_DRIVERSECTION( "inufuku.c", "352" ),
+           REGISTER_DRIVERSECTION( "iqblock.c", "353" ),
+           REGISTER_DRIVERSECTION( "irobot.c", "354" ),
+           REGISTER_DRIVERSECTION( "ironhors.c", "355" ),
+           REGISTER_DRIVERSECTION( "itech32.c", "356" ),
+           REGISTER_DRIVERSECTION( "itech8.c", "357" ),
+           REGISTER_DRIVERSECTION( "jack.c", "358" ),
+           REGISTER_DRIVERSECTION( "jackal.c", "359" ),
+           REGISTER_DRIVERSECTION( "jailbrek.c", "360" ),
+           REGISTER_DRIVERSECTION( "jalmah.c", "361" ),
+           REGISTER_DRIVERSECTION( "jchan.c", "362" ),
+           REGISTER_DRIVERSECTION( "jcross.c", "363" ),
+           REGISTER_DRIVERSECTION( "jedi.c", "364" ),
+           REGISTER_DRIVERSECTION( "jrpacman.c", "365" ),
+           REGISTER_DRIVERSECTION( "junofrst.c", "16" ),
+           REGISTER_DRIVERSECTION( "kaneko16.c", "367" ),
+           REGISTER_DRIVERSECTION( "kangaroo.c", "368" ),
+           REGISTER_DRIVERSECTION( "karnov.c", "369" ),
+           REGISTER_DRIVERSECTION( "kchamp.c", "370" ),
+           REGISTER_DRIVERSECTION( "kickgoal.c", "371" ),
+           REGISTER_DRIVERSECTION( "kingobox.c", "372" ),
+           REGISTER_DRIVERSECTION( "kinst.c", "373" ),
+           REGISTER_DRIVERSECTION( "klax.c", "374" ),
+           REGISTER_DRIVERSECTION( "kncljoe.c", "375" ),
+           REGISTER_DRIVERSECTION( "konamigq.c", "376" ),
+           REGISTER_DRIVERSECTION( "konamigx.c", "24" ),
+           REGISTER_DRIVERSECTION( "kopunch.c", "378" ),
+           REGISTER_DRIVERSECTION( "kyugo.c", "379" ),
+           REGISTER_DRIVERSECTION( "labyrunr.c", "380" ),
+           REGISTER_DRIVERSECTION( "ladybug.c", "381" ),
+           REGISTER_DRIVERSECTION( "ladyfrog.c", "382" ),
+           REGISTER_DRIVERSECTION( "lasso.c", "383" ),
+           REGISTER_DRIVERSECTION( "lastduel.c", "384" ),
+           REGISTER_DRIVERSECTION( "lazercmd.c", "385" ),
+           REGISTER_DRIVERSECTION( "legionna.c", "386" ),
+           REGISTER_DRIVERSECTION( "leland.c", "19" ),
+           REGISTER_DRIVERSECTION( "lemmings.c", "388" ),
+           REGISTER_DRIVERSECTION( "leprechn.c", "389" ),
+           REGISTER_DRIVERSECTION( "lethalj.c", "390" ),
+           REGISTER_DRIVERSECTION( "liberate.c", "391" ),
+           REGISTER_DRIVERSECTION( "liberatr.c", "392" ),
+           REGISTER_DRIVERSECTION( "lkage.c", "393" ),
+           REGISTER_DRIVERSECTION( "locomotn.c", "16" ),
+           REGISTER_DRIVERSECTION( "looping.c", "395" ),
+           REGISTER_DRIVERSECTION( "lsasquad.c", "396" ),
+           REGISTER_DRIVERSECTION( "ltcasino.c", "397" ),
+           REGISTER_DRIVERSECTION( "lwings.c", "398" ),
+           REGISTER_DRIVERSECTION( "m107.c", "399" ),
+           REGISTER_DRIVERSECTION( "m62.c", "400" ),
+           REGISTER_DRIVERSECTION( "m72.c", "18" ),
+           REGISTER_DRIVERSECTION( "m79amb.c", "402" ),
+           REGISTER_DRIVERSECTION( "m90.c", "18" ),
+           REGISTER_DRIVERSECTION( "m92.c", "404" ),
+           REGISTER_DRIVERSECTION( "macrossp.c", "405" ),
+           REGISTER_DRIVERSECTION( "madmotor.c", "406" ),
+           REGISTER_DRIVERSECTION( "magmax.c", "407" ),
+           REGISTER_DRIVERSECTION( "mainevt.c", "408" ),
+           REGISTER_DRIVERSECTION( "mainsnk.c", "409" ),
+           REGISTER_DRIVERSECTION( "malzak.c", "410" ),
+           REGISTER_DRIVERSECTION( "mappy.c", "411" ),
+           REGISTER_DRIVERSECTION( "marineb.c", "11" ),
+           REGISTER_DRIVERSECTION( "marinedt.c", "413" ),
+           REGISTER_DRIVERSECTION( "mario.c", "414" ),
+           REGISTER_DRIVERSECTION( "markham.c", "415" ),
+           REGISTER_DRIVERSECTION( "marvins.c", "7" ),
+           REGISTER_DRIVERSECTION( "matmania.c", "417" ),
+           REGISTER_DRIVERSECTION( "mayumi.c", "418" ),
+           REGISTER_DRIVERSECTION( "mazerbla.c", "419" ),
+           REGISTER_DRIVERSECTION( "mcatadv.c", "420" ),
+           REGISTER_DRIVERSECTION( "mcr1.c", "4" ),
+           REGISTER_DRIVERSECTION( "mcr2.c", "4" ),
+           REGISTER_DRIVERSECTION( "mcr3.c", "4" ),
+           REGISTER_DRIVERSECTION( "mcr68.c", "4" ),
+           REGISTER_DRIVERSECTION( "meadows.c", "425" ),
+           REGISTER_DRIVERSECTION( "megasys1.c", "15" ),
+           REGISTER_DRIVERSECTION( "megazone.c", "427" ),
+           REGISTER_DRIVERSECTION( "mermaid.c", "428" ),
+           REGISTER_DRIVERSECTION( "metlclsh.c", "429" ),
+           REGISTER_DRIVERSECTION( "metro.c", "430" ),
+           REGISTER_DRIVERSECTION( "mexico86.c", "431" ),
+           REGISTER_DRIVERSECTION( "mhavoc.c", "432" ),
+           REGISTER_DRIVERSECTION( "midtunit.c", "4" ),
+           REGISTER_DRIVERSECTION( "midvunit.c", "4" ),
+           REGISTER_DRIVERSECTION( "midwunit.c", "4" ),
+           REGISTER_DRIVERSECTION( "midxunit.c", "4" ),
+           REGISTER_DRIVERSECTION( "midyunit.c", "4" ),
+           REGISTER_DRIVERSECTION( "mikie.c", "438" ),
+           REGISTER_DRIVERSECTION( "minivadr.c", "439" ),
+           REGISTER_DRIVERSECTION( "missb2.c", "440" ),
+           REGISTER_DRIVERSECTION( "missile.c", "441" ),
+           REGISTER_DRIVERSECTION( "mitchell.c", "442" ),
+           REGISTER_DRIVERSECTION( "mjkjidai.c", "443" ),
+           REGISTER_DRIVERSECTION( "mjsister.c", "444" ),
+           REGISTER_DRIVERSECTION( "mnight.c", "445" ),
+           REGISTER_DRIVERSECTION( "mogura.c", "446" ),
+           REGISTER_DRIVERSECTION( "mole.c", "447" ),
+           REGISTER_DRIVERSECTION( "momoko.c", "448" ),
+           REGISTER_DRIVERSECTION( "moo.c", "450" ),
+           REGISTER_DRIVERSECTION( "mosaic.c", "451" ),
+           REGISTER_DRIVERSECTION( "mouser.c", "452" ),
+           REGISTER_DRIVERSECTION( "mpatrol.c", "6" ),
+           REGISTER_DRIVERSECTION( "mrdo.c", "454" ),
+           REGISTER_DRIVERSECTION( "mrflea.c", "455" ),
+           REGISTER_DRIVERSECTION( "mrjong.c", "456" ),
+           REGISTER_DRIVERSECTION( "ms32.c", "28" ),
+           REGISTER_DRIVERSECTION( "msisaac.c", "458" ),
+           REGISTER_DRIVERSECTION( "mugsmash.c", "459" ),
+           REGISTER_DRIVERSECTION( "multi32.c", "3" ),
+           REGISTER_DRIVERSECTION( "munchmo.c", "461" ),
+           REGISTER_DRIVERSECTION( "mustache.c", "462" ),
+           REGISTER_DRIVERSECTION( "mystston.c", "463" ),
+           REGISTER_DRIVERSECTION( "mystwarr.c", "24" ),
+           REGISTER_DRIVERSECTION( "namcoic.c", "2" ),
+           REGISTER_DRIVERSECTION( "namcona1.c", "2" ),
+           REGISTER_DRIVERSECTION( "namconb1.c", "2" ),
+           REGISTER_DRIVERSECTION( "namcond1.c", "2" ),
+           REGISTER_DRIVERSECTION( "namcos1.c", "2" ),
+           REGISTER_DRIVERSECTION( "namcos10.c", "470" ),
+           REGISTER_DRIVERSECTION( "namcos11.c", "2" ),
+           REGISTER_DRIVERSECTION( "namcos12.c", "472" ),
+           REGISTER_DRIVERSECTION( "namcos2.c", "2" ),
+           REGISTER_DRIVERSECTION( "namcos21.c", "2" ),
+           REGISTER_DRIVERSECTION( "namcos22.c", "2" ),
+           REGISTER_DRIVERSECTION( "namcos86.c", "2" ),
+           REGISTER_DRIVERSECTION( "naughtyb.c", "477" ),
+           REGISTER_DRIVERSECTION( "nbmj8688.c", "478" ),
+           REGISTER_DRIVERSECTION( "nbmj8891.c", "479" ),
+           REGISTER_DRIVERSECTION( "nbmj8991.c", "480" ),
+           REGISTER_DRIVERSECTION( "nbmj9195.c", "481" ),
+           REGISTER_DRIVERSECTION( "nemesis.c", "482" ),
+           REGISTER_DRIVERSECTION( "neogeo.c", "483" ),
+           REGISTER_DRIVERSECTION( "news.c", "484" ),
+           REGISTER_DRIVERSECTION( "ninjakd2.c", "485" ),
+           REGISTER_DRIVERSECTION( "ninjakid.c", "486" ),
+           REGISTER_DRIVERSECTION( "ninjaw.c", "487" ),
+           REGISTER_DRIVERSECTION( "nitedrvr.c", "488" ),
+           REGISTER_DRIVERSECTION( "niyanpai.c", "489" ),
+           REGISTER_DRIVERSECTION( "nmk16.c", "490" ),
+           REGISTER_DRIVERSECTION( "nova2001.c", "13" ),
+           REGISTER_DRIVERSECTION( "nss.c", "492" ),
+           REGISTER_DRIVERSECTION( "nycaptor.c", "493" ),
+           REGISTER_DRIVERSECTION( "nyny.c", "34" ),
+           REGISTER_DRIVERSECTION( "offtwall.c", "495" ),
+           REGISTER_DRIVERSECTION( "ohmygod.c", "496" ),
+           REGISTER_DRIVERSECTION( "ojankohs.c", "497" ),
+           REGISTER_DRIVERSECTION( "olibochu.c", "498" ),
+           REGISTER_DRIVERSECTION( "omegaf.c", "499" ),
+           REGISTER_DRIVERSECTION( "omegrace.c", "500" ),
+           REGISTER_DRIVERSECTION( "oneshot.c", "501" ),
+           REGISTER_DRIVERSECTION( "opwolf.c", "10" ),
+           REGISTER_DRIVERSECTION( "orbit.c", "503" ),
+           REGISTER_DRIVERSECTION( "othldrby.c", "504" ),
+           REGISTER_DRIVERSECTION( "othunder.c", "505" ),
+           REGISTER_DRIVERSECTION( "outrun.c", "3" ),
+           REGISTER_DRIVERSECTION( "overdriv.c", "507" ),
+           REGISTER_DRIVERSECTION( "pacland.c", "508" ),
+           REGISTER_DRIVERSECTION( "pacman.c", "8" ),
+           REGISTER_DRIVERSECTION( "pandoras.c", "510" ),
+           REGISTER_DRIVERSECTION( "paradise.c", "511" ),
+           REGISTER_DRIVERSECTION( "parodius.c", "512" ),
+           REGISTER_DRIVERSECTION( "pass.c", "513" ),
+           REGISTER_DRIVERSECTION( "pastelgl.c", "514" ),
+           REGISTER_DRIVERSECTION( "pbaction.c", "515" ),
+           REGISTER_DRIVERSECTION( "pbillian.c", "516" ),
+           REGISTER_DRIVERSECTION( "pcktgal.c", "517" ),
+           REGISTER_DRIVERSECTION( "pengo.c", "8" ),
+           REGISTER_DRIVERSECTION( "pgm.c", "519" ),
+           REGISTER_DRIVERSECTION( "phoenix.c", "8" ),
+           REGISTER_DRIVERSECTION( "pingpong.c", "521" ),
+           REGISTER_DRIVERSECTION( "pipedrm.c", "22" ),
+           REGISTER_DRIVERSECTION( "pirates.c", "523" ),
+           REGISTER_DRIVERSECTION( "pitnrun.c", "524" ),
+           REGISTER_DRIVERSECTION( "pkunwar.c", "13" ),
+           REGISTER_DRIVERSECTION( "playch10.c", "526" ),
+           REGISTER_DRIVERSECTION( "playmark.c", "33" ),
+           REGISTER_DRIVERSECTION( "plygonet.c", "528" ),
+           REGISTER_DRIVERSECTION( "polepos.c", "529" ),
+           REGISTER_DRIVERSECTION( "policetr.c", "530" ),
+           REGISTER_DRIVERSECTION( "polyplay.c", "531" ),
+           REGISTER_DRIVERSECTION( "poolshrk.c", "533" ),
+           REGISTER_DRIVERSECTION( "pooyan.c", "16" ),
+           REGISTER_DRIVERSECTION( "popeye.c", "535" ),
+           REGISTER_DRIVERSECTION( "popper.c", "536" ),
+           REGISTER_DRIVERSECTION( "portrait.c", "537" ),
+           REGISTER_DRIVERSECTION( "powerins.c", "538" ),
+           REGISTER_DRIVERSECTION( "prehisle.c", "539" ),
+           REGISTER_DRIVERSECTION( "psikyo.c", "540" ),
+           REGISTER_DRIVERSECTION( "psikyo4.c", "541" ),
+           REGISTER_DRIVERSECTION( "psikyosh.c", "542" ),
+           REGISTER_DRIVERSECTION( "psychic5.c", "543" ),
+           REGISTER_DRIVERSECTION( "punchout.c", "544" ),
+           REGISTER_DRIVERSECTION( "pushman.c", "545" ),
+           REGISTER_DRIVERSECTION( "qix.c", "546" ),
+           REGISTER_DRIVERSECTION( "quantum.c", "547" ),
+           REGISTER_DRIVERSECTION( "quizdna.c", "548" ),
+           REGISTER_DRIVERSECTION( "quizpani.c", "549" ),
+           REGISTER_DRIVERSECTION( "r2dtank.c", "550" ),
+           REGISTER_DRIVERSECTION( "rabbit.c", "551" ),
+           REGISTER_DRIVERSECTION( "raiden.c", "552" ),
+           REGISTER_DRIVERSECTION( "raiden2.c", "553" ),
+           REGISTER_DRIVERSECTION( "raiders5.c", "554" ),
+           REGISTER_DRIVERSECTION( "rainbow.c", "10" ),
+           REGISTER_DRIVERSECTION( "rallyx.c", "16" ),
+           REGISTER_DRIVERSECTION( "rampart.c", "9" ),
+           REGISTER_DRIVERSECTION( "rastan.c", "10" ),
+           REGISTER_DRIVERSECTION( "realbrk.c", "559" ),
+           REGISTER_DRIVERSECTION( "redalert.c", "560" ),
+           REGISTER_DRIVERSECTION( "redclash.c", "561" ),
+           REGISTER_DRIVERSECTION( "relief.c", "562" ),
+           REGISTER_DRIVERSECTION( "renegade.c", "563" ),
+           REGISTER_DRIVERSECTION( "retofinv.c", "564" ),
+           REGISTER_DRIVERSECTION( "rmhaihai.c", "565" ),
+           REGISTER_DRIVERSECTION( "rockola.c", "566" ),
+           REGISTER_DRIVERSECTION( "rockrage.c", "567" ),
+           REGISTER_DRIVERSECTION( "rocnrope.c", "16" ),
+           REGISTER_DRIVERSECTION( "rohga.c", "569" ),
+           REGISTER_DRIVERSECTION( "rollerg.c", "570" ),
+           REGISTER_DRIVERSECTION( "rollrace.c", "27" ),
+           REGISTER_DRIVERSECTION( "rotaryf.c", "30" ),
+           REGISTER_DRIVERSECTION( "route16.c", "573" ),
+           REGISTER_DRIVERSECTION( "royalmah.c", "574" ),
+           REGISTER_DRIVERSECTION( "rpunch.c", "575" ),
+           REGISTER_DRIVERSECTION( "runaway.c", "576" ),
+           REGISTER_DRIVERSECTION( "rungun.c", "577" ),
+           REGISTER_DRIVERSECTION( "safarir.c", "578" ),
+           REGISTER_DRIVERSECTION( "sauro.c", "579" ),
+           REGISTER_DRIVERSECTION( "sbasketb.c", "20" ),
+           REGISTER_DRIVERSECTION( "sbowling.c", "581" ),
+           REGISTER_DRIVERSECTION( "sbrkout.c", "582" ),
+           REGISTER_DRIVERSECTION( "sbugger.c", "583" ),
+           REGISTER_DRIVERSECTION( "scobra.c", "8" ),
+           REGISTER_DRIVERSECTION( "scramble.c", "8" ),
+           REGISTER_DRIVERSECTION( "scregg.c", "32" ),
+           REGISTER_DRIVERSECTION( "seattle.c", "587" ),
+           REGISTER_DRIVERSECTION( "sega.c", "25" ),
+           REGISTER_DRIVERSECTION( "segac2.c", "3" ),
+           REGISTER_DRIVERSECTION( "segar.c", "25" ),
+           REGISTER_DRIVERSECTION( "segasyse.c", "3" ),
+           REGISTER_DRIVERSECTION( "seicross.c", "592" ),
+           REGISTER_DRIVERSECTION( "sengokmj.c", "593" ),
+           REGISTER_DRIVERSECTION( "senjyo.c", "594" ),
+           REGISTER_DRIVERSECTION( "seta.c", "595" ),
+           REGISTER_DRIVERSECTION( "seta2.c", "596" ),
+           REGISTER_DRIVERSECTION( "sf1.c", "597" ),
+           REGISTER_DRIVERSECTION( "sg1000a.c", "598" ),
+           REGISTER_DRIVERSECTION( "sgladiat.c", "7" ),
+           REGISTER_DRIVERSECTION( "shadfrce.c", "600" ),
+           REGISTER_DRIVERSECTION( "shangha3.c", "601" ),
+           REGISTER_DRIVERSECTION( "shanghai.c", "602" ),
+           REGISTER_DRIVERSECTION( "shangkid.c", "603" ),
+           REGISTER_DRIVERSECTION( "shaolins.c", "604" ),
+           REGISTER_DRIVERSECTION( "sharrier.c", "3" ),
+           REGISTER_DRIVERSECTION( "shisen.c", "18" ),
+           REGISTER_DRIVERSECTION( "shootout.c", "607" ),
+           REGISTER_DRIVERSECTION( "shougi.c", "608" ),
+           REGISTER_DRIVERSECTION( "shuuz.c", "609" ),
+           REGISTER_DRIVERSECTION( "sidearms.c", "610" ),
+           REGISTER_DRIVERSECTION( "sidepckt.c", "611" ),
+           REGISTER_DRIVERSECTION( "silkroad.c", "612" ),
+           REGISTER_DRIVERSECTION( "simpsons.c", "613" ),
+           REGISTER_DRIVERSECTION( "skullxbo.c", "614" ),
+           REGISTER_DRIVERSECTION( "skyarmy.c", "615" ),
+           REGISTER_DRIVERSECTION( "skychut.c", "616" ),
+           REGISTER_DRIVERSECTION( "skydiver.c", "617" ),
+           REGISTER_DRIVERSECTION( "skyfox.c", "618" ),
+           REGISTER_DRIVERSECTION( "skykid.c", "619" ),
+           REGISTER_DRIVERSECTION( "skyraid.c", "620" ),
+           REGISTER_DRIVERSECTION( "slapfght.c", "621" ),
+           REGISTER_DRIVERSECTION( "slapshot.c", "622" ),
+           REGISTER_DRIVERSECTION( "snk.c", "7" ),
+           REGISTER_DRIVERSECTION( "snk68.c", "624" ),
+           REGISTER_DRIVERSECTION( "snowbros.c", "625" ),
+           REGISTER_DRIVERSECTION( "solomon.c", "626" ),
+           REGISTER_DRIVERSECTION( "sonson.c", "627" ),
+           REGISTER_DRIVERSECTION( "spacefb.c", "628" ),
+           REGISTER_DRIVERSECTION( "spbactn.c", "629" ),
+           REGISTER_DRIVERSECTION( "spcforce.c", "630" ),
+           REGISTER_DRIVERSECTION( "spdbuggy.c", "631" ),
+           REGISTER_DRIVERSECTION( "spdodgeb.c", "632" ),
+           REGISTER_DRIVERSECTION( "speedatk.c", "633" ),
+           REGISTER_DRIVERSECTION( "speedbal.c", "634" ),
+           REGISTER_DRIVERSECTION( "speedspn.c", "635" ),
+           REGISTER_DRIVERSECTION( "spiders.c", "34" ),
+           REGISTER_DRIVERSECTION( "splash.c", "637" ),
+           REGISTER_DRIVERSECTION( "sprcros2.c", "638" ),
+           REGISTER_DRIVERSECTION( "sprint2.c", "639" ),
+           REGISTER_DRIVERSECTION( "sprint4.c", "640" ),
+           REGISTER_DRIVERSECTION( "sprint8.c", "641" ),
+           REGISTER_DRIVERSECTION( "spy.c", "642" ),
+           REGISTER_DRIVERSECTION( "srmp2.c", "643" ),
+           REGISTER_DRIVERSECTION( "srumbler.c", "644" ),
+           REGISTER_DRIVERSECTION( "sshangha.c", "645" ),
+           REGISTER_DRIVERSECTION( "sslam.c", "33" ),
+           REGISTER_DRIVERSECTION( "ssozumo.c", "647" ),
+           REGISTER_DRIVERSECTION( "sspeedr.c", "648" ),
+           REGISTER_DRIVERSECTION( "ssrj.c", "649" ),
+           REGISTER_DRIVERSECTION( "ssv.c", "650" ),
+           REGISTER_DRIVERSECTION( "stactics.c", "651" ),
+           REGISTER_DRIVERSECTION( "stadhero.c", "652" ),
+           REGISTER_DRIVERSECTION( "starcrus.c", "653" ),
+           REGISTER_DRIVERSECTION( "starfire.c", "654" ),
+           REGISTER_DRIVERSECTION( "starshp1.c", "655" ),
+           REGISTER_DRIVERSECTION( "starwars.c", "656" ),
+           REGISTER_DRIVERSECTION( "statriv2.c", "657" ),
+           REGISTER_DRIVERSECTION( "stfight.c", "658" ),
+           REGISTER_DRIVERSECTION( "stlforce.c", "659" ),
+           REGISTER_DRIVERSECTION( "strnskil.c", "660" ),
+           REGISTER_DRIVERSECTION( "strvmstr.c", "661" ),
+           REGISTER_DRIVERSECTION( "stv.c", "662" ),
+           REGISTER_DRIVERSECTION( "stvhacks.c", "663" ),
+           REGISTER_DRIVERSECTION( "subs.c", "664" ),
+           REGISTER_DRIVERSECTION( "suna16.c", "665" ),
+           REGISTER_DRIVERSECTION( "suna8.c", "666" ),
+           REGISTER_DRIVERSECTION( "supbtime.c", "667" ),
+           REGISTER_DRIVERSECTION( "supdrapo.c", "668" ),
+           REGISTER_DRIVERSECTION( "superchs.c", "21" ),
+           REGISTER_DRIVERSECTION( "superqix.c", "670" ),
+           REGISTER_DRIVERSECTION( "supertnk.c", "671" ),
+           REGISTER_DRIVERSECTION( "suprloco.c", "672" ),
+           REGISTER_DRIVERSECTION( "suprnova.c", "673" ),
+           REGISTER_DRIVERSECTION( "suprslam.c", "674" ),
+           REGISTER_DRIVERSECTION( "surpratk.c", "675" ),
+           REGISTER_DRIVERSECTION( "system1.c", "3" ),
+           REGISTER_DRIVERSECTION( "system16.c", "3" ),
+           REGISTER_DRIVERSECTION( "system18.c", "3" ),
+           REGISTER_DRIVERSECTION( "system24.c", "3" ),
+           REGISTER_DRIVERSECTION( "system32.c", "3" ),
+           REGISTER_DRIVERSECTION( "tagteam.c", "681" ),
+           REGISTER_DRIVERSECTION( "tail2nos.c", "682" ),
+           REGISTER_DRIVERSECTION( "taito_b.c", "683" ),
+           REGISTER_DRIVERSECTION( "taito_f2.c", "684" ),
+           REGISTER_DRIVERSECTION( "taito_f3.c", "21" ),
+           REGISTER_DRIVERSECTION( "taito_h.c", "686" ),
+           REGISTER_DRIVERSECTION( "taito_l.c", "687" ),
+           REGISTER_DRIVERSECTION( "taito_x.c", "688" ),
+           REGISTER_DRIVERSECTION( "taito_z.c", "689" ),
+           REGISTER_DRIVERSECTION( "taitoair.c", "690" ),
+           REGISTER_DRIVERSECTION( "taitosj.c", "691" ),
+           REGISTER_DRIVERSECTION( "tankbatt.c", "692" ),
+           REGISTER_DRIVERSECTION( "tankbust.c", "693" ),
+           REGISTER_DRIVERSECTION( "taotaido.c", "694" ),
+           REGISTER_DRIVERSECTION( "targeth.c", "695" ),
+           REGISTER_DRIVERSECTION( "taxidrvr.c", "696" ),
+           REGISTER_DRIVERSECTION( "tbowl.c", "697" ),
+           REGISTER_DRIVERSECTION( "tceptor.c", "698" ),
+           REGISTER_DRIVERSECTION( "tecmo.c", "699" ),
+           REGISTER_DRIVERSECTION( "tecmo16.c", "700" ),
+           REGISTER_DRIVERSECTION( "tecmosys.c", "701" ),
+           REGISTER_DRIVERSECTION( "tehkanwc.c", "702" ),
+           REGISTER_DRIVERSECTION( "tempest.c", "703" ),
+           REGISTER_DRIVERSECTION( "terracre.c", "704" ),
+           REGISTER_DRIVERSECTION( "tetrisp2.c", "28" ),
+           REGISTER_DRIVERSECTION( "thedeep.c", "706" ),
+           REGISTER_DRIVERSECTION( "thepit.c", "707" ),
+           REGISTER_DRIVERSECTION( "thief.c", "708" ),
+           REGISTER_DRIVERSECTION( "thoop2.c", "709" ),
+           REGISTER_DRIVERSECTION( "thunderj.c", "36" ),
+           REGISTER_DRIVERSECTION( "thunderx.c", "711" ),
+           REGISTER_DRIVERSECTION( "tickee.c", "712" ),
+           REGISTER_DRIVERSECTION( "tigeroad.c", "713" ),
+           REGISTER_DRIVERSECTION( "timelimt.c", "714" ),
+           REGISTER_DRIVERSECTION( "timeplt.c", "16" ),
+           REGISTER_DRIVERSECTION( "tmnt.c", "716" ),
+           REGISTER_DRIVERSECTION( "tnzs.c", "717" ),
+           REGISTER_DRIVERSECTION( "toaplan1.c", "718" ),
+           REGISTER_DRIVERSECTION( "toaplan2.c", "719" ),
+           REGISTER_DRIVERSECTION( "toki.c", "720" ),
+           REGISTER_DRIVERSECTION( "toobin.c", "721" ),
+           REGISTER_DRIVERSECTION( "topspeed.c", "10" ),
+           REGISTER_DRIVERSECTION( "toratora.c", "723" ),
+           REGISTER_DRIVERSECTION( "tourtabl.c", "724" ),
+           REGISTER_DRIVERSECTION( "toypop.c", "725" ),
+           REGISTER_DRIVERSECTION( "tp84.c", "726" ),
+           REGISTER_DRIVERSECTION( "trackfld.c", "20" ),
+           REGISTER_DRIVERSECTION( "travrusa.c", "728" ),
+           REGISTER_DRIVERSECTION( "triplhnt.c", "729" ),
+           REGISTER_DRIVERSECTION( "troangel.c", "730" ),
+           REGISTER_DRIVERSECTION( "truco.c", "731" ),
+           REGISTER_DRIVERSECTION( "tryout.c", "732" ),
+           REGISTER_DRIVERSECTION( "tsamurai.c", "733" ),
+           REGISTER_DRIVERSECTION( "ttmahjng.c", "734" ),
+           REGISTER_DRIVERSECTION( "tubep.c", "735" ),
+           REGISTER_DRIVERSECTION( "tugboat.c", "736" ),
+           REGISTER_DRIVERSECTION( "tumblep.c", "737" ),
+           REGISTER_DRIVERSECTION( "tunhunt.c", "738" ),
+           REGISTER_DRIVERSECTION( "turbo.c", "739" ),
+           REGISTER_DRIVERSECTION( "tutankhm.c", "16" ),
+           REGISTER_DRIVERSECTION( "twin16.c", "741" ),
+           REGISTER_DRIVERSECTION( "twincobr.c", "5" ),
+           REGISTER_DRIVERSECTION( "ultraman.c", "743" ),
+           REGISTER_DRIVERSECTION( "ultratnk.c", "744" ),
+           REGISTER_DRIVERSECTION( "undrfire.c", "21" ),
+           REGISTER_DRIVERSECTION( "unico.c", "746" ),
+           REGISTER_DRIVERSECTION( "usgames.c", "747" ),
+           REGISTER_DRIVERSECTION( "vamphalf.c", "748" ),
+           REGISTER_DRIVERSECTION( "vaportra.c", "749" ),
+           REGISTER_DRIVERSECTION( "vastar.c", "750" ),
+           REGISTER_DRIVERSECTION( "vball.c", "751" ),
+           REGISTER_DRIVERSECTION( "vendetta.c", "752" ),
+           REGISTER_DRIVERSECTION( "vicdual.c", "753" ),
+           REGISTER_DRIVERSECTION( "victory.c", "17" ),
+           REGISTER_DRIVERSECTION( "videopin.c", "755" ),
+           REGISTER_DRIVERSECTION( "vigilant.c", "18" ),
+           REGISTER_DRIVERSECTION( "vindictr.c", "757" ),
+           REGISTER_DRIVERSECTION( "vmetal.c", "758" ),
+           REGISTER_DRIVERSECTION( "volfied.c", "759" ),
+           REGISTER_DRIVERSECTION( "vsnes.c", "760" ),
+           REGISTER_DRIVERSECTION( "vulgus.c", "761" ),
+           REGISTER_DRIVERSECTION( "wallc.c", "762" ),
+           REGISTER_DRIVERSECTION( "wardner.c", "5" ),
+           REGISTER_DRIVERSECTION( "warpwarp.c", "764" ),
+           REGISTER_DRIVERSECTION( "warriorb.c", "765" ),
+           REGISTER_DRIVERSECTION( "wc90.c", "766" ),
+           REGISTER_DRIVERSECTION( "wc90b.c", "767" ),
+           REGISTER_DRIVERSECTION( "wecleman.c", "768" ),
+           REGISTER_DRIVERSECTION( "welltris.c", "769" ),
+           REGISTER_DRIVERSECTION( "wgp.c", "770" ),
+           REGISTER_DRIVERSECTION( "williams.c", "4" ),
+           REGISTER_DRIVERSECTION( "wilytowr.c", "772" ),
+           REGISTER_DRIVERSECTION( "wiping.c", "29" ),
+           REGISTER_DRIVERSECTION( "wiz.c", "27" ),
+           REGISTER_DRIVERSECTION( "wolfpack.c", "775" ),
+           REGISTER_DRIVERSECTION( "wrally.c", "776" ),
+           REGISTER_DRIVERSECTION( "wwfsstar.c", "777" ),
+           REGISTER_DRIVERSECTION( "wwfwfest.c", "778" ),
+           REGISTER_DRIVERSECTION( "xain.c", "779" ),
+           REGISTER_DRIVERSECTION( "xevious.c", "780" ),
+           REGISTER_DRIVERSECTION( "xexex.c", "781" ),
+           REGISTER_DRIVERSECTION( "xmen.c", "782" ),
+           REGISTER_DRIVERSECTION( "xorworld.c", "783" ),
+           REGISTER_DRIVERSECTION( "xxmissio.c", "784" ),
+           REGISTER_DRIVERSECTION( "xybots.c", "785" ),
+           REGISTER_DRIVERSECTION( "xyonix.c", "786" ),
+           REGISTER_DRIVERSECTION( "yamato.c", "8" ),
+           REGISTER_DRIVERSECTION( "yard.c", "6" ),
+           REGISTER_DRIVERSECTION( "yiear.c", "20" ),
+           REGISTER_DRIVERSECTION( "yumefuda.c", "790" ),
+           REGISTER_DRIVERSECTION( "yunsun16.c", "791" ),
+           REGISTER_DRIVERSECTION( "yunsung8.c", "792" ),
+           REGISTER_DRIVERSECTION( "zac2650.c", "793" ),
+           REGISTER_DRIVERSECTION( "zaccaria.c", "794" ),
+           REGISTER_DRIVERSECTION( "zaxxon.c", "26" ),
+           REGISTER_DRIVERSECTION( "zerozone.c", "796" ),
+           REGISTER_DRIVERSECTION( "zn.c", "797" ),
+           REGISTER_DRIVERSECTION( "zodiack.c", "11" ) };
 
 
 //-------------------------------------------------------------
@@ -847,95 +847,95 @@ static const driverSectionRegistration_t			g_driverSectionRegistry[] = {
 //-------------------------------------------------------------
 inline BOOL IsDriverClone( const char *driverName )
 {
-  return( !strcmp( driverName, "src\\drivers\\cps2.c" ) ||
-        !strcmp( driverName, "src\\drivers\\namcona1.c" ) ||
-        !strcmp( driverName, "src\\drivers\\namconb1.c" ) ||
-        !strcmp( driverName, "src\\drivers\\namcond1.c" ) ||
-        !strcmp( driverName, "src\\drivers\\namcos1.c" ) ||
-        !strcmp( driverName, "src\\drivers\\namcos2.c" ) ||
-        !strcmp( driverName, "src\\drivers\\namcos21.c" ) ||
-        !strcmp( driverName, "src\\drivers\\namcos22.c" ) ||
-        !strcmp( driverName, "src\\drivers\\namcos86.c" ) ||
-        !strcmp( driverName, "src\\drivers\\namcos11.c" ) ||
-        !strcmp( driverName, "src\\drivers\\system1.c" ) ||
-        !strcmp( driverName, "src\\drivers\\system16.c" ) ||
-        !strcmp( driverName, "src\\drivers\\system18.c" ) ||
-        !strcmp( driverName, "src\\drivers\\system24.c" ) ||
-        !strcmp( driverName, "src\\drivers\\system32.c" ) ||
-        !strcmp( driverName, "src\\drivers\\aburner.c" ) ||
-        !strcmp( driverName, "src\\drivers\\sharrier.c" ) ||
-        !strcmp( driverName, "src\\drivers\\outrun.c" ) ||
-        !strcmp( driverName, "src\\drivers\\segasyse.c" ) ||
-        !strcmp( driverName, "src\\drivers\\segac2.c" ) ||
-        !strcmp( driverName, "src\\drivers\\mcr2.c" ) ||
-        !strcmp( driverName, "src\\drivers\\mcr3.c" ) ||
-        !strcmp( driverName, "src\\drivers\\mcr68.c" ) ||
-        !strcmp( driverName, "src\\drivers\\williams.c" ) ||
-        !strcmp( driverName, "src\\drivers\\midyunit.c" ) ||
-        !strcmp( driverName, "src\\drivers\\midtunit.c" ) ||
-        !strcmp( driverName, "src\\drivers\\midwunit.c" ) ||
-        !strcmp( driverName, "src\\drivers\\midvunit.c" ) ||
-        !strcmp( driverName, "src\\drivers\\midxunit.c" ) ||
-        !strcmp( driverName, "src\\drivers\\twincobr.c" ) ||
-        !strcmp( driverName, "src\\drivers\\yard.c" ) ||
-        !strcmp( driverName, "src\\drivers\\hal21.c" ) ||
-        !strcmp( driverName, "src\\drivers\\marvins.c" ) ||
-        !strcmp( driverName, "src\\drivers\\sgladiat.c" ) ||
-        !strcmp( driverName, "src\\drivers\\scramble.c" ) ||
-        !strcmp( driverName, "src\\drivers\\scobra.c" ) ||
-        !strcmp( driverName, "src\\drivers\\amidar.c" ) ||
-        !strcmp( driverName, "src\\drivers\\frogger.c" ) ||
-        !strcmp( driverName, "src\\drivers\\pacman.c" ) ||
-        !strcmp( driverName, "src\\drivers\\pengo.c" ) ||
-        !strcmp( driverName, "src\\drivers\\cclimber.c" ) ||
-        !strcmp( driverName, "src\\drivers\\dkong.c" ) ||
-        !strcmp( driverName, "src\\drivers\\yamato.c" ) ||
-        !strcmp( driverName, "src\\drivers\\phoenix.c" ) ||
-        !strcmp( driverName, "src\\drivers\\epos.c" ) ||
-        !strcmp( driverName, "src\\drivers\\arcadecl.c" ) ||
-        !strcmp( driverName, "src\\drivers\\asuka.c" ) ||
-        !strcmp( driverName, "src\\drivers\\opwolf.c" ) ||
-        !strcmp( driverName, "src\\drivers\\rainbow.c" ) ||
-        !strcmp( driverName, "src\\drivers\\topspeed.c" ) ||
-        !strcmp( driverName, "src\\drivers\\marineb.c" ) ||
-        !strcmp( driverName, "src\\drivers\\zodiack.c" ) ||
-        !strcmp( driverName, "src\\drivers\\bwidow.c" ) ||
-        !strcmp( driverName, "src\\drivers\\pkunwar.c" ) ||
-        !strcmp( driverName, "src\\drivers\\exterm.c" ) ||
-        !strcmp( driverName, "src\\drivers\\cischeat.c" ) ||
-        !strcmp( driverName, "src\\drivers\\timeplt.c" ) ||
-        !strcmp( driverName, "src\\drivers\\locomotn.c" ) ||
-        !strcmp( driverName, "src\\drivers\\tutankhm.c" ) ||
-        !strcmp( driverName, "src\\drivers\\pooyan.c" ) ||
-        !strcmp( driverName, "src\\drivers\\rocnrope.c" ) ||
-        !strcmp( driverName, "src\\drivers\\junofrst.c" ) ||
-        !strcmp( driverName, "src\\drivers\\victory.c" ) ||
-        !strcmp( driverName, "src\\drivers\\m90.c" ) ||
-        !strcmp( driverName, "src\\drivers\\vigilant.c" ) ||
-        !strcmp( driverName, "src\\drivers\\shisen.c" ) ||
-        !strcmp( driverName, "src\\drivers\\ataxx.c" ) ||
-        !strcmp( driverName, "src\\drivers\\hyperspt.c" ) ||
-        !strcmp( driverName, "src\\drivers\\yiear.c" ) ||
-        !strcmp( driverName, "src\\drivers\\sbasketb.c" ) ||
-        !strcmp( driverName, "src\\drivers\\superchs.c" ) ||
-        !strcmp( driverName, "src\\drivers\\groundfx.c" ) ||
-        !strcmp( driverName, "src\\drivers\\gunbustr.c" ) ||
-        !strcmp( driverName, "src\\drivers\\undrfire.c" ) ||
-        !strcmp( driverName, "src\\drivers\\pipedrm.c" ) ||
-        !strcmp( driverName, "src\\drivers\\mystwarr.c" ) ||
-        !strcmp( driverName, "src\\drivers\\sega.c" ) ||
-        !strcmp( driverName, "src\\drivers\\congo.c" ) ||
-        !strcmp( driverName, "src\\drivers\\rollrace.c" ) ||
-        !strcmp( driverName, "src\\drivers\\tetrisp2.c" ) ||
-        !strcmp( driverName, "src\\drivers\\clshroad.c" ) ||
-        !strcmp( driverName, "src\\drivers\\rotaryf.c" ) ||
-        !strcmp( driverName, "src\\drivers\\circus.c" ) ||
-        !strcmp( driverName, "src\\drivers\\40love.c" ) ||
-        !strcmp( driverName, "src\\drivers\\scregg.c" ) ||
-        !strcmp( driverName, "src\\drivers\\sslam.c" ) ||
-        !strcmp( driverName, "src\\drivers\\spiders.c" ) ||
-        !strcmp( driverName, "src\\drivers\\chinagat.c" ) ||
-        !strcmp( driverName, "src\\drivers\\eprom.c" ) );
+  return( !strcmp( driverName, "cps2.c" ) ||
+        !strcmp( driverName, "namcona1.c" ) ||
+        !strcmp( driverName, "namconb1.c" ) ||
+        !strcmp( driverName, "namcond1.c" ) ||
+        !strcmp( driverName, "namcos1.c" ) ||
+        !strcmp( driverName, "namcos2.c" ) ||
+        !strcmp( driverName, "namcos21.c" ) ||
+        !strcmp( driverName, "namcos22.c" ) ||
+        !strcmp( driverName, "namcos86.c" ) ||
+        !strcmp( driverName, "namcos11.c" ) ||
+        !strcmp( driverName, "system1.c" ) ||
+        !strcmp( driverName, "system16.c" ) ||
+        !strcmp( driverName, "system18.c" ) ||
+        !strcmp( driverName, "system24.c" ) ||
+        !strcmp( driverName, "system32.c" ) ||
+        !strcmp( driverName, "aburner.c" ) ||
+        !strcmp( driverName, "sharrier.c" ) ||
+        !strcmp( driverName, "outrun.c" ) ||
+        !strcmp( driverName, "segasyse.c" ) ||
+        !strcmp( driverName, "segac2.c" ) ||
+        !strcmp( driverName, "mcr2.c" ) ||
+        !strcmp( driverName, "mcr3.c" ) ||
+        !strcmp( driverName, "mcr68.c" ) ||
+        !strcmp( driverName, "williams.c" ) ||
+        !strcmp( driverName, "midyunit.c" ) ||
+        !strcmp( driverName, "midtunit.c" ) ||
+        !strcmp( driverName, "midwunit.c" ) ||
+        !strcmp( driverName, "midvunit.c" ) ||
+        !strcmp( driverName, "midxunit.c" ) ||
+        !strcmp( driverName, "twincobr.c" ) ||
+        !strcmp( driverName, "yard.c" ) ||
+        !strcmp( driverName, "hal21.c" ) ||
+        !strcmp( driverName, "marvins.c" ) ||
+        !strcmp( driverName, "sgladiat.c" ) ||
+        !strcmp( driverName, "scramble.c" ) ||
+        !strcmp( driverName, "scobra.c" ) ||
+        !strcmp( driverName, "amidar.c" ) ||
+        !strcmp( driverName, "frogger.c" ) ||
+        !strcmp( driverName, "pacman.c" ) ||
+        !strcmp( driverName, "pengo.c" ) ||
+        !strcmp( driverName, "cclimber.c" ) ||
+        !strcmp( driverName, "dkong.c" ) ||
+        !strcmp( driverName, "yamato.c" ) ||
+        !strcmp( driverName, "phoenix.c" ) ||
+        !strcmp( driverName, "epos.c" ) ||
+        !strcmp( driverName, "arcadecl.c" ) ||
+        !strcmp( driverName, "asuka.c" ) ||
+        !strcmp( driverName, "opwolf.c" ) ||
+        !strcmp( driverName, "rainbow.c" ) ||
+        !strcmp( driverName, "topspeed.c" ) ||
+        !strcmp( driverName, "marineb.c" ) ||
+        !strcmp( driverName, "zodiack.c" ) ||
+        !strcmp( driverName, "bwidow.c" ) ||
+        !strcmp( driverName, "pkunwar.c" ) ||
+        !strcmp( driverName, "exterm.c" ) ||
+        !strcmp( driverName, "cischeat.c" ) ||
+        !strcmp( driverName, "timeplt.c" ) ||
+        !strcmp( driverName, "locomotn.c" ) ||
+        !strcmp( driverName, "tutankhm.c" ) ||
+        !strcmp( driverName, "pooyan.c" ) ||
+        !strcmp( driverName, "rocnrope.c" ) ||
+        !strcmp( driverName, "junofrst.c" ) ||
+        !strcmp( driverName, "victory.c" ) ||
+        !strcmp( driverName, "m90.c" ) ||
+        !strcmp( driverName, "vigilant.c" ) ||
+        !strcmp( driverName, "shisen.c" ) ||
+        !strcmp( driverName, "ataxx.c" ) ||
+        !strcmp( driverName, "hyperspt.c" ) ||
+        !strcmp( driverName, "yiear.c" ) ||
+        !strcmp( driverName, "sbasketb.c" ) ||
+        !strcmp( driverName, "superchs.c" ) ||
+        !strcmp( driverName, "groundfx.c" ) ||
+        !strcmp( driverName, "gunbustr.c" ) ||
+        !strcmp( driverName, "undrfire.c" ) ||
+        !strcmp( driverName, "pipedrm.c" ) ||
+        !strcmp( driverName, "mystwarr.c" ) ||
+        !strcmp( driverName, "sega.c" ) ||
+        !strcmp( driverName, "congo.c" ) ||
+        !strcmp( driverName, "rollrace.c" ) ||
+        !strcmp( driverName, "tetrisp2.c" ) ||
+        !strcmp( driverName, "clshroad.c" ) ||
+        !strcmp( driverName, "rotaryf.c" ) ||
+        !strcmp( driverName, "circus.c" ) ||
+        !strcmp( driverName, "40love.c" ) ||
+        !strcmp( driverName, "scregg.c" ) ||
+        !strcmp( driverName, "sslam.c" ) ||
+        !strcmp( driverName, "spiders.c" ) ||
+        !strcmp( driverName, "chinagat.c" ) ||
+        !strcmp( driverName, "eprom.c" ) );
 }
 
 #ifdef _DEBUG
@@ -947,7 +947,7 @@ void CheckDriverSectionRAM( void )
   DWORD total = 0;
 
 	const driverSectionRegistration_t *entry = (const driverSectionRegistration_t *)g_driverSectionRegistry;
-	for( ; entry->m_driverName; ++entry )
+	for( int i = 0; i < NUM_DRIVERSECTIONS; ++entry, ++i )
 	{
       // Only test families once (all but the first member are skipped)
 		if( !IsDriverClone( entry->m_driverName ) )
@@ -976,7 +976,7 @@ void CheckDriverSectionRAM( void )
 BOOL LoadDriverSections( void )
 {
 	const driverSectionRegistration_t *entry = (const driverSectionRegistration_t *)g_driverSectionRegistry;
-	for( ; entry->m_driverName; ++entry )
+	for( int i = 0; i < NUM_DRIVERSECTIONS; ++entry, ++i )
 	{
       // Only load families once (all but the first member are skipped)
 		if( !IsDriverClone( entry->m_driverName ) )
@@ -997,7 +997,7 @@ BOOL LoadDriverSections( void )
 BOOL UnloadDriverSections( void )
 {
 	const driverSectionRegistration_t *entry = (const driverSectionRegistration_t *)g_driverSectionRegistry;
-	for( ; entry->m_driverName; ++entry )
+	for( int i = 0; i < NUM_DRIVERSECTIONS; ++entry, ++i )
 	{
       // Only unload families once (all but the first member are skipped)
 		if( !IsDriverClone( entry->m_driverName ) )
@@ -1018,7 +1018,7 @@ BOOL UnloadDriverSections( void )
 BOOL LoadDriverSectionByName( const char *driverFileName )
 {
 	const driverSectionRegistration_t *entry = (const driverSectionRegistration_t *)g_driverSectionRegistry;
-	for( ; entry->m_driverName; ++entry )
+	for( int i = 0; i < NUM_DRIVERSECTIONS; ++entry, ++i )
 	{
 		if( !strcmp( entry->m_driverName, driverFileName ) )
 		{
@@ -1044,7 +1044,7 @@ BOOL LoadDriverSectionByName( const char *driverFileName )
 BOOL UnloadDriverSectionByName( const char *driverFileName )
 {
 	const driverSectionRegistration_t *entry = (const driverSectionRegistration_t *)g_driverSectionRegistry;
-	for( ; entry->m_driverName; ++entry )
+	for( int i = 0; i < NUM_DRIVERSECTIONS; ++entry, ++i )
 	{
 		if( !strcmp( entry->m_driverName, driverFileName ) )
 		{
