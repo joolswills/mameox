@@ -247,6 +247,13 @@
 			<File
 				RelativePath="MediaFiles\FontAN10.rdf">
 				<FileConfiguration
+					Name="Debug|Xbox">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="bundler &quot;$(InputPath)&quot;"
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
+				</FileConfiguration>
+				<FileConfiguration
 					Name="Release|Xbox">
 					<Tool
 						Name="VCCustomBuildTool"
@@ -256,6 +263,13 @@
 			</File>
 			<File
 				RelativePath="MediaFiles\FontAN11.rdf">
+				<FileConfiguration
+					Name="Debug|Xbox">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="bundler &quot;$(InputPath)&quot;"
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
+				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Xbox">
 					<Tool
@@ -267,6 +281,13 @@
 			<File
 				RelativePath="MediaFiles\FontAN12.rdf">
 				<FileConfiguration
+					Name="Debug|Xbox">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="bundler &quot;$(InputPath)&quot;"
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
+				</FileConfiguration>
+				<FileConfiguration
 					Name="Release|Xbox">
 					<Tool
 						Name="VCCustomBuildTool"
@@ -276,6 +297,13 @@
 			</File>
 			<File
 				RelativePath="MediaFiles\FontCN10.rdf">
+				<FileConfiguration
+					Name="Debug|Xbox">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="bundler &quot;$(InputPath)&quot;"
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
+				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Xbox">
 					<Tool

@@ -12,8 +12,8 @@ Version 0.68b
 
   - \MAMEoX\Includes\Gamepad.h
   - \MAMEoX\Sources\Gamepad.cpp
-    - Bugfix: IsButtonPressed returns TRUE if only the button of the 
-      params are pressed
+    - New funct IsOnlyButtonPressed returns TRUE if only the 
+      button specified in the params are pressed
     - New function: GetButtonState which returns all GP_ flags of the 
       pressed buttons, DPAD, etc.
 

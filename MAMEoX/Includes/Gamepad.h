@@ -149,6 +149,17 @@ public:
   BOOL IsButtonPressed( UINT32 buttonID );
 
 		//------------------------------------------------------
+		//	IsOnlyButtonPressed
+    //! \brief    Returns TRUE if the given button is pressed 
+    //!           on the gamepad, and no other buttons are
+    //!           pressed
+    //!
+    //! \return   BOOL - TRUE if button is exclusively pressed, 
+    //!                  else FALSE
+		//------------------------------------------------------
+  BOOL IsOnlyButtonPressed( UINT32 buttonID );
+
+		//------------------------------------------------------
 		//	IsOneOfButtonsPressed
     //! \brief    Returns TRUE if any of the given buttons   
     //!           is pressed on the gamepad

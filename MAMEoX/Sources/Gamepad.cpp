@@ -275,6 +275,18 @@ BOOL CGamepad::IsButtonPressed( UINT32 buttonID )
 
 	UINT32 state = GetButtonState();
 
+  return ( (state & buttonID) == buttonID );
+}
+
+//------------------------------------------------------
+//	IsOnlyButtonPressed
+//------------------------------------------------------
+BOOL CGamepad::IsOnlyButtonPressed( UINT32 buttonID )
+{
+  const XINPUT_GAMEPAD	&gp = m_state.Gamepad;
+
+	UINT32 state = GetButtonState();
+
   return ( state == buttonID );
 }
 
