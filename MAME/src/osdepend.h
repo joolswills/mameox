@@ -354,9 +354,9 @@ cycles_t osd_profiling_ticks(void);
 #define osd_malloc(s)     osd_malloc_debug( (s), __FILE__, __LINE__, __FUNCTION__ )
 #define osd_calloc(n,s)   osd_calloc_debug( (n), (s), __FILE__, __LINE__, __FUNCTION__ )
 #define osd_realloc(m,s)  osd_realloc_debug( (m), (s), __FILE__, __LINE__, __FUNCTION__ )
-void *osd_malloc_debug( size_t, const char **filename, unsigned int line, const char **function );
-void *osd_calloc_debug( size_t num, size_t size, const char **filename, unsigned int line, const char **function );
-void *osd_realloc_debug( void *memblock, size_t size, const char **filename, unsigned int line, const char **function );
+void *osd_malloc_debug( size_t, const char *filename, unsigned int line, const char *function );
+void *osd_calloc_debug( size_t num, size_t size, const char *filename, unsigned int line, const char *function );
+void *osd_realloc_debug( void *memblock, size_t size, const char *filename, unsigned int line, const char *function );
 
 #else
   // Retail versions
