@@ -2,10 +2,10 @@
 #pragma data_seg("CD17")
 #pragma bss_seg("CB17")
 #pragma const_seg("CK17")
-#pragma comment(linker, "/merge:CD17=CPU17")
-#pragma comment(linker, "/merge:CC17=CPU17")
-#pragma comment(linker, "/merge:CB17=CPU17")
-#pragma comment(linker, "/merge:CK17=CPU17")
+#pragma comment(linker, "/merge:CD17=CPU15")
+#pragma comment(linker, "/merge:CC17=CPU15")
+#pragma comment(linker, "/merge:CB17=CPU15")
+#pragma comment(linker, "/merge:CK17=CPU15")
 /*****************************************************************************
  *
  *	 tbl2a03.c

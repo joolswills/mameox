@@ -2,10 +2,10 @@
 #pragma data_seg("CD17")
 #pragma bss_seg("CB17")
 #pragma const_seg("CK17")
-#pragma comment(linker, "/merge:CD17=CPU17")
-#pragma comment(linker, "/merge:CC17=CPU17")
-#pragma comment(linker, "/merge:CB17=CPU17")
-#pragma comment(linker, "/merge:CK17=CPU17")
+#pragma comment(linker, "/merge:CD17=CPU15")
+#pragma comment(linker, "/merge:CC17=CPU15")
+#pragma comment(linker, "/merge:CB17=CPU15")
+#pragma comment(linker, "/merge:CK17=CPU15")
 /*****************************************************************************
  *
  *	6502dasm.c
@@ -108,7 +108,7 @@ enum opcodes {
 /* 4510 mnemonics */
 	map,
 
-/* Deco CPU16 mnemonics */
+/* Deco CPU15 mnemonics */
 	vbl,  u13,  u8F,  uAB,  u87,  u0B,  uA3,  u4B,
 	u3F,  uBB,  u23
 };
@@ -143,7 +143,7 @@ static const char *token[]=
 /* 4510 mnemonics */
 	"map",
 
-/* Deco CPU16 mnemonics */
+/* Deco CPU15 mnemonics */
 	"VBL", "u13", "u8F", "uAB", "u87", "u0B", "uA3", "u4B",
 	"u3F", "uBB", "u23"
 };

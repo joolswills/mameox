@@ -156,6 +156,13 @@ BOOL UnloadCPUSections( void )
   std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.begin();
   for( ; i != g_IDToSectionMap.end(); ++i )
   {
+      // Only unload families once
+    if( (*i).first == CPU_M6809 ||
+        (*i).first == CPU_M6805 ||
+        (*i).first == CPU_M68000 ||
+        (*i).first == CPU_M6800 )
+        continue;
+
     XFreeSection( (*i).second.c_str() );
   }
   return TRUE;
