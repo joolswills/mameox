@@ -303,7 +303,7 @@ ROM_START( portrait )
 	/* proms? */
 ROM_END
 
-GAMEX( 1983, portrait,  0,    portrait, portrait,  0, ROT270, "Olympia", "Portraits", GAME_NO_SOUND | GAME_IMPERFECT_GRAPHICS | GAME_WRONG_COLORS )
+GAMEX( 1983, portrait,  0,    portrait, portrait,  0, ROT270, "Olympia", "Portraits", GAME_NO_SOUND | GAME_IMPERFECT_GRAPHICS | GAME_WRONG_COLORS | GAME_NOT_WORKING )
 
 #pragma code_seg()
 #pragma data_seg()

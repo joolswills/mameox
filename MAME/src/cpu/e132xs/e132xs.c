@@ -538,7 +538,8 @@ UINT32 get_emu_code_addr(UINT8 num) /* num is OP */
 //the user program can only changes the above 2 flags
 
 
-#define GET_CONST_RR(const_val, pc)	{				\
+#define GET_CONST_RR(const_val, pc)					\
+{													\
 	INT16 tmp;										\
 	PC += 2;										\
 	tmp = READ_OP(PC);								\
@@ -561,7 +562,7 @@ UINT32 get_emu_code_addr(UINT8 num) /* num is OP */
 		{											\
 			const_val |= 0xffffc000;				\
 		}											\
-	} \
+	}												\
 }
 
 
@@ -1250,10 +1251,10 @@ void e132xs_divu(void)
 
 			if( divisor == 0 || dividend > 0xffffffff )
 			{
-        UINT32 addr;
 				//Rd//Rdf -> undefined
 				//Z -> undefined
 				//N -> undefined
+				UINT32 addr;
 				SET_V(1);
 				addr = get_trap_addr(RANGE_ERROR);
 				execute_trap(addr);
@@ -1321,10 +1322,10 @@ void e132xs_divs(void)
 
 			if( divisor == 0 || dividend > 0xffffffff || (dividend_high & 0x80000000) )
 			{
-        UINT32 addr;
 				//Rd//Rdf -> undefined
 				//Z -> undefined
 				//N -> undefined
+				UINT32 addr;
 				SET_V(1);
 				addr = get_trap_addr(RANGE_ERROR);
 				execute_trap(addr);

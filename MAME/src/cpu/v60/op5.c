@@ -24,8 +24,7 @@ UINT32 opBRK(void)
 	PC = GETINTVECT(13);
 	ChangePC(PC);
 */
-//	MessageBox(NULL,"BRK opcode: skipping","Warning",MB_OK);
-	messagebox("Skipping BRK opcode!");
+	logerror("Skipping BRK opcode! PC=%x", PC);
 
 	return 1;
 }
@@ -51,7 +50,7 @@ UINT32 opBRKV(void)
 UINT32 opCLRTLBA(void)
 {
 	// @@@ TLB not yet supported
-	messagebox("Skipping CLRTLBA opcode!\n");
+	logerror("Skipping CLRTLBA opcode! PC=%x\n", PC);
 	return 1;
 }
 
@@ -67,7 +66,7 @@ UINT32 opDISPOSE(void)
 UINT32 opHALT(void)
 {
 	// @@@ It should wait for an interrupt to occur
-	//MessageBox(NULL,"HALT found: skipping","Warning",MB_OK);
+	//logerror("HALT found: skipping");
 	return 1;
 }
 
@@ -92,7 +91,8 @@ UINT32 opTRAPFL(void)
 	if ((TKCW & 0x1F0) & ((PSW & 0x1F00) >> 4))
 	{
 		// @@@ FPU exception
-		messagebox("Hit TRAPFL!\n");
+		logerror("Hit TRAPFL! PC=%x\n", PC);
+		abort();
 	}
 
 	return 1;

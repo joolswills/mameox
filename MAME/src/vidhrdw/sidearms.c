@@ -54,7 +54,7 @@ WRITE_HANDLER( sidearms_c804_w )
 	coin_counter_w(1, data & 0x02);
 
 	/* bit 2 and 3 lock the coin chutes */
-	if (!sidearms_gameid)
+	if (!sidearms_gameid || sidearms_gameid==3)
 	{
 		coin_lockout_w(0, !(data & 0x04));
 		coin_lockout_w(1, !(data & 0x08));
@@ -142,6 +142,22 @@ INLINE void get_philko_bg_tile_info(int offs)
 	SET_TILE_INFO(1, code, color, flags)
 }
 
+INLINE void get_whizz_bg_tile_info(int offs)
+{
+	int code, attr, color, flags;
+
+	code = tilerom[offs];
+	attr = tilerom[offs + 1];
+	code |= ((attr&0xc0)<<2);
+	if((attr&40))code+=256*4;/* test only */
+	
+
+	color = attr>>3 & 0x0f;
+	flags = attr>>1 & 0x03;
+
+	SET_TILE_INFO(1, code, color, flags)
+}
+
 INLINE void get_fg_tile_info(int tile_index)
 {
 	int attr = colorram[tile_index];
@@ -175,8 +191,12 @@ VIDEO_START( sidearms )
 	}
 	else
 	{
-		bg_tilemap = tilemap_create(get_philko_bg_tile_info, sidearms_tilemap_scan,
-			TILEMAP_OPAQUE, 32, 32, 128, 128);
+		if(sidearms_gameid==3)
+			bg_tilemap = tilemap_create(get_whizz_bg_tile_info, sidearms_tilemap_scan,TILEMAP_OPAQUE, 32, 32, 128, 128);
+		else
+			bg_tilemap = tilemap_create(get_philko_bg_tile_info, sidearms_tilemap_scan,TILEMAP_OPAQUE, 32, 32, 128, 128);
+	
+		
 
 		if ( !bg_tilemap ) return 1;
 	}

@@ -1,4 +1,4 @@
-Version 0.74.2b
+Version 0.75.1b
 
    -------------------------------------------------------------
   - \MAMEoX\Includes: 
@@ -10,6 +10,34 @@ Version 0.74.2b
  --- Specific Game fixes --------------------------------------------
   - Megatech games (segasyse.c): Dep on segac2.c
 
+ --- Integrated MAME version 0.75, changes follow -------------------
+
+ Changes in the \MAME\src directory
+
+ Additions:
+
+   drivers\
+     compgolf.c
+     djmain.c
+     dorachan.c
+     embargo.c
+     homerun.c
+     jcross.c
+     ladyfrog.c
+     marinedt.c
+     yumefuda.c
+
+   vidhrdw\
+     djmain.c
+     dorachan.c
+     homerun.c
+     jcross.c
+     ladyfrog.c
+     mainsnk.c
+
+   \
+     config.c
+     config.h
 
 *********************************************************************
 Version 0.74.1b

@@ -30,14 +30,16 @@
 		Phil Stroffolino
 		Shoot Out (Japan) and fixes added by Bryan McPhail (mish@tendril.co.uk)
 
-	Todo:
-	- Add cocktail support to shootoub/shootouj.
+	TODO:
+
+	- Remove the silly input port hack
 
 *******************************************************************************/
 
 /*
 	
 	2003-06-01	Added cocktail support to shootout
+	2003-10-08	Added cocktail support to shootouj/shootoub
 
 */
 
@@ -46,7 +48,7 @@
 #include "cpu/m6502/m6502.h"
 
 /* externals: from vidhrdw */
-unsigned char *shootout_textram;
+UINT8 *shootout_textram;
 WRITE_HANDLER( shootout_videoram_w );
 WRITE_HANDLER( shootout_textram_w );
 
@@ -61,7 +63,7 @@ PALETTE_INIT( shootout );
 static WRITE_HANDLER( shootout_bankswitch_w )
 {
 	int bankaddress;
-	unsigned char *RAM;
+	UINT8 *RAM;
 
 	RAM = memory_region(REGION_CPU1);
 	bankaddress = 0x10000 + ( 0x4000 * (data & 0x0f) );
@@ -291,7 +293,7 @@ static struct YM2203interface ym2203_interface2 =
 	{ 0 },
 	{ 0 },
 	{ shootout_bankswitch_w },
-	{ 0 }, /* Todo:  Port B write is flipscreen */
+	{ shootout_flipscreen_w },
 	{ shootout_snd2_irq },
 };
 
@@ -450,7 +452,7 @@ ROM_END
 
 static DRIVER_INIT( shootout )
 {
-	unsigned char *rom = memory_region(REGION_CPU1);
+	UINT8 *rom = memory_region(REGION_CPU1);
 	int diff = memory_region_length(REGION_CPU1) / 2;
 	int A;
 
@@ -461,10 +463,9 @@ static DRIVER_INIT( shootout )
 }
 
 
-GAME( 1985, shootout, 0,		 shootout, shootout, shootout, ROT0, "Data East USA", "Shoot Out (US)")
-GAMEX( 1985, shootouj, shootout, shootouj, shootout, 0, 	   ROT0, "Data East USA", "Shoot Out (Japan)", GAME_NO_COCKTAIL )
-GAMEX( 1985, shootoub, shootout, shootouj, shootout, shootout, ROT0, "bootleg", "Shoot Out (Korean Bootleg)", GAME_NO_COCKTAIL )
-
+GAME( 1985, shootout, 0,		shootout, shootout, shootout, ROT0, "Data East USA", "Shoot Out (US)")
+GAME( 1985, shootouj, shootout, shootouj, shootout, 0,		  ROT0, "Data East USA", "Shoot Out (Japan)" )
+GAME( 1985, shootoub, shootout, shootouj, shootout, shootout, ROT0, "bootleg", "Shoot Out (Korean Bootleg)" )
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

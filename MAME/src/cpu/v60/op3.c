@@ -321,8 +321,6 @@ UINT32 opRETIU(void) /* TRUSTED */
 	// Read the operand
 	ReadAM();
 
-	logWrite(0, "INTERRUPT: Exiting, reading stack from: %x\n", SP);
-
 	// Restore PC and PSW from stack
 	PC = MemRead32(SP);
 	SP += 4;
@@ -335,8 +333,6 @@ UINT32 opRETIU(void) /* TRUSTED */
 	SP += amOut;
 	
 	v60WritePSW(tempPSW);
-
-	logWrite(0, "INTERRUPT: Exiting PC: %x, SP: %x\n", PC, SP);
 
 	// Update all the flags from PSW
 	UPDATECPUFLAGS();

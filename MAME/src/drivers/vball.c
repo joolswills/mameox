@@ -502,7 +502,7 @@ static MACHINE_DRIVER_START( vball )
 
 	/* basic machine hardware */
  	MDRV_CPU_ADD(M6502, 3600000)	// [EBA]: Fix from pomata // 3.6MHz
-// 	MDRV_CPU_ADD(M6502, 2000000)	/* 3.579545 MHz */
+// 	MDRV_CPU_ADD(M6502, 2000000)	/* 2 MHz - measured by guru but it makes the game far far too slow ?! */
 	MDRV_CPU_MEMORY(readmem,writemem)
 	MDRV_CPU_VBLANK_INT(vball_interrupt,32)	/* ??1 IRQ every 8 visible scanlines, plus NMI for vblank?? */
 

@@ -7698,6 +7698,30 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\src\drivers\compgolf.c">
+					<FileConfiguration
+						Name="Debug|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./debug_obj/drivers\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./release_obj/drivers\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./profile_obj/drivers\"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath=".\src\drivers\congo.c">
 					<FileConfiguration
 						Name="Debug|Xbox"
@@ -8538,6 +8562,30 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\src\drivers\djmain.c">
+					<FileConfiguration
+						Name="Debug|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./debug_obj/drivers\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./release_obj/drivers\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./profile_obj/drivers\"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath=".\src\drivers\dkong.c">
 					<FileConfiguration
 						Name="Debug|Xbox"
@@ -8635,6 +8683,30 @@
 				</File>
 				<File
 					RelativePath=".\src\drivers\dooyong.c">
+					<FileConfiguration
+						Name="Debug|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./debug_obj/drivers\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./release_obj/drivers\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./profile_obj/drivers\"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\drivers\dorachan.c">
 					<FileConfiguration
 						Name="Debug|Xbox"
 						ExcludedFromBuild="FALSE">
@@ -8803,6 +8875,30 @@
 				</File>
 				<File
 					RelativePath=".\src\drivers\dynduke.c">
+					<FileConfiguration
+						Name="Debug|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./debug_obj/drivers\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./release_obj/drivers\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./profile_obj/drivers\"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\drivers\embargo.c">
 					<FileConfiguration
 						Name="Debug|Xbox"
 						ExcludedFromBuild="FALSE">
@@ -10962,6 +11058,30 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\src\drivers\homerun.c">
+					<FileConfiguration
+						Name="Debug|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./debug_obj/drivers\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./release_obj/drivers\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./profile_obj/drivers\"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath=".\src\drivers\hyhoo.c">
 					<FileConfiguration
 						Name="Debug|Xbox"
@@ -11275,6 +11395,30 @@
 				</File>
 				<File
 					RelativePath=".\src\drivers\jalmah.c">
+					<FileConfiguration
+						Name="Debug|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./debug_obj/drivers\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./release_obj/drivers\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./profile_obj/drivers\"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\drivers\jcross.c">
 					<FileConfiguration
 						Name="Debug|Xbox"
 						ExcludedFromBuild="FALSE">
@@ -11707,6 +11851,30 @@
 				</File>
 				<File
 					RelativePath=".\src\drivers\ladybug.c">
+					<FileConfiguration
+						Name="Debug|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./debug_obj/drivers\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./release_obj/drivers\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./profile_obj/drivers\"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\drivers\ladyfrog.c">
 					<FileConfiguration
 						Name="Debug|Xbox"
 						ExcludedFromBuild="FALSE">
@@ -12406,6 +12574,30 @@
 				</File>
 				<File
 					RelativePath=".\src\drivers\marineb.c">
+					<FileConfiguration
+						Name="Debug|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./debug_obj/drivers\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./release_obj/drivers\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./profile_obj/drivers\"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\drivers\marinedt.c">
 					<FileConfiguration
 						Name="Debug|Xbox"
 						ExcludedFromBuild="FALSE">
@@ -21190,6 +21382,30 @@
 				</File>
 				<File
 					RelativePath=".\src\drivers\yiear.c">
+					<FileConfiguration
+						Name="Debug|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./debug_obj/drivers\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./release_obj/drivers\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./profile_obj/drivers\"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\drivers\yumefuda.c">
 					<FileConfiguration
 						Name="Debug|Xbox"
 						ExcludedFromBuild="FALSE">
@@ -32414,6 +32630,30 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\src\vidhrdw\djmain.c">
+					<FileConfiguration
+						Name="Debug|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./debug_obj/vidhrdw\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./release_obj/vidhrdw\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./profile_obj/vidhrdw\"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath=".\src\vidhrdw\dkong.c">
 					<FileConfiguration
 						Name="Debug|Xbox"
@@ -32487,6 +32727,30 @@
 				</File>
 				<File
 					RelativePath=".\src\vidhrdw\dooyong.c">
+					<FileConfiguration
+						Name="Debug|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./debug_obj/vidhrdw\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./release_obj/vidhrdw\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./profile_obj/vidhrdw\"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\vidhrdw\dorachan.c">
 					<FileConfiguration
 						Name="Debug|Xbox"
 						ExcludedFromBuild="FALSE">
@@ -34649,6 +34913,30 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\src\vidhrdw\homerun.c">
+					<FileConfiguration
+						Name="Debug|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./debug_obj/vidhrdw\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./release_obj/vidhrdw\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./profile_obj/vidhrdw\"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath=".\src\vidhrdw\hyhoo.c">
 					<FileConfiguration
 						Name="Debug|Xbox"
@@ -35036,6 +35324,30 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\src\vidhrdw\jcross.c">
+					<FileConfiguration
+						Name="Debug|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./debug_obj/vidhrdw\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./release_obj/vidhrdw\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./profile_obj/vidhrdw\"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath=".\src\vidhrdw\jedi.c">
 					<FileConfiguration
 						Name="Debug|Xbox"
@@ -35400,6 +35712,30 @@
 				</File>
 				<File
 					RelativePath=".\src\vidhrdw\ladybug.c">
+					<FileConfiguration
+						Name="Debug|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./debug_obj/vidhrdw\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./release_obj/vidhrdw\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./profile_obj/vidhrdw\"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\vidhrdw\ladyfrog.c">
 					<FileConfiguration
 						Name="Debug|Xbox"
 						ExcludedFromBuild="FALSE">
@@ -35955,6 +36291,30 @@
 				</File>
 				<File
 					RelativePath=".\src\vidhrdw\mainevt.c">
+					<FileConfiguration
+						Name="Debug|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./debug_obj/vidhrdw\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./release_obj/vidhrdw\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./profile_obj/vidhrdw\"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\vidhrdw\mainsnk.c">
 					<FileConfiguration
 						Name="Debug|Xbox"
 						ExcludedFromBuild="FALSE">
@@ -44307,6 +44667,30 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\src\windows\config.h">
+					<FileConfiguration
+						Name="Debug|Xbox"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./debug_obj/windows\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./release_obj/windows\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./profile_obj/windows\"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath=".\src\windows\d3d_extra.h">
 					<FileConfiguration
 						Name="Debug|Xbox"
@@ -45618,6 +46002,33 @@
 			</File>
 			<File
 				RelativePath=".\src\common.h">
+			</File>
+			<File
+				RelativePath=".\src\config.c">
+				<FileConfiguration
+					Name="Debug|Xbox"
+					ExcludedFromBuild="FALSE">
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="./debug_obj/\"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Xbox"
+					ExcludedFromBuild="FALSE">
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="./release_obj/\"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Xbox"
+					ExcludedFromBuild="FALSE">
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="./profile_obj/\"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\src\config.h">
 			</File>
 			<File
 				RelativePath=".\src\cpuexec.c">

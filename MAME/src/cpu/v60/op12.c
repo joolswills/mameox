@@ -469,8 +469,8 @@ UINT32 opCHLVL(void)
 
 	if (f12Op1>3)
 	{
-		messagebox("Illegal data field on opCHLVL\n");
-		F12END();
+		logerror("Illegal data field on opCHLVL, PC=%x\n", PC);
+		abort();
 	}
 
 	UPDATEPSW();
@@ -549,7 +549,8 @@ UINT32 opDIVB(void) /* TRUSTED */
 	F12LOADOP2BYTE();
 
 	_OV = ((appb == 0x80) && (f12Op1==0xFF));
-	if (f12Op1 && !_OV) appb=((*(INT8*)&appb) / ((INT8)(f12Op1&0xFF)));
+	if (f12Op1 && !_OV)
+		appb= (INT8)appb / (INT8)f12Op1;
 	_Z = (appb == 0);
 	_S = ((appb & 0x80)!=0);
 
@@ -565,7 +566,8 @@ UINT32 opDIVH(void) /* TRUSTED */
 	F12LOADOP2HALF();
 
 	_OV = ((apph == 0x8000) && (f12Op1==0xFFFF));
-	if (f12Op1 && !_OV)	apph=((*(INT16*)&apph) / ((INT16)(f12Op1&0xFFFF)));
+	if (f12Op1 && !_OV)
+		apph = (INT16)apph / (INT16)f12Op1;
 	_Z = (apph == 0);
 	_S = ((apph & 0x8000)!=0);
 
@@ -581,7 +583,8 @@ UINT32 opDIVW(void) /* TRUSTED */
 	F12LOADOP2WORD();
 
 	_OV = ((appw == 0x80000000) && (f12Op1==0xFFFFFFFF));
-	if (f12Op1 && !_OV)	appw=((*(INT32*)&appw) / (*(INT32*)&f12Op1));
+	if (f12Op1 && !_OV)
+		appw = (INT32)appw / (INT32)f12Op1;
 	_Z = (appw == 0);
 	_S = ((appw & 0x80000000)!=0);
 
@@ -609,8 +612,8 @@ UINT32 opDIVX(void)
 
 	dv = ((UINT64)b<<32) | ((UINT64)a);
 
-	a = dv / (INT64)(*(INT32*)&f12Op1);
-	b = dv % (INT64)(*(INT32*)&f12Op1);
+	a = dv / (INT64)((INT32)f12Op1);
+	b = dv % (INT64)((INT32)f12Op1);
 
 	_S = ((a & 0x80000000)!=0);
 	_Z = (a == 0);
@@ -752,7 +755,10 @@ UINT32 opLDPR(void)
 			v60.reg[f12Op2 + 36] = f12Op1;
 	}
 	else
-		messagebox("Invalid operand on LDPR\n");
+	{
+		logerror("Invalid operand on LDPR PC=%x\n", PC);
+		abort();
+	}
 	F12END();
 }
 
@@ -944,8 +950,8 @@ UINT32 opMULB(void)
 	F12LOADOP2BYTE();
 
 	// @@@ OV not set!!
-	tmp=((INT32)((*(INT8*)&appb) * (INT32)((INT8)(f12Op1 & 0xFF))));
-	appb = (UINT8)(tmp&0xFF);
+	tmp=(INT8)appb * (INT32)(INT8)f12Op1;
+	appb = tmp;
 	_Z = (appb == 0);
 	_S = ((appb & 0x80)!=0);
 	_OV = ((tmp >> 8)!=0);
@@ -963,8 +969,8 @@ UINT32 opMULH(void)
 	F12LOADOP2HALF();
 
 	// @@@ OV not set!!
-	tmp=(INT32)((*(INT16*)&apph) * (INT32)((INT16)(f12Op1&0xFFFF)));
-	apph = (UINT16)(tmp&0xFFFF);
+	tmp=(INT16)apph * (INT32)(INT16)f12Op1;
+	apph = tmp;
 	_Z = (apph == 0);
 	_S = ((apph & 0x8000)!=0);
 	_OV = ((tmp >> 16)!=0);
@@ -982,8 +988,8 @@ UINT32 opMULW(void)
 	F12LOADOP2WORD();
 
 	// @@@ OV not set!!
-	tmp=(INT64)((*(INT32*)&appw) * (INT64)(*(INT32*)&f12Op1));
-	appw = (UINT32)(tmp&0xFFFFFFFF);
+	tmp=(INT32)appw * (INT64)(INT32)f12Op1;
+	appw = tmp;
 	_Z = (appw == 0);
 	_S = ((appw & 0x80000000)!=0);
 	_OV = ((tmp >> 32) != 0);
@@ -1001,8 +1007,8 @@ UINT32 opMULUB(void)
 	F12LOADOP2BYTE();
 
 	// @@@ OV not set!!
-	tmp=(appb * (UINT8)f12Op1);
-	appb = (UINT8)(tmp&0xFF);
+	tmp = appb * (UINT8)f12Op1;
+	appb = tmp;
 	_Z = (appb == 0);
 	_S = ((appb & 0x80)!=0);
 	_OV = ((tmp >> 8)!=0);
@@ -1020,8 +1026,8 @@ UINT32 opMULUH(void)
 	F12LOADOP2HALF();
 
 	// @@@ OV not set!!
-	tmp=(apph * (UINT16)f12Op1);
-	apph = (UINT16)(tmp&0xFFFF);
+	tmp=apph * (UINT16)f12Op1;
+	apph = tmp;
 	_Z = (apph == 0);
 	_S = ((apph & 0x8000)!=0);
 	_OV = ((tmp >> 16)!=0);
@@ -1039,8 +1045,8 @@ UINT32 opMULUW(void)
 	F12LOADOP2WORD();
 
 	// @@@ OV not set!!
-	tmp=((UINT64)appw * (UINT64)f12Op1);
-	appw = (UINT32)(tmp&0xFFFFFFFF);
+	tmp=(UINT64)appw * (UINT64)f12Op1;
+	appw = tmp;
 	_Z = (appw == 0);
 	_S = ((appw & 0x80000000)!=0);
 	_OV = ((tmp >> 32)!=0);
@@ -1051,12 +1057,10 @@ UINT32 opMULUW(void)
 
 UINT32 opNEGB(void) /* TRUSTED  (C too!)*/
 {
-	UINT8 tmpb;
 	F12DecodeFirstOperand(ReadAM,0);
 
-	tmpb = (INT8)(f12Op1&0xFF);
 	modWriteValB = 0;
-	SUBB(modWriteValB, (INT8)tmpb);
+	SUBB(modWriteValB, (INT8)f12Op1);
 
 	F12WriteSecondOperand(0);
 	F12END();
@@ -1064,12 +1068,10 @@ UINT32 opNEGB(void) /* TRUSTED  (C too!)*/
 
 UINT32 opNEGH(void) /* TRUSTED  (C too!)*/
 {
-	UINT16 tmph;
 	F12DecodeFirstOperand(ReadAM,1);
 
-	tmph = (INT16)(f12Op1&0xffff);
 	modWriteValH = 0;
-	SUBW(modWriteValH, (INT16)tmph);
+	SUBW(modWriteValH, (INT16)f12Op1);
 
 	F12WriteSecondOperand(1);
 	F12END();
@@ -1077,12 +1079,10 @@ UINT32 opNEGH(void) /* TRUSTED  (C too!)*/
 
 UINT32 opNEGW(void) /* TRUSTED  (C too!)*/
 {
-	UINT32 tmpw;
 	F12DecodeFirstOperand(ReadAM,2);
 
-	tmpw = *(INT32*)&f12Op1;
 	modWriteValW = 0;
-	SUBL(modWriteValW, (INT32)tmpw);
+	SUBL(modWriteValW, (INT32)f12Op1);
 
 	F12WriteSecondOperand(2);
 	F12END();
@@ -1091,7 +1091,7 @@ UINT32 opNEGW(void) /* TRUSTED  (C too!)*/
 UINT32 opNOTB(void) /* TRUSTED */
 {
 	F12DecodeFirstOperand(ReadAM,0);
-	modWriteValB=~(UINT8)f12Op1;
+	modWriteValB=~f12Op1;
 
 	_OV=0;
 	_S=((modWriteValB&0x80)!=0);
@@ -1104,7 +1104,7 @@ UINT32 opNOTB(void) /* TRUSTED */
 UINT32 opNOTH(void) /* TRUSTED */
 {
 	F12DecodeFirstOperand(ReadAM,1);
-	modWriteValH=~(UINT16)f12Op1;
+	modWriteValH=~f12Op1;
 
 	_OV=0;
 	_S=((modWriteValH&0x8000)!=0);
@@ -1214,7 +1214,8 @@ UINT32 opREMB(void)
 	F12LOADOP2BYTE();
 
 	_OV = 0;
-	if (f12Op1) appb=((*(INT8*)&appb) % ((INT8)(f12Op1&0xFF)));
+	if (f12Op1)
+		appb= (INT8)appb % (INT8)f12Op1;
 	_Z = (appb == 0);
 	_S = ((appb & 0x80)!=0);
 
@@ -1230,7 +1231,8 @@ UINT32 opREMH(void)
 	F12LOADOP2HALF();
 
 	_OV = 0;
-	if (f12Op1)	apph=((*(INT16*)&apph) % ((INT16)(f12Op1&0xFFFF)));
+	if (f12Op1)
+		apph=(INT16)apph % (INT16)f12Op1;
 	_Z = (apph == 0);
 	_S = ((apph & 0x8000)!=0);
 
@@ -1246,7 +1248,8 @@ UINT32 opREMW(void)
 	F12LOADOP2WORD();
 
 	_OV = 0;
-	if (f12Op1)	appw=((*(INT32*)&appw) % (*(INT32*)&f12Op1));
+	if (f12Op1)
+		appw=(INT32)appw % (INT32)f12Op1;
 	_Z = (appw == 0);
 	_S = ((appw & 0x80000000)!=0);
 
@@ -1262,7 +1265,8 @@ UINT32 opREMUB(void)
 	F12LOADOP2BYTE();
 
 	_OV = 0;
-	if (f12Op1)	appb %= (UINT8)f12Op1;
+	if (f12Op1)
+		appb %= (UINT8)f12Op1;
 	_Z = (appb == 0);
 	_S = ((appb & 0x80)!=0);
 
@@ -1278,7 +1282,8 @@ UINT32 opREMUH(void)
 	F12LOADOP2HALF();
 
 	_OV = 0;
-	if (f12Op1)	apph %= (UINT16)f12Op1;
+	if (f12Op1)
+		apph %= (UINT16)f12Op1;
 	_Z = (apph == 0);
 	_S = ((apph & 0x8000)!=0);
 
@@ -1294,7 +1299,8 @@ UINT32 opREMUW(void)
 	F12LOADOP2WORD();
 
 	_OV = 0;
-	if (f12Op1)	appw %= f12Op1;
+	if (f12Op1)
+		appw %= f12Op1;
 	_Z = (appw == 0);
 	_S = ((appw & 0x80000000)!=0);
 
@@ -1742,7 +1748,7 @@ UINT32 opSHAB(void)
 		if (count >= 8)
 			appb = (appb & 0x80) ? 0xFF : 0;
 		else
-			appb = (*(INT8*)&appb) >> count;
+			appb = ((INT8)appb) >> count;
 
 		SetSZPF_Byte(appb);
 	}
@@ -1796,7 +1802,7 @@ UINT32 opSHAH(void)
 		if (count >= 16)
 			apph = (apph & 0x8000) ? 0xFFFF : 0;
 		else
-			apph = (*(INT16*)&apph) >> count;
+			apph = ((INT16)apph) >> count;
 
 		SetSZPF_Word(apph);
 	}
@@ -1850,7 +1856,7 @@ UINT32 opSHAW(void)
 		if (count >= 32)
 			appw = (appw & 0x80000000) ? 0xFFFFFFFF : 0;
 		else
-			appw = (*(INT32*)&appw) >> count;
+			appw = ((INT32)appw) >> count;
 
 		SetSZPF_Long(appw);
 	}
@@ -2046,7 +2052,10 @@ UINT32 opSTPR(void)
 	if (f12Op1 >= 0 && f12Op1 <= 28)
 		modWriteValW = v60.reg[f12Op1 + 36];
 	else
-		messagebox("Invalid operand on STPR\n");
+	{
+		logerror("Invalid operand on STPR PC=%x\n", PC);
+		abort();
+	}
 	F12WriteSecondOperand(2);
 	F12END();
 }
@@ -2272,7 +2281,7 @@ UINT32 opMULX(void)
 		a=MemRead32(f12Op2);
 	}
 
-	res = (INT64)a * (INT64)(*(INT32*)&f12Op1);
+	res = (INT64)a * (INT64)(INT32)f12Op1;
 
 	b = (INT32)((res >> 32)&0xffffffff);
 	a = (INT32)(res&0xffffffff);

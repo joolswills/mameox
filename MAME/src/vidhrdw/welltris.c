@@ -49,118 +49,114 @@ WRITE16_HANDLER( welltris_spriteram_w )
 /* Sprite Drawing is pretty much the same as fromance.c */
 static void welltris_draw_sprites(struct mame_bitmap *bitmap,const struct rectangle *cliprect)
 {
-  UINT8 zoomtable[16] = { 0,7,14,20,25,30,34,38,42,46,49,52,54,57,59,61 };
-  int offs;
+	UINT8 zoomtable[16] = { 0,7,14,20,25,30,34,38,42,46,49,52,54,57,59,61 };
+	int offs;
 
-  /* draw the sprites */
-  for (offs = 0; offs < 0x200 - 4; offs += 4) 
-  {
-    if (!(welltris_spriteram[offs + 2] & 0x0080))
-      continue;
-    else
-    {
-      int data0 = welltris_spriteram[offs + 0];
-      int data1 = welltris_spriteram[offs + 1];
-      int data2 = welltris_spriteram[offs + 2];
-      int data3 = welltris_spriteram[offs + 3];
-      int code = data3 & 0x1fff;
-      int color = (data2 & 0x0f) + (0x10 * spritepalettebank);
-      int y = (data0 & 0x1ff) + 1;
-      int x = (data1 & 0x1ff) + 6;
-      int yzoom = (data0 >> 12) & 15;
-      int xzoom = (data1 >> 12) & 15;
-      int zoomed = (xzoom | yzoom);
-      int ytiles = ((data2 >> 12) & 7) + 1;
-      int xtiles = ((data2 >>  8) & 7) + 1;
-      int yflip = (data2 >> 15) & 1;
-      int xflip = (data2 >> 11) & 1;
-      int xt, yt;
+	/* draw the sprites */
+	for (offs = 0; offs < 0x200 - 4; offs += 4) {
+		int data0 = welltris_spriteram[offs + 0];
+		int data1 = welltris_spriteram[offs + 1];
+		int data2 = welltris_spriteram[offs + 2];
+		int data3 = welltris_spriteram[offs + 3];
+		int code = data3 & 0x1fff;
+		int color = (data2 & 0x0f) + (0x10 * spritepalettebank);
+		int y = (data0 & 0x1ff) + 1;
+		int x = (data1 & 0x1ff) + 6;
+		int yzoom = (data0 >> 12) & 15;
+		int xzoom = (data1 >> 12) & 15;
+		int zoomed = (xzoom | yzoom);
+		int ytiles = ((data2 >> 12) & 7) + 1;
+		int xtiles = ((data2 >>  8) & 7) + 1;
+		int yflip = (data2 >> 15) & 1;
+		int xflip = (data2 >> 11) & 1;
+		int xt, yt;
 
-      /* compute the zoom factor -- stolen from aerofgt.c */
-      xzoom = 16 - zoomtable[xzoom] / 8;
-      yzoom = 16 - zoomtable[yzoom] / 8;
+		if (!(welltris_spriteram[offs + 2] & 0x0080)) continue;
 
-      /* wrap around */
-      if (x > Machine->visible_area.max_x) x -= 0x200;
-      if (y > Machine->visible_area.max_y) y -= 0x200;
+		/* compute the zoom factor -- stolen from aerofgt.c */
+		xzoom = 16 - zoomtable[xzoom] / 8;
+		yzoom = 16 - zoomtable[yzoom] / 8;
 
-      /* normal case */
-      if (!xflip && !yflip) {
-        for (yt = 0; yt < ytiles; yt++) {
-          for (xt = 0; xt < xtiles; xt++, code++) {
-            if (!zoomed)
-              drawgfx(bitmap, Machine->gfx[1], code, color, 0, 0,
-              x + xt * 16, y + yt * 16, cliprect, TRANSPARENCY_PEN, 15);
-            else
-              drawgfxzoom(bitmap, Machine->gfx[1], code, color, 0, 0,
-              x + xt * xzoom, y + yt * yzoom, cliprect, TRANSPARENCY_PEN, 15,
-              0x1000 * xzoom, 0x1000 * yzoom);
-          }
-          if (xtiles == 3) code += 1;
-          if (xtiles == 5) code += 3;
-          if (xtiles == 6) code += 2;
-          if (xtiles == 7) code += 1;
-        }
-      }
+		/* wrap around */
+		if (x > Machine->visible_area.max_x) x -= 0x200;
+		if (y > Machine->visible_area.max_y) y -= 0x200;
 
-      /* xflipped case */
-      else if (xflip && !yflip) {
-        for (yt = 0; yt < ytiles; yt++) {
-          for (xt = 0; xt < xtiles; xt++, code++) {
-            if (!zoomed)
-              drawgfx(bitmap, Machine->gfx[1], code, color, 1, 0,
-              x + (xtiles - 1 - xt) * 16, y + yt * 16, cliprect, TRANSPARENCY_PEN, 15);
-            else
-              drawgfxzoom(bitmap, Machine->gfx[1], code, color, 1, 0,
-              x + (xtiles - 1 - xt) * xzoom, y + yt * yzoom, cliprect, TRANSPARENCY_PEN, 15,
-              0x1000 * xzoom, 0x1000 * yzoom);
-          }
-          if (xtiles == 3) code += 1;
-          if (xtiles == 5) code += 3;
-          if (xtiles == 6) code += 2;
-          if (xtiles == 7) code += 1;
-        }
-      }
+		/* normal case */
+		if (!xflip && !yflip) {
+			for (yt = 0; yt < ytiles; yt++) {
+				for (xt = 0; xt < xtiles; xt++, code++) {
+					if (!zoomed)
+						drawgfx(bitmap, Machine->gfx[1], code, color, 0, 0,
+								x + xt * 16, y + yt * 16, cliprect, TRANSPARENCY_PEN, 15);
+					else
+						drawgfxzoom(bitmap, Machine->gfx[1], code, color, 0, 0,
+								x + xt * xzoom, y + yt * yzoom, cliprect, TRANSPARENCY_PEN, 15,
+								0x1000 * xzoom, 0x1000 * yzoom);
+				}
+				if (xtiles == 3) code += 1;
+				if (xtiles == 5) code += 3;
+				if (xtiles == 6) code += 2;
+				if (xtiles == 7) code += 1;
+			}
+		}
 
-      /* yflipped case */
-      else if (!xflip && yflip) {
-        for (yt = 0; yt < ytiles; yt++) {
-          for (xt = 0; xt < xtiles; xt++, code++) {
-            if (!zoomed)
-              drawgfx(bitmap, Machine->gfx[1], code, color, 0, 1,
-              x + xt * 16, y + (ytiles - 1 - yt) * 16, cliprect, TRANSPARENCY_PEN, 15);
-            else
-              drawgfxzoom(bitmap, Machine->gfx[1], code, color, 0, 1,
-              x + xt * xzoom, y + (ytiles - 1 - yt) * yzoom, cliprect, TRANSPARENCY_PEN, 15,
-              0x1000 * xzoom, 0x1000 * yzoom);
-          }
-          if (xtiles == 3) code += 1;
-          if (xtiles == 5) code += 3;
-          if (xtiles == 6) code += 2;
-          if (xtiles == 7) code += 1;
-        }
-      }
+		/* xflipped case */
+		else if (xflip && !yflip) {
+			for (yt = 0; yt < ytiles; yt++) {
+				for (xt = 0; xt < xtiles; xt++, code++) {
+					if (!zoomed)
+						drawgfx(bitmap, Machine->gfx[1], code, color, 1, 0,
+								x + (xtiles - 1 - xt) * 16, y + yt * 16, cliprect, TRANSPARENCY_PEN, 15);
+					else
+						drawgfxzoom(bitmap, Machine->gfx[1], code, color, 1, 0,
+								x + (xtiles - 1 - xt) * xzoom, y + yt * yzoom, cliprect, TRANSPARENCY_PEN, 15,
+								0x1000 * xzoom, 0x1000 * yzoom);
+				}
+				if (xtiles == 3) code += 1;
+				if (xtiles == 5) code += 3;
+				if (xtiles == 6) code += 2;
+				if (xtiles == 7) code += 1;
+			}
+		}
 
-      /* x & yflipped case */
-      else {
-        for (yt = 0; yt < ytiles; yt++) {
-          for (xt = 0; xt < xtiles; xt++, code++) {
-            if (!zoomed)
-              drawgfx(bitmap, Machine->gfx[1], code, color, 1, 1,
-              x + (xtiles - 1 - xt) * 16, y + (ytiles - 1 - yt) * 16, cliprect, TRANSPARENCY_PEN, 15);
-            else
-              drawgfxzoom(bitmap, Machine->gfx[1], code, color, 1, 1,
-              x + (xtiles - 1 - xt) * xzoom, y + (ytiles - 1 - yt) * yzoom, cliprect, TRANSPARENCY_PEN, 15,
-              0x1000 * xzoom, 0x1000 * yzoom);
-          }
-          if (xtiles == 3) code += 1;
-          if (xtiles == 5) code += 3;
-          if (xtiles == 6) code += 2;
-          if (xtiles == 7) code += 1;
-        }
-      }
-    }
-  }
+		/* yflipped case */
+		else if (!xflip && yflip) {
+			for (yt = 0; yt < ytiles; yt++) {
+				for (xt = 0; xt < xtiles; xt++, code++) {
+					if (!zoomed)
+						drawgfx(bitmap, Machine->gfx[1], code, color, 0, 1,
+								x + xt * 16, y + (ytiles - 1 - yt) * 16, cliprect, TRANSPARENCY_PEN, 15);
+					else
+						drawgfxzoom(bitmap, Machine->gfx[1], code, color, 0, 1,
+								x + xt * xzoom, y + (ytiles - 1 - yt) * yzoom, cliprect, TRANSPARENCY_PEN, 15,
+								0x1000 * xzoom, 0x1000 * yzoom);
+				}
+				if (xtiles == 3) code += 1;
+				if (xtiles == 5) code += 3;
+				if (xtiles == 6) code += 2;
+				if (xtiles == 7) code += 1;
+			}
+		}
+
+		/* x & yflipped case */
+		else {
+			for (yt = 0; yt < ytiles; yt++) {
+				for (xt = 0; xt < xtiles; xt++, code++) {
+					if (!zoomed)
+						drawgfx(bitmap, Machine->gfx[1], code, color, 1, 1,
+								x + (xtiles - 1 - xt) * 16, y + (ytiles - 1 - yt) * 16, cliprect, TRANSPARENCY_PEN, 15);
+					else
+						drawgfxzoom(bitmap, Machine->gfx[1], code, color, 1, 1,
+								x + (xtiles - 1 - xt) * xzoom, y + (ytiles - 1 - yt) * yzoom, cliprect, TRANSPARENCY_PEN, 15,
+								0x1000 * xzoom, 0x1000 * yzoom);
+				}
+				if (xtiles == 3) code += 1;
+				if (xtiles == 5) code += 3;
+				if (xtiles == 6) code += 2;
+				if (xtiles == 7) code += 1;
+			}
+		}
+	}
 }
 
 static void setbank(struct tilemap *tmap, int num, int bank)
