@@ -126,7 +126,7 @@ void CLightgunCalibrator::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 	  m_displayDevice->Clear(	0L,																// Count
 		  											NULL,															// Rects to clear
 			  										D3DCLEAR_TARGET,	                // Flags
-				  									D3DCOLOR_XRGB(128,128,128),				// Color
+				  									D3DCOLOR_XRGB(243,243,243),				// Color
 					  								1.0f,															// Z
 						  							0L );															// Stencil
 
@@ -134,6 +134,7 @@ void CLightgunCalibrator::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   RenderBackdrop();
 
 
+  #define TEXTCOLOR                     D3DCOLOR_XRGB( 10,10,10 );
   #define CURSOR_COLOR                  D3DCOLOR_RGBA( 255, 100, 100, 255 )
   static WCHAR *calibrationStepText[NUM_CALIBRATIONSTEPS] = { L"Shoot the upper left corner", 
                                                               L"Shoot the center", 
@@ -144,17 +145,17 @@ void CLightgunCalibrator::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   m_fontSet.DefaultFont().Begin();
 
     swprintf( wBuf, L"Gun in port %d", m_currentInputDeviceIndex );
-    m_fontSet.DefaultFont().DrawText( 320, 160, D3DCOLOR_XRGB( 255, 255, 255), wBuf, XBFONT_CENTER_X );
+    m_fontSet.DefaultFont().DrawText( 320, 160, TEXTCOLOR, wBuf, XBFONT_CENTER_X );
 
-    m_fontSet.DefaultFont().DrawText( 320, 180, D3DCOLOR_XRGB( 255, 255, 255), calibrationStepText[m_calibrationStep], XBFONT_CENTER_X );
+    m_fontSet.DefaultFont().DrawText( 320, 180, TEXTCOLOR, calibrationStepText[m_calibrationStep], XBFONT_CENTER_X );
 
-    m_fontSet.DefaultFont().DrawText( 320, 240, D3DCOLOR_XRGB( 255, 255, 255), L"Press B to discard changes.", XBFONT_CENTER_X );
+    m_fontSet.DefaultFont().DrawText( 320, 240, TEXTCOLOR, L"Press B to discard changes.", XBFONT_CENTER_X );
 
       swprintf( wBuf, L"X: %d maps to %d", m_currentGunX, m_currentGunCalibratedX );
-	    m_fontSet.DefaultFont().DrawText( 320, 80, D3DCOLOR_XRGB( 255, 255, 255), wBuf, XBFONT_CENTER_X );
+	    m_fontSet.DefaultFont().DrawText( 320, 80, TEXTCOLOR, wBuf, XBFONT_CENTER_X );
 
       swprintf( wBuf, L"Y: %d maps to %d", m_currentGunY, m_currentGunCalibratedY );
-	    m_fontSet.DefaultFont().DrawText( 320, 100, D3DCOLOR_XRGB( 255, 255, 255), wBuf, XBFONT_CENTER_X );
+	    m_fontSet.DefaultFont().DrawText( 320, 100, TEXTCOLOR, wBuf, XBFONT_CENTER_X );
 
   m_fontSet.DefaultFont().End();
 

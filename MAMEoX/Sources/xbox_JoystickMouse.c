@@ -428,16 +428,21 @@ void osd_joystick_end_calibration( void )
 void osd_lightgun_read(int player, int *deltax, int *deltay)
 {
 	const XINPUT_GAMEPAD *gp;
+  const XINPUT_CAPABILITIES *gpCaps;
+
   assert( deltax && deltay );
 
-	if( (gp = GetGamepadState( player )) )
+	if( (gpCaps = GetGamepadCaps( player )) && 
+      gpCaps->SubType == XINPUT_DEVSUBTYPE_GC_LIGHTGUN &&
+      (gp = GetGamepadState( player )) )
   {
     lightgunCalibration_t *calibData = &g_calibrationData[player];
     FLOAT calibratedX, calibratedY, xMap, yMap;
 
     *deltax = gp->sThumbLX;
     *deltay = gp->sThumbLY;
-
+if( !player )
+  PRINTMSG( T_INFO, "%d %d", gp->sThumbLX, gp->sThumbLY );
       // Don't bother if we're not pointing at the screen
     if( !(*deltax) && !(*deltay) )
       return;
@@ -450,9 +455,9 @@ void osd_lightgun_read(int player, int *deltax, int *deltay)
     yMap = calibData->m_yData[0] - calibData->m_yData[1]; // top Y is positive, so sub center to bring it closer to the middle
 
     if( xMap )
-      calibratedX = (int)((FLOAT)calibratedX * 128.0f / -xMap );
+      *deltax = (int)((FLOAT)calibratedX * 128.0f / -xMap );
     else
-      calibratedX = 0;
+      *deltax = 0;
 
     if( yMap )
       calibratedY = (int)((FLOAT)calibratedY * 128.0f / yMap );
@@ -460,18 +465,15 @@ void osd_lightgun_read(int player, int *deltax, int *deltay)
       calibratedY = 0;
 
       // Lock to the expected range
-    if( calibratedX > 128 )
-      calibratedX = 128;
-    else if( calibratedX < -128 )
-      calibratedX = -128;
+    if( *deltax > 128 )
+      *deltax = 128;
+    else if( *deltax < -128 )
+      *deltax = -128;
 
-    if( calibratedY > 128 )
-      calibratedY = 128;
-    else if( calibratedY < -128 )
-      calibratedY = -128;
-
-    *deltax = calibratedX;
-    *deltay = calibratedY;
+    if( *deltax > 128 )
+      *deltax = 128;
+    else if( *deltax < -128 )
+      *deltax = -128;
   }
   else  
 	  *deltax = *deltay = 0;

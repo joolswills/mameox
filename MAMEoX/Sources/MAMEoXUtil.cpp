@@ -529,7 +529,6 @@ void CheckRAM( void )
     EndFontRender( TRUE );
   }
 	g_inputManager.WaitForNoButton( 0 );
-
 }
 #endif
 
