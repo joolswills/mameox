@@ -1774,7 +1774,7 @@ static int setdefcodesettings(struct mame_bitmap *bitmap,int selected)
 
 		if (ret >= 0)
 		{
-			sel &= 0xff;
+			sel &= SEL_MASK;
 
 			if (ret > 0 || seq_get_1(&entry[sel]->seq) == CODE_NONE)
 			{
@@ -1908,7 +1908,7 @@ static int setcodesettings(struct mame_bitmap *bitmap,int selected)
 
 		if (ret >= 0)
 		{
-			sel &= 0xff;
+			sel &= SEL_MASK;
 
 			if (ret > 0 || seq_get_1(&entry[sel]->seq) == CODE_NONE)
 			{
@@ -1999,7 +1999,7 @@ static int calibratejoysticks(struct mame_bitmap *bitmap,int selected)
 		else if (input_ui_pressed(IPT_UI_SELECT))
 		{
 			osd_joystick_calibrate();
-			sel &= 0xff;
+			sel &= SEL_MASK;
 		}
 
 		ui_displaymessagewindow(bitmap,buf);

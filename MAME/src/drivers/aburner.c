@@ -356,8 +356,8 @@ INPUT_PORTS_START( aburner )
 	PORT_START
 	PORT_ANALOG( 0xff, 0x7f, IPT_AD_STICK_Y | IPF_CENTER | IPF_REVERSE, 100, 4, 0x00, 0xff )
 
-	PORT_START /* throttle (hack - mapped as player2 stick) */
-	PORT_ANALOG( 0xff, 0x80, IPT_AD_STICK_Y | IPF_CENTER | IPF_PLAYER2, 100, 79, 0x00, 0xff )
+	PORT_START /* throttle (old player2 hack removed, now uses Z axis) */
+	PORT_ANALOG( 0xff, 0x80, IPT_AD_STICK_Z | IPF_CENTER, 100, 79, 0x00, 0xff )
 INPUT_PORTS_END
 
 INPUT_PORTS_START( aburner2 )
@@ -439,8 +439,8 @@ INPUT_PORTS_START( aburner2 )
 	PORT_START
 	PORT_ANALOG( 0xff, 0x7f, IPT_AD_STICK_Y | IPF_CENTER | IPF_REVERSE, 100, 4, 0x00, 0xff )
 
-	PORT_START /* throttle (hack - mapped as player2 stick) */
-	PORT_ANALOG( 0xff, 0x80, IPT_AD_STICK_Y | IPF_CENTER | IPF_PLAYER2, 100, 79, 0x00, 0xff )
+	PORT_START /* throttle (old player2 hack removed, now uses Z axis) */
+	PORT_ANALOG( 0xff, 0x80, IPT_AD_STICK_Z | IPF_CENTER, 100, 79, 0x00, 0xff )
 INPUT_PORTS_END
 
 INPUT_PORTS_START( thndrbld )
@@ -483,8 +483,8 @@ INPUT_PORTS_START( thndrbld )
 	PORT_START
 	PORT_ANALOG( 0xff, 0x7f, IPT_AD_STICK_X | IPF_CENTER | IPF_REVERSE, 100, 4, 0x00, 0xff )
 
-	PORT_START /* throttle (hack - mapped as player2 stick) */
-	PORT_ANALOG( 0xff, 0x80, IPT_AD_STICK_Y | IPF_CENTER | IPF_PLAYER2, 100, 79, 0x00, 0xff )
+	PORT_START /* throttle (old player2 hack removed, now uses Z axis) */
+	PORT_ANALOG( 0xff, 0x80, IPT_AD_STICK_Z | IPF_CENTER, 100, 79, 0x00, 0xff )
 
 	PORT_START
 	PORT_ANALOG( 0xff, 0x7f, IPT_AD_STICK_Y | IPF_CENTER, 100, 4, 0x00, 0xff )

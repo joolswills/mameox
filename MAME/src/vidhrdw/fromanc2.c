@@ -35,8 +35,7 @@ void fromanc2_set_dispvram_w(int vram)
 {
 	fromanc2_dispvram = (vram ? 1 : 0);
 
-	if (fromanc2_dispvram_old != fromanc2_dispvram)
-	{
+	if (fromanc2_dispvram_old != fromanc2_dispvram) {
 		fromanc2_dispvram_old = fromanc2_dispvram;
 
 		if (fromanc2_tilemap[fromanc2_dispvram][0]) tilemap_mark_all_tiles_dirty(fromanc2_tilemap[fromanc2_dispvram][0]);
@@ -56,8 +55,8 @@ INLINE void fromanc2_get_tile_info(int tile_index, int vram, int layer)
 {
 	int tile, color;
 
-	tile  = ((fromanc2_videoram[vram][layer][tile_index] & 0x3fff) | (fromanc2_gfxbank[vram][layer] << 14));
-	color = (((fromanc2_videoram[vram][layer][tile_index] & 0xc000) >> 14) | (0x10 * vram));
+	tile  = (fromanc2_videoram[vram][layer][tile_index] & 0x3fff) | (fromanc2_gfxbank[vram][layer] << 14);
+	color = ((fromanc2_videoram[vram][layer][tile_index] & 0xc000) >> 14) | (0x10 * vram);
 
 	SET_TILE_INFO(layer, tile, color, 0)
 }
@@ -76,7 +75,7 @@ INLINE void fromancr_get_tile_info(int tile_index, int vram, int layer)
 {
 	int tile, color;
 
-	tile  = (fromanc2_videoram[vram][layer][tile_index] | (fromanc2_gfxbank[vram][layer] << 16));
+	tile  = fromanc2_videoram[vram][layer][tile_index] | (fromanc2_gfxbank[vram][layer] << 16);
 	color = vram;
 
 	SET_TILE_INFO(layer, tile, color, 0)
@@ -114,16 +113,16 @@ WRITE16_HANDLER( fromanc2_paletteram_0_w )
 	COMBINE_DATA(&fromanc2_paletteram[0][offset]);
 
 	// GGGG_GRRR_RRBB_BBBx
-	r = ((data >>  6) & 0x1f);
-	g = ((data >> 11) & 0x1f);
-	b = ((data >>  1) & 0x1f);
+	r = (data >>  6) & 0x1f;
+	g = (data >> 11) & 0x1f;
+	b = (data >>  1) & 0x1f;
 
-	r = ((r << 3) | (r >> 2));
-	g = ((g << 3) | (g >> 2));
-	b = ((b << 3) | (b >> 2));
+	r = (r << 3) | (r >> 2);
+	g = (g << 3) | (g >> 2);
+	b = (b << 3) | (b >> 2);
 
-	color = (((offset & 0x0700) << 1) + (offset & 0x00ff));
-	palette_set_color((0x000 + color), r, g, b);
+	color = ((offset & 0x0700) << 1) + (offset & 0x00ff);
+	palette_set_color(0x000 + color, r, g, b);
 }
 
 WRITE16_HANDLER( fromanc2_paletteram_1_w )
@@ -134,16 +133,16 @@ WRITE16_HANDLER( fromanc2_paletteram_1_w )
 	COMBINE_DATA(&fromanc2_paletteram[1][offset]);
 
 	// GGGG_GRRR_RRBB_BBBx
-	r = ((data >>  6) & 0x1f);
-	g = ((data >> 11) & 0x1f);
-	b = ((data >>  1) & 0x1f);
+	r = (data >>  6) & 0x1f;
+	g = (data >> 11) & 0x1f;
+	b = (data >>  1) & 0x1f;
 
-	r = ((r << 3) | (r >> 2));
-	g = ((g << 3) | (g >> 2));
-	b = ((b << 3) | (b >> 2));
+	r = (r << 3) | (r >> 2);
+	g = (g << 3) | (g >> 2);
+	b = (b << 3) | (b >> 2);
 
-	color = (((offset & 0x0700) << 1) + (offset & 0x00ff));
-	palette_set_color((0x100 + color), r, g, b);
+	color = ((offset & 0x0700) << 1) + (offset & 0x00ff);
+	palette_set_color(0x100 + color, r, g, b);
 }
 
 
@@ -165,16 +164,16 @@ WRITE16_HANDLER( fromancr_paletteram_0_w )
 	COMBINE_DATA(&fromanc2_paletteram[0][offset]);
 
 	// xGGG_GGRR_RRRB_BBBB
-	r = ((data >>  5) & 0x1f);
-	g = ((data >> 10) & 0x1f);
-	b = ((data >>  0) & 0x1f);
+	r = (data >>  5) & 0x1f;
+	g = (data >> 10) & 0x1f;
+	b = (data >>  0) & 0x1f;
 
-	r = ((r << 3) | (r >> 2));
-	g = ((g << 3) | (g >> 2));
-	b = ((b << 3) | (b >> 2));
+	r = (r << 3) | (r >> 2);
+	g = (g << 3) | (g >> 2);
+	b = (b << 3) | (b >> 2);
 
-	color = (((offset & 0x0700) << 1) + (offset & 0x00ff));
-	palette_set_color((0x000 + color), r, g, b);
+	color = ((offset & 0x0700) << 1) + (offset & 0x00ff);
+	palette_set_color(0x000 + color, r, g, b);
 }
 
 WRITE16_HANDLER( fromancr_paletteram_1_w )
@@ -185,16 +184,16 @@ WRITE16_HANDLER( fromancr_paletteram_1_w )
 	COMBINE_DATA(&fromanc2_paletteram[1][offset]);
 
 	// xGGG_GGRR_RRRB_BBBB
-	r = ((data >>  5) & 0x1f);
-	g = ((data >> 10) & 0x1f);
-	b = ((data >>  0) & 0x1f);
+	r = (data >>  5) & 0x1f;
+	g = (data >> 10) & 0x1f;
+	b = (data >>  0) & 0x1f;
 
-	r = ((r << 3) | (r >> 2));
-	g = ((g << 3) | (g >> 2));
-	b = ((b << 3) | (b >> 2));
+	r = (r << 3) | (r >> 2);
+	g = (g << 3) | (g >> 2);
+	b = (b << 3) | (b >> 2);
 
-	color = (((offset & 0x0700) << 1) + (offset & 0x00ff));
-	palette_set_color((0x100 + color), r, g, b);
+	color = ((offset & 0x0700) << 1) + (offset & 0x00ff);
+	palette_set_color(0x100 + color, r, g, b);
 }
 
 
@@ -216,16 +215,16 @@ WRITE16_HANDLER( fromanc4_paletteram_0_w )
 	COMBINE_DATA(&fromanc2_paletteram[0][offset]);
 
 	// xRRR_RRGG_GGGB_BBBB
-	r = ((data >> 10) & 0x1f);
-	g = ((data >>  5) & 0x1f);
-	b = ((data >>  0) & 0x1f);
+	r = (data >> 10) & 0x1f;
+	g = (data >>  5) & 0x1f;
+	b = (data >>  0) & 0x1f;
 
-	r = ((r << 3) | (r >> 2));
-	g = ((g << 3) | (g >> 2));
-	b = ((b << 3) | (b >> 2));
+	r = (r << 3) | (r >> 2);
+	g = (g << 3) | (g >> 2);
+	b = (b << 3) | (b >> 2);
 
-	color = (((offset & 0x0700) << 1) + (offset & 0x00ff));
-	palette_set_color((0x000 + color), r, g, b);
+	color = ((offset & 0x0700) << 1) + (offset & 0x00ff);
+	palette_set_color(0x000 + color, r, g, b);
 }
 
 WRITE16_HANDLER( fromanc4_paletteram_1_w )
@@ -236,22 +235,22 @@ WRITE16_HANDLER( fromanc4_paletteram_1_w )
 	COMBINE_DATA(&fromanc2_paletteram[1][offset]);
 
 	// xRRR_RRGG_GGGB_BBBB
-	r = ((data >> 10) & 0x1f);
-	g = ((data >>  5) & 0x1f);
-	b = ((data >>  0) & 0x1f);
+	r = (data >> 10) & 0x1f;
+	g = (data >>  5) & 0x1f;
+	b = (data >>  0) & 0x1f;
 
-	r = ((r << 3) | (r >> 2));
-	g = ((g << 3) | (g >> 2));
-	b = ((b << 3) | (b >> 2));
+	r = (r << 3) | (r >> 2);
+	g = (g << 3) | (g >> 2);
+	b = (b << 3) | (b >> 2);
 
-	color = (((offset & 0x0700) << 1) + (offset & 0x00ff));
-	palette_set_color((0x100 + color), r, g, b);
+	color = ((offset & 0x0700) << 1) + (offset & 0x00ff);
+	palette_set_color(0x100 + color, r, g, b);
 }
 
 
 INLINE void fromanc2_dispvram_w(offs_t offset, data16_t data, data16_t mem_mask, int vram, int layer)
 {
-	layer += ((offset < 0x1000) ? 0 : 1);
+	layer += (offset < 0x1000) ? 0 : 1;
 
 	COMBINE_DATA(&fromanc2_videoram[vram][layer][offset & 0x0fff]);
 	tilemap_mark_tile_dirty(fromanc2_tilemap[vram][layer], offset & 0x0fff);
@@ -264,12 +263,11 @@ WRITE16_HANDLER( fromanc2_videoram_3_w ) { fromanc2_dispvram_w(offset, data, mem
 
 WRITE16_HANDLER( fromanc2_gfxreg_0_w )
 {
-	switch(offset)
-	{
-		case	0x00:	fromanc2_scrollx[0][0] = -(data - 0x000); break;
-		case	0x01:	fromanc2_scrolly[0][0] = -(data - 0x000); break;
-		case	0x02:	fromanc2_scrollx[0][1] = -(data - 0x004); break;
-		case	0x03:	fromanc2_scrolly[0][1] = -(data - 0x000); break;
+	switch (offset) {
+		case 0x00:	fromanc2_scrollx[0][0] = -(data - 0x000); break;
+		case 0x01:	fromanc2_scrolly[0][0] = -(data - 0x000); break;
+		case 0x02:	fromanc2_scrollx[0][1] = -(data - 0x004); break;
+		case 0x03:	fromanc2_scrolly[0][1] = -(data - 0x000); break;
 		// offset 0x04 - 0x11 unknown
 		default:	break;
 	}
@@ -277,12 +275,11 @@ WRITE16_HANDLER( fromanc2_gfxreg_0_w )
 
 WRITE16_HANDLER( fromanc2_gfxreg_1_w )
 {
-	switch(offset)
-	{
-		case	0x00:	fromanc2_scrollx[1][0] = -(data - 0x1be); break;
-		case	0x01:	fromanc2_scrolly[1][0] = -(data - 0x1ef); break;
-		case	0x02:	fromanc2_scrollx[1][1] = -(data - 0x1c2); break;
-		case	0x03:	fromanc2_scrolly[1][1] = -(data - 0x1ef); break;
+	switch (offset) {
+		case 0x00:	fromanc2_scrollx[1][0] = -(data - 0x1be); break;
+		case 0x01:	fromanc2_scrolly[1][0] = -(data - 0x1ef); break;
+		case 0x02:	fromanc2_scrollx[1][1] = -(data - 0x1c2); break;
+		case 0x03:	fromanc2_scrolly[1][1] = -(data - 0x1ef); break;
 		// offset 0x04 - 0x11 unknown
 		default:	break;
 	}
@@ -290,12 +287,11 @@ WRITE16_HANDLER( fromanc2_gfxreg_1_w )
 
 WRITE16_HANDLER( fromanc2_gfxreg_2_w )
 {
-	switch(offset)
-	{
-		case	0x00:	fromanc2_scrollx[0][2] = -(data - 0x1c0); break;
-		case	0x01:	fromanc2_scrolly[0][2] = -(data - 0x1ef); break;
-		case	0x02:	fromanc2_scrollx[0][3] = -(data - 0x1c3); break;
-		case	0x03:	fromanc2_scrolly[0][3] = -(data - 0x1ef); break;
+	switch (offset) {
+		case 0x00:	fromanc2_scrollx[0][2] = -(data - 0x1c0); break;
+		case 0x01:	fromanc2_scrolly[0][2] = -(data - 0x1ef); break;
+		case 0x02:	fromanc2_scrollx[0][3] = -(data - 0x1c3); break;
+		case 0x03:	fromanc2_scrolly[0][3] = -(data - 0x1ef); break;
 		// offset 0x04 - 0x11 unknown
 		default:	break;
 	}
@@ -303,12 +299,11 @@ WRITE16_HANDLER( fromanc2_gfxreg_2_w )
 
 WRITE16_HANDLER( fromanc2_gfxreg_3_w )
 {
-	switch(offset)
-	{
-		case	0x00:	fromanc2_scrollx[1][2] = -(data - 0x1bf); break;
-		case	0x01:	fromanc2_scrolly[1][2] = -(data - 0x1ef); break;
-		case	0x02:	fromanc2_scrollx[1][3] = -(data - 0x1c3); break;
-		case	0x03:	fromanc2_scrolly[1][3] = -(data - 0x1ef); break;
+	switch (offset) {
+		case 0x00:	fromanc2_scrollx[1][2] = -(data - 0x1bf); break;
+		case 0x01:	fromanc2_scrolly[1][2] = -(data - 0x1ef); break;
+		case 0x02:	fromanc2_scrollx[1][3] = -(data - 0x1c3); break;
+		case 0x03:	fromanc2_scrolly[1][3] = -(data - 0x1ef); break;
 		// offset 0x04 - 0x11 unknown
 		default:	break;
 	}
@@ -316,10 +311,10 @@ WRITE16_HANDLER( fromanc2_gfxreg_3_w )
 
 WRITE16_HANDLER( fromanc2_gfxbank_0_w )
 {
-	fromanc2_gfxbank[0][0] = ((data & 0x000f) >>  0);
-	fromanc2_gfxbank[0][1] = ((data & 0x00f0) >>  4);
-	fromanc2_gfxbank[0][2] = ((data & 0x0f00) >>  8);
-	fromanc2_gfxbank[0][3] = ((data & 0xf000) >> 12);
+	fromanc2_gfxbank[0][0] = (data & 0x000f) >>  0;
+	fromanc2_gfxbank[0][1] = (data & 0x00f0) >>  4;
+	fromanc2_gfxbank[0][2] = (data & 0x0f00) >>  8;
+	fromanc2_gfxbank[0][3] = (data & 0xf000) >> 12;
 	tilemap_mark_all_tiles_dirty(fromanc2_tilemap[0][0]);
 	tilemap_mark_all_tiles_dirty(fromanc2_tilemap[0][1]);
 	tilemap_mark_all_tiles_dirty(fromanc2_tilemap[0][2]);
@@ -328,10 +323,10 @@ WRITE16_HANDLER( fromanc2_gfxbank_0_w )
 
 WRITE16_HANDLER( fromanc2_gfxbank_1_w )
 {
-	fromanc2_gfxbank[1][0] = ((data & 0x000f) >>  0);
-	fromanc2_gfxbank[1][1] = ((data & 0x00f0) >>  4);
-	fromanc2_gfxbank[1][2] = ((data & 0x0f00) >>  8);
-	fromanc2_gfxbank[1][3] = ((data & 0xf000) >> 12);
+	fromanc2_gfxbank[1][0] = (data & 0x000f) >>  0;
+	fromanc2_gfxbank[1][1] = (data & 0x00f0) >>  4;
+	fromanc2_gfxbank[1][2] = (data & 0x0f00) >>  8;
+	fromanc2_gfxbank[1][3] = (data & 0xf000) >> 12;
 	tilemap_mark_all_tiles_dirty(fromanc2_tilemap[1][0]);
 	tilemap_mark_all_tiles_dirty(fromanc2_tilemap[1][1]);
 	tilemap_mark_all_tiles_dirty(fromanc2_tilemap[1][2]);
@@ -341,7 +336,7 @@ WRITE16_HANDLER( fromanc2_gfxbank_1_w )
 
 INLINE void fromancr_vram_w(offs_t offset, data16_t data, data16_t mem_mask, int layer)
 {
-	int vram = ((offset < 0x1000) ? 0 : 1);
+	int vram = (offset < 0x1000) ? 0 : 1;
 
 	COMBINE_DATA(&fromanc2_videoram[vram][layer][offset & 0x0fff]);
 	tilemap_mark_tile_dirty(fromanc2_tilemap[vram][layer], offset & 0x0fff);
@@ -353,12 +348,11 @@ WRITE16_HANDLER( fromancr_videoram_2_w ) { fromancr_vram_w(offset, data, mem_mas
 
 WRITE16_HANDLER( fromancr_gfxreg_0_w )
 {
-	switch(offset)
-	{
-		case	0x00:	fromanc2_scrollx[0][0] = -(data - 0x1bf); break;
-		case	0x01:	fromanc2_scrolly[0][0] = -(data - 0x1ef); break;
-		case	0x02:	fromanc2_scrollx[1][0] = -(data - 0x1c3); break;
-		case	0x03:	fromanc2_scrolly[1][0] = -(data - 0x1ef); break;
+	switch (offset) {
+		case 0x00:	fromanc2_scrollx[0][0] = -(data - 0x1bf); break;
+		case 0x01:	fromanc2_scrolly[0][0] = -(data - 0x1ef); break;
+		case 0x02:	fromanc2_scrollx[1][0] = -(data - 0x1c3); break;
+		case 0x03:	fromanc2_scrolly[1][0] = -(data - 0x1ef); break;
 		// offset 0x04 - 0x11 unknown
 		default:	break;
 	}
@@ -366,12 +360,11 @@ WRITE16_HANDLER( fromancr_gfxreg_0_w )
 
 WRITE16_HANDLER( fromancr_gfxreg_1_w )
 {
-	switch(offset)
-	{
-		case	0x00:	fromanc2_scrollx[0][1] = -(data - 0x000); break;
-		case	0x01:	fromanc2_scrolly[0][1] = -(data - 0x000); break;
-		case	0x02:	fromanc2_scrollx[1][1] = -(data - 0x004); break;
-		case	0x03:	fromanc2_scrolly[1][1] = -(data - 0x000); break;
+	switch (offset) {
+		case 0x00:	fromanc2_scrollx[0][1] = -(data - 0x000); break;
+		case 0x01:	fromanc2_scrolly[0][1] = -(data - 0x000); break;
+		case 0x02:	fromanc2_scrollx[1][1] = -(data - 0x004); break;
+		case 0x03:	fromanc2_scrolly[1][1] = -(data - 0x000); break;
 		// offset 0x04 - 0x11 unknown
 		default:	break;
 	}
@@ -379,10 +372,10 @@ WRITE16_HANDLER( fromancr_gfxreg_1_w )
 
 void fromancr_gfxbank_w(int data)
 {
-	fromanc2_gfxbank[0][0] = ((data & 0x0010) >>  4);	// BG (1P)
-	fromanc2_gfxbank[0][1] = ((data & 0xf000) >> 12);	// FG (1P)
-	fromanc2_gfxbank[1][0] = ((data & 0x0008) >>  3);	// BG (2P)
-	fromanc2_gfxbank[1][1] = ((data & 0x0f00) >>  8);	// FG (2P)
+	fromanc2_gfxbank[0][0] = (data & 0x0010) >>  4;	// BG (1P)
+	fromanc2_gfxbank[0][1] = (data & 0xf000) >> 12;	// FG (1P)
+	fromanc2_gfxbank[1][0] = (data & 0x0008) >>  3;	// BG (2P)
+	fromanc2_gfxbank[1][1] = (data & 0x0f00) >>  8;	// FG (2P)
 	tilemap_mark_all_tiles_dirty(fromanc2_tilemap[0][0]);
 	tilemap_mark_all_tiles_dirty(fromanc2_tilemap[0][1]);
 	tilemap_mark_all_tiles_dirty(fromanc2_tilemap[1][0]);
@@ -392,7 +385,7 @@ void fromancr_gfxbank_w(int data)
 
 INLINE void fromanc4_vram_w(offs_t offset, data16_t data, data16_t mem_mask, int layer)
 {
-	int vram = ((offset < 0x4000) ? 0 : 1);
+	int vram = (offset < 0x4000) ? 0 : 1;
 
 	COMBINE_DATA(&fromanc2_videoram[vram][layer][offset & 0x3fff]);
 	tilemap_mark_tile_dirty(fromanc2_tilemap[vram][layer], offset & 0x3fff);
@@ -404,17 +397,16 @@ WRITE16_HANDLER( fromanc4_videoram_2_w ) { fromanc4_vram_w(offset, data, mem_mas
 
 WRITE16_HANDLER( fromanc4_gfxreg_0_w )
 {
-	switch(offset)
-	{
-		case	0x00:	fromanc2_scrollx[0][2] = -(data - 0xfbb); break;
-		case	0x01:	fromanc2_scrolly[0][2] = -(data - 0x1e4); break;
-		case	0x02:	fromanc2_scrollx[1][2] = -(data - 0xfbb); break;
-		case	0x03:	fromanc2_scrolly[1][2] = -(data - 0x1e4); break;
-		case	0x05:	fromanc2_gfxbank[0][2] = ((data & 0x000f) >> 0);
-				fromanc2_gfxbank[1][2] = ((data & 0x0f00) >> 8);
-				tilemap_mark_all_tiles_dirty(fromanc2_tilemap[0][2]);
-				tilemap_mark_all_tiles_dirty(fromanc2_tilemap[1][2]);
-				break;
+	switch (offset) {
+		case 0x00:	fromanc2_scrollx[0][2] = -(data - 0xfbb); break;
+		case 0x01:	fromanc2_scrolly[0][2] = -(data - 0x1e4); break;
+		case 0x02:	fromanc2_scrollx[1][2] = -(data - 0xfbb); break;
+		case 0x03:	fromanc2_scrolly[1][2] = -(data - 0x1e4); break;
+		case 0x05:	fromanc2_gfxbank[0][2] = (data & 0x000f) >> 0;
+					fromanc2_gfxbank[1][2] = (data & 0x0f00) >> 8;
+					tilemap_mark_all_tiles_dirty(fromanc2_tilemap[0][2]);
+					tilemap_mark_all_tiles_dirty(fromanc2_tilemap[1][2]);
+					break;
 		// offset 0x04, 0x06 - 0x11 unknown
 		default:	break;
 	}
@@ -422,17 +414,16 @@ WRITE16_HANDLER( fromanc4_gfxreg_0_w )
 
 WRITE16_HANDLER( fromanc4_gfxreg_1_w )
 {
-	switch(offset)
-	{
-		case	0x00:	fromanc2_scrollx[0][1] = -(data - 0xfba); break;
-		case	0x01:	fromanc2_scrolly[0][1] = -(data - 0x1e4); break;
-		case	0x02:	fromanc2_scrollx[1][1] = -(data - 0xfba); break;
-		case	0x03:	fromanc2_scrolly[1][1] = -(data - 0x1e4); break;
-		case	0x05:	fromanc2_gfxbank[0][1] = ((data & 0x000f) >> 0);
-				fromanc2_gfxbank[1][1] = ((data & 0x0f00) >> 8);
-				tilemap_mark_all_tiles_dirty(fromanc2_tilemap[0][1]);
-				tilemap_mark_all_tiles_dirty(fromanc2_tilemap[1][1]);
-				break;
+	switch (offset) {
+		case 0x00:	fromanc2_scrollx[0][1] = -(data - 0xfba); break;
+		case 0x01:	fromanc2_scrolly[0][1] = -(data - 0x1e4); break;
+		case 0x02:	fromanc2_scrollx[1][1] = -(data - 0xfba); break;
+		case 0x03:	fromanc2_scrolly[1][1] = -(data - 0x1e4); break;
+		case 0x05:	fromanc2_gfxbank[0][1] = (data & 0x000f) >> 0;
+					fromanc2_gfxbank[1][1] = (data & 0x0f00) >> 8;
+					tilemap_mark_all_tiles_dirty(fromanc2_tilemap[0][1]);
+					tilemap_mark_all_tiles_dirty(fromanc2_tilemap[1][1]);
+					break;
 		// offset 0x04, 0x06 - 0x11 unknown
 		default:	break;
 	}
@@ -440,17 +431,16 @@ WRITE16_HANDLER( fromanc4_gfxreg_1_w )
 
 WRITE16_HANDLER( fromanc4_gfxreg_2_w )
 {
-	switch(offset)
-	{
-		case	0x00:	fromanc2_scrollx[0][0] = -(data - 0xfbb); break;
-		case	0x01:	fromanc2_scrolly[0][0] = -(data - 0x1e4); break;
-		case	0x02:	fromanc2_scrollx[1][0] = -(data - 0xfbb); break;
-		case	0x03:	fromanc2_scrolly[1][0] = -(data - 0x1e4); break;
-		case	0x05:	fromanc2_gfxbank[0][0] = ((data & 0x000f) >> 0);
-				fromanc2_gfxbank[1][0] = ((data & 0x0f00) >> 8);
-				tilemap_mark_all_tiles_dirty(fromanc2_tilemap[0][0]);
-				tilemap_mark_all_tiles_dirty(fromanc2_tilemap[1][0]);
-				break;
+	switch (offset) {
+		case 0x00:	fromanc2_scrollx[0][0] = -(data - 0xfbb); break;
+		case 0x01:	fromanc2_scrolly[0][0] = -(data - 0x1e4); break;
+		case 0x02:	fromanc2_scrollx[1][0] = -(data - 0xfbb); break;
+		case 0x03:	fromanc2_scrolly[1][0] = -(data - 0x1e4); break;
+		case 0x05:	fromanc2_gfxbank[0][0] = (data & 0x000f) >> 0;
+					fromanc2_gfxbank[1][0] = (data & 0x0f00) >> 8;
+					tilemap_mark_all_tiles_dirty(fromanc2_tilemap[0][0]);
+					tilemap_mark_all_tiles_dirty(fromanc2_tilemap[1][0]);
+					break;
 		// offset 0x04, 0x06 - 0x11 unknown
 		default:	break;
 	}
@@ -486,25 +476,24 @@ VIDEO_START( fromanc2 )
 	fromanc2_paletteram[0] = auto_malloc(0x800 * 2);
 	fromanc2_paletteram[1] = auto_malloc(0x800 * 2);
 
-	if ((!fromanc2_tilemap[0][0]) ||
-	    (!fromanc2_tilemap[0][1]) ||
-	    (!fromanc2_tilemap[0][2]) ||
-	    (!fromanc2_tilemap[0][3]) ||
-	    (!fromanc2_tilemap[1][0]) ||
-	    (!fromanc2_tilemap[1][1]) ||
-	    (!fromanc2_tilemap[1][2]) ||
-	    (!fromanc2_tilemap[1][3]) ||
-	    (!fromanc2_videoram[0][0]) ||
-	    (!fromanc2_videoram[0][1]) ||
-	    (!fromanc2_videoram[0][2]) ||
-	    (!fromanc2_videoram[0][3]) ||
-	    (!fromanc2_videoram[1][0]) ||
-	    (!fromanc2_videoram[1][1]) ||
-	    (!fromanc2_videoram[1][2]) ||
-	    (!fromanc2_videoram[1][3]) ||
-	    (!fromanc2_paletteram[0]) ||
-	    (!fromanc2_paletteram[1]))
-	{
+	if (!fromanc2_tilemap[0][0] ||
+		!fromanc2_tilemap[0][1] ||
+		!fromanc2_tilemap[0][2] ||
+		!fromanc2_tilemap[0][3] ||
+		!fromanc2_tilemap[1][0] ||
+		!fromanc2_tilemap[1][1] ||
+		!fromanc2_tilemap[1][2] ||
+		!fromanc2_tilemap[1][3] ||
+		!fromanc2_videoram[0][0] ||
+		!fromanc2_videoram[0][1] ||
+		!fromanc2_videoram[0][2] ||
+		!fromanc2_videoram[0][3] ||
+		!fromanc2_videoram[1][0] ||
+		!fromanc2_videoram[1][1] ||
+		!fromanc2_videoram[1][2] ||
+		!fromanc2_videoram[1][3] ||
+		!fromanc2_paletteram[0] ||
+		!fromanc2_paletteram[1]) {
 		return 1;
 	}
 
@@ -541,21 +530,20 @@ VIDEO_START( fromancr )
 	fromanc2_paletteram[0] = auto_malloc(0x800 * 2);
 	fromanc2_paletteram[1] = auto_malloc(0x800 * 2);
 
-	if ((!fromanc2_tilemap[0][0]) ||
-	    (!fromanc2_tilemap[0][1]) ||
-	    (!fromanc2_tilemap[0][2]) ||
-	    (!fromanc2_tilemap[1][0]) ||
-	    (!fromanc2_tilemap[1][1]) ||
-	    (!fromanc2_tilemap[1][2]) ||
-	    (!fromanc2_videoram[0][0]) ||
-	    (!fromanc2_videoram[0][1]) ||
-	    (!fromanc2_videoram[0][2]) ||
-	    (!fromanc2_videoram[1][0]) ||
-	    (!fromanc2_videoram[1][1]) ||
-	    (!fromanc2_videoram[1][2]) ||
-	    (!fromanc2_paletteram[0]) ||
-	    (!fromanc2_paletteram[1]))
-	{
+	if (!fromanc2_tilemap[0][0] ||
+		!fromanc2_tilemap[0][1] ||
+		!fromanc2_tilemap[0][2] ||
+		!fromanc2_tilemap[1][0] ||
+		!fromanc2_tilemap[1][1] ||
+		!fromanc2_tilemap[1][2] ||
+		!fromanc2_videoram[0][0] ||
+		!fromanc2_videoram[0][1] ||
+		!fromanc2_videoram[0][2] ||
+		!fromanc2_videoram[1][0] ||
+		!fromanc2_videoram[1][1] ||
+		!fromanc2_videoram[1][2] ||
+		!fromanc2_paletteram[0] ||
+		!fromanc2_paletteram[1]) {
 		return 1;
 	}
 
@@ -591,21 +579,20 @@ VIDEO_START( fromanc4 )
 	fromanc2_paletteram[0] = auto_malloc(0x800 * 2);
 	fromanc2_paletteram[1] = auto_malloc(0x800 * 2);
 
-	if ((!fromanc2_tilemap[0][0]) ||
-	    (!fromanc2_tilemap[0][1]) ||
-	    (!fromanc2_tilemap[0][2]) ||
-	    (!fromanc2_tilemap[1][0]) ||
-	    (!fromanc2_tilemap[1][1]) ||
-	    (!fromanc2_tilemap[1][2]) ||
-	    (!fromanc2_videoram[0][0]) ||
-	    (!fromanc2_videoram[0][1]) ||
-	    (!fromanc2_videoram[0][2]) ||
-	    (!fromanc2_videoram[1][0]) ||
-	    (!fromanc2_videoram[1][1]) ||
-	    (!fromanc2_videoram[1][2]) ||
-	    (!fromanc2_paletteram[0]) ||
-	    (!fromanc2_paletteram[1]))
-	{
+	if (!fromanc2_tilemap[0][0] ||
+		!fromanc2_tilemap[0][1] ||
+		!fromanc2_tilemap[0][2] ||
+		!fromanc2_tilemap[1][0] ||
+		!fromanc2_tilemap[1][1] ||
+		!fromanc2_tilemap[1][2] ||
+		!fromanc2_videoram[0][0] ||
+		!fromanc2_videoram[0][1] ||
+		!fromanc2_videoram[0][2] ||
+		!fromanc2_videoram[1][0] ||
+		!fromanc2_videoram[1][1] ||
+		!fromanc2_videoram[1][2] ||
+		!fromanc2_paletteram[0] ||
+		!fromanc2_paletteram[1]) {
 		return 1;
 	}
 
@@ -627,26 +614,22 @@ VIDEO_START( fromanc4 )
 
 VIDEO_UPDATE( fromanc2 )
 {
-	if (fromanc2_tilemap[fromanc2_dispvram][0])
-	{
+	if (fromanc2_tilemap[fromanc2_dispvram][0]) {
 		tilemap_set_scrollx(fromanc2_tilemap[fromanc2_dispvram][0], 0, -fromanc2_scrollx[fromanc2_dispvram][0]);
 		tilemap_set_scrolly(fromanc2_tilemap[fromanc2_dispvram][0], 0, -fromanc2_scrolly[fromanc2_dispvram][0]);
 	 	tilemap_draw(bitmap,cliprect, fromanc2_tilemap[fromanc2_dispvram][0], 0, 0);
 	}
-	if (fromanc2_tilemap[fromanc2_dispvram][1])
-	{
+	if (fromanc2_tilemap[fromanc2_dispvram][1]) {
 		tilemap_set_scrollx(fromanc2_tilemap[fromanc2_dispvram][1], 0, -fromanc2_scrollx[fromanc2_dispvram][1]);
 		tilemap_set_scrolly(fromanc2_tilemap[fromanc2_dispvram][1], 0, -fromanc2_scrolly[fromanc2_dispvram][1]);
 	 	tilemap_draw(bitmap,cliprect, fromanc2_tilemap[fromanc2_dispvram][1], 0, 0);
 	}
-	if (fromanc2_tilemap[fromanc2_dispvram][2])
-	{
+	if (fromanc2_tilemap[fromanc2_dispvram][2]) {
 		tilemap_set_scrollx(fromanc2_tilemap[fromanc2_dispvram][2], 0, -fromanc2_scrollx[fromanc2_dispvram][2]);
 		tilemap_set_scrolly(fromanc2_tilemap[fromanc2_dispvram][2], 0, -fromanc2_scrolly[fromanc2_dispvram][2]);
 	 	tilemap_draw(bitmap,cliprect, fromanc2_tilemap[fromanc2_dispvram][2], 0, 0);
 	}
-	if (fromanc2_tilemap[fromanc2_dispvram][3])
-	{
+	if (fromanc2_tilemap[fromanc2_dispvram][3]) {
 		tilemap_set_scrollx(fromanc2_tilemap[fromanc2_dispvram][3], 0, -fromanc2_scrollx[fromanc2_dispvram][3]);
 		tilemap_set_scrolly(fromanc2_tilemap[fromanc2_dispvram][3], 0, -fromanc2_scrolly[fromanc2_dispvram][3]);
 	 	tilemap_draw(bitmap,cliprect, fromanc2_tilemap[fromanc2_dispvram][3], 0, 0);

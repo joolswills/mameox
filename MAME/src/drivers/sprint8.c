@@ -608,7 +608,7 @@ ROM_END
 
 
 GAMEX( 1977, sprint8,  0,       sprint8, sprint8,  0, ROT0, "Atari", "Sprint 8",             GAME_NO_SOUND )
-GAMEX( 1977, sprint8a, sprint8, sprint8, sprint8p, 0, ROT0, "Atari", "Sprint 8 Sprint 8 (play tag & chase)", GAME_NO_SOUND )
+GAMEX( 1977, sprint8a, sprint8, sprint8, sprint8p, 0, ROT0, "Atari", "Sprint 8 (play tag & chase)", GAME_NO_SOUND )
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

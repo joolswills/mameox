@@ -423,6 +423,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\dynax.c", "241" );
   RegisterSectionName( "src\\drivers\\dynduke.c", "242" );
   RegisterSectionName( "src\\drivers\\enigma2.c", "243" );
+  RegisterSectionName( "src\\drivers\\epos.c", "8" );
   RegisterSectionName( "src\\drivers\\eprom.c", "36" );
   RegisterSectionName( "src\\drivers\\equites.c", "246" );
   RegisterSectionName( "src\\drivers\\esd16.c", "247" );
@@ -456,7 +457,6 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\fromance.c", "22" );
   RegisterSectionName( "src\\drivers\\funkybee.c", "276" );
   RegisterSectionName( "src\\drivers\\funkyjet.c", "277" );
-  RegisterSectionName( "src\\drivers\\fuuki16.c", "278" );
   RegisterSectionName( "src\\drivers\\fuukifg2.c", "758" );
   RegisterSectionName( "src\\drivers\\fuukifg3.c", "759" );
   RegisterSectionName( "src\\drivers\\gaelco.c", "279" );
@@ -944,7 +944,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\zerozone.c", "744" );
   RegisterSectionName( "src\\drivers\\zn.c", "745" );
   RegisterSectionName( "src\\drivers\\zodiack.c", "11" );
-  RegisterSectionName( "src\\drivers\\epos.c", "8" );
+  RegisterSectionName( "src\\drivers\\inufuku.c", "767" );
 }
 #pragma code_seg()
 #pragma data_seg()

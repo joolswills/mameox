@@ -1,4 +1,4 @@
-Version 0.73.1b
+Version 0.74.1b
 
    -------------------------------------------------------------
   - \MAME\src:
@@ -97,6 +97,27 @@ Version 0.73.1b
   - Batman Part 2 (galaxian.c): Dep on phoenix.c
   - Beastie Feastie (pacman.c): Dep on epos.c
 
+ --- Integrated MAME version 0.74, changes follow -------------------
+
+ Changes in the \MAME\src directory
+
+ Removals:
+
+   drivers\
+     fuuki16.c
+
+   vidhrdw\
+     fuuki16.c
+
+
+ Additions:
+
+   drivers\
+     inufuku.c
+
+   vidhrdw\
+     inufuku.c
+
  --- Integrated pong and monaco gp from PatchMAME 0.62.1 ------------
 
  Note: The integration is only partial, looks like a fair amount
@@ -131,8 +152,6 @@ Version 0.73.1b
      cpuintrf.c
      cpuintrf.h
    
-
-
  --- Integrated MAME version 0.73, changes follow -------------------
 
  Changes in the \MAME\src directory
