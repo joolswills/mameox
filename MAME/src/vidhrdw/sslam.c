@@ -1,11 +1,11 @@
-#pragma code_seg("C518")
-#pragma data_seg("D518")
-#pragma bss_seg("B518")
-#pragma const_seg("K518")
-#pragma comment(linker, "/merge:D518=518")
-#pragma comment(linker, "/merge:C518=518")
-#pragma comment(linker, "/merge:B518=518")
-#pragma comment(linker, "/merge:K518=518")
+#pragma code_seg("C604")
+#pragma data_seg("D604")
+#pragma bss_seg("B604")
+#pragma const_seg("K604")
+#pragma comment(linker, "/merge:D604=604")
+#pragma comment(linker, "/merge:C604=604")
+#pragma comment(linker, "/merge:B604=604")
+#pragma comment(linker, "/merge:K604=604")
 /* Super Slam - Video Hardware */
 
 #include "driver.h"

@@ -1,11 +1,11 @@
-#pragma code_seg("C520")
-#pragma data_seg("D520")
-#pragma bss_seg("B520")
-#pragma const_seg("K520")
-#pragma comment(linker, "/merge:D520=520")
-#pragma comment(linker, "/merge:C520=520")
-#pragma comment(linker, "/merge:B520=520")
-#pragma comment(linker, "/merge:K520=520")
+#pragma code_seg("C606")
+#pragma data_seg("D606")
+#pragma bss_seg("B606")
+#pragma const_seg("K606")
+#pragma comment(linker, "/merge:D606=606")
+#pragma comment(linker, "/merge:C606=606")
+#pragma comment(linker, "/merge:B606=606")
+#pragma comment(linker, "/merge:K606=606")
 /***************************************************************************
 
 					-= Seta, Sammy, Visco (SSV) System =-

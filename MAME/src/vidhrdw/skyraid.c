@@ -1,11 +1,11 @@
-#pragma code_seg("C496")
-#pragma data_seg("D496")
-#pragma bss_seg("B496")
-#pragma const_seg("K496")
-#pragma comment(linker, "/merge:D496=496")
-#pragma comment(linker, "/merge:C496=496")
-#pragma comment(linker, "/merge:B496=496")
-#pragma comment(linker, "/merge:K496=496")
+#pragma code_seg("C581")
+#pragma data_seg("D581")
+#pragma bss_seg("B581")
+#pragma const_seg("K581")
+#pragma comment(linker, "/merge:D581=581")
+#pragma comment(linker, "/merge:C581=581")
+#pragma comment(linker, "/merge:B581=581")
+#pragma comment(linker, "/merge:K581=581")
 /***************************************************************************
 
 Atari Sky Raider video emulation

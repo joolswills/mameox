@@ -1,11 +1,11 @@
-#pragma code_seg("C479")
-#pragma data_seg("D479")
-#pragma bss_seg("B479")
-#pragma const_seg("K479")
-#pragma comment(linker, "/merge:D479=479")
-#pragma comment(linker, "/merge:C479=479")
-#pragma comment(linker, "/merge:B479=479")
-#pragma comment(linker, "/merge:K479=479")
+#pragma code_seg("C564")
+#pragma data_seg("D564")
+#pragma bss_seg("B564")
+#pragma const_seg("K564")
+#pragma comment(linker, "/merge:D564=564")
+#pragma comment(linker, "/merge:C564=564")
+#pragma comment(linker, "/merge:B564=564")
+#pragma comment(linker, "/merge:K564=564")
 /* vidhrdw/shangkid */
 
 #include "driver.h"
