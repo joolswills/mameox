@@ -274,10 +274,10 @@ int cpu_init(void)
   {
     MEMORYSTATUS memStatus;
     GlobalMemoryStatus(  &memStatus );
-    PRINTMSG( T_INFO, 
+    PRINTMSG(( T_INFO, 
               "Memory before unloading CPUs: %lu/%lu",
               memStatus.dwAvailPhys, 
-              memStatus.dwTotalPhys );
+              memStatus.dwTotalPhys ));
   }
   #endif
 
@@ -303,10 +303,10 @@ int cpu_init(void)
   {
     MEMORYSTATUS memStatus;
     GlobalMemoryStatus(  &memStatus );
-    PRINTMSG( T_INFO, 
+    PRINTMSG(( T_INFO, 
               "Memory after unloading CPUs: %lu/%lu",
               memStatus.dwAvailPhys, 
-              memStatus.dwTotalPhys );
+              memStatus.dwTotalPhys ));
   }
   #endif
 
