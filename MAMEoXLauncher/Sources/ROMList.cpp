@@ -161,8 +161,8 @@ BOOL CROMList::GenerateROMList( void )
   }
   else
   {
-    HANDLE findHandle = FindFirstFile( g_FileIOConfig.m_RomPath + "\\*",
-      &findData );
+    HANDLE findHandle = FindFirstFile( (g_FileIOConfig.m_RomPath + "\\*").c_str(),
+                                        &findData );
     if( findHandle == INVALID_HANDLE_VALUE )
     {
       PRINTMSG( T_ERROR, "Could not find files!" );
@@ -192,9 +192,6 @@ BOOL CROMList::GenerateROMList( void )
     FindClose( findHandle );
   }
 
-  CStdString strBuff;
-  strBuff.Format("Found %lu zip files!\n", zipFileNames.size());
-  OutputDebugString(strBuff);
 	PRINTMSG( T_INFO, "Found %lu zip files!", zipFileNames.size() );
 
   // Check the zip files against the list of all known zip files

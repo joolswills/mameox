@@ -28,6 +28,9 @@
 #ifndef LIBSMB_CPP_DEFINES_H
 #define LIBSMB_CPP_DEFINES_H
 
+#include "MAMEoX.h"
+
+
 /* This is modified by configure */
 #define SIZEOF_CHAR 1
 #define SIZEOF_SHORT 2
@@ -161,7 +164,12 @@ struct hostent *
 gethostbyname(
     const char * name
     );
-int xboxstricmp(const char* str1,const char* str2);
+
+ // I switched this to just use stricmp from the C lib, as that
+ // is what is used by MAMEoX.h (which defines strcasecmp and
+ // is now included to allow PRINTMSG calls instead of OutputDebugString's)
+ // [EBA]
+//int xboxstricmp(const char* str1,const char* str2);
 #endif
 
 #endif // LIBSMB_CPP_DEFINES_H

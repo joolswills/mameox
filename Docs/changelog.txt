@@ -1,8 +1,33 @@
 Version 0.66b
+
+  - \MAMEoX\Includes\StdString.h:
+    - Defined SS_NO_IMPLICIT_CAST to force us to
+      use c_str(). Apparently the CStdString class
+      cannot be passed as an elipsis argument, which
+      is why it sometimes crashes in PRINTMSG macros.
+      (See the notes for SS_SAFE_FORMAT in this file)
+
+  - \MAMEoX\Includes\MAMEoX.h
+    - Updated version number
+
   - \MAMEoX\Sources\xbox_Main.cpp
     - Removed unloading of game sections after a game
       was run, this speeds up the return to the game selection
       by quite a bit. (opcode)
+    - Hopefully disabled memory card initialization, as it
+      causes crashes
+    - Changed build process to use custom imagebld.switch
+      files, setting the driver sections to \NOPRELOAD as
+      originally intended. This allows us to remove the Unload
+      and Load general section calls and just load the individual
+      sections that we need, speeding up load times.
+
+  - \MAMEoX\Sources\MAMEoXUtil.cpp
+    - Added network and directory ini entries to SaveOptions
+    - Added "DisableNetworking" option to ensure that networking
+      is not started at all if not wanted. For some reason my
+      current network setup takes about 40 seconds to boot in debug
+      mode, this is a hack until I figure out why.
 
   - \MAME\src\vidhrdw\namcos1.c
     - Reverted back to MAME 0.60 version of this file
@@ -12,6 +37,44 @@ Version 0.66b
       would load the roms then crash when video was 
       started. (opcode)
 
+  - \Sectionize.pl
+    - Updated to dump two imagebld.switch files, one for
+      debug, one for release. Hopefully this can be used
+      to eliminate the need to unload a ton of sections
+      before executing each ROM
+
+  - \imageblddbg.switch
+  - \imagebld.switch
+  - \DBGMAMEoX_XBE.bat
+  - \MAMEoX_XBE.bat
+    - Added files necessary to generate MAMEoX.xbe without
+      preloaded XBE sections.
+    - These files were immediately removed, as I didn't like
+      the way it ended up working, did some profiling, and
+      realized that it wasn't making a noticeable difference
+      (even in debug mode)
+
+  - \MAMEoXLauncher\Sources\main.cpp
+    - Hopefully disabled memory card initialization, as it
+      causes crashes
+
+  - \ZLIB\ZLIB.vcproj
+  - \MAMEoXLauncher\MAMEoXLauncher.vcproj
+  - \MAMEoX\MAMEoX.vcproj
+  - \MAME\MAME.vcproj
+  - \libsmb++\libsmb.vcproj
+    - Changed all debug versions to use single-threaded debug
+      lib to stay inline w/ release mode
+    - Fixed problem where MAMEoX project attempted to use the
+      release mode libsmb in debug mode, making it impossible
+      to automatically build from clean in debug mode (unless
+      it was done following a release build)
+    - Changed MAMEoX XBE to use runtime checking on uninitialized
+      vars and stack validity in debug mode, led to discovery of
+      an apparent stack overflow and slight increase of stack size
+
+
+*********************************************************************
 Version 0.65b
   - Fixed a slight glitch in rendering where a grey/white
     bar would show on the left and right of the rendered
@@ -151,6 +214,7 @@ Version 0.65b
       wolfpack.c
 
 
+*********************************************************************
 Version 0.64b
 
   - \Docs\readme.txt:
@@ -298,6 +362,7 @@ Version 0.64b
 	truco.c
 	unico.c
 
+*********************************************************************
 Version 0.63b
   
   - \MAMEoX\MAMEoX_VC6.dsp
@@ -351,6 +416,7 @@ Version 0.63b
 
 
 
+*********************************************************************
 Version 0.62b
   
   - \MAME\MAME_VC6.dsp
@@ -392,7 +458,7 @@ Version 0.62b
     - Added changelog
 
 
-===============================================================================
+*********************************************************************
 Version 0.61b
 	- No changelog
 

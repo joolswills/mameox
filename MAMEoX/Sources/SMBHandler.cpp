@@ -45,7 +45,7 @@ CSMBHandler::CSMBHandler(void)
   m_pSMB = new SMB();
 
   if( g_NetworkConfig.m_NameServer[0] != 0x00 )
-    m_pSMB->setNBNSAddress(g_NetworkConfig.m_NameServer);
+    m_pSMB->setNBNSAddress(g_NetworkConfig.m_NameServer.c_str());
 
   m_pSMB->setPasswordCallback(&cb);
   m_fd = -1;
@@ -75,7 +75,7 @@ bool CSMBHandler::GetDirectory(const CStdString& strDirectory,
 
   SMBdirent* dirEnt;
 
-  int fd = m_pSMB->opendir(strDirectory);
+  int fd = m_pSMB->opendir(strDirectory.c_str());
   if (fd < 0) 
   {
     return false;
@@ -87,12 +87,12 @@ bool CSMBHandler::GetDirectory(const CStdString& strDirectory,
     {
       CStdString strName = dirEnt->d_name;
 
-      if ((strName.Find(strExtFilter) != -1) || (strExtFilter.IsEmpty()))
+      if ((strName.Find(strExtFilter.c_str()) != -1) || (strExtFilter.IsEmpty()))
       {
         // Chop off the extension if we need to
         if (bChopExt)
         {
-          strName = strName.Left(strName.Find(strExtFilter));
+          strName = strName.Left(strName.Find(strExtFilter.c_str()));
         }
 
         // Add the fielname to the vector
@@ -115,14 +115,14 @@ bool CSMBHandler::GetDirectory(const CStdString& strDirectory,
 //----------------------------------------------------------------------
 bool CSMBHandler::CopyFile(const CStdString& strSrcFile, const CStdString& strDestFile)
 {
-  if (!Open(strSrcFile))
+  if (!Open(strSrcFile.c_str()))
   {
     return false;
   }
 
   // Open the output file for write
   HANDLE hFile;
-  hFile = CreateFile(	strDestFile,
+  hFile = CreateFile(	strDestFile.c_str(),
                       GENERIC_WRITE,
                       0,
                       NULL,
@@ -180,7 +180,7 @@ void CSMBHandler::ParsePasswd(const CStdString& strSMBPath)
     }
 
     // Copy the string back to the global
-    strcpy(szPassWd, strSMBPath.Mid(iPassEndIdx, iPassEndIdx-iPassStartIdx));
+    strcpy(szPassWd, strSMBPath.Mid(iPassEndIdx, iPassEndIdx-iPassStartIdx).c_str() );
   }
   else
   {

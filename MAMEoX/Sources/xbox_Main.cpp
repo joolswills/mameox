@@ -94,18 +94,18 @@ void __cdecl main( void )
 #else
 	g_font.Create( "Font.xpr", 0 );
 #endif
+
   LoadOptions();
 
-	// Intialize the various MAME OSD-specific subsystems
+	  // Intialize the various MAMEoX subsystems
   InitializeTiming();
 	InitializeFileIO();
-  InitializeNetwork();
 	InitializeD3DRenderer( g_graphicsManager, &g_font );
   
   SaveOptions();
 
-	// Initialize the input subsystem
-	g_inputManager.Create( 4, 8 );
+	  // Initialize the input subsystem
+	g_inputManager.Create( 4, 0 );  // 4 controllers, no memory cards
 
     // Check the launch data to ensure that we've been started properly
   if( ret != ERROR_SUCCESS || g_launchDataType != LDT_TITLE )
@@ -137,15 +137,20 @@ CHECKRAM();
   }
   else
   {
+      // Bring up the network
+    if( !g_NetworkConfig.m_networkDisabled )
+      InitializeNetwork();
+
       // Unload the XGRAPHICS section, as we won't be using it at all
     XFreeSection( "XGRPH" );
 
       // This shouldn't be necessary, IMAGEBLD should not load the non-data sections,
       //  as they're defined /NOPRELOAD
+      // Update: I hacked it so that imagebld would not preload the sections
+      //         however, the hack was less than ideal, so I quickly profiled
+      //         this call, and it takes basically no time whatsoever, so I changed
+      //         everything back to the way it was before. [EBA]
     UnloadDriverNonDataSections();    
-
-      // This should only be necessary if IMAGEBLD doesn't load any sections
-    LoadDriverDataSections();
 
       // Sort the game drivers and run the ROM
     qsort( drivers, mameoxLaunchData->m_totalMAMEGames, sizeof(drivers[0]), compareDriverNames );

@@ -121,10 +121,11 @@ void LoadOptions( void )
   SetScreenUsage( xPercentage, yPercentage );
 
   // Grab the network settings
-  g_NetworkConfig.m_IPAddr     = iniFile.GetProfileString("Network", "IPAddress",  DEFAULT_IPADDR);
-  g_NetworkConfig.m_Gateway    = iniFile.GetProfileString("Network", "Gateway",    DEFAULT_GATEWAY);
-  g_NetworkConfig.m_SubnetMask = iniFile.GetProfileString("Network", "Subnet",     DEFAULT_SUBNETMASK);
-  g_NetworkConfig.m_NameServer = iniFile.GetProfileString("Network", "NameServer", DEFAULT_NAMESERVER);
+  g_NetworkConfig.m_networkDisabled = iniFile.GetProfileInt( "Network", "DisableNetworking",  FALSE );
+  g_NetworkConfig.m_IPAddr          = iniFile.GetProfileString("Network", "IPAddress",  DEFAULT_IPADDR);
+  g_NetworkConfig.m_Gateway         = iniFile.GetProfileString("Network", "Gateway",    DEFAULT_GATEWAY);
+  g_NetworkConfig.m_SubnetMask      = iniFile.GetProfileString("Network", "Subnet",     DEFAULT_SUBNETMASK);
+  g_NetworkConfig.m_NameServer      = iniFile.GetProfileString("Network", "NameServer", DEFAULT_NAMESERVER);
 
   // Grab the directory settings
   g_FileIOConfig.m_ALTDrive           = iniFile.GetProfileString("Directories", "ALTDrive",            DEFAULT_ALTDRIVE);
@@ -209,6 +210,7 @@ void SaveOptions( void )
 
 
     //-- Write the network settings ---------------------------------------------
+  iniFile.WriteProfileInt( "Network", "DisableNetworking",  g_NetworkConfig.m_networkDisabled );
   iniFile.WriteProfileString( "Network", "IPAddress",  g_NetworkConfig.m_IPAddr );
   iniFile.WriteProfileString( "Network", "Gateway",    g_NetworkConfig.m_Gateway );
   iniFile.WriteProfileString( "Network", "Subnet",     g_NetworkConfig.m_SubnetMask );

@@ -12,6 +12,7 @@ extern "C" {
 //= I N C L U D E S ====================================================
 #include "osdepend.h"
 #include "osd_cpu.h"
+#include "DebugLogger.h"
 #include <Xtl.h>
 
 //= D E F I N E S ======================================================

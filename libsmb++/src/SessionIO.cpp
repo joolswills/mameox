@@ -19,6 +19,7 @@
     MA 02139, USA.
 */
 #include "defines.h"
+#include "MAMEoX.h"
 //#ifndef USE_SAMBA
 
 // Network related includes
@@ -92,7 +93,7 @@ int SessionIO::connect(const char *hostname, uint16 p)
 	hostName=NULL;
 	hostName=new char[strlen(hostList->name)+1];
 	strcpy(hostName,hostList->name);
-	OutputDebugString(hostName);
+  PRINTMSG( T_INFO, hostName );
 
 	int ret=SessionIO::connect(hostList->ip, p);
 	delete hostList;
@@ -152,7 +153,7 @@ int SessionIO::send(SessionPacket *p)
 {
 	if (!p)
 	{
-		OutputDebugString("SessionIO::send() NULL pointer\n");
+		PRINTMSG( T_INFO, "SessionIO::send() NULL pointer" );
 		errno=SESSION_ERROR_NOT_ENOUGH_RESOURCES;
 		return -1;
 	}
@@ -160,7 +161,7 @@ int SessionIO::send(SessionPacket *p)
 	uint8 *packet=p->packet();
 	if (!packet)
 	{	
-		OutputDebugString("SessionIO::send() packet=NULL\n");
+		PRINTMSG( T_INFO, "SessionIO::send() packet=NULL\n");
 		errno=SESSION_ERROR_NOT_ENOUGH_RESOURCES;
 		return -1;
 	}
@@ -173,7 +174,7 @@ int SessionIO::send(SessionPacket *p)
 	{	
 		char szTmp[128];
 		sprintf(szTmp,"SessionIO::send() failed %i\n",WSAGetLastError());
-		OutputDebugString(szTmp);
+		PRINTMSG( T_INFO, szTmp);
 		errno=SESSION_ERROR;
 		ret=-1;
 	}
@@ -196,7 +197,7 @@ SessionPacket *SessionIO::receive()
 	// timeout=>exit loop
 	if (!select(sock+1, &rfds, 0, 0, &tv)) 
 	{
-		OutputDebugString("SessionIO::receive select() failed\n");
+		PRINTMSG( T_INFO, "SessionIO::receive select() failed");
 		errno=SESSION_ERROR_CALLED_NOT_PRESENT;
 		return 0;
 	}
@@ -209,7 +210,7 @@ SessionPacket *SessionIO::receive()
 		&& (type!=NEGATIVE_SESSION_RESPONSE) && (type!=RETARGET_SESSION_RESPONSE)
 		&& (type!=SESSION_KEEP_ALIVE) && (type!=SESSION_REQUEST))
 	{
-		OutputDebugString("SessionIO::receive Unknown NetBIOS packet type \n");
+		PRINTMSG( T_INFO, "SessionIO::receive Unknown NetBIOS packet type");
 		errno=SESSION_ERROR;
 		return 0;
 	}
@@ -221,21 +222,21 @@ SessionPacket *SessionIO::receive()
 	// timeout=>exit loop
 	if (!select(sock+1, &rfds, 0, 0, &tv)) 
 	{
-		OutputDebugString("SessionIO::receive select() #2 failed \n");
+		PRINTMSG( T_INFO, "SessionIO::receive select() #2 failed");
 		errno=SESSION_ERROR; 
 		return 0;
 	}
 #ifdef _WIN32
 	if (recv(sock,(char*)lengthField,3,0)<0) 
 	{
-		OutputDebugString("SessionIO::receive recv() failed \n");
+		PRINTMSG( T_INFO, "SessionIO::receive recv() failed");
 		errno=SESSION_ERROR; 
 		return 0;
 	}
 #else
 	if (read(sock,lengthField,3)<0) 
 	{
-		OutputDebugString("SessionIO::receive read() failed \n");
+		PRINTMSG( T_INFO, "SessionIO::receive read() failed");
 		errno=SESSION_ERROR; 
 		return 0;
 	}
@@ -256,7 +257,7 @@ SessionPacket *SessionIO::receive()
 			// timeout=>exit loop
 			if (!select(sock+1, &rfds, 0, 0, &tv)) 
 			{
-				OutputDebugString("SessionIO::receive select()#3 failed \n");
+				PRINTMSG( T_INFO, "SessionIO::receive select()#3 failed");
 				errno=SESSION_ERROR;
 				delete data;
 				return 0;
@@ -269,7 +270,7 @@ SessionPacket *SessionIO::receive()
 				alreadyRead+=numRead;
 			else 
 			{
-				OutputDebugString("SessionIO::receive recv()#2 failed \n");
+				PRINTMSG( T_INFO, "SessionIO::receive recv()#2 failed");
 				errno=SESSION_ERROR;
 				delete data;
 				return 0;

@@ -16,14 +16,15 @@
 			IntermediateDirectory=".\dbg_obj"
 			ConfigurationType="4"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			WholeProgramOptimization="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories="src,src\includes,..\MAMEoX\Includes,src\cpu\adsp2100,src\cpu\m68000,..\,..\c_m68000\output,..\zlib"
 				PreprocessorDefinitions="_XBOX,_DEBUG,INLINE=(static __inline)"
-				RuntimeLibrary="1"
+				RuntimeLibrary="5"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\dbg_obj/MAME.pch"
 				AssemblerListingLocation=".\dbg_obj/"
@@ -53,7 +54,8 @@
 			IntermediateDirectory=".\obj"
 			ConfigurationType="4"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"

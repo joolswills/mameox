@@ -100,44 +100,44 @@ void InitializeFileIO( void )
 
     // Make sure the rom list path is available
 
-  CREATEOROPENPATH( g_FileIOConfig.m_DefaultRomListPath, TRUE );
+  CREATEOROPENPATH( g_FileIOConfig.m_DefaultRomListPath.c_str(), TRUE );
   g_ROMListPath = tempStr;
 
-  CREATEOROPENPATH( g_FileIOConfig.m_RomBackupPath, TRUE );
+  CREATEOROPENPATH( g_FileIOConfig.m_RomBackupPath.c_str(), TRUE );
   g_ROMBackupPath = tempStr;
 
-  CREATEOROPENPATH( g_FileIOConfig.m_RomPath, FALSE );
+  CREATEOROPENPATH( g_FileIOConfig.m_RomPath.c_str(), FALSE );
 	g_pathNames[FILETYPE_RAW] = g_pathNames[FILETYPE_ROM] = tempStr;
 
-  CREATEOROPENPATH( g_FileIOConfig.m_IniPath, TRUE );
+  CREATEOROPENPATH( g_FileIOConfig.m_IniPath.c_str(), TRUE );
 	g_pathNames[FILETYPE_INI] = tempStr;
 
-  CREATEOROPENPATH( g_FileIOConfig.m_HiScorePath, TRUE );
+  CREATEOROPENPATH( g_FileIOConfig.m_HiScorePath.c_str(), TRUE );
 	g_pathNames[FILETYPE_HIGHSCORE] = g_pathNames[FILETYPE_HIGHSCORE_DB] = 
                                     tempStr;
 
-  CREATEOROPENPATH( g_FileIOConfig.m_NVramPath, TRUE );
+  CREATEOROPENPATH( g_FileIOConfig.m_NVramPath.c_str(), TRUE );
 																		g_pathNames[FILETYPE_NVRAM] = 
 																		g_pathNames[FILETYPE_STATE] =
 																		g_pathNames[FILETYPE_MEMCARD] = 
 																		tempStr;
 
-  CREATEOROPENPATH( g_FileIOConfig.m_HDImagePath, FALSE );
+  CREATEOROPENPATH( g_FileIOConfig.m_HDImagePath.c_str(), FALSE );
   g_pathNames[FILETYPE_IMAGE] = tempStr;
 
-  CREATEOROPENPATH( g_FileIOConfig.m_HDImagePath, TRUE );
+  CREATEOROPENPATH( g_FileIOConfig.m_HDImagePath.c_str(), TRUE );
   g_pathNames[FILETYPE_IMAGE_DIFF] = tempStr;
 
-  CREATEOROPENPATH( g_FileIOConfig.m_ArtPath, FALSE );
+  CREATEOROPENPATH( g_FileIOConfig.m_ArtPath.c_str(), FALSE );
   g_pathNames[FILETYPE_ARTWORK] = tempStr;
 
-  CREATEOROPENPATH( g_FileIOConfig.m_AudioPath, FALSE );
+  CREATEOROPENPATH( g_FileIOConfig.m_AudioPath.c_str(), FALSE );
   g_pathNames[FILETYPE_SAMPLE] = tempStr;
 
-  CREATEOROPENPATH( g_FileIOConfig.m_ConfigPath, TRUE );
+  CREATEOROPENPATH( g_FileIOConfig.m_ConfigPath.c_str(), TRUE );
   g_pathNames[FILETYPE_CONFIG] = tempStr;
 
-  CREATEOROPENPATH( g_FileIOConfig.m_GeneralPath, TRUE );
+  CREATEOROPENPATH( g_FileIOConfig.m_GeneralPath.c_str(), TRUE );
 	g_pathNames[FILETYPE_INPUTLOG] =  g_pathNames[FILETYPE_SCREENSHOT] = 
 																	  g_pathNames[FILETYPE_HISTORY] = 
 																	  g_pathNames[FILETYPE_CHEAT] = 
@@ -191,7 +191,6 @@ int osd_get_path_info( int pathtype, int pathindex, const char *filename )
 {
 	/* Get information on the existence of a file */
 	DWORD attribs;
-	char *fullPath;
 	
 	PRINTMSG( T_TRACE, "osd_get_path_info" );
 
@@ -205,29 +204,21 @@ int osd_get_path_info( int pathtype, int pathindex, const char *filename )
     }
   #endif
 
-	fullPath = (char*)malloc( strlen(g_pathNames[pathtype]) + strlen(filename) + 2 );
-	if( !fullPath )
-	{
-		PRINTMSG( T_ERROR, "Malloc failed!" );
-		return PATH_NOT_FOUND;
-	}
 
   // Check if the path points to a SMB share, we only support files
   // on smb shares so always return this is a file
   CStdString strPath = g_pathNames[pathtype];
-  if ( strPath.Left(6) == "smb://" )
+  if( strPath.Left(6) == "smb://" )
   {
     attribs = PATH_IS_FILE;
   }
   else
   {
-    sprintf( fullPath, "%s\\%s", g_pathNames[pathtype], filename );
-    Helper_ConvertSlashToBackslash( fullPath );
-
-    attribs = GetFileAttributes( fullPath );
+    strPath += "\\";
+    strPath += filename;
+    Helper_ConvertSlashToBackslash( strPath.GetBuffer(strPath.GetLength()+10) );
+    attribs = GetFileAttributes( strPath.c_str() );
   }
-
-	free( fullPath );
 
 	if( attribs < 0 )
 		return PATH_NOT_FOUND;
@@ -316,7 +307,7 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
     else
     {
       ret->m_bIsSMB = TRUE;
-      if (!ret->m_SmbHandler.Open(strFullPath))
+      if (!ret->m_SmbHandler.Open(strFullPath.c_str()))
       {
         delete ret ;
         return NULL;
@@ -333,7 +324,7 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
   {
     Helper_ConvertSlashToBackslash( strFullPath.GetBuffer(strFullPath.GetLength()+10) );
 
-    PRINTMSG( T_INFO, "Opening file: %s", (LPCSTR)strFullPath );
+    PRINTMSG( T_INFO, "Opening file: %s", strFullPath.c_str() );
 
     ret->m_handle = CreateFile(	strFullPath.c_str(),
       dwDesiredAccess,
@@ -351,25 +342,25 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
       // Return if read only or some other error
       if( !(dwDesiredAccess & GENERIC_WRITE) || err != ERROR_PATH_NOT_FOUND )
       {
-        PRINTMSG( T_ERROR, "Failed opening file %s: 0x%X!", strFullPath, err );
+        PRINTMSG( T_ERROR, "Failed opening file %s: 0x%X!", strFullPath.c_str(), err );
         delete ret;
         return NULL;
       }
 
       // create the directory path and try again
-      Helper_CreateDirectoryPath( strFullPath, TRUE );
-      ret->m_handle = CreateFile(	strFullPath,
-        dwDesiredAccess,
-        0,
-        NULL,
-        dwCreationDisposition,
-        FILE_ATTRIBUTE_NORMAL,
-        NULL );
+      Helper_CreateDirectoryPath( strFullPath.c_str(), TRUE );
+      ret->m_handle = CreateFile(	strFullPath.c_str(),
+                                  dwDesiredAccess,
+                                  0,
+                                  NULL,
+                                  dwCreationDisposition,
+                                  FILE_ATTRIBUTE_NORMAL,
+                                  NULL );
 
       // if that doesn't work, we give up
       if( ret->m_handle == INVALID_HANDLE_VALUE )
       {
-        PRINTMSG( T_ERROR, "Failed opening file %s: 0x%X!", strFullPath, err );
+        PRINTMSG( T_ERROR, "Failed opening file %s: 0x%X!", strFullPath.c_str(), err );
         delete ret;
         return NULL;
       }

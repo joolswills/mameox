@@ -17,7 +17,7 @@
 			ConfigurationType="1"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			WholeProgramOptimization="FALSE">
+			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
@@ -68,10 +68,10 @@
 			<Tool
 				Name="XboxImageTool"
 				AdditionalOptions="/testid:0x4D414D45"
-				StackSize="0x20000"
+				StackSize="0x25000"
 				LimitAvailableMemoryTo64MB="TRUE"
 				SuppressStartupBanner="TRUE"
-				FormatUD="TRUE"
+				FormatUD="FALSE"
 				TitleName="&quot;MAMEoX Util (Don&apos;t Run)&quot;"/>
 		</Configuration>
 		<Configuration
@@ -87,7 +87,9 @@
 				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories=".\Includes;..\MAME\src;..\;&quot;$(XDK)\Samples\XBox\Common\Include\&quot;;&quot;..\libsmb++\src&quot;"
 				PreprocessorDefinitions="WIN32,_XBOX,_DEBUG"
-				RuntimeLibrary="1"
+				MinimalRebuild="TRUE"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="5"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Debug/MAMEoX.pch"
 				AssemblerListingLocation=".\Debug/"
@@ -104,31 +106,35 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 /FIXED:NO"
-				AdditionalDependencies="xapilibd.lib d3d8d.lib d3dx8d.lib xgraphicsd.lib dsoundd.lib dmusicd.lib xnetd.lib xboxkrnl.lib MAME.lib libsmb.lib"
-				OutputFile=".\Debug/MAMEoX.exe"
+				AdditionalDependencies="xapilibd.lib d3d8d.lib d3dx8d.lib xgraphicsd.lib dsoundd.lib dmusicd.lib xnetd.lib xboxkrnl.lib MAME.lib libsmbd.lib"
+				OutputFile=".\Debug\MAMEoX.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="..\MAME\Debug;;&quot;..\libsmb++\Release&quot;"
+				AdditionalLibraryDirectories="..\MAME\Debug;&quot;..\libsmb++\debug&quot;"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug/MAMEoX.pdb"/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				Description="Creating MAMEoX XBE and copying to the XBOX..."
+				CommandLine="..\DBGMAMEoX_XBE.bat"
+				ExcludedFromBuild="TRUE"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="XboxDeploymentTool"
+				ExcludedFromBuild="TRUE"
 				RemotePath="xe:\MAMETEST\MAMEoX.xbe"/>
 			<Tool
 				Name="XboxImageTool"
-				AdditionalOptions="/testid:0x4D414D45"
-				StackSize="0x20000"
+				FileName="$(TargetDir)$(TargetName).xbe"
+				StackSize="0x25000"
 				IncludeDebugInfo="TRUE"
 				LimitAvailableMemoryTo64MB="TRUE"
 				SuppressStartupBanner="TRUE"
-				FormatUD="TRUE"
-				TitleName="&quot;MAMEoX Util (Don&apos;t Run)&quot;"/>
+				FormatUD="FALSE"
+				TitleName=""/>
 		</Configuration>
 		<Configuration
 			Name="Profile|Xbox"

@@ -22,7 +22,7 @@ struct hostent* gethostbyname(const char* _name)
 {
 	HostEnt* server = new HostEnt;
 
-	if( gethostname(server->name, 128) && xboxstricmp(server->name, _name) == 0 )
+	if( gethostname(server->name, 128) && strcasecmp(server->name, _name) == 0 )
 	{
 		XNADDR xna;
 		DWORD dwState;

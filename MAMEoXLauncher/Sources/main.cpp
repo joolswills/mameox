@@ -262,12 +262,48 @@ void __cdecl main( void )
 	// Intialize the various MAME OSD-specific subsystems
 	InitializeFileIO();
 	InitializeTiming();
-  InitializeNetwork();
+
+  if( !g_NetworkConfig.m_networkDisabled )
+    InitializeNetwork();
+  else
+  {
+      // If any paths have been set to samba, revert them
+      // to the defaults
+    if( g_FileIOConfig.m_ArtPath.Left(6) == "smb://" )
+      g_FileIOConfig.m_ArtPath = DEFAULT_ARTPATH;
+
+    if( g_FileIOConfig.m_AudioPath.Left(6) == "smb://" )
+      g_FileIOConfig.m_AudioPath = DEFAULT_AUDIOPATH;
+    
+    if( g_FileIOConfig.m_ConfigPath.Left(6) == "smb://" )
+      g_FileIOConfig.m_ConfigPath = DEFAULT_CONFIGPATH;
+    
+    if( g_FileIOConfig.m_DefaultRomListPath.Left(6) == "smb://" )
+      g_FileIOConfig.m_DefaultRomListPath = DEFAULT_DEFAULTROMLISTPATH;
+    
+    if( g_FileIOConfig.m_GeneralPath.Left(6) == "smb://" )
+      g_FileIOConfig.m_GeneralPath = DEFAULT_GENERALPATH;
+    
+    if( g_FileIOConfig.m_HDImagePath.Left(6) == "smb://" )
+      g_FileIOConfig.m_HDImagePath = DEFAULT_HDIMAGEPATH;
+    
+    if( g_FileIOConfig.m_HiScorePath.Left(6) == "smb://" )
+      g_FileIOConfig.m_HiScorePath = DEFAULT_HISCOREPATH;
+    
+    if( g_FileIOConfig.m_NVramPath.Left(6) == "smb://" )
+      g_FileIOConfig.m_NVramPath = DEFAULT_NVRAMPATH;
+    
+    if( g_FileIOConfig.m_RomBackupPath.Left(6) == "smb://" )
+      g_FileIOConfig.m_RomBackupPath = DEFAULT_ROMBACKUPPATH;
+    
+    if( g_FileIOConfig.m_RomPath.Left(6) == "smb://" )
+      g_FileIOConfig.m_RomPath = DEFAULT_ROMPATH;
+  }
 
   SaveOptions(); 
 
 		// Initialize the input subsystem
-	g_inputManager.Create( 4, 8 );
+	g_inputManager.Create( 4, 0 );  // 4 controllers, no memory cards
 
   LoadPackedResources();
 
@@ -446,8 +482,7 @@ void __cdecl main( void )
 #endif
 
 		// Load the Help file
-  CHelp help( pD3DDevice, 
-                 g_font );
+  CHelp help( pD3DDevice, g_font );
 	if( !help.LoadHelpFile() )
 		Die( pD3DDevice, "Could not load help file!" );
 

@@ -147,7 +147,7 @@ static char szHost[1024];
 bool bIsWorkGroup=false;
 bool Resolve::isWorkgroup(const char* name)
 {
-	if (xboxstricmp(name,szHost) )
+	if (strcasecmp(name,szHost) )
 	{
 		strcpy(szHost,name);
 		// static method, so define a temporary object here

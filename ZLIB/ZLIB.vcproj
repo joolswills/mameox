@@ -23,7 +23,7 @@
 				OptimizeForProcessor="2"
 				PreprocessorDefinitions="WIN32,_XBOX,NDEBUG"
 				StringPooling="TRUE"
-				RuntimeLibrary="0"
+				RuntimeLibrary="4"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Release/ZLIB.pch"

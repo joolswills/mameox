@@ -372,7 +372,7 @@
 //      bakes your cake.  Just #define this macro to get rid of the the implicit
 //      cast.
 
-//#define SS_NO_IMPLICIT_CAST // gets rid of operator const CT*()
+#define SS_NO_IMPLICIT_CAST // gets rid of operator const CT*()
 
 
 // MACRO: SS_NO_REFCOUNT

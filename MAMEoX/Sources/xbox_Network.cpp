@@ -47,72 +47,66 @@ BOOL InitializeNetwork( void )
 
     TXNetConfigParams configParams;   
 
-    OutputDebugString("Loading network configuration...\n");
+    PRINTMSG( T_INFO, "Loading network configuration..." );
     XNetLoadConfigParams( (LPBYTE) &configParams );
-    OutputDebugString("Ready.\n");
+    PRINTMSG( T_INFO, "Ready." );
 
     BOOL bXboxVersion2 = (configParams.V2_Tag == 0x58425632 );	// "XBV2"
     BOOL bDirty = FALSE;
 
-    OutputDebugString("User local address: ");
-    OutputDebugString(g_NetworkConfig.m_IPAddr);
-    OutputDebugString("\n");
+    PRINTMSG( T_INFO, "User local address: %s", g_NetworkConfig.m_IPAddr.c_str() );
 
     if (bXboxVersion2)
     {
-      if (configParams.V2_IP != inet_addr(g_NetworkConfig.m_IPAddr))
+      if (configParams.V2_IP != inet_addr(g_NetworkConfig.m_IPAddr.c_str()))
       {
-        configParams.V2_IP = inet_addr(g_NetworkConfig.m_IPAddr);
+        configParams.V2_IP = inet_addr(g_NetworkConfig.m_IPAddr.c_str());
         bDirty = TRUE;
       }
     }
     else
     {
-      if (configParams.V1_IP != inet_addr(g_NetworkConfig.m_IPAddr))
+      if (configParams.V1_IP != inet_addr(g_NetworkConfig.m_IPAddr.c_str()))
       {
-        configParams.V1_IP = inet_addr(g_NetworkConfig.m_IPAddr);
+        configParams.V1_IP = inet_addr(g_NetworkConfig.m_IPAddr.c_str());
         bDirty = TRUE;
       }
     }
 
-    OutputDebugString("User subnet mask: ");
-    OutputDebugString(g_NetworkConfig.m_SubnetMask);
-    OutputDebugString("\n");
+    PRINTMSG( T_INFO, "User subnet mask: %s", g_NetworkConfig.m_SubnetMask.c_str() );
 
     if (bXboxVersion2)
     {
-      if (configParams.V2_Subnetmask != inet_addr(g_NetworkConfig.m_SubnetMask))
+      if (configParams.V2_Subnetmask != inet_addr(g_NetworkConfig.m_SubnetMask.c_str()))
       {
-        configParams.V2_Subnetmask = inet_addr(g_NetworkConfig.m_SubnetMask);
+        configParams.V2_Subnetmask = inet_addr(g_NetworkConfig.m_SubnetMask.c_str());
         bDirty = TRUE;
       }
     }
     else
     {
-      if (configParams.V1_Subnetmask != inet_addr(g_NetworkConfig.m_SubnetMask))
+      if (configParams.V1_Subnetmask != inet_addr(g_NetworkConfig.m_SubnetMask.c_str()))
       {
-        configParams.V1_Subnetmask = inet_addr(g_NetworkConfig.m_SubnetMask);
+        configParams.V1_Subnetmask = inet_addr(g_NetworkConfig.m_SubnetMask.c_str());
         bDirty = TRUE;
       }
     }
 
-    OutputDebugString("User gateway address: ");
-    OutputDebugString(g_NetworkConfig.m_Gateway.c_str());
-    OutputDebugString("\n");
+    PRINTMSG( T_INFO, "User gateway address: %s", g_NetworkConfig.m_Gateway.c_str() );
 
     if (bXboxVersion2)
     {
-      if (configParams.V2_Defaultgateway != inet_addr(g_NetworkConfig.m_Gateway))
+      if (configParams.V2_Defaultgateway != inet_addr(g_NetworkConfig.m_Gateway.c_str()))
       {
-        configParams.V2_Defaultgateway = inet_addr(g_NetworkConfig.m_Gateway);
+        configParams.V2_Defaultgateway = inet_addr(g_NetworkConfig.m_Gateway.c_str());
         bDirty = TRUE;
       }
     }
     else
     {
-      if (configParams.V1_Defaultgateway != inet_addr(g_NetworkConfig.m_Gateway))
+      if (configParams.V1_Defaultgateway != inet_addr(g_NetworkConfig.m_Gateway.c_str()))
       {
-        configParams.V1_Defaultgateway = inet_addr(g_NetworkConfig.m_Gateway);
+        configParams.V1_Defaultgateway = inet_addr(g_NetworkConfig.m_Gateway.c_str());
         bDirty = TRUE;
       }
     }
@@ -125,9 +119,9 @@ BOOL InitializeNetwork( void )
 
     if (bDirty)
     {
-      OutputDebugString("Updating network configuration...\n");
+      PRINTMSG( T_INFO, "Updating network configuration...");
       XNetSaveConfigParams( (LPBYTE) &configParams );
-      OutputDebugString("Ready.\n");
+      PRINTMSG( T_INFO, "Ready." );
     }
   }
 
@@ -152,7 +146,7 @@ BOOL InitializeNetwork( void )
   do
   {
     dwState = XNetGetTitleXnAddr(&xna);
-    Sleep(500);
+    Sleep(50);
   } while (dwState==XNET_GET_XNADDR_PENDING);
 
   // Convert the addr to a string

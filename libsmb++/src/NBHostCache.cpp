@@ -26,7 +26,7 @@
 #include "NBHostCache.h"
 #ifdef _WIN32
 #include <time.h>
-#define strcasecmp xboxstricmp
+//#define strcasecmp xboxstricmp
 #else
 #include <sys/time.h>
 #endif

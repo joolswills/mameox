@@ -8,13 +8,27 @@ use constant BSS_PREFIX   => 'B';
 use constant CONST_PREFIX => 'K';
 
 
-	# Create the imagebld.switch file
+	# Create the imageblddbg.switch file
+open( DBGPRELOADFILE, ">imageblddbg.switch" );
+print DBGPRELOADFILE "/IN:\"Debug\\MAMEoX.exe\"\n";
+print DBGPRELOADFILE "/OUT:\"Debug\\MAMEoX.xbe\"\n";
+print DBGPRELOADFILE "/STACK:\"0x20000\"\n";
+print DBGPRELOADFILE "/DEBUG\n";
+print DBGPRELOADFILE "/LIMITMEM\n";
+print DBGPRELOADFILE "/NOLOGO\n";
+print DBGPRELOADFILE "/formatud\n";
+print DBGPRELOADFILE "/testname:\"MAMEoX Util (Don't Run)\"\n";
+print DBGPRELOADFILE "/testid:0x4D414D45\n";
+
 open( PRELOADFILE, ">imagebld.switch" );
-print PRELOADFILE "/OUT:\"c:\\MAMEoX\\MAMEoX\\Debug\\MAMEoX.xbe\"\n";
-print PRELOADFILE "/STACK:\"0x10000\"\n";
-print PRELOADFILE "/DEBUG\n";
+print DBGPRELOADFILE "/IN:\"Release\\MAMEoX.exe\"\n";
+print DBGPRELOADFILE "/OUT:\"Release\\MAMEoX.xbe\"\n";
+print PRELOADFILE "/STACK:\"0x20000\"\n";
 print PRELOADFILE "/LIMITMEM\n";
 print PRELOADFILE "/NOLOGO\n";
+print PRELOADFILE "/formatud\n";
+print PRELOADFILE "/testname:\"MAMEoX Util (Don't Run)\"\n";
+print PRELOADFILE "/testid:0x4D414D45\n";
 
 
 	# Create the Sections.h file
@@ -385,6 +399,8 @@ foreach( @FILEs ) {
 
 		print PRELOADFILE "/NOPRELOAD:\"".CODE_PREFIX."$autoNameNumber\"\n";
 		print PRELOADFILE "/NOPRELOAD:\"".BSS_PREFIX."$autoNameNumber\"\n";
+		print DBGPRELOADFILE "/NOPRELOAD:\"".CODE_PREFIX."$autoNameNumber\"\n";
+		print DBGPRELOADFILE "/NOPRELOAD:\"".BSS_PREFIX."$autoNameNumber\"\n";
 #		print PRELOADFILE "/NOPRELOAD:\"".DATA_PREFIX."$autoNameNumber\"\n";
 #		print PRELOADFILE "/NOPRELOAD:\"".CONST_PREFIX."$autoNameNumber\"\n";
 		print GENERATEDFILE "  RegisterSectionName( \"$DriverName\", \"$autoNameNumber\" );\n";
@@ -426,6 +442,8 @@ foreach( @newFILEs ) {
 
 		print PRELOADFILE "/NOPRELOAD:\"".CODE_PREFIX."$autoNameNumber\"\n";
 		print PRELOADFILE "/NOPRELOAD:\"".BSS_PREFIX."$autoNameNumber\"\n";
+		print DBGPRELOADFILE "/NOPRELOAD:\"".CODE_PREFIX."$autoNameNumber\"\n";
+		print DBGPRELOADFILE "/NOPRELOAD:\"".BSS_PREFIX."$autoNameNumber\"\n";
 #		print PRELOADFILE "/NOPRELOAD:\"".DATA_PREFIX."$autoNameNumber\"\n";
 #		print PRELOADFILE "/NOPRELOAD:\"".CONST_PREFIX."$autoNameNumber\"\n";
 		print GENERATEDFILE "  RegisterSectionName( \"$DriverName\", \"$autoNameNumber\" );\n";
@@ -482,6 +500,8 @@ print GENERATEDFILE "}\n\n\n";
 
 close( GENERATEDFILE );
 close( PRELOADFILE );
+close( DBGPRELOADFILE );
+
 
 
 #------------------------------------------------------------------------

@@ -32,7 +32,7 @@
 #else
 #include <winsock2.h>
 #endif
-#define strcasecmp xboxstricmp
+//#define strcasecmp xboxstricmp
 #else
 #include <sys/time.h>
 #include <sys/socket.h>

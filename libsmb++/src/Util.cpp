@@ -28,6 +28,7 @@
 #include "strtool.h"
 
 #pragma warning (disable:4018)
+/*
 int xboxstricmp(const char* str1,const char* str2)
 {
 	int iLen;
@@ -40,6 +41,8 @@ int xboxstricmp(const char* str1,const char* str2)
 	}
 	return 0;
 }
+*/
+
 Util::Util()
 {
 	workgroupValue = hostValue = shareValue = dirValue = 0;

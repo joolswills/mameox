@@ -13,10 +13,14 @@
 //= S T R U C T U R E S ===============================================
 struct SNetworkConfig
 {
-  CStdString m_IPAddr;
-  CStdString m_SubnetMask;
-  CStdString m_Gateway;
-  CStdString m_NameServer;
+    //! Whether or not to totally disable network 
+    //! (in case of problems like my strange sometimes very long load 
+    //!  times :)
+  BOOL        m_networkDisabled;  
+  CStdString  m_IPAddr;
+  CStdString  m_SubnetMask;
+  CStdString  m_Gateway;
+  CStdString  m_NameServer;
 };
 
 //= D E F I N E S ======================================================
