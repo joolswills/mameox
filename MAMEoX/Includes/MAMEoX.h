@@ -79,6 +79,19 @@ typedef struct MAMEDriverData_t
 const XINPUT_GAMEPAD *GetGamepadState( UINT32 joynum );
 
 	//-------------------------------------------------------------------
+	//	GetGamepadCaps
+	//! \brief		Returns the XINPUT_CAPABILITIES containing
+	//!            info about joynum
+	//!
+	//! \param		joynum - The gamepad index (0-3)
+	//!
+	//! \return		const XINPUT_CAPABILITIES * - Capabilities
+	//! \retval		NULL - Operation failed
+	//! \retval		other - current state
+	//-------------------------------------------------------------------
+const XINPUT_CAPABILITIES *GetGamepadCaps( UINT32 joynum );
+
+	//-------------------------------------------------------------------
 	//	PollGamepads
 	//! \brief		Polls the gamepads
 	//-------------------------------------------------------------------

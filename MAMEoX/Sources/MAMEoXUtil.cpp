@@ -151,6 +151,16 @@ const XINPUT_GAMEPAD *GetGamepadState( UINT32 joynum )
 }
 
 //-------------------------------------------------------------
+//	GetGamepadCaps
+//-------------------------------------------------------------
+const XINPUT_CAPABILITIES *GetGamepadCaps( UINT32 joynum )
+{
+  const XINPUT_CAPABILITIES &gp = g_inputManager.GetGamepadDeviceCaps( joynum );
+  return &gp;
+}
+
+
+//-------------------------------------------------------------
 //	PollGamepads
 //-------------------------------------------------------------
 void PollGamepads( void )

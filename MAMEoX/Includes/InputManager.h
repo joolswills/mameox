@@ -136,6 +136,25 @@ public:
 	}
 
 		//------------------------------------------------------
+		//	GetGamepadDeviceCaps
+    //! Return the capabilities of a given gamepad
+    //!
+    //! \param    device - The device number to query (0-3)
+    //!
+    //! \retval   const XINPUT_CAPABILITIES & - The requested
+    //!                                    gamepad caps object
+		//------------------------------------------------------
+	const XINPUT_CAPABILITIES &GetGamepadDeviceCaps( DWORD device ) const {
+		if( device > 3 )
+		{
+			//assert( 0 && "Invalid gamepad device number!" );
+			return m_gamepadCaps[0];
+		}
+
+		return m_gamepadCaps[device];
+	}
+
+		//------------------------------------------------------
 		//	SetGamepadFeedbackState
     //! Send a force feedback effect to a gamepad
     //!
@@ -375,6 +394,7 @@ protected:
 																							         portName,				
 																							         XDEVICE_NO_SLOT,			// Gamepad, so no slot
 																							         NULL );								// No special polling params
+      XInputGetCapabilities( m_gamepadDeviceHandles[portNumber], &m_gamepadCaps[portNumber] );
 		}
 		else if( !(m_gamepadDeviceBitmap & portMask ) && m_gamepadDeviceHandles[portNumber] )
 		{
@@ -476,8 +496,9 @@ protected:
 	HANDLE					m_gamepadDeviceHandles[4];	//!<	Input handles for gamepads
 	HANDLE					m_memunitDeviceHandles[8];	//!<	Input handles for mem units
 
-	XINPUT_STATE		m_gamepadDeviceState[4];		//!<	Gamepad device state structs
-	XINPUT_FEEDBACK m_gamepadFeedback[4];				//!<	Feedback struct for each gamepad
+	XINPUT_STATE		    m_gamepadDeviceState[4];	//!<	Gamepad device state structs
+	XINPUT_FEEDBACK     m_gamepadFeedback[4];			//!<	Feedback struct for each gamepad
+  XINPUT_CAPABILITIES m_gamepadCaps[4];         //!<  Gamepad device capabilities
 };
 
 #endif
