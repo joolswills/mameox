@@ -1125,25 +1125,29 @@ void CROMList::DrawZipCheckProgress( DWORD index )
 	
 	m_fontSet.DefaultFont().DrawText( 320, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Checking against known ROM files", XBFONT_CENTER_X );
 
+		  // Draw the current filename
+	  WCHAR wBuf[256];
+	  mbstowcs( wBuf, m_driverInfoList[index].m_description, 256 );
+	  m_fontSet.DefaultFont().DrawText( 320, 110, D3DCOLOR_XRGB( 60, 100, 255 ), wBuf, XBFONT_CENTER_X );
+
+	m_fontSet.DefaultFont().End();
+
+  m_fontSet.LargeThinFont().Begin();
 		  // Draw a progress bar
     UINT32 percentage = (UINT32)( (FLOAT)index * (25.0f / (FLOAT)m_numDrivers) + 0.5f ); 
     UINT32 i = 0;
-	  WCHAR wBuf[256] = L"[";
+    wcscpy( wBuf, L"[" );
     for( ; i < percentage; ++i )
       wcscat( wBuf, L"|" );
     for( ; i < 25; ++i )
       wcscat( wBuf, L" " );
     wcscat( wBuf, L"]" );
 
-	  m_fontSet.DefaultFont().DrawText( 320, 80, D3DCOLOR_XRGB( 255, 125, 125 ), wBuf, XBFONT_CENTER_X );
+	  m_fontSet.LargeThinFont().DrawText( 320, 80, D3DCOLOR_XRGB( 255, 125, 125 ), wBuf, XBFONT_CENTER_X );
+  m_fontSet.LargeThinFont().End();
 
-		  // Draw the current filename
-	  mbstowcs( wBuf, m_driverInfoList[index].m_description, 256 );
-	  m_fontSet.DefaultFont().DrawText( 320, 100, D3DCOLOR_XRGB( 60, 100, 255 ), wBuf, XBFONT_CENTER_X );
 
-	m_fontSet.DefaultFont().End();
 	m_displayDevice->Present( NULL, NULL, NULL, NULL );
-
 }
 
 //---------------------------------------------------------------------

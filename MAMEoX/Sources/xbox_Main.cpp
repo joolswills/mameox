@@ -435,7 +435,8 @@ static BOOL Helper_SaveDriverInfoFile( void )
       // Store whether or not this is a clone
       // All drivers are clones of _driver_0, whose clone_of is NULL,
       //  so check against that to decide whether this is a clone or not
-    BOOL isClone = (drivers[i]->clone_of && drivers[i]->clone_of->clone_of);
+    BOOL isClone = (drivers[i]->clone_of && drivers[i]->clone_of->clone_of &&
+                    !drivers[i]->clone_of->bios);
     WRITEDATA( &isClone, sizeof( isClone ) );
 
       // Write the length of the clonename
@@ -514,24 +515,29 @@ static void DrawDriverProgressData( const char *fileName, DWORD index, DWORD tot
     g_fontSet.DefaultFont().DrawText( 320, 80, D3DCOLOR_XRGB( 255, 255, 255 ), L"detected.", XBFONT_CENTER_X );
   	g_fontSet.DefaultFont().DrawText( 320, 120, D3DCOLOR_XRGB( 255, 255, 255 ), L"Dumping driver data", XBFONT_CENTER_X );
 
-		  // Draw a progress bar
-      // Temporary: The Hawaiian Punk font doesn't have a | character, so use 1 instead
-    UINT32 percentage = (UINT32)( (FLOAT)index * (25.0f / (FLOAT)total) + 0.5f ); 
-    UINT32 i = 0;
-	  WCHAR wBuf[256] = L"[";
-    for( ; i < percentage; ++i )
-      wcscat( wBuf, L"1" );
-    for( ; i < 25; ++i )
-      wcscat( wBuf, L" " );
-    wcscat( wBuf, L"]" );
-
-	  g_fontSet.DefaultFont().DrawText( 320, 140, D3DCOLOR_XRGB( 255, 125, 125 ), wBuf, XBFONT_CENTER_X );
-
 		  // Draw the current filename
+	  WCHAR wBuf[256];
 	  mbstowcs( wBuf, fileName, 256 );
 	  g_fontSet.DefaultFont().DrawText( 320, 170, D3DCOLOR_XRGB( 60, 100, 255 ), wBuf, XBFONT_CENTER_X );
 
 	g_fontSet.DefaultFont().End();
+
+
+  g_fontSet.LargeThinFont().Begin();
+		  // Draw a progress bar
+    UINT32 percentage = (UINT32)( (FLOAT)index * (25.0f / (FLOAT)total) + 0.5f ); 
+    UINT32 i = 0;
+    wcscpy( wBuf, L"[" );
+    for( ; i < percentage; ++i )
+      wcscat( wBuf, L"|" );
+    for( ; i < 25; ++i )
+      wcscat( wBuf, L" " );
+    wcscat( wBuf, L"]" );
+
+	  g_fontSet.LargeThinFont().DrawText( 320, 140, D3DCOLOR_XRGB( 255, 125, 125 ), wBuf, XBFONT_CENTER_X );
+  g_fontSet.LargeThinFont().End();
+
+
 
 	pD3DDevice->Present( NULL, NULL, NULL, NULL );
 }
