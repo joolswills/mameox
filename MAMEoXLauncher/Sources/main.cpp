@@ -7,6 +7,7 @@
 
 //= I N C L U D E S ====================================================
 #include <Xtl.h>
+#include <XGraphics.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <crtdbg.h>
@@ -16,6 +17,7 @@
 #endif
 
 #include "MAMEoX.h"
+#include "Resource.h"
 
 #include "InputManager.h"
 #include "GraphicsManager.h"
@@ -41,7 +43,7 @@ struct CUSTOMVERTEX
 {
 	D3DXVECTOR3   pos;      // The transformed position for the vertex
   DWORD         diffuse;  // The diffuse color of the vertex
-//  FLOAT         tu, tv;   // The texture coordinates
+  FLOAT         tu, tv;   // The texture coordinates
 };
 
 //= G L O B A L = V A R S =============================================
@@ -52,6 +54,9 @@ extern CXBFont						g_font;
   // XBE Launch data
 static DWORD              g_launchDataType;
 static LAUNCH_DATA        g_launchData;
+
+BYTE                      *g_pResourceSysMemData = NULL;
+BYTE                      *g_pResourceVidMemData = NULL;
 
   // Defines the percentage of the total screen area that should actually be used
   // This is required because TV's have some overscan area that is not actually
@@ -78,36 +83,11 @@ BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage );
 void DestroyBackdrop( void );
 void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... );
 static BOOL Helper_LoadDriverInfoFile( void );
+static HRESULT LoadPackedResources( void );
+static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice );
 
 //= F U N C T I O N S =================================================
 
-//-------------------------------------------------------------
-//	ShowSplashScreen
-//-------------------------------------------------------------
-static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
-{
-		// Clear the backbuffer
-  pD3DDevice->Clear(	0L,																// Count
-											NULL,															// Rects to clear
-											D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
-                      D3DCOLOR_XRGB(0,0,0),							// Color
-											1.0f,															// Z
-											0L );															// Stencil
-
-  g_font.Begin();
-	
-  g_font.DrawText( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255),   L"MAMEoX v" LVERSION_STRING, XBFONT_CENTER_X );
-  g_font.DrawText( 320, 100, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Uses MAME version 0.67", XBFONT_CENTER_X );
-  g_font.DrawText( 320, 260, D3DCOLOR_RGBA( 240, 240, 240, 255 ), L"Portions based on:", XBFONT_CENTER_X );
-  g_font.DrawText( 320, 280, D3DCOLOR_RGBA( 240, 240, 240, 255 ), L"\"MAMEX(b5): updated by superfro, original port by opcode\"", XBFONT_CENTER_X );
-	g_font.DrawText( 320, 320, D3DCOLOR_RGBA( 70, 235, 125, 255 ),  L"Press any button to continue.", XBFONT_CENTER_X );
-
-  g_font.End();
-  pD3DDevice->Present( NULL, NULL, NULL, NULL );
-
-	g_inputManager.WaitForAnyKey();
-	g_inputManager.WaitForNoKey( 0 );
-}
 
 
 //-------------------------------------------------------------
@@ -142,6 +122,8 @@ void __cdecl main( void )
 
 	LoadOptions();
   SaveOptions();
+
+  LoadPackedResources();
 
     // Get the launch data
   MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
@@ -248,26 +230,41 @@ void __cdecl main( void )
 
 		
 			// Move the cursor position and render
-    g_graphicsManager.GetD3DDevice()->SetTransform( D3DTS_WORLD, &matWorld );
-    g_graphicsManager.GetD3DDevice()->SetTransform( D3DTS_VIEW, &matWorld );
-    g_graphicsManager.GetD3DDevice()->SetTransform( D3DTS_PROJECTION, &matWorld );
+    pD3DDevice->SetTransform( D3DTS_WORLD, &matWorld );
+    pD3DDevice->SetTransform( D3DTS_VIEW, &matWorld );
+    pD3DDevice->SetTransform( D3DTS_PROJECTION, &matWorld );
 
-	  g_graphicsManager.GetD3DDevice()->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
-	  g_graphicsManager.GetD3DDevice()->SetRenderState( D3DRS_LIGHTING, FALSE );
-	  g_graphicsManager.GetD3DDevice()->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-    g_graphicsManager.GetD3DDevice()->SetRenderState( D3DRS_ZENABLE, FALSE );
-    g_graphicsManager.GetD3DDevice()->Clear(	0L,																// Count
-											                        NULL,															// Rects to clear
-											                        D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
-                                              D3DCOLOR_XRGB(0,0,0),							// Color
-											                        1.0f,															// Z
-											                        0L );															// Stencil
-    g_graphicsManager.GetD3DDevice()->SetVertexShader( D3DFVF_XYZ | D3DFVF_DIFFUSE );
-    g_graphicsManager.GetD3DDevice()->SetStreamSource(	0,												  // Stream number
-																	                      g_pD3DVertexBuffer,					// Stream data
-																	                      sizeof(CUSTOMVERTEX) );		  // Vertex stride
+	  pD3DDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
+	  pD3DDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
+	  pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
+    pD3DDevice->SetRenderState( D3DRS_ZENABLE, FALSE );
 
-    g_graphicsManager.GetD3DDevice()->DrawPrimitive( D3DPT_QUADLIST, 0, 5 );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_MINFILTER, D3DTEXF_LINEAR );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_MAGFILTER, D3DTEXF_LINEAR );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
+
+    pD3DDevice->Clear(	0L,																// Count
+											  NULL,															// Rects to clear
+											  D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+                        D3DCOLOR_XRGB(105,105,105),				// Color
+											  1.0f,															// Z
+											  0L );															// Stencil
+
+
+    LPDIRECT3DTEXTURE8 pTexture = (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_ROMListBackdrop_OFFSET];
+	  pD3DDevice->SetTexture( 0, pTexture );
+
+    pD3DDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1 );
+    pD3DDevice->SetStreamSource(	0,												  // Stream number
+																	g_pD3DVertexBuffer,					// Stream data
+																	sizeof(CUSTOMVERTEX) );		  // Vertex stride
+
+    pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
+
+	  pD3DDevice->SetTexture( 0, NULL );
+    pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 4, 4 );
 
     if( optionsMode )
     {
@@ -488,35 +485,35 @@ BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage )
 		pVertices[0].pos.y = yUsage;
 		pVertices[0].pos.z = 1.0f;
     pVertices[0].diffuse = D3DCOLOR_RGBA( 30, 50, 30, 255 );
-    //pVertices[0].tu = 0.0f;
-    //pVertices[0].tv = 0.0f;
+    pVertices[0].tu = 0.0f;
+    pVertices[0].tv = 0.0f;
 
 		pVertices[1].pos.x = xUsage;
 		pVertices[1].pos.y = yUsage;
 		pVertices[1].pos.z = 1.0f;
     pVertices[1].diffuse = D3DCOLOR_RGBA( 30, 50, 30, 255 );
-    //pVertices[1].tu = 1.0f;
-    //pVertices[1].tv = 0.0f;
+    pVertices[1].tu = 1.0f;
+    pVertices[1].tv = 0.0f;
 		
 		pVertices[2].pos.x = xUsage;
 		pVertices[2].pos.y = -yUsage;
 		pVertices[2].pos.z = 1.0f;
     pVertices[2].diffuse = D3DCOLOR_RGBA( 30, 50, 30, 255 );
-    //pVertices[2].tu = 1.0f;
-    //pVertices[2].tv = 1.0f;
+    pVertices[2].tu = 1.0f;
+    pVertices[2].tv = 1.0f;
 		
 		pVertices[3].pos.x = -xUsage;
 		pVertices[3].pos.y = -yUsage;
 		pVertices[3].pos.z = 1.0f;
     pVertices[3].diffuse = D3DCOLOR_RGBA( 30, 50, 30, 255 );
-    //pVertices[3].tu = 0.0f;
-    //pVertices[3].tv = 1.0f;
+    pVertices[3].tu = 0.0f;
+    pVertices[3].tv = 1.0f;
 
 
 
       //-- Draw the corner pieces -----------------------------
     #define LINE_WIDTH    0.02f
-    #define LINE_COLOR    D3DCOLOR_RGBA( 150, 150, 100, 255 );
+    #define LINE_COLOR    D3DCOLOR_RGBA( 200, 200, 100, 255 );
 
 		pVertices[4].pos.x = -xUsage;
 		pVertices[4].pos.y = yUsage;
@@ -642,6 +639,185 @@ void GetScreenUsage( FLOAT *xPercentage, FLOAT *yPercentage )
     *yPercentage = g_screenYPercentage;
 }
 
+//-----------------------------------------------------------------------------
+// LoadPackedResources
+//-----------------------------------------------------------------------------
+static HRESULT LoadPackedResources( void )
+{
+  FILE *file = fopen( "D:\\Media\\Resource.xpr", "rb" );
+  if( !file )
+    return E_FAIL;
+
+    // Read in and verify the XPR magic header
+  XPR_HEADER xprh;
+  if( fread( &xprh, sizeof(XPR_HEADER), 1, file ) != 1 )
+  {
+    fclose( file );
+    return E_FAIL;
+  }
+
+  if( xprh.dwMagic != XPR_MAGIC_VALUE )
+  {
+    _RPT0( _CRT_WARN, "ERROR: Invalid Xbox Packed Resource (.xpr) file" );
+    fclose( file );
+    return E_INVALIDARG;
+  }
+
+    // Compute memory requirements
+  DWORD dwSysMemDataSize = xprh.dwHeaderSize - sizeof(XPR_HEADER);
+  DWORD dwVidMemDataSize = xprh.dwTotalSize - xprh.dwHeaderSize;
+
+    // Allocate memory
+  g_pResourceSysMemData = new BYTE[dwSysMemDataSize];
+  g_pResourceVidMemData = (BYTE*)D3D_AllocContiguousMemory( dwVidMemDataSize, D3DTEXTURE_ALIGNMENT );
+
+    // Read in the data from the file
+  if( fread( g_pResourceSysMemData, dwSysMemDataSize, 1, file ) != 1 ||
+      fread( g_pResourceVidMemData, dwVidMemDataSize, 1, file ) != 1 )
+  {
+    delete[] g_pResourceSysMemData;
+    D3D_FreeContiguousMemory( g_pResourceVidMemData );
+    fclose( file );
+    return E_FAIL;
+  }
+
+  fclose( file );
+  
+    // Loop over resources, calling Register()
+  BYTE *pData = g_pResourceSysMemData;
+
+  for( DWORD i = 0; i < resource_NUM_RESOURCES; ++i )
+  {
+    LPDIRECT3DRESOURCE8 pResource = (LPDIRECT3DRESOURCE8)pData;
+    pResource->Register( g_pResourceVidMemData );
+
+    switch( pResource->GetType() )
+    {
+      case D3DRTYPE_TEXTURE:       
+        pData += sizeof(D3DTexture);       
+        break;
+
+      case D3DRTYPE_VOLUMETEXTURE: 
+        pData += sizeof(D3DVolumeTexture); 
+        break;
+
+      case D3DRTYPE_CUBETEXTURE:   
+        pData += sizeof(D3DCubeTexture);   
+        break;
+
+      case D3DRTYPE_VERTEXBUFFER:  
+        pData += sizeof(D3DVertexBuffer);  
+        break;
+
+      case D3DRTYPE_INDEXBUFFER:   
+        pData += sizeof(D3DIndexBuffer);   
+        break;
+
+      case D3DRTYPE_PALETTE:       
+        pData += sizeof(D3DPalette);       
+        break;
+
+      default:
+        return E_FAIL;
+    }
+  }
+  return S_OK;
+}
+
+//-------------------------------------------------------------
+//	ShowSplashScreen
+//-------------------------------------------------------------
+static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
+{
+		// Clear the backbuffer
+  pD3DDevice->Clear(	0L,																// Count
+											NULL,															// Rects to clear
+											D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+                      D3DCOLOR_XRGB(255,255,255),			  // Color
+											1.0f,															// Z
+											0L );															// Stencil
+
+	pD3DDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
+	pD3DDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
+	pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
+  pD3DDevice->SetRenderState( D3DRS_ZENABLE, FALSE );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_MINFILTER, D3DTEXF_LINEAR );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_MAGFILTER, D3DTEXF_LINEAR );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
+
+    // Create the vertex buffer
+  struct CUSTOMVERTEX
+  {
+	  D3DXVECTOR3   pos;      // The transformed position for the vertex
+    FLOAT         tu, tv;   // The texture coordinates
+  };
+
+  LPDIRECT3DVERTEXBUFFER8 pD3DVertexBuffer = NULL;
+  pD3DDevice->CreateVertexBuffer( (sizeof(CUSTOMVERTEX) << 2),
+							                    D3DUSAGE_WRITEONLY,
+																	D3DFVF_XYZ | D3DFVF_TEX1,
+																	D3DPOOL_MANAGED,
+																	&pD3DVertexBuffer );
+
+	CUSTOMVERTEX *pVertices;
+	pD3DVertexBuffer->Lock( 0,										// Offset to lock
+												  0,										// Size to lock
+													(BYTE**)&pVertices,		// ppbData
+													0 );									// Flags
+
+      //-- Draw the backdrop -------------------------------------------------
+		pVertices[0].pos.x = -0.80f;
+		pVertices[0].pos.y = 0.80f;
+		pVertices[0].pos.z = 1.0f;
+    pVertices[0].tu = 0.0f;
+    pVertices[0].tv = 0.0f;
+
+		pVertices[1].pos.x = 0.80f;
+		pVertices[1].pos.y = 0.80f;
+		pVertices[1].pos.z = 1.0f;
+    pVertices[1].tu = 1.0f;
+    pVertices[1].tv = 0.0f;
+
+		pVertices[2].pos.x = 0.80f;
+		pVertices[2].pos.y = 0.0f;
+		pVertices[2].pos.z = 1.0f;
+    pVertices[2].tu = 1.0f;
+    pVertices[2].tv = 1.0f;
+
+		pVertices[3].pos.x = -0.80f;
+		pVertices[3].pos.y = 0.0f;
+		pVertices[3].pos.z = 1.0f;
+    pVertices[3].tu = 0.0f;
+    pVertices[3].tv = 1.0f;
+
+	pD3DVertexBuffer->Unlock();
+  pD3DDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX1 );
+  pD3DDevice->SetStreamSource(	0,												// Stream number
+																pD3DVertexBuffer,					// Stream data
+																sizeof(CUSTOMVERTEX) );		// Vertex stride
+
+  LPDIRECT3DTEXTURE8 pTexture = (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_MAMEoXLogo_OFFSET];
+	pD3DDevice->SetTexture( 0, pTexture );
+
+  pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
+
+  g_font.Begin();
+    g_font.DrawText( 320, 258, D3DCOLOR_RGBA( 0, 0, 80, 255),   L"Version " LVERSION_STRING, XBFONT_CENTER_X );
+    g_font.DrawText( 320, 282, D3DCOLOR_RGBA( 0, 0, 80, 255 ), L"Uses MAME version " LMAMEVERSION_STRING, XBFONT_CENTER_X );
+    g_font.DrawText( 320, 352, D3DCOLOR_RGBA( 10, 90, 100, 255 ), L"Portions based on:", XBFONT_CENTER_X );
+    g_font.DrawText( 320, 376, D3DCOLOR_RGBA( 10, 90, 100, 255 ), L"\"MAMEX(b5): updated by superfro, original port by opcode\"", XBFONT_CENTER_X );
+	  g_font.DrawText( 320, 400, D3DCOLOR_RGBA( 60, 105, 225, 255 ),  L"Press any button to continue.", XBFONT_CENTER_X );
+  g_font.End();
+
+  pD3DDevice->Present( NULL, NULL, NULL, NULL );
+
+	g_inputManager.WaitForAnyKey();
+	g_inputManager.WaitForNoKey( 0 );
+
+  pD3DVertexBuffer->Release();
+}
 
 
 extern "C" {
