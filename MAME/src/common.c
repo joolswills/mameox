@@ -1138,10 +1138,10 @@ static int display_rom_load_results(struct rom_load_data *romdata)
 		printf("%s", romdata->errorbuf);
     osd_print_error( "%s", romdata->errorbuf );
 
+#if 0    // [EBA] Don't wait for the user to bail out, just play
 		/* if we're not getting out of here, wait for a keypress */
 		if (!options.gui_host && !bailing)
 		{
-#if 0       // Don't wait for a keypress, it was already done in osd_print_error     
 			int k;
 
 			/* loop until we get one */
@@ -1154,9 +1154,9 @@ static int display_rom_load_results(struct rom_load_data *romdata)
 
 			/* bail on a control + C */
 			if (keyboard_pressed(KEYCODE_LCONTROL) && keyboard_pressed(KEYCODE_C))
-#endif
 				return 1;
 		}
+#endif
 	}
 
 	/* clean up any regions */
