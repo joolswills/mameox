@@ -349,9 +349,24 @@ cycles_t osd_profiling_ticks(void);
 // [EBA] - "Safe" mallocs, exits the program if the malloc fails, rather than
 // relying on MAME to actually check for failure (which it does not, in numerous
 // places)
-void *osd_malloc( size_t );
-void *osd_calloc( size_t num, size_t size );
-void *osd_realloc( void *memblock, size_t size );
+#ifdef _DEBUG
+  // Debug versions w/ caller-logging
+#define osd_malloc(s)     osd_malloc_debug( (s), __FILE__, __LINE__, __FUNCTION__ )
+#define osd_calloc(n,s)   osd_calloc_debug( (n), (s), __FILE__, __LINE__, __FUNCTION__ )
+#define osd_realloc(m,s)  osd_realloc_debug( (m), (s), __FILE__, __LINE__, __FUNCTION__ )
+void *osd_malloc_debug( size_t, const char **filename, unsigned int line, const char **function );
+void *osd_calloc_debug( size_t num, size_t size, const char **filename, unsigned int line, const char **function );
+void *osd_realloc_debug( void *memblock, size_t size, const char **filename, unsigned int line, const char **function );
+
+#else
+  // Retail versions
+#define osd_malloc(s)     osd_malloc_retail( (s) )
+#define osd_calloc(n,s)   osd_calloc_retail( (n), (s) )
+#define osd_realloc(m,s)  osd_realloc_retail( (m), (s) )
+void *osd_malloc_retail( size_t );
+void *osd_calloc_retail( size_t num, size_t size );
+void *osd_realloc_retail( void *memblock, size_t size );
+#endif
 
 
 /* called while loading ROMs. It is called a last time with name == 0 to signal */
