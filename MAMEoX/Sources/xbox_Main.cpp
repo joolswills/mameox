@@ -26,6 +26,7 @@
 	// Font class from the XDK
 #include "XBFont.h"
 
+#include "System_IniFile.h"
 #include "xbox_Timing.h"
 #include "xbox_JoystickMouse.h"
 #include "xbox_Direct3DRenderer.h"
@@ -62,7 +63,8 @@ static BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage );
 static void DestroyBackdrop( void );
 static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... );
 static BOOL __cdecl compareDriverNames( const void *elem1, const void *elem2 );
-static void SetOptions( void );
+static void LoadOptions( void );
+static void SaveOptions( void );
 static BOOL Helper_RunRom( UINT32 romIndex );
 
 
@@ -84,8 +86,6 @@ void __cdecl main( void )
     // Register the loadable section names for lookup at runtime
   RegisterDriverSectionNames();
 
-	SetOptions();
-
 		// Initialize the graphics subsystem
 	g_graphicsManager.Create();
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
@@ -105,6 +105,9 @@ void __cdecl main( void )
 	const XINPUT_GAMEPAD	&gp1 = g_inputManager.GetGamepadDeviceState( 1 );
 	const XINPUT_GAMEPAD	&gp2 = g_inputManager.GetGamepadDeviceState( 2 );
 	const XINPUT_GAMEPAD	&gp3 = g_inputManager.GetGamepadDeviceState( 3 );
+
+	LoadOptions();
+  SaveOptions();
 
 		// Show a splash screen
 	ShowSplashScreen( pD3DDevice );
@@ -152,6 +155,9 @@ void __cdecl main( void )
 				gp0.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] > 200 &&
 				gp0.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 200 )
 		{
+        // Strangely enough, we need XGRPH to use ifstream
+      XLoadSection( "XGRPH" );    
+      SaveOptions();
       LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
       XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
 		}
@@ -361,10 +367,12 @@ static BOOL __cdecl compareDriverNames( const void *elem1, const void *elem2 )
 
 
 //-------------------------------------------------------------
-//	SetOptions
+//	LoadOptions
 //-------------------------------------------------------------
-static void SetOptions( void )
+static void LoadOptions( void )
 {
+  CSystem_IniFile iniFile( INIFILENAME );
+
 /*
 	int		mame_debug;		          1 to enable debugging
 	int		cheat;			            1 to enable cheating
@@ -373,29 +381,66 @@ static void SetOptions( void )
 	int 	skip_gameinfo;		      1 to skip the game info screen at startup
 */
 
-	options.samplerate = 44100;       // sound sample playback rate, in Hz
-  options.use_samples = TRUE;       // 1 to enable external .wav samples
-  options.use_filter = TRUE;        // 1 to enable FIR filter on final mixer output
+    // sound sample playback rate, in Hz
+  options.samplerate = iniFile.GetProfileInt( "Sound", "SampleRate", 44100 );
+    // 1 to enable external .wav samples
+  options.use_samples = iniFile.GetProfileInt( "Sound", "UseSamples", TRUE );
+    // 1 to enable FIR filter on final mixer output
+  options.use_filter = iniFile.GetProfileInt( "Sound", "UseFilter", TRUE );
 
-	options.brightness = 1.0f;		    // brightness of the display
-  options.pause_bright = 0.65f;     // brightness when in pause
-	options.gamma = 1.0f;			        // gamma correction of the display
-	options.color_depth = 32;
-	options.vector_width = 640;	      // requested width for vector games; 0 means default (640)
-	options.vector_height = 480;	    // requested height for vector games; 0 means default (480)
+	options.brightness = iniFile.GetProfileFloat( "Video", "Brightness", 1.0f );		    // brightness of the display
+  options.pause_bright = iniFile.GetProfileFloat( "Video", "PauseBrightness", 0.65f );     // brightness when in pause
+	options.gamma = iniFile.GetProfileFloat( "Video", "Gamma", 1.0f );			        // gamma correction of the display
+	options.color_depth = iniFile.GetProfileInt( "Video", "ColorDepth", 32 );
+	options.vector_width = iniFile.GetProfileInt( "Video", "ColorDepth", 640 );	      // requested width for vector games; 0 means default (640)
+	options.vector_height = iniFile.GetProfileInt( "Video", "ColorDepth", 480 );	    // requested height for vector games; 0 means default (480)
 	// int		ui_orientation;	        // orientation of the UI relative to the video
 
-	options.beam = 2;			            // vector beam width
-	options.vector_flicker = 0.5f;	  // vector beam flicker effect control
-	options.vector_intensity = 1.5f;  // vector beam intensity
-	options.translucency = TRUE;      // 1 to enable translucency on vectors
+	options.beam = iniFile.GetProfileInt( "VectorOptions", "BeamWidth", 2 );			            // vector beam width
+	options.vector_flicker = iniFile.GetProfileFloat( "VectorOptions", "FlickerEffect", 0.5f );	  // vector beam flicker effect control
+	options.vector_intensity = iniFile.GetProfileFloat( "VectorOptions", "BeamIntensity", 1.5f );  // vector beam intensity
+	options.translucency = iniFile.GetProfileInt( "VectorOptions", "BeamWidth", TRUE );      // 1 to enable translucency on vectors
 	options.antialias = FALSE;		    // 1 to enable antialiasing on vectors
 
 	//int		use_artwork;	          bitfield indicating which artwork pieces to use
 	//int		artwork_res;	          1 for 1x game scaling, 2 for 2x
 	//int		artwork_crop;	          1 to crop artwork to the game screen
 	//char	savegame;		            character representing a savegame to load
+
+
+  FLOAT xPercentage = iniFile.GetProfileFloat( "Video", "ScreenUsage_X", DEFAULT_SCREEN_X_PERCENTAGE );
+  FLOAT yPercentage = iniFile.GetProfileFloat( "Video", "ScreenUsage_Y", DEFAULT_SCREEN_Y_PERCENTAGE );
+  SetScreenUsage( xPercentage, yPercentage );
 }
+
+
+//-------------------------------------------------------------
+//	SaveOptions
+//-------------------------------------------------------------
+static void SaveOptions( void )
+{
+  CSystem_IniFile iniFile( INIFILENAME );
+
+  iniFile.WriteProfileInt( "Sound", "SampleRate", options.samplerate );
+  iniFile.WriteProfileInt( "Sound", "UseSamples", options.use_samples );
+  iniFile.WriteProfileInt( "Sound", "UseFilter", options.use_filter );
+  iniFile.WriteProfileFloat( "Video", "Brightness", options.brightness );		    // brightness of the display
+  iniFile.WriteProfileFloat( "Video", "PauseBrightness", options.pause_bright );     // brightness when in pause
+	iniFile.WriteProfileFloat( "Video", "Gamma", options.gamma );			        // gamma correction of the display
+	iniFile.WriteProfileInt( "Video", "ColorDepth", options.color_depth );
+	iniFile.WriteProfileInt( "Video", "ColorDepth", options.vector_width );	      // requested width for vector games; 0 means default (640)
+	iniFile.WriteProfileInt( "Video", "ColorDepth", options.vector_height );	    // requested height for vector games; 0 means default (480)
+	iniFile.WriteProfileInt( "VectorOptions", "BeamWidth", options.beam );			            // vector beam width
+	iniFile.WriteProfileFloat( "VectorOptions", "FlickerEffect", options.vector_flicker );	  // vector beam flicker effect control
+	iniFile.WriteProfileFloat( "VectorOptions", "BeamIntensity", options.vector_intensity );  // vector beam intensity
+	iniFile.WriteProfileInt( "VectorOptions", "BeamWidth", options.translucency );      // 1 to enable translucency on vectors
+
+  FLOAT xPercentage, yPercentage;
+  GetScreenUsage( &xPercentage, &yPercentage );
+  iniFile.WriteProfileFloat( "Video", "ScreenUsage_X", xPercentage );
+  iniFile.WriteProfileFloat( "Video", "ScreenUsage_Y", yPercentage );
+}
+
 
 //-------------------------------------------------------------
 //  Helper_RunRom

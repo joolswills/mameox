@@ -257,6 +257,12 @@
 				RelativePath="Includes\Sections.h">
 			</File>
 			<File
+				RelativePath="Includes\System_IniFile.h">
+			</File>
+			<File
+				RelativePath="Includes\System_StringModifier.h">
+			</File>
+			<File
 				RelativePath="..\VCPPMame.h">
 			</File>
 			<File
@@ -347,6 +353,9 @@
 						ObjectFile=".\Profile/"
 						ProgramDataBaseFileName=".\Profile/"/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="Sources\System_IniFile.cpp">
 			</File>
 			<File
 				RelativePath="..\..\Program Files\XboxSDK_June2002\Samples\Xbox\Common\Src\xbfont.cpp">
