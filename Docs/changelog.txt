@@ -68,6 +68,8 @@ Version 0.71.3b (CVS)
       - Fixed an off by 1 error when setting texture coords that
         caused clipping of a valid row of pixels
       - Prerotate screenshots before saving the file
+      - Added graphics filtering capabilities (right now options are
+        "none" (no filtering) or "AdvanceMAME scale2x")
 
     - Keyboard.cpp
       - Finished off the debug keyboard reading routines
@@ -115,6 +117,7 @@ Version 0.71.3b (CVS)
       - Added filter by "disliked" favorite status
       - Added sort by genre
       - Added a simple screensaver (thanks to Noodle for the suggestion)
+      - Added graphics option "scale filter".
 
     - StartMenu.cpp
       - Made menu functions token based instead of cursor position 
@@ -151,6 +154,9 @@ Version 0.71.3b (CVS)
       image backdrops.
     - Added new class "CTVCalibrationScreen" which takes care of screen
       resizing/repositioning
+    - Added new class "CGFilterManager" which handles graphics filters/scalers
+      for smoothing game frames. (opcode)
+    - Added scale2x.cpp/.h to project to provide AdvanceMAME's Scale2x filter.
 
    -------------------------------------------------------------
   - \Sectionize.pl
