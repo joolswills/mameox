@@ -55,11 +55,11 @@
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			WholeProgramOptimization="TRUE">
+			WholeProgramOptimization="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
-				GlobalOptimizations="FALSE"
+				Optimization="3"
+				GlobalOptimizations="TRUE"
 				InlineFunctionExpansion="1"
 				FavorSizeOrSpeed="0"
 				OptimizeForProcessor="2"
@@ -69,7 +69,7 @@
 				ExceptionHandling="FALSE"
 				RuntimeLibrary="4"
 				BufferSecurityCheck="FALSE"
-				EnableFunctionLevelLinking="TRUE"
+				EnableFunctionLevelLinking="FALSE"
 				PrecompiledHeaderFile=".\obj/MAME.pch"
 				AssemblerListingLocation=".\obj/"
 				ObjectFile=".\obj/"
