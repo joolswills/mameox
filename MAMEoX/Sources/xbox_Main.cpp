@@ -415,7 +415,6 @@ static BOOL Helper_RunRom( UINT32 romIndex )
   DmStartProfiling( "xd:\\perf.log", 0 );
   #endif
 
-
   std::string DriverName = drivers[romIndex]->source_file;
   
   PRINTMSG( T_INFO, "*** Driver name: %s\n", drivers[romIndex]->source_file );
@@ -458,11 +457,7 @@ static BOOL Helper_RunRom( UINT32 romIndex )
   else
   {
 		ret = run_game( romIndex );
-    UnloadDriverSectionByName( DriverName.c_str() );
   }
-
-    // Reload data XBE sections, as they are needed for ROMList parsing
-  LoadDriverDataSections();
 
   #ifdef _PROFILER
   DmStopProfiling();
