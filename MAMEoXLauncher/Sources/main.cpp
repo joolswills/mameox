@@ -134,10 +134,9 @@ void __cdecl main( void )
 
   Enable128MegCaching();
 
-
-	InitializeFileIO(); // Must be done before LoadOptions!
   LoadOptions();      // Must be done before inputManager goes up (for lightgun calib data)
   SaveOptions();      // Write out a default INI if none existed
+	InitializeFileIO(); // Initialize fileIO (must be done after LoadOptions!)
 
 		// Initialize the graphics subsystem
 	g_graphicsManager.Create( TRUE );

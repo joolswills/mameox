@@ -86,8 +86,8 @@ void __cdecl main( void )
   DWORD getLaunchInfoRet = XGetLaunchInfo( &g_launchDataType, &g_launchData );
   MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
 
-	InitializeFileIO(); // Initialize fileIO (must be done before LoadOptions!)
   LoadOptions();      // Must be done before graphics mgr (for VSYNC) and before input mgr (lightgun calib data)
+	InitializeFileIO(); // Initialize fileIO (must be done after LoadOptions!)
 
 		// Initialize the graphics subsystem
   g_graphicsManager.Create( g_rendererOptions.m_vsync );

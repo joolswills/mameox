@@ -92,8 +92,7 @@ int vsnprintf( char *buf, size_t count, const char *fmt, va_list lst )
 //-------------------------------------------------------------
 void LoadOptions( void )
 {
-  CStdString iniFileName = g_FileIOConfig.m_IniPath;
-  iniFileName += "\\" INIFILENAME;
+  CStdString iniFileName = DEFAULT_MAMEOXSYSTEMPATH "\\" INIFILENAME;
   CSystem_IniFile iniFile( iniFileName );
 
 /*
@@ -250,8 +249,7 @@ void LoadOptions( void )
 //-------------------------------------------------------------
 void SaveOptions( void )
 {
-  CStdString iniFileName = g_FileIOConfig.m_IniPath;
-  iniFileName += "\\" INIFILENAME;
+  CStdString iniFileName = DEFAULT_MAMEOXSYSTEMPATH "\\" INIFILENAME;
   CSystem_IniFile iniFile( iniFileName );
 
   iniFile.WriteProfileInt( "General", "CheatsEnabled", options.cheat );

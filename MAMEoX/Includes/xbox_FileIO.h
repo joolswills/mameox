@@ -25,7 +25,7 @@
 
 #define DEFAULT_GENERALPATH				  "D:\\GENERAL"
 #define DEFAULT_ARTPATH						  "D:\\ARTWORK"
-#define DEFAULT_INIPATH						  "U:\\INI"
+#define DEFAULT_INIPATH						  "D:\\INI"
 #define DEFAULT_NVRAMPATH					  "D:\\NVRAM"
 #define DEFAULT_CONFIGPATH          "D:\\CFG"
 #define DEFAULT_ROMPATH						  "D:\\ROMS"
@@ -42,7 +42,7 @@
 #define DEFAULT_HMAPPING            "\\Device\\Harddisk0\\Partition6"
 
   // Path for internal files (should always be on the T or U drive)
-#define DEFAULT_MAMEOXSYSTEMPATH    "T:\\ROMS"
+#define DEFAULT_MAMEOXSYSTEMPATH    "T:\\SYSTEM"
 
 #define INIFILENAME           "MAMEoX.ini"
 #define DRIVERLISTFILENAME    "DRIVERS.list"
