@@ -1,11 +1,11 @@
-#pragma code_seg("C294")
-#pragma data_seg("D294")
-#pragma bss_seg("B294")
-#pragma const_seg("K294")
-#pragma comment(linker, "/merge:D294=294")
-#pragma comment(linker, "/merge:C294=294")
-#pragma comment(linker, "/merge:B294=294")
-#pragma comment(linker, "/merge:K294=294")
+#pragma code_seg("C295")
+#pragma data_seg("D295")
+#pragma bss_seg("B295")
+#pragma const_seg("K295")
+#pragma comment(linker, "/merge:D295=295")
+#pragma comment(linker, "/merge:C295=295")
+#pragma comment(linker, "/merge:B295=295")
+#pragma comment(linker, "/merge:K295=295")
 /***************************************************************************
 
 GI Joe

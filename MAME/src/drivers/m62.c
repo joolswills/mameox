@@ -1,11 +1,11 @@
-#pragma code_seg("C376")
-#pragma data_seg("D376")
-#pragma bss_seg("B376")
-#pragma const_seg("K376")
-#pragma comment(linker, "/merge:D376=376")
-#pragma comment(linker, "/merge:C376=376")
-#pragma comment(linker, "/merge:B376=376")
-#pragma comment(linker, "/merge:K376=376")
+#pragma code_seg("C377")
+#pragma data_seg("D377")
+#pragma bss_seg("B377")
+#pragma const_seg("K377")
+#pragma comment(linker, "/merge:D377=377")
+#pragma comment(linker, "/merge:C377=377")
+#pragma comment(linker, "/merge:B377=377")
+#pragma comment(linker, "/merge:K377=377")
 /****************************************************************************
 
 Irem "M62" system

@@ -1,11 +1,11 @@
-#pragma code_seg("C434")
-#pragma data_seg("D434")
-#pragma bss_seg("B434")
-#pragma const_seg("K434")
-#pragma comment(linker, "/merge:D434=434")
-#pragma comment(linker, "/merge:C434=434")
-#pragma comment(linker, "/merge:B434=434")
-#pragma comment(linker, "/merge:K434=434")
+#pragma code_seg("C435")
+#pragma data_seg("D435")
+#pragma bss_seg("B435")
+#pragma const_seg("K435")
+#pragma comment(linker, "/merge:D435=435")
+#pragma comment(linker, "/merge:C435=435")
+#pragma comment(linker, "/merge:B435=435")
+#pragma comment(linker, "/merge:K435=435")
 /***************************************************************************
 
 Mysterious Stones

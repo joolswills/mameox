@@ -1,11 +1,11 @@
-#pragma code_seg("C675")
-#pragma data_seg("D675")
-#pragma bss_seg("B675")
-#pragma const_seg("K675")
-#pragma comment(linker, "/merge:D675=675")
-#pragma comment(linker, "/merge:C675=675")
-#pragma comment(linker, "/merge:B675=675")
-#pragma comment(linker, "/merge:K675=675")
+#pragma code_seg("C676")
+#pragma data_seg("D676")
+#pragma bss_seg("B676")
+#pragma const_seg("K676")
+#pragma comment(linker, "/merge:D676=676")
+#pragma comment(linker, "/merge:C676=676")
+#pragma comment(linker, "/merge:B676=676")
+#pragma comment(linker, "/merge:K676=676")
 /***************************************************************************
 
 Tora Tora (c) 1980 GamePlan

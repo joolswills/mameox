@@ -1,11 +1,11 @@
-#pragma code_seg("C467")
-#pragma data_seg("D467")
-#pragma bss_seg("B467")
-#pragma const_seg("K467")
-#pragma comment(linker, "/merge:D467=467")
-#pragma comment(linker, "/merge:C467=467")
-#pragma comment(linker, "/merge:B467=467")
-#pragma comment(linker, "/merge:K467=467")
+#pragma code_seg("C468")
+#pragma data_seg("D468")
+#pragma bss_seg("B468")
+#pragma const_seg("K468")
+#pragma comment(linker, "/merge:D468=468")
+#pragma comment(linker, "/merge:C468=468")
+#pragma comment(linker, "/merge:B468=468")
+#pragma comment(linker, "/merge:K468=468")
 /***************************************************************************
 
 Omega Fighter

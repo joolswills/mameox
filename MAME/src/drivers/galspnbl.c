@@ -1,11 +1,11 @@
-#pragma code_seg("C286")
-#pragma data_seg("D286")
-#pragma bss_seg("B286")
-#pragma const_seg("K286")
-#pragma comment(linker, "/merge:D286=286")
-#pragma comment(linker, "/merge:C286=286")
-#pragma comment(linker, "/merge:B286=286")
-#pragma comment(linker, "/merge:K286=286")
+#pragma code_seg("C287")
+#pragma data_seg("D287")
+#pragma bss_seg("B287")
+#pragma const_seg("K287")
+#pragma comment(linker, "/merge:D287=287")
+#pragma comment(linker, "/merge:C287=287")
+#pragma comment(linker, "/merge:B287=287")
+#pragma comment(linker, "/merge:K287=287")
 /***************************************************************************
 
 Hot Pinball

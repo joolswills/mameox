@@ -1,11 +1,11 @@
-#pragma code_seg("C298")
-#pragma data_seg("D298")
-#pragma bss_seg("B298")
-#pragma const_seg("K298")
-#pragma comment(linker, "/merge:D298=298")
-#pragma comment(linker, "/merge:C298=298")
-#pragma comment(linker, "/merge:B298=298")
-#pragma comment(linker, "/merge:K298=298")
+#pragma code_seg("C299")
+#pragma data_seg("D299")
+#pragma bss_seg("B299")
+#pragma const_seg("K299")
+#pragma comment(linker, "/merge:D299=299")
+#pragma comment(linker, "/merge:C299=299")
+#pragma comment(linker, "/merge:B299=299")
+#pragma comment(linker, "/merge:K299=299")
 /***************************************************************************
 
 Ghosts'n Goblins

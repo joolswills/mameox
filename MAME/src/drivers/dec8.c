@@ -1,11 +1,11 @@
-#pragma code_seg("C221")
-#pragma data_seg("D221")
-#pragma bss_seg("B221")
-#pragma const_seg("K221")
-#pragma comment(linker, "/merge:D221=221")
-#pragma comment(linker, "/merge:C221=221")
-#pragma comment(linker, "/merge:B221=221")
-#pragma comment(linker, "/merge:K221=221")
+#pragma code_seg("C222")
+#pragma data_seg("D222")
+#pragma bss_seg("B222")
+#pragma const_seg("K222")
+#pragma comment(linker, "/merge:D222=222")
+#pragma comment(linker, "/merge:C222=222")
+#pragma comment(linker, "/merge:B222=222")
+#pragma comment(linker, "/merge:K222=222")
 /***************************************************************************
 
 Various Data East 8 bit games:

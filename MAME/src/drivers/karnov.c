@@ -1,11 +1,11 @@
-#pragma code_seg("C348")
-#pragma data_seg("D348")
-#pragma bss_seg("B348")
-#pragma const_seg("K348")
-#pragma comment(linker, "/merge:D348=348")
-#pragma comment(linker, "/merge:C348=348")
-#pragma comment(linker, "/merge:B348=348")
-#pragma comment(linker, "/merge:K348=348")
+#pragma code_seg("C349")
+#pragma data_seg("D349")
+#pragma bss_seg("B349")
+#pragma const_seg("K349")
+#pragma comment(linker, "/merge:D349=349")
+#pragma comment(linker, "/merge:C349=349")
+#pragma comment(linker, "/merge:B349=349")
+#pragma comment(linker, "/merge:K349=349")
 /***************************************************************************
 
 	Karnov (USA version)                   (c) 1987 Data East USA

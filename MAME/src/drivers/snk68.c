@@ -1,11 +1,11 @@
-#pragma code_seg("C585")
-#pragma data_seg("D585")
-#pragma bss_seg("B585")
-#pragma const_seg("K585")
-#pragma comment(linker, "/merge:D585=585")
-#pragma comment(linker, "/merge:C585=585")
-#pragma comment(linker, "/merge:B585=585")
-#pragma comment(linker, "/merge:K585=585")
+#pragma code_seg("C586")
+#pragma data_seg("D586")
+#pragma bss_seg("B586")
+#pragma const_seg("K586")
+#pragma comment(linker, "/merge:D586=586")
+#pragma comment(linker, "/merge:C586=586")
+#pragma comment(linker, "/merge:B586=586")
+#pragma comment(linker, "/merge:K586=586")
 /***************************************************************************
 
 	POW - Prisoners Of War (US) 		A7008	SNK 1988

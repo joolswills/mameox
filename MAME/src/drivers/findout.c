@@ -1,11 +1,11 @@
-#pragma code_seg("C262")
-#pragma data_seg("D262")
-#pragma bss_seg("B262")
-#pragma const_seg("K262")
-#pragma comment(linker, "/merge:D262=262")
-#pragma comment(linker, "/merge:C262=262")
-#pragma comment(linker, "/merge:B262=262")
-#pragma comment(linker, "/merge:K262=262")
+#pragma code_seg("C263")
+#pragma data_seg("D263")
+#pragma bss_seg("B263")
+#pragma const_seg("K263")
+#pragma comment(linker, "/merge:D263=263")
+#pragma comment(linker, "/merge:C263=263")
+#pragma comment(linker, "/merge:B263=263")
+#pragma comment(linker, "/merge:K263=263")
 /***************************************************************************
 
 Find Out    (c) 1987

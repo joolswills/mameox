@@ -1,11 +1,11 @@
-#pragma code_seg("C729")
-#pragma data_seg("D729")
-#pragma bss_seg("B729")
-#pragma const_seg("K729")
-#pragma comment(linker, "/merge:D729=729")
-#pragma comment(linker, "/merge:C729=729")
-#pragma comment(linker, "/merge:B729=729")
-#pragma comment(linker, "/merge:K729=729")
+#pragma code_seg("C730")
+#pragma data_seg("D730")
+#pragma bss_seg("B730")
+#pragma const_seg("K730")
+#pragma comment(linker, "/merge:D730=730")
+#pragma comment(linker, "/merge:C730=730")
+#pragma comment(linker, "/merge:B730=730")
+#pragma comment(linker, "/merge:K730=730")
 /***************************************************************************
 
 Xevious

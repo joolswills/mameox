@@ -1,11 +1,11 @@
-#pragma code_seg("C494")
-#pragma data_seg("D494")
-#pragma bss_seg("B494")
-#pragma const_seg("K494")
-#pragma comment(linker, "/merge:D494=494")
-#pragma comment(linker, "/merge:C494=494")
-#pragma comment(linker, "/merge:B494=494")
-#pragma comment(linker, "/merge:K494=494")
+#pragma code_seg("C495")
+#pragma data_seg("D495")
+#pragma bss_seg("B495")
+#pragma const_seg("K495")
+#pragma comment(linker, "/merge:D495=495")
+#pragma comment(linker, "/merge:C495=495")
+#pragma comment(linker, "/merge:B495=495")
+#pragma comment(linker, "/merge:K495=495")
 /***************************************************************************
 
 Playchoice 10 - (c) 1986 Nintendo of America

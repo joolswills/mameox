@@ -1,11 +1,11 @@
-#pragma code_seg("C299")
-#pragma data_seg("D299")
-#pragma bss_seg("B299")
-#pragma const_seg("K299")
-#pragma comment(linker, "/merge:D299=299")
-#pragma comment(linker, "/merge:C299=299")
-#pragma comment(linker, "/merge:B299=299")
-#pragma comment(linker, "/merge:K299=299")
+#pragma code_seg("C300")
+#pragma data_seg("D300")
+#pragma bss_seg("B300")
+#pragma const_seg("K300")
+#pragma comment(linker, "/merge:D300=300")
+#pragma comment(linker, "/merge:C300=300")
+#pragma comment(linker, "/merge:B300=300")
+#pragma comment(linker, "/merge:K300=300")
 /***************************************************************************
   GOINDOL
 

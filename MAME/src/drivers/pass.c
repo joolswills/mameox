@@ -1,11 +1,11 @@
-#pragma code_seg("C481")
-#pragma data_seg("D481")
-#pragma bss_seg("B481")
-#pragma const_seg("K481")
-#pragma comment(linker, "/merge:D481=481")
-#pragma comment(linker, "/merge:C481=481")
-#pragma comment(linker, "/merge:B481=481")
-#pragma comment(linker, "/merge:K481=481")
+#pragma code_seg("C482")
+#pragma data_seg("D482")
+#pragma bss_seg("B482")
+#pragma const_seg("K482")
+#pragma comment(linker, "/merge:D482=482")
+#pragma comment(linker, "/merge:C482=482")
+#pragma comment(linker, "/merge:B482=482")
+#pragma comment(linker, "/merge:K482=482")
 /* Pass (c)1992, Oksan
 
  Driver by David Haywood

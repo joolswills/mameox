@@ -1,11 +1,11 @@
-#pragma code_seg("C516")
-#pragma data_seg("D516")
-#pragma bss_seg("B516")
-#pragma const_seg("K516")
-#pragma comment(linker, "/merge:D516=516")
-#pragma comment(linker, "/merge:C516=516")
-#pragma comment(linker, "/merge:B516=516")
-#pragma comment(linker, "/merge:K516=516")
+#pragma code_seg("C517")
+#pragma data_seg("D517")
+#pragma bss_seg("B517")
+#pragma const_seg("K517")
+#pragma comment(linker, "/merge:D517=517")
+#pragma comment(linker, "/merge:C517=517")
+#pragma comment(linker, "/merge:B517=517")
+#pragma comment(linker, "/merge:K517=517")
 /*******************************************************************
 R2D Tank (c) 1980 Sigma Ent. Inc.
 

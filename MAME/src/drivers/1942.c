@@ -1,11 +1,11 @@
-#pragma code_seg("C76")
-#pragma data_seg("D76")
-#pragma bss_seg("B76")
-#pragma const_seg("K76")
-#pragma comment(linker, "/merge:D76=76")
-#pragma comment(linker, "/merge:C76=76")
-#pragma comment(linker, "/merge:B76=76")
-#pragma comment(linker, "/merge:K76=76")
+#pragma code_seg("C77")
+#pragma data_seg("D77")
+#pragma bss_seg("B77")
+#pragma const_seg("K77")
+#pragma comment(linker, "/merge:D77=77")
+#pragma comment(linker, "/merge:C77=77")
+#pragma comment(linker, "/merge:B77=77")
+#pragma comment(linker, "/merge:K77=77")
 /***************************************************************************
 
 1942

@@ -1,11 +1,11 @@
-#pragma code_seg("C635")
-#pragma data_seg("D635")
-#pragma bss_seg("B635")
-#pragma const_seg("K635")
-#pragma comment(linker, "/merge:D635=635")
-#pragma comment(linker, "/merge:C635=635")
-#pragma comment(linker, "/merge:B635=635")
-#pragma comment(linker, "/merge:K635=635")
+#pragma code_seg("C636")
+#pragma data_seg("D636")
+#pragma bss_seg("B636")
+#pragma const_seg("K636")
+#pragma comment(linker, "/merge:D636=636")
+#pragma comment(linker, "/merge:C636=636")
+#pragma comment(linker, "/merge:B636=636")
+#pragma comment(linker, "/merge:K636=636")
 /***************************************************************************
 
 Tail to Nose / Super Formula - (c) 1989 Video System Co.

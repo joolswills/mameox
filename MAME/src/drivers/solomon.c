@@ -1,11 +1,11 @@
-#pragma code_seg("C587")
-#pragma data_seg("D587")
-#pragma bss_seg("B587")
-#pragma const_seg("K587")
-#pragma comment(linker, "/merge:D587=587")
-#pragma comment(linker, "/merge:C587=587")
-#pragma comment(linker, "/merge:B587=587")
-#pragma comment(linker, "/merge:K587=587")
+#pragma code_seg("C588")
+#pragma data_seg("D588")
+#pragma bss_seg("B588")
+#pragma const_seg("K588")
+#pragma comment(linker, "/merge:D588=588")
+#pragma comment(linker, "/merge:C588=588")
+#pragma comment(linker, "/merge:B588=588")
+#pragma comment(linker, "/merge:K588=588")
 /***************************************************************************
 
 Solomon's Key

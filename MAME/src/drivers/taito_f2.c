@@ -1,11 +1,11 @@
-#pragma code_seg("C637")
-#pragma data_seg("D637")
-#pragma bss_seg("B637")
-#pragma const_seg("K637")
-#pragma comment(linker, "/merge:D637=637")
-#pragma comment(linker, "/merge:C637=637")
-#pragma comment(linker, "/merge:B637=637")
-#pragma comment(linker, "/merge:K637=637")
+#pragma code_seg("C638")
+#pragma data_seg("D638")
+#pragma bss_seg("B638")
+#pragma const_seg("K638")
+#pragma comment(linker, "/merge:D638=638")
+#pragma comment(linker, "/merge:C638=638")
+#pragma comment(linker, "/merge:B638=638")
+#pragma comment(linker, "/merge:K638=638")
 /***************************************************************************
 
 Taito F2 System

@@ -1,11 +1,11 @@
-#pragma code_seg("C425")
-#pragma data_seg("D425")
-#pragma bss_seg("B425")
-#pragma const_seg("K425")
-#pragma comment(linker, "/merge:D425=425")
-#pragma comment(linker, "/merge:C425=425")
-#pragma comment(linker, "/merge:B425=425")
-#pragma comment(linker, "/merge:K425=425")
+#pragma code_seg("C426")
+#pragma data_seg("D426")
+#pragma bss_seg("B426")
+#pragma const_seg("K426")
+#pragma comment(linker, "/merge:D426=426")
+#pragma comment(linker, "/merge:C426=426")
+#pragma comment(linker, "/merge:B426=426")
+#pragma comment(linker, "/merge:K426=426")
 /***************************************************************************
 
 Mr Do!

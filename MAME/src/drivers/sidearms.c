@@ -1,11 +1,11 @@
-#pragma code_seg("C571")
-#pragma data_seg("D571")
-#pragma bss_seg("B571")
-#pragma const_seg("K571")
-#pragma comment(linker, "/merge:D571=571")
-#pragma comment(linker, "/merge:C571=571")
-#pragma comment(linker, "/merge:B571=571")
-#pragma comment(linker, "/merge:K571=571")
+#pragma code_seg("C572")
+#pragma data_seg("D572")
+#pragma bss_seg("B572")
+#pragma const_seg("K572")
+#pragma comment(linker, "/merge:D572=572")
+#pragma comment(linker, "/merge:C572=572")
+#pragma comment(linker, "/merge:B572=572")
+#pragma comment(linker, "/merge:K572=572")
 /***************************************************************************
 
   Sidearms

@@ -1,11 +1,11 @@
-#pragma code_seg("C393")
-#pragma data_seg("D393")
-#pragma bss_seg("B393")
-#pragma const_seg("K393")
-#pragma comment(linker, "/merge:D393=393")
-#pragma comment(linker, "/merge:C393=393")
-#pragma comment(linker, "/merge:B393=393")
-#pragma comment(linker, "/merge:K393=393")
+#pragma code_seg("C394")
+#pragma data_seg("D394")
+#pragma bss_seg("B394")
+#pragma const_seg("K394")
+#pragma comment(linker, "/merge:D394=394")
+#pragma comment(linker, "/merge:C394=394")
+#pragma comment(linker, "/merge:B394=394")
+#pragma comment(linker, "/merge:K394=394")
 /******************************************************************************
 
   'Face' LINDA board

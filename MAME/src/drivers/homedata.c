@@ -1,11 +1,11 @@
-#pragma code_seg("C329")
-#pragma data_seg("D329")
-#pragma bss_seg("B329")
-#pragma const_seg("K329")
-#pragma comment(linker, "/merge:D329=329")
-#pragma comment(linker, "/merge:C329=329")
-#pragma comment(linker, "/merge:B329=329")
-#pragma comment(linker, "/merge:K329=329")
+#pragma code_seg("C330")
+#pragma data_seg("D330")
+#pragma bss_seg("B330")
+#pragma const_seg("K330")
+#pragma comment(linker, "/merge:D330=330")
+#pragma comment(linker, "/merge:C330=330")
+#pragma comment(linker, "/merge:B330=330")
+#pragma comment(linker, "/merge:K330=330")
 /***************************************************************************
 
 Homedata Games

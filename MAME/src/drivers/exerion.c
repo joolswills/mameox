@@ -1,11 +1,11 @@
-#pragma code_seg("C250")
-#pragma data_seg("D250")
-#pragma bss_seg("B250")
-#pragma const_seg("K250")
-#pragma comment(linker, "/merge:D250=250")
-#pragma comment(linker, "/merge:C250=250")
-#pragma comment(linker, "/merge:B250=250")
-#pragma comment(linker, "/merge:K250=250")
+#pragma code_seg("C251")
+#pragma data_seg("D251")
+#pragma bss_seg("B251")
+#pragma const_seg("K251")
+#pragma comment(linker, "/merge:D251=251")
+#pragma comment(linker, "/merge:C251=251")
+#pragma comment(linker, "/merge:B251=251")
+#pragma comment(linker, "/merge:K251=251")
 /***************************************************************************
 
 	Jaleco Exerion hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C628")
-#pragma data_seg("D628")
-#pragma bss_seg("B628")
-#pragma const_seg("K628")
-#pragma comment(linker, "/merge:D628=628")
-#pragma comment(linker, "/merge:C628=628")
-#pragma comment(linker, "/merge:B628=628")
-#pragma comment(linker, "/merge:K628=628")
+#pragma code_seg("C629")
+#pragma data_seg("D629")
+#pragma bss_seg("B629")
+#pragma const_seg("K629")
+#pragma comment(linker, "/merge:D629=629")
+#pragma comment(linker, "/merge:C629=629")
+#pragma comment(linker, "/merge:B629=629")
+#pragma comment(linker, "/merge:K629=629")
 /***************************************************************************
 
 Surprise Attack (Konami GX911) (c) 1990 Konami

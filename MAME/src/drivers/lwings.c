@@ -1,11 +1,11 @@
-#pragma code_seg("C374")
-#pragma data_seg("D374")
-#pragma bss_seg("B374")
-#pragma const_seg("K374")
-#pragma comment(linker, "/merge:D374=374")
-#pragma comment(linker, "/merge:C374=374")
-#pragma comment(linker, "/merge:B374=374")
-#pragma comment(linker, "/merge:K374=374")
+#pragma code_seg("C375")
+#pragma data_seg("D375")
+#pragma bss_seg("B375")
+#pragma const_seg("K375")
+#pragma comment(linker, "/merge:D375=375")
+#pragma comment(linker, "/merge:C375=375")
+#pragma comment(linker, "/merge:B375=375")
+#pragma comment(linker, "/merge:K375=375")
 /***************************************************************************
 
   Legendary Wings

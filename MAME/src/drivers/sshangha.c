@@ -1,11 +1,11 @@
-#pragma code_seg("C603")
-#pragma data_seg("D603")
-#pragma bss_seg("B603")
-#pragma const_seg("K603")
-#pragma comment(linker, "/merge:D603=603")
-#pragma comment(linker, "/merge:C603=603")
-#pragma comment(linker, "/merge:B603=603")
-#pragma comment(linker, "/merge:K603=603")
+#pragma code_seg("C604")
+#pragma data_seg("D604")
+#pragma bss_seg("B604")
+#pragma const_seg("K604")
+#pragma comment(linker, "/merge:D604=604")
+#pragma comment(linker, "/merge:C604=604")
+#pragma comment(linker, "/merge:B604=604")
+#pragma comment(linker, "/merge:K604=604")
 /***************************************************************************
 
   Super Shanghai Dragon's Eye             (c) 1992 Hot-B

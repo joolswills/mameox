@@ -1,11 +1,11 @@
-#pragma code_seg("C319")
-#pragma data_seg("D319")
-#pragma bss_seg("B319")
-#pragma const_seg("K319")
-#pragma comment(linker, "/merge:D319=319")
-#pragma comment(linker, "/merge:C319=319")
-#pragma comment(linker, "/merge:B319=319")
-#pragma comment(linker, "/merge:K319=319")
+#pragma code_seg("C320")
+#pragma data_seg("D320")
+#pragma bss_seg("B320")
+#pragma const_seg("K320")
+#pragma comment(linker, "/merge:D320=320")
+#pragma comment(linker, "/merge:C320=320")
+#pragma comment(linker, "/merge:B320=320")
+#pragma comment(linker, "/merge:K320=320")
 /***************************************************************************
 
   Hana Awase driver by Zsolt Vasvari

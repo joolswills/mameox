@@ -1,11 +1,11 @@
-#pragma code_seg("C535")
-#pragma data_seg("D535")
-#pragma bss_seg("B535")
-#pragma const_seg("K535")
-#pragma comment(linker, "/merge:D535=535")
-#pragma comment(linker, "/merge:C535=535")
-#pragma comment(linker, "/merge:B535=535")
-#pragma comment(linker, "/merge:K535=535")
+#pragma code_seg("C536")
+#pragma data_seg("D536")
+#pragma bss_seg("B536")
+#pragma const_seg("K536")
+#pragma comment(linker, "/merge:D536=536")
+#pragma comment(linker, "/merge:C536=536")
+#pragma comment(linker, "/merge:B536=536")
+#pragma comment(linker, "/merge:K536=536")
 /***************************************************************************
 
 Rollergames (GX999) (c) 1991 Konami

@@ -1,11 +1,11 @@
-#pragma code_seg("C213")
-#pragma data_seg("D213")
-#pragma bss_seg("B213")
-#pragma const_seg("K213")
-#pragma comment(linker, "/merge:D213=213")
-#pragma comment(linker, "/merge:C213=213")
-#pragma comment(linker, "/merge:B213=213")
-#pragma comment(linker, "/merge:K213=213")
+#pragma code_seg("C214")
+#pragma data_seg("D214")
+#pragma bss_seg("B214")
+#pragma const_seg("K214")
+#pragma comment(linker, "/merge:D214=214")
+#pragma comment(linker, "/merge:C214=214")
+#pragma comment(linker, "/merge:B214=214")
+#pragma comment(linker, "/merge:K214=214")
 /***************************************************************************
 
 	D-Con									(c) 1992 Success

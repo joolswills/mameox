@@ -1,11 +1,11 @@
-#pragma code_seg("C258")
-#pragma data_seg("D258")
-#pragma bss_seg("B258")
-#pragma const_seg("K258")
-#pragma comment(linker, "/merge:D258=258")
-#pragma comment(linker, "/merge:C258=258")
-#pragma comment(linker, "/merge:B258=258")
-#pragma comment(linker, "/merge:K258=258")
+#pragma code_seg("C259")
+#pragma data_seg("D259")
+#pragma bss_seg("B259")
+#pragma const_seg("K259")
+#pragma comment(linker, "/merge:D259=259")
+#pragma comment(linker, "/merge:C259=259")
+#pragma comment(linker, "/merge:B259=259")
+#pragma comment(linker, "/merge:K259=259")
 /***************************************************************************
 
   Fast Freddie/Jump Coaster hardware

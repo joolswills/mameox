@@ -1,11 +1,11 @@
-#pragma code_seg("C565")
-#pragma data_seg("D565")
-#pragma bss_seg("B565")
-#pragma const_seg("K565")
-#pragma comment(linker, "/merge:D565=565")
-#pragma comment(linker, "/merge:C565=565")
-#pragma comment(linker, "/merge:B565=565")
-#pragma comment(linker, "/merge:K565=565")
+#pragma code_seg("C566")
+#pragma data_seg("D566")
+#pragma bss_seg("B566")
+#pragma const_seg("K566")
+#pragma comment(linker, "/merge:D566=566")
+#pragma comment(linker, "/merge:C566=566")
+#pragma comment(linker, "/merge:B566=566")
+#pragma comment(linker, "/merge:K566=566")
 /***************************************************************************
 
 Shaolin's Road
