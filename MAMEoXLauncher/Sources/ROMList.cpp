@@ -27,7 +27,7 @@ extern "C" {
 #define SELECTED_ITEM_COLOR			D3DCOLOR_RGBA( 255, 255, 255, 255 )
 
 	// Maximum number of items to render on the screen at once
-#define MAXPAGESIZE							28
+#define MAXPAGESIZE							31
 
 	// Timeout values for the cursor movement acceleration bands
 	// Values are measured in seconds
@@ -52,6 +52,7 @@ extern "C" {
 
 //= G L O B A L = V A R S ==============================================
 const char g_superscrollCharacterSet[NUM_SUPERSCROLL_CHARS+1] = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
 
 //= P R O T O T Y P E S ================================================
 BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage );              // Defined in main.cpp
@@ -142,6 +143,7 @@ BOOL CROMList::GenerateROMList( void )
 {
 	PRINTMSG( T_TRACE, "GenerateROMList" );
 
+  m_shouldGenerateROMList = FALSE;
 	m_ROMListWithClones.clear();
   m_ROMListNoClones.clear();
 
@@ -271,8 +273,7 @@ void CROMList::MoveCursor( CGamepad &gp )
   	// Handle user input
   if(  gp.IsButtonPressed( GP_B | GP_A ) )
   {
-    GenerateROMList();
-		WaitForNoButton();
+    m_shouldGenerateROMList = TRUE;
   }
   else if( gp.IsOneOfButtonsPressed( GP_A | GP_START ) )
 	{

@@ -83,6 +83,8 @@ Version 0.69.01b
       - Made ROMList, OptionsPage, and Help render to a resizeable,
         rotateable texture
       - Made use of the new VirtualKeyboard class
+      - Added option to disable sound processing
+      - Enabled option to change sound samplerate
 
     - Help.cpp
       - Made ROMList, OptionsPage, and Help render to a resizeable,
@@ -117,6 +119,35 @@ Version 0.69.01b
   - Media
     - help.txt
       - Integrated patch from John Wu (thanks!)
+
+
+ --- Integrated MAME version 0.70, changes follow -------------------
+
+ Changes in the \MAME\src directory
+
+ Removals:
+
+ Additions:
+   \
+     memdbg.c
+     memdbg.h
+
+   drivers\
+     djboy.c
+     glass.c
+
+   includes\
+
+   machine\
+     pgmprot.c
+
+   vidhrdw\
+     djboy.c
+     glass.c
+
+   xml2info\
+     <directory added>
+     
 
  --- Specific Game fixes --------------------------------------------
   U.S. Championship V'ball

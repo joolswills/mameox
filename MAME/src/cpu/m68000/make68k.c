@@ -4163,7 +4163,7 @@ void mul(void)
 
 							fprintf(fp, "\t\t add   esi,byte 2\n\n");
 
-							TimingCycles += 70 ;
+							TimingCycles += 54 ;
 
 							if (mode < 7)
 							{

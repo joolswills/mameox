@@ -32,8 +32,8 @@ extern "C" {
 #define RELEASE_STRING        ".1b"
 #define LRELEASE_STRING       L".1b"
 
-#define VERSION_STRING    "0.69" RELEASE_STRING
-#define LVERSION_STRING   L"0.69" LRELEASE_STRING
+#define VERSION_STRING    "0.70" RELEASE_STRING
+#define LVERSION_STRING   L"0.70" LRELEASE_STRING
 
   //! \enum   mameoxLaunchCommand
   //! \brief  Determines what the MAMEoX task should do
@@ -80,6 +80,8 @@ typedef struct RenderToTextureToken_t
   LPDIRECT3DSURFACE8  m_zBuffer;
   LPDIRECT3DSURFACE8  m_textureSurface;
   LPDIRECT3DDEVICE8   m_pD3DDevice;
+  D3DVIEWPORT8        m_viewPoint;
+  LPDIRECT3DTEXTURE8  m_texture;
 } RenderToTextureToken_t;
 
 //= G L O B A L = V A R S ==============================================

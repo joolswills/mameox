@@ -973,6 +973,8 @@ void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\zerozone.c", "633" );
   RegisterSectionName( "src\\drivers\\zn.c", "634" );
   RegisterSectionName( "src\\drivers\\zodiack.c", "635" );
+  RegisterSectionName( "src\\drivers\\djboy.c", "665" );
+  RegisterSectionName( "src\\drivers\\glass.c", "666" );
 } // End extern "C"
 }
 

@@ -22,7 +22,7 @@ extern "C" {
 #define NORMAL_ITEM_COLOR				D3DCOLOR_XRGB( 190, 215, 255 )
 
 	// Maximum number of items to render on the screen at once
-#define MAXPAGESIZE							22
+#define MAXPAGESIZE							23
 
 	// Timeout values for the cursor movement acceleration bands
 	// Values are measured in seconds
@@ -341,7 +341,6 @@ void CHelp::Draw( BOOL opaque, BOOL flipOnCompletion )
 	m_font.Begin();
 
 		// Render the text
-	FLOAT xPos;
 	FLOAT yPos = Y_POS;
 	DWORD pageSize = (m_Help.size() < MAXPAGESIZE ? m_Help.size() : MAXPAGESIZE);
 	ULONG absListIDX = (ULONG)m_helpPageOffset;

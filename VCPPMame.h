@@ -118,7 +118,7 @@
 #define HAS_V70					1
 #define HAS_NAMCONA			1
 #define HAS_PIC16C55    1   // New: 0.67
-
+#define HAS_PIC16C57    1   // New: 0.70
 
 
 

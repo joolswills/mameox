@@ -67,6 +67,9 @@ lightgunCalibration_t    g_calibrationData[4] = { {-32767,0,32767,32767,0,-32767
                                                   {-32767,0,32767,32767,0,-32767},
                                                   {-32767,0,32767,32767,0,-32767} };
 
+  //! Token to force rendering to screen
+static RenderToTextureToken_t   g_toScreenToken;
+
 
 //= P R O T O T Y P E S ===============================================
 XBOXAPI DWORD WINAPI IoCreateSymbolicLink( PUNICODE_STRING symLinkName, PUNICODE_STRING devName );
@@ -518,6 +521,7 @@ void RemapDriveLetters( void )
 
 }	// End Extern "C"
 
+
 //-------------------------------------------------------------
 //  RenderToTextureStart
 //-------------------------------------------------------------
@@ -527,6 +531,8 @@ BOOL RenderToTextureStart( RenderToTextureToken_t &token, LPDIRECT3DDEVICE8 pD3D
     return FALSE;
 
   token.m_pD3DDevice = pD3DDevice;
+  token.m_viewPoint = textureViewpoint;
+  token.m_texture = texture;
 
       // Set up to render to texture
   pD3DDevice->GetRenderTarget( &token.m_backBuffer );

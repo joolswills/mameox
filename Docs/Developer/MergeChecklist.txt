@@ -54,14 +54,11 @@
 
 	================================================================================
 	WinCVS:
-		I'm not positive that this op can be done via wincvs
-		(without just using the admin->command line stuff). It's
-		possible that it could be done w/ the Merge Options tab,
-		doing a "Plus w/ this tag" and putting the second most recent 
-		milestone tag first, B_MAME second. 
+		Merge Options tab, "Plus w/ this tag" putting the second most recent 
+		milestone tag first, B_MAME second.
 
 	(You can find the tag from the last merge by doing a cvs log on the sln file and
-		taking the most recent M_* tag)
+		taking the second most recent I_* tag)
 	================================================================================
 
 	Note that it's very important to pass the -d option (create missing directories) to ensure

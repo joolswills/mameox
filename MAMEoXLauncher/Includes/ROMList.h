@@ -54,7 +54,8 @@ public:
     m_superscrollCharacterIdx( 0 ),
     m_driverInfoList( drivers ),
     m_numDrivers( numDrivers ),
-    m_gameSelected( FALSE )
+    m_gameSelected( FALSE ),
+    m_shouldGenerateROMList( FALSE )
 	{
     for( UINT32 i = 0; i < NUM_SUPERSCROLL_CHARS; ++i )
       m_superscrollJumpTable[i] = INVALID_SUPERSCROLL_JUMP_IDX;
@@ -169,6 +170,7 @@ public:
   }
 
   BOOL IsGameSelected( void ) { return m_gameSelected; }
+  BOOL ShouldGenerateROMList( void ) { return m_shouldGenerateROMList; }
 
 protected:
 
@@ -196,6 +198,7 @@ protected:
 	CXBFont								&m_font;
 
   BOOL                  m_gameSelected;             //!<  Whether or not the user has selected a game
+  BOOL                  m_shouldGenerateROMList;    //!<  Whether or not the main() funct should call GenerateROMList for us (to render directly to the screen)
 
 		//! Vector of integers into the MAME driver array
 		//!  defining the set of available ROMs

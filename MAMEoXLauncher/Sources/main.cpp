@@ -75,6 +75,10 @@ static LPDIRECT3DVERTEXBUFFER8    g_pD3DVertexBuffer = NULL;
   //! The data for each driver
 static MAMEDriverData_t   *g_driverData = NULL;
 
+  // The token for rendering the various views to a texture
+static RenderToTextureToken_t   g_renderToTextureToken;
+
+
 
 extern "C" {
   // Fake options struct for load/store options
@@ -684,9 +688,8 @@ void __cdecl main( void )
 		
 
       // Set up to render to texture
-    RenderToTextureToken_t token;
     D3DVIEWPORT8 vp = { 0, 0, 512, 512, 0.0f, 1.0f };
-    RenderToTextureStart( token, pD3DDevice, renderTargetTexture, vp );
+    RenderToTextureStart( g_renderToTextureToken, pD3DDevice, renderTargetTexture, vp );
 
 			// Move the cursor position and render
     pD3DDevice->SetTransform( D3DTS_WORLD, &matWorld );
@@ -740,7 +743,7 @@ void __cdecl main( void )
 
 
       // Restore the render target
-    RenderToTextureEnd( token );
+    RenderToTextureEnd( g_renderToTextureToken );
 
       // Now render the texture to the screen 
     pD3DDevice->Clear(	0L,																// Count
@@ -794,6 +797,11 @@ void __cdecl main( void )
       ShowLoadingScreen( pD3DDevice );
       XLaunchNewImage( "D:\\MAMEoX.xbe", &g_launchData );
 		  Die( pD3DDevice, "Could not execute MAMEoX.xbe!" );
+    }
+    else if( romList.ShouldGenerateROMList() )
+    {
+      romList.GenerateROMList();
+		  WaitForNoButton();
     }
 	}
 }
