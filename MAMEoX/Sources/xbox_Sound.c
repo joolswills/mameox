@@ -17,7 +17,7 @@
 
 //= D E F I N E S ======================================================
   // Whether or not to enable sound debug messages
-//#define LOG_SOUND
+#define LOG_SOUND
 
   // The number of audio updates to ignore underflow/overflows before
   //  reporting them
@@ -126,6 +126,8 @@ INT32 osd_start_audio_stream( INT32 stereo )
 
 	// determine the number of samples per frame
 	g_samplesPerFrame = (DOUBLE)Machine->sample_rate / (DOUBLE)Machine->drv->frames_per_second;
+  _RPT1( _CRT_WARN, "Samples per frame: %f\n", g_samplesPerFrame );
+  _RPT1( _CRT_WARN, "Consumed per frame: %f\n", (DOUBLE)Machine->sample_rate / 60.0 );
 
 	// compute how many samples to generate the first frame
 	g_samplesLeftOver = g_samplesPerFrame;
@@ -528,7 +530,7 @@ static void Helper_CopySampleData( INT16 *data, UINT32 totalToCopy )
   UINT32 bytesToCopy = 0;
   DWORD playCursor, writeCursor;
   HRESULT result = IDirectSoundBuffer_GetCurrentPosition( g_pStreamBuffer, &playCursor, &writeCursor );
-
+g_streamBufferWriteCursor = writeCursor;
     // 1) If playCursor < g_streamBufferWriteCursor < writeCursor, an underflow has ocurred
   if( playCursor < g_streamBufferWriteCursor && g_streamBufferWriteCursor < writeCursor )
   {
