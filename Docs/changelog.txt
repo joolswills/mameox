@@ -1,3 +1,21 @@
+Version 0.64b
+ 
+  - \MAME\cheat.c:
+    - Disabled watch prints by default
+
+  - \MAMEoX\Includes\xbox_FileIO.h:
+    - Moved romlist and driverlist directory to default to the d:
+      as there's no real reason to force it to Z.
+
+  - \MAMEoX\Sources\MAMEoXUtil.cpp:
+    - Fixed a couple more INI bugs (improperly mapped options)
+
+  - \MAMEoX\Sources\xbox_main.cpp:
+    - Fixed a non-termination bug w/ the Die function.
+
+  - \MAMEoXLauncher\Sources\main.cpp
+    - Fixed a non-termination bug w/ the Die function.
+
 Version 0.63b
   
   - \MAMEoX\MAMEoX_VC6.dsp

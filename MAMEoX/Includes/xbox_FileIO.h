@@ -27,7 +27,7 @@ extern "C" {
 #define CONFIGPATH          "D:\\CFG"
 #define ROMPATH						  "D:\\ROMS"
 #define AUDIOPATH           "D:\\SAMPLES"
-#define ROMLISTPATH				  "Z:\\MAMEoX"
+#define ROMLISTPATH				  "D:\\ROMS"
 
 #define DRIVERLISTFILENAME  "DRIVERS.list"
 #define ROMLISTFILENAME		  "ROMS.list"

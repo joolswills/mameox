@@ -478,7 +478,7 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 	g_font.Begin();
 	
 	WCHAR wBuf[1024];
-	mbstowcs( wBuf, buf, strlen(buf) );
+	mbstowcs( wBuf, buf, strlen(buf) + 1 );
 
 	g_font.DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
 	g_font.DrawText( 320, 320, D3DCOLOR_RGBA( 255, 125, 125, 255), L"Press any button to reboot.", XBFONT_CENTER_X );

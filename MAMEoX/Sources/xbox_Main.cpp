@@ -107,23 +107,13 @@ void __cdecl main( void )
 	LoadOptions();
   SaveOptions();
 
-    // Unload the XGRAPHICS section, as we won't be using it at all
-  XFreeSection( "XGRPH" );
-
-    // This shouldn't be necessary, IMAGEBLD should not load the non-data sections,
-    //  as they're defined /NOPRELOAD
-  UnloadDriverNonDataSections();    
-
-    // This should only be necessary if IMAGEBLD doesn't load any sections
-  LoadDriverDataSections();
-
 
     // Check the launch data to ensure that we've been started properly
   if( ret != ERROR_SUCCESS || g_launchDataType != LDT_TITLE )
   {
       // This XBE shouldn't be launched directly. Throw up a splash screen
       // saying so, then try to launch MAMEoxLauncher
-    Die( pD3DDevice, "MAMEoX wasn't called from the launcher!\nPlease run default.xbe instead." );
+    Die( pD3DDevice, "MAMEoX wasn't called from the launcher!\nPlease run default.xbe instead.\n" );
       // Die never returns
   }
  
@@ -146,6 +136,16 @@ void __cdecl main( void )
   }
   else
   {
+      // Unload the XGRAPHICS section, as we won't be using it at all
+    XFreeSection( "XGRPH" );
+
+      // This shouldn't be necessary, IMAGEBLD should not load the non-data sections,
+      //  as they're defined /NOPRELOAD
+    UnloadDriverNonDataSections();    
+
+      // This should only be necessary if IMAGEBLD doesn't load any sections
+    LoadDriverDataSections();
+
       // Sort the game drivers and run the ROM
     qsort( drivers, mameoxLaunchData->m_totalMAMEGames, sizeof(drivers[0]), compareDriverNames );
     Helper_RunRom( mameoxLaunchData->m_gameIndex );
@@ -322,7 +322,7 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 	g_font.Begin();
 	
 	WCHAR wBuf[1024];
-	mbstowcs( wBuf, buf, strlen(buf) );
+	mbstowcs( wBuf, buf, strlen(buf) + 1 );
 
 	g_font.DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
 	g_font.DrawText( 320, 320, D3DCOLOR_RGBA( 255, 125, 125, 255), L"Press any button to reboot.", XBFONT_CENTER_X );

@@ -22,8 +22,8 @@ extern "C" {
 #endif
 
   // Version number
-#define VERSION_STRING    "0.63b"
-#define LVERSION_STRING   L"0.63b"
+#define VERSION_STRING    "0.64b"
+#define LVERSION_STRING   L"0.64b"
 
   //! \enum   mameoxLaunchCommand
   //! \brief  Determines what the MAMEoX task should do

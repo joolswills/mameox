@@ -90,8 +90,10 @@ void LoadOptions( void )
 	options.beam = iniFile.GetProfileInt( "VectorOptions", "BeamWidth", 2 );			            // vector beam width
 	options.vector_flicker = iniFile.GetProfileFloat( "VectorOptions", "FlickerEffect", 0.5f );	  // vector beam flicker effect control
 	options.vector_intensity = iniFile.GetProfileFloat( "VectorOptions", "BeamIntensity", 1.5f );  // vector beam intensity
-	options.translucency = iniFile.GetProfileInt( "VectorOptions", "BeamWidth", TRUE );      // 1 to enable translucency on vectors
-	options.antialias = FALSE;		    // 1 to enable antialiasing on vectors
+	options.translucency = iniFile.GetProfileInt( "VectorOptions", "Translucency", TRUE );      // 1 to enable translucency on vectors
+	 
+    // Antialiasing holds forever in vector.c due to an apparent signed/unsigned problem
+  options.antialias = FALSE; //iniFile.GetProfileInt( "VectorOptions", "Antialiasing", FALSE );		    // 1 to enable antialiasing on vectors
 
 	//int		use_artwork;	          bitfield indicating which artwork pieces to use
 	//int		artwork_res;	          1 for 1x game scaling, 2 for 2x
@@ -130,7 +132,8 @@ void SaveOptions( void )
 	iniFile.WriteProfileInt( "VectorOptions", "BeamWidth", options.beam );			            // vector beam width
 	iniFile.WriteProfileFloat( "VectorOptions", "FlickerEffect", options.vector_flicker );	  // vector beam flicker effect control
 	iniFile.WriteProfileFloat( "VectorOptions", "BeamIntensity", options.vector_intensity );  // vector beam intensity
-	iniFile.WriteProfileInt( "VectorOptions", "BeamWidth", options.translucency );      // 1 to enable translucency on vectors
+	iniFile.WriteProfileInt( "VectorOptions", "Translucency", options.translucency );      // 1 to enable translucency on vectors
+	//iniFile.WriteProfileInt( "VectorOptions", "Antialiasing", options.antialias );		    // 1 to enable antialiasing on vectors
 
   FLOAT xPercentage, yPercentage;
   GetScreenUsage( &xPercentage, &yPercentage );

@@ -844,7 +844,7 @@ static CPUInfo				regionInfoList[kRegionListLength];
 static int					cheatEngineWasActive = 0;
 static int					foundCheatDatabase = 0;
 static int					cheatsDisabled = 0;
-static int					watchesDisabled = 0;
+static int					watchesDisabled = 1;
 
 static int					fullMenuPageHeight = 0;
 
@@ -1698,7 +1698,7 @@ void InitCheat(void)
 	currentSearchIdx =		0;
 	foundCheatDatabase =	0;
 	cheatsDisabled =		0;
-	watchesDisabled =		0;
+	watchesDisabled =		1;
 
 	useClassicSearchBox =	1;
 	dontPrintNewLabels =	0;
@@ -1774,7 +1774,7 @@ void StopCheat(void)
 	cheatEngineWasActive =	0;
 	foundCheatDatabase =	0;
 	cheatsDisabled =		0;
-	watchesDisabled =		0;
+	watchesDisabled =		1;
 	mainDatabaseName[0] =	0;
 	menuItemInfoLength =	0;
 	useClassicSearchBox =	1;
