@@ -21,7 +21,7 @@ extern "C" {
 #define HELPFILENAME		    "D:\\Media\\help.txt"
 
 	// Maximum number of items to render on the screen at once
-#define MAXPAGESIZE							14
+#define MAXPAGESIZE							15
 
   //--- Layout defines -----------------------------------------
 #define HEADER_COLOR          D3DCOLOR_XRGB( 0, 0, 0 )
@@ -29,8 +29,8 @@ extern "C" {
 #define HIGHLIGHTBAR_COLOR    D3DCOLOR_ARGB( 180, 175, 179, 212 )
 #define SCROLLICON_COLOR      D3DCOLOR_XRGB( 255, 255, 255 )
 
-#define TITLEBAR_ROW          116
-#define FIRSTDATA_ROW         142
+#define TITLEBAR_ROW          101
+#define FIRSTDATA_ROW         126
 
 #define NAME_COLUMN           40
 #define MANUFACTURER_COLUMN   305
@@ -39,12 +39,12 @@ extern "C" {
 #define TEXTBOX_RIGHT         604   // The right edge of the text box
 #define COLUMN_PADDING        9     // Number of pixels to subtract from the column width before truncating text
 
-#define SCROLLUP_TOP          137
+#define SCROLLUP_TOP          122
 #define SCROLLUP_RIGHT        608
 #define SCROLLUP_LEFT         SCROLLUP_RIGHT - 32
 #define SCROLLUP_BOTTOM       SCROLLUP_TOP + 32
 
-#define SCROLLDOWN_BOTTOM     448
+#define SCROLLDOWN_BOTTOM     451
 #define SCROLLDOWN_TOP        SCROLLDOWN_BOTTOM - 32
 #define SCROLLDOWN_RIGHT      608
 #define SCROLLDOWN_LEFT       SCROLLDOWN_RIGHT - 32

@@ -33,8 +33,8 @@ extern "C" {
 #define HELPICON_COLOR        D3DCOLOR_XRGB( 255, 255, 255 )
 #define HELPBACKDROP_COLOR    D3DCOLOR_ARGB( 127, 255, 255, 255 )
 
-#define TITLEBAR_ROW          116
-#define FIRSTDATA_ROW         140
+#define TITLEBAR_ROW          101
+#define FIRSTDATA_ROW         126
 
 #define HIGHLIGHTBAR_LEFT     34
 #define HIGHLIGHTBAR_RIGHT    607
@@ -44,7 +44,8 @@ extern "C" {
 #define COLUMN_PADDING        9     // Number of pixels to subtract from the column width before truncating text
 
 
-#define TRIGGER_TOP           422
+#define TRIGGER_BOTTOM        451
+#define TRIGGER_TOP           TRIGGER_BOTTOM - m_textureSet.GetTriggerIconHeight()
 #define LEFTTRIGGER_LEFT      30
 #define RIGHTTRIGGER_RIGHT    608
 
@@ -153,7 +154,7 @@ COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice,
   wcscpy( m_pageData[OPTPAGE_ROMLIST].m_title, L"ROM List Options" );
   m_pageData[OPTPAGE_ROMLIST].m_drawFunct = ::DrawROMListPage;
   m_pageData[OPTPAGE_ROMLIST].m_changeFunct = ::ChangeROMListPage;
-  m_pageData[OPTPAGE_ROMLIST].m_numItems = 3;
+  m_pageData[OPTPAGE_ROMLIST].m_numItems = 8;
 
   m_virtualKeyboard = new CVirtualKeyboard( displayDevice, m_fontSet, m_textureSet );
 }
@@ -364,7 +365,6 @@ void COptionsPage::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
       // Draw left trigger "head"
     FLOAT leftTriggerIconRight  = LEFTTRIGGER_LEFT + (m_textureSet.GetTriggerIconRight() - m_textureSet.GetTriggerIconLeft());
-    FLOAT triggerIconBottom     = TRIGGER_TOP + (m_textureSet.GetTriggerIconBottom() - m_textureSet.GetTriggerIconTop());
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
     m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconLeft(), m_textureSet.GetTriggerIconTop() );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, LEFTTRIGGER_LEFT, TRIGGER_TOP, 1.0f, 1.0f );
@@ -375,11 +375,11 @@ void COptionsPage::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
     m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconRight(), m_textureSet.GetTriggerIconBottom() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, leftTriggerIconRight, triggerIconBottom, 1.0f, 1.0f );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, leftTriggerIconRight, TRIGGER_BOTTOM, 1.0f, 1.0f );
 
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
     m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconLeft(), m_textureSet.GetTriggerIconBottom() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, LEFTTRIGGER_LEFT, triggerIconBottom, 1.0f, 1.0f );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, LEFTTRIGGER_LEFT, TRIGGER_BOTTOM, 1.0f, 1.0f );
 
       // Draw the "tail"
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
@@ -393,11 +393,11 @@ void COptionsPage::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
     m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconTailRight(), m_textureSet.GetTriggerIconTailBottom() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, leftTriggerIconTailRight, triggerIconBottom, 1.0f, 1.0f );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, leftTriggerIconTailRight, TRIGGER_BOTTOM, 1.0f, 1.0f );
 
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
     m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconTailLeft(), m_textureSet.GetTriggerIconTailBottom() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, LEFTTRIGGERTEXT_START + leftTriggerLength, triggerIconBottom, 1.0f, 1.0f );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, LEFTTRIGGERTEXT_START + leftTriggerLength, TRIGGER_BOTTOM, 1.0f, 1.0f );
 
 
 
@@ -413,11 +413,11 @@ void COptionsPage::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
     m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconLeft(), m_textureSet.GetTriggerIconBottom() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, RIGHTTRIGGER_RIGHT, triggerIconBottom, 1.0f, 1.0f );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, RIGHTTRIGGER_RIGHT, TRIGGER_BOTTOM, 1.0f, 1.0f );
 
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
     m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconRight(), m_textureSet.GetTriggerIconBottom() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, rightTriggerIconLeft, triggerIconBottom, 1.0f, 1.0f );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, rightTriggerIconLeft, TRIGGER_BOTTOM, 1.0f, 1.0f );
 
       // Draw the "tail"
     FLOAT rightTriggerIconTailLeft = (RIGHTTRIGGERTEXT_END - rightTriggerLength) - (m_textureSet.GetTriggerIconTailRight() - m_textureSet.GetTriggerIconTailLeft());
@@ -431,11 +431,11 @@ void COptionsPage::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
     m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconTailLeft(), m_textureSet.GetTriggerIconTailBottom() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, RIGHTTRIGGERTEXT_END - rightTriggerLength, triggerIconBottom, 1.0f, 1.0f );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, RIGHTTRIGGERTEXT_END - rightTriggerLength, TRIGGER_BOTTOM, 1.0f, 1.0f );
 
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPICON_COLOR );
     m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetTriggerIconTailRight(), m_textureSet.GetTriggerIconTailBottom() );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, rightTriggerIconTailLeft, triggerIconBottom, 1.0f, 1.0f );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, rightTriggerIconTailLeft, TRIGGER_BOTTOM, 1.0f, 1.0f );
 
 
 
@@ -454,10 +454,10 @@ void COptionsPage::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, LEFTTRIGGERTEXT_START + leftTriggerLength + 1, TRIGGER_TOP + 1, 1.0f, 1.0f );
     
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPBACKDROP_COLOR );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, LEFTTRIGGERTEXT_START + leftTriggerLength + 1, triggerIconBottom + 1, 1.0f, 1.0f );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, LEFTTRIGGERTEXT_START + leftTriggerLength + 1, TRIGGER_BOTTOM + 1, 1.0f, 1.0f );
 
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPBACKDROP_COLOR );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, leftTriggerIconRight, triggerIconBottom + 1, 1.0f, 1.0f );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, leftTriggerIconRight, TRIGGER_BOTTOM + 1, 1.0f, 1.0f );
 
 
 
@@ -469,10 +469,10 @@ void COptionsPage::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, rightTriggerIconLeft, TRIGGER_TOP + 1, 1.0f, 1.0f );
     
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPBACKDROP_COLOR );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, rightTriggerIconLeft, triggerIconBottom + 1, 1.0f, 1.0f );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, rightTriggerIconLeft, TRIGGER_BOTTOM + 1, 1.0f, 1.0f );
 
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HELPBACKDROP_COLOR );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, RIGHTTRIGGERTEXT_END - rightTriggerLength, triggerIconBottom + 1, 1.0f, 1.0f );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, RIGHTTRIGGERTEXT_END - rightTriggerLength, TRIGGER_BOTTOM + 1, 1.0f, 1.0f );
 
   m_displayDevice->End();
 
@@ -851,11 +851,12 @@ void COptionsPage::DrawROMListPage( void )
 
   DRAWITEM( L"Sort mode", sortMode[(UINT32)g_romListOptions.m_sortMode] );
 
-/*
-  DRAWITEM( L"Filter mode", g_romListOptions.m_filterMode
-   =                iniFile.GetProfileInt( "ROMListOptions", "FilterMode", (UINT32)FM_NONE );
-  g_romListOptions.m_numPlayersFilter =          iniFile.GetProfileInt( "ROMListOptions", "Filter_NumPlayers", 0 );
-*/
+  DRAWITEM( L"Filter clones",         g_romListOptions.m_filterMode & FM_CLONE ? L"Yes" : L"No" );
+  DRAWITEM( L"Filter \"slow\"",       g_romListOptions.m_filterMode & FM_ROMSTATUS_SLOW ? L"Yes" : L"No" );
+  DRAWITEM( L"Filter \"out of mem\"", g_romListOptions.m_filterMode & FM_ROMSTATUS_OUTOFMEM ? L"Yes" : L"No" );
+  DRAWITEM( L"Filter \"crashes\"", g_romListOptions.m_filterMode & FM_ROMSTATUS_CRASH ? L"Yes" : L"No" );
+  DRAWITEM( L"Filter \"other nonworking\"", g_romListOptions.m_filterMode & FM_ROMSTATUS_NONWORKING ? L"Yes" : L"No" );
+
   ENDPAGE();
 }
 
@@ -1538,6 +1539,46 @@ void COptionsPage::ChangeROMListPage( BOOL movingRight )
       else
         g_romListOptions.m_sortMode = SM_BYNAME;
     }
+    break;
+
+    // Filter clones
+  case 3:
+    if( g_romListOptions.m_filterMode & FM_CLONE )
+      g_romListOptions.m_filterMode &= ~FM_CLONE;
+    else
+      g_romListOptions.m_filterMode |= FM_CLONE;
+    break;
+
+    // Filter "slow"
+  case 4:
+    if( g_romListOptions.m_filterMode & FM_ROMSTATUS_SLOW )
+      g_romListOptions.m_filterMode &= ~FM_ROMSTATUS_SLOW;
+    else
+      g_romListOptions.m_filterMode |= FM_ROMSTATUS_SLOW;
+    break;
+
+    // Filter "out of mem"
+  case 5:
+    if( g_romListOptions.m_filterMode & FM_ROMSTATUS_OUTOFMEM )
+      g_romListOptions.m_filterMode &= ~FM_ROMSTATUS_OUTOFMEM;
+    else
+      g_romListOptions.m_filterMode |= FM_ROMSTATUS_OUTOFMEM;
+    break;
+
+    // Filter "crashes"
+  case 6:
+    if( g_romListOptions.m_filterMode & FM_ROMSTATUS_CRASH )
+      g_romListOptions.m_filterMode &= ~FM_ROMSTATUS_CRASH;
+    else
+      g_romListOptions.m_filterMode |= FM_ROMSTATUS_CRASH;
+    break;
+
+    // Filter "other nonworking"
+  case 7:
+    if( g_romListOptions.m_filterMode & FM_ROMSTATUS_NONWORKING )
+      g_romListOptions.m_filterMode &= ~FM_ROMSTATUS_NONWORKING;
+    else
+      g_romListOptions.m_filterMode |= FM_ROMSTATUS_NONWORKING;
     break;
   }
 }

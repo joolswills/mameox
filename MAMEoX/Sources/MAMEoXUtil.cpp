@@ -232,7 +232,8 @@ void LoadOptions( void )
   g_romListOptions.m_verboseMode =               iniFile.GetProfileInt( "ROMListOptions", "VerboseMode", TRUE );
   g_romListOptions.m_sortMode = (ROMListSortMode)iniFile.GetProfileInt( "ROMListOptions", "SortMode", (UINT32)SM_BYNAME );
   g_romListOptions.m_showROMStatus =             iniFile.GetProfileInt( "ROMListOptions", "ShowROMStatus", TRUE );
-  g_romListOptions.m_filterMode =                iniFile.GetProfileInt( "ROMListOptions", "FilterMode", (UINT32)FM_NONE );
+  g_romListOptions.m_hideFiltered =              iniFile.GetProfileInt( "ROMListOptions", "HideFilteredROMs", FALSE );
+  g_romListOptions.m_filterMode =                iniFile.GetProfileInt( "ROMListOptions", "FilterMode", (UINT32)FM_CLONE );
   g_romListOptions.m_numPlayersFilter =          iniFile.GetProfileInt( "ROMListOptions", "Filter_NumPlayers", 0 );
   g_persistentLaunchData.m_cursorPosition =      iniFile.GetProfileFloat( "ROMListOptions", "CursorPosition", 0.0f );
   g_persistentLaunchData.m_pageOffset =          iniFile.GetProfileFloat( "ROMListOptions", "PageOffset", 0.0f );
@@ -358,6 +359,7 @@ void SaveOptions( void )
   iniFile.WriteProfileInt(   "ROMListOptions", "VerboseMode", g_romListOptions.m_verboseMode );
   iniFile.WriteProfileInt(   "ROMListOptions", "SortMode", (UINT32)g_romListOptions.m_sortMode );
   iniFile.WriteProfileInt(   "ROMListOptions", "ShowROMStatus", g_romListOptions.m_showROMStatus );
+  iniFile.WriteProfileInt(   "ROMListOptions", "HideFilteredROMs", g_romListOptions.m_hideFiltered );
   iniFile.WriteProfileInt(   "ROMListOptions", "FilterMode", g_romListOptions.m_filterMode );
   iniFile.WriteProfileInt(   "ROMListOptions", "Filter_NumPlayers", g_romListOptions.m_numPlayersFilter );
 

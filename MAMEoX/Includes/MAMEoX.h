@@ -143,6 +143,7 @@ typedef struct ROMListOptions_t
   BOOL              m_verboseMode;        //!<  Whether or not to show verbose info (manufacturer, year, etc...)
   ROMListSortMode   m_sortMode;           //!<  The current sort mode
   BOOL              m_showROMStatus;      //!<  Whether or not to colorize based on ROM Status
+  BOOL              m_hideFiltered;       //!<  Whether or not to hide ROMs that have been filtered out
 
   UINT32            m_filterMode;         //!<  General filter mode bitvector (uses ROMListFilterMode flags)
   UINT32            m_numPlayersFilter;

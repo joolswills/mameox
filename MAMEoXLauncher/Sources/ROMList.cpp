@@ -35,31 +35,32 @@ extern "C" {
 #define HIGHLIGHTBAR_COLOR    D3DCOLOR_ARGB( 180, 175, 179, 212 )
 #define SCROLLICON_COLOR      D3DCOLOR_XRGB( 255, 255, 255 )
 
-#define TITLEBAR_ROW          114
-#define FIRSTDATA_ROW         140
+#define TITLEBAR_ROW          101
+#define FIRSTDATA_ROW         126
 
 #define HIGHLIGHTBAR_LEFT     34
 #define HIGHLIGHTBAR_RIGHT    607
 #define NAME_COLUMN           40
 #define MANUFACTURER_COLUMN   305
-#define YEAR_COLUMN           460
-#define CLONE_COLUMN          530 
+#define YEAR_COLUMN           437
+#define NUMPLAYERS_COLUMN     506
+#define CLONE_COLUMN          535 
 #define TEXTBOX_RIGHT         604   // The right edge of the text box
 #define COLUMN_PADDING        9     // Number of pixels to subtract from the column width before truncating text
 
-#define SCROLLUP_TOP          137
+#define SCROLLUP_TOP          122
 #define SCROLLUP_RIGHT        608
 #define SCROLLUP_LEFT         SCROLLUP_RIGHT - 32
 #define SCROLLUP_BOTTOM       SCROLLUP_TOP + 32
 
-#define SCROLLDOWN_BOTTOM     448
+#define SCROLLDOWN_BOTTOM     451
 #define SCROLLDOWN_TOP        SCROLLDOWN_BOTTOM - 32
 #define SCROLLDOWN_RIGHT      608
 #define SCROLLDOWN_LEFT       SCROLLDOWN_RIGHT - 32
 
 
 	// Maximum number of items to render on the screen at once
-#define MAXPAGESIZE							14
+#define MAXPAGESIZE							15
 
 	// Timeout values for the cursor movement acceleration bands
 	// Values are measured in seconds
@@ -688,10 +689,7 @@ void CROMList::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
   {
       // No need to regenerate the list, just switch to
       // the noclones (or clones) list
-    if( m_options.m_filterMode & FM_CLONE )
-      m_options.m_filterMode &= ~FM_CLONE;
-    else
-      m_options.m_filterMode |= FM_CLONE;
+
 
     UpdateSortedList();
     m_numLinesInList = m_currentSortedList.size();
@@ -1016,7 +1014,7 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
 	m_fontSet.SmallThinFont().Begin();
 
-	  swprintf( name, L"Names (%s)  ", ( m_options.m_filterMode != FM_NONE ) ? L"Filtered " : L"Full List" );
+	  swprintf( name, L"Names (%s)  ", m_options.m_hideFiltered ? L"Filtered " : L"Full List" );
     if( m_superscrollMode )
     {
         // Display the superscroll character
@@ -1033,6 +1031,7 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 	  {
 		  m_fontSet.SmallThinFont().DrawText( MANUFACTURER_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"Manufacturer" );
 		  m_fontSet.SmallThinFont().DrawText( YEAR_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"Year" );
+      m_fontSet.SmallThinFont().DrawText( NUMPLAYERS_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"#P" );
 		  m_fontSet.SmallThinFont().DrawText( CLONE_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"Clone" );
 	  }
 
@@ -1088,13 +1087,23 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
                                             XBFONT_TRUNCATED,
                                             YEAR_COLUMN - (MANUFACTURER_COLUMN + COLUMN_PADDING) );
 
+
 			  mbstowcs( name, m_driverInfoList[ m_currentSortedList[i] ].m_year, 255 );
 			  m_fontSet.SmallThinFont().DrawText( YEAR_COLUMN, 
                                             FIRSTDATA_ROW + yPos, 
                                             color, 
                                             name, 
                                             XBFONT_TRUNCATED,
-                                            CLONE_COLUMN - (YEAR_COLUMN + COLUMN_PADDING) );
+                                            NUMPLAYERS_COLUMN - (YEAR_COLUMN + COLUMN_PADDING) );
+
+
+			  swprintf( name, L"%lu", m_driverInfoList[m_currentSortedList[i]].m_numPlayers );
+			  m_fontSet.SmallThinFont().DrawText( NUMPLAYERS_COLUMN,
+                                            FIRSTDATA_ROW + yPos,
+                                            color,
+                                            name,
+                                            XBFONT_TRUNCATED,
+                                            CLONE_COLUMN - (NUMPLAYERS_COLUMN + COLUMN_PADDING) );
 
 			  mbstowcs( name, m_driverInfoList[ m_currentSortedList[i] ].m_cloneFileName, 255 );
 			  m_fontSet.SmallThinFont().DrawText( CLONE_COLUMN, 
@@ -1344,7 +1353,7 @@ void CROMList::UpdateSortedList( void )
 {
   UINT32 oldDriverIndex = GetCurrentGameIndex();
 
-  if( m_options.m_filterMode == FM_NONE )
+  if( !m_options.m_hideFiltered )
     m_currentSortedList = m_ROMListFull;
   else
   {

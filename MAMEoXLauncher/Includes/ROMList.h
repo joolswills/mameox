@@ -62,6 +62,7 @@ public:
     m_options.m_sortMode = SM_BYNAME;
     m_options.m_showROMStatus = TRUE;
     m_options.m_filterMode = FM_NONE;
+    m_options.m_hideFiltered = FALSE;
     m_options.m_numPlayersFilter = 0;
 
     if( !m_numDrivers )

@@ -74,9 +74,8 @@ Version 0.71.1b
         cursor on the selected ROM when toggling clones/no clones
       - Fixed: ROM list cache file not updated when ROM is removed
         from the list via "Remove Selected ROM" feature
-      - Put in support for various sort modes and filters, filters are
-        not activated yet, sortmodes may be changed in the options
-        screen.
+      - Put in support for various sort modes and filters, these may
+        be changed in the options screen.
       - Put in support for ROMSTATUS.XML name colorization (the color
         of the name in the ROM list is changed based on the reported
         working/nonworking status of the ROM).
