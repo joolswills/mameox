@@ -320,6 +320,9 @@
 				RelativePath="Includes\xbox_JoystickMouse.h">
 			</File>
 			<File
+				RelativePath="Includes\xbox_Keyboard.h">
+			</File>
+			<File
 				RelativePath="Includes\xbox_Network.h">
 			</File>
 			<File
@@ -386,6 +389,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="Sources\Keyboard.cpp">
+			</File>
+			<File
 				RelativePath="Sources\MAMEoXUtil.cpp">
 			</File>
 			<File
@@ -423,6 +429,9 @@
 				RelativePath="Sources\xbox_FileIO.cpp">
 			</File>
 			<File
+				RelativePath="Sources\xbox_Input.c">
+			</File>
+			<File
 				RelativePath=".\Sources\xbox_JoystickMouse.c">
 				<FileConfiguration
 					Name="Profile|Xbox">
@@ -434,15 +443,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\Sources\xbox_Keyboard.c">
-				<FileConfiguration
-					Name="Profile|Xbox">
-					<Tool
-						Name="VCCLCompilerTool"
-						AssemblerListingLocation=".\Profile/"
-						ObjectFile=".\Profile/"
-						ProgramDataBaseFileName=".\Profile/"/>
-				</FileConfiguration>
+				RelativePath="Sources\xbox_Keyboard.cpp">
 			</File>
 			<File
 				RelativePath=".\Sources\xbox_Main.cpp">
