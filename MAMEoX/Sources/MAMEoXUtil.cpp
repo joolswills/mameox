@@ -645,6 +645,92 @@ void EndFontRender( BOOL present )
     pD3DDevice->Present( NULL, NULL, NULL, NULL );
 }
 
+//-------------------------------------------------------------
+//  RenderProgressBar
+//-------------------------------------------------------------
+void RenderProgressBar( INT32 left, 
+                        INT32 top, 
+                        INT32 right, 
+                        INT32 bottom, 
+                        UINT32 curValue, 
+                        UINT32 maxValue, 
+                        D3DCOLOR barColor, 
+                        D3DCOLOR borderColor )
+{
+	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
+
+  pD3DDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     FALSE );
+  pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    FALSE );
+  pD3DDevice->SetTexture( 0, NULL );
+  pD3DDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
+
+  #define PROGRESSBAR_CAP_WIDTH     2
+
+  #define DRAWQUAD( left, top, right, bottom, color ) \
+        pD3DDevice->Begin( D3DPT_QUADLIST ); \
+          pD3DDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, color ); \
+          pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, left, top, 1.0f, 1.0f ); \
+          pD3DDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, color ); \
+          pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, right, top, 1.0f, 1.0f ); \
+          pD3DDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, color ); \
+          pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, right, bottom, 1.0f, 1.0f ); \
+          pD3DDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, color ); \
+          pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, left, bottom, 1.0f, 1.0f ); \
+        pD3DDevice->End();
+
+    // Draw left "cap"
+  DRAWQUAD( left, 
+            top,
+            left + PROGRESSBAR_CAP_WIDTH,
+            bottom,
+            borderColor );
+
+
+    // Draw right "cap"
+  DRAWQUAD( right - PROGRESSBAR_CAP_WIDTH, 
+            top,
+            right,
+            bottom,
+            borderColor );
+
+    // Draw an outline around the bar
+  DRAWQUAD( left, 
+            top,
+            right,
+            top + PROGRESSBAR_CAP_WIDTH,
+            borderColor );
+
+  DRAWQUAD( left, 
+            bottom - PROGRESSBAR_CAP_WIDTH,
+            right,
+            bottom,
+            borderColor );
+
+  if( maxValue == BUBBLEBAR )
+  {
+    #define PROGRESSBAR_BUBBLE_WIDTH   15
+
+      // Just have a "bubble" that scrolls from left to right, reappearing on the left when it scrolls
+      // off the edge
+    UINT32 xOffset = (curValue << 1) % (((right-left) - (PROGRESSBAR_CAP_WIDTH<<1)) - PROGRESSBAR_BUBBLE_WIDTH);
+    DRAWQUAD( left + PROGRESSBAR_CAP_WIDTH + xOffset, 
+              top + PROGRESSBAR_CAP_WIDTH,
+              left + PROGRESSBAR_CAP_WIDTH + xOffset + PROGRESSBAR_BUBBLE_WIDTH,
+              bottom - PROGRESSBAR_CAP_WIDTH,
+              barColor );
+  }
+  else
+  {
+      // Draw the bar
+    UINT32 xOffset = (FLOAT)curValue * ( ( (FLOAT)((right-left) - (PROGRESSBAR_CAP_WIDTH<<1)) / (FLOAT)maxValue ) );
+    DRAWQUAD( left + PROGRESSBAR_CAP_WIDTH, 
+              top + PROGRESSBAR_CAP_WIDTH,
+              left + PROGRESSBAR_CAP_WIDTH + xOffset,
+              bottom - PROGRESSBAR_CAP_WIDTH,
+              barColor );
+  }
+}
+
 
 #ifdef _DEBUG
 //-------------------------------------------------------------

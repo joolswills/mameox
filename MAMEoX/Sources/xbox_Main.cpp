@@ -657,32 +657,31 @@ static void DrawDriverProgressData( const char *fileName, DWORD index, DWORD tot
 
 	g_fontSet.DefaultFont().Begin();
 	
-    g_fontSet.DefaultFont().DrawText( 320, 60, D3DCOLOR_XRGB( 255, 255, 255 ), L"A new version of MAME has been", XBFONT_CENTER_X );
-    g_fontSet.DefaultFont().DrawText( 320, 80, D3DCOLOR_XRGB( 255, 255, 255 ), L"detected.", XBFONT_CENTER_X );
-  	g_fontSet.DefaultFont().DrawText( 320, 120, D3DCOLOR_XRGB( 255, 255, 255 ), L"Dumping driver data", XBFONT_CENTER_X );
+    g_fontSet.DefaultFont().DrawText( 320, 140, D3DCOLOR_XRGB( 255, 255, 255 ), L"A new version of MAME has been", XBFONT_CENTER_X );
+    g_fontSet.DefaultFont().DrawText( 320, 160, D3DCOLOR_XRGB( 255, 255, 255 ), L"detected.", XBFONT_CENTER_X );
+  	g_fontSet.DefaultFont().DrawText( 320, 195, D3DCOLOR_XRGB( 255, 255, 255 ), L"Dumping driver data", XBFONT_CENTER_X );
 
 		  // Draw the current filename
 	  WCHAR wBuf[256];
 	  mbstowcs( wBuf, fileName, 256 );
-	  g_fontSet.DefaultFont().DrawText( 320, 170, D3DCOLOR_XRGB( 60, 100, 255 ), wBuf, XBFONT_CENTER_X );
+	  g_fontSet.DefaultFont().DrawText( 320, 260, D3DCOLOR_XRGB( 60, 100, 255 ), wBuf, XBFONT_CENTER_X );
 
 	g_fontSet.DefaultFont().End();
 
+  #define PROGRESSBAR_CAP_COLOR     D3DCOLOR_XRGB( 101, 197, 247 )
+  #define PROGRESSBAR_BAR_COLOR     D3DCOLOR_XRGB( 16, 80, 124 )
 
-  g_fontSet.LargeThinFont().Begin();
-		  // Draw a progress bar
-    UINT32 percentage = (UINT32)( (FLOAT)index * (25.0f / (FLOAT)total) + 0.5f ); 
-    UINT32 i = 0;
-    wcscpy( wBuf, L"[" );
-    for( ; i < percentage; ++i )
-      wcscat( wBuf, L"|" );
-    for( ; i < 25; ++i )
-      wcscat( wBuf, L" " );
-    wcscat( wBuf, L"]" );
+  #define PROGRESSBAR_WIDTH         410
+  #define PROGRESSBAR_HEIGHT        20
 
-	  g_fontSet.LargeThinFont().DrawText( 320, 140, D3DCOLOR_XRGB( 255, 125, 125 ), wBuf, XBFONT_CENTER_X );
-  g_fontSet.LargeThinFont().End();
-
+  RenderProgressBar( 320 - (PROGRESSBAR_WIDTH>>1),
+                      240 - (PROGRESSBAR_HEIGHT >> 1), 
+                      320 + (PROGRESSBAR_WIDTH>>1), 
+                      240 + (PROGRESSBAR_HEIGHT >> 1), 
+                      index, 
+                      total, 
+                      PROGRESSBAR_BAR_COLOR, 
+                      PROGRESSBAR_CAP_COLOR );
 
 
 	pD3DDevice->Present( NULL, NULL, NULL, NULL );

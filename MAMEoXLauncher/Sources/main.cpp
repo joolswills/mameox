@@ -225,6 +225,9 @@ void __cdecl main( void )
          "Media directory on your XBOX and restart." );
   }
 
+  DEBUGGERCHECKRAM();
+
+
     // Get the launch data
   DWORD ret = XGetLaunchInfo( &g_launchDataType, &g_launchData );
   MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
@@ -1507,7 +1510,6 @@ void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 //---------------------------------------------------------------------
 void DrawProgressbarMessage( LPDIRECT3DDEVICE8 pD3DDevice, const char *message, const char *itemName, DWORD currentItem, DWORD totalItems )
 {
-		// Display the error to the user
 	pD3DDevice->Clear(	0L,																// Count
 											NULL,															// Rects to clear
 											D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
@@ -1515,20 +1517,28 @@ void DrawProgressbarMessage( LPDIRECT3DDEVICE8 pD3DDevice, const char *message, 
 											1.0f,															// Z
 											0L );															// Stencil
 
-    // Render the backdrop texture
-  
-    // Render the highlight bar for the selected item
-  pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-	pD3DDevice->SetTexture( 0, g_textureSet.GetMessageScreenBackdrop() );
+  // Render the backdrop texture
+	pD3DDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
+	pD3DDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
+	pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
+  pD3DDevice->SetRenderState( D3DRS_ZENABLE, FALSE );
+
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_MINFILTER, D3DTEXF_LINEAR );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_MAGFILTER, D3DTEXF_LINEAR );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSU, D3DTADDRESS_CLAMP );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSW, D3DTADDRESS_CLAMP );
+
+  pD3DDevice->SetTexture( 0, g_textureSet.GetMessageScreenBackdrop() );
   pD3DDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX0 );
   pD3DDevice->Begin( D3DPT_QUADLIST );
 
-      // Write the diffuse color
     FLOAT xPercentage, yPercentage;
     GetScreenUsage( &xPercentage, &yPercentage );
-  
-
-
+ 
     pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 0.0f );
     pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, -xPercentage, yPercentage, 1.0f, 1.0f );
     pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 0.0f );
@@ -1554,81 +1564,20 @@ void DrawProgressbarMessage( LPDIRECT3DDEVICE8 pD3DDevice, const char *message, 
 
   if( currentItem != 0xFFFFFFFF )
   {
-    pD3DDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     FALSE );
-    pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    FALSE );
-    pD3DDevice->SetTexture( 0, NULL );
-    pD3DDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
-
     #define PROGRESSBAR_CAP_COLOR     D3DCOLOR_XRGB( 101, 197, 247 )
     #define PROGRESSBAR_BAR_COLOR     D3DCOLOR_XRGB( 16, 80, 124 )
 
     #define PROGRESSBAR_WIDTH         410
     #define PROGRESSBAR_HEIGHT        20
-    #define PROGRESSBAR_CAP_WIDTH     2
 
-    #define DRAWQUAD( left, top, right, bottom, color ) \
-          pD3DDevice->Begin( D3DPT_QUADLIST ); \
-            pD3DDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, color ); \
-            pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, left, top, 1.0f, 1.0f ); \
-            pD3DDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, color ); \
-            pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, right, top, 1.0f, 1.0f ); \
-            pD3DDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, color ); \
-            pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, right, bottom, 1.0f, 1.0f ); \
-            pD3DDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, color ); \
-            pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, left, bottom, 1.0f, 1.0f ); \
-          pD3DDevice->End();
-
-      // Draw left "cap"
-    DRAWQUAD( 320 - (PROGRESSBAR_WIDTH >> 1), 
-              240 - (PROGRESSBAR_HEIGHT >> 1),
-              320 - (PROGRESSBAR_WIDTH >> 1) + PROGRESSBAR_CAP_WIDTH,
-              240 + (PROGRESSBAR_HEIGHT >> 1),
-              PROGRESSBAR_CAP_COLOR );
-
-
-      // Draw right "cap"
-    DRAWQUAD( 320 + (PROGRESSBAR_WIDTH >> 1), 
-              240 - (PROGRESSBAR_HEIGHT >> 1),
-              320 + (PROGRESSBAR_WIDTH >> 1) - PROGRESSBAR_CAP_WIDTH,
-              240 + (PROGRESSBAR_HEIGHT >> 1),
-              PROGRESSBAR_CAP_COLOR );
-
-      // Draw an outline around the bar
-    DRAWQUAD( 320 - (PROGRESSBAR_WIDTH >> 1), 
-              240 - (PROGRESSBAR_HEIGHT >> 1),
-              320 + (PROGRESSBAR_WIDTH >> 1),
-              240 - (PROGRESSBAR_HEIGHT >> 1) + 2.0f,
-              PROGRESSBAR_CAP_COLOR );
-
-    DRAWQUAD( 320 - (PROGRESSBAR_WIDTH >> 1), 
-              240 + (PROGRESSBAR_HEIGHT >> 1) - 2.0f,
-              320 + (PROGRESSBAR_WIDTH >> 1),
-              240 + (PROGRESSBAR_HEIGHT >> 1),
-              PROGRESSBAR_CAP_COLOR );
-
-    if( !totalItems )
-    {
-      #define PROGRESSBAR_BUBBLE_WIDTH   15
-
-        // Just have a "bubble" that scrolls from left to right, reappearing on the left when it scrolls
-        // off the edge
-      UINT32 left = (currentItem<<1) % ((PROGRESSBAR_WIDTH - (PROGRESSBAR_CAP_WIDTH<<1)) - PROGRESSBAR_BUBBLE_WIDTH);
-      DRAWQUAD( 320 - (PROGRESSBAR_WIDTH >> 1) + PROGRESSBAR_CAP_WIDTH + left, 
-                240 - (PROGRESSBAR_HEIGHT >> 1) + 2,
-                320 - (PROGRESSBAR_WIDTH >> 1) + PROGRESSBAR_CAP_WIDTH + left + PROGRESSBAR_BUBBLE_WIDTH,
-                240 + (PROGRESSBAR_HEIGHT >> 1) - 2,
-                PROGRESSBAR_BAR_COLOR );
-    }
-    else
-    {
-        // Draw the bar
-      UINT32 right = (FLOAT)currentItem * ( ( (FLOAT)(PROGRESSBAR_WIDTH - (PROGRESSBAR_CAP_WIDTH<<1)) / (FLOAT)totalItems ) );
-      DRAWQUAD( 320 - (PROGRESSBAR_WIDTH >> 1) + PROGRESSBAR_CAP_WIDTH, 
-                240 - (PROGRESSBAR_HEIGHT >> 1) + 2,
-                320 - (PROGRESSBAR_WIDTH >> 1) + PROGRESSBAR_CAP_WIDTH + right,
-                240 + (PROGRESSBAR_HEIGHT >> 1) - 2,
-                PROGRESSBAR_BAR_COLOR );
-    }
+    RenderProgressBar( 320 - (PROGRESSBAR_WIDTH>>1),
+                       240 - (PROGRESSBAR_HEIGHT >> 1), 
+                       320 + (PROGRESSBAR_WIDTH>>1), 
+                       240 + (PROGRESSBAR_HEIGHT >> 1), 
+                       currentItem, 
+                       (!totalItems ? BUBBLEBAR : totalItems), 
+                       PROGRESSBAR_BAR_COLOR, 
+                       PROGRESSBAR_CAP_COLOR );
   }
 
 	pD3DDevice->Present( NULL, NULL, NULL, NULL );

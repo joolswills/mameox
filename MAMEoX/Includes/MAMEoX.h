@@ -70,6 +70,8 @@ extern "C" {
 #define VERSION_STRING            "0.73" RELEASE_STRING
 #define LVERSION_STRING           L"0.73" LRELEASE_STRING
 
+  //! Used in RenderProgressBar to render a "bubble" instead of a progress bar
+#define BUBBLEBAR                 0xFFFFFFFF
 
 #define DRIVERLIST_FILESTAMP      "MAMEoX" VERSION_STRING
 
@@ -369,6 +371,29 @@ void FontRender( INT32 x, INT32 y, UINT32 color, const WCHAR *str, UINT32 flags 
   //! \param    present - Whether or not to present the backbuffer
 	//-------------------------------------------------------------------
 void EndFontRender( BOOL present );
+
+	//-------------------------------------------------------------------
+	//	RenderProgressBar
+	//! \brief		Draw a graphical progressbar or "bubblebar"
+  //!
+  //! \param    left - Position of the left side of the border
+  //! \param    top - Position of the top of the border
+  //! \param    right - Position of the right side of the border
+  //! \param    bottom - Position of the bottom of the border
+  //! \param    curValue - Current value used to determine the progress %
+  //! \param    maxValue - The maximum possible value or BUBBLEBAR to
+  //!                      draw a bubblebar
+  //! \param    barColor - The color of the "bar" or "bubble" itself
+  //! \param    borderColor - The color of the capsule for the bar
+	//-------------------------------------------------------------------
+void RenderProgressBar( INT32 left, 
+                        INT32 top, 
+                        INT32 right, 
+                        INT32 bottom, 
+                        UINT32 curValue, 
+                        UINT32 maxValue, 
+                        D3DCOLOR barColor, 
+                        D3DCOLOR borderColor );
 
 	//-------------------------------------------------------------------
 	//	WaitForAnyButton

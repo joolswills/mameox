@@ -131,6 +131,7 @@
 #define HAS_G65816      1   // New: 0.72
 #define HAS_SPC700      1   // New: 0.72
 
+#define HAS_E132XS      1   // New: 0.73
 
 //---------------------------------------------------------------------------
 // HAS_SOUND Declarations

@@ -307,11 +307,14 @@ BOOL CROMListScreen::Helper_GenerateROMList( CStdString &path )
     for( ; ; ++i )
     {
         // Notify the user that a new zip has been found
-      DrawProgressbarMessage( m_displayDevice, 
-                              "Searching for ROM files", 
-                              findData.cFileName, 
-                              i, 
-                              0 );
+        // Only redraw every 4th ROM, as rendering takes up
+        // the vast majority of the overall time
+      if( !(i & 0x03) )
+        DrawProgressbarMessage( m_displayDevice, 
+                                "Searching for ROM files", 
+                                findData.cFileName, 
+                                i, 
+                                0 );
 
       // Remove the extension
       CStdString filename = findData.cFileName;

@@ -15,6 +15,7 @@ open( OUTFILE, ">MAME.vcproj" ) || die "Failed to create MAME.vcproj!\n";
 	"./src/cpu/ccpu/ccputabl.c",
 	"./src/cpu/dsp32/dsp32dis.c",
 	"./src/cpu/dsp32/dsp32ops.c",
+	"./src/cpu/e132xs/32xsdasm.c",
 	"./src/cpu/h6280/6280dasm.c",
 	"./src/cpu/h6280/tblh6280.c",
 	"./src/cpu/hd6309/6309dasm.c",

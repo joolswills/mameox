@@ -1,3 +1,59 @@
+Version 0.73.1b
+
+
+   -------------------------------------------------------------
+  - \MAMEoX\Includes: 
+    - MAMEoX.h
+      - Upped version number
+      - Moved graphical progressbar code to MAMEoXUtil
+
+   -------------------------------------------------------------
+  - \MAMEoX\Sources: 
+    - xbox_Main.cpp
+      - Made progressbars graphical
+
+    - MAMEoXUtil.cpp
+      - Moved graphical progressbar code to MAMEoXUtil
+
+   -------------------------------------------------------------
+  - \MAMEoXLauncher\Sources:
+    - main.cpp
+      - Moved graphical progressbar code to MAMEoXUtil
+
+
+ --- Integrated MAME version 0.73, changes follow -------------------
+
+ Changes in the \MAME\src directory
+
+ Removals:
+
+ Additions:
+   \
+
+   cpu\
+     e132xs\*
+
+   drivers\
+     fuukifg2.c
+     fuukifg3.c
+     mogura.c
+     speedatk.c
+     sprint8.c
+     strvmstr.c
+     vamphalf.c
+
+   machine\
+     strtheat.c
+     
+
+   vidhrdw\
+     fuukifg2.c
+     fuukifg3.c
+     speedatk.c
+     sprint8.c
+     stvvdp1.c     
+     stvvdp2.c     
+
 
 *********************************************************************
 Version 0.72.1b

@@ -387,6 +387,82 @@ MEMORY_WRITE_START( qsound_writemem )
 	{ 0xf000, 0xffff, MWA_RAM, &qsound_sharedram2 },
 MEMORY_END
 
+/***********************************************************
+			 INPUT PORTS, DIPs
+***********************************************************/
+
+#define CPS1_COINAGE_1 \
+	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) ) \
+	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) ) \
+	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) ) \
+	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) ) \
+	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) ) \
+	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) ) \
+	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) ) \
+	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) ) \
+	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) ) \
+	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) ) \
+	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) ) \
+	PORT_DIPSETTING(    0x08, DEF_STR( 3C_1C ) ) \
+	PORT_DIPSETTING(    0x10, DEF_STR( 2C_1C ) ) \
+	PORT_DIPSETTING(    0x38, DEF_STR( 1C_1C ) ) \
+	PORT_DIPSETTING(    0x30, DEF_STR( 1C_2C ) ) \
+	PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) ) \
+	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) ) \
+	PORT_DIPSETTING(    0x18, DEF_STR( 1C_6C ) )
+
+#define CPS1_COINAGE_2 \
+	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coinage ) ) \
+	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) ) \
+	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) ) \
+	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) ) \
+	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) ) \
+	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) ) \
+	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) ) \
+	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) ) \
+	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
+
+#define CPS1_COINAGE_3 \
+	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) ) \
+	PORT_DIPSETTING(    0x01, DEF_STR( 4C_1C ) ) \
+	PORT_DIPSETTING(    0x02, DEF_STR( 3C_1C ) ) \
+	PORT_DIPSETTING(    0x03, DEF_STR( 2C_1C ) ) \
+	PORT_DIPSETTING(    0x00, "2 Coins/1 Credit (1 to continue)" ) \
+	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) ) \
+	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) ) \
+	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) ) \
+	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) ) \
+	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) ) \
+	PORT_DIPSETTING(    0x08, DEF_STR( 4C_1C ) ) \
+	PORT_DIPSETTING(    0x10, DEF_STR( 3C_1C ) ) \
+	PORT_DIPSETTING(    0x18, DEF_STR( 2C_1C ) ) \
+	PORT_DIPSETTING(    0x00, "2 Coins/1 Credit (1 to continue)" ) \
+	PORT_DIPSETTING(    0x38, DEF_STR( 1C_1C ) ) \
+	PORT_DIPSETTING(    0x30, DEF_STR( 1C_2C ) ) \
+	PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) ) \
+	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) )
+
+#define CPS1_DIFFICULTY_1 \
+	PORT_DIPNAME( 0x07, 0x04, DEF_STR( Difficulty ) ) \
+	PORT_DIPSETTING(    0x07, "1 (Easiest)" ) \
+	PORT_DIPSETTING(    0x06, "2" ) \
+	PORT_DIPSETTING(    0x05, "3" ) \
+	PORT_DIPSETTING(    0x04, "4 (Normal)" ) \
+	PORT_DIPSETTING(    0x03, "5" ) \
+	PORT_DIPSETTING(    0x02, "6" ) \
+	PORT_DIPSETTING(    0x01, "7" ) \
+	PORT_DIPSETTING(    0x00, "8 (Hardest)" )
+
+#define CPS1_DIFFICULTY_2 \
+	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) ) \
+	PORT_DIPSETTING(    0x04, "1 (Easiest)" ) \
+	PORT_DIPSETTING(    0x05, "2" ) \
+	PORT_DIPSETTING(    0x06, "3" ) \
+	PORT_DIPSETTING(    0x07, "4 (Normal)" ) \
+	PORT_DIPSETTING(    0x03, "5" ) \
+	PORT_DIPSETTING(    0x02, "6" ) \
+	PORT_DIPSETTING(    0x01, "7" ) \
+	PORT_DIPSETTING(    0x00, "8 (Hardest)" )
 
 
 INPUT_PORTS_START( forgottn )
@@ -401,24 +477,7 @@ INPUT_PORTS_START( forgottn )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 2C_2C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
-	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x30, DEF_STR( 2C_2C ) )
-	PORT_DIPSETTING(    0x38, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x18, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_1
 	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Demo_Sounds ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x40, DEF_STR( On ) )
@@ -427,15 +486,7 @@ INPUT_PORTS_START( forgottn )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x04, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(    0x07, "Easiest" )				// "01"
-	PORT_DIPSETTING(    0x06, "Easier" )				// "02"
-	PORT_DIPSETTING(    0x05, "Easy" )					// "03"
-	PORT_DIPSETTING(    0x04, "Normal" )				// "04"
-	PORT_DIPSETTING(    0x03, "Medium" )				// "05"
-	PORT_DIPSETTING(    0x02, "Hard" )					// "06"
-	PORT_DIPSETTING(    0x01, "Harder" )				// "07"
-	PORT_DIPSETTING(    0x00, "Hardest" )				// "08"
+	CPS1_DIFFICULTY_1
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )			// Check code at 0x00111c
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )			// (0x00112c in 'lostwrld')
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -513,24 +564,7 @@ INPUT_PORTS_START( ghouls )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
-	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x38, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x30, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x18, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_1
 	PORT_DIPNAME( 0xc0, 0xc0, DEF_STR( Cabinet ) )
 	PORT_DIPSETTING(    0xc0, "Upright 1 Player" )
 	PORT_DIPSETTING(    0x80, "Upright 2 Players" )
@@ -538,15 +572,7 @@ INPUT_PORTS_START( ghouls )
 	PORT_DIPSETTING(    0x00, DEF_STR( Cocktail ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(    0x04, "Easiest" )
-	PORT_DIPSETTING(    0x05, "Easier" )
-	PORT_DIPSETTING(    0x06, "Easy" )
-	PORT_DIPSETTING(    0x07, "Normal" )
-	PORT_DIPSETTING(    0x03, "Medium" )
-	PORT_DIPSETTING(    0x02, "Hard" )
-	PORT_DIPSETTING(    0x01, "Harder" )
-	PORT_DIPSETTING(    0x00, "Hardest" )
+	CPS1_DIFFICULTY_2
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -577,7 +603,7 @@ INPUT_PORTS_START( ghouls )
 	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Flip_Screen ) )
 	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unused ) )
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unused ) )		// "Demo Sounds" in manual; doesn´t work
 	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x40, 0x40, "Allow Continue" )
@@ -620,24 +646,7 @@ INPUT_PORTS_START( ghoulsu )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
-	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x38, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x30, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x18, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_1
 	PORT_DIPNAME( 0xc0, 0xc0, DEF_STR( Cabinet ) )
 	PORT_DIPSETTING(    0xc0, "Upright 1 Player" )
 	PORT_DIPSETTING(    0x80, "Upright 2 Players" )
@@ -645,15 +654,7 @@ INPUT_PORTS_START( ghoulsu )
 	PORT_DIPSETTING(    0x00, DEF_STR( Cocktail ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(    0x04, "Easiest" )
-	PORT_DIPSETTING(    0x05, "Easier" )
-	PORT_DIPSETTING(    0x06, "Easy" )
-	PORT_DIPSETTING(    0x07, "Normal" )
-	PORT_DIPSETTING(    0x03, "Medium" )
-	PORT_DIPSETTING(    0x02, "Hard" )
-	PORT_DIPSETTING(    0x01, "Harder" )
-	PORT_DIPSETTING(    0x00, "Hardest" )
+	CPS1_DIFFICULTY_2
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -684,7 +685,7 @@ INPUT_PORTS_START( ghoulsu )
 	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Flip_Screen ) )
 	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unused ) )
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unused ) )		// "Demo Sounds" in manual; doesn´t work
 	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x40, 0x40, "Allow Continue" )
@@ -726,24 +727,7 @@ INPUT_PORTS_START( daimakai )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
-	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x38, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x30, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x18, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_1
 	PORT_DIPNAME( 0xc0, 0xc0, DEF_STR( Cabinet ) )
 	PORT_DIPSETTING(    0xc0, "Upright 1 Player" )
 	PORT_DIPSETTING(    0x80, "Upright 2 Players" )
@@ -751,15 +735,7 @@ INPUT_PORTS_START( daimakai )
 	PORT_DIPSETTING(    0x00, DEF_STR( Cocktail ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(    0x04, "Easiest" )
-	PORT_DIPSETTING(    0x05, "Easier" )
-	PORT_DIPSETTING(    0x06, "Easy" )
-	PORT_DIPSETTING(    0x07, "Normal" )
-	PORT_DIPSETTING(    0x03, "Medium" )
-	PORT_DIPSETTING(    0x02, "Hard" )
-	PORT_DIPSETTING(    0x01, "Harder" )
-	PORT_DIPSETTING(    0x00, "Hardest" )
+	CPS1_DIFFICULTY_2
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -790,7 +766,7 @@ INPUT_PORTS_START( daimakai )
 	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Flip_Screen ) )
 	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unused ) )
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unused ) )		// "Demo Sounds" in manual; doesn´t work
 	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x40, 0x40, "Allow Continue" )
@@ -832,24 +808,7 @@ INPUT_PORTS_START( strider )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
-	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x38, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x30, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x18, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_1
 	PORT_DIPNAME( 0xc0, 0xc0, DEF_STR( Cabinet ) )
 	PORT_DIPSETTING(    0xc0, "Upright 1 Player" )
 	PORT_DIPSETTING(    0x80, "Upright 2 Players" )
@@ -857,15 +816,7 @@ INPUT_PORTS_START( strider )
 	PORT_DIPSETTING(    0x00, DEF_STR( Cocktail ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(    0x04, "Easiest" )					// "1"
-	PORT_DIPSETTING(    0x05, "Easier" )					// "2"
-	PORT_DIPSETTING(    0x06, "Easy" )						// "3"
-	PORT_DIPSETTING(    0x07, "Normal" )					// "4"
-	PORT_DIPSETTING(    0x03, "Medium" )					// "5"
-	PORT_DIPSETTING(    0x02, "Hard" )						// "6"
-	PORT_DIPSETTING(    0x01, "Harder" )					// "7"
-	PORT_DIPSETTING(    0x00, "Hardest" )					// "8"
+	CPS1_DIFFICULTY_2
 	/* In 'striderj', bit 3 is stored at 0xff8e77 ($e77,A5) via code at 0x000a2a,
 	   but this address is never checked again.
 	   In 'strider' and 'stridrja', this code even doesn't exist ! */
@@ -927,7 +878,8 @@ INPUT_PORTS_START( strider )
 	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_UNKNOWN )
 INPUT_PORTS_END
 
-/* "Debug" features to be implemented */
+/* "Debug" features to be implemented
+   Same as strider but additional "2 Coins to Start, 1 to Continue" Dip Switch */
 INPUT_PORTS_START( stridrua )
 	PORT_START      /* IN0 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN1 )
@@ -940,24 +892,7 @@ INPUT_PORTS_START( stridrua )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
-	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x38, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x30, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x18, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_1
 	PORT_DIPNAME( 0xc0, 0xc0, DEF_STR( Cabinet ) )
 	PORT_DIPSETTING(    0xc0, "Upright 1 Player" )
 	PORT_DIPSETTING(    0x80, "Upright 2 Players" )
@@ -965,15 +900,7 @@ INPUT_PORTS_START( stridrua )
 	PORT_DIPSETTING(    0x00, DEF_STR( Cocktail ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(    0x04, "Easiest" )					// "1"
-	PORT_DIPSETTING(    0x05, "Easier" )					// "2"
-	PORT_DIPSETTING(    0x06, "Easy" )						// "3"
-	PORT_DIPSETTING(    0x07, "Normal" )					// "4"
-	PORT_DIPSETTING(    0x03, "Medium" )					// "5"
-	PORT_DIPSETTING(    0x02, "Hard" )						// "6"
-	PORT_DIPSETTING(    0x01, "Harder" )					// "7"
-	PORT_DIPSETTING(    0x00, "Hardest" )					// "8"
+	CPS1_DIFFICULTY_2
 	/* In 'striderj', bit 3 is stored at 0xff8e77 ($e77,A5) via code at 0x000a2a,
 	   but this address is never checked again.
 	   In 'strider' and 'stridrja', this code even doesn't exist ! */
@@ -1047,24 +974,7 @@ INPUT_PORTS_START( dw )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x00, "2 Coins/1 Credit (1 to continue)" )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x18, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x00, "2 Coins/1 Credit (1 to continue)" )
-	PORT_DIPSETTING(    0x38, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x30, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) )
+	CPS1_COINAGE_3
 	/* According to the manual, ALL bits 0 to 5 must be ON to have
 	   "2 Coins/1 Credit (1 to continue)" for both coin slots */
 	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unused ) )
@@ -1075,15 +985,7 @@ INPUT_PORTS_START( dw )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(    0x04, "Easiest" )				// "Very Easy"
-	PORT_DIPSETTING(    0x05, "Easier" )				// "Easy 2"
-	PORT_DIPSETTING(    0x06, "Easy" )					// "Easy 1"
-	PORT_DIPSETTING(    0x07, "Normal" )				// "Normal"
-	PORT_DIPSETTING(    0x03, "Medium" )				// "Difficult 1"
-	PORT_DIPSETTING(    0x02, "Hard" )					// "Difficult 2"
-	PORT_DIPSETTING(    0x01, "Harder" )				// "Difficult 3"
-	PORT_DIPSETTING(    0x00, "Hardest" )				// "Very Difficult"
+	CPS1_DIFFICULTY_2
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -1118,13 +1020,14 @@ INPUT_PORTS_START( dw )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Demo_Sounds ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )			// "ON"  in the "test mode"
-	PORT_DIPSETTING(    0x20, DEF_STR( On ) )				// "OFF" in the "test mode"
+	PORT_DIPSETTING(    0x20, DEF_STR( On ) )			// "OFF" in the "test mode"
 	PORT_DIPNAME( 0x40, 0x40, "Allow Continue" )
-	PORT_DIPSETTING(    0x00, DEF_STR( No ) )				// "ON"  in the "test mode"
+	PORT_DIPSETTING(    0x00, DEF_STR( No ) )			// "ON"  in the "test mode"
 	PORT_DIPSETTING(    0x40, DEF_STR( Yes ) )			// "OFF" in the "test mode"
 	PORT_BITX(    0x80, 0x80, IPT_DIPSWITCH_NAME, "Game Mode", IP_KEY_NONE, IP_JOY_NONE )
 	PORT_DIPSETTING(    0x80, "Game" )
 	PORT_DIPSETTING(    0x00, "Test" )
+
 
 	PORT_START
 	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_8WAY | IPF_PLAYER1 )
@@ -1158,24 +1061,7 @@ INPUT_PORTS_START( willow )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x00, "2 Coins/1 Credit (1 to continue)" )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x18, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x00, "2 Coins/1 Credit (1 to continue)" )
-	PORT_DIPSETTING(    0x38, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x30, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) )
+	CPS1_COINAGE_3
 	/* According to the manual, ALL bits 0 to 5 must be ON to have
 	   "2 Coins/1 Credit (1 to continue)" for both coin slots */
 	PORT_DIPNAME( 0xc0, 0xc0, DEF_STR( Cabinet ) )
@@ -1185,15 +1071,7 @@ INPUT_PORTS_START( willow )
 	PORT_DIPSETTING(    0x00, DEF_STR( Cocktail ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(    0x04, "Easiest" )				// "Very Easy     00"
-	PORT_DIPSETTING(    0x05, "Easier" )				// "Easy          10"
-	PORT_DIPSETTING(    0x06, "Easy" )					// "Easy          20"
-	PORT_DIPSETTING(    0x07, "Normal" )				// "Normal        30"
-	PORT_DIPSETTING(    0x03, "Medium" )				// "Difficult     40"
-	PORT_DIPSETTING(    0x02, "Hard" )					// "Difficult     50"
-	PORT_DIPSETTING(    0x01, "Harder" )				// "Difficult     60"
-	PORT_DIPSETTING(    0x00, "Hardest" )				// "Very Difficult70"
+	CPS1_DIFFICULTY_2
 	PORT_DIPNAME( 0x18, 0x18, "Nando Speed" )
 	PORT_DIPSETTING(    0x10, "Slow" )
 	PORT_DIPSETTING(    0x18, "Normal" )
@@ -1275,24 +1153,7 @@ INPUT_PORTS_START( unsquad )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x00, "2 Coins/1 Credit (1 to continue)" )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x18, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x00, "2 Coins/1 Credit (1 to continue)" )
-	PORT_DIPSETTING(    0x38, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x30, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) )
+	CPS1_COINAGE_3
 	/* According to the manual, ALL bits 0 to 5 must be ON to have
 	   "2 Coins/1 Credit (1 to continue)" for both coin slots */
 	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unused ) )
@@ -1303,15 +1164,7 @@ INPUT_PORTS_START( unsquad )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x04, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(    0x07, "Easiest" )				// "Super Easy"
-	PORT_DIPSETTING(    0x06, "Easier" )				// "Very Easy"
-	PORT_DIPSETTING(    0x05, "Easy" )					// "Easy"
-	PORT_DIPSETTING(    0x04, "Normal" )				// "Normal"
-	PORT_DIPSETTING(    0x03, "Medium" )				// "Difficult"
-	PORT_DIPSETTING(    0x02, "Hard" )					// "Very Difficult"
-	PORT_DIPSETTING(    0x01, "Harder" )				// "Super Difficult"
-	PORT_DIPSETTING(    0x00, "Hardest" )				// "Ultra Super Difficult"
+	CPS1_DIFFICULTY_1
 	PORT_DIPNAME( 0x18, 0x18, "Damage" )				// Check code at 0x006f4e
 	PORT_DIPSETTING(    0x10, "Small" )
 	PORT_DIPSETTING(    0x18, "Normal" )
@@ -1386,24 +1239,7 @@ INPUT_PORTS_START( ffight )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
-	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x38, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x30, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x18, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_1
 	PORT_DIPNAME( 0x40, 0x40, "2 Coins to Start, 1 to Continue" )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -1415,16 +1251,16 @@ INPUT_PORTS_START( ffight )
 	PORT_DIPNAME( 0x07, 0x04, "Difficulty Level 1" )
 	PORT_DIPSETTING(    0x07, "Easiest" )				// "01"
 	PORT_DIPSETTING(    0x06, "Easier" )				// "02"
-	PORT_DIPSETTING(    0x05, "Easy" )					// "03"
+	PORT_DIPSETTING(    0x05, "Easy" )				// "03"
 	PORT_DIPSETTING(    0x04, "Normal" )				// "04"
 	PORT_DIPSETTING(    0x03, "Medium" )				// "05"
-	PORT_DIPSETTING(    0x02, "Hard" )					// "06"
+	PORT_DIPSETTING(    0x02, "Hard" )				// "06"
 	PORT_DIPSETTING(    0x01, "Harder" )				// "07"
 	PORT_DIPSETTING(    0x00, "Hardest" )				// "08"
 	PORT_DIPNAME( 0x18, 0x10, "Difficulty Level 2" )
-	PORT_DIPSETTING(    0x18, "Easy" )					// "01"
+	PORT_DIPSETTING(    0x18, "Easy" )				// "01"
 	PORT_DIPSETTING(    0x10, "Normal" )				// "02"
-	PORT_DIPSETTING(    0x08, "Hard" )					// "03"
+	PORT_DIPSETTING(    0x08, "Hard" )				// "03"
 	PORT_DIPSETTING(    0x00, "Hardest" )				// "04"
 	PORT_DIPNAME( 0x60, 0x60, DEF_STR( Bonus_Life ) )
 	PORT_DIPSETTING(    0x60, "100k" )
@@ -1479,7 +1315,6 @@ INPUT_PORTS_START( ffight )
 	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_UNKNOWN )
 INPUT_PORTS_END
 
-/* Needs further checking */
 INPUT_PORTS_START( 1941 )
 	PORT_START      /* IN0 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN1 )
@@ -1492,41 +1327,16 @@ INPUT_PORTS_START( 1941 )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
-	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x38, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x30, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x18, DEF_STR( 1C_6C ) )
-	PORT_DIPNAME( 0x40, 0x40, "2 to Start, 1 to Cont." )	// Other desc. was too long !
+	CPS1_COINAGE_1
+	PORT_DIPNAME( 0x40, 0x40, "2 Coins to Start, 1 to Continue" )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(    0x07, "0 (Easier)" )
-	PORT_DIPSETTING(    0x06, "1" )
-	PORT_DIPSETTING(    0x05, "2" )
-	PORT_DIPSETTING(    0x04, "3" )
-	PORT_DIPSETTING(    0x03, "4" )
-	PORT_DIPSETTING(    0x02, "5" )
-	PORT_DIPSETTING(    0x01, "6" )
-	PORT_DIPSETTING(    0x00, "7 (Harder)" )
+	CPS1_DIFFICULTY_1
 	PORT_DIPNAME( 0x18, 0x18, "Life Bar" )
 	PORT_DIPSETTING(    0x18, "More Slowly" )
 	PORT_DIPSETTING(    0x10, "Slowly" )
@@ -1542,10 +1352,10 @@ INPUT_PORTS_START( 1941 )
 	PORT_DIPSETTING(    0x00, "4 Bars" )
 
 	PORT_START      /* DSWC */
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x01, 0x01, "Throttle Game Speed" ) 	// turning this off will break the game
+	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x01, DEF_STR( On ) )
+	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Free_Play ) )
@@ -1598,15 +1408,7 @@ INPUT_PORTS_START( mercs )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coinage ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_2
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -1616,7 +1418,7 @@ INPUT_PORTS_START( mercs )
 	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "2 to Start, 1 to Cont." )	// Other desc. was too long !
+	PORT_DIPNAME( 0x40, 0x40, "2 Coins to Start, 1 to Continue" )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unused ) )
@@ -1624,15 +1426,7 @@ INPUT_PORTS_START( mercs )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x04, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(    0x07, "Easiest" )				// "Easy"
-	PORT_DIPSETTING(    0x06, "Easier" )
-	PORT_DIPSETTING(    0x05, "Easy" )
-	PORT_DIPSETTING(    0x04, "Normal" )				// "Normal"
-	PORT_DIPSETTING(    0x03, "Medium" )
-	PORT_DIPSETTING(    0x02, "Hard" )
-	PORT_DIPSETTING(    0x01, "Harder" )
-	PORT_DIPSETTING(    0x00, "Hardest" )				// "Difficult"
+	CPS1_DIFFICULTY_1
 	PORT_DIPNAME( 0x08, 0x08, "Coin Slots" )
 	PORT_DIPSETTING(    0x00, "1" )
 	PORT_DIPSETTING(    0x08, "3" )
@@ -1727,24 +1521,7 @@ INPUT_PORTS_START( mtwins )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
-	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x38, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x30, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x18, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_1
 	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -1753,15 +1530,7 @@ INPUT_PORTS_START( mtwins )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x04, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(    0x07, "Easiest" )				// "Easy"
-	PORT_DIPSETTING(    0x06, "Easier" )
-	PORT_DIPSETTING(    0x05, "Easy" )
-	PORT_DIPSETTING(    0x04, "Normal" )
-	PORT_DIPSETTING(    0x03, "Medium" )
-	PORT_DIPSETTING(    0x02, "Hard" )
-	PORT_DIPSETTING(    0x01, "Harder" )
-	PORT_DIPSETTING(    0x00, "Hardest" )				// "Diff"
+	CPS1_DIFFICULTY_1
 	PORT_DIPNAME( 0x38, 0x18, DEF_STR( Lives ) )
 //	PORT_DIPSETTING(    0x30, "1" )					// 0x38 energy, smallest damage
 //	PORT_DIPSETTING(    0x38, "1" )					// 0x38 energy, small damage
@@ -1840,24 +1609,7 @@ INPUT_PORTS_START( msword )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
-	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x38, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x30, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x18, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_1
 	PORT_DIPNAME( 0x40, 0x40, "2 Coins to Start, 1 to Continue" )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -1866,24 +1618,24 @@ INPUT_PORTS_START( msword )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x04, "Vitality Consumption" )		// "Level 1"
-	PORT_DIPSETTING(    0x07, "Lowest" )				// "Easy 3"		(-1 every 28 frames)
-	PORT_DIPSETTING(    0x06, "Lower" )					// "Easy 2"		(-1 every 24 frames)
-	PORT_DIPSETTING(    0x05, "Low" )					// "Easy 1"		(-1 every 20 frames)
-	PORT_DIPSETTING(    0x04, "Normal" )				// "Normal"		(-1 every 18 frames)
-	PORT_DIPSETTING(    0x03, "Medium" )				// "Difficult 1"	(-1 every 16 frames)
-	PORT_DIPSETTING(    0x02, "High" )					// "Difficult 2"	(-1 every 14 frames)
-	PORT_DIPSETTING(    0x01, "Higher" )				// "Difficult 3"	(-1 every 12 frames)
-	PORT_DIPSETTING(    0x00, "Highest" )				// "Difficult 4"	(-1 every 8 frames)
-	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Difficulty ) )		// "Level 2" (damage + enemies' speed)
-	PORT_DIPSETTING(    0x20, "Easiest" )				// "Easy 3"
-	PORT_DIPSETTING(    0x28, "Easier" )				// "Easy 2"
-	PORT_DIPSETTING(    0x30, "Easy" )					// "Easy 1"
-	PORT_DIPSETTING(    0x38, "Normal" )				// "Normal"
-	PORT_DIPSETTING(    0x18, "Medium" )				// "Difficult 1"
-	PORT_DIPSETTING(    0x10, "Hard" )					// "Difficult 2"
-	PORT_DIPSETTING(    0x08, "Harder" )				// "Difficult 3"
-	PORT_DIPSETTING(    0x00, "Hardest" )				// "Difficult 4"
+	PORT_DIPNAME( 0x07, 0x04, "Player's vitality consumption" )		// "Level 1"
+	PORT_DIPSETTING(    0x07, "1 (Easiest)" )				// "Easy 3"		(-1 every 28 frames)
+	PORT_DIPSETTING(    0x06, "2" )						// "Easy 2"		(-1 every 24 frames)
+	PORT_DIPSETTING(    0x05, "3" )						// "Easy 1"		(-1 every 20 frames)
+	PORT_DIPSETTING(    0x04, "4 (Normal)" )				// "Normal"		(-1 every 18 frames)
+	PORT_DIPSETTING(    0x03, "5" )						// "Difficult 1"	(-1 every 16 frames)
+	PORT_DIPSETTING(    0x02, "6" )						// "Difficult 2"	(-1 every 14 frames)
+	PORT_DIPSETTING(    0x01, "7" )						// "Difficult 3"	(-1 every 12 frames)
+	PORT_DIPSETTING(    0x00, "8 (Hardest)" )				// "Difficult 4"	(-1 every 8 frames)
+	PORT_DIPNAME( 0x38, 0x38, "Enemy's vitality and attacking power" )	// "Level 2"
+	PORT_DIPSETTING(    0x20, "1 (Easiest)" )				// "Easy 3"
+	PORT_DIPSETTING(    0x28, "2" )						// "Easy 2"
+	PORT_DIPSETTING(    0x30, "3" )						// "Easy 1"
+	PORT_DIPSETTING(    0x38, "4 (Normal)" )				// "Normal"
+	PORT_DIPSETTING(    0x18, "5" )						// "Difficult 1"
+	PORT_DIPSETTING(    0x10, "6" )						// "Difficult 2"
+	PORT_DIPSETTING(    0x08, "7" )						// "Difficult 3"
+	PORT_DIPSETTING(    0x00, "8 (Hardest)" )				// "Difficult 4"
 	PORT_DIPNAME( 0x40, 0x00, "Stage Select" )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -1893,10 +1645,10 @@ INPUT_PORTS_START( msword )
 
 	PORT_START      /* DSWC */
 	PORT_DIPNAME( 0x03, 0x03, "Vitality Packs" )
-	PORT_DIPSETTING(    0x00, "1" )					// 0x0320
-	PORT_DIPSETTING(    0x03, "2" )					// 0x0640
-	PORT_DIPSETTING(    0x02, "3 (2 when continue)" )		// 0x0960 (0x0640 when continue)
-	PORT_DIPSETTING(    0x01, "4 (3 when continue)" )		// 0x0c80 (0x0960 when continue)
+	PORT_DIPSETTING(    0x00, "1" )						// 0x0320
+	PORT_DIPSETTING(    0x03, "2" )						// 0x0640
+	PORT_DIPSETTING(    0x02, "3 (2 when continue)" )			// 0x0960 (0x0640 when continue)
+	PORT_DIPSETTING(    0x01, "4 (3 when continue)" )			// 0x0c80 (0x0960 when continue)
 	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Free_Play ) )
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -1935,7 +1687,6 @@ INPUT_PORTS_START( msword )
 	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_UNKNOWN )
 INPUT_PORTS_END
 
-/* Needs further checking */
 INPUT_PORTS_START( cawing )
 	PORT_START      /* IN0 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN1 )
@@ -1948,61 +1699,44 @@ INPUT_PORTS_START( cawing )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
-	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x38, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x30, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x18, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_1
 	PORT_DIPNAME( 0x40, 0x40, "2 Coins to Start, 1 to Continue" )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x07, "Difficulty Level (Enemy Strength)" )
-	PORT_DIPSETTING(    0x07, "Very Easy" )
-	PORT_DIPSETTING(    0x06, "Easy 2" )
-	PORT_DIPSETTING(    0x05, "Easy 1" )
-	PORT_DIPSETTING(    0x04, "Normal" )
-	PORT_DIPSETTING(    0x03, "Difficult 1" )
-	PORT_DIPSETTING(    0x02, "Difficult 2" )
-	PORT_DIPSETTING(    0x01, "Difficult 3" )
-	PORT_DIPSETTING(    0x00, "Very Difficult" )
-	PORT_DIPNAME( 0x18, 0x10, "Difficulty Level (Player Strength)" )
+	PORT_DIPNAME( 0x07, 0x04, "Difficulty Level (Enemy's Strength)" )
+	PORT_DIPSETTING(    0x07, "1 (Easiest)" )
+	PORT_DIPSETTING(    0x06, "2" )
+	PORT_DIPSETTING(    0x05, "3" )
+	PORT_DIPSETTING(    0x04, "4 (Normal)" )
+	PORT_DIPSETTING(    0x03, "5" )
+	PORT_DIPSETTING(    0x02, "6" )
+	PORT_DIPSETTING(    0x01, "7" )
+	PORT_DIPSETTING(    0x00, "8 (Hardest)" )
+	PORT_DIPNAME( 0x18, 0x18, "Difficulty Level (Player's Strength)" )
 	PORT_DIPSETTING(    0x10, "Easy" )
 	PORT_DIPSETTING(    0x18, "Normal" )
-	PORT_DIPSETTING(    0x08, "Difficult" )
-	PORT_DIPSETTING(    0x00, "Very Difficult" )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x08, "Hard" )
+	PORT_DIPSETTING(    0x00, "Hardest" )
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWC */
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Free_Play ) )
@@ -2056,24 +1790,7 @@ INPUT_PORTS_START( nemo )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
-	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x38, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x30, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x18, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_1
 	PORT_DIPNAME( 0x40, 0x40, "2 Coins to Start, 1 to Continue" )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -2082,15 +1799,7 @@ INPUT_PORTS_START( nemo )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x04, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(    0x07, "Easiest" )				// "Very Easy"
-	PORT_DIPSETTING(    0x06, "Easier" )				// "Easy 1"
-	PORT_DIPSETTING(    0x05, "Easy" )					// "Easy 2"
-	PORT_DIPSETTING(    0x04, "Normal" )				// "Normal"
-	PORT_DIPSETTING(    0x03, "Medium" )				// "Difficult 1"
-	PORT_DIPSETTING(    0x02, "Hard" )					// "Difficult 2"
-	PORT_DIPSETTING(    0x01, "Harder" )				// "Difficult 3"
-	PORT_DIPSETTING(    0x00, "Hardest" )				// "Very Difficult"
+	CPS1_DIFFICULTY_1
 	PORT_DIPNAME( 0x18, 0x18, "Life Bar" )
 	PORT_DIPSETTING(    0x00, "Minimun" )
 	PORT_DIPSETTING(    0x18, "Medium" )
@@ -2150,7 +1859,6 @@ INPUT_PORTS_START( nemo )
 	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_UNKNOWN )
 INPUT_PORTS_END
 
-/* Needs further checking */
 INPUT_PORTS_START( sf2 )
 	PORT_START      /* IN0 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN1 )
@@ -2163,63 +1871,39 @@ INPUT_PORTS_START( sf2 )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN  )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
-	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x38, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x30, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x18, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_1
 	PORT_DIPNAME( 0x40, 0x40, "2 Coins to Start, 1 to Continue" )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x04, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(    0x07, "Easier" )
-	PORT_DIPSETTING(    0x06, "Very Easy" )
-	PORT_DIPSETTING(    0x05, "Easy" )
-	PORT_DIPSETTING(    0x04, "Normal" )
-	PORT_DIPSETTING(    0x03, "Difficult" )
-	PORT_DIPSETTING(    0x02, "Hard" )
-	PORT_DIPSETTING(    0x01, "Very Hard" )
-	PORT_DIPSETTING(    0x00, "Hardest" )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
+	CPS1_DIFFICULTY_1
+	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWC */
-	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x00, "1" )
-	PORT_DIPSETTING(    0x03, "2" )
-	PORT_DIPSETTING(    0x02, "3" )
-	PORT_DIPSETTING(    0x01, "4" )
+	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unused ) )
+	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unused ) )
+	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Free_Play ) )
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -2281,41 +1965,16 @@ INPUT_PORTS_START( sf2j )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN  )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
-	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x38, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x30, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x18, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_1
 	PORT_DIPNAME( 0x40, 0x40, "2 Coins to Start, 1 to Continue" )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x04, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(    0x07, "Easier" )
-	PORT_DIPSETTING(    0x06, "Very Easy" )
-	PORT_DIPSETTING(    0x05, "Easy" )
-	PORT_DIPSETTING(    0x04, "Normal" )
-	PORT_DIPSETTING(    0x03, "Difficult" )
-	PORT_DIPSETTING(    0x02, "Hard" )
-	PORT_DIPSETTING(    0x01, "Very Hard" )
-	PORT_DIPSETTING(    0x00, "Hardest" )
+	CPS1_DIFFICULTY_1
 	PORT_DIPNAME( 0x08, 0x00, "2 Players Game" )
 	PORT_DIPSETTING(    0x08, "1 Credit/No Continue" )
 	PORT_DIPSETTING(    0x00, "2 Credits/Winner Continue" )
@@ -2333,11 +1992,12 @@ INPUT_PORTS_START( sf2j )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWC */
-	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x00, "1" )
-	PORT_DIPSETTING(    0x03, "2" )
-	PORT_DIPSETTING(    0x02, "3" )
-	PORT_DIPSETTING(    0x01, "4" )
+	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Free_Play ) )
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -2399,24 +2059,7 @@ INPUT_PORTS_START( 3wonders )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
-	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x38, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x30, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x18, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_1
 	PORT_DIPNAME( 0x40, 0x40, "2 Coins to Start, 1 to Continue" )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -2425,34 +2068,34 @@ INPUT_PORTS_START( 3wonders )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x03, 0x03, "Lives (Action)" )
+	PORT_DIPNAME( 0x03, 0x02, "Lives (Action)" )
 	PORT_DIPSETTING(    0x03, "1" )
 	PORT_DIPSETTING(    0x02, "2" )
 	PORT_DIPSETTING(    0x01, "3" )
 	PORT_DIPSETTING(    0x00, "5" )
-	PORT_DIPNAME( 0x0c, 0x0c, "Difficulty (Action)" )
+	PORT_DIPNAME( 0x0c, 0x08, "Difficulty (Action)" )
 	PORT_DIPSETTING(    0x0c, "Easy" )
 	PORT_DIPSETTING(    0x08, "Normal" )
 	PORT_DIPSETTING(    0x04, "Hard" )
 	PORT_DIPSETTING(    0x00, "Hardest" )
-	PORT_DIPNAME( 0x30, 0x30, "Lives (Shooting)" )
+	PORT_DIPNAME( 0x30, 0x20, "Lives (Shooting)" )
 	PORT_DIPSETTING(    0x30, "1" )
 	PORT_DIPSETTING(    0x20, "2" )
 	PORT_DIPSETTING(    0x10, "3" )
 	PORT_DIPSETTING(    0x00, "5" )
-	PORT_DIPNAME( 0xc0, 0xc0, "Difficulty (Shooting)" )
+	PORT_DIPNAME( 0xc0, 0x80, "Difficulty (Shooting)" )
 	PORT_DIPSETTING(    0xc0, "Easy" )
 	PORT_DIPSETTING(    0x80, "Normal" )
 	PORT_DIPSETTING(    0x40, "Hard" )
 	PORT_DIPSETTING(    0x00, "Hardest" )
 
 	PORT_START      /* DSWC */
-	PORT_DIPNAME( 0x03, 0x03, "Lives (Puzzle)" )
+	PORT_DIPNAME( 0x03, 0x02, "Lives (Puzzle)" )
 	PORT_DIPSETTING(    0x03, "1" )
 	PORT_DIPSETTING(    0x02, "2" )
 	PORT_DIPSETTING(    0x01, "3" )
 	PORT_DIPSETTING(    0x00, "5" )
-	PORT_DIPNAME( 0x0c, 0x0c, "Difficulty (Puzzle)" )
+	PORT_DIPNAME( 0x0c, 0x08, "Difficulty (Puzzle)" )
 	PORT_DIPSETTING(    0x0c, "Easy" )
 	PORT_DIPSETTING(    0x08, "Normal" )
 	PORT_DIPSETTING(    0x04, "Hard" )
@@ -2489,7 +2132,6 @@ INPUT_PORTS_START( 3wonders )
 	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_UNKNOWN )
 INPUT_PORTS_END
 
-/* Needs further checking */
 INPUT_PORTS_START( kod )
 	PORT_START      /* IN0 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN1 )
@@ -2502,41 +2144,25 @@ INPUT_PORTS_START( kod )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coinage ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_2
 	PORT_DIPNAME( 0x08, 0x08, "Coin Slots" )
 	PORT_DIPSETTING(    0x00, "1" )
 	PORT_DIPSETTING(    0x08, "3" )
 	PORT_DIPNAME( 0x10, 0x10, "Max Players" )
 	PORT_DIPSETTING(    0x00, "2" )
 	PORT_DIPSETTING(    0x10, "3" )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x40, 0x40, "2 Coins to Start, 1 to Continue" )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x04, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(    0x07, "Easiest" )
-	PORT_DIPSETTING(    0x06, "Very Easy" )
-	PORT_DIPSETTING(    0x05, "Easy" )
-	PORT_DIPSETTING(    0x04, "Normal" )
-	PORT_DIPSETTING(    0x03, "Medium" )
-	PORT_DIPSETTING(    0x02, "Hard" )
-	PORT_DIPSETTING(    0x01, "Very Hard" )
-	PORT_DIPSETTING(    0x00, "Hardest" )
+	CPS1_DIFFICULTY_1
 	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Lives ) )
 	PORT_DIPSETTING(    0x30, "1" )
 	PORT_DIPSETTING(    0x38, "2" )
@@ -2553,10 +2179,10 @@ INPUT_PORTS_START( kod )
 	PORT_DIPSETTING(    0x00, "None" )
 
 	PORT_START      /* DSWC */
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Free_Play ) )
@@ -2607,6 +2233,8 @@ INPUT_PORTS_START( kod )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_START3 )
 INPUT_PORTS_END
 
+/* Needs further checking
+   Same as kod but different "Bonus_life" values */
 INPUT_PORTS_START( kodj )
 	PORT_START      /* IN0 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN1 )
@@ -2619,41 +2247,25 @@ INPUT_PORTS_START( kodj )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coinage ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_2
 	PORT_DIPNAME( 0x08, 0x08, "Coin Slots" )
 	PORT_DIPSETTING(    0x00, "1" )
 	PORT_DIPSETTING(    0x08, "3" )
 	PORT_DIPNAME( 0x10, 0x10, "Max Players" )
 	PORT_DIPSETTING(    0x00, "2" )
 	PORT_DIPSETTING(    0x10, "3" )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x40, 0x40, "2 Coins to Start, 1 to Continue" )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x04, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(    0x07, "Easiest" )
-	PORT_DIPSETTING(    0x06, "Very Easy" )
-	PORT_DIPSETTING(    0x05, "Easy" )
-	PORT_DIPSETTING(    0x04, "Normal" )
-	PORT_DIPSETTING(    0x03, "Medium" )
-	PORT_DIPSETTING(    0x02, "Hard" )
-	PORT_DIPSETTING(    0x01, "Very Hard" )
-	PORT_DIPSETTING(    0x00, "Hardest" )
+	CPS1_DIFFICULTY_1
 	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Lives ) )
 	PORT_DIPSETTING(    0x30, "1" )
 	PORT_DIPSETTING(    0x38, "2" )
@@ -2670,10 +2282,10 @@ INPUT_PORTS_START( kodj )
 	PORT_DIPSETTING(    0x00, "None" )
 
 	PORT_START      /* DSWC */
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Free_Play ) )
@@ -2725,7 +2337,6 @@ INPUT_PORTS_START( kodj )
 INPUT_PORTS_END
 
 
-/* Needs further checking */
 INPUT_PORTS_START( captcomm )
 	PORT_START      /* IN0 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN1 )
@@ -2738,47 +2349,39 @@ INPUT_PORTS_START( captcomm )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
-	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x38, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x30, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x18, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_2
+	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unused ) )
+	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unused ) )
+	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unused ) )
+	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x40, 0x40, "2 Coins to Start, 1 to Continue" )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x07, "Difficulty 1" )
-	PORT_DIPSETTING(    0x07, "Very Easy" )
-	PORT_DIPSETTING(    0x06, "Easy 1" )
-	PORT_DIPSETTING(    0x05, "Easy 2" )
-	PORT_DIPSETTING(    0x04, "Normal" )
-	PORT_DIPSETTING(    0x03, "Difficult" )
-	PORT_DIPSETTING(    0x02, "Very Difficult" )
-	PORT_DIPSETTING(    0x01, "Hard" )
+	PORT_DIPNAME( 0x07, 0x04, "Difficulty 1" )
+	PORT_DIPSETTING(    0x07, "1 (Easiest)" )
+	PORT_DIPSETTING(    0x06, "2" )
+	PORT_DIPSETTING(    0x05, "3" )
+	PORT_DIPSETTING(    0x04, "4 (Normal)" )
+	PORT_DIPSETTING(    0x03, "5" )
+	PORT_DIPSETTING(    0x02, "6" )
+	PORT_DIPSETTING(    0x01, "7" )
+	PORT_DIPSETTING(    0x00, "8 (Hardest)" )
+	PORT_DIPNAME( 0x18, 0x10, "Difficulty 2" )
+	PORT_DIPSETTING(    0x18, "Easy" )
+	PORT_DIPSETTING(    0x10, "Normal" )
+	PORT_DIPSETTING(    0x08, "Hard" )
 	PORT_DIPSETTING(    0x00, "Hardest" )
-	PORT_DIPNAME( 0x18, 0x18, "Difficulty 2" )
-	PORT_DIPSETTING(    0x18, "1" )
-	PORT_DIPSETTING(    0x10, "2" )
-	PORT_DIPSETTING(    0x08, "3" )
-	PORT_DIPSETTING(    0x00, "4" )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0xc0, 0xc0, "Max Players" )
@@ -2851,7 +2454,6 @@ INPUT_PORTS_START( captcomm )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_START4 )
 INPUT_PORTS_END
 
-/* Needs further checking */
 INPUT_PORTS_START( knights )
 	PORT_START      /* IN0 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN1 )
@@ -2864,15 +2466,7 @@ INPUT_PORTS_START( knights )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_2
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -2890,24 +2484,24 @@ INPUT_PORTS_START( knights )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x04, "Player speed and vitality consumption" )
-	PORT_DIPSETTING(    0x07, "Very easy" )
-	PORT_DIPSETTING(    0x06, "Easier" )
-	PORT_DIPSETTING(    0x05, "Easy" )
-	PORT_DIPSETTING(    0x04, "Normal" )
-	PORT_DIPSETTING(    0x03, "Medium" )
-	PORT_DIPSETTING(    0x02, "Hard" )
-	PORT_DIPSETTING(    0x01, "Harder" )
-	PORT_DIPSETTING(    0x00, "Hardest" )
-	PORT_DIPNAME( 0x38, 0x38, "Enemy's vitality and attack power" )
-	PORT_DIPSETTING(    0x10, "Very Easy" )
-	PORT_DIPSETTING(    0x08, "Easier" )
-	PORT_DIPSETTING(    0x00, "Easy" )
-	PORT_DIPSETTING(    0x38, "Normal" )
-	PORT_DIPSETTING(    0x30, "Medium" )
-	PORT_DIPSETTING(    0x28, "Hard" )
-	PORT_DIPSETTING(    0x20, "Harder" )
-	PORT_DIPSETTING(    0x18, "Hardest" )
+	PORT_DIPNAME( 0x07, 0x04, "Enemy's attack frequency" )
+	PORT_DIPSETTING(    0x07, "1 (Easiest)" )
+	PORT_DIPSETTING(    0x06, "2" )
+	PORT_DIPSETTING(    0x05, "3" )
+	PORT_DIPSETTING(    0x04, "4 (Normal)" )
+	PORT_DIPSETTING(    0x03, "5" )
+	PORT_DIPSETTING(    0x02, "6" )
+	PORT_DIPSETTING(    0x01, "7" )
+	PORT_DIPSETTING(    0x00, "8 (Hardest)" )
+	PORT_DIPNAME( 0x38, 0x38, "Enemy's attack power" )
+	PORT_DIPSETTING(    0x10, "1 (Easiest)" )
+	PORT_DIPSETTING(    0x08, "2" )
+	PORT_DIPSETTING(    0x00, "3" )
+	PORT_DIPSETTING(    0x38, "4 (Normal)" )
+	PORT_DIPSETTING(    0x30, "5" )
+	PORT_DIPSETTING(    0x28, "6" )
+	PORT_DIPSETTING(    0x20, "7" )
+	PORT_DIPSETTING(    0x18, "8 (Hardest)" )
 	PORT_DIPNAME( 0x40, 0x40, "Coin Slots" )
 	PORT_DIPSETTING(    0x00, "1" )
 	PORT_DIPSETTING(    0x40, "3" )
@@ -2969,7 +2563,6 @@ INPUT_PORTS_START( knights )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_START3 )
 INPUT_PORTS_END
 
-/* Needs further checking */
 INPUT_PORTS_START( varth )
 	PORT_START      /* IN0 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN1 )
@@ -2982,53 +2575,28 @@ INPUT_PORTS_START( varth )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
-	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Coin_B ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x38, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x30, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x18, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_1
 	PORT_DIPNAME( 0x40, 0x40, "2 Coins to Start, 1 to Continue" )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(    0x07, "Very Easy" )
-	PORT_DIPSETTING(    0x06, "Easy 1" )
-	PORT_DIPSETTING(    0x05, "Easy 2" )
-	PORT_DIPSETTING(    0x04, "Normal" )
-	PORT_DIPSETTING(    0x03, "Difficult" )
-	PORT_DIPSETTING(    0x02, "Very Difficult" )
-	PORT_DIPSETTING(    0x01, "Hard" )
-	PORT_DIPSETTING(    0x00, "Hardest" )
-	PORT_DIPNAME( 0x18, 0x18, DEF_STR( Bonus_Life ) )
+	CPS1_DIFFICULTY_1
+	PORT_DIPNAME( 0x18, 0x10, DEF_STR( Bonus_Life ) )
 	PORT_DIPSETTING(    0x18, "600k and every 1.400k" )
 	PORT_DIPSETTING(    0x10, "600k 2.000k and 4500k" )
 	PORT_DIPSETTING(    0x08, "1.200k 3.500k" )
 	PORT_DIPSETTING(    0x00, "2000k only" )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
@@ -3089,17 +2657,15 @@ INPUT_PORTS_START( cworld2j )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coinage ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
-	PORT_DIPNAME( 0x38, 0x38, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x38, DEF_STR( Off ) )
+	CPS1_COINAGE_2
+	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x40, 0x40, "2 Coins to Start, 1 to Continue" )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
@@ -3396,15 +2962,7 @@ INPUT_PORTS_START( pnickj )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coinage ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_2
 	PORT_DIPNAME( 0x08, 0x08, "Coin Slots" )
 	PORT_DIPSETTING(    0x08, "1" )
 	PORT_DIPSETTING(    0x00, "2" )
@@ -3422,23 +2980,16 @@ INPUT_PORTS_START( pnickj )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x04, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(    0x07, "Easiest" )
-	PORT_DIPSETTING(    0x06, "Very Easy" )
-	PORT_DIPSETTING(    0x05, "Easy" )
-	PORT_DIPSETTING(    0x04, "Normal" )
-	PORT_DIPSETTING(    0x03, "Hard" )
-	PORT_DIPSETTING(    0x02, "Very Hard" )
-	PORT_DIPSETTING(    0x01, "Hardest" )
-	PORT_DIPSETTING(    0x00, "Master Level" )
+	CPS1_DIFFICULTY_1
 	PORT_DIPNAME( 0x08, 0x00, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x30, 0x30, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x00, "1" )
-	PORT_DIPSETTING(    0x10, "2" )
-	PORT_DIPSETTING(    0x20, "3" )
-	PORT_DIPSETTING(    0x30, "4" )
+	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0xc0, 0xc0, "Vs Play Mode" )
 	PORT_DIPSETTING(    0xc0, "1 Game Match" )
 	PORT_DIPSETTING(    0x80, "3 Games Match" )
@@ -3446,11 +2997,12 @@ INPUT_PORTS_START( pnickj )
 	PORT_DIPSETTING(    0x00, "7 Games Match" )
 
 	PORT_START      /* DSWC */
-	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x03, "1" )
-	PORT_DIPSETTING(    0x02, "2" )
-	PORT_DIPSETTING(    0x01, "3" )
-	PORT_DIPSETTING(    0x00, "4" )
+	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -3502,15 +3054,7 @@ INPUT_PORTS_START( qad )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coinage ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_2
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -3523,25 +3067,25 @@ INPUT_PORTS_START( qad )
 	PORT_DIPNAME( 0x40, 0x40, "2 Coins to Start, 1 to Continue" )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x06, DEF_STR( Difficulty ) )
-//	PORT_DIPSETTING(    0x07, "Very Easy" )
-	PORT_DIPSETTING(    0x06, "Very Easy" )
+	PORT_DIPNAME( 0x07, 0x04, DEF_STR( Difficulty ) )
+//	PORT_DIPSETTING(    0x07, "Easiest" )
+	PORT_DIPSETTING(    0x06, "Easiest" )
 	PORT_DIPSETTING(    0x05, "Easy" )
 	PORT_DIPSETTING(    0x04, "Normal" )
 	PORT_DIPSETTING(    0x03, "Hard" )
-	PORT_DIPSETTING(    0x02, "Very Hard" )
-//	PORT_DIPSETTING(    0x01, "Very Hard" )
-//	PORT_DIPSETTING(    0x00, "Very Hard" )
-	PORT_DIPNAME( 0x18, 0x18, "Wisdom" )
-	PORT_DIPSETTING(    0x18, "Low" )
+	PORT_DIPSETTING(    0x02, "Hardest" )
+//	PORT_DIPSETTING(    0x01, "Hardest" )
+//	PORT_DIPSETTING(    0x00, "Hardest" )
+	PORT_DIPNAME( 0x18, 0x10, "Wisdom" )
+	PORT_DIPSETTING(    0x18, "Easy" )
 	PORT_DIPSETTING(    0x10, "Normal" )
-	PORT_DIPSETTING(    0x08, "High" )
-	PORT_DIPSETTING(    0x00, "Brilliant" )
+	PORT_DIPSETTING(    0x08, "Hard" )
+	PORT_DIPSETTING(    0x00, "Hardest" )
 	PORT_DIPNAME( 0xe0, 0xe0, DEF_STR( Lives ) )
 	PORT_DIPSETTING(    0x60, "1" )
 	PORT_DIPSETTING(    0x80, "2" )
@@ -3553,6 +3097,12 @@ INPUT_PORTS_START( qad )
 //	PORT_DIPSETTING(    0x00, "1" )
 
 	PORT_START      /* DSWC */
+	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unused ) )
+	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unused ) )
+	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Free_Play ) )
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -3604,15 +3154,7 @@ INPUT_PORTS_START( qadj )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coinage ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_2
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -3625,7 +3167,7 @@ INPUT_PORTS_START( qadj )
 	PORT_DIPNAME( 0x40, 0x40, "2 Coins to Start, 1 to Continue" )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unused ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
@@ -3713,15 +3255,7 @@ INPUT_PORTS_START( qtono2 )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_START      /* DSWA */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coinage ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( 3C_1C ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(    0x06, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(    0x05, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( 1C_4C ) )
-	PORT_DIPSETTING(    0x03, DEF_STR( 1C_6C ) )
+	CPS1_COINAGE_2
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -3739,15 +3273,7 @@ INPUT_PORTS_START( qtono2 )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(    0x07, "1" )
-	PORT_DIPSETTING(    0x06, "2" )
-	PORT_DIPSETTING(    0x05, "3" )
-	PORT_DIPSETTING(    0x04, "4" )
-	PORT_DIPSETTING(    0x03, "5" )
-	PORT_DIPSETTING(    0x02, "6" )
-	PORT_DIPSETTING(    0x01, "7" )
-	PORT_DIPSETTING(    0x00, "8" )
+	CPS1_DIFFICULTY_1
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -3895,11 +3421,11 @@ INPUT_PORTS_START( megaman )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Difficulty ) )
+	PORT_DIPNAME( 0x03, 0x02, DEF_STR( Difficulty ) )
 	PORT_DIPSETTING(    0x03, "Easy" )
 	PORT_DIPSETTING(    0x02, "Normal" )
-	PORT_DIPSETTING(    0x01, "Difficult" )
-	PORT_DIPSETTING(    0x00, "Hard" )
+	PORT_DIPSETTING(    0x01, "Hard" )
+	PORT_DIPSETTING(    0x00, "Hardest" )
 	PORT_DIPNAME( 0x0c, 0x0c, "Time" )
 	PORT_DIPSETTING(    0x0c, "100" )
 	PORT_DIPSETTING(    0x08, "90" )
@@ -4008,11 +3534,11 @@ INPUT_PORTS_START( rockmanj )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Difficulty ) )
+	PORT_DIPNAME( 0x03, 0x02, DEF_STR( Difficulty ) )
 	PORT_DIPSETTING(    0x03, "Easy" )
 	PORT_DIPSETTING(    0x02, "Normal" )
-	PORT_DIPSETTING(    0x01, "Difficult" )
-	PORT_DIPSETTING(    0x00, "Hard" )
+	PORT_DIPSETTING(    0x01, "Hard" )
+	PORT_DIPSETTING(    0x00, "Hardest" )
 	PORT_DIPNAME( 0x0c, 0x0c, "Time" )
 	PORT_DIPSETTING(    0x0c, "100" )
 	PORT_DIPSETTING(    0x08, "90" )
@@ -4075,7 +3601,6 @@ INPUT_PORTS_START( rockmanj )
 	PORT_BIT( 0x4000, IP_ACTIVE_LOW, IPT_BUTTON3 | IPF_PLAYER2 )
 	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_UNKNOWN )
 INPUT_PORTS_END
-
 
 
 static struct GfxLayout layout8x8 =

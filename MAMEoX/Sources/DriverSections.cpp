@@ -914,6 +914,13 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\zerozone.c", "744" );
   RegisterSectionName( "src\\drivers\\zn.c", "745" );
   RegisterSectionName( "src\\drivers\\zodiack.c", "746" );
+  RegisterSectionName( "src\\drivers\\fuukifg2.c", "758" );
+  RegisterSectionName( "src\\drivers\\fuukifg3.c", "759" );
+  RegisterSectionName( "src\\drivers\\mogura.c", "760" );
+  RegisterSectionName( "src\\drivers\\speedatk.c", "761" );
+  RegisterSectionName( "src\\drivers\\sprint8.c", "762" );
+  RegisterSectionName( "src\\drivers\\strvmstr.c", "763" );
+  RegisterSectionName( "src\\drivers\\vamphalf.c", "764" );
 }
 #pragma code_seg()
 #pragma data_seg()

@@ -689,7 +689,7 @@ unsigned Dasm6309 (char *buffer, unsigned pc)
 			 }
 			 else
 			 {	/* not found in alternate page */
-				strcpy (buffer, "JMP [$FFF0] Illegal Opcode");
+				strcpy (buffer, "Illegal Opcode (JMP [$FFF0])");
 				return 2;
 			 }
 		}
@@ -706,7 +706,7 @@ unsigned Dasm6309 (char *buffer, unsigned pc)
 	}
 	else
 	{
-		strcpy (buffer, "JMP [$FFF0] Illegal Opcode");
+		strcpy (buffer, "Illegal Opcode (JMP [$FFF0])");
 		return 1;
 	}
 
