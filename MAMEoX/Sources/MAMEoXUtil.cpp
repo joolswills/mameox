@@ -30,13 +30,26 @@ extern "C" {
 #include "mame.h"
 }
 
+//= D E F I N E S =====================================================
+#define MAPDRIVE( _drivePath__, _driveLetter__ )    { \
+                                                      UNICODE_STRING devName = { strlen(_drivePath__), strlen(_drivePath__) + 1, _drivePath__ }; \
+                                                      UNICODE_STRING devLetter = { strlen(_driveLetter__), strlen(_driveLetter__) + 1, _driveLetter__ }; \
+                                                      DWORD status = IoCreateSymbolicLink( &devLetter, &devName ); \
+                                                      PRINTMSG( T_INFO, "Map %s = %s, status %d", _driveLetter__, _drivePath__, status ); \
+                                                    }
+
 //= S T R U C T U R E S ===============================================
+typedef struct _UNICODE_STRING
+{
+  USHORT      m_length;
+  USHORT      m_maxLength;
+  const char *m_str;
+} UNICODE_STRING, *PUNICODE_STRING;
 
 //= G L O B A L = V A R S =============================================
 CInputManager			g_inputManager;
 CGraphicsManager	g_graphicsManager;
 CXBFont						g_font;
-
 
 extern "C" {
 
@@ -51,6 +64,8 @@ lightgunCalibration_t    g_calibrationData[4] = { {-32767,0,32767,32767,0,-32767
 
 
 //= P R O T O T Y P E S ===============================================
+XBOXAPI DWORD WINAPI IoCreateSymbolicLink( PUNICODE_STRING symLinkName, PUNICODE_STRING devName );
+XBOXAPI DWORD WINAPI IoDeleteSymbolicLink( PUNICODE_STRING symLinkName );
 
 
 //= F U N C T I O N S =================================================
@@ -129,16 +144,22 @@ void LoadOptions( void )
   g_NetworkConfig.m_NameServer      = iniFile.GetProfileString("Network", "NameServer", DEFAULT_NAMESERVER);
 
   // Grab the directory settings
-  g_FileIOConfig.m_ALTDrive           = iniFile.GetProfileString("Directories", "ALTDrive",            DEFAULT_ALTDRIVE);
-  g_FileIOConfig.m_ArtPath            = iniFile.GetProfileString("Directories", "ArtPath",             DEFAULT_ARTPATH);
-  g_FileIOConfig.m_AudioPath          = iniFile.GetProfileString("Directories", "AudioPath",           DEFAULT_AUDIOPATH);
-  g_FileIOConfig.m_ConfigPath         = iniFile.GetProfileString("Directories", "ConfigPath",          DEFAULT_CONFIGPATH);
-  g_FileIOConfig.m_GeneralPath        = iniFile.GetProfileString("Directories", "GeneralPath",         DEFAULT_GENERALPATH);
-  g_FileIOConfig.m_HDImagePath        = iniFile.GetProfileString("Directories", "HDImagePath",         DEFAULT_HDIMAGEPATH);
-  g_FileIOConfig.m_HiScorePath        = iniFile.GetProfileString("Directories", "HiScoresPath",        DEFAULT_HISCOREPATH);
-  g_FileIOConfig.m_NVramPath          = iniFile.GetProfileString("Directories", "NVRamPath",           DEFAULT_NVRAMPATH);
-  g_FileIOConfig.m_RomBackupPath      = iniFile.GetProfileString("Directories", "BackupPath",          DEFAULT_ROMBACKUPPATH);
-  g_FileIOConfig.m_RomPath            = iniFile.GetProfileString("Directories", "RomsPath",            DEFAULT_ROMPATH);
+  g_FileIOConfig.m_ALTDrive           = iniFile.GetProfileString( "Directories", "ALTDrive",            DEFAULT_ALTDRIVE );
+  g_FileIOConfig.m_LetterCMapping     = iniFile.GetProfileString( "Directories", "C_Mapping",           DEFAULT_CMAPPING );
+  g_FileIOConfig.m_LetterEMapping     = iniFile.GetProfileString( "Directories", "E_Mapping",           DEFAULT_EMAPPING );
+  g_FileIOConfig.m_LetterFMapping     = iniFile.GetProfileString( "Directories", "F_Mapping",           DEFAULT_FMAPPING );
+  g_FileIOConfig.m_LetterGMapping     = iniFile.GetProfileString( "Directories", "G_Mapping",           DEFAULT_GMAPPING );
+  g_FileIOConfig.m_LetterHMapping     = iniFile.GetProfileString( "Directories", "H_Mapping",           DEFAULT_HMAPPING );
+
+  g_FileIOConfig.m_ArtPath            = iniFile.GetProfileString( "Directories", "ArtPath",             DEFAULT_ARTPATH );
+  g_FileIOConfig.m_AudioPath          = iniFile.GetProfileString( "Directories", "AudioPath",           DEFAULT_AUDIOPATH );
+  g_FileIOConfig.m_ConfigPath         = iniFile.GetProfileString( "Directories", "ConfigPath",          DEFAULT_CONFIGPATH );
+  g_FileIOConfig.m_GeneralPath        = iniFile.GetProfileString( "Directories", "GeneralPath",         DEFAULT_GENERALPATH );
+  g_FileIOConfig.m_HDImagePath        = iniFile.GetProfileString( "Directories", "HDImagePath",         DEFAULT_HDIMAGEPATH );
+  g_FileIOConfig.m_HiScorePath        = iniFile.GetProfileString( "Directories", "HiScoresPath",        DEFAULT_HISCOREPATH );
+  g_FileIOConfig.m_NVramPath          = iniFile.GetProfileString( "Directories", "NVRamPath",           DEFAULT_NVRAMPATH );
+  g_FileIOConfig.m_RomBackupPath      = iniFile.GetProfileString( "Directories", "BackupPath",          DEFAULT_ROMBACKUPPATH );
+  g_FileIOConfig.m_RomPath            = iniFile.GetProfileString( "Directories", "RomsPath",            DEFAULT_ROMPATH );
   // There's no reason to allow this to be changed, it's totally internal
   //  g_FileIOConfig.m_DefaultRomListPath = iniFile.GetProfileString("Directories", "DefaultRomsListPath", DEFAULT_DEFAULTROMLISTPATH);
 
@@ -220,6 +241,11 @@ void SaveOptions( void )
 
     //-- Write the directory settings -------------------------------------------
   iniFile.WriteProfileString( "Directories", "ALTDrive",           g_FileIOConfig.m_ALTDrive );
+  iniFile.WriteProfileString( "Directories", "C_Mapping",          g_FileIOConfig.m_LetterCMapping );
+  iniFile.WriteProfileString( "Directories", "E_Mapping",          g_FileIOConfig.m_LetterEMapping );
+  iniFile.WriteProfileString( "Directories", "F_Mapping",          g_FileIOConfig.m_LetterFMapping );
+  iniFile.WriteProfileString( "Directories", "G_Mapping",          g_FileIOConfig.m_LetterGMapping );
+  iniFile.WriteProfileString( "Directories", "H_Mapping",          g_FileIOConfig.m_LetterHMapping );
   iniFile.WriteProfileString("Directories", "ArtPath",             g_FileIOConfig.m_ArtPath );
   iniFile.WriteProfileString("Directories", "AudioPath",           g_FileIOConfig.m_AudioPath );
   iniFile.WriteProfileString("Directories", "ConfigPath",          g_FileIOConfig.m_ConfigPath );
@@ -418,6 +444,48 @@ void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice )
   pD3DDevice->PersistDisplay();
 }
 
+
+//-------------------------------------------------------------
+// RemapDriveLetters
+//-------------------------------------------------------------
+void RemapDriveLetters( void )
+{
+  MAPDRIVE( g_FileIOConfig.m_LetterCMapping.c_str(), "\\??\\C:" );
+  MAPDRIVE( g_FileIOConfig.m_LetterEMapping.c_str(), "\\??\\E:" );
+  MAPDRIVE( g_FileIOConfig.m_LetterFMapping.c_str(), "\\??\\F:" );
+  MAPDRIVE( g_FileIOConfig.m_LetterGMapping.c_str(), "\\??\\G:" );
+  MAPDRIVE( g_FileIOConfig.m_LetterHMapping.c_str(), "\\??\\H:" );
+
+  WIN32_FIND_DATA findData;
+
+  HANDLE h = FindFirstFile( "D:\\*", &findData );
+  if( h != INVALID_HANDLE_VALUE )
+  {
+    do {
+      PRINTMSG( T_INFO, "D:\\%s", findData.cFileName );
+    } while( FindNextFile( h, &findData ) );
+    FindClose( h );
+  }
+
+  h = FindFirstFile( "E:\\*", &findData );
+  if( h != INVALID_HANDLE_VALUE )
+  {
+    do {
+      PRINTMSG( T_INFO, "E:\\%s", findData.cFileName );
+    } while( FindNextFile( h, &findData ) );
+    FindClose( h );
+  }
+
+  h = FindFirstFile( "G:\\*", &findData );
+  if( h != INVALID_HANDLE_VALUE )
+  {
+    do {
+      PRINTMSG( T_INFO, "G:\\%s", findData.cFileName );
+    } while( FindNextFile( h, &findData ) );
+    FindClose( h );
+  }
+
+}
 
 }	// End Extern "C"
 

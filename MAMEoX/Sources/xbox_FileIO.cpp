@@ -92,6 +92,10 @@ void InitializeFileIO( void )
   char *tempStr = NULL;
 	PRINTMSG( T_TRACE, "InitializeFileIO" );
 
+    // Remap the symbolic C, E, F, G, H links to the user
+    // defined ones
+  RemapDriveLetters();
+
 
     // Try to create/open all of the paths. If any fail,
     //     switch the drive letter to ALTDRIVE, as we must be
@@ -99,7 +103,6 @@ void InitializeFileIO( void )
 
 
     // Make sure the rom list path is available
-
   CREATEOROPENPATH( g_FileIOConfig.m_DefaultRomListPath.c_str(), TRUE );
   g_ROMListPath = tempStr;
 

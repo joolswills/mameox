@@ -1,3 +1,21 @@
+Version 0.67b
+
+  - \MAMEoX\Includes\MAMEoX.h
+    - Upped version number to 0.67b
+    - Added symlink support (code based on submission from Redline)
+
+  - \MAMEoX\Includes\xbox_FileIO.h
+    - Added symlink support (code based on submission from Redline)
+
+  - \MAMEoX\Sources\xbox_FileIO.cpp
+    - Added symlink support (code based on submission from Redline)
+
+  - \MAMEoX\Sources\MAMEoXUtil.cpp
+    - Added symlink support (code based on submission from Redline)
+
+  - \MAMEoXLauncher\Sources\OptionsPage.cpp
+    - Added read-only listing of symlinks to options
+
 Version 0.66b
 
   - \MAME\src\usrintrf.c
@@ -6,14 +24,6 @@ Version 0.66b
       is parsed to find a working clone of a ROM that
       is tagged as invalid. This fixes crashes for
       these games (such as Alexx Kid set 1)
-
-  - \MAMEoX\Includes\MAMEoX.h
-    - clonename, manufacturer, year added into MAMEDriverData_t 
-  - \MAMEoX\Sources\xbox_Main.cpp
-    - clonename, manufacturer, year added into DriverList (Save)
-  - \MAMEoXLauncher\Sources\main.cpp
-    - clonename, manufacturer, year added into DriverList Load)
-
 
   - \MAMEoX\Includes\Gamepad.h
   - \MAMEoX\Sources\Gamepad.cpp
@@ -34,6 +44,7 @@ Version 0.66b
       WaitForAnyButton resp.
     - Added LAUNCH_RUN_AS_IF_REBOOTED command to properly handle
       case where MAMEoX.xbe is started instead of default.xbe
+    - clonename, manufacturer, year added into MAMEDriverData_t 
 
   - \MAMEoX\Sources\xbox_Main.cpp
     - Removed unloading of game sections after a game
@@ -49,6 +60,7 @@ Version 0.66b
     - Adaptations for CGamepad addition
     - Added LAUNCH_RUN_AS_IF_REBOOTED command to properly handle
       case where MAMEoX.xbe is started instead of default.xbe
+    - clonename, manufacturer, year added into DriverList (Save)
 
   - \MAMEoX\Sources\MAMEoXUtil.cpp
     - Added network and directory ini entries to SaveOptions
@@ -100,6 +112,7 @@ Version 0.66b
     - Adaptations for CGamepad addition
     - Added LAUNCH_RUN_AS_IF_REBOOTED command to properly handle
       case where MAMEoX.xbe is started instead of default.xbe
+    - clonename, manufacturer, year added into DriverList Load)
 
   - \MAMEoXLauncher\Includes\ROMList.h
   - \MAMEoXLauncher\Sources\ROMList.cpp

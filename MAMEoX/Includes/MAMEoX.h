@@ -40,8 +40,8 @@ extern "C" {
 #endif
 
   // Version number
-#define VERSION_STRING        "0.66b" BUILD_STRING
-#define LVERSION_STRING       L"0.66b" LBUILD_STRING
+#define VERSION_STRING        "0.67b" BUILD_STRING
+#define LVERSION_STRING       L"0.67b" LBUILD_STRING
 
 #define MAMEVERSION_STRING    "0.69"
 #define LMAMEVERSION_STRING   L"0.69"
@@ -211,6 +211,14 @@ void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice );
   //! \param    lst - The var arg variable to retrieve data from
 	//-------------------------------------------------------------------
 int vsnprintf( char *buf, size_t count, const char *fmt, va_list lst );
+
+
+	//-------------------------------------------------------------------
+  // RemapDriveLetters
+  //! \brief    Remap the drive letters to the paths that the
+  //!           user has defined in the INI file.
+	//-------------------------------------------------------------------
+void RemapDriveLetters( void );
 
 
 #ifdef __cplusplus

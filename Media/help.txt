@@ -2,15 +2,7 @@
                         MAMEoX Help
 =======================================
 
- A - Play selected ROM
- X + B - Move ROM to the "BACKUP" directory (this 
-         allows the user to "permanently" remove a
-         ROM from the listing, without really deleting 
-	 the file. Note that there is currently no way
-	 to add the file back to the list from within
-	 MAMEoX. You will have to manually move it 
-	 back to the ROMs directory.
- Y + B - Toggle Option screen
+ A     - Play selected ROM
  X     - Show Help file
  Y     - Hold to enter "Super Scroll" mode. At the top
          of the screen, a letter (or # symbol) will 
@@ -18,6 +10,15 @@
          buttons, you can change the letter; 
          skipping to the section of the list 
          starting with that letter.
+ B + Y - Toggle Option screen
+ B + A - Scan for new ROMs
+ B + X - Move ROM to the "BACKUP" directory (this 
+         allows the user to "permanently" remove a
+         ROM from the listing, without really deleting 
+	 the file. Note that there is currently no way
+	 to add the file back to the list from within
+	 MAMEoX. You will have to manually move it 
+	 back to the ROMs directory.
  Black - Toggle between showing and hiding clones
  White - Toggle extended list mode (with 
          rating and favorite columns)

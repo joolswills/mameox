@@ -454,6 +454,11 @@ void COptionsPage::DrawDirectoryPathPage( void )
 {
 /*
   g_FileIOConfig.m_ALTDrive           = iniFile.GetProfileString("Directories", "ALTDrive",            DEFAULT_ALTDRIVE);
+  g_FileIOConfig.m_LetterCMapping     = iniFile.GetProfileString( "Directories", "C_Mapping",           DEFAULT_CMAPPING );
+  g_FileIOConfig.m_LetterEMapping     = iniFile.GetProfileString( "Directories", "E_Mapping",           DEFAULT_EMAPPING );
+  g_FileIOConfig.m_LetterFMapping     = iniFile.GetProfileString( "Directories", "F_Mapping",           DEFAULT_FMAPPING );
+  g_FileIOConfig.m_LetterGMapping     = iniFile.GetProfileString( "Directories", "G_Mapping",           DEFAULT_GMAPPING );
+  g_FileIOConfig.m_LetterHMapping     = iniFile.GetProfileString( "Directories", "H_Mapping",           DEFAULT_HMAPPING );
   g_FileIOConfig.m_ArtPath            = iniFile.GetProfileString("Directories", "ArtPath",             DEFAULT_ARTPATH);
   g_FileIOConfig.m_AudioPath          = iniFile.GetProfileString("Directories", "AudioPath",           DEFAULT_AUDIOPATH);
   g_FileIOConfig.m_ConfigPath         = iniFile.GetProfileString("Directories", "ConfigPath",          DEFAULT_CONFIGPATH);
@@ -471,6 +476,21 @@ void COptionsPage::DrawDirectoryPathPage( void )
 
   mbstowcs( text, g_FileIOConfig.m_ALTDrive.c_str(), 255 );
   DRAWITEM( L"Alternate drive letter", text );
+
+  mbstowcs( text, g_FileIOConfig.m_LetterCMapping.c_str(), 255 );
+  DRAWITEM( L"C:", text );
+
+  mbstowcs( text, g_FileIOConfig.m_LetterEMapping.c_str(), 255 );
+  DRAWITEM( L"E:", text );
+
+  mbstowcs( text, g_FileIOConfig.m_LetterFMapping.c_str(), 255 );
+  DRAWITEM( L"F:", text );
+
+  mbstowcs( text, g_FileIOConfig.m_LetterGMapping.c_str(), 255 );
+  DRAWITEM( L"G:", text );
+
+  mbstowcs( text, g_FileIOConfig.m_LetterHMapping.c_str(), 255 );
+  DRAWITEM( L"H:", text );
 
   mbstowcs( text, g_FileIOConfig.m_RomPath.c_str(), 255 );
   DRAWITEM( L"ROM Files", text );

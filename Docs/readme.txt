@@ -193,35 +193,8 @@ Chances are good that you'll see some compile errors:
 Usage:
 
   Available ROMs screen:
-    A - Play selected ROM
-    X + B - Move ROM to the "BACKUP" directory (this is to allow
-             the user to "permanently" remove a ROM from the listing,
-	     without really deleting the file. Note that there is no
-	     way, currently, of adding the file back to the list. You'd
-	     have to manually move it back to the ROMs directory
-    Y + B - Toggle Option screen
-    X - Show Help file
-    Y - Hold to enter "Super Scroll" mode. In the upper left hand corner
-        of the screen, a letter (or #) will appear. Using the DPAD up and 
-	down buttons, you can change the letter, skipping to the section of
-	the list starting with that letter.
-    Black - Search for ROM files, culling out clones / keeping clones
-    White - Toggle game list (w/o rating and favorite)
-
-    Left Trigger - Move the current ROM cursor up fast
-    Right Trigger - Move the current ROM cursor down fast
-    DPAD/Left Analog Stick - Move the current ROM cursor slowly
-
-    Right Analog Stick - Used to set the screen usage percentage for MAME rendering.
-			Moving the stick will resize the green background (which is
-			where the game screen will be rendered). This should be 
-			sized such that a very small black border is revealed all
-			around the green. Failure to do this will cause clipping
-			(where the parts of the screen are not visibile) or suboptimal
-			usage (where there is a big black border around the game screen)
-
-    Pressing Left Trigger, Right Trigger, and the Black button
-       on Joypad 1 will jump to the dashboard.
+    X - Show Help file (the readme.txt isn't kept up to date, except
+                        for this one key :))
 
 
 

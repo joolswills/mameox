@@ -35,6 +35,14 @@
 #define DEFAULT_HDIMAGEPATH         "D:\\HDIMAGES"
 #define DEFAULT_HISCOREPATH         "D:\\HISCORES"
   
+
+#define DEFAULT_CMAPPING            "\\Device\\Harddisk0\\Partition1"
+#define DEFAULT_EMAPPING            "\\Device\\Harddisk0\\Partition1"
+#define DEFAULT_FMAPPING            "\\Device\\Harddisk0\\Partition6"
+#define DEFAULT_GMAPPING            "\\Device\\Cdrom0"
+#define DEFAULT_HMAPPING            "\\Device\\Harddisk0\\Partition6"
+
+
 #define DRIVERLISTFILENAME  "DRIVERS.list"
 #define ROMLISTFILENAME		  "ROMS.list"
 #define INIFILENAME         "MAMEoX.ini"
@@ -61,21 +69,33 @@ struct SFileIOConfig
   CStdString m_HiScorePath;
   CStdString m_DefaultRomListPath;
 
+  CStdString m_LetterCMapping;
+  CStdString m_LetterEMapping;
+  CStdString m_LetterFMapping;
+  CStdString m_LetterGMapping;
+  CStdString m_LetterHMapping;
+
   SFileIOConfig()
   {
     // Default the paths
-    m_ALTDrive           = DEFAULT_ALTDRIVE;
-    m_GeneralPath        = DEFAULT_GENERALPATH;
-    m_ArtPath            = DEFAULT_ARTPATH;
-    m_IniPath            = DEFAULT_INIPATH;
-    m_NVramPath          = DEFAULT_NVRAMPATH;
-    m_ConfigPath         = DEFAULT_CONFIGPATH;
-    m_RomPath            = DEFAULT_ROMPATH;
-    m_AudioPath          = DEFAULT_AUDIOPATH;
-    m_DefaultRomListPath = DEFAULT_DEFAULTROMLISTPATH;
-    m_RomBackupPath      = DEFAULT_ROMBACKUPPATH;
-    m_HDImagePath        = DEFAULT_HDIMAGEPATH;
-    m_HiScorePath        = DEFAULT_HISCOREPATH;
+    m_ALTDrive            = DEFAULT_ALTDRIVE;
+    m_GeneralPath         = DEFAULT_GENERALPATH;
+    m_ArtPath             = DEFAULT_ARTPATH;
+    m_IniPath             = DEFAULT_INIPATH;
+    m_NVramPath           = DEFAULT_NVRAMPATH;
+    m_ConfigPath          = DEFAULT_CONFIGPATH;
+    m_RomPath             = DEFAULT_ROMPATH;
+    m_AudioPath           = DEFAULT_AUDIOPATH;
+    m_DefaultRomListPath  = DEFAULT_DEFAULTROMLISTPATH;
+    m_RomBackupPath       = DEFAULT_ROMBACKUPPATH;
+    m_HDImagePath         = DEFAULT_HDIMAGEPATH;
+    m_HiScorePath         = DEFAULT_HISCOREPATH;
+
+    m_LetterCMapping      = DEFAULT_CMAPPING;
+    m_LetterEMapping      = DEFAULT_EMAPPING;
+    m_LetterFMapping      = DEFAULT_FMAPPING;
+    m_LetterGMapping      = DEFAULT_GMAPPING;
+    m_LetterHMapping      = DEFAULT_HMAPPING;
   }
 };
 
