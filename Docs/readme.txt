@@ -172,7 +172,12 @@ Chances are good that you'll see some compile errors:
 	This ensures that the system will not mind if a tilemap is freed that
 	has not been added to the linked list.
 
-
+  e) Missing files:
+    i) If your XDK is installed to a directory other than default (and
+       sometimes even if it's in the default) you may see build errors
+       about missing files: xbutil.cpp, xbfont.cpp, xbresource.cpp
+       If this happens, delete these files from the MAMEoX and MAMEoXLauncher
+       projects, then re-add them from the correct directory
  
 
 
