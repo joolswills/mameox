@@ -1595,11 +1595,11 @@ void COptionsScreen::ChangeROMListPage( BOOL movingRight )
       if( g_romListOptions.m_sortMode != SM_BYNAME )
         g_romListOptions.m_sortMode = (ROMListSortMode)((UINT32)g_romListOptions.m_sortMode - 1);
       else
-        g_romListOptions.m_sortMode = SM_BYNUMTIMESPLAYED;
+        g_romListOptions.m_sortMode = (ROMListSortMode)(SM_LAST - 1);
     }
     else
     {
-      if( g_romListOptions.m_sortMode < SM_BYNUMTIMESPLAYED )
+      if( g_romListOptions.m_sortMode < SM_LAST - 1 )
         g_romListOptions.m_sortMode = (ROMListSortMode)((UINT32)g_romListOptions.m_sortMode + 1);
       else
         g_romListOptions.m_sortMode = SM_BYNAME;

@@ -2225,7 +2225,10 @@ void CROMListScreen::GetFriendlySuperscrollIndexStringForROM( CStdString *ret, U
 
     // *** SM_BYGENRE *** //
   case SM_BYGENRE:
-    *ret = "Unsupported";
+    if( metadata.m_genre )
+      *ret = metadata.m_genre;    
+    else
+      *ret = "-Unknown-";
     break;
 
     // *** SM_BYNUMPLAYERS *** //
@@ -2374,9 +2377,12 @@ static BOOL Compare_Genre( UINT32 a, UINT32 b )
 {
   MAMEDriverData_t &aDriver = CROMListScreen::m_driverInfoList[a];
   MAMEDriverData_t &bDriver = CROMListScreen::m_driverInfoList[b];
+  MAMEoXDriverMetadata_t  &aStatus = CROMListScreen::m_driverMetadata[a];
+  MAMEoXDriverMetadata_t  &bStatus = CROMListScreen::m_driverMetadata[b];
 
-    // There is no genre available yet, just sort by name
-  int cmp = 0; //stricmp( aDriver.m_cloneFileName, bDriver.m_cloneFileName );
+  int cmp = 0;
+  if( aStatus.m_genre && bStatus.m_genre )
+    cmp = stricmp( aStatus.m_genre, bStatus.m_genre );
   if( !cmp )
     cmp = stricmp( aDriver.m_description, bDriver.m_description );
 

@@ -117,7 +117,8 @@ typedef enum ROMListSortMode
   SM_BYNUMPLAYERS,                //!< Sort by the number of players
   SM_BYFAVORITESTATUS,            //!< Sort by favorite status (best liked -> least liked)
   SM_BYNUMTIMESPLAYED,            //!< Sort by number of times played (most played -> least played)
-  SM_BYGENRE                      //!< Sort by genre
+  SM_BYGENRE,                     //!< Sort by genre
+  SM_LAST                         //!< Invalid "last" tag
 } ROMListSortMode;
 
 typedef enum MAMEoXFavoriteStatus

@@ -35,11 +35,14 @@ Version 0.71.3b (CVS)
       - Moved progress bar stuff to a central point so it can be used
         from anywhere in the launcher
       - Added filter by "disliked" favorite status
+      - Added sort by genre
+      - Added catver.ini parsing
 
     - OptionsScreen.cpp
       - Added sort by favorite status and sort by number of times 
         played
       - Added filter by "disliked" favorite status
+      - Added sort by genre
 
     - StartMenu.cpp
       - Made menu functions token based instead of cursor position 
