@@ -40,8 +40,13 @@ typedef enum gamepadButtonID_t {
   GP_RA_UP            = (1<<20),
   GP_RA_RIGHT         = (1<<21),
   GP_RA_DOWN          = (1<<22),
-  GP_RA_LEFT          = (1<<23)
+  GP_RA_LEFT          = (1<<23),
+
+  GP_DPAD_MASK        = GP_DPAD_UP | GP_DPAD_DOWN | GP_DPAD_LEFT | GP_DPAD_RIGHT,
+  GP_LA_MASK          = GP_LA_UP | GP_LA_DOWN | GP_LA_LEFT | GP_LA_RIGHT,
+  GP_RA_MASK          = GP_RA_UP | GP_RA_DOWN | GP_RA_LEFT | GP_RA_RIGHT
 } gamepadButtonID_t;
+
 
 typedef enum gamepadAnalogID_t {
   GP_ANALOG_LEFT = 0x00,

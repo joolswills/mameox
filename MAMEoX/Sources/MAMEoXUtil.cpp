@@ -50,6 +50,7 @@ typedef struct _UNICODE_STRING
 CInputManager			g_inputManager;
 CGraphicsManager	g_graphicsManager;
 CXBFont						g_font;
+CXBFont						g_fixedWidthFont;
 
 extern "C" {
 
@@ -510,4 +511,38 @@ void RemapDriveLetters( void )
 }
 
 }	// End Extern "C"
+
+//-------------------------------------------------------------
+//  RenderToTextureStart
+//-------------------------------------------------------------
+BOOL RenderToTextureStart( RenderToTextureToken_t &token, LPDIRECT3DDEVICE8 pD3DDevice, LPDIRECT3DTEXTURE8 texture, D3DVIEWPORT8 &textureViewpoint )
+{
+  if( !texture )
+    return FALSE;
+
+  token.m_pD3DDevice = pD3DDevice;
+
+      // Set up to render to texture
+  pD3DDevice->GetRenderTarget( &token.m_backBuffer );
+  pD3DDevice->GetDepthStencilSurface( &token.m_zBuffer );
+  texture->GetSurfaceLevel( 0, &token.m_textureSurface );
+  pD3DDevice->SetRenderTarget( token.m_textureSurface, NULL );
+  pD3DDevice->SetViewport( &textureViewpoint );
+
+  return TRUE;
+}
+
+//-------------------------------------------------------------
+//  RenderToTextureEnd
+//-------------------------------------------------------------
+void RenderToTextureEnd( RenderToTextureToken_t &token )
+{
+  D3DVIEWPORT8 vpBackBuffer = { 0, 0, 640, 480, 0.0f, 1.0f };
+  token.m_pD3DDevice->SetRenderTarget( token.m_backBuffer, token.m_zBuffer );
+  token.m_pD3DDevice->SetViewport( &vpBackBuffer );
+  SAFE_RELEASE( token.m_backBuffer );
+  SAFE_RELEASE( token.m_zBuffer );
+  SAFE_RELEASE( token.m_textureSurface );
+}
+
 

@@ -73,6 +73,14 @@ typedef struct lightgunCalibration_t
   SHORT   m_yData[3];   //!< Y-Axis calibration data (top,center,bottom)
 } lightgunCalibration_t;
 
+  //! \struct  Token class for RenderToTexture functions
+typedef struct RenderToTextureToken_t
+{
+  LPDIRECT3DSURFACE8  m_backBuffer;
+  LPDIRECT3DSURFACE8  m_zBuffer;
+  LPDIRECT3DSURFACE8  m_textureSurface;
+  LPDIRECT3DDEVICE8   m_pD3DDevice;
+} RenderToTextureToken_t;
 
 //= G L O B A L = V A R S ==============================================
 extern lightgunCalibration_t    g_calibrationData[4]; //!< Lightgun calibration data
@@ -209,9 +217,21 @@ int vsnprintf( char *buf, size_t count, const char *fmt, va_list lst );
 	//-------------------------------------------------------------------
 void RemapDriveLetters( void );
 
-
 #ifdef __cplusplus
-}
+} // End of extern "C"
+
+	//-------------------------------------------------------------------
+  // RenderToTextureStart
+  //! \brief    Set up the renderer to output to a texture
+	//-------------------------------------------------------------------
+BOOL RenderToTextureStart( RenderToTextureToken_t &token, LPDIRECT3DDEVICE8 pD3DDevice, LPDIRECT3DTEXTURE8 texture, D3DVIEWPORT8 &textureViewpoint );
+
+	//-------------------------------------------------------------------
+  // RenderToTextureEnd
+  //! \brief    Reset the renderer to output to the screen
+	//-------------------------------------------------------------------
+void RenderToTextureEnd( RenderToTextureToken_t &token );
+
 #endif
 
 

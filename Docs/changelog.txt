@@ -10,6 +10,7 @@ Version 0.69.01b
     - MAMEoX.h
       - Upped version number
       - Modified version number to be MAME license compliant
+      - Added code to easily set render target to a texture
 
     - Gamepad.h
       - New function: GetButtonState which returns all GP_ flags of 
@@ -47,6 +48,9 @@ Version 0.69.01b
       - Added option for screen rotation
       - Added option to select texture filters
 
+    - MAMEoXUtil.cpp
+      - Added code to easily set render target to a texture
+
    -------------------------------------------------------------
   - \MAMEoXLauncher\Includes:
 
@@ -57,6 +61,9 @@ Version 0.69.01b
         selectable
       - Fixed problem where the cursor in Network Settings could
         scroll past the end of the list
+
+    - VirtualKeyboard.h
+      - Added basic virtual keyboard class
 
    -------------------------------------------------------------
   - \MAMEoXLauncher\Sources:
@@ -75,6 +82,7 @@ Version 0.69.01b
       - Added option to select texture filters
       - Made ROMList, OptionsPage, and Help render to a resizeable,
         rotateable texture
+      - Made use of the new VirtualKeyboard class
 
     - Help.cpp
       - Made ROMList, OptionsPage, and Help render to a resizeable,
@@ -87,6 +95,10 @@ Version 0.69.01b
       - Made ROMList, OptionsPage, and Help render to a resizeable,
         rotateable texture
       - Implemented rotation on the ROM list
+      - Changed font for Help page
+
+    - VirtualKeyboard.cpp
+      - Added basic virtual keyboard class
 
    -------------------------------------------------------------
   - \MAMEoX\src:
@@ -100,6 +112,11 @@ Version 0.69.01b
       - Increased the size of array "scrollx" to 32 elements to
         keep the vball_interrupt function from writing past the
 	end of the array.
+
+   -------------------------------------------------------------
+  - Media
+    - help.txt
+      - Integrated patch from John Wu (thanks!)
 
  --- Specific Game fixes --------------------------------------------
   U.S. Championship V'ball

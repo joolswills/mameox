@@ -9,9 +9,6 @@
 #include "DebugLogger.h"
 #include "XBFont.h"
 
-#include "xbox_FileIO.h"		// for path info
-#include "xbox_Direct3DRenderer.h" // For Set/GetScreenUsage
-
 #include <string>
 
 extern "C" {
@@ -25,7 +22,7 @@ extern "C" {
 #define NORMAL_ITEM_COLOR				D3DCOLOR_XRGB( 190, 215, 255 )
 
 	// Maximum number of items to render on the screen at once
-#define MAXPAGESIZE							18
+#define MAXPAGESIZE							22
 
 	// Timeout values for the cursor movement acceleration bands
 	// Values are measured in seconds
@@ -47,7 +44,7 @@ extern "C" {
 	// Number of seconds between valid DPAD readings
 #define DPADCURSORMOVE_TIMEOUT	0.20f
 
-#define X_POS		( 80 )
+#define X_POS		( 25 )
 #define Y_POS		( 25 )
 #define WIDTH		( 512 - (X_POS<<1) )
 

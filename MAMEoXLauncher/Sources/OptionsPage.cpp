@@ -64,7 +64,17 @@ extern "C" {
   extern const char *cheatfile;
 }
 
+//= S T R U C T U R E S ===============================================
+struct CUSTOMVERTEX
+{
+	D3DXVECTOR3   pos;      // The transformed position for the vertex
+  FLOAT         tu, tv;   // The texture coordinates
+};
+
+
 //= F U N C T I O N S ==================================================
+
+
 
 //---------------------------------------------------------------------
 //  DrawGeneralPage
@@ -168,12 +178,116 @@ void ChangeDirectoryPathPage( COptionsPage *ptr, BOOL direction )
 
 
 
+//------------------------------------------------------------
+// Constructor
+//------------------------------------------------------------
+COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice, CXBFont &font, GameOptions &options ) :
+	m_displayDevice( displayDevice ),
+	m_font( font ),
+	m_cursorPosition( 0 ),
+	m_dpadCursorDelay( 0.0f ),
+  m_optToggleDelay( 0.0f ),
+  m_triggerDelay( 0.0f ),
+  m_pageNumber( 0 ),
+  m_virtualKeyboardMode( FALSE )
+{
+  wcscpy( m_pageData[OPTPAGE_GENERAL].m_title, L"General Options" );
+  m_pageData[OPTPAGE_GENERAL].m_drawFunct = ::DrawGeneralPage;
+  m_pageData[OPTPAGE_GENERAL].m_changeFunct = ::ChangeGeneralPage;
+  m_pageData[OPTPAGE_GENERAL].m_numItems = 4;
+
+  wcscpy( m_pageData[OPTPAGE_SOUND].m_title, L"Sound Options" );
+  m_pageData[OPTPAGE_SOUND].m_drawFunct = ::DrawSoundPage;
+  m_pageData[OPTPAGE_SOUND].m_changeFunct = ::ChangeSoundPage;
+  m_pageData[OPTPAGE_SOUND].m_numItems = 3;
+
+  wcscpy( m_pageData[OPTPAGE_VIDEO].m_title, L"Video Options" );
+  m_pageData[OPTPAGE_VIDEO].m_drawFunct = ::DrawVideoPage;
+  m_pageData[OPTPAGE_VIDEO].m_changeFunct = ::ChangeVideoPage;
+  m_pageData[OPTPAGE_VIDEO].m_numItems = 8;
+
+  wcscpy( m_pageData[OPTPAGE_VECTOR].m_title, L"Vector Options" );
+  m_pageData[OPTPAGE_VECTOR].m_drawFunct = ::DrawVectorPage;
+  m_pageData[OPTPAGE_VECTOR].m_changeFunct = ::ChangeVectorPage;
+  m_pageData[OPTPAGE_VECTOR].m_numItems = 6;
+
+  wcscpy( m_pageData[OPTPAGE_NETWORK].m_title, L"Network Options" );
+  m_pageData[OPTPAGE_NETWORK].m_drawFunct = ::DrawNetworkPage;
+  m_pageData[OPTPAGE_NETWORK].m_changeFunct = ::ChangeNetworkPage;
+  m_pageData[OPTPAGE_NETWORK].m_numItems = 5;
+
+  wcscpy( m_pageData[OPTPAGE_DIRECTORIES].m_title, L"Directory Path Options" );
+  m_pageData[OPTPAGE_DIRECTORIES].m_drawFunct = ::DrawDirectoryPathPage;
+  m_pageData[OPTPAGE_DIRECTORIES].m_changeFunct = ::ChangeDirectoryPathPage;
+  m_pageData[OPTPAGE_DIRECTORIES].m_numItems = 15;
+
+  m_virtualKeyboard = new CVirtualKeyboard( displayDevice, font );
+
+    // Create a vertex buffer to render the backdrop image to the renderTargetTexture
+  m_displayDevice->CreateVertexBuffer(  (sizeof(CUSTOMVERTEX) << 2),
+																        D3DUSAGE_WRITEONLY,
+																	      D3DFVF_XYZ | D3DFVF_TEX1,
+																	      D3DPOOL_MANAGED,
+																	      &m_virtualKeyboardVertexBuffer );
+
+	CUSTOMVERTEX *pVertices;
+	m_virtualKeyboardVertexBuffer->Lock(  0,										// Offset to lock
+												                0,										// Size to lock
+												                (BYTE**)&pVertices,		// ppbData
+												                0 );									// Flags
+
+    FLOAT posX = (VK_SCREEN_WIDTH / 512.0f);
+    FLOAT posY = (VK_SCREEN_HEIGHT / 512.0f);
+		pVertices[0].pos.x = -posX;
+		pVertices[0].pos.y = posY;
+		pVertices[0].pos.z = 1.0f;
+    pVertices[0].tu = 0.0f;
+    pVertices[0].tv = 0.0f;
+
+		pVertices[1].pos.x = posX;
+		pVertices[1].pos.y = posY;
+		pVertices[1].pos.z = 1.0f;
+    pVertices[1].tu = VK_SCREEN_WIDTH;
+    pVertices[1].tv = 0.0f;
+  	
+		pVertices[2].pos.x = posX;
+		pVertices[2].pos.y = -posY;
+		pVertices[2].pos.z = 1.0f;
+    pVertices[2].tu = VK_SCREEN_WIDTH;
+    pVertices[2].tv = VK_SCREEN_HEIGHT;
+  	
+		pVertices[3].pos.x = -posX;
+		pVertices[3].pos.y = -posY;
+		pVertices[3].pos.z = 1.0f;
+    pVertices[3].tu = 0.0f;
+    pVertices[3].tv = VK_SCREEN_HEIGHT;
+
+  m_virtualKeyboardVertexBuffer->Unlock();
+}
+
+//---------------------------------------------------------------------
+//	Destructor
+//---------------------------------------------------------------------
+COptionsPage::~COptionsPage( void ) 
+{
+  if( m_virtualKeyboard )
+    delete m_virtualKeyboard;
+
+  SAFE_RELEASE( m_virtualKeyboardVertexBuffer );
+}
 
 //---------------------------------------------------------------------
 //	MoveCursor
 //---------------------------------------------------------------------
 void COptionsPage::MoveCursor( CGamepad	&gp )
 {
+  if( m_virtualKeyboardMode )
+  {
+    m_virtualKeyboard->MoveCursor( gp );
+    m_pageData[m_pageNumber].m_changeFunct( this, TRUE ); // Polls to see if the keyboard is done w/ input
+    return;
+  }
+
 		// General idea taken from XMAME
 	static UINT64		lastTime = 0;
 	UINT64 curTime = osd_cycles();
@@ -294,6 +408,18 @@ void COptionsPage::Draw( BOOL opaque, BOOL flipOnCompletion )
     m_font.DrawText( WIDTH + X_POS - 10, HEIGHT, HELP_TEXT_COLOR, L"->", XBFONT_RIGHT );
     m_font.DrawText( WIDTH + X_POS - 30, HEIGHT, SELECTED_ITEM_COLOR, m_pageData[next].m_title, XBFONT_RIGHT );  
 	m_font.End();
+
+
+  
+
+  if( m_virtualKeyboardMode )
+  {
+    m_virtualKeyboard->Draw();
+    m_displayDevice->SetTexture( 0, m_virtualKeyboard->GetTexture() );
+    m_displayDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX1 );
+    m_displayDevice->SetStreamSource(	0, m_virtualKeyboardVertexBuffer, sizeof(CUSTOMVERTEX) );
+    m_displayDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
+  }
 
   if( flipOnCompletion )
 	  m_displayDevice->Present( NULL, NULL, NULL, NULL );	
@@ -550,10 +676,6 @@ void COptionsPage::DrawDirectoryPathPage( void )
   mbstowcs( text, g_FileIOConfig.m_NVramPath.c_str(), 255 );
   DRAWITEM( L"NVRAM, state files", text );
 
-
-
-
-
   ENDPAGE();
 }
 
@@ -802,12 +924,72 @@ void COptionsPage::ChangeVectorPage( BOOL direction )
 //---------------------------------------------------------------------
 void COptionsPage::ChangeNetworkPage( BOOL direction )
 {
-  // Mostly read-only until virtual keyboard is written
-  switch( m_cursorPosition )
+  if( !m_cursorPosition )
   {
-  case 0:
     g_NetworkConfig.m_networkDisabled = !g_NetworkConfig.m_networkDisabled;
-    break;
+  }
+  else
+  {
+    if( !m_virtualKeyboardMode )
+    {
+      m_virtualKeyboardMode = TRUE;
+      switch( m_cursorPosition )
+      {
+        // IP address
+      case 1:
+	      m_virtualKeyboard->SetData( g_NetworkConfig.m_IPAddr );
+        break;
+
+        // Gateway address
+      case 2:
+	      m_virtualKeyboard->SetData( g_NetworkConfig.m_Gateway );
+        break;
+
+        // Subnet mask
+      case 3:
+	      m_virtualKeyboard->SetData( g_NetworkConfig.m_SubnetMask );
+        break;
+
+        // Name server
+      case 4:
+	      m_virtualKeyboard->SetData( g_NetworkConfig.m_NameServer );
+        break;
+      }
+    }
+    else
+    {
+      if( m_virtualKeyboard->IsInputAccepted() )
+      {
+        switch( m_cursorPosition )
+        {
+          // IP address
+        case 1:
+	        g_NetworkConfig.m_IPAddr = m_virtualKeyboard->GetData();
+          break;
+
+          // Gateway address
+        case 2:
+	        g_NetworkConfig.m_Gateway = m_virtualKeyboard->GetData();
+          break;
+
+          // Subnet mask
+        case 3:
+	        g_NetworkConfig.m_SubnetMask = m_virtualKeyboard->GetData();
+          break;
+
+          // Name server
+        case 4:
+	        g_NetworkConfig.m_NameServer = m_virtualKeyboard->GetData();
+          break;
+        }
+      }
+
+      if( m_virtualKeyboard->IsInputFinished() )
+      {
+        m_virtualKeyboard->Reset();
+        m_virtualKeyboardMode = FALSE;
+      }
+    }
   }
 }
 
@@ -816,7 +998,176 @@ void COptionsPage::ChangeNetworkPage( BOOL direction )
 //---------------------------------------------------------------------
 void COptionsPage::ChangeDirectoryPathPage( BOOL direction )
 {
-  // Read-only until virtual keyboard is written
+  if( !m_virtualKeyboardMode )
+  {
+    m_virtualKeyboardMode = TRUE;
+    switch( m_cursorPosition )
+    {
+      // Alternate drive letter
+    case 0:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_ALTDrive );
+      break;
+
+      // C:
+    case 1:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_LetterCMapping );
+      break;
+
+      // E:
+    case 2:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_LetterEMapping );
+      break;
+    
+      // F:
+    case 3:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_LetterFMapping );
+      break;
+
+      // G:
+    case 4:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_LetterGMapping );
+      break;
+
+      // H:
+    case 5:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_LetterHMapping );
+      break;
+
+      // ROM Files
+    case 6:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_RomPath );
+      break;
+
+      // Removed ROMs
+    case 7:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_RomBackupPath );
+      break;
+
+      // General
+    case 8:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_GeneralPath );
+      break;
+
+      // Art
+    case 9:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_ArtPath );
+      break;
+
+      // Samples (Audio)
+    case 10:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_AudioPath );
+      break;
+
+      // Config (CFG's)
+    case 11:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_ConfigPath );
+      break;
+
+      // HD images (CHD's)
+    case 12:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_HDImagePath );
+      break;
+
+      // High scores (highscore.dat)
+    case 13:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_HiScorePath );
+      break;
+
+      // NVRAM, state files
+    case 14:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_NVramPath );
+      break;
+    }
+  }
+  else
+  {
+    if( m_virtualKeyboard->IsInputAccepted() )
+    {
+      switch( m_cursorPosition )
+      {
+        // Alternate drive letter
+      case 0:
+        g_FileIOConfig.m_ALTDrive = m_virtualKeyboard->GetData();
+        break;
+
+        // C:
+      case 1:
+        g_FileIOConfig.m_LetterCMapping = m_virtualKeyboard->GetData();
+        break;
+
+        // E:
+      case 2:
+        g_FileIOConfig.m_LetterEMapping = m_virtualKeyboard->GetData();
+        break;
+      
+        // F:
+      case 3:
+        g_FileIOConfig.m_LetterFMapping = m_virtualKeyboard->GetData();
+        break;
+
+        // G:
+      case 4:
+        g_FileIOConfig.m_LetterGMapping = m_virtualKeyboard->GetData();
+        break;
+
+        // H:
+      case 5:
+        g_FileIOConfig.m_LetterHMapping = m_virtualKeyboard->GetData();
+        break;
+
+        // ROM Files
+      case 6:
+        g_FileIOConfig.m_RomPath = m_virtualKeyboard->GetData();
+        break;
+
+        // Removed ROMs
+      case 7:
+        g_FileIOConfig.m_RomBackupPath = m_virtualKeyboard->GetData();
+        break;
+
+        // General
+      case 8:
+        g_FileIOConfig.m_GeneralPath = m_virtualKeyboard->GetData();
+        break;
+
+        // Art
+      case 9:
+        g_FileIOConfig.m_ArtPath = m_virtualKeyboard->GetData();
+        break;
+
+        // Samples (Audio)
+      case 10:
+        g_FileIOConfig.m_AudioPath = m_virtualKeyboard->GetData();
+        break;
+
+        // Config (CFG's)
+      case 11:
+        g_FileIOConfig.m_ConfigPath = m_virtualKeyboard->GetData();
+        break;
+
+        // HD images (CHD's)
+      case 12:
+        g_FileIOConfig.m_HDImagePath = m_virtualKeyboard->GetData();
+        break;
+
+        // High scores (highscore.dat)
+      case 13:
+        g_FileIOConfig.m_HiScorePath = m_virtualKeyboard->GetData();
+        break;
+
+        // NVRAM, state files
+      case 14:
+        g_FileIOConfig.m_NVramPath = m_virtualKeyboard->GetData();
+        break;
+      }
+    }
+
+    if( m_virtualKeyboard->IsInputFinished() )
+    {
+      m_virtualKeyboard->Reset();
+      m_virtualKeyboardMode = FALSE;
+    }
+  }
 }
 
 

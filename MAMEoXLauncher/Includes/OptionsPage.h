@@ -15,6 +15,7 @@
 #include "XBFont.h"
 #include "MAMEoX.h"
 #include "Gamepad.h"
+#include "VirtualKeyboard.h"
 
 extern "C" {
 #include "mame.h"
@@ -74,45 +75,12 @@ public:
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-	COptionsPage( LPDIRECT3DDEVICE8	displayDevice, CXBFont &font, GameOptions &options ) :
-		m_displayDevice( displayDevice ),
-		m_font( font ),
-		m_cursorPosition( 0 ),
-		m_dpadCursorDelay( 0.0f ),
-    m_optToggleDelay( 0.0f ),
-    m_triggerDelay( 0.0f ),
-    m_pageNumber( 0 )
-	{
-    wcscpy( m_pageData[OPTPAGE_GENERAL].m_title, L"General Options" );
-    m_pageData[OPTPAGE_GENERAL].m_drawFunct = ::DrawGeneralPage;
-    m_pageData[OPTPAGE_GENERAL].m_changeFunct = ::ChangeGeneralPage;
-    m_pageData[OPTPAGE_GENERAL].m_numItems = 4;
+	COptionsPage( LPDIRECT3DDEVICE8	displayDevice, CXBFont &font, GameOptions &options );
 
-    wcscpy( m_pageData[OPTPAGE_SOUND].m_title, L"Sound Options" );
-    m_pageData[OPTPAGE_SOUND].m_drawFunct = ::DrawSoundPage;
-    m_pageData[OPTPAGE_SOUND].m_changeFunct = ::ChangeSoundPage;
-    m_pageData[OPTPAGE_SOUND].m_numItems = 3;
-
-    wcscpy( m_pageData[OPTPAGE_VIDEO].m_title, L"Video Options" );
-    m_pageData[OPTPAGE_VIDEO].m_drawFunct = ::DrawVideoPage;
-    m_pageData[OPTPAGE_VIDEO].m_changeFunct = ::ChangeVideoPage;
-    m_pageData[OPTPAGE_VIDEO].m_numItems = 8;
-
-    wcscpy( m_pageData[OPTPAGE_VECTOR].m_title, L"Vector Options" );
-    m_pageData[OPTPAGE_VECTOR].m_drawFunct = ::DrawVectorPage;
-    m_pageData[OPTPAGE_VECTOR].m_changeFunct = ::ChangeVectorPage;
-    m_pageData[OPTPAGE_VECTOR].m_numItems = 6;
-
-    wcscpy( m_pageData[OPTPAGE_NETWORK].m_title, L"Network Options" );
-    m_pageData[OPTPAGE_NETWORK].m_drawFunct = ::DrawNetworkPage;
-    m_pageData[OPTPAGE_NETWORK].m_changeFunct = ::ChangeNetworkPage;
-    m_pageData[OPTPAGE_NETWORK].m_numItems = 5;
-
-    wcscpy( m_pageData[OPTPAGE_DIRECTORIES].m_title, L"Directory Path Options" );
-    m_pageData[OPTPAGE_DIRECTORIES].m_drawFunct = ::DrawDirectoryPathPage;
-    m_pageData[OPTPAGE_DIRECTORIES].m_changeFunct = ::ChangeDirectoryPathPage;
-    m_pageData[OPTPAGE_DIRECTORIES].m_numItems = 15;
-  }
+		//------------------------------------------------------------
+    // Destructor
+		//------------------------------------------------------------
+  ~COptionsPage( void );
 
 		//------------------------------------------------------------
 		// MoveCursor
@@ -147,16 +115,20 @@ public:
   void ChangeDirectoryPathPage( BOOL direction );
 
 protected:
-  UINT32                m_pageNumber;         //!< The options page number
-	UINT32								m_cursorPosition;	    //!< Cursor position within the current list page
-	FLOAT									m_dpadCursorDelay;    //!< Counter used to slow down the dpad repeat rate
-  FLOAT                 m_triggerDelay;       //!< Counter used to slow down the trigger repeat rate
-  FLOAT                 m_optToggleDelay;     //!< Counter used to slow down option toggle buttons
+  UINT32                    m_pageNumber;                   //!< The options page number
+	UINT32								    m_cursorPosition;	              //!< Cursor position within the current list page
+	FLOAT									    m_dpadCursorDelay;              //!< Counter used to slow down the dpad repeat rate
+  FLOAT                     m_triggerDelay;                 //!< Counter used to slow down the trigger repeat rate
+  FLOAT                     m_optToggleDelay;               //!< Counter used to slow down option toggle buttons
 
-  optionsPageData_t     m_pageData[OPTPAGE_LAST];
+  BOOL                      m_virtualKeyboardMode;          //!< Whether or not to show the virtual keyboard
+  CVirtualKeyboard          *m_virtualKeyboard;             //!< Virtual keyboard instance
+  LPDIRECT3DVERTEXBUFFER8   m_virtualKeyboardVertexBuffer;
 
-	LPDIRECT3DDEVICE8			m_displayDevice;
-	CXBFont								&m_font;
+  optionsPageData_t         m_pageData[OPTPAGE_LAST];
+
+	LPDIRECT3DDEVICE8			    m_displayDevice;
+	CXBFont								    &m_font;
 };
 
 

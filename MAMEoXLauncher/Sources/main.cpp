@@ -53,6 +53,7 @@ struct CUSTOMVERTEX
 extern CInputManager			g_inputManager;
 extern CGraphicsManager	  g_graphicsManager;
 extern CXBFont						g_font;
+extern CXBFont            g_fixedWidthFont;
 
   // XBE Launch data
 static DWORD              g_launchDataType;
@@ -256,9 +257,12 @@ void __cdecl main( void )
 // VC6 requires the 2 paramater call to create. _VC6 is defined in the VC6 dsp files
 #ifdef _VC6
 	g_font.Create( pD3DDevice, "FontAN12.xpr" );
+  g_fixedWidthFont.Create( pD3DDevice, "FontCN10.xpr" );
 #else
 	g_font.Create( "FontAN12.xpr", 0 );
+  g_fixedWidthFont.Create( "FontCN10.xpr" );
 #endif
+
   LoadOptions();
 
 		// Initialize the input subsystem
@@ -489,7 +493,7 @@ void __cdecl main( void )
 
 
 		// Load the Help file
-  CHelp help( pD3DDevice, g_font );
+  CHelp help( pD3DDevice, g_fixedWidthFont );
 	if( !help.LoadHelpFile() )
   {
     Die( pD3DDevice, 
@@ -674,14 +678,9 @@ void __cdecl main( void )
 		
 
       // Set up to render to texture
-    LPDIRECT3DSURFACE8 pBackBuffer, pZBuffer;
-    pD3DDevice->GetRenderTarget( &pBackBuffer );
-    pD3DDevice->GetDepthStencilSurface( &pZBuffer );
-    LPDIRECT3DSURFACE8 pTextureSurface;
-    renderTargetTexture->GetSurfaceLevel( 0, &pTextureSurface );
+    RenderToTextureToken_t token;
     D3DVIEWPORT8 vp = { 0, 0, 512, 512, 0.0f, 1.0f };
-    pD3DDevice->SetRenderTarget( pTextureSurface, NULL );
-    pD3DDevice->SetViewport( &vp );
+    RenderToTextureStart( token, pD3DDevice, renderTargetTexture, vp );
 
 			// Move the cursor position and render
     pD3DDevice->SetTransform( D3DTS_WORLD, &matWorld );
@@ -735,12 +734,7 @@ void __cdecl main( void )
 
 
       // Restore the render target
-    D3DVIEWPORT8 vpBackBuffer = { 0, 0, 640, 480, 0.0f, 1.0f };
-    pD3DDevice->SetRenderTarget( pBackBuffer, pZBuffer );
-    pD3DDevice->SetViewport( &vpBackBuffer );
-    SAFE_RELEASE( pBackBuffer );
-    SAFE_RELEASE( pZBuffer );
-    SAFE_RELEASE( pTextureSurface );
+    RenderToTextureEnd( token );
 
       // Now render the texture to the screen 
     pD3DDevice->Clear(	0L,																// Count
