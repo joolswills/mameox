@@ -1,3 +1,7 @@
+#pragma code_seg("C482")
+#pragma bss_seg("B482")
+#pragma data_seg("D482")
+#pragma const_seg("K482")
 /***************************************************************************
 
   Snow Brothers by ToaPlan - GFX driver.
@@ -222,3 +226,7 @@ VIDEO_UPDATE( snowbro3 )
 	}
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

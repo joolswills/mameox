@@ -1,3 +1,7 @@
+#pragma code_seg("C338")
+#pragma bss_seg("B338")
+#pragma data_seg("D338")
+#pragma const_seg("K338")
 /* Jaleco MegaSystem 32 Video Hardware */
 
 /* The Video Hardware is Similar to the Non-MS32 Version of Tetris Plus 2 */
@@ -502,3 +506,7 @@ if (!keyboard_pressed(KEYCODE_R))
 #endif
 	ms32_draw_sprites(bitmap,cliprect, ms32_spram, 0x40000);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

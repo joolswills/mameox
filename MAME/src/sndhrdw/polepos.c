@@ -1,3 +1,7 @@
+#pragma code_seg("C402")
+#pragma bss_seg("B402")
+#pragma data_seg("D402")
+#pragma const_seg("K402")
 /***************************************************************************
 	polepos.c
 	Sound handler
@@ -176,3 +180,7 @@ void polepos_sample_play(int sample)
 
 	mixer_play_sample(channel, speech + start * 16, len * 16, 4000*8, 0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

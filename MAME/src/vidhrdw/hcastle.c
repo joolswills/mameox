@@ -1,3 +1,7 @@
+#pragma code_seg("C236")
+#pragma bss_seg("B236")
+#pragma data_seg("D236")
+#pragma const_seg("K236")
 /***************************************************************************
 
 	Haunted Castle video emulation
@@ -240,3 +244,7 @@ VIDEO_UPDATE( hcastle )
 		draw_sprites( bitmap,cliprect, buffered_spriteram_2, 1 );
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

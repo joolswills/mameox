@@ -1,3 +1,7 @@
+#pragma code_seg("C184")
+#pragma bss_seg("B184")
+#pragma data_seg("D184")
+#pragma const_seg("K184")
 /* Flower Video Hardware */
 
 #include "driver.h"
@@ -156,3 +160,7 @@ WRITE_HANDLER( flower_sharedram_w )
 		tilemap_mark_tile_dirty(flower_bg1_tilemap,offset&0x1ff);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

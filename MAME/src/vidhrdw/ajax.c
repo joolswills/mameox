@@ -1,3 +1,7 @@
+#pragma code_seg("C13")
+#pragma bss_seg("B13")
+#pragma data_seg("D13")
+#pragma const_seg("K13")
 /***************************************************************************
 
   vidhrdw.c
@@ -118,3 +122,7 @@ VIDEO_UPDATE( ajax )
 
 	K051960_sprites_draw(bitmap,cliprect,-1,-1);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

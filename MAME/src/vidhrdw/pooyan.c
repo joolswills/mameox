@@ -1,3 +1,7 @@
+#pragma code_seg("C406")
+#pragma bss_seg("B406")
+#pragma data_seg("D406")
+#pragma const_seg("K406")
 /***************************************************************************
 
   vidhrdw.c
@@ -150,3 +154,7 @@ VIDEO_UPDATE( pooyan )
 				&Machine->visible_area,TRANSPARENCY_COLOR,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

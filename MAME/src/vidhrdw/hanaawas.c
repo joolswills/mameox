@@ -1,3 +1,7 @@
+#pragma code_seg("C233")
+#pragma bss_seg("B233")
+#pragma data_seg("D233")
+#pragma const_seg("K233")
 /***************************************************************************
 
   vidhrdw.c
@@ -145,3 +149,7 @@ VIDEO_UPDATE( hanaawas )
 	}
 	copybitmap(bitmap,tmpbitmap,0,0,0,0,&Machine->visible_area,TRANSPARENCY_NONE,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

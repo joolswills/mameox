@@ -1,3 +1,7 @@
+#pragma code_seg("C65")
+#pragma bss_seg("B65")
+#pragma data_seg("D65")
+#pragma const_seg("K65")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -249,3 +253,7 @@ VIDEO_EOF( blktiger )
 {
 	buffer_spriteram_w(0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

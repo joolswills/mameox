@@ -1,3 +1,7 @@
+#pragma code_seg("C614")
+#pragma bss_seg("B614")
+#pragma data_seg("D614")
+#pragma const_seg("K614")
 /***************************************************************************
 
   vidhrdw.c
@@ -297,3 +301,7 @@ VIDEO_UPDATE( stinger )
 	draw_sprites(bitmap, spriteram_2, 4, &Machine->visible_area);
 	draw_sprites(bitmap, spriteram  , 5, &Machine->visible_area);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

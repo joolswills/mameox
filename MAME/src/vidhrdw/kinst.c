@@ -1,3 +1,7 @@
+#pragma code_seg("C265")
+#pragma bss_seg("B265")
+#pragma data_seg("D265")
+#pragma const_seg("K265")
 /***************************************************************************
 
 	Killer Instinct hardware
@@ -98,3 +102,7 @@ VIDEO_UPDATE( kinst )
 	for (y = cliprect->min_y; y <= cliprect->max_y; y++)
 		memcpy(bitmap->line[y], &vram_buffer[y * 320], 320 * sizeof(UINT16));
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C426")
+#pragma bss_seg("B426")
+#pragma data_seg("D426")
+#pragma const_seg("K426")
 /***************************************************************************
 
   vidhrdw.c
@@ -242,3 +246,7 @@ VIDEO_UPDATE( redalert )
 
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

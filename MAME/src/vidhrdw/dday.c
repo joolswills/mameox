@@ -1,3 +1,7 @@
+#pragma code_seg("C134")
+#pragma bss_seg("B134")
+#pragma data_seg("D134")
+#pragma const_seg("K134")
 /***************************************************************************
 
   vidhrdw.c
@@ -384,3 +388,7 @@ VIDEO_UPDATE( dday )
 		copybitmap(bitmap,main_bitmap,0,0,0,0,cliprect,TRANSPARENCY_NONE,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

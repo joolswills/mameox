@@ -1,3 +1,7 @@
+#pragma code_seg("C555")
+#pragma bss_seg("B555")
+#pragma data_seg("D555")
+#pragma const_seg("K555")
 /***************************************************************************
 
   Gaelco Type 1 Video Hardware Rev B
@@ -252,3 +256,7 @@ VIDEO_UPDATE( thoop2 )
 
 	gaelco_draw_sprites(bitmap,cliprect,4);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

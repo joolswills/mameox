@@ -1,3 +1,7 @@
+#pragma code_seg("C411")
+#pragma bss_seg("B411")
+#pragma data_seg("D411")
+#pragma const_seg("K411")
 /***************************************************************************
 
 							-= Psikyo Games =-
@@ -572,3 +576,7 @@ VIDEO_EOF( psikyo )
 	memcpy(spritebuf2, spritebuf1, 0x2000);
 	memcpy(spritebuf1, spriteram32, 0x2000);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C438")
+#pragma bss_seg("B438")
+#pragma data_seg("D438")
+#pragma const_seg("K438")
 /***************************************************************************
 
   vidhrdw.c
@@ -331,3 +335,7 @@ static void modify_pen(int pen, int colorindex)
 
 	palette_set_color(pen,r,g,b);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

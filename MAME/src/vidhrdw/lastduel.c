@@ -1,3 +1,7 @@
+#pragma code_seg("C274")
+#pragma bss_seg("B274")
+#pragma data_seg("D274")
+#pragma const_seg("K274")
 /***************************************************************************
 
   vidhrdw.c
@@ -269,3 +273,7 @@ VIDEO_EOF( lastduel )
 		every frame at the end of vblank */
 	buffer_spriteram16_w(0,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

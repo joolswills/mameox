@@ -1,3 +1,7 @@
+#pragma code_seg("C559")
+#pragma bss_seg("B559")
+#pragma data_seg("D559")
+#pragma const_seg("K559")
 #include "vidhrdw/generic.h"
 
 static data16_t tigeroad_scrollram[2];
@@ -183,3 +187,7 @@ VIDEO_EOF( tigeroad )
 {
 	buffer_spriteram16_w(0,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

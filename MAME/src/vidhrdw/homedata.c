@@ -1,3 +1,7 @@
+#pragma code_seg("C243")
+#pragma bss_seg("B243")
+#pragma data_seg("D243")
+#pragma const_seg("K243")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "cpu/m6809/m6809.h"
@@ -874,3 +878,7 @@ VIDEO_EOF( homedata )
 {
 	homedata_visible_page ^= 1;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

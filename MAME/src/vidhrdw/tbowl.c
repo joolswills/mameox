@@ -1,3 +1,7 @@
+#pragma code_seg("C545")
+#pragma bss_seg("B545")
+#pragma data_seg("D545")
+#pragma const_seg("K545")
 /* vidhrdw/tbowl.c */
 
 /* see drivers/tbowl.c for more info */
@@ -242,3 +246,7 @@ VIDEO_UPDATE( tbowl )
 	tilemap_draw(bitmap,cliprect,bg2_tilemap,0,0);
 	tilemap_draw(bitmap,cliprect,tx_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

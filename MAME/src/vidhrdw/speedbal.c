@@ -1,3 +1,7 @@
+#pragma code_seg("C490")
+#pragma bss_seg("B490")
+#pragma data_seg("D490")
+#pragma const_seg("K490")
  /****************************************************************************
  *									  *
  * vidhrdw.c								*
@@ -276,3 +280,7 @@ VIDEO_UPDATE( speedbal )
 	// thirth sprites
 	speedbal_draw_sprites (bitmap);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C434")
+#pragma bss_seg("B434")
+#pragma data_seg("D434")
+#pragma const_seg("K434")
 /***************************************************************************
 
   vidhrdw.c
@@ -148,3 +152,7 @@ VIDEO_UPDATE( rocnrope )
 				&Machine->visible_area,TRANSPARENCY_COLOR,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

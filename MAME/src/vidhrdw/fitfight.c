@@ -1,3 +1,7 @@
+#pragma code_seg("C182")
+#pragma bss_seg("B182")
+#pragma data_seg("D182")
+#pragma const_seg("K182")
 /* Fit of Fighting Video Hardware */
 
 #include "driver.h"
@@ -151,3 +155,7 @@ VIDEO_UPDATE(fitfight)
 			fof_a00000[0] );
 */
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

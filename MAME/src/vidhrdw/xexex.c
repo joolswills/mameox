@@ -1,3 +1,7 @@
+#pragma code_seg("C620")
+#pragma bss_seg("B620")
+#pragma data_seg("D620")
+#pragma const_seg("K620")
 #include "driver.h"
 #include "state.h"
 #include "vidhrdw/generic.h"
@@ -117,3 +121,7 @@ VIDEO_UPDATE( xexex )
 
 	K054157_tilemap_draw(bitmap,cliprect, 0, 0, 0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

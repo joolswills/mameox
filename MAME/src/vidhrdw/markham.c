@@ -1,3 +1,7 @@
+#pragma code_seg("C300")
+#pragma bss_seg("B300")
+#pragma data_seg("D300")
+#pragma const_seg("K300")
 /******************************************************************************
 
 Markham (c) 1983 Sun Electronics
@@ -133,3 +137,7 @@ VIDEO_UPDATE( markham )
 	}
 
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

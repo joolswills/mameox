@@ -1,3 +1,7 @@
+#pragma code_seg("C475")
+#pragma bss_seg("B475")
+#pragma data_seg("D475")
+#pragma const_seg("K475")
 /***************************************************************************
 
 						-= Sky Fox / Exerizer =-
@@ -291,3 +295,7 @@ VIDEO_UPDATE( skyfox )
 	skyfox_draw_background(bitmap);
 	skyfox_draw_sprites(bitmap);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

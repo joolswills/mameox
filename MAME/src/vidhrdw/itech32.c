@@ -1,3 +1,7 @@
+#pragma code_seg("C251")
+#pragma bss_seg("B251")
+#pragma data_seg("D251")
+#pragma const_seg("K251")
 /***************************************************************************
 
 	Incredible Technologies/Strata system
@@ -1136,3 +1140,7 @@ VIDEO_UPDATE( itech32 )
 			draw_scanline16(bitmap, cliprect->min_x, y, cliprect->max_x - cliprect->min_x + 1, &src1[cliprect->min_x], Machine->pens, -1);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

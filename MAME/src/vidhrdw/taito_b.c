@@ -1,3 +1,7 @@
+#pragma code_seg("C531")
+#pragma bss_seg("B531")
+#pragma data_seg("D531")
+#pragma const_seg("K531")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -680,3 +684,7 @@ VIDEO_EOF( taitob )
   taitob_draw_sprites(framebuffer[framebuffer_page],&Machine->visible_area);
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

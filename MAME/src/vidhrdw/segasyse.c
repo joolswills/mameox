@@ -1,3 +1,7 @@
+#pragma code_seg("C452")
+#pragma bss_seg("B452")
+#pragma data_seg("D452")
+#pragma const_seg("K452")
 /*******************************************************************************
  Sega System E (834-5803) Driver (vidhrdw/segasyse.c)
 ********************************************************************************
@@ -567,3 +571,7 @@ static void segae_draw8pixsprite(UINT8 *dest, UINT8 chip, UINT16 tile, UINT8 lin
 	pix = ((pix8 >> 0) & 0x01) | ((pix8 >> 7) & 0x02) | ((pix8 >> 14) & 0x04) | ((pix8 >> 21) & 0x08) ; if (pix) dest[7] = pix+16+32*chip;
 
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

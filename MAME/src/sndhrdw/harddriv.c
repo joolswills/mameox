@@ -1,3 +1,7 @@
+#pragma code_seg("C235")
+#pragma bss_seg("B235")
+#pragma data_seg("D235")
+#pragma const_seg("K235")
 /***************************************************************************
 
 	Hard Drivin' sound hardware
@@ -393,3 +397,7 @@ READ16_HANDLER( hdsnddsp_compare_r )
 	logerror("%06X:hdsnddsp_compare_r(%04X)\n", activecpu_get_previouspc(), offset);
 	return 0;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

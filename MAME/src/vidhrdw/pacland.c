@@ -1,3 +1,7 @@
+#pragma code_seg("C384")
+#pragma bss_seg("B384")
+#pragma data_seg("D384")
+#pragma const_seg("K384")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -383,3 +387,7 @@ VIDEO_UPDATE( pacland )
 
 	pacland_draw_sprites(bitmap,1);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C123")
+#pragma bss_seg("B123")
+#pragma data_seg("D123")
+#pragma const_seg("K123")
 /***************************************************************************
 
 	Kitco Crowns Golf hardware
@@ -232,3 +236,7 @@ VIDEO_UPDATE( crgolf )
 	if (*crgolf_color_select)
 		copybitmap(bitmap, highbit, 0, 0, 0, 0, cliprect, TRANSPARENCY_BLEND, 0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

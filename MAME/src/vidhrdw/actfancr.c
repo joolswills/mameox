@@ -1,3 +1,7 @@
+#pragma code_seg("C8")
+#pragma bss_seg("B8")
+#pragma data_seg("D8")
+#pragma const_seg("K8")
 /*******************************************************************************
 
 	actfancr - Bryan McPhail, mish@tendril.co.uk
@@ -320,3 +324,7 @@ VIDEO_UPDATE( triothep )
 			cliprect,TRANSPARENCY_PEN,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

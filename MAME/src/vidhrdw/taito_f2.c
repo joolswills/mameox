@@ -1,3 +1,7 @@
+#pragma code_seg("C532")
+#pragma bss_seg("B532")
+#pragma data_seg("D532")
+#pragma const_seg("K532")
 #include "driver.h"
 #include "state.h"
 #include "vidhrdw/generic.h"
@@ -1341,3 +1345,7 @@ VIDEO_UPDATE( deadconx )
 
 	TC0480SCP_tilemap_draw(bitmap,cliprect,layer[4],0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

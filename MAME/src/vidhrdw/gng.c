@@ -1,3 +1,7 @@
+#pragma code_seg("C214")
+#pragma bss_seg("B214")
+#pragma data_seg("D214")
+#pragma const_seg("K214")
 /***************************************************************************
 
   vidhrdw.c
@@ -158,3 +162,7 @@ VIDEO_EOF( gng )
 {
 	buffer_spriteram_w(0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

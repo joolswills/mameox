@@ -1,3 +1,7 @@
+#pragma code_seg("C136")
+#pragma bss_seg("B136")
+#pragma data_seg("D136")
+#pragma const_seg("K136")
 /***************************************************************************
 
   Video Hardware for some Technos games:
@@ -259,3 +263,7 @@ VIDEO_UPDATE( ddragon )
 	draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,fg_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C313")
+#pragma bss_seg("B313")
+#pragma data_seg("D313")
+#pragma const_seg("K313")
 /***************************************************************************
 
 							  -= Metro Games =-
@@ -903,3 +907,7 @@ if (keyboard_pressed(KEYCODE_Z))
 				metro_draw_sprites(bitmap,cliprect, i);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

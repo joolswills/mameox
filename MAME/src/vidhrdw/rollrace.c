@@ -1,3 +1,7 @@
+#pragma code_seg("C437")
+#pragma bss_seg("B437")
+#pragma data_seg("D437")
+#pragma const_seg("K437")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -168,3 +172,7 @@ VIDEO_UPDATE( rollrace )
 
 
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

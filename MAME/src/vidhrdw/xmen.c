@@ -1,3 +1,7 @@
+#pragma code_seg("C621")
+#pragma bss_seg("B621")
+#pragma data_seg("D621")
+#pragma const_seg("K621")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 
@@ -114,3 +118,7 @@ VIDEO_UPDATE( xmen )
 	pdrawgfx_shadow_lowpri = 1;	/* fix shadows of boulders in front of feet */
 	K053247_sprites_draw(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

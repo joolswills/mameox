@@ -1,3 +1,7 @@
+#pragma code_seg("C166")
+#pragma bss_seg("B166")
+#pragma data_seg("D166")
+#pragma const_seg("K166")
 /***************************************************************************
 
   vidhrdw.c
@@ -241,3 +245,7 @@ VIDEO_UPDATE( exctsccr ) {
 	exctsccr_drawsprites( bitmap );
 
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

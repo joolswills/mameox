@@ -1,3 +1,7 @@
+#pragma code_seg("C308")
+#pragma bss_seg("B308")
+#pragma data_seg("D308")
+#pragma const_seg("K308")
 /***************************************************************************
 
 	Midway MCR-68k system
@@ -372,3 +376,7 @@ VIDEO_UPDATE( zwackery )
 	/* draw the high-priority sprites */
 	zwackery_update_sprites(bitmap, cliprect, 1);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

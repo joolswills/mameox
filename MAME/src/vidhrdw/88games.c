@@ -1,3 +1,7 @@
+#pragma code_seg("C5")
+#pragma bss_seg("B5")
+#pragma data_seg("D5")
+#pragma const_seg("K5")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 
@@ -102,3 +106,7 @@ VIDEO_UPDATE( 88games )
 		tilemap_draw(bitmap,cliprect,K052109_tilemap[0],0,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

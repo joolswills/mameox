@@ -1,3 +1,7 @@
+#pragma code_seg("C381")
+#pragma bss_seg("B381")
+#pragma data_seg("D381")
+#pragma const_seg("K381")
 #include "driver.h"
 #include "state.h"
 #include "vidhrdw/generic.h"
@@ -357,3 +361,7 @@ VIDEO_UPDATE( othunder )
 	}
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

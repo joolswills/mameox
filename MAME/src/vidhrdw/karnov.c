@@ -1,3 +1,7 @@
+#pragma code_seg("C261")
+#pragma bss_seg("B261")
+#pragma data_seg("D261")
+#pragma const_seg("K261")
 /*******************************************************************************
 
 	Karnov - Bryan McPhail, mish@tendril.co.uk
@@ -271,3 +275,7 @@ VIDEO_START( wndrplnt )
 }
 
 /******************************************************************************/
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

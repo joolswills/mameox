@@ -1,3 +1,7 @@
+#pragma code_seg("C238")
+#pragma bss_seg("B238")
+#pragma data_seg("D238")
+#pragma const_seg("K238")
 #include "driver.h"
 
 
@@ -173,3 +177,7 @@ VIDEO_UPDATE( hexion )
 	tilemap_draw(bitmap,cliprect,tilemap[1],0,0);
 	tilemap_draw(bitmap,cliprect,tilemap[0],0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

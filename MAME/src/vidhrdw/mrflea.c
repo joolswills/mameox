@@ -1,3 +1,7 @@
+#pragma code_seg("C336")
+#pragma bss_seg("B336")
+#pragma data_seg("D336")
+#pragma const_seg("K336")
 /******************************************************************
 
 Mr. F. Lea
@@ -94,3 +98,7 @@ VIDEO_UPDATE( mrflea )
 	draw_background( bitmap );
 	draw_sprites( bitmap );
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

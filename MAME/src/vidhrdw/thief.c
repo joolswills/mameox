@@ -1,3 +1,7 @@
+#pragma code_seg("C554")
+#pragma bss_seg("B554")
+#pragma data_seg("D554")
+#pragma const_seg("K554")
 /*	video hardware for Pacific Novelty games:
 **	Thief/Nato Defense
 */
@@ -323,3 +327,7 @@ WRITE_HANDLER( thief_coprocessor_w ){
 		break;
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

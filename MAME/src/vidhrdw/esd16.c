@@ -1,3 +1,7 @@
+#pragma code_seg("C164")
+#pragma bss_seg("B164")
+#pragma data_seg("D164")
+#pragma const_seg("K164")
 /***************************************************************************
 
 						  -= ESD 16 Bit Games =-
@@ -237,3 +241,7 @@ if ( keyboard_pressed(KEYCODE_Z) )
 
 	if (layers_ctrl & 4)	esd16_draw_sprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

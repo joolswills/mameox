@@ -1,3 +1,7 @@
+#pragma code_seg("C334")
+#pragma bss_seg("B334")
+#pragma data_seg("D334")
+#pragma const_seg("K334")
 /***************************************************************************
 
   vidhrdw.c
@@ -496,3 +500,7 @@ VIDEO_UPDATE( mpatrol )
 				&Machine->visible_area,TRANSPARENCY_COLOR,128+32);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

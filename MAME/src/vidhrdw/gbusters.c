@@ -1,3 +1,7 @@
+#pragma code_seg("C208")
+#pragma bss_seg("B208")
+#pragma data_seg("D208")
+#pragma const_seg("K208")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 
@@ -78,3 +82,7 @@ VIDEO_UPDATE( gbusters )
 		tilemap_draw(bitmap,cliprect,K052109_tilemap[0],0,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

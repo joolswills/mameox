@@ -1,3 +1,7 @@
+#pragma code_seg("C497")
+#pragma bss_seg("B497")
+#pragma data_seg("D497")
+#pragma const_seg("K497")
 /***************************************************************************
 
 Functions to emulate the video hardware of the machine.
@@ -475,3 +479,7 @@ VIDEO_UPDATE( mjyuugi )
 	fillbitmap(bitmap, Machine->pens[0x1f0], &Machine->visible_area);
 	mjyuugi_draw_sprites(bitmap);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

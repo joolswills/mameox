@@ -1,3 +1,7 @@
+#pragma code_seg("C573")
+#pragma bss_seg("B573")
+#pragma data_seg("D573")
+#pragma const_seg("K573")
 /***************************************************************************
 
   vidhrdw.c
@@ -338,3 +342,7 @@ VIDEO_UPDATE( travrusa )
 	draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,bg_tilemap,TILEMAP_FRONT,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

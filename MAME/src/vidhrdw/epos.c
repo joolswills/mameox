@@ -1,3 +1,7 @@
+#pragma code_seg("C161")
+#pragma bss_seg("B161")
+#pragma data_seg("D161")
+#pragma const_seg("K161")
 /***************************************************************************
 
 	Epos games
@@ -117,3 +121,7 @@ VIDEO_UPDATE( epos )
 	}
 	copybitmap(bitmap,tmpbitmap,0,0,0,0,&Machine->visible_area,TRANSPARENCY_NONE,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

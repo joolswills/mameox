@@ -1,3 +1,7 @@
+#pragma code_seg("C343")
+#pragma bss_seg("B343")
+#pragma data_seg("D343")
+#pragma const_seg("K343")
 /***************************************************************************
 
 	vidhrdw.c
@@ -219,3 +223,7 @@ VIDEO_UPDATE( mystston )
 	draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,fg_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C188")
+#pragma bss_seg("B188")
+#pragma data_seg("D188")
+#pragma const_seg("K188")
 /* Free Kick Video Hardware */
 
 #include "driver.h"
@@ -154,3 +158,7 @@ VIDEO_UPDATE(freekick)
 	tilemap_draw(bitmap,cliprect,freek_tilemap,0,0);
 	freekick_draw_sprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

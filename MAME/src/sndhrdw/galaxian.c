@@ -1,3 +1,7 @@
+#pragma code_seg("C199")
+#pragma bss_seg("B199")
+#pragma data_seg("D199")
+#pragma const_seg("K199")
 #include "driver.h"
 #include <math.h>
 
@@ -658,3 +662,7 @@ struct CustomSound_interface galaxian_custom_interface =
 	galaxian_sh_stop,
 	galaxian_sh_update
 };
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

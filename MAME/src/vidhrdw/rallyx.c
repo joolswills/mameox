@@ -1,3 +1,7 @@
+#pragma code_seg("C423")
+#pragma bss_seg("B423")
+#pragma data_seg("D423")
+#pragma const_seg("K423")
 /***************************************************************************
 
   vidhrdw.c
@@ -796,3 +800,7 @@ if (flip_screen) sx += 32;
 				&Machine->visible_area,TRANSPARENCY_PEN,3);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

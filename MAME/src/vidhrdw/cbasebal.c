@@ -1,3 +1,7 @@
+#pragma code_seg("C91")
+#pragma bss_seg("B91")
+#pragma data_seg("D91")
+#pragma const_seg("K91")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -201,3 +205,7 @@ VIDEO_UPDATE( cbasebal )
 	if (text_on)
 		tilemap_draw(bitmap,cliprect,fg_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

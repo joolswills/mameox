@@ -1,3 +1,7 @@
+#pragma code_seg("C170")
+#pragma bss_seg("B170")
+#pragma data_seg("D170")
+#pragma const_seg("K170")
 /***************************************************************************
 
 	Exidy 440 sound system
@@ -995,3 +999,7 @@ static void finish_wav_file(void)
 }
 
 #endif
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

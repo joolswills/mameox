@@ -1,3 +1,7 @@
+#pragma code_seg("C160")
+#pragma bss_seg("B160")
+#pragma data_seg("D160")
+#pragma const_seg("K160")
 
 #include "driver.h"
 #include "vidhrdw/generic.h"
@@ -216,3 +220,7 @@ VIDEO_UPDATE( dynduke )
 	draw_sprites(bitmap,cliprect,3);
 	tilemap_draw(bitmap,cliprect,tx_layer,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

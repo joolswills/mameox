@@ -1,3 +1,7 @@
+#pragma code_seg("C295")
+#pragma bss_seg("B295")
+#pragma data_seg("D295")
+#pragma const_seg("K295")
 /***************************************************************************
 
 Video Hardware for MAGMAX.
@@ -532,3 +536,7 @@ VIDEO_UPDATE( magmax )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

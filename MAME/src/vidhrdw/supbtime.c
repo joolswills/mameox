@@ -1,3 +1,7 @@
+#pragma code_seg("C517")
+#pragma bss_seg("B517")
+#pragma data_seg("D517")
+#pragma const_seg("K517")
 /***************************************************************************
 
    Super Burger Time Video emulation - Bryan McPhail, mish@tendril.co.uk
@@ -205,3 +209,7 @@ VIDEO_UPDATE( chinatwn )
 	supbtime_drawsprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,pf1_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

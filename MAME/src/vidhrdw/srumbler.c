@@ -1,3 +1,7 @@
+#pragma code_seg("C498")
+#pragma bss_seg("B498")
+#pragma data_seg("D498")
+#pragma const_seg("K498")
 /***************************************************************************
 
   vidhrdw.c
@@ -182,3 +186,7 @@ VIDEO_EOF( srumbler )
 {
 	buffer_spriteram_w(0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

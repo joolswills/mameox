@@ -1,3 +1,7 @@
+#pragma code_seg("C285")
+#pragma bss_seg("B285")
+#pragma data_seg("D285")
+#pragma const_seg("K285")
 #include "driver.h"
 #include "generic.h"
 
@@ -100,3 +104,7 @@ VIDEO_UPDATE( lsasquad )
 	draw_sprites(bitmap);
 	draw_layer(bitmap,lsasquad_scrollram + 0x100);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C522")
+#pragma bss_seg("B522")
+#pragma data_seg("D522")
+#pragma const_seg("K522")
 /* Super Kaneko Nova System Vidhrdw */
 
 #include "driver.h"
@@ -742,3 +746,7 @@ VIDEO_UPDATE(skns)
 
 	skns_drawsprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

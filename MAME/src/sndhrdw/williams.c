@@ -1,3 +1,7 @@
+#pragma code_seg("C611")
+#pragma bss_seg("B611")
+#pragma data_seg("D611")
+#pragma const_seg("K611")
 /***************************************************************************
 
 	Midway/Williams Audio Boards
@@ -691,3 +695,7 @@ static WRITE_HANDLER( narc_command2_w )
 	soundlatch2_w(0, data & 0xff);
 	cpu_set_irq_line(soundalt_cpunum, M6809_FIRQ_LINE, ASSERT_LINE);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

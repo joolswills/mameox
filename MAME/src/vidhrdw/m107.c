@@ -1,3 +1,7 @@
+#pragma code_seg("C287")
+#pragma bss_seg("B287")
+#pragma data_seg("D287")
+#pragma const_seg("K287")
 /****************************************************************************
 
 	Irem M107 video hardware, Bryan McPhail, mish@tendril.co.uk
@@ -465,3 +469,7 @@ WRITE_HANDLER( m107_spritebuffer_w )
 		memcpy(m107_spriteram,spriteram,0x1000);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

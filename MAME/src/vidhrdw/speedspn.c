@@ -1,3 +1,7 @@
+#pragma code_seg("C491")
+#pragma bss_seg("B491")
+#pragma data_seg("D491")
+#pragma const_seg("K491")
 /* Speed Spin Vidhrdw, see driver file for notes */
 
 #include "driver.h"
@@ -111,3 +115,7 @@ VIDEO_UPDATE(speedspn)
 	tilemap_draw(bitmap,cliprect,speedspn_tilemap,0,0);
 	speedspn_drawsprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

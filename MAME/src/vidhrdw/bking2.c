@@ -1,3 +1,7 @@
+#pragma code_seg("C63")
+#pragma bss_seg("B63")
+#pragma data_seg("D63")
+#pragma const_seg("K63")
 /***************************************************************************
 
   bking2.c
@@ -383,3 +387,7 @@ VIDEO_EOF( bking2 )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

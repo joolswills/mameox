@@ -1,3 +1,7 @@
+#pragma code_seg("C340")
+#pragma bss_seg("B340")
+#pragma data_seg("D340")
+#pragma const_seg("K340")
 /* vidhrdw/mugsmash.c - see drivers/mugsmash.c for more info */
 
 #include "driver.h"
@@ -161,3 +165,7 @@ VIDEO_UPDATE( mugsmash )
 	tilemap_draw(bitmap,cliprect,mugsmash_tilemap1,0,0);
 	draw_sprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

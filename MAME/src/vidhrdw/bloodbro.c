@@ -1,3 +1,7 @@
+#pragma code_seg("C70")
+#pragma bss_seg("B70")
+#pragma data_seg("D70")
+#pragma const_seg("K70")
 /***************************************************************************
 
 	Video Hardware for Blood Brothers
@@ -284,3 +288,7 @@ VIDEO_UPDATE( skysmash )
 }
 
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

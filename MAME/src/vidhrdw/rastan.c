@@ -1,3 +1,7 @@
+#pragma code_seg("C425")
+#pragma bss_seg("B425")
+#pragma data_seg("D425")
+#pragma const_seg("K425")
 /***************************************************************************
   Functions to emulate similar video hardware on these Taito games:
 
@@ -252,3 +256,7 @@ VIDEO_UPDATE( jumping )
 #endif
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

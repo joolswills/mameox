@@ -1,3 +1,7 @@
+#pragma code_seg("C451")
+#pragma bss_seg("B451")
+#pragma data_seg("D451")
+#pragma const_seg("K451")
 /***************************************************************************
 
 	Sega G-80 raster hardware
@@ -532,3 +536,7 @@ WRITE_HANDLER( monsterb_sh_rom_select_w )
 		rom_offset |= 0x1000;
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

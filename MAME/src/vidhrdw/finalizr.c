@@ -1,3 +1,7 @@
+#pragma code_seg("C178")
+#pragma bss_seg("B178")
+#pragma data_seg("D178")
+#pragma const_seg("K178")
 /***************************************************************************
 
   vidhrdw.c
@@ -275,3 +279,7 @@ VIDEO_UPDATE( finalizr )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

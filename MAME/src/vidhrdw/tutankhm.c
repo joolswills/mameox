@@ -1,3 +1,7 @@
+#pragma code_seg("C583")
+#pragma bss_seg("B583")
+#pragma data_seg("D583")
+#pragma const_seg("K583")
 /***************************************************************************
 
   vidhrdw.c
@@ -200,3 +204,7 @@ WRITE_HANDLER( junofrst_blitter_w )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

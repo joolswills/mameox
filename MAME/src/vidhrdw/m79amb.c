@@ -1,3 +1,7 @@
+#pragma code_seg("C290")
+#pragma bss_seg("B290")
+#pragma data_seg("D290")
+#pragma const_seg("K290")
 /***************************************************************************
 
   vidhrdw.c
@@ -44,3 +48,7 @@ WRITE_HANDLER( ramtek_videoram_w )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C75")
+#pragma bss_seg("B75")
+#pragma data_seg("D75")
+#pragma const_seg("K75")
 /***************************************************************************
 
   vidhrdw.c
@@ -422,3 +426,7 @@ void bosco_vh_interrupt(void)
 	stars_scrollx += speedsx[bosco_starcontrol & 7];
 	stars_scrolly += speedsy[(bosco_starcontrol & 56) >> 3];
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

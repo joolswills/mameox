@@ -1,3 +1,7 @@
+#pragma code_seg("C582")
+#pragma bss_seg("B582")
+#pragma data_seg("D582")
+#pragma const_seg("K582")
 /*************************************************************************
 
 	Sega Z80-3D system
@@ -1010,3 +1014,7 @@ WRITE_HANDLER( buckrog_bitmap_w )
 {
 	buckrog_bitmap_ram[offset] = data & 1;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

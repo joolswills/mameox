@@ -1,3 +1,7 @@
+#pragma code_seg("C159")
+#pragma bss_seg("B159")
+#pragma data_seg("D159")
+#pragma const_seg("K159")
 /***************************************************************************
 
 						-= Dynax / Nakanihon Games =-
@@ -826,3 +830,7 @@ VIDEO_UPDATE( mjdialq2 )
 	if (layers_ctrl & 1)	mjdialq2_copylayer( bitmap, cliprect, 0 );
 	if (layers_ctrl & 2)	mjdialq2_copylayer( bitmap, cliprect, 1 );
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

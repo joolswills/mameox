@@ -1,3 +1,7 @@
+#pragma code_seg("C46")
+#pragma bss_seg("B46")
+#pragma data_seg("D46")
+#pragma const_seg("K46")
 /***************************************************************************
 
 	Atari Bad Lands hardware
@@ -148,3 +152,7 @@ VIDEO_UPDATE( badlands )
 				}
 		}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

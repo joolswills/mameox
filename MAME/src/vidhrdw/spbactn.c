@@ -1,3 +1,7 @@
+#pragma code_seg("C486")
+#pragma bss_seg("B486")
+#pragma data_seg("D486")
+#pragma const_seg("K486")
 /* vidhrdw/spbactn.c - see drivers/spbactn.c for more info */
 /* rather similar to galspnbl.c */
 
@@ -118,3 +122,7 @@ VIDEO_UPDATE( spbactn )
 
 	draw_sprites(bitmap,1);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

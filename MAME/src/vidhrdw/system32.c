@@ -1,3 +1,7 @@
+#pragma code_seg("C528")
+#pragma bss_seg("B528")
+#pragma data_seg("D528")
+#pragma const_seg("K528")
 /* System 32 Video Hardware */
 
 /* todo:
@@ -1137,3 +1141,7 @@ VIDEO_UPDATE( system32 )
 	system32_draw_text_layer (bitmap, cliprect);
 
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C465")
+#pragma bss_seg("B465")
+#pragma data_seg("D465")
+#pragma const_seg("K465")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -79,3 +83,7 @@ VIDEO_UPDATE( sichuan2 )
 	/* copy the character mapped graphics */
 	copybitmap(bitmap,tmpbitmap,0,0,0,0,&Machine->visible_area,TRANSPARENCY_NONE,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C202")
+#pragma bss_seg("B202")
+#pragma data_seg("D202")
+#pragma const_seg("K202")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -174,3 +178,7 @@ VIDEO_UPDATE( comad )
 
 	comad_draw_sprites(bitmap);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

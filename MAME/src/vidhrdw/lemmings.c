@@ -1,3 +1,7 @@
+#pragma code_seg("C278")
+#pragma bss_seg("B278")
+#pragma data_seg("D278")
+#pragma const_seg("K278")
 /***************************************************************************
 
 	Lemmings video emulation - Bryan McPhail, mish@tendril.co.uk
@@ -215,3 +219,7 @@ VIDEO_UPDATE( lemmings )
 	tilemap_draw(bitmap,cliprect,vram_tilemap,0,0);
 	lemmings_drawsprites(bitmap,sprite_triple_buffer_0,0,0x2000);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

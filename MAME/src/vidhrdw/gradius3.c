@@ -1,3 +1,7 @@
+#pragma code_seg("C220")
+#pragma bss_seg("B220")
+#pragma data_seg("D220")
+#pragma const_seg("K220")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 
@@ -195,3 +199,7 @@ VIDEO_UPDATE( gradius3 )
 
 	K051960_sprites_draw(bitmap,cliprect,-1,-1);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C307")
+#pragma bss_seg("B307")
+#pragma data_seg("D307")
+#pragma const_seg("K307")
 /***************************************************************************
 
 	Midway MCR-III system
@@ -296,3 +300,7 @@ PALETTE_INIT( spyhunt )
 	palette_set_color(4*16+2,0x00,0x00,0xff);
 	palette_set_color(4*16+3,0xff,0xff,0xff);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

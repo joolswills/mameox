@@ -1,3 +1,7 @@
+#pragma code_seg("C444")
+#pragma bss_seg("B444")
+#pragma data_seg("D444")
+#pragma const_seg("K444")
 /***************************************************************************
 
   vidhrdw.c
@@ -197,3 +201,7 @@ VIDEO_UPDATE( sbasketb )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

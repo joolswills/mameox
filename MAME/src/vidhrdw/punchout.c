@@ -1,3 +1,7 @@
+#pragma code_seg("C415")
+#pragma bss_seg("B415")
+#pragma data_seg("D415")
+#pragma const_seg("K415")
 /***************************************************************************
 
   vidhrdw.c
@@ -712,3 +716,7 @@ VIDEO_UPDATE( armwrest )
 				&backgroundvisiblearea,TRANSPARENCY_PEN,7);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

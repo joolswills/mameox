@@ -1,3 +1,7 @@
+#pragma code_seg("C230")
+#pragma bss_seg("B230")
+#pragma data_seg("D230")
+#pragma const_seg("K230")
 /***************************************************************************
 
   vidhrdw.c
@@ -242,3 +246,7 @@ INTERRUPT_GEN( gyruss_6809_interrupt )
 	if (scanline == 255)
 		irq0_line_hold();
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

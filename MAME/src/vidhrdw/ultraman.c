@@ -1,3 +1,7 @@
+#pragma code_seg("C586")
+#pragma bss_seg("B586")
+#pragma data_seg("D586")
+#pragma const_seg("K586")
 #include "driver.h"
 #include "tilemap.h"
 #include "vidhrdw/generic.h"
@@ -143,3 +147,7 @@ VIDEO_UPDATE( ultraman )
 	K051316_zoom_draw_0(bitmap,cliprect,0,0);
 	K051960_sprites_draw(bitmap,cliprect,1,1);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

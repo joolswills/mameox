@@ -1,3 +1,7 @@
+#pragma code_seg("C511")
+#pragma bss_seg("B511")
+#pragma data_seg("D511")
+#pragma const_seg("K511")
 /* vidhrdw/stlforce.c - see main driver for other notes */
 
 #include "driver.h"
@@ -172,3 +176,7 @@ VIDEO_START( stlforce )
 
 	return 0;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

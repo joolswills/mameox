@@ -1,3 +1,7 @@
+#pragma code_seg("C493")
+#pragma bss_seg("B493")
+#pragma data_seg("D493")
+#pragma const_seg("K493")
 /***************************************************************************
 
   vidhrdw.c
@@ -205,3 +209,7 @@ VIDEO_UPDATE( splash )
 	splash_draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,screen[0],0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C108")
+#pragma bss_seg("B108")
+#pragma data_seg("D108")
+#pragma const_seg("K108")
 /***************************************************************************
 
 	Atari Cloud 9 (prototype) hardware
@@ -293,3 +297,7 @@ VIDEO_START( cloud9 )
 	return 0;
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

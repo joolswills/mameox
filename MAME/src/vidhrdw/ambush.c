@@ -1,3 +1,7 @@
+#pragma code_seg("C16")
+#pragma bss_seg("B16")
+#pragma data_seg("D16")
+#pragma const_seg("K16")
 /***************************************************************************
 
   vidhrdw.c
@@ -179,3 +183,7 @@ VIDEO_UPDATE( ambush )
 	/* Draw the foreground priority characters */
 	draw_chars(bitmap, 0x10);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C227")
+#pragma bss_seg("B227")
+#pragma data_seg("D227")
+#pragma const_seg("K227")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/taitoic.h"
@@ -257,3 +261,7 @@ VIDEO_UPDATE( gunbustr )
 	gunbustr_draw_sprites_16x16(bitmap,cliprect,primasks,48,-116);
 #endif
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

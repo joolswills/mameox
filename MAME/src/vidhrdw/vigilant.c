@@ -1,3 +1,7 @@
+#pragma code_seg("C598")
+#pragma bss_seg("B598")
+#pragma data_seg("D598")
+#pragma const_seg("K598")
 /***************************************************************************
 
   vidhrdw.c
@@ -352,3 +356,7 @@ VIDEO_UPDATE( kikcubic )
 
 	draw_sprites(bitmap,&Machine->visible_area);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C74")
+#pragma bss_seg("B74")
+#pragma data_seg("D74")
+#pragma const_seg("K74")
 /***************************************************************************
 
   vidhrdw.c
@@ -196,3 +200,7 @@ VIDEO_UPDATE( bombjack )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C326")
+#pragma bss_seg("B326")
+#pragma data_seg("D326")
+#pragma const_seg("K326")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -146,3 +150,7 @@ VIDEO_UPDATE( mjkjidai )
 		draw_sprites(bitmap,cliprect);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

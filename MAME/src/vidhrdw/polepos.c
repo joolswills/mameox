@@ -1,3 +1,7 @@
+#pragma code_seg("C402")
+#pragma bss_seg("B402")
+#pragma data_seg("D402")
+#pragma const_seg("K402")
 #include "driver.h"
 
 data16_t *polepos_view16_memory;
@@ -478,3 +482,7 @@ VIDEO_UPDATE( polepos )
 	draw_sprites(bitmap);
 	draw_alpha(bitmap);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

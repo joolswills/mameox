@@ -1,3 +1,7 @@
+#pragma code_seg("C549")
+#pragma bss_seg("B549")
+#pragma data_seg("D549")
+#pragma const_seg("K549")
 /***************************************************************************
 
 Tehkan World Cup - (c) Tehkan 1985
@@ -227,3 +231,7 @@ VIDEO_UPDATE( tehkanwc )
 	gridiron_drawled(bitmap,led0,0);
 	gridiron_drawled(bitmap,led1,1);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

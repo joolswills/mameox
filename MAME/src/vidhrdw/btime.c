@@ -1,3 +1,7 @@
+#pragma code_seg("C79")
+#pragma bss_seg("B79")
+#pragma data_seg("D79")
+#pragma const_seg("K79")
 /***************************************************************************
 
     vidhrdw.c
@@ -739,3 +743,7 @@ VIDEO_UPDATE( disco )
 
     drawsprites(bitmap, btime_palette, 0, 0, spriteram, 1);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C606")
+#pragma bss_seg("B606")
+#pragma data_seg("D606")
+#pragma const_seg("K606")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -366,3 +370,7 @@ VIDEO_UPDATE( wc90 )
 	tilemap_draw(bitmap,cliprect,tx_tilemap,0,0);
 	draw_sprites( bitmap,cliprect, 0 );
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

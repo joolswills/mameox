@@ -1,3 +1,7 @@
+#pragma code_seg("C388")
+#pragma bss_seg("B388")
+#pragma data_seg("D388")
+#pragma const_seg("K388")
 /* vidhrdw/pass.c - see drivers/pass.c for more info */
 
 #include "driver.h"
@@ -75,3 +79,7 @@ VIDEO_START( pass )
 
 	return 0;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

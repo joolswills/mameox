@@ -1,3 +1,7 @@
+#pragma code_seg("C222")
+#pragma bss_seg("B222")
+#pragma data_seg("D222")
+#pragma const_seg("K222")
 /*************************************************************************
 
 	Basic Gridlee sound driver
@@ -167,3 +171,7 @@ fclose(f);
 }
 #endif
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

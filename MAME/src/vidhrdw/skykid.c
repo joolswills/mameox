@@ -1,3 +1,7 @@
+#pragma code_seg("C476")
+#pragma bss_seg("B476")
+#pragma data_seg("D476")
+#pragma const_seg("K476")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "tilemap.h"
@@ -260,3 +264,7 @@ VIDEO_UPDATE( skykid )
 	if ((priority & 0xf0) == 0x50)
 		skykid_draw_sprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C433")
+#pragma bss_seg("B433")
+#pragma data_seg("D433")
+#pragma const_seg("K433")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/konamiic.h"
@@ -96,3 +100,7 @@ VIDEO_UPDATE( rockrage )
 	K007342_tilemap_draw( bitmap,cliprect, 1, 0 ,0);
 	K007342_tilemap_draw( bitmap,cliprect, 1, 1 ,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

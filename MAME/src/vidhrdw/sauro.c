@@ -1,3 +1,7 @@
+#pragma code_seg("C443")
+#pragma bss_seg("B443")
+#pragma data_seg("D443")
+#pragma const_seg("K443")
 /***************************************************************************
 
   vidhrdw.c
@@ -167,3 +171,7 @@ VIDEO_UPDATE( sauro )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

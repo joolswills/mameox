@@ -1,3 +1,7 @@
+#pragma code_seg("C141")
+#pragma bss_seg("B141")
+#pragma data_seg("D141")
+#pragma const_seg("K141")
 /***************************************************************************
 
 Cobra Command:
@@ -851,3 +855,7 @@ VIDEO_START( garyoret )
 }
 
 /******************************************************************************/
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

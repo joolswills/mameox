@@ -1,3 +1,7 @@
+#pragma code_seg("C25")
+#pragma bss_seg("B25")
+#pragma data_seg("D25")
+#pragma const_seg("K25")
 /***************************************************************************
 
   vidhrdw.c
@@ -121,3 +125,7 @@ VIDEO_UPDATE( arkanoid )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C207")
+#pragma bss_seg("B207")
+#pragma data_seg("D207")
+#pragma const_seg("K207")
 /***************************************************************************
 
   vidhrdw.c
@@ -291,3 +295,7 @@ VIDEO_UPDATE( gberetb )
 	draw_sprites_bootleg(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,bg_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

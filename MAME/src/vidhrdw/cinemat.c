@@ -1,3 +1,7 @@
+#pragma code_seg("C101")
+#pragma bss_seg("B101")
+#pragma data_seg("D101")
+#pragma const_seg("K101")
 /***************************************************************************
 
 	Cinematronics vector hardware
@@ -89,3 +93,7 @@ VIDEO_UPDATE( spacewar )
 	artwork_show("pressed0", (~sw_option >> 11) & 1);
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

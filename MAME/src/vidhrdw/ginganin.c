@@ -1,3 +1,7 @@
+#pragma code_seg("C212")
+#pragma bss_seg("B212")
+#pragma data_seg("D212")
+#pragma const_seg("K212")
 /**************************************************************************
 
 							Ginga NinkyouDen
@@ -295,3 +299,7 @@ if (keyboard_pressed(KEYCODE_Z))
 
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C597")
+#pragma bss_seg("B597")
+#pragma data_seg("D597")
+#pragma const_seg("K597")
 /*************************************************************************
 
 	Atari Video Pinball hardware
@@ -140,3 +144,7 @@ VIDEO_UPDATE( videopin )
 		/*			1,0,350,6*x,&Machine->drv->visible_area,TRANSPARENCY_NONE,0); */
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

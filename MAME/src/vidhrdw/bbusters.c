@@ -1,3 +1,7 @@
+#pragma code_seg("C56")
+#pragma bss_seg("B56")
+#pragma data_seg("D56")
+#pragma const_seg("K56")
 /***************************************************************************
 
 	Emulation by Bryan McPhail, mish@tendril.co.uk
@@ -313,3 +317,7 @@ VIDEO_UPDATE( mechatt )
 	draw_crosshair(bitmap,readinputport(2),readinputport(3),cliprect);
 	draw_crosshair(bitmap,readinputport(4),readinputport(5),cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C359")
+#pragma bss_seg("B359")
+#pragma data_seg("D359")
+#pragma const_seg("K359")
 /***************************************************************************
 
   vidhrdw.c
@@ -671,3 +675,7 @@ VIDEO_UPDATE( salamand )
 		tilemap_draw(bitmap,&clip,background,1,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

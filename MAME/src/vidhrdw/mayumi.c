@@ -1,3 +1,7 @@
+#pragma code_seg("C303")
+#pragma bss_seg("B303")
+#pragma data_seg("D303")
+#pragma const_seg("K303")
 /******************************************************************************
 
 Kikiippatsu Mayumi-chan (c) 1988 Victory L.L.C.
@@ -49,3 +53,7 @@ VIDEO_UPDATE( mayumi )
 	tilemap_draw(bitmap, cliprect, mayumi_tilemap, 0, 0);
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

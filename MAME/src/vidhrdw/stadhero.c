@@ -1,3 +1,7 @@
+#pragma code_seg("C504")
+#pragma bss_seg("B504")
+#pragma data_seg("D504")
+#pragma const_seg("K504")
 /***************************************************************************
 
   stadhero video emulation - Bryan McPhail, mish@tendril.co.uk
@@ -176,3 +180,7 @@ VIDEO_START( stadhero )
 }
 
 /******************************************************************************/
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C563")
+#pragma bss_seg("B563")
+#pragma data_seg("D563")
+#pragma const_seg("K563")
 /***************************************************************************
 
   vidhrdw.c
@@ -200,3 +204,7 @@ VIDEO_UPDATE( tnzs )
 							tnzs_objram + 0x1000, /*   ctrl : d000 */
 							tnzs_objram + 0x1200); /* color : d200 */
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

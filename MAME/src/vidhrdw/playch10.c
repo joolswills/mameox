@@ -1,3 +1,7 @@
+#pragma code_seg("C400")
+#pragma bss_seg("B400")
+#pragma data_seg("D400")
+#pragma const_seg("K400")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/ppu2c03b.h"
@@ -151,3 +155,7 @@ VIDEO_UPDATE( playch10 )
 	/* copy the temporary bitmap to the screen */
 	copybitmap( bitmap, tmpbitmap, 0, 0, 0, 0, &top_monitor, TRANSPARENCY_NONE, 0 );
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C286")
+#pragma bss_seg("B286")
+#pragma data_seg("D286")
+#pragma const_seg("K286")
 /***************************************************************************
 
   vidhrdw.c
@@ -300,3 +304,7 @@ VIDEO_EOF( lwings )
 {
 	buffer_spriteram_w(0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

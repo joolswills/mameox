@@ -1,3 +1,7 @@
+#pragma code_seg("C615")
+#pragma bss_seg("B615")
+#pragma data_seg("D615")
+#pragma const_seg("K615")
 /***************************************************************************
 
   World Rally Video Hardware
@@ -176,3 +180,7 @@ VIDEO_UPDATE( wrally )
 	tilemap_draw(bitmap,cliprect,pant[0],0,0);
 	gaelco_draw_sprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

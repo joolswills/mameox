@@ -1,3 +1,7 @@
+#pragma code_seg("C575")
+#pragma bss_seg("B575")
+#pragma data_seg("D575")
+#pragma const_seg("K575")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -236,3 +240,7 @@ VIDEO_UPDATE( troangel )
 	draw_background(bitmap);
 	draw_sprites(bitmap);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

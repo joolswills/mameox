@@ -1,3 +1,7 @@
+#pragma code_seg("C325")
+#pragma bss_seg("B325")
+#pragma data_seg("D325")
+#pragma const_seg("K325")
 /***************************************************************************
 
  Pang Video Hardware
@@ -257,3 +261,7 @@ VIDEO_UPDATE( pang )
 	tilemap_draw(bitmap,cliprect,bg_tilemap,0,0);
 	draw_sprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

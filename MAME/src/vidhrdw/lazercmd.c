@@ -1,3 +1,7 @@
+#pragma code_seg("C275")
+#pragma bss_seg("B275")
+#pragma data_seg("D275")
+#pragma const_seg("K275")
 /*************************************************************/
 /*                                                           */
 /* Lazer Command video handler                               */
@@ -132,3 +136,7 @@ VIDEO_UPDATE( lazercmd )
 	y = vert_scale(marker_y) - VERT_CHR; /* first line used as scratch pad */
 	plot_pattern(bitmap,x,y);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C112")
+#pragma bss_seg("B112")
+#pragma data_seg("D112")
+#pragma const_seg("K112")
 /***************************************************************************
 
   vidhrdw.c
@@ -672,3 +676,7 @@ VIDEO_UPDATE( combascb )
 
 	tilemap_draw( bitmap,cliprect,textlayer,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

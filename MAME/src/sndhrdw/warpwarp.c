@@ -1,3 +1,7 @@
+#pragma code_seg("C604")
+#pragma bss_seg("B604")
+#pragma data_seg("D604")
+#pragma const_seg("K604")
 /****************************************************************************
  *
  * warpwarp.c
@@ -224,3 +228,7 @@ void warpwarp_sh_update(void)
 	stream_update(channel,0);
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

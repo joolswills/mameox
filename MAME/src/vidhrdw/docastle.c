@@ -1,3 +1,7 @@
+#pragma code_seg("C150")
+#pragma bss_seg("B150")
+#pragma data_seg("D150")
+#pragma const_seg("K150")
 /***************************************************************************
 
   vidhrdw.c
@@ -343,3 +347,7 @@ VIDEO_UPDATE( docastle )
 	/* now redraw the portions of the background which have priority over sprites */
 	copybitmap(bitmap,tmpbitmap1,0,0,0,0,&Machine->visible_area,TRANSPARENCY_COLOR,256);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

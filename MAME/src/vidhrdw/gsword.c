@@ -1,3 +1,7 @@
+#pragma code_seg("C225")
+#pragma bss_seg("B225")
+#pragma data_seg("D225")
+#pragma const_seg("K225")
 /***************************************************************************
   Great Swordsman
 
@@ -263,3 +267,7 @@ VIDEO_UPDATE( gsword )
 	render_sprites(bitmap);
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

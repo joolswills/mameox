@@ -1,3 +1,7 @@
+#pragma code_seg("C508")
+#pragma bss_seg("B508")
+#pragma data_seg("D508")
+#pragma const_seg("K508")
 /***************************************************************************
 
 	Atari Star Wars hardware
@@ -239,3 +243,7 @@ WRITE_HANDLER( starwars_soundrst_w )
 	cpu_set_reset_line(1, PULSE_LINE);
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

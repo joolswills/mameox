@@ -1,3 +1,7 @@
+#pragma code_seg("C229")
+#pragma bss_seg("B229")
+#pragma data_seg("D229")
+#pragma const_seg("K229")
 /***************************************************************************
 
   vidhrdw.c
@@ -297,3 +301,7 @@ VIDEO_UPDATE( gunsmoke )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

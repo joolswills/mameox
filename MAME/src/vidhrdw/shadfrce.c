@@ -1,3 +1,7 @@
+#pragma code_seg("C459")
+#pragma bss_seg("B459")
+#pragma data_seg("D459")
+#pragma const_seg("K459")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -189,3 +193,7 @@ VIDEO_EOF( shadfrce )
 	/* looks like sprites are *two* frames ahead */
 	memcpy(shadfrce_spvideoram_old,shadfrce_spvideoram,spriteram_size);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

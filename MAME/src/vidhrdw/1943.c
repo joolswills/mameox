@@ -1,3 +1,7 @@
+#pragma code_seg("C1")
+#pragma bss_seg("B1")
+#pragma data_seg("D1")
+#pragma const_seg("K1")
 /***************************************************************************
 
   vidhrdw.c
@@ -381,3 +385,7 @@ VIDEO_UPDATE( 1943 )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C52")
+#pragma bss_seg("B52")
+#pragma data_seg("D52")
+#pragma const_seg("K52")
 /***************************************************************************
 
 	Battlelane
@@ -325,3 +329,7 @@ VIDEO_UPDATE( battlane )
 
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

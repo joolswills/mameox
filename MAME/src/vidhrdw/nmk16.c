@@ -1,3 +1,7 @@
+#pragma code_seg("C367")
+#pragma bss_seg("B367")
+#pragma data_seg("D367")
+#pragma const_seg("K367")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -591,3 +595,7 @@ VIDEO_EOF( nmk )
 	memcpy(spriteram_old2,spriteram_old,spriteram_size);
 	memcpy(spriteram_old,spriteram16,spriteram_size);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C535")
+#pragma bss_seg("B535")
+#pragma data_seg("D535")
+#pragma const_seg("K535")
 #include "driver.h"
 
 
@@ -354,3 +358,7 @@ VIDEO_EOF( taitol )
 
 	memcpy(buffered_spriteram,spriteram,SPRITERAM_SIZE);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

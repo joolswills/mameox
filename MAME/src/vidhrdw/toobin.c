@@ -1,3 +1,7 @@
+#pragma code_seg("C567")
+#pragma bss_seg("B567")
+#pragma data_seg("D567")
+#pragma const_seg("K567")
 /***************************************************************************
 
 	Atari Toobin' hardware
@@ -274,3 +278,7 @@ VIDEO_UPDATE( toobin )
 	/* add the alpha on top */
 	tilemap_draw(bitmap, cliprect, atarigen_alpha_tilemap, 0, 0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C244")
+#pragma bss_seg("B244")
+#pragma data_seg("D244")
+#pragma const_seg("K244")
 /******************************************************************************
 
 	Video Hardware for Nichibutsu Mahjong series.
@@ -392,3 +396,7 @@ VIDEO_UPDATE( hyhoo )
 		fillbitmap(bitmap, Machine->pens[0x0000], 0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

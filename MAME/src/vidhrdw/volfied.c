@@ -1,3 +1,7 @@
+#pragma code_seg("C600")
+#pragma bss_seg("B600")
+#pragma data_seg("D600")
+#pragma const_seg("K600")
 #include "driver.h"
 #include "state.h"
 #include "vidhrdw/generic.h"
@@ -168,3 +172,7 @@ VIDEO_UPDATE( volfied )
 
 	PC090OJ_draw_sprites(bitmap, cliprect, 0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C194")
+#pragma bss_seg("B194")
+#pragma data_seg("D194")
+#pragma const_seg("K194")
 /***************************************************************************
 
 						  -= Fuuki 16 Bit Games =-
@@ -351,3 +355,7 @@ VIDEO_UPDATE( fuuki16 )
 
 	fuuki16_draw_sprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

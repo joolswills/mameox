@@ -1,3 +1,7 @@
+#pragma code_seg("C167")
+#pragma bss_seg("B167")
+#pragma data_seg("D167")
+#pragma const_seg("K167")
 /***************************************************************************
 
   vidhrdw.c
@@ -244,3 +248,7 @@ VIDEO_EOF( exedexes )
 {
 	buffer_spriteram_w(0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

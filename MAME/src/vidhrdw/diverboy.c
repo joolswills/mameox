@@ -1,3 +1,7 @@
+#pragma code_seg("C147")
+#pragma bss_seg("B147")
+#pragma data_seg("D147")
+#pragma const_seg("K147")
 /* Diver Boy - Video Hardware */
 
 #include "driver.h"
@@ -51,3 +55,7 @@ VIDEO_UPDATE(diverboy)
 //	fillbitmap(bitmap,get_black_pen(),cliprect);
 	diverboy_drawsprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C219")
+#pragma bss_seg("B219")
+#pragma data_seg("D219")
+#pragma const_seg("K219")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -204,3 +208,7 @@ VIDEO_UPDATE( gotya )
 	draw_status_row(bitmap, 35, 14);
 	draw_status_row(bitmap, 34, 15);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

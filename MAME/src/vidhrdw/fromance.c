@@ -1,3 +1,7 @@
+#pragma code_seg("C191")
+#pragma bss_seg("B191")
+#pragma data_seg("D191")
+#pragma const_seg("K191")
 /******************************************************************************
 
 	Video Hardware for Video System Mahjong series and Pipe Dream.
@@ -427,3 +431,7 @@ VIDEO_UPDATE( pipedrm )
 	draw_sprites(bitmap,cliprect, 0);
 	draw_sprites(bitmap,cliprect, 1);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

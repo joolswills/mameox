@@ -1,3 +1,7 @@
+#pragma code_seg("C419")
+#pragma bss_seg("B419")
+#pragma data_seg("D419")
+#pragma const_seg("K419")
 /******************************************************************************
 
 Quiz DNA no Hanran (c) 1992 Face
@@ -208,3 +212,7 @@ VIDEO_UPDATE( quizdna )
 	else
 		fillbitmap(bitmap, get_black_pen(), &Machine->visible_area);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

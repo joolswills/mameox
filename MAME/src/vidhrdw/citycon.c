@@ -1,3 +1,7 @@
+#pragma code_seg("C105")
+#pragma bss_seg("B105")
+#pragma data_seg("D105")
+#pragma const_seg("K105")
 /***************************************************************************
 
   vidhrdw.c
@@ -194,3 +198,7 @@ VIDEO_UPDATE( citycon )
 	tilemap_draw(bitmap,cliprect,fg_tilemap,0,0);
 	draw_sprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C185")
+#pragma bss_seg("B185")
+#pragma data_seg("D185")
+#pragma const_seg("K185")
 /***************************************************************************
 
   vidhrdw.c
@@ -184,3 +188,7 @@ VIDEO_UPDATE( flstory )
 	}
 
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

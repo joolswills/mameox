@@ -1,3 +1,7 @@
+#pragma code_seg("C568")
+#pragma bss_seg("B568")
+#pragma data_seg("D568")
+#pragma const_seg("K568")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/taitoic.h"
@@ -200,3 +204,7 @@ VIDEO_UPDATE( topspeed )
 }
 
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

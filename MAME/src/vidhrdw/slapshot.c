@@ -1,3 +1,7 @@
+#pragma code_seg("C479")
+#pragma bss_seg("B479")
+#pragma data_seg("D479")
+#pragma const_seg("K479")
 #include "driver.h"
 #include "state.h"
 #include "vidhrdw/generic.h"
@@ -643,3 +647,7 @@ VIDEO_UPDATE( slapshot )
 	TC0480SCP_tilemap_draw(bitmap,cliprect,layer[4],0,0);
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

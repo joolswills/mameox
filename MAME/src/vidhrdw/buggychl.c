@@ -1,3 +1,7 @@
+#pragma code_seg("C82")
+#pragma bss_seg("B82")
+#pragma data_seg("D82")
+#pragma const_seg("K82")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -277,3 +281,7 @@ VIDEO_UPDATE( buggychl )
 	for (code = 0;code < 256;code++)
 		dirtychar[code] = 0;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

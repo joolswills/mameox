@@ -1,3 +1,7 @@
+#pragma code_seg("C216")
+#pragma bss_seg("B216")
+#pragma data_seg("D216")
+#pragma const_seg("K216")
 /******************************************************************************
 
 	Gomoku Narabe Renju
@@ -317,3 +321,7 @@ if (keyboard_pressed(KEYCODE_F))
 #endif
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

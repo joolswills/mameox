@@ -1,3 +1,7 @@
+#pragma code_seg("C624")
+#pragma bss_seg("B624")
+#pragma data_seg("D624")
+#pragma const_seg("K624")
 
 #include "driver.h"
 
@@ -62,3 +66,7 @@ VIDEO_UPDATE(xyonix)
 {
 	tilemap_draw(bitmap,cliprect,xyonix_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

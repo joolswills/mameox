@@ -1,3 +1,7 @@
+#pragma code_seg("C71")
+#pragma bss_seg("B71")
+#pragma data_seg("D71")
+#pragma const_seg("K71")
 /***************************************************************************
 
 	Atari Blasteroids hardware
@@ -175,3 +179,7 @@ VIDEO_UPDATE( blstroid )
 				}
 		}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

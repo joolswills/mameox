@@ -1,3 +1,7 @@
+#pragma code_seg("C55")
+#pragma bss_seg("B55")
+#pragma data_seg("D55")
+#pragma const_seg("K55")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/konamiic.h"
@@ -70,3 +74,7 @@ VIDEO_UPDATE( battlnts ){
 	K007420_sprites_draw( bitmap, cliprect );
 	K007342_tilemap_draw( bitmap, cliprect, 0, 1 | TILEMAP_IGNORE_TRANSPARENCY ,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C632")
+#pragma bss_seg("B632")
+#pragma data_seg("D632")
+#pragma const_seg("K632")
 /***************************************************************************
 
   vidhrdw.c
@@ -597,3 +601,7 @@ VIDEO_UPDATE( ixion )
 
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

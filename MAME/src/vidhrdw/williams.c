@@ -1,3 +1,7 @@
+#pragma code_seg("C611")
+#pragma bss_seg("B611")
+#pragma data_seg("D611")
+#pragma const_seg("K611")
 /***************************************************************************
 
   vidhrdw.c
@@ -955,3 +959,7 @@ static void BLITTER_NAME(int sstart, int dstart, int w, int h, int data)
 
 #endif
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C124")
+#pragma bss_seg("B124")
+#pragma data_seg("D124")
+#pragma const_seg("K124")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/konamiic.h"
@@ -89,3 +93,7 @@ VIDEO_UPDATE( crimfght )
 	tilemap_draw(bitmap,cliprect,K052109_tilemap[0],0,0);
 	K051960_sprites_draw(bitmap,cliprect,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

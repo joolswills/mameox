@@ -1,3 +1,7 @@
+#pragma code_seg("C399")
+#pragma bss_seg("B399")
+#pragma data_seg("D399")
+#pragma const_seg("K399")
 /***************************************************************************
 
   vidhrdw.c
@@ -117,3 +121,7 @@ VIDEO_UPDATE( pkunwar )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C533")
+#pragma bss_seg("B533")
+#pragma data_seg("D533")
+#pragma const_seg("K533")
 /***************************************************************************
 
    Taito F3 Video emulation - Bryan McPhail, mish@tendril.co.uk
@@ -3373,3 +3377,7 @@ if (!deb_enable || !keyboard_pressed(KEYCODE_M))
 	}
 #endif	//DEBUG_F3
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

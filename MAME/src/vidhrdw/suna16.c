@@ -1,3 +1,7 @@
+#pragma code_seg("C515")
+#pragma bss_seg("B515")
+#pragma data_seg("D515")
+#pragma const_seg("K515")
 /***************************************************************************
 
 							-=  SunA 16 Bit Games =-
@@ -219,3 +223,7 @@ VIDEO_UPDATE( suna16 )
 	fillbitmap(bitmap,get_black_pen(),&Machine->visible_area);
 	suna16_draw_sprites(bitmap);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

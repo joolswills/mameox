@@ -1,3 +1,7 @@
+#pragma code_seg("C404")
+#pragma bss_seg("B404")
+#pragma data_seg("D404")
+#pragma const_seg("K404")
 /***************************************************************************
 
   Poly-Play
@@ -87,3 +91,7 @@ void play_channel2(int data)
 		polyplay_sh_stop();
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

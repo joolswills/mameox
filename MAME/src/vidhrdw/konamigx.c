@@ -1,3 +1,7 @@
+#pragma code_seg("C268")
+#pragma bss_seg("B268")
+#pragma data_seg("D268")
+#pragma const_seg("K268")
 /*
  * vidhrdw/konamigx.c - Konami GX video hardware (here there be dragons)
  *
@@ -463,3 +467,7 @@ WRITE32_HANDLER( konamigx_sprbank_w )
 {
 	logerror("Write %x (mask %x) to spritebank at %x\n", data, mem_mask, offset);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

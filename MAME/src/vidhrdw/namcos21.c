@@ -1,3 +1,7 @@
+#pragma code_seg("C351")
+#pragma bss_seg("B351")
+#pragma data_seg("D351")
+#pragma const_seg("K351")
 /***************************************************************************
 
 Namco System 21 Video Hardware
@@ -513,3 +517,7 @@ VIDEO_UPDATE( namcos21_default )
 		}
 	}
 } /* namcos21_default */
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

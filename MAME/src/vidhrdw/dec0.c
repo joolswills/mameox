@@ -1,3 +1,7 @@
+#pragma code_seg("C140")
+#pragma bss_seg("B140")
+#pragma data_seg("D140")
+#pragma const_seg("K140")
 /***************************************************************************
 
   Dec0 Video emulation - Bryan McPhail, mish@tendril.co.uk
@@ -930,3 +934,7 @@ VIDEO_START( dec0 )
 }
 
 /******************************************************************************/
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

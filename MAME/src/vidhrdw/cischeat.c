@@ -1,3 +1,7 @@
+#pragma code_seg("C104")
+#pragma bss_seg("B104")
+#pragma data_seg("D104")
+#pragma const_seg("K104")
 /***************************************************************************
 
 							-= Jaleco Driving Games =-
@@ -1315,3 +1319,7 @@ if ( keyboard_pressed(KEYCODE_Z) || keyboard_pressed(KEYCODE_X) )
 
 	megasys1_active_layers = megasys1_active_layers1;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

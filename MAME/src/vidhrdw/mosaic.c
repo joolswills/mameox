@@ -1,3 +1,7 @@
+#pragma code_seg("C332")
+#pragma bss_seg("B332")
+#pragma data_seg("D332")
+#pragma const_seg("K332")
 /***************************************************************************
 
   vidhrdw.c
@@ -90,3 +94,7 @@ VIDEO_UPDATE( mosaic )
 	tilemap_draw(bitmap,cliprect,bg_tilemap,0,0);
 	tilemap_draw(bitmap,cliprect,fg_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

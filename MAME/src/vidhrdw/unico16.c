@@ -1,3 +1,7 @@
+#pragma code_seg("C589")
+#pragma bss_seg("B589")
+#pragma data_seg("D589")
+#pragma const_seg("K589")
 /***************************************************************************
 
 						  -= Unico 16 Bit Games =-
@@ -298,3 +302,7 @@ if ( keyboard_pressed(KEYCODE_Z) || keyboard_pressed(KEYCODE_X) )
 			cliprect);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

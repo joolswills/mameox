@@ -1,3 +1,7 @@
+#pragma code_seg("C542")
+#pragma bss_seg("B542")
+#pragma data_seg("D542")
+#pragma const_seg("K542")
 /* Tao Taido Video Hardware */
 
 /*
@@ -245,3 +249,7 @@ VIDEO_EOF( taotaido )
 	memcpy(taotaido_spriteram_older,taotaido_spriteram_old,0x2000);
 	memcpy(taotaido_spriteram_old,taotaido_spriteram,0x2000);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

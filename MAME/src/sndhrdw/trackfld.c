@@ -1,3 +1,7 @@
+#pragma code_seg("C572")
+#pragma bss_seg("B572")
+#pragma data_seg("D572")
+#pragma const_seg("K572")
 #include "driver.h"
 
 
@@ -155,3 +159,7 @@ WRITE_HANDLER( hyprolyb_ADPCM_data_w )
     if (end > start)
         ADPCM_play(0,start,(end - start)*2);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

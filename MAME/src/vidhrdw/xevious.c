@@ -1,3 +1,7 @@
+#pragma code_seg("C619")
+#pragma bss_seg("B619")
+#pragma data_seg("D619")
+#pragma const_seg("K619")
 /***************************************************************************
 
   vidhrdw.c
@@ -451,3 +455,7 @@ VIDEO_UPDATE( xevious )
 	draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,fg_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

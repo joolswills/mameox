@@ -1,3 +1,7 @@
+#pragma code_seg("C190")
+#pragma bss_seg("B190")
+#pragma data_seg("D190")
+#pragma const_seg("K190")
 /******************************************************************************
 
 	Video Hardware for Video System Mahjong series.
@@ -644,3 +648,7 @@ VIDEO_UPDATE( fromanc2 )
 	 	tilemap_draw(bitmap,cliprect, fromanc2_tilemap[fromanc2_dispvram][3], 0, 0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C481")
+#pragma bss_seg("B481")
+#pragma data_seg("D481")
+#pragma const_seg("K481")
 /***************************************************************************
 
 	SNK 68000 video routines
@@ -315,3 +319,7 @@ VIDEO_UPDATE( searchar )
 	tilemap_draw(bitmap,cliprect,fix_tilemap,0,0);
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

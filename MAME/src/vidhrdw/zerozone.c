@@ -1,3 +1,7 @@
+#pragma code_seg("C633")
+#pragma bss_seg("B633")
+#pragma data_seg("D633")
+#pragma const_seg("K633")
 /***************************************************************************
 
   vidhrdw/zerozone.c
@@ -53,3 +57,7 @@ VIDEO_UPDATE( zerozone )
 {
 	tilemap_draw(bitmap,cliprect,zerozone_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

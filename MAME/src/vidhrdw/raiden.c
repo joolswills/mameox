@@ -1,3 +1,7 @@
+#pragma code_seg("C420")
+#pragma bss_seg("B420")
+#pragma data_seg("D420")
+#pragma const_seg("K420")
 
 #include "driver.h"
 #include "vidhrdw/generic.h"
@@ -190,3 +194,7 @@ VIDEO_UPDATE( raiden )
 	/* Text layer */
 	tilemap_draw(bitmap,cliprect,tx_layer,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

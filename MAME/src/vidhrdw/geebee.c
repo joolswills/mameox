@@ -1,3 +1,7 @@
+#pragma code_seg("C210")
+#pragma bss_seg("B210")
+#pragma data_seg("D210")
+#pragma const_seg("K210")
 /****************************************************************************
  *
  * geebee.c
@@ -190,3 +194,7 @@ VIDEO_UPDATE( geebee )
 				geebee_plot(bitmap,cliprect,geebee_ball_h+x+5,geebee_ball_v+y-2);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

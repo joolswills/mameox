@@ -1,3 +1,7 @@
+#pragma code_seg("C239")
+#pragma bss_seg("B239")
+#pragma data_seg("D239")
+#pragma const_seg("K239")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -151,3 +155,7 @@ VIDEO_UPDATE( higemaru )
 				&Machine->visible_area,TRANSPARENCY_PEN,15);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

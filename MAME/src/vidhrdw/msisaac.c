@@ -1,3 +1,7 @@
+#pragma code_seg("C339")
+#pragma bss_seg("B339")
+#pragma data_seg("D339")
+#pragma const_seg("K339")
 /*
 *	Video Driver for Metal Soldier Isaac II (1985)
 */
@@ -260,3 +264,7 @@ VIDEO_UPDATE( msisaac )
 	tilemap_draw(bitmap,cliprect,foreground, 0,0);
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

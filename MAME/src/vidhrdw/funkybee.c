@@ -1,3 +1,7 @@
+#pragma code_seg("C192")
+#pragma bss_seg("B192")
+#pragma data_seg("D192")
+#pragma const_seg("K192")
 /***************************************************************************
 
   vidhrdw.c
@@ -160,3 +164,7 @@ VIDEO_UPDATE( funkybee )
 	}
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

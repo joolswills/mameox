@@ -1,3 +1,7 @@
+#pragma code_seg("C280")
+#pragma bss_seg("B280")
+#pragma data_seg("D280")
+#pragma const_seg("K280")
 /*******************************************************************************
 
 	Todo:
@@ -435,3 +439,7 @@ VIDEO_UPDATE( liberate )
 	liberate_drawsprites(bitmap);
 	tilemap_draw(bitmap,cliprect,fix_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C565")
+#pragma bss_seg("B565")
+#pragma data_seg("D565")
+#pragma const_seg("K565")
 /***************************************************************************
 
   Functions to emulate the video hardware of some Toaplan games,
@@ -1590,3 +1594,7 @@ VIDEO_EOF( batrider_0 )
 	memcpy(spriteram16_next[0],spriteram16_new[0],TOAPLAN2_SPRITERAM_SIZE);
 	cpu_set_irq_line(0, MC68000_IRQ_4, HOLD_LINE);  /* Frame done */
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

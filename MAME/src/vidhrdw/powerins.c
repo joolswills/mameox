@@ -1,3 +1,7 @@
+#pragma code_seg("C409")
+#pragma bss_seg("B409")
+#pragma data_seg("D409")
+#pragma const_seg("K409")
 /***************************************************************************
 
 						  -= Power Instinct =-
@@ -380,3 +384,7 @@ if (keyboard_pressed(KEYCODE_Z))
 	if (layers_ctrl&8)		powerins_draw_sprites(bitmap,cliprect);
 	if (layers_ctrl&2)		tilemap_draw(bitmap,cliprect, tilemap_1, 0, 0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

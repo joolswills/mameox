@@ -1,3 +1,7 @@
+#pragma code_seg("C538")
+#pragma bss_seg("B538")
+#pragma data_seg("D538")
+#pragma const_seg("K538")
 /***************************************************************************
 
 Functions to emulate the video hardware of the machine.
@@ -422,3 +426,7 @@ VIDEO_UPDATE( taitoair )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

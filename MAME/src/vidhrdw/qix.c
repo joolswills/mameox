@@ -1,3 +1,7 @@
+#pragma code_seg("C417")
+#pragma bss_seg("B417")
+#pragma data_seg("D417")
+#pragma const_seg("K417")
 /***************************************************************************
 
 	Taito Qix hardware
@@ -243,3 +247,7 @@ VIDEO_UPDATE( qix )
 	for (y = cliprect->min_y; y <= cliprect->max_y; y++)
 		draw_scanline8(bitmap, 0, y, 256, &videoram[y * 256], pens, -1);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

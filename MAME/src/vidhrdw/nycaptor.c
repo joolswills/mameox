@@ -1,3 +1,7 @@
+#pragma code_seg("C369")
+#pragma bss_seg("B369")
+#pragma data_seg("D369")
+#pragma const_seg("K369")
 /***************************************************************************
 
   vidhrdw.c
@@ -298,3 +302,7 @@ VIDEO_UPDATE( nycaptor )
  	draw_crosshair(bitmap,readinputport(5),readinputport(6),cliprect);
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

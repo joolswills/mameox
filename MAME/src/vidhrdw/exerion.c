@@ -1,3 +1,7 @@
+#pragma code_seg("C168")
+#pragma bss_seg("B168")
+#pragma data_seg("D168")
+#pragma const_seg("K168")
 /***************************************************************************
 
 	Jaleco Exerion
@@ -457,3 +461,7 @@ VIDEO_UPDATE( exerion )
 				cliprect, TRANSPARENCY_PEN, 0);
 		}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

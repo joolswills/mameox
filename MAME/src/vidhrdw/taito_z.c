@@ -1,3 +1,7 @@
+#pragma code_seg("C537")
+#pragma bss_seg("B537")
+#pragma data_seg("D537")
+#pragma const_seg("K537")
 #include "driver.h"
 #include "state.h"
 #include "vidhrdw/generic.h"
@@ -1120,3 +1124,7 @@ VIDEO_UPDATE( dblaxle )
 }
 
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

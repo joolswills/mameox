@@ -1,3 +1,7 @@
+#pragma code_seg("C245")
+#pragma bss_seg("B245")
+#pragma data_seg("D245")
+#pragma const_seg("K245")
 /***************************************************************************
 
   vidhrdw.c
@@ -312,3 +316,7 @@ VIDEO_UPDATE( roadf )
 				&Machine->visible_area,TRANSPARENCY_COLOR,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

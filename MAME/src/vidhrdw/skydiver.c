@@ -1,3 +1,7 @@
+#pragma code_seg("C474")
+#pragma bss_seg("B474")
+#pragma data_seg("D474")
+#pragma const_seg("K474")
 /***************************************************************************
 
 	Atari Sky Diver hardware
@@ -203,3 +207,7 @@ VIDEO_UPDATE( skydiver )
 	draw_sprites(bitmap, cliprect);
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

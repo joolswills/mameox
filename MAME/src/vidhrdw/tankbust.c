@@ -1,3 +1,7 @@
+#pragma code_seg("C541")
+#pragma bss_seg("B541")
+#pragma data_seg("D541")
+#pragma const_seg("K541")
 /*
 *	Video Driver for Tank Busters
 */
@@ -265,3 +269,7 @@ VIDEO_UPDATE( tankbust )
 
 	tilemap_draw(bitmap, cliprect, txt_tilemap, 0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

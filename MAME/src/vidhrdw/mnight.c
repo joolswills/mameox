@@ -1,3 +1,7 @@
+#pragma code_seg("C328")
+#pragma bss_seg("B328")
+#pragma data_seg("D328")
+#pragma const_seg("K328")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -215,3 +219,7 @@ VIDEO_UPDATE( mnight )
 	}
 
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C414")
+#pragma bss_seg("B414")
+#pragma data_seg("D414")
+#pragma const_seg("K414")
 /***************************************************************************
   Psychic 5
 
@@ -625,3 +629,7 @@ VIDEO_UPDATE( psychic5 )
 	}
 	psychic5_draw_foreground(bitmap);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

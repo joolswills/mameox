@@ -1,3 +1,7 @@
+#pragma code_seg("C494")
+#pragma bss_seg("B494")
+#pragma data_seg("D494")
+#pragma const_seg("K494")
 /*
 Super Cross II (JPN Ver.)
 (c)1986 GM Shoji
@@ -177,3 +181,7 @@ VIDEO_UPDATE( sprcros2 )
 	sprcros2_draw_sprites(bitmap,cliprect);
 	tilemap_draw( bitmap,cliprect,sprcros2_fgtilemap,0,0 );
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

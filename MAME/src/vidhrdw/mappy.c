@@ -1,3 +1,7 @@
+#pragma code_seg("C297")
+#pragma bss_seg("B297")
+#pragma data_seg("D297")
+#pragma const_seg("K297")
 /***************************************************************************
 
   vidhrdw.c
@@ -395,3 +399,7 @@ VIDEO_UPDATE( mappy )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

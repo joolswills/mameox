@@ -1,3 +1,7 @@
+#pragma code_seg("C110")
+#pragma bss_seg("B110")
+#pragma data_seg("D110")
+#pragma const_seg("K110")
 /***************************************************************************
 
    Caveman Ninja Video emulation - Bryan McPhail, mish@tendril.co.uk
@@ -535,3 +539,7 @@ VIDEO_UPDATE( mutantf )
 	}
 	deco16_tilemap_1_draw(bitmap,cliprect,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C254")
+#pragma bss_seg("B254")
+#pragma data_seg("D254")
+#pragma const_seg("K254")
 /***************************************************************************
 
   vidhrdw.c
@@ -271,3 +275,7 @@ VIDEO_UPDATE( jackal )
 	jackal_draw_sprites(bitmap,ss,0x0f5,3);
 	jackal_draw_sprites(bitmap,sr,0x500,1);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

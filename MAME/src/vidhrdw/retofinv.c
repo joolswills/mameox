@@ -1,3 +1,7 @@
+#pragma code_seg("C430")
+#pragma bss_seg("B430")
+#pragma data_seg("D430")
+#pragma const_seg("K430")
 /***************************************************************************
 
   vidhrdw.c
@@ -406,3 +410,7 @@ VIDEO_UPDATE( retofinv )
 	retofinv_render_sprites(bitmap);
 	retofinv_draw_foreground(bitmap);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

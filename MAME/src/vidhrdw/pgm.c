@@ -1,3 +1,7 @@
+#pragma code_seg("C393")
+#pragma bss_seg("B393")
+#pragma data_seg("D393")
+#pragma const_seg("K393")
 /*** Video *******************************************************************/
 /* see drivers/pgm.c for notes on where improvements can be made */
 
@@ -314,3 +318,7 @@ VIDEO_UPDATE( pgm )
 	tilemap_set_scrollx(pgm_tx_tilemap,0, pgm_videoregs[0x6000/2]); // Check
 	tilemap_draw(bitmap,cliprect,pgm_tx_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

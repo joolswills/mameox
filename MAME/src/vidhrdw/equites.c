@@ -1,3 +1,7 @@
+#pragma code_seg("C163")
+#pragma bss_seg("B163")
+#pragma data_seg("D163")
+#pragma const_seg("K163")
 /*******************************************************************************
 
 Equites           (c) 1984 Alpha Denshi Co./Sega
@@ -703,3 +707,7 @@ WRITE16_HANDLER(splndrbt_bgcolor_w)
 }
 
 /******************************************************************************/
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

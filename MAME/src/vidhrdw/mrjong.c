@@ -1,3 +1,7 @@
+#pragma code_seg("C337")
+#pragma bss_seg("B337")
+#pragma data_seg("D337")
+#pragma const_seg("K337")
 /***************************************************************************
 
   vidhrdw.c
@@ -150,3 +154,7 @@ VIDEO_UPDATE( mrjong )
 				&Machine->visible_area, TRANSPARENCY_PEN, 0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

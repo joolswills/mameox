@@ -1,3 +1,7 @@
+#pragma code_seg("C213")
+#pragma bss_seg("B213")
+#pragma data_seg("D213")
+#pragma const_seg("K213")
 
 
 /***************************************************************************
@@ -265,3 +269,7 @@ VIDEO_UPDATE( gladiatr )
 		render_text( bitmap );
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

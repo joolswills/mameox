@@ -1,3 +1,7 @@
+#pragma code_seg("C440")
+#pragma bss_seg("B440")
+#pragma data_seg("D440")
+#pragma const_seg("K440")
 /***************************************************************************
 
   vidhrdw/rpunch.c
@@ -338,3 +342,7 @@ VIDEO_UPDATE( rpunch )
 	if (rpunch_bitmapram)
 		draw_bitmap(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

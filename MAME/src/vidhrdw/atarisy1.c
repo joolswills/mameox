@@ -1,3 +1,7 @@
+#pragma code_seg("C39")
+#pragma bss_seg("B39")
+#pragma data_seg("D39")
+#pragma const_seg("K39")
 /***************************************************************************
 
 	Atari System 1 hardware
@@ -664,3 +668,7 @@ static int get_bank(UINT8 prom1, UINT8 prom2, int bpp)
 	/* set the entry and return it */
 	return bank_gfx[bpp - 4][bank_index] = gfx_index;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

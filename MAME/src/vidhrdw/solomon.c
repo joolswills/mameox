@@ -1,3 +1,7 @@
+#pragma code_seg("C483")
+#pragma bss_seg("B483")
+#pragma data_seg("D483")
+#pragma const_seg("K483")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "state.h"
@@ -174,3 +178,7 @@ VIDEO_UPDATE( solomon )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

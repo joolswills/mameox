@@ -1,3 +1,7 @@
+#pragma code_seg("C412")
+#pragma bss_seg("B412")
+#pragma data_seg("D412")
+#pragma const_seg("K412")
 /*
 
 Psikyo PS6807 (PS4):
@@ -184,3 +188,7 @@ VIDEO_START( psikyo4 )
 	screen = 0;
 	return 0;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C344")
+#pragma bss_seg("B344")
+#pragma data_seg("D344")
+#pragma const_seg("K344")
 /*
  * vidhrdw/mystwarr.c - Konami "Pre-GX" video hardware (here there be dragons)
  *
@@ -802,3 +806,7 @@ VIDEO_UPDATE(martchmp) //*
 
 	K053247GP_sprites_draw(bitmap, cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C171")
+#pragma bss_seg("B171")
+#pragma data_seg("D171")
+#pragma const_seg("K171")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -117,3 +121,7 @@ VIDEO_UPDATE( exprraid )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

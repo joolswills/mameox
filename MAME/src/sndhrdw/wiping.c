@@ -1,3 +1,7 @@
+#pragma code_seg("C613")
+#pragma bss_seg("B613")
+#pragma data_seg("D613")
+#pragma const_seg("K613")
 /***************************************************************************
 
 	Wiping sound driver (quick hack of the Namco sound driver)
@@ -252,3 +256,7 @@ WRITE_HANDLER( wiping_sound_w )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

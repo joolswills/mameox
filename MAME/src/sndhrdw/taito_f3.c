@@ -1,3 +1,7 @@
+#pragma code_seg("C533")
+#pragma bss_seg("B533")
+#pragma data_seg("D533")
+#pragma const_seg("K533")
 #include "driver.h"
 
 static int counter,vector_reg,imr_status;
@@ -230,3 +234,7 @@ WRITE16_HANDLER(es5510_dsp_w)
 			break;
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

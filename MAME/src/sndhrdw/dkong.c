@@ -1,3 +1,7 @@
+#pragma code_seg("C148")
+#pragma bss_seg("B148")
+#pragma data_seg("D148")
+#pragma const_seg("K148")
 #include "driver.h"
 #include "cpu/i8039/i8039.h"
 
@@ -123,3 +127,7 @@ WRITE_HANDLER( dkongjr_sh_walk_w )
 		walk = data;
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

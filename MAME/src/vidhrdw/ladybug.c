@@ -1,3 +1,7 @@
+#pragma code_seg("C272")
+#pragma bss_seg("B272")
+#pragma data_seg("D272")
+#pragma const_seg("K272")
 /***************************************************************************
 
   vidhrdw.c
@@ -210,3 +214,7 @@ VIDEO_UPDATE( ladybug )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C627")
+#pragma bss_seg("B627")
+#pragma data_seg("D627")
+#pragma const_seg("K627")
 /***************************************************************************
 
   vidhrdw.c
@@ -173,3 +177,7 @@ VIDEO_UPDATE( yiear )
 			&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

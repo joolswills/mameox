@@ -1,3 +1,7 @@
+#pragma code_seg("C158")
+#pragma bss_seg("B158")
+#pragma data_seg("D158")
+#pragma const_seg("K158")
 /*******************************************************************************
 
 Dr. Micro (c) 1983 Sanritsu
@@ -169,3 +173,7 @@ VIDEO_UPDATE( drmicro )
 	}
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

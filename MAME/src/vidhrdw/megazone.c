@@ -1,3 +1,7 @@
+#pragma code_seg("C311")
+#pragma bss_seg("B311")
+#pragma data_seg("D311")
+#pragma const_seg("K311")
 /***************************************************************************
 
   vidhrdw.c
@@ -231,3 +235,7 @@ VIDEO_UPDATE( megazone )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

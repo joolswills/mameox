@@ -1,3 +1,7 @@
+#pragma code_seg("C610")
+#pragma bss_seg("B610")
+#pragma data_seg("D610")
+#pragma const_seg("K610")
 #include "driver.h"
 #include "state.h"
 #include "vidhrdw/generic.h"
@@ -815,3 +819,7 @@ VIDEO_UPDATE( wgp )
 #endif
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

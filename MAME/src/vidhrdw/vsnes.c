@@ -1,3 +1,7 @@
+#pragma code_seg("C601")
+#pragma bss_seg("B601")
+#pragma data_seg("D601")
+#pragma const_seg("K601")
 #include "driver.h"
 #include "vidhrdw/ppu2c03b.h"
 
@@ -82,3 +86,7 @@ VIDEO_UPDATE( vsdual )
 	ppu2c03b_render( 0, bitmap, 0, 0, 0, 0 );
 	ppu2c03b_render( 1, bitmap, 0, 0, 32*8, 0 );
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

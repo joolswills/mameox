@@ -1,3 +1,7 @@
+#pragma code_seg("C226")
+#pragma bss_seg("B226")
+#pragma data_seg("D226")
+#pragma const_seg("K226")
 /* Gumbo Vidhrdw */
 
 #include "driver.h"
@@ -56,3 +60,7 @@ VIDEO_UPDATE( gumbo )
 	tilemap_draw(bitmap,cliprect,gumbo_bg_tilemap,0,0);
 	tilemap_draw(bitmap,cliprect,gumbo_fg_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

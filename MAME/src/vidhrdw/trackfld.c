@@ -1,3 +1,7 @@
+#pragma code_seg("C572")
+#pragma bss_seg("B572")
+#pragma data_seg("D572")
+#pragma const_seg("K572")
 /***************************************************************************
 
   vidhrdw.c
@@ -234,3 +238,7 @@ VIDEO_UPDATE( trackfld )
 				&Machine->visible_area,TRANSPARENCY_COLOR,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

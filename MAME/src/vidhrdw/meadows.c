@@ -1,3 +1,7 @@
+#pragma code_seg("C309")
+#pragma bss_seg("B309")
+#pragma data_seg("D309")
+#pragma const_seg("K309")
 /***************************************************************************
 
 	Meadows S2650 driver
@@ -114,3 +118,7 @@ VIDEO_UPDATE( meadows )
 	if (Machine->gfx[1])
 		draw_sprites(bitmap, cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C519")
+#pragma bss_seg("B519")
+#pragma data_seg("D519")
+#pragma const_seg("K519")
 /***************************************************************************
 
   vidhrdw.c
@@ -293,3 +297,7 @@ VIDEO_UPDATE( superpac )
 	/* Color 31 still has priority over that (ghost eyes in Pac 'n Pal) */
 	draw_sprites(bitmap, &Machine->visible_area, TRANSPARENCY_PENS);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

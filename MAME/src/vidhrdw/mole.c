@@ -1,3 +1,7 @@
+#pragma code_seg("C329")
+#pragma bss_seg("B329")
+#pragma data_seg("D329")
+#pragma const_seg("K329")
 /***************************************************************************
   vidhrdw/mole.c
   Functions to emulate the video hardware of Mole Attack!.
@@ -81,3 +85,7 @@ VIDEO_UPDATE( moleattack ){
 
 	copybitmap(bitmap,tmpbitmap,0,0,0,0,&Machine->visible_area,TRANSPARENCY_NONE,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

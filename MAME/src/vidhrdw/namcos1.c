@@ -1,3 +1,7 @@
+#pragma code_seg("C349")
+#pragma bss_seg("B349")
+#pragma data_seg("D349")
+#pragma const_seg("K349")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -724,3 +728,7 @@ VIDEO_UPDATE( namcos1 )
 
 	temp = sp_backbuffer; sp_backbuffer = sp_updatebuffer; sp_updatebuffer = temp; // mature backbuffer
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

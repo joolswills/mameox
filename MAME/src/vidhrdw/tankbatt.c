@@ -1,3 +1,7 @@
+#pragma code_seg("C540")
+#pragma bss_seg("B540")
+#pragma data_seg("D540")
+#pragma const_seg("K540")
 /***************************************************************************
 
   vidhrdw.c
@@ -124,3 +128,7 @@ VIDEO_UPDATE( tankbatt )
 
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

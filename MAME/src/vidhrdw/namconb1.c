@@ -1,3 +1,7 @@
+#pragma code_seg("C347")
+#pragma bss_seg("B347")
+#pragma data_seg("D347")
+#pragma const_seg("K347")
 /* vidhrdw/namconb1.c */
 
 #include "driver.h"
@@ -354,3 +358,7 @@ VIDEO_START( namconb2 )
 
 	return 0;
 } /* namconb2_vh_start */
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C468")
+#pragma bss_seg("B468")
+#pragma data_seg("D468")
+#pragma const_seg("K468")
 /***************************************************************************
 
   vidhrdw.c
@@ -296,3 +300,7 @@ VIDEO_EOF( sidearms )
 {
 	buffer_spriteram_w(0, 0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C510")
+#pragma bss_seg("B510")
+#pragma data_seg("D510")
+#pragma const_seg("K510")
 /***************************************************************************
 
   vidhrdw.c
@@ -309,3 +313,7 @@ VIDEO_UPDATE( stfight )
 
 	tilemap_draw(bitmap,cliprect,tx_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

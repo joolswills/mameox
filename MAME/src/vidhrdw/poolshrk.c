@@ -1,3 +1,7 @@
+#pragma code_seg("C405")
+#pragma bss_seg("B405")
+#pragma data_seg("D405")
+#pragma const_seg("K405")
 /***************************************************************************
 
 Atari Poolshark video emulation
@@ -62,3 +66,7 @@ VIDEO_UPDATE( poolshrk )
 
 	tilemap_draw(bitmap, cliprect, tilemap, 0, 0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

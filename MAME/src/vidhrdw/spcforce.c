@@ -1,3 +1,7 @@
+#pragma code_seg("C487")
+#pragma bss_seg("B487")
+#pragma data_seg("D487")
+#pragma const_seg("K487")
 /***************************************************************************
 
   vidhrdw.c
@@ -59,3 +63,7 @@ VIDEO_UPDATE( spcforce )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C428")
+#pragma bss_seg("B428")
+#pragma data_seg("D428")
+#pragma const_seg("K428")
 /***************************************************************************
 
 	Atari "Round" hardware
@@ -177,3 +181,7 @@ VIDEO_UPDATE( relief )
 				}
 		}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C230")
+#pragma bss_seg("B230")
+#pragma data_seg("D230")
+#pragma const_seg("K230")
 #include "driver.h"
 #include "cpu/i8039/i8039.h"
 
@@ -84,3 +88,7 @@ WRITE_HANDLER( gyruss_i8039_irq_w )
 {
 	cpu_set_irq_line(3, 0, PULSE_LINE);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

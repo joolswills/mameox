@@ -1,3 +1,7 @@
+#pragma code_seg("C574")
+#pragma bss_seg("B574")
+#pragma data_seg("D574")
+#pragma const_seg("K574")
 /***************************************************************************
 
 Atari Triple Hunt video emulation
@@ -155,3 +159,7 @@ VIDEO_UPDATE( triplhnt )
 
 	draw_crosshair(bitmap, cross_x, cross_y, cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

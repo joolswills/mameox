@@ -1,3 +1,7 @@
+#pragma code_seg("C157")
+#pragma bss_seg("B157")
+#pragma data_seg("D157")
+#pragma const_seg("K157")
 /***************************************************************************
 
 	Model Racing Dribbling hardware
@@ -83,3 +87,7 @@ VIDEO_UPDATE( dribling )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

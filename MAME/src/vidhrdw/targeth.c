@@ -1,3 +1,7 @@
+#pragma code_seg("C543")
+#pragma bss_seg("B543")
+#pragma data_seg("D543")
+#pragma const_seg("K543")
 /***************************************************************************
 
   Target Hits Video Hardware
@@ -169,3 +173,7 @@ VIDEO_UPDATE( targeth )
 		draw_crosshair(bitmap, posx - 0x17, posy + 1, cliprect);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C383")
+#pragma bss_seg("B383")
+#pragma data_seg("D383")
+#pragma const_seg("K383")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 
@@ -92,3 +96,7 @@ VIDEO_UPDATE( overdriv )
 
 	K053247_sprites_draw(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

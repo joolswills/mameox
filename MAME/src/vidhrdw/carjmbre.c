@@ -1,3 +1,7 @@
+#pragma code_seg("C88")
+#pragma bss_seg("B88")
+#pragma data_seg("D88")
+#pragma const_seg("K88")
 /*
 Car Jamboree
 Omori Electric CAD (OEC) 1981
@@ -147,3 +151,7 @@ VIDEO_UPDATE( carjmbre )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

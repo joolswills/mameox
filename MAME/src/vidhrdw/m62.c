@@ -1,3 +1,7 @@
+#pragma code_seg("C288")
+#pragma bss_seg("B288")
+#pragma data_seg("D288")
+#pragma const_seg("K288")
 /***************************************************************************
 
 Video Hardware for Irem Games:
@@ -1226,3 +1230,7 @@ VIDEO_UPDATE( youjyudn )
 	youjyudn_draw_background(bitmap,1);
 	youjyudn_draw_text(bitmap);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C450")
+#pragma bss_seg("B450")
+#pragma data_seg("D450")
+#pragma const_seg("K450")
 /***********************************************************************************************
 
 	Sega System C/C2 Driver
@@ -1395,3 +1399,7 @@ XP = X Position of Sprite
 
 */
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

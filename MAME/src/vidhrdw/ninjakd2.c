@@ -1,3 +1,7 @@
+#pragma code_seg("C362")
+#pragma bss_seg("B362")
+#pragma data_seg("D362")
+#pragma const_seg("K362")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -208,3 +212,7 @@ VIDEO_UPDATE( ninjakd2 )
 	}
 
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

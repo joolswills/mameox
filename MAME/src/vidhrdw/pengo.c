@@ -1,3 +1,7 @@
+#pragma code_seg("C392")
+#pragma bss_seg("B392")
+#pragma data_seg("D392")
+#pragma const_seg("K392")
 /*************************************************************************
 
 	Sega Pengo
@@ -390,3 +394,7 @@ VIDEO_UPDATE( vanvan )
 				&spriteclip,TRANSPARENCY_PEN,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

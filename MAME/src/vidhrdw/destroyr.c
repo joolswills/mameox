@@ -1,3 +1,7 @@
+#pragma code_seg("C145")
+#pragma bss_seg("B145")
+#pragma data_seg("D145")
+#pragma const_seg("K145")
 /***************************************************************************
 
 Atari Destroyer video emulation
@@ -87,3 +91,7 @@ VIDEO_UPDATE( destroyr )
 			plot_pixel(bitmap, i, destroyr_cursor ^ 0xff, Machine->pens[7]);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C429")
+#pragma bss_seg("B429")
+#pragma data_seg("D429")
+#pragma const_seg("K429")
 /***************************************************************************
 
 	Renegade Video Hardware
@@ -139,3 +143,7 @@ VIDEO_UPDATE( renegade )
 	draw_sprites( bitmap,cliprect );
 	tilemap_draw( bitmap,cliprect,fg_tilemap,0 ,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

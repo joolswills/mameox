@@ -1,3 +1,7 @@
+#pragma code_seg("C291")
+#pragma bss_seg("B291")
+#pragma data_seg("D291")
+#pragma const_seg("K291")
 /*****************************************************************************
 
 	Irem M90 system.  There is 1 video chip - NANAO GA-25, it produces
@@ -262,3 +266,7 @@ VIDEO_UPDATE( m90 )
 
 	m90_drawsprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

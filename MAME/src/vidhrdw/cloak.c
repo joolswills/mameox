@@ -1,3 +1,7 @@
+#pragma code_seg("C107")
+#pragma bss_seg("B107")
+#pragma data_seg("D107")
+#pragma const_seg("K107")
 /***************************************************************************
 
 	Atari Cloak & Dagger hardware
@@ -245,3 +249,7 @@ VIDEO_UPDATE( cloak )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C361")
+#pragma bss_seg("B361")
+#pragma data_seg("D361")
+#pragma const_seg("K361")
 #include "driver.h"
 #include "news.h"
 
@@ -102,3 +106,7 @@ VIDEO_UPDATE( news )
 	tilemap_draw(bitmap,cliprect,bg_tilemap,0,0);
 	tilemap_draw(bitmap,cliprect,fg_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

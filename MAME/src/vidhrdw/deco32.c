@@ -1,3 +1,7 @@
+#pragma code_seg("C142")
+#pragma bss_seg("B142")
+#pragma data_seg("D142")
+#pragma const_seg("K142")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "state.h"
@@ -1307,3 +1311,7 @@ if (!keyboard_pressed(KEYCODE_R))	tilemap_draw(bitmap,cliprect,pf1_tilemap,0,0);
 
 //	print_debug_info();
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

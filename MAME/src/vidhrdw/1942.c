@@ -1,3 +1,7 @@
+#pragma code_seg("C0")
+#pragma bss_seg("B0")
+#pragma data_seg("D0")
+#pragma const_seg("K0")
 /***************************************************************************
 
   vidhrdw.c
@@ -249,3 +253,7 @@ VIDEO_UPDATE( 1942 )
 	draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,fg_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

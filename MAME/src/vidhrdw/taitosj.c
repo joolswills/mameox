@@ -1,3 +1,7 @@
+#pragma code_seg("C539")
+#pragma bss_seg("B539")
+#pragma data_seg("D539")
+#pragma const_seg("K539")
 /***************************************************************************
 
   vidhrdw.c
@@ -842,3 +846,7 @@ VIDEO_UPDATE( taitosj )
 
 	/*check_plane_plane_collision();*/	/*not implemented !!!*/
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

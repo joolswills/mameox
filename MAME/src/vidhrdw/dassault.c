@@ -1,3 +1,7 @@
+#pragma code_seg("C131")
+#pragma bss_seg("B131")
+#pragma data_seg("D131")
+#pragma const_seg("K131")
 /***************************************************************************
 
    Desert Assault Video emulation - Bryan McPhail, mish@tendril.co.uk
@@ -197,3 +201,7 @@ VIDEO_UPDATE( dassault )
 	dassault_drawsprites(bitmap,deco16_priority);
 	deco16_tilemap_1_draw(bitmap,cliprect,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

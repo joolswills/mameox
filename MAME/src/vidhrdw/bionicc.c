@@ -1,3 +1,7 @@
+#pragma code_seg("C62")
+#pragma bss_seg("B62")
+#pragma data_seg("D62")
+#pragma const_seg("K62")
 /***************************************************************************
 
 Bionic Commando Video Hardware
@@ -239,3 +243,7 @@ VIDEO_EOF( bionicc )
 {
 	buffer_spriteram16_w(0,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

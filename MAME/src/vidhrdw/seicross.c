@@ -1,3 +1,7 @@
+#pragma code_seg("C453")
+#pragma bss_seg("B453")
+#pragma data_seg("D453")
+#pragma const_seg("K453")
 /***************************************************************************
 
   vidhrdw.c
@@ -166,3 +170,7 @@ VIDEO_UPDATE( seicross )
 					&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

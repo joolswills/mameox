@@ -1,3 +1,7 @@
+#pragma code_seg("C180")
+#pragma bss_seg("B180")
+#pragma data_seg("D180")
+#pragma const_seg("K180")
 /***************************************************************************
 
   vidhrdw.c
@@ -299,3 +303,7 @@ VIDEO_UPDATE( firetrap )
 	draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,fg_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

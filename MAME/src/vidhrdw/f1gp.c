@@ -1,3 +1,7 @@
+#pragma code_seg("C174")
+#pragma bss_seg("B174")
+#pragma data_seg("D174")
+#pragma const_seg("K174")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 #include "f1gp.h"
@@ -431,3 +435,7 @@ VIDEO_UPDATE( f1gp2 )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

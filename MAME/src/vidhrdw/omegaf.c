@@ -1,3 +1,7 @@
+#pragma code_seg("C375")
+#pragma bss_seg("B375")
+#pragma data_seg("D375")
+#pragma const_seg("K375")
 /***************************************************************************
 
 Functions to emulate the video hardware of the machine.
@@ -606,3 +610,7 @@ VIDEO_UPDATE( omegaf )
 		draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect, fg_tilemap, 0, 0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

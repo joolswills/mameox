@@ -1,3 +1,7 @@
+#pragma code_seg("C556")
+#pragma bss_seg("B556")
+#pragma data_seg("D556")
+#pragma const_seg("K556")
 /***************************************************************************
 
 	Atari ThunderJaws hardware
@@ -301,3 +305,7 @@ VIDEO_UPDATE( thunderj )
 				}
 		}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

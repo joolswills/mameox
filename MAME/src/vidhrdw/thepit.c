@@ -1,3 +1,7 @@
+#pragma code_seg("C553")
+#pragma bss_seg("B553")
+#pragma data_seg("D553")
+#pragma const_seg("K553")
 /***************************************************************************
 
   vidhrdw.c
@@ -350,3 +354,7 @@ VIDEO_UPDATE( thepit )
 	/* high priority sprites */
 	drawsprites(bitmap,1);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

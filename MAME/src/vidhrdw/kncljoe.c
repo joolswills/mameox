@@ -1,3 +1,7 @@
+#pragma code_seg("C267")
+#pragma bss_seg("B267")
+#pragma data_seg("D267")
+#pragma const_seg("K267")
 /***************************************************************************
 
 Knuckle Joe - (c) 1985 Taito Corporation
@@ -236,3 +240,7 @@ VIDEO_UPDATE( kncljoe )
 	tilemap_draw(bitmap,cliprect,bg_tilemap,0,0);
 	draw_sprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

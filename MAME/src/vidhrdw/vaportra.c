@@ -1,3 +1,7 @@
+#pragma code_seg("C591")
+#pragma bss_seg("B591")
+#pragma data_seg("D591")
+#pragma const_seg("K591")
 /***************************************************************************
 
    Vapour Trail Video emulation - Bryan McPhail, mish@tendril.co.uk
@@ -277,3 +281,7 @@ VIDEO_UPDATE( vaportra )
 	vaportra_drawsprites(bitmap,cliprect,1);
 	tilemap_draw(bitmap,cliprect,pf1_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

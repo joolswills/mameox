@@ -1,3 +1,7 @@
+#pragma code_seg("C333")
+#pragma bss_seg("B333")
+#pragma data_seg("D333")
+#pragma const_seg("K333")
 /*******************************************************************************
 
      Mouser - Video Hardware:
@@ -187,3 +191,7 @@ VIDEO_UPDATE( mouser )
 	}
 
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

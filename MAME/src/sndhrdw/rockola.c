@@ -1,3 +1,7 @@
+#pragma code_seg("C432")
+#pragma bss_seg("B432")
+#pragma data_seg("D432")
+#pragma const_seg("K432")
 /* from Andrew Scott (ascott@utkux.utcc.utk.edu) */
 #include "driver.h"
 
@@ -314,3 +318,7 @@ WRITE_HANDLER( fantasy_sound2_w )
 //	Sound2Base = 0x1000 + ((data & 0x10) << 5) + ((data & 0x20) << 5) + ((data & 0x40) << 2);
 	Sound2Mask = 0xff;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

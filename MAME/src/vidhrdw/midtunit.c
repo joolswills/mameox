@@ -1,3 +1,7 @@
+#pragma code_seg("C316")
+#pragma bss_seg("B316")
+#pragma data_seg("D316")
+#pragma const_seg("K316")
 /*************************************************************************
 
 	Driver for Midway T-unit games.
@@ -909,3 +913,7 @@ VIDEO_UPDATE( midtunit )
 		offset = (offset + 512) & 0x3ffff;
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

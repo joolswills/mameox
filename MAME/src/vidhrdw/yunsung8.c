@@ -1,3 +1,7 @@
+#pragma code_seg("C629")
+#pragma bss_seg("B629")
+#pragma data_seg("D629")
+#pragma const_seg("K629")
 /***************************************************************************
 
 						  -= Yun Sung 8 Bit Games =-
@@ -213,3 +217,7 @@ if (keyboard_pressed(KEYCODE_Z))
 
 	if (layers_ctrl&2)	tilemap_draw(bitmap,cliprect, tilemap_1, 0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C373")
+#pragma bss_seg("B373")
+#pragma data_seg("D373")
+#pragma const_seg("K373")
 /******************************************************************************
 
 	Video Hardware for Video System Mahjong series.
@@ -225,3 +229,7 @@ VIDEO_UPDATE( ojankohs )
 
 	tilemap_draw(bitmap,cliprect, ojankohs_tilemap, 0, 0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

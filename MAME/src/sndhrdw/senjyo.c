@@ -1,3 +1,7 @@
+#pragma code_seg("C454")
+#pragma bss_seg("B454")
+#pragma data_seg("D454")
+#pragma const_seg("K454")
 #include "driver.h"
 #include "machine/z80fmly.h"
 #include <math.h>
@@ -101,3 +105,7 @@ void senjyo_sh_update(void)
 
 	mixer_set_sample_frequency(channel,single_rate);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

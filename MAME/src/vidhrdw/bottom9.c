@@ -1,3 +1,7 @@
+#pragma code_seg("C76")
+#pragma bss_seg("B76")
+#pragma data_seg("D76")
+#pragma const_seg("K76")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 
@@ -101,3 +105,7 @@ VIDEO_UPDATE( bottom9 )
 		tilemap_draw(bitmap,cliprect,K052109_tilemap[1],0,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

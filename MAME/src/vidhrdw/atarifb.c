@@ -1,3 +1,7 @@
+#pragma code_seg("C34")
+#pragma bss_seg("B34")
+#pragma data_seg("D34")
+#pragma const_seg("K34")
 /*************************************************************************
 
 	Atari Football hardware
@@ -362,3 +366,7 @@ if (atarifb_game != 4)
 			drawgfx(bitmap,Machine->uifont,buf2[x],UI_COLOR_NORMAL,0,0,6*x,0,0,TRANSPARENCY_NONE,0);
 }
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C364")
+#pragma bss_seg("B364")
+#pragma data_seg("D364")
+#pragma const_seg("K364")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/taitoic.h"
@@ -199,3 +203,7 @@ VIDEO_UPDATE( ninjaw )
 	}
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

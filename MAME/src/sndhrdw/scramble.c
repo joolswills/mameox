@@ -1,3 +1,7 @@
+#pragma code_seg("C447")
+#pragma bss_seg("B447")
+#pragma data_seg("D447")
+#pragma const_seg("K447")
 /***************************************************************************
 
   This file contains functions to emulate the sound hardware found on
@@ -262,3 +266,7 @@ WRITE_HANDLER( zigzag_8910_control_trigger_w )
 	AY8910_control_port_0_w(0,latch);
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

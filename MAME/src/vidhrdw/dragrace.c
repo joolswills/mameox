@@ -1,3 +1,7 @@
+#pragma code_seg("C155")
+#pragma bss_seg("B155")
+#pragma data_seg("D155")
+#pragma const_seg("K155")
 /***************************************************************************
 
 Atari Drag Race video emulation
@@ -85,3 +89,7 @@ VIDEO_UPDATE( dragrace )
 		tilemap_draw(bitmap, &rect, tilemap, 0, 0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C271")
+#pragma bss_seg("B271")
+#pragma data_seg("D271")
+#pragma const_seg("K271")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 #include "vidhrdw/generic.h"
@@ -159,3 +163,7 @@ VIDEO_UPDATE( labyrunr )
 	K007121_sprites_draw(0,bitmap,cliprect,spriteram,(K007121_ctrlram[0][6]&0x30)*2,40,0,-1);
 	tilemap_draw(bitmap,&finalclip1,layer1,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

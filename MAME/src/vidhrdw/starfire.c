@@ -1,3 +1,7 @@
+#pragma code_seg("C506")
+#pragma bss_seg("B506")
+#pragma data_seg("D506")
+#pragma const_seg("K506")
 /***************************************************************************
 
 	Star Fire video system
@@ -290,3 +294,7 @@ VIDEO_UPDATE( starfire )
 }
 
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

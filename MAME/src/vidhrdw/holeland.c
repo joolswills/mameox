@@ -1,3 +1,7 @@
+#pragma code_seg("C242")
+#pragma bss_seg("B242")
+#pragma data_seg("D242")
+#pragma const_seg("K242")
 /***************************************************************************
 
   vidhrdw.c
@@ -206,3 +210,7 @@ VIDEO_UPDATE( crzrally )
 	tilemap_draw(bitmap,cliprect,bg_tilemap,0,0);
 	crzrally_draw_sprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

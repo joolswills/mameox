@@ -1,3 +1,7 @@
+#pragma code_seg("C524")
+#pragma bss_seg("B524")
+#pragma data_seg("D524")
+#pragma const_seg("K524")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 
@@ -100,3 +104,7 @@ VIDEO_UPDATE( surpratk )
 
 	K053245_sprites_draw(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

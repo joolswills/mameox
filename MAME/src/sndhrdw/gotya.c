@@ -1,3 +1,7 @@
+#pragma code_seg("C219")
+#pragma bss_seg("B219")
+#pragma data_seg("D219")
+#pragma const_seg("K219")
 #include "driver.h"
 
 struct gotya_sample
@@ -76,3 +80,7 @@ WRITE_HANDLER( gotya_soundlatch_w )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

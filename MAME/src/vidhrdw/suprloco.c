@@ -1,3 +1,7 @@
+#pragma code_seg("C521")
+#pragma bss_seg("B521")
+#pragma data_seg("D521")
+#pragma const_seg("K521")
 /***************************************************************************
 
   vidhrdw.c
@@ -291,3 +295,7 @@ VIDEO_UPDATE( suprloco )
 	draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,bg_tilemap,1,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

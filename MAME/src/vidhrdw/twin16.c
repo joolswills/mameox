@@ -1,3 +1,7 @@
+#pragma code_seg("C584")
+#pragma bss_seg("B584")
+#pragma data_seg("D584")
+#pragma const_seg("K584")
 /* vidhrdw/twin16.c
 
 	Known Issues:
@@ -488,3 +492,7 @@ VIDEO_UPDATE( twin16 )
 
 //	usrintf_showmessage("%08x",video_register);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

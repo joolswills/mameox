@@ -1,3 +1,7 @@
+#pragma code_seg("C599")
+#pragma bss_seg("B599")
+#pragma data_seg("D599")
+#pragma const_seg("K599")
 /***************************************************************************
 
 	Atari Vindicators hardware
@@ -307,3 +311,7 @@ VIDEO_UPDATE( vindictr )
 				}
 		}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

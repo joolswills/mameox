@@ -1,3 +1,7 @@
+#pragma code_seg("C204")
+#pragma bss_seg("B204")
+#pragma data_seg("D204")
+#pragma const_seg("K204")
 /***************************************************************************
 
   vidhrdw.c
@@ -343,3 +347,7 @@ void gameplan_clear_screen(void)
 
 	fix_clear_to_colour = -1;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

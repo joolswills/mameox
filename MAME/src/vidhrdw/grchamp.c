@@ -1,3 +1,7 @@
+#pragma code_seg("C221")
+#pragma bss_seg("B221")
+#pragma data_seg("D221")
+#pragma const_seg("K221")
 /*	video hardware for Taito Grand Champion */
 
 #include "driver.h"
@@ -430,3 +434,7 @@ VIDEO_UPDATE( grchamp ){
 	if( grchamp_videoreg0&0x80 ) draw_radar( bitmap,cliprect );
 	draw_tachometer( bitmap,cliprect );
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

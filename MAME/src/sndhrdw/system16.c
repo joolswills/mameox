@@ -1,3 +1,7 @@
+#pragma code_seg("C526")
+#pragma bss_seg("B526")
+#pragma data_seg("D526")
+#pragma const_seg("K526")
 // system 16 - 7751 emulation, based on monster bash code.
 #include "driver.h"
 #include "cpu/i8039/i8039.h"
@@ -110,3 +114,7 @@ WRITE_HANDLER( sys16_7751_sh_rom_select_w )
 
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C195")
+#pragma bss_seg("B195")
+#pragma data_seg("D195")
+#pragma const_seg("K195")
 /***************************************************************************
 
   Gaelco Type 1 Video Hardware
@@ -301,3 +305,7 @@ VIDEO_UPDATE( bigkarnk )
 
 	gaelco_draw_sprites(bitmap,cliprect,4);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C571")
+#pragma bss_seg("B571")
+#pragma data_seg("D571")
+#pragma const_seg("K571")
 /***************************************************************************
 
 	vidhrdw.c
@@ -341,3 +345,7 @@ INTERRUPT_GEN( tp84_6809_interrupt )
 	if (scanline == 255)
 		irq0_line_hold();
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

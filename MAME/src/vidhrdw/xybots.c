@@ -1,3 +1,7 @@
+#pragma code_seg("C623")
+#pragma bss_seg("B623")
+#pragma data_seg("D623")
+#pragma const_seg("K623")
 /***************************************************************************
 
 	Atari Xybots hardware
@@ -169,3 +173,7 @@ VIDEO_UPDATE( xybots )
 	/* add the alpha on top */
 	tilemap_draw(bitmap, cliprect, atarigen_alpha_tilemap, 0, 0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C536")
+#pragma bss_seg("B536")
+#pragma data_seg("D536")
+#pragma const_seg("K536")
 /***************************************************************************
 
   vidhrdw/superman.c
@@ -177,3 +181,7 @@ VIDEO_UPDATE( superman )
 #endif
 	superman_draw_sprites (bitmap,bankbase,cocktail);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C304")
+#pragma bss_seg("B304")
+#pragma data_seg("D304")
+#pragma const_seg("K304")
 /* Magical Cat Adventure / Nostradamus Video Hardware */
 
 /*
@@ -250,3 +254,7 @@ VIDEO_EOF( mcatadv )
 	memcpy(spriteram_old,spriteram16,spriteram_size);
 	memcpy(vidregs_old,mcatadv_vidregs,0xf);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C592")
+#pragma bss_seg("B592")
+#pragma data_seg("D592")
+#pragma const_seg("K592")
 /***************************************************************************
 
   vidhrdw.c
@@ -232,3 +236,7 @@ VIDEO_UPDATE( vastar )
 		break;
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

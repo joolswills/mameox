@@ -1,3 +1,7 @@
+#pragma code_seg("C557")
+#pragma bss_seg("B557")
+#pragma data_seg("D557")
+#pragma const_seg("K557")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 
@@ -92,3 +96,7 @@ VIDEO_UPDATE( scontra )
 
 	K051960_sprites_draw(bitmap,cliprect,-1,-1);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C562")
+#pragma bss_seg("B562")
+#pragma data_seg("D562")
+#pragma const_seg("K562")
 #include "driver.h"
 #include "machine/eeprom.h"
 #include "vidhrdw/konamiic.h"
@@ -759,3 +763,7 @@ VIDEO_UPDATE( thndrx2 )
 
 	K051960_sprites_draw(bitmap,cliprect,-1,-1);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C427")
+#pragma bss_seg("B427")
+#pragma data_seg("D427")
+#pragma const_seg("K427")
 /***************************************************************************
 
   vidhrdw.c
@@ -239,3 +243,7 @@ usrintf_showmessage("unknown sprite size 0");
 
 //usrintf_showmessage("%d%d%d",star2,star1,star0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

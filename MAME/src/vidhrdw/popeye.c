@@ -1,3 +1,7 @@
+#pragma code_seg("C407")
+#pragma bss_seg("B407")
+#pragma data_seg("D407")
+#pragma const_seg("K407")
 /***************************************************************************
 
   vidhrdw.c
@@ -404,3 +408,7 @@ VIDEO_UPDATE( popeye )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

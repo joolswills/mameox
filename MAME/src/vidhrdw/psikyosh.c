@@ -1,3 +1,7 @@
+#pragma code_seg("C413")
+#pragma bss_seg("B413")
+#pragma data_seg("D413")
+#pragma const_seg("K413")
 /*
 
 Psikyo PS6406B (PS3v1/PS5/PS5v2):
@@ -643,3 +647,7 @@ VIDEO_EOF( psikyosh )
 	psikyosh_vidregs[2], psikyosh_vidregs[3],
 	psikyosh_vidregs[4], psikyosh_vidregs[5],
 	psikyosh_vidregs[6], psikyosh_vidregs[7]);*/
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

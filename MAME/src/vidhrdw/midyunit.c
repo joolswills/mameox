@@ -1,3 +1,7 @@
+#pragma code_seg("C320")
+#pragma bss_seg("B320")
+#pragma data_seg("D320")
+#pragma const_seg("K320")
 /*************************************************************************
 
 	Williams/Midway Y/Z-unit system
@@ -837,3 +841,7 @@ VIDEO_UPDATE( midyunit )
 		fillbitmap(bitmap, get_black_pen(), &erase);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

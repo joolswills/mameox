@@ -1,3 +1,7 @@
+#pragma code_seg("C270")
+#pragma bss_seg("B270")
+#pragma data_seg("D270")
+#pragma const_seg("K270")
 /***************************************************************************
 
 	Kyugo hardware games
@@ -243,3 +247,7 @@ VIDEO_UPDATE( kyugo )
 	draw_sprites(bitmap, cliprect);
 	tilemap_draw(bitmap, cliprect, fg_tilemap, 0, 0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

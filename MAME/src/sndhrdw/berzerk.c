@@ -1,3 +1,7 @@
+#pragma code_seg("C60")
+#pragma bss_seg("B60")
+#pragma data_seg("D60")
+#pragma const_seg("K60")
 /*
  * Berzerk/Frenzy Soundhardware Driver
  * Copyright Alex Judd 1997/98
@@ -322,3 +326,7 @@ struct CustomSound_interface berzerk_custom_interface =
 	0,
 	berzerk_sh_update
 };
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

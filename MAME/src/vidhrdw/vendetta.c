@@ -1,3 +1,7 @@
+#pragma code_seg("C594")
+#pragma bss_seg("B594")
+#pragma data_seg("D594")
+#pragma const_seg("K594")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 
@@ -127,3 +131,7 @@ VIDEO_UPDATE( vendetta )
 
 	K053247_sprites_draw(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C312")
+#pragma bss_seg("B312")
+#pragma data_seg("D312")
+#pragma const_seg("K312")
 /***************************************************************************
 
   vidhrdw.c
@@ -233,3 +237,7 @@ VIDEO_UPDATE( mermaid )
 				TRANSPARENCY_PEN,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

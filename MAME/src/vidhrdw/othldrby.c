@@ -1,3 +1,7 @@
+#pragma code_seg("C380")
+#pragma bss_seg("B380")
+#pragma data_seg("D380")
+#pragma const_seg("K380")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -227,3 +231,7 @@ VIDEO_EOF( othldrby )
     memcpy(buf_spriteram,buf_spriteram2,SPRITERAM_SIZE*sizeof(buf_spriteram[0]));
     memcpy(buf_spriteram2,&vram[SPRITERAM_START],SPRITERAM_SIZE*sizeof(buf_spriteram[0]));
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C31")
+#pragma bss_seg("B31")
+#pragma data_seg("D31")
+#pragma const_seg("K31")
 /**************************************************************************
 
 	WOW/Votrax SC-01 Emulator
@@ -211,3 +215,7 @@ READ_HANDLER( wow_port_2_r )
 void wow_sh_update(void)
 {
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

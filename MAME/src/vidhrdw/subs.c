@@ -1,3 +1,7 @@
+#pragma code_seg("C514")
+#pragma bss_seg("B514")
+#pragma data_seg("D514")
+#pragma const_seg("K514")
 /***************************************************************************
 
 	Atari Subs hardware
@@ -157,3 +161,7 @@ VIDEO_UPDATE( subs )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

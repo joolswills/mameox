@@ -1,3 +1,7 @@
+#pragma code_seg("C631")
+#pragma bss_seg("B631")
+#pragma data_seg("D631")
+#pragma const_seg("K631")
 /***************************************************************************
 
   vidhrdw.c
@@ -299,3 +303,7 @@ VIDEO_UPDATE( zaccaria )
 
 	draw_sprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

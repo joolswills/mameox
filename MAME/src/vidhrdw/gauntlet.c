@@ -1,3 +1,7 @@
+#pragma code_seg("C206")
+#pragma bss_seg("B206")
+#pragma data_seg("D206")
+#pragma const_seg("K206")
 /***************************************************************************
 
 	Atari Gauntlet hardware
@@ -233,3 +237,7 @@ VIDEO_UPDATE( gauntlet )
 	/* add the alpha on top */
 	tilemap_draw(bitmap, cliprect, atarigen_alpha_tilemap, 0, 0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

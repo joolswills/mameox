@@ -1,3 +1,7 @@
+#pragma code_seg("C551")
+#pragma bss_seg("B551")
+#pragma data_seg("D551")
+#pragma const_seg("K551")
 /***************************************************************************
 
   vidhrdw.c
@@ -224,3 +228,7 @@ VIDEO_UPDATE( amazon )
 	draw_sprites( bitmap,cliprect );
 	tilemap_draw( bitmap,cliprect, foreground, 0, 0 );
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

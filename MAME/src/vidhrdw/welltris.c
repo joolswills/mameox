@@ -1,3 +1,7 @@
+#pragma code_seg("C609")
+#pragma bss_seg("B609")
+#pragma data_seg("D609")
+#pragma const_seg("K609")
 #include "driver.h"
 
 
@@ -205,3 +209,7 @@ VIDEO_UPDATE( welltris )
 	wel_draw_sprites(bitmap,cliprect);
 
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

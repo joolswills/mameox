@@ -1,3 +1,7 @@
+#pragma code_seg("C529")
+#pragma bss_seg("B529")
+#pragma data_seg("D529")
+#pragma const_seg("K529")
 /***************************************************************************
 
 	vidhrdw.c
@@ -203,3 +207,7 @@ VIDEO_UPDATE( tagteam )
 	drawsprites(bitmap,palettebank);
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

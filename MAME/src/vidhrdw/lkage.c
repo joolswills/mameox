@@ -1,3 +1,7 @@
+#pragma code_seg("C282")
+#pragma bss_seg("B282")
+#pragma data_seg("D282")
+#pragma const_seg("K282")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -221,3 +225,7 @@ VIDEO_UPDATE( lkage )
 		tilemap_draw( bitmap,cliprect,tx_tilemap,TILEMAP_IGNORE_TRANSPARENCY ,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C151")
+#pragma bss_seg("B151")
+#pragma data_seg("D151")
+#pragma const_seg("K151")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "dogfgt.h"
@@ -246,3 +250,7 @@ VIDEO_UPDATE( dogfgt )
 
 	copybitmap(bitmap,pixbitmap,0,0,0,0,cliprect,TRANSPARENCY_COLOR,PIXMAP_COLOR_BASE + 8*pixcolor);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C113")
+#pragma bss_seg("B113")
+#pragma data_seg("D113")
+#pragma const_seg("K113")
 /***************************************************************************
 
   vidhrdw.c
@@ -173,3 +177,7 @@ VIDEO_EOF( commando )
 {
 	buffer_spriteram_w(0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C263")
+#pragma bss_seg("B263")
+#pragma data_seg("D263")
+#pragma const_seg("K263")
 /* Kick Goal - Vidhrdw */
 
 #include "driver.h"
@@ -154,3 +158,7 @@ VIDEO_UPDATE( kickgoal )
 	kickgoal_scrram[7]);
 	*/
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

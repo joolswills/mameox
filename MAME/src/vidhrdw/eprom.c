@@ -1,3 +1,7 @@
+#pragma code_seg("C162")
+#pragma bss_seg("B162")
+#pragma data_seg("D162")
+#pragma const_seg("K162")
 /***************************************************************************
 
 	Atari Escape hardware
@@ -275,3 +279,7 @@ VIDEO_UPDATE( eprom )
 				}
 		}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C346")
+#pragma bss_seg("B346")
+#pragma data_seg("D346")
+#pragma const_seg("K346")
 /*	Namco System NA1/2 Video Hardware */
 
 #include "vidhrdw/generic.h"
@@ -700,3 +704,7 @@ VIDEO_UPDATE( namcona1 )
 		draw_sprites( bitmap );
 	} /* gfx enabled */
 } /* namcona1_vh_screenrefresh */
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

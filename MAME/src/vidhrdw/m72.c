@@ -1,3 +1,7 @@
+#pragma code_seg("C289")
+#pragma bss_seg("B289")
+#pragma data_seg("D289")
+#pragma const_seg("K289")
 #include "driver.h"
 #include "sndhrdw/m72.h"
 #include "vidhrdw/generic.h"
@@ -704,3 +708,7 @@ VIDEO_EOF( m72 )
 		scrolly2[i] = scrolly2[255];
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

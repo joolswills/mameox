@@ -1,3 +1,7 @@
+#pragma code_seg("C67")
+#pragma bss_seg("B67")
+#pragma data_seg("D67")
+#pragma const_seg("K67")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -34,3 +38,7 @@ VIDEO_UPDATE( blockade )
 	/* copy the character mapped graphics */
 	copybitmap(bitmap,tmpbitmap,0,0,0,0,&Machine->visible_area,TRANSPARENCY_NONE,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C516")
+#pragma bss_seg("B516")
+#pragma data_seg("D516")
+#pragma const_seg("K516")
 /***************************************************************************
 
 							-=  SunA 8 Bit Games =-
@@ -460,3 +464,7 @@ VIDEO_UPDATE( suna8 )
 		suna8_draw_text_sprites(bitmap,cliprect);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C281")
+#pragma bss_seg("B281")
+#pragma data_seg("D281")
+#pragma const_seg("K281")
 /***************************************************************************
 
   liberator.c - 'vidhrdw.c'
@@ -439,3 +443,7 @@ VIDEO_UPDATE( liberatr )
 	/* draw the planet */
 	liberatr_draw_planet(bitmap);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

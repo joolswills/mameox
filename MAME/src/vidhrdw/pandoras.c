@@ -1,3 +1,7 @@
+#pragma code_seg("C386")
+#pragma bss_seg("B386")
+#pragma data_seg("D386")
+#pragma const_seg("K386")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -176,3 +180,7 @@ VIDEO_UPDATE( pandoras )
 	draw_sprites( bitmap,cliprect, &pandoras_sharedram[0x800] );
 	tilemap_draw( bitmap,cliprect, layer0, 0 ,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

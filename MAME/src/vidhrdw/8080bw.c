@@ -1,3 +1,7 @@
+#pragma code_seg("C4")
+#pragma bss_seg("B4")
+#pragma data_seg("D4")
+#pragma const_seg("K4")
 /***************************************************************************
 
   vidhrdw.c
@@ -811,3 +815,7 @@ static WRITE_HANDLER( sstrngr2_videoram_w )
 
 	plot_byte(x, y, data, col, 0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

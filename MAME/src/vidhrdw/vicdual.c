@@ -1,3 +1,7 @@
+#pragma code_seg("C595")
+#pragma bss_seg("B595")
+#pragma data_seg("D595")
+#pragma const_seg("K595")
 /***************************************************************************
 
   vidhrdw.c
@@ -190,3 +194,7 @@ VIDEO_UPDATE( vicdual )
 		if (dirtycharacter[offs] == 2) dirtycharacter[offs] = 0;
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

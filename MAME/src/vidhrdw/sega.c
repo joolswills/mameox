@@ -1,3 +1,7 @@
+#pragma code_seg("C449")
+#pragma bss_seg("B449")
+#pragma data_seg("D449")
+#pragma const_seg("K449")
 /*************************************************************************
 
 	Sega vector hardware
@@ -177,3 +181,7 @@ VIDEO_UPDATE( sega )
 	sega_generate_vector_list();
 	video_update_vector(bitmap,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

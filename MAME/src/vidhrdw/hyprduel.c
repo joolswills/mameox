@@ -1,3 +1,7 @@
+#pragma code_seg("C246")
+#pragma bss_seg("B246")
+#pragma data_seg("D246")
+#pragma const_seg("K246")
 
 /* based on driver from vidhrdw/metro.c by Luca Elia */
 /* modified by Eisuke Watanabe */
@@ -669,3 +673,7 @@ VIDEO_UPDATE( hyprduel )
 				hypr_draw_sprites(bitmap,cliprect, i);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C635")
+#pragma bss_seg("B635")
+#pragma data_seg("D635")
+#pragma const_seg("K635")
 /***************************************************************************
 
   vidhrdw.c
@@ -256,3 +260,7 @@ VIDEO_UPDATE( zodiack )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

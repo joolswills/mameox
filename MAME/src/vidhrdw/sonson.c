@@ -1,3 +1,7 @@
+#pragma code_seg("C484")
+#pragma bss_seg("B484")
+#pragma data_seg("D484")
+#pragma const_seg("K484")
 /***************************************************************************
 
   vidhrdw.c
@@ -152,3 +156,7 @@ VIDEO_UPDATE( sonson )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

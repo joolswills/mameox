@@ -1,3 +1,7 @@
+#pragma code_seg("C193")
+#pragma bss_seg("B193")
+#pragma data_seg("D193")
+#pragma const_seg("K193")
 /***************************************************************************
 
    Funky Jet Video emulation - Bryan McPhail, mish@tendril.co.uk
@@ -92,3 +96,7 @@ VIDEO_UPDATE( funkyjet )
 	deco16_tilemap_1_draw(bitmap,cliprect,0,0);
 	funkyjet_drawsprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C471")
+#pragma bss_seg("B471")
+#pragma data_seg("D471")
+#pragma const_seg("K471")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/konamiic.h"
@@ -163,3 +167,7 @@ VIDEO_UPDATE( simpsons )
 
 	K053247_sprites_draw(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C262")
+#pragma bss_seg("B262")
+#pragma data_seg("D262")
+#pragma const_seg("K262")
 /***************************************************************************
 
   vidhrdw.c
@@ -167,3 +171,7 @@ VIDEO_UPDATE( kchamp )
 
 	(*kchamp_drawsprites)( bitmap);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

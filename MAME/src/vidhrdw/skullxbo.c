@@ -1,3 +1,7 @@
+#pragma code_seg("C472")
+#pragma bss_seg("B472")
+#pragma data_seg("D472")
+#pragma const_seg("K472")
 /***************************************************************************
 
 	Atari Skull & Crossbones hardware
@@ -312,3 +316,7 @@ VIDEO_UPDATE( skullxbo )
 	/* add the alpha on top */
 	tilemap_draw(bitmap, cliprect, atarigen_alpha_tilemap, 0, 0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C103")
+#pragma bss_seg("B103")
+#pragma data_seg("D103")
+#pragma const_seg("K103")
 /***************************************************************************
 
   vidhrdw.c
@@ -208,3 +212,7 @@ VIDEO_UPDATE( circusc )
 	draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,bg_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C49")
+#pragma bss_seg("B49")
+#pragma data_seg("D49")
+#pragma const_seg("K49")
 /***************************************************************************
 
   vidhrdw.c
@@ -261,3 +265,7 @@ VIDEO_UPDATE( bankp )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

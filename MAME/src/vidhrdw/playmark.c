@@ -1,3 +1,7 @@
+#pragma code_seg("C401")
+#pragma bss_seg("B401")
+#pragma data_seg("D401")
+#pragma const_seg("K401")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -277,3 +281,7 @@ VIDEO_UPDATE( wbeachvl )
 	draw_sprites(bitmap,cliprect,0);
 	tilemap_draw(bitmap,cliprect,tx_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

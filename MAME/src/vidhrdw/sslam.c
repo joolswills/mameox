@@ -1,3 +1,7 @@
+#pragma code_seg("C500")
+#pragma bss_seg("B500")
+#pragma data_seg("D500")
+#pragma const_seg("K500")
 /* Super Slam - Video Hardware */
 
 #include "driver.h"
@@ -170,3 +174,7 @@ VIDEO_UPDATE(sslam)
 }
 
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

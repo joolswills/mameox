@@ -1,3 +1,7 @@
+#pragma code_seg("C370")
+#pragma bss_seg("B370")
+#pragma data_seg("D370")
+#pragma const_seg("K370")
 /***************************************************************************
 
   vidhrdw.c
@@ -153,3 +157,7 @@ VIDEO_UPDATE( nyny )
 	copybitmap(bitmap,tmpbitmap2,flip_screen,flip_screen,0,0,&Machine->visible_area,TRANSPARENCY_NONE,0);
 	copybitmap(bitmap,tmpbitmap1,flip_screen,flip_screen,0,0,&Machine->visible_area,TRANSPARENCY_COLOR,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

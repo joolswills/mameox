@@ -1,3 +1,7 @@
+#pragma code_seg("C143")
+#pragma bss_seg("B143")
+#pragma data_seg("D143")
+#pragma const_seg("K143")
 /***********************************************************************
 
 	DECO Cassette System vidhrdw
@@ -752,3 +756,7 @@ VIDEO_UPDATE( decocass )
 	draw_missiles(bitmap,cliprect, 1, 0, decocass_colorram, 0x20);
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C59")
+#pragma bss_seg("B59")
+#pragma data_seg("D59")
+#pragma const_seg("K59")
 #include "driver.h"
 #include "cpu/m6809/m6809.h"
 #include "machine/6522via.h"
@@ -85,3 +89,7 @@ READ_HANDLER( beezer_line_r )
 	return (scanline & 0xfe) << 1;
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

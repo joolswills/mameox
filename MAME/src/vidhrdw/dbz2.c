@@ -1,3 +1,7 @@
+#pragma code_seg("C132")
+#pragma bss_seg("B132")
+#pragma data_seg("D132")
+#pragma const_seg("K132")
 /*
   Dragonball Z 2 Super Battle
   (c) 1994 Banpresto
@@ -129,3 +133,7 @@ VIDEO_UPDATE(dbz2)
 }
 
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

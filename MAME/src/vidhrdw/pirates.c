@@ -1,3 +1,7 @@
+#pragma code_seg("C398")
+#pragma bss_seg("B398")
+#pragma data_seg("D398")
+#pragma const_seg("K398")
 #include "driver.h"
 
 
@@ -114,3 +118,7 @@ VIDEO_UPDATE(pirates)
 	draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,tx_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

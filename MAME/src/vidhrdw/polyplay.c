@@ -1,3 +1,7 @@
+#pragma code_seg("C404")
+#pragma bss_seg("B404")
+#pragma data_seg("D404")
+#pragma const_seg("K404")
 /***************************************************************************
 
   Poly-Play
@@ -123,3 +127,7 @@ VIDEO_UPDATE( polyplay )
 		if (dirtycharacter[offs] == 2) dirtycharacter[offs] = 0;
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

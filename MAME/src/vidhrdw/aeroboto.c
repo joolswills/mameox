@@ -1,3 +1,7 @@
+#pragma code_seg("C9")
+#pragma bss_seg("B9")
+#pragma data_seg("D9")
+#pragma const_seg("K9")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -188,3 +192,7 @@ VIDEO_UPDATE( aeroboto )
 	tilemap_set_scrolly(bg_tilemap,0,0);
 	tilemap_draw(bitmap,cliprect,bg_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

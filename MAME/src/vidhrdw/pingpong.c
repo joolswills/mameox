@@ -1,3 +1,7 @@
+#pragma code_seg("C396")
+#pragma bss_seg("B396")
+#pragma data_seg("D396")
+#pragma const_seg("K396")
 /***************************************************************************
 
   vidhrdw.c
@@ -162,3 +166,7 @@ VIDEO_UPDATE( pingpong )
 				&spritevisiblearea,TRANSPARENCY_COLOR,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

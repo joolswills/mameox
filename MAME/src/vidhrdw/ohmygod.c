@@ -1,3 +1,7 @@
+#pragma code_seg("C372")
+#pragma bss_seg("B372")
+#pragma data_seg("D372")
+#pragma const_seg("K372")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -119,3 +123,7 @@ VIDEO_UPDATE( ohmygod )
 	tilemap_draw(bitmap,cliprect,bg_tilemap,0,0);
 	draw_sprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

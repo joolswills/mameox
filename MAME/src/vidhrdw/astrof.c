@@ -1,3 +1,7 @@
+#pragma code_seg("C32")
+#pragma bss_seg("B32")
+#pragma data_seg("D32")
+#pragma const_seg("K32")
 /***************************************************************************
 
   vidhrdw.c
@@ -247,3 +251,7 @@ VIDEO_UPDATE( astrof )
 	
 	copybitmap(bitmap,tmpbitmap,0,0,0,0,&Machine->visible_area,TRANSPARENCY_NONE,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

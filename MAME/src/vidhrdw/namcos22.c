@@ -1,3 +1,7 @@
+#pragma code_seg("C352")
+#pragma bss_seg("B352")
+#pragma data_seg("D352")
+#pragma const_seg("K352")
 /* video hardware for Namco System22 */
 
 #include <math.h>
@@ -896,3 +900,7 @@ LoadMatrix( const INT32 *pSource, double M[4][4] )
 		}
 	}
 } /* LoadMatrix */
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

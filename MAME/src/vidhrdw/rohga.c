@@ -1,3 +1,7 @@
+#pragma code_seg("C435")
+#pragma bss_seg("B435")
+#pragma data_seg("D435")
+#pragma const_seg("K435")
 /***************************************************************************
 
 	Rohga Video emulation - Bryan McPhail, mish@tendril.co.uk
@@ -263,3 +267,7 @@ VIDEO_UPDATE( wizdfire )
 
 	deco16_tilemap_1_draw(bitmap,cliprect,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C11")
+#pragma bss_seg("B11")
+#pragma data_seg("D11")
+#pragma const_seg("K11")
 /***************************************************************************
 
 							  -= Afega Games =-
@@ -343,3 +347,7 @@ if ( keyboard_pressed(KEYCODE_Z) || keyboard_pressed(KEYCODE_X) )
 	if (layers_ctrl & 4)	tilemap_draw(bitmap,cliprect,tilemap_1,0,0);
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C353")
+#pragma bss_seg("B353")
+#pragma data_seg("D353")
+#pragma const_seg("K353")
 /*******************************************************************
 
 Rolling Thunder Video Hardware
@@ -393,3 +397,7 @@ int b=keyboard_pressed(KEYCODE_Y)?8:0;
 }
 #endif
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

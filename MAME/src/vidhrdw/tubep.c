@@ -1,3 +1,7 @@
+#pragma code_seg("C578")
+#pragma bss_seg("B578")
+#pragma data_seg("D578")
+#pragma const_seg("K578")
 /***************************************************************************
 
   vidhrdw.c
@@ -929,3 +933,7 @@ VIDEO_UPDATE( rjammer )
 
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

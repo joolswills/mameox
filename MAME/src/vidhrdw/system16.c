@@ -1,3 +1,7 @@
+#pragma code_seg("C526")
+#pragma bss_seg("B526")
+#pragma data_seg("D526")
+#pragma const_seg("K526")
 /***************************************************************************
 
 Sega System 16 Video Hardware
@@ -1849,3 +1853,7 @@ VIDEO_UPDATE( aburner ){
 
 //	debug_draw( bitmap,cliprect, 8,8,sys16_roadram[0x1000] );
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

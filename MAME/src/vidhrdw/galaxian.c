@@ -1,3 +1,7 @@
+#pragma code_seg("C199")
+#pragma bss_seg("B199")
+#pragma data_seg("D199")
+#pragma const_seg("K199")
 /***************************************************************************
 
   Galaxian hardware family
@@ -1792,3 +1796,7 @@ VIDEO_UPDATE( galaxian )
 		draw_sprites(bitmap, galaxian_spriteram2, galaxian_spriteram2_size);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

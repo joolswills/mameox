@@ -1,3 +1,7 @@
+#pragma code_seg("C156")
+#pragma bss_seg("B156")
+#pragma data_seg("D156")
+#pragma const_seg("K156")
 // remaining gfx glitches
 
 // layer priority register not fully understood
@@ -207,3 +211,7 @@ VIDEO_UPDATE(drgnmst)
 //	usrintf_showmessage	("x %04x x %04x y %04x y %04x z %04x z %04x",drgnmst_vidregs[0],drgnmst_vidregs[1],drgnmst_vidregs[2],drgnmst_vidregs[3],drgnmst_vidregs[4],drgnmst_vidregs[5]);
 
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

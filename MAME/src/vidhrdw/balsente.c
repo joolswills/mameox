@@ -1,3 +1,7 @@
+#pragma code_seg("C48")
+#pragma bss_seg("B48")
+#pragma data_seg("D48")
+#pragma const_seg("K48")
 /***************************************************************************
 
   vidhrdw/balsente.c
@@ -304,3 +308,7 @@ VIDEO_UPDATE( balsente )
 		draw_crosshair(bitmap,beamx,beamy,cliprect);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C454")
+#pragma bss_seg("B454")
+#pragma data_seg("D454")
+#pragma const_seg("K454")
 /***************************************************************************
 
   vidhrdw.c
@@ -450,3 +454,7 @@ VIDEO_UPDATE( senjyo )
 }
 #endif
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C628")
+#pragma bss_seg("B628")
+#pragma data_seg("D628")
+#pragma const_seg("K628")
 /***************************************************************************
 
 						  -= Yun Sung 16 Bit Games =-
@@ -240,3 +244,7 @@ VIDEO_UPDATE( yunsun16 )
 		fillbitmap(bitmap,Machine->pens[0],&clip);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

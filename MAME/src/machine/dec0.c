@@ -16,6 +16,7 @@ static int GAME,i8751_return,slyspy_state;
 
 READ16_HANDLER( dec0_controls_r )
 {
+#if 0
 	switch (offset<<1)
 	{
 		case 0: /* Player 1 & 2 joystick & buttons */
@@ -31,7 +32,23 @@ READ16_HANDLER( dec0_controls_r )
 			//logerror("CPU #0 PC %06x: warning - read unmapped memory address %06x\n",activecpu_get_pc(),0x30c000+offset);
 			return i8751_return;
 	}
+#else
+	switch (offset)
+	{
+		case 0: /* Player 1 & 2 joystick & buttons */
+			return (readinputport(0) + (readinputport(1) << 8));
 
+		case 1: /* Credits, start buttons */
+			return readinputport(2);
+
+		case 2: /* Byte 4: Dipswitch bank 2, Byte 5: Dipswitch Bank 1 */
+			return (readinputport(3) + (readinputport(4) << 8));
+
+		case 4: /* Intel 8751 mc, Bad Dudes & Heavy Barrel only */
+			//logerror("CPU #0 PC %06x: warning - read unmapped memory address %06x\n",activecpu_get_pc(),0x30c000+offset);
+			return i8751_return;
+	}
+#endif
 	logerror("CPU #0 PC %06x: warning - read unmapped memory address %06x\n",activecpu_get_pc(),0x30c000+offset);
 	return ~0;
 }
@@ -40,6 +57,7 @@ READ16_HANDLER( dec0_controls_r )
 
 READ16_HANDLER( dec0_rotary_r )
 {
+#if 0
 	switch (offset<<1)
 	{
 		case 0: /* Player 1 rotary */
@@ -51,6 +69,19 @@ READ16_HANDLER( dec0_rotary_r )
 		default:
 			logerror("Unknown rotary read at 300000 %02x\n",offset);
 	}
+#else
+	switch (offset)
+	{
+		case 0: /* Player 1 rotary */
+			return ~(1 << (readinputport(5) * 12 / 256));
+
+		case 4: /* Player 2 rotary */
+			return ~(1 << (readinputport(6) * 12 / 256));
+
+		default:
+			logerror("Unknown rotary read at 300000 %02x\n",offset);
+	}
+#endif
 
 	return 0;
 }
@@ -59,6 +90,7 @@ READ16_HANDLER( dec0_rotary_r )
 
 READ16_HANDLER( midres_controls_r )
 {
+#if 0
 	switch (offset<<1)
 	{
 		case 0: /* Player 1 Joystick + start, Player 2 Joystick + start */
@@ -79,6 +111,28 @@ READ16_HANDLER( midres_controls_r )
 		case 12:
 			return 0;	/* ?? watchdog ?? */
 	}
+#else
+	switch (offset)
+	{
+		case 0: /* Player 1 Joystick + start, Player 2 Joystick + start */
+			return (readinputport(0) + (readinputport(1) << 8));
+
+		case 1: /* Dipswitches */
+			return (readinputport(3) + (readinputport(4) << 8));
+
+		case 2: /* Player 1 rotary */
+			return ~(1 << (readinputport(5) * 12 / 256));
+
+		case 3: /* Player 2 rotary */
+			return ~(1 << (readinputport(6) * 12 / 256));
+
+		case 4: /* Credits, start buttons */
+			return readinputport(2);
+
+		case 6:
+			return 0;	/* ?? watchdog ?? */
+	}
+#endif
 
 	logerror("PC %06x unknown control read at %02x\n",activecpu_get_pc(),0x180000+offset);
 	return ~0;
@@ -88,7 +142,8 @@ READ16_HANDLER( midres_controls_r )
 
 READ16_HANDLER( slyspy_controls_r )
 {
-	switch (offset<<1)
+#if 0
+	switch (offset)
 	{
 		case 0: /* Dip Switches */
 			return (readinputport(3) + (readinputport(4) << 8));
@@ -99,6 +154,19 @@ READ16_HANDLER( slyspy_controls_r )
 		case 4: /* Credits */
 			return readinputport(2);
 	}
+#else
+	switch (offset)
+	{
+		case 0: /* Dip Switches */
+			return (readinputport(3) + (readinputport(4) << 8));
+
+		case 1: /* Player 1 & Player 2 joysticks & fire buttons */
+			return (readinputport(0) + (readinputport(1) << 8));
+
+		case 2: /* Credits */
+			return readinputport(2);
+	}
+#endif
 
 	logerror("Unknown control read at 30c000 %d\n",offset);
 	return ~0;
@@ -107,12 +175,21 @@ READ16_HANDLER( slyspy_controls_r )
 READ16_HANDLER( slyspy_protection_r )
 {
 	/* These values are for Boulderdash, I have no idea what they do in Slyspy */
+#if 0
 	switch (offset<<1) {
 		case 0: 	return 0;
 		case 2: 	return 0x13;
 		case 4:		return 0;
 		case 6:		return 0x2;
 	}
+#else
+	switch (offset) {
+		case 0: 	return 0;
+		case 1: 	return 0x13;
+		case 2:		return 0;
+		case 3:		return 0x2;
+	}
+#endif
 
 	logerror("%04x, Unknown protection read at 30c000 %d\n",activecpu_get_pc(),offset);
 	return 0;

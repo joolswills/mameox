@@ -1,3 +1,7 @@
+#pragma code_seg("C173")
+#pragma bss_seg("B173")
+#pragma data_seg("D173")
+#pragma const_seg("K173")
 /***************************************************************************
 
 Functions to emulate the video hardware of the machine.
@@ -217,3 +221,7 @@ VIDEO_UPDATE( exzisus )
 }
 
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

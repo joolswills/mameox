@@ -1,3 +1,7 @@
+#pragma code_seg("C449")
+#pragma bss_seg("B449")
+#pragma data_seg("D449")
+#pragma const_seg("K449")
 /*************************************************************************
 
 	Sega vector hardware
@@ -682,3 +686,7 @@ WRITE_HANDLER( spacfury2_sh_w )
 
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

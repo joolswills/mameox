@@ -1,3 +1,7 @@
+#pragma code_seg("C169")
+#pragma bss_seg("B169")
+#pragma data_seg("D169")
+#pragma const_seg("K169")
 /*************************************************************************
 
 	Exidy 6502 hardware
@@ -786,3 +790,7 @@ READ_HANDLER( mtrap_voiceio_r )
 	}
 	return 0;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

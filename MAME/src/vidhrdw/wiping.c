@@ -1,3 +1,7 @@
+#pragma code_seg("C613")
+#pragma bss_seg("B613")
+#pragma data_seg("D613")
+#pragma const_seg("K613")
 /***************************************************************************
 
   vidhrdw.c
@@ -225,3 +229,7 @@ VIDEO_UPDATE( wiping )
 }
 #endif
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

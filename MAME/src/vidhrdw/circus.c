@@ -1,3 +1,7 @@
+#pragma code_seg("C102")
+#pragma bss_seg("B102")
+#pragma data_seg("D102")
+#pragma const_seg("K102")
 /***************************************************************************
 
   vidhrdw.c
@@ -415,3 +419,7 @@ VIDEO_UPDATE( ripcord )
 	copybitmap(bitmap, tmpbitmap, 0, 0, 0, 0, &Machine->visible_area, TRANSPARENCY_NONE, 0);
 }
 //ZT
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C203")
+#pragma bss_seg("B203")
+#pragma data_seg("D203")
+#pragma const_seg("K203")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -153,3 +157,7 @@ VIDEO_UPDATE( galspnbl )
 
 	draw_sprites(bitmap,1);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

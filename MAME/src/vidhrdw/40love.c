@@ -1,3 +1,7 @@
+#pragma code_seg("C2")
+#pragma bss_seg("B2")
+#pragma data_seg("D2")
+#pragma const_seg("K2")
 /*
 *	Video Driver for Forty-Love
 */
@@ -356,3 +360,7 @@ VIDEO_UPDATE( fortyl )
 
 	draw_sprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C60")
+#pragma bss_seg("B60")
+#pragma data_seg("D60")
+#pragma const_seg("K60")
 /***************************************************************************
 
   vidhrdw.c
@@ -167,3 +171,7 @@ READ_HANDLER( berzerk_port_4e_r )
 {
 	return input_port_3_r(0) | collision;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

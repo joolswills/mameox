@@ -1,3 +1,7 @@
+#pragma code_seg("C125")
+#pragma bss_seg("B125")
+#pragma data_seg("D125")
+#pragma const_seg("K125")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/konamiic.h"
@@ -227,3 +231,7 @@ VIDEO_EOF( crshrace )
 	buffer_spriteram16_w(0,0,0);
 	buffer_spriteram16_2_w(0,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

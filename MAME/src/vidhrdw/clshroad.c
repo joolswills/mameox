@@ -1,3 +1,7 @@
+#pragma code_seg("C109")
+#pragma bss_seg("B109")
+#pragma data_seg("D109")
+#pragma const_seg("K109")
 /***************************************************************************
 
 							-= Clash Road =-
@@ -365,3 +369,7 @@ VIDEO_UPDATE( clshroad )
 	draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,tilemap_1,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

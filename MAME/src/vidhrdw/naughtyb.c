@@ -1,3 +1,7 @@
+#pragma code_seg("C354")
+#pragma bss_seg("B354")
+#pragma data_seg("D354")
+#pragma const_seg("K354")
 /***************************************************************************
 
   vidhrdw.c
@@ -318,3 +322,7 @@ VIDEO_UPDATE( naughtyb )
 		copyscrollbitmap(bitmap,tmpbitmap,1,&scrollx,0,0,&scrollvisiblearea,TRANSPARENCY_NONE,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C260")
+#pragma bss_seg("B260")
+#pragma data_seg("D260")
+#pragma const_seg("K260")
 /***************************************************************************
 
 	Sun Electronics Kangaroo hardware
@@ -325,3 +329,7 @@ VIDEO_UPDATE( kangaroo )
 		copybitmap(bitmap,tmpbitmap2,0,0,0,0,&Machine->visible_area,TRANSPARENCY_COLOR,16);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

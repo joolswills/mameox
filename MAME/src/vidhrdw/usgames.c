@@ -1,3 +1,7 @@
+#pragma code_seg("C590")
+#pragma bss_seg("B590")
+#pragma data_seg("D590")
+#pragma const_seg("K590")
 #include "driver.h"
 
 data8_t *usg_videoram,*usg_charram;
@@ -76,3 +80,7 @@ VIDEO_UPDATE(usg)
 {
 	tilemap_draw(bitmap,cliprect,usg_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

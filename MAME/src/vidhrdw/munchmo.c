@@ -1,3 +1,7 @@
+#pragma code_seg("C342")
+#pragma bss_seg("B342")
+#pragma data_seg("D342")
+#pragma const_seg("K342")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -202,3 +206,7 @@ VIDEO_UPDATE( mnchmobl )
 	draw_sprites( bitmap );
 	draw_status( bitmap );
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

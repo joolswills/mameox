@@ -1,3 +1,7 @@
+#pragma code_seg("C122")
+#pragma bss_seg("B122")
+#pragma data_seg("D122")
+#pragma const_seg("K122")
 /***************************************************************************
 
   vidhrdw.c
@@ -169,3 +173,7 @@ VIDEO_UPDATE( crbaloon )
 			bx,by,
 			&Machine->visible_area,TRANSPARENCY_PEN,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

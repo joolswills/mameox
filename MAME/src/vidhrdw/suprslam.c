@@ -1,3 +1,7 @@
+#pragma code_seg("C523")
+#pragma bss_seg("B523")
+#pragma data_seg("D523")
+#pragma const_seg("K523")
 /* Super Slams - vidhrdw, see notes in driver file */
 
 #include "driver.h"
@@ -180,3 +184,7 @@ WRITE16_HANDLER (suprslam_bank_w)
 	if (screen_bank != old_screen_bank) tilemap_mark_all_tiles_dirty (suprslam_screen_tilemap);
 	if (bg_bank != old_bg_bank) tilemap_mark_all_tiles_dirty (suprslam_bg_tilemap);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

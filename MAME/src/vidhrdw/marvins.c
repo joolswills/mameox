@@ -1,3 +1,7 @@
+#pragma code_seg("C301")
+#pragma bss_seg("B301")
+#pragma data_seg("D301")
+#pragma const_seg("K301")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "cpu/z80/z80.h"
@@ -403,3 +407,7 @@ VIDEO_UPDATE( madcrash )
 	tilemap_draw( bitmap,&finalclip,tx_tilemap,0 ,0);
 	draw_status( bitmap,cliprect );
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

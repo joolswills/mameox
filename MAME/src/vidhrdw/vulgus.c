@@ -1,3 +1,7 @@
+#pragma code_seg("C602")
+#pragma bss_seg("B602")
+#pragma data_seg("D602")
+#pragma const_seg("K602")
 /***************************************************************************
 
   vidhrdw.c
@@ -234,3 +238,7 @@ VIDEO_UPDATE( vulgus )
 	draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,fg_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C499")
+#pragma bss_seg("B499")
+#pragma data_seg("D499")
+#pragma const_seg("K499")
 /***************************************************************************
 
 	Uses Data East custom chip 55 for backgrounds, with a special 8bpp mode
@@ -266,3 +270,7 @@ VIDEO_UPDATE( sshangha )
 	sshangha_drawsprites(bitmap,spriteram16_2,0x0000,0x0000);
 	sshangha_drawsprites(bitmap,spriteram16,0x4000,0x0000);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

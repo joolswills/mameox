@@ -1,3 +1,7 @@
+#pragma code_seg("C478")
+#pragma bss_seg("B478")
+#pragma data_seg("D478")
+#pragma const_seg("K478")
 /***************************************************************************
 
   vidhrdw.c
@@ -266,3 +270,7 @@ VIDEO_UPDATE( slapfight )
 	slapfght_log_vram();
 #endif
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

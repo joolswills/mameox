@@ -1,3 +1,7 @@
+#pragma code_seg("C235")
+#pragma bss_seg("B235")
+#pragma data_seg("D235")
+#pragma const_seg("K235")
 /***************************************************************************
 
 	Hard Drivin' video hardware
@@ -551,3 +555,7 @@ if (cliprect->min_y < 30)
 }
 #endif
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C585")
+#pragma bss_seg("B585")
+#pragma data_seg("D585")
+#pragma const_seg("K585")
 /***************************************************************************
   vidhrdw.c
 
@@ -443,3 +447,7 @@ VIDEO_EOF( toaplan0 )
 		assume it happens automatically every frame, at the end of vblank */
 	buffer_spriteram16_w(0,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

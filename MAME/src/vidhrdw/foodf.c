@@ -1,3 +1,7 @@
+#pragma code_seg("C187")
+#pragma bss_seg("B187")
+#pragma data_seg("D187")
+#pragma const_seg("K187")
 /***************************************************************************
 
 	Atari Food Fight hardware
@@ -138,3 +142,7 @@ VIDEO_UPDATE( foodf )
 				xpos - 256, ypos, cliprect, TRANSPARENCY_PEN, 0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

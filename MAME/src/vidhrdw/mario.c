@@ -1,3 +1,7 @@
+#pragma code_seg("C299")
+#pragma bss_seg("B299")
+#pragma data_seg("D299")
+#pragma const_seg("K299")
 /***************************************************************************
 
   vidhrdw.c
@@ -171,3 +175,7 @@ VIDEO_UPDATE( mario )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

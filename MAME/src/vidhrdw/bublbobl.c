@@ -1,3 +1,7 @@
+#pragma code_seg("C81")
+#pragma bss_seg("B81")
+#pragma data_seg("D81")
+#pragma const_seg("K81")
 /***************************************************************************
 
   vidhrdw.c
@@ -103,3 +107,7 @@ VIDEO_UPDATE( bublbobl )
 		sx += 16;
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

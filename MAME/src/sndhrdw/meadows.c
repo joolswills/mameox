@@ -1,3 +1,7 @@
+#pragma code_seg("C309")
+#pragma bss_seg("B309")
+#pragma data_seg("D309")
+#pragma const_seg("K309")
 /***************************************************************************
 	meadows.c
 	Sound handler
@@ -131,3 +135,7 @@ void meadows_sh_dac_w(int data)
 }
 
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

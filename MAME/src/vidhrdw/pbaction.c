@@ -1,3 +1,7 @@
+#pragma code_seg("C390")
+#pragma bss_seg("B390")
+#pragma data_seg("D390")
+#pragma const_seg("K390")
 /***************************************************************************
 
   vidhrdw.c
@@ -208,3 +212,7 @@ VIDEO_UPDATE( pbaction )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

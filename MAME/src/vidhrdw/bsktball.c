@@ -1,3 +1,7 @@
+#pragma code_seg("C78")
+#pragma bss_seg("B78")
+#pragma data_seg("D78")
+#pragma const_seg("K78")
 /***************************************************************************
 
 	Atari Basketball hardware
@@ -74,3 +78,7 @@ VIDEO_UPDATE( bsktball )
 	}
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

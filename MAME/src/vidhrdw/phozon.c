@@ -1,3 +1,7 @@
+#pragma code_seg("C395")
+#pragma bss_seg("B395")
+#pragma data_seg("D395")
+#pragma const_seg("K395")
 /***************************************************************************
 
   vidhrdw.c
@@ -251,3 +255,7 @@ usrintf_showmessage("%02x",spriteram_3[offs] & 0x3c);
 			}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

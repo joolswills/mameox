@@ -1,3 +1,7 @@
+#pragma code_seg("C626")
+#pragma bss_seg("B626")
+#pragma data_seg("D626")
+#pragma const_seg("K626")
 /***************************************************************************
 
   vidhrdw.c
@@ -365,3 +369,7 @@ VIDEO_UPDATE( yard )
 				   flip_screen ? &panelvisibleareaflip : &panelvisiblearea,TRANSPARENCY_NONE,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

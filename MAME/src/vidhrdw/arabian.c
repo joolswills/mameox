@@ -1,3 +1,7 @@
+#pragma code_seg("C22")
+#pragma bss_seg("B22")
+#pragma data_seg("D22")
+#pragma const_seg("K22")
 /***************************************************************************
 
   vidhrdw.c
@@ -399,3 +403,7 @@ VIDEO_UPDATE( arabian )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

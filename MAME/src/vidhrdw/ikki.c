@@ -1,3 +1,7 @@
+#pragma code_seg("C247")
+#pragma bss_seg("B247")
+#pragma data_seg("D247")
+#pragma const_seg("K247")
 /******************************************************************************
 
 Ikki (c) 1985 Sun Electronics
@@ -204,3 +208,7 @@ VIDEO_UPDATE( ikki )
 	}
 
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

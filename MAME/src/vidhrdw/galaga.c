@@ -1,3 +1,7 @@
+#pragma code_seg("C198")
+#pragma bss_seg("B198")
+#pragma data_seg("D198")
+#pragma const_seg("K198")
 /***************************************************************************
 
   vidhrdw.c
@@ -364,3 +368,7 @@ void galaga_vh_interrupt(void)
 
 	stars_scroll -= speeds[s0 + s1*2 + s2*4];
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C324")
+#pragma bss_seg("B324")
+#pragma data_seg("D324")
+#pragma const_seg("K324")
 /***************************************************************************
 
 	Atari Missile Command hardware
@@ -163,3 +167,7 @@ VIDEO_UPDATE( missile )
 	}
 	copybitmap(bitmap,tmpbitmap,0,0,0,0,&Machine->visible_area,TRANSPARENCY_NONE,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

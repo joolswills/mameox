@@ -1,3 +1,7 @@
+#pragma code_seg("C72")
+#pragma bss_seg("B72")
+#pragma data_seg("D72")
+#pragma const_seg("K72")
 /***************************************************************************
 
   vidhrdw.c
@@ -196,3 +200,7 @@ VIDEO_UPDATE( blueprnt )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

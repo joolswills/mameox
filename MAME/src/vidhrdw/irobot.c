@@ -1,3 +1,7 @@
+#pragma code_seg("C249")
+#pragma bss_seg("B249")
+#pragma data_seg("D249")
+#pragma const_seg("K249")
 /***************************************************************************
 
 	Atari I, Robot hardware
@@ -400,3 +404,7 @@ VIDEO_UPDATE( irobot )
 						&Machine->visible_area,TRANSPARENCY_COLOR,transp);
 			}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C40")
+#pragma bss_seg("B40")
+#pragma data_seg("D40")
+#pragma const_seg("K40")
 /***************************************************************************
 
 	Atari System 2 hardware
@@ -376,3 +380,7 @@ VIDEO_UPDATE( atarisy2 )
 	/* add the alpha on top */
 	tilemap_draw(bitmap, cliprect, atarigen_alpha_tilemap, 0, 0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C26")
+#pragma bss_seg("B26")
+#pragma data_seg("D26")
+#pragma const_seg("K26")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -313,3 +317,7 @@ VIDEO_EOF( armedf )
 {
 	buffer_spriteram16_w(0,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

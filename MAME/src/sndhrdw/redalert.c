@@ -1,3 +1,7 @@
+#pragma code_seg("C426")
+#pragma bss_seg("B426")
+#pragma data_seg("D426")
+#pragma const_seg("K426")
 /***************************************************************************
 
 Irem Red Alert sound hardware
@@ -118,3 +122,7 @@ WRITE_HANDLER( redalert_AY8910_B_w )
 	/* D6 = Explosion #3? */
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

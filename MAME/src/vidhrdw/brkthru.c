@@ -1,3 +1,7 @@
+#pragma code_seg("C77")
+#pragma bss_seg("B77")
+#pragma data_seg("D77")
+#pragma const_seg("K77")
 /***************************************************************************
 
 	breakthru:vidhrdw.c
@@ -276,3 +280,7 @@ VIDEO_UPDATE( brkthru )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

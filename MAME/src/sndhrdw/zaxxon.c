@@ -1,3 +1,7 @@
+#pragma code_seg("C632")
+#pragma bss_seg("B632")
+#pragma data_seg("D632")
+#pragma const_seg("K632")
 /*
  * Zaxxon Soundhardware Driver
  * Copyright Alex Judd 1997/98
@@ -176,3 +180,7 @@ WRITE_HANDLER( zaxxon_sound_w )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

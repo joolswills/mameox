@@ -1,3 +1,7 @@
+#pragma code_seg("C273")
+#pragma bss_seg("B273")
+#pragma data_seg("D273")
+#pragma const_seg("K273")
 /***************************************************************************
 
  Lasso and similar hardware
@@ -407,3 +411,7 @@ VIDEO_UPDATE( wwjgtin )
 	draw_sprites(bitmap, cliprect, 1);	// reverse order
 	tilemap_draw(bitmap, cliprect, bg_tilemap, 0, 0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C492")
+#pragma bss_seg("B492")
+#pragma data_seg("D492")
+#pragma const_seg("K492")
 /***************************************************************************
 
   vidhrdw.c
@@ -129,3 +133,7 @@ VIDEO_UPDATE( spiders )
 	/* Now copy the temp bitmap to the screen */
 	copybitmap(bitmap,tmpbitmap,0,0,0,0,&Machine->visible_area,TRANSPARENCY_NONE,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

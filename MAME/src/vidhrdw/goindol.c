@@ -1,3 +1,7 @@
+#pragma code_seg("C215")
+#pragma bss_seg("B215")
+#pragma data_seg("D215")
+#pragma const_seg("K215")
 /***************************************************************************
   Goindol
 
@@ -146,3 +150,7 @@ VIDEO_UPDATE( goindol )
 	draw_sprites(bitmap,cliprect,1,spriteram);
 	draw_sprites(bitmap,cliprect,0,spriteram_2);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

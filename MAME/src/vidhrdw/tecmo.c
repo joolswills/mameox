@@ -1,3 +1,7 @@
+#pragma code_seg("C546")
+#pragma bss_seg("B546")
+#pragma data_seg("D546")
+#pragma const_seg("K546")
 /***************************************************************************
 
   video hardware for Tecmo games
@@ -264,3 +268,7 @@ VIDEO_UPDATE( tecmo )
 
 	draw_sprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

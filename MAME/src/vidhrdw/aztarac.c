@@ -1,3 +1,7 @@
+#pragma code_seg("C45")
+#pragma bss_seg("B45")
+#pragma data_seg("D45")
+#pragma const_seg("K45")
 /*************************************************************************
 
 	Centuri Aztarac hardware
@@ -96,3 +100,7 @@ VIDEO_START( aztarac )
 	vector_set_shift (VEC_SHIFT);
 	return video_start_vector();
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

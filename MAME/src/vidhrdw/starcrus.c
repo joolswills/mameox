@@ -1,3 +1,7 @@
+#pragma code_seg("C505")
+#pragma bss_seg("B505")
+#pragma data_seg("D505")
+#pragma const_seg("K505")
 
 /* Ramtek - Star Cruiser */
 
@@ -575,3 +579,7 @@ READ_HANDLER( starcrus_coll_det_r )
 {
     return collision_reg ^ 0xff;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

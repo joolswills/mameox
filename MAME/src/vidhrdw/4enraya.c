@@ -1,3 +1,7 @@
+#pragma code_seg("C3")
+#pragma bss_seg("B3")
+#pragma data_seg("D3")
+#pragma const_seg("K3")
 /***************************************************************************
 
   vidhrdw.c
@@ -38,3 +42,7 @@ VIDEO_UPDATE( 4enraya)
 {
 	tilemap_draw(bitmap,cliprect,tilemap, 0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

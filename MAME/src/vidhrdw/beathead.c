@@ -1,3 +1,7 @@
+#pragma code_seg("C58")
+#pragma bss_seg("B58")
+#pragma data_seg("D58")
+#pragma const_seg("K58")
 /***************************************************************************
 
 	Atari "Stella on Steroids" hardware
@@ -232,3 +236,7 @@ VIDEO_UPDATE( beathead )
 		draw_scanline8(bitmap, cliprect->min_x, y, cliprect->max_x - cliprect->min_x + 1, &scanline[cliprect->min_x], &Machine->pens[scanline_palette[y] * 256], -1);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C330")
+#pragma bss_seg("B330")
+#pragma data_seg("D330")
+#pragma const_seg("K330")
 /*******************************************************************************
 
 Momoko 120% (c) 1986 Jaleco
@@ -321,3 +325,7 @@ VIDEO_UPDATE( momoko )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

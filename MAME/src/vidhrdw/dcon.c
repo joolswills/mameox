@@ -1,3 +1,7 @@
+#pragma code_seg("C133")
+#pragma bss_seg("B133")
+#pragma data_seg("D133")
+#pragma const_seg("K133")
 /***************************************************************************
 
 	D-Con video hardware.
@@ -255,3 +259,7 @@ VIDEO_UPDATE( sdgndmps )
 	draw_sprites(bitmap,cliprect,3);
 	tilemap_draw(bitmap,cliprect,text_layer,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

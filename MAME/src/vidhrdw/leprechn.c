@@ -1,3 +1,7 @@
+#pragma code_seg("C279")
+#pragma bss_seg("B279")
+#pragma data_seg("D279")
+#pragma const_seg("K279")
 /***************************************************************************
 
   vidhrdw.c
@@ -139,3 +143,7 @@ READ_HANDLER( leprechn_videoram_r )
 {
     return videoram[y * Machine->drv->screen_width + x];
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C566")
+#pragma bss_seg("B566")
+#pragma data_seg("D566")
+#pragma const_seg("K566")
 /***************************************************************************
 
   vidhrdw.c
@@ -357,3 +361,7 @@ VIDEO_UPDATE( tokib )
 	tokib_draw_sprites (bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,text_layer,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

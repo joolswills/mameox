@@ -1,3 +1,7 @@
+#pragma code_seg("C463")
+#pragma bss_seg("B463")
+#pragma data_seg("D463")
+#pragma const_seg("K463")
 /***************************************************************************
 
   vidhrdw.c
@@ -167,3 +171,7 @@ VIDEO_UPDATE( shaolins )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

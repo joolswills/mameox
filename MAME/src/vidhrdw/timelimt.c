@@ -1,3 +1,7 @@
+#pragma code_seg("C560")
+#pragma bss_seg("B560")
+#pragma data_seg("D560")
+#pragma const_seg("K560")
 #include "vidhrdw/generic.h"
 
 /* globals */
@@ -227,3 +231,7 @@ VIDEO_UPDATE( timelimt )
 	drawsprites( bitmap );
 	draw_foreground(  bitmap );
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

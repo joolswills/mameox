@@ -1,3 +1,7 @@
+#pragma code_seg("C237")
+#pragma bss_seg("B237")
+#pragma data_seg("D237")
+#pragma const_seg("K237")
 /***************************************************************************
 
   vidhrdw.c
@@ -92,3 +96,7 @@ VIDEO_UPDATE( hexa )
 
 	copybitmap(bitmap,tmpbitmap,0,0,0,0,&Machine->visible_area,TRANSPARENCY_NONE,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

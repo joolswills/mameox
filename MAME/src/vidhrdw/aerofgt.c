@@ -1,3 +1,7 @@
+#pragma code_seg("C10")
+#pragma bss_seg("B10")
+#pragma data_seg("D10")
+#pragma const_seg("K10")
 #include "driver.h"
 
 
@@ -541,3 +545,7 @@ VIDEO_UPDATE( aerofgt )
 	aerofgt_drawsprites(bitmap,cliprect,2);
 	aerofgt_drawsprites(bitmap,cliprect,3);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C169")
+#pragma bss_seg("B169")
+#pragma data_seg("D169")
+#pragma const_seg("K169")
 /*************************************************************************
 
 	Exidy 6502 hardware
@@ -488,3 +492,7 @@ VIDEO_UPDATE( exidy )
 	/* indicate that we already updated the background */
 	update_complete = 1;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

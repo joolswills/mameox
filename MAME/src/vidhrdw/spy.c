@@ -1,3 +1,7 @@
+#pragma code_seg("C496")
+#pragma bss_seg("B496")
+#pragma data_seg("D496")
+#pragma const_seg("K496")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 
@@ -85,3 +89,7 @@ VIDEO_UPDATE( spy )
 	K051960_sprites_draw(bitmap,cliprect,-1,-1);
 	tilemap_draw(bitmap,cliprect,K052109_tilemap[0],0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

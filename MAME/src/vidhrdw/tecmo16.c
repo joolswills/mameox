@@ -1,3 +1,7 @@
+#pragma code_seg("C547")
+#pragma bss_seg("B547")
+#pragma data_seg("D547")
+#pragma const_seg("K547")
 /******************************************************************************
 
   Ganbare Ginkun  (Japan)  (c)1995 TECMO
@@ -260,3 +264,7 @@ VIDEO_UPDATE( tecmo16 )
 
 	draw_sprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

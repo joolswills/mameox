@@ -1,3 +1,7 @@
+#pragma code_seg("C552")
+#pragma bss_seg("B552")
+#pragma data_seg("D552")
+#pragma const_seg("K552")
 /***************************************************************************
 
 							  -= Tetris Plus 2 =-
@@ -778,3 +782,7 @@ VIDEO_UPDATE( rocknms )
 	copybitmap(bitmap, rocknms_main_tmpbitmap, 0, 0,   0, 224, &rocknms_rect_main, TRANSPARENCY_NONE, 0);
 //	copybitmap(bitmap, rocknms_sub_tmpbitmap,  0, 0,   0,   0, &rocknms_rect_sub,  TRANSPARENCY_NONE, 0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C466")
+#pragma bss_seg("B466")
+#pragma data_seg("D466")
+#pragma const_seg("K466")
 /*
 	Video Hardware for Shoot Out
 	prom GB09.K6 may be related to background tile-sprite priority
@@ -158,3 +162,7 @@ VIDEO_UPDATE( shootouj )
 	tilemap_draw(bitmap,cliprect,foreground,0,1);
 	draw_sprites(bitmap,cliprect,2/*bank bits*/);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

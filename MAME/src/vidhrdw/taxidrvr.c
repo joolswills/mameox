@@ -1,3 +1,7 @@
+#pragma code_seg("C544")
+#pragma bss_seg("B544")
+#pragma data_seg("D544")
+#pragma const_seg("K544")
 #include "driver.h"
 #include "taxidrvr.h"
 
@@ -154,3 +158,7 @@ VIDEO_UPDATE( taxidrvr )
 				cliprect,TRANSPARENCY_PEN,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

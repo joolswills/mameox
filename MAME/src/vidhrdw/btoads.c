@@ -1,3 +1,7 @@
+#pragma code_seg("C80")
+#pragma bss_seg("B80")
+#pragma data_seg("D80")
+#pragma const_seg("K80")
 /*************************************************************************
 
 	BattleToads
@@ -492,3 +496,7 @@ VIDEO_UPDATE( btoads )
 	logerror("---VBLANK---\n");
 #endif
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

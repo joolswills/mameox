@@ -1,3 +1,7 @@
+#pragma code_seg("C44")
+#pragma bss_seg("B44")
+#pragma data_seg("D44")
+#pragma const_seg("K44")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -176,3 +180,7 @@ VIDEO_STOP(avengrgs)
 	fclose(fp);
 #endif
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

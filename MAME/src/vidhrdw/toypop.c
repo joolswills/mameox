@@ -1,3 +1,7 @@
+#pragma code_seg("C570")
+#pragma bss_seg("B570")
+#pragma data_seg("D570")
+#pragma const_seg("K570")
 /***************************************************************************
 
   vidhrdw.c
@@ -236,3 +240,7 @@ VIDEO_UPDATE( toypop )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

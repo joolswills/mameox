@@ -1,3 +1,7 @@
+#pragma code_seg("C593")
+#pragma bss_seg("B593")
+#pragma data_seg("D593")
+#pragma const_seg("K593")
 /***************************************************************************
 
   Video Hardware for Championship V'ball by Paul Hampson
@@ -197,3 +201,7 @@ INTERRUPT_GEN( vball_interrupt )
 	//save the scroll x register value
 	if(line<32) scrollx[31-line] = (vb_scrollx_hi + vb_scrollx_lo+4);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

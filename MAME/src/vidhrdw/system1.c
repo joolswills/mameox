@@ -1,3 +1,7 @@
+#pragma code_seg("C525")
+#pragma bss_seg("B525")
+#pragma data_seg("D525")
+#pragma const_seg("K525")
 /*************************************************************************
 
   System1 / System 2.   By Jarek Parchanski & Mirko Buffoni.
@@ -816,3 +820,7 @@ VIDEO_UPDATE( blockgal )
 
 	blockgal_kludgeoffset = 0;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C224")
+#pragma bss_seg("B224")
+#pragma data_seg("D224")
+#pragma const_seg("K224")
 
 #include "driver.h"
 #include "gstriker.h"
@@ -520,3 +524,7 @@ VIDEO_START(gstriker)
 
 	return 0;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

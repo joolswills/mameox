@@ -1,3 +1,7 @@
+#pragma code_seg("C138")
+#pragma bss_seg("B138")
+#pragma data_seg("D138")
+#pragma const_seg("K138")
 /***************************************************************************
 
   vidhrdw.c
@@ -256,3 +260,7 @@ VIDEO_UPDATE( ddrible )
 	ddribble_draw_sprites(bitmap,cliprect,ddrible_spriteram_2,0x140,3,ddribble_vregs[1][4] & 0x08);
 	tilemap_draw(bitmap,cliprect,fg_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

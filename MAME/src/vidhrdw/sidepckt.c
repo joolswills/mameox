@@ -1,3 +1,7 @@
+#pragma code_seg("C469")
+#pragma bss_seg("B469")
+#pragma data_seg("D469")
+#pragma const_seg("K469")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -157,3 +161,7 @@ VIDEO_UPDATE( sidepckt )
 	draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,bg_tilemap,TILEMAP_FRONT,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

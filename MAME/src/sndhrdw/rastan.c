@@ -1,3 +1,7 @@
+#pragma code_seg("C425")
+#pragma bss_seg("B425")
+#pragma data_seg("D425")
+#pragma const_seg("K425")
 #include "driver.h"
 
 /* Game writes here to set ADPCM ROM address */
@@ -30,3 +34,7 @@ WRITE_HANDLER( rastan_d000_w )
 		mixer_stop_sample(channel);
 #endif
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

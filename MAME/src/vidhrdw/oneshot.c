@@ -1,3 +1,7 @@
+#pragma code_seg("C377")
+#pragma bss_seg("B377")
+#pragma data_seg("D377")
+#pragma const_seg("K377")
 /* One Shot One Kill Video Hardware */
 
 #include "driver.h"
@@ -205,3 +209,7 @@ VIDEO_UPDATE( maddonna )
 
 //	usrintf_showmessage	("%04x %04x %04x %04x %04x %04x %04x %04x", oneshot_scroll[0],oneshot_scroll[1],oneshot_scroll[2],oneshot_scroll[3],oneshot_scroll[4],oneshot_scroll[5],oneshot_scroll[6],oneshot_scroll[7]);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

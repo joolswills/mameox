@@ -1,3 +1,7 @@
+#pragma code_seg("C530")
+#pragma bss_seg("B530")
+#pragma data_seg("D530")
+#pragma const_seg("K530")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "konamiic.h"
@@ -221,3 +225,7 @@ VIDEO_UPDATE( tail2nos )
 	else
 		fillbitmap(bitmap,Machine->pens[0],cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

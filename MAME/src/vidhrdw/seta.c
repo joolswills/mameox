@@ -1,3 +1,7 @@
+#pragma code_seg("C455")
+#pragma bss_seg("B455")
+#pragma data_seg("D455")
+#pragma const_seg("K455")
 /***************************************************************************
 
 							-= Seta Hardware =-
@@ -946,3 +950,7 @@ if (keyboard_pressed(KEYCODE_Z))
 		zombraid_drawcrosshairs(bitmap,cliprect);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

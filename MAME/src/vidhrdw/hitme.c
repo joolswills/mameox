@@ -1,3 +1,7 @@
+#pragma code_seg("C240")
+#pragma bss_seg("B240")
+#pragma data_seg("D240")
+#pragma const_seg("K240")
 
 #include "driver.h"
 
@@ -78,3 +82,7 @@ VIDEO_UPDATE (hitme)
 {
 	tilemap_draw(bitmap,cliprect,hitme_tilemap,0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

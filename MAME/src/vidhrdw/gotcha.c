@@ -1,3 +1,7 @@
+#pragma code_seg("C217")
+#pragma bss_seg("B217")
+#pragma data_seg("D217")
+#pragma const_seg("K217")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -142,3 +146,7 @@ VIDEO_UPDATE( gotcha )
 
 	draw_sprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

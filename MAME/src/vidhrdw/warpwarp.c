@@ -1,3 +1,7 @@
+#pragma code_seg("C604")
+#pragma bss_seg("B604")
+#pragma data_seg("D604")
+#pragma const_seg("K604")
 /***************************************************************************
 
   vidhrdw.c
@@ -165,3 +169,7 @@ WRITE_HANDLER( warpwarp_flip_screen_w )
 	flip_screen_set(data & 1);
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

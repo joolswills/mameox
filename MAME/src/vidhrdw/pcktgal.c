@@ -1,3 +1,7 @@
+#pragma code_seg("C391")
+#pragma bss_seg("B391")
+#pragma data_seg("D391")
+#pragma const_seg("K391")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -107,3 +111,7 @@ VIDEO_UPDATE( pcktgal )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

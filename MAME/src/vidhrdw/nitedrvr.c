@@ -1,3 +1,7 @@
+#pragma code_seg("C365")
+#pragma bss_seg("B365")
+#pragma data_seg("D365")
+#pragma const_seg("K365")
 /***************************************************************************
 
 	Atari Night Driver hardware
@@ -106,3 +110,7 @@ VIDEO_UPDATE( nitedrvr )
 				0,0,(offs+26)*8,31*8,
 				&Machine->visible_area,TRANSPARENCY_NONE,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

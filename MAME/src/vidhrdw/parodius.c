@@ -1,3 +1,7 @@
+#pragma code_seg("C387")
+#pragma bss_seg("B387")
+#pragma data_seg("D387")
+#pragma const_seg("K387")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 
@@ -101,3 +105,7 @@ VIDEO_UPDATE( parodius )
 
 	K053245_sprites_draw(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

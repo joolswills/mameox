@@ -1,3 +1,7 @@
+#pragma code_seg("C130")
+#pragma bss_seg("B130")
+#pragma data_seg("D130")
+#pragma const_seg("K130")
 /***************************************************************************
 
    Dark Seal Video emulation - Bryan McPhail, mish@tendril.co.uk
@@ -320,3 +324,7 @@ VIDEO_UPDATE( darkseal )
 }
 
 /******************************************************************************/
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

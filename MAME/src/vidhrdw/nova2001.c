@@ -1,3 +1,7 @@
+#pragma code_seg("C368")
+#pragma bss_seg("B368")
+#pragma data_seg("D368")
+#pragma const_seg("K368")
 /*******************************************************************************
 
      Nova 2001 - Video Description:
@@ -227,3 +231,7 @@ VIDEO_UPDATE( nova2001 )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

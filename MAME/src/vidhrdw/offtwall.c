@@ -1,3 +1,7 @@
+#pragma code_seg("C371")
+#pragma bss_seg("B371")
+#pragma data_seg("D371")
+#pragma const_seg("K371")
 /***************************************************************************
 
 	Atari "Round" hardware
@@ -119,3 +123,7 @@ VIDEO_UPDATE( offtwall )
 				}
 		}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

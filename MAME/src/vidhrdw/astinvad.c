@@ -1,3 +1,7 @@
+#pragma code_seg("C30")
+#pragma bss_seg("B30")
+#pragma data_seg("D30")
+#pragma const_seg("K30")
 /***************************************************************************
 
 	Video emulation for Astro Invader, Space Intruder et al
@@ -162,3 +166,7 @@ VIDEO_UPDATE( astinvad )
 		copybitmap(bitmap, tmpbitmap, 0, 0, 0, 0, cliprect, TRANSPARENCY_NONE, 0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

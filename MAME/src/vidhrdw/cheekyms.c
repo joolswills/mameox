@@ -1,3 +1,7 @@
+#pragma code_seg("C98")
+#pragma bss_seg("B98")
+#pragma data_seg("D98")
+#pragma const_seg("K98")
 /*************************************************************************
  Universal Cheeky Mouse Driver
  (c)Lee Taylor May 1998, All rights reserved.
@@ -221,3 +225,7 @@ VIDEO_UPDATE( cheekyms )
 	/* copy the temporary bitmap to the screen over the sprites */
 	copybitmap(bitmap,tmpbitmap,0,0,0,0,&Machine->visible_area,TRANSPARENCY_PEN,Machine->pens[4*char_palette]);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C196")
+#pragma bss_seg("B196")
+#pragma data_seg("D196")
+#pragma const_seg("K196")
 /***************************************************************************
 
   Gaelco Type CG-1V/GAE1 Video Hardware
@@ -619,3 +623,7 @@ VIDEO_EOF( gaelco2 )
 	/* sprites are one frame ahead */
 	buffer_spriteram16_w(0, 0, 0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C501")
+#pragma bss_seg("B501")
+#pragma data_seg("D501")
+#pragma const_seg("K501")
 /***************************************************************************
 
 Syusse Oozumou
@@ -152,3 +156,7 @@ VIDEO_UPDATE( ssozumo )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C32")
+#pragma bss_seg("B32")
+#pragma data_seg("D32")
+#pragma const_seg("K32")
 
 #include "driver.h"
 
@@ -174,3 +178,7 @@ WRITE_HANDLER( astrof_sample2_w )
 	last = data;
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

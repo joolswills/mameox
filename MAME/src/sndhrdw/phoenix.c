@@ -1,3 +1,7 @@
+#pragma code_seg("C394")
+#pragma bss_seg("B394")
+#pragma data_seg("D394")
+#pragma const_seg("K394")
 /****************************************************************************
  *
  * Phoenix sound hardware simulation - still very ALPHA!
@@ -627,3 +631,7 @@ void phoenix_sh_update(void)
 }
 
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

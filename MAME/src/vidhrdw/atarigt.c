@@ -1,3 +1,7 @@
+#pragma code_seg("C37")
+#pragma bss_seg("B37")
+#pragma data_seg("D37")
+#pragma const_seg("K37")
 /***************************************************************************
 
 	Atari GT hardware
@@ -613,3 +617,7 @@ static void dump_video_memory(struct mame_bitmap *mo_bitmap, struct mame_bitmap 
 }
 
 #endif
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

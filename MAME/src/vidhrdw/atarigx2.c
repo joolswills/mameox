@@ -1,3 +1,7 @@
+#pragma code_seg("C38")
+#pragma bss_seg("B38")
+#pragma data_seg("D38")
+#pragma const_seg("K38")
 /***************************************************************************
 
 	Atari GX2 hardware
@@ -281,3 +285,7 @@ VIDEO_UPDATE( atarigx2 )
 	/* add the alpha on top */
 	tilemap_draw(bitmap, cliprect, atarigen_alpha_tilemap, 0, 0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C460")
+#pragma bss_seg("B460")
+#pragma data_seg("D460")
+#pragma const_seg("K460")
 /***************************************************************************
 
 Custom blitter GA9201 KA01-0249 (120pin IC)
@@ -268,3 +272,7 @@ VIDEO_UPDATE( shangha3 )
 {
 	copybitmap(bitmap,rawbitmap,0,0,0,0,&Machine->visible_area,TRANSPARENCY_NONE,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

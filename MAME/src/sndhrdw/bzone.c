@@ -1,3 +1,7 @@
+#pragma code_seg("C84")
+#pragma bss_seg("B84")
+#pragma data_seg("D84")
+#pragma const_seg("K84")
 /*
 
 Battlezone sound info, courtesy of Al Kossow:
@@ -294,3 +298,7 @@ void bzone_sh_update(void)
 }
 
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C489")
+#pragma bss_seg("B489")
+#pragma data_seg("D489")
+#pragma const_seg("K489")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "cpu/m6502/m6502.h"
@@ -232,3 +236,7 @@ VIDEO_UPDATE( spdodgeb )
 	tilemap_draw(bitmap,cliprect,bg_tilemap,0,0);
 	draw_sprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

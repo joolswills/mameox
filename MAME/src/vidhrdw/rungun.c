@@ -1,3 +1,7 @@
+#pragma code_seg("C441")
+#pragma bss_seg("B441")
+#pragma data_seg("D441")
+#pragma const_seg("K441")
 /*
    Run and Gun
    (c) 1993 Konami
@@ -158,3 +162,7 @@ VIDEO_UPDATE(rng)
 	K053247_sprites_draw(bitmap, cliprect);
 	tilemap_draw(bitmap, cliprect, ttl_tilemap, 0, 1<<0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

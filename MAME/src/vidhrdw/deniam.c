@@ -1,3 +1,7 @@
+#pragma code_seg("C144")
+#pragma bss_seg("B144")
+#pragma data_seg("D144")
+#pragma const_seg("K144")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -415,3 +419,7 @@ VIDEO_UPDATE( deniam )
 
 	draw_sprites(bitmap,cliprect);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

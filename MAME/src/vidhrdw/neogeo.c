@@ -1,3 +1,7 @@
+#pragma code_seg("C360")
+#pragma bss_seg("B360")
+#pragma data_seg("D360")
+#pragma const_seg("K360")
 /***************************************************************************
 
   vidhrdw.c
@@ -609,3 +613,7 @@ profiler_mark(PROFILER_VIDEO);
 
 profiler_mark(PROFILER_END);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

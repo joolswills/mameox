@@ -1,3 +1,7 @@
+#pragma code_seg("C518")
+#pragma bss_seg("B518")
+#pragma data_seg("D518")
+#pragma const_seg("K518")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/taitoic.h"
@@ -254,3 +258,7 @@ VIDEO_UPDATE( superchs )
 	superchs_draw_sprites_16x16(bitmap,cliprect,primasks,48,-116);
 #endif
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

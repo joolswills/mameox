@@ -1,3 +1,7 @@
+#pragma code_seg("C47")
+#pragma bss_seg("B47")
+#pragma data_seg("D47")
+#pragma const_seg("K47")
 /***************************************************************************
 
   vidhrdw.c
@@ -170,3 +174,7 @@ VIDEO_UPDATE( bagman )
 					&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

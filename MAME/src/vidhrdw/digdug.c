@@ -1,3 +1,7 @@
+#pragma code_seg("C146")
+#pragma bss_seg("B146")
+#pragma data_seg("D146")
+#pragma const_seg("K146")
 /***************************************************************************
 
   vidhrdw.c
@@ -316,3 +320,7 @@ VIDEO_UPDATE( digdug )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C186")
+#pragma bss_seg("B186")
+#pragma data_seg("D186")
+#pragma const_seg("K186")
 /***************************************************************************
 
 Atari Flyball video emulation
@@ -94,3 +98,7 @@ VIDEO_UPDATE( flyball )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

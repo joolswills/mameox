@@ -1,3 +1,7 @@
+#pragma code_seg("C15")
+#pragma bss_seg("B15")
+#pragma data_seg("D15")
+#pragma const_seg("K15")
 /***************************************************************************
 
    Alpha 68k video emulation - Bryan McPhail, mish@tendril.co.uk
@@ -662,3 +666,7 @@ VIDEO_UPDATE( sstingry )
 	sstingry_draw_sprites(bitmap,cliprect,3,0x0c00);
 	sstingry_draw_sprites(bitmap,cliprect,1,0x0400);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C90")
+#pragma bss_seg("B90")
+#pragma data_seg("D90")
+#pragma const_seg("K90")
 /***************************************************************************
 
 							  -= Cave Hardware =-
@@ -1646,3 +1650,7 @@ VIDEO_UPDATE( cave )
 		}
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

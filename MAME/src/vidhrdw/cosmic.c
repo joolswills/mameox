@@ -1,3 +1,7 @@
+#pragma code_seg("C119")
+#pragma bss_seg("B119")
+#pragma data_seg("D119")
+#pragma const_seg("K119")
 /***************************************************************************
 
  COSMIC.C
@@ -497,3 +501,7 @@ VIDEO_UPDATE( nomnlnd )
         }
     }
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

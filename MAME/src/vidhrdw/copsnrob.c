@@ -1,3 +1,7 @@
+#pragma code_seg("C118")
+#pragma bss_seg("B118")
+#pragma data_seg("D118")
+#pragma const_seg("K118")
 /***************************************************************************
 
 	Atari Cops'n Robbers hardware
@@ -166,3 +170,7 @@ VIDEO_UPDATE( copsnrob )
         }
     }
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

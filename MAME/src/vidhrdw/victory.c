@@ -1,3 +1,7 @@
+#pragma code_seg("C596")
+#pragma bss_seg("B596")
+#pragma data_seg("D596")
+#pragma const_seg("K596")
 /***************************************************************************
 
 	Victory video system
@@ -1258,3 +1262,7 @@ VIDEO_UPDATE( victory )
 	/* indicate that we already did collision detection */
 	update_complete = 1;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

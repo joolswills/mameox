@@ -1,3 +1,7 @@
+#pragma code_seg("C520")
+#pragma bss_seg("B520")
+#pragma data_seg("D520")
+#pragma const_seg("K520")
 /***************************************************************************
 
   vidhrdw.c
@@ -259,3 +263,7 @@ VIDEO_UPDATE( superqix )
 
 	sqix_minx=1000;sqix_maxx=-1;sqix_miny=1000;sqix_maxy=-1;
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

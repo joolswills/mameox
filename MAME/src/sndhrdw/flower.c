@@ -1,3 +1,7 @@
+#pragma code_seg("C184")
+#pragma bss_seg("B184")
+#pragma data_seg("D184")
+#pragma const_seg("K184")
 /***************************************************************************
 
 	Flower sound driver (quick hack of the Wiping sound driver)
@@ -289,3 +293,7 @@ usrintf_showmessage("%02x%02x %02x%02x %02x%02x %02x%02x %02x%02x %02x%02x %02x%
 		voice->oneshotplaying = 0;
 	}
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

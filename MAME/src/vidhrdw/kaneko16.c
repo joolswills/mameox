@@ -1,3 +1,7 @@
+#pragma code_seg("C259")
+#pragma bss_seg("B259")
+#pragma data_seg("D259")
+#pragma const_seg("K259")
 /***************************************************************************
 
 							-= Kaneko 16 Bit Games =-
@@ -956,3 +960,7 @@ if ( keyboard_pressed(KEYCODE_Z) ||
 	if (layers_ctrl & (0xf<<16))
 		kaneko16_draw_sprites(bitmap,cliprect, (layers_ctrl >> 16) & 0xf);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

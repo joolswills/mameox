@@ -1,3 +1,7 @@
+#pragma code_seg("C183")
+#pragma bss_seg("B183")
+#pragma data_seg("D183")
+#pragma const_seg("K183")
 /***************************************************************************
 
   Functions to emulate the video hardware of the machine.
@@ -170,3 +174,7 @@ usrintf_showmessage("%02x-%02x-%02x-%02x-%02x-%02x-%02x-%02x  %02x-%02x-%02x-%02
 	K007121_sprites_draw(0,bitmap,cliprect,&k007121_ram[0x1000],0,40,0,-1);
 	tilemap_draw(bitmap,&final_clip[1],k007121_tilemap[1],0,0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C558")
+#pragma bss_seg("B558")
+#pragma data_seg("D558")
+#pragma const_seg("K558")
 /***************************************************************************
 
 	Raster Elite Tickee Tickats hardware
@@ -146,3 +150,7 @@ VIDEO_UPDATE( tickee )
 	draw_crosshair(bitmap, beamx, beamy, cliprect);
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C456")
+#pragma bss_seg("B456")
+#pragma data_seg("D456")
+#pragma const_seg("K456")
 /***************************************************************************
 
 						  -= Newer Seta Hardware =-
@@ -310,12 +314,12 @@ static void seta2_draw_sprites(struct mame_bitmap *bitmap,const struct rectangle
 				int flipy = (attr & 0x0008);
 				int color = (attr & 0xffe0) >> 5;
 
+				int x,y;
 				int sizex = use_global_size ? global_sizex : sx;
 				int sizey = use_global_size ? global_sizey : sy;
 				sizex = (1 << ((sizex & 0x0c00)>> 10))-1;
 				sizey = (1 << ((sizey & 0x0c00)>> 10))-1;
 
-				int x,y;
 
 				sx += xoffs;
 				sy += yoffs;
@@ -383,3 +387,7 @@ VIDEO_UPDATE( seta2 )
 	seta2_draw_sprites(bitmap,cliprect);
 }
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

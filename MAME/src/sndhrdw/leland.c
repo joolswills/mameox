@@ -1,3 +1,7 @@
+#pragma code_seg("C277")
+#pragma bss_seg("B277")
+#pragma data_seg("D277")
+#pragma const_seg("K277")
 /***************************************************************************
 
 	Cinemat/Leland driver
@@ -2259,3 +2263,7 @@ Memory configurations:
 		FFD9D:80186 middle P chip select = C0BC
 
 ************************************************************************/
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

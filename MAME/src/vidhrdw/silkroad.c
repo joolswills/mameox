@@ -1,3 +1,7 @@
+#pragma code_seg("C470")
+#pragma bss_seg("B470")
+#pragma data_seg("D470")
+#pragma const_seg("K470")
 #include "driver.h"
 
 /* Sprites probably need to be delayed */
@@ -189,3 +193,7 @@ VIDEO_UPDATE(silkroad)
 	);
 */
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()
