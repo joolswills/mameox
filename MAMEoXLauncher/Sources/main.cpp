@@ -308,7 +308,7 @@ void __cdecl main( void )
 																	                      g_pD3DVertexBuffer,					// Stream data
 																	                      sizeof(CUSTOMVERTEX) );		  // Vertex stride
 
-    g_graphicsManager.GetD3DDevice()->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
+    g_graphicsManager.GetD3DDevice()->DrawPrimitive( D3DPT_QUADLIST, 0, 5 );
 
 		romList.MoveCursor( gp0 );
 		romList.Draw( FALSE, FALSE );
@@ -504,7 +504,7 @@ static BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage )
   }
 
     // Create the vertex buffer
-  g_graphicsManager.GetD3DDevice()->CreateVertexBuffer( sizeof(CUSTOMVERTEX) << 2,
+  g_graphicsManager.GetD3DDevice()->CreateVertexBuffer( (sizeof(CUSTOMVERTEX) << 2) * 5,
 																		                    D3DUSAGE_WRITEONLY,
 																		                    D3DFVF_XYZ | D3DFVF_DIFFUSE,
 																		                    D3DPOOL_MANAGED,
@@ -516,6 +516,7 @@ static BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage )
 														(BYTE**)&pVertices,		// ppbData
 														0 );									// Flags
 
+      //-- Draw the backdrop -------------------------------------------------
 		pVertices[0].pos.x = -xUsage;
 		pVertices[0].pos.y = yUsage;
 		pVertices[0].pos.z = 1.0f;
@@ -543,6 +544,98 @@ static BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage )
     pVertices[3].diffuse = D3DCOLOR_RGBA( 30, 50, 30, 255 );
     //pVertices[3].tu = 0.0f;
     //pVertices[3].tv = 1.0f;
+
+
+
+      //-- Draw the corner pieces -----------------------------
+    #define LINE_WIDTH    0.02
+    #define LINE_COLOR    D3DCOLOR_RGBA( 150, 150, 100, 255 );
+
+		pVertices[4].pos.x = -xUsage;
+		pVertices[4].pos.y = yUsage;
+		pVertices[4].pos.z = 1.0f;
+    pVertices[4].diffuse = LINE_COLOR
+
+		pVertices[5].pos.x = xUsage;
+		pVertices[5].pos.y = yUsage;
+		pVertices[5].pos.z = 1.0f;
+    pVertices[5].diffuse = LINE_COLOR;
+		
+		pVertices[6].pos.x = xUsage;
+		pVertices[6].pos.y = yUsage - LINE_WIDTH;
+		pVertices[6].pos.z = 1.0f;
+    pVertices[6].diffuse = LINE_COLOR;
+		
+		pVertices[7].pos.x = -xUsage;
+		pVertices[7].pos.y = yUsage - LINE_WIDTH;
+		pVertices[7].pos.z = 1.0f;
+    pVertices[7].diffuse = LINE_COLOR;
+
+
+		pVertices[8].pos.x = -xUsage;
+		pVertices[8].pos.y = -yUsage;
+		pVertices[8].pos.z = 1.0f;
+    pVertices[8].diffuse = LINE_COLOR
+
+		pVertices[9].pos.x = xUsage;
+		pVertices[9].pos.y = -yUsage;
+		pVertices[9].pos.z = 1.0f;
+    pVertices[9].diffuse = LINE_COLOR;
+		
+		pVertices[10].pos.x = xUsage;
+		pVertices[10].pos.y = -yUsage + LINE_WIDTH;
+		pVertices[10].pos.z = 1.0f;
+    pVertices[10].diffuse = LINE_COLOR;
+		
+		pVertices[11].pos.x = -xUsage;
+		pVertices[11].pos.y = -yUsage + LINE_WIDTH;
+		pVertices[11].pos.z = 1.0f;
+    pVertices[11].diffuse = LINE_COLOR;
+
+
+		pVertices[12].pos.x = -xUsage;
+		pVertices[12].pos.y = -yUsage;
+		pVertices[12].pos.z = 1.0f;
+    pVertices[12].diffuse = LINE_COLOR
+
+		pVertices[13].pos.x = -xUsage + LINE_WIDTH;
+		pVertices[13].pos.y = -yUsage;
+		pVertices[13].pos.z = 1.0f;
+    pVertices[13].diffuse = LINE_COLOR;
+		
+		pVertices[14].pos.x = -xUsage + LINE_WIDTH;
+		pVertices[14].pos.y = yUsage;
+		pVertices[14].pos.z = 1.0f;
+    pVertices[14].diffuse = LINE_COLOR;
+		
+		pVertices[15].pos.x = -xUsage;
+		pVertices[15].pos.y = yUsage;
+		pVertices[15].pos.z = 1.0f;
+    pVertices[15].diffuse = LINE_COLOR;
+
+
+		pVertices[16].pos.x = xUsage;
+		pVertices[16].pos.y = -yUsage;
+		pVertices[16].pos.z = 1.0f;
+    pVertices[16].diffuse = LINE_COLOR
+
+		pVertices[17].pos.x = xUsage - LINE_WIDTH;
+		pVertices[17].pos.y = -yUsage;
+		pVertices[17].pos.z = 1.0f;
+    pVertices[17].diffuse = LINE_COLOR;
+		
+		pVertices[18].pos.x = xUsage - LINE_WIDTH;
+		pVertices[18].pos.y = yUsage;
+		pVertices[18].pos.z = 1.0f;
+    pVertices[18].diffuse = LINE_COLOR;
+		
+		pVertices[19].pos.x = xUsage;
+		pVertices[19].pos.y = yUsage;
+		pVertices[19].pos.z = 1.0f;
+    pVertices[19].diffuse = LINE_COLOR;
+
+
+
 
 	g_pD3DVertexBuffer->Unlock();
 
