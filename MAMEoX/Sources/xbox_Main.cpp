@@ -533,6 +533,8 @@ static BOOL Helper_RunRom( UINT32 romIndex )
   LoadDriverSectionByName( "src\\drivers\\timeplt.c" );   // Loco-Motion
   LoadDriverSectionByName( "src\\drivers\\exidy.c" );     // Victory
   LoadDriverSectionByName( "src\\drivers\\m72.c" );       // Bomber Man World (World)
+  LoadDriverSectionByName( "src\\drivers\\leland.c" );    // Asylum (prototype)
+  LoadDriverSectionByName( "src\\drivers\\trackfld.c" );  // Hyper Sports, Hyper Olympics '84?
 
     // VC6 seems to be calling this with the full path so strstr just trims down the path
     // appropriately. NOTE: we probably don't need this to conditionally compile and could

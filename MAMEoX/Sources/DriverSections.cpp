@@ -113,6 +113,7 @@ BOOL LoadDriverSectionByName( const char *DriverFileName )
     return FALSE;
   std::string sectionName;
   void *addr;
+  PRINTMSG( T_INFO, "Load section %s, ID %s\n", DriverFileName, (*i).second.c_str() );
   sectionName = DATA_PREFIX;
   sectionName += (*i).second.c_str();
   addr = XLoadSection( sectionName.c_str() );

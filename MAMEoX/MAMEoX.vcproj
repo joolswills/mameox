@@ -136,7 +136,7 @@
 				SuppressStartupBanner="TRUE"
 				FormatUD="FALSE"
 				NoLibWarn="TRUE"
-				TitleName=""/>
+				TitleName="&quot;MAMEoX Util (Don&apos;t Run)&quot;"/>
 		</Configuration>
 		<Configuration
 			Name="Profile|Xbox"

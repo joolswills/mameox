@@ -118,6 +118,12 @@ Version 0.66b
       vars and stack validity in debug mode, led to discovery of
       an apparent stack overflow and slight increase of stack size
 
+ --- Specific Game fixes --------------------------------------------
+  Ataxx
+  Asylum
+  U.S. Classic
+  Hyper Sports
+  Hyper Olympics '84
 
 *********************************************************************
 Version 0.65b
