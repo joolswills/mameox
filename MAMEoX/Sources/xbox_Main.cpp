@@ -235,11 +235,8 @@ static BOOL Helper_RunRom( UINT32 romIndex )
     // just leave the first call but would like someone with VS.net to test first just in case :)
     //
     // Should be perfectly fine w/ the strstr
-PRINTMSG(( T_INFO, "LoadDriverSectionByName" ));
   if( !LoadDriverSectionByName( strstr(DriverName.c_str(),"src\\drivers\\") ) )
     PRINTMSG(( T_ERROR, "Failed to load section for file %s!", DriverName.c_str() ));
-PRINTMSG(( T_INFO, "LoadDriverSectionByName Done" ));
-
 
     // Unload all the other XBE data sections, as we'll only be using the one
     // for the file we're loading
@@ -247,15 +244,11 @@ PRINTMSG(( T_INFO, "LoadDriverSectionByName Done" ));
     // This increments the refcount on the driver causing the system 
     // not to release anything allocated by the segment back to the heap
     // (MAME shouldn't allocate anything at this point, but it's good to be safe)
-PRINTMSG(( T_INFO, "UnloadDriverSections" ));
   UnloadDriverSections();
   //UnloadCPUSections();          // CPU sections are unloaded in mame/src/cpuexec.c
-PRINTMSG(( T_INFO, "UnloadDriverSections Done" ));
 
     // Free up unneeded sectionizer memory
-PRINTMSG(( T_INFO, "TerminateDriverSectionizer" ));
   TerminateDriverSectionizer();
-PRINTMSG(( T_INFO, "TerminateDriverSectionizer done" ));
 //  TerminateCPUSectionizer();    // CPU sectionizer is unloaded in mame/src/cpuexec.c
 
     // Override sound processing
