@@ -12,6 +12,7 @@
 #include "InputManager.h"
 #include "GraphicsManager.h"
 #include "DebugLogger.h"
+#include "Sections.h"
 
 	// Font class from the XDK
 #include "XBFont.h"
@@ -132,13 +133,14 @@ void LoadOptions( void )
   g_FileIOConfig.m_ArtPath            = iniFile.GetProfileString("Directories", "ArtPath",             DEFAULT_ARTPATH);
   g_FileIOConfig.m_AudioPath          = iniFile.GetProfileString("Directories", "AudioPath",           DEFAULT_AUDIOPATH);
   g_FileIOConfig.m_ConfigPath         = iniFile.GetProfileString("Directories", "ConfigPath",          DEFAULT_CONFIGPATH);
-  g_FileIOConfig.m_DefaultRomListPath = iniFile.GetProfileString("Directories", "DefaultRomsListPath", DEFAULT_DEFAULTROMLISTPATH);
   g_FileIOConfig.m_GeneralPath        = iniFile.GetProfileString("Directories", "GeneralPath",         DEFAULT_GENERALPATH);
   g_FileIOConfig.m_HDImagePath        = iniFile.GetProfileString("Directories", "HDImagePath",         DEFAULT_HDIMAGEPATH);
   g_FileIOConfig.m_HiScorePath        = iniFile.GetProfileString("Directories", "HiScoresPath",        DEFAULT_HISCOREPATH);
   g_FileIOConfig.m_NVramPath          = iniFile.GetProfileString("Directories", "NVRamPath",           DEFAULT_NVRAMPATH);
   g_FileIOConfig.m_RomBackupPath      = iniFile.GetProfileString("Directories", "BackupPath",          DEFAULT_ROMBACKUPPATH);
   g_FileIOConfig.m_RomPath            = iniFile.GetProfileString("Directories", "RomsPath",            DEFAULT_ROMPATH);
+  // There's no reason to allow this to be changed, it's totally internal
+  //  g_FileIOConfig.m_DefaultRomListPath = iniFile.GetProfileString("Directories", "DefaultRomsListPath", DEFAULT_DEFAULTROMLISTPATH);
 
     //-- Lightgun calibration -----------------------------------------------
   g_calibrationData[0].m_xData[0] = iniFile.GetProfileInt( "Input", "Lightgun1_Left", -32767 );
@@ -221,13 +223,14 @@ void SaveOptions( void )
   iniFile.WriteProfileString("Directories", "ArtPath",             g_FileIOConfig.m_ArtPath );
   iniFile.WriteProfileString("Directories", "AudioPath",           g_FileIOConfig.m_AudioPath );
   iniFile.WriteProfileString("Directories", "ConfigPath",          g_FileIOConfig.m_ConfigPath );
-  iniFile.WriteProfileString("Directories", "DefaultRomsListPath", g_FileIOConfig.m_DefaultRomListPath );
   iniFile.WriteProfileString("Directories", "GeneralPath",         g_FileIOConfig.m_GeneralPath );
   iniFile.WriteProfileString("Directories", "HDImagePath",         g_FileIOConfig.m_HDImagePath );
   iniFile.WriteProfileString("Directories", "HiScoresPath",        g_FileIOConfig.m_HiScorePath );
   iniFile.WriteProfileString("Directories", "NVRamPath",           g_FileIOConfig.m_NVramPath );
   iniFile.WriteProfileString("Directories", "BackupPath",          g_FileIOConfig.m_RomBackupPath );
   iniFile.WriteProfileString("Directories", "RomsPath",            g_FileIOConfig.m_RomPath );
+  // There's no reason to allow this to be changed, it's totally internal
+  //iniFile.WriteProfileString("Directories", "DefaultRomsListPath", g_FileIOConfig.m_DefaultRomListPath );
 
 
     //-- Lightgun calibration -----------------------------------------------
@@ -382,7 +385,9 @@ void CheckRAM( void )
             memStatus.dwTotalPhys );
 
   BeginFontRender( TRUE );
-  FontRender( 320, 300, D3DCOLOR_RGBA(255,255,255,255), memStr, 2 );
+  FontRender( 320, 200, D3DCOLOR_XRGB(255,200,200), L"This is a DEBUG version of MAMEoX!", 2 );
+  FontRender( 320, 280, D3DCOLOR_XRGB(255,255,255), L"Mem: Avail/Total", 2 );
+  FontRender( 320, 300, D3DCOLOR_XRGB(255,255,255), memStr, 2 );
   EndFontRender();
 
   RequireController( 0 );

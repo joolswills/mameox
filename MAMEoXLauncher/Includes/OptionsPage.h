@@ -29,6 +29,8 @@ typedef enum PageID
   OPTPAGE_SOUND,
   OPTPAGE_VIDEO,
   OPTPAGE_VECTOR,
+  OPTPAGE_NETWORK,
+  OPTPAGE_DIRECTORIES,
   OPTPAGE_LAST
 } PageID;
 
@@ -49,11 +51,15 @@ void DrawGeneralPage( COptionsPage * );
 void DrawSoundPage( COptionsPage * );
 void DrawVideoPage( COptionsPage * );
 void DrawVectorPage( COptionsPage * );
+void DrawNetworkPage( COptionsPage * );
+void DrawDirectoryPathPage( COptionsPage * );
 
 void ChangeGeneralPage( COptionsPage *, BOOL direction );
 void ChangeSoundPage( COptionsPage *, BOOL direction );
 void ChangeVideoPage( COptionsPage *, BOOL direction );
 void ChangeVectorPage( COptionsPage *, BOOL direction );
+void ChangeNetworkPage( COptionsPage *, BOOL direction );
+void ChangeDirectoryPathPage( COptionsPage *, BOOL direction );
 
 //= C L A S S E S ======================================================
 
@@ -96,6 +102,16 @@ public:
     m_pageData[OPTPAGE_VECTOR].m_drawFunct = ::DrawVectorPage;
     m_pageData[OPTPAGE_VECTOR].m_changeFunct = ::ChangeVectorPage;
     m_pageData[OPTPAGE_VECTOR].m_numItems = 6;
+
+    wcscpy( m_pageData[OPTPAGE_NETWORK].m_title, L"Network Options" );
+    m_pageData[OPTPAGE_NETWORK].m_drawFunct = ::DrawNetworkPage;
+    m_pageData[OPTPAGE_NETWORK].m_changeFunct = ::ChangeNetworkPage;
+    m_pageData[OPTPAGE_NETWORK].m_numItems = 6;
+
+    wcscpy( m_pageData[OPTPAGE_DIRECTORIES].m_title, L"Directory Path Options" );
+    m_pageData[OPTPAGE_DIRECTORIES].m_drawFunct = ::DrawDirectoryPathPage;
+    m_pageData[OPTPAGE_DIRECTORIES].m_changeFunct = ::ChangeDirectoryPathPage;
+    m_pageData[OPTPAGE_DIRECTORIES].m_numItems = 6;
   }
 
 		//------------------------------------------------------------
@@ -120,11 +136,15 @@ public:
   void DrawSoundPage( void );
   void DrawVideoPage( void );
   void DrawVectorPage( void );
+  void DrawNetworkPage( void );
+  void DrawDirectoryPathPage( void );
 
   void ChangeGeneralPage( BOOL direction );
   void ChangeSoundPage( BOOL direction );
   void ChangeVideoPage( BOOL direction );
   void ChangeVectorPage( BOOL direction );
+  void ChangeNetworkPage( BOOL direction );
+  void ChangeDirectoryPathPage( BOOL direction );
 
 protected:
   UINT32                m_pageNumber;         //!< The options page number

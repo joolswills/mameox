@@ -199,6 +199,7 @@ void SaveOptions( void );
 	//-------------------------------------------------------------------
 void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice );
 
+
 	//-------------------------------------------------------------------
   // vsnprintf
   //! \brief    Fake implementation of vsnprintf to get MAME core

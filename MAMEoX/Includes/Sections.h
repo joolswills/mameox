@@ -92,6 +92,13 @@ BOOL UnloadDriverDataSections( void );
 BOOL UnloadDriverNonDataSections( void );
 
 //-------------------------------------------------------------
+//	LoadSilentDependencyDriverDataHacks
+//! \brief    Load the driver data for all of the known
+//!            XBE silent dependencies
+//-------------------------------------------------------------
+void LoadSilentDependencyDriverDataHacks( void );
+
+//-------------------------------------------------------------
 //	RegisterCPUSectionNames
 //! \brief    Registers all of the segments for use by
 //!            LoadCPUSectionByName and UnloadCPUSectionByName

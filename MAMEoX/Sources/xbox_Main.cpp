@@ -510,31 +510,9 @@ static BOOL Helper_RunRom( UINT32 romIndex )
     // for the file we're loading
   UnloadDriverDataSections();
 
-    // Hacks
-  LoadDriverSectionByName( "src\\drivers\\cps1.c" );      // cps2.c is dependent on cps1.c
-  LoadDriverSectionByName( "src\\drivers\\mpatrol.c" );   // 10 yard fight is dependent on the mpatrol vidhrdw
-  LoadDriverSectionByName( "src\\drivers\\snk.c" );       // hal121.c is dependent on snk vidhrdw (ASO - Armored Scrum Object)
-  LoadDriverSectionByName( "src\\drivers\\system16.c" );  // afterburner dependent
-  LoadDriverSectionByName( "src\\drivers\\galaxian.c" );  // Amidar
-  LoadDriverSectionByName( "src\\drivers\\scramble.c" );  // Amidar
-  LoadDriverSectionByName( "src\\drivers\\scobra.c" );    // Amidar
-  LoadDriverSectionByName( "src\\drivers\\rampart.c" );   // Arcade Classic Arcadecl.c
-  LoadDriverSectionByName( "src\\drivers\\williams.c" );  // Archrivals
-  LoadDriverSectionByName( "src\\drivers\\rastan.c" );    // Asuka & Asuka (sound)
-  LoadDriverSectionByName( "src\\drivers\\hal21.c" );     // Athena
-  LoadDriverSectionByName( "src\\drivers\\espial.c" );    // battle cruiser
-  LoadDriverSectionByName( "src\\drivers\\bzone.c" );     // gravitar
-  LoadDriverSectionByName( "src\\drivers\\nova2001.c" );  // Penguin-Kun War
-  LoadDriverSectionByName( "src\\drivers\\gottlieb.c" );  // exterminator
-  LoadDriverSectionByName( "src\\drivers\\pengo.c" );     // eyes
-  LoadDriverSectionByName( "src\\drivers\\megasys1.c" );  // F1 Grand Prix Star
-  LoadDriverSectionByName( "src\\drivers\\namcos1.c" );   // Face Off (Japan)
-  LoadDriverSectionByName( "src\\drivers\\rallyx.c" );    // Loco-Motion
-  LoadDriverSectionByName( "src\\drivers\\timeplt.c" );   // Loco-Motion
-  LoadDriverSectionByName( "src\\drivers\\exidy.c" );     // Victory
-  LoadDriverSectionByName( "src\\drivers\\m72.c" );       // Bomber Man World (World)
-  LoadDriverSectionByName( "src\\drivers\\leland.c" );    // Asylum (prototype)
-  LoadDriverSectionByName( "src\\drivers\\trackfld.c" );  // Hyper Sports, Hyper Olympics '84?
+    // Hack: Load up all the drivers necessary to fix the silent XBE dependencies
+    //       and avoid crashing.
+  LoadSilentDependencyDriverDataHacks();
 
     // VC6 seems to be calling this with the full path so strstr just trims down the path
     // appropriately. NOTE: we probably don't need this to conditionally compile and could

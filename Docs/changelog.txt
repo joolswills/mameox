@@ -60,6 +60,10 @@ Version 0.66b
       WaitForAnyButton resp.
     - Adaptations for CGamepad addition
 
+  - \MAMEoX\Sources\xbox_FileIO.cpp:
+    - Fixed a problem where the file was new'd but not memset to
+      0, causing the fileposition and other members to be undefined.
+
   - \MAME\src\vidhrdw\namcos1.c
     - Reverted back to MAME 0.60 version of this file
       some update after 0.60 made it crash the xbox, but
@@ -109,6 +113,7 @@ Version 0.66b
 
   - \MAMEoXLauncher\Sources\OptionsPage.cpp
       - Adaptations for CGamepad addition
+      - Added read-only pages for network and directory options
 
   - \ZLIB\ZLIB.vcproj
   - \MAMEoXLauncher\MAMEoXLauncher.vcproj

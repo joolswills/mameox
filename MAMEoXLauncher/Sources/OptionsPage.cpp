@@ -9,6 +9,8 @@
 #include "OptionsPage.h"
 #include "DebugLogger.h"
 #include "XBFont.h"
+#include "xbox_FileIO.h"
+#include "xbox_Network.h"
 
 #include "xbox_FileIO.h"		// for path info
 
@@ -22,8 +24,9 @@ extern "C" {
 
 //= D E F I N E S ======================================================
 
-#define NORMAL_ITEM_COLOR				D3DCOLOR_RGBA( 100, 255, 100, 255 )
-#define SELECTED_ITEM_COLOR			D3DCOLOR_RGBA( 255, 255, 255, 255 )
+#define NORMAL_ITEM_COLOR				D3DCOLOR_XRGB( 100, 255, 100 )
+#define SELECTED_ITEM_COLOR			D3DCOLOR_XRGB( 255, 255, 255 )
+#define HELP_TEXT_COLOR         D3DCOLOR_XRGB( 100, 220, 220 )
 #define ITEMCOLOR()             i == (ULONG)m_cursorPosition ? SELECTED_ITEM_COLOR : NORMAL_ITEM_COLOR
 
 	// Maximum number of items to render on the screen at once
@@ -39,6 +42,14 @@ extern "C" {
 
   // Number of seconds between valid left/right trigger readings
 #define TRIGGERSWITCH_TIMEOUT   0.5f
+
+
+#define STARTPAGE()                       DWORD i = 0
+#define DRAWITEM( _name__, _val__ )       m_font.DrawText( 80,  (i*20)+64, ITEMCOLOR(), _name__, XBFONT_TRUNCATED, 500 ); \
+                                          m_font.DrawText( 360, (i*20)+64, ITEMCOLOR(), _val__, XBFONT_TRUNCATED, 500 ); \
+                                          ++i;
+#define ENDPAGE()
+
 
 //= G L O B A L = V A R S ==============================================
 extern "C" {
@@ -80,6 +91,24 @@ void DrawVectorPage( COptionsPage *ptr )
 }
 
 //---------------------------------------------------------------------
+//  DrawNetworkPage
+//---------------------------------------------------------------------
+void DrawNetworkPage( COptionsPage *ptr )
+{
+  ptr->DrawNetworkPage();
+}
+
+//---------------------------------------------------------------------
+//  DrawDirectoryPathPage
+//---------------------------------------------------------------------
+void DrawDirectoryPathPage( COptionsPage *ptr )
+{
+  ptr->DrawDirectoryPathPage();
+}
+
+
+
+//---------------------------------------------------------------------
 //  ChangeGeneralPage
 //---------------------------------------------------------------------
 void ChangeGeneralPage( COptionsPage *ptr, BOOL direction )
@@ -110,6 +139,26 @@ void ChangeVectorPage( COptionsPage *ptr, BOOL direction )
 {
   ptr->ChangeVectorPage( direction );
 }
+
+//---------------------------------------------------------------------
+//  ChangeNetworkPage
+//---------------------------------------------------------------------
+void ChangeNetworkPage( COptionsPage *ptr, BOOL direction )
+{
+  ptr->ChangeNetworkPage( direction );
+}
+
+//---------------------------------------------------------------------
+//  ChangeDirectoryPathPage
+//---------------------------------------------------------------------
+void ChangeDirectoryPathPage( COptionsPage *ptr, BOOL direction )
+{
+  ptr->ChangeDirectoryPathPage( direction );
+}
+
+
+
+
 
 
 //---------------------------------------------------------------------
@@ -191,12 +240,12 @@ void COptionsPage::MoveCursor( CGamepad	&gp )
   }
   else if( gp.IsOneOfButtonsPressed( GP_DPAD_LEFT | GP_LA_LEFT ) && m_optToggleDelay == 0.0f )
 	{
-		m_optToggleDelay = DPADCURSORMOVE_TIMEOUT;
+		m_optToggleDelay = TRIGGERSWITCH_TIMEOUT;
     m_pageData[m_pageNumber].m_changeFunct( this, FALSE );
   }
   else if( gp.IsOneOfButtonsPressed( GP_DPAD_RIGHT | GP_LA_RIGHT ) && m_optToggleDelay == 0.0f )
 	{
-		m_optToggleDelay = DPADCURSORMOVE_TIMEOUT;
+		m_optToggleDelay = TRIGGERSWITCH_TIMEOUT;
     m_pageData[m_pageNumber].m_changeFunct( this, TRUE );
   }
   
@@ -219,15 +268,18 @@ void COptionsPage::Draw( BOOL opaque, BOOL flipOnCompletion )
 						  							0L );															// Stencil
 
 	m_font.Begin();
+    m_font.DrawText( 320, 40, D3DCOLOR_XRGB( 255, 255, 255 ), m_pageData[m_pageNumber].m_title, XBFONT_CENTER_X );
     m_pageData[m_pageNumber].m_drawFunct( this );
 
     UINT32 prev = m_pageNumber ? m_pageNumber - 1 : OPTPAGE_LAST - 1;
     UINT32 next = m_pageNumber < OPTPAGE_LAST - 1 ? m_pageNumber + 1 : 0;
 
-    m_font.DrawText( 80,  384, SELECTED_ITEM_COLOR, L"<-", 0 );
+    m_font.DrawText( 103, 360, HELP_TEXT_COLOR, L"Left Trigger", 0 );
+    m_font.DrawText( 80,  384, HELP_TEXT_COLOR, L"<-", 0 );
     m_font.DrawText( 103, 384, SELECTED_ITEM_COLOR, m_pageData[prev].m_title, 0 );
 
-    m_font.DrawText( 545, 384, SELECTED_ITEM_COLOR, L"->", XBFONT_RIGHT );
+    m_font.DrawText( 520, 360, HELP_TEXT_COLOR, L"Right Trigger", XBFONT_RIGHT );
+    m_font.DrawText( 545, 384, HELP_TEXT_COLOR, L"->", XBFONT_RIGHT );
     m_font.DrawText( 520, 384, SELECTED_ITEM_COLOR, m_pageData[next].m_title, XBFONT_RIGHT );  
 	m_font.End();
 
@@ -240,8 +292,6 @@ void COptionsPage::Draw( BOOL opaque, BOOL flipOnCompletion )
 //---------------------------------------------------------------------
 void COptionsPage::DrawGeneralPage( void )
 {
-  m_font.DrawText( 320, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), m_pageData[OPTPAGE_GENERAL].m_title, XBFONT_CENTER_X );
-
 /*
   options.cheat = iniFile.GetProfileInt( "General", "CheatsEnabled", FALSE );
   cheatfile = strdup( iniFile.GetProfileString( "General", "CheatFilename", "cheat.dat" ).c_str() );
@@ -254,24 +304,19 @@ void COptionsPage::DrawGeneralPage( void )
     // 1 to skip the game info screen at startup
 	options.skip_gameinfo = iniFile.GetProfileInt( "General", "SkipGameInfo", FALSE );
 */
+  STARTPAGE();
 
-  DWORD i = 0;
-  m_font.DrawText( 80,  (i*20)+64, ITEMCOLOR(), L"Cheats", 0 );
-  m_font.DrawText( 460, (i*20)+64, ITEMCOLOR(), options.cheat ? L"Enabled" : L"Disabled", 0 );
+  DRAWITEM( L"Cheats", options.cheat ? L"Enabled" : L"Disabled" );
 
-  ++i;
   WCHAR name[256] = {0};
 	mbstowcs( name, cheatfile, 255 );
-  m_font.DrawText( 80,  (i*20)+64, ITEMCOLOR(), L"Cheat file", 0 );
-  m_font.DrawText( 460, (i*20)+64, ITEMCOLOR(), name, 0 );
+  DRAWITEM( L"Cheat file", name );
 
-  ++i;
-  m_font.DrawText( 80,  (i*20)+64, ITEMCOLOR(), L"Disclaimer", 0 );
-  m_font.DrawText( 460, (i*20)+64, ITEMCOLOR(), options.skip_disclaimer ? L"Skipped" : L"Shown", 0 );
+  DRAWITEM( L"Disclaimer", options.skip_disclaimer ? L"Skipped" : L"Shown" );
 
-  ++i;
-  m_font.DrawText( 80,  (i*20)+64, ITEMCOLOR(), L"Game Info", 0 );
-  m_font.DrawText( 460, (i*20)+64, ITEMCOLOR(), options.skip_gameinfo ? L"Skipped" : L"Shown", 0 );
+  DRAWITEM( L"Game Info", options.skip_gameinfo ? L"Skipped" : L"Shown" );
+
+  ENDPAGE();
 }
 
 //---------------------------------------------------------------------
@@ -279,8 +324,6 @@ void COptionsPage::DrawGeneralPage( void )
 //---------------------------------------------------------------------
 void COptionsPage::DrawSoundPage( void )
 {
-  m_font.DrawText( 320, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), m_pageData[OPTPAGE_SOUND].m_title, XBFONT_CENTER_X );
-
 /*
     // sound sample playback rate, in Hz
   options.samplerate = iniFile.GetProfileInt( "Sound", "SampleRate", 44100 );
@@ -291,19 +334,17 @@ void COptionsPage::DrawSoundPage( void )
 */
 
   WCHAR text[256] = {0};
+
+  STARTPAGE();
+
   swprintf( text, L"%lu", options.samplerate );
+  DRAWITEM( L"Sample Rate", text );
 
-  DWORD i = 0;
-  m_font.DrawText( 80,  (i*20)+64, ITEMCOLOR(), L"Sample Rate", 0 );
-  m_font.DrawText( 460, (i*20)+64, ITEMCOLOR(), text, 0 );
+  DRAWITEM( L"Audio Samples", options.use_samples ? L"Enabled" : L"Disabled" );
 
-  ++i;
-  m_font.DrawText( 80,  (i*20)+64, ITEMCOLOR(), L"Audio Samples", 0 );
-  m_font.DrawText( 460, (i*20)+64, ITEMCOLOR(), options.use_samples ? L"Enabled" : L"Disabled", 0 );
+  DRAWITEM( L"Audio Filter", options.use_filter ? L"Enabled" : L"Disabled" );
 
-  ++i;
-  m_font.DrawText( 80,  (i*20)+64, ITEMCOLOR(), L"Audio Filter", 0 );
-  m_font.DrawText( 460, (i*20)+64, ITEMCOLOR(), options.use_filter ? L"Enabled" : L"Disabled", 0 );
+  ENDPAGE();
 }
 
 //---------------------------------------------------------------------
@@ -311,8 +352,6 @@ void COptionsPage::DrawSoundPage( void )
 //---------------------------------------------------------------------
 void COptionsPage::DrawVideoPage( void )
 {
-  m_font.DrawText( 320, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), m_pageData[OPTPAGE_VIDEO].m_title, XBFONT_CENTER_X );
-
 /*
 	options.brightness = iniFile.GetProfileFloat( "Video", "Brightness", 1.0f );		    // brightness of the display
   options.pause_bright = iniFile.GetProfileFloat( "Video", "PauseBrightness", 0.65f );     // brightness when in pause
@@ -322,26 +361,21 @@ void COptionsPage::DrawVideoPage( void )
 
   WCHAR text[256] = {0};
 
-  DWORD i = 0;
+  STARTPAGE();
+
   swprintf( text, L"%f", options.brightness );
-  m_font.DrawText( 80,  (i*20)+64, ITEMCOLOR(), L"Brightness", 0 );
-  m_font.DrawText( 460, (i*20)+64, ITEMCOLOR(), text, 0 );
+  DRAWITEM( L"Brightness", text );
 
-  ++i;
   swprintf( text, L"%f", options.pause_bright );
-  m_font.DrawText( 80,  (i*20)+64, ITEMCOLOR(), L"Paused Brightness", 0 );
-  m_font.DrawText( 460, (i*20)+64, ITEMCOLOR(), text, 0 );
+  DRAWITEM( L"Paused Brightness", text );
 
-  ++i;
   swprintf( text, L"%f", options.gamma );
-  m_font.DrawText( 80,  (i*20)+64, ITEMCOLOR(), L"Gamma", 0 );
-  m_font.DrawText( 460, (i*20)+64, ITEMCOLOR(), text, 0 );
+  DRAWITEM( L"Gamma", text );
 
-  ++i;
   swprintf( text, L"%lu", options.color_depth );
-  m_font.DrawText( 80,  (i*20)+64, ITEMCOLOR(), L"Color Depth", 0 );
-  m_font.DrawText( 460, (i*20)+64, ITEMCOLOR(), text, 0 );
+  DRAWITEM( L"Color Depth", text );
 
+  ENDPAGE();
 }
 
 //---------------------------------------------------------------------
@@ -349,8 +383,6 @@ void COptionsPage::DrawVideoPage( void )
 //---------------------------------------------------------------------
 void COptionsPage::DrawVectorPage( void )
 {
-  m_font.DrawText( 320, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), m_pageData[OPTPAGE_VECTOR].m_title, XBFONT_CENTER_X );
-
 /*
 	options.beam = iniFile.GetProfileInt( "VectorOptions", "BeamWidth", 2 );			            // vector beam width
 	options.vector_flicker = iniFile.GetProfileFloat( "VectorOptions", "FlickerEffect", 0.5f );	  // vector beam flicker effect control
@@ -361,35 +393,120 @@ void COptionsPage::DrawVectorPage( void )
 */
   WCHAR text[256] = {0};
 
-  DWORD i = 0;
+  STARTPAGE();
   swprintf( text, L"%lu", options.beam );
-  m_font.DrawText( 80,  (i*20)+64, ITEMCOLOR(), L"Beam Width", 0 );
-  m_font.DrawText( 460, (i*20)+64, ITEMCOLOR(), text, 0 );
+  DRAWITEM( L"Beam Width", text );
 
-  ++i;
   swprintf( text, L"%f", options.vector_flicker );
-  m_font.DrawText( 80,  (i*20)+64, ITEMCOLOR(), L"Flicker Effect", 0 );
-  m_font.DrawText( 460, (i*20)+64, ITEMCOLOR(), text, 0 );
+  DRAWITEM( L"Flicker Effect", text );
 
-  ++i;
   swprintf( text, L"%f", options.vector_intensity );
-  m_font.DrawText( 80,  (i*20)+64, ITEMCOLOR(), L"Beam Intensity", 0 );
-  m_font.DrawText( 460, (i*20)+64, ITEMCOLOR(), text, 0 );
+  DRAWITEM( L"Beam Intensity", text );
 
-  ++i;
-  m_font.DrawText( 80,  (i*20)+64, ITEMCOLOR(), L"Translucency", 0 );
-  m_font.DrawText( 460, (i*20)+64, ITEMCOLOR(), options.translucency ? L"Enabled" : L"Disabled", 0 );
+  DRAWITEM( L"Translucency", options.translucency ? L"Enabled" : L"Disabled" );
 
-  ++i;
   swprintf( text, L"%lu", options.vector_width );
-  m_font.DrawText( 80,  (i*20)+64, ITEMCOLOR(), L"Vector Screen Width", 0 );
-  m_font.DrawText( 460, (i*20)+64, ITEMCOLOR(), text, 0 );
+  DRAWITEM( L"Vector Screen Width", text );
 
-  ++i;
   swprintf( text, L"%lu", options.vector_height );
-  m_font.DrawText( 80,  (i*20)+64, ITEMCOLOR(), L"Vector Screen Height", 0 );
-  m_font.DrawText( 460, (i*20)+64, ITEMCOLOR(), text, 0 );
+  DRAWITEM( L"Vector Screen Height", text );
+
+  ENDPAGE();
 }
+
+//---------------------------------------------------------------------
+//	DrawNetworkPage
+//---------------------------------------------------------------------
+void COptionsPage::DrawNetworkPage( void )
+{
+/*
+  g_NetworkConfig.m_networkDisabled = iniFile.GetProfileInt( "Network", "DisableNetworking",  FALSE );
+  g_NetworkConfig.m_IPAddr          = iniFile.GetProfileString("Network", "IPAddress",  DEFAULT_IPADDR);
+  g_NetworkConfig.m_Gateway         = iniFile.GetProfileString("Network", "Gateway",    DEFAULT_GATEWAY);
+  g_NetworkConfig.m_SubnetMask      = iniFile.GetProfileString("Network", "Subnet",     DEFAULT_SUBNETMASK);
+  g_NetworkConfig.m_NameServer      = iniFile.GetProfileString("Network", "NameServer", DEFAULT_NAMESERVER);
+*/
+  WCHAR text[256] = {0};
+
+  STARTPAGE();
+
+  DRAWITEM( L"Networking features", g_NetworkConfig.m_networkDisabled ? L"Disabled" : L"Enabled" );
+
+	mbstowcs( text, g_NetworkConfig.m_IPAddr.c_str(), 255 );
+  DRAWITEM( L"IP address", text );
+
+	mbstowcs( text, g_NetworkConfig.m_Gateway.c_str(), 255 );
+  DRAWITEM( L"Gateway address", text );
+
+	mbstowcs( text, g_NetworkConfig.m_SubnetMask.c_str(), 255 );
+  DRAWITEM( L"Subnet mask", text );
+
+	mbstowcs( text, g_NetworkConfig.m_NameServer.c_str(), 255 );
+  DRAWITEM( L"Name server", text );
+
+  ENDPAGE();
+}
+
+//---------------------------------------------------------------------
+//	DrawDirectoryPathPage
+//---------------------------------------------------------------------
+void COptionsPage::DrawDirectoryPathPage( void )
+{
+/*
+  g_FileIOConfig.m_ALTDrive           = iniFile.GetProfileString("Directories", "ALTDrive",            DEFAULT_ALTDRIVE);
+  g_FileIOConfig.m_ArtPath            = iniFile.GetProfileString("Directories", "ArtPath",             DEFAULT_ARTPATH);
+  g_FileIOConfig.m_AudioPath          = iniFile.GetProfileString("Directories", "AudioPath",           DEFAULT_AUDIOPATH);
+  g_FileIOConfig.m_ConfigPath         = iniFile.GetProfileString("Directories", "ConfigPath",          DEFAULT_CONFIGPATH);
+  g_FileIOConfig.m_DefaultRomListPath = iniFile.GetProfileString("Directories", "DefaultRomsListPath", DEFAULT_DEFAULTROMLISTPATH);
+  g_FileIOConfig.m_GeneralPath        = iniFile.GetProfileString("Directories", "GeneralPath",         DEFAULT_GENERALPATH);
+  g_FileIOConfig.m_HDImagePath        = iniFile.GetProfileString("Directories", "HDImagePath",         DEFAULT_HDIMAGEPATH);
+  g_FileIOConfig.m_HiScorePath        = iniFile.GetProfileString("Directories", "HiScoresPath",        DEFAULT_HISCOREPATH);
+  g_FileIOConfig.m_NVramPath          = iniFile.GetProfileString("Directories", "NVRamPath",           DEFAULT_NVRAMPATH);
+  g_FileIOConfig.m_RomBackupPath      = iniFile.GetProfileString("Directories", "BackupPath",          DEFAULT_ROMBACKUPPATH);
+  g_FileIOConfig.m_RomPath            = iniFile.GetProfileString("Directories", "RomsPath",            DEFAULT_ROMPATH);
+*/
+  WCHAR text[256] = {0};
+
+  STARTPAGE();
+
+  mbstowcs( text, g_FileIOConfig.m_ALTDrive.c_str(), 255 );
+  DRAWITEM( L"Alternate drive letter", text );
+
+  mbstowcs( text, g_FileIOConfig.m_RomPath.c_str(), 255 );
+  DRAWITEM( L"ROM Files", text );
+
+  mbstowcs( text, g_FileIOConfig.m_RomBackupPath.c_str(), 255 );
+  DRAWITEM( L"Removed ROMs", text );
+
+  mbstowcs( text, g_FileIOConfig.m_GeneralPath.c_str(), 255 );
+  DRAWITEM( L"General", text );
+
+  mbstowcs( text, g_FileIOConfig.m_ArtPath.c_str(), 255 );
+  DRAWITEM( L"Art", text );
+
+  mbstowcs( text, g_FileIOConfig.m_AudioPath.c_str(), 255 );
+  DRAWITEM( L"Samples (Audio)", text );
+
+  mbstowcs( text, g_FileIOConfig.m_ConfigPath.c_str(), 255 );
+  DRAWITEM( L"Config (CFG's)", text );
+
+  mbstowcs( text, g_FileIOConfig.m_HDImagePath.c_str(), 255 );
+  DRAWITEM( L"HD images (CHD's)", text );
+
+  mbstowcs( text, g_FileIOConfig.m_HiScorePath.c_str(), 255 );
+  DRAWITEM( L"High scores (highscore.dat)", text );
+
+  mbstowcs( text, g_FileIOConfig.m_NVramPath.c_str(), 255 );
+  DRAWITEM( L"NVRAM, state files", text );
+
+
+
+
+
+  ENDPAGE();
+}
+
+
 
 //---------------------------------------------------------------------
 //  ChangeGeneralPage
@@ -564,3 +681,27 @@ void COptionsPage::ChangeVectorPage( BOOL direction )
     break;
   }
 }
+
+//---------------------------------------------------------------------
+//  ChangeNetworkPage
+//---------------------------------------------------------------------
+void COptionsPage::ChangeNetworkPage( BOOL direction )
+{
+  // Mostly read-only until virtual keyboard is written
+  switch( m_cursorPosition )
+  {
+  case 0:
+    g_NetworkConfig.m_networkDisabled = !g_NetworkConfig.m_networkDisabled;
+    break;
+  }
+}
+
+//---------------------------------------------------------------------
+//  ChangeDirectoryPathPage
+//---------------------------------------------------------------------
+void COptionsPage::ChangeDirectoryPathPage( BOOL direction )
+{
+  // Read-only until virtual keyboard is written
+}
+
+

@@ -271,6 +271,38 @@ BOOL UnloadDriverDataSections( void )
   return TRUE;
 }
 
+//-------------------------------------------------------------
+//  LoadSilentDependencyDriverDataHacks
+//-------------------------------------------------------------
+void LoadSilentDependencyDriverDataHacks( void )
+{
+    // Hacks
+  LoadDriverSectionByName( "src\\drivers\\cps1.c" );      // cps2.c is dependent on cps1.c
+  LoadDriverSectionByName( "src\\drivers\\mpatrol.c" );   // 10 yard fight is dependent on the mpatrol vidhrdw
+  LoadDriverSectionByName( "src\\drivers\\snk.c" );       // hal121.c is dependent on snk vidhrdw (ASO - Armored Scrum Object)
+  LoadDriverSectionByName( "src\\drivers\\system16.c" );  // afterburner dependent
+  LoadDriverSectionByName( "src\\drivers\\galaxian.c" );  // Amidar
+  LoadDriverSectionByName( "src\\drivers\\scramble.c" );  // Amidar
+  LoadDriverSectionByName( "src\\drivers\\scobra.c" );    // Amidar
+  LoadDriverSectionByName( "src\\drivers\\rampart.c" );   // Arcade Classic Arcadecl.c
+  LoadDriverSectionByName( "src\\drivers\\williams.c" );  // Archrivals
+  LoadDriverSectionByName( "src\\drivers\\rastan.c" );    // Asuka & Asuka (sound)
+  LoadDriverSectionByName( "src\\drivers\\hal21.c" );     // Athena
+  LoadDriverSectionByName( "src\\drivers\\espial.c" );    // battle cruiser
+  LoadDriverSectionByName( "src\\drivers\\bzone.c" );     // gravitar
+  LoadDriverSectionByName( "src\\drivers\\nova2001.c" );  // Penguin-Kun War
+  LoadDriverSectionByName( "src\\drivers\\gottlieb.c" );  // exterminator
+  LoadDriverSectionByName( "src\\drivers\\pengo.c" );     // eyes
+  LoadDriverSectionByName( "src\\drivers\\megasys1.c" );  // F1 Grand Prix Star
+  LoadDriverSectionByName( "src\\drivers\\namcos1.c" );   // Face Off (Japan)
+  LoadDriverSectionByName( "src\\drivers\\rallyx.c" );    // Loco-Motion
+  LoadDriverSectionByName( "src\\drivers\\timeplt.c" );   // Loco-Motion
+  LoadDriverSectionByName( "src\\drivers\\exidy.c" );     // Victory
+  LoadDriverSectionByName( "src\\drivers\\m72.c" );       // Bomber Man World (World)
+  LoadDriverSectionByName( "src\\drivers\\leland.c" );    // Asylum (prototype)
+  LoadDriverSectionByName( "src\\drivers\\trackfld.c" );  // Hyper Sports, Hyper Olympics '84?
+}
+
 
 //-------------------------------------------------------------
 //	RegisterDriverSectionNames
