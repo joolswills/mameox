@@ -67,8 +67,8 @@ extern "C" {
 #define RELEASE_STRING            ".1b"
 #define LRELEASE_STRING           L".1b"
 
-#define VERSION_STRING            "0.72" RELEASE_STRING
-#define LVERSION_STRING           L"0.72" LRELEASE_STRING
+#define VERSION_STRING            "0.73" RELEASE_STRING
+#define LVERSION_STRING           L"0.73" LRELEASE_STRING
 
 
 #define DRIVERLIST_FILESTAMP      "MAMEoX" VERSION_STRING
