@@ -1,3 +1,7 @@
+#pragma code_seg("C494")
+#pragma bss_seg("B494")
+#pragma data_seg("D494")
+#pragma const_seg("K494")
 /*
 Super Cross II (JPN Ver.)
 (c)1986 GM Shoji
@@ -372,3 +376,7 @@ ROM_START( sprcros2 )
 ROM_END
 
 GAME( 1986, sprcros2, 0, sprcros2, sprcros2, sprcros2, ROT0, "GM Shoji", "Super Cross 2 (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

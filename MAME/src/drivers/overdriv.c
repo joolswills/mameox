@@ -1,3 +1,7 @@
+#pragma code_seg("C383")
+#pragma bss_seg("B383")
+#pragma data_seg("D383")
+#pragma const_seg("K383")
 /***************************************************************************
 
 Over Drive (GX789) (c) 1990 Konami
@@ -500,3 +504,7 @@ static DRIVER_INIT( overdriv )
 
 
 GAMEX( 1990, overdriv, 0, overdriv, overdriv, overdriv, ROT90, "Konami", "Over Drive", GAME_IMPERFECT_GRAPHICS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

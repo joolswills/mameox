@@ -1,3 +1,7 @@
+#pragma code_seg("C238")
+#pragma bss_seg("B238")
+#pragma data_seg("D238")
+#pragma const_seg("K238")
 /***************************************************************************
 
 Hexion (GX122) (c) 1992 Konami
@@ -349,3 +353,7 @@ ROM_END
 
 
 GAME( 1992, hexion, 0, hexion, hexion, 0, ROT0, "Konami", "Hexion (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

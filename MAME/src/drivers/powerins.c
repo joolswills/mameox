@@ -1,3 +1,7 @@
+#pragma code_seg("C409")
+#pragma bss_seg("B409")
+#pragma data_seg("D409")
+#pragma const_seg("K409")
 /***************************************************************************
 
 						  -= Power Instinct =-
@@ -368,3 +372,7 @@ ROM_END
 
 
 GAME( 1993, powerins, 0, powerins, powerins, 0, ROT0, "Atlus", "Power Instinct (USA bootleg)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

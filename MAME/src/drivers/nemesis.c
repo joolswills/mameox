@@ -1,3 +1,7 @@
+#pragma code_seg("C359")
+#pragma bss_seg("B359")
+#pragma data_seg("D359")
+#pragma const_seg("K359")
 /***************************************************************************
 
 	Nemesis (Hacked?)		GX400
@@ -2603,3 +2607,7 @@ GAMEX(1987, citybomb, 0,        citybomb,      citybomb, 0, ROT270, "Konami", "C
 GAMEX(1987, citybmrj, citybomb, citybomb,      citybomb, 0, ROT270, "Konami", "City Bomber (Japan)", GAME_NO_COCKTAIL )
 GAMEX(1988, kittenk,  0,        nyanpani,      nyanpani, 0, ROT0,   "Konami", "Kitten Kaboodle", GAME_NO_COCKTAIL )
 GAMEX(1988, nyanpani, kittenk,  nyanpani,      nyanpani, 0, ROT0,   "Konami", "Nyan Nyan Panic (Japan)", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -242,7 +242,8 @@ INLINE void bail_and_print(const char *message)
 	if (!bailing)
 	{
 		bailing = 1;
-		printf("%s\n", message);
+    logerror( "%s\n", message );
+    osd_print_error( "%s\n", message );
 	}
 }
 
@@ -938,7 +939,7 @@ static int decode_graphics(const struct GfxDecodeInfo *gfxdecodeinfo)
 		if ((Machine->gfx[i] = decodegfx(region_base + gfxdecodeinfo[i].start, &glcopy)) == 0)
 		{
 			bailing = 1;
-			printf("Out of memory decoding gfx\n");
+      logerror( "Out of memory decoding gfx\n" );
 			return 1;
 		}
 
@@ -1609,16 +1610,16 @@ static int validitychecks(void)
 
 	a = 0xff;
 	b = a + 1;
-	if (b > a)	{ printf("UINT8 must be 8 bits\n"); error = 1; }
+	if (b > a)	{ logerror("UINT8 must be 8 bits\n"); error = 1; }
 
-	if (sizeof(INT8)   != 1)	{ printf("INT8 must be 8 bits\n"); error = 1; }
-	if (sizeof(UINT8)  != 1)	{ printf("UINT8 must be 8 bits\n"); error = 1; }
-	if (sizeof(INT16)  != 2)	{ printf("INT16 must be 16 bits\n"); error = 1; }
-	if (sizeof(UINT16) != 2)	{ printf("UINT16 must be 16 bits\n"); error = 1; }
-	if (sizeof(INT32)  != 4)	{ printf("INT32 must be 32 bits\n"); error = 1; }
-	if (sizeof(UINT32) != 4)	{ printf("UINT32 must be 32 bits\n"); error = 1; }
-	if (sizeof(INT64)  != 8)	{ printf("INT64 must be 64 bits\n"); error = 1; }
-	if (sizeof(UINT64) != 8)	{ printf("UINT64 must be 64 bits\n"); error = 1; }
+	if (sizeof(INT8)   != 1)	{ logerror("INT8 must be 8 bits\n"); error = 1; }
+	if (sizeof(UINT8)  != 1)	{ logerror("UINT8 must be 8 bits\n"); error = 1; }
+	if (sizeof(INT16)  != 2)	{ logerror("INT16 must be 16 bits\n"); error = 1; }
+	if (sizeof(UINT16) != 2)	{ logerror("UINT16 must be 16 bits\n"); error = 1; }
+	if (sizeof(INT32)  != 4)	{ logerror("INT32 must be 32 bits\n"); error = 1; }
+	if (sizeof(UINT32) != 4)	{ logerror("UINT32 must be 32 bits\n"); error = 1; }
+	if (sizeof(INT64)  != 8)	{ logerror("INT64 must be 64 bits\n"); error = 1; }
+	if (sizeof(UINT64) != 8)	{ logerror("UINT64 must be 64 bits\n"); error = 1; }
 
 	for (i = 0;drivers[i];i++)
 	{
@@ -1630,7 +1631,7 @@ static int validitychecks(void)
 
 		if (drivers[i]->clone_of == drivers[i])
 		{
-			printf("%s: %s is set as a clone of itself\n",drivers[i]->source_file,drivers[i]->name);
+			logerror("%s: %s is set as a clone of itself\n",drivers[i]->source_file,drivers[i]->name);
 			error = 1;
 		}
 
@@ -1638,7 +1639,7 @@ static int validitychecks(void)
 		{
 			if ((drivers[i]->clone_of->clone_of->flags & NOT_A_DRIVER) == 0)
 			{
-				printf("%s: %s is a clone of a clone\n",drivers[i]->source_file,drivers[i]->name);
+				logerror("%s: %s is a clone of a clone\n",drivers[i]->source_file,drivers[i]->name);
 				error = 1;
 			}
 		}
@@ -1648,7 +1649,7 @@ static int validitychecks(void)
 		if (drivers[i]->drv->color_table_len && drivers[i]->drv->total_colors &&
 				drivers[i]->drv->vh_init_palette == 0)
 		{
-			printf("%s: %s could use color_table_len = 0\n",drivers[i]->source_file,drivers[i]->name);
+			logerror("%s: %s could use color_table_len = 0\n",drivers[i]->source_file,drivers[i]->name);
 			error = 1;
 		}
 #endif
@@ -1657,19 +1658,19 @@ static int validitychecks(void)
 		{
 			if (!strcmp(drivers[i]->name,drivers[j]->name))
 			{
-				printf("%s: %s is a duplicate name (%s, %s)\n",drivers[i]->source_file,drivers[i]->name,drivers[i]->source_file,drivers[j]->source_file);
+				logerror("%s: %s is a duplicate name (%s, %s)\n",drivers[i]->source_file,drivers[i]->name,drivers[i]->source_file,drivers[j]->source_file);
 				error = 1;
 			}
 			if (!strcmp(drivers[i]->description,drivers[j]->description))
 			{
-				printf("%s: %s is a duplicate description (%s, %s)\n",drivers[i]->description,drivers[i]->source_file,drivers[i]->name,drivers[j]->name);
+				logerror("%s: %s is a duplicate description (%s, %s)\n",drivers[i]->description,drivers[i]->source_file,drivers[i]->name,drivers[j]->name);
 				error = 1;
 			}
 			if (drivers[i]->rom && drivers[i]->rom == drivers[j]->rom
 					&& (drivers[i]->flags & NOT_A_DRIVER) == 0
 					&& (drivers[j]->flags & NOT_A_DRIVER) == 0)
 			{
-				printf("%s: %s and %s use the same ROM set\n",drivers[i]->source_file,drivers[i]->name,drivers[j]->name);
+				logerror("%s: %s and %s use the same ROM set\n",drivers[i]->source_file,drivers[i]->name,drivers[j]->name);
 				error = 1;
 			}
 		}
@@ -1680,7 +1681,7 @@ static int validitychecks(void)
 			if (drv.sound[0].sound_type == 0 && (drivers[i]->flags & GAME_NO_SOUND) == 0 &&
 					strcmp(drivers[i]->name,"minivadr"))
 			{
-				printf("%s: %s missing GAME_NO_SOUND flag\n",drivers[i]->source_file,drivers[i]->name);
+				logerror("%s: %s missing GAME_NO_SOUND flag\n",drivers[i]->source_file,drivers[i]->name);
 				error = 1;
 			}
 		}
@@ -1712,7 +1713,7 @@ static int validitychecks(void)
 					count++;
 					if (type && (type >= REGION_MAX || type <= REGION_INVALID))
 					{
-						printf("%s: %s has invalid ROM_REGION type %x\n",drivers[i]->source_file,drivers[i]->name,type);
+						logerror("%s: %s has invalid ROM_REGION type %x\n",drivers[i]->source_file,drivers[i]->name,type);
 						error = 1;
 					}
 
@@ -1728,7 +1729,7 @@ static int validitychecks(void)
 					{
 						if (tolower(*c) != *c)
 						{
-							printf("%s: %s has upper case ROM name %s\n",drivers[i]->source_file,drivers[i]->name,ROM_GETNAME(romp));
+							logerror("%s: %s has upper case ROM name %s\n",drivers[i]->source_file,drivers[i]->name,ROM_GETNAME(romp));
 							error = 1;
 						}
 						c++;
@@ -1749,7 +1750,7 @@ static int validitychecks(void)
 					}
 					if (pre > 8 || post > 4)
 					{
-						printf("%s: %s has >8.3 ROM name %s\n",drivers[i]->source_file,drivers[i]->name,ROM_GETNAME(romp));
+						logerror("%s: %s has >8.3 ROM name %s\n",drivers[i]->source_file,drivers[i]->name,ROM_GETNAME(romp));
 						error = 1;
 					}
 				}
@@ -1757,7 +1758,7 @@ static int validitychecks(void)
 				{
 					if (ROM_GETOFFSET(romp) + ROM_GETLENGTH(romp) > region_length[count])
 					{
-						printf("%s: %s has ROM %s extending past the defined memory region\n",drivers[i]->source_file,drivers[i]->name,last_name);
+						logerror("%s: %s has ROM %s extending past the defined memory region\n",drivers[i]->source_file,drivers[i]->name,last_name);
 						error = 1;
 					}
 				}
@@ -1768,7 +1769,7 @@ static int validitychecks(void)
 			{
 				if (region_type_used[j] > 1)
 				{
-					printf("%s: %s has duplicated ROM_REGION type %x\n",drivers[i]->source_file,drivers[i]->name,j);
+					logerror("%s: %s has duplicated ROM_REGION type %x\n",drivers[i]->source_file,drivers[i]->name,j);
 					error = 1;
 				}
 			}
@@ -1790,7 +1791,7 @@ static int validitychecks(void)
 
 						if (!IS_MEMPORT_MARKER(mra) || (mra->end & MEMPORT_DIRECTION_MASK) != MEMPORT_DIRECTION_READ)
 						{
-							printf("%s: %s wrong MEMPORT_READ_START\n",drivers[i]->source_file,drivers[i]->name);
+							logerror("%s: %s wrong MEMPORT_READ_START\n",drivers[i]->source_file,drivers[i]->name);
 							error = 1;
 						}
 
@@ -1799,21 +1800,21 @@ static int validitychecks(void)
 							case 8:
 								if ((mra->end & MEMPORT_WIDTH_MASK) != MEMPORT_WIDTH_8)
 								{
-									printf("%s: %s cpu #%d uses wrong data width memory handlers! (width = %d, memory = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,mra->end);
+									logerror("%s: %s cpu #%d uses wrong data width memory handlers! (width = %d, memory = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,mra->end);
 									error = 1;
 								}
 								break;
 							case 16:
 								if ((mra->end & MEMPORT_WIDTH_MASK) != MEMPORT_WIDTH_16)
 								{
-									printf("%s: %s cpu #%d uses wrong data width memory handlers! (width = %d, memory = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,mra->end);
+									logerror("%s: %s cpu #%d uses wrong data width memory handlers! (width = %d, memory = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,mra->end);
 									error = 1;
 								}
 								break;
 							case 32:
 								if ((mra->end & MEMPORT_WIDTH_MASK) != MEMPORT_WIDTH_32)
 								{
-									printf("%s: %s cpu #%d uses wrong data width memory handlers! (width = %d, memory = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,mra->end);
+									logerror("%s: %s cpu #%d uses wrong data width memory handlers! (width = %d, memory = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,mra->end);
 									error = 1;
 								}
 								break;
@@ -1825,12 +1826,12 @@ static int validitychecks(void)
 							{
 								if (mra->end < mra->start)
 								{
-									printf("%s: %s wrong memory read handler start = %08x > end = %08x\n",drivers[i]->source_file,drivers[i]->name,mra->start,mra->end);
+									logerror("%s: %s wrong memory read handler start = %08x > end = %08x\n",drivers[i]->source_file,drivers[i]->name,mra->start,mra->end);
 									error = 1;
 								}
 								if ((mra->start & (alignunit-1)) != 0 || (mra->end & (alignunit-1)) != (alignunit-1))
 								{
-									printf("%s: %s wrong memory read handler start = %08x, end = %08x ALIGN = %d\n",drivers[i]->source_file,drivers[i]->name,mra->start,mra->end,alignunit);
+									logerror("%s: %s wrong memory read handler start = %08x, end = %08x ALIGN = %d\n",drivers[i]->source_file,drivers[i]->name,mra->start,mra->end,alignunit);
 									error = 1;
 								}
 							}
@@ -1844,7 +1845,7 @@ static int validitychecks(void)
 						if (mwa->start != MEMPORT_MARKER ||
 								(mwa->end & MEMPORT_DIRECTION_MASK) != MEMPORT_DIRECTION_WRITE)
 						{
-							printf("%s: %s wrong MEMPORT_WRITE_START\n",drivers[i]->source_file,drivers[i]->name);
+							logerror("%s: %s wrong MEMPORT_WRITE_START\n",drivers[i]->source_file,drivers[i]->name);
 							error = 1;
 						}
 
@@ -1853,21 +1854,21 @@ static int validitychecks(void)
 							case 8:
 								if ((mwa->end & MEMPORT_WIDTH_MASK) != MEMPORT_WIDTH_8)
 								{
-									printf("%s: %s cpu #%d uses wrong data width memory handlers! (width = %d, memory = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,mwa->end);
+									logerror("%s: %s cpu #%d uses wrong data width memory handlers! (width = %d, memory = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,mwa->end);
 									error = 1;
 								}
 								break;
 							case 16:
 								if ((mwa->end & MEMPORT_WIDTH_MASK) != MEMPORT_WIDTH_16)
 								{
-									printf("%s: %s cpu #%d uses wrong data width memory handlers! (width = %d, memory = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,mwa->end);
+									logerror("%s: %s cpu #%d uses wrong data width memory handlers! (width = %d, memory = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,mwa->end);
 									error = 1;
 								}
 								break;
 							case 32:
 								if ((mwa->end & MEMPORT_WIDTH_MASK) != MEMPORT_WIDTH_32)
 								{
-									printf("%s: %s cpu #%d uses wrong data width memory handlers! (width = %d, memory = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,mwa->end);
+									logerror("%s: %s cpu #%d uses wrong data width memory handlers! (width = %d, memory = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,mwa->end);
 									error = 1;
 								}
 								break;
@@ -1879,12 +1880,12 @@ static int validitychecks(void)
 							{
 								if (mwa->end < mwa->start)
 								{
-									printf("%s: %s wrong memory write handler start = %08x > end = %08x\n",drivers[i]->source_file,drivers[i]->name,mwa->start,mwa->end);
+									logerror("%s: %s wrong memory write handler start = %08x > end = %08x\n",drivers[i]->source_file,drivers[i]->name,mwa->start,mwa->end);
 									error = 1;
 								}
 								if ((mwa->start & (alignunit-1)) != 0 || (mwa->end & (alignunit-1)) != (alignunit-1))
 								{
-									printf("%s: %s wrong memory write handler start = %08x, end = %08x ALIGN = %d\n",drivers[i]->source_file,drivers[i]->name,mwa->start,mwa->end,alignunit);
+									logerror("%s: %s wrong memory write handler start = %08x, end = %08x ALIGN = %d\n",drivers[i]->source_file,drivers[i]->name,mwa->start,mwa->end,alignunit);
 									error = 1;
 								}
 							}
@@ -1906,7 +1907,7 @@ static int validitychecks(void)
 /*
 					if (type && (type >= REGION_MAX || type <= REGION_INVALID))
 					{
-						printf("%s: %s has invalid memory region for gfx[%d]\n",drivers[i]->source_file,drivers[i]->name,j);
+						logerror("%s: %s has invalid memory region for gfx[%d]\n",drivers[i]->source_file,drivers[i]->name,j);
 						error = 1;
 					}
 */
@@ -1926,7 +1927,7 @@ static int validitychecks(void)
 								- (drv.gfxdecodeinfo[j].start & ~(drv.gfxdecodeinfo[j].gfxlayout->charincrement/8-1));
 						if ((start + len) / 8 > avail)
 						{
-							printf("%s: %s has gfx[%d] extending past allocated memory\n",drivers[i]->source_file,drivers[i]->name,j);
+							logerror("%s: %s has gfx[%d] extending past allocated memory\n",drivers[i]->source_file,drivers[i]->name,j);
 							error = 1;
 						}
 					}
@@ -1950,39 +1951,39 @@ static int validitychecks(void)
 						if (inp->name == ipdn_defaultstrings[j]) break;
 						else if (!my_stricmp(inp->name,ipdn_defaultstrings[j]))
 						{
-							printf("%s: %s must use DEF_STR( %s )\n",drivers[i]->source_file,drivers[i]->name,inp->name);
+							logerror("%s: %s must use DEF_STR( %s )\n",drivers[i]->source_file,drivers[i]->name,inp->name);
 							error = 1;
 						}
 					}
 
 					if (inp->name == DEF_STR( On ) && (inp+1)->name == DEF_STR( Off ))
 					{
-						printf("%s: %s has inverted Off/On dipswitch order\n",drivers[i]->source_file,drivers[i]->name);
+						logerror("%s: %s has inverted Off/On dipswitch order\n",drivers[i]->source_file,drivers[i]->name);
 						error = 1;
 					}
 
 					if (inp->name == DEF_STR( Yes ) && (inp+1)->name == DEF_STR( No ))
 					{
-						printf("%s: %s has inverted No/Yes dipswitch order\n",drivers[i]->source_file,drivers[i]->name);
+						logerror("%s: %s has inverted No/Yes dipswitch order\n",drivers[i]->source_file,drivers[i]->name);
 						error = 1;
 					}
 
 					if (!my_stricmp(inp->name,"table"))
 					{
-						printf("%s: %s must use DEF_STR( Cocktail ), not %s\n",drivers[i]->source_file,drivers[i]->name,inp->name);
+						logerror("%s: %s must use DEF_STR( Cocktail ), not %s\n",drivers[i]->source_file,drivers[i]->name,inp->name);
 						error = 1;
 					}
 
 					if (inp->name == DEF_STR( Cabinet ) && (inp+1)->name == DEF_STR( Upright )
 							&& inp->default_value != (inp+1)->default_value)
 					{
-						printf("%s: %s Cabinet must default to Upright\n",drivers[i]->source_file,drivers[i]->name);
+						logerror("%s: %s Cabinet must default to Upright\n",drivers[i]->source_file,drivers[i]->name);
 						error = 1;
 					}
 
 					if (inp->name == DEF_STR( Cocktail ) && (inp+1)->name == DEF_STR( Upright ))
 					{
-						printf("%s: %s has inverted Upright/Cocktail dipswitch order\n",drivers[i]->source_file,drivers[i]->name);
+						logerror("%s: %s has inverted Upright/Cocktail dipswitch order\n",drivers[i]->source_file,drivers[i]->name);
 						error = 1;
 					}
 
@@ -1990,26 +1991,26 @@ static int validitychecks(void)
 							&& (inp+1)->name >= DEF_STR( 9C_1C ) && (inp+1)->name <= DEF_STR( Free_Play )
 							&& inp->name >= (inp+1)->name)
 					{
-						printf("%s: %s has unsorted coinage %s > %s\n",drivers[i]->source_file,drivers[i]->name,inp->name,(inp+1)->name);
+						logerror("%s: %s has unsorted coinage %s > %s\n",drivers[i]->source_file,drivers[i]->name,inp->name,(inp+1)->name);
 						error = 1;
 					}
 
 					if (inp->name == DEF_STR( Flip_Screen ) && (inp+1)->name != DEF_STR( Off ))
 					{
-						printf("%s: %s has wrong Flip Screen option %s\n",drivers[i]->source_file,drivers[i]->name,(inp+1)->name);
+						logerror("%s: %s has wrong Flip Screen option %s\n",drivers[i]->source_file,drivers[i]->name,(inp+1)->name);
 						error = 1;
 					}
 
 					if (inp->name == DEF_STR( Demo_Sounds ) && (inp+2)->name == DEF_STR( On )
 							&& inp->default_value != (inp+2)->default_value)
 					{
-						printf("%s: %s Demo Sounds must default to On\n",drivers[i]->source_file,drivers[i]->name);
+						logerror("%s: %s Demo Sounds must default to On\n",drivers[i]->source_file,drivers[i]->name);
 						error = 1;
 					}
 
 					if (inp->name == DEF_STR( Demo_Sounds ) && (inp+1)->name == DEF_STR( No ))
 					{
-						printf("%s: %s has wrong Demo Sounds option No instead of Off\n",drivers[i]->source_file,drivers[i]->name);
+						logerror("%s: %s has wrong Demo Sounds option No instead of Off\n",drivers[i]->source_file,drivers[i]->name);
 						error = 1;
 					}
 				}

@@ -1,3 +1,7 @@
+#pragma code_seg("C396")
+#pragma bss_seg("B396")
+#pragma data_seg("D396")
+#pragma const_seg("K396")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -246,3 +250,7 @@ ROM_END
 
 
 GAME( 1985, pingpong, 0, pingpong, pingpong, 0, ROT0, "Konami", "Ping Pong" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -2006,7 +2006,10 @@ static void PREFIX86(_pushf)(void)    /* Opcode 0x9c */
 #elif defined V20
     PUSH( CompressFlags() | 0xe000 );
 #else
-    PUSH( CompressFlags() | 0xf000 );
+  {
+    WORD val = CompressFlags() | 0xf000;
+    PUSH( val );
+  }
 #endif
 }
 

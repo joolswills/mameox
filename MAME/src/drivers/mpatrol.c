@@ -1,3 +1,7 @@
+#pragma code_seg("C334")
+#pragma bss_seg("B334")
+#pragma data_seg("D334")
+#pragma const_seg("K334")
 /***************************************************************************
 
 Moon Patrol memory map (preliminary)
@@ -468,3 +472,7 @@ ROM_END
 
 GAME( 1982, mpatrol,  0,       mpatrol, mpatrol,  0, ROT0, "Irem", "Moon Patrol" )
 GAME( 1982, mpatrolw, mpatrol, mpatrol, mpatrolw, 0, ROT0, "Irem (Williams license)", "Moon Patrol (Williams)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

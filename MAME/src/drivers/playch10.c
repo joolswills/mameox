@@ -1,3 +1,7 @@
+#pragma code_seg("C400")
+#pragma bss_seg("B400")
+#pragma data_seg("D400")
+#pragma const_seg("K400")
 /***************************************************************************
 
 Playchoice 10 - (c) 1986 Nintendo of America
@@ -1631,3 +1635,7 @@ GAME( 1990, pc_sjetm,playch10, playch10, playch10, pciboard, ROT0, "Rare", "Play
 
 /* K-Board Games */
 GAME( 1991, pc_moglf,playch10, playch10, playch10, pckboard, ROT0, "Nintendo", "PlayChoice-10: Mario's Open Golf" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

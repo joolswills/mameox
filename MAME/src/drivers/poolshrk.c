@@ -1,3 +1,7 @@
+#pragma code_seg("C405")
+#pragma bss_seg("B405")
+#pragma data_seg("D405")
+#pragma const_seg("K405")
 /***************************************************************************
 
 Atari Poolshark Driver
@@ -257,3 +261,7 @@ ROM_END
 
 
 GAMEX( 1977, poolshrk, 0, poolshrk, poolshrk, poolshrk, 0, "Atari", "Poolshark", GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

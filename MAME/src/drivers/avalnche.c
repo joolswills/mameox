@@ -1,3 +1,7 @@
+#pragma code_seg("C43")
+#pragma bss_seg("B43")
+#pragma data_seg("D43")
+#pragma const_seg("K43")
 /***************************************************************************
 
 	Atari Avalanche hardware
@@ -238,3 +242,7 @@ static DRIVER_INIT( avalnche )
  *************************************/
 
 GAME( 1978, avalnche, 0, avalnche, avalnche, avalnche, ROT0, "Atari", "Avalanche" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

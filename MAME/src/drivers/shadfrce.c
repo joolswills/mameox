@@ -1,3 +1,7 @@
+#pragma code_seg("C459")
+#pragma bss_seg("B459")
+#pragma data_seg("D459")
+#pragma const_seg("K459")
 /*******************************************************************************
  Shadow Force (c)1993 Technos
  Preliminary Driver by David Haywood
@@ -624,3 +628,7 @@ ROM_END
 
 
 GAMEX( 1993, shadfrce, 0, shadfrce, shadfrce, 0, ROT0, "Technos Japan", "Shadow Force (US Version 2)", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C588")
+#pragma bss_seg("B588")
+#pragma data_seg("D588")
+#pragma const_seg("K588")
 /***************************************************************************
 
 	Underfire  							(c) 1993 Taito
@@ -723,3 +727,7 @@ DRIVER_INIT( undrfire )
 
 
 GAMEX( 1993, undrfire, 0, undrfire, undrfire, undrfire, ROT0, "Taito Corporation Japan", "Under Fire (World)", GAME_IMPERFECT_COLORS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C234")
+#pragma bss_seg("B234")
+#pragma data_seg("D234")
+#pragma const_seg("K234")
 /* Hanaroku */
 
 /*
@@ -311,3 +315,7 @@ ROM_END
 
 
 GAMEX( 1988, hanaroku, 0,        hanaroku, hanaroku, 0, ROT0, "Alba", "Hanaroku", GAME_NO_COCKTAIL | GAME_IMPERFECT_GRAPHICS | GAME_IMPERFECT_COLORS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C217")
+#pragma bss_seg("B217")
+#pragma data_seg("D217")
+#pragma const_seg("K217")
 /***************************************************************************
 
 Gotcha  (c) 1997 Dongsung
@@ -320,3 +324,7 @@ ROM_END
 
 
 GAME( 1997, gotcha, 0, gotcha, gotcha, 0, ROT0, "Dongsung", "Got-cha" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C261")
+#pragma bss_seg("B261")
+#pragma data_seg("D261")
+#pragma const_seg("K261")
 /***************************************************************************
 
 	Karnov (USA version)                   (c) 1987 Data East USA
@@ -257,6 +261,7 @@ static void chelnov_i8751_w(int data)
 
 static WRITE16_HANDLER( karnov_control_w )
 {
+#if 0
 	/* Mnemonics filled in from the schematics, brackets are my comments */
 	switch (offset<<1) {
 		case 0: /* SECLR (Interrupt ack for Level 6 i8751 interrupt) */
@@ -316,12 +321,74 @@ static WRITE16_HANDLER( karnov_control_w )
 			cpu_set_irq_line(0,7,CLEAR_LINE);
 			break;
 	}
+#else
+	/* Mnemonics filled in from the schematics, brackets are my comments */
+	switch (offset) {
+		case 0: /* SECLR (Interrupt ack for Level 6 i8751 interrupt) */
+			cpu_set_irq_line(0,6,CLEAR_LINE);
+
+			if (i8751_needs_ack) {
+				/* If a command and coin insert happen at once, then the i8751 will queue the
+					coin command until the previous command is ACK'd */
+				if (i8751_coin_pending) {
+					i8751_return=i8751_coin_pending;
+					cpu_set_irq_line(0,6,HOLD_LINE);
+					i8751_coin_pending=0;
+				} else if (i8751_command_queue) {
+					/* Pending control command - just write it back as SECREQ */
+					i8751_needs_ack=0;
+					karnov_control_w(3,i8751_command_queue,0xffff);
+					i8751_command_queue=0;
+				} else {
+					i8751_needs_ack=0;
+				}
+			}
+			return;
+
+		case 1: /* SONREQ (Sound CPU byte) */
+			soundlatch_w(0,data&0xff);
+			cpu_set_irq_line (1, IRQ_LINE_NMI, PULSE_LINE);
+			break;
+
+		case 2: /* DM (DMA to buffer spriteram) */
+			buffer_spriteram16_w(0,0,0);
+			break;
+
+		case 3: /* SECREQ (Interrupt & Data to i8751) */
+			if (microcontroller_id==KARNOV || microcontroller_id==KARNOVJ) karnov_i8751_w(data);
+			if (microcontroller_id==CHELNOV || microcontroller_id==CHELNOVJ || microcontroller_id==CHELNOVW) chelnov_i8751_w(data);
+			if (microcontroller_id==WNDRPLNT) wndrplnt_i8751_w(data);
+			break;
+
+		case 4: /* HSHIFT (9 bits) - Top bit indicates video flip */
+			COMBINE_DATA(&karnov_scroll[0]);
+			karnov_flipscreen_w(data>>15);
+			break;
+
+		case 5: /* VSHIFT */
+			COMBINE_DATA(&karnov_scroll[1]);
+			break;
+
+		case 6: /* SECR (Reset i8751) */
+			logerror("Reset i8751\n");
+			i8751_needs_ack=0;
+			i8751_coin_pending=0;
+			i8751_command_queue=0;
+			i8751_return=0;
+			break;
+
+		case 7: /* INTCLR (Interrupt ack for Level 7 vbl interrupt) */
+			cpu_set_irq_line(0,7,CLEAR_LINE);
+			break;
+	}
+#endif
 }
 
 /******************************************************************************/
 
 static READ16_HANDLER( karnov_control_r )
 {
+#if 0
 	switch (offset<<1) {
 		case 0: /* Player controls */
 			return ( readinputport(0) + (readinputport(1)<<8));
@@ -332,7 +399,18 @@ static READ16_HANDLER( karnov_control_r )
 		case 6: /* i8751 return values */
 			return i8751_return;
 	}
-
+#else
+	switch (offset) {
+		case 0: /* Player controls */
+			return ( readinputport(0) + (readinputport(1)<<8));
+		case 1: /* Start buttons & VBL */
+			return readinputport(2);
+		case 2: /* Dipswitch A & B */
+			return ( readinputport(4) + (readinputport(5)<<8));
+		case 3: /* i8751 return values */
+			return i8751_return;
+  }
+#endif
 	return ~0;
 }
 
@@ -1065,3 +1143,7 @@ GAME( 1987, wndrplnt, 0,       wndrplnt, wndrplnt,wndrplnt, ROT270, "Data East C
 GAME( 1988, chelnov,  0,       karnov,   chelnov, chelnovw, ROT0,   "Data East Corporation", "Chelnov - Atomic Runner (World)" )
 GAME( 1988, chelnovu, chelnov, karnov,   chelnov, chelnov,  ROT0,   "Data East USA",         "Chelnov - Atomic Runner (US)" )
 GAME( 1988, chelnovj, chelnov, karnov,   chelnov, chelnovj, ROT0,   "Data East Corporation", "Chelnov - Atomic Runner (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C315")
+#pragma bss_seg("B315")
+#pragma data_seg("D315")
+#pragma const_seg("K315")
 /***************************************************************************
 
 	Atari Major Havoc hardware
@@ -801,3 +805,7 @@ GAME( 1983, mhavocrv, mhavoc, mhavoc,   mhavoc,   0, ROT0, "hack",  "Major Havoc
 GAME( 1983, mhavocp,  mhavoc, mhavoc,   mhavocp,  0, ROT0, "Atari", "Major Havoc (prototype)" )
 GAME( 1983, alphaone, mhavoc, alphaone, alphaone, 0, ROT0, "Atari", "Alpha One (prototype, 3 lives)" )
 GAME( 1983, alphaona, mhavoc, alphaone, alphaone, 0, ROT0, "Atari", "Alpha One (prototype, 5 lives)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

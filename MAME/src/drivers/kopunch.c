@@ -1,3 +1,7 @@
+#pragma code_seg("C269")
+#pragma bss_seg("B269")
+#pragma data_seg("D269")
+#pragma const_seg("K269")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -343,3 +347,7 @@ static DRIVER_INIT( kopunch )
 
 
 GAMEX( 1981, kopunch, 0, kopunch, kopunch, kopunch, ROT270, "Sega", "KO Punch", GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

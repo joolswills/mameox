@@ -1,3 +1,7 @@
+#pragma code_seg("C593")
+#pragma bss_seg("B593")
+#pragma data_seg("D593")
+#pragma const_seg("K593")
 /**********************************************************************************************************************
  Championship VBall
  Driver by Paul "TBBle" Hampson
@@ -589,3 +593,7 @@ ROM_END
 
 GAME( 1988, vball,    0,     vball,    vball,    0, ROT0, "Technos", "U.S. Championship V'ball (set 1)" )
 GAMEX(1988, vball2pj, vball, vball2pj, vball2pj, 0, ROT0, "Technos", "U.S. Championship V'ball (Japan bootleg)", GAME_IMPERFECT_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

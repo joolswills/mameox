@@ -1,3 +1,7 @@
+#pragma code_seg("C66")
+#pragma bss_seg("B66")
+#pragma data_seg("D66")
+#pragma const_seg("K66")
 /***************************************************************************
 
 							  -= Blomby Car =-
@@ -387,3 +391,7 @@ DRIVER_INIT( blmbycar )
 
 GAME( 1994, blmbycar, 0,        blmbycar, blmbycar, blmbycar, ROT0, "ABM & Gecas", "Blomby Car" )
 GAME( 1994, blmbycau, blmbycar, blmbycar, blmbycar, 0,        ROT0, "ABM & Gecas", "Blomby Car (not encrypted)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

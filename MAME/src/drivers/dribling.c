@@ -1,3 +1,7 @@
+#pragma code_seg("C157")
+#pragma bss_seg("B157")
+#pragma data_seg("D157")
+#pragma const_seg("K157")
 /***************************************************************************
 
 	Model Racing Dribbling hardware
@@ -373,3 +377,7 @@ ROM_END
 
 GAMEX( 1983, dribling, 0,        dribling, dribling, 0, ROT0, "Model Racing", "Dribbling", GAME_NO_SOUND )
 GAMEX( 1983, driblino, dribling, dribling, dribling, 0, ROT0, "Model Racing (Olympia license)", "Dribbling (Olympia)", GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

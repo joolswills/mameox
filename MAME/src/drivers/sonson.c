@@ -1,3 +1,7 @@
+#pragma code_seg("C484")
+#pragma bss_seg("B484")
+#pragma data_seg("D484")
+#pragma const_seg("K484")
 /***************************************************************************
 
 Son Son memory map (preliminary)
@@ -347,3 +351,7 @@ ROM_END
 
 GAMEX( 1984, sonson,  0,      sonson, sonson, 0, ROT0, "Capcom", "Son Son", GAME_NO_COCKTAIL )
 GAMEX( 1984, sonsonj, sonson, sonson, sonson, 0, ROT0, "Capcom", "Son Son (Japan)", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

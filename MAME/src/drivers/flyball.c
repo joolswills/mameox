@@ -1,3 +1,7 @@
+#pragma code_seg("C186")
+#pragma bss_seg("B186")
+#pragma data_seg("D186")
+#pragma const_seg("K186")
 /***************************************************************************
 
 Atari Flyball Driver
@@ -330,3 +334,7 @@ ROM_END
 
 
 GAMEX( 1976, flyball, 0, flyball, flyball, 0, 0, "Atari", "Flyball", GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

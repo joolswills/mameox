@@ -1,3 +1,7 @@
+#pragma code_seg("C336")
+#pragma bss_seg("B336")
+#pragma data_seg("D336")
+#pragma const_seg("K336")
 /******************************************************************
 
 Mr F Lea
@@ -416,3 +420,7 @@ INPUT_PORTS_END
 
 
 GAME(1982, mrflea,   0,        mrflea,   mrflea,   0,        ROT270, "Pacific Novelty", "The Amazing Adventures of Mr. F. Lea"  )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C283")
+#pragma bss_seg("B283")
+#pragma data_seg("D283")
+#pragma const_seg("K283")
 /***************************************************************************
 
 Loco-Motion
@@ -786,3 +790,7 @@ GAME( 1982, locomotn, 0,        locomotn, locomotn, 0, ROT90, "Konami (Centuri l
 GAME( 1982, gutangtn, locomotn, locomotn, locomotn, 0, ROT90, "Konami (Sega license)", "Guttang Gottong" )
 GAME( 1982, cottong,  locomotn, locomotn, locomotn, 0, ROT90, "bootleg", "Cotocoto Cottong" )
 GAME( 1983, commsega, 0,        commsega, commsega, 0, ROT90, "Sega", "Commando (Sega)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

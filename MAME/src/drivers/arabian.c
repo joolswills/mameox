@@ -1,3 +1,7 @@
+#pragma code_seg("C22")
+#pragma bss_seg("B22")
+#pragma data_seg("D22")
+#pragma const_seg("K22")
 /***************************************************************************
 
 	Sun Electronics Arabian hardware
@@ -444,3 +448,7 @@ static DRIVER_INIT( arabian )
 
 GAME( 1983, arabian,  0,       arabian, arabian, arabian, ROT270, "Sun Electronics", "Arabian" )
 GAME( 1983, arabiana, arabian, arabian, arabian, arabian, ROT270, "[Sun Electronics] (Atari license)", "Arabian (Atari)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

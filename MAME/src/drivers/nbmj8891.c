@@ -1,3 +1,7 @@
+#pragma code_seg("C356")
+#pragma bss_seg("B356")
+#pragma data_seg("D356")
+#pragma const_seg("K356")
 /******************************************************************************
 
 	Game Driver for Nichibutsu Mahjong series.
@@ -3075,3 +3079,7 @@ GAME( 1990, maiko,     0,        maiko,    maiko,    maiko,    ROT0,   "Nichibut
 GAME( 1990, club90s,   0,        mjnanpas, club90s,  club90s,  ROT0,   "Nichibutsu", "Mahjong CLUB 90's (set 1) (Japan 900919)" )
 GAME( 1990, club90sa,  club90s,  mjnanpas, club90s,  club90s,  ROT0,   "Nichibutsu", "Mahjong CLUB 90's (set 2) (Japan 900919)" )
 GAME( 1991, hanaoji,   0,        hanaoji,  hanaoji,  hanaoji,  ROT0,   "Nichibutsu", "Hana to Ojisan [BET] (Japan 911209)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

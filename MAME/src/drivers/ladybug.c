@@ -1,3 +1,7 @@
+#pragma code_seg("C272")
+#pragma bss_seg("B272")
+#pragma data_seg("D272")
+#pragma const_seg("K272")
 /***************************************************************************
 
 Lady Bug memory map (preliminary)
@@ -711,3 +715,7 @@ GAME( 1981?,snapjack, 0,       ladybug, snapjack, 0,       ROT0,   "Universal", 
 GAME( 1981, cavenger, 0,       ladybug, cavenger, 0,       ROT0,   "Universal", "Cosmic Avenger" )
 GAME( 1982?,dorodon,  0,       ladybug, dorodon,  dorodon, ROT270, "Falcon",    "Dorodon (set 1)" )
 GAME( 1982?,dorodon2, dorodon, ladybug, dorodon,  dorodon, ROT270, "Falcon",    "Dorodon (set 2)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

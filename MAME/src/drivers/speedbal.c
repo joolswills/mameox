@@ -1,3 +1,7 @@
+#pragma code_seg("C490")
+#pragma bss_seg("B490")
+#pragma data_seg("D490")
+#pragma const_seg("K490")
 /***************************************************************************
 
 Speed Ball map
@@ -326,3 +330,7 @@ static DRIVER_INIT( speedbal )
 
 
 GAME( 1987, speedbal, 0, speedbal, speedbal, speedbal, ROT270, "Tecfri", "Speed Ball" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C20")
+#pragma bss_seg("B20")
+#pragma data_seg("D20")
+#pragma const_seg("K20")
 /***************************************************************************
 
 Appoooh memory map (preliminary)
@@ -301,3 +305,7 @@ ROM_END
 
 
 GAME( 1984, appoooh, 0, appoooh, appoooh, 0, ROT0, "[Sanritsu] Sega", "Appoooh" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

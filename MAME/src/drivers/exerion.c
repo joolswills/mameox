@@ -1,3 +1,7 @@
+#pragma code_seg("C168")
+#pragma bss_seg("B168")
+#pragma data_seg("D168")
+#pragma const_seg("K168")
 /***************************************************************************
 
 	Jaleco Exerion hardware
@@ -515,3 +519,7 @@ static DRIVER_INIT( exerionb )
 GAME( 1983, exerion,  0,       exerion, exerion, exerion,  ROT90, "Jaleco", "Exerion" )
 GAME( 1983, exeriont, exerion, exerion, exerion, exerion,  ROT90, "Jaleco (Taito America license)", "Exerion (Taito)" )
 GAME( 1983, exerionb, exerion, exerion, exerion, exerionb, ROT90, "Jaleco", "Exerion (bootleg)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

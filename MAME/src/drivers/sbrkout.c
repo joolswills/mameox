@@ -1,3 +1,7 @@
+#pragma code_seg("C445")
+#pragma bss_seg("B445")
+#pragma data_seg("D445")
+#pragma const_seg("K445")
 /***************************************************************************
 
 	Atari Super Breakout hardware
@@ -339,3 +343,7 @@ static DRIVER_INIT( sbrkout )
  *************************************/
 
 GAME( 1978, sbrkout, 0, sbrkout, sbrkout, sbrkout, ROT270, "Atari", "Super Breakout" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

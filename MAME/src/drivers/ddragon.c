@@ -1,3 +1,7 @@
+#pragma code_seg("C136")
+#pragma bss_seg("B136")
+#pragma data_seg("D136")
+#pragma const_seg("K136")
 /***************************************************************************
 
 Double Dragon     (c) 1987 Technos Japan
@@ -1086,3 +1090,7 @@ GAMEX( 199?, ddungeon, 0, toffy, toffy, 0, ROT0, "East Coast Coin Company (Melbo
 /* these run on their own board but are the basically the same game, Toffy even has 'dangerous dungeons' text in it */
 GAME( 1993, toffy,  0, toffy, toffy, toffy, ROT0, "Midas",                 "Toffy" )
 GAME( 1994, stoffy, 0, toffy, toffy, toffy, ROT0, "Midas (Unico license)", "Super Toffy" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

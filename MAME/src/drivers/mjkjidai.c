@@ -1,3 +1,7 @@
+#pragma code_seg("C326")
+#pragma bss_seg("B326")
+#pragma data_seg("D326")
+#pragma const_seg("K326")
 /***************************************************************************
 
 Mahjong Kyou Jidai     (c)1986 Sanritsu
@@ -366,3 +370,7 @@ ROM_END
 
 
 GAMEX( 1986, mjkjidai, 0, mjkjidai, mjkjidai, 0, ROT0, "Sanritsu",  "Mahjong Kyou Jidai (Japan)", GAME_IMPERFECT_GRAPHICS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

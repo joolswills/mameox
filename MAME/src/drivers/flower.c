@@ -1,3 +1,7 @@
+#pragma code_seg("C184")
+#pragma bss_seg("B184")
+#pragma data_seg("D184")
+#pragma const_seg("K184")
 /* Flower (c)1986 Komax
  - Driver by InsideOutBoy
 
@@ -321,3 +325,7 @@ ROM_END
 
 
 GAMEX( 1986, flower, 0, flower, flower, 0, ROT0, "Komax", "Flower", GAME_WRONG_COLORS | GAME_IMPERFECT_SOUND | GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

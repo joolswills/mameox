@@ -1,3 +1,7 @@
+#pragma code_seg("C310")
+#pragma bss_seg("B310")
+#pragma data_seg("D310")
+#pragma const_seg("K310")
 /***************************************************************************
 
 							-= Jaleco Mega System 1 =-
@@ -3564,3 +3568,7 @@ GAME( 1992, bigstrik, 0,        system_C,          bigstrik, bigstrik, ROT0,   "
 GAME( 1993, chimerab, 0,        system_C,          chimerab, chimerab, ROT0,   "Jaleco", "Chimera Beast (prototype)" )
 GAME( 1993, cybattlr, 0,        system_C,          cybattlr, cybattlr, ROT90,  "Jaleco", "Cybattler" )
 GAME( 1993, peekaboo, 0,        system_D,          peekaboo, peekaboo, ROT0,   "Jaleco", "Peek-a-Boo!" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C61")
+#pragma bss_seg("B61")
+#pragma data_seg("D61")
+#pragma const_seg("K61")
 /* Jaleco's Big Striker (bootleg version)
 
  Driver by David Haywood
@@ -292,3 +296,7 @@ ROM_END
 /* GAME drivers */
 
 GAMEX( 1992, bigstrkb, bigstrik, bigstrkb, bigstrkb, 0, ROT0, "bootleg", "Big Striker (bootleg)", GAME_IMPERFECT_SOUND | GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

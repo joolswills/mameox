@@ -1,3 +1,7 @@
+#pragma code_seg("C296")
+#pragma bss_seg("B296")
+#pragma data_seg("D296")
+#pragma const_seg("K296")
 /***************************************************************************
 
   The Main Event, (c) 1988 Konami
@@ -872,3 +876,7 @@ GAME( 1988, devstors, 0,        devstors, devstors, mainevt, ROT90, "Konami", "D
 GAME( 1988, devstor2, devstors, devstors, devstors, mainevt, ROT90, "Konami", "Devastators (version X)" )
 GAME( 1988, devstor3, devstors, devstors, devstors, mainevt, ROT90, "Konami", "Devastators (version V)" )
 GAME( 1988, garuka,   devstors, devstors, devstors, mainevt, ROT90, "Konami", "Garuka (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

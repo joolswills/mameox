@@ -1,3 +1,7 @@
+#pragma code_seg("C460")
+#pragma bss_seg("B460")
+#pragma data_seg("D460")
+#pragma const_seg("K460")
 /***************************************************************************
 
 Shanghai 3           (c)1993 Sunsoft     (68000     AY8910 OKI6295)
@@ -671,3 +675,7 @@ static DRIVER_INIT( heberpop )
 GAME( 1993, shangha3, 0, shangha3, shangha3, shangha3, ROT0, "Sunsoft", "Shanghai III (Japan)" )
 GAME( 1994, heberpop, 0, heberpop, heberpop, heberpop, ROT0, "Sunsoft / Atlus", "Hebereke no Popoon (Japan)" )
 GAME( 1994, blocken,  0, blocken,  blocken,  heberpop, ROT0, "KID / Visco", "Blocken (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

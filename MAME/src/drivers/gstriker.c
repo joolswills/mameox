@@ -1,3 +1,7 @@
+#pragma code_seg("C224")
+#pragma bss_seg("B224")
+#pragma data_seg("D224")
+#pragma const_seg("K224")
 /*** DRIVER INFO **************************************************************
 
 Grand Striker, V Goal Soccer, World Cup '94
@@ -582,3 +586,7 @@ GAMEX(1993, gstriker, 0,        gstriker, gstriker, 0,        ROT0, "Human", "Gr
 GAMEX(199?, vgoalsoc, 0,        gstriker, gstriker, 0,        ROT0, "Tecmo", "V Goal Soccer", GAME_NOT_WORKING )
 GAMEX(199?, vgoalsca, vgoalsoc, gstriker, gstriker, 0,        ROT0, "Tecmo", "V Goal Soccer (alt)", GAME_NOT_WORKING )
 GAMEX(199?, worldc94, 0,        gstriker, gstriker, 0,        ROT0, "Tecmo", "World Cup '94", GAME_NOT_WORKING )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

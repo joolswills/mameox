@@ -1,3 +1,7 @@
+#pragma code_seg("C606")
+#pragma bss_seg("B606")
+#pragma data_seg("D606")
+#pragma const_seg("K606")
 /*
 World Cup 90 ( Tecmo ) driver
 -----------------------------
@@ -487,3 +491,7 @@ ROM_END
 GAMEX( 1989, wc90,  0,    wc90, wc90, 0, ROT0, "Tecmo", "Tecmo World Cup '90 (set 1)", GAME_IMPERFECT_SOUND | GAME_NO_COCKTAIL )
 GAMEX( 1989, wc90a, wc90, wc90, wc90, 0, ROT0, "Tecmo", "Tecmo World Cup '90 (set 2)", GAME_IMPERFECT_SOUND | GAME_NO_COCKTAIL )
 GAMEX( 1989, wc90t, wc90, wc90, wc90, 0, ROT0, "Tecmo", "Tecmo World Cup '90 (trackball)", GAME_IMPERFECT_SOUND | GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

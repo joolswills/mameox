@@ -1,3 +1,7 @@
+#pragma code_seg("C250")
+#pragma bss_seg("B250")
+#pragma data_seg("D250")
+#pragma const_seg("K250")
 /***************************************************************************
 
 IronHorse
@@ -566,3 +570,7 @@ ROM_END
 GAMEX( 1986, ironhors, 0,        ironhors, ironhors, 0, ROT0, "Konami", "Iron Horse", GAME_NO_COCKTAIL )
 GAMEX( 1986, dairesya, ironhors, ironhors, dairesya, 0, ROT0, "[Konami] (Kawakusu license)", "Dai Ressya Goutou (Japan)", GAME_NO_COCKTAIL )
 GAMEX( 1986, farwest,  ironhors, farwest,  ironhors, 0, ROT0, "bootleg?", "Far West", GAME_NOT_WORKING | GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

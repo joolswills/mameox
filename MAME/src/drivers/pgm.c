@@ -1,3 +1,7 @@
+#pragma code_seg("C393")
+#pragma bss_seg("B393")
+#pragma data_seg("D393")
+#pragma const_seg("K393")
 
 /* PGM System (c)1997 IGS
 
@@ -1499,3 +1503,7 @@ char CalRead()
 */
 
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C59")
+#pragma bss_seg("B59")
+#pragma data_seg("D59")
+#pragma const_seg("K59")
 /*
 
   Beezer - (c) 1982 Tong Electronic
@@ -173,3 +177,7 @@ ROM_END
 
 GAMEX( 1982, beezer,  0,       beezer, beezer, beezer, ORIENTATION_FLIP_X, "Tong Electronic", "Beezer (set 1)", GAME_IMPERFECT_SOUND )
 GAMEX( 1982, beezer1,  beezer, beezer, beezer, beezer, ORIENTATION_FLIP_X, "Tong Electronic", "Beezer (set 2)", GAME_IMPERFECT_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

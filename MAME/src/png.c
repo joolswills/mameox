@@ -343,7 +343,11 @@ int png_read_file(mame_file *fp, struct png_info *p)
 	return 1;
 }
 
-int png_read_info(mame_file *fp, struct png_info *p)
+#ifdef _XBOX
+  int XB_png_read_info(void *fp, struct png_info *p)
+#else
+  int png_read_info(void *fp, struct png_info *p)
+#endif
 {
 	UINT32 chunk_length, chunk_type=0, chunk_crc, crc;
 	UINT8 *chunk_data;

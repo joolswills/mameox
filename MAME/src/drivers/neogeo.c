@@ -1,3 +1,7 @@
+#pragma code_seg("C360")
+#pragma bss_seg("B360")
+#pragma data_seg("D360")
+#pragma const_seg("K360")
 /***************************************************************************
 	M.A.M.E. Neo Geo driver presented to you by the Shin Emu Keikaku team.
 
@@ -5591,3 +5595,7 @@ GAME( 2002, mslug4,   neogeo,   neogeo, neogeo,  mslug4,   ROT0, "Mega Enterpris
 
 /* Evoga */
 GAME( 2002, rotd,	  neogeo,	neogeo, neogeo,  rotd,	   ROT0, "Evoga / Playmore Corporation", "Rage of the Dragons" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

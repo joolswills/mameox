@@ -1,3 +1,7 @@
+#pragma code_seg("C381")
+#pragma bss_seg("B381")
+#pragma data_seg("D381")
+#pragma const_seg("K381")
 /***************************************************************************
 
 Operation Thunderbolt  (Taito)
@@ -658,3 +662,7 @@ static DRIVER_INIT( othunder )
 
 GAME( 1988, othunder, 0,        othunder, othunder, othunder, ORIENTATION_FLIP_X, "Taito Corporation Japan", "Operation Thunderbolt (World)" )
 GAME( 1988, othundu,  othunder, othunder, othundu,  othunder, ORIENTATION_FLIP_X, "Taito America Corporation", "Operation Thunderbolt (US)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

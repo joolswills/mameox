@@ -1,3 +1,7 @@
+#pragma code_seg("C491")
+#pragma bss_seg("B491")
+#pragma data_seg("D491")
+#pragma const_seg("K491")
 /*** DRIVER INFO & NOTES ******************************************************
  Speed Spin (c)1994 TCH
   driver by David Haywood & Farfetch'd
@@ -361,3 +365,7 @@ ROM_END
 /*** GAME DRIVERS ************************************************************/
 
 GAMEX( 1994, speedspn, 0, speedspn, speedspn, 0, ROT180, "TCH", "Speed Spin", GAME_IMPERFECT_GRAPHICS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

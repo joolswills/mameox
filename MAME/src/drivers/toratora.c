@@ -1,3 +1,7 @@
+#pragma code_seg("C569")
+#pragma bss_seg("B569")
+#pragma data_seg("D569")
+#pragma const_seg("K569")
 /***************************************************************************
 
 Tora Tora (c) 1980 GamePlan
@@ -264,3 +268,7 @@ ROM_END
 
 
 GAMEX( 1980, toratora, 0, toratora, toratora, 0, ROT90, "GamePlan", "Tora Tora", GAME_NOT_WORKING | GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

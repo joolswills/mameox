@@ -1,3 +1,7 @@
+#pragma code_seg("C132")
+#pragma bss_seg("B132")
+#pragma data_seg("D132")
+#pragma const_seg("K132")
 /*
   Dragonball Z 2 Super Battle
   (c) 1994 Banpresto
@@ -395,3 +399,7 @@ static DRIVER_INIT(dbz2)
 
 
 GAMEX( 1994, dbz2, 0, dbz2, dbz2, dbz2, ROT0, "Banpresto", "Dragonball Z 2 Super Battle" , GAME_IMPERFECT_GRAPHICS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C426")
+#pragma bss_seg("B426")
+#pragma data_seg("D426")
+#pragma const_seg("K426")
 /***************************************************************************
 
 Irem Red Alert Driver
@@ -337,3 +341,7 @@ ROM_END
 
 
 GAMEX( 1981, redalert, 0, redalert, redalert, 0, ROT270, "Irem + GDI", "Red Alert", GAME_WRONG_COLORS | GAME_IMPERFECT_SOUND)
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

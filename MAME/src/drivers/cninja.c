@@ -1,3 +1,7 @@
+#pragma code_seg("C110")
+#pragma bss_seg("B110")
+#pragma data_seg("D110")
+#pragma const_seg("K110")
 /***************************************************************************
 
   Edward Randy      (c) 1990 Data East Corporation (World version)
@@ -1747,3 +1751,7 @@ GAME( 1991, robocp2j, robocop2,robocop2, robocop2,0,        ROT0, "Data East Cor
 GAME( 1992, mutantf,  0,       mutantf,  mutantf, mutantf,  ROT0, "Data East Corporation", "Mutant Fighter (World Rev 4, EM-5)" )
 GAME( 1992, mutantfa, mutantf, mutantf,  mutantf, mutantf,  ROT0, "Data East Corporation", "Mutant Fighter (World Rev 3, EM-4)" )
 GAME( 1992, deathbrd, mutantf, mutantf,  mutantf, mutantf,  ROT0, "Data East Corporation", "Death Brade (Japan Rev 2, JM-3)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C41")
+#pragma bss_seg("B41")
+#pragma data_seg("D41")
+#pragma const_seg("K41")
 /***************************************************************************
 
 	Leland Ataxx-era driver
@@ -899,3 +903,7 @@ GAME( 1990, wsf,      0,      wsf,     wsf,      wsf,      ROT0,   "Leland Corp.
 GAME( 1991, indyheat, 0,      wsf,     indyheat, indyheat, ROT0,   "Leland Corp.", "Danny Sullivan's Indy Heat" )
 GAME( 1991, brutforc, 0,      wsf,     brutforc, brutforc, ROT0,   "Leland Corp.", "Brute Force" )
 GAME( 1991, asylum,   0,      wsf,     brutforc, asylum,   ROT270, "Leland Corp.", "Asylum (prototype)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

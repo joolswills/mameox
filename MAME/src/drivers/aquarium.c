@@ -1,3 +1,7 @@
+#pragma code_seg("C21")
+#pragma bss_seg("B21")
+#pragma data_seg("D21")
+#pragma const_seg("K21")
 /* Aquarium (c)1996 Excellent Systems */
 
 /* the hardware is similar to gcpinbal.c, probably should merge it at some point */
@@ -409,3 +413,7 @@ GAMEX( 1996, aquarium, 0, aquarium, aquarium, aquarium, ROT0, "Excellent System"
 #else
 GAMEX( 1996, aquarium, 0, aquarium, aquarium, aquarium, ROT0, "Excellent System", "Aquarium", GAME_IMPERFECT_SOUND | GAME_IMPERFECT_GRAPHICS | GAME_NO_COCKTAIL )
 #endif
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C554")
+#pragma bss_seg("B554")
+#pragma data_seg("D554")
+#pragma const_seg("K554")
 /******************************************************************
 
 Shark Attack
@@ -650,3 +654,7 @@ GAME( 1980, sharkatt, 0,       sharkatt, sharkatt, 0,     ROT0, "Pacific Novelty
 GAME( 1981, thief,    0,       thief,    thief,    thief, ROT0, "Pacific Novelty", "Thief" )
 GAME( 1982, natodef,  0,       natodef,  natodef,  thief, ROT0, "Pacific Novelty", "NATO Defense"  )
 GAME( 1982, natodefa, natodef, natodef,  natodef,  thief, ROT0, "Pacific Novelty", "NATO Defense (alternate mazes)"  )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C257")
+#pragma bss_seg("B257")
+#pragma data_seg("D257")
+#pragma const_seg("K257")
 /***************************************************************************
 
 	Bally/Midway Jr. Pac-Man
@@ -464,3 +468,7 @@ static DRIVER_INIT( jrpacman )
  *************************************/
 
 GAME( 1983, jrpacman, 0, jrpacman, jrpacman, jrpacman, ROT90, "Bally Midway", "Jr. Pac-Man" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

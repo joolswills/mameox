@@ -1,3 +1,7 @@
+#pragma code_seg("C410")
+#pragma bss_seg("B410")
+#pragma data_seg("D410")
+#pragma const_seg("K410")
 /***************************************************************************
 
 	Prehistoric Isle in 1930 (World)		(c) 1989 SNK
@@ -409,3 +413,7 @@ static DRIVER_INIT( gensitou )
 GAMEX( 1989, prehisle, 0,		 prehisle, prehisle, prehisle, ROT0, "SNK", "Prehistoric Isle in 1930 (World)", GAME_NO_COCKTAIL )
 GAMEX( 1989, prehislu, prehisle, prehisle, prehisle, prehislu, ROT0, "SNK of America", "Prehistoric Isle in 1930 (US)", GAME_NO_COCKTAIL )
 GAMEX( 1989, gensitou, prehisle, prehisle, prehisle, gensitou, ROT0, "SNK", "Genshi-Tou 1930's", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

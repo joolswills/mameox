@@ -1,3 +1,7 @@
+#pragma code_seg("C566")
+#pragma bss_seg("B566")
+#pragma data_seg("D566")
+#pragma const_seg("K566")
 /***************************************************************************
 
 Toki
@@ -743,3 +747,7 @@ GAME( 1989, tokia, toki, toki,  toki,  toki,  ROT0, "Tad", "Toki (World set 2)" 
 GAME( 1989, tokij, toki, toki,  toki,  toki,  ROT0, "Tad", "JuJu Densetsu (Japan)" )
 GAME( 1989, tokiu, toki, toki,  toki,  toki,  ROT0, "Tad (Fabtek license)", "Toki (US)" )
 GAME( 1989, tokib, toki, tokib, tokib, tokib, ROT0, "bootleg", "Toki (bootleg)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

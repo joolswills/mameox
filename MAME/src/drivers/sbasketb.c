@@ -1,3 +1,7 @@
+#pragma code_seg("C444")
+#pragma bss_seg("B444")
+#pragma data_seg("D444")
+#pragma const_seg("K444")
 /***************************************************************************
 
 Super Basketball memory map (preliminary)
@@ -386,3 +390,7 @@ static DRIVER_INIT( sbasketb )
 GAME( 1984, sbasketb, 0,        sbasketb, sbasketb, sbasketb, ROT90, "Konami", "Super Basketball (version G)" )
 GAME( 1984, sbasketo, sbasketb, sbasketb, sbasketb, sbasketb, ROT90, "Konami", "Super Basketball (version E)" )
 GAME( 1984, sbasketu, sbasketb, sbasketb, sbasketb, 0,        ROT90, "Konami", "Super Basketball (not encrypted)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

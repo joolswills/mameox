@@ -1,3 +1,7 @@
+#pragma code_seg("C538")
+#pragma bss_seg("B538")
+#pragma data_seg("D538")
+#pragma const_seg("K538")
 /***************************************************************************
 
 Taito Air System
@@ -778,3 +782,7 @@ static DRIVER_INIT( taitoair )
 /*   ( YEAR  NAME      PARENT    MACHINE   INPUT     INIT      MONITOR  COMPANY  FULLNAME */
 GAME( 1988, topland,  0,        airsys,   topland,  taitoair, ROT0,    "Taito Corporation Japan", "Top Landing (World)" )
 GAME( 1990, ainferno, 0,        airsys,   ainferno, taitoair, ROT0,    "Taito America Corporation", "Air Inferno (US)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

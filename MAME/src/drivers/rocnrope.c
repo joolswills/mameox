@@ -1,3 +1,7 @@
+#pragma code_seg("C434")
+#pragma bss_seg("B434")
+#pragma data_seg("D434")
+#pragma const_seg("K434")
 /***************************************************************************
 
 Based on drivers from Juno First emulator by Chris Hardy (chrish@kcbbs.gen.nz)
@@ -332,3 +336,7 @@ static DRIVER_INIT( rocnropk )
 
 GAME( 1983, rocnrope, 0,        rocnrope, rocnrope, rocnrope, ROT270, "Konami", "Roc'n Rope" )
 GAME( 1983, rocnropk, rocnrope, rocnrope, rocnrope, rocnropk, ROT270, "Konami + Kosuka", "Roc'n Rope (Kosuka)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

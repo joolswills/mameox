@@ -1,3 +1,7 @@
+#pragma code_seg("C299")
+#pragma bss_seg("B299")
+#pragma data_seg("D299")
+#pragma const_seg("K299")
 /***************************************************************************
 
 Mario Bros memory map (preliminary):
@@ -550,3 +554,7 @@ ROM_END
 GAME( 1983, mario,   0,     mario, mario,   0, ROT180, "Nintendo of America", "Mario Bros. (US)" )
 GAME( 1983, mariojp, mario, mario, mariojp, 0, ROT180, "Nintendo", "Mario Bros. (Japan)" )
 GAME( 1983, masao,   mario, masao, mario,   0, ROT180, "bootleg", "Masao" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C124")
+#pragma bss_seg("B124")
+#pragma data_seg("D124")
+#pragma const_seg("K124")
 /***************************************************************************
 
 Crime Fighters (Konami GX821) (c) 1989 Konami
@@ -539,3 +543,7 @@ static DRIVER_INIT( crimfght )
 GAME( 1989, crimfght, 0,        crimfght, crimfght, crimfght, ROT0, "Konami", "Crime Fighters (US 4 players)" )
 GAME( 1989, crimfgt2, crimfght, crimfght, crimfgtj, crimfght, ROT0, "Konami", "Crime Fighters (World 2 Players)" )
 GAME( 1989, crimfgtj, crimfght, crimfght, crimfgtj, crimfght, ROT0, "Konami", "Crime Fighters (Japan 2 Players)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

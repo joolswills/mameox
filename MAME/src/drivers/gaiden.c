@@ -1,3 +1,7 @@
+#pragma code_seg("C197")
+#pragma bss_seg("B197")
+#pragma data_seg("D197")
+#pragma const_seg("K197")
 /***************************************************************************
 
 Ninja Gaiden memory map (preliminary)
@@ -1104,3 +1108,7 @@ GAME( 1989, wildfang, 0,        shadoww, wildfang, wildfang, ROT0, "Tecmo", "Wil
 GAME( 1989, tknight,  wildfang, shadoww, tknight,  wildfang, ROT0, "Tecmo", "Tecmo Knight" )
 GAMEX(1991, stratof,  0,        shadoww, raiga,    raiga,    ROT0, "Tecmo", "Raiga - Strato Fighter (US)", GAME_UNEMULATED_PROTECTION )
 GAMEX(1991, raiga,    stratof,  shadoww, raiga,    raiga,    ROT0, "Tecmo", "Raiga - Strato Fighter (Japan)", GAME_UNEMULATED_PROTECTION )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

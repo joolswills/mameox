@@ -1,3 +1,7 @@
+#pragma code_seg("C373")
+#pragma bss_seg("B373")
+#pragma data_seg("D373")
+#pragma const_seg("K373")
 /******************************************************************************
 
 	Game Driver for Video System Mahjong series.
@@ -935,3 +939,7 @@ GAME( 1986, ojankoy,  0, ojankoy,  ojankoy,  0, ROT0, "V-System Co.", "Ojanko Ya
 GAME( 1987, ojanko2,  0, ojankoy,  ojankoy,  0, ROT0, "V-System Co.", "Ojanko Yakata 2bankan (Japan)" )
 GAME( 1987, ccasino,  0, ccasino,  ccasino,  0, ROT0, "V-System Co.", "Chinese Casino [BET] (Japan)" )
 GAME( 1988, ojankohs, 0, ojankohs, ojankohs, 0, ROT0, "V-System Co.", "Ojanko High School (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

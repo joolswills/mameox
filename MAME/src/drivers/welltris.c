@@ -1,3 +1,7 @@
+#pragma code_seg("C609")
+#pragma bss_seg("B609")
+#pragma data_seg("D609")
+#pragma const_seg("K609")
 /*******************************************************************************
  Welltris (c)1991 Video System
 ********************************************************************************
@@ -666,3 +670,7 @@ ROM_END
 
 
 GAMEX( 1991, welltris, 0,        welltris, welltris, welltris, ROT0,   "Video System Co.", "Welltris (Japan, 2 players)", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C246")
+#pragma bss_seg("B246")
+#pragma data_seg("D246")
+#pragma const_seg("K246")
 /***************************************************************************
 
 Hyper Duel
@@ -756,3 +760,7 @@ ROM_END
 GAMEX( 1993, hyprduel, 0,        hyprduel, hyprduel, hyprduel, ROT0, "Technosoft", "Hyper Duel (World)", GAME_NOT_WORKING )
 GAME ( 1993, hyprdelj, hyprduel, hyprduel, hyprduel, hyprduel, ROT0, "Technosoft", "Hyper Duel (Japan)" )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C610")
+#pragma bss_seg("B610")
+#pragma data_seg("D610")
+#pragma const_seg("K610")
 /***************************************************************************
 
 World Grand Prix	(c) Taito Corporation 1989
@@ -1490,3 +1494,7 @@ GAMEX( 1989, wgpjoy,   wgp,    wgp,    wgpjoy, wgp,    ROT0, "Taito Corporation"
 GAMEX( 1989, wgpjoya,  wgp,    wgp,    wgpjoy, wgp,    ROT0, "Taito Corporation", "World Grand Prix (joystick version set 2) (Japan)", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1990, wgp2,     wgp,    wgp2,   wgp2,   wgp2,   ROT0, "Taito Corporation", "World Grand Prix 2 (Japan)", GAME_IMPERFECT_GRAPHICS )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C570")
+#pragma bss_seg("B570")
+#pragma data_seg("D570")
+#pragma const_seg("K570")
 /****************************************
 
 TOYPOP
@@ -513,3 +517,7 @@ static DRIVER_INIT( toypop )
 
 GAME( 1983, liblrabl, 0, toypop,   liblrabl, liblrabl, ROT0, "Namco", "Libble Rabble" )
 GAME( 1986, toypop,   0, toypop,   toypop,   toypop,   ROT0, "Namco", "Toypop" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

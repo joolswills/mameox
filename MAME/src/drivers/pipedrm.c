@@ -1,3 +1,7 @@
+#pragma code_seg("C397")
+#pragma bss_seg("B397")
+#pragma data_seg("D397")
+#pragma const_seg("K397")
 /***************************************************************************
 
 	Pipe Dream
@@ -788,3 +792,7 @@ static DRIVER_INIT( hatris )
 GAME( 1990, pipedrm,  0,       pipedrm, pipedrm, pipedrm, ROT0, "Video System Co.", "Pipe Dream (US)" )
 GAME( 1990, pipedrmj, pipedrm, pipedrm, pipedrm, pipedrm, ROT0, "Video System Co.", "Pipe Dream (Japan)" )
 GAME( 1990, hatris,   0,       hatris,  hatris,  hatris,  ROT0, "Video System Co.", "Hatris (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C135")
+#pragma bss_seg("B135")
+#pragma data_seg("D135")
+#pragma const_seg("K135")
 /***************************************************************************
 
 Some Dynax/Nakanihon games using the third version of their blitter
@@ -1767,3 +1771,7 @@ GAMEX(1994, rongrong, 0,       rongrong, rongrong, rongrong, ROT0, "Nakanihon", 
 GAMEX(1996, ddenlovr, 0,       ddenlovr, ddenlovr, 0,        ROT0, "Dynax",     "Don Den Lover Vol. 1 (Hong Kong)", GAME_IMPERFECT_COLORS | GAME_NO_COCKTAIL )
 
 GAMEX(1996, hanakanz, 0,       rongrong, rongrong, 0,        ROT0, "Dynax",     "Hanakanzashi (Japan)", GAME_NOT_WORKING )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

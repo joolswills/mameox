@@ -1,3 +1,7 @@
+#pragma code_seg("C240")
+#pragma bss_seg("B240")
+#pragma data_seg("D240")
+#pragma const_seg("K240")
 /* Hit Me driver by the EMUL8, led by Dan Boris
 
    It doesn't work?  should the timer stuff have changed?
@@ -361,3 +365,7 @@ ROM_END
 GAMEX( 1976, hitme,    0,        hitme,    hitme,    0, ROT0, "RamTek", "Hit Me", GAME_NO_SOUND | GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1976, barricad, 0,        brickyrd, brickyrd, 0, ROT0, "RamTek", "Barricade", GAME_NO_SOUND  )
 GAMEX( 1976, brickyrd, barricad, brickyrd, brickyrd, 0, ROT0, "RamTek", "Brickyard", GAME_NO_SOUND  )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

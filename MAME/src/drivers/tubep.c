@@ -1,3 +1,7 @@
+#pragma code_seg("C578")
+#pragma bss_seg("B578")
+#pragma data_seg("D578")
+#pragma const_seg("K578")
 /***************************************************************************
 
 Tube Panic
@@ -986,3 +990,7 @@ ROM_END
 GAME( 1984, tubep,   0,      tubep,   tubep,   0, ROT0, "Nichibutsu + Fujitek", "Tube Panic" )
 GAME( 1984, rjammer, 0,      rjammer, rjammer, 0, ROT0, "Nichibutsu + Alice", "Roller Jammer" )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

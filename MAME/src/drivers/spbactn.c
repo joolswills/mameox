@@ -1,3 +1,7 @@
+#pragma code_seg("C486")
+#pragma bss_seg("B486")
+#pragma data_seg("D486")
+#pragma const_seg("K486")
 /*******************************************************************************
  Super Pinball Action (c) 1991 Tecmo
 ********************************************************************************
@@ -419,3 +423,7 @@ ROM_START( spbactn )
 ROM_END
 
 GAMEX( 1991, spbactn, 0, spbactn, spbactn, 0, ROT90, "Tecmo", "Super Pinball Action (Japan)", GAME_IMPERFECT_GRAPHICS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C585")
+#pragma bss_seg("B585")
+#pragma data_seg("D585")
+#pragma const_seg("K585")
 /****************************************************************************
 
 		ToaPlan game hardware from 1987
@@ -1157,3 +1161,7 @@ GAME( 1987, skyshark, fshark,   twincobr, skyshark, fshark, ROT270, "[Toaplan] T
 GAME( 1987, hishouza, fshark,   twincobr, hishouza, fshark, ROT270, "[Toaplan] Taito Corporation", "Hishou Zame (Japan)" )
 GAME( 1987, fsharkbt, fshark,   twincobr, skyshark, fshark, ROT270, "bootleg", "Flying Shark (bootleg)" )
 GAME( 1991, gulfwar2, 0,        twincobr, gulfwar2, 0,      ROT270, "Comad", "Gulf War II" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

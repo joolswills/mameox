@@ -1,3 +1,7 @@
+#pragma code_seg("C329")
+#pragma bss_seg("B329")
+#pragma data_seg("D329")
+#pragma const_seg("K329")
 //	MOLE ATTACK    YACHIYO  1982
 //	known clones: "Holy Moly"
 //
@@ -247,3 +251,7 @@ INPUT_PORTS_END
 
 
 GAMEX(1982, mole, 0, mole, mole, 0, ROT0, "Yachiyo Electronics, Ltd.", "Mole Attack", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

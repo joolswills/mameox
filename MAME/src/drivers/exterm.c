@@ -1,3 +1,7 @@
+#pragma code_seg("C172")
+#pragma bss_seg("B172")
+#pragma data_seg("D172")
+#pragma const_seg("K172")
 /****************************************************************************
 
 	Exterminator memory map
@@ -576,3 +580,7 @@ DRIVER_INIT( exterm )
  *************************************/
 
 GAME( 1989, exterm, 0, exterm, exterm, exterm, ROT0, "Gottlieb / Premier Technology", "Exterminator" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C140")
+#pragma bss_seg("B140")
+#pragma data_seg("D140")
+#pragma const_seg("K140")
 /***************************************************************************
 
   Data East 16 bit games - Bryan McPhail, mish@tendril.co.uk
@@ -48,6 +52,7 @@ data8_t *robocop_shared_ram;
 
 static WRITE16_HANDLER( dec0_control_w )
 {
+#if 0
 	switch (offset<<1)
 	{
 		case 0: /* Playfield & Sprite priority */
@@ -89,10 +94,54 @@ static WRITE16_HANDLER( dec0_control_w )
 			logerror("CPU #0 PC %06x: warning - write %02x to unmapped memory address %06x\n",activecpu_get_pc(),data,0x30c010+(offset<<1));
 			break;
 	}
+#else
+	switch (offset)
+	{
+		case 0: /* Playfield & Sprite priority */
+			dec0_priority_w(0,data,mem_mask);
+			break;
+
+		case 1: /* DMA flag */
+			dec0_update_sprites_w(0,0,mem_mask);
+			break;
+
+		case 2: /* 6502 sound cpu */
+			if (ACCESSING_LSB)
+			{
+				soundlatch_w(0,data & 0xff);
+				cpu_set_irq_line(1,IRQ_LINE_NMI,PULSE_LINE);
+			}
+			break;
+
+		case 3: /* Intel 8751 microcontroller - Bad Dudes, Heavy Barrel, Birdy Try only */
+			dec0_i8751_write(data);
+			break;
+
+		case 4: /* Interrupt ack (VBL - IRQ 6) */
+			break;
+
+		case 5: /* Mix Psel(?). */
+ 			logerror("CPU #0 PC %06x: warning - write %02x to unmapped memory address %06x\n",activecpu_get_pc(),data,0x30c010+(offset<<1));
+			break;
+
+		case 6: /* Cblk - coin blockout.  Seems to be unused by the games */
+			break;
+
+		case 7: /* Reset Intel 8751? - not sure, all the games write here at startup */
+			dec0_i8751_reset();
+ 			logerror("CPU #0 PC %06x: warning - write %02x to unmapped memory address %06x\n",activecpu_get_pc(),data,0x30c010+(offset<<1));
+			break;
+
+		default:
+			logerror("CPU #0 PC %06x: warning - write %02x to unmapped memory address %06x\n",activecpu_get_pc(),data,0x30c010+(offset<<1));
+			break;
+	}
+#endif
 }
 
 static WRITE16_HANDLER( slyspy_control_w )
 {
+#if 0
     switch (offset<<1) {
     	case 0:
 			if (ACCESSING_LSB)
@@ -105,6 +154,20 @@ static WRITE16_HANDLER( slyspy_control_w )
 			dec0_priority_w(0,data,mem_mask);
 			break;
     }
+#else
+    switch (offset) {
+    	case 0:
+			if (ACCESSING_LSB)
+			{
+				soundlatch_w(0,data & 0xff);
+				cpu_set_irq_line(1,IRQ_LINE_NMI,PULSE_LINE);
+			}
+			break;
+		case 1:
+			dec0_priority_w(0,data,mem_mask);
+			break;
+    }
+#endif
 }
 
 static WRITE16_HANDLER( midres_sound_w )
@@ -2090,3 +2153,7 @@ GAME( 1989, midresu,  midres,   midres,   midres,   0,        ROT0,   "Data East
 GAME( 1989, midresj,  midres,   midres,   midres,   0,        ROT0,   "Data East Corporation", "Midnight Resistance (Japan)" )
 GAME( 1990, bouldash, 0,        slyspy,   bouldash, slyspy,   ROT0,   "Data East Corporation (licensed from First Star)", "Boulder Dash / Boulder Dash Part 2 (World)" )
 GAME( 1990, bouldshj, bouldash, slyspy,   bouldash, slyspy,   ROT0,   "Data East Corporation (licensed from First Star)", "Boulder Dash / Boulder Dash Part 2 (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

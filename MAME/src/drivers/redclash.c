@@ -1,3 +1,7 @@
+#pragma code_seg("C427")
+#pragma bss_seg("B427")
+#pragma data_seg("D427")
+#pragma const_seg("K427")
 /***************************************************************************
 
 Zero Hour / Red Clash
@@ -425,3 +429,7 @@ static DRIVER_INIT( redclash )
 GAMEX( 1980?,zerohour, 0,        zerohour, redclash, redclash, ROT270, "Universal", "Zero Hour",          GAME_NO_SOUND | GAME_WRONG_COLORS | GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1981, redclash, 0,        redclash, redclash, redclash, ROT270, "Tehkan",    "Red Clash",          GAME_NO_SOUND | GAME_WRONG_COLORS | GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1981, redclask, redclash, redclash, redclash, redclash, ROT270, "Kaneko",    "Red Clash (Kaneko)", GAME_NO_SOUND | GAME_WRONG_COLORS | GAME_IMPERFECT_GRAPHICS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

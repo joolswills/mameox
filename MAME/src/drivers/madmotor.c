@@ -1,3 +1,7 @@
+#pragma code_seg("C294")
+#pragma bss_seg("B294")
+#pragma data_seg("D294")
+#pragma const_seg("K294")
 /***************************************************************************
 
   Mad Motor								(c) 1989 Mitchell Corporation
@@ -393,3 +397,7 @@ static DRIVER_INIT( madmotor )
 
  /* The title screen is undated, but it's (c) 1989 Data East at 0xefa0 */
 GAME( 1989, madmotor, 0, madmotor, madmotor, madmotor, ROT0, "Mitchell", "Mad Motor" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

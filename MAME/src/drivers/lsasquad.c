@@ -1,3 +1,7 @@
+#pragma code_seg("C285")
+#pragma bss_seg("B285")
+#pragma data_seg("D285")
+#pragma const_seg("K285")
 /***************************************************************************
 
 Land Sea Air Squad / Storming Party  (c) 1986 Taito
@@ -449,3 +453,7 @@ static DRIVER_INIT( storming ) { lsasquad_invertcoin = 0x0c; init_common(); }
 
 GAMEX( 1986, lsasquad, 0,        lsasquad, lsasquad, lsasquad, ROT270, "Taito", "Land Sea Air Squad / Riku Kai Kuu Saizensen", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1986, storming, lsasquad, lsasquad, lsasquad, storming, ROT270, "Taito", "Storming Party / Riku Kai Kuu Saizensen", GAME_IMPERFECT_GRAPHICS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C513")
+#pragma bss_seg("B513")
+#pragma data_seg("D513")
+#pragma const_seg("K513")
 /* Sega ST-V (Sega Titan Video)
 
 built to run the rom test mode only, don't consider anything here too accurate ;-)
@@ -1440,3 +1444,7 @@ GAMEX( 1997, winterht,  stvbios, stv, stv,  stv,  ROT0, "Sega", "Winter Heat", G
 GAMEX( 1997, znpwfv,    stvbios, stv, stv,  stv,  ROT0, "Sega", "Zen Nippon Pro-Wrestling Featuring Virtua", GAME_NO_SOUND | GAME_NOT_WORKING )
 
 /* there are probably a bunch of other games (batman forever? with extra sound board, some fishing games with cd-rom etc.) */
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

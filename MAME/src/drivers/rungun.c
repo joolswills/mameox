@@ -1,3 +1,7 @@
+#pragma code_seg("C441")
+#pragma bss_seg("B441")
+#pragma data_seg("D441")
+#pragma const_seg("K441")
 /*
    Run and Gun / Slam Dunk
    (c) 1993 Konami
@@ -497,3 +501,7 @@ ROM_END
 GAMEX( 1993, rungun,   0,      rng, rng, 0, ROT0, "Konami", "Run and Gun (World ver. EAA)", GAME_NOT_WORKING | GAME_IMPERFECT_GRAPHICS | GAME_IMPERFECT_COLORS )
 GAMEX( 1993, rungunu,  rungun, rng, rng, 0, ROT0, "Konami", "Run and Gun (US ver. UAB)", GAME_NOT_WORKING | GAME_IMPERFECT_GRAPHICS | GAME_IMPERFECT_COLORS )
 GAMEX( 1993, slmdunkj, rungun, rng, rng, 0, ROT0, "Konami", "Slam Dunk (Japan ver. JAA))", GAME_NOT_WORKING | GAME_IMPERFECT_GRAPHICS | GAME_IMPERFECT_COLORS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

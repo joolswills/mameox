@@ -1,3 +1,7 @@
+#pragma code_seg("C260")
+#pragma bss_seg("B260")
+#pragma data_seg("D260")
+#pragma const_seg("K260")
 /***************************************************************************
 
 	Sun Electronics Kangaroo hardware
@@ -544,3 +548,7 @@ GAME( 1981, fnkyfish, 0,        kangaroo, fnkyfish, 0, ROT90, "Sun Electronics",
 GAME( 1982, kangaroo, 0,        kangaroo, kangaroo, 0, ROT90, "Sun Electronics", "Kangaroo" )
 GAME( 1982, kangaroa, kangaroo, kangaroo, kangaroo, 0, ROT90, "[Sun Electronics] (Atari license)", "Kangaroo (Atari)" )
 GAME( 1982, kangarob, kangaroo, kangaroo, kangaroo, 0, ROT90, "bootleg", "Kangaroo (bootleg)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

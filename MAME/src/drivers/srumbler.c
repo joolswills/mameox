@@ -1,3 +1,7 @@
+#pragma code_seg("C498")
+#pragma bss_seg("B498")
+#pragma data_seg("D498")
+#pragma const_seg("K498")
 /***************************************************************************
 
   Speed Rumbler
@@ -453,3 +457,7 @@ ROM_END
 GAME( 1986, srumbler, 0,        srumbler, srumbler, 0, ROT270, "Capcom", "The Speed Rumbler (set 1)" )
 GAME( 1986, srumblr2, srumbler, srumbler, srumbler, 0, ROT270, "Capcom", "The Speed Rumbler (set 2)" )
 GAME( 1986, rushcrsh, srumbler, srumbler, srumbler, 0, ROT270, "Capcom", "Rush & Crash (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

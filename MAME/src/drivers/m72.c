@@ -1,3 +1,7 @@
+#pragma code_seg("C289")
+#pragma bss_seg("B289")
+#pragma data_seg("D289")
+#pragma const_seg("K289")
 /***************************************************************************
 
 IREM M72 board
@@ -3263,3 +3267,7 @@ GAMEX( 1990, airduel,  0,        m72,      airduel,  airduel,  ROT270, "Irem", "
 GAMEX( 1991, cosmccop, 0,        kengo,    gallop,   0,        ROT0,   "Irem", "Cosmic Cop (World)", GAME_NO_COCKTAIL )
 GAMEX( 1991, gallop,   cosmccop, m72,      gallop,   gallop,   ROT0,   "Irem", "Gallop - Armed police Unit (Japan)", GAME_NO_COCKTAIL )
 GAMEX( 1991, kengo,    0,        kengo,    kengo,    kengo,    ROT0,   "Irem", "Ken-Go", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

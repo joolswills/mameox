@@ -1,3 +1,7 @@
+#pragma code_seg("C265")
+#pragma bss_seg("B265")
+#pragma data_seg("D265")
+#pragma const_seg("K265")
 /***************************************************************************
 
 	Killer Instinct hardware
@@ -538,3 +542,7 @@ static DRIVER_INIT( kinst2 )
 
 GAME( 1994, kinst,	0,		kinst, kinst,  kinst,	ROT0, "Rare", "Killer Instinct (v1.0)" )
 GAME( 1994, kinst2, 0,		kinst, kinst,  kinst2,	ROT0, "Rare", "Killer Instinct 2 (v2.1)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

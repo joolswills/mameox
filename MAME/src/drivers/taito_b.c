@@ -1,3 +1,7 @@
+#pragma code_seg("C531")
+#pragma bss_seg("B531")
+#pragma data_seg("D531")
+#pragma const_seg("K531")
 /***************************************************************************
 
 Taito B System
@@ -3658,3 +3662,7 @@ GAME( 1994, spacedxo, spacedx, spacedxo, spacedxo, 0, ROT0,   "Taito Corporation
  	the enemy.
 */
 GAME(  1990, sbm,      0,       sbm,      sbm,      0, ROT0,   "Taito Corporation", "Sonic Blast Man (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

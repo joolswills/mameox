@@ -1,3 +1,7 @@
+#pragma code_seg("C253")
+#pragma bss_seg("B253")
+#pragma data_seg("D253")
+#pragma const_seg("K253")
 /***************************************************************************
 
 Jack the Giant Killer memory map (preliminary)
@@ -913,3 +917,7 @@ GAME( 1982, brix,     zzyzzyxx, jack, zzyzzyxx, zzyzzyxx, ROT90, "Cinematronics 
 GAME( 19??, freeze,   0,        jack, freeze,   jack,     ROT90, "Cinematronics", "Freeze" )
 GAME( 1982, sucasino, 0,        jack, sucasino, jack,     ROT90, "Data Amusement", "Super Casino" )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C502")
+#pragma bss_seg("B502")
+#pragma data_seg("D502")
+#pragma const_seg("K502")
 /***************************************************************************
 
 					-= Seta, Sammy, Visco (SSV) System =-
@@ -3217,3 +3221,7 @@ GAMEX( 1997,  mslider,  0,        mslider,  mslider,  mslider,  ROT0,   "Visco /
 GAMEX( 1994,  twineag2, 0,        twineag2, twineag2, twineag2, ROT270, "Seta",               "Twin Eagle II - The Rescue Mission",           GAME_NO_COCKTAIL | GAME_NOT_WORKING )
 GAMEX( 1994,  eaglshot, 0,        survarts, survarts, survarts, ROT0,   "Sammy",   			  "Eagle Shot Golf",                              GAME_NO_COCKTAIL | GAME_NOT_WORKING)
 GAMEX( 1994,  eaglshta, eaglshot, survarts, survarts, survarts, ROT0,   "Sammy",   			  "Eagle Shot Golf (alt)",                        GAME_NO_COCKTAIL | GAME_NOT_WORKING)
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C469")
+#pragma bss_seg("B469")
+#pragma data_seg("D469")
+#pragma const_seg("K469")
 /***************************************************************************
 
 Side Pocket - (c) 1986 Data East
@@ -443,3 +447,7 @@ ROM_END
 GAME( 1986, sidepckt, 0,        sidepckt, sidepckt, 0, ROT0, "Data East Corporation", "Side Pocket (World)" )
 GAME( 1986, sidepctj, sidepckt, sidepctj, sidepckt, 0, ROT0, "Data East Corporation", "Side Pocket (Japan)" )
 GAME( 1986, sidepctb, sidepckt, sidepckt, sidepckt, 0, ROT0, "bootleg", "Side Pocket (bootleg)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

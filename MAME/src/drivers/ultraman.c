@@ -1,3 +1,7 @@
+#pragma code_seg("C586")
+#pragma bss_seg("B586")
+#pragma data_seg("D586")
+#pragma const_seg("K586")
 /***************************************************************************
 
 Ultraman (c) 1991  Banpresto / Bandai
@@ -355,3 +359,7 @@ static DRIVER_INIT( ultraman )
 
 
 GAME( 1991, ultraman, 0, ultraman, ultraman, ultraman, ROT0, "Banpresto/Bandai", "Ultraman (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

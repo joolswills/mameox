@@ -1,3 +1,7 @@
+#pragma code_seg("C86")
+#pragma bss_seg("B86")
+#pragma data_seg("D86")
+#pragma const_seg("K86")
 /***************************************************************************
 
 	Atari Canyon Bomber hardware
@@ -571,3 +575,7 @@ ROM_END
 
 GAME( 1977, canyon,   0,      canyon, canyon, 0, ROT0, "Atari", "Canyon Bomber" )
 GAME( 1977, canbprot, canyon, canyon, canyon, 0, ROT0, "Atari", "Canyon Bomber (prototype)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

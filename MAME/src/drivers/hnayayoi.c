@@ -1,3 +1,7 @@
+#pragma code_seg("C241")
+#pragma bss_seg("B241")
+#pragma data_seg("D241")
+#pragma const_seg("K241")
 /****************************************************************************
 
 Some Dynax games using the first version of their blitter
@@ -757,3 +761,7 @@ static DRIVER_INIT( hnfubuki )
 GAME( 1987, hnayayoi, 0,        hnayayoi, hnayayoi, 0,        ROT0, "Dyna Electronics", "Hana Yayoi (Japan)" )
 GAME( 1987, hnfubuki, hnayayoi, hnfubuki, hnfubuki, hnfubuki, ROT0, "Dynax", "Hana Fubuki [BET] (Japan)" )
 GAME( 1987, untoucha, 0,        untoucha, untoucha, 0,        ROT0, "Dynax", "Untouchable (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C435")
+#pragma bss_seg("B435")
+#pragma data_seg("D435")
+#pragma const_seg("K435")
 /***************************************************************************
 
 	'Rohga' era hardware:
@@ -850,3 +854,7 @@ GAMEX(1991, rohgau,   rohga,   rohga,    rohga,    rohga,    ROT0,   "Data East 
 GAME( 1992, wizdfire, 0,       wizdfire, wizdfire, wizdfire, ROT0,   "Data East Corporation", "Wizard Fire (US v1.1)" )
 GAME( 1992, darksel2, wizdfire,wizdfire, wizdfire, wizdfire, ROT0,   "Data East Corporation", "Dark Seal 2 (Japan v2.1)" )
 GAMEX(1992, nitrobal, 0,       nitrobal, rohga,    nitrobal, ROT270, "Data East Corporation", "Nitro Ball (US)", GAME_UNEMULATED_PROTECTION )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

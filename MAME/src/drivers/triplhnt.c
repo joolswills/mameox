@@ -1,3 +1,7 @@
+#pragma code_seg("C574")
+#pragma bss_seg("B574")
+#pragma data_seg("D574")
+#pragma const_seg("K574")
 /***************************************************************************
 
 Atari Triple Hunt Driver
@@ -360,3 +364,7 @@ ROM_END
 
 
 GAMEX( 1977, triplhnt, 0, triplhnt, triplhnt, triplhnt, 0, "Atari", "Triple Hunt", GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

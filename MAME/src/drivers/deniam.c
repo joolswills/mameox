@@ -1,3 +1,7 @@
+#pragma code_seg("C144")
+#pragma bss_seg("B144")
+#pragma data_seg("D144")
+#pragma const_seg("K144")
 /***************************************************************************
 
 Deniam games
@@ -466,3 +470,7 @@ ROM_END
 GAME( 1996, logicpro, 0, deniam16b, logicpr2, logicpro, ROT0, "Deniam", "Logic Pro (Japan)" )
 GAME( 1996, karianx,  0, deniam16b, karianx,  karianx,  ROT0, "Deniam", "Karian Cross (Rev. 1.0)" )
 GAMEX(1997, logicpr2, 0, deniam16c, logicpr2, logicpro, ROT0, "Deniam", "Logic Pro 2 (Japan)", GAME_IMPERFECT_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

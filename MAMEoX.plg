@@ -1,0 +1,24 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: MAMEoX - Xbox Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Build : warning : failed to (or don't know how to) build 'C:\MAMEoX\Debug\MAMEoX.exe'
+
+Creating command line "imagebld.exe /nologo /stack:0x10000 /debug /out:"Debug/MAMEoX.xbe"  .\Debug\MAMEoX.exe "
+<h3>Output Window</h3>
+Creating Xbox image...
+IMAGEBLD : error IM1000: cannot open input file '.\Debug\MAMEoX.exe'
+Error executing imagebld.exe.
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+MAMEoX.xbe - 1 error(s), 1 warning(s)
+</pre>
+</body>
+</html>

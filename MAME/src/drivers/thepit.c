@@ -1,3 +1,7 @@
+#pragma code_seg("C553")
+#pragma bss_seg("B553")
+#pragma data_seg("D553")
+#pragma const_seg("K553")
 /***************************************************************************
 
 The Pit/Round Up/Intrepid/Super Mouse memory map (preliminary)
@@ -890,3 +894,7 @@ GAME( 1982, machomou, 0,        suprmous, suprmous, 0, ROT90, "Techstar", "Macho
 GAME( 1983, intrepid, 0,        intrepid, intrepid, 0, ROT90, "Nova Games Ltd.", "Intrepid (set 1)" )
 GAME( 1983, intrepi2, intrepid, intrepid, intrepid, 0, ROT90, "Nova Games Ltd.", "Intrepid (set 2)" )
 GAMEX(1984, zaryavos, 0,        intrepid, intrepid, 0, ROT90, "Nova Games of Canada", "Zarya Vostoka", GAME_NOT_WORKING )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

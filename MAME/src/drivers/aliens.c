@@ -1,3 +1,7 @@
+#pragma code_seg("C14")
+#pragma bss_seg("B14")
+#pragma data_seg("D14")
+#pragma const_seg("K14")
 /***************************************************************************
 
 Aliens (c) 1990 Konami Co. Ltd
@@ -470,3 +474,7 @@ GAME( 1990, aliens,  0,      aliens, aliens, aliens, ROT0, "Konami", "Aliens (Wo
 GAME( 1990, aliens2, aliens, aliens, aliens, aliens, ROT0, "Konami", "Aliens (World set 2)" )
 GAME( 1990, aliensu, aliens, aliens, aliens, aliens, ROT0, "Konami", "Aliens (US)" )
 GAME( 1990, aliensj, aliens, aliens, aliens, aliens, ROT0, "Konami", "Aliens (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C365")
+#pragma bss_seg("B365")
+#pragma data_seg("D365")
+#pragma const_seg("K365")
 /***************************************************************************
 
 	Atari Night Driver hardware
@@ -248,3 +252,7 @@ ROM_END
  *************************************/
 
 GAMEX( 1976, nitedrvr, 0, nitedrvr, nitedrvr, 0, ROT0, "Atari", "Night Driver", GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C91")
+#pragma bss_seg("B91")
+#pragma data_seg("D91")
+#pragma const_seg("K91")
 /***************************************************************************
 
   Capcom Baseball
@@ -344,3 +348,7 @@ DRIVER_INIT( cbasebal )
 
 
 GAME( 1989, cbasebal, 0, cbasebal, cbasebal, cbasebal, ROT0, "Capcom", "Capcom Baseball (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C571")
+#pragma bss_seg("B571")
+#pragma data_seg("D571")
+#pragma const_seg("K571")
 /***************************************************************************
 
 Time Pilot 84  (c) 1984 Konami
@@ -468,3 +472,7 @@ ROM_END
 
 GAMEX( 1984, tp84,  0,    tp84, tp84, 0, ROT90, "Konami", "Time Pilot '84 (set 1)", GAME_NO_COCKTAIL )
 GAMEX( 1984, tp84a, tp84, tp84, tp84, 0, ROT90, "Konami", "Time Pilot '84 (set 2)", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

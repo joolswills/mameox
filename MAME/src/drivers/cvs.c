@@ -1,3 +1,7 @@
+#pragma code_seg("C127")
+#pragma bss_seg("B127")
+#pragma data_seg("D127")
+#pragma const_seg("K127")
 /***************************************************************************
 
 Century CVS System
@@ -657,3 +661,7 @@ GAMEX( 1983, hunchbak,    cvs,      cvs,      cvs,    0,          ROT90, "Centur
 GAMEX( 1983, superbik,    cvs,      cvs,      cvs,    superbik,   ROT90, "Century Electronics", "Superbike", GAME_IMPERFECT_SOUND | GAME_NO_COCKTAIL )
 GAMEX( 1983, hero,        cvs,      cvs,      cvs,    hero,       ROT90, "Seatongrove Ltd", "Hero", GAME_IMPERFECT_SOUND | GAME_NO_COCKTAIL )
 GAMEX( 1984, huncholy,    cvs,      cvs,      cvs,    huncholy,   ROT90, "Seatongrove Ltd", "Hunchback Olympic", GAME_IMPERFECT_SOUND | GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

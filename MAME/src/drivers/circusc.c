@@ -1,3 +1,7 @@
+#pragma code_seg("C103")
+#pragma bss_seg("B103")
+#pragma data_seg("D103")
+#pragma const_seg("K103")
 /***************************************************************************
 
 Based on drivers from Juno First emulator by Chris Hardy (chrish@kcbbs.gen.nz)
@@ -418,3 +422,7 @@ GAME( 1984, circusc,  0,       circusc, circusc, circusc, ROT90, "Konami", "Circ
 GAME( 1984, circusc2, circusc, circusc, circusc, circusc, ROT90, "Konami", "Circus Charlie (no level select)" )
 GAME( 1984, circuscc, circusc, circusc, circusc, circusc, ROT90, "Konami (Centuri licence)", "Circus Charlie (Centuri)" )
 GAME( 1984, circusce, circusc, circusc, circusc, circusc, ROT90, "Konami (Centuri licence)", "Circus Charlie (Centuri, earlier)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C212")
+#pragma bss_seg("B212")
+#pragma data_seg("D212")
+#pragma const_seg("K212")
 /***************************************************************************
 
 							Ginga NinkyouDen
@@ -459,3 +463,7 @@ DRIVER_INIT( ginganin )
 
 GAME( 1987, ginganin, 0, ginganin, ginganin, ginganin, ROT0, "Jaleco", "Ginga NinkyouDen" )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C517")
+#pragma bss_seg("B517")
+#pragma data_seg("D517")
+#pragma const_seg("K517")
 /***************************************************************************
 
   Super Burger Time     (c) 1990 Data East Corporation (DE-0343)
@@ -43,6 +47,7 @@ static READ16_HANDLER( supbtime_pf2_data_r ) { return supbtime_pf2_data[offset];
 
 static READ16_HANDLER( supbtime_controls_r )
 {
+#if 0
  	switch (offset<<1)
 	{
 		case 0: /* Player 1 & Player 2 joysticks & fire buttons */
@@ -55,6 +60,20 @@ static READ16_HANDLER( supbtime_controls_r )
 		case 12:
 			return 0;
 	}
+#else
+ 	switch (offset)
+	{
+		case 0: /* Player 1 & Player 2 joysticks & fire buttons */
+			return (readinputport(0) + (readinputport(1) << 8));
+		case 1: /* Dips */
+			return (readinputport(3) + (readinputport(4) << 8));
+		case 4: /* Credits */
+			return readinputport(2);
+		case 5: /* ?  Not used for anything */
+		case 6:
+			return 0;
+	}
+#endif
 
 	logerror("CPU #0 PC %06x: warning - read unmapped control address %06x\n",activecpu_get_pc(),offset);
 	return ~0;
@@ -518,3 +537,7 @@ ROM_END
 GAME( 1990, supbtime, 0,        supbtime, supbtime, 0, ROT0, "Data East Corporation", "Super Burger Time (World)" )
 GAME( 1990, supbtimj, supbtime, supbtime, supbtime, 0, ROT0, "Data East Corporation", "Super Burger Time (Japan)" )
 GAME( 1991, chinatwn, 0,        chinatwn, chinatwn, 0, ROT0, "Data East Corporation", "China Town (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

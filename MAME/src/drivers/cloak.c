@@ -1,3 +1,7 @@
+#pragma code_seg("C107")
+#pragma bss_seg("B107")
+#pragma data_seg("D107")
+#pragma const_seg("K107")
 /***************************************************************************
 
 	Atari Cloak & Dagger hardware
@@ -427,3 +431,7 @@ ROM_END
  *************************************/
 
 GAMEX( 1983, cloak, 0, cloak, cloak, 0, ROT0, "Atari", "Cloak & Dagger", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

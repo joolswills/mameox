@@ -1,3 +1,7 @@
+#pragma code_seg("C200")
+#pragma bss_seg("B200")
+#pragma data_seg("D200")
+#pragma const_seg("K200")
 /***************************************************************************
 
 TODO:
@@ -905,3 +909,7 @@ GAME( 1986, dangarb,  dangar,   galivan,  dangarb,  0, ROT270, "bootleg", "Danga
 GAME( 1986, ninjemak, 0,        ninjemak, ninjemak, 0, ROT270, "Nichibutsu", "Ninja Emaki (US)" )
 GAME( 1986, youma,    ninjemak, ninjemak, ninjemak, 0, ROT270, "Nichibutsu", "Youma Ninpou Chou (Japan)" )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

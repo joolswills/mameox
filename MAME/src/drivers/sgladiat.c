@@ -1,3 +1,7 @@
+#pragma code_seg("C458")
+#pragma bss_seg("B458")
+#pragma data_seg("D458")
+#pragma const_seg("K458")
 /* "Gladiator"
  * (C) 1984 SNK
  */
@@ -388,3 +392,7 @@ INPUT_PORTS_START( sgladiat )
 INPUT_PORTS_END
 
 GAMEX( 1984, sgladiat, 0, sgladiat, sgladiat, 0, 0,   "SNK", "Gladiator 1984", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C618")
+#pragma bss_seg("B618")
+#pragma data_seg("D618")
+#pragma const_seg("K618")
 /***************************************************************************
 Xain'd Sleena (TECHNOS), Solar Warrior (TAITO).
 By Carlos A. Lozano & Rob Rosenbrock & Phil Stroffolino
@@ -551,3 +555,7 @@ DRIVER_INIT( solarwar )
 GAME( 1986, xsleena,  0,       xsleena, xsleena, xsleena,  ROT0, "Technos", "Xain'd Sleena" )
 GAME( 1986, xsleenab, xsleena, xsleena, xsleena, 0,        ROT0, "bootleg", "Xain'd Sleena (bootleg)" )
 GAME( 1986, solarwar, xsleena, xsleena, xsleena, solarwar, ROT0, "[Technos] Taito (Memetron license)", "Solar-Warrior" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C312")
+#pragma bss_seg("B312")
+#pragma data_seg("D312")
+#pragma const_seg("K312")
 /***************************************************************************
 
 Mermaid
@@ -282,3 +286,7 @@ ROM_END
 
 
 GAMEX( 1982, mermaid, 0, mermaid, mermaid, 0, ROT0, "[Sanritsu] Rock-ola", "Mermaid", GAME_NOT_WORKING )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

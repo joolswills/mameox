@@ -1,3 +1,7 @@
+#pragma code_seg("C440")
+#pragma bss_seg("B440")
+#pragma data_seg("D440")
+#pragma const_seg("K440")
 /***************************************************************************
 
 	Rabbit Punch / Rabio Lepus
@@ -886,3 +890,7 @@ GAME( 1987, rpunch,   rabiolep, rpunch,   rpunch,   rabiolep, ROT0, "V-System Co
 GAME( 1989, svolley,  0,        rpunch,   svolley,  svolley,  ROT0, "V-System Co.", "Super Volleyball (Japan)" )
 GAME( 1989, svolleyk, svolley,  rpunch,   svolley,  svolley,  ROT0, "V-System Co.", "Super Volleyball (Korea)" )
 GAME( 1989, svolleyu, svolley,  rpunch,   svolley,  svolley,  ROT0, "V-System Co. (Data East license)", "Super Volleyball (US)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

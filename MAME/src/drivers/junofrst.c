@@ -1,3 +1,7 @@
+#pragma code_seg("C258")
+#pragma bss_seg("B258")
+#pragma data_seg("D258")
+#pragma const_seg("K258")
 /***************************************************************************
 
 Juno First :  memory map same as tutankham with some address changes
@@ -451,3 +455,7 @@ static DRIVER_INIT( junofrst )
 
 GAME( 1983, junofrst, 0,        junofrst, junofrst, junofrst, ROT90, "Konami", "Juno First" )
 GAME( 1983, junofstg, junofrst, junofrst, junofrst, junofrst, ROT90, "Konami (Gottlieb license)", "Juno First (Gottlieb)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C382")
+#pragma bss_seg("B382")
+#pragma data_seg("D382")
+#pragma const_seg("K382")
 /*
 **	2xMC68000 + Z80
 **	YM2151 + Custom PCM
@@ -1340,3 +1344,7 @@ GAME( 1986, outruna,  outrun,   outruna,  outrun,   outrun,   ROT0,         "Seg
 GAME( 1986, outrunb,  outrun,   outruna,  outrun,   outrunb,  ROT0,         "Sega",    "Out Run (set 3)" )
 GAMEX(19??, toutrun,  0,        outrun,   outrun,   outrun,   ROT0,         "Sega", "Turbo Outrun (set 1)", GAME_NOT_WORKING )
 GAMEX(19??, toutruna, toutrun,  outrun,   outrun,   outrun,   ROT0,         "Sega", "Turbo Outrun (set 2)", GAME_NOT_WORKING )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

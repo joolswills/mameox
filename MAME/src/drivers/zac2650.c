@@ -1,3 +1,7 @@
+#pragma code_seg("C630")
+#pragma bss_seg("B630")
+#pragma data_seg("D630")
+#pragma const_seg("K630")
 /*
  * Signetics 2650 CPU Games
  *
@@ -346,3 +350,7 @@ static DRIVER_INIT( tinvader )
 GAMEX( 19??, sia2650,  0,       tinvader, sinvader, 0,        ROT270, "Zaccaria/Zelco", "Super Invader Attack", GAME_NO_SOUND )
 GAMEX( 19??, tinv2650, sia2650, tinvader, tinvader, tinvader, ROT270, "Zaccaria/Zelco", "The Invaders", GAME_NO_SOUND )
 GAMEX( 1977, embargo,  0,       embargo,  embargo,  8080bw,   ROT0,   "Cinematronics",  "Embargo", GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

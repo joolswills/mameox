@@ -1,3 +1,7 @@
+#pragma code_seg("C534")
+#pragma bss_seg("B534")
+#pragma data_seg("D534")
+#pragma const_seg("K534")
 /***************************************************************************
 
 Taito H system
@@ -789,3 +793,7 @@ static DRIVER_INIT( taitoh )
 GAME( 1988, syvalion, 0,        syvalion, syvalion, taitoh,  ROT0,    "Taito Corporation", "Syvalion (Japan)" )
 GAME( 1988, recordbr, 0,        recordbr, recordbr, taitoh,  ROT0,    "Taito Corporation Japan", "Recordbreaker (World)" )
 GAME( 1990, dleague,  0,        dleague,  dleague,  taitoh,  ROT0,    "Taito Corporation", "Dynamite League (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

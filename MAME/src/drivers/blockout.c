@@ -1,3 +1,7 @@
+#pragma code_seg("C69")
+#pragma bss_seg("B69")
+#pragma data_seg("D69")
+#pragma const_seg("K69")
 /***************************************************************************
 
 Block Out
@@ -348,3 +352,7 @@ ROM_END
 GAME( 1989, blockout, 0,        blockout, blockout, 0, ROT0, "Technos + California Dreams", "Block Out (set 1)" )
 GAME( 1989, blckout2, blockout, blockout, blockout, 0, ROT0, "Technos + California Dreams", "Block Out (set 2)" )
 GAME( 1989, blckoutj, blockout, blockout, blckoutj, 0, ROT0, "Technos + California Dreams", "Block Out (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C537")
+#pragma bss_seg("B537")
+#pragma data_seg("D537")
+#pragma const_seg("K537")
 /***************************************************************************
 
 Taito Z System [twin 68K with optional Z80]
@@ -3991,3 +3995,7 @@ GAMEX( 1990, aquajckj, aquajack, aquajack, aquajckj, taitoz,   ROT0,            
 GAME ( 1990, spacegun, 0,        spacegun, spacegun, bshark,   ORIENTATION_FLIP_X, "Taito Corporation Japan", "Space Gun (World)" )
 GAMEX( 1991, dblaxle,  0,        dblaxle,  dblaxle,  taitoz,   ROT0,               "Taito America Corporation", "Double Axle (US)", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1991, pwheelsj, dblaxle,  dblaxle,  pwheelsj, taitoz,   ROT0,               "Taito Corporation", "Power Wheels (Japan)", GAME_IMPERFECT_GRAPHICS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

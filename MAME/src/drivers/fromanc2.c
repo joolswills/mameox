@@ -1,3 +1,7 @@
+#pragma code_seg("C190")
+#pragma bss_seg("B190")
+#pragma data_seg("D190")
+#pragma const_seg("K190")
 /******************************************************************************
 
 	Game Driver for Video System Mahjong series. (Preliminary driver)
@@ -968,3 +972,7 @@ ROM_END
 GAME( 1995, fromanc2, 0, fromanc2, fromanc2, fromanc2, ROT0, "Video System", "Taisen Idol-Mahjong Final Romance 2 (Japan)" )
 GAME( 1995, fromancr, 0, fromancr, fromanc2, fromancr, ROT0, "Video System", "Taisen Mahjong FinalRomance R (Japan)" )
 GAME( 1998, fromanc4, 0, fromanc4, fromanc4, fromanc4, ROT0, "Video System", "Taisen Mahjong FinalRomance 4 (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

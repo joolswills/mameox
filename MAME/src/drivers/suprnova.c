@@ -1,3 +1,7 @@
+#pragma code_seg("C522")
+#pragma bss_seg("B522")
+#pragma data_seg("D522")
+#pragma const_seg("K522")
 /* Super Kaneko Nova System */
 /* Original Driver by Sylvain Glaize */
 /* taken to pieces and attempted reconstruction by David Haywood */
@@ -1380,3 +1384,7 @@ GAMEX( 1997, sarukani, skns,    skns, skns, sarukani, ROT0,  "Kaneko / Mediawork
 
 /* not playable */
 GAMEX( 2000, gutsn,    skns,    skns, skns, gutsn,    ROT0,  "Kaneko", "Guts'n (Japan)", GAME_NOT_WORKING ) // doesn't display anything (sh2?)
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

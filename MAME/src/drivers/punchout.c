@@ -1,3 +1,7 @@
+#pragma code_seg("C415")
+#pragma bss_seg("B415")
+#pragma data_seg("D415")
+#pragma const_seg("K415")
 /***************************************************************************
 
 Punch Out memory map (preliminary)
@@ -1104,3 +1108,7 @@ GAME( 1984, punchout, 0,        punchout, punchout, punchout, ROT0, "Nintendo", 
 GAME( 1984, spnchout, 0,        punchout, spnchout, spnchout, ROT0, "Nintendo", "Super Punch-Out!!" )
 GAME( 1984, spnchotj, spnchout, punchout, spnchout, spnchotj, ROT0, "Nintendo", "Super Punch-Out!! (Japan)" )
 GAME( 1985, armwrest, 0,        armwrest, armwrest, armwrest, ROT0, "Nintendo", "Arm Wrestling" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

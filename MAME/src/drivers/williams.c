@@ -1,3 +1,7 @@
+#pragma code_seg("C611")
+#pragma bss_seg("B611")
+#pragma data_seg("D611")
+#pragma const_seg("K611")
 /***************************************************************************
 
 	Williams 6809 system
@@ -2560,3 +2564,7 @@ GAMEX(1984, inferno,  0,        williams2,inferno,  inferno,  ROT0,   "Williams"
 GAME( 1986, joust2,   0,        joust2,   joust2,   joust2,   ROT270, "Williams", "Joust 2 - Survival of the Fittest (set 1)" )
 
 GAME( 1987, lottofun, 0,        williams, lottofun, lottofun, ROT0,   "H.A.R. Management", "Lotto Fun" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C58")
+#pragma bss_seg("B58")
+#pragma data_seg("D58")
+#pragma const_seg("K58")
 /***************************************************************************
 
 	Atari "Stella on Steroids" hardware
@@ -563,3 +567,7 @@ static DRIVER_INIT( beathead )
  *************************************/
 
 GAME( 1993, beathead, 0, beathead, beathead, beathead, ROT0, "Atari Games", "BeatHead (prototype)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

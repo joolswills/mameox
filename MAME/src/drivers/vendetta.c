@@ -1,3 +1,7 @@
+#pragma code_seg("C594")
+#pragma bss_seg("B594")
+#pragma data_seg("D594")
+#pragma const_seg("K594")
 /***************************************************************************
 
 Vendetta (GX081) (c) 1991 Konami
@@ -810,3 +814,7 @@ GAME( 1991, vendetas, vendetta, vendetta, vendetta, vendetta, ROT0, "Konami", "V
 GAME( 1991, vendtaso, vendetta, vendetta, vendetta, vendetta, ROT0, "Konami", "Vendetta (Asia 2 Players ver. D)" )
 GAME( 1991, vendettj, vendetta, vendetta, vendetta, vendetta, ROT0, "Konami", "Crime Fighters 2 (Japan 2 Players ver. P)" )
 GAME( 1991, esckids,  0,        esckids,  esckids,  vendetta, ROT0, "Konami", "Escape Kids (Japan 2 Players)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

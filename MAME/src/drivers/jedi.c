@@ -1,3 +1,7 @@
+#pragma code_seg("C256")
+#pragma bss_seg("B256")
+#pragma data_seg("D256")
+#pragma const_seg("K256")
 /***************************************************************************
 
 	Atari Return of the Jedi hardware
@@ -630,3 +634,7 @@ ROM_END
  *************************************/
 
 GAME( 1984, jedi, 0, jedi, jedi, 0, ROT0, "Atari", "Return of the Jedi" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

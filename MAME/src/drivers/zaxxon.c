@@ -1,3 +1,7 @@
+#pragma code_seg("C632")
+#pragma bss_seg("B632")
+#pragma data_seg("D632")
+#pragma const_seg("K632")
 /***************************************************************************
 
 Notes:
@@ -1320,3 +1324,7 @@ GAME( 1984, futspy,   0,         futspy,   futspy,   futspy,   ROT270, "Sega",  
 GAMEX(1983, razmataz, 0,         razmataz, razmataz, razmataz, ROT270, "Sega",    "Razzmatazz", GAME_NO_SOUND )
 GAMEX(1983, ixion,    0,         ixion,    ixion,    ixion,    ROT270, "Sega",    "Ixion (prototype)", GAME_NO_SOUND )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

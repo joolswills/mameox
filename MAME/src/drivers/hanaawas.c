@@ -1,3 +1,7 @@
+#pragma code_seg("C233")
+#pragma bss_seg("B233")
+#pragma data_seg("D233")
+#pragma const_seg("K233")
 /***************************************************************************
 
   Hana Awase driver by Zsolt Vasvari
@@ -228,3 +232,7 @@ ROM_END
 
 
 GAME(1982, hanaawas, 0, hanaawas, hanaawas, 0, ROT0, "Seta", "Hana Awase (Flower Matching)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

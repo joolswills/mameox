@@ -1,3 +1,7 @@
+#pragma code_seg("C276")
+#pragma bss_seg("B276")
+#pragma data_seg("D276")
+#pragma const_seg("K276")
 /***************************************************************************
 
 Legionnaire (c) Tad 1992
@@ -1067,3 +1071,7 @@ GAMEX( 1992, legionnu, legionna, legionna, legionna, legionna, ROT0, "Tad (Fabte
 GAMEX( 1992, heatbrl,  0,        heatbrl,  heatbrl,  0,        ROT0, "Tad", "Heated Barrel (World)", GAME_UNEMULATED_PROTECTION )
 GAMEX( 1992, heatbrlo, heatbrl,  heatbrl,  heatbrl,  0,        ROT0, "Tad", "Heated Barrel (World old version)", GAME_UNEMULATED_PROTECTION )
 GAMEX( 1992, heatbrlu, heatbrl,  heatbrl,  heatbrl,  0,        ROT0, "Tad", "Heated Barrel (US)", GAME_UNEMULATED_PROTECTION )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

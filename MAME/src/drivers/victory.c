@@ -1,3 +1,7 @@
+#pragma code_seg("C596")
+#pragma bss_seg("B596")
+#pragma data_seg("D596")
+#pragma const_seg("K596")
 /***************************************************************************
 
 	Victory system
@@ -477,3 +481,7 @@ ROM_END
 
 GAME( 1982, victory,  0,        victory, victory, 0,     ROT0, "Exidy", "Victory" )
 GAME( 1982, victorba, victory,  victory, victory, 0,     ROT0, "Exidy", "Victor Banana" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C344")
+#pragma bss_seg("B344")
+#pragma data_seg("D344")
+#pragma const_seg("K344")
 /**************************************************************************
  * Mystic Warrior (c) 1993 Konami
  * Metamorphic Force (c) 1993 Konami
@@ -1726,3 +1730,7 @@ GAMEX( 1993, viostrma, viostorm, viostorm, viostorm,  mystwarr, ROT0,  "Konami",
 GAMEX( 1993, metamrph, 0,        metamrph, metamrph,  mystwarr, ROT0,  "Konami", "Metamorphic Force (US ver UAA)", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1993, mtlchmpj, 0,        martchmp, martchmp,  mystwarr, ROT0,  "Konami", "Martial Champion (Japan ver JAA)", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1993, gaiapols, 0,        gaiapols, dadandarn, mystwarr, ROT90, "Konami", "Gaiapolis (Japan ver JAF)", GAME_IMPERFECT_GRAPHICS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

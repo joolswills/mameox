@@ -1,3 +1,7 @@
+#pragma code_seg("C33")
+#pragma bss_seg("B33")
+#pragma data_seg("D33")
+#pragma const_seg("K33")
 /***************************************************************************
 
 Asuka & Asuka  (+ Taito/Visco games on similar hardware)
@@ -1470,3 +1474,7 @@ GAME( 1989, cadashf,  cadash,   cadash,   cadash,   0, ROT0,   "Taito Corporatio
 GAME( 1992, galmedes, 0,        galmedes, galmedes, 0, ROT270, "Visco", "Galmedes (Japan)" )
 GAME( 1993, earthjkr, 0,        galmedes, earthjkr, 0, ROT270, "Visco", "U.N. Defense Force: Earth Joker (Japan)" )
 GAME( 1994, eto,      0,        eto,      eto,      0, ROT0,   "Visco", "Kokontouzai Eto Monogatari (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

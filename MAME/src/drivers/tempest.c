@@ -1,3 +1,7 @@
+#pragma code_seg("C550")
+#pragma bss_seg("B550")
+#pragma data_seg("D550")
+#pragma const_seg("K550")
 /***************************************************************************
 
 	Atari Tempest hardware
@@ -554,3 +558,7 @@ GAME( 1980, tempest,  0,       tempest, tempest, 0, ROT270, "Atari", "Tempest (r
 GAME( 1980, tempest1, tempest, tempest, tempest, 0, ROT270, "Atari", "Tempest (rev 1)" )
 GAME( 1980, tempest2, tempest, tempest, tempest, 0, ROT270, "Atari", "Tempest (rev 2)" )
 GAME( 1980, temptube, tempest, tempest, tempest, 0, ROT270, "hack", "Tempest Tubes" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C11")
+#pragma bss_seg("B11")
+#pragma data_seg("D11")
+#pragma const_seg("K11")
 /***************************************************************************
 
 							  -= Afega Games =-
@@ -893,3 +897,7 @@ GAMEX( 1998, stagger1, 0,        stagger1, stagger1, 0,        ROT270, "Afega", 
 GAMEX( 1997, redhawk,  stagger1, redhawk,  stagger1, redhawk,  ROT270, "Afega", "Red Hawk (US)", GAME_NOT_WORKING )
 GAMEX( 1998, grdnstrm, 0,        grdnstrm, grdnstrm, grdnstrm, ROT270, "Afega", "Sen Jin - Guardian Storm (Korea)", GAME_NOT_WORKING )
 GAMEX( 1998, bubl2000, 0,        bubl2000, bubl2000, bubl2000, ROT0,   "Tuning", "Bubble 2000", GAME_IMPERFECT_GRAPHICS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

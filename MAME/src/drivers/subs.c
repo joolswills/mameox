@@ -1,3 +1,7 @@
+#pragma code_seg("C514")
+#pragma bss_seg("B514")
+#pragma data_seg("D514")
+#pragma const_seg("K514")
 /***************************************************************************
 
 	Atari Subs hardware
@@ -276,3 +280,7 @@ static DRIVER_INIT( subs )
  *************************************/
 
 GAMEX( 1977, subs, 0, subs, subs, subs, ROT0, "Atari", "Subs", GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

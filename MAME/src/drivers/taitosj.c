@@ -1,3 +1,7 @@
+#pragma code_seg("C539")
+#pragma bss_seg("B539")
+#pragma data_seg("D539")
+#pragma const_seg("K539")
 /***************************************************************************
 
 Taito SJ system memory map
@@ -2444,3 +2448,7 @@ GAME( 1983, bioatack, 0,        nomcu, bioatack,   0,       ROT270, "Taito Corpo
 GAME( 1984, sfposeid, 0,        mcu,   sfposeid,   0,       ROT0,   "Taito Corporation", "Sea Fighter Poseidon" )
 GAME( 1983, hwrace,   0,        nomcu, hwrace,     0,       ROT270, "Taito Corporation", "High Way Race" )
 GAMEX(1984, kikstart, 0,        mcu,   junglek,    0,       ROT0,   "Taito Corporation", "Kick Start Wheelie King", GAME_NOT_WORKING )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

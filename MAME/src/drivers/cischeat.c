@@ -1,3 +1,7 @@
+#pragma code_seg("C104")
+#pragma bss_seg("B104")
+#pragma data_seg("D104")
+#pragma const_seg("K104")
 /***************************************************************************
 
 							-= Jaleco Driving Games =-
@@ -2163,3 +2167,7 @@ GAMEX( 1989, bigrun,   0, bigrun,   bigrun,   bigrun,   ROT0,   "Jaleco", "Big R
 GAMEX( 1990, cischeat, 0, cischeat, cischeat, cischeat, ROT0,   "Jaleco", "Cisco Heat",         GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1991, f1gpstar, 0, f1gpstar, f1gpstar, f1gpstar, ROT0,   "Jaleco", "F1 Grand Prix Star", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1994, scudhamm, 0, scudhamm, scudhamm, 0,        ROT270, "Jaleco", "Scud Hammer",        GAME_IMPERFECT_GRAPHICS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

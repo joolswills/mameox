@@ -1,3 +1,7 @@
+#pragma code_seg("C298")
+#pragma bss_seg("B298")
+#pragma data_seg("D298")
+#pragma const_seg("K298")
 /***************************************************************************
 
 Marine Boy hardware memory map (preliminary)
@@ -904,3 +908,7 @@ GAME( 1983, hoccer2,  hoccer,  hoccer,   hoccer,  0, ROT90,  "Eastern Micro Elec
 GAME( 1983, bcruzm12, 0,       bcruzm12, bcruzm12,0, ROT90,  "Sigma Enterprises Inc.", "Battle Cruiser M-12" )
 GAME( 1983, hopprobo, 0,       hopprobo, marineb, 0, ROT90,  "Sega", "Hopper Robo" )
 GAME( 1984, wanted,   0,       wanted,   wanted,  0, ROT90,  "Sigma Enterprises Inc.", "Wanted" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

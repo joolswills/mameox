@@ -1,3 +1,7 @@
+#pragma code_seg("C540")
+#pragma bss_seg("B540")
+#pragma data_seg("D540")
+#pragma const_seg("K540")
 /***************************************************************************
 
 Tank Battalion memory map (preliminary)
@@ -327,3 +331,7 @@ ROM_END
 
 
 GAME( 1980, tankbatt, 0, tankbatt, tankbatt, 0, ROT90, "Namco", "Tank Battalion" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

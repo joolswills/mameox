@@ -1,3 +1,7 @@
+#pragma code_seg("C321")
+#pragma bss_seg("B321")
+#pragma data_seg("D321")
+#pragma const_seg("K321")
 /***************************************************************************
 
 Mikie memory map (preliminary)
@@ -378,3 +382,7 @@ ROM_END
 GAME( 1984, mikie,   0,     mikie, mikie, 0, ROT270, "Konami", "Mikie" )
 GAME( 1984, mikiej,  mikie, mikie, mikie, 0, ROT270, "Konami", "Shinnyuushain Tooru-kun" )
 GAME( 1984, mikiehs, mikie, mikie, mikie, 0, ROT270, "Konami", "Mikie (High School Graffiti)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

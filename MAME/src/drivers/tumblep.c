@@ -1,3 +1,7 @@
+#pragma code_seg("C580")
+#pragma bss_seg("B580")
+#pragma data_seg("D580")
+#pragma const_seg("K580")
 /***************************************************************************
 
   Tumblepop (World)     (c) 1991 Data East Corporation
@@ -145,6 +149,7 @@ static WRITE16_HANDLER( tumblep_sound_w )
 
 static READ16_HANDLER( tumblepop_controls_r )
 {
+#if 0
  	switch (offset<<1)
 	{
 		case 0: /* Player 1 & Player 2 joysticks & fire buttons */
@@ -157,7 +162,20 @@ static READ16_HANDLER( tumblepop_controls_r )
 		case 12:
         	return 0;
 	}
-
+#else
+ 	switch (offset)
+	{
+		case 0: /* Player 1 & Player 2 joysticks & fire buttons */
+			return (readinputport(0) + (readinputport(1) << 8));
+		case 1: /* Dips */
+			return (readinputport(3) + (readinputport(4) << 8));
+		case 4: /* Credits */
+			return readinputport(2);
+		case 5: /* ? */
+		case 6:
+        	return 0;
+	}
+#endif
 	return ~0;
 }
 
@@ -878,3 +896,7 @@ GAMEX(1991, tumblepb, tumblep, tumblepb,  tumblep,  tumblepb, ROT0, "bootleg", "
 GAMEX(1991, tumblep2, tumblep, tumblepb,  tumblep,  tumblepb, ROT0, "bootleg", "Tumble Pop (bootleg set 2)", GAME_IMPERFECT_SOUND )
 GAMEX(1993, jumpkids, 0,       jumpkids,  tumblep,  jumpkids, ROT0, "Comad", "Jump Kids", GAME_NO_SOUND )
 GAME (1996, fncywld,  0,       fncywld,   fncywld,  fncywld,  ROT0, "Unico", "Fancy World - Earth of Crisis" ) // game says 1996, testmode 1995?
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

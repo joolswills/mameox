@@ -1,3 +1,7 @@
+#pragma code_seg("C333")
+#pragma bss_seg("B333")
+#pragma data_seg("D333")
+#pragma const_seg("K333")
 /*******************************************************************************
 
      Mouser
@@ -308,3 +312,7 @@ DRIVER_INIT( mouser )
 
 GAME( 1983, mouser,   0,      mouser, mouser, mouser, ROT90, "UPL", "Mouser" )
 GAME( 1983, mouserc,  mouser, mouser, mouser, mouser, ROT90, "[UPL] (Cosmos license)", "Mouser (Cosmos)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

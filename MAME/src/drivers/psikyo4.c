@@ -1,3 +1,7 @@
+#pragma code_seg("C412")
+#pragma bss_seg("B412")
+#pragma data_seg("D412")
+#pragma const_seg("K412")
 /*----------------------------------------------------------------
    Psikyo PS4 SH-2 Based Systems
    driver by David Haywood (+ Paul Priest)
@@ -891,3 +895,7 @@ GAMEX( 1998, hgkairak, 0,        ps4big,    hotgmck,  hotgmck,  ROT0,   "Psikyo"
 GAME ( 2000, loderndf, 0,        ps4small,  loderndf, loderndf, ROT0,   "Psikyo", "Lode Runner - The Dig Fight (ver. B) (Japan)" )
 GAME ( 2000, loderdfa, loderndf, ps4small,  loderndf, loderdfa, ROT0,   "Psikyo", "Lode Runner - The Dig Fight (ver. A) (Japan)" )
 GAME ( 2000, hotdebut, 0,        ps4small,  hotdebut, hotdebut, ROT0,   "Psikyo / Moss", "Quiz de Idol! Hot Debut (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C230")
+#pragma bss_seg("B230")
+#pragma data_seg("D230")
+#pragma const_seg("K230")
 /***************************************************************************
 
 Gyruss memory map (preliminary)
@@ -595,3 +599,7 @@ static DRIVER_INIT( gyruss )
 GAME( 1983, gyruss,   0,      gyruss, gyruss,   gyruss, ROT90, "Konami", "Gyruss (Konami)" )
 GAME( 1983, gyrussce, gyruss, gyruss, gyrussce, gyruss, ROT90, "Konami (Centuri license)", "Gyruss (Centuri)" )
 GAME( 1983, venus,    gyruss, gyruss, gyrussce, gyruss, ROT90, "bootleg", "Venus" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

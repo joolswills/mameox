@@ -1,3 +1,7 @@
+#pragma code_seg("C245")
+#pragma bss_seg("B245")
+#pragma data_seg("D245")
+#pragma const_seg("K245")
 /***************************************************************************
 
 Based on drivers from Juno First emulator by Chris Hardy (chrish@kcbbs.gen.nz)
@@ -679,3 +683,7 @@ GAME( 1984, hpolym84, hyperspt, hyperspt, hyperspt, hyperspt, ROT0,  "Konami", "
 GAME( 1984, roadf,	  0,		roadf,	  roadf,	hyperspt, ROT90, "Konami", "Road Fighter (set 1)" )
 GAME( 1984, roadf2,   roadf,	roadf,	  roadf,	hyperspt, ROT90, "Konami", "Road Fighter (set 2)" )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C562")
+#pragma bss_seg("B562")
+#pragma data_seg("D562")
+#pragma const_seg("K562")
 /***************************************************************************
 
 This driver contains several Konami 68000 based games. For the most part they
@@ -3617,3 +3621,7 @@ GAME( 1991, thndrx2,  0,        thndrx2,  thndrx2,  gfx,      ROT0,  "Konami", "
 GAME( 1991, thndrx2a, thndrx2,  thndrx2,  thndrx2,  gfx,      ROT0,  "Konami", "Thunder Cross II (Asia)" )
 
 GAME( 1993, prmrsocr, 0,        prmrsocr, prmrsocr, glfgreat, ROT0,  "Konami", "Premier Soccer (Japan ver. JAB)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

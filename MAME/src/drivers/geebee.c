@@ -1,3 +1,7 @@
+#pragma code_seg("C210")
+#pragma bss_seg("B210")
+#pragma data_seg("D210")
+#pragma const_seg("K210")
 /****************************************************************************
  *
  * geebee.c
@@ -637,3 +641,7 @@ GAME ( 1980, kaitei,   0,        kaitei,   kaitei,   0,      ROT90, "K.K. Tokki"
 GAME ( 1980, kaitein,  kaitei,	 kaitei,   kaitein,  0,      ROT90, "Namco", "Kaitei Takara Sagashi (Namco)" )
 GAMEX( 1980, sos,	   0,        sos,      sos,      0,      ROT90, "Namco", "SOS", GAME_IMPERFECT_SOUND )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

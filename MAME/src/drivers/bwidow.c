@@ -1,3 +1,7 @@
+#pragma code_seg("C83")
+#pragma bss_seg("B83")
+#pragma data_seg("D83")
+#pragma const_seg("K83")
 /***************************************************************************
 
 	Atari Black Widow hardware
@@ -887,3 +891,7 @@ GAME( 1982, gravitar, 0,        gravitar, gravitar, 0, ROT0, "Atari", "Gravitar 
 GAME( 1982, gravitr2, gravitar, gravitar, gravitar, 0, ROT0, "Atari", "Gravitar (version 2)" )
 GAME( 1982, gravp,    gravitar, gravitar, gravitar, 0, ROT0, "Atari", "Gravitar (prototype)" )
 GAME( 1982, lunarbat, gravitar, lunarbat, lunarbat, 0, ROT0, "Atari", "Lunar Battle (prototype)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

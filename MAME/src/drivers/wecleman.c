@@ -1,3 +1,7 @@
+#pragma code_seg("C608")
+#pragma bss_seg("B608")
+#pragma data_seg("D608")
+#pragma const_seg("K608")
 /***************************************************************************
 						WEC Le Mans 24  &   Hot Chase
 
@@ -1797,3 +1801,7 @@ DRIVER_INIT( hotchase )
 
 GAME( 1986, wecleman, 0, wecleman, wecleman, wecleman, ROT0, "Konami", "WEC Le Mans 24" )
 GAME( 1988, hotchase, 0, hotchase, hotchase, hotchase, ROT0, "Konami", "Hot Chase" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

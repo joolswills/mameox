@@ -1,3 +1,7 @@
+#pragma code_seg("C13")
+#pragma bss_seg("B13")
+#pragma data_seg("D13")
+#pragma const_seg("K13")
 /***************************************************************************
 
 "AJAX/Typhoon"	(Konami GX770)
@@ -426,3 +430,7 @@ static DRIVER_INIT( ajax )
 GAME( 1987, ajax,    0,    ajax, ajax, ajax, ROT90, "Konami", "Ajax" )
 GAME( 1987, typhoon, ajax, ajax, ajax, ajax, ROT90, "Konami", "Typhoon" )
 GAME( 1987, ajaxj,   ajax, ajax, ajax, ajax, ROT90, "Konami", "Ajax (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

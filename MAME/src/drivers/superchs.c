@@ -1,3 +1,7 @@
+#pragma code_seg("C518")
+#pragma bss_seg("B518")
+#pragma data_seg("D518")
+#pragma const_seg("K518")
 /****************************************************************************
 
 	Super Chase  						(c) 1992 Taito
@@ -562,3 +566,7 @@ static DRIVER_INIT( superchs )
 }
 
 GAME( 1992, superchs, 0, superchs, superchs, superchs, ROT0, "Taito America Corporation", "Super Chase - Criminal Termination (US)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C108")
+#pragma bss_seg("B108")
+#pragma data_seg("D108")
+#pragma const_seg("K108")
 /***************************************************************************
 
 	Atari Cloud 9 (prototype) hardware
@@ -312,3 +316,7 @@ ROM_END
 
 GAMEX( 1983, cloud9, 0, cloud9, cloud9, 0, ROT0, "Atari", "Cloud 9 (prototype)", GAME_NO_COCKTAIL )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

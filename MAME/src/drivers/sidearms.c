@@ -1,3 +1,7 @@
+#pragma code_seg("C468")
+#pragma bss_seg("B468")
+#pragma data_seg("D468")
+#pragma const_seg("K468")
 /***************************************************************************
 
   Sidearms
@@ -807,3 +811,7 @@ GAMEX( 1986, sidearjp, sidearms, sidearms, sidearms, sidearms, ROT0,   "Capcom",
 GAMEX( 1988, turtship, 0,        turtship, turtship, turtship, ROT0,   "Philko", "Turtle Ship", GAME_NO_COCKTAIL )
 GAMEX( 1989, dyger,    0,        turtship, dyger,    dyger,    ROT270, "Philko", "Dyger (Korea set 1)", GAME_NO_COCKTAIL )
 GAMEX( 1989, dygera,   dyger,    turtship, dyger,    dyger,    ROT270, "Philko", "Dyger (Korea set 2)", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

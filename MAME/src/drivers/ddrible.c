@@ -1,3 +1,7 @@
+#pragma code_seg("C138")
+#pragma bss_seg("B138")
+#pragma data_seg("D138")
+#pragma const_seg("K138")
 /***************************************************************************
 
 Double Dribble(GX690) (c) Konami 1986
@@ -404,3 +408,7 @@ ROM_END
 
 
 GAME( 1986, ddribble, 0, ddribble, ddribble, 0, ROT0, "Konami", "Double Dribble")
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

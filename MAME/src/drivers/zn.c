@@ -1,3 +1,7 @@
+#pragma code_seg("C634")
+#pragma bss_seg("B634")
+#pragma data_seg("D634")
+#pragma const_seg("K634")
 /***************************************************************************
 
   Sony ZN1/ZN2 - Arcade PSX Hardware
@@ -913,3 +917,7 @@ GAME( 1999, shiryu2,  0,		znqs, zn, 0, ROT0, "Capcom", "Strider Hiryu 2 (JAPAN 9
 GAMEX( 1996, sncwgltd,	0,	  zn, zn, 0, ROT0, "Video System Co.", "Sonic Wings Limited (JAPAN)", GAME_NO_SOUND )
 GAMEX( 1997, glpracr2,	0,	  zn, zn, 0, ROT0, "Tecmo", "Gallop Racer 2 (JAPAN)", GAME_NO_SOUND )
 GAMEX( 1998, doapp,		0,	  zn, zn, 0, ROT0, "Tecmo", "Dead Or Alive ++ (JAPAN)", GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C171")
+#pragma bss_seg("B171")
+#pragma data_seg("D171")
+#pragma const_seg("K171")
 /***************************************************************************
 
 Express Raider - (c) 1986 Data East USA
@@ -574,3 +578,7 @@ GAMEX( 1986, exprraid, 0,        exprraid, exprraid, exprraid, ROT0, "Data East 
 GAMEX( 1986, wexpress, exprraid, exprraid, exprraid, wexpress, ROT0, "Data East Corporation", "Western Express (World?)", GAME_NO_COCKTAIL )
 GAMEX( 1986, wexpresb, exprraid, exprraid, exprraid, wexpresb, ROT0, "bootleg", "Western Express (bootleg set 1)", GAME_NO_COCKTAIL )
 GAMEX( 1986, wexpresc, exprraid, exprraid, exprraid, wexpresc, ROT0, "bootleg", "Western Express (bootleg set 2)", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C149")
+#pragma bss_seg("B149")
+#pragma data_seg("D149")
+#pragma const_seg("K149")
 /* the way I hooked up the CTC is most likely completely wrong */
 
 #include "driver.h"
@@ -265,3 +269,7 @@ ROM_END
 
 GAMEX( 1983, dlair, 0, dlair, dlair, 0, ROT0, "Cinematronics", "Dragon's Lair", GAME_NOT_WORKING | GAME_NO_SOUND )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

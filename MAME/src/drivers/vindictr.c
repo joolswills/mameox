@@ -1,3 +1,7 @@
+#pragma code_seg("C599")
+#pragma bss_seg("B599")
+#pragma data_seg("D599")
+#pragma const_seg("K599")
 /***************************************************************************
 
 	Atari Vindicators hardware
@@ -401,3 +405,7 @@ static DRIVER_INIT( vindictr )
 
 GAME( 1988, vindictr, 0,        vindictr, vindictr, vindictr, ROT0, "Atari Games", "Vindicators (4/26/88)" )
 GAME( 1988, vindicta, vindictr, vindictr, vindictr, vindictr, ROT0, "Atari Games", "Vindicators (4/20/88)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

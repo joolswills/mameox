@@ -1,3 +1,7 @@
+#pragma code_seg("C51")
+#pragma bss_seg("B51")
+#pragma data_seg("D51")
+#pragma const_seg("K51")
 /***************************************************************************
 
 	Atari Batman hardware
@@ -343,3 +347,7 @@ static DRIVER_INIT( batman )
  *************************************/
 
 GAME( 1991, batman, 0, batman, batman, batman, ROT0, "Atari Games", "Batman" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

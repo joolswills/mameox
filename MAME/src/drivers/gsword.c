@@ -1,3 +1,7 @@
+#pragma code_seg("C225")
+#pragma bss_seg("B225")
+#pragma data_seg("D225")
+#pragma const_seg("K225")
 /* Great Swordsman (Taito) 1984
 
 TODO:
@@ -745,3 +749,7 @@ static DRIVER_INIT( gsword )
 
 GAMEX( 1983, josvolly, 0, josvolly, gsword, 0,      ROT90, "Taito Corporation", "Joshi Volleyball", GAME_NOT_WORKING )
 GAMEX( 1984, gsword,   0, gsword,   gsword, gsword, ROT0,  "Taito Corporation", "Great Swordsman", GAME_IMPERFECT_COLORS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

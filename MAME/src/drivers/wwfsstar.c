@@ -1,3 +1,7 @@
+#pragma code_seg("C616")
+#pragma bss_seg("B616")
+#pragma data_seg("D616")
+#pragma const_seg("K616")
 /*******************************************************************************
  WWF Superstars (C) 1989 Technos Japan  (drivers/wwfsstar.c)
 ********************************************************************************
@@ -454,3 +458,7 @@ ROM_END
 
 
 GAME( 1989, wwfsstar, 0, wwfsstar, wwfsstar,  0, ROT0, "Technos Japan", "WWF Superstars (US)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C235")
+#pragma bss_seg("B235")
+#pragma data_seg("D235")
+#pragma const_seg("K235")
 /***************************************************************************
 
 	Driver for Atari polygon racer games
@@ -2308,3 +2312,7 @@ GAME ( 1991, steeltal, 0,        steeltal, steeltal, steeltal, ROT0, "Atari Game
 GAMEX( 1991, steeltap, steeltal, steeltal, steeltal, steeltal, ROT0, "Atari Games", "Steel Talons (prototype)", GAME_NOT_WORKING )
 GAMEX( 1993, hdrivair, 0,        hdrivair, hdrivair, hdrivair, ROT0, "Atari Games", "Hard Drivin's Airborne (prototype)", GAME_NO_SOUND )
 GAMEX( 1993, hdrivaip, hdrivair, hdrivair, hdrivair, hdrivaip, ROT0, "Atari Games", "Hard Drivin's Airborne (prototype, early rev)", GAME_NOT_WORKING | GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

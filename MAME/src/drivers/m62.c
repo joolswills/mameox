@@ -1,3 +1,7 @@
+#pragma code_seg("C288")
+#pragma bss_seg("B288")
+#pragma data_seg("D288")
+#pragma const_seg("K288")
 /****************************************************************************
 
 Irem "M62" system
@@ -2265,3 +2269,7 @@ GAME( 1985, spelunkr, 0,        spelunkr, spelunkr, 0, ROT0,   "Irem (licensed f
 GAME( 1985, spelnkrj, spelunkr, spelunkr, spelunkr, 0, ROT0,   "Irem (licensed from Broderbund)", "Spelunker (Japan)" )
 GAME( 1986, spelunk2, 0,        spelunk2, spelunk2, 0, ROT0,   "Irem (licensed from Broderbund)", "Spelunker II" )
 GAME( 1986, youjyudn, 0,        youjyudn, youjyudn, 0, ROT270, "Irem", "Youjyuden (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

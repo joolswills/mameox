@@ -1,3 +1,7 @@
+#pragma code_seg("C105")
+#pragma bss_seg("B105")
+#pragma data_seg("D105")
+#pragma const_seg("K105")
 /***************************************************************************
 
 
@@ -373,3 +377,7 @@ static DRIVER_INIT( citycon )
 GAME( 1985, citycon,  0,       citycon, citycon, citycon, ROT0, "Jaleco", "City Connection (set 1)" )
 GAME( 1985, citycona, citycon, citycon, citycon, citycon, ROT0, "Jaleco", "City Connection (set 2)" )
 GAME( 1985, cruisin,  citycon, citycon, citycon, citycon, ROT0, "Jaleco (Kitkorp license)", "Cruisin" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

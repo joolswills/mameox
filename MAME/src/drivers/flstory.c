@@ -1,3 +1,7 @@
+#pragma code_seg("C185")
+#pragma bss_seg("B185")
+#pragma data_seg("D185")
+#pragma const_seg("K185")
 /***************************************************************************
 
 The FairyLand Story
@@ -759,3 +763,7 @@ GAMEX( 1985, flstory,  0,        flstory,  flstory,  0, ROT180, "Taito", "The Fa
 GAMEX( 1985, flstoryj, flstory,  flstory,  flstory,  0, ROT180, "Taito", "The FairyLand Story (Japan)", GAME_IMPERFECT_SOUND )
 GAMEX( 1985, onna34ro, 0,        onna34ro, onna34ro, 0, ROT0,   "Taito", "Onna Sansirou - Typhoon Gal (set 1)", GAME_UNEMULATED_PROTECTION | GAME_IMPERFECT_SOUND )
 GAMEX( 1985, onna34ra, onna34ro, onna34ro, onna34ro, 0, ROT0,   "Taito", "Onna Sansirou - Typhoon Gal (set 2)", GAME_UNEMULATED_PROTECTION | GAME_IMPERFECT_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C443")
+#pragma bss_seg("B443")
+#pragma data_seg("D443")
+#pragma const_seg("K443")
 /***************************************************************************
 
 Sauro Memory Map (preliminary)
@@ -345,3 +349,7 @@ static DRIVER_INIT( sauro )
 
 
 GAMEX( 1987, sauro, 0, sauro, sauro, sauro, ROT0, "Tecfri", "Sauro", GAME_IMPERFECT_COLORS | GAME_IMPERFECT_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

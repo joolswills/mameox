@@ -1,3 +1,7 @@
+#pragma code_seg("C367")
+#pragma bss_seg("B367")
+#pragma data_seg("D367")
+#pragma const_seg("K367")
 /********************************************************************
 
 Urashima Mahjong         UPL        68000 <unknown cpu> OKIM6295
@@ -4130,3 +4134,7 @@ GAMEX( 1993, tdragon2, 0,       macross2, tdragon2, 0,        ROT270, "NMK",				
 GAMEX( 1992, sabotenb, 0,       bjtwin,   sabotenb, nmk,      ROT0,   "NMK / Tecmo",					"Saboten Bombers", GAME_NO_COCKTAIL )
 GAMEX( 1993, bjtwin,   0,       bjtwin,   bjtwin,   bjtwin,   ROT270, "NMK",							"Bombjack Twin", GAME_NO_COCKTAIL )
 GAMEX( 1995, nouryoku, 0,       bjtwin,   nouryoku, nmk,      ROT0,   "Tecmo",							"Nouryoku Koujou Iinkai", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C1")
+#pragma bss_seg("B1")
+#pragma data_seg("D1")
+#pragma const_seg("K1")
 /*
 
 TODO: 1943 is almost identical to GunSmoke (one more scrolling playfield). We
@@ -458,3 +462,7 @@ ROM_END
 GAMEX( 1987, 1943,    0,    1943, 1943, 0, ROT270, "Capcom", "1943 - The Battle of Midway (US)", GAME_NO_COCKTAIL )
 GAMEX( 1987, 1943j,   1943, 1943, 1943, 0, ROT270, "Capcom", "1943 - The Battle of Midway (Japan)", GAME_NO_COCKTAIL )
 GAMEX( 1987, 1943kai, 0,    1943, 1943, 0, ROT270, "Capcom", "1943 Kai - Midway Kaisen", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

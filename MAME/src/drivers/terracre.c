@@ -1,3 +1,7 @@
+#pragma code_seg("C551")
+#pragma bss_seg("B551")
+#pragma data_seg("D551")
+#pragma const_seg("K551")
 /******************************************************************
 Terra Cresta (preliminary)
 Nichibutsu 1985
@@ -965,3 +969,7 @@ GAME( 1986, amazon,   0,        amazon,  amazon,   amazon,   ROT270,  "Nichibuts
 GAME( 1986, amatelas, amazon,   amazon,  amazon,   amatelas, ROT270,  "Nichibutsu", "Sei Senshi Amatelass" )
 GAME( 1987, horekid,  0,        amazon,  horekid,  horekid,  ROT270,  "Nichibutsu", "Kid no Hore Hore Daisakusen" )
 GAME( 1987, horekidb, horekid,  amazon,  horekid,  horekid,  ROT270,  "bootleg", "Kid no Hore Hore Daisakusen (bootleg)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

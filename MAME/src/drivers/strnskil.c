@@ -1,3 +1,7 @@
+#pragma code_seg("C512")
+#pragma bss_seg("B512")
+#pragma data_seg("D512")
+#pragma const_seg("K512")
 /*****************************************************************************
 
 Strength & Skill (c) 1984 Sun Electronics
@@ -474,3 +478,7 @@ ROM_END
 GAME(  1984, strnskil, 0,        strnskil, strnskil, 0, ROT0, "Sun Electronics", "Strength & Skill" )
 GAME(  1984, guiness,  strnskil, strnskil, strnskil, 0, ROT0, "Sun Electronics", "The Guiness (Japan)" )
 GAMEX( 1984, pettanp,  0,        strnskil, pettanp,  0, ROT0, "Sun Electronics", "Pettan Pyuu (Japan)", GAME_UNEMULATED_PROTECTION )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

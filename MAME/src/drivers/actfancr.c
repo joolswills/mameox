@@ -1,3 +1,7 @@
+#pragma code_seg("C8")
+#pragma bss_seg("B8")
+#pragma data_seg("D8")
+#pragma const_seg("K8")
 /*******************************************************************************
 
 	Act Fancer (Japan)				FD (c) 1989 Data East Corporation
@@ -646,3 +650,7 @@ GAME( 1989, actfancr, 0,        actfancr, actfancr, actfancr, ROT0, "Data East C
 GAME( 1989, actfanc1, actfancr, actfancr, actfancr, actfancr, ROT0, "Data East Corporation", "Act-Fancer Cybernetick Hyper Weapon (World revision 1)" )
 GAME( 1989, actfancj, actfancr, actfancr, actfancr, actfancj, ROT0, "Data East Corporation", "Act-Fancer Cybernetick Hyper Weapon (Japan revision 1)" )
 GAME( 1989, triothep, 0,        triothep, triothep, 0,        ROT0, "Data East Corporation", "Trio The Punch - Never Forget Me... (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C100")
+#pragma bss_seg("B100")
+#pragma data_seg("D100")
+#pragma const_seg("K100")
 /***************************************************************************
 
 Chequered Flag / Checkered Flag (GX717) (c) Konami 1988
@@ -464,3 +468,7 @@ static DRIVER_INIT( chqflag )
 
 GAMEX( 1988, chqflag,        0, chqflag, chqflag, chqflag, ROT90, "Konami", "Chequered Flag", GAME_UNEMULATED_PROTECTION | GAME_IMPERFECT_SOUND )
 GAMEX( 1988, chqflagj, chqflag, chqflag, chqflag, chqflag, ROT90, "Konami", "Chequered Flag (Japan)", GAME_UNEMULATED_PROTECTION | GAME_IMPERFECT_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C629")
+#pragma bss_seg("B629")
+#pragma data_seg("D629")
+#pragma const_seg("K629")
 /***************************************************************************
 
 						  -= Yun Sung 8 Bit Games =-
@@ -576,3 +580,7 @@ ROM_END
 
 GAMEX( 1995, cannball, 0, yunsung8, cannball, 0, ROT0, "Yun Sung / Soft Vision", "Cannon Ball",  GAME_IMPERFECT_SOUND )
 GAMEX( 1995, magix,    0, yunsung8, magix,    0, ROT0, "Yun Sung",               "Magix / Rock", GAME_IMPERFECT_SOUND ) // Title: DSW
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

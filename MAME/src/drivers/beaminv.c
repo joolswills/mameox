@@ -1,3 +1,7 @@
+#pragma code_seg("C57")
+#pragma bss_seg("B57")
+#pragma data_seg("D57")
+#pragma const_seg("K57")
 /***************************************************************************
 
 	Tekunon Kougyou Beam Invader hardware
@@ -162,3 +166,7 @@ ROM_END
  *************************************/
 
 GAMEX(19??, beaminv, 0, beaminv, beaminv, 0, ROT0, "Tekunon Kougyou", "Beam Invader", GAME_NO_SOUND)
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

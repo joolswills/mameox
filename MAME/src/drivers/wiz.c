@@ -1,3 +1,7 @@
+#pragma code_seg("C614")
+#pragma bss_seg("B614")
+#pragma data_seg("D614")
+#pragma const_seg("K614")
 /***************************************************************************
 
 Wiz/Stinger/Scion memory map (preliminary)
@@ -825,3 +829,7 @@ GAMEX(1984, scion,    0,       stinger, scion,    0,       ROT0,   "Seibu Denshi
 GAMEX(1984, scionc,   scion,   stinger, scion,    0,       ROT0,   "Seibu Denshi (Cinematronics license)", "Scion (Cinematronics)", GAME_IMPERFECT_COLORS )
 GAME( 1985, wiz,      0,       wiz,     wiz,      wiz,     ROT270, "Seibu Kaihatsu Inc.", "Wiz" )
 GAME( 1985, wizt,     wiz,     wiz,     wiz,      wiz,     ROT270, "[Seibu] (Taito license)", "Wiz (Taito)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

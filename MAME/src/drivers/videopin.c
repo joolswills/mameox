@@ -1,3 +1,7 @@
+#pragma code_seg("C597")
+#pragma bss_seg("B597")
+#pragma data_seg("D597")
+#pragma const_seg("K597")
 /***************************************************************************
 
 	Atari Video Pinball hardware
@@ -240,3 +244,7 @@ ROM_END
  *************************************/
 
 GAMEX( 1979, videopin, 0, videopin, videopin, 0, ROT270, "Atari", "Video Pinball", GAME_NOT_WORKING | GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

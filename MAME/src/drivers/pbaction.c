@@ -1,3 +1,7 @@
+#pragma code_seg("C390")
+#pragma bss_seg("B390")
+#pragma data_seg("D390")
+#pragma const_seg("K390")
 /***************************************************************************
 
 Pinball Action memory map (preliminary)
@@ -365,3 +369,7 @@ ROM_END
 
 GAME( 1985, pbaction, 0,        pbaction, pbaction, 0, ROT90, "Tehkan", "Pinball Action (set 1)" )
 GAME( 1985, pbactio2, pbaction, pbaction, pbaction, 0, ROT90, "Tehkan", "Pinball Action (set 2)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

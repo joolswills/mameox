@@ -1,3 +1,7 @@
+#pragma code_seg("C337")
+#pragma bss_seg("B337")
+#pragma data_seg("D337")
+#pragma const_seg("K337")
 /***************************************************************************
 
 Mr.Jong
@@ -217,3 +221,7 @@ ROM_END
 
 GAME( 1983, mrjong,   0,      mrjong, mrjong, 0, ROT90, "Kiwako", "Mr. Jong (Japan)" )
 GAME( 1983, crazyblk, mrjong, mrjong, mrjong, 0, ROT90, "Kiwako (ECI license)", "Crazy Blocks" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

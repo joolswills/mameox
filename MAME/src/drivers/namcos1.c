@@ -1,3 +1,7 @@
+#pragma code_seg("C349")
+#pragma bss_seg("B349")
+#pragma data_seg("D349")
+#pragma const_seg("K349")
 /***********************************************************************
 
 Namco System 1
@@ -2449,3 +2453,7 @@ GAME( 1990, puzlclub, 0,        ns1,     ns1,     puzlclub, ROT270, "Namco", "Pu
 GAME( 1991, tankfrce, 0,        ns1,     ns1,     tankfrce, ROT180, "Namco", "Tank Force (US)" )
 GAME( 1991, tankfrcj, tankfrce, ns1,     ns1,     tankfrce, ROT180, "Namco", "Tank Force (Japan)" )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

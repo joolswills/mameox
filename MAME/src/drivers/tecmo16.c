@@ -1,3 +1,7 @@
+#pragma code_seg("C547")
+#pragma bss_seg("B547")
+#pragma data_seg("D547")
+#pragma const_seg("K547")
 /******************************************************************************
 
   Ganbare Ginkun  (Japan)  (c)1995 TECMO
@@ -469,3 +473,7 @@ ROM_END
 
 GAMEX( 1992, fstarfrc, 0, fstarfrc, fstarfrc, 0, ROT90, "Tecmo", "Final Star Force (US)", GAME_NO_COCKTAIL )
 GAMEX( 1995, ginkun,   0, ginkun,   ginkun,   0, ROT0,  "Tecmo", "Ganbare Ginkun", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

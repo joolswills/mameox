@@ -1,3 +1,7 @@
+#pragma code_seg("C214")
+#pragma bss_seg("B214")
+#pragma data_seg("D214")
+#pragma const_seg("K214")
 /***************************************************************************
 
 Ghosts'n Goblins
@@ -706,3 +710,7 @@ GAME( 1985, makaimuc, gng, gng, makaimur, 0,	   ROT0, "Capcom", "Makai-Mura (Jap
 GAME( 1985, makaimug, gng, gng, makaimur, 0,	   ROT0, "Capcom", "Makai-Mura (Japan Revision G)" )
 GAME( 1989, diamond,  0,   gng, diamond,  diamond, ROT0, "KH Video", "Diamond Run" )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

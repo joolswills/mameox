@@ -1,3 +1,7 @@
+#pragma code_seg("C47")
+#pragma bss_seg("B47")
+#pragma data_seg("D47")
+#pragma const_seg("K47")
 /***************************************************************************
 
 Bagman memory map
@@ -792,3 +796,7 @@ GAME(1984, sbagman,  0, 	  bagman, sbagman, 0, ROT270, "Valadon Automation", "Su
 GAME(1984, sbagmans, sbagman, bagman, sbagman, 0, ROT270, "Valadon Automation (Stern license)", "Super Bagman (Stern)" )
 GAME(1983, pickin,	 0, 	  pickin, pickin,  0, ROT270, "Valadon Automation", "Pickin'" )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

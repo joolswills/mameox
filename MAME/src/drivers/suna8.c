@@ -1,3 +1,7 @@
+#pragma code_seg("C516")
+#pragma bss_seg("B516")
+#pragma data_seg("D516")
+#pragma const_seg("K516")
 /***************************************************************************
 
 							-=  SunA 8 Bit Games =-
@@ -2380,3 +2384,7 @@ GAMEX( 1990, starfigh, 0,        starfigh, hardhea2, starfigh, ROT90, "SunA", "S
 GAMEX( 1991, hardhea2, 0,        hardhea2, hardhea2, hardhea2, ROT0,  "SunA", "Hard Head 2 (v2.0)",  GAME_NOT_WORKING )
 GAMEX( 1992, brickzn,  0,        brickzn,  brickzn,  brickzn3, ROT90, "SunA", "Brick Zone (v5.0)",   GAME_NOT_WORKING )
 GAMEX( 1992, brickzn3, brickzn,  brickzn,  brickzn,  brickzn3, ROT90, "SunA", "Brick Zone (v3.0)",   GAME_NOT_WORKING )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

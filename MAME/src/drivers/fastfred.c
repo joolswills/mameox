@@ -1,3 +1,7 @@
+#pragma code_seg("C175")
+#pragma bss_seg("B175")
+#pragma data_seg("D175")
+#pragma const_seg("K175")
 /***************************************************************************
 
   Fast Freddie/Jump Coaster hardware
@@ -729,3 +733,7 @@ GAME( 1982, fastfred, flyboy, fastfred, fastfred, fastfred, ROT90, "Atari", "Fas
 GAME( 1983, jumpcoas, 0,      jumpcoas, jumpcoas, jumpcoas, ROT90, "Kaneko", "Jump Coaster" )
 GAME( 1983, boggy84,  0,      jumpcoas, boggy84,  boggy84,  ROT90, "bootleg", "Boggy '84" )
 GAME( 1986, redrobin, 0,      fastfred, redrobin, flyboy,   ROT90, "Elettronolo", "Red Robin" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C575")
+#pragma bss_seg("B575")
+#pragma data_seg("D575")
+#pragma const_seg("K575")
 /****************************************************************************
 
 Tropical Angel
@@ -231,3 +235,7 @@ ROM_END
 
 
 GAME( 1983, troangel, 0, troangel, troangel, 0, ROT0, "Irem", "Tropical Angel" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

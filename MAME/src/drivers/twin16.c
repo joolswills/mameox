@@ -1,3 +1,7 @@
+#pragma code_seg("C584")
+#pragma bss_seg("B584")
+#pragma data_seg("D584")
+#pragma const_seg("K584")
 /*
 Konami "Twin16"
 
@@ -1630,3 +1634,7 @@ GAME( 1988, fround,   0,      fround,    fround,   fround, ROT0, "Konami", "The 
 GAME( 1988, froundl,  fround, fround,    fround,   fround, ROT0, "Konami", "The Final Round (version L)" )
 GAME( 1988, hpuncher, fround, twin16,    fround,   twin16, ROT0, "Konami", "Hard Puncher (Japan)" )
 GAME( 1989, miaj,     mia,    twin16,    miaj,     twin16, ROT0, "Konami", "Missing in Action (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

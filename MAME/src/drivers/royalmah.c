@@ -1,3 +1,7 @@
+#pragma code_seg("C439")
+#pragma bss_seg("B439")
+#pragma data_seg("D439")
+#pragma const_seg("K439")
 /****************************************************************************
 
 Royal Mahjong (c) 1982 Falcon
@@ -1371,3 +1375,7 @@ GAME( 1987, tontonb,  0, tontonb,  tontonb,  0, ROT0, "Dynax", "Tonton [BET] (Ja
 GAME( 1988, majs101b, 0, majs101b, majs101b, 0, ROT0, "Dynax", "Mahjong Studio 101 [BET] (Japan)" )
 GAME( 1989, mjderngr, 0, mjderngr, majs101b, 0, ROT0, "Dynax", "Mahjong Derringer (Japan)" )
 GAMEX(1990, mjifb,    0, mjderngr, majs101b, 0, ROT0, "Dynax", "Mahjong If [BET] (Japan)", GAME_NOT_WORKING )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

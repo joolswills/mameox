@@ -1,3 +1,7 @@
+#pragma code_seg("C268")
+#pragma bss_seg("B268")
+#pragma data_seg("D268")
+#pragma const_seg("K268")
 /**************************************************************************
  *
  * konamigx.c - Konami System GX
@@ -2620,3 +2624,7 @@ GAMEX( 1996, vsnetscr, konamigx, gxtype3,  type3, konamigx, ROT0, "Konami", "Ver
    directed to a different monitor to create the dual-mon effect.  Probably should be a
    separate driver. */
 GAMEX( 1996, rungun2,  konamigx, gxtype4,  type3,    sexyparo, ROT0, "Konami", "Run and Gun 2 (Ver UAA)", GAME_NOT_WORKING )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

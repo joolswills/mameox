@@ -1,3 +1,7 @@
+#pragma code_seg("C282")
+#pragma bss_seg("B282")
+#pragma data_seg("D282")
+#pragma const_seg("K282")
 /***************************************************************************
 
 Legend of Kage
@@ -535,3 +539,7 @@ GAME( 1984, lkage,   0,     lkage,  lkage, 0,       ROT0, "Taito Corporation", "
 GAMEX(1984, lkageb,  lkage, lkageb, lkage, lkageb,  ROT0, "bootleg", "The Legend of Kage (bootleg set 1)", GAME_NOT_WORKING )
 GAME( 1984, lkageb2, lkage, lkageb, lkage, 0,       ROT0, "bootleg", "The Legend of Kage (bootleg set 2)" )
 GAME( 1984, lkageb3, lkage, lkageb, lkage, 0,       ROT0, "bootleg", "The Legend of Kage (bootleg set 3)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

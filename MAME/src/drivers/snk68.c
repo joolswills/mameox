@@ -1,3 +1,7 @@
+#pragma code_seg("C481")
+#pragma bss_seg("B481")
+#pragma data_seg("D481")
+#pragma const_seg("K481")
 /***************************************************************************
 
 	POW - Prisoners Of War (US) 		A7008	SNK 1988
@@ -1215,3 +1219,7 @@ GAME( 1989, streetsw, streetsm, searchar, streetsj, 0,		  ROT0,  "SNK", "Street 
 GAME( 1989, streetsj, streetsm, searchar, streetsj, 0,		  ROT0,  "SNK", "Street Smart (Japan version 1)" )
 GAME( 1989, ikari3,   0,		ikari3,   ikari3,	searchar, ROT0,  "SNK", "Ikari III - The Rescue" )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

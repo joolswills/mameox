@@ -1,3 +1,7 @@
+#pragma code_seg("C587")
+#pragma bss_seg("B587")
+#pragma data_seg("D587")
+#pragma const_seg("K587")
 /***************************************************************************
 
 	Atari/Kee Ultra Tank hardware
@@ -702,3 +706,7 @@ ROM_END
  *************************************/
 
 GAME( 1978, ultratnk, 0, ultratnk, ultratnk, 0, 0, "Atari", "Ultra Tank" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

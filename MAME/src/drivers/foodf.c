@@ -1,3 +1,7 @@
+#pragma code_seg("C187")
+#pragma bss_seg("B187")
+#pragma data_seg("D187")
+#pragma const_seg("K187")
 /***************************************************************************
 
 	Atari Food Fight hardware
@@ -430,3 +434,7 @@ ROM_END
  *************************************/
 
 GAME( 1982, foodf, 0, foodf, foodf, 0, ROT0, "Atari", "Food Fight" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

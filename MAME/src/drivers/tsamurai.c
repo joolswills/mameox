@@ -1,3 +1,7 @@
+#pragma code_seg("C576")
+#pragma bss_seg("B576")
+#pragma data_seg("D576")
+#pragma const_seg("K576")
 /****************************************************************************
 
 	Preliminary driver for Samurai, Nunchackun, Yuke Yuke Yamaguchi-kun
@@ -1335,3 +1339,7 @@ GAME( 1986, m660,     0,        m660,     m660,     0, ROT90, "[Wood Place] Tait
 GAME( 1986, m660j,    m660,     m660,     m660,     0, ROT90, "[Wood Place] Taito Corporation", "Mission 660 (Japan)" )
 GAME( 1986, m660b,    m660,     m660,     m660,     0, ROT90, "bootleg", "Mission 660 (bootleg)" )
 GAME( 1986, alphaxz,  m660,     m660,     m660,     0, ROT90, "Ed/Wood Place", "The Alphax Z (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

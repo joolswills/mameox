@@ -1,3 +1,7 @@
+#pragma code_seg("C305")
+#pragma bss_seg("B305")
+#pragma data_seg("D305")
+#pragma const_seg("K305")
 /***************************************************************************
 
 	Midway MCR-1 system
@@ -516,3 +520,7 @@ static DRIVER_INIT( kick )
 GAME( 1981, solarfox, 0,    mcr1, solarfox, solarfox, ROT90 ^ ORIENTATION_FLIP_Y, "Bally Midway", "Solar Fox" )
 GAME( 1981, kick,     0,    mcr1, kick,     kick,     ORIENTATION_SWAP_XY,        "Midway", "Kick (upright)" )
 GAME( 1981, kicka,    kick, mcr1, kicka,    kick,     ROT90,                      "Midway", "Kick (cocktail)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C35")
+#pragma bss_seg("B35")
+#pragma data_seg("D35")
+#pragma const_seg("K35")
 /***************************************************************************
 
 	Atari G1 hardware
@@ -739,3 +743,7 @@ GAME( 1990, hydrap,   hydra,    atarig1, hydra,    hydrap,   ROT0, "Atari Games"
 GAME( 1990, pitfight, 0,        atarig1, pitfight, pitfight, ROT0, "Atari Games", "Pit-Fighter (version 4)" )
 GAME( 1990, pitfigh3, pitfight, atarig1, pitfight, pitfight, ROT0, "Atari Games", "Pit-Fighter (version 3)" )
 GAME( 1990, pitfighb, pitfight, atarig1, pitfight, pitfighb, ROT0, "Atari Games", "Pit-Fighter (bootleg)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

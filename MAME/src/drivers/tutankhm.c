@@ -1,3 +1,7 @@
+#pragma code_seg("C583")
+#pragma bss_seg("B583")
+#pragma data_seg("D583")
+#pragma const_seg("K583")
 /***************************************************************************
 
 Tutankham :  memory map (preliminary)
@@ -422,3 +426,7 @@ ROM_END
 
 GAME( 1982, tutankhm, 0,        tutankhm, tutankhm, 0, ROT90, "Konami", "Tutankham" )
 GAME( 1982, tutankst, tutankhm, tutankhm, tutankhm, 0, ROT90, "[Konami] (Stern license)", "Tutankham (Stern)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C353")
+#pragma bss_seg("B353")
+#pragma data_seg("D353")
+#pragma const_seg("K353")
 /*******************************************************************
 Rolling Thunder
 (C) 1986 Namco
@@ -1774,3 +1778,7 @@ GAME( 1986, genpeitd, 0,        genpeitd, genpeitd, namco86,  ROT0,   "Namco", "
 GAME( 1986, rthunder, 0,        rthunder, rthunder, namco86,  ROT0,   "Namco", "Rolling Thunder (new version)" )
 GAME( 1986, rthundro, rthunder, rthunder, rthundro, namco86,  ROT0,   "Namco", "Rolling Thunder (old version)" )
 GAME( 1987, wndrmomo, 0,        wndrmomo, wndrmomo, namco86,  ROT0,   "Namco", "Wonder Momo" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C568")
+#pragma bss_seg("B568")
+#pragma data_seg("D568")
+#pragma const_seg("K568")
 /***************************************************************************
 
 Top Speed / Full Throttle    (c) Taito 1987
@@ -966,3 +970,7 @@ GAME( 1987, topspeed, 0,        topspeed, topspeed, topspeed, ROT0, "Taito Corpo
 GAME( 1987, topspedu, topspeed, topspeed, topspedu, topspeed, ROT0, "Taito America Corporation (Romstar license)", "Top Speed (US)" )
 GAME( 1987, fullthrl, topspeed, topspeed, fullthrl, topspeed, ROT0, "Taito Corporation", "Full Throttle (Japan)" )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

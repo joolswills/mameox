@@ -1,3 +1,7 @@
+#pragma code_seg("C508")
+#pragma bss_seg("B508")
+#pragma data_seg("D508")
+#pragma const_seg("K508")
 /***************************************************************************
 
 	Atari Star Wars hardware
@@ -595,3 +599,7 @@ static DRIVER_INIT( esb )
 GAME( 1983, starwars, 0,        starwars, starwars, starwars, ROT0, "Atari", "Star Wars (rev 2)" )
 GAME( 1983, starwar1, starwars, starwars, starwars, starwars, ROT0, "Atari", "Star Wars (rev 1)" )
 GAME( 1985, esb,      0,        starwars, esb,      esb,      ROT0, "Atari Games", "The Empire Strikes Back" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

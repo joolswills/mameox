@@ -1,3 +1,7 @@
+#pragma code_seg("C602")
+#pragma bss_seg("B602")
+#pragma data_seg("D602")
+#pragma const_seg("K602")
 /***************************************************************************
 
 Vulgus memory map (preliminary)
@@ -415,3 +419,7 @@ ROM_END
 GAME( 1984, vulgus,  0,      vulgus, vulgus, 0, ROT90,  "Capcom", "Vulgus (set 1)" )
 GAME( 1984, vulgus2, vulgus, vulgus, vulgus, 0, ROT270, "Capcom", "Vulgus (set 2)" )
 GAME( 1984, vulgusj, vulgus, vulgus, vulgus, 0, ROT270, "Capcom", "Vulgus (Japan?)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

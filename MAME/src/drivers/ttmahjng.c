@@ -1,3 +1,7 @@
+#pragma code_seg("C577")
+#pragma bss_seg("B577")
+#pragma data_seg("D577")
+#pragma const_seg("K577")
 /***************************************************************************
 
 
@@ -236,3 +240,7 @@ ROM_END
 
 
 GAME( 1981, ttmahjng, 0, ttmahjng, ttmahjng, 0, ROT0, "Taito", "Mahjong" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

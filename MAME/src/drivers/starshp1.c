@@ -1,3 +1,7 @@
+#pragma code_seg("C507")
+#pragma bss_seg("B507")
+#pragma data_seg("D507")
+#pragma const_seg("K507")
 /***************************************************************************
 
 Atari Starship 1 driver
@@ -474,3 +478,7 @@ ROM_END
 
 GAMEX( 1977, starshp1, 0,        starshp1, starshp1, 0, ORIENTATION_FLIP_X, "Atari", "Starship 1",              GAME_NO_SOUND )
 GAMEX( 1977, starshpp, starshp1, starshp1, starshp1, 0, ORIENTATION_FLIP_X, "Atari", "Starship 1 (prototype?)", GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

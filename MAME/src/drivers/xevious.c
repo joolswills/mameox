@@ -1,3 +1,7 @@
+#pragma code_seg("C619")
+#pragma bss_seg("B619")
+#pragma data_seg("D619")
+#pragma const_seg("K619")
 /***************************************************************************
 
 Xevious
@@ -1415,3 +1419,7 @@ GAME( 1982, xevios,   xevious, xevios,  xevious,  xevios, ROT90, "bootleg", "Xev
 GAME( 1982, battles,  xevious, battles, battles,  0,      ROT90, "bootleg", "Battles" )
 GAME( 1984, sxevious, xevious, xevious, sxevious, 0,      ROT90, "Namco", "Super Xevious" )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C16")
+#pragma bss_seg("B16")
+#pragma data_seg("D16")
+#pragma const_seg("K16")
 /***************************************************************************
 
 Ambush Memory Map (preliminary)
@@ -236,3 +240,7 @@ ROM_END
 
 
 GAME( 1983, ambush, 0, ambush, ambush, 0, ROT0, "Nippon Amuse Co-Ltd", "Ambush" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

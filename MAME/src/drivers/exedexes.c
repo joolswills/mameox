@@ -1,3 +1,7 @@
+#pragma code_seg("C167")
+#pragma bss_seg("B167")
+#pragma data_seg("D167")
+#pragma const_seg("K167")
 /***************************************************************************
 
 Exed Exes
@@ -360,3 +364,7 @@ ROM_END
 
 GAME( 1985, exedexes, 0,        exedexes, exedexes, 0, ROT270, "Capcom", "Exed Exes" )
 GAME( 1985, savgbees, exedexes, exedexes, exedexes, 0, ROT270, "Capcom (Memetron license)", "Savage Bees" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

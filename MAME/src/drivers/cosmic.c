@@ -1,3 +1,7 @@
+#pragma code_seg("C119")
+#pragma bss_seg("B119")
+#pragma data_seg("D119")
+#pragma const_seg("K119")
 /***************************************************************************
 
 Universal board numbers (found on the schematics)
@@ -1542,3 +1546,7 @@ GAMEX(1980, magspot2, 0,       magspot2, magspot2, 0,       ROT270, "Universal",
 GAMEX(1980, devzone,  0,       magspot2, devzone,  0,       ROT270, "Universal", "Devil Zone", GAME_IMPERFECT_SOUND )
 GAMEX(1980?,nomnlnd,  0,       nomnlnd,  nomnlnd,  0,       ROT270, "Universal", "No Man's Land", GAME_WRONG_COLORS | GAME_IMPERFECT_SOUND )
 GAMEX(1980?,nomnlndg, nomnlnd, nomnlnd,  nomnlndg, 0,       ROT270, "Universal (Gottlieb license)", "No Man's Land (Gottlieb)", GAME_WRONG_COLORS | GAME_IMPERFECT_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

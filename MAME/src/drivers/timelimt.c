@@ -1,3 +1,7 @@
+#pragma code_seg("C560")
+#pragma bss_seg("B560")
+#pragma data_seg("D560")
+#pragma const_seg("K560")
 /***************************************************************************
 
 Time Limit (c) 1983 Chuo
@@ -279,3 +283,7 @@ ROM_END
 
 
 GAMEX( 1983, timelimt, 0, timelimt, timelimt, 0, ROT90, "Chuo Co. Ltd", "Time Limit", GAME_IMPERFECT_COLORS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C228")
+#pragma bss_seg("B228")
+#pragma data_seg("D228")
+#pragma const_seg("K228")
 /***************************************************************************
 
 Gun Dealer memory map
@@ -594,3 +598,7 @@ GAME( 19??, gundeala, gundealr, gundealr, gundealr, gundealr, ROT270, "Dooyong",
 GAME( 1990, gundealt, gundealr, gundealr, gundealt, gundealr, ROT270, "Tecmo", "Gun Dealer (Tecmo)" )
 GAME( 1990, yamyam,   0,        gundealr, yamyam,   yamyam,   ROT0,   "Dooyong", "Yam! Yam!?" )
 GAME( 1990, wiseguy,  yamyam,   gundealr, yamyam,   yamyam,   ROT0,   "Dooyong", "Wise Guy" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

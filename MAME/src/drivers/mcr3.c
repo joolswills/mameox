@@ -1,3 +1,7 @@
+#pragma code_seg("C307")
+#pragma bss_seg("B307")
+#pragma data_seg("D307")
+#pragma const_seg("K307")
 /***************************************************************************
 
 	Midway MCR-3 system
@@ -2115,3 +2119,7 @@ GAME( 1987, stargrds, 0,        mono_sg,  stargrds, stargrds, ROT0,  "Bally Midw
 GAME( 1983, spyhunt,  0,        spyhunt,  spyhunt,  spyhunt,  ROT90, "Bally Midway", "Spy Hunter" )
 GAME( 1984, crater,   0,        crater,   crater,   crater,   ORIENTATION_FLIP_X, "Bally Midway", "Crater Raider" )
 GAMEX(1985, turbotag, 0,        turbotag, turbotag, turbotag, ROT90, "Bally Midway", "Turbo Tag (prototype)", GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

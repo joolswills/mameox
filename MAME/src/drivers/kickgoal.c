@@ -1,3 +1,7 @@
+#pragma code_seg("C263")
+#pragma bss_seg("B263")
+#pragma data_seg("D263")
+#pragma const_seg("K263")
 /* Driver Info
 
 Kick Goal (c)1995 TCH
@@ -270,3 +274,7 @@ DRIVER_INIT( kickgoal )
 
 
 GAMEX( 1995, kickgoal,0, kickgoal, kickgoal, kickgoal, ROT0, "TCH", "Kick Goal", GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C357")
+#pragma bss_seg("B357")
+#pragma data_seg("D357")
+#pragma const_seg("K357")
 /******************************************************************************
 
 	Game Driver for Nichibutsu Mahjong series.
@@ -2476,3 +2480,7 @@ GAME( 1989, mcontest, 0,        mcontest, mcontest, mcontest, ROT180, "Nichibuts
 GAME( 1989, uchuuai,  0,        uchuuai,  uchuuai,  uchuuai,  ROT180, "Nichibutsu", "Mahjong Uchuu yori Ai wo komete (Japan)" )
 GAMEX(1991, av2mj1bb, 0,        av2mj1bb, av2mj1bb, av2mj1bb, ROT0,   "MIKI SYOUJI/AV JAPAN", "AV2Mahjong No.1 Bay Bridge no Seijo (Japan)", GAME_NOT_WORKING )
 GAMEX(1991, av2mj2rg, 0,        av2mj2rg, av2mj2rg, av2mj2rg, ROT0,   "MIKI SYOUJI/AV JAPAN", "AV2Mahjong No.2 Rouge no Kaori (Japan)", GAME_NOT_WORKING )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C422")
+#pragma bss_seg("B422")
+#pragma data_seg("D422")
+#pragma const_seg("K422")
 /***************************************************************************
 
 Rainbow Islands  (c) Taito 1987   + Jumping
@@ -803,3 +807,7 @@ GAME( 1987, rainbow,  0,       rainbow, rainbow, rainbow,  ROT0, "Taito Corporat
 GAME( 1987, rainbowo, rainbow, rainbow, rainbow, rainbow,  ROT0, "Taito Corporation", "Rainbow Islands (old version)" )
 GAME( 1988, rainbowe, rainbow, rainbow, rainbow, rainbowe, ROT0, "Taito Corporation", "Rainbow Islands (Extra)" )
 GAME( 1989, jumping,  rainbow, jumping, jumping, jumping,  ROT0, "bootleg", "Jumping" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

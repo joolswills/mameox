@@ -1,3 +1,7 @@
+#pragma code_seg("C532")
+#pragma bss_seg("B532")
+#pragma data_seg("D532")
+#pragma const_seg("K532")
 /***************************************************************************
 
 Taito F2 System
@@ -6700,3 +6704,7 @@ GAME( 1993, qcrayon,  0,        qcrayon,  qcrayon,  f2,       ROT0,   "Taito Cor
 GAME( 1993, qcrayon2, 0,        qcrayon2, qcrayon2, f2,       ROT0,   "Taito Corporation", "Crayon Shinchan Orato Asobo (Japan)" )
 GAME( 1991, driftout, 0,        driftout, driftout, f2,       ROT270, "Visco", "Drift Out (Japan)" )
 GAME( 1991, driveout, driftout, driveout, driftout, driveout, ROT270, "bootleg", "Drive Out" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

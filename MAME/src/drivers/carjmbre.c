@@ -1,3 +1,7 @@
+#pragma code_seg("C88")
+#pragma bss_seg("B88")
+#pragma data_seg("D88")
+#pragma const_seg("K88")
 /*
 Car Jamboree
 Omori Electric CAD (OEC) 1981
@@ -253,3 +257,7 @@ ROM_START( carjmbre )
 ROM_END
 
 GAMEX(1983, carjmbre, 0, carjmbre, carjmbre, 0, ROT90, "Omori Electric", "Car Jamboree", GAME_IMPERFECT_COLORS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

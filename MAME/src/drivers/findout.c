@@ -1,3 +1,7 @@
+#pragma code_seg("C179")
+#pragma bss_seg("B179")
+#pragma data_seg("D179")
+#pragma const_seg("K179")
 /***************************************************************************
 
 Find Out    (c) 1987
@@ -298,3 +302,7 @@ ROM_END
 
 
 GAMEX( 1987, findout, 0, findout, findout, 0, ROT0, "Elettronolo", "Find Out", GAME_WRONG_COLORS | GAME_IMPERFECT_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

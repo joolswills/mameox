@@ -1,3 +1,7 @@
+#pragma code_seg("C421")
+#pragma bss_seg("B421")
+#pragma data_seg("D421")
+#pragma const_seg("K421")
 /*****************************************************************************
 
 Raiders5 (c) 1985 Taito / UPL
@@ -317,3 +321,7 @@ ROM_END
 
 GAME( 1985, raiders5, 0,        raiders5, raiders5, 0, ROT0, "UPL", "Raiders5" )
 GAME( 1985, raidrs5t, raiders5, raiders5, raiders5, 0, ROT0, "UPL (Taito license)", "Raiders5 (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

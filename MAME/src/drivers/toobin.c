@@ -1,3 +1,7 @@
+#pragma code_seg("C567")
+#pragma bss_seg("B567")
+#pragma data_seg("D567")
+#pragma const_seg("K567")
 /***************************************************************************
 
 	Atari Toobin' hardware
@@ -465,3 +469,7 @@ static DRIVER_INIT( toobin )
 GAME( 1988, toobin,  0,      toobin, toobin, toobin, ROT270, "Atari Games", "Toobin' (version 3)" )
 GAME( 1988, toobin2, toobin, toobin, toobin, toobin, ROT270, "Atari Games", "Toobin' (version 2)" )
 GAME( 1988, toobinp, toobin, toobin, toobin, toobin, ROT270, "Atari Games", "Toobin' (prototype)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

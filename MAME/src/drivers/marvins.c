@@ -1,3 +1,7 @@
+#pragma code_seg("C301")
+#pragma bss_seg("B301")
+#pragma data_seg("D301")
+#pragma const_seg("K301")
 /*
 various early SNK games (1983-1985)
 - Marvin's Maze
@@ -823,3 +827,7 @@ GAMEX(1983, marvins,  0, marvins,  marvins,  marvins,  ROT270, "SNK", "Marvin's 
 GAMEX(1984, madcrash, 0, madcrash, madcrash, madcrash, ROT0,   "SNK", "Mad Crasher", GAME_IMPERFECT_SOUND )
 GAMEX(1984, vangrd2,  0, madcrash, vangrd2,  vangrd2,  ROT270, "SNK", "Vanguard II", GAME_NO_COCKTAIL )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

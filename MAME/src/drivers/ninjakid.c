@@ -1,3 +1,7 @@
+#pragma code_seg("C363")
+#pragma bss_seg("B363")
+#pragma data_seg("D363")
+#pragma const_seg("K363")
 /*******************************************************************************
  Ninja Kid / Ninjakun Majou no Bouken | (c) 1984 UPL / Taito
 ********************************************************************************
@@ -335,3 +339,7 @@ static DRIVER_INIT( ninjakid )
 *******************************************************************************/
 
 GAME( 1984, ninjakun, 0, ninjakid, ninjakid, ninjakid, ROT0, "[UPL] (Taito license)", "Ninjakun Majou no Bouken" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

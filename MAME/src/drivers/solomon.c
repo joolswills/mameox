@@ -1,3 +1,7 @@
+#pragma code_seg("C483")
+#pragma bss_seg("B483")
+#pragma data_seg("D483")
+#pragma const_seg("K483")
 /***************************************************************************
 
 Solomon's Key
@@ -266,3 +270,7 @@ ROM_END
 
 
 GAME( 1986, solomon, 0, solomon, solomon, 0, ROT0, "Tecmo", "Solomon's Key (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

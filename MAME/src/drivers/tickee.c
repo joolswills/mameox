@@ -1,3 +1,7 @@
+#pragma code_seg("C558")
+#pragma bss_seg("B558")
+#pragma data_seg("D558")
+#pragma const_seg("K558")
 /***************************************************************************
 
 	Raster Elite Tickee Tickats hardware
@@ -297,3 +301,7 @@ static DRIVER_INIT( tickee )
  *************************************/
 
 GAME( 1994, tickee, 0, tickee, tickee, tickee, ROT0, "Raster Elite", "Tickee Tickats" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

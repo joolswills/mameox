@@ -1,3 +1,7 @@
+#pragma code_seg("C402")
+#pragma bss_seg("B402")
+#pragma data_seg("D402")
+#pragma const_seg("K402")
 /***************************************************************************
   Pole Position memory map (preliminary)
 
@@ -1055,3 +1059,7 @@ GAME( 1983, poleps2a, polepos2, polepos, polepos2, polepos2, ROT0, "Namco (Atari
 GAME( 1983, poleps2b, polepos2, polepos, polepos2, 0,		 ROT0, "Namco (Atari license)", "Pole Position II (Atari bootleg 1)" )
 GAME( 1983, poleps2c, polepos2, polepos, polepos2, 0,		 ROT0, "Namco (Atari license)", "Pole Position II (Atari bootleg 2)" )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

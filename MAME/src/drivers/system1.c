@@ -1,3 +1,7 @@
+#pragma code_seg("C525")
+#pragma bss_seg("B525")
+#pragma data_seg("D525")
+#pragma const_seg("K525")
 /******************************************************************************
 
 Sega System 1 / System 2
@@ -4195,3 +4199,7 @@ GAMEX(1987, wbmljb,   wbml,     wbml,     wbml,     bootleg,  ROT0,   "bootleg",
 GAMEX(1987, wbmlb,    wbml,     wbml,     wbml,     bootleg,  ROT0,   "bootleg", "Wonder Boy in Monster Land", GAME_NO_COCKTAIL )
 GAMEX(1987, dakkochn, 0,        chplft,   chplft,   0,        ROT0,   "Sega", "DakkoChan Jansoh", GAME_NOT_WORKING | GAME_NO_COCKTAIL )
 GAMEX(1988, ufosensi, 0,        chplft,   chplft,   0,        ROT0,   "Sega", "Ufo Senshi Yohko Chan", GAME_NOT_WORKING | GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

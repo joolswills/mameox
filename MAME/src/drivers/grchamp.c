@@ -1,3 +1,7 @@
+#pragma code_seg("C221")
+#pragma bss_seg("B221")
+#pragma data_seg("D221")
+#pragma const_seg("K221")
 /***************************************************************************
 
 Grand Champion
@@ -535,3 +539,7 @@ ROM_END
 /***************************************************************************/
 
 GAMEX( 1981, grchamp, 0, grchamp, grchamp, grchamp, ROT90, "Taito", "Grand Champion", GAME_IMPERFECT_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

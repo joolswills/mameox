@@ -1,3 +1,7 @@
+#pragma code_seg("C535")
+#pragma bss_seg("B535")
+#pragma data_seg("D535")
+#pragma const_seg("K535")
 /*
   Taito L-System
 
@@ -2587,3 +2591,7 @@ GAME( 199?, cubybop,  0,        cachat,   cubybop,  0,        ROT0,   "Taito Cor
 
 GAME( 1992, plgirls,  0,        cachat,   plgirls,  0,        ROT270, "Hot-B.", "Play Girls" )
 GAME( 1993, plgirls2, 0,        cachat,   plgirls2, 0,        ROT270, "Hot-B.", "Play Girls 2" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

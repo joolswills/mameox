@@ -1,3 +1,7 @@
+#pragma code_seg("C188")
+#pragma bss_seg("B188")
+#pragma data_seg("D188")
+#pragma const_seg("K188")
 /***************************************************************************
 
 Free Kick  - (c) 1987 Sega / Nihon System (made by Nihon, licensed to Sega)
@@ -897,3 +901,7 @@ GAMEX(1987, pbillrds, pbillrd,  pbillrd,  pbillrd,  0,     ROT0,   "Nihon System
 GAMEX(1987, freekick, 0,        freekckb, freekckb, 0,     ROT270, "Nihon System (Sega license)", "Free Kick", GAME_NOT_WORKING )
 GAME( 1987, freekckb, freekick, freekckb, freekckb, 0,     ROT270, "bootleg", "Free Kick (bootleg)" )
 GAMEX(198?, countrun, 0,        freekckb, freekckb, 0,     ROT0,   "Nihon System (Sega license)", "Counter Run", GAME_NOT_WORKING )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

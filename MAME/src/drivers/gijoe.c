@@ -1,3 +1,7 @@
+#pragma code_seg("C211")
+#pragma bss_seg("B211")
+#pragma data_seg("D211")
+#pragma const_seg("K211")
 /***************************************************************************
 
 GI Joe
@@ -359,3 +363,7 @@ static DRIVER_INIT( gijoe )
 
 GAME( 1992, gijoe,  0,     gijoe, gijoe, gijoe, ROT0, "Konami", "GI Joe (World)")
 GAME( 1992, gijoeu, gijoe, gijoe, gijoe, gijoe, ROT0, "Konami", "GI Joe (US)")
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

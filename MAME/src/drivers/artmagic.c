@@ -1,3 +1,7 @@
+#pragma code_seg("C27")
+#pragma bss_seg("B27")
+#pragma data_seg("D27")
+#pragma const_seg("K27")
 /***************************************************************************
 
 	Art & Magic hardware
@@ -1028,3 +1032,7 @@ GAME( 1993, ultennis, 0,        artmagic, ultennis, ultennis, ROT0, "Art & Magic
 GAME( 1994, cheesech, 0,        artmagic, cheesech, cheesech, ROT0, "Art & Magic", "Cheese Chase" )
 GAME( 1994, stonebal, 0,        stonebal, stonebal, stonebal, ROT0, "Art & Magic", "Stone Ball (4 Players)" )
 GAME( 1994, stoneba2, stonebal, stonebal, stonebal, stonebal, ROT0, "Art & Magic", "Stone Ball (2 Players)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

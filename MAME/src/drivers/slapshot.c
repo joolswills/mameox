@@ -1,3 +1,7 @@
+#pragma code_seg("C479")
+#pragma bss_seg("B479")
+#pragma data_seg("D479")
+#pragma const_seg("K479")
 /***************************************************************************
 
 Slapshot (c) Taito 1994
@@ -479,3 +483,7 @@ static DRIVER_INIT( slapshot )
 }
 
 GAME( 1994, slapshot, 0, slapshot, slapshot, slapshot, ROT0, "Taito Corporation", "Slap Shot (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

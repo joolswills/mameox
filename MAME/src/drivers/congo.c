@@ -1,3 +1,7 @@
+#pragma code_seg("C114")
+#pragma bss_seg("B114")
+#pragma data_seg("D114")
+#pragma const_seg("K114")
 /***************************************************************************
 
 Congo Bongo memory map (preliminary)
@@ -537,3 +541,7 @@ ROM_END
 GAME (1983, congo,  0,     congo, congo,  0, ROT90, "Sega", "Congo Bongo" )
 GAME (1983, tiptop, congo, congo, tiptop, 0, ROT90, "Sega", "Tip Top" )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

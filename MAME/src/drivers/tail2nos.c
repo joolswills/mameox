@@ -1,3 +1,7 @@
+#pragma code_seg("C530")
+#pragma bss_seg("B530")
+#pragma data_seg("D530")
+#pragma const_seg("K530")
 /***************************************************************************
 
 Tail to Nose / Super Formula - (c) 1989 Video System Co.
@@ -373,3 +377,7 @@ ROM_END
 
 GAMEX( 1989, tail2nos, 0,        tail2nos, tail2nos, 0, ROT90, "V-System Co.", "Tail to Nose - Great Championship", GAME_NO_COCKTAIL )
 GAMEX( 1989, sformula, tail2nos, tail2nos, tail2nos, 0, ROT90, "V-System Co.", "Super Formula (Japan)", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

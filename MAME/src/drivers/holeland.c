@@ -1,3 +1,7 @@
+#pragma code_seg("C242")
+#pragma bss_seg("B242")
+#pragma data_seg("D242")
+#pragma const_seg("K242")
 /***************************************************************************
 
 Hole Land
@@ -405,3 +409,7 @@ ROM_END
 
 GAMEX( 1984, holeland, 0, holeland, holeland, 0, ROT0,   "Tecfri", "Hole Land", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1985, crzrally, 0, crzrally, crzrally, 0, ROT270, "Tecfri", "Crazy Rally", GAME_IMPERFECT_GRAPHICS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

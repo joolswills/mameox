@@ -1,3 +1,7 @@
+#pragma code_seg("C97")
+#pragma bss_seg("B97")
+#pragma data_seg("D97")
+#pragma const_seg("K97")
 /***************************************************************************
 
 Championship Baseball
@@ -323,3 +327,7 @@ ROM_END
 GAMEX(1983, champbas, 0,        champbas, champbas, 0, ROT0, "Sega", "Champion Baseball", GAME_NO_COCKTAIL )
 GAMEX(1983, champbbj, champbas, champbas, champbas, 0, ROT0, "Alpha Denshi Co.", "Champion Baseball (Japan)", GAME_NOT_WORKING )
 GAMEX(1983, champbb2, 0,        champbas, champbas, 0, ROT0, "Sega", "Champion Baseball II", GAME_NOT_WORKING )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

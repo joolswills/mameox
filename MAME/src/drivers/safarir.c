@@ -1,3 +1,7 @@
+#pragma code_seg("C442")
+#pragma bss_seg("B442")
+#pragma data_seg("D442")
+#pragma const_seg("K442")
 /****************************************************************************
 
 Safari Rally by SNK/Taito
@@ -265,3 +269,7 @@ DRIVER_INIT( safarir )
 
 
 GAMEX( 1979, safarir, 0, safarir, safarir, safarir, ROT90, "SNK", "Safari Rally (Japan)", GAME_NO_SOUND | GAME_IMPERFECT_COLORS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

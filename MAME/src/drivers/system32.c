@@ -1,3 +1,7 @@
+#pragma code_seg("C528")
+#pragma bss_seg("B528")
+#pragma data_seg("D528")
+#pragma const_seg("K528")
 /*
 	Sega System 32 hardware
 
@@ -2787,3 +2791,7 @@ GAMEX(1992, darkedge, 0,        sys32_hi, system32, s32,      ROT0, "Sega", "Dar
 /* Outrunners */
 /* Stadium Cross */
 /* Title Fight */
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

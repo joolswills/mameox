@@ -1,3 +1,7 @@
+#pragma code_seg("C92")
+#pragma bss_seg("B92")
+#pragma data_seg("D92")
+#pragma const_seg("K92")
 /***************************************************************************
 
   Crude Buster (World version FX)		(c) 1990 Data East Corporation
@@ -41,6 +45,7 @@ static data16_t prot;
 
 static WRITE16_HANDLER( twocrude_control_w )
 {
+#if 0
 	switch (offset<<1) {
 	case 0: /* DMA flag */
 		buffer_spriteram16_w(0,0,0);
@@ -86,11 +91,59 @@ static WRITE16_HANDLER( twocrude_control_w )
 
 		break;
 	}
+#else
+	switch (offset) {
+	case 0: /* DMA flag */
+		buffer_spriteram16_w(0,0,0);
+		return;
+
+	case 3: /* IRQ ack */
+		return;
+
+  case 1: /* Sound CPU write */
+		soundlatch_w(0,data & 0xff);
+		cpu_set_irq_line(1,0,HOLD_LINE);
+    	return;
+
+	case 2: /* Protection, maybe this is a PAL on the board?
+
+			80046 is level number
+			stop at stage and enter.
+			see also 8216..
+
+				9a 00 = pf4 over pf3 (normal) (level 0)
+				9a f1 =  (level 1 - water), pf3 over ALL sprites + pf4
+				9a 80 = pf3 over pf4 (Level 2 - copter)
+				9a 40 = pf3 over ALL sprites + pf4 (snow) level 3
+				9a c0 = doesn't matter?
+				9a ff = pf 3 over pf4
+
+			I can't find a priority register, I assume it's tied to the
+			protection?!
+
+		*/
+		if ((data&0xffff)==0x9a00) prot=0;
+		if ((data&0xffff)==0xaa) prot=0x74;
+		if ((data&0xffff)==0x0200) prot=0x63<<8;
+		if ((data&0xffff)==0x9a) prot=0xe;
+		if ((data&0xffff)==0x55) prot=0x1e;
+		if ((data&0xffff)==0x0e) {prot=0x0e;twocrude_pri_w(0);} /* start */
+		if ((data&0xffff)==0x00) {prot=0x0e;twocrude_pri_w(0);} /* level 0 */
+		if ((data&0xffff)==0xf1) {prot=0x36;twocrude_pri_w(1);} /* level 1 */
+		if ((data&0xffff)==0x80) {prot=0x2e;twocrude_pri_w(1);} /* level 2 */
+		if ((data&0xffff)==0x40) {prot=0x1e;twocrude_pri_w(1);} /* level 3 */
+		if ((data&0xffff)==0xc0) {prot=0x3e;twocrude_pri_w(0);} /* level 4 */
+		if ((data&0xffff)==0xff) {prot=0x76;twocrude_pri_w(1);} /* level 5 */
+
+		break;
+	}
+#endif
 	logerror("Warning %04x- %02x written to control %02x\n",activecpu_get_pc(),data,offset);
 }
 
 READ16_HANDLER( twocrude_control_r )
 {
+#if 0
 	switch (offset<<1)
 	{
 		case 0: /* Player 1 & Player 2 joysticks & fire buttons */
@@ -106,6 +159,23 @@ READ16_HANDLER( twocrude_control_r )
 		case 6: /* Credits, VBL in byte 7 */
 			return readinputport(2);
 	}
+#else
+	switch (offset)
+	{
+		case 0: /* Player 1 & Player 2 joysticks & fire buttons */
+			return (readinputport(0) + (readinputport(1) << 8));
+
+		case 1: /* Dip Switches */
+			return (readinputport(3) + (readinputport(4) << 8));
+
+		case 2: /* Protection */
+			logerror("%04x : protection control read at 30c000 %d\n",activecpu_get_pc(),offset);
+			return prot;
+
+		case 3: /* Credits, VBL in byte 7 */
+			return readinputport(2);
+	}
+#endif
 
 	return ~0;
 }
@@ -618,3 +688,7 @@ GAME( 1990, cbuster,  0,       twocrude, twocrude, twocrude, ROT0, "Data East Co
 GAME( 1990, cbusterw, cbuster, twocrude, twocrude, twocrude, ROT0, "Data East Corporation", "Crude Buster (World FU version)" )
 GAME( 1990, cbusterj, cbuster, twocrude, twocrude, twocrude, ROT0, "Data East Corporation", "Crude Buster (Japan)" )
 GAME( 1990, twocrude, cbuster, twocrude, twocrude, twocrude, ROT0, "Data East USA", "Two Crude (US)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

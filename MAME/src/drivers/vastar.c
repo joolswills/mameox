@@ -1,3 +1,7 @@
+#pragma code_seg("C592")
+#pragma bss_seg("B592")
+#pragma data_seg("D592")
+#pragma const_seg("K592")
 /***************************************************************************
 
 Vastar memory map (preliminary)
@@ -441,3 +445,7 @@ ROM_END
 
 GAME( 1983, vastar,  0,      vastar, vastar, 0, ROT90, "Sesame Japan", "Vastar (set 1)" )
 GAME( 1983, vastar2, vastar, vastar, vastar, 0, ROT90, "Sesame Japan", "Vastar (set 2)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

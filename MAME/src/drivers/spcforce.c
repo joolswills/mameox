@@ -1,3 +1,7 @@
+#pragma code_seg("C487")
+#pragma bss_seg("B487")
+#pragma data_seg("D487")
+#pragma const_seg("K487")
 /***************************************************************************
 
 Space Force Memory Map
@@ -368,3 +372,7 @@ ROM_END
 GAMEX( 1980, spcforce, 0,        spcforce, spcforce, 0, ROT270, "Venture Line", "Space Force", GAME_IMPERFECT_COLORS )
 GAMEX( 19??, spcforc2, spcforce, spcforce, spcforc2, 0, ROT270, "Elcon (bootleg?)", "Space Force (set 2)", GAME_IMPERFECT_COLORS )
 GAMEX( 1981, meteor,   spcforce, spcforce, spcforc2, 0, ROT270, "Venture Line", "Meteoroids", GAME_IMPERFECT_COLORS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

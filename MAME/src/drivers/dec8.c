@@ -1,3 +1,7 @@
+#pragma code_seg("C141")
+#pragma bss_seg("B141")
+#pragma data_seg("D141")
+#pragma const_seg("K141")
 /***************************************************************************
 
 Various Data East 8 bit games:
@@ -3104,3 +3108,7 @@ GAME(1986, shackled, 0,        shackled, shackled, 0,       ROT0,   "Data East U
 GAME(1986, breywood, shackled, shackled, shackled, 0,       ROT0,   "Data East Corporation", "Breywood (Japan revision 2)" )
 GAME(1987, csilver,  0,        csilver,  csilver,  0,       ROT0,   "Data East Corporation", "Captain Silver (Japan)" )
 GAME(1987, garyoret, 0,        garyoret, garyoret, 0,       ROT0,   "Data East Corporation", "Garyo Retsuden (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C286")
+#pragma bss_seg("B286")
+#pragma data_seg("D286")
+#pragma const_seg("K286")
 /***************************************************************************
 
   Legendary Wings
@@ -1436,3 +1440,7 @@ GAME( 1986, trojanj,  trojan,   trojan,   trojan,   0, ROT0,  "Capcom", "Tatakai
 GAME( 1987, avengers, 0,        avengers, avengers, 0, ROT90, "Capcom", "Avengers (US set 1)" )
 GAME( 1987, avenger2, avengers, avengers, avengers, 0, ROT90, "Capcom", "Avengers (US set 2)" )
 GAME( 1987, buraiken, avengers, avengers, avengers, 0, ROT90, "Capcom", "Hissatsu Buraiken (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C189")
+#pragma bss_seg("B189")
+#pragma data_seg("D189")
+#pragma const_seg("K189")
 /***************************************************************************
 
  Frogger hardware
@@ -206,3 +210,7 @@ ROM_END
 GAME( 1981, frogger,  0,	   frogger,  frogger,  frogger,  ROT90, "Konami", "Frogger" )
 GAME( 1981, frogseg1, frogger, frogger,  frogger,  frogger,  ROT90, "[Konami] (Sega license)", "Frogger (Sega set 1)" )
 GAME( 1981, frogseg2, frogger, frogger,  frogger,  frogger,  ROT90, "[Konami] (Sega license)", "Frogger (Sega set 2)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

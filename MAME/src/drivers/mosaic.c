@@ -1,3 +1,7 @@
+#pragma code_seg("C332")
+#pragma bss_seg("B332")
+#pragma data_seg("D332")
+#pragma const_seg("K332")
 /***************************************************************************
 
 Mosaic (c) 1990 Space
@@ -379,3 +383,7 @@ ROM_END
 GAME( 1990, mosaic,  0,      mosaic, mosaic, 0, ROT0, "Space", "Mosaic" )
 GAME( 1990, mosaica, mosaic, mosaic, mosaic, 0, ROT0, "Space (Fuuki license)", "Mosaic (Fuuki)" )
 GAME( 1992, gfire2,  0,      gfire2, gfire2, 0, ROT0, "Topis Corp", "Golden Fire II" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

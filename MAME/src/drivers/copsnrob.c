@@ -1,3 +1,7 @@
+#pragma code_seg("C118")
+#pragma bss_seg("B118")
+#pragma data_seg("D118")
+#pragma const_seg("K118")
 /***************************************************************************
 
 	Atari Cops'n Robbers hardware
@@ -333,3 +337,7 @@ static DRIVER_INIT( copsnrob )
  *************************************/
 
 GAMEX( 1976, copsnrob, 0, copsnrob, copsnrob, copsnrob, ROT0, "Atari", "Cops'n Robbers", GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

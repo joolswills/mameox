@@ -1,3 +1,7 @@
+#pragma code_seg("C347")
+#pragma bss_seg("B347")
+#pragma data_seg("D347")
+#pragma const_seg("K347")
 /*
 Namco System NB-1
 
@@ -1202,3 +1206,7 @@ GAMEX( 1994, vshoot,   0,        namconb1, namconb1, vshoot,   ROT0,  "Namco", "
 GAMEX( 1994, outfxies, 0,		 namconb2, namconb1, outfxies, ROT0, "Namco", "Outfoxies", GAME_NO_SOUND )
 GAMEX( 1994, outfxesj, outfxies, namconb2, namconb1, outfxies, ROT0, "Namco", "The Outfoxies (Japan)", GAME_NO_SOUND )
 GAMEX( 1995, machbrkr, 0,		 namconb2, namconb1, machbrkr, ROT0, "Namco", "Mach Breakers (Japan)", GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

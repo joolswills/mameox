@@ -1,3 +1,7 @@
+#pragma code_seg("C31")
+#pragma bss_seg("B31")
+#pragma data_seg("D31")
+#pragma const_seg("K31")
 /****************************************************************************
 
 Bally Astrocade style games
@@ -945,3 +949,7 @@ GAME( 1981, gorf,     0,    gorf,     gorf,     gorf,     ROT270, "Midway", "Gor
 GAME( 1981, gorfpgm1, gorf, gorf,     gorf,     gorf,     ROT270, "Midway", "Gorf (Program 1)" )
 GAME( 1981, robby,    0,    robby,    robby,    0,        ROT0,   "Bally Midway", "Robby Roto" )
 GAME( 1983, profpac,  0,    profpac,  gorf,     0,        ROT0,   "Bally Midway", "Professor PacMan" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

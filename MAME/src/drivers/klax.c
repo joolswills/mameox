@@ -1,3 +1,7 @@
+#pragma code_seg("C266")
+#pragma bss_seg("B266")
+#pragma data_seg("D266")
+#pragma const_seg("K266")
 /***************************************************************************
 
 	Atari Klax hardware
@@ -385,3 +389,7 @@ GAME( 1989, klax2, klax, klax, klax, klax, ROT0, "Atari Games", "Klax (set 2)" )
 GAME( 1989, klax3, klax, klax, klax, klax, ROT0, "Atari Games", "Klax (set 3)" )
 GAME( 1989, klaxj, klax, klax, klax, klax, ROT0, "Atari Games", "Klax (Japan)" )
 GAME( 1989, klaxd, klax, klax, klax, klax, ROT0, "Atari Games", "Klax (Germany)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C488")
+#pragma bss_seg("B488")
+#pragma data_seg("D488")
+#pragma const_seg("K488")
 /***************************************************************************
 
 							Speed Buggy / Buggy Boy
@@ -711,3 +715,7 @@ VIDEO_UPDATE( spdbuggy )
 	/* Draw the foreground (text) */
 	if (layers_ctrl & 4)	tilemap_draw(bitmap, cliprect, fg_tilemap,  0, 0);
 }
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

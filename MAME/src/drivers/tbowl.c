@@ -1,3 +1,7 @@
+#pragma code_seg("C545")
+#pragma bss_seg("B545")
+#pragma data_seg("D545")
+#pragma const_seg("K545")
 /*** Tecmo Bowl (c)1987 Tecmo
 
 driver by David Haywood
@@ -736,3 +740,7 @@ ROM_END
 
 GAMEX( 1987, tbowl,    0,        tbowl,    tbowl,    0, ROT0,  "Tecmo", "Tecmo Bowl (World?)", GAME_IMPERFECT_SOUND )
 GAMEX( 1987, tbowlj,   tbowl,    tbowl,    tbowlj,   0, ROT0,  "Tecmo", "Tecmo Bowl (Japan)", GAME_IMPERFECT_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

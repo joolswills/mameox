@@ -1,3 +1,7 @@
+#pragma code_seg("C159")
+#pragma bss_seg("B159")
+#pragma data_seg("D159")
+#pragma const_seg("K159")
 /***************************************************************************
 
 Some Dynax games using the second version of their blitter
@@ -1772,6 +1776,9 @@ ROM_END
 
 static DRIVER_INIT( maya )
 {
+	data8_t	*gfx;
+	int i;
+
 	/* Address lines scrambling on 1 z80 rom */
 	data8_t	*rom = memory_region(REGION_CPU1) + 0x28000,
 			*end = rom + 0x10000;
@@ -1786,9 +1793,8 @@ static DRIVER_INIT( maya )
 	}
 
 	/* Address lines scrambling on the blitter data roms */
-	data8_t	*gfx = memory_region(REGION_GFX1);
+  gfx = memory_region(REGION_GFX1);
 	rom = memory_region(REGION_USER1);
-	int i;
 	for (i = 0; i < 0xc0000; i++)
 		gfx[i] = rom[BITSWAP24(i,23,22,21,20,19,18,14,15, 16,17,13,12,11,10,9,8, 7,6,5,4,3,2,1,0)];
 }
@@ -1849,3 +1855,7 @@ GAMEX(1993, ladyfrog, 0,        ladyfrog, sprtmtch, 0,    ROT0,   "Microhard", "
 GAMEX(1993, ladyfrga, ladyfrog, ladyfrog, sprtmtch, 0,    ROT0,   "Microhard", "The Return of Lady Frog (set 2)", GAME_NOT_WORKING )
 GAME( 1994, maya,     0,        sprtmtch, sprtmtch, maya, ROT0,   "Promat",    "Maya" )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

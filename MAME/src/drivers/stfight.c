@@ -1,3 +1,7 @@
+#pragma code_seg("C510")
+#pragma bss_seg("B510")
+#pragma data_seg("D510")
+#pragma const_seg("K510")
 /*****************************          (by Mark McDougall)
  *** STREET FIGHT hardware ***	This has been adapted from the excellent
  *****************************  Psychic 5 description (by Roberto Ventura)
@@ -698,3 +702,7 @@ ROM_END
 GAME( 1986, empcity,  0,       stfight, stfight, empcity, ROT0, "Seibu Kaihatsu", "Empire City: 1931 (bootleg?)" )
 GAME( 1986, empcityj, empcity, stfight, stfight, stfight, ROT0, "[Seibu Kaihatsu] (Taito license)", "Empire City: 1931 (Japan)" )
 GAME( 1986, stfight,  empcity, stfight, stfight, stfight, ROT0, "Seibu Kaihatsu", "Street Fight (Germany)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

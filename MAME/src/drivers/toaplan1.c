@@ -1,3 +1,7 @@
+#pragma code_seg("C564")
+#pragma bss_seg("B564")
+#pragma data_seg("D564")
+#pragma const_seg("K564")
 /***************************************************************************
 
 		ToaPlan game hardware from 1988-1991
@@ -2265,3 +2269,7 @@ GAME ( 1990, outzonea, outzone,  outzone,  outzone,  0, ROT270, "Toaplan", "Out 
 GAMEX( 1991, vimana,   0,        vimana,   vimana,   0, ROT270, "Toaplan", "Vimana", GAME_NO_SOUND )
 GAMEX( 1991, vimana1,  vimana,   vimana,   vimana,   0, ROT270, "Toaplan", "Vimana (old set)", GAME_NO_SOUND )
 GAMEX( 1991, vimanan,  vimana,   vimana,   vimanan,  0, ROT270, "Toaplan (Nova Apparate GMBH & Co license)", "Vimana (Nova Apparate GMBH & Co)", GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

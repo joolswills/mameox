@@ -1,3 +1,7 @@
+#pragma code_seg("C274")
+#pragma bss_seg("B274")
+#pragma data_seg("D274")
+#pragma const_seg("K274")
 /**************************************************************************
 
   Last Duel 			          - Capcom, 1988
@@ -801,3 +805,7 @@ GAME( 1988, lstduelb, lastduel, lastduel, lastduel, 0, ROT270, "bootleg", "Last 
 GAME( 1989, madgear,  0,        madgear,  madgear,  0, ROT270, "Capcom", "Mad Gear (US)" )
 GAME( 1989, madgearj, madgear,  madgear,  madgear,  0, ROT270, "Capcom", "Mad Gear (Japan)" )
 GAME( 1988, ledstorm, madgear,  madgear,  madgear,  0, ROT270, "Capcom", "Led Storm (US)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C582")
+#pragma bss_seg("B582")
+#pragma data_seg("D582")
+#pragma const_seg("K582")
 /*************************************************************************
 
 	Sega Z80-3D system
@@ -977,3 +981,7 @@ GAMEX( 1981, turbob,   turbo,   turbo,    turbo,    decode_turbo,   ROT270,     
 GAME ( 1982, subroc3d, 0,       subroc3d, subroc3d, 0,              ORIENTATION_FLIP_X, "Sega", "Subroc-3D" )
 GAME ( 1982, buckrog,  0,       buckrog,  buckrog,  decode_buckrog, ROT0,               "Sega", "Buck Rogers: Planet of Zoom" )
 GAME ( 1982, buckrogn, buckrog, buckrog,  buckrog,  0,              ROT0,               "Sega", "Buck Rogers: Planet of Zoom (not encrypted)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

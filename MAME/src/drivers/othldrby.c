@@ -1,3 +1,7 @@
+#pragma code_seg("C380")
+#pragma bss_seg("B380")
+#pragma data_seg("D380")
+#pragma const_seg("K380")
 /***************************************************************************
 
 Othello Derby
@@ -298,3 +302,7 @@ ROM_END
 
 
 GAME( 1995, othldrby, 0, othldrby, othldrby, 0, ROT0, "Sunwise", "Othello Derby (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

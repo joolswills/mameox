@@ -1,3 +1,7 @@
+#pragma code_seg("C248")
+#pragma bss_seg("B248")
+#pragma data_seg("D248")
+#pragma const_seg("K248")
 /***************************************************************************
 
 IQ Block   (c) 1992 IGS
@@ -427,3 +431,7 @@ static DRIVER_INIT( cabaret )
 GAME( 1993, iqblock, 0, iqblock, iqblock, iqblock, ROT0, "IGS", "IQ-Block" )
 
 GAMEX( 19??, cabaret, 0, cabaret, iqblock, cabaret, ROT0, "IGS", "Cabaret", GAME_NOT_WORKING | GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

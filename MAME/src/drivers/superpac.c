@@ -1,3 +1,7 @@
+#pragma code_seg("C519")
+#pragma bss_seg("B519")
+#pragma data_seg("D519")
+#pragma const_seg("K519")
 /***************************************************************************
 
 Super Pac-Man memory map (preliminary)
@@ -545,3 +549,7 @@ GAME( 1982, superpcm, superpac, superpac, superpac, 0, ROT90, "[Namco] (Bally Mi
 GAME( 1983, pacnpal,  0,        superpac, pacnpal,  0, ROT90, "Namco", "Pac & Pal" )
 GAME( 1983, pacnpal2, pacnpal,  superpac, pacnpal,  0, ROT90, "Namco", "Pac & Pal (older)" )
 GAMEX(1983, pacnchmp, pacnpal,  superpac, pacnpal,  0, ROT90, "Namco", "Pac-Man & Chomp Chomp", GAME_IMPERFECT_COLORS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

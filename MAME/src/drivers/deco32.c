@@ -1,3 +1,7 @@
+#pragma code_seg("C142")
+#pragma bss_seg("B142")
+#pragma data_seg("D142")
+#pragma const_seg("K142")
 /***************************************************************************
 
 	Data East 32 bit ARM based games:
@@ -2614,3 +2618,7 @@ GAMEX(1994, lockload, 0,        lockload, lockload, lockload, ROT0, "Data East C
 GAMEX(1994, tattass,  0,        tattass,  tattass,  tattass,  ROT0, "Data East Pinball",     "Tattoo Assassins (US Prototype)", GAME_IMPERFECT_GRAPHICS )
 GAMEX(1994, tattassa, tattass,  tattass,  tattass,  tattass,  ROT0, "Data East Pinball",     "Tattoo Assassins (Asia Prototype)", GAME_IMPERFECT_GRAPHICS )
 GAMEX(1994, nslasher, 0,        tattass,  tattass,  nslasher, ROT0, "Data East Corporation", "Night Slashers", GAME_NOT_WORKING | GAME_UNEMULATED_PROTECTION)
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

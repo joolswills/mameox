@@ -1,3 +1,7 @@
+#pragma code_seg("C384")
+#pragma bss_seg("B384")
+#pragma data_seg("D384")
+#pragma const_seg("K384")
 /***************************************************************************
 
 PacLand memory map (preliminary)
@@ -489,3 +493,7 @@ GAMEX( 1984, pacland,  0,       pacland, pacland, 0, ROT0, "Namco", "Pac-Land (s
 GAMEX( 1984, pacland2, pacland, pacland, pacland, 0, ROT0, "Namco", "Pac-Land (set 2)", GAME_NO_COCKTAIL )
 GAMEX( 1984, pacland3, pacland, pacland, pacland, 0, ROT0, "Namco", "Pac-Land (set 3)", GAME_NO_COCKTAIL )
 GAMEX( 1984, paclandm, pacland, pacland, pacland, 0, ROT0, "[Namco] (Bally Midway license)", "Pac-Land (Midway)", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

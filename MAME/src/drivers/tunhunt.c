@@ -1,3 +1,7 @@
+#pragma code_seg("C581")
+#pragma bss_seg("B581")
+#pragma data_seg("D581")
+#pragma const_seg("K581")
 /***************************************************************************
 
 	Atari Tunnel Hunt hardware
@@ -380,3 +384,7 @@ ROM_END
 
 /*         rom   parent  machine    inp       	init */
 GAME( 1981,tunhunt,   0, tunhunt,   tunhunt,	0,  ORIENTATION_SWAP_XY, "Atari", "Tunnel Hunt" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

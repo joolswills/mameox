@@ -1,3 +1,7 @@
+#pragma code_seg("C202")
+#pragma bss_seg("B202")
+#pragma data_seg("D202")
+#pragma const_seg("K202")
 /***************************************************************************
 
 Gals Panic       1990 Kaneko
@@ -997,3 +1001,7 @@ GAMEX( 1995, newfant,  0,        comad,    fantasia, 0, ROT90, "Comad & New Japa
 GAMEX( 1995, fantsy95, 0,        comad,    fantasia, 0, ROT90, "Hi-max Technology Inc.", "Fantasy '95", GAME_NO_COCKTAIL )
 GAMEX( 1996, missw96,  0,        comad,    missw96,  0, ROT0,  "Comad", "Miss World '96 Nude", GAME_NO_COCKTAIL )
 GAMEX( 1997, fantsia2, 0,        fantsia2, missw96,  0, ROT0,  "Comad", "Fantasia II", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

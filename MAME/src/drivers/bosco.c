@@ -1,3 +1,7 @@
+#pragma code_seg("C75")
+#pragma bss_seg("B75")
+#pragma data_seg("D75")
+#pragma const_seg("K75")
 /***************************************************************************
 
 Bosconian
@@ -702,3 +706,7 @@ GAME( 1981, boscoo,   bosco, bosco, bosco,   0, ROT0, "Namco", "Bosconian (old v
 GAME( 1981, boscoo2,  bosco, bosco, bosco,   0, ROT0, "Namco", "Bosconian (older version)" )
 GAME( 1981, boscomd,  bosco, bosco, boscomd, 0, ROT0, "[Namco] (Midway license)", "Bosconian (Midway, new version)" )
 GAME( 1981, boscomdo, bosco, bosco, boscomd, 0, ROT0, "[Namco] (Midway license)", "Bosconian (Midway, old version)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C155")
+#pragma bss_seg("B155")
+#pragma data_seg("D155")
+#pragma const_seg("K155")
 /***************************************************************************
 
 Atari Drag Race Driver
@@ -308,3 +312,7 @@ ROM_END
 
 
 GAMEX( 1977, dragrace, 0, dragrace, dragrace, 0, 0, "Atari", "Drag Race", GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

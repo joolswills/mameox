@@ -1,3 +1,7 @@
+#pragma code_seg("C464")
+#pragma bss_seg("B464")
+#pragma data_seg("D464")
+#pragma const_seg("K464")
 /*	Space Harrier Hardware
 **
 **	2xMC68000 + Z80
@@ -1338,3 +1342,7 @@ GAME( 1985, sharrier, 0,        sharrier, sharrier, sharrier, ROT0, "Sega",    "
 GAMEX(1986, enduror,  0,        enduror,  enduror,  enduror,  ROT0, "Sega",    "Enduro Racer", GAME_NOT_WORKING )
 GAME( 1986, endurobl, enduror,  enduror,  enduror,  endurobl, ROT0, "bootleg", "Enduro Racer (bootleg set 1)" )
 GAME( 1986, endurob2, enduror,  endurob2, enduror,  endurob2, ROT0, "bootleg", "Enduro Racer (bootleg set 2)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C192")
+#pragma bss_seg("B192")
+#pragma data_seg("D192")
+#pragma const_seg("K192")
 /***************************************************************************
 
 Funky Bee/Sky Lancer memory map (preliminary)
@@ -314,3 +318,7 @@ ROM_END
 GAMEX( 1982, funkybee, 0, funkybee, funkybee, 0, ROT90, "Orca Corporation", "Funky Bee", GAME_NO_COCKTAIL )
 GAMEX( 1983, skylancr, 0, funkybee, skylancr, 0, ROT90, "Orca (Esco Trading Co license)", "Sky Lancer", GAME_NO_COCKTAIL )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

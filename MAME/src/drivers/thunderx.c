@@ -1,3 +1,7 @@
+#pragma code_seg("C557")
+#pragma bss_seg("B557")
+#pragma data_seg("D557")
+#pragma const_seg("K557")
 /***************************************************************************
 
 Super Contra / Thunder Cross
@@ -986,3 +990,7 @@ GAME( 1988, scontra,  0,        scontra,  scontra,  scontra, ROT90, "Konami", "S
 GAME( 1988, scontraj, scontra,  scontra,  scontra,  scontra, ROT90, "Konami", "Super Contra (Japan)" )
 GAME( 1988, thunderx, 0,        thunderx, thunderx, scontra, ROT0, "Konami", "Thunder Cross" )
 GAME( 1988, thnderxj, thunderx, thunderx, thunderx, scontra, ROT0, "Konami", "Thunder Cross (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

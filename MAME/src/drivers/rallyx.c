@@ -1,3 +1,7 @@
+#pragma code_seg("C423")
+#pragma bss_seg("B423")
+#pragma data_seg("D423")
+#pragma const_seg("K423")
 /***************************************************************************
 
 Rally X memory map (preliminary)
@@ -481,3 +485,7 @@ GAME( 1980, rallyx,  0,       rallyx, rallyx,  0, ROT0, "Namco", "Rally X" )
 GAME( 1980, rallyxm, rallyx,  rallyx, rallyx,  0, ROT0, "[Namco] (Midway license)", "Rally X (Midway)" )
 GAME( 1981, nrallyx, 0,       rallyx, nrallyx, 0, ROT0, "Namco", "New Rally X" )
 GAME( 1981, nrallyv, nrallyx, rallyx, nrallyv, 0, ROT90, "hack", "New Rally X (Vertical Screen)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

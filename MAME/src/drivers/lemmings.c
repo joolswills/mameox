@@ -1,3 +1,7 @@
+#pragma code_seg("C278")
+#pragma bss_seg("B278")
+#pragma data_seg("D278")
+#pragma const_seg("K278")
 /***************************************************************************
 
 	Lemmings				(c) 1991 Data East USA (DE-0357)
@@ -348,3 +352,7 @@ ROM_END
 /******************************************************************************/
 
 GAME( 1991, lemmings, 0, lemmings, lemmings, 0, ROT0, "Data East USA", "Lemmings (US Prototype)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C252")
+#pragma bss_seg("B252")
+#pragma data_seg("D252")
+#pragma const_seg("K252")
 /***************************************************************************
 
 	Incredible Technologies/Strata system
@@ -2225,3 +2229,7 @@ GAME ( 1992, gtg2,     0,        gtg2,      gtg2,     viasound, ROT0,   "Strata/
 GAME ( 1989, gtg2t,    gtg2,     tmshi2203, gtg2t,    0,        ROT0,   "Strata/Incredible Technologies", "Golden Tee Golf II (Trackball, V1.1)" )
 GAME ( 1991, gtg2j,    gtg2,     tmslo2203, gtg,      0,        ROT0,   "Strata/Incredible Technologies", "Golden Tee Golf II (Joystick, V1.0)" )
 GAME ( 1992, neckneck, 0,        neckneck,  neckneck, 0,        ROT0,   "Bundra Games/Incredible Technologies", "Neck-n-Neck (v1.2)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C559")
+#pragma bss_seg("B559")
+#pragma data_seg("D559")
+#pragma const_seg("K559")
 /***************************************************************************
 
 Tiger Road (C) 1987 Romstar/Capcom USA
@@ -762,3 +766,7 @@ GAME ( 1987, toramich, tigeroad, toramich, toramich, tigeroad, ROT0, "Capcom", "
 /* F1 Dream has an Intel 8751 microcontroller for protection */
 GAME ( 1988, f1dream,  0,        tigeroad, f1dream,  f1dream,  ROT0, "Capcom (Romstar license)", "F-1 Dream" )
 GAME ( 1988, f1dreamb, f1dream,  tigeroad, f1dream,  tigeroad, ROT0, "bootleg", "F-1 Dream (bootleg)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

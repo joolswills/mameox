@@ -1,3 +1,7 @@
+#pragma code_seg("C183")
+#pragma bss_seg("B183")
+#pragma data_seg("D183")
+#pragma const_seg("K183")
 /***************************************************************************
 
 Flak Attack/MX5000 (Konami GX669)
@@ -346,3 +350,7 @@ ROM_END
 GAME( 1987, mx5000,  0, 	 flkatck, flkatck, 0, ROT90, "Konami", "MX5000" )
 GAME( 1987, flkatck, mx5000, flkatck, flkatck, 0, ROT90, "Konami", "Flak Attack (Japan)" )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

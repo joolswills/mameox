@@ -1,3 +1,7 @@
+#pragma code_seg("C148")
+#pragma bss_seg("B148")
+#pragma data_seg("D148")
+#pragma const_seg("K148")
 /***************************************************************************
 
 TODO:
@@ -1795,3 +1799,7 @@ GAMEX(1983, hunchbkd, hunchbak, hunchbkd, hunchbkd, 0,        ROT90, "Century El
 
 GAME( 1984, herodk,   hero,     hunchbkd, herodk,   herodk,   ROT90, "Seatongrove Ltd (Crown license)", "Hero in the Castle of Doom (DK conversion)" )
 GAME( 1984, herodku,  hero,     hunchbkd, herodk,   0,        ROT90, "Seatongrove Ltd (Crown license)", "Hero in the Castle of Doom (DK conversion not encrypted)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

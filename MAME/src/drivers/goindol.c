@@ -1,3 +1,7 @@
+#pragma code_seg("C215")
+#pragma bss_seg("B215")
+#pragma data_seg("D215")
+#pragma const_seg("K215")
 /***************************************************************************
   GOINDOL
 
@@ -498,3 +502,7 @@ GAMEX( 1987, goindol,  0,       goindol, goindol, goindol, ROT90, "Sun a Electro
 GAMEX( 1987, goindolu, goindol, goindol, goindol, goindol, ROT90, "Sun a Electronics", "Goindol (US)", GAME_UNEMULATED_PROTECTION | GAME_NO_COCKTAIL )
 GAMEX( 1987, goindolj, goindol, goindol, goindol, goindol, ROT90, "Sun a Electronics", "Goindol (Japan)", GAME_UNEMULATED_PROTECTION | GAME_NO_COCKTAIL )
 GAMEX( 1987, homo,     goindol, goindol, homo,    0,       ROT90, "bootleg", "Homo", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C330")
+#pragma bss_seg("B330")
+#pragma data_seg("D330")
+#pragma const_seg("K330")
 /*****************************************************************************
 
 Momoko 120% (c) 1986 Jaleco
@@ -328,3 +332,7 @@ ROM_START( momoko )
 ROM_END
 
 GAME( 1986, momoko, 0, momoko, momoko, 0, ROT0, "Jaleco", "Momoko 120%" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

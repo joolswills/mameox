@@ -1,3 +1,7 @@
+#pragma code_seg("C506")
+#pragma bss_seg("B506")
+#pragma data_seg("D506")
+#pragma const_seg("K506")
 /***************************************************************************
 
 	Star Fire/Fire One system
@@ -417,3 +421,7 @@ static DRIVER_INIT( fireone )
 GAMEX( 1979, starfire, 0,        starfire, starfire, starfire, ROT0, "Exidy", "Star Fire (set 1)", GAME_NO_SOUND )
 GAMEX( 1979, starfira, starfire, starfire, starfire, starfire, ROT0, "Exidy", "Star Fire (set 2)", GAME_NO_SOUND )
 GAMEX( 1979, fireone,  0,        starfire, fireone,  fireone,  ROT0, "Exidy", "Fire One", GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

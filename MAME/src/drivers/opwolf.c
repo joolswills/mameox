@@ -1,3 +1,7 @@
+#pragma code_seg("C378")
+#pragma bss_seg("B378")
+#pragma data_seg("D378")
+#pragma const_seg("K378")
 /****************************************************************************
 
 Operation Wolf  (c) Taito 1987
@@ -615,3 +619,7 @@ static DRIVER_INIT( opwolfb )
 /*    year  rom       parent    machine   inp       init */
 GAME( 1987, opwolf,   0,        opwolf,   opwolf,   opwolf,   ROT0, "Taito America Corporation", "Operation Wolf (US)" )
 GAME( 1987, opwolfb,  opwolf,   opwolfb,  opwolf,   opwolfb,  ROT0, "bootleg", "Operation Bear" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

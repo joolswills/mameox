@@ -1,3 +1,7 @@
+#pragma code_seg("C524")
+#pragma bss_seg("B524")
+#pragma data_seg("D524")
+#pragma const_seg("K524")
 /***************************************************************************
 
 Surprise Attack (Konami GX911) (c) 1990 Konami
@@ -317,3 +321,7 @@ static DRIVER_INIT( surpratk )
 
 
 GAME( 1990, surpratk, 0, surpratk, surpratk, surpratk, ROT0, "Konami", "Surprise Attack (Japan ver. M)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C352")
+#pragma bss_seg("B352")
+#pragma data_seg("D352")
+#pragma const_seg("K352")
 /**
  * driver\namcos22.c
  *
@@ -1104,3 +1108,7 @@ GAMEX( 1994, alpinerd, 0,     namcos22s, alpiner,  alpiner,  ROT0, "Namco", "Alp
 GAMEX( 1996, propcycl, 0,     namcos22s, propcycl, propcycl, ROT0, "Namco", "Prop Cycle",          GAME_NO_SOUND|GAME_IMPERFECT_GRAPHICS )
 //GAMEX( 1995,"Time Crisis")
 //GAMEX( 1996,"Tokyo Wars")
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

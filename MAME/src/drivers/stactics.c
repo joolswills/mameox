@@ -1,3 +1,7 @@
+#pragma code_seg("C503")
+#pragma bss_seg("B503")
+#pragma data_seg("D503")
+#pragma const_seg("K503")
 /****************************************************************************
 
 Sega "Space Tactics" Driver
@@ -313,3 +317,7 @@ ROM_END
 
 GAMEX( 1981, stactics, 0, stactics, stactics, 0, ROT0, "Sega", "Space Tactics", GAME_NO_SOUND )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C164")
+#pragma bss_seg("B164")
+#pragma data_seg("D164")
+#pragma const_seg("K164")
 /***************************************************************************
 
 						  -= ESD 16 Bit Games =-
@@ -429,3 +433,7 @@ ROM_END
 ***************************************************************************/
 
 GAME( 1998, multchmp, 0, multchmp, multchmp, 0, ROT0, "ESD", "Multi Champ (Korea)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

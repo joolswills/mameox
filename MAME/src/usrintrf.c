@@ -3775,9 +3775,9 @@ void do_loadsave(struct mame_bitmap *bitmap, int request_loadsave)
 		InputCode code;
 
 		if (request_loadsave == LOADSAVE_SAVE)
-			displaymessage(bitmap, "Select position to save to");
+      displaymessage(bitmap, "Save position? A,B,X,Y");
 		else
-			displaymessage(bitmap, "Select position to load from");
+      displaymessage(bitmap, "Load position? A,B,X,Y");
 
 		update_video_and_audio();
 		reset_partial_updates();
@@ -3785,6 +3785,31 @@ void do_loadsave(struct mame_bitmap *bitmap, int request_loadsave)
 		if (input_ui_pressed(IPT_UI_CANCEL))
 			break;
 
+    code = code_read_async();
+    if( code != CODE_NONE )
+    {
+      switch( code )
+      {
+      case JOYCODE_1_BUTTON1:
+        file = '0';
+        break;
+
+      case JOYCODE_1_BUTTON2:
+        file = '1';
+        break;
+
+      case JOYCODE_1_BUTTON3:
+        file = '2';
+        break;
+
+      case JOYCODE_1_BUTTON4:
+        file = '3';
+        break;
+
+      }
+    }
+
+/*
 		code = code_read_async();
 		if (code != CODE_NONE)
 		{
@@ -3795,6 +3820,7 @@ void do_loadsave(struct mame_bitmap *bitmap, int request_loadsave)
 			else if (code >= KEYCODE_0_PAD && code <= KEYCODE_9_PAD)
 				file = '0' + (code - KEYCODE_0);
 		}
+*/
 	}
 	while (!file);
 

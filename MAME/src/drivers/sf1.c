@@ -1,3 +1,7 @@
+#pragma code_seg("C457")
+#pragma bss_seg("B457")
+#pragma data_seg("D457")
+#pragma const_seg("K457")
 /***************************************************************************
 
   Street Fighter 1
@@ -1139,3 +1143,7 @@ GAME( 1987, sf1,   0,   sf1,   sf1,   0, ROT0, "Capcom", "Street Fighter (World)
 GAME( 1987, sf1us, sf1, sf1us, sf1us, 0, ROT0, "Capcom", "Street Fighter (US)" )
 GAME( 1987, sf1jp, sf1, sf1jp, sf1jp, 0, ROT0, "Capcom", "Street Fighter (Japan)" )
 GAME( 1987, sf1p,  sf1, sf1p,  sf1,   0, ROT0, "Capcom", "Street Fighter (prototype)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

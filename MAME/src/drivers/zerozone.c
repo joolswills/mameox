@@ -1,3 +1,7 @@
+#pragma code_seg("C633")
+#pragma bss_seg("B633")
+#pragma data_seg("D633")
+#pragma const_seg("K633")
 /***************************************************************************
 
 Zero Zone memory map
@@ -282,3 +286,7 @@ ROM_END
 
 GAME( 1993, zerozone, 0, zerozone, zerozone, 0, ROT0, "Comad", "Zero Zone" )
 GAME( 1994, lvgirl94, 0, zerozone, zerozone, 0, ROT0, "Comad", "Las Vegas Girl (Girl '94)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

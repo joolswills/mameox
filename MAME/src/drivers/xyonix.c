@@ -1,3 +1,7 @@
+#pragma code_seg("C624")
+#pragma bss_seg("B624")
+#pragma data_seg("D624")
+#pragma const_seg("K624")
 /* Xyonix *********************************************************************
 
 driver by David Haywood and Stephh
@@ -291,3 +295,7 @@ ROM_END
 /* GAME drivers **************************************************************/
 
 GAME( 1989, xyonix, 0, xyonix, xyonix, 0, ROT0, "Philko Corp.", "Xyonix" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

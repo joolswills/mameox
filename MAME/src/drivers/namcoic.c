@@ -1,3 +1,7 @@
+#pragma code_seg("C345")
+#pragma bss_seg("B345")
+#pragma data_seg("D345")
+#pragma const_seg("K345")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "namcos2.h"	/* for game-specific hacks */
@@ -891,3 +895,7 @@ namco_road_draw( struct mame_bitmap *bitmap, int pri )
 		}
 	}
 } /* namco_road_draw */
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

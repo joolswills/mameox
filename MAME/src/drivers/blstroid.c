@@ -1,3 +1,7 @@
+#pragma code_seg("C71")
+#pragma bss_seg("B71")
+#pragma data_seg("D71")
+#pragma const_seg("K71")
 /***************************************************************************
 
 	Atari Blasteroids hardware
@@ -370,3 +374,7 @@ static DRIVER_INIT( blstroid )
 GAME( 1987, blstroid, 0,        blstroid, blstroid, blstroid, ROT0, "Atari Games", "Blasteroids (version 4)" )
 GAME( 1987, blstroi2, blstroid, blstroid, blstroid, blstroid, ROT0, "Atari Games", "Blasteroids (version 2)" )
 GAME( 1987, blsthead, blstroid, blstroid, blstroid, blstroid, ROT0, "Atari Games", "Blasteroids (with heads)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C53")
+#pragma bss_seg("B53")
+#pragma data_seg("D53")
+#pragma const_seg("K53")
 /*******************************************************************************
 
 	Battle Rangers					(c) 1988 Data East Corporation
@@ -370,3 +374,7 @@ ROM_END
 
 GAMEX( 1988, battlera, 0,        battlera, battlera,  0,   ROT0, "Data East Corporation", "Battle Rangers (World)", GAME_IMPERFECT_SOUND | GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1988, bldwolf,  battlera, battlera, battlera,  0,   ROT0, "Data East USA", "Bloody Wolf (US)", GAME_IMPERFECT_SOUND | GAME_IMPERFECT_GRAPHICS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

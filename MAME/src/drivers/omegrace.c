@@ -1,3 +1,7 @@
+#pragma code_seg("C376")
+#pragma bss_seg("B376")
+#pragma data_seg("D376")
+#pragma const_seg("K376")
 /***************************************************************************
 
 	Midway Omega Race hardware
@@ -605,3 +609,7 @@ static DRIVER_INIT( omegrace )
 
 GAMEX( 1981, omegrace, 0, omegrace, omegrace, omegrace, ROT0, "Midway", "Omega Race", GAME_NO_COCKTAIL )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

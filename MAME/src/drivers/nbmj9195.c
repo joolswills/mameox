@@ -1,3 +1,7 @@
+#pragma code_seg("C358")
+#pragma bss_seg("B358")
+#pragma data_seg("D358")
+#pragma const_seg("K358")
 /******************************************************************************
 
 	Game Driver for Nichibutsu Mahjong series.
@@ -4599,3 +4603,7 @@ GAME( 1992, mjkoiura, 0,        mjkoiura, mjkoiura, mjkoiura, ROT0, "Nichibutsu"
 GAME( 1994, mscoutm,  0,        mscoutm,  mscoutm,  mscoutm,  ROT0, "SPHINX/AV JAPAN", "Mahjong Scout Man (Japan)" )
 GAME( 1994, imekura,  0,        imekura,  imekura,  imekura,  ROT0, "SPHINX/AV JAPAN", "Imekura Mahjong (Japan)" )
 GAME( 1994, mjegolf,  0,        mjegolf,  mjegolf,  mjegolf,  ROT0, "FUJIC/AV JAPAN", "Mahjong Erotica Golf (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

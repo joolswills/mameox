@@ -1,3 +1,7 @@
+#pragma code_seg("C450")
+#pragma bss_seg("B450")
+#pragma data_seg("D450")
+#pragma const_seg("K450")
 /***********************************************************************************************
 
 	Sega System C/C2 Driver
@@ -2246,3 +2250,7 @@ GAME ( 1994, stkclmns, 0,        segac2, stkclmns, stkclmns, ROT0, "Sega",      
 GAME ( 1994, puyopuy2, 0,        segac2, puyopuy2, puyopuy2, ROT0, "Compile (Sega license)", "Puyo Puyo 2 (Japan)" )
 GAME ( 1994, potopoto, 0,        segac2, potopoto, potopoto, ROT0, "Sega",                   "Poto Poto (Japan)" )
 GAME ( 1994, zunkyou,  0,        segac2, zunkyou,  zunkyou,  ROT0, "Sega",                   "Zunzunkyou No Yabou (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

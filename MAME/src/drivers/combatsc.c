@@ -1,3 +1,7 @@
+#pragma code_seg("C112")
+#pragma bss_seg("B112")
+#pragma data_seg("D112")
+#pragma const_seg("K112")
 /***************************************************************************
 
 "Combat School" (also known as "Boot Camp") - (Konami GX611)
@@ -876,3 +880,7 @@ GAME( 1987, combasct, combasc, combasc,  combasct, 0,        ROT0, "Konami", "Co
 GAME( 1987, combascj, combasc, combasc,  combasct, 0,        ROT0, "Konami", "Combat School (Japan trackball)" )
 GAME( 1987, bootcamp, combasc, combasc,  combasct, 0,        ROT0, "Konami", "Boot Camp" )
 GAMEX(1988, combascb, combasc, combascb, combascb, combascb, ROT0, "bootleg", "Combat School (bootleg)", GAME_IMPERFECT_COLORS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

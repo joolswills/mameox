@@ -1,3 +1,7 @@
+#pragma code_seg("C556")
+#pragma bss_seg("B556")
+#pragma data_seg("D556")
+#pragma const_seg("K556")
 /***************************************************************************
 
 	Atari ThunderJaws hardware
@@ -474,3 +478,7 @@ static DRIVER_INIT( thunderj )
  *************************************/
 
 GAME( 1990, thunderj, 0, thunderj, thunderj, thunderj, ROT0, "Atari Games", "ThunderJaws" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

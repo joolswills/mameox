@@ -1,3 +1,7 @@
+#pragma code_seg("C368")
+#pragma bss_seg("B368")
+#pragma data_seg("D368")
+#pragma const_seg("K368")
 /*******************************************************************************
 
      Nova 2001 - by UPL - 1983
@@ -272,3 +276,7 @@ ROM_END
 
 GAME( 1983, nova2001, 0,        nova2001, nova2001, 0, ROT0, "UPL", "Nova 2001 (Japan)" )
 GAME( 1983, nov2001u, nova2001, nova2001, nova2001, 0, ROT0, "UPL (Universal license)", "Nova 2001 (US)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

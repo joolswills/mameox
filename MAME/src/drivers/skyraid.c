@@ -1,3 +1,7 @@
+#pragma code_seg("C477")
+#pragma bss_seg("B477")
+#pragma data_seg("D477")
+#pragma const_seg("K477")
 /***************************************************************************
 
 Atari Sky Raider driver
@@ -331,3 +335,7 @@ ROM_END
 
 
 GAMEX( 1978, skyraid, 0, skyraid, skyraid, 0, ORIENTATION_FLIP_Y, "Atari", "Sky Raider", GAME_NO_SOUND | GAME_IMPERFECT_COLORS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

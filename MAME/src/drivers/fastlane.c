@@ -1,3 +1,7 @@
+#pragma code_seg("C176")
+#pragma bss_seg("B176")
+#pragma data_seg("D176")
+#pragma const_seg("K176")
 /***************************************************************************
 
 Fast Lane(GX752) (c) 1987 Konami
@@ -328,3 +332,7 @@ ROM_END
 
 
 GAMEX( 1987, fastlane, 0, fastlane, fastlane, 0, ROT90, "Konami", "Fast Lane", GAME_IMPERFECT_COLORS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

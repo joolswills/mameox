@@ -1,3 +1,7 @@
+#pragma code_seg("C472")
+#pragma bss_seg("B472")
+#pragma data_seg("D472")
+#pragma const_seg("K472")
 /***************************************************************************
 
 	Atari Skull & Crossbones hardware
@@ -448,3 +452,7 @@ static DRIVER_INIT( skullxbo )
 
 GAME( 1989, skullxbo, 0,        skullxbo, skullxbo, skullxbo, ROT0, "Atari Games", "Skull & Crossbones (set 1)" )
 GAME( 1989, skullxb2, skullxbo, skullxbo, skullxbo, skullxbo, ROT0, "Atari Games", "Skull & Crossbones (set 2)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

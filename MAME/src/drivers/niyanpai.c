@@ -1,3 +1,7 @@
+#pragma code_seg("C366")
+#pragma bss_seg("B366")
+#pragma data_seg("D366")
+#pragma const_seg("K366")
 /******************************************************************************
 
 	Game Driver for Nichibutsu Mahjong series.
@@ -566,3 +570,7 @@ ROM_END
 
 
 GAME( 1996, niyanpai, 0, niyanpai, niyanpai, niyanpai, ROT0, "Nichibutsu", "Niyanpai (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

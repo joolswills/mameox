@@ -1,3 +1,7 @@
+#pragma code_seg("C209")
+#pragma bss_seg("B209")
+#pragma data_seg("D209")
+#pragma const_seg("K209")
 /***************************************************************************
 
 Grand Cross Pinball
@@ -355,3 +359,7 @@ ROM_END
 
 GAMEX( 1994, gcpinbal, 0, gcpinbal, gcpinbal, 0, ROT270, "Excellent System", "Grand Cross", GAME_NO_SOUND | GAME_NO_COCKTAIL )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

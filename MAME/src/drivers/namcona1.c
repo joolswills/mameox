@@ -1,3 +1,7 @@
+#pragma code_seg("C346")
+#pragma bss_seg("B346")
+#pragma data_seg("D346")
+#pragma const_seg("K346")
 /***************************************************************************
 Namco NA-1 / NA-2 System
 
@@ -1271,3 +1275,7 @@ GAMEX( 1993,numanatj, numanath, namcona1,  namcona1_joy,	numanath, ROT0, "Namco"
 GAMEX( 1993,quiztou,  0,        namcona1,  namcona1_quiz,	quiztou,  ROT0, "Namco", "Nettou! Gekitou! Quiztou!! (Japan)", GAME_IMPERFECT_SOUND )
 GAMEX( 1993,tinklpit, 0,        namcona1w, namcona1_joy,	tinklpit, ROT0, "Namco", "Tinkle Pit (Japan)", GAME_IMPERFECT_SOUND )
 GAMEX( 1995,xday2,    0,        namcona1,  xday2,           xday2,    ROT0, "Namco", "X-Day 2 (Japan)", GAME_IMPERFECT_SOUND|GAME_NOT_WORKING )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

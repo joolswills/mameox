@@ -1,3 +1,7 @@
+#pragma code_seg("C239")
+#pragma bss_seg("B239")
+#pragma data_seg("D239")
+#pragma const_seg("K239")
 /****************************************************************************
 
 Higemaru
@@ -244,3 +248,7 @@ ROM_END
 
 
 GAME( 1984, higemaru, 0, higemaru, higemaru, 0, ROT0, "Capcom", "Pirate Ship HigeMaru" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

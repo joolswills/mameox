@@ -360,6 +360,8 @@ int osd_display_loading_rom_message(const char *name,struct rom_load_data *romda
 /* interface is still active while the game is paused. */
 void osd_pause(int paused);
 
+/* Used to report fatal errors to the user in the case that the system has no stdout */
+void osd_print_error( const char *fmt, ... );
 
 
 #ifdef MAME_NET

@@ -1,3 +1,7 @@
+#pragma code_seg("C371")
+#pragma bss_seg("B371")
+#pragma data_seg("D371")
+#pragma const_seg("K371")
 /***************************************************************************
 
 	Atari "Round" hardware
@@ -527,3 +531,7 @@ static DRIVER_INIT( offtwalc )
 
 GAME( 1991, offtwall, 0,        offtwall, offtwall, offtwall, ROT0, "Atari Games", "Off the Wall (2/3-player upright)" )
 GAME( 1991, offtwalc, offtwall, offtwall, offtwall, offtwalc, ROT0, "Atari Games", "Off the Wall (2-player cocktail)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

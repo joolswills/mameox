@@ -1,3 +1,7 @@
+#pragma code_seg("C496")
+#pragma bss_seg("B496")
+#pragma data_seg("D496")
+#pragma const_seg("K496")
 /***************************************************************************
 
 S.P.Y. (c) 1989 Konami
@@ -640,3 +644,7 @@ static DRIVER_INIT( spy )
 
 GAME( 1989, spy,  0,   spy, spy, spy, ROT0, "Konami", "S.P.Y. - Special Project Y (World ver. N)")
 GAME( 1989, spyu, spy, spy, spy, spy, ROT0, "Konami", "S.P.Y. - Special Project Y (US ver. M)")
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C544")
+#pragma bss_seg("B544")
+#pragma data_seg("D544")
+#pragma const_seg("K544")
 /***************************************************************************
 
 Taxi Driver  (c) 1984 Graphic Techno
@@ -434,3 +438,7 @@ ROM_END
 
 
 GAMEX( 1984, taxidrvr, 0, taxidrvr, taxidrvr, 0, ROT90, "Graphic Techno", "Taxi Driver", GAME_IMPERFECT_GRAPHICS | GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

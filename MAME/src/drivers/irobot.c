@@ -1,3 +1,7 @@
+#pragma code_seg("C249")
+#pragma bss_seg("B249")
+#pragma data_seg("D249")
+#pragma const_seg("K249")
 /***************************************************************************
 
 	Atari I, Robot hardware
@@ -393,3 +397,7 @@ ROM_END
  *************************************/
 
 GAME( 1983, irobot, 0, irobot, irobot, irobot, ROT0, "Atari", "I, Robot" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

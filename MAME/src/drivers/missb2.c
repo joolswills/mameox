@@ -1,3 +1,7 @@
+#pragma code_seg("C323")
+#pragma bss_seg("B323")
+#pragma data_seg("D323")
+#pragma const_seg("K323")
 /* Miss Bubble 2
 
 A rather odd bootleg of Bubble Bobble with level select, redesigned levels,
@@ -345,3 +349,7 @@ static DRIVER_INIT( missb2 )
 }
 
 GAMEX( 1986, missb2, bublbobl, missb2, missb2, missb2, ROT0,  "bootleg", "Miss Bubble 2", GAME_IMPERFECT_GRAPHICS | GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C331")
+#pragma bss_seg("B331")
+#pragma data_seg("D331")
+#pragma const_seg("K331")
 /***************************************************************************
 
  Wild West C.O.W.boys of Moo Mesa
@@ -719,3 +723,7 @@ GAME( 1992, moo,     0,       moo,     moo,     moo,      ROT0, "Konami", "Wild 
 GAME( 1992, mooua,   moo,     moo,     moo,     moo,      ROT0, "Konami", "Wild West C.O.W.-Boys of Moo Mesa (US version UA)")
 GAME( 1992, bucky,   0,       bucky,   bucky,   moo,      ROT0, "Konami", "Bucky O'Hare (World version EA)")
 GAME( 1992, buckyua, bucky,   bucky,   bucky,   moo,      ROT0, "Konami", "Bucky O'Hare (US version UA)")
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C79")
+#pragma bss_seg("B79")
+#pragma data_seg("D79")
+#pragma const_seg("K79")
 /***************************************************************************
 
 Burger Time
@@ -1780,3 +1784,7 @@ GAME( 1982, caractn,  brubber, bnj,      bnj,      lnc,     ROT270, "bootleg", "
 GAME( 1982, zoar,     0,       zoar,     zoar,     zoar,    ROT270, "Data East USA", "Zoar" )
 GAME( 1982, disco,    0,       disco,    disco,    btime,   ROT270, "Data East", "Disco No.1" )
 GAME( 1982, discof,   disco,   disco,    disco,    btime,   ROT270, "Data East", "Disco No.1 (Rev.F)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C471")
+#pragma bss_seg("B471")
+#pragma data_seg("D471")
+#pragma const_seg("K471")
 /***************************************************************************
 
 The Simpsons (c) 1991 Konami Co. Ltd
@@ -417,3 +421,7 @@ static DRIVER_INIT( simpsons )
 GAME( 1991, simpsons, 0,        simpsons, simpsons, simpsons, ROT0, "Konami", "The Simpsons (4 Players)" )
 GAME( 1991, simpsn2p, simpsons, simpsons, simpsn2p, simpsons, ROT0, "Konami", "The Simpsons (2 Players)" )
 GAME( 1991, simps2pj, simpsons, simpsons, simpsn2p, simpsons, ROT0, "Konami", "The Simpsons (2 Players Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C98")
+#pragma bss_seg("B98")
+#pragma data_seg("D98")
+#pragma const_seg("K98")
 /*************************************************************************
  Universal Cheeky Mouse Driver
  (c)Lee Taylor May/June 1998, All rights reserved.
@@ -198,3 +202,7 @@ ROM_END
 
 
 GAMEX( 1980?, cheekyms, 0, cheekyms, cheekyms, 0, ROT270, "Universal", "Cheeky Mouse", GAME_WRONG_COLORS | GAME_IMPERFECT_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C565")
+#pragma bss_seg("B565")
+#pragma data_seg("D565")
+#pragma const_seg("K565")
 /*****************************************************************************
 
 		ToaPlan      game hardware from 1991 - 1994
@@ -4511,3 +4515,7 @@ GAME ( 1998, batrider, 0,        batrider, batrider, battleg,  ROT270, "Raizing/
 GAME ( 1998, batridra, batrider, batrider, batrider, battleg,  ROT270, "Raizing/8ing", "Armed Police Batrider (Japan, version A)" )
 GAME ( 1999, bbakraid, 0,        bbakraid, bbakraid, T2_Z80,   ROT270, "8ing", "Battle Bakraid - unlimited version (Japan)")
 GAME ( 1999, bbakrada, bbakraid, bbakraid, bbakraid, T2_Z80,   ROT270, "8ing", "Battle Bakraid (Japan)")
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

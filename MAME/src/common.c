@@ -1120,6 +1120,7 @@ static int display_rom_load_results(struct rom_load_data *romdata)
 
 		/* display the result */
 		printf("%s", romdata->errorbuf);
+    osd_print_error( "%s", romdata->errorbuf );
 
 		/* if we're not getting out of here, wait for a keypress */
 		if (!options.gui_host && !bailing)
@@ -1127,6 +1128,7 @@ static int display_rom_load_results(struct rom_load_data *romdata)
 			int k;
 
 			/* loop until we get one */
+#if 0       // Don't wait for a keypress, it was already done in osd_print_error     
 			printf ("Press any key to continue\n");
 			do
 			{
@@ -1136,6 +1138,7 @@ static int display_rom_load_results(struct rom_load_data *romdata)
 
 			/* bail on a control + C */
 			if (keyboard_pressed(KEYCODE_LCONTROL) && keyboard_pressed(KEYCODE_C))
+#endif
 				return 1;
 		}
 	}
@@ -1726,6 +1729,7 @@ int rom_load(const struct RomModule *romp)
 		if (new_memory_region(regiontype, ROMREGION_GETLENGTH(region), ROMREGION_GETFLAGS(region)))
 		{
 			printf("Error: unable to allocate memory for region %d\n", regiontype);
+      osd_print_error( "Error: unable to allocate memory for region %d\n", regiontype );
 			return 1;
 		}
 
@@ -1752,12 +1756,18 @@ int rom_load(const struct RomModule *romp)
 		if (ROMREGION_ISROMDATA(region))
 		{
 			if (!process_rom_entries(&romdata, region + 1))
+      {
+        osd_print_error( "Error: process_rom_entries failed\n" );
 				return 1;
+      }
 		}
 		else if (ROMREGION_ISDISKDATA(region))
 		{
 			if (!process_disk_entries(&romdata, region + 1))
+      {
+        osd_print_error( "Error: process_disk_entries failed\n" );
 				return 1;
+      }
 		}
 
 		/* add this region to the list */

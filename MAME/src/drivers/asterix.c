@@ -1,3 +1,7 @@
+#pragma code_seg("C28")
+#pragma bss_seg("B28")
+#pragma data_seg("D28")
+#pragma const_seg("K28")
 /***************************************************************************
 
 Asterix
@@ -406,3 +410,7 @@ static DRIVER_INIT( asterix )
 GAMEX( 1992, asterix,  0,       asterix, asterix, asterix, ROT0, "Konami", "Asterix (World ver. EAD)", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1992, astrxeac, asterix, asterix, asterix, asterix, ROT0, "Konami", "Asterix (World ver. EAC)", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1992, astrxeaa, asterix, asterix, asterix, asterix, ROT0, "Konami", "Asterix (World ver. EAA)", GAME_IMPERFECT_GRAPHICS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

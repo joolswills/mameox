@@ -1,3 +1,7 @@
+#pragma code_seg("C414")
+#pragma bss_seg("B414")
+#pragma data_seg("D414")
+#pragma const_seg("K414")
 /**************************
  *** PSYCHIC 5 hardware ***		(by Roberto Ventura)
  **************************
@@ -597,3 +601,7 @@ ROM_END
 
 
 GAMEX( 1987, psychic5, 0, psychic5, psychic5, 0, ROT270, "Jaleco", "Psychic 5", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

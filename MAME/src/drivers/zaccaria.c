@@ -1,3 +1,7 @@
+#pragma code_seg("C631")
+#pragma bss_seg("B631")
+#pragma data_seg("D631")
+#pragma const_seg("K631")
 /***************************************************************************
 
 Jack Rabbit memory map (preliminary)
@@ -858,3 +862,7 @@ GAMEX( 1983, monymony, 0,        zaccaria, monymony, 0, ROT90, "Zaccaria", "Mone
 GAMEX( 1984, jackrabt, 0,        zaccaria, jackrabt, 0, ROT90, "Zaccaria", "Jack Rabbit (set 1)", GAME_IMPERFECT_SOUND )
 GAMEX( 1984, jackrab2, jackrabt, zaccaria, jackrabt, 0, ROT90, "Zaccaria", "Jack Rabbit (set 2)", GAME_IMPERFECT_SOUND )
 GAMEX( 1984, jackrabs, jackrabt, zaccaria, jackrabt, 0, ROT90, "Zaccaria", "Jack Rabbit (special)", GAME_IMPERFECT_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

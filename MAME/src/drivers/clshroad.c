@@ -1,3 +1,7 @@
+#pragma code_seg("C109")
+#pragma bss_seg("B109")
+#pragma data_seg("D109")
+#pragma const_seg("K109")
 /***************************************************************************
 
 							-= Clash Road =-
@@ -398,3 +402,7 @@ ROM_END
 
 GAMEX( 1984, firebatl, 0, firebatl, clshroad, 0, ROT90, "Taito", "Fire Battle", GAME_NOT_WORKING | GAME_WRONG_COLORS )
 GAMEX( 1986, clshroad, 0, clshroad, clshroad, 0, ROT0,  "Woodplace Inc.", "Clash-Road", GAME_WRONG_COLORS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

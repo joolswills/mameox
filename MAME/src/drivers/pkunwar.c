@@ -1,3 +1,7 @@
+#pragma code_seg("C399")
+#pragma bss_seg("B399")
+#pragma data_seg("D399")
+#pragma const_seg("K399")
 /***************************************************************************
 
 Notes:
@@ -243,3 +247,7 @@ ROM_END
 
 GAME( 1985?, pkunwar,  0,       pkunwar, pkunwar, 0, ROT0, "UPL", "Penguin-Kun Wars (US)" )
 GAME( 1985?, pkunwarj, pkunwar, pkunwar, pkunwar, 0, ROT0, "UPL", "Penguin-Kun Wars (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

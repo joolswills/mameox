@@ -1,3 +1,7 @@
+#pragma code_seg("C635")
+#pragma bss_seg("B635")
+#pragma data_seg("D635")
+#pragma const_seg("K635")
 /***************************************************************************
 
 Zodiack/Dogfight Memory Map (preliminary)
@@ -646,3 +650,7 @@ GAMEX(1983, dogfight, 0, zodiack, dogfight, 0, ROT270, "[Orca] Thunderbolt", "Do
 GAMEX(1982, moguchan, 0, zodiack, moguchan, 0, ROT270, "Orca (Eastern Commerce Inc. license) (bootleg?)",  /* this is in the ROM at $0b5c */ "Moguchan", GAME_WRONG_COLORS )
 GAME( 1981, percuss,  0, percuss, percuss,  0, ROT270, "Orca", "The Percussor" )
 GAME( 1982, bounty,   0, percuss, bounty,   0, ROT180, "Orca", "The Bounty" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

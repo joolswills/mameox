@@ -1,3 +1,7 @@
+#pragma code_seg("C463")
+#pragma bss_seg("B463")
+#pragma data_seg("D463")
+#pragma const_seg("K463")
 /***************************************************************************
 
 Shaolin's Road
@@ -304,3 +308,7 @@ ROM_END
 
 GAME( 1985, kicker,   0,      shaolins, shaolins, 0, ROT90, "Konami", "Kicker" )
 GAME( 1985, shaolins, kicker, shaolins, shaolins, 0, ROT90, "Konami", "Shao-Lin's Road" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

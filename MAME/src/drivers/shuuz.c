@@ -1,3 +1,7 @@
+#pragma code_seg("C467")
+#pragma bss_seg("B467")
+#pragma data_seg("D467")
+#pragma const_seg("K467")
 /***************************************************************************
 
 	Atari Shuuz hardware
@@ -397,3 +401,7 @@ static DRIVER_INIT( shuuz )
 
 GAME( 1990, shuuz,  0,     shuuz, shuuz,  shuuz, ROT0, "Atari Games", "Shuuz (version 8.0)" )
 GAME( 1990, shuuz2, shuuz, shuuz, shuuz2, shuuz, ROT0, "Atari Games", "Shuuz (version 7.1)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

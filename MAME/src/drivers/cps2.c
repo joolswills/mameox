@@ -1,3 +1,7 @@
+#pragma code_seg("C121")
+#pragma bss_seg("B121")
+#pragma data_seg("D121")
+#pragma const_seg("K121")
 /***************************************************************************
 
   Capcom System 2
@@ -5589,3 +5593,7 @@ GAMEX(2000, 1944j,    1944,    cps2, 19xx,    cps2, ROT0,   "Capcom, supported b
 /* Games released on CPS-2 hardware by Cave */
 
 GAMEX(2001, progear,  0,       cps2, cps2,    cps2, ROT0,   "Cave, distributed by Capcom", "Progear no Arashi (Japan 010117)", GAME_NOT_WORKING )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C470")
+#pragma bss_seg("B470")
+#pragma data_seg("D470")
+#pragma const_seg("K470")
 #include "driver.h"
 
 /* The Legend of Silk Road - Unico 1999 */
@@ -480,3 +484,7 @@ ROM_END
 
 
 GAME( 1999, silkroad, 0, silkroad, silkroad, silkroad, ROT0, "Unico", "The Legend of Silkroad" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

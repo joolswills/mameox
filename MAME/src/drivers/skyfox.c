@@ -1,3 +1,7 @@
+#pragma code_seg("C475")
+#pragma bss_seg("B475")
+#pragma data_seg("D475")
+#pragma const_seg("K475")
 /***************************************************************************
 
 						-= Sky Fox / Exerizer =-
@@ -442,3 +446,7 @@ DRIVER_INIT( skyfox )
 
 GAME( 1987, skyfox,   0,      skyfox, skyfox, skyfox, ROT90, "Jaleco (Nichibutsu USA License)", "Sky Fox"  )
 GAME( 1987, exerizrb, skyfox, skyfox, skyfox, skyfox, ROT90, "Jaleco", "Exerizer (Japan) (bootleg)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

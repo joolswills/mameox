@@ -1,3 +1,7 @@
+#pragma code_seg("C418")
+#pragma bss_seg("B418")
+#pragma data_seg("D418")
+#pragma const_seg("K418")
 /***************************************************************************
 
 	Atari Quantum hardware
@@ -341,3 +345,7 @@ ROM_END
 GAME( 1982, quantum,  0,       quantum, quantum, 0, ROT270, "Atari", "Quantum (rev 2)" )
 GAME( 1982, quantum1, quantum, quantum, quantum, 0, ROT270, "Atari", "Quantum (rev 1)" )
 GAME( 1982, quantump, quantum, quantum, quantum, 0, ROT270, "Atari", "Quantum (prototype)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

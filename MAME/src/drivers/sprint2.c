@@ -1,3 +1,7 @@
+#pragma code_seg("C495")
+#pragma bss_seg("B495")
+#pragma data_seg("D495")
+#pragma const_seg("K495")
 /***************************************************************************
 
 	Atari Sprint 2 hardware
@@ -748,3 +752,7 @@ ROM_END
 /*    YEAR  NAME      PARENT   MACHINE   INPUT  INIT MONITOR  */
 GAME( 1978, sprint1,  0,       sprint1,  sprint1, 0, ROT0, "Atari", "Sprint 1" )
 GAME( 1976, sprint2,  sprint1, sprint2,  sprint2, 0, ROT0, "Atari", "Sprint 2" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

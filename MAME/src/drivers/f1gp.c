@@ -1,3 +1,7 @@
+#pragma code_seg("C174")
+#pragma bss_seg("B174")
+#pragma data_seg("D174")
+#pragma const_seg("K174")
 /***************************************************************************
 
 F-1 Grand Prix       (c) 1991 Video System Co.
@@ -629,3 +633,7 @@ ROM_END
 
 GAMEX( 1991, f1gp,  0, f1gp,  f1gp,  0, ROT90, "Video System Co.", "F-1 Grand Prix",         GAME_NO_COCKTAIL )
 GAMEX( 1992, f1gp2, 0, f1gp2, f1gp2, 0, ROT90, "Video System Co.", "F-1 Grand Prix Part II", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

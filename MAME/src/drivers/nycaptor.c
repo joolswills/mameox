@@ -1,3 +1,7 @@
+#pragma code_seg("C369")
+#pragma bss_seg("B369")
+#pragma data_seg("D369")
+#pragma const_seg("K369")
 /***************************************************************************
     N.Y. Captor - Taito '85
 
@@ -839,3 +843,7 @@ ROM_END
 
 GAMEX(1985, nycaptor, 0,       nycaptor,  nycaptor, 0, ROT0,  "Taito", "N.Y. Captor", GAME_IMPERFECT_GRAPHICS | GAME_IMPERFECT_SOUND )
 GAMEX(1986, cyclshtg, 0,       cyclshtg,  cyclshtg, 0, ROT90, "Taito", "Cycle Shooting", GAME_NOT_WORKING)
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C87")
+#pragma bss_seg("B87")
+#pragma data_seg("D87")
+#pragma const_seg("K87")
 /***************************************************************************
 
 	Coors Light Bowling/Bowl-O-Rama hardware
@@ -438,3 +442,7 @@ GAME( 1988, capbowl,  0,       capbowl,  capbowl, 0, ROT270, "Incredible Technol
 GAME( 1988, capbowl2, capbowl, capbowl,  capbowl, 0, ROT270, "Incredible Technologies", "Capcom Bowling (set 2)" )
 GAME( 1989, clbowl,   capbowl, capbowl,  capbowl, 0, ROT270, "Incredible Technologies", "Coors Light Bowling" )
 GAME( 1991, bowlrama, 0,       bowlrama, capbowl, 0, ROT270, "P & P Marketing", "Bowl-O-Rama" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C361")
+#pragma bss_seg("B361")
+#pragma data_seg("D361")
+#pragma const_seg("K361")
 /*
 
 News
@@ -147,3 +151,7 @@ ROM_END
 
 
 GAME( 1993, news, 0, news, news, 0, ROT0, "Poby / Virus", "News" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

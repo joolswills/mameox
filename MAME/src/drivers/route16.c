@@ -1,3 +1,7 @@
+#pragma code_seg("C438")
+#pragma bss_seg("B438")
+#pragma data_seg("D438")
+#pragma const_seg("K438")
 /***************************************************************************
 
  Route 16/Stratovox memory map (preliminary)
@@ -581,3 +585,7 @@ GAME( 1981, route16b, route16,  route16,  route16,  route16b, ROT270, "bootleg",
 GAME( 1980, speakres, 0,        speakres, speakres, stratvox, ROT270, "Sun Electronics", "Speak & Rescue" )
 GAME( 1980, stratvox, speakres, stratvox, stratvox, stratvox, ROT270, "[Sun Electronics] (Taito license)", "Stratovox" )
 GAME( 1980, spacecho, speakres, spacecho, spacecho, stratvox, ROT270, "bootleg", "Space Echo" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

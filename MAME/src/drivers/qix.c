@@ -1,3 +1,7 @@
+#pragma code_seg("C417")
+#pragma bss_seg("B417")
+#pragma data_seg("D417")
+#pragma const_seg("K417")
 /***************************************************************************
 
 	Taito Qix hardware
@@ -1195,3 +1199,7 @@ GAME( 1982, zookeep3, zookeep,  zookeep, zookeep,  zookeep,  ROT0,   "Taito Amer
 GAME( 1982, slither,  0,        slither, slither,  slither,  ROT270, "Century II",                "Slither (set 1)" )
 GAME( 1982, slithera, slither,  slither, slither,  slither,  ROT270, "Century II",                "Slither (set 2)" )
 GAME( 1984, complexx, 0,        qix,     complexx, 0,        ROT270, "Taito America Corporation", "Complex X" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

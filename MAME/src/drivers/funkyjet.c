@@ -1,3 +1,7 @@
+#pragma code_seg("C193")
+#pragma bss_seg("B193")
+#pragma data_seg("D193")
+#pragma const_seg("K193")
 /***************************************************************************
 
   Funky Jet                               (c) 1992 Mitchell Corporation
@@ -398,3 +402,7 @@ static DRIVER_INIT( funkyjet )
 
 GAME( 1992, funkyjet, 0, funkyjet, funkyjet, funkyjet, ROT0, "[Data East] (Mitchell license)", "Funky Jet" )
 GAME( 1995, sotsugyo, 0, funkyjet, sotsugyo, funkyjet, ROT0, "Mitchell Corporation (Atlus license)", "Sotsugyo Shousho" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

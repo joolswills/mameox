@@ -1,3 +1,7 @@
+#pragma code_seg("C226")
+#pragma bss_seg("B226")
+#pragma data_seg("D226")
+#pragma const_seg("K226")
 /*
 
 Gumbo (c)1994 Min Corp (Main Corp written on PCB)
@@ -186,3 +190,7 @@ ROM_START( gumbo )
 ROM_END
 
 GAME( 1994, gumbo, 0, gumbo, gumbo, 0, ROT0, "Min Corp.", "Gumbo" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

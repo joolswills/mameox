@@ -1,3 +1,7 @@
+#pragma code_seg("C341")
+#pragma bss_seg("B341")
+#pragma data_seg("D341")
+#pragma const_seg("K341")
 /*
 	Sega Multi System 32 hardware
 
@@ -30,25 +34,25 @@ int multi32;
 
 static unsigned char irq_status;
 static data16_t *system32_shared_ram;
-data16_t *system32_mixerregs_monitor_a;		// mixer registers
+extern data16_t *system32_mixerregs_monitor_a;		// mixer registers
 data16_t *system32_mixerregs_monitor_b;		// mixer registers
 
 static data16_t *sys32_protram;
 static data16_t *system32_workram;
-data16_t *sys32_tilebank_external;
-data16_t* sys32_displayenable;
+extern data16_t *sys32_tilebank_external;
+extern data16_t* sys32_displayenable;
 
 /* Video Hardware */
-int system32_temp_kludge;
-data16_t *sys32_spriteram16;
-data16_t *sys32_txtilemap_ram;
-data16_t *sys32_ramtile_ram;
-data16_t *scrambled_paletteram16;
+extern int system32_temp_kludge;
+extern data16_t *sys32_spriteram16;
+extern data16_t *sys32_txtilemap_ram;
+extern data16_t *sys32_ramtile_ram;
+extern data16_t *scrambled_paletteram16;
 
 extern int sys32_sprite_priority_kludge;
 
-int system32_palMask;
-int system32_mixerShift;
+extern int system32_palMask;
+extern int system32_mixerShift;
 extern int system32_screen_mode;
 extern int system32_screen_old_mode;
 extern int system32_allow_high_resolution;
@@ -62,7 +66,7 @@ READ32_HANDLER ( sys32_videoram_long_r );
 VIDEO_START( system32 );
 VIDEO_UPDATE( system32 );
 
-int system32_use_default_eeprom;
+extern int system32_use_default_eeprom;
 
 static data16_t controlB[256];
 static data16_t control[256];
@@ -936,5 +940,7 @@ GAMEX( 1994, harddunk,     0, multi32, harddunk, harddunk, ROT0, "Sega", "Hard D
 
 // doesn't boot (needs v70 or something else?)
 GAMEX( 199?, titlef,       0, multi32, titlef,   titlef,   ROT0, "Sega", "Title Fight", GAME_NOT_WORKING )
-
-
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

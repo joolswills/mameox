@@ -1,3 +1,7 @@
+#pragma code_seg("C99")
+#pragma bss_seg("B99")
+#pragma data_seg("D99")
+#pragma const_seg("K99")
 /*
 China Gate.
 By Paul Hampson from First Principles
@@ -869,3 +873,7 @@ GAME ( 1988, chinagat, 0,        chinagat, chinagat, 0     , ROT0, "[Technos] (T
 GAME ( 1988, saiyugou, chinagat, chinagat, chinagat, 0     , ROT0, "Technos", "Sai Yu Gou Ma Roku (Japan)" )
 GAMEX( 1988, saiyugb1, chinagat, saiyugb1, chinagat, 0     , ROT0, "bootleg", "Sai Yu Gou Ma Roku (Japan bootleg 1)", GAME_IMPERFECT_SOUND )
 GAME ( 1988, saiyugb2, chinagat, saiyugb2, chinagat, 0     , ROT0, "bootleg", "Sai Yu Gou Ma Roku (Japan bootleg 2)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

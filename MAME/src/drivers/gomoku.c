@@ -1,3 +1,7 @@
+#pragma code_seg("C216")
+#pragma bss_seg("B216")
+#pragma data_seg("D216")
+#pragma const_seg("K216")
 /******************************************************************************
 
 	Gomoku Narabe Renju
@@ -223,3 +227,7 @@ ROM_END
 
 //     YEAR,     NAME,   PARENT,  MACHINE,    INPUT,     INIT,    MONITOR, COMPANY, FULLNAME, FLAGS
 GAMEX( 1981,   gomoku,        0,   gomoku,   gomoku,        0,      ROT90, "Nichibutsu", "Gomoku Narabe Renju", GAME_IMPERFECT_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

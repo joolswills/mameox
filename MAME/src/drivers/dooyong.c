@@ -1,3 +1,7 @@
+#pragma code_seg("C153")
+#pragma bss_seg("B153")
+#pragma data_seg("D153")
+#pragma const_seg("K153")
 /***************************************************************************
 
 Dooyong games
@@ -1454,3 +1458,7 @@ GAME( 1993, sadari,   0,        primella, primella, 0, ROT0,   "[Dooyong] (NTC l
 GAME( 1994, gundl94,  0,        primella, primella, 0, ROT0,   "Dooyong", "Gun Dealer '94" )
 GAME( 1994, primella, gundl94,  primella, primella, 0, ROT0,   "[Dooyong] (NTC license)", "Primella" )
 GAMEX(1995, rshark,   0,        rshark,   rshark,   0, ROT270, "Dooyong", "R-Shark", GAME_IMPERFECT_GRAPHICS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C388")
+#pragma bss_seg("B388")
+#pragma data_seg("D388")
+#pragma const_seg("K388")
 /* Pass (c)1992, Oksan
 
  Driver by David Haywood
@@ -338,3 +342,7 @@ ROM_END
 
 
 GAMEX( 1992, pass, 0, pass, pass, 0, ROT0, "Oksan", "Pass", GAME_IMPERFECT_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

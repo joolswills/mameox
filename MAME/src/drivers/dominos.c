@@ -1,3 +1,7 @@
+#pragma code_seg("C152")
+#pragma bss_seg("B152")
+#pragma data_seg("D152")
+#pragma const_seg("K152")
 /***************************************************************************
 
 	Atari Dominos hardware
@@ -228,3 +232,7 @@ ROM_END
  *************************************/
 
 GAMEX( 1977, dominos, 0, dominos, dominos, 0, ROT0, "Atari", "Dominos", GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

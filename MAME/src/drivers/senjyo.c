@@ -1,3 +1,7 @@
+#pragma code_seg("C454")
+#pragma bss_seg("B454")
+#pragma data_seg("D454")
+#pragma const_seg("K454")
 /***************************************************************************
 
 Senjyo / Star Force / Baluba-louk
@@ -801,3 +805,7 @@ GAME( 1984, starforc, 0,        senjyo, starforc, starforc, ROT90, "Tehkan", "St
 GAME( 1984, starfore, starforc, senjyo, starforc, starfore, ROT90, "Tehkan", "Star Force (encrypted)" )
 GAME( 1985, megaforc, starforc, senjyo, starforc, starforc, ROT90, "Tehkan (Video Ware license)", "Mega Force" )
 GAMEX(1986, baluba,   0,        senjyo, baluba,   starforc, ROT90, "Able Corp, Ltd.", "Baluba-louk no Densetsu", GAME_IMPERFECT_COLORS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

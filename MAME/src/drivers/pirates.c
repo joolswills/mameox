@@ -1,3 +1,7 @@
+#pragma code_seg("C398")
+#pragma bss_seg("B398")
+#pragma data_seg("D398")
+#pragma const_seg("K398")
 /*---
 
 Pirates (c)1994 NIX  (DEC 14 1994 17:32:29 is displayed in the Test Mode)
@@ -439,3 +443,7 @@ static DRIVER_INIT( pirates )
 /* GAME */
 
 GAME(1994, pirates, 0, pirates, pirates, pirates, 0, "NIX", "Pirates" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C474")
+#pragma bss_seg("B474")
+#pragma data_seg("D474")
+#pragma const_seg("K474")
 /***************************************************************************
 
 	Atari Sky Diver hardware
@@ -393,3 +397,7 @@ ROM_END
  *************************************/
 
 GAMEX( 1978, skydiver, 0, skydiver, skydiver, 0, ROT0, "Atari", "Sky Diver", GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C325")
+#pragma bss_seg("B325")
+#pragma data_seg("D325")
+#pragma const_seg("K325")
 /***************************************************************************
 
 "Mitchell hardware". Actually used mostly by Capcom.
@@ -1642,3 +1646,7 @@ GAME( 1991, block,    0,        pang,    block,    block,    ROT270, "Capcom", "
 GAME( 1991, blocka,   block,    pang,    block,    block,    ROT270, "Capcom", "Block Block (World 910910)" )
 GAME( 1991, blockj,   block,    pang,    block,    block,    ROT270, "Capcom", "Block Block (Japan 910910)" )
 GAME( 1991, blockbl,  block,    pang,    block,    blockbl,  ROT270, "bootleg", "Block Block (bootleg)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

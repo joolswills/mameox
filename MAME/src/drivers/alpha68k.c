@@ -1,3 +1,7 @@
+#pragma code_seg("C15")
+#pragma bss_seg("B15")
+#pragma data_seg("D15")
+#pragma const_seg("K15")
 /***************************************************************************
 
 	SNK/Alpha 68000 based games:
@@ -3033,3 +3037,7 @@ GAME( 1989, sbasebal, 0,        alpha68k_V_sb, sbasebal, sbasebal, ROT0,  "Alpha
 #endif
 GAMEX(1989, tnexspce, 0,        tnexspce,      tnexspce, tnexspce, ROT90, "SNK",                "The Next Space", GAME_NO_COCKTAIL )
 
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

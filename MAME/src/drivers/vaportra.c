@@ -1,3 +1,7 @@
+#pragma code_seg("C591")
+#pragma bss_seg("B591")
+#pragma data_seg("D591")
+#pragma const_seg("K591")
 /***************************************************************************
 
   Vapor Trail (World version)  (c) 1989 Data East Corporation
@@ -454,3 +458,7 @@ static DRIVER_INIT( vaportra )
 GAME( 1989, vaportra, 0,        vaportra, vaportra, vaportra, ROT270, "Data East Corporation", "Vapor Trail - Hyper Offence Formation (World revision 1)" )
 GAME( 1989, vaportru, vaportra, vaportra, vaportra, vaportra, ROT270, "Data East USA", "Vapor Trail - Hyper Offence Formation (US)" )
 GAME( 1989, kuhga,    vaportra, vaportra, vaportra, vaportra, ROT270, "Data East Corporation", "Kuhga - Operation Code 'Vapor Trail' (Japan revision 3)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

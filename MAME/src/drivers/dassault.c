@@ -1,3 +1,7 @@
+#pragma code_seg("C131")
+#pragma bss_seg("B131")
+#pragma data_seg("D131")
+#pragma const_seg("K131")
 /***************************************************************************
 
   Thunder Zone       (c) 1991 Data East Corporation (World 2 players)
@@ -132,6 +136,7 @@ static data16_t *dassault_ram,*shared_ram,*dassault_ram2;
 
 static READ16_HANDLER( dassault_control_r )
 {
+#if 0
 	switch (offset<<1)
 	{
 		case 0: /* Player 1 & Player 2 joysticks & fire buttons */
@@ -149,7 +154,25 @@ static READ16_HANDLER( dassault_control_r )
 		case 8: /* VBL, Credits */
 			return readinputport(2);
 	}
+#else
+	switch (offset)
+	{
+		case 0: /* Player 1 & Player 2 joysticks & fire buttons */
+			return (readinputport(0) + (readinputport(1) << 8));
 
+		case 1: /* Player 3 & Player 4 joysticks & fire buttons */
+			return (readinputport(6) + (readinputport(7) << 8));
+
+		case 2: /* Dip 1 (stored at 0x3f8035) */
+			return readinputport(3);
+
+		case 3: /* Dip 2 (stored at 0x3f8034) */
+			return readinputport(4);
+
+		case 4: /* VBL, Credits */
+			return readinputport(2);
+	}
+#endif
 	return 0xffff;
 }
 
@@ -876,3 +899,7 @@ static void init_thndzone(void)
 GAME(1991, thndzone, 0,        dassault, thndzone, thndzone, ROT0, "Data East Corporation", "Thunder Zone (World)" )
 GAME(1991, dassault, thndzone, dassault, dassault, dassault, ROT0, "Data East Corporation", "Desert Assault (US)" )
 GAME(1991, dassaul4, thndzone, dassault, dassaul4, dassault, ROT0, "Data East Corporation", "Desert Assault (US 4 Players)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

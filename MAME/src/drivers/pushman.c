@@ -1,3 +1,7 @@
+#pragma code_seg("C416")
+#pragma bss_seg("B416")
+#pragma data_seg("D416")
+#pragma const_seg("K416")
 /***************************************************************************
 
 	Pushman							(c) 1990 Comad
@@ -582,3 +586,7 @@ ROM_END
 
 GAME( 1990, pushman, 0, pushman, pushman, 0, ROT0, "Comad (American Sammy license)", "Pushman" )
 GAME( 1991, bballs,  0, bballs,  bballs,  0, ROT0, "Comad", "Bouncing Balls" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

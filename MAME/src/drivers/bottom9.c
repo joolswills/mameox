@@ -1,3 +1,7 @@
+#pragma code_seg("C76")
+#pragma bss_seg("B76")
+#pragma data_seg("D76")
+#pragma const_seg("K76")
 /***************************************************************************
 
 Bottom of the Ninth (c) 1989 Konami
@@ -614,3 +618,7 @@ static DRIVER_INIT( bottom9 )
 GAME( 1989, bottom9,  0,       bottom9, bottom9,  bottom9, ROT0, "Konami", "Bottom of the Ninth (version T)" )
 GAME( 1989, bottom9n, bottom9, bottom9, bottom9,  bottom9, ROT0, "Konami", "Bottom of the Ninth (version N)" )
 GAME( 1989, mstadium, bottom9, bottom9, mstadium, bottom9, ROT0, "Konami", "Main Stadium (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

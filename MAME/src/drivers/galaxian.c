@@ -1,3 +1,7 @@
+#pragma code_seg("C199")
+#pragma bss_seg("B199")
+#pragma data_seg("D199")
+#pragma const_seg("K199")
 /***************************************************************************
 
  Galaxian/Moon Cresta hardware
@@ -4606,3 +4610,7 @@ GAMEX(1981, 4in1,     0,        4in1,     4in1,     4in1,     ROT90,  "Armenia /
 GAMEX(1982, bagmanmc, bagman,   bagmanmc, bagmanmc, 0,        ROT90,  "bootleg", "Bagman (Moon Cresta hardware)", GAME_WRONG_COLORS  )
 GAMEX(1982, dkongjrm, dkongjr,  dkongjrm, dkongjrm, 0,        ROT90,  "bootleg", "Donkey Kong Jr. (Moon Cresta hardware)", GAME_WRONG_COLORS | GAME_IMPERFECT_SOUND )
 GAME( 1981, froggrmc, frogger,  froggrmc, froggrmc, froggers, ROT90,  "bootleg?", "Frogger (Moon Cresta hardware)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

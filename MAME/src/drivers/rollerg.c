@@ -1,3 +1,7 @@
+#pragma code_seg("C436")
+#pragma bss_seg("B436")
+#pragma data_seg("D436")
+#pragma const_seg("K436")
 /***************************************************************************
 
 Rollergames (GX999) (c) 1991 Konami
@@ -365,3 +369,7 @@ static DRIVER_INIT( rollerg )
 
 GAME( 1991, rollerg,  0,       rollerg, rollerg, rollerg, ROT0, "Konami", "Rollergames (US)" )
 GAME( 1991, rollergj, rollerg, rollerg, rollerg, rollerg, ROT0, "Konami", "Rollergames (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

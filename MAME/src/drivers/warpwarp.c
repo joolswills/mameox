@@ -1,3 +1,7 @@
+#pragma code_seg("C604")
+#pragma bss_seg("B604")
+#pragma data_seg("D604")
+#pragma const_seg("K604")
 /***************************************************************************
 
 Warp Warp memory map (preliminary)
@@ -524,3 +528,7 @@ GAME( 1979, cutieq,   0,        bombbee,  cutieq,   0, ROT90, "Namco", "Cutie Q"
 GAME( 1981, warpwarp, 0,        warpwarp, warpwarp, 0, ROT90, "Namco", "Warp & Warp" )
 GAME( 1981, warpwarr, warpwarp, warpwarp, warpwarr, 0, ROT90, "[Namco] (Rock-ola license)", "Warp Warp (Rock-ola set 1)" )
 GAME( 1981, warpwar2, warpwarp, warpwarp, warpwarr, 0, ROT90, "[Namco] (Rock-ola license)", "Warp Warp (Rock-ola set 2)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

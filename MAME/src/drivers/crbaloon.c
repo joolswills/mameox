@@ -1,3 +1,7 @@
+#pragma code_seg("C122")
+#pragma bss_seg("B122")
+#pragma data_seg("D122")
+#pragma const_seg("K122")
 /***************************************************************************
 
 Crazy Balloon memory map (preliminary)
@@ -421,3 +425,7 @@ ROM_END
 
 GAMEX( 1980, crbaloon, 0,		crbaloon, crbaloon, 0, ROT90, "Taito Corporation", "Crazy Balloon (set 1)", GAME_IMPERFECT_SOUND )
 GAMEX( 1980, crbalon2, crbaloon, crbaloon, crbaloon, 0, ROT90, "Taito Corporation", "Crazy Balloon (set 2)", GAME_IMPERFECT_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

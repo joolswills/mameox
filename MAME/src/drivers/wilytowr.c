@@ -1,3 +1,7 @@
+#pragma code_seg("C612")
+#pragma bss_seg("B612")
+#pragma data_seg("D612")
+#pragma const_seg("K612")
 /***************************************************************************
 
 Wily Towr   (c) 1984 Irem
@@ -499,3 +503,7 @@ ROM_END
 
 GAMEX( 1984, wilytowr, 0,        wilytowr, wilytowr, 0, ROT180, "Irem",                    "Wily Tower", GAME_NO_SOUND | GAME_NO_COCKTAIL )
 GAMEX( 1985, atomboy,  wilytowr, wilytowr, wilytowr, 0, ROT180, "Irem (Memetron license)", "Atomic Boy", GAME_NO_SOUND | GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C5")
+#pragma bss_seg("B5")
+#pragma data_seg("D5")
+#pragma const_seg("K5")
 /***************************************************************************
 
 88 Games (c) 1988 Konami
@@ -554,3 +558,7 @@ static DRIVER_INIT( 88games )
 GAME( 1988, 88games,  0,       88games, 88games, 88games, ROT0, "Konami", "'88 Games" )
 GAME( 1988, konami88, 88games, 88games, 88games, 88games, ROT0, "Konami", "Konami '88" )
 GAME( 1988, hypsptsp, 88games, 88games, 88games, 88games, ROT0, "Konami", "Hyper Sports Special (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

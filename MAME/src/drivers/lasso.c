@@ -1,3 +1,7 @@
+#pragma code_seg("C273")
+#pragma bss_seg("B273")
+#pragma data_seg("D273")
+#pragma const_seg("K273")
 /***************************************************************************
 
  Lasso and similar hardware
@@ -1002,3 +1006,7 @@ GAME( 1983, chameleo, 0,     chameleo, chameleo, 0, ROT0,  "Jaleco", "Chameleon"
 GAME( 1984, wwjgtin,  0,     wwjgtin,  wwjgtin,  0, ROT0,  "Jaleco / Casio", "Wai Wai Jockey Gate-In!" )
 GAME( 1984, pinbo,    0,     pinbo,    pinbo,    0, ROT90, "Jaleco", "Pinbo" )
 GAME( 1984, pinbos,   pinbo, pinbo,    pinbos,   0, ROT90, "bootleg?", "Pinbo (Strike)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

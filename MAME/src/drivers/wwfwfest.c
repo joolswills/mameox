@@ -1,3 +1,7 @@
+#pragma code_seg("C617")
+#pragma bss_seg("B617")
+#pragma data_seg("D617")
+#pragma const_seg("K617")
 /*******************************************************************************
  WWF Wrestlefest (C) 1991 Technos Japan  (drivers/wwfwfest.c)
 ********************************************************************************
@@ -569,3 +573,7 @@ ROM_END
 GAME( 1991, wwfwfest, 0,        wwfwfest, wwfwfest, 0, ROT0, "Technos Japan", "WWF WrestleFest (US)" )
 GAME( 1991, wwfwfsta, wwfwfest, wwfwfest, wwfwfest, 0, ROT0, "Technos Japan (Tecmo license)", "WWF WrestleFest (US Tecmo)" )
 GAME( 1991, wwfwfstj, wwfwfest, wwfwfest, wwfwfest, 0, ROT0, "Technos Japan", "WWF WrestleFest (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

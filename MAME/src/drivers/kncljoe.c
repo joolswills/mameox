@@ -1,3 +1,7 @@
+#pragma code_seg("C267")
+#pragma bss_seg("B267")
+#pragma data_seg("D267")
+#pragma const_seg("K267")
 /***************************************************************************
 
 Knuckle Joe - (c) 1985 Seibu Kaihatsu ( Taito License )
@@ -301,3 +305,7 @@ ROM_END
 GAME( 1985, kncljoe,  0,       kncljoe, kncljoe, 0, ROT0, "[Seibu Kaihatsu] (Taito license)", "Knuckle Joe (set 1)" )
 GAME( 1985, kncljoea, kncljoe, kncljoe, kncljoe, 0, ROT0, "[Seibu Kaihatsu] (Taito license)", "Knuckle Joe (set 2)" )
 GAME( 1985, bcrusher, kncljoe, kncljoe, kncljoe, 0, ROT0, "bootleg",                          "Bone Crusher" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

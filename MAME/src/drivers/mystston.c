@@ -1,3 +1,7 @@
+#pragma code_seg("C343")
+#pragma bss_seg("B343")
+#pragma data_seg("D343")
+#pragma const_seg("K343")
 /***************************************************************************
 
 Mysterious Stones
@@ -339,3 +343,7 @@ ROM_END
 
 GAME( 1984, mystston, 0,        mystston, mystston, 0, ROT270, "Technos", "Mysterious Stones (set 1)" )
 GAME( 1984, myststno, mystston, mystston, mystston, 0, ROT270, "Technos", "Mysterious Stones (set 2)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

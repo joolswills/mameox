@@ -1,3 +1,7 @@
+#pragma code_seg("C102")
+#pragma bss_seg("B102")
+#pragma data_seg("D102")
+#pragma const_seg("K102")
 /***************************************************************************
 
 Circus memory map
@@ -496,3 +500,7 @@ GAMEX( 1977, circus,   0, circus,   circus,   circus, ROT0, "Exidy", "Circus", G
 GAMEX( 1977, robotbwl, 0, robotbwl, robotbwl, 0,      ROT0, "Exidy", "Robot Bowl", GAME_NO_SOUND )
 GAMEX( 1979, crash,    0, crash,    crash,    0,      ROT0, "Exidy", "Crash", GAME_IMPERFECT_SOUND )
 GAMEX( 1977, ripcord,  0, ripcord,  ripcord,  0,      ROT0, "Exidy", "Rip Cord", GAME_IMPERFECT_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C204")
+#pragma bss_seg("B204")
+#pragma data_seg("D204")
+#pragma const_seg("K204")
 /***************************************************************************
 
 GAME PLAN driver, used for games like MegaTack, Killer Comet, Kaos, Challenger
@@ -637,3 +641,7 @@ GAME( 1981, kaos,     0, gameplan, kaos,     0, ROT270, "GamePlan", "Kaos" )
 GAME( 1980, killcom,  0, gameplan, killcom,  0, ROT0,   "GamePlan (Centuri license)", "Killer Comet" )
 GAME( 1980, megatack, 0, gameplan, megatack, 0, ROT0,   "GamePlan (Centuri license)", "MegaTack" )
 GAME( 1981, challeng, 0, gameplan, challeng, 0, ROT0,   "GamePlan (Centuri license)", "Challenger" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C374")
+#pragma bss_seg("B374")
+#pragma data_seg("D374")
+#pragma const_seg("K374")
 /***************************************************************************
 
 Oli-Boo-Chu
@@ -420,3 +424,7 @@ ROM_END
 
 
 GAMEX( 1981, olibochu, 0, olibochu, olibochu, 0, ROT270, "Irem + GDI", "Oli-Boo-Chu", GAME_WRONG_COLORS | GAME_IMPERFECT_SOUND | GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C601")
+#pragma bss_seg("B601")
+#pragma data_seg("D601")
+#pragma const_seg("K601")
 /***************************************************************************
 
 Nintendo VS UniSystem and DualSystem - (c) 1984 Nintendo of America
@@ -2750,3 +2754,7 @@ GAMEX( 19??, supxevs,  0,        vsnes,   vsnes,	xevious,  ROT0, "Namco?",   "Vs
 GAMEX(1988?, vsfdf,    0,        vsnes,   vsfdf,    vsfdf   , ROT0, "Konami",   "Vs. Freedom Force", GAME_NOT_WORKING )
 GAMEX( 1985, smgolfb,  smgolf,   vsnes,   golf,     machridr, ROT0, "Nintendo", "Vs. Stroke and Match Golf (Men set 2)", GAME_NOT_WORKING )
 GAMEX( 1984, vsbbaljb, vsbball,  vsdual,  vsbballj, vsbball,  ROT0, "Nintendo of America",  "Vs. BaseBall (Japan set 3)", GAME_NOT_WORKING )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

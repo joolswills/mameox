@@ -1,3 +1,7 @@
+#pragma code_seg("C280")
+#pragma bss_seg("B280")
+#pragma data_seg("D280")
+#pragma const_seg("K280")
 /*******************************************************************************
 
 	Pro Soccer						(c) 1983 Data East Corporation
@@ -918,3 +922,7 @@ GAME( 1983, boomrang, 0,        boomrang,  boomrang, prosport, ROT270, "Data Eas
 GAME( 1984, kamikcab, 0,        boomrang,  kamikcab, prosport, ROT270, "Data East Corporation", "Kamikaze Cabbie" )
 GAME( 1984, liberate, 0,        liberate,  liberate, liberate, ROT270, "Data East Corporation", "Liberation" )
 GAMEX(1984, liberatb, liberate, liberatb,  liberate, prosport, ROT270, "bootleg",               "Liberation (bootleg)", GAME_NOT_WORKING )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

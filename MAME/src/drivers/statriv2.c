@@ -1,3 +1,7 @@
+#pragma code_seg("C509")
+#pragma bss_seg("B509")
+#pragma data_seg("D509")
+#pragma const_seg("K509")
 /****************************************************************\
 * Status Trivia 2 driver by David Haywood, MooglyGuy, and Stephh *
 * Super Trivia driver by MooglyGuy                               *
@@ -565,3 +569,7 @@ ROM_END
 GAMEX( 1984, trivquiz, 0, trivquiz, statriv2, 0, ROT0, "Status Games", "Triv Quiz", GAME_WRONG_COLORS )
 GAMEX( 1984, statriv2, 0, statriv2, statriv2, 0, ROT0, "Status Games", "(Status) Triv Two", GAME_WRONG_COLORS )
 GAMEX( 1986, supertr2, 0, supertr2, supertr2, 0, ROT0, "Status Games", "Super Triv II", GAME_WRONG_COLORS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C111")
+#pragma bss_seg("B111")
+#pragma data_seg("D111")
+#pragma const_seg("K111")
 /***************************************************************************
 
 	Atari CoJag hardware
@@ -971,3 +975,7 @@ static DRIVER_INIT( vcircle )
 GAME( 1995, area51,   0,        cojag68k,  area51,   area51,   ROT0, "Atari Games", "Area 51" )
 GAME( 1996, maxforce, 0,        r3knarrow, area51,   maxforce, ROT0, "Atari Games", "Maximum Force" )
 GAME( 1996, vcircle,  0,        cojagr3k,  vcircle,  vcircle,  ROT0, "Atari Games", "Vicious Circle (prototype)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

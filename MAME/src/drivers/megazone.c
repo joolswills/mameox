@@ -1,3 +1,7 @@
+#pragma code_seg("C311")
+#pragma bss_seg("B311")
+#pragma data_seg("D311")
+#pragma const_seg("K311")
 /**************************************************************************
 
 Based on drivers from Juno First emulator by Chris Hardy (chris@junofirst.freeserve.co.uk)
@@ -451,3 +455,7 @@ static DRIVER_INIT( megazone )
 
 GAME( 1983, megazone, 0,        megazone, megazone, megazone, ROT90, "Konami", "Mega Zone" )
 GAME( 1983, megaznik, megazone, megazone, megazone, megazone, ROT90, "Konami / Interlogic + Kosuka", "Mega Zone (Kosuka)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

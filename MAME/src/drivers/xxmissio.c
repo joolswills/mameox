@@ -1,3 +1,7 @@
+#pragma code_seg("C622")
+#pragma bss_seg("B622")
+#pragma data_seg("D622")
+#pragma const_seg("K622")
 /*****************************************************************************
 
 XX Mission (c) 1986 UPL
@@ -387,3 +391,7 @@ ROM_START( xxmissio )
 ROM_END
 
 GAME( 1986, xxmissio, 0, xxmissio, xxmissio, 0, ROT90, "UPL", "XX Mission" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

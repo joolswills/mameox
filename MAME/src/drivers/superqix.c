@@ -1,3 +1,7 @@
+#pragma code_seg("C520")
+#pragma bss_seg("B520")
+#pragma data_seg("D520")
+#pragma const_seg("K520")
 /***************************************************************************
 
 Super QIX memory map (preliminary)
@@ -361,3 +365,7 @@ static DRIVER_INIT(perestro)
 GAMEX( 1987, superqix, 0,        superqix, superqix, 0,        ROT90, "Taito", "Super Qix", GAME_NOT_WORKING | GAME_NO_COCKTAIL )
 GAMEX( 1987, sqixbl,   superqix, superqix, superqix, 0,        ROT90, "bootleg", "Super Qix (bootleg)", GAME_NO_COCKTAIL )
 GAMEX( 1993, perestro, 0,        superqix, superqix, perestro, ROT90, "Promat / Fuuki", "Perestroika Girls", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

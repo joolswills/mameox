@@ -1,3 +1,7 @@
+#pragma code_seg("C351")
+#pragma bss_seg("B351")
+#pragma data_seg("D351")
+#pragma const_seg("K351")
 /***************************************************************************
 Namco System 21
 
@@ -1058,3 +1062,7 @@ GAMEX( 1991, starblad, 0, 	    poly_c140_typeA,  default,  	starblad, ROT0, 	  "
 /* 1988, Winning Run */
 /* 1989, Winning Run Suzuka Grand Prix */
 GAMEX( 1991, winrun91, 0, 	    poly_c140_typeB,  default,	    winrun,	  ROT0, 	  "Namco", "Winning Run 91", 	GAME_NOT_WORKING ) /* not working */
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

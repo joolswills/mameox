@@ -1,3 +1,7 @@
+#pragma code_seg("C270")
+#pragma bss_seg("B270")
+#pragma data_seg("D270")
+#pragma const_seg("K270")
 /***************************************************************************
 
 	Kyugo hardware games
@@ -1120,3 +1124,7 @@ GAME( 1986?,legend,   0,        legend,   legend,   srdmissn, ROT0,  "Sega/Corel
 GAME( 1987, airwolf,  0,        srdmissn, airwolf,  srdmissn, ROT0,  "Kyugo", "Airwolf" )
 GAME( 1987, skywolf,  airwolf,  srdmissn, skywolf,  srdmissn, ROT0,  "bootleg", "Sky Wolf (set 1)" )
 GAME( 1987, skywolf2, airwolf,  srdmissn, airwolf,  srdmissn, ROT0,  "bootleg", "Sky Wolf (set 2)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

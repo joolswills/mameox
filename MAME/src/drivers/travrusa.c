@@ -1,3 +1,7 @@
+#pragma code_seg("C573")
+#pragma bss_seg("B573")
+#pragma data_seg("D573")
+#pragma const_seg("K573")
 /****************************************************************************
 
 Traverse USA / Zippy Race  (c) 1983 Irem
@@ -569,3 +573,7 @@ static DRIVER_INIT( shtrider )
 GAME( 1983, travrusa, 0,        travrusa, travrusa, 0,        ROT270, "Irem", "Traverse USA / Zippy Race" )
 GAME( 1983, motorace, travrusa, travrusa, motorace, motorace, ROT270, "Irem (Williams license)", "MotoRace USA" )
 GAMEX(1984, shtrider, 0,        shtrider, shtrider, shtrider, ROT270|ORIENTATION_FLIP_X, "Seibu Kaihatsu (Sigma license)", "Shot Rider", GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

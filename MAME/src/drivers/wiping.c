@@ -1,3 +1,7 @@
+#pragma code_seg("C613")
+#pragma bss_seg("B613")
+#pragma data_seg("D613")
+#pragma const_seg("K613")
 /***************************************************************************
 				Wiping
 			    (C) 1982 Nichibutsu
@@ -410,3 +414,7 @@ ROM_END
 
 GAME( 1982, wiping,  0,      wiping, wiping,  0, ROT90, "Nichibutsu", "Wiping" )
 GAME( 1983, rugrats, wiping, wiping, rugrats, 0, ROT90, "Nichibutsu", "Rug Rats" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

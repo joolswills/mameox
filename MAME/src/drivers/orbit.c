@@ -1,3 +1,7 @@
+#pragma code_seg("C379")
+#pragma bss_seg("B379")
+#pragma data_seg("D379")
+#pragma const_seg("K379")
 /***************************************************************************
 
 Atari Orbit Driver
@@ -353,3 +357,7 @@ ROM_END
 
 
 GAMEX( 1978, orbit, 0, orbit, orbit, 0, 0, "Atari", "Orbit", GAME_NO_SOUND )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

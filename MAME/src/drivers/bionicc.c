@@ -1,3 +1,7 @@
+#pragma code_seg("C62")
+#pragma bss_seg("B62")
+#pragma data_seg("D62")
+#pragma const_seg("K62")
 /********************************************************************
 
 			  Bionic Commando
@@ -493,3 +497,7 @@ ROM_END
 GAME( 1987, bionicc,  0,       bionicc, bionicc, 0, ROT0, "Capcom", "Bionic Commando (US set 1)" )
 GAME( 1987, bionicc2, bionicc, bionicc, bionicc, 0, ROT0, "Capcom", "Bionic Commando (US set 2)" )
 GAME( 1987, topsecrt, bionicc, bionicc, bionicc, 0, ROT0, "Capcom", "Top Secret (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C90")
+#pragma bss_seg("B90")
+#pragma data_seg("D90")
+#pragma const_seg("K90")
 /***************************************************************************
 
 							  -= Cave Hardware =-
@@ -3243,3 +3247,7 @@ GAME( 1999, guwange,  0,        guwange,  guwange,  guwange,  ROT270, "Atlus/Cav
 
 /* Games not working properly: */
 GAMEX(1994, pwrinst2, 0,        pwrinst2, metmqstr, pwrinst2, ROT0,   "Atlus/Cave",                           "Power Instinct 2 (USA)", GAME_NOT_WORKING )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

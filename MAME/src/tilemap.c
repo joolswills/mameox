@@ -16,6 +16,8 @@
 
 #if !defined(DECLARE) && !defined(TRANSP)
 
+#include "MAMEoX.h"
+
 #include "driver.h"
 #include "osinline.h"
 #include "tilemap.h"
@@ -669,6 +671,9 @@ struct tilemap *tilemap_create(
 	UINT32 row;
 	int num_tiles;
 
+  CHECKRAM();
+
+
 	tilemap = calloc( 1,sizeof( struct tilemap ) );
 	if( tilemap )
 	{
@@ -715,6 +720,8 @@ struct tilemap *tilemap_create(
 		tilemap->pixmap = bitmap_alloc_depth( tilemap->cached_width, tilemap->cached_height, -16 );
 		tilemap->transparency_bitmap = bitmap_alloc_depth( tilemap->cached_width, tilemap->cached_height, -8 );
 
+    CHECKRAM();
+
 		if( tilemap->logical_rowscroll && tilemap->cached_rowscroll &&
 			tilemap->logical_colscroll && tilemap->cached_colscroll &&
 			tilemap->pixmap &&
@@ -760,8 +767,8 @@ void tilemap_dispose( struct tilemap *tilemap )
 	else
 	{
 		prev = first_tilemap;
-		while( prev->next != tilemap ) prev = prev->next;
-		prev->next =tilemap->next;
+		while( prev && prev->next != tilemap ) prev = prev->next;
+		if( prev ) prev->next = tilemap->next;
 	}
 	PenToPixel_Term( tilemap );
 	free( tilemap->logical_rowscroll );

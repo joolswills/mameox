@@ -1,3 +1,7 @@
+#pragma code_seg("C529")
+#pragma bss_seg("B529")
+#pragma data_seg("D529")
+#pragma const_seg("K529")
 /***************************************************************************
 
 Tag Team Wrestling hardware description:
@@ -402,3 +406,7 @@ ROM_END
 
 GAME( 1983, bigprowr, 0,        tagteam, bigprowr, 0, ROT270, "Technos", "The Big Pro Wrestling!" )
 GAME( 1983, tagteam,  bigprowr, tagteam, tagteam,  0, ROT270, "Technos (Data East license)", "Tag Team Wrestling" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

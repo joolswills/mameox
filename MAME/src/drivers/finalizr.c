@@ -1,3 +1,7 @@
+#pragma code_seg("C178")
+#pragma bss_seg("B178")
+#pragma data_seg("D178")
+#pragma const_seg("K178")
 /***************************************************************************
 
 Finalizer (GX523) (c) 1985 Konami
@@ -517,3 +521,7 @@ static DRIVER_INIT( finalizr )
 
 GAMEX( 1985, finalizr, 0,        finalizr, finalizr, finalizr, ROT90, "Konami", "Finalizer - Super Transformation", GAME_IMPERFECT_SOUND | GAME_NO_COCKTAIL )
 GAMEX( 1985, finalizb, finalizr, finalizr, finalizb, finalizr, ROT90, "bootleg", "Finalizer - Super Transformation (bootleg)", GAME_IMPERFECT_SOUND | GAME_NO_COCKTAIL )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

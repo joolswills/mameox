@@ -1,3 +1,7 @@
+#pragma code_seg("C600")
+#pragma bss_seg("B600")
+#pragma data_seg("D600")
+#pragma const_seg("K600")
 /******************************************************************
 
 Volfied (c) 1989 Taito Corporation
@@ -435,3 +439,7 @@ ROM_END
 GAMEX( 1989, volfied,  0,       volfied, volfied,  volfied, ROT270, "Taito Corporation Japan", "Volfied (World)", GAME_UNEMULATED_PROTECTION )
 GAMEX( 1989, volfiedu, volfied, volfied, volfiedu, volfied, ROT270, "Taito America Corporation", "Volfied (US)", GAME_UNEMULATED_PROTECTION )
 GAMEX( 1989, volfiedj, volfied, volfied, volfiedj, volfied, ROT270, "Taito Corporation", "Volfied (Japan)", GAME_UNEMULATED_PROTECTION )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

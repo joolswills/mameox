@@ -1,3 +1,7 @@
+#pragma code_seg("C335")
+#pragma bss_seg("B335")
+#pragma data_seg("D335")
+#pragma const_seg("K335")
 /***************************************************************************
 
 Mr Do!
@@ -410,3 +414,7 @@ GAME( 1982, mrdofix,  mrdo, mrdo, mrdo, 0, ROT270, "Universal (Taito license)", 
 GAME( 1982, mrlo,     mrdo, mrdo, mrdo, 0, ROT270, "bootleg", "Mr. Lo!" )
 GAME( 1982, mrdu,     mrdo, mrdo, mrdo, 0, ROT270, "bootleg", "Mr. Du!" )
 GAME( 1982, yankeedo, mrdo, mrdo, mrdo, 0, ROT270, "hack", "Yankee DO!" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

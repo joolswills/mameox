@@ -1,3 +1,7 @@
+#pragma code_seg("C407")
+#pragma bss_seg("B407")
+#pragma data_seg("D407")
+#pragma const_seg("K407")
 /***************************************************************************
 
 Popeye  (c) 1982 Nintendo
@@ -699,3 +703,7 @@ GAME( 1982, popeye,   0,      popeye,   popeye,   popeye,   ROT0, "Nintendo", "P
 GAME( 1982, popeyeu,  popeye, popeye,   popeye,   popeye,   ROT0, "Nintendo", "Popeye (revision D not protected)" )
 GAME( 1982, popeyef,  popeye, popeye,   popeyef,  popeye,   ROT0, "Nintendo", "Popeye (revision F)" )
 GAME( 1982, popeyebl, popeye, popeyebl, popeye,   0,        ROT0, "bootleg",  "Popeye (bootleg)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

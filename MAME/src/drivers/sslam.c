@@ -1,3 +1,7 @@
+#pragma code_seg("C500")
+#pragma bss_seg("B500")
+#pragma data_seg("D500")
+#pragma const_seg("K500")
 /* Super Slam (c)1993 Playmark */
 
 /*
@@ -288,3 +292,7 @@ ROM_START( sslam )
 ROM_END
 
 GAMEX(1993, sslam, 0, sslam, sslam, 0, ROT0, "Playmark", "Super Slam", GAME_NO_SOUND | GAME_IMPERFECT_GRAPHICS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

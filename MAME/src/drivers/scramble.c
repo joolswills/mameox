@@ -1,3 +1,7 @@
+#pragma code_seg("C447")
+#pragma bss_seg("B447")
+#pragma data_seg("D447")
+#pragma const_seg("K447")
 /***************************************************************************
 
  Scramble hardware
@@ -1999,3 +2003,7 @@ GAME( 1983, hunchbks, hunchbak, hunchbks, hunchbks, scramble_ppi, ROT90, "Centur
 GAME( 1983, cavelon,  0,        cavelon,  cavelon,  cavelon,      ROT90, "Jetsoft", "Cavelon" )
 GAME( 1983, sfx,      0,        sfx,      sfx,      sfx,          ORIENTATION_FLIP_X, "Nichibutsu", "SF-X" )
 GAME( 198?, mimonkey, 0,        mimonkey, mimonkey, mimonkey,     ROT90, "bootleg", "Mighty Monkey" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

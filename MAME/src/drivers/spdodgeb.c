@@ -1,3 +1,7 @@
+#pragma code_seg("C489")
+#pragma bss_seg("B489")
+#pragma data_seg("D489")
+#pragma const_seg("K489")
 /***************************************************************************
 
 Super Dodgeball / Nekketsu Koukou Dodgeball Bu
@@ -468,3 +472,7 @@ ROM_END
 
 GAME( 1987, spdodgeb, 0,        spdodgeb, spdodgeb, 0, ROT0, "Technos", "Super Dodge Ball (US)" )
 GAME( 1987, nkdodgeb, spdodgeb, spdodgeb, spdodgeb, 0, ROT0, "Technos", "Nekketsu Koukou Dodgeball Bu (Japan bootleg)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

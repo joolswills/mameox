@@ -1,3 +1,7 @@
+#pragma code_seg("C408")
+#pragma bss_seg("B408")
+#pragma data_seg("D408")
+#pragma const_seg("K408")
 /*
 Popper
 
@@ -373,3 +377,7 @@ ROM_END
 
 
 GAMEX(1983, popper, 0, popper, popper, 0, ROT90, "Omori Electric Co., Ltd.", "Popper", GAME_IMPERFECT_COLORS )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

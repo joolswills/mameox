@@ -1,3 +1,7 @@
+#pragma code_seg("C297")
+#pragma bss_seg("B297")
+#pragma data_seg("D297")
+#pragma const_seg("K297")
 /***************************************************************************
 
 Mappy memory map (preliminary)
@@ -918,3 +922,7 @@ GAME( 1985, digdug2o, digdug2,  digdug2,  digdug2,  0, ROT90, "Namco", "Dig Dug 
 GAME( 1985, motos,    0,        motos,    motos,    0, ROT90, "Namco", "Motos" )
 GAME( 1984, todruaga, 0,        todruaga, todruaga, 0, ROT90, "Namco", "Tower of Druaga (New Ver.)" )
 GAME( 1984, todruago, todruaga, todruaga, todruaga, 0, ROT90, "Namco", "Tower of Druaga (Old Ver.)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C623")
+#pragma bss_seg("B623")
+#pragma data_seg("D623")
+#pragma const_seg("K623")
 /***************************************************************************
 
 	Atari Xybots hardware
@@ -283,3 +287,7 @@ static DRIVER_INIT( xybots )
  *************************************/
 
 GAME( 1987, xybots, 0, xybots, xybots, xybots, ROT0, "Atari Games", "Xybots" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

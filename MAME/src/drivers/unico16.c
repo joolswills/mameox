@@ -1,3 +1,7 @@
+#pragma code_seg("C589")
+#pragma bss_seg("B589")
+#pragma data_seg("D589")
+#pragma const_seg("K589")
 /***************************************************************************
 
 						  -= Unico 16 Bit Games =-
@@ -675,3 +679,7 @@ ROM_END
 
 GAME( 1997, burglarx, 0, burglarx, burglarx, 0, ROT0, "Unico Electronics", "Burglar X"  )
 GAME( 1998, zeropnt,  0, zeropnt,  zeropnt,  0, ROT0, "Unico Electronics", "Zero Point" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,7 @@
+#pragma code_seg("C620")
+#pragma bss_seg("B620")
+#pragma data_seg("D620")
+#pragma const_seg("K620")
 /***************************************************************************
 
 Xexex
@@ -458,3 +462,7 @@ static DRIVER_INIT( xexex )
 
 GAME( 1991, xexex,  0,     xexex, xexex, xexex, ROT0, "Konami", "Xexex (World)" )
 GAME( 1991, xexexj, xexex, xexex, xexex, xexex, ROT0, "Konami", "Xexex (Japan)" )
+#pragma data_seg()
+#pragma code_seg()
+#pragma bss_seg()
+#pragma const_seg()
