@@ -1,11 +1,11 @@
-#pragma code_seg("C54")
-#pragma data_seg("D54")
-#pragma bss_seg("B54")
-#pragma const_seg("K54")
-#pragma comment(linker, "/merge:D54=54")
-#pragma comment(linker, "/merge:C54=54")
-#pragma comment(linker, "/merge:B54=54")
-#pragma comment(linker, "/merge:K54=54")
+#pragma code_seg("C118")
+#pragma data_seg("D118")
+#pragma bss_seg("B118")
+#pragma const_seg("K118")
+#pragma comment(linker, "/merge:D118=118")
+#pragma comment(linker, "/merge:C118=118")
+#pragma comment(linker, "/merge:B118=118")
+#pragma comment(linker, "/merge:K118=118")
 /***************************************************************************
 
 	Atari Tetris hardware

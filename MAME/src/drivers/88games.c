@@ -1,11 +1,11 @@
-#pragma code_seg("C17")
-#pragma data_seg("D17")
-#pragma bss_seg("B17")
-#pragma const_seg("K17")
-#pragma comment(linker, "/merge:D17=17")
-#pragma comment(linker, "/merge:C17=17")
-#pragma comment(linker, "/merge:B17=17")
-#pragma comment(linker, "/merge:K17=17")
+#pragma code_seg("C81")
+#pragma data_seg("D81")
+#pragma bss_seg("B81")
+#pragma const_seg("K81")
+#pragma comment(linker, "/merge:D81=81")
+#pragma comment(linker, "/merge:C81=81")
+#pragma comment(linker, "/merge:B81=81")
+#pragma comment(linker, "/merge:K81=81")
 /***************************************************************************
 
 88 Games (c) 1988 Konami

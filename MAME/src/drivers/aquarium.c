@@ -1,11 +1,11 @@
-#pragma code_seg("C33")
-#pragma data_seg("D33")
-#pragma bss_seg("B33")
-#pragma const_seg("K33")
-#pragma comment(linker, "/merge:D33=33")
-#pragma comment(linker, "/merge:C33=33")
-#pragma comment(linker, "/merge:B33=33")
-#pragma comment(linker, "/merge:K33=33")
+#pragma code_seg("C97")
+#pragma data_seg("D97")
+#pragma bss_seg("B97")
+#pragma const_seg("K97")
+#pragma comment(linker, "/merge:D97=97")
+#pragma comment(linker, "/merge:C97=97")
+#pragma comment(linker, "/merge:B97=97")
+#pragma comment(linker, "/merge:K97=97")
 /* Aquarium (c)1996 Excellent Systems */
 
 /* the hardware is similar to gcpinbal.c, probably should merge it at some point */

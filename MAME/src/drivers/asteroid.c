@@ -1,11 +1,11 @@
-#pragma code_seg("C41")
-#pragma data_seg("D41")
-#pragma bss_seg("B41")
-#pragma const_seg("K41")
-#pragma comment(linker, "/merge:D41=41")
-#pragma comment(linker, "/merge:C41=41")
-#pragma comment(linker, "/merge:B41=41")
-#pragma comment(linker, "/merge:K41=41")
+#pragma code_seg("C105")
+#pragma data_seg("D105")
+#pragma bss_seg("B105")
+#pragma const_seg("K105")
+#pragma comment(linker, "/merge:D105=105")
+#pragma comment(linker, "/merge:C105=105")
+#pragma comment(linker, "/merge:B105=105")
+#pragma comment(linker, "/merge:K105=105")
 /***************************************************************************
 
 	Atari Asteroids hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C53")
-#pragma data_seg("D53")
-#pragma bss_seg("B53")
-#pragma const_seg("K53")
-#pragma comment(linker, "/merge:D53=53")
-#pragma comment(linker, "/merge:C53=53")
-#pragma comment(linker, "/merge:B53=53")
-#pragma comment(linker, "/merge:K53=53")
+#pragma code_seg("C20")
+#pragma data_seg("D20")
+#pragma bss_seg("B20")
+#pragma const_seg("K20")
+#pragma comment(linker, "/merge:D20=20")
+#pragma comment(linker, "/merge:C20=20")
+#pragma comment(linker, "/merge:B20=20")
+#pragma comment(linker, "/merge:K20=20")
 /***************************************************************************
 
 	Leland Ataxx-era driver

@@ -1,11 +1,11 @@
-#pragma code_seg("C31")
-#pragma data_seg("D31")
-#pragma bss_seg("B31")
-#pragma const_seg("K31")
-#pragma comment(linker, "/merge:D31=31")
-#pragma comment(linker, "/merge:C31=31")
-#pragma comment(linker, "/merge:B31=31")
-#pragma comment(linker, "/merge:K31=31")
+#pragma code_seg("C95")
+#pragma data_seg("D95")
+#pragma bss_seg("B95")
+#pragma const_seg("K95")
+#pragma comment(linker, "/merge:D95=95")
+#pragma comment(linker, "/merge:C95=95")
+#pragma comment(linker, "/merge:B95=95")
+#pragma comment(linker, "/merge:K95=95")
 /* Angel Kids / Space Position hardware driver
 
  driver by David Haywood

@@ -1,11 +1,11 @@
-#pragma code_seg("C19")
-#pragma data_seg("D19")
-#pragma bss_seg("B19")
-#pragma const_seg("K19")
-#pragma comment(linker, "/merge:D19=19")
-#pragma comment(linker, "/merge:C19=19")
-#pragma comment(linker, "/merge:B19=19")
-#pragma comment(linker, "/merge:K19=19")
+#pragma code_seg("C83")
+#pragma data_seg("D83")
+#pragma bss_seg("B83")
+#pragma const_seg("K83")
+#pragma comment(linker, "/merge:D83=83")
+#pragma comment(linker, "/merge:C83=83")
+#pragma comment(linker, "/merge:B83=83")
+#pragma comment(linker, "/merge:K83=83")
 /****************************************************************************
 
 Ace by Allied Leisure
