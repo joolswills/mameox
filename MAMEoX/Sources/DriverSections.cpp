@@ -213,7 +213,8 @@ BOOL UnloadDriverSections( void )
         (*i).first == "src\\drivers\\pipedrm.c" ||
         (*i).first == "src\\drivers\\mystwarr.c" ||
         (*i).first == "src\\drivers\\sega.c" ||
-        (*i).first == "src\\drivers\\congo.c" )
+        (*i).first == "src\\drivers\\congo.c" ||
+        (*i).first == "src\\drivers\\rollrace.c" )
         continue;
     XFreeSection( (*i).second.c_str() );
   }
@@ -670,6 +671,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\raiden.c", "517" );
   RegisterSectionName( "src\\drivers\\raiden2.c", "518" );
   RegisterSectionName( "src\\drivers\\raiders5.c", "519" );
+  RegisterSectionName( "src\\drivers\\rainbow.c", "10" );
   RegisterSectionName( "src\\drivers\\rallyx.c", "17" );
   RegisterSectionName( "src\\drivers\\rampart.c", "9" );
   RegisterSectionName( "src\\drivers\\rastan.c", "10" );
@@ -685,7 +687,6 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\rocnrope.c", "533" );
   RegisterSectionName( "src\\drivers\\rohga.c", "534" );
   RegisterSectionName( "src\\drivers\\rollerg.c", "535" );
-  RegisterSectionName( "src\\drivers\\rollrace.c", "536" );
   RegisterSectionName( "src\\drivers\\rotaryf.c", "537" );
   RegisterSectionName( "src\\drivers\\route16.c", "538" );
   RegisterSectionName( "src\\drivers\\royalmah.c", "539" );
@@ -872,7 +873,6 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\williams.c", "4" );
   RegisterSectionName( "src\\drivers\\wilytowr.c", "721" );
   RegisterSectionName( "src\\drivers\\wiping.c", "722" );
-  RegisterSectionName( "src\\drivers\\wiz.c", "723" );
   RegisterSectionName( "src\\drivers\\wolfpack.c", "724" );
   RegisterSectionName( "src\\drivers\\wrally.c", "725" );
   RegisterSectionName( "src\\drivers\\wwfsstar.c", "726" );
@@ -895,7 +895,8 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\zerozone.c", "743" );
   RegisterSectionName( "src\\drivers\\zn.c", "744" );
   RegisterSectionName( "src\\drivers\\zodiack.c", "745" );
-  RegisterSectionName( "src\\drivers\\rainbow.c", "10" );
+  RegisterSectionName( "src\\drivers\\rollrace.c", "28" );
+  RegisterSectionName( "src\\drivers\\wiz.c", "28" );
 }
 #pragma code_seg()
 #pragma data_seg()

@@ -357,8 +357,6 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 @SegaFamily = ( "multi32.c", "system1.c", "system16.c", "system18.c", "system24.c", "system32.c",
 				"aburner.c", "sharrier.c", "outrun.c" );
 
-
-  # TEST Families for 0.71.1b
 @MoonPatrolFamily = ( "mpatrol.c", "yard.c" );								# 10 Yard Fight07/07/2003
 @SNKFamily = ( "snk.c", "hal21.c" );										# ASO - Armored Scrum Object, Athena
 @AmidarFamily = ( "galaxian.c", "scramble.c", "scobra.c", 
@@ -386,12 +384,14 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 @SegarFamily = ( "segar.c", "sega.c" );										# Star Trek
 @ZaxxonFamily = ( "zaxxon.c", "congo.c" );									# Congo Bongo
 
+@WizFamily = ( "wiz.c", "rollrace.c" );										# Fighting Roller
+
 local @Families = ( \@CapcomFamily, \@NamcoFamily, \@SegaFamily, \@MidwayMCRFamily, \@TwinCobraFamily,
 					\@MoonPatrolFamily, \@SNKFamily, \@AmidarFamily, \@RampartFamily, \@RastanFamily,
 					\@EspialFamily, \@BZoneFamily, \@Nova2001Family, \@GottLiebFamily, \@PengoFamily,
 					\@Megasys1Family, \@LocoMotionFamily, \@ExidyFamily, \@M72Family, \@LelandFamily,
 					\@TrackFldFamily, \@Taito_F3Family, \@FromanceFamily, \@MidYUnitFamily, \@KonamiGXFamily,
-					\@SegarFamily, \@ZaxxonFamily );
+					\@SegarFamily, \@ZaxxonFamily, \@WizFamily );
 $autoNameNumber = $#Families + 50;
 
 
