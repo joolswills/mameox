@@ -319,16 +319,6 @@ CHECKRAM();
     // stretches the screen. If true, it moves it.
   BOOL rightAnalogMovesScreen = FALSE;
 
-    // Set up texture engine
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_MINFILTER, D3DTEXF_LINEAR );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_MAGFILTER, D3DTEXF_LINEAR );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSU, D3DTADDRESS_CLAMP );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSW, D3DTADDRESS_CLAMP );
-
 
 		//--- Main loop ------------------------------------------------------
 	while( 1 )
@@ -464,7 +454,10 @@ CHECKRAM();
     pD3DDevice->SetTextureStageState( 0, D3DTSS_MAGFILTER, D3DTEXF_LINEAR );
     pD3DDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
     pD3DDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-    pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSU, D3DTADDRESS_CLAMP );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSW, D3DTADDRESS_CLAMP );
     
       // Render whatever screen happens to be active to the
       // texture
@@ -513,24 +506,6 @@ CHECKRAM();
 											  1.0f,															// Z
 											  0L );															// Stencil
 
-			// Move the cursor position and render
-    pD3DDevice->SetTransform( D3DTS_WORLD, &matWorld );
-    pD3DDevice->SetTransform( D3DTS_VIEW, &matWorld );
-    pD3DDevice->SetTransform( D3DTS_PROJECTION, &matWorld );
-
-	  pD3DDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
-	  pD3DDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
-	  pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-    pD3DDevice->SetRenderState( D3DRS_ZENABLE, FALSE );
-
-    pD3DDevice->SetTextureStageState( 0, D3DTSS_MINFILTER, D3DTEXF_LINEAR );
-    pD3DDevice->SetTextureStageState( 0, D3DTSS_MAGFILTER, D3DTEXF_LINEAR );
-    pD3DDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-    pD3DDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-    pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
-    pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSU, D3DTADDRESS_CLAMP );
-    pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP );
-    pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSW, D3DTADDRESS_CLAMP );
 
     pD3DDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX1 );
     pD3DDevice->SetStreamSource(	0,												  // Stream number
@@ -990,6 +965,15 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
   pD3DDevice->SetRenderState( D3DRS_ALPHAFUNC,        D3DCMP_GREATEREQUAL );
   pD3DDevice->SetRenderState( D3DRS_ALPHAREF,         0x08 );
   pD3DDevice->SetRenderState( D3DRS_ZENABLE,          FALSE );
+    // Set up texture engine
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_MINFILTER, D3DTEXF_LINEAR );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_MAGFILTER, D3DTEXF_LINEAR );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSU, D3DTADDRESS_CLAMP );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSW, D3DTADDRESS_CLAMP );
 
   #define TEXTFADE_MINIMUM            0.0f
   #define TEXTFADE_MAXIMUM            110.0f
