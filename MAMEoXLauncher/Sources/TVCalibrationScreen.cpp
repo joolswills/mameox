@@ -26,9 +26,13 @@ extern "C" {
 
   //--- Layout defines -----------------------------------------
 #define TEXT_COLOR			      D3DCOLOR_XRGB( 10,10,10 )
-#define BACKDROP_COLOR        D3DCOLOR_XRGB(243,243,243)
-#define ICON_COLOR            D3DCOLOR_XRGB( 0, 0, 0 )
+#define BACKDROP_COLOR        D3DCOLOR_XRGB(190,190,190)
+#define ICON_COLOR            D3DCOLOR_XRGB(245,245,245)
 #define SCREENOUTLINE_COLOR   D3DCOLOR_XRGB( 150, 150, 150 )
+
+#define CURSORTEXTURE_WIDTH   81.0f
+#define CURSORTEXTURE_HEIGHT  81.0f
+
 
 	// Number of seconds between valid DPAD readings
 #define DPADCURSORMOVE_TIMEOUT	  0.075f
@@ -181,16 +185,16 @@ void CTVCalibrationScreen::MoveCursor( CInputManager &gp, BOOL useSpeedbanding )
       m_currentStep = TVCS_SET_LOWERRIGHT;
       m_screenRect.left = m_cursorPos.x;
       m_screenRect.top = m_cursorPos.y;
-      m_cursorPos.x = m_screenRect.right - 32;
-      m_cursorPos.y = m_screenRect.bottom - 32;
+      m_cursorPos.x = m_screenRect.right - CURSORTEXTURE_WIDTH;
+      m_cursorPos.y = m_screenRect.bottom - CURSORTEXTURE_HEIGHT;
       break;
 
       // *** TVCS_SET_LOWERRIGHT *** //
     case TVCS_SET_LOWERRIGHT:
       {
         m_currentStep = TVCS_COMPLETED;
-        m_screenRect.right = m_cursorPos.x + 32;
-        m_screenRect.bottom = m_cursorPos.y + 32;
+        m_screenRect.right = m_cursorPos.x + CURSORTEXTURE_WIDTH;
+        m_screenRect.bottom = m_cursorPos.y + CURSORTEXTURE_HEIGHT;
         m_screenSettingsChangedFlag = TRUE;
 
           // Calculate the screen usage + position
@@ -248,13 +252,13 @@ void CTVCalibrationScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_screenRect.left, m_screenRect.top, 1.0f, 1.0f );
       
       m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCREENOUTLINE_COLOR );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_cursorPos.x + 32.0f,  m_screenRect.top, 1.0f, 1.0f );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_cursorPos.x + CURSORTEXTURE_WIDTH,  m_screenRect.top, 1.0f, 1.0f );
       
       m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCREENOUTLINE_COLOR );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_cursorPos.x + 32.0f,  m_cursorPos.y + 32.0f, 1.0f, 1.0f );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_cursorPos.x + CURSORTEXTURE_WIDTH,  m_cursorPos.y + CURSORTEXTURE_HEIGHT, 1.0f, 1.0f );
 
       m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCREENOUTLINE_COLOR );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_screenRect.left,  m_cursorPos.y + 32.0f, 1.0f, 1.0f );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_screenRect.left,  m_cursorPos.y + CURSORTEXTURE_HEIGHT, 1.0f, 1.0f );
     m_displayDevice->End();
   }
 
@@ -294,15 +298,15 @@ void CTVCalibrationScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, ICON_COLOR );
     m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, tu_r, tv_t );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_cursorPos.x + 32.0f,  m_cursorPos.y, 1.0f, 1.0f );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_cursorPos.x + CURSORTEXTURE_WIDTH,  m_cursorPos.y, 1.0f, 1.0f );
     
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, ICON_COLOR );
     m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, tu_r, tv_b );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_cursorPos.x + 32.0f,  m_cursorPos.y + 32.0f, 1.0f, 1.0f );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_cursorPos.x + CURSORTEXTURE_WIDTH,  m_cursorPos.y + CURSORTEXTURE_HEIGHT, 1.0f, 1.0f );
 
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, ICON_COLOR );
     m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, tu_l, tv_b );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_cursorPos.x,  m_cursorPos.y + 32.0f, 1.0f, 1.0f );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_cursorPos.x,  m_cursorPos.y + CURSORTEXTURE_HEIGHT, 1.0f, 1.0f );
   m_displayDevice->End();
 
   m_displayDevice->SetTexture( 0, NULL );
@@ -316,7 +320,7 @@ void CTVCalibrationScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     {
     case TVCS_SET_UPPERLEFT:
       m_fontSet.DefaultFont().DrawText( 320,
-                                        200,
+                                        170,
                                         TEXT_COLOR,
                                         L"Use the left analog stick to set\n the upper left corner of the screen.",
                                         XBFONT_CENTER_X );
@@ -324,7 +328,7 @@ void CTVCalibrationScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
     case TVCS_SET_LOWERRIGHT:
       m_fontSet.DefaultFont().DrawText( 320,
-                                        200,
+                                        170,
                                         TEXT_COLOR,
                                         L"Use the left analog stick to set\n the lower right corner of the screen.",
                                         XBFONT_CENTER_X );
@@ -332,7 +336,7 @@ void CTVCalibrationScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     }
 
     m_fontSet.DefaultFont().DrawText( 320,
-                                      270,
+                                      235,
                                       TEXT_COLOR,
                                       L"Button Functions:\n   A: Accept\n   B: Cancel\n   Y: Reset to default values",
                                       XBFONT_CENTER_X );

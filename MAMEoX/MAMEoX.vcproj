@@ -137,7 +137,7 @@
 				AdditionalOptions="/testid:0x4D414D45"
 				StackSize="0x10000"
 				IncludeDebugInfo="TRUE"
-				LimitAvailableMemoryTo64MB="FALSE"
+				LimitAvailableMemoryTo64MB="TRUE"
 				SuppressStartupBanner="TRUE"
 				FormatUD="FALSE"
 				NoLibWarn="TRUE"

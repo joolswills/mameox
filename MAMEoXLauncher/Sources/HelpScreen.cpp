@@ -29,8 +29,8 @@ extern "C" {
 #define HIGHLIGHTBAR_COLOR    D3DCOLOR_ARGB( 180, 175, 179, 212 )
 #define SCROLLICON_COLOR      D3DCOLOR_XRGB( 255, 255, 255 )
 
-#define TITLEBAR_ROW          100
-#define FIRSTDATA_ROW         126
+#define TITLEBAR_ROW          99
+#define FIRSTDATA_ROW         124
 
 #define NAME_COLUMN           42
 #define MANUFACTURER_COLUMN   305

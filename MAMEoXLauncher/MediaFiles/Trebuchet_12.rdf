@@ -1,0 +1,22 @@
+// List of resources to bundle.
+//
+// The output will be a header file (.h) used at compile time,
+// and a packed resource file (.xpr) used at runtime.
+
+out_header         ..\Includes\Trebuchet_12.h
+out_packedresource ..\..\Media\Trebuchet_12.xpr
+out_error          Trebuchet_12.err
+
+
+Texture Font
+{
+   Source      Trebuchet_12.tga
+   Format      D3DFMT_A4R4G4B4
+   Levels      1
+}
+
+UserData FontData
+{
+   DataFile Trebuchet_12.abc
+}
+

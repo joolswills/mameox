@@ -24,8 +24,8 @@ extern "C" {
   //-- Position of assets within the conglomerate "icon mask" texture ---
 #define ASSET_SCROLLDOWN_LEFT         0.0f
 #define ASSET_SCROLLDOWN_TOP          0.0f
-#define ASSET_SCROLLDOWN_RIGHT        31.0f
-#define ASSET_SCROLLDOWN_BOTTOM       29.0f
+#define ASSET_SCROLLDOWN_RIGHT        32.0f
+#define ASSET_SCROLLDOWN_BOTTOM       30.0f
 
 #define ASSET_TRIGGERICON_LEFT        33.0f
 #define ASSET_TRIGGERICON_TOP         0.0f
@@ -33,14 +33,15 @@ extern "C" {
 #define ASSET_TRIGGERICON_BOTTOM      26.0f
 
 #define ASSET_SCROLLUP_LEFT           0.0f
-#define ASSET_SCROLLUP_TOP            31.0f
-#define ASSET_SCROLLUP_RIGHT          31.0f
-#define ASSET_SCROLLUP_BOTTOM         60.0f
+#define ASSET_SCROLLUP_TOP            30.0f
+#define ASSET_SCROLLUP_RIGHT          32.0f
+#define ASSET_SCROLLUP_BOTTOM         61.0f
 
 #define ASSET_TRIGGERICONTAIL_LEFT    33.0f
-#define ASSET_TRIGGERICONTAIL_TOP     28.0f
-#define ASSET_TRIGGERICONTAIL_RIGHT   60.0f
-#define ASSET_TRIGGERICONTAIL_BOTTOM  54.0f
+#define ASSET_TRIGGERICONTAIL_TOP     27.0f
+#define ASSET_TRIGGERICONTAIL_RIGHT   63.0f
+#define ASSET_TRIGGERICONTAIL_BOTTOM  53.0f
+
 
 
   //-- Position of assets within the conglomerate "menu parts" texture ---
@@ -63,14 +64,15 @@ extern "C" {
 
   //-- Position of button icons within the buttons conglomerate
 #define ASSET_BUTTON_TOPROW_TOP         0.0f
-#define ASSET_BUTTON_TOPROW_BOTTOM      28.0f
+#define ASSET_BUTTON_TOPROW_BOTTOM      33.0f
 #define ASSET_BUTTON_BOTTOMROW_TOP      35.0f
-#define ASSET_BUTTON_BOTTOMROW_BOTTOM   64.0f
+#define ASSET_BUTTON_BOTTOMROW_BOTTOM   67.0f
 
 #define ASSET_BUTTON_LEFTCOLUMN_LEFT    0.0f
-#define ASSET_BUTTON_LEFTCOLUMN_RIGHT   31.0f
-#define ASSET_BUTTON_RIGHTCOLUMN_LEFT   33.0f
-#define ASSET_BUTTON_RIGHTCOLUMN_RIGHT  64.0f
+#define ASSET_BUTTON_LEFTCOLUMN_RIGHT   33.0f
+#define ASSET_BUTTON_RIGHTCOLUMN_LEFT   35.0f
+#define ASSET_BUTTON_RIGHTCOLUMN_RIGHT  67.0f
+
 
 #define ASSET_BUTTONICON_X_LEFT         ASSET_BUTTON_RIGHTCOLUMN_LEFT
 #define ASSET_BUTTONICON_X_TOP          ASSET_BUTTON_TOPROW_TOP
@@ -91,6 +93,11 @@ extern "C" {
 #define ASSET_BUTTONICON_B_TOP          ASSET_BUTTON_BOTTOMROW_TOP
 #define ASSET_BUTTONICON_B_RIGHT        ASSET_BUTTON_LEFTCOLUMN_RIGHT
 #define ASSET_BUTTONICON_B_BOTTOM       ASSET_BUTTON_BOTTOMROW_BOTTOM
+
+#define ASSET_BUTTONICON_START_LEFT     68.0f
+#define ASSET_BUTTONICON_START_TOP      0.0f
+#define ASSET_BUTTONICON_START_RIGHT    97.0f
+#define ASSET_BUTTONICON_START_BOTTOM   38.0f
 
 
 
@@ -259,6 +266,14 @@ public:
 
   FLOAT GetButtonWidth( void ) const    { return ASSET_BUTTONICON_B_RIGHT - ASSET_BUTTONICON_B_LEFT; }
   FLOAT GetButtonHeight( void ) const   { return ASSET_BUTTONICON_B_BOTTOM - ASSET_BUTTONICON_B_TOP; }
+
+  FLOAT GetSTARTButtonLeft( void ) const    { return ASSET_BUTTONICON_START_LEFT; }
+  FLOAT GetSTARTButtonTop( void ) const     { return ASSET_BUTTONICON_START_TOP; }
+  FLOAT GetSTARTButtonRight( void ) const   { return ASSET_BUTTONICON_START_RIGHT; }
+  FLOAT GetSTARTButtonBottom( void ) const  { return ASSET_BUTTONICON_START_BOTTOM; }
+  FLOAT GetSTARTButtonWidth( void ) const    { return ASSET_BUTTONICON_START_RIGHT - ASSET_BUTTONICON_START_LEFT; }
+  FLOAT GetSTARTButtonHeight( void ) const   { return ASSET_BUTTONICON_START_BOTTOM - ASSET_BUTTONICON_START_TOP; }
+
 
 protected:
 

@@ -1295,11 +1295,11 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
     g_fontSet.LargeThinFont().Begin();
       g_fontSet.LargeThinFont().DrawText( 130, 240, NORMAL_TEXT_COLOR, L"MAME is distributed under the MAME license." ); 
       g_fontSet.LargeThinFont().DrawText( 130, 260, IMPORTANT_TEXT_COLOR, L"See www.mame.net/readme.html or" );
-      g_fontSet.LargeThinFont().DrawText( 135, 280, IMPORTANT_TEXT_COLOR, L"MAME/docs/mame.txt for details" );
+      g_fontSet.LargeThinFont().DrawText( 140, 280, IMPORTANT_TEXT_COLOR, L"MAME/docs/mame.txt for details" );
         
       g_fontSet.LargeThinFont().DrawText( 130, 316, NORMAL_TEXT_COLOR, L"Portions of MAMEoX based on:" );
       g_fontSet.LargeThinFont().DrawText( 130, 334, IMPORTANT_TEXT_COLOR, L"\"MAMEX(b5): updated by superfro," );
-      g_fontSet.LargeThinFont().DrawText( 135, 354, IMPORTANT_TEXT_COLOR, L"original port by opcode\"" );      
+      g_fontSet.LargeThinFont().DrawText( 140, 354, IMPORTANT_TEXT_COLOR, L"original port by opcode\"" );      
     g_fontSet.LargeThinFont().End();
 
 

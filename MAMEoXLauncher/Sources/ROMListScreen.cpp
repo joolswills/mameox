@@ -36,15 +36,15 @@ extern "C" {
 
 #define HIGHLIGHTBAR_COLOR      D3DCOLOR_ARGB( 180, 175, 179, 212 )
 #define SCROLLICON_COLOR        D3DCOLOR_XRGB( 255, 255, 255 )
-#define SPACER_COLOR            D3DCOLOR_XRGB( 255, 255, 255 )
+#define SPACER_COLOR            D3DCOLOR_ARGB( 100, 255, 255, 255 )
 #define NOSCREENSHOT_COLOR      D3DCOLOR_XRGB( 1, 1, 1 )
 #define NOSCREENSHOTTEXT_COLOR  D3DCOLOR_XRGB( 255, 255, 255 )
 
-#define TITLEBAR_ROW          101
-#define FIRSTDATA_ROW         125
+#define TITLEBAR_ROW          99
+#define FIRSTDATA_ROW         124
 
 #define HIGHLIGHTBAR_LEFT     34
-#define HIGHLIGHTBAR_RIGHT    607
+#define HIGHLIGHTBAR_RIGHT    606
 
 #define SPACER_WIDTH          2
 
@@ -67,20 +67,20 @@ extern "C" {
 #define SCROLLDOWN_LEFT       (SCROLLDOWN_RIGHT - 32)
 
   //-- Button help messages ------
-#define HELP_A_ICON_X      255
+#define HELP_A_ICON_X      250
 #define HELP_A_ICON_Y      40
 #define HELP_A_TEXT_X      (HELP_A_ICON_X + m_textureSet.GetButtonWidth() + 4)
-#define HELP_A_TEXT_Y      (HELP_A_ICON_Y)
+#define HELP_A_TEXT_Y      (HELP_A_ICON_Y + 5)
 
-#define HELP_X_ICON_X      375
+#define HELP_X_ICON_X      370
 #define HELP_X_ICON_Y      40
 #define HELP_X_TEXT_X      (HELP_X_ICON_X + m_textureSet.GetButtonWidth() + 4)
-#define HELP_X_TEXT_Y      (HELP_X_ICON_Y)
+#define HELP_X_TEXT_Y      (HELP_X_ICON_Y + 5)
 
 #define HELP_Y_ICON_X      450
 #define HELP_Y_ICON_Y      40
 #define HELP_Y_TEXT_X      (HELP_Y_ICON_X + m_textureSet.GetButtonWidth() + 4)
-#define HELP_Y_TEXT_Y      (HELP_Y_ICON_Y)
+#define HELP_Y_TEXT_Y      (HELP_Y_ICON_Y + 5)
 
 
 

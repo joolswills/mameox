@@ -27,7 +27,7 @@ extern "C" {
 
 
   //--- Layout defines -----------------------------------------
-#define VIRTUALKEYBOARD_WIDTH     215
+#define VIRTUALKEYBOARD_WIDTH     250
 #define VIRTUALKEYBOARD_HEIGHT    143
 
 
@@ -44,11 +44,11 @@ extern "C" {
 #define HELPICON_COLOR        D3DCOLOR_XRGB( 255, 255, 255 )
 #define HELPBACKDROP_COLOR    D3DCOLOR_ARGB( 127, 255, 255, 255 )
 
-#define TITLEBAR_ROW          101
-#define FIRSTDATA_ROW         126
+#define TITLEBAR_ROW          99
+#define FIRSTDATA_ROW         124
 
 #define HIGHLIGHTBAR_LEFT     34
-#define HIGHLIGHTBAR_RIGHT    607
+#define HIGHLIGHTBAR_RIGHT    606
 #define NAME_START            42
 #define VALUE_START           240
 #define TEXTBOX_RIGHT         604   // The right edge of the text box
@@ -75,7 +75,7 @@ extern "C" {
 
 #define LEFTTRIGGERTEXT_START             62
 #define RIGHTTRIGGERTEXT_END              579
-#define TRIGGERTEXT_ROW               426
+#define TRIGGERTEXT_ROW                   426
 
 #define STARTPAGE()                       DWORD i = 0; FLOAT fontHeight = m_fontSet.SmallThinFontHeight()
 #define DRAWITEM( _name__, _val__ )       m_fontSet.SmallThinFont().DrawText( NAME_START,   FIRSTDATA_ROW+(i*fontHeight), ITEM_COLOR, _name__, XBFONT_TRUNCATED, VALUE_START - (NAME_START+COLUMN_PADDING) ); \

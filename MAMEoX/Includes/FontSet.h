@@ -17,10 +17,11 @@
 #define CREATEFONT( fntObj, fntName )     fntObj.Create( fntName )
 
 
-#define DEFAULT_FONT      "HawaiianPunk_16.xpr"
-#define FIXEDWIDTH_FONT   "CourierNew_12.xpr"
+#define DEFAULT_FONT      "Trebuchet_14.xpr"
+#define FIXEDWIDTH_FONT   "FranklinGothicMedium_12.xpr"
 #define SMALLTHIN_FONT    "FranklinGothicMedium_12.xpr"
-#define LARGETHIN_FONT    "ArialNarrow_16.xpr"
+#define LARGETHIN_FONT    "Trebuchet_12.xpr"
+
 
 
 
