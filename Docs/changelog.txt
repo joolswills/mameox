@@ -24,6 +24,9 @@ Version 0.71.3b (CVS)
     - System_IniFile.cpp
       - Changed over to use buffered reads/writes to speed up parsing
 
+    - MAMEoXUtil.cpp
+      - Fixed bezels (artwork)
+
    -------------------------------------------------------------
   - \MAMEoXLauncher\Includes:
     - ROMList.h
