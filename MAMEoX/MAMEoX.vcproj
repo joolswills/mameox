@@ -129,7 +129,7 @@
 				IncludeDebugInfo="TRUE"
 				LimitAvailableMemoryTo64MB="TRUE"
 				SuppressStartupBanner="TRUE"
-				TitleName="&quot;MAMEoX Util (Don&apos;t Run)&quot;"/>
+				TitleName="&quot;MAMEoX Util (Don&apos;t Run) [DBG]&quot;"/>
 		</Configuration>
 		<Configuration
 			Name="Profile|Xbox"

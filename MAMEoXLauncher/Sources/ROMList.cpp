@@ -718,6 +718,8 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
               memStatus.dwTotalPhys );
 
     m_font.DrawText( 320, Y_POS + yPos, D3DCOLOR_XRGB(100,220,220), memStr, XBFONT_CENTER_X );
+  #else
+    m_font.DrawText( 320, Y_POS + yPos, D3DCOLOR_XRGB(100,220,220), L"Press X for help", XBFONT_CENTER_X );
   #endif
 
   if( m_superscrollMode )

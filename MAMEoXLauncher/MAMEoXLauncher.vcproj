@@ -63,7 +63,7 @@
 				IncludeDebugInfo="TRUE"
 				LimitAvailableMemoryTo64MB="TRUE"
 				NoLibWarn="TRUE"
-				TitleName="&quot;MAMEoX Launcher&quot;"/>
+				TitleName="&quot;MAMEoX Launcher [DBG]&quot;"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Xbox"
