@@ -89,11 +89,22 @@ BOOL CROMList::LoadROMList( BOOL bGenerate, BOOL allowClones )
 		m_font.End();
 		m_displayDevice->Present( NULL, NULL, NULL, NULL );	
 
+  
+    char signature[8] = {0};
+		DWORD BytesRead = 0;
+    ReadFile( hFile, signature, 6, &BytesRead, NULL );
+    if( BytesRead != 6 || strcmp( signature, "MAMEoX" ) )
+    {
+      CloseHandle( hFile );
+	    if( bGenerate )
+        return GenerateROMList( allowClones );		
+      return FALSE;
+    }
+
 			// Read in the ROM list
 		while( 1 )
 		{
 			DWORD idx;
-			DWORD BytesRead = 0;
 			ReadFile( hFile, &idx, sizeof(idx), &BytesRead, NULL );
 			if( BytesRead != sizeof(idx) )
 				break;
@@ -200,10 +211,21 @@ BOOL CROMList::GenerateROMList( BOOL allowClones )
 		return FALSE;
 	}
 
+  DWORD bytesWritten;
+  WriteFile( hFile, "MAMEoX", 6, &bytesWritten, NULL );
+  if( bytesWritten != 6 )
+	{
+		PRINTMSG( T_ERROR, "Write failed!" );
+		CloseHandle( hFile );
+
+			// Delete the file
+		DeleteFile( romListFile.c_str() );
+		return FALSE;
+	}
+
 	std::vector<UINT32>::iterator it = m_ROMList.begin();
 	for( ; it != m_ROMList.end(); ++it )
 	{
-		DWORD bytesWritten;
 		DWORD idx = (*it);
 		WriteFile( hFile, &idx, sizeof(idx), &bytesWritten, NULL );
 		if( bytesWritten != sizeof(idx) )

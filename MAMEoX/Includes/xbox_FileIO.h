@@ -25,7 +25,7 @@ extern "C" {
 #define NVRAMPATH					"D:\\NVRAM"
 #define CONFIGPATH        "D:\\CFG"
 #define ROMPATH						"D:\\ROMS"
-#define ROMLISTPATH				"Z:"
+#define ROMLISTPATH				"Z:\\MAMEoX"
 #define ROMLISTFILENAME		"ROMS.list"
 
   //!<  Define this to force all open() calls on the ROM directory

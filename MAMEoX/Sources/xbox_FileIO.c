@@ -73,6 +73,12 @@ void InitializeFileIO( void )
     // Try to create/open all of the paths. If any fail,
     //     switch the drive letter to 'Z', as we must be
     //     running off of a DVD
+
+
+    // Make sure the rom list path is available
+  CREATEOROPENPATH( ROMLISTPATH );
+  free( tempStr );
+
   CREATEOROPENPATH( ROMPATH );
 	g_pathNames[FILETYPE_RAW] = g_pathNames[FILETYPE_ROM] = 
 															g_pathNames[FILETYPE_ROM_NOCRC] = 
