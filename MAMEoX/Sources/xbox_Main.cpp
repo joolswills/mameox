@@ -287,7 +287,7 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 
   g_font.Begin();
 	
-  g_font.DrawText( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255),   L"MAMEoX v0.5", XBFONT_CENTER_X );
+  g_font.DrawText( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255),   L"MAMEoX v0.6b", XBFONT_CENTER_X );
   g_font.DrawText( 320, 100, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Uses MAME version 0.67", XBFONT_CENTER_X );
   g_font.DrawText( 320, 260, D3DCOLOR_RGBA( 240, 240, 240, 255 ), L"Portions based on:", XBFONT_CENTER_X );
   g_font.DrawText( 320, 280, D3DCOLOR_RGBA( 240, 240, 240, 255 ), L"\"MAMEX(b5): updated by superfro, original port by opcode\"", XBFONT_CENTER_X );
