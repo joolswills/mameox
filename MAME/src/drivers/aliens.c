@@ -1,11 +1,11 @@
-#pragma code_seg("C100")
-#pragma data_seg("D100")
-#pragma bss_seg("B100")
-#pragma const_seg("K100")
-#pragma comment(linker, "/merge:D100=100")
-#pragma comment(linker, "/merge:C100=100")
-#pragma comment(linker, "/merge:B100=100")
-#pragma comment(linker, "/merge:K100=100")
+#pragma code_seg("C99")
+#pragma data_seg("D99")
+#pragma bss_seg("B99")
+#pragma const_seg("K99")
+#pragma comment(linker, "/merge:D99=99")
+#pragma comment(linker, "/merge:C99=99")
+#pragma comment(linker, "/merge:B99=99")
+#pragma comment(linker, "/merge:K99=99")
 /***************************************************************************
 
 Aliens (c) 1990 Konami Co. Ltd

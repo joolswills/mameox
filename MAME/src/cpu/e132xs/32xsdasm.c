@@ -1,11 +1,11 @@
-#pragma code_seg("CC87")
-#pragma data_seg("CD87")
-#pragma bss_seg("CB87")
-#pragma const_seg("CK87")
-#pragma comment(linker, "/merge:CD87=CPU87")
-#pragma comment(linker, "/merge:CC87=CPU87")
-#pragma comment(linker, "/merge:CB87=CPU87")
-#pragma comment(linker, "/merge:CK87=CPU87")
+#pragma code_seg("CC46")
+#pragma data_seg("CD46")
+#pragma bss_seg("CB46")
+#pragma const_seg("CK46")
+#pragma comment(linker, "/merge:CD46=CPU46")
+#pragma comment(linker, "/merge:CC46=CPU46")
+#pragma comment(linker, "/merge:CB46=CPU46")
+#pragma comment(linker, "/merge:CK46=CPU46")
 /*
 
  Hyperstone E1-32XS disassembler

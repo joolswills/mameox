@@ -1,11 +1,11 @@
-#pragma code_seg("CC90")
-#pragma data_seg("CD90")
-#pragma bss_seg("CB90")
-#pragma const_seg("CK90")
-#pragma comment(linker, "/merge:CD90=CPU90")
-#pragma comment(linker, "/merge:CC90=CPU90")
-#pragma comment(linker, "/merge:CB90=CPU90")
-#pragma comment(linker, "/merge:CK90=CPU90")
+#pragma code_seg("CC49")
+#pragma data_seg("CD49")
+#pragma bss_seg("CB49")
+#pragma const_seg("CK49")
+#pragma comment(linker, "/merge:CD49=CPU49")
+#pragma comment(linker, "/merge:CC49=CPU49")
+#pragma comment(linker, "/merge:CB49=CPU49")
+#pragma comment(linker, "/merge:CK49=CPU49")
 /* ======================================================================== */
 /* =============================== COPYRIGHT ============================== */
 /* ======================================================================== */

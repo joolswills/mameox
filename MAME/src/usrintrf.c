@@ -23,7 +23,8 @@
 
 
 #include "MAMEoX.h"
-#include "XBESectionUtil.h"
+//#include "XBESectionUtil.h"
+#include "Sections.h"
 
 
 /***************************************************************************
