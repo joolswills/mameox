@@ -34,10 +34,12 @@ Version 0.71.3b (CVS)
         played
       - Moved progress bar stuff to a central point so it can be used
         from anywhere in the launcher
+      - Added filter by "disliked" favorite status
 
     - OptionsPage.cpp
       - Added sort by favorite status and sort by number of times 
         played
+      - Added filter by "disliked" favorite status
 
     - main.cpp
       - Added handling for MAMEoX system files to apply speed

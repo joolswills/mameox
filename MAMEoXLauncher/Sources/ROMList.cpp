@@ -2018,8 +2018,9 @@ void CROMList::UpdateFilteredList( void )
   std::vector<UINT32>::iterator i = m_ROMListFull.begin();
   for( ; i != m_ROMListFull.end(); ++i )
   {
-    MAMEDriverData_t &driverData = m_driverInfoList[*i];
-    ROMStatus        &driverStatus = m_ROMStatus[*i];
+    MAMEDriverData_t        &driverData = m_driverInfoList[*i];
+    ROMStatus               &driverStatus = m_ROMStatus[*i];
+    MAMEoXDriverMetadata_t  &metadata = m_driverMetadata[*i];
 
       // Filter on CLONE status
     if( m_options.m_filterMode & FM_CLONE &&driverData.m_isClone )
@@ -2048,6 +2049,10 @@ void CROMList::UpdateFilteredList( void )
 
       // Filter out ROMs marked as "Other nonworking"
     if( m_options.m_filterMode & FM_ROMSTATUS_NONWORKING && driverStatus == STATUS_GENERAL_NONWORKING )
+      continue;
+
+      // Filter out ROMs marked as "disliked" or "strongly disliked"
+    if( m_options.m_filterMode & FM_DISLIKED && (metadata.m_favoriteStatus == FS_STRONGDISLIKE || metadata.m_favoriteStatus == FS_DISLIKE) )
       continue;
 
     m_ROMListFiltered.push_back( *i );
