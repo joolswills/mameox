@@ -140,25 +140,6 @@ BOOL D3DRendererCreateSession( struct osd_create_params *params )
 {
 	PRINTMSG( T_TRACE, "D3DRendererCreateSession" );
 
-
-#ifdef _PROFILER
-    // Since this function will be called when starting to load the function,
-    // we can do a memory usage check here
-  MEMORYSTATUS memStatus;
-  GlobalMemoryStatus(  &memStatus );
-
-  PRINTMSG( T_INFO, "Memory status" );
-  PRINTMSG( T_INFO, "Physical:" );
-  PRINTMSG( T_INFO, "         Avail: %lu", memStatus.dwAvailPhys );
-  PRINTMSG( T_INFO, "         Total: %lu", memStatus.dwTotalPhys );
-  PRINTMSG( T_INFO, "Page File:" );
-  PRINTMSG( T_INFO, "         Avail: %lu", memStatus.dwAvailPageFile );
-  PRINTMSG( T_INFO, "         Total: %lu", memStatus.dwTotalPageFile );
-  PRINTMSG( T_INFO, "Virtual:" );
-  PRINTMSG( T_INFO, "         Avail: %lu", memStatus.dwAvailVirtual );
-  PRINTMSG( T_INFO, "         Total: %lu", memStatus.dwTotalVirtual );
-#endif
-
     // Store the creation params
 	memcpy( &g_createParams, params, sizeof(g_createParams) );
 
@@ -248,8 +229,8 @@ void D3DRendererSetOutputRect( INT32 left, INT32 top, INT32 right, INT32 bottom 
 
     g_textureRenderingArea.left = top;
     g_textureRenderingArea.top = left;
-    g_textureRenderingArea.right = bottom;
-    g_textureRenderingArea.bottom = right;
+    g_textureRenderingArea.right = bottom + 1;
+    g_textureRenderingArea.bottom = right + 1;
   }
   else
   {
@@ -258,8 +239,8 @@ void D3DRendererSetOutputRect( INT32 left, INT32 top, INT32 right, INT32 bottom 
 
     g_textureRenderingArea.left = left;
     g_textureRenderingArea.top = top;
-    g_textureRenderingArea.right = right;
-    g_textureRenderingArea.bottom = bottom;
+    g_textureRenderingArea.right = right + 1;
+    g_textureRenderingArea.bottom = bottom + 1;
   }
 
 
@@ -667,7 +648,7 @@ static BOOL CreateTexture( void )
 
     // Lock the region so we can render to it later
 	g_pTexture->LockRect(	0, &g_d3dLockedRect, NULL, 0 );
-
+  memset( g_d3dLockedRect.pBits, 0, desc.Width * desc.Height * sizeof(DWORD) );
 
   return TRUE;
 }
@@ -695,10 +676,10 @@ static BOOL CreateRenderingQuad( void )
 
     // Calculate the TU/TV coords based on the rendering area
   FLOAT tu_l, tv_t, tu_r, tv_b;
-  tu_l = (FLOAT)g_textureRenderingArea.left+1;
+  tu_l = (FLOAT)g_textureRenderingArea.left;
   tu_r = (FLOAT)(g_textureRenderingArea.right);
   tv_t = (FLOAT)g_textureRenderingArea.top;
-  tv_b = (FLOAT)(g_textureRenderingArea.bottom+1);
+  tv_b = (FLOAT)(g_textureRenderingArea.bottom);
 
   FLOAT xpos = g_rendererOptions.m_screenUsageX;
   FLOAT ypos = g_rendererOptions.m_screenUsageY;

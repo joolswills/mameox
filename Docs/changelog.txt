@@ -27,6 +27,10 @@ Version 0.71.3b (CVS)
     - MAMEoXUtil.cpp
       - Fixed bezels (artwork)
 
+    - xbox_Direct3DRenderer.cpp
+      - Fixed an off by 1 error when setting texture coords that
+        caused clipping of a valid row of pixels
+
    -------------------------------------------------------------
   - \MAMEoXLauncher\Includes:
     - ROMList.h
