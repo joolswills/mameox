@@ -181,7 +181,7 @@ BOOL CROMList::GenerateROMList( void )
     for( ; ; ++i )
     {
       // Notify the user that a new zip has been found
-      DrawZipData( findData.cFileName, i );
+      DrawZipData( "Searching for ROM files", findData.cFileName, i );
 
       // Remove the extension
       CStdString filename = findData.cFileName;
@@ -328,11 +328,12 @@ BOOL CROMList::SaveROMListFile( void )
 	std::vector<UINT32>::iterator it = m_ROMListFull.begin();
 	for( ; it != m_ROMListFull.end(); ++it )
 	{
-		DWORD idx = (*it);
-    WRITEDATA( &idx, sizeof(idx) );
+		DWORD val = (*it);
+    WRITEDATA( &val, sizeof(val) );
 
       // Write the ROM status
-    WRITEDATA( &m_ROMStatus[idx], sizeof(m_ROMStatus[idx]) );
+    val = (DWORD)m_ROMStatus[(*it)];
+    WRITEDATA( &val, sizeof(val) );
 	}
 
     // Grab the signature
@@ -369,6 +370,11 @@ BOOL CROMList::LoadROMListFile( void )
 {
   m_ROMListFull.clear();
   m_ROMStatus.clear();
+
+  UINT32 i = 0;
+  for( ; i < m_numDrivers; ++i )
+    m_ROMStatus.push_back( STATUS_UNKNOWN );
+
 	std::string		romListFile = g_ROMListPath;
 	romListFile += "\\";
 	romListFile += ROMLISTFILENAME;
@@ -511,20 +517,40 @@ BOOL CROMList::LoadROMListFile( void )
 
   for( DWORD i = 0; i < numItems; ++i )
   {
-    DWORD val;
+    DWORD idx, status;
       // Read the ROM index
-    READDATA_NOMALLOC( &val, sizeof(val) );
-		m_ROMListFull.push_back( val );
+    READDATA_NOMALLOC( &idx, sizeof(idx) );
+		m_ROMListFull.push_back( idx );
 
       // Read the ROM status
-    READDATA_NOMALLOC( &val, sizeof(val) );
-    m_ROMStatus.push_back( (ROMStatus)val );
+    READDATA_NOMALLOC( &status, sizeof(status) );
+    m_ROMStatus[idx] = (ROMStatus)status;
   }
   free( fileData );
 
   return TRUE;
 }
 
+//---------------------------------------------------------------------
+//	RefreshROMStatus
+//---------------------------------------------------------------------
+BOOL CROMList::RefreshROMStatus( void )
+{
+  if( !LoadROMStatusFile() )
+  {
+    PRINTMSG( T_ERROR, "Failed to load the ROM status file" );
+    return FALSE;
+  }
+
+  DrawZipData( "Saving cache file...", "", 0 );
+  if( !SaveROMListFile() )
+  {
+    PRINTMSG( T_ERROR, "Failed to save the ROM list file" );
+    return FALSE;
+  }
+
+  return TRUE;
+}
 
 //---------------------------------------------------------------------
 //	LoadROMStatusFile
@@ -546,6 +572,7 @@ BOOL CROMList::LoadROMStatusFile( void )
   }
 
   char buffer[2] = {0};
+  UINT32 entryNumber = 0; // Throw away index number for DrawZipData usage
   CStdString tagName = "";
   CStdString closingTagName = "";
   CStdString tagData = "";
@@ -574,6 +601,9 @@ BOOL CROMList::LoadROMStatusFile( void )
           // Go through the m_driverInfoList and find the entry matching that read from the XML file
         for( i = 0; i < m_numDrivers && stricmp( m_driverInfoList[i].m_romFileName, romName.c_str() ); ++i )
           ;
+
+
+	      DrawZipData( "Parsing status file", romName.c_str(), entryNumber++ );
 
           // Set m_ROMStatus at the same index
         if( i != m_numDrivers )
@@ -1202,7 +1232,7 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 //---------------------------------------------------------------------
 //	DrawZipData
 //---------------------------------------------------------------------
-void CROMList::DrawZipData( const char *fileName, DWORD index )
+void CROMList::DrawZipData( const char *message, const char *fileName, DWORD index )
 {
 		// Each index value is 1/4th of a *
 		// The *'s scroll between the < >'s
@@ -1223,10 +1253,11 @@ void CROMList::DrawZipData( const char *fileName, DWORD index )
 
 	m_fontSet.DefaultFont().Begin();
 	
-	  m_fontSet.DefaultFont().DrawText( 320, 200, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Searching for ROM files", XBFONT_CENTER_X );
+	  WCHAR wBuf[256];
+    mbstowcs( wBuf, message, 256 );
+	  m_fontSet.DefaultFont().DrawText( 320, 200, D3DCOLOR_RGBA( 255, 255, 255, 255 ), wBuf, XBFONT_CENTER_X );
 
 		  // Draw some progress dots
-	  WCHAR wBuf[256];
   	
 		  // Draw the current filename
 	  mbstowcs( wBuf, fileName, 256 );

@@ -25,11 +25,13 @@ Version 0.71.2b (CVS)
         the subviews. Failure to do so caused it to be left to
         "DIFFUSE" after rendering the lightgun cursor, which led
         to an unusable calibration screen.
+      - Added menu option to reload just the ROM status file
 
     - ROMList.cpp
       - Changed it so romstatus.xml file is only parsed when scanning
         for new ROMs. This decreases load time between ROMs for large
         XML files.
+      - Added public function to force reload the rom status file
 
    -------------------------------------------------------------
   - \Sectionize.pl

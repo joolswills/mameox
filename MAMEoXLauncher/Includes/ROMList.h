@@ -116,6 +116,16 @@ public:
 	BOOL GenerateROMList( void );
 
 		//------------------------------------------------------------
+		// RefreshROMStatus
+		//! \brief		Reload the romstatus.xml file
+		//!
+		//! \return		BOOL - Operation status
+		//! \retval		TRUE - Operation successful
+		//! \retval		FALSE - No ROM list could be generated
+		//------------------------------------------------------------
+  BOOL RefreshROMStatus( void );
+
+		//------------------------------------------------------------
 		// MoveCursor
 		//! \brief		Move the cursor based on user input
 		//!
@@ -189,6 +199,7 @@ public:
 
   BOOL IsGameSelected( void ) { return m_gameSelected; }
   BOOL ShouldGenerateROMList( void ) { return m_shouldGenerateROMList; }
+  BOOL ShouldRefreshROMStatus( void ) { return m_shouldGenerateROMList; }
 
 
     //! Vector of ROMStatus types marking the status of each entry in
@@ -255,10 +266,11 @@ protected:
 		//! \brief		Present some indication that a new zip file has
 		//!            been found to the user
 		//!
+		//! \param		message - The general message to display (ex. "Searching for ROM files")
 		//! \param		fileName - The filename of the zip file
 		//! \param		index - The 0 based index of the zip file
 		//------------------------------------------------------------
-	void DrawZipData( const char *fileName, DWORD index );
+	void DrawZipData( const char *message, const char *fileName, DWORD index );
 
 
 		//------------------------------------------------------------

@@ -590,6 +590,11 @@ void __cdecl main( void )
               case 4:
                 romList.GenerateROMList();
                 break;
+
+                // Refresh ROM Status file
+              case 5:
+                romList.RefreshROMStatus();
+                break;
               }
               break;
 
@@ -688,6 +693,7 @@ static void Helper_SetStartMenuItems( CStartMenu &startMenu, viewmode currentVie
     startMenu.AddMenuItem( "Lightgun Calibration" );
     startMenu.AddMenuItem( "Remove Selected ROM" );
     startMenu.AddMenuItem( "Scan for ROMs" );
+    startMenu.AddMenuItem( "Refresh ROM Status file" );
     break;
 
     // *** VIEW_OPTIONS *** //

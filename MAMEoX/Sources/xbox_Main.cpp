@@ -149,7 +149,6 @@ void __cdecl main( void )
       InitializeNetwork();
     else
     {
-      CHECKRAM();
         // Unload all the samba and networking stuff
 //      XFreeSection( "NETWORK" );
       XFreeSection( "MOXNET" );
