@@ -28,6 +28,7 @@ Version 0.63b
 
   - \MAMEoX\Sources\MAMEoXUtil.cpp
     - Added file
+    - Enabled cheats (untested)
 
   - \MAMEoX\Docs\Readme.txt:
     - Changed control notes to reflect new controls

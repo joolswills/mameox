@@ -60,8 +60,13 @@ static MAMEDriverData_t   *g_driverData = NULL;
 
 #define SCREENRANGE_DEADZONE    15000
 
+extern "C" {
   // Fake options struct for load/store options
 GameOptions options;
+
+  // Fake cheatfile name for load/store options
+const char *cheatfile = NULL;
+}
 
 //= P R O T O T Y P E S ===============================================
 static BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage );
@@ -548,7 +553,7 @@ static BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage )
 
 
       //-- Draw the corner pieces -----------------------------
-    #define LINE_WIDTH    0.02
+    #define LINE_WIDTH    0.02f
     #define LINE_COLOR    D3DCOLOR_RGBA( 150, 150, 100, 255 );
 
 		pVertices[4].pos.x = -xUsage;

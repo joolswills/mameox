@@ -37,6 +37,8 @@ CXBFont						g_font;
 
 extern "C" {
 
+  // from MAME\cheat.c
+extern char *cheatfile;
 
 //= P R O T O T Y P E S ===============================================
 
@@ -52,11 +54,23 @@ void LoadOptions( void )
 
 /*
 	int		mame_debug;		          1 to enable debugging
-	int		cheat;			            1 to enable cheating
+	
 	int 	gui_host;		            1 to tweak some UI-related things for better GUI integration
-	int 	skip_disclaimer;	      1 to skip the disclaimer screen at startup
-	int 	skip_gameinfo;		      1 to skip the game info screen at startup
 */
+
+    // 1 to enable cheating
+  options.cheat = iniFile.GetProfileInt( "General", "CheatsEnabled", FALSE );
+  cheatfile = strdup( iniFile.GetProfileString( "General", "CheatFilename", "cheat.dat" ).c_str() );
+  if( !cheatfile )
+    options.cheat = FALSE;
+
+    // 1 to skip the disclaimer screen at startup
+  options.skip_disclaimer = iniFile.GetProfileInt( "General", "SkipDisclaimer", FALSE );
+
+    // 1 to skip the game info screen at startup
+	options.skip_gameinfo = iniFile.GetProfileInt( "General", "SkipGameInfo", FALSE );
+  
+
 
     // sound sample playback rate, in Hz
   options.samplerate = iniFile.GetProfileInt( "Sound", "SampleRate", 44100 );
@@ -98,6 +112,12 @@ void SaveOptions( void )
 {
   CSystem_IniFile iniFile( INIFILENAME );
 
+  iniFile.WriteProfileInt( "General", "CheatsEnabled", options.cheat );
+  if( cheatfile )
+    iniFile.WriteProfileString( "General", "CheatFilename", cheatfile );
+
+  iniFile.WriteProfileInt( "General", "SkipDisclaimer", options.skip_disclaimer );
+  iniFile.WriteProfileInt( "General", "SkipGameInfo", options.skip_gameinfo );
   iniFile.WriteProfileInt( "Sound", "SampleRate", options.samplerate );
   iniFile.WriteProfileInt( "Sound", "UseSamples", options.use_samples );
   iniFile.WriteProfileInt( "Sound", "UseFilter", options.use_filter );

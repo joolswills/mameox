@@ -87,6 +87,7 @@ X) This step is currently unnecessary, as the source distribution includes the
          copied over, default.xbe and MAMEoX.xbe. Failure to copy both files will
 	 result in error messages.
   
+   Cheat files should be placed in the "General" directory
 
 
 ---------------------------------------------------------------------------
