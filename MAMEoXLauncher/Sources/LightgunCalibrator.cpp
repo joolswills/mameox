@@ -21,6 +21,12 @@ extern "C" {
   // The number of calibration steps per device
 #define NUM_CALIBRATIONSTEPS    3
 
+  // Calibration step giving the UL corner numbers
+#define CALIB_UL    1
+
+  // Calibration step giving the center numbers
+#define CALIB_C     0
+
   // Note: These values are halved for the cursor
 #define TARGET_WIDTH    64
 #define TARGET_HEIGHT   64
@@ -120,15 +126,13 @@ void CLightgunCalibrator::MoveCursor( CInputManager &inputManager, BOOL unused )
 
     if( m_calibrationStep == 1 )
     {
-/*
-      gp->SetLightgunCalibration( XINPUT_LIGHTGUN_CALIBRATION_CENTER_X - calibData.m_xData[1], 
-                                  XINPUT_LIGHTGUN_CALIBRATION_CENTER_Y - calibData.m_yData[1], 
+      gp->SetLightgunCalibration( XINPUT_LIGHTGUN_CALIBRATION_CENTER_X - calibData.m_xData[CALIB_C], 
+                                  XINPUT_LIGHTGUN_CALIBRATION_CENTER_Y - calibData.m_yData[CALIB_C], 
                                   0, 
                                   0 );
-*/
 /*
-      gp->SetLightgunCalibration( calibData.m_xData[1], 
-                                  calibData.m_yData[1], 
+      gp->SetLightgunCalibration( calibData.m_xData[CALIB_C], 
+                                  calibData.m_yData[CALIB_C], 
                                   0, 
                                   0 );
 */
@@ -137,15 +141,16 @@ void CLightgunCalibrator::MoveCursor( CInputManager &inputManager, BOOL unused )
     {
         // We've collected UL and center values, throw them to the gun
       calibData.m_xData[2] = gp->GetLightgunFlags();
-/*      gp->SetLightgunCalibration( XINPUT_LIGHTGUN_CALIBRATION_CENTER_X - calibData.m_xData[1], 
-                                  XINPUT_LIGHTGUN_CALIBRATION_CENTER_Y - calibData.m_yData[1], 
-                                  XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_X - calibData.m_xData[0], 
-                                  XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_Y - calibData.m_yData[0] );
+      gp->SetLightgunCalibration( XINPUT_LIGHTGUN_CALIBRATION_CENTER_X - calibData.m_xData[CALIB_C], 
+                                  XINPUT_LIGHTGUN_CALIBRATION_CENTER_Y - calibData.m_yData[CALIB_C], 
+                                  XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_X - calibData.m_xData[CALIB_UL], 
+                                  XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_Y - calibData.m_yData[CALIB_UL] );
+/*
+      gp->SetLightgunCalibration( -calibData.m_xData[CALIB_C], 
+                                  -calibData.m_yData[CALIB_C], 
+                                  -calibData.m_xData[CALIB_UL], 
+                                  -calibData.m_yData[CALIB_UL] );
 */
-      gp->SetLightgunCalibration( -calibData.m_xData[1], 
-                                  -calibData.m_yData[1], 
-                                  -calibData.m_xData[0], 
-                                  -calibData.m_yData[0] );
     }
   }
 
@@ -342,12 +347,12 @@ void CLightgunCalibrator::GetCalibratedCursorPosition( CInputManager &inputManag
     return;
   }
 
-  m_currentGunCalibratedX = m_currentGunX;// + calibData.m_xData[1];
-  m_currentGunCalibratedY = m_currentGunY;// + calibData.m_yData[1]);
+  m_currentGunCalibratedX = m_currentGunX;// + calibData.m_xData[CALIB_C];
+  m_currentGunCalibratedY = m_currentGunY;// + calibData.m_yData[CALIB_C]);
 
     // Map from -128 to 128
-  FLOAT xMap = calibData.m_xData[0] - calibData.m_xData[1];
-  FLOAT yMap = calibData.m_yData[0] - calibData.m_yData[1];
+  FLOAT xMap = calibData.m_xData[CALIB_UL] - calibData.m_xData[CALIB_C];
+  FLOAT yMap = calibData.m_yData[CALIB_UL] - calibData.m_yData[CALIB_C];
 
   if( xMap )
     m_currentGunCalibratedX = (int)((FLOAT)m_currentGunCalibratedX * 128.0f / -xMap );
