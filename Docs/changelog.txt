@@ -66,6 +66,8 @@ Version 0.71.3b (CVS)
     - Fixed dep for Revolution X
     - Fixed dep for Tetris Plus 2 (MegaSystem 32 version)
 
+  - Fixed the .NET 2k2 solution files
+
 *********************************************************************
 Version 0.71.2b 
 
