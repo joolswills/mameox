@@ -68,6 +68,7 @@ static BOOL Helper_RunRom( UINT32 romIndex );
 static BOOL __cdecl compareDriverNames( const void *elem1, const void *elem2 );
 static BOOL Helper_SaveDriverInfoFile( void );
 static void DrawDriverProgressData( const char *fileName, DWORD index, DWORD total );
+static BOOL Helper_IsBIOS( const GameDriver *drv );
 
 //= F U N C T I O N S =================================================
 
@@ -164,6 +165,30 @@ void __cdecl main( void )
   DWORD retVal = XLaunchNewImage( "D:\\default.xbe", &g_launchData );
   Die( pD3DDevice, "Failed to launch D:\\default.xbe! 0x%X", retVal );
 }
+
+
+//-------------------------------------------------------------
+//  Helper_IsBIOS
+//-------------------------------------------------------------
+static BOOL Helper_IsBIOS( const GameDriver *drv )
+{
+  if( !drv )
+    return FALSE;
+
+    // The list of bios drivers from www.mame.dk
+  if( !stricmp( drv->name, "decocass" ) ||
+      !stricmp( drv->name, "cvs" ) ||
+      !stricmp( drv->name, "neogeo" ) ||
+      !stricmp( drv->name, "pgm" ) ||
+      !stricmp( drv->name, "playch10" ) ||
+      !stricmp( drv->name, "stvbios" ) ||
+      !stricmp( drv->name, "skns" ) ||
+      !stricmp( drv->name, "konamigx" ) )
+    return TRUE;
+
+  return FALSE;
+}
+
 
 //-------------------------------------------------------------
 //  Helper_RunRom
@@ -436,7 +461,7 @@ static BOOL Helper_SaveDriverInfoFile( void )
       // All drivers are clones of _driver_0, whose clone_of is NULL,
       //  so check against that to decide whether this is a clone or not
     BOOL isClone = (drivers[i]->clone_of && drivers[i]->clone_of->clone_of &&
-                    !drivers[i]->clone_of->bios);
+                    !Helper_IsBIOS( drivers[i]->clone_of ) );
     WRITEDATA( &isClone, sizeof( isClone ) );
 
       // Write the length of the clonename

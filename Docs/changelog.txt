@@ -19,6 +19,10 @@ Version 0.70.4b
       - Added osd_malloc function to check malloc's and report
         out of memory conditions to the user
 
+    - xbox_Main.cpp:
+      - Added better checking for clone/no clone status to avoid
+        marking BIOS clones as true clones.
+
    -------------------------------------------------------------
   - \MAMEoXLauncher\Sources:
 
@@ -33,6 +37,8 @@ Version 0.70.4b
     - ROMList.cpp
       - Put all textures in a texture set helper class
       - Repositioned (very slightly) the scroll icons
+      - Used the general message backdrop for the "checking against
+        known ROMs" display.
 
     - OptionsPage.cpp
       - Integrated new gfx from r4dius

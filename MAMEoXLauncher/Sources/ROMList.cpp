@@ -1083,22 +1083,31 @@ void CROMList::DrawZipData( const char *fileName, DWORD index )
 													1.0f,															// Z
 													0L );															// Stencil
 
+  m_backdropTexture = m_textureSet.GetMessageScreenBackdrop();
+
+    // Render the backdrop texture
+  RenderBackdrop();
+
 	m_fontSet.DefaultFont().Begin();
 	
-	  m_fontSet.DefaultFont().DrawText( 320, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Searching for ROM files", XBFONT_CENTER_X );
+	  m_fontSet.DefaultFont().DrawText( 320, 200, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Searching for ROM files", XBFONT_CENTER_X );
 
 		  // Draw some progress dots
 	  WCHAR wBuf[256];
   	
-	  wcscpy( wBuf, L"<                >" );
-	  wBuf[8 + cursorPos] = L'*';
-	  m_fontSet.DefaultFont().DrawText( 320, 80, D3DCOLOR_RGBA( 255, 125, 125, 255), wBuf, XBFONT_CENTER_X );
-
 		  // Draw the current filename
 	  mbstowcs( wBuf, fileName, 256 );
-	  m_fontSet.DefaultFont().DrawText( 320, 100, D3DCOLOR_RGBA( 60, 100, 255, 255 ), wBuf, XBFONT_CENTER_X );
-
+	  m_fontSet.DefaultFont().DrawText( 320, 270, D3DCOLOR_RGBA( 60, 100, 255, 255 ), wBuf, XBFONT_CENTER_X );
 	m_fontSet.DefaultFont().End();
+
+  m_fontSet.LargeThinFont().Begin();
+	  wcscpy( wBuf, L"<                >" );
+	  wBuf[8 + cursorPos] = L'*';
+	  m_fontSet.LargeThinFont().DrawText( 320, 240, D3DCOLOR_RGBA( 255, 125, 125, 255), wBuf, XBFONT_CENTER_X );
+  m_fontSet.LargeThinFont().End();
+
+
+
 	m_displayDevice->Present( NULL, NULL, NULL, NULL );
 
 }
@@ -1120,18 +1129,28 @@ void CROMList::DrawZipCheckProgress( DWORD index )
 													1.0f,															// Z
 													0L );															// Stencil
 
+  
+
+  m_backdropTexture = m_textureSet.GetMessageScreenBackdrop();
+
+    // Render the backdrop texture
+  RenderBackdrop();
+
+
+
 	m_fontSet.DefaultFont().Begin();
 	
-	m_fontSet.DefaultFont().DrawText( 320, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Checking against known ROM files", XBFONT_CENTER_X );
+	  m_fontSet.DefaultFont().DrawText( 320, 200, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Checking against known ROM files", XBFONT_CENTER_X );
 
-		  // Draw the current filename
-	  WCHAR wBuf[256];
-	  mbstowcs( wBuf, m_driverInfoList[index].m_description, 256 );
-	  m_fontSet.DefaultFont().DrawText( 320, 110, D3DCOLOR_XRGB( 60, 100, 255 ), wBuf, XBFONT_CENTER_X );
+		    // Draw the current filename
+	    WCHAR wBuf[256];
+	    mbstowcs( wBuf, m_driverInfoList[index].m_description, 256 );
+	    m_fontSet.DefaultFont().DrawText( 320, 270, D3DCOLOR_XRGB( 60, 100, 255 ), wBuf, XBFONT_CENTER_X );
 
 	m_fontSet.DefaultFont().End();
 
   m_fontSet.LargeThinFont().Begin();
+
 		  // Draw a progress bar
     UINT32 percentage = (UINT32)( (FLOAT)index * (25.0f / (FLOAT)m_numDrivers) + 0.5f ); 
     UINT32 i = 0;
@@ -1142,7 +1161,7 @@ void CROMList::DrawZipCheckProgress( DWORD index )
       wcscat( wBuf, L" " );
     wcscat( wBuf, L"]" );
 
-	  m_fontSet.LargeThinFont().DrawText( 320, 80, D3DCOLOR_XRGB( 255, 125, 125 ), wBuf, XBFONT_CENTER_X );
+	  m_fontSet.LargeThinFont().DrawText( 320, 240, D3DCOLOR_XRGB( 255, 125, 125 ), wBuf, XBFONT_CENTER_X );
   m_fontSet.LargeThinFont().End();
 
 
