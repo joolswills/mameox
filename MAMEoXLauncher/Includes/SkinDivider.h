@@ -45,9 +45,19 @@ public:
 		//------------------------------------------------------
 		//	RenderAsOffset 
 		//------------------------------------------------------
-	void RenderAsOffset( LPDIRECT3DDEVICE8 displayDevice, FLOAT x, FLOAT y ) const;
+	void RenderAsOffset( LPDIRECT3DDEVICE8 displayDevice, FLOAT x, FLOAT y ) const {
+		CSkinHighlightBar::RenderAsOffset( displayDevice, x, y );
+	}
 
 		//------------------------------------------------------
+		//	Render
+		//------------------------------------------------------
+	void Render( LPDIRECT3DDEVICE8 displayDevice ) const {
+		CSkinHighlightBar::RenderAtRect( displayDevice, m_left, m_top, m_right, m_bottom );
+	}
+
+		//------------------------------------------------------
+		//	ParseINI
 		//------------------------------------------------------
 	virtual BOOL ParseINI( CSystem_IniFile &iniFile, const CStdString &sectionName ) { return ParseINI( iniFile, sectionName, "" ); }
 

@@ -114,7 +114,14 @@ void CStartMenuView::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 	if( !g_loadedSkin )
 		return;
 
-  FLOAT fontHeight  = m_fontSet.SmallThinFontHeight();
+
+	FLOAT fontHeight = 20.0f;
+	if( CheckResourceValidity( SKINELEMENT_STARTMENU_BODY_TEXT ) ) 
+	{
+		const CSkinText *t = g_loadedSkin->GetSkinElementText(SKINELEMENT_STARTMENU_BODY_TEXT);
+		fontHeight = t->GetFontHeight();
+	}
+
   RenderBackdrop( fontHeight );
 
     //-- Render the highlight bar for the selected item -------------------------------------
@@ -134,13 +141,13 @@ void CStartMenuView::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 		WCHAR wBuf[256];
     mbstowcs( wBuf, m_title.c_str(), 256 );
 
-		g_loadedSkin->GetSkinElementText(SKINELEMENT_VIRTUALKEYBOARD_HEADER_TEXT)->RenderAtRect(	m_displayDevice,
-																																															wBuf,
-																																															NAME_START,
-																																															TITLEBAR_ROW,
-																																															TEXTBOX_RIGHT,
-																																															VALUE_AUTO,
-																																															XBFONT_TRUNCATED );
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_STARTMENU_HEADER_TEXT)->RenderAtRect(	m_displayDevice,
+																																												wBuf,
+																																												NAME_START,
+																																												TITLEBAR_ROW,
+																																												TEXTBOX_RIGHT,
+																																												VALUE_AUTO,
+																																												XBFONT_TRUNCATED );
 	}
 
 

@@ -308,6 +308,13 @@ void COptionsScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 																																																titleBarLeft, 
 																																																titleBarTop );
 
+			// Draw the spacer
+	if( CheckResourceValidity( SKINELEMENT_OPTIONSSCREEN_HEADER_DIVIDER ) )
+	{
+		g_loadedSkin->GetSkinElementDivider(SKINELEMENT_OPTIONSSCREEN_HEADER_DIVIDER)->RenderAsOffset( m_displayDevice, 
+																																																	 titleBarLeft, 
+																																																	 titleBarTop );
+	}
 
 		//--- Draw the body text -------------------------------------------
 	if( CheckResourceValidity( SKINELEMENT_OPTIONSSCREEN_BODY_SCROLLAREA ) )
@@ -322,7 +329,20 @@ void COptionsScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
 			// Draw the spacer
 		if( CheckResourceValidity( SKINELEMENT_OPTIONSSCREEN_BODY_DIVIDER ) )
-			g_loadedSkin->GetSkinElement(SKINELEMENT_OPTIONSSCREEN_BODY_DIVIDER)->Render( m_displayDevice );
+		{
+			FLOAT left = 0.0f;
+			FLOAT top = 0.0f;
+			const CSkinElement *bodyArea = g_loadedSkin->GetSkinElement( SKINELEMENT_OPTIONSSCREEN_BODY );
+			if( bodyArea )
+			{
+				left = bodyArea->m_left;
+				top = bodyArea->m_top;
+			}
+
+			g_loadedSkin->GetSkinElementDivider(SKINELEMENT_OPTIONSSCREEN_BODY_DIVIDER)->RenderAsOffset( m_displayDevice, 
+																																																	 left, 
+																																																	 top );
+		}
 
 
 		m_pageData[m_pageNumber].m_drawFunct( this );

@@ -95,8 +95,12 @@ public:
 		//------------------------------------------------------
 		//	GetTextWidth
 		//------------------------------------------------------
-	UINT32 GetTextWidth( const WCHAR *str );
+	UINT32 GetTextWidth( const WCHAR *str ) const;
 
+		//------------------------------------------------------
+		//	GetFontHeight
+		//------------------------------------------------------
+	UINT32 GetFontHeight( void ) const;
 
 	D3DCOLOR			m_color;
 	fonttype			m_fontType;

@@ -1800,7 +1800,47 @@ void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     {
       // *** DM_VERBOSELIST *** //
     case DM_VERBOSELIST:
-      DrawVerboseList();
+			{
+					// Draw the dividers
+				FLOAT headerLeft = 0.0f;
+				FLOAT headerTop = 0.0f;
+				if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_HEADER ) )
+				{
+					const CSkinElement *bodyArea = g_loadedSkin->GetSkinElement( SKINELEMENT_ROMLISTSCREEN_HEADER );
+					headerLeft = bodyArea->m_left;
+					headerTop = bodyArea->m_top;
+				}
+
+				if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSE_MANUFACTURER_DIVIDER ) )
+				{
+					g_loadedSkin->GetSkinElementDivider(SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSE_MANUFACTURER_DIVIDER)->RenderAsOffset( m_displayDevice,
+																																																														headerLeft,
+																																																														headerTop );
+				}
+
+				if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSE_YEAR_DIVIDER ) )
+				{
+					g_loadedSkin->GetSkinElementDivider(SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSE_YEAR_DIVIDER)->RenderAsOffset( m_displayDevice,
+																																																														headerLeft,
+																																																														headerTop );
+				}
+
+				if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSE_NUMPLAYERS_DIVIDER ) )
+				{
+					g_loadedSkin->GetSkinElementDivider(SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSE_NUMPLAYERS_DIVIDER)->RenderAsOffset( m_displayDevice,
+																																																														headerLeft,
+																																																														headerTop );
+				}
+
+				if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSE_CLONE_DIVIDER ) )
+				{
+					g_loadedSkin->GetSkinElementDivider(SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSE_CLONE_DIVIDER)->RenderAsOffset( m_displayDevice,
+																																																														headerLeft,
+																																																														headerTop );
+				}
+
+				DrawVerboseList();
+			}
       break;
 
       // *** DM_SIMPLELIST *** //
@@ -1849,17 +1889,42 @@ void CROMListScreen::DrawVerboseList( void )
 		area->m_highlightBar->RenderAsOffset( m_displayDevice, area->m_left, selectedItemYPos );
 
     // Draw the dividers
+	FLOAT bodyLeft = 0.0f;
+	FLOAT bodyTop = 0.0f;
+	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_BODY ) )
+	{
+		const CSkinElement *bodyArea = g_loadedSkin->GetSkinElement( SKINELEMENT_ROMLISTSCREEN_BODY );
+		bodyLeft = bodyArea->m_left;
+		bodyTop = bodyArea->m_top;
+	}
+
 	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_BODY_VERBOSE_MANUFACTURER_DIVIDER ) )
-		g_loadedSkin->GetSkinElement(SKINELEMENT_ROMLISTSCREEN_BODY_VERBOSE_MANUFACTURER_DIVIDER)->Render( m_displayDevice );
+	{
+		g_loadedSkin->GetSkinElementDivider(SKINELEMENT_ROMLISTSCREEN_BODY_VERBOSE_MANUFACTURER_DIVIDER)->RenderAsOffset( m_displayDevice,
+																																																											bodyLeft,
+																																																											bodyTop );
+	}
 
 	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_BODY_VERBOSE_YEAR_DIVIDER ) )
-		g_loadedSkin->GetSkinElement(SKINELEMENT_ROMLISTSCREEN_BODY_VERBOSE_YEAR_DIVIDER)->Render( m_displayDevice );
+	{
+		g_loadedSkin->GetSkinElementDivider(SKINELEMENT_ROMLISTSCREEN_BODY_VERBOSE_YEAR_DIVIDER)->RenderAsOffset( m_displayDevice,
+																																																											bodyLeft,
+																																																											bodyTop );
+	}
 
 	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_BODY_VERBOSE_NUMPLAYERS_DIVIDER ) )
-		g_loadedSkin->GetSkinElement(SKINELEMENT_ROMLISTSCREEN_BODY_VERBOSE_NUMPLAYERS_DIVIDER)->Render( m_displayDevice );
+	{
+		g_loadedSkin->GetSkinElementDivider(SKINELEMENT_ROMLISTSCREEN_BODY_VERBOSE_NUMPLAYERS_DIVIDER)->RenderAsOffset( m_displayDevice,
+																																																											bodyLeft,
+																																																											bodyTop );
+	}
 
 	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_BODY_VERBOSE_CLONE_DIVIDER ) )
-		g_loadedSkin->GetSkinElement(SKINELEMENT_ROMLISTSCREEN_BODY_VERBOSE_CLONE_DIVIDER)->Render( m_displayDevice );
+	{
+		g_loadedSkin->GetSkinElementDivider(SKINELEMENT_ROMLISTSCREEN_BODY_VERBOSE_CLONE_DIVIDER)->RenderAsOffset( m_displayDevice,
+																																																											bodyLeft,
+																																																											bodyTop );
+	}
 
 
 	swprintf( name, L"Names (%s)  ", m_options.m_hideFiltered ? L"Filtered " : L"Full List" );
