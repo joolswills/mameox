@@ -2384,6 +2384,7 @@ void CROMListScreen::DrawDetailedList( void )
   m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
+  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
 
     // Draw scroll up icon
   if( GetAbsoluteCursorPosition() )

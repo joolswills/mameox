@@ -28,6 +28,7 @@ void CBaseMenuView::RenderBackdrop( void )
 {
     //-- Draw the actual menu texture ------------------------------------------------------------
   m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
+  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
   m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
   m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
 
