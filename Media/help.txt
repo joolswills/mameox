@@ -16,8 +16,9 @@ Y     - Hold to enter "Super Scroll" mode.
         that letter.
 BLACK - Toggle between showing and hiding 
         clones
-WHITE - Toggle extended list mode (with 
-        rating and favorite columns)
+WHITE - Cycle through the ROM listing modes
+        (Verbose list mode, simple list 
+        mode, and detailed mode)
 START - Toggle the start menu, from which
         you can remove ROMs, scan for new
         ROMs, switch to the Options menu,
