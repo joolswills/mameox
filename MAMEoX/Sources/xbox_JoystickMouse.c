@@ -112,8 +112,8 @@ static BOOL                     g_systemInitialized = FALSE;
 static UINT32                   g_calibrationStep = 0;
 static UINT32                   g_calibrationJoynum = 0;
 
-  //! Whether or not the "STARTUP" XBE section has been unloaded
-static BOOL                     g_STARTUPSectionUnloaded = FALSE;
+  //! Whether or not the "MOXINPUT" XBE section has been unloaded
+static BOOL                     g_MOXINPUTSectionUnloaded = FALSE;
 
 //= P R O T O T Y P E S ================================================
 	//------------------------------------------------------------------
@@ -703,11 +703,11 @@ void osd_customize_inputport_defaults( struct ipd *defaults )
   This function is called on startup, before reading the configuration from disk.
   Scan the list, and change the keys/joysticks you want.
 */
-  if( g_STARTUPSectionUnloaded )
+  if( g_MOXINPUTSectionUnloaded )
   {
-    PRINTMSG( T_INFO, "Loading startup section!" );
-    XLoadSection( "STARTUP" );
-    g_STARTUPSectionUnloaded = FALSE;
+    PRINTMSG( T_INFO, "Loading MOXINPUT section!" );
+    XLoadSection( "MOXINPUT" );
+    g_MOXINPUTSectionUnloaded = FALSE;
   }
 
   if( !g_systemInitialized )
@@ -715,18 +715,22 @@ void osd_customize_inputport_defaults( struct ipd *defaults )
 
   Helper_CustomizeInputPortDefaults( defaults );
 
-  if( !g_STARTUPSectionUnloaded )
+  if( !g_MOXINPUTSectionUnloaded )
   {
-    PRINTMSG( T_INFO, "Unloading startup section!" );
-    XFreeSection( "STARTUP" );
-    g_STARTUPSectionUnloaded = TRUE;
+    PRINTMSG( T_INFO, "Unloading MOXINPUT section!" );
+    XFreeSection( "MOXINPUT" );
+    g_MOXINPUTSectionUnloaded = TRUE;
   }
 }
 
 
 
 
-#pragma code_seg("STARTUP")
+#pragma code_seg( "MXCINPUT" )
+#pragma data_seg( "MXDINPUT" )
+#pragma comment(linker, "/merge:MXCINPUT=MOXINPUT")
+#pragma comment(linker, "/merge:MXDINPUT=MOXINPUT")
+
 //---------------------------------------------------------------------
 //	InitializeJoystickMouse
 //---------------------------------------------------------------------
@@ -1933,5 +1937,5 @@ static void Helper_AddEntry( const char *name, INT32 code, INT32 standardCode, I
   }
 }
 #pragma code_seg()
-
+#pragma data_seg()
 

@@ -257,6 +257,10 @@ static BOOL Helper_RunRom( UINT32 romIndex )
   if( !g_soundEnabled )
     options.samplerate = 0;
 
+
+    // Unload the "STARTUP" section
+  XFreeSection( "STARTUP" );
+
   #ifdef _DEBUG
   {
     MEMORYSTATUS memStatus;
