@@ -20,8 +20,10 @@
 #pragma warning(disable:4146)		// "unary minus operator applied to unsigned type"
 #pragma warning(disable:4244)		// "possible loss of data"
 #pragma warning(disable:4305)		// "truncation from 'type' to 'type'
+#pragma warning(disable:4530)   // "C++ exception handler used, but unwind semantics are not enabled"
 #pragma warning(disable:4550)		// "expression evaluates .. missing an argument list"
 #pragma warning(disable:4761)		// "integral size mismatch in argument"
+
 
 //---------------------------------------------------------------------------
 // M68000 Core Selection
