@@ -54,7 +54,7 @@ extern "C" {
 #define TRIGGER_BOTTOM        450
 #define TRIGGER_TOP           TRIGGER_BOTTOM - desc->GetHeight()
 #define LEFTTRIGGER_LEFT      32
-#define RIGHTTRIGGER_RIGHT    608
+#define RIGHTTRIGGER_RIGHT    607
 
   //-- Button help messages ------
 #define HELP_START_ICON_X   200
