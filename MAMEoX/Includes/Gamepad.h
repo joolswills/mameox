@@ -252,6 +252,14 @@ public:
 		//------------------------------------------------------
   void SetLightgunCalibration( INT32 cx, INT32 cy, INT32 ulx, INT32 uly );
 
+		//------------------------------------------------------
+		//	GetLightgunFlags
+    //! Get the lightgun specific wButtons
+    //!
+    //! \return  DWORD - wButtons masked to return only lightgun flags
+		//------------------------------------------------------
+  DWORD GetLightgunFlags( void );
+
   protected:
 		//------------------------------------------------------
 		//	AttachRemoveGamepadDevice
