@@ -21,6 +21,9 @@
 #endif
 
 
+#include "MAMEoX.h"
+#include "Sections.h"
+
 
 /***************************************************************************
 
@@ -2564,6 +2567,15 @@ int showgamewarnings(struct mame_bitmap *bitmap)
 			if (Machine->gamedrv->clone_of && !(Machine->gamedrv->clone_of->flags & NOT_A_DRIVER))
 				maindrv = Machine->gamedrv->clone_of;
 			else maindrv = Machine->gamedrv;
+
+        /* 
+          [EBA] Have to load all driver data sections to allow parsing of
+          the drivers array. The problem is that the ROM may already be
+          loaded at this point, so it might fail to load all driver sections,
+          causing a crash still... Will have to look into a better solution
+          sometime in the future.
+        */ 
+      LoadDriverDataSections();
 
 			foundworking = 0;
 			i = 0;

@@ -11,9 +11,6 @@
 extern "C" {
 #endif
 #include "osd_cpu.h"
-#ifdef __cplusplus
-}
-#endif
 //= P R O T O T Y P E S ================================================
 
 #ifdef _DEBUG
@@ -126,3 +123,6 @@ BOOL LoadCPUSectionByName( const char *CPUFileName );
 //! \return   FALSE - Failure
 //-------------------------------------------------------------
 BOOL UnloadCPUSectionByName( const char *CPUFileName );
+#ifdef __cplusplus
+} // End extern "C"
+#endif

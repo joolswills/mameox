@@ -25,6 +25,7 @@ extern "C" {
 //= G L O B A L = V A R S ==============================================
 static std::map< std::string, std::string >  g_nameToSectionMap;
 //= F U N C T I O N S ==================================================
+extern "C" {
 
 #ifdef _DEBUG
 //-------------------------------------------------------------
@@ -940,6 +941,7 @@ void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\zerozone.c", "633" );
   RegisterSectionName( "src\\drivers\\zn.c", "634" );
   RegisterSectionName( "src\\drivers\\zodiack.c", "635" );
+} // End extern "C"
 }
 
 

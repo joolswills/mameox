@@ -1,5 +1,12 @@
 Version 0.66b
 
+  - \MAME\src\usrintrf.c
+    - Added a call to LoadDriverDataSections()
+      in the block of code where the drivers[] array
+      is parsed to find a working clone of a ROM that
+      is tagged as invalid. This fixes crashes for
+      these games (such as Alexx Kid set 1)
+
   - \MAMEoX\Includes\MAMEoX.h
     - clonename, manufacturer, year added into MAMEDriverData_t 
   - \MAMEoX\Sources\xbox_Main.cpp
@@ -121,6 +128,7 @@ Version 0.66b
  --- Specific Game fixes --------------------------------------------
   Ataxx
   Asylum
+  Alex Kidd (Set 1) - The ROM is tagged as non-working, but no longer crashes
   U.S. Classic
   Hyper Sports
   Hyper Olympics '84

@@ -49,9 +49,6 @@ print GENERATEDFILE "#ifdef __cplusplus\n";
 print GENERATEDFILE "extern \"C\" {\n";
 print GENERATEDFILE "#endif\n";
 print GENERATEDFILE "#include \"osd_cpu.h\"\n";
-print GENERATEDFILE "#ifdef __cplusplus\n";
-print GENERATEDFILE "}\n";
-print GENERATEDFILE "#endif\n";
 print GENERATEDFILE "//= P R O T O T Y P E S ================================================\n";
 print GENERATEDFILE "\n#ifdef _DEBUG\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
@@ -152,6 +149,9 @@ print GENERATEDFILE "//! \\retval   TRUE - success\n";
 print GENERATEDFILE "//! \\return   FALSE - Failure\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
 print GENERATEDFILE "BOOL UnloadCPUSectionByName( const char *CPUFileName );\n";
+print GENERATEDFILE "#ifdef __cplusplus\n";
+print GENERATEDFILE "} // End extern \"C\"\n";
+print GENERATEDFILE "#endif\n";
 close( GENERATEDFILE );
 
 
@@ -183,6 +183,7 @@ print GENERATEDFILE "\n";
 print GENERATEDFILE "//= G L O B A L = V A R S ==============================================\n";
 print GENERATEDFILE "static std::map< std::string, std::string >  g_nameToSectionMap;\n";
 print GENERATEDFILE "//= F U N C T I O N S ==================================================\n";
+print GENERATEDFILE "extern \"C\" {\n";
 print GENERATEDFILE "\n#ifdef _DEBUG\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
 print GENERATEDFILE "//	CheckDriverSectionRAM\n";
@@ -449,6 +450,7 @@ print CPUFILE "\n";
 print CPUFILE "//= G L O B A L = V A R S ==============================================\n";
 print CPUFILE "static std::map< std::string, std::string >  g_nameToSectionMap;\n";
 print CPUFILE "//= F U N C T I O N S ==================================================\n";
+print CPUFILE "extern \"C\" {\n";
 print CPUFILE "\n#ifdef _DEBUG\n";
 print CPUFILE "//-------------------------------------------------------------\n";
 print CPUFILE "//	CheckCPUSectionRAM\n";
@@ -809,6 +811,7 @@ foreach( @newFILEs ) {
 		$autoNameNumber++;
 	}
 }
+print GENERATEDFILE "} // End extern \"C\"\n";
 print GENERATEDFILE "}\n\n\n";
 close( GENERATEDFILE );
 
@@ -905,6 +908,7 @@ foreach( @newFILEs ) {
 		# Write out the section header/footer
 	WriteCPUSectionData( $DriverFileName, $File, $autoNameNumber );
 }
+print CPUFILE "} // End extern \"C\"\n";
 print CPUFILE "}\n\n\n";
 close( CPUFILE );
 
