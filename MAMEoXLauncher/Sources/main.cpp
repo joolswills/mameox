@@ -1192,25 +1192,10 @@ static HRESULT LoadPackedResources( void )
 //-------------------------------------------------------------
 static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 {
+  LPDIRECT3DVERTEXBUFFER8 pD3DVertexBuffer = NULL;
   RequireController( 0 );
+  CGamepad *gp = g_inputManager.GetGamepad( 0 );
 
-		// Clear the backbuffer
-  pD3DDevice->Clear(	0L,																// Count
-											NULL,															// Rects to clear
-											D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
-                      D3DCOLOR_XRGB(255,255,255),			  // Color
-											1.0f,															// Z
-											0L );															// Stencil
-
-	pD3DDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
-	pD3DDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
-	pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-  pD3DDevice->SetRenderState( D3DRS_ZENABLE, FALSE );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_MINFILTER, D3DTEXF_LINEAR );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_MAGFILTER, D3DTEXF_LINEAR );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
 
     // Create the vertex buffer
   struct CUSTOMVERTEX
@@ -1219,7 +1204,6 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
     FLOAT         tu, tv;   // The texture coordinates
   };
 
-  LPDIRECT3DVERTEXBUFFER8 pD3DVertexBuffer = NULL;
   pD3DDevice->CreateVertexBuffer( (sizeof(CUSTOMVERTEX) << 2),
 							                    D3DUSAGE_WRITEONLY,
 																	D3DFVF_XYZ | D3DFVF_TEX1,
@@ -1258,28 +1242,51 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
     pVertices[3].tv = 1.0f;
 
 	pD3DVertexBuffer->Unlock();
-  pD3DDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX1 );
-  pD3DDevice->SetStreamSource(	0,												// Stream number
-																pD3DVertexBuffer,					// Stream data
-																sizeof(CUSTOMVERTEX) );		// Vertex stride
 
   LPDIRECT3DTEXTURE8 pTexture = (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_MAMEoXLogo_OFFSET];
-	pD3DDevice->SetTexture( 0, pTexture );
-
-  pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
-
-  g_font.Begin();
-    g_font.DrawText( 320, 258, D3DCOLOR_XRGB( 0, 0, 80 ),     L"Version " LVERSION_STRING L" " LBUILDCONFIG_STRING, XBFONT_CENTER_X );
-    g_font.DrawText( 320, 282, D3DCOLOR_XRGB( 0, 0, 80 ),     L"Uses MAME version " LMAMEVERSION_STRING, XBFONT_CENTER_X );
-    g_font.DrawText( 320, 352, D3DCOLOR_XRGB( 10, 90, 100 ),  L"Portions based on:", XBFONT_CENTER_X );
-    g_font.DrawText( 320, 376, D3DCOLOR_XRGB( 10, 90, 100 ),  L"\"MAMEX(b5): updated by superfro, original port by opcode\"", XBFONT_CENTER_X );
-	  g_font.DrawText( 320, 400, D3DCOLOR_XRGB( 60, 105, 225 ), L"Press any button to continue.", XBFONT_CENTER_X );
-  g_font.End();
-
-  pD3DDevice->Present( NULL, NULL, NULL, NULL );
 
 
-	g_inputManager.WaitForAnyButton();
+  while( !gp->IsAnyButtonPressed() )
+  {
+    RequireController( 0 );
+
+		  // Clear the backbuffer
+    pD3DDevice->Clear(	0L,																// Count
+											  NULL,															// Rects to clear
+											  D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+                        D3DCOLOR_XRGB(255,255,255),			  // Color
+											  1.0f,															// Z
+											  0L );															// Stencil
+
+	  pD3DDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
+	  pD3DDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
+	  pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
+    pD3DDevice->SetRenderState( D3DRS_ZENABLE, FALSE );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_MINFILTER, D3DTEXF_LINEAR );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_MAGFILTER, D3DTEXF_LINEAR );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
+
+    pD3DDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX1 );
+    pD3DDevice->SetStreamSource(	0,												// Stream number
+																  pD3DVertexBuffer,					// Stream data
+																  sizeof(CUSTOMVERTEX) );		// Vertex stride
+	  pD3DDevice->SetTexture( 0, pTexture );
+
+    pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
+
+    g_font.Begin();
+      g_font.DrawText( 320, 258, D3DCOLOR_XRGB( 0, 0, 80 ),     L"Version " LVERSION_STRING L" " LBUILDCONFIG_STRING, XBFONT_CENTER_X );
+      g_font.DrawText( 320, 282, D3DCOLOR_XRGB( 0, 0, 80 ),     L"Uses MAME version " LMAMEVERSION_STRING, XBFONT_CENTER_X );
+      g_font.DrawText( 320, 352, D3DCOLOR_XRGB( 10, 90, 100 ),  L"Portions based on:", XBFONT_CENTER_X );
+      g_font.DrawText( 320, 376, D3DCOLOR_XRGB( 10, 90, 100 ),  L"\"MAMEX(b5): updated by superfro, original port by opcode\"", XBFONT_CENTER_X );
+	    g_font.DrawText( 320, 400, D3DCOLOR_XRGB( 60, 105, 225 ), L"Press any button to continue.", XBFONT_CENTER_X );
+    g_font.End();
+
+    pD3DDevice->Present( NULL, NULL, NULL, NULL );
+  }
+
 	g_inputManager.WaitForNoButton( 0 );
 
   pD3DVertexBuffer->Release();

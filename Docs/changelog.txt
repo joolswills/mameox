@@ -74,6 +74,7 @@ Version 0.68b
     - main.cpp
       - Joined all D3D renderer opts into a struct
       - Added a RequireController call to splashscreen
+      - Added more calls to RequireController
 
    -------------------------------------------------------------
   - \MAMEoX\src:

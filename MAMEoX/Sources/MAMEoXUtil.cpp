@@ -96,13 +96,9 @@ void LoadOptions( void )
   cheatfile = strdup( iniFile.GetProfileString( "General", "CheatFilename", "cheat.dat" ).c_str() );
   if( !cheatfile )
     options.cheat = FALSE;
+  options.skip_disclaimer = iniFile.GetProfileInt( "General", "SkipDisclaimer", FALSE );   // 1 to skip the disclaimer screen at startup
+	options.skip_gameinfo = iniFile.GetProfileInt( "General", "SkipGameInfo", FALSE );    // 1 to skip the game info screen at startup
 
-    // 1 to skip the disclaimer screen at startup
-  options.skip_disclaimer = iniFile.GetProfileInt( "General", "SkipDisclaimer", FALSE );
-
-    // 1 to skip the game info screen at startup
-	options.skip_gameinfo = iniFile.GetProfileInt( "General", "SkipGameInfo", FALSE );
-  
     // sound sample playback rate, in Hz
   options.samplerate = iniFile.GetProfileInt( "Sound", "SampleRate", 44100 );
     // 1 to enable external .wav samples
@@ -317,6 +313,7 @@ void SaveOptions( void )
 //-------------------------------------------------------------
 void RequireController( DWORD number )
 {
+  g_inputManager.PollDevices();
   if( g_inputManager.IsGamepadConnected( number ) )
     return;
 
