@@ -44,7 +44,7 @@ extern "C" {
 #define COLUMN_PADDING        9     // Number of pixels to subtract from the column width before truncating text
 
 
-#define TRIGGER_BOTTOM        451
+#define TRIGGER_BOTTOM        450
 #define TRIGGER_TOP           TRIGGER_BOTTOM - m_textureSet.GetTriggerIconHeight()
 #define LEFTTRIGGER_LEFT      32
 #define RIGHTTRIGGER_RIGHT    608
@@ -109,7 +109,7 @@ COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice,
                             CFontSet &fontSet, 
                             CTextureSet &textureSet, 
                             GameOptions &options ) :
-  CListView( displayDevice, fontSet, textureSet.GetBasicBackdrop() ),
+  CListView( displayDevice, fontSet, textureSet.GetOptionsScreenBackdrop() ),
   m_textureSet( textureSet ),
   m_optToggleDelay( 0.0f ),
   m_triggerDelay( 0.0f ),

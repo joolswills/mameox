@@ -106,6 +106,10 @@ public:
     return (LPDIRECT3DTEXTURE8)&m_pResourceSysMemData[resource_MenuParts_OFFSET];
   }
 
+  LPDIRECT3DTEXTURE8 GetOptionsScreenBackdrop( void ) {    
+    return (LPDIRECT3DTEXTURE8)&m_pResourceSysMemData[resource_OptionsScreenBackdrop_OFFSET];
+  }
+
     //--- Asset position functions -------------------------------------
 
     // Scroll Icon Mask positions
