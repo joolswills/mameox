@@ -55,7 +55,7 @@
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			WholeProgramOptimization="FALSE">
+			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/GL"
@@ -88,6 +88,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalOptions="/LTCG"
 				OutputFile=".\Release\MAME.lib"
 				SuppressStartupBanner="TRUE"/>
 			<Tool
