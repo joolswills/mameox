@@ -57,6 +57,38 @@ Version 0.65b
   - \MAMEoXLauncher\Sources\main.cpp:
     - Bugfix for the backup (X+B) feature
 
+
+ --- Integrated MAME version 0.69, changes follow -------------------
+
+ Changes in the \MAME\src directory
+
+ Removals:
+
+ Additions:
+   \
+
+   drivers\
+     jalmah.c
+     mustache.c
+     paradise.c
+     plygonet.c
+     portrait.c
+     wolfpack.c
+
+    includes\
+      paradise.h
+
+    machine\
+      acitya.c
+
+    vidhrdw\
+      mustache.c
+      paradise.c
+      plygonet.c
+      portrait.c
+      wolfpack.c
+
+
 Version 0.64b
 
   - \Docs\readme.txt:
