@@ -271,6 +271,12 @@
 				RelativePath="..\MAMEoX\Includes\System_IniFile.h">
 			</File>
 			<File
+				RelativePath="Sources\TVCalibrationScreen.cpp">
+			</File>
+			<File
+				RelativePath="Includes\TVCalibrationScreen.h">
+			</File>
+			<File
 				RelativePath="Includes\VirtualKeyboard.h">
 			</File>
 			<File

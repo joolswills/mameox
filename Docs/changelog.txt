@@ -81,6 +81,8 @@ Version 0.71.3b (CVS)
     - Added new class "CBaseMenuView" which takes care of drawing a
       fully resizable menu backdrop. Also removed the old static
       image backdrops.
+    - Added new class "CTVCalibrationScreen" which takes care of screen
+      resizing/repositioning
 
    -------------------------------------------------------------
   - \Sectionize.pl

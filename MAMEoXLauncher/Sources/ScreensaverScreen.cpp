@@ -92,7 +92,6 @@ void CScreensaverScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
       m_screenshotRect.bottom = 480;
       m_screenshotOrientation = 0;
 
-
         // Move the text message around
       textMessageX = rand() % 320 + 160;
       textMessageY = rand() % 240 + 120;
@@ -184,20 +183,20 @@ void CScreensaverScreen::CalculateRenderingQuad( void )
   FLOAT xpos, ypos;
   GetScreenUsage( &xpos, &ypos );
 
-/*
-  if( g_rendererOptions.m_screenRotation == SR_0 || g_rendererOptions.m_screenRotation == SR_180 )
+  if( g_rendererOptions.m_preserveAspectRatio )
   {
-    if( g_rendererOptions.m_preserveAspectRatio )
+    FLOAT xPercentage, yPercentage;
+    GetScreenUsage( &xPercentage, &yPercentage );
+
+    if( g_rendererOptions.m_screenRotation == SR_0 || g_rendererOptions.m_screenRotation == SR_180 )
     {
+        // Hack: Assume that swap XY means we're using 3:4 aspect, otherwise 4:3
+
         // Aspect ratio
-      double screenRatio = 640.0/480.0;
+      double screenRatio = (640.0 * xPercentage) / (480.0 * yPercentage);
 
         // The desired aspect ratio for the game
-	    double aspectRatio = (double)g_createParams.aspect_x / (double)g_createParams.aspect_y;
-      if( g_createParams.video_attributes & VIDEO_PIXEL_ASPECT_RATIO_1_2 )
-        aspectRatio /= 2.0;
-      else if( g_createParams.video_attributes & VIDEO_PIXEL_ASPECT_RATIO_2_1 )
-        aspectRatio *= 2.0;
+      double aspectRatio = ( m_screenshotOrientation & ORIENTATION_SWAP_XY ) ? (3.0/4.0) : (4.0/3.0);
 
         // The native screenRatio is 4/3
         // so multiplying x by the desired aspect ratio will actually give us (x*4/3)*(aspectRatio)
@@ -214,21 +213,14 @@ void CScreensaverScreen::CalculateRenderingQuad( void )
         xpos *= aspectRatio / screenRatio;
       }
     }
-  }
-  else
-  {
-      // We're rendering sideways, so the aspect ratio of the monitor is different
-    if( g_rendererOptions.m_preserveAspectRatio )
+    else
     {
+        // Hack: Assume that swap XY means we're using 3:4 aspect, otherwise 4:3
         // Aspect ratio
-      double screenRatio = 480.0/640.0;
+      double screenRatio = (480.0 * yPercentage) / (640.0 * xPercentage);
 
         // The desired aspect ratio for the game
-	    double aspectRatio = (double)g_createParams.aspect_x / (double)g_createParams.aspect_y;
-      if( g_createParams.video_attributes & VIDEO_PIXEL_ASPECT_RATIO_1_2 )
-        aspectRatio *= 2.0;
-      else if( g_createParams.video_attributes & VIDEO_PIXEL_ASPECT_RATIO_2_1 )
-        aspectRatio /= 2.0;
+      double aspectRatio = ( m_screenshotOrientation & ORIENTATION_SWAP_XY ) ? (3.0/4.0) : (4.0/3.0);
 
         // The native screenRatio is 3/4
         // so multiplying x by the desired aspect ratio will actually give us (x*3/4)*(aspectRatio)
@@ -243,10 +235,9 @@ void CScreensaverScreen::CalculateRenderingQuad( void )
       {
           // Scale down x
         ypos *= aspectRatio / screenRatio;
-      }
+      }      
     }
   }
-*/
 
     // Handle screen rotation and 
   switch( g_rendererOptions.m_screenRotation )

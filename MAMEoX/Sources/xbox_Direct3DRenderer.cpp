@@ -690,7 +690,8 @@ static BOOL CreateRenderingQuad( void )
     if( g_rendererOptions.m_preserveAspectRatio )
     {
         // Aspect ratio
-      double screenRatio = 640.0/480.0;
+      //double screenRatio = 640.0/480.0;
+      double screenRatio = (640.0 * g_rendererOptions.m_screenUsageX)/(480.0 * g_rendererOptions.m_screenUsageY);
 
         // The desired aspect ratio for the game
 	    double aspectRatio = (double)g_createParams.aspect_x / (double)g_createParams.aspect_y;
@@ -721,7 +722,8 @@ static BOOL CreateRenderingQuad( void )
     if( g_rendererOptions.m_preserveAspectRatio )
     {
         // Aspect ratio
-      double screenRatio = 480.0/640.0;
+      //double screenRatio = 480.0/640.0;
+      double screenRatio = (480.0 * g_rendererOptions.m_screenUsageY) / (640.0 * g_rendererOptions.m_screenUsageX);
 
         // The desired aspect ratio for the game
 	    double aspectRatio = (double)g_createParams.aspect_x / (double)g_createParams.aspect_y;

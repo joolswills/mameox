@@ -35,6 +35,7 @@
 #include "LightgunCalibratorScreen.h"
 #include "StartMenu.h"
 #include "ScreensaverScreen.h"
+#include "TVCalibrationScreen.h"
 
 //= D E F I N E S =====================================================
 
@@ -54,7 +55,8 @@ typedef enum viewmode
   VIEW_ROMLIST,
   VIEW_OPTIONS,
   VIEW_LIGHTGUNCALIBRATOR,
-  VIEW_HELP
+  VIEW_HELP,
+  VIEW_SCREENSETUP
 } viewmode;
 
 
@@ -69,7 +71,8 @@ typedef enum startmenuitemdata
   MI_SCANFORROMS,
   MI_REFRESHROMMETADATA,
   MI_COPYSYSTEMFILESFROMDVD,
-  MI_ROMLIST
+  MI_ROMLIST,
+  MI_SCREENSETUP
 } startmenuitemdata;
 
 //= S T R U C T U R E S ===============================================
@@ -326,6 +329,9 @@ void __cdecl main( void )
   CScreensaverScreen screenSaver( pD3DDevice, g_fontSet, g_driverData, mameoxLaunchData->m_totalMAMEGames );
   screenSaver.FindScreenshots();
 
+    // TV calibration object
+  CTVCalibrationScreen TVCalibrationScreen( pD3DDevice, g_fontSet, g_textureSet );
+
 
     //-- Initialize the rendering engine -------------------------------
   D3DXMATRIX matWorld;
@@ -361,8 +367,8 @@ void __cdecl main( void )
   BOOL rightAnalogMovesScreen = FALSE;
 
     // Note: Setting g_screensaverTimeout to 0 disables it
-  UINT64 screensaverDelayCycles = g_screensaverTimeout * 60 * osd_cycles_per_second();
-  UINT64 screensaverTimeout = screensaverDelayCycles;
+  #define SCREENSAVERDELAYCYCLES      ((UINT64)g_screensaverTimeout * (UINT64)60 * osd_cycles_per_second())
+  UINT64 screensaverTimeout = SCREENSAVERDELAYCYCLES;
 
 		//--- Main loop ------------------------------------------------------
 	while( 1 )
@@ -374,7 +380,7 @@ void __cdecl main( void )
 	  DOUBLE elapsedTime = (DOUBLE)elapsedTicks / (DOUBLE)osd_cycles_per_second();
 
     if( g_inputManager.IsAnyInput() )
-      screensaverTimeout = screensaverDelayCycles;
+      screensaverTimeout = SCREENSAVERDELAYCYCLES;
     else if( screensaverTimeout && g_screensaverTimeout )
     {
       if( elapsedTicks >= screensaverTimeout )
@@ -406,101 +412,22 @@ void __cdecl main( void )
       Helper_SetStartMenuItems( startMenu, currentView );
       g_inputManager.WaitForNoButton();
     }
-/*
-    else if( g_inputManager.IsOnlyButtonPressed( GP_B | GP_Y ) )
-    {
-      if( currentView != VIEW_OPTIONS )
-        currentView = VIEW_OPTIONS;
-      else
-        currentView = VIEW_ROMLIST;
 
-      startMenu.Reset();
-      Helper_SetStartMenuItems( startMenu, currentView );
-      g_inputManager.WaitForNoButton();
-    }
-    else if( g_inputManager.IsOnlyButtonPressed( GP_BACK ) )
+    if( oldRotation != g_rendererOptions.m_screenRotation ||
+        TVCalibrationScreen.AreScreenSettingsChanged() )
     {
-      if( currentView != VIEW_LIGHTGUNCALIBRATOR )
-        currentView = VIEW_LIGHTGUNCALIBRATOR;
-      else
-        currentView = VIEW_ROMLIST;
-
-      startMenu.Reset();
-      Helper_SetStartMenuItems( startMenu, currentView );
-      g_inputManager.WaitForNoButton();
-    }
-*/
-    else if( g_inputManager.IsButtonPressed( GP_RIGHT_ANALOG ) )
-    {
-        // Toggle the right analog stick mode
-      rightAnalogMovesScreen = !rightAnalogMovesScreen;
-
-      g_inputManager.WaitForNoButton();
-    }
-    else if( g_inputManager.IsOneOfButtonsPressed( GP_RA_LEFT | GP_RA_RIGHT | GP_RA_UP | GP_RA_DOWN ) ||
-             oldRotation != g_rendererOptions.m_screenRotation )
-    {
-        // Handle screen size/move/rotate
-      FLOAT xPos, yPos;
-      GetScreenPosition( &xPos, &yPos );
-      FLOAT xPercentage, yPercentage;
+      FLOAT xPos, yPos, xPercentage, yPercentage;
       GetScreenUsage( &xPercentage, &yPercentage );
-
-      if( rightAnalogMovesScreen )
-      {
-        if( g_inputManager.IsButtonPressed( GP_RA_LEFT ) )
-          xPos -= 0.00025f;
-        else if( g_inputManager.IsButtonPressed( GP_RA_RIGHT ) )
-          xPos += 0.00025f;
-
-        if( g_inputManager.IsButtonPressed( GP_RA_DOWN ) )
-          yPos -= 0.00025f;
-        else if( g_inputManager.IsButtonPressed( GP_RA_UP ) )
-          yPos += 0.00025f;
-
-        if( xPos < -0.5f )
-          xPos = -0.5f;
-        else if( xPos > 0.5f )
-          xPos = 0.5f;
-
-        if( yPos < -0.5f )
-          yPos = -0.5f;
-        else if( yPos > 0.5f )
-          yPos = 0.5f;
-
-        SetScreenPosition( xPos, yPos );
-      }
-      else
-      {
-
-        if( g_inputManager.IsButtonPressed( GP_RA_LEFT ) )
-          xPercentage -= 0.00025f;
-        else if( g_inputManager.IsButtonPressed( GP_RA_RIGHT ) )
-          xPercentage += 0.00025f;
-
-        if( g_inputManager.IsButtonPressed( GP_RA_DOWN ) )
-          yPercentage -= 0.00025f;
-        else if( g_inputManager.IsButtonPressed( GP_RA_UP ) )
-          yPercentage += 0.00025f;
-
-        if( xPercentage < 0.25f )
-          xPercentage = 0.25f;
-        else if( xPercentage > 1.0f )
-          xPercentage = 1.0f;
-
-        if( yPercentage < 0.25f )
-          yPercentage = 0.25f;
-        else if( yPercentage > 1.0f )
-          yPercentage = 1.0f;
-
-        SetScreenUsage( xPercentage, yPercentage );
-      }
+      GetScreenPosition( &xPos, &yPos );
 
       DestroyBackdrop();
       CreateBackdrop( xPos, yPos, xPercentage, yPercentage );
       oldRotation = g_rendererOptions.m_screenRotation;
+      TVCalibrationScreen.Reset();
     }
-		
+
+
+
 			// Move the cursor position and render
     pD3DDevice->SetTransform( D3DTS_WORLD, &matWorld );
     pD3DDevice->SetTransform( D3DTS_VIEW, &matWorld );
@@ -565,6 +492,28 @@ void __cdecl main( void )
       if( !showStartMenu )
         help.MoveCursor( g_inputManager );
       help.DrawToTexture( renderTargetTexture );
+      break;
+
+      // *** VIEW_SCREENSETUP *** //
+    case VIEW_SCREENSETUP:
+      if( !showStartMenu )
+        TVCalibrationScreen.MoveCursor( g_inputManager );
+      if( TVCalibrationScreen.IsCalibrationCompleted() )
+      {
+        if( TVCalibrationScreen.AreScreenSettingsChanged() )
+        {
+          FLOAT xPos, yPos, xPercentage, yPercentage;
+          GetScreenUsage( &xPercentage, &yPercentage );
+          GetScreenPosition( &xPos, &yPos );
+          DestroyBackdrop();
+          CreateBackdrop( xPos, yPos, xPercentage, yPercentage );
+        }
+
+        currentView = VIEW_ROMLIST;
+        TVCalibrationScreen.Reset();
+        startMenu.Reset();
+        Helper_SetStartMenuItems( startMenu, currentView );
+      }      
       break;
     }
 
@@ -648,7 +597,12 @@ void __cdecl main( void )
             // *** MI_ROMLIST *** //
           case MI_ROMLIST:
             romList.SetOptions( g_romListOptions );
-            currentView = VIEW_ROMLIST;
+            currentView = VIEW_ROMLIST;            
+            break;
+
+            // *** MI_SCREENSETUP *** //
+          case MI_SCREENSETUP:
+            currentView = VIEW_SCREENSETUP;
             break;
           }
         }
@@ -658,6 +612,9 @@ void __cdecl main( void )
     }
 
 
+      // Render the TV calibration screen (has to run fullscreen)
+    if( currentView == VIEW_SCREENSETUP )
+      TVCalibrationScreen.Draw( TRUE, FALSE );
 
       // Render the screensaver
     if( screensaverTimeout == 0.0 && g_screensaverTimeout )
@@ -713,7 +670,7 @@ static void Helper_SetStartMenuItems( CStartMenu &startMenu, viewmode currentVie
     startMenu.SetTitle( ":: ROM List ::" );
     startMenu.AddMenuItem( "Help", MI_HELP );
     startMenu.AddMenuItem( "Options Menu", MI_OPTIONS );
-
+    startMenu.AddMenuItem( "Screen Setup", MI_SCREENSETUP );
       // Check to see if a lightgun is inserted at all
     {
       BOOL showLightgunCalibratorOpt = FALSE;
@@ -761,6 +718,13 @@ static void Helper_SetStartMenuItems( CStartMenu &startMenu, viewmode currentVie
   case VIEW_HELP:
     startMenu.SetTitle( ":: Help ::" );
     startMenu.AddMenuItem( "ROM List", MI_ROMLIST );
+    break;
+
+    // *** VIEW_SCREENSETUP *** //
+  case VIEW_SCREENSETUP:
+    startMenu.SetTitle( ":: Screen Setup ::" );
+    startMenu.AddMenuItem( "ROM List", MI_ROMLIST );
+    startMenu.AddMenuItem( "Help", MI_HELP );
     break;
   }
 

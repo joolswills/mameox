@@ -1937,7 +1937,7 @@ void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 	  m_fontSet.LargeThinFont().DrawText( HELP_Y_TEXT_X, 
                                         HELP_Y_TEXT_Y, 
                                         HELPITEM_COLOR, 
-                                        L"Superscroll" );
+                                        L"Fast Jump" );
   m_fontSet.LargeThinFont().End();
 
 

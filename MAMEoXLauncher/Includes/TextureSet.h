@@ -140,6 +140,12 @@ public:
     return (LPDIRECT3DTEXTURE8)&m_pResourceSysMemData[resource_ButtonIcons_OFFSET];
   }
 
+  LPDIRECT3DTEXTURE8 GetTVCalibrationCursorMask( void ) {    
+    return (LPDIRECT3DTEXTURE8)&m_pResourceSysMemData[resource_TVCalibrationCursorMask_OFFSET];
+  }
+
+
+
     //--- Asset position functions -------------------------------------
 
     // Scroll Icon Mask positions

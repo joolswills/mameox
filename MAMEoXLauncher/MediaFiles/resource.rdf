@@ -61,3 +61,11 @@ Texture ButtonIcons
   Levels        1
 }
 
+Texture TVCalibrationCursorMask
+{
+  Source        mox-tvcalibration-cursormask.bmp
+  Alphasource   mox-tvcalibration-cursormask.bmp
+  Format        D3DFMT_A8R8G8B8
+  Levels        1
+}
+
