@@ -153,6 +153,9 @@
 				RelativePath="..\MAMEoX\Sources\InputManager.cpp">
 			</File>
 			<File
+				RelativePath="Sources\LightgunCalibrator.cpp">
+			</File>
+			<File
 				RelativePath="Sources\ListView.cpp">
 			</File>
 			<File
@@ -215,6 +218,9 @@
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Includes\InputManager.h">
+			</File>
+			<File
+				RelativePath="Includes\LightgunCalibrator.h">
 			</File>
 			<File
 				RelativePath="Includes\ListView.h">
