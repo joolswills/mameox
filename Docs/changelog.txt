@@ -35,6 +35,8 @@ Version 0.70.3b
       - Switched back to | character now that it is supported
         by the Hawaiian Punk font
 
+    - FontSet.h
+      - Added font resource helper class
 
    -------------------------------------------------------------
   - \MAMEoXLauncher\Sources:

@@ -153,6 +153,9 @@
 				RelativePath="..\MAMEoX\Sources\InputManager.cpp">
 			</File>
 			<File
+				RelativePath="Sources\ListView.cpp">
+			</File>
+			<File
 				RelativePath="..\MAMEoX\Sources\MAMEoXUtil.cpp">
 			</File>
 			<File
@@ -199,6 +202,9 @@
 				RelativePath="..\MAMEoX\Includes\DebugLogger.h">
 			</File>
 			<File
+				RelativePath="..\MAMEoX\Includes\FontSet.h">
+			</File>
+			<File
 				RelativePath="..\MAMEoX\Includes\Gamepad.h">
 			</File>
 			<File
@@ -209,6 +215,9 @@
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Includes\InputManager.h">
+			</File>
+			<File
+				RelativePath="Includes\ListView.h">
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Includes\MAMEoX.h">

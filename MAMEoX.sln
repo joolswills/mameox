@@ -7,9 +7,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MAMEoX", "MAMEoX\MAMEoX.vcp
 	ProjectSection(ProjectDependencies) = postProject
 		{6E91E5AE-9076-483E-9728-28D12259AA17} = {6E91E5AE-9076-483E-9728-28D12259AA17}
 		{6F3BF3B3-58D7-4783-8AF7-0C6D445266EB} = {6F3BF3B3-58D7-4783-8AF7-0C6D445266EB}
+		{6E91E5AE-9076-483E-9728-28D12259AA17} = {6E91E5AE-9076-483E-9728-28D12259AA17}
+		{6F3BF3B3-58D7-4783-8AF7-0C6D445266EB} = {6F3BF3B3-58D7-4783-8AF7-0C6D445266EB}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZLIB", "ZLIB\ZLIB.vcproj", "{29CD255B-0DEA-4260-B504-527BF5E5ED4A}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MAMEoXLauncher", "MAMEoXLauncher\MAMEoXLauncher.vcproj", "{BEC3062C-78B0-4B2D-BE06-4177F71981BE}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -22,15 +26,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libsmb", "libsmb++\libsmb.v
 EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
-		ConfigName.0 = Debug
-		ConfigName.1 = Debug_With_Retail_MAME
-		ConfigName.2 = Profile
-		ConfigName.3 = Release
+		Debug = Debug
+		Debug_With_Retail_MAME = Debug_With_Retail_MAME
+		Profile = Profile
+		Release = Release
 	EndGlobalSection
-	GlobalSection(ProjectDependencies) = postSolution
-		{A5CE2025-F0F4-45C5-B29D-1DE92417DB8F}.0 = {6F3BF3B3-58D7-4783-8AF7-0C6D445266EB}
-		{A5CE2025-F0F4-45C5-B29D-1DE92417DB8F}.1 = {6E91E5AE-9076-483E-9728-28D12259AA17}
-		{BEC3062C-78B0-4B2D-BE06-4177F71981BE}.0 = {6E91E5AE-9076-483E-9728-28D12259AA17}	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{6F3BF3B3-58D7-4783-8AF7-0C6D445266EB}.Debug.ActiveCfg = Debug|Xbox
 		{6F3BF3B3-58D7-4783-8AF7-0C6D445266EB}.Debug.Build.0 = Debug|Xbox
