@@ -17,7 +17,7 @@
   //--- Layout defines -----------------------------------------
 #define HEADER_COLOR            D3DCOLOR_XRGB( 0, 0, 0 )
 #define ITEM_COLOR			        D3DCOLOR_XRGB( 0, 0, 0 )
-#define HIGHLIGHTBAR_COLOR      D3DCOLOR_ARGB( 180, 165, 169, 202 )
+#define HIGHLIGHTBAR_COLOR      D3DCOLOR_ARGB( 180, 145, 149, 182 )
 
 #define TITLEBAR_ROW            m_titleArea.top + 4
 #define FIRSTDATA_ROW           m_bodyArea.top
