@@ -73,6 +73,7 @@ public:
 		m_font( font ),
 		m_cursorPosition( 0 ),
 		m_dpadCursorDelay( 0.0f ),
+    m_optToggleDelay( 0.0f ),
     m_triggerDelay( 0.0f ),
     m_pageNumber( 0 )
 	{
@@ -130,6 +131,7 @@ protected:
 	UINT32								m_cursorPosition;	    //!< Cursor position within the current list page
 	FLOAT									m_dpadCursorDelay;    //!< Counter used to slow down the dpad repeat rate
   FLOAT                 m_triggerDelay;       //!< Counter used to slow down the trigger repeat rate
+  FLOAT                 m_optToggleDelay;     //!< Counter used to slow down option toggle buttons
 
   optionsPageData_t     m_pageData[OPTPAGE_LAST];
 

@@ -129,13 +129,21 @@ void COptionsPage::MoveCursor( CGamepad	&gp )
 	}
 	lastTime = curTime;
 
-		// Decrement the dpad movement timer
+		// Decrement the movement timers
 	if( m_dpadCursorDelay > 0.0f )
 	{
 		m_dpadCursorDelay -= elapsedTime;
     if( m_dpadCursorDelay < 0.0f || 
         !gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_DPAD_DOWN | GP_LA_UP | GP_LA_DOWN ) )
 			m_dpadCursorDelay = 0.0f;
+	}
+
+	if( m_optToggleDelay > 0.0f )
+	{
+		m_optToggleDelay -= elapsedTime;
+    if( m_optToggleDelay < 0.0f || 
+        !gp.IsOneOfButtonsPressed( GP_DPAD_LEFT | GP_DPAD_RIGHT | GP_LA_LEFT | GP_LA_RIGHT ) )
+			m_optToggleDelay = 0.0f;
 	}
 
   if( m_triggerDelay > 0.0f )
@@ -145,6 +153,8 @@ void COptionsPage::MoveCursor( CGamepad	&gp )
       m_triggerDelay = 0.0f;
   }
 
+
+    //-- Check the button states ----------------------------------------------------------
   if( gp.IsButtonPressed( GP_LEFT_TRIGGER ) && m_triggerDelay == 0.0f )
   {
     if( m_pageNumber )
@@ -179,14 +189,14 @@ void COptionsPage::MoveCursor( CGamepad	&gp )
     else
       m_cursorPosition = m_pageData[m_pageNumber].m_numItems - 1;
   }
-  else if( gp.IsOneOfButtonsPressed( GP_DPAD_LEFT | GP_LA_LEFT ) && m_dpadCursorDelay == 0.0f )
+  else if( gp.IsOneOfButtonsPressed( GP_DPAD_LEFT | GP_LA_LEFT ) && m_optToggleDelay == 0.0f )
 	{
-		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
+		m_optToggleDelay = DPADCURSORMOVE_TIMEOUT;
     m_pageData[m_pageNumber].m_changeFunct( this, FALSE );
   }
-  else if( gp.IsOneOfButtonsPressed( GP_DPAD_RIGHT | GP_LA_RIGHT ) && m_dpadCursorDelay == 0.0f )
+  else if( gp.IsOneOfButtonsPressed( GP_DPAD_RIGHT | GP_LA_RIGHT ) && m_optToggleDelay == 0.0f )
 	{
-		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
+		m_optToggleDelay = DPADCURSORMOVE_TIMEOUT;
     m_pageData[m_pageNumber].m_changeFunct( this, TRUE );
   }
   
