@@ -1,11 +1,11 @@
-#pragma code_seg("C249")
-#pragma data_seg("D249")
-#pragma bss_seg("B249")
-#pragma const_seg("K249")
-#pragma comment(linker, "/merge:D249=249")
-#pragma comment(linker, "/merge:C249=249")
-#pragma comment(linker, "/merge:B249=249")
-#pragma comment(linker, "/merge:K249=249")
+#pragma code_seg("C321")
+#pragma data_seg("D321")
+#pragma bss_seg("B321")
+#pragma const_seg("K321")
+#pragma comment(linker, "/merge:D321=321")
+#pragma comment(linker, "/merge:C321=321")
+#pragma comment(linker, "/merge:B321=321")
+#pragma comment(linker, "/merge:K321=321")
 /***************************************************************************
 
 	Hard Drivin' video hardware

@@ -1,3 +1,11 @@
+#pragma code_seg("C14")
+#pragma data_seg("D14")
+#pragma bss_seg("B14")
+#pragma const_seg("K14")
+#pragma comment(linker, "/merge:D14=14")
+#pragma comment(linker, "/merge:C14=14")
+#pragma comment(linker, "/merge:B14=14")
+#pragma comment(linker, "/merge:K14=14")
 /***************************************************************************
 
   vidhrdw.c
@@ -214,3 +222,7 @@ VIDEO_UPDATE( gottlieb )
 		tilemap_draw(bitmap, &Machine->visible_area, bg_tilemap, 0, 0);
 	}
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

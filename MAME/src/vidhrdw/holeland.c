@@ -1,11 +1,11 @@
-#pragma code_seg("C256")
-#pragma data_seg("D256")
-#pragma bss_seg("B256")
-#pragma const_seg("K256")
-#pragma comment(linker, "/merge:D256=256")
-#pragma comment(linker, "/merge:C256=256")
-#pragma comment(linker, "/merge:B256=256")
-#pragma comment(linker, "/merge:K256=256")
+#pragma code_seg("C328")
+#pragma data_seg("D328")
+#pragma bss_seg("B328")
+#pragma const_seg("K328")
+#pragma comment(linker, "/merge:D328=328")
+#pragma comment(linker, "/merge:C328=328")
+#pragma comment(linker, "/merge:B328=328")
+#pragma comment(linker, "/merge:K328=328")
 /***************************************************************************
 
   vidhrdw.c

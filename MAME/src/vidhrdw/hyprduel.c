@@ -1,11 +1,11 @@
-#pragma code_seg("C260")
-#pragma data_seg("D260")
-#pragma bss_seg("B260")
-#pragma const_seg("K260")
-#pragma comment(linker, "/merge:D260=260")
-#pragma comment(linker, "/merge:C260=260")
-#pragma comment(linker, "/merge:B260=260")
-#pragma comment(linker, "/merge:K260=260")
+#pragma code_seg("C332")
+#pragma data_seg("D332")
+#pragma bss_seg("B332")
+#pragma const_seg("K332")
+#pragma comment(linker, "/merge:D332=332")
+#pragma comment(linker, "/merge:C332=332")
+#pragma comment(linker, "/merge:B332=332")
+#pragma comment(linker, "/merge:K332=332")
 /* based on driver from vidhrdw/metro.c by Luca Elia */
 /* modified by Eisuke Watanabe */
 

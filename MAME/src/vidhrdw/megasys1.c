@@ -1,3 +1,11 @@
+#pragma code_seg("C16")
+#pragma data_seg("D16")
+#pragma bss_seg("B16")
+#pragma const_seg("K16")
+#pragma comment(linker, "/merge:D16=16")
+#pragma comment(linker, "/merge:C16=16")
+#pragma comment(linker, "/merge:B16=16")
+#pragma comment(linker, "/merge:K16=16")
 /***************************************************************************
 
 							-= Jaleco Mega System 1 =-
@@ -1046,3 +1054,7 @@ VIDEO_UPDATE( megasys1 )
 	if (active_layers & 0x08)
 		draw_sprites(bitmap,cliprect);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

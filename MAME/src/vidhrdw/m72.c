@@ -1,3 +1,11 @@
+#pragma code_seg("C19")
+#pragma data_seg("D19")
+#pragma bss_seg("B19")
+#pragma const_seg("K19")
+#pragma comment(linker, "/merge:D19=19")
+#pragma comment(linker, "/merge:C19=19")
+#pragma comment(linker, "/merge:B19=19")
+#pragma comment(linker, "/merge:K19=19")
 #include "driver.h"
 #include "sndhrdw/m72.h"
 #include "vidhrdw/generic.h"
@@ -728,3 +736,7 @@ VIDEO_EOF( m72 )
 		scrolly2[i] = scrolly2[255];
 	}
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

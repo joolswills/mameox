@@ -1,11 +1,11 @@
-#pragma code_seg("C230")
-#pragma data_seg("D230")
-#pragma bss_seg("B230")
-#pragma const_seg("K230")
-#pragma comment(linker, "/merge:D230=230")
-#pragma comment(linker, "/merge:C230=230")
-#pragma comment(linker, "/merge:B230=230")
-#pragma comment(linker, "/merge:K230=230")
+#pragma code_seg("C300")
+#pragma data_seg("D300")
+#pragma bss_seg("B300")
+#pragma const_seg("K300")
+#pragma comment(linker, "/merge:D300=300")
+#pragma comment(linker, "/merge:C300=300")
+#pragma comment(linker, "/merge:B300=300")
+#pragma comment(linker, "/merge:K300=300")
 /******************************************************************************
 
 	Gomoku Narabe Renju

@@ -1,11 +1,11 @@
-#pragma code_seg("C255")
-#pragma data_seg("D255")
-#pragma bss_seg("B255")
-#pragma const_seg("K255")
-#pragma comment(linker, "/merge:D255=255")
-#pragma comment(linker, "/merge:C255=255")
-#pragma comment(linker, "/merge:B255=255")
-#pragma comment(linker, "/merge:K255=255")
+#pragma code_seg("C327")
+#pragma data_seg("D327")
+#pragma bss_seg("B327")
+#pragma const_seg("K327")
+#pragma comment(linker, "/merge:D327=327")
+#pragma comment(linker, "/merge:C327=327")
+#pragma comment(linker, "/merge:B327=327")
+#pragma comment(linker, "/merge:K327=327")
 /***************************************************************************
 
 First version of the Dynax blitter.

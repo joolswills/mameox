@@ -1,11 +1,11 @@
-#pragma code_seg("C234")
-#pragma data_seg("D234")
-#pragma bss_seg("B234")
-#pragma const_seg("K234")
-#pragma comment(linker, "/merge:D234=234")
-#pragma comment(linker, "/merge:C234=234")
-#pragma comment(linker, "/merge:B234=234")
-#pragma comment(linker, "/merge:K234=234")
+#pragma code_seg("C305")
+#pragma data_seg("D305")
+#pragma bss_seg("B305")
+#pragma const_seg("K305")
+#pragma comment(linker, "/merge:D305=305")
+#pragma comment(linker, "/merge:C305=305")
+#pragma comment(linker, "/merge:B305=305")
+#pragma comment(linker, "/merge:K305=305")
 /*	video hardware for Taito Grand Champion */
 
 #include "driver.h"

@@ -1,11 +1,11 @@
-#pragma code_seg("C282")
-#pragma data_seg("D282")
-#pragma bss_seg("B282")
-#pragma const_seg("K282")
-#pragma comment(linker, "/merge:D282=282")
-#pragma comment(linker, "/merge:C282=282")
-#pragma comment(linker, "/merge:B282=282")
-#pragma comment(linker, "/merge:K282=282")
+#pragma code_seg("C354")
+#pragma data_seg("D354")
+#pragma bss_seg("B354")
+#pragma const_seg("K354")
+#pragma comment(linker, "/merge:D354=354")
+#pragma comment(linker, "/merge:C354=354")
+#pragma comment(linker, "/merge:B354=354")
+#pragma comment(linker, "/merge:K354=354")
 /***************************************************************************
 
 Knuckle Joe - (c) 1985 Taito Corporation

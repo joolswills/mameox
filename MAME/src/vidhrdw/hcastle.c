@@ -1,11 +1,11 @@
-#pragma code_seg("C250")
-#pragma data_seg("D250")
-#pragma bss_seg("B250")
-#pragma const_seg("K250")
-#pragma comment(linker, "/merge:D250=250")
-#pragma comment(linker, "/merge:C250=250")
-#pragma comment(linker, "/merge:B250=250")
-#pragma comment(linker, "/merge:K250=250")
+#pragma code_seg("C322")
+#pragma data_seg("D322")
+#pragma bss_seg("B322")
+#pragma const_seg("K322")
+#pragma comment(linker, "/merge:D322=322")
+#pragma comment(linker, "/merge:C322=322")
+#pragma comment(linker, "/merge:B322=322")
+#pragma comment(linker, "/merge:K322=322")
 /***************************************************************************
 
 	Haunted Castle video emulation
