@@ -562,6 +562,16 @@ void osd_customize_inputport_defaults( struct ipd *defaults )
 
       //-- PLAYER 1 CONTROLS ----------------------------------------------------------------------------
 
+			// *** IPT_START1 *** //
+    case IPT_START1:
+      REMAP_SEQ_1( JOYCODE_1_START );
+      break;
+
+			// *** IPT_COIN1 *** //
+    case IPT_COIN1:
+      REMAP_SEQ_1( JOYCODE_1_SELECT);
+      break;
+
 			// *** IPT_JOYSTICK_UP|IPF_PLAYER1 *** //
     case (IPT_JOYSTICK_UP|IPF_PLAYER1):
         // Don't remap if the game supports analog natively
@@ -761,6 +771,16 @@ void osd_customize_inputport_defaults( struct ipd *defaults )
 
       //-- PLAYER 2 CONTROLS ----------------------------------------------------------------------------
 
+			// *** IPT_START2 *** //
+    case IPT_START2:
+      REMAP_SEQ_1( JOYCODE_2_START );
+      break;
+
+			// *** IPT_COIN2 *** //
+    case IPT_COIN2:
+      REMAP_SEQ_1( JOYCODE_2_SELECT );
+      break;
+
 			// *** IPT_JOYSTICK_UP|IPF_PLAYER2 *** //
     case (IPT_JOYSTICK_UP|IPF_PLAYER2):
         // Don't remap if the game supports analog natively
@@ -937,6 +957,16 @@ void osd_customize_inputport_defaults( struct ipd *defaults )
 
       //-- PLAYER 3 CONTROLS ----------------------------------------------------------------------------
 
+			// *** IPT_START3 *** //
+    case IPT_START3:
+      REMAP_SEQ_1( JOYCODE_3_START );
+      break;
+
+			// *** IPT_COIN3 *** //
+    case IPT_COIN3:
+      REMAP_SEQ_1( JOYCODE_3_SELECT );
+      break;
+
 			// *** IPT_JOYSTICK_UP|IPF_PLAYER3 *** //
     case (IPT_JOYSTICK_UP|IPF_PLAYER3):
         // Don't remap if the game supports analog natively
@@ -1111,7 +1141,17 @@ void osd_customize_inputport_defaults( struct ipd *defaults )
       REMAP_SEQ_1( JOYCODE_3_DOWN );
       break;
 
-      //-- PLAYER 2 CONTROLS ----------------------------------------------------------------------------
+      //-- PLAYER 4 CONTROLS ----------------------------------------------------------------------------
+
+			// *** IPT_START4 *** //
+    case IPT_START4:
+      REMAP_SEQ_1( JOYCODE_4_START );
+      break;
+
+			// *** IPT_COIN4 *** //
+    case IPT_COIN4:
+      REMAP_SEQ_1( JOYCODE_4_SELECT );
+      break;
 
 			// *** IPT_JOYSTICK_UP|IPF_PLAYER4 *** //
     case (IPT_JOYSTICK_UP|IPF_PLAYER4):
