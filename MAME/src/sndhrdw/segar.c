@@ -1,11 +1,11 @@
-#pragma code_seg("C26")
-#pragma data_seg("D26")
-#pragma bss_seg("B26")
-#pragma const_seg("K26")
-#pragma comment(linker, "/merge:D26=26")
-#pragma comment(linker, "/merge:C26=26")
-#pragma comment(linker, "/merge:B26=26")
-#pragma comment(linker, "/merge:K26=26")
+#pragma code_seg("C25")
+#pragma data_seg("D25")
+#pragma bss_seg("B25")
+#pragma const_seg("K25")
+#pragma comment(linker, "/merge:D25=25")
+#pragma comment(linker, "/merge:C25=25")
+#pragma comment(linker, "/merge:B25=25")
+#pragma comment(linker, "/merge:K25=25")
 /***************************************************************************
 
 	Sega G-80 raster hardware

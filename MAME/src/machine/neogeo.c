@@ -1,11 +1,11 @@
-#pragma code_seg("C452")
-#pragma data_seg("D452")
-#pragma bss_seg("B452")
-#pragma const_seg("K452")
-#pragma comment(linker, "/merge:D452=452")
-#pragma comment(linker, "/merge:C452=452")
-#pragma comment(linker, "/merge:B452=452")
-#pragma comment(linker, "/merge:K452=452")
+#pragma code_seg("C453")
+#pragma data_seg("D453")
+#pragma bss_seg("B453")
+#pragma const_seg("K453")
+#pragma comment(linker, "/merge:D453=453")
+#pragma comment(linker, "/merge:C453=453")
+#pragma comment(linker, "/merge:B453=453")
+#pragma comment(linker, "/merge:K453=453")
 #include "driver.h"
 #include "machine/pd4990a.h"
 #include "neogeo.h"

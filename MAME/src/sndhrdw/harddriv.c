@@ -1,11 +1,11 @@
-#pragma code_seg("C321")
-#pragma data_seg("D321")
-#pragma bss_seg("B321")
-#pragma const_seg("K321")
-#pragma comment(linker, "/merge:D321=321")
-#pragma comment(linker, "/merge:C321=321")
-#pragma comment(linker, "/merge:B321=321")
-#pragma comment(linker, "/merge:K321=321")
+#pragma code_seg("C322")
+#pragma data_seg("D322")
+#pragma bss_seg("B322")
+#pragma const_seg("K322")
+#pragma comment(linker, "/merge:D322=322")
+#pragma comment(linker, "/merge:C322=322")
+#pragma comment(linker, "/merge:B322=322")
+#pragma comment(linker, "/merge:K322=322")
 /***************************************************************************
 
 	Hard Drivin' sound hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C252")
-#pragma data_seg("D252")
-#pragma bss_seg("B252")
-#pragma const_seg("K252")
-#pragma comment(linker, "/merge:D252=252")
-#pragma comment(linker, "/merge:C252=252")
-#pragma comment(linker, "/merge:B252=252")
-#pragma comment(linker, "/merge:K252=252")
+#pragma code_seg("C253")
+#pragma data_seg("D253")
+#pragma bss_seg("B253")
+#pragma const_seg("K253")
+#pragma comment(linker, "/merge:D253=253")
+#pragma comment(linker, "/merge:C253=253")
+#pragma comment(linker, "/merge:B253=253")
+#pragma comment(linker, "/merge:K253=253")
 /***************************************************************************
 
 	Exidy 440 sound system

@@ -1,11 +1,11 @@
-#pragma code_seg("C220")
-#pragma data_seg("D220")
-#pragma bss_seg("B220")
-#pragma const_seg("K220")
-#pragma comment(linker, "/merge:D220=220")
-#pragma comment(linker, "/merge:C220=220")
-#pragma comment(linker, "/merge:B220=220")
-#pragma comment(linker, "/merge:K220=220")
+#pragma code_seg("C221")
+#pragma data_seg("D221")
+#pragma bss_seg("B221")
+#pragma const_seg("K221")
+#pragma comment(linker, "/merge:D221=221")
+#pragma comment(linker, "/merge:C221=221")
+#pragma comment(linker, "/merge:B221=221")
+#pragma comment(linker, "/merge:K221=221")
 /*******************************************************************************
 
 Data East machine functions - Bryan McPhail, mish@tendril.co.uk

@@ -1,11 +1,11 @@
-#pragma code_seg("C19")
-#pragma data_seg("D19")
-#pragma bss_seg("B19")
-#pragma const_seg("K19")
-#pragma comment(linker, "/merge:D19=19")
-#pragma comment(linker, "/merge:C19=19")
-#pragma comment(linker, "/merge:B19=19")
-#pragma comment(linker, "/merge:K19=19")
+#pragma code_seg("C18")
+#pragma data_seg("D18")
+#pragma bss_seg("B18")
+#pragma const_seg("K18")
+#pragma comment(linker, "/merge:D18=18")
+#pragma comment(linker, "/merge:C18=18")
+#pragma comment(linker, "/merge:B18=18")
+#pragma comment(linker, "/merge:K18=18")
 /***************************************************************************
 
 IREM "M72" sound hardware
