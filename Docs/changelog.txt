@@ -21,8 +21,13 @@ Version 0.67b
     - xbox_FileIO.cpp
       - Added symlink support (code based on submission from Redline)
 
-  - MAMEoXUtil.cpp
-    - Added symlink support (code based on submission from Redline)
+    - xbox_Main.cpp
+      - Put back the call to LoadDriverDataSections that caused
+        0.66b to fail when running in Release mode. Put in a note
+	to remind me not to take it out again :)
+
+    - MAMEoXUtil.cpp
+      - Added symlink support (code based on submission from Redline)
 
     - xbox_Direct3DRenderer.cpp
       - Added Aspect Ratio Correction toggle option
@@ -40,6 +45,14 @@ Version 0.67b
     - main.cpp
       - Added Aspect Ratio Correction toggle option
 
+   -------------------------------------------------------------
+  - libsmb++\src
+
+    - SessionPacket.cpp
+      - Added #undef errno to fix compiler issues
+
+    - NetBIOSPacket.h
+      - Added #undef errno to fix compiler issues
 
 
 *********************************************************************

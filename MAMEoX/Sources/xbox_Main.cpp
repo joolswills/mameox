@@ -153,10 +153,18 @@ CHECKRAM();
       //         everything back to the way it was before. [EBA]
     UnloadDriverNonDataSections();    
 
+      // This should only be necessary if IMAGEBLD doesn't load any sections
+      // Update: Taking out this line is what caused the 0.66b release to
+      //         crash in Release mode. Leave it be, or figure out why :) [EBA]
+    LoadDriverDataSections();
+
       // Sort the game drivers and run the ROM
     qsort( drivers, mameoxLaunchData->m_totalMAMEGames, sizeof(drivers[0]), compareDriverNames );
 
     Helper_RunRom( mameoxLaunchData->m_gameIndex );
+
+      // NOTE: The driver list is invalid after Helper_RunRom, so don't do anything with it
+      // until the MAMEoX.xbe utility has been rebooted.
   }
 
     // Relaunch MAMEoXLauncher
