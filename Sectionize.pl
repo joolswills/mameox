@@ -380,19 +380,21 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 @FromanceFamily = ( "fromance.c", "pipedrm.c" );							# Pipe Dream
 @MidwayMCRFamily = ( "mcr1.c", "mcr2.c", "mcr3.c", "mcr68.c", "williams.c",
 					 "midyunit.c", "midtunit.c", "midwunit.c", 
-					 "midvunit.c" );										# Arch rivals, Mortal Kombat II, WWF: Wrestlemania (rev 1.30 08/10/95), Mortal Kombat
+					 "midvunit.c", "midxunit.c" );							# Arch rivals, Mortal Kombat II, WWF: Wrestlemania (rev 1.30 08/10/95), Mortal Kombat, Revolution X
 @KonamiGXFamily = ( "konamigx.c", "mystwarr.c" );							# Metamorphic Force
 @SegarFamily = ( "segar.c", "sega.c" );										# Star Trek
 @ZaxxonFamily = ( "zaxxon.c", "congo.c" );									# Congo Bongo
 
 @WizFamily = ( "wiz.c", "rollrace.c" );										# Fighting Roller
 
+@TetrisPlus2Family = ( "ms32.c", "tetrisp2.c" );							# Tetris Plus 2 (MegaSystem 32 Version)
+
 local @Families = ( \@CapcomFamily, \@NamcoFamily, \@SegaFamily, \@MidwayMCRFamily, \@TwinCobraFamily,
 					\@MoonPatrolFamily, \@SNKFamily, \@AmidarFamily, \@RampartFamily, \@RastanFamily,
 					\@EspialFamily, \@BZoneFamily, \@Nova2001Family, \@GottLiebFamily, \@PengoFamily,
 					\@Megasys1Family, \@LocoMotionFamily, \@ExidyFamily, \@M72Family, \@LelandFamily,
 					\@TrackFldFamily, \@Taito_F3Family, \@FromanceFamily, \@MidYUnitFamily, \@KonamiGXFamily,
-					\@SegarFamily, \@ZaxxonFamily, \@WizFamily );
+					\@SegarFamily, \@ZaxxonFamily, \@WizFamily, \@TetrisPlus2Family );
 $autoNameNumber = $#Families + 50;
 
 
