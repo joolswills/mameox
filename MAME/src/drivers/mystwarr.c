@@ -1826,7 +1826,8 @@ static void init_common(void)
 
 static DRIVER_INIT(mystwarr)
 {
-  int i;
+	int i;
+
 	init_common();
 
 	#if MW_SKIPIDLE
@@ -1846,7 +1847,8 @@ static DRIVER_INIT(mystwarr)
 
 static DRIVER_INIT(dadandrn)
 {
-  int i;
+	int i;
+
 	init_common();
 
 	#if MW_SKIPIDLE
@@ -1854,12 +1856,13 @@ static DRIVER_INIT(dadandrn)
 	#endif
 
 	// boost voice(chip 0 channel 4-7)
-	for ( i=4; i<=7; i++) K054539_set_gain(0, i, 2.0);
+	for (i=4; i<=7; i++) K054539_set_gain(0, i, 2.0);
 }
 
 static DRIVER_INIT(viostorm)
 {
-  int i;
+	int i;
+
 	init_common();
 
 	#if MW_SKIPIDLE
@@ -1867,18 +1870,19 @@ static DRIVER_INIT(viostorm)
 	#endif
 
 	// boost voice(chip 0 channel 4-7)
-	for ( i=4; i<=7; i++) K054539_set_gain(0, i, 2.0);
+	for (i=4; i<=7; i++) K054539_set_gain(0, i, 2.0);
 }
 
 static DRIVER_INIT(metamrph)
 {
-  int i;
+	int i;
+
 	init_common();
 
 	K053250_unpack_pixels(REGION_GFX3);
 
 	// boost voice(chip 0 channel 4-7) and soften other channels
-	for ( i=0; i<=3; i++)
+	for (i=0; i<=3; i++)
 	{
 		K054539_set_gain(0, i,   0.8);
 		K054539_set_gain(0, i+4, 1.8);
@@ -1889,7 +1893,8 @@ static DRIVER_INIT(metamrph)
 
 static DRIVER_INIT(martchmp)
 {
-  int i;
+	int i;
+
 	init_common();
 
 	#if MW_SKIPIDLE
@@ -1904,7 +1909,8 @@ static DRIVER_INIT(martchmp)
 
 static DRIVER_INIT(gaiapols)
 {
-  int i;
+	int i;
+
 	init_common();
 
 	#if MW_SKIPIDLE

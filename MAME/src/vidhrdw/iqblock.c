@@ -14,6 +14,7 @@ data8_t *iqblock_bgvideoram;
 data8_t *iqblock_fgscroll;
 data8_t *iqblock_fgvideoram;
 int iqblock_videoenable;
+int iqblock_vidhrdw_type;
 
 static struct tilemap *bg_tilemap,*fg_tilemap;
 
@@ -29,8 +30,8 @@ static void get_bg_tile_info(int tile_index)
 	int code = iqblock_bgvideoram[tile_index] + (iqblock_bgvideoram[tile_index + 0x800] << 8);
 	SET_TILE_INFO(
 			0,
-			code & 0x1fff,
-			2*(code >> 13)+1,
+			code &(iqblock_vidhrdw_type ? 0x1fff : 0x3fff),
+			iqblock_vidhrdw_type? (2*(code >> 13)+1) : (4*(code >> 14)+3),
 			0)
 }
 

@@ -253,7 +253,7 @@ int toaplan2_sub_cpu = 0;
 static int mcu_data = 0;
 static int video_status;
 static int prev_scanline;
-static int prev_beampos;
+//static int prev_beampos;
 static INT8 old_p1_paddle_h;			/* For Ghox */
 static INT8 old_p1_paddle_v;
 static INT8 old_p2_paddle_h;
@@ -262,6 +262,8 @@ static int current_bank = 2;			/* Z80 bank used in Battle Garegga and Batrider *
 static int raizing_Z80_busreq;
 static int bbakraid_unlimited_ver;
 
+static int current_scanline = 0;
+static int vblank_irq;
 
 /**************** Video stuff ******************/
 WRITE16_HANDLER( toaplan2_0_voffs_w );
@@ -297,12 +299,14 @@ VIDEO_EOF( batrider_0 );
 VIDEO_START( toaplan2_0 );
 VIDEO_START( toaplan2_1 );
 VIDEO_START( truxton2_0 );
+VIDEO_START( battleg_0 );
 VIDEO_START( batrider_0 );
 VIDEO_UPDATE( toaplan2_0 );
 VIDEO_UPDATE( truxton2_0 );
 VIDEO_UPDATE( dogyuun_1 );
 VIDEO_UPDATE( batsugun_1 );
 VIDEO_UPDATE( batrider_0 );
+VIDEO_UPDATE( mahoudai_0 );
 
 
 /********* Video wrappers for PIPIBIBI *********/
@@ -477,6 +481,35 @@ static DRIVER_INIT( bbakrada )
   Toaplan games
 ***************************************************************************/
 
+READ16_HANDLER( toaplan2_inputport_0_word_r )
+{
+//	int retval = (current_scanline>255) ? 1 : 0;
+	int retval = vblank_irq;
+	return retval;
+}
+
+static void toaplan2_irq(int irq_line)
+{
+	if (cpu_getiloops() == 0) current_scanline = 255;
+
+	if(current_scanline == 245)
+	{
+		cpu_set_irq_line(0, irq_line, HOLD_LINE);
+		vblank_irq = 1;
+	}
+
+	current_scanline++;
+	if(current_scanline > 261)
+	{
+		current_scanline = 0;
+		vblank_irq = 0;
+	}
+}
+
+static INTERRUPT_GEN( toaplan2_vblank_irq2 ) {toaplan2_irq(2);}
+static INTERRUPT_GEN( toaplan2_vblank_irq3 ) {toaplan2_irq(3);}
+static INTERRUPT_GEN( toaplan2_vblank_irq4 ) {toaplan2_irq(4);}
+
 static READ16_HANDLER( video_count_r )
 {
 	/* +---------+---------+--------+---------------------------+ */
@@ -485,27 +518,26 @@ static READ16_HANDLER( video_count_r )
 	/* +---------+---------+--------+---------------------------+ */
 	/*************** Control Signals are active low ***************/
 
-	int current_scanline = cpu_getscanline();
-	int current_beampos = cpu_gethorzbeampos();
+//	static int current_beampos = 0;
 
-//	logerror("Was VC=%04x  Vbl=%02x  VS=%04x  HS=%04x - ",video_status,cpu_getvblank(),prev_scanline,prev_beampos );
+//	logerror("Was VC=%04x  Vbl=%02x  VS=%04x  HS=%04x - ",video_status,vblank_irq,prev_scanline,prev_beampos );
 
 	video_status = 0xff00;						/* Set signals inactive */
 	video_status |= (current_scanline & 0xff);	/* Scanline */
 
-	if (cpu_getvblank()) {
-		video_status &= ~0x0100;				/* Activate V-Blank */
+	if (vblank_irq) {
+		video_status &= ~0x0100;
 	}
 	if (prev_scanline != current_scanline) {
-		video_status &= ~0x4000;				/* Activate V-Sync Clk */
+		video_status &= ~0x8000;				/* Activate V-Sync Clk */
 	}
-	if (((prev_beampos & 1) == 0) && ((current_beampos & 1) == 1)) {
-		video_status &= ~0x8000;				/* Activate H-Sync Clk */
-	}
+//	if (current_beampos) {
+//		video_status &= ~0x4000;
+//	}
+//	current_beampos = ~current_beampos;
 	prev_scanline = current_scanline;
-	prev_beampos = current_beampos;
 
-//	logerror("Now VC=%04x  Vbl=%02x  VS=%04x  HS=%04x\n",video_status,cpu_getvblank(),cpu_getscanline(),cpu_gethorzbeampos() );
+//	logerror("Now VC=%04x  Vbl=%02x  VS=%04x  HS=%04x\n",video_status,vblank_irq,cpu_getscanline(),cpu_gethorzbeampos() );
 
 	return video_status;
 }
@@ -1194,7 +1226,7 @@ static MEMORY_READ16_START( tekipaki_readmem )
 	{ 0x080000, 0x082fff, MRA16_RAM },
 	{ 0x0c0000, 0x0c0fff, paletteram16_word_r },
 	{ 0x140004, 0x140007, toaplan2_0_videoram16_r },
-	{ 0x14000c, 0x14000d, input_port_0_word_r },	/* VBlank */
+	{ 0x14000c, 0x14000d, toaplan2_inputport_0_word_r },	/* VBlank */
 	{ 0x180000, 0x180001, input_port_4_word_r },	/* Dip Switch A */
 	{ 0x180010, 0x180011, input_port_5_word_r },	/* Dip Switch B */
 	{ 0x180020, 0x180021, input_port_3_word_r },	/* Coin/System inputs */
@@ -1223,7 +1255,7 @@ static MEMORY_READ16_START( ghox_readmem )
 	{ 0x0c0000, 0x0c0fff, paletteram16_word_r },
 	{ 0x100000, 0x100001, ghox_p1_h_analog_r },		/* Paddle 1 */
 	{ 0x140004, 0x140007, toaplan2_0_videoram16_r },
-	{ 0x14000c, 0x14000d, input_port_0_word_r },	/* VBlank */
+	{ 0x14000c, 0x14000d, toaplan2_inputport_0_word_r },	/* VBlank */
 	{ 0x180000, 0x180001, ghox_mcu_r },				/* really part of shared RAM */
 	{ 0x180006, 0x180007, input_port_4_word_r },	/* Dip Switch A */
 	{ 0x180008, 0x180009, input_port_5_word_r },	/* Dip Switch B */
@@ -1268,7 +1300,7 @@ static MEMORY_READ16_START( dogyuun_readmem )
 #endif
 	/***** The following in 0x30000x are for video controller 1 ******/
 	{ 0x300004, 0x300007, toaplan2_0_videoram16_r },/* tile layers */
-	{ 0x30000c, 0x30000d, input_port_0_word_r },	/* VBlank */
+	{ 0x30000c, 0x30000d, toaplan2_inputport_0_word_r },	/* VBlank */
 	{ 0x400000, 0x400fff, paletteram16_word_r },
 	/***** The following in 0x50000x are for video controller 2 ******/
 	{ 0x500004, 0x500007, toaplan2_1_videoram16_r },/* tile layers 2 */
@@ -1312,7 +1344,7 @@ static MEMORY_READ16_START( kbash_readmem )
 	{ 0x208014, 0x208015, input_port_2_word_r },	/* Player 2 controls */
 	{ 0x208018, 0x208019, input_port_3_word_r },	/* Coin/System inputs */
 	{ 0x300004, 0x300007, toaplan2_0_videoram16_r },/* tile layers */
-	{ 0x30000c, 0x30000d, input_port_0_word_r },	/* VBlank */
+	{ 0x30000c, 0x30000d, toaplan2_inputport_0_word_r },	/* VBlank */
 	{ 0x400000, 0x400fff, paletteram16_word_r },
 	{ 0x700000, 0x700001, video_count_r },			/* test bit 8 */
 MEMORY_END
@@ -1334,7 +1366,7 @@ static MEMORY_READ16_START( truxton2_readmem )
 	{ 0x000000, 0x07ffff, MRA16_ROM },
 	{ 0x100000, 0x10ffff, MRA16_RAM },
 	{ 0x200004, 0x200007, toaplan2_0_videoram16_r },
-	{ 0x20000c, 0x20000d, input_port_0_word_r },	/* VBlank */
+	{ 0x20000c, 0x20000d, toaplan2_inputport_0_word_r },	/* VBlank */
 	{ 0x300000, 0x300fff, paletteram16_word_r },
 	{ 0x400000, 0x401fff, toaplan2_txvideoram16_r },
 	{ 0x402000, 0x4021ff, toaplan2_txvideoram16_offs_r },
@@ -1379,7 +1411,7 @@ static MEMORY_READ16_START( pipibibs_readmem )
 	{ 0x080000, 0x082fff, MRA16_RAM },
 	{ 0x0c0000, 0x0c0fff, paletteram16_word_r },
 	{ 0x140004, 0x140007, toaplan2_0_videoram16_r },
-	{ 0x14000c, 0x14000d, input_port_0_word_r },	/* VBlank */
+	{ 0x14000c, 0x14000d, toaplan2_inputport_0_word_r },	/* VBlank */
 	{ 0x190000, 0x190fff, toaplan2_shared_r },
 	{ 0x19c020, 0x19c021, input_port_4_word_r },	/* Dip Switch A */
 	{ 0x19c024, 0x19c025, input_port_5_word_r },	/* Dip Switch B */
@@ -1454,7 +1486,7 @@ static MEMORY_READ16_START( fixeight_readmem )
 	{ 0x28fc00, 0x28ffff, Zx80_sharedram_r },		/* 16-bit on 68000 side, 8-bit on Zx80 side */
 #endif
 	{ 0x300004, 0x300007, toaplan2_0_videoram16_r },
-	{ 0x30000c, 0x30000d, input_port_0_word_r },
+	{ 0x30000c, 0x30000d, toaplan2_inputport_0_word_r },
 	{ 0x400000, 0x400fff, paletteram16_word_r },
 	{ 0x500000, 0x501fff, toaplan2_txvideoram16_r },
 	{ 0x502000, 0x5021ff, toaplan2_txvideoram16_offs_r },
@@ -1509,7 +1541,7 @@ static MEMORY_READ16_START( vfive_readmem )
 	{ 0x21fc00, 0x21ffff, Zx80_sharedram_r },		/* 16-bit on 68000 side, 8-bit on Zx80 side */
 #endif
 	{ 0x300004, 0x300007, toaplan2_0_videoram16_r },
-	{ 0x30000c, 0x30000d, input_port_0_word_r },
+	{ 0x30000c, 0x30000d, toaplan2_inputport_0_word_r },
 	{ 0x400000, 0x400fff, paletteram16_word_r },
 	{ 0x700000, 0x700001, video_count_r },
 MEMORY_END
@@ -1554,7 +1586,7 @@ static MEMORY_READ16_START( batsugun_readmem )
 #endif
 	/***** The following in 0x30000x are for video controller 1 ******/
 	{ 0x300004, 0x300007, toaplan2_0_videoram16_r },/* tile layers */
-	{ 0x30000c, 0x30000d, input_port_0_word_r },	/* VBlank */
+	{ 0x30000c, 0x30000d, toaplan2_inputport_0_word_r },	/* VBlank */
 	{ 0x400000, 0x400fff, paletteram16_word_r },
 	/***** The following in 0x50000x are for video controller 2 ******/
 	{ 0x500004, 0x500007, toaplan2_1_videoram16_r },/* tile layers 2 */
@@ -1591,7 +1623,7 @@ static MEMORY_READ16_START( snowbro2_readmem )
 	{ 0x000000, 0x07ffff, MRA16_ROM },
 	{ 0x100000, 0x10ffff, MRA16_RAM },
 	{ 0x300004, 0x300007, toaplan2_0_videoram16_r },/* tile layers */
-	{ 0x30000c, 0x30000d, input_port_0_word_r },	/* VBlank */
+	{ 0x30000c, 0x30000d, toaplan2_inputport_0_word_r },	/* VBlank */
 	{ 0x400000, 0x400fff, paletteram16_word_r },
 	{ 0x500002, 0x500003, YM2151_status_port_0_lsb_r },
 	{ 0x600000, 0x600001, OKIM6295_status_0_lsb_r },
@@ -1632,7 +1664,7 @@ static MEMORY_READ16_START( mahoudai_readmem )
 	{ 0x21c034, 0x21c035, input_port_6_word_r },	/* Territory Jumper block */
 	{ 0x21c03c, 0x21c03d, video_count_r },
 	{ 0x300004, 0x300007, toaplan2_0_videoram16_r },/* Tile/Sprite VideoRAM */
-	{ 0x30000c, 0x30000d, input_port_0_word_r },	/* VBlank */
+	{ 0x30000c, 0x30000d, toaplan2_inputport_0_word_r },	/* VBlank */
 	{ 0x400000, 0x400fff, paletteram16_word_r },
 	{ 0x401000, 0x4017ff, MRA16_RAM },				/* Unused PaletteRAM */
 	{ 0x500000, 0x501fff, toaplan2_txvideoram16_r },
@@ -1672,7 +1704,7 @@ static MEMORY_READ16_START( shippumd_readmem )
 	{ 0x21c034, 0x21c035, input_port_6_word_r },	/* Territory Jumper block */
 	{ 0x21c03c, 0x21c03d, video_count_r },
 	{ 0x300004, 0x300007, toaplan2_0_videoram16_r },/* Tile/Sprite VideoRAM */
-	{ 0x30000c, 0x30000d, input_port_0_word_r },	/* VBlank */
+	{ 0x30000c, 0x30000d, toaplan2_inputport_0_word_r },	/* VBlank */
 	{ 0x400000, 0x400fff, paletteram16_word_r },
 	{ 0x401000, 0x4017ff, MRA16_RAM },				/* Unused PaletteRAM */
 	{ 0x500000, 0x501fff, toaplan2_txvideoram16_r },
@@ -1713,7 +1745,7 @@ static MEMORY_READ16_START( battleg_readmem )
 	{ 0x21c034, 0x21c035, input_port_6_word_r },	/* Territory Jumper block */
 	{ 0x21c03c, 0x21c03d, video_count_r },
 	{ 0x300004, 0x300007, toaplan2_0_videoram16_r },/* Tile/Sprite VideoRAM */
-	{ 0x30000c, 0x30000d, input_port_0_word_r },	/* VBlank */
+	{ 0x30000c, 0x30000d, toaplan2_inputport_0_word_r },	/* VBlank */
 	{ 0x400000, 0x400fff, paletteram16_word_r },
 	{ 0x500000, 0x501fff, toaplan2_txvideoram16_r },
 	{ 0x502000, 0x5021ff, toaplan2_txvideoram16_offs_r },
@@ -1749,7 +1781,7 @@ static MEMORY_READ16_START( batrider_readmem )
 	{ 0x203400, 0x207fff, raizing_tx_gfxram16_r },	/* Main RAM actually */
 	{ 0x208000, 0x20ffff, MRA16_RAM },
 	{ 0x300000, 0x37ffff, raizing_z80rom_r },
-	{ 0x400000, 0x400001, input_port_0_word_r },	/* VBlank */
+	{ 0x400000, 0x400001, toaplan2_inputport_0_word_r },	/* VBlank */
 	{ 0x400008, 0x40000b, toaplan2_0_videoram16_r },/* Tile/Sprite VideoRAM */
 	{ 0x500000, 0x500001, input_port_1_word_r },
 	{ 0x500002, 0x500003, input_port_2_word_r },
@@ -1787,7 +1819,7 @@ static MEMORY_READ16_START( bbakraid_readmem )
 	{ 0x203400, 0x207fff, raizing_tx_gfxram16_r },	/* Main RAM actually */
 	{ 0x208000, 0x20ffff, MRA16_RAM },
 	{ 0x300000, 0x33ffff, raizing_z80rom_r },
-	{ 0x400000, 0x400001, input_port_0_word_r },	/* VBlank */
+	{ 0x400000, 0x400001, toaplan2_inputport_0_word_r },	/* VBlank */
 	{ 0x400008, 0x40000b, toaplan2_0_videoram16_r },/* Tile/Sprite VideoRAM */
 	{ 0x500000, 0x500001, input_port_1_word_r },
 	{ 0x500002, 0x500003, input_port_2_word_r },
@@ -2197,7 +2229,7 @@ INPUT_PORTS_START( ghox )
 	PORT_DIPSETTING(	0x01, "USA" )
 	PORT_DIPSETTING(	0x00, "Japan" )
 	PORT_DIPSETTING(	0x04, "Korea" )
-	PORT_DIPSETTING(	0x03, "Hong Kong (Honest Trading Co." )
+	PORT_DIPSETTING(	0x03, "Hong Kong (Honest Trading Co.)" )
 	PORT_DIPSETTING(	0x05, "Taiwan" )
 	PORT_DIPSETTING(	0x06, "Spain & Portugal (APM Electronics SA)" )
 	PORT_DIPSETTING(	0x07, "Italy (Star Electronica SRL)" )
@@ -2440,7 +2472,7 @@ INPUT_PORTS_START( pipibibs )
 	PORT_DIPSETTING(	0x06, "Europe" )
 	PORT_DIPSETTING(	0x04, "USA" )
 	PORT_DIPSETTING(	0x00, "Japan" )
-	PORT_DIPSETTING(	0x02, "Hong Kong" )
+	PORT_DIPSETTING(	0x02, "Hong Kong (Honest Trading Co.)" )
 	PORT_DIPSETTING(	0x03, "Taiwan" )
 	PORT_DIPSETTING(	0x01, "Asia" )
 	PORT_DIPSETTING(	0x07, "Europe (Nova Apparate GMBH & Co)" )
@@ -2486,7 +2518,7 @@ INPUT_PORTS_START( whoopee )
 	PORT_DIPSETTING(	0x06, "Europe" )
 	PORT_DIPSETTING(	0x04, "USA" )
 	PORT_DIPSETTING(	0x00, "Japan" )
-	PORT_DIPSETTING(	0x02, "Hong Kong" )
+	PORT_DIPSETTING(	0x02, "Hong Kong (Honest Trading Co.)" )
 	PORT_DIPSETTING(	0x03, "Taiwan" )
 	PORT_DIPSETTING(	0x01, "Asia" )
 	PORT_DIPSETTING(	0x07, "Europe (Nova Apparate GMBH & Co)" )
@@ -2545,7 +2577,7 @@ INPUT_PORTS_START( pipibibi )
 	PORT_DIPSETTING(	0x02, "World" )
 	PORT_DIPSETTING(	0x05, "Europe" )
 	PORT_DIPSETTING(	0x04, "USA" )
-	PORT_DIPSETTING(	0x01, "Hong Kong (Honest Trading Co." )
+	PORT_DIPSETTING(	0x01, "Hong Kong (Honest Trading Co.)" )
 	PORT_DIPSETTING(	0x06, "Spain & Portugal (APM Electronics SA)" )
 //	PORT_DIPSETTING(	0x03, "World" )
 	PORT_DIPNAME( 0x08,	0x00, "Nudity" )
@@ -3692,7 +3724,7 @@ static MACHINE_DRIVER_START( tekipaki )
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000, 10000000)			/* 10MHz Oscillator */
 	MDRV_CPU_MEMORY(tekipaki_readmem,tekipaki_writemem)
-	MDRV_CPU_VBLANK_INT(irq4_line_hold,1)
+	MDRV_CPU_VBLANK_INT(toaplan2_vblank_irq4,262)
 
 #if HD64x180
 	MDRV_CPU_ADD(Z180, 10000000)			/* HD647180 CPU actually */
@@ -3725,7 +3757,7 @@ static MACHINE_DRIVER_START( ghox )
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000, 10000000)			/* 10MHz Oscillator */
 	MDRV_CPU_MEMORY(ghox_readmem,ghox_writemem)
-	MDRV_CPU_VBLANK_INT(irq4_line_hold,1)
+	MDRV_CPU_VBLANK_INT(toaplan2_vblank_irq4,262)
 
 #if HD64x180
 	MDRV_CPU_ADD(Z180, 10000000)			/* HD647180 CPU actually */
@@ -3759,7 +3791,7 @@ static MACHINE_DRIVER_START( dogyuun )
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000, 16000000)			/* 16MHz Oscillator */
 	MDRV_CPU_MEMORY(dogyuun_readmem,dogyuun_writemem)
-	MDRV_CPU_VBLANK_INT(irq4_line_hold,1)
+	MDRV_CPU_VBLANK_INT(toaplan2_vblank_irq4,262)
 
 #if Zx80
 	MDRV_CPU_ADD(Z180, 16000000)			/* Z?80 type Toaplan marked CPU ??? */
@@ -3795,7 +3827,7 @@ static MACHINE_DRIVER_START( kbash )
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000, 16000000)			/* 16MHz Oscillator */
 	MDRV_CPU_MEMORY(kbash_readmem,kbash_writemem)
-	MDRV_CPU_VBLANK_INT(irq4_line_hold,1)
+	MDRV_CPU_VBLANK_INT(toaplan2_vblank_irq4,262)
 
 #if Zx80
 	MDRV_CPU_ADD(Z180, 16000000)			/* Z?80 type Toaplan marked CPU ??? */
@@ -3831,7 +3863,7 @@ static MACHINE_DRIVER_START( truxton2 )
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000, 16000000)			/* 16MHz Oscillator */
 	MDRV_CPU_MEMORY(truxton2_readmem,truxton2_writemem)
-	MDRV_CPU_VBLANK_INT(irq2_line_hold,1)
+	MDRV_CPU_VBLANK_INT(toaplan2_vblank_irq2,262)
 
 	MDRV_FRAMES_PER_SECOND( (27000000.0 / 4) / (432 * 263) )
 	MDRV_VBLANK_DURATION(DEFAULT_REAL_60HZ_VBLANK_DURATION)
@@ -3861,7 +3893,7 @@ static MACHINE_DRIVER_START( pipibibs )
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000, 10000000)			/* 10MHz Oscillator */
 	MDRV_CPU_MEMORY(pipibibs_readmem,pipibibs_writemem)
-	MDRV_CPU_VBLANK_INT(irq4_line_hold,1)
+	MDRV_CPU_VBLANK_INT(toaplan2_vblank_irq4,262)
 
 	MDRV_CPU_ADD(Z80,27000000/8)			/* ??? 3.37MHz , 27MHz Oscillator */
 	MDRV_CPU_MEMORY(sound_readmem,sound_writemem)
@@ -3893,7 +3925,7 @@ static MACHINE_DRIVER_START( whoopee )
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000, 10000000)			/* 10MHz Oscillator */
 	MDRV_CPU_MEMORY(tekipaki_readmem,tekipaki_writemem)
-	MDRV_CPU_VBLANK_INT(irq4_line_hold,1)
+	MDRV_CPU_VBLANK_INT(toaplan2_vblank_irq4,262)
 
 	MDRV_CPU_ADD(Z80, 27000000/8)			/* This should be a HD647180 */
 											/* Change this to 10MHz when HD647180 gets dumped. 10MHz Oscillator */
@@ -3926,7 +3958,7 @@ static MACHINE_DRIVER_START( pipibibi )
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000, 10000000)			/* 10MHz Oscillator */
 	MDRV_CPU_MEMORY(pipibibi_readmem,pipibibi_writemem)
-	MDRV_CPU_VBLANK_INT(irq4_line_hold,1)
+	MDRV_CPU_VBLANK_INT(toaplan2_vblank_irq4,262)
 
 	MDRV_CPU_ADD(Z80,27000000/8)			/* ??? 3.37MHz */
 	MDRV_CPU_MEMORY(sound_readmem,sound_writemem)
@@ -3958,7 +3990,7 @@ static MACHINE_DRIVER_START( fixeight )
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000, 16000000)			/* 16MHz Oscillator */
 	MDRV_CPU_MEMORY(fixeight_readmem,fixeight_writemem)
-	MDRV_CPU_VBLANK_INT(irq4_line_hold,1)
+	MDRV_CPU_VBLANK_INT(toaplan2_vblank_irq4,262)
 
 #if Zx80
 	MDRV_CPU_ADD(Z180, 16000000)			/* Z?80 type Toaplan marked CPU ??? */
@@ -3995,7 +4027,7 @@ static MACHINE_DRIVER_START( vfive )
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000, 10000000)			/* 10MHz Oscillator */
 	MDRV_CPU_MEMORY(vfive_readmem,vfive_writemem)
-	MDRV_CPU_VBLANK_INT(irq4_line_hold,1)
+	MDRV_CPU_VBLANK_INT(toaplan2_vblank_irq4,262)
 
 #if Zx80
 	MDRV_CPU_ADD(Z180, 10000000)			/* Z?80 type Toaplan marked CPU ??? */
@@ -4030,7 +4062,7 @@ static MACHINE_DRIVER_START( batsugun )
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000,32000000/2)			/* 16MHz , 32MHz Oscillator */
 	MDRV_CPU_MEMORY(batsugun_readmem,batsugun_writemem)
-	MDRV_CPU_VBLANK_INT(irq4_line_hold,1)
+	MDRV_CPU_VBLANK_INT(toaplan2_vblank_irq4,262)
 
 #if Zx80
 	MDRV_CPU_ADD(Z180, 32000000/2)			/* Z?80 type Toaplan marked CPU ??? */
@@ -4066,7 +4098,7 @@ static MACHINE_DRIVER_START( snowbro2 )
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000, 16000000)
 	MDRV_CPU_MEMORY(snowbro2_readmem,snowbro2_writemem)
-	MDRV_CPU_VBLANK_INT(irq4_line_hold,1)
+	MDRV_CPU_VBLANK_INT(toaplan2_vblank_irq4,262)
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(DEFAULT_REAL_60HZ_VBLANK_DURATION)
@@ -4096,7 +4128,7 @@ static MACHINE_DRIVER_START( mahoudai )
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000,32000000/2)			/* 16MHz , 32MHz Oscillator */
 	MDRV_CPU_MEMORY(mahoudai_readmem,mahoudai_writemem)
-	MDRV_CPU_VBLANK_INT(irq4_line_hold,1)
+	MDRV_CPU_VBLANK_INT(toaplan2_vblank_irq4,262)
 
 	MDRV_CPU_ADD(Z80,32000000/8)			/* 4MHz , 32MHz Oscillator */
 	MDRV_CPU_MEMORY(raizing_sound_readmem,raizing_sound_writemem)
@@ -4114,9 +4146,9 @@ static MACHINE_DRIVER_START( mahoudai )
 	MDRV_GFXDECODE(raizing_gfxdecodeinfo)
 	MDRV_PALETTE_LENGTH(2048)
 
-	MDRV_VIDEO_START(truxton2_0)
+	MDRV_VIDEO_START(battleg_0)
 	MDRV_VIDEO_EOF(toaplan2_0)
-	MDRV_VIDEO_UPDATE(truxton2_0)
+	MDRV_VIDEO_UPDATE(mahoudai_0)
 
 	/* sound hardware */
 	MDRV_SOUND_ATTRIBUTES(SOUND_SUPPORTS_STEREO)
@@ -4130,7 +4162,7 @@ static MACHINE_DRIVER_START( shippumd )
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000,32000000/2)			/* 16MHz , 32MHz Oscillator */
 	MDRV_CPU_MEMORY(shippumd_readmem,shippumd_writemem)
-	MDRV_CPU_VBLANK_INT(irq4_line_hold,1)
+	MDRV_CPU_VBLANK_INT(toaplan2_vblank_irq4,262)
 
 	MDRV_CPU_ADD(Z80,32000000/8)			/* 4MHz , 32MHz Oscillator */
 	MDRV_CPU_MEMORY(raizing_sound_readmem,raizing_sound_writemem)
@@ -4148,7 +4180,7 @@ static MACHINE_DRIVER_START( shippumd )
 	MDRV_GFXDECODE(raizing_gfxdecodeinfo)
 	MDRV_PALETTE_LENGTH(2048)
 
-	MDRV_VIDEO_START(truxton2_0)
+	MDRV_VIDEO_START(battleg_0)
 	MDRV_VIDEO_EOF(toaplan2_0)
 	MDRV_VIDEO_UPDATE(truxton2_0)
 
@@ -4164,7 +4196,7 @@ static MACHINE_DRIVER_START( battleg )
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000,32000000/2)			/* 16MHz , 32MHz Oscillator */
 	MDRV_CPU_MEMORY(battleg_readmem,battleg_writemem)
-	MDRV_CPU_VBLANK_INT(irq4_line_hold,1)
+	MDRV_CPU_VBLANK_INT(toaplan2_vblank_irq4,262)
 
 	MDRV_CPU_ADD(Z80,32000000/8)			/* 4MHz , 32MHz Oscillator */
 	MDRV_CPU_MEMORY(battleg_sound_readmem,battleg_sound_writemem)
@@ -4182,7 +4214,7 @@ static MACHINE_DRIVER_START( battleg )
 	MDRV_GFXDECODE(raizing_gfxdecodeinfo)
 	MDRV_PALETTE_LENGTH(2048)
 
-	MDRV_VIDEO_START(truxton2_0)
+	MDRV_VIDEO_START(battleg_0)
 	MDRV_VIDEO_EOF(toaplan2_0)
 	MDRV_VIDEO_UPDATE(truxton2_0)
 
@@ -4198,7 +4230,7 @@ static MACHINE_DRIVER_START( batrider )
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000,32000000/2)			/* 16MHz , 32MHz Oscillator */
 	MDRV_CPU_MEMORY(batrider_readmem,batrider_writemem)
-	MDRV_CPU_VBLANK_INT(irq2_line_hold,1)
+	MDRV_CPU_VBLANK_INT(toaplan2_vblank_irq2,262)
 
 	MDRV_CPU_ADD(Z80,32000000/8)			/* 4MHz , 32MHz Oscillator */
 	MDRV_CPU_MEMORY(batrider_sound_readmem,batrider_sound_writemem)
@@ -4232,7 +4264,7 @@ static MACHINE_DRIVER_START( bbakraid )
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000,32000000/2)
 	MDRV_CPU_MEMORY(bbakraid_readmem,bbakraid_writemem)
-	MDRV_CPU_VBLANK_INT(irq3_line_hold,1)
+	MDRV_CPU_VBLANK_INT(toaplan2_vblank_irq3,262)
 
 	MDRV_CPU_ADD(Z80,32000000/4)
 	MDRV_CPU_MEMORY(bbakraid_sound_readmem,bbakraid_sound_writemem)
@@ -4240,7 +4272,7 @@ static MACHINE_DRIVER_START( bbakraid )
 	MDRV_CPU_PERIODIC_INT(bbakraid_snd_interrupt, 388)
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(DEFAULT_REAL_60HZ_VBLANK_DURATION)
-	MDRV_INTERLEAVE(10)
+	MDRV_INTERLEAVE(262)
 
 	MDRV_MACHINE_INIT(toaplan2)
 	MDRV_NVRAM_HANDLER(bbakraid)
@@ -4253,7 +4285,6 @@ static MACHINE_DRIVER_START( bbakraid )
 	MDRV_PALETTE_LENGTH(2048)
 
 	MDRV_VIDEO_START(batrider_0)
-	MDRV_VIDEO_EOF(toaplan2_0)
 	MDRV_VIDEO_UPDATE(batrider_0)
 
 	/* sound hardware */

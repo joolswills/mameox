@@ -27,6 +27,7 @@
 #include "cpu/tms34010/tms34010.h"
 #include "vidhrdw/tlc34076.h"
 #include "artmagic.h"
+#include "machine/random.h"
 
 
 static data16_t *control;
@@ -163,7 +164,7 @@ static void ultennis_protection(void)
 	{
 		case 0x00:	/* reset */
 			prot_input_index = prot_output_index = 0;
-			prot_output[0] = rand();
+			prot_output[0] = mame_rand();
 			break;
 
 		case 0x01:	/* 01 aaaa bbbb cccc dddd (xxxx) */
@@ -253,7 +254,7 @@ static void cheesech_protection(void)
 	{
 		case 0x00:	/* reset */
 			prot_input_index = prot_output_index = 0;
-			prot_output[0] = rand();
+			prot_output[0] = mame_rand();
 			break;
 
 		case 0x01:	/* 01 aaaa bbbb (xxxx) */
