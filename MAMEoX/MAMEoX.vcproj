@@ -79,7 +79,9 @@
 				SuppressStartupBanner="TRUE"
 				FormatUD="FALSE"
 				NoLibWarn="TRUE"
-				TitleName="&quot;MAMEoX Util (Don&apos;t Run)&quot;"/>
+				TitleName="&quot;MAMEoX Util (Don&apos;t Run)&quot;"
+				TitleImage="..\Media\MAMEoXIcon.xpr"
+				SaveGameImage="..\Media\MAMEoXIcon.xpr"/>
 		</Configuration>
 		<Configuration
 			Name="Debug|Xbox"
@@ -92,7 +94,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories=".\Includes;..\MAME\src;..\;&quot;$(XDK)\Samples\XBox\Common\Include\&quot;;&quot;..\libsmb++\src&quot;"
+				AdditionalIncludeDirectories=".\Includes;..\MAME\src;..\;&quot;$(XDK)\Samples\XBox\Common\Include\&quot;;&quot;..\libsmb++\src&quot;;..\SharedResources\Includes"
 				PreprocessorDefinitions="WIN32,_XBOX,_DEBUG,DEBUG_KEYBOARD"
 				MinimalRebuild="TRUE"
 				ExceptionHandling="FALSE"
@@ -120,7 +122,8 @@
 				OutputFile=".\Debug/MAMEoX.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="..\MAME\Debug;;&quot;..\libsmb++\Debug&quot;"
+				AdditionalLibraryDirectories="..\MAME\Debug;&quot;..\libsmb++\Debug&quot;"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug/MAMEoX.pdb"/>
 			<Tool
@@ -141,7 +144,9 @@
 				SuppressStartupBanner="TRUE"
 				FormatUD="FALSE"
 				NoLibWarn="TRUE"
-				TitleName="&quot;MAMEoX Util (Don&apos;t Run) [DBG]&quot;"/>
+				TitleName="&quot;MAMEoX Util (Don&apos;t Run) [DBG]&quot;"
+				TitleImage="..\Media\MAMEoXIcon.xpr"
+				SaveGameImage="..\Media\MAMEoXIcon.xpr"/>
 		</Configuration>
 		<Configuration
 			Name="Profile|Xbox"
@@ -198,7 +203,9 @@
 				SuppressStartupBanner="TRUE"
 				FormatUD="FALSE"
 				NoLibWarn="TRUE"
-				TitleName="&quot;MAMEoX Util (Don&apos;t Run)&quot;"/>
+				TitleName="&quot;MAMEoX Util (Don&apos;t Run) [PRF]&quot;"
+				TitleImage="..\Media\MAMEoXIcon.xpr"
+				SaveGameImage="..\Media\MAMEoXIcon.xpr"/>
 		</Configuration>
 		<Configuration
 			Name="Debug_With_Retail_MAME|Xbox"
@@ -255,7 +262,9 @@
 				SuppressStartupBanner="TRUE"
 				FormatUD="FALSE"
 				NoLibWarn="TRUE"
-				TitleName="&quot;MAMEoX Util (Don&apos;t Run)&quot;"/>
+				TitleName="&quot;MAMEoX Util (Don&apos;t Run) [DBG]&quot;"
+				TitleImage="..\Media\MAMEoXIcon.xpr"
+				SaveGameImage="..\Media\MAMEoXIcon.xpr"/>
 		</Configuration>
 	</Configurations>
 	<References>

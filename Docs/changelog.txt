@@ -1,5 +1,10 @@
 Version 0.73.1b
 
+   -------------------------------------------------------------
+  - \MAME\src:
+    - drivers\vball.c
+      - Integrated patch from pomata increasing the M6502 CPU
+        speed
 
    -------------------------------------------------------------
   - \MAMEoX\Includes: 
@@ -25,6 +30,10 @@ Version 0.73.1b
       - Fixed problem where disabling the screensaver would
         enter an infinite input-eating loop
 
+   -------------------------------------------------------------
+  - \SharedResources:
+    - Added dummy project to compile XPR resources outside of MAMEoXLauncher
+      (needed for XBE icon support)
 
  --- Integrated MAME version 0.73, changes follow -------------------
 

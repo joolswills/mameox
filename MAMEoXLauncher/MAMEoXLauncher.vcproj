@@ -20,7 +20,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories=".\Includes;..\MAMEoX\Includes;..\;&quot;$(XDK)\Samples\XBox\Common\Include&quot;;&quot;..\libsmb++\src&quot;;&quot;..\zlib&quot;;..\MAME\src"
+				AdditionalIncludeDirectories=".\Includes;..\MAMEoX\Includes;..\;&quot;$(XDK)\Samples\XBox\Common\Include&quot;;&quot;..\libsmb++\src&quot;;&quot;..\zlib&quot;;..\MAME\src;&quot;..\SharedResources\Includes&quot;"
 				PreprocessorDefinitions="_DEBUG;_XBOX;DEBUG_KEYBOARD"
 				MinimalRebuild="FALSE"
 				BasicRuntimeChecks="3"
@@ -64,7 +64,9 @@
 				LimitAvailableMemoryTo64MB="TRUE"
 				FormatUD="TRUE"
 				NoLibWarn="TRUE"
-				TitleName="&quot;MAMEoX Launcher [DBG]&quot;"/>
+				TitleName="&quot;MAMEoX Launcher [DBG]&quot;"
+				TitleImage="..\Media\MAMEoXIcon.xpr"
+				SaveGameImage="..\Media\MAMEoXIcon.xpr"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Xbox"
@@ -82,7 +84,7 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="TRUE"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories=".\Includes;..\MAMEoX\Includes;..\;&quot;$(XDK)\Samples\XBox\Common\Include&quot;;&quot;..\libsmb++\src&quot;;&quot;..\zlib&quot;;..\MAME\src"
+				AdditionalIncludeDirectories=".\Includes;..\MAMEoX\Includes;..\;&quot;$(XDK)\Samples\XBox\Common\Include&quot;;&quot;..\libsmb++\src&quot;;&quot;..\zlib&quot;;..\MAME\src;&quot;..\SharedResources\Includes&quot;"
 				PreprocessorDefinitions="NDEBUG;_XBOX;DEBUG_KEYBOARD"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
@@ -130,7 +132,9 @@
 				LimitAvailableMemoryTo64MB="FALSE"
 				FormatUD="TRUE"
 				NoLibWarn="TRUE"
-				TitleName="&quot;MAMEoX Launcher&quot;"/>
+				TitleName="&quot;MAMEoX Launcher&quot;"
+				TitleImage="..\Media\MAMEoXIcon.xpr"
+				SaveGameImage="..\Media\MAMEoXIcon.xpr"/>
 		</Configuration>
 	</Configurations>
 	<References>
@@ -334,78 +338,6 @@
 			</File>
 			<File
 				RelativePath="$(XDK)\Samples\Xbox\Common\Include\xbutil.h">
-			</File>
-		</Filter>
-		<Filter
-			Name="Resources"
-			Filter="">
-			<File
-				RelativePath=".\MediaFiles\FranklinGothicMedium_12.rdf">
-				<FileConfiguration
-					Name="Debug|Xbox">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Xbox">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\MediaFiles\FranklinGothicMedium_13.rdf">
-				<FileConfiguration
-					Name="Debug|Xbox">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Xbox">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\MediaFiles\FranklinGothicMedium_14.rdf">
-				<FileConfiguration
-					Name="Debug|Xbox">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Xbox">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="MediaFiles\resource.rdf">
-				<FileConfiguration
-					Name="Debug|Xbox">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Xbox">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
-				</FileConfiguration>
 			</File>
 		</Filter>
 	</Files>
