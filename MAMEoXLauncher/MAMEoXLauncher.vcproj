@@ -171,12 +171,6 @@
 				RelativePath=".\Sources\PNGFunctions.cpp">
 			</File>
 			<File
-				RelativePath=".\Sources\SkinChooser.cpp">
-			</File>
-			<File
-				RelativePath=".\Sources\SkinResource.cpp">
-			</File>
-			<File
 				RelativePath="..\MAMEoX\Sources\SMBHandler.cpp">
 			</File>
 			<File
@@ -246,6 +240,55 @@
 					RelativePath=".\Sources\VirtualKeyboardView.cpp">
 				</File>
 			</Filter>
+			<Filter
+				Name="Skin Components"
+				Filter="">
+				<File
+					RelativePath=".\Sources\Skin.cpp">
+				</File>
+				<File
+					RelativePath=".\Sources\Skin3PartBackdrop.cpp">
+				</File>
+				<File
+					RelativePath=".\Sources\SkinButtonInfo.cpp">
+				</File>
+				<File
+					RelativePath=".\Sources\SkinChooser.cpp">
+				</File>
+				<File
+					RelativePath=".\Sources\SkinElement.cpp">
+				</File>
+				<File
+					RelativePath=".\Sources\SkinHighlightBar.cpp">
+				</File>
+				<File
+					RelativePath=".\Sources\SkinIcon.cpp">
+				</File>
+				<File
+					RelativePath=".\Sources\SkinMenuBody.cpp">
+				</File>
+				<File
+					RelativePath=".\Sources\SkinMenuFooter.cpp">
+				</File>
+				<File
+					RelativePath=".\Sources\SkinMenuHeader.cpp">
+				</File>
+				<File
+					RelativePath=".\Sources\SkinProgressbar.cpp">
+				</File>
+				<File
+					RelativePath=".\Sources\SkinScreenshot.cpp">
+				</File>
+				<File
+					RelativePath=".\Sources\SkinScrollArea.cpp">
+				</File>
+				<File
+					RelativePath=".\Sources\SkinText.cpp">
+				</File>
+				<File
+					RelativePath=".\Sources\SkinTriggerInfo.cpp">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -284,12 +327,6 @@
 				RelativePath="Includes\Resource.h">
 			</File>
 			<File
-				RelativePath=".\Includes\SkinChooser.h">
-			</File>
-			<File
-				RelativePath=".\Includes\SkinResource.h">
-			</File>
-			<File
 				RelativePath="..\MAMEoX\Includes\SMBHandler.h">
 			</File>
 			<File
@@ -297,6 +334,9 @@
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Includes\System_IniFile.h">
+			</File>
+			<File
+				RelativePath="..\MAMEoX\Includes\System_StringModifier.h">
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Includes\VirtualMemoryManager.h">
@@ -366,6 +406,64 @@
 				</File>
 				<File
 					RelativePath=".\Includes\VirtualKeyboardView.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="Skin Components"
+				Filter="">
+				<File
+					RelativePath=".\Includes\Skin.h">
+				</File>
+				<File
+					RelativePath=".\Includes\Skin3PartBackdrop.h">
+				</File>
+				<File
+					RelativePath=".\Includes\SkinButtonInfo.h">
+				</File>
+				<File
+					RelativePath=".\Includes\SkinChooser.h">
+				</File>
+				<File
+					RelativePath=".\Includes\SkinDiffuseOverlay.h">
+				</File>
+				<File
+					RelativePath=".\Includes\SkinDivider.h">
+				</File>
+				<File
+					RelativePath=".\Includes\SkinElement.h">
+				</File>
+				<File
+					RelativePath=".\Includes\SkinHighlightBar.h">
+				</File>
+				<File
+					RelativePath=".\Includes\SkinIcon.h">
+				</File>
+				<File
+					RelativePath=".\Includes\SkinMenuBody.h">
+				</File>
+				<File
+					RelativePath=".\Includes\SkinMenuFooter.h">
+				</File>
+				<File
+					RelativePath=".\Includes\SkinMenuHeader.h">
+				</File>
+				<File
+					RelativePath=".\Includes\SkinProgressbar.h">
+				</File>
+				<File
+					RelativePath=".\Includes\SkinScreenshot.h">
+				</File>
+				<File
+					RelativePath=".\Includes\SkinScrollArea.h">
+				</File>
+				<File
+					RelativePath=".\Includes\SkinSpriteResource.h">
+				</File>
+				<File
+					RelativePath=".\Includes\SkinText.h">
+				</File>
+				<File
+					RelativePath=".\Includes\SkinTriggerInfo.h">
 				</File>
 			</Filter>
 		</Filter>

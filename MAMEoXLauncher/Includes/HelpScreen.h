@@ -11,22 +11,12 @@
 
 #include "ListView.h"
 #include "BaseMenuView.h"
-#include "SkinResource.h"
+#include "Skin.h"
 #include "StdString.h"
 
 
 //= D E F I N E S ======================================================
 
-  // Layout for the list rendering
-#undef LISTPOS_LEFT
-#undef LISTPOS_TOP
-#undef LISTPOS_RIGHT
-#undef LISTPOS_BOTTOM
-
-#define LISTPOS_LEFT    31
-#define LISTPOS_TOP     95
-#define LISTPOS_RIGHT   608
-#define LISTPOS_BOTTOM  451
 
 
 //= C L A S S E S ======================================================
@@ -45,16 +35,6 @@ public:
 	CHelpScreen( LPDIRECT3DDEVICE8 displayDevice, CFontSet &fontSet ) :
       CListView( displayDevice, fontSet, ASSET_LIST_BACKDROP )
 	{
-    RECT area = { LISTPOS_LEFT, LISTPOS_TOP, LISTPOS_RIGHT, LISTPOS_BOTTOM };
-    m_menuRenderer = new CBaseMenuView( displayDevice, fontSet, area );
-    assert( m_menuRenderer );
-  }
-
-		//------------------------------------------------------------
-		// Destructor
-		//------------------------------------------------------------
-  ~CHelpScreen( void ) {
-    delete m_menuRenderer;
   }
 
 		//------------------------------------------------------------
@@ -83,6 +63,5 @@ protected:
 		//------------------------------------------------------------
 	BOOL FileGets( HANDLE file, char *buffer, UINT32 length );
 
-  CBaseMenuView               *m_menuRenderer;                //!<  Resizable menu renderer
 	std::vector<CStdString>		  m_data;
 };

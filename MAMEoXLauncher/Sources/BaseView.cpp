@@ -76,9 +76,9 @@ void CBaseView::RenderBackdrop( void )
 
   m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
   m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
-	g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, m_backdropTextureID );
+	g_loadedSkin->SelectSkinTexture( m_displayDevice, m_backdropTextureID );
 	
-	g_loadedSkin->GetSkinResourceInfo( m_backdropTextureID )->Render( m_displayDevice, 0.0f, 0.0f, 640.0f, 480.0f );
+	g_loadedSkin->GetSkinSpriteResource( m_backdropTextureID )->Render( m_displayDevice, 0.0f, 0.0f, 640.0f, 480.0f );
 
 	m_displayDevice->SetTexture( 0, NULL );
 }

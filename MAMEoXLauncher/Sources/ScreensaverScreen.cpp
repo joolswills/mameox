@@ -127,16 +127,13 @@ void CScreensaverScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_renderingQuadCoords[3][0], m_renderingQuadCoords[3][1], 1.0f, 1.0f );
     m_displayDevice->End();
   }
-	else
+	else if( CheckResourceValidity( SKINELEMENT_SCREENSAVEROPTIONS_TEXT ) )
   {
       // Render something
-		m_fontSet.DefaultFont().Begin();
-			m_fontSet.DefaultFont().DrawText( textMessageX,
-																				textMessageY,
-																				g_loadedSkin->GetSkinColor( COLOR_SCREENSAVER_TEXT ),
-																				m_screenshotFiles.size() ? L"Screensaver mode" : L"Screensaver active but there\nare no screenshots to display.",
-																				XBFONT_CENTER_X );
-		m_fontSet.DefaultFont().End();
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_SCREENSAVEROPTIONS_TEXT)->Render(	m_displayDevice, 
+																																										m_screenshotFiles.size() ? L"Screensaver mode" : L"Screensaver active but there\nare no screenshots to display.", 
+																																										textMessageX, 
+																																										textMessageY );
   }
 
   if( flipOnCompletion )

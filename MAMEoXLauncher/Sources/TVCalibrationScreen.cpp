@@ -171,7 +171,7 @@ void CTVCalibrationScreen::MoveCursor( CInputManager &gp, BOOL useSpeedbanding )
   {
 		if( CheckResourceValidity( SPRITE_TVCALIBRATION_CURSOR ) )
 		{
-			const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_TVCALIBRATION_CURSOR );
+			const CSkinSpriteResource *desc = g_loadedSkin->GetSkinSpriteResource( SPRITE_TVCALIBRATION_CURSOR );
 
 			switch( m_currentStep )
 			{
@@ -245,7 +245,7 @@ void CTVCalibrationScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
 	if( CheckResourceValidity( SPRITE_TVCALIBRATION_CURSOR ) )
 	{
-		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_TVCALIBRATION_CURSOR );
+		const CSkinSpriteResource *desc = g_loadedSkin->GetSkinSpriteResource( SPRITE_TVCALIBRATION_CURSOR );
 
 
 			//-- Render a box for the screenspace -------------------------------------
@@ -278,7 +278,7 @@ void CTVCalibrationScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 		m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
 		m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
 
-		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_TVCALIBRATION_CURSOR );
+		g_loadedSkin->SelectSkinTexture( m_displayDevice, SPRITE_TVCALIBRATION_CURSOR );
 
 		FLOAT tu_l, tv_t, tu_r, tv_b;
 		switch( m_currentStep )

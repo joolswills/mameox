@@ -27,126 +27,6 @@ extern "C" {
 
 //= D E F I N E S ======================================================
 
-  //--- Layout defines -----------------------------------------
-
-#define TITLEBAR_ROW          99
-#define FIRSTDATA_ROW         124
-
-#define HIGHLIGHTBAR_LEFT     34
-#define HIGHLIGHTBAR_RIGHT    605
-
-#define SPACER_WIDTH          2
-
-#define NAME_COLUMN           42
-#define MANUFACTURER_COLUMN   305
-#define YEAR_COLUMN           437
-#define NUMPLAYERS_COLUMN     506
-#define CLONE_COLUMN          535 
-#define TEXTBOX_RIGHT         604   // The right edge of the text box
-#define COLUMN_PADDING        9     // Number of pixels to subtract from the column width before truncating text
-
-#define SCROLLUP_TOP          122
-#define SCROLLUP_RIGHT        608
-#define SCROLLUP_LEFT         (SCROLLUP_RIGHT - 32)
-#define SCROLLUP_BOTTOM       (SCROLLUP_TOP + 32)
-
-#define SCROLLDOWN_BOTTOM     451
-#define SCROLLDOWN_TOP        (SCROLLDOWN_BOTTOM - 32)
-#define SCROLLDOWN_RIGHT      608
-#define SCROLLDOWN_LEFT       (SCROLLDOWN_RIGHT - 32)
-
-  //-- Button help messages ------
-#define HELP_START_ICON_X   200
-#define HELP_START_ICON_Y   40
-#define HELP_START_TEXT_X   (HELP_START_ICON_X + desc->GetWidth() + 4)
-#define HELP_START_TEXT_Y   (HELP_START_ICON_Y + 5)
-
-//#define HELP_A_ICON_X       250
-#define HELP_A_ICON_X       285
-#define HELP_A_ICON_Y       40
-#define HELP_A_TEXT_X       (HELP_A_ICON_X + desc->GetWidth() + 4)
-#define HELP_A_TEXT_Y       (HELP_A_ICON_Y + 5)
-
-//#define HELP_X_ICON_X       370
-#define HELP_X_ICON_X       405
-#define HELP_X_ICON_Y       40
-#define HELP_X_TEXT_X       (HELP_X_ICON_X + desc->GetWidth() + 4)
-#define HELP_X_TEXT_Y       (HELP_X_ICON_Y + 5)
-
-//#define HELP_Y_ICON_X       450
-#define HELP_Y_ICON_X       485
-#define HELP_Y_ICON_Y       40
-#define HELP_Y_TEXT_X       (HELP_Y_ICON_X + desc->GetWidth() + 4)
-#define HELP_Y_TEXT_Y       (HELP_Y_ICON_Y + 5)
-
-
-
-
-
-  // Detailed view layout
-#define DETAIL_ROMSTATUS_X        NAME_COLUMN
-#define DETAIL_ROMSTATUS_Y        FIRSTDATA_ROW
-
-#define DETAIL_NUMPLAYERS_X       NAME_COLUMN
-#define DETAIL_NUMPLAYERS_Y       (FIRSTDATA_ROW + 20)
-
-#define DETAIL_MANUFACTURER_X     NAME_COLUMN
-#define DETAIL_MANUFACTURER_Y     (FIRSTDATA_ROW + 40)
-
-#define DETAIL_YEAR_X             NAME_COLUMN
-#define DETAIL_YEAR_Y             (FIRSTDATA_ROW + 60)
-
-#define DETAIL_PARENT_X           NAME_COLUMN
-#define DETAIL_PARENT_Y           (FIRSTDATA_ROW + 80)
-
-#define DETAIL_GENRE_X            NAME_COLUMN
-#define DETAIL_GENRE_Y            (FIRSTDATA_ROW + 100)
-
-#define DETAIL_VERSIONADDED_X     NAME_COLUMN
-#define DETAIL_VERSIONADDED_Y     (FIRSTDATA_ROW + 120)
-
-#define DETAIL_TIMESPLAYED_X      NAME_COLUMN
-#define DETAIL_TIMESPLAYED_Y      (FIRSTDATA_ROW + 140)
-
-#define DETAIL_FAVORITESTATUS_X   NAME_COLUMN
-#define DETAIL_FAVORITESTATUS_Y   (FIRSTDATA_ROW + 160)
-
-#define DETAIL_FILENAME_X         NAME_COLUMN
-#define DETAIL_FILENAME_Y         (FIRSTDATA_ROW + 180)
-
-#define DETAIL_SCREENSHOT_RIGHT   SCROLLUP_LEFT
-#define DETAIL_SCREENSHOT_TOP     127
-#define DETAIL_SCREENSHOT_LEFT    (DETAIL_SCREENSHOT_RIGHT - 320)
-#define DETAIL_SCREENSHOT_BOTTOM  (DETAIL_SCREENSHOT_TOP + ( (FLOAT)(DETAIL_SCREENSHOT_RIGHT - DETAIL_SCREENSHOT_LEFT) * 3.0f / 4.0f))
-
-#define DETAIL_SCREENSHOTCAPTION_X  (DETAIL_SCREENSHOT_LEFT + ((DETAIL_SCREENSHOT_RIGHT - DETAIL_SCREENSHOT_LEFT) >> 1))
-#define DETAIL_SCREENSHOTCAPTION_Y  (DETAIL_SCREENSHOT_BOTTOM + 5)
-
-	// Maximum number of items to render on the screen at once
-#define MAXPAGESIZE							15
-
-	// Timeout values for the cursor movement acceleration bands
-	// Values are measured in seconds
-#define SBTIMEOUT_FASTEST				3.0f
-#define SBTIMEOUT_FASTER				2.0f
-#define SBTIMEOUT_FAST					1.0f
-
-	// Multiplier values for the cursor movement acceleration bands
-	// Values are multiplied against the cursorVelocity
-#define SBMULTIPLIER_FASTEST		5.0f
-#define SBMULTIPLIER_FASTER			2.5f
-#define SBMULTIPLIER_FAST				1.5f
-
-	// Analog trigger deadzone
-#define DEADZONE								0.25f
-#define DEADZONE_RECTIFIER			1.0f / (1.0f - DEADZONE)
-#define CURSOR_SPEED            0.8f                // The cursor velocity modifier
-
-	// Number of seconds between valid DPAD readings
-#define DPADCURSORMOVE_TIMEOUT	0.20f
-
-
-
 //= G L O B A L = V A R S ==============================================
   // Static member initialization
 MAMEDriverData_t                        *CROMListScreen::m_driverInfoList = NULL;
@@ -180,7 +60,7 @@ BOOL CROMListScreen::LoadROMList( BOOL bGenerate, BOOL allowClones )
 {
 	PRINTMSG(( T_TRACE, "LoadROMList" ));
 
-  m_maxPageSize = MAXPAGESIZE;
+  m_maxPageSize = 15;
 	m_ROMListFull.clear();
   m_ROMListFiltered.clear();
 
@@ -1731,7 +1611,13 @@ void CROMListScreen::NormalModeMoveCursor( CInputManager &gp, FLOAT elapsedTime 
 		cursorVelocity *= SBMULTIPLIER_FAST;
 
 
-	DWORD pageSize = (m_currentSortedList.size() < MAXPAGESIZE ? m_currentSortedList.size() : MAXPAGESIZE);
+	const CSkinScrollArea *area = g_loadedSkin->GetSkinElementScrollArea( SKINELEMENT_HELPSCREEN_BODY_SCROLLAREA );
+	if( area )
+		m_maxPageSize = area->GetHeight() / area->m_singleRowHeight;
+	else
+		m_maxPageSize = 15;
+
+	DWORD pageSize = (m_currentSortedList.size() < m_maxPageSize ? m_currentSortedList.size() : m_maxPageSize);
 	ULONG pageHalfwayPoint = (pageSize >> 1);
 	ULONG maxPageOffset = m_currentSortedList.size() - pageSize;
 
@@ -1871,120 +1757,39 @@ void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
     // Render the backdrop texture
   RenderBackdrop();
-  m_menuRenderer->Draw( FALSE, FALSE );
 
-	if( CheckResourceTextureValidity( SPRITE_BUTTON_A ) )
-	{
-			//-- A button -------------------------------------------------
-		if( CheckResourceValidity( SPRITE_BUTTON_A ) )
-		{
-			m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
-			m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
-			m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
-			m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
+	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_FOOTER ) )
+		g_loadedSkin->GetSkinElement( SKINELEMENT_ROMLISTSCREEN_FOOTER )->Render( m_displayDevice );
 
-			m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-			m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-			m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-			m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
+	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_BODY ) )
+		g_loadedSkin->GetSkinElement( SKINELEMENT_ROMLISTSCREEN_BODY )->Render( m_displayDevice );
 
-			g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_BUTTON_A );
-			m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
-			const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_BUTTON_A );
-			desc->Render( m_displayDevice, HELP_A_ICON_X, HELP_A_ICON_Y );
-			m_displayDevice->SetTexture( 0, NULL );
+	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_HEADER ) )
+		g_loadedSkin->GetSkinElement( SKINELEMENT_ROMLISTSCREEN_HEADER )->Render( m_displayDevice );
 
-			m_fontSet.LargeThinFont().Begin();
-				m_fontSet.LargeThinFont().DrawText( HELP_A_TEXT_X, 
-																						HELP_A_TEXT_Y, 
-																						g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BUTTONICON_TEXT), 
-																						L"Play ROM" );
-			m_fontSet.LargeThinFont().End();
-		}
 
-			//-- X button ------------------------------------------------
-		if( CheckResourceValidity( SPRITE_BUTTON_X ) )
-		{
-			m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
-			m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
-			m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
-			m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
 
-			m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-			m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-			m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-			m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
 
-			g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_BUTTON_X );
-			m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
-			const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_BUTTON_X );
-			desc->Render( m_displayDevice, HELP_X_ICON_X, HELP_X_ICON_Y );
-			m_displayDevice->SetTexture( 0, NULL );
 
-			m_fontSet.LargeThinFont().Begin();
-				m_fontSet.LargeThinFont().DrawText( HELP_X_TEXT_X, 
-																						HELP_X_TEXT_Y, 
-																						g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BUTTONICON_TEXT), 
-																						L"Help" );
-			m_fontSet.LargeThinFont().End();
-		}
+		// ** A ** //
+	if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_BUTTONINFO_A) )
+		g_loadedSkin->GetSkinElementButtonInfo(SKINELEMENT_ROMLISTSCREEN_BUTTONINFO_A)->Render( m_displayDevice, L"Play ROM" );
 
-			//-- Y button ------------------------------------------------
-		if( CheckResourceValidity( SPRITE_BUTTON_Y ) )
-		{
-			m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
-			m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
-			m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
-			m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
+		// ** X ** //
+	if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_BUTTONINFO_X) )
+		g_loadedSkin->GetSkinElementButtonInfo(SKINELEMENT_ROMLISTSCREEN_BUTTONINFO_X)->Render( m_displayDevice, L"Help" );
 
-			m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-			m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-			m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-			m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
 
-			g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_BUTTON_A );
-			m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
-			const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_BUTTON_Y );
-			desc->Render( m_displayDevice, HELP_Y_ICON_X, HELP_Y_ICON_Y );
-			m_displayDevice->SetTexture( 0, NULL );
+		// ** Y ** //
+	if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_BUTTONINFO_Y) )
+		g_loadedSkin->GetSkinElementButtonInfo(SKINELEMENT_ROMLISTSCREEN_BUTTONINFO_Y)->Render( m_displayDevice, L"Fast Jump" );
 
-			m_fontSet.LargeThinFont().Begin();
-				m_fontSet.LargeThinFont().DrawText( HELP_Y_TEXT_X, 
-																						HELP_Y_TEXT_Y, 
-																						g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BUTTONICON_TEXT), 
-																						L"Fast Jump" );
-			m_fontSet.LargeThinFont().End();
-		}
 
-			//-- START button ------------------------------------------------
-		if( CheckResourceValidity( SPRITE_BUTTON_START ) )
-		{
-			m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
-			m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
-			m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
-			m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
+		// ** Start ** //
+	if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_BUTTONINFO_START) )
+		g_loadedSkin->GetSkinElementButtonInfo(SKINELEMENT_ROMLISTSCREEN_BUTTONINFO_START)->Render( m_displayDevice, L"Menu" );
 
-			m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-			m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-			m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-			m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
 
-			g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_BUTTON_START );
-			m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
-			const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_BUTTON_START );
-			desc->Render( m_displayDevice, HELP_START_ICON_X, HELP_START_ICON_Y );
-			m_displayDevice->SetTexture( 0, NULL );
-
-			m_fontSet.LargeThinFont().Begin();
-				m_fontSet.LargeThinFont().DrawText( HELP_START_TEXT_X,
-																						HELP_START_TEXT_Y,
-																						g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BUTTONICON_TEXT),
-																						L"Menu" );
-			m_fontSet.LargeThinFont().End();
-		}
-	}
-
-  m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     FALSE );
   m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    FALSE );
   m_displayDevice->SetTexture( 0, NULL );
 
@@ -2010,6 +1815,15 @@ void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     }
   }
 
+
+    //-- Render the scroll up and/or scroll down icons --------------------------------------------
+	FLOAT pageSize = GetCurrentPageSize();
+	if( (UINT32)m_pageOffset && CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLICON_UP ) )
+		g_loadedSkin->GetSkinElement( SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLICON_UP )->Render( m_displayDevice );
+
+	if( (UINT32)m_pageOffset < (m_numLinesInList - (UINT32)pageSize) && CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLICON_DOWN ) )
+		g_loadedSkin->GetSkinElement( SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLICON_DOWN )->Render( m_displayDevice );
+
 	if( flipOnCompletion )
 	  m_displayDevice->Present( NULL, NULL, NULL, NULL );	
 }
@@ -2020,229 +1834,130 @@ void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 //---------------------------------------------------------------------
 void CROMListScreen::DrawVerboseList( void )
 {
+	if( !CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA ) )
+	{
+		PRINTMSG(( T_ERROR, "SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA invalid!" ));
+		return;
+	}
+
+	const CSkinScrollArea *area = g_loadedSkin->GetSkinElementScrollArea( SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA );
+
 	WCHAR name[512];
+	FLOAT selectedItemYPos = area->m_top + (area->m_singleRowHeight * (ULONG)m_cursorPosition);
 
-  FLOAT textHeight = m_fontSet.SmallThinFontHeight();
-  FLOAT selectedItemYPos = (textHeight * (ULONG)m_cursorPosition);
+	if( area->m_highlightBar )
+		area->m_highlightBar->RenderAsOffset( m_displayDevice, area->m_left, selectedItemYPos );
 
-    // Render the highlight bar for the selected item
-  m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
-  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
-  m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
-  m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
-  m_displayDevice->SetRenderState( D3DRS_SRCBLEND,            D3DBLEND_SRCALPHA );
-  m_displayDevice->SetRenderState( D3DRS_DESTBLEND,           D3DBLEND_INVSRCALPHA );
-  m_displayDevice->SetTexture( 0, NULL );
-  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
+    // Draw the dividers
+	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_BODY_VERBOSE_MANUFACTURER_DIVIDER ) )
+		g_loadedSkin->GetSkinElement(SKINELEMENT_ROMLISTSCREEN_BODY_VERBOSE_MANUFACTURER_DIVIDER)->Render( m_displayDevice );
 
-  m_displayDevice->Begin( D3DPT_QUADLIST );
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_HIGHLIGHTBAR) );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
-    
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_HIGHLIGHTBAR) );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
-    
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_HIGHLIGHTBAR) );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos + textHeight, 1.0f, 1.0f );
+	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_BODY_VERBOSE_YEAR_DIVIDER ) )
+		g_loadedSkin->GetSkinElement(SKINELEMENT_ROMLISTSCREEN_BODY_VERBOSE_YEAR_DIVIDER)->Render( m_displayDevice );
 
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_HIGHLIGHTBAR) );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos + textHeight, 1.0f, 1.0f );
-  m_displayDevice->End();
+	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_BODY_VERBOSE_NUMPLAYERS_DIVIDER ) )
+		g_loadedSkin->GetSkinElement(SKINELEMENT_ROMLISTSCREEN_BODY_VERBOSE_NUMPLAYERS_DIVIDER)->Render( m_displayDevice );
+
+	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_BODY_VERBOSE_CLONE_DIVIDER ) )
+		g_loadedSkin->GetSkinElement(SKINELEMENT_ROMLISTSCREEN_BODY_VERBOSE_CLONE_DIVIDER)->Render( m_displayDevice );
 
 
-    // Draw the vertical spacers
-  m_displayDevice->Begin( D3DPT_QUADLIST );
+	swprintf( name, L"Names (%s)  ", m_options.m_hideFiltered ? L"Filtered " : L"Full List" );
+  if( m_superscrollMode )
+  {
+      // Display the superscroll character
+    WCHAR displayString[64] = L"";
+    CStdString tempBuf;
+    GetFriendlySuperscrollIndexStringForJumpTableIndex( &tempBuf, m_currentSuperscrollIndex );
 
-    #define DRAWSPACER( spacerLeft ) { \
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_DIVIDER) ); \
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft), LISTPOS_TOP + 1, 1.0f, 1.0f ); \
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_DIVIDER) ); \
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft) + SPACER_WIDTH, LISTPOS_TOP + 1, 1.0f, 1.0f ); \
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_DIVIDER) ); \
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft) + SPACER_WIDTH, LISTPOS_BOTTOM - 1, 1.0f, 1.0f ); \
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_DIVIDER) ); \
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft), LISTPOS_BOTTOM - 1, 1.0f, 1.0f ); \
-    }
+    mbstowcs( displayString, tempBuf.c_str(), 64 );
+		swprintf( &name[wcslen(name)], L"[%s]", displayString );
+  }
 
-      // Manufacturer
-    DRAWSPACER( MANUFACTURER_COLUMN - 6 )
+	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_NAME_TEXT ) )
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_NAME_TEXT)->Render( m_displayDevice, name );
 
-      // Year column
-    DRAWSPACER( YEAR_COLUMN - 6 )
+	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_MANUFACTERER_TEXT ) )
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_MANUFACTERER_TEXT)->Render( m_displayDevice, L"Manufacturer" );
 
-      // Number of players column
-    DRAWSPACER( NUMPLAYERS_COLUMN - 6 )
+	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_YEAR_TEXT ) )
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_YEAR_TEXT)->Render( m_displayDevice, L"Year" );
 
-      // Clone column
-    DRAWSPACER( CLONE_COLUMN - 6 )
+	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_NUMPLAYERS_TEXT ) )
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_NUMPLAYERS_TEXT)->Render( m_displayDevice, L"#P" );
 
-  m_displayDevice->End();
+	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_CLONE_TEXT ) )
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_CLONE_TEXT)->Render( m_displayDevice, L"Clone" );
 
 
-	m_fontSet.SmallThinFont().Begin();
-	
-	  swprintf( name, L"Names (%s)  ", m_options.m_hideFiltered ? L"Filtered " : L"Full List" );
-    if( m_superscrollMode )
-    {
-        // Display the superscroll character
-      WCHAR displayString[64] = L"";
-      CStdString tempBuf;
-      GetFriendlySuperscrollIndexStringForJumpTableIndex( &tempBuf, m_currentSuperscrollIndex );
+		// Render the ROM info
+	FLOAT yPos = area->m_top;
+  FLOAT pageSize = GetCurrentPageSize();
+	ULONG absListIDX = (ULONG)m_pageOffset;
 
-      mbstowcs( displayString, tempBuf.c_str(), 64 );
-		  swprintf( &name[wcslen(name)], L"[%s]", displayString );
-    }
+	for( DWORD i = absListIDX; i < pageSize + absListIDX; ++i )
+	{
+		if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_VERBOSE_ROMWORKING_NAME_TEXT ) )
+		{
+			const CSkinText *nameText = g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_VERBOSE_ROMWORKING_NAME_TEXT);
 
-	  m_fontSet.SmallThinFont().DrawText( NAME_COLUMN, 
-                                        TITLEBAR_ROW, 
-                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_TITLEBAR_TEXT), 
-                                        name, 
-                                        XBFONT_TRUNCATED,
-                                        MANUFACTURER_COLUMN - (NAME_COLUMN + COLUMN_PADDING) );
+				// Set the ROM color based on its status
+			if( m_options.m_showROMStatus )
+			{
+				ROMStatus &status = m_ROMStatus[m_currentSortedList[i]];
+				switch( status )
+				{
+				case STATUS_UNKNOWN:
+				case STATUS_WORKING:
+				default:
+						// Do nothing
+					break;
 
-		m_fontSet.SmallThinFont().DrawText( MANUFACTURER_COLUMN, 
-																				TITLEBAR_ROW, 
-																				g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_TITLEBAR_TEXT), 
-																				L"Manufacturer" );
+				case STATUS_SLOW:
+					if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_VERBOSE_ROMWARNING_NAME_TEXT) )
+						nameText = g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_VERBOSE_ROMWARNING_NAME_TEXT);
+					break;
 
-		m_fontSet.SmallThinFont().DrawText( YEAR_COLUMN, 
-																				TITLEBAR_ROW, 
-																				g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_TITLEBAR_TEXT), 
-																				L"Year" );
+				case STATUS_CRASH:
+				case STATUS_OUT_OF_MEMORY:
+				case STATUS_GENERAL_NONWORKING:
+					if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_VERBOSE_ROMNONWORKING_NAME_TEXT) )
+						nameText = g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_VERBOSE_ROMNONWORKING_NAME_TEXT);
+					break;
+				}
+			}
 
-    m_fontSet.SmallThinFont().DrawText( NUMPLAYERS_COLUMN, 
-																				TITLEBAR_ROW, 
-																				g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_TITLEBAR_TEXT), 
-																				L"#P" );
+			mbstowcs( name, m_driverInfoList[ m_currentSortedList[i] ].m_description, 255 );
+			nameText->RenderAsOffset( m_displayDevice, name, area->m_left, yPos );
+		}
 
-		m_fontSet.SmallThinFont().DrawText( CLONE_COLUMN, 
-																				TITLEBAR_ROW, 
-																				g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_TITLEBAR_TEXT), 
-																				L"Clone" );
-
-		  // Render the ROM info
-	  FLOAT yPos = 0.0f;
-    FLOAT pageSize = GetCurrentPageSize();
-	  ULONG absListIDX = (ULONG)m_pageOffset;
-
-	  for( DWORD i = absListIDX; i < pageSize + absListIDX; ++i )
-	  {
-      DWORD color = g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_ROMWORKING_TEXT);
-
-        // Set the ROM color based on its status
-      if( m_options.m_showROMStatus )
-      {
-        ROMStatus &status = m_ROMStatus[m_currentSortedList[i]];
-        switch( status )
-        {
-        case STATUS_UNKNOWN:
-        case STATUS_WORKING:
-        default:
-            // Do nothing, ITEM_COLOR is already correct
-          break;
-
-        case STATUS_SLOW:
-          color = g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_ROMWARNING_TEXT);
-          break;
-
-        case STATUS_CRASH:
-        case STATUS_OUT_OF_MEMORY:
-        case STATUS_GENERAL_NONWORKING:
-          color = g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_ROMNONWORKING_TEXT);
-          break;
-        }
-      }
-
-		  mbstowcs( name, m_driverInfoList[ m_currentSortedList[i] ].m_description, 255 );
-		  m_fontSet.SmallThinFont().DrawText( NAME_COLUMN,
-                                          FIRSTDATA_ROW + yPos,
-                                          color,
-                                          name,
-                                          XBFONT_TRUNCATED,
-                                          MANUFACTURER_COLUMN - (NAME_COLUMN + COLUMN_PADDING) );
-
+		if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_VERBOSE_MANUFACTURER_TEXT ) )
+		{
 			mbstowcs( name, m_driverInfoList[ m_currentSortedList[i] ].m_manufacturer, 255 );
-			m_fontSet.SmallThinFont().DrawText( MANUFACTURER_COLUMN,
-                                          FIRSTDATA_ROW + yPos,
-                                          color,
-                                          name,
-                                          XBFONT_TRUNCATED,
-                                          YEAR_COLUMN - (MANUFACTURER_COLUMN + COLUMN_PADDING) );
+			g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_VERBOSE_MANUFACTURER_TEXT)->RenderAsOffset( m_displayDevice, name, area->m_left, yPos );
+		}
 
-
+		if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_VERBOSE_YEAR_TEXT ) )
+		{
 			mbstowcs( name, m_driverInfoList[ m_currentSortedList[i] ].m_year, 255 );
-			m_fontSet.SmallThinFont().DrawText( YEAR_COLUMN, 
-                                          FIRSTDATA_ROW + yPos, 
-                                          color, 
-                                          name, 
-                                          XBFONT_TRUNCATED,
-                                          NUMPLAYERS_COLUMN - (YEAR_COLUMN + COLUMN_PADDING) );
+			g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_VERBOSE_YEAR_TEXT)->RenderAsOffset( m_displayDevice, name, area->m_left, yPos );
+		}
 
-
+		if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_VERBOSE_NUMPLAYERS_TEXT ) )
+		{
 			swprintf( name, L"%lu", m_driverInfoList[m_currentSortedList[i]].m_numPlayers );
-			m_fontSet.SmallThinFont().DrawText( NUMPLAYERS_COLUMN,
-                                          FIRSTDATA_ROW + yPos,
-                                          color,
-                                          name,
-                                          XBFONT_TRUNCATED,
-                                          CLONE_COLUMN - (NUMPLAYERS_COLUMN + COLUMN_PADDING) );
+			g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_VERBOSE_NUMPLAYERS_TEXT)->RenderAsOffset( m_displayDevice, name, area->m_left, yPos );
+		}
 
+		if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_VERBOSE_CLONE_TEXT ) )
+		{
 			mbstowcs( name, m_driverInfoList[ m_currentSortedList[i] ].m_cloneFileName, 255 );
-			m_fontSet.SmallThinFont().DrawText( CLONE_COLUMN, 
-                                          FIRSTDATA_ROW + yPos,
-                                          color,
-                                          name,
-                                          XBFONT_TRUNCATED,
-                                          TEXTBOX_RIGHT - (CLONE_COLUMN + COLUMN_PADDING) );
+			g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_VERBOSE_CLONE_TEXT)->RenderAsOffset( m_displayDevice, name, area->m_left, yPos );
+		}
 
-			  // Inc the Y position
-		  yPos += textHeight;
-	  }
-	
-	m_fontSet.SmallThinFont().End();
-
-
-    //-- Render the scroll up and/or scroll down icons --------------------------------------------
-  m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
-  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
-  m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
-  m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
-  m_displayDevice->SetRenderState( D3DRS_SRCBLEND,            D3DBLEND_SRCALPHA );
-  m_displayDevice->SetRenderState( D3DRS_DESTBLEND,           D3DBLEND_INVSRCALPHA );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
-  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
-
-    // Draw scroll up icon
-  if( (DWORD)m_pageOffset && CheckResourceValidity( SPRITE_LIST_SCROLLICON_UP ) )
-  {
-		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_UP );
-		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_UP );
-		desc->Render( m_displayDevice, 
-									(FLOAT)SCROLLUP_LEFT, 
-									(FLOAT)SCROLLUP_TOP, 
-									(FLOAT)SCROLLUP_RIGHT, 
-									(FLOAT)SCROLLUP_BOTTOM );
-  }
-
-  if( (DWORD)m_pageOffset < (m_numLinesInList - (DWORD)pageSize) && CheckResourceValidity( SPRITE_LIST_SCROLLICON_DOWN ) )
-  {
-		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_DOWN );
-		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_DOWN );
-		desc->Render( m_displayDevice, 
-									(FLOAT)SCROLLDOWN_LEFT, 
-									(FLOAT)SCROLLDOWN_TOP, 
-									(FLOAT)SCROLLDOWN_RIGHT, 
-									(FLOAT)SCROLLDOWN_BOTTOM );
-  }
-
-  m_displayDevice->SetTexture( 0, NULL );
-  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
+			// Inc the Y position
+		yPos += area->m_singleRowHeight;
+	}
 }
 
 //---------------------------------------------------------------------
@@ -2250,142 +1965,86 @@ void CROMListScreen::DrawVerboseList( void )
 //---------------------------------------------------------------------
 void CROMListScreen::DrawSimpleList( void )
 {
+	if( !CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA ) )
+	{
+		PRINTMSG(( T_ERROR, "SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA invalid!" ));
+		return;
+	}
+
+		// Draw the title bar
+	swprintf( name, L"Names (%s)  ", m_options.m_hideFiltered ? L"Filtered " : L"Full List" );
+  if( m_superscrollMode )
+  {
+      // Display the superscroll character
+    WCHAR displayString[64] = L"";
+    CStdString tempBuf;
+    GetFriendlySuperscrollIndexStringForJumpTableIndex( &tempBuf, m_currentSuperscrollIndex );
+
+    mbstowcs( displayString, tempBuf.c_str(), 64 );
+		swprintf( &name[wcslen(name)], L"[%s]", displayString );
+  }
+
+	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_HEADER_SIMPLE_NAME_TEXT ) )
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_HEADER_SIMPLE_NAME_TEXT)->Render( m_displayDevice, name );
+
+
+
+
+
+
+	const CSkinScrollArea *area = g_loadedSkin->GetSkinElementScrollArea( SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA );
+
 	WCHAR name[512];
+	FLOAT selectedItemYPos = area->m_top + (area->m_singleRowHeight * (ULONG)m_cursorPosition);
 
-  FLOAT textHeight = m_fontSet.SmallThinFontHeight();
-  FLOAT selectedItemYPos = (textHeight * (ULONG)m_cursorPosition);
-
-    // Render the highlight bar for the selected item
-  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-  m_displayDevice->SetRenderState( D3DRS_SRCBLEND,         D3DBLEND_SRCALPHA );
-  m_displayDevice->SetRenderState( D3DRS_DESTBLEND,        D3DBLEND_INVSRCALPHA );
-  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
-  m_displayDevice->SetTexture( 0, NULL );
-
-  m_displayDevice->Begin( D3DPT_QUADLIST );
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_HIGHLIGHTBAR) );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
-    
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_HIGHLIGHTBAR) );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
-    
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_HIGHLIGHTBAR) );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos + textHeight, 1.0f, 1.0f );
-
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_HIGHLIGHTBAR) );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos + textHeight, 1.0f, 1.0f );
-  m_displayDevice->End();
-
-	m_fontSet.SmallThinFont().Begin();
-	
-	  swprintf( name, L"Names (%s)  ", m_options.m_hideFiltered ? L"Filtered " : L"Full List" );
-    if( m_superscrollMode )
-    {
-        // Display the superscroll character
-      WCHAR displayString[64] = L"";
-      CStdString tempBuf;
-      GetFriendlySuperscrollIndexStringForJumpTableIndex( &tempBuf, m_currentSuperscrollIndex );
-
-      mbstowcs( displayString, tempBuf.c_str(), 64 );
-		  swprintf( &name[wcslen(name)], L"[%s]", displayString );
-    }
-
-	  m_fontSet.SmallThinFont().DrawText( NAME_COLUMN, 
-                                        TITLEBAR_ROW, 
-                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_TITLEBAR_TEXT), 
-                                        name, 
-                                        XBFONT_TRUNCATED,
-                                        TEXTBOX_RIGHT - (NAME_COLUMN + COLUMN_PADDING) );
-
-		  // Render the ROM info
-	  FLOAT yPos = 0.0f;
-    FLOAT pageSize = GetCurrentPageSize();
-	  ULONG absListIDX = (ULONG)m_pageOffset;
-
-	  for( DWORD i = absListIDX; i < pageSize + absListIDX; ++i )
-	  {
-      DWORD color = g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_ROMWORKING_TEXT);
-
-        // Set the ROM color based on its status
-      if( m_options.m_showROMStatus )
-      {
-        ROMStatus &status = m_ROMStatus[m_currentSortedList[i]];
-        switch( status )
-        {
-        case STATUS_UNKNOWN:
-        case STATUS_WORKING:
-        default:
-            // Do nothing, ITEM_COLOR is already correct
-          break;
-
-        case STATUS_SLOW:
-          color = g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_ROMWARNING_TEXT);
-          break;
-
-        case STATUS_CRASH:
-        case STATUS_OUT_OF_MEMORY:
-        case STATUS_GENERAL_NONWORKING:
-          color = g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_ROMNONWORKING_TEXT);
-          break;
-        }
-      }
-
-		  mbstowcs( name, m_driverInfoList[ m_currentSortedList[i] ].m_description, 255 );
-		  m_fontSet.SmallThinFont().DrawText( NAME_COLUMN,
-                                          FIRSTDATA_ROW + yPos,
-                                          color,
-                                          name,
-                                          XBFONT_TRUNCATED,
-                                          TEXTBOX_RIGHT - (NAME_COLUMN + COLUMN_PADDING) );
-
-			  // Inc the Y position
-		  yPos += textHeight;
-	  }
-	
-	m_fontSet.SmallThinFont().End();
+	if( area->m_highlightBar )
+		area->m_highlightBar->RenderAsOffset( m_displayDevice, area->m_left, selectedItemYPos );
 
 
-    //-- Render the scroll up and/or scroll down icons --------------------------------------------
-  m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
-  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
-  m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
-  m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
-  m_displayDevice->SetRenderState( D3DRS_SRCBLEND,            D3DBLEND_SRCALPHA );
-  m_displayDevice->SetRenderState( D3DRS_DESTBLEND,           D3DBLEND_INVSRCALPHA );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
-  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
+		// Render the ROM info
+	FLOAT yPos = area->m_top;
+  FLOAT pageSize = GetCurrentPageSize();
+	ULONG absListIDX = (ULONG)m_pageOffset;
 
-    // Draw scroll up icon
-  if( (DWORD)m_pageOffset && CheckResourceValidity( SPRITE_LIST_SCROLLICON_UP ) )
-  {
-		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_UP );
-		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_UP );
-		desc->Render( m_displayDevice, 
-									(FLOAT)SCROLLUP_LEFT, 
-									(FLOAT)SCROLLUP_TOP, 
-									(FLOAT)SCROLLUP_RIGHT, 
-									(FLOAT)SCROLLUP_BOTTOM );
-  }
+	for( DWORD i = absListIDX; i < pageSize + absListIDX; ++i )
+	{
+		if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_SIMPLE_ROMWORKING_NAME_TEXT ) )
+		{
+			const CSkinText *nameText = g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_SIMPLE_ROMWORKING_NAME_TEXT);
 
-  if( (DWORD)m_pageOffset < (m_numLinesInList - (DWORD)pageSize) && CheckResourceValidity( SPRITE_LIST_SCROLLICON_DOWN ) )
-  {
-		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_DOWN );
-		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_DOWN );
-		desc->Render( m_displayDevice, 
-									(FLOAT)SCROLLDOWN_LEFT, 
-									(FLOAT)SCROLLDOWN_TOP, 
-									(FLOAT)SCROLLDOWN_RIGHT, 
-									(FLOAT)SCROLLDOWN_BOTTOM );
-  }
+				// Set the ROM color based on its status
+			if( m_options.m_showROMStatus )
+			{
+				ROMStatus &status = m_ROMStatus[m_currentSortedList[i]];
+				switch( status )
+				{
+				case STATUS_UNKNOWN:
+				case STATUS_WORKING:
+				default:
+						// Do nothing
+					break;
 
-  m_displayDevice->SetTexture( 0, NULL );
-  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
+				case STATUS_SLOW:
+					if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_SIMPLE_ROMWARNING_NAME_TEXT) )
+						nameText = g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_SIMPLE_ROMWARNING_NAME_TEXT);
+					break;
+
+				case STATUS_CRASH:
+				case STATUS_OUT_OF_MEMORY:
+				case STATUS_GENERAL_NONWORKING:
+					if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_SIMPLE_ROMNONWORKING_NAME_TEXT) )
+						nameText = g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_SIMPLE_ROMNONWORKING_NAME_TEXT);
+					break;
+				}
+			}
+
+			mbstowcs( name, m_driverInfoList[ m_currentSortedList[i] ].m_description, 255 );
+			nameText->RenderAsOffset( m_displayDevice, name, area->m_left, yPos );
+		}
+
+			// Inc the Y position
+		yPos += area->m_singleRowHeight;
+	}
 }
 
 //---------------------------------------------------------------------
@@ -2393,15 +2052,21 @@ void CROMListScreen::DrawSimpleList( void )
 //---------------------------------------------------------------------
 void CROMListScreen::DrawDetailedList( void )
 {
+	if( !CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA ) )
+	{
+		PRINTMSG(( T_ERROR, "SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA invalid!" ));
+		return;
+	}
+
+	const CSkinScrollArea *area = g_loadedSkin->GetSkinElementScrollArea( SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA );
+
 	WCHAR name[256];
   WCHAR temp[256];
-
-  FLOAT textHeight = m_fontSet.SmallThinFontHeight();
-  FLOAT selectedItemYPos = (textHeight * (ULONG)m_cursorPosition);
 
 	MAMEDriverData_t        &driverData = m_driverInfoList[GetCurrentGameIndex()];
   ROMStatus               &status     = m_ROMStatus[GetCurrentGameIndex()];
   MAMEoXDriverMetadata_t  &metadata   = m_driverMetadata[GetCurrentGameIndex()];
+
 
     // Sort of a hack, keep track of the last selected ROM
     // so we can load a screenshot file whenever we change to
@@ -2417,152 +2082,24 @@ void CROMListScreen::DrawDetailedList( void )
     LoadScreenshotFile( 0 );
   }
 
-    // Display the screenshot
-  m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     FALSE );
-  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    FALSE );
 
-  FLOAT screenshotLeft = DETAIL_SCREENSHOT_LEFT;
-  FLOAT screenshotRight = DETAIL_SCREENSHOT_RIGHT;
-  FLOAT screenshotTop = DETAIL_SCREENSHOT_TOP;
-  FLOAT screenshotBottom = DETAIL_SCREENSHOT_BOTTOM;
-
-		// Flip the width and height
-  if( driverData.m_screenOrientation & ORIENTATION_SWAP_XY )
+	if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_SCREENSHOT) )
 	{
-      // Set the height = to the standard width
-    screenshotBottom = screenshotTop + (DETAIL_SCREENSHOT_RIGHT-DETAIL_SCREENSHOT_LEFT);
+		const CSkinScreenshot *screenshot = g_loadedSkin->GetSkinElementScreenshot(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_SCREENSHOT);
 
-      // Calculate left based on the new aspect ratio
-    screenshotLeft = screenshotRight - ( (FLOAT)(DETAIL_SCREENSHOT_RIGHT - DETAIL_SCREENSHOT_LEFT) * 3.0f / 4.0f);
+    //swprintf( name, L"[%lu]", 0 );
+		screenshot->RenderAsOffset( m_displayDevice,
+																m_screenshotTexture,
+																m_screenshotRect,
+																area->m_left,
+																area->m_top,
+																driverData.m_screenOrientation & ORIENTATION_SWAP_XY,
+																driverData.m_screenOrientation & ORIENTATION_FLIP_X,
+																driverData.m_screenOrientation & ORIENTATION_FLIP_Y );
 	}
 
 
-
-
-  if( m_screenshotTexture )
-  {
-    m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-    m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-    m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
-	  m_displayDevice->SetTexture( 0, m_screenshotTexture );
-
-    m_displayDevice->Begin( D3DPT_QUADLIST );      
-
-        // Apply screenshot rotations
-      POINT ul, ur, br, bl;
-      if( driverData.m_screenOrientation & ORIENTATION_SWAP_XY )
-      {
-        ul.x = driverData.m_screenOrientation & ORIENTATION_FLIP_X ? m_screenshotRect.left : m_screenshotRect.right;
-        ul.y = driverData.m_screenOrientation & ORIENTATION_FLIP_Y ? m_screenshotRect.top : m_screenshotRect.bottom;
-
-        ur.x = driverData.m_screenOrientation & ORIENTATION_FLIP_X ? m_screenshotRect.left : m_screenshotRect.right;
-        ur.y = driverData.m_screenOrientation & ORIENTATION_FLIP_Y ? m_screenshotRect.bottom : m_screenshotRect.top;
-
-        br.x = driverData.m_screenOrientation & ORIENTATION_FLIP_X ? m_screenshotRect.right : m_screenshotRect.left;
-        br.y = driverData.m_screenOrientation & ORIENTATION_FLIP_Y ? m_screenshotRect.bottom : m_screenshotRect.top;
-
-        bl.x = driverData.m_screenOrientation & ORIENTATION_FLIP_X ? m_screenshotRect.right : m_screenshotRect.left;
-        bl.y = driverData.m_screenOrientation & ORIENTATION_FLIP_Y ? m_screenshotRect.top : m_screenshotRect.bottom;
-      }
-      else
-      {
-        ul.x = driverData.m_screenOrientation & ORIENTATION_FLIP_X ? m_screenshotRect.left : m_screenshotRect.right;
-        ul.y = driverData.m_screenOrientation & ORIENTATION_FLIP_Y ? m_screenshotRect.top : m_screenshotRect.bottom;
-
-        ur.x = driverData.m_screenOrientation & ORIENTATION_FLIP_X ? m_screenshotRect.left : m_screenshotRect.right;
-        ur.y = driverData.m_screenOrientation & ORIENTATION_FLIP_Y ? m_screenshotRect.bottom : m_screenshotRect.top;
-
-        br.x = driverData.m_screenOrientation & ORIENTATION_FLIP_X ? m_screenshotRect.right : m_screenshotRect.left;
-        br.y = driverData.m_screenOrientation & ORIENTATION_FLIP_Y ? m_screenshotRect.bottom : m_screenshotRect.top;
-
-        bl.x = driverData.m_screenOrientation & ORIENTATION_FLIP_X ? m_screenshotRect.right : m_screenshotRect.left;
-        bl.y = driverData.m_screenOrientation & ORIENTATION_FLIP_Y ? m_screenshotRect.top : m_screenshotRect.bottom;
-
-        bl.x = ul.x = m_screenshotRect.left;
-        ur.y = ul.y = m_screenshotRect.top;
-        
-        br.x = ur.x = m_screenshotRect.right; 
-        br.y = bl.y = m_screenshotRect.bottom;
-
-        if( driverData.m_screenOrientation & ORIENTATION_FLIP_X )
-        {
-          UINT32 temp = bl.x;
-          bl.x = ul.x = ur.x;
-          br.x = ur.x = temp;
-        }
-
-        if( driverData.m_screenOrientation & ORIENTATION_FLIP_Y )
-        {
-          UINT32 temp = bl.y;
-          bl.y = br.y = ul.y;
-          ul.y = ur.y = temp;
-        }
-      }
-
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_screenshotRect.left, m_screenshotRect.top );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotLeft, screenshotTop, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_screenshotRect.right, m_screenshotRect.top );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotRight, screenshotTop, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_screenshotRect.right, m_screenshotRect.bottom );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotRight, screenshotBottom, 1.0f, 1.0f );
-
-      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_screenshotRect.left, m_screenshotRect.bottom );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotLeft, screenshotBottom, 1.0f, 1.0f );
-    m_displayDevice->End();
-
-/*
-      // Draw the screenshot index
-	  m_fontSet.SmallThinFont().Begin();
-      swprintf( name, L"[%lu]", 0 );
-	    m_fontSet.SmallThinFont().DrawText( DETAIL_SCREENSHOTCAPTION_X, 
-                                          DETAIL_SCREENSHOTCAPTION_Y, 
-                                          ITEM_COLOR, 
-                                          name,
-                                          XBFONT_CENTER_X );
-    m_fontSet.SmallThinFont().End();
-*/
-  }
-  else
-  {
-      // Render a black rect where the screenshot would go and put "No Screenshot" text in it
-    m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-    m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
-    m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
-	  m_displayDevice->SetTexture( 0, NULL );
-
-    m_displayDevice->Begin( D3DPT_QUADLIST );      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_SCREENSHOT_BACKGROUND) );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotLeft, screenshotTop, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_SCREENSHOT_BACKGROUND) );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotRight, screenshotTop, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_SCREENSHOT_BACKGROUND) );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotRight, screenshotBottom, 1.0f, 1.0f );
-
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_SCREENSHOT_BACKGROUND) );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotLeft, screenshotBottom, 1.0f, 1.0f );
-    m_displayDevice->End();
-
-      // Draw the screenshot index
-	  m_fontSet.SmallThinFont().Begin();
-      swprintf( name, L"[%lu]", 0 );
-	    m_fontSet.SmallThinFont().DrawText( screenshotLeft + ((screenshotRight - screenshotLeft) / 2.0f), 
-                                          screenshotTop + ((screenshotBottom - screenshotTop) / 2.0f), 
-                                          g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_SCREENSHOT_TEXT), 
-                                          L"No Screenshots",
-                                          XBFONT_CENTER_X );
-    m_fontSet.SmallThinFont().End();
-  }
-
-
-
-
-
-
-	m_fontSet.SmallThinFont().Begin();
+	if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_HEADER_DETAIL_NAME_TEXT) )
 	{
 	  mbstowcs( name, driverData.m_description, 255 );
     wcscat( name, m_options.m_hideFiltered ? L"    (Filtered)  " : L"    (Full List)  " );
@@ -2577,150 +2114,160 @@ void CROMListScreen::DrawDetailedList( void )
 		  swprintf( &name[wcslen(name)], L"[%s]", displayString );
     }
 
-	  m_fontSet.SmallThinFont().DrawText( NAME_COLUMN, 
-                                        TITLEBAR_ROW, 
-                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_TITLEBAR_TEXT), 
-                                        name, 
-                                        XBFONT_TRUNCATED,
-                                        TEXTBOX_RIGHT - (NAME_COLUMN + COLUMN_PADDING) );
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_HEADER_DETAIL_NAME_TEXT)->Render( m_displayDevice, name );
+	}
 
-		  // Render the ROM info
 
-      //--- Display the ROM status ---------------------------
-    DWORD color = g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_ROMWORKING_TEXT);
-    swprintf( name, L"ROM Status: " );
-    switch( status )
-    {
-        // *** STATUS_UNKNOWN *** //
-      case STATUS_UNKNOWN:
-      default:
-        wcscat( name, L"Unknown" );
-        break;
 
-        // *** STATUS_WORKING *** //
-      case STATUS_WORKING:
-        wcscat( name, L"Working" );
-        break;
+		// Render the ROM info
+	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_ROMWORKING_NAME_TEXT ) )
+	{
+		const CSkinText *nameText = g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_ROMWORKING_NAME_TEXT);
+		swprintf( name, L"ROM Status: " );
 
-        // *** STATUS_SLOW *** //
-      case STATUS_SLOW:
-        wcscat( name, L"Runs slowly" );
-        color = g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_ROMWARNING_TEXT);
-        break;
+			// Set the ROM color based on its status
+		if( m_options.m_showROMStatus )
+		{
+			switch( status )
+			{
+				// *** STATUS_UNKNOWN *** //
+			case STATUS_UNKNOWN:
+			default:
+				wcscat( name, L"Unknown" );
+				break;
 
-        // *** STATUS_CRASH *** //
-      case STATUS_CRASH:
-        wcscat( name, L"Crashes" );
-        color = g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_ROMNONWORKING_TEXT);
-        break;
+				// *** STATUS_WORKING *** //
+			case STATUS_WORKING:
+				wcscat( name, L"Working" );
+				break;
 
-        // *** STATUS_OUT_OF_MEMORY *** //
-      case STATUS_OUT_OF_MEMORY:
-        wcscat( name, L"Out of memory" );
-        color = g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_ROMNONWORKING_TEXT);
-        break;
+				// *** STATUS_SLOW *** //
+			case STATUS_SLOW:
+				wcscat( name, L"Runs slowly" );
+				if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_ROMWARNING_NAME_TEXT) )
+					nameText = g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_ROMWARNING_NAME_TEXT);
+				break;
 
-        // *** STATUS_GENERAL_NONWORKING *** //
-      case STATUS_GENERAL_NONWORKING:
-        wcscat( name, L"General nonworking" );
-        color = g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_ROMNONWORKING_TEXT);
-        break;
-    }
-    m_fontSet.SmallThinFont().DrawText( DETAIL_ROMSTATUS_X, 
-                                        DETAIL_ROMSTATUS_Y, 
-                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_TEXT), 
-                                        name, 
-                                        XBFONT_TRUNCATED, 
-                                        screenshotLeft - (DETAIL_ROMSTATUS_X + COLUMN_PADDING) );
+				// *** STATUS_CRASH *** //
+			case STATUS_CRASH:
+				wcscat( name, L"Crashes" );
+				if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_ROMNONWORKING_NAME_TEXT) )
+					nameText = g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_ROMNONWORKING_NAME_TEXT);
+				break;
 
+				// *** STATUS_OUT_OF_MEMORY *** //
+			case STATUS_OUT_OF_MEMORY:
+				wcscat( name, L"Out of memory" );
+				if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_ROMNONWORKING_NAME_TEXT) )
+					nameText = g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_ROMNONWORKING_NAME_TEXT);
+				break;
+
+				// *** STATUS_GENERAL_NONWORKING *** //
+			case STATUS_GENERAL_NONWORKING:
+				wcscat( name, L"General nonworking" );
+				if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_ROMNONWORKING_NAME_TEXT) )
+					nameText = g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_ROMNONWORKING_NAME_TEXT);
+				break;
+			}
+		}
+
+		nameText->RenderAsOffset( m_displayDevice, name, area->m_left, area->m_top );
+	}
 
       //--- Display the number of players ---------------------------
+	if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_NUMPLAYERS_TEXT) )
+	{
     swprintf( name, L"Number of players: %lu", driverData.m_numPlayers );
-    m_fontSet.SmallThinFont().DrawText( DETAIL_NUMPLAYERS_X, 
-                                        DETAIL_NUMPLAYERS_Y, 
-                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_TEXT), 
-                                        name, 
-                                        XBFONT_TRUNCATED, 
-                                        screenshotLeft - (DETAIL_NUMPLAYERS_X + COLUMN_PADDING) );
-
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_NUMPLAYERS_TEXT)->RenderAsOffset( m_displayDevice,
+																																																																	name,
+																																																																	area->m_left,
+																																																																	area->m_top );
+	}
 
       //--- Display the manufacturer ---------------------------
+	if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_MANUFACTURER_TEXT) )
+	{
     if( driverData.m_manufacturer )
       mbstowcs( temp, driverData.m_manufacturer, 255 );
     else
       wcscpy( temp, L"Unknown" );
     swprintf( name, L"Manufacturer: %s", temp );
-    m_fontSet.SmallThinFont().DrawText( DETAIL_MANUFACTURER_X, 
-                                        DETAIL_MANUFACTURER_Y, 
-                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_TEXT), 
-                                        name, 
-                                        XBFONT_TRUNCATED, 
-                                        screenshotLeft - (DETAIL_MANUFACTURER_X + COLUMN_PADDING) );
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_MANUFACTURER_TEXT)->RenderAsOffset( m_displayDevice,
+																																																																	name,
+																																																																	area->m_left,
+																																																																	area->m_top );
+	}
+
 
       //--- Display the year ---------------------------
+	if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_YEAR_TEXT) )
+	{
     if( driverData.m_year )
       mbstowcs( temp, driverData.m_year, 255 );
     else
       wcscpy( temp, L"Unknown" );
     swprintf( name, L"Year: %s", temp );
-    m_fontSet.SmallThinFont().DrawText( DETAIL_YEAR_X, 
-                                        DETAIL_YEAR_Y, 
-                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_TEXT), 
-                                        name, 
-                                        XBFONT_TRUNCATED, 
-                                        screenshotLeft - (DETAIL_YEAR_X + COLUMN_PADDING) );
-
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_YEAR_TEXT)->RenderAsOffset( m_displayDevice,
+																																																																	name,
+																																																																	area->m_left,
+																																																																	area->m_top );
+	}
 
       //--- Display the parent ROM ---------------------------
+	if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_PARENT_TEXT) )
+	{
     if( driverData.m_cloneFileName )
       mbstowcs( temp, driverData.m_cloneFileName, 255 );
     else
       wcscpy( temp, L"None" );
     swprintf( name, L"Parent ROM filename: %s", temp );
-    m_fontSet.SmallThinFont().DrawText( DETAIL_PARENT_X, 
-                                        DETAIL_PARENT_Y, 
-                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_TEXT), 
-                                        name, 
-                                        XBFONT_TRUNCATED, 
-                                        screenshotLeft - (DETAIL_PARENT_X + COLUMN_PADDING) );
-
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_PARENT_TEXT)->RenderAsOffset( m_displayDevice,
+																																																																	name,
+																																																																	area->m_left,
+																																																																	area->m_top );
+	}
 
       //--- Display the genre ---------------------------
+	if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_GENRE_TEXT) )
+	{
     if( metadata.m_genre )
       mbstowcs( temp, metadata.m_genre, 255 );
     else
       wcscpy( temp, L"Unknown" );
     swprintf( name, L"Genre: %s", temp );
-    m_fontSet.SmallThinFont().DrawText( DETAIL_GENRE_X, 
-                                        DETAIL_GENRE_Y, 
-                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_TEXT), 
-                                        name, 
-                                        XBFONT_TRUNCATED, 
-                                        screenshotLeft - (DETAIL_GENRE_X + COLUMN_PADDING) );
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_GENRE_TEXT)->RenderAsOffset( m_displayDevice,
+																																																																	name,
+																																																																	area->m_left,
+																																																																	area->m_top );
+	}
 
       //--- Display the version this rom was added to MAME ---------------------------
+	if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_VERSIONADDED_TEXT) )
+	{
     if( metadata.m_versionAdded )
       mbstowcs( temp, metadata.m_versionAdded, 255 );
     else
       wcscpy( temp, L"Unknown" );
     swprintf( name, L"Version added: %s", temp );
-    m_fontSet.SmallThinFont().DrawText( DETAIL_VERSIONADDED_X, 
-                                        DETAIL_VERSIONADDED_Y, 
-                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_TEXT), 
-                                        name, 
-                                        XBFONT_TRUNCATED, 
-                                        screenshotLeft - (DETAIL_VERSIONADDED_X + COLUMN_PADDING) );
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_VERSIONADDED_TEXT)->RenderAsOffset( m_displayDevice,
+																																																																	name,
+																																																																	area->m_left,
+																																																																	area->m_top );
+	}
 
-      //--- Display the version this rom was added to MAME ---------------------------
+      //--- Times played ---------------------------------------------------------------
+	if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_TIMESPLAYED_TEXT) )
+	{
     swprintf( name, L"Times played: %lu", metadata.m_timesPlayed );
-    m_fontSet.SmallThinFont().DrawText( DETAIL_TIMESPLAYED_X, 
-                                        DETAIL_TIMESPLAYED_Y, 
-                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_TEXT), 
-                                        name, 
-                                        XBFONT_TRUNCATED, 
-                                        screenshotLeft - (DETAIL_TIMESPLAYED_X + COLUMN_PADDING) );
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_TIMESPLAYED_TEXT)->RenderAsOffset( m_displayDevice,
+																																																																	name,
+																																																																	area->m_left,
+																																																																	area->m_top );
+	}
 
-      //--- Display the version this rom was added to MAME ---------------------------
+      //--- Favorite status ---------------------------------------------------------------
+	if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_FAVORITESTATUS_TEXT) )
+	{
     switch( metadata.m_favoriteStatus )
     {
       // *** FS_INDIFFERENT *** //
@@ -2749,75 +2296,25 @@ void CROMListScreen::DrawDetailedList( void )
       break;
     }
     swprintf( name, L"Favorite status: %s", temp );
-    m_fontSet.SmallThinFont().DrawText( DETAIL_FAVORITESTATUS_X, 
-                                        DETAIL_FAVORITESTATUS_Y, 
-                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_TEXT), 
-                                        name, 
-                                        XBFONT_TRUNCATED, 
-                                        screenshotLeft - (DETAIL_FAVORITESTATUS_X + COLUMN_PADDING) );
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_FAVORITESTATUS_TEXT)->RenderAsOffset( m_displayDevice,
+																																																																	name,
+																																																																	area->m_left,
+																																																																	area->m_top );
+	}
 
-      //--- Display the filename ---------------------------
+      //--- Filename ---------------------------------------------------------------
+	if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_FILENAME_TEXT) )
+	{
     if( driverData.m_romFileName )
       mbstowcs( temp, driverData.m_romFileName, 255 );
     else
       wcscpy( temp, L"Unknown" );
     swprintf( name, L"ROM filename: %s.zip", temp );
-    m_fontSet.SmallThinFont().DrawText( DETAIL_FILENAME_X, 
-                                        DETAIL_FILENAME_Y, 
-                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_TEXT), 
-                                        name, 
-                                        XBFONT_TRUNCATED, 
-                                        screenshotLeft - (DETAIL_FILENAME_X + COLUMN_PADDING) );
-
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_FILENAME_TEXT)->RenderAsOffset( m_displayDevice,
+																																																																	name,
+																																																																	area->m_left,
+																																																																	area->m_top );
 	}
-	m_fontSet.SmallThinFont().End();
-
-
-
-
-
-    //-- Render the scroll up and/or scroll down icons --------------------------------------------
-  m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
-  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
-  m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
-  m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
-  m_displayDevice->SetRenderState( D3DRS_SRCBLEND,            D3DBLEND_SRCALPHA );
-  m_displayDevice->SetRenderState( D3DRS_DESTBLEND,           D3DBLEND_INVSRCALPHA );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
-  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
-
-    // Draw scroll up icon
-  if( GetAbsoluteCursorPosition() && CheckResourceValidity( SPRITE_LIST_SCROLLICON_UP ) )
-  {
-		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_UP );
-		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_UP );
-		desc->Render( m_displayDevice, 
-									(FLOAT)SCROLLUP_LEFT, 
-									(FLOAT)SCROLLUP_TOP, 
-									(FLOAT)SCROLLUP_RIGHT, 
-									(FLOAT)SCROLLUP_BOTTOM );
-  }
-
-    // Draw scroll down icon
-  if( GetAbsoluteCursorPosition() < m_numLinesInList - 1 && CheckResourceValidity( SPRITE_LIST_SCROLLICON_DOWN ) )
-  {
-		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_DOWN );
-		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_DOWN );
-		desc->Render( m_displayDevice, 
-									(FLOAT)SCROLLDOWN_LEFT, 
-									(FLOAT)SCROLLDOWN_TOP, 
-									(FLOAT)SCROLLDOWN_RIGHT, 
-									(FLOAT)SCROLLDOWN_BOTTOM );
-  }
-
-  m_displayDevice->SetTexture( 0, NULL );
-  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
 }
 
 //---------------------------------------------------------------------
@@ -3127,13 +2624,20 @@ void CROMListScreen::SetAbsoluteCursorPosition( UINT32 pos )
   if( pos == INVALID_ROM_INDEX )
     return;
 
+	const CSkinScrollArea *area = g_loadedSkin->GetSkinElementScrollArea( SKINELEMENT_HELPSCREEN_BODY_SCROLLAREA );
+	if( area )
+		m_maxPageSize = area->GetHeight() / area->m_singleRowHeight;
+	else
+		m_maxPageSize = 15;
+
+
     // Jump the cursor to the selected position
-	UINT32 pageSize = (m_currentSortedList.size() < MAXPAGESIZE ? m_currentSortedList.size() : MAXPAGESIZE);
+	UINT32 pageSize = m_currentSortedList.size() < m_maxPageSize ? m_currentSortedList.size() : m_maxPageSize;
 	UINT32 pageHalfwayPoint = (pageSize >> 1);
 	UINT32 maxPageOffset = m_currentSortedList.size() - pageSize;
 
     // Put the page offset at absoluteCursorPos - pageHalwayPoint, or 0
-  if( pos <= pageHalfwayPoint || m_currentSortedList.size() < MAXPAGESIZE )
+  if( pos <= pageHalfwayPoint || m_currentSortedList.size() < m_maxPageSize )
   {
     m_pageOffset = 0.0f;
     m_cursorPosition = (FLOAT)pos;

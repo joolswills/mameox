@@ -13,7 +13,7 @@
 #include "MAMEoX.h"
 #include "InputManager.h"
 #include "FontSet.h"
-#include "SkinResource.h"
+#include "Skin.h"
 
 
 

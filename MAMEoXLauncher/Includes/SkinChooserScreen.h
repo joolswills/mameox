@@ -12,23 +12,13 @@
 #include "BaseMenuView.h"
 
 #include "SkinChooser.h"
-#include "SkinResource.h"
+#include "Skin.h"
 #include "MAMEoX.h"
 
 #include <vector>
 
 //= D E F I N E S ======================================================
 #define INVALID_INDEX               0xFFFFFFFF
-
-  // Layout for the list rendering
-#undef LISTPOS_LEFT
-#undef LISTPOS_TOP
-#undef LISTPOS_RIGHT
-#undef LISTPOS_BOTTOM
-#define LISTPOS_LEFT    31
-#define LISTPOS_TOP     95
-#define LISTPOS_RIGHT   608
-#define LISTPOS_BOTTOM  451
 
 //= G L O B A L = V A R S ==============================================
 
@@ -53,20 +43,9 @@ public:
 		m_maxPageSize = 3;
 		m_numLinesInList = m_skinChooser.m_skinResourceVector.size();
 
-
-    RECT area = { LISTPOS_LEFT, LISTPOS_TOP, LISTPOS_RIGHT, LISTPOS_BOTTOM };
-    m_menuRenderer = new CBaseMenuView( displayDevice, fontSet, area );
-    assert( m_menuRenderer );		
-
 		SetCursorToSelectedSkin();
 	}
 
-		//------------------------------------------------------------
-		// Destructor
-		//------------------------------------------------------------
-  ~CSkinChooserScreen( void ) {
-    delete m_menuRenderer;
-  }
 
 		//------------------------------------------------------------
 		// MoveCursor
@@ -115,11 +94,8 @@ protected:
 
      // Cursor movement helper functions
   void NormalModeMoveCursor( CInputManager &gp, FLOAT elapsedTime );
-	void DrawSkinList( void );
 
 	void SetCursorToSelectedSkin( void );	
-
-  CBaseMenuView										*m_menuRenderer;    //!<  Resizable menu renderer
 
 	CSkinChooser										&m_skinChooser;
 };

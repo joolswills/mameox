@@ -8,6 +8,7 @@
 #include "StartMenuView.h"
 #include "DebugLogger.h"
 #include "XBFont.h"
+#include "ListView.h"		// For DPAD timeout define
 
 #include <string>
 
@@ -23,9 +24,6 @@
 #define NAME_START              m_bodyArea.left + 9
 #define TEXTBOX_RIGHT           HIGHLIGHTBAR_RIGHT   // The right edge of the text box
 #define COLUMN_PADDING          9     // Number of pixels to subtract from the column width before truncating text
-
-	// Number of seconds between valid DPAD readings
-#define DPADCURSORMOVE_TIMEOUT	0.20f
 
 //= G L O B A L = V A R S ==============================================
 
@@ -120,56 +118,51 @@ void CStartMenuView::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   RenderBackdrop( fontHeight );
 
     //-- Render the highlight bar for the selected item -------------------------------------
-  FLOAT selectedItemYPos = (m_fontSet.SmallThinFontHeight() * (UINT32)m_cursorPosition);
-  m_displayDevice->SetTexture( 0, NULL );
-  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-  m_displayDevice->SetRenderState( D3DRS_SRCBLEND,         D3DBLEND_SRCALPHA );
-  m_displayDevice->SetRenderState( D3DRS_DESTBLEND,        D3DBLEND_INVSRCALPHA );
-  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
+	if( CheckResourceValidity( SKINELEMENT_STARTMENU_BODY_HIGHLIGHTBAR ) )
+	{
+		FLOAT selectedItemYPos = (m_fontSet.SmallThinFontHeight() * (UINT32)m_cursorPosition);
+		
+		g_loadedSkin->GetSkinElementHighlightbar(SKINELEMENT_STARTMENU_BODY_HIGHLIGHTBAR)->RenderAtRect(	m_displayDevice,
+																																																			HIGHLIGHTBAR_LEFT,
+																																																			FIRSTDATA_ROW + selectedItemYPos,
+																																																			HIGHLIGHTBAR_RIGHT,
+																																																			FIRSTDATA_ROW + selectedItemYPos + fontHeight );
+	}
 
-  m_displayDevice->Begin( D3DPT_QUADLIST );
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_STARTMENU_BODY_HIGHLIGHTBAR) );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
-    
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_STARTMENU_BODY_HIGHLIGHTBAR) );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
-    
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_STARTMENU_BODY_HIGHLIGHTBAR) );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos + fontHeight, 1.0f, 1.0f );
-
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_STARTMENU_BODY_HIGHLIGHTBAR) );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos + fontHeight, 1.0f, 1.0f );
-  m_displayDevice->End();
-
-
-  WCHAR wBuf[256];
-
-    // Render the title
-  m_fontSet.SmallThinFont().Begin();
+	if( CheckResourceValidity( SKINELEMENT_STARTMENU_HEADER_TEXT ) ) 
+	{
+		WCHAR wBuf[256];
     mbstowcs( wBuf, m_title.c_str(), 256 );
-    m_fontSet.SmallThinFont().DrawText( NAME_START,
-                                        TITLEBAR_ROW,
-                                        g_loadedSkin->GetSkinColor(COLOR_STARTMENU_TITLEBAR_TEXT),
-                                        wBuf,
-                                        XBFONT_TRUNCATED,
-                                        TEXTBOX_RIGHT - (NAME_START+COLUMN_PADDING) );
-  m_fontSet.SmallThinFont().End();
+
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_VIRTUALKEYBOARD_HEADER_TEXT)->RenderAtRect(	m_displayDevice,
+																																															wBuf,
+																																															NAME_START,
+																																															TITLEBAR_ROW,
+																																															TEXTBOX_RIGHT,
+																																															VALUE_AUTO,
+																																															XBFONT_TRUNCATED );
+	}
 
 
-    // Render the menu items
-  m_fontSet.SmallThinFont().Begin();
+	if( CheckResourceValidity( SKINELEMENT_STARTMENU_BODY_TEXT ) ) 
+	{
+		WCHAR wBuf[256];
+		const CSkinText *t = g_loadedSkin->GetSkinElementText(SKINELEMENT_STARTMENU_BODY_TEXT);
+
+			// Render the menu items
     std::vector< std::pair<CStdString,UINT32> >::iterator i = m_menuItems.begin();
     for( UINT32 y = 0; i != m_menuItems.end(); ++i, y += fontHeight )
     {
       mbstowcs( wBuf, (*i).first.c_str(), 256 );
-      m_fontSet.SmallThinFont().DrawText( NAME_START,
-                                          FIRSTDATA_ROW + y,
-                                          g_loadedSkin->GetSkinColor(COLOR_STARTMENU_BODY_TEXT),
-                                          wBuf,
-                                          XBFONT_TRUNCATED,
-                                          TEXTBOX_RIGHT - (NAME_START+COLUMN_PADDING) );
-    }
-  m_fontSet.SmallThinFont().End();
+			t->RenderAtRect(	m_displayDevice,
+												wBuf,
+												NAME_START,
+												FIRSTDATA_ROW + y,
+												TEXTBOX_RIGHT,
+												VALUE_AUTO,
+												XBFONT_TRUNCATED );
+		}
+	}
 
   if( flipOnCompletion )
 	  m_displayDevice->Present( NULL, NULL, NULL, NULL );	

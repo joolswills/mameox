@@ -8,7 +8,7 @@
 
 //= I N C L U D E S ====================================================
 #include "BaseView.h"
-#include "SkinResource.h"
+#include "Skin.h"
 
 //= D E F I N E S ======================================================
 typedef enum tvcalibrationstep
@@ -36,7 +36,7 @@ public:
 		// Constructor
 		//------------------------------------------------------------
   CTVCalibrationScreen( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet ) :
-    CBaseView( displayDevice, fontSet, RESOURCE_INVALID )
+    CBaseView( displayDevice, fontSet, SKINRESOURCE_INVALID )
   {
       Reset();
   }

@@ -312,102 +312,89 @@ void CVirtualKeyboardView::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     //-- Render the highlight bar for the selected item -------------------------------------
   FLOAT selectedItemYPos = (fontHeight * (UINT32)m_cursorPositionY);
 
-  m_displayDevice->SetTexture( 0, NULL );
-  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-  m_displayDevice->SetRenderState( D3DRS_SRCBLEND,         D3DBLEND_SRCALPHA );
-  m_displayDevice->SetRenderState( D3DRS_DESTBLEND,        D3DBLEND_INVSRCALPHA );
-  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
+	if( CheckResourceValidity( SKINELEMENT_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR ) )
+	{
+		FLOAT left, top, right, bottom;
 
-    // Highlight the entire bar for cancel/ok
-  if( m_cursorPositionY >= 4 )
-  {
-    m_displayDevice->Begin( D3DPT_QUADLIST );
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR) );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR) );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR) );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos + fontHeight, 1.0f, 1.0f );
+		if( m_cursorPositionY >= 4 )
+		{
+				// Highlight the entire bar for cancel/ok
+			left = HIGHLIGHTBAR_LEFT;
+			top = FIRSTDATA_ROW + selectedItemYPos;
+			right = HIGHLIGHTBAR_RIGHT;
+			bottom = FIRSTDATA_ROW + selectedItemYPos + fontHeight;
+		}
+		else
+		{
+				// Highlight only the selected letter
+			FLOAT selectedItemXPos = (characterWidth * (UINT32)m_cursorPositionX) - (CHAR_PADDING / 2.0f);
+			left = DATA_START + selectedItemXPos;
+			top = FIRSTDATA_ROW + selectedItemYPos;
+			right = DATA_START + selectedItemXPos + characterWidth + 1;
+			bottom = FIRSTDATA_ROW + selectedItemYPos + fontHeight + 1;
+		}
 
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR) );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos + fontHeight, 1.0f, 1.0f );
-    m_displayDevice->End();
-  }
-  else
-  {
-      // Highlight only the selected letter
-    FLOAT selectedItemXPos = (characterWidth * (UINT32)m_cursorPositionX) - (CHAR_PADDING / 2.0f);
-    m_displayDevice->Begin( D3DPT_QUADLIST );
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR) );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 
-                                        DATA_START + selectedItemXPos, 
-                                        FIRSTDATA_ROW + selectedItemYPos, 
-                                        1.0f, 
-                                        1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR) );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 
-                                        DATA_START + selectedItemXPos + characterWidth + 1, 
-                                        FIRSTDATA_ROW + selectedItemYPos, 
-                                        1.0f, 
-                                        1.0f );
-      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR) );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 
-                                        DATA_START + selectedItemXPos + characterWidth + 1, 
-                                        FIRSTDATA_ROW + selectedItemYPos + fontHeight + 1, 
-                                        1.0f, 
-                                        1.0f );
-
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR) );
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 
-                                        DATA_START + selectedItemXPos, 
-                                        FIRSTDATA_ROW + selectedItemYPos + fontHeight + 1, 
-                                        1.0f, 
-                                        1.0f );
-    m_displayDevice->End();
+		g_loadedSkin->GetSkinElementHighlightbar(SKINELEMENT_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR)->RenderAtRect(	m_displayDevice,
+																																																						left,
+																																																						top,
+																																																						right,
+																																																						bottom );
   }
 
-    // Render the data
-  WCHAR wBuf[256];
-  m_fontSet.FixedWidthFont().Begin();
+
+	
+	if( CheckResourceValidity( SKINELEMENT_VIRTUALKEYBOARD_HEADER_TEXT ) )
+	{
+	  WCHAR wBuf[256];
     mbstowcs( wBuf, &m_data.c_str()[m_dataDrawStartPosition], 256 );
-    m_fontSet.FixedWidthFont().DrawText( NAME_START,
-                                        TITLEBAR_ROW,
-                                        g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_TITLEBAR_TEXT),
-                                        wBuf,
-                                        XBFONT_TRUNCATED,
-                                        TEXTBOX_RIGHT - NAME_START );
-  m_fontSet.FixedWidthFont().End();
 
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_VIRTUALKEYBOARD_HEADER_TEXT)->RenderAtRect(	m_displayDevice,
+																																															wBuf,
+																																															NAME_START,
+																																															TITLEBAR_ROW,
+																																															TEXTBOX_RIGHT,
+																																															TITLEBAR_ROW + 20,
+																																															XBFONT_TRUNCATED );
+	}
+
+	if( CheckResourceValidity( SKINELEMENT_VIRTUALKEYBOARD_BODY_TEXT ) )
+	{
+		const CSkinText *t = g_loadedSkin->GetSkinElementText(SKINELEMENT_VIRTUALKEYBOARD_BODY_TEXT);
 
     // Render the virtual keys
-  m_fontSet.FixedWidthFont().Begin();
     for( UINT32 y = 0; y < 4; ++y )
     {
       for( UINT32 x = 0; x < wcslen(g_keyboardData[y]); ++x )
       {
+				WCHAR wBuf[4];
         wBuf[1] = L'\0';
         wBuf[0] = g_keyboardData[y][x];
-        m_fontSet.FixedWidthFont().DrawText( DATA_START + (characterWidth * x) + (CHAR_PADDING / 2.0f), 
-                                            FIRSTDATA_ROW + (fontHeight * y),
-                                            g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_TEXT),
-                                            wBuf );
+
+				t->RenderAtRect(	m_displayDevice, 
+													wBuf,
+													DATA_START + (characterWidth * x) + (CHAR_PADDING / 2.0f), 
+													FIRSTDATA_ROW + (fontHeight * y),
+													DATA_START + (characterWidth * (x+1)) + (CHAR_PADDING / 2.0f), 
+													FIRSTDATA_ROW + (fontHeight * (y+1)) );
       }
     }
 
-    m_fontSet.FixedWidthFont().DrawText( DATA_START,
-                                        FIRSTDATA_ROW + (fontHeight * 4),
-                                        g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_TEXT),
-                                        L"Cancel" );
-    
-    m_fontSet.FixedWidthFont().DrawText( DATA_START,
-                                        FIRSTDATA_ROW + (fontHeight * 5),
-                                        g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_TEXT),
-                                        L"OK" );
-  m_fontSet.FixedWidthFont().End();
+
+		t->RenderAtRect(	m_displayDevice, 
+											L"Cancel",
+											DATA_START,
+											FIRSTDATA_ROW + (fontHeight * 4),
+											VALUE_UNBOUNDED,
+											VALUE_UNBOUNDED );
+
+
+		t->RenderAtRect(	m_displayDevice, 
+											L"OK",
+											DATA_START,
+											FIRSTDATA_ROW + (fontHeight * 5),
+											VALUE_UNBOUNDED,
+											VALUE_UNBOUNDED );
+	}
 
   if( flipOnCompletion )
 	  m_displayDevice->Present( NULL, NULL, NULL, NULL );	

@@ -1256,9 +1256,6 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
   pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
   pD3DDevice->SetRenderState( D3DRS_SRCBLEND,         D3DBLEND_SRCALPHA );
   pD3DDevice->SetRenderState( D3DRS_DESTBLEND,        D3DBLEND_INVSRCALPHA );
-	pD3DDevice->SetRenderState( D3DRS_ALPHATESTENABLE,  TRUE );
-  pD3DDevice->SetRenderState( D3DRS_ALPHAFUNC,        D3DCMP_GREATEREQUAL );
-  pD3DDevice->SetRenderState( D3DRS_ALPHAREF,         0x08 );
   pD3DDevice->SetRenderState( D3DRS_ZENABLE,          FALSE );
 
     // Set up texture engine
@@ -1278,11 +1275,12 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 	D3DCOLOR normalTextColor = D3DCOLOR_XRGB( 0, 0, 0 );
 	D3DCOLOR importantTextColor = D3DCOLOR_XRGB( 90, 105, 195 );
 
-	if( g_loadedSkin )
-	{
-		normalTextColor = g_loadedSkin->GetSkinColor( COLOR_SPLASHSCREEN_TEXT );
-		importantTextColor = g_loadedSkin->GetSkinColor( COLOR_SPLASHSCREEN_IMPORTANT_TEXT );
-	}
+	if( CheckResourceValidity(SKINELEMENT_SPLASHSCREEN_TEXT) )
+		normalTextColor = g_loadedSkin->GetSkinElementText(SKINELEMENT_SPLASHSCREEN_TEXT)->m_color;
+
+
+	if( CheckResourceValidity(SKINELEMENT_SPLASHSCREEN_IMPORTANT_TEXT) )
+		importantTextColor = g_loadedSkin->GetSkinElementText( SKINELEMENT_SPLASHSCREEN_IMPORTANT_TEXT )->m_color;
 
     //-- Set up the credits ------------------------------------------
   #define CREDITS_FRAMES_PER_STEP     0.5f;
@@ -1337,12 +1335,11 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 
 
     pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-	  pD3DDevice->SetRenderState( D3DRS_ALPHATESTENABLE, FALSE );
-		g_loadedSkin->SelectSkinResourceTexture( pD3DDevice, ASSET_SPLASH_BACKDROP );
+		g_loadedSkin->SelectSkinTexture( pD3DDevice, ASSET_SPLASH_BACKDROP );
     pD3DDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
     pD3DDevice->Begin( D3DPT_QUADLIST );
 		{
-			const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( ASSET_SPLASH_BACKDROP );
+			const CSkinSpriteResource *desc = g_loadedSkin->GetSkinSpriteResource( ASSET_SPLASH_BACKDROP );
 
       pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_top );
       pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, 0.0f, 0.0f, 1.0f, 1.0f );
@@ -1364,7 +1361,6 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
     if( creditsPosition >= creditsLength )
       creditsPosition = (-(CREDITSBOX_RIGHT - CREDITSBOX_LEFT) + 1.0f);
 
-	  pD3DDevice->SetRenderState( D3DRS_ALPHATESTENABLE,  TRUE );
     pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
 	  pD3DDevice->SetTexture( 0, creditsTexture );
     pD3DDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
@@ -1549,11 +1545,11 @@ inline void RenderMessageBackdrop( LPDIRECT3DDEVICE8 pD3DDevice )
   pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
 
 
-	g_loadedSkin->SelectSkinResourceTexture( pD3DDevice, ASSET_MESSAGE_BACKDROP );
+	g_loadedSkin->SelectSkinTexture( pD3DDevice, ASSET_MESSAGE_BACKDROP );
   pD3DDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX0 );
   pD3DDevice->Begin( D3DPT_QUADLIST );
 	{
-		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( ASSET_MESSAGE_BACKDROP );
+		const CSkinSpriteResource *desc = g_loadedSkin->GetSkinSpriteResource( ASSET_MESSAGE_BACKDROP );
 
     FLOAT xPercentage, yPercentage;
     GetScreenUsage( &xPercentage, &yPercentage );
@@ -1589,8 +1585,8 @@ void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 	RenderMessageBackdrop( pD3DDevice );
 
 	D3DCOLOR textColor = D3DCOLOR_XRGB( 0, 0, 0 );
-	if( g_loadedSkin )
-		textColor = g_loadedSkin->GetSkinColor(COLOR_MESSAGESCREEN_TEXT);
+	if( CheckResourceValidity(SKINELEMENT_MESSAGESCREEN_TEXT) )
+		textColor = g_loadedSkin->GetSkinElementText(SKINELEMENT_MESSAGESCREEN_TEXT)->m_color;
 
   g_fontSet.DefaultFont().Begin();
 		g_fontSet.DefaultFont().DrawText( 320, 
@@ -1624,8 +1620,8 @@ void DrawProgressbarMessage( LPDIRECT3DDEVICE8 pD3DDevice, const char *message, 
 
 	g_fontSet.DefaultFont().Begin();	
 		D3DCOLOR textColor = D3DCOLOR_XRGB( 0, 0, 0 );
-		if( g_loadedSkin )
-			textColor = g_loadedSkin->GetSkinColor(COLOR_MESSAGESCREEN_TEXT);
+		if( CheckResourceValidity(SKINELEMENT_MESSAGESCREEN_TEXT) )
+			textColor = g_loadedSkin->GetSkinElementText(SKINELEMENT_MESSAGESCREEN_TEXT)->m_color;
 
     if( message )
     {
@@ -1651,11 +1647,13 @@ void DrawProgressbarMessage( LPDIRECT3DDEVICE8 pD3DDevice, const char *message, 
 		D3DCOLOR barColor = D3DCOLOR_XRGB( 110, 120, 200 );
 		D3DCOLOR backgroundColor = D3DCOLOR_RGBA( 190, 190, 190, 100 );
 
-		if( g_loadedSkin )
+
+		if( CheckResourceValidity(SKINELEMENT_MESSAGESCREEN_PROGRESSBAR) )
 		{
-			endColor = g_loadedSkin->GetSkinColor(COLOR_MESSAGESCREEN_PROGRESSBAR_END);
-			barColor = g_loadedSkin->GetSkinColor(COLOR_MESSAGESCREEN_PROGRESSBAR_BAR);
-			backgroundColor = g_loadedSkin->GetSkinColor(COLOR_MESSAGESCREEN_PROGRESSBAR_BACKGROUND);
+			const CSkinProgressbar *b = g_loadedSkin->GetSkinElementProgressbar(SKINELEMENT_MESSAGESCREEN_PROGRESSBAR);
+			endColor = b->m_endColor;
+			barColor = b->m_barColor;
+			backgroundColor = b->m_backgroundColor;
 		}
 
     #define PROGRESSBAR_WIDTH         410

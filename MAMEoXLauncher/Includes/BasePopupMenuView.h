@@ -11,7 +11,7 @@
 
 #include "BaseMenuView.h"
 #include "StdString.h"
-#include "SkinResource.h"
+#include "Skin.h"
 
 //= D E F I N E S ======================================================
 typedef enum MenuState

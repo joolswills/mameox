@@ -10,25 +10,13 @@
 //= I N C L U D E S ====================================================
 #include "ListView.h"
 #include "BaseMenuView.h"
-#include "SkinResource.h"
+#include "Skin.h"
 #include "MAMEoX.h"
 
 #include <vector>
 
 //= D E F I N E S ======================================================
 #define INVALID_ROM_INDEX               0xFFFFFFFF
-
-
-  // Layout for the list rendering
-#undef LISTPOS_LEFT
-#undef LISTPOS_TOP
-#undef LISTPOS_RIGHT
-#undef LISTPOS_BOTTOM
-#define LISTPOS_LEFT    31
-#define LISTPOS_TOP     95
-#define LISTPOS_RIGHT   608
-#define LISTPOS_BOTTOM  451
-
 
   //! \enum   ROMStatus
   //! \brief  Enumerates the various working states for the ROMs
@@ -82,10 +70,6 @@ public:
       m_numDrivers = numDrivers;
     if( !m_driverInfoList )
       m_driverInfoList = drivers;
-
-    RECT area = { LISTPOS_LEFT, LISTPOS_TOP, LISTPOS_RIGHT, LISTPOS_BOTTOM };
-    m_menuRenderer = new CBaseMenuView( displayDevice, fontSet, area );
-    assert( m_menuRenderer );
 	}
 
 		//------------------------------------------------------------
@@ -93,7 +77,6 @@ public:
 		//------------------------------------------------------------
   ~CROMListScreen( void ) {
     SAFE_RELEASE( m_screenshotTexture );
-    delete m_menuRenderer;
   }
 
 		//------------------------------------------------------------
@@ -322,8 +305,6 @@ protected:
 
   BOOL                  m_gameSelected;             //!<  Whether or not the user has selected a game
   BOOL                  m_shouldGenerateROMList;    //!<  Whether or not the main() funct should call GenerateROMList for us (to render directly to the screen)
-
-  CBaseMenuView         *m_menuRenderer;            //!<  Resizable menu renderer
 
   LPDIRECT3DTEXTURE8    m_screenshotTexture;          //!<  Texture for the currently loaded screenshot image
   RECT                  m_screenshotRect;             //!<  Rect containing the size of the screenshot

@@ -11,7 +11,7 @@
 
 #include "BaseView.h"
 #include "StdString.h"
-#include "SkinResource.h"
+#include "Skin.h"
 
 //= D E F I N E S ======================================================
 
@@ -28,9 +28,21 @@ public:
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-  CBaseMenuView( LPDIRECT3DDEVICE8 displayDevice, CFontSet &fontSet, const RECT &area ) :
-    CBaseView( displayDevice, fontSet, RESOURCE_INVALID ) {
-      SetRect( area );
+  CBaseMenuView( LPDIRECT3DDEVICE8 displayDevice, CFontSet &fontSet ) :
+          CBaseView( displayDevice, fontSet, SKINRESOURCE_INVALID ) 
+  {
+    memset( &m_titleArea, 0, sizeof(m_titleArea) );
+    memset( &m_bodyArea, 0, sizeof(m_bodyArea) );
+    memset( &m_footerArea, 0, sizeof(m_footerArea) );
+  }
+
+		//------------------------------------------------------------
+		// Constructor
+		//------------------------------------------------------------
+  CBaseMenuView( LPDIRECT3DDEVICE8 displayDevice, CFontSet &fontSet, const RECT &totalArea ) :
+          CBaseView( displayDevice, fontSet, SKINRESOURCE_INVALID ) 
+  {
+		SetRect( totalArea );
   }
 
 
@@ -44,16 +56,28 @@ public:
 		m_titleArea.bottom = area.top;
 
 		if( CheckResourceValidity( SPRITE_MENU_TITLEBAR_CENTER ) )
-			m_titleArea.bottom += g_loadedSkin->GetSkinResourceInfo( SPRITE_MENU_TITLEBAR_CENTER )->GetHeight();
+			m_titleArea.bottom += g_loadedSkin->GetSkinSpriteResource( SPRITE_MENU_TITLEBAR_CENTER )->GetHeight();
 
 		m_bodyArea.top = m_titleArea.bottom;
 		m_bodyArea.bottom = area.bottom;
 
 		if( CheckResourceValidity( SPRITE_MENU_FOOTER_CENTER ) )
-			m_bodyArea.bottom -= g_loadedSkin->GetSkinResourceInfo( SPRITE_MENU_FOOTER_CENTER )->GetHeight();
+			m_bodyArea.bottom -= g_loadedSkin->GetSkinSpriteResource( SPRITE_MENU_FOOTER_CENTER )->GetHeight();
 
-    m_titleArea.left = m_bodyArea.left = area.left;
-    m_titleArea.right = m_bodyArea.right = area.right;
+    m_footerArea.top = m_bodyArea.bottom;
+    m_footerArea.bottom = area.bottom;
+
+
+    m_footerArea.left = m_titleArea.left = m_bodyArea.left = area.left;
+    m_footerArea.right = m_titleArea.right = m_bodyArea.right = area.right;
+  }
+
+		//------------------------------------------------------------
+		// SetBodyRect
+		//! \brief		Sets only the body area for the menu
+		//------------------------------------------------------------
+  virtual void SetBodyRect( const RECT &area ) {
+    m_bodyArea = area;
   }
 
     // This base view can be used independently, so the pure virtuals from
@@ -82,8 +106,10 @@ public:
 	    m_displayDevice->Present( NULL, NULL, NULL, NULL );	
   }
 
-	const RECT &GetTitleArea( void ) const { return m_titleArea; }
-	const RECT &GetBodyArea( void ) const { return m_bodyArea; }
+	const RECT &GetTitleArea( void )  const { return m_titleArea; }
+	const RECT &GetBodyArea( void )   const { return m_bodyArea; }
+	const RECT &GetFooterArea( void ) const { return m_footerArea; }
+
 protected:
 
 		//------------------------------------------------------------
@@ -94,5 +120,6 @@ protected:
 
   RECT                      m_titleArea;      //!<  Rect enclosing the are to be used for title rendering
   RECT                      m_bodyArea;       //!<  Rect enclosing the area to be used for the body text
+  RECT                      m_footerArea;     //!<  Rect enclosing the area to be used for the body text
 };
 

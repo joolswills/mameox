@@ -11,7 +11,7 @@
 #include "ListView.h"
 #include "BaseMenuView.h"
 #include "VirtualKeyboardView.h"
-#include "SkinResource.h"
+#include "Skin.h"
 
 extern "C" {
 #include "mame.h"

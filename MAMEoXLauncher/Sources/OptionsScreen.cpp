@@ -31,63 +31,18 @@ extern "C" {
 #define VIRTUALKEYBOARD_WIDTH     257
 #define VIRTUALKEYBOARD_HEIGHT    143
 
+#define STARTPAGE()                       if( CheckResourceValidity( SKINELEMENT_OPTIONSSCREEN_BODY_SCROLLAREA_SINGLEROW_OPTIONNAME_TEXT ) && CheckResourceValidity( SKINELEMENT_OPTIONSSCREEN_BODY_SCROLLAREA_SINGLEROW_OPTIONVALUE_TEXT ) ) { \
+																						DWORD i = 0; \
+																						const CSkinScrollArea *area = g_loadedSkin->GetSkinElementScrollArea( SKINELEMENT_OPTIONSSCREEN_BODY_SCROLLAREA ); \
+																						const CSkinText *nameText = g_loadedSkin->GetSkinElementText( SKINELEMENT_OPTIONSSCREEN_BODY_SCROLLAREA_SINGLEROW_OPTIONNAME_TEXT ); \
+																						const CSkinText *valText = g_loadedSkin->GetSkinElementText( SKINELEMENT_OPTIONSSCREEN_BODY_SCROLLAREA_SINGLEROW_OPTIONVALUE_TEXT ); \
+																						m_maxPageSize = area->GetHeight() / area->m_singleRowHeight;
 
-  // Layout for the list rendering
-#define LISTPOS_LEFT    31
-#define LISTPOS_TOP     95
-#define LISTPOS_RIGHT   608
-#define LISTPOS_BOTTOM  451
+#define DRAWITEM( _name__, _val__ )					nameText->RenderAsOffset( m_displayDevice, _name__, area->m_left, area->m_top + (i * area->m_singleRowHeight) ); \
+																						nameText->RenderAsOffset( m_displayDevice, _val__, area->m_left, area->m_top + (i * area->m_singleRowHeight) ); \
+																						++i;
 
-#define TITLEBAR_ROW          99
-#define FIRSTDATA_ROW         124
-
-#define SPACER_WIDTH          2
-
-#define HIGHLIGHTBAR_LEFT     34
-#define HIGHLIGHTBAR_RIGHT    605
-#define NAME_START            42
-#define VALUE_START           248
-#define TEXTBOX_RIGHT         604   // The right edge of the text box
-#define COLUMN_PADDING        9     // Number of pixels to subtract from the column width before truncating text
-
-
-#define TRIGGER_BOTTOM        450
-#define TRIGGER_TOP           TRIGGER_BOTTOM - desc->GetHeight()
-#define LEFTTRIGGER_LEFT      32
-#define RIGHTTRIGGER_RIGHT    607
-
-  //-- Button help messages ------
-#define HELP_START_ICON_X   200
-#define HELP_START_ICON_Y   40
-#define HELP_START_TEXT_X   (HELP_START_ICON_X + desc->GetWidth() + 4)
-#define HELP_START_TEXT_Y   (HELP_START_ICON_Y + 5)
-
-  // Text offsets for left/right trigger help messages
-/*
-#define LEFTTRIGGER_LINEONE_START     58
-#define LEFTTRIGGERTEXT_START     65
-
-#define RIGHTTRIGGER_LINEONE_END      582
-#define RIGHTTRIGGER_LINETWO_END      574
-
-#define TRIGGERTEXT_LINEONE_ROW       419
-#define TRIGGERTEXT_LINETWO_ROW       432
-*/
-
-#define LEFTTRIGGERTEXT_START             62
-#define RIGHTTRIGGERTEXT_END              579
-#define TRIGGERTEXT_ROW                   426
-
-#define STARTPAGE()                       DWORD i = 0; FLOAT fontHeight = m_fontSet.SmallThinFontHeight()
-#define DRAWITEM( _name__, _val__ )       m_fontSet.SmallThinFont().DrawText( NAME_START,   FIRSTDATA_ROW+(i*fontHeight), g_loadedSkin->GetSkinColor(COLOR_OPTIONSSCREEN_BODY_TEXT), _name__, XBFONT_TRUNCATED, VALUE_START - (NAME_START+COLUMN_PADDING) ); \
-                                          m_fontSet.SmallThinFont().DrawText( VALUE_START,  FIRSTDATA_ROW+(i*fontHeight), g_loadedSkin->GetSkinColor(COLOR_OPTIONSSCREEN_BODY_TEXT), _val__, XBFONT_TRUNCATED, TEXTBOX_RIGHT - (VALUE_START+COLUMN_PADDING) ); \
-                                          ++i;
-#define ENDPAGE()
-
-
-
-	// Maximum number of items to render on the screen at once
-#define MAXPAGESIZE							18
+#define ENDPAGE()													}
 
 
 	// Number of seconds between valid DPAD readings
@@ -171,13 +126,6 @@ COptionsScreen::COptionsScreen( LPDIRECT3DDEVICE8	displayDevice,
   RECT area = { 320 - (VIRTUALKEYBOARD_WIDTH>>1), 240 - (VIRTUALKEYBOARD_HEIGHT >> 1), 
                 320 + (VIRTUALKEYBOARD_WIDTH>>1), 240 + (VIRTUALKEYBOARD_HEIGHT >> 1) };
   m_virtualKeyboard = new CVirtualKeyboardView( displayDevice, fontSet, area );
-
-  area.left = LISTPOS_LEFT;
-  area.top = LISTPOS_TOP;
-  area.right = LISTPOS_RIGHT;
-  area.bottom = LISTPOS_BOTTOM;
-  m_menuRenderer = new CBaseMenuView( displayDevice, fontSet, area );
-  assert( m_menuRenderer );
 }
 
 //---------------------------------------------------------------------
@@ -327,257 +275,62 @@ void COptionsScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 		return;
 
   RenderBackdrop();
-  m_menuRenderer->Draw( FALSE, FALSE );
+	if( CheckResourceValidity( SKINELEMENT_OPTIONSSCREEN_FOOTER ) )
+		g_loadedSkin->GetSkinElement( SKINELEMENT_OPTIONSSCREEN_FOOTER )->Render( m_displayDevice );
 
-	if( CheckResourceValidity( SPRITE_BUTTON_START ) )
+	if( CheckResourceValidity( SKINELEMENT_OPTIONSSCREEN_BODY ) )
+		g_loadedSkin->GetSkinElement( SKINELEMENT_OPTIONSSCREEN_BODY )->Render( m_displayDevice );
+
+	if( CheckResourceValidity( SKINELEMENT_OPTIONSSCREEN_HEADER ) )
+		g_loadedSkin->GetSkinElement( SKINELEMENT_OPTIONSSCREEN_HEADER )->Render( m_displayDevice );
+
+
+
+		//-- Draw the help text --------------------------------------------
+
+		// ** Start ** //
+	if( CheckResourceValidity(SKINELEMENT_OPTIONSSCREEN_BUTTONINFO_START) )
+		g_loadedSkin->GetSkinElementButtonInfo(SKINELEMENT_OPTIONSSCREEN_BUTTONINFO_START)->Render( m_displayDevice, L"Menu" );
+
+
+
+		//--- Draw the title bar text --------------------------------------
+	if( CheckResourceValidity( SKINELEMENT_OPTIONSSCREEN_HEADER_TEXT ) )
+		g_loadedSkin->GetSkinElementText( SKINELEMENT_OPTIONSSCREEN_HEADER_TEXT )->Render( m_displayDevice, m_pageData[m_pageNumber].m_title );
+
+
+
+
+		//--- Draw the body text -------------------------------------------
+	if( CheckResourceValidity( SKINELEMENT_OPTIONSSCREEN_BODY_SCROLLAREA ) )
 	{
+		const CSkinScrollArea *area = g_loadedSkin->GetSkinElementScrollArea( SKINELEMENT_OPTIONSSCREEN_BODY_SCROLLAREA );
+		m_maxPageSize = area->GetHeight() / area->m_singleRowHeight;
 
-			//-- Draw the help text --------------------------------------------
-		m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
-		m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
-		m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
-		m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
+			// Render the highlight bar for the selected item
+		FLOAT selectedItemYPos = area->m_top + (area->m_singleRowHeight * (UINT32)m_cursorPosition);
+		if( area->m_highlightBar )
+			area->m_highlightBar->RenderAsOffset( m_displayDevice, area->m_left, selectedItemYPos );
 
-		m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-		m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-		m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-		m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
-
-		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_BUTTON_START );
-		m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
+			// Draw the spacer
+		if( CheckResourceValidity( SKINELEMENT_OPTIONSSCREEN_BODY_DIVIDER ) )
+			g_loadedSkin->GetSkinElement(SKINELEMENT_OPTIONSSCREEN_BODY_DIVIDER)->Render( m_displayDevice );
 
 
-		FLOAT ulX, ulY;
+		m_pageData[m_pageNumber].m_drawFunct( this );
 
-			//-- START button ------------------------------------------------
-		ulX = HELP_START_ICON_X;
-		ulY = HELP_START_ICON_Y;
-		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_BUTTON_START );
-		desc->Render( m_displayDevice, ulX, ulY );
+    //-- Draw the trigger icons -----------------------------------------------------------
 
-			// Now render the text messages
-		m_fontSet.LargeThinFont().Begin();
-			m_fontSet.LargeThinFont().DrawText( HELP_START_TEXT_X,
-																					HELP_START_TEXT_Y,
-																					g_loadedSkin->GetSkinColor(COLOR_OPTIONSSCREEN_BUTTONICON_TEXT),
-																					L"Menu" );
-		m_fontSet.LargeThinFont().End();
+			// Calculate the previous and next page indices
+		UINT32 prevPageIndex = m_pageNumber ? m_pageNumber - 1 : OPTPAGE_LAST - 1;
+		UINT32 nextPageIndex = m_pageNumber < OPTPAGE_LAST - 1 ? m_pageNumber + 1 : 0;
+
+		if( CheckResourceValidity( SKINELEMENT_OPTIONSSCREEN_BODY_TRIGGERINFO_LEFT ) )
+			g_loadedSkin->GetSkinElementTriggerInfo(SKINELEMENT_OPTIONSSCREEN_BODY_TRIGGERINFO_LEFT)->Render( m_displayDevice, m_pageData[prevPageIndex].m_title );
+
+		if( CheckResourceValidity( SKINELEMENT_OPTIONSSCREEN_BODY_TRIGGERINFO_RIGHT ) )
+			g_loadedSkin->GetSkinElementTriggerInfo(SKINELEMENT_OPTIONSSCREEN_BODY_TRIGGERINFO_RIGHT)->Render( m_displayDevice, m_pageData[nextPageIndex].m_title );
 	}
-
-  FLOAT fontHeight = m_fontSet.SmallThinFontHeight();
-  FLOAT selectedItemYPos = (fontHeight * (UINT32)m_cursorPosition);
-
-    //-- Render the highlight bar for the selected item -------------------------------------
-  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-  m_displayDevice->SetRenderState( D3DRS_SRCBLEND,         D3DBLEND_SRCALPHA );
-  m_displayDevice->SetRenderState( D3DRS_DESTBLEND,        D3DBLEND_INVSRCALPHA );
-  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
-
-  m_displayDevice->Begin( D3DPT_QUADLIST );
-		m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_OPTIONSSCREEN_BODY_HIGHLIGHTBAR) );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
-    
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_OPTIONSSCREEN_BODY_HIGHLIGHTBAR) );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
-    
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_OPTIONSSCREEN_BODY_HIGHLIGHTBAR) );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos + fontHeight, 1.0f, 1.0f );
-
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_OPTIONSSCREEN_BODY_HIGHLIGHTBAR) );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos + fontHeight, 1.0f, 1.0f );
-  m_displayDevice->End();
-
-    // Draw the vertical spacers
-  m_displayDevice->Begin( D3DPT_QUADLIST );
-
-    #define DRAWSPACER( spacerLeft ) { \
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_OPTIONSSCREEN_BODY_DIVIDER) ); \
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft), LISTPOS_TOP + 1, 1.0f, 1.0f ); \
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_OPTIONSSCREEN_BODY_DIVIDER) ); \
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft) + SPACER_WIDTH, LISTPOS_TOP + 1, 1.0f, 1.0f ); \
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_OPTIONSSCREEN_BODY_DIVIDER) ); \
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft) + SPACER_WIDTH, LISTPOS_BOTTOM - 1, 1.0f, 1.0f ); \
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_OPTIONSSCREEN_BODY_DIVIDER) ); \
-      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft), LISTPOS_BOTTOM - 1, 1.0f, 1.0f ); \
-    }
-
-      // Value
-    DRAWSPACER( VALUE_START - 6 )
-
-  m_displayDevice->End();
-
-    //-- Render the page's text -----------------------------------------------------------
-	m_fontSet.SmallThinFont().Begin();
-
-    m_fontSet.SmallThinFont().DrawText( NAME_START,
-                                        TITLEBAR_ROW,
-																				g_loadedSkin->GetSkinColor( COLOR_OPTIONSSCREEN_TITLEBAR_TEXT ),
-                                        m_pageData[m_pageNumber].m_title,
-                                        XBFONT_TRUNCATED,
-                                        TEXTBOX_RIGHT - (NAME_START+COLUMN_PADDING) );
-
-
-    m_pageData[m_pageNumber].m_drawFunct( this );
-
-	m_fontSet.SmallThinFont().End();
-
-
-    // Calculate the previous and next page indices
-  UINT32 prevPageIndex = m_pageNumber ? m_pageNumber - 1 : OPTPAGE_LAST - 1;
-  UINT32 nextPageIndex = m_pageNumber < OPTPAGE_LAST - 1 ? m_pageNumber + 1 : 0;
-
-    // Calculate the width of each trigger text item
-/*
-  UINT32 leftTriggerLineOneLength = m_fontSet.SmallThinFont().GetTextWidth( L"Left Trigger" );
-  UINT32 leftTriggerLineTwoLength = m_fontSet.SmallThinFont().GetTextWidth( m_pageData[prevPageIndex].m_title );
-  UINT32 rightTriggerLineOneLength = m_fontSet.SmallThinFont().GetTextWidth( L"Right Trigger" );
-  UINT32 rightTriggerLineTwoLength = m_fontSet.SmallThinFont().GetTextWidth( m_pageData[nextPageIndex].m_title );
-
-  FLOAT leftTriggerLength = max( leftTriggerLineOneLength, leftTriggerLineTwoLength );
-  FLOAT rightTriggerLength = max( rightTriggerLineOneLength, rightTriggerLineTwoLength );
-*/
-
-  FLOAT leftTriggerLength = m_fontSet.SmallThinFont().GetTextWidth( m_pageData[prevPageIndex].m_title );
-  FLOAT rightTriggerLength = m_fontSet.SmallThinFont().GetTextWidth( m_pageData[nextPageIndex].m_title );
-
-    //-- Render the left/right trigger icons ------------------------------------------------------
-  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
-
-	FLOAT leftTriggerIconRight, rightTriggerIconLeft;
-	if( CheckResourceValidity( SPRITE_LIST_TRIGGERICON_HEAD ) )
-	{
-		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_TRIGGERICON_HEAD );
-		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_TRIGGERICON_HEAD );
-
-		leftTriggerIconRight  = LEFTTRIGGER_LEFT + desc->GetWidth() + 1.0f;
-    rightTriggerIconLeft = RIGHTTRIGGER_RIGHT - desc->GetWidth();
-
-		desc->Render( m_displayDevice, 
-									(FLOAT)LEFTTRIGGER_LEFT, 
-									(FLOAT)TRIGGER_TOP, 
-									(FLOAT)leftTriggerIconRight, 
-									(FLOAT)TRIGGER_BOTTOM );
-
-
-				// Right trigger, same deal, but flip the textures
-		m_displayDevice->Begin( D3DPT_QUADLIST );      
-			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_right, desc->m_top );
-			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, rightTriggerIconLeft, TRIGGER_TOP, 1.0f, 1.0f );
-
-			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_top );
-			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, RIGHTTRIGGER_RIGHT, TRIGGER_TOP, 1.0f, 1.0f );
-	    
-			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_bottom );
-			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, RIGHTTRIGGER_RIGHT, TRIGGER_BOTTOM, 1.0f, 1.0f );
-
-			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_right, desc->m_bottom );
-			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, rightTriggerIconLeft, TRIGGER_BOTTOM, 1.0f, 1.0f );
-		m_displayDevice->End();
-	}
-
-	if( CheckResourceValidity( SPRITE_LIST_TRIGGERICON_CENTER ) )
-	{
-		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_TRIGGERICON_CENTER );
-		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_TRIGGERICON_CENTER );
-
-		desc->Render( m_displayDevice, 
-									leftTriggerIconRight, 
-									TRIGGER_TOP, 
-									LEFTTRIGGERTEXT_START + leftTriggerLength + 1, 
-									TRIGGER_BOTTOM );
-
-	  m_displayDevice->Begin( D3DPT_QUADLIST );
-			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_right, desc->m_top );
-			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, RIGHTTRIGGERTEXT_END - rightTriggerLength, TRIGGER_TOP, 1.0f, 1.0f );
-
-			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_top );
-			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, rightTriggerIconLeft, TRIGGER_TOP, 1.0f, 1.0f );
-	    
-			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_bottom );
-			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, rightTriggerIconLeft, TRIGGER_BOTTOM, 1.0f, 1.0f );
-
-			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_right, desc->m_bottom );
-			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, RIGHTTRIGGERTEXT_END - rightTriggerLength, TRIGGER_BOTTOM, 1.0f, 1.0f );
-		m_displayDevice->End();
-	}
-
-	if( CheckResourceValidity( SPRITE_LIST_TRIGGERICON_TAIL ) )
-	{
-		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_TRIGGERICON_TAIL );
-		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_TRIGGERICON_TAIL );
-
-		FLOAT leftTriggerIconTailRight = (LEFTTRIGGERTEXT_START + leftTriggerLength) + desc->GetWidth();
-    FLOAT rightTriggerIconTailLeft = (RIGHTTRIGGERTEXT_END - rightTriggerLength) - desc->GetWidth();
-
-
-		desc->Render( m_displayDevice, 
-									LEFTTRIGGERTEXT_START + leftTriggerLength + 1, 
-									TRIGGER_TOP, 
-									leftTriggerIconTailRight, 
-									TRIGGER_BOTTOM );
-
-
-				// Draw the right "tail"
-		m_displayDevice->Begin( D3DPT_QUADLIST );      
-			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_right, desc->m_top );
-			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, rightTriggerIconTailLeft, TRIGGER_TOP, 1.0f, 1.0f );
-
-			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_top );
-			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, rightTriggerIconTailLeft + desc->GetWidth(), TRIGGER_TOP, 1.0f, 1.0f );
-	    
-			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_left, desc->m_bottom );
-			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, rightTriggerIconTailLeft + desc->GetWidth(), TRIGGER_BOTTOM, 1.0f, 1.0f );
-
-			m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, desc->m_right, desc->m_bottom );
-			m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, rightTriggerIconTailLeft, TRIGGER_BOTTOM, 1.0f, 1.0f );
-		m_displayDevice->End();
-	}
-
-
-
-
-
-
-    // Finally, draw the text for the left/right trigger
-	m_fontSet.SmallThinFont().Begin();
-/*
-    m_fontSet.SmallThinFont().DrawText( LEFTTRIGGER_LINEONE_START, 
-                                        TRIGGERTEXT_LINEONE_ROW, 
-                                        g_loadedSkin->GetSkinColor( COLOR_OPTIONSSCREEN_BODY_TRIGGERICON_TEXT ), 
-                                        L"Left Trigger", 
-                                        0 );
-*/
-    m_fontSet.SmallThinFont().DrawText( LEFTTRIGGERTEXT_START, 
-                                        TRIGGERTEXT_ROW, 
-                                        g_loadedSkin->GetSkinColor( COLOR_OPTIONSSCREEN_BODY_TRIGGERICON_TEXT ), 
-                                        m_pageData[prevPageIndex].m_title, 
-                                        0 );
-/*
-    m_fontSet.SmallThinFont().DrawText( RIGHTTRIGGER_LINEONE_END - rightTriggerLineOneLength, 
-                                        TRIGGERTEXT_LINEONE_ROW, 
-                                        g_loadedSkin->GetSkinColor( COLOR_OPTIONSSCREEN_BODY_TRIGGERICON_TEXT ), 
-                                        L"Right Trigger", 
-                                        XBFONT_RIGHT );
-*/
-    m_fontSet.SmallThinFont().DrawText( RIGHTTRIGGERTEXT_END, 
-                                        TRIGGERTEXT_ROW, 
-                                        g_loadedSkin->GetSkinColor( COLOR_OPTIONSSCREEN_BODY_TRIGGERICON_TEXT ), 
-                                        m_pageData[nextPageIndex].m_title, 
-                                        XBFONT_RIGHT );  
-
-	m_fontSet.SmallThinFont().End();
-
-
-    // Clean up settings
-  m_displayDevice->SetTexture( 0, NULL );
-  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
 
   if( m_virtualKeyboardMode )
     m_virtualKeyboard->Draw( FALSE, FALSE );
@@ -591,19 +344,6 @@ void COptionsScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 //---------------------------------------------------------------------
 void COptionsScreen::DrawGeneralPage( void )
 {
-/*
-  options.cheat = iniFile.GetProfileInt( "General", "CheatsEnabled", FALSE );
-  cheatfile = strdup( iniFile.GetProfileString( "General", "CheatFilename", "cheat.dat" ).c_str() );
-  if( !cheatfile )
-    options.cheat = FALSE;
-  history_filename = strdup( iniFile.GetProfileString( "General", "HistoryFilename", "history.dat" ).c_str() );  
-
-    // 1 to skip the disclaimer screen at startup
-  options.skip_disclaimer = iniFile.GetProfileInt( "General", "SkipDisclaimer", FALSE );
-
-    // 1 to skip the game info screen at startup
-	options.skip_gameinfo = iniFile.GetProfileInt( "General", "SkipGameInfo", FALSE );
-*/
   STARTPAGE();
 
   DRAWITEM( L"Cheats", options.cheat ? L"Enabled" : L"Disabled" );

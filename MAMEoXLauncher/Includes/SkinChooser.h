@@ -11,8 +11,8 @@
 #include "ListView.h"
 #include "BaseMenuView.h"
 
-#include "SkinResource.h"
-#include "SkinResource.h"
+#include "Skin.h"
+#include "Skin.h"
 #include "MAMEoX.h"
 
 #include <vector>
@@ -41,13 +41,13 @@ public:
 		// Destructor
 		//------------------------------------------------------------
   ~CSkinChooser( void ) {
-		std::vector<CSkinResource*>::iterator i = m_skinResourceVector.begin();
+		std::vector<CSkin*>::iterator i = m_skinResourceVector.begin();
 		for( ; i != m_skinResourceVector.end(); ++i )
 			delete (*i);
   }
 
 	SkinOptions_t										m_options;
-	std::vector<CSkinResource*>			m_skinResourceVector;
+	std::vector<CSkin*>			m_skinResourceVector;
 };
 
 

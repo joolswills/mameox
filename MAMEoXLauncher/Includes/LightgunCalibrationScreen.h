@@ -8,7 +8,7 @@
 
 //= I N C L U D E S ====================================================
 #include "ListView.h"
-#include "SkinResource.h"
+#include "Skin.h"
 
 //= C L A S S E S ======================================================
 
@@ -24,7 +24,7 @@ public:
     // Constructor
 		//------------------------------------------------------------
 	CLightgunCalibrationScreen(  LPDIRECT3DDEVICE8 displayDevice, CFontSet &fontSet ) :
-    CListView( displayDevice, fontSet, RESOURCE_INVALID ),
+    CListView( displayDevice, fontSet, SKINRESOURCE_INVALID ),
     m_currentInputDeviceIndex( 0 ),
     m_calibrationStep( 0 ),
     m_calibrationCompleted( FALSE ),

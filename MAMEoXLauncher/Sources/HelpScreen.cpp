@@ -20,38 +20,6 @@ extern "C" {
 //= D E F I N E S ======================================================
 #define HELPFILENAME		    "D:\\Media\\help.txt"
 
-	// Maximum number of items to render on the screen at once
-#define MAXPAGESIZE							15
-
-  //--- Layout defines -----------------------------------------
-#define TITLEBAR_ROW          99
-#define FIRSTDATA_ROW         124
-
-#define NAME_COLUMN           42
-#define MANUFACTURER_COLUMN   305
-#define YEAR_COLUMN           460
-#define CLONE_COLUMN          530 
-#define TEXTBOX_RIGHT         604   // The right edge of the text box
-#define COLUMN_PADDING        9     // Number of pixels to subtract from the column width before truncating text
-
-#define SCROLLUP_TOP          122
-#define SCROLLUP_RIGHT        608
-#define SCROLLUP_LEFT         SCROLLUP_RIGHT - 32
-#define SCROLLUP_BOTTOM       SCROLLUP_TOP + 32
-
-#define SCROLLDOWN_BOTTOM     451
-#define SCROLLDOWN_TOP        SCROLLDOWN_BOTTOM - 32
-#define SCROLLDOWN_RIGHT      608
-#define SCROLLDOWN_LEFT       SCROLLDOWN_RIGHT - 32
-
-
-  //-- Button help messages ------
-#define HELP_START_ICON_X   200
-#define HELP_START_ICON_Y   40
-#define HELP_START_TEXT_X   (HELP_START_ICON_X + desc->GetWidth() + 4)
-#define HELP_START_TEXT_Y   (HELP_START_ICON_Y + 5)
-#define HELPITEM_COLOR        D3DCOLOR_XRGB( 20, 20, 20 )
-
 //= G L O B A L = V A R S ==============================================
 
 //= P R O T O T Y P E S ================================================
@@ -112,7 +80,7 @@ BOOL CHelpScreen::LoadHelpFile( void )
 		CloseHandle( hFile );
 
     m_numLinesInList = m_data.size();
-    m_maxPageSize = MAXPAGESIZE;
+    m_maxPageSize = 15;
 
 		return TRUE;
 	}
@@ -158,7 +126,13 @@ void CHelpScreen::MoveCursor( CInputManager &gp, BOOL unused )
 {
     // Keep the cursor situated at the halfway point so that any
     // DPAD movement will move the entire screen
-	DWORD pageSize = (m_data.size() < MAXPAGESIZE ? m_data.size() : MAXPAGESIZE);
+	const CSkinScrollArea *area = g_loadedSkin->GetSkinElementScrollArea( SKINELEMENT_HELPSCREEN_BODY_SCROLLAREA );
+	if( area )
+		m_maxPageSize = area->GetHeight() / area->m_singleRowHeight;
+	else
+		m_maxPageSize = 15;
+
+	DWORD pageSize = (m_data.size() < m_maxPageSize ? m_data.size() : m_maxPageSize);
   m_cursorPosition = (pageSize >> 1);
 
   CListView::MoveCursor( gp, unused );
@@ -184,114 +158,61 @@ void CHelpScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
     // Render the backdrop texture
   RenderBackdrop();
-  m_menuRenderer->Draw( FALSE, FALSE );
+
+	if( CheckResourceValidity( SKINELEMENT_HELPSCREEN_FOOTER ) )
+		g_loadedSkin->GetSkinElement( SKINELEMENT_HELPSCREEN_FOOTER )->Render( m_displayDevice );
+
+	if( CheckResourceValidity( SKINELEMENT_HELPSCREEN_BODY ) )
+		g_loadedSkin->GetSkinElement( SKINELEMENT_HELPSCREEN_BODY )->Render( m_displayDevice );
+
+	if( CheckResourceValidity( SKINELEMENT_HELPSCREEN_HEADER ) )
+		g_loadedSkin->GetSkinElement( SKINELEMENT_HELPSCREEN_HEADER )->Render( m_displayDevice );
 
 
-	if( CheckResourceValidity( SPRITE_BUTTON_START ) )
+
+
+		//-- Draw the help text --------------------------------------------
+
+		// ** Start ** //
+	if( CheckResourceValidity(SKINELEMENT_HELPSCREEN_BUTTONINFO_START) )
+		g_loadedSkin->GetSkinElementButtonInfo(SKINELEMENT_HELPSCREEN_BUTTONINFO_START)->Render( m_displayDevice, L"Menu" );
+
+
+		//-- Draw the title bar --------------------------------------------
+	if( CheckResourceValidity( SKINELEMENT_HELPSCREEN_HEADER_TEXT ) )
+		g_loadedSkin->GetSkinElementText( SKINELEMENT_HELPSCREEN_HEADER_TEXT )->Render( m_displayDevice, L"Help!" );
+
+
+	if( !CheckResourceValidity( SKINELEMENT_HELPSCREEN_BODY_SCROLLAREA ) ||
+			!CheckResourceValidity( SKINELEMENT_HELPSCREEN_BODY_SCROLLAREA_SINGLEROW_TEXT ) )
 	{
-
-			//-- Draw the help text --------------------------------------------
-		m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
-		m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
-		m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
-		m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
-
-		m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-		m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-		m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-		m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
-
-		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_BUTTON_START );
-		m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
-
-
-		FLOAT ulX, ulY;
-
-			//-- START button ------------------------------------------------
-		ulX = HELP_START_ICON_X;
-		ulY = HELP_START_ICON_Y;
-		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_BUTTON_START );
-		desc->Render( m_displayDevice, ulX, ulY );
-
-			// Now render the text messages
-		m_fontSet.LargeThinFont().Begin();
-			m_fontSet.LargeThinFont().DrawText( HELP_START_TEXT_X,
-																					HELP_START_TEXT_Y,
-																					g_loadedSkin->GetSkinColor( COLOR_HELPSCREEN_BUTTONICON_TEXT ),
-																					L"Menu" );
-		m_fontSet.LargeThinFont().End();
+		PRINTMSG(( T_INFO, "SKINELEMENT_HELPSCREEN_BODY_SCROLLAREA or SKINELEMENT_HELPSCREEN_BODY_SCROLLAREA_SINGLEROW_TEXT invalid!" ));
+		return;
 	}
 
-	m_fontSet.SmallThinFont().Begin();
-		m_fontSet.SmallThinFont().DrawText( NAME_COLUMN, 
-																				TITLEBAR_ROW, 
-																				g_loadedSkin->GetSkinColor( COLOR_HELPSCREEN_TITLEBAR_TEXT ), 
-																				L"Help!" );
-	m_fontSet.SmallThinFont().End();
 
-  m_fontSet.FixedWidthFont().Begin();
+		// Render the actual help text
+	const CSkinScrollArea *area = g_loadedSkin->GetSkinElementScrollArea( SKINELEMENT_HELPSCREEN_BODY_SCROLLAREA );
+	m_maxPageSize = area->GetHeight() / area->m_singleRowHeight;
 
-		  // Render the help text
-	  FLOAT yPos = 0.0f;
-    FLOAT pageSize = GetCurrentPageSize();
-	  UINT32 absListIDX = (UINT32)m_pageOffset;
-		D3DCOLOR textColor = g_loadedSkin->GetSkinColor( COLOR_HELPSCREEN_BODY_TEXT );
+	const CSkinText *text = g_loadedSkin->GetSkinElementText(SKINELEMENT_HELPSCREEN_BODY_SCROLLAREA_SINGLEROW_TEXT);
 
-	  for( DWORD i = 0; i < pageSize; ++i )
-	  {
-      WCHAR wBuf[256];
-		  mbstowcs( wBuf, m_data[ absListIDX++ ].c_str(), 255 );
-		  m_fontSet.FixedWidthFont().DrawText(  NAME_COLUMN,
-                                            FIRSTDATA_ROW + yPos,
-                                            textColor,
-                                            wBuf,
-                                            XBFONT_TRUNCATED,
-                                            TEXTBOX_RIGHT - (NAME_COLUMN + COLUMN_PADDING) );
-			  // Inc the Y position
-		  yPos += textHeight;
-	  }
-
-	m_fontSet.FixedWidthFont().End();
+  FLOAT pageSize = GetCurrentPageSize();
+	UINT32 absListIDX = (UINT32)m_pageOffset;
+	FLOAT yOffset = area->m_top;
+	for( UINT32 i = 0; i < pageSize; ++i, yOffset += area->m_singleRowHeight )
+	{
+    WCHAR wBuf[256];
+		mbstowcs( wBuf, m_data[ absListIDX++ ].c_str(), 255 );
+		text->RenderAsOffset( m_displayDevice, wBuf, area->m_left, yOffset );			
+	}
 
     //-- Render the scroll up and/or scroll down icons --------------------------------------------
-  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-  m_displayDevice->SetRenderState( D3DRS_SRCBLEND,         D3DBLEND_SRCALPHA );
-  m_displayDevice->SetRenderState( D3DRS_DESTBLEND,        D3DBLEND_INVSRCALPHA );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
-  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
+	if( (UINT32)m_pageOffset && CheckResourceValidity( SKINELEMENT_HELPSCREEN_BODY_SCROLLICON_UP ) )
+		g_loadedSkin->GetSkinElement( SKINELEMENT_HELPSCREEN_BODY_SCROLLICON_UP )->Render( m_displayDevice );
 
-    // Draw scroll up icon
-  if( (DWORD)m_pageOffset && CheckResourceValidity( SPRITE_LIST_SCROLLICON_UP ) )
-  {
-		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_UP );
-		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_UP );
-		desc->Render( m_displayDevice, 
-									(FLOAT)SCROLLUP_LEFT, 
-									(FLOAT)SCROLLUP_TOP, 
-									(FLOAT)SCROLLUP_RIGHT, 
-									(FLOAT)SCROLLUP_BOTTOM );
-  }
-
-  if( (DWORD)m_pageOffset < (m_numLinesInList - (DWORD)pageSize) && CheckResourceValidity( SPRITE_LIST_SCROLLICON_DOWN ) )
-  {
-		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_DOWN );
-		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_DOWN );
-		desc->Render( m_displayDevice, 
-									(FLOAT)SCROLLDOWN_LEFT, 
-									(FLOAT)SCROLLDOWN_TOP, 
-									(FLOAT)SCROLLDOWN_RIGHT, 
-									(FLOAT)SCROLLDOWN_BOTTOM );
-  }
-
-  m_displayDevice->SetTexture( 0, NULL );
-  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
-
+	if( (UINT32)m_pageOffset < (m_numLinesInList - (UINT32)pageSize) && CheckResourceValidity( SKINELEMENT_HELPSCREEN_BODY_SCROLLICON_DOWN ) )
+		g_loadedSkin->GetSkinElement( SKINELEMENT_HELPSCREEN_BODY_SCROLLICON_DOWN )->Render( m_displayDevice );
 
 
   if( flipOnCompletion )

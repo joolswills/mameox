@@ -18,26 +18,6 @@ extern "C" {
 
 //= D E F I N E S ======================================================
 
-	// Timeout values for the cursor movement acceleration bands
-	// Values are measured in seconds
-#define SBTIMEOUT_FASTEST				3.0f
-#define SBTIMEOUT_FASTER				2.0f
-#define SBTIMEOUT_FAST					1.0f
-
-	// Multiplier values for the cursor movement acceleration bands
-	// Values are multiplied against the cursorVelocity
-#define SBMULTIPLIER_FASTEST		5.0f
-#define SBMULTIPLIER_FASTER			2.5f
-#define SBMULTIPLIER_FAST				1.5f
-
-
-	// Analog trigger deadzone
-#define DEADZONE								0.25f
-#define DEADZONE_RECTIFIER			1.0f / (1.0f - DEADZONE)
-#define CURSOR_SPEED            0.8f                // The cursor velocity modifier
-
-	// Number of seconds between valid DPAD readings
-#define DPADCURSORMOVE_TIMEOUT	0.20f
 
 //= S T R U C T U R E S ===============================================
 

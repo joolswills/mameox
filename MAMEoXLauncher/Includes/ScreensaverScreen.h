@@ -8,7 +8,7 @@
 
 //= I N C L U D E S ====================================================
 #include "ListView.h"
-#include "SkinResource.h"
+#include "Skin.h"
 #include "MAMEoX.h"
 
 #include <vector>
@@ -35,7 +35,7 @@ public:
                       CFontSet &fontSet,    
                       MAMEDriverData_t *drivers, 
                       UINT32 numDrivers ) :
-    CListView( displayDevice, fontSet, RESOURCE_INVALID ),
+    CListView( displayDevice, fontSet, SKINRESOURCE_INVALID ),
     m_displayTimeout( 0 ),
 		m_screenshotTexture( NULL )
   {

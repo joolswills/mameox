@@ -684,7 +684,6 @@ void RenderProgressBar( INT32 left,
 {
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
 
-  pD3DDevice->SetRenderState( D3DRS_ALPHATESTENABLE,  FALSE );
 	pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
   pD3DDevice->SetRenderState( D3DRS_SRCBLEND,					D3DBLEND_SRCALPHA );
   pD3DDevice->SetRenderState( D3DRS_DESTBLEND,				D3DBLEND_INVSRCALPHA );

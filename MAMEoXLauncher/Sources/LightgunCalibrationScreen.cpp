@@ -209,8 +209,8 @@ void CLightgunCalibrationScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 	if( CheckResourceValidity( SPRITE_LIGHTGUNCALIBRATION_CURSOR ) )
 	{
 		m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
-		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIGHTGUNCALIBRATION_CURSOR );
-		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIGHTGUNCALIBRATION_CURSOR );
+		g_loadedSkin->SelectSkinTexture( m_displayDevice, SPRITE_LIGHTGUNCALIBRATION_CURSOR );
+		const CSkinSpriteResource *desc = g_loadedSkin->GetSkinSpriteResource( SPRITE_LIGHTGUNCALIBRATION_CURSOR );
 
 			// Display a target/cursor if the gun is pointed at the screen
 		if(  m_currentGunFlags & XINPUT_LIGHTGUN_ONSCREEN )
