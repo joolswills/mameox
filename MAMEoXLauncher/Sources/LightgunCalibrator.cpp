@@ -19,7 +19,7 @@ extern "C" {
 
 //= D E F I N E S ======================================================
   // The number of calibration steps per device
-#define NUM_CALIBRATIONSTEPS    4
+#define NUM_CALIBRATIONSTEPS    3
 
   // Note: These values are halved for the cursor
 #define TARGET_WIDTH    64
@@ -137,7 +137,7 @@ void CLightgunCalibrator::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   #define CURSOR_COLOR                  D3DCOLOR_RGBA( 255, 100, 100, 255 )
   static WCHAR *calibrationStepText[NUM_CALIBRATIONSTEPS] = { L"Shoot the upper left corner", 
                                                               L"Shoot the center", 
-                                                              L"Shoot the lower right corner",
+//                                                              L"Shoot the lower right corner",
                                                               L"Shoot anywhere to accept" };
   WCHAR wBuf[256];
 
@@ -214,7 +214,7 @@ void CLightgunCalibrator::Draw( BOOL clearScreen, BOOL flipOnCompletion )
         m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 1.0f );
         m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_C_X, TARGET_C_Y + TARGET_HEIGHT, 1.0f, 1.0f );
         break;
-
+/*
       case 2:
         m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, CURSOR_COLOR );
         m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 0.0f );
@@ -232,8 +232,9 @@ void CLightgunCalibrator::Draw( BOOL clearScreen, BOOL flipOnCompletion )
         m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 1.0f );
         m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, TARGET_LR_X, TARGET_LR_Y + TARGET_HEIGHT, 1.0f, 1.0f );
         break;
+*/
 
-      case 3:
+      case (NUM_CALIBRATIONSTEPS - 1):
         {
           FLOAT x = m_currentGunCalibratedX;
           FLOAT y = -m_currentGunCalibratedY;  // Y values are negated for MAME
@@ -344,8 +345,8 @@ void CLightgunCalibrator::GetCalibratedCursorPosition( CInputManager &inputManag
   m_currentGunCalibratedY = m_currentGunY;// + calibData.m_yData[1]);
 
     // Map from -128 to 128
-  FLOAT xMap = calibData.m_xData[0] + calibData.m_xData[1]; // left X is negative, so add center to bring it closer to the middle
-  FLOAT yMap = calibData.m_yData[0] - calibData.m_yData[1]; // top Y is positive, so sub center to bring it closer to the middle
+  FLOAT xMap = calibData.m_xData[0] - calibData.m_xData[1];
+  FLOAT yMap = calibData.m_yData[0] - calibData.m_yData[1];
 
   if( xMap )
     m_currentGunCalibratedX = (int)((FLOAT)m_currentGunCalibratedX * 128.0f / -xMap );
