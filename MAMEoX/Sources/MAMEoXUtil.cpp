@@ -142,6 +142,11 @@ void LoadOptions( void )
   FLOAT yPosition = iniFile.GetProfileFloat( "Video", "ScreenPos_Y", 0.0f );
   SetScreenPosition( xPosition, yPosition );
 
+  options.use_artwork = iniFile.GetProfileInt( "Video", "Artwork", 0 );
+  options.artwork_res = 1;
+  options.artwork_crop = TRUE;
+
+
 	options.vector_width =  iniFile.GetProfileInt( "VectorOptions", "VectorWidth", 640 );	      // requested width for vector games; 0 means default (640)
 	options.vector_height = iniFile.GetProfileInt( "VectorOptions", "VectorHeight", 480 );	    // requested height for vector games; 0 means default (480)
 
@@ -154,9 +159,6 @@ void LoadOptions( void )
     // Antialiasing holds forever in vector.c due to an apparent signed/unsigned problem
   options.antialias = FALSE; //iniFile.GetProfileInt( "VectorOptions", "Antialiasing", FALSE );		    // 1 to enable antialiasing on vectors
 
-	//int		use_artwork;	          bitfield indicating which artwork pieces to use
-	//int		artwork_res;	          1 for 1x game scaling, 2 for 2x
-	//int		artwork_crop;	          1 to crop artwork to the game screen
 	//char	savegame;		            character representing a savegame to load
 
 
@@ -274,6 +276,9 @@ void SaveOptions( void )
   GetScreenPosition( &xPosition, &yPosition );
   iniFile.WriteProfileFloat( "Video", "ScreenPos_X", xPosition );
   iniFile.WriteProfileFloat( "Video", "ScreenPos_Y", yPosition );
+
+  iniFile.WriteProfileInt( "Video", "Artwork", options.use_artwork );
+
 
     //-- Write the network settings ---------------------------------------------
   iniFile.WriteProfileInt( "Network", "DisableNetworking",  g_NetworkConfig.m_networkDisabled );

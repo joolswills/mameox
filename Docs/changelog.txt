@@ -41,6 +41,8 @@ Version 0.70.3b
     - MAMEoXUtil.cpp
       - Put in code to reposition the screen as well as resize
       - Made ROM List settings persistent
+      - Added option to enable artwork
+      - Added option to set screenshot directory
 
     - xbox_Direct3DRenderer.cpp
       - Put in code to reposition the screen as well as resize
@@ -79,6 +81,8 @@ Version 0.70.3b
 
     - OptionsPage.cpp
       - Changed all list views to use the new CListView base class
+      - Added option to enable artwork
+      - Added option to set screenshot directory
 
     - ListView.cpp
       - Added list view base class

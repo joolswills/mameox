@@ -209,7 +209,7 @@ COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice,
   wcscpy( m_pageData[OPTPAGE_VIDEO].m_title, L"Video Options" );
   m_pageData[OPTPAGE_VIDEO].m_drawFunct = ::DrawVideoPage;
   m_pageData[OPTPAGE_VIDEO].m_changeFunct = ::ChangeVideoPage;
-  m_pageData[OPTPAGE_VIDEO].m_numItems = 7;
+  m_pageData[OPTPAGE_VIDEO].m_numItems = 8;
 
   wcscpy( m_pageData[OPTPAGE_VECTOR].m_title, L"Vector Options" );
   m_pageData[OPTPAGE_VECTOR].m_drawFunct = ::DrawVectorPage;
@@ -514,6 +514,7 @@ void COptionsPage::DrawVideoPage( void )
   options.pause_bright = iniFile.GetProfileFloat( "Video", "PauseBrightness", 0.65f );     // brightness when in pause
 	options.gamma = iniFile.GetProfileFloat( "Video", "Gamma", 1.0f );			        // gamma correction of the display
 	options.color_depth = iniFile.GetProfileInt( "Video", "ColorDepth", 32 );
+  options.use_artwork = iniFile.GetProfileInt( "Video", "Artwork", 0 );
 */
 
   WCHAR text[256] = {0};
@@ -551,6 +552,20 @@ void COptionsPage::DrawVideoPage( void )
   DRAWITEM( L"Minification filter", filterNames[g_rendererOptions.m_minFilter] );
 
   DRAWITEM( L"Magnification filter", filterNames[g_rendererOptions.m_magFilter] );
+
+  if( !options.use_artwork )
+    swprintf( text, L"None" );
+  else
+  {
+    swprintf( text, 
+              L"%s%s%s%s%s",
+              options.use_artwork & ARTWORK_USE_BACKDROPS ? L"Backdrops" : L"",
+              (options.use_artwork & ARTWORK_USE_BACKDROPS && (options.use_artwork & ARTWORK_USE_OVERLAYS || options.use_artwork & ARTWORK_USE_BEZELS)) ? L"," : L"",
+              options.use_artwork & ARTWORK_USE_OVERLAYS ? L"Overlays" : L"",
+              (options.use_artwork & ARTWORK_USE_OVERLAYS && options.use_artwork & ARTWORK_USE_BEZELS) ? L"," : L"",
+              options.use_artwork & ARTWORK_USE_BEZELS ? L"Bezels" : L"" );
+  }
+  DRAWITEM( L"Artwork usage", text );
 
   ENDPAGE();
 }
@@ -897,6 +912,47 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
         g_rendererOptions.m_magFilter = D3DTEXF_POINT;
     }
     break;
+
+    // Artwork usage
+  case 7:
+    {
+      DWORD artworkState[8] = { 0, 
+                                ARTWORK_USE_BACKDROPS, 
+                                ARTWORK_USE_BACKDROPS | ARTWORK_USE_OVERLAYS,
+                                ARTWORK_USE_BACKDROPS | ARTWORK_USE_BEZELS,
+                                ARTWORK_USE_OVERLAYS,
+                                ARTWORK_USE_OVERLAYS | ARTWORK_USE_BEZELS,
+                                ARTWORK_USE_BEZELS,
+                                ARTWORK_USE_BACKDROPS | ARTWORK_USE_OVERLAYS | ARTWORK_USE_BEZELS };
+
+        // Figure out our current state
+      DWORD currentState = 0;
+      for( ; artworkState[currentState] != options.use_artwork && currentState < (sizeof(artworkState) / sizeof(DWORD)); ++currentState )
+        ;
+
+        // Validate the currentState
+      if( currentState == (sizeof(artworkState) / sizeof(DWORD)) )
+        currentState = 0;
+
+      if( !direction )
+      {
+        if( currentState )
+          --currentState;
+        else
+          currentState = (sizeof(artworkState) / sizeof(DWORD)) - 1;
+      }
+      else
+      {
+        if( currentState < (sizeof(artworkState) / sizeof(DWORD)) - 1 )
+          ++currentState;
+        else
+          currentState = 0;
+      }
+
+      options.use_artwork = artworkState[currentState];
+    }
+    break;
+
   }
 }
 
