@@ -26,6 +26,9 @@ Version 0.70.4b
       - Added better checking for clone/no clone status to avoid
         marking BIOS clones as true clones.
 
+    - xbox_Display.c:
+      - Implemented MAME hooks for frameskip/throttle toggling
+
    -------------------------------------------------------------
   - \MAMEoXLauncher\Sources:
 
@@ -48,6 +51,8 @@ Version 0.70.4b
     - OptionsPage.cpp
       - Integrated new gfx from r4dius
       - Added VSYNC and framerate throttling options
+      - Added frame skip option
+      - Split directories up into two separate options
 
     - LightgunCalibrator.cpp
       - Changed text from "Push B to discard changes" to

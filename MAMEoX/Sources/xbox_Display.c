@@ -20,7 +20,6 @@
 
 
 //= D E F I N E S ======================================================
-#define FRAMESKIP_LEVELS			12 
 
 
 //= G L O B A L = V A R S ==============================================
@@ -40,8 +39,6 @@ static const BOOL g_skipTable[FRAMESKIP_LEVELS][FRAMESKIP_LEVELS] = { { 0,0,0,0,
 	                                                                    { 0,1,1,1,1,1,1,1,1,1,1,1 } };
 
   //!< Whether or not to use auto frame skipping
-BOOL              g_autoFrameSkip = TRUE;
-
 static INT32			g_frameskip = 0;
 static INT32			g_frameskipCounter = 0;
 static INT32			g_frameskipAdjust = 0;
@@ -180,7 +177,41 @@ void osd_update_video_and_audio(struct mame_display *display)
   static cycles_t lastFrameEndTime = 0;
   const struct performance_info *performance = mame_get_performance_info();
 
-//	PRINTMSG( T_TRACE, "osd_update_video_and_audio" );
+
+    // Handle the special MAME core hook input IDs
+	if( input_ui_pressed( IPT_UI_FRAMESKIP_INC ) )
+	{
+    if( g_rendererOptions.m_frameskip == AUTO_FRAMESKIP )
+      g_rendererOptions.m_frameskip = 0;
+		else if( g_rendererOptions.m_frameskip == (FRAMESKIP_LEVELS - 1) )
+      g_rendererOptions.m_frameskip = AUTO_FRAMESKIP;
+    else
+      ++g_rendererOptions.m_frameskip;
+
+		  // display the FPS counter for 2 seconds
+		ui_show_fps_temp( 2.0 );
+	}
+
+	if( input_ui_pressed( IPT_UI_FRAMESKIP_DEC ) )
+	{
+    if( g_rendererOptions.m_frameskip == AUTO_FRAMESKIP )
+      g_rendererOptions.m_frameskip = FRAMESKIP_LEVELS - 1;
+    else if( !g_rendererOptions.m_frameskip )
+      g_rendererOptions.m_frameskip = AUTO_FRAMESKIP; // This would be handled by -- below, but only if AUTO_FRAMESKIP is always -1
+    else
+      --g_rendererOptions.m_frameskip;
+
+		  // display the FPS counter for 2 seconds
+		ui_show_fps_temp( 2.0 );
+	}
+
+    // Toggle frame throttling
+	if( input_ui_pressed( IPT_UI_THROTTLE ) )
+	{
+    g_rendererOptions.m_throttleFramerate = !g_rendererOptions.m_throttleFramerate;
+	}
+
+
 
 	if( display->changed_flags & GAME_VISIBLE_AREA_CHANGED )
 	{
@@ -213,59 +244,66 @@ void osd_update_video_and_audio(struct mame_display *display)
 
 
       // Update autoframeskip
-    if( g_autoFrameSkip && cpu_getcurrentframe() > (FRAMESKIP_LEVELS << 1) )
+    if( g_rendererOptions.m_frameskip == AUTO_FRAMESKIP )
     {
+      if( cpu_getcurrentframe() > (FRAMESKIP_LEVELS << 1) )
+      {
 
-		    // if we're too fast, attempt to decrease the frameskip
-		  if( performance->game_speed_percent >= 99.5f )
-		  {
-			  ++g_frameskipAdjust;
+		      // if we're too fast, attempt to decrease the frameskip
+		    if( performance->game_speed_percent >= 99.5f )
+		    {
+			    ++g_frameskipAdjust;
 
-			    // but only after 3 consecutive frames where we are too fast
-			  if( g_frameskipAdjust >= 3 )
-			  {
-				  g_frameskipAdjust = 0;
-				  if( g_frameskip )
+			      // but only after 3 consecutive frames where we are too fast
+			    if( g_frameskipAdjust >= 3 )
+			    {
+				    g_frameskipAdjust = 0;
+				    if( g_frameskip )
+            {
+              --g_frameskip;
+              PRINTMSG( T_INFO, "Decreasing frameskip level to %lu\n", g_frameskip );
+            }
+			    }
+		    }
+		    else
+		    {
+			      // if below 80% speed, be more aggressive
+			    if( performance->game_speed_percent < 80.0f )
+				    g_frameskipAdjust -= (INT32)((90.0f - performance->game_speed_percent) / 5.0f);			  
+			    else if( g_frameskip < 8 ) 
           {
-            --g_frameskip;
-            PRINTMSG( T_INFO, "Decreasing frameskip level to %lu\n", g_frameskip );
+              // if we're close, only force it up to frameskip 8
+				    --g_frameskipAdjust;
           }
-			  }
-		  }
-		  else
-		  {
-			    // if below 80% speed, be more aggressive
-			  if( performance->game_speed_percent < 80.0f )
-				  g_frameskipAdjust -= (INT32)((90.0f - performance->game_speed_percent) / 5.0f);			  
-			  else if( g_frameskip < 8 ) 
-        {
-            // if we're close, only force it up to frameskip 8
-				  --g_frameskipAdjust;
+
+			      // perform the adjustment
+			    while( g_frameskipAdjust <= -2 )
+			    {
+				    g_frameskipAdjust += 2;
+				    if( g_frameskip < FRAMESKIP_LEVELS - 1 )
+					    ++g_frameskip;
+            else
+            {
+              g_frameskipAdjust = 0;
+              break;
+            }
+			    }
+          PRINTMSG( T_INFO, "Increasing frameskip level to %lu\n", g_frameskip );
         }
-
-			    // perform the adjustment
-			  while( g_frameskipAdjust <= -2 )
-			  {
-				  g_frameskipAdjust += 2;
-				  if( g_frameskip < FRAMESKIP_LEVELS - 1 )
-					  ++g_frameskip;
-          else
-          {
-            g_frameskipAdjust = 0;
-            break;
-          }
-			  }
-        PRINTMSG( T_INFO, "Increasing frameskip level to %lu\n", g_frameskip );
       }
     }
-
+    else
+    {
+      g_frameskip = g_rendererOptions.m_frameskip;
+      PRINTMSG( T_INFO, "Setting frameskip level to %lu\n", g_frameskip );
+    }
 
       // Wait out the remaining time for this frame
     if( lastFrameEndTime && 
         !g_frameskip && 
         performance->game_speed_percent >= 99.5f && 
         g_desiredFPS != 0.0f && 
-        !g_rendererOptions.m_syncOnlyToVSYNC )
+        !g_rendererOptions.m_throttleFramerate )
     {
       cycles_t targetFrameCycles = (cycles_t)(((double)osd_cycles_per_second()) / g_desiredFPS);
       cycles_t actualFrameCycles = osd_cycles() - lastFrameEndTime;
@@ -325,12 +363,21 @@ const char *osd_get_fps_text( const struct performance_info *performance )
 	char *dest = buffer;
 
 	// display the FPS, frameskip, percent, fps and target fps
-	dest += sprintf(dest, 
-                  "Auto%2d%4d%%%4d/%d fps",
-			            g_frameskip,
-			            (int)(performance->game_speed_percent + 0.5),
-			            (int)(performance->frames_per_second + 0.5),
-			            (int)(Machine->drv->frames_per_second + 0.5));
+  if( g_rendererOptions.m_frameskip == AUTO_FRAMESKIP )
+	  dest += sprintf(dest, 
+                    "Auto(%2d)%4d%%%4d/%d fps",
+			              g_frameskip,
+			              (int)(performance->game_speed_percent + 0.5),
+			              (int)(performance->frames_per_second + 0.5),
+			              (int)(Machine->drv->frames_per_second + 0.5));
+  else
+	  dest += sprintf(dest, 
+                    "%2d%4d%%%4d/%d fps",
+			              g_frameskip,
+			              (int)(performance->game_speed_percent + 0.5),
+			              (int)(performance->frames_per_second + 0.5),
+			              (int)(Machine->drv->frames_per_second + 0.5));
+
 
 	/* for vector games, add the number of vector updates */
 	if (Machine->drv->video_attributes & VIDEO_TYPE_VECTOR)

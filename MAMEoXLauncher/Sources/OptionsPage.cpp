@@ -148,11 +148,19 @@ void DrawNetworkPage( COptionsPage *ptr )
 }
 
 //---------------------------------------------------------------------
-//  DrawDirectoryPathPage
+//  DrawDirectoryPathPage1
 //---------------------------------------------------------------------
-void DrawDirectoryPathPage( COptionsPage *ptr )
+void DrawDirectoryPathPage1( COptionsPage *ptr )
 {
-  ptr->DrawDirectoryPathPage();
+  ptr->DrawDirectoryPathPage1();
+}
+
+//---------------------------------------------------------------------
+//  DrawDirectoryPathPage2
+//---------------------------------------------------------------------
+void DrawDirectoryPathPage2( COptionsPage *ptr )
+{
+  ptr->DrawDirectoryPathPage2();
 }
 
 
@@ -198,11 +206,19 @@ void ChangeNetworkPage( COptionsPage *ptr, BOOL direction )
 }
 
 //---------------------------------------------------------------------
-//  ChangeDirectoryPathPage
+//  ChangeDirectoryPathPage1
 //---------------------------------------------------------------------
-void ChangeDirectoryPathPage( COptionsPage *ptr, BOOL direction )
+void ChangeDirectoryPathPage1( COptionsPage *ptr, BOOL direction )
 {
-  ptr->ChangeDirectoryPathPage( direction );
+  ptr->ChangeDirectoryPathPage1( direction );
+}
+
+//---------------------------------------------------------------------
+//  ChangeDirectoryPathPage2
+//---------------------------------------------------------------------
+void ChangeDirectoryPathPage2( COptionsPage *ptr, BOOL direction )
+{
+  ptr->ChangeDirectoryPathPage2( direction );
 }
 
 
@@ -236,7 +252,7 @@ COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice,
   wcscpy( m_pageData[OPTPAGE_VIDEO].m_title, L"Video Options" );
   m_pageData[OPTPAGE_VIDEO].m_drawFunct = ::DrawVideoPage;
   m_pageData[OPTPAGE_VIDEO].m_changeFunct = ::ChangeVideoPage;
-  m_pageData[OPTPAGE_VIDEO].m_numItems = 10;
+  m_pageData[OPTPAGE_VIDEO].m_numItems = 11;
 
   wcscpy( m_pageData[OPTPAGE_VECTOR].m_title, L"Vector Options" );
   m_pageData[OPTPAGE_VECTOR].m_drawFunct = ::DrawVectorPage;
@@ -248,10 +264,15 @@ COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice,
   m_pageData[OPTPAGE_NETWORK].m_changeFunct = ::ChangeNetworkPage;
   m_pageData[OPTPAGE_NETWORK].m_numItems = 5;
 
-  wcscpy( m_pageData[OPTPAGE_DIRECTORIES].m_title, L"Directory Path Options" );
-  m_pageData[OPTPAGE_DIRECTORIES].m_drawFunct = ::DrawDirectoryPathPage;
-  m_pageData[OPTPAGE_DIRECTORIES].m_changeFunct = ::ChangeDirectoryPathPage;
-  m_pageData[OPTPAGE_DIRECTORIES].m_numItems = 16;
+  wcscpy( m_pageData[OPTPAGE_DIRECTORIES_1].m_title, L"Directory Path Options [1/2]" );
+  m_pageData[OPTPAGE_DIRECTORIES_1].m_drawFunct = ::DrawDirectoryPathPage1;
+  m_pageData[OPTPAGE_DIRECTORIES_1].m_changeFunct = ::ChangeDirectoryPathPage1;
+  m_pageData[OPTPAGE_DIRECTORIES_1].m_numItems = 6;
+
+  wcscpy( m_pageData[OPTPAGE_DIRECTORIES_2].m_title, L"Directory Path Options [2/2]" );
+  m_pageData[OPTPAGE_DIRECTORIES_2].m_drawFunct = ::DrawDirectoryPathPage2;
+  m_pageData[OPTPAGE_DIRECTORIES_2].m_changeFunct = ::ChangeDirectoryPathPage2;
+  m_pageData[OPTPAGE_DIRECTORIES_2].m_numItems = 10;
 
   m_virtualKeyboard = new CVirtualKeyboard( displayDevice, m_fontSet, m_textureSet );
 }
@@ -695,6 +716,7 @@ void COptionsPage::DrawVideoPage( void )
 /*
   g_rendererOptions.m_vsync = iniFile.GetProfileInt( "Video", "VSYNC", FALSE );       // Enable VSYNC for game rendering
   g_rendererOptions.m_syncOnlyToVSYNC
+  g_rendererOptions.m_frameskip =           iniFile.GetProfileInt( "Video", "Frameskip", AUTO_FRAMESKIP );
   options.brightness = iniFile.GetProfileFloat( "Video", "Brightness", 1.0f );		    // brightness of the display
   options.pause_bright = iniFile.GetProfileFloat( "Video", "PauseBrightness", 0.65f );     // brightness when in pause
 	options.gamma = iniFile.GetProfileFloat( "Video", "Gamma", 1.0f );			        // gamma correction of the display
@@ -714,7 +736,12 @@ void COptionsPage::DrawVideoPage( void )
 
   DRAWITEM( L"VSYNC", g_rendererOptions.m_vsync ? L"Enabled" : L"Disabled" );
     
-  DRAWITEM( L"Framerate throttling", g_rendererOptions.m_syncOnlyToVSYNC ? L"Disabled" : L"Enabled" );
+  DRAWITEM( L"Framerate throttling", g_rendererOptions.m_throttleFramerate ? L"Enabled" : L"Disabled" );
+
+  swprintf( text, L"Level %d", g_rendererOptions.m_frameskip );
+  DRAWITEM( L"Frameskip mode", 
+            g_rendererOptions.m_frameskip == AUTO_FRAMESKIP ?  L"Auto" :
+            (!g_rendererOptions.m_frameskip ? L"No frameskipping" : text ) );
 
   DRAWITEM( L"Aspect ratio correction", g_rendererOptions.m_preserveAspectRatio ? L"Enabled" : L"Disabled" );
 
@@ -829,9 +856,9 @@ void COptionsPage::DrawNetworkPage( void )
 }
 
 //---------------------------------------------------------------------
-//	DrawDirectoryPathPage
+//	DrawDirectoryPathPage1
 //---------------------------------------------------------------------
-void COptionsPage::DrawDirectoryPathPage( void )
+void COptionsPage::DrawDirectoryPathPage1( void )
 {
 /*
   g_FileIOConfig.m_ALTDrive           = iniFile.GetProfileString("Directories", "ALTDrive",            DEFAULT_ALTDRIVE);
@@ -840,17 +867,6 @@ void COptionsPage::DrawDirectoryPathPage( void )
   g_FileIOConfig.m_LetterFMapping     = iniFile.GetProfileString( "Directories", "F_Mapping",           DEFAULT_FMAPPING );
   g_FileIOConfig.m_LetterGMapping     = iniFile.GetProfileString( "Directories", "G_Mapping",           DEFAULT_GMAPPING );
   g_FileIOConfig.m_LetterHMapping     = iniFile.GetProfileString( "Directories", "H_Mapping",           DEFAULT_HMAPPING );
-  g_FileIOConfig.m_ArtPath            = iniFile.GetProfileString("Directories", "ArtPath",             DEFAULT_ARTPATH);
-  g_FileIOConfig.m_AudioPath          = iniFile.GetProfileString("Directories", "AudioPath",           DEFAULT_AUDIOPATH);
-  g_FileIOConfig.m_ConfigPath         = iniFile.GetProfileString("Directories", "ConfigPath",          DEFAULT_CONFIGPATH);
-  g_FileIOConfig.m_DefaultRomListPath = iniFile.GetProfileString("Directories", "DefaultRomsListPath", DEFAULT_DEFAULTROMLISTPATH);
-  g_FileIOConfig.m_GeneralPath        = iniFile.GetProfileString("Directories", "GeneralPath",         DEFAULT_GENERALPATH);
-  g_FileIOConfig.m_HDImagePath        = iniFile.GetProfileString("Directories", "HDImagePath",         DEFAULT_HDIMAGEPATH);
-  g_FileIOConfig.m_HiScorePath        = iniFile.GetProfileString("Directories", "HiScoresPath",        DEFAULT_HISCOREPATH);
-  g_FileIOConfig.m_NVramPath          = iniFile.GetProfileString("Directories", "NVRamPath",           DEFAULT_NVRAMPATH);
-  g_FileIOConfig.m_RomBackupPath      = iniFile.GetProfileString("Directories", "BackupPath",          DEFAULT_ROMBACKUPPATH);
-  g_FileIOConfig.m_RomPath            = iniFile.GetProfileString("Directories", "RomsPath",            DEFAULT_ROMPATH);
-  g_FileIOConfig.m_ScreenshotPath     = iniFile.GetProfileString( "Directories", "ScreenshotPath",      DEFAULT_SCREENSHOTPATH );
 */
   WCHAR text[256] = {0};
 
@@ -873,6 +889,32 @@ void COptionsPage::DrawDirectoryPathPage( void )
 
   mbstowcs( text, g_FileIOConfig.m_LetterHMapping.c_str(), 255 );
   DRAWITEM( L"H:", text );
+
+  ENDPAGE();
+}
+
+
+//---------------------------------------------------------------------
+//	DrawDirectoryPathPage2
+//---------------------------------------------------------------------
+void COptionsPage::DrawDirectoryPathPage2( void )
+{
+/*
+  g_FileIOConfig.m_ArtPath            = iniFile.GetProfileString("Directories", "ArtPath",             DEFAULT_ARTPATH);
+  g_FileIOConfig.m_AudioPath          = iniFile.GetProfileString("Directories", "AudioPath",           DEFAULT_AUDIOPATH);
+  g_FileIOConfig.m_ConfigPath         = iniFile.GetProfileString("Directories", "ConfigPath",          DEFAULT_CONFIGPATH);
+  g_FileIOConfig.m_DefaultRomListPath = iniFile.GetProfileString("Directories", "DefaultRomsListPath", DEFAULT_DEFAULTROMLISTPATH);
+  g_FileIOConfig.m_GeneralPath        = iniFile.GetProfileString("Directories", "GeneralPath",         DEFAULT_GENERALPATH);
+  g_FileIOConfig.m_HDImagePath        = iniFile.GetProfileString("Directories", "HDImagePath",         DEFAULT_HDIMAGEPATH);
+  g_FileIOConfig.m_HiScorePath        = iniFile.GetProfileString("Directories", "HiScoresPath",        DEFAULT_HISCOREPATH);
+  g_FileIOConfig.m_NVramPath          = iniFile.GetProfileString("Directories", "NVRamPath",           DEFAULT_NVRAMPATH);
+  g_FileIOConfig.m_RomBackupPath      = iniFile.GetProfileString("Directories", "BackupPath",          DEFAULT_ROMBACKUPPATH);
+  g_FileIOConfig.m_RomPath            = iniFile.GetProfileString("Directories", "RomsPath",            DEFAULT_ROMPATH);
+  g_FileIOConfig.m_ScreenshotPath     = iniFile.GetProfileString( "Directories", "ScreenshotPath",      DEFAULT_SCREENSHOTPATH );
+*/
+  WCHAR text[256] = {0};
+
+  STARTPAGE();
 
   mbstowcs( text, g_FileIOConfig.m_RomPath.c_str(), 255 );
   DRAWITEM( L"ROM Files", text );
@@ -1020,16 +1062,40 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
 
      // Framerate throttling
   case 1:
-    g_rendererOptions.m_syncOnlyToVSYNC = !g_rendererOptions.m_syncOnlyToVSYNC;
+    g_rendererOptions.m_throttleFramerate = !g_rendererOptions.m_throttleFramerate;
+    break;
+
+    // Frameskip mode
+  case 2:
+    if( !direction )
+    {
+        // Reduce
+      if( g_rendererOptions.m_frameskip == 0 )
+        g_rendererOptions.m_frameskip = AUTO_FRAMESKIP;
+      else if( g_rendererOptions.m_frameskip == AUTO_FRAMESKIP )
+        g_rendererOptions.m_frameskip = FRAMESKIP_LEVELS - 1;
+      else
+        --g_rendererOptions.m_frameskip;
+    }
+    else
+    {
+        // Increment
+      if( g_rendererOptions.m_frameskip == AUTO_FRAMESKIP )
+        g_rendererOptions.m_frameskip = 0;
+      else if( g_rendererOptions.m_frameskip == FRAMESKIP_LEVELS - 1 )
+        g_rendererOptions.m_frameskip = AUTO_FRAMESKIP;
+      else
+        ++g_rendererOptions.m_frameskip;
+    }
     break;
 
      // Preserve aspect ratio
-  case 2:
+  case 3:
     g_rendererOptions.m_preserveAspectRatio = !g_rendererOptions.m_preserveAspectRatio;
     break;
 
     // Screen rotation
-  case 3:
+  case 4:
     if( !direction )
     {
       if( g_rendererOptions.m_screenRotation > SR_0 )
@@ -1047,7 +1113,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
     break;
 
     // Brightness
-  case 4:
+  case 5:
     {
       if( !direction )
         options.brightness -= 0.01f;
@@ -1062,7 +1128,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
     break;
 
     // Paused brightness
-  case 5:
+  case 6:
     {
       if( !direction )
         options.pause_bright -= 0.01f;
@@ -1077,7 +1143,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
     break;
 
     // Gamma
-  case 6:
+  case 7:
     {
       if( !direction )
         options.gamma -= 0.01f;
@@ -1103,7 +1169,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
 */
 
     // Minification filter
-  case 7:
+  case 8:
     if( !direction )
     {
       if( g_rendererOptions.m_minFilter > D3DTEXF_POINT )
@@ -1121,7 +1187,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
     break;
 
     // Magnification filter
-  case 8:
+  case 9:
     if( !direction )
     {
       if( g_rendererOptions.m_magFilter > D3DTEXF_POINT )
@@ -1139,7 +1205,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
     break;
 
     // Artwork usage
-  case 9:
+  case 10:
     {
       DWORD artworkState[8] = { 0, 
                                 ARTWORK_USE_BACKDROPS, 
@@ -1321,9 +1387,9 @@ void COptionsPage::ChangeNetworkPage( BOOL direction )
 }
 
 //---------------------------------------------------------------------
-//  ChangeDirectoryPathPage
+//  ChangeDirectoryPathPage1
 //---------------------------------------------------------------------
-void COptionsPage::ChangeDirectoryPathPage( BOOL direction )
+void COptionsPage::ChangeDirectoryPathPage1( BOOL direction )
 {
   if( !m_virtualKeyboardMode )
   {
@@ -1359,56 +1425,6 @@ void COptionsPage::ChangeDirectoryPathPage( BOOL direction )
       // H:
     case 5:
       m_virtualKeyboard->SetData( g_FileIOConfig.m_LetterHMapping );
-      break;
-
-      // ROM Files
-    case 6:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_RomPath );
-      break;
-
-      // Removed ROMs
-    case 7:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_RomBackupPath );
-      break;
-
-      // General
-    case 8:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_GeneralPath );
-      break;
-
-      // Art
-    case 9:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_ArtPath );
-      break;
-
-      // Samples (Audio)
-    case 10:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_AudioPath );
-      break;
-
-      // Config (CFG's)
-    case 11:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_ConfigPath );
-      break;
-
-      // HD images (CHD's)
-    case 12:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_HDImagePath );
-      break;
-
-      // High scores (highscore.dat)
-    case 13:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_HiScorePath );
-      break;
-
-      // NVRAM, state files
-    case 14:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_NVramPath );
-      break;
-
-      // Screenshots
-    case 15:
-      m_virtualKeyboard->SetData( g_FileIOConfig.m_ScreenshotPath );
       break;
     }
   }
@@ -1447,56 +1463,128 @@ void COptionsPage::ChangeDirectoryPathPage( BOOL direction )
       case 5:
         g_FileIOConfig.m_LetterHMapping = m_virtualKeyboard->GetData();
         break;
+      }
+    }
+  }
+}
 
+//---------------------------------------------------------------------
+//  ChangeDirectoryPathPage2
+//---------------------------------------------------------------------
+void COptionsPage::ChangeDirectoryPathPage2( BOOL direction )
+{
+  if( !m_virtualKeyboardMode )
+  {
+    m_virtualKeyboardMode = TRUE;
+    WaitForNoInput();
+    switch( (DWORD)m_cursorPosition )
+    {
+      // ROM Files
+    case 0:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_RomPath );
+      break;
+
+      // Removed ROMs
+    case 1:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_RomBackupPath );
+      break;
+
+      // General
+    case 2:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_GeneralPath );
+      break;
+
+      // Art
+    case 3:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_ArtPath );
+      break;
+
+      // Samples (Audio)
+    case 4:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_AudioPath );
+      break;
+
+      // Config (CFG's)
+    case 5:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_ConfigPath );
+      break;
+
+      // HD images (CHD's)
+    case 6:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_HDImagePath );
+      break;
+
+      // High scores (highscore.dat)
+    case 7:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_HiScorePath );
+      break;
+
+      // NVRAM, state files
+    case 8:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_NVramPath );
+      break;
+
+      // Screenshots
+    case 9:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_ScreenshotPath );
+      break;
+    }
+  }
+  else
+  {
+    if( m_virtualKeyboard->IsInputAccepted() )
+    {
+      switch( (DWORD)m_cursorPosition )
+      {
         // ROM Files
-      case 6:
+      case 0:
         g_FileIOConfig.m_RomPath = m_virtualKeyboard->GetData();
         break;
 
         // Removed ROMs
-      case 7:
+      case 1:
         g_FileIOConfig.m_RomBackupPath = m_virtualKeyboard->GetData();
         break;
 
         // General
-      case 8:
+      case 2:
         g_FileIOConfig.m_GeneralPath = m_virtualKeyboard->GetData();
         break;
 
         // Art
-      case 9:
+      case 3:
         g_FileIOConfig.m_ArtPath = m_virtualKeyboard->GetData();
         break;
 
         // Samples (Audio)
-      case 10:
+      case 4:
         g_FileIOConfig.m_AudioPath = m_virtualKeyboard->GetData();
         break;
 
         // Config (CFG's)
-      case 11:
+      case 5:
         g_FileIOConfig.m_ConfigPath = m_virtualKeyboard->GetData();
         break;
 
         // HD images (CHD's)
-      case 12:
+      case 6:
         g_FileIOConfig.m_HDImagePath = m_virtualKeyboard->GetData();
         break;
 
         // High scores (highscore.dat)
-      case 13:
+      case 7:
         g_FileIOConfig.m_HiScorePath = m_virtualKeyboard->GetData();
         break;
 
         // NVRAM, state files
-      case 14:
+      case 8:
         g_FileIOConfig.m_NVramPath = m_virtualKeyboard->GetData();
         break;
 
-      // Screenshots
-    case 15:
-      g_FileIOConfig.m_ScreenshotPath = m_virtualKeyboard->GetData();
-      break;
+        // Screenshots
+      case 9:
+        g_FileIOConfig.m_ScreenshotPath = m_virtualKeyboard->GetData();
+        break;
       }
     }
   }

@@ -30,6 +30,11 @@ extern "C" {
 #define DEFAULT_SCREEN_X_PERCENTAGE     0.85f
 #define DEFAULT_SCREEN_Y_PERCENTAGE     0.85f
 
+#define AUTO_FRAMESKIP                  -1 
+#define FRAMESKIP_LEVELS			12 
+
+
+
 // 16bpp color conversion
 #define WIN_COLOR16_RSRC_SHIFT	3
 #define WIN_COLOR16_GSRC_SHIFT	3
@@ -71,6 +76,8 @@ typedef struct RendererOptions_t
   FLOAT                 m_screenOffsetX;    //!< Offset of the screen from the upper left hand corner (0,0)
   FLOAT                 m_screenOffsetY;    //!< Offset of the screen from the upper left hand corner (0,0)
 
+  INT32                 m_frameskip;        //!< Frameskip level, -1 == auto, 0 = no frameskip
+
     //! Whether or not to use aspect ratio correction code
   BOOL                  m_preserveAspectRatio;    
 
@@ -78,7 +85,7 @@ typedef struct RendererOptions_t
   BOOL                  m_vsync;
 
     //! Whether or not we should try to stay at the games desired refresh rate
-  BOOL                  m_syncOnlyToVSYNC;
+  BOOL                  m_throttleFramerate;
 
     //! Level of screen rotation
   screenrotation_t      m_screenRotation;

@@ -119,9 +119,10 @@ void LoadOptions( void )
   options.use_filter = iniFile.GetProfileInt( "Sound", "UseFilter", TRUE );
 
   g_rendererOptions.m_vsync =               iniFile.GetProfileInt( "Video", "VSYNC", FALSE );       // Enable VSYNC for game rendering
-  g_rendererOptions.m_syncOnlyToVSYNC =     iniFile.GetProfileInt( "Video", "SyncRefresh", FALSE ); // Sync only to vsync
+  g_rendererOptions.m_throttleFramerate =   iniFile.GetProfileInt( "Video", "ThrottleFramerate", TRUE ); // Sync only to vsync
   g_rendererOptions.m_preserveAspectRatio = iniFile.GetProfileInt( "Video", "AspectRatioCorrection", TRUE );  // aspect ratio correction code
   g_rendererOptions.m_screenRotation =      (screenrotation_t)iniFile.GetProfileInt( "Video", "ScreenRotation", SR_0 );
+  g_rendererOptions.m_frameskip =           iniFile.GetProfileInt( "Video", "Frameskip", AUTO_FRAMESKIP );
   g_rendererOptions.m_minFilter =           (D3DTEXTUREFILTERTYPE)iniFile.GetProfileInt( "Video", "MinificationFilter", D3DTEXF_LINEAR );
   g_rendererOptions.m_magFilter =           (D3DTEXTUREFILTERTYPE)iniFile.GetProfileInt( "Video", "MagnificationFilter", D3DTEXF_LINEAR );
 	options.brightness =    iniFile.GetProfileFloat( "Video", "Brightness", 1.0f );		    // brightness of the display
@@ -259,10 +260,11 @@ void SaveOptions( void )
 
 
   iniFile.WriteProfileInt( "Video", "VSYNC", g_rendererOptions.m_vsync );       // Enable VSYNC for game rendering
-  iniFile.WriteProfileInt( "Video", "SyncRefresh", g_rendererOptions.m_syncOnlyToVSYNC ); // Sync only to vsync
+  iniFile.WriteProfileInt( "Video", "ThrottleFramerate", g_rendererOptions.m_throttleFramerate ); // Sync only to vsync
   iniFile.WriteProfileInt( "Video", "AspectRatioCorrection", g_rendererOptions.m_preserveAspectRatio );
   iniFile.WriteProfileInt( "Video", "MinificationFilter", g_rendererOptions.m_minFilter );
   iniFile.WriteProfileInt( "Video", "MagnificationFilter", g_rendererOptions.m_magFilter );
+  iniFile.WriteProfileInt( "Video", "Frameskip", g_rendererOptions.m_frameskip );
   iniFile.WriteProfileInt( "Video", "ScreenRotation", g_rendererOptions.m_screenRotation );
   iniFile.WriteProfileFloat( "Video", "Brightness", options.brightness );		    // brightness of the display
   iniFile.WriteProfileFloat( "Video", "PauseBrightness", options.pause_bright );     // brightness when in pause
