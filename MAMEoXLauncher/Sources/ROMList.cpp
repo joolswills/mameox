@@ -487,7 +487,7 @@ void CROMList::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
     m_shouldGenerateROMList = TRUE;
     gp.WaitForNoButton();
   }
-  else if( gp.IsOneOfButtonsPressed( GP_A | GP_START ) )
+  else if( gp.IsOneOfButtonsPressed( GP_A ) )
 	{
 			// Run the selected ROM
     if( GetCurrentGameIndex() != INVALID_ROM_INDEX  )

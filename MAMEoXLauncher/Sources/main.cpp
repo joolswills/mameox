@@ -352,8 +352,12 @@ CHECKRAM();
 		}
 
 
-
-    if( g_inputManager.IsOnlyButtonPressed( GP_B | GP_Y ) && toggleButtonTimeout == 0.0f )
+    if( g_inputManager.IsOnlyButtonPressed( GP_START ) )
+    {
+        // Enter the main menu
+      //menuMode = TRUE;
+    }
+    else if( g_inputManager.IsOnlyButtonPressed( GP_B | GP_Y ) && toggleButtonTimeout == 0.0f )
     {
         // Toggle options mode
       optionsMode = !optionsMode;
