@@ -1125,10 +1125,10 @@ static int display_rom_load_results(struct rom_load_data *romdata)
 		/* if we're not getting out of here, wait for a keypress */
 		if (!options.gui_host && !bailing)
 		{
+#if 0       // Don't wait for a keypress, it was already done in osd_print_error     
 			int k;
 
 			/* loop until we get one */
-#if 0       // Don't wait for a keypress, it was already done in osd_print_error     
 			printf ("Press any key to continue\n");
 			do
 			{
