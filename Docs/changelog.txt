@@ -54,6 +54,8 @@ Version 0.71.2b (CVS)
     - Fixed dep for Rainbow Islands
     - Fixed dep for Fighting Roller
     - Fixed dep for Tutankham
+    - Fixed dep for Vigilante
+    - Fixed dep for Yie ar kung fu
 
 *********************************************************************
 Version 0.71.1b

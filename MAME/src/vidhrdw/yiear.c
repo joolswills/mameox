@@ -1,11 +1,11 @@
-#pragma code_seg("C737")
-#pragma data_seg("D737")
-#pragma bss_seg("B737")
-#pragma const_seg("K737")
-#pragma comment(linker, "/merge:D737=737")
-#pragma comment(linker, "/merge:C737=737")
-#pragma comment(linker, "/merge:B737=737")
-#pragma comment(linker, "/merge:K737=737")
+#pragma code_seg("C21")
+#pragma data_seg("D21")
+#pragma bss_seg("B21")
+#pragma const_seg("K21")
+#pragma comment(linker, "/merge:D21=21")
+#pragma comment(linker, "/merge:C21=21")
+#pragma comment(linker, "/merge:B21=21")
+#pragma comment(linker, "/merge:K21=21")
 /***************************************************************************
 
   vidhrdw.c

@@ -372,9 +372,9 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 @LocoMotionFamily = ( "rallyx.c", "timeplt.c", "locomotn.c", 
 					  "tutankhm.c" );										# Loco-Motion, Tutankham
 @ExidyFamily = ( "exidy.c", "victory.c" );									# Victory
-@M72Family = ( "m72.c", "m90.c" );											# Bomber Man World (World)
+@M72Family = ( "m72.c", "m90.c", "vigilant.c" );							# Bomber Man World (World), Vigilante
 @LelandFamily = ( "leland.c", "ataxx.c" );									# Asylum (prototype)
-@TrackFldFamily = ( "trackfld.c", "hyperspt.c" );							# Hyper Sports, Hyper Olympics '84
+@TrackFldFamily = ( "trackfld.c", "hyperspt.c", "yiear.c" );				# Hyper Sports, Hyper Olympics '84, Yie ar Kung Fu
 @Taito_F3Family = ( "taito_f3.c", "superchs.c", "groundfx.c",
 					"gunbustr.c", "undrfire.c" );							# Super Chase, Ground Effects, Gunbuster, Under Fire
 @FromanceFamily = ( "fromance.c", "pipedrm.c" );							# Pipe Dream

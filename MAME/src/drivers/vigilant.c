@@ -1,11 +1,11 @@
-#pragma code_seg("C706")
-#pragma data_seg("D706")
-#pragma bss_seg("B706")
-#pragma const_seg("K706")
-#pragma comment(linker, "/merge:D706=706")
-#pragma comment(linker, "/merge:C706=706")
-#pragma comment(linker, "/merge:B706=706")
-#pragma comment(linker, "/merge:K706=706")
+#pragma code_seg("C19")
+#pragma data_seg("D19")
+#pragma bss_seg("B19")
+#pragma const_seg("K19")
+#pragma comment(linker, "/merge:D19=19")
+#pragma comment(linker, "/merge:C19=19")
+#pragma comment(linker, "/merge:B19=19")
+#pragma comment(linker, "/merge:K19=19")
 /***************************************************************************
 
   Vigilante

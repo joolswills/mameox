@@ -205,8 +205,10 @@ BOOL UnloadDriverSections( void )
         (*i).first == "src\\drivers\\tutankhm.c" ||
         (*i).first == "src\\drivers\\victory.c" ||
         (*i).first == "src\\drivers\\m90.c" ||
+        (*i).first == "src\\drivers\\vigilant.c" ||
         (*i).first == "src\\drivers\\ataxx.c" ||
         (*i).first == "src\\drivers\\hyperspt.c" ||
+        (*i).first == "src\\drivers\\yiear.c" ||
         (*i).first == "src\\drivers\\superchs.c" ||
         (*i).first == "src\\drivers\\groundfx.c" ||
         (*i).first == "src\\drivers\\gunbustr.c" ||
@@ -843,6 +845,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\tumblep.c", "688" );
   RegisterSectionName( "src\\drivers\\tunhunt.c", "689" );
   RegisterSectionName( "src\\drivers\\turbo.c", "690" );
+  RegisterSectionName( "src\\drivers\\tutankhm.c", "17" );
   RegisterSectionName( "src\\drivers\\twin16.c", "692" );
   RegisterSectionName( "src\\drivers\\twincobr.c", "5" );
   RegisterSectionName( "src\\drivers\\ultraman.c", "694" );
@@ -857,7 +860,6 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\vicdual.c", "703" );
   RegisterSectionName( "src\\drivers\\victory.c", "18" );
   RegisterSectionName( "src\\drivers\\videopin.c", "705" );
-  RegisterSectionName( "src\\drivers\\vigilant.c", "706" );
   RegisterSectionName( "src\\drivers\\vindictr.c", "707" );
   RegisterSectionName( "src\\drivers\\volfied.c", "708" );
   RegisterSectionName( "src\\drivers\\vsnes.c", "709" );
@@ -888,7 +890,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\xyonix.c", "734" );
   RegisterSectionName( "src\\drivers\\yamato.c", "735" );
   RegisterSectionName( "src\\drivers\\yard.c", "6" );
-  RegisterSectionName( "src\\drivers\\yiear.c", "737" );
+  RegisterSectionName( "src\\drivers\\yiear.c", "21" );
   RegisterSectionName( "src\\drivers\\yunsun16.c", "738" );
   RegisterSectionName( "src\\drivers\\yunsung8.c", "739" );
   RegisterSectionName( "src\\drivers\\zac2650.c", "740" );
@@ -897,7 +899,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\zerozone.c", "743" );
   RegisterSectionName( "src\\drivers\\zn.c", "744" );
   RegisterSectionName( "src\\drivers\\zodiack.c", "745" );
-  RegisterSectionName( "src\\drivers\\tutankhm.c", "17" );
+  RegisterSectionName( "src\\drivers\\vigilant.c", "19" );
 }
 #pragma code_seg()
 #pragma data_seg()
