@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.10"
+	Name="SharedResources"
+	ProjectGUID="{731999BE-2D18-4EE5-9C18-0EEDD29B5821}"
+	Keyword="XboxProj">
+	<Platforms>
+		<Platform
+			Name="Xbox"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Release|Xbox"
+			OutputDirectory="Release"
+			IntermediateDirectory="Release"
+			ConfigurationType="4"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="3"
+				OmitFramePointers="TRUE"
+				OptimizeForProcessor="2"
+				PreprocessorDefinitions="NDEBUG;_XBOX;_LIB"
+				StringPooling="TRUE"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="TRUE"
+				EnableEnhancedInstructionSet="1"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile="$(OutDir)/$(ProjectName).pch"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="FALSE"
+				DebugInformationFormat="3"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile="$(OutDir)/$(ProjectName).lib"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			<File
+				RelativePath=".\Sources\Dummy.cpp">
+			</File>
+			<File
+				RelativePath=".\MediaFiles\FranklinGothicMedium_12.rdf">
+				<FileConfiguration
+					Name="Release|Xbox">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="bundler &quot;$(InputPath)&quot;"
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\MediaFiles\FranklinGothicMedium_13.rdf">
+				<FileConfiguration
+					Name="Release|Xbox">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="bundler &quot;$(InputPath)&quot;"
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\MediaFiles\FranklinGothicMedium_14.rdf">
+				<FileConfiguration
+					Name="Release|Xbox">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="bundler &quot;$(InputPath)&quot;"
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\MediaFiles\mox-icon.rdf">
+				<FileConfiguration
+					Name="Release|Xbox">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="bundler &quot;$(InputPath)&quot;"
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\MediaFiles\resource.rdf">
+				<FileConfiguration
+					Name="Release|Xbox">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="bundler &quot;$(InputPath)&quot;"
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+		</Filter>
+		<File
+			RelativePath=".\ReadMe.txt">
+		</File>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>
