@@ -6,6 +6,7 @@
 #include "state.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/konamiic.h"
+#include "machine/konamigx.h"
 
 static int sprite_colorbase;
 static int layer_colorbase[4], bg_colorbase, layerpri[4];
@@ -105,7 +106,9 @@ VIDEO_UPDATE( xexex )
 	sortlayers(layer, layerpri);
 
 	fillbitmap(priority_bitmap, 0, cliprect);
-	K054338_fill_solid_bg(bitmap);
+
+	K054338_fill_backcolor(bitmap, 0); //*
+
 	for(plane=0; plane<4; plane++)
 		if(layer[plane] < 0)
 			K053250_draw(bitmap,cliprect, 0, bg_colorbase, 1<<plane);

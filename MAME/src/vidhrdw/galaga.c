@@ -27,8 +27,13 @@ struct star
 };
 static struct star stars[MAX_STARS];
 static int total_stars;
+static int galaga_gfxbank; // used by catsbee
 
-
+WRITE_HANDLER ( catsbee_bank_w )
+{
+	galaga_gfxbank = data & 0x1;
+	memset (dirtybuffer, 1, videoram_size);
+}
 
 /***************************************************************************
 
@@ -125,6 +130,7 @@ VIDEO_START( galaga )
 	int x,y;
 	int set = 0;
 
+	galaga_gfxbank = 0;
 
 	if (video_start_generic() != 0)
 		return 1;
@@ -234,7 +240,7 @@ VIDEO_UPDATE( galaga )
 			}
 
 			drawgfx(tmpbitmap,Machine->gfx[0],
-					videoram[offs],
+					videoram[offs]+galaga_gfxbank*0x100,
 					colorram[offs],
 					flip_screen,flip_screen,
 					8*sx,8*sy,

@@ -177,7 +177,7 @@ print GENERATEDFILE "    }\n";
 print GENERATEDFILE "    else\n";
 print GENERATEDFILE "    {\n";
 print GENERATEDFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for file %s!\", (*i).second.c_str(), (*i).first.c_str() );\n";
-print GENERATEDFILE "      RPT2( _CRT_WARN, \"Invalid section %s for file %s!\\n\", (*i).second.c_str(), (*i).first.c_str() );\n";
+print GENERATEDFILE "      _RPT2( _CRT_WARN, \"Invalid section %s for file %s!\\n\", (*i).second.c_str(), (*i).first.c_str() );\n";
 print GENERATEDFILE "    }\n";
 print GENERATEDFILE "\n";
 print GENERATEDFILE "    sectionName = CONST_PREFIX;\n";

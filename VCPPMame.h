@@ -188,3 +188,4 @@
 #define HAS_GAELCO_CG1V	1
 #define HAS_C6280       1   // New: 0.67
 #define HAS_MULTIPCM    1   // New: 0.67
+#define HAS_TIA         1   // New: 0.68

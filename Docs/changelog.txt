@@ -69,10 +69,10 @@ Version 0.64b
 
  Additions:
    \
-	blitgen.c
+	blitgen.c  - Don't add to project
 	hash.c
 	hash.h
-	mameblit.c
+	mameblit.c - Don't add to project
 	sha1.c
 	sha1.h
 

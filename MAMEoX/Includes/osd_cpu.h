@@ -22,9 +22,6 @@
 
 #pragma once
 
-#ifndef OSD_CPU_H
-#define OSD_CPU_H
-
 #define PI								((float)3.141592654f)
 #define M_PI							PI
 
@@ -80,5 +77,3 @@ typedef union PAIR {
 	struct { UINT16 l,h; } w;
 	UINT32 d;
 }	PAIR;
-
-#endif	/* defined OSD_CPU_H */

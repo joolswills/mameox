@@ -101,7 +101,6 @@ void InitializeFileIO( void )
 
   CREATEOROPENPATH( ROMPATH, FALSE );
 	g_pathNames[FILETYPE_RAW] = g_pathNames[FILETYPE_ROM] = 
-															g_pathNames[FILETYPE_ROM_NOCRC] = 
 															tempStr;
 
   CREATEOROPENPATH( INIPATH, TRUE );
@@ -151,7 +150,6 @@ int osd_get_path_count( int pathtype )
 	{
 	case FILETYPE_RAW:
 	case FILETYPE_ROM:
-	case FILETYPE_ROM_NOCRC:
 
 	case FILETYPE_IMAGE:
 	case FILETYPE_IMAGE_DIFF:
@@ -191,7 +189,7 @@ int osd_get_path_info( int pathtype, int pathindex, const char *filename )
   #ifdef ALL_ROMS_ZIPPED
       // Don't bother searching for anything in the ROMs directory
       // if it doesn't end with .zip
-    if( pathtype == FILETYPE_ROM || pathtype == FILETYPE_ROM_NOCRC )
+    if( pathtype == FILETYPE_ROM )
     {
       if( stricmp( &filename[strlen(filename)-4], ".zip" ) )
         return PATH_NOT_FOUND;
@@ -424,7 +422,7 @@ UINT32 osd_fwrite( osd_file *file, const void *buffer, UINT32 length )
   {
     file->m_fileSize = length;
 
-    if( !(file->m_data = (UINT8*)malloc( file->m_fileSize )) )
+    if( !(file->m_data = (UINT8*)malloc( (size_t)file->m_fileSize )) )
     {
       PRINTMSG( T_ERROR, "Failed to malloc %lu bytes for new file!", length );
       _RPT1( _CRT_WARN, "Failed to malloc %lu bytes for new file!", length );
@@ -441,7 +439,7 @@ UINT32 osd_fwrite( osd_file *file, const void *buffer, UINT32 length )
   {
     file->m_fileSize = ((UINT64)file->m_filePointer - (UINT64)file->m_data) + length;
 
-    if( !(file->m_data = realloc( file->m_data, file->m_fileSize )) )
+    if( !(file->m_data = realloc( file->m_data, (size_t)file->m_fileSize )) )
     {
       PRINTMSG( T_ERROR, "Failed to realloc %lu bytes for new file!", length );
       _RPT1( _CRT_WARN, "Failed to realloc %lu bytes for new file!", length );
@@ -478,7 +476,7 @@ void osd_fclose( osd_file *file )
       PRINTMSG( T_ERROR, "Failed to reset file pointer to beginning of file. Data lost!" );
     }
 
-    if( !WriteFile( file->m_fileHandle, file->m_data, file->m_fileSize, &bytesWritten, NULL ) || bytesWritten != file->m_fileSize )
+    if( !WriteFile( file->m_fileHandle, file->m_data, (DWORD)file->m_fileSize, &bytesWritten, NULL ) || bytesWritten != file->m_fileSize )
     {
       _RPT0( _CRT_WARN, "Failed to write to file. Data lost!\n" );
       PRINTMSG( T_ERROR, "Failed to write to file. Data lost!" );
@@ -604,7 +602,7 @@ static BOOL Helper_PreloadFile( _osd_file *dest, HANDLE openedFile )
 
     if( !ReadFile(  dest->m_fileHandle,
                     dest->m_data,
-                    dest->m_fileSize,
+                    (DWORD)dest->m_fileSize,
                     &bytesRead,
                     NULL ) || bytesRead != dest->m_fileSize )
     {
