@@ -25,9 +25,6 @@ extern "C" {
 #define NORMAL_ITEM_COLOR				D3DCOLOR_RGBA( 100, 255, 100, 255 )
 #define SELECTED_ITEM_COLOR			D3DCOLOR_RGBA( 255, 255, 255, 255 )
 
-  // The deadzone for the screen usage percentage control (right analog)
-#define SCREENRANGE_DEADZONE    15000
-
 	// Maximum number of items to render on the screen at once
 #define MAXPAGESIZE							18
 
@@ -316,36 +313,6 @@ void CROMList::MoveCursor( const XINPUT_GAMEPAD	&gp )
   {
       // Regenerate the rom listing, hiding clones
     GenerateROMList( FALSE );
-  }
-  else if(  gp.sThumbRX < -SCREENRANGE_DEADZONE || gp.sThumbRX > SCREENRANGE_DEADZONE || 
-            gp.sThumbRY < -SCREENRANGE_DEADZONE || gp.sThumbRY > SCREENRANGE_DEADZONE )
-  {
-    FLOAT xPercentage, yPercentage;
-    GetScreenUsage( &xPercentage, &yPercentage );
-
-    if( gp.sThumbRX < -SCREENRANGE_DEADZONE )
-      xPercentage -= 0.00025f;
-    else if( gp.sThumbRX > SCREENRANGE_DEADZONE )
-      xPercentage += 0.00025f;
-
-    if( gp.sThumbRY < -SCREENRANGE_DEADZONE )
-      yPercentage -= 0.00025f;
-    else if( gp.sThumbRY > SCREENRANGE_DEADZONE )
-      yPercentage += 0.00025f;
-
-    if( xPercentage < 0.25f )
-      xPercentage = 0.25f;
-    else if( xPercentage > 1.0f )
-      xPercentage = 1.0f;
-
-    if( yPercentage < 0.25f )
-      yPercentage = 0.25f;
-    else if( yPercentage > 1.0f )
-      yPercentage = 1.0f;
-
-    SetScreenUsage( xPercentage, yPercentage );
-    DestroyBackdrop();
-    CreateBackdrop( xPercentage, yPercentage );
   }
 
 		// General idea taken from XMAME

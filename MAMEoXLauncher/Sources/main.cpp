@@ -37,6 +37,8 @@
 	// Number of seconds between valid X button readings
 #define XBUTTON_TIMEOUT	0.50f
 
+  // The deadzone for the screen usage percentage control (right analog)
+#define SCREENRANGE_DEADZONE    15000
 
 //= S T R U C T U R E S ===============================================
 struct CUSTOMVERTEX
@@ -225,6 +227,36 @@ void __cdecl main( void )
         // Toggle options mode
       optionsMode = !optionsMode;
       xButtonTimeout = XBUTTON_TIMEOUT;
+    }
+    else if(  gp0.sThumbRX < -SCREENRANGE_DEADZONE || gp0.sThumbRX > SCREENRANGE_DEADZONE || 
+              gp0.sThumbRY < -SCREENRANGE_DEADZONE || gp0.sThumbRY > SCREENRANGE_DEADZONE )
+    {
+      FLOAT xPercentage, yPercentage;
+      GetScreenUsage( &xPercentage, &yPercentage );
+
+      if( gp0.sThumbRX < -SCREENRANGE_DEADZONE )
+        xPercentage -= 0.00025f;
+      else if( gp0.sThumbRX > SCREENRANGE_DEADZONE )
+        xPercentage += 0.00025f;
+
+      if( gp0.sThumbRY < -SCREENRANGE_DEADZONE )
+        yPercentage -= 0.00025f;
+      else if( gp0.sThumbRY > SCREENRANGE_DEADZONE )
+        yPercentage += 0.00025f;
+
+      if( xPercentage < 0.25f )
+        xPercentage = 0.25f;
+      else if( xPercentage > 1.0f )
+        xPercentage = 1.0f;
+
+      if( yPercentage < 0.25f )
+        yPercentage = 0.25f;
+      else if( yPercentage > 1.0f )
+        yPercentage = 1.0f;
+
+      SetScreenUsage( xPercentage, yPercentage );
+      DestroyBackdrop();
+      CreateBackdrop( xPercentage, yPercentage );
     }
 
 
