@@ -30,6 +30,7 @@
 #include "xbox_JoystickMouse.h"
 #include "xbox_Direct3DRenderer.h"
 #include "xbox_FileIO.h"
+#include "xbox_Network.h"
 
 extern "C" {
 #include "osd_cpu.h"
@@ -93,17 +94,18 @@ void __cdecl main( void )
 #else
 	g_font.Create( "Font.xpr", 0 );
 #endif
-		// Intialize the various MAME OSD-specific subsystems
+  LoadOptions();
+
+	// Intialize the various MAME OSD-specific subsystems
+  InitializeTiming();
 	InitializeFileIO();
-	InitializeTiming();
+  InitializeNetwork();
 	InitializeD3DRenderer( g_graphicsManager, &g_font );
-
-		// Initialize the input subsystem
-	g_inputManager.Create( 4, 8 );
-
-	LoadOptions();
+  
   SaveOptions();
 
+	// Initialize the input subsystem
+	g_inputManager.Create( 4, 8 );
 
     // Check the launch data to ensure that we've been started properly
   if( ret != ERROR_SUCCESS || g_launchDataType != LDT_TITLE )
