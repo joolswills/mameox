@@ -16,11 +16,27 @@ out_prefix         resource
 //   Levels 1
 //}
 
-Texture ROMListBackdrop
+Texture ROMListScreenBackdrop
 {
-  Source mox-romlistbackdrop_dark.bmp
+  Source mox-romlistscreen.bmp
   Format D3DFMT_X8R8G8B8
   Levels 1
+}
+
+Texture ROMListScrollUpMask
+{
+  Source      mox-romlist-scrollupmask.bmp
+  Alphasource mox-romlist-scrollupmask.bmp
+  Format      D3DFMT_A8R8G8B8
+  Levels      1
+}
+
+Texture ROMListScrollDownMask
+{
+  Source      mox-romlist-scrolldownmask.bmp
+  Alphasource mox-romlist-scrolldownmask.bmp
+  Format      D3DFMT_A8R8G8B8
+  Levels      1
 }
 
 Texture SplashScreenBackdrop
@@ -33,6 +49,20 @@ Texture SplashScreenBackdrop
 Texture MessageScreenBackdrop
 {
   Source mox-messagescreen.jpg
+  Format D3DFMT_X8R8G8B8
+  Levels 1
+}
+
+Texture OptionsScreenBackdrop
+{
+  Source mox-optionsscreen.bmp
+  Format D3DFMT_X8R8G8B8
+  Levels 1
+}
+
+Texture HelpScreenBackdrop
+{
+  Source mox-helpscreen.bmp
   Format D3DFMT_X8R8G8B8
   Levels 1
 }
