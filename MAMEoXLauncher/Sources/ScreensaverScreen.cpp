@@ -127,8 +127,7 @@ void CScreensaverScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, m_renderingQuadCoords[3][0], m_renderingQuadCoords[3][1], 1.0f, 1.0f );
     m_displayDevice->End();
   }
-
-  if( !m_screenshotFiles.size() )
+	else
   {
       // Render something
     m_fontSet.DefaultFont().Begin();
