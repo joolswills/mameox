@@ -22,6 +22,7 @@ foreach( @FILEs ) {
 
 			# Wipe out the header
 		$File =~ s/\#pragma (code|data|bss|const)_seg\(\"[C|B|D|K]\d+\"\)[\r|\n]+//g;
+		$File =~ s/\#pragma comment\(linker, \"\/merge:.?\d+=.?\d+\"\)[\r|\n]+//g;
 
 			# Wipe out the footer
 		$File =~ s/\#pragma (code|data|bss|const)_seg\(\)[\r|\n]+//g;
@@ -48,6 +49,7 @@ foreach( @FILEs ) {
 
 				# Wipe out the header
 			$File =~ s/\#pragma (code|data|bss|const)_seg\(\"[C|B|D|K]\d+\"\)[\r|\n]+//g;
+			$File =~ s/\#pragma comment\(linker, \"\/merge:.?\d+=.?\d+\"\)[\r|\n]+//g;
 
 				# Wipe out the footer
 			$File =~ s/\#pragma (code|data|bss|const)_seg\(\)[\r|\n]+//g;
@@ -74,11 +76,40 @@ foreach( @FILEs ) {
 
 				# Wipe out the header
 			$File =~ s/\#pragma (code|data|bss|const)_seg\(\"[C|B|D|K]\d+\"\)[\r|\n]+//g;
+			$File =~ s/\#pragma comment\(linker, \"\/merge:.?\d+=.?\d+\"\)[\r|\n]+//g;
 
 				# Wipe out the footer
 			$File =~ s/\#pragma (code|data|bss|const)_seg\(\)[\r|\n]+//g;
 
 			open( FILE, ">$SoundHardwareName" ) || die "Failed to open file $SoundHardwareName for writing!\n";
+			syswrite( FILE, $File, length($File) );
+			close( FILE );
+		}
+	}
+
+
+		# Also do the machine file, if one exists
+	$MachineHardwareName = $DriverFileName;
+	$MachineHardwareName =~ s/\/drivers\//\/machine\//;
+
+	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $MachineHardwareName );
+
+	if( open( FILE, "<$MachineHardwareName" ) ) {
+		$File = "";
+		sysread( FILE, $File, $size );
+		close( FILE );
+
+		if( ($File =~ /\#pragma code_seg/) ) {
+
+				# Wipe out the header
+			$File =~ s/\#pragma (code|data|bss|const)_seg\(\"[C|B|D|K]\d+\"\)[\r|\n]+//g;
+			$File =~ s/\#pragma comment\(linker, \"\/merge:.?\d+=.?\d+\"\)[\r|\n]+//g;
+
+				# Wipe out the footer
+			$File =~ s/\#pragma (code|data|bss|const)_seg\(\)[\r|\n]+//g;
+
+			open( FILE, ">$MachineHardwareName" ) || die "Failed to open file $MachineHardwareName for writing!\n";
 			syswrite( FILE, $File, length($File) );
 			close( FILE );
 		}
@@ -106,8 +137,10 @@ foreach( @FILEs ) {
 
 	if( ($File =~ /\#pragma code_seg/) ) {
 
+
 			# Wipe out the header
-		$File =~ s/\#pragma (code|data|bss|const)_seg\(\"[C|B|D|K]\d+\"\)[\r|\n]+//g;
+		$File =~ s/\#pragma (code|data|bss|const)_seg\(\"C[C|B|D|K]\d+\"\)[\r|\n]+//g;
+		$File =~ s/\#pragma comment\(linker, \"\/merge:C[C|B|D|K]\d+=CPU\d+\"\)[\r|\n]+//g;
 
 			# Wipe out the footer
 		$File =~ s/\#pragma (code|data|bss|const)_seg\(\)[\r|\n]+//g;

@@ -63,12 +63,16 @@ print GENERATEDFILE "//! \\brief    Prints the size of each CPU segment\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
 print GENERATEDFILE "void CheckCPUSectionRAM( void );\n";
 print GENERATEDFILE "#endif\n\n";
-print GENERATEDFILE "\n//-------------------------------------------------------------\n";
-print GENERATEDFILE "//	RegisterDriverSectionNames\n";
-print GENERATEDFILE "//! \\brief    Registers all of the segments for use by\n";
-print GENERATEDFILE "//!            LoadDriverSectionByName and UnloadDriverSectionByName\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
-print GENERATEDFILE "void RegisterDriverSectionNames( void );\n";
+print GENERATEDFILE "//	InitDriverSectionizer\n";
+print GENERATEDFILE "//! \\brief    Initializes the DriverSectionizer subsystem\n";
+print GENERATEDFILE "//-------------------------------------------------------------\n";
+print GENERATEDFILE "void InitDriverSectionizer( void );\n";
+print GENERATEDFILE "\n//-------------------------------------------------------------\n";
+print GENERATEDFILE "//	TerminateDriverSectionizer\n";
+print GENERATEDFILE "//! \\brief    Terminates the DriverSectionizer subsystem\n";
+print GENERATEDFILE "//-------------------------------------------------------------\n";
+print GENERATEDFILE "void TerminateDriverSectionizer( void );\n";
 print GENERATEDFILE "\n//-------------------------------------------------------------\n";
 print GENERATEDFILE "//	LoadDriverSectionByName\n";
 print GENERATEDFILE "//! \\brief    Loads the section associated with the passed name\n";
@@ -94,38 +98,35 @@ print GENERATEDFILE "//! \\return   FALSE - Failure\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
 print GENERATEDFILE "BOOL UnloadDriverSectionByName( const char *DriverFileName );\n";
 print GENERATEDFILE "\n//-------------------------------------------------------------\n";
-print GENERATEDFILE "//	LoadDriverDataSections\n";
-print GENERATEDFILE "//! \\brief    Loads all of the driver data sections\n";
+print GENERATEDFILE "//	LoadDriverSections\n";
+print GENERATEDFILE "//! \\brief    Loads all of the driver sections\n";
 print GENERATEDFILE "//!\n";
 print GENERATEDFILE "//! \\return   BOOL - Operation status\n";
 print GENERATEDFILE "//! \\retval   TRUE - success\n";
 print GENERATEDFILE "//! \\return   FALSE - Failure\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
-print GENERATEDFILE "BOOL LoadDriverDataSections( void );\n";
+print GENERATEDFILE "BOOL LoadDriverSections( void );\n";
 print GENERATEDFILE "\n//-------------------------------------------------------------\n";
-print GENERATEDFILE "//	UnloadDriverDataSections\n";
-print GENERATEDFILE "//! \\brief    Unloads all of the driver data sections\n";
+print GENERATEDFILE "//	UnloadDriverSections\n";
+print GENERATEDFILE "//! \\brief    Unloads all of the driver sections\n";
 print GENERATEDFILE "//!\n";
 print GENERATEDFILE "//! \\return   BOOL - Operation status\n";
 print GENERATEDFILE "//! \\retval   TRUE - success\n";
 print GENERATEDFILE "//! \\return   FALSE - Failure\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
-print GENERATEDFILE "BOOL UnloadDriverDataSections( void );\n";
-print GENERATEDFILE "\n//-------------------------------------------------------------\n";
-print GENERATEDFILE "//	UnloadDriverNonDataSections\n";
-print GENERATEDFILE "//! \\brief    Unloads all non-data driver sections\n";
-print GENERATEDFILE "//!\n";
-print GENERATEDFILE "//! \\return   BOOL - Operation status\n";
-print GENERATEDFILE "//! \\retval   TRUE - success\n";
-print GENERATEDFILE "//! \\return   FALSE - Failure\n";
+print GENERATEDFILE "BOOL UnloadDriverSections( void );\n";
+
+
+print GENERATEDFILE "\n\n//-------------------------------------------------------------\n";
+print GENERATEDFILE "//	InitCPUSectionizer\n";
+print GENERATEDFILE "//! \\brief    Initializes the DriverSectionizer subsystem\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
-print GENERATEDFILE "BOOL UnloadDriverNonDataSections( void );\n";
+print GENERATEDFILE "void InitCPUSectionizer( void );\n";
 print GENERATEDFILE "\n//-------------------------------------------------------------\n";
-print GENERATEDFILE "//	RegisterCPUSectionNames\n";
-print GENERATEDFILE "//! \\brief    Registers all of the segments for use by\n";
-print GENERATEDFILE "//!            LoadCPUSectionByName and UnloadCPUSectionByName\n";
+print GENERATEDFILE "//	TerminateCPUSectionizer\n";
+print GENERATEDFILE "//! \\brief    Terminates the DriverSectionizer subsystem\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
-print GENERATEDFILE "void RegisterCPUSectionNames( void );\n";
+print GENERATEDFILE "void TerminateCPUSectionizer( void );\n";
 print GENERATEDFILE "\n//-------------------------------------------------------------\n";
 print GENERATEDFILE "//	LoadCPUSectionByID\n";
 print GENERATEDFILE "//! \\brief    Loads the section associated with the passed name\n";
@@ -151,32 +152,23 @@ print GENERATEDFILE "//! \\return   FALSE - Failure\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
 print GENERATEDFILE "BOOL UnloadCPUSectionByID( UINT32 CPUID );\n";
 print GENERATEDFILE "\n//-------------------------------------------------------------\n";
-print GENERATEDFILE "//	LoadCPUDataSections\n";
-print GENERATEDFILE "//! \\brief    Loads all of the CPU data sections\n";
+print GENERATEDFILE "//	LoadCPUSections\n";
+print GENERATEDFILE "//! \\brief    Loads all of the CPU sections\n";
 print GENERATEDFILE "//!\n";
 print GENERATEDFILE "//! \\return   BOOL - Operation status\n";
 print GENERATEDFILE "//! \\retval   TRUE - success\n";
 print GENERATEDFILE "//! \\return   FALSE - Failure\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
-print GENERATEDFILE "BOOL LoadCPUDataSections( void );\n";
+print GENERATEDFILE "BOOL LoadCPUSections( void );\n";
 print GENERATEDFILE "\n//-------------------------------------------------------------\n";
-print GENERATEDFILE "//	UnloadCPUDataSections\n";
-print GENERATEDFILE "//! \\brief    Unloads all of the CPU data sections\n";
+print GENERATEDFILE "//	UnloadCPUSections\n";
+print GENERATEDFILE "//! \\brief    Unloads all of the CPU sections\n";
 print GENERATEDFILE "//!\n";
 print GENERATEDFILE "//! \\return   BOOL - Operation status\n";
 print GENERATEDFILE "//! \\retval   TRUE - success\n";
 print GENERATEDFILE "//! \\return   FALSE - Failure\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
-print GENERATEDFILE "BOOL UnloadCPUDataSections( void );\n";
-print GENERATEDFILE "\n//-------------------------------------------------------------\n";
-print GENERATEDFILE "//	UnloadCPUNonDataSections\n";
-print GENERATEDFILE "//! \\brief    Unloads all non-data CPU sections\n";
-print GENERATEDFILE "//!\n";
-print GENERATEDFILE "//! \\return   BOOL - Operation status\n";
-print GENERATEDFILE "//! \\retval   TRUE - success\n";
-print GENERATEDFILE "//! \\return   FALSE - Failure\n";
-print GENERATEDFILE "//-------------------------------------------------------------\n";
-print GENERATEDFILE "BOOL UnloadCPUNonDataSections( void );\n";
+print GENERATEDFILE "BOOL UnloadCPUSections( void );\n";
 print GENERATEDFILE "#ifdef __cplusplus\n";
 print GENERATEDFILE "} // End extern \"C\"\n";
 print GENERATEDFILE "#endif\n";
@@ -209,9 +201,38 @@ print GENERATEDFILE "#define BSS_PREFIX       \"".BSS_PREFIX."\"\n";
 print GENERATEDFILE "#define CONST_PREFIX     \"".CONST_PREFIX."\"\n";
 print GENERATEDFILE "\n";
 print GENERATEDFILE "//= G L O B A L = V A R S ==============================================\n";
-print GENERATEDFILE "static std::map< std::string, std::string >  g_nameToSectionMap;\n";
+print GENERATEDFILE "static std::map< std::string, std::string >  g_nameToSectionMap;\n\n";
+print GENERATEDFILE "//= P R O T O T Y P E S ================================================\n";
+print GENERATEDFILE "extern \"C\" static void RegisterDriverSectionNames( void );\n\n";
 print GENERATEDFILE "//= F U N C T I O N S ==================================================\n";
 print GENERATEDFILE "extern \"C\" {\n";
+print GENERATEDFILE "\n//-------------------------------------------------------------\n";
+print GENERATEDFILE "//	InitDriverSectionizer\n";
+print GENERATEDFILE "//-------------------------------------------------------------\n";
+print GENERATEDFILE "void InitDriverSectionizer( void )\n";
+print GENERATEDFILE "{\n";
+print GENERATEDFILE "  g_nameToSectionMap.clear();\n";
+print GENERATEDFILE "  void *addr;\n";
+print GENERATEDFILE "  addr = XLoadSection( \"DRVSNIZE\" );\n";
+print GENERATEDFILE "  if( !addr )\n";
+print GENERATEDFILE "  {\n";
+print GENERATEDFILE "    UINT32 lastErr = GetLastError();\n";
+print GENERATEDFILE "    PRINTMSG( T_ERROR, \"XLoadSection failed! 0x%X\\r\\n\", lastErr );\n";
+print GENERATEDFILE "  }\n";
+print GENERATEDFILE "  RegisterDriverSectionNames();\n";
+print GENERATEDFILE "}\n\n";
+print GENERATEDFILE "\n//-------------------------------------------------------------\n";
+print GENERATEDFILE "//	TerminateDriverSectionizer\n";
+print GENERATEDFILE "//-------------------------------------------------------------\n";
+print GENERATEDFILE "void TerminateDriverSectionizer( void )\n";
+print GENERATEDFILE "{\n";
+print GENERATEDFILE "  g_nameToSectionMap.clear();\n";
+print GENERATEDFILE "  XFreeSection( \"DRVSNIZE\" );\n";
+print GENERATEDFILE "}\n\n";
+print GENERATEDFILE "#pragma code_seg( \"DRVCSNZE\" )\n";
+print GENERATEDFILE "#pragma data_seg( \"DRVDSNZE\" )\n";
+print GENERATEDFILE "#pragma comment(linker, \"/merge:DRVCSNZE=DRVSNIZE\")\n";
+print GENERATEDFILE "#pragma comment(linker, \"/merge:DRVDSNZE=DRVSNIZE\")\n";
 print GENERATEDFILE "\n#ifdef _DEBUG\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
 print GENERATEDFILE "//	CheckDriverSectionRAM\n";
@@ -222,57 +243,15 @@ print GENERATEDFILE "  DWORD total = 0;\n";
 print GENERATEDFILE "  std::map< std::string, std::string >::iterator i = g_nameToSectionMap.begin();\n";
 print GENERATEDFILE "  for( ; i != g_nameToSectionMap.end(); ++i )\n";
 print GENERATEDFILE "  {\n";
-print GENERATEDFILE "    std::string sectionName;\n";
-print GENERATEDFILE "    sectionName = CODE_PREFIX;\n";
-print GENERATEDFILE "    sectionName += (*i).second.c_str();\n";
-print GENERATEDFILE "    HANDLE h = XGetSectionHandle( sectionName.c_str() );\n";
+print GENERATEDFILE "    HANDLE h = XGetSectionHandle( (*i).second.c_str() );\n";
 print GENERATEDFILE "    if( h != INVALID_HANDLE_VALUE )\n";
 print GENERATEDFILE "    {\n";
 print GENERATEDFILE "      UINT32 sz = XGetSectionSize( h );\n";
-print GENERATEDFILE "      PRINTMSG( T_INFO, \"Driver %s [CODE]: %lu\", (*i).first.c_str(), sz );\n";
+print GENERATEDFILE "      PRINTMSG( T_INFO, \"Driver %s %lu\", (*i).first.c_str(), sz );\n";
 print GENERATEDFILE "      total += sz;\n";
 print GENERATEDFILE "    }\n";
 print GENERATEDFILE "    else\n";
 print GENERATEDFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for file %s!\", (*i).second.c_str(), (*i).first.c_str() );\n";
-print GENERATEDFILE "\n";
-print GENERATEDFILE "    sectionName = DATA_PREFIX;\n";
-print GENERATEDFILE "    sectionName += (*i).second.c_str();\n";
-print GENERATEDFILE "    h = XGetSectionHandle( sectionName.c_str() );\n";
-print GENERATEDFILE "    if( h != INVALID_HANDLE_VALUE )\n";
-print GENERATEDFILE "    {\n";
-print GENERATEDFILE "      UINT32 sz = XGetSectionSize( h );\n";
-print GENERATEDFILE "      PRINTMSG( T_INFO, \"Driver %s [DATA]: %lu\", (*i).first.c_str(), sz );\n";
-print GENERATEDFILE "      total += sz;\n";
-print GENERATEDFILE "    }\n";
-print GENERATEDFILE "    else\n";
-print GENERATEDFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for file %s!\", (*i).second.c_str(), (*i).first.c_str() );\n";
-print GENERATEDFILE "\n";
-print GENERATEDFILE "    sectionName = BSS_PREFIX;\n";
-print GENERATEDFILE "    sectionName += (*i).second.c_str();\n";
-print GENERATEDFILE "    h = XGetSectionHandle( sectionName.c_str() );\n";
-print GENERATEDFILE "    if( h != INVALID_HANDLE_VALUE )\n";
-print GENERATEDFILE "    {\n";
-print GENERATEDFILE "      UINT32 sz = XGetSectionSize( h );\n";
-print GENERATEDFILE "      PRINTMSG( T_INFO, \"Driver %s [BSS]: %lu\", (*i).first.c_str(), sz );\n";
-print GENERATEDFILE "      total += sz;\n";
-print GENERATEDFILE "    }\n";
-print GENERATEDFILE "    else\n";
-print GENERATEDFILE "    {\n";
-print GENERATEDFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for file %s!\", (*i).second.c_str(), (*i).first.c_str() );\n";
-print GENERATEDFILE "    }\n";
-print GENERATEDFILE "\n";
-print GENERATEDFILE "    sectionName = CONST_PREFIX;\n";
-print GENERATEDFILE "    sectionName += (*i).second.c_str();\n";
-print GENERATEDFILE "    h = XGetSectionHandle( sectionName.c_str() );\n";
-print GENERATEDFILE "    if( h != INVALID_HANDLE_VALUE )\n";
-print GENERATEDFILE "    {\n";
-print GENERATEDFILE "      UINT32 sz = XGetSectionSize( h );\n";
-print GENERATEDFILE "      PRINTMSG( T_INFO, \"Driver %s [CONST]: %lu\", (*i).first.c_str(), sz );\n";
-print GENERATEDFILE "      total += sz;\n";
-print GENERATEDFILE "    }\n";
-print GENERATEDFILE "    else\n";
-print GENERATEDFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for file %s!\", (*i).second.c_str(), (*i).first.c_str() );\n";
-print GENERATEDFILE "\n";
 print GENERATEDFILE "  }\n";
 print GENERATEDFILE "  PRINTMSG( T_INFO, \"Total %lu bytes\\n\", total );\n";
 print GENERATEDFILE "}\n";
@@ -280,10 +259,10 @@ print GENERATEDFILE "#endif\n\n";
 print GENERATEDFILE "\n//-------------------------------------------------------------\n";
 print GENERATEDFILE "//	RegisterSectionName\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
-print GENERATEDFILE "static void RegisterSectionName( const char *DriverFileName, const char *DataSectionName )\n";
+print GENERATEDFILE "static void RegisterSectionName( const char *DriverFileName, const char *sectionName )\n";
 print GENERATEDFILE "{\n";
 print GENERATEDFILE "    // Add the section name to the map\n";
-print GENERATEDFILE "  g_nameToSectionMap[ DriverFileName ] = DataSectionName;\n";
+print GENERATEDFILE "  g_nameToSectionMap[ DriverFileName ] = sectionName;\n";
 print GENERATEDFILE "}\n\n";
 print GENERATEDFILE "\n//-------------------------------------------------------------\n";
 print GENERATEDFILE "//	LoadDriverSectionByName\n";
@@ -293,50 +272,14 @@ print GENERATEDFILE "{\n";
 print GENERATEDFILE "  std::map< std::string, std::string >::iterator i = g_nameToSectionMap.find( DriverFileName );\n";
 print GENERATEDFILE "  if( i == g_nameToSectionMap.end() )\n";
 print GENERATEDFILE "    return FALSE;\n";
-print GENERATEDFILE "  std::string sectionName;\n";
 print GENERATEDFILE "  void *addr;\n";
 print GENERATEDFILE "  PRINTMSG( T_INFO, \"Load section %s, ID %s\\n\", DriverFileName, (*i).second.c_str() );\n";
-print GENERATEDFILE "  sectionName = DATA_PREFIX;\n";
-print GENERATEDFILE "  sectionName += (*i).second.c_str();\n";
-print GENERATEDFILE "  addr = XLoadSection( sectionName.c_str() );\n";
+print GENERATEDFILE "  addr = XLoadSection( (*i).second.c_str() );\n";
 print GENERATEDFILE "  if( !addr )\n";
 print GENERATEDFILE "  {\n";
 print GENERATEDFILE "    UINT32 lastErr = GetLastError();\n";
 print GENERATEDFILE "    PRINTMSG( T_ERROR, \"XLoadSection failed! 0x%X\\r\\n\", lastErr );\n";
-print GENERATEDFILE "    //osd_print_error( \"Failed to load section %s!\", sectionName.c_str() );\n";
-print GENERATEDFILE "    //return FALSE;\n";
-print GENERATEDFILE "  }\n";
-print GENERATEDFILE "\n";
-print GENERATEDFILE "  sectionName = CODE_PREFIX;\n";
-print GENERATEDFILE "  sectionName += (*i).second.c_str();\n";
-print GENERATEDFILE "  addr = XLoadSection( sectionName.c_str() );\n";
-print GENERATEDFILE "  if( !addr )\n";
-print GENERATEDFILE "  {\n";
-print GENERATEDFILE "    UINT32 lastErr = GetLastError();\n";
-print GENERATEDFILE "    PRINTMSG( T_ERROR, \"XLoadSection failed! 0x%X\\r\\n\", lastErr );\n";
-print GENERATEDFILE "    //osd_print_error( \"Failed to load section %s!\", sectionName.c_str() );\n";
-print GENERATEDFILE "    //return FALSE;\n";
-print GENERATEDFILE "  }\n";
-print GENERATEDFILE "\n";
-print GENERATEDFILE "  sectionName = BSS_PREFIX;\n";
-print GENERATEDFILE "  sectionName += (*i).second.c_str();\n";
-print GENERATEDFILE "  addr = XLoadSection( sectionName.c_str() );\n";
-print GENERATEDFILE "  if( !addr )\n";
-print GENERATEDFILE "  {\n";
-print GENERATEDFILE "    UINT32 lastErr = GetLastError();\n";
-print GENERATEDFILE "    PRINTMSG( T_ERROR, \"XLoadSection failed! 0x%X\\r\\n\", lastErr );\n";
-print GENERATEDFILE "    //osd_print_error( \"Failed to load section %s!\", sectionName.c_str() );\n";
-print GENERATEDFILE "    //return FALSE;\n";
-print GENERATEDFILE "  }\n";
-print GENERATEDFILE "\n";
-print GENERATEDFILE "  sectionName = CONST_PREFIX;\n";
-print GENERATEDFILE "  sectionName += (*i).second.c_str();\n";
-print GENERATEDFILE "  addr = XLoadSection( sectionName.c_str() );\n";
-print GENERATEDFILE "  if( !addr )\n";
-print GENERATEDFILE "  {\n";
-print GENERATEDFILE "    UINT32 lastErr = GetLastError();\n";
-print GENERATEDFILE "    PRINTMSG( T_ERROR, \"XLoadSection failed! 0x%X\\r\\n\", lastErr );\n";
-print GENERATEDFILE "    //osd_print_error( \"Failed to load section %s!\", sectionName.c_str() );\n";
+print GENERATEDFILE "    //osd_print_error( \"Failed to load section %s!\", (*i).second.c_str() );\n";
 print GENERATEDFILE "    //return FALSE;\n";
 print GENERATEDFILE "  }\n";
 print GENERATEDFILE "  return TRUE;\n";
@@ -349,104 +292,38 @@ print GENERATEDFILE "{\n";
 print GENERATEDFILE "  std::map< std::string, std::string >::iterator i = g_nameToSectionMap.find( DriverFileName );\n";
 print GENERATEDFILE "  if( i == g_nameToSectionMap.end() )\n";
 print GENERATEDFILE "    return FALSE;\n";
-print GENERATEDFILE "  BOOL dataRet, codeRet, bssRet, constRet;\n";
-print GENERATEDFILE "  std::string sectionName;\n";
-print GENERATEDFILE "  sectionName = DATA_PREFIX;\n";
-print GENERATEDFILE "  sectionName += (*i).second.c_str();\n";
-print GENERATEDFILE "  dataRet = XFreeSection( sectionName.c_str() );\n";
-print GENERATEDFILE "\n";
-print GENERATEDFILE "  sectionName = CODE_PREFIX;\n";
-print GENERATEDFILE "  sectionName += (*i).second.c_str();\n";
-print GENERATEDFILE "  codeRet = XFreeSection( sectionName.c_str() );\n";
-print GENERATEDFILE "\n";
-print GENERATEDFILE "  sectionName = BSS_PREFIX;\n";
-print GENERATEDFILE "  sectionName += (*i).second.c_str();\n";
-print GENERATEDFILE "  bssRet = XFreeSection( sectionName.c_str() );\n";
-print GENERATEDFILE "\n";
-print GENERATEDFILE "  sectionName = CONST_PREFIX;\n";
-print GENERATEDFILE "  sectionName += (*i).second.c_str();\n";
-print GENERATEDFILE "  constRet = XFreeSection( sectionName.c_str() );\n";
-print GENERATEDFILE "\n";
-print GENERATEDFILE "  return (dataRet && codeRet && bssRet && constRet);\n";
+print GENERATEDFILE "  return XFreeSection( (*i).second.c_str() );\n";
 print GENERATEDFILE "}\n\n";
 print GENERATEDFILE "\n//-------------------------------------------------------------\n";
-print GENERATEDFILE "//	LoadDriverDataSections\n";
+print GENERATEDFILE "//	LoadDriverSections\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
-print GENERATEDFILE "BOOL LoadDriverDataSections( void )\n";
+print GENERATEDFILE "BOOL LoadDriverSections( void )\n";
 print GENERATEDFILE "{\n";
 print GENERATEDFILE "  std::map< std::string, std::string >::iterator i = g_nameToSectionMap.begin();\n";
 print GENERATEDFILE "  for( ; i != g_nameToSectionMap.end(); ++i )\n";
 print GENERATEDFILE "  {\n";
-print GENERATEDFILE "    std::string sectionName;\n";
-print GENERATEDFILE "    sectionName = DATA_PREFIX;\n";
-print GENERATEDFILE "    sectionName += (*i).second.c_str();\n";
-print GENERATEDFILE "    if( !XLoadSection( sectionName.c_str() ) )\n";
+print GENERATEDFILE "    if( !XLoadSection( (*i).second.c_str() ) )\n";
 print GENERATEDFILE "    {\n";
-print GENERATEDFILE "      PRINTMSG( T_ERROR, \"Failed to load section %s!\", sectionName.c_str() );\n";
-print GENERATEDFILE "      //return FALSE;\n";
-print GENERATEDFILE "    }\n";
-print GENERATEDFILE "\n";
-print GENERATEDFILE "    sectionName = CONST_PREFIX;\n";
-print GENERATEDFILE "    sectionName += (*i).second.c_str();\n";
-print GENERATEDFILE "    if( !XLoadSection( sectionName.c_str() ) )\n";
-print GENERATEDFILE "    {\n";
-print GENERATEDFILE "      PRINTMSG( T_ERROR, \"Failed to load section %s!\", sectionName.c_str() );\n";
+print GENERATEDFILE "      PRINTMSG( T_ERROR, \"Failed to load section %s!\", (*i).second.c_str() );\n";
 print GENERATEDFILE "      //return FALSE;\n";
 print GENERATEDFILE "    }\n";
 print GENERATEDFILE "  }\n";
 print GENERATEDFILE "  return TRUE;\n";
 print GENERATEDFILE "}\n\n";
 print GENERATEDFILE "\n//-------------------------------------------------------------\n";
-print GENERATEDFILE "//	UnloadDriverNonDataSections\n";
+print GENERATEDFILE "//	UnloadDriverSections\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
-print GENERATEDFILE "BOOL UnloadDriverNonDataSections( void )\n";
+print GENERATEDFILE "BOOL UnloadDriverSections( void )\n";
 print GENERATEDFILE "{\n";
 print GENERATEDFILE "  std::map< std::string, std::string >::iterator i = g_nameToSectionMap.begin();\n";
 print GENERATEDFILE "  for( ; i != g_nameToSectionMap.end(); ++i )\n";
-print GENERATEDFILE "  {\n";
-print GENERATEDFILE "    std::string sectionName;\n";
-print GENERATEDFILE "    sectionName = CODE_PREFIX;\n";
-print GENERATEDFILE "    sectionName += (*i).second.c_str();\n";
-print GENERATEDFILE "    HANDLE h = XGetSectionHandle( sectionName.c_str() );\n";
-print GENERATEDFILE "    if( h != INVALID_HANDLE_VALUE )\n";
-print GENERATEDFILE "      XFreeSectionByHandle( h );\n";
-print GENERATEDFILE "\n";
-print GENERATEDFILE "    sectionName = BSS_PREFIX;\n";
-print GENERATEDFILE "    sectionName += (*i).second.c_str();\n";
-print GENERATEDFILE "    h = XGetSectionHandle( sectionName.c_str() );\n";
-print GENERATEDFILE "    if( h != INVALID_HANDLE_VALUE )\n";
-print GENERATEDFILE "      XFreeSectionByHandle( h );\n";
-print GENERATEDFILE "\n";
-print GENERATEDFILE "  }\n";
-print GENERATEDFILE "  return TRUE;\n";
-print GENERATEDFILE "}\n\n";
-print GENERATEDFILE "\n//-------------------------------------------------------------\n";
-print GENERATEDFILE "//	UnloadDriverDataSections\n";
-print GENERATEDFILE "//-------------------------------------------------------------\n";
-print GENERATEDFILE "BOOL UnloadDriverDataSections( void )\n";
-print GENERATEDFILE "{\n";
-print GENERATEDFILE "  std::map< std::string, std::string >::iterator i = g_nameToSectionMap.begin();\n";
-print GENERATEDFILE "  for( ; i != g_nameToSectionMap.end(); ++i )\n";
-print GENERATEDFILE "  {\n";
-print GENERATEDFILE "    std::string sectionName;\n";
-print GENERATEDFILE "    sectionName = DATA_PREFIX;\n";
-print GENERATEDFILE "    sectionName += (*i).second.c_str();\n";
-print GENERATEDFILE "    HANDLE h = XGetSectionHandle( sectionName.c_str() );\n";
-print GENERATEDFILE "    if( h != INVALID_HANDLE_VALUE )\n";
-print GENERATEDFILE "      XFreeSectionByHandle( h );\n";
-print GENERATEDFILE "\n";
-print GENERATEDFILE "    sectionName = CONST_PREFIX;\n";
-print GENERATEDFILE "    sectionName += (*i).second.c_str();\n";
-print GENERATEDFILE "    h = XGetSectionHandle( sectionName.c_str() );\n";
-print GENERATEDFILE "    if( h != INVALID_HANDLE_VALUE )\n";
-print GENERATEDFILE "      XFreeSectionByHandle( h );\n";
-print GENERATEDFILE "  }\n";
+print GENERATEDFILE "    XFreeSection( (*i).second.c_str() );\n";
 print GENERATEDFILE "  return TRUE;\n";
 print GENERATEDFILE "}\n\n";
 print GENERATEDFILE "\n//-------------------------------------------------------------\n";
 print GENERATEDFILE "//	RegisterDriverSectionNames\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
-print GENERATEDFILE "void RegisterDriverSectionNames( void )\n";
+print GENERATEDFILE "static void RegisterDriverSectionNames( void )\n";
 print GENERATEDFILE "{\n";
 
 
@@ -477,9 +354,38 @@ print CPUFILE "#define BSS_PREFIX       \"C".BSS_PREFIX."\"\n";
 print CPUFILE "#define CONST_PREFIX     \"C".CONST_PREFIX."\"\n";
 print CPUFILE "\n";
 print CPUFILE "//= G L O B A L = V A R S ==============================================\n";
-print CPUFILE "static std::map< UINT32, std::string >  g_IDToSectionMap;\n";
+print CPUFILE "static std::map< UINT32, std::string >  g_IDToSectionMap;\n\n";
+print CPUFILE "//= P R O T O T Y P E S ================================================\n";
+print CPUFILE "extern \"C\" static void RegisterCPUSectionNames( void );\n\n";
 print CPUFILE "//= F U N C T I O N S ==================================================\n";
 print CPUFILE "extern \"C\" {\n";
+print CPUFILE "\n//-------------------------------------------------------------\n";
+print CPUFILE "//	InitCPUSectionizer\n";
+print CPUFILE "//-------------------------------------------------------------\n";
+print CPUFILE "void InitCPUSectionizer( void )\n";
+print CPUFILE "{\n";
+print CPUFILE "  g_IDToSectionMap.clear();\n";
+print CPUFILE "  void *addr;\n";
+print CPUFILE "  addr = XLoadSection( \"CPUSNIZE\" );\n";
+print CPUFILE "  if( !addr )\n";
+print CPUFILE "  {\n";
+print CPUFILE "    UINT32 lastErr = GetLastError();\n";
+print CPUFILE "    PRINTMSG( T_ERROR, \"XLoadSection failed! 0x%X\\r\\n\", lastErr );\n";
+print CPUFILE "  }\n";
+print CPUFILE "  RegisterCPUSectionNames();\n";
+print CPUFILE "}\n\n";
+print CPUFILE "\n//-------------------------------------------------------------\n";
+print CPUFILE "//	TerminateCPUSectionizer\n";
+print CPUFILE "//-------------------------------------------------------------\n";
+print CPUFILE "void TerminateCPUSectionizer( void )\n";
+print CPUFILE "{\n";
+print CPUFILE "  g_IDToSectionMap.clear();\n";
+print CPUFILE "  XFreeSection( \"CPUSNIZE\" );\n";
+print CPUFILE "}\n\n";
+print CPUFILE "#pragma code_seg( \"CPUCSNZE\" )\n";
+print CPUFILE "#pragma data_seg( \"CPUDSNZE\" )\n";
+print CPUFILE "#pragma comment(linker, \"/merge:CPUCSNZE=CPUSNIZE\")\n";
+print CPUFILE "#pragma comment(linker, \"/merge:CPUDSNZE=CPUSNIZE\")\n";
 print CPUFILE "\n#ifdef _DEBUG\n";
 print CPUFILE "//-------------------------------------------------------------\n";
 print CPUFILE "//	CheckCPUSectionRAM\n";
@@ -490,57 +396,15 @@ print CPUFILE "  DWORD total = 0;\n";
 print CPUFILE "  std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.begin();\n";
 print CPUFILE "  for( ; i != g_IDToSectionMap.end(); ++i )\n";
 print CPUFILE "  {\n";
-print CPUFILE "    std::string sectionName;\n";
-print CPUFILE "    sectionName = CODE_PREFIX;\n";
-print CPUFILE "    sectionName += (*i).second.c_str();\n";
-print CPUFILE "    HANDLE h = XGetSectionHandle( sectionName.c_str() );\n";
+print CPUFILE "    HANDLE h = XGetSectionHandle( (*i).second.c_str() );\n";
 print CPUFILE "    if( h != INVALID_HANDLE_VALUE )\n";
 print CPUFILE "    {\n";
 print CPUFILE "      UINT32 sz = XGetSectionSize( h );\n";
-print CPUFILE "      PRINTMSG( T_INFO, \"CPU%lu [CODE]: %lu\", (*i).first, sz );\n";
+print CPUFILE "      PRINTMSG( T_INFO, \"CPU%lu %lu\", (*i).first, sz );\n";
 print CPUFILE "      total += sz;\n";
 print CPUFILE "    }\n";
 print CPUFILE "    else\n";
 print CPUFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for CPU%lu!\", (*i).second.c_str(), (*i).first );\n";
-print CPUFILE "\n";
-print CPUFILE "    sectionName = DATA_PREFIX;\n";
-print CPUFILE "    sectionName += (*i).second.c_str();\n";
-print CPUFILE "    h = XGetSectionHandle( sectionName.c_str() );\n";
-print CPUFILE "    if( h != INVALID_HANDLE_VALUE )\n";
-print CPUFILE "    {\n";
-print CPUFILE "      UINT32 sz = XGetSectionSize( h );\n";
-print CPUFILE "      PRINTMSG( T_INFO, \"CPU%lu [DATA]: %lu\", (*i).first, sz );\n";
-print CPUFILE "      total += sz;\n";
-print CPUFILE "    }\n";
-print CPUFILE "    else\n";
-print CPUFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for CPU%lu!\", (*i).second.c_str(), (*i).first );\n";
-print CPUFILE "\n";
-print CPUFILE "    sectionName = BSS_PREFIX;\n";
-print CPUFILE "    sectionName += (*i).second.c_str();\n";
-print CPUFILE "    h = XGetSectionHandle( sectionName.c_str() );\n";
-print CPUFILE "    if( h != INVALID_HANDLE_VALUE )\n";
-print CPUFILE "    {\n";
-print CPUFILE "      UINT32 sz = XGetSectionSize( h );\n";
-print CPUFILE "      PRINTMSG( T_INFO, \"CPU%lu [BSS]: %lu\", (*i).first, sz );\n";
-print CPUFILE "      total += sz;\n";
-print CPUFILE "    }\n";
-print CPUFILE "    else\n";
-print CPUFILE "    {\n";
-print CPUFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for CPU%lu!\", (*i).second.c_str(), (*i).first );\n";
-print CPUFILE "    }\n";
-print CPUFILE "\n";
-print CPUFILE "    sectionName = CONST_PREFIX;\n";
-print CPUFILE "    sectionName += (*i).second.c_str();\n";
-print CPUFILE "    h = XGetSectionHandle( sectionName.c_str() );\n";
-print CPUFILE "    if( h != INVALID_HANDLE_VALUE )\n";
-print CPUFILE "    {\n";
-print CPUFILE "      UINT32 sz = XGetSectionSize( h );\n";
-print CPUFILE "      PRINTMSG( T_INFO, \"CPU%lu [CONST]: %lu\", (*i).first, sz );\n";
-print CPUFILE "      total += sz;\n";
-print CPUFILE "    }\n";
-print CPUFILE "    else\n";
-print CPUFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for CPU%lu!\", (*i).second.c_str(), (*i).first );\n";
-print CPUFILE "\n";
 print CPUFILE "  }\n";
 print CPUFILE "  PRINTMSG( T_INFO, \"Total %lu bytes\\n\", total );\n";
 print CPUFILE "}\n";
@@ -561,51 +425,13 @@ print CPUFILE "{\n";
 print CPUFILE "  std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.find( CPUID );\n";
 print CPUFILE "  if( i == g_IDToSectionMap.end() )\n";
 print CPUFILE "    return FALSE;\n";
-print CPUFILE "  std::string sectionName;\n";
 print CPUFILE "  void *addr;\n";
 print CPUFILE "  PRINTMSG( T_INFO, \"Load section CPU%lu, ID %s\\n\", CPUID, (*i).second.c_str() );\n";
-print CPUFILE "  sectionName = DATA_PREFIX;\n";
-print CPUFILE "  sectionName += (*i).second.c_str();\n";
-print CPUFILE "  addr = XLoadSection( sectionName.c_str() );\n";
+print CPUFILE "  addr = XLoadSection( (*i).second.c_str() );\n";
 print CPUFILE "  if( !addr )\n";
 print CPUFILE "  {\n";
 print CPUFILE "    UINT32 lastErr = GetLastError();\n";
-print CPUFILE "    PRINTMSG( T_ERROR, \"XLoadSection failed! 0x%X\\r\\n\", lastErr );\n";
-print CPUFILE "    //osd_print_error( \"Failed to load section %s!\", sectionName.c_str() );\n";
-print CPUFILE "    //return FALSE;\n";
-print CPUFILE "  }\n";
-print CPUFILE "\n";
-print CPUFILE "  sectionName = CODE_PREFIX;\n";
-print CPUFILE "  sectionName += (*i).second.c_str();\n";
-print CPUFILE "  addr = XLoadSection( sectionName.c_str() );\n";
-print CPUFILE "  if( !addr )\n";
-print CPUFILE "  {\n";
-print CPUFILE "    UINT32 lastErr = GetLastError();\n";
-print CPUFILE "    PRINTMSG( T_ERROR, \"XLoadSection failed! 0x%X\\r\\n\", lastErr );\n";
-print CPUFILE "    //osd_print_error( \"Failed to load section %s!\", sectionName.c_str() );\n";
-print CPUFILE "    //return FALSE;\n";
-print CPUFILE "  }\n";
-print CPUFILE "\n";
-print CPUFILE "  sectionName = BSS_PREFIX;\n";
-print CPUFILE "  sectionName += (*i).second.c_str();\n";
-print CPUFILE "  addr = XLoadSection( sectionName.c_str() );\n";
-print CPUFILE "  if( !addr )\n";
-print CPUFILE "  {\n";
-print CPUFILE "    UINT32 lastErr = GetLastError();\n";
-print CPUFILE "    PRINTMSG( T_ERROR, \"XLoadSection failed! 0x%X\\r\\n\", lastErr );\n";
-print CPUFILE "    //osd_print_error( \"Failed to load section %s!\", sectionName.c_str() );\n";
-print CPUFILE "    //return FALSE;\n";
-print CPUFILE "  }\n";
-print CPUFILE "\n";
-print CPUFILE "  sectionName = CONST_PREFIX;\n";
-print CPUFILE "  sectionName += (*i).second.c_str();\n";
-print CPUFILE "  addr = XLoadSection( sectionName.c_str() );\n";
-print CPUFILE "  if( !addr )\n";
-print CPUFILE "  {\n";
-print CPUFILE "    UINT32 lastErr = GetLastError();\n";
-print CPUFILE "    PRINTMSG( T_ERROR, \"XLoadSection failed! 0x%X\\r\\n\", lastErr );\n";
-print CPUFILE "    //osd_print_error( \"Failed to load section %s!\", sectionName.c_str() );\n";
-print CPUFILE "    //return FALSE;\n";
+print CPUFILE "    PRINTMSG( T_ERROR, \"XLoadSection failed for section %s! 0x%X\\r\\n\", (*i).second.c_str(), lastErr );\n";
 print CPUFILE "  }\n";
 print CPUFILE "  return TRUE;\n";
 print CPUFILE "}\n\n";
@@ -617,104 +443,46 @@ print CPUFILE "{\n";
 print CPUFILE "  std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.find( CPUID );\n";
 print CPUFILE "  if( i == g_IDToSectionMap.end() )\n";
 print CPUFILE "    return FALSE;\n";
-print CPUFILE "  BOOL dataRet, codeRet, bssRet, constRet;\n";
-print CPUFILE "  std::string sectionName;\n";
-print CPUFILE "  sectionName = DATA_PREFIX;\n";
-print CPUFILE "  sectionName += (*i).second.c_str();\n";
-print CPUFILE "  dataRet = XFreeSection( sectionName.c_str() );\n";
-print CPUFILE "\n";
-print CPUFILE "  sectionName = CODE_PREFIX;\n";
-print CPUFILE "  sectionName += (*i).second.c_str();\n";
-print CPUFILE "  codeRet = XFreeSection( sectionName.c_str() );\n";
-print CPUFILE "\n";
-print CPUFILE "  sectionName = BSS_PREFIX;\n";
-print CPUFILE "  sectionName += (*i).second.c_str();\n";
-print CPUFILE "  bssRet = XFreeSection( sectionName.c_str() );\n";
-print CPUFILE "\n";
-print CPUFILE "  sectionName = CONST_PREFIX;\n";
-print CPUFILE "  sectionName += (*i).second.c_str();\n";
-print CPUFILE "  constRet = XFreeSection( sectionName.c_str() );\n";
-print CPUFILE "\n";
-print CPUFILE "  return (dataRet && codeRet && bssRet && constRet);\n";
+print CPUFILE "  return XFreeSection( (*i).second.c_str() );\n";
 print CPUFILE "}\n\n";
 print CPUFILE "\n//-------------------------------------------------------------\n";
-print CPUFILE "//	LoadCPUDataSections\n";
+print CPUFILE "//	LoadCPUSections\n";
 print CPUFILE "//-------------------------------------------------------------\n";
-print CPUFILE "BOOL LoadCPUDataSections( void )\n";
+print CPUFILE "BOOL LoadCPUSections( void )\n";
 print CPUFILE "{\n";
 print CPUFILE "  std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.begin();\n";
 print CPUFILE "  for( ; i != g_IDToSectionMap.end(); ++i )\n";
 print CPUFILE "  {\n";
-print CPUFILE "    std::string sectionName;\n";
-print CPUFILE "    sectionName = DATA_PREFIX;\n";
-print CPUFILE "    sectionName += (*i).second.c_str();\n";
-print CPUFILE "    if( !XLoadSection( sectionName.c_str() ) )\n";
+print CPUFILE "    if( !XLoadSection( (*i).second.c_str() ) )\n";
 print CPUFILE "    {\n";
-print CPUFILE "      PRINTMSG( T_ERROR, \"Failed to load section %s!\", sectionName.c_str() );\n";
-print CPUFILE "      //return FALSE;\n";
-print CPUFILE "    }\n";
-print CPUFILE "\n";
-print CPUFILE "    sectionName = CONST_PREFIX;\n";
-print CPUFILE "    sectionName += (*i).second.c_str();\n";
-print CPUFILE "    if( !XLoadSection( sectionName.c_str() ) )\n";
-print CPUFILE "    {\n";
-print CPUFILE "      PRINTMSG( T_ERROR, \"Failed to load section %s!\", sectionName.c_str() );\n";
+print CPUFILE "      PRINTMSG( T_ERROR, \"Failed to load section %s!\", (*i).second.c_str() );\n";
 print CPUFILE "      //return FALSE;\n";
 print CPUFILE "    }\n";
 print CPUFILE "  }\n";
 print CPUFILE "  return TRUE;\n";
 print CPUFILE "}\n\n";
 print CPUFILE "\n//-------------------------------------------------------------\n";
-print CPUFILE "//	UnloadCPUNonDataSections\n";
+print CPUFILE "//	UnloadCPUSections\n";
 print CPUFILE "//-------------------------------------------------------------\n";
-print CPUFILE "BOOL UnloadCPUNonDataSections( void )\n";
+print CPUFILE "BOOL UnloadCPUSections( void )\n";
 print CPUFILE "{\n";
 print CPUFILE "  std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.begin();\n";
 print CPUFILE "  for( ; i != g_IDToSectionMap.end(); ++i )\n";
 print CPUFILE "  {\n";
-print CPUFILE "    std::string sectionName;\n";
-print CPUFILE "    sectionName = CODE_PREFIX;\n";
-print CPUFILE "    sectionName += (*i).second.c_str();\n";
-print CPUFILE "    HANDLE h = XGetSectionHandle( sectionName.c_str() );\n";
-print CPUFILE "    if( h != INVALID_HANDLE_VALUE )\n";
-print CPUFILE "      XFreeSectionByHandle( h );\n";
-print CPUFILE "\n";
-print CPUFILE "    sectionName = BSS_PREFIX;\n";
-print CPUFILE "    sectionName += (*i).second.c_str();\n";
-print CPUFILE "    h = XGetSectionHandle( sectionName.c_str() );\n";
-print CPUFILE "    if( h != INVALID_HANDLE_VALUE )\n";
-print CPUFILE "      XFreeSectionByHandle( h );\n";
-print CPUFILE "\n";
-print CPUFILE "  }\n";
-print CPUFILE "  return TRUE;\n";
-print CPUFILE "}\n\n";
-print CPUFILE "\n//-------------------------------------------------------------\n";
-print CPUFILE "//	UnloadCPUDataSections\n";
-print CPUFILE "//-------------------------------------------------------------\n";
-print CPUFILE "BOOL UnloadCPUDataSections( void )\n";
-print CPUFILE "{\n";
-print CPUFILE "  std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.begin();\n";
-print CPUFILE "  for( ; i != g_IDToSectionMap.end(); ++i )\n";
-print CPUFILE "  {\n";
-print CPUFILE "    std::string sectionName;\n";
-print CPUFILE "    sectionName = DATA_PREFIX;\n";
-print CPUFILE "    sectionName += (*i).second.c_str();\n";
-print CPUFILE "    HANDLE h = XGetSectionHandle( sectionName.c_str() );\n";
-print CPUFILE "    if( h != INVALID_HANDLE_VALUE )\n";
-print CPUFILE "      XFreeSectionByHandle( h );\n";
-print CPUFILE "\n";
-print CPUFILE "    sectionName = CONST_PREFIX;\n";
-print CPUFILE "    sectionName += (*i).second.c_str();\n";
-print CPUFILE "    h = XGetSectionHandle( sectionName.c_str() );\n";
-print CPUFILE "    if( h != INVALID_HANDLE_VALUE )\n";
-print CPUFILE "      XFreeSectionByHandle( h );\n";
+print CPUFILE "      // Only unload families once\n";
+print CPUFILE "    if( (*i).first == CPU_M6809 ||\n";
+print CPUFILE "        (*i).first == CPU_M6805 ||\n";
+print CPUFILE "        (*i).first == CPU_M68000 ||\n";
+print CPUFILE "        (*i).first == CPU_M6800 )\n";
+print CPUFILE "        continue;\n";
+print CPUFILE "    XFreeSection( (*i).second.c_str() );\n";
 print CPUFILE "  }\n";
 print CPUFILE "  return TRUE;\n";
 print CPUFILE "}\n\n";
 print CPUFILE "\n//-------------------------------------------------------------\n";
 print CPUFILE "//	RegisterCPUSectionNames\n";
 print CPUFILE "//-------------------------------------------------------------\n";
-print CPUFILE "void RegisterCPUSectionNames( void )\n";
+print CPUFILE "static void RegisterCPUSectionNames( void )\n";
 print CPUFILE "{\n";
 
 
@@ -746,13 +514,17 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 #  LoadDriverSectionByName( "src\\drivers\\m72.c" );       // Bomber Man World (World)
 #  LoadDriverSectionByName( "src\\drivers\\leland.c" );    // Asylum (prototype)
 #  LoadDriverSectionByName( "src\\drivers\\trackfld.c" );  // Hyper Sports, Hyper Olympics '84?
+#  taito_f3 - Super Chase
+#  multi32 - All sega system 32 games (Golden Axe 2)
+#  namcoic, namcos2 - Lucky&Wild
 
 @SkipDrivers = ( "jrcrypt.c", "cps1.c", "mpatrol.c", "snk.c", 
-                 "system16.c", "galaxian.c", "scramble.c", "scobra.c", 
+                 "system16.c", "multi32.c", "galaxian.c", "scramble.c", "scobra.c", 
 	             "rampart.c", "williams.c", "rastan.c", "hal21.c", 
 	             "espial.c", "bzone.c", "nova2001.c", "gottlieb.c", 
-	             "pengo.c",  "megasys1.c", "namcos1.c", "rallyx.c", 
-	             "timeplt.c", "exidy.c", "m72.c", "leland.c", "trackfld.c" );
+	             "pengo.c",  "megasys1.c", "namcos1.c", "namcoic.c", "namcos2.c"
+				 "rallyx.c", "timeplt.c", "exidy.c", "m72.c", "leland.c", "trackfld.c",
+				 "taito_f3.c" );
 
 # Do two passes, one to find the last autoNameNumber, another to actually
 # modify the files
@@ -840,12 +612,8 @@ foreach( @newFILEs ) {
 	$DriverName =~ /^\.\/MAME\/src\/drivers\/(.*\.c)$/;
 	$DriverName = "src\\\\drivers\\\\$1";
 
-	print PRELOADFILE "/NOPRELOAD:\"".CODE_PREFIX."$autoNameNumber\"\n";
-	print PRELOADFILE "/NOPRELOAD:\"".BSS_PREFIX."$autoNameNumber\"\n";
-	print DBGPRELOADFILE "/NOPRELOAD:\"".CODE_PREFIX."$autoNameNumber\"\n";
-	print DBGPRELOADFILE "/NOPRELOAD:\"".BSS_PREFIX."$autoNameNumber\"\n";
-#		print PRELOADFILE "/NOPRELOAD:\"".DATA_PREFIX."$autoNameNumber\"\n";
-#		print PRELOADFILE "/NOPRELOAD:\"".CONST_PREFIX."$autoNameNumber\"\n";
+	print PRELOADFILE "/NOPRELOAD:\"$autoNameNumber\"\n";
+	print DBGPRELOADFILE "/NOPRELOAD:\"$autoNameNumber\"\n";
 	print GENERATEDFILE "  RegisterSectionName( \"$DriverName\", \"$autoNameNumber\" );\n";
 
 	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
@@ -892,10 +660,29 @@ foreach( @newFILEs ) {
 		}
 	}
 
+		# Also do the machine file, if one exists
+	$MachineHardwareName = $DriverFileName;
+	$MachineHardwareName =~ s/\/drivers\//\/machine\//;
+
+	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $MachineHardwareName );
+
+	if( open( FILE, "<$MachineHardwareName" ) ) {
+		$File = "";
+		sysread( FILE, $File, $size );
+		close( FILE );
+
+		if( !($File =~ /\#pragma code_seg/) ) {
+			WriteSectionData( $MachineHardwareName, $File, $autoNameNumber );
+		}
+	}
+
 	$autoNameNumber++;
 }
-print GENERATEDFILE "} // End extern \"C\"\n";
-print GENERATEDFILE "}\n\n\n";
+print GENERATEDFILE "}\n";
+print GENERATEDFILE "#pragma code_seg()\n";
+print GENERATEDFILE "#pragma data_seg()\n";
+print GENERATEDFILE "} // End extern \"C\"\n\n\n";
 close( GENERATEDFILE );
 
 
@@ -907,12 +694,15 @@ print "Sectionizing CPU's...\n";
 #local @CPUDirs = `find ./MAME/src/cpu -path \'*/CVS\' -prune -o -type d -a -print`;
 @FILEs    = `find ./MAME/src/cpu/ -name *.c`;
 @newFILEs = ();
-$autoNameNumber = 0;
 local $OldCPUName = "";
 
 
 @SkipCPUs = ( "DSP32", "I8085", "JAGUAR", "MIPS", "NEC", "PIC16C5X", "TMS9900" );
 
+@Motorola = ( "m6502", "m6800", "m68000", "m6805", "m6809" );
+$MotorolaID = 15;
+
+$autoNameNumber = $MotorolaID + 1;
 
 # Do two passes, one to find the last autoNameNumber, another to actually
 # modify the files
@@ -940,6 +730,15 @@ foreach( @FILEs ) {
 		}
 	}
 
+	foreach( @Motorola ) {
+		$CPUToSkip = $_;
+		if( uc($CPUName) eq $CPUToSkip ) {
+			print "Skipping $CPUName.\n";
+			$IsValid = false;
+			last;
+		}
+	}
+
 	next if( $IsValid eq false );
 
 	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
@@ -959,11 +758,9 @@ foreach( @FILEs ) {
 		if( $CPUName ne $OldCPUName ) {
 			$OldCPUName = $CPUName;
 			$ucaseCPUName = uc( $CPUName );
-			print PRELOADFILE "/NOPRELOAD:\"C".CODE_PREFIX."$myAutoNameNumber\"\n";
-			print PRELOADFILE "/NOPRELOAD:\"C".BSS_PREFIX."$myAutoNameNumber\"\n";
-			print DBGPRELOADFILE "/NOPRELOAD:\"C".CODE_PREFIX."$myAutoNameNumber\"\n";
-			print DBGPRELOADFILE "/NOPRELOAD:\"C".BSS_PREFIX."$myAutoNameNumber\"\n";
-			print CPUFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"$myAutoNameNumber\" );\n";
+			print PRELOADFILE "/NOPRELOAD:\"C$myAutoNameNumber\"\n";
+			print DBGPRELOADFILE "/NOPRELOAD:\"C$myAutoNameNumber\"\n";
+			print CPUFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"CPU$myAutoNameNumber\" );\n";
 		}
 
 		if( $myAutoNameNumber >= $autoNameNumber ) {
@@ -1010,11 +807,9 @@ foreach( @newFILEs ) {
 		$autoNameNumber++;
 		$OldCPUName = $CPUName;
 		$ucaseCPUName = uc( $CPUName );
-		print PRELOADFILE "/NOPRELOAD:\"C".CODE_PREFIX."$autoNameNumber\"\n";
-		print PRELOADFILE "/NOPRELOAD:\"C".BSS_PREFIX."$autoNameNumber\"\n";
-		print DBGPRELOADFILE "/NOPRELOAD:\"C".CODE_PREFIX."$autoNameNumber\"\n";
-		print DBGPRELOADFILE "/NOPRELOAD:\"C".BSS_PREFIX."$autoNameNumber\"\n";
-		print CPUFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"$autoNameNumber\" );\n";
+		print PRELOADFILE "/NOPRELOAD:\"C$autoNameNumber\"\n";
+		print DBGPRELOADFILE "/NOPRELOAD:\"C$autoNameNumber\"\n";
+		print CPUFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"CPU$autoNameNumber\" );\n";
 	}
 
 
@@ -1028,8 +823,11 @@ foreach( @newFILEs ) {
 		# Write out the section header/footer
 	WriteCPUSectionData( $DriverFileName, $File, $autoNameNumber );
 }
-print CPUFILE "} // End extern \"C\"\n";
-print CPUFILE "}\n\n\n";
+
+print CPUFILE "}\n";
+print CPUFILE "#pragma code_seg()\n";
+print CPUFILE "#pragma data_seg()\n";
+print CPUFILE "} // End extern \"C\"\n\n\n";
 close( CPUFILE );
 
 
@@ -1055,20 +853,34 @@ sub WriteSectionData( $$$ ) {
 		#open the segment
 	my $SegLine = "#pragma code_seg($CodeSectionName)\n";
 	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma data_seg($DataSectionName)\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
 	$SegLine = "#pragma bss_seg($BSSSectionName)\n";
 	syswrite( FILE, $SegLine, length($SegLine) );
-	$SegLine = "#pragma data_seg($DataSectionName)\n";
-				syswrite( FILE, $SegLine, length($SegLine) );
 	$SegLine = "#pragma const_seg($ConstSectionName)\n";
-				syswrite( FILE, $SegLine, length($SegLine) );
+	syswrite( FILE, $SegLine, length($SegLine) );
+
+
+		# Merge all of the sections into one segment (identified by $autoNameNumber)
+		# Note: It is _very_ important to put the data section first, otherwise the
+		#       merged section will be read-only!
+	$SegLine = "#pragma comment(linker, \"/merge:D$autoNameNumber=$autoNameNumber\")\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma comment(linker, \"/merge:C$autoNameNumber=$autoNameNumber\")\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma comment(linker, \"/merge:B$autoNameNumber=$autoNameNumber\")\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma comment(linker, \"/merge:K$autoNameNumber=$autoNameNumber\")\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+
 
 		#write the old file data
 	syswrite( FILE, $File, $size );
 
 		#Close the segment
-	$SegLine = "#pragma data_seg()\n";
-	syswrite( FILE, $SegLine, length($SegLine) );
 	$SegLine = "#pragma code_seg()\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma data_seg()\n";
 	syswrite( FILE, $SegLine, length($SegLine) );
 	$SegLine = "#pragma bss_seg()\n";
 	syswrite( FILE, $SegLine, length($SegLine) );
@@ -1085,8 +897,8 @@ sub WriteCPUSectionData( $$$ ) {
 	my $FileName = $_[0];
 	my $File = $_[1];
 	my $autoNameNumber = $_[2];
-	my $DataSectionName = "\"CD$autoNameNumber\"";
 	my $CodeSectionName = "\"CC$autoNameNumber\"";
+	my $DataSectionName = "\"CD$autoNameNumber\"";
 	my $BSSSectionName = "\"CB$autoNameNumber\"";
 	my $ConstSectionName= "\"CK$autoNameNumber\"";
 
@@ -1095,20 +907,33 @@ sub WriteCPUSectionData( $$$ ) {
 		#open the segment
 	my $SegLine = "#pragma code_seg($CodeSectionName)\n";
 	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma data_seg($DataSectionName)\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
 	$SegLine = "#pragma bss_seg($BSSSectionName)\n";
 	syswrite( FILE, $SegLine, length($SegLine) );
-	$SegLine = "#pragma data_seg($DataSectionName)\n";
-				syswrite( FILE, $SegLine, length($SegLine) );
 	$SegLine = "#pragma const_seg($ConstSectionName)\n";
-				syswrite( FILE, $SegLine, length($SegLine) );
+	syswrite( FILE, $SegLine, length($SegLine) );
+
+		# Merge all of the sections into one segment (identified by C$autoNameNumber)
+		# Note: It is _very_ important to put the data section first, otherwise the
+		#       merged section will be read-only!
+	$SegLine = "#pragma comment(linker, \"/merge:CD$autoNameNumber=CPU$autoNameNumber\")\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma comment(linker, \"/merge:CC$autoNameNumber=CPU$autoNameNumber\")\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma comment(linker, \"/merge:CB$autoNameNumber=CPU$autoNameNumber\")\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma comment(linker, \"/merge:CK$autoNameNumber=CPU$autoNameNumber\")\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+
 
 		#write the old file data
 	syswrite( FILE, $File, $size );
 
 		#Close the segment
-	$SegLine = "#pragma data_seg()\n";
-	syswrite( FILE, $SegLine, length($SegLine) );
 	$SegLine = "#pragma code_seg()\n";
+	syswrite( FILE, $SegLine, length($SegLine) );
+	$SegLine = "#pragma data_seg()\n";
 	syswrite( FILE, $SegLine, length($SegLine) );
 	$SegLine = "#pragma bss_seg()\n";
 	syswrite( FILE, $SegLine, length($SegLine) );
