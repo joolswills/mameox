@@ -50,6 +50,10 @@ Version 0.71.1b
       - Changed the size and color of the debug console
       - Added option to print messages w/out function/file info
 
+    - xbox_Sound.c:
+      - Fixed problem that allowed the sound buffer to be overrun
+        constantly, causing crackling.
+
    -------------------------------------------------------------
   - \MAMEoXLauncher\Sources:
 
