@@ -53,7 +53,7 @@ static LPDIRECTSOUND8					g_pDSound = NULL;
 static LPDIRECTSOUNDBUFFER8		g_pStreamBuffer = NULL;
 static UINT32									g_streamBufferSize = 0;
 static UINT32									g_streamBufferWriteCursor = 0;
-static INT8                   *g_streamBufferData = NULL;
+static UINT32				          g_streamBufferIn;
 
   // descriptors and formats
 static DSBUFFERDESC			      g_streamDesc = {0};
@@ -117,39 +117,35 @@ INT32 osd_start_audio_stream( INT32 stereo )
   //Of course that value is not necessarily an INT32eger so at least a +/- 1
   //adjustment is necessary to avoid drifting over time.
 
-    // Disable the XBOX's WaitForVoiceOff warning
+  // Disable the XBOX's WaitForVoiceOff warning
   g_fDirectSoundDisableBusyWaitWarning = TRUE;
   g_totalFrames = 0;
   g_bufferUnderflows = 0;
   g_bufferOverflows = 0;
   g_streamBufferWriteCursor = 0;
 
-
 	// determine the number of samples per frame
 	g_samplesPerFrame = (DOUBLE)Machine->sample_rate / (DOUBLE)Machine->drv->frames_per_second;
   _RPT1( _CRT_WARN, "Samples per frame: %f\n", g_samplesPerFrame );
   _RPT1( _CRT_WARN, "Consumed per frame: %f\n", (DOUBLE)Machine->sample_rate / 60.0 );
 
-
-g_samplesPerFrame = (DOUBLE)Machine->sample_rate / 60.0;
-
+  g_samplesPerFrame = (DOUBLE)Machine->sample_rate / 60.0;
  
 	// compute how many samples to generate the first frame
 	g_samplesLeftOver = g_samplesPerFrame;
 	g_samplesThisFrame = (UINT32)g_samplesLeftOver;
 	g_samplesLeftOver -= (DOUBLE)g_samplesThisFrame;
 
-	  // skip if sound disabled
+	 // skip if sound disabled
 	if( Machine->sample_rate )
 	{
-			// Initialize direct sound
+		// Initialize direct sound
 		if( !Helper_DirectSoundInitialize() )
 			return 0;
 
 		// set the startup volume
 		osd_set_mastervolume( g_attenuation );
 	}
-
 
 	// return the samples to play the first frame
 	return g_samplesLeftOver;
@@ -160,13 +156,11 @@ g_samplesPerFrame = (DOUBLE)Machine->sample_rate / 60.0;
 //---------------------------------------------------------------------
 void osd_stop_audio_stream( void )
 {
-
 	// if nothing to do, don't do it
 	if( !Machine->sample_rate )
 		return;
 
-		// kill the buffers and g_pDSound
-  //Helper_DirectSoundDestroyBuffers(); // Done by Helper_DirectSoundTerminate
+	// kill the buffers and g_pDSound
 	Helper_DirectSoundTerminate();
 
   #ifdef LOG_SOUND
@@ -174,37 +168,46 @@ void osd_stop_audio_stream( void )
   #endif
 }
 
-
-
 //---------------------------------------------------------------------
 //	osd_update_audio_stream
 //---------------------------------------------------------------------
 INT32 osd_update_audio_stream( INT16 *buffer )
 {
+  int original_bytes;
+  int input_bytes;
+  int final_bytes;
 
-		// if nothing to do, don't do it
+	// if nothing to do, don't do it
 	if( Machine->sample_rate && g_pStreamBuffer)
 	{
     if( !g_soundPlaying )
     {
-        // Reset the play position = 0
+      // Reset the play position = 0
       IDirectSoundBuffer_SetCurrentPosition( g_pStreamBuffer, 0 );
       g_soundPlaying = TRUE;
     }
-		  // update the sample adjustment
+
+    original_bytes = Helper_BytesInStreamBuffer();
+    input_bytes = g_samplesThisFrame * g_streamFormat.nBlockAlign;
+
+		// update the sample adjustment
 		Helper_UpdateSampleAdjustment();
 
-		  // copy data into the sound buffer
-		Helper_CopySampleData( buffer, g_samplesThisFrame * g_streamFormat.nBlockAlign );
-    Helper_ClearSampleData( g_samplesThisFrame * g_streamFormat.nBlockAlign );
+		// copy data into the sound buffer
+		Helper_CopySampleData( buffer, input_bytes );
+
+    // check for overflows
+    final_bytes = Helper_BytesInStreamBuffer();
+    if (final_bytes < original_bytes)
+      ++g_bufferOverflows;
+
+    // reset underflow/overflow tracking
+    if (++g_totalFrames == IGNORE_UNDERFLOW_FRAMES)
+      g_bufferOverflows = g_bufferUnderflows = 0;
+    else if( g_totalFrames > IGNORE_UNDERFLOW_FRAMES )
+      g_totalFrames = IGNORE_UNDERFLOW_FRAMES + 1;
 
     #ifdef LOG_SOUND
-	      // reset underflow/overflow tracking
-	    if( ++g_totalFrames == IGNORE_UNDERFLOW_FRAMES )
-		    g_bufferOverflows = g_bufferUnderflows = 0;
-      else if( g_totalFrames > IGNORE_UNDERFLOW_FRAMES )
-        g_totalFrames = IGNORE_UNDERFLOW_FRAMES + 1;
-
       {
         static int prev_overflows = 0, prev_underflows = 0;
         if( g_totalFrames > IGNORE_UNDERFLOW_FRAMES && (g_bufferOverflows != prev_overflows || g_bufferUnderflows != prev_underflows) )
@@ -217,7 +220,7 @@ INT32 osd_update_audio_stream( INT16 *buffer )
     #endif
 	}
 
-	  // compute how many samples to generate next frame
+  // compute how many samples to generate next frame
 	g_samplesLeftOver += g_samplesPerFrame;
 	g_samplesThisFrame = (UINT32)g_samplesLeftOver;
 	g_samplesLeftOver -= (DOUBLE)g_samplesThisFrame;
@@ -239,7 +242,7 @@ void osd_set_mastervolume( INT32 attenuation )
 	//while (attenuation++ < 0)
 	//	volume /= 1.122018454;		//	= (10 ^ (1/20)) = 1dB
 
-		// clamp the attenuation to 0-32 range
+	// clamp the attenuation to 0-32 range
 	g_attenuation = attenuation;
   if( g_attenuation > 0 )
     g_attenuation = 0;
@@ -274,12 +277,6 @@ void osd_sound_enable( INT32 enable )
 }
 
 
-
-
-
-
-
-
 //---------------------------------------------------------------------
 //	Helper_DirectSoundInitialize
 //---------------------------------------------------------------------
@@ -294,7 +291,7 @@ static BOOL Helper_DirectSoundInitialize( void )
 		return FALSE;
 	}
 
-		// make a format description for what we want
+	// make a format description for what we want
 	g_streamFormat.wFormatTag			= WAVE_FORMAT_PCM;
 	g_streamFormat.nChannels			= (Machine->drv->sound_attributes & SOUND_SUPPORTS_STEREO) ? 2 : 1;
 	g_streamFormat.nSamplesPerSec	= Machine->sample_rate;
@@ -302,14 +299,13 @@ static BOOL Helper_DirectSoundInitialize( void )
 	g_streamFormat.nBlockAlign		= (g_streamFormat.wBitsPerSample * g_streamFormat.nChannels) >> 3;
 	g_streamFormat.nAvgBytesPerSec	= g_streamFormat.nSamplesPerSec * g_streamFormat.nBlockAlign;
 
-		// compute the buffer sizes
+	// compute the buffer sizes
 	g_streamBufferSize = ((UINT64)MAX_BUFFER_SIZE * (UINT64)g_streamFormat.nSamplesPerSec) / 44100;
 	g_streamBufferSize = (g_streamBufferSize * g_streamFormat.nBlockAlign) / 4;
 	g_streamBufferSize = (g_streamBufferSize * 30) / Machine->drv->frames_per_second;
 	g_streamBufferSize = (g_streamBufferSize / 1024) * 1024;  // Drop remainder
-  g_streamBufferSize *= 2;
 
-		// compute the upper/lower thresholds
+	// compute the upper/lower thresholds
 	g_lowerThresh = g_streamBufferSize / 5;
 	g_upperThresh = (g_streamBufferSize << 1) / 5;
 	
@@ -319,7 +315,7 @@ static BOOL Helper_DirectSoundInitialize( void )
 	  _RPTF1( _CRT_WARN, "upper_thresh = %d\n", g_upperThresh);
   #endif
 
-		// create the buffers
+	// create the buffers
 	if( !Helper_DirectSoundCreateBuffers() )
 	{
 		IDirectSound_Release( g_pDSound );
@@ -327,10 +323,17 @@ static BOOL Helper_DirectSoundInitialize( void )
 		return FALSE;
 	}
 
+  // start playing
+  hr = IDirectSoundBuffer_Play( g_pStreamBuffer, 0, 0, DSBPLAY_LOOPING );
+  if ( hr != DS_OK )
+  {
+    _RPT1( _CRT_WARN, "Error playing: %08x\n", (UINT32)result );
+    Helper_DirectSoundTerminate();
+    return FALSE;
+  }
+
 	return TRUE;
 }
-
-
 
 //---------------------------------------------------------------------
 //	Helper_DirectSoundTerminate
@@ -345,28 +348,52 @@ static void Helper_DirectSoundTerminate( void )
 	g_pDSound = NULL;
 }
 
-
-
 //---------------------------------------------------------------------
 //	Helper_DirectSoundCreateBuffers
 //---------------------------------------------------------------------
 static BOOL Helper_DirectSoundCreateBuffers( void )
 {
 	HRESULT result;
+  DSMIXBINS dsmb;
+  DWORD locked;
+  void *buffer;
 
-    // If size is 0, we don't need a buffer
+  // Mixer definition, used to get output to all speakers
+  DSMIXBINVOLUMEPAIR dsmbvp[8] = 
+  {
+    {DSMIXBIN_FRONT_LEFT, DSBVOLUME_MAX},    // left channel
+    {DSMIXBIN_FRONT_RIGHT, DSBVOLUME_MAX},   // right channel
+    {DSMIXBIN_FRONT_CENTER, DSBVOLUME_MAX},  // left channel
+    {DSMIXBIN_FRONT_CENTER, DSBVOLUME_MAX},  // right channel
+    {DSMIXBIN_BACK_LEFT, DSBVOLUME_MAX},     // left channel
+    {DSMIXBIN_BACK_RIGHT, DSBVOLUME_MAX},    // right channel
+    {DSMIXBIN_LOW_FREQUENCY, DSBVOLUME_MAX}, // left channel
+    {DSMIXBIN_LOW_FREQUENCY, DSBVOLUME_MAX}  // right channel
+  };
+
+  // If size is 0, we don't need a buffer
   if( !g_streamBufferSize )
   {
     _RPT0( _CRT_WARN, "g_streamBufferSize == 0 in Helper_DirectSoundCreateBuffers!\n" );
     return TRUE;
   }
 
-	  // create a buffer desc for the stream buffer
+  // If our stream buffer hasn't been freed, do so now
+  if ( g_pStreamBuffer != NULL )
+  {
+    Helper_DirectSoundDestroyBuffers();
+  }
+  
+  dsmb.dwMixBinCount = 8;
+  dsmb.lpMixBinVolumePairs = dsmbvp;
+
+	// create a buffer desc for the stream buffer
   memset( &g_streamDesc, 0, sizeof(g_streamDesc) );
 	g_streamDesc.dwSize         = sizeof(g_streamDesc);
-	g_streamDesc.dwFlags        = DSBCAPS_CTRLPOSITIONNOTIFY;
-	g_streamDesc.dwBufferBytes  = 0;
+	g_streamDesc.dwFlags        = 0 /*DSBCAPS_CTRLPOSITIONNOTIFY*/;
+	g_streamDesc.dwBufferBytes  = g_streamBufferSize;
 	g_streamDesc.lpwfxFormat    = &g_streamFormat;
+  g_streamDesc.lpMixBins			= &dsmb;
 
 	  // create the stream buffer
 	if( (result = IDirectSound_CreateSoundBuffer( g_pDSound, &g_streamDesc, &g_pStreamBuffer, NULL )) != S_OK )
@@ -376,57 +403,38 @@ static BOOL Helper_DirectSoundCreateBuffers( void )
     return FALSE;
 	}
 
-
-    // Allocate the stream buffer
-  if( g_streamBufferData )
-    free( g_streamBufferData );
-  
-  if( !(g_streamBufferData = (INT8*)calloc( 1, g_streamBufferSize )) )
+  // lock the buffer
+  result = IDirectSoundBuffer_Lock( g_pStreamBuffer, 0, g_streamBufferSize, &buffer, &locked, NULL, NULL, 0 );
+  if (result != DS_OK)
   {
-    _RPT0( _CRT_WARN, "Failed to allocate streambuffer!\n" );
-    PRINTMSG( T_ERROR, "Failed to allocate streambuffer!" );
-	  IDirectSoundBuffer_Release( g_pStreamBuffer );
-	  g_pStreamBuffer = NULL;
+    osd_print_error("Error locking stream buffer: %08x\n", (UINT32)result);
+    IDirectSoundBuffer_Release( g_pStreamBuffer );
     return FALSE;
   }
 
-  IDirectSoundBuffer_SetBufferData( g_pStreamBuffer, g_streamBufferData, g_streamBufferSize );
-  g_streamBufferWriteCursor = 0;
+  // clear the buffer to remove any noise in it
+  memset(buffer, 0, locked);
 
-	if( (result = IDirectSoundBuffer_Play( g_pStreamBuffer, 0, 0, DSBPLAY_LOOPING )) != S_OK )
-	{
-		PRINTMSG( T_ERROR, "IDirectSoundBuffer_Play failed! 0x%X", result );
-    free( g_streamBufferData );
-    g_streamBufferData = NULL;
-	  IDirectSoundBuffer_Release( g_pStreamBuffer );
-	  g_pStreamBuffer = NULL;
-		return FALSE;
-	}
+  // Unlock the buffer
+  IDirectSoundBuffer_Unlock( g_pStreamBuffer, &buffer, locked, NULL, 0 );
 
 	return TRUE;
 }
-
-
 
 //---------------------------------------------------------------------
 //	Helper_DirectSoundDestroyBuffers
 //---------------------------------------------------------------------
 static void Helper_DirectSoundDestroyBuffers( void )
 {
-	// stop any playback
-	if( g_pStreamBuffer )
-	{
-		IDirectSoundBuffer_Stop( g_pStreamBuffer );
-		IDirectSoundBuffer_Release( g_pStreamBuffer );
-    if( g_streamBufferData )
-    {
-      free( g_streamBufferData );
-      g_streamBufferData = NULL;
-    }
-    g_streamBufferWriteCursor = 0;  // Reset the write cursor to the head of the buffer
-    g_soundPlaying = FALSE;
-	}
-	g_pStreamBuffer = NULL;
+  // stop any playback
+  if (g_pStreamBuffer)
+    IDirectSoundBuffer_Stop(g_pStreamBuffer);
+
+  // release the buffer
+  if (g_pStreamBuffer)
+    IDirectSoundBuffer_Release(g_pStreamBuffer);
+  
+  g_pStreamBuffer = NULL;
 }
 
 
@@ -435,27 +443,14 @@ static void Helper_DirectSoundDestroyBuffers( void )
 //---------------------------------------------------------------------
 static __inline UINT32 Helper_BytesInStreamBuffer( void )
 {
-	DWORD play_position;
-	if( IDirectSoundBuffer_GetCurrentPosition(  g_pStreamBuffer, 
-																						  &play_position, 
-																							NULL ) != S_OK )
-  {
-    return 0;
-  }
-  
-  //#ifdef LOG_SOUND
-  //  _RPT2( _CRT_WARN, "WCursor: %-6.6lu, PlayPos: %-6.6lu\n", g_streamBufferWriteCursor, play_position );
-  //#endif
+  DWORD play_position, write_position;
+  HRESULT result;
 
-    // Case 1: Write cursor is past the play_position, so the valid area is
-    //          simply between the two
-	if( g_streamBufferWriteCursor >= play_position )
-		return g_streamBufferWriteCursor - play_position;
-
-    // Case 2: Write cursor has wrapped around in the circular buffer. Valid 
-    //          area is the distance between the end of the buffer and 
-    //          play_position, + the position of the write cursor
-	return (g_streamBufferSize - play_position) + g_streamBufferWriteCursor;
+  result = IDirectSoundBuffer_GetCurrentPosition(g_pStreamBuffer, &play_position, &write_position);
+  if (g_streamBufferIn > play_position)
+    return g_streamBufferIn - play_position;
+  else
+    return g_streamBufferSize + g_streamBufferIn - play_position;
 }
 
 
@@ -468,7 +463,7 @@ static void Helper_UpdateSampleAdjustment( void )
 	static UINT32 consecutive_mids = 0;
 	static UINT32 consecutive_highs = 0;
   UINT32        buffered = Helper_BytesInStreamBuffer(); 
-buffered = g_lowerThresh;
+  buffered = g_lowerThresh;
 
   #ifdef LOG_SOUND
     _RPT1( _CRT_WARN, "Helper_UpdateSampleAdjustment: %d buffered\n", buffered );
@@ -476,9 +471,10 @@ buffered = g_lowerThresh;
 
 	if( buffered < g_lowerThresh )
 	{
-		  // we have too few samples in the buffer
+		// we have too few samples in the buffer
 		if( ++consecutive_lows > MAX_SAMPLE_ADJUST )
       consecutive_lows = MAX_SAMPLE_ADJUST;
+
 		consecutive_mids = 0;
 		consecutive_highs = 0;
 
@@ -494,10 +490,11 @@ buffered = g_lowerThresh;
 			// we have too many samples in the buffer
 		consecutive_lows = 0;
 		consecutive_mids = 0;
+
 		if( ++consecutive_highs > MAX_SAMPLE_ADJUST )
       consecutive_highs = MAX_SAMPLE_ADJUST;
 
-		  // adjust so that we generate fewer samples per frame to compensate
+		// adjust so that we generate fewer samples per frame to compensate
 		g_currentAdjustment = (consecutive_highs < MAX_SAMPLE_ADJUST) ? -consecutive_highs : -MAX_SAMPLE_ADJUST;
 		
     #ifdef LOG_SOUND
@@ -506,14 +503,14 @@ buffered = g_lowerThresh;
 	}
 	else
 	{
-			// We have the right number of samples in the buffer
-
+		// We have the right number of samples in the buffer
 		consecutive_lows = 0;
 		if( ++consecutive_mids > NUM_TARGET_FRAMES_BEFORE_ADJUST_RESET )
       consecutive_mids = NUM_TARGET_FRAMES_BEFORE_ADJUST_RESET + 1;
+
 		consecutive_highs = 0;
 
-		  // after 10 or so of these, revert back to no adjustment
+		// after 10 or so of these, revert back to no adjustment
 		if( consecutive_mids >= NUM_TARGET_FRAMES_BEFORE_ADJUST_RESET && g_currentAdjustment )
     {
 			g_currentAdjustment = 0;
@@ -525,128 +522,41 @@ buffered = g_lowerThresh;
 	}
 }
 
-
-
 //---------------------------------------------------------------------
 //	Helper_CopySampleData
 //---------------------------------------------------------------------
 static void Helper_CopySampleData( INT16 *data, UINT32 totalToCopy )
-{	
-  UINT32 length1 = 0, length2 = 0;
-  void *buffer1 = NULL, *buffer2 = NULL;
-  UINT32 bytesToCopy = 0;
-  DWORD playCursor, writeCursor;
-  HRESULT result = IDirectSoundBuffer_GetCurrentPosition( g_pStreamBuffer, &playCursor, &writeCursor );
-  
-  #ifdef LOG_SOUND
-  _RPT3( _CRT_WARN, "R: %-8.8lu W: %-8.8lu SB: %-8.8lu\n", playCursor, writeCursor, g_streamBufferWriteCursor );
-  #endif
+{
+  void *buffer1, *buffer2;
+  DWORD length1, length2;
+  HRESULT result;
+  int cur_bytes;
 
-  if( (g_streamBufferWriteCursor > writeCursor && g_streamBufferWriteCursor - writeCursor > 10) || 
-      (g_streamBufferWriteCursor < writeCursor && writeCursor - g_streamBufferWriteCursor > 10 ) )
-      g_streamBufferWriteCursor = writeCursor;
-
-    // 1) If playCursor < g_streamBufferWriteCursor < writeCursor, an underflow has ocurred
-  if( playCursor < g_streamBufferWriteCursor && g_streamBufferWriteCursor < writeCursor )
+  // attempt to lock the stream buffer
+  result = IDirectSoundBuffer_Lock( g_pStreamBuffer, g_streamBufferIn, totalToCopy, &buffer1, &length1, &buffer2, &length2, 0 );
+  if ( result != DS_OK )
   {
     ++g_bufferUnderflows;
-    g_streamBufferWriteCursor = writeCursor;
+    return;
   }
 
-    // Buffer1 will always start at the write cursor position
-  buffer1 = g_streamBufferData + g_streamBufferWriteCursor; 
+  // adjust the input pointer
+  g_streamBufferIn = (g_streamBufferIn + totalToCopy) % g_streamBufferSize;
 
-    // 2) Figure out where we should start copying data
-  if( playCursor <= g_streamBufferWriteCursor )
+  // copy the first chunk
+  cur_bytes = (totalToCopy > length1) ? length1 : totalToCopy;
+  memcpy( buffer1, data, cur_bytes );
+
+  // adjust for the number of bytes
+  totalToCopy -= cur_bytes;
+  data = (INT16 *)((UINT8 *)data + cur_bytes);
+
+  // copy the second chunk
+  if (totalToCopy != 0)
   {
-      // We can write until the end of the buffer, and then from the beginning
-      // of the buffer up to the playCursor
-    length1 = g_streamBufferSize - g_streamBufferWriteCursor;
-
-    length2 = playCursor ? playCursor - 1 : 0;
-    buffer2 = g_streamBufferData;
+    cur_bytes = (totalToCopy > length2) ? length2 : totalToCopy;
+    memcpy( buffer2, data, cur_bytes );
   }
-  else
-  {
-      // We can write up to the playCursor
-    length1 = playCursor - g_streamBufferWriteCursor;
-  }
-
-    // Check for an overflow
-  if( length1 + length2 < totalToCopy )
-  {
-    ++g_bufferOverflows; 
-    totalToCopy = length1 + length2;
-  }
-
-	  // adjust the write cursor, wrapping around the end of the buffer if necessary
-	writeCursor = (g_streamBufferWriteCursor + totalToCopy) % g_streamBufferSize;
-
-	  // copy the first chunk
-	bytesToCopy = (totalToCopy > length1) ? length1 : totalToCopy;
-	memcpy( buffer1, data, bytesToCopy );
-	totalToCopy -= bytesToCopy;
-	
-	  // copy the second chunk, if necessary
-	if( totalToCopy )
-	{
-      // Advance past the data that was already copied
-	  data = (INT16*)((UINT8*)data + bytesToCopy);
-		memcpy( buffer2, data, totalToCopy );       // Overflow was handled above, so using totalToCopy will be safe
-	}
-  g_streamBufferWriteCursor = writeCursor; 
-
-}
-
-
-
-//---------------------------------------------------------------------
-//	Helper_ClearSampleData
-//---------------------------------------------------------------------
-static void Helper_ClearSampleData( UINT32 amountToClear )
-{	
-  UINT32 length1 = 0, length2 = 0;
-  void *buffer1 = NULL, *buffer2 = NULL;
-  UINT32 bytesToCopy = 0;
-  DWORD playCursor, writeCursor;
-  HRESULT result = IDirectSoundBuffer_GetCurrentPosition( g_pStreamBuffer, &playCursor, &writeCursor );
-
-    // Buffer1 will always start at the write cursor position
-  buffer1 = g_streamBufferData + g_streamBufferWriteCursor; 
-
-    // 2) Figure out where we should start copying data
-  if( playCursor <= g_streamBufferWriteCursor )
-  {
-      // We can write until the end of the buffer, and then from the beginning
-      // of the buffer up to the playCursor
-    length1 = g_streamBufferSize - g_streamBufferWriteCursor;
-
-    length2 = playCursor ? playCursor - 1 : 0;
-    buffer2 = g_streamBufferData;
-  }
-  else
-  {
-      // We can write up to the playCursor
-    length1 = playCursor - g_streamBufferWriteCursor;
-  }
-
-    // Check for an overflow
-  if( length1 + length2 < amountToClear )
-  {
-    amountToClear = length1 + length2;
-  }
-
-	  // copy the first chunk
-	bytesToCopy = (amountToClear > length1) ? length1 : amountToClear;
-	memset( buffer1, 0, bytesToCopy );
-	amountToClear -= bytesToCopy;
-	
-	  // copy the second chunk, if necessary
-	if( amountToClear )
-	{
-      // Advance past the data that was already copied
-		memset( buffer2, 0, amountToClear );       // Overflow was handled above, so using totalToCopy will be safe
-	}
 }
 
 
