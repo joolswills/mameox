@@ -1,20 +1,83 @@
 #!/bin/perl
+if( @ARGV ) {
+	foreach( @ARGV ) {
+		$FileName = $_;
+		$DriverFileName = $_;
+		
+			# Add .c if it's not there
+		if( !( $DriverFileName =~ /(.*)\.c$/ ) ) {
+			$DriverFileName .= ".c";
+		}
 
-local @FILEs = `find ./MAME/src/drivers/*.c`;
+		print "Attempting to remove sections from a driver called $DriverFileName\n";
+
+		if( RemoveDriverSection( "./MAME/src/drivers/".$DriverFileName ) eq false ) {
+			print "Looks like it's not a driver, trying to find a CPU directory named $FileName\n";
+
+				# Try again as a CPU
+			local @FILES = `find ./MAME/src/cpu/$FileName/*.c`;
+			if( scalar( @FILES ) != 0 ) {
+				foreach( @FILES ) {
+					chomp;
+					if( RemoveCPUSection( $_ ) eq false ) {
+						print "Failed removing sections from file $_!\n";
+					}
+					else {
+						print "Removed section from file $_\n";
+					}
+				}
+				print "Done checking the c files within directory ./MAME/src/cpu/$FileName!\n";
+			} else {
+				print "Can't do anything with $FileName. It's not a driver or a CPU directory.\n";
+			}
+		} else {
+			print "Section removed!\n";
+		}
+
+	}
+}
+else {
+	die "BLAH!\n";
+
+	local @FILEs = `find ./MAME/src/drivers/*.c`;
+
+	print "Removing sections from drivers, sound hardware, and video hardware...\n";
+
+	foreach( @FILEs ) {
+		chomp( $_ );
+		RemoveDriverSection( $_ );
+	}
+
+	#------------------------------------------------------------------------------
 
 
-print "Removing sections from drivers, sound hardware, and video hardware...\n";
+	print "Removing sections from CPU's...\n";
 
-foreach( @FILEs ) {
-	chomp( $_ );
+	@FILEs    = `find ./MAME/src/cpu/ -name *.c`;
 
-	$DriverFileName = $_;
-	$DriverName = $_;
+	foreach( @FILEs ) {
+		chomp( $_ );
+
+		$DriverFileName = $_;
+		RemoveCPUSection( $DriverFileName );
+	}
+
+	print "Done!\n";
+}
+
+
+#------------------------------------------------------------------------------
+# RemoveDriverSection
+#
+# \param   Name (and path) of the driver file to desectionize
+#------------------------------------------------------------------------------
+sub RemoveDriverSection( $ ) {
+	$DriverFileName = shift;
 
 	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
 	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
 
-	open( FILE, "<$DriverFileName" ) || die "Failed to open file $DriverFileName!\n";
+	open( FILE, "<$DriverFileName" ) || return false;
 	sysread( FILE, $File, $size );
 	close( FILE );
 
@@ -114,24 +177,24 @@ foreach( @FILEs ) {
 			close( FILE );
 		}
 	}
+
+	return true;
 }
 
+
 #------------------------------------------------------------------------------
+# RemoveCPUSection
+#
+# \param   Path to the CPU directory to desectionize
+#------------------------------------------------------------------------------
+sub RemoveCPUSection( $ ) {
 
-
-print "Removing sections from CPU's...\n";
-
-@FILEs    = `find ./MAME/src/cpu/ -name *.c`;
-
-foreach( @FILEs ) {
-	chomp( $_ );
-
-	$DriverFileName = $_;
+	$DriverFileName = shift;
 
 	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
 	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
 
-	open( FILE, "<$DriverFileName" ) || die "Failed to open file $DriverFileName!\n";
+	open( FILE, "<$DriverFileName" ) || return false;
 	sysread( FILE, $File, $size );
 	close( FILE );
 
@@ -149,8 +212,6 @@ foreach( @FILEs ) {
 		syswrite( FILE, $File, length($File) );
 		close( FILE );
 	}
+
+	return true;
 }
-
-
-
-print "Finished.\n";
