@@ -7,6 +7,7 @@
 
 //= I N C L U D E S ===========================================================
 #include "Gamepad.h"
+#include "InputManager.h"
 #include "DebugLogger.h"
 
 
@@ -33,16 +34,14 @@ CGamepad::CGamepad( void )
 //------------------------------------------------------
 BOOL CGamepad::Create(  DWORD gpIndex, 
                         DWORD maxMemUnits, 
-                        const DWORD *gpBitmap, 
-                        const DWORD *muBitmap ) 
+                        CInputManager *inputManager ) 
 {
-  if( gpIndex > 3 )
+  if( gpIndex > 3 || !inputManager )
     return FALSE;
 
   m_gamepadIndex = gpIndex;
 
-	m_gamepadDeviceBitmap = gpBitmap;
-	m_memunitDeviceBitmap = muBitmap;
+  m_inputManager = inputManager;
 
 
 	switch( m_gamepadIndex )
@@ -85,6 +84,17 @@ BOOL CGamepad::Create(  DWORD gpIndex,
 	}
 
   return TRUE;
+}
+
+//------------------------------------------------------
+//	PollDevice
+//------------------------------------------------------
+void CGamepad::PollDevice( void )
+{
+  m_inputManager->AttachRemoveDevices();
+
+  if( m_gamepadDeviceHandle )
+    XInputGetState( m_gamepadDeviceHandle, &m_state );
 }
 
 //------------------------------------------------------
@@ -306,6 +316,81 @@ const XINPUT_GAMEPAD *CGamepad::GetGamepadDeviceState( void ) const
 const XINPUT_CAPABILITIES *CGamepad::GetGamepadDeviceCaps( void ) const 
 {
 	return &m_caps;
+}
+
+
+//------------------------------------------------------
+//	AttachRemoveDevices
+//------------------------------------------------------
+void CGamepad::AttachRemoveDevices( void ) 
+{
+		// Attach/Remove gamepads
+	AttachRemoveGamepadDevice();
+
+		// Attach/Remove MemUnit sets
+	AttachRemoveMemUnitDevicePair();
+}
+
+//------------------------------------------------------
+//	AttachRemoveGamepadDevice
+//------------------------------------------------------
+void CGamepad::AttachRemoveGamepadDevice( void )
+{
+	if(	(m_inputManager->GetGamepadDeviceBitmap() & m_portMask ) && !m_gamepadDeviceHandle )
+	{
+			// Attach
+		m_gamepadDeviceHandle = XInputOpen( XDEVICE_TYPE_GAMEPAD,
+																							            m_portName,				
+																							            XDEVICE_NO_SLOT,			// Gamepad, so no slot
+																							            NULL );								// No special polling params
+    XInputGetCapabilities( m_gamepadDeviceHandle, &m_caps );
+	}
+	else if( !(m_inputManager->GetGamepadDeviceBitmap() & m_portMask ) && m_gamepadDeviceHandle )
+	{
+			// Detach
+		XInputClose( m_gamepadDeviceHandle );
+		m_gamepadDeviceHandle = NULL;
+		m_state.dwPacketNumber = 0;
+	}
+}
+
+//------------------------------------------------------
+//	AttachRemoveMemUnitDevicePair
+//------------------------------------------------------
+void CGamepad::AttachRemoveMemUnitDevicePair( void )
+{
+
+		// -- Top --------------------------------
+	if( (m_inputManager->GetMUDeviceBitmap() & m_topMemPortMask) && !m_memunitDeviceHandles[0] )
+	{
+			// Attach
+		m_memunitDeviceHandles[0] = XInputOpen( XDEVICE_TYPE_MEMORY_UNIT,
+																						m_portName,				
+																						XDEVICE_TOP_SLOT,			// Gamepad, so no slot
+																						NULL );								// No special polling params
+	}
+	else if( !(m_inputManager->GetMUDeviceBitmap() & m_topMemPortMask ) && m_memunitDeviceHandles[0] )
+	{
+			// Detach
+		XInputClose( m_memunitDeviceHandles[0] );
+		m_memunitDeviceHandles[0] = NULL;
+	}
+
+		// -- Bottom --------------------------------
+	if( (m_inputManager->GetMUDeviceBitmap() & m_bottomMemPortMask) && !m_memunitDeviceHandles[1] )
+	{
+			// Attach
+		m_memunitDeviceHandles[1] = XInputOpen( XDEVICE_TYPE_MEMORY_UNIT,
+																						m_portName,				
+																						XDEVICE_BOTTOM_SLOT,			// Gamepad, so no slot
+																						NULL );								// No special polling params
+	}
+	else if( !(m_inputManager->GetMUDeviceBitmap() & m_bottomMemPortMask ) && m_memunitDeviceHandles[1] )
+	{
+			// Detach
+		XInputClose( m_memunitDeviceHandles[1] );
+		m_memunitDeviceHandles[1] = NULL;
+	}
 }
 
 

@@ -62,8 +62,8 @@ public:
     {
       m_gamepads[i].Create( i, 
                             maxMemUnits > 2 ? 2 : maxMemUnits, 
-                            &m_gamepadDeviceBitmap,
-                            &m_memunitDeviceBitmap );
+                            this );
+
       if( maxMemUnits > 2 )
         maxMemUnits -= 2;
       else
@@ -331,6 +331,10 @@ public:
             m_gamepads[2].IsOneOfButtonsPressed(buttonID) ||
             m_gamepads[3].IsOneOfButtonsPressed(buttonID);
   }
+
+  DWORD GetGamepadDeviceBitmap( void ) const { return m_gamepadDeviceBitmap; }
+  DWORD GetMUDeviceBitmap( void ) const { return m_memunitDeviceBitmap; }
+
 
 protected:
 

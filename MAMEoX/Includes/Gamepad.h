@@ -60,6 +60,7 @@ typedef enum gamepadAxisID_t {
 
 
 //= C L A S S E S =============================================================
+class CInputManager;
 
   //! \class    CGamepad
   //! \brief    Simple wrapper around the XINPUT_STATE and XINPUT_CAPABILITIES
@@ -80,13 +81,11 @@ public:
     //!
     //! \param    gpIndex - 0 based index of this gamepad
     //! \param    maxMemUnits - Max number of mem units for this gp 
-    //! \param    gpBitmap - Pointer to the gamepad bitmap for the system
-    //! \param    muBitmap - Pointer to the mem unit bitmap for the system
+    //! \param    inputManager - Pointer to the CInputManager parent
 		//------------------------------------------------------
 	BOOL Create(  DWORD gpIndex, 
-                DWORD maxMemUnits, 
-                const DWORD *gpBitmap, 
-                const DWORD *muBitmap );
+                DWORD maxMemUnits,
+                CInputManager *inputManager );
 
 		//------------------------------------------------------
 		//	IsConnected
@@ -215,23 +214,14 @@ public:
     //! \brief    Poll the associated physical device for
     //!           its current state
 		//------------------------------------------------------
-	inline void PollDevice( void ) {
-    if( m_gamepadDeviceHandle )
-      XInputGetState( m_gamepadDeviceHandle, &m_state );
-	}
+	void PollDevice( void );
 
 		//------------------------------------------------------
 		//	AttachRemoveDevices
     //! \brief    Attach or remove physical devices at
     //!           the associated gameport
 		//------------------------------------------------------
-	inline void AttachRemoveDevices( void ) {
-			// Attach/Remove gamepads
-		AttachRemoveGamepadDevice();
-
-			// Attach/Remove MemUnit sets
-		AttachRemoveMemUnitDevicePair();
-	}
+	void AttachRemoveDevices( void );
 
 		//------------------------------------------------------
 		//	GetGamepadDeviceState
@@ -257,65 +247,14 @@ public:
 		//------------------------------------------------------
 		//	AttachRemoveGamepadDevice
 		//------------------------------------------------------
-	inline void AttachRemoveGamepadDevice( void ) {
-		if(	(*m_gamepadDeviceBitmap & m_portMask ) && !m_gamepadDeviceHandle )
-		{
-				// Attach
-			m_gamepadDeviceHandle = XInputOpen( XDEVICE_TYPE_GAMEPAD,
-																							             m_portName,				
-																							             XDEVICE_NO_SLOT,			// Gamepad, so no slot
-																							             NULL );								// No special polling params
-      XInputGetCapabilities( m_gamepadDeviceHandle, &m_caps );
-		}
-		else if( !(*m_gamepadDeviceBitmap & m_portMask ) && m_gamepadDeviceHandle )
-		{
-				// Detach
-			XInputClose( m_gamepadDeviceHandle );
-			m_gamepadDeviceHandle = NULL;
-			m_state.dwPacketNumber = 0;
-		}
-	}
+	void AttachRemoveGamepadDevice( void );
 
 		//------------------------------------------------------
 		//	AttachRemoveMemUnitDevicePair
 		//------------------------------------------------------
-	inline void AttachRemoveMemUnitDevicePair( void ) {
+	inline void AttachRemoveMemUnitDevicePair( void );
 
-			// -- Top --------------------------------
-		if( (*m_memunitDeviceBitmap & m_topMemPortMask) && !m_memunitDeviceHandles[0] )
-		{
-				// Attach
-			m_memunitDeviceHandles[0] = XInputOpen( XDEVICE_TYPE_MEMORY_UNIT,
-																						  m_portName,				
-																							XDEVICE_TOP_SLOT,			// Gamepad, so no slot
-																							NULL );								// No special polling params
-		}
-		else if( !(*m_memunitDeviceBitmap & m_topMemPortMask ) && m_memunitDeviceHandles[0] )
-		{
-				// Detach
-			XInputClose( m_memunitDeviceHandles[0] );
-			m_memunitDeviceHandles[0] = NULL;
-		}
-
-			// -- Bottom --------------------------------
-		if( (*m_memunitDeviceBitmap & m_bottomMemPortMask) && !m_memunitDeviceHandles[1] )
-		{
-				// Attach
-			m_memunitDeviceHandles[1] = XInputOpen( XDEVICE_TYPE_MEMORY_UNIT,
-																							m_portName,				
-																							XDEVICE_BOTTOM_SLOT,			// Gamepad, so no slot
-																							NULL );								// No special polling params
-		}
-		else if( !(*m_memunitDeviceBitmap & m_bottomMemPortMask ) && m_memunitDeviceHandles[1] )
-		{
-				// Detach
-			XInputClose( m_memunitDeviceHandles[1] );
-			m_memunitDeviceHandles[1] = NULL;
-		}
-	}
-
-	const DWORD			    *m_gamepadDeviceBitmap;			//!<	Bitmap storing which gamepad devices are currently attached
-	const DWORD			    *m_memunitDeviceBitmap;			//!<	Bitmap storing which mem unit devices are currently attached
+  CInputManager       *m_inputManager;
 
 	DWORD               m_portMask, m_portName;
 	DWORD               m_topMemPortMask, m_bottomMemPortMask;
