@@ -44,12 +44,14 @@ Version 0.70.2b
       - Put initialization code in a section that is unloaded
         as soon as it's completed (for a gain of 50k or so)
       - Signed driver.list file to prevent corruption
+       - Put in code to reboot and dump log when missing fonts
 
    -------------------------------------------------------------
   - \MAMEoXLauncher\Sources:
 
     - main.cpp
        - Signed driver.list file to prevent corruption
+       - Put in code to reboot and dump log when missing fonts
 
     - ROMList.cpp
        - Signed rom.list file to prevent corruption

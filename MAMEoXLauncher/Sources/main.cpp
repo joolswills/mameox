@@ -41,9 +41,9 @@
 
 // VC6 requires the 2 paramater call to create. _VC6 is defined in the VC6 dsp files
 #ifdef _VC6
-#define CREATEFONT( fntObj, fntName )     fntObj.Create( pD3DDevice, fntName );
+#define CREATEFONT( fntObj, fntName )     fntObj.Create( pD3DDevice, fntName )
 #else
-#define CREATEFONT( fntObj, fntName )     fntObj.Create( fntName );
+#define CREATEFONT( fntObj, fntName )     fntObj.Create( fntName )
 #endif
 
 
@@ -115,150 +115,8 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice );
 
 //= F U N C T I O N S =================================================
 
+
 #define TEST_LIGHTGUN 0
-#if TEST_LIGHTGUN
-
-static UINT32                   g_calibrationStep = 0;
-static UINT32                   g_calibrationJoynum = 0;
-
-void osd_joystick_start_calibration( void )
-{
-/* Preprocessing for joystick calibration. Returns 0 on success */
-  const XINPUT_CAPABILITIES *gp;
-  UINT32 i = 0;
-
-  g_calibrationStep = 0;
-
-    // Search for the first connected gun
-  for( ; i < 4; ++i )
-  {
-    gp = GetGamepadCaps( 0 );  
-    if( gp && gp->SubType == XINPUT_DEVSUBTYPE_GC_LIGHTGUN )
-    {
-      g_calibrationJoynum = i;
-      return;
-    }
-  }
-}
-
-const char *osd_joystick_calibrate_next( void )
-{
-/* Prepare the next calibration step. Return a description of this step. */
-/* (e.g. "move to upper left") */
-  char retString[128];
-
-    // When we hit 3, switch over to the next gun to be calibrated,
-    //  or return NULL to exit the process
-  if( g_calibrationStep == 3 )
-  {
-    const XINPUT_CAPABILITIES *gp;
-    ++g_calibrationJoynum;
-    for( ; g_calibrationJoynum < 4; ++g_calibrationJoynum )
-    {
-      gp = GetGamepadCaps( g_calibrationJoynum );
-      if( gp && gp->SubType == XINPUT_DEVSUBTYPE_GC_LIGHTGUN )
-      {
-          // Found another gun
-        g_calibrationStep = 0;
-        break;
-      }
-    }
-
-    if( g_calibrationJoynum == 4 )
-      return NULL;
-  }
-
-  sprintf( retString, "Gun %d: ", g_calibrationJoynum + 1 );
-  switch( g_calibrationStep++ )
-  {
-  case 0:
-    strcat( retString, "Upper left" );
-    break;
-
-  case 1:
-    strcat( retString, "Center" );
-    break;
-
-  case 2:
-    strcat( retString, "Lower right" );
-    break;
-  }
-
-	return retString;
-}
-
-void osd_joystick_calibrate( void )
-{
-/* Get the actual joystick calibration data for the current position */
-
-  if( g_calibrationStep && g_calibrationStep < 4 )
-  {
-	  const XINPUT_GAMEPAD *gp;
-    if( (gp = GetGamepadState( g_calibrationJoynum )) )
-    {
-      g_calibrationData[g_calibrationJoynum].m_xData[g_calibrationStep-1] = gp->sThumbLX;
-      g_calibrationData[g_calibrationJoynum].m_yData[g_calibrationStep-1] = gp->sThumbLY;
-    }
-    PRINTMSG( T_INFO, "CALIB: STEP %d: %d, %d\n", g_calibrationStep - 1, gp->sThumbLX, gp->sThumbLY );
-  }
-}
-
-void osd_joystick_end_calibration( void )
-{
-/* Postprocessing (e.g. saving joystick data to config) */
-  UINT32 i = 0;
-
-  for( ; i < 3; ++i )
-  {
-    g_calibrationData[i].m_xData[0] -= g_calibrationData[i].m_xData[1];
-    g_calibrationData[i].m_xData[2] -= g_calibrationData[i].m_xData[1];
-    g_calibrationData[i].m_xData[0] *= -1;  //!< Negate so that < 0 values stay < 0
-
-    g_calibrationData[i].m_yData[0] -= g_calibrationData[i].m_yData[1];
-    g_calibrationData[i].m_yData[2] -= g_calibrationData[i].m_yData[1];
-    g_calibrationData[i].m_yData[2] *= -1;  //!< Negate so that < 0 values stay < 0
-  }
-}
-
-void osd_lightgun_read(int player, int *deltax, int *deltay)
-{
-	const XINPUT_GAMEPAD *gp;
-
-	if( (gp = GetGamepadState( player )) )
-  {
-    lightgunCalibration_t *calibData = &g_calibrationData[player];
-
-    *deltax = gp->sThumbLX - calibData->m_xData[1];
-    *deltay = -1 * (gp->sThumbLY - calibData->m_yData[1]);
-
-      // Map from -128 to 128
-    if( gp->sThumbLX < 0 )
-      *deltax = (int)((FLOAT)*deltax * 128.0f / ((FLOAT)calibData->m_xData[0]+1.0f));
-    else
-      *deltax = (int)((FLOAT)*deltax * 128.0f / ((FLOAT)calibData->m_xData[2]+1.0f));
-
-    if( gp->sThumbLY > 0 )
-      *deltay = (int)((FLOAT)*deltay * 128.0f / ((FLOAT)calibData->m_yData[0]+1.0f));
-    else
-      *deltay = (int)((FLOAT)*deltay * 128.0f / ((FLOAT)calibData->m_yData[2]+1.0f));
-
-      // Lock to the expected range
-    if( *deltax > 128 )
-      *deltax = 128;
-    else if( *deltax < -128 )
-      *deltax = -128;
-
-    if( *deltay > 128 )
-      *deltay = 128;
-    else if( *deltay < -128 )
-      *deltay = -128;
-  }
-  else  
-	  *deltax = *deltay = 0;
-}
-
-#endif
-
 
 
 //-------------------------------------------------------------
@@ -273,10 +131,29 @@ void __cdecl main( void )
 	g_graphicsManager.Create();
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
 
-		// Create a general purpose font
-  CREATEFONT( g_font, "Arial_16.xpr" );
-  CREATEFONT( g_fixedWidthFont, "CourierNew_12.xpr" );
-  CREATEFONT( g_smallFont, "ArialNarrow_12.xpr" );
+		// Load the fonts, reboot if any are missing (without a font,
+    //  no error message is possible (as of today)
+  if( FAILED( CREATEFONT( g_font, "Arial_16.xpr" ) ) )
+  {
+    PRINTMSG_TO_LOG( T_ERROR, "Failed loading font Media/Arial_16.xpr!" );
+    LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
+    XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
+  }
+
+  if( FAILED( CREATEFONT( g_fixedWidthFont, "CourierNew_12.xpr" ) ) )
+  {
+    PRINTMSG_TO_LOG( T_ERROR, "Failed loading font Media/CourierNew_12.xpr!" );
+    LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
+    XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
+  }
+
+  if( FAILED( CREATEFONT( g_smallFont, "ArialNarrow_12.xpr" ) ) )
+  {
+    PRINTMSG_TO_LOG( T_ERROR, "Failed loading font Media/ArialNarrow_12.xpr!" );
+    LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
+    XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
+  }
+
 
   LoadOptions();
 
@@ -331,18 +208,15 @@ void __cdecl main( void )
   if( FAILED( LoadPackedResources() ) )
   {
     Die( pD3DDevice, 
-         "The Media/Resource.xpr file\n"
-         "is missing or damaged.\n"
-         "The original file may be\n"
-         "found in the Media directory\n"
-         "of the MAMEoX package\n"
-         "(it is autogenerated\n"
-         "during the build process,\n"
-         "so you may have to rebuild\n"
+         "The Media/Resource.xpr file is missing\n"
+         "or damaged.\n"
+         "The original file may be found in the\n"
+         "Media directory of the MAMEoX package\n"
+         "(it is autogenerated during the build\n"
+         "process, so you may have to rebuild\n"
          "to obtain it.\n"
-         "Please place the correct\n"
-         "file in the Media directory\n"
-         "on your XBOX and restart." );
+         "Please place the correct file in the\n"
+         "Media directory on your XBOX and restart." );
   }
 
     // Get the launch data
@@ -1438,3 +1312,158 @@ void osd_exit( void )
 
 }	// End Extern "C"
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+#if TEST_LIGHTGUN
+
+static UINT32                   g_calibrationStep = 0;
+static UINT32                   g_calibrationJoynum = 0;
+
+void osd_joystick_start_calibration( void )
+{
+/* Preprocessing for joystick calibration. Returns 0 on success */
+  const XINPUT_CAPABILITIES *gp;
+  UINT32 i = 0;
+
+  g_calibrationStep = 0;
+
+    // Search for the first connected gun
+  for( ; i < 4; ++i )
+  {
+    gp = GetGamepadCaps( 0 );  
+    if( gp && gp->SubType == XINPUT_DEVSUBTYPE_GC_LIGHTGUN )
+    {
+      g_calibrationJoynum = i;
+      return;
+    }
+  }
+}
+
+const char *osd_joystick_calibrate_next( void )
+{
+/* Prepare the next calibration step. Return a description of this step. */
+/* (e.g. "move to upper left") */
+  char retString[128];
+
+    // When we hit 3, switch over to the next gun to be calibrated,
+    //  or return NULL to exit the process
+  if( g_calibrationStep == 3 )
+  {
+    const XINPUT_CAPABILITIES *gp;
+    ++g_calibrationJoynum;
+    for( ; g_calibrationJoynum < 4; ++g_calibrationJoynum )
+    {
+      gp = GetGamepadCaps( g_calibrationJoynum );
+      if( gp && gp->SubType == XINPUT_DEVSUBTYPE_GC_LIGHTGUN )
+      {
+          // Found another gun
+        g_calibrationStep = 0;
+        break;
+      }
+    }
+
+    if( g_calibrationJoynum == 4 )
+      return NULL;
+  }
+
+  sprintf( retString, "Gun %d: ", g_calibrationJoynum + 1 );
+  switch( g_calibrationStep++ )
+  {
+  case 0:
+    strcat( retString, "Upper left" );
+    break;
+
+  case 1:
+    strcat( retString, "Center" );
+    break;
+
+  case 2:
+    strcat( retString, "Lower right" );
+    break;
+  }
+
+	return retString;
+}
+
+void osd_joystick_calibrate( void )
+{
+/* Get the actual joystick calibration data for the current position */
+
+  if( g_calibrationStep && g_calibrationStep < 4 )
+  {
+	  const XINPUT_GAMEPAD *gp;
+    if( (gp = GetGamepadState( g_calibrationJoynum )) )
+    {
+      g_calibrationData[g_calibrationJoynum].m_xData[g_calibrationStep-1] = gp->sThumbLX;
+      g_calibrationData[g_calibrationJoynum].m_yData[g_calibrationStep-1] = gp->sThumbLY;
+    }
+    PRINTMSG( T_INFO, "CALIB: STEP %d: %d, %d\n", g_calibrationStep - 1, gp->sThumbLX, gp->sThumbLY );
+  }
+}
+
+void osd_joystick_end_calibration( void )
+{
+/* Postprocessing (e.g. saving joystick data to config) */
+  UINT32 i = 0;
+
+  for( ; i < 3; ++i )
+  {
+    g_calibrationData[i].m_xData[0] -= g_calibrationData[i].m_xData[1];
+    g_calibrationData[i].m_xData[2] -= g_calibrationData[i].m_xData[1];
+    g_calibrationData[i].m_xData[0] *= -1;  //!< Negate so that < 0 values stay < 0
+
+    g_calibrationData[i].m_yData[0] -= g_calibrationData[i].m_yData[1];
+    g_calibrationData[i].m_yData[2] -= g_calibrationData[i].m_yData[1];
+    g_calibrationData[i].m_yData[2] *= -1;  //!< Negate so that < 0 values stay < 0
+  }
+}
+
+void osd_lightgun_read(int player, int *deltax, int *deltay)
+{
+	const XINPUT_GAMEPAD *gp;
+
+	if( (gp = GetGamepadState( player )) )
+  {
+    lightgunCalibration_t *calibData = &g_calibrationData[player];
+
+    *deltax = gp->sThumbLX - calibData->m_xData[1];
+    *deltay = -1 * (gp->sThumbLY - calibData->m_yData[1]);
+
+      // Map from -128 to 128
+    if( gp->sThumbLX < 0 )
+      *deltax = (int)((FLOAT)*deltax * 128.0f / ((FLOAT)calibData->m_xData[0]+1.0f));
+    else
+      *deltax = (int)((FLOAT)*deltax * 128.0f / ((FLOAT)calibData->m_xData[2]+1.0f));
+
+    if( gp->sThumbLY > 0 )
+      *deltay = (int)((FLOAT)*deltay * 128.0f / ((FLOAT)calibData->m_yData[0]+1.0f));
+    else
+      *deltay = (int)((FLOAT)*deltay * 128.0f / ((FLOAT)calibData->m_yData[2]+1.0f));
+
+      // Lock to the expected range
+    if( *deltax > 128 )
+      *deltax = 128;
+    else if( *deltax < -128 )
+      *deltax = -128;
+
+    if( *deltay > 128 )
+      *deltay = 128;
+    else if( *deltay < -128 )
+      *deltay = -128;
+  }
+  else  
+	  *deltax = *deltay = 0;
+}
+
+#endif

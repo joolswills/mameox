@@ -297,7 +297,6 @@ void Helper_OutputDebugStringPrintMsg( ULONG msgLevel, const char *fileName, ULO
 }
 #endif
 
-#if defined(_DEBUG) || defined(_LOGDEBUGMESSAGES)
 //-------------------------------------------------------
 //  Helper_WriteToFilePrintMsg
 //-------------------------------------------------------
@@ -338,7 +337,6 @@ void Helper_WriteToFilePrintMsg( ULONG msgLevel, const char *fileName, ULONG lin
     CloseHandle( h );
   }
 }
-#endif
 
 } // extern "C"
 

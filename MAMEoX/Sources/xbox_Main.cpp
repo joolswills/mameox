@@ -42,9 +42,9 @@ extern "C" {
 
 // VC6 requires the 2 paramater call to create. _VC6 is defined in the VC6 dsp files
 #ifdef _VC6
-#define CREATEFONT( fntObj, fntName )     fntObj.Create( pD3DDevice, fntName );
+#define CREATEFONT( fntObj, fntName )     fntObj.Create( pD3DDevice, fntName )
 #else
-#define CREATEFONT( fntObj, fntName )     fntObj.Create( fntName );
+#define CREATEFONT( fntObj, fntName )     fntObj.Create( fntName )
 #endif
 
 
@@ -95,10 +95,14 @@ void __cdecl main( void )
 	g_graphicsManager.Create();
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
 
-		// Create a general purpose font
-  CREATEFONT( g_font, "Arial_16.xpr" );
-//  CREATEFONT( g_fixedWidthFont, "CourierNew_12.xpr" );
-//  CREATEFONT( g_smallFont, "ArialNarrow_12.xpr" );
+		// Load the font, reboot if it's missing (without a font,
+    //  no error message is possible (as of today)
+  if( FAILED( CREATEFONT( g_font, "Arial_16.xpr" ) ) )
+  {
+    PRINTMSG_TO_LOG( T_ERROR, "Failed loading font Media/Arial_16.xpr!" );
+    LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
+    XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
+  }
 
   LoadOptions();
 

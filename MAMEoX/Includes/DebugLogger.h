@@ -41,6 +41,7 @@
 
 #endif
 
+#define PRINTMSG_TO_LOG                     Helper_WriteToFilePrintMsg
 
   // To kill an output type, just define it to T_NOLOG
 #define T_NOLOG        NEVERMODULE, LASTLOG, NULL, 0
