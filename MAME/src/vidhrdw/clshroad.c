@@ -1,11 +1,11 @@
-#pragma code_seg("C189")
-#pragma data_seg("D189")
-#pragma bss_seg("B189")
-#pragma const_seg("K189")
-#pragma comment(linker, "/merge:D189=189")
-#pragma comment(linker, "/merge:C189=189")
-#pragma comment(linker, "/merge:B189=189")
-#pragma comment(linker, "/merge:K189=189")
+#pragma code_seg("C190")
+#pragma data_seg("D190")
+#pragma bss_seg("B190")
+#pragma const_seg("K190")
+#pragma comment(linker, "/merge:D190=190")
+#pragma comment(linker, "/merge:C190=190")
+#pragma comment(linker, "/merge:B190=190")
+#pragma comment(linker, "/merge:K190=190")
 /***************************************************************************
 
 							-= Clash Road =-

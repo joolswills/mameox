@@ -1,11 +1,11 @@
-#pragma code_seg("C734")
-#pragma data_seg("D734")
-#pragma bss_seg("B734")
-#pragma const_seg("K734")
-#pragma comment(linker, "/merge:D734=734")
-#pragma comment(linker, "/merge:C734=734")
-#pragma comment(linker, "/merge:B734=734")
-#pragma comment(linker, "/merge:K734=734")
+#pragma code_seg("C735")
+#pragma data_seg("D735")
+#pragma bss_seg("B735")
+#pragma const_seg("K735")
+#pragma comment(linker, "/merge:D735=735")
+#pragma comment(linker, "/merge:C735=735")
+#pragma comment(linker, "/merge:B735=735")
+#pragma comment(linker, "/merge:K735=735")
 #include "driver.h"
 
 extern data8_t *xyonix_vidram;

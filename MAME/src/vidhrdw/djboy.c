@@ -1,11 +1,11 @@
-#pragma code_seg("C228")
-#pragma data_seg("D228")
-#pragma bss_seg("B228")
-#pragma const_seg("K228")
-#pragma comment(linker, "/merge:D228=228")
-#pragma comment(linker, "/merge:C228=228")
-#pragma comment(linker, "/merge:B228=228")
-#pragma comment(linker, "/merge:K228=228")
+#pragma code_seg("C229")
+#pragma data_seg("D229")
+#pragma bss_seg("B229")
+#pragma const_seg("K229")
+#pragma comment(linker, "/merge:D229=229")
+#pragma comment(linker, "/merge:C229=229")
+#pragma comment(linker, "/merge:B229=229")
+#pragma comment(linker, "/merge:K229=229")
 /**
  * @file vidhrdw/djboy.c
  *

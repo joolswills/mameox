@@ -1,11 +1,11 @@
-#pragma code_seg("C534")
-#pragma data_seg("D534")
-#pragma bss_seg("B534")
-#pragma const_seg("K534")
-#pragma comment(linker, "/merge:D534=534")
-#pragma comment(linker, "/merge:C534=534")
-#pragma comment(linker, "/merge:B534=534")
-#pragma comment(linker, "/merge:K534=534")
+#pragma code_seg("C535")
+#pragma data_seg("D535")
+#pragma bss_seg("B535")
+#pragma const_seg("K535")
+#pragma comment(linker, "/merge:D535=535")
+#pragma comment(linker, "/merge:C535=535")
+#pragma comment(linker, "/merge:B535=535")
+#pragma comment(linker, "/merge:K535=535")
 /***************************************************************************
 
 	Rohga Video emulation - Bryan McPhail, mish@tendril.co.uk

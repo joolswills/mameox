@@ -1,11 +1,11 @@
-#pragma code_seg("C324")
-#pragma data_seg("D324")
-#pragma bss_seg("B324")
-#pragma const_seg("K324")
-#pragma comment(linker, "/merge:D324=324")
-#pragma comment(linker, "/merge:C324=324")
-#pragma comment(linker, "/merge:B324=324")
-#pragma comment(linker, "/merge:K324=324")
+#pragma code_seg("C325")
+#pragma data_seg("D325")
+#pragma bss_seg("B325")
+#pragma const_seg("K325")
+#pragma comment(linker, "/merge:D325=325")
+#pragma comment(linker, "/merge:C325=325")
+#pragma comment(linker, "/merge:B325=325")
+#pragma comment(linker, "/merge:K325=325")
 #include "driver.h"
 
 

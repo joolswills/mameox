@@ -1,11 +1,11 @@
-#pragma code_seg("C164")
-#pragma data_seg("D164")
-#pragma bss_seg("B164")
-#pragma const_seg("K164")
-#pragma comment(linker, "/merge:D164=164")
-#pragma comment(linker, "/merge:C164=164")
-#pragma comment(linker, "/merge:B164=164")
-#pragma comment(linker, "/merge:K164=164")
+#pragma code_seg("C165")
+#pragma data_seg("D165")
+#pragma bss_seg("B165")
+#pragma const_seg("K165")
+#pragma comment(linker, "/merge:D165=165")
+#pragma comment(linker, "/merge:C165=165")
+#pragma comment(linker, "/merge:B165=165")
+#pragma comment(linker, "/merge:K165=165")
 /***************************************************************************
 
 	Atari Canyon Bomber hardware

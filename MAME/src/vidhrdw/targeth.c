@@ -1,11 +1,11 @@
-#pragma code_seg("C648")
-#pragma data_seg("D648")
-#pragma bss_seg("B648")
-#pragma const_seg("K648")
-#pragma comment(linker, "/merge:D648=648")
-#pragma comment(linker, "/merge:C648=648")
-#pragma comment(linker, "/merge:B648=648")
-#pragma comment(linker, "/merge:K648=648")
+#pragma code_seg("C649")
+#pragma data_seg("D649")
+#pragma bss_seg("B649")
+#pragma const_seg("K649")
+#pragma comment(linker, "/merge:D649=649")
+#pragma comment(linker, "/merge:C649=649")
+#pragma comment(linker, "/merge:B649=649")
+#pragma comment(linker, "/merge:K649=649")
 /***************************************************************************
 
   Target Hits Video Hardware

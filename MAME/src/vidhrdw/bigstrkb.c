@@ -1,11 +1,11 @@
-#pragma code_seg("C137")
-#pragma data_seg("D137")
-#pragma bss_seg("B137")
-#pragma const_seg("K137")
-#pragma comment(linker, "/merge:D137=137")
-#pragma comment(linker, "/merge:C137=137")
-#pragma comment(linker, "/merge:B137=137")
-#pragma comment(linker, "/merge:K137=137")
+#pragma code_seg("C138")
+#pragma data_seg("D138")
+#pragma bss_seg("B138")
+#pragma const_seg("K138")
+#pragma comment(linker, "/merge:D138=138")
+#pragma comment(linker, "/merge:C138=138")
+#pragma comment(linker, "/merge:B138=138")
+#pragma comment(linker, "/merge:K138=138")
 /* Big Striker (bootleg) Video Hardware */
 
 #include "driver.h"

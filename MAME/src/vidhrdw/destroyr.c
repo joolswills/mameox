@@ -1,11 +1,11 @@
-#pragma code_seg("C225")
-#pragma data_seg("D225")
-#pragma bss_seg("B225")
-#pragma const_seg("K225")
-#pragma comment(linker, "/merge:D225=225")
-#pragma comment(linker, "/merge:C225=225")
-#pragma comment(linker, "/merge:B225=225")
-#pragma comment(linker, "/merge:K225=225")
+#pragma code_seg("C226")
+#pragma data_seg("D226")
+#pragma bss_seg("B226")
+#pragma const_seg("K226")
+#pragma comment(linker, "/merge:D226=226")
+#pragma comment(linker, "/merge:C226=226")
+#pragma comment(linker, "/merge:B226=226")
+#pragma comment(linker, "/merge:K226=226")
 /***************************************************************************
 
 Atari Destroyer video emulation

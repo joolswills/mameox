@@ -1,11 +1,11 @@
-#pragma code_seg("C508")
-#pragma data_seg("D508")
-#pragma bss_seg("B508")
-#pragma const_seg("K508")
-#pragma comment(linker, "/merge:D508=508")
-#pragma comment(linker, "/merge:C508=508")
-#pragma comment(linker, "/merge:B508=508")
-#pragma comment(linker, "/merge:K508=508")
+#pragma code_seg("C509")
+#pragma data_seg("D509")
+#pragma bss_seg("B509")
+#pragma const_seg("K509")
+#pragma comment(linker, "/merge:D509=509")
+#pragma comment(linker, "/merge:C509=509")
+#pragma comment(linker, "/merge:B509=509")
+#pragma comment(linker, "/merge:K509=509")
 /*
 
 Psikyo PS6807 (PS4):

@@ -1,11 +1,11 @@
-#pragma code_seg("C271")
-#pragma data_seg("D271")
-#pragma bss_seg("B271")
-#pragma const_seg("K271")
-#pragma comment(linker, "/merge:D271=271")
-#pragma comment(linker, "/merge:C271=271")
-#pragma comment(linker, "/merge:B271=271")
-#pragma comment(linker, "/merge:K271=271")
+#pragma code_seg("C272")
+#pragma data_seg("D272")
+#pragma bss_seg("B272")
+#pragma const_seg("K272")
+#pragma comment(linker, "/merge:D272=272")
+#pragma comment(linker, "/merge:C272=272")
+#pragma comment(linker, "/merge:B272=272")
+#pragma comment(linker, "/merge:K272=272")
 /* Free Kick Video Hardware */
 
 #include "driver.h"

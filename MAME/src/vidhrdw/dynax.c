@@ -1,11 +1,11 @@
-#pragma code_seg("C240")
-#pragma data_seg("D240")
-#pragma bss_seg("B240")
-#pragma const_seg("K240")
-#pragma comment(linker, "/merge:D240=240")
-#pragma comment(linker, "/merge:C240=240")
-#pragma comment(linker, "/merge:B240=240")
-#pragma comment(linker, "/merge:K240=240")
+#pragma code_seg("C241")
+#pragma data_seg("D241")
+#pragma bss_seg("B241")
+#pragma const_seg("K241")
+#pragma comment(linker, "/merge:D241=241")
+#pragma comment(linker, "/merge:C241=241")
+#pragma comment(linker, "/merge:B241=241")
+#pragma comment(linker, "/merge:K241=241")
 /***************************************************************************
 
 						-= Dynax / Nakanihon Games =-

@@ -1,11 +1,11 @@
-#pragma code_seg("C595")
-#pragma data_seg("D595")
-#pragma bss_seg("B595")
-#pragma const_seg("K595")
-#pragma comment(linker, "/merge:D595=595")
-#pragma comment(linker, "/merge:C595=595")
-#pragma comment(linker, "/merge:B595=595")
-#pragma comment(linker, "/merge:K595=595")
+#pragma code_seg("C596")
+#pragma data_seg("D596")
+#pragma bss_seg("B596")
+#pragma const_seg("K596")
+#pragma comment(linker, "/merge:D596=596")
+#pragma comment(linker, "/merge:C596=596")
+#pragma comment(linker, "/merge:B596=596")
+#pragma comment(linker, "/merge:K596=596")
 /* Speed Spin Vidhrdw, see driver file for notes */
 
 #include "driver.h"

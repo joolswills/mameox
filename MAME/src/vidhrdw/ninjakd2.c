@@ -1,11 +1,11 @@
-#pragma code_seg("C454")
-#pragma data_seg("D454")
-#pragma bss_seg("B454")
-#pragma const_seg("K454")
-#pragma comment(linker, "/merge:D454=454")
-#pragma comment(linker, "/merge:C454=454")
-#pragma comment(linker, "/merge:B454=454")
-#pragma comment(linker, "/merge:K454=454")
+#pragma code_seg("C455")
+#pragma data_seg("D455")
+#pragma bss_seg("B455")
+#pragma const_seg("K455")
+#pragma comment(linker, "/merge:D455=455")
+#pragma comment(linker, "/merge:C455=455")
+#pragma comment(linker, "/merge:B455=455")
+#pragma comment(linker, "/merge:K455=455")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 

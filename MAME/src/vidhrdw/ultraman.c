@@ -1,11 +1,11 @@
-#pragma code_seg("C694")
-#pragma data_seg("D694")
-#pragma bss_seg("B694")
-#pragma const_seg("K694")
-#pragma comment(linker, "/merge:D694=694")
-#pragma comment(linker, "/merge:C694=694")
-#pragma comment(linker, "/merge:B694=694")
-#pragma comment(linker, "/merge:K694=694")
+#pragma code_seg("C695")
+#pragma data_seg("D695")
+#pragma bss_seg("B695")
+#pragma const_seg("K695")
+#pragma comment(linker, "/merge:D695=695")
+#pragma comment(linker, "/merge:C695=695")
+#pragma comment(linker, "/merge:B695=695")
+#pragma comment(linker, "/merge:K695=695")
 #include "driver.h"
 #include "tilemap.h"
 #include "vidhrdw/generic.h"

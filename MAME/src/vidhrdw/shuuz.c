@@ -1,11 +1,11 @@
-#pragma code_seg("C570")
-#pragma data_seg("D570")
-#pragma bss_seg("B570")
-#pragma const_seg("K570")
-#pragma comment(linker, "/merge:D570=570")
-#pragma comment(linker, "/merge:C570=570")
-#pragma comment(linker, "/merge:B570=570")
-#pragma comment(linker, "/merge:K570=570")
+#pragma code_seg("C571")
+#pragma data_seg("D571")
+#pragma bss_seg("B571")
+#pragma const_seg("K571")
+#pragma comment(linker, "/merge:D571=571")
+#pragma comment(linker, "/merge:C571=571")
+#pragma comment(linker, "/merge:B571=571")
+#pragma comment(linker, "/merge:K571=571")
 /***************************************************************************
 
 	Atari Shuuz hardware
