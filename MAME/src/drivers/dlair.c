@@ -1,7 +1,7 @@
-#pragma code_seg("C149")
-#pragma bss_seg("B149")
-#pragma data_seg("D149")
-#pragma const_seg("K149")
+#pragma code_seg("C151")
+#pragma bss_seg("B151")
+#pragma data_seg("D151")
+#pragma const_seg("K151")
 /* the way I hooked up the CTC is most likely completely wrong */
 
 #include "driver.h"

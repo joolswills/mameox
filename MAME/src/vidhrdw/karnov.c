@@ -1,7 +1,7 @@
-#pragma code_seg("C261")
-#pragma bss_seg("B261")
-#pragma data_seg("D261")
-#pragma const_seg("K261")
+#pragma code_seg("C262")
+#pragma bss_seg("B262")
+#pragma data_seg("D262")
+#pragma const_seg("K262")
 /*******************************************************************************
 
 	Karnov - Bryan McPhail, mish@tendril.co.uk

@@ -1,7 +1,7 @@
-#pragma code_seg("C642")
-#pragma bss_seg("B642")
-#pragma data_seg("D642")
-#pragma const_seg("K642")
+#pragma code_seg("C280")
+#pragma bss_seg("B280")
+#pragma data_seg("D280")
+#pragma const_seg("K280")
 /***************************************************************************
 
 	The Game Room Lethal Justice hardware

@@ -1,7 +1,7 @@
-#pragma code_seg("C154")
-#pragma bss_seg("B154")
-#pragma data_seg("D154")
-#pragma const_seg("K154")
+#pragma code_seg("C156")
+#pragma bss_seg("B156")
+#pragma data_seg("D156")
+#pragma const_seg("K156")
 /***************************************************************************
 
 Dottori Kun (Head On's mini game)

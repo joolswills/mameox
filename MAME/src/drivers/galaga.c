@@ -1,7 +1,7 @@
-#pragma code_seg("C198")
-#pragma bss_seg("B198")
-#pragma data_seg("D198")
-#pragma const_seg("K198")
+#pragma code_seg("C199")
+#pragma bss_seg("B199")
+#pragma data_seg("D199")
+#pragma const_seg("K199")
 /***************************************************************************
 
 TODO:

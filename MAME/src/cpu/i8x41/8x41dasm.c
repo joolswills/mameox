@@ -570,7 +570,3 @@ unsigned Dasm8x41(char *dst, unsigned pc)
 }
 
 #endif
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -314,7 +314,3 @@ static const struct i86_timing i286_cycles =
 
 	(void *)-1		/* marker to make sure we line up */
 };
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

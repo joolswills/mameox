@@ -2212,7 +2212,3 @@ INLINE void stx_ex( void )
 	EXTENDED;
 	WM16(EAD,&m6808.x);
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

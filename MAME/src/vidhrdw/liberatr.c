@@ -1,7 +1,7 @@
-#pragma code_seg("C281")
-#pragma bss_seg("B281")
-#pragma data_seg("D281")
-#pragma const_seg("K281")
+#pragma code_seg("C282")
+#pragma bss_seg("B282")
+#pragma data_seg("D282")
+#pragma const_seg("K282")
 /***************************************************************************
 
   liberator.c - 'vidhrdw.c'

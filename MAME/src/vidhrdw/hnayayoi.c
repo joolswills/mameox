@@ -1,7 +1,7 @@
-#pragma code_seg("C241")
-#pragma bss_seg("B241")
-#pragma data_seg("D241")
-#pragma const_seg("K241")
+#pragma code_seg("C242")
+#pragma bss_seg("B242")
+#pragma data_seg("D242")
+#pragma const_seg("K242")
 /***************************************************************************
 
 First version of the Dynax blitter.

@@ -1,7 +1,7 @@
-#pragma code_seg("C636")
-#pragma bss_seg("B636")
-#pragma data_seg("D636")
-#pragma const_seg("K636")
+#pragma code_seg("C84")
+#pragma bss_seg("B84")
+#pragma data_seg("D84")
+#pragma const_seg("K84")
 /*****************************************************************************
 
 B-Wings  (c) 1984 Data East Corporation

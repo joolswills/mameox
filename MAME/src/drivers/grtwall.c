@@ -1,7 +1,7 @@
-#pragma code_seg("C641")
-#pragma bss_seg("B641")
-#pragma data_seg("D641")
-#pragma const_seg("K641")
+#pragma code_seg("C225")
+#pragma bss_seg("B225")
+#pragma data_seg("D225")
+#pragma const_seg("K225")
 /* IGS - The Great Wall */
 
 /* hardware is probably very similar to China Dragon / Dragon World */

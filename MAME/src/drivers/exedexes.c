@@ -1,7 +1,7 @@
-#pragma code_seg("C167")
-#pragma bss_seg("B167")
-#pragma data_seg("D167")
-#pragma const_seg("K167")
+#pragma code_seg("C168")
+#pragma bss_seg("B168")
+#pragma data_seg("D168")
+#pragma const_seg("K168")
 /***************************************************************************
 
 Exed Exes

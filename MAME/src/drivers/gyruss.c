@@ -1,7 +1,7 @@
-#pragma code_seg("C230")
-#pragma bss_seg("B230")
-#pragma data_seg("D230")
-#pragma const_seg("K230")
+#pragma code_seg("C232")
+#pragma bss_seg("B232")
+#pragma data_seg("D232")
+#pragma const_seg("K232")
 /***************************************************************************
 
 Gyruss memory map (preliminary)

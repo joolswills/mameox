@@ -3471,7 +3471,3 @@ unsigned int m68k_is_valid_instruction(unsigned int instruction, unsigned int cp
 /* ======================================================================== */
 /* ============================== END OF FILE ============================= */
 /* ======================================================================== */
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

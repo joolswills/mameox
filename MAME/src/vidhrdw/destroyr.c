@@ -1,7 +1,7 @@
-#pragma code_seg("C145")
-#pragma bss_seg("B145")
-#pragma data_seg("D145")
-#pragma const_seg("K145")
+#pragma code_seg("C146")
+#pragma bss_seg("B146")
+#pragma data_seg("D146")
+#pragma const_seg("K146")
 /***************************************************************************
 
 Atari Destroyer video emulation

@@ -1,7 +1,7 @@
-#pragma code_seg("C176")
-#pragma bss_seg("B176")
-#pragma data_seg("D176")
-#pragma const_seg("K176")
+#pragma code_seg("C177")
+#pragma bss_seg("B177")
+#pragma data_seg("D177")
+#pragma const_seg("K177")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 #include "vidhrdw/generic.h"

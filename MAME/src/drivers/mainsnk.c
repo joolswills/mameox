@@ -1,7 +1,3 @@
-#pragma code_seg("C643")
-#pragma bss_seg("B643")
-#pragma data_seg("D643")
-#pragma const_seg("K643")
 /* Main Event - SNK */
 
 /*
@@ -348,7 +344,3 @@ ROM_END
 
 GAMEX( 1984, mainsnk,      0,          mainsnk, mainsnk, 0,          ROT0, "SNK", "Main Event (1984)", GAME_NO_SOUND | GAME_NOT_WORKING )
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

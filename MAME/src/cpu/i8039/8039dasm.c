@@ -291,7 +291,3 @@ int Dasm8039(char *buffer, unsigned pc)
 
 	return cnt;
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,7 @@
-#pragma code_seg("C270")
-#pragma bss_seg("B270")
-#pragma data_seg("D270")
-#pragma const_seg("K270")
+#pragma code_seg("C271")
+#pragma bss_seg("B271")
+#pragma data_seg("D271")
+#pragma const_seg("K271")
 /***************************************************************************
 
 	Kyugo hardware games

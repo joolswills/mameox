@@ -1,7 +1,7 @@
-#pragma code_seg("C132")
-#pragma bss_seg("B132")
-#pragma data_seg("D132")
-#pragma const_seg("K132")
+#pragma code_seg("C133")
+#pragma bss_seg("B133")
+#pragma data_seg("D133")
+#pragma const_seg("K133")
 /*
   Dragonball Z
   (c) 1993 Banpresto

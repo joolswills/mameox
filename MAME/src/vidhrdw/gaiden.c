@@ -1,7 +1,7 @@
-#pragma code_seg("C197")
-#pragma bss_seg("B197")
-#pragma data_seg("D197")
-#pragma const_seg("K197")
+#pragma code_seg("C198")
+#pragma bss_seg("B198")
+#pragma data_seg("D198")
+#pragma const_seg("K198")
 /***************************************************************************
 
 	Ninja Gaiden / Tecmo Knights Video Hardware

@@ -832,7 +832,3 @@ int Dasm2650(char * buff, int PC)
 	}
 	return pc - PC;
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,7 @@
-#pragma code_seg("C235")
-#pragma bss_seg("B235")
-#pragma data_seg("D235")
-#pragma const_seg("K235")
+#pragma code_seg("C236")
+#pragma bss_seg("B236")
+#pragma data_seg("D236")
+#pragma const_seg("K236")
 /***************************************************************************
 
 	Hard Drivin' sound hardware

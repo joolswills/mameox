@@ -1313,7 +1313,3 @@ static void PREFIXV30(_brks) (void)		/* Opcode 0xf1 - Break to Security Mode */
 	logerror("PC=%06x : BRKS %02x\n", activecpu_get_pc() - 2, int_vector);
 }
 #endif
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

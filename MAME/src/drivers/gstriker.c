@@ -1,7 +1,7 @@
-#pragma code_seg("C224")
-#pragma bss_seg("B224")
-#pragma data_seg("D224")
-#pragma const_seg("K224")
+#pragma code_seg("C226")
+#pragma bss_seg("B226")
+#pragma data_seg("D226")
+#pragma const_seg("K226")
 /*** DRIVER INFO **************************************************************
 
 Grand Striker, V Goal Soccer, World Cup '94

@@ -1,7 +1,7 @@
-#pragma code_seg("C225")
-#pragma bss_seg("B225")
-#pragma data_seg("D225")
-#pragma const_seg("K225")
+#pragma code_seg("C227")
+#pragma bss_seg("B227")
+#pragma data_seg("D227")
+#pragma const_seg("K227")
 /***************************************************************************
   Great Swordsman
 

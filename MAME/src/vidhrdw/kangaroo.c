@@ -1,7 +1,7 @@
-#pragma code_seg("C260")
-#pragma bss_seg("B260")
-#pragma data_seg("D260")
-#pragma const_seg("K260")
+#pragma code_seg("C261")
+#pragma bss_seg("B261")
+#pragma data_seg("D261")
+#pragma const_seg("K261")
 /***************************************************************************
 
 	Sun Electronics Kangaroo hardware

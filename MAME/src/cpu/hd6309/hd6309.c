@@ -1358,7 +1358,3 @@ INLINE void fetch_effective_address( void )
 	hd6309_ICount -= index_cycle[postbyte];
 }
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

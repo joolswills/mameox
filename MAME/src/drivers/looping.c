@@ -1,7 +1,7 @@
-#pragma code_seg("C284")
-#pragma bss_seg("B284")
-#pragma data_seg("D284")
-#pragma const_seg("K284")
+#pragma code_seg("C285")
+#pragma bss_seg("B285")
+#pragma data_seg("D285")
+#pragma const_seg("K285")
 /*
 To Do:
 - get sound working

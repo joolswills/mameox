@@ -2563,7 +2563,3 @@ WRITE_HANDLER( m6803_internal_registers_w )
 }
 #endif
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

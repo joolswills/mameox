@@ -1,7 +1,7 @@
-#pragma code_seg("C161")
-#pragma bss_seg("B161")
-#pragma data_seg("D161")
-#pragma const_seg("K161")
+#pragma code_seg("C163")
+#pragma bss_seg("B163")
+#pragma data_seg("D163")
+#pragma const_seg("K163")
 /***************************************************************************
 
 	Epos games

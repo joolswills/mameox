@@ -1,7 +1,3 @@
-#pragma code_seg("C277")
-#pragma bss_seg("B277")
-#pragma data_seg("D277")
-#pragma const_seg("K277")
 /***************************************************************************
 
 	Cinemat/Leland driver
@@ -582,7 +578,3 @@ VIDEO_UPDATE( ataxx )
 	/* Merge the two bitmaps together */
 	copybitmap(bitmap, fgbitmap, 0, 0, 0, 0, cliprect, TRANSPARENCY_BLEND, 6);
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

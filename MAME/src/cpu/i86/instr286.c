@@ -310,7 +310,3 @@ static void PREFIX286(_arpl)(void) /* 0x63 */
 		i286_trap2(ILLEGAL_INSTRUCTION);
 	}
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

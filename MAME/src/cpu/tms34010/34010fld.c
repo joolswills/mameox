@@ -663,7 +663,3 @@ data32_t rfield_s_31(offs_t offset)
 }
 
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,7 @@
-#pragma code_seg("C175")
-#pragma bss_seg("B175")
-#pragma data_seg("D175")
-#pragma const_seg("K175")
+#pragma code_seg("C176")
+#pragma bss_seg("B176")
+#pragma data_seg("D176")
+#pragma const_seg("K176")
 /***************************************************************************
 
   Fast Freddie/Jump Coaster hardware

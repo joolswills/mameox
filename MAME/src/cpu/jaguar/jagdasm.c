@@ -192,7 +192,3 @@ unsigned dasmjag(int variant, char *buffer, unsigned pc)
 	}
 	return size;
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

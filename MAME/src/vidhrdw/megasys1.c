@@ -1,7 +1,3 @@
-#pragma code_seg("C310")
-#pragma bss_seg("B310")
-#pragma data_seg("D310")
-#pragma const_seg("K310")
 /***************************************************************************
 
 							-= Jaleco Mega System 1 =-
@@ -1050,7 +1046,3 @@ VIDEO_UPDATE( megasys1 )
 	if (active_layers & 0x08)
 		draw_sprites(bitmap,cliprect);
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

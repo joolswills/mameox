@@ -1,7 +1,3 @@
-#pragma code_seg("C218")
-#pragma bss_seg("B218")
-#pragma data_seg("D218")
-#pragma const_seg("K218")
 /***************************************************************************
 
 Gottlieb driver : dedicated to Warren Davis, Jeff Lee, Tim Skelly & David Thiel
@@ -1909,7 +1905,3 @@ GAMEX(1984, 3stooges, 0,     stooges,  3stooges, gottlieb, ROT0,   "Mylstar", "T
 GAME( 1983, qbertqub, 0,     qbert,    qbertqub, 0,        ROT270, "Mylstar", "Q*bert's Qubes" )
 GAME( 1983, screwloo, 0,     gottlieb2,screwloo, gottlieb, ROT0,   "Mylstar", "Screw Loose (prototype)" )
 GAME( 1984, curvebal, 0,     gottlieb, curvebal, 0,        ROT270, "Mylstar", "Curve Ball" )
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,3 @@
-#pragma code_seg("C120")
-#pragma bss_seg("B120")
-#pragma data_seg("D120")
-#pragma const_seg("K120")
 /***************************************************************************
 
 These are some of the CPS-B chip numbers:
@@ -1922,7 +1918,3 @@ void cps2_objram_latch(void)
 	cps2_set_sprite_priorities();
 	memcpy(cps2_buffered_obj, cps2_objbase(), cps2_obj_size);
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,7 @@
-#pragma code_seg("C146")
-#pragma bss_seg("B146")
-#pragma data_seg("D146")
-#pragma const_seg("K146")
+#pragma code_seg("C147")
+#pragma bss_seg("B147")
+#pragma data_seg("D147")
+#pragma const_seg("K147")
 /***************************************************************************
 
 Dig Dug

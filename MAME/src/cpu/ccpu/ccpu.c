@@ -2373,7 +2373,3 @@ void cGetContext(CONTEXTCCPU *c)
 	c -> eRegP = register_P;
 	c -> eCState = state;
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,7 @@
-#pragma code_seg("C234")
-#pragma bss_seg("B234")
-#pragma data_seg("D234")
-#pragma const_seg("K234")
+#pragma code_seg("C235")
+#pragma bss_seg("B235")
+#pragma data_seg("D235")
+#pragma const_seg("K235")
 /* Hanaroku */
 
 /*

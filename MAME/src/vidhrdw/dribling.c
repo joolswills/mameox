@@ -1,7 +1,7 @@
-#pragma code_seg("C157")
-#pragma bss_seg("B157")
-#pragma data_seg("D157")
-#pragma const_seg("K157")
+#pragma code_seg("C159")
+#pragma bss_seg("B159")
+#pragma data_seg("D159")
+#pragma const_seg("K159")
 /***************************************************************************
 
 	Model Racing Dribbling hardware

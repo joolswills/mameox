@@ -1018,7 +1018,3 @@ int dsp32c_pio_r(int cpunum, int reg)
 	cpuintrf_pop_context();
 	return (result >> shift) & ~mask;
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

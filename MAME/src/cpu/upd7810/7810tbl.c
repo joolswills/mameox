@@ -3515,7 +3515,3 @@ static struct opcode_s opXX_7807[256] =
 	{JR,			1,10,10,L0|L1}	/* ff: 1111 1111								*/
 };
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,7 @@
-#pragma code_seg("C258")
-#pragma bss_seg("B258")
-#pragma data_seg("D258")
-#pragma const_seg("K258")
+#pragma code_seg("C259")
+#pragma bss_seg("B259")
+#pragma data_seg("D259")
+#pragma const_seg("K259")
 /***************************************************************************
 
 Juno First :  memory map same as tutankham with some address changes

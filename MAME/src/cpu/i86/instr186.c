@@ -179,7 +179,3 @@ static void PREFIX186(_leave)(void)    /* Opcode 0xc9 */
 	I.regs.w[SP]=I.regs.w[BP];
 	POP(I.regs.w[BP]);
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

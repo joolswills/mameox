@@ -1,7 +1,7 @@
-#pragma code_seg("C100")
-#pragma bss_seg("B100")
-#pragma data_seg("D100")
-#pragma const_seg("K100")
+#pragma code_seg("C102")
+#pragma bss_seg("B102")
+#pragma data_seg("D102")
+#pragma const_seg("K102")
 /***************************************************************************
 
 Chequered Flag / Checkered Flag (GX717) (c) Konami 1988

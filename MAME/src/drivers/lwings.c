@@ -1,7 +1,7 @@
-#pragma code_seg("C286")
-#pragma bss_seg("B286")
-#pragma data_seg("D286")
-#pragma const_seg("K286")
+#pragma code_seg("C287")
+#pragma bss_seg("B287")
+#pragma data_seg("D287")
+#pragma const_seg("K287")
 /***************************************************************************
 
   Legendary Wings

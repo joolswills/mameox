@@ -296,7 +296,3 @@ int DasmZ8000(char *buff, int pc)
 	return new_pc - pc;
 }
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

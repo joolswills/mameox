@@ -1,7 +1,7 @@
-#pragma code_seg("C152")
-#pragma bss_seg("B152")
-#pragma data_seg("D152")
-#pragma const_seg("K152")
+#pragma code_seg("C154")
+#pragma bss_seg("B154")
+#pragma data_seg("D154")
+#pragma const_seg("K154")
 /***************************************************************************
 
 	Atari Dominos hardware

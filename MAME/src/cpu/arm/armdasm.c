@@ -352,7 +352,3 @@ void arm_disasm( char *pBuf, data32_t pc, data32_t opcode )
 		pBuf += sprintf( pBuf, "Undefined" );
 	}
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

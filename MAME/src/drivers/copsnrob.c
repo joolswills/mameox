@@ -1,7 +1,7 @@
-#pragma code_seg("C118")
-#pragma bss_seg("B118")
-#pragma data_seg("D118")
-#pragma const_seg("K118")
+#pragma code_seg("C120")
+#pragma bss_seg("B120")
+#pragma data_seg("D120")
+#pragma const_seg("K120")
 /***************************************************************************
 
 	Atari Cops'n Robbers hardware

@@ -1,7 +1,7 @@
-#pragma code_seg("C97")
-#pragma bss_seg("B97")
-#pragma data_seg("D97")
-#pragma const_seg("K97")
+#pragma code_seg("C98")
+#pragma bss_seg("B98")
+#pragma data_seg("D98")
+#pragma const_seg("K98")
 /***************************************************************************
 
 Championship Baseball

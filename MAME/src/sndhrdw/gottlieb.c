@@ -1,7 +1,3 @@
-#pragma code_seg("C218")
-#pragma bss_seg("B218")
-#pragma data_seg("D218")
-#pragma const_seg("K218")
 #include "driver.h"
 #include "cpu/m6502/m6502.h"
 
@@ -350,7 +346,3 @@ WRITE16_HANDLER( gottlieb_sh_word_w )
 		gottlieb_sh_w(offset, data);
 }
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,7 @@
-#pragma code_seg("C150")
-#pragma bss_seg("B150")
-#pragma data_seg("D150")
-#pragma const_seg("K150")
+#pragma code_seg("C152")
+#pragma bss_seg("B152")
+#pragma data_seg("D152")
+#pragma const_seg("K152")
 /***************************************************************************
 
 Mr. Do's Castle memory map (preliminary)

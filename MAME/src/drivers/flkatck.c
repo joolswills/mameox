@@ -1,7 +1,7 @@
-#pragma code_seg("C183")
-#pragma bss_seg("B183")
-#pragma data_seg("D183")
-#pragma const_seg("K183")
+#pragma code_seg("C184")
+#pragma bss_seg("B184")
+#pragma data_seg("D184")
+#pragma const_seg("K184")
 /***************************************************************************
 
 Flak Attack/MX5000 (Konami GX669)

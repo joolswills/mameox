@@ -1,7 +1,7 @@
-#pragma code_seg("C638")
-#pragma bss_seg("B638")
-#pragma data_seg("D638")
-#pragma const_seg("K638")
+#pragma code_seg("C101")
+#pragma bss_seg("B101")
+#pragma data_seg("D101")
+#pragma const_seg("K101")
 /* China Dragon / Dragon World */
 
 #include "driver.h"

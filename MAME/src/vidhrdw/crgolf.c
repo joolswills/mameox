@@ -1,7 +1,7 @@
-#pragma code_seg("C123")
-#pragma bss_seg("B123")
-#pragma data_seg("D123")
-#pragma const_seg("K123")
+#pragma code_seg("C124")
+#pragma bss_seg("B124")
+#pragma data_seg("D124")
+#pragma const_seg("K124")
 /***************************************************************************
 
 	Kitco Crowns Golf hardware

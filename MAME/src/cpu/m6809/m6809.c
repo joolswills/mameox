@@ -1251,7 +1251,3 @@ INLINE void fetch_effective_address( void )
 	case 0xff: IMMWORD(ea); 						EAD=RM16(EAD);	m6809_ICount-=5;   break;
 	}
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,7 @@
-#pragma code_seg("C236")
-#pragma bss_seg("B236")
-#pragma data_seg("D236")
-#pragma const_seg("K236")
+#pragma code_seg("C237")
+#pragma bss_seg("B237")
+#pragma data_seg("D237")
+#pragma const_seg("K237")
 /***************************************************************************
 
 	Haunted Castle

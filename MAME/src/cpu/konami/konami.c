@@ -706,7 +706,3 @@ int konami_execute(int cycles)
 	return cycles - konami_ICount;
 }
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,7 @@
-#pragma code_seg("C276")
-#pragma bss_seg("B276")
-#pragma data_seg("D276")
-#pragma const_seg("K276")
+#pragma code_seg("C277")
+#pragma bss_seg("B277")
+#pragma data_seg("D277")
+#pragma const_seg("K277")
 /***************************************************************************
 
 	Legionnaire / Heated Barrel video hardware (derived from D-Con)

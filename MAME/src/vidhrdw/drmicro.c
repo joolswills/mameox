@@ -1,7 +1,7 @@
-#pragma code_seg("C158")
-#pragma bss_seg("B158")
-#pragma data_seg("D158")
-#pragma const_seg("K158")
+#pragma code_seg("C160")
+#pragma bss_seg("B160")
+#pragma data_seg("D160")
+#pragma const_seg("K160")
 /*******************************************************************************
 
 Dr. Micro (c) 1983 Sanritsu

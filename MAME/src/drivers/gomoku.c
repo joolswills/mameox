@@ -1,7 +1,7 @@
-#pragma code_seg("C216")
-#pragma bss_seg("B216")
-#pragma data_seg("D216")
-#pragma const_seg("K216")
+#pragma code_seg("C217")
+#pragma bss_seg("B217")
+#pragma data_seg("D217")
+#pragma const_seg("K217")
 /******************************************************************************
 
 	Gomoku Narabe Renju

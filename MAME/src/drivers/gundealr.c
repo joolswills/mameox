@@ -1,7 +1,7 @@
-#pragma code_seg("C228")
-#pragma bss_seg("B228")
-#pragma data_seg("D228")
-#pragma const_seg("K228")
+#pragma code_seg("C230")
+#pragma bss_seg("B230")
+#pragma data_seg("D230")
+#pragma const_seg("K230")
 /***************************************************************************
 
 Gun Dealer memory map

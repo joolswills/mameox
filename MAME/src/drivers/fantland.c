@@ -1,7 +1,7 @@
-#pragma code_seg("C639")
-#pragma bss_seg("B639")
-#pragma data_seg("D639")
-#pragma const_seg("K639")
+#pragma code_seg("C175")
+#pragma bss_seg("B175")
+#pragma data_seg("D175")
+#pragma const_seg("K175")
 /***************************************************************************
 
 					  -= Fantasy Land / Galaxy Gunners =-

@@ -1,7 +1,7 @@
-#pragma code_seg("C156")
-#pragma bss_seg("B156")
-#pragma data_seg("D156")
-#pragma const_seg("K156")
+#pragma code_seg("C158")
+#pragma bss_seg("B158")
+#pragma data_seg("D158")
+#pragma const_seg("K158")
 // remaining gfx glitches
 
 // layer priority register not fully understood

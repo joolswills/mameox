@@ -1,7 +1,7 @@
-#pragma code_seg("C138")
-#pragma bss_seg("B138")
-#pragma data_seg("D138")
-#pragma const_seg("K138")
+#pragma code_seg("C139")
+#pragma bss_seg("B139")
+#pragma data_seg("D139")
+#pragma const_seg("K139")
 /***************************************************************************
 
 Double Dribble(GX690) (c) Konami 1986

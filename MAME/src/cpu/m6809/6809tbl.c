@@ -318,7 +318,3 @@ static void (*m6809_main[0x100])(void) = {
 	eorb_ex,adcb_ex,orb_ex, addb_ex,ldd_ex, std_ex, ldu_ex, stu_ex
 };
 #endif
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

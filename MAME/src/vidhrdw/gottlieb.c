@@ -1,7 +1,3 @@
-#pragma code_seg("C218")
-#pragma bss_seg("B218")
-#pragma data_seg("D218")
-#pragma const_seg("K218")
 /***************************************************************************
 
   vidhrdw.c
@@ -244,7 +240,3 @@ VIDEO_UPDATE( gottlieb )
 	if (background_priority)
 		copybitmap(bitmap,tmpbitmap,0,0,0,0,&Machine->visible_area,TRANSPARENCY_COLOR,0);
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,7 @@
-#pragma code_seg("C190")
-#pragma bss_seg("B190")
-#pragma data_seg("D190")
-#pragma const_seg("K190")
+#pragma code_seg("C191")
+#pragma bss_seg("B191")
+#pragma data_seg("D191")
+#pragma const_seg("K191")
 /******************************************************************************
 
 	Video Hardware for Video System Mahjong series.

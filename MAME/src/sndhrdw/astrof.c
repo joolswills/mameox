@@ -2,7 +2,6 @@
 #pragma bss_seg("B32")
 #pragma data_seg("D32")
 #pragma const_seg("K32")
-
 #include "driver.h"
 
 /* Make sure that the sample name definitions in drivers/astrof.c matches these */

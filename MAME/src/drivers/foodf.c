@@ -1,7 +1,7 @@
-#pragma code_seg("C187")
-#pragma bss_seg("B187")
-#pragma data_seg("D187")
-#pragma const_seg("K187")
+#pragma code_seg("C188")
+#pragma bss_seg("B188")
+#pragma data_seg("D188")
+#pragma const_seg("K188")
 /***************************************************************************
 
 	Atari Food Fight hardware

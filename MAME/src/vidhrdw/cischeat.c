@@ -1,7 +1,7 @@
-#pragma code_seg("C104")
-#pragma bss_seg("B104")
-#pragma data_seg("D104")
-#pragma const_seg("K104")
+#pragma code_seg("C106")
+#pragma bss_seg("B106")
+#pragma data_seg("D106")
+#pragma const_seg("K106")
 /***************************************************************************
 
 							-= Jaleco Driving Games =-

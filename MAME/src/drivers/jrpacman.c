@@ -1,7 +1,7 @@
-#pragma code_seg("C257")
-#pragma bss_seg("B257")
-#pragma data_seg("D257")
-#pragma const_seg("K257")
+#pragma code_seg("C258")
+#pragma bss_seg("B258")
+#pragma data_seg("D258")
+#pragma const_seg("K258")
 /***************************************************************************
 
 	Bally/Midway Jr. Pac-Man

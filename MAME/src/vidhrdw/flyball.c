@@ -1,7 +1,7 @@
-#pragma code_seg("C186")
-#pragma bss_seg("B186")
-#pragma data_seg("D186")
-#pragma const_seg("K186")
+#pragma code_seg("C187")
+#pragma bss_seg("B187")
+#pragma data_seg("D187")
+#pragma const_seg("K187")
 /***************************************************************************
 
 Atari Flyball video emulation

@@ -1,7 +1,7 @@
-#pragma code_seg("C102")
-#pragma bss_seg("B102")
-#pragma data_seg("D102")
-#pragma const_seg("K102")
+#pragma code_seg("C104")
+#pragma bss_seg("B104")
+#pragma data_seg("D104")
+#pragma const_seg("K104")
 /***************************************************************************
 
 Circus memory map

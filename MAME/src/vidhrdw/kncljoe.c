@@ -1,7 +1,7 @@
-#pragma code_seg("C267")
-#pragma bss_seg("B267")
-#pragma data_seg("D267")
-#pragma const_seg("K267")
+#pragma code_seg("C268")
+#pragma bss_seg("B268")
+#pragma data_seg("D268")
+#pragma const_seg("K268")
 /***************************************************************************
 
 Knuckle Joe - (c) 1985 Taito Corporation

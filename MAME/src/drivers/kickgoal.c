@@ -1,7 +1,7 @@
-#pragma code_seg("C263")
-#pragma bss_seg("B263")
-#pragma data_seg("D263")
-#pragma const_seg("K263")
+#pragma code_seg("C264")
+#pragma bss_seg("B264")
+#pragma data_seg("D264")
+#pragma const_seg("K264")
 /* Driver Info
 
 Kick Goal (c)1995 TCH

@@ -1,7 +1,7 @@
-#pragma code_seg("C196")
-#pragma bss_seg("B196")
-#pragma data_seg("D196")
-#pragma const_seg("K196")
+#pragma code_seg("C197")
+#pragma bss_seg("B197")
+#pragma data_seg("D197")
+#pragma const_seg("K197")
 /***************************************************************************
 
   Gaelco Type CG-1V/GAE1 Video Hardware

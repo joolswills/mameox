@@ -1,7 +1,7 @@
-#pragma code_seg("C99")
-#pragma bss_seg("B99")
-#pragma data_seg("D99")
-#pragma const_seg("K99")
+#pragma code_seg("C100")
+#pragma bss_seg("B100")
+#pragma data_seg("D100")
+#pragma const_seg("K100")
 /*
 China Gate.
 By Paul Hampson from First Principles

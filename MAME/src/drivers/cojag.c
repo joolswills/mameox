@@ -1,7 +1,7 @@
-#pragma code_seg("C111")
-#pragma bss_seg("B111")
-#pragma data_seg("D111")
-#pragma const_seg("K111")
+#pragma code_seg("C113")
+#pragma bss_seg("B113")
+#pragma data_seg("D113")
+#pragma const_seg("K113")
 /***************************************************************************
 
 	Atari CoJag hardware

@@ -1,7 +1,7 @@
-#pragma code_seg("C179")
-#pragma bss_seg("B179")
-#pragma data_seg("D179")
-#pragma const_seg("K179")
+#pragma code_seg("C180")
+#pragma bss_seg("B180")
+#pragma data_seg("D180")
+#pragma const_seg("K180")
 /***************************************************************************
 
 Find Out    (c) 1987

@@ -398,7 +398,3 @@ subb_ex,sbcb_ex,cmpb_ex,illegal,andb_ex,ldb_ex, bitb_ex,stb_ex,
 eorb_ex,orb_ex, adcb_ex,addb_ex,addx_ex,ldx_ex, illegal,stx_ex
 };
 #endif
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,7 @@
-#pragma code_seg("C112")
-#pragma bss_seg("B112")
-#pragma data_seg("D112")
-#pragma const_seg("K112")
+#pragma code_seg("C114")
+#pragma bss_seg("B114")
+#pragma data_seg("D114")
+#pragma const_seg("K114")
 /***************************************************************************
 
 "Combat School" (also known as "Boot Camp") - (Konami GX611)

@@ -1,7 +1,7 @@
-#pragma code_seg("C159")
-#pragma bss_seg("B159")
-#pragma data_seg("D159")
-#pragma const_seg("K159")
+#pragma code_seg("C161")
+#pragma bss_seg("B161")
+#pragma data_seg("D161")
+#pragma const_seg("K161")
 /***************************************************************************
 
 Some Dynax games using the second version of their blitter

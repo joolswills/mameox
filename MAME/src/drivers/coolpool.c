@@ -1,7 +1,7 @@
-#pragma code_seg("C116")
-#pragma bss_seg("B116")
-#pragma data_seg("D116")
-#pragma const_seg("K116")
+#pragma code_seg("C118")
+#pragma bss_seg("B118")
+#pragma data_seg("D118")
+#pragma const_seg("K118")
 /***************************************************************************
 
 AmeriDarts      (c) 1989 Ameri Corporation

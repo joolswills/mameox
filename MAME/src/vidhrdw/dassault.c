@@ -1,7 +1,7 @@
-#pragma code_seg("C131")
-#pragma bss_seg("B131")
-#pragma data_seg("D131")
-#pragma const_seg("K131")
+#pragma code_seg("C132")
+#pragma bss_seg("B132")
+#pragma data_seg("D132")
+#pragma const_seg("K132")
 /***************************************************************************
 
    Desert Assault Video emulation - Bryan McPhail, mish@tendril.co.uk

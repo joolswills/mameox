@@ -562,7 +562,3 @@ unsigned Dasm8085(char *buff, unsigned pc)
 	return pc - PC;
 }
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

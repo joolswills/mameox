@@ -1,7 +1,7 @@
-#pragma code_seg("C164")
-#pragma bss_seg("B164")
-#pragma data_seg("D164")
-#pragma const_seg("K164")
+#pragma code_seg("C166")
+#pragma bss_seg("B166")
+#pragma data_seg("D166")
+#pragma const_seg("K166")
 /***************************************************************************
 
 						  -= ESD 16 Bit Games =-

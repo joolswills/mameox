@@ -1,7 +1,7 @@
-#pragma code_seg("C105")
-#pragma bss_seg("B105")
-#pragma data_seg("D105")
-#pragma const_seg("K105")
+#pragma code_seg("C107")
+#pragma bss_seg("B107")
+#pragma data_seg("D107")
+#pragma const_seg("K107")
 /***************************************************************************
 
 

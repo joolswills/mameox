@@ -1,7 +1,7 @@
-#pragma code_seg("C119")
-#pragma bss_seg("B119")
-#pragma data_seg("D119")
-#pragma const_seg("K119")
+#pragma code_seg("C121")
+#pragma bss_seg("B121")
+#pragma data_seg("D121")
+#pragma const_seg("K121")
 /***************************************************************************
 
 Universal board numbers (found on the schematics)

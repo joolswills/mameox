@@ -1,7 +1,7 @@
-#pragma code_seg("C135")
-#pragma bss_seg("B135")
-#pragma data_seg("D135")
-#pragma const_seg("K135")
+#pragma code_seg("C136")
+#pragma bss_seg("B136")
+#pragma data_seg("D136")
+#pragma const_seg("K136")
 /***************************************************************************
 
 Some Dynax/Nakanihon games using the third version of their blitter

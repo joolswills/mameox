@@ -1,7 +1,7 @@
-#pragma code_seg("C275")
-#pragma bss_seg("B275")
-#pragma data_seg("D275")
-#pragma const_seg("K275")
+#pragma code_seg("C276")
+#pragma bss_seg("B276")
+#pragma data_seg("D276")
+#pragma const_seg("K276")
 /*************************************************************/
 /*                                                           */
 /* Lazer Command video handler                               */

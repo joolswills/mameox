@@ -467,7 +467,3 @@ static opcode_func cineops[4][256] =
 	}
 };
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

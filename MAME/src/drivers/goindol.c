@@ -1,7 +1,7 @@
-#pragma code_seg("C215")
-#pragma bss_seg("B215")
-#pragma data_seg("D215")
-#pragma const_seg("K215")
+#pragma code_seg("C216")
+#pragma bss_seg("B216")
+#pragma data_seg("D216")
+#pragma const_seg("K216")
 /***************************************************************************
   GOINDOL
 

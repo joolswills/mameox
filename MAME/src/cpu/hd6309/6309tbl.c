@@ -816,7 +816,3 @@ static void (*hd6309_page11[0x100])(void) = {
 };
 
 #endif /* BIG_SWITCH */
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

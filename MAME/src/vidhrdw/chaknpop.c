@@ -1,7 +1,7 @@
-#pragma code_seg("C637")
-#pragma bss_seg("B637")
-#pragma data_seg("D637")
-#pragma const_seg("K637")
+#pragma code_seg("C97")
+#pragma bss_seg("B97")
+#pragma data_seg("D97")
+#pragma const_seg("K97")
 /*
  *	Chack'n Pop (C) 1983 TAITO Corp.
  *	emulate video hardware

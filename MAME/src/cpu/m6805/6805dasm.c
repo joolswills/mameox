@@ -249,7 +249,3 @@ unsigned Dasm6805 (char *buf, unsigned pc)
 }
 
 #endif
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,7 @@
-#pragma code_seg("C134")
-#pragma bss_seg("B134")
-#pragma data_seg("D134")
-#pragma const_seg("K134")
+#pragma code_seg("C135")
+#pragma bss_seg("B135")
+#pragma data_seg("D135")
+#pragma const_seg("K135")
 /***************************************************************************
 
 D-Day

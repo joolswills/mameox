@@ -349,7 +349,3 @@ unsigned Dasm32010(char *str, unsigned pc)
 	}
 	return cnt;
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

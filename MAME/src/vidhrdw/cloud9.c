@@ -1,7 +1,7 @@
-#pragma code_seg("C108")
-#pragma bss_seg("B108")
-#pragma data_seg("D108")
-#pragma const_seg("K108")
+#pragma code_seg("C110")
+#pragma bss_seg("B110")
+#pragma data_seg("D110")
+#pragma const_seg("K110")
 /***************************************************************************
 
 	Atari Cloud 9 (prototype) hardware

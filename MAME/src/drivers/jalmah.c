@@ -1,7 +1,7 @@
-#pragma code_seg("C659")
-#pragma bss_seg("B659")
-#pragma data_seg("D659")
-#pragma const_seg("K659")
+#pragma code_seg("C256")
+#pragma bss_seg("B256")
+#pragma data_seg("D256")
+#pragma const_seg("K256")
 /* Jaleco Mahjong Games */
 /* Board:	MJ-8956 */
 

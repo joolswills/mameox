@@ -1,7 +1,7 @@
-#pragma code_seg("C130")
-#pragma bss_seg("B130")
-#pragma data_seg("D130")
-#pragma const_seg("K130")
+#pragma code_seg("C131")
+#pragma bss_seg("B131")
+#pragma data_seg("D131")
+#pragma const_seg("K131")
 /***************************************************************************
 
 	Dark Seal (Rev 3)    (c) 1990 Data East Corporation (World version)

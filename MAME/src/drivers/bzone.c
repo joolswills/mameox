@@ -1,7 +1,3 @@
-#pragma code_seg("C84")
-#pragma bss_seg("B84")
-#pragma data_seg("D84")
-#pragma const_seg("K84")
 /***************************************************************************
 
 	Atari Battlezone hardware
@@ -917,7 +913,3 @@ GAME( 1980, bzone2,   bzone, bzone,    bzone,    bzone,    ROT0, "Atari", "Battl
 GAMEX(1980, bzonec,   bzone, bzone,    bzone,    bzone,    ROT0, "Atari", "Battle Zone (cocktail)", GAME_NO_COCKTAIL )
 GAME( 1980, bradley,  0,     bradley,  bradley,  bradley,  ROT0, "Atari", "Bradley Trainer" )
 GAME( 1980, redbaron, 0,     redbaron, redbaron, redbaron, ROT0, "Atari", "Red Baron" )
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

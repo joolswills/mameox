@@ -1,7 +1,7 @@
-#pragma code_seg("C195")
-#pragma bss_seg("B195")
-#pragma data_seg("D195")
-#pragma const_seg("K195")
+#pragma code_seg("C196")
+#pragma bss_seg("B196")
+#pragma data_seg("D196")
+#pragma const_seg("K196")
 /***************************************************************************
 
   Gaelco Type 1 Video Hardware

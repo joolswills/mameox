@@ -1,7 +1,7 @@
-#pragma code_seg("C239")
-#pragma bss_seg("B239")
-#pragma data_seg("D239")
-#pragma const_seg("K239")
+#pragma code_seg("C240")
+#pragma bss_seg("B240")
+#pragma data_seg("D240")
+#pragma const_seg("K240")
 /****************************************************************************
 
 Higemaru

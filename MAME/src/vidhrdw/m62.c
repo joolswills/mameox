@@ -1,7 +1,7 @@
-#pragma code_seg("C288")
-#pragma bss_seg("B288")
-#pragma data_seg("D288")
-#pragma const_seg("K288")
+#pragma code_seg("C289")
+#pragma bss_seg("B289")
+#pragma data_seg("D289")
+#pragma const_seg("K289")
 /***************************************************************************
 
 Video Hardware for Irem Games:

@@ -1,7 +1,7 @@
-#pragma code_seg("C182")
-#pragma bss_seg("B182")
-#pragma data_seg("D182")
-#pragma const_seg("K182")
+#pragma code_seg("C183")
+#pragma bss_seg("B183")
+#pragma data_seg("D183")
+#pragma const_seg("K183")
 /* Fit of Fighting / The History of Martial Arts / 'BB' */
 
 /* NIX or Novatecnia (both spanish) may have produced these

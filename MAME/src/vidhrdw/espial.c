@@ -1,7 +1,3 @@
-#pragma code_seg("C165")
-#pragma bss_seg("B165")
-#pragma data_seg("D165")
-#pragma const_seg("K165")
 /***************************************************************************
 
   vidhrdw.c
@@ -262,7 +258,3 @@ VIDEO_UPDATE( espial )
 
 	draw_sprites(bitmap, cliprect);
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -500,7 +500,3 @@ WRITE_HANDLER( H6280_timer_w )
 }
 
 /*****************************************************************************/
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

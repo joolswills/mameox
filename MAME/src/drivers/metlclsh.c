@@ -1,7 +1,7 @@
-#pragma code_seg("C644")
-#pragma bss_seg("B644")
-#pragma data_seg("D644")
-#pragma const_seg("K644")
+#pragma code_seg("C312")
+#pragma bss_seg("B312")
+#pragma data_seg("D312")
+#pragma const_seg("K312")
 /***************************************************************************
 
 							  -= Metal Clash =-

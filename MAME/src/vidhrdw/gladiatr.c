@@ -2,8 +2,6 @@
 #pragma bss_seg("B213")
 #pragma data_seg("D213")
 #pragma const_seg("K213")
-
-
 /***************************************************************************
 	Video Hardware description for Taito Gladiator
 

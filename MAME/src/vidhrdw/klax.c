@@ -1,7 +1,7 @@
-#pragma code_seg("C266")
-#pragma bss_seg("B266")
-#pragma data_seg("D266")
-#pragma const_seg("K266")
+#pragma code_seg("C267")
+#pragma bss_seg("B267")
+#pragma data_seg("D267")
+#pragma const_seg("K267")
 /***************************************************************************
 
 	Atari Klax hardware

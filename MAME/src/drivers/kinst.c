@@ -1,7 +1,7 @@
-#pragma code_seg("C265")
-#pragma bss_seg("B265")
-#pragma data_seg("D265")
-#pragma const_seg("K265")
+#pragma code_seg("C266")
+#pragma bss_seg("B266")
+#pragma data_seg("D266")
+#pragma const_seg("K266")
 /***************************************************************************
 
 	Killer Instinct hardware

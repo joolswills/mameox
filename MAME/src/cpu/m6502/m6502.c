@@ -1037,7 +1037,3 @@ unsigned deco16_dasm(char *buffer, unsigned pc)
 
 #endif
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

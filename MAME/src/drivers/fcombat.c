@@ -1,7 +1,7 @@
-#pragma code_seg("C177")
-#pragma bss_seg("B177")
-#pragma data_seg("D177")
-#pragma const_seg("K177")
+#pragma code_seg("C178")
+#pragma bss_seg("B178")
+#pragma data_seg("D178")
+#pragma const_seg("K178")
 /* Field Combat (c)1985 Jaleco */
 
 /* todo:

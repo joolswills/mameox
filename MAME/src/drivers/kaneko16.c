@@ -1,7 +1,7 @@
-#pragma code_seg("C259")
-#pragma bss_seg("B259")
-#pragma data_seg("D259")
-#pragma const_seg("K259")
+#pragma code_seg("C260")
+#pragma bss_seg("B260")
+#pragma data_seg("D260")
+#pragma const_seg("K260")
 /***************************************************************************
 
 							-= Kaneko 16 Bit Games =-

@@ -1,7 +1,7 @@
-#pragma code_seg("C665")
-#pragma bss_seg("B665")
-#pragma data_seg("D665")
-#pragma const_seg("K665")
+#pragma code_seg("C149")
+#pragma bss_seg("B149")
+#pragma data_seg("D149")
+#pragma const_seg("K149")
 /**
  * @file vidhrdw/djboy.c
  *

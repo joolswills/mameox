@@ -1,7 +1,7 @@
-#pragma code_seg("C153")
-#pragma bss_seg("B153")
-#pragma data_seg("D153")
-#pragma const_seg("K153")
+#pragma code_seg("C155")
+#pragma bss_seg("B155")
+#pragma data_seg("D155")
+#pragma const_seg("K155")
 /***************************************************************************
 
 Dooyong games

@@ -1,7 +1,7 @@
-#pragma code_seg("C139")
-#pragma bss_seg("B139")
-#pragma data_seg("D139")
-#pragma const_seg("K139")
+#pragma code_seg("C140")
+#pragma bss_seg("B140")
+#pragma data_seg("D140")
+#pragma const_seg("K140")
 #include "vidhrdw/generic.h"
 
 static struct tilemap *pf3_layer,*pf2_layer,*pf1_layer,*text_layer;

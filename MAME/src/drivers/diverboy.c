@@ -1,7 +1,7 @@
-#pragma code_seg("C147")
-#pragma bss_seg("B147")
-#pragma data_seg("D147")
-#pragma const_seg("K147")
+#pragma code_seg("C148")
+#pragma bss_seg("B148")
+#pragma data_seg("D148")
+#pragma const_seg("K148")
 /* Diver Boy
  (c)1992 Device Electronics
 

@@ -1,7 +1,7 @@
-#pragma code_seg("C114")
-#pragma bss_seg("B114")
-#pragma data_seg("D114")
-#pragma const_seg("K114")
+#pragma code_seg("C116")
+#pragma bss_seg("B116")
+#pragma data_seg("D116")
+#pragma const_seg("K116")
 /***************************************************************************
 
 Congo Bongo memory map (preliminary)

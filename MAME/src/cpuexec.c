@@ -13,6 +13,8 @@
 #include "mamedbg.h"
 #include "hiscore.h"
 
+#include "Sections.h"
+
 #if (HAS_M68000 || HAS_M68010 || HAS_M68020 || HAS_M68EC020)
 #include "cpu/m68000/m68000.h"
 #endif
@@ -271,6 +273,21 @@ int cpu_init(void)
 			return 1;
 	}
 	
+    // Now we can release the cpu sections that we are not going to use [EBA]
+/*
+  UnloadCPUDataSections();
+  UnloadCPUNonDataSections();
+	for (cpunum = 0; cpunum < MAX_CPU; cpunum++)
+  {
+		int cputype = Machine->drv->cpu[cpunum].cpu_type;		
+		if (cputype == CPU_DUMMY)
+			break;
+
+      // Load the section for the requested CPU
+    LoadCPUSectionByID( cputype );
+  }
+*/  
+
 	/* compute the perfect interleave factor */
 	compute_perfect_interleave();
 

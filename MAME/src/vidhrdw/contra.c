@@ -1,7 +1,7 @@
-#pragma code_seg("C115")
-#pragma bss_seg("B115")
-#pragma data_seg("D115")
-#pragma const_seg("K115")
+#pragma code_seg("C117")
+#pragma bss_seg("B117")
+#pragma data_seg("D117")
+#pragma const_seg("K117")
 /***************************************************************************
 
   gryzor: vidhrdw.c

@@ -525,7 +525,3 @@ unsigned i286_dasm(char *buffer, unsigned pc)
 
 void i286_init(void){ return; }
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

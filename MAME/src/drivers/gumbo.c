@@ -1,7 +1,7 @@
-#pragma code_seg("C226")
-#pragma bss_seg("B226")
-#pragma data_seg("D226")
-#pragma const_seg("K226")
+#pragma code_seg("C228")
+#pragma bss_seg("B228")
+#pragma data_seg("D228")
+#pragma const_seg("K228")
 /*
 
 Gumbo (c)1994 Min Corp (Main Corp written on PCB)

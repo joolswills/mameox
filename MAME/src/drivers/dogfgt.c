@@ -1,7 +1,7 @@
-#pragma code_seg("C151")
-#pragma bss_seg("B151")
-#pragma data_seg("D151")
-#pragma const_seg("K151")
+#pragma code_seg("C153")
+#pragma bss_seg("B153")
+#pragma data_seg("D153")
+#pragma const_seg("K153")
 /***************************************************************************
 
 Dog-Fight / Batten O'hara no Sucha-Raka Kuuchuu Sen

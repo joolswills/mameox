@@ -1,7 +1,7 @@
-#pragma code_seg("C133")
-#pragma bss_seg("B133")
-#pragma data_seg("D133")
-#pragma const_seg("K133")
+#pragma code_seg("C134")
+#pragma bss_seg("B134")
+#pragma data_seg("D134")
+#pragma const_seg("K134")
 /***************************************************************************
 
 	D-Con video hardware.

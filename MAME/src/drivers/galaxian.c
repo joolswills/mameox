@@ -1,7 +1,3 @@
-#pragma code_seg("C199")
-#pragma bss_seg("B199")
-#pragma data_seg("D199")
-#pragma const_seg("K199")
 /***************************************************************************
 
  Galaxian/Moon Cresta hardware
@@ -4925,7 +4921,3 @@ GAMEX(1982, dkongjrm, dkongjr,  dkongjrm, dkongjrm, 0,        ROT90,  "bootleg",
 GAME( 1981, froggrmc, frogger,  froggrmc, froggrmc, froggers, ROT90,  "bootleg?", "Frogger (Moon Cresta hardware)" )
 GAME( 1981, rockclim, 0,        rockclim, rockclim, 0,		  ROT180, "Taito", "Rock Climber" )
 GAME( 1983, ozon1,    0,		ozon1,    ozon1,	0,		  ROT90,  "Proma", "Ozon I" )
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

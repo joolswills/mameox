@@ -1169,7 +1169,3 @@ static void (*opcode_table[65536 >> 4])(void) =
 	unimpl,		unimpl,		unimpl,		unimpl,		unimpl,		unimpl,		unimpl,		unimpl,
 	unimpl,		unimpl,		unimpl,		unimpl,		unimpl,		unimpl,		unimpl,		unimpl
 };
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

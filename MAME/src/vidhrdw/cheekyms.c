@@ -1,7 +1,7 @@
-#pragma code_seg("C98")
-#pragma bss_seg("B98")
-#pragma data_seg("D98")
-#pragma const_seg("K98")
+#pragma code_seg("C99")
+#pragma bss_seg("B99")
+#pragma data_seg("D99")
+#pragma const_seg("K99")
 /*************************************************************************
  Universal Cheeky Mouse Driver
  (c)Lee Taylor May 1998, All rights reserved.

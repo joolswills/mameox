@@ -1,7 +1,7 @@
-#pragma code_seg("C666")
-#pragma bss_seg("B666")
-#pragma data_seg("D666")
-#pragma const_seg("K666")
+#pragma code_seg("C214")
+#pragma bss_seg("B214")
+#pragma data_seg("D214")
+#pragma const_seg("K214")
 /***************************************************************************
 
   Glass Video Hardware

@@ -1,7 +1,7 @@
-#pragma code_seg("C142")
-#pragma bss_seg("B142")
-#pragma data_seg("D142")
-#pragma const_seg("K142")
+#pragma code_seg("C143")
+#pragma bss_seg("B143")
+#pragma data_seg("D143")
+#pragma const_seg("K143")
 /***************************************************************************
 
 	Data East 32 bit ARM based games:

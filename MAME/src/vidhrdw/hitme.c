@@ -1,8 +1,7 @@
-#pragma code_seg("C240")
-#pragma bss_seg("B240")
-#pragma data_seg("D240")
-#pragma const_seg("K240")
-
+#pragma code_seg("C241")
+#pragma bss_seg("B241")
+#pragma data_seg("D241")
+#pragma const_seg("K241")
 #include "driver.h"
 
 extern data8_t *hitme_vidram;

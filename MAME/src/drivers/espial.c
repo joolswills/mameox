@@ -1,7 +1,3 @@
-#pragma code_seg("C165")
-#pragma bss_seg("B165")
-#pragma data_seg("D165")
-#pragma const_seg("K165")
 /***************************************************************************
 
  Espial hardware games
@@ -430,7 +426,3 @@ ROM_END
 GAME( 1983, espial,  0,      espial,  espial,  0, ROT0,  "[Orca] Thunderbolt", "Espial (US?)" )
 GAME( 1983, espiale, espial, espial,  espial,  0, ROT0,  "[Orca] Thunderbolt", "Espial (Europe)" )
 GAME( 1983, netwars, 0,      netwars, netwars, 0, ROT90, "Orca (Esco Trading Co license)", "Net Wars" )
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

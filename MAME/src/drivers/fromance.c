@@ -1,7 +1,7 @@
-#pragma code_seg("C191")
-#pragma bss_seg("B191")
-#pragma data_seg("D191")
-#pragma const_seg("K191")
+#pragma code_seg("C192")
+#pragma bss_seg("B192")
+#pragma data_seg("D192")
+#pragma const_seg("K192")
 /******************************************************************************
 
 	Game Driver for Video System Mahjong series.

@@ -134,7 +134,3 @@ int main (int argc,char *argv[])
 	free (filebuf);
 	return 0;
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,7 @@
-#pragma code_seg("C194")
-#pragma bss_seg("B194")
-#pragma data_seg("D194")
-#pragma const_seg("K194")
+#pragma code_seg("C195")
+#pragma bss_seg("B195")
+#pragma data_seg("D195")
+#pragma const_seg("K195")
 /***************************************************************************
 
 						  -= Fuuki 16 Bit Games =-

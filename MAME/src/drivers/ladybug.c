@@ -1,7 +1,7 @@
-#pragma code_seg("C272")
-#pragma bss_seg("B272")
-#pragma data_seg("D272")
-#pragma const_seg("K272")
+#pragma code_seg("C273")
+#pragma bss_seg("B273")
+#pragma data_seg("D273")
+#pragma const_seg("K273")
 /***************************************************************************
 
 Lady Bug memory map (preliminary)

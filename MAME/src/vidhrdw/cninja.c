@@ -1,7 +1,7 @@
-#pragma code_seg("C110")
-#pragma bss_seg("B110")
-#pragma data_seg("D110")
-#pragma const_seg("K110")
+#pragma code_seg("C112")
+#pragma bss_seg("B112")
+#pragma data_seg("D112")
+#pragma const_seg("K112")
 /***************************************************************************
 
    Caveman Ninja Video emulation - Bryan McPhail, mish@tendril.co.uk

@@ -245,7 +245,3 @@ int Dasm9900 (char *buffer, int pc)
 
 
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

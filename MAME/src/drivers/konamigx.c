@@ -1,7 +1,7 @@
-#pragma code_seg("C268")
-#pragma bss_seg("B268")
-#pragma data_seg("D268")
-#pragma const_seg("K268")
+#pragma code_seg("C269")
+#pragma bss_seg("B269")
+#pragma data_seg("D269")
+#pragma const_seg("K269")
 #define GX_DEBUG     0
 #define GX_SKIPIDLE  1
 

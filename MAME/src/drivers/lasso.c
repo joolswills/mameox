@@ -1,7 +1,7 @@
-#pragma code_seg("C273")
-#pragma bss_seg("B273")
-#pragma data_seg("D273")
-#pragma const_seg("K273")
+#pragma code_seg("C274")
+#pragma bss_seg("B274")
+#pragma data_seg("D274")
+#pragma const_seg("K274")
 /***************************************************************************
 
  Lasso and similar hardware

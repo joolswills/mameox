@@ -1,7 +1,7 @@
-#pragma code_seg("C141")
-#pragma bss_seg("B141")
-#pragma data_seg("D141")
-#pragma const_seg("K141")
+#pragma code_seg("C142")
+#pragma bss_seg("B142")
+#pragma data_seg("D142")
+#pragma const_seg("K142")
 /***************************************************************************
 
 Cobra Command:

@@ -1,7 +1,7 @@
-#pragma code_seg("C127")
-#pragma bss_seg("B127")
-#pragma data_seg("D127")
-#pragma const_seg("K127")
+#pragma code_seg("C128")
+#pragma bss_seg("B128")
+#pragma data_seg("D128")
+#pragma const_seg("K128")
 /***************************************************************************
 
 Century CVS System

@@ -1736,7 +1736,3 @@ unsigned Dasm34020(char *buff, UINT32 pc)
 	return Dasm340x0(buff, pc, 1);
 }
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

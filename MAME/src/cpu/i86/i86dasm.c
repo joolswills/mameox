@@ -1631,7 +1631,3 @@ unsigned DasmI386(char* buffer, unsigned pc)
 
 #endif	/* MAME_DEBUG */
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

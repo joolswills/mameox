@@ -425,7 +425,3 @@ unsigned int m65ce02_dasm(char *buffer, unsigned pc)
 
 
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

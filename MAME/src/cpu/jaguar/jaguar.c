@@ -1830,7 +1830,3 @@ void jaguardsp_ctrl_w(int cpunum, offs_t offset, data32_t data, data32_t mem_mas
 	/* restore old context */
 	cpuintrf_pop_context();
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

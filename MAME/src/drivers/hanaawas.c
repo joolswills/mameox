@@ -1,7 +1,7 @@
-#pragma code_seg("C233")
-#pragma bss_seg("B233")
-#pragma data_seg("D233")
-#pragma const_seg("K233")
+#pragma code_seg("C234")
+#pragma bss_seg("B234")
+#pragma data_seg("D234")
+#pragma const_seg("K234")
 /***************************************************************************
 
   Hana Awase driver by Zsolt Vasvari

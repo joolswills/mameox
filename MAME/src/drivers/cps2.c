@@ -1,7 +1,7 @@
-#pragma code_seg("C121")
-#pragma bss_seg("B121")
-#pragma data_seg("D121")
-#pragma const_seg("K121")
+#pragma code_seg("C122")
+#pragma bss_seg("B122")
+#pragma data_seg("D122")
+#pragma const_seg("K122")
 /***************************************************************************
 
   Capcom System 2

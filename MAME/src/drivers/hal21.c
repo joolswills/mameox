@@ -1,7 +1,3 @@
-#pragma code_seg("C231")
-#pragma bss_seg("B231")
-#pragma data_seg("D231")
-#pragma const_seg("K231")
 /*
 	Hal21 (possibly bad tile gfx ROMs)
 	ASO (seems fine)
@@ -939,7 +935,3 @@ ROM_END
 GAMEX( 1985, aso,    0,     aso,   aso,   0, ROT270, "SNK", "ASO - Armored Scrum Object", GAME_IMPERFECT_SOUND )
 GAMEX( 1985, hal21,  0,     hal21, hal21, 0, ROT270, "SNK", "HAL21", GAME_IMPERFECT_COLORS | GAME_IMPERFECT_SOUND )
 GAMEX( 1985, hal21j, hal21, hal21, hal21, 0, ROT270, "SNK", "HAL21 (Japan)", GAME_IMPERFECT_COLORS | GAME_IMPERFECT_SOUND )
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

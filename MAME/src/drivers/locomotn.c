@@ -1,7 +1,7 @@
-#pragma code_seg("C283")
-#pragma bss_seg("B283")
-#pragma data_seg("D283")
-#pragma const_seg("K283")
+#pragma code_seg("C284")
+#pragma bss_seg("B284")
+#pragma data_seg("D284")
+#pragma const_seg("K284")
 /***************************************************************************
 
 Loco-Motion

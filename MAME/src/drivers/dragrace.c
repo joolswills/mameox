@@ -1,7 +1,7 @@
-#pragma code_seg("C155")
-#pragma bss_seg("B155")
-#pragma data_seg("D155")
-#pragma const_seg("K155")
+#pragma code_seg("C157")
+#pragma bss_seg("B157")
+#pragma data_seg("D157")
+#pragma const_seg("K157")
 /***************************************************************************
 
 Atari Drag Race Driver

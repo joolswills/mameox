@@ -1,7 +1,7 @@
-#pragma code_seg("C143")
-#pragma bss_seg("B143")
-#pragma data_seg("D143")
-#pragma const_seg("K143")
+#pragma code_seg("C144")
+#pragma bss_seg("B144")
+#pragma data_seg("D144")
+#pragma const_seg("K144")
 /***********************************************************************
 
 	DECO Cassette System vidhrdw

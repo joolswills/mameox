@@ -89,7 +89,3 @@ int main(int ac, char **av)
 
     return 0;
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,7 @@
-#pragma code_seg("C188")
-#pragma bss_seg("B188")
-#pragma data_seg("D188")
-#pragma const_seg("K188")
+#pragma code_seg("C189")
+#pragma bss_seg("B189")
+#pragma data_seg("D189")
+#pragma const_seg("K189")
 /* Free Kick Video Hardware */
 
 #include "driver.h"

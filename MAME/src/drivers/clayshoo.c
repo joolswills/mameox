@@ -1,7 +1,7 @@
-#pragma code_seg("C106")
-#pragma bss_seg("B106")
-#pragma data_seg("D106")
-#pragma const_seg("K106")
+#pragma code_seg("C108")
+#pragma bss_seg("B108")
+#pragma data_seg("D108")
+#pragma const_seg("K108")
 /***************************************************************************
 
 	Atari Clay Shoot hardware

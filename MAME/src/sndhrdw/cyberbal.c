@@ -1,7 +1,7 @@
-#pragma code_seg("C128")
-#pragma bss_seg("B128")
-#pragma data_seg("D128")
-#pragma const_seg("K128")
+#pragma code_seg("C129")
+#pragma bss_seg("B129")
+#pragma data_seg("D129")
+#pragma const_seg("K129")
 /***************************************************************************
 
 	Cyberball 68000 sound simulator

@@ -1,7 +1,7 @@
-#pragma code_seg("C240")
-#pragma bss_seg("B240")
-#pragma data_seg("D240")
-#pragma const_seg("K240")
+#pragma code_seg("C241")
+#pragma bss_seg("B241")
+#pragma data_seg("D241")
+#pragma const_seg("K241")
 /* Hit Me driver by the EMUL8, led by Dan Boris
 
    It doesn't work?  should the timer stuff have changed?

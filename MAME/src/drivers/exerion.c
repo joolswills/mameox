@@ -1,7 +1,7 @@
-#pragma code_seg("C168")
-#pragma bss_seg("B168")
-#pragma data_seg("D168")
-#pragma const_seg("K168")
+#pragma code_seg("C169")
+#pragma bss_seg("B169")
+#pragma data_seg("D169")
+#pragma const_seg("K169")
 /***************************************************************************
 
 	Jaleco Exerion hardware

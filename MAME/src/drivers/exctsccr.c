@@ -1,7 +1,7 @@
-#pragma code_seg("C166")
-#pragma bss_seg("B166")
-#pragma data_seg("D166")
-#pragma const_seg("K166")
+#pragma code_seg("C167")
+#pragma bss_seg("B167")
+#pragma data_seg("D167")
+#pragma const_seg("K167")
 /***************************************************************************
 
 Exciting Soccer - (c) 1983 Alpha Denshi Co.

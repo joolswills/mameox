@@ -438,7 +438,3 @@ unsigned m6509_dasm(char *buffer, unsigned pc)
 
 void m6509_init(void){ return; }
 
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

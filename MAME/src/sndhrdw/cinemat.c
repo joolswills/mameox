@@ -1,7 +1,7 @@
-#pragma code_seg("C101")
-#pragma bss_seg("B101")
-#pragma data_seg("D101")
-#pragma const_seg("K101")
+#pragma code_seg("C103")
+#pragma bss_seg("B103")
+#pragma data_seg("D103")
+#pragma const_seg("K103")
 /***************************************************************************
 
 	Cinematronics vector hardware

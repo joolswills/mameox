@@ -1,7 +1,7 @@
-#pragma code_seg("C181")
-#pragma bss_seg("B181")
-#pragma data_seg("D181")
-#pragma const_seg("K181")
+#pragma code_seg("C182")
+#pragma bss_seg("B182")
+#pragma data_seg("D182")
+#pragma const_seg("K182")
 /***************************************************************************
 
 Atari Fire Truck + Super Bug + Monte Carlo video emulation

@@ -1,7 +1,7 @@
-#pragma code_seg("C264")
-#pragma bss_seg("B264")
-#pragma data_seg("D264")
-#pragma const_seg("K264")
+#pragma code_seg("C265")
+#pragma bss_seg("B265")
+#pragma data_seg("D265")
+#pragma const_seg("K265")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 

@@ -1,7 +1,7 @@
-#pragma code_seg("C232")
-#pragma bss_seg("B232")
-#pragma data_seg("D232")
-#pragma const_seg("K232")
+#pragma code_seg("C233")
+#pragma bss_seg("B233")
+#pragma data_seg("D233")
+#pragma const_seg("K233")
 /*
 Halley's Comet, 1986 Taito
 

@@ -1,7 +1,7 @@
-#pragma code_seg("C136")
-#pragma bss_seg("B136")
-#pragma data_seg("D136")
-#pragma const_seg("K136")
+#pragma code_seg("C137")
+#pragma bss_seg("B137")
+#pragma data_seg("D137")
+#pragma const_seg("K137")
 /***************************************************************************
 
 Double Dragon     (c) 1987 Technos Japan

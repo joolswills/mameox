@@ -1,7 +1,3 @@
-#pragma code_seg("C289")
-#pragma bss_seg("B289")
-#pragma data_seg("D289")
-#pragma const_seg("K289")
 /***************************************************************************
 
 IREM "M72" sound hardware
@@ -203,7 +199,3 @@ WRITE_HANDLER( m72_sample_w )
 	DAC_signed_data_w(0,data);
 	sample_addr = (sample_addr + 1) & (memory_region_length(REGION_SOUND1) - 1);
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,7 @@
-#pragma code_seg("C162")
-#pragma bss_seg("B162")
-#pragma data_seg("D162")
-#pragma const_seg("K162")
+#pragma code_seg("C164")
+#pragma bss_seg("B164")
+#pragma data_seg("D164")
+#pragma const_seg("K164")
 /***************************************************************************
 
 	Atari Escape hardware

@@ -1375,7 +1375,3 @@ static data32_t decodeShift( data32_t insn, data32_t *pCarry)
 	logerror("%08x: Decodeshift error\n",R15);
 	return 0;
 } /* decodeShift */
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

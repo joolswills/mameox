@@ -1,7 +1,7 @@
-#pragma code_seg("C109")
-#pragma bss_seg("B109")
-#pragma data_seg("D109")
-#pragma const_seg("K109")
+#pragma code_seg("C111")
+#pragma bss_seg("B111")
+#pragma data_seg("D111")
+#pragma const_seg("K111")
 /***************************************************************************
 
 							-= Clash Road =-

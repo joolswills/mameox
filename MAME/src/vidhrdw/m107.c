@@ -1,7 +1,7 @@
-#pragma code_seg("C287")
-#pragma bss_seg("B287")
-#pragma data_seg("D287")
-#pragma const_seg("K287")
+#pragma code_seg("C288")
+#pragma bss_seg("B288")
+#pragma data_seg("D288")
+#pragma const_seg("K288")
 /****************************************************************************
 
 	Irem M107 video hardware, Bryan McPhail, mish@tendril.co.uk

@@ -1892,7 +1892,3 @@ INLINE void stx_ix( void )
 	INDEXED;
 	WM(EAD,X);
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,3 @@
-#pragma code_seg("C277")
-#pragma bss_seg("B277")
-#pragma data_seg("D277")
-#pragma const_seg("K277")
 /***************************************************************************
 
 	Cinemat/Leland driver
@@ -2552,7 +2548,3 @@ GAME( 1989, offroad,  0,       lelandi, offroad,  offroad,  ROT0,   "Leland Corp
 GAME( 1989, offroadt, 0,       lelandi, offroad,  offroadt, ROT0,   "Leland Corp.", "Ironman Stewart's Super Off-Road Track Pack" )
 GAME( 1990, pigout,   0,       lelandi, pigout,   pigout,   ROT0,   "Leland Corp.", "Pigout" )
 GAME( 1990, pigouta,  pigout,  lelandi, pigout,   pigout,   ROT0,   "Leland Corp.", "Pigout (alternate)" )
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

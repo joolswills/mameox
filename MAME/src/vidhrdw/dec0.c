@@ -1,7 +1,7 @@
-#pragma code_seg("C140")
-#pragma bss_seg("B140")
-#pragma data_seg("D140")
-#pragma const_seg("K140")
+#pragma code_seg("C141")
+#pragma bss_seg("B141")
+#pragma data_seg("D141")
+#pragma const_seg("K141")
 /***************************************************************************
 
   Dec0 Video emulation - Bryan McPhail, mish@tendril.co.uk

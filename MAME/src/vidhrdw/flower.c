@@ -1,7 +1,7 @@
-#pragma code_seg("C184")
-#pragma bss_seg("B184")
-#pragma data_seg("D184")
-#pragma const_seg("K184")
+#pragma code_seg("C185")
+#pragma bss_seg("B185")
+#pragma data_seg("D185")
+#pragma const_seg("K185")
 /* Flower Video Hardware */
 
 #include "driver.h"
