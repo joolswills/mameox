@@ -186,12 +186,14 @@ Usage:
 	     without really deleting the file. Note that there is no
 	     way, currently, of adding the file back to the list. You'd
 	     have to manually move it back to the ROMs directory
+    Y + B - Toggle Option screen
+    X - Show Help file
     Y - Hold to enter "Super Scroll" mode. In the upper left hand corner
         of the screen, a letter (or #) will appear. Using the DPAD up and 
 	down buttons, you can change the letter, skipping to the section of
 	the list starting with that letter.
-    Black - Search for ROM files, culling out clones
-    White - Search for ROM files, keeping clones
+    Black - Search for ROM files, culling out clones / keeping clones
+    White - Toggle game list (w/o rating and favorite)
 
     Left Trigger - Move the current ROM cursor up fast
     Right Trigger - Move the current ROM cursor down fast
