@@ -56,8 +56,8 @@ extern CGraphicsManager	  g_graphicsManager;
 extern CXBFont						g_font;
 
   // XBE Launch data
-DWORD              g_launchDataType;
-LAUNCH_DATA        g_launchData;
+static DWORD              g_launchDataType;
+static LAUNCH_DATA        g_launchData;
 
 BYTE                      *g_pResourceSysMemData = NULL;
 BYTE                      *g_pResourceVidMemData = NULL;
