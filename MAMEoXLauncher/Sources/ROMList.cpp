@@ -27,7 +27,7 @@ extern "C" {
 #define SELECTED_ITEM_COLOR			D3DCOLOR_RGBA( 255, 255, 255, 255 )
 
 	// Maximum number of items to render on the screen at once
-#define MAXPAGESIZE							18
+#define MAXPAGESIZE							28
 
 	// Timeout values for the cursor movement acceleration bands
 	// Values are measured in seconds
@@ -617,11 +617,33 @@ void CROMList::NormalModeMoveCursor( CGamepad &gp, FLOAT elapsedTime )
 }
 
 //---------------------------------------------------------------------
+//	GetHeaderLine
+//---------------------------------------------------------------------
+WCHAR *CROMList::GetHeaderLine( FLOAT width )
+{
+	static WCHAR hl[ 512 ];
+	FLOAT w, h;
+	std::string	headline;
+	m_font.GetTextExtent( L"-", &w, &h, FALSE );
+
+	for( int i = 0; i < width / w; i++ )
+		headline += '-';
+
+	mbstowcs( hl, headline.c_str(), 512 );
+
+	return( hl );
+}
+
+//---------------------------------------------------------------------
 //	Draw
 //---------------------------------------------------------------------
 void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
 {
-	WCHAR name[256];
+	WCHAR name[512];
+
+	#define X_POS		( 55 )
+	#define Y_POS		( 25 )
+	#define WIDTH		( 640 - 2 * X_POS )
 
 		// Display the error to the user
   if( opaque )  
@@ -635,22 +657,24 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
 	m_font.Begin();
 
 	swprintf( name, L"Names %s", ( m_allowClones == FALSE ) ? L"(No Clones)" : L"(Clones)   " );
-	m_font.DrawText(  70, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), name );
+	m_font.DrawText(  X_POS + 0, Y_POS + 0, D3DCOLOR_RGBA( 255, 255, 255, 255 ), name );
 	if( m_additionalinfo )
 	{
-		m_font.DrawText( 440, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Year" );
-		m_font.DrawText( 498, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Clone" );
-		m_font.DrawText(  65, 50, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"----------------------------------------------------" );
-		m_font.DrawText( 435, 50, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"--------" );
-		m_font.DrawText( 495, 50, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"------------" );
+		m_font.DrawText( X_POS + 280, Y_POS +  0, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Manufacturer" );
+		m_font.DrawText( X_POS + 410, Y_POS +  0, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Year" );
+		m_font.DrawText( X_POS + 468, Y_POS +  0, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Clone" );
+		m_font.DrawText( X_POS +   0, Y_POS + 10, D3DCOLOR_RGBA( 255, 255, 255, 255 ), GetHeaderLine( 270 ) );
+		m_font.DrawText( X_POS + 280, Y_POS + 10, D3DCOLOR_RGBA( 255, 255, 255, 255 ), GetHeaderLine( 120 ) );
+		m_font.DrawText( X_POS + 410, Y_POS + 10, D3DCOLOR_RGBA( 255, 255, 255, 255 ), GetHeaderLine(  48 ) );
+		m_font.DrawText( X_POS + 468, Y_POS + 10, D3DCOLOR_RGBA( 255, 255, 255, 255 ), GetHeaderLine(  60 ) );
 	}
 	else
-		m_font.DrawText(  65, 50, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"-------------------------------------------------------------------------" );
+		m_font.DrawText( X_POS +   0, Y_POS + 10, D3DCOLOR_RGBA( 255, 255, 255, 255 ), GetHeaderLine( WIDTH ) );
 
 		// Render the titles
 	DWORD color;
 	FLOAT xPos, xDelta;
-	FLOAT yPos = 64;
+	FLOAT yPos = 24;
 	DWORD pageSize = (CURRENTROMLIST().size() < MAXPAGESIZE ? CURRENTROMLIST().size() : MAXPAGESIZE);
 	ULONG absListIDX = (ULONG)m_gameListPageOffset;
 	if( absListIDX > (CURRENTROMLIST().size() - pageSize) )
@@ -665,28 +689,30 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
 	for( DWORD i = 0; i < pageSize; ++i )
 	{
 			// Render the selected item as bright white
-		xPos = 70;
+		xPos = 10;
 		xDelta = 0;
 		if( i == (ULONG)m_gameListCursorPosition )
 		{
 			color = SELECTED_ITEM_COLOR;
-			xDelta = 16;
+			xDelta = 10;
 		}
 		else
 			color = NORMAL_ITEM_COLOR;
 
 		mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX++ ] ].m_description, 255 );
-		m_font.DrawText( xPos + xDelta, yPos, color, name, XBFONT_TRUNCATED, ( m_additionalinfo ? 365 : 500 ) - xDelta );
+		m_font.DrawText( X_POS + xPos + xDelta, Y_POS + yPos, color, name, XBFONT_TRUNCATED, ( m_additionalinfo ? 270 : WIDTH ) - xDelta );
 		if( m_additionalinfo )
 		{
+			mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX - 1 ] ].m_manufacturer, 255 );
+			m_font.DrawText( X_POS + 280, Y_POS + yPos, color, name, XBFONT_TRUNCATED, 120 );
 			mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX - 1 ] ].m_year, 255 );
-			m_font.DrawText( 440, yPos, color, name );
+			m_font.DrawText( X_POS + 410, Y_POS + yPos, color, name, XBFONT_TRUNCATED,  48 );
 			mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX - 1 ] ].m_cloneFileName, 255 );
-			m_font.DrawText( 500, yPos, color, name );
+			m_font.DrawText( X_POS + 470, Y_POS + yPos, color, name, XBFONT_TRUNCATED,  60 );
 		}
 
 			// Inc the Y position
-		yPos += 20;
+		yPos += 14;
 	}
 
   #if defined(_PROFILER) || defined(_DEBUG)
@@ -699,9 +725,8 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
               memStatus.dwAvailPhys, 
               memStatus.dwTotalPhys );
 
-    m_font.DrawText( 320, yPos, D3DCOLOR_XRGB(100,220,220), memStr, XBFONT_CENTER_X );
+    m_font.DrawText( 320, Y_POS + yPos, D3DCOLOR_XRGB(100,220,220), memStr, XBFONT_CENTER_X );
   #endif
-
 
   if( m_superscrollMode )
   {
@@ -709,7 +734,7 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
     WCHAR displayString[2] = L"";
     mbtowc( displayString, &g_superscrollCharacterSet[m_superscrollCharacterIdx], 1 );
 		swprintf( name, L"Names %s [%s]", ( m_allowClones == FALSE ) ? L"(No Clones)" : L"(Clones)   ", displayString );
-		m_font.DrawText(  70, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), name );
+		m_font.DrawText( X_POS +   0, Y_POS +  0, D3DCOLOR_RGBA( 255, 255, 255, 255 ), name );
   }
 
 	m_font.End();

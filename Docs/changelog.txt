@@ -1,5 +1,23 @@
 Version 0.68b
 
+  - Added new fonts (Arial Narrow and Courier New) size 10, 11 and 12
+  - Remove dependencies bug
+
+  - \MAMEoXLauncher\Sources\ROMList.cpp
+    - Bugfix: Additional info shows the files correct now
+    - Additional info shows year and clonefilename now
+    - Use new font and added manufacturer in the game list
+    - Additional info is default now
+    - More lines (30 instead of 18) in the game list
+
+  - \MAMEoX\Includes\Gamepad.h
+  - \MAMEoX\Sources\Gamepad.cpp
+    - Bugfix: IsButtonPressed returns TRUE if only the button of the 
+      params are pressed
+    - New function: GetButtonState which returns all GP_ flags of the 
+      pressed buttons, DPAD, etc.
+
+   -------------------------------------------------------------
   - \MAMEoX\Includes: 
 
     - MAMEoX.h

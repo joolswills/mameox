@@ -1,0 +1,22 @@
+// List of resources to bundle.
+//
+// The output will be a header file (.h) used at compile time,
+// and a packed resource file (.xpr) used at runtime.
+
+out_header         ..\Includes\FontCN10.h
+out_packedresource ..\..\Media\FontCN10.xpr
+out_error          FontCN10.err
+
+
+Texture Font
+{
+   Source      CN10.tga
+   Format      D3DFMT_A4R4G4B4
+   Levels      1
+}
+
+UserData FontData
+{
+   DataFile CN10.abc
+}
+

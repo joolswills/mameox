@@ -50,7 +50,7 @@ public:
 		m_gameListPageOffset( 0.0f ),
     m_superscrollMode( FALSE ),
 		m_allowClones( TRUE ),
-		m_additionalinfo( FALSE ),
+		m_additionalinfo( TRUE ),
     m_superscrollCharacterIdx( 0 ),
     m_driverInfoList( drivers ),
     m_numDrivers( numDrivers ),
@@ -94,6 +94,14 @@ public:
 		//------------------------------------------------------------
 	void MoveCursor( CGamepad	&gp );
 
+		//------------------------------------------------------------
+		// GetHeaderLine
+		//! \brief		Return a headerline with  specific size
+    //!
+    //! \param    size - Size of the header line
+    //! \return   Return the headerline
+		//------------------------------------------------------------
+	virtual WCHAR *GetHeaderLine( FLOAT width );
 
 		//------------------------------------------------------------
 		// Draw

@@ -256,9 +256,9 @@ void __cdecl main( void )
 		// Create a general purpose font
 // VC6 requires the 2 paramater call to create. _VC6 is defined in the VC6 dsp files
 #ifdef _VC6
-	g_font.Create( pD3DDevice, "Font.xpr" );
+	g_font.Create( pD3DDevice, "FontAN12.xpr" );
 #else
-	g_font.Create( "Font.xpr", 0 );
+	g_font.Create( "FontAN12.xpr", 0 );
 #endif
   LoadOptions();
 
