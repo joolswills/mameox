@@ -22,17 +22,6 @@ extern "C" {
 #define CHECKRAM()
 #endif
 
-
-
-  // Build string
-#ifdef _VC6
-  #define BUILD_STRING         "::VC6"
-  #define LBUILD_STRING        L"::VC6"
-#else
-  #define BUILD_STRING         "::VC7"
-  #define LBUILD_STRING        L"::VC7"
-#endif
-
 #ifdef _DEBUG
   #define LBUILDCONFIG_STRING   L"[DEBUG]"
 #else
@@ -40,11 +29,11 @@ extern "C" {
 #endif
 
   // Version number
-#define VERSION_STRING        "0.68b" BUILD_STRING
-#define LVERSION_STRING       L"0.68b" LBUILD_STRING
+#define RELEASE_STRING        ".1b"
+#define LRELEASE_STRING       L".1b"
 
-#define MAMEVERSION_STRING    "0.69"
-#define LMAMEVERSION_STRING   L"0.69"
+#define VERSION_STRING    "0.69" RELEASE_STRING
+#define LVERSION_STRING   L"0.69" LRELEASE_STRING
 
   //! \enum   mameoxLaunchCommand
   //! \brief  Determines what the MAMEoX task should do

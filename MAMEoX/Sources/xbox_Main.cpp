@@ -199,11 +199,11 @@ static BOOL Helper_SaveDriverList( void )
 
   DWORD bytesWritten;
   WriteFile( hFile, 
-             "MAMEoX" VERSION_STRING MAMEVERSION_STRING, 
-             6 + strlen(VERSION_STRING) + strlen(MAMEVERSION_STRING), 
+             "MAMEoX" VERSION_STRING, 
+             6 + strlen(VERSION_STRING), 
              &bytesWritten, 
              NULL );
-  if( bytesWritten != 6 + strlen(VERSION_STRING) + strlen(MAMEVERSION_STRING) )
+  if( bytesWritten != 6 + strlen(VERSION_STRING) )
 	{
 		PRINTMSG( T_ERROR, "Write failed!" );
 		CloseHandle( hFile );

@@ -697,9 +697,9 @@ static BOOL Helper_LoadDriverInfoFile( void )
     // Read in the signature
 	DWORD BytesRead = 0;
   char signature[64] = {0};
-  ReadFile( hFile, signature, 6 + strlen(VERSION_STRING) + strlen(MAMEVERSION_STRING), &BytesRead, NULL );
-  if( BytesRead != 6 + strlen(VERSION_STRING) + strlen(MAMEVERSION_STRING) || 
-      strcmp( signature, "MAMEoX" VERSION_STRING MAMEVERSION_STRING ) )
+  ReadFile( hFile, signature, 6 + strlen(VERSION_STRING), &BytesRead, NULL );
+  if( BytesRead != 6 + strlen(VERSION_STRING) || 
+      strcmp( signature, "MAMEoX" VERSION_STRING ) )
   {
     CloseHandle( hFile );
     return FALSE;
@@ -1278,7 +1278,6 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 
     g_font.Begin();
       g_font.DrawText( 320, 258, D3DCOLOR_XRGB( 0, 0, 80 ),     L"Version " LVERSION_STRING L" " LBUILDCONFIG_STRING, XBFONT_CENTER_X );
-      g_font.DrawText( 320, 282, D3DCOLOR_XRGB( 0, 0, 80 ),     L"Uses MAME version " LMAMEVERSION_STRING, XBFONT_CENTER_X );
       g_font.DrawText( 320, 352, D3DCOLOR_XRGB( 10, 90, 100 ),  L"Portions based on:", XBFONT_CENTER_X );
       g_font.DrawText( 320, 376, D3DCOLOR_XRGB( 10, 90, 100 ),  L"\"MAMEX(b5): updated by superfro, original port by opcode\"", XBFONT_CENTER_X );
 	    g_font.DrawText( 320, 400, D3DCOLOR_XRGB( 60, 105, 225 ), L"Press any button to continue.", XBFONT_CENTER_X );

@@ -1,4 +1,4 @@
-Version 0.68b
+Version 0.69.01b
 
   - General:
     - Added new fonts (Arial Narrow and Courier New) size 10, 11 and 12
@@ -9,6 +9,7 @@ Version 0.68b
 
     - MAMEoX.h
       - Upped version number
+      - Modified version number to be MAME license compliant
 
     - Gamepad.h
       - New function: GetButtonState which returns all GP_ flags of 
