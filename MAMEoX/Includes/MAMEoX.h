@@ -33,8 +33,8 @@ extern "C" {
 #endif
 
   // Version number
-#define VERSION_STRING        "0.64b" BUILD_STRING
-#define LVERSION_STRING       L"0.64b" LBUILD_STRING
+#define VERSION_STRING        "0.65b" BUILD_STRING
+#define LVERSION_STRING       L"0.65b" LBUILD_STRING
 
 #define LMAMEVERSION_STRING   L"0.68"
 
