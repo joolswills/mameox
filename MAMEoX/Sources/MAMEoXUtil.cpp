@@ -58,6 +58,7 @@ extern "C" {
 
   // from MAME\cheat.c
 extern char *cheatfile;
+extern const char *history_filename;  // Defined in datafile.c
 
   //! Lightgun calibration data
 lightgunCalibration_t    g_calibrationData[4] = { {-32767,0,32767,32767,0,-32767},
@@ -105,6 +106,7 @@ void LoadOptions( void )
   cheatfile = strdup( iniFile.GetProfileString( "General", "CheatFilename", "cheat.dat" ).c_str() );
   if( !cheatfile )
     options.cheat = FALSE;
+  history_filename = strdup( iniFile.GetProfileString( "General", "HistoryFilename", "history.dat" ).c_str() );  
   options.skip_disclaimer = iniFile.GetProfileInt( "General", "SkipDisclaimer", FALSE );   // 1 to skip the disclaimer screen at startup
 	options.skip_gameinfo = iniFile.GetProfileInt( "General", "SkipGameInfo", FALSE );    // 1 to skip the game info screen at startup
 
@@ -244,6 +246,8 @@ void SaveOptions( void )
   iniFile.WriteProfileInt( "General", "CheatsEnabled", options.cheat );
   if( cheatfile )
     iniFile.WriteProfileString( "General", "CheatFilename", cheatfile );
+  if( history_filename )
+    iniFile.WriteProfileString( "General", "HistoryFilename", history_filename );
 
   iniFile.WriteProfileInt( "General", "SkipDisclaimer", options.skip_disclaimer );
   iniFile.WriteProfileInt( "General", "SkipGameInfo", options.skip_gameinfo );

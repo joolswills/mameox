@@ -62,6 +62,7 @@ extern "C" {
 //= G L O B A L = V A R S ==============================================
 extern "C" {
   extern const char *cheatfile;
+  extern const char *history_filename;  // Defined in datafile.c
 }
 
 extern BOOL g_soundEnabled; // Sound processing override, defined in xbox_Main.cpp
@@ -199,7 +200,7 @@ COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice,
   wcscpy( m_pageData[OPTPAGE_GENERAL].m_title, L"General Options" );
   m_pageData[OPTPAGE_GENERAL].m_drawFunct = ::DrawGeneralPage;
   m_pageData[OPTPAGE_GENERAL].m_changeFunct = ::ChangeGeneralPage;
-  m_pageData[OPTPAGE_GENERAL].m_numItems = 4;
+  m_pageData[OPTPAGE_GENERAL].m_numItems = 5;
 
   wcscpy( m_pageData[OPTPAGE_SOUND].m_title, L"Sound Options" );
   m_pageData[OPTPAGE_SOUND].m_drawFunct = ::DrawSoundPage;
@@ -452,6 +453,7 @@ void COptionsPage::DrawGeneralPage( void )
   cheatfile = strdup( iniFile.GetProfileString( "General", "CheatFilename", "cheat.dat" ).c_str() );
   if( !cheatfile )
     options.cheat = FALSE;
+  history_filename = strdup( iniFile.GetProfileString( "General", "HistoryFilename", "history.dat" ).c_str() );  
 
     // 1 to skip the disclaimer screen at startup
   options.skip_disclaimer = iniFile.GetProfileInt( "General", "SkipDisclaimer", FALSE );
@@ -466,6 +468,9 @@ void COptionsPage::DrawGeneralPage( void )
   WCHAR name[256] = {0};
 	mbstowcs( name, cheatfile, 255 );
   DRAWITEM( L"Cheat file", name );
+
+  mbstowcs( name, history_filename, 255 );
+  DRAWITEM( L"History file", name );
 
   DRAWITEM( L"Disclaimer", options.skip_disclaimer ? L"Skipped" : L"Shown" );
 
@@ -727,10 +732,12 @@ void COptionsPage::ChangeGeneralPage( BOOL direction )
 {
   switch( (DWORD)m_cursorPosition )
   {
+    // Cheats (enabled/disabled)
   case 0:
     options.cheat = !options.cheat;
     break;
 
+    // Cheat file
   case 1:
     if( !m_virtualKeyboardMode )
     {
@@ -744,16 +751,37 @@ void COptionsPage::ChangeGeneralPage( BOOL direction )
           // Free cheatfile, as it was strdup'd in MAMEoXUtil.cpp
         free( (void*)cheatfile );
         if( !(cheatfile = strdup( m_virtualKeyboard->GetData().c_str() )) )
-          Die( m_displayDevice, "Out of memory setting the cheatfile name!" );
+          Die( m_displayDevice, "Out of memory setting the cheatfile!" );
       }
     }
     break;
 
+    // History file
   case 2:
+    if( !m_virtualKeyboardMode )
+    {
+      m_virtualKeyboardMode = TRUE;
+	    m_virtualKeyboard->SetData( history_filename );
+    }
+    else
+    {
+      if( m_virtualKeyboard->IsInputAccepted() )
+      {
+          // Free cheatfile, as it was strdup'd in MAMEoXUtil.cpp
+        free( (void*)history_filename );
+        if( !(history_filename = strdup( m_virtualKeyboard->GetData().c_str() )) )
+          Die( m_displayDevice, "Out of memory setting the history_filename!" );
+      }
+    }
+    break;
+
+      // Disclaimer (skipped/shown)
+  case 3:
     options.skip_disclaimer = !options.skip_disclaimer;
     break;
 
-  case 3:
+    // Game info (skipped/shown)
+  case 4:
     options.skip_gameinfo = !options.skip_gameinfo;
     break;
   }

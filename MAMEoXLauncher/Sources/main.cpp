@@ -74,8 +74,9 @@ extern "C" {
   // Fake options struct for load/store options
 GameOptions options;
 
-  // Fake cheatfile name for load/store options
+  // Fake filenames for load/store options
 const char *cheatfile = NULL;
+const char *history_filename = NULL;
 }
   
   // Fake D3D renderer options
