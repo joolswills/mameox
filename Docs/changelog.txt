@@ -29,6 +29,9 @@ Version 0.70.4b
     - xbox_Display.c:
       - Implemented MAME hooks for frameskip/throttle toggling
 
+    - MAMEoXUtil.cpp
+      - Removed history.dat support
+
    -------------------------------------------------------------
   - \MAMEoXLauncher\Sources:
 
@@ -53,6 +56,7 @@ Version 0.70.4b
       - Added VSYNC and framerate throttling options
       - Added frame skip option
       - Split directories up into two separate options
+      - Removed history.dat support
 
     - LightgunCalibrator.cpp
       - Changed text from "Push B to discard changes" to

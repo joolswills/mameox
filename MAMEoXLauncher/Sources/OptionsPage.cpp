@@ -87,7 +87,7 @@ extern "C" {
 //= G L O B A L = V A R S ==============================================
 extern "C" {
   extern const char *cheatfile;
-  extern const char *history_filename;  // Defined in datafile.c
+//  extern const char *history_filename;  // Defined in datafile.c
 }
 
 extern BOOL g_soundEnabled; // Sound processing override, defined in xbox_Main.cpp
@@ -104,126 +104,6 @@ struct CUSTOMVERTEX
 void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... );
 
 //= F U N C T I O N S ==================================================
-
-
-
-//---------------------------------------------------------------------
-//  DrawGeneralPage
-//---------------------------------------------------------------------
-void DrawGeneralPage( COptionsPage *ptr )
-{
-  ptr->DrawGeneralPage();
-}
-
-//---------------------------------------------------------------------
-//  DrawSoundPage
-//---------------------------------------------------------------------
-void DrawSoundPage( COptionsPage *ptr )
-{
-  ptr->DrawSoundPage();
-}
-
-//---------------------------------------------------------------------
-//  DrawVideoPage
-//---------------------------------------------------------------------
-void DrawVideoPage( COptionsPage *ptr )
-{
-  ptr->DrawVideoPage();
-}
-
-//---------------------------------------------------------------------
-//  DrawVectorPage
-//---------------------------------------------------------------------
-void DrawVectorPage( COptionsPage *ptr )
-{
-  ptr->DrawVectorPage();
-}
-
-//---------------------------------------------------------------------
-//  DrawNetworkPage
-//---------------------------------------------------------------------
-void DrawNetworkPage( COptionsPage *ptr )
-{
-  ptr->DrawNetworkPage();
-}
-
-//---------------------------------------------------------------------
-//  DrawDirectoryPathPage1
-//---------------------------------------------------------------------
-void DrawDirectoryPathPage1( COptionsPage *ptr )
-{
-  ptr->DrawDirectoryPathPage1();
-}
-
-//---------------------------------------------------------------------
-//  DrawDirectoryPathPage2
-//---------------------------------------------------------------------
-void DrawDirectoryPathPage2( COptionsPage *ptr )
-{
-  ptr->DrawDirectoryPathPage2();
-}
-
-
-
-//---------------------------------------------------------------------
-//  ChangeGeneralPage
-//---------------------------------------------------------------------
-void ChangeGeneralPage( COptionsPage *ptr, BOOL direction )
-{
-  ptr->ChangeGeneralPage( direction );
-}
-
-//---------------------------------------------------------------------
-//  ChangeSoundPage
-//---------------------------------------------------------------------
-void ChangeSoundPage( COptionsPage *ptr, BOOL direction )
-{
-  ptr->ChangeSoundPage( direction );
-}
-
-//---------------------------------------------------------------------
-//  ChangeVideoPage
-//---------------------------------------------------------------------
-void ChangeVideoPage( COptionsPage *ptr, BOOL direction )
-{
-  ptr->ChangeVideoPage( direction );
-}
-
-//---------------------------------------------------------------------
-//  ChangeVectorPage
-//---------------------------------------------------------------------
-void ChangeVectorPage( COptionsPage *ptr, BOOL direction )
-{
-  ptr->ChangeVectorPage( direction );
-}
-
-//---------------------------------------------------------------------
-//  ChangeNetworkPage
-//---------------------------------------------------------------------
-void ChangeNetworkPage( COptionsPage *ptr, BOOL direction )
-{
-  ptr->ChangeNetworkPage( direction );
-}
-
-//---------------------------------------------------------------------
-//  ChangeDirectoryPathPage1
-//---------------------------------------------------------------------
-void ChangeDirectoryPathPage1( COptionsPage *ptr, BOOL direction )
-{
-  ptr->ChangeDirectoryPathPage1( direction );
-}
-
-//---------------------------------------------------------------------
-//  ChangeDirectoryPathPage2
-//---------------------------------------------------------------------
-void ChangeDirectoryPathPage2( COptionsPage *ptr, BOOL direction )
-{
-  ptr->ChangeDirectoryPathPage2( direction );
-}
-
-
-
-
 
 //------------------------------------------------------------
 // Constructor
@@ -242,7 +122,7 @@ COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice,
   wcscpy( m_pageData[OPTPAGE_GENERAL].m_title, L"General Options" );
   m_pageData[OPTPAGE_GENERAL].m_drawFunct = ::DrawGeneralPage;
   m_pageData[OPTPAGE_GENERAL].m_changeFunct = ::ChangeGeneralPage;
-  m_pageData[OPTPAGE_GENERAL].m_numItems = 5;
+  m_pageData[OPTPAGE_GENERAL].m_numItems = 4;
 
   wcscpy( m_pageData[OPTPAGE_SOUND].m_title, L"Sound Options" );
   m_pageData[OPTPAGE_SOUND].m_drawFunct = ::DrawSoundPage;
@@ -667,10 +547,10 @@ void COptionsPage::DrawGeneralPage( void )
   WCHAR name[256] = {0};
 	mbstowcs( name, cheatfile, 255 );
   DRAWITEM( L"Cheat file", name );
-
+/*
   mbstowcs( name, history_filename, 255 );
   DRAWITEM( L"History file", name );
-
+*/
   DRAWITEM( L"Disclaimer", options.skip_disclaimer ? L"Skipped" : L"Shown" );
 
   DRAWITEM( L"Game Info", options.skip_gameinfo ? L"Skipped" : L"Shown" );
@@ -982,7 +862,7 @@ void COptionsPage::ChangeGeneralPage( BOOL direction )
       }
     }
     break;
-
+/*
     // History file
   case 2:
     if( !m_virtualKeyboardMode )
@@ -1002,14 +882,14 @@ void COptionsPage::ChangeGeneralPage( BOOL direction )
       }
     }
     break;
-
+*/
       // Disclaimer (skipped/shown)
-  case 3:
+  case 2:
     options.skip_disclaimer = !options.skip_disclaimer;
     break;
 
     // Game info (skipped/shown)
-  case 4:
+  case 3:
     options.skip_gameinfo = !options.skip_gameinfo;
     break;
   }
@@ -1588,6 +1468,131 @@ void COptionsPage::ChangeDirectoryPathPage2( BOOL direction )
       }
     }
   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+//---------------------------------------------------------------------
+//  DrawGeneralPage
+//---------------------------------------------------------------------
+void DrawGeneralPage( COptionsPage *ptr )
+{
+  ptr->DrawGeneralPage();
+}
+
+//---------------------------------------------------------------------
+//  DrawSoundPage
+//---------------------------------------------------------------------
+void DrawSoundPage( COptionsPage *ptr )
+{
+  ptr->DrawSoundPage();
+}
+
+//---------------------------------------------------------------------
+//  DrawVideoPage
+//---------------------------------------------------------------------
+void DrawVideoPage( COptionsPage *ptr )
+{
+  ptr->DrawVideoPage();
+}
+
+//---------------------------------------------------------------------
+//  DrawVectorPage
+//---------------------------------------------------------------------
+void DrawVectorPage( COptionsPage *ptr )
+{
+  ptr->DrawVectorPage();
+}
+
+//---------------------------------------------------------------------
+//  DrawNetworkPage
+//---------------------------------------------------------------------
+void DrawNetworkPage( COptionsPage *ptr )
+{
+  ptr->DrawNetworkPage();
+}
+
+//---------------------------------------------------------------------
+//  DrawDirectoryPathPage1
+//---------------------------------------------------------------------
+void DrawDirectoryPathPage1( COptionsPage *ptr )
+{
+  ptr->DrawDirectoryPathPage1();
+}
+
+//---------------------------------------------------------------------
+//  DrawDirectoryPathPage2
+//---------------------------------------------------------------------
+void DrawDirectoryPathPage2( COptionsPage *ptr )
+{
+  ptr->DrawDirectoryPathPage2();
+}
+
+
+
+//---------------------------------------------------------------------
+//  ChangeGeneralPage
+//---------------------------------------------------------------------
+void ChangeGeneralPage( COptionsPage *ptr, BOOL direction )
+{
+  ptr->ChangeGeneralPage( direction );
+}
+
+//---------------------------------------------------------------------
+//  ChangeSoundPage
+//---------------------------------------------------------------------
+void ChangeSoundPage( COptionsPage *ptr, BOOL direction )
+{
+  ptr->ChangeSoundPage( direction );
+}
+
+//---------------------------------------------------------------------
+//  ChangeVideoPage
+//---------------------------------------------------------------------
+void ChangeVideoPage( COptionsPage *ptr, BOOL direction )
+{
+  ptr->ChangeVideoPage( direction );
+}
+
+//---------------------------------------------------------------------
+//  ChangeVectorPage
+//---------------------------------------------------------------------
+void ChangeVectorPage( COptionsPage *ptr, BOOL direction )
+{
+  ptr->ChangeVectorPage( direction );
+}
+
+//---------------------------------------------------------------------
+//  ChangeNetworkPage
+//---------------------------------------------------------------------
+void ChangeNetworkPage( COptionsPage *ptr, BOOL direction )
+{
+  ptr->ChangeNetworkPage( direction );
+}
+
+//---------------------------------------------------------------------
+//  ChangeDirectoryPathPage1
+//---------------------------------------------------------------------
+void ChangeDirectoryPathPage1( COptionsPage *ptr, BOOL direction )
+{
+  ptr->ChangeDirectoryPathPage1( direction );
+}
+
+//---------------------------------------------------------------------
+//  ChangeDirectoryPathPage2
+//---------------------------------------------------------------------
+void ChangeDirectoryPathPage2( COptionsPage *ptr, BOOL direction )
+{
+  ptr->ChangeDirectoryPathPage2( direction );
 }
 
 

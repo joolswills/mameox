@@ -106,7 +106,7 @@ void LoadOptions( void )
   cheatfile = strdup( iniFile.GetProfileString( "General", "CheatFilename", "cheat.dat" ).c_str() );
   if( !cheatfile )
     options.cheat = FALSE;
-  history_filename = strdup( iniFile.GetProfileString( "General", "HistoryFilename", "history.dat" ).c_str() );  
+  history_filename = NULL; //strdup( iniFile.GetProfileString( "General", "HistoryFilename", "history.dat" ).c_str() );  
   options.skip_disclaimer = iniFile.GetProfileInt( "General", "SkipDisclaimer", FALSE );   // 1 to skip the disclaimer screen at startup
 	options.skip_gameinfo = iniFile.GetProfileInt( "General", "SkipGameInfo", FALSE );    // 1 to skip the game info screen at startup
 

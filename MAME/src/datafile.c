@@ -616,8 +616,10 @@ int load_driver_history (const struct GameDriver *drv, char *buffer, int bufsize
         *buffer = 0;
 
 
+          // [EBA] disable this function
         if(!history_filename)
-                history_filename = "history.dat";
+          return 0;
+//                history_filename = "history.dat";
 
         /* try to open history datafile */
         if (ParseOpen (history_filename))
