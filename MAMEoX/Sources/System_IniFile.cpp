@@ -259,7 +259,6 @@ BOOL CSystem_IniFile::GetValueString( const std::string &section,
 	std::vector<std::string>::const_iterator i = (*sectionData).second.begin();
 	for( ; i != (*sectionData).second.end(); ++i )
 	{
-    PRINTMSG( T_INFO, "%s =? %s", (*i).c_str(), entryName.c_str() );
 		if( !strncasecmp( (*i).c_str(), entryName.c_str(), entryName.length() ) )
 		{
 			char *front = strstr( (*i).c_str(), "=" );

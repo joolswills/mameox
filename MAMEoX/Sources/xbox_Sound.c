@@ -177,10 +177,10 @@ INT32 osd_update_audio_stream( INT16 *buffer )
   int original_bytes;
   int input_bytes;
   int final_bytes;
-
+/*
 static cycles_t lastFrameEndTime = 0;
 cycles_t actualFrameCycles = osd_cycles() - lastFrameEndTime;
-
+*/
 	// if nothing to do, don't do it
 	if( Machine->sample_rate && g_pStreamBuffer )
 	{
@@ -211,7 +211,7 @@ cycles_t actualFrameCycles = osd_cycles() - lastFrameEndTime;
     else if( g_totalFrames > IGNORE_UNDERFLOW_FRAMES )
       g_totalFrames = IGNORE_UNDERFLOW_FRAMES + 1;
 
-//    #ifdef LOG_SOUND
+    #ifdef LOG_SOUND
       {
         static int prev_overflows = 0, prev_underflows = 0;
         if( g_totalFrames > IGNORE_UNDERFLOW_FRAMES && (g_bufferOverflows != prev_overflows || g_bufferUnderflows != prev_underflows) )
@@ -221,7 +221,7 @@ cycles_t actualFrameCycles = osd_cycles() - lastFrameEndTime;
           PRINTMSG_TO_CONSOLE( T_NOPOSITION, "overflows=%d underflows=%d\n", g_bufferOverflows, g_bufferUnderflows );
         }
       }
-//    #endif
+    #endif
 	}
 
     // compute how many samples to generate next frame
@@ -232,11 +232,10 @@ cycles_t actualFrameCycles = osd_cycles() - lastFrameEndTime;
 	g_samplesThisFrame += g_currentAdjustment;
 
 
-
+/*
   PRINTMSG_TO_CONSOLE( T_NOPOSITION, "FPS %f SPF %3.3f SR: %lu", ((DOUBLE)osd_cycles_per_second() / (DOUBLE)actualFrameCycles), g_samplesPerFrame, Machine->sample_rate );
 lastFrameEndTime = osd_cycles();
-
-
+*/
 	  // return the samples to play this next frame
 	return g_samplesThisFrame;
 }
@@ -489,9 +488,9 @@ static void Helper_UpdateSampleAdjustment( void )
     // adjust so that we generate more samples per frame to compensate
     g_currentAdjustment = (consecutive_lows < MAX_SAMPLE_ADJUST) ? consecutive_lows : MAX_SAMPLE_ADJUST;
 
-    //#ifdef LOG_SOUND
+    #ifdef LOG_SOUND
     PRINTMSG_TO_CONSOLE( T_NOPOSITION, "too low - adjusting to %d\n", g_currentAdjustment );
-    //#endif
+    #endif
 	}
 	else if( buffered > g_upperThresh )
 	{
@@ -503,9 +502,9 @@ static void Helper_UpdateSampleAdjustment( void )
     // adjust so that we generate more samples per frame to compensate
     g_currentAdjustment = (consecutive_highs < MAX_SAMPLE_ADJUST) ? -consecutive_highs : -MAX_SAMPLE_ADJUST;
 		
-    //#ifdef LOG_SOUND
+    #ifdef LOG_SOUND
     PRINTMSG_TO_CONSOLE( T_NOPOSITION, "too high - adjusting to %d\n", g_currentAdjustment );
-    //#endif
+    #endif
 	}
 	else
 	{
@@ -572,8 +571,10 @@ static void Helper_CopySampleData( INT16 *data, UINT32 totalToCopy )
     cur_bytes = (totalToCopy > length2) ? length2 : totalToCopy;
     memcpy( buffer2, data, cur_bytes );
 
+    #ifdef LOG_SOUND
     if( totalToCopy > length2 )
       PRINTMSG_TO_CONSOLE( T_NOPOSITION, "Overflow!" );
+    #endif
   }
 
 
