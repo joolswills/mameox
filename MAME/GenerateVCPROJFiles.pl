@@ -114,6 +114,7 @@ open( OUTFILE, ">MAME.vcproj" ) || die "Failed to create MAME.vcproj!\n";
 	"./src/cpu/z8000/z8000tbl.c",
 	"./src/cpu/pic16c5x/dis16c5x.c",
 	"./src/drivers/jrcrypt.c",
+	"./src/drivers/fuuki16.c",
 	"./src/sound/disc_dev.c",
 	"./src/sound/disc_flt.c",
 	"./src/sound/disc_inp.c",
