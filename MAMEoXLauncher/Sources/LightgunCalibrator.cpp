@@ -69,8 +69,14 @@ void CLightgunCalibrator::MoveCursor( CInputManager &inputManager, BOOL unused )
   lightgunCalibration_t &calibData = g_calibrationData[m_currentInputDeviceIndex];
 
     // Update the cursor position
-  m_currentGunX = gp->GetAnalogAxisState( GP_ANALOG_LEFT, GP_AXIS_X );
-  m_currentGunY = gp->GetAnalogAxisState( GP_ANALOG_LEFT, GP_AXIS_Y );
+  const XINPUT_GAMEPAD *gpState = gp->GetGamepadDeviceState();
+  if( gpState && (gpState->wButtons & XINPUT_LIGHTGUN_ONSCREEN) )
+  {
+    m_currentGunX = gp->GetAnalogAxisState( GP_ANALOG_LEFT, GP_AXIS_X );
+    m_currentGunY = gp->GetAnalogAxisState( GP_ANALOG_LEFT, GP_AXIS_Y );
+  }
+  else
+    m_currentGunX = m_currentGunY;
 
   if( gp->IsButtonPressed( GP_B ) )
   {
@@ -134,7 +140,7 @@ void CLightgunCalibrator::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   RenderBackdrop();
 
 
-  #define TEXTCOLOR                     D3DCOLOR_XRGB( 10,10,10 );
+  #define TEXTCOLOR                     D3DCOLOR_XRGB( 10,10,10 )
   #define CURSOR_COLOR                  D3DCOLOR_RGBA( 255, 100, 100, 255 )
   static WCHAR *calibrationStepText[NUM_CALIBRATIONSTEPS] = { L"Shoot the upper left corner", 
                                                               L"Shoot the center", 
