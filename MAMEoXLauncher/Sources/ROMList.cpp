@@ -641,9 +641,9 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
 {
 	WCHAR name[512];
 
-	#define X_POS		( 55 )
+	#define X_POS		( 10 )
 	#define Y_POS		( 25 )
-	#define WIDTH		( 640 - 2 * X_POS )
+	#define WIDTH		( 512 - (X_POS<<1) )
 
 		// Display the error to the user
   if( opaque )  
@@ -660,13 +660,13 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
 	m_font.DrawText(  X_POS + 0, Y_POS + 0, D3DCOLOR_RGBA( 255, 255, 255, 255 ), name );
 	if( m_additionalinfo )
 	{
-		m_font.DrawText( X_POS + 280, Y_POS +  0, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Manufacturer" );
-		m_font.DrawText( X_POS + 410, Y_POS +  0, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Year" );
-		m_font.DrawText( X_POS + 468, Y_POS +  0, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Clone" );
-		m_font.DrawText( X_POS +   0, Y_POS + 10, D3DCOLOR_RGBA( 255, 255, 255, 255 ), GetHeaderLine( 270 ) );
-		m_font.DrawText( X_POS + 280, Y_POS + 10, D3DCOLOR_RGBA( 255, 255, 255, 255 ), GetHeaderLine( 120 ) );
-		m_font.DrawText( X_POS + 410, Y_POS + 10, D3DCOLOR_RGBA( 255, 255, 255, 255 ), GetHeaderLine(  48 ) );
-		m_font.DrawText( X_POS + 468, Y_POS + 10, D3DCOLOR_RGBA( 255, 255, 255, 255 ), GetHeaderLine(  60 ) );
+		m_font.DrawText( X_POS + 240, Y_POS +  0, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Manufacturer" );
+		m_font.DrawText( X_POS + 370, Y_POS +  0, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Year" );
+		m_font.DrawText( X_POS + 428, Y_POS +  0, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Clone" );
+		m_font.DrawText( X_POS +   0, Y_POS + 10, D3DCOLOR_RGBA( 255, 255, 255, 255 ), GetHeaderLine( 230 ) );
+		m_font.DrawText( X_POS + 240, Y_POS + 10, D3DCOLOR_RGBA( 255, 255, 255, 255 ), GetHeaderLine( 120 ) );
+		m_font.DrawText( X_POS + 370, Y_POS + 10, D3DCOLOR_RGBA( 255, 255, 255, 255 ), GetHeaderLine(  48 ) );
+		m_font.DrawText( X_POS + 428, Y_POS + 10, D3DCOLOR_RGBA( 255, 255, 255, 255 ), GetHeaderLine(  60 ) );
 	}
 	else
 		m_font.DrawText( X_POS +   0, Y_POS + 10, D3DCOLOR_RGBA( 255, 255, 255, 255 ), GetHeaderLine( WIDTH ) );
@@ -700,15 +700,15 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
 			color = NORMAL_ITEM_COLOR;
 
 		mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX++ ] ].m_description, 255 );
-		m_font.DrawText( X_POS + xPos + xDelta, Y_POS + yPos, color, name, XBFONT_TRUNCATED, ( m_additionalinfo ? 270 : WIDTH ) - xDelta );
+		m_font.DrawText( X_POS + xPos + xDelta, Y_POS + yPos, color, name, XBFONT_TRUNCATED, ( m_additionalinfo ? 230 : WIDTH ) - xDelta );
 		if( m_additionalinfo )
 		{
 			mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX - 1 ] ].m_manufacturer, 255 );
-			m_font.DrawText( X_POS + 280, Y_POS + yPos, color, name, XBFONT_TRUNCATED, 120 );
+			m_font.DrawText( X_POS + 240, Y_POS + yPos, color, name, XBFONT_TRUNCATED, 120 );
 			mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX - 1 ] ].m_year, 255 );
-			m_font.DrawText( X_POS + 410, Y_POS + yPos, color, name, XBFONT_TRUNCATED,  48 );
+			m_font.DrawText( X_POS + 370, Y_POS + yPos, color, name, XBFONT_TRUNCATED,  48 );
 			mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[ absListIDX - 1 ] ].m_cloneFileName, 255 );
-			m_font.DrawText( X_POS + 470, Y_POS + yPos, color, name, XBFONT_TRUNCATED,  60 );
+			m_font.DrawText( X_POS + 430, Y_POS + yPos, color, name, XBFONT_TRUNCATED,  60 );
 		}
 
 			// Inc the Y position

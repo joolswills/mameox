@@ -67,15 +67,26 @@ Version 0.69.01b
       - Use new font and added manufacturer in the game list
       - Additional info is default now
       - More lines (30 instead of 18) in the game list
+      - Made ROMList, OptionsPage, and Help render to a resizeable,
+        rotateable texture
 
     - OptionsPage.cpp
       - Added option for screen rotation
       - Added option to select texture filters
+      - Made ROMList, OptionsPage, and Help render to a resizeable,
+        rotateable texture
+
+    - Help.cpp
+      - Made ROMList, OptionsPage, and Help render to a resizeable,
+        rotateable texture
 
     - main.cpp
       - Joined all D3D renderer opts into a struct
       - Added a RequireController call to splashscreen
       - Added more calls to RequireController
+      - Made ROMList, OptionsPage, and Help render to a resizeable,
+        rotateable texture
+      - Implemented rotation on the ROM list
 
    -------------------------------------------------------------
   - \MAMEoX\src:

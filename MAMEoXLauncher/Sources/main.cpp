@@ -46,7 +46,6 @@
 struct CUSTOMVERTEX
 {
 	D3DXVECTOR3   pos;      // The transformed position for the vertex
-  DWORD         diffuse;  // The diffuse color of the vertex
   FLOAT         tu, tv;   // The texture coordinates
 };
 
@@ -366,7 +365,7 @@ void __cdecl main( void )
     // Create the vertex buffer
   g_graphicsManager.GetD3DDevice()->CreateVertexBuffer( (sizeof(CUSTOMVERTEX) << 2),
 																		                    D3DUSAGE_WRITEONLY,
-																		                    D3DFVF_XYZ | D3DFVF_DIFFUSE,
+																		                    D3DFVF_XYZ | D3DFVF_TEX1,
 																		                    D3DPOOL_MANAGED,
 																		                    &g_pD3DVertexBuffer );
 
@@ -404,28 +403,24 @@ void __cdecl main( void )
 		pVertices[0].pos.x = lx;
 		pVertices[0].pos.y = ty;
 		pVertices[0].pos.z = 1.0f;
-    pVertices[0].diffuse = D3DCOLOR_RGBA( 0, 0, 0, 255 );
     pVertices[0].tu = 0.0f;
     pVertices[0].tv = 0.0f;
 
 		pVertices[1].pos.x = rx;
 		pVertices[1].pos.y = ty;
 		pVertices[1].pos.z = 1.0f;
-    pVertices[1].diffuse = D3DCOLOR_RGBA( 0, 0, 0, 255 );
     pVertices[1].tu = 1.0f;
     pVertices[1].tv = 0.0f;
 		
 		pVertices[2].pos.x = rx;
 		pVertices[2].pos.y = by;
 		pVertices[2].pos.z = 1.0f;
-    pVertices[2].diffuse = D3DCOLOR_RGBA( 0, 0, 0, 255 );
     pVertices[2].tu = 1.0f;
     pVertices[2].tv = 1.0f;
 		
 		pVertices[3].pos.x = lx;
 		pVertices[3].pos.y = by;
 		pVertices[3].pos.z = 1.0f;
-    pVertices[3].diffuse = D3DCOLOR_RGBA( 0, 0, 0, 255 );
     pVertices[3].tu = 0.0f;
     pVertices[3].tv = 1.0f;
 
@@ -479,7 +474,7 @@ void __cdecl main( void )
 
     g_font.End();
 
-    pD3DDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1 );
+    pD3DDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX1 );
     pD3DDevice->SetStreamSource(	0,												  // Stream number
 																	g_pD3DVertexBuffer,					// Stream data
 																	sizeof(CUSTOMVERTEX) );		  // Vertex stride
@@ -532,13 +527,75 @@ void __cdecl main( void )
   D3DXMATRIX matWorld;
   D3DXMatrixIdentity( &matWorld );
 
+    // Create a texture for the render target
+  LPDIRECT3DTEXTURE8 renderTargetTexture = NULL;
+  if( FAILED( D3DXCreateTexture(  pD3DDevice,
+                                  512, 
+                                  512, 
+                                  1, 
+                                  0L, 
+                                  D3DFMT_LIN_X8R8G8B8, 
+                                  D3DPOOL_DEFAULT, 
+                                  &renderTargetTexture ) ) )
+  {
+    Die( pD3DDevice, "Fatal error while creating render target texture!" );
+  }
+
+  LPDIRECT3DVERTEXBUFFER8    backdropVertexBuffer = NULL;
+
+    // Create a vertex buffer to render the backdrop image to the renderTargetTexture
+  pD3DDevice->CreateVertexBuffer( (sizeof(CUSTOMVERTEX) << 2),
+																  D3DUSAGE_WRITEONLY,
+																	D3DFVF_XYZ | D3DFVF_TEX1,
+																	D3DPOOL_MANAGED,
+																	&backdropVertexBuffer );
+
+	CUSTOMVERTEX *pVertices;
+	backdropVertexBuffer->Lock( 0,										// Offset to lock
+														  0,										// Size to lock
+														  (BYTE**)&pVertices,		// ppbData
+														  0 );									// Flags
+
+		pVertices[0].pos.x = -1.0f;
+		pVertices[0].pos.y = 1.0f;
+		pVertices[0].pos.z = 1.0f;
+    pVertices[0].tu = 0.0f;
+    pVertices[0].tv = 0.0f;
+
+		pVertices[1].pos.x = 1.0f;
+		pVertices[1].pos.y = 1.0f;
+		pVertices[1].pos.z = 1.0f;
+    pVertices[1].tu = 1.0f;
+    pVertices[1].tv = 0.0f;
+		
+		pVertices[2].pos.x = 1.0f;
+		pVertices[2].pos.y = -1.0f;
+		pVertices[2].pos.z = 1.0f;
+    pVertices[2].tu = 1.0f;
+    pVertices[2].tv = 1.0f;
+		
+		pVertices[3].pos.x = -1.0f;
+		pVertices[3].pos.y = -1.0f;
+		pVertices[3].pos.z = 1.0f;
+    pVertices[3].tu = 0.0f;
+    pVertices[3].tv = 1.0f;
+
+  backdropVertexBuffer->Unlock();
+
+
     // Toggle for whether or not we're in a given mode
   BOOL optionsMode = FALSE;
   BOOL helpMode = FALSE;
 	FLOAT toggleButtonTimeout = 0.0f;
 	UINT64 lastTime = osd_cycles();
 
-		// Main loop
+
+    // Store the current screen rotation value so we can
+    // rotate as soon as we notice that the option is changed
+  screenrotation_t oldRotation = g_rendererOptions.m_screenRotation;
+
+
+		//--- Main loop ------------------------------------------------------
 	while( 1 )
 	{
 		g_inputManager.PollDevices();
@@ -583,7 +640,8 @@ void __cdecl main( void )
     else if(  gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) < -SCREENRANGE_DEADZONE || 
               gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) > SCREENRANGE_DEADZONE || 
               gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) < -SCREENRANGE_DEADZONE || 
-              gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) > SCREENRANGE_DEADZONE )
+              gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) > SCREENRANGE_DEADZONE ||
+              oldRotation != g_rendererOptions.m_screenRotation )
     {
       FLOAT xPercentage, yPercentage;
       GetScreenUsage( &xPercentage, &yPercentage );
@@ -611,8 +669,20 @@ void __cdecl main( void )
       SetScreenUsage( xPercentage, yPercentage );
       DestroyBackdrop();
       CreateBackdrop( xPercentage, yPercentage );
+      oldRotation = g_rendererOptions.m_screenRotation;
     }
 		
+
+      // Set up to render to texture
+    LPDIRECT3DSURFACE8 pBackBuffer, pZBuffer;
+    pD3DDevice->GetRenderTarget( &pBackBuffer );
+    pD3DDevice->GetDepthStencilSurface( &pZBuffer );
+    LPDIRECT3DSURFACE8 pTextureSurface;
+    renderTargetTexture->GetSurfaceLevel( 0, &pTextureSurface );
+    D3DVIEWPORT8 vp = { 0, 0, 512, 512, 0.0f, 1.0f };
+    pD3DDevice->SetRenderTarget( pTextureSurface, NULL );
+    pD3DDevice->SetViewport( &vp );
+
 			// Move the cursor position and render
     pD3DDevice->SetTransform( D3DTS_WORLD, &matWorld );
     pD3DDevice->SetTransform( D3DTS_VIEW, &matWorld );
@@ -628,27 +698,24 @@ void __cdecl main( void )
     pD3DDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
     pD3DDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
     pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
-
+    
+      // Render whatever screen happens to be active to the
+      // texture
     pD3DDevice->Clear(	0L,																// Count
 											  NULL,															// Rects to clear
-											  D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+											  D3DCLEAR_TARGET,	                // Flags
                         D3DCOLOR_XRGB(105,105,105),				// Color
 											  1.0f,															// Z
 											  0L );															// Stencil
 
+	  pD3DDevice->SetTexture( 0, (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_ROMListBackdrop_OFFSET] );
 
-    LPDIRECT3DTEXTURE8 pTexture = (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_ROMListBackdrop_OFFSET];
-	  pD3DDevice->SetTexture( 0, pTexture );
-
-    pD3DDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1 );
+    pD3DDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX1 );
     pD3DDevice->SetStreamSource(	0,												  // Stream number
-																	g_pD3DVertexBuffer,					// Stream data
+																	backdropVertexBuffer,	      // Stream data
 																	sizeof(CUSTOMVERTEX) );		  // Vertex stride
 
     pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
-
-	  pD3DDevice->SetTexture( 0, NULL );
-    pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 4, 4 );
 
     if( optionsMode )
     {
@@ -666,8 +733,51 @@ void __cdecl main( void )
 		  romList.Draw( FALSE, FALSE );
     }
 
-    g_graphicsManager.GetD3DDevice()->Present( NULL, NULL, NULL, NULL );
 
+      // Restore the render target
+    D3DVIEWPORT8 vpBackBuffer = { 0, 0, 640, 480, 0.0f, 1.0f };
+    pD3DDevice->SetRenderTarget( pBackBuffer, pZBuffer );
+    pD3DDevice->SetViewport( &vpBackBuffer );
+    SAFE_RELEASE( pBackBuffer );
+    SAFE_RELEASE( pZBuffer );
+    SAFE_RELEASE( pTextureSurface );
+
+      // Now render the texture to the screen 
+    pD3DDevice->Clear(	0L,																// Count
+											  NULL,															// Rects to clear
+											  D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+                        D3DCOLOR_XRGB(105,105,105),				// Color
+											  1.0f,															// Z
+											  0L );															// Stencil
+
+			// Move the cursor position and render
+    pD3DDevice->SetTransform( D3DTS_WORLD, &matWorld );
+    pD3DDevice->SetTransform( D3DTS_VIEW, &matWorld );
+    pD3DDevice->SetTransform( D3DTS_PROJECTION, &matWorld );
+
+	  pD3DDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
+	  pD3DDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
+	  pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
+    pD3DDevice->SetRenderState( D3DRS_ZENABLE, FALSE );
+
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_MINFILTER, D3DTEXF_LINEAR );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_MAGFILTER, D3DTEXF_LINEAR );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSU, D3DTADDRESS_CLAMP );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP );
+    pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSW, D3DTADDRESS_CLAMP );
+
+    pD3DDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX1 );
+    pD3DDevice->SetStreamSource(	0,												  // Stream number
+																	g_pD3DVertexBuffer,	        // Stream data
+																	sizeof(CUSTOMVERTEX) );		  // Vertex stride
+	  pD3DDevice->SetTexture( 0, renderTargetTexture );
+//	  pD3DDevice->SetTexture( 0, (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_ROMListBackdrop_OFFSET] );
+    pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
+
+    pD3DDevice->Present( NULL, NULL, NULL, NULL );
 	}
 }
 
@@ -933,9 +1043,9 @@ BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage )
   }
 
     // Create the vertex buffer
-  g_graphicsManager.GetD3DDevice()->CreateVertexBuffer( (sizeof(CUSTOMVERTEX) << 2) * 5,
+  g_graphicsManager.GetD3DDevice()->CreateVertexBuffer( (sizeof(CUSTOMVERTEX) << 2),
 																		                    D3DUSAGE_WRITEONLY,
-																		                    D3DFVF_XYZ | D3DFVF_DIFFUSE,
+																		                    D3DFVF_XYZ | D3DFVF_TEX1,
 																		                    D3DPOOL_MANAGED,
 																		                    &g_pD3DVertexBuffer );
 
@@ -949,121 +1059,67 @@ BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage )
 		pVertices[0].pos.x = -xUsage;
 		pVertices[0].pos.y = yUsage;
 		pVertices[0].pos.z = 1.0f;
-    pVertices[0].diffuse = D3DCOLOR_RGBA( 30, 50, 30, 255 );
-    pVertices[0].tu = 0.0f;
-    pVertices[0].tv = 0.0f;
 
 		pVertices[1].pos.x = xUsage;
 		pVertices[1].pos.y = yUsage;
 		pVertices[1].pos.z = 1.0f;
-    pVertices[1].diffuse = D3DCOLOR_RGBA( 30, 50, 30, 255 );
-    pVertices[1].tu = 1.0f;
-    pVertices[1].tv = 0.0f;
 		
 		pVertices[2].pos.x = xUsage;
 		pVertices[2].pos.y = -yUsage;
 		pVertices[2].pos.z = 1.0f;
-    pVertices[2].diffuse = D3DCOLOR_RGBA( 30, 50, 30, 255 );
-    pVertices[2].tu = 1.0f;
-    pVertices[2].tv = 1.0f;
 		
 		pVertices[3].pos.x = -xUsage;
 		pVertices[3].pos.y = -yUsage;
 		pVertices[3].pos.z = 1.0f;
-    pVertices[3].diffuse = D3DCOLOR_RGBA( 30, 50, 30, 255 );
-    pVertices[3].tu = 0.0f;
-    pVertices[3].tv = 1.0f;
 
+    FLOAT tu_l = 0.0f, tu_r = 512.0f, tv_t = 0.0f, tv_b = 512.0f;
 
+    switch( g_rendererOptions.m_screenRotation )
+    {
+    case SR_0:
+      pVertices[0].tu = tu_l;
+      pVertices[0].tv = tv_t;
+      pVertices[1].tu = tu_r;
+      pVertices[1].tv = tv_t;
+      pVertices[2].tu = tu_r;
+      pVertices[2].tv = tv_b;
+      pVertices[3].tu = tu_l;
+      pVertices[3].tv = tv_b;
+      break;
 
-      //-- Draw the corner pieces -----------------------------
-    #define LINE_WIDTH    0.02f
-    #define LINE_COLOR    D3DCOLOR_RGBA( 200, 200, 100, 255 );
+    case SR_90:
+      pVertices[0].tu = tu_l;
+      pVertices[0].tv = tv_b;
+      pVertices[1].tu = tu_l;
+      pVertices[1].tv = tv_t;
+      pVertices[2].tu = tu_r;
+      pVertices[2].tv = tv_t;
+      pVertices[3].tu = tu_r;
+      pVertices[3].tv = tv_b;
+      break;
 
-		pVertices[4].pos.x = -xUsage;
-		pVertices[4].pos.y = yUsage;
-		pVertices[4].pos.z = 1.0f;
-    pVertices[4].diffuse = LINE_COLOR
+    case SR_180:
+      pVertices[0].tu = tu_r;
+      pVertices[0].tv = tv_b;
+      pVertices[1].tu = tu_l;
+      pVertices[1].tv = tv_b;
+      pVertices[2].tu = tu_l;
+      pVertices[2].tv = tv_t;
+      pVertices[3].tu = tu_r;
+      pVertices[3].tv = tv_t;
+      break;
 
-		pVertices[5].pos.x = xUsage;
-		pVertices[5].pos.y = yUsage;
-		pVertices[5].pos.z = 1.0f;
-    pVertices[5].diffuse = LINE_COLOR;
-		
-		pVertices[6].pos.x = xUsage;
-		pVertices[6].pos.y = yUsage - LINE_WIDTH;
-		pVertices[6].pos.z = 1.0f;
-    pVertices[6].diffuse = LINE_COLOR;
-		
-		pVertices[7].pos.x = -xUsage;
-		pVertices[7].pos.y = yUsage - LINE_WIDTH;
-		pVertices[7].pos.z = 1.0f;
-    pVertices[7].diffuse = LINE_COLOR;
-
-
-		pVertices[8].pos.x = -xUsage;
-		pVertices[8].pos.y = -yUsage;
-		pVertices[8].pos.z = 1.0f;
-    pVertices[8].diffuse = LINE_COLOR
-
-		pVertices[9].pos.x = xUsage;
-		pVertices[9].pos.y = -yUsage;
-		pVertices[9].pos.z = 1.0f;
-    pVertices[9].diffuse = LINE_COLOR;
-		
-		pVertices[10].pos.x = xUsage;
-		pVertices[10].pos.y = -yUsage + LINE_WIDTH;
-		pVertices[10].pos.z = 1.0f;
-    pVertices[10].diffuse = LINE_COLOR;
-		
-		pVertices[11].pos.x = -xUsage;
-		pVertices[11].pos.y = -yUsage + LINE_WIDTH;
-		pVertices[11].pos.z = 1.0f;
-    pVertices[11].diffuse = LINE_COLOR;
-
-
-		pVertices[12].pos.x = -xUsage;
-		pVertices[12].pos.y = -yUsage;
-		pVertices[12].pos.z = 1.0f;
-    pVertices[12].diffuse = LINE_COLOR
-
-		pVertices[13].pos.x = -xUsage + LINE_WIDTH;
-		pVertices[13].pos.y = -yUsage;
-		pVertices[13].pos.z = 1.0f;
-    pVertices[13].diffuse = LINE_COLOR;
-		
-		pVertices[14].pos.x = -xUsage + LINE_WIDTH;
-		pVertices[14].pos.y = yUsage;
-		pVertices[14].pos.z = 1.0f;
-    pVertices[14].diffuse = LINE_COLOR;
-		
-		pVertices[15].pos.x = -xUsage;
-		pVertices[15].pos.y = yUsage;
-		pVertices[15].pos.z = 1.0f;
-    pVertices[15].diffuse = LINE_COLOR;
-
-
-		pVertices[16].pos.x = xUsage;
-		pVertices[16].pos.y = -yUsage;
-		pVertices[16].pos.z = 1.0f;
-    pVertices[16].diffuse = LINE_COLOR
-
-		pVertices[17].pos.x = xUsage - LINE_WIDTH;
-		pVertices[17].pos.y = -yUsage;
-		pVertices[17].pos.z = 1.0f;
-    pVertices[17].diffuse = LINE_COLOR;
-		
-		pVertices[18].pos.x = xUsage - LINE_WIDTH;
-		pVertices[18].pos.y = yUsage;
-		pVertices[18].pos.z = 1.0f;
-    pVertices[18].diffuse = LINE_COLOR;
-		
-		pVertices[19].pos.x = xUsage;
-		pVertices[19].pos.y = yUsage;
-		pVertices[19].pos.z = 1.0f;
-    pVertices[19].diffuse = LINE_COLOR;
-
-
+    case SR_270:
+      pVertices[0].tu = tu_r;
+      pVertices[0].tv = tv_t;
+      pVertices[1].tu = tu_r;
+      pVertices[1].tv = tv_b;
+      pVertices[2].tu = tu_l;
+      pVertices[2].tv = tv_b;
+      pVertices[3].tu = tu_l;
+      pVertices[3].tv = tv_t;
+      break;
+    }
 
 
 	g_pD3DVertexBuffer->Unlock();

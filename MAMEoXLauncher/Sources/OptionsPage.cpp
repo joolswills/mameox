@@ -45,9 +45,16 @@ extern "C" {
 #define TRIGGERSWITCH_TIMEOUT   0.5f
 
 
+
+#define X_POS		( 10 )
+#define Y_POS		( 25 )
+#define WIDTH		( 512 - (X_POS<<1) )
+#define HEIGHT  ( 512 - (Y_POS<<1) )
+
+
 #define STARTPAGE()                       DWORD i = 0
-#define DRAWITEM( _name__, _val__ )       m_font.DrawText( 80,  (i*18)+64, ITEMCOLOR(), _name__, XBFONT_TRUNCATED, 500 ); \
-                                          m_font.DrawText( 300, (i*18)+64, ITEMCOLOR(), _val__, XBFONT_TRUNCATED, 500 ); \
+#define DRAWITEM( _name__, _val__ )       m_font.DrawText( X_POS,  (i*18)+Y_POS+20, ITEMCOLOR(), _name__, XBFONT_TRUNCATED, WIDTH ); \
+                                          m_font.DrawText( X_POS + 200, (i*18)+Y_POS+20, ITEMCOLOR(), _val__, XBFONT_TRUNCATED, WIDTH ); \
                                           ++i;
 #define ENDPAGE()
 
@@ -269,19 +276,23 @@ void COptionsPage::Draw( BOOL opaque, BOOL flipOnCompletion )
 						  							0L );															// Stencil
 
 	m_font.Begin();
-    m_font.DrawText( 320, 40, D3DCOLOR_XRGB( 255, 255, 255 ), m_pageData[m_pageNumber].m_title, XBFONT_CENTER_X );
+    m_font.DrawText( (WIDTH >> 1) + X_POS, Y_POS, D3DCOLOR_XRGB( 255, 255, 255 ), m_pageData[m_pageNumber].m_title, XBFONT_CENTER_X );
+    WCHAR underline[128] = {0};    
+    for( UINT32 i = 0; i < wcslen(m_pageData[m_pageNumber].m_title) + 4; ++i )
+      underline[i] = L'_';
+    m_font.DrawText( (WIDTH >> 1) + X_POS, Y_POS + 4, D3DCOLOR_XRGB( 255, 255, 255 ), underline, XBFONT_CENTER_X );
     m_pageData[m_pageNumber].m_drawFunct( this );
 
     UINT32 prev = m_pageNumber ? m_pageNumber - 1 : OPTPAGE_LAST - 1;
     UINT32 next = m_pageNumber < OPTPAGE_LAST - 1 ? m_pageNumber + 1 : 0;
 
-    m_font.DrawText( 103, 360, HELP_TEXT_COLOR, L"Left Trigger", 0 );
-    m_font.DrawText( 80,  384, HELP_TEXT_COLOR, L"<-", 0 );
-    m_font.DrawText( 103, 384, SELECTED_ITEM_COLOR, m_pageData[prev].m_title, 0 );
+    m_font.DrawText( X_POS + 30, HEIGHT - 15, HELP_TEXT_COLOR, L"Left Trigger", 0 );
+    m_font.DrawText( X_POS + 10, HEIGHT, HELP_TEXT_COLOR, L"<-", 0 );
+    m_font.DrawText( X_POS + 30, HEIGHT, SELECTED_ITEM_COLOR, m_pageData[prev].m_title, 0 );
 
-    m_font.DrawText( 520, 360, HELP_TEXT_COLOR, L"Right Trigger", XBFONT_RIGHT );
-    m_font.DrawText( 545, 384, HELP_TEXT_COLOR, L"->", XBFONT_RIGHT );
-    m_font.DrawText( 520, 384, SELECTED_ITEM_COLOR, m_pageData[next].m_title, XBFONT_RIGHT );  
+    m_font.DrawText( WIDTH + X_POS - 30, HEIGHT - 15, HELP_TEXT_COLOR, L"Right Trigger", XBFONT_RIGHT );
+    m_font.DrawText( WIDTH + X_POS - 10, HEIGHT, HELP_TEXT_COLOR, L"->", XBFONT_RIGHT );
+    m_font.DrawText( WIDTH + X_POS - 30, HEIGHT, SELECTED_ITEM_COLOR, m_pageData[next].m_title, XBFONT_RIGHT );  
 	m_font.End();
 
   if( flipOnCompletion )

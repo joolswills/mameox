@@ -47,6 +47,9 @@ extern "C" {
 	// Number of seconds between valid DPAD readings
 #define DPADCURSORMOVE_TIMEOUT	0.20f
 
+#define X_POS		( 80 )
+#define Y_POS		( 25 )
+#define WIDTH		( 512 - (X_POS<<1) )
 
 //= G L O B A L = V A R S ==============================================
 
@@ -75,7 +78,7 @@ BOOL CHelp::FileGets( HANDLE file, char *buffer, UINT32 length )
 		}
 		if( c == '\n' )
 		{
-			buffer[ i++ ] = c;
+//			buffer[ i++ ] = c;    // The \n will be ignored anyway [EBA]
 			buffer[ i++ ] = '\0';
 			return( TRUE );
 		}
@@ -342,7 +345,7 @@ void CHelp::Draw( BOOL opaque, BOOL flipOnCompletion )
 
 		// Render the text
 	FLOAT xPos;
-	FLOAT yPos = 64;
+	FLOAT yPos = Y_POS;
 	DWORD pageSize = (m_Help.size() < MAXPAGESIZE ? m_Help.size() : MAXPAGESIZE);
 	ULONG absListIDX = (ULONG)m_helpPageOffset;
 	if( absListIDX > (m_Help.size() - pageSize) )
@@ -356,11 +359,11 @@ void CHelp::Draw( BOOL opaque, BOOL flipOnCompletion )
 
 	for( DWORD i = 0; i < pageSize; ++i )
 	{
-		mbstowcs( name, m_Help[ absListIDX++ ].c_str(), 255 );
+		mbstowcs( name, m_Help[absListIDX++].c_str(), 255 );
+    name[wcslen(name)-1] = L'\0';
 
 			// Render the selected item as bright white
-		xPos = 70;
-		m_font.DrawText( xPos, yPos, NORMAL_ITEM_COLOR, name, XBFONT_TRUNCATED, 500 );
+		m_font.DrawText( X_POS, yPos, NORMAL_ITEM_COLOR, name, XBFONT_TRUNCATED, WIDTH );
 
 			// Inc the Y position
 		yPos += 20;
