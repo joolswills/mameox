@@ -20,6 +20,10 @@ Version 0.71.2b (CVS)
       - Moved LoadOptions above the graphics initialization so
         that the VSYNC option is actually used (doh!)
 
+    - DebugLogger.cpp
+      - Fixed: Release not called on vertex buffer after 
+        GetStreamSource() function.
+
    -------------------------------------------------------------
   - \MAMEoXLauncher\Includes:
 
