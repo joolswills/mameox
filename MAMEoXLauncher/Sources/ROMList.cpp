@@ -10,6 +10,7 @@
 #include "XBFont.h"
 
 #include "xbox_FileIO.h"		// for path info
+#include "xbox_Direct3DRenderer.h" // For Set/GetScreenUsage
 
 #include <string>
 
@@ -23,6 +24,9 @@ extern "C" {
 
 #define NORMAL_ITEM_COLOR				D3DCOLOR_RGBA( 100, 255, 100, 255 )
 #define SELECTED_ITEM_COLOR			D3DCOLOR_RGBA( 255, 255, 255, 255 )
+
+  // The deadzone for the screen usage percentage control (right analog)
+#define SCREENRANGE_DEADZONE    15000
 
 	// Maximum number of items to render on the screen at once
 #define MAXPAGESIZE							18
@@ -53,6 +57,11 @@ extern "C" {
 
 //= G L O B A L = V A R S ==============================================
 const char g_superscrollCharacterSet[NUM_SUPERSCROLL_CHARS+1] = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+//= P R O T O T Y P E S ================================================
+BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage );              // Defined in main.cpp
+void DestroyBackdrop( void );                                   // Defined in main.cpp
+void Die( LPDIRECT3DDEVICE8 m_displayDevice, const char *fmt, ... ); // Defined in main.cpp
 
 //= F U N C T I O N S ==================================================
 
@@ -253,6 +262,92 @@ BOOL CROMList::GenerateROMList( BOOL allowClones )
 //---------------------------------------------------------------------
 void CROMList::MoveCursor( const XINPUT_GAMEPAD	&gp )
 {
+  	// Handle user input
+  if( gp.bAnalogButtons[XINPUT_GAMEPAD_A] > 50 )
+	{
+			// Run the selected ROM
+    if( GetCurrentGameIndex() != INVALID_ROM_INDEX  )
+    {
+        // Pack info to be passed to MAMEoX
+      MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)m_launchData->Data;
+      mameoxLaunchData->m_gameIndex = GetCurrentGameIndex();
+      GetCursorPosition(  &mameoxLaunchData->m_cursorPosition, 
+                                  &mameoxLaunchData->m_pageOffset );
+      mameoxLaunchData->m_command = LAUNCH_RUN_GAME;
+
+      SaveOptions();
+      ShowLoadingScreen( m_displayDevice );
+      XLaunchNewImage( "D:\\MAMEoX.xbe", m_launchData );
+		  Die( m_displayDevice, "Could not execute MAMEoX.xbe!" );
+    }
+	}
+	else if( gp.bAnalogButtons[XINPUT_GAMEPAD_X] > 150 &&
+						gp.bAnalogButtons[XINPUT_GAMEPAD_B] > 150 )
+	{				
+			// Move the currently selected game to the backup dir
+		UINT32 romIDX = GetCurrentGameIndex();
+
+		std::string oldPath = ROMPATH "\\";
+		oldPath += m_driverInfoList[romIDX].m_romFileName;
+		oldPath += ".zip";
+
+		std::string newPath = ROMPATH "\\backup\\";
+		newPath += m_driverInfoList[romIDX].m_romFileName;
+		newPath += ".zip";
+
+      // Make sure the backup dir exists
+    CreateDirectory( ROMPATH "\\backup", NULL );
+
+		PRINTMSG( T_INFO, "Moving ROM %s to %s!", oldPath.c_str(), newPath.c_str() );
+		if( !MoveFile( oldPath.c_str(), newPath.c_str() ) )
+		{
+			PRINTMSG( T_ERROR, "Failed moving ROM %s to %s!", oldPath.c_str(), newPath.c_str() );
+		}
+
+		WaitForNoKey();
+		RemoveCurrentGameIndex();
+	}
+	else if( gp.bAnalogButtons[XINPUT_GAMEPAD_WHITE] > 150 )
+	{
+			// Regenerate the rom listing, allowing clones
+		GenerateROMList();
+	}
+  else if( gp.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 150 )
+  {
+      // Regenerate the rom listing, hiding clones
+    GenerateROMList( FALSE );
+  }
+  else if(  gp.sThumbRX < -SCREENRANGE_DEADZONE || gp.sThumbRX > SCREENRANGE_DEADZONE || 
+            gp.sThumbRY < -SCREENRANGE_DEADZONE || gp.sThumbRY > SCREENRANGE_DEADZONE )
+  {
+    FLOAT xPercentage, yPercentage;
+    GetScreenUsage( &xPercentage, &yPercentage );
+
+    if( gp.sThumbRX < -SCREENRANGE_DEADZONE )
+      xPercentage -= 0.00025f;
+    else if( gp.sThumbRX > SCREENRANGE_DEADZONE )
+      xPercentage += 0.00025f;
+
+    if( gp.sThumbRY < -SCREENRANGE_DEADZONE )
+      yPercentage -= 0.00025f;
+    else if( gp.sThumbRY > SCREENRANGE_DEADZONE )
+      yPercentage += 0.00025f;
+
+    if( xPercentage < 0.25f )
+      xPercentage = 0.25f;
+    else if( xPercentage > 1.0f )
+      xPercentage = 1.0f;
+
+    if( yPercentage < 0.25f )
+      yPercentage = 0.25f;
+    else if( yPercentage > 1.0f )
+      yPercentage = 1.0f;
+
+    SetScreenUsage( xPercentage, yPercentage );
+    DestroyBackdrop();
+    CreateBackdrop( xPercentage, yPercentage );
+  }
+
 		// General idea taken from XMAME
 	static UINT64		lastTime = 0;
 	UINT64 curTime = osd_cycles();

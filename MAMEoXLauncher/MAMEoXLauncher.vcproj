@@ -132,6 +132,9 @@
 				RelativePath="..\MAMEoX\Sources\MAMEoXUtil.cpp">
 			</File>
 			<File
+				RelativePath="Sources\OptionsPage.cpp">
+			</File>
+			<File
 				RelativePath="Sources\ROMList.cpp">
 			</File>
 			<File
@@ -170,6 +173,9 @@
 			</File>
 			<File
 				RelativePath="..\MAMEoX\Includes\MAMEoX.h">
+			</File>
+			<File
+				RelativePath="Includes\OptionsPage.h">
 			</File>
 			<File
 				RelativePath="Includes\ROMList.h">

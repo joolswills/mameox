@@ -3,18 +3,33 @@ Version 0.64b
   - \MAME\cheat.c:
     - Disabled watch prints by default
 
+  - \MAMEoX\Includes\InputManager.h:
+    - Renamed WaitForNoKeys to WaitForNoKey
+
   - \MAMEoX\Includes\xbox_FileIO.h:
     - Moved romlist and driverlist directory to default to the d:
       as there's no real reason to force it to Z.
 
   - \MAMEoX\Sources\MAMEoXUtil.cpp:
     - Fixed a couple more INI bugs (improperly mapped options)
+    - Renamed WaitForNoKeys to WaitForNoKey
 
   - \MAMEoX\Sources\xbox_main.cpp:
     - Fixed a non-termination bug w/ the Die function.
+    - Renamed WaitForNoKeys to WaitForNoKey
 
   - \MAMEoXLauncher\Sources\main.cpp
     - Fixed a non-termination bug w/ the Die function.
+    - Moved all ROMList user input to the ROMList file    
+
+  - \MAMEoXLauncher\Sources\ROMList.cpp:
+    - Moved all ROMList user input to the ROMList file
+
+  - \MAMEoXLauncher\Includes\OptionsPage.h:
+    - Added INI options editing class
+
+  - \MAMEoXLauncher\Sources\OptionsPage.cpp:
+    - Added INI options editing class
 
 Version 0.63b
   

@@ -40,7 +40,7 @@ public:
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-	CROMList( LPDIRECT3DDEVICE8	displayDevice, CXBFont &font, MAMEDriverData_t *drivers, UINT32 numDrivers ) :
+	CROMList( LPDIRECT3DDEVICE8	displayDevice, CXBFont &font, MAMEDriverData_t *drivers, UINT32 numDrivers, LAUNCH_DATA *launchData ) :
 		m_displayDevice( displayDevice ),
 		m_font( font ),
 		m_gameListCursorPosition( 0.0f ),
@@ -50,7 +50,8 @@ public:
     m_superscrollMode( FALSE ),
     m_superscrollCharacterIdx( 0 ),
     m_driverInfoList( drivers ),
-    m_numDrivers( numDrivers )
+    m_numDrivers( numDrivers ),
+    m_launchData( launchData )
 	{
     for( UINT32 i = 0; i < NUM_SUPERSCROLL_CHARS; ++i )
       m_superscrollJumpTable[i] = INVALID_SUPERSCROLL_JUMP_IDX;
@@ -164,6 +165,7 @@ protected:
 
 	LPDIRECT3DDEVICE8			m_displayDevice;
 	CXBFont								&m_font;
+  LAUNCH_DATA           *m_launchData;
 
 		//! Vector of integers into the MAME driver array
 		//!  defining the set of available ROMs

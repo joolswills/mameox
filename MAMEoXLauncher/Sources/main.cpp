@@ -20,6 +20,7 @@
 #include "InputManager.h"
 #include "GraphicsManager.h"
 #include "ROMList.h"
+#include "OptionsPage.h"
 #include "System_IniFile.h"
 #include "xbox_FileIO.h"
 #include "xbox_Direct3DRenderer.h"
@@ -28,6 +29,11 @@
 
 	// Font class from the XDK
 #include "XBFont.h"
+
+//= D E F I N E S =====================================================
+
+	// Number of seconds between valid X button readings
+#define XBUTTON_TIMEOUT	0.50f
 
 
 //= S T R U C T U R E S ===============================================
@@ -58,7 +64,6 @@ static LPDIRECT3DVERTEXBUFFER8    g_pD3DVertexBuffer = NULL;
   //! The data for each driver
 static MAMEDriverData_t   *g_driverData = NULL;
 
-#define SCREENRANGE_DEADZONE    15000
 
 extern "C" {
   // Fake options struct for load/store options
@@ -69,9 +74,9 @@ const char *cheatfile = NULL;
 }
 
 //= P R O T O T Y P E S ===============================================
-static BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage );
-static void DestroyBackdrop( void );
-static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... );
+BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage );
+void DestroyBackdrop( void );
+void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... );
 static BOOL Helper_LoadDriverInfoFile( void );
 
 //= F U N C T I O N S =================================================
@@ -101,7 +106,7 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
   pD3DDevice->Present( NULL, NULL, NULL, NULL );
 
 	g_inputManager.WaitForAnyKey();
-	g_inputManager.WaitForNoKeys( 0 );
+	g_inputManager.WaitForNoKey( 0 );
 }
 
 
@@ -175,7 +180,11 @@ void __cdecl main( void )
   // our totalMAMEGames member, as well as producing the driver info file
 
 		// Load/Generate the ROM listing
-  CROMList romList( pD3DDevice, g_font, g_driverData, mameoxLaunchData->m_totalMAMEGames );
+  CROMList romList( pD3DDevice, 
+                    g_font, 
+                    g_driverData, 
+                    mameoxLaunchData->m_totalMAMEGames,
+                    &g_launchData );
 	if( !romList.LoadROMList( TRUE ) )
 		Die( pD3DDevice, "Could not generate ROM list!" );
 
@@ -185,19 +194,39 @@ void __cdecl main( void )
 
     // Grab the current screen usage so we can render a border
   FLOAT xPercentage, yPercentage;
-  xPercentage = g_screenXPercentage;
-  yPercentage = g_screenYPercentage;
+  GetScreenUsage( &xPercentage, &yPercentage );
   CreateBackdrop( xPercentage, yPercentage );
 
+  COptionsPage optionsPage( pD3DDevice,
+                            g_font,
+                            options );
 
     //-- Initialize the rendering engine -------------------------------
   D3DXMATRIX matWorld;
   D3DXMatrixIdentity( &matWorld );
 
+    // Toggle for whether or not we're in options mode
+  BOOL optionsMode = FALSE;
+	FLOAT xButtonTimeout = 0.0f;
+	UINT64 lastTime = osd_cycles();
+
 		// Main loop
 	while( 1 )
 	{
 		g_inputManager.PollDevices();
+
+	  UINT64 curTime = osd_cycles();
+	  FLOAT elapsedTime = (FLOAT)(curTime - lastTime) / (FLOAT)osd_cycles_per_second();
+	  lastTime = curTime;
+
+		  // Decrement the dpad movement timer
+	  if( xButtonTimeout > 0.0f )
+	  {
+		  xButtonTimeout -= elapsedTime;
+		  if( xButtonTimeout < 0.0f )
+			  xButtonTimeout = 0.0f;
+	  }
+
 
 			// Reboot on LT+RT+Black
 		if( gp0.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] > 150 &&
@@ -209,88 +238,13 @@ void __cdecl main( void )
       XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
 		}
 
-			// Handle user input
-		if( gp0.bAnalogButtons[XINPUT_GAMEPAD_A] > 50 )
-		{
-				// Run the selected ROM
-      if( romList.GetCurrentGameIndex() != INVALID_ROM_INDEX  )
-      {
-          // Pack info to be passed to MAMEoX
-        mameoxLaunchData->m_gameIndex = romList.GetCurrentGameIndex();
-        romList.GetCursorPosition(  &mameoxLaunchData->m_cursorPosition, 
-                                    &mameoxLaunchData->m_pageOffset );
-        mameoxLaunchData->m_command = LAUNCH_RUN_GAME;
-
-        SaveOptions();
-        ShowLoadingScreen( pD3DDevice );
-        XLaunchNewImage( "D:\\MAMEoX.xbe", &g_launchData );
-		    Die( pD3DDevice, "Could not execute MAMEoX.xbe!" );
-      }
-		}
-		else if( gp0.bAnalogButtons[XINPUT_GAMEPAD_X] > 150 &&
-						 gp0.bAnalogButtons[XINPUT_GAMEPAD_B] > 150 )
-		{				
-				// Move the currently selected game to the backup dir
-			UINT32 romIDX = romList.GetCurrentGameIndex();
-
-			std::string oldPath = ROMPATH "\\";
-			oldPath += g_driverData[romIDX].m_romFileName;
-			oldPath += ".zip";
-
-			std::string newPath = ROMPATH "\\backup\\";
-			newPath += g_driverData[romIDX].m_romFileName;
-			newPath += ".zip";
-
-        // Make sure the backup dir exists
-      CreateDirectory( ROMPATH "\\backup", NULL );
-
-			PRINTMSG( T_INFO, "Moving ROM %s to %s!", oldPath.c_str(), newPath.c_str() );
-			if( !MoveFile( oldPath.c_str(), newPath.c_str() ) )
-			{
-				PRINTMSG( T_ERROR, "Failed moving ROM %s to %s!", oldPath.c_str(), newPath.c_str() );
-			}
-
-			g_inputManager.WaitForNoKeys( 0 );
-			romList.RemoveCurrentGameIndex();
-		}
-		else if( gp0.bAnalogButtons[XINPUT_GAMEPAD_WHITE] > 150 )
-		{
-				// Regenerate the rom listing, allowing clones
-			romList.GenerateROMList();
-		}
-    else if( gp0.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 150 )
+    if( gp0.bAnalogButtons[XINPUT_GAMEPAD_X] > 150 && xButtonTimeout == 0.0f )
     {
-        // Regenerate the rom listing, hiding clones
-      romList.GenerateROMList( FALSE );
+        // Toggle options mode
+      optionsMode = !optionsMode;
+      xButtonTimeout = XBUTTON_TIMEOUT;
     }
-    else if(  gp0.sThumbRX < -SCREENRANGE_DEADZONE || gp0.sThumbRX > SCREENRANGE_DEADZONE || 
-              gp0.sThumbRY < -SCREENRANGE_DEADZONE || gp0.sThumbRY > SCREENRANGE_DEADZONE )
-    {
-      if( gp0.sThumbRX < -SCREENRANGE_DEADZONE )
-        xPercentage -= 0.00025f;
-      else if( gp0.sThumbRX > SCREENRANGE_DEADZONE )
-        xPercentage += 0.00025f;
 
-      if( gp0.sThumbRY < -SCREENRANGE_DEADZONE )
-        yPercentage -= 0.00025f;
-      else if( gp0.sThumbRY > SCREENRANGE_DEADZONE )
-        yPercentage += 0.00025f;
-
-      if( xPercentage < 0.25f )
-        xPercentage = 0.25f;
-      else if( xPercentage > 1.0f )
-        xPercentage = 1.0f;
-
-      if( yPercentage < 0.25f )
-        yPercentage = 0.25f;
-      else if( yPercentage > 1.0f )
-        yPercentage = 1.0f;
-
-      g_screenXPercentage = xPercentage;
-      g_screenYPercentage = yPercentage;
-      DestroyBackdrop();
-      CreateBackdrop( xPercentage, yPercentage );
-    }
 
 		
 			// Move the cursor position and render
@@ -315,8 +269,16 @@ void __cdecl main( void )
 
     g_graphicsManager.GetD3DDevice()->DrawPrimitive( D3DPT_QUADLIST, 0, 5 );
 
-		romList.MoveCursor( gp0 );
-		romList.Draw( FALSE, FALSE );
+    if( optionsMode )
+    {
+      optionsPage.MoveCursor( gp0 );
+      optionsPage.Draw( FALSE, FALSE );
+    }
+    else
+    {
+		  romList.MoveCursor( gp0 );
+		  romList.Draw( FALSE, FALSE );
+    }
 
     g_graphicsManager.GetD3DDevice()->Present( NULL, NULL, NULL, NULL );
 
@@ -456,7 +418,7 @@ static BOOL Helper_LoadDriverInfoFile( void )
 //-------------------------------------------------------------
 //	Die
 //-------------------------------------------------------------
-static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
+void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 {
 	char buf[1024];
 
@@ -486,9 +448,9 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 	g_font.End();
 	pD3DDevice->Present( NULL, NULL, NULL, NULL );
 
-	g_inputManager.WaitForNoKeys( 0 );
+	g_inputManager.WaitForNoKey( 0 );
 	g_inputManager.WaitForAnyKey( 0 );
-	g_inputManager.WaitForNoKeys( 0 );
+	g_inputManager.WaitForNoKey( 0 );
 
     // Reboot
   LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
@@ -500,7 +462,7 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 //-------------------------------------------------------------
 //  CreateBackdrop
 //-------------------------------------------------------------
-static BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage )
+BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage )
 {
   if( g_pD3DVertexBuffer )
   {
@@ -651,7 +613,7 @@ static BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage )
 //-------------------------------------------------------------
 //  DestroyBackdrop
 //-------------------------------------------------------------
-static void DestroyBackdrop( void )
+void DestroyBackdrop( void )
 {
   if( g_pD3DVertexBuffer )
   {
