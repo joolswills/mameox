@@ -657,9 +657,18 @@ void CROMList::NormalModeMoveCursor( CInputManager &gp, FLOAT elapsedTime )
 		// General idea taken from XMAME
 
 		// The combined trigger offset, scaled to the range [-1.0f,1.0f]
-  FLOAT cursorVelocity =  ((FLOAT)gp.GetGamepad(0)->GetAnalogButtonState( GP_RIGHT_TRIGGER ) - 
-												  (FLOAT)gp.GetGamepad(0)->GetAnalogButtonState( GP_LEFT_TRIGGER )) / 256.0f;
+  FLOAT cursorVelocity = 0.0f;
 
+    // Loop through all the gamepads, checking the right and left triggers
+    // until one with an offset is found
+  for( UINT32 i = 0; i < 4 && cursorVelocity == 0.0f; ++i )
+  {
+    CGamepad *gamepad;
+    if( (gamepad = gp.GetGamepad( i )) )
+      cursorVelocity = (FLOAT)(gamepad->GetAnalogButtonState( GP_RIGHT_TRIGGER ) - gamepad->GetAnalogButtonState( GP_LEFT_TRIGGER ));
+  }
+
+  cursorVelocity /= 256.0f;
 
 		// Reset the speed band timeout
 	if( cursorVelocity < 0.99f && cursorVelocity > -0.99f )

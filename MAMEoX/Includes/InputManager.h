@@ -277,7 +277,8 @@ public:
     //!
     //! \return   BOOL - TRUE if any button is pressed, else FALSE
 		//------------------------------------------------------
-  BOOL IsAnyButtonPressed( void ) const {
+  BOOL IsAnyButtonPressed( void ) {
+    PollDevices();
     return  m_gamepads[0].IsAnyButtonPressed() ||
             m_gamepads[1].IsAnyButtonPressed() ||
             m_gamepads[2].IsAnyButtonPressed() ||
@@ -291,7 +292,8 @@ public:
     //!
     //! \return   BOOL - TRUE if button is pressed, else FALSE
 		//------------------------------------------------------
-  BOOL IsButtonPressed( UINT32 buttonID ) const {
+  BOOL IsButtonPressed( UINT32 buttonID ) {
+    PollDevices();
     return  m_gamepads[0].IsButtonPressed(buttonID) ||
             m_gamepads[1].IsButtonPressed(buttonID) ||
             m_gamepads[2].IsButtonPressed(buttonID) ||
@@ -307,7 +309,8 @@ public:
     //! \return   BOOL - TRUE if button is exclusively pressed, 
     //!                  else FALSE
 		//------------------------------------------------------
-  BOOL IsOnlyButtonPressed( UINT32 buttonID ) const {
+  BOOL IsOnlyButtonPressed( UINT32 buttonID ) {
+    PollDevices();
     return  m_gamepads[0].IsOnlyButtonPressed(buttonID) ||
             m_gamepads[1].IsOnlyButtonPressed(buttonID) ||
             m_gamepads[2].IsOnlyButtonPressed(buttonID) ||
@@ -321,7 +324,8 @@ public:
     //!
     //! \return   BOOL - TRUE if button is pressed, else FALSE
 		//------------------------------------------------------
-  BOOL IsOneOfButtonsPressed( UINT32 buttonID ) const {
+  BOOL IsOneOfButtonsPressed( UINT32 buttonID ) {
+    PollDevices();
     return  m_gamepads[0].IsOneOfButtonsPressed(buttonID) ||
             m_gamepads[1].IsOneOfButtonsPressed(buttonID) ||
             m_gamepads[2].IsOneOfButtonsPressed(buttonID) ||

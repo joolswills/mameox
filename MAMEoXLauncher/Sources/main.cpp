@@ -1151,9 +1151,6 @@ static HRESULT LoadPackedResources( void )
 //-------------------------------------------------------------
 static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 {
-  RequireController( 0 );
-  CGamepad *gp = g_inputManager.GetGamepad( 0 );
-
     // Create the vertex buffer
   struct CUSTOMVERTEX
   {
@@ -1216,10 +1213,8 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 
 
     //-- Display everything -------------------------------------------------------
-  while( !gp->IsAnyButtonPressed() )
+  while( !g_inputManager.IsAnyButtonPressed() )
   {
-    RequireController( 0 );
-
       // Bounce the fade color back and forth between MIN and MAX
     textFadeColor += fadeDirection / TEXTFADE_FRAMES_PER_STEP;
     if( textFadeColor <= TEXTFADE_MINIMUM )
