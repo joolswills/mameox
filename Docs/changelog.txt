@@ -1,3 +1,17 @@
+The latest version section is always the one currently in CVS
+(prerelease)
+
+Version 0.70.3b
+
+   -------------------------------------------------------------
+  - \MAMEoX\Includes: 
+    - MAMEoX.h
+      - Upped version number
+
+
+
+
+*********************************************************************
 Version 0.70.2b
 
  Note: I finally figured out exactly why 0.66b went bad.
@@ -70,6 +84,7 @@ Version 0.70.2b
     - Updated to merge data + code sections
     
 
+*********************************************************************
 Version 0.70.1b
 
   - General:
