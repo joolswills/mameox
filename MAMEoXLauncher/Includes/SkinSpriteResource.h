@@ -131,12 +131,21 @@ public:
 		CStdString fullEntryName = entryName;
 		fullEntryName += ".FileOffset.";
 
-		m_left		= iniFile.GetProfileInt( sectionName, fullEntryName + "left", -1 );
-		m_right		= iniFile.GetProfileInt( sectionName, fullEntryName + "right", -1 );
-		m_top			= iniFile.GetProfileInt( sectionName, fullEntryName + "top", -1 );
-		m_bottom	= iniFile.GetProfileInt( sectionName, fullEntryName + "bottom", -1 );
+		m_left		= iniFile.GetProfileInt( sectionName, fullEntryName + "left", VALUE_INVALID );
+		m_right		= iniFile.GetProfileInt( sectionName, fullEntryName + "right", VALUE_INVALID );
+		m_top			= iniFile.GetProfileInt( sectionName, fullEntryName + "top", VALUE_INVALID );
+		m_bottom	= iniFile.GetProfileInt( sectionName, fullEntryName + "bottom", VALUE_INVALID );
 
-		return (m_left != -1.0f && m_right != -1.0f && m_top != -1.0f && m_bottom != -1.0f);
+		int width = iniFile.GetProfileInt( sectionName, fullEntryName + "width", VALUE_INVALID );
+		int height = iniFile.GetProfileInt( sectionName, fullEntryName + "height", VALUE_INVALID );
+
+		if( m_right == VALUE_INVALID && width != VALUE_INVALID )
+			m_right = m_left + width;
+
+		if( m_bottom == VALUE_INVALID && height != VALUE_INVALID )
+			m_bottom = m_top + height;
+
+		return (m_left != VALUE_INVALID && m_right != VALUE_INVALID && m_top != VALUE_INVALID && m_bottom != VALUE_INVALID);
 	}
 
 
