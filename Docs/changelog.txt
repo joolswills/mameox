@@ -8,6 +8,8 @@ Version 0.65b
 
   - \MAMEoX\Sources\xbox_Main.cpp:
     - Removed unused gamepad references
+    - Added progress bar for driver dumping sequence
+    - Added MAME core version to driver file sig.
 
   - \MAMEoX\Sources\xbox_JoystickMouse.c:
     - Improved analog controls
@@ -42,6 +44,7 @@ Version 0.65b
     - Help loading
     - Option mode on button B+Y now
     - Added function to wait until a given gamepad is inserted
+    - Added MAME core version to driver file sig.
 
   - \MAMEoXLauncher\sources\Help.cpp:
 

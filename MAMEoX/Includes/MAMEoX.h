@@ -36,7 +36,8 @@ extern "C" {
 #define VERSION_STRING        "0.65b" BUILD_STRING
 #define LVERSION_STRING       L"0.65b" LBUILD_STRING
 
-#define LMAMEVERSION_STRING   L"0.68"
+#define MAMEVERSION_STRING    "0.69"
+#define LMAMEVERSION_STRING   L"0.69"
 
   //! \enum   mameoxLaunchCommand
   //! \brief  Determines what the MAMEoX task should do
@@ -180,8 +181,23 @@ void SaveOptions( void );
 	//	ShowLoadingScreen
 	//! \brief		Display a persistent loading screen for use when
   //!           switching between XBEs
+  //!
+  //! \param    pD3DDevice - D3D device to render the screen to
 	//-------------------------------------------------------------------
 void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice );
+
+	//-------------------------------------------------------------------
+  // vsnprintf
+  //! \brief    Fake implementation of vsnprintf to get MAME core
+  //!           version 0.69 to compile
+  //!
+  //! \param    buf - The buffer to print to
+  //! \param    count - The maximum number of characters to print
+  //! \param    fmt - The printf format string
+  //! \param    lst - The var arg variable to retrieve data from
+	//-------------------------------------------------------------------
+int vsnprintf( char *buf, size_t count, const char *fmt, va_list lst );
+
 
 #ifdef __cplusplus
 }

@@ -656,9 +656,10 @@ static BOOL Helper_LoadDriverInfoFile( void )
 
     // Read in the signature
 	DWORD BytesRead = 0;
-  char signature[32] = {0};
-  ReadFile( hFile, signature, 6 + strlen(VERSION_STRING), &BytesRead, NULL );
-  if( BytesRead != 6 + strlen(VERSION_STRING) || strcmp( signature, "MAMEoX" VERSION_STRING ) )
+  char signature[64] = {0};
+  ReadFile( hFile, signature, 6 + strlen(VERSION_STRING) + strlen(MAMEVERSION_STRING), &BytesRead, NULL );
+  if( BytesRead != 6 + strlen(VERSION_STRING) + strlen(MAMEVERSION_STRING) || 
+      strcmp( signature, "MAMEoX" VERSION_STRING MAMEVERSION_STRING ) )
   {
     CloseHandle( hFile );
     return FALSE;

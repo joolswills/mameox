@@ -61,6 +61,7 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... );
 static BOOL Helper_RunRom( UINT32 romIndex );
 static BOOL __cdecl compareDriverNames( const void *elem1, const void *elem2 );
 static BOOL Helper_SaveDriverList( void );
+static void DrawDriverProgressData( const char *fileName, DWORD index, DWORD total );
 
 //= F U N C T I O N S =================================================
 
@@ -114,6 +115,8 @@ void __cdecl main( void )
   }
  
   MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
+
+CHECKRAM();
 
     // Create the sorted game listing and exit
   if( mameoxLaunchData->m_command == LAUNCH_CREATE_MAME_GAME_LIST )
@@ -178,8 +181,12 @@ static BOOL Helper_SaveDriverList( void )
 	}
 
   DWORD bytesWritten;
-  WriteFile( hFile, "MAMEoX" VERSION_STRING, 6 + strlen(VERSION_STRING), &bytesWritten, NULL );
-  if( bytesWritten != 6 + strlen(VERSION_STRING) )
+  WriteFile( hFile, 
+             "MAMEoX" VERSION_STRING MAMEVERSION_STRING, 
+             6 + strlen(VERSION_STRING) + strlen(MAMEVERSION_STRING), 
+             &bytesWritten, 
+             NULL );
+  if( bytesWritten != 6 + strlen(VERSION_STRING) + strlen(MAMEVERSION_STRING) )
 	{
 		PRINTMSG( T_ERROR, "Write failed!" );
 		CloseHandle( hFile );
@@ -212,6 +219,8 @@ static BOOL Helper_SaveDriverList( void )
     // Write data for each driver
   for( DWORD i = 0; i < mameoxLaunchData->m_totalMAMEGames; ++i )
   {
+    DrawDriverProgressData( drivers[i]->name, i, mameoxLaunchData->m_totalMAMEGames );
+
       // Write the index
     WriteFile( hFile, &i, sizeof(i), &bytesWritten, NULL );
     if( bytesWritten != sizeof(i) )
@@ -335,6 +344,49 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
     // Relaunch MAMEoXLauncher
   ShowLoadingScreen( pD3DDevice );
   XLaunchNewImage( "D:\\default.xbe", &g_launchData );
+}
+
+
+//-------------------------------------------------------------
+//  DrawDriverProgressData
+//-------------------------------------------------------------
+static void DrawDriverProgressData( const char *fileName, DWORD index, DWORD total )
+{
+	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
+
+		// Display the error to the user
+	pD3DDevice->Clear(	0L,																// Count
+											NULL,															// Rects to clear
+											D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+											D3DCOLOR_XRGB(0,0,0),							// Color
+											1.0f,															// Z
+											0L );															// Stencil
+
+	g_font.Begin();
+	
+    g_font.DrawText( 320, 60, D3DCOLOR_XRGB( 255, 255, 255 ), L"A new version of MAME has been", XBFONT_CENTER_X );
+    g_font.DrawText( 320, 80, D3DCOLOR_XRGB( 255, 255, 255 ), L"detected.", XBFONT_CENTER_X );
+  	g_font.DrawText( 320, 120, D3DCOLOR_XRGB( 255, 255, 255 ), L"Dumping driver data", XBFONT_CENTER_X );
+
+		  // Draw a progress bar
+    UINT32 percentage = (UINT32)( (FLOAT)index * (25.0f / (FLOAT)total) + 0.5f ); 
+    UINT32 i = 0;
+	  WCHAR wBuf[256] = L"[";
+    for( ; i < percentage; ++i )
+      wcscat( wBuf, L"|" );
+    for( ; i < 25; ++i )
+      wcscat( wBuf, L" " );
+    wcscat( wBuf, L"]" );
+
+	  g_font.DrawText( 320, 140, D3DCOLOR_XRGB( 255, 125, 125 ), wBuf, XBFONT_CENTER_X );
+
+		  // Draw the current filename
+	  mbstowcs( wBuf, fileName, 256 );
+	  g_font.DrawText( 320, 170, D3DCOLOR_XRGB( 60, 100, 255 ), wBuf, XBFONT_CENTER_X );
+
+	g_font.End();
+
+	pD3DDevice->Present( NULL, NULL, NULL, NULL );
 }
 
 //-------------------------------------------------------------
