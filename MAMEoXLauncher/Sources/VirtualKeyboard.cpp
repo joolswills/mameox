@@ -131,7 +131,7 @@ CVirtualKeyboard::~CVirtualKeyboard( void )
 //---------------------------------------------------------------------
 //	MoveCursor
 //---------------------------------------------------------------------
-void CVirtualKeyboard::MoveCursor( CGamepad &gp )
+void CVirtualKeyboard::MoveCursor( CInputManager &gp )
 {
 	static UINT64		lastTime = 0;
 	UINT64 curTime = osd_cycles();

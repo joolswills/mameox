@@ -284,7 +284,7 @@ COptionsPage::~COptionsPage( void )
 //---------------------------------------------------------------------
 //	MoveCursor
 //---------------------------------------------------------------------
-void COptionsPage::MoveCursor( CGamepad	&gp, BOOL useSpeedbanding )
+void COptionsPage::MoveCursor( CInputManager &gp, BOOL useSpeedbanding )
 {
 	static UINT64		lastTime = 0;
 	UINT64 curTime = osd_cycles();

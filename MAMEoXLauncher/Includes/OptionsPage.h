@@ -83,12 +83,12 @@ public:
 		// MoveCursor
 		//! \brief		Move the cursor based on user input
 		//!
-		//! \param		gp - The CGamepad containing the 
-		//!                current state of the user's joystick
+		//! \param		gp - The CInputManager containing the
+		//!                current state of the user's joystick(s)
     //! \param    useSpeedBanding - Whether or not to enable
     //!              "speed bands" (cursor acceleration)
 		//------------------------------------------------------------
-	virtual void MoveCursor( CGamepad &gp, BOOL useSpeedBanding = FALSE );
+	virtual void MoveCursor( CInputManager &inputManager, BOOL useSpeedBanding = FALSE );
 
 		//------------------------------------------------------------
 		// Draw

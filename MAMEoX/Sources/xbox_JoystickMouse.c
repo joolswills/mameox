@@ -48,13 +48,23 @@
 #define MAX_JOYSTICKINFO_ENTRIES      128
 
   //! Macros for redefining input sequences
-#define REMAP_SEQ_6(a,b,c,d,e,f)        { InputSeq newSeq = SEQ_DEF_6((a),(b),(c),(d),(e),(f)); memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
-#define REMAP_SEQ_5(a,b,c,d,e)          { InputSeq newSeq = SEQ_DEF_5((a),(b),(c),(d),(e)); memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
-#define REMAP_SEQ_4(a,b,c,d)            { InputSeq newSeq = SEQ_DEF_4((a),(b),(c),(d)); memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
-#define REMAP_SEQ_3(a,b,c)              { InputSeq newSeq = SEQ_DEF_3((a),(b),(c)); memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
-#define REMAP_SEQ_2(a,b)                { InputSeq newSeq = SEQ_DEF_2((a),(b)); memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
-#define REMAP_SEQ_1(a)                  { InputSeq newSeq = SEQ_DEF_1((a)); memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
-#define REMAP_SEQ_0()				            { InputSeq newSeq = SEQ_DEF_0; memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
+#define REMAP_SEQ_16(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p) { InputSeq newSeq = SEQ_DEF_16((a),(b),(c),(d),(e),(f),(g),(h),(i),(j),(k),(l),(m),(n),(o),(p)); memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
+#define REMAP_SEQ_15(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o)   { InputSeq newSeq = SEQ_DEF_15((a),(b),(c),(d),(e),(f),(g),(h),(i),(j),(k),(l),(m),(n),(o)); memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
+#define REMAP_SEQ_14(a,b,c,d,e,f,g,h,i,j,k,l,m,n)     { InputSeq newSeq = SEQ_DEF_14((a),(b),(c),(d),(e),(f),(g),(h),(i),(j),(k),(l),(m),(n)); memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
+#define REMAP_SEQ_13(a,b,c,d,e,f,g,h,i,j,k,l,m)       { InputSeq newSeq = SEQ_DEF_13((a),(b),(c),(d),(e),(f),(g),(h),(i),(j),(k),(l),(m)); memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
+#define REMAP_SEQ_12(a,b,c,d,e,f,g,h,i,j,k,l)         { InputSeq newSeq = SEQ_DEF_12((a),(b),(c),(d),(e),(f),(g),(h),(i),(j),(k),(l)); memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
+#define REMAP_SEQ_11(a,b,c,d,e,f,g,h,i,j,k)           { InputSeq newSeq = SEQ_DEF_11((a),(b),(c),(d),(e),(f),(g),(h),(i),(j),(k)); memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
+#define REMAP_SEQ_10(a,b,c,d,e,f,g,h,i,j)             { InputSeq newSeq = SEQ_DEF_10((a),(b),(c),(d),(e),(f),(g),(h),(i),(j)); memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
+#define REMAP_SEQ_9(a,b,c,d,e,f,g,h,i)                { InputSeq newSeq = SEQ_DEF_9((a),(b),(c),(d),(e),(f),(g),(h),(i)); memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
+#define REMAP_SEQ_8(a,b,c,d,e,f,g,h)                  { InputSeq newSeq = SEQ_DEF_8((a),(b),(c),(d),(e),(f),(g),(h)); memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
+#define REMAP_SEQ_7(a,b,c,d,e,f,g)                    { InputSeq newSeq = SEQ_DEF_7((a),(b),(c),(d),(e),(f),(g)); memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
+#define REMAP_SEQ_6(a,b,c,d,e,f)                      { InputSeq newSeq = SEQ_DEF_6((a),(b),(c),(d),(e),(f)); memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
+#define REMAP_SEQ_5(a,b,c,d,e)                        { InputSeq newSeq = SEQ_DEF_5((a),(b),(c),(d),(e)); memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
+#define REMAP_SEQ_4(a,b,c,d)                          { InputSeq newSeq = SEQ_DEF_4((a),(b),(c),(d)); memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
+#define REMAP_SEQ_3(a,b,c)                            { InputSeq newSeq = SEQ_DEF_3((a),(b),(c)); memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
+#define REMAP_SEQ_2(a,b)                              { InputSeq newSeq = SEQ_DEF_2((a),(b)); memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
+#define REMAP_SEQ_1(a)                                { InputSeq newSeq = SEQ_DEF_1((a)); memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
+#define REMAP_SEQ_0()				                          { InputSeq newSeq = SEQ_DEF_0; memcpy( entry->seq, newSeq, sizeof(entry->seq) ); }
 
   //! Macros for converting non-standard internal axis/button codes to MAME ones 
   //!  (only use them for things that are not mapped to an entry in input.h)
@@ -809,73 +819,98 @@ static void Helper_CustomizeInputPortDefaults( struct ipd *defaults )
 			// *** IPT_UI_CANCEL *** //
 		case IPT_UI_CANCEL:
 				// Remap cancel to gamepad0 back + start
-      REMAP_SEQ_2( JOYCODE_1_SELECT, JOYCODE_1_START );
+      REMAP_SEQ_12( JOYCODE_1_SELECT, JOYCODE_1_START, CODE_OR, 
+                    JOYCODE_2_SELECT, JOYCODE_2_START, CODE_OR,
+                    JOYCODE_3_SELECT, JOYCODE_3_START, CODE_OR,
+                    JOYCODE_4_SELECT, JOYCODE_4_START, CODE_OR );
 			break;
 
 			// *** IPT_UI_TOGGLE_CROSSHAIR *** //
     case IPT_UI_TOGGLE_CROSSHAIR:
-      REMAP_SEQ_2( JOYCODE_1_SELECT, BUTTONCODE( 0, BUTTON_LA ) );
+      REMAP_SEQ_12( JOYCODE_1_SELECT, BUTTONCODE( 0, BUTTON_LA ), CODE_OR, 
+                    JOYCODE_2_SELECT, BUTTONCODE( 1, BUTTON_LA ), CODE_OR,
+                    JOYCODE_3_SELECT, BUTTONCODE( 2, BUTTON_LA ), CODE_OR,
+                    JOYCODE_4_SELECT, BUTTONCODE( 3, BUTTON_LA ), CODE_OR );
       break;
 
 			// *** IPT_UI_CONFIGURE *** //
     case IPT_UI_CONFIGURE:
-      REMAP_SEQ_2( JOYCODE_1_SELECT, BUTTONCODE( 0, BUTTON_WHITE ) );
+      REMAP_SEQ_12( JOYCODE_1_SELECT, BUTTONCODE( 0, BUTTON_WHITE ), CODE_OR, 
+                    JOYCODE_2_SELECT, BUTTONCODE( 1, BUTTON_WHITE ), CODE_OR,
+                    JOYCODE_3_SELECT, BUTTONCODE( 2, BUTTON_WHITE ), CODE_OR,
+                    JOYCODE_4_SELECT, BUTTONCODE( 3, BUTTON_WHITE ), CODE_OR );
       break;
 
 			// *** IPT_UI_PAUSE *** //
     case IPT_UI_PAUSE:
-      REMAP_SEQ_2( JOYCODE_1_SELECT, BUTTONCODE( 0, BUTTON_BLACK ) );
+      REMAP_SEQ_12( JOYCODE_1_SELECT, BUTTONCODE( 0, BUTTON_BLACK ), CODE_OR, 
+                    JOYCODE_2_SELECT, BUTTONCODE( 1, BUTTON_BLACK ), CODE_OR,
+                    JOYCODE_3_SELECT, BUTTONCODE( 2, BUTTON_BLACK ), CODE_OR,
+                    JOYCODE_4_SELECT, BUTTONCODE( 3, BUTTON_BLACK ), CODE_OR );
       break;
 
 			// *** IPT_UI_ON_SCREEN_DISPLAY *** //
     case IPT_UI_ON_SCREEN_DISPLAY:
-        // Make sure we don't do this while loading or saving state
-      REMAP_SEQ_6(  JOYCODE_1_SELECT, 
-                    BUTTONCODE( 0, BUTTON_RA ), 
-                    CODE_NOT, JOYCODE_1_BUTTON5,
-                    CODE_NOT, JOYCODE_1_BUTTON6 ); 
+      REMAP_SEQ_12( JOYCODE_1_SELECT, BUTTONCODE( 0, BUTTON_RA ), CODE_OR, 
+                    JOYCODE_2_SELECT, BUTTONCODE( 1, BUTTON_RA ), CODE_OR,
+                    JOYCODE_3_SELECT, BUTTONCODE( 2, BUTTON_RA ), CODE_OR,
+                    JOYCODE_4_SELECT, BUTTONCODE( 3, BUTTON_RA ), CODE_OR );
       break;
 
 			// *** IPT_UI_RESET_MACHINE *** //
     case IPT_UI_RESET_MACHINE:
-      REMAP_SEQ_5(  JOYCODE_1_SELECT, 
-                    JOYCODE_1_BUTTON5, 
-                    JOYCODE_1_BUTTON6, 
-                    CODE_NOT, BUTTONCODE( 0, BUTTON_RA ) );
+      REMAP_SEQ_15( JOYCODE_1_SELECT, JOYCODE_1_BUTTON5, JOYCODE_1_BUTTON6, CODE_OR, 
+                    JOYCODE_2_SELECT, JOYCODE_2_BUTTON5, JOYCODE_2_BUTTON6, CODE_OR,
+                    JOYCODE_3_SELECT, JOYCODE_3_BUTTON5, JOYCODE_3_BUTTON6, CODE_OR,
+                    JOYCODE_4_SELECT, JOYCODE_4_BUTTON5, JOYCODE_4_BUTTON6 );
       break;
 
 			// *** IPT_UI_SAVE_STATE *** //
     case IPT_UI_SAVE_STATE:
-      REMAP_SEQ_3(  JOYCODE_1_SELECT, 
-                    BUTTONCODE( 0, BUTTON_RA ), 
-                    JOYCODE_1_BUTTON6 );
+      REMAP_SEQ_15( JOYCODE_1_SELECT, BUTTONCODE( 0, BUTTON_RA ), JOYCODE_1_BUTTON6, CODE_OR, 
+                    JOYCODE_2_SELECT, BUTTONCODE( 1, BUTTON_RA ), JOYCODE_2_BUTTON6, CODE_OR,
+                    JOYCODE_3_SELECT, BUTTONCODE( 2, BUTTON_RA ), JOYCODE_3_BUTTON6, CODE_OR,
+                    JOYCODE_4_SELECT, BUTTONCODE( 3, BUTTON_RA ), JOYCODE_4_BUTTON6 );
       break;
 
 			// *** IPT_UI_LOAD_STATE *** //
     case IPT_UI_LOAD_STATE:
-      REMAP_SEQ_3(  JOYCODE_1_SELECT, 
-                    BUTTONCODE( 0, BUTTON_RA ), 
-                    JOYCODE_1_BUTTON5 );
+      REMAP_SEQ_15( JOYCODE_1_SELECT, BUTTONCODE( 0, BUTTON_RA ), JOYCODE_1_BUTTON5, CODE_OR, 
+                    JOYCODE_2_SELECT, BUTTONCODE( 1, BUTTON_RA ), JOYCODE_1_BUTTON5, CODE_OR,
+                    JOYCODE_3_SELECT, BUTTONCODE( 2, BUTTON_RA ), JOYCODE_1_BUTTON5, CODE_OR,
+                    JOYCODE_4_SELECT, BUTTONCODE( 3, BUTTON_RA ), JOYCODE_1_BUTTON5 );
       break;
 
 			// *** IPT_UI_UP *** //
     case IPT_UI_UP:
-      REMAP_SEQ_3( JOYCODE_1_UP, CODE_OR, AXISCODE( 0, JT_LSTICK_UP ) );
+      REMAP_SEQ_15( JOYCODE_1_UP, CODE_OR, AXISCODE( 0, JT_LSTICK_UP ), CODE_OR,
+                    JOYCODE_2_UP, CODE_OR, AXISCODE( 1, JT_LSTICK_UP ), CODE_OR,
+                    JOYCODE_3_UP, CODE_OR, AXISCODE( 2, JT_LSTICK_UP ), CODE_OR,
+                    JOYCODE_4_UP, CODE_OR, AXISCODE( 3, JT_LSTICK_UP ) );
       break;
 
 			// *** IPT_UI_LEFT *** //
     case IPT_UI_LEFT:
-      REMAP_SEQ_3( JOYCODE_1_LEFT, CODE_OR, AXISCODE( 0, JT_LSTICK_LEFT ) );
+      REMAP_SEQ_15( JOYCODE_1_LEFT, CODE_OR, AXISCODE( 0, JT_LSTICK_LEFT ), CODE_OR,
+                    JOYCODE_2_LEFT, CODE_OR, AXISCODE( 1, JT_LSTICK_LEFT ), CODE_OR,
+                    JOYCODE_3_LEFT, CODE_OR, AXISCODE( 2, JT_LSTICK_LEFT ), CODE_OR,
+                    JOYCODE_4_LEFT, CODE_OR, AXISCODE( 3, JT_LSTICK_LEFT ) );
       break;
 
 			// *** IPT_UI_DOWN *** //
     case IPT_UI_DOWN:
-      REMAP_SEQ_3( JOYCODE_1_DOWN, CODE_OR, AXISCODE( 0, JT_LSTICK_DOWN ) );
+      REMAP_SEQ_15( JOYCODE_1_DOWN, CODE_OR, AXISCODE( 0, JT_LSTICK_DOWN ), CODE_OR,
+                    JOYCODE_2_DOWN, CODE_OR, AXISCODE( 1, JT_LSTICK_DOWN ), CODE_OR,
+                    JOYCODE_3_DOWN, CODE_OR, AXISCODE( 2, JT_LSTICK_DOWN ), CODE_OR,
+                    JOYCODE_4_DOWN, CODE_OR, AXISCODE( 3, JT_LSTICK_DOWN ) );
       break;
 
 			// *** IPT_UI_RIGHT *** //
     case IPT_UI_RIGHT:
-      REMAP_SEQ_3( JOYCODE_1_RIGHT, CODE_OR, AXISCODE( 0, JT_LSTICK_RIGHT ) );
+      REMAP_SEQ_15( JOYCODE_1_RIGHT, CODE_OR, AXISCODE( 0, JT_LSTICK_RIGHT ), CODE_OR,
+                    JOYCODE_2_RIGHT, CODE_OR, AXISCODE( 1, JT_LSTICK_RIGHT ), CODE_OR,
+                    JOYCODE_3_RIGHT, CODE_OR, AXISCODE( 2, JT_LSTICK_RIGHT ), CODE_OR,
+                    JOYCODE_4_RIGHT, CODE_OR, AXISCODE( 3, JT_LSTICK_RIGHT ) );
       break;
 
 
@@ -1021,12 +1056,10 @@ static void Helper_CustomizeInputPortDefaults( struct ipd *defaults )
       REMAP_SEQ_1( AXISCODE( 0, JT_LSTICK_LEFT ) );
       break;
 
-
-   //    For some reason this maps to 89 (IPT_UI_LOAD_STATE)
-			//// *** IPT_PADDLE|IPF_PLAYER1+IPT_EXTENSION *** //
-   // case ((IPT_PADDLE|IPF_PLAYER1)+IPT_EXTENSION):
-   //   REMAP_SEQ_1( JOYCODE_1_RIGHT );
-   //   break;
+			// *** IPT_PADDLE|IPF_PLAYER1+IPT_EXTENSION *** //
+    case ((IPT_PADDLE|IPF_PLAYER1)+IPT_EXTENSION):
+      REMAP_SEQ_1( JOYCODE_1_RIGHT );
+      break;
 
 			// *** IPT_PADDLE_V|IPF_PLAYER1 *** //
     case (IPT_PADDLE_V|IPF_PLAYER1):
@@ -1069,23 +1102,55 @@ static void Helper_CustomizeInputPortDefaults( struct ipd *defaults )
       break;
 
 
+			// *** IPT_AD_STICK_X|IPF_PLAYER1 *** //
+    case (IPT_AD_STICK_X|IPF_PLAYER1):
+      REMAP_SEQ_1( AXISCODE( 0, JT_LSTICK_LEFT ) );
+      break;
 
-/*
-	{ IPT_AD_STICK_X | IPF_PLAYER1, "AD Stick X",   SEQ_DEF_3(KEYCODE_LEFT, CODE_OR, JOYCODE_1_LEFT) },
-	{ (IPT_AD_STICK_X | IPF_PLAYER1)+IPT_EXTENSION,                "AD Stick X",   SEQ_DEF_3(KEYCODE_RIGHT, CODE_OR, JOYCODE_1_RIGHT) },
+			// *** IPT_AD_STICK_X|IPF_PLAYER1+IPT_EXTENSION *** //
+    case (IPT_AD_STICK_X|IPF_PLAYER1)+IPT_EXTENSION:
+      REMAP_SEQ_1( AXISCODE( 0, JT_LSTICK_RIGHT ) );
+      break;
 
-	{ IPT_AD_STICK_Y | IPF_PLAYER1, "AD Stick Y",   SEQ_DEF_3(KEYCODE_UP, CODE_OR, JOYCODE_1_UP) },
-	{ (IPT_AD_STICK_Y | IPF_PLAYER1)+IPT_EXTENSION,                "AD Stick Y",   SEQ_DEF_3(KEYCODE_DOWN, CODE_OR, JOYCODE_1_DOWN) },
+			// *** IPT_AD_STICK_Y|IPF_PLAYER1 *** //
+    case (IPT_AD_STICK_Y|IPF_PLAYER1):
+      REMAP_SEQ_1( AXISCODE( 0, JT_LSTICK_UP ) );
+      break;
 
-	{ IPT_AD_STICK_Z | IPF_PLAYER1, "AD Stick Z",   SEQ_DEF_0 },
-	{ (IPT_AD_STICK_Z | IPF_PLAYER1)+IPT_EXTENSION,                "AD Stick Z",   SEQ_DEF_0 },
+			// *** IPT_AD_STICK_Y|IPF_PLAYER1+IPT_EXTENSION *** //
+    case (IPT_AD_STICK_Y|IPF_PLAYER1)+IPT_EXTENSION:
+      REMAP_SEQ_1( AXISCODE( 0, JT_LSTICK_DOWN ) );
+      break;
 
-	{ IPT_LIGHTGUN_X | IPF_PLAYER1, "Lightgun X",   SEQ_DEF_3(KEYCODE_LEFT, CODE_OR, JOYCODE_1_LEFT) },
-	{ (IPT_LIGHTGUN_X | IPF_PLAYER1)+IPT_EXTENSION,                "Lightgun X",   SEQ_DEF_3(KEYCODE_RIGHT, CODE_OR, JOYCODE_1_RIGHT) },
+			// *** IPT_AD_STICK_Z|IPF_PLAYER1 *** //
+    case (IPT_AD_STICK_Z|IPF_PLAYER1):
+      REMAP_SEQ_1( AXISCODE( 0, JT_RSTICK_LEFT ) );
+      break;
 
-	{ IPT_LIGHTGUN_Y | IPF_PLAYER1, "Lightgun Y",   SEQ_DEF_3(KEYCODE_UP, CODE_OR, JOYCODE_1_UP) },
-	{ (IPT_LIGHTGUN_Y | IPF_PLAYER1)+IPT_EXTENSION,                "Lightgun Y",   SEQ_DEF_3(KEYCODE_DOWN, CODE_OR, JOYCODE_1_DOWN) },
-*/
+			// *** IPT_AD_STICK_Z|IPF_PLAYER1+IPT_EXTENSION *** //
+    case (IPT_AD_STICK_Z|IPF_PLAYER1)+IPT_EXTENSION:
+      REMAP_SEQ_1( AXISCODE( 0, JT_RSTICK_RIGHT ) );
+      break;
+
+			// *** IPT_LIGHTGUN_X|IPF_PLAYER1 *** //
+    case (IPT_LIGHTGUN_X|IPF_PLAYER1):
+      REMAP_SEQ_1( AXISCODE( 0, JT_RSTICK_LEFT ) );
+      break;
+
+			// *** IPT_LIGHTGUN_X|IPF_PLAYER1+IPT_EXTENSION *** //
+    case (IPT_LIGHTGUN_X|IPF_PLAYER1)+IPT_EXTENSION:
+      REMAP_SEQ_1( AXISCODE( 0, JT_RSTICK_RIGHT ) );
+      break;
+
+			// *** IPT_LIGHTGUN_Y|IPF_PLAYER1 *** //
+    case (IPT_LIGHTGUN_Y|IPF_PLAYER1):
+      REMAP_SEQ_1( AXISCODE( 0, JT_LSTICK_UP ) );
+      break;
+
+			// *** IPT_LIGHTGUN_Y|IPF_PLAYER1+IPT_EXTENSION *** //
+    case (IPT_LIGHTGUN_Y|IPF_PLAYER1)+IPT_EXTENSION:
+      REMAP_SEQ_1( AXISCODE( 0, JT_LSTICK_DOWN ) );
+      break;
 
 
 
@@ -1275,6 +1340,58 @@ static void Helper_CustomizeInputPortDefaults( struct ipd *defaults )
       REMAP_SEQ_1( AXISCODE( 1, JT_LSTICK_DOWN ) );
       break;
 
+			// *** IPT_AD_STICK_X|IPF_PLAYER2 *** //
+    case (IPT_AD_STICK_X|IPF_PLAYER2):
+      REMAP_SEQ_1( AXISCODE( 1, JT_LSTICK_LEFT ) );
+      break;
+
+			// *** IPT_AD_STICK_X|IPF_PLAYER2+IPT_EXTENSION *** //
+    case (IPT_AD_STICK_X|IPF_PLAYER2)+IPT_EXTENSION:
+      REMAP_SEQ_1( AXISCODE( 1, JT_LSTICK_RIGHT ) );
+      break;
+
+			// *** IPT_AD_STICK_Y|IPF_PLAYER2 *** //
+    case (IPT_AD_STICK_Y|IPF_PLAYER2):
+      REMAP_SEQ_1( AXISCODE( 1, JT_LSTICK_UP ) );
+      break;
+
+			// *** IPT_AD_STICK_Y|IPF_PLAYER2+IPT_EXTENSION *** //
+    case (IPT_AD_STICK_Y|IPF_PLAYER2)+IPT_EXTENSION:
+      REMAP_SEQ_1( AXISCODE( 1, JT_LSTICK_DOWN ) );
+      break;
+
+			// *** IPT_AD_STICK_Z|IPF_PLAYER2 *** //
+    case (IPT_AD_STICK_Z|IPF_PLAYER2):
+      REMAP_SEQ_1( AXISCODE( 1, JT_RSTICK_LEFT ) );
+      break;
+
+			// *** IPT_AD_STICK_Z|IPF_PLAYER2+IPT_EXTENSION *** //
+    case (IPT_AD_STICK_Z|IPF_PLAYER2)+IPT_EXTENSION:
+      REMAP_SEQ_1( AXISCODE( 1, JT_RSTICK_RIGHT ) );
+      break;
+
+			// *** IPT_LIGHTGUN_X|IPF_PLAYER2 *** //
+    case (IPT_LIGHTGUN_X|IPF_PLAYER2):
+      REMAP_SEQ_1( AXISCODE( 1, JT_RSTICK_LEFT ) );
+      break;
+
+			// *** IPT_LIGHTGUN_X|IPF_PLAYER2+IPT_EXTENSION *** //
+    case (IPT_LIGHTGUN_X|IPF_PLAYER2)+IPT_EXTENSION:
+      REMAP_SEQ_1( AXISCODE( 1, JT_RSTICK_RIGHT ) );
+      break;
+
+			// *** IPT_LIGHTGUN_Y|IPF_PLAYER2 *** //
+    case (IPT_LIGHTGUN_Y|IPF_PLAYER2):
+      REMAP_SEQ_1( AXISCODE( 1, JT_LSTICK_UP ) );
+      break;
+
+			// *** IPT_LIGHTGUN_Y|IPF_PLAYER2+IPT_EXTENSION *** //
+    case (IPT_LIGHTGUN_Y|IPF_PLAYER2)+IPT_EXTENSION:
+      REMAP_SEQ_1( AXISCODE( 1, JT_LSTICK_DOWN ) );
+      break;
+
+
+
       //-- PLAYER 3 CONTROLS ----------------------------------------------------------------------------
 
 			// *** IPT_START3 *** //
@@ -1461,6 +1578,58 @@ static void Helper_CustomizeInputPortDefaults( struct ipd *defaults )
       REMAP_SEQ_1( AXISCODE( 2, JT_LSTICK_DOWN ) );
       break;
 
+			// *** IPT_AD_STICK_X|IPF_PLAYER3 *** //
+    case (IPT_AD_STICK_X|IPF_PLAYER3):
+      REMAP_SEQ_1( AXISCODE( 2, JT_LSTICK_LEFT ) );
+      break;
+
+			// *** IPT_AD_STICK_X|IPF_PLAYER3+IPT_EXTENSION *** //
+    case (IPT_AD_STICK_X|IPF_PLAYER3)+IPT_EXTENSION:
+      REMAP_SEQ_1( AXISCODE( 2, JT_LSTICK_RIGHT ) );
+      break;
+
+			// *** IPT_AD_STICK_Y|IPF_PLAYER3 *** //
+    case (IPT_AD_STICK_Y|IPF_PLAYER3):
+      REMAP_SEQ_1( AXISCODE( 2, JT_LSTICK_UP ) );
+      break;
+
+			// *** IPT_AD_STICK_Y|IPF_PLAYER3+IPT_EXTENSION *** //
+    case (IPT_AD_STICK_Y|IPF_PLAYER3)+IPT_EXTENSION:
+      REMAP_SEQ_1( AXISCODE( 2, JT_LSTICK_DOWN ) );
+      break;
+
+			// *** IPT_AD_STICK_Z|IPF_PLAYER3 *** //
+    case (IPT_AD_STICK_Z|IPF_PLAYER3):
+      REMAP_SEQ_1( AXISCODE( 2, JT_RSTICK_LEFT ) );
+      break;
+
+			// *** IPT_AD_STICK_Z|IPF_PLAYER3+IPT_EXTENSION *** //
+    case (IPT_AD_STICK_Z|IPF_PLAYER3)+IPT_EXTENSION:
+      REMAP_SEQ_1( AXISCODE( 2, JT_RSTICK_RIGHT ) );
+      break;
+
+			// *** IPT_LIGHTGUN_X|IPF_PLAYER3 *** //
+    case (IPT_LIGHTGUN_X|IPF_PLAYER3):
+      REMAP_SEQ_1( AXISCODE( 2, JT_RSTICK_LEFT ) );
+      break;
+
+			// *** IPT_LIGHTGUN_X|IPF_PLAYER3+IPT_EXTENSION *** //
+    case (IPT_LIGHTGUN_X|IPF_PLAYER3)+IPT_EXTENSION:
+      REMAP_SEQ_1( AXISCODE( 2, JT_RSTICK_RIGHT ) );
+      break;
+
+			// *** IPT_LIGHTGUN_Y|IPF_PLAYER3 *** //
+    case (IPT_LIGHTGUN_Y|IPF_PLAYER3):
+      REMAP_SEQ_1( AXISCODE( 2, JT_LSTICK_UP ) );
+      break;
+
+			// *** IPT_LIGHTGUN_Y|IPF_PLAYER3+IPT_EXTENSION *** //
+    case (IPT_LIGHTGUN_Y|IPF_PLAYER3)+IPT_EXTENSION:
+      REMAP_SEQ_1( AXISCODE( 2, JT_LSTICK_DOWN ) );
+      break;
+
+
+
       //-- PLAYER 4 CONTROLS ----------------------------------------------------------------------------
 
 			// *** IPT_START4 *** //
@@ -1646,6 +1815,57 @@ static void Helper_CustomizeInputPortDefaults( struct ipd *defaults )
     case ((IPT_TRACKBALL_Y|IPF_PLAYER4)+IPT_EXTENSION):
       REMAP_SEQ_1( AXISCODE( 3, JT_LSTICK_DOWN ) );
       break;
+
+			// *** IPT_AD_STICK_X|IPF_PLAYER4 *** //
+    case (IPT_AD_STICK_X|IPF_PLAYER4):
+      REMAP_SEQ_1( AXISCODE( 3, JT_LSTICK_LEFT ) );
+      break;
+
+			// *** IPT_AD_STICK_X|IPF_PLAYER4+IPT_EXTENSION *** //
+    case (IPT_AD_STICK_X|IPF_PLAYER4)+IPT_EXTENSION:
+      REMAP_SEQ_1( AXISCODE( 3, JT_LSTICK_RIGHT ) );
+      break;
+
+			// *** IPT_AD_STICK_Y|IPF_PLAYER4 *** //
+    case (IPT_AD_STICK_Y|IPF_PLAYER4):
+      REMAP_SEQ_1( AXISCODE( 3, JT_LSTICK_UP ) );
+      break;
+
+			// *** IPT_AD_STICK_Y|IPF_PLAYER4+IPT_EXTENSION *** //
+    case (IPT_AD_STICK_Y|IPF_PLAYER4)+IPT_EXTENSION:
+      REMAP_SEQ_1( AXISCODE( 3, JT_LSTICK_DOWN ) );
+      break;
+
+			// *** IPT_AD_STICK_Z|IPF_PLAYER4 *** //
+    case (IPT_AD_STICK_Z|IPF_PLAYER4):
+      REMAP_SEQ_1( AXISCODE( 3, JT_RSTICK_LEFT ) );
+      break;
+
+			// *** IPT_AD_STICK_Z|IPF_PLAYER4+IPT_EXTENSION *** //
+    case (IPT_AD_STICK_Z|IPF_PLAYER4)+IPT_EXTENSION:
+      REMAP_SEQ_1( AXISCODE( 3, JT_RSTICK_RIGHT ) );
+      break;
+
+			// *** IPT_LIGHTGUN_X|IPF_PLAYER4 *** //
+    case (IPT_LIGHTGUN_X|IPF_PLAYER4):
+      REMAP_SEQ_1( AXISCODE( 3, JT_RSTICK_LEFT ) );
+      break;
+
+			// *** IPT_LIGHTGUN_X|IPF_PLAYER4+IPT_EXTENSION *** //
+    case (IPT_LIGHTGUN_X|IPF_PLAYER4)+IPT_EXTENSION:
+      REMAP_SEQ_1( AXISCODE( 3, JT_RSTICK_RIGHT ) );
+      break;
+
+			// *** IPT_LIGHTGUN_Y|IPF_PLAYER4 *** //
+    case (IPT_LIGHTGUN_Y|IPF_PLAYER4):
+      REMAP_SEQ_1( AXISCODE( 3, JT_LSTICK_UP ) );
+      break;
+
+			// *** IPT_LIGHTGUN_Y|IPF_PLAYER4+IPT_EXTENSION *** //
+    case (IPT_LIGHTGUN_Y|IPF_PLAYER4)+IPT_EXTENSION:
+      REMAP_SEQ_1( AXISCODE( 3, JT_LSTICK_DOWN ) );
+      break;
+
 		}
 	}
 }

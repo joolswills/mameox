@@ -56,7 +56,7 @@ struct CUSTOMVERTEX
 //---------------------------------------------------------------------
 //	MoveCursor
 //---------------------------------------------------------------------
-void CListView::MoveCursor( CGamepad &gp, BOOL useSpeedBanding )
+void CListView::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
 {
 		// General idea taken from XMAME
 	static UINT64		lastTime = 0;
@@ -80,8 +80,8 @@ void CListView::MoveCursor( CGamepad &gp, BOOL useSpeedBanding )
 
 		// General idea taken from XMAME
 		// The combined trigger offset, scaled to the range [-1.0f,1.0f]
-	FLOAT cursorVelocity =  ((FLOAT)gp.GetAnalogButtonState(GP_RIGHT_TRIGGER) - 
-												  (FLOAT)gp.GetAnalogButtonState(GP_LEFT_TRIGGER)) / 256.0f;
+	FLOAT cursorVelocity =  ((FLOAT)gp.GetGamepad(0)->GetAnalogButtonState(GP_RIGHT_TRIGGER) - 
+												  (FLOAT)gp.GetGamepad(0)->GetAnalogButtonState(GP_LEFT_TRIGGER)) / 256.0f;
 
 
   if( useSpeedBanding )

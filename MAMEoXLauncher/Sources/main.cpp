@@ -229,7 +229,6 @@ void __cdecl main( void )
 
     // Wait for controller 0 to be inserted
   RequireController( 0 );
-  CGamepad *gp0 = g_inputManager.GetGamepad( 0 );
 
 #if TEST_LIGHTGUN
 
@@ -250,7 +249,6 @@ void __cdecl main( void )
 
 		g_inputManager.PollDevices();
     RequireController( 0 );
-	  gp0 = g_inputManager.GetGamepadDeviceState( 0 );
 
     pD3DDevice->Clear(	0L,																// Count
 											  NULL,															// Rects to clear
@@ -264,11 +262,11 @@ void __cdecl main( void )
 															(BYTE**)&pVertices,		// ppbData
 															0 );									// Flags
 
-      FLOAT lx = (FLOAT)((gp0->sThumbLX - 300)) / 32767.0f;
-      FLOAT rx = (FLOAT)((gp0->sThumbLX + 300)) / 32767.0f;
+      FLOAT lx = (FLOAT)((g_inputManager.sThumbLX - 300)) / 32767.0f;
+      FLOAT rx = (FLOAT)((g_inputManager.sThumbLX + 300)) / 32767.0f;
 
-      FLOAT ty = (FLOAT)((gp0->sThumbLY - 300)) / 32767.0f;
-      FLOAT by = (FLOAT)((gp0->sThumbLY + 300)) / 32767.0f;
+      FLOAT ty = (FLOAT)((g_inputManager.sThumbLY - 300)) / 32767.0f;
+      FLOAT by = (FLOAT)((g_inputManager.sThumbLY + 300)) / 32767.0f;
 
         //-- Draw the backdrop -------------------------------------------------
 		  pVertices[0].pos.x = lx;
@@ -299,7 +297,7 @@ void __cdecl main( void )
 
     g_fontSet.DefaultFont().Begin();
 
-    if( gp0->bAnalogButtons[XINPUT_GAMEPAD_B] > 10 )
+    if( g_inputManager.bAnalogButtons[XINPUT_GAMEPAD_B] > 10 )
     {
       osd_joystick_start_calibration();
       WaitForNoButton();
@@ -309,7 +307,7 @@ void __cdecl main( void )
       else
      	  mbstowcs( calibBuf, ptr, strlen(ptr) + 1 );
     }
-    if( gp0->bAnalogButtons[XINPUT_GAMEPAD_A] > 10 && g_calibrationStep )
+    if( g_inputManager.bAnalogButtons[XINPUT_GAMEPAD_A] > 10 && g_calibrationStep )
     {
       osd_joystick_calibrate();
       WaitForNoButton();
@@ -319,17 +317,17 @@ void __cdecl main( void )
       else
      	  mbstowcs( calibBuf, ptr, strlen(ptr) + 1 );
     }
-    if( gp0->bAnalogButtons[XINPUT_GAMEPAD_X] > 10 )
+    if( g_inputManager.bAnalogButtons[XINPUT_GAMEPAD_X] > 10 )
     {
       SaveOptions();
     }
 
       g_fontSet.DefaultFont().DrawText( 320, 180, D3DCOLOR_RGBA( 255, 255, 255, 255), calibBuf, XBFONT_CENTER_X );
 
-      swprintf( wBuf, L"LX: %d", gp0->sThumbLX );
+      swprintf( wBuf, L"LX: %d", g_inputManager.sThumbLX );
 	    g_fontSet.DefaultFont().DrawText( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
 
-      swprintf( wBuf, L"LY: %d", gp0->sThumbLY );
+      swprintf( wBuf, L"LY: %d", g_inputManager.sThumbLY );
 	    g_fontSet.DefaultFont().DrawText( 320, 100, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
 
 
@@ -439,7 +437,6 @@ void __cdecl main( void )
 	{
 		g_inputManager.PollDevices();
     RequireController( 0 );
-	  gp0 = g_inputManager.GetGamepad( 0 );
 
 	  UINT64 curTime = osd_cycles();
 	  FLOAT elapsedTime = (FLOAT)(curTime - lastTime) / (FLOAT)osd_cycles_per_second();
@@ -455,7 +452,7 @@ void __cdecl main( void )
 
 
 			// Reboot on LT+RT+Black
-    if( gp0->IsButtonPressed( GP_LEFT_TRIGGER | GP_RIGHT_TRIGGER | GP_BLACK ) )
+    if( g_inputManager.IsButtonPressed( GP_LEFT_TRIGGER | GP_RIGHT_TRIGGER | GP_BLACK ) )
 		{
       SaveOptions();
       LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
@@ -464,28 +461,25 @@ void __cdecl main( void )
 
 
 
-    if( gp0->IsOnlyButtonPressed( GP_B | GP_Y ) && toggleButtonTimeout == 0.0f )
+    if( g_inputManager.IsOnlyButtonPressed( GP_B | GP_Y ) && toggleButtonTimeout == 0.0f )
     {
         // Toggle options mode
       optionsMode = !optionsMode;
       toggleButtonTimeout = TOGGLEBUTTON_TIMEOUT;
     }
-    else if( gp0->IsOnlyButtonPressed( GP_X ) && toggleButtonTimeout == 0.0f )
+    else if( g_inputManager.IsOnlyButtonPressed( GP_X ) && toggleButtonTimeout == 0.0f )
     {
         // Toggle help mode
       helpMode = !helpMode;
       toggleButtonTimeout = TOGGLEBUTTON_TIMEOUT;
     }
-    else if( gp0->IsButtonPressed( GP_RIGHT_ANALOG ) && toggleButtonTimeout == 0.0f )
+    else if( g_inputManager.IsButtonPressed( GP_RIGHT_ANALOG ) && toggleButtonTimeout == 0.0f )
     {
         // Toggle the right analog stick mode
       rightAnalogMovesScreen = !rightAnalogMovesScreen;
       toggleButtonTimeout = TOGGLEBUTTON_TIMEOUT;
     }
-    else if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) < -SCREENRANGE_DEADZONE || 
-             gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) > SCREENRANGE_DEADZONE || 
-             gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) < -SCREENRANGE_DEADZONE || 
-             gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) > SCREENRANGE_DEADZONE ||
+    else if( g_inputManager.IsOneOfButtonsPressed( GP_RA_LEFT | GP_RA_RIGHT | GP_RA_UP | GP_RA_DOWN ) ||
              oldRotation != g_rendererOptions.m_screenRotation )
     {
       FLOAT xPos, yPos;
@@ -495,15 +489,14 @@ void __cdecl main( void )
 
       if( rightAnalogMovesScreen )
       {
-
-        if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) < -SCREENRANGE_DEADZONE )
+        if( g_inputManager.IsButtonPressed( GP_RA_LEFT ) )
           xPos -= 0.00025f;
-        else if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) > SCREENRANGE_DEADZONE )
-          xPos += 0.0005f;
+        else if( g_inputManager.IsButtonPressed( GP_RA_RIGHT ) )
+          xPos += 0.00025f;
 
-        if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) < -SCREENRANGE_DEADZONE )
+        if( g_inputManager.IsButtonPressed( GP_RA_DOWN ) )
           yPos -= 0.00025f;
-        else if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) > SCREENRANGE_DEADZONE )
+        else if( g_inputManager.IsButtonPressed( GP_RA_UP ) )
           yPos += 0.00025f;
 
         if( xPos < -0.5f )
@@ -521,14 +514,14 @@ void __cdecl main( void )
       else
       {
 
-        if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) < -SCREENRANGE_DEADZONE )
+        if( g_inputManager.IsButtonPressed( GP_RA_LEFT ) )
           xPercentage -= 0.00025f;
-        else if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_X ) > SCREENRANGE_DEADZONE )
+        else if( g_inputManager.IsButtonPressed( GP_RA_RIGHT ) )
           xPercentage += 0.00025f;
 
-        if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) < -SCREENRANGE_DEADZONE )
+        if( g_inputManager.IsButtonPressed( GP_RA_DOWN ) )
           yPercentage -= 0.00025f;
-        else if( gp0->GetAnalogAxisState( GP_ANALOG_RIGHT, GP_AXIS_Y ) > SCREENRANGE_DEADZONE )
+        else if( g_inputManager.IsButtonPressed( GP_RA_UP ) )
           yPercentage += 0.00025f;
 
         if( xPercentage < 0.25f )
@@ -578,17 +571,17 @@ void __cdecl main( void )
 
     if( optionsMode )
     {
-      optionsPage.MoveCursor( *gp0 );
+      optionsPage.MoveCursor( g_inputManager );
       optionsPage.DrawToTexture( renderTargetTexture );
     }
     else if( helpMode )
     {
-      help.MoveCursor( *gp0 );
+      help.MoveCursor( g_inputManager );
       help.DrawToTexture( renderTargetTexture );
     }
     else
     {
-		  romList.MoveCursor( *gp0 );
+		  romList.MoveCursor( g_inputManager );
 		  romList.DrawToTexture( renderTargetTexture );
     }
 

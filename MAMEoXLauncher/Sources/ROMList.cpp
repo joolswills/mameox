@@ -479,7 +479,7 @@ BOOL CROMList::LoadROMListFile( void )
 //---------------------------------------------------------------------
 //	MoveCursor
 //---------------------------------------------------------------------
-void CROMList::MoveCursor( CGamepad &gp, BOOL useSpeedBanding )
+void CROMList::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
 {
   	// Handle user input
   if(  gp.IsButtonPressed( GP_B | GP_A ) )
@@ -581,7 +581,7 @@ void CROMList::MoveCursor( CGamepad &gp, BOOL useSpeedBanding )
 //---------------------------------------------------------------------
 //	SuperScrollModeMoveCursor
 //---------------------------------------------------------------------
-void CROMList::SuperScrollModeMoveCursor( CGamepad &gp, FLOAT elapsedTime )
+void CROMList::SuperScrollModeMoveCursor( CInputManager &gp, FLOAT elapsedTime )
 {
   if( gp.IsOneOfButtonsPressed( GP_DPAD_DOWN | GP_LA_DOWN ) && m_dpadCursorDelay == 0.0f )
 	{
@@ -648,13 +648,13 @@ void CROMList::SuperScrollModeMoveCursor( CGamepad &gp, FLOAT elapsedTime )
 //---------------------------------------------------------------------
 //  NormalModeMoveCursor
 //---------------------------------------------------------------------
-void CROMList::NormalModeMoveCursor( CGamepad &gp, FLOAT elapsedTime )
+void CROMList::NormalModeMoveCursor( CInputManager &gp, FLOAT elapsedTime )
 {
 		// General idea taken from XMAME
 
 		// The combined trigger offset, scaled to the range [-1.0f,1.0f]
-  FLOAT cursorVelocity =  ((FLOAT)gp.GetAnalogButtonState( GP_RIGHT_TRIGGER ) - 
-												  (FLOAT)gp.GetAnalogButtonState( GP_LEFT_TRIGGER )) / 256.0f;
+  FLOAT cursorVelocity =  ((FLOAT)gp.GetGamepad(0)->GetAnalogButtonState( GP_RIGHT_TRIGGER ) - 
+												  (FLOAT)gp.GetGamepad(0)->GetAnalogButtonState( GP_LEFT_TRIGGER )) / 256.0f;
 
 
 		// Reset the speed band timeout
@@ -848,7 +848,7 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   #define SCROLLICON_COLOR      D3DCOLOR_XRGB( 255, 255, 255 )
 
   #define TITLEBAR_ROW          116
-  #define FIRSTDATA_ROW         139
+  #define FIRSTDATA_ROW         142
 
   #define HIGHLIGHTBAR_LEFT     34
   #define HIGHLIGHTBAR_RIGHT    606

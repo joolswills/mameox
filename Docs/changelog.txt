@@ -9,6 +9,12 @@ Version 0.70.3b
       - Put a call to osd_sound_enable just after cpu_run to
         stop annoying sound looping when exiting a game.
 
+    - inptport.h
+      - Bumped IPT_UI_CONFIGURE and all following commands up
+        to 2*IPT_EXTENSION to allow room for any input extension
+        slots. This fixes a problem in xbox_JoystickMouse.c where
+        certain case values (ex 
+        IPT_PADDLE|IPF_PLAYER1 + IPT_EXTENSION) are repeated
 
    -------------------------------------------------------------
   - \MAMEoX\Includes: 
@@ -19,6 +25,15 @@ Version 0.70.3b
       - Put in code to reposition the screen as well as resize
       - Moved resize variables from globals to members of the
         render setup struct
+
+    - InputManager.h
+      - Added "Is*ButtonPressed()" functions to act across all
+        gamepads. This allows users other than X to control
+        input (necessary for when a lightgun is in slot 0, for
+        instance)
+
+    - FontSet.h
+      - Added font resource helper class
 
    -------------------------------------------------------------
   - \MAMEoX\Sources: 
@@ -35,8 +50,10 @@ Version 0.70.3b
       - Switched back to | character now that it is supported
         by the Hawaiian Punk font
 
-    - FontSet.h
-      - Added font resource helper class
+    - xbox_JoystickMouse.c
+      - Added mappings for AD sticks + Lightgun
+      - Readded mapping for IPT_PADDLE|IPT_PLAYER1+IPT_EXTENSION
+        now that the inptport.h enum is fixed
 
    -------------------------------------------------------------
   - \MAMEoXLauncher\Sources:

@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "MAMEoX.h"
-#include "Gamepad.h"
+#include "InputManager.h"
 #include "StdString.h"
 #include "FontSet.h"
 
@@ -70,7 +70,7 @@ public:
 		//! \param		gp - The CGamepad containing the 
 		//!                current state of the user's joystick
 		//------------------------------------------------------------
-	void MoveCursor( CGamepad &gp );
+	void MoveCursor( CInputManager &gp );
 
 		//------------------------------------------------------------
 		// Draw

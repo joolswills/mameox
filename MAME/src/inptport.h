@@ -83,7 +83,7 @@ enum { IPT_END=1,IPT_PORT,
 					/* It is used to store additional parameters for analog inputs */
 
 	/* the following are special codes for user interface handling - not to be used by drivers! */
-	IPT_UI_CONFIGURE,
+	IPT_UI_CONFIGURE = IPT_EXTENSION * 2,
 	IPT_UI_ON_SCREEN_DISPLAY,
 	IPT_UI_PAUSE,
 	IPT_UI_RESET_MACHINE,

@@ -88,12 +88,12 @@ public:
 		// MoveCursor
 		//! \brief		Move the cursor based on user input
 		//!
-		//! \param		gp - The CGamepad containing the 
-		//!                current state of the user's joystick
+		//! \param		gp - The CInputManager containing the
+		//!                current state of the user's joystick(s)
     //! \param    useSpeedBanding - Whether or not to enable
     //!              "speed bands" (cursor acceleration)
 		//------------------------------------------------------------
-	virtual void MoveCursor( CGamepad &gp, BOOL useSpeedBanding = TRUE );
+	virtual void MoveCursor( CInputManager &inputManager, BOOL useSpeedBanding = FALSE );
 
 		//------------------------------------------------------------
 		// Draw
@@ -183,8 +183,8 @@ protected:
 
 
     // Cursor movement helper functions
-  void SuperScrollModeMoveCursor( CGamepad &gp, FLOAT elapsedTime );
-  void NormalModeMoveCursor( CGamepad &gp, FLOAT elapsedTime );
+  void SuperScrollModeMoveCursor( CInputManager &gp, FLOAT elapsedTime );
+  void NormalModeMoveCursor( CInputManager &gp, FLOAT elapsedTime );
   void GenerateSuperscrollJumpTable( void );
 
   UINT32                m_numDrivers;               //!<  The total number of drivers supported by the core
