@@ -189,7 +189,7 @@ static BOOL Helper_ReadXMLTag( osd_file *file, CStdString *tagName );
 //---------------------------------------------------------------------
 BOOL CROMListScreen::LoadROMList( BOOL bGenerate, BOOL allowClones )
 {
-	PRINTMSG( T_TRACE, "LoadROMList" );
+	PRINTMSG(( T_TRACE, "LoadROMList" ));
 
   m_maxPageSize = MAXPAGESIZE;
 	m_ROMListFull.clear();
@@ -226,7 +226,7 @@ BOOL CROMListScreen::LoadROMList( BOOL bGenerate, BOOL allowClones )
 //---------------------------------------------------------------------
 BOOL CROMListScreen::GenerateROMList( void )
 {
-	PRINTMSG( T_TRACE, "GenerateROMList" );
+	PRINTMSG(( T_TRACE, "GenerateROMList" ));
 
   m_shouldGenerateROMList = FALSE;
 	m_ROMListFull.clear();
@@ -237,19 +237,19 @@ BOOL CROMListScreen::GenerateROMList( void )
   g_FileIOConfig.m_RomPath2.MakeLower();
   g_FileIOConfig.m_RomPath3.MakeLower();
 
-	PRINTMSG( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_RomPath0.c_str() );
+	PRINTMSG(( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_RomPath0.c_str() ));
   Helper_GenerateROMList( g_FileIOConfig.m_RomPath0 );
 
   if( g_FileIOConfig.m_RomPath1 != g_FileIOConfig.m_RomPath0 )
   {
-	  PRINTMSG( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_RomPath1.c_str() );
+	  PRINTMSG(( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_RomPath1.c_str() ));
     Helper_GenerateROMList( g_FileIOConfig.m_RomPath1 );
   }
 
   if( g_FileIOConfig.m_RomPath2 != g_FileIOConfig.m_RomPath1 &&
       g_FileIOConfig.m_RomPath2 != g_FileIOConfig.m_RomPath0 )
   {
-	  PRINTMSG( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_RomPath2.c_str() );
+	  PRINTMSG(( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_RomPath2.c_str() ));
     Helper_GenerateROMList( g_FileIOConfig.m_RomPath2 );
   }
 
@@ -257,7 +257,7 @@ BOOL CROMListScreen::GenerateROMList( void )
       g_FileIOConfig.m_RomPath2 != g_FileIOConfig.m_RomPath1 &&
       g_FileIOConfig.m_RomPath2 != g_FileIOConfig.m_RomPath0 )
   {
-	  PRINTMSG( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_RomPath3.c_str() );
+	  PRINTMSG(( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_RomPath3.c_str() ));
     Helper_GenerateROMList( g_FileIOConfig.m_RomPath3 );
   }
 
@@ -268,7 +268,7 @@ BOOL CROMListScreen::GenerateROMList( void )
 
   if( !SaveROMListFile() )
   {
-    PRINTMSG( T_INFO, "Failed to store the ROM list file!" );
+    PRINTMSG(( T_INFO, "Failed to store the ROM list file!" ));
     return FALSE;
   }
 
@@ -302,7 +302,7 @@ BOOL CROMListScreen::Helper_GenerateROMList( CStdString &path )
                                         &findData );
     if( findHandle == INVALID_HANDLE_VALUE )
     {
-      PRINTMSG( T_INFO, "Could not find files!" );
+      PRINTMSG(( T_INFO, "Could not find files!" ));
       return TRUE;  // This is not really an error
     }
 
@@ -336,7 +336,7 @@ BOOL CROMListScreen::Helper_GenerateROMList( CStdString &path )
     FindClose( findHandle );
   }
 
-	PRINTMSG( T_INFO, "Found %lu zip files!", zipFileNames.size() );
+	PRINTMSG(( T_INFO, "Found %lu zip files!", zipFileNames.size() ));
 
   // Check the zip files against the list of all known zip files
 	for(DWORD i = 0; i < m_numDrivers && zipFileNames.size(); ++i )
@@ -379,7 +379,7 @@ BOOL CROMListScreen::Helper_GenerateROMList( CStdString &path )
     }
 	}
 
-	PRINTMSG( T_INFO, "Found %lu games!", m_ROMListFull.size() );
+	PRINTMSG(( T_INFO, "Found %lu games!", m_ROMListFull.size() ));
 
 	return TRUE;
 }
@@ -391,20 +391,20 @@ BOOL CROMListScreen::SaveROMListFile( void )
 {
 		// Write the indices to the ROM list file
 	CStdString romListFile = DEFAULT_MAMEOXSYSTEMPATH "\\" ROMLISTFILENAME;
-	PRINTMSG( T_INFO, "Store ROM list: %s", romListFile.c_str() );
+	PRINTMSG(( T_INFO, "Store ROM list: %s", romListFile.c_str() ));
 
 
   osd_file *file = osd_fopen( FILETYPE_MAMEOX_SYSTEM, 0, ROMLISTFILENAME, "w" );
 	if( !file )
 	{
-		PRINTMSG( T_ERROR, "Could not create file %s!", romListFile.c_str() );
+		PRINTMSG(( T_ERROR, "Could not create file %s!", romListFile.c_str() ));
 		return FALSE;
 	}
 
     // Sign the file
   if( osd_fwrite( file, DRIVERLIST_FILESTAMP, sizeof(DRIVERLIST_FILESTAMP) - 1 ) != sizeof(DRIVERLIST_FILESTAMP) - 1 )
 	{
-		PRINTMSG( T_ERROR, "Write failed!" );
+		PRINTMSG(( T_ERROR, "Write failed!" ));
 		osd_fclose( file );
 
 			// Delete the file
@@ -420,7 +420,7 @@ BOOL CROMListScreen::SaveROMListFile( void )
   {
     osd_fclose( file );
 		DeleteFile( romListFile.c_str() );
-    PRINTMSG( T_ERROR, "Could not calculate driver list signature!" );
+    PRINTMSG(( T_ERROR, "Could not calculate driver list signature!" ));
     return FALSE;
   }
 
@@ -430,7 +430,7 @@ BOOL CROMListScreen::SaveROMListFile( void )
   {
     osd_fclose( file );
 		DeleteFile( romListFile.c_str() );
-    PRINTMSG( T_ERROR, "Could not allocate memory for driver list signature!" );
+    PRINTMSG(( T_ERROR, "Could not allocate memory for driver list signature!" ));
     return FALSE;
   }
 
@@ -440,7 +440,7 @@ BOOL CROMListScreen::SaveROMListFile( void )
     free( sigData );
     osd_fclose( file );
 		DeleteFile( romListFile.c_str() );
-    PRINTMSG( T_ERROR, "Failed writing blank signature!" );
+    PRINTMSG(( T_ERROR, "Failed writing blank signature!" ));
     return FALSE;
   }
 
@@ -451,7 +451,7 @@ BOOL CROMListScreen::SaveROMListFile( void )
     if( XCalculateSignatureUpdate( sigHandle, (const BYTE *)(_data__), (_dataSize__) ) != ERROR_SUCCESS || \
         osd_fwrite( file, (_data__), (_dataSize__) ) != (_dataSize__) ) \
     { \
-      PRINTMSG( T_ERROR, "Write failed!" ); \
+      PRINTMSG(( T_ERROR, "Write failed!" )); \
       free( sigData ); \
       osd_fclose( file ); \
       DeleteFile( romListFile.c_str() ); \
@@ -481,7 +481,7 @@ BOOL CROMListScreen::SaveROMListFile( void )
     free( sigData );
     osd_fclose( file );
 		DeleteFile( romListFile.c_str() );
-    PRINTMSG( T_ERROR, "Failed getting signature!" );
+    PRINTMSG(( T_ERROR, "Failed getting signature!" ));
     return FALSE;
   }
 
@@ -492,7 +492,7 @@ BOOL CROMListScreen::SaveROMListFile( void )
     free( sigData );
     osd_fclose( file );
 		DeleteFile( romListFile.c_str() );
-    PRINTMSG( T_ERROR, "Failed writing signature!" );
+    PRINTMSG(( T_ERROR, "Failed writing signature!" ));
     return FALSE;
   }
 
@@ -516,11 +516,11 @@ BOOL CROMListScreen::LoadROMListFile( void )
     m_ROMStatus.push_back( STATUS_UNKNOWN );
 
   std::string romListFile = DEFAULT_MAMEOXSYSTEMPATH "\\" ROMLISTFILENAME;
-	PRINTMSG( T_INFO, "Load ROM list: %s", romListFile.c_str() );
+	PRINTMSG(( T_INFO, "Load ROM list: %s", romListFile.c_str() ));
   osd_file *file = osd_fopen( FILETYPE_MAMEOX_SYSTEM, 0, ROMLISTFILENAME, "r" );
 	if( !file )
 	{
-    PRINTMSG( T_ERROR, "Failed to open ROM list file %s!", romListFile.c_str() );
+    PRINTMSG(( T_ERROR, "Failed to open ROM list file %s!", romListFile.c_str() ));
     return FALSE;
   }
 
@@ -534,10 +534,10 @@ BOOL CROMListScreen::LoadROMListFile( void )
   {
     osd_fclose( file );
 		DeleteFile( romListFile.c_str() );
-    PRINTMSG( T_ERROR, 
+    PRINTMSG(( T_ERROR, 
               "Could not malloc space for %s (%lu bytes required)!", 
               romListFile.c_str(), 
-              fileSize );
+              fileSize ));
     return FALSE;
   }
 
@@ -547,7 +547,7 @@ BOOL CROMListScreen::LoadROMListFile( void )
     free( fileData );
     osd_fclose( file );
 		DeleteFile( romListFile.c_str() );
-    PRINTMSG( T_ERROR, "Failed to read file %s!", romListFile.c_str() );
+    PRINTMSG(( T_ERROR, "Failed to read file %s!", romListFile.c_str() ));
     return FALSE;
   }
   osd_fclose( file );
@@ -557,7 +557,7 @@ BOOL CROMListScreen::LoadROMListFile( void )
   {
     free( fileData );
 		DeleteFile( romListFile.c_str() );
-    PRINTMSG( T_ERROR, "Bad file signature!" );
+    PRINTMSG(( T_ERROR, "Bad file signature!" ));
     return FALSE;
   }
 
@@ -567,7 +567,7 @@ BOOL CROMListScreen::LoadROMListFile( void )
   {
     free( fileData );
 		DeleteFile( romListFile.c_str() );
-    PRINTMSG( T_ERROR, "Could not calculate driver list signature!" );
+    PRINTMSG(( T_ERROR, "Could not calculate driver list signature!" ));
     return FALSE;
   }
 
@@ -577,7 +577,7 @@ BOOL CROMListScreen::LoadROMListFile( void )
   {
     free( fileData );
 		DeleteFile( romListFile.c_str() );
-    PRINTMSG( T_ERROR, "Could not allocate memory for driver list signature!" );
+    PRINTMSG(( T_ERROR, "Could not allocate memory for driver list signature!" ));
     return FALSE;
   }
 
@@ -588,7 +588,7 @@ BOOL CROMListScreen::LoadROMListFile( void )
     free( fileData );
     free( sigData );
 		DeleteFile( romListFile.c_str() );
-    PRINTMSG( T_ERROR, "Failed to calculate data signature!" );
+    PRINTMSG(( T_ERROR, "Failed to calculate data signature!" ));
     return FALSE;
   }
   
@@ -598,7 +598,7 @@ BOOL CROMListScreen::LoadROMListFile( void )
     free( fileData );
     free( sigData );
 		DeleteFile( romListFile.c_str() );
-    PRINTMSG( T_ERROR, "Failed getting signature!" );
+    PRINTMSG(( T_ERROR, "Failed getting signature!" ));
     return FALSE;
   }
 
@@ -608,7 +608,7 @@ BOOL CROMListScreen::LoadROMListFile( void )
     free( fileData );
     free( sigData );
 		DeleteFile( romListFile.c_str() );
-    PRINTMSG( T_ERROR, "Data signature mismatch!" );
+    PRINTMSG(( T_ERROR, "Data signature mismatch!" ));
     return FALSE;
   }
   free( sigData );
@@ -624,7 +624,7 @@ BOOL CROMListScreen::LoadROMListFile( void )
     { \
       free( fileData ); \
       DeleteFile( romListFile.c_str() ); \
-      PRINTMSG( T_ERROR, "Attempt to read beyond the end of the file!" ); \
+      PRINTMSG(( T_ERROR, "Attempt to read beyond the end of the file!" )); \
       return FALSE; \
     } \
     else \
@@ -633,7 +633,7 @@ BOOL CROMListScreen::LoadROMListFile( void )
       { \
         free( fileData ); \
         DeleteFile( romListFile.c_str() ); \
-        PRINTMSG( T_ERROR, "Failed to malloc data array. %lu bytes requested!", (_dataSize__) ); \
+        PRINTMSG(( T_ERROR, "Failed to malloc data array. %lu bytes requested!", (_dataSize__) )); \
         return FALSE; \
       } \
       memcpy( (_data__), listData, (_dataSize__) ); \
@@ -645,7 +645,7 @@ BOOL CROMListScreen::LoadROMListFile( void )
     { \
       free( fileData ); \
       DeleteFile( romListFile.c_str() ); \
-      PRINTMSG( T_ERROR, "Attempt to read beyond the end of the file!" ); \
+      PRINTMSG(( T_ERROR, "Attempt to read beyond the end of the file!" )); \
       return FALSE; \
     } \
     else \
@@ -654,7 +654,7 @@ BOOL CROMListScreen::LoadROMListFile( void )
       { \
         free( fileData ); \
         DeleteFile( romListFile.c_str() ); \
-        PRINTMSG( T_ERROR, "Attempt to read into NULL destination buffer!" ); \
+        PRINTMSG(( T_ERROR, "Attempt to read into NULL destination buffer!" )); \
         return FALSE; \
       } \
       memcpy( (_data__), listData, (_dataSize__) ); \
@@ -680,7 +680,7 @@ BOOL CROMListScreen::LoadROMListFile( void )
   free( fileData );
 
   if( !LoadROMMetadataFile() )
-    PRINTMSG( T_ERROR, "Failed loading ROM metadata file!" );
+    PRINTMSG(( T_ERROR, "Failed loading ROM metadata file!" ));
 
 
   return TRUE;
@@ -695,18 +695,18 @@ BOOL CROMListScreen::SaveROMMetadataFile( void )
   CStdString romMetadataFile = DEFAULT_MAMEOXSYSTEMPATH "\\" ROMMETADATAFILENAME;
 
 		// Write the indices to the ROM list file
-	PRINTMSG( T_TRACE, "SaveROMMetadataFile" );
+	PRINTMSG(( T_TRACE, "SaveROMMetadataFile" ));
   osd_file *file = osd_fopen( FILETYPE_MAMEOX_SYSTEM, 0, ROMMETADATAFILENAME, "w" );
 	if( !file )
 	{
-		PRINTMSG( T_ERROR, "Could not create file %s!", romMetadataFile.c_str() );
+		PRINTMSG(( T_ERROR, "Could not create file %s!", romMetadataFile.c_str() ));
 		return FALSE;
 	}
 
     // Sign the file
   if( osd_fwrite( file, DRIVERLIST_FILESTAMP, sizeof(DRIVERLIST_FILESTAMP) - 1 ) != sizeof(DRIVERLIST_FILESTAMP) - 1 )
 	{
-		PRINTMSG( T_ERROR, "Write failed!" );
+		PRINTMSG(( T_ERROR, "Write failed!" ));
 		osd_fclose( file );
 
 			// Delete the file
@@ -721,7 +721,7 @@ BOOL CROMListScreen::SaveROMMetadataFile( void )
   {
     osd_fclose( file );
 		DeleteFile( romMetadataFile.c_str() );
-    PRINTMSG( T_ERROR, "Could not calculate driver list signature!" );
+    PRINTMSG(( T_ERROR, "Could not calculate driver list signature!" ));
     return FALSE;
   }
 
@@ -731,7 +731,7 @@ BOOL CROMListScreen::SaveROMMetadataFile( void )
   {
     osd_fclose( file );
 		DeleteFile( romMetadataFile.c_str() );
-    PRINTMSG( T_ERROR, "Could not allocate memory for driver list signature!" );
+    PRINTMSG(( T_ERROR, "Could not allocate memory for driver list signature!" ));
     return FALSE;
   }
 
@@ -741,7 +741,7 @@ BOOL CROMListScreen::SaveROMMetadataFile( void )
     free( sigData );
     osd_fclose( file );
 		DeleteFile( romMetadataFile.c_str() );
-    PRINTMSG( T_ERROR, "Failed writing blank signature!" );
+    PRINTMSG(( T_ERROR, "Failed writing blank signature!" ));
     return FALSE;
   }
 
@@ -752,7 +752,7 @@ BOOL CROMListScreen::SaveROMMetadataFile( void )
     if( XCalculateSignatureUpdate( sigHandle, (const BYTE *)(_data__), (_dataSize__) ) != ERROR_SUCCESS || \
         osd_fwrite( file, (_data__), (_dataSize__) ) != (_dataSize__) ) \
     { \
-      PRINTMSG( T_ERROR, "Write failed!" ); \
+      PRINTMSG(( T_ERROR, "Write failed!" )); \
       free( sigData ); \
       osd_fclose( file ); \
       DeleteFile( romMetadataFile.c_str() ); \
@@ -827,7 +827,7 @@ BOOL CROMListScreen::SaveROMMetadataFile( void )
     free( sigData );
     osd_fclose( file );
 		DeleteFile( romMetadataFile.c_str() );
-    PRINTMSG( T_ERROR, "Failed getting signature!" );
+    PRINTMSG(( T_ERROR, "Failed getting signature!" ));
     return FALSE;
   }
 
@@ -838,7 +838,7 @@ BOOL CROMListScreen::SaveROMMetadataFile( void )
     free( sigData );
     osd_fclose( file );
 		DeleteFile( romMetadataFile.c_str() );
-    PRINTMSG( T_ERROR, "Failed writing signature!" );
+    PRINTMSG(( T_ERROR, "Failed writing signature!" ));
     return FALSE;
   }
 
@@ -866,11 +866,11 @@ BOOL CROMListScreen::LoadROMMetadataFile( void )
     m_driverMetadata.push_back( emptyMetadata );
   }
 
-	PRINTMSG( T_INFO, "Load ROM metadata: %s", romMetadataFile.c_str() );
+	PRINTMSG(( T_INFO, "Load ROM metadata: %s", romMetadataFile.c_str() ));
   osd_file *file = osd_fopen( FILETYPE_MAMEOX_SYSTEM, 0, ROMMETADATAFILENAME, "r" );
 	if( !file )
 	{
-    PRINTMSG( T_ERROR, "Failed to open ROM metadata file %s!", romMetadataFile.c_str() );
+    PRINTMSG(( T_ERROR, "Failed to open ROM metadata file %s!", romMetadataFile.c_str() ));
     return FALSE;
   }
 
@@ -884,10 +884,10 @@ BOOL CROMListScreen::LoadROMMetadataFile( void )
   {
     osd_fclose( file );
 		DeleteFile( romMetadataFile.c_str() );
-    PRINTMSG( T_ERROR, 
+    PRINTMSG(( T_ERROR, 
               "Could not malloc space for %s (%lu bytes required)!", 
               romMetadataFile.c_str(), 
-              fileSize );
+              fileSize ));
     return FALSE;
   }
 
@@ -897,7 +897,7 @@ BOOL CROMListScreen::LoadROMMetadataFile( void )
     free( fileData );
     osd_fclose( file );
 		DeleteFile( romMetadataFile.c_str() );
-    PRINTMSG( T_ERROR, "Failed to read file %s!", romMetadataFile.c_str() );
+    PRINTMSG(( T_ERROR, "Failed to read file %s!", romMetadataFile.c_str() ));
     return FALSE;
   }
   osd_fclose( file );
@@ -918,7 +918,7 @@ BOOL CROMListScreen::LoadROMMetadataFile( void )
   {
     free( fileData );
 		DeleteFile( romMetadataFile.c_str() );
-    PRINTMSG( T_ERROR, "Could not calculate driver list signature!" );
+    PRINTMSG(( T_ERROR, "Could not calculate driver list signature!" ));
     return FALSE;
   }
 
@@ -928,7 +928,7 @@ BOOL CROMListScreen::LoadROMMetadataFile( void )
   {
     free( fileData );
 		DeleteFile( romMetadataFile.c_str() );
-    PRINTMSG( T_ERROR, "Could not allocate memory for driver list signature!" );
+    PRINTMSG(( T_ERROR, "Could not allocate memory for driver list signature!" ));
     return FALSE;
   }
 
@@ -939,7 +939,7 @@ BOOL CROMListScreen::LoadROMMetadataFile( void )
     free( fileData );
     free( sigData );
 		DeleteFile( romMetadataFile.c_str() );
-    PRINTMSG( T_ERROR, "Failed to calculate data signature!" );
+    PRINTMSG(( T_ERROR, "Failed to calculate data signature!" ));
     return FALSE;
   }
   
@@ -950,7 +950,7 @@ BOOL CROMListScreen::LoadROMMetadataFile( void )
     free( fileData );
     free( sigData );
 		DeleteFile( romMetadataFile.c_str() );
-    PRINTMSG( T_ERROR, "Failed getting signature!" );
+    PRINTMSG(( T_ERROR, "Failed getting signature!" ));
     return FALSE;
   }
 
@@ -960,7 +960,7 @@ BOOL CROMListScreen::LoadROMMetadataFile( void )
     free( fileData );
     free( sigData );
 		DeleteFile( romMetadataFile.c_str() );
-    PRINTMSG( T_ERROR, "Data signature mismatch!" );
+    PRINTMSG(( T_ERROR, "Data signature mismatch!" ));
     return FALSE;
   }
   free( sigData );
@@ -973,7 +973,7 @@ BOOL CROMListScreen::LoadROMMetadataFile( void )
     { \
       free( fileData ); \
       DeleteFile( romMetadataFile.c_str() ); \
-      PRINTMSG( T_ERROR, "Attempt to read beyond the end of the file!" ); \
+      PRINTMSG(( T_ERROR, "Attempt to read beyond the end of the file!" )); \
       return FALSE; \
     } \
     else \
@@ -982,7 +982,7 @@ BOOL CROMListScreen::LoadROMMetadataFile( void )
       { \
         free( fileData ); \
         DeleteFile( romMetadataFile.c_str() ); \
-        PRINTMSG( T_ERROR, "Failed to malloc data array. %lu bytes requested!", (_dataSize__) ); \
+        PRINTMSG(( T_ERROR, "Failed to malloc data array. %lu bytes requested!", (_dataSize__) )); \
         return FALSE; \
       } \
       memcpy( (_data__), listData, (_dataSize__) ); \
@@ -994,7 +994,7 @@ BOOL CROMListScreen::LoadROMMetadataFile( void )
     { \
       free( fileData ); \
       DeleteFile( romMetadataFile.c_str() ); \
-      PRINTMSG( T_ERROR, "Attempt to read beyond the end of the file!" ); \
+      PRINTMSG(( T_ERROR, "Attempt to read beyond the end of the file!" )); \
       return FALSE; \
     } \
     else \
@@ -1003,7 +1003,7 @@ BOOL CROMListScreen::LoadROMMetadataFile( void )
       { \
         free( fileData ); \
         DeleteFile( romMetadataFile.c_str() ); \
-        PRINTMSG( T_ERROR, "Attempt to read into NULL destination buffer!" ); \
+        PRINTMSG(( T_ERROR, "Attempt to read into NULL destination buffer!" )); \
         return FALSE; \
       } \
       memcpy( (_data__), listData, (_dataSize__) ); \
@@ -1077,11 +1077,11 @@ BOOL CROMListScreen::UpdateROMMetadataFile( void )
     m_driverMetadata.push_back( emptyMetadata );
   }
 
-	PRINTMSG( T_INFO, "Load ROM metadata: %s", romMetadataFile.c_str() );
+	PRINTMSG(( T_INFO, "Load ROM metadata: %s", romMetadataFile.c_str() ));
 	osd_file *file = osd_fopen( FILETYPE_MAMEOX_SYSTEM, 0, ROMMETADATAFILENAME, "r" );
 	if( !file )
 	{
-    PRINTMSG( T_ERROR, "Failed to open ROM metadata file %s!", romMetadataFile.c_str() );
+    PRINTMSG(( T_ERROR, "Failed to open ROM metadata file %s!", romMetadataFile.c_str() ));
     return FALSE;
   }
 
@@ -1095,10 +1095,10 @@ BOOL CROMListScreen::UpdateROMMetadataFile( void )
   {
     osd_fclose( file );
 		DeleteFile( romMetadataFile.c_str() );
-    PRINTMSG( T_ERROR, 
+    PRINTMSG(( T_ERROR, 
               "Could not malloc space for %s (%lu bytes required)!", 
               romMetadataFile.c_str(), 
-              fileSize );
+              fileSize ));
     return FALSE;
   }
 
@@ -1108,7 +1108,7 @@ BOOL CROMListScreen::UpdateROMMetadataFile( void )
     free( fileData );
     osd_fclose( file );
 		DeleteFile( romMetadataFile.c_str() );
-    PRINTMSG( T_ERROR, "Failed to read file %s!", romMetadataFile.c_str() );
+    PRINTMSG(( T_ERROR, "Failed to read file %s!", romMetadataFile.c_str() ));
     return FALSE;
   }
   osd_fclose( file );
@@ -1121,7 +1121,7 @@ BOOL CROMListScreen::UpdateROMMetadataFile( void )
   {
     free( fileData );
 		DeleteFile( romMetadataFile.c_str() );
-    PRINTMSG( T_ERROR, "Could not calculate driver list signature!" );
+    PRINTMSG(( T_ERROR, "Could not calculate driver list signature!" ));
     return FALSE;
   }
 
@@ -1131,7 +1131,7 @@ BOOL CROMListScreen::UpdateROMMetadataFile( void )
   {
     free( fileData );
 		DeleteFile( romMetadataFile.c_str() );
-    PRINTMSG( T_ERROR, "Could not allocate memory for driver list signature!" );
+    PRINTMSG(( T_ERROR, "Could not allocate memory for driver list signature!" ));
     return FALSE;
   }
 
@@ -1142,7 +1142,7 @@ BOOL CROMListScreen::UpdateROMMetadataFile( void )
     free( fileData );
     free( sigData );
 		DeleteFile( romMetadataFile.c_str() );
-    PRINTMSG( T_ERROR, "Failed to calculate data signature!" );
+    PRINTMSG(( T_ERROR, "Failed to calculate data signature!" ));
     return FALSE;
   }
   
@@ -1154,7 +1154,7 @@ BOOL CROMListScreen::UpdateROMMetadataFile( void )
     free( fileData );
     free( sigData );
 		DeleteFile( romMetadataFile.c_str() );
-    PRINTMSG( T_ERROR, "Failed getting signature!" );
+    PRINTMSG(( T_ERROR, "Failed getting signature!" ));
     return FALSE;
   }
 
@@ -1164,7 +1164,7 @@ BOOL CROMListScreen::UpdateROMMetadataFile( void )
     free( fileData );
     free( sigData );
 		DeleteFile( romMetadataFile.c_str() );
-    PRINTMSG( T_ERROR, "Data signature mismatch!" );
+    PRINTMSG(( T_ERROR, "Data signature mismatch!" ));
     return FALSE;
   }
   free( sigData );
@@ -1177,7 +1177,7 @@ BOOL CROMListScreen::UpdateROMMetadataFile( void )
     { \
       free( fileData ); \
       DeleteFile( romMetadataFile.c_str() ); \
-      PRINTMSG( T_ERROR, "Attempt to read beyond the end of the file!" ); \
+      PRINTMSG(( T_ERROR, "Attempt to read beyond the end of the file!" )); \
       return FALSE; \
     } \
     else \
@@ -1186,7 +1186,7 @@ BOOL CROMListScreen::UpdateROMMetadataFile( void )
       { \
         free( fileData ); \
         DeleteFile( romMetadataFile.c_str() ); \
-        PRINTMSG( T_ERROR, "Failed to malloc data array. %lu bytes requested!", (_dataSize__) ); \
+        PRINTMSG(( T_ERROR, "Failed to malloc data array. %lu bytes requested!", (_dataSize__) )); \
         return FALSE; \
       } \
       memcpy( (_data__), listData, (_dataSize__) ); \
@@ -1198,7 +1198,7 @@ BOOL CROMListScreen::UpdateROMMetadataFile( void )
     { \
       free( fileData ); \
       DeleteFile( romMetadataFile.c_str() ); \
-      PRINTMSG( T_ERROR, "Attempt to read beyond the end of the file!" ); \
+      PRINTMSG(( T_ERROR, "Attempt to read beyond the end of the file!" )); \
       return FALSE; \
     } \
     else \
@@ -1207,7 +1207,7 @@ BOOL CROMListScreen::UpdateROMMetadataFile( void )
       { \
         free( fileData ); \
         DeleteFile( romMetadataFile.c_str() ); \
-        PRINTMSG( T_ERROR, "Attempt to read into NULL destination buffer!" ); \
+        PRINTMSG(( T_ERROR, "Attempt to read into NULL destination buffer!" )); \
         return FALSE; \
       } \
       memcpy( (_data__), listData, (_dataSize__) ); \
@@ -1331,7 +1331,7 @@ BOOL CROMListScreen::RefreshROMStatus( void )
                           0 );
   if( !LoadROMStatusFile() )
   {
-    PRINTMSG( T_ERROR, "Failed to load the ROM status file" );
+    PRINTMSG(( T_ERROR, "Failed to load the ROM status file" ));
     return FALSE;
   }
 
@@ -1344,7 +1344,7 @@ BOOL CROMListScreen::RefreshROMStatus( void )
 
   if( !SaveROMListFile() )
   {
-    PRINTMSG( T_ERROR, "Failed to save the ROM list file" );
+    PRINTMSG(( T_ERROR, "Failed to save the ROM list file" ));
     return FALSE;
   }
 
@@ -1366,7 +1366,7 @@ BOOL CROMListScreen::LoadROMStatusFile( void )
   osd_file *file = osd_fopen( FILETYPE_HISTORY, 0, ROMSTATUSFILENAME, "r" );
   if( !file )
   {
-    PRINTMSG( T_ERROR, "Failed to open rom status file: %s", ROMSTATUSFILENAME );
+    PRINTMSG(( T_ERROR, "Failed to open rom status file: %s", ROMSTATUSFILENAME ));
     return FALSE;
   }
 
@@ -1415,7 +1415,7 @@ BOOL CROMListScreen::LoadROMStatusFile( void )
         if( i != m_numDrivers )
           m_ROMStatus[i] = romStatus;
         else
-          PRINTMSG( T_INFO, "Unknown driver %s in status XML file!", "" );
+          PRINTMSG(( T_INFO, "Unknown driver %s in status XML file!", "" ));
 
         romName = "";
         romStatus = STATUS_UNKNOWN;
@@ -1490,7 +1490,7 @@ void CROMListScreen::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
       {
         m_gameSelected = TRUE;
         ++m_driverMetadata[GetCurrentGameIndex()].m_timesPlayed;
-        PRINTMSG( T_INFO, "m_driverMetadata[GetCurrentGameIndex()].m_timesPlayed %lu", m_driverMetadata[GetCurrentGameIndex()].m_timesPlayed );
+        PRINTMSG(( T_INFO, "m_driverMetadata[GetCurrentGameIndex()].m_timesPlayed %lu", m_driverMetadata[GetCurrentGameIndex()].m_timesPlayed ));
       }
     }
 	}
@@ -1858,7 +1858,7 @@ void CROMListScreen::NormalModeMoveCursor( CInputManager &gp, FLOAT elapsedTime 
           return;
       }
 
-      PRINTMSG( T_ERROR, "Could not find valid jump table index for ROM %lu [%s]!", GetCurrentGameIndex(), currentROMVal.c_str() );
+      PRINTMSG(( T_ERROR, "Could not find valid jump table index for ROM %lu [%s]!", GetCurrentGameIndex(), currentROMVal.c_str() ));
       m_currentSuperscrollIndex = 0;
     }
   }
@@ -2925,7 +2925,7 @@ BOOL CROMListScreen::RemoveCurrentGameIndex( void )
     // Write out the new list to file
   if( !SaveROMListFile() )
   {
-    PRINTMSG( T_INFO, "Failed to store the ROM list file!" );
+    PRINTMSG(( T_INFO, "Failed to store the ROM list file!" ));
     return FALSE;
   }
 
@@ -2968,13 +2968,13 @@ BOOL CROMListScreen::Helper_MoveCurrentGameToBackupDir( CStdString &path )
     // Make sure the backup dir exists
     CreateDirectory( g_ROMBackupPath, NULL );
 
-    PRINTMSG( T_INFO, "Moving ROM %s to %s!", oldPath.c_str(), newPath.c_str() );
+    PRINTMSG(( T_INFO, "Moving ROM %s to %s!", oldPath.c_str(), newPath.c_str() ));
 
       // For some reason MoveFile seems to fail if I move from one partition to
       // another. For this reason, do a copy & delete
 //    if( !MoveFile( oldPath.c_str(), newPath.c_str() ) )
     if( !CopyFile( oldPath.c_str(), newPath.c_str(), FALSE ) )
-      PRINTMSG( T_ERROR, "Failed moving ROM %s to %s!", oldPath.c_str(), newPath.c_str() );
+      PRINTMSG(( T_ERROR, "Failed moving ROM %s to %s!", oldPath.c_str(), newPath.c_str() ));
     else
     {
       DeleteFile( oldPath.c_str() );

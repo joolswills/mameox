@@ -50,7 +50,7 @@ extern "C" {
 #define DEBUGGERCHECKRAM() {\
                               MEMORYSTATUS memStatus;\
                               GlobalMemoryStatus(  &memStatus );\
-                              PRINTMSG( T_INFO, "Memory: %lu/%lu",memStatus.dwAvailPhys, memStatus.dwTotalPhys );\
+                              PRINTMSG(( T_INFO, "Memory: %lu/%lu",memStatus.dwAvailPhys, memStatus.dwTotalPhys ));\
                             }
 #else
 #define CHECKRAM()

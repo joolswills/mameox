@@ -64,11 +64,11 @@ void Die( LPDIRECT3DDEVICE8 m_displayDevice, const char *fmt, ... ); // Defined 
 //---------------------------------------------------------------------
 BOOL CHelpScreen::LoadHelpFile( void )
 {
-	PRINTMSG( T_TRACE, "LoadHelpFile" );
+	PRINTMSG(( T_TRACE, "LoadHelpFile" ));
 
 	m_data.clear();
 
-	PRINTMSG( T_INFO, "Load help file: " HELPFILENAME );
+	PRINTMSG(( T_INFO, "Load help file: " HELPFILENAME ));
 	HANDLE hFile = CreateFile(	HELPFILENAME,
 															GENERIC_READ,
 															0,

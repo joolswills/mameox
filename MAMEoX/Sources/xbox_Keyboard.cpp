@@ -86,7 +86,7 @@ int osd_readkey_unicode( int flush )
   Set flush to 1 to clear the buffer before entering text. This will avoid
   having prior UI and game keys leak into the text entry.
 */
-//	PRINTMSG( T_TRACE, "osd_readkey_unicode" );
+//	PRINTMSG(( T_TRACE, "osd_readkey_unicode" ));
 	return 0;
 }
 
@@ -232,7 +232,7 @@ static void Helper_AddEntry( const char *name, BYTE code, INT32 standardCode, UI
   ki.name = strdup( name );
   if( !ki.name )
   {
-    PRINTMSG( T_ERROR, "Out of memory creating keyboard entry!" );
+    PRINTMSG(( T_ERROR, "Out of memory creating keyboard entry!" ));
     osd_print_error( "Out of memory!" );
     return;
   }

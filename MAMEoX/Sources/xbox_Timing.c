@@ -27,10 +27,10 @@ cycles_t InitializeTiming( void )
 	if( QueryPerformanceFrequency( &frequency ) )
 		g_cyclesPerSecond = frequency.QuadPart;
 	else
-		PRINTMSG( T_ERROR, "QueryPerformanceFrequency failed!" );
+		PRINTMSG(( T_ERROR, "QueryPerformanceFrequency failed!" ));
 
 	// log the results
-	PRINTMSG( T_INFO, "cycles/second = %lu\n", (DWORD)g_cyclesPerSecond);
+	PRINTMSG(( T_INFO, "cycles/second = %lu\n", (DWORD)g_cyclesPerSecond ));
 
 	// return the current cycle count
 	return osd_cycles();

@@ -117,12 +117,12 @@ int osd_is_joy_pressed( int joycode )
 
 	const XINPUT_GAMEPAD *gamepad;
 	
-//	PRINTMSG( T_TRACE, "osd_is_joy_pressed" );
+//	PRINTMSG(( T_TRACE, "osd_is_joy_pressed" ));
 	
 	gamepad = GetGamepadState( joynum );
 	if( !gamepad )
 	{
-//		PRINTMSG( T_ERROR, "Invalid joynum %lu!", joynum );
+//		PRINTMSG(( T_ERROR, "Invalid joynum %lu!", joynum ));
 		return 0;
 	}
 
@@ -198,7 +198,7 @@ int osd_is_joy_pressed( int joycode )
 int osd_is_joystick_axis_code( int joycode )
 {
 /* added for building joystick seq for analog inputs */
-//	PRINTMSG( T_TRACE, "osd_is_joystick_axis_code" );
+//	PRINTMSG(( T_TRACE, "osd_is_joystick_axis_code" ));
 
 	switch( JT( joycode ) )
 	{
@@ -345,7 +345,7 @@ void osd_joystick_calibrate( void )
       g_calibrationData[g_calibrationJoynum].m_xData[g_calibrationStep-1] = gp->sThumbLX;
       g_calibrationData[g_calibrationJoynum].m_yData[g_calibrationStep-1] = gp->sThumbLY;
     }
-    PRINTMSG( T_INFO, "CALIB: STEP %d: %d, %d\n", g_calibrationStep - 1, gp->sThumbLX, gp->sThumbLY );
+    PRINTMSG(( T_INFO, "CALIB: STEP %d: %d, %d\n", g_calibrationStep - 1, gp->sThumbLX, gp->sThumbLY ));
   }
 }
 
@@ -427,13 +427,13 @@ void osd_analogjoy_read(	int player,
 	const XINPUT_GAMEPAD *gamepad;
   const XINPUT_CAPABILITIES *gpCaps;
 	
-//	PRINTMSG( T_TRACE, "osd_analogjoy_read" );
+//	PRINTMSG(( T_TRACE, "osd_analogjoy_read" ));
 
 	gpCaps = GetGamepadCaps( player );
 	gamepad = GetGamepadState( player );
 	if( !gamepad )
 	{
-//		PRINTMSG( T_ERROR, "Invalid joynum %lu!", player );
+//		PRINTMSG(( T_ERROR, "Invalid joynum %lu!", player ));
 		return;
 	}
 
@@ -722,7 +722,7 @@ static void Helper_AddEntry( const char *name, INT32 code, INT32 standardCode, U
   ji->name = strdup( name );
   if( !ji->name )
   {
-    PRINTMSG( T_ERROR, "Out of memory creating joystick entry!" );
+    PRINTMSG(( T_ERROR, "Out of memory creating joystick entry!" ));
     osd_print_error( "Out of memory!" );
     return;
   }

@@ -5,6 +5,18 @@ Version 0.79.2b
     - MAMEoX.h
       - Upped version number
 
+
+  - \MAMEoX\Includes:
+    - DebugLogger.h
+      - Changed PRINTMSG macro to be totally removed in retail
+        builds.
+
+
+  - Script changes --------------------------
+
+  - Moved all the scripts to the MAMEoX/Scripts, making necessary
+    changes to support running them from the new directory.
+
   - Fixed a major bug in the ChangeMallocs.pl script that caused
     it to miss any MAME core files not in the root MAME/src directory.
     This explains the infrequent crashes on certain games (where it
@@ -14,6 +26,9 @@ Version 0.79.2b
   - Added FindDependencies.pl, a script used to find all symbol 
     dependencies between the object files. This should plot out all
     silent XBE dependencies, eliminating the simple crash case.
+
+  - Major tweaks to Sectionize.pl to utilize the new information
+    from the FindDependencies.pl script.
 
 
 *********************************************************************

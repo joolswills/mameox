@@ -298,7 +298,7 @@ protected:
 
     if( xprh.dwMagic != XPR_MAGIC_VALUE )
     {
-      PRINTMSG( T_INFO, "ERROR: Invalid Xbox Packed Resource (.xpr) file" );
+      PRINTMSG(( T_INFO, "ERROR: Invalid Xbox Packed Resource (.xpr) file" ));
       fclose( file );
       return E_INVALIDARG;
     }

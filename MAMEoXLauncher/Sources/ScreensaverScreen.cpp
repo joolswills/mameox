@@ -159,7 +159,7 @@ void CScreensaverScreen::FindScreenshots( void )
   if( h != INVALID_HANDLE_VALUE )
   {
     do {
-      PRINTMSG( T_INFO, "Found screenshot: %s", findData.cFileName );
+      PRINTMSG(( T_INFO, "Found screenshot: %s", findData.cFileName ));
       m_screenshotFiles.push_back( findData.cFileName );
     } while( FindNextFile( h, &findData ) );
     FindClose( h );

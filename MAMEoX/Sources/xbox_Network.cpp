@@ -50,14 +50,14 @@ BOOL InitializeNetwork( void )
 
     TXNetConfigParams configParams;   
 
-    PRINTMSG( T_INFO, "Loading network configuration..." );
+    PRINTMSG(( T_INFO, "Loading network configuration..." ));
     XNetLoadConfigParams( (LPBYTE) &configParams );
-    PRINTMSG( T_INFO, "Ready." );
+    PRINTMSG(( T_INFO, "Ready." ));
 
     BOOL bXboxVersion2 = (configParams.V2_Tag == 0x58425632 );	// "XBV2"
     BOOL bDirty = FALSE;
 
-    PRINTMSG( T_INFO, "User local address: %s", g_NetworkConfig.m_IPAddr.c_str() );
+    PRINTMSG(( T_INFO, "User local address: %s", g_NetworkConfig.m_IPAddr.c_str() ));
 
     if (bXboxVersion2)
     {
@@ -76,7 +76,7 @@ BOOL InitializeNetwork( void )
       }
     }
 
-    PRINTMSG( T_INFO, "User subnet mask: %s", g_NetworkConfig.m_SubnetMask.c_str() );
+    PRINTMSG(( T_INFO, "User subnet mask: %s", g_NetworkConfig.m_SubnetMask.c_str() ));
 
     if (bXboxVersion2)
     {
@@ -95,7 +95,7 @@ BOOL InitializeNetwork( void )
       }
     }
 
-    PRINTMSG( T_INFO, "User gateway address: %s", g_NetworkConfig.m_Gateway.c_str() );
+    PRINTMSG(( T_INFO, "User gateway address: %s", g_NetworkConfig.m_Gateway.c_str() ));
 
     if (bXboxVersion2)
     {
@@ -122,9 +122,9 @@ BOOL InitializeNetwork( void )
 
     if (bDirty)
     {
-      PRINTMSG( T_INFO, "Updating network configuration...");
+      PRINTMSG(( T_INFO, "Updating network configuration..."));
       XNetSaveConfigParams( (LPBYTE) &configParams );
-      PRINTMSG( T_INFO, "Ready." );
+      PRINTMSG(( T_INFO, "Ready." ));
     }
   }
 

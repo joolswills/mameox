@@ -176,7 +176,7 @@ BOOL CBaseView::LoadPNGToTexture( const CStdString &filename, LPDIRECT3DTEXTURE8
   png_bytep *row_pointers = (png_bytep*)calloc( 1, retRect->bottom * sizeof(png_bytep) );
   if( !row_pointers )
   {
-    PRINTMSG( T_ERROR, "Out of memory allocating row_pointers array!" );
+    PRINTMSG(( T_ERROR, "Out of memory allocating row_pointers array!" ));
     png_destroy_read_struct( &png_ptr, &info_ptr, png_infopp_NULL );
     osd_fclose( file );
     return FALSE;
@@ -187,7 +187,7 @@ BOOL CBaseView::LoadPNGToTexture( const CStdString &filename, LPDIRECT3DTEXTURE8
   {
     if( !(row_pointers[y] = (png_bytep)malloc( png_get_rowbytes(png_ptr,info_ptr))) )
     {
-      PRINTMSG( T_ERROR, "Out of memory allocating row_pointers[%lu]!", y );
+      PRINTMSG(( T_ERROR, "Out of memory allocating row_pointers[%lu]!", y ));
       png_destroy_read_struct( &png_ptr, &info_ptr, png_infopp_NULL );
       osd_fclose( file );
       return FALSE;
@@ -213,17 +213,17 @@ BOOL CBaseView::LoadPNGToTexture( const CStdString &filename, LPDIRECT3DTEXTURE8
     MEMORYSTATUS memStatus;
     GlobalMemoryStatus( &memStatus );
 
-    PRINTMSG( T_ERROR, "Failed to create texture for screenshot" );
-    PRINTMSG( T_INFO, "Memory status" );
-    PRINTMSG( T_INFO, "Physical:" );
-    PRINTMSG( T_INFO, "         Avail: %lu", memStatus.dwAvailPhys );
-    PRINTMSG( T_INFO, "         Total: %lu", memStatus.dwTotalPhys );
-    PRINTMSG( T_INFO, "Page File:" );
-    PRINTMSG( T_INFO, "         Avail: %lu", memStatus.dwAvailPageFile );
-    PRINTMSG( T_INFO, "         Total: %lu", memStatus.dwTotalPageFile );
-    PRINTMSG( T_INFO, "Virtual:" );
-    PRINTMSG( T_INFO, "         Avail: %lu", memStatus.dwAvailVirtual );
-    PRINTMSG( T_INFO, "         Total: %lu", memStatus.dwTotalVirtual );
+    PRINTMSG(( T_ERROR, "Failed to create texture for screenshot" ));
+    PRINTMSG(( T_INFO, "Memory status" ));
+    PRINTMSG(( T_INFO, "Physical:" ));
+    PRINTMSG(( T_INFO, "         Avail: %lu", memStatus.dwAvailPhys ));
+    PRINTMSG(( T_INFO, "         Total: %lu", memStatus.dwTotalPhys ));
+    PRINTMSG(( T_INFO, "Page File:" ));
+    PRINTMSG(( T_INFO, "         Avail: %lu", memStatus.dwAvailPageFile ));
+    PRINTMSG(( T_INFO, "         Total: %lu", memStatus.dwTotalPageFile ));
+    PRINTMSG(( T_INFO, "Virtual:" ));
+    PRINTMSG(( T_INFO, "         Avail: %lu", memStatus.dwAvailVirtual ));
+    PRINTMSG(( T_INFO, "         Total: %lu", memStatus.dwTotalVirtual ));
 
     png_destroy_read_struct( &png_ptr, &info_ptr, png_infopp_NULL );
     osd_fclose( file );

@@ -151,7 +151,7 @@ void GetScreenPosition( FLOAT *xOffset, FLOAT *yOffset )
 //-------------------------------------------------------------
 BOOL D3DRendererCreateSession( struct osd_create_params *params )
 {
-	PRINTMSG( T_TRACE, "D3DRendererCreateSession" );
+	PRINTMSG(( T_TRACE, "D3DRendererCreateSession" ));
 
     // Store the creation params
 	memcpy( &g_createParams, params, sizeof(g_createParams) );
@@ -216,7 +216,7 @@ BOOL D3DRendererCreateSession( struct osd_create_params *params )
 //-------------------------------------------------------------
 void D3DRendererDestroySession( void )
 {
-	PRINTMSG( T_TRACE, "D3DRendererDestroySession" );
+	PRINTMSG(( T_TRACE, "D3DRendererDestroySession" ));
 
 	g_pD3DDevice->SetTexture( 0, NULL );
 
@@ -467,7 +467,7 @@ static void Helper_RenderDirect32( void *dest, struct mame_bitmap *bitmap, const
 		// 32 bit direct
   if( !(g_createParams.video_attributes & VIDEO_RGB_DIRECT) )
   {
-		PRINTMSG( T_ERROR, "32 bit palettized mode not supported!" );
+		PRINTMSG(( T_ERROR, "32 bit palettized mode not supported!" ));
     return;
   }
 	
@@ -712,17 +712,17 @@ static BOOL CreateTexture( void )
     MEMORYSTATUS memStatus;
     GlobalMemoryStatus(  &memStatus );
 
-    PRINTMSG( T_ERROR, "Failed to create texture" );
-    PRINTMSG( T_INFO, "Memory status" );
-    PRINTMSG( T_INFO, "Physical:" );
-    PRINTMSG( T_INFO, "         Avail: %lu", memStatus.dwAvailPhys );
-    PRINTMSG( T_INFO, "         Total: %lu", memStatus.dwTotalPhys );
-    PRINTMSG( T_INFO, "Page File:" );
-    PRINTMSG( T_INFO, "         Avail: %lu", memStatus.dwAvailPageFile );
-    PRINTMSG( T_INFO, "         Total: %lu", memStatus.dwTotalPageFile );
-    PRINTMSG( T_INFO, "Virtual:" );
-    PRINTMSG( T_INFO, "         Avail: %lu", memStatus.dwAvailVirtual );
-    PRINTMSG( T_INFO, "         Total: %lu", memStatus.dwTotalVirtual );
+    PRINTMSG(( T_ERROR, "Failed to create texture" ));
+    PRINTMSG(( T_INFO, "Memory status" ));
+    PRINTMSG(( T_INFO, "Physical:" ));
+    PRINTMSG(( T_INFO, "         Avail: %lu", memStatus.dwAvailPhys ));
+    PRINTMSG(( T_INFO, "         Total: %lu", memStatus.dwTotalPhys ));
+    PRINTMSG(( T_INFO, "Page File:" ));
+    PRINTMSG(( T_INFO, "         Avail: %lu", memStatus.dwAvailPageFile ));
+    PRINTMSG(( T_INFO, "         Total: %lu", memStatus.dwTotalPageFile ));
+    PRINTMSG(( T_INFO, "Virtual:" ));
+    PRINTMSG(( T_INFO, "         Avail: %lu", memStatus.dwAvailVirtual ));
+    PRINTMSG(( T_INFO, "         Total: %lu", memStatus.dwTotalVirtual ));
 
     osd_print_error(  "Out of memory\n%lu available of %lu total.",
                       memStatus.dwAvailPhys, 

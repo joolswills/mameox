@@ -88,7 +88,7 @@ int osd_create_display( const struct osd_create_params *params, UINT32 *rgb_comp
   Returns 0 on success.
 */
 
-	PRINTMSG( T_TRACE, "osd_create_display" );
+	PRINTMSG(( T_TRACE, "osd_create_display" ));
 
   g_desiredFPS = params->fps;
 
@@ -118,7 +118,7 @@ int osd_create_display( const struct osd_create_params *params, UINT32 *rgb_comp
 		// Initialize the renderer
 	if( !D3DRendererCreateSession( params ) )
 	{
-		PRINTMSG( T_ERROR, "D3DRendererCreateSession failed!" );
+		PRINTMSG(( T_ERROR, "D3DRendererCreateSession failed!" ));
 		return 1;
 	}
 
@@ -131,7 +131,7 @@ int osd_create_display( const struct osd_create_params *params, UINT32 *rgb_comp
 //---------------------------------------------------------------------
 void osd_close_display(void)
 {
-	PRINTMSG( T_TRACE, "osd_close_display" );
+	PRINTMSG(( T_TRACE, "osd_close_display" ));
 	D3DRendererDestroySession();
 }
 
@@ -343,7 +343,7 @@ INLINE void Helper_UpdateAutoframeskip( const struct performance_info *performan
 				if( g_frameskip )
         {
 					--g_frameskip;
-          PRINTMSG( T_INFO, "Autosetting frameskip level to %lu\n", g_frameskip );
+          PRINTMSG(( T_INFO, "Autosetting frameskip level to %lu\n", g_frameskip ));
         }
         else
         {
@@ -372,7 +372,7 @@ INLINE void Helper_UpdateAutoframeskip( const struct performance_info *performan
 				if( g_frameskip < FRAMESKIP_LEVELS - 1 )
         {
 					++g_frameskip;
-          PRINTMSG( T_INFO, "Autosetting frameskip level to %lu\n", g_frameskip );
+          PRINTMSG(( T_INFO, "Autosetting frameskip level to %lu\n", g_frameskip ));
         }
         else
         {
@@ -387,7 +387,7 @@ INLINE void Helper_UpdateAutoframeskip( const struct performance_info *performan
   {
     #ifdef _DEBUG
     if( g_frameskip != g_rendererOptions.m_frameskip )
-      PRINTMSG( T_INFO, "Setting frameskip level to %lu\n", g_rendererOptions.m_frameskip );
+      PRINTMSG(( T_INFO, "Setting frameskip level to %lu\n", g_rendererOptions.m_frameskip ));
     #endif
 
     g_frameskip = g_rendererOptions.m_frameskip;
@@ -462,7 +462,7 @@ static void Helper_UpdatePalette( struct mame_display *display )
 {
 	UINT32 i, j;
 
-//	PRINTMSG( T_TRACE, "Helper_UpdatePalette" );
+//	PRINTMSG(( T_TRACE, "Helper_UpdatePalette" ));
 
 		// The game_palette_dirty entry is a bitflag specifying which
 		// palette entries need to be updated

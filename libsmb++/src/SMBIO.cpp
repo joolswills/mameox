@@ -1117,20 +1117,20 @@ int SMBIO::readRaw(int fd, void *buf, uint32 count)
 	FdCell *info = getFdCellFromFd((FdCell*)fdInfo, fd);
 	if ((!info) || (info->fid==-1) || (!(info->dir))) 
 	{
-		PRINTMSG( T_INFO, "SMB:readRaw invalid fd");
+		PRINTMSG(( T_INFO, "SMB:readRaw invalid fd" ));
 		errno=EBADF; 
 		return -1;
 	}
 	if (info->pos>=(unsigned int)(info->st_size)) 
 	{
-		PRINTMSG( T_INFO, "SMB:readRaw cant read past eof");
+		PRINTMSG(( T_INFO, "SMB:readRaw cant read past eof" ));
 		errno=0; 
 		return 0; // end of file
 	}
 	if (hasBeenDeconnected) 
 	{ 
 		// must reopen, fid invalid
-		PRINTMSG( T_INFO, "SMB:readRaw reconnect");
+		PRINTMSG(( T_INFO, "SMB:readRaw reconnect" ));
 
 		char *url=buildURL(info->workgroup,info->host,info->share,info->dir,info->user);
 		int fd2=open(url, info->openMode); // set hasBeenDeconnected to 0
@@ -1156,7 +1156,7 @@ int SMBIO::readRaw(int fd, void *buf, uint32 count)
 		SMBreadBrawPacket *p1=new SMBreadBrawPacket(TID, info->fid, info->pos, maxTransfert);
 		if (send(p1)==-1) 
 		{
-			PRINTMSG( T_INFO, "SMB:readRaw send readrawpacket failed");
+			PRINTMSG(( T_INFO, "SMB:readRaw send readrawpacket failed" ));
 			delete p1; 
 			delete rawdata; 
 			errno=EIO; 
@@ -1171,7 +1171,7 @@ int SMBIO::readRaw(int fd, void *buf, uint32 count)
 #endif
 		if (queue<4) 
 		{
-			PRINTMSG( T_INFO, "SMB:readRaw send readrawpacket returned<4 bytes\n");
+			PRINTMSG(( T_INFO, "SMB:readRaw send readrawpacket returned<4 bytes" ));
 			break; 
 			delete rawdata; 
 			errno=EIO; 
@@ -1188,7 +1188,7 @@ int SMBIO::readRaw(int fd, void *buf, uint32 count)
 #endif
 		if (length==0) 
 		{
-			PRINTMSG( T_INFO, "SMB:readRaw send readrawpacket returned empty packet\n");
+			PRINTMSG(( T_INFO, "SMB:readRaw send readrawpacket returned empty packet\n" ));
 			break; //gasp {delete rawdata; errno=SUCCESS; return cpt+ret;}
 		}
 		// copy queue and not length bytes, packet might not be a
@@ -1216,7 +1216,7 @@ int SMBIO::readRaw(int fd, void *buf, uint32 count)
  
 		if (info->pos>=(unsigned int)(info->st_size)) 
 		{ 
-			PRINTMSG( T_INFO, "SMB:readRaw end of file reached\n");
+			PRINTMSG(( T_INFO, "SMB:readRaw end of file reached\n" ));
 			// end of file
 			delete rawdata;
 			errno=0;
@@ -1247,7 +1247,7 @@ int SMBIO::readRaw(int fd, void *buf, uint32 count)
 	SMBreadPacket *p=new SMBreadPacket(TID, info->fid, info->pos, count);
 	if (send(p)==-1) 
 	{
-		PRINTMSG( T_INFO, "SMB:readRaw send read failed\n");
+		PRINTMSG(( T_INFO, "SMB:readRaw send read failed\n" ));
 		delete p; 
 		errno=EIO; 
 		return -1;
@@ -1258,12 +1258,12 @@ int SMBIO::readRaw(int fd, void *buf, uint32 count)
 	{
 		errno=EIO; 
 		return -1;
-		PRINTMSG( T_INFO, "SMB:readRaw send read didn't return any data\n");
+		PRINTMSG(( T_INFO, "SMB:readRaw send read didn't return any data\n" ));
 		
 	}
 	if (sesp->getType()!=SESSION_MESSAGE)
 	{
-		PRINTMSG( T_INFO, "SMB:readRaw send read returned invalid packet\n");
+		PRINTMSG(( T_INFO, "SMB:readRaw send read returned invalid packet\n" ));
 		delete sesp;
 		errno=EIO;
 		return -1;
@@ -1271,7 +1271,7 @@ int SMBIO::readRaw(int fd, void *buf, uint32 count)
 	p=new SMBreadPacket;
 	if (p->parse(sesp)==-1)
 	{
-		PRINTMSG( T_INFO, "SMB:readRaw send read returned invalid smb packet\n");
+		PRINTMSG(( T_INFO, "SMB:readRaw send read returned invalid smb packet\n" ));
 		errno=EIO;
 		delete sesp;
 		delete p;
@@ -1279,7 +1279,7 @@ int SMBIO::readRaw(int fd, void *buf, uint32 count)
 	}
 	if (p->getSMBType()!=SMBread)
 	{
-		PRINTMSG( T_INFO, "SMB:readRaw send read didn't return smbpacket\n");
+		PRINTMSG(( T_INFO, "SMB:readRaw send read didn't return smbpacket\n" ));
 		errno=EIO;
 		delete sesp;
 		delete p;
@@ -1289,7 +1289,7 @@ int SMBIO::readRaw(int fd, void *buf, uint32 count)
 	count=p->getReadCount();
 	if ((int)count==-1) 
 	{
-		PRINTMSG( T_INFO, "SMB:readRaw send read didn't returned empty smbpacket\n");
+		PRINTMSG(( T_INFO, "SMB:readRaw send read didn't returned empty smbpacket\n" ));
 		errno=EIO; 
 		delete p; 
 		return -1;
@@ -1297,7 +1297,7 @@ int SMBIO::readRaw(int fd, void *buf, uint32 count)
 	uint8 *data=p->getReadData();
 	if (data==0) 
 	{
-		PRINTMSG( T_INFO, "SMB:readRaw send read didn't returned smbpacket without data\n");
+		PRINTMSG(( T_INFO, "SMB:readRaw send read didn't returned smbpacket without data\n" ));
 		errno=EIO; 
 		delete p; 
 		return -1;
@@ -1315,13 +1315,13 @@ int SMBIO::read(int fd, void *buf, uint32 count)
 	FdCell *info = getFdCellFromFd((FdCell*)fdInfo, fd);
 	if ((!info) || (info->fid==-1) || (!(info->dir))) 
 	{
-		PRINTMSG( T_INFO, "SMB::read invalid fd\n");
+		PRINTMSG(( T_INFO, "SMB::read invalid fd\n" ));
 		errno=EBADF; 
 		return -1;
 	}
 	if (hasBeenDeconnected) 
 	{ // must reopen, fid invalid
-		PRINTMSG( T_INFO, "SMB::Reconnect\n");
+		PRINTMSG(( T_INFO, "SMB::Reconnect\n" ));
 		char *url=buildURL(info->workgroup,info->host,info->share,info->dir,info->user);
 		int fd2=open(url, info->openMode); // set hasBeenDeconnected to 0
 		delete url;
@@ -1371,7 +1371,7 @@ int SMBIO::read(int fd, void *buf, uint32 count)
 				cout<<"read : info->cachePositionInFile : "<<info->cachePositionInFile<<"\n";
 #endif
 				errno=0; 
-				PRINTMSG( T_INFO, "SMB:EOF reached\n");
+				PRINTMSG(( T_INFO, "SMB:EOF reached" ));
 				return current-(uint8*)buf;
 			}
 			int num=0;
@@ -1381,7 +1381,7 @@ int SMBIO::read(int fd, void *buf, uint32 count)
 			{
 				if (flush(fd)==-1) 
 				{
-					PRINTMSG( T_INFO, "SMB:flush() failed\n");
+					PRINTMSG(( T_INFO, "SMB:flush() failed" ));
 					return -1;
 				}
 				info->pos=info->cachePositionInFile;

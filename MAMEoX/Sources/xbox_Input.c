@@ -76,7 +76,7 @@ void osd_customize_inputport_defaults( struct ipd *defaults )
 */
   if( g_MOXINPUTSectionUnloaded )
   {
-    PRINTMSG( T_INFO, "Loading MOXINPUT section!" );
+    PRINTMSG(( T_INFO, "Loading MOXINPUT section!" ));
     XLoadSection( "MOXINPUT" );
     g_MOXINPUTSectionUnloaded = FALSE;
   }
@@ -92,7 +92,7 @@ void osd_customize_inputport_defaults( struct ipd *defaults )
 
   if( !g_MOXINPUTSectionUnloaded )
   {
-    PRINTMSG( T_INFO, "Unloading MOXINPUT section!" );
+    PRINTMSG(( T_INFO, "Unloading MOXINPUT section!" ));
     XFreeSection( "MOXINPUT" );
     g_MOXINPUTSectionUnloaded = TRUE;
   }

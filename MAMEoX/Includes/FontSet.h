@@ -40,25 +40,25 @@ public:
       //  no error message is possible (as of today)
     if( FAILED( CREATEFONT( m_fonts[0], DEFAULT_FONT ) ) )
     {
-      PRINTMSG_TO_LOG( T_ERROR, "Failed loading font Media/" DEFAULT_FONT "!" );
+      PRINTMSG_TO_LOG(( T_ERROR, "Failed loading font Media/" DEFAULT_FONT "!" ));
       return FALSE;
     }
 
     if( FAILED( CREATEFONT( m_fonts[1], FIXEDWIDTH_FONT ) ) )
     {
-      PRINTMSG_TO_LOG( T_ERROR, "Failed loading font Media/" FIXEDWIDTH_FONT "!" );
+      PRINTMSG_TO_LOG(( T_ERROR, "Failed loading font Media/" FIXEDWIDTH_FONT "!" ));
       return FALSE;
     }
 
     if( FAILED( CREATEFONT( m_fonts[2], SMALLTHIN_FONT ) ) )
     {
-      PRINTMSG_TO_LOG( T_ERROR, "Failed loading font Media/" SMALLTHIN_FONT "!" );
+      PRINTMSG_TO_LOG(( T_ERROR, "Failed loading font Media/" SMALLTHIN_FONT "!" ));
       return FALSE;
     }
 
     if( FAILED( CREATEFONT( m_fonts[3], LARGETHIN_FONT ) ) )
     {
-      PRINTMSG_TO_LOG( T_ERROR, "Failed loading font Media/" LARGETHIN_FONT "!" );
+      PRINTMSG_TO_LOG(( T_ERROR, "Failed loading font Media/" LARGETHIN_FONT "!" ));
       return FALSE;
     }
 

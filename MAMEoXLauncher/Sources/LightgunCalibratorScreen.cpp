@@ -62,7 +62,7 @@ void CLightgunCalibratorScreen::MoveCursor( CInputManager &inputManager, BOOL un
   CGamepad *gp = inputManager.GetGamepad( m_currentInputDeviceIndex );
   if( !gp )
   {
-    PRINTMSG( T_ERROR, "Could not retrieve CGamepad object for index %d", m_currentInputDeviceIndex );
+    PRINTMSG(( T_ERROR, "Could not retrieve CGamepad object for index %d", m_currentInputDeviceIndex ));
     return;
   }
 

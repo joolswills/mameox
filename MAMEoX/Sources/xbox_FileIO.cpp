@@ -24,7 +24,7 @@
   //!<  Helper macro, calls Helper_CreateOrOpenSystemPath on the passed path
 #define CREATEOROPENPATH( _pth__, _wtReq__ )  tempStr = strdup( _pth__ ); \
                                               if( !Helper_CreateOrOpenSystemPath( &tempStr, (_wtReq__) ) ) { \
-                                                PRINTMSG( T_ERROR, "Failed to create or open system path %s!", tempStr ); \
+                                                PRINTMSG(( T_ERROR, "Failed to create or open system path %s!", tempStr )); \
                                               }
 
 #define FILE_BUFFER_SIZE	256
@@ -93,7 +93,7 @@ static void Helper_ConvertSlashToBackslash( char *path );
 void InitializeFileIO( void )
 {
   char *tempStr = NULL;
-	PRINTMSG( T_TRACE, "InitializeFileIO" );
+	PRINTMSG(( T_TRACE, "InitializeFileIO" ));
 
     // Remap the symbolic C, E, F, G, H links to the user
     // defined ones
@@ -166,7 +166,7 @@ void InitializeFileIO( void )
 int osd_get_path_count( int pathtype )
 {
 	/* Return the number of paths for a given type */
-	PRINTMSG( T_TRACE, "osd_get_path_count: pathtype: %d", pathtype );
+	PRINTMSG(( T_TRACE, "osd_get_path_count: pathtype: %d", pathtype ));
 //EZ_TRACE();
 
 	switch( pathtype )
@@ -221,7 +221,7 @@ int osd_get_path_info( int pathtype, int pathindex, const char *filename )
 	/* Get information on the existence of a file */
 	DWORD attribs;
 	
-	PRINTMSG( T_TRACE, "osd_get_path_info, pathtype %d, pathindex %d", pathtype, pathindex );
+	PRINTMSG(( T_TRACE, "osd_get_path_info, pathtype %d, pathindex %d", pathtype, pathindex ));
 
   #ifdef ALL_ROMS_ZIPPED
       // Don't bother searching for anything in the ROMs directory
@@ -288,7 +288,7 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
 	osd_file *ret;
   LARGE_INTEGER fileSize;
 
-	PRINTMSG( T_TRACE, "osd_fopen" );
+	PRINTMSG(( T_TRACE, "osd_fopen" ));
 
     // The calloc is important here, if it's taken away
     // it will cause odd behavior if the caller doesn't do
@@ -296,7 +296,7 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
 	ret = (osd_file*)calloc( 1, sizeof(osd_file) ); 
 	if( !ret )
 	{
-		PRINTMSG( T_ERROR, "Malloc failed creating osd_file instance!" );
+		PRINTMSG(( T_ERROR, "Malloc failed creating osd_file instance!" ));
 		return NULL;
 	}
 
@@ -379,7 +379,7 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
   {
     Helper_ConvertSlashToBackslash( strFullPath.GetBuffer(strFullPath.GetLength()+10) );
 
-    PRINTMSG( T_INFO, "Opening file: %s", strFullPath.c_str() );
+    PRINTMSG(( T_INFO, "Opening file: %s", strFullPath.c_str() ));
 
     ret->m_handle = CreateFile(	strFullPath.c_str(),
       dwDesiredAccess,
@@ -397,7 +397,7 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
       // Return if read only or some other error
       if( !(dwDesiredAccess & GENERIC_WRITE) || err != ERROR_PATH_NOT_FOUND )
       {
-        PRINTMSG( T_ERROR, "Failed opening file %s: 0x%X!", strFullPath.c_str(), err );
+        PRINTMSG(( T_ERROR, "Failed opening file %s: 0x%X!", strFullPath.c_str(), err ));
         free( ret );
         return NULL;
       }
@@ -415,7 +415,7 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
       // if that doesn't work, we give up
       if( ret->m_handle == INVALID_HANDLE_VALUE )
       {
-        PRINTMSG( T_ERROR, "Failed opening file %s: 0x%X!", strFullPath.c_str(), err );
+        PRINTMSG(( T_ERROR, "Failed opening file %s: 0x%X!", strFullPath.c_str(), err ));
         free( ret );
         return NULL;
       }
@@ -424,7 +424,7 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
     // Store the filesize
     if( !GetFileSizeEx( ret->m_handle, &fileSize ) )
     {
-      PRINTMSG( T_ERROR, "GetFileSizeEx failed!" );
+      PRINTMSG(( T_ERROR, "GetFileSizeEx failed!" ));
       return NULL;
     }
 
@@ -449,7 +449,7 @@ void osd_fflush( osd_file *file )
     DWORD result;
     if( !WriteFile( file->m_handle, file->m_writeBuffer, file->m_writeBufferBytes, &result, NULL ) )
     {
-      PRINTMSG( T_ERROR, "WriteFile failed! 0x%X", GetLastError() );
+      PRINTMSG(( T_ERROR, "WriteFile failed! 0x%X", GetLastError() ));
       return;
     }
     file->m_writeBufferBytes = 0;
@@ -488,14 +488,14 @@ INT32 osd_fseek( osd_file *file, INT64 offset, int whence )
       break;
 
     default:
-      PRINTMSG( T_ERROR, "Invalid whence parameter in osd_fseek" );
+      PRINTMSG(( T_ERROR, "Invalid whence parameter in osd_fseek" ));
       return 1;
     }
 
       // Validate arg
     if( file->m_offset > file->m_end )
     {
-      PRINTMSG( T_ERROR, "Offset value too high or low in osd_fseek" );
+      PRINTMSG(( T_ERROR, "Offset value too high or low in osd_fseek" ));
       return 1;
     }
 
@@ -661,7 +661,7 @@ UINT32 osd_fwrite( osd_file *file, const void *buffer, UINT32 length )
       // Write the requested data to the file as well
     if( !WriteFile( file->m_handle, buffer, length, &result, NULL ) )
     {
-      PRINTMSG( T_ERROR, "WriteFile failed! 0x%X", GetLastError() );
+      PRINTMSG(( T_ERROR, "WriteFile failed! 0x%X", GetLastError() ));
       return 0;
     }
     file->m_filepos += result;
@@ -706,7 +706,7 @@ void Helper_CreateDirectoryPath( const char *path, BOOL has_filename )
 {
 	DWORD attributes;
 	char *sep;
-	PRINTMSG( T_TRACE, "Helper_CreateDirectoryPath" );
+	PRINTMSG(( T_TRACE, "Helper_CreateDirectoryPath" ));
 	
 	if( !path )
 		return;

@@ -14,7 +14,7 @@
   // Uncomment this line to send PRINTMSG data to Debug.Log in
   // the MAMEoX root directory. Note that it only takes effect
   // in release mode
-//#define _LOGDEBUGMESSAGES
+#define _LOGDEBUGMESSAGES
 
 // Module types
 #define MT_OFF         0x00
@@ -28,29 +28,23 @@
 #define DEBUGCONSOLE_TOGGLE_DELAY     2
 
 #ifdef _DEBUG
-
-  #define DebugLoggerFlush()							
-  #define DebugLoggerWaitForLogClient()		
   #define RenderDebugConsole(dev)                         Helper_RenderDebugConsole( (void*)dev )
-  #define PRINTMSG												                Helper_OutputDebugStringPrintMsg
-  #define PRINTMSG_TO_CONSOLE                             Helper_ConsolePrintMsg
+  #define PRINTMSG(c)												              Helper_OutputDebugStringPrintMsg c
+  #define PRINTMSG_TO_CONSOLE(c)                          Helper_ConsolePrintMsg c
 #else
-
-  #define DebugLoggerFlush()							
-  #define DebugLoggerWaitForLogClient()		
   #define RenderDebugConsole(dev)
 
   #ifdef _LOGDEBUGMESSAGES
-    #define PRINTMSG												              Helper_WriteToFilePrintMsg
-    #define PRINTMSG_TO_CONSOLE                           Helper_WriteToFilePrintMsg
+    #define PRINTMSG(c)							  			              Helper_WriteToFilePrintMsg c
+    #define PRINTMSG_TO_CONSOLE(c)                        Helper_WriteToFilePrintMsg c
   #else
-    #define PRINTMSG												              Helper_InlineNOPDebugLoggerPrintMsg
-    #define PRINTMSG_TO_CONSOLE                           Helper_InlineNOPDebugLoggerPrintMsg
+    #define PRINTMSG(c)						  				              Helper_InlineNOPDebugLoggerPrintMsg c
+    #define PRINTMSG_TO_CONSOLE(c)                        Helper_InlineNOPDebugLoggerPrintMsg c
   #endif
 
 #endif
 
-#define PRINTMSG_TO_LOG                     Helper_WriteToFilePrintMsg
+#define PRINTMSG_TO_LOG(c)                                Helper_WriteToFilePrintMsg c
 
   // To kill an output type, just define it to T_NOLOG
 #define T_NOLOG        NEVERMODULE, LASTLOG, NULL, 0
@@ -60,7 +54,7 @@
 #define T_INFO         MT_INFO, __FILE__, __LINE__, __FUNCTION__
 #define T_NOPOSITION   MT_INFO, NULL, 0, NULL
 
-#define EZ_TRACE()		PRINTMSG( T_TRACE, "" ); DebugLoggerFlush();
+#define EZ_TRACE()		PRINTMSG(( T_TRACE, "" ));
 
 //= P R O T O T Y P E S ========================================
 
