@@ -47,74 +47,116 @@ local $autoNameNumber = 0;
   # Driver families --------------------------------------------
 @SkipDrivers = ( "jrcrypt.c", "monaco.c", "pong.c" );
 
-@TwinCobraFamily = ( "wardner.c", "twincobr.c" );
-@CapcomFamily = ( "cps1.c", "cps2.c" );
-@NamcoFamily = ( "namcoic.c", "namcona1.c", "namconb1.c", "namcond1.c", "namcos1.c",
-                 "namcos2.c", "namcos21.c", "namcos22.c", "namcos86.c", "namcos11.c" );
-@SegaFamily = ( "multi32.c", "system1.c", "system16.c", "system18.c", "system24.c", "system32.c",
-				"aburner.c", "sharrier.c", "outrun.c", "segasyse.c", "segac2.c" );
-@MoonPatrolFamily = ( "mpatrol.c", "yard.c" );								# 10 Yard Fight07/07/2003
-@SNKFamily = ( "snk.c", "hal21.c", "marvins.c", "sgladiat.c" );				# ASO - Armored Scrum Object, Athena, Marvin's Maze, Gladiator 1984
-@AmidarFamily = ( "galaxian.c", "scramble.c", "scobra.c", 
-                  "amidar.c", "frogger.c", "pacman.c",
-				  "pengo.c", "cclimber.c", "dkong.c", "yamato.c",				  
-				  "phoenix.c", "epos.c" );									# Amidar, Frog (Galaxian Hardware), Pac-Man (Galaxian Hardware), eyes, Moon Shuttle (US?), Special Forces, Special Forces II, Yamato, Batman Part 2, Beastie Feastie
-@RampartFamily = ( "rampart.c", "arcadecl.c" );								# Arcade Classics
-@RastanFamily = ( "rastan.c", "asuka.c", "opwolf.c", "rainbow.c", 
-                  "topspeed.c" );			                                # Asuka & Asuka, Operation Wolf, Rainbow Islands, Top Speed, Full Throttle
-@EspialFamily = ( "espial.c", "marineb.c", "zodiack.c" );					# Battle Cruiser M-12, Zodiack
-@BZoneFamily = ( "bzone.c", "bwidow.c" );									# Gravitar
-@Nova2001Family = ( "nova2001.c", "pkunwar.c" );							# Penguin-Kun War
-@GottLiebFamily = ( "gottlieb.c", "exterm.c" );							    # exterminator
-@Megasys1Family = ( "megasys1.c", "cischeat.c" );							# F-1 Grand Prix Star II
-@LocoMotionFamily = ( "rallyx.c", "timeplt.c", "locomotn.c", 
-					  "tutankhm.c", "pooyan.c", "rocnrope.c", 
-					  "junofrst.c" );				                        # Loco-Motion, Tutankham, Pooyan, Roc'n Rope, Juno First
-@ExidyFamily = ( "exidy.c", "victory.c" );									# Victory
-@M72Family = ( "m72.c", "m90.c", "vigilant.c", "shisen.c" );			    # Bomber Man World (World), Vigilante, Sichuan II
-@LelandFamily = ( "leland.c", "ataxx.c" );									# Asylum (prototype)
-@TrackFldFamily = ( "trackfld.c", "hyperspt.c", "yiear.c", "sbasketb.c" );	# Hyper Sports, Hyper Olympics '84, Yie ar Kung Fu, Super Basketball
-@Taito_F3Family = ( "taito_f3.c", "superchs.c", "groundfx.c",
-					"gunbustr.c", "undrfire.c" );							# Super Chase, Ground Effects, Gunbuster, Under Fire
-@FromanceFamily = ( "fromance.c", "pipedrm.c" );							# Pipe Dream
-@MidwayMCRFamily = ( "mcr1.c", "mcr2.c", "mcr3.c", "mcr68.c", "williams.c",
-					 "midyunit.c", "midtunit.c", "midwunit.c", 
-					 "midvunit.c", "midxunit.c" );							# Arch rivals, Mortal Kombat II, WWF: Wrestlemania (rev 1.30 08/10/95), Mortal Kombat, Revolution X
-@KonamiGXFamily = ( "konamigx.c", "mystwarr.c" );							# Metamorphic Force
-@SegarFamily = ( "segar.c", "sega.c" );										# Star Trek
-@ZaxxonFamily = ( "zaxxon.c", "congo.c" );									# Congo Bongo
+#@TwinCobraFamily = ( "wardner.c", "twincobr.c" );
+#@CapcomFamily = ( "cps1.c", "cps2.c" );
+#@NamcoFamily = ( "namcoic.c", "namcona1.c", "namconb1.c", "namcond1.c", "namcos1.c",
+#                 "namcos2.c", "namcos21.c", "namcos22.c", "namcos86.c", "namcos11.c" );
+#@SegaFamily = ( "multi32.c", "system1.c", "system16.c", "system18.c", "system24.c", "system32.c",
+#				"aburner.c", "sharrier.c", "outrun.c", "segasyse.c", "segac2.c" );
+#@MoonPatrolFamily = ( "mpatrol.c", "yard.c" );								# 10 Yard Fight07/07/2003
+#@SNKFamily = ( "snk.c", "hal21.c", "marvins.c", "sgladiat.c" );				# ASO - Armored Scrum Object, Athena, Marvin's Maze, Gladiator 1984
+#@AmidarFamily = ( "galaxian.c", "scramble.c", "scobra.c", 
+#                  "amidar.c", "frogger.c", "pacman.c",
+#				  "pengo.c", "cclimber.c", "dkong.c", "yamato.c",				  
+#				  "phoenix.c", "epos.c" );									# Amidar, Frog (Galaxian Hardware), Pac-Man (Galaxian Hardware), eyes, Moon Shuttle (US?), Special Forces, Special Forces II, Yamato, Batman Part 2, Beastie Feastie
+#@RampartFamily = ( "rampart.c", "arcadecl.c" );								# Arcade Classics
+#@RastanFamily = ( "rastan.c", "asuka.c", "opwolf.c", "rainbow.c", 
+#                  "topspeed.c" );			                                # Asuka & Asuka, Operation Wolf, Rainbow Islands, Top Speed, Full Throttle
+#@EspialFamily = ( "espial.c", "marineb.c", "zodiack.c" );					# Battle Cruiser M-12, Zodiack
+#@BZoneFamily = ( "bzone.c", "bwidow.c" );									# Gravitar
+#@Nova2001Family = ( "nova2001.c", "pkunwar.c" );							# Penguin-Kun War
+#@GottLiebFamily = ( "gottlieb.c", "exterm.c" );							    # exterminator
+#@Megasys1Family = ( "megasys1.c", "cischeat.c" );							# F-1 Grand Prix Star II
+#@LocoMotionFamily = ( "rallyx.c", "timeplt.c", "locomotn.c", 
+#					  "tutankhm.c", "pooyan.c", "rocnrope.c", 
+#					  "junofrst.c" );				                        # Loco-Motion, Tutankham, Pooyan, Roc'n Rope, Juno First
+#@ExidyFamily = ( "exidy.c", "victory.c" );									# Victory
+#@M72Family = ( "m72.c", "m90.c", "vigilant.c", "shisen.c" );			    # Bomber Man World (World), Vigilante, Sichuan II
+#@LelandFamily = ( "leland.c", "ataxx.c" );									# Asylum (prototype)
+#@TrackFldFamily = ( "trackfld.c", "hyperspt.c", "yiear.c", "sbasketb.c" );	# Hyper Sports, Hyper Olympics '84, Yie ar Kung Fu, Super Basketball
+#@Taito_F3Family = ( "taito_f3.c", "superchs.c", "groundfx.c",
+#					"gunbustr.c", "undrfire.c" );							# Super Chase, Ground Effects, Gunbuster, Under Fire
+#@FromanceFamily = ( "fromance.c", "pipedrm.c" );							# Pipe Dream
+#@MidwayMCRFamily = ( "mcr1.c", "mcr2.c", "mcr3.c", "mcr68.c", "williams.c",
+#					 "midyunit.c", "midtunit.c", "midwunit.c", 
+#					 "midvunit.c", "midxunit.c" );							# Arch rivals, Mortal Kombat II, WWF: Wrestlemania (rev 1.30 08/10/95), Mortal Kombat, Revolution X
+#@KonamiGXFamily = ( "konamigx.c", "mystwarr.c" );							# Metamorphic Force
+#@SegarFamily = ( "segar.c", "sega.c" );										# Star Trek
+#@ZaxxonFamily = ( "zaxxon.c", "congo.c" );									# Congo Bongo
+#@WizFamily = ( "wiz.c", "rollrace.c" );										# Fighting Roller
+#@TetrisPlus2Family = ( "ms32.c", "tetrisp2.c" );							# Tetris Plus 2 (MegaSystem 32 Version)
+#@WipingFamily = ( "wiping.c", "clshroad.c" );								# Fire Battle, Clash-Road
+#@D8080bwFamily = ( "8080bw.c", "rotaryf.c", "circus.c" );					# Rotary Fighter, Clowns, Dog Patch
+#@BuggyChallengeFamily = ( "buggychl.c", "40love.c" );						# Forty-Love
+#@BurgerTimeFamily = ( "btime.c", "scregg.c" );								# Dommy, Scrambled Egg
+#@PlaymarkFamily = ( "playmark.c", "sslam.c" );								# Super Slam
+#@NYNYFamily = ( "nyny.c", "spiders.c" );									# Spiders
+#@DoubleDragonFamily = ( "ddragon.c", "chinagat.c" );						# China Gate
+#@ThunderJawsFamily = ( "thunderj.c", "eprom.c" );							# Escape from the Planet of the Robot Monsters
 
-@WizFamily = ( "wiz.c", "rollrace.c" );										# Fighting Roller
-
-@TetrisPlus2Family = ( "ms32.c", "tetrisp2.c" );							# Tetris Plus 2 (MegaSystem 32 Version)
-
-@WipingFamily = ( "wiping.c", "clshroad.c" );								# Fire Battle, Clash-Road
-
-@D8080bwFamily = ( "8080bw.c", "rotaryf.c", "circus.c" );					# Rotary Fighter, Clowns, Dog Patch
-
-@BuggyChallengeFamily = ( "buggychl.c", "40love.c" );						# Forty-Love
-
-@BurgerTimeFamily = ( "btime.c", "scregg.c" );								# Dommy, Scrambled Egg
-
-@PlaymarkFamily = ( "playmark.c", "sslam.c" );								# Super Slam
-
-@NYNYFamily = ( "nyny.c", "spiders.c" );									# Spiders
-@DoubleDragonFamily = ( "ddragon.c", "chinagat.c" );						# China Gate
-@ThunderJawsFamily = ( "thunderj.c", "eprom.c" );							# Escape from the Planet of the Robot Monsters
-
-
-local @DriverFamilies = ( \@CapcomFamily, \@NamcoFamily, \@SegaFamily, \@MidwayMCRFamily, \@TwinCobraFamily,
-													\@MoonPatrolFamily, \@SNKFamily, \@AmidarFamily, \@RampartFamily, \@RastanFamily,
-													\@EspialFamily, \@BZoneFamily, \@Nova2001Family, \@GottLiebFamily, 
-													\@Megasys1Family, \@LocoMotionFamily, \@ExidyFamily, \@M72Family, \@LelandFamily,
-													\@TrackFldFamily, \@Taito_F3Family, \@FromanceFamily, \@MidYUnitFamily, \@KonamiGXFamily,
-													\@SegarFamily, \@ZaxxonFamily, \@WizFamily, \@TetrisPlus2Family, \@WipingFamily,
-													\@D8080bwFamily, \@BuggyChallengeFamily, \@BurgerTimeFamily, \@PlaymarkFamily,
-													\@NYNYFamily, \@DoubleDragonFamily, \@ThunderJawsFamily );
+#local @DriverFamilies = ( \@CapcomFamily, \@NamcoFamily, \@SegaFamily, \@MidwayMCRFamily, \@TwinCobraFamily,
+#													\@MoonPatrolFamily, \@SNKFamily, \@AmidarFamily, \@RampartFamily, \@RastanFamily,
+#													\@EspialFamily, \@BZoneFamily, \@Nova2001Family, \@GottLiebFamily, 
+#													\@Megasys1Family, \@LocoMotionFamily, \@ExidyFamily, \@M72Family, \@LelandFamily,
+#													\@TrackFldFamily, \@Taito_F3Family, \@FromanceFamily, \@MidYUnitFamily, \@KonamiGXFamily,
+#													\@SegarFamily, \@ZaxxonFamily, \@WizFamily, \@TetrisPlus2Family, \@WipingFamily,
+#													\@D8080bwFamily, \@BuggyChallengeFamily, \@BurgerTimeFamily, \@PlaymarkFamily,
+#													\@NYNYFamily, \@DoubleDragonFamily, \@ThunderJawsFamily );
 
 
+  # Generated w/ DetermineFamilies.pl
+local @Family_0 = ( "buggychl.c", "40love.c" );
+local @Family_1 = ( "circus.c", "8080bw.c", "rotaryf.c" );
+local @Family_2 = ( "system16.c", "aburner.c", "taito_b.c", "taito_f3.c", "groundfx.c", "gunbustr.c", "outrun.c", "segasyse.c", "system18.c", "segac2.c", "sharrier.c", "superchs.c", "undrfire.c" );
+local @Family_3 = ( "actfancr.c", "battlera.c", "cbuster.c", "cninja.c", "darkseal.c", "dassault.c", "dec0.c", "deco32.c", "funkyjet.c", "madmotor.c", "rohga.c", "supbtime.c", "tumblep.c", "vaportra.c" );  # CPU deps: "cpu/h6280/h6280.c" 
+local @Family_4 = ( "bagman.c", "cclimber.c", "cvs.c", "dkong.c", "epos.c", "galaxian.c", "ladybug.c", "mario.c", "pengo.c", "phoenix.c", "frogger.c", "pacman.c", "scobra.c", "scramble.c", "amidar.c", "malzak.c", "yamato.c" );
+local @Family_5 = ( "rampart.c", "arcadecl.c" );
+local @Family_6 = ( "artmagic.c", "btoads.c", "coolpool.c", "gottlieb.c", "exterm.c", "harddriv.c", "kinst.c", "lethalj.c", "williams.c", "midyunit.c", "midtunit.c", "mcr3.c", "mcr68.c", "mcr1.c", "mcr2.c", "midvunit.c", "midwunit.c", "midxunit.c", "seattle.c", "tickee.c" );  # CPU deps: "cpu/tms34010/34010fld.c" "cpu/tms34010/tms34010.c" "cpu/dsp32/dsp32.c" "cpu/adsp2100/adsp2100.c" 
+local @Family_7 = ( "rastan.c", "asuka.c", "opwolf.c", "rainbow.c", "topspeed.c" );
+local @Family_8 = ( "leland.c", "ataxx.c" );
+local @Family_9 = ( "baraduke.c", "kncljoe.c", "m62.c", "mpatrol.c", "namcos1.c", "namcos86.c", "pacland.c", "skykid.c", "namcoic.c", "namcos2.c", "tceptor.c", "namconb1.c", "namcos21.c", "travrusa.c", "troangel.c", "yard.c" );  # CPU deps: "cpu/m6800/m6800.c" 
+local @Family_10 = ( "thunderj.c", "batman.c", "klax.c", "eprom.c", "vindictr.c" );
+local @Family_11 = ( "lkage.c", "battlane.c" );
+local @Family_12 = ( "megasys1.c", "bigstrkb.c", "cischeat.c" );
+local @Family_13 = ( "bzone.c", "bwidow.c" );
+local @Family_14 = ( "ddragon.c", "chinagat.c" );
+local @Family_15 = ( "cinemat.c" );  # CPU deps: "cpu/ccpu/ccpu.c" 
+local @Family_16 = ( "wiping.c", "clshroad.c" );
+local @Family_17 = ( "cojag.c" );  # CPU deps: "cpu/jaguar/jaguar.c" 
+local @Family_18 = ( "cps1.c", "cps2.c" );  # CPU deps: "cpu/m68000/m68kcpu.c" "cpu/m68000/m68kmame.c" "cpu/m68000/m68kopac.c" "cpu/m68000/m68kopdm.c" "cpu/m68000/m68kopnz.c" "cpu/m68000/m68kops.c" 
+local @Family_19 = ( "drgnmst.c", "playmark.c", "sslam.c" );  # CPU deps: "cpu/pic16c5x/pic16c5x.c" 
+local @Family_20 = ( "victory.c", "exidy.c" );
+local @Family_21 = ( "exerion.c", "fcombat.c" );
+local @Family_22 = ( "gaelco2.c", "gaelco.c" );
+local @Family_23 = ( "kaneko16.c", "galpani2.c" );
+local @Family_24 = ( "legionna.c", "goal92.c" );
+local @Family_25 = ( "snk.c", "hal21.c", "jcross.c", "marvins.c", "sgladiat.c" );
+local @Family_26 = ( "trackfld.c", "hyperspt.c", "sbasketb.c", "yiear.c" );
+local @Family_27 = ( "tutankhm.c", "junofrst.c", "timeplt.c", "rallyx.c", "locomotn.c", "pooyan.c", "rocnrope.c" );
+local @Family_28 = ( "konamigx.c", "konamigq.c", "mystwarr.c" );
+local @Family_29 = ( "m72.c", "m90.c", "shisen.c", "vigilant.c" );
+local @Family_30 = ( "m107.c", "m92.c" );
+local @Family_31 = ( "espial.c", "marineb.c", "zodiack.c" );
+local @Family_32 = ( "bublbobl.c", "missb2.c" );
+local @Family_33 = ( "tetrisp2.c", "ms32.c" );
+local @Family_34 = ( "system32.c", "multi32.c" );
+local @Family_35 = ( "nbmj8688.c", "nbmj8891.c" );
+local @Family_36 = ( "fromance.c", "pipedrm.c" );
+local @Family_37 = ( "nova2001.c", "pkunwar.c" );
+local @Family_38 = ( "wiz.c", "rollrace.c" );
+local @Family_39 = ( "btime.c", "scregg.c" );
+local @Family_40 = ( "segar.c", "sega.c" );
+local @Family_41 = ( "nyny.c", "spiders.c" );
+local @Family_42 = ( "stvhacks.c", "stv.c" );
+local @Family_43 = ( "seta.c", "taito_x.c" );
+local @Family_44 = ( "twin16.c", "tmnt.c" );
+local @Family_45 = ( "mappy.c", "toypop.c" );
+local @Family_46 = ( "twincobr.c", "wardner.c" );
+local @Family_47 = ( "ninjaw.c", "warriorb.c" );
+local @Family_48 = ( "wc90.c", "wc90b.c" );
 
 
+local @DriverFamilies = ( \@Family_0, \@Family_1, \@Family_2, \@Family_3, \@Family_4, \@Family_5, \@Family_6, \@Family_7, \@Family_8, \@Family_9, \@Family_10, \@Family_11, \@Family_12, \@Family_13, \@Family_14, \@Family_15, \@Family_16, \@Family_17, \@Family_18, \@Family_19, \@Family_20, \@Family_21, \@Family_22, \@Family_23, \@Family_24, \@Family_25, \@Family_26, \@Family_27, \@Family_28, \@Family_29, \@Family_30, \@Family_31, \@Family_32, \@Family_33, \@Family_34, \@Family_35, \@Family_36, \@Family_37, \@Family_38, \@Family_39, \@Family_40, \@Family_41, \@Family_42, \@Family_43, \@Family_44, \@Family_45, \@Family_46, \@Family_47, \@Family_48 );
 
 
 
