@@ -64,8 +64,8 @@ Global
 		{BEC3062C-78B0-4B2D-BE06-4177F71981BE}.Profile.Build.0 = Debug|Xbox
 		{BEC3062C-78B0-4B2D-BE06-4177F71981BE}.Release.ActiveCfg = Release|Xbox
 		{BEC3062C-78B0-4B2D-BE06-4177F71981BE}.Release.Build.0 = Release|Xbox
-		{6E91E5AE-9076-483E-9728-28D12259AA17}.Debug.ActiveCfg = Debug|Xbox
-		{6E91E5AE-9076-483E-9728-28D12259AA17}.Debug.Build.0 = Debug|Xbox
+		{6E91E5AE-9076-483E-9728-28D12259AA17}.Debug.ActiveCfg = Release|Xbox
+		{6E91E5AE-9076-483E-9728-28D12259AA17}.Debug.Build.0 = Release|Xbox
 		{6E91E5AE-9076-483E-9728-28D12259AA17}.Debug_With_Retail_MAME.ActiveCfg = Release|Xbox
 		{6E91E5AE-9076-483E-9728-28D12259AA17}.Debug_With_Retail_MAME.Build.0 = Release|Xbox
 		{6E91E5AE-9076-483E-9728-28D12259AA17}.Profile.ActiveCfg = Release|Xbox
