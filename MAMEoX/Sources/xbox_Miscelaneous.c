@@ -71,11 +71,11 @@ int osd_display_loading_rom_message( const char *name, struct rom_load_data *rom
     FontRender( 320, 140, D3DCOLOR_XRGB( 60, 105, 225 ), L"MAMEoX version " LVERSION_STRING, 2 );
     FontRender( 320, 340, D3DCOLOR_XRGB( 60, 105, 225 ), L"Memory Status", 2 );
     FontRender( 320, 360, D3DCOLOR_XRGB( 60, 105, 225 ), memory, 2 );
-  EndFontRender();
+  EndFontRender( FALSE );
 
   BeginFontRender( FALSE, FONTTYPE_LARGETHIN );
 	  FontRender( 320, 240, D3DCOLOR_XRGB( 120, 230, 120 ), bar, 2 );
-  EndFontRender();
+  EndFontRender( TRUE );
 
 	return 0;
 }
@@ -124,7 +124,7 @@ void osd_print_error( const char *fmt, ... )
     FontRender( 320, 60, D3DCOLOR_RGBA( 255, 200, 200, 255 ), L"Error:", 2 /*XBFONT_CENTER_X*/ );
 	  FontRender( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255 ), wBuf, 2 /*XBFONT_CENTER_X*/ );
 	  FontRender( 320, 320, D3DCOLOR_RGBA( 70, 235, 125, 255), L"Press any button to continue.", 2 /*XBFONT_CENTER_X*/ );
-	EndFontRender();
+	EndFontRender( TRUE );
 
   WaitForNoButton();     // Ensure that the user sees the message
   WaitForAnyButton();

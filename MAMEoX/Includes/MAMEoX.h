@@ -193,8 +193,9 @@ void FontRender( INT32 x, INT32 y, UINT32 color, const WCHAR *str, UINT32 flags 
 	//-------------------------------------------------------------------
 	//	EndFontRender
 	//! \brief		Flush the font rendering batch
+  //! \param    present - Whether or not to present the backbuffer
 	//-------------------------------------------------------------------
-void EndFontRender( void );
+void EndFontRender( BOOL present );
 
 	//-------------------------------------------------------------------
 	//	WaitForAnyButton

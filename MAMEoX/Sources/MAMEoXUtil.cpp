@@ -401,7 +401,7 @@ void RequireController( DWORD number )
 
   BeginFontRender( TRUE, FONTTYPE_DEFAULT );
     FontRender( 320, 180, D3DCOLOR_XRGB(255,255,255), wBuf, XBFONT_CENTER_X );
-  EndFontRender();
+  EndFontRender( TRUE );
   
   g_inputManager.WaitForControllerInsertion( number );
 }
@@ -481,11 +481,13 @@ void FontRender( INT32 x, INT32 y, UINT32 color, const WCHAR *str, UINT32 flags 
 //-------------------------------------------------------------
 //	EndFontRender
 //-------------------------------------------------------------
-void EndFontRender( void )
+void EndFontRender( BOOL present )
 {
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
   g_fontSet.GetFont(g_fontType).End();
-  pD3DDevice->Present( NULL, NULL, NULL, NULL );
+
+  if( present )
+    pD3DDevice->Present( NULL, NULL, NULL, NULL );
 }
 
 
@@ -517,7 +519,7 @@ void CheckRAM( void )
       FontRender( 320, 200, D3DCOLOR_XRGB(255,200,200), L"This is a DEBUG version of MAMEoX!", 2 );
       FontRender( 320, 280, D3DCOLOR_XRGB(255,255,255), L"Mem: Avail/Total", 2 );
       FontRender( 320, 300, D3DCOLOR_XRGB(255,255,255), memStr, 2 );
-    EndFontRender();
+    EndFontRender( TRUE );
   }
 	g_inputManager.WaitForNoButton( 0 );
 
