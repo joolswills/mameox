@@ -2,8 +2,18 @@
 
 
 
-
-
+  - \MAME\MAME_VC6.dsp
+    - MAME project file for VC6 users
+    - File Added
+  - \MAMEoX\MAMEoX_VC6.dsp
+    - MAMEoX project file for VC6 users
+    - File Added
+  - \MAMEoX_VC6.dsw
+    - Main project workspace file for VC6 users
+    - file added
+  - \MAMEoX\Sources\xbox_Main.cpp:
+    - Added conditional compile code to make project VC6 friendly
+    - Modified functions main and Helper_RunRom
 	- xbox_FileIO.h:
 		- Added AUDIOPATH for audio samples
 	- xbox_FileIO.c:
