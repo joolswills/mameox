@@ -1,0 +1,1024 @@
+
+<Skin>
+	<Metadata>
+		<Author>Erik</Author>
+		<Description>Test INI file</Description>
+	</Metadata>
+
+
+	<!-- Resource file definitions -->
+	<ResourceDefinitions>
+		<ResourceFile>
+			<ColorChannelFilename>sprites-tvcalibration-color.png</ColorChannelFilename>
+			<AlphaChannelFilename>sprites-tvcalibration-color.png</AlphaChannelFilename>
+
+			<Resource>
+				<ID>T_TVCalibrationCursor</ID>
+				<Area>
+					<Left>0</Left>
+					<Top>0</Top>
+					<Right>64</Right>
+					<Bottom>64</Bottom>
+				</Area>
+			</Resource>
+		</ResourceFile>
+
+		<ResourceFile>
+			<ColorChannelFilename>sprites-lightguncalibration-color.png</ColorChannelFilename>
+			<AlphaChannelFilename>sprites-lightguncalibration-color.png</AlphaChannelFilename>
+
+			<Resource>
+				<ID>T_Target</ID>
+				<Area>
+					<Left>0</Left>
+					<Top>0</Top>
+					<Right>32</Right>
+					<Bottom>32</Bottom>
+				</Area>
+			</Resource>
+		</ResourceFile>
+
+		<ResourceFile>
+			<ColorChannelFilename>sprites-list-color.png</ColorChannelFilename>
+			<AlphaChannelFilename>sprites-list-alpha.png</AlphaChannelFilename>
+
+			<Resource>
+				<ID>T_TriggerIconHead</ID>
+				<Area>
+					<Left>0</Left>
+					<Top>0</Top>
+					<Right>32</Right>
+					<Bottom>32</Bottom>
+				</Area>
+			</Resource>
+			<Resource>
+				<ID>T_TriggerIconCenter</ID>
+				<Area>
+					<Left>31</Left>
+					<Top>0</Top>
+					<Right>32</Right>
+					<Bottom>32</Bottom>
+				</Area>
+			</Resource>
+			<Resource>
+				<ID>T_TriggerIconTail</ID>
+				<Area>
+					<Left>32</Left>
+					<Top>0</Top>
+					<Right>64</Right>
+					<Bottom>32</Bottom>
+				</Area>
+			</Resource>
+			<Resource>
+				<ID>T_ScrollIcon_Up</ID>
+				<Area>
+					<Left>0</Left>
+					<Top>64</Top>
+					<Right>32</Right>
+					<Bottom>96</Bottom>
+				</Area>
+			</Resource>
+			<Resource>
+				<ID>T_ScrollIcon_Down</ID>
+				<Area>
+					<Left>0</Left>
+					<Top>96</Top>
+					<Right>32</Right>
+					<Bottom>128</Bottom>
+				</Area>
+			</Resource>
+		</ResourceFile>
+
+		<ResourceFile>
+			<ColorChannelFilename>sprites-menu-color.png</ColorChannelFilename>
+			<AlphaChannelFilename>sprites-menu-alpha.png</AlphaChannelFilename>
+
+			<Resource>
+				<ID>T_TitleBarLeftCorner</ID>
+				<Area>
+					<Left>1</Left>
+					<Top>0</Top>
+					<Right>12</Right>
+					<Bottom>29</Bottom>
+				</Area>
+			</Resource>
+			<Resource>
+				<ID>T_TitleBarCenter</ID>
+				<Area>
+					<Left>26</Left>
+					<Top>0</Top>
+					<Right>38</Right>
+					<Bottom>29</Bottom>
+				</Area>
+			</Resource>
+			<Resource>
+				<ID>T_TitleBarRightCorner</ID>
+				<Area>
+					<Left>40</Left>
+					<Top>0</Top>
+					<Right>64</Right>
+					<Bottom>29</Bottom>
+				</Area>
+			</Resource>
+			<Resource>
+				<ID>T_BodyLeftSide</ID>
+				<Area>
+					<Left>1</Left>
+					<Top>36</Top>
+					<Right>12</Right>
+					<Bottom>44</Bottom>
+				</Area>
+			</Resource>
+			<Resource>
+				<ID>T_BodyCenter</ID>
+				<Area>
+					<Left>26</Left>
+					<Top>36</Top>
+					<Right>38</Right>
+					<Bottom>44</Bottom>
+				</Area>
+			</Resource>
+			<Resource>
+				<ID>T_BodyRightSide</ID>
+				<Area>
+					<Left>40</Left>
+					<Top>36</Top>
+					<Right>64</Right>
+					<Bottom>44</Bottom>
+				</Area>
+			</Resource>
+			<Resource>
+				<ID>T_FooterLeftCorner</ID>
+				<Area>
+					<Left>1</Left>
+					<Top>53</Top>
+					<Right>12</Right>
+					<Bottom>64</Bottom>
+				</Area>
+			</Resource>
+			<Resource>
+				<ID>T_FooterCenter</ID>
+				<Area>
+					<Left>26</Left>
+					<Top>53</Top>
+					<Right>38</Right>
+					<Bottom>64</Bottom>
+				</Area>
+			</Resource>
+			<Resource>
+				<ID>T_FooterRightCorner</ID>
+				<Area>
+					<Left>40</Left>
+					<Top>53</Top>
+					<Right>64</Right>
+					<Bottom>64</Bottom>
+				</Area>
+			</Resource>
+		</ResourceFile>
+
+		<ResourceFile>
+			<ColorChannelFilename>sprites-buttons-color.png</ColorChannelFilename>
+			<AlphaChannelFilename>sprites-buttons-alpha.png</AlphaChannelFilename>
+
+			<Resource>
+				<ID>T_ButtonIcon_A</ID>
+				<Area>
+					<Left>2</Left>
+					<Top>2</Top>
+					<Right>34</Right>
+					<Bottom>33</Bottom>
+				</Area>
+			</Resource>
+			<Resource>
+				<ID>T_ButtonIcon_B</ID>
+				<Area>
+					<Left>2</Left>
+					<Top>34</Top>
+					<Right>34</Right>
+					<Bottom>65</Bottom>
+				</Area>
+			</Resource>
+			<Resource>
+				<ID>T_ButtonIcon_X</ID>
+				<Area>
+					<Left>35</Left>
+					<Top>2</Top>
+					<Right>67</Right>
+					<Bottom>33</Bottom>
+				</Area>
+			</Resource>
+			<Resource>
+				<ID>T_ButtonIcon_Y</ID>
+				<Area>
+					<Left>35</Left>
+					<Top>34</Top>
+					<Right>67</Right>
+					<Bottom>65</Bottom>
+				</Area>
+			</Resource>
+			<Resource>
+				<ID>T_ButtonIcon_Start</ID>
+				<Area>
+					<Left>68</Left>
+					<Top>2</Top>
+					<Right>98</Right>
+					<Bottom>40</Bottom>
+				</Area>
+			</Resource>
+		</ResourceFile>
+	</ResourceDefinitions>
+
+	
+	<!-- Screen definitions -->
+
+	<HelpScreen>
+		<Backdrop>BackdropTextureID</Backdrop>
+		<Defaults>
+				<!-- Default text setup, all text widgets on this
+					 screen will inherit these values unless they're overridden -->
+			<Text>
+				<Font>SmallThin</Font>
+				<Color>
+					<Alpha>255</Alpha>
+					<Red>0</Red>
+					<Green>0</Green>
+					<Blue>0</Blue>
+						OR
+					<ARGB>FF000000h</ARGB>
+				</Color>
+			</Text>
+		</Defaults>
+
+		
+			<!-- The titlebar, left corner -->
+		<Icon>
+			<TextureID>T_TitleBarLeftCorner</TextureID>
+			<Position>
+				<X>30</X>
+				<Y>95</Y>
+			</Position>
+		</Icon>
+			<!-- The title bar, center -->
+		<Icon>
+			<ID>WI_TitleBarCenter</ID>
+			<TextureID>T_TitleBarCenter</TextureID>
+
+				<!-- Using the Area directive here will allow us
+					 to stretch the texture to fit our area -->
+			<Area>
+				<Left>[30 + T_TitleBarLeftCorner.width]</Left>
+				<Top>95</Top>
+				<Right>[610 - T_TitleBarRightCorner.width]</Right>
+				<Bottom>[T_TitleBarCenter.height]</Bottom>
+			</Area>
+		</Icon>
+			<!-- The title bar, right corner -->
+		<Icon>
+			<TextureID>T_TitleBarRightCorner</TextureID>
+			<Position>
+				<X>[610 - T_TitleBarRightCorner.width]</X>
+				<Y>95</Y>
+			</Position>
+		</Icon>
+
+		<Text>
+			<String>Help!</String>
+			<Area>[HeaderBarCenter.area]</Area>
+			<CenterVertically/>
+		</Text>
+
+
+
+
+			<!-- The body, left side -->
+		<Icon>
+			<ID>WI_BodyLeftSide</ID>
+			<TextureID>T_BodyLeftSide</TextureID>
+			<Area>
+				<Left>30</Left>
+				<Top>[WI_TitleBarCenter.bottom]</Top>
+				<Right>[30 + T_BodyLeftSide.width]</Right>
+				<Bottom>440</Bottom>
+			</Area>
+		</Icon>
+			<!-- The body, center -->
+		<Icon>
+			<TextureID>T_BodyCenter</TextureID>
+			<Area>
+				<Left>[WI_BodyLeftSide.right]</Left>
+				<Top>[WI_BodyLeftSide.top]</Top>
+				<Right>[WI_BodyRightSide.left]</Right>
+				<Bottom>440</Bottom>
+			</Area>
+		</Icon>
+			<!-- The body, right side -->
+		<Icon>
+			<TextureID>T_BodyRightSide</TextureID>
+			<Area>
+				<Left>[610 - T_BodyRightSide.width]</Left>
+				<Top>[WI_BodyLeftSide.top]</Top>
+				<Right>610</Right>
+				<Bottom>440</Bottom>
+			</Area>
+		</Icon>
+
+
+
+<!--
+// Defaults to Body.Area
+// Body.ScrollArea.Area = 
+Body.ScrollArea.SingleRow.Height = 21
+
+Body.ScrollArea.SingleRow.Text.Position = 10,0
+Body.ScrollArea.SingleRow.Text.Color = 255 0 0 0
+Body.ScrollArea.SingleRow.Text.Font = SmallThin
+
+// Scroll Icons
+Body.ScrollIcon.Up.Position = 576,122
+Body.ScrollIcon.Down.Position = 576,419
+
+Footer.Area = 30,440,610,452
+
+ButtonInfo.Start.Position = 368,40
+ButtonInfo.Start.Text.Font = SmallThin
+ButtonInfo.Start.Text.Position = 404,45
+ButtonInfo.Start.Text.Color = 255 0 0 0
+
+
+		<ButtonInfo>
+			<Icon>
+				<TextureID>TextureID</TextureID>
+				<Area>x,y,x2,y2</Area>
+				<Position>x,y</Position>
+				<Size>width,height</Size>
+			</Icon>
+			<Text>
+				<String>Text string to display</String>
+				<Area>x,y,x2,y2</Area>
+\				<Position>x,y</Position>
+				<Size>width,height</Size>
+
+				<Font>fonttype</Font>
+				<Color>a,r,g,b</Color>
+
+				<CenterVertically/>
+			</Text>
+		</ButtonInfo>
+-->
+
+	</HelpScreen>
+
+
+
+
+	<OptionsScreen>
+		<Backdrop>BackdropTextureID</Backdrop>		
+	</OptionsScreen>
+
+	<ROMListScreen>
+		<Backdrop>BackdropTextureID</Backdrop>
+	</ROMListScreen>
+
+	<SplashScreen>
+		<Backdrop>BackdropTextureID</Backdrop>
+	</SplashScreen>
+
+	<MessageScreen>
+		<Backdrop>BackdropTextureID</Backdrop>
+	</MessageScreen>
+
+		<!-- Popup menus -->
+	<StartMenu>
+	</StartMenu>
+
+	<VirtualKeyboard>
+	</VirtualKeyboard>
+
+		<!-- Screensaver definition -->
+	<Screensaver>
+	</Screensaver>
+
+
+</Skin>
+
+
+<!--
+// General notes which should be moved to a real doc:
+
+// Valid separator characters: ',' ' ' ':' ';'
+
+// .Color options are always specified in ARGB format
+
+// Text widgets can be layed out via the .Area property
+//  which will cause long text to be truncated w/ "...",
+//  or with the .Position property, which allows any length
+//  to be displayed
+
+
+//  General Popup Options  //
+//
+// DiffuseOverlay.Color - The color drawn over the screen before a popup menu
+//                        is rendered.
+[PopupOptions]
+DiffuseOverlay.Area = 0,0,640,480
+DiffuseOverlay.Color = 120 0 0 0
+
+
+// 
+//	HelpScreenOptions 
+// 
+[HelpScreenOptions]
+TitleBar.Area = 30,95,610,124
+TitleBar.Text.Font = SmallThin
+TitleBar.Text.Position = 10,5
+TitleBar.Text.Color = 255 0 0 0
+
+Body.Area = 30,124,610,440
+
+// Defaults to Body.Area
+// Body.ScrollArea.Area = 
+Body.ScrollArea.SingleRow.Height = 21
+
+Body.ScrollArea.SingleRow.Text.Position = 10,0
+Body.ScrollArea.SingleRow.Text.Color = 255 0 0 0
+Body.ScrollArea.SingleRow.Text.Font = SmallThin
+
+// Scroll Icons
+Body.ScrollIcon.Up.Position = 576,122
+Body.ScrollIcon.Down.Position = 576,419
+
+Footer.Area = 30,440,610,452
+
+ButtonInfo.Start.Position = 368,40
+ButtonInfo.Start.Text.Font = SmallThin
+ButtonInfo.Start.Text.Position = 404,45
+ButtonInfo.Start.Text.Color = 255 0 0 0
+
+
+// 
+//	OptionsScreenOptions 
+// 
+[OptionsScreenOptions]
+TitleBar.Area = 30,95,610,124
+TitleBar.Text.Font = SmallThin
+TitleBar.Text.Position = 10,5
+TitleBar.Text.Color = 255 0 0 0
+
+Body.Area = 30,124,610,440
+
+// Defaults to Body.Area
+// Body.ScrollArea.Area = 
+
+Body.ScrollArea.HighlightBar.Area = 3,0,577,20
+Body.ScrollArea.HighlightBar.Color = 130 125 135 210
+
+Body.ScrollArea.SingleRow.Height = 21
+
+Body.ScrollArea.SingleRow.OptionName.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.OptionName.Text.Position = 10,0
+Body.ScrollArea.SingleRow.OptionName.Text.Color = 255 0 0 0
+
+Body.ScrollArea.SingleRow.OptionValue.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.OptionValue.Text.Position = 249,0
+Body.ScrollArea.SingleRow.OptionValue.Text.Color = 255 0 0 0
+
+TitleBar.Divider.Area = 240,3,242,355
+TitleBar.Divider.Color = 130 255 255 255
+
+Body.LeftTrigger.TriggerInfo.Area = 31,419,Auto,451
+
+Body.LeftTrigger.TriggerInfo.Text.Font = SmallThin
+Body.LeftTrigger.TriggerInfo.Text.Position = 0,3
+Body.LeftTrigger.TriggerInfo.Text.Color = 255 0 0 0
+Body.LeftTrigger.TriggerInfo.Text.Options = CenterVertical
+
+Body.RightTrigger.TriggerInfo.Area = Auto,419,608,451
+
+Body.RightTrigger.TriggerInfo.Text.Font = SmallThin
+Body.RightTrigger.TriggerInfo.Text.Position = 0,3
+Body.RightTrigger.TriggerInfo.Text.Color = 255 0 0 0
+Body.RightTrigger.TriggerInfo.Text.Options = CenterVertical
+
+Footer.Area = 30,440,610,452
+
+ButtonInfo.Start.Position = 368,40
+ButtonInfo.Start.Text.Font = SmallThin
+ButtonInfo.Start.Text.Position = 404,45
+ButtonInfo.Start.Text.Color = 255 0 0 0
+
+
+// 
+//	ROMListScreenOptions 
+// 
+[ROMListScreenOptions]
+TitleBar.Area = 30,95,610,124
+TitleBar.Text.Font = SmallThin
+TitleBar.Text.Color = 255 0 0 0
+
+TitleBar.Simple.Name.Text.Font = SmallThin
+TitleBar.Simple.Name.Text.Position = 10,5
+TitleBar.Simple.Name.Text.Color = 255 0 0 0
+
+TitleBar.Verbose.Name.Text.Font = SmallThin
+TitleBar.Verbose.Name.Text.Position = 10,5
+TitleBar.Verbose.Name.Text.Color = 255 0 0 0
+
+TitleBar.Verbose.Manufacturer.Text.Font = SmallThin
+TitleBar.Verbose.Manufacturer.Text.Position = 275,5
+TitleBar.Verbose.Manufacturer.Text.Color = 255 0 0 0
+
+TitleBar.Verbose.Year.Text.Font = SmallThin
+TitleBar.Verbose.Year.Text.Position = 420,5
+TitleBar.Verbose.Year.Text.Color = 255 0 0 0
+
+TitleBar.Verbose.NumPlayers.Text.Font = SmallThin
+TitleBar.Verbose.NumPlayers.Text.Position = 472,5
+TitleBar.Verbose.NumPlayers.Text.Color = 255 0 0 0
+
+TitleBar.Verbose.Clone.Text.Font = SmallThin
+TitleBar.Verbose.Clone.Text.Position = 507,5
+TitleBar.Verbose.Clone.Text.Color = 255 0 0 0
+
+TitleBar.Detail.Name.Text.Font = SmallThin
+TitleBar.Detail.Name.Text.Position = 10,5
+TitleBar.Detail.Name.Text.Color = 255 0 0 0
+
+Body.Area = 30,124,610,440
+
+// Defaults to Body.Area
+// Body.ScrollArea.Area = 
+Body.ScrollArea.HighlightBar.Area = 3,0,577,20
+Body.ScrollArea.HighlightBar.Color = 130 125 135 210
+Body.ScrollArea.SingleRow.Height = 21
+
+// Body.ScrollArea.SingleRow.Verbose.ROMWorking.Text.Color
+
+Body.ScrollArea.SingleRow.Verbose.ROMWorking.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Verbose.ROMWorking.Text.Area = 10,0,260,0
+
+Body.ScrollArea.SingleRow.Verbose.ROMWarning.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Verbose.ROMWarning.Text.Area = 10,0,260,0
+
+Body.ScrollArea.SingleRow.Verbose.ROMNonworking.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Verbose.ROMNonworking.Text.Area = 10,0,260,0
+
+Body.ScrollArea.SingleRow.Verbose.Manufacturer.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Verbose.Manufacturer.Text.Area = 275,0,407,0
+
+Body.ScrollArea.SingleRow.Verbose.Year.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Verbose.Year.Text.Area = 420,0,460,0
+
+Body.ScrollArea.SingleRow.Verbose.NumPlayers.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Verbose.NumPlayers.Text.Area = 472,0,493,0
+
+Body.ScrollArea.SingleRow.Verbose.Clone.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Verbose.Clone.Text.Area = 507,0,577,0
+
+Body.ScrollArea.SingleRow.Simple.ROMWorking.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Simple.ROMWorking.Text.Area = 10,0,600,0
+
+Body.ScrollArea.SingleRow.Simple.ROMWarning.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Simple.ROMWarning.Text.Area = 10,0,600,0
+
+Body.ScrollArea.SingleRow.Simple.ROMNonworking.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Simple.ROMNonworking.Text.Area = 10,0,600,0
+
+Body.ScrollArea.SingleRow.Detail.ROMWorking.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Detail.ROMWorking.Text.Area = 10,0,280,21
+
+Body.ScrollArea.SingleRow.Detail.ROMWarning.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Detail.ROMWarning.Text.Area = 10,0,280,21
+
+Body.ScrollArea.SingleRow.Detail.ROMNonworking.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Detail.ROMNonworking.Text.Area = 10,0,280,21
+
+Body.ScrollArea.SingleRow.Detail.NumPlayers.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Detail.NumPlayers.Text.Area = 10,21,280,42
+
+Body.ScrollArea.SingleRow.Detail.Manufacturer.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Detail.Manufacturer.Text.Area = 10,42,280,63
+
+Body.ScrollArea.SingleRow.Detail.Year.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Detail.Year.Text.Area = 10,63,280,84
+
+Body.ScrollArea.SingleRow.Detail.Parent.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Detail.Parent.Text.Area = 10,84,280,105
+
+Body.ScrollArea.SingleRow.Detail.Genre.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Detail.Genre.Text.Area = 10,105,280,126
+
+Body.ScrollArea.SingleRow.Detail.VersionAdded.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Detail.VersionAdded.Text.Area = 10,126,280,147
+
+Body.ScrollArea.SingleRow.Detail.TimesPlayed.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Detail.TimesPlayed.Text.Area = 10,147,280,168
+
+Body.ScrollArea.SingleRow.Detail.FavoriteStatus.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Detail.FavoriteStatus.Text.Area = 10,168,280,189
+
+Body.ScrollArea.SingleRow.Detail.Filename.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Detail.Filename.Text.Area = 10,189,280,210
+
+Body.ScrollArea.SingleRow.Detail.Screenshot.Area = 315,127,605,448
+
+Body.ScrollArea.SingleRow.Detail.Screenshot.Color.UpperLeft = 0 0 0 0
+Body.ScrollArea.SingleRow.Detail.Screenshot.Color.UpperRight = 255 0 0 0
+Body.ScrollArea.SingleRow.Detail.Screenshot.Color.LowerRight = 255 0 0 0
+Body.ScrollArea.SingleRow.Detail.Screenshot.Color.LowerLeft = 0 0 0 0
+
+Body.ScrollArea.SingleRow.Detail.Screenshot.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Detail.Screenshot.Text.Color = 255 255 255 255
+Body.ScrollArea.SingleRow.Detail.Screenshot.Text.Area = 315,127,605,448
+Body.ScrollArea.SingleRow.Detail.Screenshot.Text.Options = CenterVertical,CenterHorizontal,Truncate
+
+TitleBar.Verbose.Manufacturer.Divider.Area = 266,3,268,355
+TitleBar.Verbose.Manufacturer.Divider.Color = 130 255 255 255
+
+TitleBar.Verbose.Year.Divider.Area = 411,3,413,355
+TitleBar.Verbose.Year.Divider.Color = 130 255 255 255
+
+TitleBar.Verbose.NumPlayers.Divider.Area = 463,3,465,355
+TitleBar.Verbose.NumPlayers.Divider.Color = 130 255 255 255
+
+TitleBar.Verbose.Clone.Divider.Area = 498,3,500,355
+TitleBar.Verbose.Clone.Divider.Color = 130 255 255 255
+
+Body.ScrollIcon.Up.Position = 576,122
+Body.ScrollIcon.Down.Position = 576,419
+
+Footer.Area = 30,440,610,452
+
+ButtonInfo.A.Position = 298,40
+ButtonInfo.A.Text.Font = SmallThin
+ButtonInfo.A.Text.Position = 334,45
+ButtonInfo.A.Text.Color = 255 0 0 0
+
+ButtonInfo.X.Position = 412,40
+ButtonInfo.X.Text.Font = SmallThin
+ButtonInfo.X.Text.Position = 448,45
+ButtonInfo.X.Text.Color = 255 0 0 0
+
+ButtonInfo.Y.Position = 490,40
+ButtonInfo.Y.Text.Font = SmallThin
+ButtonInfo.Y.Text.Position = 526,45
+ButtonInfo.Y.Text.Color = 255 0 0 0
+
+ButtonInfo.Start.Position = 212,40
+ButtonInfo.Start.Text.Font = SmallThin
+ButtonInfo.Start.Text.Position = 248,45
+ButtonInfo.Start.Text.Color = 255 0 0 0
+
+
+// 
+//	ScreensaverOptions
+// 
+[ScreensaverOptions]
+Text.Color = 255 255 255 255
+
+
+// 
+//	SkinChooserScreenOptions
+// 
+[SkinChooserScreenOptions]
+TitleBar.Area = 30,95,610,124
+TitleBar.Text.Font = SmallThin
+TitleBar.Text.Position = 10,5
+TitleBar.Text.Color = 255 0 0 0
+
+Body.Area = 30,124,610,440
+Body.ScrollIcon.Up.Position = 576,122
+Body.ScrollIcon.Down.Position = 576,419
+
+// Defaults to Body.Area
+Body.ScrollArea.HighlightBar.Area = 3,0,577,70
+Body.ScrollArea.HighlightBar.Color = 130 125 135 210
+
+Body.ScrollArea.SingleRow.Height = 70
+
+Body.ScrollArea.SingleRow.Name.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Name.Text.Color = 255 0 0 0
+Body.ScrollArea.SingleRow.Name.Text.Area = 10,0,Unbounded,35
+Body.ScrollArea.SingleRow.Name.Text.Options = CenterVertical
+
+Body.ScrollArea.SingleRow.Description.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.Description.Text.Color = 255 40 40 40
+Body.ScrollArea.SingleRow.Description.Text.Area = 10,35,Unbounded,70
+Body.ScrollArea.SingleRow.Description.Text.Options = CenterVertical
+
+Body.ScrollArea.SingleRow.NameWithoutDescription.Text.Font = SmallThin
+Body.ScrollArea.SingleRow.NameWithoutDescription.Text.Color = 255 0 0 0
+Body.ScrollArea.SingleRow.NameWithoutDescription.Text.Area = 10,0,Unbounded,70
+Body.ScrollArea.SingleRow.NameWithoutDescription.Text.Options = CenterVertical
+
+Body.ScrollArea.SingleRow.Screenshot.Area = 315,0,590,70
+
+Body.ScrollArea.SingleRow.Screenshot.Color.UpperLeft = 0 0 0 0
+Body.ScrollArea.SingleRow.Screenshot.Color.UpperRight = 255 0 0 0
+Body.ScrollArea.SingleRow.Screenshot.Color.LowerRight = 255 0 0 0
+Body.ScrollArea.SingleRow.Screenshot.Color.LowerLeft = 0 0 0 0
+
+Body.ScrollArea.SingleRow.Screenshot.Text.Color = 255 255 255 255
+Body.ScrollArea.SingleRow.Screenshot.Text.Area = 315,0,605,70
+Body.ScrollArea.SingleRow.Screenshot.Text.Options = CenterVertical,CenterHorizontal,Truncate
+
+Footer.Area = 31,440,610,452
+
+ButtonInfo.Start.Position = 368,40
+ButtonInfo.Start.Text.Font = SmallThin
+ButtonInfo.Start.Text.Position = 404,45
+ButtonInfo.Start.Text.Color = 255 0 0 0
+
+
+// 
+//	StartMenuOptions 
+// 
+[StartMenuOptions]
+TitleBar.Text.Font = SmallThin
+TitleBar.Text.Color = 255 0 0 0
+
+Body.Text.Font = SmallThin
+Body.Text.Color = 255 0 0 0
+Body.HighlightBar.Color = 130 125 135 210
+
+
+// 
+//	VirtualKeyboardOptions 
+// 
+[VirtualKeyboardOptions]
+TitleBar.Text.Color = 255 0 0 0
+
+Body.Text.Font = SmallThin
+Body.Text.Color = 255 0 0 0
+Body.HighlightBar.Color = 130 125 135 210
+
+
+// 
+//	MessageScreenOptions 
+// 
+[MessageScreenOptions]
+Text.Color = 255 0 0 0
+ProgressBar.EndColor = 255 255 255 255
+ProgressBar.BarColor = 255 110 120 200
+ProgressBar.BackgroundColor = 130 190 190 190
+
+
+// 
+//	SplashScreenOptions 
+// 
+[SplashScreenOptions]
+Text.Color = 255 0 0 0
+Important.Text.Color = 255 90 105 195
+
+
+
+
+
+// ***********************************************************************
+// * Backdrops:
+// * 
+// * The backdrop [Sections] notify MAMEoX of the full screen images to be
+// * displayed as backdrops.
+// *
+// * ResourcesColorChannelFilename - Required:
+// *   This entry provides the name of a png file to extract sprite color 
+// *   information from. This gives only the RGB values, no alpha (transparency)
+// *   information will be taken from this file.
+// *
+// * Backdrop.FileOffset - Required:
+// *   These definitions provide MAMEoX with the position within the
+// *   ResourcesColorChannelFilename file (in pixels) for the
+// *   backdrop data. 
+// *
+// *
+// *
+// * [SplashBackdrop] - Displayed in the initial "Insert Coin" screen
+// * [MessageBackdrop] - Displayed for various messages/progressbar screens
+// * [ListBackdrop] - Displayed for all the list screens
+// ***********************************************************************
+
+[SplashBackdrop]
+ResourcesColorChannelFilename = backdrop-splash.png
+Backdrop.FileOffset.left = 0
+Backdrop.FileOffset.top = 0
+Backdrop.FileOffset.right = 640
+Backdrop.FileOffset.bottom = 480
+
+
+[MessageBackdrop]
+ResourcesColorChannelFilename = backdrop-message.png
+Backdrop.FileOffset.left = 0
+Backdrop.FileOffset.top = 0
+Backdrop.FileOffset.right = 640
+Backdrop.FileOffset.bottom = 480
+
+
+[ListBackdrop]
+ResourcesColorChannelFilename = backdrop-list.png
+Backdrop.FileOffset.left = 0
+Backdrop.FileOffset.top = 0
+Backdrop.FileOffset.right = 640
+Backdrop.FileOffset.bottom = 480
+
+
+
+
+
+// ***********************************************************************
+// * The rest of the file consists of sprite file definitions. These
+// * are used to notify MAMEoX as to where certain sprite textures can
+// * be found.
+// *
+// * ResourcesColorChannelFilename - Required:
+// *   This entry provides the name of a png file to extract sprite color 
+// *   information from. This gives only the RGB values, no alpha (transparency)
+// *   information will be taken from this file.
+// *
+// * ResourcesAlphaChannelFilename - Optional:
+// *   This entry provides the name of a png file to extract sprite alpha
+// *   information from. This data is combined with the image defined in
+// *   ResourcesColorChannelFilename and determines the transparency of
+// *   each pixel in the sprite.
+// *   NOTE: MAMEoX uses the value of the GREEN portion of each pixel
+// *         only! Red/Blue data is ignored.
+// *
+// * XXXXX.FileOffset - Optional:
+// *   These definitions provide MAMEoX with the position within the
+// *   ResourcesColorChannelFilename and ResourcesAlphaChannelFilename
+// *   files (in pixels) for sprite XXXXX. Any missing/invalid entries
+// *   will cause MAMEoX to hide sprite XXXXX. The actual valid values
+// *   for XXXXX are dependent on the [Section] name.
+// ***********************************************************************
+
+//  Sprites for the TV Calibration screen 
+[TVCalibrationSprites]
+ResourcesColorChannelFilename = sprites-tvcalibration-color.png
+ResourcesAlphaChannelFilename = sprites-tvcalibration-color.png
+Cursor.FileOffset.left = 0
+Cursor.FileOffset.top = 0
+Cursor.FileOffset.right = 64
+Cursor.FileOffset.bottom = 64
+
+
+//  Sprites for the Lightgun Calibration screen 
+[LightgunCalibrationSprites]
+ResourcesColorChannelFilename = sprites-lightguncalibration-color.png
+ResourcesAlphaChannelFilename = sprites-lightguncalibration-color.png
+
+Target.FileOffset.left = 0
+Target.FileOffset.top = 0
+Target.FileOffset.right = 32
+Target.FileOffset.bottom = 32
+
+Cursor.FileOffset.left = 0
+Cursor.FileOffset.top = 0
+Cursor.FileOffset.right = 32
+Cursor.FileOffset.bottom = 32
+
+
+//  Sprites for lists and the options "trigger" items 
+[ListSprites]
+ResourcesColorChannelFilename = sprites-list-color.png
+ResourcesAlphaChannelFilename = sprites-list-alpha.png
+
+TriggerIcon.Head.FileOffset.left = 0
+TriggerIcon.Head.FileOffset.top = 0
+TriggerIcon.Head.FileOffset.right = 32
+TriggerIcon.Head.FileOffset.bottom = 32
+
+TriggerIcon.Center.FileOffset.left = 31
+TriggerIcon.Center.FileOffset.top = 0
+TriggerIcon.Center.FileOffset.right = 32
+TriggerIcon.Center.FileOffset.bottom = 32
+
+TriggerIcon.Tail.FileOffset.left = 32
+TriggerIcon.Tail.FileOffset.top = 0
+TriggerIcon.Tail.FileOffset.right = 64
+TriggerIcon.Tail.FileOffset.bottom = 32
+
+ScrollIcon.Up.FileOffset.left = 0
+ScrollIcon.Up.FileOffset.top = 64
+ScrollIcon.Up.FileOffset.right = 32
+ScrollIcon.Up.FileOffset.bottom = 96
+
+ScrollIcon.Down.FileOffset.left = 0
+ScrollIcon.Down.FileOffset.top = 96
+ScrollIcon.Down.FileOffset.right = 32
+ScrollIcon.Down.FileOffset.bottom = 128
+
+
+//  Sprites for popup menus and list borders 
+[MenuSprites]
+ResourcesColorChannelFilename = sprites-menu-color.png
+ResourcesAlphaChannelFilename = sprites-menu-alpha.png
+
+TitleBar.LeftSide.FileOffset.left = 1
+TitleBar.LeftSide.FileOffset.top = 0
+TitleBar.LeftSide.FileOffset.right = 12
+TitleBar.LeftSide.FileOffset.bottom = 29
+
+TitleBar.Center.FileOffset.left = 26
+TitleBar.Center.FileOffset.top = 0
+TitleBar.Center.FileOffset.right = 38
+TitleBar.Center.FileOffset.bottom = 29
+
+TitleBar.RightSide.FileOffset.left = 40
+TitleBar.RightSide.FileOffset.top = 0
+TitleBar.RightSide.FileOffset.right = 64
+TitleBar.RightSide.FileOffset.bottom = 29
+
+Body.LeftSide.FileOffset.left = 1
+Body.LeftSide.FileOffset.top = 36
+Body.LeftSide.FileOffset.right = 12
+Body.LeftSide.FileOffset.bottom = 44
+
+Body.Center.FileOffset.left = 26
+Body.Center.FileOffset.top = 36
+Body.Center.FileOffset.right = 38
+Body.Center.FileOffset.bottom = 44
+
+Body.RightSide.FileOffset.left = 40
+Body.RightSide.FileOffset.top = 36
+Body.RightSide.FileOffset.right = 64
+Body.RightSide.FileOffset.bottom = 44
+
+Footer.LeftSide.FileOffset.left = 1
+Footer.LeftSide.FileOffset.top = 53
+Footer.LeftSide.FileOffset.right = 12
+Footer.LeftSide.FileOffset.bottom = 64
+
+Footer.Center.FileOffset.left = 26
+Footer.Center.FileOffset.top = 53
+Footer.Center.FileOffset.right = 38
+Footer.Center.FileOffset.bottom = 64
+
+Footer.RightSide.FileOffset.left = 40
+Footer.RightSide.FileOffset.top = 53
+Footer.RightSide.FileOffset.right = 64
+Footer.RightSide.FileOffset.bottom = 64
+
+
+//  Sprites for the ButtonInfo Objects 
+[ButtonSprites]
+ResourcesColorChannelFilename = sprites-buttons-color.png
+ResourcesAlphaChannelFilename = sprites-buttons-alpha.png
+
+A.FileOffset.left = 2
+A.FileOffset.top = 2
+A.FileOffset.right = 34
+A.FileOffset.bottom = 33
+
+B.FileOffset.left = 2
+B.FileOffset.top = 34
+B.FileOffset.right = 34
+B.FileOffset.bottom = 65
+
+X.FileOffset.left = 35
+X.FileOffset.top = 2
+X.FileOffset.right = 67
+X.FileOffset.bottom = 33
+
+Y.FileOffset.left = 35
+Y.FileOffset.top = 34
+Y.FileOffset.right = 67
+Y.FileOffset.bottom = 65
+
+// Black.FileOffset.left = 
+// Black.FileOffset.top = 
+// Black.FileOffset.right = 
+// Black.FileOffset.bottom = 
+
+// White.FileOffset.left = 
+// White.FileOffset.top = 
+// White.FileOffset.right = 
+// White.FileOffset.bottom = 
+
+Start.FileOffset.left = 68
+Start.FileOffset.top = 2
+Start.FileOffset.right = 98
+Start.FileOffset.bottom = 40
+
+// Back.FileOffset.left = 
+// Back.FileOffset.top = 
+// Back.FileOffset.right = 
+// Back.FileOffset.bottom = 
+
+// LeftTrigger.FileOffset.left = 
+// LeftTrigger.FileOffset.top = 
+// LeftTrigger.FileOffset.right = 
+// LeftTrigger.FileOffset.bottom = 
+
+// RightTrigger.FileOffset.left = 
+// RightTrigger.FileOffset.top = 
+// RightTrigger.FileOffset.right = 
+// RightTrigger.FileOffset.bottom = 
+
+// LeftAnalog.FileOffset.left = 
+// LeftAnalog.FileOffset.top = 
+// LeftAnalog.FileOffset.right = 
+// LeftAnalog.FileOffset.bottom = 
+
+// RightAnalog.FileOffset.left = 
+// RightAnalog.FileOffset.top = 
+// RightAnalog.FileOffset.right = 
+// RightAnalog.FileOffset.bottom = 
+-->

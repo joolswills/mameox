@@ -197,6 +197,9 @@
 			<File
 				RelativePath="$(XDK)\Samples\Xbox\Common\Src\xbutil.cpp">
 			</File>
+			<File
+				RelativePath=".\Sources\XMLParse.cpp">
+			</File>
 			<Filter
 				Name="Screens"
 				Filter="">
@@ -364,6 +367,9 @@
 			</File>
 			<File
 				RelativePath="$(XDK)\Samples\Xbox\Common\Include\xbutil.h">
+			</File>
+			<File
+				RelativePath=".\Includes\XMLParse.h">
 			</File>
 			<Filter
 				Name="Screens"
