@@ -5,8 +5,8 @@
 
 out_header         ..\Includes\MAMEoXIcon.h
 out_packedresource ..\..\Media\MAMEoXIcon.xpr
-out_error          Resource.err
-out_prefix         resource
+out_error          MAMEoXIcon.err
+out_prefix         mameoxicon
 
 Texture MAMEoXIcon
 {
