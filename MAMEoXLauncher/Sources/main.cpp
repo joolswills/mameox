@@ -1260,7 +1260,7 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
     pD3DDevice->Present( NULL, NULL, NULL, NULL );
   }
 
-	g_inputManager.WaitForNoButton( 0 );
+	g_inputManager.WaitForNoButton();
 
   SAFE_RELEASE( creditsTexture );
 }
