@@ -43,8 +43,6 @@ static INT32			g_frameskip = 0;
 static INT32			g_frameskipCounter = 0;
 static INT32			g_frameskipAdjust = 0;
 
-static BOOL				g_throttleFrameRate = TRUE;
-
   // The desired framerate for the title
 static FLOAT      g_desiredFPS = 0.0f;
 
@@ -305,7 +303,7 @@ void osd_update_video_and_audio(struct mame_display *display)
 
       // Wait out the remaining time for this frame
     if( lastFrameEndTime && 
-        !g_frameskip && 
+        (!g_frameskip || g_rendererOptions.m_frameskip != AUTO_FRAMESKIP) && 
         performance->game_speed_percent >= 99.5f && 
         g_desiredFPS != 0.0f && 
         g_rendererOptions.m_throttleFramerate )
@@ -315,7 +313,7 @@ void osd_update_video_and_audio(struct mame_display *display)
 
         // Note that this loop could easily be "optimized" to be
         //  a while( statement ) ; - style loop, but I'm worried that the
-        //  optimizing compiler would thing that it's not doing anything
+        //  optimizing compiler would think that it's not doing anything
         //  useful (after all, it's a busy wait) and throw it out altogether
       while( actualFrameCycles < targetFrameCycles )
       {
