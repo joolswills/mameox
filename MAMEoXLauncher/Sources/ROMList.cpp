@@ -1451,17 +1451,16 @@ void CROMList::UpdateFilteredList( void )
   std::vector<UINT32>::iterator i = m_ROMListFull.begin();
   for( ; i != m_ROMListFull.end(); ++i )
   {
-    BOOL validEntry = TRUE;
     MAMEDriverData_t &driverData = m_driverInfoList[*i];
     ROMStatus        &driverStatus = m_ROMStatus[*i];
 
       // Filter on CLONE status
-    if( m_options.m_filterMode & FM_CLONE )
-      validEntry = !driverData.m_isClone;
+    if( m_options.m_filterMode & FM_CLONE &&driverData.m_isClone )
+      continue;
 
       // Filter on the number of players
-    if( m_options.m_filterMode & FM_NUMPLAYERS )
-      validEntry = driverData.m_numPlayers >= m_options.m_numPlayersFilter;
+    if( m_options.m_filterMode & FM_NUMPLAYERS && driverData.m_numPlayers < m_options.m_numPlayersFilter )
+      continue;
 
       // Filter on the genre
     if( m_options.m_filterMode & FM_GENRE )
@@ -1469,23 +1468,22 @@ void CROMList::UpdateFilteredList( void )
     }
 
       // Filter out ROMs marked as "SLOW"
-    if( m_options.m_filterMode & FM_ROMSTATUS_SLOW )
-      validEntry = (driverStatus != STATUS_SLOW);
+    if( m_options.m_filterMode & FM_ROMSTATUS_SLOW && driverStatus == STATUS_SLOW )
+      continue;
 
       // Filter out ROMs marked as "Out of memory"
-    if( m_options.m_filterMode & FM_ROMSTATUS_OUTOFMEM )
-      validEntry = (driverStatus != STATUS_OUT_OF_MEMORY);
+    if( m_options.m_filterMode & FM_ROMSTATUS_OUTOFMEM && driverStatus == STATUS_OUT_OF_MEMORY )
+      continue;
 
       // Filter out ROMs marked as "Crash"
-    if( m_options.m_filterMode & FM_ROMSTATUS_CRASH )
-      validEntry = (driverStatus != STATUS_CRASH);
+    if( m_options.m_filterMode & FM_ROMSTATUS_CRASH && driverStatus == STATUS_CRASH )
+      continue;
 
       // Filter out ROMs marked as "Other nonworking"
-    if( m_options.m_filterMode & FM_ROMSTATUS_NONWORKING )
-      validEntry = (driverStatus != STATUS_GENERAL_NONWORKING);
+    if( m_options.m_filterMode & FM_ROMSTATUS_NONWORKING && driverStatus == STATUS_GENERAL_NONWORKING )
+      continue;
 
-    if( validEntry )
-      m_ROMListFiltered.push_back( *i );
+    m_ROMListFiltered.push_back( *i );
   }
 }
 
