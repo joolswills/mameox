@@ -11,6 +11,7 @@
 #include "MAMEoX.h"
 #include "GraphicsManager.h"
 #include "XBFont.h"
+#include "GFilterManager.h"
 
 extern "C" {
 #endif
@@ -95,6 +96,8 @@ typedef struct RendererOptions_t
 
     //! Maximization filter op
   D3DTEXTUREFILTERTYPE  m_magFilter;
+
+	DWORD                 m_FilterType;
 
 } RendererOptions_t;
 

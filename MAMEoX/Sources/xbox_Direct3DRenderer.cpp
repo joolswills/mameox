@@ -14,7 +14,7 @@
 #include "DebugLogger.h"
 #include "GraphicsManager.h"
 #include "xbox_Direct3DRenderer.h"
-
+#include "scale2x.h"
 
 	// Font class from the XDK
 #include "XBFont.h"
@@ -58,10 +58,21 @@ static RECT                       g_textureRenderingArea = {0,0,0,0};
 		//! The locked region for us to render to
 static D3DLOCKED_RECT             g_d3dLockedRect;
 
+// Filter manager class
+static CGFilterManager            g_FilterManger;
+
+// This is for rendering frames into before they are scaled
+static BYTE*                      g_pRenderBuffer = NULL;
+
+// These will hold our original (pre filtered/scaled) width/height
+static int                        g_OrigRenderWidth;
+static int                        g_OrigRenderHeight;
 
 extern "C" {
   //! Generic D3D Renderer options
 RendererOptions_t                 g_rendererOptions;
+
+
 
 extern UINT32	g_pal32Lookup[65536];
 }
@@ -71,6 +82,7 @@ static void Helper_RenderDirect16( void *destination, struct mame_bitmap *bitmap
 static void Helper_RenderDirect32( void *destination, struct mame_bitmap *bitmap, const struct rectangle *bounds );
 static void Helper_RenderPalettized16( void *destination, struct mame_bitmap *bitmap, const struct rectangle *bounds );
 static void Helper_RenderVectors( void *dest, struct mame_bitmap *bitmap, const struct rectangle *bnds, vector_pixel_t *vectorList );
+static void Helper_AllocFilterBuffer();
 static BOOL CreateTexture( void );
 static BOOL CreateRenderingQuad( void );
 extern "C" int fatalerror( const char *fmt, ... );
@@ -88,6 +100,7 @@ void InitializeD3DRenderer( CGraphicsManager &gman, CXBFont *fnt )
 {
 	g_pD3DDevice = gman.GetD3DDevice();
 	g_font = fnt;
+	g_FilterManger.SetActiveFilter((EFilterType)g_rendererOptions.m_FilterType);
 }
 
 extern "C" {
@@ -157,12 +170,22 @@ BOOL D3DRendererCreateSession( struct osd_create_params *params )
 		g_createParams.aspect_x = g_createParams.aspect_y;
 		g_createParams.aspect_y = temp;
 	}
+	
+	// Get the active filters magnifiction level
+	int iFilterMagLvl = g_FilterManger.GetActiveFilter().m_dwMagnificatonLvl;
 
+	g_createParams.width  = g_createParams.width *= iFilterMagLvl;
+	g_createParams.height = g_createParams.height *= iFilterMagLvl;
 
     // Assume that the game will render to the entire requested area
   g_textureRenderingArea.right = g_createParams.width;
   g_textureRenderingArea.bottom = g_createParams.height;
 
+	// Figure out the bitmap depth and tell teh filter manager
+	if( !(g_createParams.video_attributes & VIDEO_RGB_DIRECT) || g_createParams.depth >= 24 )
+		g_FilterManger.SetBitmapDepth(32);
+	else if( g_createParams.depth >= 15 )
+		g_FilterManger.SetBitmapDepth(16);
 
 		//-- Initialize the texture ---------------------------------------
   if( !CreateTexture() )
@@ -184,8 +207,6 @@ BOOL D3DRendererCreateSession( struct osd_create_params *params )
 	g_pD3DDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
 	g_pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
   g_pD3DDevice->SetRenderState( D3DRS_ZENABLE, FALSE );
-
-
 
 	return TRUE;
 }
@@ -210,6 +231,12 @@ void D3DRendererDestroySession( void )
 		g_pTexture->Release();
 		g_pTexture = NULL;
 	}
+
+	if (g_pRenderBuffer != NULL)
+	{
+		delete [] g_pRenderBuffer;
+		g_pRenderBuffer = NULL;
+	}
 }
 
 //-------------------------------------------------------------
@@ -220,35 +247,40 @@ void D3DRendererSetOutputRect( INT32 left, INT32 top, INT32 right, INT32 bottom 
     // 1) Tear down the preexisting texture
   D3DRendererDestroySession();  
 
+	// Get the active filters magnifiction level
+	int iFilterMagLvl = g_FilterManger.GetActiveFilter().m_dwMagnificatonLvl;
+
     // 2) Set up the new creation params
 	if( g_createParams.orientation & ORIENTATION_SWAP_XY )
   {
       // Need to flip the width and height
-    g_createParams.width = bottom;
-    g_createParams.height = right;
+    g_createParams.width = bottom * iFilterMagLvl;
+    g_createParams.height = right * iFilterMagLvl;
 
-    g_textureRenderingArea.left = top;
-    g_textureRenderingArea.top = left;
-    g_textureRenderingArea.right = bottom + 1;
-    g_textureRenderingArea.bottom = right + 1;
+    g_textureRenderingArea.left = top * iFilterMagLvl;
+    g_textureRenderingArea.top = left * iFilterMagLvl;
+    g_textureRenderingArea.right = (bottom + 1) * iFilterMagLvl;
+    g_textureRenderingArea.bottom = (right + 1) * iFilterMagLvl;
   }
   else
   {
-    g_createParams.width = right;
-    g_createParams.height = bottom;
+    g_createParams.width = right * iFilterMagLvl;
+    g_createParams.height = bottom * iFilterMagLvl;
 
-    g_textureRenderingArea.left = left;
-    g_textureRenderingArea.top = top;
-    g_textureRenderingArea.right = right + 1;
-    g_textureRenderingArea.bottom = bottom + 1;
+    g_textureRenderingArea.left = left * iFilterMagLvl;
+    g_textureRenderingArea.top = top * iFilterMagLvl;
+    g_textureRenderingArea.right = (right + 1) * iFilterMagLvl;
+    g_textureRenderingArea.bottom = (bottom + 1) * iFilterMagLvl;
   }
-
 
     // 3) Create a new texture
   CreateTexture();
 
     // 4) Create a new quad
   CreateRenderingQuad();  
+
+	// Allocate our buffers
+	Helper_AllocFilterBuffer();
 }
 
 
@@ -320,7 +352,40 @@ BOOL D3DRendererRender(	struct mame_bitmap *bitmap,
 
 } // End Extern "C"
 
+static void Helper_AllocFilterBuffer()
+{
+	if (g_pRenderBuffer != NULL)
+	{
+		delete [] g_pRenderBuffer;
+		g_pRenderBuffer = NULL;
+	}
 
+	// Get the active filter info
+	SFilterInfo oActiveFilter = g_FilterManger.GetActiveFilter();
+
+	// Store our original width and height
+	g_OrigRenderWidth  = g_createParams.width/oActiveFilter.m_dwMagnificatonLvl;
+	g_OrigRenderHeight = g_createParams.height/oActiveFilter.m_dwMagnificatonLvl;
+
+	// Don't do anything if no filter is selected
+	if (oActiveFilter.m_FilterType == eftNone)
+	{
+		return;
+	}
+
+	// Figure out our game byte depth 2 or 4 bytes (assume 2 check if it is 4)
+	int iDepth = 2; 
+
+	// Use 32 bit color for palettized or 32 bit sessions
+	if( !(g_createParams.video_attributes & VIDEO_RGB_DIRECT) || g_createParams.depth >= 24 )
+		iDepth = 4;
+
+	// Calculate the original (pre scaled) bitmap size
+	int iOrigBitampBytes = (g_OrigRenderWidth*g_OrigRenderHeight*iDepth);
+
+	// Allocate the render buffer large enough to hold a original sized game frame
+	g_pRenderBuffer = new BYTE[iOrigBitampBytes];
+}
 
 //-------------------------------------------------------------
 //	Helper_RenderDirect16
@@ -331,15 +396,27 @@ static void Helper_RenderDirect16( void *dest, struct mame_bitmap *bitmap, const
 	++bounds.max_x;
 	++bounds.max_y;
 
+	UINT16 *destBuffer;
+	UINT16 *sourceBuffer = (UINT16*)bitmap->base;
+
+	// If we a filtering render into a temp buffer then filter that buffer
+	// into the actual framebuffer
+	if (g_FilterManger.GetActiveFilter().m_FilterType != eftNone)
+	{
+		destBuffer = (UINT16*)g_pRenderBuffer;
+	}
+	else
+	{
+		destBuffer = (UINT16*)dest;
+	}
+
 	if( g_createParams.orientation & ORIENTATION_SWAP_XY )
   {
-    UINT16	*sourceBuffer = (UINT16*)bitmap->base;
 	  sourceBuffer += (bounds.min_y * bitmap->rowpixels) + bounds.min_x;
 
       // SwapXY 
-    UINT16 *destBuffer = (UINT16*)dest;
     destBuffer += bounds.min_y;  // The bounds.min_y value gives us our starting X coord
-    destBuffer += (bounds.min_x * g_createParams.width); // The bounds.min_x value gives us our starting Y coord
+    destBuffer += (bounds.min_x * g_OrigRenderWidth); // The bounds.min_x value gives us our starting Y coord
 
       // Render, treating sourceBuffer as normal (x and y not swapped)
     for( UINT32 y = bounds.min_y; y < bounds.max_y; ++y )
@@ -350,7 +427,7 @@ static void Helper_RenderDirect16( void *dest, struct mame_bitmap *bitmap, const
 			for( UINT32 x = bounds.min_x; x < bounds.max_x; ++x )
       {
         *offset = *(sourceOffset++);
-        offset += g_createParams.width;   // Increment the output Y value
+        offset += g_OrigRenderWidth;   // Increment the output Y value
       }
 
       sourceBuffer += bitmap->rowpixels;
@@ -359,20 +436,24 @@ static void Helper_RenderDirect16( void *dest, struct mame_bitmap *bitmap, const
   }
   else
 	{ 
-			// Destination buffer is in 32 bit X8R8G8B8
-	  UINT8		*sourceBuffer = (UINT8*)bitmap->base;
-	  sourceBuffer += (bounds.min_y * bitmap->rowbytes) + (bounds.min_x << 1);
-    UINT8 *destBuffer = (UINT8*)dest;
-    destBuffer += ((bounds.min_y * g_createParams.width) + bounds.min_x) << 1;
+	  sourceBuffer += (bounds.min_y * bitmap->rowpixels) + bounds.min_x;
+    
+    destBuffer += ((bounds.min_y * g_createParams.width) + bounds.min_x);
     UINT32 scanLen = (bounds.max_x - bounds.min_x) << 1;
 
 		for( UINT32 y = bounds.min_y; y < bounds.max_y; ++y )
 		{
       memcpy( destBuffer, sourceBuffer, scanLen );
-			destBuffer += (g_createParams.width << 1);
-			sourceBuffer += bitmap->rowbytes;
+			destBuffer += g_OrigRenderWidth;
+			sourceBuffer += bitmap->rowpixels;
 		}
   }
+
+	if (g_FilterManger.GetActiveFilter().m_FilterType != eftNone)
+	{
+		g_FilterManger.FilterBitmap((u8*)dest, (u8*)g_pRenderBuffer, (g_OrigRenderWidth << 1), 
+			g_OrigRenderWidth-1, g_OrigRenderHeight-1);
+	}
 }
 
 //-------------------------------------------------------------
@@ -390,17 +471,29 @@ static void Helper_RenderDirect32( void *dest, struct mame_bitmap *bitmap, const
 		PRINTMSG( T_ERROR, "32 bit palettized mode not supported!" );
     return;
   }
+	
+	UINT32 *destBuffer;
+	UINT32 *sourceBuffer = (UINT32*)bitmap->base;
+
+	// If we a filtering render into a temp buffer then filter that buffer
+	// into the actual framebuffer
+	if (g_FilterManger.GetActiveFilter().m_FilterType != eftNone)
+	{
+		destBuffer = (UINT32*)g_pRenderBuffer;
+	}
+	else
+	{
+		destBuffer = (UINT32*)dest;
+	}
 
   	// Destination buffer is in 32 bit X8R8G8B8
 	if( g_createParams.orientation & ORIENTATION_SWAP_XY )
   {
-    UINT32	*sourceBuffer = (UINT32*)bitmap->base;
 	  sourceBuffer += (bounds.min_y * bitmap->rowpixels) + bounds.min_x;
 
       // SwapXY 
-    UINT32 *destBuffer = (UINT32*)dest;
     destBuffer += bounds.min_y;  // The bounds.min_y value gives us our starting X coord
-    destBuffer += (bounds.min_x * g_createParams.width); // The bounds.min_x value gives us our starting Y coord
+    destBuffer += (bounds.min_x * g_OrigRenderWidth); // The bounds.min_x value gives us our starting Y coord
 
       // Render, treating sourceBuffer as normal (x and y not swapped)
     for( UINT32 y = bounds.min_y; y < bounds.max_y; ++y )
@@ -411,7 +504,7 @@ static void Helper_RenderDirect32( void *dest, struct mame_bitmap *bitmap, const
 			for( UINT32 x = bounds.min_x; x < bounds.max_x; ++x )
       {
         *offset = *(sourceOffset++);
-        offset += g_createParams.width;   // Increment the output Y value
+        offset += g_OrigRenderWidth;   // Increment the output Y value
       }
 
       sourceBuffer += bitmap->rowpixels;
@@ -420,19 +513,24 @@ static void Helper_RenderDirect32( void *dest, struct mame_bitmap *bitmap, const
   }
   else
 	{ 
-	  UINT8		*sourceBuffer = (UINT8*)bitmap->base;
-	  sourceBuffer += (bounds.min_y * bitmap->rowbytes) + (bounds.min_x << 2);
-    UINT8 *destBuffer = (UINT8*)dest;
-    destBuffer += ((bounds.min_y * g_createParams.width) + bounds.min_x) << 2;
+	  sourceBuffer += (bounds.min_y * bitmap->rowpixels) + bounds.min_x;
+
+    destBuffer += ((bounds.min_y * g_OrigRenderWidth) + bounds.min_x);
     UINT32 scanLen = (bounds.max_x - bounds.min_x) << 2;
 
 		for( UINT32 y = bounds.min_y; y < bounds.max_y; ++y )
 		{
       memcpy( destBuffer, sourceBuffer, scanLen );
-			destBuffer += (g_createParams.width << 2);
-			sourceBuffer += bitmap->rowbytes;
+			destBuffer += g_OrigRenderWidth;
+			sourceBuffer += bitmap->rowpixels;
 		}
   }
+
+	if (g_FilterManger.GetActiveFilter().m_FilterType != eftNone)
+	{
+		g_FilterManger.FilterBitmap((u8*)dest, (u8*)g_pRenderBuffer, (g_OrigRenderWidth << 2), 
+			g_OrigRenderWidth-1, g_OrigRenderHeight-1);
+	}
 }
 
 
@@ -446,17 +544,29 @@ static void Helper_RenderPalettized16( void *dest, struct mame_bitmap *bitmap, c
 	++bounds.max_x;
 	++bounds.max_y;
 
+	UINT32 *destBuffer;
+	UINT16 *sourceBuffer = (UINT16*)bitmap->base;
+
+	// If we a filtering render into a temp buffer then filter that buffer
+	// into the actual framebuffer
+	if (g_FilterManger.GetActiveFilter().m_FilterType != eftNone)
+	{
+		destBuffer = (UINT32*)g_pRenderBuffer;
+	}
+	else
+	{
+		destBuffer = (UINT32*)dest;
+	}
+
 		// bitmap format is 16 bit indices into the palette
 		// Destination buffer is in 32 bit X8R8G8B8
 	if( g_createParams.orientation & ORIENTATION_SWAP_XY )
 	{ 
-    UINT16 *sourceBuffer = (UINT16*)bitmap->base;
     sourceBuffer += (bounds.min_y * bitmap->rowpixels) + bounds.min_x;
 
       // SwapXY
-    UINT32 *destBuffer = (UINT32*)dest;
     destBuffer += bounds.min_y;  // The bounds.min_y value gives us our starting X coord
-    destBuffer += (bounds.min_x * g_createParams.width); // The bounds.min_x value gives us our starting Y coord
+    destBuffer += (bounds.min_x * g_OrigRenderWidth); // The bounds.min_x value gives us our starting Y coord
 
       // Render, treating sourceBuffer as normal (x and y not swapped)
     for( UINT32 y = bounds.min_y; y < bounds.max_y; ++y )
@@ -470,7 +580,7 @@ static void Helper_RenderPalettized16( void *dest, struct mame_bitmap *bitmap, c
         *offset = g_pal32Lookup[ *(sourceOffset++) ];
 
           // Skip to the next row
-        offset += g_createParams.width;   // Increment the output Y value
+        offset += g_OrigRenderWidth;   // Increment the output Y value
       }
 
       sourceBuffer += bitmap->rowpixels;
@@ -479,11 +589,8 @@ static void Helper_RenderPalettized16( void *dest, struct mame_bitmap *bitmap, c
 	}
 	else
 	{
-		UINT16 *sourceBuffer = (UINT16*)bitmap->base;
     sourceBuffer += (bounds.min_y * bitmap->rowpixels) + bounds.min_x;
-
-		UINT32	*destBuffer = (UINT32*)dest;
-    destBuffer += (bounds.min_y * g_createParams.width + bounds.min_x);
+    destBuffer += (bounds.min_y * g_OrigRenderWidth + bounds.min_x);
 
 		for( UINT32 y = bounds.min_y; y < bounds.max_y; ++y )
 		{
@@ -496,9 +603,15 @@ static void Helper_RenderPalettized16( void *dest, struct mame_bitmap *bitmap, c
         *(offset++) = g_pal32Lookup[ *(sourceOffset++) ];
 			}
 
-			destBuffer += g_createParams.width;
+			destBuffer += g_OrigRenderWidth;
       sourceBuffer += bitmap->rowpixels;
 		}
+	}
+
+	if (g_FilterManger.GetActiveFilter().m_FilterType != eftNone)
+	{
+		g_FilterManger.FilterBitmap((u8*)dest, (u8*)g_pRenderBuffer, (g_OrigRenderWidth << 2), 
+			g_OrigRenderWidth, g_OrigRenderHeight);
 	}
 }
     
