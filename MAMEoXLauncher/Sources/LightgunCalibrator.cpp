@@ -192,7 +192,7 @@ void CLightgunCalibrator::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
     m_fontSet.DefaultFont().DrawText( 320, 180, TEXTCOLOR, calibrationStepText[m_calibrationStep], XBFONT_CENTER_X );
 
-    m_fontSet.DefaultFont().DrawText( 320, 280, TEXTCOLOR, L"Press B to discard changes.", XBFONT_CENTER_X );
+    m_fontSet.DefaultFont().DrawText( 320, 280, TEXTCOLOR, L"Press B to recalibrate.", XBFONT_CENTER_X );
 
   m_fontSet.DefaultFont().End();
 

@@ -22,6 +22,10 @@ Version 0.70.4b
     - OptionsPage.cpp
       - Integrated new gfx from r4dius
 
+    - LightgunCalibrator.cpp
+      - Changed text from "Push B to discard changes" to
+        "Push B to recalibrate"
+
 
 *********************************************************************
 Version 0.70.3b
