@@ -237,6 +237,12 @@ void CVirtualKeyboard::MoveCursor( CGamepad &gp )
         m_data = m_data.substr( 0, m_data.length() - 1 );
     }
   }
+
+  if( gp.IsButtonPressed( GP_BACK ) )
+    m_inputState = VKS_CANCELLED;
+  else if( gp.IsButtonPressed( GP_START ) )
+    m_inputState = VKS_ACCEPTED;
+  
 }
 
 //---------------------------------------------------------------------
