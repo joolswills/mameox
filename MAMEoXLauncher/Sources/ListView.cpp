@@ -40,12 +40,6 @@ extern "C" {
 #define DPADCURSORMOVE_TIMEOUT	0.20f
 
 //= S T R U C T U R E S ===============================================
-struct CUSTOMVERTEX
-{
-	D3DXVECTOR3   pos;      // The transformed position for the vertex
-  FLOAT         tu, tv;   // The texture coordinates
-};
-
 
 //= G L O B A L = V A R S ==============================================
 

@@ -51,13 +51,14 @@ void CScreensaverScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 					  								1.0f,															// Z
 						  							0L );															// Stencil
 
+	if( !g_loadedSkin )
+		return;
+
   static textMessageX = 0, textMessageY = 0;
   static UINT64 lastTime = 0;
 	UINT64 curTime = osd_cycles();
 	UINT64 elapsedTime = curTime - lastTime;
 	lastTime = curTime;
-
-
 
   if( elapsedTime >= m_displayTimeout )
   {
@@ -133,7 +134,7 @@ void CScreensaverScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     m_fontSet.DefaultFont().Begin();
       m_fontSet.DefaultFont().DrawText( textMessageX,
                                         textMessageY,
-                                        D3DCOLOR_XRGB( 255, 255, 255 ),
+                                        g_loadedSkin->GetSkinColor( COLOR_SCREENSAVER_TEXT ),
                                         L"Screensaver active but there\nare no screenshots to display.",
                                         XBFONT_CENTER_X );
     m_fontSet.DefaultFont().End();

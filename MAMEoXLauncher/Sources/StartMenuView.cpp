@@ -15,10 +15,6 @@
 
 
   //--- Layout defines -----------------------------------------
-#define HEADER_COLOR            D3DCOLOR_XRGB( 0, 0, 0 )
-#define ITEM_COLOR			        D3DCOLOR_XRGB( 0, 0, 0 )
-#define HIGHLIGHTBAR_COLOR      D3DCOLOR_ARGB( 180, 145, 149, 182 )
-
 #define TITLEBAR_ROW            m_titleArea.top + 4
 #define FIRSTDATA_ROW           m_bodyArea.top
 
@@ -116,6 +112,9 @@ void CStartMenuView::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 				  									D3DCOLOR_XRGB(0,0,0),							// Color
 					  								1.0f,															// Z
 						  							0L );															// Stencil
+	
+	if( !g_loadedSkin )
+		return;
 
   FLOAT fontHeight  = m_fontSet.SmallThinFontHeight();
   RenderBackdrop( fontHeight );
@@ -129,16 +128,16 @@ void CStartMenuView::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
 
   m_displayDevice->Begin( D3DPT_QUADLIST );
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_STARTMENU_BODY_HIGHLIGHTBAR) );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
     
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_STARTMENU_BODY_HIGHLIGHTBAR) );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
     
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_STARTMENU_BODY_HIGHLIGHTBAR) );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos + fontHeight, 1.0f, 1.0f );
 
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_STARTMENU_BODY_HIGHLIGHTBAR) );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos + fontHeight, 1.0f, 1.0f );
   m_displayDevice->End();
 
@@ -150,7 +149,7 @@ void CStartMenuView::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     mbstowcs( wBuf, m_title.c_str(), 256 );
     m_fontSet.SmallThinFont().DrawText( NAME_START,
                                         TITLEBAR_ROW,
-                                        HEADER_COLOR,
+                                        g_loadedSkin->GetSkinColor(COLOR_STARTMENU_TITLEBAR_TEXT),
                                         wBuf,
                                         XBFONT_TRUNCATED,
                                         TEXTBOX_RIGHT - (NAME_START+COLUMN_PADDING) );
@@ -165,7 +164,7 @@ void CStartMenuView::Draw( BOOL clearScreen, BOOL flipOnCompletion )
       mbstowcs( wBuf, (*i).first.c_str(), 256 );
       m_fontSet.SmallThinFont().DrawText( NAME_START,
                                           FIRSTDATA_ROW + y,
-                                          ITEM_COLOR,
+                                          g_loadedSkin->GetSkinColor(COLOR_STARTMENU_BODY_TEXT),
                                           wBuf,
                                           XBFONT_TRUNCATED,
                                           TEXTBOX_RIGHT - (NAME_START+COLUMN_PADDING) );

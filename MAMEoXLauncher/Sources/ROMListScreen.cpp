@@ -28,17 +28,6 @@ extern "C" {
 //= D E F I N E S ======================================================
 
   //--- Layout defines -----------------------------------------
-#define HEADER_COLOR          D3DCOLOR_XRGB( 1, 1, 1 )
-#define HELPITEM_COLOR        D3DCOLOR_XRGB( 20, 20, 20 )
-#define ITEM_COLOR			      D3DCOLOR_XRGB( 1, 1, 1 )
-#define ITEM_WARNING_COLOR    D3DCOLOR_XRGB( 100, 100, 0 )
-#define ITEM_NONWORKING_COLOR D3DCOLOR_XRGB( 240, 20, 20 )
-
-#define HIGHLIGHTBAR_COLOR      D3DCOLOR_ARGB( 180, 175, 179, 212 )
-#define SCROLLICON_COLOR        D3DCOLOR_XRGB( 255, 255, 255 )
-#define SPACER_COLOR            D3DCOLOR_ARGB( 100, 255, 255, 255 )
-#define NOSCREENSHOT_COLOR      D3DCOLOR_XRGB( 1, 1, 1 )
-#define NOSCREENSHOTTEXT_COLOR  D3DCOLOR_XRGB( 255, 255, 255 )
 
 #define TITLEBAR_ROW          99
 #define FIRSTDATA_ROW         124
@@ -1877,6 +1866,9 @@ void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 					  								1.0f,															// Z
 						  							0L );															// Stencil
 
+	if( !g_loadedSkin )
+		return;
+
     // Render the backdrop texture
   RenderBackdrop();
   m_menuRenderer->Draw( FALSE, FALSE );
@@ -1905,7 +1897,7 @@ void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 			m_fontSet.LargeThinFont().Begin();
 				m_fontSet.LargeThinFont().DrawText( HELP_A_TEXT_X, 
 																						HELP_A_TEXT_Y, 
-																						HELPITEM_COLOR, 
+																						g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BUTTONICON_TEXT), 
 																						L"Play ROM" );
 			m_fontSet.LargeThinFont().End();
 		}
@@ -1932,7 +1924,7 @@ void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 			m_fontSet.LargeThinFont().Begin();
 				m_fontSet.LargeThinFont().DrawText( HELP_X_TEXT_X, 
 																						HELP_X_TEXT_Y, 
-																						HELPITEM_COLOR, 
+																						g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BUTTONICON_TEXT), 
 																						L"Help" );
 			m_fontSet.LargeThinFont().End();
 		}
@@ -1959,7 +1951,7 @@ void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 			m_fontSet.LargeThinFont().Begin();
 				m_fontSet.LargeThinFont().DrawText( HELP_Y_TEXT_X, 
 																						HELP_Y_TEXT_Y, 
-																						HELPITEM_COLOR, 
+																						g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BUTTONICON_TEXT), 
 																						L"Fast Jump" );
 			m_fontSet.LargeThinFont().End();
 		}
@@ -1986,7 +1978,7 @@ void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 			m_fontSet.LargeThinFont().Begin();
 				m_fontSet.LargeThinFont().DrawText( HELP_START_TEXT_X,
 																						HELP_START_TEXT_Y,
-																						HELPITEM_COLOR,
+																						g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BUTTONICON_TEXT),
 																						L"Menu" );
 			m_fontSet.LargeThinFont().End();
 		}
@@ -2044,16 +2036,16 @@ void CROMListScreen::DrawVerboseList( void )
   m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
 
   m_displayDevice->Begin( D3DPT_QUADLIST );
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_HIGHLIGHTBAR) );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
     
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_HIGHLIGHTBAR) );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
     
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_HIGHLIGHTBAR) );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos + textHeight, 1.0f, 1.0f );
 
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_HIGHLIGHTBAR) );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos + textHeight, 1.0f, 1.0f );
   m_displayDevice->End();
 
@@ -2062,13 +2054,13 @@ void CROMListScreen::DrawVerboseList( void )
   m_displayDevice->Begin( D3DPT_QUADLIST );
 
     #define DRAWSPACER( spacerLeft ) { \
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SPACER_COLOR ); \
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_DIVIDER) ); \
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft), LISTPOS_TOP + 1, 1.0f, 1.0f ); \
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SPACER_COLOR ); \
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_DIVIDER) ); \
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft) + SPACER_WIDTH, LISTPOS_TOP + 1, 1.0f, 1.0f ); \
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SPACER_COLOR ); \
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_DIVIDER) ); \
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft) + SPACER_WIDTH, LISTPOS_BOTTOM - 1, 1.0f, 1.0f ); \
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SPACER_COLOR ); \
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_DIVIDER) ); \
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft), LISTPOS_BOTTOM - 1, 1.0f, 1.0f ); \
     }
 
@@ -2103,14 +2095,30 @@ void CROMListScreen::DrawVerboseList( void )
 
 	  m_fontSet.SmallThinFont().DrawText( NAME_COLUMN, 
                                         TITLEBAR_ROW, 
-                                        HEADER_COLOR, 
+                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_TITLEBAR_TEXT), 
                                         name, 
                                         XBFONT_TRUNCATED,
                                         MANUFACTURER_COLUMN - (NAME_COLUMN + COLUMN_PADDING) );
-		m_fontSet.SmallThinFont().DrawText( MANUFACTURER_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"Manufacturer" );
-		m_fontSet.SmallThinFont().DrawText( YEAR_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"Year" );
-    m_fontSet.SmallThinFont().DrawText( NUMPLAYERS_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"#P" );
-		m_fontSet.SmallThinFont().DrawText( CLONE_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"Clone" );
+
+		m_fontSet.SmallThinFont().DrawText( MANUFACTURER_COLUMN, 
+																				TITLEBAR_ROW, 
+																				g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_TITLEBAR_TEXT), 
+																				L"Manufacturer" );
+
+		m_fontSet.SmallThinFont().DrawText( YEAR_COLUMN, 
+																				TITLEBAR_ROW, 
+																				g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_TITLEBAR_TEXT), 
+																				L"Year" );
+
+    m_fontSet.SmallThinFont().DrawText( NUMPLAYERS_COLUMN, 
+																				TITLEBAR_ROW, 
+																				g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_TITLEBAR_TEXT), 
+																				L"#P" );
+
+		m_fontSet.SmallThinFont().DrawText( CLONE_COLUMN, 
+																				TITLEBAR_ROW, 
+																				g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_TITLEBAR_TEXT), 
+																				L"Clone" );
 
 		  // Render the ROM info
 	  FLOAT yPos = 0.0f;
@@ -2119,7 +2127,7 @@ void CROMListScreen::DrawVerboseList( void )
 
 	  for( DWORD i = absListIDX; i < pageSize + absListIDX; ++i )
 	  {
-      DWORD color = ITEM_COLOR;
+      DWORD color = g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_ROMWORKING_TEXT);
 
         // Set the ROM color based on its status
       if( m_options.m_showROMStatus )
@@ -2134,13 +2142,13 @@ void CROMListScreen::DrawVerboseList( void )
           break;
 
         case STATUS_SLOW:
-          color = ITEM_WARNING_COLOR;
+          color = g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_ROMWARNING_TEXT);
           break;
 
         case STATUS_CRASH:
         case STATUS_OUT_OF_MEMORY:
         case STATUS_GENERAL_NONWORKING:
-          color = ITEM_NONWORKING_COLOR;
+          color = g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_ROMNONWORKING_TEXT);
           break;
         }
       }
@@ -2202,7 +2210,7 @@ void CROMListScreen::DrawVerboseList( void )
   m_displayDevice->SetRenderState( D3DRS_SRCBLEND,            D3DBLEND_SRCALPHA );
   m_displayDevice->SetRenderState( D3DRS_DESTBLEND,           D3DBLEND_INVSRCALPHA );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
   m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
@@ -2213,12 +2221,10 @@ void CROMListScreen::DrawVerboseList( void )
 		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_UP );
 		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_UP );
 		desc->Render( m_displayDevice, 
-									D3DVSDE_DIFFUSE, 
-									SCROLLICON_COLOR, 
-									SCROLLUP_LEFT, 
-									SCROLLUP_TOP, 
-									SCROLLUP_RIGHT, 
-									SCROLLUP_BOTTOM );
+									(FLOAT)SCROLLUP_LEFT, 
+									(FLOAT)SCROLLUP_TOP, 
+									(FLOAT)SCROLLUP_RIGHT, 
+									(FLOAT)SCROLLUP_BOTTOM );
   }
 
   if( (DWORD)m_pageOffset < (m_numLinesInList - (DWORD)pageSize) && CheckResourceValidity( SPRITE_LIST_SCROLLICON_DOWN ) )
@@ -2226,12 +2232,10 @@ void CROMListScreen::DrawVerboseList( void )
 		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_DOWN );
 		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_DOWN );
 		desc->Render( m_displayDevice, 
-									D3DVSDE_DIFFUSE, 
-									SCROLLICON_COLOR, 
-									SCROLLDOWN_LEFT, 
-									SCROLLDOWN_TOP, 
-									SCROLLDOWN_RIGHT, 
-									SCROLLDOWN_BOTTOM );
+									(FLOAT)SCROLLDOWN_LEFT, 
+									(FLOAT)SCROLLDOWN_TOP, 
+									(FLOAT)SCROLLDOWN_RIGHT, 
+									(FLOAT)SCROLLDOWN_BOTTOM );
   }
 
   m_displayDevice->SetTexture( 0, NULL );
@@ -2259,16 +2263,16 @@ void CROMListScreen::DrawSimpleList( void )
   m_displayDevice->SetTexture( 0, NULL );
 
   m_displayDevice->Begin( D3DPT_QUADLIST );
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_HIGHLIGHTBAR) );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
     
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_HIGHLIGHTBAR) );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
     
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_HIGHLIGHTBAR) );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos + textHeight, 1.0f, 1.0f );
 
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_HIGHLIGHTBAR) );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos + textHeight, 1.0f, 1.0f );
   m_displayDevice->End();
 
@@ -2288,7 +2292,7 @@ void CROMListScreen::DrawSimpleList( void )
 
 	  m_fontSet.SmallThinFont().DrawText( NAME_COLUMN, 
                                         TITLEBAR_ROW, 
-                                        HEADER_COLOR, 
+                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_TITLEBAR_TEXT), 
                                         name, 
                                         XBFONT_TRUNCATED,
                                         TEXTBOX_RIGHT - (NAME_COLUMN + COLUMN_PADDING) );
@@ -2300,7 +2304,7 @@ void CROMListScreen::DrawSimpleList( void )
 
 	  for( DWORD i = absListIDX; i < pageSize + absListIDX; ++i )
 	  {
-      DWORD color = ITEM_COLOR;
+      DWORD color = g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_ROMWORKING_TEXT);
 
         // Set the ROM color based on its status
       if( m_options.m_showROMStatus )
@@ -2315,13 +2319,13 @@ void CROMListScreen::DrawSimpleList( void )
           break;
 
         case STATUS_SLOW:
-          color = ITEM_WARNING_COLOR;
+          color = g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_ROMWARNING_TEXT);
           break;
 
         case STATUS_CRASH:
         case STATUS_OUT_OF_MEMORY:
         case STATUS_GENERAL_NONWORKING:
-          color = ITEM_NONWORKING_COLOR;
+          color = g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_ROMNONWORKING_TEXT);
           break;
         }
       }
@@ -2349,7 +2353,7 @@ void CROMListScreen::DrawSimpleList( void )
   m_displayDevice->SetRenderState( D3DRS_SRCBLEND,            D3DBLEND_SRCALPHA );
   m_displayDevice->SetRenderState( D3DRS_DESTBLEND,           D3DBLEND_INVSRCALPHA );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
   m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
@@ -2360,12 +2364,10 @@ void CROMListScreen::DrawSimpleList( void )
 		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_UP );
 		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_UP );
 		desc->Render( m_displayDevice, 
-									D3DVSDE_DIFFUSE, 
-									SCROLLICON_COLOR, 
-									SCROLLUP_LEFT, 
-									SCROLLUP_TOP, 
-									SCROLLUP_RIGHT, 
-									SCROLLUP_BOTTOM );
+									(FLOAT)SCROLLUP_LEFT, 
+									(FLOAT)SCROLLUP_TOP, 
+									(FLOAT)SCROLLUP_RIGHT, 
+									(FLOAT)SCROLLUP_BOTTOM );
   }
 
   if( (DWORD)m_pageOffset < (m_numLinesInList - (DWORD)pageSize) && CheckResourceValidity( SPRITE_LIST_SCROLLICON_DOWN ) )
@@ -2373,12 +2375,10 @@ void CROMListScreen::DrawSimpleList( void )
 		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_DOWN );
 		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_DOWN );
 		desc->Render( m_displayDevice, 
-									D3DVSDE_DIFFUSE, 
-									SCROLLICON_COLOR, 
-									SCROLLDOWN_LEFT, 
-									SCROLLDOWN_TOP, 
-									SCROLLDOWN_RIGHT, 
-									SCROLLDOWN_BOTTOM );
+									(FLOAT)SCROLLDOWN_LEFT, 
+									(FLOAT)SCROLLDOWN_TOP, 
+									(FLOAT)SCROLLDOWN_RIGHT, 
+									(FLOAT)SCROLLDOWN_BOTTOM );
   }
 
   m_displayDevice->SetTexture( 0, NULL );
@@ -2533,16 +2533,16 @@ void CROMListScreen::DrawDetailedList( void )
 	  m_displayDevice->SetTexture( 0, NULL );
 
     m_displayDevice->Begin( D3DPT_QUADLIST );      
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, NOSCREENSHOT_COLOR );
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_SCREENSHOT_BACKGROUND) );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotLeft, screenshotTop, 1.0f, 1.0f );
       
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, NOSCREENSHOT_COLOR );
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_SCREENSHOT_BACKGROUND) );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotRight, screenshotTop, 1.0f, 1.0f );
       
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, NOSCREENSHOT_COLOR );
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_SCREENSHOT_BACKGROUND) );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotRight, screenshotBottom, 1.0f, 1.0f );
 
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, NOSCREENSHOT_COLOR );
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_SCREENSHOT_BACKGROUND) );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotLeft, screenshotBottom, 1.0f, 1.0f );
     m_displayDevice->End();
 
@@ -2551,7 +2551,7 @@ void CROMListScreen::DrawDetailedList( void )
       swprintf( name, L"[%lu]", 0 );
 	    m_fontSet.SmallThinFont().DrawText( screenshotLeft + ((screenshotRight - screenshotLeft) / 2.0f), 
                                           screenshotTop + ((screenshotBottom - screenshotTop) / 2.0f), 
-                                          NOSCREENSHOTTEXT_COLOR, 
+                                          g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_SCREENSHOT_TEXT), 
                                           L"No Screenshots",
                                           XBFONT_CENTER_X );
     m_fontSet.SmallThinFont().End();
@@ -2579,7 +2579,7 @@ void CROMListScreen::DrawDetailedList( void )
 
 	  m_fontSet.SmallThinFont().DrawText( NAME_COLUMN, 
                                         TITLEBAR_ROW, 
-                                        HEADER_COLOR, 
+                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_TITLEBAR_TEXT), 
                                         name, 
                                         XBFONT_TRUNCATED,
                                         TEXTBOX_RIGHT - (NAME_COLUMN + COLUMN_PADDING) );
@@ -2587,7 +2587,7 @@ void CROMListScreen::DrawDetailedList( void )
 		  // Render the ROM info
 
       //--- Display the ROM status ---------------------------
-    DWORD color = ITEM_COLOR;
+    DWORD color = g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_ROMWORKING_TEXT);
     swprintf( name, L"ROM Status: " );
     switch( status )
     {
@@ -2605,30 +2605,30 @@ void CROMListScreen::DrawDetailedList( void )
         // *** STATUS_SLOW *** //
       case STATUS_SLOW:
         wcscat( name, L"Runs slowly" );
-        color = ITEM_WARNING_COLOR;
+        color = g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_ROMWARNING_TEXT);
         break;
 
         // *** STATUS_CRASH *** //
       case STATUS_CRASH:
         wcscat( name, L"Crashes" );
-        color = ITEM_NONWORKING_COLOR;
+        color = g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_ROMNONWORKING_TEXT);
         break;
 
         // *** STATUS_OUT_OF_MEMORY *** //
       case STATUS_OUT_OF_MEMORY:
         wcscat( name, L"Out of memory" );
-        color = ITEM_NONWORKING_COLOR;
+        color = g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_ROMNONWORKING_TEXT);
         break;
 
         // *** STATUS_GENERAL_NONWORKING *** //
       case STATUS_GENERAL_NONWORKING:
         wcscat( name, L"General nonworking" );
-        color = ITEM_NONWORKING_COLOR;
+        color = g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_ROMNONWORKING_TEXT);
         break;
     }
     m_fontSet.SmallThinFont().DrawText( DETAIL_ROMSTATUS_X, 
                                         DETAIL_ROMSTATUS_Y, 
-                                        ITEM_COLOR, 
+                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_TEXT), 
                                         name, 
                                         XBFONT_TRUNCATED, 
                                         screenshotLeft - (DETAIL_ROMSTATUS_X + COLUMN_PADDING) );
@@ -2638,7 +2638,7 @@ void CROMListScreen::DrawDetailedList( void )
     swprintf( name, L"Number of players: %lu", driverData.m_numPlayers );
     m_fontSet.SmallThinFont().DrawText( DETAIL_NUMPLAYERS_X, 
                                         DETAIL_NUMPLAYERS_Y, 
-                                        ITEM_COLOR, 
+                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_TEXT), 
                                         name, 
                                         XBFONT_TRUNCATED, 
                                         screenshotLeft - (DETAIL_NUMPLAYERS_X + COLUMN_PADDING) );
@@ -2652,7 +2652,7 @@ void CROMListScreen::DrawDetailedList( void )
     swprintf( name, L"Manufacturer: %s", temp );
     m_fontSet.SmallThinFont().DrawText( DETAIL_MANUFACTURER_X, 
                                         DETAIL_MANUFACTURER_Y, 
-                                        ITEM_COLOR, 
+                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_TEXT), 
                                         name, 
                                         XBFONT_TRUNCATED, 
                                         screenshotLeft - (DETAIL_MANUFACTURER_X + COLUMN_PADDING) );
@@ -2665,7 +2665,7 @@ void CROMListScreen::DrawDetailedList( void )
     swprintf( name, L"Year: %s", temp );
     m_fontSet.SmallThinFont().DrawText( DETAIL_YEAR_X, 
                                         DETAIL_YEAR_Y, 
-                                        ITEM_COLOR, 
+                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_TEXT), 
                                         name, 
                                         XBFONT_TRUNCATED, 
                                         screenshotLeft - (DETAIL_YEAR_X + COLUMN_PADDING) );
@@ -2679,7 +2679,7 @@ void CROMListScreen::DrawDetailedList( void )
     swprintf( name, L"Parent ROM filename: %s", temp );
     m_fontSet.SmallThinFont().DrawText( DETAIL_PARENT_X, 
                                         DETAIL_PARENT_Y, 
-                                        ITEM_COLOR, 
+                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_TEXT), 
                                         name, 
                                         XBFONT_TRUNCATED, 
                                         screenshotLeft - (DETAIL_PARENT_X + COLUMN_PADDING) );
@@ -2693,7 +2693,7 @@ void CROMListScreen::DrawDetailedList( void )
     swprintf( name, L"Genre: %s", temp );
     m_fontSet.SmallThinFont().DrawText( DETAIL_GENRE_X, 
                                         DETAIL_GENRE_Y, 
-                                        ITEM_COLOR, 
+                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_TEXT), 
                                         name, 
                                         XBFONT_TRUNCATED, 
                                         screenshotLeft - (DETAIL_GENRE_X + COLUMN_PADDING) );
@@ -2706,7 +2706,7 @@ void CROMListScreen::DrawDetailedList( void )
     swprintf( name, L"Version added: %s", temp );
     m_fontSet.SmallThinFont().DrawText( DETAIL_VERSIONADDED_X, 
                                         DETAIL_VERSIONADDED_Y, 
-                                        ITEM_COLOR, 
+                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_TEXT), 
                                         name, 
                                         XBFONT_TRUNCATED, 
                                         screenshotLeft - (DETAIL_VERSIONADDED_X + COLUMN_PADDING) );
@@ -2715,7 +2715,7 @@ void CROMListScreen::DrawDetailedList( void )
     swprintf( name, L"Times played: %lu", metadata.m_timesPlayed );
     m_fontSet.SmallThinFont().DrawText( DETAIL_TIMESPLAYED_X, 
                                         DETAIL_TIMESPLAYED_Y, 
-                                        ITEM_COLOR, 
+                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_TEXT), 
                                         name, 
                                         XBFONT_TRUNCATED, 
                                         screenshotLeft - (DETAIL_TIMESPLAYED_X + COLUMN_PADDING) );
@@ -2751,7 +2751,7 @@ void CROMListScreen::DrawDetailedList( void )
     swprintf( name, L"Favorite status: %s", temp );
     m_fontSet.SmallThinFont().DrawText( DETAIL_FAVORITESTATUS_X, 
                                         DETAIL_FAVORITESTATUS_Y, 
-                                        ITEM_COLOR, 
+                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_TEXT), 
                                         name, 
                                         XBFONT_TRUNCATED, 
                                         screenshotLeft - (DETAIL_FAVORITESTATUS_X + COLUMN_PADDING) );
@@ -2764,7 +2764,7 @@ void CROMListScreen::DrawDetailedList( void )
     swprintf( name, L"ROM filename: %s.zip", temp );
     m_fontSet.SmallThinFont().DrawText( DETAIL_FILENAME_X, 
                                         DETAIL_FILENAME_Y, 
-                                        ITEM_COLOR, 
+                                        g_loadedSkin->GetSkinColor(COLOR_ROMLISTSCREEN_BODY_TEXT), 
                                         name, 
                                         XBFONT_TRUNCATED, 
                                         screenshotLeft - (DETAIL_FILENAME_X + COLUMN_PADDING) );
@@ -2784,7 +2784,7 @@ void CROMListScreen::DrawDetailedList( void )
   m_displayDevice->SetRenderState( D3DRS_SRCBLEND,            D3DBLEND_SRCALPHA );
   m_displayDevice->SetRenderState( D3DRS_DESTBLEND,           D3DBLEND_INVSRCALPHA );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
   m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
@@ -2795,12 +2795,10 @@ void CROMListScreen::DrawDetailedList( void )
 		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_UP );
 		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_UP );
 		desc->Render( m_displayDevice, 
-									D3DVSDE_DIFFUSE, 
-									SCROLLICON_COLOR, 
-									SCROLLUP_LEFT, 
-									SCROLLUP_TOP, 
-									SCROLLUP_RIGHT, 
-									SCROLLUP_BOTTOM );
+									(FLOAT)SCROLLUP_LEFT, 
+									(FLOAT)SCROLLUP_TOP, 
+									(FLOAT)SCROLLUP_RIGHT, 
+									(FLOAT)SCROLLUP_BOTTOM );
   }
 
     // Draw scroll down icon
@@ -2809,12 +2807,10 @@ void CROMListScreen::DrawDetailedList( void )
 		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_DOWN );
 		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_DOWN );
 		desc->Render( m_displayDevice, 
-									D3DVSDE_DIFFUSE, 
-									SCROLLICON_COLOR, 
-									SCROLLDOWN_LEFT, 
-									SCROLLDOWN_TOP, 
-									SCROLLDOWN_RIGHT, 
-									SCROLLDOWN_BOTTOM );
+									(FLOAT)SCROLLDOWN_LEFT, 
+									(FLOAT)SCROLLDOWN_TOP, 
+									(FLOAT)SCROLLDOWN_RIGHT, 
+									(FLOAT)SCROLLDOWN_BOTTOM );
   }
 
   m_displayDevice->SetTexture( 0, NULL );

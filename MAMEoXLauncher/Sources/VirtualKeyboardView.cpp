@@ -14,11 +14,6 @@
 //= D E F I N E S ======================================================
 
   //--- Layout defines -----------------------------------------
-#define HEADER_COLOR            D3DCOLOR_XRGB( 0, 0, 0 )
-#define ITEM_COLOR			        D3DCOLOR_XRGB( 0, 0, 0 )
-#define DARKENBACKGROUND_COLOR  D3DCOLOR_ARGB( 160, 0, 0, 0 )
-#define HIGHLIGHTBAR_COLOR      D3DCOLOR_ARGB( 255, 125, 129, 162 )
-
 #define TITLEBAR_ROW            m_titleArea.top + 6
 #define FIRSTDATA_ROW           m_bodyArea.top + 3
 
@@ -327,16 +322,16 @@ void CVirtualKeyboardView::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   if( m_cursorPositionY >= 4 )
   {
     m_displayDevice->Begin( D3DPT_QUADLIST );
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR) );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
       
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR) );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
       
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR) );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos + fontHeight, 1.0f, 1.0f );
 
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR) );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos + fontHeight, 1.0f, 1.0f );
     m_displayDevice->End();
   }
@@ -345,28 +340,28 @@ void CVirtualKeyboardView::Draw( BOOL clearScreen, BOOL flipOnCompletion )
       // Highlight only the selected letter
     FLOAT selectedItemXPos = (characterWidth * (ULONG)m_cursorPositionX) - (CHAR_PADDING / 2.0f);
     m_displayDevice->Begin( D3DPT_QUADLIST );
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR) );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 
                                         DATA_START + selectedItemXPos, 
                                         FIRSTDATA_ROW + selectedItemYPos, 
                                         1.0f, 
                                         1.0f );
       
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR) );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 
                                         DATA_START + selectedItemXPos + characterWidth + 1, 
                                         FIRSTDATA_ROW + selectedItemYPos, 
                                         1.0f, 
                                         1.0f );
       
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR) );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 
                                         DATA_START + selectedItemXPos + characterWidth + 1, 
                                         FIRSTDATA_ROW + selectedItemYPos + fontHeight + 1, 
                                         1.0f, 
                                         1.0f );
 
-      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR) );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 
                                         DATA_START + selectedItemXPos, 
                                         FIRSTDATA_ROW + selectedItemYPos + fontHeight + 1, 
@@ -381,7 +376,7 @@ void CVirtualKeyboardView::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     mbstowcs( wBuf, &m_data.c_str()[m_dataDrawStartPosition], 256 );
     m_fontSet.FixedWidthFont().DrawText( NAME_START,
                                         TITLEBAR_ROW,
-                                        HEADER_COLOR,
+                                        g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_TITLEBAR_TEXT),
                                         wBuf,
                                         XBFONT_TRUNCATED,
                                         TEXTBOX_RIGHT - NAME_START );
@@ -398,19 +393,19 @@ void CVirtualKeyboardView::Draw( BOOL clearScreen, BOOL flipOnCompletion )
         wBuf[0] = g_keyboardData[y][x];
         m_fontSet.FixedWidthFont().DrawText( DATA_START + (characterWidth * x) + (CHAR_PADDING / 2.0f), 
                                             FIRSTDATA_ROW + (fontHeight * y),
-                                            ITEM_COLOR,
+                                            g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_TEXT),
                                             wBuf );
       }
     }
 
     m_fontSet.FixedWidthFont().DrawText( DATA_START,
                                         FIRSTDATA_ROW + (fontHeight * 4),
-                                        ITEM_COLOR,
+                                        g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_TEXT),
                                         L"Cancel" );
     
     m_fontSet.FixedWidthFont().DrawText( DATA_START,
                                         FIRSTDATA_ROW + (fontHeight * 5),
-                                        ITEM_COLOR,
+                                        g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_TEXT),
                                         L"OK" );
   m_fontSet.FixedWidthFont().End();
 

@@ -24,18 +24,6 @@
 //= D E F I N E S ======================================================
 
   //--- Layout defines -----------------------------------------
-#define HEADER_COLOR          D3DCOLOR_XRGB( 1, 1, 1 )
-#define HELPITEM_COLOR        D3DCOLOR_XRGB( 20, 20, 20 )
-#define ITEM_COLOR			      D3DCOLOR_XRGB( 1, 1, 1 )
-#define ITEM_WARNING_COLOR    D3DCOLOR_XRGB( 100, 100, 0 )
-#define ITEM_NONWORKING_COLOR D3DCOLOR_XRGB( 240, 20, 20 )
-
-#define HIGHLIGHTBAR_COLOR      D3DCOLOR_ARGB( 180, 175, 179, 212 )
-#define SCROLLICON_COLOR        D3DCOLOR_XRGB( 255, 255, 255 )
-#define SPACER_COLOR            D3DCOLOR_ARGB( 100, 255, 255, 255 )
-#define NOSCREENSHOT_COLOR      D3DCOLOR_XRGB( 1, 1, 1 )
-#define NOSCREENSHOTTEXT_COLOR  D3DCOLOR_XRGB( 255, 255, 255 )
-
 #define TITLEBAR_ROW          99
 #define FIRSTDATA_ROW         124
 
@@ -386,7 +374,8 @@ void CSkinChooserScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 					  								1.0f,															// Z
 						  							0L );															// Stencil
 
-
+	if( !g_loadedSkin )
+		return;
 
     // Render the backdrop texture
 	RenderBackdrop();
@@ -422,7 +411,7 @@ void CSkinChooserScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 		m_fontSet.LargeThinFont().Begin();
 			m_fontSet.LargeThinFont().DrawText( HELP_START_TEXT_X,
 																					HELP_START_TEXT_Y,
-																					HELPITEM_COLOR,
+																					g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_BUTTONICON_TEXT),
 																					L"Menu" );
 		m_fontSet.LargeThinFont().End();
 	}
@@ -446,7 +435,7 @@ void CSkinChooserScreen::DrawSkinList( void )
 		mbstowcs( name, "Skin Chooser", 255 );
 		m_fontSet.SmallThinFont().DrawText( NAME_COLUMN, 
 																				TITLEBAR_ROW, 
-																				HEADER_COLOR, 
+																				g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_TITLEBAR_TEXT), 
 																				name, 
 																				XBFONT_TRUNCATED,
 																				TEXTBOX_RIGHT - (NAME_COLUMN + COLUMN_PADDING) );
@@ -463,16 +452,16 @@ void CSkinChooserScreen::DrawSkinList( void )
   FLOAT selectedItemYPos = DETAIL_SCREENSHOT_TOP + entryHeight * (ULONG)m_cursorPosition;
 
   m_displayDevice->Begin( D3DPT_QUADLIST );
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_BODY_HIGHLIGHTBAR) );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, selectedItemYPos, 1.0f, 1.0f );
     
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_BODY_HIGHLIGHTBAR) );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, selectedItemYPos, 1.0f, 1.0f );
     
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_BODY_HIGHLIGHTBAR) );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, selectedItemYPos + entryHeight, 1.0f, 1.0f );
 
-    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_BODY_HIGHLIGHTBAR) );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, selectedItemYPos + entryHeight, 1.0f, 1.0f );
   m_displayDevice->End();
 
@@ -525,16 +514,16 @@ void CSkinChooserScreen::DrawSkinList( void )
 			m_displayDevice->SetTexture( 0, NULL );
 
 			m_displayDevice->Begin( D3DPT_QUADLIST );      
-				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, NOSCREENSHOT_COLOR );
+				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND) );
 				m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotLeft, screenshotTop, 1.0f, 1.0f );
 	      
-				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, NOSCREENSHOT_COLOR );
+				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND) );
 				m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotRight, screenshotTop, 1.0f, 1.0f );
 	      
-				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, NOSCREENSHOT_COLOR );
+				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND) );
 				m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotRight, screenshotBottom, 1.0f, 1.0f );
 
-				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, NOSCREENSHOT_COLOR );
+				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND) );
 				m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotLeft, screenshotBottom, 1.0f, 1.0f );
 			m_displayDevice->End();
 
@@ -543,7 +532,7 @@ void CSkinChooserScreen::DrawSkinList( void )
 				swprintf( name, L"[%lu]", 0 );
 				m_fontSet.SmallThinFont().DrawText( screenshotLeft + ((screenshotRight - screenshotLeft) / 2.0f), 
 																						screenshotTop + ((screenshotBottom - screenshotTop) / 2.0f), 
-																						NOSCREENSHOTTEXT_COLOR, 
+																						g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_SCREENSHOT_TEXT), 
 																						L"No Screenshots",
 																						XBFONT_CENTER_X );
 			m_fontSet.SmallThinFont().End();
@@ -554,7 +543,7 @@ void CSkinChooserScreen::DrawSkinList( void )
 			mbstowcs( name, currentResource->GetSkinName().c_str(), 255 );
 			m_fontSet.SmallThinFont().DrawText( NAME_COLUMN, 
 																					screenshotTop + entryHeight / 2.0f, 
-																					HEADER_COLOR, 
+																					g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_BODY_TEXT), 
 																					name, 
 																					XBFONT_TRUNCATED | XBFONT_CENTER_Y,
 																					TEXTBOX_RIGHT - (NAME_COLUMN + COLUMN_PADDING) );
@@ -574,7 +563,7 @@ void CSkinChooserScreen::DrawSkinList( void )
   m_displayDevice->SetRenderState( D3DRS_SRCBLEND,            D3DBLEND_SRCALPHA );
   m_displayDevice->SetRenderState( D3DRS_DESTBLEND,           D3DBLEND_INVSRCALPHA );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
   m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
@@ -585,12 +574,10 @@ void CSkinChooserScreen::DrawSkinList( void )
 		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_UP );
 		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_UP );
 		desc->Render( m_displayDevice, 
-									D3DVSDE_DIFFUSE, 
-									SCROLLICON_COLOR, 
-									SCROLLUP_LEFT, 
-									SCROLLUP_TOP, 
-									SCROLLUP_RIGHT, 
-									SCROLLUP_BOTTOM );
+									(FLOAT)SCROLLUP_LEFT, 
+									(FLOAT)SCROLLUP_TOP, 
+									(FLOAT)SCROLLUP_RIGHT, 
+									(FLOAT)SCROLLUP_BOTTOM );
   }
 
     // Draw scroll down icon
@@ -599,12 +586,10 @@ void CSkinChooserScreen::DrawSkinList( void )
 		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_DOWN );
 		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_DOWN );
 		desc->Render( m_displayDevice, 
-									D3DVSDE_DIFFUSE, 
-									SCROLLICON_COLOR, 
-									SCROLLDOWN_LEFT, 
-									SCROLLDOWN_TOP, 
-									SCROLLDOWN_RIGHT, 
-									SCROLLDOWN_BOTTOM );
+									(FLOAT)SCROLLDOWN_LEFT, 
+									(FLOAT)SCROLLDOWN_TOP, 
+									(FLOAT)SCROLLDOWN_RIGHT, 
+									(FLOAT)SCROLLDOWN_BOTTOM );
   }
 
   m_displayDevice->SetTexture( 0, NULL );

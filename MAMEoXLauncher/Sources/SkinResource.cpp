@@ -32,6 +32,15 @@ typedef enum SkinINISectionID_t {
 	SECTION_MENU_SPRITES,
 	SECTION_BUTTON_SPRITES,
 
+	SECTION_POPUP_OPTIONS,
+	SECTION_HELPSCREEN_OPTIONS,
+	SECTION_OPTIONSSCREEN_OPTIONS,
+	SECTION_ROMLISTSCREEN_OPTIONS,
+	SECTION_SCREENSAVER_OPTIONS,
+	SECTION_SKINCHOOSERSCREEN_OPTIONS,
+	SECTION_STARTMENU_OPTIONS,
+	SECTION_VIRTUALKEYBOARD_OPTIONS,
+
 	SECTION_INVALID = 0x7FFFFFFF
 } SkinINISectionID_t;
 
@@ -43,18 +52,27 @@ CSkinResource							*g_loadedSkin = NULL;
 
 
 	// Array of INI sections containing sprites
-const char *g_skinINISections[] = { "SplashBackdrop",
-																		"MessageBackdrop",
-																		"ListBackdrop",
-																		"TVCalibrationSprites", 
-																		"LightgunCalibrationSprites", 
-																		"ListSprites",
-																		"MenuSprites",
-																		"ButtonSprites" };
+const char *g_skinINISections[] = { "SplashBackdrop",							// SECTION_SPLASH_BACKDROP
+																		"MessageBackdrop",						// SECTION_MESSAGE_BACKDROP
+																		"ListBackdrop",								// SECTION_LIST_BACKDROP
+																		"TVCalibrationSprites", 			// SECTION_TVCALIBRATION_SPRITES
+																		"LightgunCalibrationSprites", // SECTION_LIGHTGUNCALIBRATION_SPRITES
+																		"ListSprites",								// SECTION_LIST_SPRITES
+																		"MenuSprites",								// SECTION_MENU_SPRITES
+																		"ButtonSprites",							// SECTION_BUTTON_SPRITES
+																		"PopupOptions",								// SECTION_POPUP_OPTIONS
+																		"HelpScreenOptions", 					// SECTION_HELPSCREEN_OPTIONS
+																		"OptionsScreenOptions",				// SECTION_OPTIONSSCREEN_OPTIONS
+																		"ROMListScreenOptions",				// SECTION_ROMLISTSCREEN_OPTIONS
+																		"ScreensaverOptions",					// SECTION_SCREENSAVER_OPTIONS
+																		"SkinChooserScreenOptions",		// SECTION_SKINCHOOSERSCREEN_OPTIONS
+																		"StartMenuOptions",						// SECTION_STARTMENU_OPTIONS
+																		"VirtualKeyboardOptions"			// SECTION_VIRTUALKEYBOARD_OPTIONS
+};
 
 
 	// Map of SkinResourceID_t's to their name in the skin.ini file 
-static const char *g_spriteIDToINIEntry[] = {
+static const char *g_resourceIDToINIEntry[] = {
 	"Backdrop",									// ASSET_SPLASH_BACKDROP
 
 	"Backdrop",									// ASSET_MESSAGE_BACKDROP
@@ -97,11 +115,58 @@ static const char *g_spriteIDToINIEntry[] = {
 };
 
 
+	// Map of SkinColorID_t's to their name in the skin.ini file 
+static const char *g_colorIDToINIEntry[] = {
+	"DarkenOverlay.Color",							// COLOR_POPUP_DARKENOVERLAY
 
+	"TitleBar.TextColor",								// COLOR_HELPSCREEN_TITLEBAR_TEXT
+	"Body.TextColor",										// COLOR_HELPSCREEN_BODY_TEXT
+	"ButtonLabels.Color",								// COLOR_HELPSCREEN_BUTTONICON_TEXT
+ 
+	"TitleBar.TextColor",								// COLOR_OPTIONSSCREEN_TITLEBAR_TEXT
+	"Body.TextColor",										// COLOR_OPTIONSSCREEN_BODY_TEXT
+	"Body.HighlightBarColor",						// COLOR_OPTIONSSCREEN_BODY_HIGHLIGHTBAR
+	"Body.DividerColor",								// COLOR_OPTIONSSCREEN_BODY_DIVIDER
+	"Body.TriggerIcon.TextColor",				// COLOR_OPTIONSSCREEN_BODY_TRIGGERICON_TEXT
+	"ButtonLabels.Color",								// COLOR_OPTIONSSCREEN_BUTTONICON_TEXT
+
+	"TitleBar.TextColor",								// COLOR_ROMLISTSCREEN_TITLEBAR_TEXT
+	"Body.TextColor",										// COLOR_ROMLISTSCREEN_BODY_TEXT
+	"Body.ROMWorkingTextColor",					// COLOR_ROMLISTSCREEN_ROMWORKING_TEXT
+	"Body.ROMWarningTextColor",					// COLOR_ROMLISTSCREEN_ROMWARNING_TEXT
+	"Body.ROMNonworkingTextColor",			// COLOR_ROMLISTSCREEN_ROMNONWORKING_TEXT
+	"Body.HighlightBarColor",						// COLOR_ROMLISTSCREEN_BODY_HIGHLIGHTBAR
+	"Body.DividerColor",								// COLOR_ROMLISTSCREEN_BODY_DIVIDER
+	"Body.Screenshot.BackgroundColor",	// COLOR_ROMLISTSCREEN_SCREENSHOT_BACKGROUND
+	"Body.Screenshot.TextColor",				// COLOR_ROMLISTSCREEN_SCREENSHOT_TEXT
+	"ButtonLabels.Color",								// COLOR_ROMLISTSCREEN_BUTTONICON_TEXT
+
+	"TextColor",												// COLOR_SCREENSAVER_TEXT
+
+	"TitleBar.TextColor",								// COLOR_SKINCHOOSERSCREEN_TITLEBAR_TEXT
+	"Body.TextColor",										// COLOR_SKINCHOOSERSCREEN_BODY_TEXT
+	"Body.HighlightBarColor",						// COLOR_SKINCHOOSERSCREEN_BODY_HIGHLIGHTBAR
+	"Body.DividerColor",								// COLOR_SKINCHOOSERSCREEN_BODY_DIVIDER
+	"Body.Screenshot.BackgroundColor",	// COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND
+	"Body.Screenshot.TextColor",				// COLOR_SKINCHOOSERSCREEN_SCREENSHOT_TEXT
+	"ButtonLabels.Color",								// COLOR_SKINCHOOSERSCREEN_BUTTONICON_TEXT
+
+	"TitleBar.TextColor",								// COLOR_STARTMENU_TITLEBAR_TEXT
+	"Body.TextColor",										// COLOR_STARTMENU_BODY_TEXT
+	"Body.HighlightBarColor",						// COLOR_STARTMENU_BODY_HIGHLIGHTBAR
+
+	"TitleBar.TextColor",								// COLOR_VIRTUALKEYBOARD_TITLEBAR_TEXT
+	"Body.TextColor",										// COLOR_VIRTUALKEYBOARD_BODY_TEXT
+	"Body.HighlightBarColor",						// COLOR_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR
+};
+
+
+static const char *g_argbColorDelimiters = ";:., ";
 
 //= P R O T O T Y P E S ===============================================
 static const char *ResourceIDToINISection( SkinResourceID_t idToMap );
-
+static const char *ColorIDToINISection( SkinColorID_t idToMap );
+static D3DCOLOR StringToColor( const CStdString &argbString );
 
 //= F U N C T I O N S =================================================
 
@@ -183,7 +248,7 @@ BOOL CSkinResource::LoadSkin( CStdString *errorReport )
 		SkinResourceInfo_t tempInfo;
 		CStdString sectionName = ResourceIDToINISection( (SkinResourceID_t)i );
 		
-		CStdString entryName = g_spriteIDToINIEntry[i];
+		CStdString entryName = g_resourceIDToINIEntry[i];
 		entryName += ".FileOffset.";
 
 		tempInfo.m_left		= iniFile.GetProfileInt( sectionName, entryName + "left", -1 );
@@ -195,6 +260,15 @@ BOOL CSkinResource::LoadSkin( CStdString *errorReport )
 
 		if( tempInfo.m_left != -1.0f && tempInfo.m_right != -1.0f && tempInfo.m_top != -1.0f && tempInfo.m_bottom != -1.0f )
 			m_spriteInfoArray[i] = new SkinResourceInfo_t( tempInfo );
+	}
+
+	for( int i = 0; i < COLOR_COUNT; ++i )
+	{
+		CStdString sectionName = ColorIDToINISection( (SkinColorID_t)i );
+		CStdString entryName = g_colorIDToINIEntry[i];
+
+		m_spriteColorArray[i] = StringToColor( iniFile.GetProfileString( sectionName, entryName, "255 0 0 0" ) );
+		PRINTMSG(( T_INFO, "Color %s:%s = 0x%X", sectionName.c_str(), entryName.c_str(), m_spriteColorArray[i] ));
 	}
 
 	return TRUE;
@@ -260,6 +334,7 @@ LPDIRECT3DTEXTURE8 CSkinResource::LoadSkinTexture(	CSystem_IniFile &iniFile,
 	return ret;		
 }
 
+
 //---------------------------------------------------------------------
 //	ResourceIDToSectionID
 //---------------------------------------------------------------------
@@ -290,19 +365,6 @@ inline SkinINISectionID_t ResourceIDToSectionID( SkinResourceID_t idToMap )
 		return SECTION_BUTTON_SPRITES;
 
 	return SECTION_INVALID;
-}
-
-//---------------------------------------------------------------------
-//	ResourceIDToINISection
-//---------------------------------------------------------------------
-static const char *ResourceIDToINISection( SkinResourceID_t idToMap )
-{
-	SkinINISectionID_t section = ResourceIDToSectionID( idToMap );
-	if( section != SECTION_INVALID )
-		return g_skinINISections[section];
-
-	PRINTMSG(( T_ERROR, "Unknown SkinResourceID_t entry %d!", idToMap ));
-	return NULL;
 }
 
 
@@ -341,5 +403,94 @@ LPDIRECT3DTEXTURE8 CSkinResource::GetSkinResourceTexture( SkinResourceID_t id ) 
 	return NULL;
 }
 
+//---------------------------------------------------------------------
+//	ResourceIDToINISection
+//---------------------------------------------------------------------
+static const char *ResourceIDToINISection( SkinResourceID_t idToMap )
+{
+	SkinINISectionID_t section = ResourceIDToSectionID( idToMap );
+	if( section != SECTION_INVALID )
+		return g_skinINISections[section];
 
+	PRINTMSG(( T_ERROR, "Unknown SkinResourceID_t entry %d!", idToMap ));
+	return NULL;
+}
+
+
+//---------------------------------------------------------------------
+//	ColorIDToSectionID
+//---------------------------------------------------------------------
+inline SkinINISectionID_t ColorIDToSectionID( SkinColorID_t idToMap )
+{
+	if( idToMap == COLOR_POPUP_DARKENOVERLAY )
+		return SECTION_POPUP_OPTIONS;
+
+	if( idToMap >= COLOR_HELPSCREEN_TITLEBAR_TEXT && idToMap <= COLOR_HELPSCREEN_BUTTONICON_TEXT )
+		return SECTION_HELPSCREEN_OPTIONS;
+
+	if( idToMap >= COLOR_OPTIONSSCREEN_TITLEBAR_TEXT && idToMap <= COLOR_OPTIONSSCREEN_BUTTONICON_TEXT )
+		return SECTION_OPTIONSSCREEN_OPTIONS;
+
+	if( idToMap >= COLOR_ROMLISTSCREEN_TITLEBAR_TEXT && idToMap <= COLOR_ROMLISTSCREEN_BUTTONICON_TEXT )
+		return SECTION_ROMLISTSCREEN_OPTIONS;
+
+	if( idToMap == COLOR_SCREENSAVER_TEXT )
+		return SECTION_SCREENSAVER_OPTIONS;
+
+	if( idToMap >= COLOR_SKINCHOOSERSCREEN_TITLEBAR_TEXT && idToMap <= COLOR_SKINCHOOSERSCREEN_BUTTONICON_TEXT )
+		return SECTION_SKINCHOOSERSCREEN_OPTIONS;
+
+	if( idToMap >= COLOR_STARTMENU_TITLEBAR_TEXT && idToMap <= COLOR_STARTMENU_BODY_HIGHLIGHTBAR )
+		return SECTION_STARTMENU_OPTIONS;
+
+	if( idToMap >= COLOR_VIRTUALKEYBOARD_TITLEBAR_TEXT && idToMap <= COLOR_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR )
+		return SECTION_VIRTUALKEYBOARD_OPTIONS;
+
+	return SECTION_INVALID;
+}
+
+//---------------------------------------------------------------------
+//	ColorIDToINISection
+//---------------------------------------------------------------------
+static const char *ColorIDToINISection( SkinColorID_t idToMap )
+{
+	SkinINISectionID_t section = ColorIDToSectionID( idToMap );
+	if( section != SECTION_INVALID )
+		return g_skinINISections[section];
+
+	PRINTMSG(( T_ERROR, "Unknown SkinColorID_t entry %d!", idToMap ));
+	return NULL;
+}
+
+
+//---------------------------------------------------------------------
+//	StringToColor
+//---------------------------------------------------------------------
+static D3DCOLOR StringToColor( const CStdString &argbString )
+{
+	int color[4] = { 255, 0, 0, 0 };
+	char *str = strdup( argbString.c_str() );
+
+	char *value = str;
+	char *delim = strpbrk( value, g_argbColorDelimiters );
+	for( int i = 0; i < 4 && value; ++i )
+	{
+		char *next = NULL;
+		if( delim )
+		{
+			*delim = 0;
+					
+				// Skip to the next number
+			next = strpbrk( delim + 1, "0123456789abcdef" );
+			delim = strpbrk( next, g_argbColorDelimiters );
+		}
+
+		sscanf( value, "%d", &color[i] );
+		value = next;
+	}
+
+	free( str );
+
+	return D3DCOLOR_ARGB( color[0], color[1], color[2], color[3] );
+}
 

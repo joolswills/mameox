@@ -16,6 +16,8 @@
 #ifdef __cplusplus
 
 //= D E F I N E S =====================================================
+
+	// Enum containing all of the graphics Resources (sprite/screen images)
 typedef enum SkinResourceID_t {
 	ASSET_SPLASH_BACKDROP,
 
@@ -60,6 +62,60 @@ typedef enum SkinResourceID_t {
 	RESOURCE_COUNT,		// Note: This must be the last "real" member of the enum
 	RESOURCE_INVALID = 0x7FFFFFFF
 } SkinResourceID_t;
+
+
+
+
+	// Enum containing all of the skin colors
+typedef enum SkinColorID_t {
+	COLOR_POPUP_DARKENOVERLAY,
+
+	COLOR_HELPSCREEN_TITLEBAR_TEXT,
+	COLOR_HELPSCREEN_BODY_TEXT,
+	COLOR_HELPSCREEN_BUTTONICON_TEXT,
+
+	COLOR_OPTIONSSCREEN_TITLEBAR_TEXT,
+	COLOR_OPTIONSSCREEN_BODY_TEXT,
+	COLOR_OPTIONSSCREEN_BODY_HIGHLIGHTBAR,
+	COLOR_OPTIONSSCREEN_BODY_DIVIDER,
+	COLOR_OPTIONSSCREEN_BODY_TRIGGERICON_TEXT,
+	COLOR_OPTIONSSCREEN_BUTTONICON_TEXT,
+
+	COLOR_ROMLISTSCREEN_TITLEBAR_TEXT,
+	COLOR_ROMLISTSCREEN_BODY_TEXT,
+	COLOR_ROMLISTSCREEN_ROMWORKING_TEXT,
+	COLOR_ROMLISTSCREEN_ROMWARNING_TEXT,
+	COLOR_ROMLISTSCREEN_ROMNONWORKING_TEXT,
+	COLOR_ROMLISTSCREEN_BODY_HIGHLIGHTBAR,
+	COLOR_ROMLISTSCREEN_BODY_DIVIDER,
+	COLOR_ROMLISTSCREEN_SCREENSHOT_BACKGROUND,
+	COLOR_ROMLISTSCREEN_SCREENSHOT_TEXT,
+	COLOR_ROMLISTSCREEN_BUTTONICON_TEXT,
+
+	COLOR_SCREENSAVER_TEXT,
+
+	COLOR_SKINCHOOSERSCREEN_TITLEBAR_TEXT,
+	COLOR_SKINCHOOSERSCREEN_BODY_TEXT,
+	COLOR_SKINCHOOSERSCREEN_BODY_HIGHLIGHTBAR,
+	COLOR_SKINCHOOSERSCREEN_BODY_DIVIDER,
+	COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND,
+	COLOR_SKINCHOOSERSCREEN_SCREENSHOT_TEXT,
+	COLOR_SKINCHOOSERSCREEN_BUTTONICON_TEXT,
+
+	COLOR_STARTMENU_TITLEBAR_TEXT,
+	COLOR_STARTMENU_BODY_TEXT,
+	COLOR_STARTMENU_BODY_HIGHLIGHTBAR,
+
+	COLOR_VIRTUALKEYBOARD_TITLEBAR_TEXT,
+	COLOR_VIRTUALKEYBOARD_BODY_TEXT,
+	COLOR_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR,
+
+	COLOR_COUNT,		// Note: This must be the last "real" member of the enum
+	COLOR_INVALID = 0x7FFFFFFF
+} SkinColorID_t;
+
+
+
 
 //= C L A S S E S ====================================================
 
@@ -293,6 +349,12 @@ public:
 		displayDevice->SetTexture( 0, GetSkinResourceTexture( id ) );
 	}
 
+		//------------------------------------------------------
+		// GetSkinColor
+		//------------------------------------------------------
+	inline D3DCOLOR GetSkinColor( SkinColorID_t id ) const { return m_spriteColorArray[id]; }
+
+
 protected:
 		//------------------------------------------------------
 		//	LoadSkinTexture
@@ -318,6 +380,8 @@ protected:
 		// Array of sprite info structs defining where a particular sprite
 		// can be found within its asset texture
 	SkinResourceInfo_t				*m_spriteInfoArray[RESOURCE_COUNT];
+
+	D3DCOLOR									m_spriteColorArray[COLOR_COUNT];
 };
 
 

@@ -24,11 +24,6 @@ extern "C" {
 #define MAXPAGESIZE							15
 
   //--- Layout defines -----------------------------------------
-#define HEADER_COLOR          D3DCOLOR_XRGB( 0, 0, 0 )
-#define ITEM_COLOR			      D3DCOLOR_XRGB( 0, 0, 0 )
-#define HIGHLIGHTBAR_COLOR    D3DCOLOR_ARGB( 180, 175, 179, 212 )
-#define SCROLLICON_COLOR      D3DCOLOR_XRGB( 255, 255, 255 )
-
 #define TITLEBAR_ROW          99
 #define FIRSTDATA_ROW         124
 
@@ -184,6 +179,9 @@ void CHelpScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
   FLOAT textHeight = m_fontSet.SmallThinFontHeight();
 
+	if( !g_loadedSkin )
+		return;
+
     // Render the backdrop texture
   RenderBackdrop();
   m_menuRenderer->Draw( FALSE, FALSE );
@@ -219,16 +217,16 @@ void CHelpScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 		m_fontSet.LargeThinFont().Begin();
 			m_fontSet.LargeThinFont().DrawText( HELP_START_TEXT_X,
 																					HELP_START_TEXT_Y,
-																					HELPITEM_COLOR,
+																					g_loadedSkin->GetSkinColor( COLOR_HELPSCREEN_BUTTONICON_TEXT ),
 																					L"Menu" );
 		m_fontSet.LargeThinFont().End();
 	}
 
-
 	m_fontSet.SmallThinFont().Begin();
-
-	  m_fontSet.SmallThinFont().DrawText( NAME_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"Help!" );
-
+		m_fontSet.SmallThinFont().DrawText( NAME_COLUMN, 
+																				TITLEBAR_ROW, 
+																				g_loadedSkin->GetSkinColor( COLOR_HELPSCREEN_TITLEBAR_TEXT ), 
+																				L"Help!" );
 	m_fontSet.SmallThinFont().End();
 
   m_fontSet.FixedWidthFont().Begin();
@@ -237,6 +235,7 @@ void CHelpScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 	  FLOAT yPos = 0.0f;
     FLOAT pageSize = GetCurrentPageSize();
 	  ULONG absListIDX = (ULONG)m_pageOffset;
+		D3DCOLOR textColor = g_loadedSkin->GetSkinColor( COLOR_HELPSCREEN_BODY_TEXT );
 
 	  for( DWORD i = 0; i < pageSize; ++i )
 	  {
@@ -244,7 +243,7 @@ void CHelpScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 		  mbstowcs( wBuf, m_data[ absListIDX++ ].c_str(), 255 );
 		  m_fontSet.FixedWidthFont().DrawText(  NAME_COLUMN,
                                             FIRSTDATA_ROW + yPos,
-                                            ITEM_COLOR,
+                                            textColor,
                                             wBuf,
                                             XBFONT_TRUNCATED,
                                             TEXTBOX_RIGHT - (NAME_COLUMN + COLUMN_PADDING) );
@@ -254,30 +253,26 @@ void CHelpScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
 	m_fontSet.FixedWidthFont().End();
 
-
-
     //-- Render the scroll up and/or scroll down icons --------------------------------------------
   m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
   m_displayDevice->SetRenderState( D3DRS_SRCBLEND,         D3DBLEND_SRCALPHA );
   m_displayDevice->SetRenderState( D3DRS_DESTBLEND,        D3DBLEND_INVSRCALPHA );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
   m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
-/*
+
     // Draw scroll up icon
   if( (DWORD)m_pageOffset && CheckResourceValidity( SPRITE_LIST_SCROLLICON_UP ) )
   {
 		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_UP );
 		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_UP );
 		desc->Render( m_displayDevice, 
-									D3DVSDE_DIFFUSE, 
-									SCROLLICON_COLOR, 
-									SCROLLUP_LEFT, 
-									SCROLLUP_TOP, 
-									SCROLLUP_RIGHT, 
-									SCROLLUP_BOTTOM );
+									(FLOAT)SCROLLUP_LEFT, 
+									(FLOAT)SCROLLUP_TOP, 
+									(FLOAT)SCROLLUP_RIGHT, 
+									(FLOAT)SCROLLUP_BOTTOM );
   }
 
   if( (DWORD)m_pageOffset < (m_numLinesInList - (DWORD)pageSize) && CheckResourceValidity( SPRITE_LIST_SCROLLICON_DOWN ) )
@@ -285,14 +280,12 @@ void CHelpScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 		g_loadedSkin->SelectSkinResourceTexture( m_displayDevice, SPRITE_LIST_SCROLLICON_DOWN );
 		const SkinResourceInfo_t *desc = g_loadedSkin->GetSkinResourceInfo( SPRITE_LIST_SCROLLICON_DOWN );
 		desc->Render( m_displayDevice, 
-									D3DVSDE_DIFFUSE, 
-									SCROLLICON_COLOR, 
-									SCROLLDOWN_LEFT, 
-									SCROLLDOWN_TOP, 
-									SCROLLDOWN_RIGHT, 
-									SCROLLDOWN_BOTTOM );
+									(FLOAT)SCROLLDOWN_LEFT, 
+									(FLOAT)SCROLLDOWN_TOP, 
+									(FLOAT)SCROLLDOWN_RIGHT, 
+									(FLOAT)SCROLLDOWN_BOTTOM );
   }
-*/
+
   m_displayDevice->SetTexture( 0, NULL );
   m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
