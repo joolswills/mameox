@@ -269,7 +269,7 @@ VIDEO_UPDATE(konamigx)
 	}
 	#endif
 
-	K054338_update_all_shadows();
+	K054338_update_all_shadows();
 
 
 	K056832_tilemap_update();
