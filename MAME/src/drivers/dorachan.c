@@ -1,3 +1,11 @@
+#pragma code_seg("C771")
+#pragma data_seg("D771")
+#pragma bss_seg("B771")
+#pragma const_seg("K771")
+#pragma comment(linker, "/merge:D771=771")
+#pragma comment(linker, "/merge:C771=771")
+#pragma comment(linker, "/merge:B771=771")
+#pragma comment(linker, "/merge:K771=771")
 /*
 Dorachan (Dora-Chan ?) (c) 1980 Craul Denshi
 Driver by Tomasz Slanina
@@ -134,3 +142,7 @@ ROM_END
 
 GAMEX( 1980, dorachan, 0, dorachan, dorachan, 0, ROT90, "Craul Denshi", "Dorachan",GAME_NO_SOUND)
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

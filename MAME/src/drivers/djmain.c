@@ -1,3 +1,11 @@
+#pragma code_seg("C770")
+#pragma data_seg("D770")
+#pragma bss_seg("B770")
+#pragma const_seg("K770")
+#pragma comment(linker, "/merge:D770=770")
+#pragma comment(linker, "/merge:C770=770")
+#pragma comment(linker, "/merge:B770=770")
+#pragma comment(linker, "/merge:K770=770")
 /*
  *	Beatmania DJ Main Board (GX753)
  *
@@ -1183,3 +1191,7 @@ GAME( 1999, hmcompmx, bmcompmx, djmain,   bmcompmx,  hmcompmx,  ROT0, "Konami", 
 GAME( 1999, bm4thmix, 0,        djmain,   bm4thmix,  bm4thmix,  ROT0, "Konami", "beatmania 4th MIX (ver JA-A)" )
 GAME( 2000, hmcompm2, 0,        djmain,   hmcompm2,  hmcompm2,  ROT0, "Konami", "hiphopmania complete MIX 2 (ver UA-A)" )
 GAME( 2000, bmcorerm, 0,        djmain,   beatmania, bmcorerm,  ROT0, "Konami", "beatmania CORE REMIX (ver JA-A)" )
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

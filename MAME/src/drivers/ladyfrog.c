@@ -1,3 +1,11 @@
+#pragma code_seg("C775")
+#pragma data_seg("D775")
+#pragma bss_seg("B775")
+#pragma const_seg("K775")
+#pragma comment(linker, "/merge:D775=775")
+#pragma comment(linker, "/merge:C775=775")
+#pragma comment(linker, "/merge:B775=775")
+#pragma comment(linker, "/merge:K775=775")
 /*
 Lady Frog (c) 1990 Mondial Games
 (there's  "(c) Alfa Tecnology" in the ROM)
@@ -335,3 +343,7 @@ ROM_START( ladyfrog )
 ROM_END
 
 GAME(1990, ladyfrog, 0,       ladyfrog,  ladyfrog, 0, ORIENTATION_SWAP_XY, "Mondial Games", "Lady Frog")
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

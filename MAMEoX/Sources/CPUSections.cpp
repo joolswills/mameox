@@ -217,6 +217,7 @@ static void RegisterCPUSectionNames( void )
   RegisterSectionID( CPU_DSP32C, "CPU33" );
   RegisterSectionID( CPU_E132XS, "CPU47" );
   RegisterSectionID( CPU_G65816, "CPU44" );
+  RegisterSectionID( CPU_GENSYNC, "CPU49" );
   RegisterSectionID( CPU_H6280, "CPU5" );
   RegisterSectionID( CPU_HD6309, "CPU14" );
   RegisterSectionID( CPU_I8035, "CPU9" );
@@ -283,7 +284,6 @@ static void RegisterCPUSectionNames( void )
   RegisterSectionID( CPU_Z180, "CPU2" );
   RegisterSectionID( CPU_Z80, "CPU1" );
   RegisterSectionID( CPU_Z8000, "CPU21" );
-  RegisterSectionID( CPU_GENSYNC, "CPU49" );
 }
 #pragma code_seg()
 #pragma data_seg()

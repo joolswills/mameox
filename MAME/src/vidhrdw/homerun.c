@@ -1,3 +1,11 @@
+#pragma code_seg("C773")
+#pragma data_seg("D773")
+#pragma bss_seg("B773")
+#pragma const_seg("K773")
+#pragma comment(linker, "/merge:D773=773")
+#pragma comment(linker, "/merge:C773=773")
+#pragma comment(linker, "/merge:B773=773")
+#pragma comment(linker, "/merge:K773=773")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -114,3 +122,7 @@ VIDEO_UPDATE(homerun)
 }
 
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

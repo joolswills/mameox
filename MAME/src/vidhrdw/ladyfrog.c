@@ -1,3 +1,11 @@
+#pragma code_seg("C775")
+#pragma data_seg("D775")
+#pragma bss_seg("B775")
+#pragma const_seg("K775")
+#pragma comment(linker, "/merge:D775=775")
+#pragma comment(linker, "/merge:C775=775")
+#pragma comment(linker, "/merge:B775=775")
+#pragma comment(linker, "/merge:K775=775")
 /***************************************************************************
 
   vidhrdw.c
@@ -152,3 +160,7 @@ VIDEO_UPDATE( ladyfrog )
     ladyfrog_draw_sprites(bitmap,cliprect);
 }
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -743,7 +743,9 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\scramble.c", "8" );
   RegisterSectionName( "src\\drivers\\scregg.c", "32" );
   RegisterSectionName( "src\\drivers\\sega.c", "25" );
+  RegisterSectionName( "src\\drivers\\segac2.c", "3" );
   RegisterSectionName( "src\\drivers\\segar.c", "25" );
+  RegisterSectionName( "src\\drivers\\segasyse.c", "3" );
   RegisterSectionName( "src\\drivers\\seicross.c", "555" );
   RegisterSectionName( "src\\drivers\\sengokmj.c", "753" );
   RegisterSectionName( "src\\drivers\\senjyo.c", "556" );
@@ -945,8 +947,17 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\zerozone.c", "744" );
   RegisterSectionName( "src\\drivers\\zn.c", "745" );
   RegisterSectionName( "src\\drivers\\zodiack.c", "11" );
-  RegisterSectionName( "src\\drivers\\segac2.c", "3" );
-  RegisterSectionName( "src\\drivers\\segasyse.c", "3" );
+  RegisterSectionName( "src\\drivers\\bishi.c", "768" );
+  RegisterSectionName( "src\\drivers\\compgolf.c", "769" );
+  RegisterSectionName( "src\\drivers\\djmain.c", "770" );
+  RegisterSectionName( "src\\drivers\\dorachan.c", "771" );
+  RegisterSectionName( "src\\drivers\\embargo.c", "772" );
+  RegisterSectionName( "src\\drivers\\homerun.c", "773" );
+  RegisterSectionName( "src\\drivers\\jcross.c", "774" );
+  RegisterSectionName( "src\\drivers\\ladyfrog.c", "775" );
+  RegisterSectionName( "src\\drivers\\marinedt.c", "776" );
+  RegisterSectionName( "src\\drivers\\tryout.c", "777" );
+  RegisterSectionName( "src\\drivers\\yumefuda.c", "778" );
 }
 #pragma code_seg()
 #pragma data_seg()

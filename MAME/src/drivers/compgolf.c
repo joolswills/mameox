@@ -1,3 +1,11 @@
+#pragma code_seg("C769")
+#pragma data_seg("D769")
+#pragma bss_seg("B769")
+#pragma const_seg("K769")
+#pragma comment(linker, "/merge:D769=769")
+#pragma comment(linker, "/merge:C769=769")
+#pragma comment(linker, "/merge:B769=769")
+#pragma comment(linker, "/merge:K769=769")
 /****************************************************************************************
 
 Competition Golf Final Round (c) 1985 Data East
@@ -404,3 +412,7 @@ DRIVER_INIT( compgolf )
 }
 
 GAMEX( 1985, compgolf, 0, compgolf, compgolf, compgolf, ROT0, "Data East", "Competition Golf Final Round (Japan)", GAME_NOT_WORKING )
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

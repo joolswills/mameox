@@ -1,3 +1,11 @@
+#pragma code_seg("C778")
+#pragma data_seg("D778")
+#pragma bss_seg("B778")
+#pragma const_seg("K778")
+#pragma comment(linker, "/merge:D778=778")
+#pragma comment(linker, "/merge:C778=778")
+#pragma comment(linker, "/merge:B778=778")
+#pragma comment(linker, "/merge:K778=778")
 /********************************************************************************************
 
 Yumefuda (c) 199? Alba
@@ -346,3 +354,7 @@ DRIVER_INIT( yumefuda )
 
 
 GAMEX( 199?, yumefuda, 0, 		yumefuda, yumefuda, yumefuda,	ROT0, "Alba", "(Medal) Yumefuda", GAME_NO_SOUND | GAME_NOT_WORKING )
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

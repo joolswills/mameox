@@ -1,3 +1,11 @@
+#pragma code_seg("C771")
+#pragma data_seg("D771")
+#pragma bss_seg("B771")
+#pragma const_seg("K771")
+#pragma comment(linker, "/merge:D771=771")
+#pragma comment(linker, "/merge:C771=771")
+#pragma comment(linker, "/merge:B771=771")
+#pragma comment(linker, "/merge:K771=771")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -57,3 +65,7 @@ WRITE_HANDLER( dorachan_videoram_w )
 		}
 	}
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,11 @@
+#pragma code_seg("C774")
+#pragma data_seg("D774")
+#pragma bss_seg("B774")
+#pragma const_seg("K774")
+#pragma comment(linker, "/merge:D774=774")
+#pragma comment(linker, "/merge:C774=774")
+#pragma comment(linker, "/merge:B774=774")
+#pragma comment(linker, "/merge:K774=774")
 /*
 Jumping Cross - (c) 1984 SNK
 driver by Tomasz Slanina
@@ -233,7 +241,7 @@ INPUT_PORTS_START( jcross )
 	PORT_DIPNAME( 0x40, 0x40, "Unknown SW 2-6" )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x00, "BG Collisions" )
+	PORT_DIPNAME( 0x80, 0x80, "BG Collisions" )
 	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( On ) )
 
@@ -366,3 +374,7 @@ ROM_END
 GAMEX(1984, jcross, 0, jcross, jcross, 0, ROT270,   "SNK", "Jumping Cross",GAME_NO_COCKTAIL|GAME_IMPERFECT_GRAPHICS)
 
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

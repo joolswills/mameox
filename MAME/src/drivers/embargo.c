@@ -1,3 +1,11 @@
+#pragma code_seg("C772")
+#pragma data_seg("D772")
+#pragma bss_seg("B772")
+#pragma const_seg("K772")
+#pragma comment(linker, "/merge:D772=772")
+#pragma comment(linker, "/merge:C772=772")
+#pragma comment(linker, "/merge:B772=772")
+#pragma comment(linker, "/merge:K772=772")
 /***************************************************************************
 
 Cinematronics Embargo driver
@@ -207,3 +215,7 @@ ROM_END
 
 
 GAMEX( 1977, embargo, 0, embargo, embargo, 0, ROT0, "Cinematronics", "Embargo", GAME_NO_SOUND )
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,11 @@
+#pragma code_seg("C773")
+#pragma data_seg("D773")
+#pragma bss_seg("B773")
+#pragma const_seg("K773")
+#pragma comment(linker, "/merge:D773=773")
+#pragma comment(linker, "/merge:C773=773")
+#pragma comment(linker, "/merge:B773=773")
+#pragma comment(linker, "/merge:K773=773")
 /*
  Moero Pro Yakyuu Homerun - (c) 1988 Jaleco
  Driver by Tomasz Slanina
@@ -208,3 +216,7 @@ ROM_END
 
 GAMEX( 1988, homerun, 0, homerun, homerun, 0, ROT0, "Jaleco", "Moero Pro Yakyuu Homerun",GAME_IMPERFECT_GRAPHICS)
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

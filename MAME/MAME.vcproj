@@ -6378,6 +6378,30 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\src\drivers\bishi.c">
+					<FileConfiguration
+						Name="Debug|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./debug_obj/drivers\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./release_obj/drivers\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./profile_obj/drivers\"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath=".\src\drivers\bking2.c">
 					<FileConfiguration
 						Name="Debug|Xbox"
@@ -20061,6 +20085,30 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\src\drivers\tryout.c">
+					<FileConfiguration
+						Name="Debug|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./debug_obj/drivers\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./release_obj/drivers\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./profile_obj/drivers\"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath=".\src\drivers\tsamurai.c">
 					<FileConfiguration
 						Name="Debug|Xbox"
@@ -30636,6 +30684,30 @@
 				</File>
 				<File
 					RelativePath=".\src\vidhrdw\bionicc.c">
+					<FileConfiguration
+						Name="Debug|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./debug_obj/vidhrdw\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./release_obj/vidhrdw\"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox"
+						ExcludedFromBuild="FALSE">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="./profile_obj/vidhrdw\"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\vidhrdw\bishi.c">
 					<FileConfiguration
 						Name="Debug|Xbox"
 						ExcludedFromBuild="FALSE">

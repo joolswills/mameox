@@ -1,3 +1,11 @@
+#pragma code_seg("C774")
+#pragma data_seg("D774")
+#pragma bss_seg("B774")
+#pragma const_seg("K774")
+#pragma comment(linker, "/merge:D774=774")
+#pragma comment(linker, "/merge:C774=774")
+#pragma comment(linker, "/merge:B774=774")
+#pragma comment(linker, "/merge:K774=774")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "cpu/z80/z80.h"
@@ -217,3 +225,7 @@ VIDEO_UPDATE( jcross )
 	tilemap_draw( bitmap,cliprect,tx_tilemap,0 ,0);
 	draw_status( bitmap,cliprect );
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

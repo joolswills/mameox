@@ -237,7 +237,7 @@ static config_file *config_init(const char *name, int save)
 	const char *format_header;
 	int i;
 
-	cfg = malloc(sizeof(struct _config_file));
+	cfg = osd_malloc(sizeof(struct _config_file));
 	if (!cfg)
 		goto error;
 	memset(cfg, 0, sizeof(*cfg));

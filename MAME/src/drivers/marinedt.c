@@ -1,3 +1,11 @@
+#pragma code_seg("C776")
+#pragma data_seg("D776")
+#pragma bss_seg("B776")
+#pragma const_seg("K776")
+#pragma comment(linker, "/merge:D776=776")
+#pragma comment(linker, "/merge:C776=776")
+#pragma comment(linker, "/merge:B776=776")
+#pragma comment(linker, "/merge:K776=776")
 /*
 ---------------------------
 Marine Date by TAITO (1981)
@@ -92,7 +100,7 @@ have i been using x/y consistently, ie non rotated or rotated origin?
 	yes, seems to be best using xy raw (ie non-rotated)
 */
 
-#include "vidhrdw\generic.h"
+#include "vidhrdw/generic.h"
 
 static int marinedt_obj1_a, marinedt_obj1_x, marinedt_obj1_y, marinedt_music, marinedt_sound, marinedt_obj2_a, marinedt_obj2_x, marinedt_obj2_y, marinedt_pd, marinedt_pf;
 static	int coll,cx,cyr,cyq;
@@ -654,3 +662,7 @@ ROM_START( marinedt )
 ROM_END
 
 GAMEX( 1981, marinedt, 0, marinedt, marinedt, 0, ROT270, "Taito", "Marine Date", GAME_NO_SOUND | GAME_NOT_WORKING )
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

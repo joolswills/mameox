@@ -1,4 +1,4 @@
-Version 0.75.1b
+Version 0.76.1b
 
    -------------------------------------------------------------
   - \MAMEoX\Includes: 
@@ -9,6 +9,23 @@ Version 0.75.1b
 
  --- Specific Game fixes --------------------------------------------
   - Megatech games (segasyse.c): Dep on segac2.c
+
+ --- Integrated MAME version 0.76, changes follow -------------------
+ Changes in the \MAME\src directory
+
+ Additions:
+
+   drivers\
+     bishi.c
+     tryout.c
+
+   vidhrdw\
+     bishi.c
+
+
+
+*********************************************************************
+Internal Version 0.75.1b
 
  --- Integrated MAME version 0.75, changes follow -------------------
 
