@@ -16,7 +16,8 @@
 			IntermediateDirectory=".\Release"
 			ConfigurationType="1"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			WholeProgramOptimization="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
@@ -24,10 +25,10 @@
 				InlineFunctionExpansion="1"
 				FavorSizeOrSpeed="1"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories=".\Includes,..\MAME\src,..\,C:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include"
+				AdditionalIncludeDirectories=".\Includes,..\MAME\src,..\,e:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include;;&quot;..\libsmb++\src&quot;"
 				PreprocessorDefinitions="WIN32,_XBOX,NDEBUG"
 				StringPooling="TRUE"
-				ExceptionHandling="FALSE"
+				ExceptionHandling="TRUE"
 				RuntimeLibrary="0"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="TRUE"
@@ -46,11 +47,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 /FIXED:NO"
-				AdditionalDependencies="xgraphics.lib xapilib.lib d3d8.lib d3dx8.lib dsound.lib xboxkrnl.lib MAME.lib"
+				AdditionalDependencies="xgraphics.lib xapilib.lib d3d8.lib d3dx8.lib dsound.lib xboxkrnl.lib MAME.lib Xnet.lib libsmb.lib"
 				OutputFile=".\Release/MAMEoX.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="..\MAME\Release"
+				AdditionalLibraryDirectories="..\MAME\Release;&quot;..\libsmb++\Release&quot;"
 				GenerateDebugInformation="FALSE"
 				ProgramDatabaseFile=".\Release/MAMEoX.pdb"
 				OptimizeReferences="2"/>
@@ -67,8 +68,9 @@
 				Name="XboxImageTool"
 				AdditionalOptions="/testid:0x4D414D45"
 				StackSize="0x10000"
-				LimitAvailableMemoryTo64MB="TRUE"
+				LimitAvailableMemoryTo64MB="FALSE"
 				SuppressStartupBanner="TRUE"
+				FormatUD="TRUE"
 				TitleName="&quot;MAMEoX Util (Don&apos;t Run)&quot;"/>
 		</Configuration>
 		<Configuration
@@ -82,7 +84,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories=".\Includes,..\MAME\src,..\,C:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include"
+				AdditionalIncludeDirectories=".\Includes,..\MAME\src,..\,e:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include;&quot;..\libsmb++\src&quot;"
 				PreprocessorDefinitions="WIN32,_XBOX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
@@ -101,11 +103,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 /FIXED:NO"
-				AdditionalDependencies="xapilibd.lib d3d8d.lib d3dx8d.lib xgraphicsd.lib dsoundd.lib dmusicd.lib xnetd.lib xboxkrnl.lib MAME.lib"
+				AdditionalDependencies="xapilibd.lib d3d8d.lib d3dx8d.lib xgraphicsd.lib dsoundd.lib dmusicd.lib xnetd.lib xboxkrnl.lib MAME.lib libsmb.lib"
 				OutputFile=".\Debug/MAMEoX.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="..\MAME\Debug"
+				AdditionalLibraryDirectories="..\MAME\Debug;;&quot;..\libsmb++\Release&quot;"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug/MAMEoX.pdb"/>
 			<Tool
@@ -192,7 +194,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories=".\Includes,..\MAME\src,..\,C:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include"
+				AdditionalIncludeDirectories=".\Includes,..\MAME\src,..\,C:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include;&quot;..\libsmb++\src&quot;"
 				PreprocessorDefinitions="WIN32,_XBOX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
@@ -254,6 +256,9 @@
 				RelativePath=".\Includes\MAMEoX.h">
 			</File>
 			<File
+				RelativePath="Includes\SMBHandler.h">
+			</File>
+			<File
 				RelativePath="Includes\Sections.h">
 			</File>
 			<File
@@ -261,6 +266,9 @@
 			</File>
 			<File
 				RelativePath="Includes\System_StringModifier.h">
+			</File>
+			<File
+				RelativePath="Includes\Undocumented.h">
 			</File>
 			<File
 				RelativePath="..\VCPPMame.h">
@@ -275,7 +283,7 @@
 				RelativePath=".\Includes\osinline.h">
 			</File>
 			<File
-				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbfont.h">
+				RelativePath="E:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbfont.h">
 			</File>
 			<File
 				RelativePath=".\Includes\xbox_Direct3DRenderer.h">
@@ -287,13 +295,16 @@
 				RelativePath="Includes\xbox_JoystickMouse.h">
 			</File>
 			<File
+				RelativePath="Includes\xbox_Network.h">
+			</File>
+			<File
 				RelativePath=".\Includes\xbox_Timing.h">
 			</File>
 			<File
-				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbresource.h">
+				RelativePath="E:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbresource.h">
 			</File>
 			<File
-				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbutil.h">
+				RelativePath="E:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include\xbutil.h">
 			</File>
 		</Filter>
 		<Filter
@@ -347,10 +358,13 @@
 				RelativePath="Sources\MAMEoXUtil.cpp">
 			</File>
 			<File
+				RelativePath="Sources\SMBHandler.cpp">
+			</File>
+			<File
 				RelativePath="Sources\System_IniFile.cpp">
 			</File>
 			<File
-				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Src\xbfont.cpp">
+				RelativePath="e:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Src\xbfont.cpp">
 			</File>
 			<File
 				RelativePath=".\Sources\xbox_Direct3DRenderer.cpp">
@@ -375,15 +389,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\Sources\xbox_FileIO.c">
-				<FileConfiguration
-					Name="Profile|Xbox">
-					<Tool
-						Name="VCCLCompilerTool"
-						AssemblerListingLocation=".\Profile/"
-						ObjectFile=".\Profile/"
-						ProgramDataBaseFileName=".\Profile/"/>
-				</FileConfiguration>
+				RelativePath="Sources\xbox_FileIO.cpp">
 			</File>
 			<File
 				RelativePath=".\Sources\xbox_JoystickMouse.c">
@@ -430,6 +436,15 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="Sources\xbox_Network.cpp">
+				<FileConfiguration
+					Name="Release|Xbox">
+					<Tool
+						Name="VCCLCompilerTool"
+						ExceptionHandling="TRUE"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\Sources\xbox_Sound.c">
 				<FileConfiguration
 					Name="Profile|Xbox">
@@ -452,10 +467,10 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Src\xbresource.cpp">
+				RelativePath="e:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Src\xbresource.cpp">
 			</File>
 			<File
-				RelativePath="..\..\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Src\xbutil.cpp">
+				RelativePath="e:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Src\xbutil.cpp">
 			</File>
 		</Filter>
 	</Files>
