@@ -1,3 +1,17 @@
+Version 0.66b
+  - \MAMEoX\Sources\xbox_Main.cpp
+    - Removed unloading of game sections after a game
+      was run, this speeds up the return to the game selection
+      by quite a bit. (opcode)
+
+  - \MAME\src\vidhrdw\namcos1.c
+    - Reverted back to MAME 0.60 version of this file
+      some update after 0.60 made it crash the xbox, but
+      works fine on the pc version of MAME. This makes
+      namco system 1 games work now, whereas before they
+      would load the roms then crash when video was 
+      started. (opcode)
+
 Version 0.65b
   - Fixed a slight glitch in rendering where a grey/white
     bar would show on the left and right of the rendered
