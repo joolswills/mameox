@@ -61,6 +61,10 @@ Version 0.70.4b
       - Used the general message backdrop for the "checking against
         known ROMs" display.
       - Various changes to support vsync'd display
+      - Fixed: Superscroll index incorrect after toggling 
+        clones/no clones
+      - Changed it so that MAMEoX will attempt to keep the 
+        cursor on the selected ROM when toggling clones/no clones
 
     - OptionsPage.cpp
       - Integrated new gfx from r4dius

@@ -657,24 +657,7 @@ void CROMList::SuperScrollModeMoveCursor( CInputManager &gp, FLOAT elapsedTime )
     // Jump if there's a place to jump to, and we're not already in the section starting
     // with the selected superscroll letter
   if( absCursorPos != INVALID_SUPERSCROLL_JUMP_IDX && currentChar != g_superscrollCharacterSet[m_superscrollCharacterIdx])
-  {
-      // Jump the cursor to the selected letter
-	  UINT32 pageSize = (m_currentSortedList.size() < MAXPAGESIZE ? m_currentSortedList.size() : MAXPAGESIZE);
-	  UINT32 pageHalfwayPoint = (pageSize >> 1);
-	  UINT32 maxPageOffset = m_currentSortedList.size() - pageSize;
-
-      // Put the page offset at absoluteCursorPos - pageHalwayPoint, or 0
-    if( absCursorPos <= pageHalfwayPoint || m_currentSortedList.size() < MAXPAGESIZE )
-    {
-      m_pageOffset = 0.0f;
-      m_cursorPosition = (FLOAT)absCursorPos;
-    }
-    else
-    {
-      m_pageOffset = (FLOAT)(absCursorPos - pageHalfwayPoint);
-      m_cursorPosition = (FLOAT)pageHalfwayPoint;
-    }
-  }
+    SetAbsoluteCursorPosition( absCursorPos );
 }
 
 //---------------------------------------------------------------------
@@ -1251,6 +1234,8 @@ void CROMList::GenerateSuperscrollJumpTable( void )
 //---------------------------------------------------------------------
 void CROMList::UpdateSortedList( void )
 {
+  UINT32 oldDriverIndex = GetCurrentGameIndex();
+
   if( m_options.m_displayClones )
     m_currentSortedList = m_ROMListWithClones;
   else
@@ -1286,7 +1271,65 @@ void CROMList::UpdateSortedList( void )
   }
 */
 
+    // Attempt to find the ROM that the user was on in the old sort mode
+    // in the new sort mode. If it can't be found, leave the cursor alone
+    // if it's less than the list size, or force it to the end of the
+    // list otherwise
+  if( oldDriverIndex != INVALID_ROM_INDEX )
+  {
+    UINT32 pos = 0;
+    std::vector<UINT32>::iterator i = m_currentSortedList.begin();
+    for( ; i != m_currentSortedList.end() && (*i) != oldDriverIndex; ++i, ++pos )
+      ;
+    if( i != m_currentSortedList.end() )
+      SetAbsoluteCursorPosition( pos );
+    else
+      SetAbsoluteCursorPosition( m_currentSortedList.size() - 1 );
+  }
+  
     // Generate the superscroll table from the new list
   GenerateSuperscrollJumpTable();
+
+    // Reposition the superscroll cursor in the new table
+  UINT32 idx = GetCurrentGameIndex();
+  if( idx != INVALID_ROM_INDEX )
+  {
+    char currentChar = toupper( m_driverInfoList[idx].m_description[0] );
+    if( !(currentChar >= 'A' && currentChar <= 'Z') )
+      currentChar = '#';
+
+    m_superscrollCharacterIdx = 0;
+    UINT32 &curIDX = m_superscrollCharacterIdx;
+    for( curIDX = 0;  curIDX < NUM_SUPERSCROLL_CHARS && g_superscrollCharacterSet[curIDX] != currentChar; ++curIDX )
+      ;
+  }
 }
+
+//---------------------------------------------------------------------
+//  SetAbsoluteCursorPosition
+//---------------------------------------------------------------------
+void CROMList::SetAbsoluteCursorPosition( UINT32 pos )
+{
+  if( pos == INVALID_ROM_INDEX )
+    return;
+
+    // Jump the cursor to the selected position
+	UINT32 pageSize = (m_currentSortedList.size() < MAXPAGESIZE ? m_currentSortedList.size() : MAXPAGESIZE);
+	UINT32 pageHalfwayPoint = (pageSize >> 1);
+	UINT32 maxPageOffset = m_currentSortedList.size() - pageSize;
+
+    // Put the page offset at absoluteCursorPos - pageHalwayPoint, or 0
+  if( pos <= pageHalfwayPoint || m_currentSortedList.size() < MAXPAGESIZE )
+  {
+    m_pageOffset = 0.0f;
+    m_cursorPosition = (FLOAT)pos;
+  }
+  else
+  {
+    m_pageOffset = (FLOAT)(pos - pageHalfwayPoint);
+    m_cursorPosition = (FLOAT)pageHalfwayPoint;
+  }
+}
+
+
 

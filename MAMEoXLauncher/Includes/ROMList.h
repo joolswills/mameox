@@ -170,6 +170,12 @@ public:
   BOOL ShouldGenerateROMList( void ) { return m_shouldGenerateROMList; }
 
 protected:
+
+    // Set the cursorPosition and pageOffset such that
+    // the cursor is displayed at the passed position
+  void SetAbsoluteCursorPosition( UINT32 pos );
+
+
     // Helper functions to save/load the rom list, with integrity checks
   BOOL SaveROMListFile( void );
   BOOL LoadROMListFile( void );
