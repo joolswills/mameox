@@ -603,6 +603,7 @@ UINT32 osd_fwrite( osd_file *file, const void *buffer, UINT32 length )
 
 
     // attempt to seek to the current location if we're not there already
+  /*
   if( file->m_offset != file->m_filepos )
   {
     LONG upperPos = (LONG)(file->m_offset >> 32);
@@ -614,9 +615,10 @@ UINT32 osd_fwrite( osd_file *file, const void *buffer, UINT32 length )
     }
     file->m_filepos = file->m_offset;
   }
+  */
 
     // Just copy the data into the write buffer
-  if( FILE_BUFFER_SIZE - file->m_writeBufferBytes > length )
+  if( (FILE_BUFFER_SIZE - file->m_writeBufferBytes) > length )
   {
     memcpy( &file->m_writeBuffer[file->m_writeBufferBytes], buffer, length );
     file->m_writeBufferBytes += length;
