@@ -29,15 +29,16 @@ extern "C" {
 //= D E F I N E S ======================================================
 
   //--- Layout defines -----------------------------------------
-#define HEADER_COLOR          D3DCOLOR_XRGB( 0, 0, 0 )
-#define ITEM_COLOR			      D3DCOLOR_XRGB( 0, 0, 0 )
+#define HEADER_COLOR          D3DCOLOR_XRGB( 1, 1, 1 )
+#define HELPITEM_COLOR        D3DCOLOR_XRGB( 20, 20, 20 )
+#define ITEM_COLOR			      D3DCOLOR_XRGB( 1, 1, 1 )
 #define ITEM_WARNING_COLOR    D3DCOLOR_XRGB( 100, 100, 0 )
-#define ITEM_NONWORKING_COLOR D3DCOLOR_XRGB( 100, 0, 0 )
+#define ITEM_NONWORKING_COLOR D3DCOLOR_XRGB( 100, 1, 1 )
 
 #define HIGHLIGHTBAR_COLOR      D3DCOLOR_ARGB( 180, 175, 179, 212 )
 #define SCROLLICON_COLOR        D3DCOLOR_XRGB( 255, 255, 255 )
 #define SPACER_COLOR            D3DCOLOR_XRGB( 255, 255, 255 )
-#define NOSCREENSHOT_COLOR      D3DCOLOR_XRGB( 0, 0, 0 )
+#define NOSCREENSHOT_COLOR      D3DCOLOR_XRGB( 1, 1, 1 )
 #define NOSCREENSHOTTEXT_COLOR  D3DCOLOR_XRGB( 255, 255, 255 )
 
 #define TITLEBAR_ROW          101
@@ -65,6 +66,24 @@ extern "C" {
 #define SCROLLDOWN_TOP        (SCROLLDOWN_BOTTOM - 32)
 #define SCROLLDOWN_RIGHT      608
 #define SCROLLDOWN_LEFT       (SCROLLDOWN_RIGHT - 32)
+
+  //-- Button help messages ------
+#define HELP_A_ICON_X      255
+#define HELP_A_ICON_Y      40
+#define HELP_A_TEXT_X      (HELP_A_ICON_X + m_textureSet.GetButtonWidth() + 4)
+#define HELP_A_TEXT_Y      (HELP_A_ICON_Y)
+
+#define HELP_X_ICON_X      375
+#define HELP_X_ICON_Y      40
+#define HELP_X_TEXT_X      (HELP_X_ICON_X + m_textureSet.GetButtonWidth() + 4)
+#define HELP_X_TEXT_Y      (HELP_X_ICON_Y)
+
+#define HELP_Y_ICON_X      450
+#define HELP_Y_ICON_Y      40
+#define HELP_Y_TEXT_X      (HELP_Y_ICON_X + m_textureSet.GetButtonWidth() + 4)
+#define HELP_Y_TEXT_Y      (HELP_Y_ICON_Y)
+
+
 
   // Detailed view layout
 #define DETAIL_ROMSTATUS_X        NAME_COLUMN
@@ -1834,6 +1853,101 @@ void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
     // Render the backdrop texture
   RenderBackdrop();
   m_menuRenderer->Draw( FALSE, FALSE );
+
+
+    //-- Draw the help text --------------------------------------------
+  m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
+  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    TRUE );
+  m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
+  m_displayDevice->SetRenderState( D3DRS_ALPHAFUNC,           D3DCMP_GREATEREQUAL );
+
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
+
+  m_displayDevice->SetTexture( 0, m_textureSet.GetButtonIcons() );
+  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
+
+
+  FLOAT ulX, ulY;
+
+    //-- A button -------------------------------------------------
+  ulX = HELP_A_ICON_X;
+  ulY = HELP_A_ICON_Y;
+  m_displayDevice->Begin( D3DPT_QUADLIST );
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetAButtonLeft(), m_textureSet.GetAButtonTop() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX, ulY, 1.0f, 1.0f );
+    
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetAButtonRight(), m_textureSet.GetAButtonTop() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX + m_textureSet.GetButtonWidth(), ulY, 1.0f, 1.0f );
+    
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetAButtonRight(), m_textureSet.GetAButtonBottom() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX + m_textureSet.GetButtonWidth(), ulY + m_textureSet.GetButtonHeight(), 1.0f, 1.0f );
+
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetAButtonLeft(), m_textureSet.GetAButtonBottom() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX, ulY + m_textureSet.GetButtonHeight(), 1.0f, 1.0f );
+  m_displayDevice->End();
+
+    //-- X button ------------------------------------------------
+  ulX = HELP_X_ICON_X;
+  ulY = HELP_X_ICON_Y;
+  m_displayDevice->Begin( D3DPT_QUADLIST );
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetXButtonLeft(), m_textureSet.GetXButtonTop() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX, ulY, 1.0f, 1.0f );
+    
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetXButtonRight(), m_textureSet.GetXButtonTop() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX + m_textureSet.GetButtonWidth(), ulY, 1.0f, 1.0f );
+    
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetXButtonRight(), m_textureSet.GetXButtonBottom() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX + m_textureSet.GetButtonWidth(), ulY + m_textureSet.GetButtonHeight(), 1.0f, 1.0f );
+
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetXButtonLeft(), m_textureSet.GetXButtonBottom() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX, ulY + m_textureSet.GetButtonHeight(), 1.0f, 1.0f );
+  m_displayDevice->End();
+
+    //-- Y button ------------------------------------------------
+  ulX = HELP_Y_ICON_X;
+  ulY = HELP_Y_ICON_Y;
+  m_displayDevice->Begin( D3DPT_QUADLIST );
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetYButtonLeft(), m_textureSet.GetYButtonTop() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX, ulY, 1.0f, 1.0f );
+    
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetYButtonRight(), m_textureSet.GetYButtonTop() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX + m_textureSet.GetButtonWidth(), ulY, 1.0f, 1.0f );
+    
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetYButtonRight(), m_textureSet.GetYButtonBottom() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX + m_textureSet.GetButtonWidth(), ulY + m_textureSet.GetButtonHeight(), 1.0f, 1.0f );
+
+    m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetYButtonLeft(), m_textureSet.GetYButtonBottom() );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, ulX, ulY + m_textureSet.GetButtonHeight(), 1.0f, 1.0f );
+  m_displayDevice->End();
+
+
+    // Now render the text messages
+	m_fontSet.LargeThinFont().Begin();
+	  m_fontSet.LargeThinFont().DrawText( HELP_A_TEXT_X, 
+                                        HELP_A_TEXT_Y, 
+                                        HELPITEM_COLOR, 
+                                        L"Play ROM" );
+
+	  m_fontSet.LargeThinFont().DrawText( HELP_X_TEXT_X, 
+                                        HELP_X_TEXT_Y, 
+                                        HELPITEM_COLOR, 
+                                        L"Help" );
+
+	  m_fontSet.LargeThinFont().DrawText( HELP_Y_TEXT_X, 
+                                        HELP_Y_TEXT_Y, 
+                                        HELPITEM_COLOR, 
+                                        L"Superscroll" );
+  m_fontSet.LargeThinFont().End();
+
+
+
+  m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     FALSE );
+  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    FALSE );
+  m_displayDevice->SetTexture( 0, NULL );
+
 
   if( GetCurrentGameIndex() != INVALID_ROM_INDEX )
   {

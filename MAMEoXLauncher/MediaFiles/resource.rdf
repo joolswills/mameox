@@ -53,3 +53,11 @@ Texture LightgunCursorMask
   Levels        1
 }
 
+Texture ButtonIcons
+{
+  Source        mox-buttons.bmp
+  Alphasource   mox-buttons-mask.bmp
+  Format        D3DFMT_LIN_A8R8G8B8
+  Levels        1
+}
+

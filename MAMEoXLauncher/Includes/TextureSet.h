@@ -61,6 +61,38 @@ extern "C" {
 #define ASSET_MENUITEM_FOOTER_BOTTOM    56.0f
 
 
+  //-- Position of button icons within the buttons conglomerate
+#define ASSET_BUTTON_TOPROW_TOP         0.0f
+#define ASSET_BUTTON_TOPROW_BOTTOM      24.0f
+#define ASSET_BUTTON_BOTTOMROW_TOP      26.0f
+#define ASSET_BUTTON_BOTTOMROW_BOTTOM   50.0f
+
+#define ASSET_BUTTON_LEFTCOLUMN_LEFT    0.0f
+#define ASSET_BUTTON_LEFTCOLUMN_RIGHT   24.0f
+#define ASSET_BUTTON_RIGHTCOLUMN_LEFT   25.0f
+#define ASSET_BUTTON_RIGHTCOLUMN_RIGHT  49.0f
+
+#define ASSET_BUTTONICON_X_LEFT         ASSET_BUTTON_RIGHTCOLUMN_LEFT
+#define ASSET_BUTTONICON_X_TOP          ASSET_BUTTON_TOPROW_TOP
+#define ASSET_BUTTONICON_X_RIGHT        ASSET_BUTTON_RIGHTCOLUMN_RIGHT
+#define ASSET_BUTTONICON_X_BOTTOM       ASSET_BUTTON_TOPROW_BOTTOM
+
+#define ASSET_BUTTONICON_Y_LEFT         ASSET_BUTTON_RIGHTCOLUMN_LEFT
+#define ASSET_BUTTONICON_Y_TOP          ASSET_BUTTON_BOTTOMROW_TOP
+#define ASSET_BUTTONICON_Y_RIGHT        ASSET_BUTTON_RIGHTCOLUMN_RIGHT
+#define ASSET_BUTTONICON_Y_BOTTOM       ASSET_BUTTON_BOTTOMROW_BOTTOM
+
+#define ASSET_BUTTONICON_A_LEFT         ASSET_BUTTON_LEFTCOLUMN_LEFT
+#define ASSET_BUTTONICON_A_TOP          ASSET_BUTTON_TOPROW_TOP
+#define ASSET_BUTTONICON_A_RIGHT        ASSET_BUTTON_LEFTCOLUMN_RIGHT
+#define ASSET_BUTTONICON_A_BOTTOM       ASSET_BUTTON_TOPROW_BOTTOM
+
+#define ASSET_BUTTONICON_B_LEFT         ASSET_BUTTON_LEFTCOLUMN_LEFT
+#define ASSET_BUTTONICON_B_TOP          ASSET_BUTTON_BOTTOMROW_TOP
+#define ASSET_BUTTONICON_B_RIGHT        ASSET_BUTTON_LEFTCOLUMN_RIGHT
+#define ASSET_BUTTONICON_B_BOTTOM       ASSET_BUTTON_BOTTOMROW_BOTTOM
+
+
 
 //= C L A S S E S =============================================================
 
@@ -102,6 +134,10 @@ public:
 
   LPDIRECT3DTEXTURE8 GetMenuParts( void ) {    
     return (LPDIRECT3DTEXTURE8)&m_pResourceSysMemData[resource_MenuParts_OFFSET];
+  }
+
+  LPDIRECT3DTEXTURE8 GetButtonIcons( void ) {
+    return (LPDIRECT3DTEXTURE8)&m_pResourceSysMemData[resource_ButtonIcons_OFFSET];
   }
 
     //--- Asset position functions -------------------------------------
@@ -195,6 +231,28 @@ public:
   FLOAT GetMenuFooterRightBottom( void ) const { return ASSET_MENUITEM_FOOTER_BOTTOM; }
   FLOAT GetMenuFooterRightWidth( void )  const { return ASSET_MENUITEM_RIGHT_RIGHT - ASSET_MENUITEM_RIGHT_LEFT; }
 
+  FLOAT GetXButtonLeft( void ) const    { return ASSET_BUTTONICON_X_LEFT; }
+  FLOAT GetXButtonTop( void ) const     { return ASSET_BUTTONICON_X_TOP; }
+  FLOAT GetXButtonRight( void ) const   { return ASSET_BUTTONICON_X_RIGHT; }
+  FLOAT GetXButtonBottom( void ) const  { return ASSET_BUTTONICON_X_BOTTOM; }
+
+  FLOAT GetYButtonLeft( void ) const    { return ASSET_BUTTONICON_Y_LEFT; }
+  FLOAT GetYButtonTop( void ) const     { return ASSET_BUTTONICON_Y_TOP; }
+  FLOAT GetYButtonRight( void ) const   { return ASSET_BUTTONICON_Y_RIGHT; }
+  FLOAT GetYButtonBottom( void ) const  { return ASSET_BUTTONICON_Y_BOTTOM; }
+
+  FLOAT GetAButtonLeft( void ) const    { return ASSET_BUTTONICON_A_LEFT; }
+  FLOAT GetAButtonTop( void ) const     { return ASSET_BUTTONICON_A_TOP; }
+  FLOAT GetAButtonRight( void ) const   { return ASSET_BUTTONICON_A_RIGHT; }
+  FLOAT GetAButtonBottom( void ) const  { return ASSET_BUTTONICON_A_BOTTOM; }
+
+  FLOAT GetBButtonLeft( void ) const    { return ASSET_BUTTONICON_B_LEFT; }
+  FLOAT GetBButtonTop( void ) const     { return ASSET_BUTTONICON_B_TOP; }
+  FLOAT GetBButtonRight( void ) const   { return ASSET_BUTTONICON_B_RIGHT; }
+  FLOAT GetBButtonBottom( void ) const  { return ASSET_BUTTONICON_B_BOTTOM; }
+
+  FLOAT GetButtonWidth( void ) const    { return ASSET_BUTTONICON_B_RIGHT - ASSET_BUTTONICON_B_LEFT; }
+  FLOAT GetButtonHeight( void ) const   { return ASSET_BUTTONICON_B_BOTTOM - ASSET_BUTTONICON_B_TOP; }
 
 protected:
 
