@@ -234,9 +234,19 @@ static BOOL Helper_RunRom( UINT32 romIndex )
     // appropriately. NOTE: we probably don't need this to conditionally compile and could
     // just leave the first call but would like someone with VS.net to test first just in case :)
     //
-    // Should be perfectly fine w/ the strstr
-  if( !LoadDriverSectionByName( strstr(DriverName.c_str(),"src\\drivers\\") ) )
+    // [EBA] Should be perfectly fine w/ the strstr
+	const char *driverName = strstr(DriverName.c_str(),"drivers\\");
+	if( !driverName || !driverName[8] )
+	{
+		PRINTMSG(( T_ERROR, "Invalid driver name at index %lu!", romIndex ));
+		fatalerror( "An unrecoverable error has occurred!\r\nInvalid driver name at index %lu!", romIndex );
+	}
+
+  if( !LoadDriverSectionByName( &driverName[8] ) )
+	{
     PRINTMSG(( T_ERROR, "Failed to load section for file %s!", DriverName.c_str() ));
+		fatalerror( "An unrecoverable error has occurred!\r\nFailed to load XBE section for file %s!", &driverName[8] );
+	}
 
     // Unload all the other XBE data sections, as we'll only be using the one
     // for the file we're loading
@@ -258,9 +268,7 @@ static BOOL Helper_RunRom( UINT32 romIndex )
 
 
     // Unload the "STARTUP" section
-PRINTMSG(( T_INFO, "XFreeSection" ));
   XFreeSection( "STARTUP" );
-PRINTMSG(( T_INFO, "XFreeSection Done" ));
 
 //  #ifdef _DEBUG
   {
@@ -273,7 +281,6 @@ PRINTMSG(( T_INFO, "XFreeSection Done" ));
   }
 //  #endif
 
-PRINTMSG(( T_INFO, "run_game" ));
 	ret = run_game( romIndex );
 
     // Restore the old value, just in case somebody writes to the INI
