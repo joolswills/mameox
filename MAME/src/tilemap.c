@@ -1051,6 +1051,9 @@ struct mame_bitmap *tilemap_get_pixmap( struct tilemap * tilemap )
 	UINT32 cached_indx = 0;
 	UINT32 row,col;
 
+  if( !tilemap )
+    return NULL;
+
 	if (tilemap->all_tiles_clean == 0)
 	{
 profiler_mark(PROFILER_TILEMAP_DRAW);

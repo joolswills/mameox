@@ -175,6 +175,8 @@ BOOL UnloadDriverSections( void )
         (*i).first == "src\\drivers\\aburner.c" ||
         (*i).first == "src\\drivers\\sharrier.c" ||
         (*i).first == "src\\drivers\\outrun.c" ||
+        (*i).first == "src\\drivers\\segasyse.c" ||
+        (*i).first == "src\\drivers\\segac2.c" ||
         (*i).first == "src\\drivers\\mcr2.c" ||
         (*i).first == "src\\drivers\\mcr3.c" ||
         (*i).first == "src\\drivers\\mcr68.c" ||
@@ -515,6 +517,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\hyperspt.c", "20" );
   RegisterSectionName( "src\\drivers\\hyprduel.c", "333" );
   RegisterSectionName( "src\\drivers\\ikki.c", "334" );
+  RegisterSectionName( "src\\drivers\\inufuku.c", "767" );
   RegisterSectionName( "src\\drivers\\iqblock.c", "335" );
   RegisterSectionName( "src\\drivers\\irobot.c", "336" );
   RegisterSectionName( "src\\drivers\\ironhors.c", "337" );
@@ -740,9 +743,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\scramble.c", "8" );
   RegisterSectionName( "src\\drivers\\scregg.c", "32" );
   RegisterSectionName( "src\\drivers\\sega.c", "25" );
-  RegisterSectionName( "src\\drivers\\segac2.c", "552" );
   RegisterSectionName( "src\\drivers\\segar.c", "25" );
-  RegisterSectionName( "src\\drivers\\segasyse.c", "554" );
   RegisterSectionName( "src\\drivers\\seicross.c", "555" );
   RegisterSectionName( "src\\drivers\\sengokmj.c", "753" );
   RegisterSectionName( "src\\drivers\\senjyo.c", "556" );
@@ -944,7 +945,8 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\zerozone.c", "744" );
   RegisterSectionName( "src\\drivers\\zn.c", "745" );
   RegisterSectionName( "src\\drivers\\zodiack.c", "11" );
-  RegisterSectionName( "src\\drivers\\inufuku.c", "767" );
+  RegisterSectionName( "src\\drivers\\segac2.c", "3" );
+  RegisterSectionName( "src\\drivers\\segasyse.c", "3" );
 }
 #pragma code_seg()
 #pragma data_seg()

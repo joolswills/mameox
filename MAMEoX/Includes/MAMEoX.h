@@ -64,8 +64,8 @@ extern "C" {
 #endif
 
   // Version number
-#define RELEASE_STRING            ".1b"
-#define LRELEASE_STRING           L".1b"
+#define RELEASE_STRING            ".2b"
+#define LRELEASE_STRING           L".2b"
 
 #define VERSION_STRING            "0.74" RELEASE_STRING
 #define LVERSION_STRING           L"0.74" LRELEASE_STRING

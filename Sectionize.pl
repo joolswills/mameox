@@ -355,8 +355,7 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 @NamcoFamily = ( "namcoic.c", "namcona1.c", "namconb1.c", "namcond1.c", "namcos1.c",
                  "namcos2.c", "namcos21.c", "namcos22.c", "namcos86.c", "namcos11.c" );
 @SegaFamily = ( "multi32.c", "system1.c", "system16.c", "system18.c", "system24.c", "system32.c",
-				"aburner.c", "sharrier.c", "outrun.c" );
-
+				"aburner.c", "sharrier.c", "outrun.c", "segasyse.c", "segac2.c" );
 @MoonPatrolFamily = ( "mpatrol.c", "yard.c" );								# 10 Yard Fight07/07/2003
 @SNKFamily = ( "snk.c", "hal21.c", "marvins.c", "sgladiat.c" );				# ASO - Armored Scrum Object, Athena, Marvin's Maze, Gladiator 1984
 @AmidarFamily = ( "galaxian.c", "scramble.c", "scobra.c", 

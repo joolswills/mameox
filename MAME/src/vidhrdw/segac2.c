@@ -1,11 +1,11 @@
-#pragma code_seg("C552")
-#pragma data_seg("D552")
-#pragma bss_seg("B552")
-#pragma const_seg("K552")
-#pragma comment(linker, "/merge:D552=552")
-#pragma comment(linker, "/merge:C552=552")
-#pragma comment(linker, "/merge:B552=552")
-#pragma comment(linker, "/merge:K552=552")
+#pragma code_seg("C3")
+#pragma data_seg("D3")
+#pragma bss_seg("B3")
+#pragma const_seg("K3")
+#pragma comment(linker, "/merge:D3=3")
+#pragma comment(linker, "/merge:C3=3")
+#pragma comment(linker, "/merge:B3=3")
+#pragma comment(linker, "/merge:K3=3")
 /***********************************************************************************************
 
 	Sega System C/C2 Driver
