@@ -1570,7 +1570,7 @@ InputSeq* input_port_seq(const struct InputPort *in)
 void update_analog_port(int port)
 {
 	struct InputPort *in;
-	int current, delta, type, sensitivity, min, max, default_value;
+	int current, delta = 0, type, sensitivity, min, max, default_value;
 	int axis, is_stick, is_gun, check_bounds;
 	InputSeq* incseq;
 	InputSeq* decseq;
@@ -1610,9 +1610,9 @@ void update_analog_port(int port)
 		case IPT_AD_STICK_Z:
 			axis = Z_AXIS; is_stick = 1; is_gun=0; check_bounds = 1; break;
 		case IPT_LIGHTGUN_X:
-			axis = X_AXIS; is_stick = 1; is_gun=1; check_bounds = 0; break;
+			axis = X_AXIS; is_stick = 1; is_gun=1; check_bounds = 1; break;
 		case IPT_LIGHTGUN_Y:
-			axis = Y_AXIS; is_stick = 1; is_gun=1; check_bounds = 0; break;
+			axis = Y_AXIS; is_stick = 1; is_gun=1; check_bounds = 1; break;
 		case IPT_PEDAL:
 			axis = PEDAL_AXIS; is_stick = 1; is_gun=0; check_bounds = 1; break;
 		case IPT_PEDAL2:
@@ -1623,6 +1623,13 @@ void update_analog_port(int port)
 			logerror("Oops, polling non analog device in update_analog_port()????\n");
 	}
 
+	switch (in->type & IPF_PLAYERMASK)
+	{
+		case IPF_PLAYER2:          player = 1; break;
+		case IPF_PLAYER3:          player = 2; break;
+		case IPF_PLAYER4:          player = 3; break;
+		case IPF_PLAYER1: default: player = 0; break;
+	}
 
 
 	sensitivity = IP_GET_SENSITIVITY(in);
@@ -1645,15 +1652,6 @@ void update_analog_port(int port)
 
 	current = input_analog_current_value[port];
 
-	delta = 0;
-
-	switch (in->type & IPF_PLAYERMASK)
-	{
-		case IPF_PLAYER2:          player = 1; break;
-		case IPF_PLAYER3:          player = 2; break;
-		case IPF_PLAYER4:          player = 3; break;
-		case IPF_PLAYER1: default: player = 0; break;
-	}
 
 
 /*
@@ -1685,9 +1683,6 @@ void update_analog_port(int port)
   }
 
 
-
-
-
 	if( is_gun && (lightgun_delta_axis[player][X_AXIS] || lightgun_delta_axis[player][Y_AXIS]) )
 	{
 		/* The OSD lightgun call should return the delta from the middle of the screen
@@ -1703,25 +1698,25 @@ void update_analog_port(int port)
 		There is an ugly hack to stop scaling of lightgun returned values.  It really
 		needs rewritten...
 		*/
+
+    #define LIGHTGUN_SENSITIVITY  100
+
 		if (axis == X_AXIS) {
 			analog_previous_axis[player][X_AXIS]=0;
 			current=analog_current_axis[player][X_AXIS]=lightgun_delta_axis[player][X_AXIS];
 			input_analog_scale[port]=0;
-			sensitivity=100;
+			sensitivity=LIGHTGUN_SENSITIVITY;
 		}
 		else
 		{
 			analog_previous_axis[player][Y_AXIS]=0;
 			current=analog_current_axis[player][Y_AXIS]=lightgun_delta_axis[player][Y_AXIS];
 			input_analog_scale[port]=0;
-			sensitivity=100;
+			sensitivity=LIGHTGUN_SENSITIVITY;
 		}
 	}
 
-
-
-	if( is_stick ||
-	    is_gun && (lightgun_delta_axis[player][X_AXIS] || lightgun_delta_axis[player][Y_AXIS]) )
+	if( is_stick || is_gun )
 	{
 		int new, prev;
 

@@ -428,7 +428,8 @@ void osd_joystick_end_calibration( void )
 void osd_lightgun_read(int player, int *deltax, int *deltay)
 {
   assert( deltax && deltay );
-  GetLightgunCalibratedPosition( player, deltax, deltay );
+  //GetLightgunCalibratedPosition( player, deltax, deltay );
+  *deltax = *deltay = 0;
 }
 
 //---------------------------------------------------------------------
@@ -487,10 +488,11 @@ void osd_analogjoy_read(	int player,
 	UINT32 i = 0;
   FLOAT analogDivisor = 32767.0f;
 	const XINPUT_GAMEPAD *gamepad;
+  const XINPUT_CAPABILITIES *gpCaps;
 	
 //	PRINTMSG( T_TRACE, "osd_analogjoy_read" );
 
-	
+	gpCaps = GetGamepadCaps( player );
 	gamepad = GetGamepadState( player );
 	if( !gamepad )
 	{
@@ -517,50 +519,88 @@ void osd_analogjoy_read(	int player,
 
     switch( joytype )
     {
+      // *** JT_LSTICK_UP *** //
 	  case JT_LSTICK_UP:
-      if( gamepad->sThumbLY > ANALOG_DEADZONE )
-        analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLY - ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
-      else if( gamepad->sThumbLY < -ANALOG_DEADZONE )
-        analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLY + ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+      if( gpCaps->SubType == XINPUT_DEVSUBTYPE_GC_LIGHTGUN )
+      {
+        INT32 junk;
+        GetLightgunCalibratedPosition( joynum, &junk, &analog_axis[i] );
+        analogDivisor = 128.0f;
+      }
       else
-        analog_axis[i] = 0;
+      {
+        if( gamepad->sThumbLY > ANALOG_DEADZONE )
+          analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLY - ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+        else if( gamepad->sThumbLY < -ANALOG_DEADZONE )
+          analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLY + ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+        else
+          analog_axis[i] = 0;
 
-       // MAME seems to expect - values for Y axes to be "Up", so we need to
-       // negate
-      analog_axis[i] *= -1;
+        // MAME seems to expect - values for Y axes to be "Up", so we need to
+        // negate
+        analog_axis[i] *= -1;
+      }
       break;
 
+      // *** JT_LSTICK_DOWN *** //
 	  case JT_LSTICK_DOWN:
-CHECKRAM();
-      if( gamepad->sThumbLY > ANALOG_DEADZONE )
-        analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLY - ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
-      else if( gamepad->sThumbLY < -ANALOG_DEADZONE )
-        analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLY + ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+      if( gpCaps->SubType == XINPUT_DEVSUBTYPE_GC_LIGHTGUN )
+      {
+        INT32 junk;
+        GetLightgunCalibratedPosition( joynum, &junk, &analog_axis[i] );
+        analogDivisor = 128.0f;
+      }
       else
-        analog_axis[i] = 0;
+      {
+        if( gamepad->sThumbLY > ANALOG_DEADZONE )
+          analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLY - ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+        else if( gamepad->sThumbLY < -ANALOG_DEADZONE )
+          analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLY + ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+        else
+          analog_axis[i] = 0;
 
-       // MAME seems to expect - values for Y axes to be "Up", so we need to
-       // negate
-      analog_axis[i] *= -1;
+        // MAME seems to expect - values for Y axes to be "Up", so we need to
+        // negate
+        analog_axis[i] *= -1;
+      }
 			break;
 
+      // *** JT_LSTICK_LEFT *** //
     case JT_LSTICK_LEFT:
-      if( gamepad->sThumbLX < -ANALOG_DEADZONE )
-        analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLX + ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
-      else if( gamepad->sThumbLX > ANALOG_DEADZONE )
-        analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLX - ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+      if( gpCaps->SubType == XINPUT_DEVSUBTYPE_GC_LIGHTGUN )
+      {
+        INT32 junk;
+        GetLightgunCalibratedPosition( joynum, &analog_axis[i], &junk );
+        analogDivisor = 128.0f;
+      }
       else
-        analog_axis[i] = 0;
+      {
+        if( gamepad->sThumbLX < -ANALOG_DEADZONE )
+          analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLX + ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+        else if( gamepad->sThumbLX > ANALOG_DEADZONE )
+          analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLX - ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+        else
+          analog_axis[i] = 0;
+      }
       break;
 
+      // *** JT_LSTICK_RIGHT *** //
 	  case JT_LSTICK_RIGHT:
-CHECKRAM();
-      if( gamepad->sThumbLX < -ANALOG_DEADZONE )
-        analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLX + ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
-      else if( gamepad->sThumbLX > ANALOG_DEADZONE )
-        analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLX - ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+      if( gpCaps->SubType == XINPUT_DEVSUBTYPE_GC_LIGHTGUN )
+      {
+        INT32 junk;
+        GetLightgunCalibratedPosition( joynum, &analog_axis[i], &junk );
+        analogDivisor = 128.0f;
+      }
       else
-        analog_axis[i] = 0;
+      {
+        if( gamepad->sThumbLX < -ANALOG_DEADZONE )
+          analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLX + ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+        else if( gamepad->sThumbLX > ANALOG_DEADZONE )
+          analog_axis[i] = (int)((FLOAT)(gamepad->sThumbLX - ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+        else
+          analog_axis[i] = 0;
+      }
       break;
 
 	  case JT_RSTICK_UP:

@@ -268,6 +268,14 @@ public:
 		//------------------------------------------------------
   BOOL IsLightgunPointedAtScreen( void ) const;
 
+		//------------------------------------------------------
+		//	IsLightgun
+    //! Check whether or not the gamepad is a lightgun
+    //!
+    //! \return  BOOL - TRUE if it's a lightgun
+		//------------------------------------------------------
+  BOOL IsLightgun( void ) const { return m_caps.SubType == XINPUT_DEVSUBTYPE_GC_LIGHTGUN; }
+
   protected:
 		//------------------------------------------------------
 		//	AttachRemoveGamepadDevice
