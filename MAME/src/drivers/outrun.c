@@ -1,11 +1,11 @@
-#pragma code_seg("C396")
-#pragma data_seg("D396")
-#pragma bss_seg("B396")
-#pragma const_seg("K396")
-#pragma comment(linker, "/merge:D396=396")
-#pragma comment(linker, "/merge:C396=396")
-#pragma comment(linker, "/merge:B396=396")
-#pragma comment(linker, "/merge:K396=396")
+#pragma code_seg("C3")
+#pragma data_seg("D3")
+#pragma bss_seg("B3")
+#pragma const_seg("K3")
+#pragma comment(linker, "/merge:D3=3")
+#pragma comment(linker, "/merge:C3=3")
+#pragma comment(linker, "/merge:B3=3")
+#pragma comment(linker, "/merge:K3=3")
 /*
 **	2xMC68000 + Z80
 **	YM2151 + Custom PCM

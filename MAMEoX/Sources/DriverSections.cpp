@@ -171,7 +171,10 @@ BOOL UnloadDriverSections( void )
         (*i).first == "src\\drivers\\system16.c" ||
         (*i).first == "src\\drivers\\system18.c" ||
         (*i).first == "src\\drivers\\system24.c" ||
-        (*i).first == "src\\drivers\\system32.c" )
+        (*i).first == "src\\drivers\\system32.c" ||
+        (*i).first == "src\\drivers\\aburner.c" ||
+        (*i).first == "src\\drivers\\sharrier.c" ||
+        (*i).first == "src\\drivers\\outrun.c" )
         continue;
     XFreeSection( (*i).second.c_str() );
   }
@@ -190,7 +193,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\4enraya.c", "15" );
   RegisterSectionName( "src\\drivers\\8080bw.c", "16" );
   RegisterSectionName( "src\\drivers\\88games.c", "17" );
-  RegisterSectionName( "src\\drivers\\aburner.c", "18" );
+  RegisterSectionName( "src\\drivers\\aburner.c", "3" );
   RegisterSectionName( "src\\drivers\\ace.c", "19" );
   RegisterSectionName( "src\\drivers\\actfancr.c", "20" );
   RegisterSectionName( "src\\drivers\\aeroboto.c", "21" );
@@ -568,7 +571,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\orbit.c", "393" );
   RegisterSectionName( "src\\drivers\\othldrby.c", "394" );
   RegisterSectionName( "src\\drivers\\othunder.c", "395" );
-  RegisterSectionName( "src\\drivers\\outrun.c", "396" );
+  RegisterSectionName( "src\\drivers\\outrun.c", "3" );
   RegisterSectionName( "src\\drivers\\overdriv.c", "397" );
   RegisterSectionName( "src\\drivers\\pacland.c", "398" );
   RegisterSectionName( "src\\drivers\\pacman.c", "399" );
@@ -653,7 +656,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\shanghai.c", "478" );
   RegisterSectionName( "src\\drivers\\shangkid.c", "479" );
   RegisterSectionName( "src\\drivers\\shaolins.c", "480" );
-  RegisterSectionName( "src\\drivers\\sharrier.c", "481" );
+  RegisterSectionName( "src\\drivers\\sharrier.c", "3" );
   RegisterSectionName( "src\\drivers\\shisen.c", "482" );
   RegisterSectionName( "src\\drivers\\shootout.c", "483" );
   RegisterSectionName( "src\\drivers\\shougi.c", "484" );

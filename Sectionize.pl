@@ -316,10 +316,8 @@ print GENERATEDFILE "}\n\n";
 
 print "Sectionizing drivers, sound hardware, and video hardware...\n";
 
-#  LoadDriverSectionByName( "src\\drivers\\cps1.c" );      // cps2.c is dependent on cps1.c
 #  LoadDriverSectionByName( "src\\drivers\\mpatrol.c" );   // 10 yard fight is dependent on the mpatrol vidhrdw
 #  LoadDriverSectionByName( "src\\drivers\\snk.c" );       // hal121.c is dependent on snk vidhrdw (ASO - Armored Scrum Object)
-#  LoadDriverSectionByName( "src\\drivers\\system16.c" );  // afterburner dependent
 #  LoadDriverSectionByName( "src\\drivers\\galaxian.c" );  // Amidar
 #  LoadDriverSectionByName( "src\\drivers\\scramble.c" );  // Amidar
 #  LoadDriverSectionByName( "src\\drivers\\scobra.c" );    // Amidar
@@ -333,7 +331,6 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 #  LoadDriverSectionByName( "src\\drivers\\gottlieb.c" );  // exterminator
 #  LoadDriverSectionByName( "src\\drivers\\pengo.c" );     // eyes
 #  LoadDriverSectionByName( "src\\drivers\\megasys1.c" );  // F1 Grand Prix Star
-#  LoadDriverSectionByName( "src\\drivers\\namcos1.c" );   // Face Off (Japan)
 #  LoadDriverSectionByName( "src\\drivers\\rallyx.c" );    // Loco-Motion
 #  LoadDriverSectionByName( "src\\drivers\\timeplt.c" );   // Loco-Motion
 #  LoadDriverSectionByName( "src\\drivers\\exidy.c" );     // Victory
@@ -341,8 +338,6 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 #  LoadDriverSectionByName( "src\\drivers\\leland.c" );    // Asylum (prototype)
 #  LoadDriverSectionByName( "src\\drivers\\trackfld.c" );  // Hyper Sports, Hyper Olympics '84?
 #  taito_f3 - Super Chase
-#  multi32 - All sega system 32 games (Golden Axe 2)
-#  namcoic, namcos2 - Lucky&Wild
 
 @SkipDrivers = ( "jrcrypt.c", "mpatrol.c", "snk.c", 
                  "galaxian.c", "scramble.c", "scobra.c", 
@@ -357,7 +352,8 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 @NamcoFamily = ( "namcoic.c", "namcona1.c", "namconb1.c", "namcond1.c", "namcos1.c",
                  "namcos2.c", "namcos21.c", "namcos22.c", "namcos86.c" );
 
-@SegaFamily = ( "multi32.c", "system1.c", "system16.c", "system18.c", "system24.c", "system32.c" );
+@SegaFamily = ( "multi32.c", "system1.c", "system16.c", "system18.c", "system24.c", "system32.c",
+				"aburner.c", "sharrier.c", "outrun.c" );
 
 local @Families = ( \@CapcomFamily, \@NamcoFamily, \@SegaFamily );
 $autoNameNumber = $#Families + 10;
