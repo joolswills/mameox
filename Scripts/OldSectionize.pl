@@ -1,6 +1,5 @@
 #!/bin/perl
 
-
 require 5.0.0.0;
 use MAMEoXScriptConstants;
 
@@ -8,15 +7,13 @@ use MAMEoXScriptConstants;
 $ROOT_DIR		= MAMEoXScriptConstants::ROOT_DIR;
 $MAMEoX_DIR = MAMEoXScriptConstants::MAMEoX_DIR;
 $MAME_DIR   = MAMEoXScriptConstants::MAME_DIR;
-$MAME_DRIVER_DIR = $MAME_DIR."/src/drivers";
-$MAME_CPU_DIR		 = $MAME_DIR."/src/cpu";
-
-
-
-# Auto generate an 8 character unique name for each file
-local $autoNameNumber = 0;
-local @newFILEs;
-local @FILEs = `find $MAME_DRIVER_DIR -name *.c`;
+$MAME_SRC_DIR			= $MAME_DIR."/src";
+$MAME_CPU_DIR			= $MAME_SRC_DIR."/cpu";
+$MAME_DRIVER_DIR	= $MAME_SRC_DIR."/drivers";
+$MAME_MACHINE_DIR = $MAME_SRC_DIR."/machine";
+$MAME_SOUND_DIR		= $MAME_SRC_DIR."/sound";
+$MAME_SNDHRDW_DIR = $MAME_SRC_DIR."/sndhrdw";
+$MAME_VIDHRDW_DIR = $MAME_SRC_DIR."/vidhrdw";
 
 use constant DATA_PREFIX  => 'D';
 use constant CODE_PREFIX  => 'C';
@@ -24,26 +21,30 @@ use constant BSS_PREFIX   => 'B';
 use constant CONST_PREFIX => 'K';
 
 
-#@SkipCPUs = ( "DSP32", "I8085", "JAGUAR", "MIPS", "NEC", "PIC16C5X", "TMS9900" );
 
-
+%DriverNameToSectionMap;
+%CPUIDToSectionMap;
 
   # Base name for the generated .h and .cpp files
 $GeneratedFileBaseName = "XBESectionUtil";
 
+
 print "Generating stub files...\n";
-CreateHeaderFile();
+if( lc(@ARGV[0]) eq "-createheader" ) {
+	CreateHeaderFile();
+} else {
+	print "Note: Skipping creation of $GeneratedFileBaseName.h, pass -createheader to generate this file.\n";
+}
 CreateSwitchStubs();
+
 CreateSourceFileStub();
 
 
+# Auto generate an 8 character unique name for each file
+local $autoNameNumber = 0;
 
 
-print "Sectionizing drivers, sound hardware, and video hardware...\n";
-
-# Note: Watch on midxunit.c, it only seems to be for Revolution X, which 
-#       runs out of memory at the moment, there may be problems there in the
-#       future.
+  # Driver families --------------------------------------------
 @SkipDrivers = ( "jrcrypt.c" );
 
 @TwinCobraFamily = ( "wardner.c", "twincobr.c" );
@@ -102,400 +103,25 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 @ThunderJawsFamily = ( "thunderj.c", "eprom.c" );							# Escape from the Planet of the Robot Monsters
 
 
-local @Families = ( \@CapcomFamily, \@NamcoFamily, \@SegaFamily, \@MidwayMCRFamily, \@TwinCobraFamily,
-					\@MoonPatrolFamily, \@SNKFamily, \@AmidarFamily, \@RampartFamily, \@RastanFamily,
-					\@EspialFamily, \@BZoneFamily, \@Nova2001Family, \@GottLiebFamily, 
-					\@Megasys1Family, \@LocoMotionFamily, \@ExidyFamily, \@M72Family, \@LelandFamily,
-					\@TrackFldFamily, \@Taito_F3Family, \@FromanceFamily, \@MidYUnitFamily, \@KonamiGXFamily,
-					\@SegarFamily, \@ZaxxonFamily, \@WizFamily, \@TetrisPlus2Family, \@WipingFamily,
-					\@D8080bwFamily, \@BuggyChallengeFamily, \@BurgerTimeFamily, \@PlaymarkFamily,
-					\@NYNYFamily, \@DoubleDragonFamily, \@ThunderJawsFamily );
-$autoNameNumber = scalar( @Families ) + 50;
+local @DriverFamilies = ( \@CapcomFamily, \@NamcoFamily, \@SegaFamily, \@MidwayMCRFamily, \@TwinCobraFamily,
+													\@MoonPatrolFamily, \@SNKFamily, \@AmidarFamily, \@RampartFamily, \@RastanFamily,
+													\@EspialFamily, \@BZoneFamily, \@Nova2001Family, \@GottLiebFamily, 
+													\@Megasys1Family, \@LocoMotionFamily, \@ExidyFamily, \@M72Family, \@LelandFamily,
+													\@TrackFldFamily, \@Taito_F3Family, \@FromanceFamily, \@MidYUnitFamily, \@KonamiGXFamily,
+													\@SegarFamily, \@ZaxxonFamily, \@WizFamily, \@TetrisPlus2Family, \@WipingFamily,
+													\@D8080bwFamily, \@BuggyChallengeFamily, \@BurgerTimeFamily, \@PlaymarkFamily,
+													\@NYNYFamily, \@DoubleDragonFamily, \@ThunderJawsFamily );
 
 
 
-print GENERATEDFILE "static const driverSectionRegistration_t			g_driverSectionRegistry[] = {\r\n";
 
-# Do two passes, one to find the last autoNameNumber, another to actually
-# modify the files
-print "Pass 1...\n";
 
-DRIVERPASSONENEXTDRIVERFILENAME:
-foreach $DriverFileName ( @FILEs ) {
-	chomp( $DriverFileName );
 
-		# Change the DriverName to what will be present in the actual MAME code
-		# Drop the ./MAME/ portion
-	$DriverFileName =~ /^$MAME_DRIVER_DIR\/(.*\.c)$/;
-	$DriverNoPath = $1;
-	$DriverName = "src\\\\drivers\\\\$1";
 
-		# Skip the fake jrcrypt.c file and all the hack files
-	foreach( @SkipDrivers ) {
-		if( ($DriverNoPath eq $_ ) ) {
-			print "Skipping $DriverNoPath.\n";
-			next DRIVERPASSONENEXTDRIVERFILENAME;
-		}
-	}
 
-	$Family = false;
-	$FamilyID = 0;
-	SEARCHFORFAMILY:
-	foreach $FamilyArrayRef ( @Families ) {
-		$FamilyID++;
-		foreach( @{$FamilyArrayRef} ) {
-			if( ($DriverNoPath eq $_ ) ) {
-				print "$DriverNoPath is in family $FamilyID.\n";
-				$Family = $FamilyID;
-				last SEARCHFORFAMILY;
-			}
-		}
-	}
 
-
-	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
-	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
-
-	open( FILE, "<$DriverFileName" ) || die "Failed to open file $DriverFileName!\n";
-	sysread( FILE, $File, $size );
-	close( FILE );
-
-	if( ($File =~ /\#pragma code_seg/) ) {
-			# this should only happen on the first pass
-		if( $Family ne false ) {
-			print PRELOADFILE "/NOPRELOAD:\"$myAutoNameNumber\"\n";
-			print DBGPRELOADFILE "/NOPRELOAD:\"$myAutoNameNumber\"\n";
-
-			print GENERATEDFILE "  REGISTER_DRIVERSECTION( \"$DriverName\", \"$Family\" )\n";
-			$myAutoNameNumber = 0;	# Don't increment (families should always be less anyway)
-		} else {
-			$File =~ /\#pragma code_seg\(\"C(\d+)\"\)/;
-			$myAutoNameNumber = $1;
-			print PRELOADFILE "/NOPRELOAD:\"$myAutoNameNumber\"\n";
-			print DBGPRELOADFILE "/NOPRELOAD:\"$myAutoNameNumber\"\n";
-			print GENERATEDFILE "  REGISTER_DRIVERSECTION( \"$DriverName\", \"$myAutoNameNumber\" )\n";
-		}
-
-
-		if( $myAutoNameNumber >= $autoNameNumber ) {
-			$autoNameNumber = $myAutoNameNumber + 1;
-		}		
-
-	} else {
-	   push @newFILEs, $DriverFileName;
-	}
-}
-
-
-# Second pass, write out the section headers
-print "Pass 2...\n";
-if( scalar( @newFILEs ) == 0 ) {
-	print "Nothing to do.\n";
-}
-
-DRIVERPASSTWONEXTDRIVERFILENAME:
-foreach $DriverFileName ( @newFILEs ) {
-	chomp( $DriverFileName );
-
-		# Change the DriverName to what will be present in the actual MAME code
-		# Drop the ./MAME/ portion
-	$DriverFileName =~ /^$MAME_DRIVER_DIR\/(.*\.c)$/;
-	$DriverNoPath = $1;
-	$DriverName = "src\\\\drivers\\\\$1";
-
-		# Skip the fake jrcrypt.c file and all the hack files
-	foreach( @SkipDrivers ) {
-		if( ($DriverNoPath eq $_ ) ) {
-			print "Skipping $DriverNoPath.\n";
-			next DRIVERPASSTWONEXTDRIVERFILENAME;
-		}
-	}
-
-	$Family = false;
-	$FamilyID = 0;
-	foreach $FamilyArrayRef ( @Families ) {
-		$FamilyID++;
-		foreach( @$FamilyArrayRef ) {
-			if( ($DriverNoPath eq $_ ) ) {
-				print "$DriverNoPath is in family $FamilyID.\n";
-				$Family = $FamilyID;
-				last;
-			}
-		}
-	}
-
-	if( $Family ne false ) {
-		print PRELOADFILE "/NOPRELOAD:\"$myAutoNameNumber\"\n";
-		print DBGPRELOADFILE "/NOPRELOAD:\"$myAutoNameNumber\"\n";
-		print GENERATEDFILE "  REGISTER_DRIVERSECTION( \"$DriverName\", \"$Family\" )\n";
-	} else {
-		print PRELOADFILE "/NOPRELOAD:\"$autoNameNumber\"\n";
-		print DBGPRELOADFILE "/NOPRELOAD:\"$autoNameNumber\"\n";
-		print GENERATEDFILE "  REGISTER_DRIVERSECTION( \"$DriverName\", \"$autoNameNumber\" )\n";
-	}
-
-	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
-	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
-
-	open( FILE, "<$DriverFileName" ) || die "Failed to open file $DriverFileName!\n";
-	sysread( FILE, $File, $size );
-	close( FILE );
-
-		# Write out the section header/footer
-	if( $Family ne false ) {
-		WriteSectionData( $DriverFileName, $File, $Family );
-	} else {
-		WriteSectionData( $DriverFileName, $File, $autoNameNumber );
-	}
-
-		# Also do the vidhdrw file, if one exists
-	$VidHardwareName = $DriverFileName;
-	$VidHardwareName =~ s/\/drivers\//\/vidhrdw\//;
-
-	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
-	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $VidHardwareName );
-
-	if( open( FILE, "<$VidHardwareName" ) ) {
-		$File = "";
-		sysread( FILE, $File, $size );
-		close( FILE );
-
-		if( !($File =~ /\#pragma code_seg/) ) {
-			if( $Family ne false ) {
-				WriteSectionData( $VidHardwareName, $File, $Family );
-			} else {
-				WriteSectionData( $VidHardwareName, $File, $autoNameNumber );
-			}
-		}
-	}
-
-		# Also do the sndhrdw file, if one exists
-	$SoundHardwareName = $DriverFileName;
-	$SoundHardwareName =~ s/\/drivers\//\/sndhrdw\//;
-
-	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
-	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $SoundHardwareName );
-
-	if( open( FILE, "<$SoundHardwareName" ) ) {
-		$File = "";
-		sysread( FILE, $File, $size );
-		close( FILE );
-
-		if( !($File =~ /\#pragma code_seg/) ) {
-			if( $Family ne false ) {
-				WriteSectionData( $SoundHardwareName, $File, $Family );
-			} else {
-				WriteSectionData( $SoundHardwareName, $File, $autoNameNumber );
-			}
-		}
-	}
-
-		# Also do the machine file, if one exists
-	$MachineHardwareName = $DriverFileName;
-	$MachineHardwareName =~ s/\/drivers\//\/machine\//;
-
-	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
-	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $MachineHardwareName );
-
-	if( open( FILE, "<$MachineHardwareName" ) ) {
-		$File = "";
-		sysread( FILE, $File, $size );
-		close( FILE );
-
-		if( !($File =~ /\#pragma code_seg/) ) {
-			if( $Family ne false ) {
-				WriteSectionData( $MachineHardwareName, $File, $Family );
-			} else {
-				WriteSectionData( $MachineHardwareName, $File, $autoNameNumber );
-			}
-		}
-	}
-
-	$autoNameNumber++;
-}
-
-
-print GENERATEDFILE << "EOF";
-  { NULL, NULL } };
-
-EOF
-
-
-
-print GENERATEDFILE << "EOF";
-
-//-------------------------------------------------------------
-//	LoadDriverSections
-//-------------------------------------------------------------
-BOOL LoadDriverSections( void )
-{
-	const driverSectionRegistration_t *entry = (const driverSectionRegistration_t *)g_driverSectionRegistry;
-	while( entry->m_driverName )
-	{
-      // Only load families once (all but the first member are skipped)
-EOF
-
-local $IsFirst = true;
-foreach $FamilyArrayRef ( @Families ) {
-	foreach( @$FamilyArrayRef ) {
-			# Skip the first (key) member of the family
-		if( $_ eq @{$FamilyArrayRef}[0] ) {
-			next;
-		}
-
-			# Print OR
-		if( $IsFirst ne true ) {
-			print GENERATEDFILE " ||\n        !strcmp( entry->m_driverName, ";
-		} else {
-			print GENERATEDFILE "    if( !strcmp( entry->m_driverName, ";
-			$IsFirst = false;
-		}
-
-			# Print code to ignore this member
-		print GENERATEDFILE "\"src\\\\drivers\\\\$_\" )";
-	}
-}
-
-
-print GENERATEDFILE << "EOF";
-        )
-		{  
-			++entry;
-      continue;
-    }
-
-		if( !XLoadSection( entry->m_sectionName ) )
-		{
-			UINT32 lastErr = GetLastError();
-			PRINTMSG(( T_ERROR, "XLoadSection failed! 0x%X", lastErr ));
-			//return FALSE;
-		}
-		++entry;
-  }
-  return TRUE;
-}
-
-
-//-------------------------------------------------------------
-//	UnloadDriverSections
-//-------------------------------------------------------------
-BOOL UnloadDriverSections( void )
-{
-	const driverSectionRegistration_t *entry = (const driverSectionRegistration_t *)g_driverSectionRegistry;
-	while( entry->m_driverName )
-	{
-      // Only unload families once (all but the first member are skipped)
-EOF
-
-
-local $IsFirst = true;
-foreach $FamilyArrayRef ( @Families ) {
-	foreach( @$FamilyArrayRef ) {
-			# Skip the first (key) member of the family
-		if( $_ eq @{$FamilyArrayRef}[0] ) {
-			next;
-		}
-
-			# Print OR
-		if( $IsFirst ne true ) {
-			print GENERATEDFILE " ||\n        !strcmp( entry->m_driverName, ";
-		} else {
-			print GENERATEDFILE "    if( !strcmp( entry->m_driverName, ";
-			$IsFirst = false;
-		}
-
-			# Print code to ignore this member
-		print GENERATEDFILE "\"src\\\\drivers\\\\$_\" )";
-	}
-}
-
-
-print GENERATEDFILE << "EOF";
-        )
-		{  
-			++entry;
-      continue;
-    }
-
-
-    XFreeSection( entry->m_sectionName );
-		++entry;
-  }
-  return TRUE;
-}
-
-
-//-------------------------------------------------------------
-//	LoadDriverSectionByName
-//-------------------------------------------------------------
-BOOL LoadDriverSectionByName( const char *DriverFileName )
-{
-	const driverSectionRegistration_t	*entry = (const driverSectionRegistration_t	*)g_driverSectionRegistry;
-	while( entry->m_driverName )
-	{
-		if( !strcmp( DriverFileName, entry->m_driverName ) )
-		{
-			PRINTMSG(( T_INFO, "Load section %s for driver %s", entry->m_sectionName, DriverFileName ));
-			if( !XLoadSection( entry->m_sectionName ) )
-			{
-				UINT32 lastErr = GetLastError();
-				PRINTMSG(( T_ERROR, "XLoadSection failed! 0x%X", lastErr ));
-				osd_print_error( "Failed to load section %s, dependency of %s!", entry->m_sectionName, DriverFileName );
-				return FALSE;
-			}
-
-			break;
-		}
-		++entry;
-	}
-
-  return TRUE;
-}
-
-
-//-------------------------------------------------------------
-//	UnloadDriverSectionByName
-//-------------------------------------------------------------
-BOOL UnloadDriverSectionByName( const char *DriverFileName )
-{
-	const driverSectionRegistration_t	*entry = (const driverSectionRegistration_t	*)g_driverSectionRegistry;
-	while( entry->m_driverName )
-	{
-		if( !strcmp( DriverFileName, entry->m_driverName ) )
-		{
-			if( !XFreeSection( entry->m_sectionName ) )
-			{
-				PRINTMSG(( T_ERROR, "XFreeSection failed for section %s!", entry->m_sectionName ));
-				return FALSE;
-			}
-
-			break;
-		}
-		++entry;
-	}
-	return TRUE;
-}
-
-#pragma code_seg()  // End of DRVSNIZE
-#pragma data_seg()
-#pragma bss_seg()
-#pragma const_seg()
-
-EOF
-
-
-
-
-
-
-
-
-
-
-#------------------------------------------------------------------------------
-
-
-
+	# CPU Families -------------------------------------------------------
+#@SkipCPUs = ( "DSP32", "I8085", "JAGUAR", "MIPS", "NEC", "PIC16C5X", "TMS9900" );
 @SkipCPUs = ();
 
 	# Notes on CPU families:
@@ -647,141 +273,147 @@ $g65816Family = "g65816";
 $spc700Family = "spc700";
 @spc700Clones = ( "spc700" );
 
-@Families = (	\$Z80Family, 
-				\$Z180Family, 
-				\$i8085Family,
-				\$m6502Family, 
-				\$h6280Family,
-				\$i86Family,
-				\$NECFamily,
-				\$v60Family,
-				\$i8039Family,
-				\$i8x41Family,
-				\$m6800Family,
-				\$m6805Family,
-				\$m6809Family,
-				\$hd6309Family,
-				\$KonamiFamily,
-				\$m68000Family,
-				\$t11Family,
-				\$s2650Family,
-				\$tms34010Family,
-				\$tms9900Family,
-				\$z8000Family,
-				\$tms32010Family,
-				\$tms32025Family,
-				\$tms32031Family,
-				\$ccpuFamily,
-				\$adsp2100Family,
-				\$mipsFamily,
-				\$asapFamily,
-				\$udp7810Family,
-				\$JaguarFamily,
-				\$armFamily,
-				\$sh2Family,
-				\$dsp32Family,
-				\$pic16c5xFamily,
-				\$g65816Family,
-				\$spc700Family );
+@CPUFamilies = (	\$Z80Family, 
+									\$Z180Family, 
+									\$i8085Family,
+									\$m6502Family, 
+									\$h6280Family,
+									\$i86Family,
+									\$NECFamily,
+									\$v60Family,
+									\$i8039Family,
+									\$i8x41Family,
+									\$m6800Family,
+									\$m6805Family,
+									\$m6809Family,
+									\$hd6309Family,
+									\$KonamiFamily,
+									\$m68000Family,
+									\$t11Family,
+									\$s2650Family,
+									\$tms34010Family,
+									\$tms9900Family,
+									\$z8000Family,
+									\$tms32010Family,
+									\$tms32025Family,
+									\$tms32031Family,
+									\$ccpuFamily,
+									\$adsp2100Family,
+									\$mipsFamily,
+									\$asapFamily,
+									\$udp7810Family,
+									\$JaguarFamily,
+									\$armFamily,
+									\$sh2Family,
+									\$dsp32Family,
+									\$pic16c5xFamily,
+									\$g65816Family,
+									\$spc700Family );
 
 
 
-@Clones = ( \@Z80Clones,
-			\@Z180Clones,
-			\@Z80Clones,
-			\@m6502Clones,
-			\@h6280Clones,
-			\@i86Clones,
-			\@NECClones,
-			\@v60Clones,
-			\@i8039Clones,
-			\@i8x41Clones,
-			\@m6800Clones,
-			\@m6805Clones,
-			\@m6809Clones,
-			\@hd6309Clones,
-			\@KonamiClones,
-			\@m68000Clones,
-			\@t11Clones,
-			\@s2650Clones,
-			\@tms34010Clones,
-			\@tms9900Clones,
-			\@z8000Clones,
-			\@tms32010Clones,
-			\@tms32025Clones,
-			\@tms32031Clones,
-			\@ccpuClones,
-			\@adsp2100Clones,
-			\@mipsClones,
-			\@asapClones,
-			\@udp7810Clones,
-			\@JaguarClones,
-			\@armClones,
-			\@sh2Clones,
-			\@dsp32Clones,
-			\@pic16c5xClones,
-			\@g65816Clones,
-			\@spc700Clones );
+@CPUClones = (	\@Z80Clones,
+								\@Z180Clones,
+								\@Z80Clones,
+								\@m6502Clones,
+								\@h6280Clones,
+								\@i86Clones,
+								\@NECClones,
+								\@v60Clones,
+								\@i8039Clones,
+								\@i8x41Clones,
+								\@m6800Clones,
+								\@m6805Clones,
+								\@m6809Clones,
+								\@hd6309Clones,
+								\@KonamiClones,
+								\@m68000Clones,
+								\@t11Clones,
+								\@s2650Clones,
+								\@tms34010Clones,
+								\@tms9900Clones,
+								\@z8000Clones,
+								\@tms32010Clones,
+								\@tms32025Clones,
+								\@tms32031Clones,
+								\@ccpuClones,
+								\@adsp2100Clones,
+								\@mipsClones,
+								\@asapClones,
+								\@udp7810Clones,
+								\@JaguarClones,
+								\@armClones,
+								\@sh2Clones,
+								\@dsp32Clones,
+								\@pic16c5xClones,
+								\@g65816Clones,
+								\@spc700Clones );
+
+
+
+
+
+
+
+
+
+print "Sectionizing drivers, sound hardware, and video hardware...\n";
+
+BuildDriverMap();
+WriteDriverFunctions();
+
+
+
+#------------------------------------------------------------------------------
 
 
 print "\n\nSectionizing CPU's...\n";
 
-@FILEs    = `find $MAME_CPU_DIR -name *.c`;
-@newFILEs = ();
-local $OldCPUName = "";
+$autoNameNumber = scalar( @CPUFamilies ) + 10;
+
+WriteCPUFunctions();
 
 
-
-$autoNameNumber = scalar( @Families ) + 50;
-
-
-WriteGENERATEDFILEStub();
-
-print GENERATEDFILE << "EOF";
-\n//-------------------------------------------------------------
-//	UnloadCPUSections
-//-------------------------------------------------------------
-BOOL UnloadCPUSections( void )
-{
-  std::map< UINT32, std::string >::iterator i = g_CPUIDToSectionMap.begin();
-  for( ; i != g_CPUIDToSectionMap.end(); ++i )
-  {
-      // Only unload clones once (all but the first member must be skipped)
-EOF
-
+print GENERATEDFILE "\n//-------------------------------------------------------------\n";
+print GENERATEDFILE "//	UnloadCPUSections\n";
+print GENERATEDFILE "//-------------------------------------------------------------\n";
+print GENERATEDFILE "BOOL UnloadCPUSections( void )\n";
+print GENERATEDFILE "{\n";
+print GENERATEDFILE "  std::map< UINT32, std::string >::iterator i = g_CPUIDToSectionMap.begin();\n";
+print GENERATEDFILE "  for( ; i != g_CPUIDToSectionMap.end(); ++i )\n";
+print GENERATEDFILE "  {\n";
+print GENERATEDFILE "      // Only unload families once (all but the first member are skipped)\n";
+print GENERATEDFILE "    if( (*i).first == ";
 local $IsFirst = true;
-foreach $CloneArrayRef ( @Clones ) {
-	for( $i = 1; $i < scalar( @$CloneArrayRef ); $i++ ) {
-		$Clone = @{$CloneArrayRef}[$i];
+foreach $CloneArrayRef ( @CPUClones ) {
+	foreach( @{$CloneArrayRef} ) {
+			# Skip the first (key) member of the family
+		if( $_ eq $CloneArrayRef->[0] ) {
+			next;
+		}
+
 			# Print OR
 		if( $IsFirst ne true ) {
 			print GENERATEDFILE " ||\n        (*i).first == ";
-		} else {
-			print GENERATEDFILE "    if( (*i).first == ";
 		}
 		$IsFirst = false;
 
 			# Print code to ignore this member
-		print GENERATEDFILE "CPU_$Clone";
+		print GENERATEDFILE "CPU_$_";
 	}
 }
+print GENERATEDFILE " )\n";
+print GENERATEDFILE "        continue;\n";
+print GENERATEDFILE "    XFreeSection( (*i).second.c_str() );\n";
+print GENERATEDFILE "  }\n";
+print GENERATEDFILE "  return TRUE;\n";
+print GENERATEDFILE "}\n\n";
+print GENERATEDFILE "\n//-------------------------------------------------------------\n";
+print GENERATEDFILE "//	RegisterCPUSectionNames\n";
+print GENERATEDFILE "//-------------------------------------------------------------\n";
+print GENERATEDFILE "static void RegisterCPUSectionNames( void )\n";
+print GENERATEDFILE "{\n";
 
-
-print GENERATEDFILE << "EOF";
- )
-        continue;
-    XFreeSection( (*i).second.c_str() );
-  }
-  return TRUE;
-}
-
-
-//-------------------------------------------------------------
-//	RegisterCPUSectionNames
-//-------------------------------------------------------------
-static void RegisterCPUSectionNames( void )
-{
-EOF
 
 
 
@@ -789,32 +421,36 @@ EOF
 # modify the files
 print "Pass 1...\n";
 
+#local @CPUDirs = `find ./MAME/src/cpu -path \'*/CVS\' -prune -o -type d -a -print`;
+@FILEs    = sort( `find $MAME_CPU_DIR -name *.c` );
+@newFILEs = ();
+local $OldCPUName = "";
+
+
+
+CPU_PASS1_NEXTFILE:
 foreach $DriverFileName ( @FILEs ) {
 	chomp( $DriverFileName );
-	$CPUName = $DriverFileName;
 
+	$CPUName = $DriverFileName;
 		# Change the CPUName to what will be present in the actual code
 		# Drop the ./MAME/src/cpu portion
 	$CPUName =~ /^$MAME_CPU_DIR\/(.+)\/.+\.c$/;
 	$CPUName = $1;
 
-	$IsValid = true;
-
 		# Skip the fake jrcrypt.c file and all the hack files
 	foreach $CPUToSkip ( @SkipCPUs ) {
 		if( uc($CPUName) eq $CPUToSkip ) {
 			print "Skipping $CPUName.\n";
-			$IsValid = false;
-			last;
+			next CPU_PASS1_NEXTFILE;
 		}
 	}
-	next if( $IsValid eq false );
 
 	$Family = false;
 	$FamilyID = 0;
-	foreach $FamilyRef ( @Families ) {
+	foreach( @CPUFamilies ) {
 		$FamilyID++;
-		if( uc($CPUName) eq $$FamilyRef ) {
+		if( uc($CPUName) eq $$_ ) {
 			print "$CPUName is in family $FamilyID.\n";
 			$Family = $FamilyID;
 			last;
@@ -847,7 +483,7 @@ foreach $DriverFileName ( @FILEs ) {
 				#print GENERATEDFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"CPU$Family\" );\n";
 
 					# Register all the clones for this CPU
-				$CloneArray = @Clones[$Family-1];
+				$CloneArray = @CPUClones[$Family-1];
 				foreach( @{$CloneArray} ) {
 					print GENERATEDFILE "  RegisterSectionID( CPU_$_, \"CPU$Family\" );\n";
 				}
@@ -867,38 +503,41 @@ foreach $DriverFileName ( @FILEs ) {
 	}
 }
 
-# Second pass, write out the section headers
+
+
+
+# Second pass, write out the section headers --------------------------
 print "Pass 2...\n";
 if( scalar( @newFILEs ) == 0 ) {
 	print "Nothing to do.\n";
 }
 
 $OldCPUName = "";
-CPUPASS2DRIVER:
+CPU_PASS2_NEXTFILE:
 foreach $DriverFileName ( @newFILEs ) {
 	chomp( $DriverFileName );
+
 	$CPUName = $DriverFileName;
-
-
 		# Change the CPUName to what will be present in the actual code
 		# Drop the ./MAME/src/cpu portion
 	$CPUName =~ /^$MAME_CPU_DIR\/(.+)\/.+\.c$/;
 	$CPUName = $1;
 
-		# Skip junk CPUs
+		# Skip the fake jrcrypt.c file and all the hack files
 	foreach $CPUToSkip ( @SkipCPUs ) {
 		$CPUToSkip =~ s/\.c/\\.c/;
 		if( ($CPUName =~ /.*$CPUToSkip/ ) ) {
 			print "Skipping $CPUName.\n";
-			next CPUPASS2DRIVER;
+			next CPU_PASS2_NEXTFILE;
 		}
 	}
 
 	$Family = false;
 	$FamilyID = 0;
-	foreach $FamilyNameRef ( @Families ) {
+	foreach( @CPUFamilies ) {
+		$FamilyArray = $_;
 		$FamilyID++;
-		if( uc($CPUName) eq $$FamilyNameRef ) {
+		if( uc($CPUName) eq $$_ ) {
 			print "$CPUName is in family $FamilyID.\n";
 			$Family = $FamilyID;
 			last;
@@ -917,7 +556,7 @@ foreach $DriverFileName ( @newFILEs ) {
 			#print GENERATEDFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"CPU$Family\" );\n";
 
 				# Register all the clones for this CPU
-			$CloneArray = @Clones[$Family-1];
+			$CloneArray = @CPUClones[$Family-1];
 			foreach( @{$CloneArray} ) {
 				print GENERATEDFILE "  RegisterSectionID( CPU_$_, \"CPU$Family\" );\n";
 			}
@@ -945,23 +584,21 @@ foreach $DriverFileName ( @newFILEs ) {
 	}
 }
 
-print GENERATEDFILE << "EOF";
-}
-
-#pragma code_seg()  // End of CPUCSNZE
-#pragma data_seg()
-#pragma bss_seg()
-#pragma const_seg()
-
-} // End extern "C"
-
-
-EOF
+print GENERATEDFILE "}\n";
+print GENERATEDFILE "#pragma code_seg()\n";
+print GENERATEDFILE "#pragma data_seg()\n";
+print GENERATEDFILE "#pragma const_seg()\n";
+print GENERATEDFILE "#pragma bss_seg()\n\n\n";
+print GENERATEDFILE "} // End extern \"C\"\n\n\n";
 close( GENERATEDFILE );
+
+
 close( PRELOADFILE );
 close( DBGPRELOADFILE );
 
-print "\n\n\nOperation complete!\n";
+
+
+
 
 
 
@@ -974,16 +611,17 @@ print "\n\n\nOperation complete!\n";
 #== F U N C T I O N S ===================================================
 
 
+
 #------------------------------------------------------------------------
 #	WriteSectionData
 #------------------------------------------------------------------------
 sub WriteSectionData( $$$ ) {
-	my $FileName = shift;
-	my $File = shift;
-	my $autoNameNumber = shift;
+	my $FileName				= shift;
+	my $File						= shift;
+	my $autoNameNumber	= shift;
 	my $DataSectionName = "\"D$autoNameNumber\"";
 	my $CodeSectionName = "\"C$autoNameNumber\"";
-	my $BSSSectionName = "\"B$autoNameNumber\"";
+	my $BSSSectionName	= "\"B$autoNameNumber\"";
 	my $ConstSectionName= "\"K$autoNameNumber\"";
 
 	open( FILE, ">$FileName" ) || die "Could not open $FileName for output!\n";
@@ -1032,12 +670,12 @@ sub WriteSectionData( $$$ ) {
 #	WriteCPUSectionData
 #------------------------------------------------------------------------
 sub WriteCPUSectionData( $$$ ) {
-	my $FileName = shift;
-	my $File = shift;
-	my $autoNameNumber = shift;
+	my $FileName				= shift;
+	my $File						= shift;
+	my $autoNameNumber	= shift;
 	my $CodeSectionName = "\"CC$autoNameNumber\"";
 	my $DataSectionName = "\"CD$autoNameNumber\"";
-	my $BSSSectionName = "\"CB$autoNameNumber\"";
+	my $BSSSectionName	= "\"CB$autoNameNumber\"";
 	my $ConstSectionName= "\"CK$autoNameNumber\"";
 
 	open( FILE, ">$FileName" ) || die "Could not open $FileName for output!\n";
@@ -1080,9 +718,6 @@ sub WriteCPUSectionData( $$$ ) {
 
 	close( FILE );
 }
-
-
-
 
 
 #------------------------------------------------------------------------
@@ -1284,13 +919,10 @@ EOF
 }
 
 
-
 #------------------------------------------------------------------------
 #	CreateSourceFileStub
 #------------------------------------------------------------------------
 sub CreateSourceFileStub() {
-
-
 
 	open( GENERATEDFILE, ">$MAMEoX_DIR/sources/$GeneratedFileBaseName.cpp" );
 	print GENERATEDFILE "/**\r\n";
@@ -1303,6 +935,7 @@ sub CreateSourceFileStub() {
 	print GENERATEDFILE "  */\r\n\r\n";
 
 
+
 	print GENERATEDFILE << "EOF";
 //= I N C L U D E S ====================================================
 #include "MAMEoX.h"
@@ -1310,6 +943,8 @@ sub CreateSourceFileStub() {
 #include <map>
 #include <string>
 #include "DebugLogger.h"
+
+
 extern "C" {
 #include "osd_cpu.h"
 #include "cpuintrf.h"
@@ -1317,21 +952,9 @@ extern "C" {
 
 
 //= D E F I N E S ======================================================
-EOF
-	print GENERATEDFILE "#define DRIVER_DATA_PREFIX      \"".DATA_PREFIX."\"\n";
-	print GENERATEDFILE "#define DRIVER_CODE_PREFIX      \"".CODE_PREFIX."\"\n";
-	print GENERATEDFILE "#define DRIVER_BSS_PREFIX       \"".BSS_PREFIX."\"\n";
-	print GENERATEDFILE "#define DRIVER_CONST_PREFIX     \"".CONST_PREFIX."\"\n";
-	print GENERATEDFILE "\n";
-	print GENERATEDFILE "#define CPU_DATA_PREFIX         \"C".DATA_PREFIX."\"\n";
-	print GENERATEDFILE "#define CPU_CODE_PREFIX         \"C".CODE_PREFIX."\"\n";
-	print GENERATEDFILE "#define CPU_BSS_PREFIX          \"C".BSS_PREFIX."\"\n";
-	print GENERATEDFILE "#define CPU_CONST_PREFIX        \"C".CONST_PREFIX."\"\n";
-	print GENERATEDFILE "\n\n";
 
-	print GENERATEDFILE << "EOF";
-
-struct driverSectionRegistration_t {
+struct driverSectionRegistration_t 
+{
   const char *m_driverName;
   const char *m_sectionName;
 };
@@ -1339,17 +962,16 @@ struct driverSectionRegistration_t {
 
 #define REGISTER_DRIVERSECTION( driverName, sectionName )     { driverName, sectionName },
 
-//= G L O B A L = V A R S ==============================================
-	// Map from MAME CPUID's to section names
-static std::map< UINT32, std::string >        g_CPUIDToSectionMap;
 
-static BOOL																		g_driverSectionizerSectionLoaded = TRUE;
-static BOOL																		g_cpuSectionizerSectionLoaded = TRUE;
+
+//= G L O B A L = V A R S ==============================================
+static std::map< UINT, std::string >         g_CPUIDToSectionMap;
+
+static BOOL																	 g_driverSectionizerLoaded = TRUE;
+static BOOL																	 g_cpuSectionizerLoaded = TRUE;
 
 //= P R O T O T Y P E S ================================================
-extern "C" {
-	static void RegisterCPUSectionNames( void );
-}
+extern "C" static void RegisterCPUSectionNames( void );
 
 
 //= F U N C T I O N S ==================================================
@@ -1360,37 +982,17 @@ extern "C" {
 //-------------------------------------------------------------
 void InitDriverSectionizer( void )
 {
-	if( !g_driverSectionizerSectionLoaded )
+	// For some reason everything crashes when the DRVSNIZE section (and/or CPUSNIZE)
+	// is unloaded. This needs to be investigated and fixed.
+//	if( !g_driverSectionizerLoaded )
 	{
 		if( !XLoadSection( "DRVSNIZE" ) )
 		{
-			UINT32 lastErr = GetLastError();
-			PRINTMSG(( T_ERROR, "XLoadSection failed! 0x%X", lastErr ));
+			PRINTMSG(( T_ERROR, "XLoadSection failed! 0x%X\\r\\n", GetLastError() ));
 		}
 		else
-			g_driverSectionizerSectionLoaded = TRUE;
+			g_driverSectionizerLoaded = TRUE;
 	}
-}
-
-//-------------------------------------------------------------
-//	InitCPUSectionizer
-//-------------------------------------------------------------
-void InitCPUSectionizer( void )
-{
-	if( !g_cpuSectionizerSectionLoaded )
-	{
-		if( !XLoadSection( "CPUSNIZE" ) )
-		{
-			UINT32 lastErr = GetLastError();
-			PRINTMSG(( T_ERROR, "XLoadSection failed! 0x%X", lastErr ));
-		}
-		else
-			g_cpuSectionizerSectionLoaded = TRUE;
-	}
-
-
-  g_CPUIDToSectionMap.clear();
-  RegisterCPUSectionNames();
 }
 
 
@@ -1401,10 +1003,31 @@ void TerminateDriverSectionizer( void )
 {
   if( !XFreeSection( "DRVSNIZE" ) )
 	{
-		PRINTMSG(( T_INFO, "Failed to unload DRVSNIZE section! 0x%X", GetLastError() ));
+		PRINTMSG(( T_ERROR, "XFreeSection failed! 0x%X\\r\\n", GetLastError() ));
 	}
 	else
-		g_driverSectionizerSectionLoaded = FALSE;
+		g_driverSectionizerLoaded = FALSE;
+}
+
+//-------------------------------------------------------------
+//	InitCPUSectionizer
+//-------------------------------------------------------------
+void InitCPUSectionizer( void )
+{
+  g_CPUIDToSectionMap.clear();
+
+	// For some reason everything crashes when the DRVSNIZE section (and/or CPUSNIZE)
+	// is unloaded. This needs to be investigated and fixed.
+//	if( !g_cpuSectionizerLoaded )
+	{
+		if( !XLoadSection( "CPUSNIZE" ) )
+		{
+			PRINTMSG(( T_ERROR, "XLoadSection failed! 0x%X\\r\\n", GetLastError() ));
+		}
+		else
+			g_cpuSectionizerLoaded = TRUE;
+	}
+  RegisterCPUSectionNames();
 }
 
 //-------------------------------------------------------------
@@ -1415,14 +1038,22 @@ void TerminateCPUSectionizer( void )
   g_CPUIDToSectionMap.clear();
   if( !XFreeSection( "CPUSNIZE" ) )
 	{
-		PRINTMSG(( T_INFO, "Failed to unload CPUSNIZE section! 0x%X", GetLastError() ));
+		PRINTMSG(( T_ERROR, "XFreeSection failed! 0x%X\\r\\n", GetLastError() ));
 	}
 	else
-		g_cpuSectionizerSectionLoaded = FALSE;
+		g_cpuSectionizerLoaded = FALSE;
 }
 
 
-	// Driver section manipulation code
+EOF
+}
+
+#------------------------------------------------------------------------
+#	WriteDriverFunctions
+#------------------------------------------------------------------------
+sub WriteDriverFunctions() {
+
+	print GENERATEDFILE << "EOF";
 #pragma code_seg("DRVCSNZE")
 #pragma data_seg("DRVDSNZE")
 #pragma bss_seg("DRVBSNZE")
@@ -1432,6 +1063,188 @@ void TerminateCPUSectionizer( void )
 #pragma comment(linker, "/merge:DRVBSNZE=DRVSNIZE")
 #pragma comment(linker, "/merge:DRVKSNZE=DRVSNIZE")
 
+static const driverSectionRegistration_t			g_driverSectionRegistry[] = {
+EOF
+
+		# Register the driver sections
+	foreach $File ( sort( keys( %DriverNameToSectionMap ) ) ) {
+		local $SectionID = $DriverNameToSectionMap{$File};
+		print PRELOADFILE "/NOPRELOAD:\"$SectionID\"\n";
+		print DBGPRELOADFILE "/NOPRELOAD:\"$SectionID\"\n";
+		print GENERATEDFILE "           REGISTER_DRIVERSECTION( \"$File\", \"$SectionID\" )\n";
+	}
+
+	print GENERATEDFILE "           { NULL, NULL } };\r\n";
+	print GENERATEDFILE "#define   NUM_DRIVERSECTIONS				".scalar( keys( %DriverNameToSectionMap ) )."\r\n";
+
+
+	print GENERATEDFILE << "EOF";
+
+
+//-------------------------------------------------------------
+//	IsDriverClone
+//-------------------------------------------------------------
+inline BOOL IsDriverClone( const char *driverName )
+{
+EOF
+	local $IsFirst = true;
+	foreach $FamilyArrayRef ( @DriverFamilies ) {
+		foreach( @$FamilyArrayRef ) {
+				# Skip the first (key) member of the family
+			if( $_ eq @{$FamilyArrayRef}[0] ) {
+				next;
+			}
+
+				# Print OR
+			if( $IsFirst ne true ) {
+				print GENERATEDFILE " ||\n        !strcmp( driverName, ";
+			} else {
+				print GENERATEDFILE "  return( !strcmp( driverName, ";
+				$IsFirst = false;
+			}
+
+				# Print code to ignore this member
+			print GENERATEDFILE "\"src\\\\drivers\\\\$_\" )";
+		}
+	}
+
+
+	print GENERATEDFILE << "EOF";
+ );
+}
+
+#ifdef _DEBUG
+//-------------------------------------------------------------
+//	CheckDriverSectionRAM
+//-------------------------------------------------------------
+void CheckDriverSectionRAM( void )
+{
+  DWORD total = 0;
+
+	const driverSectionRegistration_t *entry = (const driverSectionRegistration_t *)g_driverSectionRegistry;
+	for( ; entry->m_driverName; ++entry )
+	{
+      // Only test families once (all but the first member are skipped)
+		if( !IsDriverClone( entry->m_driverName ) )
+		{
+			HANDLE h = XGetSectionHandle( entry->m_sectionName );
+			if( h != INVALID_HANDLE_VALUE )
+			{
+				UINT32 sz = XGetSectionSize( h );
+				PRINTMSG(( T_INFO, "Driver %s %lu", entry->m_driverName, sz ));
+				total += sz;
+			}
+			else
+				PRINTMSG(( T_ERROR, "Invalid section %s for file %s!", entry->m_sectionName, entry->m_driverName ));
+		}
+	}
+  PRINTMSG(( T_INFO, "Total %lu bytes\\n", total ));
+}
+#endif
+
+
+EOF
+
+	print GENERATEDFILE << "EOF";
+
+
+//-------------------------------------------------------------
+//	LoadDriverSections
+//-------------------------------------------------------------
+BOOL LoadDriverSections( void )
+{
+	const driverSectionRegistration_t *entry = (const driverSectionRegistration_t *)g_driverSectionRegistry;
+	for( ; entry->m_driverName; ++entry )
+	{
+      // Only load families once (all but the first member are skipped)
+		if( !IsDriverClone( entry->m_driverName ) )
+		{
+			if( !XLoadSection( entry->m_sectionName ) )
+			{
+				PRINTMSG(( T_ERROR, "XLoadSection %s for driver %s failed! 0x%X", entry->m_sectionName, entry->m_driverName, GetLastError() ));
+				return FALSE;
+			}
+		}
+  }
+  return TRUE;
+}
+
+//-------------------------------------------------------------
+//	UnloadDriverSections
+//-------------------------------------------------------------
+BOOL UnloadDriverSections( void )
+{
+	const driverSectionRegistration_t *entry = (const driverSectionRegistration_t *)g_driverSectionRegistry;
+	for( ; entry->m_driverName; ++entry )
+	{
+      // Only unload families once (all but the first member are skipped)
+		if( !IsDriverClone( entry->m_driverName ) )
+		{
+		  if( !XFreeSection( entry->m_sectionName ) )
+			{
+				PRINTMSG(( T_ERROR, "XFreeSection %s for driver %s failed! 0x%X", entry->m_sectionName, entry->m_driverName, GetLastError() ));
+			}
+		}
+	}
+
+	return TRUE;
+}
+
+//-------------------------------------------------------------
+//	LoadDriverSectionByName
+//-------------------------------------------------------------
+BOOL LoadDriverSectionByName( const char *driverFileName )
+{
+	const driverSectionRegistration_t *entry = (const driverSectionRegistration_t *)g_driverSectionRegistry;
+	for( ; entry->m_driverName; ++entry )
+	{
+		if( !strcmp( entry->m_driverName, driverFileName ) )
+		{
+			PRINTMSG(( T_INFO, "Load section %s for driver %s\\n", entry->m_sectionName, entry->m_driverName ));
+			if( !XLoadSection( entry->m_sectionName ) )
+			{
+				PRINTMSG(( T_ERROR, "XLoadSection %s for driver %s failed! 0x%X", entry->m_sectionName, entry->m_driverName, GetLastError() ));
+				return FALSE;
+			}
+
+			return TRUE;
+		}
+	}
+
+	PRINTMSG(( T_INFO, "No section registered for driver %s!\\n", driverFileName ));
+  return FALSE;
+}
+
+
+//-------------------------------------------------------------
+//	UnloadDriverSectionByName
+//-------------------------------------------------------------
+BOOL UnloadDriverSectionByName( const char *driverFileName )
+{
+	const driverSectionRegistration_t *entry = (const driverSectionRegistration_t *)g_driverSectionRegistry;
+	for( ; entry->m_driverName; ++entry )
+	{
+		if( !strcmp( entry->m_driverName, driverFileName ) )
+		{
+			PRINTMSG(( T_INFO, "Free section %s for driver %s\\n", entry->m_sectionName, entry->m_driverName ));
+			if( !XFreeSection( entry->m_sectionName ) )
+			{
+				PRINTMSG(( T_ERROR, "XFreeSection %s for driver %s failed! 0x%X", entry->m_sectionName, entry->m_driverName, GetLastError() ));
+				return FALSE;
+			}
+
+			return TRUE;
+		}
+	}
+
+	PRINTMSG(( T_INFO, "No section registered for driver %s!\\n", driverFileName ));
+  return FALSE;
+}
+
+#pragma code_seg()			// End of DRVSNIZE
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()
 
 
 EOF
@@ -1440,20 +1253,22 @@ EOF
 
 
 #------------------------------------------------------------------------
-#	WriteGENERATEDFILEStub
+#	WriteCPUFunctions
 #------------------------------------------------------------------------
-sub WriteGENERATEDFILEStub() {
+sub WriteCPUFunctions() {
+	# Create the CPUSections.cpp file
+print GENERATEDFILE << "EOF";
 
+  //--- CPU Functions -----------------------------------------------
 
-	print GENERATEDFILE << "EOF";
-#pragma code_seg("CPUCSNZE")
-#pragma data_seg("CPUDSNZE")
-#pragma bss_seg("CPUBSNZE")
-#pragma const_seg("CPUKSNZE")
+#pragma code_seg( "CPUCSNZE" )
+#pragma data_seg( "CPUDSNZE" )
+#pragma const_seg( "CPUKSNZE" )
+#pragma bss_seg( "CPUBSNZE" )
 #pragma comment(linker, "/merge:CPUCSNZE=CPUSNIZE")
 #pragma comment(linker, "/merge:CPUDSNZE=CPUSNIZE")
-#pragma comment(linker, "/merge:CPUBSNZE=CPUSNIZE")
 #pragma comment(linker, "/merge:CPUKSNZE=CPUSNIZE")
+#pragma comment(linker, "/merge:CPUBSNZE=CPUSNIZE")
 
 #ifdef _DEBUG
 //-------------------------------------------------------------
@@ -1498,12 +1313,14 @@ BOOL LoadCPUSectionByID( UINT32 CPUID )
   std::map< UINT32, std::string >::iterator i = g_CPUIDToSectionMap.find( CPUID );
   if( i == g_CPUIDToSectionMap.end() )
     return FALSE;
-  PRINTMSG(( T_INFO, "Load section CPU%lu, ID %s", CPUID, (*i).second.c_str() ));
-  if( !XLoadSection( (*i).second.c_str() ) )
+  void *addr;
+  PRINTMSG(( T_INFO, "Load section CPU%lu, ID %s\\n", CPUID, (*i).second.c_str() ));
+  addr = XLoadSection( (*i).second.c_str() );
+  if( !addr )
   {
-    PRINTMSG(( T_ERROR, "XLoadSection failed for section %s! 0x%X", (*i).second.c_str(), GetLastError() ));
+    UINT32 lastErr = GetLastError();
+    PRINTMSG(( T_ERROR, "XLoadSection failed for section %s! 0x%X\\r\\n", (*i).second.c_str(), lastErr ));
   }
-
   return TRUE;
 }
 
@@ -1541,3 +1358,209 @@ EOF
 }
 
 
+
+
+
+#------------------------------------------------------------------------
+#	BuildDriverMap
+#------------------------------------------------------------------------
+sub BuildDriverMap() {
+
+	local @newFILEs;
+	local @FILEs = sort( `find $MAME_DRIVER_DIR -name *.c` );
+	$autoNameNumber = scalar( @DriverFamilies ) + 50;
+
+	# Do two passes, one to find the last autoNameNumber, another to actually
+	# modify the files
+	print "Pass 1...\n";
+
+	DRIVER_PASS1_NEXTFILE:
+	foreach( @FILEs ) {
+		chomp( $_ );
+
+		$DriverFileName = $_;
+
+			# Change the DriverName to what will be present in the actual MAME code
+			# Drop the ./MAME/ portion
+		$DriverFileName =~ /^$MAME_DRIVER_DIR\/(.*\.c)$/;
+		$DriverNoPath = $1;
+		$DriverName = "src\\\\drivers\\\\$1";
+
+			# Skip the fake jrcrypt.c file and all the hack files
+		foreach( @SkipDrivers ) {
+			if( ($DriverNoPath eq $_ ) ) {
+				print "Skipping $DriverNoPath.\n";
+				next DRIVER_PASS1_NEXTFILE;
+			}
+		}
+
+
+		$Family = false;
+		$FamilyID = 0;
+		foreach $FamilyArrayRef ( @DriverFamilies ) {
+			$FamilyID++;
+			foreach( @{$FamilyArrayRef} ) {
+				if( ($DriverNoPath eq $_ ) ) {
+					print "$DriverNoPath is in family $FamilyID.\n";
+					$Family = $FamilyID;
+					last;
+				}
+			}
+		}
+
+
+
+		($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+		 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
+
+		open( FILE, "<$DriverFileName" ) || die "Failed to open file $DriverFileName!\n";
+		sysread( FILE, $File, $size );
+		close( FILE );
+
+		if( ($File =~ /\#pragma code_seg/) ) {
+				# this should only happen on the first pass
+			if( $Family ne false ) {
+				$DriverNameToSectionMap{$DriverName} = $Family;
+				$myAutoNameNumber = 0;	# Don't increment (families should always be less anyway)
+			} else {
+				$File =~ /\#pragma code_seg\(\"C(\d+)\"\)/;
+				$myAutoNameNumber = $1;
+				$DriverNameToSectionMap{$DriverName} = $myAutoNameNumber;
+			}
+
+
+			if( $myAutoNameNumber >= $autoNameNumber ) {
+				$autoNameNumber = $myAutoNameNumber + 1;
+			}		
+
+		} else {
+			 push @newFILEs, $DriverFileName;
+		}
+	}
+
+
+	# Second pass, write out the section headers
+	print "Pass 2...\n";
+	if( scalar( @newFILEs ) == 0 ) {
+		print "Nothing to do.\n";
+	}
+
+	DRIVER_PASS2_NEXTFILE:
+	foreach( @newFILEs ) {
+		chomp( $_ );
+
+		$DriverFileName = $_;
+
+			# Change the DriverName to what will be present in the actual MAME code
+			# Drop the ./MAME/ portion
+		$DriverFileName =~ /^$MAME_DRIVER_DIR\/(.*\.c)$/;
+		$DriverNoPath = $1;
+		$DriverName = "src\\\\drivers\\\\$1";
+
+			# Skip the fake jrcrypt.c file and all the hack files
+		foreach( @SkipDrivers ) {
+			if( ($DriverNoPath eq $_ ) ) {
+				print "Skipping $DriverNoPath.\n";
+				next DRIVER_PASS2_NEXTFILE;
+			}
+		}
+
+		$Family = false;
+		$FamilyID = 0;
+		foreach $FamilyArrayRef ( @DriverFamilies ) {
+			$FamilyID++;
+			foreach( @{$FamilyArrayRef} ) {
+				if( ($DriverNoPath eq $_ ) ) {
+					print "$DriverNoPath is in family $FamilyID.\n";
+					$Family = $FamilyID;
+					last;
+				}
+			}
+		}
+
+		if( $Family ne false ) {
+				$DriverNameToSectionMap{$DriverName} = $Family;
+		} else {
+			$DriverNameToSectionMap{$DriverName} = $autoNameNumber;
+		}
+
+		($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+		 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
+
+		open( FILE, "<$DriverFileName" ) || die "Failed to open file $DriverFileName!\n";
+		sysread( FILE, $File, $size );
+		close( FILE );
+
+			# Write out the section header/footer
+		if( $Family ne false ) {
+			WriteSectionData( $DriverFileName, $File, $Family );
+		} else {
+			WriteSectionData( $DriverFileName, $File, $autoNameNumber );
+		}
+
+			# Also do the vidhdrw file, if one exists
+		$VidHardwareName = $DriverFileName;
+		$VidHardwareName =~ s/\/drivers\//\/vidhrdw\//;
+
+		($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+		 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $VidHardwareName );
+
+		if( open( FILE, "<$VidHardwareName" ) ) {
+			$File = "";
+			sysread( FILE, $File, $size );
+			close( FILE );
+
+			if( !($File =~ /\#pragma code_seg/) ) {
+				if( $Family ne false ) {
+					WriteSectionData( $VidHardwareName, $File, $Family );
+				} else {
+					WriteSectionData( $VidHardwareName, $File, $autoNameNumber );
+				}
+			}
+		}
+
+			# Also do the sndhrdw file, if one exists
+		$SoundHardwareName = $DriverFileName;
+		$SoundHardwareName =~ s/\/drivers\//\/sndhrdw\//;
+
+		($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+		 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $SoundHardwareName );
+
+		if( open( FILE, "<$SoundHardwareName" ) ) {
+			$File = "";
+			sysread( FILE, $File, $size );
+			close( FILE );
+
+			if( !($File =~ /\#pragma code_seg/) ) {
+				if( $Family ne false ) {
+					WriteSectionData( $SoundHardwareName, $File, $Family );
+				} else {
+					WriteSectionData( $SoundHardwareName, $File, $autoNameNumber );
+				}
+			}
+		}
+
+			# Also do the machine file, if one exists
+		$MachineHardwareName = $DriverFileName;
+		$MachineHardwareName =~ s/\/drivers\//\/machine\//;
+
+		($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+		 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $MachineHardwareName );
+
+		if( open( FILE, "<$MachineHardwareName" ) ) {
+			$File = "";
+			sysread( FILE, $File, $size );
+			close( FILE );
+
+			if( !($File =~ /\#pragma code_seg/) ) {
+				if( $Family ne false ) {
+					WriteSectionData( $MachineHardwareName, $File, $Family );
+				} else {
+					WriteSectionData( $MachineHardwareName, $File, $autoNameNumber );
+				}
+			}
+		}
+
+		$autoNameNumber++;
+	}
+}

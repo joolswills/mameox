@@ -3,7 +3,6 @@
   * \brief    Generic virtual memory manager class
   *
   */
-#define _LOGDEBUGMESSAGES
 
 //= I N C L U D E S ===========================================================
 #include "VirtualMemoryManager.h"

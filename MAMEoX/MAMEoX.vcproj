@@ -314,9 +314,6 @@
 				RelativePath=".\Includes\scale2x.h">
 			</File>
 			<File
-				RelativePath=".\Includes\Sections.h">
-			</File>
-			<File
 				RelativePath="Includes\SMBHandler.h">
 			</File>
 			<File
@@ -336,6 +333,9 @@
 			</File>
 			<File
 				RelativePath=".\Includes\VirtualMemoryManager.h">
+			</File>
+			<File
+				RelativePath=".\Includes\XBESectionUtil.h">
 			</File>
 			<File
 				RelativePath="$(XDK)\Samples\Xbox\Common\Include\xbfont.h">
@@ -369,9 +369,6 @@
 			Name="Sources"
 			Filter="*.c;*.cpp;*.asm">
 			<File
-				RelativePath=".\Sources\CPUSections.cpp">
-			</File>
-			<File
 				RelativePath=".\Sources\DebugLogger.cpp">
 				<FileConfiguration
 					Name="Profile|Xbox">
@@ -381,9 +378,6 @@
 						ObjectFile=".\Profile/"
 						ProgramDataBaseFileName=".\Profile/"/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\Sources\DriverSections.cpp">
 			</File>
 			<File
 				RelativePath="Sources\Gamepad.cpp">
@@ -436,6 +430,9 @@
 			</File>
 			<File
 				RelativePath=".\Sources\VirtualMemoryManager.cpp">
+			</File>
+			<File
+				RelativePath=".\Sources\XBESectionUtil.cpp">
 			</File>
 			<File
 				RelativePath="$(XDK)\Samples\Xbox\Common\Src\xbfont.cpp">

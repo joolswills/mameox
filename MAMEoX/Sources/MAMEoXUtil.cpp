@@ -12,6 +12,7 @@
 #include "GraphicsManager.h"
 #include "DebugLogger.h"
 #include "XBESectionUtil.h"
+
 #include "FontSet.h"
 #include "VirtualMemoryManager.h"
 

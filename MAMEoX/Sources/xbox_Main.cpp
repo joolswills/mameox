@@ -15,8 +15,7 @@
   #include <xbdm.h>
 #endif
 
-//#include "XBESectionUtil.h"
-#include "Sections.h"
+#include "XBESectionUtil.h"
 
 #include "MAMEoX.h"
 #include "InputManager.h"
