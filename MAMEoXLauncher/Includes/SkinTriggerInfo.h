@@ -36,7 +36,10 @@ public:
 																								reversed ? SPRITE_LIST_TRIGGERICON_TAIL : SPRITE_LIST_TRIGGERICON_HEAD, 
 																								SPRITE_LIST_TRIGGERICON_CENTER, 
 																								reversed ? SPRITE_LIST_TRIGGERICON_HEAD : SPRITE_LIST_TRIGGERICON_TAIL,
-																								reversed ) {}
+																								reversed ) 
+	{
+		m_text = NULL;
+	}
 
 		//------------------------------------------------------
 		//	Constructor (CSkinTriggerInfo)
