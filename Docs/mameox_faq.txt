@@ -206,7 +206,13 @@
      
      Alternatively, you could also throw the .sta file into the 
      autobootsave directory.  If the folder is not there already, create
-     it.
+     it.  
+     
+     NOTE:  If you use the autobootsave directory, your save state should
+            still be named with the romname-autoboot.sta convention!
+            This directory is just for keeping which games autoboot
+            straight - it's like an extra NVRAM directory for you without
+            all of the other entries.
  -------------------------------------------------------------------------
  Q.  What is wrong with lightgun support?  I can't get it to work right.
  
