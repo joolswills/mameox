@@ -2787,7 +2787,6 @@ static DRIVER_INIT(konamigx)
 #define BPP6  2
 #define BPP66 3
 
-	int i;
 	int readback = 0;
 
 	konamigx_cfgport = -1;
