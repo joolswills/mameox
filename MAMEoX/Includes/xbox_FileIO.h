@@ -58,7 +58,8 @@
 
 
   // Special filetype for 
-#define FILETYPE_MAMEOX_SYSTEM        FILETYPE_end
+#define FILETYPE_MAMEOX_FULLPATH      FILETYPE_end                //!<  The entire filepath is passed, not just the filename
+#define FILETYPE_MAMEOX_SYSTEM        FILETYPE_end + 1            //!<  Use the DEFAULT_MAMEOXSYSTEMPATH as the path
 #define FILETYPE_MAMEOX_END           FILETYPE_MAMEOX_SYSTEM + 1
 
 //= S T R U C T U R E S ===============================================

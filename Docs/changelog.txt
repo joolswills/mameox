@@ -14,10 +14,15 @@ Version 0.71.3b (CVS)
       - Fixed some bugs in the osd_fseek stuff, made fseeks
         immediate, as there's no real need to buffer them (and
         doing so breaks fwrites)
+      - Added FILETYPE_MAMEOX_FULLPATH filetype to allow the full
+        path of a file to be passed directly to the osd_f* functions
 
     - xbox_Main.cpp
       - Added handling for MAMEoX system files to apply speed
         buffering to all writes/reads
+
+    - System_IniFile.cpp
+      - Changed over to use buffered reads/writes to speed up parsing
 
    -------------------------------------------------------------
   - \MAMEoXLauncher\Includes:
@@ -37,6 +42,7 @@ Version 0.71.3b (CVS)
       - Added filter by "disliked" favorite status
       - Added sort by genre
       - Added catver.ini parsing
+      - Added "detail" view which will eventually house screenshots
 
     - OptionsScreen.cpp
       - Added sort by favorite status and sort by number of times 

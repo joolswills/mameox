@@ -26,13 +26,6 @@
 //---------------------------------------------------------------------
 void CBaseMenuView::RenderBackdrop( void )
 {
-    //--- Darken the screen under the menu ----------------------------------------
-  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-  m_displayDevice->SetRenderState( D3DRS_SRCBLEND,         D3DBLEND_SRCALPHA );
-  m_displayDevice->SetRenderState( D3DRS_DESTBLEND,        D3DBLEND_INVSRCALPHA );
-  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
-  m_displayDevice->SetTexture( 0, NULL );
-
     //-- Draw the actual menu texture ------------------------------------------------------------
   m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     TRUE );
   m_displayDevice->SetRenderState( D3DRS_ALPHAREF,            0x08 );
@@ -177,6 +170,9 @@ void CBaseMenuView::RenderBackdrop( void )
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, centerRight, footerBottom, 1.0f, 1.0f );
 
   m_displayDevice->End();
+
+
+  m_displayDevice->SetTexture( 0, NULL );
   m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE, FALSE );
 }
 

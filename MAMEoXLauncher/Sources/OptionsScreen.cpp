@@ -877,9 +877,13 @@ void COptionsScreen::DrawROMListPage( void )
                                 L"By number of times played",
                                 L"By genre" };
 
+  static WCHAR *displayMode[] = { L"Verbose list",
+                                  L"Simple list",
+                                  L"Detailed single item" };
+
   STARTPAGE();
 
-  DRAWITEM( L"Verbose mode", g_romListOptions.m_verboseMode ? L"Enabled" : L"Disabled" );
+  DRAWITEM( L"Display mode", displayMode[g_romListOptions.m_displayMode] );
 
   DRAWITEM( L"Colorize ROM status", g_romListOptions.m_showROMStatus ? L"Yes" : L"No" );
 
@@ -1580,7 +1584,20 @@ void COptionsScreen::ChangeROMListPage( BOOL movingRight )
   {
     // Verbose mode
   case 0:
-    g_romListOptions.m_verboseMode = !g_romListOptions.m_verboseMode;
+    if( !movingRight )
+    {
+      if( g_romListOptions.m_displayMode != DM_VERBOSELIST )
+        g_romListOptions.m_displayMode = (ROMListDisplayMode)(g_romListOptions.m_displayMode - 1);
+      else
+        g_romListOptions.m_displayMode = (ROMListDisplayMode)(DM_LAST - 1);
+    }
+    else
+    {
+      if( g_romListOptions.m_displayMode != DM_LAST )
+        g_romListOptions.m_displayMode = (ROMListDisplayMode)(g_romListOptions.m_displayMode + 1);
+      else
+        g_romListOptions.m_displayMode = DM_VERBOSELIST;
+    }
     break;
 
     // Colorize ROM status

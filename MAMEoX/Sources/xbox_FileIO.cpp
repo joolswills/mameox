@@ -195,6 +195,9 @@ int osd_get_path_count( int pathtype )
     // Internal MAMEoX system files
   case FILETYPE_MAMEOX_SYSTEM:
     return 1;
+
+  case FILETYPE_MAMEOX_FULLPATH:
+    return 0;
 	}
 
 	return 0;
@@ -223,7 +226,13 @@ int osd_get_path_info( int pathtype, int pathindex, const char *filename )
 
   // Check if the path points to a SMB share, we only support files
   // on smb shares so always return this is a file
-  CStdString strPath = g_pathNames[pathtype][pathindex];
+
+  CStdString strPath;
+  if( pathtype != FILETYPE_MAMEOX_FULLPATH )
+    strPath = g_pathNames[pathtype][pathindex];
+  else
+    strPath = filename;
+
   strPath.MakeLower();
   if( strPath.Left(6) == "smb://" )
   {
@@ -231,8 +240,11 @@ int osd_get_path_info( int pathtype, int pathindex, const char *filename )
   }
   else
   {
-    strPath += "\\";
-    strPath += filename;
+    if( pathtype != FILETYPE_MAMEOX_FULLPATH )
+    {
+      strPath += "\\";
+      strPath += filename;
+    }
     Helper_ConvertSlashToBackslash( strPath.GetBuffer(strPath.GetLength()+10) );
     attribs = GetFileAttributes( strPath.c_str() );
   }
@@ -295,7 +307,12 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
 		dwDesiredAccess = GENERIC_READ | GENERIC_WRITE;
 	}
 
-  CStdString strPath = g_pathNames[pathtype][pathindex];
+  CStdString strPath;
+  if( pathtype != FILETYPE_MAMEOX_FULLPATH )
+    strPath = g_pathNames[pathtype][pathindex];
+  else
+    strPath = filename;
+
   strPath.MakeLower();
   CStdString strFullPath = "";
 
@@ -312,7 +329,8 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
       ret->m_bIsSMB = FALSE;
 
       // Format the full path to the smb shared file
-      strFullPath.Format( "%s/%s", g_pathNames[pathtype][pathindex], filename );
+      if( pathtype != FILETYPE_MAMEOX_FULLPATH )
+        strFullPath.Format( "%s/%s", g_pathNames[pathtype][pathindex], filename );
 
       // The file will be cached to the utility drive
       CStdString strCacheFilePath;
@@ -343,8 +361,10 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
       }
     }
   }
-  else
+  else if( pathtype != FILETYPE_MAMEOX_FULLPATH )
     strFullPath.Format( "%s\\%s", g_pathNames[pathtype][pathindex], filename );
+  else
+    strFullPath = filename;
 
   // Only load the file from disk if it isn't a smb file
   if ( ret->m_bIsSMB == FALSE )
@@ -714,10 +734,19 @@ BOOL ComposeFilePath( char *buf, UINT32 maxLen, UINT32 pathtype, UINT32 pathinde
   if( !buf || !filename )
     return FALSE;
 
-  if( maxLen < strlen(g_pathNames[pathtype][pathindex]) + strlen(filename) + 2 )
-    return FALSE;
+  if( pathtype != FILETYPE_MAMEOX_FULLPATH )
+  {
+    if( maxLen < strlen(g_pathNames[pathtype][pathindex]) + strlen(filename) + 2 )
+      return FALSE;
+    sprintf( buf, "%s\\%s", g_pathNames[pathtype][pathindex], filename );
+  }
+  else
+  {
+    if( maxLen < strlen(filename) + 1 )
+      return FALSE;
+    strcpy( buf, filename );
+  }
 
-  sprintf( buf, "%s\\%s", g_pathNames[pathtype][pathindex], filename );
 	Helper_ConvertSlashToBackslash( buf );
 
   return TRUE;

@@ -37,7 +37,7 @@ extern "C" {
 #define SCROLLICON_COLOR      D3DCOLOR_XRGB( 255, 255, 255 )
 
 #define TITLEBAR_ROW          101
-#define FIRSTDATA_ROW         126
+#define FIRSTDATA_ROW         125
 
 #define HIGHLIGHTBAR_LEFT     34
 #define HIGHLIGHTBAR_RIGHT    607
@@ -58,6 +58,42 @@ extern "C" {
 #define SCROLLDOWN_TOP        SCROLLDOWN_BOTTOM - 32
 #define SCROLLDOWN_RIGHT      608
 #define SCROLLDOWN_LEFT       SCROLLDOWN_RIGHT - 32
+
+  // Detailed view layout
+#define DETAIL_ROMSTATUS_X        NAME_COLUMN
+#define DETAIL_ROMSTATUS_Y        FIRSTDATA_ROW
+
+#define DETAIL_NUMPLAYERS_X       NAME_COLUMN
+#define DETAIL_NUMPLAYERS_Y       FIRSTDATA_ROW + 20
+
+#define DETAIL_MANUFACTURER_X     NAME_COLUMN
+#define DETAIL_MANUFACTURER_Y     FIRSTDATA_ROW + 40
+
+#define DETAIL_YEAR_X             NAME_COLUMN
+#define DETAIL_YEAR_Y             FIRSTDATA_ROW + 60
+
+#define DETAIL_PARENT_X           NAME_COLUMN
+#define DETAIL_PARENT_Y           FIRSTDATA_ROW + 80
+
+#define DETAIL_GENRE_X            NAME_COLUMN
+#define DETAIL_GENRE_Y            FIRSTDATA_ROW + 100
+
+#define DETAIL_VERSIONADDED_X     NAME_COLUMN
+#define DETAIL_VERSIONADDED_Y     FIRSTDATA_ROW + 120
+
+#define DETAIL_TIMESPLAYED_X      NAME_COLUMN
+#define DETAIL_TIMESPLAYED_Y      FIRSTDATA_ROW + 140
+
+#define DETAIL_FAVORITESTATUS_X   NAME_COLUMN
+#define DETAIL_FAVORITESTATUS_Y   FIRSTDATA_ROW + 160
+
+#define DETAIL_FILENAME_X         NAME_COLUMN
+#define DETAIL_FILENAME_Y         FIRSTDATA_ROW + 180
+
+#define DETAIL_SCREENSHOT_LEFT    0
+#define DETAIL_SCREENSHOT_TOP     0
+#define DETAIL_SCREENSHOT_RIGHT   1
+#define DETAIL_SCREENSHOT_BOTTOM  1
 
 
 	// Maximum number of items to render on the screen at once
@@ -694,16 +730,30 @@ BOOL CROMListScreen::SaveROMMetadataFile( void )
     METADATA_WRITEDATA( &(*it).m_timesPlayed, sizeof((*it).m_timesPlayed) );
 
       // Write the catver.ini [Category] 
-    len = strlen( (*it).m_genre );
-    METADATA_WRITEDATA( &len, sizeof(len) );
-    if( len )
+    if( (*it).m_genre )
+    {
+      len = strlen( (*it).m_genre );
+      METADATA_WRITEDATA( &len, sizeof(len) );
       METADATA_WRITEDATA( (*it).m_genre, len );
+    }
+    else
+    {
+      len = 0;
+      METADATA_WRITEDATA( &len, sizeof(len) );
+    }
 
       // Write the catver.ini [VersionAdded] 
-    len = strlen( (*it).m_versionAdded );
-    METADATA_WRITEDATA( &len, sizeof(len) );
-    if( len )
+    if( (*it).m_versionAdded )
+    {
+      len = strlen( (*it).m_versionAdded );
+      METADATA_WRITEDATA( &len, sizeof(len) );
       METADATA_WRITEDATA( (*it).m_versionAdded, len );
+    }
+    else
+    {
+      len = 0;
+      METADATA_WRITEDATA( &len, sizeof(len) );
+    }
 	}
 
 
@@ -920,11 +970,21 @@ BOOL CROMListScreen::LoadROMMetadataFile( void )
 
       // Read the catver.ini [Category] 
     METADATA_READDATA_NOMALLOC( &len, sizeof(len) );
-    METADATA_READDATA( metadata.m_genre, len, char );
+    if( len )
+    {
+      METADATA_READDATA( metadata.m_genre, len, char );
+    }
+    else
+      metadata.m_genre = strdup( "Unknown" );
 
       // Read the catver.ini [VersionAdded] 
     METADATA_READDATA_NOMALLOC( &len, sizeof(len) );
-    METADATA_READDATA( metadata.m_versionAdded, len, char );
+    if( len )
+    {
+      METADATA_READDATA( metadata.m_versionAdded, len, char );
+    }
+    else
+      metadata.m_versionAdded = strdup( "Unknown" );
 
 
       // Add the loaded data to the metadata list
@@ -1145,15 +1205,37 @@ BOOL CROMListScreen::ImportCatverINI( void )
 {
   CStdString iniFileName = g_FileIOConfig.m_GeneralPath;
   iniFileName += "\\catver.ini";
+
+  DrawProgressbarMessage( m_displayDevice, 
+                          "Parsing catver.ini file...", 
+                          "", 
+                          0xFFFFFFFF, 
+                          0 );
+
+
+    // Make sure there's a file to parse
+  osd_file *file = osd_fopen( FILETYPE_HISTORY, 0, "catver.ini", "r" );
+  if( !file )
+    return FALSE;
+  osd_fclose( file );
+
   CSystem_IniFile iniFile( iniFileName );
 
   std::vector<MAMEoXDriverMetadata_t>::iterator it = m_driverMetadata.begin();
-  for( ; it != m_driverMetadata.end(); ++it )
+  UINT32 i = 0;
+  for( ; it != m_driverMetadata.end(); ++it, ++i )
   {
     if( (*it).m_romFileName )
     {
       CStdString tempStr;
       
+
+      DrawProgressbarMessage( m_displayDevice, 
+                              "Importing catver.ini file", 
+                              (*it).m_romFileName, 
+                              i, 
+                              m_driverMetadata.size() );
+
         // Grab the category
       tempStr = iniFile.GetProfileString( "Category", (*it).m_romFileName, "[Unknown]" );
       if( (*it).m_genre )
@@ -1176,6 +1258,11 @@ BOOL CROMListScreen::ImportCatverINI( void )
 //---------------------------------------------------------------------
 BOOL CROMListScreen::RefreshROMStatus( void )
 {
+  DrawProgressbarMessage( m_displayDevice, 
+                          "Parsing romstatus.xml file...", 
+                          "", 
+                          0xFFFFFFFF, 
+                          0 );
   if( !LoadROMStatusFile() )
   {
     PRINTMSG( T_ERROR, "Failed to load the ROM status file" );
@@ -1344,7 +1431,11 @@ void CROMListScreen::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
 	}
 	else if( gp.IsButtonPressed( GP_WHITE ) )
 	{
-		m_options.m_verboseMode = !m_options.m_verboseMode;
+    if( m_options.m_displayMode < (DM_LAST - 1) )
+      m_options.m_displayMode = (ROMListDisplayMode)(m_options.m_displayMode + 1);
+    else
+      m_options.m_displayMode = DM_VERBOSELIST;
+
     UpdateSortedList();
     m_numLinesInList = m_currentSortedList.size();
     gp.WaitForNoButton();
@@ -1358,6 +1449,74 @@ void CROMListScreen::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
     UpdateSortedList();
     m_numLinesInList = m_currentSortedList.size();
     gp.WaitForNoButton();
+  }
+  else if( gp.IsButtonPressed( GP_DPAD_LEFT ) && m_favoriteStatusChangeDelay == 0.0f )
+  {
+    DWORD currentGameIdx = GetCurrentGameIndex();
+    if( currentGameIdx != INVALID_ROM_INDEX )
+    {
+      MAMEoXDriverMetadata_t  &metadata = m_driverMetadata[currentGameIdx];
+      switch( metadata.m_favoriteStatus )
+      {
+        // *** FS_INDIFFERENT *** //
+      case FS_INDIFFERENT:
+        metadata.m_favoriteStatus = FS_DISLIKE;
+        break;
+
+        // *** FS_STRONGDISLIKE *** //
+      case FS_STRONGDISLIKE:
+        // *** FS_DISLIKE *** //
+      case FS_DISLIKE:
+        metadata.m_favoriteStatus = FS_STRONGDISLIKE;
+        break;
+
+        // *** FS_LIKE *** //
+      case FS_LIKE:
+        metadata.m_favoriteStatus = FS_INDIFFERENT;
+        break;
+        
+        // *** FS_STRONGLIKE *** //
+      case FS_STRONGLIKE:
+        metadata.m_favoriteStatus = FS_LIKE;
+        break;
+      }
+
+      m_favoriteStatusChangeDelay = DPADCURSORMOVE_TIMEOUT;
+    }
+  }
+  else if( gp.IsButtonPressed( GP_DPAD_RIGHT ) && m_favoriteStatusChangeDelay == 0.0f )
+  {
+    DWORD currentGameIdx = GetCurrentGameIndex();
+    if( currentGameIdx != INVALID_ROM_INDEX )
+    {
+      MAMEoXDriverMetadata_t  &metadata = m_driverMetadata[currentGameIdx];
+      switch( metadata.m_favoriteStatus )
+      {
+        // *** FS_INDIFFERENT *** //
+      case FS_INDIFFERENT:
+        metadata.m_favoriteStatus = FS_LIKE;
+        break;
+
+        // *** FS_STRONGDISLIKE *** //
+      case FS_STRONGDISLIKE:
+        metadata.m_favoriteStatus = FS_DISLIKE;
+        break;
+
+        // *** FS_DISLIKE *** //
+      case FS_DISLIKE:
+        metadata.m_favoriteStatus = FS_INDIFFERENT;
+        break;
+
+        // *** FS_LIKE *** //
+      case FS_LIKE:
+        // *** FS_STRONGLIKE *** //
+      case FS_STRONGLIKE:
+        metadata.m_favoriteStatus = FS_STRONGLIKE;
+        break;
+      }
+
+      m_favoriteStatusChangeDelay = DPADCURSORMOVE_TIMEOUT;
+    }
   }
 
 		// General idea taken from XMAME
@@ -1381,6 +1540,13 @@ void CROMListScreen::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
 			m_dpadCursorDelay = 0.0f;
 	}
 
+  if( m_favoriteStatusChangeDelay > 0.0f )
+  {
+		m_favoriteStatusChangeDelay -= elapsedTime;
+    if( m_favoriteStatusChangeDelay < 0.0f || 
+        !gp.IsOneOfButtonsPressed( GP_DPAD_LEFT | GP_DPAD_RIGHT ) )
+			m_favoriteStatusChangeDelay = 0.0f;
+  }
 
   if( gp.IsButtonPressed( GP_Y ) && !m_superscrollMode )
   {
@@ -1633,8 +1799,6 @@ void CROMListScreen::NormalModeMoveCursor( CInputManager &gp, FLOAT elapsedTime 
 //---------------------------------------------------------------------
 void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 {
-	WCHAR name[512];
-
   if( clearScreen )  
 	  m_displayDevice->Clear(	0L,																// Count
 		  											NULL,															// Rects to clear
@@ -1644,18 +1808,49 @@ void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 						  							0L );															// Stencil
 
 
-  FLOAT textHeight = m_fontSet.SmallThinFontHeight();
 
     // Render the backdrop texture
   RenderBackdrop();
   m_menuRenderer->Draw( FALSE, FALSE );
 
+  switch( m_options.m_displayMode )
+  {
+    // *** DM_VERBOSELIST *** //
+  case DM_VERBOSELIST:
+    DrawVerboseList();
+    break;
+
+    // *** DM_SIMPLELIST *** //
+  case DM_SIMPLELIST:
+    DrawSimpleList();
+    break;
+
+    // *** DM_DETAILED *** //
+  case DM_DETAILED:
+    DrawDetailedList();
+    break;
+  }
+
+  if( flipOnCompletion )
+	  m_displayDevice->Present( NULL, NULL, NULL, NULL );	
+}
+
+
+//---------------------------------------------------------------------
+//	DrawVerboseList
+//---------------------------------------------------------------------
+void CROMListScreen::DrawVerboseList( void )
+{
+	WCHAR name[512];
+
+  FLOAT textHeight = m_fontSet.SmallThinFontHeight();
   FLOAT selectedItemYPos = (textHeight * (ULONG)m_cursorPosition);
 
     // Render the highlight bar for the selected item
   m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
   m_displayDevice->SetRenderState( D3DRS_SRCBLEND,         D3DBLEND_SRCALPHA );
   m_displayDevice->SetRenderState( D3DRS_DESTBLEND,        D3DBLEND_INVSRCALPHA );
+  m_displayDevice->SetTexture( 0, NULL );
   m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
 
   m_displayDevice->Begin( D3DPT_QUADLIST );
@@ -1691,14 +1886,11 @@ void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
                                         HEADER_COLOR, 
                                         name, 
                                         XBFONT_TRUNCATED,
-                                        ( m_options.m_verboseMode ? MANUFACTURER_COLUMN : TEXTBOX_RIGHT ) - (NAME_COLUMN + COLUMN_PADDING) );
-	  if( m_options.m_verboseMode )
-	  {
-		  m_fontSet.SmallThinFont().DrawText( MANUFACTURER_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"Manufacturer" );
-		  m_fontSet.SmallThinFont().DrawText( YEAR_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"Year" );
-      m_fontSet.SmallThinFont().DrawText( NUMPLAYERS_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"#P" );
-		  m_fontSet.SmallThinFont().DrawText( CLONE_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"Clone" );
-	  }
+                                        MANUFACTURER_COLUMN - (NAME_COLUMN + COLUMN_PADDING) );
+		m_fontSet.SmallThinFont().DrawText( MANUFACTURER_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"Manufacturer" );
+		m_fontSet.SmallThinFont().DrawText( YEAR_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"Year" );
+    m_fontSet.SmallThinFont().DrawText( NUMPLAYERS_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"#P" );
+		m_fontSet.SmallThinFont().DrawText( CLONE_COLUMN, TITLEBAR_ROW, HEADER_COLOR, L"Clone" );
 
 		  // Render the ROM info
 	  FLOAT yPos = 0.0f;
@@ -1712,7 +1904,7 @@ void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
         // Set the ROM color based on its status
       if( m_options.m_showROMStatus )
       {
-        ROMStatus &status = m_ROMStatus[m_currentSortedList[ i ]];
+        ROMStatus &status = m_ROMStatus[m_currentSortedList[i]];
         switch( status )
         {
         case STATUS_UNKNOWN:
@@ -1739,44 +1931,41 @@ void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
                                           color,
                                           name,
                                           XBFONT_TRUNCATED,
-                                          ( m_options.m_verboseMode ? MANUFACTURER_COLUMN : TEXTBOX_RIGHT ) - (NAME_COLUMN + COLUMN_PADDING) );
+                                          MANUFACTURER_COLUMN - (NAME_COLUMN + COLUMN_PADDING) );
 
-		  if( m_options.m_verboseMode )
-		  {
-			  mbstowcs( name, m_driverInfoList[ m_currentSortedList[i] ].m_manufacturer, 255 );
-			  m_fontSet.SmallThinFont().DrawText( MANUFACTURER_COLUMN,
-                                            FIRSTDATA_ROW + yPos,
-                                            color,
-                                            name,
-                                            XBFONT_TRUNCATED,
-                                            YEAR_COLUMN - (MANUFACTURER_COLUMN + COLUMN_PADDING) );
+			mbstowcs( name, m_driverInfoList[ m_currentSortedList[i] ].m_manufacturer, 255 );
+			m_fontSet.SmallThinFont().DrawText( MANUFACTURER_COLUMN,
+                                          FIRSTDATA_ROW + yPos,
+                                          color,
+                                          name,
+                                          XBFONT_TRUNCATED,
+                                          YEAR_COLUMN - (MANUFACTURER_COLUMN + COLUMN_PADDING) );
 
 
-			  mbstowcs( name, m_driverInfoList[ m_currentSortedList[i] ].m_year, 255 );
-			  m_fontSet.SmallThinFont().DrawText( YEAR_COLUMN, 
-                                            FIRSTDATA_ROW + yPos, 
-                                            color, 
-                                            name, 
-                                            XBFONT_TRUNCATED,
-                                            NUMPLAYERS_COLUMN - (YEAR_COLUMN + COLUMN_PADDING) );
+			mbstowcs( name, m_driverInfoList[ m_currentSortedList[i] ].m_year, 255 );
+			m_fontSet.SmallThinFont().DrawText( YEAR_COLUMN, 
+                                          FIRSTDATA_ROW + yPos, 
+                                          color, 
+                                          name, 
+                                          XBFONT_TRUNCATED,
+                                          NUMPLAYERS_COLUMN - (YEAR_COLUMN + COLUMN_PADDING) );
 
 
-			  swprintf( name, L"%lu", m_driverInfoList[m_currentSortedList[i]].m_numPlayers );
-			  m_fontSet.SmallThinFont().DrawText( NUMPLAYERS_COLUMN,
-                                            FIRSTDATA_ROW + yPos,
-                                            color,
-                                            name,
-                                            XBFONT_TRUNCATED,
-                                            CLONE_COLUMN - (NUMPLAYERS_COLUMN + COLUMN_PADDING) );
+			swprintf( name, L"%lu", m_driverInfoList[m_currentSortedList[i]].m_numPlayers );
+			m_fontSet.SmallThinFont().DrawText( NUMPLAYERS_COLUMN,
+                                          FIRSTDATA_ROW + yPos,
+                                          color,
+                                          name,
+                                          XBFONT_TRUNCATED,
+                                          CLONE_COLUMN - (NUMPLAYERS_COLUMN + COLUMN_PADDING) );
 
-			  mbstowcs( name, m_driverInfoList[ m_currentSortedList[i] ].m_cloneFileName, 255 );
-			  m_fontSet.SmallThinFont().DrawText( CLONE_COLUMN, 
-                                            FIRSTDATA_ROW + yPos,
-                                            color,
-                                            name,
-                                            XBFONT_TRUNCATED,
-                                            TEXTBOX_RIGHT - (CLONE_COLUMN + COLUMN_PADDING) );
-		  }
+			mbstowcs( name, m_driverInfoList[ m_currentSortedList[i] ].m_cloneFileName, 255 );
+			m_fontSet.SmallThinFont().DrawText( CLONE_COLUMN, 
+                                          FIRSTDATA_ROW + yPos,
+                                          color,
+                                          name,
+                                          XBFONT_TRUNCATED,
+                                          TEXTBOX_RIGHT - (CLONE_COLUMN + COLUMN_PADDING) );
 
 			  // Inc the Y position
 		  yPos += textHeight;
@@ -1841,11 +2030,401 @@ void CROMListScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
+}
+
+//---------------------------------------------------------------------
+//	DrawSimpleList
+//---------------------------------------------------------------------
+void CROMListScreen::DrawSimpleList( void )
+{
+	WCHAR name[512];
+
+  FLOAT textHeight = m_fontSet.SmallThinFontHeight();
+  FLOAT selectedItemYPos = (textHeight * (ULONG)m_cursorPosition);
+
+    // Render the highlight bar for the selected item
+  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
+  m_displayDevice->SetRenderState( D3DRS_SRCBLEND,         D3DBLEND_SRCALPHA );
+  m_displayDevice->SetRenderState( D3DRS_DESTBLEND,        D3DBLEND_INVSRCALPHA );
+  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
+  m_displayDevice->SetTexture( 0, NULL );
+
+  m_displayDevice->Begin( D3DPT_QUADLIST );
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
+    
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
+    
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos + textHeight, 1.0f, 1.0f );
+
+    m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos + textHeight, 1.0f, 1.0f );
+  m_displayDevice->End();
+
+	m_fontSet.SmallThinFont().Begin();
+
+	  swprintf( name, L"Names (%s)  ", m_options.m_hideFiltered ? L"Filtered " : L"Full List" );
+    if( m_superscrollMode )
+    {
+        // Display the superscroll character
+      WCHAR displayString[64] = L"";
+      CStdString tempBuf;
+      GetFriendlySuperscrollIndexStringForJumpTableIndex( &tempBuf, m_currentSuperscrollIndex );
+
+      mbstowcs( displayString, tempBuf.c_str(), 64 );
+		  swprintf( &name[wcslen(name)], L"[%s]", displayString );
+    }
+
+	  m_fontSet.SmallThinFont().DrawText( NAME_COLUMN, 
+                                        TITLEBAR_ROW, 
+                                        HEADER_COLOR, 
+                                        name, 
+                                        XBFONT_TRUNCATED,
+                                        TEXTBOX_RIGHT - (NAME_COLUMN + COLUMN_PADDING) );
+
+		  // Render the ROM info
+	  FLOAT yPos = 0.0f;
+    FLOAT pageSize = GetCurrentPageSize();
+	  ULONG absListIDX = (ULONG)m_pageOffset;
+
+	  for( DWORD i = absListIDX; i < pageSize + absListIDX; ++i )
+	  {
+      DWORD color = ITEM_COLOR;
+
+        // Set the ROM color based on its status
+      if( m_options.m_showROMStatus )
+      {
+        ROMStatus &status = m_ROMStatus[m_currentSortedList[i]];
+        switch( status )
+        {
+        case STATUS_UNKNOWN:
+        case STATUS_WORKING:
+        default:
+            // Do nothing, ITEM_COLOR is already correct
+          break;
+
+        case STATUS_SLOW:
+          color = ITEM_WARNING_COLOR;
+          break;
+
+        case STATUS_CRASH:
+        case STATUS_OUT_OF_MEMORY:
+        case STATUS_GENERAL_NONWORKING:
+          color = ITEM_NONWORKING_COLOR;
+          break;
+        }
+      }
+
+		  mbstowcs( name, m_driverInfoList[ m_currentSortedList[i] ].m_description, 255 );
+		  m_fontSet.SmallThinFont().DrawText( NAME_COLUMN,
+                                          FIRSTDATA_ROW + yPos,
+                                          color,
+                                          name,
+                                          XBFONT_TRUNCATED,
+                                          TEXTBOX_RIGHT - (NAME_COLUMN + COLUMN_PADDING) );
+
+			  // Inc the Y position
+		  yPos += textHeight;
+	  }
+	m_fontSet.SmallThinFont().End();
+
+
+    //-- Render the scroll up and/or scroll down icons --------------------------------------------
+  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
+
+    // Draw scroll up icon
+  if( (DWORD)m_pageOffset )
+  {
+	  m_displayDevice->SetTexture( 0, m_textureSet.GetScrollIconMasks() );
+    m_displayDevice->Begin( D3DPT_QUADLIST );      
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconLeft(), m_textureSet.GetScrollUpIconTop() );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_LEFT, SCROLLUP_TOP, 1.0f, 1.0f );
+      
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconRight(), m_textureSet.GetScrollUpIconTop() );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_RIGHT, SCROLLUP_TOP, 1.0f, 1.0f );
+      
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconRight(), m_textureSet.GetScrollUpIconBottom() );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_RIGHT, SCROLLUP_BOTTOM, 1.0f, 1.0f );
+
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconLeft(), m_textureSet.GetScrollUpIconBottom() );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_LEFT, SCROLLUP_BOTTOM, 1.0f, 1.0f );
+    m_displayDevice->End();
+  }
+
+  if( (DWORD)m_pageOffset < (m_numLinesInList - (DWORD)pageSize) )
+  {
+	  m_displayDevice->SetTexture( 0, m_textureSet.GetScrollIconMasks() );
+    m_displayDevice->Begin( D3DPT_QUADLIST );
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconLeft(), m_textureSet.GetScrollDownIconTop() );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_LEFT, SCROLLDOWN_TOP, 1.0f, 1.0f );
+      
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconRight(), m_textureSet.GetScrollDownIconTop() );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_RIGHT, SCROLLDOWN_TOP, 1.0f, 1.0f );
+      
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconRight(), m_textureSet.GetScrollDownIconBottom() );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_RIGHT, SCROLLDOWN_BOTTOM, 1.0f, 1.0f );
+
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconLeft(), m_textureSet.GetScrollDownIconBottom() );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_LEFT, SCROLLDOWN_BOTTOM, 1.0f, 1.0f );
+    m_displayDevice->End();
+  }
+
+  m_displayDevice->SetTexture( 0, NULL );
+  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
+}
+
+//---------------------------------------------------------------------
+//	DrawDetailedList
+//---------------------------------------------------------------------
+void CROMListScreen::DrawDetailedList( void )
+{
+	WCHAR name[256];
+  WCHAR temp[256];
+
+  FLOAT textHeight = m_fontSet.SmallThinFontHeight();
+  FLOAT selectedItemYPos = (textHeight * (ULONG)m_cursorPosition);
+
+	m_fontSet.SmallThinFont().Begin();
+
+	  mbstowcs( name, m_driverInfoList[m_currentSortedList[GetAbsoluteCursorPosition()]].m_description, 255 );
+    wcscat( name, m_options.m_hideFiltered ? L"    (Filtered)  " : L"    (Full List)  " );
+    if( m_superscrollMode )
+    {
+        // Display the superscroll character
+      WCHAR displayString[64] = L"";
+      CStdString tempBuf;
+      GetFriendlySuperscrollIndexStringForJumpTableIndex( &tempBuf, m_currentSuperscrollIndex );
+
+      mbstowcs( displayString, tempBuf.c_str(), 64 );
+		  swprintf( &name[wcslen(name)], L"[%s]", displayString );
+    }
+
+	  m_fontSet.SmallThinFont().DrawText( NAME_COLUMN, 
+                                        TITLEBAR_ROW, 
+                                        HEADER_COLOR, 
+                                        name, 
+                                        XBFONT_TRUNCATED,
+                                        TEXTBOX_RIGHT - (NAME_COLUMN + COLUMN_PADDING) );
+
+		  // Render the ROM info
+    MAMEDriverData_t        &driverData = m_driverInfoList[GetCurrentGameIndex()];
+    ROMStatus               &status     = m_ROMStatus[GetCurrentGameIndex()];
+    MAMEoXDriverMetadata_t  &metadata   = m_driverMetadata[GetCurrentGameIndex()];
 
 
 
-  if( flipOnCompletion )
-	  m_displayDevice->Present( NULL, NULL, NULL, NULL );	
+      //--- Display the ROM status ---------------------------
+    DWORD color = ITEM_COLOR;
+    swprintf( name, L"ROM Status: " );
+    switch( status )
+    {
+        // *** STATUS_UNKNOWN *** //
+      case STATUS_UNKNOWN:
+      default:
+        wcscat( name, L"Unknown" );
+        break;
+
+        // *** STATUS_WORKING *** //
+      case STATUS_WORKING:
+        wcscat( name, L"Working" );
+        break;
+
+        // *** STATUS_SLOW *** //
+      case STATUS_SLOW:
+        wcscat( name, L"Runs slowly" );
+        color = ITEM_WARNING_COLOR;
+        break;
+
+        // *** STATUS_CRASH *** //
+      case STATUS_CRASH:
+        wcscat( name, L"Crashes" );
+        color = ITEM_NONWORKING_COLOR;
+        break;
+
+        // *** STATUS_OUT_OF_MEMORY *** //
+      case STATUS_OUT_OF_MEMORY:
+        wcscat( name, L"Out of memory" );
+        color = ITEM_NONWORKING_COLOR;
+        break;
+
+        // *** STATUS_GENERAL_NONWORKING *** //
+      case STATUS_GENERAL_NONWORKING:
+        wcscat( name, L"General nonworking" );
+        color = ITEM_NONWORKING_COLOR;
+        break;
+    }
+    m_fontSet.SmallThinFont().DrawText( DETAIL_ROMSTATUS_X, DETAIL_ROMSTATUS_Y, ITEM_COLOR, name );
+
+
+      //--- Display the number of players ---------------------------
+    swprintf( name, L"Number of players: %lu", driverData.m_numPlayers );
+    m_fontSet.SmallThinFont().DrawText( DETAIL_NUMPLAYERS_X, DETAIL_NUMPLAYERS_Y, ITEM_COLOR, name );
+
+
+      //--- Display the manufacturer ---------------------------
+    if( driverData.m_manufacturer )
+      mbstowcs( temp, driverData.m_manufacturer, 255 );
+    else
+      wcscpy( temp, L"Unknown" );
+    swprintf( name, L"Manufacturer: %s", temp );
+    m_fontSet.SmallThinFont().DrawText( DETAIL_MANUFACTURER_X, DETAIL_MANUFACTURER_Y, ITEM_COLOR, name );
+
+      //--- Display the year ---------------------------
+    if( driverData.m_year )
+      mbstowcs( temp, driverData.m_year, 255 );
+    else
+      wcscpy( temp, L"Unknown" );
+    swprintf( name, L"Year: %s", temp );
+    m_fontSet.SmallThinFont().DrawText( DETAIL_YEAR_X, DETAIL_YEAR_Y, ITEM_COLOR, name );
+
+
+      //--- Display the parent ROM ---------------------------
+    if( driverData.m_cloneFileName )
+      mbstowcs( temp, driverData.m_cloneFileName, 255 );
+    else
+      wcscpy( temp, L"None" );
+    swprintf( name, L"Parent ROM filename: %s", temp );
+    m_fontSet.SmallThinFont().DrawText( DETAIL_PARENT_X, DETAIL_PARENT_Y, ITEM_COLOR, name );
+
+
+      //--- Display the genre ---------------------------
+    if( metadata.m_genre )
+      mbstowcs( temp, metadata.m_genre, 255 );
+    else
+      wcscpy( temp, L"Unknown" );
+    swprintf( name, L"Genre: %s", temp );
+    m_fontSet.SmallThinFont().DrawText( DETAIL_GENRE_X, DETAIL_GENRE_Y, ITEM_COLOR, name );
+
+      //--- Display the version this rom was added to MAME ---------------------------
+    if( metadata.m_versionAdded )
+      mbstowcs( temp, metadata.m_versionAdded, 255 );
+    else
+      wcscpy( temp, L"Unknown" );
+    swprintf( name, L"Version added: %s", temp );
+    m_fontSet.SmallThinFont().DrawText( DETAIL_VERSIONADDED_X, DETAIL_VERSIONADDED_Y, ITEM_COLOR, name );
+
+      //--- Display the version this rom was added to MAME ---------------------------
+    swprintf( name, L"Times played: %lu", metadata.m_timesPlayed );
+    m_fontSet.SmallThinFont().DrawText( DETAIL_TIMESPLAYED_X, DETAIL_TIMESPLAYED_Y, ITEM_COLOR, name );
+
+      //--- Display the version this rom was added to MAME ---------------------------
+    switch( metadata.m_favoriteStatus )
+    {
+      // *** FS_INDIFFERENT *** //
+    case FS_INDIFFERENT:
+      wcscpy( temp, L"Average" );
+      break;
+
+      // *** FS_STRONGDISLIKE *** //
+    case FS_STRONGDISLIKE:
+      wcscpy( temp, L"Strongly disliked" );
+      break;
+
+      // *** FS_DISLIKE *** //
+    case FS_DISLIKE:
+      wcscpy( temp, L"Disliked" );
+      break;
+
+      // *** FS_LIKE *** //
+    case FS_LIKE:
+      wcscpy( temp, L"Liked" );
+      break;
+
+      // *** FS_STRONGLIKE *** //
+    case FS_STRONGLIKE:
+      wcscpy( temp, L"Strongly liked" );
+      break;
+    }
+    swprintf( name, L"Favorite status: %s", temp );
+    m_fontSet.SmallThinFont().DrawText( DETAIL_FAVORITESTATUS_X, DETAIL_FAVORITESTATUS_Y, ITEM_COLOR, name );
+
+      //--- Display the filename ---------------------------
+    if( driverData.m_romFileName )
+      mbstowcs( temp, driverData.m_romFileName, 255 );
+    else
+      wcscpy( temp, L"Unknown" );
+    swprintf( name, L"ROM filename: %s.zip", temp );
+    m_fontSet.SmallThinFont().DrawText( DETAIL_FILENAME_X, DETAIL_FILENAME_Y, ITEM_COLOR, name );
+
+
+	m_fontSet.SmallThinFont().End();
+
+
+    //-- Render the scroll up and/or scroll down icons --------------------------------------------
+  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
+
+    // Draw scroll up icon
+  if( GetAbsoluteCursorPosition() )
+  {
+	  m_displayDevice->SetTexture( 0, m_textureSet.GetScrollIconMasks() );
+    m_displayDevice->Begin( D3DPT_QUADLIST );      
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconLeft(), m_textureSet.GetScrollUpIconTop() );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_LEFT, SCROLLUP_TOP, 1.0f, 1.0f );
+      
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconRight(), m_textureSet.GetScrollUpIconTop() );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_RIGHT, SCROLLUP_TOP, 1.0f, 1.0f );
+      
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconRight(), m_textureSet.GetScrollUpIconBottom() );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_RIGHT, SCROLLUP_BOTTOM, 1.0f, 1.0f );
+
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollUpIconLeft(), m_textureSet.GetScrollUpIconBottom() );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLUP_LEFT, SCROLLUP_BOTTOM, 1.0f, 1.0f );
+    m_displayDevice->End();
+  }
+
+    // Draw scroll down icon
+  if( GetAbsoluteCursorPosition() < m_numLinesInList - 1 )
+  {
+	  m_displayDevice->SetTexture( 0, m_textureSet.GetScrollIconMasks() );
+    m_displayDevice->Begin( D3DPT_QUADLIST );
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconLeft(), m_textureSet.GetScrollDownIconTop() );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_LEFT, SCROLLDOWN_TOP, 1.0f, 1.0f );
+      
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconRight(), m_textureSet.GetScrollDownIconTop() );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_RIGHT, SCROLLDOWN_TOP, 1.0f, 1.0f );
+      
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconRight(), m_textureSet.GetScrollDownIconBottom() );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_RIGHT, SCROLLDOWN_BOTTOM, 1.0f, 1.0f );
+
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SCROLLICON_COLOR );
+      m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, m_textureSet.GetScrollDownIconLeft(), m_textureSet.GetScrollDownIconBottom() );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, SCROLLDOWN_LEFT, SCROLLDOWN_BOTTOM, 1.0f, 1.0f );
+    m_displayDevice->End();
+  }
+
+  m_displayDevice->SetTexture( 0, NULL );
+  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+  m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
 }
 
 //---------------------------------------------------------------------
@@ -2086,8 +2665,8 @@ void CROMListScreen::UpdateFilteredList( void )
       continue;
 
       // Filter on the number of players
-    if( m_options.m_filterMode & FM_NUMPLAYERS && driverData.m_numPlayers < m_options.m_numPlayersFilter )
-      continue;
+//    if( m_options.m_filterMode & FM_NUMPLAYERS && driverData.m_numPlayers < m_options.m_numPlayersFilter )
+//      continue;
 
       // Filter on the genre
     if( m_options.m_filterMode & FM_GENRE )

@@ -121,6 +121,14 @@ typedef enum ROMListSortMode
   SM_LAST                         //!< Invalid "last" tag
 } ROMListSortMode;
 
+typedef enum ROMListDisplayMode
+{
+  DM_VERBOSELIST,                 //!<  Verbose list (w/ data columns) 
+  DM_SIMPLELIST,                  //!<  Simple list (just name)
+  DM_DETAILED,                    //!<  Detailed single ROM viewer w/ screenshots
+  DM_LAST                         //!<  Invalid "last" tag
+} ROMListDisplayMode;
+
 typedef enum MAMEoXFavoriteStatus
 {
   FS_INDIFFERENT = 0x00,          //!< The game is neutral or unrated
@@ -258,14 +266,14 @@ typedef struct RenderToTextureToken_t
 #ifdef __cplusplus
 typedef struct ROMListOptions_t
 {
-  BOOL              m_verboseMode;        //!<  Whether or not to show verbose info (manufacturer, year, etc...)
-  ROMListSortMode   m_sortMode;           //!<  The current sort mode
-  BOOL              m_showROMStatus;      //!<  Whether or not to colorize based on ROM Status
-  BOOL              m_hideFiltered;       //!<  Whether or not to hide ROMs that have been filtered out
+  ROMListDisplayMode  m_displayMode;        //!<  Whether or not to show verbose info (manufacturer, year, etc...)
+  ROMListSortMode     m_sortMode;           //!<  The current sort mode
+  BOOL                m_showROMStatus;      //!<  Whether or not to colorize based on ROM Status
+  BOOL                m_hideFiltered;       //!<  Whether or not to hide ROMs that have been filtered out
 
-  UINT32            m_filterMode;         //!<  General filter mode bitvector (uses ROMListFilterMode flags)
-  UINT32            m_numPlayersFilter;
-//  CStdString        m_genreFilter;
+  UINT32              m_filterMode;         //!<  General filter mode bitvector (uses ROMListFilterMode flags)
+//  UINT32              m_numPlayersFilter;
+//  CStdString          m_genreFilter;
 } ROMListOptions_t;
 #endif
 

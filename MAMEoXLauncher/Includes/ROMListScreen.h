@@ -69,14 +69,15 @@ public:
     m_superscrollMode( FALSE ),
     m_gameSelected( FALSE ),
     m_shouldGenerateROMList( FALSE ),
-    m_currentSuperscrollIndex( 0 )
+    m_currentSuperscrollIndex( 0 ),
+    m_favoriteStatusChangeDelay( 0.0f )
 	{
-    m_options.m_verboseMode = TRUE;
+    m_options.m_displayMode = DM_VERBOSELIST;
     m_options.m_sortMode = SM_BYNAME;
     m_options.m_showROMStatus = TRUE;
     m_options.m_filterMode = FM_NONE;
     m_options.m_hideFiltered = FALSE;
-    m_options.m_numPlayersFilter = 0;
+//    m_options.m_numPlayersFilter = 0;
 
     if( !m_numDrivers )
       m_numDrivers = numDrivers;
@@ -257,6 +258,11 @@ protected:
   UINT32 GetAbsoluteCursorPosition( void ) const { return (UINT32)m_pageOffset + (UINT32)m_cursorPosition; }
 
 
+    // Helper functions to render ROM data
+  void DrawVerboseList( void );
+  void DrawSimpleList( void );
+  void DrawDetailedList( void );
+
     // Helper functions to save/load the rom list, with integrity checks
   BOOL SaveROMListFile( void );
   BOOL LoadROMListFile( void );
@@ -319,6 +325,7 @@ protected:
   CBaseMenuView         *m_menuRenderer;            //!<  Resizable menu renderer
 
 
+  FLOAT                 m_favoriteStatusChangeDelay;  //!<  Delay timer for favorite status changes
 
 		//! Vector of integers into the MAME driver array
 		//!  defining the set of available ROMs

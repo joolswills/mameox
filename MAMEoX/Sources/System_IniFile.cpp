@@ -38,19 +38,48 @@ CSystem_IniFile::CSystem_IniFile( const CStdString &strFullPath ) :
   
   m_fileName = strFullPath;
 
-	std::ifstream is( m_fileName.c_str() );
-	if( is.fail() )
-		return;
 
 	std::vector< std::string > inputVector;
 
-	while( 1 )
+    // Read the entire file into RAM, as reads/writes are unbuffered
+  osd_file *file = osd_fopen( FILETYPE_MAMEOX_FULLPATH, 0, m_fileName.c_str(), "r" );
+  if( !file )
+    return;
+
+  osd_fseek( file, 0, SEEK_END );
+  UINT32 fileSize = osd_ftell( file );
+  osd_fseek( file, 0, SEEK_SET );
+
+  char *buffer = new char[fileSize];
+  if( !buffer )
+    return;
+
+  osd_fread( file, buffer, fileSize );
+
+  osd_fclose( file );
+
+
+    // Break the file up into a vector of lines
+  UINT32 i = 0;
+	while( i < fileSize )
 	{
 		char buf[8192];
+    UINT32 j = 0;
+    for( ; buffer[i] != '\n' && j < 8192; ++i, ++j )
+      buf[j] = buffer[i];
 
-		is.getline( buf, 8191 );
+    if( j == 8192 )
+    {
+      PRINTMSG( T_ERROR, "Corrupt INI file, read 8k chars before finding a \\n!" );
+      return;
+    }
+    else if( j )
+      buf[j-1] = 0;
+    else
+      buf[j] = 0;
 
-		if( !is.eof() )
+      // Catch no newline at end of file
+		if( buffer[i++] == '\n' )
 		{
 			std::string inputStr = buf;
 			inputVector.push_back( CSystem_StringModifier::KillLeadingWhitespaceStr( inputStr ) );
@@ -59,21 +88,24 @@ CSystem_IniFile::CSystem_IniFile( const CStdString &strFullPath ) :
 			break;
 	}
 
-	is.close();
+    // The file data is no longer needed
+  delete[] buffer;
 
-	std::vector<std::string>::iterator i = inputVector.begin();
-	for( ; i != inputVector.end(); ++i )
+
+    // Break each line up
+	std::vector<std::string>::iterator it = inputVector.begin();
+	for( ; it != inputVector.end(); ++it )
 	{
 			// Check to see if the current string is a new section
-		if( (*i)[0] == '[' )
+		if( (*it)[0] == '[' )
 		{
-			std::string sectionHeader = (*i++);
+			std::string sectionHeader = (*it++);
 			std::vector<std::string> temp;
 
-			for( ;(i+1) != inputVector.end() && (*(i+1))[0] != '['; ++i )
+			for( ;(it+1) != inputVector.end() && (*(it+1))[0] != '['; ++it )
 			{
-				if( (*i).size() )	// Don't bother storing blank lines
-          temp.push_back( (*i) );
+				if( (*it).size() )	// Don't bother storing blank lines
+          temp.push_back( (*it) );
 			}
 
 			m_data[sectionHeader] = temp;
@@ -89,23 +121,28 @@ CSystem_IniFile::~CSystem_IniFile( void )
 	if( !m_dirtyFlag || m_fileName == "" )
 		return;
 
-	std::ofstream os( m_fileName.c_str() );
-	if( os.fail() )
-		return;
+    // Write via osd_fwrite, as it's buffered
+  osd_file *file = osd_fopen( FILETYPE_MAMEOX_FULLPATH, 0, m_fileName.c_str(), "w" );
+  if( !file )
+    return;
 
 	std::map< std::string, std::vector<std::string> >::iterator i = m_data.begin();
 	for( ; i != m_data.end(); ++i )
 	{
-		os << (*i).first << std::endl;
+    osd_fwrite( file, (*i).first.c_str(), (*i).first.length() );
+    osd_fwrite( file, "\n", 1 );
 
 		std::vector<std::string>::iterator j = (*i).second.begin();
 		for( ; j != (*i).second.end(); ++j )
-			os << (*j) << std::endl;
+    {
+      osd_fwrite( file, (*j).c_str(), (*j).length() );
+      osd_fwrite( file, "\n", 1 );
+    }
 
-		os << std::endl << std::endl;
+    osd_fwrite( file, "\n\n", 2 );
 	}
 
-	os.close();
+  osd_fclose( file );
 }
 
 
@@ -213,6 +250,8 @@ BOOL CSystem_IniFile::GetValueString( const std::string &section,
 									 std::string &valueRet ) const
 {
 	std::map< std::string, std::vector<std::string> >::const_iterator sectionData = m_data.find( section );
+  if( sectionData == m_data.end() )
+    return FALSE;
 
 	std::vector<std::string>::const_iterator i = (*sectionData).second.begin();
 	for( ; i != (*sectionData).second.end(); ++i )
