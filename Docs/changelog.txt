@@ -1,4 +1,5 @@
 Version 0.64b
+
   - \Docs\readme.txt:
     - Noted new directory for CHD files
 
@@ -56,6 +57,93 @@ Version 0.64b
 
   - \MAMEoXLauncher\Sources\OptionsPage.cpp:
     - Added INI options editing class
+
+ --- Integrated MAME version 0.68, changes follow -------------------
+
+ Changes in the \MAME\src directory
+
+ Removals:
+   cpu\m68000\asmintf.c.cra
+   drivers\unico16.c
+   vidhrdw\unico16.c
+
+ Additions:
+   \
+	blitgen.c
+	hash.c
+	hash.h
+	mameblit.c
+	sha1.c
+	sha1.h
+
+   drivers\
+	bwing.c
+	chaknpop.c
+	chindrag.c
+	fantland.c
+	groundfx.c
+	grtwall.c
+	lethalj.c
+	mainsnk.c
+	metlclsh.c
+	pbillian.c
+	raiden2.c
+	realbrk.c
+	rotaryf.c
+	sbugger.c
+	sg1000a.c
+	shougi.c
+	skyarmy.c
+	system24.c
+	thedeep.c
+	tourtabl.c
+	truco.c
+	unico.c
+	wallc.c
+
+    includes\
+	lethalj.h
+	realbrk.h
+	system24.h
+	thedeep.h
+	unico.h
+
+    machine\
+	6532riot.c
+	6532riot.h
+	chaknpop.c
+	system24.c
+	tmp68301.c
+	tmp68301.h
+
+    sndhrdw\
+	pbillian.c
+
+    sound\
+	tiaintf.c
+	tiaintf.h
+	tiasound.c
+	tiasound.h
+
+    vidhrdw\
+	bwing.c
+	chaknpop.c
+	fantland.c
+	groundfx.c
+	lethalj.c
+	metlclsh.c
+	pbillian.c
+	realbrk.c
+	sbugger.c
+	segaic24.c
+	segaic24.h
+	system24.c
+	thedeep.c
+	tia.c
+	tms9928a.c
+	tms9928a.h
+	truco.c
+	unico.c
 
 Version 0.63b
   
