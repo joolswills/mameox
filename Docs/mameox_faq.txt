@@ -1,6 +1,6 @@
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@@@                          MAMEoX FAQ v 0.16                          @@@
+@@@                          MAMEoX FAQ v 0.17                          @@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@                                                                     @@@
 @@@           MAMEoX v 0.72.1b, based on the MAME v 0.72 core           @@@
@@ -26,7 +26,9 @@
                    M$ dash and neogeo games starting properly.
  08/12/2003 - 0.16 Added information about autobooting save 
                    states.  Updated version.  Updated vmm 
-                   information.  Added lightgun information.                                                                  
+                   information.  Added lightgun information.
+ 08/13/2003 - 0.17 Added information on default key mappings
+                   (can be used with USB keyboard)                                                                                    
 
  1.0 Purpose:
  ------------
@@ -218,6 +220,34 @@
  
  A.  It's still not working as well as we would like.  We hope to fix 
      in a later release.  Please be patient.
+ -------------------------------------------------------------------------
+ Q.  How do I use a keyboard with MAMEoX?
+ 
+ A.  MAMEoX as of version .72.1b supports USB keyboards.  Here are the 
+     default keymappings (thanks to xaiNiax for this info!) :
+     
+     ***** FUNCTION KEYS *****
+     TAB - Toggle the configuration menu. 
+     Tilde - Toggle the on screen display. Use the up and down arrow 
+     keys to select the parameter (global volume, mixing level,
+     gamma correction etc.), left and right arrow keys to modify it. 
+     P - Pause. 
+     Shift+P - While paused, advances to the next frame 
+     F3 - Reset game. 
+     F4 - Shows the game graphics. Use cursor keys to change 
+     set/color, F4 or Esc to return to the emulation. 
+
+     Shift+F7 then number 1-0 to save a game. 
+     (NOTE: Not all games support this function!) 
+
+     F7 then number used to load a saved game. 
+
+     F9 - Change frame skip on the fly.
+     F10 - Toggle speed throttling.
+     F11 - Toggle speed display.
+     Shift+F11 - Toggle profiler display.
+     F12 - Save ScreenShot. 
+     ESC - Exit.    
  -------------------------------------------------------------------------
  Q.  Does MAMEoX support any filters?
  
