@@ -1,0 +1,65 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: MAMEoX - Xbox Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPE7.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /Zi /Od /I ".\Includes" /I "..\MAME\src" /I "..\\" /I "C:\Program Files\XboxSDK_June2002\Samples\Xbox\Common\Include" /FI"VCPPMame.h" /D "WIN32" /D "_XBOX" /D "_DEBUG" /Fp"Debug/MAMEoX.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /G6 /Ztmp /c 
+"C:\MAMEoX\MAMEoX\Sources\xbox_Main.cpp"
+"C:\MAMEoX\MAMEoX\Sources\xbox_Sound.c"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPE7.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPE8.tmp" with contents
+[
+xapilibd.lib d3d8d.lib d3dx8d.lib xgraphicsd.lib dsoundd.lib dmusicd.lib xnetd.lib xboxkrnl.lib MAME.lib /nologo /incremental:no /pdb:"Debug/MAMEoX.pdb" /debug /machine:I386 /out:"Debug/MAMEoX.exe" /libpath:"..\MAME\Debug" /subsystem:xbox /fixed:no /TMP 
+.\Debug\DebugLogger.obj
+.\Debug\GraphicsManager.obj
+.\Debug\InputManager.obj
+.\Debug\ROMList.obj
+.\Debug\xbfont.obj
+.\Debug\xbox_Direct3DRenderer.obj
+.\Debug\xbox_Display.obj
+.\Debug\xbox_FileIO.obj
+.\Debug\xbox_JoystickMouse.obj
+.\Debug\xbox_Keyboard.obj
+.\Debug\xbox_Main.obj
+.\Debug\xbox_Miscelaneous.obj
+.\Debug\xbox_Sound.obj
+.\Debug\xbox_Timing.obj
+.\Debug\xbresource.obj
+.\Debug\xbutil.obj
+\MAMEoX\MAME\Debug\MAME.lib
+]
+Creating command line "link.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPE8.tmp"
+Creating command line "imagebld.exe /nologo /stack:0x10000 /debug /out:"Debug/MAMEoX.xbe" /limitmem  .\Debug\MAMEoX.exe "
+<h3>Output Window</h3>
+Compiling...
+xbox_Main.cpp
+xbox_Sound.c
+Linking...
+Creating Xbox image...
+IMAGEBLD : warning IM1029: library XAPILIBD is unapproved
+IMAGEBLD : warning IM1029: library D3D8D is unapproved
+IMAGEBLD : warning IM1029: library D3DX8D is unapproved
+IMAGEBLD : warning IM1029: library XGRAPHCD is unapproved
+IMAGEBLD : warning IM1029: library DSOUNDD is unapproved
+IMAGEBLD : warning IM1029: library DMUSICD is unapproved
+IMAGEBLD : warning IM1029: library XNETD is unapproved
+IMAGEBLD : warning IM1029: library LIBCMTD is unapproved
+IMAGEBLD : warning IM1029: library LIBCPMTD is unapproved
+IMAGEBLD : warning IM1030: This image may not be accepted for certification
+Creating command line "xbecopy.exe /NOLOGO  .\Debug\MAMEoX.xbe "E:\MAMETEST\MameoX.xbe""
+Transferring file to Xbox...E:\MAMETEST\MameoX.xbe
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+MAMEoX.xbe - 0 error(s), 10 warning(s)
+</pre>
+</body>
+</html>

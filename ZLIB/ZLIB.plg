@@ -1,0 +1,90 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: MAMEoX - Xbox Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Build : warning : failed to (or don't know how to) build 'C:\MAMEoX\Release\MAMEoX.exe'
+
+Creating command line "imagebld.exe /nologo /stack:0x10000 /out:"Release/MAMEoX.xbe"  .\Release\MAMEoX.exe "
+<h3>Output Window</h3>
+Creating Xbox image...
+IMAGEBLD : error IM1000: cannot open input file '.\Release\MAMEoX.exe'
+Error executing imagebld.exe.
+
+
+
+<h3>Results</h3>
+MAMEoX.xbe - 1 error(s), 1 warning(s)
+<h3>
+--------------------Configuration: ZLIB - Xbox Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPD33.tmp" with contents
+[
+/nologo /MT /W3 /GX /O2 /D "WIN32" /D "_XBOX" /D "NDEBUG" /Fp"Release/ZLIB.pch" /YX /Fo"Release/" /Fd"Release/" /FD /G6 /Ztmp /c 
+"C:\MAMEoX\ZLIB\zutil.c"
+"C:\MAMEoX\ZLIB\compress.c"
+"C:\MAMEoX\ZLIB\crc32.c"
+"C:\MAMEoX\ZLIB\deflate.c"
+"C:\MAMEoX\ZLIB\gzio.c"
+"C:\MAMEoX\ZLIB\infblock.c"
+"C:\MAMEoX\ZLIB\infcodes.c"
+"C:\MAMEoX\ZLIB\inffast.c"
+"C:\MAMEoX\ZLIB\inflate.c"
+"C:\MAMEoX\ZLIB\inftrees.c"
+"C:\MAMEoX\ZLIB\infutil.c"
+"C:\MAMEoX\ZLIB\maketree.c"
+"C:\MAMEoX\ZLIB\trees.c"
+"C:\MAMEoX\ZLIB\uncompr.c"
+"C:\MAMEoX\ZLIB\adler32.c"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPD33.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPD34.tmp" with contents
+[
+/nologo /out:"Release\ZLIB.lib" 
+.\Release\zutil.obj
+.\Release\compress.obj
+.\Release\crc32.obj
+.\Release\deflate.obj
+.\Release\gzio.obj
+.\Release\infblock.obj
+.\Release\infcodes.obj
+.\Release\inffast.obj
+.\Release\inflate.obj
+.\Release\inftrees.obj
+.\Release\infutil.obj
+.\Release\maketree.obj
+.\Release\trees.obj
+.\Release\uncompr.obj
+.\Release\adler32.obj
+]
+Creating command line "link.exe -lib @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPD34.tmp"
+<h3>Output Window</h3>
+Compiling...
+zutil.c
+compress.c
+crc32.c
+deflate.c
+gzio.c
+infblock.c
+infcodes.c
+inffast.c
+inflate.c
+inftrees.c
+infutil.c
+maketree.c
+trees.c
+uncompr.c
+adler32.c
+Creating library...
+
+
+
+<h3>Results</h3>
+ZLIB.lib - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>
