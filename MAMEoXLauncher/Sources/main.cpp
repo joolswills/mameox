@@ -1335,6 +1335,7 @@ static BOOL Helper_CopySystemFilesFromDVD( LPDIRECT3DDEVICE8 pD3DDevice )
             sourceStr += "\\"; \
             sourceStr += findData.cFileName; \
             tempStr = (dirName); \
+            tempStr += "\\"; \
             tempStr += findData.cFileName; \
             DrawProgressbarMessage( pD3DDevice, message, findData.cFileName, i++, 0 ); \
             CopyFile( sourceStr.c_str(), tempStr.c_str(), TRUE ); \
