@@ -82,6 +82,8 @@ public:
 	    m_displayDevice->Present( NULL, NULL, NULL, NULL );	
   }
 
+	const RECT &GetTitleArea( void ) const { return m_titleArea; }
+	const RECT &GetBodyArea( void ) const { return m_bodyArea; }
 protected:
 
 		//------------------------------------------------------------

@@ -147,13 +147,17 @@ static const char *g_colorIDToINIEntry[] = {
 
 	"TextColor",												// COLOR_SCREENSAVER_TEXT
 
-	"TitleBar.TextColor",								// COLOR_SKINCHOOSERSCREEN_TITLEBAR_TEXT
-	"Body.TextColor",										// COLOR_SKINCHOOSERSCREEN_BODY_TEXT
-	"Body.HighlightBarColor",						// COLOR_SKINCHOOSERSCREEN_BODY_HIGHLIGHTBAR
-	"Body.DividerColor",								// COLOR_SKINCHOOSERSCREEN_BODY_DIVIDER
-	"Body.Screenshot.BackgroundColor",	// COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND
-	"Body.Screenshot.TextColor",				// COLOR_SKINCHOOSERSCREEN_SCREENSHOT_TEXT
-	"ButtonLabels.Color",								// COLOR_SKINCHOOSERSCREEN_BUTTONICON_TEXT
+	"TitleBar.TextColor",													// COLOR_SKINCHOOSERSCREEN_TITLEBAR_TEXT
+	"Body.TextColor",															// COLOR_SKINCHOOSERSCREEN_BODY_TEXT
+	"Body.DescriptionTextColor",									// COLOR_SKINCHOOSERSCREEN_BODY_DESCRIPTION_TEXT
+	"Body.HighlightBarColor",											// COLOR_SKINCHOOSERSCREEN_BODY_HIGHLIGHTBAR
+	"Body.DividerColor",													// COLOR_SKINCHOOSERSCREEN_BODY_DIVIDER
+	"Body.Screenshot.BackgroundColor.UpperLeft",	// COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND_UL
+	"Body.Screenshot.BackgroundColor.UpperRight",	// COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND_UR
+	"Body.Screenshot.BackgroundColor.LowerRight",	// COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND_LR
+	"Body.Screenshot.BackgroundColor.LowerLeft",	// COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND_LL
+	"Body.Screenshot.TextColor",									// COLOR_SKINCHOOSERSCREEN_SCREENSHOT_TEXT
+	"ButtonLabels.Color",													// COLOR_SKINCHOOSERSCREEN_BUTTONICON_TEXT
 
 	"TitleBar.TextColor",								// COLOR_STARTMENU_TITLEBAR_TEXT
 	"Body.TextColor",										// COLOR_STARTMENU_BODY_TEXT

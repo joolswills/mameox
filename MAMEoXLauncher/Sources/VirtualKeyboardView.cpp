@@ -310,7 +310,7 @@ void CVirtualKeyboardView::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   RenderBackdrop( fontHeight );
 
     //-- Render the highlight bar for the selected item -------------------------------------
-  FLOAT selectedItemYPos = (fontHeight * (ULONG)m_cursorPositionY);
+  FLOAT selectedItemYPos = (fontHeight * (UINT32)m_cursorPositionY);
 
   m_displayDevice->SetTexture( 0, NULL );
   m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
@@ -338,7 +338,7 @@ void CVirtualKeyboardView::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   else
   {
       // Highlight only the selected letter
-    FLOAT selectedItemXPos = (characterWidth * (ULONG)m_cursorPositionX) - (CHAR_PADDING / 2.0f);
+    FLOAT selectedItemXPos = (characterWidth * (UINT32)m_cursorPositionX) - (CHAR_PADDING / 2.0f);
     m_displayDevice->Begin( D3DPT_QUADLIST );
       m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_VIRTUALKEYBOARD_BODY_HIGHLIGHTBAR) );
       m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 

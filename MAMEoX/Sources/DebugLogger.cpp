@@ -73,7 +73,7 @@ extern "C" {
 //-------------------------------------------------------
 //  Helper_OutputDebugStringPrintMsg
 //-------------------------------------------------------
-void Helper_OutputDebugStringPrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNumber, const char *function, const char *fmt, ... )
+void Helper_OutputDebugStringPrintMsg( UINT32 msgLevel, const char *fileName, UINT32 lineNumber, const char *function, const char *fmt, ... )
 {
   sprintf(  g_debugLoggerString, 
             "<%s %-24.24s [%6.6lu] %-24.24s> ", 
@@ -97,7 +97,7 @@ void Helper_OutputDebugStringPrintMsg( ULONG msgLevel, const char *fileName, ULO
 //----------------------------------------------------------------------------
 //  Helper_ConsolePrintMsg
 //----------------------------------------------------------------------------
-void Helper_ConsolePrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNumber, const char *function, const char *fmt, ... )
+void Helper_ConsolePrintMsg( UINT32 msgLevel, const char *fileName, UINT32 lineNumber, const char *function, const char *fmt, ... )
 {
   if( function )
   {
@@ -212,7 +212,7 @@ void Helper_RenderDebugConsole( void *device )
 //-------------------------------------------------------
 //  Helper_WriteToFilePrintMsg
 //-------------------------------------------------------
-void Helper_WriteToFilePrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNumber, const char *function, const char *fmt, ... )
+void Helper_WriteToFilePrintMsg( UINT32 msgLevel, const char *fileName, UINT32 lineNumber, const char *function, const char *fmt, ... )
 {
   sprintf(  g_debugLoggerString, 
             "<%s %-24.24s [%6.6lu] %-32.32s> ", 

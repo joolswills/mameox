@@ -62,6 +62,10 @@ BOOL CSkinChooser::FindSkins( void )
 		{
 			osd_fclose( file );
 
+			CSystem_IniFile iniFile( iniFile.c_str() );
+			CStdString author = iniFile.GetProfileString( "Metadata", "Author", "" );
+			CStdString description = iniFile.GetProfileString( "Metadata", "Description", "" );
+
 			PRINTMSG(( T_INFO, "Skin %s found!", basepath.c_str() ));
 
 				// Try to load a preview for this skin
@@ -79,7 +83,7 @@ BOOL CSkinChooser::FindSkins( void )
 			}
 
 				// We have a skin on our hands
-			m_skinResourceVector.push_back( new CSkinResource( basepath.c_str(), texture, rct ) );
+			m_skinResourceVector.push_back( new CSkinResource( basepath, author, description, texture, rct ) );
 		}
 
 	} while( FindNextFile( findHandle, &findData ) );

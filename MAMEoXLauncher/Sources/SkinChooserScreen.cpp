@@ -57,10 +57,9 @@
 #define HELP_START_TEXT_Y   (HELP_START_ICON_Y + 5)
 
 
-#define DETAIL_SCREENSHOT_RIGHT   SCROLLUP_LEFT
-#define DETAIL_SCREENSHOT_TOP     127
-#define DETAIL_SCREENSHOT_LEFT    (DETAIL_SCREENSHOT_RIGHT - 128)
-#define DETAIL_SCREENSHOT_BOTTOM  (DETAIL_SCREENSHOT_TOP + ( (FLOAT)(DETAIL_SCREENSHOT_RIGHT - DETAIL_SCREENSHOT_LEFT) * 3.0f / 4.0f))
+#define DETAIL_SCREENSHOT_RIGHT   SCROLLUP_RIGHT
+#define DETAIL_SCREENSHOT_TOP     FIRSTDATA_ROW
+#define DETAIL_SCREENSHOT_LEFT    (DETAIL_SCREENSHOT_RIGHT - 260)
 
 	// Maximum number of items to render on the screen at once
 #define MAXPAGESIZE							3
@@ -263,15 +262,15 @@ void CSkinChooserScreen::NormalModeMoveCursor( CInputManager &gp, FLOAT elapsedT
 
 
 	DWORD pageSize = (m_skinChooser.m_skinResourceVector.size() < MAXPAGESIZE ? m_skinChooser.m_skinResourceVector.size() : MAXPAGESIZE);
-	ULONG pageHalfwayPoint = (pageSize >> 1);
-	ULONG maxPageOffset = m_skinChooser.m_skinResourceVector.size() - pageSize;
+	UINT32 pageHalfwayPoint = (pageSize >> 1);
+	UINT32 maxPageOffset = m_skinChooser.m_skinResourceVector.size() - pageSize;
 
 	if( cursorVelocity > 0 )
 	{
 			// Moving down in the list
 
 			// If the cursor position is not locked at the halfway point, move it towards there
-		if( (ULONG)m_cursorPosition < pageHalfwayPoint )
+		if( (UINT32)m_cursorPosition < pageHalfwayPoint )
 		{
 				// See if the entire velocity is consumed in moving the cursor or not
 			if( (cursorVelocity + m_cursorPosition) < pageHalfwayPoint )
@@ -288,7 +287,7 @@ void CSkinChooserScreen::NormalModeMoveCursor( CInputManager &gp, FLOAT elapsedT
 				// The cursor is already at the halfway point
 
 				// If the page offset can be moved without going off the end of the list, do so
-			if( (ULONG)(cursorVelocity + m_pageOffset) <= maxPageOffset )
+			if( (UINT32)(cursorVelocity + m_pageOffset) <= maxPageOffset )
 			{
 				m_pageOffset += cursorVelocity;
 			}
@@ -307,9 +306,9 @@ void CSkinChooserScreen::NormalModeMoveCursor( CInputManager &gp, FLOAT elapsedT
 		}
 
 			// Cap values
-		if( (ULONG)m_pageOffset > maxPageOffset )
+		if( (UINT32)m_pageOffset > maxPageOffset )
 			m_pageOffset = (FLOAT)maxPageOffset;
-		if( (ULONG)m_cursorPosition > (pageSize - 1) )
+		if( (UINT32)m_cursorPosition > (pageSize - 1) )
 			m_cursorPosition = (FLOAT)(pageSize - 1);
 	}
 	else
@@ -317,7 +316,7 @@ void CSkinChooserScreen::NormalModeMoveCursor( CInputManager &gp, FLOAT elapsedT
 			//--- Moving up in the list -----------------------------------------------
 
 			// If the cursor position is not locked at the halfway point, move it towards there
-		if( (ULONG)m_cursorPosition > pageHalfwayPoint )
+		if( (UINT32)m_cursorPosition > pageHalfwayPoint )
 		{
 				// See if the entire velocity is consumed in moving the cursor or not
 			if( (cursorVelocity + m_cursorPosition) > pageHalfwayPoint )
@@ -441,6 +440,13 @@ void CSkinChooserScreen::DrawSkinList( void )
 																				TEXTBOX_RIGHT - (NAME_COLUMN + COLUMN_PADDING) );
 	m_fontSet.SmallThinFont().End();
 
+
+
+		// Calculate the height per row from the skin
+	RECT bodyRect = m_menuRenderer->GetBodyArea();
+	FLOAT rowHeight = (FLOAT)( (bodyRect.bottom - bodyRect.top) / m_maxPageSize );
+
+
     // Render the highlight bar for the selected item
   m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
   m_displayDevice->SetRenderState( D3DRS_SRCBLEND,         D3DBLEND_SRCALPHA );
@@ -448,8 +454,7 @@ void CSkinChooserScreen::DrawSkinList( void )
   m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
   m_displayDevice->SetTexture( 0, NULL );
 
-	FLOAT entryHeight = (DETAIL_SCREENSHOT_BOTTOM - DETAIL_SCREENSHOT_TOP + 10);
-  FLOAT selectedItemYPos = FIRSTDATA_ROW + entryHeight * (ULONG)m_cursorPosition;
+  FLOAT selectedItemYPos = FIRSTDATA_ROW + (rowHeight * (UINT32)m_cursorPosition);
 
   m_displayDevice->Begin( D3DPT_QUADLIST );
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_BODY_HIGHLIGHTBAR) );
@@ -459,48 +464,57 @@ void CSkinChooserScreen::DrawSkinList( void )
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, selectedItemYPos, 1.0f, 1.0f );
     
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_BODY_HIGHLIGHTBAR) );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, selectedItemYPos + entryHeight, 1.0f, 1.0f );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, selectedItemYPos + rowHeight, 1.0f, 1.0f );
 
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_BODY_HIGHLIGHTBAR) );
-    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, selectedItemYPos + entryHeight, 1.0f, 1.0f );
+    m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, selectedItemYPos + rowHeight, 1.0f, 1.0f );
   m_displayDevice->End();
 
 
 
+
 		//-- Draw 3 screenshot + name pairs -------------------------------------------------
-	for( int i = (ULONG)m_pageOffset; i < (ULONG)m_pageOffset + GetCurrentPageSize(); ++i )
+	for( int i = (UINT32)m_pageOffset; i < (UINT32)m_pageOffset + GetCurrentPageSize(); ++i )
 	{
 
 		CSkinResource *currentResource = m_skinChooser.m_skinResourceVector[i];
 
-		FLOAT screenshotLeft = DETAIL_SCREENSHOT_LEFT;
-		FLOAT screenshotRight = DETAIL_SCREENSHOT_RIGHT;
-		FLOAT screenshotTop = DETAIL_SCREENSHOT_TOP + 5 + ((i - m_pageOffset) * entryHeight);
-		FLOAT screenshotBottom = screenshotTop + (DETAIL_SCREENSHOT_BOTTOM - DETAIL_SCREENSHOT_TOP);
+
+		FLOAT screenshotLeft = bodyRect.right - 260;
+		FLOAT screenshotRight = bodyRect.right;
+		FLOAT screenshotTop = bodyRect.top + ((i - (UINT32)m_pageOffset) * rowHeight);
+		FLOAT screenshotBottom = screenshotTop + rowHeight;
 
 			// Display the screenshot
-		m_displayDevice->SetRenderState( D3DRS_ALPHATESTENABLE,     FALSE );
-		m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE,    FALSE );
+		m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
+		m_displayDevice->SetRenderState( D3DRS_SRCBLEND,         D3DBLEND_SRCALPHA );
+		m_displayDevice->SetRenderState( D3DRS_DESTBLEND,        D3DBLEND_INVSRCALPHA );
+		m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+		m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+		m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
+		m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
+		m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX0 );
 
 		LPDIRECT3DTEXTURE8 previewTexture = currentResource->GetPreviewTexture();
 		if( previewTexture )
 		{
-			m_displayDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-			m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-			m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_TEX0 );
 			m_displayDevice->SetTexture( 0, previewTexture );
 
 			m_displayDevice->Begin( D3DPT_QUADLIST );      
 				const RECT &rct = currentResource->GetPreviewTextureRect();
+				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND_UL) );
 				m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, rct.left, rct.top );
 				m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotLeft, screenshotTop, 1.0f, 1.0f );
 	      
+				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND_UR) );
 				m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, rct.right, rct.top );
 				m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotRight, screenshotTop, 1.0f, 1.0f );
 	      
+				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND_LR) );
 				m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, rct.right, rct.bottom );
 				m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotRight, screenshotBottom, 1.0f, 1.0f );
 
+				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND_LL) );
 				m_displayDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, rct.left, rct.bottom );
 				m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotLeft, screenshotBottom, 1.0f, 1.0f );
 			m_displayDevice->End();
@@ -514,16 +528,16 @@ void CSkinChooserScreen::DrawSkinList( void )
 			m_displayDevice->SetTexture( 0, NULL );
 
 			m_displayDevice->Begin( D3DPT_QUADLIST );      
-				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND) );
+				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND_UL) );
 				m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotLeft, screenshotTop, 1.0f, 1.0f );
 	      
-				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND) );
+				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND_UR) );
 				m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotRight, screenshotTop, 1.0f, 1.0f );
 	      
-				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND) );
+				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND_LR) );
 				m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotRight, screenshotBottom, 1.0f, 1.0f );
 
-				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND) );
+				m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND_LL) );
 				m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, screenshotLeft, screenshotBottom, 1.0f, 1.0f );
 			m_displayDevice->End();
 
@@ -539,15 +553,42 @@ void CSkinChooserScreen::DrawSkinList( void )
 		}
 
 
+
+		FLOAT lineOneCenterOffset = (rowHeight / 2.0f);
+		FLOAT lineTwoCenterOffset = lineOneCenterOffset + m_fontSet.SmallThinFont().GetFontHeight() / 2.0f;
+		if( currentResource->GetSkinDescription().size() )
+			lineOneCenterOffset -= m_fontSet.SmallThinFont().GetFontHeight() / 2.0f;
+		
 		m_fontSet.SmallThinFont().Begin();
-			mbstowcs( name, currentResource->GetSkinName().c_str(), 255 );
+
+			if( currentResource->GetSkinAuthor().size() )
+			{
+				WCHAR skinName[64] = L"";
+				WCHAR skinAuthor[64] = L"";
+	      mbstowcs( skinName, currentResource->GetSkinName().c_str(), 64 );
+	      mbstowcs( skinAuthor, currentResource->GetSkinAuthor().c_str(), 64 );
+				swprintf( name, L"%s by %s", skinName, skinAuthor );
+			}
+			else
+				mbstowcs( name, currentResource->GetSkinName().c_str(), 255 );
+
 			m_fontSet.SmallThinFont().DrawText( NAME_COLUMN, 
-																					screenshotTop + entryHeight / 2.0f, 
+																					screenshotTop + lineOneCenterOffset,
 																					g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_BODY_TEXT), 
 																					name, 
 																					XBFONT_TRUNCATED | XBFONT_CENTER_Y,
 																					TEXTBOX_RIGHT - (NAME_COLUMN + COLUMN_PADDING) );
 
+			if( currentResource->GetSkinDescription().size() )
+			{
+				mbstowcs( name, currentResource->GetSkinDescription().c_str(), 255 );
+				m_fontSet.SmallThinFont().DrawText( NAME_COLUMN, 
+																						screenshotTop + lineTwoCenterOffset,
+																						g_loadedSkin->GetSkinColor(COLOR_SKINCHOOSERSCREEN_BODY_DESCRIPTION_TEXT), 
+																						name, 
+																						XBFONT_TRUNCATED | XBFONT_CENTER_Y,
+																						TEXTBOX_RIGHT - (NAME_COLUMN + COLUMN_PADDING) );
+			}
 		m_fontSet.SmallThinFont().End();
 	}
 

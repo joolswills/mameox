@@ -365,7 +365,7 @@ void COptionsScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 	}
 
   FLOAT fontHeight = m_fontSet.SmallThinFontHeight();
-  FLOAT selectedItemYPos = (fontHeight * (ULONG)m_cursorPosition);
+  FLOAT selectedItemYPos = (fontHeight * (UINT32)m_cursorPosition);
 
     //-- Render the highlight bar for the selected item -------------------------------------
   m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );

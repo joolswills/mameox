@@ -96,9 +96,13 @@ typedef enum SkinColorID_t {
 
 	COLOR_SKINCHOOSERSCREEN_TITLEBAR_TEXT,
 	COLOR_SKINCHOOSERSCREEN_BODY_TEXT,
+	COLOR_SKINCHOOSERSCREEN_BODY_DESCRIPTION_TEXT,
 	COLOR_SKINCHOOSERSCREEN_BODY_HIGHLIGHTBAR,
 	COLOR_SKINCHOOSERSCREEN_BODY_DIVIDER,
-	COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND,
+	COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND_UL,
+	COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND_UR,
+	COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND_LR,
+	COLOR_SKINCHOOSERSCREEN_SCREENSHOT_BACKGROUND_LL,
 	COLOR_SKINCHOOSERSCREEN_SCREENSHOT_TEXT,
 	COLOR_SKINCHOOSERSCREEN_BUTTONICON_TEXT,
 
@@ -255,10 +259,12 @@ public:
 		//------------------------------------------------------
 		//	Constructor
 		//------------------------------------------------------
-	CSkinResource( const char *basePath, LPDIRECT3DTEXTURE8 previewTexture, const RECT &previewTextureSize ) : 
+	CSkinResource( const CStdString &basePath, const CStdString &author, const CStdString &description, LPDIRECT3DTEXTURE8 previewTexture, const RECT &previewTextureSize ) : 
 			m_skinName( basePath ),
 			m_previewTexture( previewTexture ),
-			m_previewTextureRect( previewTextureSize )
+			m_previewTextureRect( previewTextureSize ),
+			m_author( author ),
+			m_description( description )
 	{
 		m_splashBackdropTexture = m_messageBackdropTexture = m_listBackdropTexture = 
 			m_TVCalibrationSpritesTexture = m_lightgunCalibrationSpritesTexture = m_listSpritesTexture =	
@@ -323,6 +329,16 @@ public:
 	const CStdString &GetSkinName( void ) const { return m_skinName;	}
 
 		//------------------------------------------------------
+		// GetSkinAuthor
+		//------------------------------------------------------
+	const CStdString &GetSkinAuthor( void ) const { return m_author;	}
+
+		//------------------------------------------------------
+		// GetSkinDescription
+		//------------------------------------------------------
+	const CStdString &GetSkinDescription( void ) const { return m_description;	}
+
+		//------------------------------------------------------
 		// GetPreviewTexture
 		//------------------------------------------------------
 	LPDIRECT3DTEXTURE8 GetPreviewTexture( void ) { return m_previewTexture;	}
@@ -375,6 +391,8 @@ protected:
 																			const CStdString &alphaChannelEntry );
 
 	CStdString							m_skinName;
+	CStdString							m_author;
+	CStdString							m_description;
 	LPDIRECT3DTEXTURE8			m_previewTexture;
 	RECT										m_previewTextureRect;
 

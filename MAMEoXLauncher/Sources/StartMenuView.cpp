@@ -120,7 +120,7 @@ void CStartMenuView::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   RenderBackdrop( fontHeight );
 
     //-- Render the highlight bar for the selected item -------------------------------------
-  FLOAT selectedItemYPos = (m_fontSet.SmallThinFontHeight() * (ULONG)m_cursorPosition);
+  FLOAT selectedItemYPos = (m_fontSet.SmallThinFontHeight() * (UINT32)m_cursorPosition);
   m_displayDevice->SetTexture( 0, NULL );
   m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
   m_displayDevice->SetRenderState( D3DRS_SRCBLEND,         D3DBLEND_SRCALPHA );

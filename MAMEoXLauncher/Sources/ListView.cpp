@@ -139,8 +139,8 @@ void CListView::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
   }
 
 	DWORD pageSize = (m_numLinesInList < m_maxPageSize ? m_numLinesInList : m_maxPageSize);
-	ULONG pageHalfwayPoint = (pageSize >> 1);
-	ULONG maxPageOffset = m_numLinesInList - pageSize;
+	UINT32 pageHalfwayPoint = (pageSize >> 1);
+	UINT32 maxPageOffset = m_numLinesInList - pageSize;
 
 
 
@@ -149,7 +149,7 @@ void CListView::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
 			// Moving down in the list
 
 			// If the cursor position is not locked at the halfway point, move it towards there
-		if( (ULONG)m_cursorPosition < pageHalfwayPoint )
+		if( (UINT32)m_cursorPosition < pageHalfwayPoint )
 		{
 				// See if the entire velocity is consumed in moving the cursor or not
 			if( (cursorVelocity + m_cursorPosition) < pageHalfwayPoint )
@@ -166,7 +166,7 @@ void CListView::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
 				// The cursor is already at the halfway point
 
 				// If the page offset can be moved without going off the end of the list, do so
-			if( (ULONG)(cursorVelocity + m_pageOffset) <= maxPageOffset )
+			if( (UINT32)(cursorVelocity + m_pageOffset) <= maxPageOffset )
 			{
 				m_pageOffset += cursorVelocity;
 			}
@@ -185,9 +185,9 @@ void CListView::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
 		}
 
 			// Cap values
-		if( (ULONG)m_pageOffset > maxPageOffset )
+		if( (UINT32)m_pageOffset > maxPageOffset )
 			m_pageOffset = (FLOAT)maxPageOffset;
-		if( (ULONG)m_cursorPosition > (pageSize - 1) )
+		if( (UINT32)m_cursorPosition > (pageSize - 1) )
 			m_cursorPosition = (FLOAT)(pageSize - 1);
 	}
 	else
@@ -195,7 +195,7 @@ void CListView::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
 			//--- Moving up in the list -----------------------------------------------
 
 			// If the cursor position is not locked at the halfway point, move it towards there
-		if( (ULONG)m_cursorPosition > pageHalfwayPoint )
+		if( (UINT32)m_cursorPosition > pageHalfwayPoint )
 		{
 				// See if the entire velocity is consumed in moving the cursor or not
 			if( (cursorVelocity + m_cursorPosition) > pageHalfwayPoint )

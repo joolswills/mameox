@@ -3172,7 +3172,7 @@ public:
 	typedef struct SSSHDR
 	{
 		BYTE	byCtrl;
-		ULONG	nChars;
+		UINT32	nChars;
 	} SSSHDR;	// as in "Standard String Stream Header"
 
 	#define SSSO_UNICODE	0x01	// the string is a wide string
@@ -3184,7 +3184,7 @@ public:
 	//		Returns how many bytes it will take to StreamSave() this CStdString
 	//		object to an IStream.
 	// -------------------------------------------------------------------------
-	ULONG StreamSize() const
+	UINT32 StreamSize() const
 	{
 		// Control header plus string
 		ASSERT(this->size()*sizeof(CT) < 0xffffffffUL - sizeof(SSSHDR));
@@ -3234,7 +3234,7 @@ public:
 		}
 		else if ( hdr.nChars > 0 )
 		{
-			ULONG nRead		= 0;
+			UINT32 nRead		= 0;
 			PMYSTR pMyBuf	= BufferSet(hdr.nChars);
 
 			// If our character size matches the character size of the string
@@ -3244,7 +3244,7 @@ public:
 			
 			if ( (hdr.byCtrl & SSSO_UNICODE) != 0 )
 			{
-				ULONG nBytes	= hdr.nChars * sizeof(wchar_t);
+				UINT32 nBytes	= hdr.nChars * sizeof(wchar_t);
 				if ( sizeof(CT) == sizeof(wchar_t) )
 				{
 					if ( FAILED(hr=pStream->Read(pMyBuf, nBytes, &nRead)) )
@@ -3261,7 +3261,7 @@ public:
 			}
 			else
 			{
-				ULONG nBytes	= hdr.nChars * sizeof(char);
+				UINT32 nBytes	= hdr.nChars * sizeof(char);
 				if ( sizeof(CT) == sizeof(char) )
 				{
 					if ( FAILED(hr=pStream->Read(pMyBuf, nBytes, &nRead)) )

@@ -87,7 +87,7 @@ protected:
 		//------------------------------------------------------------
   DWORD GetCurrentPageSize( void ) {
 	  DWORD pageSize = (m_numLinesInList < m_maxPageSize ? m_numLinesInList : m_maxPageSize);
-	  ULONG absListIDX = (ULONG)m_pageOffset;
+	  UINT32 absListIDX = (UINT32)m_pageOffset;
 	  if( absListIDX > (m_numLinesInList - pageSize) )
 	  {
 			  // The current page offset is invalid (due to list shrinkage), reset it and

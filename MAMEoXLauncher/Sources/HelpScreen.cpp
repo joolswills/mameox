@@ -234,7 +234,7 @@ void CHelpScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 		  // Render the help text
 	  FLOAT yPos = 0.0f;
     FLOAT pageSize = GetCurrentPageSize();
-	  ULONG absListIDX = (ULONG)m_pageOffset;
+	  UINT32 absListIDX = (UINT32)m_pageOffset;
 		D3DCOLOR textColor = g_loadedSkin->GetSkinColor( COLOR_HELPSCREEN_BODY_TEXT );
 
 	  for( DWORD i = 0; i < pageSize; ++i )
