@@ -1,11 +1,11 @@
-#pragma code_seg("C460")
-#pragma data_seg("D460")
-#pragma bss_seg("B460")
-#pragma const_seg("K460")
-#pragma comment(linker, "/merge:D460=460")
-#pragma comment(linker, "/merge:C460=460")
-#pragma comment(linker, "/merge:B460=460")
-#pragma comment(linker, "/merge:K460=460")
+#pragma code_seg("C461")
+#pragma data_seg("D461")
+#pragma bss_seg("B461")
+#pragma const_seg("K461")
+#pragma comment(linker, "/merge:D461=461")
+#pragma comment(linker, "/merge:C461=461")
+#pragma comment(linker, "/merge:B461=461")
+#pragma comment(linker, "/merge:K461=461")
 /***************************************************************************
   Munch Mobile
   (C) 1982 SNK

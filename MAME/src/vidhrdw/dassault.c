@@ -1,11 +1,11 @@
-#pragma code_seg("C223")
-#pragma data_seg("D223")
-#pragma bss_seg("B223")
-#pragma const_seg("K223")
-#pragma comment(linker, "/merge:D223=223")
-#pragma comment(linker, "/merge:C223=223")
-#pragma comment(linker, "/merge:B223=223")
-#pragma comment(linker, "/merge:K223=223")
+#pragma code_seg("C224")
+#pragma data_seg("D224")
+#pragma bss_seg("B224")
+#pragma const_seg("K224")
+#pragma comment(linker, "/merge:D224=224")
+#pragma comment(linker, "/merge:C224=224")
+#pragma comment(linker, "/merge:B224=224")
+#pragma comment(linker, "/merge:K224=224")
 /***************************************************************************
 
    Desert Assault Video emulation - Bryan McPhail, mish@tendril.co.uk

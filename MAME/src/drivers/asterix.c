@@ -1,11 +1,11 @@
-#pragma code_seg("C114")
-#pragma data_seg("D114")
-#pragma bss_seg("B114")
-#pragma const_seg("K114")
-#pragma comment(linker, "/merge:D114=114")
-#pragma comment(linker, "/merge:C114=114")
-#pragma comment(linker, "/merge:B114=114")
-#pragma comment(linker, "/merge:K114=114")
+#pragma code_seg("C115")
+#pragma data_seg("D115")
+#pragma bss_seg("B115")
+#pragma const_seg("K115")
+#pragma comment(linker, "/merge:D115=115")
+#pragma comment(linker, "/merge:C115=115")
+#pragma comment(linker, "/merge:B115=115")
+#pragma comment(linker, "/merge:K115=115")
 /***************************************************************************
 
 Asterix

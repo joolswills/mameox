@@ -1,11 +1,11 @@
-#pragma code_seg("C715")
-#pragma data_seg("D715")
-#pragma bss_seg("B715")
-#pragma const_seg("K715")
-#pragma comment(linker, "/merge:D715=715")
-#pragma comment(linker, "/merge:C715=715")
-#pragma comment(linker, "/merge:B715=715")
-#pragma comment(linker, "/merge:K715=715")
+#pragma code_seg("C716")
+#pragma data_seg("D716")
+#pragma bss_seg("B716")
+#pragma const_seg("K716")
+#pragma comment(linker, "/merge:D716=716")
+#pragma comment(linker, "/merge:C716=716")
+#pragma comment(linker, "/merge:B716=716")
+#pragma comment(linker, "/merge:K716=716")
 /***************************************************************************
 
 This driver contains several Konami 68000 based games. For the most part they

@@ -1,11 +1,11 @@
-#pragma code_seg("C592")
-#pragma data_seg("D592")
-#pragma bss_seg("B592")
-#pragma const_seg("K592")
-#pragma comment(linker, "/merge:D592=592")
-#pragma comment(linker, "/merge:C592=592")
-#pragma comment(linker, "/merge:B592=592")
-#pragma comment(linker, "/merge:K592=592")
+#pragma code_seg("C593")
+#pragma data_seg("D593")
+#pragma bss_seg("B593")
+#pragma const_seg("K593")
+#pragma comment(linker, "/merge:D593=593")
+#pragma comment(linker, "/merge:C593=593")
+#pragma comment(linker, "/merge:B593=593")
+#pragma comment(linker, "/merge:K593=593")
 /******************************************************************************************
 
 Sengoku Mahjong Video Hardware section

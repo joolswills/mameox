@@ -1,11 +1,11 @@
-#pragma code_seg("C728")
-#pragma data_seg("D728")
-#pragma bss_seg("B728")
-#pragma const_seg("K728")
-#pragma comment(linker, "/merge:D728=728")
-#pragma comment(linker, "/merge:C728=728")
-#pragma comment(linker, "/merge:B728=728")
-#pragma comment(linker, "/merge:K728=728")
+#pragma code_seg("C729")
+#pragma data_seg("D729")
+#pragma bss_seg("B729")
+#pragma const_seg("K729")
+#pragma comment(linker, "/merge:D729=729")
+#pragma comment(linker, "/merge:C729=729")
+#pragma comment(linker, "/merge:B729=729")
+#pragma comment(linker, "/merge:K729=729")
 /***************************************************************************
 
 Atari Triple Hunt Driver

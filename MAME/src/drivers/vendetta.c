@@ -1,11 +1,11 @@
-#pragma code_seg("C751")
-#pragma data_seg("D751")
-#pragma bss_seg("B751")
-#pragma const_seg("K751")
-#pragma comment(linker, "/merge:D751=751")
-#pragma comment(linker, "/merge:C751=751")
-#pragma comment(linker, "/merge:B751=751")
-#pragma comment(linker, "/merge:K751=751")
+#pragma code_seg("C752")
+#pragma data_seg("D752")
+#pragma bss_seg("B752")
+#pragma const_seg("K752")
+#pragma comment(linker, "/merge:D752=752")
+#pragma comment(linker, "/merge:C752=752")
+#pragma comment(linker, "/merge:B752=752")
+#pragma comment(linker, "/merge:K752=752")
 /***************************************************************************
 
 Vendetta (GX081) (c) 1991 Konami

@@ -1,11 +1,11 @@
-#pragma code_seg("C118")
-#pragma data_seg("D118")
-#pragma bss_seg("B118")
-#pragma const_seg("K118")
-#pragma comment(linker, "/merge:D118=118")
-#pragma comment(linker, "/merge:C118=118")
-#pragma comment(linker, "/merge:B118=118")
-#pragma comment(linker, "/merge:K118=118")
+#pragma code_seg("C119")
+#pragma data_seg("D119")
+#pragma bss_seg("B119")
+#pragma const_seg("K119")
+#pragma comment(linker, "/merge:D119=119")
+#pragma comment(linker, "/merge:C119=119")
+#pragma comment(linker, "/merge:B119=119")
+#pragma comment(linker, "/merge:K119=119")
 #include "driver.h"
 
 /* Make sure that the sample name definitions in drivers/astrof.c matches these */

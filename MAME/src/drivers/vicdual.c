@@ -1,11 +1,11 @@
-#pragma code_seg("C752")
-#pragma data_seg("D752")
-#pragma bss_seg("B752")
-#pragma const_seg("K752")
-#pragma comment(linker, "/merge:D752=752")
-#pragma comment(linker, "/merge:C752=752")
-#pragma comment(linker, "/merge:B752=752")
-#pragma comment(linker, "/merge:K752=752")
+#pragma code_seg("C753")
+#pragma data_seg("D753")
+#pragma bss_seg("B753")
+#pragma const_seg("K753")
+#pragma comment(linker, "/merge:D753=753")
+#pragma comment(linker, "/merge:C753=753")
+#pragma comment(linker, "/merge:B753=753")
+#pragma comment(linker, "/merge:K753=753")
 /***************************************************************************
 
 VIC Dual Game board

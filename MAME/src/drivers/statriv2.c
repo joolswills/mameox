@@ -1,11 +1,11 @@
-#pragma code_seg("C656")
-#pragma data_seg("D656")
-#pragma bss_seg("B656")
-#pragma const_seg("K656")
-#pragma comment(linker, "/merge:D656=656")
-#pragma comment(linker, "/merge:C656=656")
-#pragma comment(linker, "/merge:B656=656")
-#pragma comment(linker, "/merge:K656=656")
+#pragma code_seg("C657")
+#pragma data_seg("D657")
+#pragma bss_seg("B657")
+#pragma const_seg("K657")
+#pragma comment(linker, "/merge:D657=657")
+#pragma comment(linker, "/merge:C657=657")
+#pragma comment(linker, "/merge:B657=657")
+#pragma comment(linker, "/merge:K657=657")
 /****************************************************************\
 * Status Triv Two driver by David Haywood, MooglyGuy, and Stephh *
 * Super Triv II driver by MooglyGuy                              *

@@ -1,11 +1,11 @@
-#pragma code_seg("C430")
-#pragma data_seg("D430")
-#pragma bss_seg("B430")
-#pragma const_seg("K430")
-#pragma comment(linker, "/merge:D430=430")
-#pragma comment(linker, "/merge:C430=430")
-#pragma comment(linker, "/merge:B430=430")
-#pragma comment(linker, "/merge:K430=430")
+#pragma code_seg("C431")
+#pragma data_seg("D431")
+#pragma bss_seg("B431")
+#pragma const_seg("K431")
+#pragma comment(linker, "/merge:D431=431")
+#pragma comment(linker, "/merge:C431=431")
+#pragma comment(linker, "/merge:B431=431")
+#pragma comment(linker, "/merge:K431=431")
 /***************************************************************************
 
 Kick & Run - (c) 1987 Taito

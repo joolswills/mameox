@@ -1,11 +1,11 @@
-#pragma code_seg("C710")
-#pragma data_seg("D710")
-#pragma bss_seg("B710")
-#pragma const_seg("K710")
-#pragma comment(linker, "/merge:D710=710")
-#pragma comment(linker, "/merge:C710=710")
-#pragma comment(linker, "/merge:B710=710")
-#pragma comment(linker, "/merge:K710=710")
+#pragma code_seg("C711")
+#pragma data_seg("D711")
+#pragma bss_seg("B711")
+#pragma const_seg("K711")
+#pragma comment(linker, "/merge:D711=711")
+#pragma comment(linker, "/merge:C711=711")
+#pragma comment(linker, "/merge:B711=711")
+#pragma comment(linker, "/merge:K711=711")
 /***************************************************************************
 
 Super Contra / Thunder Cross

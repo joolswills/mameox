@@ -1,11 +1,11 @@
-#pragma code_seg("C279")
-#pragma data_seg("D279")
-#pragma bss_seg("B279")
-#pragma const_seg("K279")
-#pragma comment(linker, "/merge:D279=279")
-#pragma comment(linker, "/merge:C279=279")
-#pragma comment(linker, "/merge:B279=279")
-#pragma comment(linker, "/merge:K279=279")
+#pragma code_seg("C280")
+#pragma data_seg("D280")
+#pragma bss_seg("B280")
+#pragma const_seg("K280")
+#pragma comment(linker, "/merge:D280=280")
+#pragma comment(linker, "/merge:C280=280")
+#pragma comment(linker, "/merge:B280=280")
+#pragma comment(linker, "/merge:K280=280")
 /***************************************************************************
 
 Atari Fire Truck + Super Bug + Monte Carlo driver

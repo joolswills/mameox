@@ -1,11 +1,11 @@
-#pragma code_seg("C606")
-#pragma data_seg("D606")
-#pragma bss_seg("B606")
-#pragma const_seg("K606")
-#pragma comment(linker, "/merge:D606=606")
-#pragma comment(linker, "/merge:C606=606")
-#pragma comment(linker, "/merge:B606=606")
-#pragma comment(linker, "/merge:K606=606")
+#pragma code_seg("C607")
+#pragma data_seg("D607")
+#pragma bss_seg("B607")
+#pragma const_seg("K607")
+#pragma comment(linker, "/merge:D607=607")
+#pragma comment(linker, "/merge:C607=607")
+#pragma comment(linker, "/merge:B607=607")
+#pragma comment(linker, "/merge:K607=607")
 /*******************************************************************************
 
 	Shoot Out (USA) 			(c) 1985 Data East USA		DE-0219

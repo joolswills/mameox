@@ -1,11 +1,11 @@
-#pragma code_seg("C641")
-#pragma data_seg("D641")
-#pragma bss_seg("B641")
-#pragma const_seg("K641")
-#pragma comment(linker, "/merge:D641=641")
-#pragma comment(linker, "/merge:C641=641")
-#pragma comment(linker, "/merge:B641=641")
-#pragma comment(linker, "/merge:K641=641")
+#pragma code_seg("C642")
+#pragma data_seg("D642")
+#pragma bss_seg("B642")
+#pragma const_seg("K642")
+#pragma comment(linker, "/merge:D642=642")
+#pragma comment(linker, "/merge:C642=642")
+#pragma comment(linker, "/merge:B642=642")
+#pragma comment(linker, "/merge:K642=642")
 /***************************************************************************
 
 S.P.Y. (c) 1989 Konami

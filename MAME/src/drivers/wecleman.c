@@ -1,11 +1,11 @@
-#pragma code_seg("C767")
-#pragma data_seg("D767")
-#pragma bss_seg("B767")
-#pragma const_seg("K767")
-#pragma comment(linker, "/merge:D767=767")
-#pragma comment(linker, "/merge:C767=767")
-#pragma comment(linker, "/merge:B767=767")
-#pragma comment(linker, "/merge:K767=767")
+#pragma code_seg("C768")
+#pragma data_seg("D768")
+#pragma bss_seg("B768")
+#pragma const_seg("K768")
+#pragma comment(linker, "/merge:D768=768")
+#pragma comment(linker, "/merge:C768=768")
+#pragma comment(linker, "/merge:B768=768")
+#pragma comment(linker, "/merge:K768=768")
 /***************************************************************************
 						WEC Le Mans 24  &   Hot Chase
 

@@ -1,11 +1,11 @@
-#pragma code_seg("C129")
-#pragma data_seg("D129")
-#pragma bss_seg("B129")
-#pragma const_seg("K129")
-#pragma comment(linker, "/merge:D129=129")
-#pragma comment(linker, "/merge:C129=129")
-#pragma comment(linker, "/merge:B129=129")
-#pragma comment(linker, "/merge:K129=129")
+#pragma code_seg("C130")
+#pragma data_seg("D130")
+#pragma bss_seg("B130")
+#pragma const_seg("K130")
+#pragma comment(linker, "/merge:D130=130")
+#pragma comment(linker, "/merge:C130=130")
+#pragma comment(linker, "/merge:B130=130")
+#pragma comment(linker, "/merge:K130=130")
 /***************************************************************************
 
 	Atari Avalanche hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C702")
-#pragma data_seg("D702")
-#pragma bss_seg("B702")
-#pragma const_seg("K702")
-#pragma comment(linker, "/merge:D702=702")
-#pragma comment(linker, "/merge:C702=702")
-#pragma comment(linker, "/merge:B702=702")
-#pragma comment(linker, "/merge:K702=702")
+#pragma code_seg("C703")
+#pragma data_seg("D703")
+#pragma bss_seg("B703")
+#pragma const_seg("K703")
+#pragma comment(linker, "/merge:D703=703")
+#pragma comment(linker, "/merge:C703=703")
+#pragma comment(linker, "/merge:B703=703")
+#pragma comment(linker, "/merge:K703=703")
 /***************************************************************************
 
 	Atari Tempest hardware

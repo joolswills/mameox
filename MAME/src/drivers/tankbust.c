@@ -1,11 +1,11 @@
-#pragma code_seg("C692")
-#pragma data_seg("D692")
-#pragma bss_seg("B692")
-#pragma const_seg("K692")
-#pragma comment(linker, "/merge:D692=692")
-#pragma comment(linker, "/merge:C692=692")
-#pragma comment(linker, "/merge:B692=692")
-#pragma comment(linker, "/merge:K692=692")
+#pragma code_seg("C693")
+#pragma data_seg("D693")
+#pragma bss_seg("B693")
+#pragma const_seg("K693")
+#pragma comment(linker, "/merge:D693=693")
+#pragma comment(linker, "/merge:C693=693")
+#pragma comment(linker, "/merge:B693=693")
+#pragma comment(linker, "/merge:K693=693")
 /***************************************************************************
 
 Tank Busters memory map

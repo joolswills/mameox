@@ -1,11 +1,11 @@
-#pragma code_seg("C246")
-#pragma data_seg("D246")
-#pragma bss_seg("B246")
-#pragma const_seg("K246")
-#pragma comment(linker, "/merge:D246=246")
-#pragma comment(linker, "/merge:C246=246")
-#pragma comment(linker, "/merge:B246=246")
-#pragma comment(linker, "/merge:K246=246")
+#pragma code_seg("C247")
+#pragma data_seg("D247")
+#pragma bss_seg("B247")
+#pragma const_seg("K247")
+#pragma comment(linker, "/merge:D247=247")
+#pragma comment(linker, "/merge:C247=247")
+#pragma comment(linker, "/merge:B247=247")
+#pragma comment(linker, "/merge:K247=247")
 /***************************************************************************
 
 Acrobatic Dog-Fight / Batten O'hara no Sucha-Raka Kuuchuu Sen

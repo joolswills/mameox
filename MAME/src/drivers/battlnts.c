@@ -1,11 +1,11 @@
-#pragma code_seg("C140")
-#pragma data_seg("D140")
-#pragma bss_seg("B140")
-#pragma const_seg("K140")
-#pragma comment(linker, "/merge:D140=140")
-#pragma comment(linker, "/merge:C140=140")
-#pragma comment(linker, "/merge:B140=140")
-#pragma comment(linker, "/merge:K140=140")
+#pragma code_seg("C141")
+#pragma data_seg("D141")
+#pragma bss_seg("B141")
+#pragma const_seg("K141")
+#pragma comment(linker, "/merge:D141=141")
+#pragma comment(linker, "/merge:C141=141")
+#pragma comment(linker, "/merge:B141=141")
+#pragma comment(linker, "/merge:K141=141")
 /***************************************************************************
 
 Battlantis(GX777) (c) 1987 Konami

@@ -13,8 +13,7 @@
 #include "mamedbg.h"
 #include "hiscore.h"
 
-//#include "XBESectionUtil.h"
-#include "Sections.h"
+#include "XBESectionUtil.h"
 #include "DebugLogger.h"
 
 #if (HAS_M68000 || HAS_M68010 || HAS_M68020 || HAS_M68EC020)

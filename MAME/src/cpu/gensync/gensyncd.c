@@ -1,11 +1,11 @@
-#pragma code_seg("CC48")
-#pragma data_seg("CD48")
-#pragma bss_seg("CB48")
-#pragma const_seg("CK48")
-#pragma comment(linker, "/merge:CD48=CPU48")
-#pragma comment(linker, "/merge:CC48=CPU48")
-#pragma comment(linker, "/merge:CB48=CPU48")
-#pragma comment(linker, "/merge:CK48=CPU48")
+#pragma code_seg("CC49")
+#pragma data_seg("CD49")
+#pragma bss_seg("CB49")
+#pragma const_seg("CK49")
+#pragma comment(linker, "/merge:CD49=CPU49")
+#pragma comment(linker, "/merge:CC49=CPU49")
+#pragma comment(linker, "/merge:CB49=CPU49")
+#pragma comment(linker, "/merge:CK49=CPU49")
 #include <stdio.h>
 #include <string.h>
 #include "gensync.h"

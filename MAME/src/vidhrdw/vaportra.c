@@ -1,11 +1,11 @@
-#pragma code_seg("C748")
-#pragma data_seg("D748")
-#pragma bss_seg("B748")
-#pragma const_seg("K748")
-#pragma comment(linker, "/merge:D748=748")
-#pragma comment(linker, "/merge:C748=748")
-#pragma comment(linker, "/merge:B748=748")
-#pragma comment(linker, "/merge:K748=748")
+#pragma code_seg("C749")
+#pragma data_seg("D749")
+#pragma bss_seg("B749")
+#pragma const_seg("K749")
+#pragma comment(linker, "/merge:D749=749")
+#pragma comment(linker, "/merge:C749=749")
+#pragma comment(linker, "/merge:B749=749")
+#pragma comment(linker, "/merge:K749=749")
 /***************************************************************************
 
    Vapour Trail Video emulation - Bryan McPhail, mish@tendril.co.uk

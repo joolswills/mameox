@@ -1,11 +1,11 @@
-#pragma code_seg("C182")
-#pragma data_seg("D182")
-#pragma bss_seg("B182")
-#pragma const_seg("K182")
-#pragma comment(linker, "/merge:D182=182")
-#pragma comment(linker, "/merge:C182=182")
-#pragma comment(linker, "/merge:B182=182")
-#pragma comment(linker, "/merge:K182=182")
+#pragma code_seg("C183")
+#pragma data_seg("D183")
+#pragma bss_seg("B183")
+#pragma const_seg("K183")
+#pragma comment(linker, "/merge:D183=183")
+#pragma comment(linker, "/merge:C183=183")
+#pragma comment(linker, "/merge:B183=183")
+#pragma comment(linker, "/merge:K183=183")
 /***************************************************************************
 
 	Atari Crystal Castles hardware

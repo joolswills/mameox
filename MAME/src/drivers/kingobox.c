@@ -1,11 +1,11 @@
-#pragma code_seg("C371")
-#pragma data_seg("D371")
-#pragma bss_seg("B371")
-#pragma const_seg("K371")
-#pragma comment(linker, "/merge:D371=371")
-#pragma comment(linker, "/merge:C371=371")
-#pragma comment(linker, "/merge:B371=371")
-#pragma comment(linker, "/merge:K371=371")
+#pragma code_seg("C372")
+#pragma data_seg("D372")
+#pragma bss_seg("B372")
+#pragma const_seg("K372")
+#pragma comment(linker, "/merge:D372=372")
+#pragma comment(linker, "/merge:C372=372")
+#pragma comment(linker, "/merge:B372=372")
+#pragma comment(linker, "/merge:K372=372")
 /***************************************************************************
 
 King of Boxer - (c) 1985 Woodplace Inc.

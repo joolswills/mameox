@@ -1,11 +1,11 @@
-#pragma code_seg("C646")
-#pragma data_seg("D646")
-#pragma bss_seg("B646")
-#pragma const_seg("K646")
-#pragma comment(linker, "/merge:D646=646")
-#pragma comment(linker, "/merge:C646=646")
-#pragma comment(linker, "/merge:B646=646")
-#pragma comment(linker, "/merge:K646=646")
+#pragma code_seg("C647")
+#pragma data_seg("D647")
+#pragma bss_seg("B647")
+#pragma const_seg("K647")
+#pragma comment(linker, "/merge:D647=647")
+#pragma comment(linker, "/merge:C647=647")
+#pragma comment(linker, "/merge:B647=647")
+#pragma comment(linker, "/merge:K647=647")
 /***************************************************************************
 
 Syusse Oozumou

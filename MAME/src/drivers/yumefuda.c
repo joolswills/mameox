@@ -1,11 +1,11 @@
-#pragma code_seg("C789")
-#pragma data_seg("D789")
-#pragma bss_seg("B789")
-#pragma const_seg("K789")
-#pragma comment(linker, "/merge:D789=789")
-#pragma comment(linker, "/merge:C789=789")
-#pragma comment(linker, "/merge:B789=789")
-#pragma comment(linker, "/merge:K789=789")
+#pragma code_seg("C790")
+#pragma data_seg("D790")
+#pragma bss_seg("B790")
+#pragma const_seg("K790")
+#pragma comment(linker, "/merge:D790=790")
+#pragma comment(linker, "/merge:C790=790")
+#pragma comment(linker, "/merge:B790=790")
+#pragma comment(linker, "/merge:K790=790")
 /********************************************************************************************
 
 Yumefuda (c) 199? Alba

@@ -1,11 +1,11 @@
-#pragma code_seg("C352")
-#pragma data_seg("D352")
-#pragma bss_seg("B352")
-#pragma const_seg("K352")
-#pragma comment(linker, "/merge:D352=352")
-#pragma comment(linker, "/merge:C352=352")
-#pragma comment(linker, "/merge:B352=352")
-#pragma comment(linker, "/merge:K352=352")
+#pragma code_seg("C353")
+#pragma data_seg("D353")
+#pragma bss_seg("B353")
+#pragma const_seg("K353")
+#pragma comment(linker, "/merge:D353=353")
+#pragma comment(linker, "/merge:C353=353")
+#pragma comment(linker, "/merge:B353=353")
+#pragma comment(linker, "/merge:K353=353")
 #include "driver.h"
 #include "iqblock.h"
 

@@ -1,11 +1,11 @@
-#pragma code_seg("C199")
-#pragma data_seg("D199")
-#pragma bss_seg("B199")
-#pragma const_seg("K199")
-#pragma comment(linker, "/merge:D199=199")
-#pragma comment(linker, "/merge:C199=199")
-#pragma comment(linker, "/merge:B199=199")
-#pragma comment(linker, "/merge:K199=199")
+#pragma code_seg("C200")
+#pragma data_seg("D200")
+#pragma bss_seg("B200")
+#pragma const_seg("K200")
+#pragma comment(linker, "/merge:D200=200")
+#pragma comment(linker, "/merge:C200=200")
+#pragma comment(linker, "/merge:B200=200")
+#pragma comment(linker, "/merge:K200=200")
 /***************************************************************************
 
 	Atari Cloud 9 (prototype) hardware

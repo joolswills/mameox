@@ -1,11 +1,11 @@
-#pragma code_seg("C667")
-#pragma data_seg("D667")
-#pragma bss_seg("B667")
-#pragma const_seg("K667")
-#pragma comment(linker, "/merge:D667=667")
-#pragma comment(linker, "/merge:C667=667")
-#pragma comment(linker, "/merge:B667=667")
-#pragma comment(linker, "/merge:K667=667")
+#pragma code_seg("C668")
+#pragma data_seg("D668")
+#pragma bss_seg("B668")
+#pragma const_seg("K668")
+#pragma comment(linker, "/merge:D668=668")
+#pragma comment(linker, "/merge:C668=668")
+#pragma comment(linker, "/merge:B668=668")
+#pragma comment(linker, "/merge:K668=668")
 /*
  Super Draw Poker (c) Stern 1983
 

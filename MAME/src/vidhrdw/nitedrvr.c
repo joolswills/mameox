@@ -1,11 +1,11 @@
-#pragma code_seg("C487")
-#pragma data_seg("D487")
-#pragma bss_seg("B487")
-#pragma const_seg("K487")
-#pragma comment(linker, "/merge:D487=487")
-#pragma comment(linker, "/merge:C487=487")
-#pragma comment(linker, "/merge:B487=487")
-#pragma comment(linker, "/merge:K487=487")
+#pragma code_seg("C488")
+#pragma data_seg("D488")
+#pragma bss_seg("B488")
+#pragma const_seg("K488")
+#pragma comment(linker, "/merge:D488=488")
+#pragma comment(linker, "/merge:C488=488")
+#pragma comment(linker, "/merge:B488=488")
+#pragma comment(linker, "/merge:K488=488")
 /***************************************************************************
 
 	Atari Night Driver hardware

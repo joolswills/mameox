@@ -1,11 +1,11 @@
-#pragma code_seg("C576")
-#pragma data_seg("D576")
-#pragma bss_seg("B576")
-#pragma const_seg("K576")
-#pragma comment(linker, "/merge:D576=576")
-#pragma comment(linker, "/merge:C576=576")
-#pragma comment(linker, "/merge:B576=576")
-#pragma comment(linker, "/merge:K576=576")
+#pragma code_seg("C577")
+#pragma data_seg("D577")
+#pragma bss_seg("B577")
+#pragma const_seg("K577")
+#pragma comment(linker, "/merge:D577=577")
+#pragma comment(linker, "/merge:C577=577")
+#pragma comment(linker, "/merge:B577=577")
+#pragma comment(linker, "/merge:K577=577")
 #define RNG_DEBUG 0
 
 /*

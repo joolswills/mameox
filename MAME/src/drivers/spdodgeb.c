@@ -1,11 +1,11 @@
-#pragma code_seg("C631")
-#pragma data_seg("D631")
-#pragma bss_seg("B631")
-#pragma const_seg("K631")
-#pragma comment(linker, "/merge:D631=631")
-#pragma comment(linker, "/merge:C631=631")
-#pragma comment(linker, "/merge:B631=631")
-#pragma comment(linker, "/merge:K631=631")
+#pragma code_seg("C632")
+#pragma data_seg("D632")
+#pragma bss_seg("B632")
+#pragma const_seg("K632")
+#pragma comment(linker, "/merge:D632=632")
+#pragma comment(linker, "/merge:C632=632")
+#pragma comment(linker, "/merge:B632=632")
+#pragma comment(linker, "/merge:K632=632")
 /***************************************************************************
 
 Super Dodgeball / Nekketsu Koukou Dodgeball Bu

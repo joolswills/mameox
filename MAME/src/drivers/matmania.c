@@ -1,11 +1,11 @@
-#pragma code_seg("C416")
-#pragma data_seg("D416")
-#pragma bss_seg("B416")
-#pragma const_seg("K416")
-#pragma comment(linker, "/merge:D416=416")
-#pragma comment(linker, "/merge:C416=416")
-#pragma comment(linker, "/merge:B416=416")
-#pragma comment(linker, "/merge:K416=416")
+#pragma code_seg("C417")
+#pragma data_seg("D417")
+#pragma bss_seg("B417")
+#pragma const_seg("K417")
+#pragma comment(linker, "/merge:D417=417")
+#pragma comment(linker, "/merge:C417=417")
+#pragma comment(linker, "/merge:B417=417")
+#pragma comment(linker, "/merge:K417=417")
 /***************************************************************************
 
 Mat Mania

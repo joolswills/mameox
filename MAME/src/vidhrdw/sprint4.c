@@ -1,11 +1,11 @@
-#pragma code_seg("C639")
-#pragma data_seg("D639")
-#pragma bss_seg("B639")
-#pragma const_seg("K639")
-#pragma comment(linker, "/merge:D639=639")
-#pragma comment(linker, "/merge:C639=639")
-#pragma comment(linker, "/merge:B639=639")
-#pragma comment(linker, "/merge:K639=639")
+#pragma code_seg("C640")
+#pragma data_seg("D640")
+#pragma bss_seg("B640")
+#pragma const_seg("K640")
+#pragma comment(linker, "/merge:D640=640")
+#pragma comment(linker, "/merge:C640=640")
+#pragma comment(linker, "/merge:B640=640")
+#pragma comment(linker, "/merge:K640=640")
 /***************************************************************************
 
 Atari Sprint 4 video emulation

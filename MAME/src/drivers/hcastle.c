@@ -1,11 +1,11 @@
-#pragma code_seg("C338")
-#pragma data_seg("D338")
-#pragma bss_seg("B338")
-#pragma const_seg("K338")
-#pragma comment(linker, "/merge:D338=338")
-#pragma comment(linker, "/merge:C338=338")
-#pragma comment(linker, "/merge:B338=338")
-#pragma comment(linker, "/merge:K338=338")
+#pragma code_seg("C339")
+#pragma data_seg("D339")
+#pragma bss_seg("B339")
+#pragma const_seg("K339")
+#pragma comment(linker, "/merge:D339=339")
+#pragma comment(linker, "/merge:C339=339")
+#pragma comment(linker, "/merge:B339=339")
+#pragma comment(linker, "/merge:K339=339")
 /***************************************************************************
 
 	Haunted Castle

@@ -1,11 +1,11 @@
-#pragma code_seg("C620")
-#pragma data_seg("D620")
-#pragma bss_seg("B620")
-#pragma const_seg("K620")
-#pragma comment(linker, "/merge:D620=620")
-#pragma comment(linker, "/merge:C620=620")
-#pragma comment(linker, "/merge:B620=620")
-#pragma comment(linker, "/merge:K620=620")
+#pragma code_seg("C621")
+#pragma data_seg("D621")
+#pragma bss_seg("B621")
+#pragma const_seg("K621")
+#pragma comment(linker, "/merge:D621=621")
+#pragma comment(linker, "/merge:C621=621")
+#pragma comment(linker, "/merge:B621=621")
+#pragma comment(linker, "/merge:K621=621")
 /***************************************************************************
 
 Slap Fight driver by K.Wilkins Jan 1998

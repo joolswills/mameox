@@ -1,11 +1,11 @@
-#pragma code_seg("C265")
-#pragma data_seg("D265")
-#pragma bss_seg("B265")
-#pragma const_seg("K265")
-#pragma comment(linker, "/merge:D265=265")
-#pragma comment(linker, "/merge:C265=265")
-#pragma comment(linker, "/merge:B265=265")
-#pragma comment(linker, "/merge:K265=265")
+#pragma code_seg("C266")
+#pragma data_seg("D266")
+#pragma bss_seg("B266")
+#pragma const_seg("K266")
+#pragma comment(linker, "/merge:D266=266")
+#pragma comment(linker, "/merge:C266=266")
+#pragma comment(linker, "/merge:B266=266")
+#pragma comment(linker, "/merge:K266=266")
 /***************************************************************************
 
 	Jaleco Exerion

@@ -1,11 +1,11 @@
-#pragma code_seg("C224")
-#pragma data_seg("D224")
-#pragma bss_seg("B224")
-#pragma const_seg("K224")
-#pragma comment(linker, "/merge:D224=224")
-#pragma comment(linker, "/merge:C224=224")
-#pragma comment(linker, "/merge:B224=224")
-#pragma comment(linker, "/merge:K224=224")
+#pragma code_seg("C225")
+#pragma data_seg("D225")
+#pragma bss_seg("B225")
+#pragma const_seg("K225")
+#pragma comment(linker, "/merge:D225=225")
+#pragma comment(linker, "/merge:C225=225")
+#pragma comment(linker, "/merge:B225=225")
+#pragma comment(linker, "/merge:K225=225")
 /*
   Dragonball Z
   Banpresto, 1993

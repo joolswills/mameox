@@ -1,11 +1,11 @@
-#pragma code_seg("C548")
-#pragma data_seg("D548")
-#pragma bss_seg("B548")
-#pragma const_seg("K548")
-#pragma comment(linker, "/merge:D548=548")
-#pragma comment(linker, "/merge:C548=548")
-#pragma comment(linker, "/merge:B548=548")
-#pragma comment(linker, "/merge:K548=548")
+#pragma code_seg("C549")
+#pragma data_seg("D549")
+#pragma bss_seg("B549")
+#pragma const_seg("K549")
+#pragma comment(linker, "/merge:D549=549")
+#pragma comment(linker, "/merge:C549=549")
+#pragma comment(linker, "/merge:B549=549")
+#pragma comment(linker, "/merge:K549=549")
 /*************************************************************************
 	Quiz Panicuru Fantasy
 	(c) 1993 NMK

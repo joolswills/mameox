@@ -1,11 +1,11 @@
-#pragma code_seg("C495")
-#pragma data_seg("D495")
-#pragma bss_seg("B495")
-#pragma const_seg("K495")
-#pragma comment(linker, "/merge:D495=495")
-#pragma comment(linker, "/merge:C495=495")
-#pragma comment(linker, "/merge:B495=495")
-#pragma comment(linker, "/merge:K495=495")
+#pragma code_seg("C496")
+#pragma data_seg("D496")
+#pragma bss_seg("B496")
+#pragma const_seg("K496")
+#pragma comment(linker, "/merge:D496=496")
+#pragma comment(linker, "/merge:C496=496")
+#pragma comment(linker, "/merge:B496=496")
+#pragma comment(linker, "/merge:K496=496")
 /***************************************************************************
 
 Oh My God!       (c) 1993 Atlus

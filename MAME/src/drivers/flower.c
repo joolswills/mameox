@@ -1,11 +1,11 @@
-#pragma code_seg("C282")
-#pragma data_seg("D282")
-#pragma bss_seg("B282")
-#pragma const_seg("K282")
-#pragma comment(linker, "/merge:D282=282")
-#pragma comment(linker, "/merge:C282=282")
-#pragma comment(linker, "/merge:B282=282")
-#pragma comment(linker, "/merge:K282=282")
+#pragma code_seg("C283")
+#pragma data_seg("D283")
+#pragma bss_seg("B283")
+#pragma const_seg("K283")
+#pragma comment(linker, "/merge:D283=283")
+#pragma comment(linker, "/merge:C283=283")
+#pragma comment(linker, "/merge:B283=283")
+#pragma comment(linker, "/merge:K283=283")
 /* Flower (c)1986 Komax
  - Driver by InsideOutBoy
 

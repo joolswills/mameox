@@ -1,11 +1,11 @@
-#pragma code_seg("C315")
-#pragma data_seg("D315")
-#pragma bss_seg("B315")
-#pragma const_seg("K315")
-#pragma comment(linker, "/merge:D315=315")
-#pragma comment(linker, "/merge:C315=315")
-#pragma comment(linker, "/merge:B315=315")
-#pragma comment(linker, "/merge:K315=315")
+#pragma code_seg("C316")
+#pragma data_seg("D316")
+#pragma bss_seg("B316")
+#pragma const_seg("K316")
+#pragma comment(linker, "/merge:D316=316")
+#pragma comment(linker, "/merge:C316=316")
+#pragma comment(linker, "/merge:B316=316")
+#pragma comment(linker, "/merge:K316=316")
 /***************************************************************************
 
 	Goal '92 video hardware

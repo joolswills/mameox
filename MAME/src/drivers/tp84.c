@@ -1,11 +1,11 @@
-#pragma code_seg("C725")
-#pragma data_seg("D725")
-#pragma bss_seg("B725")
-#pragma const_seg("K725")
-#pragma comment(linker, "/merge:D725=725")
-#pragma comment(linker, "/merge:C725=725")
-#pragma comment(linker, "/merge:B725=725")
-#pragma comment(linker, "/merge:K725=725")
+#pragma code_seg("C726")
+#pragma data_seg("D726")
+#pragma bss_seg("B726")
+#pragma const_seg("K726")
+#pragma comment(linker, "/merge:D726=726")
+#pragma comment(linker, "/merge:C726=726")
+#pragma comment(linker, "/merge:B726=726")
+#pragma comment(linker, "/merge:K726=726")
 /***************************************************************************
 
 Time Pilot 84  (c) 1984 Konami

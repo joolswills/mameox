@@ -1,11 +1,11 @@
-#pragma code_seg("C94")
-#pragma data_seg("D94")
-#pragma bss_seg("B94")
-#pragma const_seg("K94")
-#pragma comment(linker, "/merge:D94=94")
-#pragma comment(linker, "/merge:C94=94")
-#pragma comment(linker, "/merge:B94=94")
-#pragma comment(linker, "/merge:K94=94")
+#pragma code_seg("C95")
+#pragma data_seg("D95")
+#pragma bss_seg("B95")
+#pragma const_seg("K95")
+#pragma comment(linker, "/merge:D95=95")
+#pragma comment(linker, "/merge:C95=95")
+#pragma comment(linker, "/merge:B95=95")
+#pragma comment(linker, "/merge:K95=95")
 /****************************************************************************
 
 Formation Z / Aeroboto

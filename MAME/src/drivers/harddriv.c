@@ -1,11 +1,11 @@
-#pragma code_seg("C337")
-#pragma data_seg("D337")
-#pragma bss_seg("B337")
-#pragma const_seg("K337")
-#pragma comment(linker, "/merge:D337=337")
-#pragma comment(linker, "/merge:C337=337")
-#pragma comment(linker, "/merge:B337=337")
-#pragma comment(linker, "/merge:K337=337")
+#pragma code_seg("C338")
+#pragma data_seg("D338")
+#pragma bss_seg("B338")
+#pragma const_seg("K338")
+#pragma comment(linker, "/merge:D338=338")
+#pragma comment(linker, "/merge:C338=338")
+#pragma comment(linker, "/merge:B338=338")
+#pragma comment(linker, "/merge:K338=338")
 /***************************************************************************
 
 	Driver for Atari polygon racer games

@@ -1,11 +1,11 @@
-#pragma code_seg("C263")
-#pragma data_seg("D263")
-#pragma bss_seg("B263")
-#pragma const_seg("K263")
-#pragma comment(linker, "/merge:D263=263")
-#pragma comment(linker, "/merge:C263=263")
-#pragma comment(linker, "/merge:B263=263")
-#pragma comment(linker, "/merge:K263=263")
+#pragma code_seg("C264")
+#pragma data_seg("D264")
+#pragma bss_seg("B264")
+#pragma const_seg("K264")
+#pragma comment(linker, "/merge:D264=264")
+#pragma comment(linker, "/merge:C264=264")
+#pragma comment(linker, "/merge:B264=264")
+#pragma comment(linker, "/merge:K264=264")
 /*************************************************************************************
 
 Emulation of the Alpha 8302 microcontroller.
