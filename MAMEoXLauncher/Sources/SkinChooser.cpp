@@ -171,11 +171,11 @@ BOOL CSkinChooser::FindSkins( void )
 		// Try to find the skin stored in our options struct
 		// If the skin doesn't exist, just load the first available one
 	int skinToLoad = 0;
-	if( m_options.g_loadedSkin != "" )
+	if( m_options.m_currentSkin != "" )
 	{
 		for( int i = 0; i < m_skinResourceVector.size(); ++i )
 		{
-			if( m_options.g_loadedSkin == m_skinResourceVector[i]->GetSkinName() )
+			if( m_options.m_currentSkin == m_skinResourceVector[i]->GetSkinName() )
 			{
 				skinToLoad = i;
 				break;

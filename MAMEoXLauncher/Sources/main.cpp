@@ -18,8 +18,6 @@
 #include <xbdm.h>
 #endif
 
-//#include "Resource.h"
-
 #include "InputManager.h"
 #include "GraphicsManager.h"
 #include "System_IniFile.h"

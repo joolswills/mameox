@@ -94,16 +94,6 @@
 						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
 				</FileConfiguration>
 			</File>
-			<File
-				RelativePath=".\MediaFiles\resource.rdf">
-				<FileConfiguration
-					Name="Release|Xbox">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
-				</FileConfiguration>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"

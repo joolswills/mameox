@@ -320,7 +320,7 @@ void LoadOptions( void )
 
 
 		//-- Skin Options ------------------------------------------------------------------------
-	g_skinOptions.g_loadedSkin = iniFile.GetProfileString( "SkinOptions", "SelectedSkin", "Original" );
+	g_skinOptions.m_currentSkin = iniFile.GetProfileString( "SkinOptions", "SelectedSkin", "Original" );
 }
 
 
@@ -460,7 +460,7 @@ void SaveOptions( void )
   iniFile.WriteProfileInt(   "ROMListOptions", "SuperscrollIndex", g_persistentLaunchData.m_superscrollIndex );
 
 		//-- Skin Options ------------------------------------------------------------------------
-	iniFile.WriteProfileString( "SkinOptions", "SelectedSkin", g_skinOptions.g_loadedSkin );
+	iniFile.WriteProfileString( "SkinOptions", "SelectedSkin", g_skinOptions.m_currentSkin );
 }
 
 //-------------------------------------------------------------

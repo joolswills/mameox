@@ -115,7 +115,7 @@ void CSkinChooserScreen::SetCursorToSelectedSkin( void )
 {
 	for( int i = 0; i < m_skinChooser.m_skinResourceVector.size(); ++i )
 	{
-		if( m_skinChooser.m_options.g_loadedSkin == m_skinChooser.m_skinResourceVector[i]->GetSkinName() )
+		if( m_skinChooser.m_options.m_currentSkin == m_skinChooser.m_skinResourceVector[i]->GetSkinName() )
 		{
 			SetAbsoluteCursorPosition( i );
 			return;
@@ -165,7 +165,7 @@ void CSkinChooserScreen::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
 	{
 			// Load the selected skin, if it's not the current one
 		CSkinResource *selectedSkin = m_skinChooser.m_skinResourceVector[GetAbsoluteCursorPosition()];
-		if( selectedSkin->GetSkinName() != m_skinChooser.m_options.g_loadedSkin )
+		if( selectedSkin->GetSkinName() != m_skinChooser.m_options.m_currentSkin )
 		{
 			CSkinResource *oldSkin = g_loadedSkin;
 			if( g_loadedSkin )
@@ -173,7 +173,7 @@ void CSkinChooserScreen::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
 
 			g_loadedSkin = selectedSkin;
 			g_loadedSkin->LoadSkin( NULL );	// Todo:Check the error code, reload the old skin, etc...
-			m_skinChooser.m_options.g_loadedSkin = selectedSkin->GetSkinName();
+			m_skinChooser.m_options.m_currentSkin = selectedSkin->GetSkinName();
 		}
 	}
 
