@@ -1168,7 +1168,7 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
                           L"       Programming - Erik Abair, opcode, luckyMIC, ips" \
                           L"       Testing - falz, enkak, noodle1009, bmetz" \
                           L"       Graphical design - r4dius, Stephen Cameron" \
-                          L"       Special thanks to MAME developers everywhere";
+                          L"       Special thanks to www.wolfsoft.de and to MAME developers everywhere";
 
   FLOAT creditsPosition = 0.0f;
   FLOAT creditsLength, creditsHeight;

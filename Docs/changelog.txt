@@ -44,6 +44,7 @@ Version 0.71.2b (CVS)
     - Fixed dep for Operation Wolf
     - Fixed dep for Rainbow Islands
     - Fixed dep for Fighting Roller
+    - Fixed dep for Tutankham
 
 *********************************************************************
 Version 0.71.1b
