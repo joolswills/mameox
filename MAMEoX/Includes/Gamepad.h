@@ -124,6 +124,14 @@ public:
   SHORT GetAnalogAxisState( gamepadAnalogID_t analogID, gamepadAxisID_t axisID );
 
 		//------------------------------------------------------
+		//	GetButtonState
+    //! \brief    Returns button state of the gamepad
+    //!
+    //! \return   UINT32 - button state of the gamepad
+		//------------------------------------------------------
+  UINT32 GetButtonState( void );
+
+		//------------------------------------------------------
 		//	IsAnyButtonPressed
     //! \brief    Returns TRUE if any button is pressed on the gamepad
     //!

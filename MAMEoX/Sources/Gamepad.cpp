@@ -202,23 +202,64 @@ SHORT CGamepad::GetAnalogAxisState( gamepadAnalogID_t analogID, gamepadAxisID_t 
 }
 
 //------------------------------------------------------
+//	GetButtonState
+//------------------------------------------------------
+UINT32 CGamepad::GetButtonState( void )
+{
+  if( !IsConnected() )
+    return 0;
+
+  const XINPUT_GAMEPAD	&gp = m_state.Gamepad;
+	UINT32 curState;
+
+	curState = 0;
+	curState |= ( ( gp.wButtons & XINPUT_GAMEPAD_DPAD_UP ) != 0 ) ?    GP_DPAD_UP : 0;
+	curState |= ( ( gp.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT ) != 0 ) ? GP_DPAD_RIGHT : 0;
+	curState |= ( ( gp.wButtons & XINPUT_GAMEPAD_DPAD_DOWN ) != 0 ) ?  GP_DPAD_DOWN : 0;
+	curState |= ( ( gp.wButtons & XINPUT_GAMEPAD_DPAD_LEFT ) != 0 ) ?  GP_DPAD_LEFT : 0;
+
+	curState |= ( ( gp.wButtons & XINPUT_GAMEPAD_BACK ) != 0 ) ?  GP_BACK : 0;
+	curState |= ( ( gp.wButtons & XINPUT_GAMEPAD_START ) != 0 ) ? GP_START : 0;
+
+	curState |= ( ( gp.wButtons & XINPUT_GAMEPAD_LEFT_THUMB ) != 0 ) ?  GP_LEFT_ANALOG : 0;
+	curState |= ( ( gp.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB ) != 0 ) ? GP_RIGHT_ANALOG : 0;
+
+	curState |= ( gp.bAnalogButtons[ XINPUT_GAMEPAD_A ] >= BUTTON_PRESS_THRESHOLD ) ? GP_A : 0;
+	curState |= ( gp.bAnalogButtons[ XINPUT_GAMEPAD_B ] >= BUTTON_PRESS_THRESHOLD ) ? GP_B : 0;
+	curState |= ( gp.bAnalogButtons[ XINPUT_GAMEPAD_X ] >= BUTTON_PRESS_THRESHOLD ) ? GP_X : 0;
+	curState |= ( gp.bAnalogButtons[ XINPUT_GAMEPAD_Y ] >= BUTTON_PRESS_THRESHOLD ) ? GP_Y : 0;
+
+	curState |= ( gp.bAnalogButtons[ XINPUT_GAMEPAD_WHITE ] >= BUTTON_PRESS_THRESHOLD ) ? GP_WHITE : 0;
+	curState |= ( gp.bAnalogButtons[ XINPUT_GAMEPAD_BLACK ] >= BUTTON_PRESS_THRESHOLD ) ? GP_BLACK : 0;
+ 
+	curState |= ( gp.bAnalogButtons[ XINPUT_GAMEPAD_LEFT_TRIGGER ] >= BUTTON_PRESS_THRESHOLD ) ? GP_LEFT_TRIGGER : 0;
+	curState |= ( gp.bAnalogButtons[ XINPUT_GAMEPAD_RIGHT_TRIGGER ] >= BUTTON_PRESS_THRESHOLD ) ? GP_RIGHT_TRIGGER : 0;
+
+  #define ANALOG_AS_DIGITAL_VAL    ( SHORT )( 32767.0f * STICK_DEADZONE )
+
+	curState |= ( gp.sThumbLY >=  ANALOG_AS_DIGITAL_VAL ) ? GP_LA_UP : 0;
+	curState |= ( gp.sThumbLX <= -ANALOG_AS_DIGITAL_VAL ) ? GP_LA_LEFT : 0;
+	curState |= ( gp.sThumbLY <= -ANALOG_AS_DIGITAL_VAL ) ? GP_LA_DOWN : 0;
+	curState |= ( gp.sThumbLX >=  ANALOG_AS_DIGITAL_VAL ) ? GP_LA_RIGHT : 0;
+
+	curState |= ( gp.sThumbRY >=  ANALOG_AS_DIGITAL_VAL ) ? GP_RA_UP : 0;
+	curState |= ( gp.sThumbRX <= -ANALOG_AS_DIGITAL_VAL ) ? GP_RA_LEFT : 0;
+	curState |= ( gp.sThumbRY <= -ANALOG_AS_DIGITAL_VAL ) ? GP_RA_DOWN : 0;
+	curState |= ( gp.sThumbRX >=  ANALOG_AS_DIGITAL_VAL ) ? GP_RA_RIGHT : 0;
+
+  return( curState );
+}
+
+//------------------------------------------------------
 //	IsAnyButtonPressed
 //------------------------------------------------------
 BOOL CGamepad::IsAnyButtonPressed( void ) 
 {
-  if( !IsConnected() )
-    return FALSE;
+	UINT32 state = GetButtonState();
 
-  const XINPUT_GAMEPAD	&gp = m_state.Gamepad;
-	return ( gp.wButtons ||
-					  gp.bAnalogButtons[XINPUT_GAMEPAD_A] >= BUTTON_PRESS_THRESHOLD ||
-					  gp.bAnalogButtons[XINPUT_GAMEPAD_B] >= BUTTON_PRESS_THRESHOLD ||
-					  gp.bAnalogButtons[XINPUT_GAMEPAD_X] >= BUTTON_PRESS_THRESHOLD ||
-					  gp.bAnalogButtons[XINPUT_GAMEPAD_Y] >= BUTTON_PRESS_THRESHOLD ||
-					  gp.bAnalogButtons[XINPUT_GAMEPAD_BLACK] >= BUTTON_PRESS_THRESHOLD ||
-					  gp.bAnalogButtons[XINPUT_GAMEPAD_WHITE] >= BUTTON_PRESS_THRESHOLD ||
-					  gp.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] >= BUTTON_PRESS_THRESHOLD ||
-  					gp.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] >= BUTTON_PRESS_THRESHOLD );
+	  // Only Buttons
+	state &= ( GP_A | GP_B | GP_X | GP_Y | GP_BLACK | GP_WHITE | GP_LEFT_TRIGGER | GP_RIGHT_TRIGGER );
+	return( state != 0 );
 }
 
 //------------------------------------------------------
@@ -226,72 +267,11 @@ BOOL CGamepad::IsAnyButtonPressed( void )
 //------------------------------------------------------
 BOOL CGamepad::IsButtonPressed( UINT32 buttonID )
 {
-  if( !IsConnected() )
-    return FALSE;
-
-  BOOL ret = TRUE;
   const XINPUT_GAMEPAD	&gp = m_state.Gamepad;
 
-  if( buttonID & GP_DPAD_UP )
-    ret &= ((gp.wButtons & XINPUT_GAMEPAD_DPAD_UP) != 0);
-  if( buttonID & GP_DPAD_RIGHT )
-    ret &= ((gp.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT) != 0);
-  if( buttonID & GP_DPAD_DOWN )
-    ret &= ((gp.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) != 0);
-  if( buttonID & GP_DPAD_LEFT )
-    ret &= ((gp.wButtons & XINPUT_GAMEPAD_DPAD_LEFT) != 0);
+	UINT32 state = GetButtonState();
 
-  if( buttonID & GP_BACK )
-    ret &= ((gp.wButtons & XINPUT_GAMEPAD_BACK) != 0);
-  if( buttonID & GP_START )
-    ret &= ((gp.wButtons & XINPUT_GAMEPAD_START) != 0);
-
-  if( buttonID & GP_LEFT_ANALOG )
-    ret &= ((gp.wButtons & XINPUT_GAMEPAD_LEFT_THUMB) != 0);
-  if( buttonID & GP_RIGHT_ANALOG )
-    ret &= ((gp.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB) != 0);
-
-  if( buttonID & GP_A )
-    ret &= (gp.bAnalogButtons[XINPUT_GAMEPAD_A] >= BUTTON_PRESS_THRESHOLD);
-  if( buttonID & GP_B )
-    ret &= (gp.bAnalogButtons[XINPUT_GAMEPAD_B] >= BUTTON_PRESS_THRESHOLD);
-  if( buttonID & GP_X )
-    ret &= (gp.bAnalogButtons[XINPUT_GAMEPAD_X] >= BUTTON_PRESS_THRESHOLD);
-  if( buttonID & GP_Y )
-    ret &= (gp.bAnalogButtons[XINPUT_GAMEPAD_Y] >= BUTTON_PRESS_THRESHOLD);
-
-  if( buttonID & GP_WHITE )
-    ret &= (gp.bAnalogButtons[XINPUT_GAMEPAD_WHITE] >= BUTTON_PRESS_THRESHOLD);
-  if( buttonID & GP_BLACK )
-    ret &= (gp.bAnalogButtons[XINPUT_GAMEPAD_BLACK] >= BUTTON_PRESS_THRESHOLD);
- 
-  if( buttonID & GP_LEFT_TRIGGER )
-    ret &= (gp.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] >= BUTTON_PRESS_THRESHOLD);
-  if( buttonID & GP_RIGHT_TRIGGER )
-    ret &= (gp.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] >= BUTTON_PRESS_THRESHOLD);
-
-  #define ANALOG_AS_DIGITAL_VAL    (SHORT)(32767.0f * STICK_DEADZONE)
-
-  if( buttonID & GP_LA_UP )
-    ret &= (gp.sThumbLY >= ANALOG_AS_DIGITAL_VAL);
-  if( buttonID & GP_LA_LEFT )
-    ret &= (gp.sThumbLX <= -ANALOG_AS_DIGITAL_VAL);
-  if( buttonID & GP_LA_DOWN )
-    ret &= (gp.sThumbLY <= -ANALOG_AS_DIGITAL_VAL);
-  if( buttonID & GP_LA_RIGHT )
-    ret &= (gp.sThumbLX >= ANALOG_AS_DIGITAL_VAL);
-
-  if( buttonID & GP_RA_UP )
-    ret &= (gp.sThumbRY >= ANALOG_AS_DIGITAL_VAL);
-  if( buttonID & GP_RA_LEFT )
-    ret &= (gp.sThumbRX <= -ANALOG_AS_DIGITAL_VAL);
-  if( buttonID & GP_RA_DOWN )
-    ret &= (gp.sThumbRY <= -ANALOG_AS_DIGITAL_VAL);
-  if( buttonID & GP_RA_RIGHT )
-    ret &= (gp.sThumbRX >= ANALOG_AS_DIGITAL_VAL);
-
-
-  return ret;
+  return ( state == buttonID );
 }
 
 //------------------------------------------------------
@@ -299,70 +279,11 @@ BOOL CGamepad::IsButtonPressed( UINT32 buttonID )
 //------------------------------------------------------
 BOOL CGamepad::IsOneOfButtonsPressed( UINT32 buttonID )
 {
-  if( !IsConnected() )
-    return FALSE;
-
-  BOOL ret = FALSE;
   const XINPUT_GAMEPAD	&gp = m_state.Gamepad;
 
-  if( buttonID & GP_DPAD_UP )
-    ret |= gp.wButtons & XINPUT_GAMEPAD_DPAD_UP;
-  if( buttonID & GP_DPAD_RIGHT )
-    ret |= gp.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT;
-  if( buttonID & GP_DPAD_DOWN )
-    ret |= gp.wButtons & XINPUT_GAMEPAD_DPAD_DOWN;
-  if( buttonID & GP_DPAD_LEFT )
-    ret |= gp.wButtons & XINPUT_GAMEPAD_DPAD_LEFT;
+	UINT32 state = GetButtonState();
 
-  if( buttonID & GP_BACK )
-    ret |= gp.wButtons & XINPUT_GAMEPAD_BACK;
-  if( buttonID & GP_START )
-    ret |= gp.wButtons & XINPUT_GAMEPAD_START;
-
-  if( buttonID & GP_LEFT_ANALOG )
-    ret |= gp.wButtons & XINPUT_GAMEPAD_LEFT_THUMB;
-  if( buttonID & GP_RIGHT_ANALOG )
-    ret |= gp.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB;
-
-  if( buttonID & GP_A )
-    ret |= gp.bAnalogButtons[XINPUT_GAMEPAD_A] >= BUTTON_PRESS_THRESHOLD;
-  if( buttonID & GP_B )
-    ret |= gp.bAnalogButtons[XINPUT_GAMEPAD_B] >= BUTTON_PRESS_THRESHOLD;
-  if( buttonID & GP_X )
-    ret |= gp.bAnalogButtons[XINPUT_GAMEPAD_X] >= BUTTON_PRESS_THRESHOLD;
-  if( buttonID & GP_Y )
-    ret |= gp.bAnalogButtons[XINPUT_GAMEPAD_Y] >= BUTTON_PRESS_THRESHOLD;
-
-  if( buttonID & GP_WHITE )
-    ret |= gp.bAnalogButtons[XINPUT_GAMEPAD_WHITE] >= BUTTON_PRESS_THRESHOLD;
-  if( buttonID & GP_BLACK )
-    ret |= gp.bAnalogButtons[XINPUT_GAMEPAD_BLACK] >= BUTTON_PRESS_THRESHOLD;
- 
-  if( buttonID & GP_LEFT_TRIGGER )
-    ret |= gp.bAnalogButtons[XINPUT_GAMEPAD_LEFT_TRIGGER] >= BUTTON_PRESS_THRESHOLD;
-  if( buttonID & GP_RIGHT_TRIGGER )
-    ret |= gp.bAnalogButtons[XINPUT_GAMEPAD_RIGHT_TRIGGER] >= BUTTON_PRESS_THRESHOLD;
-
-  if( buttonID & GP_LA_UP )
-    ret |= (gp.sThumbLY >= ANALOG_AS_DIGITAL_VAL);
-  if( buttonID & GP_LA_LEFT )
-    ret |= (gp.sThumbLX <= -ANALOG_AS_DIGITAL_VAL);
-  if( buttonID & GP_LA_DOWN )
-    ret |= (gp.sThumbLY <= -ANALOG_AS_DIGITAL_VAL);
-  if( buttonID & GP_LA_RIGHT )
-    ret |= (gp.sThumbLX >= ANALOG_AS_DIGITAL_VAL);
-
-  if( buttonID & GP_RA_UP )
-    ret |= (gp.sThumbRY >= ANALOG_AS_DIGITAL_VAL);
-  if( buttonID & GP_RA_LEFT )
-    ret |= (gp.sThumbRX <= -ANALOG_AS_DIGITAL_VAL);
-  if( buttonID & GP_RA_DOWN )
-    ret |= (gp.sThumbRY <= -ANALOG_AS_DIGITAL_VAL);
-  if( buttonID & GP_RA_RIGHT )
-    ret |= (gp.sThumbRX >= ANALOG_AS_DIGITAL_VAL);
-
-
-  return ret;
+  return ( state & buttonID );
 }
 
 
