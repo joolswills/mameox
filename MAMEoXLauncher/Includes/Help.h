@@ -14,7 +14,7 @@
 
 //= D E F I N E S ======================================================
 
-#define HELPFILENAME		  "D:\\help.txt"
+#define HELPFILENAME		  "D:\\Media\\help.txt"
 
 //= C L A S S E S ======================================================
 
