@@ -141,12 +141,14 @@ void InitializeFileIO( void )
   g_pathNames[FILETYPE_CONFIG] = tempStr;
 
   CREATEOROPENPATH( g_FileIOConfig.m_GeneralPath.c_str(), TRUE );
-	g_pathNames[FILETYPE_INPUTLOG] =  g_pathNames[FILETYPE_SCREENSHOT] = 
-																	  g_pathNames[FILETYPE_HISTORY] = 
+	g_pathNames[FILETYPE_INPUTLOG] =  g_pathNames[FILETYPE_HISTORY] = 
 																	  g_pathNames[FILETYPE_CHEAT] = 
 																	  g_pathNames[FILETYPE_LANGUAGE] = 
 																	  g_pathNames[FILETYPE_CTRLR] = 
                                     tempStr;
+
+  CREATEOROPENPATH( g_FileIOConfig.m_ScreenshotPath.c_str(), TRUE );
+  g_pathNames[FILETYPE_SCREENSHOT] = tempStr;
 }
 
 //---------------------------------------------------------------------

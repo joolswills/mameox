@@ -224,7 +224,7 @@ COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice,
   wcscpy( m_pageData[OPTPAGE_DIRECTORIES].m_title, L"Directory Path Options" );
   m_pageData[OPTPAGE_DIRECTORIES].m_drawFunct = ::DrawDirectoryPathPage;
   m_pageData[OPTPAGE_DIRECTORIES].m_changeFunct = ::ChangeDirectoryPathPage;
-  m_pageData[OPTPAGE_DIRECTORIES].m_numItems = 15;
+  m_pageData[OPTPAGE_DIRECTORIES].m_numItems = 16;
 
   m_virtualKeyboard = new CVirtualKeyboard( displayDevice, m_fontSet );
 
@@ -646,6 +646,7 @@ void COptionsPage::DrawDirectoryPathPage( void )
   g_FileIOConfig.m_NVramPath          = iniFile.GetProfileString("Directories", "NVRamPath",           DEFAULT_NVRAMPATH);
   g_FileIOConfig.m_RomBackupPath      = iniFile.GetProfileString("Directories", "BackupPath",          DEFAULT_ROMBACKUPPATH);
   g_FileIOConfig.m_RomPath            = iniFile.GetProfileString("Directories", "RomsPath",            DEFAULT_ROMPATH);
+  g_FileIOConfig.m_ScreenshotPath     = iniFile.GetProfileString( "Directories", "ScreenshotPath",      DEFAULT_SCREENSHOTPATH );
 */
   WCHAR text[256] = {0};
 
@@ -695,6 +696,9 @@ void COptionsPage::DrawDirectoryPathPage( void )
 
   mbstowcs( text, g_FileIOConfig.m_NVramPath.c_str(), 255 );
   DRAWITEM( L"NVRAM, state files", text );
+
+  mbstowcs( text, g_FileIOConfig.m_ScreenshotPath.c_str(), 255 );
+  DRAWITEM( L"Screenshots", text );
 
   ENDPAGE();
 }
@@ -1118,6 +1122,11 @@ void COptionsPage::ChangeDirectoryPathPage( BOOL direction )
     case 14:
       m_virtualKeyboard->SetData( g_FileIOConfig.m_NVramPath );
       break;
+
+      // Screenshots
+    case 15:
+      m_virtualKeyboard->SetData( g_FileIOConfig.m_ScreenshotPath );
+      break;
     }
   }
   else
@@ -1200,6 +1209,11 @@ void COptionsPage::ChangeDirectoryPathPage( BOOL direction )
       case 14:
         g_FileIOConfig.m_NVramPath = m_virtualKeyboard->GetData();
         break;
+
+      // Screenshots
+    case 15:
+      g_FileIOConfig.m_ScreenshotPath = m_virtualKeyboard->GetData();
+      break;
       }
     }
   }

@@ -34,6 +34,7 @@
 #define DEFAULT_ROMBACKUPPATH       "D:\\ROMS\\BACKUP"
 #define DEFAULT_HDIMAGEPATH         "D:\\HDIMAGES"
 #define DEFAULT_HISCOREPATH         "D:\\HISCORES"
+#define DEFAULT_SCREENSHOTPATH      "D:\\SCREENSHOTS"
   
 
 #define DEFAULT_CMAPPING            "\\Device\\Harddisk0\\Partition1"
@@ -68,6 +69,7 @@ struct FileIOConfig_t
   CStdString m_HDImagePath;
   CStdString m_HiScorePath;
   CStdString m_DefaultRomListPath;
+  CStdString m_ScreenshotPath;
 
   CStdString m_LetterCMapping;
   CStdString m_LetterEMapping;
@@ -89,6 +91,7 @@ struct FileIOConfig_t
     m_RomBackupPath       = DEFAULT_ROMBACKUPPATH;
     m_HDImagePath         = DEFAULT_HDIMAGEPATH;
     m_HiScorePath         = DEFAULT_HISCOREPATH;
+    m_ScreenshotPath      = DEFAULT_SCREENSHOTPATH;
 
     m_LetterCMapping      = DEFAULT_CMAPPING;
     m_LetterEMapping      = DEFAULT_EMAPPING;
@@ -110,6 +113,7 @@ struct FileIOConfig_t
     m_RomBackupPath.MakeLower();
     m_HDImagePath.MakeLower();
     m_HiScorePath.MakeLower();
+    m_ScreenshotPath.MakeLower();
 
     m_LetterCMapping.MakeLower();
     m_LetterEMapping.MakeLower();
