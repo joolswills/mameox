@@ -310,6 +310,59 @@ print GENERATEDFILE "    }\n";
 print GENERATEDFILE "  }\n";
 print GENERATEDFILE "  return TRUE;\n";
 print GENERATEDFILE "}\n\n";
+
+
+
+
+print "Sectionizing drivers, sound hardware, and video hardware...\n";
+
+#  LoadDriverSectionByName( "src\\drivers\\cps1.c" );      // cps2.c is dependent on cps1.c
+#  LoadDriverSectionByName( "src\\drivers\\mpatrol.c" );   // 10 yard fight is dependent on the mpatrol vidhrdw
+#  LoadDriverSectionByName( "src\\drivers\\snk.c" );       // hal121.c is dependent on snk vidhrdw (ASO - Armored Scrum Object)
+#  LoadDriverSectionByName( "src\\drivers\\system16.c" );  // afterburner dependent
+#  LoadDriverSectionByName( "src\\drivers\\galaxian.c" );  // Amidar
+#  LoadDriverSectionByName( "src\\drivers\\scramble.c" );  // Amidar
+#  LoadDriverSectionByName( "src\\drivers\\scobra.c" );    // Amidar
+#  LoadDriverSectionByName( "src\\drivers\\rampart.c" );   // Arcade Classic Arcadecl.c
+#  LoadDriverSectionByName( "src\\drivers\\williams.c" );  // Archrivals
+#  LoadDriverSectionByName( "src\\drivers\\rastan.c" );    // Asuka & Asuka (sound)
+#  LoadDriverSectionByName( "src\\drivers\\hal21.c" );     // Athena
+#  LoadDriverSectionByName( "src\\drivers\\espial.c" );    // battle cruiser
+#  LoadDriverSectionByName( "src\\drivers\\bzone.c" );     // gravitar
+#  LoadDriverSectionByName( "src\\drivers\\nova2001.c" );  // Penguin-Kun War
+#  LoadDriverSectionByName( "src\\drivers\\gottlieb.c" );  // exterminator
+#  LoadDriverSectionByName( "src\\drivers\\pengo.c" );     // eyes
+#  LoadDriverSectionByName( "src\\drivers\\megasys1.c" );  // F1 Grand Prix Star
+#  LoadDriverSectionByName( "src\\drivers\\namcos1.c" );   // Face Off (Japan)
+#  LoadDriverSectionByName( "src\\drivers\\rallyx.c" );    // Loco-Motion
+#  LoadDriverSectionByName( "src\\drivers\\timeplt.c" );   // Loco-Motion
+#  LoadDriverSectionByName( "src\\drivers\\exidy.c" );     // Victory
+#  LoadDriverSectionByName( "src\\drivers\\m72.c" );       // Bomber Man World (World)
+#  LoadDriverSectionByName( "src\\drivers\\leland.c" );    // Asylum (prototype)
+#  LoadDriverSectionByName( "src\\drivers\\trackfld.c" );  // Hyper Sports, Hyper Olympics '84?
+#  taito_f3 - Super Chase
+#  multi32 - All sega system 32 games (Golden Axe 2)
+#  namcoic, namcos2 - Lucky&Wild
+
+@SkipDrivers = ( "jrcrypt.c", "mpatrol.c", "snk.c", 
+                 "galaxian.c", "scramble.c", "scobra.c", 
+	             "rampart.c", "williams.c", "rastan.c", "hal21.c", 
+	             "espial.c", "bzone.c", "nova2001.c", "gottlieb.c", 
+	             "pengo.c",  "megasys1.c", "rallyx.c", "timeplt.c", 
+				 "exidy.c", "m72.c", "leland.c", "trackfld.c",
+				 "taito_f3.c" );
+
+@CapcomFamily = ( "cps1.c", "cps2.c" );
+
+@NamcoFamily = ( "namcoic.c", "namcona1.c", "namconb1.c", "namcond1.c", "namcos1.c",
+                 "namcos2.c", "namcos21.c", "namcos22.c", "namcos86.c" );
+
+@SegaFamily = ( "multi32.c", "system1.c", "system16.c", "system18.c", "system24.c", "system32.c" );
+
+local @Families = ( \@CapcomFamily, \@NamcoFamily, \@SegaFamily );
+$autoNameNumber = $#Families + 10;
+
+
 print GENERATEDFILE "\n//-------------------------------------------------------------\n";
 print GENERATEDFILE "//	UnloadDriverSections\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
@@ -317,7 +370,32 @@ print GENERATEDFILE "BOOL UnloadDriverSections( void )\n";
 print GENERATEDFILE "{\n";
 print GENERATEDFILE "  std::map< std::string, std::string >::iterator i = g_nameToSectionMap.begin();\n";
 print GENERATEDFILE "  for( ; i != g_nameToSectionMap.end(); ++i )\n";
+print GENERATEDFILE "  {\n";
+print GENERATEDFILE "      // Only unload families once (all but the first member are skipped)\n";
+print GENERATEDFILE "    if( (*i).first == ";
+local $IsFirst = true;
+foreach( @Families ) {
+	$FamilyArray = $_;
+	foreach( @{$FamilyArray} ) {
+			# Skip the first (key) member of the family
+		if( $_ eq $FamilyArray->[0] ) {
+			next;
+		}
+
+			# Print OR
+		if( $IsFirst ne true ) {
+			print GENERATEDFILE " ||\n        (*i).first == ";
+		}
+		$IsFirst = false;
+
+			# Print code to ignore this member
+		print GENERATEDFILE "\"src\\\\drivers\\\\$_\"";
+	}
+}
+print GENERATEDFILE " )\n";
+print GENERATEDFILE "        continue;\n";
 print GENERATEDFILE "    XFreeSection( (*i).second.c_str() );\n";
+print GENERATEDFILE "  }\n";
 print GENERATEDFILE "  return TRUE;\n";
 print GENERATEDFILE "}\n\n";
 print GENERATEDFILE "\n//-------------------------------------------------------------\n";
@@ -325,6 +403,249 @@ print GENERATEDFILE "//	RegisterDriverSectionNames\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
 print GENERATEDFILE "static void RegisterDriverSectionNames( void )\n";
 print GENERATEDFILE "{\n";
+
+
+# Do two passes, one to find the last autoNameNumber, another to actually
+# modify the files
+print "Pass 1...\n";
+
+foreach( @FILEs ) {
+	chomp( $_ );
+
+	$DriverFileName = $_;
+
+		# Change the DriverName to what will be present in the actual MAME code
+		# Drop the ./MAME/ portion
+	/^\.\/MAME\/src\/drivers\/(.*\.c)$/;
+	$DriverNoPath = $1;
+	$DriverName = "src\\\\drivers\\\\$1";
+	$IsValid = true;
+
+		# Skip the fake jrcrypt.c file and all the hack files
+	foreach( @SkipDrivers ) {
+		if( ($DriverNoPath eq $_ ) ) {
+			print "Skipping $DriverNoPath.\n";
+			$IsValid = false;
+			last;
+		}
+	}
+
+	next if( $IsValid eq false );
+
+
+	$Family = false;
+	$FamilyID = 0;
+	foreach( @Families ) {
+		$FamilyArray = $_;
+		$FamilyID++;
+		foreach( @{$FamilyArray} ) {
+			if( ($DriverNoPath eq $_ ) ) {
+				print "$DriverNoPath is in family $FamilyID.\n";
+				$Family = $FamilyID;
+				last;
+			}
+		}
+	}
+
+
+
+	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
+
+	open( FILE, "<$DriverFileName" ) || die "Failed to open file $DriverFileName!\n";
+	sysread( FILE, $File, $size );
+	close( FILE );
+
+	if( ($File =~ /\#pragma code_seg/) ) {
+			# this should only happen on the first pass
+		if( $Family ne false ) {
+			print PRELOADFILE "/NOPRELOAD:\"$myAutoNameNumber\"\n";
+			print DBGPRELOADFILE "/NOPRELOAD:\"$myAutoNameNumber\"\n";
+			print GENERATEDFILE "  RegisterSectionName( \"$DriverName\", \"$Family\" );\n";
+			$myAutoNameNumber = 0;	# Don't increment (families should always be less anyway)
+		} else {
+			$File =~ /\#pragma code_seg\(\"C(\d+)\"\)/;
+			$myAutoNameNumber = $1;
+			print PRELOADFILE "/NOPRELOAD:\"$myAutoNameNumber\"\n";
+			print DBGPRELOADFILE "/NOPRELOAD:\"$myAutoNameNumber\"\n";
+			print GENERATEDFILE "  RegisterSectionName( \"$DriverName\", \"$myAutoNameNumber\" );\n";
+		}
+
+
+		if( $myAutoNameNumber >= $autoNameNumber ) {
+			$autoNameNumber = $myAutoNameNumber + 1;
+		}		
+
+	} else {
+	   push @newFILEs, $DriverFileName;
+	}
+}
+
+
+# Second pass, write out the section headers
+print "Pass 2...\n";
+foreach( @newFILEs ) {
+	chomp( $_ );
+
+	$DriverFileName = $_;
+
+		# Change the DriverName to what will be present in the actual MAME code
+		# Drop the ./MAME/ portion
+	/^\.\/MAME\/src\/drivers\/(.*\.c)$/;
+	$DriverNoPath = $1;
+	$DriverName = "src\\\\drivers\\\\$1";
+	$IsValid = true;
+
+		# Skip the fake jrcrypt.c file and all the hack files
+	foreach( @SkipDrivers ) {
+		if( ($DriverNoPath eq $_ ) ) {
+			print "Skipping $DriverNoPath.\n";
+			$IsValid = false;
+			last;
+		}
+	}
+
+	next if( $IsValid eq false );
+
+	$Family = false;
+	$FamilyID = 0;
+	foreach( @Families ) {
+		$FamilyArray = $_;
+		$FamilyID++;
+		foreach( @{$FamilyArray} ) {
+			if( ($DriverNoPath eq $_ ) ) {
+				print "$DriverNoPath is in family $FamilyID.\n";
+				$Family = $FamilyID;
+				last;
+			}
+		}
+	}
+
+	if( $Family ne false ) {
+		print PRELOADFILE "/NOPRELOAD:\"$myAutoNameNumber\"\n";
+		print DBGPRELOADFILE "/NOPRELOAD:\"$myAutoNameNumber\"\n";
+		print GENERATEDFILE "  RegisterSectionName( \"$DriverName\", \"$Family\" );\n";
+	} else {
+		print PRELOADFILE "/NOPRELOAD:\"$autoNameNumber\"\n";
+		print DBGPRELOADFILE "/NOPRELOAD:\"$autoNameNumber\"\n";
+		print GENERATEDFILE "  RegisterSectionName( \"$DriverName\", \"$autoNameNumber\" );\n";
+	}
+
+	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
+
+	open( FILE, "<$DriverFileName" ) || die "Failed to open file $DriverFileName!\n";
+	sysread( FILE, $File, $size );
+	close( FILE );
+
+		# Write out the section header/footer
+	if( $Family ne false ) {
+		WriteSectionData( $DriverFileName, $File, $Family );
+	} else {
+		WriteSectionData( $DriverFileName, $File, $autoNameNumber );
+	}
+
+		# Also do the vidhdrw file, if one exists
+	$VidHardwareName = $DriverFileName;
+	$VidHardwareName =~ s/\/drivers\//\/vidhrdw\//;
+
+	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $VidHardwareName );
+
+	if( open( FILE, "<$VidHardwareName" ) ) {
+		$File = "";
+		sysread( FILE, $File, $size );
+		close( FILE );
+
+		if( !($File =~ /\#pragma code_seg/) ) {
+			if( $Family ne false ) {
+				WriteSectionData( $VidHardwareName, $File, $Family );
+			} else {
+				WriteSectionData( $VidHardwareName, $File, $autoNameNumber );
+			}
+		}
+	}
+
+		# Also do the sndhrdw file, if one exists
+	$SoundHardwareName = $DriverFileName;
+	$SoundHardwareName =~ s/\/drivers\//\/sndhrdw\//;
+
+	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $SoundHardwareName );
+
+	if( open( FILE, "<$SoundHardwareName" ) ) {
+		$File = "";
+		sysread( FILE, $File, $size );
+		close( FILE );
+
+		if( !($File =~ /\#pragma code_seg/) ) {
+			if( $Family ne false ) {
+				WriteSectionData( $SoundHardwareName, $File, $Family );
+			} else {
+				WriteSectionData( $SoundHardwareName, $File, $autoNameNumber );
+			}
+		}
+	}
+
+		# Also do the machine file, if one exists
+	$MachineHardwareName = $DriverFileName;
+	$MachineHardwareName =~ s/\/drivers\//\/machine\//;
+
+	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $MachineHardwareName );
+
+	if( open( FILE, "<$MachineHardwareName" ) ) {
+		$File = "";
+		sysread( FILE, $File, $size );
+		close( FILE );
+
+		if( !($File =~ /\#pragma code_seg/) ) {
+			if( $Family ne false ) {
+				WriteSectionData( $MachineHardwareName, $File, $Family );
+			} else {
+				WriteSectionData( $MachineHardwareName, $File, $autoNameNumber );
+			}
+		}
+	}
+
+	$autoNameNumber++;
+}
+print GENERATEDFILE "}\n";
+print GENERATEDFILE "#pragma code_seg()\n";
+print GENERATEDFILE "#pragma data_seg()\n";
+print GENERATEDFILE "} // End extern \"C\"\n\n\n";
+close( GENERATEDFILE );
+
+
+
+
+
+
+
+
+
+
+
+
+
+#------------------------------------------------------------------------------
+
+
+print "\n\nSectionizing CPU's...\n";
+
+#local @CPUDirs = `find ./MAME/src/cpu -path \'*/CVS\' -prune -o -type d -a -print`;
+@FILEs    = `find ./MAME/src/cpu/ -name *.c`;
+@newFILEs = ();
+local $OldCPUName = "";
+
+
+@SkipCPUs = ( "DSP32", "I8085", "JAGUAR", "MIPS", "NEC", "PIC16C5X", "TMS9900" );
+
+@MotorolaFamily = ( "M6502", "M6800", "M68000", "M6805", "M6809" );
+@Families = ( \@MotorolaFamily );
+
+$autoNameNumber = $#Families + 10;
+
 
 
 	# Create the CPUSections.cpp file
@@ -469,11 +790,28 @@ print CPUFILE "{\n";
 print CPUFILE "  std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.begin();\n";
 print CPUFILE "  for( ; i != g_IDToSectionMap.end(); ++i )\n";
 print CPUFILE "  {\n";
-print CPUFILE "      // Only unload families once\n";
-print CPUFILE "    if( (*i).first == CPU_M6809 ||\n";
-print CPUFILE "        (*i).first == CPU_M6805 ||\n";
-print CPUFILE "        (*i).first == CPU_M68000 ||\n";
-print CPUFILE "        (*i).first == CPU_M6800 )\n";
+print CPUFILE "      // Only unload families once (all but the first member are skipped)\n";
+print CPUFILE "    if( (*i).first == ";
+local $IsFirst = true;
+foreach( @Families ) {
+	$FamilyArray = $_;
+	foreach( @{$FamilyArray} ) {	
+			# Skip the first (key) member of the family
+		if( $_ eq $FamilyArray->[0] ) {
+			next;
+		}
+
+			# Print OR
+		if( $IsFirst ne true ) {
+			print CPUFILE " ||\n        (*i).first == ";
+		}
+		$IsFirst = false;
+
+			# Print code to ignore this member
+		print CPUFILE "CPU_$_";
+	}
+}
+print CPUFILE " )\n";
 print CPUFILE "        continue;\n";
 print CPUFILE "    XFreeSection( (*i).second.c_str() );\n";
 print CPUFILE "  }\n";
@@ -487,222 +825,6 @@ print CPUFILE "{\n";
 
 
 
-
-print "Sectionizing drivers, sound hardware, and video hardware...\n";
-
-#  LoadDriverSectionByName( "src\\drivers\\cps1.c" );      // cps2.c is dependent on cps1.c
-#  LoadDriverSectionByName( "src\\drivers\\mpatrol.c" );   // 10 yard fight is dependent on the mpatrol vidhrdw
-#  LoadDriverSectionByName( "src\\drivers\\snk.c" );       // hal121.c is dependent on snk vidhrdw (ASO - Armored Scrum Object)
-#  LoadDriverSectionByName( "src\\drivers\\system16.c" );  // afterburner dependent
-#  LoadDriverSectionByName( "src\\drivers\\galaxian.c" );  // Amidar
-#  LoadDriverSectionByName( "src\\drivers\\scramble.c" );  // Amidar
-#  LoadDriverSectionByName( "src\\drivers\\scobra.c" );    // Amidar
-#  LoadDriverSectionByName( "src\\drivers\\rampart.c" );   // Arcade Classic Arcadecl.c
-#  LoadDriverSectionByName( "src\\drivers\\williams.c" );  // Archrivals
-#  LoadDriverSectionByName( "src\\drivers\\rastan.c" );    // Asuka & Asuka (sound)
-#  LoadDriverSectionByName( "src\\drivers\\hal21.c" );     // Athena
-#  LoadDriverSectionByName( "src\\drivers\\espial.c" );    // battle cruiser
-#  LoadDriverSectionByName( "src\\drivers\\bzone.c" );     // gravitar
-#  LoadDriverSectionByName( "src\\drivers\\nova2001.c" );  // Penguin-Kun War
-#  LoadDriverSectionByName( "src\\drivers\\gottlieb.c" );  // exterminator
-#  LoadDriverSectionByName( "src\\drivers\\pengo.c" );     // eyes
-#  LoadDriverSectionByName( "src\\drivers\\megasys1.c" );  // F1 Grand Prix Star
-#  LoadDriverSectionByName( "src\\drivers\\namcos1.c" );   // Face Off (Japan)
-#  LoadDriverSectionByName( "src\\drivers\\rallyx.c" );    // Loco-Motion
-#  LoadDriverSectionByName( "src\\drivers\\timeplt.c" );   // Loco-Motion
-#  LoadDriverSectionByName( "src\\drivers\\exidy.c" );     // Victory
-#  LoadDriverSectionByName( "src\\drivers\\m72.c" );       // Bomber Man World (World)
-#  LoadDriverSectionByName( "src\\drivers\\leland.c" );    // Asylum (prototype)
-#  LoadDriverSectionByName( "src\\drivers\\trackfld.c" );  // Hyper Sports, Hyper Olympics '84?
-#  taito_f3 - Super Chase
-#  multi32 - All sega system 32 games (Golden Axe 2)
-#  namcoic, namcos2 - Lucky&Wild
-
-@SkipDrivers = ( "jrcrypt.c", "cps1.c", "mpatrol.c", "snk.c", 
-                 "system16.c", "multi32.c", "galaxian.c", "scramble.c", "scobra.c", 
-	             "rampart.c", "williams.c", "rastan.c", "hal21.c", 
-	             "espial.c", "bzone.c", "nova2001.c", "gottlieb.c", 
-	             "pengo.c",  "megasys1.c", "namcos1.c", "namcoic.c", "namcos2.c"
-				 "rallyx.c", "timeplt.c", "exidy.c", "m72.c", "leland.c", "trackfld.c",
-				 "taito_f3.c" );
-
-# Do two passes, one to find the last autoNameNumber, another to actually
-# modify the files
-print "Pass 1...\n";
-
-foreach( @FILEs ) {
-	chomp( $_ );
-
-	$DriverFileName = $_;
-	$DriverName = $_;
-	$IsValid = true;
-
-		# Skip the fake jrcrypt.c file and all the hack files
-	foreach( @SkipDrivers ) {
-		$DriverToSkip = $_;
-		$DriverToSkip =~ s/\.c/\\.c/;
-		if( ($DriverName =~ /.*$DriverToSkip/ ) ) {
-			print "Skipping $DriverName.\n";
-			$IsValid = false;
-			last;
-		}
-	}
-
-	next if( $IsValid eq false );
-
-		# Change the DriverName to what will be present in the actual MAME code
-		# Drop the ./MAME/ portion
-	$DriverName =~ /^\.\/MAME\/src\/drivers\/(.*\.c)$/;
-	$DriverName = "src\\\\drivers\\\\$1";
-
-	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
-	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
-
-	open( FILE, "<$DriverFileName" ) || die "Failed to open file $DriverFileName!\n";
-	sysread( FILE, $File, $size );
-	close( FILE );
-
-	if( ($File =~ /\#pragma code_seg/) ) {
-			# this should only happen on the first pass
-		$File =~ /\#pragma code_seg\(\"C(\d+)\"\)/;
-		$myAutoNameNumber = $1;
-
-		print PRELOADFILE "/NOPRELOAD:\"".CODE_PREFIX."$myAutoNameNumber\"\n";
-		print PRELOADFILE "/NOPRELOAD:\"".BSS_PREFIX."$myAutoNameNumber\"\n";
-		print DBGPRELOADFILE "/NOPRELOAD:\"".CODE_PREFIX."$myAutoNameNumber\"\n";
-		print DBGPRELOADFILE "/NOPRELOAD:\"".BSS_PREFIX."$myAutoNameNumber\"\n";
-#		print PRELOADFILE "/NOPRELOAD:\"".DATA_PREFIX."$myAutoNameNumber\"\n";
-#		print PRELOADFILE "/NOPRELOAD:\"".CONST_PREFIX."$myAutoNameNumber\"\n";
-		print GENERATEDFILE "  RegisterSectionName( \"$DriverName\", \"$myAutoNameNumber\" );\n";
-
-		if( $myAutoNameNumber >= $autoNameNumber ) {
-			$autoNameNumber = $myAutoNameNumber + 1;
-		}		
-
-	} else {
-	   push @newFILEs, $DriverFileName;
-	}
-}
-
-
-# Second pass, write out the section headers
-print "Pass 2...\n";
-foreach( @newFILEs ) {
-	chomp( $_ );
-
-	$DriverFileName = $_;
-	$DriverName = $_;
-	$IsValid = true;
-
-		# Skip the fake jrcrypt.c file and all the hack files
-	foreach( @SkipDrivers ) {
-		$DriverToSkip = $_;
-		$DriverToSkip =~ s/\.c/\\.c/;
-		if( ($DriverName =~ /.*$DriverToSkip/ ) ) {
-			print "Skipping $DriverName.\n";
-			$IsValid = false;
-			last;
-		}
-	}
-
-	next if( $IsValid eq false );
-
-		# Change the DriverName to what will be present in the actual MAME code
-		# Drop the ./MAME/ portion
-	$DriverName =~ /^\.\/MAME\/src\/drivers\/(.*\.c)$/;
-	$DriverName = "src\\\\drivers\\\\$1";
-
-	print PRELOADFILE "/NOPRELOAD:\"$autoNameNumber\"\n";
-	print DBGPRELOADFILE "/NOPRELOAD:\"$autoNameNumber\"\n";
-	print GENERATEDFILE "  RegisterSectionName( \"$DriverName\", \"$autoNameNumber\" );\n";
-
-	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
-	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
-
-	open( FILE, "<$DriverFileName" ) || die "Failed to open file $DriverFileName!\n";
-	sysread( FILE, $File, $size );
-	close( FILE );
-
-		# Write out the section header/footer
-	WriteSectionData( $DriverFileName, $File, $autoNameNumber );
-
-		# Also do the vidhdrw file, if one exists
-	$VidHardwareName = $DriverFileName;
-	$VidHardwareName =~ s/\/drivers\//\/vidhrdw\//;
-
-	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
-	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $VidHardwareName );
-
-	if( open( FILE, "<$VidHardwareName" ) ) {
-		$File = "";
-		sysread( FILE, $File, $size );
-		close( FILE );
-
-		if( !($File =~ /\#pragma code_seg/) ) {
-			WriteSectionData( $VidHardwareName, $File, $autoNameNumber );
-		}
-	}
-
-		# Also do the sndhrdw file, if one exists
-	$SoundHardwareName = $DriverFileName;
-	$SoundHardwareName =~ s/\/drivers\//\/sndhrdw\//;
-
-	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
-	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $SoundHardwareName );
-
-	if( open( FILE, "<$SoundHardwareName" ) ) {
-		$File = "";
-		sysread( FILE, $File, $size );
-		close( FILE );
-
-		if( !($File =~ /\#pragma code_seg/) ) {
-			WriteSectionData( $SoundHardwareName, $File, $autoNameNumber );
-		}
-	}
-
-		# Also do the machine file, if one exists
-	$MachineHardwareName = $DriverFileName;
-	$MachineHardwareName =~ s/\/drivers\//\/machine\//;
-
-	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
-	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $MachineHardwareName );
-
-	if( open( FILE, "<$MachineHardwareName" ) ) {
-		$File = "";
-		sysread( FILE, $File, $size );
-		close( FILE );
-
-		if( !($File =~ /\#pragma code_seg/) ) {
-			WriteSectionData( $MachineHardwareName, $File, $autoNameNumber );
-		}
-	}
-
-	$autoNameNumber++;
-}
-print GENERATEDFILE "}\n";
-print GENERATEDFILE "#pragma code_seg()\n";
-print GENERATEDFILE "#pragma data_seg()\n";
-print GENERATEDFILE "} // End extern \"C\"\n\n\n";
-close( GENERATEDFILE );
-
-
-#------------------------------------------------------------------------------
-
-
-print "Sectionizing CPU's...\n";
-
-#local @CPUDirs = `find ./MAME/src/cpu -path \'*/CVS\' -prune -o -type d -a -print`;
-@FILEs    = `find ./MAME/src/cpu/ -name *.c`;
-@newFILEs = ();
-local $OldCPUName = "";
-
-
-@SkipCPUs = ( "DSP32", "I8085", "JAGUAR", "MIPS", "NEC", "PIC16C5X", "TMS9900" );
-
-@Motorola = ( "m6502", "m6800", "m68000", "m6805", "m6809" );
-$MotorolaID = 15;
-
-$autoNameNumber = $MotorolaID + 1;
 
 # Do two passes, one to find the last autoNameNumber, another to actually
 # modify the files
@@ -730,12 +852,17 @@ foreach( @FILEs ) {
 		}
 	}
 
-	foreach( @Motorola ) {
-		$CPUToSkip = $_;
-		if( uc($CPUName) eq $CPUToSkip ) {
-			print "Skipping $CPUName.\n";
-			$IsValid = false;
-			last;
+	$Family = false;
+	$FamilyID = 0;
+	foreach( @Families ) {
+		$FamilyArray = $_;
+		$FamilyID++;
+		foreach( @{$FamilyArray} ) {			
+			if( uc($CPUName) eq $_ ) {
+				print "$CPUName is in family $FamilyID.\n";
+				$Family = $FamilyID;
+				last;
+			}
 		}
 	}
 
@@ -758,9 +885,17 @@ foreach( @FILEs ) {
 		if( $CPUName ne $OldCPUName ) {
 			$OldCPUName = $CPUName;
 			$ucaseCPUName = uc( $CPUName );
-			print PRELOADFILE "/NOPRELOAD:\"C$myAutoNameNumber\"\n";
-			print DBGPRELOADFILE "/NOPRELOAD:\"C$myAutoNameNumber\"\n";
-			print CPUFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"CPU$myAutoNameNumber\" );\n";
+			if( $Family ne false ) {
+				print PRELOADFILE "/NOPRELOAD:\"C$Family\"\n";
+				print DBGPRELOADFILE "/NOPRELOAD:\"C$Family\"\n";
+				print CPUFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"CPU$Family\" );\n";
+				$myAutoNameNumber = 0;	# Don't increment (families should always be less anyway)
+			}
+			else {
+				print PRELOADFILE "/NOPRELOAD:\"C$myAutoNameNumber\"\n";
+				print DBGPRELOADFILE "/NOPRELOAD:\"C$myAutoNameNumber\"\n";
+				print CPUFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"CPU$myAutoNameNumber\" );\n";
+			}
 		}
 
 		if( $myAutoNameNumber >= $autoNameNumber ) {
@@ -777,7 +912,6 @@ $OldCPUName = "";
 
 foreach( @newFILEs ) {
 	chomp( $_ );
-	print "$_\n";
 
 	$DriverFileName = $_;
 	$CPUName = $_;
@@ -799,17 +933,37 @@ foreach( @newFILEs ) {
 		}
 	}
 
+	$Family = false;
+	$FamilyID = 0;
+	foreach( @Families ) {
+		$FamilyArray = $_;
+		$FamilyID++;
+		foreach( @{$FamilyArray} ) {			
+			if( uc($CPUName) eq $_ ) {
+				print "$CPUName is in family $FamilyID.\n";
+				$Family = $FamilyID;
+				last;
+			}
+		}
+	}
+
 	next if( $IsValid eq false );
 
 		# Unlike the drivers, we want one name for an entire directory
 		# so only register on a new directory (CPUName)
 	if( $CPUName ne $OldCPUName ) {
-		$autoNameNumber++;
 		$OldCPUName = $CPUName;
 		$ucaseCPUName = uc( $CPUName );
-		print PRELOADFILE "/NOPRELOAD:\"C$autoNameNumber\"\n";
-		print DBGPRELOADFILE "/NOPRELOAD:\"C$autoNameNumber\"\n";
-		print CPUFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"CPU$autoNameNumber\" );\n";
+		if( $Family ne false ) {
+			print PRELOADFILE "/NOPRELOAD:\"C$Family\"\n";
+			print DBGPRELOADFILE "/NOPRELOAD:\"C$Family\"\n";
+			print CPUFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"CPU$Family\" );\n";
+		} else {
+			$autoNameNumber++;
+			print PRELOADFILE "/NOPRELOAD:\"C$autoNameNumber\"\n";
+			print DBGPRELOADFILE "/NOPRELOAD:\"C$autoNameNumber\"\n";
+			print CPUFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"CPU$autoNameNumber\" );\n";
+		}
 	}
 
 
@@ -821,7 +975,11 @@ foreach( @newFILEs ) {
 	close( FILE );
 
 		# Write out the section header/footer
-	WriteCPUSectionData( $DriverFileName, $File, $autoNameNumber );
+	if( $Family ne false ) {
+		WriteCPUSectionData( $DriverFileName, $File, $Family );
+	} else {
+		WriteCPUSectionData( $DriverFileName, $File, $autoNameNumber );
+	}
 }
 
 print CPUFILE "}\n";
