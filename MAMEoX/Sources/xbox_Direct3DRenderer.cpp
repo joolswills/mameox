@@ -664,8 +664,8 @@ static BOOL CreateRenderingQuad( void )
 
     // Calculate the TU/TV coords based on the rendering area
   FLOAT tu_l, tv_t, tu_r, tv_b;
-  tu_l = (FLOAT)g_textureRenderingArea.left;
-  tu_r = (FLOAT)(g_textureRenderingArea.right+1);
+  tu_l = (FLOAT)g_textureRenderingArea.left+1;
+  tu_r = (FLOAT)(g_textureRenderingArea.right);
   tv_t = (FLOAT)g_textureRenderingArea.top;
   tv_b = (FLOAT)(g_textureRenderingArea.bottom+1);
 
