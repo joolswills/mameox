@@ -1971,6 +1971,8 @@ void CROMListScreen::DrawSimpleList( void )
 		return;
 	}
 
+	WCHAR name[512];
+
 		// Draw the title bar
 	swprintf( name, L"Names (%s)  ", m_options.m_hideFiltered ? L"Filtered " : L"Full List" );
   if( m_superscrollMode )
@@ -1993,8 +1995,6 @@ void CROMListScreen::DrawSimpleList( void )
 
 
 	const CSkinScrollArea *area = g_loadedSkin->GetSkinElementScrollArea( SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA );
-
-	WCHAR name[512];
 	FLOAT selectedItemYPos = area->m_top + (area->m_singleRowHeight * (ULONG)m_cursorPosition);
 
 	if( area->m_highlightBar )
