@@ -1443,44 +1443,14 @@ void GetScreenPosition( FLOAT *xOffset, FLOAT *yOffset )
 //-------------------------------------------------------------
 void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 {
-  LPDIRECT3DVERTEXBUFFER8 pVertexBuffer = NULL;
+	pD3DDevice->Clear(	0L,																// Count
+											NULL,															// Rects to clear
+											D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+											D3DCOLOR_XRGB(0,0,0),							// Color
+											1.0f,															// Z
+											0L );															// Stencil
 
-  pD3DDevice->CreateVertexBuffer( (sizeof(CUSTOMVERTEX) << 2),
-							                    D3DUSAGE_WRITEONLY,
-																	D3DFVF_XYZ | D3DFVF_TEX1,
-																	D3DPOOL_MANAGED,
-																	&pVertexBuffer );
-
-	CUSTOMVERTEX *pVertices;
-	pVertexBuffer->Lock( 0,										// Offset to lock
-											 0,										// Size to lock
-											 (BYTE**)&pVertices,		// ppbData
-											 0 );									// Flags
-		pVertices[0].pos.x = -0.9f;
-		pVertices[0].pos.y = 0.9f;
-		pVertices[0].pos.z = 1.0f;
-    pVertices[0].tu = 0.0f;
-    pVertices[0].tv = 0.0f;
-
-		pVertices[1].pos.x = 0.9f;
-		pVertices[1].pos.y = 0.9f;
-		pVertices[1].pos.z = 1.0f;
-    pVertices[1].tu = 1.0f;
-    pVertices[1].tv = 0.0f;
-
-		pVertices[2].pos.x = 0.9f;
-		pVertices[2].pos.y = -0.9f;
-		pVertices[2].pos.z = 1.0f;
-    pVertices[2].tu = 1.0f;
-    pVertices[2].tv = 1.0f;
-
-		pVertices[3].pos.x = -0.9f;
-		pVertices[3].pos.y = -0.9f;
-		pVertices[3].pos.z = 1.0f;
-    pVertices[3].tu = 0.0f;
-    pVertices[3].tv = 1.0f;
-	pVertexBuffer->Unlock();
-
+  // Render the backdrop texture
 	pD3DDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
 	pD3DDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
 	pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
@@ -1490,22 +1460,28 @@ void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice )
   pD3DDevice->SetTextureStageState( 0, D3DTSS_MAGFILTER, D3DTEXF_LINEAR );
   pD3DDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
   pD3DDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-  pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSU, D3DTADDRESS_CLAMP );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSW, D3DTADDRESS_CLAMP );
 
-		// Clear the backbuffer
-  pD3DDevice->Clear(	0L,																// Count
-											NULL,															// Rects to clear
-											D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
-                      D3DCOLOR_XRGB(0,0,0),							// Color
-											1.0f,															// Z
-											0L );															// Stencil
+  pD3DDevice->SetTexture( 0, g_textureSet.GetMessageScreenBackdrop() );
+  pD3DDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX0 );
+  pD3DDevice->Begin( D3DPT_QUADLIST );
 
-
-  pD3DDevice->SetStreamSource(	0,												// Stream number
-																pVertexBuffer,					// Stream data
-																sizeof(CUSTOMVERTEX) );		// Vertex stride
-	pD3DDevice->SetTexture( 0, g_textureSet.GetMessageScreenBackdrop() );
-  pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
+    FLOAT xPercentage, yPercentage;
+    GetScreenUsage( &xPercentage, &yPercentage );
+ 
+    pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 0.0f );
+    pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, -xPercentage, yPercentage, 1.0f, 1.0f );
+    pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 0.0f );
+    pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, xPercentage, yPercentage, 1.0f, 1.0f );
+    pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 1.0f, 1.0f );
+    pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, xPercentage, -yPercentage, 1.0f, 1.0f );
+    pD3DDevice->SetVertexData2f( D3DVSDE_TEXCOORD0, 0.0f, 1.0f );
+    pD3DDevice->SetVertexData4f( D3DVSDE_VERTEX, -xPercentage, -yPercentage, 1.0f, 1.0f );
+  pD3DDevice->End();
+	pD3DDevice->SetTexture( 0, NULL );
 
   g_fontSet.DefaultFont().Begin();
   g_fontSet.DefaultFont().DrawText( 320, 240, D3DCOLOR_RGBA( 255, 255, 255, 255),   L"Loading. Please wait...", XBFONT_CENTER_X );
