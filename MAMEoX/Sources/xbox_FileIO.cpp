@@ -40,6 +40,10 @@ struct _osd_file
   UINT64		m_bufferbase;
   DWORD		  m_bufferbytes;
   UINT8		  m_buffer[FILE_BUFFER_SIZE];
+
+  UINT64    m_writeBufferBytes;
+  UINT8     m_writeBuffer[FILE_BUFFER_SIZE];
+
   BOOL      m_bIsSMB;
   CSMBHandler m_SmbHandler;
 } _osd_file;
@@ -411,6 +415,19 @@ INT32 osd_fseek( osd_file *file, INT64 offset, int whence )
   }
   else
   {
+      // Flush the write buffer
+    if( file->m_writeBufferBytes )
+    {
+      DWORD result;
+      if( !WriteFile( file->m_handle, file->m_writeBuffer, file->m_writeBufferBytes, &result, NULL ) )
+      {
+        PRINTMSG( T_ERROR, "WriteFile failed! 0x%X", GetLastError() );
+        return 0;
+      }
+      file->m_writeBufferBytes = 0;
+      file->m_filepos += result;
+    }
+
     switch( whence )
     {
     case SEEK_SET:	
@@ -504,7 +521,7 @@ UINT32 osd_fread( osd_file *file, void *buffer, UINT32 length )
     }
 
     // attempt to seek to the current location if we're not there already
-    if (file->m_offset != file->m_filepos)
+    if( file->m_offset != file->m_filepos )
     {
       LONG upperPos = (LONG)(file->m_offset >> 32);
       result = SetFilePointer(file->m_handle, (UINT32)file->m_offset, &upperPos, FILE_BEGIN);
@@ -557,26 +574,58 @@ UINT32 osd_fread( osd_file *file, void *buffer, UINT32 length )
 //---------------------------------------------------------------------
 UINT32 osd_fwrite( osd_file *file, const void *buffer, UINT32 length )
 {
-  LONG upperPos;
   DWORD result;
 
-  // invalidate any buffered data
+  // invalidate any buffered read data
   file->m_bufferbytes = 0;
 
-  // attempt to seek to the current location
-  upperPos = (LONG)(file->m_offset >> 32);
-  result = SetFilePointer(file->m_handle, (UINT32)file->m_offset, &upperPos, FILE_BEGIN);
-  if (result == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR)
-    return 0;
 
-  // do the write
-  WriteFile(file->m_handle, buffer, length, &result, NULL);
-  file->m_filepos += result;
+    // attempt to seek to the current location if we're not there already
+  if( file->m_offset != file->m_filepos )
+  {
+    LONG upperPos = (LONG)(file->m_offset >> 32);
+    result = SetFilePointer(file->m_handle, (UINT32)file->m_offset, &upperPos, FILE_BEGIN);
+    if (result == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR)
+    {
+      file->m_filepos = ~0;
+      return 0;
+    }
+    file->m_filepos = file->m_offset;
+  }
 
-  // adjust the pointers
-  file->m_offset += result;
-  if (file->m_offset > file->m_end)
+    // Just copy the data into the write buffer
+  if( FILE_BUFFER_SIZE - file->m_writeBufferBytes > length )
+  {
+    memcpy( &file->m_writeBuffer[file->m_writeBufferBytes], buffer, length );
+    file->m_writeBufferBytes += length;
+    result = length;
+  }
+  else
+  {
+      // Flush the buffer and then write the data
+    if( !WriteFile( file->m_handle, file->m_writeBuffer, file->m_writeBufferBytes, &result, NULL ) )
+    {
+      PRINTMSG( T_ERROR, "WriteFile failed! 0x%X", GetLastError() );
+      return 0;
+    }
+      // No need to adjust m_offset, it's already been done when the data was copied to the buffer
+    file->m_writeBufferBytes = 0;
+    file->m_filepos += result;
+
+      // Write the requested data to the file as well
+    if( !WriteFile( file->m_handle, buffer, length, &result, NULL ) )
+    {
+      PRINTMSG( T_ERROR, "WriteFile failed! 0x%X", GetLastError() );
+      return 0;
+    }
+    file->m_filepos += result;
+  }
+
+    // adjust the pointers
+  file->m_offset += length;
+  if( file->m_offset > file->m_end )
     file->m_end = file->m_offset;
+
   return result;
 }
 
@@ -591,7 +640,19 @@ void osd_fclose( osd_file *file )
   }
   else
   {
-    // close the handle and clear it out
+      // Flush the write buffer
+    if( file->m_writeBufferBytes )
+    {
+      DWORD result;
+      if( !WriteFile( file->m_handle, file->m_writeBuffer, file->m_writeBufferBytes, &result, NULL ) )
+      {
+        PRINTMSG( T_ERROR, "WriteFile failed, data will be lost! 0x%X", GetLastError() );
+      }
+      file->m_writeBufferBytes = 0;
+      file->m_filepos += result;
+    }
+
+      // close the handle and clear it out
     if (file->m_handle)
       CloseHandle(file->m_handle);
 

@@ -27,6 +27,10 @@ Version 0.71.2b (CVS)
 
     - xbox_fileio.c
       - Added code to allow 4 ROM paths
+      - Added buffering for fwrite(), should speed up ROM exiting
+        a bit (when saving the input settings it did a whole bunch
+        of tiny fwrite(), each of which utilizes WriteFile on an
+        unbuffered device, which was _slow_)
 
    -------------------------------------------------------------
   - \MAMEoXLauncher\Includes:
