@@ -3,8 +3,8 @@
 // The output will be a header file (.h) used at compile time,
 // and a packed resource file (.xpr) used at runtime.
 
-out_header         ..\Includes\MAMEoXIcon.h
-out_packedresource ..\..\Media\MAMEoXIcon.xpr
+out_header         ..\Includes\mox-icon.h
+out_packedresource ..\..\Media\mox-icon.xpr
 out_error          MAMEoXIcon.err
 out_prefix         mameoxicon
 

@@ -5,7 +5,7 @@
 
 out_header         ..\Includes\FranklinGothicMedium_12.h
 out_packedresource ..\..\Media\FranklinGothicMedium_12.xpr
-out_error          FranklinGothicMedium_12.err
+out_error                      FranklinGothicMedium_12.err
 
 
 Texture Font

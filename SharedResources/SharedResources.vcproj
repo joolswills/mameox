@@ -61,7 +61,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes"/>
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -71,7 +71,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes"/>
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -81,7 +81,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes"/>
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -91,7 +91,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes"/>
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -101,7 +101,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						CommandLine="bundler &quot;$(InputPath)&quot;"
-						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes"/>
+						Outputs="..\Media\$(InputName).xpr;$(ProjectDir)\Includes\$(InputName).h"/>
 				</FileConfiguration>
 			</File>
 		</Filter>
