@@ -111,6 +111,13 @@
      no way to display them within MAMEoX. This feature will be implemented
      in a future version.
  -------------------------------------------------------------------------
+ Q.  I modified/added my INI file in the MAMEoX/INI directory, but none of 
+     the changes seem to work?  What am I doing wrong?
+ 
+ A.  Use the in game editor, the INI file is only read out of UDATA, and 
+     when you use the editor it modifies the correct ini file.  The 
+     in-game editor also keeps you from entering incorrect values.
+ -------------------------------------------------------------------------
  Q.  Why won't a particular rom run?
 
  A.  There are many reasons your rom might not run.  You might have a bad
