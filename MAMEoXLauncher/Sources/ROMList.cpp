@@ -150,7 +150,8 @@ BOOL CROMList::GenerateROMList( void )
 	std::vector< CStdString > zipFileNames;
 	WIN32_FIND_DATA findData;
 
-	PRINTMSG( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_RomPath );
+  g_FileIOConfig.m_RomPath.MakeLower();
+	PRINTMSG( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_RomPath.c_str() );
 
   // Check if the rom path is on a smb share
   if (g_FileIOConfig.m_RomPath.Left(6) == "smb://")
@@ -717,9 +718,9 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
               memStatus.dwAvailPhys, 
               memStatus.dwTotalPhys );
 
-    m_font.DrawText( 320, Y_POS + yPos, D3DCOLOR_XRGB(100,220,220), memStr, XBFONT_CENTER_X );
+    m_font.DrawText( 256, Y_POS + yPos, D3DCOLOR_XRGB(100,220,220), memStr, XBFONT_CENTER_X );
   #else
-    m_font.DrawText( 320, Y_POS + yPos, D3DCOLOR_XRGB(100,220,220), L"Press X for help", XBFONT_CENTER_X );
+    m_font.DrawText( 256, Y_POS + yPos, D3DCOLOR_XRGB(100,220,220), L"Press X for help", XBFONT_CENTER_X );
   #endif
 
   if( m_superscrollMode )

@@ -181,6 +181,7 @@ void LoadOptions( void )
   g_FileIOConfig.m_RomPath            = iniFile.GetProfileString( "Directories", "RomsPath",            DEFAULT_ROMPATH );
   // There's no reason to allow this to be changed, it's totally internal
   //  g_FileIOConfig.m_DefaultRomListPath = iniFile.GetProfileString("Directories", "DefaultRomsListPath", DEFAULT_DEFAULTROMLISTPATH);
+  g_FileIOConfig.MakeLower();
 
     //-- Lightgun calibration -----------------------------------------------
   g_calibrationData[0].m_xData[0] = iniFile.GetProfileInt( "Input", "Lightgun1_Left", -32767 );

@@ -15,8 +15,8 @@
 #include <vector>
 
 //= D E F I N E S ======================================================
-#define VK_SCREEN_WIDTH     256.0f
-#define VK_SCREEN_HEIGHT    128.0f
+#define VK_SCREEN_WIDTH         256.0f    //!< Width of the VK window
+#define VK_SCREEN_HEIGHT        128.0f    //!< Height of the VK window
 
 typedef enum VKInputState
 {
@@ -53,6 +53,7 @@ public:
 		//------------------------------------------------------------
   void Reset( void ) {
 		m_cursorPositionX = m_cursorPositionY = 0;
+    m_dataDrawStartPosition = 0;
 		m_dpadCursorDelay = 0.0f;
     m_buttonDelay = 0.0f;
     m_inputState = VKS_INPROGRESS;
@@ -82,8 +83,13 @@ public:
 		//------------------------------------------------------------
   LPDIRECT3DTEXTURE8 GetTexture( void ) { return m_renderTarget; }
 
-  void SetData( const CStdString &data ) { m_data = data; }
-  void SetData( const char *data ) { m_data = data; }
+  void SetData( const CStdString &data ) { SetData( data.c_str() ); }
+  void SetData( const char *data ) {
+    m_dataDrawStartPosition = 0;
+    m_data = data; 
+    if( m_data.size() > m_maxDisplayableChars )
+      m_dataDrawStartPosition = (m_data.size() - (m_maxDisplayableChars - 1));
+  }
 
   BOOL IsInputFinished( void ) const { return m_inputState != VKS_INPROGRESS; }
   BOOL IsInputAccepted( void ) const { return m_inputState == VKS_ACCEPTED; }
@@ -102,6 +108,8 @@ protected:
 
   UINT32                    m_cursorPositionX;
   UINT32                    m_cursorPositionY;
+  UINT32                    m_dataDrawStartPosition;  //!< Position to start rendering the data text from
+  UINT32                    m_maxDisplayableChars;    //!< Maximum number of characters to display on the data line
 
   VKInputState              m_inputState;     //!< Input state (accepted, cancelled, in progress)
   UINT32                    m_minChars;       //!< Minimum string size

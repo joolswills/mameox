@@ -38,6 +38,16 @@ extern "C" {
 #include "mame.h"
 }
 
+//= D E F I N E S =====================================================
+
+// VC6 requires the 2 paramater call to create. _VC6 is defined in the VC6 dsp files
+#ifdef _VC6
+#define CREATEFONT( fntObj, fntName )     fntObj.Create( pD3DDevice, fntName );
+#else
+#define CREATEFONT( fntObj, fntName )     fntObj.Create( fntName );
+#endif
+
+
 //= S T R U C T U R E S ===============================================
 struct CUSTOMVERTEX
 {
@@ -93,12 +103,9 @@ void __cdecl main( void )
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
 
 		// Create a general purpose font
-// VC6 requires the 2 paramater call to create. _VC6 is defined in the VC6 dsp files
-#ifdef _VC6
-	g_font.Create( pD3DDevice, "Font.xpr" );
-#else
-	g_font.Create( "Font.xpr", 0 );
-#endif
+  CREATEFONT( g_font, "Arial_16.xpr" );
+//  CREATEFONT( g_fixedWidthFont, "CourierNew_12.xpr" );
+//  CREATEFONT( g_smallFont, "ArialNarrow_12.xpr" );
 
   LoadOptions();
 

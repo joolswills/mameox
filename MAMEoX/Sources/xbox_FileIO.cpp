@@ -46,11 +46,11 @@ struct _osd_file
 
 
 //= G L O B A L = V A R S ==============================================
-const char *g_ROMListPath = NULL;
-const char *g_ROMBackupPath = NULL;
-SFileIOConfig g_FileIOConfig;
-const char *g_pathNames[FILETYPE_end] = {NULL};
-std::set<CStdString> g_setcSMBFilesCached;
+const char            *g_ROMListPath = NULL;
+const char            *g_ROMBackupPath = NULL;
+FileIOConfig_t        g_FileIOConfig;
+const char            *g_pathNames[FILETYPE_end] = {NULL};
+std::set<CStdString>  g_setcSMBFilesCached;
 
 
 //= P R O T O T Y P E S ================================================
@@ -211,6 +211,7 @@ int osd_get_path_info( int pathtype, int pathindex, const char *filename )
   // Check if the path points to a SMB share, we only support files
   // on smb shares so always return this is a file
   CStdString strPath = g_pathNames[pathtype];
+  strPath.MakeLower();
   if( strPath.Left(6) == "smb://" )
   {
     attribs = PATH_IS_FILE;
@@ -271,6 +272,7 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
 	}
 
   CStdString strPath = g_pathNames[pathtype];
+  strPath.MakeLower();
   CStdString strFullPath;
 
   // Default to a non smb type file
@@ -665,9 +667,9 @@ static BOOL Helper_CreateOrOpenSystemPath( char **path, BOOL writeRequired )
   if( !path || !(*path) )
     return FALSE;
 
-  // If the path starts w/ smb:\\ assume it exists
+  // If the path starts w/ smb:// assume it exists
   CStdString strPath = *path;
-  if (strPath.Left(6) == "smb://")
+  if( strPath.Left(6) == "smb://" )
   {
     return TRUE;
   }

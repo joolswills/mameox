@@ -35,7 +35,7 @@
 static WCHAR  *g_keyboardData[4] = { L"1234567890.",
                                      L"ABCDEFGHIJK",
                                      L"LMNOPQRSTUV",
-                                     L"WXYZ:/" };
+                                     L"WXYZ:/@\\" };
 
 //= S T R U C T U R E S ===============================================
 struct CUSTOMVERTEX
@@ -65,6 +65,7 @@ CVirtualKeyboard::CVirtualKeyboard( LPDIRECT3DDEVICE8	displayDevice, CXBFont &fo
 {
   m_font.GetTextExtent( L"Wijg,", &m_textWidth, &m_textHeight );
   m_textWidth = m_font.GetTextWidth( L"W" );
+  m_maxDisplayableChars = (VK_SCREEN_WIDTH - 10) / m_textWidth;
 
     // Create a vertex buffer to render the backdrop image to the renderTargetTexture
   m_displayDevice->CreateVertexBuffer(  (sizeof(CUSTOMVERTEX) << 2),
@@ -229,12 +230,19 @@ void CVirtualKeyboard::MoveCursor( CGamepad &gp )
       char newChar[2] = {0};
       wctomb( &newChar[0], g_keyboardData[m_cursorPositionY][m_cursorPositionX] );
       m_data += newChar;
+
+      if( m_data.length() >= (m_maxDisplayableChars - 1) )
+        ++m_dataDrawStartPosition;
     }
     else if( gp.IsButtonPressed( GP_B ) )
     {
       m_buttonDelay = DPADCURSORMOVE_TIMEOUT;
       if( m_data.length() )
+      {
         m_data = m_data.substr( 0, m_data.length() - 1 );
+        if( m_dataDrawStartPosition )
+          --m_dataDrawStartPosition;
+      }
     }
   }
 
@@ -274,7 +282,7 @@ void CVirtualKeyboard::Draw( void )
     #define X_OFFSET    30
 
     mbstowcs( buf, m_data.c_str(), 255 );
-    m_font.DrawText( X_OFFSET, 10, SELECTED_ITEM_COLOR, buf );
+    m_font.DrawText( 15, 10, SELECTED_ITEM_COLOR, &buf[m_dataDrawStartPosition] );
 
     FLOAT keyWidth = m_textWidth + 4;
     FLOAT keyHeight = m_textHeight + 2;

@@ -1,68 +1,84 @@
-======================================================
-                   MAMEoX Help
-======================================================
+============================================
+                 MAMEoX Help
+============================================
 
  ROM List Controls
 -------------------
 
 A     - Play selected ROM
 X     - Show Help file
-Y     - Hold to enter "Super Scroll" mode. At the top
-        of the screen, a letter (or # symbol) will 
-        appear. Using the DPAD up and down buttons, 
-        you can change the letter; skipping to the 
-        section of the list starting with that 
-        letter.
+Y     - Hold to enter "Super Scroll" mode. 
+        At the top of the screen, a letter 
+        (or # symbol) will appear. Using the
+        DPAD up and down buttons, you can 
+        change the letter; skipping to the 
+        section of the list starting with 
+        that letter.
 B + Y - Toggle Option screen
 B + A - Scan for new ROMs
-B + X - Move ROM to the "BACKUP" directory (this 
-        allows the user to "permanently" remove a ROM
-        from the listing, without really deleting the
-        file. Note that there is currently no way to
-        add the file back to the list from within
-        MAMEoX. You will have to manually move it 
-        back to the ROMs directory.
-Black - Toggle between showing and hiding clones
-White - Toggle extended list mode (with rating and 
-        favorite columns)
+B + X - Move ROM to the "BACKUP" directory 
+        (this allows you to "permanently" 
+        remove a ROM from the listing, 
+        without really deleting the file. 
+        Note that there is currently no way 
+        to add the file back to the list 
+        from within MAMEoX. You will have to
+        manually move it back to the ROMs 
+        directory.
+Black - Toggle between showing and hiding 
+        clones
+White - Toggle extended list mode (with 
+        rating and favorite columns)
 
--- List Navigation -----------------------------------
-Left Trigger           - Move the ROM cursor up fast
-Right Trigger          - Move the ROM cursor down fast
-DPAD/Left Analog Stick - Move the ROM cursor slowly
+-- List Navigation -------------------------
+Left Trigger           - Move the ROM cursor
+                         up fast
+Right Trigger          - Move the ROM cursor
+                         down fast
+DPAD/Left Analog Stick - Move the ROM cursor
+                         up/down slowly
 
--- Screen Size ---------------------------------------
-Right Analog Stick - Used to set the screen usage 
-         percentage for MAME rendering. Moving the 
-         stick will resize the selection screen (this
-         area corresponds to the area into which the 
-         game screen will be rendered). This should be
-         sized such that the blue  border just barely 
-         fits on the screen. Failure to do this may 
-         cause clipping (where parts of the screen are
-         not visible) or suboptimal usage (where there
-         is a larger than necessary black border 
-         around the game screen).
+-- Screen Size -----------------------------
+Right Analog Stick - 
+        Used to set the screen usage
+        percentage for MAME rendering.
+        Moving the stick will resize the
+        selection screen (this area
+        corresponds to the area into which
+        the game screen will be rendered). 
+        This should be sized such that the 
+        blue border just barely fits on the
+        screen. Failure to do this may cause
+        clipping (where parts of the screen
+        are not visible) or suboptimal usage
+        (where there is a larger than 
+        necessary black border around the
+        game screen).
 
--- Exiting MAMEoX ------------------------------------
-Pressing Left Trigger, Right Trigger, and the Black 
-button on Gamepad 1 will jump to the dashboard.
+-- Exiting MAMEoX --------------------------
+Pressing Left Trigger, Right Trigger, and 
+the Black button on Gamepad 1 will jump to
+the dashboard.
 
  
-======================================================
+============================================
 
  In Game Controls
 ------------------
 Cancel            - BACK and START
-Toggle Crosshair  - BACK and Left Analog button
+On screen display - BACK and Right Analog
+                    button
+Toggle Crosshair  - BACK and Left Analog 
+                    button
 UI Configure      - BACK and White button
 Pause             - BACK and Black button
-On screen display - BACK and Right Analog button
-Reset ROM         - BACK, Left and Right Trigger
-Load State        - BACK, Right Analog button, 
-                    and Left trigger
-Save State        - BACK, Right Analog button, 
-                    and Right trigger
+Reset ROM         - BACK, Left and Right
+                    triggers
+Load State        - BACK, Right Analog 
+                    button, and Left trigger
+Save State        - BACK, Right Analog 
+                    button, and Right 
+                    trigger
 
  Default Player Controls
 -------------------------
@@ -79,4 +95,4 @@ Button 10  - Black
 Enter Coin - Back
 Start      - Start
 
-======================================================
+============================================

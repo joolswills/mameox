@@ -54,7 +54,7 @@
 #define ALL_ROMS_ZIPPED
 
 //= S T R U C T U R E S ===============================================
-struct SFileIOConfig
+struct FileIOConfig_t
 {
   CStdString m_ALTDrive;
   CStdString m_GeneralPath;
@@ -75,8 +75,7 @@ struct SFileIOConfig
   CStdString m_LetterGMapping;
   CStdString m_LetterHMapping;
 
-  SFileIOConfig()
-  {
+  FileIOConfig_t( void ) {
     // Default the paths
     m_ALTDrive            = DEFAULT_ALTDRIVE;
     m_GeneralPath         = DEFAULT_GENERALPATH;
@@ -97,12 +96,33 @@ struct SFileIOConfig
     m_LetterGMapping      = DEFAULT_GMAPPING;
     m_LetterHMapping      = DEFAULT_HMAPPING;
   }
+
+  void MakeLower( void ) {
+    m_ALTDrive.MakeLower();
+    m_GeneralPath.MakeLower();
+    m_ArtPath.MakeLower();
+    m_IniPath.MakeLower();
+    m_NVramPath.MakeLower();
+    m_ConfigPath.MakeLower();
+    m_RomPath.MakeLower();
+    m_AudioPath.MakeLower();
+    m_DefaultRomListPath.MakeLower();
+    m_RomBackupPath.MakeLower();
+    m_HDImagePath.MakeLower();
+    m_HiScorePath.MakeLower();
+
+    m_LetterCMapping.MakeLower();
+    m_LetterEMapping.MakeLower();
+    m_LetterFMapping.MakeLower();
+    m_LetterGMapping.MakeLower();
+    m_LetterHMapping.MakeLower();
+  }
 };
 
 //= G L O B A L = V A R S ==============================================
-extern const char *g_ROMListPath;
-extern const char *g_ROMBackupPath;
-extern SFileIOConfig g_FileIOConfig;
+extern const char       *g_ROMListPath;
+extern const char       *g_ROMBackupPath;
+extern FileIOConfig_t   g_FileIOConfig;
 
 //= P R O T O T Y P E S ================================================
 	//--------------------------------------------------------------------------

@@ -36,6 +36,15 @@
 
 //= D E F I N E S =====================================================
 
+
+// VC6 requires the 2 paramater call to create. _VC6 is defined in the VC6 dsp files
+#ifdef _VC6
+#define CREATEFONT( fntObj, fntName )     fntObj.Create( pD3DDevice, fntName );
+#else
+#define CREATEFONT( fntObj, fntName )     fntObj.Create( fntName );
+#endif
+
+
 	// Number of seconds between valid X button readings
 #define TOGGLEBUTTON_TIMEOUT	0.50f
 
@@ -263,16 +272,9 @@ void __cdecl main( void )
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
 
 		// Create a general purpose font
-// VC6 requires the 2 paramater call to create. _VC6 is defined in the VC6 dsp files
-#ifdef _VC6
-	g_font.Create( pD3DDevice, "Font.xpr" );
-  g_fixedWidthFont.Create( pD3DDevice, "FontCN10.xpr" );
-  g_smallFont.Create( pD3DDevice, "FontAN12.xpr" );
-#else
-	g_font.Create( "Font.xpr" );
-  g_fixedWidthFont.Create( "FontCN10.xpr" );
-  g_smallFont.Create( "FontAN12.xpr" );
-#endif
+  CREATEFONT( g_font, "Arial_16.xpr" );
+  CREATEFONT( g_fixedWidthFont, "CourierNew_12.xpr" );
+  CREATEFONT( g_smallFont, "ArialNarrow_12.xpr" );
 
   LoadOptions();
 
@@ -535,6 +537,7 @@ void __cdecl main( void )
 
   COptionsPage optionsPage( pD3DDevice,
                             g_smallFont,
+                            g_fixedWidthFont,
                             options );
 
     //-- Initialize the rendering engine -------------------------------
@@ -1361,10 +1364,17 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 
     g_font.Begin();
       g_font.DrawText( 320, 258, D3DCOLOR_XRGB( 0, 0, 80 ),     L"Version " LVERSION_STRING L" " LBUILDCONFIG_STRING, XBFONT_CENTER_X );
-      g_font.DrawText( 320, 352, D3DCOLOR_XRGB( 10, 90, 100 ),  L"Portions based on:", XBFONT_CENTER_X );
-      g_font.DrawText( 320, 376, D3DCOLOR_XRGB( 10, 90, 100 ),  L"\"MAMEX(b5): updated by superfro, original port by opcode\"", XBFONT_CENTER_X );
-	    g_font.DrawText( 320, 400, D3DCOLOR_XRGB( 60, 105, 225 ), L"Press any button to continue.", XBFONT_CENTER_X );
+	    g_font.DrawText( 320, 410, D3DCOLOR_XRGB( 60, 105, 225 ), L"Press any button to continue.", XBFONT_CENTER_X );
     g_font.End();
+
+    g_smallFont.Begin();
+      g_smallFont.DrawText( 110, 300, D3DCOLOR_XRGB( 10, 90, 100 ), L"MAME is distributed under the MAME license." ); 
+      g_smallFont.DrawText( 110, 320, D3DCOLOR_XRGB( 10, 90, 100 ), L"See www.mame.net/readme.html or MAME/docs/mame.txt for details" ); 
+
+      g_smallFont.DrawText( 110, 352, D3DCOLOR_XRGB( 10, 90, 100 ), L"Portions of MAMEoX based on:" );
+      g_smallFont.DrawText( 110, 376, D3DCOLOR_XRGB( 10, 90, 100 ), L"\"MAMEX(b5): updated by superfro, original port by opcode\"" );
+    g_smallFont.End();
+
 
     pD3DDevice->Present( NULL, NULL, NULL, NULL );
   }

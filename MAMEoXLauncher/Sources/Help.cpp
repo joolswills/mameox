@@ -375,7 +375,7 @@ void CHelp::Draw( BOOL opaque, BOOL flipOnCompletion )
               memStatus.dwAvailPhys, 
               memStatus.dwTotalPhys );
 
-    m_font.DrawText( 320, yPos, D3DCOLOR_RGBA(100,220,220,255), memStr, XBFONT_CENTER_X );
+    m_font.DrawText( 256, yPos, D3DCOLOR_RGBA(100,220,220,255), memStr, XBFONT_CENTER_X );
   #endif
 
 	m_font.End();

@@ -53,8 +53,8 @@ extern "C" {
 
 
 #define STARTPAGE()                       DWORD i = 0
-#define DRAWITEM( _name__, _val__ )       m_font.DrawText( X_POS,  (i*18)+Y_POS+20, ITEMCOLOR(), _name__, XBFONT_TRUNCATED, WIDTH ); \
-                                          m_font.DrawText( X_POS + 200, (i*18)+Y_POS+20, ITEMCOLOR(), _val__, XBFONT_TRUNCATED, WIDTH ); \
+#define DRAWITEM( _name__, _val__ )       m_varWidthFont.DrawText( X_POS,  (i*18)+Y_POS+20, ITEMCOLOR(), _name__, XBFONT_TRUNCATED, WIDTH ); \
+                                          m_varWidthFont.DrawText( X_POS + 200, (i*18)+Y_POS+20, ITEMCOLOR(), _val__, XBFONT_TRUNCATED, WIDTH ); \
                                           ++i;
 #define ENDPAGE()
 
@@ -186,9 +186,10 @@ void ChangeDirectoryPathPage( COptionsPage *ptr, BOOL direction )
 //------------------------------------------------------------
 // Constructor
 //------------------------------------------------------------
-COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice, CXBFont &font, GameOptions &options ) :
+COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice, CXBFont &varWidthFont, CXBFont &fixedWidthFont, GameOptions &options ) :
 	m_displayDevice( displayDevice ),
-	m_font( font ),
+	m_varWidthFont( varWidthFont ),
+	m_fixedWidthFont( fixedWidthFont ),
 	m_cursorPosition( 0 ),
 	m_dpadCursorDelay( 0.0f ),
   m_optToggleDelay( 0.0f ),
@@ -226,7 +227,7 @@ COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice, CXBFont &font, Game
   m_pageData[OPTPAGE_DIRECTORIES].m_changeFunct = ::ChangeDirectoryPathPage;
   m_pageData[OPTPAGE_DIRECTORIES].m_numItems = 15;
 
-  m_virtualKeyboard = new CVirtualKeyboard( displayDevice, font );
+  m_virtualKeyboard = new CVirtualKeyboard( displayDevice, m_fixedWidthFont );
 
     // Create a vertex buffer to render the backdrop image to the renderTargetTexture
   m_displayDevice->CreateVertexBuffer(  (sizeof(CUSTOMVERTEX) << 2),
@@ -286,17 +287,27 @@ COptionsPage::~COptionsPage( void )
 //---------------------------------------------------------------------
 void COptionsPage::MoveCursor( CGamepad	&gp )
 {
+	static UINT64		lastTime = 0;
+	UINT64 curTime = osd_cycles();
+	FLOAT elapsedTime = (FLOAT)(curTime - lastTime) / (FLOAT)osd_cycles_per_second();
+
   if( m_virtualKeyboardMode )
   {
     m_virtualKeyboard->MoveCursor( gp );
     m_pageData[m_pageNumber].m_changeFunct( this, TRUE ); // Polls to see if the keyboard is done w/ input
-    return;
+
+    if( m_virtualKeyboard->IsInputFinished() )
+    {
+      m_virtualKeyboard->Reset();
+      m_virtualKeyboardMode = FALSE;
+      m_optToggleDelay = TRIGGERSWITCH_TIMEOUT; // Set the delay timer to avoid accepting buttons from the VK
+      lastTime = 0;                             // Don't count time spent in VK screen
+    }
+    else
+      return;
   }
 
 		// General idea taken from XMAME
-	static UINT64		lastTime = 0;
-	UINT64 curTime = osd_cycles();
-	FLOAT elapsedTime = (FLOAT)(curTime - lastTime) / (FLOAT)osd_cycles_per_second();
 	if( !lastTime )
 	{
 			// lastTime isn't valid yet, so wait for the next frame
@@ -394,25 +405,25 @@ void COptionsPage::Draw( BOOL opaque, BOOL flipOnCompletion )
 					  								1.0f,															// Z
 						  							0L );															// Stencil
 
-	m_font.Begin();
-    m_font.DrawText( (WIDTH >> 1) + X_POS, Y_POS, D3DCOLOR_XRGB( 255, 255, 255 ), m_pageData[m_pageNumber].m_title, XBFONT_CENTER_X );
+	m_varWidthFont.Begin();
+    m_varWidthFont.DrawText( (WIDTH >> 1) + X_POS, Y_POS, D3DCOLOR_XRGB( 255, 255, 255 ), m_pageData[m_pageNumber].m_title, XBFONT_CENTER_X );
     WCHAR underline[128] = {0};    
     for( UINT32 i = 0; i < wcslen(m_pageData[m_pageNumber].m_title) + 4; ++i )
       underline[i] = L'_';
-    m_font.DrawText( (WIDTH >> 1) + X_POS, Y_POS + 4, D3DCOLOR_XRGB( 255, 255, 255 ), underline, XBFONT_CENTER_X );
+    m_varWidthFont.DrawText( (WIDTH >> 1) + X_POS, Y_POS + 4, D3DCOLOR_XRGB( 255, 255, 255 ), underline, XBFONT_CENTER_X );
     m_pageData[m_pageNumber].m_drawFunct( this );
 
     UINT32 prev = m_pageNumber ? m_pageNumber - 1 : OPTPAGE_LAST - 1;
     UINT32 next = m_pageNumber < OPTPAGE_LAST - 1 ? m_pageNumber + 1 : 0;
 
-    m_font.DrawText( X_POS + 30, HEIGHT - 15, HELP_TEXT_COLOR, L"Left Trigger", 0 );
-    m_font.DrawText( X_POS + 10, HEIGHT, HELP_TEXT_COLOR, L"<-", 0 );
-    m_font.DrawText( X_POS + 30, HEIGHT, SELECTED_ITEM_COLOR, m_pageData[prev].m_title, 0 );
+    m_varWidthFont.DrawText( X_POS + 30, HEIGHT - 15, HELP_TEXT_COLOR, L"Left Trigger", 0 );
+    m_varWidthFont.DrawText( X_POS + 10, HEIGHT, HELP_TEXT_COLOR, L"<-", 0 );
+    m_varWidthFont.DrawText( X_POS + 30, HEIGHT, SELECTED_ITEM_COLOR, m_pageData[prev].m_title, 0 );
 
-    m_font.DrawText( WIDTH + X_POS - 30, HEIGHT - 15, HELP_TEXT_COLOR, L"Right Trigger", XBFONT_RIGHT );
-    m_font.DrawText( WIDTH + X_POS - 10, HEIGHT, HELP_TEXT_COLOR, L"->", XBFONT_RIGHT );
-    m_font.DrawText( WIDTH + X_POS - 30, HEIGHT, SELECTED_ITEM_COLOR, m_pageData[next].m_title, XBFONT_RIGHT );  
-	m_font.End();
+    m_varWidthFont.DrawText( WIDTH + X_POS - 30, HEIGHT - 15, HELP_TEXT_COLOR, L"Right Trigger", XBFONT_RIGHT );
+    m_varWidthFont.DrawText( WIDTH + X_POS - 10, HEIGHT, HELP_TEXT_COLOR, L"->", XBFONT_RIGHT );
+    m_varWidthFont.DrawText( WIDTH + X_POS - 30, HEIGHT, SELECTED_ITEM_COLOR, m_pageData[next].m_title, XBFONT_RIGHT );  
+	m_varWidthFont.End();
 
 
   
@@ -713,11 +724,6 @@ void COptionsPage::ChangeGeneralPage( BOOL direction )
         free( (void*)cheatfile );
         if( !(cheatfile = strdup( m_virtualKeyboard->GetData().c_str() )) )
           Die( m_displayDevice, "Out of memory setting the cheatfile name!" );
-      }
-      if( m_virtualKeyboard->IsInputFinished() )
-      {
-        m_virtualKeyboard->Reset();
-        m_virtualKeyboardMode = FALSE;
       }
     }
     break;
@@ -1022,12 +1028,6 @@ void COptionsPage::ChangeNetworkPage( BOOL direction )
           break;
         }
       }
-
-      if( m_virtualKeyboard->IsInputFinished() )
-      {
-        m_virtualKeyboard->Reset();
-        m_virtualKeyboardMode = FALSE;
-      }
     }
   }
 }
@@ -1199,12 +1199,6 @@ void COptionsPage::ChangeDirectoryPathPage( BOOL direction )
         g_FileIOConfig.m_NVramPath = m_virtualKeyboard->GetData();
         break;
       }
-    }
-
-    if( m_virtualKeyboard->IsInputFinished() )
-    {
-      m_virtualKeyboard->Reset();
-      m_virtualKeyboardMode = FALSE;
     }
   }
 }

@@ -1,7 +1,8 @@
-Version 0.69.01b
+Version 0.70.01b
 
   - General:
-    - Added new fonts (Arial Narrow and Courier New) size 10, 11 and 12
+    - Added new fonts (Arial, Arial Narrow and Courier New)
+    - Reformatted screens to work w/ new fonts
     - Remove dependencies bug
 
    -------------------------------------------------------------

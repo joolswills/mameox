@@ -72,8 +72,9 @@ X) This step is currently unnecessary, as the source distribution includes the
     - general  : This is where cfg files, cheat file, and other general files 
                  are stored
     - Media
-      > Font.xpr : This should be taken from the SDK. The project currently
+      XX Font.xpr : This should be taken from the SDK. The project currently
                    has no fonts (or graphics in general, see "Contributions")
+        NOTE: Font.xpr is no longer required as of 0.70.1b
       > All of the resource files from the MAMEoX\Media directory in the source
         package, including help.txt and Resource.xpr (created during the build
 	process)

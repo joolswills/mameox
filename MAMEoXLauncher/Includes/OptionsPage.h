@@ -75,7 +75,7 @@ public:
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-	COptionsPage( LPDIRECT3DDEVICE8	displayDevice, CXBFont &font, GameOptions &options );
+	COptionsPage( LPDIRECT3DDEVICE8	displayDevice, CXBFont &varWidthFont, CXBFont &fixedWidthFont, GameOptions &options );
 
 		//------------------------------------------------------------
     // Destructor
@@ -128,7 +128,8 @@ protected:
   optionsPageData_t         m_pageData[OPTPAGE_LAST];
 
 	LPDIRECT3DDEVICE8			    m_displayDevice;
-	CXBFont								    &m_font;
+	CXBFont								    &m_varWidthFont;
+	CXBFont								    &m_fixedWidthFont;
 };
 
 
