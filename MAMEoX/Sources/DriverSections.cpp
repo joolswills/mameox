@@ -193,6 +193,7 @@ BOOL UnloadDriverSections( void )
         (*i).first == "src\\drivers\\frogger.c" ||
         (*i).first == "src\\drivers\\arcadecl.c" ||
         (*i).first == "src\\drivers\\asuka.c" ||
+        (*i).first == "src\\drivers\\opwolf.c" ||
         (*i).first == "src\\drivers\\marineb.c" ||
         (*i).first == "src\\drivers\\bwidow.c" ||
         (*i).first == "src\\drivers\\pkunwar.c" ||
@@ -619,7 +620,6 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\omegaf.c", "467" );
   RegisterSectionName( "src\\drivers\\omegrace.c", "468" );
   RegisterSectionName( "src\\drivers\\oneshot.c", "469" );
-  RegisterSectionName( "src\\drivers\\opwolf.c", "470" );
   RegisterSectionName( "src\\drivers\\orbit.c", "471" );
   RegisterSectionName( "src\\drivers\\othldrby.c", "472" );
   RegisterSectionName( "src\\drivers\\othunder.c", "473" );
@@ -895,6 +895,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\zerozone.c", "743" );
   RegisterSectionName( "src\\drivers\\zn.c", "744" );
   RegisterSectionName( "src\\drivers\\zodiack.c", "745" );
+  RegisterSectionName( "src\\drivers\\opwolf.c", "10" );
 }
 #pragma code_seg()
 #pragma data_seg()

@@ -365,7 +365,7 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 @AmidarFamily = ( "galaxian.c", "scramble.c", "scobra.c", 
                   "amidar.c", "frogger.c" );								# Amidar, Frog (Galaxian Hardware)
 @RampartFamily = ( "rampart.c", "arcadecl.c" );								# Arcade Classics
-@RastanFamily = ( "rastan.c", "asuka.c" );									# Asuka & Asuka
+@RastanFamily = ( "rastan.c", "asuka.c", "opwolf.c" );						# Asuka & Asuka, Operation Wolf
 @EspialFamily = ( "espial.c", "marineb.c" );								# Battle Cruiser M-12
 @BZoneFamily = ( "bzone.c", "bwidow.c" );									# Gravitar
 @Nova2001Family = ( "nova2001.c", "pkunwar.c" );							# Penguin-Kun War
