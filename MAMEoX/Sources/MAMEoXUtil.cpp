@@ -234,28 +234,28 @@ void LoadOptions( void )
 
   // Grab the directory settings
   g_FileIOConfig.m_ALTDrive           = iniFile.GetProfileString( "Directories", "ALTDrive",            DEFAULT_ALTDRIVE );
-  g_FileIOConfig.m_LetterCMapping     = iniFile.GetProfileString( "Directories", "C_Mapping",           DEFAULT_CMAPPING );
-  g_FileIOConfig.m_LetterEMapping     = iniFile.GetProfileString( "Directories", "E_Mapping",           DEFAULT_EMAPPING );
-  g_FileIOConfig.m_LetterFMapping     = iniFile.GetProfileString( "Directories", "F_Mapping",           DEFAULT_FMAPPING );
-  g_FileIOConfig.m_LetterGMapping     = iniFile.GetProfileString( "Directories", "G_Mapping",           DEFAULT_GMAPPING );
-  g_FileIOConfig.m_LetterHMapping     = iniFile.GetProfileString( "Directories", "H_Mapping",           DEFAULT_HMAPPING );
+  g_FileIOConfig.m_letterCMapping     = iniFile.GetProfileString( "Directories", "C_Mapping",           DEFAULT_CMAPPING );
+  g_FileIOConfig.m_letterEMapping     = iniFile.GetProfileString( "Directories", "E_Mapping",           DEFAULT_EMAPPING );
+  g_FileIOConfig.m_letterFMapping     = iniFile.GetProfileString( "Directories", "F_Mapping",           DEFAULT_FMAPPING );
+  g_FileIOConfig.m_letterGMapping     = iniFile.GetProfileString( "Directories", "G_Mapping",           DEFAULT_GMAPPING );
+  g_FileIOConfig.m_letterHMapping     = iniFile.GetProfileString( "Directories", "H_Mapping",           DEFAULT_HMAPPING );
 
-  g_FileIOConfig.m_RomBackupPath      = iniFile.GetProfileString( "Directories", "BackupPath",          DEFAULT_ROMBACKUPPATH );
-  g_FileIOConfig.m_RomPath0           = iniFile.GetProfileString( "Directories", "RomsPath0",           DEFAULT_ROMPATH);
-  g_FileIOConfig.m_RomPath1           = iniFile.GetProfileString( "Directories", "RomsPath1",           DEFAULT_ROMPATH);
-  g_FileIOConfig.m_RomPath2           = iniFile.GetProfileString( "Directories", "RomsPath2",           DEFAULT_ROMPATH);
-  g_FileIOConfig.m_RomPath3           = iniFile.GetProfileString( "Directories", "RomsPath3",           DEFAULT_ROMPATH);
-  g_FileIOConfig.m_ArtPath            = iniFile.GetProfileString( "Directories", "ArtPath",             DEFAULT_ARTPATH );
-  g_FileIOConfig.m_AudioPath          = iniFile.GetProfileString( "Directories", "AudioPath",           DEFAULT_AUDIOPATH );
-  g_FileIOConfig.m_ConfigPath         = iniFile.GetProfileString( "Directories", "ConfigPath",          DEFAULT_CONFIGPATH );
-  g_FileIOConfig.m_GeneralPath        = iniFile.GetProfileString( "Directories", "GeneralPath",         DEFAULT_GENERALPATH );
+  g_FileIOConfig.m_romBackupPath      = iniFile.GetProfileString( "Directories", "BackupPath",          DEFAULT_ROMBACKUPPATH );
+  g_FileIOConfig.m_romPath0           = iniFile.GetProfileString( "Directories", "RomsPath0",           DEFAULT_ROMPATH);
+  g_FileIOConfig.m_romPath1           = iniFile.GetProfileString( "Directories", "RomsPath1",           DEFAULT_ROMPATH);
+  g_FileIOConfig.m_romPath2           = iniFile.GetProfileString( "Directories", "RomsPath2",           DEFAULT_ROMPATH);
+  g_FileIOConfig.m_romPath3           = iniFile.GetProfileString( "Directories", "RomsPath3",           DEFAULT_ROMPATH);
+  g_FileIOConfig.m_artPath            = iniFile.GetProfileString( "Directories", "ArtPath",             DEFAULT_ARTPATH );
+  g_FileIOConfig.m_audioPath          = iniFile.GetProfileString( "Directories", "AudioPath",           DEFAULT_AUDIOPATH );
+  g_FileIOConfig.m_configPath         = iniFile.GetProfileString( "Directories", "ConfigPath",          DEFAULT_CONFIGPATH );
+  g_FileIOConfig.m_generalPath        = iniFile.GetProfileString( "Directories", "GeneralPath",         DEFAULT_GENERALPATH );
   g_FileIOConfig.m_HDImagePath        = iniFile.GetProfileString( "Directories", "HDImagePath",         DEFAULT_HDIMAGEPATH );
   g_FileIOConfig.m_HiScorePath        = iniFile.GetProfileString( "Directories", "HiScoresPath",        DEFAULT_HISCOREPATH );
   g_FileIOConfig.m_NVramPath          = iniFile.GetProfileString( "Directories", "NVRamPath",           DEFAULT_NVRAMPATH );
-  g_FileIOConfig.m_ScreenshotPath     = iniFile.GetProfileString( "Directories", "ScreenshotPath",      DEFAULT_SCREENSHOTPATH );
-  g_FileIOConfig.m_AutoBootSavePath   = iniFile.GetProfileString( "Directories", "AutoBootSavePath",    DEFAULT_BOOTSAVESTATE );
-  // There's no reason to allow this to be changed, it's totally internal
-  //  g_FileIOConfig.m_DefaultRomListPath = iniFile.GetProfileString("Directories", "DefaultRomsListPath", DEFAULT_DEFAULTROMLISTPATH);
+  g_FileIOConfig.m_screenshotPath     = iniFile.GetProfileString( "Directories", "ScreenshotPath",      DEFAULT_SCREENSHOTPATH );
+  g_FileIOConfig.m_autoBootSavePath   = iniFile.GetProfileString( "Directories", "AutoBootSavePath",    DEFAULT_BOOTSAVESTATE );
+
+
   g_FileIOConfig.MakeLower();
 
     //-- Lightgun calibration -----------------------------------------------
@@ -371,25 +371,25 @@ void SaveOptions( void )
 
     //-- Write the directory settings -------------------------------------------
   iniFile.WriteProfileString( "Directories", "ALTDrive",           g_FileIOConfig.m_ALTDrive );
-  iniFile.WriteProfileString( "Directories", "C_Mapping",          g_FileIOConfig.m_LetterCMapping );
-  iniFile.WriteProfileString( "Directories", "E_Mapping",          g_FileIOConfig.m_LetterEMapping );
-  iniFile.WriteProfileString( "Directories", "F_Mapping",          g_FileIOConfig.m_LetterFMapping );
-  iniFile.WriteProfileString( "Directories", "G_Mapping",          g_FileIOConfig.m_LetterGMapping );
-  iniFile.WriteProfileString( "Directories", "H_Mapping",          g_FileIOConfig.m_LetterHMapping );
-  iniFile.WriteProfileString( "Directories", "RomsPath0",          g_FileIOConfig.m_RomPath0 );
-  iniFile.WriteProfileString( "Directories", "RomsPath1",          g_FileIOConfig.m_RomPath1 );
-  iniFile.WriteProfileString( "Directories", "RomsPath2",          g_FileIOConfig.m_RomPath2 );
-  iniFile.WriteProfileString( "Directories", "RomsPath3",          g_FileIOConfig.m_RomPath3 );
-  iniFile.WriteProfileString("Directories", "ArtPath",             g_FileIOConfig.m_ArtPath );
-  iniFile.WriteProfileString("Directories", "AudioPath",           g_FileIOConfig.m_AudioPath );
-  iniFile.WriteProfileString("Directories", "ConfigPath",          g_FileIOConfig.m_ConfigPath );
-  iniFile.WriteProfileString("Directories", "GeneralPath",         g_FileIOConfig.m_GeneralPath );
+  iniFile.WriteProfileString( "Directories", "C_Mapping",          g_FileIOConfig.m_letterCMapping );
+  iniFile.WriteProfileString( "Directories", "E_Mapping",          g_FileIOConfig.m_letterEMapping );
+  iniFile.WriteProfileString( "Directories", "F_Mapping",          g_FileIOConfig.m_letterFMapping );
+  iniFile.WriteProfileString( "Directories", "G_Mapping",          g_FileIOConfig.m_letterGMapping );
+  iniFile.WriteProfileString( "Directories", "H_Mapping",          g_FileIOConfig.m_letterHMapping );
+  iniFile.WriteProfileString( "Directories", "RomsPath0",          g_FileIOConfig.m_romPath0 );
+  iniFile.WriteProfileString( "Directories", "RomsPath1",          g_FileIOConfig.m_romPath1 );
+  iniFile.WriteProfileString( "Directories", "RomsPath2",          g_FileIOConfig.m_romPath2 );
+  iniFile.WriteProfileString( "Directories", "RomsPath3",          g_FileIOConfig.m_romPath3 );
+  iniFile.WriteProfileString("Directories", "ArtPath",             g_FileIOConfig.m_artPath );
+  iniFile.WriteProfileString("Directories", "AudioPath",           g_FileIOConfig.m_audioPath );
+  iniFile.WriteProfileString("Directories", "ConfigPath",          g_FileIOConfig.m_configPath );
+  iniFile.WriteProfileString("Directories", "GeneralPath",         g_FileIOConfig.m_generalPath );
   iniFile.WriteProfileString("Directories", "HDImagePath",         g_FileIOConfig.m_HDImagePath );
   iniFile.WriteProfileString("Directories", "HiScoresPath",        g_FileIOConfig.m_HiScorePath );
   iniFile.WriteProfileString("Directories", "NVRamPath",           g_FileIOConfig.m_NVramPath );
-  iniFile.WriteProfileString("Directories", "BackupPath",          g_FileIOConfig.m_RomBackupPath );
-  iniFile.WriteProfileString("Directories", "ScreenshotPath",      g_FileIOConfig.m_ScreenshotPath );
-  iniFile.WriteProfileString("Directories", "AutoBootSavePath",    g_FileIOConfig.m_AutoBootSavePath );
+  iniFile.WriteProfileString("Directories", "BackupPath",          g_FileIOConfig.m_romBackupPath );
+  iniFile.WriteProfileString("Directories", "ScreenshotPath",      g_FileIOConfig.m_screenshotPath );
+  iniFile.WriteProfileString("Directories", "AutoBootSavePath",    g_FileIOConfig.m_autoBootSavePath );
   // There's no reason to allow this to be changed, it's totally internal
   //iniFile.WriteProfileString("Directories", "DefaultRomsListPath", g_FileIOConfig.m_DefaultRomListPath );
 
@@ -445,11 +445,11 @@ void SaveOptions( void )
 //-------------------------------------------------------------
 void RemapDriveLetters( void )
 {
-  MAPDRIVE( g_FileIOConfig.m_LetterCMapping.c_str(), "\\??\\C:" );
-  MAPDRIVE( g_FileIOConfig.m_LetterEMapping.c_str(), "\\??\\E:" );
-  MAPDRIVE( g_FileIOConfig.m_LetterFMapping.c_str(), "\\??\\F:" );
-  MAPDRIVE( g_FileIOConfig.m_LetterGMapping.c_str(), "\\??\\G:" );
-  MAPDRIVE( g_FileIOConfig.m_LetterHMapping.c_str(), "\\??\\H:" );
+  MAPDRIVE( g_FileIOConfig.m_letterCMapping.c_str(), "\\??\\C:" );
+  MAPDRIVE( g_FileIOConfig.m_letterEMapping.c_str(), "\\??\\E:" );
+  MAPDRIVE( g_FileIOConfig.m_letterFMapping.c_str(), "\\??\\F:" );
+  MAPDRIVE( g_FileIOConfig.m_letterGMapping.c_str(), "\\??\\G:" );
+  MAPDRIVE( g_FileIOConfig.m_letterHMapping.c_str(), "\\??\\H:" );
 
   #ifdef _DEBUG
     WIN32_FIND_DATA findData;

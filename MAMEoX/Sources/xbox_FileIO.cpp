@@ -103,19 +103,19 @@ void InitializeFileIO( void )
     // Try to create/open all of the paths. If any fail,
     //     switch the drive letter to ALTDRIVE, as we must be
     //     running off of a DVD
-  CREATEOROPENPATH( g_FileIOConfig.m_RomBackupPath.c_str(), TRUE );
+  CREATEOROPENPATH( g_FileIOConfig.m_romBackupPath.c_str(), TRUE );
   g_ROMBackupPath = tempStr;
 
-  CREATEOROPENPATH( g_FileIOConfig.m_RomPath0.c_str(), FALSE );
+  CREATEOROPENPATH( g_FileIOConfig.m_romPath0.c_str(), FALSE );
 	g_pathNames[FILETYPE_RAW][0] = g_pathNames[FILETYPE_ROM][0] = tempStr;
-  CREATEOROPENPATH( g_FileIOConfig.m_RomPath1.c_str(), FALSE );
+  CREATEOROPENPATH( g_FileIOConfig.m_romPath1.c_str(), FALSE );
 	g_pathNames[FILETYPE_RAW][1] = g_pathNames[FILETYPE_ROM][1] = tempStr;
-  CREATEOROPENPATH( g_FileIOConfig.m_RomPath2.c_str(), FALSE );
+  CREATEOROPENPATH( g_FileIOConfig.m_romPath2.c_str(), FALSE );
 	g_pathNames[FILETYPE_RAW][2] = g_pathNames[FILETYPE_ROM][2] = tempStr;
-  CREATEOROPENPATH( g_FileIOConfig.m_RomPath3.c_str(), FALSE );
+  CREATEOROPENPATH( g_FileIOConfig.m_romPath3.c_str(), FALSE );
 	g_pathNames[FILETYPE_RAW][3] = g_pathNames[FILETYPE_ROM][3] = tempStr;
 
-  CREATEOROPENPATH( g_FileIOConfig.m_IniPath.c_str(), TRUE );
+  CREATEOROPENPATH( g_FileIOConfig.m_iniPath.c_str(), TRUE );
 	g_pathNames[FILETYPE_INI][0] = tempStr;
 
   CREATEOROPENPATH( g_FileIOConfig.m_HiScorePath.c_str(), TRUE );
@@ -132,27 +132,27 @@ void InitializeFileIO( void )
   CREATEOROPENPATH( g_FileIOConfig.m_HDImagePath.c_str(), TRUE );
   g_pathNames[FILETYPE_IMAGE_DIFF][0] = tempStr;
 
-  CREATEOROPENPATH( g_FileIOConfig.m_ArtPath.c_str(), FALSE );
+  CREATEOROPENPATH( g_FileIOConfig.m_artPath.c_str(), FALSE );
   g_pathNames[FILETYPE_ARTWORK][0] = tempStr;
 
-  CREATEOROPENPATH( g_FileIOConfig.m_AudioPath.c_str(), FALSE );
+  CREATEOROPENPATH( g_FileIOConfig.m_audioPath.c_str(), FALSE );
   g_pathNames[FILETYPE_SAMPLE][0] = tempStr;
 
-  CREATEOROPENPATH( g_FileIOConfig.m_ConfigPath.c_str(), TRUE );
+  CREATEOROPENPATH( g_FileIOConfig.m_configPath.c_str(), TRUE );
   g_pathNames[FILETYPE_CONFIG][0] = tempStr;
 
-  CREATEOROPENPATH( g_FileIOConfig.m_GeneralPath.c_str(), TRUE );
+  CREATEOROPENPATH( g_FileIOConfig.m_generalPath.c_str(), TRUE );
 	g_pathNames[FILETYPE_INPUTLOG][0] = g_pathNames[FILETYPE_HISTORY][0] = 
 																	    g_pathNames[FILETYPE_CHEAT][0] = 
 																	    g_pathNames[FILETYPE_LANGUAGE][0] = 
 																	    g_pathNames[FILETYPE_CTRLR][0] = tempStr;
 
-  CREATEOROPENPATH( g_FileIOConfig.m_ScreenshotPath.c_str(), TRUE );
+  CREATEOROPENPATH( g_FileIOConfig.m_screenshotPath.c_str(), TRUE );
   g_pathNames[FILETYPE_SCREENSHOT][0] = tempStr;
 
     // The MAME core will look for autoboot save states as FILETYPE_STATE
     // so add a second path for save states.
-  CREATEOROPENPATH( g_FileIOConfig.m_AutoBootSavePath.c_str(), TRUE );
+  CREATEOROPENPATH( g_FileIOConfig.m_autoBootSavePath.c_str(), TRUE );
   g_pathNames[FILETYPE_STATE][1] = tempStr;
 
   CREATEOROPENPATH( DEFAULT_MAMEOXSYSTEMPATH, TRUE );

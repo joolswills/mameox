@@ -34,6 +34,7 @@
 #define DEFAULT_HDIMAGEPATH         "D:\\HDIMAGES"
 #define DEFAULT_HISCOREPATH         "D:\\HISCORES"
 #define DEFAULT_SCREENSHOTPATH      "D:\\SCREENSHOTS"
+#define DEFAULT_SKINPATH						"D:\\SKINS"
 
 #define DEFAULT_CMAPPING            "\\Device\\Harddisk0\\Partition1"
 #define DEFAULT_EMAPPING            "\\Device\\Harddisk0\\Partition1"
@@ -68,80 +69,83 @@
 //= S T R U C T U R E S ===============================================
 struct FileIOConfig_t
 {
-  CStdString m_ALTDrive;
-  CStdString m_GeneralPath;
-  CStdString m_ArtPath;
-  CStdString m_IniPath;
-  CStdString m_NVramPath;
-  CStdString m_ConfigPath;
-  CStdString m_RomPath0;
-  CStdString m_RomPath1;
-  CStdString m_RomPath2;
-  CStdString m_RomPath3;
-  CStdString m_AudioPath;
-  CStdString m_RomBackupPath;
-  CStdString m_HDImagePath;
-  CStdString m_HiScorePath;
-  CStdString m_ScreenshotPath;
-  CStdString m_AutoBootSavePath;
+  CStdString	m_ALTDrive;
+  CStdString	m_generalPath;
+  CStdString	m_artPath;
+  CStdString	m_iniPath;
+  CStdString	m_NVramPath;
+  CStdString	m_configPath;
+  CStdString	m_romPath0;
+  CStdString	m_romPath1;
+  CStdString	m_romPath2;
+  CStdString	m_romPath3;
+  CStdString	m_audioPath;
+  CStdString	m_romBackupPath;
+  CStdString	m_HDImagePath;
+  CStdString	m_HiScorePath;
+  CStdString	m_screenshotPath;
+  CStdString	m_autoBootSavePath;
+	CStdString	m_skinPath;
 
-  CStdString m_LetterCMapping;
-  CStdString m_LetterEMapping;
-  CStdString m_LetterFMapping;
-  CStdString m_LetterGMapping;
-  CStdString m_LetterHMapping;
+  CStdString	m_letterCMapping;
+  CStdString	m_letterEMapping;
+  CStdString	m_letterFMapping;
+  CStdString	m_letterGMapping;
+  CStdString	m_letterHMapping;
 
-  BOOL       m_recursiveSearching;    //!< Whether or not to recursively search ROM/other paths
+  BOOL				m_recursiveSearching;    //!< Whether or not to recursively search ROM/other paths
 
   FileIOConfig_t( void ) {
     // Default the paths
     m_ALTDrive            = DEFAULT_ALTDRIVE;
-    m_GeneralPath         = DEFAULT_GENERALPATH;
-    m_ArtPath             = DEFAULT_ARTPATH;
-    m_IniPath             = DEFAULT_INIPATH;
+    m_generalPath         = DEFAULT_GENERALPATH;
+    m_artPath             = DEFAULT_ARTPATH;
+    m_iniPath             = DEFAULT_INIPATH;
     m_NVramPath           = DEFAULT_NVRAMPATH;
-    m_ConfigPath          = DEFAULT_CONFIGPATH;
-    m_RomPath0            = DEFAULT_ROMPATH;
-    m_RomPath1            = DEFAULT_ROMPATH;
-    m_RomPath2            = DEFAULT_ROMPATH;
-    m_RomPath3            = DEFAULT_ROMPATH;
-    m_AudioPath           = DEFAULT_AUDIOPATH;
-    m_RomBackupPath       = DEFAULT_ROMBACKUPPATH;
+    m_configPath          = DEFAULT_CONFIGPATH;
+    m_romPath0            = DEFAULT_ROMPATH;
+    m_romPath1            = DEFAULT_ROMPATH;
+    m_romPath2            = DEFAULT_ROMPATH;
+    m_romPath3            = DEFAULT_ROMPATH;
+    m_audioPath           = DEFAULT_AUDIOPATH;
+    m_romBackupPath       = DEFAULT_ROMBACKUPPATH;
     m_HDImagePath         = DEFAULT_HDIMAGEPATH;
     m_HiScorePath         = DEFAULT_HISCOREPATH;
-    m_ScreenshotPath      = DEFAULT_SCREENSHOTPATH;
-    m_AutoBootSavePath    = DEFAULT_BOOTSAVESTATE;
+    m_screenshotPath      = DEFAULT_SCREENSHOTPATH;
+    m_autoBootSavePath    = DEFAULT_BOOTSAVESTATE;
+		m_skinPath						= DEFAULT_SKINPATH;
 
-    m_LetterCMapping      = DEFAULT_CMAPPING;
-    m_LetterEMapping      = DEFAULT_EMAPPING;
-    m_LetterFMapping      = DEFAULT_FMAPPING;
-    m_LetterGMapping      = DEFAULT_GMAPPING;
-    m_LetterHMapping      = DEFAULT_HMAPPING;
+    m_letterCMapping      = DEFAULT_CMAPPING;
+    m_letterEMapping      = DEFAULT_EMAPPING;
+    m_letterFMapping      = DEFAULT_FMAPPING;
+    m_letterGMapping      = DEFAULT_GMAPPING;
+    m_letterHMapping      = DEFAULT_HMAPPING;
   }
 
   void MakeLower( void ) {
     m_ALTDrive.MakeLower();
-    m_GeneralPath.MakeLower();
-    m_ArtPath.MakeLower();
-    m_IniPath.MakeLower();
+    m_generalPath.MakeLower();
+    m_artPath.MakeLower();
+    m_iniPath.MakeLower();
     m_NVramPath.MakeLower();
-    m_ConfigPath.MakeLower();
-    m_RomPath0.MakeLower();
-    m_RomPath1.MakeLower();
-    m_RomPath2.MakeLower();
-    m_RomPath3.MakeLower();
-    m_AudioPath.MakeLower();
-    m_RomBackupPath.MakeLower();
+    m_configPath.MakeLower();
+    m_romPath0.MakeLower();
+    m_romPath1.MakeLower();
+    m_romPath2.MakeLower();
+    m_romPath3.MakeLower();
+    m_audioPath.MakeLower();
+    m_romBackupPath.MakeLower();
     m_HDImagePath.MakeLower();
     m_HiScorePath.MakeLower();
-    m_ScreenshotPath.MakeLower();
-    m_AutoBootSavePath.MakeLower();
+    m_screenshotPath.MakeLower();
+    m_autoBootSavePath.MakeLower();
+		m_skinPath.MakeLower();
 
-    m_LetterCMapping.MakeLower();
-    m_LetterEMapping.MakeLower();
-    m_LetterFMapping.MakeLower();
-    m_LetterGMapping.MakeLower();
-    m_LetterHMapping.MakeLower();
+    m_letterCMapping.MakeLower();
+    m_letterEMapping.MakeLower();
+    m_letterFMapping.MakeLower();
+    m_letterGMapping.MakeLower();
+    m_letterHMapping.MakeLower();
   }
 };
 
