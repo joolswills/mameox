@@ -1,11 +1,11 @@
-#pragma code_seg("C171")
-#pragma data_seg("D171")
-#pragma bss_seg("B171")
-#pragma const_seg("K171")
-#pragma comment(linker, "/merge:D171=171")
-#pragma comment(linker, "/merge:C171=171")
-#pragma comment(linker, "/merge:B171=171")
-#pragma comment(linker, "/merge:K171=171")
+#pragma code_seg("C184")
+#pragma data_seg("D184")
+#pragma bss_seg("B184")
+#pragma const_seg("K184")
+#pragma comment(linker, "/merge:D184=184")
+#pragma comment(linker, "/merge:C184=184")
+#pragma comment(linker, "/merge:B184=184")
+#pragma comment(linker, "/merge:K184=184")
 /***************************************************************************
 
 Express Raider - (c) 1986 Data East USA

@@ -1,11 +1,11 @@
-#pragma code_seg("C210")
-#pragma data_seg("D210")
-#pragma bss_seg("B210")
-#pragma const_seg("K210")
-#pragma comment(linker, "/merge:D210=210")
-#pragma comment(linker, "/merge:C210=210")
-#pragma comment(linker, "/merge:B210=210")
-#pragma comment(linker, "/merge:K210=210")
+#pragma code_seg("C223")
+#pragma data_seg("D223")
+#pragma bss_seg("B223")
+#pragma const_seg("K223")
+#pragma comment(linker, "/merge:D223=223")
+#pragma comment(linker, "/merge:C223=223")
+#pragma comment(linker, "/merge:B223=223")
+#pragma comment(linker, "/merge:K223=223")
 /****************************************************************************
  *
  * geebee.c

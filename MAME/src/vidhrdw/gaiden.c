@@ -1,11 +1,11 @@
-#pragma code_seg("C198")
-#pragma data_seg("D198")
-#pragma bss_seg("B198")
-#pragma const_seg("K198")
-#pragma comment(linker, "/merge:D198=198")
-#pragma comment(linker, "/merge:C198=198")
-#pragma comment(linker, "/merge:B198=198")
-#pragma comment(linker, "/merge:K198=198")
+#pragma code_seg("C211")
+#pragma data_seg("D211")
+#pragma bss_seg("B211")
+#pragma const_seg("K211")
+#pragma comment(linker, "/merge:D211=211")
+#pragma comment(linker, "/merge:C211=211")
+#pragma comment(linker, "/merge:B211=211")
+#pragma comment(linker, "/merge:K211=211")
 /***************************************************************************
 
 	Ninja Gaiden / Tecmo Knights Video Hardware

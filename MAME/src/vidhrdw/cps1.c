@@ -1,3 +1,11 @@
+#pragma code_seg("C1")
+#pragma data_seg("D1")
+#pragma bss_seg("B1")
+#pragma const_seg("K1")
+#pragma comment(linker, "/merge:D1=1")
+#pragma comment(linker, "/merge:C1=1")
+#pragma comment(linker, "/merge:B1=1")
+#pragma comment(linker, "/merge:K1=1")
 /***************************************************************************
 
 These are some of the CPS-B chip numbers:
@@ -1918,3 +1926,7 @@ void cps2_objram_latch(void)
 	cps2_set_sprite_priorities();
 	memcpy(cps2_buffered_obj, cps2_objbase(), cps2_obj_size);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

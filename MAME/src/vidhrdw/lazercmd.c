@@ -1,11 +1,11 @@
-#pragma code_seg("C276")
-#pragma data_seg("D276")
-#pragma bss_seg("B276")
-#pragma const_seg("K276")
-#pragma comment(linker, "/merge:D276=276")
-#pragma comment(linker, "/merge:C276=276")
-#pragma comment(linker, "/merge:B276=276")
-#pragma comment(linker, "/merge:K276=276")
+#pragma code_seg("C290")
+#pragma data_seg("D290")
+#pragma bss_seg("B290")
+#pragma const_seg("K290")
+#pragma comment(linker, "/merge:D290=290")
+#pragma comment(linker, "/merge:C290=290")
+#pragma comment(linker, "/merge:B290=290")
+#pragma comment(linker, "/merge:K290=290")
 /*************************************************************/
 /*                                                           */
 /* Lazer Command video handler                               */

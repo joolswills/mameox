@@ -1,11 +1,11 @@
-#pragma code_seg("C455")
-#pragma data_seg("D455")
-#pragma bss_seg("B455")
-#pragma const_seg("K455")
-#pragma comment(linker, "/merge:D455=455")
-#pragma comment(linker, "/merge:C455=455")
-#pragma comment(linker, "/merge:B455=455")
-#pragma comment(linker, "/merge:K455=455")
+#pragma code_seg("C472")
+#pragma data_seg("D472")
+#pragma bss_seg("B472")
+#pragma const_seg("K472")
+#pragma comment(linker, "/merge:D472=472")
+#pragma comment(linker, "/merge:C472=472")
+#pragma comment(linker, "/merge:B472=472")
+#pragma comment(linker, "/merge:K472=472")
 /***************************************************************************
 
 						  -= Newer Seta Hardware =-

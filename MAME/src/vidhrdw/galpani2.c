@@ -1,11 +1,11 @@
-#pragma code_seg("C201")
-#pragma data_seg("D201")
-#pragma bss_seg("B201")
-#pragma const_seg("K201")
-#pragma comment(linker, "/merge:D201=201")
-#pragma comment(linker, "/merge:C201=201")
-#pragma comment(linker, "/merge:B201=201")
-#pragma comment(linker, "/merge:K201=201")
+#pragma code_seg("C214")
+#pragma data_seg("D214")
+#pragma bss_seg("B214")
+#pragma const_seg("K214")
+#pragma comment(linker, "/merge:D214=214")
+#pragma comment(linker, "/merge:C214=214")
+#pragma comment(linker, "/merge:B214=214")
+#pragma comment(linker, "/merge:K214=214")
 /***************************************************************************
 
 							-= Gal's Panic II =-

@@ -1,11 +1,11 @@
-#pragma code_seg("C386")
-#pragma data_seg("D386")
-#pragma bss_seg("B386")
-#pragma const_seg("K386")
-#pragma comment(linker, "/merge:D386=386")
-#pragma comment(linker, "/merge:C386=386")
-#pragma comment(linker, "/merge:B386=386")
-#pragma comment(linker, "/merge:K386=386")
+#pragma code_seg("C403")
+#pragma data_seg("D403")
+#pragma bss_seg("B403")
+#pragma const_seg("K403")
+#pragma comment(linker, "/merge:D403=403")
+#pragma comment(linker, "/merge:C403=403")
+#pragma comment(linker, "/merge:B403=403")
+#pragma comment(linker, "/merge:K403=403")
 /* vidhrdw/pass.c - see drivers/pass.c for more info */
 
 #include "driver.h"

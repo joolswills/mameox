@@ -1,11 +1,11 @@
-#pragma code_seg("C60")
-#pragma data_seg("D60")
-#pragma bss_seg("B60")
-#pragma const_seg("K60")
-#pragma comment(linker, "/merge:D60=60")
-#pragma comment(linker, "/merge:C60=60")
-#pragma comment(linker, "/merge:B60=60")
-#pragma comment(linker, "/merge:K60=60")
+#pragma code_seg("C72")
+#pragma data_seg("D72")
+#pragma bss_seg("B72")
+#pragma const_seg("K72")
+#pragma comment(linker, "/merge:D72=72")
+#pragma comment(linker, "/merge:C72=72")
+#pragma comment(linker, "/merge:B72=72")
+#pragma comment(linker, "/merge:K72=72")
 /*
  * Berzerk/Frenzy Soundhardware Driver
  * Copyright Alex Judd 1997/98

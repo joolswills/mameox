@@ -1,11 +1,11 @@
-#pragma code_seg("C136")
-#pragma data_seg("D136")
-#pragma bss_seg("B136")
-#pragma const_seg("K136")
-#pragma comment(linker, "/merge:D136=136")
-#pragma comment(linker, "/merge:C136=136")
-#pragma comment(linker, "/merge:B136=136")
-#pragma comment(linker, "/merge:K136=136")
+#pragma code_seg("C149")
+#pragma data_seg("D149")
+#pragma bss_seg("B149")
+#pragma const_seg("K149")
+#pragma comment(linker, "/merge:D149=149")
+#pragma comment(linker, "/merge:C149=149")
+#pragma comment(linker, "/merge:B149=149")
+#pragma comment(linker, "/merge:K149=149")
 /***************************************************************************
 
 Some Dynax/Nakanihon games using the third version of their blitter

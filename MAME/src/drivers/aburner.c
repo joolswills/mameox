@@ -1,11 +1,11 @@
-#pragma code_seg("C6")
-#pragma data_seg("D6")
-#pragma bss_seg("B6")
-#pragma const_seg("K6")
-#pragma comment(linker, "/merge:D6=6")
-#pragma comment(linker, "/merge:C6=6")
-#pragma comment(linker, "/merge:B6=6")
-#pragma comment(linker, "/merge:K6=6")
+#pragma code_seg("C18")
+#pragma data_seg("D18")
+#pragma bss_seg("B18")
+#pragma const_seg("K18")
+#pragma comment(linker, "/merge:D18=18")
+#pragma comment(linker, "/merge:C18=18")
+#pragma comment(linker, "/merge:B18=18")
+#pragma comment(linker, "/merge:K18=18")
 /*	After Burner Hardware
 **	2xMC68000 + Z80
 **	YM2151 + Custom PCM

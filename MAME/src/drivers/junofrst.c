@@ -1,11 +1,11 @@
-#pragma code_seg("C259")
-#pragma data_seg("D259")
-#pragma bss_seg("B259")
-#pragma const_seg("K259")
-#pragma comment(linker, "/merge:D259=259")
-#pragma comment(linker, "/merge:C259=259")
-#pragma comment(linker, "/merge:B259=259")
-#pragma comment(linker, "/merge:K259=259")
+#pragma code_seg("C273")
+#pragma data_seg("D273")
+#pragma bss_seg("B273")
+#pragma const_seg("K273")
+#pragma comment(linker, "/merge:D273=273")
+#pragma comment(linker, "/merge:C273=273")
+#pragma comment(linker, "/merge:B273=273")
+#pragma comment(linker, "/merge:K273=273")
 /***************************************************************************
 
 Juno First :  memory map same as tutankham with some address changes

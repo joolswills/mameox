@@ -1,11 +1,11 @@
-#pragma code_seg("C121")
-#pragma data_seg("D121")
-#pragma bss_seg("B121")
-#pragma const_seg("K121")
-#pragma comment(linker, "/merge:D121=121")
-#pragma comment(linker, "/merge:C121=121")
-#pragma comment(linker, "/merge:B121=121")
-#pragma comment(linker, "/merge:K121=121")
+#pragma code_seg("C133")
+#pragma data_seg("D133")
+#pragma bss_seg("B133")
+#pragma const_seg("K133")
+#pragma comment(linker, "/merge:D133=133")
+#pragma comment(linker, "/merge:C133=133")
+#pragma comment(linker, "/merge:B133=133")
+#pragma comment(linker, "/merge:K133=133")
 /***************************************************************************
 
  COSMIC.C

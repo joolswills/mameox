@@ -1,11 +1,11 @@
-#pragma code_seg("C447")
-#pragma data_seg("D447")
-#pragma bss_seg("B447")
-#pragma const_seg("K447")
-#pragma comment(linker, "/merge:D447=447")
-#pragma comment(linker, "/merge:C447=447")
-#pragma comment(linker, "/merge:B447=447")
-#pragma comment(linker, "/merge:K447=447")
+#pragma code_seg("C464")
+#pragma data_seg("D464")
+#pragma bss_seg("B464")
+#pragma const_seg("K464")
+#pragma comment(linker, "/merge:D464=464")
+#pragma comment(linker, "/merge:C464=464")
+#pragma comment(linker, "/merge:B464=464")
+#pragma comment(linker, "/merge:K464=464")
 /***************************************************************************
 
 Eggs & Dommy

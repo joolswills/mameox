@@ -1,11 +1,11 @@
-#pragma code_seg("C129")
-#pragma data_seg("D129")
-#pragma bss_seg("B129")
-#pragma const_seg("K129")
-#pragma comment(linker, "/merge:D129=129")
-#pragma comment(linker, "/merge:C129=129")
-#pragma comment(linker, "/merge:B129=129")
-#pragma comment(linker, "/merge:K129=129")
+#pragma code_seg("C142")
+#pragma data_seg("D142")
+#pragma bss_seg("B142")
+#pragma const_seg("K142")
+#pragma comment(linker, "/merge:D142=142")
+#pragma comment(linker, "/merge:C142=142")
+#pragma comment(linker, "/merge:B142=142")
+#pragma comment(linker, "/merge:K142=142")
 /***************************************************************************
 
 	Cyberball 68000 sound simulator

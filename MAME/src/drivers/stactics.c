@@ -1,11 +1,11 @@
-#pragma code_seg("C504")
-#pragma data_seg("D504")
-#pragma bss_seg("B504")
-#pragma const_seg("K504")
-#pragma comment(linker, "/merge:D504=504")
-#pragma comment(linker, "/merge:C504=504")
-#pragma comment(linker, "/merge:B504=504")
-#pragma comment(linker, "/merge:K504=504")
+#pragma code_seg("C521")
+#pragma data_seg("D521")
+#pragma bss_seg("B521")
+#pragma const_seg("K521")
+#pragma comment(linker, "/merge:D521=521")
+#pragma comment(linker, "/merge:C521=521")
+#pragma comment(linker, "/merge:B521=521")
+#pragma comment(linker, "/merge:K521=521")
 /****************************************************************************
 
 Sega "Space Tactics" Driver

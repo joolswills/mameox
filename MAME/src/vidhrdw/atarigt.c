@@ -1,11 +1,11 @@
-#pragma code_seg("C37")
-#pragma data_seg("D37")
-#pragma bss_seg("B37")
-#pragma const_seg("K37")
-#pragma comment(linker, "/merge:D37=37")
-#pragma comment(linker, "/merge:C37=37")
-#pragma comment(linker, "/merge:B37=37")
-#pragma comment(linker, "/merge:K37=37")
+#pragma code_seg("C49")
+#pragma data_seg("D49")
+#pragma bss_seg("B49")
+#pragma const_seg("K49")
+#pragma comment(linker, "/merge:D49=49")
+#pragma comment(linker, "/merge:C49=49")
+#pragma comment(linker, "/merge:B49=49")
+#pragma comment(linker, "/merge:K49=49")
 /***************************************************************************
 
 	Atari GT hardware

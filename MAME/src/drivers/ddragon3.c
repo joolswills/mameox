@@ -1,11 +1,11 @@
-#pragma code_seg("C138")
-#pragma data_seg("D138")
-#pragma bss_seg("B138")
-#pragma const_seg("K138")
-#pragma comment(linker, "/merge:D138=138")
-#pragma comment(linker, "/merge:C138=138")
-#pragma comment(linker, "/merge:B138=138")
-#pragma comment(linker, "/merge:K138=138")
+#pragma code_seg("C151")
+#pragma data_seg("D151")
+#pragma bss_seg("B151")
+#pragma const_seg("K151")
+#pragma comment(linker, "/merge:D151=151")
+#pragma comment(linker, "/merge:C151=151")
+#pragma comment(linker, "/merge:B151=151")
+#pragma comment(linker, "/merge:K151=151")
 /******************************************************************
 
 	Double Dragon 3 					Technos Japan Corp 1990

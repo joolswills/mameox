@@ -1,11 +1,11 @@
-#pragma code_seg("C328")
-#pragma data_seg("D328")
-#pragma bss_seg("B328")
-#pragma const_seg("K328")
-#pragma comment(linker, "/merge:D328=328")
-#pragma comment(linker, "/merge:C328=328")
-#pragma comment(linker, "/merge:B328=328")
-#pragma comment(linker, "/merge:K328=328")
+#pragma code_seg("C343")
+#pragma data_seg("D343")
+#pragma bss_seg("B343")
+#pragma const_seg("K343")
+#pragma comment(linker, "/merge:D343=343")
+#pragma comment(linker, "/merge:C343=343")
+#pragma comment(linker, "/merge:B343=343")
+#pragma comment(linker, "/merge:K343=343")
 /***************************************************************************
 
 Mutant Night

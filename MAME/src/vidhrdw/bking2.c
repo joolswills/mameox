@@ -1,11 +1,11 @@
-#pragma code_seg("C63")
-#pragma data_seg("D63")
-#pragma bss_seg("B63")
-#pragma const_seg("K63")
-#pragma comment(linker, "/merge:D63=63")
-#pragma comment(linker, "/merge:C63=63")
-#pragma comment(linker, "/merge:B63=63")
-#pragma comment(linker, "/merge:K63=63")
+#pragma code_seg("C75")
+#pragma data_seg("D75")
+#pragma bss_seg("B75")
+#pragma const_seg("K75")
+#pragma comment(linker, "/merge:D75=75")
+#pragma comment(linker, "/merge:C75=75")
+#pragma comment(linker, "/merge:B75=75")
+#pragma comment(linker, "/merge:K75=75")
 /***************************************************************************
 
   bking2.c

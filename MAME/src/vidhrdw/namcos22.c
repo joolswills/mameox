@@ -1,11 +1,11 @@
-#pragma code_seg("C350")
-#pragma data_seg("D350")
-#pragma bss_seg("B350")
-#pragma const_seg("K350")
-#pragma comment(linker, "/merge:D350=350")
-#pragma comment(linker, "/merge:C350=350")
-#pragma comment(linker, "/merge:B350=350")
-#pragma comment(linker, "/merge:K350=350")
+#pragma code_seg("C2")
+#pragma data_seg("D2")
+#pragma bss_seg("B2")
+#pragma const_seg("K2")
+#pragma comment(linker, "/merge:D2=2")
+#pragma comment(linker, "/merge:C2=2")
+#pragma comment(linker, "/merge:B2=2")
+#pragma comment(linker, "/merge:K2=2")
 /* video hardware for Namco System22 */
 
 #include <math.h>

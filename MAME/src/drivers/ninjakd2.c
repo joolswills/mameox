@@ -1,11 +1,11 @@
-#pragma code_seg("C360")
-#pragma data_seg("D360")
-#pragma bss_seg("B360")
-#pragma const_seg("K360")
-#pragma comment(linker, "/merge:D360=360")
-#pragma comment(linker, "/merge:C360=360")
-#pragma comment(linker, "/merge:B360=360")
-#pragma comment(linker, "/merge:K360=360")
+#pragma code_seg("C377")
+#pragma data_seg("D377")
+#pragma bss_seg("B377")
+#pragma const_seg("K377")
+#pragma comment(linker, "/merge:D377=377")
+#pragma comment(linker, "/merge:C377=377")
+#pragma comment(linker, "/merge:B377=377")
+#pragma comment(linker, "/merge:K377=377")
 /***************************************************************************
 
  *****************************

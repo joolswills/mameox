@@ -1,11 +1,11 @@
-#pragma code_seg("C311")
-#pragma data_seg("D311")
-#pragma bss_seg("B311")
-#pragma const_seg("K311")
-#pragma comment(linker, "/merge:D311=311")
-#pragma comment(linker, "/merge:C311=311")
-#pragma comment(linker, "/merge:B311=311")
-#pragma comment(linker, "/merge:K311=311")
+#pragma code_seg("C326")
+#pragma data_seg("D326")
+#pragma bss_seg("B326")
+#pragma const_seg("K326")
+#pragma comment(linker, "/merge:D326=326")
+#pragma comment(linker, "/merge:C326=326")
+#pragma comment(linker, "/merge:B326=326")
+#pragma comment(linker, "/merge:K326=326")
 /***************************************************************************
 
 Mermaid

@@ -1,11 +1,11 @@
-#pragma code_seg("C286")
-#pragma data_seg("D286")
-#pragma bss_seg("B286")
-#pragma const_seg("K286")
-#pragma comment(linker, "/merge:D286=286")
-#pragma comment(linker, "/merge:C286=286")
-#pragma comment(linker, "/merge:B286=286")
-#pragma comment(linker, "/merge:K286=286")
+#pragma code_seg("C300")
+#pragma data_seg("D300")
+#pragma bss_seg("B300")
+#pragma const_seg("K300")
+#pragma comment(linker, "/merge:D300=300")
+#pragma comment(linker, "/merge:C300=300")
+#pragma comment(linker, "/merge:B300=300")
+#pragma comment(linker, "/merge:K300=300")
 /***************************************************************************
 
 Land Sea Air Squad / Storming Party  (c) 1986 Taito

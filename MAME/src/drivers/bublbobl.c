@@ -1,11 +1,11 @@
-#pragma code_seg("C81")
-#pragma data_seg("D81")
-#pragma bss_seg("B81")
-#pragma const_seg("K81")
-#pragma comment(linker, "/merge:D81=81")
-#pragma comment(linker, "/merge:C81=81")
-#pragma comment(linker, "/merge:B81=81")
-#pragma comment(linker, "/merge:K81=81")
+#pragma code_seg("C93")
+#pragma data_seg("D93")
+#pragma bss_seg("B93")
+#pragma const_seg("K93")
+#pragma comment(linker, "/merge:D93=93")
+#pragma comment(linker, "/merge:C93=93")
+#pragma comment(linker, "/merge:B93=93")
+#pragma comment(linker, "/merge:K93=93")
 /***************************************************************************
 Bubble Bobble / Tokio
 

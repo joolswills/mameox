@@ -1,11 +1,11 @@
-#pragma code_seg("C376")
-#pragma data_seg("D376")
-#pragma bss_seg("B376")
-#pragma const_seg("K376")
-#pragma comment(linker, "/merge:D376=376")
-#pragma comment(linker, "/merge:C376=376")
-#pragma comment(linker, "/merge:B376=376")
-#pragma comment(linker, "/merge:K376=376")
+#pragma code_seg("C393")
+#pragma data_seg("D393")
+#pragma bss_seg("B393")
+#pragma const_seg("K393")
+#pragma comment(linker, "/merge:D393=393")
+#pragma comment(linker, "/merge:C393=393")
+#pragma comment(linker, "/merge:B393=393")
+#pragma comment(linker, "/merge:K393=393")
 /***************************************************************************
 
 Atari Orbit Driver

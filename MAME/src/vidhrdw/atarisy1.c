@@ -1,11 +1,11 @@
-#pragma code_seg("C39")
-#pragma data_seg("D39")
-#pragma bss_seg("B39")
-#pragma const_seg("K39")
-#pragma comment(linker, "/merge:D39=39")
-#pragma comment(linker, "/merge:C39=39")
-#pragma comment(linker, "/merge:B39=39")
-#pragma comment(linker, "/merge:K39=39")
+#pragma code_seg("C51")
+#pragma data_seg("D51")
+#pragma bss_seg("B51")
+#pragma const_seg("K51")
+#pragma comment(linker, "/merge:D51=51")
+#pragma comment(linker, "/merge:C51=51")
+#pragma comment(linker, "/merge:B51=51")
+#pragma comment(linker, "/merge:K51=51")
 /***************************************************************************
 
 	Atari System 1 hardware

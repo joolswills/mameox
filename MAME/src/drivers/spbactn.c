@@ -1,11 +1,11 @@
-#pragma code_seg("C487")
-#pragma data_seg("D487")
-#pragma bss_seg("B487")
-#pragma const_seg("K487")
-#pragma comment(linker, "/merge:D487=487")
-#pragma comment(linker, "/merge:C487=487")
-#pragma comment(linker, "/merge:B487=487")
-#pragma comment(linker, "/merge:K487=487")
+#pragma code_seg("C504")
+#pragma data_seg("D504")
+#pragma bss_seg("B504")
+#pragma const_seg("K504")
+#pragma comment(linker, "/merge:D504=504")
+#pragma comment(linker, "/merge:C504=504")
+#pragma comment(linker, "/merge:B504=504")
+#pragma comment(linker, "/merge:K504=504")
 /*******************************************************************************
  Super Pinball Action (c) 1991 Tecmo
 ********************************************************************************

@@ -1839,91 +1839,19 @@
 					Name="ccore"
 					Filter="">
 					<File
-						RelativePath="..\c_m68000\output\m68kopac.c">
-						<FileConfiguration
-							Name="Debug|Xbox">
-							<Tool
-								Name="VCCLCompilerTool"
-								ObjectFile=".\dbg_obj\cpu/"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Xbox">
-							<Tool
-								Name="VCCLCompilerTool"
-								ObjectFile=".\obj\cpu/"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Profile|Xbox">
-							<Tool
-								Name="VCCLCompilerTool"
-								ObjectFile=".\prf_obj\cpu/"/>
-						</FileConfiguration>
+						RelativePath="src\cpu\m68000\m68kopac.c">
 					</File>
 					<File
-						RelativePath="..\c_m68000\output\m68kopdm.c">
-						<FileConfiguration
-							Name="Debug|Xbox">
-							<Tool
-								Name="VCCLCompilerTool"
-								ObjectFile=".\dbg_obj\cpu/"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Xbox">
-							<Tool
-								Name="VCCLCompilerTool"
-								ObjectFile=".\obj\cpu/"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Profile|Xbox">
-							<Tool
-								Name="VCCLCompilerTool"
-								ObjectFile=".\prf_obj\cpu/"/>
-						</FileConfiguration>
+						RelativePath="src\cpu\m68000\m68kopdm.c">
 					</File>
 					<File
-						RelativePath="..\c_m68000\output\m68kopnz.c">
-						<FileConfiguration
-							Name="Debug|Xbox">
-							<Tool
-								Name="VCCLCompilerTool"
-								ObjectFile=".\dbg_obj\cpu/"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Xbox">
-							<Tool
-								Name="VCCLCompilerTool"
-								ObjectFile=".\obj\cpu/"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Profile|Xbox">
-							<Tool
-								Name="VCCLCompilerTool"
-								ObjectFile=".\prf_obj\cpu/"/>
-						</FileConfiguration>
+						RelativePath="src\cpu\m68000\m68kopnz.c">
 					</File>
 					<File
-						RelativePath="..\c_m68000\output\m68kops.c">
-						<FileConfiguration
-							Name="Debug|Xbox">
-							<Tool
-								Name="VCCLCompilerTool"
-								ObjectFile=".\dbg_obj\cpu/"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Xbox">
-							<Tool
-								Name="VCCLCompilerTool"
-								ObjectFile=".\obj\cpu/"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Profile|Xbox">
-							<Tool
-								Name="VCCLCompilerTool"
-								ObjectFile=".\prf_obj\cpu/"/>
-						</FileConfiguration>
+						RelativePath="src\cpu\m68000\m68kops.c">
 					</File>
 					<File
-						RelativePath="..\c_m68000\output\m68kops.h">
+						RelativePath="src\cpu\m68000\m68kops.h">
 					</File>
 				</Filter>
 			</Filter>

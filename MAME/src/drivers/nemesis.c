@@ -1,11 +1,11 @@
-#pragma code_seg("C357")
-#pragma data_seg("D357")
-#pragma bss_seg("B357")
-#pragma const_seg("K357")
-#pragma comment(linker, "/merge:D357=357")
-#pragma comment(linker, "/merge:C357=357")
-#pragma comment(linker, "/merge:B357=357")
-#pragma comment(linker, "/merge:K357=357")
+#pragma code_seg("C374")
+#pragma data_seg("D374")
+#pragma bss_seg("B374")
+#pragma const_seg("K374")
+#pragma comment(linker, "/merge:D374=374")
+#pragma comment(linker, "/merge:C374=374")
+#pragma comment(linker, "/merge:B374=374")
+#pragma comment(linker, "/merge:K374=374")
 /***************************************************************************
 
 	Nemesis (Hacked?)		GX400

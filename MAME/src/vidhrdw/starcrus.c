@@ -1,11 +1,11 @@
-#pragma code_seg("C506")
-#pragma data_seg("D506")
-#pragma bss_seg("B506")
-#pragma const_seg("K506")
-#pragma comment(linker, "/merge:D506=506")
-#pragma comment(linker, "/merge:C506=506")
-#pragma comment(linker, "/merge:B506=506")
-#pragma comment(linker, "/merge:K506=506")
+#pragma code_seg("C523")
+#pragma data_seg("D523")
+#pragma bss_seg("B523")
+#pragma const_seg("K523")
+#pragma comment(linker, "/merge:D523=523")
+#pragma comment(linker, "/merge:C523=523")
+#pragma comment(linker, "/merge:B523=523")
+#pragma comment(linker, "/merge:K523=523")
 /* Ramtek - Star Cruiser */
 
 #include "driver.h"

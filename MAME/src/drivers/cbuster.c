@@ -1,11 +1,11 @@
-#pragma code_seg("C92")
-#pragma data_seg("D92")
-#pragma bss_seg("B92")
-#pragma const_seg("K92")
-#pragma comment(linker, "/merge:D92=92")
-#pragma comment(linker, "/merge:C92=92")
-#pragma comment(linker, "/merge:B92=92")
-#pragma comment(linker, "/merge:K92=92")
+#pragma code_seg("C104")
+#pragma data_seg("D104")
+#pragma bss_seg("B104")
+#pragma const_seg("K104")
+#pragma comment(linker, "/merge:D104=104")
+#pragma comment(linker, "/merge:C104=104")
+#pragma comment(linker, "/merge:B104=104")
+#pragma comment(linker, "/merge:K104=104")
 /***************************************************************************
 
   Crude Buster (World version FX)		(c) 1990 Data East Corporation

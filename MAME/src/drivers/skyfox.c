@@ -1,11 +1,11 @@
-#pragma code_seg("C477")
-#pragma data_seg("D477")
-#pragma bss_seg("B477")
-#pragma const_seg("K477")
-#pragma comment(linker, "/merge:D477=477")
-#pragma comment(linker, "/merge:C477=477")
-#pragma comment(linker, "/merge:B477=477")
-#pragma comment(linker, "/merge:K477=477")
+#pragma code_seg("C494")
+#pragma data_seg("D494")
+#pragma bss_seg("B494")
+#pragma const_seg("K494")
+#pragma comment(linker, "/merge:D494=494")
+#pragma comment(linker, "/merge:C494=494")
+#pragma comment(linker, "/merge:B494=494")
+#pragma comment(linker, "/merge:K494=494")
 /***************************************************************************
 
 						-= Sky Fox / Exerizer =-

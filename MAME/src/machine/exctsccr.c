@@ -1,11 +1,11 @@
-#pragma code_seg("C167")
-#pragma data_seg("D167")
-#pragma bss_seg("B167")
-#pragma const_seg("K167")
-#pragma comment(linker, "/merge:D167=167")
-#pragma comment(linker, "/merge:C167=167")
-#pragma comment(linker, "/merge:B167=167")
-#pragma comment(linker, "/merge:K167=167")
+#pragma code_seg("C180")
+#pragma data_seg("D180")
+#pragma bss_seg("B180")
+#pragma const_seg("K180")
+#pragma comment(linker, "/merge:D180=180")
+#pragma comment(linker, "/merge:C180=180")
+#pragma comment(linker, "/merge:B180=180")
+#pragma comment(linker, "/merge:K180=180")
 /*************************************************************************************
 
 Emulation of the Alpha 8302 microcontroller.

@@ -1,11 +1,11 @@
-#pragma code_seg("C370")
-#pragma data_seg("D370")
-#pragma bss_seg("B370")
-#pragma const_seg("K370")
-#pragma comment(linker, "/merge:D370=370")
-#pragma comment(linker, "/merge:C370=370")
-#pragma comment(linker, "/merge:B370=370")
-#pragma comment(linker, "/merge:K370=370")
+#pragma code_seg("C387")
+#pragma data_seg("D387")
+#pragma bss_seg("B387")
+#pragma const_seg("K387")
+#pragma comment(linker, "/merge:D387=387")
+#pragma comment(linker, "/merge:C387=387")
+#pragma comment(linker, "/merge:B387=387")
+#pragma comment(linker, "/merge:K387=387")
 /******************************************************************************
 
 	Video Hardware for Video System Mahjong series.

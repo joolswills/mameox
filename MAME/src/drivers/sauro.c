@@ -1,11 +1,11 @@
-#pragma code_seg("C443")
-#pragma data_seg("D443")
-#pragma bss_seg("B443")
-#pragma const_seg("K443")
-#pragma comment(linker, "/merge:D443=443")
-#pragma comment(linker, "/merge:C443=443")
-#pragma comment(linker, "/merge:B443=443")
-#pragma comment(linker, "/merge:K443=443")
+#pragma code_seg("C460")
+#pragma data_seg("D460")
+#pragma bss_seg("B460")
+#pragma const_seg("K460")
+#pragma comment(linker, "/merge:D460=460")
+#pragma comment(linker, "/merge:C460=460")
+#pragma comment(linker, "/merge:B460=460")
+#pragma comment(linker, "/merge:K460=460")
 /***************************************************************************
 
 Sauro

@@ -1,11 +1,11 @@
-#pragma code_seg("C33")
-#pragma data_seg("D33")
-#pragma bss_seg("B33")
-#pragma const_seg("K33")
-#pragma comment(linker, "/merge:D33=33")
-#pragma comment(linker, "/merge:C33=33")
-#pragma comment(linker, "/merge:B33=33")
-#pragma comment(linker, "/merge:K33=33")
+#pragma code_seg("C45")
+#pragma data_seg("D45")
+#pragma bss_seg("B45")
+#pragma const_seg("K45")
+#pragma comment(linker, "/merge:D45=45")
+#pragma comment(linker, "/merge:C45=45")
+#pragma comment(linker, "/merge:B45=45")
+#pragma comment(linker, "/merge:K45=45")
 #include "driver.h"
 #include "state.h"
 #include "vidhrdw/taitoic.h"

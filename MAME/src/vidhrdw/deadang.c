@@ -1,11 +1,11 @@
-#pragma code_seg("C140")
-#pragma data_seg("D140")
-#pragma bss_seg("B140")
-#pragma const_seg("K140")
-#pragma comment(linker, "/merge:D140=140")
-#pragma comment(linker, "/merge:C140=140")
-#pragma comment(linker, "/merge:B140=140")
-#pragma comment(linker, "/merge:K140=140")
+#pragma code_seg("C153")
+#pragma data_seg("D153")
+#pragma bss_seg("B153")
+#pragma const_seg("K153")
+#pragma comment(linker, "/merge:D153=153")
+#pragma comment(linker, "/merge:C153=153")
+#pragma comment(linker, "/merge:B153=153")
+#pragma comment(linker, "/merge:K153=153")
 #include "vidhrdw/generic.h"
 
 static struct tilemap *pf3_layer,*pf2_layer,*pf1_layer,*text_layer;

@@ -1,11 +1,11 @@
-#pragma code_seg("C361")
-#pragma data_seg("D361")
-#pragma bss_seg("B361")
-#pragma const_seg("K361")
-#pragma comment(linker, "/merge:D361=361")
-#pragma comment(linker, "/merge:C361=361")
-#pragma comment(linker, "/merge:B361=361")
-#pragma comment(linker, "/merge:K361=361")
+#pragma code_seg("C378")
+#pragma data_seg("D378")
+#pragma bss_seg("B378")
+#pragma const_seg("K378")
+#pragma comment(linker, "/merge:D378=378")
+#pragma comment(linker, "/merge:C378=378")
+#pragma comment(linker, "/merge:B378=378")
+#pragma comment(linker, "/merge:K378=378")
 /*******************************************************************************
  Ninja Kid / Ninjakun Majou no Bouken | (c) 1984 UPL / Taito
 ********************************************************************************

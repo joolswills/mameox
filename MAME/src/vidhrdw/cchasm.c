@@ -1,11 +1,11 @@
-#pragma code_seg("C94")
-#pragma data_seg("D94")
-#pragma bss_seg("B94")
-#pragma const_seg("K94")
-#pragma comment(linker, "/merge:D94=94")
-#pragma comment(linker, "/merge:C94=94")
-#pragma comment(linker, "/merge:B94=94")
-#pragma comment(linker, "/merge:K94=94")
+#pragma code_seg("C106")
+#pragma data_seg("D106")
+#pragma bss_seg("B106")
+#pragma const_seg("K106")
+#pragma comment(linker, "/merge:D106=106")
+#pragma comment(linker, "/merge:C106=106")
+#pragma comment(linker, "/merge:B106=106")
+#pragma comment(linker, "/merge:K106=106")
 /***************************************************************************
 
 	Cinematronics Cosmic Chasm hardware

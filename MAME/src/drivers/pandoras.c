@@ -1,11 +1,11 @@
-#pragma code_seg("C383")
-#pragma data_seg("D383")
-#pragma bss_seg("B383")
-#pragma const_seg("K383")
-#pragma comment(linker, "/merge:D383=383")
-#pragma comment(linker, "/merge:C383=383")
-#pragma comment(linker, "/merge:B383=383")
-#pragma comment(linker, "/merge:K383=383")
+#pragma code_seg("C400")
+#pragma data_seg("D400")
+#pragma bss_seg("B400")
+#pragma const_seg("K400")
+#pragma comment(linker, "/merge:D400=400")
+#pragma comment(linker, "/merge:C400=400")
+#pragma comment(linker, "/merge:B400=400")
+#pragma comment(linker, "/merge:K400=400")
 /***************************************************************************
 
 Pandora's Palace(GX328) (c) 1984 Konami/Interlogic

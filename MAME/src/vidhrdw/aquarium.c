@@ -1,11 +1,11 @@
-#pragma code_seg("C21")
-#pragma data_seg("D21")
-#pragma bss_seg("B21")
-#pragma const_seg("K21")
-#pragma comment(linker, "/merge:D21=21")
-#pragma comment(linker, "/merge:C21=21")
-#pragma comment(linker, "/merge:B21=21")
-#pragma comment(linker, "/merge:K21=21")
+#pragma code_seg("C33")
+#pragma data_seg("D33")
+#pragma bss_seg("B33")
+#pragma const_seg("K33")
+#pragma comment(linker, "/merge:D33=33")
+#pragma comment(linker, "/merge:C33=33")
+#pragma comment(linker, "/merge:B33=33")
+#pragma comment(linker, "/merge:K33=33")
 /* Aquarium */
 
 #include "driver.h"

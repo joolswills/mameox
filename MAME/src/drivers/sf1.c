@@ -1,11 +1,11 @@
-#pragma code_seg("C456")
-#pragma data_seg("D456")
-#pragma bss_seg("B456")
-#pragma const_seg("K456")
-#pragma comment(linker, "/merge:D456=456")
-#pragma comment(linker, "/merge:C456=456")
-#pragma comment(linker, "/merge:B456=456")
-#pragma comment(linker, "/merge:K456=456")
+#pragma code_seg("C473")
+#pragma data_seg("D473")
+#pragma bss_seg("B473")
+#pragma const_seg("K473")
+#pragma comment(linker, "/merge:D473=473")
+#pragma comment(linker, "/merge:C473=473")
+#pragma comment(linker, "/merge:B473=473")
+#pragma comment(linker, "/merge:K473=473")
 /***************************************************************************
 
   Street Fighter 1

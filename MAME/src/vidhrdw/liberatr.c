@@ -1,11 +1,11 @@
-#pragma code_seg("C282")
-#pragma data_seg("D282")
-#pragma bss_seg("B282")
-#pragma const_seg("K282")
-#pragma comment(linker, "/merge:D282=282")
-#pragma comment(linker, "/merge:C282=282")
-#pragma comment(linker, "/merge:B282=282")
-#pragma comment(linker, "/merge:K282=282")
+#pragma code_seg("C296")
+#pragma data_seg("D296")
+#pragma bss_seg("B296")
+#pragma const_seg("K296")
+#pragma comment(linker, "/merge:D296=296")
+#pragma comment(linker, "/merge:C296=296")
+#pragma comment(linker, "/merge:B296=296")
+#pragma comment(linker, "/merge:K296=296")
 /***************************************************************************
 
   liberator.c - 'vidhrdw.c'

@@ -1,11 +1,11 @@
-#pragma code_seg("C0")
-#pragma data_seg("D0")
-#pragma bss_seg("B0")
-#pragma const_seg("K0")
-#pragma comment(linker, "/merge:D0=0")
-#pragma comment(linker, "/merge:C0=0")
-#pragma comment(linker, "/merge:B0=0")
-#pragma comment(linker, "/merge:K0=0")
+#pragma code_seg("C12")
+#pragma data_seg("D12")
+#pragma bss_seg("B12")
+#pragma const_seg("K12")
+#pragma comment(linker, "/merge:D12=12")
+#pragma comment(linker, "/merge:C12=12")
+#pragma comment(linker, "/merge:B12=12")
+#pragma comment(linker, "/merge:K12=12")
 /***************************************************************************
 
 1942

@@ -1,11 +1,11 @@
-#pragma code_seg("C295")
-#pragma data_seg("D295")
-#pragma bss_seg("B295")
-#pragma const_seg("K295")
-#pragma comment(linker, "/merge:D295=295")
-#pragma comment(linker, "/merge:C295=295")
-#pragma comment(linker, "/merge:B295=295")
-#pragma comment(linker, "/merge:K295=295")
+#pragma code_seg("C309")
+#pragma data_seg("D309")
+#pragma bss_seg("B309")
+#pragma const_seg("K309")
+#pragma comment(linker, "/merge:D309=309")
+#pragma comment(linker, "/merge:C309=309")
+#pragma comment(linker, "/merge:B309=309")
+#pragma comment(linker, "/merge:K309=309")
 /***************************************************************************
 
 MAGMAX

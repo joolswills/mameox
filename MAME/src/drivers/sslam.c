@@ -1,11 +1,11 @@
-#pragma code_seg("C501")
-#pragma data_seg("D501")
-#pragma bss_seg("B501")
-#pragma const_seg("K501")
-#pragma comment(linker, "/merge:D501=501")
-#pragma comment(linker, "/merge:C501=501")
-#pragma comment(linker, "/merge:B501=501")
-#pragma comment(linker, "/merge:K501=501")
+#pragma code_seg("C518")
+#pragma data_seg("D518")
+#pragma bss_seg("B518")
+#pragma const_seg("K518")
+#pragma comment(linker, "/merge:D518=518")
+#pragma comment(linker, "/merge:C518=518")
+#pragma comment(linker, "/merge:B518=518")
+#pragma comment(linker, "/merge:K518=518")
 /* Super Slam (c)1993 Playmark */
 
 /*

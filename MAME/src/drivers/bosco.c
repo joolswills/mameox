@@ -1,11 +1,11 @@
-#pragma code_seg("C75")
-#pragma data_seg("D75")
-#pragma bss_seg("B75")
-#pragma const_seg("K75")
-#pragma comment(linker, "/merge:D75=75")
-#pragma comment(linker, "/merge:C75=75")
-#pragma comment(linker, "/merge:B75=75")
-#pragma comment(linker, "/merge:K75=75")
+#pragma code_seg("C87")
+#pragma data_seg("D87")
+#pragma bss_seg("B87")
+#pragma const_seg("K87")
+#pragma comment(linker, "/merge:D87=87")
+#pragma comment(linker, "/merge:C87=87")
+#pragma comment(linker, "/merge:B87=87")
+#pragma comment(linker, "/merge:K87=87")
 /***************************************************************************
 
 Bosconian

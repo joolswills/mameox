@@ -1,11 +1,11 @@
-#pragma code_seg("C224")
-#pragma data_seg("D224")
-#pragma bss_seg("B224")
-#pragma const_seg("K224")
-#pragma comment(linker, "/merge:D224=224")
-#pragma comment(linker, "/merge:C224=224")
-#pragma comment(linker, "/merge:B224=224")
-#pragma comment(linker, "/merge:K224=224")
+#pragma code_seg("C237")
+#pragma data_seg("D237")
+#pragma bss_seg("B237")
+#pragma const_seg("K237")
+#pragma comment(linker, "/merge:D237=237")
+#pragma comment(linker, "/merge:C237=237")
+#pragma comment(linker, "/merge:B237=237")
+#pragma comment(linker, "/merge:K237=237")
 /***************************************************************************
 
 	Ground Effects / Super Ground FX					(c) 1993 Taito

@@ -1,11 +1,11 @@
-#pragma code_seg("C335")
-#pragma data_seg("D335")
-#pragma bss_seg("B335")
-#pragma const_seg("K335")
-#pragma comment(linker, "/merge:D335=335")
-#pragma comment(linker, "/merge:C335=335")
-#pragma comment(linker, "/merge:B335=335")
-#pragma comment(linker, "/merge:K335=335")
+#pragma code_seg("C350")
+#pragma data_seg("D350")
+#pragma bss_seg("B350")
+#pragma const_seg("K350")
+#pragma comment(linker, "/merge:D350=350")
+#pragma comment(linker, "/merge:C350=350")
+#pragma comment(linker, "/merge:B350=350")
+#pragma comment(linker, "/merge:K350=350")
 /******************************************************************
 
 Mr F Lea

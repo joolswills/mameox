@@ -1,11 +1,11 @@
-#pragma code_seg("C246")
-#pragma data_seg("D246")
-#pragma bss_seg("B246")
-#pragma const_seg("K246")
-#pragma comment(linker, "/merge:D246=246")
-#pragma comment(linker, "/merge:C246=246")
-#pragma comment(linker, "/merge:B246=246")
-#pragma comment(linker, "/merge:K246=246")
+#pragma code_seg("C260")
+#pragma data_seg("D260")
+#pragma bss_seg("B260")
+#pragma const_seg("K260")
+#pragma comment(linker, "/merge:D260=260")
+#pragma comment(linker, "/merge:C260=260")
+#pragma comment(linker, "/merge:B260=260")
+#pragma comment(linker, "/merge:K260=260")
 /***************************************************************************
 
 Hyper Duel

@@ -1,11 +1,11 @@
-#pragma code_seg("C230")
-#pragma data_seg("D230")
-#pragma bss_seg("B230")
-#pragma const_seg("K230")
-#pragma comment(linker, "/merge:D230=230")
-#pragma comment(linker, "/merge:C230=230")
-#pragma comment(linker, "/merge:B230=230")
-#pragma comment(linker, "/merge:K230=230")
+#pragma code_seg("C243")
+#pragma data_seg("D243")
+#pragma bss_seg("B243")
+#pragma const_seg("K243")
+#pragma comment(linker, "/merge:D243=243")
+#pragma comment(linker, "/merge:C243=243")
+#pragma comment(linker, "/merge:B243=243")
+#pragma comment(linker, "/merge:K243=243")
 /***************************************************************************
 
 Gun Dealer memory map

@@ -1,11 +1,11 @@
-#pragma code_seg("C19")
-#pragma data_seg("D19")
-#pragma bss_seg("B19")
-#pragma const_seg("K19")
-#pragma comment(linker, "/merge:D19=19")
-#pragma comment(linker, "/merge:C19=19")
-#pragma comment(linker, "/merge:B19=19")
-#pragma comment(linker, "/merge:K19=19")
+#pragma code_seg("C31")
+#pragma data_seg("D31")
+#pragma bss_seg("B31")
+#pragma const_seg("K31")
+#pragma comment(linker, "/merge:D31=31")
+#pragma comment(linker, "/merge:C31=31")
+#pragma comment(linker, "/merge:B31=31")
+#pragma comment(linker, "/merge:K31=31")
 /* vidhrdw/angelkds.c - see drivers/angelkds.c for more info */
 
 /* graphical issues

@@ -1,11 +1,11 @@
-#pragma code_seg("C275")
-#pragma data_seg("D275")
-#pragma bss_seg("B275")
-#pragma const_seg("K275")
-#pragma comment(linker, "/merge:D275=275")
-#pragma comment(linker, "/merge:C275=275")
-#pragma comment(linker, "/merge:B275=275")
-#pragma comment(linker, "/merge:K275=275")
+#pragma code_seg("C289")
+#pragma data_seg("D289")
+#pragma bss_seg("B289")
+#pragma const_seg("K289")
+#pragma comment(linker, "/merge:D289=289")
+#pragma comment(linker, "/merge:C289=289")
+#pragma comment(linker, "/merge:B289=289")
+#pragma comment(linker, "/merge:K289=289")
 /**************************************************************************
 
   Last Duel 			          - Capcom, 1988

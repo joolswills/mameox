@@ -1,11 +1,11 @@
-#pragma code_seg("C254")
-#pragma data_seg("D254")
-#pragma bss_seg("B254")
-#pragma const_seg("K254")
-#pragma comment(linker, "/merge:D254=254")
-#pragma comment(linker, "/merge:C254=254")
-#pragma comment(linker, "/merge:B254=254")
-#pragma comment(linker, "/merge:K254=254")
+#pragma code_seg("C268")
+#pragma data_seg("D268")
+#pragma bss_seg("B268")
+#pragma const_seg("K268")
+#pragma comment(linker, "/merge:D268=268")
+#pragma comment(linker, "/merge:C268=268")
+#pragma comment(linker, "/merge:B268=268")
+#pragma comment(linker, "/merge:K268=268")
 /***************************************************************************
 
   jackal.c

@@ -1,11 +1,11 @@
-#pragma code_seg("C15")
-#pragma data_seg("D15")
-#pragma bss_seg("B15")
-#pragma const_seg("K15")
-#pragma comment(linker, "/merge:D15=15")
-#pragma comment(linker, "/merge:C15=15")
-#pragma comment(linker, "/merge:B15=15")
-#pragma comment(linker, "/merge:K15=15")
+#pragma code_seg("C27")
+#pragma data_seg("D27")
+#pragma bss_seg("B27")
+#pragma const_seg("K27")
+#pragma comment(linker, "/merge:D27=27")
+#pragma comment(linker, "/merge:C27=27")
+#pragma comment(linker, "/merge:B27=27")
+#pragma comment(linker, "/merge:K27=27")
 /***************************************************************************
 
    Alpha 68k video emulation - Bryan McPhail, mish@tendril.co.uk

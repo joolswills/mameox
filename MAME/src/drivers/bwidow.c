@@ -1,11 +1,11 @@
-#pragma code_seg("C83")
-#pragma data_seg("D83")
-#pragma bss_seg("B83")
-#pragma const_seg("K83")
-#pragma comment(linker, "/merge:D83=83")
-#pragma comment(linker, "/merge:C83=83")
-#pragma comment(linker, "/merge:B83=83")
-#pragma comment(linker, "/merge:K83=83")
+#pragma code_seg("C95")
+#pragma data_seg("D95")
+#pragma bss_seg("B95")
+#pragma const_seg("K95")
+#pragma comment(linker, "/merge:D95=95")
+#pragma comment(linker, "/merge:C95=95")
+#pragma comment(linker, "/merge:B95=95")
+#pragma comment(linker, "/merge:K95=95")
 /***************************************************************************
 
 	Atari Black Widow hardware

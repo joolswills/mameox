@@ -1,11 +1,11 @@
-#pragma code_seg("C97")
-#pragma data_seg("D97")
-#pragma bss_seg("B97")
-#pragma const_seg("K97")
-#pragma comment(linker, "/merge:D97=97")
-#pragma comment(linker, "/merge:C97=97")
-#pragma comment(linker, "/merge:B97=97")
-#pragma comment(linker, "/merge:K97=97")
+#pragma code_seg("C109")
+#pragma data_seg("D109")
+#pragma bss_seg("B109")
+#pragma const_seg("K109")
+#pragma comment(linker, "/merge:D109=109")
+#pragma comment(linker, "/merge:C109=109")
+#pragma comment(linker, "/merge:B109=109")
+#pragma comment(linker, "/merge:K109=109")
 /*
  *	Chack'n Pop
  *	(C) 1983 TAITO Corp.

@@ -1,11 +1,11 @@
-#pragma code_seg("C188")
-#pragma data_seg("D188")
-#pragma bss_seg("B188")
-#pragma const_seg("K188")
-#pragma comment(linker, "/merge:D188=188")
-#pragma comment(linker, "/merge:C188=188")
-#pragma comment(linker, "/merge:B188=188")
-#pragma comment(linker, "/merge:K188=188")
+#pragma code_seg("C201")
+#pragma data_seg("D201")
+#pragma bss_seg("B201")
+#pragma const_seg("K201")
+#pragma comment(linker, "/merge:D201=201")
+#pragma comment(linker, "/merge:C201=201")
+#pragma comment(linker, "/merge:B201=201")
+#pragma comment(linker, "/merge:K201=201")
 /***************************************************************************
 
 	Atari Food Fight hardware

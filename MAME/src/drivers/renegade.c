@@ -1,11 +1,11 @@
-#pragma code_seg("C428")
-#pragma data_seg("D428")
-#pragma bss_seg("B428")
-#pragma const_seg("K428")
-#pragma comment(linker, "/merge:D428=428")
-#pragma comment(linker, "/merge:C428=428")
-#pragma comment(linker, "/merge:B428=428")
-#pragma comment(linker, "/merge:K428=428")
+#pragma code_seg("C445")
+#pragma data_seg("D445")
+#pragma bss_seg("B445")
+#pragma const_seg("K445")
+#pragma comment(linker, "/merge:D445=445")
+#pragma comment(linker, "/merge:C445=445")
+#pragma comment(linker, "/merge:B445=445")
+#pragma comment(linker, "/merge:K445=445")
 /***************************************************************************
 
 Renegade

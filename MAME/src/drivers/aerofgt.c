@@ -1,11 +1,11 @@
-#pragma code_seg("C10")
-#pragma data_seg("D10")
-#pragma bss_seg("B10")
-#pragma const_seg("K10")
-#pragma comment(linker, "/merge:D10=10")
-#pragma comment(linker, "/merge:C10=10")
-#pragma comment(linker, "/merge:B10=10")
-#pragma comment(linker, "/merge:K10=10")
+#pragma code_seg("C22")
+#pragma data_seg("D22")
+#pragma bss_seg("B22")
+#pragma const_seg("K22")
+#pragma comment(linker, "/merge:D22=22")
+#pragma comment(linker, "/merge:C22=22")
+#pragma comment(linker, "/merge:B22=22")
+#pragma comment(linker, "/merge:K22=22")
 /***************************************************************************
 
 Various Video System Co. games using the C7-01 GGA, VS8803, VS8904, VS8905

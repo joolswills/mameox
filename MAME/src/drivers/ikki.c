@@ -1,11 +1,11 @@
-#pragma code_seg("C247")
-#pragma data_seg("D247")
-#pragma bss_seg("B247")
-#pragma const_seg("K247")
-#pragma comment(linker, "/merge:D247=247")
-#pragma comment(linker, "/merge:C247=247")
-#pragma comment(linker, "/merge:B247=247")
-#pragma comment(linker, "/merge:K247=247")
+#pragma code_seg("C261")
+#pragma data_seg("D261")
+#pragma bss_seg("B261")
+#pragma const_seg("K261")
+#pragma comment(linker, "/merge:D261=261")
+#pragma comment(linker, "/merge:C261=261")
+#pragma comment(linker, "/merge:B261=261")
+#pragma comment(linker, "/merge:K261=261")
 /*****************************************************************************
 
 Ikki (c) 1985 Sun Electronics

@@ -1,11 +1,11 @@
-#pragma code_seg("C284")
-#pragma data_seg("D284")
-#pragma bss_seg("B284")
-#pragma const_seg("K284")
-#pragma comment(linker, "/merge:D284=284")
-#pragma comment(linker, "/merge:C284=284")
-#pragma comment(linker, "/merge:B284=284")
-#pragma comment(linker, "/merge:K284=284")
+#pragma code_seg("C298")
+#pragma data_seg("D298")
+#pragma bss_seg("B298")
+#pragma const_seg("K298")
+#pragma comment(linker, "/merge:D298=298")
+#pragma comment(linker, "/merge:C298=298")
+#pragma comment(linker, "/merge:B298=298")
+#pragma comment(linker, "/merge:K298=298")
 /***************************************************************************
 
 Loco-Motion

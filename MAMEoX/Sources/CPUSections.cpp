@@ -156,13 +156,46 @@ BOOL UnloadCPUSections( void )
   std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.begin();
   for( ; i != g_IDToSectionMap.end(); ++i )
   {
-      // Only unload families once
-    if( (*i).first == CPU_M6809 ||
-        (*i).first == CPU_M6805 ||
-        (*i).first == CPU_M68000 ||
-        (*i).first == CPU_M6800 )
+      // Only unload families once (all but the first member are skipped)
+    if( (*i).first == CPU_M65C02 ||
+        (*i).first == CPU_M6510 ||
+        (*i).first == CPU_N2A03 ||
+        (*i).first == CPU_DECO16 ||
+        (*i).first == CPU_I186 ||
+        (*i).first == CPU_V30 ||
+        (*i).first == CPU_V33 ||
+        (*i).first == CPU_V70 ||
+        (*i).first == CPU_I8039 ||
+        (*i).first == CPU_I8048 ||
+        (*i).first == CPU_N7751 ||
+        (*i).first == CPU_M6801 ||
+        (*i).first == CPU_M6802 ||
+        (*i).first == CPU_M6803 ||
+        (*i).first == CPU_M6808 ||
+        (*i).first == CPU_HD63701 ||
+        (*i).first == CPU_M68705 ||
+        (*i).first == CPU_HD63705 ||
+        (*i).first == CPU_M68010 ||
+        (*i).first == CPU_M68020 ||
+        (*i).first == CPU_M68EC020 ||
+        (*i).first == CPU_TMS34020 ||
+        (*i).first == CPU_TMS9995 ||
+        (*i).first == CPU_ADSP2101 ||
+        (*i).first == CPU_ADSP2105 ||
+        (*i).first == CPU_ADSP2115 ||
+        (*i).first == CPU_R3000BE ||
+        (*i).first == CPU_R3000LE ||
+        (*i).first == CPU_R4600BE ||
+        (*i).first == CPU_R4600LE ||
+        (*i).first == CPU_R5000BE ||
+        (*i).first == CPU_R5000LE ||
+        (*i).first == CPU_UPD7807 ||
+        (*i).first == CPU_JAGUARDSP ||
+        (*i).first == CPU_PIC16C55 ||
+        (*i).first == CPU_PIC16C56 ||
+        (*i).first == CPU_PIC16C57 ||
+        (*i).first == CPU_PIC16C58 )
         continue;
-
     XFreeSection( (*i).second.c_str() );
   }
   return TRUE;
@@ -174,33 +207,78 @@ BOOL UnloadCPUSections( void )
 //-------------------------------------------------------------
 static void RegisterCPUSectionNames( void )
 {
-  RegisterSectionID( CPU_Z8000, "CPU1" );
-  RegisterSectionID( CPU_Z80, "CPU2" );
-  RegisterSectionID( CPU_Z180, "CPU3" );
-  RegisterSectionID( CPU_V60, "CPU4" );
-  RegisterSectionID( CPU_UPD7810, "CPU5" );
-  RegisterSectionID( CPU_TMS34010, "CPU6" );
-  RegisterSectionID( CPU_TMS32031, "CPU7" );
-  RegisterSectionID( CPU_TMS32025, "CPU8" );
-  RegisterSectionID( CPU_TMS32010, "CPU9" );
-  RegisterSectionID( CPU_T11, "CPU10" );
-  RegisterSectionID( CPU_SH2, "CPU11" );
-  RegisterSectionID( CPU_S2650, "CPU12" );
-  RegisterSectionID( CPU_M6809, "CPU15" );
-  RegisterSectionID( CPU_M6805, "CPU15" );
-  RegisterSectionID( CPU_M68000, "CPU15" );
-  RegisterSectionID( CPU_M6800, "CPU15" );
-  RegisterSectionID( CPU_M6502, "CPU15" );
-  RegisterSectionID( CPU_KONAMI, "CPU18" );
-  RegisterSectionID( CPU_I8X41, "CPU19" );
-  RegisterSectionID( CPU_I86, "CPU20" );
-  RegisterSectionID( CPU_I8039, "CPU21" );
-  RegisterSectionID( CPU_HD6309, "CPU22" );
-  RegisterSectionID( CPU_H6280, "CPU23" );
-  RegisterSectionID( CPU_CCPU, "CPU24" );
-  RegisterSectionID( CPU_ASAP, "CPU25" );
-  RegisterSectionID( CPU_ARM, "CPU26" );
-  RegisterSectionID( CPU_ADSP2100, "CPU27" );
+  RegisterSectionID( CPU_Z8000, "CPU21" );
+  RegisterSectionID( CPU_Z80, "CPU1" );
+  RegisterSectionID( CPU_Z180, "CPU2" );
+  RegisterSectionID( CPU_V60, "CPU8" );
+  RegisterSectionID( CPU_V70, "CPU8" );
+  RegisterSectionID( CPU_UPD7810, "CPU29" );
+  RegisterSectionID( CPU_UPD7807, "CPU29" );
+  RegisterSectionID( CPU_TMS9980, "CPU20" );
+  RegisterSectionID( CPU_TMS9995, "CPU20" );
+  RegisterSectionID( CPU_TMS34010, "CPU19" );
+  RegisterSectionID( CPU_TMS34020, "CPU19" );
+  RegisterSectionID( CPU_TMS32031, "CPU24" );
+  RegisterSectionID( CPU_TMS32025, "CPU23" );
+  RegisterSectionID( CPU_TMS32010, "CPU22" );
+  RegisterSectionID( CPU_T11, "CPU17" );
+  RegisterSectionID( CPU_SH2, "CPU32" );
+  RegisterSectionID( CPU_S2650, "CPU18" );
+  RegisterSectionID( CPU_PIC16C54, "CPU34" );
+  RegisterSectionID( CPU_PIC16C55, "CPU34" );
+  RegisterSectionID( CPU_PIC16C56, "CPU34" );
+  RegisterSectionID( CPU_PIC16C57, "CPU34" );
+  RegisterSectionID( CPU_PIC16C58, "CPU34" );
+  RegisterSectionID( CPU_V20, "CPU7" );
+  RegisterSectionID( CPU_V30, "CPU7" );
+  RegisterSectionID( CPU_V33, "CPU7" );
+  RegisterSectionID( CPU_PSXCPU, "CPU27" );
+  RegisterSectionID( CPU_R3000BE, "CPU27" );
+  RegisterSectionID( CPU_R3000LE, "CPU27" );
+  RegisterSectionID( CPU_R4600BE, "CPU27" );
+  RegisterSectionID( CPU_R4600LE, "CPU27" );
+  RegisterSectionID( CPU_R5000BE, "CPU27" );
+  RegisterSectionID( CPU_R5000LE, "CPU27" );
+  RegisterSectionID( CPU_M6809, "CPU13" );
+  RegisterSectionID( CPU_M6805, "CPU12" );
+  RegisterSectionID( CPU_M68705, "CPU12" );
+  RegisterSectionID( CPU_HD63705, "CPU12" );
+  RegisterSectionID( CPU_M68000, "CPU16" );
+  RegisterSectionID( CPU_M68010, "CPU16" );
+  RegisterSectionID( CPU_M68020, "CPU16" );
+  RegisterSectionID( CPU_M68EC020, "CPU16" );
+  RegisterSectionID( CPU_M6800, "CPU11" );
+  RegisterSectionID( CPU_M6801, "CPU11" );
+  RegisterSectionID( CPU_M6802, "CPU11" );
+  RegisterSectionID( CPU_M6803, "CPU11" );
+  RegisterSectionID( CPU_M6808, "CPU11" );
+  RegisterSectionID( CPU_HD63701, "CPU11" );
+  RegisterSectionID( CPU_M6502, "CPU4" );
+  RegisterSectionID( CPU_M65C02, "CPU4" );
+  RegisterSectionID( CPU_M6510, "CPU4" );
+  RegisterSectionID( CPU_N2A03, "CPU4" );
+  RegisterSectionID( CPU_DECO16, "CPU4" );
+  RegisterSectionID( CPU_KONAMI, "CPU15" );
+  RegisterSectionID( CPU_JAGUARGPU, "CPU30" );
+  RegisterSectionID( CPU_JAGUARDSP, "CPU30" );
+  RegisterSectionID( CPU_I8X41, "CPU10" );
+  RegisterSectionID( CPU_I86, "CPU6" );
+  RegisterSectionID( CPU_I186, "CPU6" );
+  RegisterSectionID( CPU_Z80, "CPU3" );
+  RegisterSectionID( CPU_I8035, "CPU9" );
+  RegisterSectionID( CPU_I8039, "CPU9" );
+  RegisterSectionID( CPU_I8048, "CPU9" );
+  RegisterSectionID( CPU_N7751, "CPU9" );
+  RegisterSectionID( CPU_HD6309, "CPU14" );
+  RegisterSectionID( CPU_H6280, "CPU5" );
+  RegisterSectionID( CPU_DSP32C, "CPU33" );
+  RegisterSectionID( CPU_CCPU, "CPU25" );
+  RegisterSectionID( CPU_ASAP, "CPU28" );
+  RegisterSectionID( CPU_ARM, "CPU31" );
+  RegisterSectionID( CPU_ADSP2100, "CPU26" );
+  RegisterSectionID( CPU_ADSP2101, "CPU26" );
+  RegisterSectionID( CPU_ADSP2105, "CPU26" );
+  RegisterSectionID( CPU_ADSP2115, "CPU26" );
 }
 #pragma code_seg()
 #pragma data_seg()

@@ -1,11 +1,11 @@
-#pragma code_seg("C509")
-#pragma data_seg("D509")
-#pragma bss_seg("B509")
-#pragma const_seg("K509")
-#pragma comment(linker, "/merge:D509=509")
-#pragma comment(linker, "/merge:C509=509")
-#pragma comment(linker, "/merge:B509=509")
-#pragma comment(linker, "/merge:K509=509")
+#pragma code_seg("C526")
+#pragma data_seg("D526")
+#pragma bss_seg("B526")
+#pragma const_seg("K526")
+#pragma comment(linker, "/merge:D526=526")
+#pragma comment(linker, "/merge:C526=526")
+#pragma comment(linker, "/merge:B526=526")
+#pragma comment(linker, "/merge:K526=526")
 /***************************************************************************
 
 	Atari Star Wars hardware

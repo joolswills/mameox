@@ -1,3 +1,11 @@
+#pragma code_seg("C256")
+#pragma data_seg("D256")
+#pragma bss_seg("B256")
+#pragma const_seg("K256")
+#pragma comment(linker, "/merge:D256=256")
+#pragma comment(linker, "/merge:C256=256")
+#pragma comment(linker, "/merge:B256=256")
+#pragma comment(linker, "/merge:K256=256")
 /***************************************************************************
 
   vidhrdw.c
@@ -206,3 +214,7 @@ VIDEO_UPDATE( crzrally )
 	tilemap_draw(bitmap,cliprect,bg_tilemap,0,0);
 	crzrally_draw_sprites(bitmap,cliprect);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

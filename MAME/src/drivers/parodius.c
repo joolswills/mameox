@@ -1,11 +1,11 @@
-#pragma code_seg("C385")
-#pragma data_seg("D385")
-#pragma bss_seg("B385")
-#pragma const_seg("K385")
-#pragma comment(linker, "/merge:D385=385")
-#pragma comment(linker, "/merge:C385=385")
-#pragma comment(linker, "/merge:B385=385")
-#pragma comment(linker, "/merge:K385=385")
+#pragma code_seg("C402")
+#pragma data_seg("D402")
+#pragma bss_seg("B402")
+#pragma const_seg("K402")
+#pragma comment(linker, "/merge:D402=402")
+#pragma comment(linker, "/merge:C402=402")
+#pragma comment(linker, "/merge:B402=402")
+#pragma comment(linker, "/merge:K402=402")
 /***************************************************************************
 
 Parodius (Konami GX955) (c) 1990 Konami

@@ -1,11 +1,11 @@
-#pragma code_seg("C31")
-#pragma data_seg("D31")
-#pragma bss_seg("B31")
-#pragma const_seg("K31")
-#pragma comment(linker, "/merge:D31=31")
-#pragma comment(linker, "/merge:C31=31")
-#pragma comment(linker, "/merge:B31=31")
-#pragma comment(linker, "/merge:K31=31")
+#pragma code_seg("C43")
+#pragma data_seg("D43")
+#pragma bss_seg("B43")
+#pragma const_seg("K43")
+#pragma comment(linker, "/merge:D43=43")
+#pragma comment(linker, "/merge:C43=43")
+#pragma comment(linker, "/merge:B43=43")
+#pragma comment(linker, "/merge:K43=43")
 /**************************************************************************
 
 	Interrupt System Hardware for Bally/Midway games

@@ -1,11 +1,11 @@
-#pragma code_seg("C352")
-#pragma data_seg("D352")
-#pragma bss_seg("B352")
-#pragma const_seg("K352")
-#pragma comment(linker, "/merge:D352=352")
-#pragma comment(linker, "/merge:C352=352")
-#pragma comment(linker, "/merge:B352=352")
-#pragma comment(linker, "/merge:K352=352")
+#pragma code_seg("C369")
+#pragma data_seg("D369")
+#pragma bss_seg("B369")
+#pragma const_seg("K369")
+#pragma comment(linker, "/merge:D369=369")
+#pragma comment(linker, "/merge:C369=369")
+#pragma comment(linker, "/merge:B369=369")
+#pragma comment(linker, "/merge:K369=369")
 /***************************************************************************
 
 Naughty Boy driver by Sal and John Bugliarisi.

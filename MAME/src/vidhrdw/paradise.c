@@ -1,11 +1,11 @@
-#pragma code_seg("C384")
-#pragma data_seg("D384")
-#pragma bss_seg("B384")
-#pragma const_seg("K384")
-#pragma comment(linker, "/merge:D384=384")
-#pragma comment(linker, "/merge:C384=384")
-#pragma comment(linker, "/merge:B384=384")
-#pragma comment(linker, "/merge:K384=384")
+#pragma code_seg("C401")
+#pragma data_seg("D401")
+#pragma bss_seg("B401")
+#pragma const_seg("K401")
+#pragma comment(linker, "/merge:D401=401")
+#pragma comment(linker, "/merge:C401=401")
+#pragma comment(linker, "/merge:B401=401")
+#pragma comment(linker, "/merge:K401=401")
 /***************************************************************************
 
 							  -= Paradise =-

@@ -1,11 +1,11 @@
-#pragma code_seg("C517")
-#pragma data_seg("D517")
-#pragma bss_seg("B517")
-#pragma const_seg("K517")
-#pragma comment(linker, "/merge:D517=517")
-#pragma comment(linker, "/merge:C517=517")
-#pragma comment(linker, "/merge:B517=517")
-#pragma comment(linker, "/merge:K517=517")
+#pragma code_seg("C534")
+#pragma data_seg("D534")
+#pragma bss_seg("B534")
+#pragma const_seg("K534")
+#pragma comment(linker, "/merge:D534=534")
+#pragma comment(linker, "/merge:C534=534")
+#pragma comment(linker, "/merge:B534=534")
+#pragma comment(linker, "/merge:K534=534")
 /***************************************************************************
 
 							-=  SunA 8 Bit Games =-

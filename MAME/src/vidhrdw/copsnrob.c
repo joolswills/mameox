@@ -1,11 +1,11 @@
-#pragma code_seg("C120")
-#pragma data_seg("D120")
-#pragma bss_seg("B120")
-#pragma const_seg("K120")
-#pragma comment(linker, "/merge:D120=120")
-#pragma comment(linker, "/merge:C120=120")
-#pragma comment(linker, "/merge:B120=120")
-#pragma comment(linker, "/merge:K120=120")
+#pragma code_seg("C132")
+#pragma data_seg("D132")
+#pragma bss_seg("B132")
+#pragma const_seg("K132")
+#pragma comment(linker, "/merge:D132=132")
+#pragma comment(linker, "/merge:C132=132")
+#pragma comment(linker, "/merge:B132=132")
+#pragma comment(linker, "/merge:K132=132")
 /***************************************************************************
 
 	Atari Cops'n Robbers hardware

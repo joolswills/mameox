@@ -1,11 +1,11 @@
-#pragma code_seg("C421")
-#pragma data_seg("D421")
-#pragma bss_seg("B421")
-#pragma const_seg("K421")
-#pragma comment(linker, "/merge:D421=421")
-#pragma comment(linker, "/merge:C421=421")
-#pragma comment(linker, "/merge:B421=421")
-#pragma comment(linker, "/merge:K421=421")
+#pragma code_seg("C438")
+#pragma data_seg("D438")
+#pragma bss_seg("B438")
+#pragma const_seg("K438")
+#pragma comment(linker, "/merge:D438=438")
+#pragma comment(linker, "/merge:C438=438")
+#pragma comment(linker, "/merge:B438=438")
+#pragma comment(linker, "/merge:K438=438")
 /*
 
 Raiden 2 Preliminary Driver

@@ -1,11 +1,11 @@
-#pragma code_seg("C406")
-#pragma data_seg("D406")
-#pragma bss_seg("B406")
-#pragma const_seg("K406")
-#pragma comment(linker, "/merge:D406=406")
-#pragma comment(linker, "/merge:C406=406")
-#pragma comment(linker, "/merge:B406=406")
-#pragma comment(linker, "/merge:K406=406")
+#pragma code_seg("C423")
+#pragma data_seg("D423")
+#pragma bss_seg("B423")
+#pragma const_seg("K423")
+#pragma comment(linker, "/merge:D423=423")
+#pragma comment(linker, "/merge:C423=423")
+#pragma comment(linker, "/merge:B423=423")
+#pragma comment(linker, "/merge:K423=423")
 /***************************************************************************
 
 Popeye  (c) 1982 Nintendo

@@ -1,11 +1,11 @@
-#pragma code_seg("C148")
-#pragma data_seg("D148")
-#pragma bss_seg("B148")
-#pragma const_seg("K148")
-#pragma comment(linker, "/merge:D148=148")
-#pragma comment(linker, "/merge:C148=148")
-#pragma comment(linker, "/merge:B148=148")
-#pragma comment(linker, "/merge:K148=148")
+#pragma code_seg("C161")
+#pragma data_seg("D161")
+#pragma bss_seg("B161")
+#pragma const_seg("K161")
+#pragma comment(linker, "/merge:D161=161")
+#pragma comment(linker, "/merge:C161=161")
+#pragma comment(linker, "/merge:B161=161")
+#pragma comment(linker, "/merge:K161=161")
 /* Diver Boy - Video Hardware */
 
 #include "driver.h"

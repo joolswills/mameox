@@ -1,11 +1,11 @@
-#pragma code_seg("C351")
-#pragma data_seg("D351")
-#pragma bss_seg("B351")
-#pragma const_seg("K351")
-#pragma comment(linker, "/merge:D351=351")
-#pragma comment(linker, "/merge:C351=351")
-#pragma comment(linker, "/merge:B351=351")
-#pragma comment(linker, "/merge:K351=351")
+#pragma code_seg("C2")
+#pragma data_seg("D2")
+#pragma bss_seg("B2")
+#pragma const_seg("K2")
+#pragma comment(linker, "/merge:D2=2")
+#pragma comment(linker, "/merge:C2=2")
+#pragma comment(linker, "/merge:B2=2")
+#pragma comment(linker, "/merge:K2=2")
 /*******************************************************************
 Rolling Thunder
 (C) 1986 Namco

@@ -1,11 +1,11 @@
-#pragma code_seg("C197")
-#pragma data_seg("D197")
-#pragma bss_seg("B197")
-#pragma const_seg("K197")
-#pragma comment(linker, "/merge:D197=197")
-#pragma comment(linker, "/merge:C197=197")
-#pragma comment(linker, "/merge:B197=197")
-#pragma comment(linker, "/merge:K197=197")
+#pragma code_seg("C210")
+#pragma data_seg("D210")
+#pragma bss_seg("B210")
+#pragma const_seg("K210")
+#pragma comment(linker, "/merge:D210=210")
+#pragma comment(linker, "/merge:C210=210")
+#pragma comment(linker, "/merge:B210=210")
+#pragma comment(linker, "/merge:K210=210")
 /***************************************************************************
 
 	Gaelco CG-1V/GAE1 based games

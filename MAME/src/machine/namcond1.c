@@ -1,11 +1,11 @@
-#pragma code_seg("C347")
-#pragma data_seg("D347")
-#pragma bss_seg("B347")
-#pragma const_seg("K347")
-#pragma comment(linker, "/merge:D347=347")
-#pragma comment(linker, "/merge:C347=347")
-#pragma comment(linker, "/merge:B347=347")
-#pragma comment(linker, "/merge:K347=347")
+#pragma code_seg("C2")
+#pragma data_seg("D2")
+#pragma bss_seg("B2")
+#pragma const_seg("K2")
+#pragma comment(linker, "/merge:D2=2")
+#pragma comment(linker, "/merge:C2=2")
+#pragma comment(linker, "/merge:B2=2")
+#pragma comment(linker, "/merge:K2=2")
 /***************************************************************************
 
   Namco ND-1

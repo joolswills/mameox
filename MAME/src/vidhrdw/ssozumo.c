@@ -1,11 +1,11 @@
-#pragma code_seg("C502")
-#pragma data_seg("D502")
-#pragma bss_seg("B502")
-#pragma const_seg("K502")
-#pragma comment(linker, "/merge:D502=502")
-#pragma comment(linker, "/merge:C502=502")
-#pragma comment(linker, "/merge:B502=502")
-#pragma comment(linker, "/merge:K502=502")
+#pragma code_seg("C519")
+#pragma data_seg("D519")
+#pragma bss_seg("B519")
+#pragma const_seg("K519")
+#pragma comment(linker, "/merge:D519=519")
+#pragma comment(linker, "/merge:C519=519")
+#pragma comment(linker, "/merge:B519=519")
+#pragma comment(linker, "/merge:K519=519")
 /***************************************************************************
 
 Syusse Oozumou

@@ -1,11 +1,11 @@
-#pragma code_seg("C498")
-#pragma data_seg("D498")
-#pragma bss_seg("B498")
-#pragma const_seg("K498")
-#pragma comment(linker, "/merge:D498=498")
-#pragma comment(linker, "/merge:C498=498")
-#pragma comment(linker, "/merge:B498=498")
-#pragma comment(linker, "/merge:K498=498")
+#pragma code_seg("C515")
+#pragma data_seg("D515")
+#pragma bss_seg("B515")
+#pragma const_seg("K515")
+#pragma comment(linker, "/merge:D515=515")
+#pragma comment(linker, "/merge:C515=515")
+#pragma comment(linker, "/merge:B515=515")
+#pragma comment(linker, "/merge:K515=515")
 /***************************************************************************
 
 Super Real Mahjong P2

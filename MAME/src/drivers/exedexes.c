@@ -1,11 +1,11 @@
-#pragma code_seg("C168")
-#pragma data_seg("D168")
-#pragma bss_seg("B168")
-#pragma const_seg("K168")
-#pragma comment(linker, "/merge:D168=168")
-#pragma comment(linker, "/merge:C168=168")
-#pragma comment(linker, "/merge:B168=168")
-#pragma comment(linker, "/merge:K168=168")
+#pragma code_seg("C181")
+#pragma data_seg("D181")
+#pragma bss_seg("B181")
+#pragma const_seg("K181")
+#pragma comment(linker, "/merge:D181=181")
+#pragma comment(linker, "/merge:C181=181")
+#pragma comment(linker, "/merge:B181=181")
+#pragma comment(linker, "/merge:K181=181")
 /***************************************************************************
 
 Exed Exes

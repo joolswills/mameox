@@ -1,11 +1,11 @@
-#pragma code_seg("C316")
-#pragma data_seg("D316")
-#pragma bss_seg("B316")
-#pragma const_seg("K316")
-#pragma comment(linker, "/merge:D316=316")
-#pragma comment(linker, "/merge:C316=316")
-#pragma comment(linker, "/merge:B316=316")
-#pragma comment(linker, "/merge:K316=316")
+#pragma code_seg("C331")
+#pragma data_seg("D331")
+#pragma bss_seg("B331")
+#pragma const_seg("K331")
+#pragma comment(linker, "/merge:D331=331")
+#pragma comment(linker, "/merge:C331=331")
+#pragma comment(linker, "/merge:B331=331")
+#pragma comment(linker, "/merge:K331=331")
 /*************************************************************************
 
 	Midway T-unit system

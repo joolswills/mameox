@@ -1,11 +1,11 @@
-#pragma code_seg("C333")
-#pragma data_seg("D333")
-#pragma bss_seg("B333")
-#pragma const_seg("K333")
-#pragma comment(linker, "/merge:D333=333")
-#pragma comment(linker, "/merge:C333=333")
-#pragma comment(linker, "/merge:B333=333")
-#pragma comment(linker, "/merge:K333=333")
+#pragma code_seg("C348")
+#pragma data_seg("D348")
+#pragma bss_seg("B348")
+#pragma const_seg("K348")
+#pragma comment(linker, "/merge:D348=348")
+#pragma comment(linker, "/merge:C348=348")
+#pragma comment(linker, "/merge:B348=348")
+#pragma comment(linker, "/merge:K348=348")
 /*******************************************************************************
 
      Mouser - Video Hardware:

@@ -1,11 +1,11 @@
-#pragma code_seg("C8")
-#pragma data_seg("D8")
-#pragma bss_seg("B8")
-#pragma const_seg("K8")
-#pragma comment(linker, "/merge:D8=8")
-#pragma comment(linker, "/merge:C8=8")
-#pragma comment(linker, "/merge:B8=8")
-#pragma comment(linker, "/merge:K8=8")
+#pragma code_seg("C20")
+#pragma data_seg("D20")
+#pragma bss_seg("B20")
+#pragma const_seg("K20")
+#pragma comment(linker, "/merge:D20=20")
+#pragma comment(linker, "/merge:C20=20")
+#pragma comment(linker, "/merge:B20=20")
+#pragma comment(linker, "/merge:K20=20")
 /*******************************************************************************
 
 	Act Fancer (Japan)				FD (c) 1989 Data East Corporation

@@ -1,11 +1,11 @@
-#pragma code_seg("C382")
-#pragma data_seg("D382")
-#pragma bss_seg("B382")
-#pragma const_seg("K382")
-#pragma comment(linker, "/merge:D382=382")
-#pragma comment(linker, "/merge:C382=382")
-#pragma comment(linker, "/merge:B382=382")
-#pragma comment(linker, "/merge:K382=382")
+#pragma code_seg("C399")
+#pragma data_seg("D399")
+#pragma bss_seg("B399")
+#pragma const_seg("K399")
+#pragma comment(linker, "/merge:D399=399")
+#pragma comment(linker, "/merge:C399=399")
+#pragma comment(linker, "/merge:B399=399")
+#pragma comment(linker, "/merge:K399=399")
 /***************************************************************************
 
 	Namco PuckMan

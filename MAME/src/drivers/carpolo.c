@@ -1,11 +1,11 @@
-#pragma code_seg("C89")
-#pragma data_seg("D89")
-#pragma bss_seg("B89")
-#pragma const_seg("K89")
-#pragma comment(linker, "/merge:D89=89")
-#pragma comment(linker, "/merge:C89=89")
-#pragma comment(linker, "/merge:B89=89")
-#pragma comment(linker, "/merge:K89=89")
+#pragma code_seg("C101")
+#pragma data_seg("D101")
+#pragma bss_seg("B101")
+#pragma const_seg("K101")
+#pragma comment(linker, "/merge:D101=101")
+#pragma comment(linker, "/merge:C101=101")
+#pragma comment(linker, "/merge:B101=101")
+#pragma comment(linker, "/merge:K101=101")
 /***************************************************************************
 
 	Exidy Car Polo hardware

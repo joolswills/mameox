@@ -1,11 +1,11 @@
-#pragma code_seg("C130")
-#pragma data_seg("D130")
-#pragma bss_seg("B130")
-#pragma const_seg("K130")
-#pragma comment(linker, "/merge:D130=130")
-#pragma comment(linker, "/merge:C130=130")
-#pragma comment(linker, "/merge:B130=130")
-#pragma comment(linker, "/merge:K130=130")
+#pragma code_seg("C143")
+#pragma data_seg("D143")
+#pragma bss_seg("B143")
+#pragma const_seg("K143")
+#pragma comment(linker, "/merge:D143=143")
+#pragma comment(linker, "/merge:C143=143")
+#pragma comment(linker, "/merge:B143=143")
+#pragma comment(linker, "/merge:K143=143")
 /***************************************************************************
 
 Darius    (c) Taito 1986

@@ -1,11 +1,11 @@
-#pragma code_seg("C432")
-#pragma data_seg("D432")
-#pragma bss_seg("B432")
-#pragma const_seg("K432")
-#pragma comment(linker, "/merge:D432=432")
-#pragma comment(linker, "/merge:C432=432")
-#pragma comment(linker, "/merge:B432=432")
-#pragma comment(linker, "/merge:K432=432")
+#pragma code_seg("C449")
+#pragma data_seg("D449")
+#pragma bss_seg("B449")
+#pragma const_seg("K449")
+#pragma comment(linker, "/merge:D449=449")
+#pragma comment(linker, "/merge:C449=449")
+#pragma comment(linker, "/merge:B449=449")
+#pragma comment(linker, "/merge:K449=449")
 /***************************************************************************
 
 Rock'n'Rage(GX620) (c) 1986 Konami

@@ -1,11 +1,11 @@
-#pragma code_seg("C424")
-#pragma data_seg("D424")
-#pragma bss_seg("B424")
-#pragma const_seg("K424")
-#pragma comment(linker, "/merge:D424=424")
-#pragma comment(linker, "/merge:C424=424")
-#pragma comment(linker, "/merge:B424=424")
-#pragma comment(linker, "/merge:K424=424")
+#pragma code_seg("C441")
+#pragma data_seg("D441")
+#pragma bss_seg("B441")
+#pragma const_seg("K441")
+#pragma comment(linker, "/merge:D441=441")
+#pragma comment(linker, "/merge:C441=441")
+#pragma comment(linker, "/merge:B441=441")
+#pragma comment(linker, "/merge:K441=441")
 /***************************************************************************
 
 					  -= Billiard Academy Real Break =-

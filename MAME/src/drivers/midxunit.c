@@ -1,11 +1,11 @@
-#pragma code_seg("C319")
-#pragma data_seg("D319")
-#pragma bss_seg("B319")
-#pragma const_seg("K319")
-#pragma comment(linker, "/merge:D319=319")
-#pragma comment(linker, "/merge:C319=319")
-#pragma comment(linker, "/merge:B319=319")
-#pragma comment(linker, "/merge:K319=319")
+#pragma code_seg("C334")
+#pragma data_seg("D334")
+#pragma bss_seg("B334")
+#pragma const_seg("K334")
+#pragma comment(linker, "/merge:D334=334")
+#pragma comment(linker, "/merge:C334=334")
+#pragma comment(linker, "/merge:B334=334")
+#pragma comment(linker, "/merge:K334=334")
 /*************************************************************************
 
 	Midway X-unit system

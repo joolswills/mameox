@@ -1,11 +1,11 @@
-#pragma code_seg("C205")
-#pragma data_seg("D205")
-#pragma bss_seg("B205")
-#pragma const_seg("K205")
-#pragma comment(linker, "/merge:D205=205")
-#pragma comment(linker, "/merge:C205=205")
-#pragma comment(linker, "/merge:B205=205")
-#pragma comment(linker, "/merge:K205=205")
+#pragma code_seg("C218")
+#pragma data_seg("D218")
+#pragma bss_seg("B218")
+#pragma const_seg("K218")
+#pragma comment(linker, "/merge:D218=218")
+#pragma comment(linker, "/merge:C218=218")
+#pragma comment(linker, "/merge:B218=218")
+#pragma comment(linker, "/merge:K218=218")
 /***************************************************************************
 
 Gaplus (c) 1984 Namco

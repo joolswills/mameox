@@ -1,11 +1,11 @@
-#pragma code_seg("C417")
-#pragma data_seg("D417")
-#pragma bss_seg("B417")
-#pragma const_seg("K417")
-#pragma comment(linker, "/merge:D417=417")
-#pragma comment(linker, "/merge:C417=417")
-#pragma comment(linker, "/merge:B417=417")
-#pragma comment(linker, "/merge:K417=417")
+#pragma code_seg("C434")
+#pragma data_seg("D434")
+#pragma bss_seg("B434")
+#pragma const_seg("K434")
+#pragma comment(linker, "/merge:D434=434")
+#pragma comment(linker, "/merge:C434=434")
+#pragma comment(linker, "/merge:B434=434")
+#pragma comment(linker, "/merge:K434=434")
 /***************************************************************************
 
 	Taito Qix hardware

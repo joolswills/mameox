@@ -1,3 +1,11 @@
+#pragma code_seg("C1")
+#pragma data_seg("D1")
+#pragma bss_seg("B1")
+#pragma const_seg("K1")
+#pragma comment(linker, "/merge:D1=1")
+#pragma comment(linker, "/merge:C1=1")
+#pragma comment(linker, "/merge:B1=1")
+#pragma comment(linker, "/merge:K1=1")
 /***************************************************************************
 
   Capcom System 1
@@ -7472,3 +7480,7 @@ GAME( 1994, pnickj,   0,        cps1,     pnickj,   cps1,     ROT0,   "Compile (
 /* Japanese version of Pang 3 is encrypted, Euro version is not */
 GAME( 1995, pang3,    0,        pang3,    pang3,    cps1,     ROT0,   "Mitchell", "Pang! 3 (Euro 950511)" )
 GAME( 1995, pang3j,   pang3,    pang3,    pang3,    pang3,    ROT0,   "Mitchell", "Pang! 3 (Japan 950511)" )
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

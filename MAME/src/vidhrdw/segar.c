@@ -1,11 +1,11 @@
-#pragma code_seg("C450")
-#pragma data_seg("D450")
-#pragma bss_seg("B450")
-#pragma const_seg("K450")
-#pragma comment(linker, "/merge:D450=450")
-#pragma comment(linker, "/merge:C450=450")
-#pragma comment(linker, "/merge:B450=450")
-#pragma comment(linker, "/merge:K450=450")
+#pragma code_seg("C467")
+#pragma data_seg("D467")
+#pragma bss_seg("B467")
+#pragma const_seg("K467")
+#pragma comment(linker, "/merge:D467=467")
+#pragma comment(linker, "/merge:C467=467")
+#pragma comment(linker, "/merge:B467=467")
+#pragma comment(linker, "/merge:K467=467")
 /***************************************************************************
 
 	Sega G-80 raster hardware

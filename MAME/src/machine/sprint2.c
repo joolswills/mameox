@@ -1,11 +1,11 @@
-#pragma code_seg("C496")
-#pragma data_seg("D496")
-#pragma bss_seg("B496")
-#pragma const_seg("K496")
-#pragma comment(linker, "/merge:D496=496")
-#pragma comment(linker, "/merge:C496=496")
-#pragma comment(linker, "/merge:B496=496")
-#pragma comment(linker, "/merge:K496=496")
+#pragma code_seg("C513")
+#pragma data_seg("D513")
+#pragma bss_seg("B513")
+#pragma const_seg("K513")
+#pragma comment(linker, "/merge:D513=513")
+#pragma comment(linker, "/merge:C513=513")
+#pragma comment(linker, "/merge:B513=513")
+#pragma comment(linker, "/merge:K513=513")
 /***************************************************************************
 
 	Atari Sprint 2 hardware

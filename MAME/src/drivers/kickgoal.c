@@ -1,11 +1,11 @@
-#pragma code_seg("C264")
-#pragma data_seg("D264")
-#pragma bss_seg("B264")
-#pragma const_seg("K264")
-#pragma comment(linker, "/merge:D264=264")
-#pragma comment(linker, "/merge:C264=264")
-#pragma comment(linker, "/merge:B264=264")
-#pragma comment(linker, "/merge:K264=264")
+#pragma code_seg("C278")
+#pragma data_seg("D278")
+#pragma bss_seg("B278")
+#pragma const_seg("K278")
+#pragma comment(linker, "/merge:D278=278")
+#pragma comment(linker, "/merge:C278=278")
+#pragma comment(linker, "/merge:B278=278")
+#pragma comment(linker, "/merge:K278=278")
 /* Driver Info
 
 Kick Goal (c)1995 TCH

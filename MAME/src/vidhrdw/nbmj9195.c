@@ -1,11 +1,11 @@
-#pragma code_seg("C356")
-#pragma data_seg("D356")
-#pragma bss_seg("B356")
-#pragma const_seg("K356")
-#pragma comment(linker, "/merge:D356=356")
-#pragma comment(linker, "/merge:C356=356")
-#pragma comment(linker, "/merge:B356=356")
-#pragma comment(linker, "/merge:K356=356")
+#pragma code_seg("C373")
+#pragma data_seg("D373")
+#pragma bss_seg("B373")
+#pragma const_seg("K373")
+#pragma comment(linker, "/merge:D373=373")
+#pragma comment(linker, "/merge:C373=373")
+#pragma comment(linker, "/merge:B373=373")
+#pragma comment(linker, "/merge:K373=373")
 /******************************************************************************
 
 	Video Hardware for Nichibutsu Mahjong series.

@@ -1,11 +1,11 @@
-#pragma code_seg("C505")
-#pragma data_seg("D505")
-#pragma bss_seg("B505")
-#pragma const_seg("K505")
-#pragma comment(linker, "/merge:D505=505")
-#pragma comment(linker, "/merge:C505=505")
-#pragma comment(linker, "/merge:B505=505")
-#pragma comment(linker, "/merge:K505=505")
+#pragma code_seg("C522")
+#pragma data_seg("D522")
+#pragma bss_seg("B522")
+#pragma const_seg("K522")
+#pragma comment(linker, "/merge:D522=522")
+#pragma comment(linker, "/merge:C522=522")
+#pragma comment(linker, "/merge:B522=522")
+#pragma comment(linker, "/merge:K522=522")
 /***************************************************************************
 
   stadhero video emulation - Bryan McPhail, mish@tendril.co.uk

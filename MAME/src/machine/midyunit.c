@@ -1,11 +1,11 @@
-#pragma code_seg("C320")
-#pragma data_seg("D320")
-#pragma bss_seg("B320")
-#pragma const_seg("K320")
-#pragma comment(linker, "/merge:D320=320")
-#pragma comment(linker, "/merge:C320=320")
-#pragma comment(linker, "/merge:B320=320")
-#pragma comment(linker, "/merge:K320=320")
+#pragma code_seg("C335")
+#pragma data_seg("D335")
+#pragma bss_seg("B335")
+#pragma const_seg("K335")
+#pragma comment(linker, "/merge:D335=335")
+#pragma comment(linker, "/merge:C335=335")
+#pragma comment(linker, "/merge:B335=335")
+#pragma comment(linker, "/merge:K335=335")
 /*************************************************************************
 
 	Williams/Midway Y/Z-unit system

@@ -1,3 +1,11 @@
+#pragma code_seg("C2")
+#pragma data_seg("D2")
+#pragma bss_seg("B2")
+#pragma const_seg("K2")
+#pragma comment(linker, "/merge:D2=2")
+#pragma comment(linker, "/merge:C2=2")
+#pragma comment(linker, "/merge:B2=2")
+#pragma comment(linker, "/merge:K2=2")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "namcos2.h"	/* for game-specific hacks */
@@ -905,3 +913,7 @@ namco_road_draw( struct mame_bitmap *bitmap, int pri )
 		}
 	}
 } /* namco_road_draw */
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

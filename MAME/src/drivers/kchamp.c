@@ -1,11 +1,11 @@
-#pragma code_seg("C263")
-#pragma data_seg("D263")
-#pragma bss_seg("B263")
-#pragma const_seg("K263")
-#pragma comment(linker, "/merge:D263=263")
-#pragma comment(linker, "/merge:C263=263")
-#pragma comment(linker, "/merge:B263=263")
-#pragma comment(linker, "/merge:K263=263")
+#pragma code_seg("C277")
+#pragma data_seg("D277")
+#pragma bss_seg("B277")
+#pragma const_seg("K277")
+#pragma comment(linker, "/merge:D277=277")
+#pragma comment(linker, "/merge:C277=277")
+#pragma comment(linker, "/merge:B277=277")
+#pragma comment(linker, "/merge:K277=277")
 /***************************************************************************
 
 Karate Champ - (c) 1984 Data East

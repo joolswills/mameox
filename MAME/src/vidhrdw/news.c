@@ -1,11 +1,11 @@
-#pragma code_seg("C359")
-#pragma data_seg("D359")
-#pragma bss_seg("B359")
-#pragma const_seg("K359")
-#pragma comment(linker, "/merge:D359=359")
-#pragma comment(linker, "/merge:C359=359")
-#pragma comment(linker, "/merge:B359=359")
-#pragma comment(linker, "/merge:K359=359")
+#pragma code_seg("C376")
+#pragma data_seg("D376")
+#pragma bss_seg("B376")
+#pragma const_seg("K376")
+#pragma comment(linker, "/merge:D376=376")
+#pragma comment(linker, "/merge:C376=376")
+#pragma comment(linker, "/merge:B376=376")
+#pragma comment(linker, "/merge:K376=376")
 #include "driver.h"
 #include "news.h"
 

@@ -1,11 +1,11 @@
-#pragma code_seg("C51")
-#pragma data_seg("D51")
-#pragma bss_seg("B51")
-#pragma const_seg("K51")
-#pragma comment(linker, "/merge:D51=51")
-#pragma comment(linker, "/merge:C51=51")
-#pragma comment(linker, "/merge:B51=51")
-#pragma comment(linker, "/merge:K51=51")
+#pragma code_seg("C63")
+#pragma data_seg("D63")
+#pragma bss_seg("B63")
+#pragma const_seg("K63")
+#pragma comment(linker, "/merge:D63=63")
+#pragma comment(linker, "/merge:C63=63")
+#pragma comment(linker, "/merge:B63=63")
+#pragma comment(linker, "/merge:K63=63")
 /***************************************************************************
 
 	Atari Batman hardware

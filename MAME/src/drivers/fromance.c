@@ -1,11 +1,11 @@
-#pragma code_seg("C192")
-#pragma data_seg("D192")
-#pragma bss_seg("B192")
-#pragma const_seg("K192")
-#pragma comment(linker, "/merge:D192=192")
-#pragma comment(linker, "/merge:C192=192")
-#pragma comment(linker, "/merge:B192=192")
-#pragma comment(linker, "/merge:K192=192")
+#pragma code_seg("C205")
+#pragma data_seg("D205")
+#pragma bss_seg("B205")
+#pragma const_seg("K205")
+#pragma comment(linker, "/merge:D205=205")
+#pragma comment(linker, "/merge:C205=205")
+#pragma comment(linker, "/merge:B205=205")
+#pragma comment(linker, "/merge:K205=205")
 /******************************************************************************
 
 	Game Driver for Video System Mahjong series.

@@ -1,11 +1,11 @@
-#pragma code_seg("C73")
-#pragma data_seg("D73")
-#pragma bss_seg("B73")
-#pragma const_seg("K73")
-#pragma comment(linker, "/merge:D73=73")
-#pragma comment(linker, "/merge:C73=73")
-#pragma comment(linker, "/merge:B73=73")
-#pragma comment(linker, "/merge:K73=73")
+#pragma code_seg("C85")
+#pragma data_seg("D85")
+#pragma bss_seg("B85")
+#pragma const_seg("K85")
+#pragma comment(linker, "/merge:D85=85")
+#pragma comment(linker, "/merge:C85=85")
+#pragma comment(linker, "/merge:B85=85")
+#pragma comment(linker, "/merge:K85=85")
 /***************************************************************************
 
 	Bogey Manor               (c) 1985 Technos Japan

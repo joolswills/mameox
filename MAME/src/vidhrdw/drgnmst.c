@@ -1,11 +1,11 @@
-#pragma code_seg("C158")
-#pragma data_seg("D158")
-#pragma bss_seg("B158")
-#pragma const_seg("K158")
-#pragma comment(linker, "/merge:D158=158")
-#pragma comment(linker, "/merge:C158=158")
-#pragma comment(linker, "/merge:B158=158")
-#pragma comment(linker, "/merge:K158=158")
+#pragma code_seg("C171")
+#pragma data_seg("D171")
+#pragma bss_seg("B171")
+#pragma const_seg("K171")
+#pragma comment(linker, "/merge:D171=171")
+#pragma comment(linker, "/merge:C171=171")
+#pragma comment(linker, "/merge:B171=171")
+#pragma comment(linker, "/merge:K171=171")
 // remaining gfx glitches
 
 // layer priority register not fully understood

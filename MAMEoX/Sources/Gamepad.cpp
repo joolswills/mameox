@@ -261,7 +261,8 @@ BOOL CGamepad::IsAnyButtonPressed( void ) const
 	state &= ( GP_A | GP_B | GP_X | GP_Y | 
              GP_BLACK | GP_WHITE | 
              GP_LEFT_TRIGGER | GP_RIGHT_TRIGGER | 
-             GP_LEFT_ANALOG | GP_RIGHT_ANALOG );
+             GP_LEFT_ANALOG | GP_RIGHT_ANALOG |
+             GP_START | GP_BACK );
 
 	return( state != 0 );
 }

@@ -1,11 +1,11 @@
-#pragma code_seg("C448")
-#pragma data_seg("D448")
-#pragma bss_seg("B448")
-#pragma const_seg("K448")
-#pragma comment(linker, "/merge:D448=448")
-#pragma comment(linker, "/merge:C448=448")
-#pragma comment(linker, "/merge:B448=448")
-#pragma comment(linker, "/merge:K448=448")
+#pragma code_seg("C465")
+#pragma data_seg("D465")
+#pragma bss_seg("B465")
+#pragma const_seg("K465")
+#pragma comment(linker, "/merge:D465=465")
+#pragma comment(linker, "/merge:C465=465")
+#pragma comment(linker, "/merge:B465=465")
+#pragma comment(linker, "/merge:K465=465")
 /***************************************************************************
 
 	Sega vector hardware

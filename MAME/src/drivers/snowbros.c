@@ -1,11 +1,11 @@
-#pragma code_seg("C483")
-#pragma data_seg("D483")
-#pragma bss_seg("B483")
-#pragma const_seg("K483")
-#pragma comment(linker, "/merge:D483=483")
-#pragma comment(linker, "/merge:C483=483")
-#pragma comment(linker, "/merge:B483=483")
-#pragma comment(linker, "/merge:K483=483")
+#pragma code_seg("C500")
+#pragma data_seg("D500")
+#pragma bss_seg("B500")
+#pragma const_seg("K500")
+#pragma comment(linker, "/merge:D500=500")
+#pragma comment(linker, "/merge:C500=500")
+#pragma comment(linker, "/merge:B500=500")
+#pragma comment(linker, "/merge:K500=500")
 /***************************************************************************
 
   Snow Brothers (Toaplan) / SemiCom Hardware

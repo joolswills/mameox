@@ -1,11 +1,11 @@
-#pragma code_seg("C52")
-#pragma data_seg("D52")
-#pragma bss_seg("B52")
-#pragma const_seg("K52")
-#pragma comment(linker, "/merge:D52=52")
-#pragma comment(linker, "/merge:C52=52")
-#pragma comment(linker, "/merge:B52=52")
-#pragma comment(linker, "/merge:K52=52")
+#pragma code_seg("C64")
+#pragma data_seg("D64")
+#pragma bss_seg("B64")
+#pragma const_seg("K64")
+#pragma comment(linker, "/merge:D64=64")
+#pragma comment(linker, "/merge:C64=64")
+#pragma comment(linker, "/merge:B64=64")
+#pragma comment(linker, "/merge:K64=64")
 /***************************************************************************
 
 	Battlelane

@@ -1,11 +1,11 @@
-#pragma code_seg("C139")
-#pragma data_seg("D139")
-#pragma bss_seg("B139")
-#pragma const_seg("K139")
-#pragma comment(linker, "/merge:D139=139")
-#pragma comment(linker, "/merge:C139=139")
-#pragma comment(linker, "/merge:B139=139")
-#pragma comment(linker, "/merge:K139=139")
+#pragma code_seg("C152")
+#pragma data_seg("D152")
+#pragma bss_seg("B152")
+#pragma const_seg("K152")
+#pragma comment(linker, "/merge:D152=152")
+#pragma comment(linker, "/merge:C152=152")
+#pragma comment(linker, "/merge:B152=152")
+#pragma comment(linker, "/merge:K152=152")
 /***************************************************************************
 
 Double Dribble(GX690) (c) Konami 1986

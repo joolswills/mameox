@@ -1,11 +1,11 @@
-#pragma code_seg("C221")
-#pragma data_seg("D221")
-#pragma bss_seg("B221")
-#pragma const_seg("K221")
-#pragma comment(linker, "/merge:D221=221")
-#pragma comment(linker, "/merge:C221=221")
-#pragma comment(linker, "/merge:B221=221")
-#pragma comment(linker, "/merge:K221=221")
+#pragma code_seg("C234")
+#pragma data_seg("D234")
+#pragma bss_seg("B234")
+#pragma const_seg("K234")
+#pragma comment(linker, "/merge:D234=234")
+#pragma comment(linker, "/merge:C234=234")
+#pragma comment(linker, "/merge:B234=234")
+#pragma comment(linker, "/merge:K234=234")
 /***************************************************************************
 
 Grand Champion

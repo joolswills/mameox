@@ -1,11 +1,11 @@
-#pragma code_seg("C4")
-#pragma data_seg("D4")
-#pragma bss_seg("B4")
-#pragma const_seg("K4")
-#pragma comment(linker, "/merge:D4=4")
-#pragma comment(linker, "/merge:C4=4")
-#pragma comment(linker, "/merge:B4=4")
-#pragma comment(linker, "/merge:K4=4")
+#pragma code_seg("C16")
+#pragma data_seg("D16")
+#pragma bss_seg("B16")
+#pragma const_seg("K16")
+#pragma comment(linker, "/merge:D16=16")
+#pragma comment(linker, "/merge:C16=16")
+#pragma comment(linker, "/merge:B16=16")
+#pragma comment(linker, "/merge:K16=16")
 /* 8080bw.c *********************************
  updated: 1997-04-09 08:46 TT
  updated  20-3-1998 LT Added color changes on base explosion

@@ -1,11 +1,11 @@
-#pragma code_seg("C510")
-#pragma data_seg("D510")
-#pragma bss_seg("B510")
-#pragma const_seg("K510")
-#pragma comment(linker, "/merge:D510=510")
-#pragma comment(linker, "/merge:C510=510")
-#pragma comment(linker, "/merge:B510=510")
-#pragma comment(linker, "/merge:K510=510")
+#pragma code_seg("C527")
+#pragma data_seg("D527")
+#pragma bss_seg("B527")
+#pragma const_seg("K527")
+#pragma comment(linker, "/merge:D527=527")
+#pragma comment(linker, "/merge:C527=527")
+#pragma comment(linker, "/merge:B527=527")
+#pragma comment(linker, "/merge:K527=527")
 /****************************************************************\
 * Status Trivia 2 driver by David Haywood, MooglyGuy, and Stephh *
 * Super Trivia driver by MooglyGuy                               *

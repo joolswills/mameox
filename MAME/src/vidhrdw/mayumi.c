@@ -1,11 +1,11 @@
-#pragma code_seg("C303")
-#pragma data_seg("D303")
-#pragma bss_seg("B303")
-#pragma const_seg("K303")
-#pragma comment(linker, "/merge:D303=303")
-#pragma comment(linker, "/merge:C303=303")
-#pragma comment(linker, "/merge:B303=303")
-#pragma comment(linker, "/merge:K303=303")
+#pragma code_seg("C318")
+#pragma data_seg("D318")
+#pragma bss_seg("B318")
+#pragma const_seg("K318")
+#pragma comment(linker, "/merge:D318=318")
+#pragma comment(linker, "/merge:C318=318")
+#pragma comment(linker, "/merge:B318=318")
+#pragma comment(linker, "/merge:K318=318")
 /******************************************************************************
 
 Kikiippatsu Mayumi-chan (c) 1988 Victory L.L.C.

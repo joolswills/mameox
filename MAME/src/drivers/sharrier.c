@@ -1,11 +1,11 @@
-#pragma code_seg("C464")
-#pragma data_seg("D464")
-#pragma bss_seg("B464")
-#pragma const_seg("K464")
-#pragma comment(linker, "/merge:D464=464")
-#pragma comment(linker, "/merge:C464=464")
-#pragma comment(linker, "/merge:B464=464")
-#pragma comment(linker, "/merge:K464=464")
+#pragma code_seg("C481")
+#pragma data_seg("D481")
+#pragma bss_seg("B481")
+#pragma const_seg("K481")
+#pragma comment(linker, "/merge:D481=481")
+#pragma comment(linker, "/merge:C481=481")
+#pragma comment(linker, "/merge:B481=481")
+#pragma comment(linker, "/merge:K481=481")
 /*	Space Harrier Hardware
 **
 **	2xMC68000 + Z80

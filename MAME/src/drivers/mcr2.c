@@ -1,11 +1,11 @@
-#pragma code_seg("C306")
-#pragma data_seg("D306")
-#pragma bss_seg("B306")
-#pragma const_seg("K306")
-#pragma comment(linker, "/merge:D306=306")
-#pragma comment(linker, "/merge:C306=306")
-#pragma comment(linker, "/merge:B306=306")
-#pragma comment(linker, "/merge:K306=306")
+#pragma code_seg("C321")
+#pragma data_seg("D321")
+#pragma bss_seg("B321")
+#pragma const_seg("K321")
+#pragma comment(linker, "/merge:D321=321")
+#pragma comment(linker, "/merge:C321=321")
+#pragma comment(linker, "/merge:B321=321")
+#pragma comment(linker, "/merge:K321=321")
 /***************************************************************************
 
 	Midway MCR-2 system

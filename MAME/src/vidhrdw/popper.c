@@ -1,11 +1,11 @@
-#pragma code_seg("C407")
-#pragma data_seg("D407")
-#pragma bss_seg("B407")
-#pragma const_seg("K407")
-#pragma comment(linker, "/merge:D407=407")
-#pragma comment(linker, "/merge:C407=407")
-#pragma comment(linker, "/merge:B407=407")
-#pragma comment(linker, "/merge:K407=407")
+#pragma code_seg("C424")
+#pragma data_seg("D424")
+#pragma bss_seg("B424")
+#pragma const_seg("K424")
+#pragma comment(linker, "/merge:D424=424")
+#pragma comment(linker, "/merge:C424=424")
+#pragma comment(linker, "/merge:B424=424")
+#pragma comment(linker, "/merge:K424=424")
 /*
 Popper
 Omori Electric CAD (OEC) 1983

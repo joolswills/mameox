@@ -1,11 +1,11 @@
-#pragma code_seg("C437")
-#pragma data_seg("D437")
-#pragma bss_seg("B437")
-#pragma const_seg("K437")
-#pragma comment(linker, "/merge:D437=437")
-#pragma comment(linker, "/merge:C437=437")
-#pragma comment(linker, "/merge:B437=437")
-#pragma comment(linker, "/merge:K437=437")
+#pragma code_seg("C454")
+#pragma data_seg("D454")
+#pragma bss_seg("B454")
+#pragma const_seg("K454")
+#pragma comment(linker, "/merge:D454=454")
+#pragma comment(linker, "/merge:C454=454")
+#pragma comment(linker, "/merge:B454=454")
+#pragma comment(linker, "/merge:K454=454")
 /* Rotary Fighter
 
 driver by Barry Rodewald

@@ -1,11 +1,11 @@
-#pragma code_seg("C124")
-#pragma data_seg("D124")
-#pragma bss_seg("B124")
-#pragma const_seg("K124")
-#pragma comment(linker, "/merge:D124=124")
-#pragma comment(linker, "/merge:C124=124")
-#pragma comment(linker, "/merge:B124=124")
-#pragma comment(linker, "/merge:K124=124")
+#pragma code_seg("C137")
+#pragma data_seg("D137")
+#pragma bss_seg("B137")
+#pragma const_seg("K137")
+#pragma comment(linker, "/merge:D137=137")
+#pragma comment(linker, "/merge:C137=137")
+#pragma comment(linker, "/merge:B137=137")
+#pragma comment(linker, "/merge:K137=137")
 /***************************************************************************
 
 	Kitco Crowns Golf hardware

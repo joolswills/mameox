@@ -1,11 +1,11 @@
-#pragma code_seg("C255")
-#pragma data_seg("D255")
-#pragma bss_seg("B255")
-#pragma const_seg("K255")
-#pragma comment(linker, "/merge:D255=255")
-#pragma comment(linker, "/merge:C255=255")
-#pragma comment(linker, "/merge:B255=255")
-#pragma comment(linker, "/merge:K255=255")
+#pragma code_seg("C269")
+#pragma data_seg("D269")
+#pragma bss_seg("B269")
+#pragma const_seg("K269")
+#pragma comment(linker, "/merge:D269=269")
+#pragma comment(linker, "/merge:C269=269")
+#pragma comment(linker, "/merge:B269=269")
+#pragma comment(linker, "/merge:K269=269")
 /***************************************************************************
 
 Jailbreak - (c) 1986 Konami

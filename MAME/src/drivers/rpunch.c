@@ -1,11 +1,11 @@
-#pragma code_seg("C440")
-#pragma data_seg("D440")
-#pragma bss_seg("B440")
-#pragma const_seg("K440")
-#pragma comment(linker, "/merge:D440=440")
-#pragma comment(linker, "/merge:C440=440")
-#pragma comment(linker, "/merge:B440=440")
-#pragma comment(linker, "/merge:K440=440")
+#pragma code_seg("C457")
+#pragma data_seg("D457")
+#pragma bss_seg("B457")
+#pragma const_seg("K457")
+#pragma comment(linker, "/merge:D457=457")
+#pragma comment(linker, "/merge:C457=457")
+#pragma comment(linker, "/merge:B457=457")
+#pragma comment(linker, "/merge:K457=457")
 /***************************************************************************
 
 	Rabbit Punch / Rabio Lepus

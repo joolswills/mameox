@@ -1,11 +1,11 @@
-#pragma code_seg("C98")
-#pragma data_seg("D98")
-#pragma bss_seg("B98")
-#pragma const_seg("K98")
-#pragma comment(linker, "/merge:D98=98")
-#pragma comment(linker, "/merge:C98=98")
-#pragma comment(linker, "/merge:B98=98")
-#pragma comment(linker, "/merge:K98=98")
+#pragma code_seg("C110")
+#pragma data_seg("D110")
+#pragma bss_seg("B110")
+#pragma const_seg("K110")
+#pragma comment(linker, "/merge:D110=110")
+#pragma comment(linker, "/merge:C110=110")
+#pragma comment(linker, "/merge:B110=110")
+#pragma comment(linker, "/merge:K110=110")
 /***************************************************************************
 
 Championship Baseball

@@ -1,11 +1,11 @@
-#pragma code_seg("C476")
-#pragma data_seg("D476")
-#pragma bss_seg("B476")
-#pragma const_seg("K476")
-#pragma comment(linker, "/merge:D476=476")
-#pragma comment(linker, "/merge:C476=476")
-#pragma comment(linker, "/merge:B476=476")
-#pragma comment(linker, "/merge:K476=476")
+#pragma code_seg("C493")
+#pragma data_seg("D493")
+#pragma bss_seg("B493")
+#pragma const_seg("K493")
+#pragma comment(linker, "/merge:D493=493")
+#pragma comment(linker, "/merge:C493=493")
+#pragma comment(linker, "/merge:B493=493")
+#pragma comment(linker, "/merge:K493=493")
 /***************************************************************************
 
 	Atari Sky Diver hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C137")
-#pragma data_seg("D137")
-#pragma bss_seg("B137")
-#pragma const_seg("K137")
-#pragma comment(linker, "/merge:D137=137")
-#pragma comment(linker, "/merge:C137=137")
-#pragma comment(linker, "/merge:B137=137")
-#pragma comment(linker, "/merge:K137=137")
+#pragma code_seg("C150")
+#pragma data_seg("D150")
+#pragma bss_seg("B150")
+#pragma const_seg("K150")
+#pragma comment(linker, "/merge:D150=150")
+#pragma comment(linker, "/merge:C150=150")
+#pragma comment(linker, "/merge:B150=150")
+#pragma comment(linker, "/merge:K150=150")
 /***************************************************************************
 
 Double Dragon     (c) 1987 Technos Japan

@@ -1,11 +1,11 @@
-#pragma code_seg("C367")
-#pragma data_seg("D367")
-#pragma bss_seg("B367")
-#pragma const_seg("K367")
-#pragma comment(linker, "/merge:D367=367")
-#pragma comment(linker, "/merge:C367=367")
-#pragma comment(linker, "/merge:B367=367")
-#pragma comment(linker, "/merge:K367=367")
+#pragma code_seg("C384")
+#pragma data_seg("D384")
+#pragma bss_seg("B384")
+#pragma const_seg("K384")
+#pragma comment(linker, "/merge:D384=384")
+#pragma comment(linker, "/merge:C384=384")
+#pragma comment(linker, "/merge:B384=384")
+#pragma comment(linker, "/merge:K384=384")
 /****
 
 New York, New York (c) 1980 Sigma

@@ -1,11 +1,11 @@
-#pragma code_seg("C248")
-#pragma data_seg("D248")
-#pragma bss_seg("B248")
-#pragma const_seg("K248")
-#pragma comment(linker, "/merge:D248=248")
-#pragma comment(linker, "/merge:C248=248")
-#pragma comment(linker, "/merge:B248=248")
-#pragma comment(linker, "/merge:K248=248")
+#pragma code_seg("C262")
+#pragma data_seg("D262")
+#pragma bss_seg("B262")
+#pragma const_seg("K262")
+#pragma comment(linker, "/merge:D262=262")
+#pragma comment(linker, "/merge:C262=262")
+#pragma comment(linker, "/merge:B262=262")
+#pragma comment(linker, "/merge:K262=262")
 /***************************************************************************
 
 IQ Block   (c) 1992 IGS
