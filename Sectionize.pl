@@ -484,6 +484,10 @@ foreach( @FILEs ) {
 
 # Second pass, write out the section headers
 print "Pass 2...\n";
+if( scalar( @newFILEs ) == 0 ) {
+	print "Nothing to do.\n";
+}
+
 foreach( @newFILEs ) {
 	chomp( $_ );
 
@@ -639,10 +643,205 @@ print "\n\nSectionizing CPU's...\n";
 local $OldCPUName = "";
 
 
-@SkipCPUs = ( "DSP32", "I8085", "JAGUAR", "MIPS", "NEC", "PIC16C5X", "TMS9900" );
+#@SkipCPUs = ( "DSP32", "I8085", "JAGUAR", "MIPS", "NEC", "PIC16C5X", "TMS9900" );
+@SkipCPUs = ();
 
-@MotorolaFamily = ( "M6502", "M6800", "M68000", "M6805", "M6809" );
-@Families = ( \@MotorolaFamily );
+	# Notes on CPU families:
+	# - Items on the first line have actual source files, 
+	#	the rest share the original sources
+	# - The families have been derived by reading cpuintrf.c, checking which
+	#	#if (HAS_)'s lead to which #includes
+
+	# The xxxFamily string defines the source directories of the CPU family
+	# The xxxClones array defines the list of all CPU_ #defines that use the source files in xxxFamily
+	# NOTE: it is very important that the family of the CPU be the first item in the Clones list,
+	#       if the family name is the name of a real CPU! (there are cases where it's not, like "MIPS" )
+
+$adsp2100Family = "ADSP2100";
+@adsp2100Clones = ( "ADSP2100", "ADSP2101", "ADSP2105", "ADSP2115" );
+
+$armFamily = "ARM";
+@armClones = ( "ARM" );
+
+$asapFamily = "ASAP";
+@asapClones = ( "ASAP" );
+
+$ccpuFamily = "CCPU";
+@ccpuClones = ( "CCPU" );
+
+$dsp32Family = "DSP32";
+@dsp32Clones = ( "DSP32C" );
+
+$h6280Family = "H6280";
+@h6280Clones = ( "H6280" );
+
+$hd6309Family = "HD6309";
+@hd6309Clones = ( "HD6309" );
+
+$i8039Family = "i8039";
+@i8039Clones = ( "I8035", "I8039", "I8048", "N7751" );
+
+$i8085Family = "i8085";
+@Z80Clones = ( "8080", "8085A" );
+
+$i86Family = "I86";
+@i86Clones = ( "I86", 
+			   "I88",
+			   "I186",
+			   "I188",
+			   "I286" );
+
+$i8x41Family = "I8X41";
+@i8x41Clones = ( "I8X41" );
+
+$JaguarFamily = "JAGUAR";
+@JaguarClones = ( "JAGUAR" );
+
+$KonamiFamily = "KONAMI";
+@KonamiClones = ( "KONAMI" );
+
+$m6502Family = "M6502";
+@m6502Clones = ( "M6502", "M65C02", "M65SC02", "M6510", "M6510T", "M7501", "M8502", "N2A03", "DECO16",
+				 "M4510",
+				 "M65CE02",
+				 "M6509" );
+
+$m6800Family = "M6800";
+@m6800Clones = ( "M6800", "M6801", "M6802", "M6803", "M6808", "HD63701" );
+
+$m68000Family = "M68000";
+@m68000Clones = ( "M68000", "M68010", "M68020", "M68EC020" );
+
+$m6805Family = "M6805";
+@m6805Clones = ( "M6805", "M68705", "HD63705" );
+
+$m6809Family = "M6809";
+@m6809Clones = ( "M6809" );
+
+$mipsFamily = "MIPS";
+@mipsClones = (	"PSXCPU",
+				"R3000", 
+				"R4600", "R5000" );
+
+$NECFamily = "NEC";
+@NECClones = ( "V20", "V30", "V33" );
+
+$pic16c5xFamily = "PIC16C5X";
+@pic16c5xClones = ( "PIC16C54", "PIC16C55", "PIC16C56", "PIC16C57", "PIC16C58" );
+
+$s2650Family = "S2650";
+@s2650Clones = ( "S2650" );
+
+$sh2Family = "SH2";
+@sh2Clones = ( "SH2" );
+
+$t11Family = "T11";
+@t11Clones = ( "T11" );
+
+$tms32010Family = "TMS32010";
+@tms32010Clones = ( "TMS32010" );
+
+$tms32025Family = "TMS32025";
+@tms32025Clones = ( "TMS32025" );
+
+$tms32031Family = "TMS32031";
+@tms32031Clones = ( "TMS32031" );
+
+$tms34010Family = "TMS34010";
+@tms34010Clones = ( "TMS34010", "TMS34020" );
+
+$tms9900Family = "TMS9900";
+@tms9900Clones = ( "TMS9900", "TMS9940", "TMS9980", "TMS9985", "TMS9989", "TMS9995", "TMS99105A", "TMS99110A" );
+
+$udp7810Family = "UPD7810";
+@udp7810Clones = ( "UPD7810", "UPD7807" );
+
+$v60Family = "V60";
+@v60Clones = ( "V60", "V70" );
+
+$Z180Family = "Z180";
+@Z180Clones = ( "Z180" );
+
+$Z80Family = "Z80";
+@Z80Clones = ( "Z80" );
+
+$z8000Family = "Z8000";
+@z8000Clones = ( "Z8000" );
+
+
+
+
+@Families = (	\$Z80Family, 
+				\$Z180Family, 
+				\$i8085Family,
+				\$m6502Family, 
+				\$h6280Family,
+				\$i86Family,
+				\$NECFamily,
+				\$v60Family,
+				\$i8039Family,
+				\$i8x41Family,
+				\$m6800Family,
+				\$m6805Family,
+				\$m6809Family,
+				\$hd6309Family,
+				\$KonamiFamily,
+				\$m68000Family,
+				\$t11Family,
+				\$s2650Family,
+				\$tms34010Family,
+				\$tms9900Family,
+				\$z8000Family,
+				\$tms32010Family,
+				\$tms32025Family,
+				\$tms32031Family,
+				\$ccpuFamily,
+				\$adsp2100Family,
+				\$mipsFamily,
+				\$asapFamily,
+				\$udp7810Family,
+				\$JaguarFamily,
+				\$armFamily,
+				\$sh2Family,
+				\$dsp32Family,
+				\$pic16c5xFamily );
+
+
+
+@Clones = ( \@Z80Clones,
+			\@Z180Clones,
+			\@Z80Clones,
+			\@m6502Clones,
+			\@h6280Clones,
+			\@i86Clones,
+			\@NECClones,
+			\@v60Clones,
+			\@i8039Clones,
+			\@i8x41Clones,
+			\@m6800Clones,
+			\@m6805Clones,
+			\@m6809Clones,
+			\@hd6309Clones,
+			\@KonamiClones,
+			\@m68000Clones,
+			\@t11Clones,
+			\@s2650Clones,
+			\@tms34010Clones,
+			\@tms9900Clones,
+			\@z8000Clones,
+			\@tms32010Clones,
+			\@tms32025Clones,
+			\@tms32031Clones,
+			\@ccpuClones,
+			\@adsp2100Clones,
+			\@mipsClones,
+			\@asapClones,
+			\@udp7810Clones,
+			\@JaguarClones,
+			\@armClones,
+			\@sh2Clones,
+			\@dsp32Clones,
+			\@pic16c5xClones );
 
 $autoNameNumber = $#Families + 10;
 
@@ -793,11 +992,11 @@ print CPUFILE "  {\n";
 print CPUFILE "      // Only unload families once (all but the first member are skipped)\n";
 print CPUFILE "    if( (*i).first == ";
 local $IsFirst = true;
-foreach( @Families ) {
-	$FamilyArray = $_;
-	foreach( @{$FamilyArray} ) {	
+foreach( @Clones ) {
+	$CloneArray = $_;
+	foreach( @{$CloneArray} ) {
 			# Skip the first (key) member of the family
-		if( $_ eq $FamilyArray->[0] ) {
+		if( $_ eq $CloneArray->[0] ) {
 			next;
 		}
 
@@ -808,7 +1007,7 @@ foreach( @Families ) {
 		$IsFirst = false;
 
 			# Print code to ignore this member
-		print CPUFILE "CPU_$_";
+		print CPUFILE "CPU$_";
 	}
 }
 print CPUFILE " )\n";
@@ -851,22 +1050,19 @@ foreach( @FILEs ) {
 			last;
 		}
 	}
+	next if( $IsValid eq false );
 
 	$Family = false;
 	$FamilyID = 0;
 	foreach( @Families ) {
-		$FamilyArray = $_;
 		$FamilyID++;
-		foreach( @{$FamilyArray} ) {			
-			if( uc($CPUName) eq $_ ) {
-				print "$CPUName is in family $FamilyID.\n";
-				$Family = $FamilyID;
-				last;
-			}
+		if( uc($CPUName) eq $$_ ) {
+			print "$CPUName is in family $FamilyID.\n";
+			$Family = $FamilyID;
+			last;
 		}
 	}
 
-	next if( $IsValid eq false );
 
 	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
 	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
@@ -886,10 +1082,17 @@ foreach( @FILEs ) {
 			$OldCPUName = $CPUName;
 			$ucaseCPUName = uc( $CPUName );
 			if( $Family ne false ) {
+				$myAutoNameNumber = 0;	# Don't increment (families should always be less anyway)
 				print PRELOADFILE "/NOPRELOAD:\"C$Family\"\n";
 				print DBGPRELOADFILE "/NOPRELOAD:\"C$Family\"\n";
-				print CPUFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"CPU$Family\" );\n";
-				$myAutoNameNumber = 0;	# Don't increment (families should always be less anyway)
+					# Each real CPU is also listed as a clone, so this would be a duplicate
+				#print CPUFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"CPU$Family\" );\n";
+
+					# Register all the clones for this CPU
+				$CloneArray = @Clones[$Family];
+				foreach( @{$CloneArray} ) {
+					print CPUFILE "  RegisterSectionID( CPU_$_, \"CPU$Family\" );\n";
+				}
 			}
 			else {
 				print PRELOADFILE "/NOPRELOAD:\"C$myAutoNameNumber\"\n";
@@ -908,10 +1111,14 @@ foreach( @FILEs ) {
 
 # Second pass, write out the section headers
 print "Pass 2...\n";
-$OldCPUName = "";
+if( scalar( @newFILEs ) == 0 ) {
+	print "Nothing to do.\n";
+}
 
+$OldCPUName = "";
 foreach( @newFILEs ) {
 	chomp( $_ );
+	print "$_\n";
 
 	$DriverFileName = $_;
 	$CPUName = $_;
@@ -932,22 +1139,19 @@ foreach( @newFILEs ) {
 			last;
 		}
 	}
+	next if( $IsValid eq false );
 
 	$Family = false;
 	$FamilyID = 0;
 	foreach( @Families ) {
 		$FamilyArray = $_;
 		$FamilyID++;
-		foreach( @{$FamilyArray} ) {			
-			if( uc($CPUName) eq $_ ) {
-				print "$CPUName is in family $FamilyID.\n";
-				$Family = $FamilyID;
-				last;
-			}
+		if( uc($CPUName) eq $$_ ) {
+			print "$CPUName is in family $FamilyID.\n";
+			$Family = $FamilyID;
+			last;
 		}
 	}
-
-	next if( $IsValid eq false );
 
 		# Unlike the drivers, we want one name for an entire directory
 		# so only register on a new directory (CPUName)
@@ -957,7 +1161,14 @@ foreach( @newFILEs ) {
 		if( $Family ne false ) {
 			print PRELOADFILE "/NOPRELOAD:\"C$Family\"\n";
 			print DBGPRELOADFILE "/NOPRELOAD:\"C$Family\"\n";
-			print CPUFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"CPU$Family\" );\n";
+				# Each real CPU is also listed as a clone, so this would be a duplicate
+			#print CPUFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"CPU$Family\" );\n";
+
+				# Register all the clones for this CPU
+			$CloneArray = @Clones[$Family];
+			foreach( @{$CloneArray} ) {
+				print CPUFILE "  RegisterSectionID( CPU_$_, \"CPU$Family\" );\n";
+			}
 		} else {
 			$autoNameNumber++;
 			print PRELOADFILE "/NOPRELOAD:\"C$autoNameNumber\"\n";
