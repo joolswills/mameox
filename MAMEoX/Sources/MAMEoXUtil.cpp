@@ -113,7 +113,21 @@ BOOL osd_vmm_accessaddress( void *ptr )
   return g_vmManager.AccessAddressRange( ptr, 0 );
 }
 
+//-------------------------------------------------------------
+//  osd_vmm_unloadLRUpage
+//-------------------------------------------------------------
+BOOL osd_vmm_unloadLRUpage( void )
+{
+  return g_vmManager.UnloadLRUPage();
+}
 
+//-------------------------------------------------------------
+//  osd_vmm_printinfo
+//-------------------------------------------------------------
+void osd_vmm_printinfo( void )
+{
+  g_vmManager.PrintInfo();
+}
 
 //-------------------------------------------------------------
 //  vsnprintf

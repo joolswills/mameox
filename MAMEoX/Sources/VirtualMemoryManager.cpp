@@ -15,7 +15,7 @@
 #define FINDPAGE( _addr__ )          (void*)(((UINT32)(_addr__)) - (((UINT32)(_addr__)) & 4096))
 
   // Define to print log info on every VMM call
-//#define LOGVMM
+#define LOGVMM
 
 //= P R O T O T Y P E S =======================================================
 extern "C" int fatalerror( const char *fmt, ... );
@@ -193,6 +193,73 @@ BOOL CVirtualMemoryManager::AccessAddressRange( void *base, UINT32 size )
 }
 
 
+//------------------------------------------------------
+//  UnloadLRUPage
+//------------------------------------------------------
+BOOL CVirtualMemoryManager::MakePageReadOnly( void *base )
+{
+  if( !base )
+  {
+    PRINTMSG( T_ERROR, "MakePageReadOnly called on NULL base!" );
+    return FALSE;
+  }
+
+  vmmpage_t page;
+  page.m_address = FINDPAGE( base );
+
+  std::vector<vmmpage_t>::iterator i = std::find( m_virtualPages.begin(), 
+                                                  m_virtualPages.end(), 
+                                                  page );
+  if( i == m_virtualPages.end() )
+  {
+    PRINTMSG( T_ERROR, "MakePageReadOnly called on invalid address 0x%X!", base );
+    return FALSE;
+  }
+
+
+    // See if the page is already committed
+  vmmpage_t &virtualPage = (*i);
+
+  DWORD oldProtection;
+  return VirtualProtect(  virtualPage.m_address,
+                          virtualPage.m_size,
+                          PAGE_READONLY,
+                          &oldProtection );
+}
+
+//------------------------------------------------------
+//  UnloadLRUPage
+//------------------------------------------------------
+BOOL CVirtualMemoryManager::MakePageReadWrite( void *base )
+{
+  if( !base )
+  {
+    PRINTMSG( T_ERROR, "MakePageReadWrite called on NULL base!" );
+    return FALSE;
+  }
+
+  vmmpage_t page;
+  page.m_address = FINDPAGE( base );
+
+  std::vector<vmmpage_t>::iterator i = std::find( m_virtualPages.begin(), 
+                                                  m_virtualPages.end(), 
+                                                  page );
+  if( i == m_virtualPages.end() )
+  {
+    PRINTMSG( T_ERROR, "MakePageReadWrite called on invalid address 0x%X!", base );
+    return FALSE;
+  }
+
+
+    // See if the page is already committed
+  vmmpage_t &virtualPage = (*i);
+
+  DWORD oldProtection;
+  return VirtualProtect(  virtualPage.m_address,
+                          virtualPage.m_size,
+                          PAGE_READWRITE,
+                          &oldProtection );
+}
 
 //------------------------------------------------------
 //  UnloadLRUPage
@@ -241,7 +308,27 @@ BOOL CVirtualMemoryManager::UnloadLRUPage( void )
 }
 
 
+//------------------------------------------------------
+//  PrintInfo
+//------------------------------------------------------
+#ifdef _DEBUG
+void CVirtualMemoryManager::PrintInfo( void )
+{
+  DEBUGGERCHECKRAM();
+  PRINTMSG( T_INFO, "Total pages: %lu Committed pages: %lu", m_virtualPages.size(), m_committedAddresses.size() );
 
+  std::vector<vmmpage_t>::iterator i = m_virtualPages.begin();
+  for( ; i != m_virtualPages.end(); ++i )
+  {
+    PRINTMSG( T_INFO, 
+              "Addr: 0x%X  Size: %lu   Committed: %d   Faults: %lu",
+              (*i).m_address,
+              (*i).m_size,
+              (*i).m_committed,
+              (*i).m_pageFaultCount );
+  }
+}
+#endif
 
 
 

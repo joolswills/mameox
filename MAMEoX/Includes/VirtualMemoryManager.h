@@ -93,6 +93,12 @@ public:
 		//------------------------------------------------------
   BOOL UnloadLRUPage( void );
 
+  BOOL MakePageReadOnly( void *ptr );
+  BOOL MakePageReadWrite( void *ptr );
+
+  #ifdef _DEBUG
+  void PrintInfo( void );
+  #endif
 
   UINT32 GetNumVirtualPages( void ) const { return m_virtualPages.size(); }
   UINT32 GetNumCommittedPages( void ) const { return m_committedAddresses.size(); }

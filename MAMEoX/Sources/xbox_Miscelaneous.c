@@ -24,6 +24,10 @@
 //= D E F I N E S  =====================================================
 //#define ENABLE_LOGERROR     // Enable the logerror function (this can spit out a _lot_ of data)
 
+//= P R O T O T Y P E S ===============================================
+BOOL osd_vmm_unloadLRUpage( void );       // Defined in MAMEoXUtil.cpp
+int fatalerror( const char *fmt, ... );   // Defined in xbox_Main.cpp
+
 
 //= F U N C T I O N S ==================================================
 
@@ -37,6 +41,11 @@ void *osd_malloc( size_t size )
   // places)
 
   void *ret = malloc( size );
+
+    // Attempt to release a virtual page back to the system to free up some RAM
+  while( !ret && osd_vmm_unloadLRUpage()  )
+    ret = malloc( size );
+
   if( !ret )
   {
     MEMORYSTATUS memStatus;
@@ -58,6 +67,11 @@ void *osd_calloc( size_t num, size_t size )
   // places)
 
   void *ret = calloc( num, size );
+
+    // Attempt to release a virtual page back to the system to free up some RAM
+  while( !ret && osd_vmm_unloadLRUpage()  )
+    ret = calloc( num, size );
+
   if( !ret )
   {
     MEMORYSTATUS memStatus;
@@ -78,6 +92,11 @@ void *osd_realloc( void *memblock, size_t size )
   // places)
 
   void *ret = realloc( memblock, size );
+
+    // Attempt to release a virtual page back to the system to free up some RAM
+  while( !ret && osd_vmm_unloadLRUpage()  )
+    ret = realloc( memblock, size );
+
   if( !ret )
   {
     MEMORYSTATUS memStatus;
