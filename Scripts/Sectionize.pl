@@ -866,19 +866,6 @@ extern "C" {
 
 
 //= D E F I N E S ======================================================
-EOF
-	print GENERATEDFILE "#define DRIVER_DATA_PREFIX      \"".DATA_PREFIX."\"\n";
-	print GENERATEDFILE "#define DRIVER_CODE_PREFIX      \"".CODE_PREFIX."\"\n";
-	print GENERATEDFILE "#define DRIVER_BSS_PREFIX       \"".BSS_PREFIX."\"\n";
-	print GENERATEDFILE "#define DRIVER_CONST_PREFIX     \"".CONST_PREFIX."\"\n";
-	print GENERATEDFILE "\n";
-	print GENERATEDFILE "#define CPU_DATA_PREFIX         \"C".DATA_PREFIX."\"\n";
-	print GENERATEDFILE "#define CPU_CODE_PREFIX         \"C".CODE_PREFIX."\"\n";
-	print GENERATEDFILE "#define CPU_BSS_PREFIX          \"C".BSS_PREFIX."\"\n";
-	print GENERATEDFILE "#define CPU_CONST_PREFIX        \"C".CONST_PREFIX."\"\n";
-	print GENERATEDFILE "\n\n";
-
-	print GENERATEDFILE << "EOF";
 
 typedef std::vector<std::string>       dependencyGraph_t;
 
