@@ -247,10 +247,7 @@
        the coders work so hard coding that they seldom even have time to
        play games in their rom collection.  Chances are that if a rom is
        broken, the coders don't know.
-
-       As an added incentive, if you have the ability to compile the CVS
-       tree, and post 
-
+       
        Even if you can't compile CVS, we can still use your help.  Testing
        with the latest release level is appreciated, just follow the 
        proper procedures for reporting a bug (see below).
