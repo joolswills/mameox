@@ -804,7 +804,7 @@ static BOOL Helper_LoadDriverInfoFile( void )
     }
 
       // Read the clonename
-    g_driverData[i].m_clonename = new char[ len ];
+    g_driverData[i].m_cloneFileName = new char[ len ];
     ReadFile( hFile, 
               g_driverData[i].m_cloneFileName, 
               len,
