@@ -120,12 +120,6 @@ print GENERATEDFILE "//! \\return   FALSE - Failure\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
 print GENERATEDFILE "BOOL UnloadDriverNonDataSections( void );\n";
 print GENERATEDFILE "\n//-------------------------------------------------------------\n";
-print GENERATEDFILE "//	LoadSilentDependencyDriverDataHacks\n";
-print GENERATEDFILE "//! \\brief    Load the driver data for all of the known\n";
-print GENERATEDFILE "//!            XBE silent dependencies\n";
-print GENERATEDFILE "//-------------------------------------------------------------\n";
-print GENERATEDFILE "void LoadSilentDependencyDriverDataHacks( void );\n";
-print GENERATEDFILE "\n//-------------------------------------------------------------\n";
 print GENERATEDFILE "//	RegisterCPUSectionNames\n";
 print GENERATEDFILE "//! \\brief    Registers all of the segments for use by\n";
 print GENERATEDFILE "//!            LoadCPUSectionByName and UnloadCPUSectionByName\n";
@@ -421,37 +415,6 @@ print GENERATEDFILE "      XFreeSectionByHandle( h );\n";
 print GENERATEDFILE "  }\n";
 print GENERATEDFILE "  return TRUE;\n";
 print GENERATEDFILE "}\n\n";
-print GENERATEDFILE "//-------------------------------------------------------------\n";
-print GENERATEDFILE "//  LoadSilentDependencyDriverDataHacks\n";
-print GENERATEDFILE "//-------------------------------------------------------------\n";
-print GENERATEDFILE "void LoadSilentDependencyDriverDataHacks( void )\n";
-print GENERATEDFILE "{\n";
-print GENERATEDFILE "    // Hacks\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\cps1.c\" );      // cps2.c is dependent on cps1.c\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\mpatrol.c\" );   // 10 yard fight is dependent on the mpatrol vidhrdw\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\snk.c\" );       // hal121.c is dependent on snk vidhrdw (ASO - Armored Scrum Object)\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\system16.c\" );  // afterburner dependent\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\galaxian.c\" );  // Amidar\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\scramble.c\" );  // Amidar\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\scobra.c\" );    // Amidar\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\rampart.c\" );   // Arcade Classic Arcadecl.c\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\williams.c\" );  // Archrivals\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\rastan.c\" );    // Asuka & Asuka (sound)\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\hal21.c\" );     // Athena\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\espial.c\" );    // battle cruiser\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\bzone.c\" );     // gravitar\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\nova2001.c\" );  // Penguin-Kun War\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\gottlieb.c\" );  // exterminator\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\pengo.c\" );     // eyes\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\megasys1.c\" );  // F1 Grand Prix Star\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\namcos1.c\" );   // Face Off (Japan)\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\rallyx.c\" );    // Loco-Motion\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\timeplt.c\" );   // Loco-Motion\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\exidy.c\" );     // Victory\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\m72.c\" );       // Bomber Man World (World)\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\leland.c\" );    // Asylum (prototype)\n";
-print GENERATEDFILE "  LoadDriverSectionByName( \"src\\\\drivers\\\\trackfld.c\" );  // Hyper Sports, Hyper Olympics '84?\n";
-print GENERATEDFILE "}\n\n";
 print GENERATEDFILE "\n//-------------------------------------------------------------\n";
 print GENERATEDFILE "//	RegisterDriverSectionNames\n";
 print GENERATEDFILE "//-------------------------------------------------------------\n";
@@ -477,6 +440,7 @@ print CPUFILE "#include \"MAMEoX.h\"\n";
 print CPUFILE "#include \"DebugLogger.h\"\n";
 print CPUFILE "extern \"C\" {\n";
 print CPUFILE "#include \"osd_cpu.h\"\n";
+print CPUFILE "#include \"cpuintrf.h\"\n";
 print CPUFILE "}\n";
 print CPUFILE "//= D E F I N E S ======================================================\n";
 print CPUFILE "#define DATA_PREFIX      \"C".DATA_PREFIX."\"\n";
@@ -485,7 +449,7 @@ print CPUFILE "#define BSS_PREFIX       \"C".BSS_PREFIX."\"\n";
 print CPUFILE "#define CONST_PREFIX     \"C".CONST_PREFIX."\"\n";
 print CPUFILE "\n";
 print CPUFILE "//= G L O B A L = V A R S ==============================================\n";
-print CPUFILE "static std::map< std::string, std::string >  g_nameToSectionMap;\n";
+print CPUFILE "static std::map< UINT32, std::string >  g_IDToSectionMap;\n";
 print CPUFILE "//= F U N C T I O N S ==================================================\n";
 print CPUFILE "extern \"C\" {\n";
 print CPUFILE "\n#ifdef _DEBUG\n";
@@ -495,8 +459,8 @@ print CPUFILE "//-------------------------------------------------------------\n
 print CPUFILE "void CheckCPUSectionRAM( void )\n";
 print CPUFILE "{\n";
 print CPUFILE "  DWORD total = 0;\n";
-print CPUFILE "  std::map< std::string, std::string >::iterator i = g_nameToSectionMap.begin();\n";
-print CPUFILE "  for( ; i != g_nameToSectionMap.end(); ++i )\n";
+print CPUFILE "  std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.begin();\n";
+print CPUFILE "  for( ; i != g_IDToSectionMap.end(); ++i )\n";
 print CPUFILE "  {\n";
 print CPUFILE "    std::string sectionName;\n";
 print CPUFILE "    sectionName = CODE_PREFIX;\n";
@@ -505,11 +469,11 @@ print CPUFILE "    HANDLE h = XGetSectionHandle( sectionName.c_str() );\n";
 print CPUFILE "    if( h != INVALID_HANDLE_VALUE )\n";
 print CPUFILE "    {\n";
 print CPUFILE "      UINT32 sz = XGetSectionSize( h );\n";
-print CPUFILE "      PRINTMSG( T_INFO, \"CPU %s [CODE]: %lu\", (*i).first.c_str(), sz );\n";
+print CPUFILE "      PRINTMSG( T_INFO, \"CPU%lu [CODE]: %lu\", (*i).first, sz );\n";
 print CPUFILE "      total += sz;\n";
 print CPUFILE "    }\n";
 print CPUFILE "    else\n";
-print CPUFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for file %s!\", (*i).second.c_str(), (*i).first.c_str() );\n";
+print CPUFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for CPU%lu!\", (*i).second.c_str(), (*i).first );\n";
 print CPUFILE "\n";
 print CPUFILE "    sectionName = DATA_PREFIX;\n";
 print CPUFILE "    sectionName += (*i).second.c_str();\n";
@@ -517,11 +481,11 @@ print CPUFILE "    h = XGetSectionHandle( sectionName.c_str() );\n";
 print CPUFILE "    if( h != INVALID_HANDLE_VALUE )\n";
 print CPUFILE "    {\n";
 print CPUFILE "      UINT32 sz = XGetSectionSize( h );\n";
-print CPUFILE "      PRINTMSG( T_INFO, \"CPU %s [DATA]: %lu\", (*i).first.c_str(), sz );\n";
+print CPUFILE "      PRINTMSG( T_INFO, \"CPU%lu [DATA]: %lu\", (*i).first, sz );\n";
 print CPUFILE "      total += sz;\n";
 print CPUFILE "    }\n";
 print CPUFILE "    else\n";
-print CPUFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for file %s!\", (*i).second.c_str(), (*i).first.c_str() );\n";
+print CPUFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for CPU%lu!\", (*i).second.c_str(), (*i).first );\n";
 print CPUFILE "\n";
 print CPUFILE "    sectionName = BSS_PREFIX;\n";
 print CPUFILE "    sectionName += (*i).second.c_str();\n";
@@ -529,12 +493,12 @@ print CPUFILE "    h = XGetSectionHandle( sectionName.c_str() );\n";
 print CPUFILE "    if( h != INVALID_HANDLE_VALUE )\n";
 print CPUFILE "    {\n";
 print CPUFILE "      UINT32 sz = XGetSectionSize( h );\n";
-print CPUFILE "      PRINTMSG( T_INFO, \"CPU %s [BSS]: %lu\", (*i).first.c_str(), sz );\n";
+print CPUFILE "      PRINTMSG( T_INFO, \"CPU%lu [BSS]: %lu\", (*i).first, sz );\n";
 print CPUFILE "      total += sz;\n";
 print CPUFILE "    }\n";
 print CPUFILE "    else\n";
 print CPUFILE "    {\n";
-print CPUFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for file %s!\", (*i).second.c_str(), (*i).first.c_str() );\n";
+print CPUFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for CPU%lu!\", (*i).second.c_str(), (*i).first );\n";
 print CPUFILE "    }\n";
 print CPUFILE "\n";
 print CPUFILE "    sectionName = CONST_PREFIX;\n";
@@ -543,35 +507,35 @@ print CPUFILE "    h = XGetSectionHandle( sectionName.c_str() );\n";
 print CPUFILE "    if( h != INVALID_HANDLE_VALUE )\n";
 print CPUFILE "    {\n";
 print CPUFILE "      UINT32 sz = XGetSectionSize( h );\n";
-print CPUFILE "      PRINTMSG( T_INFO, \"CPU %s [CONST]: %lu\", (*i).first.c_str(), sz );\n";
+print CPUFILE "      PRINTMSG( T_INFO, \"CPU%lu [CONST]: %lu\", (*i).first, sz );\n";
 print CPUFILE "      total += sz;\n";
 print CPUFILE "    }\n";
 print CPUFILE "    else\n";
-print CPUFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for file %s!\", (*i).second.c_str(), (*i).first.c_str() );\n";
+print CPUFILE "      PRINTMSG( T_ERROR, \"Invalid section %s for CPU%lu!\", (*i).second.c_str(), (*i).first );\n";
 print CPUFILE "\n";
 print CPUFILE "  }\n";
 print CPUFILE "  PRINTMSG( T_INFO, \"Total %lu bytes\\n\", total );\n";
 print CPUFILE "}\n";
 print CPUFILE "#endif\n\n";
 print CPUFILE "\n//-------------------------------------------------------------\n";
-print CPUFILE "//	RegisterSectionName\n";
+print CPUFILE "//	RegisterSectionID\n";
 print CPUFILE "//-------------------------------------------------------------\n";
-print CPUFILE "static void RegisterSectionName( const char *CPUFileName, const char *DataSectionName )\n";
+print CPUFILE "static void RegisterSectionID( UINT32 CPUID, const char *DataSectionName )\n";
 print CPUFILE "{\n";
 print CPUFILE "    // Add the section name to the map\n";
-print CPUFILE "  g_nameToSectionMap[ CPUFileName ] = DataSectionName;\n";
+print CPUFILE "  g_IDToSectionMap[ CPUID ] = DataSectionName;\n";
 print CPUFILE "}\n\n";
 print CPUFILE "\n//-------------------------------------------------------------\n";
-print CPUFILE "//	LoadCPUSectionByName\n";
+print CPUFILE "//	LoadCPUSectionByID\n";
 print CPUFILE "//-------------------------------------------------------------\n";
-print CPUFILE "BOOL LoadCPUSectionByName( const char *CPUFileName )\n";
+print CPUFILE "BOOL LoadCPUSectionByID( UINT32 CPUID )\n";
 print CPUFILE "{\n";
-print CPUFILE "  std::map< std::string, std::string >::iterator i = g_nameToSectionMap.find( CPUFileName );\n";
-print CPUFILE "  if( i == g_nameToSectionMap.end() )\n";
+print CPUFILE "  std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.find( CPUID );\n";
+print CPUFILE "  if( i == g_IDToSectionMap.end() )\n";
 print CPUFILE "    return FALSE;\n";
 print CPUFILE "  std::string sectionName;\n";
 print CPUFILE "  void *addr;\n";
-print CPUFILE "  PRINTMSG( T_INFO, \"Load section %s, ID %s\\n\", CPUFileName, (*i).second.c_str() );\n";
+print CPUFILE "  PRINTMSG( T_INFO, \"Load section CPU%lu, ID %s\\n\", CPUID, (*i).second.c_str() );\n";
 print CPUFILE "  sectionName = DATA_PREFIX;\n";
 print CPUFILE "  sectionName += (*i).second.c_str();\n";
 print CPUFILE "  addr = XLoadSection( sectionName.c_str() );\n";
@@ -618,12 +582,12 @@ print CPUFILE "  }\n";
 print CPUFILE "  return TRUE;\n";
 print CPUFILE "}\n\n";
 print CPUFILE "\n//-------------------------------------------------------------\n";
-print CPUFILE "//	UnloadCPUSectionByName\n";
+print CPUFILE "//	UnloadCPUSectionByID\n";
 print CPUFILE "//-------------------------------------------------------------\n";
-print CPUFILE "BOOL UnloadCPUSectionByName( const char *CPUFileName )\n";
+print CPUFILE "BOOL UnloadCPUSectionByID( UINT32 CPUID )\n";
 print CPUFILE "{\n";
-print CPUFILE "  std::map< std::string, std::string >::iterator i = g_nameToSectionMap.find( CPUFileName );\n";
-print CPUFILE "  if( i == g_nameToSectionMap.end() )\n";
+print CPUFILE "  std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.find( CPUID );\n";
+print CPUFILE "  if( i == g_IDToSectionMap.end() )\n";
 print CPUFILE "    return FALSE;\n";
 print CPUFILE "  BOOL dataRet, codeRet, bssRet, constRet;\n";
 print CPUFILE "  std::string sectionName;\n";
@@ -650,8 +614,8 @@ print CPUFILE "//	LoadCPUDataSections\n";
 print CPUFILE "//-------------------------------------------------------------\n";
 print CPUFILE "BOOL LoadCPUDataSections( void )\n";
 print CPUFILE "{\n";
-print CPUFILE "  std::map< std::string, std::string >::iterator i = g_nameToSectionMap.begin();\n";
-print CPUFILE "  for( ; i != g_nameToSectionMap.end(); ++i )\n";
+print CPUFILE "  std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.begin();\n";
+print CPUFILE "  for( ; i != g_IDToSectionMap.end(); ++i )\n";
 print CPUFILE "  {\n";
 print CPUFILE "    std::string sectionName;\n";
 print CPUFILE "    sectionName = DATA_PREFIX;\n";
@@ -677,8 +641,8 @@ print CPUFILE "//	UnloadCPUNonDataSections\n";
 print CPUFILE "//-------------------------------------------------------------\n";
 print CPUFILE "BOOL UnloadCPUNonDataSections( void )\n";
 print CPUFILE "{\n";
-print CPUFILE "  std::map< std::string, std::string >::iterator i = g_nameToSectionMap.begin();\n";
-print CPUFILE "  for( ; i != g_nameToSectionMap.end(); ++i )\n";
+print CPUFILE "  std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.begin();\n";
+print CPUFILE "  for( ; i != g_IDToSectionMap.end(); ++i )\n";
 print CPUFILE "  {\n";
 print CPUFILE "    std::string sectionName;\n";
 print CPUFILE "    sectionName = CODE_PREFIX;\n";
@@ -701,8 +665,8 @@ print CPUFILE "//	UnloadCPUDataSections\n";
 print CPUFILE "//-------------------------------------------------------------\n";
 print CPUFILE "BOOL UnloadCPUDataSections( void )\n";
 print CPUFILE "{\n";
-print CPUFILE "  std::map< std::string, std::string >::iterator i = g_nameToSectionMap.begin();\n";
-print CPUFILE "  for( ; i != g_nameToSectionMap.end(); ++i )\n";
+print CPUFILE "  std::map< UINT32, std::string >::iterator i = g_IDToSectionMap.begin();\n";
+print CPUFILE "  for( ; i != g_IDToSectionMap.end(); ++i )\n";
 print CPUFILE "  {\n";
 print CPUFILE "    std::string sectionName;\n";
 print CPUFILE "    sectionName = DATA_PREFIX;\n";
@@ -730,6 +694,38 @@ print CPUFILE "{\n";
 
 print "Sectionizing drivers, sound hardware, and video hardware...\n";
 
+#  LoadDriverSectionByName( "src\\drivers\\cps1.c" );      // cps2.c is dependent on cps1.c
+#  LoadDriverSectionByName( "src\\drivers\\mpatrol.c" );   // 10 yard fight is dependent on the mpatrol vidhrdw
+#  LoadDriverSectionByName( "src\\drivers\\snk.c" );       // hal121.c is dependent on snk vidhrdw (ASO - Armored Scrum Object)
+#  LoadDriverSectionByName( "src\\drivers\\system16.c" );  // afterburner dependent
+#  LoadDriverSectionByName( "src\\drivers\\galaxian.c" );  // Amidar
+#  LoadDriverSectionByName( "src\\drivers\\scramble.c" );  // Amidar
+#  LoadDriverSectionByName( "src\\drivers\\scobra.c" );    // Amidar
+#  LoadDriverSectionByName( "src\\drivers\\rampart.c" );   // Arcade Classic Arcadecl.c
+#  LoadDriverSectionByName( "src\\drivers\\williams.c" );  // Archrivals
+#  LoadDriverSectionByName( "src\\drivers\\rastan.c" );    // Asuka & Asuka (sound)
+#  LoadDriverSectionByName( "src\\drivers\\hal21.c" );     // Athena
+#  LoadDriverSectionByName( "src\\drivers\\espial.c" );    // battle cruiser
+#  LoadDriverSectionByName( "src\\drivers\\bzone.c" );     // gravitar
+#  LoadDriverSectionByName( "src\\drivers\\nova2001.c" );  // Penguin-Kun War
+#  LoadDriverSectionByName( "src\\drivers\\gottlieb.c" );  // exterminator
+#  LoadDriverSectionByName( "src\\drivers\\pengo.c" );     // eyes
+#  LoadDriverSectionByName( "src\\drivers\\megasys1.c" );  // F1 Grand Prix Star
+#  LoadDriverSectionByName( "src\\drivers\\namcos1.c" );   // Face Off (Japan)
+#  LoadDriverSectionByName( "src\\drivers\\rallyx.c" );    // Loco-Motion
+#  LoadDriverSectionByName( "src\\drivers\\timeplt.c" );   // Loco-Motion
+#  LoadDriverSectionByName( "src\\drivers\\exidy.c" );     // Victory
+#  LoadDriverSectionByName( "src\\drivers\\m72.c" );       // Bomber Man World (World)
+#  LoadDriverSectionByName( "src\\drivers\\leland.c" );    // Asylum (prototype)
+#  LoadDriverSectionByName( "src\\drivers\\trackfld.c" );  // Hyper Sports, Hyper Olympics '84?
+
+@SkipDrivers = ( "jrcrypt.c", "cps1.c", "mpatrol.c", "snk.c", 
+                 "system16.c", "galaxian.c", "scramble.c", "scobra.c", 
+	             "rampart.c", "williams.c", "rastan.c", "hal21.c", 
+	             "espial.c", "bzone.c", "nova2001.c", "gottlieb.c", 
+	             "pengo.c",  "megasys1.c", "namcos1.c", "rallyx.c", 
+	             "timeplt.c", "exidy.c", "m72.c", "leland.c", "trackfld.c" );
+
 # Do two passes, one to find the last autoNameNumber, another to actually
 # modify the files
 print "Pass 1...\n";
@@ -737,43 +733,54 @@ print "Pass 1...\n";
 foreach( @FILEs ) {
 	chomp( $_ );
 
-		# Skip the fake jrcrypt.c file
-	if( !($_ =~ /.*jrcrypt\.c$/) ) {
-		$DriverFileName = $_;
-		$DriverName = $_;
+	$DriverFileName = $_;
+	$DriverName = $_;
+	$IsValid = true;
 
-			# Change the DriverName to what will be present in the actual MAME code
-			# Drop the ./MAME/ portion
-		$DriverName =~ /^\.\/MAME\/src\/drivers\/(.*\.c)$/;
-		$DriverName = "src\\\\drivers\\\\$1";
-
-		($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
-		 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
-
-		open( FILE, "<$DriverFileName" ) || die "Failed to open file $DriverFileName!\n";
-		sysread( FILE, $File, $size );
-		close( FILE );
-
-		if( ($File =~ /\#pragma code_seg/) ) {
-				# this should only happen on the first pass
-			$File =~ /\#pragma code_seg\(\"C(\d+)\"\)/;
-			$myAutoNameNumber = $1;
-
-			print PRELOADFILE "/NOPRELOAD:\"".CODE_PREFIX."$myAutoNameNumber\"\n";
-			print PRELOADFILE "/NOPRELOAD:\"".BSS_PREFIX."$myAutoNameNumber\"\n";
-			print DBGPRELOADFILE "/NOPRELOAD:\"".CODE_PREFIX."$myAutoNameNumber\"\n";
-			print DBGPRELOADFILE "/NOPRELOAD:\"".BSS_PREFIX."$myAutoNameNumber\"\n";
-	#		print PRELOADFILE "/NOPRELOAD:\"".DATA_PREFIX."$myAutoNameNumber\"\n";
-	#		print PRELOADFILE "/NOPRELOAD:\"".CONST_PREFIX."$myAutoNameNumber\"\n";
-			print GENERATEDFILE "  RegisterSectionName( \"$DriverName\", \"$myAutoNameNumber\" );\n";
-
-			if( $myAutoNameNumber >= $autoNameNumber ) {
-				$autoNameNumber = $myAutoNameNumber + 1;
-			}		
-
-		} else {
-		   push @newFILEs, $DriverFileName;
+		# Skip the fake jrcrypt.c file and all the hack files
+	foreach( @SkipDrivers ) {
+		$DriverToSkip = $_;
+		$DriverToSkip =~ s/\.c/\\.c/;
+		if( ($DriverName =~ /.*$DriverToSkip/ ) ) {
+			print "Skipping $DriverName.\n";
+			$IsValid = false;
+			last;
 		}
+	}
+
+	next if( $IsValid eq false );
+
+		# Change the DriverName to what will be present in the actual MAME code
+		# Drop the ./MAME/ portion
+	$DriverName =~ /^\.\/MAME\/src\/drivers\/(.*\.c)$/;
+	$DriverName = "src\\\\drivers\\\\$1";
+
+	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
+
+	open( FILE, "<$DriverFileName" ) || die "Failed to open file $DriverFileName!\n";
+	sysread( FILE, $File, $size );
+	close( FILE );
+
+	if( ($File =~ /\#pragma code_seg/) ) {
+			# this should only happen on the first pass
+		$File =~ /\#pragma code_seg\(\"C(\d+)\"\)/;
+		$myAutoNameNumber = $1;
+
+		print PRELOADFILE "/NOPRELOAD:\"".CODE_PREFIX."$myAutoNameNumber\"\n";
+		print PRELOADFILE "/NOPRELOAD:\"".BSS_PREFIX."$myAutoNameNumber\"\n";
+		print DBGPRELOADFILE "/NOPRELOAD:\"".CODE_PREFIX."$myAutoNameNumber\"\n";
+		print DBGPRELOADFILE "/NOPRELOAD:\"".BSS_PREFIX."$myAutoNameNumber\"\n";
+#		print PRELOADFILE "/NOPRELOAD:\"".DATA_PREFIX."$myAutoNameNumber\"\n";
+#		print PRELOADFILE "/NOPRELOAD:\"".CONST_PREFIX."$myAutoNameNumber\"\n";
+		print GENERATEDFILE "  RegisterSectionName( \"$DriverName\", \"$myAutoNameNumber\" );\n";
+
+		if( $myAutoNameNumber >= $autoNameNumber ) {
+			$autoNameNumber = $myAutoNameNumber + 1;
+		}		
+
+	} else {
+	   push @newFILEs, $DriverFileName;
 	}
 }
 
@@ -783,74 +790,88 @@ print "Pass 2...\n";
 foreach( @newFILEs ) {
 	chomp( $_ );
 
-		# Skip the fake jrcrypt.c file
-	if( !($_ =~ /.*jrcrypt\.c$/) ) {
-		$DriverFileName = $_;
-		$DriverName = $_;
+	$DriverFileName = $_;
+	$DriverName = $_;
+	$IsValid = true;
 
-			# Change the DriverName to what will be present in the actual MAME code
-			# Drop the ./MAME/ portion
-		$DriverName =~ /^\.\/MAME\/src\/drivers\/(.*\.c)$/;
-		$DriverName = "src\\\\drivers\\\\$1";
+		# Skip the fake jrcrypt.c file and all the hack files
+	foreach( @SkipDrivers ) {
+		$DriverToSkip = $_;
+		$DriverToSkip =~ s/\.c/\\.c/;
+		if( ($DriverName =~ /.*$DriverToSkip/ ) ) {
+			print "Skipping $DriverName.\n";
+			$IsValid = false;
+			last;
+		}
+	}
 
-		print PRELOADFILE "/NOPRELOAD:\"".CODE_PREFIX."$autoNameNumber\"\n";
-		print PRELOADFILE "/NOPRELOAD:\"".BSS_PREFIX."$autoNameNumber\"\n";
-		print DBGPRELOADFILE "/NOPRELOAD:\"".CODE_PREFIX."$autoNameNumber\"\n";
-		print DBGPRELOADFILE "/NOPRELOAD:\"".BSS_PREFIX."$autoNameNumber\"\n";
+	next if( $IsValid eq false );
+
+		# Change the DriverName to what will be present in the actual MAME code
+		# Drop the ./MAME/ portion
+	$DriverName =~ /^\.\/MAME\/src\/drivers\/(.*\.c)$/;
+	$DriverName = "src\\\\drivers\\\\$1";
+
+	print PRELOADFILE "/NOPRELOAD:\"".CODE_PREFIX."$autoNameNumber\"\n";
+	print PRELOADFILE "/NOPRELOAD:\"".BSS_PREFIX."$autoNameNumber\"\n";
+	print DBGPRELOADFILE "/NOPRELOAD:\"".CODE_PREFIX."$autoNameNumber\"\n";
+	print DBGPRELOADFILE "/NOPRELOAD:\"".BSS_PREFIX."$autoNameNumber\"\n";
 #		print PRELOADFILE "/NOPRELOAD:\"".DATA_PREFIX."$autoNameNumber\"\n";
 #		print PRELOADFILE "/NOPRELOAD:\"".CONST_PREFIX."$autoNameNumber\"\n";
-		print GENERATEDFILE "  RegisterSectionName( \"$DriverName\", \"$autoNameNumber\" );\n";
+	print GENERATEDFILE "  RegisterSectionName( \"$DriverName\", \"$autoNameNumber\" );\n";
 
-		($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
-		 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
+	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
 
-		open( FILE, "<$DriverFileName" ) || die "Failed to open file $DriverFileName!\n";
+	open( FILE, "<$DriverFileName" ) || die "Failed to open file $DriverFileName!\n";
+	sysread( FILE, $File, $size );
+	close( FILE );
+
+		# Write out the section header/footer
+	WriteSectionData( $DriverFileName, $File, $autoNameNumber );
+
+		# Also do the vidhdrw file, if one exists
+	$VidHardwareName = $DriverFileName;
+	$VidHardwareName =~ s/\/drivers\//\/vidhrdw\//;
+
+	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $VidHardwareName );
+
+	if( open( FILE, "<$VidHardwareName" ) ) {
+		$File = "";
 		sysread( FILE, $File, $size );
 		close( FILE );
 
-			# Write out the section header/footer
-		WriteSectionData( $DriverFileName, $File, $autoNameNumber );
-
-			# Also do the vidhdrw file, if one exists
-		$VidHardwareName = $DriverFileName;
-		$VidHardwareName =~ s/\/drivers\//\/vidhrdw\//;
-
-		($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
-		 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $VidHardwareName );
-
-		if( open( FILE, "<$VidHardwareName" ) ) {
-			$File = "";
-			sysread( FILE, $File, $size );
-			close( FILE );
-
-			if( !($File =~ /\#pragma code_seg/) ) {
-				WriteSectionData( $VidHardwareName, $File, $autoNameNumber );
-			}
+		if( !($File =~ /\#pragma code_seg/) ) {
+			WriteSectionData( $VidHardwareName, $File, $autoNameNumber );
 		}
-
-			# Also do the sndhrdw file, if one exists
-		$SoundHardwareName = $DriverFileName;
-		$SoundHardwareName =~ s/\/drivers\//\/sndhrdw\//;
-
-		($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
-		 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $SoundHardwareName );
-
-		if( open( FILE, "<$SoundHardwareName" ) ) {
-			$File = "";
-			sysread( FILE, $File, $size );
-			close( FILE );
-
-			if( !($File =~ /\#pragma code_seg/) ) {
-				WriteSectionData( $SoundHardwareName, $File, $autoNameNumber );
-			}
-		}
-
-		$autoNameNumber++;
 	}
+
+		# Also do the sndhrdw file, if one exists
+	$SoundHardwareName = $DriverFileName;
+	$SoundHardwareName =~ s/\/drivers\//\/sndhrdw\//;
+
+	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $SoundHardwareName );
+
+	if( open( FILE, "<$SoundHardwareName" ) ) {
+		$File = "";
+		sysread( FILE, $File, $size );
+		close( FILE );
+
+		if( !($File =~ /\#pragma code_seg/) ) {
+			WriteSectionData( $SoundHardwareName, $File, $autoNameNumber );
+		}
+	}
+
+	$autoNameNumber++;
 }
 print GENERATEDFILE "} // End extern \"C\"\n";
 print GENERATEDFILE "}\n\n\n";
 close( GENERATEDFILE );
+
+
+#------------------------------------------------------------------------------
 
 
 print "Sectionizing CPU's...\n";
@@ -859,8 +880,11 @@ print "Sectionizing CPU's...\n";
 @FILEs    = `find ./MAME/src/cpu/ -name *.c`;
 @newFILEs = ();
 $autoNameNumber = 0;
-
 local $OldCPUName = "";
+
+
+@SkipCPUs = ( "DSP32", "I8085", "JAGUAR", "MIPS", "NEC", "PIC16C5X", "TMS9900" );
+
 
 # Do two passes, one to find the last autoNameNumber, another to actually
 # modify the files
@@ -875,6 +899,20 @@ foreach( @FILEs ) {
 		# Drop the ./MAME/src/cpu portion
 	$CPUName =~ /^\.\/MAME\/src\/cpu\/(.+)\/.+\.c$/;
 	$CPUName = $1;
+
+	$IsValid = true;
+
+		# Skip the fake jrcrypt.c file and all the hack files
+	foreach( @SkipCPUs ) {
+		$CPUToSkip = $_;
+		if( uc($CPUName) eq $CPUToSkip ) {
+			print "Skipping $CPUName.\n";
+			$IsValid = false;
+			last;
+		}
+	}
+
+	next if( $IsValid eq false );
 
 	($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
 	 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );
@@ -892,11 +930,12 @@ foreach( @FILEs ) {
 			# so only register on a new directory (CPUName)
 		if( $CPUName ne $OldCPUName ) {
 			$OldCPUName = $CPUName;
+			$ucaseCPUName = uc( $CPUName );
 			print PRELOADFILE "/NOPRELOAD:\"C".CODE_PREFIX."$myAutoNameNumber\"\n";
 			print PRELOADFILE "/NOPRELOAD:\"C".BSS_PREFIX."$myAutoNameNumber\"\n";
 			print DBGPRELOADFILE "/NOPRELOAD:\"C".CODE_PREFIX."$myAutoNameNumber\"\n";
 			print DBGPRELOADFILE "/NOPRELOAD:\"C".BSS_PREFIX."$myAutoNameNumber\"\n";
-			print CPUFILE "  RegisterSectionName( \"$CPUName\", \"$myAutoNameNumber\" );\n";
+			print CPUFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"$myAutoNameNumber\" );\n";
 		}
 
 		if( $myAutoNameNumber >= $autoNameNumber ) {
@@ -922,16 +961,32 @@ foreach( @newFILEs ) {
 	$CPUName =~ /^\.\/MAME\/src\/cpu\/(.+)\/.+\.c$/;
 	$CPUName = $1;
 
+	$IsValid = true;
+
+		# Skip the fake jrcrypt.c file and all the hack files
+	foreach( @SkipCPUs ) {
+		$CPUToSkip = $_;
+		$CPUToSkip =~ s/\.c/\\.c/;
+		if( ($CPUName =~ /.*$CPUToSkip/ ) ) {
+			print "Skipping $CPUName.\n";
+			$IsValid = false;
+			last;
+		}
+	}
+
+	next if( $IsValid eq false );
+
 		# Unlike the drivers, we want one name for an entire directory
 		# so only register on a new directory (CPUName)
 	if( $CPUName ne $OldCPUName ) {
 		$autoNameNumber++;
 		$OldCPUName = $CPUName;
+		$ucaseCPUName = uc( $CPUName );
 		print PRELOADFILE "/NOPRELOAD:\"C".CODE_PREFIX."$autoNameNumber\"\n";
 		print PRELOADFILE "/NOPRELOAD:\"C".BSS_PREFIX."$autoNameNumber\"\n";
 		print DBGPRELOADFILE "/NOPRELOAD:\"C".CODE_PREFIX."$autoNameNumber\"\n";
 		print DBGPRELOADFILE "/NOPRELOAD:\"C".BSS_PREFIX."$autoNameNumber\"\n";
-		print CPUFILE "  RegisterSectionName( \"$CPUName\", \"$autoNameNumber\" );\n";
+		print CPUFILE "  RegisterSectionID( CPU_$ucaseCPUName, \"$autoNameNumber\" );\n";
 	}
 
 
