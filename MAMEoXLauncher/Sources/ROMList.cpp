@@ -70,7 +70,9 @@ BOOL CROMList::LoadROMList( BOOL bGenerate, BOOL allowClones )
 {
 	PRINTMSG( T_TRACE, "LoadROMList" );
 
-	m_ROMList.clear();
+	m_ROMListWithClones.clear();
+  m_ROMListNoClones.clear();
+  m_allowClones = allowClones;
 
 	std::string		romListFile = g_ROMListPath;
 	romListFile += "\\";
@@ -107,7 +109,7 @@ BOOL CROMList::LoadROMList( BOOL bGenerate, BOOL allowClones )
     {
       CloseHandle( hFile );
 	    if( bGenerate )
-        return GenerateROMList( allowClones );		
+        return GenerateROMList();		
       return FALSE;
     }
 
@@ -119,7 +121,9 @@ BOOL CROMList::LoadROMList( BOOL bGenerate, BOOL allowClones )
 			if( BytesRead != sizeof(idx) )
 				break;
 
-			m_ROMList.push_back( idx );
+			m_ROMListWithClones.push_back( idx );
+      if( !m_driverInfoList[idx].m_isClone )
+        m_ROMListNoClones.push_back( idx );
 		}
 
 		CloseHandle( hFile );
@@ -128,7 +132,7 @@ BOOL CROMList::LoadROMList( BOOL bGenerate, BOOL allowClones )
 	}
 	else if( bGenerate )
   {
-    return GenerateROMList( allowClones );		
+    return GenerateROMList();		
   }
 
 	return FALSE;
@@ -137,16 +141,17 @@ BOOL CROMList::LoadROMList( BOOL bGenerate, BOOL allowClones )
 //---------------------------------------------------------------------
 //	GenerateROMList
 //---------------------------------------------------------------------
-BOOL CROMList::GenerateROMList( BOOL allowClones )
+BOOL CROMList::GenerateROMList( void )
 {
 	PRINTMSG( T_TRACE, "GenerateROMList" );
 
-	m_ROMList.clear();
+	m_ROMListWithClones.clear();
+  m_ROMListNoClones.clear();
 
 	std::vector< CStdString > zipFileNames;
 	WIN32_FIND_DATA findData;
 
-	PRINTMSG( T_INFO, "Finding files %s", g_FileIOConfig.m_RomPath + "\\*.zip" );
+	PRINTMSG( T_INFO, "Finding files %s\\*.zip", g_FileIOConfig.m_RomPath );
 
   // Check if the rom path is on a smb share
   if (g_FileIOConfig.m_RomPath.Left(6) == "smb://")
@@ -190,7 +195,6 @@ BOOL CROMList::GenerateROMList( BOOL allowClones )
   CStdString strBuff;
   strBuff.Format("Found %lu zip files!\n", zipFileNames.size());
   OutputDebugString(strBuff);
-  _RPT1( _CRT_WARN, "Found %lu zip files!", zipFileNames.size() );
 	PRINTMSG( T_INFO, "Found %lu zip files!", zipFileNames.size() );
 
   // Check the zip files against the list of all known zip files
@@ -202,14 +206,14 @@ BOOL CROMList::GenerateROMList( BOOL allowClones )
 		{
       if( it->CompareNoCase(m_driverInfoList[i].m_romFileName) == 0 )
 			{
-        if( allowClones || !m_driverInfoList[i].m_isClone )
-					m_ROMList.push_back( i );
+        if( !m_driverInfoList[i].m_isClone )
+          m_ROMListNoClones.push_back( i );
+        m_ROMListWithClones.push_back( i );
 			}
 		}
 	}
 
-  _RPT1( _CRT_WARN, "Found %lu games!", m_ROMList.size() );
-	PRINTMSG( T_INFO, "Found %lu games!", m_ROMList.size() );
+	PRINTMSG( T_INFO, "Found %lu games, %lu unique!", m_ROMListWithClones.size(), m_ROMListNoClones.size() );
 
 
 		// Write the indices to the ROM list file
@@ -242,8 +246,8 @@ BOOL CROMList::GenerateROMList( BOOL allowClones )
 		return FALSE;
 	}
 
-	std::vector<UINT32>::iterator it = m_ROMList.begin();
-	for( ; it != m_ROMList.end(); ++it )
+	std::vector<UINT32>::iterator it = m_ROMListWithClones.begin();
+	for( ; it != m_ROMListWithClones.end(); ++it )
 	{
 		DWORD idx = (*it);
 		WriteFile( hFile, &idx, sizeof(idx), &bytesWritten, NULL );
@@ -271,7 +275,13 @@ BOOL CROMList::GenerateROMList( BOOL allowClones )
 void CROMList::MoveCursor( const XINPUT_GAMEPAD	&gp )
 {
   	// Handle user input
-  if( gp.bAnalogButtons[XINPUT_GAMEPAD_A] > 50 )
+  if(  gp.bAnalogButtons[XINPUT_GAMEPAD_B] > 50 && 
+       gp.bAnalogButtons[XINPUT_GAMEPAD_A] > 50 )
+  {
+    GenerateROMList();
+		WaitForNoKey();
+  }
+  else if( gp.bAnalogButtons[XINPUT_GAMEPAD_A] > 50 || gp.wButtons & XINPUT_GAMEPAD_START )
 	{
 			// Run the selected ROM
     if( GetCurrentGameIndex() != INVALID_ROM_INDEX  )
@@ -290,7 +300,7 @@ void CROMList::MoveCursor( const XINPUT_GAMEPAD	&gp )
     }
 	}
 	else if( gp.bAnalogButtons[XINPUT_GAMEPAD_X] > 150 &&
-						gp.bAnalogButtons[XINPUT_GAMEPAD_B] > 150 )
+					 gp.bAnalogButtons[XINPUT_GAMEPAD_B] > 150 )
 	{				
 			// Move the currently selected game to the backup dir
 		UINT32 romIDX = GetCurrentGameIndex();
@@ -327,9 +337,9 @@ void CROMList::MoveCursor( const XINPUT_GAMEPAD	&gp )
 	}
   else if( gp.bAnalogButtons[XINPUT_GAMEPAD_BLACK] > 150 )
   {
-		m_allowclones = !m_allowclones;
-      // Regenerate the rom listing, hiding clones
-    GenerateROMList( m_allowclones );
+      // No need to regenerate the list, just switch to
+      // the noclones (or clones) list
+		m_allowClones = !m_allowClones;
 		WaitForNoKey();
   }
 
@@ -415,12 +425,12 @@ void CROMList::SuperScrollModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapse
   if( absCursorPos != INVALID_SUPERSCROLL_JUMP_IDX )
   {
       // Jump the cursor to the selected letter
-	  UINT32 pageSize = (m_ROMList.size() < MAXPAGESIZE ? m_ROMList.size() : MAXPAGESIZE);
+	  UINT32 pageSize = (CURRENTROMLIST().size() < MAXPAGESIZE ? CURRENTROMLIST().size() : MAXPAGESIZE);
 	  UINT32 pageHalfwayPoint = (pageSize >> 1);
-	  UINT32 maxPageOffset = m_ROMList.size() - pageSize;
+	  UINT32 maxPageOffset = CURRENTROMLIST().size() - pageSize;
 
       // Put the page offset at absoluteCursorPos - pageHalwayPoint, or 0
-    if( absCursorPos <= pageHalfwayPoint || m_ROMList.size() < MAXPAGESIZE )
+    if( absCursorPos <= pageHalfwayPoint || CURRENTROMLIST().size() < MAXPAGESIZE )
     {
       m_gameListPageOffset = 0.0f;
       m_gameListCursorPosition = (FLOAT)absCursorPos;
@@ -499,9 +509,9 @@ void CROMList::NormalModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapsedTime
 		cursorVelocity *= SBMULTIPLIER_FAST;
 
 
-	DWORD pageSize = (m_ROMList.size() < MAXPAGESIZE ? m_ROMList.size() : MAXPAGESIZE);
+	DWORD pageSize = (CURRENTROMLIST().size() < MAXPAGESIZE ? CURRENTROMLIST().size() : MAXPAGESIZE);
 	ULONG pageHalfwayPoint = (pageSize >> 1);
-	ULONG maxPageOffset = m_ROMList.size() - pageSize;
+	ULONG maxPageOffset = CURRENTROMLIST().size() - pageSize;
 
 	if( cursorVelocity > 0 )
 	{
@@ -633,7 +643,7 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
 
 	m_font.Begin();
 
-	swprintf( name, L"Names %s", ( m_allowclones == FALSE ) ? L"(No Clones)" : L"(Clones)   " );
+	swprintf( name, L"Names %s", ( m_allowClones == FALSE ) ? L"(No Clones)" : L"(Clones)   " );
 	m_font.DrawText(  70, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), name );
 	if( m_additionalinfo )
 	{
@@ -650,20 +660,20 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
 	DWORD color;
 	FLOAT xPos, xDelta;
 	FLOAT yPos = 64;
-	DWORD pageSize = (m_ROMList.size() < MAXPAGESIZE ? m_ROMList.size() : MAXPAGESIZE);
+	DWORD pageSize = (CURRENTROMLIST().size() < MAXPAGESIZE ? CURRENTROMLIST().size() : MAXPAGESIZE);
 	ULONG absListIDX = (ULONG)m_gameListPageOffset;
-	if( absListIDX > (m_ROMList.size() - pageSize) )
+	if( absListIDX > (CURRENTROMLIST().size() - pageSize) )
 	{
 			// The current page offset is invalid (due to list shrinkage), reset it and
 			//  set the cursor position to the last item in the list
-    absListIDX = (m_ROMList.size() - pageSize);
+    absListIDX = (CURRENTROMLIST().size() - pageSize);
     m_gameListPageOffset = (FLOAT)absListIDX;
 		m_gameListCursorPosition = (FLOAT)(pageSize - 1);
 	}
 
 	for( DWORD i = 0; i < pageSize; ++i )
 	{
-		mbstowcs( name, m_driverInfoList[ m_ROMList[absListIDX++] ].m_description, 255 );
+		mbstowcs( name, m_driverInfoList[ CURRENTROMLIST()[absListIDX++] ].m_description, 255 );
 
 			// Render the selected item as bright white
 		xPos = 70;
@@ -705,7 +715,7 @@ void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
       // Display the superscroll character
     WCHAR displayString[2] = L"";
     mbtowc( displayString, &g_superscrollCharacterSet[m_superscrollCharacterIdx], 1 );
-		swprintf( name, L"Names %s [%s]", ( m_allowclones == FALSE ) ? L"(No Clones)" : L"(Clones)   ", displayString );
+		swprintf( name, L"Names %s [%s]", ( m_allowClones == FALSE ) ? L"(No Clones)" : L"(Clones)   ", displayString );
 		m_font.DrawText(  70, 40, D3DCOLOR_RGBA( 255, 255, 255, 255 ), name );
   }
 
@@ -788,11 +798,15 @@ void CROMList::SetCurrentGameIndex( UINT32 idx )
 void CROMList::RemoveCurrentGameIndex( void )
 {
 	UINT32 curCursorPos = (ULONG)m_gameListPageOffset + (ULONG)m_gameListCursorPosition;
-	std::vector<UINT32>::iterator it = m_ROMList.begin();
+	std::vector<UINT32>::iterator it = CURRENTROMLIST().begin();
 	for( UINT32 i = 0; i < curCursorPos; ++i )
 		++it;
 
-	m_ROMList.erase( it );
+	CURRENTROMLIST().erase( it );
+
+    // Note: This needs to be fixed to remove from both
+    //       ROM lists, as well as write the list back
+    //       to the file.
 }
 
 //---------------------------------------------------------------------
@@ -805,9 +819,9 @@ void CROMList::GenerateSuperscrollJumpTable( void )
     m_superscrollJumpTable[idx] = INVALID_SUPERSCROLL_JUMP_IDX;
   
   char charToLookFor = g_superscrollCharacterSet[0];
-  for( UINT32 j = 0, i = 0; j < m_ROMList.size() ; ++j )
+  for( UINT32 j = 0, i = 0; j < CURRENTROMLIST().size() ; ++j )
   {
-    char currentChar = toupper( m_driverInfoList[ m_ROMList[j] ].m_description[0] );
+    char currentChar = toupper( m_driverInfoList[ CURRENTROMLIST()[j] ].m_description[0] );
 
       // Map any non-alphanumerics to '#'
     if( !(currentChar >= 'A' && currentChar <= 'Z') )

@@ -36,6 +36,7 @@ Version 0.65b
   - \MAMEoX\Includes\DebugLogger.h
   - \MAMEoX\Sources\DebugLogger.cpp
     - Switched PRINTMSG to use OutputDebugString if _DEBUG is defined
+    - Added implicit \n to PRINTMSG
 
   - \media\help.txt:
     - Help file
@@ -86,18 +87,21 @@ Version 0.65b
     - Added MAME core version to driver file sig.
     - Bugfix for the backup (X+B) feature
     - Added Debug/Release mode notification to version string
-    - Reloading ROMS on button B+A now
 
   - \MAMEoXLauncher\sources\Help.cpp:
 
   - \MAMEoXLauncher\includes\Help.h:
     - Help functionality (Button X)
 
+  - \MAMEoXLauncher\includes\ROMList.h:
   - \MAMEoXLauncher\sources\ROMList.cpp:
     - Made the ROM backup path writeRequired
     - Black button to toggle clones on/off
     - White button for advanced game list (not yet)
     - Show With / without Clones in the header
+    - ROM list is regenerated via B+A now
+    - Switching between show/hide clones no longer
+      requires a list regeneration
 
  --- Specific Game fixes --------------------------------------------
   Bomber Man World (XBE dependency)

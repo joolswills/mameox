@@ -248,6 +248,8 @@ void Helper_OutputDebugStringPrintMsg( ULONG msgLevel, const char *fileName, ULO
   vsprintf( &g_debugLoggerString[strlen(g_debugLoggerString)], fmt, arg );
   va_end( arg );
 
+  strcat( g_debugLoggerString, "\n" );
+
   OutputDebugString( g_debugLoggerString );
 }
 #endif

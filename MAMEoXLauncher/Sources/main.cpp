@@ -37,7 +37,7 @@
 //= D E F I N E S =====================================================
 
 	// Number of seconds between valid X button readings
-#define XBUTTON_TIMEOUT	0.50f
+#define TOGGLEBUTTON_TIMEOUT	0.50f
 
   // The deadzone for the screen usage percentage control (right analog)
 #define SCREENRANGE_DEADZONE    15000
@@ -176,7 +176,7 @@ void osd_joystick_calibrate( void )
       g_calibrationData[g_calibrationJoynum].m_xData[g_calibrationStep-1] = gp->sThumbLX;
       g_calibrationData[g_calibrationJoynum].m_yData[g_calibrationStep-1] = gp->sThumbLY;
     }
-    _RPT3( _CRT_WARN, "CALIB: STEP %d: %d, %d\n", g_calibrationStep - 1, gp->sThumbLX, gp->sThumbLY );
+    PRINTMSG( T_INFO, "CALIB: STEP %d: %d, %d\n", g_calibrationStep - 1, gp->sThumbLX, gp->sThumbLY );
   }
 }
 
@@ -477,10 +477,10 @@ void __cdecl main( void )
   D3DXMATRIX matWorld;
   D3DXMatrixIdentity( &matWorld );
 
-    // Toggle for whether or not we're in options mode
+    // Toggle for whether or not we're in a given mode
   BOOL optionsMode = FALSE;
   BOOL helpMode = FALSE;
-	FLOAT xButtonTimeout = 0.0f;
+	FLOAT toggleButtonTimeout = 0.0f;
 	UINT64 lastTime = osd_cycles();
 
 		// Main loop
@@ -495,11 +495,11 @@ void __cdecl main( void )
 	  lastTime = curTime;
 
 		  // Decrement the dpad movement timer
-	  if( xButtonTimeout > 0.0f )
+	  if( toggleButtonTimeout > 0.0f )
 	  {
-		  xButtonTimeout -= elapsedTime;
-		  if( xButtonTimeout < 0.0f )
-			  xButtonTimeout = 0.0f;
+		  toggleButtonTimeout -= elapsedTime;
+		  if( toggleButtonTimeout < 0.0f )
+			  toggleButtonTimeout = 0.0f;
 	  }
 
 
@@ -513,36 +513,23 @@ void __cdecl main( void )
       XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
 		}
 
+
+
     if( gp0->bAnalogButtons[XINPUT_GAMEPAD_B] > 150 && 
         gp0->bAnalogButtons[XINPUT_GAMEPAD_Y] > 150 && 
-        xButtonTimeout == 0.0f )
+        toggleButtonTimeout == 0.0f )
     {
         // Toggle options mode
       optionsMode = !optionsMode;
-      xButtonTimeout = XBUTTON_TIMEOUT;
-    }
-    else if(  gp0->bAnalogButtons[XINPUT_GAMEPAD_B] > 150 && 
-              gp0->bAnalogButtons[XINPUT_GAMEPAD_A] > 150 && 
-              xButtonTimeout == 0.0f )
-    {
-        // Reload ROMS
-      ShowLoadingScreen( pD3DDevice );
-      // Create the MAME driver list
-			mameoxLaunchData->m_gameIndex = 0;
-	    mameoxLaunchData->m_cursorPosition = 0.0f; 
-			mameoxLaunchData->m_pageOffset = 0.0f;
-		  mameoxLaunchData->m_totalMAMEGames = 0;
-	    mameoxLaunchData->m_command = LAUNCH_CREATE_MAME_GAME_LIST;
-      XLaunchNewImage( "D:\\MAMEoX.xbe", &g_launchData );
-		  Die( pD3DDevice, "Could not execute MAMEoX.xbe!" );
+      toggleButtonTimeout = TOGGLEBUTTON_TIMEOUT;
     }
     else if(  gp0->bAnalogButtons[XINPUT_GAMEPAD_B] < 150 && 
               gp0->bAnalogButtons[XINPUT_GAMEPAD_X] > 150 && 
-              xButtonTimeout == 0.0f )
+              toggleButtonTimeout == 0.0f )
     {
         // Toggle help mode
       helpMode = !helpMode;
-      xButtonTimeout = XBUTTON_TIMEOUT;
+      toggleButtonTimeout = TOGGLEBUTTON_TIMEOUT;
     }
     else if(  gp0->sThumbRX < -SCREENRANGE_DEADZONE || gp0->sThumbRX > SCREENRANGE_DEADZONE || 
               gp0->sThumbRY < -SCREENRANGE_DEADZONE || gp0->sThumbRY > SCREENRANGE_DEADZONE )

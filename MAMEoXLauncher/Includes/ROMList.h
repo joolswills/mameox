@@ -18,6 +18,7 @@
 #define INVALID_SUPERSCROLL_JUMP_IDX    0xFFFFFFFF
 #define INVALID_ROM_INDEX               0xFFFFFFFF
 
+#define CURRENTROMLIST()                (m_allowClones ? m_ROMListWithClones : m_ROMListNoClones)
 /*
 typedef enum SortMethod {
 	BY_NAME = 0,
@@ -47,7 +48,7 @@ public:
 		m_gameListCursorSpeedBandTimeout( 0.0f ),
 		m_gameListPageOffset( 0.0f ),
     m_superscrollMode( FALSE ),
-		m_allowclones( TRUE ),
+		m_allowClones( TRUE ),
 		m_additionalinfo( FALSE ),
     m_superscrollCharacterIdx( 0 ),
     m_driverInfoList( drivers ),
@@ -77,14 +78,11 @@ public:
 		// GenerateROMList
 		//! \brief		Generate and store a ROM list file
 		//!
-		//! \param		allowClones - Whether or not to allow clones in the
-		//!                          listing
-		//!
 		//! \return		BOOL - Operation status
 		//! \retval		TRUE - Operation successful
 		//! \retval		FALSE - No ROM list could be generated
 		//------------------------------------------------------------
-	BOOL GenerateROMList( BOOL allowClones = TRUE );
+	BOOL GenerateROMList( void );
 
 		//------------------------------------------------------------
 		// MoveCursor
@@ -122,9 +120,8 @@ public:
 		//!            of the currently selected item.
 		//------------------------------------------------------------
 	UINT32 GetCurrentGameIndex( void ) { 
-    if( m_ROMList.size() && 
-        (ULONG)m_gameListPageOffset + (ULONG)m_gameListCursorPosition < m_ROMList.size() )
-		  return m_ROMList[ (ULONG)m_gameListPageOffset + (ULONG)m_gameListCursorPosition ]; 
+    if( (ULONG)m_gameListPageOffset + (ULONG)m_gameListCursorPosition < CURRENTROMLIST().size() )
+		  return CURRENTROMLIST()[ (ULONG)m_gameListPageOffset + (ULONG)m_gameListCursorPosition ]; 
     return INVALID_ROM_INDEX;
 	}
 
@@ -154,7 +151,7 @@ protected:
   UINT32                m_numDrivers;               //!<  The total number of drivers supported by the core
   MAMEDriverData_t      *m_driverInfoList;          //!<  Drivers supported by the MAME core
   BOOL                  m_superscrollMode;          //!<  Whether or not to display in superscroll mode
-	BOOL									m_allowclones;							//!<	Whether or not to allow clones
+	BOOL									m_allowClones;							//!<	Whether or not to allow clones
 	BOOL									m_additionalinfo;						//!<	Game list with additional informations
   UINT32                m_superscrollCharacterIdx;  //!<  Character for superscroll mode
   UINT32                m_superscrollJumpTable[NUM_SUPERSCROLL_CHARS]; //!<  Jump indices for superscroll
@@ -172,7 +169,8 @@ protected:
 
 		//! Vector of integers into the MAME driver array
 		//!  defining the set of available ROMs
-	std::vector<UINT32>		m_ROMList;		
+	std::vector<UINT32>		m_ROMListWithClones;		
+  std::vector<UINT32>   m_ROMListNoClones;
 };
 
 
