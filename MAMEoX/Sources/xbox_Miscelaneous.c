@@ -117,31 +117,19 @@ int osd_display_loading_rom_message( const char *name, struct rom_load_data *rom
 	/* return non-zero to abort loading */
 
 	WCHAR title[128];
-	WCHAR bar[128];
   WCHAR memory[64];
   MEMORYSTATUS memStatus;
 
 	PRINTMSG( T_TRACE, "osd_display_loading_rom_message" );
 
-	swprintf( bar, L"[%50c]", L' ' );
-
 	if( name )
 	{
-		UINT32 i = 0;
 		wcscpy( title, L"Loading \"" );
 		mbstowcs( &title[wcslen(title)], name, 32 );
 		swprintf( &title[wcslen(title)], L"\" (%d/ %d)", romdata->romsloaded, romdata->romstotal );
-
-		for( ; i < (ULONG)(((FLOAT)romdata->romsloaded / (FLOAT)romdata->romstotal) * 50.0f); ++i )
-			bar[i+1] = L'|';
 	}
 	else
-	{
-		UINT32 i = 0;
 		wcscpy( title, L"Loading complete!" );
-		for( ; i < 50; ++i )
-			bar[i+1] = L'|';
-	}
 
 
   GlobalMemoryStatus( &memStatus );
@@ -154,9 +142,31 @@ int osd_display_loading_rom_message( const char *name, struct rom_load_data *rom
     FontRender( 320, 360, D3DCOLOR_XRGB( 60, 105, 225 ), memory, 2 );
   EndFontRender( FALSE );
 
-  BeginFontRender( FALSE, FONTTYPE_LARGETHIN );
-	  FontRender( 320, 240, D3DCOLOR_XRGB( 120, 230, 120 ), bar, 2 );
-  EndFontRender( TRUE );
+
+  #define PROGRESSBAR_CAP_COLOR     D3DCOLOR_XRGB( 101, 197, 247 )
+  #define PROGRESSBAR_BAR_COLOR     D3DCOLOR_XRGB( 16, 80, 124 )
+
+  #define PROGRESSBAR_WIDTH         410
+  #define PROGRESSBAR_HEIGHT        20
+
+  if( name )
+    RenderProgressBar( 320 - (PROGRESSBAR_WIDTH>>1),
+                        240 - (PROGRESSBAR_HEIGHT >> 1), 
+                        320 + (PROGRESSBAR_WIDTH>>1), 
+                        240 + (PROGRESSBAR_HEIGHT >> 1), 
+                        romdata->romsloaded, 
+                        romdata->romstotal, 
+                        PROGRESSBAR_BAR_COLOR, 
+                        PROGRESSBAR_CAP_COLOR );
+  else
+    RenderProgressBar( 320 - (PROGRESSBAR_WIDTH>>1),
+                        240 - (PROGRESSBAR_HEIGHT >> 1), 
+                        320 + (PROGRESSBAR_WIDTH>>1), 
+                        240 + (PROGRESSBAR_HEIGHT >> 1), 
+                        100, 
+                        100, 
+                        PROGRESSBAR_BAR_COLOR, 
+                        PROGRESSBAR_CAP_COLOR );
 
 	return 0;
 }
