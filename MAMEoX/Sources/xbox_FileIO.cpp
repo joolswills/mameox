@@ -234,10 +234,8 @@ int osd_get_path_info( int pathtype, int pathindex, const char *filename )
     strPath = filename;
 
   strPath.MakeLower();
-  if( strPath.Left(6) == "smb://" )
-  {
+  if( strPath.Left(6) == "smb:\\\\" )
     attribs = PATH_IS_FILE;
-  }
   else
   {
     if( pathtype != FILETYPE_MAMEOX_FULLPATH )
@@ -320,7 +318,7 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
   ret->m_bIsSMB = FALSE;
 
   // Check if this is a file on a smb share
-  if ( strPath.Left(6) == "smb://" )
+  if ( strPath.Left(6) == "smb:\\\\" )
   {
     // If the file is of type rom, we will cache it to the utility drive
     if ( pathtype == FILETYPE_ROM )
@@ -779,9 +777,9 @@ static BOOL Helper_CreateOrOpenSystemPath( char **path, BOOL writeRequired )
   if( !path || !(*path) )
     return FALSE;
 
-  // If the path starts w/ smb:// assume it exists
+  // If the path starts w/ smb:\\ assume it exists
   CStdString strPath = *path;
-  if( strPath.Left(6) == "smb://" )
+  if( strPath.Left(6) == "smb:\\\\" )
   {
     return TRUE;
   }
