@@ -7,6 +7,8 @@ Version 0.64b
 
   - \MAMEoX\Includes\MAMEoX.h:
     - Moved MAME core version string to header file
+    - Added build string to report what version of VC++ was used
+      to compile the image.
 
   - \MAMEoX\Includes\InputManager.h:
     - Renamed WaitForNoKeys to WaitForNoKey

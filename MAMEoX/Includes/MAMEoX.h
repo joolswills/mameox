@@ -21,9 +21,20 @@ extern "C" {
 #define CHECKRAM()
 #endif
 
+
+
+  // Build string
+#ifdef _VC6
+#define BUILD_STRING         "::VC6"
+#define LBUILD_STRING        L"::VC6"
+#else
+#define BUILD_STRING         "::VC7"
+#define LBUILD_STRING        L"::VC7"
+#endif
+
   // Version number
-#define VERSION_STRING        "0.64b"
-#define LVERSION_STRING       L"0.64b"
+#define VERSION_STRING        "0.64b" BUILD_STRING
+#define LVERSION_STRING       L"0.64b" LBUILD_STRING
 
 #define LMAMEVERSION_STRING   L"0.67"
 
