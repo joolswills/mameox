@@ -27,7 +27,7 @@
 
 	// Analog stick deadzone
 #define ANALOG_DEADZONE_PERCENTAGE      0.15f
-#define ANALOG_DEADZONE				          (32768 * ANALOG_DEADZONE_PERCENTAGE)
+#define ANALOG_DEADZONE				          (INT32)(32768.0f * ANALOG_DEADZONE_PERCENTAGE)
 #define DEADZONE_RECTIFIER			        1.0f / (1.0f - ANALOG_DEADZONE_PERCENTAGE)
 
 	// macros for building/mapping keycodes
@@ -534,7 +534,43 @@ void osd_lightgun_read(int player, int *deltax, int *deltay)
 //---------------------------------------------------------------------
 void osd_trak_read(int player, int *deltax, int *deltay)
 {
-	*deltax = *deltay = 0;
+  /*
+	const XINPUT_GAMEPAD *gp;
+
+	if( (gp = GetGamepadState( player )) )
+  {
+      if( gp->sThumbLX > ANALOG_DEADZONE )
+        *deltax = (int)((FLOAT)(gp->sThumbLX - ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+      else if( gp->sThumbLX < -ANALOG_DEADZONE )
+        *deltax = (int)((FLOAT)(gp->sThumbLX + ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+      else
+        *deltax = 0;
+
+      if( gp->sThumbLY > ANALOG_DEADZONE )
+        *deltay = (int)((FLOAT)(gp->sThumbLY - ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+      else if( gp->sThumbLY < -ANALOG_DEADZONE )
+        *deltay = (int)((FLOAT)(gp->sThumbLY + ANALOG_DEADZONE) * DEADZONE_RECTIFIER);
+      else
+        *deltay = 0;
+
+      // Set to [-128,128]
+    *deltax = ((FLOAT)*deltax * 128.0f / 32767.0f);
+    *deltay = ((FLOAT)*deltay * 128.0f / 32767.0f);
+
+      // Lock to the expected range
+    if( *deltax > 128 )
+      *deltax = 128;
+    else if( *deltax < -128 )
+      *deltax = -128;
+
+    if( *deltay > 128 )
+      *deltay = 128;
+    else if( *deltay < -128 )
+      *deltay = -128;
+  }
+  else  
+  */
+	  *deltax = *deltay = 0;
 }
 
 
@@ -547,7 +583,7 @@ void osd_analogjoy_read(	int player,
 {
 	/* return values in the range -128 .. 128 (yes, 128, not 127) */
 	UINT32 i = 0;
-  FLOAT analogDivisor = 32768.0f;
+  FLOAT analogDivisor = 32767.0f;
 	const XINPUT_GAMEPAD *gamepad;
 	
 //	PRINTMSG( T_TRACE, "osd_analogjoy_read" );
@@ -702,7 +738,7 @@ CHECKRAM();
 			continue;
 		}
 
-		analog_axis[i] = (analog_axis[i] * 128.0f / analogDivisor);
+		analog_axis[i] = ((float)analog_axis[i] * 128.0f / analogDivisor);
 		if (analog_axis[i] < -128) 
 			analog_axis[i] = -128;
 		if (analog_axis[i] >  128) 
@@ -951,7 +987,7 @@ void osd_customize_inputport_defaults( struct ipd *defaults )
 
 			// *** IPT_PADDLE|IPF_PLAYER1 *** //
     case (IPT_PADDLE|IPF_PLAYER1):
-      REMAP_SEQ_1( JOYCODE_1_LEFT );
+      REMAP_SEQ_1( AXISCODE( 0, JT_LSTICK_LEFT ) );
       break;
 
 
@@ -963,42 +999,42 @@ void osd_customize_inputport_defaults( struct ipd *defaults )
 
 			// *** IPT_PADDLE_V|IPF_PLAYER1 *** //
     case (IPT_PADDLE_V|IPF_PLAYER1):
-      REMAP_SEQ_1( JOYCODE_1_UP );
+      REMAP_SEQ_1( AXISCODE( 0, JT_LSTICK_UP ) );
       break;
 
 			// *** IPT_PADDLE_V|IPF_PLAYER1+IPT_EXTENSION *** //
     case ((IPT_PADDLE_V|IPF_PLAYER1)+IPT_EXTENSION):
-      REMAP_SEQ_1( JOYCODE_1_DOWN );
+      REMAP_SEQ_1( AXISCODE( 0, JT_LSTICK_DOWN ) );
       break;
 
 			// *** IPT_DIAL|IPF_PLAYER1 *** //
     case (IPT_DIAL|IPF_PLAYER1):
-      REMAP_SEQ_1( JOYCODE_1_LEFT );
+      REMAP_SEQ_1( AXISCODE( 0, JT_LSTICK_LEFT ) );
       break;
 
 			// *** IPT_DIAL|IPF_PLAYER1+IPT_EXTENSION *** //
     case ((IPT_DIAL|IPF_PLAYER1)+IPT_EXTENSION):
-      REMAP_SEQ_1( JOYCODE_1_RIGHT );
+      REMAP_SEQ_1( AXISCODE( 0, JT_LSTICK_RIGHT ) );
       break;
 
 			// *** IPT_TRACKBALL_X|IPF_PLAYER1 *** //
     case (IPT_TRACKBALL_X|IPF_PLAYER1):
-      REMAP_SEQ_1( JOYCODE_1_LEFT );
+      REMAP_SEQ_1( AXISCODE( 0, JT_LSTICK_LEFT ) );
       break;
 
 			// *** IPT_TRACKBALL_X|IPF_PLAYER1+IPT_EXTENSION *** //
     case ((IPT_TRACKBALL_X|IPF_PLAYER1)+IPT_EXTENSION):
-      REMAP_SEQ_1( JOYCODE_1_RIGHT );
+      REMAP_SEQ_1( AXISCODE( 0, JT_LSTICK_RIGHT ) );
       break;
 
 			// *** IPT_TRACKBALL_Y|IPF_PLAYER1 *** //
     case (IPT_TRACKBALL_Y|IPF_PLAYER1):
-      REMAP_SEQ_1( JOYCODE_1_UP );
+      REMAP_SEQ_1( AXISCODE( 0, JT_LSTICK_UP ) );
       break;
 
 			// *** IPT_TRACKBALL_Y|IPF_PLAYER1+IPT_EXTENSION *** //
     case ((IPT_TRACKBALL_Y|IPF_PLAYER1)+IPT_EXTENSION):
-      REMAP_SEQ_1( JOYCODE_1_DOWN );
+      REMAP_SEQ_1( AXISCODE( 0, JT_LSTICK_DOWN ) );
       break;
 
 
@@ -1160,52 +1196,52 @@ void osd_customize_inputport_defaults( struct ipd *defaults )
 
 			// *** IPT_PADDLE|IPF_PLAYER2 *** //
     case (IPT_PADDLE|IPF_PLAYER2):
-      REMAP_SEQ_1( JOYCODE_2_LEFT );
+      REMAP_SEQ_1( AXISCODE( 1, JT_LSTICK_LEFT ) );
       break;
 
 			// *** IPT_PADDLE|IPF_PLAYER2+IPT_EXTENSION *** //
     case ((IPT_PADDLE|IPF_PLAYER2)+IPT_EXTENSION):
-      REMAP_SEQ_1( JOYCODE_2_RIGHT );
+      REMAP_SEQ_1( AXISCODE( 1, JT_LSTICK_RIGHT ) );
       break;
 
 			// *** IPT_PADDLE_V|IPF_PLAYER2 *** //
     case (IPT_PADDLE_V|IPF_PLAYER2):
-      REMAP_SEQ_1( JOYCODE_2_UP );
+      REMAP_SEQ_1( AXISCODE( 1, JT_LSTICK_UP ) );
       break;
 
 			// *** IPT_PADDLE_V|IPF_PLAYER2+IPT_EXTENSION *** //
     case ((IPT_PADDLE_V|IPF_PLAYER2)+IPT_EXTENSION):
-      REMAP_SEQ_1( JOYCODE_2_DOWN );
+      REMAP_SEQ_1( AXISCODE( 1, JT_LSTICK_DOWN ) );
       break;
 
 			// *** IPT_DIAL|IPF_PLAYER2 *** //
     case (IPT_DIAL|IPF_PLAYER2):
-      REMAP_SEQ_1( JOYCODE_2_LEFT );
+      REMAP_SEQ_1( AXISCODE( 1, JT_LSTICK_LEFT ) );
       break;
 
 			// *** IPT_DIAL|IPF_PLAYER2+IPT_EXTENSION *** //
     case ((IPT_DIAL|IPF_PLAYER2)+IPT_EXTENSION):
-      REMAP_SEQ_1( JOYCODE_2_RIGHT );
+      REMAP_SEQ_1( AXISCODE( 1, JT_LSTICK_RIGHT ) );
       break;
 
 			// *** IPT_TRACKBALL_X|IPF_PLAYER2 *** //
     case (IPT_TRACKBALL_X|IPF_PLAYER2):
-      REMAP_SEQ_1( JOYCODE_2_LEFT );
+      REMAP_SEQ_1( AXISCODE( 1, JT_LSTICK_LEFT ) );
       break;
 
 			// *** IPT_TRACKBALL_X|IPF_PLAYER2+IPT_EXTENSION *** //
     case ((IPT_TRACKBALL_X|IPF_PLAYER2)+IPT_EXTENSION):
-      REMAP_SEQ_1( JOYCODE_2_RIGHT );
+      REMAP_SEQ_1( AXISCODE( 1, JT_LSTICK_RIGHT ) );
       break;
 
 			// *** IPT_TRACKBALL_Y|IPF_PLAYER2 *** //
     case (IPT_TRACKBALL_Y|IPF_PLAYER2):
-      REMAP_SEQ_1( JOYCODE_2_UP );
+      REMAP_SEQ_1( AXISCODE( 1, JT_LSTICK_UP ) );
       break;
 
 			// *** IPT_TRACKBALL_Y|IPF_PLAYER2+IPT_EXTENSION *** //
     case ((IPT_TRACKBALL_Y|IPF_PLAYER2)+IPT_EXTENSION):
-      REMAP_SEQ_1( JOYCODE_2_DOWN );
+      REMAP_SEQ_1( AXISCODE( 1, JT_LSTICK_DOWN ) );
       break;
 
       //-- PLAYER 3 CONTROLS ----------------------------------------------------------------------------
@@ -1346,52 +1382,52 @@ void osd_customize_inputport_defaults( struct ipd *defaults )
 
 			// *** IPT_PADDLE|IPF_PLAYER3 *** //
     case (IPT_PADDLE|IPF_PLAYER3):
-      REMAP_SEQ_1( JOYCODE_3_LEFT );
+      REMAP_SEQ_1( AXISCODE( 2, JT_LSTICK_LEFT ) );
       break;
 
 			// *** IPT_PADDLE|IPF_PLAYER3+IPT_EXTENSION *** //
     case ((IPT_PADDLE|IPF_PLAYER3)+IPT_EXTENSION):
-      REMAP_SEQ_1( JOYCODE_3_RIGHT );
+      REMAP_SEQ_1( AXISCODE( 2, JT_LSTICK_RIGHT ) );
       break;
 
 			// *** IPT_PADDLE_V|IPF_PLAYER3 *** //
     case (IPT_PADDLE_V|IPF_PLAYER3):
-      REMAP_SEQ_1( JOYCODE_3_UP );
+      REMAP_SEQ_1( AXISCODE( 2, JT_LSTICK_UP ) );
       break;
 
 			// *** IPT_PADDLE_V|IPF_PLAYER3+IPT_EXTENSION *** //
     case ((IPT_PADDLE_V|IPF_PLAYER3)+IPT_EXTENSION):
-      REMAP_SEQ_1( JOYCODE_3_DOWN );
+      REMAP_SEQ_1( AXISCODE( 2, JT_LSTICK_DOWN ) );
       break;
 
 			// *** IPT_DIAL|IPF_PLAYER3 *** //
     case (IPT_DIAL|IPF_PLAYER3):
-      REMAP_SEQ_1( JOYCODE_3_LEFT );
+      REMAP_SEQ_1( AXISCODE( 2, JT_LSTICK_LEFT ) );
       break;
 
 			// *** IPT_DIAL|IPF_PLAYER3+IPT_EXTENSION *** //
     case ((IPT_DIAL|IPF_PLAYER3)+IPT_EXTENSION):
-      REMAP_SEQ_1( JOYCODE_3_RIGHT );
+      REMAP_SEQ_1( AXISCODE( 2, JT_LSTICK_RIGHT ) );
       break;
 
 			// *** IPT_TRACKBALL_X|IPF_PLAYER3 *** //
     case (IPT_TRACKBALL_X|IPF_PLAYER3):
-      REMAP_SEQ_1( JOYCODE_3_LEFT );
+      REMAP_SEQ_1( AXISCODE( 2, JT_LSTICK_LEFT ) );
       break;
 
 			// *** IPT_TRACKBALL_X|IPF_PLAYER3+IPT_EXTENSION *** //
     case ((IPT_TRACKBALL_X|IPF_PLAYER3)+IPT_EXTENSION):
-      REMAP_SEQ_1( JOYCODE_3_RIGHT );
+      REMAP_SEQ_1( AXISCODE( 2, JT_LSTICK_RIGHT ) );
       break;
 
 			// *** IPT_TRACKBALL_Y|IPF_PLAYER3 *** //
     case (IPT_TRACKBALL_Y|IPF_PLAYER3):
-      REMAP_SEQ_1( JOYCODE_3_UP );
+      REMAP_SEQ_1( AXISCODE( 2, JT_LSTICK_UP ) );
       break;
 
 			// *** IPT_TRACKBALL_Y|IPF_PLAYER3+IPT_EXTENSION *** //
     case ((IPT_TRACKBALL_Y|IPF_PLAYER3)+IPT_EXTENSION):
-      REMAP_SEQ_1( JOYCODE_3_DOWN );
+      REMAP_SEQ_1( AXISCODE( 2, JT_LSTICK_DOWN ) );
       break;
 
       //-- PLAYER 4 CONTROLS ----------------------------------------------------------------------------
@@ -1532,52 +1568,52 @@ void osd_customize_inputport_defaults( struct ipd *defaults )
 
 			// *** IPT_PADDLE|IPF_PLAYER4 *** //
     case (IPT_PADDLE|IPF_PLAYER4):
-      REMAP_SEQ_1( JOYCODE_4_LEFT );
+      REMAP_SEQ_1( AXISCODE( 3, JT_LSTICK_LEFT ) );
       break;
 
 			// *** IPT_PADDLE|IPF_PLAYER4+IPT_EXTENSION *** //
     case ((IPT_PADDLE|IPF_PLAYER4)+IPT_EXTENSION):
-      REMAP_SEQ_1( JOYCODE_4_RIGHT );
+      REMAP_SEQ_1( AXISCODE( 3, JT_LSTICK_RIGHT ) );
       break;
 
 			// *** IPT_PADDLE_V|IPF_PLAYER4 *** //
     case (IPT_PADDLE_V|IPF_PLAYER4):
-      REMAP_SEQ_1( JOYCODE_4_UP );
+      REMAP_SEQ_1( AXISCODE( 3, JT_LSTICK_UP ) );
       break;
 
 			// *** IPT_PADDLE_V|IPF_PLAYER4+IPT_EXTENSION *** //
     case ((IPT_PADDLE_V|IPF_PLAYER4)+IPT_EXTENSION):
-      REMAP_SEQ_1( JOYCODE_4_DOWN );
+      REMAP_SEQ_1( AXISCODE( 3, JT_LSTICK_DOWN ) );
       break;
 
 			// *** IPT_DIAL|IPF_PLAYER4 *** //
     case (IPT_DIAL|IPF_PLAYER4):
-      REMAP_SEQ_1( JOYCODE_4_LEFT );
+      REMAP_SEQ_1( AXISCODE( 3, JT_LSTICK_LEFT ) );
       break;
 
 			// *** IPT_DIAL|IPF_PLAYER4+IPT_EXTENSION *** //
     case ((IPT_DIAL|IPF_PLAYER4)+IPT_EXTENSION):
-      REMAP_SEQ_1( JOYCODE_4_RIGHT );
+      REMAP_SEQ_1( AXISCODE( 3, JT_LSTICK_RIGHT ) );
       break;
 
 			// *** IPT_TRACKBALL_X|IPF_PLAYER4 *** //
     case (IPT_TRACKBALL_X|IPF_PLAYER4):
-      REMAP_SEQ_1( JOYCODE_4_LEFT );
+      REMAP_SEQ_1( AXISCODE( 3, JT_LSTICK_LEFT ) );
       break;
 
 			// *** IPT_TRACKBALL_X|IPF_PLAYER4+IPT_EXTENSION *** //
     case ((IPT_TRACKBALL_X|IPF_PLAYER4)+IPT_EXTENSION):
-      REMAP_SEQ_1( JOYCODE_4_RIGHT );
+      REMAP_SEQ_1( AXISCODE( 3, JT_LSTICK_RIGHT ) );
       break;
 
 			// *** IPT_TRACKBALL_Y|IPF_PLAYER4 *** //
     case (IPT_TRACKBALL_Y|IPF_PLAYER4):
-      REMAP_SEQ_1( JOYCODE_4_UP );
+      REMAP_SEQ_1( AXISCODE( 3, JT_LSTICK_UP ) );
       break;
 
 			// *** IPT_TRACKBALL_Y|IPF_PLAYER4+IPT_EXTENSION *** //
     case ((IPT_TRACKBALL_Y|IPF_PLAYER4)+IPT_EXTENSION):
-      REMAP_SEQ_1( JOYCODE_4_DOWN );
+      REMAP_SEQ_1( AXISCODE( 3, JT_LSTICK_DOWN ) );
       break;
 		}
 	}

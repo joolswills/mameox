@@ -1594,9 +1594,9 @@ void update_analog_port(int port)
 		case IPT_AD_STICK_Z:
 			axis = Z_AXIS; is_stick = 1; is_gun=0; check_bounds = 1; break;
 		case IPT_LIGHTGUN_X:
-			axis = X_AXIS; is_stick = 1; is_gun=1; check_bounds = 1; break;
+			axis = X_AXIS; is_stick = 0; is_gun=1; check_bounds = 1; break;
 		case IPT_LIGHTGUN_Y:
-			axis = Y_AXIS; is_stick = 1; is_gun=1; check_bounds = 1; break;
+			axis = Y_AXIS; is_stick = 0; is_gun=1; check_bounds = 1; break;
 		case IPT_PEDAL:
 			axis = PEDAL_AXIS; is_stick = 1; is_gun=0; check_bounds = 1; break;
 		case IPT_PEDAL2:
@@ -1606,6 +1606,7 @@ void update_analog_port(int port)
 			axis = X_AXIS; is_stick = 0; is_gun=0; check_bounds = 0;
 			logerror("Oops, polling non analog device in update_analog_port()????\n");
 	}
+
 
 
 	sensitivity = IP_GET_SENSITIVITY(in);
@@ -1638,6 +1639,8 @@ void update_analog_port(int port)
 		case IPF_PLAYER1: default: player = 0; break;
 	}
 
+
+/*
 	delta = mouse_delta_axis[player][axis];
 
 	if (seq_pressed(decseq)) delta -= keydelta;
@@ -1648,12 +1651,22 @@ void update_analog_port(int port)
 	}
 	else
 	{
-		/* is this cheesy or what? */
+		// is this cheesy or what? 
 		if (!delta && seq_get_1(incseq) == KEYCODE_Y) delta += keydelta;
 		delta = -delta;
 	}
+*/
 
-	if (in->type & IPF_REVERSE) delta = -delta;
+    // [EBA]
+  if( !is_gun && !is_stick )
+  {
+      // Remap the analog_current_axis range from [-128,128] to
+      // [-32,32], as adding 128 per frame is one hell of a spin
+      // on the steering wheel :)
+    delta = ((float)analog_current_axis[player][axis] * 32.0f / 128.0f);
+	  if( in->type & IPF_REVERSE ) 
+      delta = -delta;
+  }
 
 	if (is_gun)
 	{

@@ -1,21 +1,8 @@
 Version 0.68b
 
-  - Added new fonts (Arial Narrow and Courier New) size 10, 11 and 12
-  - Remove dependencies bug
-
-  - \MAMEoXLauncher\Sources\ROMList.cpp
-    - Bugfix: Additional info shows the files correct now
-    - Additional info shows year and clonefilename now
-    - Use new font and added manufacturer in the game list
-    - Additional info is default now
-    - More lines (30 instead of 18) in the game list
-
-  - \MAMEoX\Includes\Gamepad.h
-  - \MAMEoX\Sources\Gamepad.cpp
-    - New funct IsOnlyButtonPressed returns TRUE if only the 
-      button specified in the params are pressed
-    - New function: GetButtonState which returns all GP_ flags of the 
-      pressed buttons, DPAD, etc.
+  - General:
+    - Added new fonts (Arial Narrow and Courier New) size 10, 11 and 12
+    - Remove dependencies bug
 
    -------------------------------------------------------------
   - \MAMEoX\Includes: 
@@ -26,15 +13,26 @@ Version 0.68b
     - Gamepad.h
       - New function: GetButtonState which returns all GP_ flags of 
         the pressed buttons, DPAD, etc.
+      - New funct IsOnlyButtonPressed returns TRUE if only the 
+        button specified in the params are pressed
+      - New function: GetButtonState which returns all GP_ flags of the 
+        pressed buttons, DPAD, etc.
 
    -------------------------------------------------------------
   - \MAMEoX\Sources:
 
     - Gamepad.cpp
-      - Bugfix: IsButtonPressed returns TRUE if only the button of 
-        the params are pressed
       - New function: GetButtonState which returns all GP_ flags of 
         the pressed buttons, DPAD, etc.
+      - New funct IsOnlyButtonPressed returns TRUE if only the 
+        button specified in the params are pressed
+      - New function: GetButtonState which returns all GP_ flags of the 
+        pressed buttons, DPAD, etc.
+
+    - xbox_JoystickMouse.c
+      - Remapped paddles, dials, and trackball to left analog stick
+      - Fixed: Pressing right on LA now properly produces 128 for
+        analog position
 
    -------------------------------------------------------------
   - \MAMEoXLauncher\Includes:
@@ -45,7 +43,16 @@ Version 0.68b
     - ROMList.cpp
       - Bugfix: Additional info shows the files correct now
       - Additional info shows year and clonefilename now
+      - Use new font and added manufacturer in the game list
+      - Additional info is default now
+      - More lines (30 instead of 18) in the game list
 
+   -------------------------------------------------------------
+  - \MAMEoX\src:
+    - inptport.c
+      - Changed analog input code to use a joystick as a mouse,
+        rather than attempting to use the broken trackball
+	code. (Fixes trackball and steering wheel games)
 
 *********************************************************************
 
