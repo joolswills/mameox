@@ -107,8 +107,8 @@ CSystem_IniFile::CSystem_IniFile( const CStdString &strFullPath ) :
 
 			for( ;(it+1) != inputVector.end() && (*(it+1))[0] != '['; ++it )
 			{
-				if( (*it).size() )	// Don't bother storing blank lines
-          temp.push_back( (*it) );
+				if( (*(it+1)).size() )	// Don't bother storing blank lines
+          temp.push_back( (*(it+1)) );
 			}
 
 			m_data[sectionHeader] = temp;
