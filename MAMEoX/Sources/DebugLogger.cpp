@@ -422,6 +422,11 @@ void Helper_RenderDebugConsole( void *device )
   pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, alphaState );
   pD3DDevice->SetRenderState( D3DRS_SRCBLEND, srcBlend );
   pD3DDevice->SetRenderState( D3DRS_DESTBLEND, destBlend );
+
+    // GetStreamSource increments the ref count on the vertex buffer,
+    // so we have to release it
+  if( pStreamData )
+    pStreamData->Release();
 }
 
 #endif
