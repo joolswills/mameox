@@ -91,9 +91,12 @@ void __cdecl main( void )
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
 
 		// Create a general purpose font
-//	g_font.Create( pD3DDevice, "Font.xpr" );
+// VC6 requires the 2 paramater call to create. _VC6 is defined in the VC6 dsp files
+#ifdef _VC6
+	g_font.Create( pD3DDevice, "Font.xpr" );
+#else
 	g_font.Create( "Font.xpr", 0 );
-
+#endif
 		// Intialize the various MAME OSD-specific subsystems
 	InitializeFileIO();
 	InitializeTiming();
@@ -501,8 +504,14 @@ static BOOL Helper_RunRom( UINT32 romIndex )
   LoadDriverSectionByName( "src\\drivers\\timeplt.c" );   // Loco-Motion
   LoadDriverSectionByName( "src\\drivers\\exidy.c" );     // Victory
 
-
+// VC6 seems to be calling this with the full path so strstr just trims down the path
+// appropriately. NOTE: we probably don't need this to conditionally compile and could
+// just leave the first call but would like someone with VS.net to test first just in case :)
+#ifdef _VC6
+  if( !LoadDriverSectionByName( strstr(DriverName.c_str(),"src\\drivers\\") ) )
+#else
   if( !LoadDriverSectionByName( DriverName.c_str() ) )
+#endif
   {
     _RPT1( _CRT_WARN, "Failed to load section for file %s!", DriverName.c_str() );
     PRINTMSG( T_ERROR, "Failed to load section for file %s!", DriverName.c_str() );
