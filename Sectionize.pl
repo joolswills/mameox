@@ -358,23 +358,25 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 				"aburner.c", "sharrier.c", "outrun.c" );
 
 @MoonPatrolFamily = ( "mpatrol.c", "yard.c" );								# 10 Yard Fight07/07/2003
-@SNKFamily = ( "snk.c", "hal21.c" );										# ASO - Armored Scrum Object, Athena
+@SNKFamily = ( "snk.c", "hal21.c", "marvins.c", "sgladiat.c" );				# ASO - Armored Scrum Object, Athena, Marvin's Maze, Gladiator 1984
 @AmidarFamily = ( "galaxian.c", "scramble.c", "scobra.c", 
                   "amidar.c", "frogger.c", "pacman.c",
-				  "pengo.c" );												# Amidar, Frog (Galaxian Hardware), Pac-Man (Galaxian Hardware), eyes
+				  "pengo.c", "cclimber.c", "dkong.c", "yamato.c" );			# Amidar, Frog (Galaxian Hardware), Pac-Man (Galaxian Hardware), eyes, Moon Shuttle (US?), Special Forces, Special Forces II, Yamato
 @RampartFamily = ( "rampart.c", "arcadecl.c" );								# Arcade Classics
-@RastanFamily = ( "rastan.c", "asuka.c", "opwolf.c", "rainbow.c" );			# Asuka & Asuka, Operation Wolf, Rainbow Islands
-@EspialFamily = ( "espial.c", "marineb.c" );								# Battle Cruiser M-12
+@RastanFamily = ( "rastan.c", "asuka.c", "opwolf.c", "rainbow.c", 
+                  "topspeed.c" );			                                # Asuka & Asuka, Operation Wolf, Rainbow Islands, Top Speed, Full Throttle
+@EspialFamily = ( "espial.c", "marineb.c", "zodiack.c" );					# Battle Cruiser M-12, Zodiack
 @BZoneFamily = ( "bzone.c", "bwidow.c" );									# Gravitar
 @Nova2001Family = ( "nova2001.c", "pkunwar.c" );							# Penguin-Kun War
 @GottLiebFamily = ( "gottlieb.c", "exterm.c" );							    # exterminator
 @Megasys1Family = ( "megasys1.c", "cischeat.c" );							# F-1 Grand Prix Star II
 @LocoMotionFamily = ( "rallyx.c", "timeplt.c", "locomotn.c", 
-					  "tutankhm.c", "pooyan.c" );							# Loco-Motion, Tutankham, Pooyan
+					  "tutankhm.c", "pooyan.c", "rocnrope.c", 
+					  "junofrst.c" );				                        # Loco-Motion, Tutankham, Pooyan, Roc'n Rope, Juno First
 @ExidyFamily = ( "exidy.c", "victory.c" );									# Victory
-@M72Family = ( "m72.c", "m90.c", "vigilant.c" );							# Bomber Man World (World), Vigilante
+@M72Family = ( "m72.c", "m90.c", "vigilant.c", "shisen.c" );			    # Bomber Man World (World), Vigilante, Sichuan II
 @LelandFamily = ( "leland.c", "ataxx.c" );									# Asylum (prototype)
-@TrackFldFamily = ( "trackfld.c", "hyperspt.c", "yiear.c" );				# Hyper Sports, Hyper Olympics '84, Yie ar Kung Fu
+@TrackFldFamily = ( "trackfld.c", "hyperspt.c", "yiear.c", "sbasketb.c" );	# Hyper Sports, Hyper Olympics '84, Yie ar Kung Fu, Super Basketball
 @Taito_F3Family = ( "taito_f3.c", "superchs.c", "groundfx.c",
 					"gunbustr.c", "undrfire.c" );							# Super Chase, Ground Effects, Gunbuster, Under Fire
 @FromanceFamily = ( "fromance.c", "pipedrm.c" );							# Pipe Dream
@@ -389,12 +391,27 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 
 @TetrisPlus2Family = ( "ms32.c", "tetrisp2.c" );							# Tetris Plus 2 (MegaSystem 32 Version)
 
+@WipingFamily = ( "wiping.c", "clshroad.c" );								# Fire Battle, Clash-Road
+
+@D8080bwFamily = ( "8080bw.c", "rotaryf.c" );								# Rotary Fighter
+
+@BuggyChallengeFamily = ( "buggychl.c", "40love.c" );						# Forty-Love
+
+@BurgerTimeFamily = ( "btime.c", "scregg.c" );								# Dommy, Scrambled Egg
+
+@PlaymarkFamily = ( "playmark.c", "sslam.c" );								# Super Slam
+
+@NYNYFamily = ( "nyny.c", "spiders.c" );									# Spiders
+@DoubleDragonFamily = ( "ddragon.c", "chinagat.c" );						# China Gate
+
 local @Families = ( \@CapcomFamily, \@NamcoFamily, \@SegaFamily, \@MidwayMCRFamily, \@TwinCobraFamily,
 					\@MoonPatrolFamily, \@SNKFamily, \@AmidarFamily, \@RampartFamily, \@RastanFamily,
 					\@EspialFamily, \@BZoneFamily, \@Nova2001Family, \@GottLiebFamily, 
 					\@Megasys1Family, \@LocoMotionFamily, \@ExidyFamily, \@M72Family, \@LelandFamily,
 					\@TrackFldFamily, \@Taito_F3Family, \@FromanceFamily, \@MidYUnitFamily, \@KonamiGXFamily,
-					\@SegarFamily, \@ZaxxonFamily, \@WizFamily, \@TetrisPlus2Family );
+					\@SegarFamily, \@ZaxxonFamily, \@WizFamily, \@TetrisPlus2Family, \@WipingFamily,
+					\@D8080bwFamily, \@BuggyChallengeFamily, \@BurgerTimeFamily, \@PlaymarkFamily,
+					\@NYNYFamily, \@DoubleDragonFamily );
 $autoNameNumber = $#Families + 50;
 
 
@@ -752,7 +769,7 @@ $m6502Family = "M6502";
 #				 "M6509" ); # Disabled in VCPPMame.h
 
 $m6800Family = "M6800";
-@m6800Clones = ( "M6800", "M6801", "M6802", "M6803", "M6808", "HD63701" );
+@m6800Clones = ( "M6800", "M6801", "M6802", "M6803", "M6808", "HD63701", "NSC8105" );
 
 $m68000Family = "M68000";
 @m68000Clones = ( "M68000", "M68010", "M68020", "M68EC020" );

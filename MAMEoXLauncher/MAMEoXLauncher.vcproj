@@ -61,7 +61,7 @@
 				FileName="$(TargetDir)default.xbe"
 				StackSize="65536"
 				IncludeDebugInfo="TRUE"
-				LimitAvailableMemoryTo64MB="TRUE"
+				LimitAvailableMemoryTo64MB="FALSE"
 				FormatUD="TRUE"
 				NoLibWarn="TRUE"
 				TitleName="&quot;MAMEoX Launcher [DBG]&quot;"

@@ -171,7 +171,7 @@ COptionsScreen::COptionsScreen( LPDIRECT3DDEVICE8	displayDevice,
   wcscpy( m_pageData[OPTPAGE_ROMLIST].m_title, L"ROM List Options" );
   m_pageData[OPTPAGE_ROMLIST].m_drawFunct = ::DrawROMListPage;
   m_pageData[OPTPAGE_ROMLIST].m_changeFunct = ::ChangeROMListPage;
-  m_pageData[OPTPAGE_ROMLIST].m_numItems = 9;
+  m_pageData[OPTPAGE_ROMLIST].m_numItems = 10;
 
   RECT area = { 320 - (VIRTUALKEYBOARD_WIDTH>>1), 240 - (VIRTUALKEYBOARD_HEIGHT >> 1), 
                 320 + (VIRTUALKEYBOARD_WIDTH>>1), 240 + (VIRTUALKEYBOARD_HEIGHT >> 1) };
@@ -939,6 +939,7 @@ void COptionsScreen::DrawROMListPage( void )
   DRAWITEM( L"Filter \"crashes in game\"",  g_romListOptions.m_filterMode & FM_ROMSTATUS_CRASH ? L"Yes" : L"No" );
   DRAWITEM( L"Filter \"other nonworking\"", g_romListOptions.m_filterMode & FM_ROMSTATUS_NONWORKING ? L"Yes" : L"No" );
   DRAWITEM( L"Filter \"disliked\"",         g_romListOptions.m_filterMode & FM_DISLIKED ? L"Yes" : L"No" );
+  DRAWITEM( L"Filter \"working\"",          g_romListOptions.m_filterMode & FM_WORKING ? L"Yes" : L"No" );
 
   ENDPAGE();
 }
@@ -1763,6 +1764,14 @@ void COptionsScreen::ChangeROMListPage( BOOL movingRight )
       g_romListOptions.m_filterMode &= ~FM_DISLIKED;
     else
       g_romListOptions.m_filterMode |= FM_DISLIKED;
+    break;
+
+    // Filter "working"
+  case 9:
+    if( g_romListOptions.m_filterMode & FM_WORKING )
+      g_romListOptions.m_filterMode &= ~FM_WORKING;
+    else
+      g_romListOptions.m_filterMode |= FM_WORKING;
     break;
   }
 }

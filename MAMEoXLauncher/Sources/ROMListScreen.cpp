@@ -1401,11 +1401,15 @@ BOOL CROMListScreen::LoadROMStatusFile( void )
         for( i = 0; i < m_numDrivers && stricmp( m_driverInfoList[i].m_romFileName, romName.c_str() ); ++i )
           ;
 
-        DrawProgressbarMessage( m_displayDevice, 
-                                "Parsing status file", 
-                                romName.c_str(), 
-                                entryNumber++, 
-                                0 );
+          // Don't redraw for every entry, as that will slow the parsing down drastically
+        if( !(entryNumber & 0x03) )
+        {
+          DrawProgressbarMessage( m_displayDevice, 
+                                  "Parsing status file", 
+                                  romName.c_str(), 
+                                  entryNumber++, 
+                                  0 );
+        }
 
           // Set m_ROMStatus at the same index
         if( i != m_numDrivers )
@@ -3158,6 +3162,10 @@ void CROMListScreen::UpdateFilteredList( void )
 
       // Filter out ROMs marked as "disliked" or "strongly disliked"
     if( m_options.m_filterMode & FM_DISLIKED && (metadata.m_favoriteStatus == FS_STRONGDISLIKE || metadata.m_favoriteStatus == FS_DISLIKE) )
+      continue;
+
+      // Filter out working ROMs (for debugging/testing or screwy people)
+    if( m_options.m_filterMode & FM_WORKING && driverStatus == STATUS_WORKING )
       continue;
 
     m_ROMListFiltered.push_back( *i );

@@ -1,11 +1,11 @@
-#pragma code_seg("C217")
-#pragma data_seg("D217")
-#pragma bss_seg("B217")
-#pragma const_seg("K217")
-#pragma comment(linker, "/merge:D217=217")
-#pragma comment(linker, "/merge:C217=217")
-#pragma comment(linker, "/merge:B217=217")
-#pragma comment(linker, "/merge:K217=217")
+#pragma code_seg("C35")
+#pragma data_seg("D35")
+#pragma bss_seg("B35")
+#pragma const_seg("K35")
+#pragma comment(linker, "/merge:D35=35")
+#pragma comment(linker, "/merge:C35=35")
+#pragma comment(linker, "/merge:B35=35")
+#pragma comment(linker, "/merge:K35=35")
 /***************************************************************************
 
   Video Hardware for some Technos games:

@@ -172,6 +172,7 @@ BOOL UnloadCPUSections( void )
         (*i).first == CPU_M6803 ||
         (*i).first == CPU_M6808 ||
         (*i).first == CPU_HD63701 ||
+        (*i).first == CPU_NSC8105 ||
         (*i).first == CPU_M68705 ||
         (*i).first == CPU_HD63705 ||
         (*i).first == CPU_M68010 ||
@@ -240,6 +241,7 @@ static void RegisterCPUSectionNames( void )
   RegisterSectionID( CPU_M6803, "CPU11" );
   RegisterSectionID( CPU_M6808, "CPU11" );
   RegisterSectionID( CPU_HD63701, "CPU11" );
+  RegisterSectionID( CPU_NSC8105, "CPU11" );
   RegisterSectionID( CPU_M68000, "CPU16" );
   RegisterSectionID( CPU_M68010, "CPU16" );
   RegisterSectionID( CPU_M68020, "CPU16" );

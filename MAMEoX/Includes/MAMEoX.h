@@ -108,6 +108,7 @@ typedef enum ROMListFilterMode
   FM_ROMSTATUS_CRASH        = (1<<5),     //!< Filter out "Crash" games
   FM_ROMSTATUS_NONWORKING   = (1<<6),     //!< Filter out "Other nonworking" games
   FM_DISLIKED               = (1<<7),     //!< Filter out roms w/ a favorite status < "average"
+  FM_WORKING                = (1<<8),     //!< Filter out roms that work (for debugging)
   FM_ROMSTATUS_UNPLAYABLE   = FM_ROMSTATUS_OUTOFMEM | FM_ROMSTATUS_CRASH | FM_ROMSTATUS_NONWORKING,  //!< Filter out any games that cannot be played
   FM_ROMSTATUS_IMPERFECT    = FM_ROMSTATUS_SLOW | FM_ROMSTATUS_UNPLAYABLE  //!< Filter all imperfect games
 } ROMListFilterMode;

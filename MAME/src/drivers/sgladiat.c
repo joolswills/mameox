@@ -1,11 +1,11 @@
-#pragma code_seg("C561")
-#pragma data_seg("D561")
-#pragma bss_seg("B561")
-#pragma const_seg("K561")
-#pragma comment(linker, "/merge:D561=561")
-#pragma comment(linker, "/merge:C561=561")
-#pragma comment(linker, "/merge:B561=561")
-#pragma comment(linker, "/merge:K561=561")
+#pragma code_seg("C7")
+#pragma data_seg("D7")
+#pragma bss_seg("B7")
+#pragma const_seg("K7")
+#pragma comment(linker, "/merge:D7=7")
+#pragma comment(linker, "/merge:C7=7")
+#pragma comment(linker, "/merge:B7=7")
+#pragma comment(linker, "/merge:K7=7")
 /*
 	"Gladiator"
 	(C) 1984 SNK

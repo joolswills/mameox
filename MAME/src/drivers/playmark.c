@@ -1,11 +1,11 @@
-#pragma code_seg("C496")
-#pragma data_seg("D496")
-#pragma bss_seg("B496")
-#pragma const_seg("K496")
-#pragma comment(linker, "/merge:D496=496")
-#pragma comment(linker, "/merge:C496=496")
-#pragma comment(linker, "/merge:B496=496")
-#pragma comment(linker, "/merge:K496=496")
+#pragma code_seg("C33")
+#pragma data_seg("D33")
+#pragma bss_seg("B33")
+#pragma const_seg("K33")
+#pragma comment(linker, "/merge:D33=33")
+#pragma comment(linker, "/merge:C33=33")
+#pragma comment(linker, "/merge:B33=33")
+#pragma comment(linker, "/merge:K33=33")
 /***************************************************************************
 
 Big Twins

@@ -1214,7 +1214,7 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
                           L"       Programming - Erik Abair, opcode" \
                           L"       Testing - falz, enkak, noodle1009, bmetz" \
                           L"       Graphical design - r4dius, Stephen Cameron" \
-                          L"       Special thanks to Klaus of www.wolfsoft.de, mjbrand for .NET 2002 solution patches, and to MAME developers everywhere";
+                          L"       Special thanks to Klaus of www.wolfsoft.de, and to MAME developers everywhere";
 
   FLOAT creditsPosition = 0.0f;
   FLOAT creditsLength, creditsHeight;
@@ -1320,7 +1320,7 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
         
       g_fontSet.LargeThinFont().DrawText( 130, 316, NORMAL_TEXT_COLOR, L"Portions of MAMEoX based on:" );
       g_fontSet.LargeThinFont().DrawText( 130, 334, IMPORTANT_TEXT_COLOR, L"\"MAMEX(b5): updated by superfro," );
-      g_fontSet.LargeThinFont().DrawText( 140, 354, IMPORTANT_TEXT_COLOR, L"original port by opcode\"" );      
+      g_fontSet.LargeThinFont().DrawText( 140, 354, IMPORTANT_TEXT_COLOR, L"original port by opcode\"" );
     g_fontSet.LargeThinFont().End();
 
 

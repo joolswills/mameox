@@ -1,11 +1,11 @@
-#pragma code_seg("C675")
-#pragma data_seg("D675")
-#pragma bss_seg("B675")
-#pragma const_seg("K675")
-#pragma comment(linker, "/merge:D675=675")
-#pragma comment(linker, "/merge:C675=675")
-#pragma comment(linker, "/merge:B675=675")
-#pragma comment(linker, "/merge:K675=675")
+#pragma code_seg("C10")
+#pragma data_seg("D10")
+#pragma bss_seg("B10")
+#pragma const_seg("K10")
+#pragma comment(linker, "/merge:D10=10")
+#pragma comment(linker, "/merge:C10=10")
+#pragma comment(linker, "/merge:B10=10")
+#pragma comment(linker, "/merge:K10=10")
 /***************************************************************************
 
 Top Speed / Full Throttle    (c) Taito 1987

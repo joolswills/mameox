@@ -42,17 +42,53 @@ Version 0.73.1b
 
     - ROMListScreen.cpp
       - Integrated pong and monaco gp from PatchMAME
+      - Added option to filter out working ROMs (testing/debugging)
+
+    - OptionsScreen.cpp
+      - Added option to filter out working ROMs (testing/debugging)
+
 
    -------------------------------------------------------------
   - \SharedResources:
     - Added dummy project to compile XPR resources outside of 
       MAMEoXLauncher (needed for XBE icon support)
 
+ --- Specific Game fixes --------------------------------------------
+
+  ** Thanks to Xboxed for reporting these **
+  - Fire Battle, Clash-Road (clshroad.c): Dep on wiping.c driver
+  - Rotary Fighter (rotaryf.c): Dep on 8080bw.c
+  - Forty-Love (40love.c): Dep on buggychl.c
+  - Moon Shuttle (galaxian.c): Dep on cclimber.c
+  - Special Forces and Special Forces II (dkong.c): Dep on scramble.c
+  - Super Basketball (sbasketb.c): Dep on trackfld.c
+  - Tube Panic, Roller Jammer (tubep.c): Uses a NSC8105 CPU (m6800 
+                          driver) whose dep was not correctly handled.
+  - Frisky Tom,Radical Radial,Seicross,Sector Zone (seicross.c): Uses
+                          a NSC8105 CPU (m6800 driver) whose dep was 
+                          not correctly handled.
+  - Zodiack,Dog Fight,Moguchan,The Percussor,The Bounty (zodiack.c):
+                          Dep on espial.c
+  - Yamato (yamato.c): Dep on cclimber.c
+  - Dommy,Scrambled Egg,Eggs (scregg.c): Dep on btime.c
+  - Marvin's Maze,Mad Crasher,Vanguard II (marvins.c): Dep on snk.c
+  - Top Speed,Full Throttle (topspeed.c): Dep on rastan.c
+  - Super Slam (sslam.c): Dep on playmark.c
+  - Spiders (spiders.c): Dep on nyny.c
+  - Sichuan II,Shisensho - Joshiryo-Hen,Match It (shisen.c): 
+                           Dep on m72.c
+  - Roc'n Rope (rocnrope.c): Dep on timeplt.c
+  - China Gate (chinagat.c): Dep on ddragon.c
+
+  ** Thanks to the rom status reporters for these **
+  - Juno First (junofrst.c): Dep on tutankhm.c
+  - Gladiator 1984 (sgladiat.c): Dep on snk.c
+
  --- Integrated pong and monaco gp from PatchMAME 0.62.1 ------------
 
  Note: The integration is only partial, looks like a fair amount
        of the existing code will need to be tweaked/rewritten to
-       get it to work w/ the 0.73 core, so it's disabled for now.
+       get it to work w/ the 0.73 core.
 
  Changes in the \MAME\src directory
  
