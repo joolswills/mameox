@@ -593,16 +593,17 @@ void osd_exit( void )
 //---------------------------------------------------------------------
 //	osd_print_error
 //---------------------------------------------------------------------
-int fatalerror( const char *mbfmt, ... )
+int fatalerror( const char *fmt, ... )
 {
   wchar_t wBuf[1024];
-  wchar_t fmt[1024];
-  mbstowcs( fmt, mbfmt, 1023 );
+  char buf[1024];
 
   va_list arg;
   va_start( arg, fmt );
-  vswprintf( wBuf, fmt, arg );
+  vsprintf( buf, fmt, arg );
   va_end( arg );
+
+  mbstowcs( wBuf, buf, 1023 );
 
   RequireController( 0 );
   CGamepad *gp = g_inputManager.GetGamepad( 0 );

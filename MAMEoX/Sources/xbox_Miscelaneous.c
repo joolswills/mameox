@@ -92,12 +92,14 @@ void __cdecl logerror( const char *fmt, ... )
 void osd_print_error( const char *fmt, ... )
 {
   wchar_t wBuf[1024];
+  char buf[1024];
 
   va_list arg;
   va_start( arg, fmt );
-  vswprintf( wBuf, fmt, arg );
+  vsprintf( buf, fmt, arg );
   va_end( arg );
 
+  mbstowcs( wBuf, buf, 1023 );
 
     // Display the error to the user
 	BeginFontRender( TRUE );

@@ -938,6 +938,7 @@ static int decode_graphics(const struct GfxDecodeInfo *gfxdecodeinfo)
 		{
 			bailing = 1;
       logerror( "Out of memory decoding gfx\n" );
+      osd_print_error( "Out of memory decoding gfx\n" );
 			return 1;
 		}
 
