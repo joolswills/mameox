@@ -73,6 +73,9 @@ typedef struct MAMEDriverData_t
   char  *m_romFileName;   //!<  Main ROM zip file name
   char  *m_description;   //!<  Description from the MAME core
   BOOL  m_isClone;        //!<  Whether or not the game is a clone
+	char  *m_cloneFileName;	//!<  Clone ROM zip file name
+	char  *m_manufacturer;	//!<  Manufacturer name
+	char  *m_year;					//!<  Year
 } MAMEDriverData_t;
 
 typedef struct lightgunCalibration_t

@@ -1,5 +1,13 @@
 Version 0.66b
 
+  - \MAMEoX\Includes\MAMEoX.h
+    - clonename, manufacturer, year added into MAMEDriverData_t 
+  - \MAMEoX\Sources\xbox_Main.cpp
+    - clonename, manufacturer, year added into DriverList (Save)
+  - \MAMEoXLauncher\Sources\main.cpp
+    - clonename, manufacturer, year added into DriverList Load)
+
+
   - \MAMEoX\Includes\Gamepad.h
   - \MAMEoX\Sources\Gamepad.cpp
     - Added CGamepad class w/ helper functions for

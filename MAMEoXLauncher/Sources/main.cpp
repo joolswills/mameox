@@ -671,7 +671,8 @@ void __cdecl main( void )
 //-------------------------------------------------------------
 static BOOL Helper_LoadDriverInfoFile( void )
 {
-	std::string		driverListFile = g_ROMListPath;
+	DWORD len;
+  std::string		driverListFile = g_ROMListPath;
 	driverListFile += "\\";
 	driverListFile += DRIVERLISTFILENAME;
 
@@ -720,7 +721,7 @@ static BOOL Helper_LoadDriverInfoFile( void )
   {
     ReadFile( hFile, 
               &g_driverData[i].m_index, 
-              sizeof(g_driverData[i].m_index), 
+              sizeof( g_driverData[i].m_index ),
               &BytesRead, 
               NULL );
     if( BytesRead != sizeof(g_driverData[i].m_index) )
@@ -730,26 +731,25 @@ static BOOL Helper_LoadDriverInfoFile( void )
     }
 
       // Read the filename length
-    DWORD fileNameLen = 0;
     ReadFile( hFile, 
-              &fileNameLen, 
-              sizeof(fileNameLen), 
+              &len, 
+              sizeof( len ), 
               &BytesRead, 
               NULL );
-    if( BytesRead != sizeof(fileNameLen) )
+    if( BytesRead != sizeof( len ) )
     {
       CloseHandle( hFile );
       return FALSE;
     }
 
       // Read the filename data
-    g_driverData[i].m_romFileName = new char[fileNameLen];
+    g_driverData[i].m_romFileName = new char[ len ];
     ReadFile( hFile, 
               g_driverData[i].m_romFileName, 
-              fileNameLen, 
+              len, 
               &BytesRead, 
               NULL );
-    if( BytesRead != fileNameLen )
+    if( BytesRead != len )
     {
       CloseHandle( hFile );
       return FALSE;
@@ -757,24 +757,24 @@ static BOOL Helper_LoadDriverInfoFile( void )
 
       // Read the description length
     ReadFile( hFile, 
-              &fileNameLen, 
-              sizeof(fileNameLen), 
+              &len, 
+              sizeof( len ), 
               &BytesRead, 
               NULL );
-    if( BytesRead != sizeof(fileNameLen) )
+    if( BytesRead != sizeof( len ) )
     {
       CloseHandle( hFile );
       return FALSE;
     }
 
       // Read the description data
-    g_driverData[i].m_description = new char[fileNameLen];
+    g_driverData[i].m_description = new char[ len ];
     ReadFile( hFile, 
               g_driverData[i].m_description, 
-              fileNameLen, 
+              len, 
               &BytesRead, 
               NULL );
-    if( BytesRead != fileNameLen )
+    if( BytesRead != len )
     {
       CloseHandle( hFile );
       return FALSE;
@@ -785,7 +785,82 @@ static BOOL Helper_LoadDriverInfoFile( void )
               sizeof(g_driverData[i].m_isClone), 
               &BytesRead, 
               NULL );
-    if( BytesRead != sizeof(g_driverData[i].m_isClone) )
+    if( BytesRead != sizeof( g_driverData[i].m_isClone ) )
+    {
+      CloseHandle( hFile );
+      return FALSE;
+    }
+
+			// Read the clonename length
+    ReadFile( hFile, 
+              &len, 
+              sizeof( len ), 
+              &BytesRead, 
+              NULL );
+    if( BytesRead != sizeof( len ) )
+    {
+      CloseHandle( hFile );
+      return FALSE;
+    }
+
+      // Read the clonename
+    g_driverData[i].m_clonename = new char[ len ];
+    ReadFile( hFile, 
+              g_driverData[i].m_cloneFileName, 
+              len,
+              &BytesRead, 
+              NULL );
+    if( BytesRead != len )
+    {
+      CloseHandle( hFile );
+      return FALSE;
+    }
+
+			// Read the manufacturer length
+    ReadFile( hFile, 
+              &len, 
+              sizeof( len ), 
+              &BytesRead, 
+              NULL );
+    if( BytesRead != sizeof( len ) )
+    {
+      CloseHandle( hFile );
+      return FALSE;
+    }
+
+      // Read the manufacturer
+    g_driverData[i].m_manufacturer = new char[ len ];
+    ReadFile( hFile, 
+              g_driverData[i].m_manufacturer,
+              len,
+              &BytesRead,
+              NULL );
+    if( BytesRead != len )
+    {
+      CloseHandle( hFile );
+      return FALSE;
+    }
+
+			// Read the year length
+    ReadFile( hFile, 
+              &len, 
+              sizeof( len ), 
+              &BytesRead, 
+              NULL );
+    if( BytesRead != sizeof( len ) )
+    {
+      CloseHandle( hFile );
+      return FALSE;
+    }
+
+      // Read the year
+    g_driverData[i].m_year = new char[ len ];
+    ReadFile( hFile, 
+              g_driverData[i].m_year,
+              len,
+              &BytesRead,
+              NULL );
+    if( BytesRead != len )
     {
       CloseHandle( hFile );
       return FALSE;

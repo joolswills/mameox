@@ -168,6 +168,7 @@ CHECKRAM();
 //-------------------------------------------------------------
 static BOOL Helper_SaveDriverList( void )
 {
+	DWORD len;
 	std::string		driverListFile = g_ROMListPath;
 	driverListFile += "\\";
 	driverListFile += DRIVERLISTFILENAME;
@@ -241,9 +242,9 @@ static BOOL Helper_SaveDriverList( void )
 		}
 
       // Write the length of the filename
-    DWORD filenameLen = strlen(drivers[i]->name) + 1;
-    WriteFile( hFile, &filenameLen, sizeof(filenameLen), &bytesWritten, NULL );
-    if( bytesWritten != sizeof(filenameLen) )
+    len = strlen(drivers[i]->name) + 1;
+    WriteFile( hFile, &len, sizeof( len ), &bytesWritten, NULL );
+    if( bytesWritten != sizeof( len ) )
 		{
 			PRINTMSG( T_ERROR, "Write failed!" );
 			CloseHandle( hFile );
@@ -254,8 +255,8 @@ static BOOL Helper_SaveDriverList( void )
 		}
 
       // Write the filename
-    WriteFile( hFile, drivers[i]->name, filenameLen, &bytesWritten, NULL );
-    if( bytesWritten != filenameLen )
+    WriteFile( hFile, drivers[i]->name, len, &bytesWritten, NULL );
+    if( bytesWritten != len )
 		{
 			PRINTMSG( T_ERROR, "Write failed!" );
 			CloseHandle( hFile );
@@ -266,9 +267,9 @@ static BOOL Helper_SaveDriverList( void )
 		}
     
       // Write the length of the filename
-    filenameLen = strlen(drivers[i]->description) + 1;
-    WriteFile( hFile, &filenameLen, sizeof(filenameLen), &bytesWritten, NULL );
-    if( bytesWritten != sizeof(filenameLen) )
+    len = strlen(drivers[i]->description) + 1;
+    WriteFile( hFile, &len, sizeof( len ), &bytesWritten, NULL );
+    if( bytesWritten != sizeof( len ) )
 		{
 			PRINTMSG( T_ERROR, "Write failed!" );
 			CloseHandle( hFile );
@@ -279,8 +280,8 @@ static BOOL Helper_SaveDriverList( void )
 		}
 
       // Write the description
-    WriteFile( hFile, drivers[i]->description, filenameLen, &bytesWritten, NULL );
-    if( bytesWritten != filenameLen )
+    WriteFile( hFile, drivers[i]->description, len, &bytesWritten, NULL );
+    if( bytesWritten != len )
 		{
 			PRINTMSG( T_ERROR, "Write failed!" );
 			CloseHandle( hFile );
@@ -294,7 +295,7 @@ static BOOL Helper_SaveDriverList( void )
       // All drivers are clones of _driver_0, whose clone_of is NULL,
       //  so check against that to decide whether this is a clone or not
     BOOL isClone = (drivers[i]->clone_of && drivers[i]->clone_of->clone_of);
-    WriteFile( hFile, &isClone, sizeof(isClone), &bytesWritten, NULL );
+    WriteFile( hFile, &isClone, sizeof( isClone ), &bytesWritten, NULL );
     if( bytesWritten != sizeof(isClone) )
 		{
 			PRINTMSG( T_ERROR, "Write failed!" );
@@ -304,7 +305,82 @@ static BOOL Helper_SaveDriverList( void )
 			DeleteFile( driverListFile.c_str() );
 			return FALSE;
 		}
-  }
+
+      // Write the length of the clonename
+    len = strlen( drivers[i]->clone_of->name ) + 1;
+    WriteFile( hFile, &len, sizeof( len ), &bytesWritten, NULL );
+    if( bytesWritten != sizeof( len ) )
+		{
+			PRINTMSG( T_ERROR, "Write failed!" );
+			CloseHandle( hFile );
+
+				// Delete the file
+			DeleteFile( driverListFile.c_str() );
+			return FALSE;
+		}
+
+			// Write the clonename
+    WriteFile( hFile, drivers[i]->clone_of->name, len, &bytesWritten, NULL );
+    if( bytesWritten != len )
+		{
+			PRINTMSG( T_ERROR, "Write failed!" );
+			CloseHandle( hFile );
+
+				// Delete the file
+			DeleteFile( driverListFile.c_str() );
+			return FALSE;
+		}
+
+      // Write the length of the manufacturer
+		len = strlen( drivers[i]->manufacturer ) + 1;
+    WriteFile( hFile, &len, sizeof( len ), &bytesWritten, NULL );
+    if( bytesWritten != sizeof( len ) )
+		{
+			PRINTMSG( T_ERROR, "Write failed!" );
+			CloseHandle( hFile );
+
+				// Delete the file
+			DeleteFile( driverListFile.c_str() );
+			return FALSE;
+		}
+
+			// Write the manufacturer
+    WriteFile( hFile, drivers[i]->manufacturer, len, &bytesWritten, NULL );
+    if( bytesWritten != len )
+		{
+			PRINTMSG( T_ERROR, "Write failed!" );
+			CloseHandle( hFile );
+
+				// Delete the file
+			DeleteFile( driverListFile.c_str() );
+			return FALSE;
+		}
+
+      // Write the length of the year
+		len = strlen( drivers[i]->year ) + 1;
+    WriteFile( hFile, &len, sizeof( len ), &bytesWritten, NULL );
+    if( bytesWritten != sizeof( len ) )
+		{
+			PRINTMSG( T_ERROR, "Write failed!" );
+			CloseHandle( hFile );
+
+				// Delete the file
+			DeleteFile( driverListFile.c_str() );
+			return FALSE;
+		}
+
+			// Write the year
+    WriteFile( hFile, drivers[i]->year, len, &bytesWritten, NULL );
+    if( bytesWritten != len )
+		{
+			PRINTMSG( T_ERROR, "Write failed!" );
+			CloseHandle( hFile );
+
+				// Delete the file
+			DeleteFile( driverListFile.c_str() );
+			return FALSE;
+		}
+	}
 
 	CloseHandle( hFile );
   return TRUE;
