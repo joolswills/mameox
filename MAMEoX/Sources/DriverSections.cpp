@@ -436,6 +436,8 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\funkybee.c", "276" );
   RegisterSectionName( "src\\drivers\\funkyjet.c", "277" );
   RegisterSectionName( "src\\drivers\\fuuki16.c", "278" );
+  RegisterSectionName( "src\\drivers\\fuukifg2.c", "758" );
+  RegisterSectionName( "src\\drivers\\fuukifg3.c", "759" );
   RegisterSectionName( "src\\drivers\\gaelco.c", "279" );
   RegisterSectionName( "src\\drivers\\gaelco2.c", "280" );
   RegisterSectionName( "src\\drivers\\gaiden.c", "281" );
@@ -579,6 +581,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\mjkjidai.c", "417" );
   RegisterSectionName( "src\\drivers\\mjsister.c", "418" );
   RegisterSectionName( "src\\drivers\\mnight.c", "419" );
+  RegisterSectionName( "src\\drivers\\mogura.c", "760" );
   RegisterSectionName( "src\\drivers\\mole.c", "420" );
   RegisterSectionName( "src\\drivers\\momoko.c", "421" );
   RegisterSectionName( "src\\drivers\\moo.c", "422" );
@@ -758,6 +761,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\spcforce.c", "592" );
   RegisterSectionName( "src\\drivers\\spdbuggy.c", "593" );
   RegisterSectionName( "src\\drivers\\spdodgeb.c", "594" );
+  RegisterSectionName( "src\\drivers\\speedatk.c", "761" );
   RegisterSectionName( "src\\drivers\\speedbal.c", "595" );
   RegisterSectionName( "src\\drivers\\speedspn.c", "596" );
   RegisterSectionName( "src\\drivers\\spiders.c", "597" );
@@ -765,6 +769,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\sprcros2.c", "599" );
   RegisterSectionName( "src\\drivers\\sprint2.c", "600" );
   RegisterSectionName( "src\\drivers\\sprint4.c", "754" );
+  RegisterSectionName( "src\\drivers\\sprint8.c", "762" );
   RegisterSectionName( "src\\drivers\\spy.c", "601" );
   RegisterSectionName( "src\\drivers\\srmp2.c", "602" );
   RegisterSectionName( "src\\drivers\\srumbler.c", "603" );
@@ -783,6 +788,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\stfight.c", "615" );
   RegisterSectionName( "src\\drivers\\stlforce.c", "616" );
   RegisterSectionName( "src\\drivers\\strnskil.c", "617" );
+  RegisterSectionName( "src\\drivers\\strvmstr.c", "763" );
   RegisterSectionName( "src\\drivers\\stv.c", "618" );
   RegisterSectionName( "src\\drivers\\subs.c", "619" );
   RegisterSectionName( "src\\drivers\\suna16.c", "620" );
@@ -866,6 +872,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\undrfire.c", "21" );
   RegisterSectionName( "src\\drivers\\unico.c", "698" );
   RegisterSectionName( "src\\drivers\\usgames.c", "699" );
+  RegisterSectionName( "src\\drivers\\vamphalf.c", "764" );
   RegisterSectionName( "src\\drivers\\vaportra.c", "700" );
   RegisterSectionName( "src\\drivers\\vastar.c", "701" );
   RegisterSectionName( "src\\drivers\\vball.c", "702" );
@@ -914,13 +921,8 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\zerozone.c", "744" );
   RegisterSectionName( "src\\drivers\\zn.c", "745" );
   RegisterSectionName( "src\\drivers\\zodiack.c", "746" );
-  RegisterSectionName( "src\\drivers\\fuukifg2.c", "758" );
-  RegisterSectionName( "src\\drivers\\fuukifg3.c", "759" );
-  RegisterSectionName( "src\\drivers\\mogura.c", "760" );
-  RegisterSectionName( "src\\drivers\\speedatk.c", "761" );
-  RegisterSectionName( "src\\drivers\\sprint8.c", "762" );
-  RegisterSectionName( "src\\drivers\\strvmstr.c", "763" );
-  RegisterSectionName( "src\\drivers\\vamphalf.c", "764" );
+  RegisterSectionName( "src\\drivers\\monaco.c", "765" );
+  RegisterSectionName( "src\\drivers\\pong.c", "766" );
 }
 #pragma code_seg()
 #pragma data_seg()

@@ -162,6 +162,21 @@
 #include "cpu/e132xs/e132xs.h"
 #endif
 
+  // [EBA] Patchmame (Pong + Monaco)
+#if (HAS_GENSYNC)
+#include "cpu/gensync/gensync.h"
+#endif
+
+
+
+
+
+
+
+
+
+
+
 #ifdef MESS
 
 #if (HAS_APEXC)
@@ -666,6 +681,12 @@ const struct cpu_interface cpuintrf[] =
 #endif
 #if (HAS_E132XS)
 	CPU0(E132XS,   e132xs, 	 1,0,1.00, 32, 32bedw,	  0,32,BE,2, 6	),
+#endif
+
+
+  // [EBA] Patchmame (Pong + Monaco)
+#if (HAS_GENSYNC)
+	CPU0(GENSYNC,  gensync,	 0,  0,1.00, 8, 20,	  0,20,LE,1, 1	),
 #endif
 
 #ifdef MESS

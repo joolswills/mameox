@@ -260,7 +260,9 @@ int memory_init(void)
 	if (!populate_ports())
 		return 0;
 
-	register_banks();
+    // [EBA] - PatchMAME 0.62.1 integration
+	if( Machine->gamedrv->rom )
+	  register_banks();
 
 #ifdef MEM_DUMP
 	/* dump the final memory configuration */

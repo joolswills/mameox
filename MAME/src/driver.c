@@ -5242,6 +5242,16 @@ TESTDRIVER( kof2002 )	/* 0265 (c) 2002 Eolith / Playmore Corporation */
 
 #endif /* CPSMAME */
 
+
+  // [EBA] From PatchMAME 0.62.1
+	/* Simulated Games - Pong, Monaco GP */
+  DRIVER( pong )          /* (c) 1972 Atari */
+  DRIVER( monaco )        /* (c) 1978 Sega */
+ 
+
 #endif	/* DRIVER_RECURSIVE */
 
 #endif	/* TINY_COMPILE */
+
+
+

@@ -287,6 +287,9 @@ BOOL CROMListScreen::Helper_GenerateROMList( CStdString &path )
 	std::vector< CStdString > zipFileNames;
 	WIN32_FIND_DATA findData;
 
+    // Hacks for the ROM-less PatchMAME games
+  static BOOL pongAdded = FALSE;
+
     // Check if the rom path is on a smb share
   if( path.Left(6) == "smb://")
   {
@@ -352,16 +355,27 @@ BOOL CROMListScreen::Helper_GenerateROMList( CStdString &path )
     CStdString driverFileName = m_driverInfoList[i].m_romFileName;
     driverFileName.ToLower();
 
-    std::vector<CStdString>::iterator it = std::find( zipFileNames.begin(), 
-                                                      zipFileNames.end(), 
-                                                      driverFileName );
 
-    if( it != zipFileNames.end() )
+      // Special handling for PatchMAME's ROM-less games
+    if( !pongAdded && driverFileName == "pong" )    
     {
-      if( std::find( m_ROMListFull.begin(), m_ROMListFull.end(), i ) == m_ROMListFull.end() )
-        m_ROMListFull.push_back( i );
+      pongAdded = TRUE;
+      m_ROMListFull.push_back( i );
+    }
+    else
+    {
+        // Standard handling
+      std::vector<CStdString>::iterator it = std::find( zipFileNames.begin(), 
+                                                        zipFileNames.end(), 
+                                                        driverFileName );
 
-      zipFileNames.erase( it );
+      if( it != zipFileNames.end() )
+      {
+        if( std::find( m_ROMListFull.begin(), m_ROMListFull.end(), i ) == m_ROMListFull.end() )
+          m_ROMListFull.push_back( i );
+
+        zipFileNames.erase( it );
+      }
     }
 	}
 

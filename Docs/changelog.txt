@@ -40,10 +40,49 @@ Version 0.73.1b
         program to crash when certain monochrome screenshots
         were loaded)
 
+    - ROMListScreen.cpp
+      - Integrated pong and monaco gp from PatchMAME
+
    -------------------------------------------------------------
   - \SharedResources:
     - Added dummy project to compile XPR resources outside of 
       MAMEoXLauncher (needed for XBE icon support)
+
+ --- Integrated pong and monaco gp from PatchMAME 0.62.1 ------------
+
+ Note: The integration is only partial, looks like a fair amount
+       of the existing code will need to be tweaked/rewritten to
+       get it to work w/ the 0.73 core, so it's disabled for now.
+
+ Changes in the \MAME\src directory
+ 
+ Additions:
+
+   cpu\
+     gensync\*
+
+   drivers\
+     monaco.c
+     pong.c
+
+   includes\
+     monaco.h
+
+   sndhrdw\
+     pong.c
+
+   vidhrdw\
+     monaco.c
+     pong.c
+     pong.h
+
+ Modifications:
+   \
+     driver.c
+     cpuintrf.c
+     cpuintrf.h
+   
+
 
  --- Integrated MAME version 0.73, changes follow -------------------
 

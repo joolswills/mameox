@@ -133,6 +133,8 @@
 
 #define HAS_E132XS      1   // New: 0.73
 
+#define HAS_GENSYNC     1   // [EBA] PatchMAME 0.62.1
+
 //---------------------------------------------------------------------------
 // HAS_SOUND Declarations
 //

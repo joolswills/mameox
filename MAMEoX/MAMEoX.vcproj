@@ -159,7 +159,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories=".\Includes;..\MAME\src;..\;&quot;C:\Program Files\Microsoft Xbox SDK\Samples\Xbox\Common\Include&quot;;&quot;$(XDK)\Samples\XBox\Common\Include\&quot;"
+				AdditionalIncludeDirectories=".\Includes;..\MAME\src;..\;&quot;$(XDK)\Samples\XBox\Common\Include\&quot;;&quot;..\libsmb++\src&quot;;..\SharedResources\Includes"
 				PreprocessorDefinitions="WIN32,_XBOX,_DEBUG,_PROFILER,DEBUG_KEYBOARD"
 				RuntimeLibrary="5"
 				UsePrecompiledHeader="0"
@@ -178,11 +178,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 /FIXED:NO"
-				AdditionalDependencies="xkbd.lib xbdm.lib xapilibd.lib d3d8d.lib d3dx8d.lib xgraphicsd.lib dsoundd.lib dmusicd.lib xnetd.lib xboxkrnl.lib MAME.lib"
+				AdditionalDependencies="XbDm.lib  xkbd.lib xapilibd.lib d3d8d.lib d3dx8d.lib xgraphicsd.lib dsoundd.lib dmusicd.lib xnetd.lib xboxkrnl.lib MAME.lib libsmbd.lib"
 				OutputFile=".\Profile/MAMEoX.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="..\MAME\Profile"
+				AdditionalLibraryDirectories="..\MAME\Profile;&quot;..\libsmb++\Debug&quot;"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug/MAMEoX.pdb"/>
 			<Tool
@@ -199,7 +199,7 @@
 				AdditionalOptions="/testid:0x4D414D45"
 				StackSize="0x10000"
 				IncludeDebugInfo="TRUE"
-				LimitAvailableMemoryTo64MB="TRUE"
+				LimitAvailableMemoryTo64MB="FALSE"
 				SuppressStartupBanner="TRUE"
 				FormatUD="FALSE"
 				NoLibWarn="TRUE"

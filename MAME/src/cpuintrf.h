@@ -303,6 +303,13 @@ enum
 	CPU_E132XS,
 #endif
 
+
+  // [EBA] PatchMAME (Pong + Monaco)
+#if (HAS_GENSYNC)
+	CPU_GENSYNC,
+#endif
+
+
 #ifdef MESS
 #if (HAS_APEXC)
 	CPU_APEXC,
