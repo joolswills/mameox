@@ -379,7 +379,15 @@ void __cdecl main( void )
 	  DOUBLE elapsedTime = (DOUBLE)elapsedTicks / (DOUBLE)osd_cycles_per_second();
 
     if( g_inputManager.IsAnyInput() )
+    {
+      BOOL eatInput = (screensaverTimeout == 0);
       screensaverTimeout = SCREENSAVERDELAYCYCLES;
+      if( eatInput )
+      {
+        g_inputManager.WaitForNoInput();
+        continue;
+      }
+    }
     else if( screensaverTimeout && g_screensaverTimeout )
     {
       if( elapsedTicks >= screensaverTimeout )
@@ -1300,7 +1308,7 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
     pD3DDevice->Present( NULL, NULL, NULL, NULL );
   }
 
-	g_inputManager.WaitForNoButton();
+	g_inputManager.WaitForNoInput();
 
   SAFE_RELEASE( creditsTexture );
 }
