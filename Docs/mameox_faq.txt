@@ -1,6 +1,6 @@
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@@@                           MAMEoX FAQ v 0.1                          @@@
+@@@                          MAMEoX FAQ v 0.11                          @@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@                                                                     @@@
 @@@           MAMEoX v 0.70.b3, based on the MAME v 0.70 core           @@@
@@ -13,7 +13,9 @@
  0.0 Change log:
  ---------------
 
- 07/07/2003 - Initial creation. 
+ 07/07/2003 - 0.10 Initial creation.
+ 07/08/2003 - 0.11 Added info about bugs in the MAME core.
+                   Added info about the MAMEoX ini file. 
 
  1.0 Purpose:
  ------------
@@ -312,6 +314,14 @@
             problems). If you don't do this, you'll probably just get
             a reply from the team asking you to provide this info before
             we can even start looking into it.
+            
+        6.  Lastly, please keep in mind that MAMEoX is a port of MAME.
+            any problems that are in the MAME core will likely be 
+            present in MAMEoX.  There is not much we can do about this.
+            Please check the rom in Mame32 or your favorite 'flavor' of
+            MAME prior to reporting a bug with a rom in MAMEoX.  It is
+            unlikely that we will fix a bug that is present in the 
+            MAME core.    
  --------------------------------------------------------------------------           
   Q.  I posted a bug/feature request/help item, and it disappeared!
       What's going on?
