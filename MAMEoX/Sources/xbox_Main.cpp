@@ -37,18 +37,29 @@ extern "C" {
 #include "mame.h"
 }
 
+//= S T R U C T U R E S ===============================================
+struct CUSTOMVERTEX
+{
+	D3DXVECTOR3   pos;      // The transformed position for the vertex
+  DWORD         diffuse;  // The diffuse color of the vertex
+//  FLOAT         tu, tv;   // The texture coordinates
+};
 
 //= G L O B A L = V A R S =============================================
 CInputManager			g_inputManager;
 CGraphicsManager	g_graphicsManager;
 CXBFont						g_font;
 
+static LPDIRECT3DVERTEXBUFFER8    g_pD3DVertexBuffer = NULL;
 
-DWORD							g_totalMAMEGames = 0;
+
+#define SCREENRANGE_DEADZONE    15000
 
 
 //= P R O T O T Y P E S ===============================================
 static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice );
+static BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage );
+static void DestroyBackdrop( void );
 static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... );
 static BOOL __cdecl compareDriverNames( const void *elem1, const void *elem2 );
 static void SetOptions( void );
@@ -109,9 +120,10 @@ void __cdecl main( void )
   LoadDriverDataSections();
 
 	  // Count and sort the game drivers (Taken from XMame)
-	for( g_totalMAMEGames = 0; drivers[g_totalMAMEGames]; ++g_totalMAMEGames)
+  DWORD totalMAMEGames = 0;
+	for( totalMAMEGames = 0; drivers[totalMAMEGames]; ++totalMAMEGames)
 		;
-	qsort( drivers, g_totalMAMEGames, sizeof(drivers[0]), compareDriverNames );
+	qsort( drivers, totalMAMEGames, sizeof(drivers[0]), compareDriverNames );
 
 
 
@@ -120,6 +132,15 @@ void __cdecl main( void )
 	if( !romList.LoadROMList( TRUE ) )
 		Die( pD3DDevice, "Could not generate ROM list!" );
 
+    // Grab the current screen usage so we can render a border
+  FLOAT xPercentage, yPercentage;
+  GetScreenUsage( &xPercentage, &yPercentage );
+  CreateBackdrop( xPercentage, yPercentage );
+
+
+    //-- Initialize the rendering engine -------------------------------
+  D3DXMATRIX matWorld;
+  D3DXMatrixIdentity( &matWorld );
 
 		// Main loop
 	while( 1 )
@@ -143,7 +164,11 @@ void __cdecl main( void )
 				// Run the selected ROM
       UINT32 romIndex = romList.GetCurrentGameIndex();
       if( romIndex != INVALID_ROM_INDEX  )
+      {
+        DestroyBackdrop();
         Helper_RunRom( romIndex );
+        CreateBackdrop( xPercentage, yPercentage );
+      }
 		}
 		else if( gp0.bAnalogButtons[XINPUT_GAMEPAD_X] > 200 &&
 						 gp0.bAnalogButtons[XINPUT_GAMEPAD_B] > 200 )
@@ -181,11 +206,61 @@ void __cdecl main( void )
         // Regenerate the rom listing, hiding clones
       romList.GenerateROMList( FALSE );
     }
+    else if(  gp0.sThumbLX < -SCREENRANGE_DEADZONE || gp0.sThumbLX > SCREENRANGE_DEADZONE || 
+              gp0.sThumbLY < -SCREENRANGE_DEADZONE || gp0.sThumbLY > SCREENRANGE_DEADZONE )
+    {
+      if( gp0.sThumbLX < -SCREENRANGE_DEADZONE )
+        xPercentage -= 0.00025f;
+      else if( gp0.sThumbLX > SCREENRANGE_DEADZONE )
+        xPercentage += 0.00025f;
+
+      if( gp0.sThumbLY < -SCREENRANGE_DEADZONE )
+        yPercentage -= 0.00025f;
+      else if( gp0.sThumbLY > SCREENRANGE_DEADZONE )
+        yPercentage += 0.00025f;
+
+      if( xPercentage < 0.25f )
+        xPercentage = 0.25f;
+      else if( xPercentage > 1.0f )
+        xPercentage = 1.0f;
+
+      if( yPercentage < 0.25f )
+        yPercentage = 0.25f;
+      else if( yPercentage > 1.0f )
+        yPercentage = 1.0f;
+
+      SetScreenUsage( xPercentage, yPercentage );
+      DestroyBackdrop();
+      CreateBackdrop( xPercentage, yPercentage );
+    }
 
 		
 			// Move the cursor position and render
+    g_graphicsManager.GetD3DDevice()->SetTransform( D3DTS_WORLD, &matWorld );
+    g_graphicsManager.GetD3DDevice()->SetTransform( D3DTS_VIEW, &matWorld );
+    g_graphicsManager.GetD3DDevice()->SetTransform( D3DTS_PROJECTION, &matWorld );
+
+	  g_graphicsManager.GetD3DDevice()->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
+	  g_graphicsManager.GetD3DDevice()->SetRenderState( D3DRS_LIGHTING, FALSE );
+	  g_graphicsManager.GetD3DDevice()->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
+    g_graphicsManager.GetD3DDevice()->SetRenderState( D3DRS_ZENABLE, FALSE );
+    g_graphicsManager.GetD3DDevice()->Clear(	0L,																// Count
+											                        NULL,															// Rects to clear
+											                        D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+                                              D3DCOLOR_XRGB(0,0,0),							// Color
+											                        1.0f,															// Z
+											                        0L );															// Stencil
+    g_graphicsManager.GetD3DDevice()->SetVertexShader( D3DFVF_XYZ | D3DFVF_DIFFUSE );
+    g_graphicsManager.GetD3DDevice()->SetStreamSource(	0,												  // Stream number
+																	                      g_pD3DVertexBuffer,					// Stream data
+																	                      sizeof(CUSTOMVERTEX) );		  // Vertex stride
+    g_graphicsManager.GetD3DDevice()->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
+
 		romList.MoveCursor( gp0 );
-		romList.Draw();
+		romList.Draw( FALSE, FALSE );
+
+    g_graphicsManager.GetD3DDevice()->Present( NULL, NULL, NULL, NULL );
+
 	}
 }
 
@@ -206,12 +281,11 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 
   g_font.Begin();
 	
-//	g_font.DrawText( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255), L"MAMEoX v0.4-67", XBFONT_CENTER_X );
-	g_font.DrawText( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"B's Momma v0.4", XBFONT_CENTER_X );
+  g_font.DrawText( 320, 80, D3DCOLOR_RGBA( 255, 255, 255, 255),   L"MAMEoX v0.5", XBFONT_CENTER_X );
   g_font.DrawText( 320, 100, D3DCOLOR_RGBA( 255, 255, 255, 255 ), L"Uses MAME version 0.67", XBFONT_CENTER_X );
   g_font.DrawText( 320, 260, D3DCOLOR_RGBA( 240, 240, 240, 255 ), L"Portions based on:", XBFONT_CENTER_X );
   g_font.DrawText( 320, 280, D3DCOLOR_RGBA( 240, 240, 240, 255 ), L"\"MAMEX(b5): updated by superfro, original port by opcode\"", XBFONT_CENTER_X );
-	g_font.DrawText( 320, 320, D3DCOLOR_RGBA( 70, 235, 125, 255 ), L"Press any button to continue.", XBFONT_CENTER_X );
+	g_font.DrawText( 320, 320, D3DCOLOR_RGBA( 70, 235, 125, 255 ),  L"Press any button to continue.", XBFONT_CENTER_X );
 
   g_font.End();
   pD3DDevice->Present( NULL, NULL, NULL, NULL );
@@ -299,23 +373,23 @@ static void SetOptions( void )
 	int 	skip_gameinfo;		      1 to skip the game info screen at startup
 */
 
-	options.samplerate = 44100;   // sound sample playback rate, in Hz
-  options.use_samples = TRUE;   // 1 to enable external .wav samples
-  options.use_filter = TRUE;    // 1 to enable FIR filter on final mixer output
+	options.samplerate = 44100;       // sound sample playback rate, in Hz
+  options.use_samples = TRUE;       // 1 to enable external .wav samples
+  options.use_filter = TRUE;        // 1 to enable FIR filter on final mixer output
 
-	options.brightness = 1.0f;		  // brightness of the display
-  options.pause_bright = 0.65f;   // brightness when in pause
-	options.gamma = 1.0f;			      // gamma correction of the display
+	options.brightness = 1.0f;		    // brightness of the display
+  options.pause_bright = 0.65f;     // brightness when in pause
+	options.gamma = 1.0f;			        // gamma correction of the display
 	options.color_depth = 32;
-	// int		vector_width;	          // requested width for vector games; 0 means default (640)
-	// int		vector_height;	        // requested height for vector games; 0 means default (480)
+	options.vector_width = 640;	      // requested width for vector games; 0 means default (640)
+	options.vector_height = 480;	    // requested height for vector games; 0 means default (480)
 	// int		ui_orientation;	        // orientation of the UI relative to the video
 
-	//int		beam;			              // vector beam width
-	//float	vector_flicker;	        // vector beam flicker effect control
-	//float	vector_intensity;       // vector beam intensity
-	options.translucency = TRUE;    // 1 to enable translucency on vectors
-	options.antialias = TRUE;		    // 1 to enable antialiasing on vectors
+	options.beam = 2;			            // vector beam width
+	options.vector_flicker = 0.5f;	  // vector beam flicker effect control
+	options.vector_intensity = 1.5f;  // vector beam intensity
+	options.translucency = TRUE;      // 1 to enable translucency on vectors
+	options.antialias = FALSE;		    // 1 to enable antialiasing on vectors
 
 	//int		use_artwork;	          bitfield indicating which artwork pieces to use
 	//int		artwork_res;	          1 for 1x game scaling, 2 for 2x
@@ -372,6 +446,7 @@ static BOOL Helper_RunRom( UINT32 romIndex )
   LoadDriverSectionByName( "src\\drivers\\rastan.c" );    // Asuka & Asuka (sound)
   LoadDriverSectionByName( "src\\drivers\\hal21.c" );     // Athena
   LoadDriverSectionByName( "src\\drivers\\espial.c" );    // battle cruiser
+  LoadDriverSectionByName( "src\\drivers\\bzone.c" );     // gravitar
 
   if( !LoadDriverSectionByName( DriverName.c_str() ) )
   {
@@ -395,8 +470,75 @@ static BOOL Helper_RunRom( UINT32 romIndex )
 }
 
 
+//-------------------------------------------------------------
+//  CreateBackdrop
+//-------------------------------------------------------------
+static BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage )
+{
+  if( g_pD3DVertexBuffer )
+  {
+    g_pD3DVertexBuffer->Release();
+    g_pD3DVertexBuffer = NULL;
+  }
+
+    // Create the vertex buffer
+  g_graphicsManager.GetD3DDevice()->CreateVertexBuffer( sizeof(CUSTOMVERTEX) << 2,
+																		                    D3DUSAGE_WRITEONLY,
+																		                    D3DFVF_XYZ | D3DFVF_DIFFUSE,
+																		                    D3DPOOL_MANAGED,
+																		                    &g_pD3DVertexBuffer );
+
+	CUSTOMVERTEX *pVertices;
+	g_pD3DVertexBuffer->Lock( 0,										// Offset to lock
+														0,										// Size to lock
+														(BYTE**)&pVertices,		// ppbData
+														0 );									// Flags
+
+		pVertices[0].pos.x = -xUsage;
+		pVertices[0].pos.y = yUsage;
+		pVertices[0].pos.z = 1.0f;
+    pVertices[0].diffuse = D3DCOLOR_RGBA( 30, 50, 30, 255 );
+    //pVertices[0].tu = 0.0f;
+    //pVertices[0].tv = 0.0f;
+
+		pVertices[1].pos.x = xUsage;
+		pVertices[1].pos.y = yUsage;
+		pVertices[1].pos.z = 1.0f;
+    pVertices[1].diffuse = D3DCOLOR_RGBA( 30, 50, 30, 255 );
+    //pVertices[1].tu = 1.0f;
+    //pVertices[1].tv = 0.0f;
+		
+		pVertices[2].pos.x = xUsage;
+		pVertices[2].pos.y = -yUsage;
+		pVertices[2].pos.z = 1.0f;
+    pVertices[2].diffuse = D3DCOLOR_RGBA( 30, 50, 30, 255 );
+    //pVertices[2].tu = 1.0f;
+    //pVertices[2].tv = 1.0f;
+		
+		pVertices[3].pos.x = -xUsage;
+		pVertices[3].pos.y = -yUsage;
+		pVertices[3].pos.z = 1.0f;
+    pVertices[3].diffuse = D3DCOLOR_RGBA( 30, 50, 30, 255 );
+    //pVertices[3].tu = 0.0f;
+    //pVertices[3].tv = 1.0f;
+
+	g_pD3DVertexBuffer->Unlock();
 
 
+  return TRUE;
+}
+
+//-------------------------------------------------------------
+//  DestroyBackdrop
+//-------------------------------------------------------------
+static void DestroyBackdrop( void )
+{
+  if( g_pD3DVertexBuffer )
+  {
+    g_pD3DVertexBuffer->Release();
+    g_pD3DVertexBuffer = NULL;
+  }
+}
 
 
 

@@ -26,6 +26,9 @@ extern "C" {
 #endif
 
 //= D E F I N E S ======================================================
+  // The default screen usage percentages, see g_screenXPercentage comments below
+#define DEFAULT_SCREEN_X_PERCENTAGE     0.85f
+#define DEFAULT_SCREEN_Y_PERCENTAGE     0.85f
 
 // 16bpp color conversion
 #define WIN_COLOR16_RSRC_SHIFT	3
@@ -63,6 +66,23 @@ extern "C" {
 void InitializeD3DRenderer( CGraphicsManager &gman, CXBFont *fnt );
 
 
+	//-------------------------------------------------------------
+	//	SetScreenUsage
+	//! \brief		Set how much of the screen is utilized
+  //!
+  //! \param    xPercentage - Usage in the X direction
+  //! \param    yPercentage - Usage in the Y direction
+	//-------------------------------------------------------------
+void SetScreenUsage( FLOAT xPercentage = DEFAULT_SCREEN_X_PERCENTAGE, FLOAT yPercentage = DEFAULT_SCREEN_Y_PERCENTAGE );
+
+	//-------------------------------------------------------------
+	//	GetScreenUsage
+	//! \brief		Query how much of the screen is utilized
+  //!
+  //! \param    xPercentage - Usage in the X direction
+  //! \param    yPercentage - Usage in the Y direction
+	//-------------------------------------------------------------
+void GetScreenUsage( FLOAT *xPercentage, FLOAT *yPercentage );
 
 extern "C" {
 #endif

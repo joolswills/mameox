@@ -516,20 +516,39 @@ void CROMList::NormalModeMoveCursor( const XINPUT_GAMEPAD &gp, FLOAT elapsedTime
 		if( (LONG)m_gameListCursorPosition < 0 )
 			m_gameListCursorPosition = 0.0f;
 	}
+
+
+    // Make the superscroll char index == whatever we're on now  
+  char CurrentGameSuperscrollChar = toupper( drivers[GetCurrentGameIndex()]->description[0] );
+  if( !(CurrentGameSuperscrollChar >= 'A' && CurrentGameSuperscrollChar <= 'Z') )
+    CurrentGameSuperscrollChar = '#';
+
+  if( g_superscrollCharacterSet[m_superscrollCharacterIdx] != CurrentGameSuperscrollChar )
+  {
+    for( m_superscrollCharacterIdx = 0; m_superscrollCharacterIdx < INVALID_SUPERSCROLL_JUMP_IDX; ++m_superscrollCharacterIdx )
+    {
+      if( g_superscrollCharacterSet[m_superscrollCharacterIdx] == CurrentGameSuperscrollChar )
+        return;
+    }
+
+    PRINTMSG( T_ERROR, "Unhandled superscroll char %c (0x%X)", CurrentGameSuperscrollChar, CurrentGameSuperscrollChar );
+    m_superscrollCharacterIdx = 0;
+  }
 }
 
 //---------------------------------------------------------------------
 //	Draw
 //---------------------------------------------------------------------
-void CROMList::Draw( void )
+void CROMList::Draw( BOOL opaque, BOOL flipOnCompletion )
 {
 		// Display the error to the user
-	m_displayDevice->Clear(	0L,																// Count
-													NULL,															// Rects to clear
-													D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
-													D3DCOLOR_XRGB(0,0,0),							// Color
-													1.0f,															// Z
-													0L );															// Stencil
+  if( opaque )  
+	  m_displayDevice->Clear(	0L,																// Count
+		  											NULL,															// Rects to clear
+			  										D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+				  									D3DCOLOR_XRGB(0,0,0),							// Color
+					  								1.0f,															// Z
+						  							0L );															// Stencil
 
 	m_font.Begin();
 	
@@ -586,7 +605,8 @@ void CROMList::Draw( void )
 
 	m_font.End();
 
-	m_displayDevice->Present( NULL, NULL, NULL, NULL );	
+  if( flipOnCompletion )
+	  m_displayDevice->Present( NULL, NULL, NULL, NULL );	
 }
 
 

@@ -94,8 +94,11 @@ public:
 		//------------------------------------------------------------
 		// Draw
 		//! \brief		Render the current list to the user
+    //!
+    //! \param    opaque - Clear the screen before rendering
+    //! \param    flipOnCompletion - Call Present before leaving
 		//------------------------------------------------------------
-	virtual void Draw( void );
+	virtual void Draw( BOOL opaque = TRUE, BOOL flipOnCompletion = TRUE );
 
 		//------------------------------------------------------------
 		// DrawZipData

@@ -14,6 +14,8 @@
 #include "MAMEoX.h"
 #include "DebugLogger.h"
 #include "GraphicsManager.h"
+#include "xbox_Direct3DRenderer.h"
+
 
 	// Font class from the XDK
 #include "XBFont.h"
@@ -21,6 +23,7 @@
 extern "C" {
 #include "osd_cpu.h"
 #include "driver.h"
+#include "vidhrdw/vector.h"     // For vector blitting
 }
 
 //= S T R U C T U R E S ===============================================
@@ -30,19 +33,10 @@ struct CUSTOMVERTEX
   FLOAT         tu, tv;   // The texture coordinates
 };
 
-typedef struct RenderQuad_t
-{
-  D3DXVECTOR3     m_ul;   // Coords of the upper left corner
-  D3DXVECTOR3     m_lr;   // Coords of the lower right corner
-} RenderQuad_t;
-
 
 
 //= D E F I N E S =====================================================
 
-  // The default screen usage percentages, see g_screenXPercentage comments below
-#define DEFAULT_SCREEN_X_PERCENTAGE     0.85f
-#define DEFAULT_SCREEN_Y_PERCENTAGE     0.85f
 
   // The color to clear the backbuffer to (set to non-black for debugging)
 #define D3D_CLEAR_COLOR                 D3DCOLOR_XRGB(0,0,0)
@@ -81,6 +75,7 @@ extern UINT32	g_pal32Lookup[65536];
 static void Helper_RenderDirect16( void *destination, struct mame_bitmap *bitmap, const struct rectangle *bounds );
 static void Helper_RenderDirect32( void *destination, struct mame_bitmap *bitmap, const struct rectangle *bounds );
 static void Helper_RenderPalettized16( void *destination, struct mame_bitmap *bitmap, const struct rectangle *bounds );
+static void Helper_RenderVectors( void *dest, struct mame_bitmap *bitmap, const struct rectangle *bnds, vector_pixel_t *vectorList );
 static BOOL CreateTexture( void );
 static BOOL CreateRenderingQuad( void );
 
@@ -97,6 +92,25 @@ void InitializeD3DRenderer( CGraphicsManager &gman, CXBFont *fnt )
 	g_font = fnt;
 }
 
+//-------------------------------------------------------------
+//	SetScreenUsage
+//-------------------------------------------------------------
+void SetScreenUsage( FLOAT xPercentage, FLOAT yPercentage )
+{
+  g_screenXPercentage = xPercentage;
+  g_screenYPercentage = yPercentage;
+}
+
+//-------------------------------------------------------------
+//	GetScreenUsage
+//-------------------------------------------------------------
+void GetScreenUsage( FLOAT *xPercentage, FLOAT *yPercentage )
+{
+  if( xPercentage )
+    *xPercentage = g_screenXPercentage;
+  if( yPercentage )
+    *yPercentage = g_screenYPercentage;
+}
 
 
 extern "C" {
@@ -262,24 +276,31 @@ BOOL D3DRendererRender(	struct mame_bitmap *bitmap,
 		return TRUE;
 	}
 
-		// Blit the bitmap to the texture
-	if( bitmap->depth == 15 || bitmap->depth == 16 )
-	{
-		if( g_createParams.video_attributes & VIDEO_RGB_DIRECT )
-		{
-				// Destination buffer is in 15 bit X1R5G5B5
-      Helper_RenderDirect16( g_d3dLockedRect.pBits, bitmap, bounds );
-		}
-		else
-		{
-				// Have to translate the colors through the palette lookup table
-			Helper_RenderPalettized16( g_d3dLockedRect.pBits, bitmap, bounds );
-		}
-	}
-	else
-	{
-		Helper_RenderDirect32( g_d3dLockedRect.pBits, bitmap, bounds );
-	}	
+  if( vector_dirty_pixels )
+  {
+    Helper_RenderVectors( g_d3dLockedRect.pBits, bitmap, bounds, (vector_pixel_t*)vector_dirty_pixels );
+  }
+  else
+  {
+		  // Blit the bitmap to the texture
+	  if( bitmap->depth == 15 || bitmap->depth == 16 )
+	  {
+		  if( g_createParams.video_attributes & VIDEO_RGB_DIRECT )
+		  {
+				  // Destination buffer is in 15 bit X1R5G5B5
+        Helper_RenderDirect16( g_d3dLockedRect.pBits, bitmap, bounds );
+		  }
+		  else
+		  {
+				  // Have to translate the colors through the palette lookup table
+			  Helper_RenderPalettized16( g_d3dLockedRect.pBits, bitmap, bounds );
+		  }
+	  }
+	  else
+	  {
+		  Helper_RenderDirect32( g_d3dLockedRect.pBits, bitmap, bounds );
+	  }	
+  }
 
   g_pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
   g_pD3DDevice->Present( NULL, NULL, NULL, NULL );
@@ -470,6 +491,76 @@ static void Helper_RenderPalettized16( void *dest, struct mame_bitmap *bitmap, c
 		}
 	}
 }
+    
+
+
+//-------------------------------------------------------------
+//	Helper_RenderVectors
+//-------------------------------------------------------------
+static void Helper_RenderVectors( void *dest, struct mame_bitmap *bitmap, const struct rectangle *bnds, vector_pixel_t *vectorList )
+{
+  UINT32 *destBuf = (UINT32*)dest;
+  if( !bitmap || !bitmap->base || !destBuf )
+    return;
+
+  if( bitmap->depth == 32 )
+  {
+    UINT32 *sourceBuf = (UINT32*)bitmap->base;
+
+	  if( g_createParams.orientation & ORIENTATION_SWAP_XY )
+    {
+	    while( *vectorList != VECTOR_PIXEL_END )
+	    {
+		    vector_pixel_t coords = *(vectorList++);
+		    INT32 x = VECTOR_PIXEL_Y( coords );
+		    INT32 y = VECTOR_PIXEL_X( coords );
+        destBuf[ (bnds->min_x + x ) + ((bnds->min_y + y) * g_createParams.width) ] = sourceBuf[ (bnds->min_x + x) + (bnds->min_y + y) * bitmap->rowpixels ];
+	    }
+    }
+    else
+    {
+	    while( *vectorList != VECTOR_PIXEL_END )
+	    {
+		    vector_pixel_t coords = *(vectorList++);
+		    INT32 x = VECTOR_PIXEL_X( coords );
+		    INT32 y = VECTOR_PIXEL_Y( coords );
+        destBuf[ (bnds->min_x + x ) + ((bnds->min_y + y) * g_createParams.width) ] = sourceBuf[ (bnds->min_x + x) + (bnds->min_y + y) * bitmap->rowpixels ];
+	    }
+    }
+  }
+  else
+  {
+    UINT16 *sourceBuf = (UINT16*)bitmap->base;
+
+	  if( g_createParams.orientation & ORIENTATION_SWAP_XY )
+    {
+	    while( *vectorList != VECTOR_PIXEL_END )
+	    {
+		    vector_pixel_t coords = *(vectorList++);
+		    INT32 x = VECTOR_PIXEL_Y( coords );
+		    INT32 y = VECTOR_PIXEL_X( coords );
+        UINT32 color = g_pal32Lookup[ sourceBuf[ (bnds->min_x + x) + (bnds->min_y + y) * bitmap->rowpixels ] ];
+        destBuf[ (bnds->min_x + x ) + ((bnds->min_y + y) * g_createParams.width) ] = color;
+	    }
+    }
+    else
+    {
+	    while( *vectorList != VECTOR_PIXEL_END )
+	    {
+		    vector_pixel_t coords = *(vectorList++);
+		    INT32 x = VECTOR_PIXEL_X( coords );
+		    INT32 y = VECTOR_PIXEL_Y( coords );
+        UINT32 color = g_pal32Lookup[ sourceBuf[ (bnds->min_x + x) + (bnds->min_y + y) * bitmap->rowpixels ] ];
+        destBuf[ (bnds->min_x + x ) + ((bnds->min_y + y) * g_createParams.width) ] = color;
+	    }
+    }
+  }
+}
+
+
+
+
+
 
 //-------------------------------------------------------------
 //  CreateTexture

@@ -33,7 +33,7 @@ void osd_pdt16np( UINT16 *dest, const UINT16 *source, const UINT8 *pMask, int ma
 */
 
 //= F U N C T I O N S =======================================================
-
+/*
 #define vec_mult		inline_vec_mult
 	//-------------------------------------------------------------
 	// vec_mult
@@ -49,3 +49,7 @@ INLINE INT32 inline_vec_mult( INT32 x, INT32 y ) {
 
     return result;
 }
+*/
+
+
+
