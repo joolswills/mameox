@@ -348,9 +348,20 @@ void CSkinChooserScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 		g_loadedSkin->GetSkinElementButtonInfo(SKINELEMENT_SKINCHOOSERSCREEN_BUTTONINFO_START)->Render( m_displayDevice, L"Menu" );
 
 
+	FLOAT titleBarLeft = 0.0f;
+	FLOAT titleBarTop = 0.0f;
+	if( CheckResourceValidity( SKINELEMENT_SKINCHOOSERSCREEN_HEADER ) )
+	{
+		const CSkinElement *titleBarArea = g_loadedSkin->GetSkinElement( SKINELEMENT_SKINCHOOSERSCREEN_HEADER );
+		titleBarLeft = titleBarArea->m_left;
+		titleBarTop =  titleBarArea->m_top;
+	}
 
 	if( CheckResourceValidity( SKINELEMENT_SKINCHOOSERSCREEN_HEADER_TEXT ) )
-		g_loadedSkin->GetSkinElementText( SKINELEMENT_SKINCHOOSERSCREEN_HEADER_TEXT )->Render( m_displayDevice, L"Skin Chooser" );
+		g_loadedSkin->GetSkinElementText( SKINELEMENT_SKINCHOOSERSCREEN_HEADER_TEXT )->RenderAsOffset( m_displayDevice, 
+																																														L"Skin Chooser",
+																																														titleBarLeft,
+																																														titleBarTop );
 
 		// Render the body
 	if( CheckResourceValidity( SKINELEMENT_SKINCHOOSERSCREEN_BODY_SCROLLAREA ) )

@@ -179,8 +179,20 @@ void CHelpScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
 
 		//-- Draw the title bar --------------------------------------------
+	FLOAT titleBarLeft = 0.0f;
+	FLOAT titleBarTop = 0.0f;
+	if( CheckResourceValidity( SKINELEMENT_HELPSCREEN_HEADER ) )
+	{
+		const CSkinElement *titleBarArea = g_loadedSkin->GetSkinElement( SKINELEMENT_HELPSCREEN_HEADER );
+		titleBarLeft = titleBarArea->m_left;
+		titleBarTop =  titleBarArea->m_top;
+	}
+
 	if( CheckResourceValidity( SKINELEMENT_HELPSCREEN_HEADER_TEXT ) )
-		g_loadedSkin->GetSkinElementText( SKINELEMENT_HELPSCREEN_HEADER_TEXT )->Render( m_displayDevice, L"Help!" );
+		g_loadedSkin->GetSkinElementText( SKINELEMENT_HELPSCREEN_HEADER_TEXT )->RenderAsOffset( m_displayDevice, 
+																																														L"Help!",
+																																														titleBarLeft,
+																																														titleBarTop );
 
 
 	if( !CheckResourceValidity( SKINELEMENT_HELPSCREEN_BODY_SCROLLAREA ) ||

@@ -1874,20 +1874,29 @@ void CROMListScreen::DrawVerboseList( void )
 		swprintf( &name[wcslen(name)], L"[%s]", displayString );
   }
 
+	FLOAT titleBarLeft = 0.0f;
+	FLOAT titleBarTop = 0.0f;
+	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_HEADER ) )
+	{
+		const CSkinElement *titleBarArea = g_loadedSkin->GetSkinElement( SKINELEMENT_ROMLISTSCREEN_HEADER );
+		titleBarLeft = titleBarArea->m_left;
+		titleBarTop =  titleBarArea->m_top;
+	}
+
 	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_NAME_TEXT ) )
-		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_NAME_TEXT)->Render( m_displayDevice, name );
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_NAME_TEXT)->RenderAsOffset( m_displayDevice, name, titleBarLeft, titleBarTop );
 
 	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_MANUFACTERER_TEXT ) )
-		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_MANUFACTERER_TEXT)->Render( m_displayDevice, L"Manufacturer" );
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_MANUFACTERER_TEXT)->Render( m_displayDevice, L"Manufacturer", titleBarLeft, titleBarTop );
 
 	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_YEAR_TEXT ) )
-		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_YEAR_TEXT)->Render( m_displayDevice, L"Year" );
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_YEAR_TEXT)->Render( m_displayDevice, L"Year", titleBarLeft, titleBarTop );
 
 	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_NUMPLAYERS_TEXT ) )
-		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_NUMPLAYERS_TEXT)->Render( m_displayDevice, L"#P" );
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_NUMPLAYERS_TEXT)->Render( m_displayDevice, L"#P", titleBarLeft, titleBarTop );
 
 	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_CLONE_TEXT ) )
-		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_CLONE_TEXT)->Render( m_displayDevice, L"Clone" );
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_HEADER_VERBOSELIST_CLONE_TEXT)->Render( m_displayDevice, L"Clone", titleBarLeft, titleBarTop );
 
 
 		// Render the ROM info
@@ -1986,8 +1995,18 @@ void CROMListScreen::DrawSimpleList( void )
 		swprintf( &name[wcslen(name)], L"[%s]", displayString );
   }
 
+
+	FLOAT titleBarLeft = 0.0f;
+	FLOAT titleBarTop = 0.0f;
+	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_HEADER ) )
+	{
+		const CSkinElement *titleBarArea = g_loadedSkin->GetSkinElement( SKINELEMENT_ROMLISTSCREEN_HEADER );
+		titleBarLeft = titleBarArea->m_left;
+		titleBarTop =  titleBarArea->m_top;
+	}
+
 	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_HEADER_SIMPLE_NAME_TEXT ) )
-		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_HEADER_SIMPLE_NAME_TEXT)->Render( m_displayDevice, name );
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_HEADER_SIMPLE_NAME_TEXT)->RenderAsOffset( m_displayDevice, name, titleBarLeft, titleBarTop );
 
 
 
@@ -2098,6 +2117,14 @@ void CROMListScreen::DrawDetailedList( void )
 																driverData.m_screenOrientation & ORIENTATION_FLIP_Y );
 	}
 
+	FLOAT titleBarLeft = 0.0f;
+	FLOAT titleBarTop = 0.0f;
+	if( CheckResourceValidity( SKINELEMENT_ROMLISTSCREEN_HEADER ) )
+	{
+		const CSkinElement *titleBarArea = g_loadedSkin->GetSkinElement( SKINELEMENT_ROMLISTSCREEN_HEADER );
+		titleBarLeft = titleBarArea->m_left;
+		titleBarTop =  titleBarArea->m_top;
+	}
 
 	if( CheckResourceValidity(SKINELEMENT_ROMLISTSCREEN_HEADER_DETAIL_NAME_TEXT) )
 	{
@@ -2114,7 +2141,7 @@ void CROMListScreen::DrawDetailedList( void )
 		  swprintf( &name[wcslen(name)], L"[%s]", displayString );
     }
 
-		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_HEADER_DETAIL_NAME_TEXT)->Render( m_displayDevice, name );
+		g_loadedSkin->GetSkinElementText(SKINELEMENT_ROMLISTSCREEN_HEADER_DETAIL_NAME_TEXT)->RenderAsOffset( m_displayDevice, name, titleBarLeft, titleBarTop );
 	}
 
 

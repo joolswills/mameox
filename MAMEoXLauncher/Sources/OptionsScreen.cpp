@@ -295,10 +295,20 @@ void COptionsScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
 
 		//--- Draw the title bar text --------------------------------------
+	FLOAT titleBarLeft = 0.0f;
+	FLOAT titleBarTop = 0.0f;
+	if( CheckResourceValidity( SKINELEMENT_OPTIONSSCREEN_HEADER ) )
+	{
+		const CSkinElement *titleBarArea = g_loadedSkin->GetSkinElement( SKINELEMENT_OPTIONSSCREEN_HEADER );
+		titleBarLeft = titleBarArea->m_left;
+		titleBarTop =  titleBarArea->m_top;
+	}
+
 	if( CheckResourceValidity( SKINELEMENT_OPTIONSSCREEN_HEADER_TEXT ) )
-		g_loadedSkin->GetSkinElementText( SKINELEMENT_OPTIONSSCREEN_HEADER_TEXT )->Render( m_displayDevice, m_pageData[m_pageNumber].m_title );
-
-
+		g_loadedSkin->GetSkinElementText( SKINELEMENT_OPTIONSSCREEN_HEADER_TEXT )->RenderAsOffset(	m_displayDevice, 
+																																																m_pageData[m_pageNumber].m_title, 
+																																																titleBarLeft, 
+																																																titleBarTop );
 
 
 		//--- Draw the body text -------------------------------------------
