@@ -55,7 +55,7 @@ Texture SplashScreenBackdrop
 
 Texture MessageScreenBackdrop
 {
-  Source mox-messagescreen.jpg
+  Source mox-messagescreen.bmp
   Format D3DFMT_X8R8G8B8
   Levels 1
 }
