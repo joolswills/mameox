@@ -1,9 +1,9 @@
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@@@                          MAMEoX FAQ v 0.15                          @@@
+@@@                          MAMEoX FAQ v 0.16                          @@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@                                                                     @@@
-@@@           MAMEoX v 0.71.3b, based on the MAME v 0.70 core           @@@
+@@@           MAMEoX v 0.72.1b, based on the MAME v 0.72 core           @@@
 @@@           Ported by eabair, opcode                                  @@@
 @@@           Portions based on MameX b5                                @@@
 @@@           original port by opcode, updated by superfro              @@@
@@ -23,7 +23,10 @@
                    added a note about neogeo bios.
  07/23/2003 - 0.14 Changed screenshot information.
  07/24/2003 - 0.15 Added note regarding the calendar in the 
-                   M$ dash and neogeo games starting properly.                                                
+                   M$ dash and neogeo games starting properly.
+ 08/12/2003 - 0.16 Added information about autobooting save 
+                   states.  Updated version.  Updated vmm 
+                   information.  Added lightgun information.                                                                  
 
  1.0 Purpose:
  ------------
@@ -33,7 +36,7 @@
  about using MAME in general, as there is an excellent FAQ located at 
  http://www.mame.net that address many of the common questions users
  have when using MAME.  This FAQ specifically focuses on the X-Box 
- flavor of MAME.
+ flavor of MAME that is MAMEoX!
 
  1.1 About MAMEoX:
  -----------------
@@ -41,7 +44,9 @@
  MAME is distributed with MAMEoX under the MAME license.  Current source
  code for MAMEoX can be found at it's home on SourceForge - 
  
- http://sourceforge.net/projects/mameox/ 
+ http://mameox.sourceforge.net
+ 
+ Then select SF Project from the menu. 
 
  Please note that only source code can be found on this website.  MAMEoX
  is built with an official Microsoft XDK, so no compiled binaries of this
@@ -84,11 +89,11 @@
 
  A.  Yup. :)
  -------------------------------------------------------------------------
- Q.  My MAMEoX hangs / won't run!  What is the deal here?
+ Q.  My MAMEoX hangs / won't run correctly!  What is the deal here?
  
- A.  If you can't seem to get MAMEoX to run, there are a number of 
-     different things you might try:
-     
+ A.  If you can't seem to get MAMEoX to run correctly, or at all, there 
+     are a number of different things you might try:
+          
      +  Update your dashboard or try a new one out.  Make sure it's one
         that is somewhat current and is not outdated.  Some people have
         reported problems with older dashboards.
@@ -105,6 +110,11 @@
         E:/TDATA/4d414d45/ as well, this includes subdirectories in this
         directory.  All of these files should be gone before attempting
         a complete re-install of MAMEoX.
+     +  If you're having difficulty geting something to work correctly
+        that you think should be working, you might check the help file
+        included with MAMEoX.  It can be accessed by pressing 'X' in the
+        rom list in the launcher.  
+        
  --------------------------------------------------------------------------        
  Q.  Ok!  I've got MAMEoX on my X-Box and it's running like a champ!  I 
      have never been happier!  Where do I put my roms?
@@ -122,10 +132,10 @@
      same up-to-date bios.
      
      It's also important to note that neogeo games require the calendar
-     to be set in your original M$ dash.  If you're having problems 
-     getting your neogeo roms to run you might boot to your M$ dash to be
-     sure that your clock is set.  Sometimes when power is disconnected to
-     your X-Box this requires resetting.
+     to be set in your original X-Box dash.  If you're having problems 
+     getting your neogeo roms to run you might boot to your X-Box dash to
+     be sure that your clock is set.  Sometimes when power is disconnected 
+     to your X-Box this requires resetting.
  --------------------------------------------------------------------------      
  Q.  I've put my rom files in the roms directory, but they still don't
      show up in the list. What's wrong?
@@ -165,7 +175,10 @@
      the screenshot, use the detail view (press the white button until it
      is displayed).  You can also view screenshots when the screensaver
      kicks in.  Alternatively, you can download screenshots from various
-     sources (we can't provide you with links).    
+     sources (we can't provide you with links).
+     
+     Alternatively you can map a button combination to take screenshots
+     in the in game menu (input settings).    
  -------------------------------------------------------------------------
  Q.  I modified/added my INI file in the MAMEoX/INI directory, but none of 
      the changes seem to work?  What am I doing wrong?
@@ -173,6 +186,41 @@
  A.  Use the in game editor, the INI file is only read out of UDATA, and 
      when you use the editor it modifies the correct ini file.  The 
      in-game editor also keeps you from entering incorrect values.
+ -------------------------------------------------------------------------
+ Q.  How do I use save states / autoboot save states?  
+ 
+ A.  First, save your game.  Save game support is still very new in the 
+     mame core, and you may find that it varies from driver to driver in
+     how well it works.  To save your game, assuming you have not mapped
+     the function to other buttons, use back + rt analog click + 
+     rt trigger.  When this is done you have your choice of four save
+     slots.  These can be selected by choosing A, B, X, or Y.
+     
+     When you have a save state saved, you should see it in subdirectory
+     NVRAM.  For example, the save state for Ms Pacman is called 
+     mspacman-0.sta, which tells you that your game has been saved to 
+     bank 0.  By changing this to mspacman-autoboot.sta, upon selecting
+     the game again it will start automatically at the save game.  You 
+     can use this to get around long rom initialization sequences you
+     would rather skip.
+     
+     Alternatively, you could also throw the .sta file into the 
+     autobootsave directory.  If the folder is not there already, create
+     it.
+ -------------------------------------------------------------------------
+ Q.  What is wrong with lightgun support?  I can't get it to work right.
+ 
+ A.  It's still not working as well as we would like.  We hope to fix 
+     in a later release.  Please be patient.
+ -------------------------------------------------------------------------
+ Q.  Does MAMEoX support any filters?
+ 
+ A.  As of version .72.1b, there is AdvanceMame2X support.  You can 
+     activate it in the Options menu in the rom list by pressing start, 
+     and navigating through the pages using the L and R triggers.
+     
+     Beware, using this does cause some overhead, and can cause MAMEoX 
+     to drop frames.  It also has a memory cost associated with using it.
  -------------------------------------------------------------------------
  Q.  How do I set up samba support within MameoX?
 
@@ -285,47 +333,30 @@
      problem of running larger roms in MAMEoX!  Windows uses a swap file!  
      It must be really easy to implement!  Why don't you guys use 
      virtual memory in MAMEoX?  It's probably easy to do!  What's the 
-     holdup?  By the way, I am not a coder and I have never looked at 
-     code in my entire life.
+     holdup?  KawaX already uses virtual memory!  By the way, I am not a 
+     coder and I have never looked at code in my entire life.
 
- A.  First, while this is something that the coders might decide to tackle
-     in the far-flung future (and we're talking _far_ flung here) it's 
-     not likely this will work very well with MAME for a couple of reasons.
-     
-     MAME currently loads roms into RAM, so it can emulate games properly.
+ A.  MAME currently loads roms into RAM, so it can emulate games properly.
      Rom information that is dumped into your rom file was originally 
      present in memory to allow the arcade machine quick access to its 
      contents.  Since the files were in memory, access to this information
      was extremely quick from an I/O perspective (I/O is input/output
      for the non-technical).  I/O to a hard drive, which is what would be
      used in MAMEoX, because of lack of RAM to use, would be a _lot_
-     slower than memory I/O wait.  It's not even clear at this time if
-     the increased I/O time would work well or at all with roms loaded
-     in MAMEoX.  To make it work well (if at all), the MAME core would 
-     need to be investigated so we would know the proper things in each
-     rom to send to virtual memory.  It's likely the source code of 
-     MAME would need to be 'hacked' to accomplish this (which is 
-     something the coders are not excited about doing, MAME is already 
-     hacked enough by itself to begin with :) ).
-
-     This is beside the point that any sort of virtual memory system for
-     MAMEoX to use would have to be written from scratch.  There is no
-     'virtual memory' support that can be ported from the MAME core, and
-     MAMEoX is a port of MAME to the X-Box that is optimized to run as
-     many games as possible on your X-Box.  The developers, if they 
-     decide to investigate this in the future, will more than likely only
-     do so after they have milked every last byte out of the X-Box's RAM.
+     slower than memory I/O wait.  To make it work well, the MAME core 
+     would need to be investigated so we would know the proper things in 
+     each rom to send to virtual memory.  Virtual Memory support has been
+     added to MAMEox.  However, it has not implemented with the rom 
+     loading code yet.
 
      If you could not tell by the tone of the question, the MAMEoX team
      is not fond of receiving 'demands' from it's users for this, 
      especially when the tone of the question would have anyone believe
      adding this sort of 'feature' is simple.
 
-     In closing, MAMEoX is open source.  If you think that implementing
-     virtual memory is easy, you're more than welcome to check the source
-     out of CVS and do the work for us. :)  Isn't the open source model
-     wonderful?
-           
+     MAMEoX is open source.  If you think that implementing virtual memory
+     is easy, you're more than welcome to check the source out of CVS and 
+     do the work for us. :)  Isn't the open source model wonderful?          
  --------------------------------------------------------------------------
  Q.  I want to help the MAMEoX team!  What can I do?
 
@@ -412,6 +443,19 @@
             MAME prior to reporting a bug with a rom in MAMEoX.  It is
             unlikely that we will fix a bug that is present in the 
             MAME core.    
+           
+      Also, please consider using the new compatiblity listing that can
+      be found here: 
+      
+      http://mameox.sourceforge.net/compat.php
+      
+      This system is used to generate a romstatus.xml file that you can 
+      place in your GENERAL directory.  This file is generated twice 
+      daily.  This can be parsed through by MAMEoX to determine what the 
+      running status of the rom is.  If it's GREEN, the rom has framerate 
+      issues.  If it's RED, the rom either runs out of memory or causes 
+      MAMEoX to crash.  Try it.  The nice thing about using this system is
+      that it allows you to help out other users of MAMEoX!
  --------------------------------------------------------------------------           
   Q.  I posted a bug/feature request/help item, and it disappeared!
       What's going on?
