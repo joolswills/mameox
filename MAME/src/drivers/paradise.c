@@ -1,7 +1,11 @@
-#pragma code_seg("C385")
-#pragma bss_seg("B385")
-#pragma data_seg("D385")
-#pragma const_seg("K385")
+#pragma code_seg("C384")
+#pragma data_seg("D384")
+#pragma bss_seg("B384")
+#pragma const_seg("K384")
+#pragma comment(linker, "/merge:D384=384")
+#pragma comment(linker, "/merge:C384=384")
+#pragma comment(linker, "/merge:B384=384")
+#pragma comment(linker, "/merge:K384=384")
 /***************************************************************************
 
 							  -= Paradise =-
@@ -336,7 +340,7 @@ ROM_END
 
 GAME( 1994+, paradise, 0, paradise, paradise, 0, ROT90, "Yun Sung", "Paradise" )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,3 @@
-#pragma code_seg("CC15")
-#pragma bss_seg("CB15")
-#pragma data_seg("CD15")
-#pragma const_seg("CK15")
 /*
  * MIPS emulator for the MAME project written by smf
  *

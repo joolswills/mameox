@@ -1,7 +1,11 @@
 #pragma code_seg("C94")
-#pragma bss_seg("B94")
 #pragma data_seg("D94")
+#pragma bss_seg("B94")
 #pragma const_seg("K94")
+#pragma comment(linker, "/merge:D94=94")
+#pragma comment(linker, "/merge:C94=94")
+#pragma comment(linker, "/merge:B94=94")
+#pragma comment(linker, "/merge:K94=94")
 /***************************************************************************
 
 	Cinematronics Cosmic Chasm hardware
@@ -276,7 +280,7 @@ ROM_END
 
 GAME( 1983, cchasm,  0,      cchasm, cchasm, 0, ROT270, "Cinematronics / GCE", "Cosmic Chasm (set 1)" )
 GAME( 1983, cchasm1, cchasm, cchasm, cchasm, 0, ROT270, "Cinematronics / GCE", "Cosmic Chasm (set 2)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C46")
-#pragma bss_seg("B46")
 #pragma data_seg("D46")
+#pragma bss_seg("B46")
 #pragma const_seg("K46")
+#pragma comment(linker, "/merge:D46=46")
+#pragma comment(linker, "/merge:C46=46")
+#pragma comment(linker, "/merge:B46=46")
+#pragma comment(linker, "/merge:K46=46")
 /***************************************************************************
 
 	Atari Bad Lands hardware
@@ -563,7 +567,7 @@ static DRIVER_INIT( badlands )
  *************************************/
 
 GAME( 1989, badlands, 0, badlands, badlands, badlands, ROT0, "Atari Games", "Bad Lands" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

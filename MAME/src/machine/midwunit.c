@@ -1,3 +1,11 @@
+#pragma code_seg("C318")
+#pragma data_seg("D318")
+#pragma bss_seg("B318")
+#pragma const_seg("K318")
+#pragma comment(linker, "/merge:D318=318")
+#pragma comment(linker, "/merge:C318=318")
+#pragma comment(linker, "/merge:B318=318")
+#pragma comment(linker, "/merge:K318=318")
 /*************************************************************************
 
 	Driver for Williams/Midway Wolf-unit games.
@@ -705,3 +713,7 @@ WRITE16_HANDLER( midwunit_sound_w )
 		dcs_data_w(data & 0xff);
 	}
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

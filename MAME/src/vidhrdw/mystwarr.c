@@ -1,7 +1,11 @@
-#pragma code_seg("C344")
-#pragma bss_seg("B344")
-#pragma data_seg("D344")
-#pragma const_seg("K344")
+#pragma code_seg("C343")
+#pragma data_seg("D343")
+#pragma bss_seg("B343")
+#pragma const_seg("K343")
+#pragma comment(linker, "/merge:D343=343")
+#pragma comment(linker, "/merge:C343=343")
+#pragma comment(linker, "/merge:B343=343")
+#pragma comment(linker, "/merge:K343=343")
 #define MW_VERBOSE 0
 
 /*
@@ -560,7 +564,7 @@ VIDEO_UPDATE(dadandrn) /* and gaiapols */
 
 	konamigx_mixer(bitmap, cliprect, (roz_enable) ? ult_936_tilemap : 0, rozmode, 0, 0, blendmode);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

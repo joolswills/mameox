@@ -1,7 +1,11 @@
 #pragma code_seg("C289")
-#pragma bss_seg("B289")
 #pragma data_seg("D289")
+#pragma bss_seg("B289")
 #pragma const_seg("K289")
+#pragma comment(linker, "/merge:D289=289")
+#pragma comment(linker, "/merge:C289=289")
+#pragma comment(linker, "/merge:B289=289")
+#pragma comment(linker, "/merge:K289=289")
 /****************************************************************************
 
 Irem "M62" system
@@ -2461,7 +2465,7 @@ GAME( 1985, spelnkrj, spelunkr, spelunkr, spelunkr, m62,      ROT0,   "Irem (lic
 GAME( 1986, spelunk2, 0,        spelunk2, spelunk2, spelunk2, ROT0,   "Irem (licensed from Broderbund)", "Spelunker II" )
 GAME( 1986, youjyudn, 0,        youjyudn, youjyudn, m62,      ROT270, "Irem", "Youjyuden (Japan)" )
 GAMEX(1985, horizon,  0,        horizon,  horizon,  m62,      ROT0,   "Irem", "Horizon", GAME_IMPERFECT_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

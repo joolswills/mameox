@@ -1,7 +1,11 @@
 #pragma code_seg("C109")
-#pragma bss_seg("B109")
 #pragma data_seg("D109")
+#pragma bss_seg("B109")
 #pragma const_seg("K109")
+#pragma comment(linker, "/merge:D109=109")
+#pragma comment(linker, "/merge:C109=109")
+#pragma comment(linker, "/merge:B109=109")
+#pragma comment(linker, "/merge:K109=109")
 /***************************************************************************
 
 	Atari Cloak & Dagger hardware
@@ -249,7 +253,7 @@ VIDEO_UPDATE( cloak )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

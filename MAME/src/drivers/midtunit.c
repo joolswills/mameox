@@ -1,7 +1,11 @@
 #pragma code_seg("C316")
-#pragma bss_seg("B316")
 #pragma data_seg("D316")
+#pragma bss_seg("B316")
 #pragma const_seg("K316")
+#pragma comment(linker, "/merge:D316=316")
+#pragma comment(linker, "/merge:C316=316")
+#pragma comment(linker, "/merge:B316=316")
+#pragma comment(linker, "/merge:K316=316")
 /*************************************************************************
 
 	Midway T-unit system
@@ -1219,7 +1223,7 @@ GAME( 1994, nbajamte, nbajam,  tunit_adpcm, nbajam,  nbajamte, ROT0, "Midway",  
 GAME( 1994, nbajamt1, nbajam,  tunit_adpcm, nbajam,  nbajamte, ROT0, "Midway",   "NBA Jam TE (rev 1.0 01/17/94)" )
 GAME( 1994, nbajamt2, nbajam,  tunit_adpcm, nbajam,  nbajamte, ROT0, "Midway",   "NBA Jam TE (rev 2.0 01/28/94)" )
 GAME( 1994, nbajamt3, nbajam,  tunit_adpcm, nbajam,  nbajamte, ROT0, "Midway",   "NBA Jam TE (rev 3.0 03/04/94)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

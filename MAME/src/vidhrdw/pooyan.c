@@ -1,7 +1,11 @@
-#pragma code_seg("C406")
-#pragma bss_seg("B406")
-#pragma data_seg("D406")
-#pragma const_seg("K406")
+#pragma code_seg("C405")
+#pragma data_seg("D405")
+#pragma bss_seg("B405")
+#pragma const_seg("K405")
+#pragma comment(linker, "/merge:D405=405")
+#pragma comment(linker, "/merge:C405=405")
+#pragma comment(linker, "/merge:B405=405")
+#pragma comment(linker, "/merge:K405=405")
 /***************************************************************************
 
   vidhrdw.c
@@ -154,7 +158,7 @@ VIDEO_UPDATE( pooyan )
 				&Machine->visible_area,TRANSPARENCY_COLOR,0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

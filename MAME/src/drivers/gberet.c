@@ -1,7 +1,11 @@
 #pragma code_seg("C207")
-#pragma bss_seg("B207")
 #pragma data_seg("D207")
+#pragma bss_seg("B207")
 #pragma const_seg("K207")
+#pragma comment(linker, "/merge:D207=207")
+#pragma comment(linker, "/merge:C207=207")
+#pragma comment(linker, "/merge:B207=207")
+#pragma comment(linker, "/merge:K207=207")
 /***************************************************************************
 
 Green Beret memory map (preliminary)
@@ -749,7 +753,7 @@ GAME( 1985, rushatck, gberet, gberet,   gberet,   0, ROT0, "Konami", "Rush'n Att
 GAME( 1985, gberetb,  gberet, gberetb,  gberetb,  0, ROT0, "bootleg", "Green Beret (bootleg)" )
 GAME( 1986, mrgoemon, 0,      mrgoemon, mrgoemon, 0, ROT0, "Konami", "Mr. Goemon (Japan)" )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

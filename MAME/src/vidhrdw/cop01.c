@@ -1,7 +1,11 @@
 #pragma code_seg("C119")
-#pragma bss_seg("B119")
 #pragma data_seg("D119")
+#pragma bss_seg("B119")
 #pragma const_seg("K119")
+#pragma comment(linker, "/merge:D119=119")
+#pragma comment(linker, "/merge:C119=119")
+#pragma comment(linker, "/merge:B119=119")
+#pragma comment(linker, "/merge:K119=119")
 /***************************************************************************
 
   vidhrdw.c
@@ -238,7 +242,7 @@ VIDEO_UPDATE( cop01 )
 	tilemap_draw(bitmap,cliprect,bg_tilemap,TILEMAP_FRONT,0);
 	tilemap_draw(bitmap,cliprect,fg_tilemap,0,0 );
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

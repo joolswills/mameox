@@ -1,7 +1,11 @@
 #pragma code_seg("C247")
-#pragma bss_seg("B247")
 #pragma data_seg("D247")
+#pragma bss_seg("B247")
 #pragma const_seg("K247")
+#pragma comment(linker, "/merge:D247=247")
+#pragma comment(linker, "/merge:C247=247")
+#pragma comment(linker, "/merge:B247=247")
+#pragma comment(linker, "/merge:K247=247")
 /*****************************************************************************
 
 Ikki (c) 1985 Sun Electronics
@@ -290,7 +294,7 @@ ROM_START( ikki )
 ROM_END
 
 GAME( 1985, ikki, 0, ikki, ikki, 0, ROT0, "Sun Electronics", "Ikki (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

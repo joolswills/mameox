@@ -1,7 +1,11 @@
-#pragma code_seg("C367")
-#pragma bss_seg("B367")
-#pragma data_seg("D367")
-#pragma const_seg("K367")
+#pragma code_seg("C366")
+#pragma data_seg("D366")
+#pragma bss_seg("B366")
+#pragma const_seg("K366")
+#pragma comment(linker, "/merge:D366=366")
+#pragma comment(linker, "/merge:C366=366")
+#pragma comment(linker, "/merge:B366=366")
+#pragma comment(linker, "/merge:K366=366")
 /***************************************************************************
 
   vidhrdw.c
@@ -302,7 +306,7 @@ VIDEO_UPDATE( nycaptor )
  	draw_crosshair(bitmap,readinputport(5),readinputport(6),cliprect);
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

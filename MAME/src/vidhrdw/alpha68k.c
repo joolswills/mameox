@@ -1,7 +1,11 @@
 #pragma code_seg("C15")
-#pragma bss_seg("B15")
 #pragma data_seg("D15")
+#pragma bss_seg("B15")
 #pragma const_seg("K15")
+#pragma comment(linker, "/merge:D15=15")
+#pragma comment(linker, "/merge:C15=15")
+#pragma comment(linker, "/merge:B15=15")
+#pragma comment(linker, "/merge:K15=15")
 /***************************************************************************
 
    Alpha 68k video emulation - Bryan McPhail, mish@tendril.co.uk
@@ -666,7 +670,7 @@ VIDEO_UPDATE( sstingry )
 	sstingry_draw_sprites(bitmap,cliprect,3,0x0c00);
 	sstingry_draw_sprites(bitmap,cliprect,1,0x0400);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

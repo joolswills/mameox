@@ -1,7 +1,11 @@
 #pragma code_seg("C130")
-#pragma bss_seg("B130")
 #pragma data_seg("D130")
+#pragma bss_seg("B130")
 #pragma const_seg("K130")
+#pragma comment(linker, "/merge:D130=130")
+#pragma comment(linker, "/merge:C130=130")
+#pragma comment(linker, "/merge:B130=130")
+#pragma comment(linker, "/merge:K130=130")
 #include "driver.h"
 #include "state.h"
 #include "vidhrdw/generic.h"
@@ -201,7 +205,7 @@ VIDEO_UPDATE( darius )
 	}
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C331")
-#pragma bss_seg("B331")
 #pragma data_seg("D331")
+#pragma bss_seg("B331")
 #pragma const_seg("K331")
+#pragma comment(linker, "/merge:D331=331")
+#pragma comment(linker, "/merge:C331=331")
+#pragma comment(linker, "/merge:B331=331")
+#pragma comment(linker, "/merge:K331=331")
 /***************************************************************************
 
  Wild West C.O.W.boys of Moo Mesa
@@ -103,7 +107,7 @@ VIDEO_UPDATE(moo)
 
 	K054157_tilemap_draw(bitmap, cliprect, 0, 0, 0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

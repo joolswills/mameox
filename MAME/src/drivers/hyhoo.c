@@ -1,7 +1,11 @@
 #pragma code_seg("C244")
-#pragma bss_seg("B244")
 #pragma data_seg("D244")
+#pragma bss_seg("B244")
 #pragma const_seg("K244")
+#pragma comment(linker, "/merge:D244=244")
+#pragma comment(linker, "/merge:C244=244")
+#pragma comment(linker, "/merge:B244=244")
+#pragma comment(linker, "/merge:K244=244")
 /******************************************************************************
 
 	Game Driver for Nichibutsu Mahjong series.
@@ -398,7 +402,7 @@ ROM_END
 
 GAME( 1987, hyhoo,  0, hyhoo,  hyhoo,  hyhoo,  ROT90, "Nichibutsu", "Taisen Quiz HYHOO (Japan)" )
 GAME( 1987, hyhoo2, 0, hyhoo,  hyhoo2, hyhoo2, ROT90, "Nichibutsu", "Taisen Quiz HYHOO 2 (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

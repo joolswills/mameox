@@ -1,3 +1,11 @@
+#pragma code_seg("C13")
+#pragma data_seg("D13")
+#pragma bss_seg("B13")
+#pragma const_seg("K13")
+#pragma comment(linker, "/merge:D13=13")
+#pragma comment(linker, "/merge:C13=13")
+#pragma comment(linker, "/merge:B13=13")
+#pragma comment(linker, "/merge:K13=13")
 /***************************************************************************
 
   machine.c
@@ -220,3 +228,7 @@ INTERRUPT_GEN( ajax_interrupt )
 	if (K051960_is_IRQ_enabled())
 		cpu_set_irq_line(0, KONAMI_IRQ_LINE, HOLD_LINE);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

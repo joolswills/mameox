@@ -1,7 +1,11 @@
 #pragma code_seg("C240")
-#pragma bss_seg("B240")
 #pragma data_seg("D240")
+#pragma bss_seg("B240")
 #pragma const_seg("K240")
+#pragma comment(linker, "/merge:D240=240")
+#pragma comment(linker, "/merge:C240=240")
+#pragma comment(linker, "/merge:B240=240")
+#pragma comment(linker, "/merge:K240=240")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -155,7 +159,7 @@ VIDEO_UPDATE( higemaru )
 				&Machine->visible_area,TRANSPARENCY_PEN,15);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

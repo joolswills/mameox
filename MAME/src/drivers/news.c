@@ -1,7 +1,11 @@
-#pragma code_seg("C360")
-#pragma bss_seg("B360")
-#pragma data_seg("D360")
-#pragma const_seg("K360")
+#pragma code_seg("C359")
+#pragma data_seg("D359")
+#pragma bss_seg("B359")
+#pragma const_seg("K359")
+#pragma comment(linker, "/merge:D359=359")
+#pragma comment(linker, "/merge:C359=359")
+#pragma comment(linker, "/merge:B359=359")
+#pragma comment(linker, "/merge:K359=359")
 /*
 
 News
@@ -151,7 +155,7 @@ ROM_END
 
 
 GAME( 1993, news, 0, news, news, 0, ROT0, "Poby / Virus", "News" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

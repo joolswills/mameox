@@ -1,7 +1,11 @@
 #pragma code_seg("C37")
-#pragma bss_seg("B37")
 #pragma data_seg("D37")
+#pragma bss_seg("B37")
 #pragma const_seg("K37")
+#pragma comment(linker, "/merge:D37=37")
+#pragma comment(linker, "/merge:C37=37")
+#pragma comment(linker, "/merge:B37=37")
+#pragma comment(linker, "/merge:K37=37")
 /***************************************************************************
 
 	Atari GT hardware
@@ -1088,7 +1092,7 @@ GAMEX( 1994, tmek,     0,        atarigt,  tmek,     tmek,     ROT0, "Atari Game
 GAMEX( 1994, tmekprot, tmek,     atarigt,  tmek,     tmek,     ROT0, "Atari Games", "T-MEK (prototype)", GAME_UNEMULATED_PROTECTION | GAME_NO_SOUND )
 GAMEX( 1994, primrage, 0,        atarigt,  primrage, primrage, ROT0, "Atari Games", "Primal Rage (version 2.3)", GAME_UNEMULATED_PROTECTION | GAME_NO_SOUND )
 GAMEX( 1994, primrag2, primrage, atarigt,  primrage, primrage, ROT0, "Atari Games", "Primal Rage (version 1.7)", GAME_UNEMULATED_PROTECTION | GAME_NO_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

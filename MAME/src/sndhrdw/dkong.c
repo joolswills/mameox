@@ -1,7 +1,11 @@
 #pragma code_seg("C150")
-#pragma bss_seg("B150")
 #pragma data_seg("D150")
+#pragma bss_seg("B150")
 #pragma const_seg("K150")
+#pragma comment(linker, "/merge:D150=150")
+#pragma comment(linker, "/merge:C150=150")
+#pragma comment(linker, "/merge:B150=150")
+#pragma comment(linker, "/merge:K150=150")
 #include "driver.h"
 #include "cpu/i8039/i8039.h"
 
@@ -127,7 +131,7 @@ WRITE_HANDLER( dkongjr_sh_walk_w )
 		walk = data;
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

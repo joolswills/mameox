@@ -1,7 +1,11 @@
 #pragma code_seg("C208")
-#pragma bss_seg("B208")
 #pragma data_seg("D208")
+#pragma bss_seg("B208")
 #pragma const_seg("K208")
+#pragma comment(linker, "/merge:D208=208")
+#pragma comment(linker, "/merge:C208=208")
+#pragma comment(linker, "/merge:B208=208")
+#pragma comment(linker, "/merge:K208=208")
 /***************************************************************************
 
 Gangbusters(GX878) (c) 1988 Konami
@@ -434,7 +438,7 @@ static DRIVER_INIT( gbusters )
 
 GAME( 1988, gbusters, 0,        gbusters, gbusters, gbusters, ROT90, "Konami", "Gang Busters" )
 GAME( 1988, crazycop, gbusters, gbusters, gbusters, gbusters, ROT90, "Konami", "Crazy Cop (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

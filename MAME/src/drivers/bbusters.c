@@ -1,7 +1,11 @@
 #pragma code_seg("C56")
-#pragma bss_seg("B56")
 #pragma data_seg("D56")
+#pragma bss_seg("B56")
 #pragma const_seg("K56")
+#pragma comment(linker, "/merge:D56=56")
+#pragma comment(linker, "/merge:C56=56")
+#pragma comment(linker, "/merge:B56=56")
+#pragma comment(linker, "/merge:K56=56")
 /***************************************************************************
 
 	Beast Busters			A9003	(c) 1989 SNK Corporation
@@ -908,7 +912,7 @@ GAME( 1989, mechatt,  0, mechatt,  mechatt,  mechatt,  ROT0,  "SNK", "Mechanized
 #else
 GAME( 1989, mechatt,  0, mechatt,  mechatt,  mechatt,  ROT0,  "SNK", "Mechanized Attack" )
 #endif
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

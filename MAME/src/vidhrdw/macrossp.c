@@ -1,7 +1,11 @@
 #pragma code_seg("C293")
-#pragma bss_seg("B293")
 #pragma data_seg("D293")
+#pragma bss_seg("B293")
 #pragma const_seg("K293")
+#pragma comment(linker, "/merge:D293=293")
+#pragma comment(linker, "/merge:C293=293")
+#pragma comment(linker, "/merge:B293=293")
+#pragma comment(linker, "/merge:K293=293")
 /* Macross Plus - Vidhrdw
   see DRIVER file for notes */
 
@@ -424,7 +428,7 @@ VIDEO_EOF( macrossp )
 	memcpy(spriteram_old2,spriteram_old,spriteram_size);
 	memcpy(spriteram_old,macrossp_spriteram,spriteram_size);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

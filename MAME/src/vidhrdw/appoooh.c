@@ -1,7 +1,11 @@
 #pragma code_seg("C20")
-#pragma bss_seg("B20")
 #pragma data_seg("D20")
+#pragma bss_seg("B20")
 #pragma const_seg("K20")
+#pragma comment(linker, "/merge:D20=20")
+#pragma comment(linker, "/merge:C20=20")
+#pragma comment(linker, "/merge:B20=20")
+#pragma comment(linker, "/merge:K20=20")
 /***************************************************************************
 
   vidhrdw.c
@@ -264,7 +268,7 @@ VIDEO_UPDATE( appoooh )
 	if (priority != 0)	/* fg in front of sprites */
 		tilemap_draw(bitmap,cliprect,fg_tilemap,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

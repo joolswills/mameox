@@ -1,7 +1,11 @@
 #pragma code_seg("CC8")
-#pragma bss_seg("CB8")
 #pragma data_seg("CD8")
+#pragma bss_seg("CB8")
 #pragma const_seg("CK8")
+#pragma comment(linker, "/merge:CD8=CPU8")
+#pragma comment(linker, "/merge:CC8=CPU8")
+#pragma comment(linker, "/merge:CB8=CPU8")
+#pragma comment(linker, "/merge:CK8=CPU8")
  /**************************************************************************\
  *				Texas Instruments TMS320x25 DSP Disassembler				*
  *																			*
@@ -137,3 +141,7 @@ int main(int argc,char *argv[])
 	fclose(F);
 	return(0);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

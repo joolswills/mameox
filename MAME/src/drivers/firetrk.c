@@ -1,7 +1,11 @@
 #pragma code_seg("C182")
-#pragma bss_seg("B182")
 #pragma data_seg("D182")
+#pragma bss_seg("B182")
 #pragma const_seg("K182")
+#pragma comment(linker, "/merge:D182=182")
+#pragma comment(linker, "/merge:C182=182")
+#pragma comment(linker, "/merge:B182=182")
+#pragma comment(linker, "/merge:K182=182")
 /***************************************************************************
 
 Atari Fire Truck + Super Bug + Monte Carlo driver
@@ -1795,7 +1799,7 @@ ROM_END
 GAME( 1977, superbug, 0, superbug, superbug, superbug, ROT270, "Atari", "Super Bug" )
 GAME( 1978, firetrk,  0, firetrk,  firetrk,  firetrk,  ROT270, "Atari", "Fire Truck" )
 GAME( 1979, montecar, 0, montecar, montecar, montecar, ROT270, "Atari", "Monte Carlo" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("CC16")
-#pragma bss_seg("CB16")
-#pragma data_seg("CD16")
-#pragma const_seg("CK16")
+#pragma code_seg("CC13")
+#pragma data_seg("CD13")
+#pragma bss_seg("CB13")
+#pragma const_seg("CK13")
+#pragma comment(linker, "/merge:CD13=CPU13")
+#pragma comment(linker, "/merge:CC13=CPU13")
+#pragma comment(linker, "/merge:CB13=CPU13")
+#pragma comment(linker, "/merge:CK13=CPU13")
 /* this code was hacked out of the fully-featured 6809 disassembler by Sean Riddle */
 
 
@@ -726,3 +730,7 @@ unsigned Dasm6809 (char *buffer, unsigned pc)
 }
 
 #endif
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C133")
-#pragma bss_seg("B133")
 #pragma data_seg("D133")
+#pragma bss_seg("B133")
 #pragma const_seg("K133")
+#pragma comment(linker, "/merge:D133=133")
+#pragma comment(linker, "/merge:C133=133")
+#pragma comment(linker, "/merge:B133=133")
+#pragma comment(linker, "/merge:K133=133")
 /*
   Dragonball Z
   Banpresto, 1993
@@ -509,7 +513,7 @@ static DRIVER_INIT(dbz)
 
 GAMEX( 1993, dbz,  0, dbz,  dbz2, dbz, ROT0, "Banpresto", "Dragonball Z" , GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1994, dbz2, 0, dbz2, dbz2, dbz2, ROT0, "Banpresto", "Dragonball Z 2 Super Battle" , GAME_IMPERFECT_GRAPHICS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

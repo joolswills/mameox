@@ -1,7 +1,11 @@
 #pragma code_seg("C314")
-#pragma bss_seg("B314")
 #pragma data_seg("D314")
+#pragma bss_seg("B314")
 #pragma const_seg("K314")
+#pragma comment(linker, "/merge:D314=314")
+#pragma comment(linker, "/merge:C314=314")
+#pragma comment(linker, "/merge:B314=314")
+#pragma comment(linker, "/merge:K314=314")
 #include "driver.h"
 
 unsigned char *mexico86_videoram,*mexico86_objectram;
@@ -248,7 +252,7 @@ VIDEO_UPDATE( kikikai )
 	}
 }
 //ZT
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

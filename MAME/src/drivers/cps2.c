@@ -1,7 +1,11 @@
 #pragma code_seg("C122")
-#pragma bss_seg("B122")
 #pragma data_seg("D122")
+#pragma bss_seg("B122")
 #pragma const_seg("K122")
+#pragma comment(linker, "/merge:D122=122")
+#pragma comment(linker, "/merge:C122=122")
+#pragma comment(linker, "/merge:B122=122")
+#pragma comment(linker, "/merge:K122=122")
 /***************************************************************************
 
   Capcom System 2
@@ -5935,7 +5939,7 @@ GAMEX(2000, 1944j,    1944,    cps2, 19xx,    cps2, ROT0,   "Capcom, supported b
 /* Games released on CPS-2 hardware by Cave */
 
 GAMEX(2001, progear,  0,       cps2, cps2,    cps2, ROT0,   "Cave, distributed by Capcom", "Progear no Arashi (Japan 010117)", GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

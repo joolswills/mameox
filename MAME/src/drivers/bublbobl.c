@@ -1,7 +1,11 @@
 #pragma code_seg("C81")
-#pragma bss_seg("B81")
 #pragma data_seg("D81")
+#pragma bss_seg("B81")
 #pragma const_seg("K81")
+#pragma comment(linker, "/merge:D81=81")
+#pragma comment(linker, "/merge:C81=81")
+#pragma comment(linker, "/merge:B81=81")
+#pragma comment(linker, "/merge:K81=81")
 /***************************************************************************
 Bubble Bobble / Tokio
 
@@ -1097,7 +1101,7 @@ GAME( 1986, boblbobl, bublbobl, boblbobl, boblbobl, boblbobl, ROT0,  "bootleg", 
 GAME( 1986, sboblbob, bublbobl, boblbobl, sboblbob, bublbobl, ROT0,  "bootleg", "Super Bobble Bobble" )
 GAMEX(1986, tokio,    0,        tokio,    tokio,    tokio,    ROT90, "Taito", "Tokio / Scramble Formation", GAME_NOT_WORKING )
 GAME( 1986, tokiob,   tokio,    tokio,    tokio,    tokio,    ROT90, "bootleg", "Tokio / Scramble Formation (bootleg)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

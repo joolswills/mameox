@@ -1,7 +1,11 @@
 #pragma code_seg("C19")
-#pragma bss_seg("B19")
 #pragma data_seg("D19")
+#pragma bss_seg("B19")
 #pragma const_seg("K19")
+#pragma comment(linker, "/merge:D19=19")
+#pragma comment(linker, "/merge:C19=19")
+#pragma comment(linker, "/merge:B19=19")
+#pragma comment(linker, "/merge:K19=19")
 /* Angel Kids / Space Position hardware driver
 
  driver by David Haywood
@@ -633,7 +637,7 @@ static DRIVER_INIT( spcpostn )	{ spcpostn_decode(); }
 
 GAME( 1988, angelkds, 0, angelkds, angelkds,        0,  ROT90,  "Sega / Nasco?", "Angel Kids (Japan)" ) /* Nasco not displayed but 'Exa Planning' is */
 GAMEX(1986, spcpostn, 0, angelkds, angelkds, spcpostn,  ROT90,  "Sega / Nasco", "Space Position (Japan)", GAME_NOT_WORKING ) /* encrypted */
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

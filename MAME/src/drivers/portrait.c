@@ -1,7 +1,11 @@
-#pragma code_seg("C409")
-#pragma bss_seg("B409")
-#pragma data_seg("D409")
-#pragma const_seg("K409")
+#pragma code_seg("C408")
+#pragma data_seg("D408")
+#pragma bss_seg("B408")
+#pragma const_seg("K408")
+#pragma comment(linker, "/merge:D408=408")
+#pragma comment(linker, "/merge:C408=408")
+#pragma comment(linker, "/merge:B408=408")
+#pragma comment(linker, "/merge:K408=408")
 /*
 Portraits 1983 (c) Olympia
 
@@ -301,7 +305,7 @@ ROM_END
 
 GAMEX( 1983, portrait,  0,    portrait, portrait,  0, ROT270, "Olympia", "Portraits", GAME_NO_SOUND | GAME_IMPERFECT_GRAPHICS | GAME_WRONG_COLORS )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C377")
-#pragma bss_seg("B377")
-#pragma data_seg("D377")
-#pragma const_seg("K377")
+#pragma code_seg("C376")
+#pragma data_seg("D376")
+#pragma bss_seg("B376")
+#pragma const_seg("K376")
+#pragma comment(linker, "/merge:D376=376")
+#pragma comment(linker, "/merge:C376=376")
+#pragma comment(linker, "/merge:B376=376")
+#pragma comment(linker, "/merge:K376=376")
 /***************************************************************************
 
 Atari Orbit video emulation
@@ -121,7 +125,7 @@ VIDEO_UPDATE( orbit )
 
 	orbit_draw_sprites(bitmap, cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

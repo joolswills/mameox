@@ -1,7 +1,11 @@
 #pragma code_seg("C197")
-#pragma bss_seg("B197")
 #pragma data_seg("D197")
+#pragma bss_seg("B197")
 #pragma const_seg("K197")
+#pragma comment(linker, "/merge:D197=197")
+#pragma comment(linker, "/merge:C197=197")
+#pragma comment(linker, "/merge:B197=197")
+#pragma comment(linker, "/merge:K197=197")
 /***************************************************************************
 
 	Gaelco CG-1V/GAE1 based games
@@ -1316,7 +1320,7 @@ GAME( 1996, maniacsq, 0,        maniacsq, maniacsq, 0,        ROT0, "Gaelco", "M
 GAMEX(1996, snowboar, 0,        snowboar, snowboar, snowboar, ROT0, "Gaelco", "Snow Board Championship (set 1)", GAME_UNEMULATED_PROTECTION )
 GAMEX(1996, snowbalt, snowboar, snowboar, snowboar, 0,        ROT0, "Gaelco", "Snow Board Championship (set 2)", GAME_UNEMULATED_PROTECTION )
 GAME( 1998, bang,     0,        bang,     bang,     bang,     ROT0, "Gaelco", "Bang!" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C373")
-#pragma bss_seg("B373")
-#pragma data_seg("D373")
-#pragma const_seg("K373")
+#pragma code_seg("C372")
+#pragma data_seg("D372")
+#pragma bss_seg("B372")
+#pragma const_seg("K372")
+#pragma comment(linker, "/merge:D372=372")
+#pragma comment(linker, "/merge:C372=372")
+#pragma comment(linker, "/merge:B372=372")
+#pragma comment(linker, "/merge:K372=372")
 /***************************************************************************
 
 Omega Fighter
@@ -882,7 +886,7 @@ GAMEX( 1988, robokid,  0,       robokid, robokid, 0,        ROT0,   "UPL",  "Ato
 GAMEX( 1988, robokidj, robokid, robokid, robokidj,0,        ROT0,   "UPL",  "Atomic Robo-kid (Japan)", GAME_NO_COCKTAIL )
 GAMEX( 1989, omegaf,   0,       omegaf,  omegaf,  omegaf,   ROT270, "UPL",  "Omega Fighter",          GAME_NO_COCKTAIL )
 GAMEX( 1989, omegafs,  omegaf,  omegaf,  omegaf,  omegaf,   ROT270, "UPL",  "Omega Fighter Special",  GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

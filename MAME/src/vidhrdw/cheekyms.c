@@ -1,7 +1,11 @@
 #pragma code_seg("C99")
-#pragma bss_seg("B99")
 #pragma data_seg("D99")
+#pragma bss_seg("B99")
 #pragma const_seg("K99")
+#pragma comment(linker, "/merge:D99=99")
+#pragma comment(linker, "/merge:C99=99")
+#pragma comment(linker, "/merge:B99=99")
+#pragma comment(linker, "/merge:K99=99")
 /*************************************************************************
  Universal Cheeky Mouse Driver
  (c)Lee Taylor May 1998, All rights reserved.
@@ -225,7 +229,7 @@ VIDEO_UPDATE( cheekyms )
 	/* copy the temporary bitmap to the screen over the sprites */
 	copybitmap(bitmap,tmpbitmap,0,0,0,0,&Machine->visible_area,TRANSPARENCY_PEN,Machine->pens[4*char_palette]);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

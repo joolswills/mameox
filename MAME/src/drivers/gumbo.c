@@ -1,7 +1,11 @@
 #pragma code_seg("C228")
-#pragma bss_seg("B228")
 #pragma data_seg("D228")
+#pragma bss_seg("B228")
 #pragma const_seg("K228")
+#pragma comment(linker, "/merge:D228=228")
+#pragma comment(linker, "/merge:C228=228")
+#pragma comment(linker, "/merge:B228=228")
+#pragma comment(linker, "/merge:K228=228")
 /*
 
 Gumbo (c)1994 Min Corp (Main Corp written on PCB)
@@ -190,7 +194,7 @@ ROM_START( gumbo )
 ROM_END
 
 GAME( 1994, gumbo, 0, gumbo, gumbo, 0, ROT0, "Min Corp.", "Gumbo" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

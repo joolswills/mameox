@@ -1,7 +1,11 @@
 #pragma code_seg("C337")
-#pragma bss_seg("B337")
 #pragma data_seg("D337")
+#pragma bss_seg("B337")
 #pragma const_seg("K337")
+#pragma comment(linker, "/merge:D337=337")
+#pragma comment(linker, "/merge:C337=337")
+#pragma comment(linker, "/merge:B337=337")
+#pragma comment(linker, "/merge:K337=337")
 /* Jaleco MegaSystem 32 (Preliminary Driver)
 
 
@@ -2115,7 +2119,7 @@ GAMEX( 1997, tp2m32,   tetrisp2, ms32, ms32,     tp2m32,     ROT0,   "Jaleco", "
 
 /* these boot and show something */
 GAMEX( 1994, f1superb, 0,        ms32, f1superb, ss92046_01, ROT0,   "Jaleco", "F1 Super Battle", GAME_NOT_WORKING | GAME_NO_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

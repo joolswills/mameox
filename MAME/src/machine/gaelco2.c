@@ -1,3 +1,11 @@
+#pragma code_seg("C197")
+#pragma data_seg("D197")
+#pragma bss_seg("B197")
+#pragma const_seg("K197")
+#pragma comment(linker, "/merge:D197=197")
+#pragma comment(linker, "/merge:C197=197")
+#pragma comment(linker, "/merge:B197=197")
+#pragma comment(linker, "/merge:K197=197")
 /***************************************************************************
 
 	Gaelco CG-1V/GAE1 based games
@@ -243,3 +251,7 @@ WRITE16_HANDLER( snowboar_protection_w )
 	logerror("%06x: protection write %04x to %04x\n", activecpu_get_pc(), data, offset*2);
 
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

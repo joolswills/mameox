@@ -1,7 +1,11 @@
 #pragma code_seg("C280")
-#pragma bss_seg("B280")
 #pragma data_seg("D280")
+#pragma bss_seg("B280")
 #pragma const_seg("K280")
+#pragma comment(linker, "/merge:D280=280")
+#pragma comment(linker, "/merge:C280=280")
+#pragma comment(linker, "/merge:B280=280")
+#pragma comment(linker, "/merge:K280=280")
 /***************************************************************************
 
 	The Game Room Lethal Justice hardware
@@ -361,7 +365,7 @@ static DRIVER_INIT( lethalj )
 GAME( 1996, lethalj,  0,        lethalj, lethalj,  lethalj, ROT0, "The Game Room", "Lethal Justice" )
 GAME( 1997, eggventr, 0,        lethalj, eggventr, lethalj, ROT0, "The Game Room", "Egg Venture" )
 GAME( 1997, eggvntdx, eggventr, lethalj, eggventr, lethalj, ROT0, "The Game Room", "Egg Venture Deluxe" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C27")
-#pragma bss_seg("B27")
 #pragma data_seg("D27")
+#pragma bss_seg("B27")
 #pragma const_seg("K27")
+#pragma comment(linker, "/merge:D27=27")
+#pragma comment(linker, "/merge:C27=27")
+#pragma comment(linker, "/merge:B27=27")
+#pragma comment(linker, "/merge:K27=27")
 /***************************************************************************
 
 	Art & Magic hardware
@@ -380,7 +384,7 @@ VIDEO_UPDATE( artmagic )
 		offset += TOWORD(0x2000);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

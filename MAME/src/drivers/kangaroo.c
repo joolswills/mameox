@@ -1,7 +1,11 @@
 #pragma code_seg("C261")
-#pragma bss_seg("B261")
 #pragma data_seg("D261")
+#pragma bss_seg("B261")
 #pragma const_seg("K261")
+#pragma comment(linker, "/merge:D261=261")
+#pragma comment(linker, "/merge:C261=261")
+#pragma comment(linker, "/merge:B261=261")
+#pragma comment(linker, "/merge:K261=261")
 /***************************************************************************
 
 	Sun Electronics Kangaroo hardware
@@ -548,7 +552,7 @@ GAME( 1981, fnkyfish, 0,        kangaroo, fnkyfish, 0, ROT90, "Sun Electronics",
 GAME( 1982, kangaroo, 0,        kangaroo, kangaroo, 0, ROT90, "Sun Electronics", "Kangaroo" )
 GAME( 1982, kangaroa, kangaroo, kangaroo, kangaroo, 0, ROT90, "[Sun Electronics] (Atari license)", "Kangaroo (Atari)" )
 GAME( 1982, kangarob, kangaroo, kangaroo, kangaroo, 0, ROT90, "bootleg", "Kangaroo (bootleg)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C106")
-#pragma bss_seg("B106")
 #pragma data_seg("D106")
+#pragma bss_seg("B106")
 #pragma const_seg("K106")
+#pragma comment(linker, "/merge:D106=106")
+#pragma comment(linker, "/merge:C106=106")
+#pragma comment(linker, "/merge:B106=106")
+#pragma comment(linker, "/merge:K106=106")
 /***************************************************************************
 
 							-= Jaleco Driving Games =-
@@ -1358,7 +1362,7 @@ if ( keyboard_pressed(KEYCODE_Z) || keyboard_pressed(KEYCODE_X) )
 
 	megasys1_active_layers = megasys1_active_layers1;
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

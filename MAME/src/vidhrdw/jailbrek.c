@@ -1,7 +1,11 @@
 #pragma code_seg("C255")
-#pragma bss_seg("B255")
 #pragma data_seg("D255")
+#pragma bss_seg("B255")
 #pragma const_seg("K255")
+#pragma comment(linker, "/merge:D255=255")
+#pragma comment(linker, "/merge:C255=255")
+#pragma comment(linker, "/merge:B255=255")
+#pragma comment(linker, "/merge:K255=255")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -152,7 +156,7 @@ VIDEO_UPDATE( jailbrek )
 
 	drawsprites( bitmap );
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

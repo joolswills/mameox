@@ -1,7 +1,11 @@
 #pragma code_seg("C229")
-#pragma bss_seg("B229")
 #pragma data_seg("D229")
+#pragma bss_seg("B229")
 #pragma const_seg("K229")
+#pragma comment(linker, "/merge:D229=229")
+#pragma comment(linker, "/merge:C229=229")
+#pragma comment(linker, "/merge:B229=229")
+#pragma comment(linker, "/merge:K229=229")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/taitoic.h"
@@ -261,7 +265,7 @@ VIDEO_UPDATE( gunbustr )
 	gunbustr_draw_sprites_16x16(bitmap,cliprect,primasks,48,-116);
 #endif
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

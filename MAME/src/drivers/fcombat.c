@@ -1,7 +1,11 @@
 #pragma code_seg("C178")
-#pragma bss_seg("B178")
 #pragma data_seg("D178")
+#pragma bss_seg("B178")
 #pragma const_seg("K178")
+#pragma comment(linker, "/merge:D178=178")
+#pragma comment(linker, "/merge:C178=178")
+#pragma comment(linker, "/merge:B178=178")
+#pragma comment(linker, "/merge:K178=178")
 /* Field Combat (c)1985 Jaleco */
 
 /* todo:
@@ -410,7 +414,7 @@ ROM_START( fcombat )
 ROM_END
 
 GAMEX( 1985, fcombat,  0,       fcombat, fcombat, fcombat,  ROT90, "Jaleco", "Field Combat", GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

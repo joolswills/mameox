@@ -1,7 +1,11 @@
 #pragma code_seg("C155")
-#pragma bss_seg("B155")
 #pragma data_seg("D155")
+#pragma bss_seg("B155")
 #pragma const_seg("K155")
+#pragma comment(linker, "/merge:D155=155")
+#pragma comment(linker, "/merge:C155=155")
+#pragma comment(linker, "/merge:B155=155")
+#pragma comment(linker, "/merge:K155=155")
 /***************************************************************************
 
 Dooyong games
@@ -1491,7 +1495,7 @@ GAME( 1993, sadari,   0,        primella, primella, 0, ROT0,   "[Dooyong] (NTC l
 GAME( 1994, gundl94,  0,        primella, primella, 0, ROT0,   "Dooyong", "Gun Dealer '94" )
 GAME( 1994, primella, gundl94,  primella, primella, 0, ROT0,   "[Dooyong] (NTC license)", "Primella" )
 GAMEX(1995, rshark,   0,        rshark,   rshark,   0, ROT270, "Dooyong", "R-Shark", GAME_IMPERFECT_GRAPHICS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

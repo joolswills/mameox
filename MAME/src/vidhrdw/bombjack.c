@@ -1,7 +1,11 @@
 #pragma code_seg("C74")
-#pragma bss_seg("B74")
 #pragma data_seg("D74")
+#pragma bss_seg("B74")
 #pragma const_seg("K74")
+#pragma comment(linker, "/merge:D74=74")
+#pragma comment(linker, "/merge:C74=74")
+#pragma comment(linker, "/merge:B74=74")
+#pragma comment(linker, "/merge:K74=74")
 /***************************************************************************
 
   vidhrdw.c
@@ -200,7 +204,7 @@ VIDEO_UPDATE( bombjack )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

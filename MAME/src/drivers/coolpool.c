@@ -1,7 +1,11 @@
 #pragma code_seg("C118")
-#pragma bss_seg("B118")
 #pragma data_seg("D118")
+#pragma bss_seg("B118")
 #pragma const_seg("K118")
+#pragma comment(linker, "/merge:D118=118")
+#pragma comment(linker, "/merge:C118=118")
+#pragma comment(linker, "/merge:B118=118")
+#pragma comment(linker, "/merge:K118=118")
 /***************************************************************************
 
 AmeriDarts      (c) 1989 Ameri Corporation
@@ -954,7 +958,7 @@ GAMEX( 1992, coolpool, 0,        coolpool, 9ballsht, coolpool, ROT0, "Catalina",
 GAMEX( 1993, 9ballsht, coolpool,        9ballsht, 9ballsht, 9ballsht, ROT0, "E-Scape EnterMedia (Bundra license)", "9-Ball Shootout (set 1)", GAME_NOT_WORKING | GAME_NO_SOUND )
 GAMEX( 1993, 9ballsh2, 0, 9ballsht, 9ballsht, 9ballsh2, ROT0, "E-Scape EnterMedia (Bundra license)", "9-Ball Shootout (set 2)", GAME_NOT_WORKING | GAME_NO_SOUND )
 GAMEX( 1993, 9ballsh3, 0, 9ballsht, 9ballsht, 9ballsh3, ROT0, "E-Scape EnterMedia (Bundra license)", "9-Ball Shootout (set 3)", GAME_NOT_WORKING | GAME_NO_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

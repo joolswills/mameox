@@ -1,7 +1,11 @@
-#pragma code_seg("C353")
-#pragma bss_seg("B353")
-#pragma data_seg("D353")
-#pragma const_seg("K353")
+#pragma code_seg("C352")
+#pragma data_seg("D352")
+#pragma bss_seg("B352")
+#pragma const_seg("K352")
+#pragma comment(linker, "/merge:D352=352")
+#pragma comment(linker, "/merge:C352=352")
+#pragma comment(linker, "/merge:B352=352")
+#pragma comment(linker, "/merge:K352=352")
 /***************************************************************************
 
 Naughty Boy driver by Sal and John Bugliarisi.
@@ -542,7 +546,7 @@ GAMEX( 1982, naughtyc, naughtyb, naughtyb, naughtyb, 0,        ROT90, "Jaleco (C
 GAMEX( 1982, popflame, 0,		 popflame, naughtyb, popflame, ROT90, "Jaleco", "Pop Flamer (protected)", GAME_NO_COCKTAIL )
 GAMEX( 1982, popflama, popflame, popflame, naughtyb, 0,        ROT90, "Jaleco", "Pop Flamer (not protected)", GAME_NO_COCKTAIL )
 GAMEX( 1982, popflamb, popflame, popflame, naughtyb, 0,        ROT90, "Jaleco", "Pop Flamer (hack?)", GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

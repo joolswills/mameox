@@ -1,7 +1,11 @@
-#pragma code_seg("C394")
-#pragma bss_seg("B394")
-#pragma data_seg("D394")
-#pragma const_seg("K394")
+#pragma code_seg("C393")
+#pragma data_seg("D393")
+#pragma bss_seg("B393")
+#pragma const_seg("K393")
+#pragma comment(linker, "/merge:D393=393")
+#pragma comment(linker, "/merge:C393=393")
+#pragma comment(linker, "/merge:B393=393")
+#pragma comment(linker, "/merge:K393=393")
 /***************************************************************************
 
 Phozon (Namco 1983)
@@ -331,7 +335,7 @@ ROM_END
 
 
 GAMEX( 1983, phozon, 0, phozon, phozon, 0, ROT90, "Namco", "Phozon (Japan)", GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

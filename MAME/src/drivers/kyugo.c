@@ -1,7 +1,11 @@
 #pragma code_seg("C271")
-#pragma bss_seg("B271")
 #pragma data_seg("D271")
+#pragma bss_seg("B271")
 #pragma const_seg("K271")
+#pragma comment(linker, "/merge:D271=271")
+#pragma comment(linker, "/merge:C271=271")
+#pragma comment(linker, "/merge:B271=271")
+#pragma comment(linker, "/merge:K271=271")
 /***************************************************************************
 
 	Kyugo hardware games
@@ -1124,7 +1128,7 @@ GAME( 1986?,legend,   0,        legend,   legend,   srdmissn, ROT0,  "Sega/Corel
 GAME( 1987, airwolf,  0,        srdmissn, airwolf,  srdmissn, ROT0,  "Kyugo", "Airwolf" )
 GAME( 1987, skywolf,  airwolf,  srdmissn, skywolf,  srdmissn, ROT0,  "bootleg", "Sky Wolf (set 1)" )
 GAME( 1987, skywolf2, airwolf,  srdmissn, airwolf,  srdmissn, ROT0,  "bootleg", "Sky Wolf (set 2)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

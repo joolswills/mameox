@@ -1,7 +1,11 @@
 #pragma code_seg("C338")
-#pragma bss_seg("B338")
 #pragma data_seg("D338")
+#pragma bss_seg("B338")
 #pragma const_seg("K338")
+#pragma comment(linker, "/merge:D338=338")
+#pragma comment(linker, "/merge:C338=338")
+#pragma comment(linker, "/merge:B338=338")
+#pragma comment(linker, "/merge:K338=338")
 /*
 *	Video Driver for Metal Soldier Isaac II (1985)
 */
@@ -264,7 +268,7 @@ VIDEO_UPDATE( msisaac )
 	tilemap_draw(bitmap,cliprect,foreground, 0,0);
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C175")
-#pragma bss_seg("B175")
 #pragma data_seg("D175")
+#pragma bss_seg("B175")
 #pragma const_seg("K175")
+#pragma comment(linker, "/merge:D175=175")
+#pragma comment(linker, "/merge:C175=175")
+#pragma comment(linker, "/merge:B175=175")
+#pragma comment(linker, "/merge:K175=175")
 /***************************************************************************
 
 					  -= Fantasy Land / Galaxy Gunners =-
@@ -95,7 +99,7 @@ VIDEO_UPDATE( fantland )
 	fantland_draw_sprites(bitmap,cliprect);
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

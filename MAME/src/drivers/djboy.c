@@ -1,7 +1,11 @@
 #pragma code_seg("C149")
-#pragma bss_seg("B149")
 #pragma data_seg("D149")
+#pragma bss_seg("B149")
 #pragma const_seg("K149")
+#pragma comment(linker, "/merge:D149=149")
+#pragma comment(linker, "/merge:C149=149")
+#pragma comment(linker, "/merge:B149=149")
+#pragma comment(linker, "/merge:K149=149")
 /*
 DJ Boy (c)1989 Kanako
 
@@ -655,7 +659,7 @@ INPUT_PORTS_END
 
 /*     YEAR, NAME,  PARENT, MACHINE, INPUT, INIT, MNTR,  COMPANY, FULLNAME, FLAGS */
 GAMEX( 1989, djboy, 0,      djboy,   djboy, 0,    ROT0, "Kaneko", "DJ Boy", GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

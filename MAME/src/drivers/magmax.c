@@ -1,7 +1,11 @@
 #pragma code_seg("C295")
-#pragma bss_seg("B295")
 #pragma data_seg("D295")
+#pragma bss_seg("B295")
 #pragma const_seg("K295")
+#pragma comment(linker, "/merge:D295=295")
+#pragma comment(linker, "/merge:C295=295")
+#pragma comment(linker, "/merge:B295=295")
+#pragma comment(linker, "/merge:K295=295")
 /***************************************************************************
 
 MAGMAX
@@ -375,7 +379,7 @@ ROM_END
 
 
 GAME( 1985, magmax, 0, magmax, magmax, 0, ROT0, "Nichibutsu", "Mag Max" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

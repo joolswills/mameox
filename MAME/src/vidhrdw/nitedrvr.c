@@ -1,7 +1,11 @@
-#pragma code_seg("C364")
-#pragma bss_seg("B364")
-#pragma data_seg("D364")
-#pragma const_seg("K364")
+#pragma code_seg("C363")
+#pragma data_seg("D363")
+#pragma bss_seg("B363")
+#pragma const_seg("K363")
+#pragma comment(linker, "/merge:D363=363")
+#pragma comment(linker, "/merge:C363=363")
+#pragma comment(linker, "/merge:B363=363")
+#pragma comment(linker, "/merge:K363=363")
 /***************************************************************************
 
 	Atari Night Driver hardware
@@ -110,7 +114,7 @@ VIDEO_UPDATE( nitedrvr )
 				0,0,(offs+26)*8,31*8,
 				&Machine->visible_area,TRANSPARENCY_NONE,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

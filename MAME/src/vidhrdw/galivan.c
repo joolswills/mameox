@@ -1,7 +1,11 @@
 #pragma code_seg("C200")
-#pragma bss_seg("B200")
 #pragma data_seg("D200")
+#pragma bss_seg("B200")
 #pragma const_seg("K200")
+#pragma comment(linker, "/merge:D200=200")
+#pragma comment(linker, "/merge:C200=200")
+#pragma comment(linker, "/merge:B200=200")
+#pragma comment(linker, "/merge:K200=200")
 /***************************************************************************
 
   vidhrdw.c
@@ -438,7 +442,7 @@ VIDEO_UPDATE( ninjemak )
 
 	tilemap_draw(bitmap,cliprect,tx_tilemap,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

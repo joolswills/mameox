@@ -1,7 +1,11 @@
-#pragma code_seg("C404")
-#pragma bss_seg("B404")
-#pragma data_seg("D404")
-#pragma const_seg("K404")
+#pragma code_seg("C403")
+#pragma data_seg("D403")
+#pragma bss_seg("B403")
+#pragma const_seg("K403")
+#pragma comment(linker, "/merge:D403=403")
+#pragma comment(linker, "/merge:C403=403")
+#pragma comment(linker, "/merge:B403=403")
+#pragma comment(linker, "/merge:K403=403")
 /***************************************************************************
 
 	  Poly-Play
@@ -386,7 +390,7 @@ static void timer_callback(int param)
 
 /* game driver */
 GAME( 1985, polyplay, 0, polyplay, polyplay, 0, ROT0, "VEB Polytechnik Karl-Marx-Stadt", "Poly-Play" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

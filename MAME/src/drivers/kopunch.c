@@ -1,7 +1,11 @@
 #pragma code_seg("C270")
-#pragma bss_seg("B270")
 #pragma data_seg("D270")
+#pragma bss_seg("B270")
 #pragma const_seg("K270")
+#pragma comment(linker, "/merge:D270=270")
+#pragma comment(linker, "/merge:C270=270")
+#pragma comment(linker, "/merge:B270=270")
+#pragma comment(linker, "/merge:K270=270")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -347,7 +351,7 @@ static DRIVER_INIT( kopunch )
 
 
 GAMEX( 1981, kopunch, 0, kopunch, kopunch, kopunch, ROT270, "Sega", "KO Punch", GAME_NO_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

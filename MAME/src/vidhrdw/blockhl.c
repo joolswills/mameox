@@ -1,7 +1,11 @@
 #pragma code_seg("C68")
-#pragma bss_seg("B68")
 #pragma data_seg("D68")
+#pragma bss_seg("B68")
 #pragma const_seg("K68")
+#pragma comment(linker, "/merge:D68=68")
+#pragma comment(linker, "/merge:C68=68")
+#pragma comment(linker, "/merge:B68=68")
+#pragma comment(linker, "/merge:K68=68")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 
@@ -66,7 +70,7 @@ VIDEO_UPDATE( blockhl )
 	K051960_sprites_draw(bitmap,cliprect,0,0);
 	tilemap_draw(bitmap,cliprect,K052109_tilemap[0],0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

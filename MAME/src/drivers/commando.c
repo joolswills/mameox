@@ -1,7 +1,11 @@
 #pragma code_seg("C115")
-#pragma bss_seg("B115")
 #pragma data_seg("D115")
+#pragma bss_seg("B115")
 #pragma const_seg("K115")
+#pragma comment(linker, "/merge:D115=115")
+#pragma comment(linker, "/merge:C115=115")
+#pragma comment(linker, "/merge:B115=115")
+#pragma comment(linker, "/merge:K115=115")
 /***************************************************************************
 
 Commando memory map (preliminary)
@@ -563,7 +567,7 @@ GAME( 1985, commando, 0,        commando, commando, commando, ROT90, "Capcom", "
 GAME( 1985, commandu, commando, commando, commandu, commando, ROT90, "Capcom (Data East USA license)", "Commando (US)" )
 GAME( 1985, commandj, commando, commando, commando, commando, ROT90, "Capcom", "Senjou no Ookami" )
 GAME( 1985, spaceinv, commando, commando, commando, spaceinv, ROT90, "bootleg", "Space Invasion" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

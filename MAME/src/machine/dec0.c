@@ -1,3 +1,11 @@
+#pragma code_seg("C141")
+#pragma data_seg("D141")
+#pragma bss_seg("B141")
+#pragma const_seg("K141")
+#pragma comment(linker, "/merge:D141=141")
+#pragma comment(linker, "/merge:C141=141")
+#pragma comment(linker, "/merge:B141=141")
+#pragma comment(linker, "/merge:K141=141")
 /*******************************************************************************
 
 Data East machine functions - Bryan McPhail, mish@tendril.co.uk
@@ -678,3 +686,7 @@ DRIVER_INIT( birdtry )
 {
 	GAME=3;
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

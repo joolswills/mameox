@@ -1,7 +1,11 @@
 #pragma code_seg("C170")
-#pragma bss_seg("B170")
 #pragma data_seg("D170")
+#pragma bss_seg("B170")
 #pragma const_seg("K170")
+#pragma comment(linker, "/merge:D170=170")
+#pragma comment(linker, "/merge:C170=170")
+#pragma comment(linker, "/merge:B170=170")
+#pragma comment(linker, "/merge:K170=170")
 /***************************************************************************
 
 	Exidy 440 hardware
@@ -1798,7 +1802,7 @@ GAME( 1987, hitnmiss, 0,        exidy440, hitnmiss, hitnmiss, ROT0, "Exidy", "Hi
 GAME( 1987, hitnmis2, hitnmiss, exidy440, hitnmiss, hitnmiss, ROT0, "Exidy", "Hit 'n Miss (version 2.0)" )
 GAME( 1988, whodunit, 0,        exidy440, whodunit, whodunit, ROT0, "Exidy", "Who Dunit (version 8.0)" )
 GAME( 1988, showdown, 0,        exidy440, showdown, showdown, ROT0, "Exidy", "Showdown (version 5.0)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

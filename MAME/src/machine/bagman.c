@@ -1,3 +1,11 @@
+#pragma code_seg("C47")
+#pragma data_seg("D47")
+#pragma bss_seg("B47")
+#pragma const_seg("K47")
+#pragma comment(linker, "/merge:D47=47")
+#pragma comment(linker, "/merge:C47=47")
+#pragma comment(linker, "/merge:B47=47")
+#pragma comment(linker, "/merge:K47=47")
 /***************************************************************************
 
   machine.c
@@ -240,3 +248,7 @@ READ_HANDLER( bagman_pal16r6_r )
 ** The /RD4 line goes low (active) whenever CPU reads from memory address a000.
 */
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C124")
-#pragma bss_seg("B124")
 #pragma data_seg("D124")
+#pragma bss_seg("B124")
 #pragma const_seg("K124")
+#pragma comment(linker, "/merge:D124=124")
+#pragma comment(linker, "/merge:C124=124")
+#pragma comment(linker, "/merge:B124=124")
+#pragma comment(linker, "/merge:K124=124")
 /***************************************************************************
 
 	Kitco Crowns Golf hardware
@@ -236,7 +240,7 @@ VIDEO_UPDATE( crgolf )
 	if (*crgolf_color_select)
 		copybitmap(bitmap, highbit, 0, 0, 0, 0, cliprect, TRANSPARENCY_BLEND, 0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C163")
-#pragma bss_seg("B163")
 #pragma data_seg("D163")
+#pragma bss_seg("B163")
 #pragma const_seg("K163")
+#pragma comment(linker, "/merge:D163=163")
+#pragma comment(linker, "/merge:C163=163")
+#pragma comment(linker, "/merge:B163=163")
+#pragma comment(linker, "/merge:K163=163")
 /***************************************************************************
 
 	Epos games
@@ -121,7 +125,7 @@ VIDEO_UPDATE( epos )
 	}
 	copybitmap(bitmap,tmpbitmap,0,0,0,0,&Machine->visible_area,TRANSPARENCY_NONE,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

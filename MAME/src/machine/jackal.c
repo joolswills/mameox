@@ -1,3 +1,11 @@
+#pragma code_seg("C254")
+#pragma data_seg("D254")
+#pragma bss_seg("B254")
+#pragma const_seg("K254")
+#pragma comment(linker, "/merge:D254=254")
+#pragma comment(linker, "/merge:C254=254")
+#pragma comment(linker, "/merge:B254=254")
+#pragma comment(linker, "/merge:K254=254")
 /***************************************************************************
 
   machine.c
@@ -102,3 +110,7 @@ WRITE_HANDLER( jackal_spriteram_w )
 {
 	jackal_spritebank[0x3000+offset] = data;
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

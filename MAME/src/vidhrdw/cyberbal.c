@@ -1,7 +1,11 @@
 #pragma code_seg("C129")
-#pragma bss_seg("B129")
 #pragma data_seg("D129")
+#pragma bss_seg("B129")
 #pragma const_seg("K129")
+#pragma comment(linker, "/merge:D129=129")
+#pragma comment(linker, "/merge:C129=129")
+#pragma comment(linker, "/merge:B129=129")
+#pragma comment(linker, "/merge:K129=129")
 /***************************************************************************
 
 	Atari Cyberball hardware
@@ -410,7 +414,7 @@ VIDEO_UPDATE( cyberbal )
 	/* add the alpha on top */
 	tilemap_draw(bitmap, cliprect, current_screen ? atarigen_alpha2_tilemap : atarigen_alpha_tilemap, 0, 0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C147")
-#pragma bss_seg("B147")
 #pragma data_seg("D147")
+#pragma bss_seg("B147")
 #pragma const_seg("K147")
+#pragma comment(linker, "/merge:D147=147")
+#pragma comment(linker, "/merge:C147=147")
+#pragma comment(linker, "/merge:B147=147")
+#pragma comment(linker, "/merge:K147=147")
 /***************************************************************************
 
   vidhrdw.c
@@ -320,7 +324,7 @@ VIDEO_UPDATE( digdug )
 		}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

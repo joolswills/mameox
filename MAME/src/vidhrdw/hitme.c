@@ -1,7 +1,11 @@
 #pragma code_seg("C241")
-#pragma bss_seg("B241")
 #pragma data_seg("D241")
+#pragma bss_seg("B241")
 #pragma const_seg("K241")
+#pragma comment(linker, "/merge:D241=241")
+#pragma comment(linker, "/merge:C241=241")
+#pragma comment(linker, "/merge:B241=241")
+#pragma comment(linker, "/merge:K241=241")
 #include "driver.h"
 
 extern data8_t *hitme_vidram;
@@ -81,7 +85,7 @@ VIDEO_UPDATE (hitme)
 {
 	tilemap_draw(bitmap,cliprect,hitme_tilemap,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

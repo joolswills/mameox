@@ -1,3 +1,11 @@
+#pragma code_seg("C199")
+#pragma data_seg("D199")
+#pragma bss_seg("B199")
+#pragma const_seg("K199")
+#pragma comment(linker, "/merge:D199=199")
+#pragma comment(linker, "/merge:C199=199")
+#pragma comment(linker, "/merge:B199=199")
+#pragma comment(linker, "/merge:K199=199")
 /***************************************************************************
 
   machine.c
@@ -297,3 +305,7 @@ INTERRUPT_GEN( galaga_interrupt_3 )
 	if (interrupt_enable_3)
 		cpu_set_irq_line(2, IRQ_LINE_NMI, PULSE_LINE);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

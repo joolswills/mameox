@@ -1,7 +1,11 @@
-#pragma code_seg("C351")
-#pragma bss_seg("B351")
-#pragma data_seg("D351")
-#pragma const_seg("K351")
+#pragma code_seg("C350")
+#pragma data_seg("D350")
+#pragma bss_seg("B350")
+#pragma const_seg("K350")
+#pragma comment(linker, "/merge:D350=350")
+#pragma comment(linker, "/merge:C350=350")
+#pragma comment(linker, "/merge:B350=350")
+#pragma comment(linker, "/merge:K350=350")
 /* video hardware for Namco System22 */
 
 #include <math.h>
@@ -900,7 +904,7 @@ LoadMatrix( const INT32 *pSource, double M[4][4] )
 		}
 	}
 } /* LoadMatrix */
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

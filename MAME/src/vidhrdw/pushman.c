@@ -1,7 +1,11 @@
-#pragma code_seg("C417")
-#pragma bss_seg("B417")
-#pragma data_seg("D417")
-#pragma const_seg("K417")
+#pragma code_seg("C416")
+#pragma data_seg("D416")
+#pragma bss_seg("B416")
+#pragma const_seg("K416")
+#pragma comment(linker, "/merge:D416=416")
+#pragma comment(linker, "/merge:C416=416")
+#pragma comment(linker, "/merge:B416=416")
+#pragma comment(linker, "/merge:K416=416")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -129,7 +133,7 @@ VIDEO_UPDATE( pushman )
 	draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,tx_tilemap,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C280")
-#pragma bss_seg("B280")
 #pragma data_seg("D280")
+#pragma bss_seg("B280")
 #pragma const_seg("K280")
+#pragma comment(linker, "/merge:D280=280")
+#pragma comment(linker, "/merge:C280=280")
+#pragma comment(linker, "/merge:B280=280")
+#pragma comment(linker, "/merge:K280=280")
 /***************************************************************************
 
 	The Game Room Lethal Justice hardware
@@ -228,7 +232,7 @@ VIDEO_UPDATE( lethalj )
 	if (cliprect->max_y == Machine->visible_area.max_y)
 		blank_palette = 0;
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

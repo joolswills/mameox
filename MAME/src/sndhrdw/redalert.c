@@ -1,7 +1,11 @@
-#pragma code_seg("C426")
-#pragma bss_seg("B426")
-#pragma data_seg("D426")
-#pragma const_seg("K426")
+#pragma code_seg("C425")
+#pragma data_seg("D425")
+#pragma bss_seg("B425")
+#pragma const_seg("K425")
+#pragma comment(linker, "/merge:D425=425")
+#pragma comment(linker, "/merge:C425=425")
+#pragma comment(linker, "/merge:B425=425")
+#pragma comment(linker, "/merge:K425=425")
 /***************************************************************************
 
 Irem Red Alert sound hardware
@@ -122,7 +126,7 @@ WRITE_HANDLER( redalert_AY8910_B_w )
 	/* D6 = Explosion #3? */
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("CC17")
-#pragma bss_seg("CB17")
-#pragma data_seg("CD17")
-#pragma const_seg("CK17")
+#pragma code_seg("CC14")
+#pragma data_seg("CD14")
+#pragma bss_seg("CB14")
+#pragma const_seg("CK14")
+#pragma comment(linker, "/merge:CD14=CPU14")
+#pragma comment(linker, "/merge:CC14=CPU14")
+#pragma comment(linker, "/merge:CB14=CPU14")
+#pragma comment(linker, "/merge:CK14=CPU14")
 /*** m6805: Portable 6805 emulator ******************************************
 
 	m6805.c (Also supports hd68705 and hd63705 variants)
@@ -1050,3 +1054,7 @@ unsigned hd63705_dasm(char *buffer, unsigned pc)
 #endif
 }
 #endif
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C250")
-#pragma bss_seg("B250")
 #pragma data_seg("D250")
+#pragma bss_seg("B250")
 #pragma const_seg("K250")
+#pragma comment(linker, "/merge:D250=250")
+#pragma comment(linker, "/merge:C250=250")
+#pragma comment(linker, "/merge:B250=250")
+#pragma comment(linker, "/merge:K250=250")
 /***************************************************************************
 
   vidhrdw.c
@@ -259,7 +263,7 @@ VIDEO_UPDATE( ironhors )
 		}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C195")
-#pragma bss_seg("B195")
 #pragma data_seg("D195")
+#pragma bss_seg("B195")
 #pragma const_seg("K195")
+#pragma comment(linker, "/merge:D195=195")
+#pragma comment(linker, "/merge:C195=195")
+#pragma comment(linker, "/merge:B195=195")
+#pragma comment(linker, "/merge:K195=195")
 /***************************************************************************
 
 						  -= Fuuki 16 Bit Games =-
@@ -757,7 +761,7 @@ ROM_END
 GAMEX( 1995, gogomile, 0,        fuuki16, gogomile, 0, ROT0, "Fuuki", "Go Go! Mile Smile",                GAME_IMPERFECT_GRAPHICS | GAME_IMPERFECT_SOUND )
 GAMEX( 1995, gogomilj, gogomile, fuuki16, gogomilj, 0, ROT0, "Fuuki", "Susume! Mile Smile (Japan)",       GAME_IMPERFECT_GRAPHICS | GAME_IMPERFECT_SOUND )
 GAMEX( 1996, pbancho,  0,        fuuki16, pbancho,  0, ROT0, "Fuuki", "Gyakuten!! Puzzle Bancho (Japan)", GAME_IMPERFECT_GRAPHICS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

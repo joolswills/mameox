@@ -1,7 +1,11 @@
 #pragma code_seg("C211")
-#pragma bss_seg("B211")
 #pragma data_seg("D211")
+#pragma bss_seg("B211")
 #pragma const_seg("K211")
+#pragma comment(linker, "/merge:D211=211")
+#pragma comment(linker, "/merge:C211=211")
+#pragma comment(linker, "/merge:B211=211")
+#pragma comment(linker, "/merge:K211=211")
 /***************************************************************************
 
 GI Joe
@@ -387,7 +391,7 @@ static DRIVER_INIT( gijoe )
 GAME( 1992, gijoe,  0,     gijoe, gijoe, gijoe, ROT0, "Konami", "GI Joe (World)")
 GAME( 1992, gijoeu, gijoe, gijoe, gijoe, gijoe, ROT0, "Konami", "GI Joe (US)")
 GAME( 1992, gijoej, gijoe, gijoe, gijoe, gijoe, ROT0, "Konami", "GI Joe (Japan)")
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

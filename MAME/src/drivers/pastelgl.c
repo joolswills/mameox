@@ -1,7 +1,11 @@
-#pragma code_seg("C388")
-#pragma bss_seg("B388")
-#pragma data_seg("D388")
-#pragma const_seg("K388")
+#pragma code_seg("C387")
+#pragma data_seg("D387")
+#pragma bss_seg("B387")
+#pragma const_seg("K387")
+#pragma comment(linker, "/merge:D387=387")
+#pragma comment(linker, "/merge:C387=387")
+#pragma comment(linker, "/merge:B387=387")
+#pragma comment(linker, "/merge:K387=387")
 /******************************************************************************
 
 	Game Driver for Nichibutsu Mahjong series.
@@ -317,7 +321,7 @@ ROM_END
 
 
 GAME( 1985, pastelgl, 0, pastelgl, pastelgl, pastelgl, ROT0, "Nichibutsu", "Pastel Gal (Japan 851224)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C308")
-#pragma bss_seg("B308")
 #pragma data_seg("D308")
+#pragma bss_seg("B308")
 #pragma const_seg("K308")
+#pragma comment(linker, "/merge:D308=308")
+#pragma comment(linker, "/merge:C308=308")
+#pragma comment(linker, "/merge:B308=308")
+#pragma comment(linker, "/merge:K308=308")
 /***************************************************************************
 
 	Midway MCR-68k system
@@ -376,7 +380,7 @@ VIDEO_UPDATE( zwackery )
 	/* draw the high-priority sprites */
 	zwackery_update_sprites(bitmap, cliprect, 1);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C279")
-#pragma bss_seg("B279")
 #pragma data_seg("D279")
+#pragma bss_seg("B279")
 #pragma const_seg("K279")
+#pragma comment(linker, "/merge:D279=279")
+#pragma comment(linker, "/merge:C279=279")
+#pragma comment(linker, "/merge:B279=279")
+#pragma comment(linker, "/merge:K279=279")
 /***************************************************************************
 
  Leprechaun/Pot of Gold
@@ -237,7 +241,7 @@ ROM_END
 
 GAME( 1982, leprechn, 0,        leprechn, leprechn, leprechn, ROT0, "Tong Electronic", "Leprechaun" )
 GAME( 1982, potogold, leprechn, leprechn, leprechn, leprechn, ROT0, "GamePlan", "Pot of Gold" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

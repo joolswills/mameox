@@ -1,7 +1,11 @@
 #pragma code_seg("C123")
-#pragma bss_seg("B123")
 #pragma data_seg("D123")
+#pragma bss_seg("B123")
 #pragma const_seg("K123")
+#pragma comment(linker, "/merge:D123=123")
+#pragma comment(linker, "/merge:C123=123")
+#pragma comment(linker, "/merge:B123=123")
+#pragma comment(linker, "/merge:K123=123")
 /***************************************************************************
 
   vidhrdw.c
@@ -173,7 +177,7 @@ VIDEO_UPDATE( crbaloon )
 			bx,by,
 			&Machine->visible_area,TRANSPARENCY_PEN,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

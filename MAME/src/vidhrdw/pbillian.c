@@ -1,7 +1,11 @@
-#pragma code_seg("C390")
-#pragma bss_seg("B390")
-#pragma data_seg("D390")
-#pragma const_seg("K390")
+#pragma code_seg("C389")
+#pragma data_seg("D389")
+#pragma bss_seg("B389")
+#pragma const_seg("K389")
+#pragma comment(linker, "/merge:D389=389")
+#pragma comment(linker, "/merge:C389=389")
+#pragma comment(linker, "/merge:B389=389")
+#pragma comment(linker, "/merge:K389=389")
 /***************************************************************************
 
   vidhrdw.c
@@ -90,7 +94,7 @@ VIDEO_UPDATE(pbillian)
 	draw_sprites(bitmap,cliprect);
 	if(is_pbillian)usrintf_showmessage	("Power %d%%", ((input_port_3_r(0)&0x3f)*100)/0x3f);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

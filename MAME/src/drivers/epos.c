@@ -1,7 +1,11 @@
 #pragma code_seg("C163")
-#pragma bss_seg("B163")
 #pragma data_seg("D163")
+#pragma bss_seg("B163")
 #pragma const_seg("K163")
+#pragma comment(linker, "/merge:D163=163")
+#pragma comment(linker, "/merge:C163=163")
+#pragma comment(linker, "/merge:B163=163")
+#pragma comment(linker, "/merge:K163=163")
 /***************************************************************************
 
 	Epos games
@@ -423,7 +427,7 @@ GAME ( 1983, theglob,  suprglob, epos, suprglob, 0, ROT270, "Epos Corporation", 
 GAME ( 1983, theglob2, suprglob, epos, suprglob, 0, ROT270, "Epos Corporation", "The Glob (earlier)" )
 GAME ( 1983, theglob3, suprglob, epos, suprglob, 0, ROT270, "Epos Corporation", "The Glob (set 3)" )
 GAMEX( 1984, igmo,     0,        epos, igmo,     0, ROT270, "Epos Corporation", "IGMO", GAME_WRONG_COLORS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

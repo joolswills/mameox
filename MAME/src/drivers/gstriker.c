@@ -1,7 +1,11 @@
 #pragma code_seg("C226")
-#pragma bss_seg("B226")
 #pragma data_seg("D226")
+#pragma bss_seg("B226")
 #pragma const_seg("K226")
+#pragma comment(linker, "/merge:D226=226")
+#pragma comment(linker, "/merge:C226=226")
+#pragma comment(linker, "/merge:B226=226")
+#pragma comment(linker, "/merge:K226=226")
 /*** DRIVER INFO **************************************************************
 
 Grand Striker, V Goal Soccer, World Cup '94
@@ -586,7 +590,7 @@ GAMEX(1993, gstriker, 0,        gstriker, gstriker, 0,        ROT0, "Human", "Gr
 GAMEX(199?, vgoalsoc, 0,        gstriker, gstriker, 0,        ROT0, "Tecmo", "V Goal Soccer", GAME_NOT_WORKING )
 GAMEX(199?, vgoalsca, vgoalsoc, gstriker, gstriker, 0,        ROT0, "Tecmo", "V Goal Soccer (alt)", GAME_NOT_WORKING )
 GAMEX(199?, worldc94, 0,        gstriker, gstriker, 0,        ROT0, "Tecmo", "World Cup '94", GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

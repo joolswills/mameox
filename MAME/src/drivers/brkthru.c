@@ -1,7 +1,11 @@
 #pragma code_seg("C77")
-#pragma bss_seg("B77")
 #pragma data_seg("D77")
+#pragma bss_seg("B77")
 #pragma const_seg("K77")
+#pragma comment(linker, "/merge:D77=77")
+#pragma comment(linker, "/merge:C77=77")
+#pragma comment(linker, "/merge:B77=77")
+#pragma comment(linker, "/merge:K77=77")
 /***************************************************************************
 Break Thru Doc. Data East (1986)
 
@@ -664,7 +668,7 @@ ROM_END
 GAME( 1986, brkthru,  0,       brkthru, brkthru,  0, ROT0,   "Data East USA", "Break Thru (US)" )
 GAME( 1986, brkthruj, brkthru, brkthru, brkthruj, 0, ROT0,   "Data East Corporation", "Kyohkoh-Toppa (Japan)" )
 GAME( 1986, darwin,   0,       darwin,  darwin,   0, ROT270, "Data East Corporation", "Darwin 4078 (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

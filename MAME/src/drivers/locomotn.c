@@ -1,7 +1,11 @@
 #pragma code_seg("C284")
-#pragma bss_seg("B284")
 #pragma data_seg("D284")
+#pragma bss_seg("B284")
 #pragma const_seg("K284")
+#pragma comment(linker, "/merge:D284=284")
+#pragma comment(linker, "/merge:C284=284")
+#pragma comment(linker, "/merge:B284=284")
+#pragma comment(linker, "/merge:K284=284")
 /***************************************************************************
 
 Loco-Motion
@@ -790,7 +794,7 @@ GAME( 1982, locomotn, 0,        locomotn, locomotn, 0, ROT90, "Konami (Centuri l
 GAME( 1982, gutangtn, locomotn, locomotn, locomotn, 0, ROT90, "Konami (Sega license)", "Guttang Gottong" )
 GAME( 1982, cottong,  locomotn, locomotn, locomotn, 0, ROT90, "bootleg", "Cotocoto Cottong" )
 GAME( 1983, commsega, 0,        commsega, commsega, 0, ROT90, "Sega", "Commando (Sega)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C429")
-#pragma bss_seg("B429")
-#pragma data_seg("D429")
-#pragma const_seg("K429")
+#pragma code_seg("C428")
+#pragma data_seg("D428")
+#pragma bss_seg("B428")
+#pragma const_seg("K428")
+#pragma comment(linker, "/merge:D428=428")
+#pragma comment(linker, "/merge:C428=428")
+#pragma comment(linker, "/merge:B428=428")
+#pragma comment(linker, "/merge:K428=428")
 /***************************************************************************
 
 Renegade
@@ -829,7 +833,7 @@ GAMEX( 1986, renegade, 0,		 renegade, renegade, renegade, ROT0, "Technos (Taito 
 GAMEX( 1986, kuniokun, renegade, renegade, renegade, kuniokun, ROT0, "Technos", "Nekketsu Kouha Kunio-kun (Japan)", GAME_NO_COCKTAIL )
 GAMEX( 1986, kuniokub, renegade, renegade, renegade, 0, 	   ROT0, "bootleg", "Nekketsu Kouha Kunio-kun (Japan bootleg)", GAME_NO_COCKTAIL )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

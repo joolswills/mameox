@@ -1,7 +1,11 @@
 #pragma code_seg("C172")
-#pragma bss_seg("B172")
 #pragma data_seg("D172")
+#pragma bss_seg("B172")
 #pragma const_seg("K172")
+#pragma comment(linker, "/merge:D172=172")
+#pragma comment(linker, "/merge:C172=172")
+#pragma comment(linker, "/merge:B172=172")
+#pragma comment(linker, "/merge:K172=172")
 /***************************************************************************
 
   vidhrdw.c
@@ -154,7 +158,7 @@ VIDEO_UPDATE( exterm )
 		draw_scanline16(bitmap, cliprect->min_x, y, cliprect->max_x - cliprect->min_x, &scanline[cliprect->min_x], Machine->pens, -1);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

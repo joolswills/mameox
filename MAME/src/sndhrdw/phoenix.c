@@ -1,7 +1,11 @@
-#pragma code_seg("C393")
-#pragma bss_seg("B393")
-#pragma data_seg("D393")
-#pragma const_seg("K393")
+#pragma code_seg("C392")
+#pragma data_seg("D392")
+#pragma bss_seg("B392")
+#pragma const_seg("K392")
+#pragma comment(linker, "/merge:D392=392")
+#pragma comment(linker, "/merge:C392=392")
+#pragma comment(linker, "/merge:B392=392")
+#pragma comment(linker, "/merge:K392=392")
 /****************************************************************************
  *
  * Phoenix sound hardware simulation - still very ALPHA!
@@ -631,7 +635,7 @@ void phoenix_sh_update(void)
 }
 
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C323")
-#pragma bss_seg("B323")
 #pragma data_seg("D323")
+#pragma bss_seg("B323")
 #pragma const_seg("K323")
+#pragma comment(linker, "/merge:D323=323")
+#pragma comment(linker, "/merge:C323=323")
+#pragma comment(linker, "/merge:B323=323")
+#pragma comment(linker, "/merge:K323=323")
 /* Miss Bubble 2
 
 A rather odd bootleg of Bubble Bobble with level select, redesigned levels,
@@ -349,7 +353,7 @@ static DRIVER_INIT( missb2 )
 }
 
 GAMEX( 1986, missb2, bublbobl, missb2, missb2, missb2, ROT0,  "bootleg", "Miss Bubble 2", GAME_IMPERFECT_GRAPHICS | GAME_NO_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

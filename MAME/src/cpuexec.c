@@ -14,6 +14,7 @@
 #include "hiscore.h"
 
 #include "Sections.h"
+#include "DebugLogger.h"
 
 #if (HAS_M68000 || HAS_M68010 || HAS_M68020 || HAS_M68EC020)
 #include "cpu/m68000/m68000.h"
@@ -272,11 +273,24 @@ int cpu_init(void)
 		if (cpuintrf_init_cpu(cpunum, cputype))
 			return 1;
 	}
-	
+
+  #ifdef _DEBUG
+  {
+    MEMORYSTATUS memStatus;
+    GlobalMemoryStatus(  &memStatus );
+    PRINTMSG( T_INFO, 
+              "Memory before unloading CPUs: %lu/%lu",
+              memStatus.dwAvailPhys, 
+              memStatus.dwTotalPhys );
+  }
+  #endif
+
     // Now we can release the cpu sections that we are not going to use [EBA]
-/*
-  UnloadCPUDataSections();
-  UnloadCPUNonDataSections();
+
+    // Note that it is _very_ important that we load _before_ the unload
+    // We have to increment the refcount on the CPU's that we're going to
+    // be using. This causes the system _not_ to release anything allocated
+    // by the CPU segment back to the heap
 	for (cpunum = 0; cpunum < MAX_CPU; cpunum++)
   {
 		int cputype = Machine->drv->cpu[cpunum].cpu_type;		
@@ -286,7 +300,20 @@ int cpu_init(void)
       // Load the section for the requested CPU
     LoadCPUSectionByID( cputype );
   }
-*/  
+  UnloadCPUSections();
+  TerminateCPUSectionizer();  // We'll never need to sectionize CPU stuff again
+
+  #ifdef _DEBUG
+  {
+    MEMORYSTATUS memStatus;
+    GlobalMemoryStatus(  &memStatus );
+    PRINTMSG( T_INFO, 
+              "Memory after unloading CPUs: %lu/%lu",
+              memStatus.dwAvailPhys, 
+              memStatus.dwTotalPhys );
+  }
+  #endif
+
 
 	/* compute the perfect interleave factor */
 	compute_perfect_interleave();

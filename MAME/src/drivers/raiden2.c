@@ -1,7 +1,11 @@
-#pragma code_seg("C422")
-#pragma bss_seg("B422")
-#pragma data_seg("D422")
-#pragma const_seg("K422")
+#pragma code_seg("C421")
+#pragma data_seg("D421")
+#pragma bss_seg("B421")
+#pragma const_seg("K421")
+#pragma comment(linker, "/merge:D421=421")
+#pragma comment(linker, "/merge:C421=421")
+#pragma comment(linker, "/merge:B421=421")
+#pragma comment(linker, "/merge:K421=421")
 /*
 
 Raiden 2 Preliminary Driver
@@ -398,7 +402,7 @@ static DRIVER_INIT (raiden2)
 /* GAME DRIVERS */
 
 GAMEX( 1993, raiden2,  0,      raiden2,  raiden2, raiden2,  ROT270, "Seibu Kaihatsu", "Raiden 2", GAME_NO_SOUND | GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

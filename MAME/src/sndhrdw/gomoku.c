@@ -1,7 +1,11 @@
 #pragma code_seg("C217")
-#pragma bss_seg("B217")
 #pragma data_seg("D217")
+#pragma bss_seg("B217")
 #pragma const_seg("K217")
+#pragma comment(linker, "/merge:D217=217")
+#pragma comment(linker, "/merge:C217=217")
+#pragma comment(linker, "/merge:B217=217")
+#pragma comment(linker, "/merge:K217=217")
 /***************************************************************************
 
 	Gomoku sound driver (quick hack of the Wiping sound driver)
@@ -254,7 +258,7 @@ WRITE_HANDLER( gomoku_sound_w )
 		}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

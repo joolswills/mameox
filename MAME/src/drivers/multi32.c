@@ -1,7 +1,3 @@
-#pragma code_seg("C340")
-#pragma bss_seg("B340")
-#pragma data_seg("D340")
-#pragma const_seg("K340")
 /*
 	Sega Multi System 32 hardware
 
@@ -1098,7 +1094,3 @@ GAMEX( 199?, titlef,       0, multi32, titlef,   titlef,   ROT0, "Sega", "Title 
 
 // serious gfx problems
 GAMEX( 1992, scross,       0, multi32, orunners, orunners, ROT0, "Sega", "Stadium Cross", GAME_IMPERFECT_GRAPHICS | GAME_NOT_WORKING )
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

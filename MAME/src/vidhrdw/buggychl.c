@@ -1,7 +1,11 @@
 #pragma code_seg("C82")
-#pragma bss_seg("B82")
 #pragma data_seg("D82")
+#pragma bss_seg("B82")
 #pragma const_seg("K82")
+#pragma comment(linker, "/merge:D82=82")
+#pragma comment(linker, "/merge:C82=82")
+#pragma comment(linker, "/merge:B82=82")
+#pragma comment(linker, "/merge:K82=82")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -281,7 +285,7 @@ VIDEO_UPDATE( buggychl )
 	for (code = 0;code < 256;code++)
 		dirtychar[code] = 0;
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

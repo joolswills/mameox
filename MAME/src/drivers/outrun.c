@@ -1,7 +1,11 @@
-#pragma code_seg("C380")
-#pragma bss_seg("B380")
-#pragma data_seg("D380")
-#pragma const_seg("K380")
+#pragma code_seg("C379")
+#pragma data_seg("D379")
+#pragma bss_seg("B379")
+#pragma const_seg("K379")
+#pragma comment(linker, "/merge:D379=379")
+#pragma comment(linker, "/merge:C379=379")
+#pragma comment(linker, "/merge:B379=379")
+#pragma comment(linker, "/merge:K379=379")
 /*
 **	2xMC68000 + Z80
 **	YM2151 + Custom PCM
@@ -1352,7 +1356,7 @@ GAME( 1986, outruna,  outrun,   outruna,  outrun,   outrun,   ROT0,         "Seg
 GAME( 1986, outrunb,  outrun,   outruna,  outrun,   outrunb,  ROT0,         "Sega",    "Out Run (set 3)" )
 GAMEX(19??, toutrun,  0,        outrun,   outrun,   outrun,   ROT0,         "Sega", "Turbo Outrun (set 1)", GAME_NOT_WORKING )
 GAMEX(19??, toutruna, toutrun,  outrun,   outrun,   outrun,   ROT0,         "Sega", "Turbo Outrun (set 2)", GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

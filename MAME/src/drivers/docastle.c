@@ -1,7 +1,11 @@
 #pragma code_seg("C152")
-#pragma bss_seg("B152")
 #pragma data_seg("D152")
+#pragma bss_seg("B152")
 #pragma const_seg("K152")
+#pragma comment(linker, "/merge:D152=152")
+#pragma comment(linker, "/merge:C152=152")
+#pragma comment(linker, "/merge:B152=152")
+#pragma comment(linker, "/merge:K152=152")
 /***************************************************************************
 
 Mr. Do's Castle memory map (preliminary)
@@ -1196,7 +1200,7 @@ GAME( 1984, dowild,   0,        dorunrun, dowild,   0, ROT0,   "Universal", "Mr.
 GAME( 1984, jjack,    0,        dorunrun, jjack,    0, ROT270, "Universal", "Jumping Jack" )
 GAME( 1984, kickridr, 0,        dorunrun, kickridr, 0, ROT0,   "Universal", "Kick Rider" )
 GAMEX(1985, idsoccer, 0,        idsoccer, idsoccer, 0, ROT0,   "Universal", "Indoor Soccer", GAME_IMPERFECT_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C412")
-#pragma bss_seg("B412")
-#pragma data_seg("D412")
-#pragma const_seg("K412")
+#pragma code_seg("C411")
+#pragma data_seg("D411")
+#pragma bss_seg("B411")
+#pragma const_seg("K411")
+#pragma comment(linker, "/merge:D411=411")
+#pragma comment(linker, "/merge:C411=411")
+#pragma comment(linker, "/merge:B411=411")
+#pragma comment(linker, "/merge:K411=411")
 /***************************************************************************
 
 							-= Psikyo Games =-
@@ -2114,7 +2118,7 @@ GAME ( 1995, s1945,    0,        s1945,    s1945,    s1945,    ROT270, "Psikyo",
 GAME ( 1995, s1945j,   s1945,    s1945,    s1945j,   s1945j,   ROT270, "Psikyo", "Strikers 1945 (Japan)" )
 GAME ( 1995, s1945jn,  s1945,    gunbird,  s1945j,   s1945jn,  ROT270, "Psikyo", "Strikers 1945 (Japan, unprotected)" )
 GAME ( 1996, tengai,   0,        s1945,    tengai,   tengai,   ROT0,   "Psikyo", "Tengai / Sengoku Blade: Sengoku Ace Episode II" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

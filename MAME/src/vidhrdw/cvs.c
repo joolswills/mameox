@@ -1,7 +1,11 @@
 #pragma code_seg("C128")
-#pragma bss_seg("B128")
 #pragma data_seg("D128")
+#pragma bss_seg("B128")
 #pragma const_seg("K128")
+#pragma comment(linker, "/merge:D128=128")
+#pragma comment(linker, "/merge:C128=128")
+#pragma comment(linker, "/merge:B128=128")
+#pragma comment(linker, "/merge:K128=128")
 /***************************************************************************
 
   vidhrdw\cvs.c
@@ -723,7 +727,7 @@ VIDEO_UPDATE( cvs )
 
     }
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

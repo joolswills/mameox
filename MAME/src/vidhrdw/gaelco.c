@@ -1,7 +1,11 @@
 #pragma code_seg("C196")
-#pragma bss_seg("B196")
 #pragma data_seg("D196")
+#pragma bss_seg("B196")
 #pragma const_seg("K196")
+#pragma comment(linker, "/merge:D196=196")
+#pragma comment(linker, "/merge:C196=196")
+#pragma comment(linker, "/merge:B196=196")
+#pragma comment(linker, "/merge:K196=196")
 /***************************************************************************
 
   Gaelco Type 1 Video Hardware
@@ -305,7 +309,7 @@ VIDEO_UPDATE( bigkarnk )
 
 	gaelco_draw_sprites(bitmap,cliprect,4);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C18")
-#pragma bss_seg("B18")
 #pragma data_seg("D18")
+#pragma bss_seg("B18")
 #pragma const_seg("K18")
+#pragma comment(linker, "/merge:D18=18")
+#pragma comment(linker, "/merge:C18=18")
+#pragma comment(linker, "/merge:B18=18")
+#pragma comment(linker, "/merge:K18=18")
 /***************************************************************************
 
 							-= American Speedway =-
@@ -161,7 +165,7 @@ VIDEO_UPDATE( amspdwy )
 	tilemap_draw(bitmap,cliprect,tilemap,0,0);
 	draw_sprites(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C151")
-#pragma bss_seg("B151")
 #pragma data_seg("D151")
+#pragma bss_seg("B151")
 #pragma const_seg("K151")
+#pragma comment(linker, "/merge:D151=151")
+#pragma comment(linker, "/merge:C151=151")
+#pragma comment(linker, "/merge:B151=151")
+#pragma comment(linker, "/merge:K151=151")
 /* the way I hooked up the CTC is most likely completely wrong */
 
 #include "driver.h"
@@ -269,7 +273,7 @@ ROM_END
 
 GAMEX( 1983, dlair, 0, dlair, dlair, 0, ROT0, "Cinematronics", "Dragon's Lair", GAME_NOT_WORKING | GAME_NO_SOUND )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

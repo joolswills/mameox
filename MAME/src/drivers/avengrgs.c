@@ -1,7 +1,11 @@
 #pragma code_seg("C44")
-#pragma bss_seg("B44")
 #pragma data_seg("D44")
+#pragma bss_seg("B44")
 #pragma const_seg("K44")
+#pragma comment(linker, "/merge:D44=44")
+#pragma comment(linker, "/merge:C44=44")
+#pragma comment(linker, "/merge:B44=44")
+#pragma comment(linker, "/merge:K44=44")
 /***************************************************************************
 
 	Avengers In Galactic Storm		(c) 1996 Data East Corporation
@@ -356,7 +360,7 @@ static DRIVER_INIT( avengrgs )
 /***************************************************************************/
 
 GAMEX( 1995, avengrgs, 0, avengrgs, avengrgs, avengrgs, ROT0, "Data East Corporation", "Avengers In Galactic Storm (Japan)", GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

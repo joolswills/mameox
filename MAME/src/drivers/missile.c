@@ -1,7 +1,11 @@
 #pragma code_seg("C324")
-#pragma bss_seg("B324")
 #pragma data_seg("D324")
+#pragma bss_seg("B324")
 #pragma const_seg("K324")
+#pragma comment(linker, "/merge:D324=324")
+#pragma comment(linker, "/merge:C324=324")
+#pragma comment(linker, "/merge:B324=324")
+#pragma comment(linker, "/merge:K324=324")
 /***************************************************************************
 
 	Atari Missile Command hardware
@@ -457,7 +461,7 @@ ROM_END
 GAME( 1980, missile,  0,       missile, missile,  0, ROT0, "Atari", "Missile Command (set 1)" )
 GAME( 1980, missile2, missile, missile, missile,  0, ROT0, "Atari", "Missile Command (set 2)" )
 GAME( 1981, suprmatk, missile, missile, suprmatk, 0, ROT0, "Atari + Gencomp", "Super Missile Attack" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

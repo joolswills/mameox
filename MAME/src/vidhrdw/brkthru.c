@@ -1,7 +1,11 @@
 #pragma code_seg("C77")
-#pragma bss_seg("B77")
 #pragma data_seg("D77")
+#pragma bss_seg("B77")
 #pragma const_seg("K77")
+#pragma comment(linker, "/merge:D77=77")
+#pragma comment(linker, "/merge:C77=77")
+#pragma comment(linker, "/merge:B77=77")
+#pragma comment(linker, "/merge:K77=77")
 /***************************************************************************
 
 	breakthru:vidhrdw.c
@@ -312,7 +316,7 @@ VIDEO_UPDATE( brkthru )
 /*	show_register(bitmap,8,8,(unsigned long)flipscreen); */
 
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C85")
-#pragma bss_seg("B85")
 #pragma data_seg("D85")
+#pragma bss_seg("B85")
 #pragma const_seg("K85")
+#pragma comment(linker, "/merge:D85=85")
+#pragma comment(linker, "/merge:C85=85")
+#pragma comment(linker, "/merge:B85=85")
+#pragma comment(linker, "/merge:K85=85")
 /***************************************************************************
 
   vidhrdw.c
@@ -158,7 +162,7 @@ VIDEO_UPDATE( cabal )
 }
 
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

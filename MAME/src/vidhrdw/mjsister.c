@@ -1,7 +1,11 @@
 #pragma code_seg("C327")
-#pragma bss_seg("B327")
 #pragma data_seg("D327")
+#pragma bss_seg("B327")
 #pragma const_seg("K327")
+#pragma comment(linker, "/merge:D327=327")
+#pragma comment(linker, "/merge:C327=327")
+#pragma comment(linker, "/merge:B327=327")
+#pragma comment(linker, "/merge:K327=327")
 /*****************************************************************************
 
 Mahjong Sisters (c) 1986 Toa Plan
@@ -118,7 +122,7 @@ VIDEO_UPDATE( mjsister )
 	else
 		fillbitmap(bitmap, get_black_pen(), &Machine->visible_area);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

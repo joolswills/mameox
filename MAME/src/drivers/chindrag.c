@@ -1,7 +1,11 @@
 #pragma code_seg("C101")
-#pragma bss_seg("B101")
 #pragma data_seg("D101")
+#pragma bss_seg("B101")
 #pragma const_seg("K101")
+#pragma comment(linker, "/merge:D101=101")
+#pragma comment(linker, "/merge:C101=101")
+#pragma comment(linker, "/merge:B101=101")
+#pragma comment(linker, "/merge:K101=101")
 /* China Dragon / Dragon World */
 
 #include "driver.h"
@@ -169,7 +173,7 @@ ROM_START( chindrag )
 ROM_END
 
 GAMEX( 1994, chindrag, 0, chindrag, chindrag, chindrag, ROT0, "IGS", "China Dragon / Dragon World", GAME_NO_SOUND | GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

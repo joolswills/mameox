@@ -1,7 +1,11 @@
 #pragma code_seg("C241")
-#pragma bss_seg("B241")
 #pragma data_seg("D241")
+#pragma bss_seg("B241")
 #pragma const_seg("K241")
+#pragma comment(linker, "/merge:D241=241")
+#pragma comment(linker, "/merge:C241=241")
+#pragma comment(linker, "/merge:B241=241")
+#pragma comment(linker, "/merge:K241=241")
 /* Hit Me driver by the EMUL8, led by Dan Boris
 
    It doesn't work?  should the timer stuff have changed?
@@ -365,7 +369,7 @@ ROM_END
 GAMEX( 1976, hitme,    0,        hitme,    hitme,    0, ROT0, "RamTek", "Hit Me", GAME_NO_SOUND | GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1976, barricad, 0,        brickyrd, brickyrd, 0, ROT0, "RamTek", "Barricade", GAME_NO_SOUND  )
 GAMEX( 1976, brickyrd, barricad, brickyrd, brickyrd, 0, ROT0, "RamTek", "Brickyard", GAME_NO_SOUND  )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

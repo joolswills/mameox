@@ -1,7 +1,11 @@
-#pragma code_seg("C403")
-#pragma bss_seg("B403")
-#pragma data_seg("D403")
-#pragma const_seg("K403")
+#pragma code_seg("C402")
+#pragma data_seg("D402")
+#pragma bss_seg("B402")
+#pragma const_seg("K402")
+#pragma comment(linker, "/merge:D402=402")
+#pragma comment(linker, "/merge:C402=402")
+#pragma comment(linker, "/merge:B402=402")
+#pragma comment(linker, "/merge:K402=402")
 /***************************************************************************
 
 	P&P Marketing Police Trainer hardware
@@ -379,7 +383,7 @@ VIDEO_UPDATE( policetr )
 	beamy = ((readinputport(6) & 0xff) * Machine->drv->screen_height) >> 8;
 	draw_crosshair(bitmap, beamx, beamy, cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

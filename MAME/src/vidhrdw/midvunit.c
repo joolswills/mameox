@@ -1,7 +1,11 @@
 #pragma code_seg("C317")
-#pragma bss_seg("B317")
 #pragma data_seg("D317")
+#pragma bss_seg("B317")
 #pragma const_seg("K317")
+#pragma comment(linker, "/merge:D317=317")
+#pragma comment(linker, "/merge:C317=317")
+#pragma comment(linker, "/merge:B317=317")
+#pragma comment(linker, "/merge:K317=317")
 /*************************************************************************
 
 	Driver for Midway V-Unit games
@@ -1168,7 +1172,7 @@ VIDEO_UPDATE( midvunit )
 		offset += 512;
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

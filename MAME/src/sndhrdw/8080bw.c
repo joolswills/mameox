@@ -1,7 +1,11 @@
 #pragma code_seg("C4")
-#pragma bss_seg("B4")
 #pragma data_seg("D4")
+#pragma bss_seg("B4")
 #pragma const_seg("K4")
+#pragma comment(linker, "/merge:D4=4")
+#pragma comment(linker, "/merge:C4=4")
+#pragma comment(linker, "/merge:B4=4")
+#pragma comment(linker, "/merge:K4=4")
 /* 8080bw.c *********************************
  updated: 1997-04-09 08:46 TT
  updated  20-3-1998 LT Added color changes on base explosion
@@ -1257,7 +1261,7 @@ MACHINE_INIT( clowns )
 
 	install_port_write_handler (0, 0x07, 0x07, clowns_sh_port7_w);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

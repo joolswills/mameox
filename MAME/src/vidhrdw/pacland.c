@@ -1,7 +1,11 @@
-#pragma code_seg("C382")
-#pragma bss_seg("B382")
-#pragma data_seg("D382")
-#pragma const_seg("K382")
+#pragma code_seg("C381")
+#pragma data_seg("D381")
+#pragma bss_seg("B381")
+#pragma const_seg("K381")
+#pragma comment(linker, "/merge:D381=381")
+#pragma comment(linker, "/merge:C381=381")
+#pragma comment(linker, "/merge:B381=381")
+#pragma comment(linker, "/merge:K381=381")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -387,7 +391,7 @@ VIDEO_UPDATE( pacland )
 
 	pacland_draw_sprites(bitmap,1);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C242")
-#pragma bss_seg("B242")
 #pragma data_seg("D242")
+#pragma bss_seg("B242")
 #pragma const_seg("K242")
+#pragma comment(linker, "/merge:D242=242")
+#pragma comment(linker, "/merge:C242=242")
+#pragma comment(linker, "/merge:B242=242")
+#pragma comment(linker, "/merge:K242=242")
 /***************************************************************************
 
 First version of the Dynax blitter.
@@ -277,7 +281,7 @@ VIDEO_UPDATE( hnayayoi )
 		draw_layer_interleaved(bitmap,cliprect,1,0,col0,1);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C328")
-#pragma bss_seg("B328")
 #pragma data_seg("D328")
+#pragma bss_seg("B328")
 #pragma const_seg("K328")
+#pragma comment(linker, "/merge:D328=328")
+#pragma comment(linker, "/merge:C328=328")
+#pragma comment(linker, "/merge:B328=328")
+#pragma comment(linker, "/merge:K328=328")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -219,7 +223,7 @@ VIDEO_UPDATE( mnight )
 	}
 
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

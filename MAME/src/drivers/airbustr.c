@@ -1,7 +1,11 @@
 #pragma code_seg("C12")
-#pragma bss_seg("B12")
 #pragma data_seg("D12")
+#pragma bss_seg("B12")
 #pragma const_seg("K12")
+#pragma comment(linker, "/merge:D12=12")
+#pragma comment(linker, "/merge:C12=12")
+#pragma comment(linker, "/merge:B12=12")
+#pragma comment(linker, "/merge:K12=12")
 /***************************************************************************
 
 								Air Buster
@@ -936,7 +940,7 @@ DRIVER_INIT( airbustj )
 
 GAME( 1990, airbustr, 0,        airbustr, airbustr, airbustr, ROT0, "Kaneko (Namco license)", "Air Buster" )	// 891220
 GAME( 1990, airbustj, airbustr, airbustr, airbustj, airbustj, ROT0, "Kaneko (Namco license)", "Air Buster (Japan)" )	// 891229
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C232")
-#pragma bss_seg("B232")
 #pragma data_seg("D232")
+#pragma bss_seg("B232")
 #pragma const_seg("K232")
+#pragma comment(linker, "/merge:D232=232")
+#pragma comment(linker, "/merge:C232=232")
+#pragma comment(linker, "/merge:B232=232")
+#pragma comment(linker, "/merge:K232=232")
 #include "driver.h"
 #include "cpu/i8039/i8039.h"
 
@@ -88,7 +92,7 @@ WRITE_HANDLER( gyruss_i8039_irq_w )
 {
 	cpu_set_irq_line(3, 0, PULSE_LINE);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

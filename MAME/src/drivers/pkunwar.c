@@ -1,7 +1,11 @@
-#pragma code_seg("C398")
-#pragma bss_seg("B398")
-#pragma data_seg("D398")
-#pragma const_seg("K398")
+#pragma code_seg("C397")
+#pragma data_seg("D397")
+#pragma bss_seg("B397")
+#pragma const_seg("K397")
+#pragma comment(linker, "/merge:D397=397")
+#pragma comment(linker, "/merge:C397=397")
+#pragma comment(linker, "/merge:B397=397")
+#pragma comment(linker, "/merge:K397=397")
 /***************************************************************************
 
 Notes:
@@ -247,7 +251,7 @@ ROM_END
 
 GAME( 1985?, pkunwar,  0,       pkunwar, pkunwar, 0, ROT0, "UPL", "Penguin-Kun Wars (US)" )
 GAME( 1985?, pkunwarj, pkunwar, pkunwar, pkunwar, 0, ROT0, "UPL", "Penguin-Kun Wars (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

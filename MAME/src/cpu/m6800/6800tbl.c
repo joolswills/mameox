@@ -1,7 +1,11 @@
-#pragma code_seg("CC19")
-#pragma bss_seg("CB19")
-#pragma data_seg("CD19")
-#pragma const_seg("CK19")
+#pragma code_seg("CC16")
+#pragma data_seg("CD16")
+#pragma bss_seg("CB16")
+#pragma const_seg("CK16")
+#pragma comment(linker, "/merge:CD16=CPU16")
+#pragma comment(linker, "/merge:CC16=CPU16")
+#pragma comment(linker, "/merge:CB16=CPU16")
+#pragma comment(linker, "/merge:CK16=CPU16")
 INLINE void aba(void);
 INLINE void abx(void);
 INLINE void adca_di(void);
@@ -398,3 +402,7 @@ subb_ex,sbcb_ex,cmpb_ex,illegal,andb_ex,ldb_ex, bitb_ex,stb_ex,
 eorb_ex,orb_ex, adcb_ex,addb_ex,addx_ex,ldx_ex, illegal,stx_ex
 };
 #endif
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

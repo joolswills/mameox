@@ -1,7 +1,11 @@
 #pragma code_seg("C33")
-#pragma bss_seg("B33")
 #pragma data_seg("D33")
+#pragma bss_seg("B33")
 #pragma const_seg("K33")
+#pragma comment(linker, "/merge:D33=33")
+#pragma comment(linker, "/merge:C33=33")
+#pragma comment(linker, "/merge:B33=33")
+#pragma comment(linker, "/merge:K33=33")
 #include "driver.h"
 #include "state.h"
 #include "vidhrdw/taitoic.h"
@@ -101,7 +105,7 @@ VIDEO_UPDATE( bonzeadv )
 	/* Sprites are always over both bg layers */
 	PC090OJ_draw_sprites(bitmap,cliprect,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

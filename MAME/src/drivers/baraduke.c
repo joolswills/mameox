@@ -1,7 +1,11 @@
 #pragma code_seg("C50")
-#pragma bss_seg("B50")
 #pragma data_seg("D50")
+#pragma bss_seg("B50")
 #pragma const_seg("K50")
+#pragma comment(linker, "/merge:D50=50")
+#pragma comment(linker, "/merge:C50=50")
+#pragma comment(linker, "/merge:B50=50")
+#pragma comment(linker, "/merge:K50=50")
 /***************************************************************************
 
 Baraduke/Metro-Cross (c) Namco 1985
@@ -624,7 +628,7 @@ GAME( 1985, baraduke, 0,        baraduke, baraduke, 0,        ROT0, "Namco", "Ba
 GAME( 1985, baraduka, baraduke, baraduke, baraduke, 0,        ROT0, "Namco", "Baraduke (set 2)" )
 GAME( 1985, metrocrs, 0,        metrocrs, metrocrs, metrocrs, ROT0, "Namco", "Metro-Cross (set 1)" )
 GAME( 1985, metrocra, metrocrs, metrocrs, metrocrs, metrocrs, ROT0, "Namco", "Metro-Cross (set 2)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

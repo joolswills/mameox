@@ -1,7 +1,11 @@
 #pragma code_seg("C299")
-#pragma bss_seg("B299")
 #pragma data_seg("D299")
+#pragma bss_seg("B299")
 #pragma const_seg("K299")
+#pragma comment(linker, "/merge:D299=299")
+#pragma comment(linker, "/merge:C299=299")
+#pragma comment(linker, "/merge:B299=299")
+#pragma comment(linker, "/merge:K299=299")
 /***************************************************************************
 
   vidhrdw.c
@@ -175,7 +179,7 @@ VIDEO_UPDATE( mario )
 		}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

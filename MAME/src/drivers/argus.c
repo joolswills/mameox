@@ -1,7 +1,11 @@
 #pragma code_seg("C24")
-#pragma bss_seg("B24")
 #pragma data_seg("D24")
+#pragma bss_seg("B24")
 #pragma const_seg("K24")
+#pragma comment(linker, "/merge:D24=24")
+#pragma comment(linker, "/merge:C24=24")
+#pragma comment(linker, "/merge:B24=24")
+#pragma comment(linker, "/merge:K24=24")
 /***************************************************************************
 
 Argus (Early NMK driver 1986-1987)
@@ -1006,7 +1010,7 @@ ROM_END
 GAME( 1986, argus,    0,      argus,    argus,    0,    ROT270,  "[NMK] (Jaleco license)", "Argus"           )
 GAME( 1986, valtric,  0,      valtric,  valtric,  0,    ROT270,  "[NMK] (Jaleco license)", "Valtric"         )
 GAME( 1987, butasan,  0,      butasan,  butasan,  0,    ROT0,    "[NMK] (Jaleco license)", "Butasan (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

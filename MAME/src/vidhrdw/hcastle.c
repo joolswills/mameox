@@ -1,7 +1,11 @@
 #pragma code_seg("C237")
-#pragma bss_seg("B237")
 #pragma data_seg("D237")
+#pragma bss_seg("B237")
 #pragma const_seg("K237")
+#pragma comment(linker, "/merge:D237=237")
+#pragma comment(linker, "/merge:C237=237")
+#pragma comment(linker, "/merge:B237=237")
+#pragma comment(linker, "/merge:K237=237")
 /***************************************************************************
 
 	Haunted Castle video emulation
@@ -244,7 +248,7 @@ VIDEO_UPDATE( hcastle )
 		draw_sprites( bitmap,cliprect, buffered_spriteram_2, 1 );
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

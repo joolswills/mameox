@@ -1,7 +1,11 @@
 #pragma code_seg("C266")
-#pragma bss_seg("B266")
 #pragma data_seg("D266")
+#pragma bss_seg("B266")
 #pragma const_seg("K266")
+#pragma comment(linker, "/merge:D266=266")
+#pragma comment(linker, "/merge:C266=266")
+#pragma comment(linker, "/merge:B266=266")
+#pragma comment(linker, "/merge:K266=266")
 /***************************************************************************
 
 	Killer Instinct hardware
@@ -102,7 +106,7 @@ VIDEO_UPDATE( kinst )
 	for (y = cliprect->min_y; y <= cliprect->max_y; y++)
 		memcpy(bitmap->line[y], &vram_buffer[y * 320], 320 * sizeof(UINT16));
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

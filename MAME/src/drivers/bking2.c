@@ -1,7 +1,11 @@
 #pragma code_seg("C63")
-#pragma bss_seg("B63")
 #pragma data_seg("D63")
+#pragma bss_seg("B63")
 #pragma const_seg("K63")
+#pragma comment(linker, "/merge:D63=63")
+#pragma comment(linker, "/merge:C63=63")
+#pragma comment(linker, "/merge:B63=63")
+#pragma comment(linker, "/merge:K63=63")
 /***************************************************************************
 
 
@@ -701,7 +705,7 @@ ROM_END
 GAME( 1982, bking,  0, bking2, bking,  0, ROT270, "Taito Corporation", "Birdie King" )
 GAME( 1983, bking2, 0, bking2, bking2, 0, ROT90,  "Taito Corporation", "Birdie King 2" )
 GAME( 1984, bking3, 0, bking2, bking2, 0, ROT90,  "Taito Corporation", "Birdie King 3" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,8 +1,11 @@
-#pragma code_seg("CC3")
-#pragma bss_seg("CB3")
-#pragma data_seg("CD3")
-#pragma const_seg("CK3")
-
+#pragma code_seg("CC4")
+#pragma data_seg("CD4")
+#pragma bss_seg("CB4")
+#pragma const_seg("CK4")
+#pragma comment(linker, "/merge:CD4=CPU4")
+#pragma comment(linker, "/merge:CC4=CPU4")
+#pragma comment(linker, "/merge:CB4=CPU4")
+#pragma comment(linker, "/merge:CK4=CPU4")
 // AM2 Functions (for ReadAMAddress)
 // *********************************
 
@@ -1284,3 +1287,7 @@ UINT32 (*BAMTable2[2][8])(void) =
 
 
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

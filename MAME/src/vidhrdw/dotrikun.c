@@ -1,7 +1,11 @@
 #pragma code_seg("C156")
-#pragma bss_seg("B156")
 #pragma data_seg("D156")
+#pragma bss_seg("B156")
 #pragma const_seg("K156")
+#pragma comment(linker, "/merge:D156=156")
+#pragma comment(linker, "/merge:C156=156")
+#pragma comment(linker, "/merge:B156=156")
+#pragma comment(linker, "/merge:K156=156")
 /***************************************************************************
 
 Dottori Kun (Head On's mini game)
@@ -86,7 +90,7 @@ VIDEO_UPDATE( dotrikun )
 	}
 	copybitmap(bitmap,tmpbitmap,0,0,0,0,&Machine->visible_area,TRANSPARENCY_NONE,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

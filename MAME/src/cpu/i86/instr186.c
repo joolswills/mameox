@@ -1,7 +1,11 @@
-#pragma code_seg("CC24")
-#pragma bss_seg("CB24")
-#pragma data_seg("CD24")
-#pragma const_seg("CK24")
+#pragma code_seg("CC20")
+#pragma data_seg("CD20")
+#pragma bss_seg("CB20")
+#pragma const_seg("CK20")
+#pragma comment(linker, "/merge:CD20=CPU20")
+#pragma comment(linker, "/merge:CC20=CPU20")
+#pragma comment(linker, "/merge:CB20=CPU20")
+#pragma comment(linker, "/merge:CK20=CPU20")
 /****************************************************************************
 *			  real mode i286 emulator v1.4 by Fabrice Frances				*
 *				(initial work based on David Hedley's pcemu)                *
@@ -179,3 +183,7 @@ static void PREFIX186(_leave)(void)    /* Opcode 0xc9 */
 	I.regs.w[SP]=I.regs.w[BP];
 	POP(I.regs.w[BP]);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

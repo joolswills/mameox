@@ -1,7 +1,11 @@
 #pragma code_seg("C137")
-#pragma bss_seg("B137")
 #pragma data_seg("D137")
+#pragma bss_seg("B137")
 #pragma const_seg("K137")
+#pragma comment(linker, "/merge:D137=137")
+#pragma comment(linker, "/merge:C137=137")
+#pragma comment(linker, "/merge:B137=137")
+#pragma comment(linker, "/merge:K137=137")
 /***************************************************************************
 
   Video Hardware for some Technos games:
@@ -263,7 +267,7 @@ VIDEO_UPDATE( ddragon )
 	draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,fg_tilemap,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C267")
-#pragma bss_seg("B267")
 #pragma data_seg("D267")
+#pragma bss_seg("B267")
 #pragma const_seg("K267")
+#pragma comment(linker, "/merge:D267=267")
+#pragma comment(linker, "/merge:C267=267")
+#pragma comment(linker, "/merge:B267=267")
+#pragma comment(linker, "/merge:K267=267")
 /***************************************************************************
 
 	Atari Klax hardware
@@ -389,7 +393,7 @@ GAME( 1989, klax2, klax, klax, klax, klax, ROT0, "Atari Games", "Klax (set 2)" )
 GAME( 1989, klax3, klax, klax, klax, klax, ROT0, "Atari Games", "Klax (set 3)" )
 GAME( 1989, klaxj, klax, klax, klax, klax, ROT0, "Atari Games", "Klax (Japan)" )
 GAME( 1989, klaxd, klax, klax, klax, klax, ROT0, "Atari Games", "Klax (Germany)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C223")
-#pragma bss_seg("B223")
 #pragma data_seg("D223")
+#pragma bss_seg("B223")
 #pragma const_seg("K223")
+#pragma comment(linker, "/merge:D223=223")
+#pragma comment(linker, "/merge:C223=223")
+#pragma comment(linker, "/merge:B223=223")
+#pragma comment(linker, "/merge:K223=223")
 /***************************************************************************
 
   vidhrdw.c
@@ -185,7 +189,7 @@ VIDEO_UPDATE( grobda )
 
 	grobda_draw_sprites(bitmap);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

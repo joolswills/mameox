@@ -1,11 +1,3 @@
-#pragma code_seg("C534")
-#pragma data_seg("D534")
-#pragma bss_seg("B534")
-#pragma const_seg("K534")
-#pragma comment(linker, "/merge:D534=534")
-#pragma comment(linker, "/merge:C534=534")
-#pragma comment(linker, "/merge:B534=534")
-#pragma comment(linker, "/merge:K534=534")
 #include "driver.h"
 
 static int counter,vector_reg,imr_status;
@@ -238,7 +230,3 @@ WRITE16_HANDLER(es5510_dsp_w)
 			break;
 	}
 }
-#pragma code_seg()
-#pragma data_seg()
-#pragma bss_seg()
-#pragma const_seg()

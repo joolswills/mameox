@@ -1,3 +1,11 @@
+#pragma code_seg("C429")
+#pragma data_seg("D429")
+#pragma bss_seg("B429")
+#pragma const_seg("K429")
+#pragma comment(linker, "/merge:D429=429")
+#pragma comment(linker, "/merge:C429=429")
+#pragma comment(linker, "/merge:B429=429")
+#pragma comment(linker, "/merge:K429=429")
 #include "driver.h"
 #include "cpu/z80/z80.h"
 
@@ -135,3 +143,7 @@ READ_HANDLER( retofinv_mcu_status_r )
 
 	return res;
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

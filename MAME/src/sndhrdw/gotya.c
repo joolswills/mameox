@@ -1,7 +1,11 @@
 #pragma code_seg("C219")
-#pragma bss_seg("B219")
 #pragma data_seg("D219")
+#pragma bss_seg("B219")
 #pragma const_seg("K219")
+#pragma comment(linker, "/merge:D219=219")
+#pragma comment(linker, "/merge:C219=219")
+#pragma comment(linker, "/merge:B219=219")
+#pragma comment(linker, "/merge:K219=219")
 #include "driver.h"
 
 struct gotya_sample
@@ -80,7 +84,7 @@ WRITE_HANDLER( gotya_soundlatch_w )
 		}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

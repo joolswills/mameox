@@ -1,3 +1,11 @@
+#pragma code_seg("C223")
+#pragma data_seg("D223")
+#pragma bss_seg("B223")
+#pragma const_seg("K223")
+#pragma comment(linker, "/merge:D223=223")
+#pragma comment(linker, "/merge:C223=223")
+#pragma comment(linker, "/merge:B223=223")
+#pragma comment(linker, "/merge:K223=223")
 /***************************************************************************
 
   machine.c
@@ -256,3 +264,7 @@ READ_HANDLER( grobda_customio_2_r )
 	else
 		return grobda_customio_2[offset];
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

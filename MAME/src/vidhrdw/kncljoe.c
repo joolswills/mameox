@@ -1,7 +1,11 @@
 #pragma code_seg("C268")
-#pragma bss_seg("B268")
 #pragma data_seg("D268")
+#pragma bss_seg("B268")
 #pragma const_seg("K268")
+#pragma comment(linker, "/merge:D268=268")
+#pragma comment(linker, "/merge:C268=268")
+#pragma comment(linker, "/merge:B268=268")
+#pragma comment(linker, "/merge:K268=268")
 /***************************************************************************
 
 Knuckle Joe - (c) 1985 Taito Corporation
@@ -240,7 +244,7 @@ VIDEO_UPDATE( kncljoe )
 	tilemap_draw(bitmap,cliprect,bg_tilemap,0,0);
 	draw_sprites(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

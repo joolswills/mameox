@@ -1,7 +1,11 @@
 #pragma code_seg("C86")
-#pragma bss_seg("B86")
 #pragma data_seg("D86")
+#pragma bss_seg("B86")
 #pragma const_seg("K86")
+#pragma comment(linker, "/merge:D86=86")
+#pragma comment(linker, "/merge:C86=86")
+#pragma comment(linker, "/merge:B86=86")
+#pragma comment(linker, "/merge:K86=86")
 /***************************************************************************
 
 	Atari Canyon Bomber hardware
@@ -86,7 +90,7 @@ VIDEO_UPDATE( canyon )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

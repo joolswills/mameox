@@ -1,7 +1,11 @@
-#pragma code_seg("C431")
-#pragma bss_seg("B431")
-#pragma data_seg("D431")
-#pragma const_seg("K431")
+#pragma code_seg("C430")
+#pragma data_seg("D430")
+#pragma bss_seg("B430")
+#pragma const_seg("K430")
+#pragma comment(linker, "/merge:D430=430")
+#pragma comment(linker, "/merge:C430=430")
+#pragma comment(linker, "/merge:B430=430")
+#pragma comment(linker, "/merge:K430=430")
 /***************************************************************************
 
 Real Mahjong Haihai                (c)1985 Alba
@@ -648,7 +652,7 @@ GAMEX( 1985, rmhaihib, rmhaihai, rmhaihai, rmhaihib, rmhaihai, ROT0, "Alba",  "R
 GAMEX( 1986, rmhaijin, 0,        rmhaihai, rmhaihai, rmhaihai, ROT0, "Alba",  "Real Mahjong Haihai Jinji Idou Hen (Japan)", GAME_NO_COCKTAIL )
 GAMEX( 1986, rmhaisei, 0,        rmhaisei, rmhaihai, rmhaihai, ROT0, "Visco", "Real Mahjong Haihai Seichouhen (Japan)", GAME_NO_COCKTAIL )
 GAMEX( 1987, themj,    0,        themj,    rmhaihai, rmhaihai, ROT0, "Visco", "The Mah-jong (Japan)", GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C64")
-#pragma bss_seg("B64")
 #pragma data_seg("D64")
+#pragma bss_seg("B64")
 #pragma const_seg("K64")
+#pragma comment(linker, "/merge:D64=64")
+#pragma comment(linker, "/merge:C64=64")
+#pragma comment(linker, "/merge:B64=64")
+#pragma comment(linker, "/merge:K64=64")
 /***************************************************************************
 
 Blades of Steel(GX797) (c) 1987 Konami
@@ -524,7 +528,7 @@ ROM_END
 
 GAME( 1987, bladestl, 0,        bladestl, bladestl, 0, ROT90, "Konami", "Blades of Steel (version T)" )
 GAME( 1987, bladstle, bladestl, bladestl, bladstle, 0, ROT90, "Konami", "Blades of Steel (version E)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

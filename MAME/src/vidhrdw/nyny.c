@@ -1,7 +1,11 @@
-#pragma code_seg("C368")
-#pragma bss_seg("B368")
-#pragma data_seg("D368")
-#pragma const_seg("K368")
+#pragma code_seg("C367")
+#pragma data_seg("D367")
+#pragma bss_seg("B367")
+#pragma const_seg("K367")
+#pragma comment(linker, "/merge:D367=367")
+#pragma comment(linker, "/merge:C367=367")
+#pragma comment(linker, "/merge:B367=367")
+#pragma comment(linker, "/merge:K367=367")
 /***************************************************************************
 
   vidhrdw.c
@@ -157,7 +161,7 @@ VIDEO_UPDATE( nyny )
 	copybitmap(bitmap,tmpbitmap2,flip_screen,flip_screen,0,0,&Machine->visible_area,TRANSPARENCY_NONE,0);
 	copybitmap(bitmap,tmpbitmap1,flip_screen,flip_screen,0,0,&Machine->visible_area,TRANSPARENCY_COLOR,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

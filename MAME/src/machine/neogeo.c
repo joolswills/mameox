@@ -1,3 +1,11 @@
+#pragma code_seg("C358")
+#pragma data_seg("D358")
+#pragma bss_seg("B358")
+#pragma const_seg("K358")
+#pragma comment(linker, "/merge:D358=358")
+#pragma comment(linker, "/merge:C358=358")
+#pragma comment(linker, "/merge:B358=358")
+#pragma comment(linker, "/merge:K358=358")
 #include "driver.h"
 #include "machine/pd4990a.h"
 #include "neogeo.h"
@@ -885,3 +893,7 @@ static void neogeo_register_sub_savestate(void)
 	state_save_register_int   ("neogeo", 0, "memcard_manager",         &memcard_manager);
 	state_save_register_int   ("neogeo", 0, "prot_data",               &prot_data);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

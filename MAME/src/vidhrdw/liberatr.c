@@ -1,7 +1,11 @@
 #pragma code_seg("C282")
-#pragma bss_seg("B282")
 #pragma data_seg("D282")
+#pragma bss_seg("B282")
 #pragma const_seg("K282")
+#pragma comment(linker, "/merge:D282=282")
+#pragma comment(linker, "/merge:C282=282")
+#pragma comment(linker, "/merge:B282=282")
+#pragma comment(linker, "/merge:K282=282")
 /***************************************************************************
 
   liberator.c - 'vidhrdw.c'
@@ -443,7 +447,7 @@ VIDEO_UPDATE( liberatr )
 	/* draw the planet */
 	liberatr_draw_planet(bitmap);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

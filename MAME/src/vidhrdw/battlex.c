@@ -1,7 +1,11 @@
 #pragma code_seg("C54")
-#pragma bss_seg("B54")
 #pragma data_seg("D54")
+#pragma bss_seg("B54")
 #pragma const_seg("K54")
+#pragma comment(linker, "/merge:D54=54")
+#pragma comment(linker, "/merge:C54=54")
+#pragma comment(linker, "/merge:B54=54")
+#pragma comment(linker, "/merge:K54=54")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -119,7 +123,7 @@ VIDEO_UPDATE(battlex)
 
 	battlex_drawsprites(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

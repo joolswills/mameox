@@ -1,7 +1,11 @@
 #pragma code_seg("C272")
-#pragma bss_seg("B272")
 #pragma data_seg("D272")
+#pragma bss_seg("B272")
 #pragma const_seg("K272")
+#pragma comment(linker, "/merge:D272=272")
+#pragma comment(linker, "/merge:C272=272")
+#pragma comment(linker, "/merge:B272=272")
+#pragma comment(linker, "/merge:K272=272")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 #include "vidhrdw/generic.h"
@@ -163,7 +167,7 @@ VIDEO_UPDATE( labyrunr )
 	K007121_sprites_draw(0,bitmap,cliprect,spriteram,(K007121_ctrlram[0][6]&0x30)*2,40,0,-1);
 	tilemap_draw(bitmap,&finalclip1,layer1,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

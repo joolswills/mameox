@@ -1,7 +1,11 @@
 #pragma code_seg("C152")
-#pragma bss_seg("B152")
 #pragma data_seg("D152")
+#pragma bss_seg("B152")
 #pragma const_seg("K152")
+#pragma comment(linker, "/merge:D152=152")
+#pragma comment(linker, "/merge:C152=152")
+#pragma comment(linker, "/merge:B152=152")
+#pragma comment(linker, "/merge:K152=152")
 /***************************************************************************
 
   vidhrdw.c
@@ -347,7 +351,7 @@ VIDEO_UPDATE( docastle )
 	/* now redraw the portions of the background which have priority over sprites */
 	copybitmap(bitmap,tmpbitmap1,0,0,0,0,&Machine->visible_area,TRANSPARENCY_COLOR,256);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C400")
-#pragma bss_seg("B400")
-#pragma data_seg("D400")
-#pragma const_seg("K400")
+#pragma code_seg("C399")
+#pragma data_seg("D399")
+#pragma bss_seg("B399")
+#pragma const_seg("K399")
+#pragma comment(linker, "/merge:D399=399")
+#pragma comment(linker, "/merge:C399=399")
+#pragma comment(linker, "/merge:B399=399")
+#pragma comment(linker, "/merge:K399=399")
 /***************************************************************************
 
 Big Twins
@@ -767,7 +771,7 @@ static DRIVER_INIT( bigtwin )
 
 GAMEX( 1995, bigtwin,  0, bigtwin,  bigtwin,  bigtwin, ROT0, "Playmark", "Big Twin", GAME_NO_COCKTAIL | GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1995, wbeachvl, 0, wbeachvl, wbeachvl, 0,       ROT0, "Playmark", "World Beach Volley", GAME_NO_COCKTAIL | GAME_NO_SOUND | GAME_IMPERFECT_GRAPHICS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

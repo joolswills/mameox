@@ -1,7 +1,11 @@
-#pragma code_seg("C370")
-#pragma bss_seg("B370")
-#pragma data_seg("D370")
-#pragma const_seg("K370")
+#pragma code_seg("C369")
+#pragma data_seg("D369")
+#pragma bss_seg("B369")
+#pragma const_seg("K369")
+#pragma comment(linker, "/merge:D369=369")
+#pragma comment(linker, "/merge:C369=369")
+#pragma comment(linker, "/merge:B369=369")
+#pragma comment(linker, "/merge:K369=369")
 /***************************************************************************
 
 Oh My God!       (c) 1993 Atlus
@@ -452,7 +456,7 @@ static DRIVER_INIT( naname )
 
 GAMEX( 1993, ohmygod, 0, ohmygod, ohmygod, ohmygod, ROT0, "Atlus", "Oh My God! (Japan)", GAME_NO_COCKTAIL )
 GAMEX( 1994, naname,  0, ohmygod, naname,  naname,  ROT0, "Atlus", "Naname de Magic! (Japan)", GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

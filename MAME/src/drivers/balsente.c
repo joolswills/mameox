@@ -1,7 +1,11 @@
 #pragma code_seg("C48")
-#pragma bss_seg("B48")
 #pragma data_seg("D48")
+#pragma bss_seg("B48")
 #pragma const_seg("K48")
+#pragma comment(linker, "/merge:D48=48")
+#pragma comment(linker, "/merge:C48=48")
+#pragma comment(linker, "/merge:B48=48")
+#pragma comment(linker, "/merge:K48=48")
 /***************************************************************************
 
 	Bally/Sente SAC-1 system
@@ -2334,7 +2338,7 @@ GAME( 1987, rescraid, 0,        balsente, rescraid, rescraid, ROT0, "Bally/Midwa
 GAME( 1987, rescrdsa, rescraid, balsente, rescraid, rescraid, ROT0, "Bally/Midway", "Rescue Raider (Stand-Alone)" )
 GAME( 198?, grudge,   0,        balsente, grudge,   grudge,   ROT0, "Bally/Midway", "Grudge Match (prototype)" )
 GAMEX(198?, shrike,   0,        shrike,   shrike,   shrike,   ROT0, "Bally/Sente", "Shrike Avenger (prototype)", GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C363")
-#pragma bss_seg("B363")
-#pragma data_seg("D363")
-#pragma const_seg("K363")
+#pragma code_seg("C362")
+#pragma data_seg("D362")
+#pragma bss_seg("B362")
+#pragma const_seg("K362")
+#pragma comment(linker, "/merge:D362=362")
+#pragma comment(linker, "/merge:C362=362")
+#pragma comment(linker, "/merge:B362=362")
+#pragma comment(linker, "/merge:K362=362")
 /***************************************************************************
 
 Taito Triple Screen Games
@@ -947,7 +951,7 @@ GAME( 1987, ninjaw,   0,      ninjaw,  ninjaw,   ninjaw,  ROT0, "Taito Corporati
 GAME( 1987, ninjawj,  ninjaw, ninjaw,  ninjawj,  ninjaw,  ROT0, "Taito Corporation", "The Ninja Warriors (Japan)" )
 GAME( 1989, darius2,  0,      darius2, darius2,  ninjaw,  ROT0, "Taito Corporation", "Darius II (Japan)" )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C49")
-#pragma bss_seg("B49")
 #pragma data_seg("D49")
+#pragma bss_seg("B49")
 #pragma const_seg("K49")
+#pragma comment(linker, "/merge:D49=49")
+#pragma comment(linker, "/merge:C49=49")
+#pragma comment(linker, "/merge:B49=49")
+#pragma comment(linker, "/merge:K49=49")
 /***************************************************************************
 
   vidhrdw.c
@@ -265,7 +269,7 @@ VIDEO_UPDATE( bankp )
 		}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

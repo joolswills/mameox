@@ -1,7 +1,11 @@
-#pragma code_seg("C358")
-#pragma bss_seg("B358")
-#pragma data_seg("D358")
-#pragma const_seg("K358")
+#pragma code_seg("C357")
+#pragma data_seg("D357")
+#pragma bss_seg("B357")
+#pragma const_seg("K357")
+#pragma comment(linker, "/merge:D357=357")
+#pragma comment(linker, "/merge:C357=357")
+#pragma comment(linker, "/merge:B357=357")
+#pragma comment(linker, "/merge:K357=357")
 /***************************************************************************
 
   vidhrdw.c
@@ -673,7 +677,7 @@ VIDEO_UPDATE( salamand )
 
 	draw_sprites(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

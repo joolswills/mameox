@@ -1,7 +1,11 @@
 #pragma code_seg("C97")
-#pragma bss_seg("B97")
 #pragma data_seg("D97")
+#pragma bss_seg("B97")
 #pragma const_seg("K97")
+#pragma comment(linker, "/merge:D97=97")
+#pragma comment(linker, "/merge:C97=97")
+#pragma comment(linker, "/merge:B97=97")
+#pragma comment(linker, "/merge:K97=97")
 /*
  *	Chack'n Pop
  *	(C) 1983 TAITO Corp.
@@ -347,7 +351,7 @@ ROM_END
 
 /*  ( YEAR  NAME      PARENT    MACHINE   INPUT     INIT      MONITOR  COMPANY              FULLNAME ) */
 GAME( 1983, chaknpop, 0,        chaknpop, chaknpop, chaknpop, ROT0,    "Taito Corporation", "Chack'n Pop")
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

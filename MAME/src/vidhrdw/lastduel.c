@@ -1,7 +1,11 @@
 #pragma code_seg("C275")
-#pragma bss_seg("B275")
 #pragma data_seg("D275")
+#pragma bss_seg("B275")
 #pragma const_seg("K275")
+#pragma comment(linker, "/merge:D275=275")
+#pragma comment(linker, "/merge:C275=275")
+#pragma comment(linker, "/merge:B275=275")
+#pragma comment(linker, "/merge:K275=275")
 /***************************************************************************
 
   vidhrdw.c
@@ -273,7 +277,7 @@ VIDEO_EOF( lastduel )
 		every frame at the end of vblank */
 	buffer_spriteram16_w(0,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

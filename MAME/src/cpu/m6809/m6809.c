@@ -1,7 +1,11 @@
-#pragma code_seg("CC16")
-#pragma bss_seg("CB16")
-#pragma data_seg("CD16")
-#pragma const_seg("CK16")
+#pragma code_seg("CC13")
+#pragma data_seg("CD13")
+#pragma bss_seg("CB13")
+#pragma const_seg("CK13")
+#pragma comment(linker, "/merge:CD13=CPU13")
+#pragma comment(linker, "/merge:CC13=CPU13")
+#pragma comment(linker, "/merge:CB13=CPU13")
+#pragma comment(linker, "/merge:CK13=CPU13")
 /*** m6809: Portable 6809 emulator ******************************************
 
 	Copyright (C) John Butler 1997
@@ -1251,3 +1255,7 @@ INLINE void fetch_effective_address( void )
 	case 0xff: IMMWORD(ea); 						EAD=RM16(EAD);	m6809_ICount-=5;   break;
 	}
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

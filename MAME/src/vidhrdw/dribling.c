@@ -1,7 +1,11 @@
 #pragma code_seg("C159")
-#pragma bss_seg("B159")
 #pragma data_seg("D159")
+#pragma bss_seg("B159")
 #pragma const_seg("K159")
+#pragma comment(linker, "/merge:D159=159")
+#pragma comment(linker, "/merge:C159=159")
+#pragma comment(linker, "/merge:B159=159")
+#pragma comment(linker, "/merge:K159=159")
 /***************************************************************************
 
 	Model Racing Dribbling hardware
@@ -87,7 +91,7 @@ VIDEO_UPDATE( dribling )
 		}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

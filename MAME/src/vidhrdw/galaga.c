@@ -1,7 +1,11 @@
 #pragma code_seg("C199")
-#pragma bss_seg("B199")
 #pragma data_seg("D199")
+#pragma bss_seg("B199")
 #pragma const_seg("K199")
+#pragma comment(linker, "/merge:D199=199")
+#pragma comment(linker, "/merge:C199=199")
+#pragma comment(linker, "/merge:B199=199")
+#pragma comment(linker, "/merge:K199=199")
 /***************************************************************************
 
   vidhrdw.c
@@ -374,7 +378,7 @@ void galaga_vh_interrupt(void)
 
 	stars_scroll -= speeds[s0 + s1*2 + s2*4];
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

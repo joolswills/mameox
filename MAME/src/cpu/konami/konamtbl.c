@@ -1,7 +1,11 @@
-#pragma code_seg("CC21")
-#pragma bss_seg("CB21")
-#pragma data_seg("CD21")
-#pragma const_seg("CK21")
+#pragma code_seg("CC18")
+#pragma data_seg("CD18")
+#pragma bss_seg("CB18")
+#pragma const_seg("CK18")
+#pragma comment(linker, "/merge:CD18=CPU18")
+#pragma comment(linker, "/merge:CC18=CPU18")
+#pragma comment(linker, "/merge:CB18=CPU18")
+#pragma comment(linker, "/merge:CK18=CPU18")
 INLINE void abx(void);
 INLINE void adca_di(void);
 INLINE void adca_ex(void);
@@ -493,3 +497,7 @@ static void (*konami_extended[0x100])(void) = {
 	illegal,illegal,illegal,illegal,illegal,illegal,illegal,illegal,	/* f0 */
 	illegal,illegal,illegal,illegal,illegal,illegal,illegal,illegal
 };
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

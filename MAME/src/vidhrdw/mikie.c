@@ -1,7 +1,11 @@
 #pragma code_seg("C321")
-#pragma bss_seg("B321")
 #pragma data_seg("D321")
+#pragma bss_seg("B321")
 #pragma const_seg("K321")
+#pragma comment(linker, "/merge:D321=321")
+#pragma comment(linker, "/merge:C321=321")
+#pragma comment(linker, "/merge:B321=321")
+#pragma comment(linker, "/merge:K321=321")
 /***************************************************************************
 
   vidhrdw.c
@@ -189,7 +193,7 @@ VIDEO_UPDATE( mikie )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

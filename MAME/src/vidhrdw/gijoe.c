@@ -1,7 +1,11 @@
 #pragma code_seg("C211")
-#pragma bss_seg("B211")
 #pragma data_seg("D211")
+#pragma bss_seg("B211")
 #pragma const_seg("K211")
+#pragma comment(linker, "/merge:D211=211")
+#pragma comment(linker, "/merge:C211=211")
+#pragma comment(linker, "/merge:B211=211")
+#pragma comment(linker, "/merge:K211=211")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/konamiic.h"
@@ -89,7 +93,7 @@ VIDEO_UPDATE( gijoe )
 
 	K054157_tilemap_draw(bitmap,cliprect, 0, 0, 0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C289")
-#pragma bss_seg("B289")
 #pragma data_seg("D289")
+#pragma bss_seg("B289")
 #pragma const_seg("K289")
+#pragma comment(linker, "/merge:D289=289")
+#pragma comment(linker, "/merge:C289=289")
+#pragma comment(linker, "/merge:B289=289")
+#pragma comment(linker, "/merge:K289=289")
 /***************************************************************************
 
 Video Hardware for Irem Games:
@@ -843,7 +847,7 @@ VIDEO_START( horizon )
 {
 	return m62_start( get_horizon_bg_tile_info, 32, 0, 8, 8, 64, 32 );
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

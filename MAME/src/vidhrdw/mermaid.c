@@ -1,7 +1,11 @@
 #pragma code_seg("C311")
-#pragma bss_seg("B311")
 #pragma data_seg("D311")
+#pragma bss_seg("B311")
 #pragma const_seg("K311")
+#pragma comment(linker, "/merge:D311=311")
+#pragma comment(linker, "/merge:C311=311")
+#pragma comment(linker, "/merge:B311=311")
+#pragma comment(linker, "/merge:K311=311")
 /***************************************************************************
 
   vidhrdw.c
@@ -237,7 +241,7 @@ VIDEO_UPDATE( mermaid )
 				TRANSPARENCY_PEN,0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C52")
-#pragma bss_seg("B52")
 #pragma data_seg("D52")
+#pragma bss_seg("B52")
 #pragma const_seg("K52")
+#pragma comment(linker, "/merge:D52=52")
+#pragma comment(linker, "/merge:C52=52")
+#pragma comment(linker, "/merge:B52=52")
+#pragma comment(linker, "/merge:K52=52")
 /***************************************************************************
 
 	BattleLane
@@ -444,7 +448,7 @@ static DRIVER_INIT( battlane )
 GAMEX( 1986, battlane, 0,        battlane, battlane, battlane, ROT90, "Technos (Taito license)", "Battle Lane Vol. 5 (set 1)", GAME_NO_COCKTAIL )
 GAMEX( 1986, battlan2, battlane, battlane, battlane, battlane, ROT90, "Technos (Taito license)", "Battle Lane Vol. 5 (set 2)", GAME_NO_COCKTAIL )
 GAMEX( 1986, battlan3, battlane, battlane, battlane, battlane, ROT90, "Technos (Taito license)", "Battle Lane Vol. 5 (set 3)", GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C328")
-#pragma bss_seg("B328")
 #pragma data_seg("D328")
+#pragma bss_seg("B328")
 #pragma const_seg("K328")
+#pragma comment(linker, "/merge:D328=328")
+#pragma comment(linker, "/merge:C328=328")
+#pragma comment(linker, "/merge:B328=328")
+#pragma comment(linker, "/merge:K328=328")
 /***************************************************************************
 
 Mutant Night
@@ -485,7 +489,7 @@ ROM_END
 
 GAME( 1987, mnight,  0, mnight, mnight,  0, ROT0, "UPL (Kawakus license)", "Mutant Night" )
 GAME( 1988?,arkarea, 0, mnight, arkarea, 0, ROT0, "UPL", "Ark Area" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C257")
-#pragma bss_seg("B257")
 #pragma data_seg("D257")
+#pragma bss_seg("B257")
 #pragma const_seg("K257")
+#pragma comment(linker, "/merge:D257=257")
+#pragma comment(linker, "/merge:C257=257")
+#pragma comment(linker, "/merge:B257=257")
+#pragma comment(linker, "/merge:K257=257")
 /***************************************************************************
 
 	Atari Return of the Jedi hardware
@@ -394,7 +398,7 @@ VIDEO_UPDATE( jedi )
 		fillbitmap(mobitmap, 0, &bounds);
     }
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C154")
-#pragma bss_seg("B154")
 #pragma data_seg("D154")
+#pragma bss_seg("B154")
 #pragma const_seg("K154")
+#pragma comment(linker, "/merge:D154=154")
+#pragma comment(linker, "/merge:C154=154")
+#pragma comment(linker, "/merge:B154=154")
+#pragma comment(linker, "/merge:K154=154")
 /***************************************************************************
 
 	Atari Dominos hardware
@@ -48,7 +52,7 @@ VIDEO_UPDATE( dominos )
 	discrete_sound_w(0, dominos_sound_ram[0] % 16);	// Freq
 	discrete_sound_w(1, dominos_sound_ram[2] % 16);	// Amp
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

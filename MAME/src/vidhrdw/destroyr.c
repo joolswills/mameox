@@ -1,7 +1,11 @@
 #pragma code_seg("C146")
-#pragma bss_seg("B146")
 #pragma data_seg("D146")
+#pragma bss_seg("B146")
 #pragma const_seg("K146")
+#pragma comment(linker, "/merge:D146=146")
+#pragma comment(linker, "/merge:C146=146")
+#pragma comment(linker, "/merge:B146=146")
+#pragma comment(linker, "/merge:K146=146")
 /***************************************************************************
 
 Atari Destroyer video emulation
@@ -91,7 +95,7 @@ VIDEO_UPDATE( destroyr )
 			plot_pixel(bitmap, i, destroyr_cursor ^ 0xff, Machine->pens[7]);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

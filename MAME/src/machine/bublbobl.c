@@ -1,3 +1,11 @@
+#pragma code_seg("C81")
+#pragma data_seg("D81")
+#pragma bss_seg("B81")
+#pragma const_seg("K81")
+#pragma comment(linker, "/merge:D81=81")
+#pragma comment(linker, "/merge:C81=81")
+#pragma comment(linker, "/merge:B81=81")
+#pragma comment(linker, "/merge:K81=81")
 /***************************************************************************
 
   machine.c
@@ -253,3 +261,7 @@ WRITE_HANDLER( bublbobl_68705_ddrB_w )
 {
 	ddrB = data;
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,11 @@
+#pragma code_seg("C43")
+#pragma data_seg("D43")
+#pragma bss_seg("B43")
+#pragma const_seg("K43")
+#pragma comment(linker, "/merge:D43=43")
+#pragma comment(linker, "/merge:C43=43")
+#pragma comment(linker, "/merge:B43=43")
+#pragma comment(linker, "/merge:K43=43")
 /***************************************************************************
 
 	Atari Avalanche hardware
@@ -81,3 +89,7 @@ INTERRUPT_GEN( avalnche_interrupt )
 {
 		cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

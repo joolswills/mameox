@@ -1,7 +1,11 @@
-#pragma code_seg("C372")
-#pragma bss_seg("B372")
-#pragma data_seg("D372")
-#pragma const_seg("K372")
+#pragma code_seg("C371")
+#pragma data_seg("D371")
+#pragma bss_seg("B371")
+#pragma const_seg("K371")
+#pragma comment(linker, "/merge:D371=371")
+#pragma comment(linker, "/merge:C371=371")
+#pragma comment(linker, "/merge:B371=371")
+#pragma comment(linker, "/merge:K371=371")
 /***************************************************************************
 
 Oli-Boo-Chu
@@ -424,7 +428,7 @@ ROM_END
 
 
 GAMEX( 1981, olibochu, 0, olibochu, olibochu, 0, ROT270, "Irem + GDI", "Oli-Boo-Chu", GAME_WRONG_COLORS | GAME_IMPERFECT_SOUND | GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C124")
-#pragma bss_seg("B124")
 #pragma data_seg("D124")
+#pragma bss_seg("B124")
 #pragma const_seg("K124")
+#pragma comment(linker, "/merge:D124=124")
+#pragma comment(linker, "/merge:C124=124")
+#pragma comment(linker, "/merge:B124=124")
+#pragma comment(linker, "/merge:K124=124")
 /***************************************************************************
 
 	Kitco Crowns Golf hardware
@@ -436,7 +440,7 @@ ROM_END
 GAME( 1984, crgolf,  0,      crgolf,  crgolf,  0, ROT0, "Nasco Japan", "Crowns Golf (set 1)" )
 GAME( 1984, crgolfa, crgolf, crgolf,  crgolf,  0, ROT0, "Nasco Japan", "Crowns Golf (set 2)" )
 GAME( 1984, crgolfb, crgolf, crgolf,  crgolf,  0, ROT0, "Nasco Japan", "Champion Golf (bootleg)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

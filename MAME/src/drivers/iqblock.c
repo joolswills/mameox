@@ -1,7 +1,11 @@
 #pragma code_seg("C248")
-#pragma bss_seg("B248")
 #pragma data_seg("D248")
+#pragma bss_seg("B248")
 #pragma const_seg("K248")
+#pragma comment(linker, "/merge:D248=248")
+#pragma comment(linker, "/merge:C248=248")
+#pragma comment(linker, "/merge:B248=248")
+#pragma comment(linker, "/merge:K248=248")
 /***************************************************************************
 
 IQ Block   (c) 1992 IGS
@@ -449,7 +453,7 @@ GAME( 1993, iqblock, 0, iqblock, iqblock, iqblock, ROT0, "IGS", "IQ-Block" )
 GAMEX(1993, grndtour, 0, iqblock, iqblock, iqblock, ROT0, "IGS", "Grand Tour", GAME_NOT_WORKING )
 
 GAMEX( 19??, cabaret, 0, cabaret, iqblock, cabaret, ROT0, "IGS", "Cabaret", GAME_NOT_WORKING | GAME_NO_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

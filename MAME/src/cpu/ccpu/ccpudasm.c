@@ -1,7 +1,11 @@
-#pragma code_seg("CC30")
-#pragma bss_seg("CB30")
-#pragma data_seg("CD30")
-#pragma const_seg("CK30")
+#pragma code_seg("CC24")
+#pragma data_seg("CD24")
+#pragma bss_seg("CB24")
+#pragma const_seg("CK24")
+#pragma comment(linker, "/merge:CD24=CPU24")
+#pragma comment(linker, "/merge:CC24=CPU24")
+#pragma comment(linker, "/merge:CB24=CPU24")
+#pragma comment(linker, "/merge:CK24=CPU24")
 #include <stdio.h>
 #include <string.h>
 #include "ccpu.h"
@@ -495,3 +499,7 @@ unsigned DasmCCPU(char *buffer, unsigned pc)
 
 	return opsize;
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

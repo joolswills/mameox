@@ -1,7 +1,11 @@
 #pragma code_seg("C166")
-#pragma bss_seg("B166")
 #pragma data_seg("D166")
+#pragma bss_seg("B166")
 #pragma const_seg("K166")
+#pragma comment(linker, "/merge:D166=166")
+#pragma comment(linker, "/merge:C166=166")
+#pragma comment(linker, "/merge:B166=166")
+#pragma comment(linker, "/merge:K166=166")
 /***************************************************************************
 
 						  -= ESD 16 Bit Games =-
@@ -366,7 +370,7 @@ if ( keyboard_pressed(KEYCODE_Z) )
 
 //	usrintf_showmessage("%04x %04x %04x %04x %04x",head_unknown1[0],head_layersize[0],head_unknown3[0],head_unknown4[0],head_unknown5[0]);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

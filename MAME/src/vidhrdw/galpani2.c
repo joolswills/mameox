@@ -1,7 +1,11 @@
 #pragma code_seg("C201")
-#pragma bss_seg("B201")
 #pragma data_seg("D201")
+#pragma bss_seg("B201")
 #pragma const_seg("K201")
+#pragma comment(linker, "/merge:D201=201")
+#pragma comment(linker, "/merge:C201=201")
+#pragma comment(linker, "/merge:B201=201")
+#pragma comment(linker, "/merge:K201=201")
 /***************************************************************************
 
 							-= Gal's Panic II =-
@@ -220,7 +224,7 @@ if (keyboard_pressed(KEYCODE_Z))
 
 	if (layers_ctrl & 0x8)	kaneko16_draw_sprites(bitmap, cliprect, 0xf);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

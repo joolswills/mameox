@@ -1,3 +1,11 @@
+#pragma code_seg("C398")
+#pragma data_seg("D398")
+#pragma bss_seg("B398")
+#pragma const_seg("K398")
+#pragma comment(linker, "/merge:D398=398")
+#pragma comment(linker, "/merge:C398=398")
+#pragma comment(linker, "/merge:B398=398")
+#pragma comment(linker, "/merge:K398=398")
 #include "driver.h"
 #include "vidhrdw/ppu2c03b.h"
 #include "machine/rp5h01.h"
@@ -871,3 +879,7 @@ DRIVER_INIT( pckboard )
 	/* common init */
 	init_playch10();
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,7 +1,3 @@
-#pragma code_seg("C349")
-#pragma bss_seg("B349")
-#pragma data_seg("D349")
-#pragma const_seg("K349")
 /***************************************************************************
 
 Namco System II driver by K.Wilkins  (Jun1998, Oct1999)
@@ -4206,7 +4202,3 @@ GAME( 1992, sws92,    0,        default,  default,  sws92,    ROT0,   "Namco", "
 GAME( 1992, sws92g,   sws92,    default,  default,  sws92g,   ROT0,   "Namco", "Super World Stadium '92 Gekitouban (Japan)" )
 GAMEX(1993, suzuk8h2, 0,        luckywld, driving,  suzuk8h2, ROT0,   "Namco", "Suzuka 8 Hours 2 (Japan)", GAME_IMPERFECT_GRAPHICS )
 GAME( 1993, sws93,    0,        default,  default,  sws93,    ROT0,   "Namco", "Super World Stadium '93 (Japan)" )
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

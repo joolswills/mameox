@@ -1,7 +1,11 @@
 #pragma code_seg("C60")
-#pragma bss_seg("B60")
 #pragma data_seg("D60")
+#pragma bss_seg("B60")
 #pragma const_seg("K60")
+#pragma comment(linker, "/merge:D60=60")
+#pragma comment(linker, "/merge:C60=60")
+#pragma comment(linker, "/merge:B60=60")
+#pragma comment(linker, "/merge:K60=60")
 /***************************************************************************
 
  Berzerk Driver by Zsolt Vasvari
@@ -392,7 +396,7 @@ ROM_END
 GAME( 1980, berzerk,  0,       berzerk, berzerk, 0, ROT0, "Stern", "Berzerk (set 1)" )
 GAME( 1980, berzerk1, berzerk, berzerk, berzerk, 0, ROT0, "Stern", "Berzerk (set 2)" )
 GAME( 1982, frenzy,   0,       frenzy,  frenzy,  0, ROT0, "Stern", "Frenzy" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

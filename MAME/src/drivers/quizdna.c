@@ -1,7 +1,11 @@
-#pragma code_seg("C420")
-#pragma bss_seg("B420")
-#pragma data_seg("D420")
-#pragma const_seg("K420")
+#pragma code_seg("C419")
+#pragma data_seg("D419")
+#pragma bss_seg("B419")
+#pragma const_seg("K419")
+#pragma comment(linker, "/merge:D419=419")
+#pragma comment(linker, "/merge:C419=419")
+#pragma comment(linker, "/merge:B419=419")
+#pragma comment(linker, "/merge:K419=419")
 /*****************************************************************************
 
 Quiz DNA no Hanran (c) 1992 Face
@@ -596,7 +600,7 @@ ROM_END
 GAME( 1991, gakupara, 0, gakupara, gakupara, 0, ROT0, "NMK",  "Quiz Gakuen Paradise (Japan)" )
 GAME( 1992, quizdna,  0, quizdna,  quizdna,  0, ROT0, "Face", "Quiz DNA no Hanran (Japan)" )
 GAME( 1992, gekiretu, 0, gekiretu, gekiretu, 0, ROT0, "Face", "Quiz Gekiretsu Scramble (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

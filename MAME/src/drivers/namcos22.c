@@ -1,7 +1,11 @@
-#pragma code_seg("C351")
-#pragma bss_seg("B351")
-#pragma data_seg("D351")
-#pragma const_seg("K351")
+#pragma code_seg("C350")
+#pragma data_seg("D350")
+#pragma bss_seg("B350")
+#pragma const_seg("K350")
+#pragma comment(linker, "/merge:D350=350")
+#pragma comment(linker, "/merge:C350=350")
+#pragma comment(linker, "/merge:B350=350")
+#pragma comment(linker, "/merge:K350=350")
 /**
  * driver\namcos22.c
  *
@@ -1108,7 +1112,7 @@ GAMEX( 1994, alpinerd, 0,     namcos22s, alpiner,  alpiner,  ROT0, "Namco", "Alp
 GAMEX( 1996, propcycl, 0,     namcos22s, propcycl, propcycl, ROT0, "Namco", "Prop Cycle",          GAME_NO_SOUND|GAME_IMPERFECT_GRAPHICS )
 //GAMEX( 1995,"Time Crisis")
 //GAMEX( 1996,"Tokyo Wars")
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C16")
-#pragma bss_seg("B16")
 #pragma data_seg("D16")
+#pragma bss_seg("B16")
 #pragma const_seg("K16")
+#pragma comment(linker, "/merge:D16=16")
+#pragma comment(linker, "/merge:C16=16")
+#pragma comment(linker, "/merge:B16=16")
+#pragma comment(linker, "/merge:K16=16")
 /***************************************************************************
 
 Ambush Memory Map (preliminary)
@@ -259,7 +263,7 @@ ROM_END
 
 GAME( 1983, ambush, 0,      ambush, ambush, 0, ROT0, "Nippon Amuse Co-Ltd", "Ambush" )
 GAME( 1983, ambusht,ambush, ambush, ambush, 0, ROT0, "Tecfri", "Ambush (Tecfri)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

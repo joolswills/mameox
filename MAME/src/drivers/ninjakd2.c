@@ -1,7 +1,11 @@
-#pragma code_seg("C361")
-#pragma bss_seg("B361")
-#pragma data_seg("D361")
-#pragma const_seg("K361")
+#pragma code_seg("C360")
+#pragma data_seg("D360")
+#pragma bss_seg("B360")
+#pragma const_seg("K360")
+#pragma comment(linker, "/merge:D360=360")
+#pragma comment(linker, "/merge:C360=360")
+#pragma comment(linker, "/merge:B360=360")
+#pragma comment(linker, "/merge:K360=360")
 /***************************************************************************
 
  *****************************
@@ -767,7 +771,7 @@ GAMEX(1987, ninjakd2, 0,        ninjakd2, ninjakd2, 0,        ROT0, "UPL", "Ninj
 GAME( 1987, ninjak2a, ninjakd2, ninjak2a, ninjakd2, ninjak2a, ROT0, "UPL", "Ninja-Kid II (set 2)" )
 GAME( 1987, ninjak2b, ninjakd2, ninjak2a, ninjakd2, ninjak2a, ROT0, "UPL", "Ninja-Kid II (set 3)" )
 GAME( 1987, rdaction, ninjakd2, ninjak2a, ninjakd2, ninjak2a, ROT0, "UPL (World Games license)", "Rad Action" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,3 +1,11 @@
+#pragma code_seg("C347")
+#pragma data_seg("D347")
+#pragma bss_seg("B347")
+#pragma const_seg("K347")
+#pragma comment(linker, "/merge:D347=347")
+#pragma comment(linker, "/merge:C347=347")
+#pragma comment(linker, "/merge:B347=347")
+#pragma comment(linker, "/merge:K347=347")
 /***************************************************************************
 
   Namco ND-1
@@ -204,3 +212,7 @@ NVRAM_HANDLER( namcond1 )
   }
 }
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

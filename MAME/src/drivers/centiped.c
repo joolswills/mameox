@@ -1,7 +1,11 @@
 #pragma code_seg("C96")
-#pragma bss_seg("B96")
 #pragma data_seg("D96")
+#pragma bss_seg("B96")
 #pragma const_seg("K96")
+#pragma comment(linker, "/merge:D96=96")
+#pragma comment(linker, "/merge:C96=96")
+#pragma comment(linker, "/merge:B96=96")
+#pragma comment(linker, "/merge:K96=96")
 /***************************************************************************
 
 	Atari Centipede hardware
@@ -1753,7 +1757,7 @@ GAME( 1982, milliped, 0,        milliped, milliped, 0,        ROT270, "Atari", "
 
 GAME( 1980, warlords, 0,        warlords, warlords, 0,        ROT0,   "Atari", "Warlords" )
 GAMEX(1982, qwakprot, 0,        qwakprot, qwakprot, 0,        ROT270, "Atari", "Qwak (prototype)", GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,3 +1,11 @@
+#pragma code_seg("C82")
+#pragma data_seg("D82")
+#pragma bss_seg("B82")
+#pragma const_seg("K82")
+#pragma comment(linker, "/merge:D82=82")
+#pragma comment(linker, "/merge:C82=82")
+#pragma comment(linker, "/merge:B82=82")
+#pragma comment(linker, "/merge:K82=82")
 #include "driver.h"
 #include "cpu/z80/z80.h"
 
@@ -146,3 +154,7 @@ READ_HANDLER( buggychl_mcu_status_r )
 
 	return res;
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

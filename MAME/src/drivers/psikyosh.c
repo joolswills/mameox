@@ -1,7 +1,11 @@
-#pragma code_seg("C414")
-#pragma bss_seg("B414")
-#pragma data_seg("D414")
-#pragma const_seg("K414")
+#pragma code_seg("C413")
+#pragma data_seg("D413")
+#pragma bss_seg("B413")
+#pragma const_seg("K413")
+#pragma comment(linker, "/merge:D413=413")
+#pragma comment(linker, "/merge:C413=413")
+#pragma comment(linker, "/merge:B413=413")
+#pragma comment(linker, "/merge:K413=413")
 /*----------------------------------------------------------------
    Psikyo PS3/PS5/PS5v2 SH-2 Based Systems
    driver by David Haywood (+ Paul Priest)
@@ -1046,7 +1050,7 @@ GAMEX( 1999, s1945iii, 0,        psikyo5,   s1945iii, s1945iii, ROT270, "Psikyo"
 /* ps5v2 */
 GAMEX( 2000, dragnblz, 0,        psikyo5,   dragnblz, dragnblz, ROT270, "Psikyo", "Dragon Blaze", GAME_IMPERFECT_GRAPHICS | GAME_IMPERFECT_SOUND ) // incomplete dump
 GAMEX( 2001, gnbarich, 0,        psikyo5,   gnbarich, gnbarich, ROT270, "Psikyo", "Gunbarich", GAME_IMPERFECT_GRAPHICS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

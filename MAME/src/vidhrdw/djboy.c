@@ -1,7 +1,11 @@
 #pragma code_seg("C149")
-#pragma bss_seg("B149")
 #pragma data_seg("D149")
+#pragma bss_seg("B149")
 #pragma const_seg("K149")
+#pragma comment(linker, "/merge:D149=149")
+#pragma comment(linker, "/merge:C149=149")
+#pragma comment(linker, "/merge:B149=149")
+#pragma comment(linker, "/merge:K149=149")
 /**
  * @file vidhrdw/djboy.c
  *
@@ -140,7 +144,7 @@ VIDEO_UPDATE( djboy )
 	tilemap_draw( bitmap, cliprect,background,0,0 );
 	draw_sprites( bitmap, cliprect );
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

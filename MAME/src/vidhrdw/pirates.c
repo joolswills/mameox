@@ -1,7 +1,11 @@
-#pragma code_seg("C397")
-#pragma bss_seg("B397")
-#pragma data_seg("D397")
-#pragma const_seg("K397")
+#pragma code_seg("C396")
+#pragma data_seg("D396")
+#pragma bss_seg("B396")
+#pragma const_seg("K396")
+#pragma comment(linker, "/merge:D396=396")
+#pragma comment(linker, "/merge:C396=396")
+#pragma comment(linker, "/merge:B396=396")
+#pragma comment(linker, "/merge:K396=396")
 #include "driver.h"
 
 
@@ -118,7 +122,7 @@ VIDEO_UPDATE(pirates)
 	draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,tx_tilemap,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

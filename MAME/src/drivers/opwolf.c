@@ -1,7 +1,11 @@
-#pragma code_seg("C376")
-#pragma bss_seg("B376")
-#pragma data_seg("D376")
-#pragma const_seg("K376")
+#pragma code_seg("C375")
+#pragma data_seg("D375")
+#pragma bss_seg("B375")
+#pragma const_seg("K375")
+#pragma comment(linker, "/merge:D375=375")
+#pragma comment(linker, "/merge:C375=375")
+#pragma comment(linker, "/merge:B375=375")
+#pragma comment(linker, "/merge:K375=375")
 /****************************************************************************
 
 Operation Wolf  (c) Taito 1987
@@ -619,7 +623,7 @@ static DRIVER_INIT( opwolfb )
 /*    year  rom       parent    machine   inp       init */
 GAME( 1987, opwolf,   0,        opwolf,   opwolf,   opwolf,   ROT0, "Taito America Corporation", "Operation Wolf (US)" )
 GAME( 1987, opwolfb,  opwolf,   opwolfb,  opwolf,   opwolfb,  ROT0, "bootleg", "Operation Bear" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

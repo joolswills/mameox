@@ -1,7 +1,11 @@
 #pragma code_seg("C51")
-#pragma bss_seg("B51")
 #pragma data_seg("D51")
+#pragma bss_seg("B51")
 #pragma const_seg("K51")
+#pragma comment(linker, "/merge:D51=51")
+#pragma comment(linker, "/merge:C51=51")
+#pragma comment(linker, "/merge:B51=51")
+#pragma comment(linker, "/merge:K51=51")
 /***************************************************************************
 
 	Atari Batman hardware
@@ -321,7 +325,7 @@ VIDEO_UPDATE( batman )
 				}
 		}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

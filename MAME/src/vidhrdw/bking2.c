@@ -1,7 +1,11 @@
 #pragma code_seg("C63")
-#pragma bss_seg("B63")
 #pragma data_seg("D63")
+#pragma bss_seg("B63")
 #pragma const_seg("K63")
+#pragma comment(linker, "/merge:D63=63")
+#pragma comment(linker, "/merge:C63=63")
+#pragma comment(linker, "/merge:B63=63")
+#pragma comment(linker, "/merge:K63=63")
 /***************************************************************************
 
   bking2.c
@@ -387,7 +391,7 @@ VIDEO_EOF( bking2 )
 		}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

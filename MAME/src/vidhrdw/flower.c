@@ -1,7 +1,11 @@
 #pragma code_seg("C185")
-#pragma bss_seg("B185")
 #pragma data_seg("D185")
+#pragma bss_seg("B185")
 #pragma const_seg("K185")
+#pragma comment(linker, "/merge:D185=185")
+#pragma comment(linker, "/merge:C185=185")
+#pragma comment(linker, "/merge:B185=185")
+#pragma comment(linker, "/merge:K185=185")
 /* Flower Video Hardware */
 
 #include "driver.h"
@@ -160,7 +164,7 @@ WRITE_HANDLER( flower_sharedram_w )
 		tilemap_mark_tile_dirty(flower_bg1_tilemap,offset&0x1ff);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

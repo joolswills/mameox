@@ -1,7 +1,11 @@
 #pragma code_seg("C195")
-#pragma bss_seg("B195")
 #pragma data_seg("D195")
+#pragma bss_seg("B195")
 #pragma const_seg("K195")
+#pragma comment(linker, "/merge:D195=195")
+#pragma comment(linker, "/merge:C195=195")
+#pragma comment(linker, "/merge:B195=195")
+#pragma comment(linker, "/merge:K195=195")
 /***************************************************************************
 
 						  -= Fuuki 16 Bit Games =-
@@ -355,7 +359,7 @@ VIDEO_UPDATE( fuuki16 )
 
 	fuuki16_draw_sprites(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

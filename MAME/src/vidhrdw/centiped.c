@@ -1,7 +1,11 @@
 #pragma code_seg("C96")
-#pragma bss_seg("B96")
 #pragma data_seg("D96")
+#pragma bss_seg("B96")
 #pragma const_seg("K96")
+#pragma comment(linker, "/merge:D96=96")
+#pragma comment(linker, "/merge:C96=96")
+#pragma comment(linker, "/merge:B96=96")
+#pragma comment(linker, "/merge:K96=96")
 /*************************************************************************
 
 	Atari Centipede hardware
@@ -460,7 +464,7 @@ VIDEO_UPDATE( qwakprot )
 				cliprect, TRANSPARENCY_PEN, 0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

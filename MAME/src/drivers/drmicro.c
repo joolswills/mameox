@@ -1,7 +1,11 @@
 #pragma code_seg("C160")
-#pragma bss_seg("B160")
 #pragma data_seg("D160")
+#pragma bss_seg("B160")
 #pragma const_seg("K160")
+#pragma comment(linker, "/merge:D160=160")
+#pragma comment(linker, "/merge:C160=160")
+#pragma comment(linker, "/merge:B160=160")
+#pragma comment(linker, "/merge:K160=160")
 /*****************************************************************************
 
 Dr. Micro (c) 1983 Sanritsu
@@ -300,7 +304,7 @@ ROM_START( drmicro )
 ROM_END
 
 GAME( 1983, drmicro, 0, drmicro, drmicro, 0, ROT270, "Sanritsu", "Dr. Micro" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

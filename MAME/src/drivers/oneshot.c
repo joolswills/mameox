@@ -1,7 +1,11 @@
-#pragma code_seg("C375")
-#pragma bss_seg("B375")
-#pragma data_seg("D375")
-#pragma const_seg("K375")
+#pragma code_seg("C374")
+#pragma data_seg("D374")
+#pragma bss_seg("B374")
+#pragma const_seg("K374")
+#pragma comment(linker, "/merge:D374=374")
+#pragma comment(linker, "/merge:C374=374")
+#pragma comment(linker, "/merge:B374=374")
+#pragma comment(linker, "/merge:K374=374")
 /* One Shot One Kill & Maddonna
    Driver by David Haywood and Paul Priest
    Dip Switches and Inputs by Stephane Humbert
@@ -505,7 +509,7 @@ ROM_END
 GAMEX(199?, oneshot,  0,        oneshot,  oneshot , 0, ROT0, "unknown", "One Shot One Kill", GAME_IMPERFECT_GRAPHICS )
 GAME (1995, maddonna, 0,        maddonna, maddonna, 0, ROT0, "Tuning",  "Mad Donna (set 1)" )
 GAMEX(1995, maddonnb, maddonna, maddonna, maddonna, 0, ROT0, "Tuning",  "Mad Donna (set 2)", GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

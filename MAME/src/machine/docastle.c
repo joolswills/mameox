@@ -1,3 +1,11 @@
+#pragma code_seg("C152")
+#pragma data_seg("D152")
+#pragma bss_seg("B152")
+#pragma const_seg("K152")
+#pragma comment(linker, "/merge:D152=152")
+#pragma comment(linker, "/merge:C152=152")
+#pragma comment(linker, "/merge:B152=152")
+#pragma comment(linker, "/merge:K152=152")
 /***************************************************************************
 
   machine.c
@@ -72,3 +80,7 @@ WRITE_HANDLER( docastle_nmitrigger_w )
 {
 	cpu_set_irq_line(1,IRQ_LINE_NMI,PULSE_LINE);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

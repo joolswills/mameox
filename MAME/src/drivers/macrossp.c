@@ -1,7 +1,11 @@
 #pragma code_seg("C293")
-#pragma bss_seg("B293")
 #pragma data_seg("D293")
+#pragma bss_seg("B293")
 #pragma const_seg("K293")
+#pragma comment(linker, "/merge:D293=293")
+#pragma comment(linker, "/merge:C293=293")
+#pragma comment(linker, "/merge:B293=293")
+#pragma comment(linker, "/merge:K293=293")
 /*** DRIVER INFO **************************************************************
 
 Macross Plus                        (c)1996 Banpresto
@@ -774,7 +778,7 @@ static DRIVER_INIT( quizmoon )
 
 GAMEX( 1996, macrossp, 0, macrossp, macrossp, macrossp, ROT270, "Banpresto", "Macross Plus", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1997, quizmoon, 0, quizmoon, macrossp, quizmoon, ROT0,   "Banpresto", "Quiz Bisyoujo Senshi Sailor Moon - Chiryoku Tairyoku Toki no Un", GAME_IMPERFECT_GRAPHICS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

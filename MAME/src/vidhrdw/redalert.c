@@ -1,7 +1,11 @@
-#pragma code_seg("C426")
-#pragma bss_seg("B426")
-#pragma data_seg("D426")
-#pragma const_seg("K426")
+#pragma code_seg("C425")
+#pragma data_seg("D425")
+#pragma bss_seg("B425")
+#pragma const_seg("K425")
+#pragma comment(linker, "/merge:D425=425")
+#pragma comment(linker, "/merge:C425=425")
+#pragma comment(linker, "/merge:B425=425")
+#pragma comment(linker, "/merge:K425=425")
 /***************************************************************************
 
   vidhrdw.c
@@ -246,7 +250,7 @@ VIDEO_UPDATE( redalert )
 
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

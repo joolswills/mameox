@@ -1,7 +1,11 @@
 #pragma code_seg("C17")
-#pragma bss_seg("B17")
 #pragma data_seg("D17")
+#pragma bss_seg("B17")
 #pragma const_seg("K17")
+#pragma comment(linker, "/merge:D17=17")
+#pragma comment(linker, "/merge:C17=17")
+#pragma comment(linker, "/merge:B17=17")
+#pragma comment(linker, "/merge:K17=17")
 /***************************************************************************
 
  Amidar hardware
@@ -559,7 +563,7 @@ GAME( 1982, amigo,   amidar,  amidar, amidaru, amidar,       ROT90, "bootleg", "
 GAME( 1981, turtles, 0,       amidar, turtles, scramble_ppi, ROT90, "[Konami] (Stern license)", "Turtles" )
 GAME( 1981, turpin,  turtles, amidar, turpin,  scramble_ppi, ROT90, "[Konami] (Sega license)", "Turpin" )
 GAME( 1981, 600,     turtles, amidar, turtles, scramble_ppi, ROT90, "Konami", "600" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

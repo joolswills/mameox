@@ -1,7 +1,11 @@
 #pragma code_seg("C50")
-#pragma bss_seg("B50")
 #pragma data_seg("D50")
+#pragma bss_seg("B50")
 #pragma const_seg("K50")
+#pragma comment(linker, "/merge:D50=50")
+#pragma comment(linker, "/merge:C50=50")
+#pragma comment(linker, "/merge:B50=50")
+#pragma comment(linker, "/merge:K50=50")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "tilemap.h"
@@ -343,7 +347,7 @@ VIDEO_UPDATE( metrocrs )
 				cliprect,TRANSPARENCY_PEN,3);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

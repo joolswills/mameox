@@ -1,7 +1,11 @@
 #pragma code_seg("C199")
-#pragma bss_seg("B199")
 #pragma data_seg("D199")
+#pragma bss_seg("B199")
 #pragma const_seg("K199")
+#pragma comment(linker, "/merge:D199=199")
+#pragma comment(linker, "/merge:C199=199")
+#pragma comment(linker, "/merge:B199=199")
+#pragma comment(linker, "/merge:K199=199")
 /***************************************************************************
 
 TODO:
@@ -757,7 +761,7 @@ GAMEX( 1981, galagab2, galaga, galaga, galaganm, 0, ROT90, "bootleg", "Galaga (b
 GAMEX( 1984, galaga84, galaga, galaga, galaganm, 0, ROT90, "hack", "Galaga '84", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1984, nebulbee, galaga, galaga, galaganm, 0, ROT90, "hack", "Nebulous Bee", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1984, gatsbee,  galaga, galaga, galaganm, gatsbee, ROT90, "Uchida", "Gatsbee", GAME_IMPERFECT_GRAPHICS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

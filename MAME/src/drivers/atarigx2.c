@@ -1,7 +1,11 @@
 #pragma code_seg("C38")
-#pragma bss_seg("B38")
 #pragma data_seg("D38")
+#pragma bss_seg("B38")
 #pragma const_seg("K38")
+#pragma comment(linker, "/merge:D38=38")
+#pragma comment(linker, "/merge:C38=38")
+#pragma comment(linker, "/merge:B38=38")
+#pragma comment(linker, "/merge:K38=38")
 /***************************************************************************
 
 	Atari GX2 hardware
@@ -1636,7 +1640,7 @@ GAMEX( 1992, spclords, 0,        atarigx2, spclords, spclords, ROT0, "Atari Game
 GAMEX( 1992, spclorda, spclords, atarigx2, spclords, spclords, ROT0, "Atari Games", "Space Lords (alternate)", GAME_UNEMULATED_PROTECTION )
 GAMEX( 1992, motofren, 0,        atarigx2, spclords, motofren, ROT0, "Atari Games", "Moto Frenzy", GAME_UNEMULATED_PROTECTION )
 GAMEX( 1994, rrreveng, 0,        atarigx2, rrreveng, rrreveng, ROT0, "Atari Games", "Road Riot's Revenge (prototype)", GAME_UNEMULATED_PROTECTION )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C350")
-#pragma bss_seg("B350")
-#pragma data_seg("D350")
-#pragma const_seg("K350")
+#pragma code_seg("C349")
+#pragma data_seg("D349")
+#pragma bss_seg("B349")
+#pragma const_seg("K349")
+#pragma comment(linker, "/merge:D349=349")
+#pragma comment(linker, "/merge:C349=349")
+#pragma comment(linker, "/merge:B349=349")
+#pragma comment(linker, "/merge:K349=349")
 /***************************************************************************
 
 Namco System 21 Video Hardware
@@ -517,7 +521,7 @@ VIDEO_UPDATE( namcos21_default )
 		}
 	}
 } /* namcos21_default */
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C167")
-#pragma bss_seg("B167")
 #pragma data_seg("D167")
+#pragma bss_seg("B167")
 #pragma const_seg("K167")
+#pragma comment(linker, "/merge:D167=167")
+#pragma comment(linker, "/merge:C167=167")
+#pragma comment(linker, "/merge:B167=167")
+#pragma comment(linker, "/merge:K167=167")
 /***************************************************************************
 
   vidhrdw.c
@@ -245,7 +249,7 @@ VIDEO_UPDATE( exctsccr ) {
 	exctsccr_drawsprites( bitmap );
 
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

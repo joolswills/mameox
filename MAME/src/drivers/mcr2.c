@@ -1,7 +1,11 @@
 #pragma code_seg("C306")
-#pragma bss_seg("B306")
 #pragma data_seg("D306")
+#pragma bss_seg("B306")
 #pragma const_seg("K306")
+#pragma comment(linker, "/merge:D306=306")
+#pragma comment(linker, "/merge:C306=306")
+#pragma comment(linker, "/merge:B306=306")
+#pragma comment(linker, "/merge:K306=306")
 /***************************************************************************
 
 	Midway MCR-2 system
@@ -1004,7 +1008,7 @@ GAME( 1982, wacko,    0,        mcr2,     wacko,    wacko,    ROT0,  "Bally Midw
 GAME( 1984, twotiger, 0,        mcr2,     twotiger, mcr2,     ROT0,  "Bally Midway", "Two Tigers" )
 GAME( 1984, twotigra, twotiger, twotigra, twotigra, twotigra, ROT0,  "Bally Midway", "Two Tigers (dedicated)" )
 GAMEX(1983, journey,  0,        journey,  domino,   mcr2,     ROT90, "Bally Midway", "Journey", GAME_IMPERFECT_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

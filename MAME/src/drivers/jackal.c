@@ -1,7 +1,11 @@
 #pragma code_seg("C254")
-#pragma bss_seg("B254")
 #pragma data_seg("D254")
+#pragma bss_seg("B254")
 #pragma const_seg("K254")
+#pragma comment(linker, "/merge:D254=254")
+#pragma comment(linker, "/merge:C254=254")
+#pragma comment(linker, "/merge:B254=254")
+#pragma comment(linker, "/merge:K254=254")
 /***************************************************************************
 
   jackal.c
@@ -525,7 +529,7 @@ GAMEX( 1986, jackal,   0,      jackal, jackal,   0, ROT90, "Konami", "Jackal (Wo
 GAMEX( 1986, topgunr,  jackal, jackal, jackal,   0, ROT90, "Konami", "Top Gunner (US)", GAME_IMPERFECT_COLORS | GAME_NO_COCKTAIL )
 GAMEX( 1986, jackalj,  jackal, jackal, jackal,   0, ROT90, "Konami", "Tokushu Butai Jackal (Japan)", GAME_IMPERFECT_COLORS | GAME_NO_COCKTAIL )
 GAMEX( 1986, topgunbl, jackal, jackal, topgunbl, 0, ROT90, "bootleg", "Top Gunner (bootleg)", GAME_IMPERFECT_COLORS | GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C158")
-#pragma bss_seg("B158")
 #pragma data_seg("D158")
+#pragma bss_seg("B158")
 #pragma const_seg("K158")
+#pragma comment(linker, "/merge:D158=158")
+#pragma comment(linker, "/merge:C158=158")
+#pragma comment(linker, "/merge:B158=158")
+#pragma comment(linker, "/merge:K158=158")
 // remaining gfx glitches
 
 // layer priority register not fully understood
@@ -211,7 +215,7 @@ VIDEO_UPDATE(drgnmst)
 //	usrintf_showmessage	("x %04x x %04x y %04x y %04x z %04x z %04x",drgnmst_vidregs[0],drgnmst_vidregs[1],drgnmst_vidregs[2],drgnmst_vidregs[3],drgnmst_vidregs[4],drgnmst_vidregs[5]);
 
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C389")
-#pragma bss_seg("B389")
-#pragma data_seg("D389")
-#pragma const_seg("K389")
+#pragma code_seg("C388")
+#pragma data_seg("D388")
+#pragma bss_seg("B388")
+#pragma const_seg("K388")
+#pragma comment(linker, "/merge:D388=388")
+#pragma comment(linker, "/merge:C388=388")
+#pragma comment(linker, "/merge:B388=388")
+#pragma comment(linker, "/merge:K388=388")
 /***************************************************************************
 
   vidhrdw.c
@@ -212,7 +216,7 @@ VIDEO_UPDATE( pbaction )
 		}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

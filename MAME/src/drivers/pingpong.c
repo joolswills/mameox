@@ -1,7 +1,11 @@
-#pragma code_seg("C395")
-#pragma bss_seg("B395")
-#pragma data_seg("D395")
-#pragma const_seg("K395")
+#pragma code_seg("C394")
+#pragma data_seg("D394")
+#pragma bss_seg("B394")
+#pragma const_seg("K394")
+#pragma comment(linker, "/merge:D394=394")
+#pragma comment(linker, "/merge:C394=394")
+#pragma comment(linker, "/merge:B394=394")
+#pragma comment(linker, "/merge:K394=394")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -250,7 +254,7 @@ ROM_END
 
 
 GAME( 1985, pingpong, 0, pingpong, pingpong, 0, ROT0, "Konami", "Ping Pong" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

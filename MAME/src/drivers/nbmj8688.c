@@ -1,7 +1,11 @@
-#pragma code_seg("C354")
-#pragma bss_seg("B354")
-#pragma data_seg("D354")
-#pragma const_seg("K354")
+#pragma code_seg("C353")
+#pragma data_seg("D353")
+#pragma bss_seg("B353")
+#pragma const_seg("K353")
+#pragma comment(linker, "/merge:D353=353")
+#pragma comment(linker, "/merge:C353=353")
+#pragma comment(linker, "/merge:B353=353")
+#pragma comment(linker, "/merge:K353=353")
 /******************************************************************************
 
 	nbmj8688 - Nichibutsu Mahjong games for years 1986-1988
@@ -2776,7 +2780,7 @@ GAME( 1988, mjsikakb, mjsikaku, mjsikaku,        mjsikaku, mjsikaku, ROT0, "Nich
 GAME( 1988, otonano,  0,        otonano,         otonano,  otonano,  ROT0, "Apple", "Otona no Mahjong (Japan 880628)" )
 GAME( 1988, mjcamera, 0,        otonano,         mjcamera, mjcamera, ROT0, "MIKI SYOUJI", "Mahjong Camera Kozou (Japan 881109)" )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

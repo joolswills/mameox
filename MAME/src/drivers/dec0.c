@@ -1,7 +1,11 @@
 #pragma code_seg("C141")
-#pragma bss_seg("B141")
 #pragma data_seg("D141")
+#pragma bss_seg("B141")
 #pragma const_seg("K141")
+#pragma comment(linker, "/merge:D141=141")
+#pragma comment(linker, "/merge:C141=141")
+#pragma comment(linker, "/merge:B141=141")
+#pragma comment(linker, "/merge:K141=141")
 /***************************************************************************
 
   Data East 16 bit games - Bryan McPhail, mish@tendril.co.uk
@@ -2153,7 +2157,7 @@ GAME( 1989, midresu,  midres,   midres,   midres,   0,        ROT0,   "Data East
 GAME( 1989, midresj,  midres,   midres,   midres,   0,        ROT0,   "Data East Corporation", "Midnight Resistance (Japan)" )
 GAME( 1990, bouldash, 0,        slyspy,   bouldash, slyspy,   ROT0,   "Data East Corporation (licensed from First Star)", "Boulder Dash / Boulder Dash Part 2 (World)" )
 GAME( 1990, bouldshj, bouldash, slyspy,   bouldash, slyspy,   ROT0,   "Data East Corporation (licensed from First Star)", "Boulder Dash / Boulder Dash Part 2 (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

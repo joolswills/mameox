@@ -1,7 +1,11 @@
-#pragma code_seg("C357")
-#pragma bss_seg("B357")
-#pragma data_seg("D357")
-#pragma const_seg("K357")
+#pragma code_seg("C356")
+#pragma data_seg("D356")
+#pragma bss_seg("B356")
+#pragma const_seg("K356")
+#pragma comment(linker, "/merge:D356=356")
+#pragma comment(linker, "/merge:C356=356")
+#pragma comment(linker, "/merge:B356=356")
+#pragma comment(linker, "/merge:K356=356")
 /******************************************************************************
 
 	Game Driver for Nichibutsu Mahjong series.
@@ -4602,7 +4606,7 @@ GAME( 1992, mjkoiura, 0,        mjkoiura, mjkoiura, mjkoiura, ROT0, "Nichibutsu"
 GAME( 1994, mscoutm,  0,        mscoutm,  mscoutm,  mscoutm,  ROT0, "SPHINX/AV JAPAN", "Mahjong Scout Man (Japan)" )
 GAME( 1994, imekura,  0,        imekura,  imekura,  imekura,  ROT0, "SPHINX/AV JAPAN", "Imekura Mahjong (Japan)" )
 GAME( 1994, mjegolf,  0,        mjegolf,  mjegolf,  mjegolf,  ROT0, "FUJIC/AV JAPAN", "Mahjong Erotica Golf (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

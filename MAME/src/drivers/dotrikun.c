@@ -1,7 +1,11 @@
 #pragma code_seg("C156")
-#pragma bss_seg("B156")
 #pragma data_seg("D156")
+#pragma bss_seg("B156")
 #pragma const_seg("K156")
+#pragma comment(linker, "/merge:D156=156")
+#pragma comment(linker, "/merge:C156=156")
+#pragma comment(linker, "/merge:B156=156")
+#pragma comment(linker, "/merge:K156=156")
 /***************************************************************************
 
 Dottori Kun (Head On's mini game)
@@ -111,7 +115,7 @@ ROM_END
 
 GAMEX( 1990, dotrikun, 0,        dotrikun, dotrikun, 0, ROT0, "Sega", "Dottori Kun (new version)", GAME_NO_SOUND )
 GAMEX( 1990, dotriku2, dotrikun, dotrikun, dotrikun, 0, ROT0, "Sega", "Dottori Kun (old version)", GAME_NO_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

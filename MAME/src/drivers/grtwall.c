@@ -1,7 +1,11 @@
 #pragma code_seg("C225")
-#pragma bss_seg("B225")
 #pragma data_seg("D225")
+#pragma bss_seg("B225")
 #pragma const_seg("K225")
+#pragma comment(linker, "/merge:D225=225")
+#pragma comment(linker, "/merge:C225=225")
+#pragma comment(linker, "/merge:B225=225")
+#pragma comment(linker, "/merge:K225=225")
 /* IGS - The Great Wall */
 
 /* hardware is probably very similar to China Dragon / Dragon World */
@@ -134,7 +138,7 @@ ROM_START( grtwall )
 ROM_END
 
 GAMEX( 1994, grtwall, 0, grtwall, grtwall, grtwall, ROT0, "IGS", "The Great Wall", GAME_NO_SOUND | GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C216")
-#pragma bss_seg("B216")
 #pragma data_seg("D216")
+#pragma bss_seg("B216")
 #pragma const_seg("K216")
+#pragma comment(linker, "/merge:D216=216")
+#pragma comment(linker, "/merge:C216=216")
+#pragma comment(linker, "/merge:B216=216")
+#pragma comment(linker, "/merge:K216=216")
 /***************************************************************************
   Goindol
 
@@ -150,7 +154,7 @@ VIDEO_UPDATE( goindol )
 	draw_sprites(bitmap,cliprect,1,spriteram);
 	draw_sprites(bitmap,cliprect,0,spriteram_2);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C147")
-#pragma bss_seg("B147")
 #pragma data_seg("D147")
+#pragma bss_seg("B147")
 #pragma const_seg("K147")
+#pragma comment(linker, "/merge:D147=147")
+#pragma comment(linker, "/merge:C147=147")
+#pragma comment(linker, "/merge:B147=147")
+#pragma comment(linker, "/merge:K147=147")
 /***************************************************************************
 
 Dig Dug
@@ -544,7 +548,7 @@ GAME( 1982, digdug,   0,      digdug, digdug, 0, ROT90, "Namco", "Dig Dug (set 1
 GAME( 1982, digdugb,  digdug, digdug, digdug, 0, ROT90, "Namco", "Dig Dug (set 2)" )
 GAME( 1982, digdugat, digdug, digdug, digdug, 0, ROT90, "[Namco] (Atari license)", "Dig Dug (Atari)" )
 GAME( 1982, dzigzag,  digdug, digdug, digdug, 0, ROT90, "bootleg", "Zig Zag (Dig Dug hardware)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

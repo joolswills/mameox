@@ -1,7 +1,11 @@
 #pragma code_seg("C42")
-#pragma bss_seg("B42")
 #pragma data_seg("D42")
+#pragma bss_seg("B42")
 #pragma const_seg("K42")
+#pragma comment(linker, "/merge:D42=42")
+#pragma comment(linker, "/merge:C42=42")
+#pragma comment(linker, "/merge:B42=42")
+#pragma comment(linker, "/merge:K42=42")
 /***************************************************************************
 
 	Atari Tetris hardware
@@ -440,7 +444,7 @@ GAME( 1988, atetrisa, atetris, atetris, atetris,  atetris, ROT0,   "Atari Games"
 GAME( 1988, atetrisb, atetris, atetris, atetris,  atetris, ROT0,   "bootleg",     "Tetris (bootleg)" )
 GAME( 1989, atetcktl, atetris, atetris, atetcktl, atetris, ROT270, "Atari Games", "Tetris (Cocktail set 1)" )
 GAME( 1989, atetckt2, atetris, atetris, atetcktl, atetris, ROT270, "Atari Games", "Tetris (Cocktail set 2)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

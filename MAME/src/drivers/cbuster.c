@@ -1,7 +1,11 @@
 #pragma code_seg("C92")
-#pragma bss_seg("B92")
 #pragma data_seg("D92")
+#pragma bss_seg("B92")
 #pragma const_seg("K92")
+#pragma comment(linker, "/merge:D92=92")
+#pragma comment(linker, "/merge:C92=92")
+#pragma comment(linker, "/merge:B92=92")
+#pragma comment(linker, "/merge:K92=92")
 /***************************************************************************
 
   Crude Buster (World version FX)		(c) 1990 Data East Corporation
@@ -688,7 +692,7 @@ GAME( 1990, cbuster,  0,       twocrude, twocrude, twocrude, ROT0, "Data East Co
 GAME( 1990, cbusterw, cbuster, twocrude, twocrude, twocrude, ROT0, "Data East Corporation", "Crude Buster (World FU version)" )
 GAME( 1990, cbusterj, cbuster, twocrude, twocrude, twocrude, ROT0, "Data East Corporation", "Crude Buster (Japan)" )
 GAME( 1990, twocrude, cbuster, twocrude, twocrude, twocrude, ROT0, "Data East USA", "Two Crude (US)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

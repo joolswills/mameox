@@ -1,7 +1,11 @@
-#pragma code_seg("C359")
-#pragma bss_seg("B359")
-#pragma data_seg("D359")
-#pragma const_seg("K359")
+#pragma code_seg("C358")
+#pragma data_seg("D358")
+#pragma bss_seg("B358")
+#pragma const_seg("K358")
+#pragma comment(linker, "/merge:D358=358")
+#pragma comment(linker, "/merge:C358=358")
+#pragma comment(linker, "/merge:B358=358")
+#pragma comment(linker, "/merge:K358=358")
 /***************************************************************************
 	M.A.M.E. Neo Geo driver presented to you by the Shin Emu Keikaku team.
 
@@ -6277,7 +6281,7 @@ GAMEB( 2002, mslug4,   neogeo,   neogeo, neogeo, neogeo,  mslug4,   ROT0, "Mega 
 
 /* Evoga */
 GAMEB( 2002, rotd,	  neogeo,	 neogeo, neogeo, neogeo,  rotd,	   ROT0, "Evoga / Playmore Corporation", "Rage of the Dragons" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

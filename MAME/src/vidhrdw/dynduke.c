@@ -1,7 +1,11 @@
 #pragma code_seg("C162")
-#pragma bss_seg("B162")
 #pragma data_seg("D162")
+#pragma bss_seg("B162")
 #pragma const_seg("K162")
+#pragma comment(linker, "/merge:D162=162")
+#pragma comment(linker, "/merge:C162=162")
+#pragma comment(linker, "/merge:B162=162")
+#pragma comment(linker, "/merge:K162=162")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -219,7 +223,7 @@ VIDEO_UPDATE( dynduke )
 	draw_sprites(bitmap,cliprect,3);
 	tilemap_draw(bitmap,cliprect,tx_layer,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

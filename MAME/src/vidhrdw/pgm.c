@@ -1,7 +1,11 @@
-#pragma code_seg("C392")
-#pragma bss_seg("B392")
-#pragma data_seg("D392")
-#pragma const_seg("K392")
+#pragma code_seg("C391")
+#pragma data_seg("D391")
+#pragma bss_seg("B391")
+#pragma const_seg("K391")
+#pragma comment(linker, "/merge:D391=391")
+#pragma comment(linker, "/merge:C391=391")
+#pragma comment(linker, "/merge:B391=391")
+#pragma comment(linker, "/merge:K391=391")
 /*** Video *******************************************************************/
 /* see drivers/pgm.c for notes on where improvements can be made */
 
@@ -327,7 +331,7 @@ VIDEO_EOF( pgm )
 	/* first 0xa00 of main ram = sprites, seems to be buffered, DMA? */
 	memcpy(pgm_spritebufferram,pgm_mainram,0xa00);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

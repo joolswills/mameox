@@ -1,3 +1,11 @@
+#pragma code_seg("C236")
+#pragma data_seg("D236")
+#pragma bss_seg("B236")
+#pragma const_seg("K236")
+#pragma comment(linker, "/merge:D236=236")
+#pragma comment(linker, "/merge:C236=236")
+#pragma comment(linker, "/merge:B236=236")
+#pragma comment(linker, "/merge:K236=236")
 /***************************************************************************
 
 	Hard Drivin' machine hardware
@@ -1910,3 +1918,7 @@ READ16_HANDLER( hdds3_speedup_r )
 
 	return data;
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

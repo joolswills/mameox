@@ -1,7 +1,11 @@
 #pragma code_seg("C103")
-#pragma bss_seg("B103")
 #pragma data_seg("D103")
+#pragma bss_seg("B103")
 #pragma const_seg("K103")
+#pragma comment(linker, "/merge:D103=103")
+#pragma comment(linker, "/merge:C103=103")
+#pragma comment(linker, "/merge:B103=103")
+#pragma comment(linker, "/merge:K103=103")
 /***************************************************************************
 
 	Cinematronics vector hardware
@@ -1346,7 +1350,7 @@ GAME( 1981, solarq,   0,       solarq,   solarq,   solarq,   ORIENTATION_FLIP_X,
 GAME( 1982, demon,    0,       demon,    demon,    demon,    ROT0,   "Rock-ola", "Demon" )
 GAMEX(1981, wotw,     0,       cincolor, wotw,     wotw,     ROT0,   "Cinematronics", "War of the Worlds", GAME_IMPERFECT_COLORS | GAME_NO_SOUND )
 GAMEX(1981, boxingb,  0,       cincolor, boxingb,  boxingb,  ROT0,   "Cinematronics", "Boxing Bugs", GAME_IMPERFECT_COLORS | GAME_NO_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

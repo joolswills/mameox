@@ -1,7 +1,11 @@
 #pragma code_seg("C158")
-#pragma bss_seg("B158")
 #pragma data_seg("D158")
+#pragma bss_seg("B158")
 #pragma const_seg("K158")
+#pragma comment(linker, "/merge:D158=158")
+#pragma comment(linker, "/merge:C158=158")
+#pragma comment(linker, "/merge:B158=158")
+#pragma comment(linker, "/merge:K158=158")
 /*
 
 Dragon Master (c)1994 Unico
@@ -553,7 +557,7 @@ static DRIVER_INIT( drgnmst )
 
 
 GAME( 1994, drgnmst, 0, drgnmst,  drgnmst, drgnmst, ROT0, "Unico", "Dragon Master" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C310")
-#pragma bss_seg("B310")
 #pragma data_seg("D310")
+#pragma bss_seg("B310")
 #pragma const_seg("K310")
+#pragma comment(linker, "/merge:D310=310")
+#pragma comment(linker, "/merge:C310=310")
+#pragma comment(linker, "/merge:B310=310")
+#pragma comment(linker, "/merge:K310=310")
 /***************************************************************************
 
   vidhrdw.c
@@ -235,7 +239,7 @@ VIDEO_UPDATE( megazone )
 		}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

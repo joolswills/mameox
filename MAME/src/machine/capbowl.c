@@ -1,3 +1,11 @@
+#pragma code_seg("C87")
+#pragma data_seg("D87")
+#pragma bss_seg("B87")
+#pragma const_seg("K87")
+#pragma comment(linker, "/merge:D87=87")
+#pragma comment(linker, "/merge:C87=87")
+#pragma comment(linker, "/merge:B87=87")
+#pragma comment(linker, "/merge:K87=87")
 /***************************************************************************
 
 	Coors Light Bowling/Bowl-O-Rama hardware
@@ -102,3 +110,7 @@ READ_HANDLER( bowlrama_turbo_r )
 
 	return ret;
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C196")
-#pragma bss_seg("B196")
 #pragma data_seg("D196")
+#pragma bss_seg("B196")
 #pragma const_seg("K196")
+#pragma comment(linker, "/merge:D196=196")
+#pragma comment(linker, "/merge:C196=196")
+#pragma comment(linker, "/merge:B196=196")
+#pragma comment(linker, "/merge:K196=196")
 /***************************************************************************
 
 	Gaelco game hardware from 1991-1996
@@ -572,7 +576,7 @@ ROM_END
 GAME( 1991, bigkarnk, 0,        bigkarnk, bigkarnk, 0, ROT0, "Gaelco", "Big Karnak" )
 GAME( 1995, biomtoy,  0,        maniacsq, biomtoy,  0, ROT0, "Gaelco", "Biomechanical Toy (unprotected)" )
 GAME( 1996, maniacsp, maniacsq, maniacsq, maniacsq, 0, ROT0, "Gaelco", "Maniac Square (prototype)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

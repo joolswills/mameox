@@ -1,7 +1,11 @@
 #pragma code_seg("C269")
-#pragma bss_seg("B269")
 #pragma data_seg("D269")
+#pragma bss_seg("B269")
 #pragma const_seg("K269")
+#pragma comment(linker, "/merge:D269=269")
+#pragma comment(linker, "/merge:C269=269")
+#pragma comment(linker, "/merge:B269=269")
+#pragma comment(linker, "/merge:K269=269")
 #define VERBOSE 0
 /*
  * vidhrdw/konamigx.c - Konami GX video hardware (here there be dragons)
@@ -412,7 +416,7 @@ WRITE32_HANDLER( konamigx_tilebank_w )
 		gx_tilebanks[offset*4+3] = data&0xff;
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

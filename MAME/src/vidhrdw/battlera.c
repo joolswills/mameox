@@ -1,7 +1,11 @@
 #pragma code_seg("C53")
-#pragma bss_seg("B53")
 #pragma data_seg("D53")
+#pragma bss_seg("B53")
 #pragma const_seg("K53")
+#pragma comment(linker, "/merge:D53=53")
+#pragma comment(linker, "/merge:C53=53")
+#pragma comment(linker, "/merge:B53=53")
+#pragma comment(linker, "/merge:K53=53")
 /*******************************************************************************
 
 	Battle Rangers - Bryan McPhail, mish@tendril.co.uk
@@ -465,7 +469,7 @@ INTERRUPT_GEN( battlera_interrupt )
 		last_line=0;
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

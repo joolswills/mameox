@@ -1,7 +1,11 @@
-#pragma code_seg("CC18")
-#pragma bss_seg("CB18")
-#pragma data_seg("CD18")
-#pragma const_seg("CK18")
+#pragma code_seg("CC15")
+#pragma data_seg("CD15")
+#pragma bss_seg("CB15")
+#pragma const_seg("CK15")
+#pragma comment(linker, "/merge:CD15=CPU15")
+#pragma comment(linker, "/merge:CC15=CPU15")
+#pragma comment(linker, "/merge:CB15=CPU15")
+#pragma comment(linker, "/merge:CK15=CPU15")
 /* ======================================================================== */
 /* ========================= LICENSING & COPYRIGHT ======================== */
 /* ======================================================================== */
@@ -3471,3 +3475,7 @@ unsigned int m68k_is_valid_instruction(unsigned int instruction, unsigned int cp
 /* ======================================================================== */
 /* ============================== END OF FILE ============================= */
 /* ======================================================================== */
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

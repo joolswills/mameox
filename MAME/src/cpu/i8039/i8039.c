@@ -1,7 +1,11 @@
-#pragma code_seg("CC26")
-#pragma bss_seg("CB26")
-#pragma data_seg("CD26")
-#pragma const_seg("CK26")
+#pragma code_seg("CC21")
+#pragma data_seg("CD21")
+#pragma bss_seg("CB21")
+#pragma const_seg("CK21")
+#pragma comment(linker, "/merge:CD21=CPU21")
+#pragma comment(linker, "/merge:CC21=CPU21")
+#pragma comment(linker, "/merge:CB21=CPU21")
+#pragma comment(linker, "/merge:CK21=CPU21")
 /****************************************************************************
  *						Intel 8039 Portable Emulator						*
  *																			*
@@ -1153,3 +1157,7 @@ unsigned n7751_dasm(char *buffer, unsigned pc)
 }
 #endif
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,3 +1,11 @@
+#pragma code_seg("C34")
+#pragma data_seg("D34")
+#pragma bss_seg("B34")
+#pragma const_seg("K34")
+#pragma comment(linker, "/merge:D34=34")
+#pragma comment(linker, "/merge:C34=34")
+#pragma comment(linker, "/merge:B34=34")
+#pragma comment(linker, "/merge:K34=34")
 /*************************************************************************
 
 	Atari Football hardware
@@ -304,3 +312,7 @@ READ_HANDLER( atarifb4_in2_r )
 }
 
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

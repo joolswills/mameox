@@ -1,7 +1,11 @@
 #pragma code_seg("C214")
-#pragma bss_seg("B214")
 #pragma data_seg("D214")
+#pragma bss_seg("B214")
 #pragma const_seg("K214")
+#pragma comment(linker, "/merge:D214=214")
+#pragma comment(linker, "/merge:C214=214")
+#pragma comment(linker, "/merge:B214=214")
+#pragma comment(linker, "/merge:K214=214")
 /***************************************************************************
 
   Glass Video Hardware
@@ -222,7 +226,7 @@ VIDEO_UPDATE( glass )
 	tilemap_draw(bitmap,cliprect,pant[0],0,0);
 	glass_draw_sprites(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

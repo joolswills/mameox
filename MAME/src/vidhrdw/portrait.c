@@ -1,7 +1,11 @@
-#pragma code_seg("C409")
-#pragma bss_seg("B409")
-#pragma data_seg("D409")
-#pragma const_seg("K409")
+#pragma code_seg("C408")
+#pragma data_seg("D408")
+#pragma bss_seg("B408")
+#pragma const_seg("K408")
+#pragma comment(linker, "/merge:D408=408")
+#pragma comment(linker, "/merge:C408=408")
+#pragma comment(linker, "/merge:B408=408")
+#pragma comment(linker, "/merge:K408=408")
 /***************************************************************************
 
   vidhrdw.c
@@ -123,7 +127,7 @@ VIDEO_UPDATE( portrait )
 	draw_sprites(bitmap);
 	tilemap_draw( bitmap, cliprect, foreground, 0, 0 );
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C119")
-#pragma bss_seg("B119")
 #pragma data_seg("D119")
+#pragma bss_seg("B119")
 #pragma const_seg("K119")
+#pragma comment(linker, "/merge:D119=119")
+#pragma comment(linker, "/merge:C119=119")
+#pragma comment(linker, "/merge:B119=119")
+#pragma comment(linker, "/merge:K119=119")
 /***************************************************************************
 
 Cops 01      (c) 1985 Nichibutsu
@@ -620,7 +624,7 @@ static DRIVER_INIT( mightguy )
 GAME( 1985, cop01,    0,     cop01,    cop01,    0,        ROT0,   "Nichibutsu", "Cop 01 (set 1)" )
 GAME( 1985, cop01a,   cop01, cop01,    cop01,    0,        ROT0,   "Nichibutsu", "Cop 01 (set 2)" )
 GAMEX(1986, mightguy, 0,     mightguy, mightguy, mightguy, ROT270, "Nichibutsu", "Mighty Guy", GAME_NOT_WORKING | GAME_UNEMULATED_PROTECTION | GAME_IMPERFECT_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

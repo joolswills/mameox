@@ -1,7 +1,11 @@
 #pragma code_seg("C272")
-#pragma bss_seg("B272")
 #pragma data_seg("D272")
+#pragma bss_seg("B272")
 #pragma const_seg("K272")
+#pragma comment(linker, "/merge:D272=272")
+#pragma comment(linker, "/merge:C272=272")
+#pragma comment(linker, "/merge:B272=272")
+#pragma comment(linker, "/merge:K272=272")
 /***************************************************************************
 
 Labyrinth Runner (GX771) (c) 1987 Konami
@@ -326,7 +330,7 @@ ROM_END
 GAME( 1987, tricktrp, 0,        labyrunr, labyrunr, 0, ROT90, "Konami", "Trick Trap (World?)" )
 GAME( 1987, labyrunr, tricktrp, labyrunr, labyrunr, 0, ROT90, "Konami", "Labyrinth Runner (Japan)" )
 GAME( 1987, labyrunk, tricktrp, labyrunr, labyrunr, 0, ROT90, "Konami", "Labyrinth Runner (World Ver. K)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C294")
-#pragma bss_seg("B294")
 #pragma data_seg("D294")
+#pragma bss_seg("B294")
 #pragma const_seg("K294")
+#pragma comment(linker, "/merge:D294=294")
+#pragma comment(linker, "/merge:C294=294")
+#pragma comment(linker, "/merge:B294=294")
+#pragma comment(linker, "/merge:K294=294")
 /***************************************************************************
 
   Mad Motor video emulation - Bryan McPhail, mish@tendril.co.uk
@@ -311,7 +315,7 @@ VIDEO_UPDATE( madmotor )
 	madmotor_drawsprites(bitmap,cliprect,0x00,0x00);
 	tilemap_draw(bitmap,cliprect,madmotor_pf1_tilemap,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

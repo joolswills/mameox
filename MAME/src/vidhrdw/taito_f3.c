@@ -1,11 +1,3 @@
-#pragma code_seg("C534")
-#pragma data_seg("D534")
-#pragma bss_seg("B534")
-#pragma const_seg("K534")
-#pragma comment(linker, "/merge:D534=534")
-#pragma comment(linker, "/merge:C534=534")
-#pragma comment(linker, "/merge:B534=534")
-#pragma comment(linker, "/merge:K534=534")
 /***************************************************************************
 
    Taito F3 Video emulation - Bryan McPhail, mish@tendril.co.uk
@@ -3381,7 +3373,3 @@ if (!deb_enable || !keyboard_pressed(KEYCODE_M))
 	}
 #endif	//DEBUG_F3
 }
-#pragma code_seg()
-#pragma data_seg()
-#pragma bss_seg()
-#pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C370")
-#pragma bss_seg("B370")
-#pragma data_seg("D370")
-#pragma const_seg("K370")
+#pragma code_seg("C369")
+#pragma data_seg("D369")
+#pragma bss_seg("B369")
+#pragma const_seg("K369")
+#pragma comment(linker, "/merge:D369=369")
+#pragma comment(linker, "/merge:C369=369")
+#pragma comment(linker, "/merge:B369=369")
+#pragma comment(linker, "/merge:K369=369")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -123,7 +127,7 @@ VIDEO_UPDATE( ohmygod )
 	tilemap_draw(bitmap,cliprect,bg_tilemap,0,0);
 	draw_sprites(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

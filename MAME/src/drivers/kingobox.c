@@ -1,7 +1,11 @@
 #pragma code_seg("C265")
-#pragma bss_seg("B265")
 #pragma data_seg("D265")
+#pragma bss_seg("B265")
 #pragma const_seg("K265")
+#pragma comment(linker, "/merge:D265=265")
+#pragma comment(linker, "/merge:C265=265")
+#pragma comment(linker, "/merge:B265=265")
+#pragma comment(linker, "/merge:K265=265")
 /***************************************************************************
 
 King of Boxer - (c) 1985 Woodplace Inc.
@@ -820,7 +824,7 @@ GAME( 1985, kingofb,  0,       kingofb,  kingofb,  0,        ROT90, "Woodplace I
 GAME( 1985, ringking, kingofb, ringking, ringking, 0,        ROT90, "Data East USA", "Ring King (US set 1)" )
 GAME( 1985, ringkin2, kingofb, ringking, ringking, 0,        ROT90, "Data East USA", "Ring King (US set 2)" )
 GAME( 1985, ringkin3, kingofb, kingofb,  kingofb,  ringkin3, ROT90, "Data East USA", "Ring King (US set 3)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

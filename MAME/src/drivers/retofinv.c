@@ -1,7 +1,11 @@
-#pragma code_seg("C430")
-#pragma bss_seg("B430")
-#pragma data_seg("D430")
-#pragma const_seg("K430")
+#pragma code_seg("C429")
+#pragma data_seg("D429")
+#pragma bss_seg("B429")
+#pragma const_seg("K429")
+#pragma comment(linker, "/merge:D429=429")
+#pragma comment(linker, "/merge:C429=429")
+#pragma comment(linker, "/merge:B429=429")
+#pragma comment(linker, "/merge:K429=429")
 /***************************************************************************
 
 Return of the Invaders
@@ -569,7 +573,7 @@ ROM_END
 GAME( 1985, retofinv, 0,        retofinv, retofinv, 0, ROT270, "Taito Corporation", "Return of the Invaders" )
 GAME( 1985, retofin1, retofinv, retofinb, retofinv, 0, ROT270, "bootleg", "Return of the Invaders (bootleg set 1)" )
 GAME( 1985, retofin2, retofinv, retofinb, retofinv, 0, ROT270, "bootleg", "Return of the Invaders (bootleg set 2)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C120")
-#pragma bss_seg("B120")
 #pragma data_seg("D120")
+#pragma bss_seg("B120")
 #pragma const_seg("K120")
+#pragma comment(linker, "/merge:D120=120")
+#pragma comment(linker, "/merge:C120=120")
+#pragma comment(linker, "/merge:B120=120")
+#pragma comment(linker, "/merge:K120=120")
 /***************************************************************************
 
 	Atari Cops'n Robbers hardware
@@ -337,7 +341,7 @@ static DRIVER_INIT( copsnrob )
  *************************************/
 
 GAMEX( 1976, copsnrob, 0, copsnrob, copsnrob, copsnrob, ROT0, "Atari", "Cops'n Robbers", GAME_NO_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

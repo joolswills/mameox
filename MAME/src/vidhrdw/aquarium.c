@@ -1,7 +1,11 @@
 #pragma code_seg("C21")
-#pragma bss_seg("B21")
 #pragma data_seg("D21")
+#pragma bss_seg("B21")
 #pragma const_seg("K21")
+#pragma comment(linker, "/merge:D21=21")
+#pragma comment(linker, "/merge:C21=21")
+#pragma comment(linker, "/merge:B21=21")
+#pragma comment(linker, "/merge:K21=21")
 /* Aquarium */
 
 #include "driver.h"
@@ -191,7 +195,7 @@ VIDEO_UPDATE(aquarium)
 	tilemap_draw(bitmap,cliprect,aquarium_txt_tilemap,0,1);
 	aquarium_draw_sprites(bitmap,cliprect,16);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

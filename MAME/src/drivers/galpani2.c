@@ -1,7 +1,11 @@
 #pragma code_seg("C201")
-#pragma bss_seg("B201")
 #pragma data_seg("D201")
+#pragma bss_seg("B201")
 #pragma const_seg("K201")
+#pragma comment(linker, "/merge:D201=201")
+#pragma comment(linker, "/merge:C201=201")
+#pragma comment(linker, "/merge:B201=201")
+#pragma comment(linker, "/merge:K201=201")
 /***************************************************************************
 
 							-= Gals Panic II =-
@@ -658,7 +662,7 @@ CPU #0 PC 02F918 : OKI 0 (380)000000-000000
 */
 
 GAMEX( 1993, galpani2, 0, galpani2, galpani2, 0, ROT90, "Kaneko", "Gals Panic II (Japan?)", GAME_NOT_WORKING | GAME_UNEMULATED_PROTECTION )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

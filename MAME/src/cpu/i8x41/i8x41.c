@@ -1,7 +1,11 @@
-#pragma code_seg("CC23")
-#pragma bss_seg("CB23")
-#pragma data_seg("CD23")
-#pragma const_seg("CK23")
+#pragma code_seg("CC19")
+#pragma data_seg("CD19")
+#pragma bss_seg("CB19")
+#pragma const_seg("CK19")
+#pragma comment(linker, "/merge:CD19=CPU19")
+#pragma comment(linker, "/merge:CC19=CPU19")
+#pragma comment(linker, "/merge:CB19=CPU19")
+#pragma comment(linker, "/merge:CK19=CPU19")
 /*****************************************************************************
  *
  *	 i8x41.c
@@ -2284,3 +2288,7 @@ unsigned i8x41_dasm(char *buffer, unsigned pc)
 	return 1;
 #endif
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

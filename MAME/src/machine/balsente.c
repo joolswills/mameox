@@ -1,3 +1,11 @@
+#pragma code_seg("C48")
+#pragma data_seg("D48")
+#pragma bss_seg("B48")
+#pragma const_seg("K48")
+#pragma comment(linker, "/merge:D48=48")
+#pragma comment(linker, "/merge:C48=48")
+#pragma comment(linker, "/merge:B48=48")
+#pragma comment(linker, "/merge:K48=48")
 /***************************************************************************
 
 	Bally/Sente SAC-1 system
@@ -1213,3 +1221,7 @@ if (offset != 0x0a || data != 0x55)
 logerror("6809 wrote %02x = %02x\n", offset, data);
 	shrike_shared[offset] = (shrike_shared[offset] & ~0xff) | data;
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C94")
-#pragma bss_seg("B94")
 #pragma data_seg("D94")
+#pragma bss_seg("B94")
 #pragma const_seg("K94")
+#pragma comment(linker, "/merge:D94=94")
+#pragma comment(linker, "/merge:C94=94")
+#pragma comment(linker, "/merge:B94=94")
+#pragma comment(linker, "/merge:K94=94")
 /***************************************************************************
 
 	Cinematronics Cosmic Chasm hardware
@@ -141,7 +145,7 @@ VIDEO_START( cchasm )
 	vector_set_shift (VEC_SHIFT);
 	return video_start_vector();
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,12 @@
 #pragma code_seg("C322")
-#pragma bss_seg("B322")
 #pragma data_seg("D322")
+#pragma bss_seg("B322")
 #pragma const_seg("K322")
+#pragma comment(linker, "/merge:D322=322")
+#pragma comment(linker, "/merge:B322=322")
+#pragma comment(linker, "/merge:K322=322")
+#pragma comment(linker, "/merge:C322=322")
+
 /***************************************************************************
 
 Minivader (Space Invaders's mini game)
@@ -87,7 +92,7 @@ ROM_END
 
 
 GAME( 1990, minivadr, 0, minivadr, minivadr, 0, ROT0, "Taito Corporation", "Minivader" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

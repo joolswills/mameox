@@ -1,7 +1,11 @@
-#pragma code_seg("CC20")
-#pragma bss_seg("CB20")
-#pragma data_seg("CD20")
-#pragma const_seg("CK20")
+#pragma code_seg("CC17")
+#pragma data_seg("CD17")
+#pragma bss_seg("CB17")
+#pragma const_seg("CK17")
+#pragma comment(linker, "/merge:CD17=CPU17")
+#pragma comment(linker, "/merge:CC17=CPU17")
+#pragma comment(linker, "/merge:CB17=CPU17")
+#pragma comment(linker, "/merge:CK17=CPU17")
 /*****************************************************************************
  *
  *	 m4510.c
@@ -503,3 +507,7 @@ unsigned m4510_dasm(char *buffer, unsigned pc)
 extern void m4510_init(void){ return; }
 
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

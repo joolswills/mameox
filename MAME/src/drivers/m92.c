@@ -1,7 +1,11 @@
 #pragma code_seg("C292")
-#pragma bss_seg("B292")
 #pragma data_seg("D292")
+#pragma bss_seg("B292")
 #pragma const_seg("K292")
+#pragma comment(linker, "/merge:D292=292")
+#pragma comment(linker, "/merge:C292=292")
+#pragma comment(linker, "/merge:B292=292")
+#pragma comment(linker, "/merge:K292=292")
 /*****************************************************************************
 
 	Irem M92 system games:
@@ -2384,7 +2388,7 @@ GAMEX(1993, psoldier, 0,        psoldier,  psoldier, psoldier, ROT0,   "Irem",  
 GAME( 1994, dsccr94j, dsoccr94, psoldier,  dsccr94j, dsccr94j, ROT0,   "Irem",         "Dream Soccer '94 (Japan)" )
 GAME( 1994, gunforc2, 0,        raster,    gunforc2, gunforc2, ROT0,   "Irem",         "Gunforce 2 (US)" )
 GAME( 1994, geostorm, gunforc2, raster,    gunforc2, gunforc2, ROT0,   "Irem",         "Geostorm (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

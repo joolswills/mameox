@@ -1,3 +1,11 @@
+#pragma code_seg("C286")
+#pragma data_seg("D286")
+#pragma bss_seg("B286")
+#pragma const_seg("K286")
+#pragma comment(linker, "/merge:D286=286")
+#pragma comment(linker, "/merge:C286=286")
+#pragma comment(linker, "/merge:B286=286")
+#pragma comment(linker, "/merge:K286=286")
 #include "driver.h"
 #include "cpu/z80/z80.h"
 
@@ -174,3 +182,7 @@ READ_HANDLER( lsasquad_mcu_status_r )
 
 	return res ^ lsasquad_invertcoin;
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

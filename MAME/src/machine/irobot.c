@@ -1,3 +1,11 @@
+#pragma code_seg("C249")
+#pragma data_seg("D249")
+#pragma bss_seg("B249")
+#pragma const_seg("K249")
+#pragma comment(linker, "/merge:D249=249")
+#pragma comment(linker, "/merge:C249=249")
+#pragma comment(linker, "/merge:B249=249")
+#pragma comment(linker, "/merge:K249=249")
 /***************************************************************************
 
 	Atari I, Robot hardware
@@ -1022,3 +1030,7 @@ void disassemble_instruction(irmb_ops *op)
 	}
 }
 #endif
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

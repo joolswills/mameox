@@ -1,7 +1,11 @@
 #pragma code_seg("C255")
-#pragma bss_seg("B255")
 #pragma data_seg("D255")
+#pragma bss_seg("B255")
 #pragma const_seg("K255")
+#pragma comment(linker, "/merge:D255=255")
+#pragma comment(linker, "/merge:C255=255")
+#pragma comment(linker, "/merge:B255=255")
+#pragma comment(linker, "/merge:K255=255")
 /***************************************************************************
 
 Jailbreak - (c) 1986 Konami
@@ -346,7 +350,7 @@ static DRIVER_INIT( jailbrek )
 
 GAME( 1986, jailbrek, 0,        jailbrek, jailbrek, jailbrek, ROT0, "Konami", "Jail Break" )
 GAME( 1986, manhatan, jailbrek, jailbrek, jailbrek, jailbrek, ROT0, "Konami", "Manhattan 24 Bunsyo (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

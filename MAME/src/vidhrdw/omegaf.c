@@ -1,7 +1,11 @@
-#pragma code_seg("C373")
-#pragma bss_seg("B373")
-#pragma data_seg("D373")
-#pragma const_seg("K373")
+#pragma code_seg("C372")
+#pragma data_seg("D372")
+#pragma bss_seg("B372")
+#pragma const_seg("K372")
+#pragma comment(linker, "/merge:D372=372")
+#pragma comment(linker, "/merge:C372=372")
+#pragma comment(linker, "/merge:B372=372")
+#pragma comment(linker, "/merge:K372=372")
 /***************************************************************************
 
 Functions to emulate the video hardware of the machine.
@@ -610,7 +614,7 @@ VIDEO_UPDATE( omegaf )
 		draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect, fg_tilemap, 0, 0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C317")
-#pragma bss_seg("B317")
 #pragma data_seg("D317")
+#pragma bss_seg("B317")
 #pragma const_seg("K317")
+#pragma comment(linker, "/merge:D317=317")
+#pragma comment(linker, "/merge:C317=317")
+#pragma comment(linker, "/merge:B317=317")
+#pragma comment(linker, "/merge:K317=317")
 /*************************************************************************
 
 	Driver for Midway V-Unit games
@@ -1427,7 +1431,7 @@ GAME( 1996, crusnw13, crusnwld, midvunit, crusnwld, crusnwld, ROT0, "Midway", "C
 GAMEX(1997, offroadc, 0,        midvunit, offroadc, offroadc, ROT0, "Midway", "Off Road Challenge", GAME_NOT_WORKING )
 
 GAMEX(1996, wargods,  0,        midvplus, wargods,  wargods,  ROT0, "Midway", "War Gods", GAME_IMPERFECT_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

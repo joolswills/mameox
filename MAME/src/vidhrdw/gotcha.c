@@ -1,7 +1,11 @@
 #pragma code_seg("C218")
-#pragma bss_seg("B218")
 #pragma data_seg("D218")
+#pragma bss_seg("B218")
 #pragma const_seg("K218")
+#pragma comment(linker, "/merge:D218=218")
+#pragma comment(linker, "/merge:C218=218")
+#pragma comment(linker, "/merge:B218=218")
+#pragma comment(linker, "/merge:K218=218")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -146,7 +150,7 @@ VIDEO_UPDATE( gotcha )
 
 	draw_sprites(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

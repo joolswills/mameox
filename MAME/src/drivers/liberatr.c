@@ -1,7 +1,11 @@
 #pragma code_seg("C282")
-#pragma bss_seg("B282")
 #pragma data_seg("D282")
+#pragma bss_seg("B282")
 #pragma const_seg("K282")
+#pragma comment(linker, "/merge:D282=282")
+#pragma comment(linker, "/merge:C282=282")
+#pragma comment(linker, "/merge:B282=282")
+#pragma comment(linker, "/merge:K282=282")
 /***************************************************************************
 
 	Atari Liberator hardware
@@ -493,7 +497,7 @@ ROM_END
 GAMEX( 1982, liberatr, 0,        liberatr, liberatr, 0, ROT0, "Atari", "Liberator (set 1)", GAME_NO_COCKTAIL )
 GAMEX( 1982, liberat2, liberatr, liberat2, liberatr, 0, ROT0, "Atari", "Liberator (set 2)", GAME_NOT_WORKING | GAME_NO_COCKTAIL )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

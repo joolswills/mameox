@@ -1,7 +1,11 @@
 #pragma code_seg("C62")
-#pragma bss_seg("B62")
 #pragma data_seg("D62")
+#pragma bss_seg("B62")
 #pragma const_seg("K62")
+#pragma comment(linker, "/merge:D62=62")
+#pragma comment(linker, "/merge:C62=62")
+#pragma comment(linker, "/merge:B62=62")
+#pragma comment(linker, "/merge:K62=62")
 /***************************************************************************
 
 Bionic Commando Video Hardware
@@ -243,7 +247,7 @@ VIDEO_EOF( bionicc )
 {
 	buffer_spriteram16_w(0,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

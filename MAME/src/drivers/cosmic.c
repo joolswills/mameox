@@ -1,7 +1,11 @@
 #pragma code_seg("C121")
-#pragma bss_seg("B121")
 #pragma data_seg("D121")
+#pragma bss_seg("B121")
 #pragma const_seg("K121")
+#pragma comment(linker, "/merge:D121=121")
+#pragma comment(linker, "/merge:C121=121")
+#pragma comment(linker, "/merge:B121=121")
+#pragma comment(linker, "/merge:K121=121")
 /***************************************************************************
 
 Universal board numbers (found on the schematics)
@@ -1501,7 +1505,7 @@ GAMEX(1980, devzone,  0,       devzone,  devzone,  devzone, ROT270, "Universal",
 GAMEX(1980, devzone2, devzone, devzone,  devzone2, devzone, ROT270, "Universal", "Devil Zone (easier)", GAME_IMPERFECT_SOUND )
 GAMEX(1980, nomnlnd,  0,       nomnlnd,  nomnlnd,  nomnlnd, ROT270, "Universal", "No Man's Land", GAME_IMPERFECT_SOUND )
 GAMEX(1980, nomnlndg, nomnlnd, nomnlnd,  nomnlndg, nomnlnd, ROT270, "Universal (Gottlieb license)", "No Man's Land (Gottlieb)", GAME_IMPERFECT_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

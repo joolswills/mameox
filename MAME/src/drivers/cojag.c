@@ -1,7 +1,11 @@
 #pragma code_seg("C113")
-#pragma bss_seg("B113")
 #pragma data_seg("D113")
+#pragma bss_seg("B113")
 #pragma const_seg("K113")
+#pragma comment(linker, "/merge:D113=113")
+#pragma comment(linker, "/merge:C113=113")
+#pragma comment(linker, "/merge:B113=113")
+#pragma comment(linker, "/merge:K113=113")
 /***************************************************************************
 
 	Atari CoJag hardware
@@ -1039,7 +1043,7 @@ GAME( 1995, area51,   0,        cojag68k,  area51,   area51,   ROT0, "Atari Game
 GAME( 1996, maxforce, 0,        r3knarrow, area51,   maxforce, ROT0, "Atari Games", "Maximum Force" )
 GAME( 1998, area51mx, 0,        cojag68k,  area51,   area51mx, ROT0, "Atari Games", "Area 51 / Maximum Force Duo" )
 GAME( 1996, vcircle,  0,        cojagr3k,  vcircle,  vcircle,  ROT0, "Atari Games", "Vicious Circle (prototype)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,3 +1,11 @@
+#pragma code_seg("C279")
+#pragma data_seg("D279")
+#pragma bss_seg("B279")
+#pragma const_seg("K279")
+#pragma comment(linker, "/merge:D279=279")
+#pragma comment(linker, "/merge:C279=279")
+#pragma comment(linker, "/merge:B279=279")
+#pragma comment(linker, "/merge:K279=279")
 #include "driver.h"
 #include "cpu/m6502/m6502.h"
 #include "machine/6522via.h"
@@ -86,3 +94,7 @@ READ_HANDLER( leprechn_sh_0805_r )
 {
     return 0xc0;
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

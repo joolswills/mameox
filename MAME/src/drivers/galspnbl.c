@@ -1,7 +1,11 @@
 #pragma code_seg("C203")
-#pragma bss_seg("B203")
 #pragma data_seg("D203")
+#pragma bss_seg("B203")
 #pragma const_seg("K203")
+#pragma comment(linker, "/merge:D203=203")
+#pragma comment(linker, "/merge:C203=203")
+#pragma comment(linker, "/merge:B203=203")
+#pragma comment(linker, "/merge:K203=203")
 /***************************************************************************
 
 Hot Pinball
@@ -426,7 +430,7 @@ ROM_END
 
 GAMEX( 1995, hotpinbl, 0, hotpinbl, hotpinbl, 0, ROT90, "Comad & New Japan System", "Hot Pinball", GAME_NO_COCKTAIL )
 GAMEX( 1996, galspnbl, 0, hotpinbl, galspnbl, 0, ROT90, "Comad", "Gals Pinball", GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C177")
-#pragma bss_seg("B177")
 #pragma data_seg("D177")
+#pragma bss_seg("B177")
 #pragma const_seg("K177")
+#pragma comment(linker, "/merge:D177=177")
+#pragma comment(linker, "/merge:C177=177")
+#pragma comment(linker, "/merge:B177=177")
+#pragma comment(linker, "/merge:K177=177")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 #include "vidhrdw/generic.h"
@@ -157,7 +161,7 @@ VIDEO_UPDATE( fastlane )
 	K007121_sprites_draw(0,bitmap,cliprect,spriteram,0,40,0,-1);
 	tilemap_draw(bitmap,&finalclip1,layer1,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

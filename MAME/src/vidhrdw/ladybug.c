@@ -1,7 +1,11 @@
 #pragma code_seg("C273")
-#pragma bss_seg("B273")
 #pragma data_seg("D273")
+#pragma bss_seg("B273")
 #pragma const_seg("K273")
+#pragma comment(linker, "/merge:D273=273")
+#pragma comment(linker, "/merge:C273=273")
+#pragma comment(linker, "/merge:B273=273")
+#pragma comment(linker, "/merge:K273=273")
 /***************************************************************************
 
   vidhrdw.c
@@ -214,7 +218,7 @@ VIDEO_UPDATE( ladybug )
 		}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C137")
-#pragma bss_seg("B137")
 #pragma data_seg("D137")
+#pragma bss_seg("B137")
 #pragma const_seg("K137")
+#pragma comment(linker, "/merge:D137=137")
+#pragma comment(linker, "/merge:C137=137")
+#pragma comment(linker, "/merge:B137=137")
+#pragma comment(linker, "/merge:K137=137")
 /***************************************************************************
 
 Double Dragon     (c) 1987 Technos Japan
@@ -1344,7 +1348,7 @@ GAMEX( 19??, tstrike,   0,        darktowr,  ddragon,  0, ROT0, "Game Room", "Th
 /* these run on their own board but are the basically the same game, Toffy even has 'dangerous dungeons' text in it */
 GAME( 1993, toffy,  0, toffy, toffy, toffy, ROT0, "Midas",                 "Toffy" )
 GAME( 1994, stoffy, 0, toffy, toffy, toffy, ROT0, "Midas (Unico license)", "Super Toffy" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

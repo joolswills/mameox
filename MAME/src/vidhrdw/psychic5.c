@@ -1,7 +1,11 @@
-#pragma code_seg("C415")
-#pragma bss_seg("B415")
-#pragma data_seg("D415")
-#pragma const_seg("K415")
+#pragma code_seg("C414")
+#pragma data_seg("D414")
+#pragma bss_seg("B414")
+#pragma const_seg("K414")
+#pragma comment(linker, "/merge:D414=414")
+#pragma comment(linker, "/merge:C414=414")
+#pragma comment(linker, "/merge:B414=414")
+#pragma comment(linker, "/merge:K414=414")
 /***************************************************************************
   Psychic 5
 
@@ -629,7 +633,7 @@ VIDEO_UPDATE( psychic5 )
 	}
 	psychic5_draw_foreground(bitmap);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

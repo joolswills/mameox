@@ -1,7 +1,11 @@
 #pragma code_seg("C286")
-#pragma bss_seg("B286")
 #pragma data_seg("D286")
+#pragma bss_seg("B286")
 #pragma const_seg("K286")
+#pragma comment(linker, "/merge:D286=286")
+#pragma comment(linker, "/merge:C286=286")
+#pragma comment(linker, "/merge:B286=286")
+#pragma comment(linker, "/merge:K286=286")
 #include "driver.h"
 #include "generic.h"
 
@@ -104,7 +108,7 @@ VIDEO_UPDATE( lsasquad )
 	draw_sprites(bitmap);
 	draw_layer(bitmap,lsasquad_scrollram + 0x100);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

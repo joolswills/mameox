@@ -1,7 +1,11 @@
 #pragma code_seg("C93")
-#pragma bss_seg("B93")
 #pragma data_seg("D93")
+#pragma bss_seg("B93")
 #pragma const_seg("K93")
+#pragma comment(linker, "/merge:D93=93")
+#pragma comment(linker, "/merge:C93=93")
+#pragma comment(linker, "/merge:B93=93")
+#pragma comment(linker, "/merge:K93=93")
 /***************************************************************************
 
 	Atari Crystal Castles hardware
@@ -360,7 +364,7 @@ ROM_END
 GAME( 1983, ccastles, 0,        ccastles, ccastles, 0, ROT0, "Atari", "Crystal Castles (version 4)" )
 GAME( 1983, ccastle3, ccastles, ccastles, ccastles, 0, ROT0, "Atari", "Crystal Castles (version 3)" )
 GAME( 1983, ccastle2, ccastles, ccastles, ccastles, 0, ROT0, "Atari", "Crystal Castles (version 2)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C394")
-#pragma bss_seg("B394")
-#pragma data_seg("D394")
-#pragma const_seg("K394")
+#pragma code_seg("C393")
+#pragma data_seg("D393")
+#pragma bss_seg("B393")
+#pragma const_seg("K393")
+#pragma comment(linker, "/merge:D393=393")
+#pragma comment(linker, "/merge:C393=393")
+#pragma comment(linker, "/merge:B393=393")
+#pragma comment(linker, "/merge:K393=393")
 /***************************************************************************
 
   vidhrdw.c
@@ -255,7 +259,7 @@ usrintf_showmessage("%02x",spriteram_3[offs] & 0x3c);
 			}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

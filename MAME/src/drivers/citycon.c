@@ -1,7 +1,11 @@
 #pragma code_seg("C107")
-#pragma bss_seg("B107")
 #pragma data_seg("D107")
+#pragma bss_seg("B107")
 #pragma const_seg("K107")
+#pragma comment(linker, "/merge:D107=107")
+#pragma comment(linker, "/merge:C107=107")
+#pragma comment(linker, "/merge:B107=107")
+#pragma comment(linker, "/merge:K107=107")
 /***************************************************************************
 
 
@@ -377,7 +381,7 @@ static DRIVER_INIT( citycon )
 GAME( 1985, citycon,  0,       citycon, citycon, citycon, ROT0, "Jaleco", "City Connection (set 1)" )
 GAME( 1985, citycona, citycon, citycon, citycon, citycon, ROT0, "Jaleco", "City Connection (set 2)" )
 GAME( 1985, cruisin,  citycon, citycon, citycon, citycon, ROT0, "Jaleco (Kitkorp license)", "Cruisin" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

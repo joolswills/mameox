@@ -1,7 +1,11 @@
 #pragma code_seg("C72")
-#pragma bss_seg("B72")
 #pragma data_seg("D72")
+#pragma bss_seg("B72")
 #pragma const_seg("K72")
+#pragma comment(linker, "/merge:D72=72")
+#pragma comment(linker, "/merge:C72=72")
+#pragma comment(linker, "/merge:B72=72")
+#pragma comment(linker, "/merge:K72=72")
 /***************************************************************************
 
   vidhrdw.c
@@ -200,7 +204,7 @@ VIDEO_UPDATE( blueprnt )
 		}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C261")
-#pragma bss_seg("B261")
 #pragma data_seg("D261")
+#pragma bss_seg("B261")
 #pragma const_seg("K261")
+#pragma comment(linker, "/merge:D261=261")
+#pragma comment(linker, "/merge:C261=261")
+#pragma comment(linker, "/merge:B261=261")
+#pragma comment(linker, "/merge:K261=261")
 /***************************************************************************
 
 	Sun Electronics Kangaroo hardware
@@ -329,7 +333,7 @@ VIDEO_UPDATE( kangaroo )
 		copybitmap(bitmap,tmpbitmap2,0,0,0,0,&Machine->visible_area,TRANSPARENCY_COLOR,16);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

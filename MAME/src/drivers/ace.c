@@ -1,7 +1,11 @@
 #pragma code_seg("C7")
-#pragma bss_seg("B7")
 #pragma data_seg("D7")
+#pragma bss_seg("B7")
 #pragma const_seg("K7")
+#pragma comment(linker, "/merge:D7=7")
+#pragma comment(linker, "/merge:C7=7")
+#pragma comment(linker, "/merge:B7=7")
+#pragma comment(linker, "/merge:K7=7")
 /****************************************************************************
 
 Ace by Allied Leisure
@@ -365,7 +369,7 @@ ROM_START( ace )
 ROM_END
 
 GAMEX( 1976, ace, 0, ace, ace, 0, ROT0, "Allied Leisure", "Ace", GAME_NO_SOUND | GAME_IMPERFECT_COLORS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

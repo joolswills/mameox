@@ -1,7 +1,11 @@
 #pragma code_seg("C143")
-#pragma bss_seg("B143")
 #pragma data_seg("D143")
+#pragma bss_seg("B143")
 #pragma const_seg("K143")
+#pragma comment(linker, "/merge:D143=143")
+#pragma comment(linker, "/merge:C143=143")
+#pragma comment(linker, "/merge:B143=143")
+#pragma comment(linker, "/merge:K143=143")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "state.h"
@@ -1311,7 +1315,7 @@ if (!keyboard_pressed(KEYCODE_R))	tilemap_draw(bitmap,cliprect,pf1_tilemap,0,0);
 
 //	print_debug_info();
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

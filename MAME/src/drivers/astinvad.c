@@ -1,7 +1,11 @@
 #pragma code_seg("C30")
-#pragma bss_seg("B30")
 #pragma data_seg("D30")
+#pragma bss_seg("B30")
 #pragma const_seg("K30")
+#pragma comment(linker, "/merge:D30=30")
+#pragma comment(linker, "/merge:C30=30")
+#pragma comment(linker, "/merge:B30=30")
+#pragma comment(linker, "/merge:K30=30")
 /***************************************************************************
 
 Misc early Z80 games with simple color bitmap graphics
@@ -369,7 +373,7 @@ GAME ( 1980, astinvad, 0,        astinvad, astinvad, 0, ROT270, "Stern",  "Astro
 GAME ( 1979, kamikaze, astinvad, astinvad, kamikaze, 0, ROT270, "Leijac", "Kamikaze" )
 GAME ( 1979, spcking2, 0,        spcking2, spcking2, 0, ROT270, "Konami", "Space King 2" )
 GAMEX( 1980, spaceint, 0,        spaceint, spaceint, 0, ROT90,  "Shoei",  "Space Intruder", GAME_WRONG_COLORS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

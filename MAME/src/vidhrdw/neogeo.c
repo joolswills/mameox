@@ -1,7 +1,11 @@
-#pragma code_seg("C359")
-#pragma bss_seg("B359")
-#pragma data_seg("D359")
-#pragma const_seg("K359")
+#pragma code_seg("C358")
+#pragma data_seg("D358")
+#pragma bss_seg("B358")
+#pragma const_seg("K358")
+#pragma comment(linker, "/merge:D358=358")
+#pragma comment(linker, "/merge:C358=358")
+#pragma comment(linker, "/merge:B358=358")
+#pragma comment(linker, "/merge:K358=358")
 /***************************************************************************
 
   vidhrdw.c
@@ -655,7 +659,7 @@ profiler_mark(PROFILER_VIDEO);
 
 profiler_mark(PROFILER_END);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C69")
-#pragma bss_seg("B69")
 #pragma data_seg("D69")
+#pragma bss_seg("B69")
 #pragma const_seg("K69")
+#pragma comment(linker, "/merge:D69=69")
+#pragma comment(linker, "/merge:C69=69")
+#pragma comment(linker, "/merge:B69=69")
+#pragma comment(linker, "/merge:K69=69")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -147,7 +151,7 @@ VIDEO_UPDATE( blockout )
 		}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,3 +1,11 @@
+#pragma code_seg("C60")
+#pragma data_seg("D60")
+#pragma bss_seg("B60")
+#pragma const_seg("K60")
+#pragma comment(linker, "/merge:D60=60")
+#pragma comment(linker, "/merge:C60=60")
+#pragma comment(linker, "/merge:B60=60")
+#pragma comment(linker, "/merge:K60=60")
 /***************************************************************************
 
   machine.c
@@ -82,3 +90,7 @@ INTERRUPT_GEN( berzerk_interrupt )
 	}
 }
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

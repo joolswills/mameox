@@ -1,7 +1,11 @@
 #pragma code_seg("C334")
-#pragma bss_seg("B334")
 #pragma data_seg("D334")
+#pragma bss_seg("B334")
 #pragma const_seg("K334")
+#pragma comment(linker, "/merge:D334=334")
+#pragma comment(linker, "/merge:C334=334")
+#pragma comment(linker, "/merge:B334=334")
+#pragma comment(linker, "/merge:K334=334")
 /***************************************************************************
 
 Mr Do!
@@ -414,7 +418,7 @@ GAME( 1982, mrdofix,  mrdo, mrdo, mrdo, 0, ROT270, "Universal (Taito license)", 
 GAME( 1982, mrlo,     mrdo, mrdo, mrdo, 0, ROT270, "bootleg", "Mr. Lo!" )
 GAME( 1982, mrdu,     mrdo, mrdo, mrdo, 0, ROT270, "bootleg", "Mr. Du!" )
 GAME( 1982, yankeedo, mrdo, mrdo, mrdo, 0, ROT270, "hack", "Yankee DO!" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

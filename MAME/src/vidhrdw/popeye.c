@@ -1,7 +1,11 @@
-#pragma code_seg("C407")
-#pragma bss_seg("B407")
-#pragma data_seg("D407")
-#pragma const_seg("K407")
+#pragma code_seg("C406")
+#pragma data_seg("D406")
+#pragma bss_seg("B406")
+#pragma const_seg("K406")
+#pragma comment(linker, "/merge:D406=406")
+#pragma comment(linker, "/merge:C406=406")
+#pragma comment(linker, "/merge:B406=406")
+#pragma comment(linker, "/merge:K406=406")
 /***************************************************************************
 
   vidhrdw.c
@@ -408,7 +412,7 @@ VIDEO_UPDATE( popeye )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

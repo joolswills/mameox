@@ -1,7 +1,11 @@
 #pragma code_seg("C145")
-#pragma bss_seg("B145")
 #pragma data_seg("D145")
+#pragma bss_seg("B145")
 #pragma const_seg("K145")
+#pragma comment(linker, "/merge:D145=145")
+#pragma comment(linker, "/merge:C145=145")
+#pragma comment(linker, "/merge:B145=145")
+#pragma comment(linker, "/merge:K145=145")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -419,7 +423,7 @@ VIDEO_UPDATE( deniam )
 
 	draw_sprites(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

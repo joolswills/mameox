@@ -1,7 +1,11 @@
 #pragma code_seg("C319")
-#pragma bss_seg("B319")
 #pragma data_seg("D319")
+#pragma bss_seg("B319")
 #pragma const_seg("K319")
+#pragma comment(linker, "/merge:D319=319")
+#pragma comment(linker, "/merge:C319=319")
+#pragma comment(linker, "/merge:B319=319")
+#pragma comment(linker, "/merge:K319=319")
 /*************************************************************************
 
 	Midway X-unit system
@@ -316,7 +320,7 @@ ROM_END
  *************************************/
 
 GAME( 1994, revx,   0,         midxunit, revx, revx, ROT0, "Midway",   "Revolution X (Rev. 1.0 6/16/94)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

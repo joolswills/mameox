@@ -1,7 +1,11 @@
 #pragma code_seg("C243")
-#pragma bss_seg("B243")
 #pragma data_seg("D243")
+#pragma bss_seg("B243")
 #pragma const_seg("K243")
+#pragma comment(linker, "/merge:D243=243")
+#pragma comment(linker, "/merge:C243=243")
+#pragma comment(linker, "/merge:B243=243")
+#pragma comment(linker, "/merge:K243=243")
 /***************************************************************************
 
 Homedata Games
@@ -1752,7 +1756,7 @@ GAME( 1992?,jogakuen, 0, pteacher, jogakuen, jogakuen, ROT0, "Windom",    "Mahjo
 GAME( 1990, lemnangl, 0, lemnangl, pteacher, 0,        ROT0, "Home Data", "Mahjong Lemon Angel (Japan)" )
 
 GAMEX(1991?,mjikaga,  0, lemnangl, mjikaga,  mjikaga,  ROT0, "Mitchell",  "Mahjong Ikaga Desu ka (Japan)", GAME_NOT_WORKING | GAME_NO_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

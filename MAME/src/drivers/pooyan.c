@@ -1,7 +1,11 @@
-#pragma code_seg("C406")
-#pragma bss_seg("B406")
-#pragma data_seg("D406")
-#pragma const_seg("K406")
+#pragma code_seg("C405")
+#pragma data_seg("D405")
+#pragma bss_seg("B405")
+#pragma const_seg("K405")
+#pragma comment(linker, "/merge:D405=405")
+#pragma comment(linker, "/merge:C405=405")
+#pragma comment(linker, "/merge:B405=405")
+#pragma comment(linker, "/merge:K405=405")
 /***************************************************************************
 
 Notes:
@@ -348,7 +352,7 @@ ROM_END
 GAME( 1982, pooyan,  0,      pooyan, pooyan, 0, ROT270, "Konami", "Pooyan" )
 GAME( 1982, pooyans, pooyan, pooyan, pooyan, 0, ROT270, "[Konami] (Stern license)", "Pooyan (Stern)" )
 GAME( 1982, pootan,  pooyan, pooyan, pooyan, 0, ROT270, "bootleg", "Pootan" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

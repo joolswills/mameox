@@ -1,7 +1,11 @@
 #pragma code_seg("C68")
-#pragma bss_seg("B68")
 #pragma data_seg("D68")
+#pragma bss_seg("B68")
 #pragma const_seg("K68")
+#pragma comment(linker, "/merge:D68=68")
+#pragma comment(linker, "/merge:C68=68")
+#pragma comment(linker, "/merge:B68=68")
+#pragma comment(linker, "/merge:K68=68")
 /***************************************************************************
 
 Block Hole (GX973) (c) 1989 Konami
@@ -366,7 +370,7 @@ static DRIVER_INIT( blockhl )
 
 GAME( 1989, blockhl, 0,       blockhl, blockhl, blockhl, ROT0, "Konami", "Block Hole" )
 GAME( 1989, quarth,  blockhl, blockhl, blockhl, blockhl, ROT0, "Konami", "Quarth (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

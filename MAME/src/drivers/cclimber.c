@@ -1,7 +1,11 @@
 #pragma code_seg("C95")
-#pragma bss_seg("B95")
 #pragma data_seg("D95")
+#pragma bss_seg("B95")
 #pragma const_seg("K95")
+#pragma comment(linker, "/merge:D95=95")
+#pragma comment(linker, "/merge:C95=95")
+#pragma comment(linker, "/merge:B95=95")
+#pragma comment(linker, "/merge:K95=95")
 /***************************************************************************
 
 Crazy Climber memory map (preliminary)
@@ -1617,7 +1621,7 @@ GAME( 1982, swimmer,  0,        swimmer,  swimmer,  0,        ROT0,   "Tehkan", 
 GAME( 1982, swimmera, swimmer,  swimmer,  swimmer,  0,        ROT0,   "Tehkan", "Swimmer (set 2)" )
 GAME( 1982, swimmerb, swimmer,  swimmer,  swimmerb, 0,        ROT0,   "Tehkan", "Swimmer (set 3)" )
 GAME( 1983, guzzler,  0,        swimmer,  guzzler,  0,        ROT90,  "Tehkan", "Guzzler" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

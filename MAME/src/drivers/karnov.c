@@ -1,7 +1,11 @@
 #pragma code_seg("C262")
-#pragma bss_seg("B262")
 #pragma data_seg("D262")
+#pragma bss_seg("B262")
 #pragma const_seg("K262")
+#pragma comment(linker, "/merge:D262=262")
+#pragma comment(linker, "/merge:C262=262")
+#pragma comment(linker, "/merge:B262=262")
+#pragma comment(linker, "/merge:K262=262")
 /***************************************************************************
 
 	Karnov (USA version)                   (c) 1987 Data East USA
@@ -1143,7 +1147,7 @@ GAME( 1987, wndrplnt, 0,       wndrplnt, wndrplnt,wndrplnt, ROT270, "Data East C
 GAME( 1988, chelnov,  0,       karnov,   chelnov, chelnovw, ROT0,   "Data East Corporation", "Chelnov - Atomic Runner (World)" )
 GAME( 1988, chelnovu, chelnov, karnov,   chelnov, chelnov,  ROT0,   "Data East USA",         "Chelnov - Atomic Runner (US)" )
 GAME( 1988, chelnovj, chelnov, karnov,   chelnov, chelnovj, ROT0,   "Data East Corporation", "Chelnov - Atomic Runner (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

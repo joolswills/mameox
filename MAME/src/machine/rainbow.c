@@ -1,3 +1,11 @@
+#pragma code_seg("C423")
+#pragma data_seg("D423")
+#pragma bss_seg("B423")
+#pragma const_seg("K423")
+#pragma comment(linker, "/merge:D423=423")
+#pragma comment(linker, "/merge:C423=423")
+#pragma comment(linker, "/merge:B423=423")
+#pragma comment(linker, "/merge:K423=423")
 /*************************************************************************
 
   Rainbow Islands C-Chip Protection
@@ -824,3 +832,7 @@ void rainbow_cchip_init(int version)
 
 	timer_pulse(TIME_IN_HZ(60), 0, cchip_timer);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

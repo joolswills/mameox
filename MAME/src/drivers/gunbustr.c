@@ -1,7 +1,11 @@
 #pragma code_seg("C229")
-#pragma bss_seg("B229")
 #pragma data_seg("D229")
+#pragma bss_seg("B229")
 #pragma const_seg("K229")
+#pragma comment(linker, "/merge:D229=229")
+#pragma comment(linker, "/merge:C229=229")
+#pragma comment(linker, "/merge:B229=229")
+#pragma comment(linker, "/merge:K229=229")
 /****************************************************************************
 
 	Gunbuster  							(c) 1992 Taito
@@ -519,7 +523,7 @@ static DRIVER_INIT( gunbustr )
 }
 
 GAME( 1992, gunbustr, 0,      gunbustr, gunbustr, gunbustr, ORIENTATION_FLIP_X, "Taito Corporation", "Gunbuster (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

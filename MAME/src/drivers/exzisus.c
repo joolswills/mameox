@@ -1,7 +1,11 @@
 #pragma code_seg("C173")
-#pragma bss_seg("B173")
 #pragma data_seg("D173")
+#pragma bss_seg("B173")
 #pragma const_seg("K173")
+#pragma comment(linker, "/merge:D173=173")
+#pragma comment(linker, "/merge:C173=173")
+#pragma comment(linker, "/merge:B173=173")
+#pragma comment(linker, "/merge:K173=173")
 /***************************************************************************
 
 Exzisus
@@ -436,7 +440,7 @@ ROM_END
 
 /*  ( YEAR      NAME  PARENT  MACHINE    INPUT     INIT  MONITOR  COMPANY              FULLNAME ) */
 GAMEX( 1987,  exzisus,      0, exzisus, exzisus, exzisus,    ROT0, "Taito Corporation", "Exzisus (Japan)", GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

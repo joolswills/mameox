@@ -1,7 +1,11 @@
 #pragma code_seg("C145")
-#pragma bss_seg("B145")
 #pragma data_seg("D145")
+#pragma bss_seg("B145")
 #pragma const_seg("K145")
+#pragma comment(linker, "/merge:D145=145")
+#pragma comment(linker, "/merge:C145=145")
+#pragma comment(linker, "/merge:B145=145")
+#pragma comment(linker, "/merge:K145=145")
 /***************************************************************************
 
 Deniam games
@@ -491,7 +495,7 @@ GAME( 1996, logicpro, 0,        deniam16b, logicpr2, logicpro, ROT0, "Deniam", "
 GAME( 1996, croquis,  logicpro, deniam16b, logicpr2, logicpro, ROT0, "Deniam", "Croquis (Germany)" )
 GAME( 1996, karianx,  0,        deniam16b, karianx,  karianx,  ROT0, "Deniam", "Karian Cross (Rev. 1.0)" )
 GAMEX(1997, logicpr2, 0,        deniam16c, logicpr2, logicpro, ROT0, "Deniam", "Logic Pro 2 (Japan)", GAME_IMPERFECT_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

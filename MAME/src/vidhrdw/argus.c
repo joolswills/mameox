@@ -1,7 +1,11 @@
 #pragma code_seg("C24")
-#pragma bss_seg("B24")
 #pragma data_seg("D24")
+#pragma bss_seg("B24")
 #pragma const_seg("K24")
+#pragma comment(linker, "/merge:D24=24")
+#pragma comment(linker, "/merge:C24=24")
+#pragma comment(linker, "/merge:B24=24")
+#pragma comment(linker, "/merge:K24=24")
 /***************************************************************************
 
 Functions to emulate the video hardware of the machine.
@@ -1374,7 +1378,7 @@ VIDEO_UPDATE( butasan )
 	butasan_log_vram();
 #endif
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

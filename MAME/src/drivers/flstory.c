@@ -1,7 +1,11 @@
 #pragma code_seg("C186")
-#pragma bss_seg("B186")
 #pragma data_seg("D186")
+#pragma bss_seg("B186")
 #pragma const_seg("K186")
+#pragma comment(linker, "/merge:D186=186")
+#pragma comment(linker, "/merge:C186=186")
+#pragma comment(linker, "/merge:B186=186")
+#pragma comment(linker, "/merge:K186=186")
 /***************************************************************************
 
 The FairyLand Story
@@ -763,7 +767,7 @@ GAMEX( 1985, flstory,  0,        flstory,  flstory,  0, ROT180, "Taito", "The Fa
 GAMEX( 1985, flstoryj, flstory,  flstory,  flstory,  0, ROT180, "Taito", "The FairyLand Story (Japan)", GAME_IMPERFECT_SOUND )
 GAMEX( 1985, onna34ro, 0,        onna34ro, onna34ro, 0, ROT0,   "Taito", "Onna Sansirou - Typhoon Gal (set 1)", GAME_UNEMULATED_PROTECTION | GAME_IMPERFECT_SOUND )
 GAMEX( 1985, onna34ra, onna34ro, onna34ro, onna34ro, 0, ROT0,   "Taito", "Onna Sansirou - Typhoon Gal (set 2)", GAME_UNEMULATED_PROTECTION | GAME_IMPERFECT_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

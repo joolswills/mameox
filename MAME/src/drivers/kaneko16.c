@@ -1,7 +1,11 @@
 #pragma code_seg("C260")
-#pragma bss_seg("B260")
 #pragma data_seg("D260")
+#pragma bss_seg("B260")
 #pragma const_seg("K260")
+#pragma comment(linker, "/merge:D260=260")
+#pragma comment(linker, "/merge:C260=260")
+#pragma comment(linker, "/merge:B260=260")
+#pragma comment(linker, "/merge:K260=260")
 /***************************************************************************
 
 							-= Kaneko 16 Bit Games =-
@@ -4141,7 +4145,7 @@ GAMEX(1992, shogwarr, 0,        shogwarr, shogwarr, shogwarr, ROT0,       "Kanek
 GAMEX(1992, fjbuster, shogwarr, shogwarr, shogwarr, fjbuster, ROT0,  "Kaneko", "Fujiyama Buster (Japan)", GAME_NOT_WORKING  )
 GAMEX(1992, brapboys, 0,        shogwarr, shogwarr, 0,        ROT0,       "Kaneko", "B.Rap Boys",                GAME_NOT_WORKING  )
 GAMEX(1994, bloodwar, 0,        bloodwar, bloodwar, kaneko16, ROT0,  "Kaneko", "Blood Warrior",           GAME_NOT_WORKING  )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

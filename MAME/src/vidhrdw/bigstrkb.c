@@ -1,7 +1,11 @@
 #pragma code_seg("C61")
-#pragma bss_seg("B61")
 #pragma data_seg("D61")
+#pragma bss_seg("B61")
 #pragma const_seg("K61")
+#pragma comment(linker, "/merge:D61=61")
+#pragma comment(linker, "/merge:C61=61")
+#pragma comment(linker, "/merge:B61=61")
+#pragma comment(linker, "/merge:K61=61")
 /* Big Striker (bootleg) Video Hardware */
 
 #include "driver.h"
@@ -160,7 +164,7 @@ VIDEO_UPDATE(bigstrkb)
 
 //	usrintf_showmessage	("Regs %08x %08x %08x %08x",bsb_vidreg2[0],bsb_vidreg2[1],bsb_vidreg2[2],bsb_vidreg2[3]);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

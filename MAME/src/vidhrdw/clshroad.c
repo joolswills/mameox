@@ -1,7 +1,11 @@
 #pragma code_seg("C111")
-#pragma bss_seg("B111")
 #pragma data_seg("D111")
+#pragma bss_seg("B111")
 #pragma const_seg("K111")
+#pragma comment(linker, "/merge:D111=111")
+#pragma comment(linker, "/merge:C111=111")
+#pragma comment(linker, "/merge:B111=111")
+#pragma comment(linker, "/merge:K111=111")
 /***************************************************************************
 
 							-= Clash Road =-
@@ -379,7 +383,7 @@ VIDEO_UPDATE( clshroad )
 	draw_sprites(bitmap,cliprect);
 	tilemap_draw(bitmap,cliprect,tilemap_1,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

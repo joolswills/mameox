@@ -1,7 +1,11 @@
 #pragma code_seg("C180")
-#pragma bss_seg("B180")
 #pragma data_seg("D180")
+#pragma bss_seg("B180")
 #pragma const_seg("K180")
+#pragma comment(linker, "/merge:D180=180")
+#pragma comment(linker, "/merge:C180=180")
+#pragma comment(linker, "/merge:B180=180")
+#pragma comment(linker, "/merge:K180=180")
 /***************************************************************************
 
 Find Out    (c) 1987
@@ -302,7 +306,7 @@ ROM_END
 
 
 GAMEX( 1987, findout, 0, findout, findout, 0, ROT0, "Elettronolo", "Find Out", GAME_WRONG_COLORS | GAME_IMPERFECT_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

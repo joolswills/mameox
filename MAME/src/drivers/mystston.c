@@ -1,7 +1,11 @@
-#pragma code_seg("C343")
-#pragma bss_seg("B343")
-#pragma data_seg("D343")
-#pragma const_seg("K343")
+#pragma code_seg("C342")
+#pragma data_seg("D342")
+#pragma bss_seg("B342")
+#pragma const_seg("K342")
+#pragma comment(linker, "/merge:D342=342")
+#pragma comment(linker, "/merge:C342=342")
+#pragma comment(linker, "/merge:B342=342")
+#pragma comment(linker, "/merge:K342=342")
 /***************************************************************************
 
 Mysterious Stones
@@ -343,7 +347,7 @@ ROM_END
 
 GAME( 1984, mystston, 0,        mystston, mystston, 0, ROT270, "Technos", "Mysterious Stones (set 1)" )
 GAME( 1984, myststno, mystston, mystston, mystston, 0, ROT270, "Technos", "Mysterious Stones (set 2)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

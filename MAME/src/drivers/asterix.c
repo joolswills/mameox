@@ -1,7 +1,11 @@
 #pragma code_seg("C28")
-#pragma bss_seg("B28")
 #pragma data_seg("D28")
+#pragma bss_seg("B28")
 #pragma const_seg("K28")
+#pragma comment(linker, "/merge:D28=28")
+#pragma comment(linker, "/merge:C28=28")
+#pragma comment(linker, "/merge:B28=28")
+#pragma comment(linker, "/merge:K28=28")
 /***************************************************************************
 
 Asterix
@@ -410,7 +414,7 @@ static DRIVER_INIT( asterix )
 GAMEX( 1992, asterix,  0,       asterix, asterix, asterix, ROT0, "Konami", "Asterix (World ver. EAD)", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1992, astrxeac, asterix, asterix, asterix, asterix, ROT0, "Konami", "Asterix (World ver. EAC)", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1992, astrxeaa, asterix, asterix, asterix, asterix, ROT0, "Konami", "Asterix (World ver. EAA)", GAME_IMPERFECT_GRAPHICS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C176")
-#pragma bss_seg("B176")
 #pragma data_seg("D176")
+#pragma bss_seg("B176")
 #pragma const_seg("K176")
+#pragma comment(linker, "/merge:D176=176")
+#pragma comment(linker, "/merge:C176=176")
+#pragma comment(linker, "/merge:B176=176")
+#pragma comment(linker, "/merge:K176=176")
 /***************************************************************************
 
   vidhrdw.c
@@ -329,7 +333,7 @@ VIDEO_UPDATE( fastfred )
 
 	draw_sprites(bitmap, cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C98")
-#pragma bss_seg("B98")
 #pragma data_seg("D98")
+#pragma bss_seg("B98")
 #pragma const_seg("K98")
+#pragma comment(linker, "/merge:D98=98")
+#pragma comment(linker, "/merge:C98=98")
+#pragma comment(linker, "/merge:B98=98")
+#pragma comment(linker, "/merge:K98=98")
 /***************************************************************************
 
 Championship Baseball
@@ -327,7 +331,7 @@ ROM_END
 GAMEX(1983, champbas, 0,        champbas, champbas, 0, ROT0, "Sega", "Champion Baseball", GAME_NO_COCKTAIL )
 GAMEX(1983, champbbj, champbas, champbas, champbas, 0, ROT0, "Alpha Denshi Co.", "Champion Baseball (Japan)", GAME_NOT_WORKING )
 GAMEX(1983, champbb2, 0,        champbas, champbas, 0, ROT0, "Sega", "Champion Baseball II", GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C364")
-#pragma bss_seg("B364")
-#pragma data_seg("D364")
-#pragma const_seg("K364")
+#pragma code_seg("C363")
+#pragma data_seg("D363")
+#pragma bss_seg("B363")
+#pragma const_seg("K363")
+#pragma comment(linker, "/merge:D363=363")
+#pragma comment(linker, "/merge:C363=363")
+#pragma comment(linker, "/merge:B363=363")
+#pragma comment(linker, "/merge:K363=363")
 /***************************************************************************
 
 	Atari Night Driver hardware
@@ -409,7 +413,7 @@ ROM_END
  *************************************/
 
 GAMEX( 1976, nitedrvr, 0, nitedrvr, nitedrvr, 0, ROT0, "Atari", "Night Driver", GAME_IMPERFECT_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

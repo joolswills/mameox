@@ -1,7 +1,11 @@
-#pragma code_seg("C342")
-#pragma bss_seg("B342")
-#pragma data_seg("D342")
-#pragma const_seg("K342")
+#pragma code_seg("C341")
+#pragma data_seg("D341")
+#pragma bss_seg("B341")
+#pragma const_seg("K341")
+#pragma comment(linker, "/merge:D341=341")
+#pragma comment(linker, "/merge:C341=341")
+#pragma comment(linker, "/merge:B341=341")
+#pragma comment(linker, "/merge:K341=341")
 /***************************************************************************
 
 	Mustache Boy
@@ -273,7 +277,7 @@ VIDEO_UPDATE( mustache )
 }
 
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

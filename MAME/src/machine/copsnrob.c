@@ -1,3 +1,11 @@
+#pragma code_seg("C120")
+#pragma data_seg("D120")
+#pragma bss_seg("B120")
+#pragma const_seg("K120")
+#pragma comment(linker, "/merge:D120=120")
+#pragma comment(linker, "/merge:C120=120")
+#pragma comment(linker, "/merge:B120=120")
+#pragma comment(linker, "/merge:K120=120")
 /***************************************************************************
 
 	Atari Cops'n Robbers hardware
@@ -57,3 +65,7 @@ READ_HANDLER( copsnrob_gun_position_r )
 
     return (keys & 0x80) | gun_mask[current_gun_pos];
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

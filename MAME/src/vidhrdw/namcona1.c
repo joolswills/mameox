@@ -1,7 +1,11 @@
-#pragma code_seg("C346")
-#pragma bss_seg("B346")
-#pragma data_seg("D346")
-#pragma const_seg("K346")
+#pragma code_seg("C345")
+#pragma data_seg("D345")
+#pragma bss_seg("B345")
+#pragma const_seg("K345")
+#pragma comment(linker, "/merge:D345=345")
+#pragma comment(linker, "/merge:C345=345")
+#pragma comment(linker, "/merge:B345=345")
+#pragma comment(linker, "/merge:K345=345")
 /*	Namco System NA1/2 Video Hardware */
 
 #include "vidhrdw/generic.h"
@@ -704,7 +708,7 @@ VIDEO_UPDATE( namcona1 )
 		draw_sprites( bitmap );
 	} /* gfx enabled */
 } /* namcona1_vh_screenrefresh */
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C206")
-#pragma bss_seg("B206")
 #pragma data_seg("D206")
+#pragma bss_seg("B206")
 #pragma const_seg("K206")
+#pragma comment(linker, "/merge:D206=206")
+#pragma comment(linker, "/merge:C206=206")
+#pragma comment(linker, "/merge:B206=206")
+#pragma comment(linker, "/merge:K206=206")
 /***************************************************************************
 
 	Atari Gauntlet hardware
@@ -1063,7 +1067,7 @@ GAME( 1985, gauntir2, gauntlet, gauntlet, gauntlet, gauntlet,  ROT0, "Atari Game
 GAME( 1985, gaunt2p,  gauntlet, gauntlet, gauntlet, gaunt2p,   ROT0, "Atari Games", "Gauntlet (2 Players)" )
 GAME( 1986, gaunt2,   0,        gauntlet, gauntlet, gauntlet2, ROT0, "Atari Games", "Gauntlet II" )
 GAME( 1988, vindctr2, 0,        gauntlet, vindctr2, vindctr2,  ROT0, "Atari Games", "Vindicators Part II" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

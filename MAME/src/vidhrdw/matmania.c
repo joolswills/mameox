@@ -1,7 +1,11 @@
 #pragma code_seg("C302")
-#pragma bss_seg("B302")
 #pragma data_seg("D302")
+#pragma bss_seg("B302")
 #pragma const_seg("K302")
+#pragma comment(linker, "/merge:D302=302")
+#pragma comment(linker, "/merge:C302=302")
+#pragma comment(linker, "/merge:B302=302")
+#pragma comment(linker, "/merge:K302=302")
 /***************************************************************************
 
 	vidhrdw.c
@@ -368,7 +372,7 @@ VIDEO_UPDATE( maniach )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

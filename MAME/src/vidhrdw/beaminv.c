@@ -1,7 +1,11 @@
 #pragma code_seg("C57")
-#pragma bss_seg("B57")
 #pragma data_seg("D57")
+#pragma bss_seg("B57")
 #pragma const_seg("K57")
+#pragma comment(linker, "/merge:D57=57")
+#pragma comment(linker, "/merge:C57=57")
+#pragma comment(linker, "/merge:B57=57")
+#pragma comment(linker, "/merge:K57=57")
 /***************************************************************************
 
 	Tekunon Kougyou Beam Invader hardware
@@ -37,7 +41,7 @@ WRITE_HANDLER( beaminv_videoram_w )
 		data >>= 1;
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

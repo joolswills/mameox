@@ -1,7 +1,11 @@
 #pragma code_seg("C313")
-#pragma bss_seg("B313")
 #pragma data_seg("D313")
+#pragma bss_seg("B313")
 #pragma const_seg("K313")
+#pragma comment(linker, "/merge:D313=313")
+#pragma comment(linker, "/merge:C313=313")
+#pragma comment(linker, "/merge:B313=313")
+#pragma comment(linker, "/merge:K313=313")
 /***************************************************************************
 
 							  -= Metro Games =-
@@ -4972,7 +4976,7 @@ GAMEX( 1997, gakusai,  0,        gakusai,  gakusai,  gakusai,  ROT0,   "MakeSoft
 GAME ( 1998, gakusai2, 0,        gakusai2, gakusai,  gakusai,  ROT0,   "MakeSoft",                   "Mahjong Gakuensai 2 (Japan)"                    )
 
 GAMEX( 1994, blzntrnd, 0,        blzntrnd, blzntrnd, blzntrnd, ROT0,   "Human Amusement",            "Blazing Tornado",                 GAME_IMPERFECT_GRAPHICS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

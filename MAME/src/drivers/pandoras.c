@@ -1,7 +1,11 @@
-#pragma code_seg("C384")
-#pragma bss_seg("B384")
-#pragma data_seg("D384")
-#pragma const_seg("K384")
+#pragma code_seg("C383")
+#pragma data_seg("D383")
+#pragma bss_seg("B383")
+#pragma const_seg("K383")
+#pragma comment(linker, "/merge:D383=383")
+#pragma comment(linker, "/merge:C383=383")
+#pragma comment(linker, "/merge:B383=383")
+#pragma comment(linker, "/merge:K383=383")
 /***************************************************************************
 
 Pandora's Palace(GX328) (c) 1984 Konami/Interlogic
@@ -494,7 +498,7 @@ ROM_END
 
 
 GAME( 1984, pandoras, 0, pandoras, pandoras, 0, ROT90, "Konami/Interlogic", "Pandora's Palace" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

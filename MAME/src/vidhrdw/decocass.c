@@ -1,7 +1,11 @@
 #pragma code_seg("C144")
-#pragma bss_seg("B144")
 #pragma data_seg("D144")
+#pragma bss_seg("B144")
 #pragma const_seg("K144")
+#pragma comment(linker, "/merge:D144=144")
+#pragma comment(linker, "/merge:C144=144")
+#pragma comment(linker, "/merge:B144=144")
+#pragma comment(linker, "/merge:K144=144")
 /***********************************************************************
 
 	DECO Cassette System vidhrdw
@@ -756,7 +760,7 @@ VIDEO_UPDATE( decocass )
 	draw_missiles(bitmap,cliprect, 1, 0, decocass_colorram, 0x20);
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

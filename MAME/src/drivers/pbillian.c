@@ -1,7 +1,11 @@
-#pragma code_seg("C390")
-#pragma bss_seg("B390")
-#pragma data_seg("D390")
-#pragma const_seg("K390")
+#pragma code_seg("C389")
+#pragma data_seg("D389")
+#pragma bss_seg("B389")
+#pragma const_seg("K389")
+#pragma comment(linker, "/merge:D389=389")
+#pragma comment(linker, "/merge:C389=389")
+#pragma comment(linker, "/merge:B389=389")
+#pragma comment(linker, "/merge:K389=389")
 /******************************************************************************
  Prebillian  1986 Taito WORKING
  Hot Smash   1987 Taito NOT WORKING (protection? see notes)
@@ -439,7 +443,7 @@ static DRIVER_INIT( hotsmash ){	is_pbillian=0;}
 
 GAMEX( 1986, pbillian, 0, pbillian, pbillian, pbillian, ROT0, "Taito", "Prebillian",GAME_IMPERFECT_SOUND)
 GAMEX( 1987, hotsmash, 0, pbillian, hotsmash, hotsmash, ROT90, "Taito", "Hot Smash",GAME_NOT_WORKING|GAME_UNEMULATED_PROTECTION )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

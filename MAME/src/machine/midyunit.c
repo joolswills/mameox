@@ -1,3 +1,11 @@
+#pragma code_seg("C320")
+#pragma data_seg("D320")
+#pragma bss_seg("B320")
+#pragma const_seg("K320")
+#pragma comment(linker, "/merge:D320=320")
+#pragma comment(linker, "/merge:C320=320")
+#pragma comment(linker, "/merge:B320=320")
+#pragma comment(linker, "/merge:K320=320")
 /*************************************************************************
 
 	Williams/Midway Y/Z-unit system
@@ -1143,3 +1151,7 @@ WRITE16_HANDLER( midyunit_sound_w )
 				break;
 		}
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C223")
-#pragma bss_seg("B223")
 #pragma data_seg("D223")
+#pragma bss_seg("B223")
 #pragma const_seg("K223")
+#pragma comment(linker, "/merge:D223=223")
+#pragma comment(linker, "/merge:C223=223")
+#pragma comment(linker, "/merge:B223=223")
+#pragma comment(linker, "/merge:K223=223")
 /***************************************************************************
 
 Grobda (c) Namco 1984
@@ -328,7 +332,7 @@ ROM_END
 GAME( 1984, grobda,  0,      grobda, grobda, 0, ROT90, "Namco", "Grobda (New version)" )
 GAME( 1984, grobda2, grobda, grobda, grobda, 0, ROT90, "Namco", "Grobda (Old version set 1)" )
 GAME( 1984, grobda3, grobda, grobda, grobda, 0, ROT90, "Namco", "Grobda (Old version set 2)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

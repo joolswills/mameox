@@ -1,7 +1,11 @@
 #pragma code_seg("C54")
-#pragma bss_seg("B54")
 #pragma data_seg("D54")
+#pragma bss_seg("B54")
 #pragma const_seg("K54")
+#pragma comment(linker, "/merge:D54=54")
+#pragma comment(linker, "/merge:C54=54")
+#pragma comment(linker, "/merge:B54=54")
+#pragma comment(linker, "/merge:K54=54")
 /* battlex.c - by David Haywood
 
 Stephh's notes :
@@ -313,7 +317,7 @@ static DRIVER_INIT( battlex )
 /*** GAME DRIVERS ************************************************************/
 
 GAMEX( 1982, battlex, 0, battlex, battlex, battlex, ROT180, "Omori Electric", "Battle Cross", GAME_IMPERFECT_GRAPHICS | GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

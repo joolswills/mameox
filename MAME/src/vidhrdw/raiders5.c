@@ -1,7 +1,11 @@
-#pragma code_seg("C423")
-#pragma bss_seg("B423")
-#pragma data_seg("D423")
-#pragma const_seg("K423")
+#pragma code_seg("C422")
+#pragma data_seg("D422")
+#pragma bss_seg("B422")
+#pragma const_seg("K422")
+#pragma comment(linker, "/merge:D422=422")
+#pragma comment(linker, "/merge:C422=422")
+#pragma comment(linker, "/merge:B422=422")
+#pragma comment(linker, "/merge:K422=422")
 /*******************************************************************************
 
 Raiders5 (c) 1985 Taito / UPL
@@ -213,7 +217,7 @@ VIDEO_UPDATE( raiders5 )
 		}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

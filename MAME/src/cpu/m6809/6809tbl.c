@@ -1,7 +1,11 @@
-#pragma code_seg("CC16")
-#pragma bss_seg("CB16")
-#pragma data_seg("CD16")
-#pragma const_seg("CK16")
+#pragma code_seg("CC13")
+#pragma data_seg("CD13")
+#pragma bss_seg("CB13")
+#pragma const_seg("CK13")
+#pragma comment(linker, "/merge:CD13=CPU13")
+#pragma comment(linker, "/merge:CC13=CPU13")
+#pragma comment(linker, "/merge:CB13=CPU13")
+#pragma comment(linker, "/merge:CK13=CPU13")
 INLINE void abx(void);
 INLINE void adca_di(void);
 INLINE void adca_ex(void);
@@ -318,3 +322,7 @@ static void (*m6809_main[0x100])(void) = {
 	eorb_ex,adcb_ex,orb_ex, addb_ex,ldd_ex, std_ex, ldu_ex, stu_ex
 };
 #endif
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

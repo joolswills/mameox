@@ -1,7 +1,11 @@
-#pragma code_seg("C400")
-#pragma bss_seg("B400")
-#pragma data_seg("D400")
-#pragma const_seg("K400")
+#pragma code_seg("C399")
+#pragma data_seg("D399")
+#pragma bss_seg("B399")
+#pragma const_seg("K399")
+#pragma comment(linker, "/merge:D399=399")
+#pragma comment(linker, "/merge:C399=399")
+#pragma comment(linker, "/merge:B399=399")
+#pragma comment(linker, "/merge:K399=399")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -281,7 +285,7 @@ VIDEO_UPDATE( wbeachvl )
 	draw_sprites(bitmap,cliprect,0);
 	tilemap_draw(bitmap,cliprect,tx_tilemap,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C432")
-#pragma bss_seg("B432")
-#pragma data_seg("D432")
-#pragma const_seg("K432")
+#pragma code_seg("C431")
+#pragma data_seg("D431")
+#pragma bss_seg("B431")
+#pragma const_seg("K431")
+#pragma comment(linker, "/merge:D431=431")
+#pragma comment(linker, "/merge:C431=431")
+#pragma comment(linker, "/merge:B431=431")
+#pragma comment(linker, "/merge:K431=431")
 /***************************************************************************
 
   vidhrdw.c
@@ -361,7 +365,7 @@ VIDEO_UPDATE( satansat )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

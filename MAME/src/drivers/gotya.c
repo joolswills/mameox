@@ -1,7 +1,11 @@
 #pragma code_seg("C219")
-#pragma bss_seg("B219")
 #pragma data_seg("D219")
+#pragma bss_seg("B219")
 #pragma const_seg("K219")
+#pragma comment(linker, "/merge:D219=219")
+#pragma comment(linker, "/merge:C219=219")
+#pragma comment(linker, "/merge:B219=219")
+#pragma comment(linker, "/merge:K219=219")
 /****************************************************************************
 
 	Gotya / The Hand driver by Zsolt Vasvari
@@ -281,7 +285,7 @@ ROM_END
 
 GAME( 1981, thehand, 0,       gotya, gotya, 0, ROT270, "T.I.C."     , "The Hand" )
 GAME( 1981, gotya,   thehand, gotya, gotya, 0, ROT270, "Game-A-Tron", "Got-Ya (12/24/1981, prototype?)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("CC19")
-#pragma bss_seg("CB19")
-#pragma data_seg("CD19")
-#pragma const_seg("CK19")
+#pragma code_seg("CC16")
+#pragma data_seg("CD16")
+#pragma bss_seg("CB16")
+#pragma const_seg("CK16")
+#pragma comment(linker, "/merge:CD16=CPU16")
+#pragma comment(linker, "/merge:CC16=CPU16")
+#pragma comment(linker, "/merge:CB16=CPU16")
+#pragma comment(linker, "/merge:CK16=CPU16")
 /*** m6800: Portable 6800 class  emulator *************************************
 
 	m6800.c
@@ -2563,3 +2567,7 @@ WRITE_HANDLER( m6803_internal_registers_w )
 }
 #endif
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

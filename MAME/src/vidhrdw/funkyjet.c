@@ -1,7 +1,11 @@
 #pragma code_seg("C194")
-#pragma bss_seg("B194")
 #pragma data_seg("D194")
+#pragma bss_seg("B194")
 #pragma const_seg("K194")
+#pragma comment(linker, "/merge:D194=194")
+#pragma comment(linker, "/merge:C194=194")
+#pragma comment(linker, "/merge:B194=194")
+#pragma comment(linker, "/merge:K194=194")
 /***************************************************************************
 
    Funky Jet Video emulation - Bryan McPhail, mish@tendril.co.uk
@@ -96,7 +100,7 @@ VIDEO_UPDATE( funkyjet )
 	deco16_tilemap_1_draw(bitmap,cliprect,0,0);
 	funkyjet_drawsprites(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

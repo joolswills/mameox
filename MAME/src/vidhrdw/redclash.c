@@ -1,7 +1,11 @@
-#pragma code_seg("C427")
-#pragma bss_seg("B427")
-#pragma data_seg("D427")
-#pragma const_seg("K427")
+#pragma code_seg("C426")
+#pragma data_seg("D426")
+#pragma bss_seg("B426")
+#pragma const_seg("K426")
+#pragma comment(linker, "/merge:D426=426")
+#pragma comment(linker, "/merge:C426=426")
+#pragma comment(linker, "/merge:B426=426")
+#pragma comment(linker, "/merge:K426=426")
 /***************************************************************************
 
   vidhrdw.c
@@ -243,7 +247,7 @@ usrintf_showmessage("unknown sprite size 0");
 
 //usrintf_showmessage("%d%d%d",star2,star1,star0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C185")
-#pragma bss_seg("B185")
 #pragma data_seg("D185")
+#pragma bss_seg("B185")
 #pragma const_seg("K185")
+#pragma comment(linker, "/merge:D185=185")
+#pragma comment(linker, "/merge:C185=185")
+#pragma comment(linker, "/merge:B185=185")
+#pragma comment(linker, "/merge:K185=185")
 /***************************************************************************
 
 	Flower sound driver (quick hack of the Wiping sound driver)
@@ -293,7 +297,7 @@ usrintf_showmessage("%02x%02x %02x%02x %02x%02x %02x%02x %02x%02x %02x%02x %02x%
 		voice->oneshotplaying = 0;
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

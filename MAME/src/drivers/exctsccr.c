@@ -1,7 +1,11 @@
 #pragma code_seg("C167")
-#pragma bss_seg("B167")
 #pragma data_seg("D167")
+#pragma bss_seg("B167")
 #pragma const_seg("K167")
+#pragma comment(linker, "/merge:D167=167")
+#pragma comment(linker, "/merge:C167=167")
+#pragma comment(linker, "/merge:B167=167")
+#pragma comment(linker, "/merge:K167=167")
 /***************************************************************************
 
 Exciting Soccer - (c) 1983 Alpha Denshi Co.
@@ -527,7 +531,7 @@ GAMEX( 1983, exctsccr, 0,        exctsccr, exctsccr, 0, ROT90, "Alpha Denshi Co.
 GAMEX( 1983, exctscca, exctsccr, exctsccr, exctsccr, 0, ROT90, "Alpha Denshi Co.", "Exciting Soccer (alternate music)", GAME_NO_COCKTAIL )
 GAMEX( 1983, exctsccb, exctsccr, exctsccb, exctsccr, 0, ROT90, "bootleg", "Exciting Soccer (bootleg)", GAME_NO_COCKTAIL )
 GAMEX( 1984, exctscc2, exctsccr, exctsccr, exctsccr, 0, ROT90, "Alpha Denshi Co.", "Exciting Soccer II", GAME_NOT_WORKING | GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

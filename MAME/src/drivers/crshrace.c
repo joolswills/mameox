@@ -1,7 +1,11 @@
 #pragma code_seg("C126")
-#pragma bss_seg("B126")
 #pragma data_seg("D126")
+#pragma bss_seg("B126")
 #pragma const_seg("K126")
+#pragma comment(linker, "/merge:D126=126")
+#pragma comment(linker, "/merge:C126=126")
+#pragma comment(linker, "/merge:B126=126")
+#pragma comment(linker, "/merge:K126=126")
 /***************************************************************************
 
 Crash Race       (c) 1993 Video System Co.
@@ -758,7 +762,7 @@ DRIVER_INIT( crshrac2 )
 
 GAMEX( 1993, crshrace, 0,        crshrace, crshrace, crshrace, ROT270, "Video System Co.", "Lethal Crash Race (set 1)", GAME_NO_COCKTAIL )
 GAMEX( 1993, crshrac2, crshrace, crshrace, crshrac2, crshrac2, ROT270, "Video System Co.", "Lethal Crash Race (set 2)", GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

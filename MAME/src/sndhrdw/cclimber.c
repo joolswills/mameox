@@ -1,7 +1,11 @@
 #pragma code_seg("C95")
-#pragma bss_seg("B95")
 #pragma data_seg("D95")
+#pragma bss_seg("B95")
 #pragma const_seg("K95")
+#pragma comment(linker, "/merge:D95=95")
+#pragma comment(linker, "/merge:C95=95")
+#pragma comment(linker, "/merge:B95=95")
+#pragma comment(linker, "/merge:K95=95")
 #include "driver.h"
 
 
@@ -115,7 +119,7 @@ struct CustomSound_interface cclimber_custom_interface =
 	0,
 	0
 };
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

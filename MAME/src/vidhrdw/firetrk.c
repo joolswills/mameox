@@ -1,7 +1,11 @@
 #pragma code_seg("C182")
-#pragma bss_seg("B182")
 #pragma data_seg("D182")
+#pragma bss_seg("B182")
 #pragma const_seg("K182")
+#pragma comment(linker, "/merge:D182=182")
+#pragma comment(linker, "/merge:C182=182")
+#pragma comment(linker, "/merge:B182=182")
+#pragma comment(linker, "/merge:K182=182")
 /***************************************************************************
 
 Atari Fire Truck + Super Bug + Monte Carlo video emulation
@@ -491,7 +495,7 @@ VIDEO_EOF( firetrk )
 		firetrk_set_blink(0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

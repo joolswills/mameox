@@ -1,7 +1,11 @@
 #pragma code_seg("C74")
-#pragma bss_seg("B74")
 #pragma data_seg("D74")
+#pragma bss_seg("B74")
 #pragma const_seg("K74")
+#pragma comment(linker, "/merge:D74=74")
+#pragma comment(linker, "/merge:C74=74")
+#pragma comment(linker, "/merge:B74=74")
+#pragma comment(linker, "/merge:K74=74")
 /***************************************************************************
 
 Bomb Jack
@@ -419,7 +423,7 @@ static DRIVER_INIT( bombjack )
 
 GAME( 1984, bombjack, 0,        bombjack, bombjack, bombjack, ROT90, "Tehkan", "Bomb Jack (set 1)" )
 GAME( 1984, bombjac2, bombjack, bombjack, bombjack, bombjack, ROT90, "Tehkan", "Bomb Jack (set 2)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C290")
-#pragma bss_seg("B290")
 #pragma data_seg("D290")
+#pragma bss_seg("B290")
 #pragma const_seg("K290")
+#pragma comment(linker, "/merge:D290=290")
+#pragma comment(linker, "/merge:C290=290")
+#pragma comment(linker, "/merge:B290=290")
+#pragma comment(linker, "/merge:K290=290")
 /* Ramtek M79 Ambush */
 
 #include "driver.h"
@@ -186,7 +190,7 @@ ROM_END
 
 
 GAMEX( 1977, m79amb, 0, m79amb, m79amb, m79amb, ROT0, "Ramtek", "M79 Ambush", GAME_NO_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

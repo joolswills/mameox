@@ -1,7 +1,11 @@
 #pragma code_seg("C45")
-#pragma bss_seg("B45")
 #pragma data_seg("D45")
+#pragma bss_seg("B45")
 #pragma const_seg("K45")
+#pragma comment(linker, "/merge:D45=45")
+#pragma comment(linker, "/merge:C45=45")
+#pragma comment(linker, "/merge:B45=45")
+#pragma comment(linker, "/merge:K45=45")
 /***************************************************************************
 
 	Centuri Aztarac hardware
@@ -60,7 +64,7 @@ INTERRUPT_GEN( aztarac_snd_timed_irq )
 }
 
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

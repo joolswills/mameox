@@ -1,3 +1,11 @@
+#pragma code_seg("C186")
+#pragma data_seg("D186")
+#pragma bss_seg("B186")
+#pragma const_seg("K186")
+#pragma comment(linker, "/merge:D186=186")
+#pragma comment(linker, "/merge:C186=186")
+#pragma comment(linker, "/merge:B186=186")
+#pragma comment(linker, "/merge:K186=186")
 /***************************************************************************
 
   machine.c
@@ -176,3 +184,7 @@ READ_HANDLER( onna34ro_mcu_status_r )
 
 	return res;
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

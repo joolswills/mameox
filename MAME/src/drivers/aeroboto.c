@@ -1,7 +1,11 @@
 #pragma code_seg("C9")
-#pragma bss_seg("B9")
 #pragma data_seg("D9")
+#pragma bss_seg("B9")
 #pragma const_seg("K9")
+#pragma comment(linker, "/merge:D9=9")
+#pragma comment(linker, "/merge:C9=9")
+#pragma comment(linker, "/merge:B9=9")
+#pragma comment(linker, "/merge:K9=9")
 /****************************************************************************
 
 Formation Z / Aeroboto
@@ -362,7 +366,7 @@ ROM_END
 
 GAMEX( 1984, formatz,  0,       formatz, formatz, 0, ROT0, "Jaleco", "Formation Z", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1984, aeroboto, formatz, formatz, formatz, 0, ROT0, "[Jaleco] (Williams license)", "Aeroboto", GAME_IMPERFECT_GRAPHICS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("CC31")
-#pragma bss_seg("CB31")
-#pragma data_seg("CD31")
-#pragma const_seg("CK31")
+#pragma code_seg("CC25")
+#pragma data_seg("CD25")
+#pragma bss_seg("CB25")
+#pragma const_seg("CK25")
+#pragma comment(linker, "/merge:CD25=CPU25")
+#pragma comment(linker, "/merge:CC25=CPU25")
+#pragma comment(linker, "/merge:CB25=CPU25")
+#pragma comment(linker, "/merge:CK25=CPU25")
 /*###################################################################################################
 **
 **
@@ -1912,3 +1916,7 @@ static void trapf(void)
 }
 
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

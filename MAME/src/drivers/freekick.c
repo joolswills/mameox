@@ -1,7 +1,11 @@
 #pragma code_seg("C189")
-#pragma bss_seg("B189")
 #pragma data_seg("D189")
+#pragma bss_seg("B189")
 #pragma const_seg("K189")
+#pragma comment(linker, "/merge:D189=189")
+#pragma comment(linker, "/merge:C189=189")
+#pragma comment(linker, "/merge:B189=189")
+#pragma comment(linker, "/merge:K189=189")
 /***************************************************************************
 
 Free Kick  - (c) 1987 Sega / Nihon System (made by Nihon, licensed to Sega)
@@ -1059,7 +1063,7 @@ GAMEX(1987, pbillrds, pbillrd,  pbillrd,  pbillrd,  0,     ROT0,   "Nihon System
 GAMEX(1987, freekick, 0,        freekckb, freekckb, 0,     ROT270, "Nihon System (Sega license)", "Free Kick", GAME_NOT_WORKING )
 GAME( 1987, freekckb, freekick, freekckb, freekckb, 0,     ROT270, "bootleg", "Free Kick (bootleg)" )
 GAMEX(198?, countrun, 0,        freekckb, freekckb, 0,     ROT0,   "Nihon System (Sega license)", "Counter Run", GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

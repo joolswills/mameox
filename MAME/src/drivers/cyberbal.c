@@ -1,7 +1,11 @@
 #pragma code_seg("C129")
-#pragma bss_seg("B129")
 #pragma data_seg("D129")
+#pragma bss_seg("B129")
 #pragma const_seg("K129")
+#pragma comment(linker, "/merge:D129=129")
+#pragma comment(linker, "/merge:C129=129")
+#pragma comment(linker, "/merge:B129=129")
+#pragma comment(linker, "/merge:K129=129")
 /***************************************************************************
 
 	Atari Cyberball hardware
@@ -878,7 +882,7 @@ GAME( 1988, cyberbal, 0,        cyberbal, cyberbal, cyberbal, ROT0, "Atari Games
 GAME( 1988, cyberba2, cyberbal, cyberbal, cyberbal, cyberbal, ROT0, "Atari Games", "Cyberball (Version 2)" )
 GAME( 1989, cyberbt,  cyberbal, cyberbal, cyberbal, cyberbt,  ROT0, "Atari Games", "Tournament Cyberball 2072" )
 GAME( 1989, cyberb2p, cyberbal, cyberb2p, cyberb2p, cyberb2p, ROT0, "Atari Games", "Cyberball 2072 (2 player)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

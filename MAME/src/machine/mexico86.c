@@ -1,3 +1,11 @@
+#pragma code_seg("C314")
+#pragma data_seg("D314")
+#pragma bss_seg("B314")
+#pragma const_seg("K314")
+#pragma comment(linker, "/merge:D314=314")
+#pragma comment(linker, "/merge:C314=314")
+#pragma comment(linker, "/merge:B314=314")
+#pragma comment(linker, "/merge:K314=314")
 #include "driver.h"
 
 
@@ -172,3 +180,7 @@ WRITE_HANDLER( mexico86_68705_ddrB_w )
 {
 	ddrB = data;
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

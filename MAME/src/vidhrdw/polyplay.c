@@ -1,7 +1,11 @@
-#pragma code_seg("C404")
-#pragma bss_seg("B404")
-#pragma data_seg("D404")
-#pragma const_seg("K404")
+#pragma code_seg("C403")
+#pragma data_seg("D403")
+#pragma bss_seg("B403")
+#pragma const_seg("K403")
+#pragma comment(linker, "/merge:D403=403")
+#pragma comment(linker, "/merge:C403=403")
+#pragma comment(linker, "/merge:B403=403")
+#pragma comment(linker, "/merge:K403=403")
 /***************************************************************************
 
   Poly-Play
@@ -127,7 +131,7 @@ VIDEO_UPDATE( polyplay )
 		if (dirtycharacter[offs] == 2) dirtycharacter[offs] = 0;
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

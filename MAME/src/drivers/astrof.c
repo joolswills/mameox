@@ -1,7 +1,11 @@
 #pragma code_seg("C32")
-#pragma bss_seg("B32")
 #pragma data_seg("D32")
+#pragma bss_seg("B32")
 #pragma const_seg("K32")
+#pragma comment(linker, "/merge:D32=32")
+#pragma comment(linker, "/merge:C32=32")
+#pragma comment(linker, "/merge:B32=32")
+#pragma comment(linker, "/merge:K32=32")
 /*
     Driver For DECO   ASTRO FIGHTER/TOMAHAWK 777
 
@@ -346,7 +350,7 @@ GAME( 1979, astrof2,  astrof,   astrof,   astrof,   0, ROT90, "Data East", "Astr
 GAME( 1979, astrof3,  astrof,   astrof,   astrof,   0, ROT90, "Data East", "Astro Fighter (set 3)" )
 GAMEX(1980, tomahawk, 0,        tomahawk, tomahawk, 0, ROT90, "Data East", "Tomahawk 777 (Revision 1)", GAME_NO_SOUND )
 GAMEX(1980, tomahaw5, tomahawk, tomahawk, tomahawk, 0, ROT90, "Data East", "Tomahawk 777 (Revision 5)", GAME_NO_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

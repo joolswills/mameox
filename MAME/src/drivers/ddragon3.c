@@ -1,7 +1,11 @@
 #pragma code_seg("C138")
-#pragma bss_seg("B138")
 #pragma data_seg("D138")
+#pragma bss_seg("B138")
 #pragma const_seg("K138")
+#pragma comment(linker, "/merge:D138=138")
+#pragma comment(linker, "/merge:C138=138")
+#pragma comment(linker, "/merge:B138=138")
+#pragma comment(linker, "/merge:K138=138")
 /******************************************************************
 
 	Double Dragon 3 					Technos Japan Corp 1990
@@ -822,7 +826,7 @@ GAMEX( 1990, ddrago3b, ddragon3, ddrago3b, ddrago3b, 0, ROT0, "bootleg", "Double
 GAMEX( 1990, ctribe,   0,		 ctribe,   ctribe,	 0, ROT0, "Technos", "The Combatribes (US)", GAME_NO_COCKTAIL )
 GAMEX( 1990, ctribeb,  ctribe,	 ctribe,   ctribe,	 0, ROT0, "bootleg", "The Combatribes (bootleg)", GAME_NO_COCKTAIL )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

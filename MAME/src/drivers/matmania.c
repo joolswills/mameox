@@ -1,7 +1,11 @@
 #pragma code_seg("C302")
-#pragma bss_seg("B302")
 #pragma data_seg("D302")
+#pragma bss_seg("B302")
 #pragma const_seg("K302")
+#pragma comment(linker, "/merge:D302=302")
+#pragma comment(linker, "/merge:C302=302")
+#pragma comment(linker, "/merge:B302=302")
+#pragma comment(linker, "/merge:K302=302")
 /***************************************************************************
 
 Mat Mania
@@ -662,7 +666,7 @@ GAME( 1985, matmania, 0,        matmania, matmania, 0, ROT270, "Technos (Taito A
 GAME( 1985, excthour, matmania, matmania, matmania, 0, ROT270, "Technos (Taito license)", "Exciting Hour" )
 GAME( 1986, maniach,  0,        maniach,  matmania, 0, ROT270, "Technos (Taito America license)", "Mania Challenge (set 1)" )
 GAME( 1986, maniach2, maniach,  maniach,  matmania, 0, ROT270, "Technos (Taito America license)", "Mania Challenge (set 2)" )	/* earlier version? */
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

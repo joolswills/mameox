@@ -1,7 +1,11 @@
 #pragma code_seg("C40")
-#pragma bss_seg("B40")
 #pragma data_seg("D40")
+#pragma bss_seg("B40")
 #pragma const_seg("K40")
+#pragma comment(linker, "/merge:D40=40")
+#pragma comment(linker, "/merge:C40=40")
+#pragma comment(linker, "/merge:B40=40")
+#pragma comment(linker, "/merge:K40=40")
 /***************************************************************************
 
 	Atari System 2 hardware
@@ -1822,7 +1826,7 @@ GAME( 1986, ssprint,  0,   sprint,   ssprint,  ssprint,  ROT0,   "Atari Games", 
 GAME( 1986, csprint,  0,   sprint,   csprint,  csprint,  ROT0,   "Atari Games", "Championship Sprint" )
 GAME( 1987, apb,      0,   atarisy2, apb,      apb,      ROT270, "Atari Games", "APB - All Points Bulletin (set 1)" )
 GAME( 1987, apb2,     apb, atarisy2, apb,      apb,      ROT270, "Atari Games", "APB - All Points Bulletin (set 2)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

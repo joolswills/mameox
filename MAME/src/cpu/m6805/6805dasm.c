@@ -1,7 +1,11 @@
-#pragma code_seg("CC17")
-#pragma bss_seg("CB17")
-#pragma data_seg("CD17")
-#pragma const_seg("CK17")
+#pragma code_seg("CC14")
+#pragma data_seg("CD14")
+#pragma bss_seg("CB14")
+#pragma const_seg("CK14")
+#pragma comment(linker, "/merge:CD14=CPU14")
+#pragma comment(linker, "/merge:CC14=CPU14")
+#pragma comment(linker, "/merge:CB14=CPU14")
+#pragma comment(linker, "/merge:CK14=CPU14")
 /*
  *   A quick-hack 68(7)05 disassembler
  *
@@ -249,3 +253,7 @@ unsigned Dasm6805 (char *buf, unsigned pc)
 }
 
 #endif
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C148")
-#pragma bss_seg("B148")
 #pragma data_seg("D148")
+#pragma bss_seg("B148")
 #pragma const_seg("K148")
+#pragma comment(linker, "/merge:D148=148")
+#pragma comment(linker, "/merge:C148=148")
+#pragma comment(linker, "/merge:B148=148")
+#pragma comment(linker, "/merge:K148=148")
 /* Diver Boy
  (c)1992 Device Electronics
 
@@ -265,7 +269,7 @@ ROM_END
 
 
 GAMEX(1992, diverboy, 0, diverboy, diverboy, 0, ORIENTATION_FLIP_X, "Electronic Devices", "Diver Boy", GAME_IMPERFECT_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

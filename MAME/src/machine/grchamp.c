@@ -1,3 +1,11 @@
+#pragma code_seg("C221")
+#pragma data_seg("D221")
+#pragma bss_seg("B221")
+#pragma const_seg("K221")
+#pragma comment(linker, "/merge:D221=221")
+#pragma comment(linker, "/merge:C221=221")
+#pragma comment(linker, "/merge:B221=221")
+#pragma comment(linker, "/merge:K221=221")
 #include "driver.h"
 
 extern UINT8 grchamp_videoreg0;
@@ -128,3 +136,7 @@ WRITE_HANDLER( grchamp_port_1_w ) {
 		break;
 	}
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

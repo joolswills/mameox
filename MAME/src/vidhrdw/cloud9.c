@@ -1,7 +1,11 @@
 #pragma code_seg("C110")
-#pragma bss_seg("B110")
 #pragma data_seg("D110")
+#pragma bss_seg("B110")
 #pragma const_seg("K110")
+#pragma comment(linker, "/merge:D110=110")
+#pragma comment(linker, "/merge:C110=110")
+#pragma comment(linker, "/merge:B110=110")
+#pragma comment(linker, "/merge:K110=110")
 /***************************************************************************
 
 	Atari Cloud 9 (prototype) hardware
@@ -297,7 +301,7 @@ VIDEO_START( cloud9 )
 	return 0;
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C413")
-#pragma bss_seg("B413")
-#pragma data_seg("D413")
-#pragma const_seg("K413")
+#pragma code_seg("C412")
+#pragma data_seg("D412")
+#pragma bss_seg("B412")
+#pragma const_seg("K412")
+#pragma comment(linker, "/merge:D412=412")
+#pragma comment(linker, "/merge:C412=412")
+#pragma comment(linker, "/merge:B412=412")
+#pragma comment(linker, "/merge:K412=412")
 /*
 
 Psikyo PS6807 (PS4):
@@ -188,7 +192,7 @@ VIDEO_START( psikyo4 )
 	screen = 0;
 	return 0;
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

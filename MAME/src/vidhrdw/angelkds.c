@@ -1,7 +1,11 @@
 #pragma code_seg("C19")
-#pragma bss_seg("B19")
 #pragma data_seg("D19")
+#pragma bss_seg("B19")
 #pragma const_seg("K19")
+#pragma comment(linker, "/merge:D19=19")
+#pragma comment(linker, "/merge:C19=19")
+#pragma comment(linker, "/merge:B19=19")
+#pragma comment(linker, "/merge:K19=19")
 /* vidhrdw/angelkds.c - see drivers/angelkds.c for more info */
 
 /* graphical issues
@@ -322,7 +326,7 @@ VIDEO_UPDATE( angelkds )
 	draw_sprites(bitmap,&clip, 0x40);
 	if ((angelkds_layer_ctrl & 0x20) == 0x00) tilemap_draw(bitmap,&clip,tx_tilemap,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

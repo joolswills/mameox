@@ -1,7 +1,11 @@
 #pragma code_seg("C240")
-#pragma bss_seg("B240")
 #pragma data_seg("D240")
+#pragma bss_seg("B240")
 #pragma const_seg("K240")
+#pragma comment(linker, "/merge:D240=240")
+#pragma comment(linker, "/merge:C240=240")
+#pragma comment(linker, "/merge:B240=240")
+#pragma comment(linker, "/merge:K240=240")
 /****************************************************************************
 
 Higemaru
@@ -248,7 +252,7 @@ ROM_END
 
 
 GAME( 1984, higemaru, 0, higemaru, higemaru, 0, ROT0, "Capcom", "Pirate Ship HigeMaru" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

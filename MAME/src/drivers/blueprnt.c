@@ -1,7 +1,11 @@
 #pragma code_seg("C72")
-#pragma bss_seg("B72")
 #pragma data_seg("D72")
+#pragma bss_seg("B72")
 #pragma const_seg("K72")
+#pragma comment(linker, "/merge:D72=72")
+#pragma comment(linker, "/merge:C72=72")
+#pragma comment(linker, "/merge:B72=72")
+#pragma comment(linker, "/merge:K72=72")
 /***************************************************************************
 
 Blue Print memory map (preliminary)
@@ -438,7 +442,7 @@ ROM_END
 GAME( 1982, blueprnt, 0,        blueprnt, blueprnt, 0, ROT270, "[Zilec] Bally Midway", "Blue Print (Midway)" )
 GAME( 1982, blueprnj, blueprnt, blueprnt, blueprnt, 0, ROT270, "[Zilec] Jaleco", "Blue Print (Jaleco)" )
 GAME( 1983, saturn,   0,        blueprnt, saturn,   0, ROT270, "[Zilec] Jaleco", "Saturn" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

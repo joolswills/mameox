@@ -1,7 +1,11 @@
 #pragma code_seg("C154")
-#pragma bss_seg("B154")
 #pragma data_seg("D154")
+#pragma bss_seg("B154")
 #pragma const_seg("K154")
+#pragma comment(linker, "/merge:D154=154")
+#pragma comment(linker, "/merge:C154=154")
+#pragma comment(linker, "/merge:B154=154")
+#pragma comment(linker, "/merge:K154=154")
 /***************************************************************************
 
 	Atari Dominos hardware
@@ -303,7 +307,7 @@ ROM_END
  *************************************/
 
 GAMEX( 1977, dominos, 0, dominos, dominos, 0, ROT0, "Atari", "Dominos", GAME_IMPERFECT_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

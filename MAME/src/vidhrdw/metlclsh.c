@@ -1,7 +1,11 @@
 #pragma code_seg("C312")
-#pragma bss_seg("B312")
 #pragma data_seg("D312")
+#pragma bss_seg("B312")
 #pragma const_seg("K312")
+#pragma comment(linker, "/merge:D312=312")
+#pragma comment(linker, "/merge:C312=312")
+#pragma comment(linker, "/merge:B312=312")
+#pragma comment(linker, "/merge:K312=312")
 /***************************************************************************
 
 							  -= Metal Clash =-
@@ -268,7 +272,7 @@ VIDEO_UPDATE( metlclsh )
 //	usrintf_showmessage("%02X",metlclsh_scrollx[0]);
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

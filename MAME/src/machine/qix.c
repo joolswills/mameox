@@ -1,3 +1,11 @@
+#pragma code_seg("C417")
+#pragma data_seg("D417")
+#pragma bss_seg("B417")
+#pragma const_seg("K417")
+#pragma comment(linker, "/merge:D417=417")
+#pragma comment(linker, "/merge:C417=417")
+#pragma comment(linker, "/merge:B417=417")
+#pragma comment(linker, "/merge:K417=417")
 /***************************************************************************
 
 	Taito Qix hardware
@@ -654,3 +662,7 @@ static READ_HANDLER( slither_trak_ud_r )
 {
 	return readinputport(qix_cocktail_flip ? 5 : 3);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

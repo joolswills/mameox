@@ -1,7 +1,11 @@
 #pragma code_seg("C104")
-#pragma bss_seg("B104")
 #pragma data_seg("D104")
+#pragma bss_seg("B104")
 #pragma const_seg("K104")
+#pragma comment(linker, "/merge:D104=104")
+#pragma comment(linker, "/merge:C104=104")
+#pragma comment(linker, "/merge:B104=104")
+#pragma comment(linker, "/merge:K104=104")
 /***************************************************************************
 
   vidhrdw.c
@@ -419,7 +423,7 @@ VIDEO_UPDATE( ripcord )
 	copybitmap(bitmap, tmpbitmap, 0, 0, 0, 0, &Machine->visible_area, TRANSPARENCY_NONE, 0);
 }
 //ZT
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,3 @@
-#pragma code_seg("CC14")
-#pragma bss_seg("CB14")
-#pragma data_seg("CD14")
-#pragma const_seg("CK14")
 /*
  * 2asm: Convert binary files to 80*86 assembler. Version 1.00
  * Adapted by Andrea Mazzoleni for use with MAME

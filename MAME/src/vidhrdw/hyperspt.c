@@ -1,7 +1,11 @@
 #pragma code_seg("C245")
-#pragma bss_seg("B245")
 #pragma data_seg("D245")
+#pragma bss_seg("B245")
 #pragma const_seg("K245")
+#pragma comment(linker, "/merge:D245=245")
+#pragma comment(linker, "/merge:C245=245")
+#pragma comment(linker, "/merge:B245=245")
+#pragma comment(linker, "/merge:K245=245")
 /***************************************************************************
 
   vidhrdw.c
@@ -316,7 +320,7 @@ VIDEO_UPDATE( roadf )
 				&Machine->visible_area,TRANSPARENCY_COLOR,0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

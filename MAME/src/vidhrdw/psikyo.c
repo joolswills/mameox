@@ -1,7 +1,11 @@
-#pragma code_seg("C412")
-#pragma bss_seg("B412")
-#pragma data_seg("D412")
-#pragma const_seg("K412")
+#pragma code_seg("C411")
+#pragma data_seg("D411")
+#pragma bss_seg("B411")
+#pragma const_seg("K411")
+#pragma comment(linker, "/merge:D411=411")
+#pragma comment(linker, "/merge:C411=411")
+#pragma comment(linker, "/merge:B411=411")
+#pragma comment(linker, "/merge:K411=411")
 /***************************************************************************
 
 							-= Psikyo Games =-
@@ -576,7 +580,7 @@ VIDEO_EOF( psikyo )
 	memcpy(spritebuf2, spritebuf1, 0x2000);
 	memcpy(spritebuf1, spriteram32, 0x2000);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C230")
-#pragma bss_seg("B230")
 #pragma data_seg("D230")
+#pragma bss_seg("B230")
 #pragma const_seg("K230")
+#pragma comment(linker, "/merge:D230=230")
+#pragma comment(linker, "/merge:C230=230")
+#pragma comment(linker, "/merge:B230=230")
+#pragma comment(linker, "/merge:K230=230")
 /***************************************************************************
 
   vidhrdw.c
@@ -159,7 +163,7 @@ VIDEO_UPDATE( gundealr )
 	tilemap_draw(bitmap,cliprect,bg_tilemap,0,0);
 	tilemap_draw(bitmap,cliprect,fg_tilemap,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("CC19")
-#pragma bss_seg("CB19")
-#pragma data_seg("CD19")
-#pragma const_seg("CK19")
+#pragma code_seg("CC16")
+#pragma data_seg("CD16")
+#pragma bss_seg("CB16")
+#pragma const_seg("CK16")
+#pragma comment(linker, "/merge:CD16=CPU16")
+#pragma comment(linker, "/merge:CC16=CPU16")
+#pragma comment(linker, "/merge:CB16=CPU16")
+#pragma comment(linker, "/merge:CK16=CPU16")
 /*
  *   A quick-hack 6803/6808 disassembler
  *
@@ -278,3 +282,7 @@ unsigned Dasm680x (int subtype, char *buf, unsigned pc)
 }
 
 #endif
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

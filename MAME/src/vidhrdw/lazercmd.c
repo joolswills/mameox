@@ -1,7 +1,11 @@
 #pragma code_seg("C276")
-#pragma bss_seg("B276")
 #pragma data_seg("D276")
+#pragma bss_seg("B276")
 #pragma const_seg("K276")
+#pragma comment(linker, "/merge:D276=276")
+#pragma comment(linker, "/merge:C276=276")
+#pragma comment(linker, "/merge:B276=276")
+#pragma comment(linker, "/merge:K276=276")
 /*************************************************************/
 /*                                                           */
 /* Lazer Command video handler                               */
@@ -136,7 +140,7 @@ VIDEO_UPDATE( lazercmd )
 	y = vert_scale(marker_y) - VERT_CHR; /* first line used as scratch pad */
 	plot_pattern(bitmap,x,y);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

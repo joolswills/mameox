@@ -1,7 +1,11 @@
 #pragma code_seg("C108")
-#pragma bss_seg("B108")
 #pragma data_seg("D108")
+#pragma bss_seg("B108")
 #pragma const_seg("K108")
+#pragma comment(linker, "/merge:D108=108")
+#pragma comment(linker, "/merge:C108=108")
+#pragma comment(linker, "/merge:B108=108")
+#pragma comment(linker, "/merge:K108=108")
 /***************************************************************************
 
 	Atari Clay Shoot hardware
@@ -50,7 +54,7 @@ WRITE_HANDLER( clayshoo_videoram_w )
 		data <<= 1;
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

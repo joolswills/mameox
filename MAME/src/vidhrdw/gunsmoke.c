@@ -1,7 +1,11 @@
 #pragma code_seg("C231")
-#pragma bss_seg("B231")
 #pragma data_seg("D231")
+#pragma bss_seg("B231")
 #pragma const_seg("K231")
+#pragma comment(linker, "/merge:D231=231")
+#pragma comment(linker, "/merge:C231=231")
+#pragma comment(linker, "/merge:B231=231")
+#pragma comment(linker, "/merge:K231=231")
 /***************************************************************************
 
   vidhrdw.c
@@ -301,7 +305,7 @@ VIDEO_UPDATE( gunsmoke )
 		}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

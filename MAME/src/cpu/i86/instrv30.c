@@ -1,7 +1,11 @@
-#pragma code_seg("CC24")
-#pragma bss_seg("CB24")
-#pragma data_seg("CD24")
-#pragma const_seg("CK24")
+#pragma code_seg("CC20")
+#pragma data_seg("CD20")
+#pragma bss_seg("CB20")
+#pragma const_seg("CK20")
+#pragma comment(linker, "/merge:CD20=CPU20")
+#pragma comment(linker, "/merge:CC20=CPU20")
+#pragma comment(linker, "/merge:CB20=CPU20")
+#pragma comment(linker, "/merge:CK20=CPU20")
 static void PREFIXV30(_0fpre) (void)	/* Opcode 0x0f */
 {
 	unsigned Opcode = FETCH;
@@ -1313,3 +1317,7 @@ static void PREFIXV30(_brks) (void)		/* Opcode 0xf1 - Break to Security Mode */
 	logerror("PC=%06x : BRKS %02x\n", activecpu_get_pc() - 2, int_vector);
 }
 #endif
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

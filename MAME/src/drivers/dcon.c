@@ -1,7 +1,11 @@
 #pragma code_seg("C134")
-#pragma bss_seg("B134")
 #pragma data_seg("D134")
+#pragma bss_seg("B134")
 #pragma const_seg("K134")
+#pragma comment(linker, "/merge:D134=134")
+#pragma comment(linker, "/merge:C134=134")
+#pragma comment(linker, "/merge:B134=134")
+#pragma comment(linker, "/merge:K134=134")
 /***************************************************************************
 
 	D-Con									(c) 1992 Success
@@ -413,7 +417,7 @@ ROM_END
 
 GAMEX( 1991, sdgndmps, 0, sdgndmps, sdgndmps, 0, ROT0, "Banpresto / Bandai", "SD Gundam Psycho Salamander no Kyoui", GAME_NO_COCKTAIL | GAME_NO_SOUND )
 GAMEX( 1992, dcon,     0, dcon,     dcon,     0, ROT0, "Success",            "D-Con", GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

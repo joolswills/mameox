@@ -1,7 +1,11 @@
 #pragma code_seg("C36")
-#pragma bss_seg("B36")
 #pragma data_seg("D36")
+#pragma bss_seg("B36")
 #pragma const_seg("K36")
+#pragma comment(linker, "/merge:D36=36")
+#pragma comment(linker, "/merge:C36=36")
+#pragma comment(linker, "/merge:B36=36")
+#pragma comment(linker, "/merge:K36=36")
 /***************************************************************************
 
 	Atari G42 hardware
@@ -787,7 +791,7 @@ static DRIVER_INIT( guardian )
 
 GAMEX( 1991, roadriot, 0,        atarig42, roadriot, roadriot, ROT0, "Atari Games", "Road Riot 4WD", GAME_UNEMULATED_PROTECTION )
 GAMEX( 1992, guardian, 0,        atarig42, guardian, guardian, ROT0, "Atari Games", "Guardians of the Hood", GAME_UNEMULATED_PROTECTION )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

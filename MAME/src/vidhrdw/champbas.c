@@ -1,7 +1,11 @@
 #pragma code_seg("C98")
-#pragma bss_seg("B98")
 #pragma data_seg("D98")
+#pragma bss_seg("B98")
 #pragma const_seg("K98")
+#pragma comment(linker, "/merge:D98=98")
+#pragma comment(linker, "/merge:C98=98")
+#pragma comment(linker, "/merge:B98=98")
+#pragma comment(linker, "/merge:K98=98")
 /***************************************************************************
 
   vidhrdw.c
@@ -146,7 +150,7 @@ VIDEO_UPDATE( champbas )
 				&Machine->visible_area,TRANSPARENCY_COLOR,0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C392")
-#pragma bss_seg("B392")
-#pragma data_seg("D392")
-#pragma const_seg("K392")
+#pragma code_seg("C391")
+#pragma data_seg("D391")
+#pragma bss_seg("B391")
+#pragma const_seg("K391")
+#pragma comment(linker, "/merge:D391=391")
+#pragma comment(linker, "/merge:C391=391")
+#pragma comment(linker, "/merge:B391=391")
+#pragma comment(linker, "/merge:K391=391")
 /* PGM System (c)1997 IGS
 
 Based on Information from ElSemi
@@ -1055,7 +1059,7 @@ GAMEX( 1999, photoy2k, pgm,        pgm, sango, djlzz, 	   ROT0, "IGS", "Photo Y2
 GAMEX( 1999, kovsh,    kov,        pgm, sango, kovsh,	   ROT0, "IGS", "Knights of Valour Superheroes / Sangoku Senki Superheroes (ver. 322)", GAME_IMPERFECT_GRAPHICS | GAME_NO_SOUND | GAME_UNEMULATED_PROTECTION | GAME_NOT_WORKING )
 GAMEX( 2001, ddp2,     pgm,        pgm, sango, 0, 	       ROT270, "IGS", "Bee Storm - DoDonPachi II", GAME_IMPERFECT_GRAPHICS | GAME_NO_SOUND | GAME_UNEMULATED_PROTECTION | GAME_NOT_WORKING )
 GAMEX( 2001, kov2plus, pgm,        pgm, sango, 0, 	       ROT0, "IGS", "Knights of Valour 2 Plus / Sangoku Senki 2 Plus", GAME_IMPERFECT_GRAPHICS | GAME_NO_SOUND | GAME_UNEMULATED_PROTECTION | GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

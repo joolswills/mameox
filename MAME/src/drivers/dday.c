@@ -1,7 +1,11 @@
 #pragma code_seg("C135")
-#pragma bss_seg("B135")
 #pragma data_seg("D135")
+#pragma bss_seg("B135")
 #pragma const_seg("K135")
+#pragma comment(linker, "/merge:D135=135")
+#pragma comment(linker, "/merge:C135=135")
+#pragma comment(linker, "/merge:B135=135")
+#pragma comment(linker, "/merge:K135=135")
 /***************************************************************************
 
 D-Day
@@ -419,7 +423,7 @@ ROM_END
 
 GAMEX( 1982, dday,  0,    dday, dday,  0, ROT0, "Olympia", "D-Day", GAME_IMPERFECT_COLORS )
 GAMEX( 1982, ddayc, dday, dday, ddayc, 0, ROT0, "Olympia (Centuri license)", "D-Day (Centuri)", GAME_IMPERFECT_COLORS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

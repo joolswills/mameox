@@ -1,7 +1,11 @@
-#pragma code_seg("CC32")
-#pragma bss_seg("CB32")
-#pragma data_seg("CD32")
-#pragma const_seg("CK32")
+#pragma code_seg("CC26")
+#pragma data_seg("CD26")
+#pragma bss_seg("CB26")
+#pragma const_seg("CK26")
+#pragma comment(linker, "/merge:CD26=CPU26")
+#pragma comment(linker, "/merge:CC26=CPU26")
+#pragma comment(linker, "/merge:CB26=CPU26")
+#pragma comment(linker, "/merge:CK26=CPU26")
 /* arm.c
 
 	ARM 2/3/6 Emulation
@@ -1375,3 +1379,7 @@ static data32_t decodeShift( data32_t insn, data32_t *pCarry)
 	logerror("%08x: Decodeshift error\n",R15);
 	return 0;
 } /* decodeShift */
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

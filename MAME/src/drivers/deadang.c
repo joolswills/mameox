@@ -1,7 +1,11 @@
 #pragma code_seg("C140")
-#pragma bss_seg("B140")
 #pragma data_seg("D140")
+#pragma bss_seg("B140")
 #pragma const_seg("K140")
+#pragma comment(linker, "/merge:D140=140")
+#pragma comment(linker, "/merge:C140=140")
+#pragma comment(linker, "/merge:B140=140")
+#pragma comment(linker, "/merge:K140=140")
 /***************************************************************************
 
 	Dead Angle							(c) 1988 Seibu Kaihatsu
@@ -325,7 +329,7 @@ static DRIVER_INIT( deadang )
 
 GAMEX( 1988, deadang, 0,       deadang, deadang, deadang, ROT0, "Seibu Kaihatsu", "Dead Angle", GAME_IMPERFECT_SOUND )
 GAMEX( 1988, ghunter, deadang, deadang, deadang, deadang, ROT0, "Seibu Kaihatsu (Segasa/Sonic license)", "Gang Hunter (Spain)", GAME_IMPERFECT_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

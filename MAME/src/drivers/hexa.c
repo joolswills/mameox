@@ -1,7 +1,11 @@
 #pragma code_seg("C238")
-#pragma bss_seg("B238")
 #pragma data_seg("D238")
+#pragma bss_seg("B238")
 #pragma const_seg("K238")
+#pragma comment(linker, "/merge:D238=238")
+#pragma comment(linker, "/merge:C238=238")
+#pragma comment(linker, "/merge:B238=238")
+#pragma comment(linker, "/merge:K238=238")
 /****************************************************************************
 
 HEXA
@@ -205,7 +209,7 @@ static DRIVER_INIT( hexa )
 
 
 GAME( 1986?, hexa, 0, hexa, hexa, hexa, ROT0, "D. R. Korea", "Hexa" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

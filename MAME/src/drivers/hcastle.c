@@ -1,7 +1,11 @@
 #pragma code_seg("C237")
-#pragma bss_seg("B237")
 #pragma data_seg("D237")
+#pragma bss_seg("B237")
 #pragma const_seg("K237")
+#pragma comment(linker, "/merge:D237=237")
+#pragma comment(linker, "/merge:C237=237")
+#pragma comment(linker, "/merge:B237=237")
+#pragma comment(linker, "/merge:K237=237")
 /***************************************************************************
 
 	Haunted Castle
@@ -445,7 +449,7 @@ GAME( 1988, hcastle,  0,       hcastle, hcastle, 0, ROT0, "Konami", "Haunted Cas
 GAME( 1988, hcastleo, hcastle, hcastle, hcastle, 0, ROT0, "Konami", "Haunted Castle (version K)" )
 GAME( 1988, hcastlej, hcastle, hcastle, hcastle, 0, ROT0, "Konami", "Akuma-Jou Dracula (Japan version P)" )
 GAME( 1988, hcastljo, hcastle, hcastle, hcastle, 0, ROT0, "Konami", "Akuma-Jou Dracula (Japan version N)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

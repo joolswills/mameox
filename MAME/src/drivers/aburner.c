@@ -1,7 +1,11 @@
 #pragma code_seg("C6")
-#pragma bss_seg("B6")
 #pragma data_seg("D6")
+#pragma bss_seg("B6")
 #pragma const_seg("K6")
+#pragma comment(linker, "/merge:D6=6")
+#pragma comment(linker, "/merge:C6=6")
+#pragma comment(linker, "/merge:B6=6")
+#pragma comment(linker, "/merge:K6=6")
 /*	After Burner Hardware
 **	2xMC68000 + Z80
 **	YM2151 + Custom PCM
@@ -915,7 +919,7 @@ GAME( 1987, aburner2, 0,        aburner,  aburner2, aburner2, ROT0, "Sega", "Aft
 GAMEX(19??, loffire,  0,        aburner,  aburner,  aburner,  ROT0, "Sega", "Line of Fire", GAME_NOT_WORKING )
 GAMEX(19??, thndrbld, 0,        aburner,  thndrbld, aburner,  ROT0, "Sega", "Thunder Blade", GAME_NOT_WORKING )
 GAME( 19??, thndrbdj, thndrbld, aburner,  thndrbld, thndrbdj, ROT0, "Sega", "Thunder Blade (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

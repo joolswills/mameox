@@ -1,7 +1,11 @@
 #pragma code_seg("C239")
-#pragma bss_seg("B239")
 #pragma data_seg("D239")
+#pragma bss_seg("B239")
 #pragma const_seg("K239")
+#pragma comment(linker, "/merge:D239=239")
+#pragma comment(linker, "/merge:C239=239")
+#pragma comment(linker, "/merge:B239=239")
+#pragma comment(linker, "/merge:K239=239")
 #include "driver.h"
 
 
@@ -177,7 +181,7 @@ VIDEO_UPDATE( hexion )
 	tilemap_draw(bitmap,cliprect,tilemap[1],0,0);
 	tilemap_draw(bitmap,cliprect,tilemap[0],0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

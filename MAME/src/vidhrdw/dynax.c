@@ -1,7 +1,11 @@
 #pragma code_seg("C161")
-#pragma bss_seg("B161")
 #pragma data_seg("D161")
+#pragma bss_seg("B161")
 #pragma const_seg("K161")
+#pragma comment(linker, "/merge:D161=161")
+#pragma comment(linker, "/merge:C161=161")
+#pragma comment(linker, "/merge:B161=161")
+#pragma comment(linker, "/merge:K161=161")
 /***************************************************************************
 
 						-= Dynax / Nakanihon Games =-
@@ -830,7 +834,7 @@ VIDEO_UPDATE( mjdialq2 )
 	if (layers_ctrl & 1)	mjdialq2_copylayer( bitmap, cliprect, 0 );
 	if (layers_ctrl & 2)	mjdialq2_copylayer( bitmap, cliprect, 1 );
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

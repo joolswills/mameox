@@ -1,7 +1,11 @@
 #pragma code_seg("C179")
-#pragma bss_seg("B179")
 #pragma data_seg("D179")
+#pragma bss_seg("B179")
 #pragma const_seg("K179")
+#pragma comment(linker, "/merge:D179=179")
+#pragma comment(linker, "/merge:C179=179")
+#pragma comment(linker, "/merge:B179=179")
+#pragma comment(linker, "/merge:K179=179")
 /***************************************************************************
 
 Finalizer (GX523) (c) 1985 Konami
@@ -521,7 +525,7 @@ static DRIVER_INIT( finalizr )
 
 GAMEX( 1985, finalizr, 0,        finalizr, finalizr, finalizr, ROT90, "Konami", "Finalizer - Super Transformation", GAME_IMPERFECT_SOUND | GAME_NO_COCKTAIL )
 GAMEX( 1985, finalizb, finalizr, finalizr, finalizb, finalizr, ROT90, "bootleg", "Finalizer - Super Transformation (bootleg)", GAME_IMPERFECT_SOUND | GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

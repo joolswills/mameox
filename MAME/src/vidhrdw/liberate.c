@@ -1,7 +1,11 @@
 #pragma code_seg("C281")
-#pragma bss_seg("B281")
 #pragma data_seg("D281")
+#pragma bss_seg("B281")
 #pragma const_seg("K281")
+#pragma comment(linker, "/merge:D281=281")
+#pragma comment(linker, "/merge:C281=281")
+#pragma comment(linker, "/merge:B281=281")
+#pragma comment(linker, "/merge:K281=281")
 /*******************************************************************************
 
 	Todo:
@@ -439,7 +443,7 @@ VIDEO_UPDATE( liberate )
 	liberate_drawsprites(bitmap);
 	tilemap_draw(bitmap,cliprect,fix_tilemap,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("CC28")
-#pragma bss_seg("CB28")
-#pragma data_seg("CD28")
-#pragma const_seg("CK28")
+#pragma code_seg("CC23")
+#pragma data_seg("CD23")
+#pragma bss_seg("CB23")
+#pragma const_seg("CK23")
+#pragma comment(linker, "/merge:CD23=CPU23")
+#pragma comment(linker, "/merge:CC23=CPU23")
+#pragma comment(linker, "/merge:CB23=CPU23")
+#pragma comment(linker, "/merge:CK23=CPU23")
 /*****************************************************************************
 
 	h6280.c - Portable HuC6280 emulator
@@ -500,3 +504,7 @@ WRITE_HANDLER( H6280_timer_w )
 }
 
 /*****************************************************************************/
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

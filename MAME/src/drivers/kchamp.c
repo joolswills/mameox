@@ -1,7 +1,11 @@
 #pragma code_seg("C263")
-#pragma bss_seg("B263")
 #pragma data_seg("D263")
+#pragma bss_seg("B263")
 #pragma const_seg("K263")
+#pragma comment(linker, "/merge:D263=263")
+#pragma comment(linker, "/merge:C263=263")
+#pragma comment(linker, "/merge:B263=263")
+#pragma comment(linker, "/merge:K263=263")
 /***************************************************************************
 
 Karate Champ - (c) 1984 Data East
@@ -735,7 +739,7 @@ GAMEX( 1984, kchamp,   0,      kchamp,   kchamp,   0,        ROT90, "Data East U
 GAMEX( 1984, karatedo, kchamp, kchamp,   kchamp,   0,        ROT90, "Data East Corporation", "Karate Dou (Japan)", GAME_NO_COCKTAIL )
 GAMEX( 1984, kchampvs, kchamp, kchampvs, kchampvs, kchampvs, ROT90, "Data East USA", "Karate Champ (US VS version)", GAME_NO_COCKTAIL )
 GAMEX( 1984, karatevs, kchamp, kchampvs, kchampvs, kchampvs, ROT90, "Data East Corporation", "Taisen Karate Dou (Japan VS version)", GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

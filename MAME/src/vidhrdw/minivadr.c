@@ -1,7 +1,11 @@
 #pragma code_seg("C322")
-#pragma bss_seg("B322")
 #pragma data_seg("D322")
+#pragma bss_seg("B322")
 #pragma const_seg("K322")
+#pragma comment(linker, "/merge:D322=322")
+#pragma comment(linker, "/merge:C322=322")
+#pragma comment(linker, "/merge:B322=322")
+#pragma comment(linker, "/merge:K322=322")
 /***************************************************************************
 
 Minivader (Space Invaders's mini game)
@@ -74,7 +78,7 @@ VIDEO_UPDATE( minivadr )
 	}
 	copybitmap(bitmap,tmpbitmap,0,0,0,0,&Machine->visible_area,TRANSPARENCY_NONE,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

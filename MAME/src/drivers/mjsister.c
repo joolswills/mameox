@@ -1,7 +1,11 @@
 #pragma code_seg("C327")
-#pragma bss_seg("B327")
 #pragma data_seg("D327")
+#pragma bss_seg("B327")
 #pragma const_seg("K327")
+#pragma comment(linker, "/merge:D327=327")
+#pragma comment(linker, "/merge:C327=327")
+#pragma comment(linker, "/merge:B327=327")
+#pragma comment(linker, "/merge:K327=327")
 /*****************************************************************************
 
 Mahjong Sisters (c) 1986 Toa Plan
@@ -365,7 +369,7 @@ ROM_START( mjsister )
 ROM_END
 
 GAME( 1986, mjsister, 0, mjsister, mjsister, 0, ROT0, "Toaplan", "Mahjong Sisters (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

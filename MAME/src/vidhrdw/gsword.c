@@ -1,7 +1,11 @@
 #pragma code_seg("C227")
-#pragma bss_seg("B227")
 #pragma data_seg("D227")
+#pragma bss_seg("B227")
 #pragma const_seg("K227")
+#pragma comment(linker, "/merge:D227=227")
+#pragma comment(linker, "/merge:C227=227")
+#pragma comment(linker, "/merge:B227=227")
+#pragma comment(linker, "/merge:K227=227")
 /***************************************************************************
   Great Swordsman
 
@@ -267,7 +271,7 @@ VIDEO_UPDATE( gsword )
 	render_sprites(bitmap);
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

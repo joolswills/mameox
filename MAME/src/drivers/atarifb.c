@@ -1,7 +1,11 @@
 #pragma code_seg("C34")
-#pragma bss_seg("B34")
 #pragma data_seg("D34")
+#pragma bss_seg("B34")
 #pragma const_seg("K34")
+#pragma comment(linker, "/merge:D34=34")
+#pragma comment(linker, "/merge:C34=34")
+#pragma comment(linker, "/merge:B34=34")
+#pragma comment(linker, "/merge:K34=34")
 /***************************************************************************
 
 	Atari Football hardware
@@ -978,7 +982,7 @@ GAME( 1979, atarifb4, atarifb, atarifb4, atarifb4, atarifb4, ROT0, "Atari", "Ata
 GAME( 1979, abaseb,   0,       abaseb,   abaseb,   abaseb,   ROT0, "Atari", "Atari Baseball (set 1)" )
 GAME( 1979, abaseb2,  abaseb,  abaseb,   abaseb,   abaseb,   ROT0, "Atari", "Atari Baseball (set 2)" )
 GAME( 1980, soccer,   0,       soccer,   soccer,   soccer,   ROT0, "Atari", "Atari Soccer" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

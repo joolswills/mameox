@@ -1,7 +1,11 @@
 #pragma code_seg("C192")
-#pragma bss_seg("B192")
 #pragma data_seg("D192")
+#pragma bss_seg("B192")
 #pragma const_seg("K192")
+#pragma comment(linker, "/merge:D192=192")
+#pragma comment(linker, "/merge:C192=192")
+#pragma comment(linker, "/merge:B192=192")
+#pragma comment(linker, "/merge:K192=192")
 /******************************************************************************
 
 	Game Driver for Video System Mahjong series.
@@ -1371,7 +1375,7 @@ GAME( 1989, mfunclub, 0, fromance, mfunclub, 0, ROT0, "Video System Co.", "Mahjo
 GAME( 1990, daiyogen, 0, fromance, daiyogen, 0, ROT0, "Video System Co.", "Mahjong Daiyogen (Japan)" )
 GAME( 1991, nmsengen, 0, fromance, nmsengen, 0, ROT0, "Video System Co.", "Nekketsu Mahjong Sengen! AFTER 5 (Japan)" )
 GAME( 1991, fromance, 0, fromance, fromance, 0, ROT0, "Video System Co.", "Idol-Mahjong Final Romance (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C213")
-#pragma bss_seg("B213")
 #pragma data_seg("D213")
+#pragma bss_seg("B213")
 #pragma const_seg("K213")
+#pragma comment(linker, "/merge:D213=213")
+#pragma comment(linker, "/merge:C213=213")
+#pragma comment(linker, "/merge:B213=213")
+#pragma comment(linker, "/merge:K213=213")
 /*
 Taito Gladiator (1986)
 Known ROM SETS: Golden Castle, Ohgon no Siro
@@ -662,7 +666,7 @@ ROM_END
 
 GAMEX( 1986, gladiatr, 0,        gladiatr, gladiatr, 0, ROT0, "Taito America Corporation", "Gladiator (US)", GAME_NO_COCKTAIL )
 GAMEX( 1986, ogonsiro, gladiatr, gladiatr, gladiatr, 0, ROT0, "Taito Corporation", "Ohgon no Siro (Japan)", GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

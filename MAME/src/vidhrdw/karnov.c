@@ -1,7 +1,11 @@
 #pragma code_seg("C262")
-#pragma bss_seg("B262")
 #pragma data_seg("D262")
+#pragma bss_seg("B262")
 #pragma const_seg("K262")
+#pragma comment(linker, "/merge:D262=262")
+#pragma comment(linker, "/merge:C262=262")
+#pragma comment(linker, "/merge:B262=262")
+#pragma comment(linker, "/merge:K262=262")
 /*******************************************************************************
 
 	Karnov - Bryan McPhail, mish@tendril.co.uk
@@ -275,7 +279,7 @@ VIDEO_START( wndrplnt )
 }
 
 /******************************************************************************/
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

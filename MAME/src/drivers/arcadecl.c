@@ -1,7 +1,11 @@
 #pragma code_seg("C23")
-#pragma bss_seg("B23")
 #pragma data_seg("D23")
+#pragma bss_seg("B23")
 #pragma const_seg("K23")
+#pragma comment(linker, "/merge:D23=23")
+#pragma comment(linker, "/merge:C23=23")
+#pragma comment(linker, "/merge:B23=23")
+#pragma comment(linker, "/merge:K23=23")
 /***************************************************************************
 
 	Atari Arcade Classics hardware (prototypes)
@@ -460,7 +464,7 @@ static DRIVER_INIT( sparkz )
 
 GAME( 1992, arcadecl, 0, arcadecl, arcadecl, arcadecl, ROT0, "Atari Games", "Arcade Classics (prototype)" )
 GAME( 1992, sparkz,   0, arcadecl, sparkz,   sparkz,   ROT0, "Atari Games", "Sparkz (prototype)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

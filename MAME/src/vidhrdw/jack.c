@@ -1,7 +1,11 @@
 #pragma code_seg("C253")
-#pragma bss_seg("B253")
 #pragma data_seg("D253")
+#pragma bss_seg("B253")
 #pragma const_seg("K253")
+#pragma comment(linker, "/merge:D253=253")
+#pragma comment(linker, "/merge:C253=253")
+#pragma comment(linker, "/merge:B253=253")
+#pragma comment(linker, "/merge:K253=253")
 /***************************************************************************
 
   vidhrdw/jack.c
@@ -102,7 +106,7 @@ VIDEO_UPDATE( jack )
 				&Machine->visible_area,TRANSPARENCY_PEN,0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C28")
-#pragma bss_seg("B28")
 #pragma data_seg("D28")
+#pragma bss_seg("B28")
 #pragma const_seg("K28")
+#pragma comment(linker, "/merge:D28=28")
+#pragma comment(linker, "/merge:C28=28")
+#pragma comment(linker, "/merge:B28=28")
+#pragma comment(linker, "/merge:K28=28")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/konamiic.h"
@@ -116,7 +120,7 @@ VIDEO_UPDATE( asterix )
 
 	K054157_tilemap_draw(bitmap, cliprect, 2, 0, 0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

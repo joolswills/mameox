@@ -1,7 +1,11 @@
-#pragma code_seg("C369")
-#pragma bss_seg("B369")
-#pragma data_seg("D369")
-#pragma const_seg("K369")
+#pragma code_seg("C368")
+#pragma data_seg("D368")
+#pragma bss_seg("B368")
+#pragma const_seg("K368")
+#pragma comment(linker, "/merge:D368=368")
+#pragma comment(linker, "/merge:C368=368")
+#pragma comment(linker, "/merge:B368=368")
+#pragma comment(linker, "/merge:K368=368")
 /***************************************************************************
 
 	Atari "Round" hardware
@@ -123,7 +127,7 @@ VIDEO_UPDATE( offtwall )
 				}
 		}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

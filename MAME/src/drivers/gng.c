@@ -1,7 +1,11 @@
 #pragma code_seg("C215")
-#pragma bss_seg("B215")
 #pragma data_seg("D215")
+#pragma bss_seg("B215")
 #pragma const_seg("K215")
+#pragma comment(linker, "/merge:D215=215")
+#pragma comment(linker, "/merge:C215=215")
+#pragma comment(linker, "/merge:B215=215")
+#pragma comment(linker, "/merge:K215=215")
 /***************************************************************************
 
 Ghosts'n Goblins
@@ -710,7 +714,7 @@ GAME( 1985, makaimuc, gng, gng, makaimur, 0,	   ROT0, "Capcom", "Makai-Mura (Jap
 GAME( 1985, makaimug, gng, gng, makaimur, 0,	   ROT0, "Capcom", "Makai-Mura (Japan Revision G)" )
 GAME( 1989, diamond,  0,   gng, diamond,  diamond, ROT0, "KH Video", "Diamond Run" )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

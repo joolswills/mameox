@@ -1,3 +1,11 @@
+#pragma code_seg("C315")
+#pragma data_seg("D315")
+#pragma bss_seg("B315")
+#pragma const_seg("K315")
+#pragma comment(linker, "/merge:D315=315")
+#pragma comment(linker, "/merge:C315=315")
+#pragma comment(linker, "/merge:B315=315")
+#pragma comment(linker, "/merge:K315=315")
 /***************************************************************************
 
 	Atari Major Havoc hardware
@@ -332,3 +340,7 @@ WRITE_HANDLER( mhavoc_out_1_w )
 	/* Bit 0 = right coin counter */
 	coin_counter_w(1, data & 0x01);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

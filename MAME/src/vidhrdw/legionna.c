@@ -1,7 +1,11 @@
 #pragma code_seg("C277")
-#pragma bss_seg("B277")
 #pragma data_seg("D277")
+#pragma bss_seg("B277")
 #pragma const_seg("K277")
+#pragma comment(linker, "/merge:D277=277")
+#pragma comment(linker, "/merge:C277=277")
+#pragma comment(linker, "/merge:B277=277")
+#pragma comment(linker, "/merge:K277=277")
 /***************************************************************************
 
 	Legionnaire / Heated Barrel video hardware (derived from D-Con)
@@ -300,7 +304,7 @@ VIDEO_UPDATE( legionna )
 #endif
 	tilemap_draw(bitmap,cliprect,text_layer,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C130")
-#pragma bss_seg("B130")
 #pragma data_seg("D130")
+#pragma bss_seg("B130")
 #pragma const_seg("K130")
+#pragma comment(linker, "/merge:D130=130")
+#pragma comment(linker, "/merge:C130=130")
+#pragma comment(linker, "/merge:B130=130")
+#pragma comment(linker, "/merge:K130=130")
 /***************************************************************************
 
 Darius    (c) Taito 1986
@@ -1162,7 +1166,7 @@ GAME( 1986, darius,   0,        darius,   darius,   darius,   ROT0, "Taito Corpo
 GAME( 1986, dariusj,  darius,   darius,   dariusj,  darius,   ROT0, "Taito Corporation", "Darius (Japan)" )
 GAME( 1986, dariuso,  darius,   darius,   dariusj,  darius,   ROT0, "Taito Corporation", "Darius (Japan old version)" )
 GAME( 1986, dariuse,  darius,   darius,   dariuse,  darius,   ROT0, "Taito Corporation", "Darius (Extra) (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C430")
-#pragma bss_seg("B430")
-#pragma data_seg("D430")
-#pragma const_seg("K430")
+#pragma code_seg("C429")
+#pragma data_seg("D429")
+#pragma bss_seg("B429")
+#pragma const_seg("K429")
+#pragma comment(linker, "/merge:D429=429")
+#pragma comment(linker, "/merge:C429=429")
+#pragma comment(linker, "/merge:B429=429")
+#pragma comment(linker, "/merge:K429=429")
 /***************************************************************************
 
   vidhrdw.c
@@ -410,7 +414,7 @@ VIDEO_UPDATE( retofinv )
 	retofinv_render_sprites(bitmap);
 	retofinv_draw_foreground(bitmap);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

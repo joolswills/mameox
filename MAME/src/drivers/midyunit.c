@@ -1,7 +1,11 @@
 #pragma code_seg("C320")
-#pragma bss_seg("B320")
 #pragma data_seg("D320")
+#pragma bss_seg("B320")
 #pragma const_seg("K320")
+#pragma comment(linker, "/merge:D320=320")
+#pragma comment(linker, "/merge:C320=320")
+#pragma comment(linker, "/merge:B320=320")
+#pragma comment(linker, "/merge:K320=320")
 /*************************************************************************
 
 	Williams/Midway Y/Z-unit system
@@ -1678,7 +1682,7 @@ GAME( 1992, mkla3,    mk,      mk,       mkla1,   mkla3,    ROT0, "Midway",   "M
 GAME( 1992, mkla4,    mk,      mk,       mkla1,   mkla4,    ROT0, "Midway",   "Mortal Kombat (rev 4.0 09/28/92)" )
 GAME( 1992, totcarn,  0,       totcarn,  totcarn, totcarn,  ROT0, "Midway",   "Total Carnage (rev LA1 03/10/92)" )
 GAME( 1992, totcarnp, totcarn, totcarn,  totcarn, totcarnp, ROT0, "Midway",   "Total Carnage (prototype, rev 1.0 01/25/92)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

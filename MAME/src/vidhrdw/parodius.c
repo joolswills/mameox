@@ -1,7 +1,11 @@
-#pragma code_seg("C386")
-#pragma bss_seg("B386")
-#pragma data_seg("D386")
-#pragma const_seg("K386")
+#pragma code_seg("C385")
+#pragma data_seg("D385")
+#pragma bss_seg("B385")
+#pragma const_seg("K385")
+#pragma comment(linker, "/merge:D385=385")
+#pragma comment(linker, "/merge:C385=385")
+#pragma comment(linker, "/merge:B385=385")
+#pragma comment(linker, "/merge:K385=385")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 
@@ -105,7 +109,7 @@ VIDEO_UPDATE( parodius )
 
 	K053245_sprites_draw(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

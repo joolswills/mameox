@@ -1,7 +1,11 @@
 #pragma code_seg("C85")
-#pragma bss_seg("B85")
 #pragma data_seg("D85")
+#pragma bss_seg("B85")
 #pragma const_seg("K85")
+#pragma comment(linker, "/merge:D85=85")
+#pragma comment(linker, "/merge:C85=85")
+#pragma comment(linker, "/merge:B85=85")
+#pragma comment(linker, "/merge:K85=85")
 /******************************************************************
 
 Cabal  (c)1998 Tad
@@ -724,7 +728,7 @@ static DRIVER_INIT( cabal )
 GAMEX( 1988, cabal,   0,     cabal,   cabal,   cabal, ROT0, "Tad (Fabtek license)", "Cabal (US set 1)", GAME_IMPERFECT_SOUND )
 GAMEX( 1988, cabal2,  cabal, cabal,   cabal,   cabal, ROT0, "Tad (Fabtek license)", "Cabal (US set 2)", GAME_IMPERFECT_SOUND )
 GAMEX( 1988, cabalbl, cabal, cabalbl, cabalbl, 0,     ROT0, "bootleg", "Cabal (bootleg)", GAME_IMPERFECT_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

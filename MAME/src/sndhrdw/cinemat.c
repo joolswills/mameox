@@ -1,7 +1,11 @@
 #pragma code_seg("C103")
-#pragma bss_seg("B103")
 #pragma data_seg("D103")
+#pragma bss_seg("B103")
 #pragma const_seg("K103")
+#pragma comment(linker, "/merge:D103=103")
+#pragma comment(linker, "/merge:C103=103")
+#pragma comment(linker, "/merge:B103=103")
+#pragma comment(linker, "/merge:K103=103")
 /***************************************************************************
 
 	Cinematronics vector hardware
@@ -772,7 +776,7 @@ MACHINE_DRIVER_START( demon_sound )
 	/* sound hardware */
 	MDRV_SOUND_ADD(AY8910, demon_ay8910_interface)
 MACHINE_DRIVER_END
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

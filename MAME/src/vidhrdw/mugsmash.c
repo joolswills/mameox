@@ -1,7 +1,11 @@
 #pragma code_seg("C339")
-#pragma bss_seg("B339")
 #pragma data_seg("D339")
+#pragma bss_seg("B339")
 #pragma const_seg("K339")
+#pragma comment(linker, "/merge:D339=339")
+#pragma comment(linker, "/merge:C339=339")
+#pragma comment(linker, "/merge:B339=339")
+#pragma comment(linker, "/merge:K339=339")
 /* vidhrdw/mugsmash.c - see drivers/mugsmash.c for more info */
 
 #include "driver.h"
@@ -165,7 +169,7 @@ VIDEO_UPDATE( mugsmash )
 	tilemap_draw(bitmap,cliprect,mugsmash_tilemap1,0,0);
 	draw_sprites(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

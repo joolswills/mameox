@@ -1,7 +1,11 @@
 #pragma code_seg("C248")
-#pragma bss_seg("B248")
 #pragma data_seg("D248")
+#pragma bss_seg("B248")
 #pragma const_seg("K248")
+#pragma comment(linker, "/merge:D248=248")
+#pragma comment(linker, "/merge:C248=248")
+#pragma comment(linker, "/merge:B248=248")
+#pragma comment(linker, "/merge:K248=248")
 #include "driver.h"
 #include "iqblock.h"
 
@@ -107,7 +111,7 @@ VIDEO_UPDATE( iqblock )
 	tilemap_draw(bitmap,cliprect,bg_tilemap,0,0);
 	tilemap_draw(bitmap,cliprect,fg_tilemap,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

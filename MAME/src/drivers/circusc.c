@@ -1,7 +1,11 @@
 #pragma code_seg("C105")
-#pragma bss_seg("B105")
 #pragma data_seg("D105")
+#pragma bss_seg("B105")
 #pragma const_seg("K105")
+#pragma comment(linker, "/merge:D105=105")
+#pragma comment(linker, "/merge:C105=105")
+#pragma comment(linker, "/merge:B105=105")
+#pragma comment(linker, "/merge:K105=105")
 /***************************************************************************
 
 Based on drivers from Juno First emulator by Chris Hardy (chrish@kcbbs.gen.nz)
@@ -422,7 +426,7 @@ GAME( 1984, circusc,  0,       circusc, circusc, circusc, ROT90, "Konami", "Circ
 GAME( 1984, circusc2, circusc, circusc, circusc, circusc, ROT90, "Konami", "Circus Charlie (no level select)" )
 GAME( 1984, circuscc, circusc, circusc, circusc, circusc, ROT90, "Konami (Centuri licence)", "Circus Charlie (Centuri)" )
 GAME( 1984, circusce, circusc, circusc, circusc, circusc, ROT90, "Konami (Centuri licence)", "Circus Charlie (Centuri, earlier)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

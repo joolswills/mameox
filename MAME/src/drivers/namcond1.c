@@ -1,7 +1,11 @@
-#pragma code_seg("C348")
-#pragma bss_seg("B348")
-#pragma data_seg("D348")
-#pragma const_seg("K348")
+#pragma code_seg("C347")
+#pragma data_seg("D347")
+#pragma bss_seg("B347")
+#pragma const_seg("K347")
+#pragma comment(linker, "/merge:D347=347")
+#pragma comment(linker, "/merge:C347=347")
+#pragma comment(linker, "/merge:B347=347")
+#pragma comment(linker, "/merge:K347=347")
 /*************************************************************
 
     Namco ND-1 Driver - Mark McDougall
@@ -317,7 +321,7 @@ GAMEX( 1995, ncv1j,  ncv1, namcond1, namcond1, 0, ROT90, "Namco", "Namco Classic
 GAMEX( 1995, ncv1j2, ncv1, namcond1, namcond1, 0, ROT90, "Namco", "Namco Classics Collection Vol.1 (Japan set 2)", GAME_NO_SOUND | GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1996, ncv2,      0, namcond1, namcond1, 0, ROT90, "Namco", "Namco Classics Collection Vol.2", GAME_NOT_WORKING | GAME_NO_SOUND | GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1996, ncv2j,  ncv2, namcond1, namcond1, 0, ROT90, "Namco", "Namco Classics Collection Vol.2 (Japan)", GAME_NOT_WORKING | GAME_NO_SOUND | GAME_IMPERFECT_GRAPHICS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

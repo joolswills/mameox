@@ -1,7 +1,11 @@
 #pragma code_seg("C93")
-#pragma bss_seg("B93")
 #pragma data_seg("D93")
+#pragma bss_seg("B93")
 #pragma const_seg("K93")
+#pragma comment(linker, "/merge:D93=93")
+#pragma comment(linker, "/merge:C93=93")
+#pragma comment(linker, "/merge:B93=93")
+#pragma comment(linker, "/merge:K93=93")
 /***************************************************************************
 
 	Atari Crystal Castles hardware
@@ -349,7 +353,7 @@ VIDEO_UPDATE( ccastles )
 		}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C210")
-#pragma bss_seg("B210")
 #pragma data_seg("D210")
+#pragma bss_seg("B210")
 #pragma const_seg("K210")
+#pragma comment(linker, "/merge:D210=210")
+#pragma comment(linker, "/merge:C210=210")
+#pragma comment(linker, "/merge:B210=210")
+#pragma comment(linker, "/merge:K210=210")
 /****************************************************************************
  *
  * geebee.c
@@ -139,7 +143,7 @@ void geebee_sh_update(void)
 {
 	stream_update(channel,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

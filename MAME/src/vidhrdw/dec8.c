@@ -1,7 +1,11 @@
 #pragma code_seg("C142")
-#pragma bss_seg("B142")
 #pragma data_seg("D142")
+#pragma bss_seg("B142")
 #pragma const_seg("K142")
+#pragma comment(linker, "/merge:D142=142")
+#pragma comment(linker, "/merge:C142=142")
+#pragma comment(linker, "/merge:B142=142")
+#pragma comment(linker, "/merge:K142=142")
 /***************************************************************************
 
 Cobra Command:
@@ -855,7 +859,7 @@ VIDEO_START( garyoret )
 }
 
 /******************************************************************************/
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

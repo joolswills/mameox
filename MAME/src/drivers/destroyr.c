@@ -1,7 +1,11 @@
 #pragma code_seg("C146")
-#pragma bss_seg("B146")
 #pragma data_seg("D146")
+#pragma bss_seg("B146")
 #pragma const_seg("K146")
+#pragma comment(linker, "/merge:D146=146")
+#pragma comment(linker, "/merge:C146=146")
+#pragma comment(linker, "/merge:B146=146")
+#pragma comment(linker, "/merge:K146=146")
 /***************************************************************************
 
 Atari Destroyer Driver
@@ -405,7 +409,7 @@ ROM_END
 
 
 GAMEX( 1977, destroyr, 0, destroyr, destroyr, 0, ORIENTATION_FLIP_X, "Atari", "Destroyer", GAME_NO_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C336")
-#pragma bss_seg("B336")
 #pragma data_seg("D336")
+#pragma bss_seg("B336")
 #pragma const_seg("K336")
+#pragma comment(linker, "/merge:D336=336")
+#pragma comment(linker, "/merge:C336=336")
+#pragma comment(linker, "/merge:B336=336")
+#pragma comment(linker, "/merge:K336=336")
 /***************************************************************************
 
   vidhrdw.c
@@ -154,7 +158,7 @@ VIDEO_UPDATE( mrjong )
 				&Machine->visible_area, TRANSPARENCY_PEN, 0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

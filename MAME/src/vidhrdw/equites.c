@@ -1,7 +1,11 @@
 #pragma code_seg("C165")
-#pragma bss_seg("B165")
 #pragma data_seg("D165")
+#pragma bss_seg("B165")
 #pragma const_seg("K165")
+#pragma comment(linker, "/merge:D165=165")
+#pragma comment(linker, "/merge:C165=165")
+#pragma comment(linker, "/merge:B165=165")
+#pragma comment(linker, "/merge:K165=165")
 /*******************************************************************************
 
 Equites           (c) 1984 Alpha Denshi Co./Sega
@@ -707,7 +711,7 @@ WRITE16_HANDLER(splndrbt_bgcolor_w)
 }
 
 /******************************************************************************/
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C161")
-#pragma bss_seg("B161")
 #pragma data_seg("D161")
+#pragma bss_seg("B161")
 #pragma const_seg("K161")
+#pragma comment(linker, "/merge:D161=161")
+#pragma comment(linker, "/merge:C161=161")
+#pragma comment(linker, "/merge:B161=161")
+#pragma comment(linker, "/merge:K161=161")
 /***************************************************************************
 
 Some Dynax games using the second version of their blitter
@@ -1854,7 +1858,7 @@ GAMEX(1993, ladyfrog, 0,        ladyfrog, sprtmtch, 0,    ROT0,   "Microhard", "
 GAMEX(1993, ladyfrga, ladyfrog, ladyfrog, sprtmtch, 0,    ROT0,   "Microhard", "The Return of Lady Frog (set 2)", GAME_NOT_WORKING )
 GAME( 1994, maya,     0,        sprtmtch, sprtmtch, maya, ROT0,   "Promat",    "Maya" )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

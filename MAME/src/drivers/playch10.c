@@ -1,7 +1,11 @@
-#pragma code_seg("C399")
-#pragma bss_seg("B399")
-#pragma data_seg("D399")
-#pragma const_seg("K399")
+#pragma code_seg("C398")
+#pragma data_seg("D398")
+#pragma bss_seg("B398")
+#pragma const_seg("K398")
+#pragma comment(linker, "/merge:D398=398")
+#pragma comment(linker, "/merge:C398=398")
+#pragma comment(linker, "/merge:B398=398")
+#pragma comment(linker, "/merge:K398=398")
 /***************************************************************************
 
 Playchoice 10 - (c) 1986 Nintendo of America
@@ -1651,7 +1655,7 @@ GAME( 1990, pc_sjetm,playch10, playch10, playch10, pciboard, ROT0, "Rare", "Play
 
 /* K-Board Games */
 GAME( 1991, pc_moglf,playch10, playch10, playch10, pckboard, ROT0, "Nintendo", "PlayChoice-10: Mario's Open Golf" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

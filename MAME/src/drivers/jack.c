@@ -1,7 +1,11 @@
 #pragma code_seg("C253")
-#pragma bss_seg("B253")
 #pragma data_seg("D253")
+#pragma bss_seg("B253")
 #pragma const_seg("K253")
+#pragma comment(linker, "/merge:D253=253")
+#pragma comment(linker, "/merge:C253=253")
+#pragma comment(linker, "/merge:B253=253")
+#pragma comment(linker, "/merge:K253=253")
 /***************************************************************************
 
 Jack the Giant Killer memory map (preliminary)
@@ -1042,7 +1046,7 @@ GAME( 1982, sucasino, 0,        jack, sucasino, jack,     ROT90, "Data Amusement
 GAME( 1981, tripool,  0,        tripool, tripool,  jack,     ROT90, "Noma (Casino Tech license)", "Tri-Pool (Casino Tech)" )
 GAME( 1981, tripoola, tripool,  tripool, tripool,  jack,     ROT90, "Noma (Costal Games license)", "Tri-Pool (Costal Games)" )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

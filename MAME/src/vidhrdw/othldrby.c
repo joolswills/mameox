@@ -1,7 +1,11 @@
-#pragma code_seg("C378")
-#pragma bss_seg("B378")
-#pragma data_seg("D378")
-#pragma const_seg("K378")
+#pragma code_seg("C377")
+#pragma data_seg("D377")
+#pragma bss_seg("B377")
+#pragma const_seg("K377")
+#pragma comment(linker, "/merge:D377=377")
+#pragma comment(linker, "/merge:C377=377")
+#pragma comment(linker, "/merge:B377=377")
+#pragma comment(linker, "/merge:K377=377")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -231,7 +235,7 @@ VIDEO_EOF( othldrby )
     memcpy(buf_spriteram,buf_spriteram2,SPRITERAM_SIZE*sizeof(buf_spriteram[0]));
     memcpy(buf_spriteram2,&vram[SPRITERAM_START],SPRITERAM_SIZE*sizeof(buf_spriteram[0]));
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C344")
-#pragma bss_seg("B344")
-#pragma data_seg("D344")
-#pragma const_seg("K344")
+#pragma code_seg("C343")
+#pragma data_seg("D343")
+#pragma bss_seg("B343")
+#pragma const_seg("K343")
+#pragma comment(linker, "/merge:D343=343")
+#pragma comment(linker, "/merge:C343=343")
+#pragma comment(linker, "/merge:B343=343")
+#pragma comment(linker, "/merge:K343=343")
 #define MW_DEBUG     0
 #define MW_SKIPIDLE  1
 /**************************************************************************
@@ -1924,7 +1928,7 @@ GAMEX( 1993, metamrph, 0,        metamrph, metamrph, metamrph, ROT0,  "Konami", 
 GAMEX( 1993, metamrpj, metamrph, metamrph, metamrph, metamrph, ROT0,  "Konami", "Metamorphic Force (Japan ver JAA)", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1993, mtlchmpj, 0,        martchmp, martchmp, martchmp, ROT0,  "Konami", "Martial Champion (Japan ver JAA)", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1993, gaiapols, 0,        gaiapols, dadandrn, gaiapols, ROT90, "Konami", "Gaiapolis (Japan ver JAF)", GAME_IMPERFECT_GRAPHICS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C189")
-#pragma bss_seg("B189")
 #pragma data_seg("D189")
+#pragma bss_seg("B189")
 #pragma const_seg("K189")
+#pragma comment(linker, "/merge:D189=189")
+#pragma comment(linker, "/merge:C189=189")
+#pragma comment(linker, "/merge:B189=189")
+#pragma comment(linker, "/merge:K189=189")
 /* Free Kick Video Hardware */
 
 #include "driver.h"
@@ -158,7 +162,7 @@ VIDEO_UPDATE(freekick)
 	tilemap_draw(bitmap,cliprect,freek_tilemap,0,0);
 	freekick_draw_sprites(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

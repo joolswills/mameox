@@ -1,7 +1,11 @@
 #pragma code_seg("C292")
-#pragma bss_seg("B292")
 #pragma data_seg("D292")
+#pragma bss_seg("B292")
 #pragma const_seg("K292")
+#pragma comment(linker, "/merge:D292=292")
+#pragma comment(linker, "/merge:C292=292")
+#pragma comment(linker, "/merge:B292=292")
+#pragma comment(linker, "/merge:K292=292")
 /*****************************************************************************
 
 	Irem M92 video hardware, Bryan McPhail, mish@tendril.co.uk
@@ -737,7 +741,7 @@ void m92_vh_raster_partial_refresh(struct mame_bitmap *bitmap,int start_line,int
 		m92_screenrefresh(bitmap,&clip);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

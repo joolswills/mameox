@@ -1,7 +1,11 @@
 #pragma code_seg("C334")
-#pragma bss_seg("B334")
 #pragma data_seg("D334")
+#pragma bss_seg("B334")
 #pragma const_seg("K334")
+#pragma comment(linker, "/merge:D334=334")
+#pragma comment(linker, "/merge:C334=334")
+#pragma comment(linker, "/merge:B334=334")
+#pragma comment(linker, "/merge:K334=334")
 /***************************************************************************
 
   vidhrdw.c
@@ -253,7 +257,7 @@ VIDEO_UPDATE( mrdo )
 	tilemap_draw(bitmap,cliprect,fg_tilemap,0,0);
 	draw_sprites(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

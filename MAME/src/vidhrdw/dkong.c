@@ -1,7 +1,11 @@
 #pragma code_seg("C150")
-#pragma bss_seg("B150")
 #pragma data_seg("D150")
+#pragma bss_seg("B150")
 #pragma const_seg("K150")
+#pragma comment(linker, "/merge:D150=150")
+#pragma comment(linker, "/merge:C150=150")
+#pragma comment(linker, "/merge:B150=150")
+#pragma comment(linker, "/merge:K150=150")
 /***************************************************************************
 
   vidhrdw.c
@@ -367,7 +371,7 @@ VIDEO_UPDATE( dkong )
 	draw_tiles(bitmap);
 	draw_sprites(bitmap);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

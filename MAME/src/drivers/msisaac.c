@@ -1,7 +1,11 @@
 #pragma code_seg("C338")
-#pragma bss_seg("B338")
 #pragma data_seg("D338")
+#pragma bss_seg("B338")
 #pragma const_seg("K338")
+#pragma comment(linker, "/merge:D338=338")
+#pragma comment(linker, "/merge:C338=338")
+#pragma comment(linker, "/merge:B338=338")
+#pragma comment(linker, "/merge:K338=338")
 /****************************************************************************
 
 	Metal Soldier Isaac II	(c) Taito 1985
@@ -612,7 +616,7 @@ ROM_START( msisaac )
 ROM_END
 
 GAMEX( 1985, msisaac, 0,        msisaac, msisaac, 0, ROT270, "Taito Corporation", "Metal Soldier Isaac II", GAME_UNEMULATED_PROTECTION | GAME_NO_COCKTAIL)
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

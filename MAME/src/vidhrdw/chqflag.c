@@ -1,7 +1,11 @@
 #pragma code_seg("C102")
-#pragma bss_seg("B102")
 #pragma data_seg("D102")
+#pragma bss_seg("B102")
 #pragma const_seg("K102")
+#pragma comment(linker, "/merge:D102=102")
+#pragma comment(linker, "/merge:C102=102")
+#pragma comment(linker, "/merge:B102=102")
+#pragma comment(linker, "/merge:K102=102")
 /***************************************************************************
 
   vidhrdw.c
@@ -96,7 +100,7 @@ VIDEO_UPDATE( chqflag )
 	K051960_sprites_draw(bitmap,cliprect,1,1);
 	K051316_zoom_draw_0(bitmap,cliprect,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

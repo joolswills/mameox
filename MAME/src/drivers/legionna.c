@@ -1,7 +1,11 @@
 #pragma code_seg("C277")
-#pragma bss_seg("B277")
 #pragma data_seg("D277")
+#pragma bss_seg("B277")
 #pragma const_seg("K277")
+#pragma comment(linker, "/merge:D277=277")
+#pragma comment(linker, "/merge:C277=277")
+#pragma comment(linker, "/merge:B277=277")
+#pragma comment(linker, "/merge:K277=277")
 /***************************************************************************
 
 Legionnaire (c) Tad 1992
@@ -1071,7 +1075,7 @@ GAMEX( 1992, legionnu, legionna, legionna, legionna, legionna, ROT0, "Tad (Fabte
 GAMEX( 1992, heatbrl,  0,        heatbrl,  heatbrl,  0,        ROT0, "Tad", "Heated Barrel (World)", GAME_UNEMULATED_PROTECTION )
 GAMEX( 1992, heatbrlo, heatbrl,  heatbrl,  heatbrl,  0,        ROT0, "Tad", "Heated Barrel (World old version)", GAME_UNEMULATED_PROTECTION )
 GAMEX( 1992, heatbrlu, heatbrl,  heatbrl,  heatbrl,  0,        ROT0, "Tad", "Heated Barrel (US)", GAME_UNEMULATED_PROTECTION )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C381")
-#pragma bss_seg("B381")
-#pragma data_seg("D381")
-#pragma const_seg("K381")
+#pragma code_seg("C380")
+#pragma data_seg("D380")
+#pragma bss_seg("B380")
+#pragma const_seg("K380")
+#pragma comment(linker, "/merge:D380=380")
+#pragma comment(linker, "/merge:C380=380")
+#pragma comment(linker, "/merge:B380=380")
+#pragma comment(linker, "/merge:K380=380")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 
@@ -96,7 +100,7 @@ VIDEO_UPDATE( overdriv )
 
 	K053247_sprites_draw(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

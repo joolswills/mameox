@@ -1,7 +1,11 @@
 #pragma code_seg("C188")
-#pragma bss_seg("B188")
 #pragma data_seg("D188")
+#pragma bss_seg("B188")
 #pragma const_seg("K188")
+#pragma comment(linker, "/merge:D188=188")
+#pragma comment(linker, "/merge:C188=188")
+#pragma comment(linker, "/merge:B188=188")
+#pragma comment(linker, "/merge:K188=188")
 /***************************************************************************
 
 	Atari Food Fight hardware
@@ -434,7 +438,7 @@ ROM_END
  *************************************/
 
 GAME( 1982, foodf, 0, foodf, foodf, 0, ROT0, "Atari", "Food Fight" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

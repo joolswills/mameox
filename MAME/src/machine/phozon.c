@@ -1,3 +1,11 @@
+#pragma code_seg("C393")
+#pragma data_seg("D393")
+#pragma bss_seg("B393")
+#pragma const_seg("K393")
+#pragma comment(linker, "/merge:D393=393")
+#pragma comment(linker, "/merge:C393=393")
+#pragma comment(linker, "/merge:B393=393")
+#pragma comment(linker, "/merge:K393=393")
 /***************************************************************************
 
   machine.c
@@ -243,3 +251,7 @@ READ_HANDLER( phozon_customio_2_r )
 		val = phozon_customio_2[offset];
 	return val;
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C226")
-#pragma bss_seg("B226")
 #pragma data_seg("D226")
+#pragma bss_seg("B226")
 #pragma const_seg("K226")
+#pragma comment(linker, "/merge:D226=226")
+#pragma comment(linker, "/merge:C226=226")
+#pragma comment(linker, "/merge:B226=226")
+#pragma comment(linker, "/merge:K226=226")
 #include "driver.h"
 #include "gstriker.h"
 
@@ -523,7 +527,7 @@ VIDEO_START(gstriker)
 
 	return 0;
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

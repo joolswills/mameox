@@ -1,7 +1,11 @@
 #pragma code_seg("C103")
-#pragma bss_seg("B103")
 #pragma data_seg("D103")
+#pragma bss_seg("B103")
 #pragma const_seg("K103")
+#pragma comment(linker, "/merge:D103=103")
+#pragma comment(linker, "/merge:C103=103")
+#pragma comment(linker, "/merge:B103=103")
+#pragma comment(linker, "/merge:K103=103")
 /***************************************************************************
 
 	Cinematronics vector hardware
@@ -93,7 +97,7 @@ VIDEO_UPDATE( spacewar )
 	artwork_show("pressed0", (~sw_option >> 11) & 1);
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

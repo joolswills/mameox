@@ -1,7 +1,11 @@
 #pragma code_seg("C111")
-#pragma bss_seg("B111")
 #pragma data_seg("D111")
+#pragma bss_seg("B111")
 #pragma const_seg("K111")
+#pragma comment(linker, "/merge:D111=111")
+#pragma comment(linker, "/merge:C111=111")
+#pragma comment(linker, "/merge:B111=111")
+#pragma comment(linker, "/merge:K111=111")
 /***************************************************************************
 
 							-= Clash Road =-
@@ -494,7 +498,7 @@ die once, it would be nice to avoid the hack however
 
 GAMEX( 1984, firebatl, 0, firebatl, firebatl, firebatl, ROT90, "Taito", "Fire Battle", GAME_IMPERFECT_GRAPHICS )
 GAME ( 1986, clshroad, 0, clshroad, clshroad, 0, ROT0,  "Woodplace Inc.", "Clash-Road" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C352")
-#pragma bss_seg("B352")
-#pragma data_seg("D352")
-#pragma const_seg("K352")
+#pragma code_seg("C351")
+#pragma data_seg("D351")
+#pragma bss_seg("B351")
+#pragma const_seg("K351")
+#pragma comment(linker, "/merge:D351=351")
+#pragma comment(linker, "/merge:C351=351")
+#pragma comment(linker, "/merge:B351=351")
+#pragma comment(linker, "/merge:K351=351")
 /*******************************************************************
 Rolling Thunder
 (C) 1986 Namco
@@ -1778,7 +1782,7 @@ GAME( 1986, genpeitd, 0,        genpeitd, genpeitd, namco86,  ROT0,   "Namco", "
 GAME( 1986, rthunder, 0,        rthunder, rthunder, namco86,  ROT0,   "Namco", "Rolling Thunder (new version)" )
 GAME( 1986, rthundro, rthunder, rthunder, rthundro, namco86,  ROT0,   "Namco", "Rolling Thunder (old version)" )
 GAME( 1987, wndrmomo, 0,        wndrmomo, wndrmomo, namco86,  ROT0,   "Namco", "Wonder Momo" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

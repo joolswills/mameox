@@ -1,7 +1,11 @@
 #pragma code_seg("C12")
-#pragma bss_seg("B12")
 #pragma data_seg("D12")
+#pragma bss_seg("B12")
 #pragma const_seg("K12")
+#pragma comment(linker, "/merge:D12=12")
+#pragma comment(linker, "/merge:C12=12")
+#pragma comment(linker, "/merge:B12=12")
+#pragma comment(linker, "/merge:K12=12")
 /**************************************************************************
 
 								Air Buster
@@ -239,7 +243,7 @@ VIDEO_UPDATE( airbustr )
 	tilemap_draw(bitmap,cliprect,fg_tilemap,0,0);
 	draw_sprites(bitmap,cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C264")
-#pragma bss_seg("B264")
 #pragma data_seg("D264")
+#pragma bss_seg("B264")
 #pragma const_seg("K264")
+#pragma comment(linker, "/merge:D264=264")
+#pragma comment(linker, "/merge:C264=264")
+#pragma comment(linker, "/merge:B264=264")
+#pragma comment(linker, "/merge:K264=264")
 /* Driver Info
 
 Kick Goal (c)1995 TCH
@@ -274,7 +278,7 @@ DRIVER_INIT( kickgoal )
 
 
 GAMEX( 1995, kickgoal,0, kickgoal, kickgoal, kickgoal, ROT0, "TCH", "Kick Goal", GAME_NO_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

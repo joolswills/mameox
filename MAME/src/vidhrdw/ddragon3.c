@@ -1,7 +1,11 @@
 #pragma code_seg("C138")
-#pragma bss_seg("B138")
 #pragma data_seg("D138")
+#pragma bss_seg("B138")
 #pragma const_seg("K138")
+#pragma comment(linker, "/merge:D138=138")
+#pragma comment(linker, "/merge:C138=138")
+#pragma comment(linker, "/merge:B138=138")
+#pragma comment(linker, "/merge:K138=138")
 /***************************************************************************
 
   Video Hardware for Double Dragon 3
@@ -228,7 +232,7 @@ VIDEO_UPDATE( ctribe )
 	draw_sprites( bitmap,cliprect );
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

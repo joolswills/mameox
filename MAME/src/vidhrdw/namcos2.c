@@ -1,7 +1,3 @@
-#pragma code_seg("C349")
-#pragma bss_seg("B349")
-#pragma data_seg("D349")
-#pragma const_seg("K349")
 /* video hardware for Namco System II */
 
 /* TBA:
@@ -935,7 +931,3 @@ VIDEO_UPDATE( metlhawk )
 		DrawSpritesMetalHawk( bitmap,cliprect,pri );
 	}
 }
-#pragma data_seg()
-#pragma code_seg()
-#pragma bss_seg()
-#pragma const_seg()

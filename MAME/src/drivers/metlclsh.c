@@ -1,7 +1,11 @@
 #pragma code_seg("C312")
-#pragma bss_seg("B312")
 #pragma data_seg("D312")
+#pragma bss_seg("B312")
 #pragma const_seg("K312")
+#pragma comment(linker, "/merge:D312=312")
+#pragma comment(linker, "/merge:C312=312")
+#pragma comment(linker, "/merge:B312=312")
+#pragma comment(linker, "/merge:K312=312")
 /***************************************************************************
 
 							  -= Metal Clash =-
@@ -467,7 +471,7 @@ ROM_END
 
 GAME( 1985, metlclsh, 0, metlclsh, metlclsh, 0, ROT0, "Data East", "Metal Clash (Japan)" )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

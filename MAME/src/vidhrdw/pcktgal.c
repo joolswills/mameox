@@ -1,7 +1,11 @@
-#pragma code_seg("C391")
-#pragma bss_seg("B391")
-#pragma data_seg("D391")
-#pragma const_seg("K391")
+#pragma code_seg("C390")
+#pragma data_seg("D390")
+#pragma bss_seg("B390")
+#pragma const_seg("K390")
+#pragma comment(linker, "/merge:D390=390")
+#pragma comment(linker, "/merge:C390=390")
+#pragma comment(linker, "/merge:B390=390")
+#pragma comment(linker, "/merge:K390=390")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -111,7 +115,7 @@ VIDEO_UPDATE( pcktgal )
 		}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

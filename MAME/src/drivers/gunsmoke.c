@@ -1,7 +1,11 @@
 #pragma code_seg("C231")
-#pragma bss_seg("B231")
 #pragma data_seg("D231")
+#pragma bss_seg("B231")
 #pragma const_seg("K231")
+#pragma comment(linker, "/merge:D231=231")
+#pragma comment(linker, "/merge:C231=231")
+#pragma comment(linker, "/merge:B231=231")
+#pragma comment(linker, "/merge:K231=231")
 /***************************************************************************
 
   GUNSMOKE
@@ -678,7 +682,7 @@ GAME( 1985, gunsmoke, 0,        gunsmoke, gunsmoke, 0, ROT270, "Capcom", "Gun.Sm
 GAME( 1985, gunsmokj, gunsmoke, gunsmoke, gunsmoke, 0, ROT270, "Capcom", "Gun.Smoke (Japan)" )
 GAME( 1985, gunsmoku, gunsmoke, gunsmoke, gunsmoke, 0, ROT270, "Capcom (Romstar license)", "Gun.Smoke (US set 1)" )
 GAME( 1986, gunsmoka, gunsmoke, gunsmoke, gunsmoka, 0, ROT270, "Capcom (Romstar license)", "Gun.Smoke (US set 2)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

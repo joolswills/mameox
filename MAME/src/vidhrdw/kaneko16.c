@@ -1,7 +1,11 @@
 #pragma code_seg("C260")
-#pragma bss_seg("B260")
 #pragma data_seg("D260")
+#pragma bss_seg("B260")
 #pragma const_seg("K260")
+#pragma comment(linker, "/merge:D260=260")
+#pragma comment(linker, "/merge:C260=260")
+#pragma comment(linker, "/merge:B260=260")
+#pragma comment(linker, "/merge:K260=260")
 /***************************************************************************
 
 							-= Kaneko 16 Bit Games =-
@@ -961,7 +965,7 @@ if ( keyboard_pressed(KEYCODE_Z) ||
 	if (layers_ctrl & (0xf<<16))
 		kaneko16_draw_sprites(bitmap,cliprect, (layers_ctrl >> 16) & 0xf);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

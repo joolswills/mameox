@@ -1,7 +1,11 @@
-#pragma code_seg("C408")
-#pragma bss_seg("B408")
-#pragma data_seg("D408")
-#pragma const_seg("K408")
+#pragma code_seg("C407")
+#pragma data_seg("D407")
+#pragma bss_seg("B407")
+#pragma const_seg("K407")
+#pragma comment(linker, "/merge:D407=407")
+#pragma comment(linker, "/merge:C407=407")
+#pragma comment(linker, "/merge:B407=407")
+#pragma comment(linker, "/merge:K407=407")
 /*
 Popper
 Omori Electric CAD (OEC) 1983
@@ -263,7 +267,7 @@ VIDEO_UPDATE( popper )
 	tilemap_draw( bitmap,&finalclip,popper_ol_p123_tilemap,TILEMAP_FRONT,0 );
 	tilemap_draw( bitmap,&finalclip,popper_ol_p0_tilemap,  TILEMAP_FRONT,0 );
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

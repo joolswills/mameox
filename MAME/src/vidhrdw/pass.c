@@ -1,7 +1,11 @@
-#pragma code_seg("C387")
-#pragma bss_seg("B387")
-#pragma data_seg("D387")
-#pragma const_seg("K387")
+#pragma code_seg("C386")
+#pragma data_seg("D386")
+#pragma bss_seg("B386")
+#pragma const_seg("K386")
+#pragma comment(linker, "/merge:D386=386")
+#pragma comment(linker, "/merge:C386=386")
+#pragma comment(linker, "/merge:B386=386")
+#pragma comment(linker, "/merge:K386=386")
 /* vidhrdw/pass.c - see drivers/pass.c for more info */
 
 #include "driver.h"
@@ -79,7 +83,7 @@ VIDEO_START( pass )
 
 	return 0;
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C115")
-#pragma bss_seg("B115")
 #pragma data_seg("D115")
+#pragma bss_seg("B115")
 #pragma const_seg("K115")
+#pragma comment(linker, "/merge:D115=115")
+#pragma comment(linker, "/merge:C115=115")
+#pragma comment(linker, "/merge:B115=115")
+#pragma comment(linker, "/merge:K115=115")
 /***************************************************************************
 
   vidhrdw.c
@@ -177,7 +181,7 @@ VIDEO_EOF( commando )
 {
 	buffer_spriteram_w(0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

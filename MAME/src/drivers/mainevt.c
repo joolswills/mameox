@@ -1,7 +1,11 @@
 #pragma code_seg("C296")
-#pragma bss_seg("B296")
 #pragma data_seg("D296")
+#pragma bss_seg("B296")
 #pragma const_seg("K296")
+#pragma comment(linker, "/merge:D296=296")
+#pragma comment(linker, "/merge:C296=296")
+#pragma comment(linker, "/merge:B296=296")
+#pragma comment(linker, "/merge:K296=296")
 /***************************************************************************
 
   The Main Event, (c) 1988 Konami
@@ -1027,7 +1031,7 @@ GAME( 1988, devstors, 0,        devstors, devstors, mainevt, ROT90, "Konami", "D
 GAME( 1988, devstor2, devstors, devstors, devstor2, mainevt, ROT90, "Konami", "Devastators (ver. X)" )
 GAME( 1988, devstor3, devstors, devstors, devstors, mainevt, ROT90, "Konami", "Devastators (ver. V)" )
 GAME( 1988, garuka,   devstors, devstors, devstor2, mainevt, ROT90, "Konami", "Garuka (Japan ver. W)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

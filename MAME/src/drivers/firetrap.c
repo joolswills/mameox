@@ -1,7 +1,11 @@
 #pragma code_seg("C181")
-#pragma bss_seg("B181")
 #pragma data_seg("D181")
+#pragma bss_seg("B181")
 #pragma const_seg("K181")
+#pragma comment(linker, "/merge:D181=181")
+#pragma comment(linker, "/merge:C181=181")
+#pragma comment(linker, "/merge:B181=181")
+#pragma comment(linker, "/merge:K181=181")
 /***************************************************************************
 
 Fire Trap memory map
@@ -784,7 +788,7 @@ ROM_END
 
 GAME( 1986, firetrap, 0,        firetrap, firetrap, 0, ROT90, "Data East USA", "Fire Trap (US)" )
 GAME( 1986, firetpbl, firetrap, firetpbl, firetpbl, 0, ROT90, "bootleg", "Fire Trap (Japan bootleg)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

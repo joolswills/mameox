@@ -1,7 +1,11 @@
 #pragma code_seg("C117")
-#pragma bss_seg("B117")
 #pragma data_seg("D117")
+#pragma bss_seg("B117")
 #pragma const_seg("K117")
+#pragma comment(linker, "/merge:D117=117")
+#pragma comment(linker, "/merge:C117=117")
+#pragma comment(linker, "/merge:B117=117")
+#pragma comment(linker, "/merge:K117=117")
 /***************************************************************************
 
 Contra/Gryzor (c) 1987 Konami
@@ -441,7 +445,7 @@ GAME( 1987, contrab,  contra, contra, contra, 0, ROT90, "bootleg", "Contra (US b
 GAME( 1987, contraj,  contra, contra, contra, 0, ROT90, "Konami", "Contra (Japan)" )
 GAME( 1987, contrajb, contra, contra, contra, 0, ROT90, "bootleg", "Contra (Japan bootleg)" )
 GAME( 1987, gryzor,   contra, contra, contra, 0, ROT90, "Konami", "Gryzor" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

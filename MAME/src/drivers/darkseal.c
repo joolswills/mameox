@@ -1,7 +1,11 @@
 #pragma code_seg("C131")
-#pragma bss_seg("B131")
 #pragma data_seg("D131")
+#pragma bss_seg("B131")
 #pragma const_seg("K131")
+#pragma comment(linker, "/merge:D131=131")
+#pragma comment(linker, "/merge:C131=131")
+#pragma comment(linker, "/merge:B131=131")
+#pragma comment(linker, "/merge:K131=131")
 /***************************************************************************
 
 	Dark Seal (Rev 3)    (c) 1990 Data East Corporation (World version)
@@ -518,7 +522,7 @@ GAME( 1990, darksea1, darkseal, darkseal, darkseal, darkseal, ROT0, "Data East C
 GAME( 1990, darkseaj, darkseal, darkseal, darkseal, darkseal, ROT0, "Data East Corporation", "Dark Seal (Japan)" )
 GAME( 1990, gatedoom, darkseal, darkseal, darkseal, darkseal, ROT0, "Data East Corporation", "Gate of Doom (US revision 4)" )
 GAME( 1990, gatedom1, darkseal, darkseal, darkseal, darkseal, ROT0, "Data East Corporation", "Gate of Doom (US revision 1)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

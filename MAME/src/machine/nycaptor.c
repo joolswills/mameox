@@ -1,3 +1,11 @@
+#pragma code_seg("C366")
+#pragma data_seg("D366")
+#pragma bss_seg("B366")
+#pragma const_seg("K366")
+#pragma comment(linker, "/merge:D366=366")
+#pragma comment(linker, "/merge:C366=366")
+#pragma comment(linker, "/merge:B366=366")
+#pragma comment(linker, "/merge:K366=366")
 /***************************************************************************
 
   machine.c
@@ -125,3 +133,7 @@ READ_HANDLER( nycaptor_mcu_status_r2 )
   return main_sent?0:1;
 
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

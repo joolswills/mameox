@@ -1,7 +1,11 @@
 #pragma code_seg("C283")
-#pragma bss_seg("B283")
 #pragma data_seg("D283")
+#pragma bss_seg("B283")
 #pragma const_seg("K283")
+#pragma comment(linker, "/merge:D283=283")
+#pragma comment(linker, "/merge:C283=283")
+#pragma comment(linker, "/merge:B283=283")
+#pragma comment(linker, "/merge:K283=283")
 /***************************************************************************
 
 Legend of Kage
@@ -566,7 +570,7 @@ GAME( 1984, lkage,   0,     lkage,  lkage, 0,       ROT0, "Taito Corporation", "
 GAME( 1984, lkageb,  lkage, lkageb, lkage, lkageb,  ROT0, "bootleg", "The Legend of Kage (bootleg set 1)" )
 GAME( 1984, lkageb2, lkage, lkageb, lkage, 0,       ROT0, "bootleg", "The Legend of Kage (bootleg set 2)" )
 GAME( 1984, lkageb3, lkage, lkageb, lkage, 0,       ROT0, "bootleg", "The Legend of Kage (bootleg set 3)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

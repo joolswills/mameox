@@ -1,7 +1,11 @@
 #pragma code_seg("C242")
-#pragma bss_seg("B242")
 #pragma data_seg("D242")
+#pragma bss_seg("B242")
 #pragma const_seg("K242")
+#pragma comment(linker, "/merge:D242=242")
+#pragma comment(linker, "/merge:C242=242")
+#pragma comment(linker, "/merge:B242=242")
+#pragma comment(linker, "/merge:K242=242")
 /****************************************************************************
 
 Some Dynax games using the first version of their blitter
@@ -761,7 +765,7 @@ static DRIVER_INIT( hnfubuki )
 GAME( 1987, hnayayoi, 0,        hnayayoi, hnayayoi, 0,        ROT0, "Dyna Electronics", "Hana Yayoi (Japan)" )
 GAME( 1987, hnfubuki, hnayayoi, hnfubuki, hnfubuki, hnfubuki, ROT0, "Dynax", "Hana Fubuki [BET] (Japan)" )
 GAME( 1987, untoucha, 0,        untoucha, untoucha, 0,        ROT0, "Dynax", "Untouchable (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

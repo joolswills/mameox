@@ -1,7 +1,11 @@
-#pragma code_seg("C391")
-#pragma bss_seg("B391")
-#pragma data_seg("D391")
-#pragma const_seg("K391")
+#pragma code_seg("C390")
+#pragma data_seg("D390")
+#pragma bss_seg("B390")
+#pragma const_seg("K390")
+#pragma comment(linker, "/merge:D390=390")
+#pragma comment(linker, "/merge:C390=390")
+#pragma comment(linker, "/merge:B390=390")
+#pragma comment(linker, "/merge:K390=390")
 /***************************************************************************
 
 	Pocket Gal						(c) 1987 Data East Corporation
@@ -490,7 +494,7 @@ GAME( 1987, pcktgalb, pcktgal, bootleg, pcktgal, deco222,  ROT0, "bootleg", "Poc
 GAME( 1989, pcktgal2, pcktgal, pcktgal, pcktgal, graphics, ROT0, "Data East Corporation", "Pocket Gal 2 (World?)" )
 GAME( 1989, spool3,   pcktgal, pcktgal, pcktgal, graphics, ROT0, "Data East Corporation", "Super Pool III (World?)" )
 GAME( 1990, spool3i,  pcktgal, pcktgal, pcktgal, graphics, ROT0, "Data East Corporation (I-Vics license)", "Super Pool III (I-Vics)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C140")
-#pragma bss_seg("B140")
 #pragma data_seg("D140")
+#pragma bss_seg("B140")
 #pragma const_seg("K140")
+#pragma comment(linker, "/merge:D140=140")
+#pragma comment(linker, "/merge:C140=140")
+#pragma comment(linker, "/merge:B140=140")
+#pragma comment(linker, "/merge:K140=140")
 #include "vidhrdw/generic.h"
 
 static struct tilemap *pf3_layer,*pf2_layer,*pf1_layer,*text_layer;
@@ -162,7 +166,7 @@ VIDEO_UPDATE( deadang )
 	if (!(deadang_scroll_ram[0x68]&0x10)) draw_sprites(bitmap);
 	tilemap_draw(bitmap,cliprect,text_layer,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C157")
-#pragma bss_seg("B157")
 #pragma data_seg("D157")
+#pragma bss_seg("B157")
 #pragma const_seg("K157")
+#pragma comment(linker, "/merge:D157=157")
+#pragma comment(linker, "/merge:C157=157")
+#pragma comment(linker, "/merge:B157=157")
+#pragma comment(linker, "/merge:K157=157")
 /***************************************************************************
 
 Atari Drag Race Driver
@@ -568,7 +572,7 @@ ROM_END
 
 
 GAME( 1977, dragrace, 0, dragrace, dragrace, 0, 0, "Atari", "Drag Race" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C421")
-#pragma bss_seg("B421")
-#pragma data_seg("D421")
-#pragma const_seg("K421")
+#pragma code_seg("C420")
+#pragma data_seg("D420")
+#pragma bss_seg("B420")
+#pragma const_seg("K420")
+#pragma comment(linker, "/merge:D420=420")
+#pragma comment(linker, "/merge:C420=420")
+#pragma comment(linker, "/merge:B420=420")
+#pragma comment(linker, "/merge:K420=420")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -193,7 +197,7 @@ VIDEO_UPDATE( raiden )
 	/* Text layer */
 	tilemap_draw(bitmap,cliprect,tx_layer,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

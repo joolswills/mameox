@@ -1,7 +1,11 @@
 #pragma code_seg("C170")
-#pragma bss_seg("B170")
 #pragma data_seg("D170")
+#pragma bss_seg("B170")
 #pragma const_seg("K170")
+#pragma comment(linker, "/merge:D170=170")
+#pragma comment(linker, "/merge:C170=170")
+#pragma comment(linker, "/merge:B170=170")
+#pragma comment(linker, "/merge:K170=170")
 /***************************************************************************
 
 	Exidy 440 video system
@@ -542,7 +546,7 @@ VIDEO_EOF( exidy440 )
 			timer_set(time, beamx, beam_firq_callback);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

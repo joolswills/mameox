@@ -1,7 +1,11 @@
-#pragma code_seg("C347")
-#pragma bss_seg("B347")
-#pragma data_seg("D347")
-#pragma const_seg("K347")
+#pragma code_seg("C346")
+#pragma data_seg("D346")
+#pragma bss_seg("B346")
+#pragma const_seg("K346")
+#pragma comment(linker, "/merge:D346=346")
+#pragma comment(linker, "/merge:C346=346")
+#pragma comment(linker, "/merge:B346=346")
+#pragma comment(linker, "/merge:K346=346")
 /* vidhrdw/namconb1.c */
 
 #include "driver.h"
@@ -392,7 +396,7 @@ VIDEO_START( namconb2 )
 
 	return 0;
 } /* namconb2_vh_start */
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C283")
-#pragma bss_seg("B283")
 #pragma data_seg("D283")
+#pragma bss_seg("B283")
 #pragma const_seg("K283")
+#pragma comment(linker, "/merge:D283=283")
+#pragma comment(linker, "/merge:C283=283")
+#pragma comment(linker, "/merge:B283=283")
+#pragma comment(linker, "/merge:K283=283")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -225,7 +229,7 @@ VIDEO_UPDATE( lkage )
 		tilemap_draw( bitmap,cliprect,tx_tilemap,TILEMAP_IGNORE_TRANSPARENCY ,0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,4 +1,11 @@
-
+#pragma code_seg("C79")
+#pragma data_seg("D79")
+#pragma bss_seg("B79")
+#pragma const_seg("K79")
+#pragma comment(linker, "/merge:D79=79")
+#pragma comment(linker, "/merge:C79=79")
+#pragma comment(linker, "/merge:B79=79")
+#pragma comment(linker, "/merge:K79=79")
 #include "driver.h"
 
 
@@ -91,3 +98,7 @@ WRITE_HANDLER( mmonkey_protection_w )
 	else if (offset >= 0x0d00 && offset <= 0x0d05)  RAM[BASE+offset] = data;   /* source table */
 	else logerror("Unknown protection write=%02X.  PC=%04X  Offset=%04X\n", data, activecpu_get_pc(), offset);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

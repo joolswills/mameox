@@ -1,7 +1,11 @@
-#pragma code_seg("C401")
-#pragma bss_seg("B401")
-#pragma data_seg("D401")
-#pragma const_seg("K401")
+#pragma code_seg("C400")
+#pragma data_seg("D400")
+#pragma bss_seg("B400")
+#pragma const_seg("K400")
+#pragma comment(linker, "/merge:D400=400")
+#pragma comment(linker, "/merge:C400=400")
+#pragma comment(linker, "/merge:B400=400")
+#pragma comment(linker, "/merge:K400=400")
 /*
 	Polygonet Commanders (Konami, 1993)
 
@@ -113,7 +117,7 @@ VIDEO_UPDATE(polygonet_vh_screenrefresh)
 	tilemap_draw(bitmap, cliprect, ttl_tilemap, 0, 1<<0);
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

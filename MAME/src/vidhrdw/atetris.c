@@ -1,7 +1,11 @@
 #pragma code_seg("C42")
-#pragma bss_seg("B42")
 #pragma data_seg("D42")
+#pragma bss_seg("B42")
 #pragma const_seg("K42")
+#pragma comment(linker, "/merge:D42=42")
+#pragma comment(linker, "/merge:C42=42")
+#pragma comment(linker, "/merge:B42=42")
+#pragma comment(linker, "/merge:K42=42")
 /***************************************************************************
 
 	Atari Tetris hardware
@@ -72,7 +76,7 @@ VIDEO_UPDATE( atetris )
 {
 	tilemap_draw(bitmap, cliprect, tilemap, 0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

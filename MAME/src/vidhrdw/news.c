@@ -1,7 +1,11 @@
-#pragma code_seg("C360")
-#pragma bss_seg("B360")
-#pragma data_seg("D360")
-#pragma const_seg("K360")
+#pragma code_seg("C359")
+#pragma data_seg("D359")
+#pragma bss_seg("B359")
+#pragma const_seg("K359")
+#pragma comment(linker, "/merge:D359=359")
+#pragma comment(linker, "/merge:C359=359")
+#pragma comment(linker, "/merge:B359=359")
+#pragma comment(linker, "/merge:K359=359")
 #include "driver.h"
 #include "news.h"
 
@@ -106,7 +110,7 @@ VIDEO_UPDATE( news )
 	tilemap_draw(bitmap,cliprect,bg_tilemap,0,0);
 	tilemap_draw(bitmap,cliprect,fg_tilemap,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

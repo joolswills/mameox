@@ -1,7 +1,11 @@
 #pragma code_seg("C224")
-#pragma bss_seg("B224")
 #pragma data_seg("D224")
+#pragma bss_seg("B224")
 #pragma const_seg("K224")
+#pragma comment(linker, "/merge:D224=224")
+#pragma comment(linker, "/merge:C224=224")
+#pragma comment(linker, "/merge:B224=224")
+#pragma comment(linker, "/merge:K224=224")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/taitoic.h"
@@ -292,7 +296,7 @@ VIDEO_UPDATE( groundfx )
 
 	TC0480SCP_tilemap_draw(bitmap,cliprect,layer[4],0,0);	/* TC0480SCP text layer */
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C81")
-#pragma bss_seg("B81")
 #pragma data_seg("D81")
+#pragma bss_seg("B81")
 #pragma const_seg("K81")
+#pragma comment(linker, "/merge:D81=81")
+#pragma comment(linker, "/merge:C81=81")
+#pragma comment(linker, "/merge:B81=81")
+#pragma comment(linker, "/merge:K81=81")
 /***************************************************************************
 
   vidhrdw.c
@@ -107,7 +111,7 @@ VIDEO_UPDATE( bublbobl )
 		sx += 16;
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

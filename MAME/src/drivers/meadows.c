@@ -1,7 +1,11 @@
 #pragma code_seg("C309")
-#pragma bss_seg("B309")
 #pragma data_seg("D309")
+#pragma bss_seg("B309")
 #pragma const_seg("K309")
+#pragma comment(linker, "/merge:D309=309")
+#pragma comment(linker, "/merge:C309=309")
+#pragma comment(linker, "/merge:B309=309")
+#pragma comment(linker, "/merge:K309=309")
 /***************************************************************************
 
 	Meadows S2650 driver
@@ -837,7 +841,7 @@ static DRIVER_INIT( minferno )
 GAME( 1978, deadeye,  0, meadows,  meadows,  deadeye,  ROT0, "Meadows", "Dead Eye" )
 GAME( 1978, gypsyjug, 0, meadows,  meadows,  gypsyjug, ROT0, "Meadows", "Gypsy Juggler" )
 GAMEX(1978, minferno, 0, minferno, minferno, minferno, ROT0, "Meadows", "Inferno (S2650)", GAME_NO_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

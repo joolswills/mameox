@@ -1,7 +1,11 @@
 #pragma code_seg("C153")
-#pragma bss_seg("B153")
 #pragma data_seg("D153")
+#pragma bss_seg("B153")
 #pragma const_seg("K153")
+#pragma comment(linker, "/merge:D153=153")
+#pragma comment(linker, "/merge:C153=153")
+#pragma comment(linker, "/merge:B153=153")
+#pragma comment(linker, "/merge:K153=153")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "dogfgt.h"
@@ -250,7 +254,7 @@ VIDEO_UPDATE( dogfgt )
 
 	copybitmap(bitmap,pixbitmap,0,0,0,0,cliprect,TRANSPARENCY_COLOR,PIXMAP_COLOR_BASE + 8*pixcolor);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

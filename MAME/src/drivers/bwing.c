@@ -1,7 +1,11 @@
 #pragma code_seg("C84")
-#pragma bss_seg("B84")
 #pragma data_seg("D84")
+#pragma bss_seg("B84")
 #pragma const_seg("K84")
+#pragma comment(linker, "/merge:D84=84")
+#pragma comment(linker, "/merge:C84=84")
+#pragma comment(linker, "/merge:B84=84")
+#pragma comment(linker, "/merge:K84=84")
 /*****************************************************************************
 
 B-Wings  (c) 1984 Data East Corporation
@@ -617,7 +621,7 @@ GAMEX( 1984, batwings, bwing, bwing, bwing, bwing, ROT90, "Data East Corporation
 
 GAME ( 1984, zaviga,       0, bwing, bwing, bwing, ROT90, "Data East Corporation", "Zaviga" )
 GAME ( 1984, zavigaj, zaviga, bwing, bwing, bwing, ROT90, "Data East Corporation", "Zaviga (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

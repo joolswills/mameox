@@ -1,7 +1,11 @@
-#pragma code_seg("C354")
-#pragma bss_seg("B354")
-#pragma data_seg("D354")
-#pragma const_seg("K354")
+#pragma code_seg("C353")
+#pragma data_seg("D353")
+#pragma bss_seg("B353")
+#pragma const_seg("K353")
+#pragma comment(linker, "/merge:D353=353")
+#pragma comment(linker, "/merge:C353=353")
+#pragma comment(linker, "/merge:B353=353")
+#pragma comment(linker, "/merge:K353=353")
 /******************************************************************************
 
 	Video Hardware for Nichibutsu Mahjong series.
@@ -752,7 +756,7 @@ VIDEO_UPDATE( mbmj8688_LCD )
 		}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

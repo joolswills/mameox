@@ -1,7 +1,11 @@
-#pragma code_seg("C365")
-#pragma bss_seg("B365")
-#pragma data_seg("D365")
-#pragma const_seg("K365")
+#pragma code_seg("C364")
+#pragma data_seg("D364")
+#pragma bss_seg("B364")
+#pragma const_seg("K364")
+#pragma comment(linker, "/merge:D364=364")
+#pragma comment(linker, "/merge:C364=364")
+#pragma comment(linker, "/merge:B364=364")
+#pragma comment(linker, "/merge:K364=364")
 /******************************************************************************
 
 	Game Driver for Nichibutsu Mahjong series.
@@ -570,7 +574,7 @@ ROM_END
 
 
 GAME( 1996, niyanpai, 0, niyanpai, niyanpai, niyanpai, ROT0, "Nichibutsu", "Niyanpai (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

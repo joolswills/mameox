@@ -1,7 +1,11 @@
 #pragma code_seg("C99")
-#pragma bss_seg("B99")
 #pragma data_seg("D99")
+#pragma bss_seg("B99")
 #pragma const_seg("K99")
+#pragma comment(linker, "/merge:D99=99")
+#pragma comment(linker, "/merge:C99=99")
+#pragma comment(linker, "/merge:B99=99")
+#pragma comment(linker, "/merge:K99=99")
 /*************************************************************************
  Universal Cheeky Mouse Driver
  (c)Lee Taylor May/June 1998, All rights reserved.
@@ -202,7 +206,7 @@ ROM_END
 
 
 GAMEX( 1980?, cheekyms, 0, cheekyms, cheekyms, 0, ROT270, "Universal", "Cheeky Mouse", GAME_WRONG_COLORS | GAME_IMPERFECT_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

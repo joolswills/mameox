@@ -1,7 +1,11 @@
 #pragma code_seg("C89")
-#pragma bss_seg("B89")
 #pragma data_seg("D89")
+#pragma bss_seg("B89")
 #pragma const_seg("K89")
+#pragma comment(linker, "/merge:D89=89")
+#pragma comment(linker, "/merge:C89=89")
+#pragma comment(linker, "/merge:B89=89")
+#pragma comment(linker, "/merge:K89=89")
 /***************************************************************************
 
 	Exidy Car Polo hardware
@@ -832,7 +836,7 @@ VIDEO_EOF( carpolo )
 	}
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C224")
-#pragma bss_seg("B224")
 #pragma data_seg("D224")
+#pragma bss_seg("B224")
 #pragma const_seg("K224")
+#pragma comment(linker, "/merge:D224=224")
+#pragma comment(linker, "/merge:C224=224")
+#pragma comment(linker, "/merge:B224=224")
+#pragma comment(linker, "/merge:K224=224")
 /***************************************************************************
 
 	Ground Effects / Super Ground FX					(c) 1993 Taito
@@ -581,7 +585,7 @@ DRIVER_INIT( groundfx )
 
 
 GAME( 1992, groundfx, 0, groundfx, groundfx, groundfx, ROT0, "Taito Corporation", "Ground Effects / Super Ground Effects (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C73")
-#pragma bss_seg("B73")
 #pragma data_seg("D73")
+#pragma bss_seg("B73")
 #pragma const_seg("K73")
+#pragma comment(linker, "/merge:D73=73")
+#pragma comment(linker, "/merge:C73=73")
+#pragma comment(linker, "/merge:B73=73")
+#pragma comment(linker, "/merge:K73=73")
 /***************************************************************************
 
 	Bogey Manor               (c) 1985 Technos Japan
@@ -309,7 +313,7 @@ ROM_END
 /******************************************************************************/
 
 GAMEX( 1985?, bogeyman, 0, bogeyman, bogeyman, 0, ROT0, "Technos Japan", "Bogey Manor", GAME_IMPERFECT_COLORS | GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C25")
-#pragma bss_seg("B25")
 #pragma data_seg("D25")
+#pragma bss_seg("B25")
 #pragma const_seg("K25")
+#pragma comment(linker, "/merge:D25=25")
+#pragma comment(linker, "/merge:C25=25")
+#pragma comment(linker, "/merge:B25=25")
+#pragma comment(linker, "/merge:K25=25")
 /***************************************************************************
 
 	Arkanoid driver (Preliminary)
@@ -644,7 +648,7 @@ GAMEX(1986, arkblock, arkanoid, bootleg,  arknoidj, 0,       ROT90, "bootleg", "
 GAME( 1986, arkbloc2, arkanoid, bootleg,  arknoidj, 0,       ROT90, "bootleg", "Block (Game Corporation bootleg)" )
 GAME( 1986, arkangc,  arkanoid, bootleg,  arknoidj, 0,       ROT90, "bootleg", "Arkanoid (Game Corporation bootleg)" )
 GAME( 1987, arkatour, arkanoid, arkanoid, arkanoid, 0,       ROT90, "Taito America Corporation (Romstar license)", "Tournament Arkanoid (US)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

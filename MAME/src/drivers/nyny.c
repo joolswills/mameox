@@ -1,7 +1,11 @@
-#pragma code_seg("C368")
-#pragma bss_seg("B368")
-#pragma data_seg("D368")
-#pragma const_seg("K368")
+#pragma code_seg("C367")
+#pragma data_seg("D367")
+#pragma bss_seg("B367")
+#pragma const_seg("K367")
+#pragma comment(linker, "/merge:D367=367")
+#pragma comment(linker, "/merge:C367=367")
+#pragma comment(linker, "/merge:B367=367")
+#pragma comment(linker, "/merge:K367=367")
 /****
 
 New York, New York (c) 1980 Sigma
@@ -453,7 +457,7 @@ ROM_END
 GAMEX( 1980, nyny,    0,    nyny, nyny, 0, ROT270, "Sigma Ent. Inc.", "New York New York", GAME_IMPERFECT_GRAPHICS | GAME_IMPERFECT_SOUND )
 GAMEX( 1980, nynyg,   nyny, nyny, nyny, 0, ROT270, "Sigma Ent. Inc. (Gottlieb license)", "New York New York (Gottlieb)", GAME_IMPERFECT_GRAPHICS | GAME_IMPERFECT_SOUND )
 GAMEX( 1980, arcadia, nyny, nyny, nyny, 0, ROT270, "Sigma Ent. Inc.", "Waga Seishun no Arcadia", GAME_IMPERFECT_GRAPHICS | GAME_IMPERFECT_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C355")
-#pragma bss_seg("B355")
-#pragma data_seg("D355")
-#pragma const_seg("K355")
+#pragma code_seg("C354")
+#pragma data_seg("D354")
+#pragma bss_seg("B354")
+#pragma const_seg("K354")
+#pragma comment(linker, "/merge:D354=354")
+#pragma comment(linker, "/merge:C354=354")
+#pragma comment(linker, "/merge:B354=354")
+#pragma comment(linker, "/merge:K354=354")
 /******************************************************************************
 
 	Video Hardware for Nichibutsu Mahjong series.
@@ -473,7 +477,7 @@ VIDEO_UPDATE( gionbana )
 		fillbitmap(bitmap, Machine->pens[0xff], 0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

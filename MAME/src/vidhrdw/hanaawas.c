@@ -1,7 +1,11 @@
 #pragma code_seg("C234")
-#pragma bss_seg("B234")
 #pragma data_seg("D234")
+#pragma bss_seg("B234")
 #pragma const_seg("K234")
+#pragma comment(linker, "/merge:D234=234")
+#pragma comment(linker, "/merge:C234=234")
+#pragma comment(linker, "/merge:B234=234")
+#pragma comment(linker, "/merge:K234=234")
 /***************************************************************************
 
   vidhrdw.c
@@ -149,7 +153,7 @@ VIDEO_UPDATE( hanaawas )
 	}
 	copybitmap(bitmap,tmpbitmap,0,0,0,0,&Machine->visible_area,TRANSPARENCY_NONE,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

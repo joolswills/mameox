@@ -1,7 +1,11 @@
 #pragma code_seg("C329")
-#pragma bss_seg("B329")
 #pragma data_seg("D329")
+#pragma bss_seg("B329")
 #pragma const_seg("K329")
+#pragma comment(linker, "/merge:D329=329")
+#pragma comment(linker, "/merge:C329=329")
+#pragma comment(linker, "/merge:B329=329")
+#pragma comment(linker, "/merge:K329=329")
 /***************************************************************************
   vidhrdw/mole.c
   Functions to emulate the video hardware of Mole Attack!.
@@ -82,7 +86,7 @@ VIDEO_UPDATE( moleattack )
 {
 	tilemap_draw(bitmap, &Machine->visible_area, bg_tilemap, 0, 0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C288")
-#pragma bss_seg("B288")
 #pragma data_seg("D288")
+#pragma bss_seg("B288")
 #pragma const_seg("K288")
+#pragma comment(linker, "/merge:D288=288")
+#pragma comment(linker, "/merge:C288=288")
+#pragma comment(linker, "/merge:B288=288")
+#pragma comment(linker, "/merge:K288=288")
 /*******************************************************************************
 
 	Irem M107 games:
@@ -692,7 +696,7 @@ static DRIVER_INIT( wpksoc )
 GAMEX(1993, firebarr, 0, firebarr, firebarr, firebarr, ROT270, "Irem", "Fire Barrel (Japan)", GAME_NO_SOUND | GAME_IMPERFECT_GRAPHICS )
 GAME( 1994, dsoccr94, 0, dsoccr94, dsoccr94, dsoccr94, ROT0,   "Irem (Data East Corporation license)", "Dream Soccer '94" )
 GAMEX(1995, wpksoc,   0, firebarr, dsoccr94, wpksoc,   ROT0,   "Jaleco", "World PK Soccer", GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

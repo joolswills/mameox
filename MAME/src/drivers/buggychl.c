@@ -1,7 +1,11 @@
 #pragma code_seg("C82")
-#pragma bss_seg("B82")
 #pragma data_seg("D82")
+#pragma bss_seg("B82")
 #pragma const_seg("K82")
+#pragma comment(linker, "/merge:D82=82")
+#pragma comment(linker, "/merge:C82=82")
+#pragma comment(linker, "/merge:B82=82")
+#pragma comment(linker, "/merge:K82=82")
 /***************************************************************************
 
 Buggy Challenge - (c) 1984 Taito Corporation
@@ -530,7 +534,7 @@ ROM_END
 
 GAMEX( 1984, buggychl, 0,        buggychl, buggychl, 0, ROT270, "Taito Corporation", "Buggy Challenge", GAME_IMPERFECT_SOUND | GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1984, buggycht, buggychl, buggychl, buggychl, 0, ROT270, "Taito Corporation (Tecfri license)", "Buggy Challenge (Tecfri)", GAME_IMPERFECT_SOUND | GAME_IMPERFECT_GRAPHICS )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

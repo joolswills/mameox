@@ -1,7 +1,11 @@
 #pragma code_seg("C339")
-#pragma bss_seg("B339")
 #pragma data_seg("D339")
+#pragma bss_seg("B339")
 #pragma const_seg("K339")
+#pragma comment(linker, "/merge:D339=339")
+#pragma comment(linker, "/merge:C339=339")
+#pragma comment(linker, "/merge:B339=339")
+#pragma comment(linker, "/merge:K339=339")
 /* Mug Smashers (c)199? Electronic Devices (Italy) / 3D Games (England)
 	driver by David Haywood - Dip Switches and Inputs by Stephane Humbert
 
@@ -496,7 +500,7 @@ ROM_START( mugsmash )
 ROM_END
 
 GAME( 1990?, mugsmash, 0, mugsmash, mugsmash, 0, ROT0, "Electronic Devices (Italy) / 3D Games (England)", "Mug Smashers" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

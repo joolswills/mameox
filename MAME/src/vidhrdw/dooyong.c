@@ -1,7 +1,11 @@
 #pragma code_seg("C155")
-#pragma bss_seg("B155")
 #pragma data_seg("D155")
+#pragma bss_seg("B155")
 #pragma const_seg("K155")
+#pragma comment(linker, "/merge:D155=155")
+#pragma comment(linker, "/merge:C155=155")
+#pragma comment(linker, "/merge:B155=155")
+#pragma comment(linker, "/merge:K155=155")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -470,7 +474,7 @@ VIDEO_EOF( rshark )
 {
 	buffer_spriteram16_w(0,0,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

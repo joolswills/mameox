@@ -1,7 +1,11 @@
-#pragma code_seg("C386")
-#pragma bss_seg("B386")
-#pragma data_seg("D386")
-#pragma const_seg("K386")
+#pragma code_seg("C385")
+#pragma data_seg("D385")
+#pragma bss_seg("B385")
+#pragma const_seg("K385")
+#pragma comment(linker, "/merge:D385=385")
+#pragma comment(linker, "/merge:C385=385")
+#pragma comment(linker, "/merge:B385=385")
+#pragma comment(linker, "/merge:K385=385")
 /***************************************************************************
 
 Parodius (Konami GX955) (c) 1990 Konami
@@ -422,7 +426,7 @@ static DRIVER_INIT( parodius )
 
 
 GAME( 1990, parodius, 0, parodius, parodius, parodius, ROT0, "Konami", "Parodius DA! (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

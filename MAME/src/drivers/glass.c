@@ -1,7 +1,11 @@
 #pragma code_seg("C214")
-#pragma bss_seg("B214")
 #pragma data_seg("D214")
+#pragma bss_seg("B214")
 #pragma const_seg("K214")
+#pragma comment(linker, "/merge:D214=214")
+#pragma comment(linker, "/merge:C214=214")
+#pragma comment(linker, "/merge:B214=214")
+#pragma comment(linker, "/merge:K214=214")
 /***************************************************************************
 
 Glass (c) 1993 Gaelco (Developed by OMK. Produced by Gaelco)
@@ -304,7 +308,7 @@ static DRIVER_INIT( glass )
 }
 
 GAMEX( 1993, glass, 0, glass,glass, glass, ROT0, "Gaelco", "Glass", GAME_UNEMULATED_PROTECTION )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

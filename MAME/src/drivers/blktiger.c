@@ -1,7 +1,11 @@
 #pragma code_seg("C65")
-#pragma bss_seg("B65")
 #pragma data_seg("D65")
+#pragma bss_seg("B65")
 #pragma const_seg("K65")
+#pragma comment(linker, "/merge:D65=65")
+#pragma comment(linker, "/merge:C65=65")
+#pragma comment(linker, "/merge:B65=65")
+#pragma comment(linker, "/merge:K65=65")
 /***************************************************************************
 
   Black Tiger
@@ -448,7 +452,7 @@ GAME( 1987, blktiger, 0,        blktiger, blktiger, 0, ROT0, "Capcom", "Black Ti
 GAME( 1987, bktigerb, blktiger, blktiger, blktiger, 0, ROT0, "bootleg", "Black Tiger (bootleg)" )
 GAME( 1987, blkdrgon, blktiger, blktiger, blktiger, 0, ROT0, "Capcom", "Black Dragon" )
 GAME( 1987, blkdrgnb, blktiger, blktiger, blktiger, 0, ROT0, "bootleg", "Black Dragon (bootleg)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

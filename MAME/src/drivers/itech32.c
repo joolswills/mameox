@@ -1,7 +1,11 @@
 #pragma code_seg("C251")
-#pragma bss_seg("B251")
 #pragma data_seg("D251")
+#pragma bss_seg("B251")
 #pragma const_seg("K251")
+#pragma comment(linker, "/merge:D251=251")
+#pragma comment(linker, "/merge:C251=251")
+#pragma comment(linker, "/merge:B251=251")
+#pragma comment(linker, "/merge:K251=251")
 /***************************************************************************
 
 	Incredible Technologies/Strata system
@@ -2209,7 +2213,7 @@ GAME( 1995, sftm,     0,        sftm,     sftm,     sftm,     ROT0, "Capcom/Incr
 GAME( 1995, sftm110,  sftm,     sftm,     sftm,     sftm110,  ROT0, "Capcom/Incredible Technologies", "Street Fighter: The Movie (v1.10)" )	/* PIC 16C54 labeled as ITSF-1 */
 GAME( 1995, sftmj,    sftm,     sftm,     sftm,     sftm,     ROT0, "Capcom/Incredible Technologies", "Street Fighter: The Movie (v1.12N, Japan)" )	/* PIC 16C54 labeled as ITSF-1 */
 GAME( 1997, shufshot, 0,        sftm,     shufshot, shufshot, ROT0, "Strata/Incredible Technologies", "Shuffleshot" ) /* PIC 16C54 labeled as ITSHF-1 */
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

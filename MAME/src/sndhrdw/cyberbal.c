@@ -1,7 +1,11 @@
 #pragma code_seg("C129")
-#pragma bss_seg("B129")
 #pragma data_seg("D129")
+#pragma bss_seg("B129")
 #pragma const_seg("K129")
+#pragma comment(linker, "/merge:D129=129")
+#pragma comment(linker, "/merge:C129=129")
+#pragma comment(linker, "/merge:B129=129")
+#pragma comment(linker, "/merge:K129=129")
 /***************************************************************************
 
 	Cyberball 68000 sound simulator
@@ -167,7 +171,7 @@ WRITE16_HANDLER( cyberbal_sound_68k_dac_w )
 		update_sound_68k_interrupts();
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

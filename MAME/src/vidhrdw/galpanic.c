@@ -1,7 +1,11 @@
 #pragma code_seg("C202")
-#pragma bss_seg("B202")
 #pragma data_seg("D202")
+#pragma bss_seg("B202")
 #pragma const_seg("K202")
+#pragma comment(linker, "/merge:D202=202")
+#pragma comment(linker, "/merge:C202=202")
+#pragma comment(linker, "/merge:B202=202")
+#pragma comment(linker, "/merge:K202=202")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -178,7 +182,7 @@ VIDEO_UPDATE( comad )
 
 	comad_draw_sprites(bitmap);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

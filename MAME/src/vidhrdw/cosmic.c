@@ -1,7 +1,11 @@
 #pragma code_seg("C121")
-#pragma bss_seg("B121")
 #pragma data_seg("D121")
+#pragma bss_seg("B121")
 #pragma const_seg("K121")
+#pragma comment(linker, "/merge:D121=121")
+#pragma comment(linker, "/merge:C121=121")
+#pragma comment(linker, "/merge:B121=121")
+#pragma comment(linker, "/merge:K121=121")
 /***************************************************************************
 
  COSMIC.C
@@ -676,7 +680,7 @@ VIDEO_UPDATE( nomnlnd )
     	nomnlnd_draw_background(bitmap);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

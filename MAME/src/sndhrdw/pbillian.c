@@ -1,7 +1,11 @@
-#pragma code_seg("C390")
-#pragma bss_seg("B390")
-#pragma data_seg("D390")
-#pragma const_seg("K390")
+#pragma code_seg("C389")
+#pragma data_seg("D389")
+#pragma bss_seg("B389")
+#pragma const_seg("K389")
+#pragma comment(linker, "/merge:D389=389")
+#pragma comment(linker, "/merge:C389=389")
+#pragma comment(linker, "/merge:B389=389")
+#pragma comment(linker, "/merge:K389=389")
 #include "driver.h"
 
 static int channel;
@@ -50,7 +54,7 @@ WRITE_HANDLER(data_41a_w)
 		default: logerror("[41a] W %x at %x\n",data,activecpu_get_previouspc());
 	}
 }	
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

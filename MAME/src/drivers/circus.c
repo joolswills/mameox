@@ -1,7 +1,11 @@
 #pragma code_seg("C104")
-#pragma bss_seg("B104")
 #pragma data_seg("D104")
+#pragma bss_seg("B104")
 #pragma const_seg("K104")
+#pragma comment(linker, "/merge:D104=104")
+#pragma comment(linker, "/merge:C104=104")
+#pragma comment(linker, "/merge:B104=104")
+#pragma comment(linker, "/merge:K104=104")
 /***************************************************************************
 
 Circus memory map
@@ -500,7 +504,7 @@ GAME( 1977, circus,   0, circus,   circus,   circus, ROT0, "Exidy", "Circus" )
 GAMEX( 1977, robotbwl, 0, robotbwl, robotbwl, 0,      ROT0, "Exidy", "Robot Bowl", GAME_NO_SOUND )
 GAMEX( 1979, crash,    0, crash,    crash,    0,      ROT0, "Exidy", "Crash", GAME_IMPERFECT_SOUND )
 GAMEX( 1977, ripcord,  0, ripcord,  ripcord,  0,      ROT0, "Exidy", "Rip Cord", GAME_IMPERFECT_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

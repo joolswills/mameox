@@ -1,7 +1,11 @@
 #pragma code_seg("C75")
-#pragma bss_seg("B75")
 #pragma data_seg("D75")
+#pragma bss_seg("B75")
 #pragma const_seg("K75")
+#pragma comment(linker, "/merge:D75=75")
+#pragma comment(linker, "/merge:C75=75")
+#pragma comment(linker, "/merge:B75=75")
+#pragma comment(linker, "/merge:K75=75")
 /***************************************************************************
 
   vidhrdw.c
@@ -426,7 +430,7 @@ void bosco_vh_interrupt(void)
 	stars_scrollx += speedsx[bosco_starcontrol & 7];
 	stars_scrolly += speedsy[(bosco_starcontrol & 56) >> 3];
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

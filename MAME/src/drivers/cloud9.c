@@ -1,7 +1,11 @@
 #pragma code_seg("C110")
-#pragma bss_seg("B110")
 #pragma data_seg("D110")
+#pragma bss_seg("B110")
 #pragma const_seg("K110")
+#pragma comment(linker, "/merge:D110=110")
+#pragma comment(linker, "/merge:C110=110")
+#pragma comment(linker, "/merge:B110=110")
+#pragma comment(linker, "/merge:K110=110")
 /***************************************************************************
 
 	Atari Cloud 9 (prototype) hardware
@@ -316,7 +320,7 @@ ROM_END
 
 GAMEX( 1983, cloud9, 0, cloud9, cloud9, 0, ROT0, "Atari", "Cloud 9 (prototype)", GAME_NO_COCKTAIL )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

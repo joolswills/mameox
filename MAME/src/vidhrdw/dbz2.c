@@ -1,7 +1,11 @@
 #pragma code_seg("C133")
-#pragma bss_seg("B133")
 #pragma data_seg("D133")
+#pragma bss_seg("B133")
 #pragma const_seg("K133")
+#pragma comment(linker, "/merge:D133=133")
+#pragma comment(linker, "/merge:C133=133")
+#pragma comment(linker, "/merge:B133=133")
+#pragma comment(linker, "/merge:K133=133")
 /*
   Dragonball Z
   (c) 1993 Banpresto
@@ -186,7 +190,7 @@ VIDEO_UPDATE(dbz)
 	K053247_sprites_draw(bitmap, cliprect);
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C363")
-#pragma bss_seg("B363")
-#pragma data_seg("D363")
-#pragma const_seg("K363")
+#pragma code_seg("C362")
+#pragma data_seg("D362")
+#pragma bss_seg("B362")
+#pragma const_seg("K362")
+#pragma comment(linker, "/merge:D362=362")
+#pragma comment(linker, "/merge:C362=362")
+#pragma comment(linker, "/merge:B362=362")
+#pragma comment(linker, "/merge:K362=362")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/taitoic.h"
@@ -203,7 +207,7 @@ VIDEO_UPDATE( ninjaw )
 	}
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
-#pragma code_seg("C416")
-#pragma bss_seg("B416")
-#pragma data_seg("D416")
-#pragma const_seg("K416")
+#pragma code_seg("C415")
+#pragma data_seg("D415")
+#pragma bss_seg("B415")
+#pragma const_seg("K415")
+#pragma comment(linker, "/merge:D415=415")
+#pragma comment(linker, "/merge:C415=415")
+#pragma comment(linker, "/merge:B415=415")
+#pragma comment(linker, "/merge:K415=415")
 /***************************************************************************
 
   vidhrdw.c
@@ -716,7 +720,7 @@ VIDEO_UPDATE( armwrest )
 				&backgroundvisiblearea,TRANSPARENCY_PEN,7);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,3 @@
-#pragma code_seg("CC14")
-#pragma bss_seg("CB14")
-#pragma data_seg("CD14")
-#pragma const_seg("CK14")
 /****************************************************************************
 
 	NEC V20/V30/V33 emulator

@@ -1,7 +1,11 @@
-#pragma code_seg("C410")
-#pragma bss_seg("B410")
-#pragma data_seg("D410")
-#pragma const_seg("K410")
+#pragma code_seg("C409")
+#pragma data_seg("D409")
+#pragma bss_seg("B409")
+#pragma const_seg("K409")
+#pragma comment(linker, "/merge:D409=409")
+#pragma comment(linker, "/merge:C409=409")
+#pragma comment(linker, "/merge:B409=409")
+#pragma comment(linker, "/merge:K409=409")
 /***************************************************************************
 
 						  -= Power Instinct =-
@@ -384,7 +388,7 @@ if (keyboard_pressed(KEYCODE_Z))
 	if (layers_ctrl&8)		powerins_draw_sprites(bitmap,cliprect);
 	if (layers_ctrl&2)		tilemap_draw(bitmap,cliprect, tilemap_1, 0, 0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

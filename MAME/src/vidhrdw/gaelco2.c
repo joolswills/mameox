@@ -1,7 +1,11 @@
 #pragma code_seg("C197")
-#pragma bss_seg("B197")
 #pragma data_seg("D197")
+#pragma bss_seg("B197")
 #pragma const_seg("K197")
+#pragma comment(linker, "/merge:D197=197")
+#pragma comment(linker, "/merge:C197=197")
+#pragma comment(linker, "/merge:B197=197")
+#pragma comment(linker, "/merge:K197=197")
 /***************************************************************************
 
   Gaelco Type CG-1V/GAE1 Video Hardware
@@ -624,7 +628,7 @@ VIDEO_EOF( gaelco2 )
 	/* sprites are one frame ahead */
 	buffer_spriteram16_w(0, 0, 0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

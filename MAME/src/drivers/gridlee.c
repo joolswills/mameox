@@ -1,7 +1,11 @@
 #pragma code_seg("C222")
-#pragma bss_seg("B222")
 #pragma data_seg("D222")
+#pragma bss_seg("B222")
 #pragma const_seg("K222")
+#pragma comment(linker, "/merge:D222=222")
+#pragma comment(linker, "/merge:C222=222")
+#pragma comment(linker, "/merge:B222=222")
+#pragma comment(linker, "/merge:K222=222")
 /***************************************************************************
 
 	Videa Gridlee hardware
@@ -501,7 +505,7 @@ ROM_END
  *************************************/
 
 GAMEX( 1983, gridlee, 0,        gridlee, gridlee, 0,     ROT0, "Videa", "Gridlee", GAME_IMPERFECT_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

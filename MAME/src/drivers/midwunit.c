@@ -1,7 +1,11 @@
 #pragma code_seg("C318")
-#pragma bss_seg("B318")
 #pragma data_seg("D318")
+#pragma bss_seg("B318")
 #pragma const_seg("K318")
+#pragma comment(linker, "/merge:D318=318")
+#pragma comment(linker, "/merge:C318=318")
+#pragma comment(linker, "/merge:B318=318")
+#pragma comment(linker, "/merge:K318=318")
 /*************************************************************************
 
 	Midway Wolf-unit system
@@ -1079,7 +1083,7 @@ GAME( 1996, nbahangt,0,         wunit, nbahangt,nbahangt,ROT0, "Midway", "NBA Ha
 GAME( 1996, nbamaxht,nbahangt,  wunit, nbahangt,nbahangt,ROT0, "Midway", "NBA Maximum Hangtime (rev 1.0 11/8/96)" )
 GAME( 1997, rmpgwt,  0,         wunit, rmpgwt,  rmpgwt,  ROT0, "Midway", "Rampage: World Tour (rev 1.3)" )
 GAME( 1997, rmpgwt11,rmpgwt,    wunit, rmpgwt,  rmpgwt,  ROT0, "Midway", "Rampage: World Tour (rev 1.1)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C209")
-#pragma bss_seg("B209")
 #pragma data_seg("D209")
+#pragma bss_seg("B209")
 #pragma const_seg("K209")
+#pragma comment(linker, "/merge:D209=209")
+#pragma comment(linker, "/merge:C209=209")
+#pragma comment(linker, "/merge:B209=209")
+#pragma comment(linker, "/merge:K209=209")
 #include "driver.h"
 #include "state.h"
 #include "vidhrdw/generic.h"
@@ -371,7 +375,7 @@ VIDEO_UPDATE( gcpinbal )
 
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C80")
-#pragma bss_seg("B80")
 #pragma data_seg("D80")
+#pragma bss_seg("B80")
 #pragma const_seg("K80")
+#pragma comment(linker, "/merge:D80=80")
+#pragma comment(linker, "/merge:C80=80")
+#pragma comment(linker, "/merge:B80=80")
+#pragma comment(linker, "/merge:K80=80")
 /*************************************************************************
 
 	BattleToads
@@ -496,7 +500,7 @@ VIDEO_UPDATE( btoads )
 	logerror("---VBLANK---\n");
 #endif
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

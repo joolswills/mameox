@@ -1,7 +1,11 @@
 #pragma code_seg("C144")
-#pragma bss_seg("B144")
 #pragma data_seg("D144")
+#pragma bss_seg("B144")
 #pragma const_seg("K144")
+#pragma comment(linker, "/merge:D144=144")
+#pragma comment(linker, "/merge:C144=144")
+#pragma comment(linker, "/merge:B144=144")
+#pragma comment(linker, "/merge:K144=144")
 /***********************************************************************
 
 	DECO Cassette System driver
@@ -1127,7 +1131,7 @@ GAME ( 1985, cbdash,   decocass, cbdash,   decocass, decocass, ROT270, "DECO", "
 GAMEX( 1985, chwy,     decocass, decocass,   decocass, decocass, ROT270, "DECO", "Cassette: Highway Chase?", GAME_NOT_WORKING )
 GAMEX( 1985, cflyball, decocass, decocass,   decocass, decocass, ROT270, "DECO", "Cassette: Flying Ball?", GAME_NOT_WORKING )
 GAMEX( 1985, czeroize, decocass, decocass,   decocass, decocass, ROT270, "DECO", "Cassette: Zeroize?", GAME_NOT_WORKING )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

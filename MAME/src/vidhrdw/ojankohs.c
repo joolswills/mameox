@@ -1,7 +1,11 @@
-#pragma code_seg("C371")
-#pragma bss_seg("B371")
-#pragma data_seg("D371")
-#pragma const_seg("K371")
+#pragma code_seg("C370")
+#pragma data_seg("D370")
+#pragma bss_seg("B370")
+#pragma const_seg("K370")
+#pragma comment(linker, "/merge:D370=370")
+#pragma comment(linker, "/merge:C370=370")
+#pragma comment(linker, "/merge:B370=370")
+#pragma comment(linker, "/merge:K370=370")
 /******************************************************************************
 
 	Video Hardware for Video System Mahjong series.
@@ -229,7 +233,7 @@ VIDEO_UPDATE( ojankohs )
 
 	tilemap_draw(bitmap,cliprect, ojankohs_tilemap, 0, 0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

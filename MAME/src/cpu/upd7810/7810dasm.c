@@ -1,7 +1,11 @@
-#pragma code_seg("CC4")
-#pragma bss_seg("CB4")
-#pragma data_seg("CD4")
-#pragma const_seg("CK4")
+#pragma code_seg("CC5")
+#pragma data_seg("CD5")
+#pragma bss_seg("CB5")
+#pragma const_seg("CK5")
+#pragma comment(linker, "/merge:CD5=CPU5")
+#pragma comment(linker, "/merge:CC5=CPU5")
+#pragma comment(linker, "/merge:CB5=CPU5")
+#pragma comment(linker, "/merge:CK5=CPU5")
 /*****************************************************************************
  *
  *	 Portable uPD7810/11, 7810H/11H, 78C10/C11/C14 disassembler
@@ -4069,3 +4073,7 @@ unsigned Dasm7807( char *buffer, unsigned pc )
 
 #endif	/* MAME_DEBUG */
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

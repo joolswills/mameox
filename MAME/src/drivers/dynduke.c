@@ -1,7 +1,11 @@
 #pragma code_seg("C162")
-#pragma bss_seg("B162")
 #pragma data_seg("D162")
+#pragma bss_seg("B162")
 #pragma const_seg("K162")
+#pragma comment(linker, "/merge:D162=162")
+#pragma comment(linker, "/merge:C162=162")
+#pragma comment(linker, "/merge:B162=162")
+#pragma comment(linker, "/merge:K162=162")
 /***************************************************************************
 
 	Dynamite Duke						(c) 1989 Seibu Kaihatsu/Fabtek
@@ -403,7 +407,7 @@ static DRIVER_INIT( dynduke )
 
 GAME( 1989, dynduke, 0,       dynduke, dynduke, dynduke, ROT0, "Seibu Kaihatsu (Fabtek license)", "Dynamite Duke" )
 GAME( 1989, dbldyn,  dynduke, dynduke, dynduke, dynduke, ROT0, "Seibu Kaihatsu (Fabtek license)", "The Double Dynamites" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

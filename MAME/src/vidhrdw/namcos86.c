@@ -1,7 +1,11 @@
-#pragma code_seg("C352")
-#pragma bss_seg("B352")
-#pragma data_seg("D352")
-#pragma const_seg("K352")
+#pragma code_seg("C351")
+#pragma data_seg("D351")
+#pragma bss_seg("B351")
+#pragma const_seg("K351")
+#pragma comment(linker, "/merge:D351=351")
+#pragma comment(linker, "/merge:C351=351")
+#pragma comment(linker, "/merge:B351=351")
+#pragma comment(linker, "/merge:K351=351")
 /*******************************************************************
 
 Rolling Thunder Video Hardware
@@ -397,7 +401,7 @@ int b=keyboard_pressed(KEYCODE_Y)?8:0;
 }
 #endif
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

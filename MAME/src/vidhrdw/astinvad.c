@@ -1,7 +1,11 @@
 #pragma code_seg("C30")
-#pragma bss_seg("B30")
 #pragma data_seg("D30")
+#pragma bss_seg("B30")
 #pragma const_seg("K30")
+#pragma comment(linker, "/merge:D30=30")
+#pragma comment(linker, "/merge:C30=30")
+#pragma comment(linker, "/merge:B30=30")
+#pragma comment(linker, "/merge:K30=30")
 /***************************************************************************
 
 	Video emulation for Astro Invader, Space Intruder et al
@@ -166,7 +170,7 @@ VIDEO_UPDATE( astinvad )
 		copybitmap(bitmap, tmpbitmap, 0, 0, 0, 0, cliprect, TRANSPARENCY_NONE, 0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

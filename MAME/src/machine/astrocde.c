@@ -1,3 +1,11 @@
+#pragma code_seg("C31")
+#pragma data_seg("D31")
+#pragma bss_seg("B31")
+#pragma const_seg("K31")
+#pragma comment(linker, "/merge:D31=31")
+#pragma comment(linker, "/merge:C31=31")
+#pragma comment(linker, "/merge:B31=31")
+#pragma comment(linker, "/merge:K31=31")
 /**************************************************************************
 
 	Interrupt System Hardware for Bally/Midway games
@@ -83,3 +91,7 @@ READ_HANDLER( ebases_trackball_r )
 	logerror("Port %d = %d\n", ebases_trackball_select, ret);
 	return ret;
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

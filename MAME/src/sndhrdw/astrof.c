@@ -1,7 +1,11 @@
 #pragma code_seg("C32")
-#pragma bss_seg("B32")
 #pragma data_seg("D32")
+#pragma bss_seg("B32")
 #pragma const_seg("K32")
+#pragma comment(linker, "/merge:D32=32")
+#pragma comment(linker, "/merge:C32=32")
+#pragma comment(linker, "/merge:B32=32")
+#pragma comment(linker, "/merge:K32=32")
 #include "driver.h"
 
 /* Make sure that the sample name definitions in drivers/astrof.c matches these */
@@ -177,7 +181,7 @@ WRITE_HANDLER( astrof_sample2_w )
 	last = data;
 }
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

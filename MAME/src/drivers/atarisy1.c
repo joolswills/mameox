@@ -1,7 +1,11 @@
 #pragma code_seg("C39")
-#pragma bss_seg("B39")
 #pragma data_seg("D39")
+#pragma bss_seg("B39")
 #pragma const_seg("K39")
+#pragma comment(linker, "/merge:D39=39")
+#pragma comment(linker, "/merge:C39=39")
+#pragma comment(linker, "/merge:B39=39")
+#pragma comment(linker, "/merge:K39=39")
 /***************************************************************************
 
 	Atari System 1 hardware
@@ -1603,7 +1607,7 @@ GAME( 1985, indytemd, indytemp, atarisy1, indytemp, indytemp, ROT0, "Atari Games
 GAME( 1985, roadrunn, 0,        atarisy1, roadrunn, roadrunn, ROT0, "Atari Games", "Road Runner" )
 GAME( 1987, roadblst, 0,        atarisy1, roadblst, roadblst, ROT0, "Atari Games", "Road Blasters (set 1)" )
 GAME( 1987, roadbls2, roadblst, atarisy1, roadblst, roadbls2, ROT0, "Atari Games", "Road Blasters (set 2)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

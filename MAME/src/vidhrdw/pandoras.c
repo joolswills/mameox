@@ -1,7 +1,11 @@
-#pragma code_seg("C384")
-#pragma bss_seg("B384")
-#pragma data_seg("D384")
-#pragma const_seg("K384")
+#pragma code_seg("C383")
+#pragma data_seg("D383")
+#pragma bss_seg("B383")
+#pragma const_seg("K383")
+#pragma comment(linker, "/merge:D383=383")
+#pragma comment(linker, "/merge:C383=383")
+#pragma comment(linker, "/merge:B383=383")
+#pragma comment(linker, "/merge:K383=383")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -180,7 +184,7 @@ VIDEO_UPDATE( pandoras )
 	draw_sprites( bitmap,cliprect, &pandoras_sharedram[0x800] );
 	tilemap_draw( bitmap,cliprect, layer0, 0 ,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C66")
-#pragma bss_seg("B66")
 #pragma data_seg("D66")
+#pragma bss_seg("B66")
 #pragma const_seg("K66")
+#pragma comment(linker, "/merge:D66=66")
+#pragma comment(linker, "/merge:C66=66")
+#pragma comment(linker, "/merge:B66=66")
+#pragma comment(linker, "/merge:K66=66")
 /***************************************************************************
 
 							  -= Blomby Car =-
@@ -274,7 +278,7 @@ if (keyboard_pressed(KEYCODE_Z))
 	if (layers_ctrl&8)
 		blmbycar_draw_sprites(bitmap, cliprect);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

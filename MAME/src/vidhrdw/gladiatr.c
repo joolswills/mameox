@@ -1,7 +1,11 @@
 #pragma code_seg("C213")
-#pragma bss_seg("B213")
 #pragma data_seg("D213")
+#pragma bss_seg("B213")
 #pragma const_seg("K213")
+#pragma comment(linker, "/merge:D213=213")
+#pragma comment(linker, "/merge:C213=213")
+#pragma comment(linker, "/merge:B213=213")
+#pragma comment(linker, "/merge:K213=213")
 /***************************************************************************
 	Video Hardware description for Taito Gladiator
 
@@ -267,7 +271,7 @@ VIDEO_UPDATE( gladiatr )
 		render_text( bitmap );
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C205")
-#pragma bss_seg("B205")
 #pragma data_seg("D205")
+#pragma bss_seg("B205")
 #pragma const_seg("K205")
+#pragma comment(linker, "/merge:D205=205")
+#pragma comment(linker, "/merge:C205=205")
+#pragma comment(linker, "/merge:B205=205")
+#pragma comment(linker, "/merge:K205=205")
 /***************************************************************************
 
 Gaplus (c) 1984 Namco
@@ -859,7 +863,7 @@ GAME( 1984, gaplusa,  gaplus,   gaplusa,  gapluso,  0, ROT90, "Namco", "Gaplus (
 GAME( 1984, galaga3,  gaplus,   gaplus,   gaplus,   0, ROT90, "Namco", "Galaga 3 (rev. C)" )
 GAME( 1984, galaga3a, gaplus,   gaplus,   galaga3a, 0, ROT90, "Namco", "Galaga 3 (alternate set)" )
 GAME( 1984, galaga3m, gaplus,   gaplus,   galaga3m, 0, ROT90, "[Namco] (Midway license)", "Galaga 3 (Midway)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

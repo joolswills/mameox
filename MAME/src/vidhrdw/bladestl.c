@@ -1,7 +1,11 @@
 #pragma code_seg("C64")
-#pragma bss_seg("B64")
 #pragma data_seg("D64")
+#pragma bss_seg("B64")
 #pragma const_seg("K64")
+#pragma comment(linker, "/merge:D64=64")
+#pragma comment(linker, "/merge:C64=64")
+#pragma comment(linker, "/merge:B64=64")
+#pragma comment(linker, "/merge:K64=64")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/konamiic.h"
@@ -82,7 +86,7 @@ VIDEO_UPDATE( bladestl )
 	K007342_tilemap_draw( bitmap, cliprect, 0, 0 ,0);
 	K007342_tilemap_draw( bitmap, cliprect, 0, 1 ,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

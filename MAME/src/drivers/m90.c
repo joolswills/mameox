@@ -1,7 +1,11 @@
 #pragma code_seg("C291")
-#pragma bss_seg("B291")
 #pragma data_seg("D291")
+#pragma bss_seg("B291")
 #pragma const_seg("K291")
+#pragma comment(linker, "/merge:D291=291")
+#pragma comment(linker, "/merge:C291=291")
+#pragma comment(linker, "/merge:B291=291")
+#pragma comment(linker, "/merge:K291=291")
 /*****************************************************************************
 
 	Irem M90/M97 system games:
@@ -888,7 +892,7 @@ GAMEX(1992, quizf1,   0,        quizf1,   quizf1,   quizf1,   ROT0, "Irem", "Qui
 GAMEX(1993, riskchal, 0,        m90,      m97,      riskchal, ROT0, "Irem", "Risky Challenge", GAME_NOT_WORKING | GAME_NO_COCKTAIL )
 GAMEX(1993, gussun,   riskchal, m90,      m97,      riskchal, ROT0, "Irem", "Gussun Oyoyo (Japan)", GAME_NOT_WORKING | GAME_NO_COCKTAIL )
 GAMEX(1993, shisen2,  0,        m90,      m97,      shisen2,  ROT0, "Tamtex", "Shisensho II", GAME_NOT_WORKING | GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

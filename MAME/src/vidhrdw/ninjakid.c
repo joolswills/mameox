@@ -1,7 +1,11 @@
-#pragma code_seg("C362")
-#pragma bss_seg("B362")
-#pragma data_seg("D362")
-#pragma const_seg("K362")
+#pragma code_seg("C361")
+#pragma data_seg("D361")
+#pragma bss_seg("B361")
+#pragma const_seg("K361")
+#pragma comment(linker, "/merge:D361=361")
+#pragma comment(linker, "/merge:C361=361")
+#pragma comment(linker, "/merge:B361=361")
+#pragma comment(linker, "/merge:K361=361")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "state.h"
@@ -306,7 +310,7 @@ VIDEO_UPDATE( ninjakid )
 
 
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

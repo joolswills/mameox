@@ -1,7 +1,11 @@
 #pragma code_seg("C288")
-#pragma bss_seg("B288")
 #pragma data_seg("D288")
+#pragma bss_seg("B288")
 #pragma const_seg("K288")
+#pragma comment(linker, "/merge:D288=288")
+#pragma comment(linker, "/merge:C288=288")
+#pragma comment(linker, "/merge:B288=288")
+#pragma comment(linker, "/merge:K288=288")
 /****************************************************************************
 
 	Irem M107 video hardware, Bryan McPhail, mish@tendril.co.uk
@@ -469,7 +473,7 @@ WRITE_HANDLER( m107_spritebuffer_w )
 		memcpy(m107_spriteram,spriteram,0x1000);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

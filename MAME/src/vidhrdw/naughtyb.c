@@ -1,7 +1,11 @@
-#pragma code_seg("C353")
-#pragma bss_seg("B353")
-#pragma data_seg("D353")
-#pragma const_seg("K353")
+#pragma code_seg("C352")
+#pragma data_seg("D352")
+#pragma bss_seg("B352")
+#pragma const_seg("K352")
+#pragma comment(linker, "/merge:D352=352")
+#pragma comment(linker, "/merge:C352=352")
+#pragma comment(linker, "/merge:B352=352")
+#pragma comment(linker, "/merge:K352=352")
 /***************************************************************************
 
   vidhrdw.c
@@ -322,7 +326,7 @@ VIDEO_UPDATE( naughtyb )
 		copyscrollbitmap(bitmap,tmpbitmap,1,&scrollx,0,0,&scrollvisiblearea,TRANSPARENCY_NONE,0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C29")
-#pragma bss_seg("B29")
 #pragma data_seg("D29")
+#pragma bss_seg("B29")
 #pragma const_seg("K29")
+#pragma comment(linker, "/merge:D29=29")
+#pragma comment(linker, "/merge:C29=29")
+#pragma comment(linker, "/merge:B29=29")
+#pragma comment(linker, "/merge:K29=29")
 /***************************************************************************
 
 	Atari Asteroids hardware
@@ -804,7 +808,7 @@ GAME( 1980, astdelu1, astdelux, astdelux, astdelux, astdelux, ROT0, "Atari", "As
 GAME( 1979, llander,  0,        llander,  llander,  0,        ROT0, "Atari", "Lunar Lander (rev 2)" )
 GAME( 1979, llander1, llander,  llander,  llander1, 0,        ROT0, "Atari", "Lunar Lander (rev 1)" )
 
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C308")
-#pragma bss_seg("B308")
 #pragma data_seg("D308")
+#pragma bss_seg("B308")
 #pragma const_seg("K308")
+#pragma comment(linker, "/merge:D308=308")
+#pragma comment(linker, "/merge:C308=308")
+#pragma comment(linker, "/merge:B308=308")
+#pragma comment(linker, "/merge:K308=308")
 /***************************************************************************
 
 	Midway MCR-68k system
@@ -1432,7 +1436,7 @@ GAME( 1989, archrivl, 0,        archrivl, archrivl, archrivl, ROT0,   "Bally Mid
 GAME( 1989, archriv2, archrivl, archrivl, archrivl, archrivl, ROT0,   "Bally Midway", "Arch Rivals (rev 2.0)" )
 GAME( 1989, trisport, 0,        trisport, trisport, trisport, ROT270, "Bally Midway", "Tri-Sports" )
 GAME( 1990, pigskin,  0,        pigskin,  pigskin,  pigskin,  ROT0,   "Midway", "Pigskin 621AD" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

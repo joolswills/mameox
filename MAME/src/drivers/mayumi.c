@@ -1,7 +1,11 @@
 #pragma code_seg("C303")
-#pragma bss_seg("B303")
 #pragma data_seg("D303")
+#pragma bss_seg("B303")
 #pragma const_seg("K303")
+#pragma comment(linker, "/merge:D303=303")
+#pragma comment(linker, "/merge:C303=303")
+#pragma comment(linker, "/merge:B303=303")
+#pragma comment(linker, "/merge:K303=303")
 /*****************************************************************************
 
 Kikiippatsu Mayumi-chan (c) 1988 Victory L.L.C.
@@ -326,7 +330,7 @@ ROM_START( mayumi )
 ROM_END
 
 GAME ( 1988, mayumi, 0, mayumi, mayumi, 0, ROT0, "[Sanritsu] Victory L.L.C.",  "Kikiippatsu Mayumi-chan (Japan)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

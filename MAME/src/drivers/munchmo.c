@@ -1,7 +1,11 @@
-#pragma code_seg("C341")
-#pragma bss_seg("B341")
-#pragma data_seg("D341")
-#pragma const_seg("K341")
+#pragma code_seg("C340")
+#pragma data_seg("D340")
+#pragma bss_seg("B340")
+#pragma const_seg("K340")
+#pragma comment(linker, "/merge:D340=340")
+#pragma comment(linker, "/merge:C340=340")
+#pragma comment(linker, "/merge:B340=340")
+#pragma comment(linker, "/merge:K340=340")
 /***************************************************************************
   Munch Mobile
   (C) 1982 SNK
@@ -387,7 +391,7 @@ ROM_END
 
 GAMEX( 1983, joyfulr,  0,       munchmo, mnchmobl, 0, ROT270, "SNK", "Joyful Road (Japan)", GAME_IMPERFECT_SOUND | GAME_NO_COCKTAIL )
 GAMEX( 1983, mnchmobl, joyfulr, munchmo, mnchmobl, 0, ROT270, "SNK (Centuri license)", "Munch Mobile (US)", GAME_IMPERFECT_SOUND | GAME_NO_COCKTAIL )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

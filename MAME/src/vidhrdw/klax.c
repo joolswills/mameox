@@ -1,7 +1,11 @@
 #pragma code_seg("C267")
-#pragma bss_seg("B267")
 #pragma data_seg("D267")
+#pragma bss_seg("B267")
 #pragma const_seg("K267")
+#pragma comment(linker, "/merge:D267=267")
+#pragma comment(linker, "/merge:C267=267")
+#pragma comment(linker, "/merge:B267=267")
+#pragma comment(linker, "/merge:K267=267")
 /***************************************************************************
 
 	Atari Klax hardware
@@ -138,7 +142,7 @@ VIDEO_UPDATE( klax )
 				}
 		}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

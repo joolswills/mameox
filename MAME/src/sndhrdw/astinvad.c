@@ -1,7 +1,11 @@
 #pragma code_seg("C30")
-#pragma bss_seg("B30")
 #pragma data_seg("D30")
+#pragma bss_seg("B30")
 #pragma const_seg("K30")
+#pragma comment(linker, "/merge:D30=30")
+#pragma comment(linker, "/merge:C30=30")
+#pragma comment(linker, "/merge:B30=30")
+#pragma comment(linker, "/merge:K30=30")
 /***********************************
  updated: 1997-04-09 08:46 TT
  updated  20-3-1998 LT Added colour changes on base explosion
@@ -143,7 +147,7 @@ WRITE_HANDLER( spaceint_sound2_w )
 
 	state = data;
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

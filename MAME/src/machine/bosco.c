@@ -1,3 +1,11 @@
+#pragma code_seg("C75")
+#pragma data_seg("D75")
+#pragma bss_seg("B75")
+#pragma const_seg("K75")
+#pragma comment(linker, "/merge:D75=75")
+#pragma comment(linker, "/merge:C75=75")
+#pragma comment(linker, "/merge:B75=75")
+#pragma comment(linker, "/merge:K75=75")
 /***************************************************************************
 
   machine.c
@@ -634,3 +642,7 @@ INTERRUPT_GEN( bosco_interrupt_3 )
 	if (interrupt_enable_3)
 		cpu_set_irq_line(2, IRQ_LINE_NMI, PULSE_LINE);
 }
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C75")
-#pragma bss_seg("B75")
 #pragma data_seg("D75")
+#pragma bss_seg("B75")
 #pragma const_seg("K75")
+#pragma comment(linker, "/merge:D75=75")
+#pragma comment(linker, "/merge:C75=75")
+#pragma comment(linker, "/merge:B75=75")
+#pragma comment(linker, "/merge:K75=75")
 #include "driver.h"
 
 /* macro to convert 4-bit unsigned samples to 8-bit signed samples */
@@ -51,7 +55,7 @@ void bosco_sample_play(int offset, int length)
 
 	mixer_play_sample(channel,speech + offset,length,4000,0);
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

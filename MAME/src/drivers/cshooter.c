@@ -1,7 +1,11 @@
 #pragma code_seg("C127")
-#pragma bss_seg("B127")
 #pragma data_seg("D127")
+#pragma bss_seg("B127")
 #pragma const_seg("K127")
+#pragma comment(linker, "/merge:D127=127")
+#pragma comment(linker, "/merge:C127=127")
+#pragma comment(linker, "/merge:B127=127")
+#pragma comment(linker, "/merge:K127=127")
 /* Cross Shooter (c) 1987 Seibu */
 
 /*
@@ -587,7 +591,7 @@ DRIVER_INIT( cshootre )
 GAMEX( 1987, cshooter, 0,        cshooter, cshooter, cshooter, ROT270, "[Seibu Kaihatsu] (Taito license)",  "Cross Shooter (not encrypted)", GAME_NOT_WORKING | GAME_NO_SOUND )
 GAMEX( 1987, cshootre, cshooter, cshooter, cshooter, cshootre, ROT270, "[Seibu Kaihatsu] (J.K.H. license)", "Cross Shooter (encrypted)", GAME_NOT_WORKING | GAME_NO_SOUND )
 GAMEX( 1987, airraid,  cshooter, cshooter, cshooter, cshootre, ROT270, "Seibu Kaihatsu",                    "Air Raid (encrypted)", GAME_NOT_WORKING | GAME_NO_SOUND )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

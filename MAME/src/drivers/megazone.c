@@ -1,7 +1,11 @@
 #pragma code_seg("C310")
-#pragma bss_seg("B310")
 #pragma data_seg("D310")
+#pragma bss_seg("B310")
 #pragma const_seg("K310")
+#pragma comment(linker, "/merge:D310=310")
+#pragma comment(linker, "/merge:C310=310")
+#pragma comment(linker, "/merge:B310=310")
+#pragma comment(linker, "/merge:K310=310")
 /**************************************************************************
 
 Based on drivers from Juno First emulator by Chris Hardy (chris@junofirst.freeserve.co.uk)
@@ -455,7 +459,7 @@ static DRIVER_INIT( megazone )
 
 GAME( 1983, megazone, 0,        megazone, megazone, megazone, ROT90, "Konami", "Mega Zone" )
 GAME( 1983, megaznik, megazone, megazone, megazone, megazone, ROT90, "Konami / Interlogic + Kosuka", "Mega Zone (Kosuka)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C153")
-#pragma bss_seg("B153")
 #pragma data_seg("D153")
+#pragma bss_seg("B153")
 #pragma const_seg("K153")
+#pragma comment(linker, "/merge:D153=153")
+#pragma comment(linker, "/merge:C153=153")
+#pragma comment(linker, "/merge:B153=153")
+#pragma comment(linker, "/merge:K153=153")
 /***************************************************************************
 
 Dog-Fight / Batten O'hara no Sucha-Raka Kuuchuu Sen
@@ -302,7 +306,7 @@ ROM_END
 
 
 GAME( 1984, dogfgt, 0, dogfgt, dogfgt, 0, ROT0, "Technos", "Dog-Fight" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

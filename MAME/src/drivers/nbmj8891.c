@@ -1,7 +1,11 @@
-#pragma code_seg("C355")
-#pragma bss_seg("B355")
-#pragma data_seg("D355")
-#pragma const_seg("K355")
+#pragma code_seg("C354")
+#pragma data_seg("D354")
+#pragma bss_seg("B354")
+#pragma const_seg("K354")
+#pragma comment(linker, "/merge:D354=354")
+#pragma comment(linker, "/merge:C354=354")
+#pragma comment(linker, "/merge:B354=354")
+#pragma comment(linker, "/merge:K354=354")
 /******************************************************************************
 
 	Game Driver for Nichibutsu Mahjong series.
@@ -3079,7 +3083,7 @@ GAME( 1990, maiko,     0,        maiko,    maiko,    maiko,    ROT0,   "Nichibut
 GAME( 1990, club90s,   0,        mjnanpas, club90s,  club90s,  ROT0,   "Nichibutsu", "Mahjong CLUB 90's (set 1) (Japan 900919)" )
 GAME( 1990, club90sa,  club90s,  mjnanpas, club90s,  club90s,  ROT0,   "Nichibutsu", "Mahjong CLUB 90's (set 2) (Japan 900919)" )
 GAME( 1991, hanaoji,   0,        hanaoji,  hanaoji,  hanaoji,  ROT0,   "Nichibutsu", "Hana to Ojisan [BET] (Japan 911209)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

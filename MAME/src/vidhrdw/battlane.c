@@ -1,7 +1,11 @@
 #pragma code_seg("C52")
-#pragma bss_seg("B52")
 #pragma data_seg("D52")
+#pragma bss_seg("B52")
 #pragma const_seg("K52")
+#pragma comment(linker, "/merge:D52=52")
+#pragma comment(linker, "/merge:C52=52")
+#pragma comment(linker, "/merge:B52=52")
+#pragma comment(linker, "/merge:K52=52")
 /***************************************************************************
 
 	Battlelane
@@ -329,7 +333,7 @@ VIDEO_UPDATE( battlane )
 
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -1,7 +1,11 @@
 #pragma code_seg("C232")
-#pragma bss_seg("B232")
 #pragma data_seg("D232")
+#pragma bss_seg("B232")
 #pragma const_seg("K232")
+#pragma comment(linker, "/merge:D232=232")
+#pragma comment(linker, "/merge:C232=232")
+#pragma comment(linker, "/merge:B232=232")
+#pragma comment(linker, "/merge:K232=232")
 /***************************************************************************
 
   vidhrdw.c
@@ -246,7 +250,7 @@ INTERRUPT_GEN( gyruss_6809_interrupt )
 	if (scanline == 255)
 		irq0_line_hold();
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

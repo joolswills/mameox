@@ -1,7 +1,11 @@
 #pragma code_seg("C135")
-#pragma bss_seg("B135")
 #pragma data_seg("D135")
+#pragma bss_seg("B135")
 #pragma const_seg("K135")
+#pragma comment(linker, "/merge:D135=135")
+#pragma comment(linker, "/merge:C135=135")
+#pragma comment(linker, "/merge:B135=135")
+#pragma comment(linker, "/merge:K135=135")
 /***************************************************************************
 
   vidhrdw.c
@@ -388,7 +392,7 @@ VIDEO_UPDATE( dday )
 		copybitmap(bitmap,main_bitmap,0,0,0,0,cliprect,TRANSPARENCY_NONE,0);
 	}
 }
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

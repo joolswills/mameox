@@ -1,7 +1,11 @@
-#pragma code_seg("C428")
-#pragma bss_seg("B428")
-#pragma data_seg("D428")
-#pragma const_seg("K428")
+#pragma code_seg("C427")
+#pragma data_seg("D427")
+#pragma bss_seg("B427")
+#pragma const_seg("K427")
+#pragma comment(linker, "/merge:D427=427")
+#pragma comment(linker, "/merge:C427=427")
+#pragma comment(linker, "/merge:B427=427")
+#pragma comment(linker, "/merge:K427=427")
 /***************************************************************************
 
 	Atari "Round" hardware
@@ -497,7 +501,7 @@ static DRIVER_INIT( relief2 )
 
 GAME( 1992, relief,  0,      relief, relief, relief,  ROT0, "Atari Games", "Relief Pitcher (set 1)" )
 GAME( 1992, relief2, relief, relief, relief, relief2, ROT0, "Atari Games", "Relief Pitcher (set 2)" )
-#pragma data_seg()
 #pragma code_seg()
+#pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()
