@@ -74,11 +74,15 @@ Version 0.71.3b (CVS)
       - Implemented missing keyboard functionality
 
     - xbox_Miscelaneous.c
-      - Added osd_autobootsavestate() function to facilitate automatic
-        booting of save states when a ROM has finished loading.
+      - Added osd_autobootsavestate() function to facilitate 
+        automatic booting of save states when a ROM has finished 
+        loading.
 
     Added xbox_Input.c to do default key mapping and input subsystem
       initialization
+
+    Added VirtualMemoryManager.cpp to facilitate VM usage in the 
+      future
 
    -------------------------------------------------------------
   - \MAMEoXLauncher\Includes:
