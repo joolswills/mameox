@@ -34,6 +34,8 @@ Version 0.73.1b
       - Moved graphical progressbar code to MAMEoXUtil
       - Fixed problem where disabling the screensaver would
         enter an infinite input-eating loop
+      - Tossed in a warning screen if the XBOX clock is not
+        set (as this can screw up Neogeo titles)
 
     - BaseView.cpp
       - Fixed problem w/ 2bpp paletted PNG files (caused the

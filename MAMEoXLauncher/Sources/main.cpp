@@ -282,6 +282,30 @@ void __cdecl main( void )
   // our totalMAMEGames member, as well as producing the driver info file
 
 
+    // Check the clock and throw up a warning screen if it hasn't been set
+    // A number of MAME ROMs require a valid clock setting to emulate correctly
+	time_t ltime;
+	time(&ltime);
+	if( !localtime(&ltime) )
+  {
+    while( !g_inputManager.IsAnyButtonPressed() && !g_inputManager.IsAnyKeyPressed() )
+    {
+      g_inputManager.PollDevices();
+      DrawProgressbarMessage( pD3DDevice, 
+                              "Your system clock is not set!\n\n"
+                              "This can cause some games to\n"
+                              "run improperly or crash!\n"
+                              "Please reboot your XBOX and set\n"
+                              "the system clock in the dashboard.", 
+                              NULL, 
+                              0xFFFFFFFF, 
+                              0 );
+    }
+	  g_inputManager.WaitForNoInput();        
+  }
+  
+
+
     //--- Create the views -------------------------------------------------------
   CHelpScreen help( pD3DDevice, 
               g_fontSet, 
