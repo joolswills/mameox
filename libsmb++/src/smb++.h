@@ -23,8 +23,11 @@
 #ifndef SMB_CPP_H
 #define SMB_CPP_H
 #include <SelectedSMB.h>
+
 #include <SelectedNMB.h>
+
 #include <Resolve.h>
+
 typedef SelectedSMB SMB;
 typedef Resolve NMB;
 #endif

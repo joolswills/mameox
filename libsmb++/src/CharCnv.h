@@ -35,8 +35,8 @@
 class CharCnv
 {
 private:
-  char unix2winmap[256];
-  char win2unixmap[256];
+  char unix2winmap[259];
+  char win2unixmap[259];
 private:
   void update_map(char *str);
   
@@ -48,7 +48,7 @@ private:
 public:
   char *unix2win(char *str) const;
   char *win2unix(char *str) const;
-  CharCnv(const char *char_set_param=0);
+  CharCnv(const char *char_set_param=0);	virtual ~CharCnv();
 };
 
 #endif

@@ -116,7 +116,7 @@ SMBIO::SMBIO(char* (*getFunc)(const char*, bool), const char *hostname) : Sessio
 	defaultBrowser=0; // use samba
 	defaultUser=0;    // anonymous
 	hasBeenDeconnected=1;
-	char_cnv=new CharCnv;
+	char_cnv=new CharCnv ("NULL");
 }
 
 SMBIO::SMBIO(SmbAnswerCallback *getObject, const char *hostname) : SessionIO(hostname)
@@ -138,7 +138,7 @@ SMBIO::SMBIO(SmbAnswerCallback *getObject, const char *hostname) : SessionIO(hos
 	defaultBrowser=0; // use samba
 	defaultUser=0;    // anonymous
 	hasBeenDeconnected=1;
-	char_cnv=new CharCnv;
+	char_cnv=new CharCnv ("NULL");
 }
 
 SMBIO::~SMBIO()
@@ -3354,7 +3354,7 @@ SMBdirent *SMBIO::readdir(int dirdesc)
 					trans->param=new uint8[trans->paramLength];
 					trans->param[0]=(uint8)(info->handle&0xFF); // little endian
 					trans->param[1]=(uint8)((info->handle&0xFF00)>>8);
-					trans->param[2]=16; // max entries to return. Not too much, watch
+					trans->param[2]=10; // max entries to return. Not too much, watch
 					trans->param[3]=0; // the cache size... (little endian)
 					trans->param[4]=1; // "standard" info level
 					trans->param[5]=0;	// was on 16 bits little endian

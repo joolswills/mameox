@@ -219,14 +219,7 @@ error class.
 #define ERRbadpw          2	// Bad password - name/password pair in a Tree Connect is invalid.
 #define ERRbadtype        3	// reserved
 #define ERRaccess         4
-//                   The requester does not have  the  necessary  access  rights  within  the
-//                   specified TID context for the requested function.  [EACCES]
-#define ERRinvnid         5	// The tree ID (tid) specified in a command was invalid.
-#define ERRinvnetname     6	// Invalid name supplied with tree connect.
-#define ERRinvdevice      7
-//                   Invalid device - printer request made to non-printer connection or  non-
-//                   printer request made to printer connection.
-#define ERRqfull         49	// Print queue full (files) -- returned by open print file.
+//                   The requester does not have  the  necessary  access  rights  within  the//                   specified TID context for the requested function.  [EACCES]#define ERRinvnid         5	// The tree ID (tid) specified in a command was invalid.#define ERRinvnetname     6	// Invalid name supplied with tree connect.#define ERRinvdevice      7//                   Invalid device - printer request made to non-printer connection or  non-//                   printer request made to printer connection.#define ERRqfull         49	// Print queue full (files) -- returned by open print file.
 #define ERRqtoobig       50	// Print queue full -- no space.
 #define ERRqeof          51	// EOF on print queue dump.
 #define ERRinvpfid       52	// Invalid print file FID.

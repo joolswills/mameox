@@ -419,7 +419,8 @@ NameConflictDemand::NameConflictDemand(const char* name, uint16 id)
 
 
 
-#endif#pragma code_seg()
+#endif
+#pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()
 #pragma const_seg()

@@ -36,8 +36,7 @@ public:
 
 // Thanks to Pål-Kristian Engstad <engstad@sqla.com> for introducing
 // the idea of a callback class!
-class SmbAnswerCallback
-{
+class SmbAnswerCallback{
 protected:
 	char *lastAnswer;
 public:

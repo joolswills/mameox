@@ -47,7 +47,9 @@ class NBHostCache
 {
 private:
   static NBHostCache *base;
+
   static long nrof_cache_entries;
+  
   uint32 lastCheck, timeout;
   NBHostEnt *host;
   NBHostCache *next;

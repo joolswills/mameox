@@ -57,6 +57,9 @@ struct hostent* gethostbyname(const char* _name)
 	WaitForSingleObject(hEvent, INFINITE);
 	if( pDns && pDns->iStatus == 0 )
 	{
+		unsigned long ulHostIp;
+		memcpy(&ulHostIp, &(pDns->aina[0].s_addr), 4);
+
 		strcpy(server->name, _name);
 		server->addr_list[0] = server->addr;
 		memcpy(server->addr, &(pDns->aina[0].s_addr), 4);

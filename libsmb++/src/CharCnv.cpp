@@ -52,6 +52,8 @@
 
 #include <string.h>
 
+
+
 #ifndef USE_SAMBA
 
 
@@ -256,9 +258,8 @@ void CharCnv::init_roman8(void) {
 
 CharCnv::CharCnv(const char *char_set_param)
 {
-  const char *defaultCharset="iso8859-1";
   char *char_set=(char*)char_set_param; // discard const ?
-  if ((!char_set) || (!char_set[0])) char_set=(char*)defaultCharset;
+  if ((!char_set) || (!char_set[0])) char_set=(char*)"iso8859-1";
   int i;
   int mapno;
   int maplen;
@@ -284,9 +285,6 @@ CharCnv::CharCnv(const char *char_set_param)
     else if (!strcmp (char_set, "KOI8-R") || !strcmp (char_set, "KOI-8-R"))    init_koi8_r();
     else if (!strcmp (char_set, "ROMAN8") || !strcmp (char_set, "ROMAN-8"))    init_roman8();
     else {
-#if DEBUG >= 4
-      cerr << "Unrecognized character set " << char_set << endl;
-#endif
   }
     return;
   }
@@ -306,15 +304,8 @@ char *CharCnv::unix2win(char *str) const
 {
   char *p;
 
-#if DEBUG >= 4
-  cerr << "unix2win before: " << str << endl;
-#endif
-
   for(p=str;*p;p++) *p = unix2winmap[(unsigned char)*p];
 
-#if DEBUG >= 4
-  cerr << "unix2win after: " << str << endl;
-#endif
 
   return str;
 }
@@ -324,23 +315,19 @@ char *CharCnv::win2unix(char *str) const
 {
   char *p;
 
-#if DEBUG >= 6
-  cerr << "win2unix before: " << str << endl;
-#endif
-
 
   for(p=str;*p;p++) 
 	{
 		*p = win2unixmap[(unsigned char)*p];
 	}
 
-#if DEBUG >= 6
-  cerr << "win2unix after: " << str << endl;
-#endif
 
   return str;
 }
 
+CharCnv::~CharCnv()
+{
+}
 
 #endif
 
