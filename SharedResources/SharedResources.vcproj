@@ -23,7 +23,7 @@
 				OptimizeForProcessor="2"
 				PreprocessorDefinitions="NDEBUG;_XBOX;_LIB"
 				StringPooling="TRUE"
-				RuntimeLibrary="0"
+				RuntimeLibrary="4"
 				EnableFunctionLevelLinking="TRUE"
 				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="0"
