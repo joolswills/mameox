@@ -52,7 +52,6 @@ static LPDIRECTSOUND8					g_pDSound = NULL;
   // sound buffers
 static LPDIRECTSOUNDBUFFER8		g_pStreamBuffer = NULL;
 static UINT32									g_streamBufferSize = 0;
-static UINT32									g_streamBufferWriteCursor = 0;
 static UINT32				          g_streamBufferIn;
 
   // descriptors and formats
@@ -122,7 +121,6 @@ INT32 osd_start_audio_stream( INT32 stereo )
   g_totalFrames = 0;
   g_bufferUnderflows = 0;
   g_bufferOverflows = 0;
-  g_streamBufferWriteCursor = 0;
 
 	// determine the number of samples per frame
 	g_samplesPerFrame = (DOUBLE)Machine->sample_rate / (DOUBLE)Machine->drv->frames_per_second;
@@ -164,7 +162,7 @@ void osd_stop_audio_stream( void )
 	Helper_DirectSoundTerminate();
 
   #ifdef LOG_SOUND
-    _RPT2( _CRT_WARN, "Sound buffer: overflows=%d underflows=%d\n", g_bufferOverflows, g_bufferUnderflows );
+    PRINTMSG( T_INFO, "Sound buffer: overflows=%d underflows=%d\n", g_bufferOverflows, g_bufferUnderflows );
   #endif
 }
 
@@ -214,7 +212,7 @@ INT32 osd_update_audio_stream( INT16 *buffer )
         {
 	        prev_overflows = g_bufferOverflows;
 	        prev_underflows = g_bufferUnderflows;
-          _RPTF2( _CRT_WARN, "************************ overflows=%d underflows=%d\n", g_bufferOverflows, g_bufferUnderflows );
+          PRINTMSG( T_INFO, "************************ overflows=%d underflows=%d\n", g_bufferOverflows, g_bufferUnderflows );
         }
       }
     #endif
@@ -310,7 +308,7 @@ static BOOL Helper_DirectSoundInitialize( void )
 	g_upperThresh = (g_streamBufferSize << 1) / 5;
 	
   #ifdef LOG_SOUND
-	  _RPTF2( _CRT_WARN, "stream_buffer_size = %d (max %d)\n", g_streamBufferSize, MAX_BUFFER_SIZE );
+	  PRINTMSG( T_INFO, "stream_buffer_size = %d (max %d)\n", g_streamBufferSize, MAX_BUFFER_SIZE );
 	  PRINTMSG( T_INFO, "lower_thresh = %d\n", g_lowerThresh);
 	  PRINTMSG( T_INFO, "upper_thresh = %d\n", g_upperThresh);
   #endif
