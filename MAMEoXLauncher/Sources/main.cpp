@@ -216,6 +216,12 @@ void __cdecl main( void )
       XLaunchNewImage( "D:\\MAMEoX.xbe", &g_launchData );
 		  Die( pD3DDevice, "Could not execute MAMEoX.xbe!" );
     }
+
+      // If we get this far, we know that the driver list hasn't been regenerated,
+      // so we can load up the last known cursor position data
+    mameoxLaunchData->m_cursorPosition   = g_persistentLaunchData.m_cursorPosition;
+    mameoxLaunchData->m_pageOffset       = g_persistentLaunchData.m_pageOffset;
+    mameoxLaunchData->m_superscrollIndex = g_persistentLaunchData.m_superscrollIndex;
   }
   else
   {
@@ -456,6 +462,9 @@ void __cdecl main( void )
     if( g_inputManager.IsButtonPressed( GP_LEFT_TRIGGER | GP_RIGHT_TRIGGER | GP_BLACK ) )
 		{
       g_romListOptions = romList.GetOptions();
+      romList.GetCursorPosition(  &g_persistentLaunchData.m_cursorPosition, 
+                                  &g_persistentLaunchData.m_pageOffset,
+                                  &g_persistentLaunchData.m_superscrollIndex );
       SaveOptions();
       LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
       XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
@@ -637,6 +646,9 @@ void __cdecl main( void )
       mameoxLaunchData->m_command = LAUNCH_RUN_GAME;
 
       g_romListOptions = romList.GetOptions();
+      romList.GetCursorPosition(  &g_persistentLaunchData.m_cursorPosition, 
+                                  &g_persistentLaunchData.m_pageOffset,
+                                  &g_persistentLaunchData.m_superscrollIndex );
       SaveOptions();
       ShowLoadingScreen( pD3DDevice );
       XLaunchNewImage( "D:\\MAMEoX.xbe", &g_launchData );

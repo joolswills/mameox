@@ -45,12 +45,13 @@ typedef struct _UNICODE_STRING
 } UNICODE_STRING, *PUNICODE_STRING;
 
 //= G L O B A L = V A R S =============================================
-CInputManager			g_inputManager;
-CGraphicsManager	g_graphicsManager;
-CFontSet          g_fontSet;  // The global font manager
+CInputManager			  g_inputManager;
+CGraphicsManager	  g_graphicsManager;
+CFontSet            g_fontSet;  // The global font manager
 
-extern BOOL       g_soundEnabled;   // Sound processing override (defined in xbox_Main.cpp)
-ROMListOptions_t  g_romListOptions;
+extern BOOL         g_soundEnabled;   // Sound processing override (defined in xbox_Main.cpp)
+ROMListOptions_t    g_romListOptions;
+MAMEoXLaunchData_t  g_persistentLaunchData;   //!<  Launch data that persists via the INI
 
 
 extern "C" {
@@ -221,9 +222,12 @@ void LoadOptions( void )
   g_calibrationData[3].m_yData[2] = iniFile.GetProfileInt( "Input", "Lightgun4_Bottom", -32767 );
 
     //-- ROM List Options --------------------------------------------------------------------
-  g_romListOptions.m_displayClones =             iniFile.GetProfileInt( "ROMListOptions", "DisplayClones", TRUE );
-  g_romListOptions.m_sortMode = (ROMListSortMode)iniFile.GetProfileInt( "ROMListOptions", "SortMode", (UINT32)SM_BYNAME );
-  g_romListOptions.m_verboseMode =               iniFile.GetProfileInt( "ROMListOptions", "VerboseMode", TRUE );
+  g_romListOptions.m_displayClones =              iniFile.GetProfileInt( "ROMListOptions", "DisplayClones", TRUE );
+  g_romListOptions.m_sortMode =  (ROMListSortMode)iniFile.GetProfileInt( "ROMListOptions", "SortMode", (UINT32)SM_BYNAME );
+  g_romListOptions.m_verboseMode =                iniFile.GetProfileInt( "ROMListOptions", "VerboseMode", TRUE );
+  g_persistentLaunchData.m_cursorPosition =       iniFile.GetProfileFloat( "ROMListOptions", "CursorPosition", 0.0f );
+  g_persistentLaunchData.m_pageOffset =           iniFile.GetProfileFloat( "ROMListOptions", "PageOffset", 0.0f );
+  g_persistentLaunchData.m_superscrollIndex =     iniFile.GetProfileInt(   "ROMListOptions", "SuperscrollIndex", 0 );
 }
 
 
@@ -331,9 +335,12 @@ void SaveOptions( void )
   iniFile.WriteProfileInt( "Input", "Lightgun4_Bottom", g_calibrationData[3].m_yData[2] );
 
     //-- ROM List Options --------------------------------------------------------------------
-  iniFile.WriteProfileInt( "ROMListOptions", "DisplayClones", g_romListOptions.m_displayClones );
-  iniFile.WriteProfileInt( "ROMListOptions", "SortMode", (UINT32)g_romListOptions.m_sortMode );
-  iniFile.WriteProfileInt( "ROMListOptions", "VerboseMode", g_romListOptions.m_verboseMode );
+  iniFile.WriteProfileInt(   "ROMListOptions", "DisplayClones", g_romListOptions.m_displayClones );
+  iniFile.WriteProfileInt(   "ROMListOptions", "SortMode", (UINT32)g_romListOptions.m_sortMode );
+  iniFile.WriteProfileInt(   "ROMListOptions", "VerboseMode", g_romListOptions.m_verboseMode );
+  iniFile.WriteProfileFloat( "ROMListOptions", "CursorPosition", g_persistentLaunchData.m_cursorPosition );
+  iniFile.WriteProfileFloat( "ROMListOptions", "PageOffset", g_persistentLaunchData.m_pageOffset );
+  iniFile.WriteProfileInt(   "ROMListOptions", "SuperscrollIndex", g_persistentLaunchData.m_superscrollIndex );
 }
 
 //-------------------------------------------------------------

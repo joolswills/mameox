@@ -123,8 +123,9 @@ typedef struct ROMListOptions_t
 
 
 //= G L O B A L = V A R S ==============================================
-extern lightgunCalibration_t    g_calibrationData[4]; //!< Lightgun calibration data
-extern ROMListOptions_t         g_romListOptions;
+extern lightgunCalibration_t    g_calibrationData[4];     //!< Lightgun calibration data
+extern ROMListOptions_t         g_romListOptions;         //!<  ROM List display options that persist via the INI
+extern MAMEoXLaunchData_t       g_persistentLaunchData;   //!<  Launch data that persists via the INI
 
 //= P R O T O T Y P E S ================================================
   //-------------------------------------------------------------------

@@ -19,6 +19,11 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+
+//= D E F I N E S  =====================================================
+//#define ENABLE_LOGERROR     // Enable the logerror function (this can spit out a _lot_ of data)
+
+
 //= F U N C T I O N S ==================================================
 
 //---------------------------------------------------------------------
@@ -87,6 +92,7 @@ void osd_pause( int paused )
 //---------------------------------------------------------------------
 void __cdecl logerror( const char *fmt, ... )
 {
+#ifdef ENABLE_LOGERROR
 	char buf[1024];
 
   va_list arg;
@@ -95,6 +101,7 @@ void __cdecl logerror( const char *fmt, ... )
   va_end( arg );
 
 	PRINTMSG( T_ERROR, buf );
+#endif
 }
 
 //---------------------------------------------------------------------
