@@ -29,15 +29,19 @@
 //---------------------------------------------------------------------
 //  osd_malloc
 //---------------------------------------------------------------------
-void *osd_malloc( size_t sz )
+void *osd_malloc( size_t size )
 {
   // [EBA] - "Safe" malloc, exits the program if the malloc fails, rather than
   // relying on MAME to actually check for failure (which it does not, in numerous
   // places)
 
-  void *ret = malloc( sz );
+  void *ret = malloc( size );
   if( !ret )
-    fatalerror( "Malloc failed! (Out of Memory)" );
+  {
+    MEMORYSTATUS memStatus;
+    GlobalMemoryStatus( &memStatus );
+    fatalerror( "Malloc failed! (Out of Memory)\nRequested %lu bytes, %lu free", size, memStatus.dwAvailPhys );
+  }
 
   return ret;
 }
@@ -54,7 +58,11 @@ void *osd_calloc( size_t num, size_t size )
 
   void *ret = calloc( num, size );
   if( !ret )
-    fatalerror( "Calloc failed! (Out of Memory)" );
+  {
+    MEMORYSTATUS memStatus;
+    GlobalMemoryStatus( &memStatus );
+    fatalerror( "Calloc failed! (Out of Memory)\nRequested %lu bytes, %lu free", size, memStatus.dwAvailPhys );
+  }
 
   return ret;
 }
@@ -70,7 +78,11 @@ void *osd_realloc( void *memblock, size_t size )
 
   void *ret = realloc( memblock, size );
   if( !ret )
-    fatalerror( "Realloc failed! (Out of Memory)" );
+  {
+    MEMORYSTATUS memStatus;
+    GlobalMemoryStatus( &memStatus );
+    fatalerror( "Realloc failed! (Out of Memory)\nRequested %lu bytes, %lu free", size, memStatus.dwAvailPhys );
+  }
 
   return ret;
 }
