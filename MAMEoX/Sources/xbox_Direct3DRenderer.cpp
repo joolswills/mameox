@@ -512,9 +512,9 @@ static void Helper_RenderVectors( void *dest, struct mame_bitmap *bitmap, const 
 	    while( *vectorList != VECTOR_PIXEL_END )
 	    {
 		    vector_pixel_t coords = *(vectorList++);
-		    INT32 x = VECTOR_PIXEL_Y( coords );
-		    INT32 y = VECTOR_PIXEL_X( coords );
-        destBuf[ (bnds->min_x + x ) + ((bnds->min_y + y) * g_createParams.width) ] = sourceBuf[ (bnds->min_x + x) + (bnds->min_y + y) * bitmap->rowpixels ];
+		    INT32 x = VECTOR_PIXEL_X( coords );
+		    INT32 y = VECTOR_PIXEL_Y( coords );
+        destBuf[ (bnds->min_y + y ) + ((bnds->min_x + x) * g_createParams.width) ] = sourceBuf[ (bnds->min_x + x) + (bnds->min_y + y) * bitmap->rowpixels ];
 	    }
     }
     else
@@ -537,10 +537,10 @@ static void Helper_RenderVectors( void *dest, struct mame_bitmap *bitmap, const 
 	    while( *vectorList != VECTOR_PIXEL_END )
 	    {
 		    vector_pixel_t coords = *(vectorList++);
-		    INT32 x = VECTOR_PIXEL_Y( coords );
-		    INT32 y = VECTOR_PIXEL_X( coords );
+		    INT32 x = VECTOR_PIXEL_X( coords );
+		    INT32 y = VECTOR_PIXEL_Y( coords );
         UINT32 color = g_pal32Lookup[ sourceBuf[ (bnds->min_x + x) + (bnds->min_y + y) * bitmap->rowpixels ] ];
-        destBuf[ (bnds->min_x + x ) + ((bnds->min_y + y) * g_createParams.width) ] = color;
+        destBuf[ (bnds->min_y + y ) + ((bnds->min_x + x) * g_createParams.width) ] = color;
 	    }
     }
     else
