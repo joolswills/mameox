@@ -14,6 +14,16 @@ Version 0.79.2b
       - Added message while saving settings before returning to
         the dashboard.
 
+		- Renamed a few files for consistency
+
+		- SkinChooserView.cpp, SkinChooserView.h
+		  - Added, provides preview/selection of skins
+
+		- SkinResource.cpp, SkinResource.h
+		  - Added, provides INI parsing and SKIN texture creation
+
+  - Skins
+	  - Added skins directory w/ "Original" skin		  
 
   - Doc changes -----------------------------
 

@@ -23,6 +23,26 @@ extern "C" {
 
 
 //= D E F I N E S ======================================================
+#ifdef _DEBUG
+  #define LBUILDCONFIG_STRING   L"[DEBUG]"
+#else
+  #define LBUILDCONFIG_STRING   L""
+#endif
+
+  // Version number
+#define RELEASE_STRING            ".2b"
+#define LRELEASE_STRING           L".2b"
+
+#define VERSION_STRING            "0.79" RELEASE_STRING
+#define LVERSION_STRING           L"0.79" LRELEASE_STRING
+
+  //! Used in RenderProgressBar to render a "bubble" instead of a progress bar
+#define BUBBLEBAR                 0xFFFFFFFF
+
+#define DRIVERLIST_FILESTAMP      "MAMEoX" VERSION_STRING
+
+  // Maximum delay before displaying the screensaver in the ROM list (in minutes)
+#define MAX_SCREENSAVER_TIMEOUT   15
 
   // MTRR register addresses
 #define IA32_MTRRCAP            0x00FE
@@ -56,27 +76,6 @@ extern "C" {
 #define CHECKRAM()
 #define DEBUGGERCHECKRAM()
 #endif
-
-#ifdef _DEBUG
-  #define LBUILDCONFIG_STRING   L"[DEBUG]"
-#else
-  #define LBUILDCONFIG_STRING   L""
-#endif
-
-  // Version number
-#define RELEASE_STRING            ".2b"
-#define LRELEASE_STRING           L".2b"
-
-#define VERSION_STRING            "0.79" RELEASE_STRING
-#define LVERSION_STRING           L"0.79" LRELEASE_STRING
-
-  //! Used in RenderProgressBar to render a "bubble" instead of a progress bar
-#define BUBBLEBAR                 0xFFFFFFFF
-
-#define DRIVERLIST_FILESTAMP      "MAMEoX" VERSION_STRING
-
-  // Maximum delay before displaying the screensaver in the ROM list (in minutes)
-#define MAX_SCREENSAVER_TIMEOUT   15
 
   //! \enum   mameoxLaunchCommand
   //! \brief  Determines what the MAMEoX task should do
