@@ -89,7 +89,7 @@ public:
     //!
     //! \return   BOOL - TRUE if the gamepad is connected
 		//------------------------------------------------------
-  BOOL IsConnected( void );
+  BOOL IsConnected( void ) const;
 
 		//------------------------------------------------------
 		//	IsMUConnected
@@ -100,7 +100,7 @@ public:
     //!
     //! \return   BOOL - TRUE if an MU is inserted
 		//------------------------------------------------------
-  BOOL IsMUConnected( BOOL bottomMU = FALSE );
+  BOOL IsMUConnected( BOOL bottomMU = FALSE ) const;
 
 		//------------------------------------------------------
 		//	GetAnalogButtonState
@@ -110,7 +110,7 @@ public:
     //!
     //! \return   UINT8 - Selected axis position value
 		//------------------------------------------------------
-  UINT8 GetAnalogButtonState( gamepadButtonID_t buttonID );
+  UINT8 GetAnalogButtonState( gamepadButtonID_t buttonID ) const;
 
 		//------------------------------------------------------
 		//	GetAnalogAxisState
@@ -121,7 +121,7 @@ public:
     //!
     //! \return   SHORT - Selected axis position value
 		//------------------------------------------------------
-  SHORT GetAnalogAxisState( gamepadAnalogID_t analogID, gamepadAxisID_t axisID );
+  SHORT GetAnalogAxisState( gamepadAnalogID_t analogID, gamepadAxisID_t axisID ) const;
 
 		//------------------------------------------------------
 		//	GetButtonState
@@ -129,7 +129,7 @@ public:
     //!
     //! \return   UINT32 - button state of the gamepad
 		//------------------------------------------------------
-  UINT32 GetButtonState( void );
+  UINT32 GetButtonState( void ) const;
 
 		//------------------------------------------------------
 		//	IsAnyButtonPressed
@@ -137,7 +137,7 @@ public:
     //!
     //! \return   BOOL - TRUE if any button is pressed, else FALSE
 		//------------------------------------------------------
-  BOOL IsAnyButtonPressed( void );
+  BOOL IsAnyButtonPressed( void ) const;
 
 		//------------------------------------------------------
 		//	IsButtonPressed
@@ -146,7 +146,7 @@ public:
     //!
     //! \return   BOOL - TRUE if button is pressed, else FALSE
 		//------------------------------------------------------
-  BOOL IsButtonPressed( UINT32 buttonID );
+  BOOL IsButtonPressed( UINT32 buttonID ) const;
 
 		//------------------------------------------------------
 		//	IsOnlyButtonPressed
@@ -157,7 +157,7 @@ public:
     //! \return   BOOL - TRUE if button is exclusively pressed, 
     //!                  else FALSE
 		//------------------------------------------------------
-  BOOL IsOnlyButtonPressed( UINT32 buttonID );
+  BOOL IsOnlyButtonPressed( UINT32 buttonID ) const;
 
 		//------------------------------------------------------
 		//	IsOneOfButtonsPressed
@@ -166,7 +166,7 @@ public:
     //!
     //! \return   BOOL - TRUE if button is pressed, else FALSE
 		//------------------------------------------------------
-  BOOL IsOneOfButtonsPressed( UINT32 buttonID );
+  BOOL IsOneOfButtonsPressed( UINT32 buttonID ) const;
 
 		//------------------------------------------------------
 		//	WaitForAnyButton

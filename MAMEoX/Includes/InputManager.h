@@ -125,9 +125,24 @@ public:
   void WaitForControllerInsertion( DWORD device ) {
     if( device < 4 )
     {
-      while( !m_gamepads[0].IsConnected() )
+      while( !m_gamepads[device].IsConnected() )
         PollDevices();
     }
+  }
+
+		//------------------------------------------------------
+		//	IsGamepadConnected
+    //! Check to see if a given controller is inserted
+    //!
+    //! \param    device - The device number to query (0-3)
+    //!
+    //! \retval   BOOL - TRUE if gamepad is inserted, FALSE otherwise
+		//------------------------------------------------------
+  BOOL IsGamepadConnected( DWORD device ) const {
+    if( device > 3 )
+      return FALSE;
+
+    return m_gamepads[device].IsConnected();
   }
 
 		//------------------------------------------------------

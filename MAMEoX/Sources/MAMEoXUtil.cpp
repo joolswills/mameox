@@ -317,7 +317,7 @@ void SaveOptions( void )
 //-------------------------------------------------------------
 void RequireController( DWORD number )
 {
-  if( g_inputManager.GetGamepadDeviceState( number ) )
+  if( g_inputManager.IsGamepadConnected( number ) )
     return;
 
   WCHAR wBuf[256];

@@ -1192,6 +1192,8 @@ static HRESULT LoadPackedResources( void )
 //-------------------------------------------------------------
 static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 {
+  RequireController( 0 );
+
 		// Clear the backbuffer
   pD3DDevice->Clear(	0L,																// Count
 											NULL,															// Rects to clear
@@ -1275,6 +1277,7 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
   g_font.End();
 
   pD3DDevice->Present( NULL, NULL, NULL, NULL );
+
 
 	g_inputManager.WaitForAnyButton();
 	g_inputManager.WaitForNoButton( 0 );

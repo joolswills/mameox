@@ -17,9 +17,13 @@ Version 0.68b
         button specified in the params are pressed
       - New function: GetButtonState which returns all GP_ flags of the 
         pressed buttons, DPAD, etc.
+      - Made a bunch of functions properly const
 
     - xbox_Direct3DRenderer.h
       - Joined all D3D renderer opts into a struct
+
+    - InputManager.h
+      - Added IsGamepadConnected() function
 
    -------------------------------------------------------------
   - \MAMEoX\Sources:
@@ -31,6 +35,7 @@ Version 0.68b
         button specified in the params are pressed
       - New function: GetButtonState which returns all GP_ flags of the 
         pressed buttons, DPAD, etc.
+      - Made a bunch of functions properly const
 
     - xbox_JoystickMouse.c
       - Remapped paddles, dials, and trackball to left analog stick
@@ -68,6 +73,7 @@ Version 0.68b
 
     - main.cpp
       - Joined all D3D renderer opts into a struct
+      - Added a RequireController call to splashscreen
 
    -------------------------------------------------------------
   - \MAMEoX\src:
