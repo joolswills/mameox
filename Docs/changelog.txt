@@ -15,10 +15,15 @@ Version 0.73.1b
     - MAMEoXUtil.cpp
       - Moved graphical progressbar code to MAMEoXUtil
 
+    - xbox_Miscelaneous.c
+      - Made progressbars graphical
+
    -------------------------------------------------------------
   - \MAMEoXLauncher\Sources:
     - main.cpp
       - Moved graphical progressbar code to MAMEoXUtil
+      - Fixed problem where disabling the screensaver would
+        enter an infinite input-eating loop
 
 
  --- Integrated MAME version 0.73, changes follow -------------------

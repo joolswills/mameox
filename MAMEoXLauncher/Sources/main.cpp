@@ -377,6 +377,7 @@ void __cdecl main( void )
     // Note: Setting g_screensaverTimeout to 0 disables it
   #define SCREENSAVERDELAYCYCLES      ((UINT64)g_screensaverTimeout * (UINT64)60 * osd_cycles_per_second())
   UINT64 screensaverTimeout = SCREENSAVERDELAYCYCLES;
+  UINT32 lastScreensaverTimeout = g_screensaverTimeout;
 
 		//--- Main loop ------------------------------------------------------
 	while( 1 )
@@ -389,7 +390,7 @@ void __cdecl main( void )
 
     if( g_inputManager.IsAnyInput() )
     {
-      BOOL eatInput = (screensaverTimeout == 0);
+      BOOL eatInput = (screensaverTimeout == 0 && g_screensaverTimeout);
       screensaverTimeout = SCREENSAVERDELAYCYCLES;
       if( eatInput )
       {
@@ -648,9 +649,19 @@ void __cdecl main( void )
       }
     }
 
-      // Render the screensaver
-    if( screensaverTimeout == 0.0 && g_screensaverTimeout )
+      // If the screensaver option is changed from "disabled" to anything, we
+      // have to reset the screensaverTimeout timer to avoid "blinking" the
+      // screensaver
+    if( lastScreensaverTimeout != g_screensaverTimeout )
+    {
+      screensaverTimeout = SCREENSAVERDELAYCYCLES;
+      lastScreensaverTimeout = g_screensaverTimeout;
+    }
+    else if( g_screensaverTimeout && screensaverTimeout == 0.0 )
+    {
+        // Render the screensaver
       screenSaver.Draw( TRUE, FALSE );
+    }
 
       // Render the debug console
     RenderDebugConsole( pD3DDevice );
