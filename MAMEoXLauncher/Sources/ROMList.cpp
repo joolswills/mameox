@@ -163,7 +163,7 @@ BOOL CROMList::GenerateROMList( void )
     if( findHandle == INVALID_HANDLE_VALUE )
     {
       PRINTMSG( T_ERROR, "Could not find files!" );
-      return FALSE;
+      return TRUE;
     }
 
     DWORD i = 0;
