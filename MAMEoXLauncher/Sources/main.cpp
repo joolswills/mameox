@@ -344,11 +344,10 @@ void __cdecl main( void )
       showStartMenu = TRUE;
       g_inputManager.WaitForNoButton();
     }
-/*
-    else if( g_inputManager.IsOnlyButtonPressed( GP_B | GP_Y ) )
+    else if( g_inputManager.IsOnlyButtonPressed( GP_X ) )
     {
-      if( currentView != VIEW_OPTIONS )
-        currentView = VIEW_OPTIONS;
+      if( currentView != VIEW_HELP )
+        currentView = VIEW_HELP;
       else
         currentView = VIEW_ROMLIST;
 
@@ -356,10 +355,11 @@ void __cdecl main( void )
       Helper_SetStartMenuItems( startMenu, currentView );
       g_inputManager.WaitForNoButton();
     }
-    else if( g_inputManager.IsOnlyButtonPressed( GP_X ) )
+/*
+    else if( g_inputManager.IsOnlyButtonPressed( GP_B | GP_Y ) )
     {
-      if( currentView != VIEW_HELP )
-        currentView = VIEW_HELP;
+      if( currentView != VIEW_OPTIONS )
+        currentView = VIEW_OPTIONS;
       else
         currentView = VIEW_ROMLIST;
 
