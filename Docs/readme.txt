@@ -236,6 +236,16 @@ Usage:
     Start      - Start
 
 
+  Enabling cheats:
+1) Edit your INI file and set the CheatsEnabled field to 1. 
+   (Version 0.64b (CVS) has an INI editor built in, so this 
+    will become easier in the future) 
+
+2) Copy your cheat.dat file to the GENERAL directory 
+
+Cheats in general are now enabled, you can enable/disable 
+specific cheats through the in game MAME menu (back+white). 
+
 
 ---------------------------------------------------------------------------
 Contributions:
