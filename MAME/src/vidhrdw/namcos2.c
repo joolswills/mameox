@@ -849,11 +849,11 @@ VIDEO_START( luckywld )
 		namco_obj_init( 0, 0x0, objcode2tile );
 		if( namcos2_gametype==NAMCOS2_LUCKY_AND_WILD )
 		{
-			namco_roz_init( 1, REGION_GFX5 );
+			return namco_roz_init( 1, REGION_GFX5 );
 		}
 		if( namcos2_gametype!=NAMCOS2_STEEL_GUNNER_2 )
 		{
-			namco_road_init(3);
+			return namco_road_init(3);
 		}
 		return 0;
 	}
