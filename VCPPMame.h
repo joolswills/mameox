@@ -42,9 +42,25 @@ extern int fatalerror( const char *fmt, ... );
   // as the MAME core is very bad about catching failed mallocs.
   // This code acts as a bottleneck to catch malloc failures and
   // handle them gracefully.
-extern void *osd_malloc( size_t );
-extern void *osd_calloc( size_t num, size_t size );
-extern void *osd_realloc( void *memblock, size_t size );
+//#ifdef _DEBUG
+#if 1
+  // Debug versions w/ caller-logging
+#define osd_malloc(s)     osd_malloc_debug( (s), __FILE__, __LINE__, __FUNCTION__ )
+#define osd_calloc(n,s)   osd_calloc_debug( (n), (s), __FILE__, __LINE__, __FUNCTION__ )
+#define osd_realloc(m,s)  osd_realloc_debug( (m), (s), __FILE__, __LINE__, __FUNCTION__ )
+void *osd_malloc_debug( size_t, const char **filename, unsigned int line, const char **function );
+void *osd_calloc_debug( size_t num, size_t size, const char **filename, unsigned int line, const char **function );
+void *osd_realloc_debug( void *memblock, size_t size, const char **filename, unsigned int line, const char **function );
+
+#else
+  // Retail versions
+#define osd_malloc(s)     osd_malloc_retail( (s) )
+#define osd_calloc(n,s)   osd_calloc_retail( (n), (s) )
+#define osd_realloc(m,s)  osd_realloc_retail( (m), (s) )
+void *osd_malloc_retail( size_t );
+void *osd_calloc_retail( size_t num, size_t size );
+void *osd_realloc_retail( void *memblock, size_t size );
+#endif
 
   // Defined in xbox_Miscelaneous, this is called to automatically
   // load a save state when starting a game.
