@@ -7,6 +7,11 @@ Version 0.70.3b
       - Put a call to osd_sound_enable just after cpu_run to
         stop annoying sound looping when exiting a game.
 
+    - inptport.c
+      - Reordered input checking to allow lightgun games to
+        take input from analog joysticks if no lightgun is
+	available
+
     - inptport.h
       - Bumped IPT_UI_CONFIGURE and all following commands up
         to 2*IPT_EXTENSION to allow room for any input extension
