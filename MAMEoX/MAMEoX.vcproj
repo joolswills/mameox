@@ -20,10 +20,12 @@
 			WholeProgramOptimization="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="4"
-				GlobalOptimizations="FALSE"
+				AdditionalOptions="/GL"
+				Optimization="3"
+				GlobalOptimizations="TRUE"
 				InlineFunctionExpansion="1"
-				FavorSizeOrSpeed="2"
+				EnableIntrinsicFunctions="TRUE"
+				FavorSizeOrSpeed="1"
 				OmitFramePointers="TRUE"
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="2"
@@ -49,7 +51,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386 /FIXED:NO"
+				AdditionalOptions="/MACHINE:I386 /FIXED:NO /LTCG"
 				AdditionalDependencies="xgraphics.lib xapilib.lib d3d8.lib d3dx8.lib dsound.lib xboxkrnl.lib MAME.lib Xnet.lib libsmb.lib"
 				OutputFile=".\Release/MAMEoX.exe"
 				LinkIncremental="1"
