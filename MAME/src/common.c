@@ -641,7 +641,7 @@ void *auto_malloc(size_t size)
 		/* make sure we have space */
 		if (malloc_list_index >= MAX_MALLOCS)
 		{
-			fprintf(stderr, "Out of malloc tracking slots!\n");
+			log( "Out of malloc tracking slots!\n" );
 			return result;
 		}
 
