@@ -1,11 +1,11 @@
-#pragma code_seg("C15")
-#pragma data_seg("D15")
-#pragma bss_seg("B15")
-#pragma const_seg("K15")
-#pragma comment(linker, "/merge:D15=15")
-#pragma comment(linker, "/merge:C15=15")
-#pragma comment(linker, "/merge:B15=15")
-#pragma comment(linker, "/merge:K15=15")
+#pragma code_seg("C79")
+#pragma data_seg("D79")
+#pragma bss_seg("B79")
+#pragma const_seg("K79")
+#pragma comment(linker, "/merge:D79=79")
+#pragma comment(linker, "/merge:C79=79")
+#pragma comment(linker, "/merge:B79=79")
+#pragma comment(linker, "/merge:K79=79")
 /***************************************************************************
 
 Driver by Tomasz Slanina  dox@space.pl

@@ -1,11 +1,11 @@
-#pragma code_seg("C14")
-#pragma data_seg("D14")
-#pragma bss_seg("B14")
-#pragma const_seg("K14")
-#pragma comment(linker, "/merge:D14=14")
-#pragma comment(linker, "/merge:C14=14")
-#pragma comment(linker, "/merge:B14=14")
-#pragma comment(linker, "/merge:K14=14")
+#pragma code_seg("C78")
+#pragma data_seg("D78")
+#pragma bss_seg("B78")
+#pragma const_seg("K78")
+#pragma comment(linker, "/merge:D78=78")
+#pragma comment(linker, "/merge:C78=78")
+#pragma comment(linker, "/merge:B78=78")
+#pragma comment(linker, "/merge:K78=78")
 /****************************************************************************
 
 	Forty-Love (c) Taito 1984
