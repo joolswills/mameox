@@ -144,10 +144,9 @@ void LoadOptions( void )
   FLOAT yPosition = iniFile.GetProfileFloat( "Video", "ScreenPos_Y", 0.0f );
   SetScreenPosition( xPosition, yPosition );
 
-  options.use_artwork = iniFile.GetProfileInt( "Video", "Artwork", 0 );
+  options.use_artwork = iniFile.GetProfileInt( "Video", "Artwork", ARTWORK_USE_BACKDROPS | ARTWORK_USE_OVERLAYS | ARTWORK_USE_BEZELS );
   options.artwork_res = 1;
   options.artwork_crop = TRUE;
-
 
 	options.vector_width =  iniFile.GetProfileInt( "VectorOptions", "VectorWidth", 640 );	      // requested width for vector games; 0 means default (640)
 	options.vector_height = iniFile.GetProfileInt( "VectorOptions", "VectorHeight", 480 );	    // requested height for vector games; 0 means default (480)
