@@ -294,8 +294,13 @@ void osd_update_video_and_audio(struct mame_display *display)
     }
     else
     {
+      #ifdef _DEBUG
+      if( g_frameskip != g_rendererOptions.m_frameskip )
+        PRINTMSG( T_INFO, "Setting frameskip level to %lu\n", g_rendererOptions.m_frameskip );
+      #endif
+
       g_frameskip = g_rendererOptions.m_frameskip;
-      PRINTMSG( T_INFO, "Setting frameskip level to %lu\n", g_frameskip );
+      
     }
 
       // Wait out the remaining time for this frame
