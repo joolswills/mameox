@@ -816,6 +816,13 @@ static void Helper_CustomizeInputPortDefaults( struct ipd *defaults )
 		{
       //-- UI CONTROLS ----------------------------------------------------------------------------
 
+			// *** IPT_UI_SELECT *** //
+    case IPT_UI_SELECT:
+      REMAP_SEQ_7( JOYCODE_1_BUTTON1, CODE_OR,
+                    JOYCODE_2_BUTTON1, CODE_OR,
+                    JOYCODE_3_BUTTON1, CODE_OR,
+                    JOYCODE_4_BUTTON1 );
+
 			// *** IPT_UI_CANCEL *** //
 		case IPT_UI_CANCEL:
 				// Remap cancel to gamepad0 back + start
