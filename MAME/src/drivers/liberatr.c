@@ -207,41 +207,41 @@ static READ_HANDLER( liberatr_input_port_0_r )
  *
  *************************************/
 
-static MEMORY_READ_START( liberatr_readmem )
-	{ 0x0002, 0x0002, liberatr_bitmap_xy_r },
-	{ 0x0000, 0x3fff, MRA_RAM },	/* overlapping for my convenience */
-	{ 0x4000, 0x403f, atari_vg_earom_r },
-	{ 0x5000, 0x5000, liberatr_input_port_0_r },
-	{ 0x5001, 0x5001, input_port_1_r },
-	{ 0x7000, 0x701f, pokey2_r },
-	{ 0x7800, 0x781f, pokey1_r },
-	{ 0x8000, 0xefff, MRA_ROM },
-	{ 0xfffa, 0xffff, MRA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( liberatr_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0002, 0x0002) AM_READ(liberatr_bitmap_xy_r)
+	AM_RANGE(0x0000, 0x3fff) AM_READ(MRA8_RAM)	/* overlapping for my convenience */
+	AM_RANGE(0x4000, 0x403f) AM_READ(atari_vg_earom_r)
+	AM_RANGE(0x5000, 0x5000) AM_READ(liberatr_input_port_0_r)
+	AM_RANGE(0x5001, 0x5001) AM_READ(input_port_1_r)
+	AM_RANGE(0x7000, 0x701f) AM_READ(pokey2_r)
+	AM_RANGE(0x7800, 0x781f) AM_READ(pokey1_r)
+	AM_RANGE(0x8000, 0xefff) AM_READ(MRA8_ROM)
+	AM_RANGE(0xfffa, 0xffff) AM_READ(MRA8_ROM)
+ADDRESS_MAP_END
 
 
-static MEMORY_WRITE_START( liberatr_writemem )
-	{ 0x0002, 0x0002, liberatr_bitmap_xy_w },
-	{ 0x0000, 0x3fff, liberatr_bitmap_w, &liberatr_bitmapram },	/* overlapping for my convenience */
-	{ 0x6000, 0x600f, MWA_RAM, &liberatr_base_ram },
-	{ 0x6200, 0x621f, liberatr_colorram_w },
-	{ 0x6400, 0x6400, MWA_NOP },
-	{ 0x6600, 0x6600, atari_vg_earom_ctrl_w },
-	{ 0x6800, 0x6800, MWA_RAM, &liberatr_planet_frame },
-	{ 0x6a00, 0x6a00, watchdog_reset_w },
-	{ 0x6c00, 0x6c01, liberatr_led_w },
-	{ 0x6c04, 0x6c04, MWA_RAM, &liberatr_ctrld },
-	{ 0x6c05, 0x6c06, liberatr_coin_counter_w },
-	{ 0x6c07, 0x6c07, MWA_RAM, &liberatr_planet_select },
-	{ 0x6e00, 0x6e3f, atari_vg_earom_w },
-	{ 0x7000, 0x701f, pokey2_w },
-	{ 0x7800, 0x781f, pokey1_w },
-	{ 0x8000, 0xefff, MWA_ROM },
-	{ 0xfffa, 0xffff, MWA_ROM },
+static ADDRESS_MAP_START( liberatr_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0002, 0x0002) AM_WRITE(liberatr_bitmap_xy_w)
+	AM_RANGE(0x0000, 0x3fff) AM_WRITE(liberatr_bitmap_w) AM_BASE(&liberatr_bitmapram)	/* overlapping for my convenience */
+	AM_RANGE(0x6000, 0x600f) AM_WRITE(MWA8_RAM) AM_BASE(&liberatr_base_ram)
+	AM_RANGE(0x6200, 0x621f) AM_WRITE(liberatr_colorram_w)
+	AM_RANGE(0x6400, 0x6400) AM_WRITE(MWA8_NOP)
+	AM_RANGE(0x6600, 0x6600) AM_WRITE(atari_vg_earom_ctrl_w)
+	AM_RANGE(0x6800, 0x6800) AM_WRITE(MWA8_RAM) AM_BASE(&liberatr_planet_frame)
+	AM_RANGE(0x6a00, 0x6a00) AM_WRITE(watchdog_reset_w)
+	AM_RANGE(0x6c00, 0x6c01) AM_WRITE(liberatr_led_w)
+	AM_RANGE(0x6c04, 0x6c04) AM_WRITE(MWA8_RAM) AM_BASE(&liberatr_ctrld)
+	AM_RANGE(0x6c05, 0x6c06) AM_WRITE(liberatr_coin_counter_w)
+	AM_RANGE(0x6c07, 0x6c07) AM_WRITE(MWA8_RAM) AM_BASE(&liberatr_planet_select)
+	AM_RANGE(0x6e00, 0x6e3f) AM_WRITE(atari_vg_earom_w)
+	AM_RANGE(0x7000, 0x701f) AM_WRITE(pokey2_w)
+	AM_RANGE(0x7800, 0x781f) AM_WRITE(pokey1_w)
+	AM_RANGE(0x8000, 0xefff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0xfffa, 0xffff) AM_WRITE(MWA8_ROM)
 
-	{ 0x0000, 0x0000, MWA_RAM, &liberatr_x },	/* just here to assign pointer */
-	{ 0x0001, 0x0001, MWA_RAM, &liberatr_y },	/* just here to assign pointer */
-MEMORY_END
+	AM_RANGE(0x0000, 0x0000) AM_WRITE(MWA8_RAM) AM_BASE(&liberatr_x)	/* just here to assign pointer */
+	AM_RANGE(0x0001, 0x0001) AM_WRITE(MWA8_RAM) AM_BASE(&liberatr_y)	/* just here to assign pointer */
+ADDRESS_MAP_END
 
 
 
@@ -251,42 +251,42 @@ MEMORY_END
  *
  *************************************/
 
-static MEMORY_READ_START( liberat2_readmem )
-	{ 0x0002, 0x0002, liberatr_bitmap_xy_r },
-	{ 0x0000, 0x3fff, MRA_RAM },	/* overlapping for my convenience */
-	{ 0x4000, 0x4000, liberatr_input_port_0_r },
-	{ 0x4001, 0x4001, input_port_1_r },
-	{ 0x4800, 0x483f, atari_vg_earom_r },
-	{ 0x5000, 0x501f, pokey2_r },
-	{ 0x5800, 0x581f, pokey1_r },
-	{ 0x6000, 0xbfff, MRA_ROM },
-	{ 0xfffa, 0xffff, MRA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( liberat2_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0002, 0x0002) AM_READ(liberatr_bitmap_xy_r)
+	AM_RANGE(0x0000, 0x3fff) AM_READ(MRA8_RAM)	/* overlapping for my convenience */
+	AM_RANGE(0x4000, 0x4000) AM_READ(liberatr_input_port_0_r)
+	AM_RANGE(0x4001, 0x4001) AM_READ(input_port_1_r)
+	AM_RANGE(0x4800, 0x483f) AM_READ(atari_vg_earom_r)
+	AM_RANGE(0x5000, 0x501f) AM_READ(pokey2_r)
+	AM_RANGE(0x5800, 0x581f) AM_READ(pokey1_r)
+	AM_RANGE(0x6000, 0xbfff) AM_READ(MRA8_ROM)
+	AM_RANGE(0xfffa, 0xffff) AM_READ(MRA8_ROM)
+ADDRESS_MAP_END
 
 
-static MEMORY_WRITE_START( liberat2_writemem )
-	{ 0x0002, 0x0002, liberatr_bitmap_xy_w },
-	{ 0x0000, 0x3fff, liberatr_bitmap_w, &liberatr_bitmapram },	/* overlapping for my convenience */
-	{ 0x4000, 0x400f, MWA_RAM, &liberatr_base_ram },
-	{ 0x4200, 0x421f, liberatr_colorram_w },
-	{ 0x4400, 0x4400, MWA_NOP },
-	{ 0x4600, 0x4600, atari_vg_earom_ctrl_w },
-	{ 0x4800, 0x4800, MWA_RAM, &liberatr_planet_frame },
-	{ 0x4a00, 0x4a00, watchdog_reset_w },
-	{ 0x4c00, 0x4c01, liberatr_led_w },
-	{ 0x4c04, 0x4c04, MWA_RAM, &liberatr_ctrld },
-	{ 0x4c05, 0x4c06, liberatr_coin_counter_w },
-	{ 0x4c07, 0x4c07, MWA_RAM, &liberatr_planet_select },
-	{ 0x4e00, 0x4e3f, atari_vg_earom_w },
-	{ 0x5000, 0x501f, pokey2_w },
-	{ 0x5800, 0x581f, pokey1_w },
-	//{ 0x6000, 0x601f, pokey1_w }, /* bug ??? */
-	{ 0x6000, 0xbfff, MWA_ROM },
-	{ 0xfffa, 0xffff, MWA_ROM },
+static ADDRESS_MAP_START( liberat2_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0002, 0x0002) AM_WRITE(liberatr_bitmap_xy_w)
+	AM_RANGE(0x0000, 0x3fff) AM_WRITE(liberatr_bitmap_w) AM_BASE(&liberatr_bitmapram)	/* overlapping for my convenience */
+	AM_RANGE(0x4000, 0x400f) AM_WRITE(MWA8_RAM) AM_BASE(&liberatr_base_ram)
+	AM_RANGE(0x4200, 0x421f) AM_WRITE(liberatr_colorram_w)
+	AM_RANGE(0x4400, 0x4400) AM_WRITE(MWA8_NOP)
+	AM_RANGE(0x4600, 0x4600) AM_WRITE(atari_vg_earom_ctrl_w)
+	AM_RANGE(0x4800, 0x4800) AM_WRITE(MWA8_RAM) AM_BASE(&liberatr_planet_frame)
+	AM_RANGE(0x4a00, 0x4a00) AM_WRITE(watchdog_reset_w)
+	AM_RANGE(0x4c00, 0x4c01) AM_WRITE(liberatr_led_w)
+	AM_RANGE(0x4c04, 0x4c04) AM_WRITE(MWA8_RAM) AM_BASE(&liberatr_ctrld)
+	AM_RANGE(0x4c05, 0x4c06) AM_WRITE(liberatr_coin_counter_w)
+	AM_RANGE(0x4c07, 0x4c07) AM_WRITE(MWA8_RAM) AM_BASE(&liberatr_planet_select)
+	AM_RANGE(0x4e00, 0x4e3f) AM_WRITE(atari_vg_earom_w)
+	AM_RANGE(0x5000, 0x501f) AM_WRITE(pokey2_w)
+	AM_RANGE(0x5800, 0x581f) AM_WRITE(pokey1_w)
+	//AM_RANGE(0x6000, 0x601f) AM_WRITE(pokey1_w) /* bug ??? */
+	AM_RANGE(0x6000, 0xbfff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0xfffa, 0xffff) AM_WRITE(MWA8_ROM)
 
-	{ 0x0000, 0x0000, MWA_RAM, &liberatr_x },	/* just here to assign pointer */
-	{ 0x0001, 0x0001, MWA_RAM, &liberatr_y },	/* just here to assign pointer */
-MEMORY_END
+	AM_RANGE(0x0000, 0x0000) AM_WRITE(MWA8_RAM) AM_BASE(&liberatr_x)	/* just here to assign pointer */
+	AM_RANGE(0x0001, 0x0001) AM_WRITE(MWA8_RAM) AM_BASE(&liberatr_y)	/* just here to assign pointer */
+ADDRESS_MAP_END
 
 
 
@@ -407,28 +407,28 @@ static struct POKEYinterface pokey_interface =
  *	Machine driver
  *
  *************************************/
- 
+
 static MACHINE_DRIVER_START( liberatr )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD_TAG("main", M6502, 1250000)
-	MDRV_CPU_MEMORY(liberatr_readmem,liberatr_writemem)
+	MDRV_CPU_PROGRAM_MAP(liberatr_readmem,liberatr_writemem)
 	MDRV_CPU_VBLANK_INT(irq0_line_hold,4)
-	
+
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(DEFAULT_REAL_60HZ_VBLANK_DURATION)
-	
+
 	MDRV_NVRAM_HANDLER(atari_vg)
-	
+
 	/* video hardware */
 	MDRV_VIDEO_ATTRIBUTES(VIDEO_TYPE_RASTER)
 	MDRV_SCREEN_SIZE(256,256)
 	MDRV_VISIBLE_AREA(8, 247, 13, 244)
 	MDRV_PALETTE_LENGTH(32)
-	
+
 	MDRV_VIDEO_START(liberatr)
 	MDRV_VIDEO_UPDATE(liberatr)
-	
+
 	/* sound hardware */
 	MDRV_SOUND_ADD(POKEY, pokey_interface)
 MACHINE_DRIVER_END
@@ -439,7 +439,7 @@ static MACHINE_DRIVER_START( liberat2 )
 	/* basic machine hardware */
 	MDRV_IMPORT_FROM(liberatr)
 	MDRV_CPU_MODIFY("main")
-	MDRV_CPU_MEMORY(liberat2_readmem,liberat2_writemem)
+	MDRV_CPU_PROGRAM_MAP(liberat2_readmem,liberat2_writemem)
 MACHINE_DRIVER_END
 
 
@@ -466,17 +466,27 @@ ROM_START( liberatr )
 	ROM_LOAD( "136012.107",   0x1000, 0x1000, CRC(8a616a63) SHA1(76794cc4e11048bb6f2628bd8b84c9a7e2e82551) )
 	ROM_LOAD( "136012.108",   0x2000, 0x1000, CRC(3f8e4cf6) SHA1(a9d0feb0892f343687e00b96f05adb423ee4d659) )
 	ROM_LOAD( "136012.109",   0x3000, 0x1000, CRC(dda0c0ef) SHA1(6e547c07c1abd17383a4389b0b4ced442ed65ce7) )
+
+	/* all PROM images were reconstructed from source code, a redump would be welcome */
+
+	ROM_REGION( 0x100, REGION_USER1, 0 )	/* latitude scaler */
+	ROM_LOAD_NIB_LOW ( "136012.123",   0x0000, 0x0100, BAD_DUMP CRC(f76449c7) SHA1(eac50b4e58a0d6313e0f5b1bc30029c56720893c) )
+	ROM_LOAD_NIB_HIGH( "136012.124",   0x0000, 0x0100, CRC(f9fb4cba) SHA1(4fc67d91d00894ffdd4b9cf79ce5a953b2a8e531) )
+
+	ROM_REGION( 0x100, REGION_USER2, 0 )	/* longitude scaler */
+	ROM_LOAD_NIB_LOW ( "136012.125",   0x0000, 0x0100, CRC(52ac8dd9) SHA1(125d54b562d079b974f2562e71ab7c7a0b97e709) )
+	ROM_LOAD_NIB_HIGH( "136012.126",   0x0000, 0x0100, CRC(2e670aa6) SHA1(a6bcc49d0948d2dfe497c5e3ad4a834fa78f779a) )
 ROM_END
 
 
 ROM_START( liberat2 )
 	ROM_REGION( 0x10000, REGION_CPU1, 0 )	/* 64k for code and data  */
-	ROM_LOAD( "l6.bin",       0x6000, 0x1000, CRC(78093d06) )
-	ROM_LOAD( "l5.bin",       0x7000, 0x1000, CRC(988db636) )
-	ROM_LOAD( "l4.bin",       0x8000, 0x1000, CRC(ec114540) )
-	ROM_LOAD( "l3.bin",       0x9000, 0x1000, CRC(184c751f) )
-	ROM_LOAD( "l2.bin",       0xa000, 0x1000, CRC(c3f61f88) )
-	ROM_LOAD( "l1.bin",       0xb000, 0x1000, CRC(ef6e9f9e) )
+	ROM_LOAD( "l6.bin",       0x6000, 0x1000, CRC(78093d06) SHA1(0f6ca01e27b32aae384a6ab67a6f14eedd3f1d9c) )
+	ROM_LOAD( "l5.bin",       0x7000, 0x1000, CRC(988db636) SHA1(8fdd07b397d4bef108aafb10c06c2fd53fc1f99a) )
+	ROM_LOAD( "l4.bin",       0x8000, 0x1000, CRC(ec114540) SHA1(eb35510b59f5e9624c3d94fb16dacb4968349030) )
+	ROM_LOAD( "l3.bin",       0x9000, 0x1000, CRC(184c751f) SHA1(e020d2943be89f244c1aeeb34a28b7aa7dbc1454) )
+	ROM_LOAD( "l2.bin",       0xa000, 0x1000, CRC(c3f61f88) SHA1(a56ce094fe7374d3ac341d5eb9e06df083e16b1f) )
+	ROM_LOAD( "l1.bin",       0xb000, 0x1000, CRC(ef6e9f9e) SHA1(b1f7cc9e0a2ea08ec89428ad31161ac81e7faaaf) )
 	ROM_RELOAD(				  0xf000, 0x1000 )		/* for interrupt/reset vectors  */
 
 	ROM_REGION( 0x4000, REGION_GFX1, 0 )	/* planet image, used at runtime */
@@ -484,6 +494,16 @@ ROM_START( liberat2 )
 	ROM_LOAD( "136012.107",   0x1000, 0x1000, CRC(8a616a63) SHA1(76794cc4e11048bb6f2628bd8b84c9a7e2e82551) )
 	ROM_LOAD( "136012.108",   0x2000, 0x1000, CRC(3f8e4cf6) SHA1(a9d0feb0892f343687e00b96f05adb423ee4d659) )
 	ROM_LOAD( "136012.109",   0x3000, 0x1000, CRC(dda0c0ef) SHA1(6e547c07c1abd17383a4389b0b4ced442ed65ce7) )
+
+	/* all PROM images were reconstructed from source code, a redump would be welcome */
+
+	ROM_REGION( 0x100, REGION_USER1, 0 )	/* latitude scaler */
+	ROM_LOAD_NIB_LOW ( "136012.123",   0x0000, 0x0100, BAD_DUMP CRC(f76449c7) SHA1(eac50b4e58a0d6313e0f5b1bc30029c56720893c) )
+	ROM_LOAD_NIB_HIGH( "136012.124",   0x0000, 0x0100, CRC(f9fb4cba) SHA1(4fc67d91d00894ffdd4b9cf79ce5a953b2a8e531) )
+
+	ROM_REGION( 0x100, REGION_USER2, 0 )	/* longitude scaler */
+	ROM_LOAD_NIB_LOW ( "136012.125",   0x0000, 0x0100, CRC(52ac8dd9) SHA1(125d54b562d079b974f2562e71ab7c7a0b97e709) )
+	ROM_LOAD_NIB_HIGH( "136012.126",   0x0000, 0x0100, CRC(2e670aa6) SHA1(a6bcc49d0948d2dfe497c5e3ad4a834fa78f779a) )
 ROM_END
 
 

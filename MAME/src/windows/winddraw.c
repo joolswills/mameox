@@ -401,11 +401,21 @@ static double compute_mode_score(int width, int height, int depth, int refresh)
 	target_width = max_width * effect_min_xscale;
 	target_height = max_height * effect_min_yscale;
 	if (pixel_aspect_ratio == VIDEO_PIXEL_ASPECT_RATIO_1_2)
-		target_height *= 2;
+	{
+		if (!blit_swapxy)
+			target_height *= 2;
+		else
+			target_width *= 2;
+	}
 	else if (win_old_scanlines)
 		target_width *= 2, target_height *= 2;
 	if (pixel_aspect_ratio == VIDEO_PIXEL_ASPECT_RATIO_2_1)
-		target_width *= 2;
+	{
+		if (!blit_swapxy)
+			target_width *= 2;
+		else
+			target_height *= 2;
+	}
 
 	// hardware stretch modes prefer at least win_gfx_zoom times expansion (default is 2)
 	if (win_dd_hw_stretch)
@@ -443,14 +453,14 @@ static double compute_mode_score(int width, int height, int depth, int refresh)
 		return 0.0;
 
 	// finally, compute refresh score
-	refresh_score = 1.0 / (1.0 + fabs((double)refresh - Machine->drv->frames_per_second));
+	refresh_score = 1.0 / (1.0 + fabs((double)refresh - Machine->refresh_rate));
 
 	// if we're looking for a particular refresh, make sure it matches
 	if (win_gfx_refresh && refresh && refresh != win_gfx_refresh)
 		return 0.0;
 
 	// if refresh is smaller than we'd like, it only scores up to 0.1
-	if ((double)refresh < Machine->drv->frames_per_second)
+	if ((double)refresh < Machine->refresh_rate)
 		refresh_score *= 0.1;
 
 	// weight size highest, followed by depth and refresh

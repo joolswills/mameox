@@ -67,8 +67,8 @@ extern "C" {
 #define RELEASE_STRING            ".1b"
 #define LRELEASE_STRING           L".1b"
 
-#define VERSION_STRING            "0.76" RELEASE_STRING
-#define LVERSION_STRING           L"0.76" LRELEASE_STRING
+#define VERSION_STRING            "0.79" RELEASE_STRING
+#define LVERSION_STRING           L"0.79" LRELEASE_STRING
 
   //! Used in RenderProgressBar to render a "bubble" instead of a progress bar
 #define BUBBLEBAR                 0xFFFFFFFF

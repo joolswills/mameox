@@ -134,8 +134,6 @@ c13_u12.u12     HN624116 - GFX
 
               Screenshots and board pics are available here...
               http://unemulated.emuunlim.com/shopraid/index.html
-              More info reqd? Email me...
-              theguru@emuunlim.com
 
 *** ROMSET: vgoalsca
 
@@ -304,62 +302,62 @@ static struct YM2610interface ym2610_interface =
 
 /*** MEMORY LAYOUTS **********************************************************/
 
-static MEMORY_READ16_START( readmem )
-	{ 0x000000, 0x0fffff, MRA16_ROM },
-	{ 0x100000, 0x103fff, MRA16_RAM },
-	{ 0x140000, 0x141fff, MRA16_RAM },
-	{ 0x180000, 0x181fff, MRA16_RAM },
-	{ 0x1c0000, 0x1c0fff, MRA16_RAM },
-	{ 0xffc000, 0xffffff, MRA16_RAM },
+static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x0fffff) AM_READ(MRA16_ROM)
+	AM_RANGE(0x100000, 0x103fff) AM_READ(MRA16_RAM)
+	AM_RANGE(0x140000, 0x141fff) AM_READ(MRA16_RAM)
+	AM_RANGE(0x180000, 0x181fff) AM_READ(MRA16_RAM)
+	AM_RANGE(0x1c0000, 0x1c0fff) AM_READ(MRA16_RAM)
+	AM_RANGE(0xffc000, 0xffffff) AM_READ(MRA16_RAM)
 
-//	{ 0x200060, 0x200061, dmmy },
-	{ 0x200080, 0x200081, input_port_1_word_r },
-	{ 0x200082, 0x200083, input_port_2_word_r },
-	{ 0x200084, 0x200085, input_port_0_word_r },
-	{ 0x200086, 0x200087, input_port_3_word_r },
-	{ 0x200088, 0x200089, input_port_4_word_r },
-	{ 0x20008e, 0x20008f, dmmy_8f },
-MEMORY_END
+//	AM_RANGE(0x200060, 0x200061) AM_READ(dmmy)
+	AM_RANGE(0x200080, 0x200081) AM_READ(input_port_1_word_r)
+	AM_RANGE(0x200082, 0x200083) AM_READ(input_port_2_word_r)
+	AM_RANGE(0x200084, 0x200085) AM_READ(input_port_0_word_r)
+	AM_RANGE(0x200086, 0x200087) AM_READ(input_port_3_word_r)
+	AM_RANGE(0x200088, 0x200089) AM_READ(input_port_4_word_r)
+	AM_RANGE(0x20008e, 0x20008f) AM_READ(dmmy_8f)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE16_START( writemem )
-	{ 0x000000, 0x0fffff, MWA16_ROM },
-	{ 0x100000, 0x101fff, MB60553_0_vram_w, &MB60553_0_vram },
-	{ 0x102000, 0x103fff, gsx_videoram3_w, &gs_videoram3 },
-	{ 0x140000, 0x141fff, MWA16_RAM, &CG10103_0_vram },
-	{ 0x180000, 0x181fff, VS920A_0_vram_w, &VS920A_0_vram },
-	{ 0x1c0000, 0x1c0fff, paletteram16_xRRRRRGGGGGBBBBB_word_w, &paletteram16 },
-	{ 0x200000, 0x20000f, MB60553_0_regs_w },
-	{ 0x200040, 0x20005f, MWA16_RAM, &gs_mixer_regs },
-	{ 0x2000a0, 0x2000a1, sound_command_w },
-	{ 0xffc000, 0xffffff, MWA16_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x0fffff) AM_WRITE(MWA16_ROM)
+	AM_RANGE(0x100000, 0x101fff) AM_WRITE(MB60553_0_vram_w) AM_BASE(&MB60553_0_vram)
+	AM_RANGE(0x102000, 0x103fff) AM_WRITE(gsx_videoram3_w) AM_BASE(&gs_videoram3)
+	AM_RANGE(0x140000, 0x141fff) AM_WRITE(MWA16_RAM) AM_BASE(&CG10103_0_vram)
+	AM_RANGE(0x180000, 0x181fff) AM_WRITE(VS920A_0_vram_w) AM_BASE(&VS920A_0_vram)
+	AM_RANGE(0x1c0000, 0x1c0fff) AM_WRITE(paletteram16_xRRRRRGGGGGBBBBB_word_w) AM_BASE(&paletteram16)
+	AM_RANGE(0x200000, 0x20000f) AM_WRITE(MB60553_0_regs_w)
+	AM_RANGE(0x200040, 0x20005f) AM_WRITE(MWA16_RAM) AM_BASE(&gs_mixer_regs)
+	AM_RANGE(0x2000a0, 0x2000a1) AM_WRITE(sound_command_w)
+	AM_RANGE(0xffc000, 0xffffff) AM_WRITE(MWA16_RAM)
+ADDRESS_MAP_END
 
-static MEMORY_READ_START( sound_readmem )
-	{ 0x0000, 0x77ff, MRA_ROM },
-	{ 0x7800, 0x7fff, MRA_RAM },
-	{ 0x8000, 0xffff, MRA_BANK1 },
-MEMORY_END
+static ADDRESS_MAP_START( sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x77ff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x7800, 0x7fff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x8000, 0xffff) AM_READ(MRA8_BANK1)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( sound_writemem )
-	{ 0x0000, 0x77ff, MWA_ROM },
-	{ 0x7800, 0x7fff, MWA_RAM },
-	{ 0x8000, 0xffff, MWA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x77ff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x7800, 0x7fff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x8000, 0xffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
-static PORT_READ_START( sound_readport )
-	{ 0x00, 0x00, YM2610_status_port_0_A_r },
-	{ 0x02, 0x02, YM2610_status_port_0_B_r },
-	{ 0x0c, 0x0c, soundlatch_r },
-PORT_END
+static ADDRESS_MAP_START( sound_readport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x00, 0x00) AM_READ(YM2610_status_port_0_A_r)
+	AM_RANGE(0x02, 0x02) AM_READ(YM2610_status_port_0_B_r)
+	AM_RANGE(0x0c, 0x0c) AM_READ(soundlatch_r)
+ADDRESS_MAP_END
 
-static PORT_WRITE_START( sound_writeport )
-	{ 0x00, 0x00, YM2610_control_port_0_A_w },
-	{ 0x01, 0x01, YM2610_data_port_0_A_w },
-	{ 0x02, 0x02, YM2610_control_port_0_B_w },
-	{ 0x03, 0x03, YM2610_data_port_0_B_w },
-	{ 0x04, 0x04, gs_sh_bankswitch_w },
-	{ 0x08, 0x08, gs_sh_pending_command_clear_w },
-PORT_END
+static ADDRESS_MAP_START( sound_writeport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x00, 0x00) AM_WRITE(YM2610_control_port_0_A_w)
+	AM_RANGE(0x01, 0x01) AM_WRITE(YM2610_data_port_0_A_w)
+	AM_RANGE(0x02, 0x02) AM_WRITE(YM2610_control_port_0_B_w)
+	AM_RANGE(0x03, 0x03) AM_WRITE(YM2610_data_port_0_B_w)
+	AM_RANGE(0x04, 0x04) AM_WRITE(gs_sh_bankswitch_w)
+	AM_RANGE(0x08, 0x08) AM_WRITE(gs_sh_pending_command_clear_w)
+ADDRESS_MAP_END
 
 /*** INPUT PORTS *************************************************************/
 
@@ -450,13 +448,13 @@ INPUT_PORTS_END
 
 static MACHINE_DRIVER_START( gstriker )
 	MDRV_CPU_ADD(M68000, 10000000)
-	MDRV_CPU_MEMORY(readmem,writemem)
+	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
 	MDRV_CPU_VBLANK_INT(irq1_line_hold,1)
 
 	MDRV_CPU_ADD(Z80,8000000/2)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)	/* 4 MHz ??? */
-	MDRV_CPU_MEMORY(sound_readmem,sound_writemem)
-	MDRV_CPU_PORTS(sound_readport,sound_writeport)
+	MDRV_CPU_PROGRAM_MAP(sound_readmem,sound_writemem)
+	MDRV_CPU_IO_MAP(sound_readport,sound_writeport)
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(5000) /* hand-tuned, it needs a bit */
@@ -507,79 +505,79 @@ ROM_END
 
 ROM_START( vgoalsoc )
 	ROM_REGION( 0x80000, REGION_CPU1, 0 )
-	ROM_LOAD16_WORD_SWAP( "c16_u37.u37",  0x00000, 0x80000, CRC(18c05440) )
+	ROM_LOAD16_WORD_SWAP( "c16_u37.u37",  0x00000, 0x80000, CRC(18c05440) SHA1(0fc78ee0ba6d7817d4a93a80f668f193c352c00d) )
 
 	ROM_REGION( 0x40000, REGION_CPU2, 0 )
-	ROM_LOAD( "c16_u65.u65",  0x000000, 0x040000, CRC(2f7bf23c) )
+	ROM_LOAD( "c16_u65.u65",  0x000000, 0x040000, CRC(2f7bf23c) SHA1(1a1a06f57bbac59807679e3762cb2f23ab1ad35e) )
 
 	ROM_REGION( 0x20000, REGION_GFX1, 0 ) // score tilemap
-	ROM_LOAD( "c16_u48.u48",  0x000000, 0x020000, CRC(ca059e7f) )
+	ROM_LOAD( "c16_u48.u48",  0x000000, 0x020000, CRC(ca059e7f) SHA1(2fa48b0fec1210575f3a1ecee7d2aec0af3fa9c4) )
 
 	ROM_REGION( 0x100000, REGION_GFX2, 0 ) // screen tilemap
-	ROM_LOAD( "c13_u20.u20",  0x000000, 0x100000, CRC(bc6e07e8) )
-	ROM_LOAD( "c13_u17.u17",  0x000000, 0x100000, CRC(bc6e07e8) ) // same content, dif pos on board
+	ROM_LOAD( "c13_u20.u20",  0x000000, 0x100000, CRC(bc6e07e8) SHA1(3f164165a2eed909aaf38d1ae23a622482d39f96) )
+	ROM_LOAD( "c13_u17.u17",  0x000000, 0x100000, CRC(bc6e07e8) SHA1(3f164165a2eed909aaf38d1ae23a622482d39f96) ) // same content, dif pos on board
 
 	ROM_REGION( 0x400000, REGION_GFX3, 0 )
-	ROM_LOAD( "c13_u11.u11",  0x000000, 0x200000, CRC(76d09f27) )
-	ROM_LOAD( "c13_u12.u12",  0x200000, 0x200000, CRC(a3874419) )
+	ROM_LOAD( "c13_u11.u11",  0x000000, 0x200000, CRC(76d09f27) SHA1(ffef83954426f9e56bbe2d98b32cea675c063fab) )
+	ROM_LOAD( "c13_u12.u12",  0x200000, 0x200000, CRC(a3874419) SHA1(c9fa283106ada3419e311f400fcf4251b32318c4) )
 
 	ROM_REGION( 0x40000, REGION_SOUND1, 0 )
-	ROM_LOAD( "c13_u86.u86",  0x000000, 0x040000, CRC(4b76a162) )
+	ROM_LOAD( "c13_u86.u86",  0x000000, 0x040000, CRC(4b76a162) SHA1(38dcb7536662f5f520e59f3ff746b42e9df789d2) )
 
 	ROM_REGION( 0x200000, REGION_SOUND2, 0 )
-	ROM_LOAD( "c13_u104.104", 0x000000, 0x200000, CRC(8437b6f8) )
+	ROM_LOAD( "c13_u104.104", 0x000000, 0x200000, CRC(8437b6f8) SHA1(79f183dcbf3cde5c77e086e4fdd8341809396e37) )
 ROM_END
 
 ROM_START( vgoalsca )
 	ROM_REGION( 0x80000, REGION_CPU1, 0 )
-	ROM_LOAD16_WORD_SWAP( "vgoalc16.u37", 0x00000, 0x80000, CRC(775ef300) )
+	ROM_LOAD16_WORD_SWAP( "vgoalc16.u37", 0x00000, 0x80000, CRC(775ef300) SHA1(d0ab1c13a19ce646c6edfc25a0c0994989560cbc) )
 
 	ROM_REGION( 0x40000, REGION_CPU2, 0 )
-	ROM_LOAD( "c16_u65.u65",  0x000000, 0x040000, CRC(2f7bf23c) )
+	ROM_LOAD( "c16_u65.u65",  0x000000, 0x040000, CRC(2f7bf23c) SHA1(1a1a06f57bbac59807679e3762cb2f23ab1ad35e) )
 
 	ROM_REGION( 0x20000, REGION_GFX1, 0 ) // fixed tile
-	ROM_LOAD( "c16_u48.u48",  0x000000, 0x020000, CRC(ca059e7f) )
+	ROM_LOAD( "c16_u48.u48",  0x000000, 0x020000, CRC(ca059e7f) SHA1(2fa48b0fec1210575f3a1ecee7d2aec0af3fa9c4) )
 
 	ROM_REGION( 0x200000, REGION_GFX2, 0 ) // scroll tile
-	ROM_LOAD( "vgoalc16.u20", 0x000000, 0x200000, CRC(2b211fb2) )
-	ROM_LOAD( "vgoalc16.u17", 0x000000, 0x200000, CRC(2b211fb2) ) // same content, dif pos on board
+	ROM_LOAD( "vgoalc16.u20", 0x000000, 0x200000, CRC(2b211fb2) SHA1(4e04e099a1dae7abdb0732808a5d74fdc7afcf45) )
+	ROM_LOAD( "vgoalc16.u17", 0x000000, 0x200000, CRC(2b211fb2) SHA1(4e04e099a1dae7abdb0732808a5d74fdc7afcf45) ) // same content, dif pos on board
 
 	ROM_REGION( 0x400000, REGION_GFX3, 0 )
-	ROM_LOAD( "vgoalc16.u11", 0x000000, 0x200000, CRC(5bc3146c) )
-	ROM_LOAD( "c13_u12.u12",  0x200000, 0x200000, CRC(a3874419) )
+	ROM_LOAD( "vgoalc16.u11", 0x000000, 0x200000, CRC(5bc3146c) SHA1(ede4def1ddc4390fed8fd89643900967faff3640) )
+	ROM_LOAD( "c13_u12.u12",  0x200000, 0x200000, CRC(a3874419) SHA1(c9fa283106ada3419e311f400fcf4251b32318c4) )
 
 	ROM_REGION( 0x40000, REGION_SOUND1, 0 )
-	ROM_LOAD( "c13_u86.u86",  0x000000, 0x040000, CRC(4b76a162) )
+	ROM_LOAD( "c13_u86.u86",  0x000000, 0x040000, CRC(4b76a162) SHA1(38dcb7536662f5f520e59f3ff746b42e9df789d2) )
 
 	ROM_REGION( 0x100000, REGION_SOUND2, 0 )
-	ROM_LOAD( "vgoalc16.104", 0x000000, 0x100000, CRC(6fb06e1b) )
+	ROM_LOAD( "vgoalc16.104", 0x000000, 0x100000, CRC(6fb06e1b) SHA1(c4584b480fe1165f8e2f887acaa578690514d35d) )
 ROM_END
 
 ROM_START( worldc94 )
 	ROM_REGION( 0x80000, REGION_CPU1, 0 )
-	ROM_LOAD16_WORD_SWAP( "13",           0x00000, 0x80000, CRC(42adb463) )
+	ROM_LOAD16_WORD_SWAP( "13",           0x00000, 0x80000, CRC(42adb463) SHA1(ec7bcb684489b56f81ab851a9d8f42d54679363b) )
 
 	ROM_REGION( 0x40000, REGION_CPU2, 0 )
-	ROM_LOAD( "12",           0x000000, 0x040000, CRC(f316e7fc) )
+	ROM_LOAD( "12",           0x000000, 0x040000, CRC(f316e7fc) SHA1(a2215605518e7293774735371c65abcead99bd88) )
 
 	ROM_REGION( 0x20000, REGION_GFX1, 0 ) // fixed tile
-	ROM_LOAD( "11",           0x000000, 0x020000, CRC(37d6dcb6) )
+	ROM_LOAD( "11",           0x000000, 0x020000, CRC(37d6dcb6) SHA1(679dd8b615497fff23c4638d413b5d4a724d3f2a) )
 
 	ROM_REGION( 0x200000, REGION_GFX2, 0 ) // scroll tile
-	ROM_LOAD( "u17",          0x000000, 0x200000, CRC(a5e40a61) )
-	ROM_LOAD( "u20",          0x000000, 0x200000, CRC(a5e40a61) )
+	ROM_LOAD( "u17",          0x000000, 0x200000, CRC(a5e40a61) SHA1(a2cb452fb069862570870653b29b045d12caf062) )
+	ROM_LOAD( "u20",          0x000000, 0x200000, CRC(a5e40a61) SHA1(a2cb452fb069862570870653b29b045d12caf062) )
 
 	ROM_REGION( 0x800000, REGION_GFX3, 0 )
-	ROM_LOAD( "u11",          0x000000, 0x200000, CRC(dd93fd45) )
-	ROM_LOAD( "u12",          0x200000, 0x200000, CRC(8e3c9bd2) )
-	ROM_LOAD( "u13",          0x400000, 0x200000, CRC(8db6b3a9) )
-	ROM_LOAD( "u14",          0x600000, 0x200000, CRC(89739c31) )
+	ROM_LOAD( "u11",          0x000000, 0x200000, CRC(dd93fd45) SHA1(26491815b5443fe6d8b1ef4d795c5151fd75c101) )
+	ROM_LOAD( "u12",          0x200000, 0x200000, CRC(8e3c9bd2) SHA1(bfd23157c836148a3860ccea5191f656fdd98ef4) )
+	ROM_LOAD( "u13",          0x400000, 0x200000, CRC(8db6b3a9) SHA1(9422cd5d6fb57a7eaa7a13bdf4ccee1f8b57f773) )
+	ROM_LOAD( "u14",          0x600000, 0x200000, CRC(89739c31) SHA1(29cd779bfe93448fb6cbfe6f8e3661dd659c0d21) )
 
 	ROM_REGION( 0x40000, REGION_SOUND1, 0 )
-	ROM_LOAD( "u86",          0x000000, 0x040000, CRC(775f45dc) )
+	ROM_LOAD( "u86",          0x000000, 0x040000, CRC(775f45dc) SHA1(1a740dd880d9f873e93dfc096fbcae1784b4f522) )
 
 	ROM_REGION( 0x100000, REGION_SOUND2, 0 )
-	ROM_LOAD( "u104",         0x000000, 0x100000, CRC(df07d0af) )
+	ROM_LOAD( "u104",         0x000000, 0x100000, CRC(df07d0af) SHA1(356560e164ff222bc9004fe202f829c93244a6c9) )
 ROM_END
 
 /*** GAME DRIVERS ************************************************************/

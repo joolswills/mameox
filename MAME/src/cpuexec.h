@@ -41,10 +41,7 @@ struct MachineCPU
 	int			cpu_type;					/* index for the CPU type */
 	int			cpu_flags;					/* flags; see #defines below */
 	int			cpu_clock;					/* in Hertz */
-	const void *memory_read;				/* struct Memory_ReadAddress */
-	const void *memory_write;				/* struct Memory_WriteAddress */
-	const void *port_read;
-	const void *port_write;
+	construct_map_t construct_map[ADDRESS_SPACES][2]; /* 2 memory maps per address space */
 	void 		(*vblank_interrupt)(void);	/* for interrupts tied to VBLANK */
 	int 		vblank_interrupts_per_frame;/* usually 1 */
 	void 		(*timed_interrupt)(void);	/* for interrupts not tied to VBLANK */
@@ -223,6 +220,9 @@ UINT64 cpunum_gettotalcycles64(int cpunum);
 
 /* Returns the number of CPU cycles before the next interrupt handler call */
 int activecpu_geticount(void);
+
+/* Safely eats cycles so we don't cross a timeslice boundary */
+void activecpu_eat_cycles(int cycles);
 
 /* Scales a given value by the ratio of fcount / fperiod */
 int cpu_scalebyfcount(int value);

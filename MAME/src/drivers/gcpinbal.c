@@ -29,8 +29,7 @@ Understand role of bit 5 of IN1
 
 Eprom?
 
-Sound: M6295 / M6585
-
+MSM6295 banking?  (also missing in Raine)
 
 Stephh's notes (based on the game M68000 code and some tests) :
 
@@ -44,7 +43,9 @@ Stephh's notes (based on the game M68000 code and some tests) :
 #include "vidhrdw/generic.h"
 #include "gcpinbal.h"
 
+/* M6585 */
 
+static int start, end, bank;
 
 /***********************************************************
                       INTERRUPTS
@@ -57,7 +58,11 @@ void gcpinbal_interrupt1(int x)
 
 void gcpinbal_interrupt3(int x)
 {
-	cpu_set_irq_line(0,3,HOLD_LINE);
+	// IRQ3 is from the M6585
+	if (!ADPCM_playing(0))
+	{
+		cpu_set_irq_line(0,3,HOLD_LINE);
+	}
 }
 
 static INTERRUPT_GEN( gcpinbal_interrupt )
@@ -89,9 +94,14 @@ static READ16_HANDLER( ioc_r )
 		case 0x86/2:
 			return input_port_2_word_r(0,mem_mask);	/* IN1 */
 
+		case 0x50:
+		case 0x51:
+			return OKIM6295_status_0_r(0)<<8;
+			break;
+
 	}
 
-logerror("CPU #0 PC %06x: warning - read unmapped ioc offset %06x\n",activecpu_get_pc(),offset);
+//logerror("CPU #0 PC %06x: warning - read unmapped ioc offset %06x\n",activecpu_get_pc(),offset);
 
 	return gcpinbal_ioc_ram[offset];
 }
@@ -112,7 +122,79 @@ static WRITE16_HANDLER( ioc_w )
 //usrintf_showmessage(" address %04x value %04x",offset,data);
 //	}
 
-logerror("CPU #0 PC %06x: warning - write ioc offset %06x with %04x\n",activecpu_get_pc(),offset,data);
+	switch (offset)
+	{
+		// these are all written every frame
+		case 0x3b:
+		case 0xa:
+		case 0xc:
+		case 0xb:
+		case 0xd:
+		case 0xe:
+		case 0xf:
+		case 0x10:
+		case 0x47:
+			break;
+
+		// MSM6585 bank, coin LEDs, maybe others?
+		case 0x44:
+			if (data & 0x10)
+			{
+				bank = 0x100000;
+			}
+			else
+			{
+				bank = 0;
+			}
+			break;
+
+		case 0x45:
+			break;
+
+		// OKIM6295
+		case 0x50:
+		case 0x51:
+			OKIM6295_data_0_w(0, data>>8);
+			break;
+
+		// MSM6585 ADPCM - mini emulation
+		case 0x60:
+			start &= 0xffff00;
+			start |= (data>>8);
+			break;
+		case 0x61:
+			start &= 0xff00ff;
+			start |= data;
+			break;
+		case 0x62:
+			start &= 0x00ffff;
+			start |= (data<<8);
+			break;
+		case 0x63:
+			end &= 0xffff00;
+			end |= (data>>8);
+			break;
+		case 0x64:
+			end &= 0xff00ff;
+			end |= data;
+			break;
+		case 0x65:
+			end &= 0x00ffff;
+			end |= (data<<8);
+			break;
+		case 0x66:
+			if (start < end)
+			{
+				ADPCM_stop(0);
+				ADPCM_play(0, start+bank, end-start);
+			}
+			break;
+
+		default:
+			logerror("CPU #0 PC %06x: warning - write ioc offset %06x with %04x\n",activecpu_get_pc(),offset,data);
+			break;
+	}
+
 }
 
 
@@ -129,23 +211,23 @@ logerror("CPU #0 PC %06x: warning - write ioc offset %06x with %04x\n",activecpu
                      MEMORY STRUCTURES
 ***********************************************************/
 
-static MEMORY_READ16_START( gcpinbal_readmem )
-	{ 0x000000, 0x1fffff, MRA16_ROM },
-	{ 0xc00000, 0xc03fff, gcpinbal_tilemaps_word_r },
-	{ 0xc80000, 0xc80fff, MRA16_RAM },	/* sprite ram */
-	{ 0xd00000, 0xd00fff, paletteram16_word_r },
-	{ 0xd80000, 0xd800ff, ioc_r },
-	{ 0xff0000, 0xffffff, MRA16_RAM },	/* RAM */
-MEMORY_END
+static ADDRESS_MAP_START( gcpinbal_readmem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x1fffff) AM_READ(MRA16_ROM)
+	AM_RANGE(0xc00000, 0xc03fff) AM_READ(gcpinbal_tilemaps_word_r)
+	AM_RANGE(0xc80000, 0xc80fff) AM_READ(MRA16_RAM)	/* sprite ram */
+	AM_RANGE(0xd00000, 0xd00fff) AM_READ(paletteram16_word_r)
+	AM_RANGE(0xd80000, 0xd800ff) AM_READ(ioc_r)
+	AM_RANGE(0xff0000, 0xffffff) AM_READ(MRA16_RAM)	/* RAM */
+ADDRESS_MAP_END
 
-static MEMORY_WRITE16_START( gcpinbal_writemem )
-	{ 0x000000, 0x1fffff, MWA16_ROM },
-	{ 0xc00000, 0xc03fff, gcpinbal_tilemaps_word_w,&gcpinbal_tilemapram },
-	{ 0xc80000, 0xc80fff, MWA16_RAM, &spriteram16, &spriteram_size },
-	{ 0xd00000, 0xd00fff, paletteram16_RRRRGGGGBBBBRGBx_word_w, &paletteram16 },
-	{ 0xd80000, 0xd800ff, ioc_w, &gcpinbal_ioc_ram },
-	{ 0xff0000, 0xffffff, MWA16_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( gcpinbal_writemem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x1fffff) AM_WRITE(MWA16_ROM)
+	AM_RANGE(0xc00000, 0xc03fff) AM_WRITE(gcpinbal_tilemaps_word_w) AM_BASE(&gcpinbal_tilemapram)
+	AM_RANGE(0xc80000, 0xc80fff) AM_WRITE(MWA16_RAM) AM_BASE(&spriteram16) AM_SIZE(&spriteram_size)
+	AM_RANGE(0xd00000, 0xd00fff) AM_WRITE(paletteram16_RRRRGGGGBBBBRGBx_word_w) AM_BASE(&paletteram16)
+	AM_RANGE(0xd80000, 0xd800ff) AM_WRITE(ioc_w) AM_BASE(&gcpinbal_ioc_ram)
+	AM_RANGE(0xff0000, 0xffffff) AM_WRITE(MWA16_RAM)
+ADDRESS_MAP_END
 
 
 
@@ -291,9 +373,21 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
                             (SOUND)
 **************************************************************/
 
+static struct OKIM6295interface m6295_interface =
+{
+	1,  /* 1 chip */
+	{ 1056000/132 },	/* bogus value */
+	{ REGION_SOUND1 },
+	{ 30 }
+};
 
-
-
+static struct ADPCMinterface adpcm_interface =
+{
+	1,
+	8000,
+	REGION_SOUND2,
+	{ 100, }
+};
 
 /***********************************************************
                         MACHINE DRIVERS
@@ -308,7 +402,7 @@ static MACHINE_DRIVER_START( gcpinbal )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD_TAG("main", M68000, 32000000/2)	/* 16 MHz ? */
-	MDRV_CPU_MEMORY(gcpinbal_readmem,gcpinbal_writemem)
+	MDRV_CPU_PROGRAM_MAP(gcpinbal_readmem,gcpinbal_writemem)
 	MDRV_CPU_VBLANK_INT(gcpinbal_interrupt,1)
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -326,7 +420,8 @@ static MACHINE_DRIVER_START( gcpinbal )
 	MDRV_VIDEO_UPDATE(gcpinbal)
 
 	/* sound hardware */
-//	MDRV_SOUND_ATTRIBUTES(SOUND_SUPPORTS_STEREO)
+	MDRV_SOUND_ADD(OKIM6295, m6295_interface)
+	MDRV_SOUND_ADD(ADPCM, adpcm_interface)
 MACHINE_DRIVER_END
 
 
@@ -361,8 +456,7 @@ ROM_END
 
 
 
-GAMEX( 1994, gcpinbal, 0, gcpinbal, gcpinbal, 0, ROT270, "Excellent System", "Grand Cross", GAME_NO_SOUND | GAME_NO_COCKTAIL )
-
+GAMEX( 1994, gcpinbal, 0, gcpinbal, gcpinbal, 0, ROT270, "Excellent System", "Grand Cross", GAME_IMPERFECT_SOUND | GAME_NO_COCKTAIL )
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

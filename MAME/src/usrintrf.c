@@ -106,15 +106,15 @@ UINT8 ui_dirty;
 
 static const UINT8 uifontdata[] =
 {
-	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-	0x7c,0x80,0x98,0x90,0x80,0xbc,0x80,0x7c,0xf8,0x04,0x64,0x44,0x04,0xf4,0x04,0xf8,
-	0x7c,0x80,0x98,0x88,0x80,0xbc,0x80,0x7c,0xf8,0x04,0x64,0x24,0x04,0xf4,0x04,0xf8,
-	0x7c,0x80,0x88,0x98,0x80,0xbc,0x80,0x7c,0xf8,0x04,0x24,0x64,0x04,0xf4,0x04,0xf8,
-	0x7c,0x80,0x90,0x98,0x80,0xbc,0x80,0x7c,0xf8,0x04,0x44,0x64,0x04,0xf4,0x04,0xf8,
-	0x30,0x48,0x84,0xb4,0xb4,0x84,0x48,0x30,0x30,0x48,0x84,0x84,0x84,0x84,0x48,0x30,
-	0x00,0xfc,0x84,0x8c,0xd4,0xa4,0xfc,0x00,0x00,0xfc,0x84,0x84,0x84,0x84,0xfc,0x00,
-	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x30,0x68,0x78,0x78,0x30,0x00,0x00,
-	0x80,0xc0,0xe0,0xf0,0xe0,0xc0,0x80,0x00,0x04,0x0c,0x1c,0x3c,0x1c,0x0c,0x04,0x00,
+	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,	/* [ 0- 1] */
+	0x7c,0x80,0x98,0x90,0x80,0xbc,0x80,0x7c,0xf8,0x04,0x64,0x44,0x04,0xf4,0x04,0xf8,	/* [ 2- 3] tape pos 1 */
+	0x7c,0x80,0x98,0x88,0x80,0xbc,0x80,0x7c,0xf8,0x04,0x64,0x24,0x04,0xf4,0x04,0xf8,	/* [ 4- 5] tape pos 2 */
+	0x7c,0x80,0x88,0x98,0x80,0xbc,0x80,0x7c,0xf8,0x04,0x24,0x64,0x04,0xf4,0x04,0xf8,	/* [ 6- 7] tape pos 3 */
+	0x7c,0x80,0x90,0x98,0x80,0xbc,0x80,0x7c,0xf8,0x04,0x44,0x64,0x04,0xf4,0x04,0xf8,	/* [ 8- 9] tape pos 3 */
+	0x30,0x48,0x84,0xb4,0xb4,0x84,0x48,0x30,0x30,0x48,0x84,0x84,0x84,0x84,0x48,0x30,	/* [10-11] */
+	0x00,0xfc,0x84,0x8c,0xd4,0xa4,0xfc,0x00,0x00,0xfc,0x84,0x84,0x84,0x84,0xfc,0x00,	/* [12-13] */
+	0x00,0x38,0x7c,0x7c,0x7c,0x38,0x00,0x00,0x00,0x30,0x68,0x78,0x78,0x30,0x00,0x00,	/* [14-15] circle & bullet */
+	0x80,0xc0,0xe0,0xf0,0xe0,0xc0,0x80,0x00,0x04,0x0c,0x1c,0x3c,0x1c,0x0c,0x04,0x00,	/* [16-17] R/L triangle */
 	0x20,0x70,0xf8,0x20,0x20,0xf8,0x70,0x20,0x48,0x48,0x48,0x48,0x48,0x00,0x48,0x00,
 	0x00,0x00,0x30,0x68,0x78,0x30,0x00,0x00,0x00,0x30,0x68,0x78,0x78,0x30,0x00,0x00,
 	0x70,0xd8,0xe8,0xe8,0xf8,0xf8,0x70,0x00,0x1c,0x7c,0x74,0x44,0x44,0x4c,0xcc,0xc0,
@@ -493,6 +493,11 @@ struct GfxElement *builduifont(void)
 void ui_drawchar(struct mame_bitmap *dest, int ch, int color, int sx, int sy)
 {
 	struct rectangle bounds;
+
+#ifdef MESS
+	extern int skip_this_frame;
+	skip_this_frame = 0;
+#endif /* MESS */
 
 	/* construct a rectangle in rotated coordinates, then transform it */
 	bounds.min_x = sx + uirotbounds.min_x;
@@ -1705,6 +1710,15 @@ static int setdipswitches(struct mame_bitmap *bitmap, int selected)
 
 
 
+#ifdef MESS
+static int setconfiguration(struct mame_bitmap *bitmap, int selected)
+{
+	return switchmenu(bitmap, selected, IPT_CONFIG_NAME, IPT_CONFIG_SETTING);
+}
+#endif /* MESS */
+
+
+
 /* This flag is used for record OR sequence of key/joy */
 /* when is !=0 the first sequence is record, otherwise the first free */
 /* it's used byt setdefkeysettings, setdefjoysettings, setkeysettings, setjoysettings */
@@ -2419,7 +2433,7 @@ static int displaygameinfo(struct mame_bitmap *bitmap,int selected)
 				Machine->visible_area.max_x - Machine->visible_area.min_x + 1,
 				Machine->visible_area.max_y - Machine->visible_area.min_y + 1,
 				(Machine->gamedrv->flags & ORIENTATION_SWAP_XY) ? "V" : "H",
-				Machine->drv->frames_per_second);
+				Machine->refresh_rate);
 #if 0
 		{
 			int pixelx,pixely,tmax,tmin,rem;
@@ -3100,7 +3114,8 @@ enum { UI_SWITCH = 0,UI_DEFCODE,UI_CODE,UI_ANALOG,UI_CALIBRATE,
 #else
 enum { UI_SWITCH = 0,UI_DEFCODE,UI_CODE,UI_ANALOG,UI_CALIBRATE,
 		UI_GAMEINFO, UI_IMAGEINFO,UI_FILEMANAGER,UI_TAPECONTROL,
-		UI_HISTORY,UI_CHEAT,UI_RESET,UI_MEMCARD,UI_RAPIDFIRE,UI_EXIT };
+		UI_HISTORY,UI_CHEAT,UI_RESET,UI_MEMCARD,UI_RAPIDFIRE,UI_EXIT,
+		UI_CONFIGURATION };
 #endif
 
 
@@ -3121,6 +3136,9 @@ static void setup_menu_init(void)
 
 	menu_item[menu_total] = ui_getstring (UI_inputgeneral); menu_action[menu_total++] = UI_DEFCODE;
 	menu_item[menu_total] = ui_getstring (UI_inputspecific); menu_action[menu_total++] = UI_CODE;
+#ifdef MESS
+	menu_item[menu_total] = ui_getstring (UI_configuration); menu_action[menu_total++] = UI_CONFIGURATION;
+#endif /* MESS */
 
 	/* Determine if there are any dip switches */
 	{
@@ -3277,7 +3295,10 @@ static int setup_menu(struct mame_bitmap *bitmap, int selected)
 				res = tapecontrol(bitmap, sel >> SEL_BITS);
 				break;
 #endif /* HAS_WAVE */
-#endif
+			case UI_CONFIGURATION:
+				res = setconfiguration(bitmap, sel >> SEL_BITS);
+				break;
+#endif /* MESS */
 			case UI_HISTORY:
 				res = displayhistory(bitmap, sel >> SEL_BITS);
 				break;
@@ -3337,7 +3358,8 @@ static int setup_menu(struct mame_bitmap *bitmap, int selected)
 			case UI_IMAGEINFO:
 			case UI_FILEMANAGER:
 			case UI_TAPECONTROL:
-			#endif
+			case UI_CONFIGURATION:
+#endif /* !MESS */
 			case UI_HISTORY:
 			case UI_CHEAT:
 			case UI_MEMCARD:
@@ -3866,7 +3888,7 @@ void CLIB_DECL usrintf_showmessage(const char *text,...)
 	va_start(arg,text);
 	vsprintf(messagetext,text,arg);
 	va_end(arg);
-	messagecounter = 2 * Machine->drv->frames_per_second;
+	messagecounter = 2 * Machine->refresh_rate;
 }
 
 void CLIB_DECL usrintf_showmessage_secs(int seconds, const char *text,...)
@@ -3875,7 +3897,7 @@ void CLIB_DECL usrintf_showmessage_secs(int seconds, const char *text,...)
 	va_start(arg,text);
 	vsprintf(messagetext,text,arg);
 	va_end(arg);
-	messagecounter = seconds * Machine->drv->frames_per_second;
+	messagecounter = seconds * Machine->refresh_rate;
 }
 
 void do_loadsave(struct mame_bitmap *bitmap, int request_loadsave)
@@ -3965,7 +3987,7 @@ void do_loadsave(struct mame_bitmap *bitmap, int request_loadsave)
 void ui_show_fps_temp(double seconds)
 {
 	if (!showfps)
-		showfpstemp = (int)(seconds * Machine->drv->frames_per_second);
+		showfpstemp = (int)(seconds * Machine->refresh_rate);
 }
 
 void ui_show_fps_set(int show)
@@ -4086,15 +4108,18 @@ int handle_user_interface(struct mame_bitmap *bitmap)
 	}
 	if (setup_selected != 0) setup_selected = setup_menu(bitmap, setup_selected);
 
-	if (!mame_debug && osd_selected == 0 && input_ui_pressed(IPT_UI_ON_SCREEN_DISPLAY))
-	{
-		osd_selected = -1;
-		if (setup_selected != 0)
+#ifdef MAME_DEBUG
+	if (!mame_debug)
+#endif
+		if (osd_selected == 0 && input_ui_pressed(IPT_UI_ON_SCREEN_DISPLAY))
 		{
-			setup_selected = 0; /* disable setup menu */
-			schedule_full_refresh();
+			osd_selected = -1;
+			if (setup_selected != 0)
+			{
+				setup_selected = 0; /* disable setup menu */
+				schedule_full_refresh();
+			}
 		}
-	}
 	if (osd_selected != 0) osd_selected = on_screen_display(bitmap, osd_selected);
 
 
@@ -4155,8 +4180,16 @@ int handle_user_interface(struct mame_bitmap *bitmap)
 	if (input_ui_pressed(IPT_UI_LOAD_STATE))
 		do_loadsave(bitmap, LOADSAVE_LOAD);
 
+#ifndef MESS
 	if (single_step || input_ui_pressed(IPT_UI_PAUSE)) /* pause the game */
 	{
+#else
+	if (setup_selected)
+		mess_pause_for_ui = 1;
+
+	if (single_step || input_ui_pressed(IPT_UI_PAUSE) || mess_pause_for_ui) /* pause the game */
+	{
+#endif
 /*		osd_selected = 0;	   disable on screen display, since we are going   */
 							/* to change parameters affected by it */
 
@@ -4205,15 +4238,18 @@ int handle_user_interface(struct mame_bitmap *bitmap)
 			}
 			if (setup_selected != 0) setup_selected = setup_menu(bitmap, setup_selected);
 
-			if (!mame_debug && osd_selected == 0 && input_ui_pressed(IPT_UI_ON_SCREEN_DISPLAY))
-			{
-				osd_selected = -1;
-				if (setup_selected != 0)
+#ifdef MAME_DEBUG
+			if (!mame_debug)
+#endif
+				if (osd_selected == 0 && input_ui_pressed(IPT_UI_ON_SCREEN_DISPLAY))
 				{
-					setup_selected = 0; /* disable setup menu */
-					schedule_full_refresh();
+					osd_selected = -1;
+					if (setup_selected != 0)
+					{
+						setup_selected = 0; /* disable setup menu */
+						schedule_full_refresh();
+					}
 				}
-			}
 			if (osd_selected != 0) osd_selected = on_screen_display(bitmap, osd_selected);
 
 			if (options.cheat) DisplayWatches(bitmap);
@@ -4229,6 +4265,14 @@ int handle_user_interface(struct mame_bitmap *bitmap)
 
 			update_video_and_audio();
 			reset_partial_updates();
+
+#ifdef MESS
+			if (!setup_selected && mess_pause_for_ui)
+			{
+				mess_pause_for_ui = 0;
+				break;
+			}
+#endif /* MESS */
 		}
 
 		if (code_pressed(KEYCODE_LSHIFT) || code_pressed(KEYCODE_RSHIFT))

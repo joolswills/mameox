@@ -929,47 +929,47 @@ static READ16_HANDLER( bogus_r )
 	return 0;
 }
 
-static MEMORY_READ16_START( namcona1_readmem )
-	{ 0x000000, 0x000fff, namcona1_mcu_r },
-	{ 0x001000, 0x07ffff, MRA16_RAM },		/* work RAM */
-	{ 0x080000, 0x3fffff, bogus_r },
-	{ 0x400000, 0xbfffff, MRA16_BANK2 },	/* data */
-	{ 0xc00000, 0xdfffff, MRA16_BANK1 },	/* code */
-	{ 0xe00000, 0xe00fff, namcona1_nvram_r },
-	{ 0xe40000, 0xe4000f, custom_key_r },
-	{ 0xe40010, 0xeffeff, bogus_r },
-	{ 0xefff00, 0xefffff, namcona1_vreg_r },
-	{ 0xf00000, 0xf01fff, namcona1_paletteram_r },
-	{ 0xf02000, 0xf3ffff, bogus_r },
-	{ 0xf40000, 0xf7ffff, namcona1_gfxram_r },
-	{ 0xf80000, 0xfeffff, bogus_r },
-	{ 0xff0000, 0xff7fff, namcona1_videoram_r },
-	{ 0xff8000, 0xffdfff, MRA16_RAM },		/* spare videoram */
-	{ 0xffe000, 0xffefff, MRA16_RAM },		/* scroll registers */
-	{ 0xfff000, 0xffffff, MRA16_RAM },		/* spriteram */
-MEMORY_END
+static ADDRESS_MAP_START( namcona1_readmem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x000fff) AM_READ(namcona1_mcu_r)
+	AM_RANGE(0x001000, 0x07ffff) AM_READ(MRA16_RAM)		/* work RAM */
+	AM_RANGE(0x080000, 0x3fffff) AM_READ(bogus_r)
+	AM_RANGE(0x400000, 0xbfffff) AM_READ(MRA16_BANK2)	/* data */
+	AM_RANGE(0xc00000, 0xdfffff) AM_READ(MRA16_BANK1)	/* code */
+	AM_RANGE(0xe00000, 0xe00fff) AM_READ(namcona1_nvram_r)
+	AM_RANGE(0xe40000, 0xe4000f) AM_READ(custom_key_r)
+	AM_RANGE(0xe40010, 0xeffeff) AM_READ(bogus_r)
+	AM_RANGE(0xefff00, 0xefffff) AM_READ(namcona1_vreg_r)
+	AM_RANGE(0xf00000, 0xf01fff) AM_READ(namcona1_paletteram_r)
+	AM_RANGE(0xf02000, 0xf3ffff) AM_READ(bogus_r)
+	AM_RANGE(0xf40000, 0xf7ffff) AM_READ(namcona1_gfxram_r)
+	AM_RANGE(0xf80000, 0xfeffff) AM_READ(bogus_r)
+	AM_RANGE(0xff0000, 0xff7fff) AM_READ(namcona1_videoram_r)
+	AM_RANGE(0xff8000, 0xffdfff) AM_READ(MRA16_RAM)		/* spare videoram */
+	AM_RANGE(0xffe000, 0xffefff) AM_READ(MRA16_RAM)		/* scroll registers */
+	AM_RANGE(0xfff000, 0xffffff) AM_READ(MRA16_RAM)		/* spriteram */
+ADDRESS_MAP_END
 
-static MEMORY_WRITE16_START( namcona1_writemem )
-	{ 0x000000, 0x000fff, namcona1_mcu_w, &mcu_ram },
-	{ 0x001000, 0x07ffff, MWA16_RAM, &namcona1_workram },
-	{ 0x080000, 0x3f8007, bogus_w },
-	{ 0x3f8008, 0x3f8009, mcu_command_w },
-	{ 0x3f800a, 0x3fffff, bogus_w },
-	{ 0x400000, 0xdfffff, MWA16_ROM }, /* data + code */
-	{ 0xe00000, 0xe00fff, namcona1_nvram_w },
-	{ 0xe01000, 0xe3ffff, bogus_w },
-	{ 0xe40000, 0xe4000f, custom_key_w },
-	{ 0xe40010, 0xeffeff, bogus_w },
-	{ 0xefff00, 0xefffff, namcona1_vreg_w, &namcona1_vreg },
-	{ 0xf00000, 0xf01fff, namcona1_paletteram_w, &paletteram16 },
-	{ 0xf02000, 0xf3ffff, bogus_w },
-	{ 0xf40000, 0xf7ffff, namcona1_gfxram_w },
-	{ 0xf80000, 0xfeffff, bogus_w },
-	{ 0xff0000, 0xff7fff, namcona1_videoram_w, &videoram16 },
-	{ 0xff8000, 0xffdfff, MWA16_RAM, &namcona1_sparevram },
-	{ 0xffe000, 0xffefff, MWA16_RAM, &namcona1_scroll },
-	{ 0xfff000, 0xffffff, MWA16_RAM, &spriteram16 },
-MEMORY_END
+static ADDRESS_MAP_START( namcona1_writemem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x000fff) AM_WRITE(namcona1_mcu_w) AM_BASE(&mcu_ram)
+	AM_RANGE(0x001000, 0x07ffff) AM_WRITE(MWA16_RAM) AM_BASE(&namcona1_workram)
+	AM_RANGE(0x080000, 0x3f8007) AM_WRITE(bogus_w)
+	AM_RANGE(0x3f8008, 0x3f8009) AM_WRITE(mcu_command_w)
+	AM_RANGE(0x3f800a, 0x3fffff) AM_WRITE(bogus_w)
+	AM_RANGE(0x400000, 0xdfffff) AM_WRITE(MWA16_ROM) /* data + code */
+	AM_RANGE(0xe00000, 0xe00fff) AM_WRITE(namcona1_nvram_w)
+	AM_RANGE(0xe01000, 0xe3ffff) AM_WRITE(bogus_w)
+	AM_RANGE(0xe40000, 0xe4000f) AM_WRITE(custom_key_w)
+	AM_RANGE(0xe40010, 0xeffeff) AM_WRITE(bogus_w)
+	AM_RANGE(0xefff00, 0xefffff) AM_WRITE(namcona1_vreg_w) AM_BASE(&namcona1_vreg)
+	AM_RANGE(0xf00000, 0xf01fff) AM_WRITE(namcona1_paletteram_w) AM_BASE(&paletteram16)
+	AM_RANGE(0xf02000, 0xf3ffff) AM_WRITE(bogus_w)
+	AM_RANGE(0xf40000, 0xf7ffff) AM_WRITE(namcona1_gfxram_w)
+	AM_RANGE(0xf80000, 0xfeffff) AM_WRITE(bogus_w)
+	AM_RANGE(0xff0000, 0xff7fff) AM_WRITE(namcona1_videoram_w) AM_BASE(&videoram16)
+	AM_RANGE(0xff8000, 0xffdfff) AM_WRITE(MWA16_RAM) AM_BASE(&namcona1_sparevram)
+	AM_RANGE(0xffe000, 0xffefff) AM_WRITE(MWA16_RAM) AM_BASE(&namcona1_scroll)
+	AM_RANGE(0xfff000, 0xffffff) AM_WRITE(MWA16_RAM) AM_BASE(&spriteram16)
+ADDRESS_MAP_END
 
 INTERRUPT_GEN( namcona1_interrupt )
 {
@@ -998,7 +998,7 @@ static struct NAMCONAinterface NAMCONA_interface =
 static MACHINE_DRIVER_START( namcona1 )
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000, 50113000/4)
-	MDRV_CPU_MEMORY(namcona1_readmem,namcona1_writemem)
+	MDRV_CPU_PROGRAM_MAP(namcona1_readmem,namcona1_writemem)
 	MDRV_CPU_VBLANK_INT(namcona1_interrupt,5)
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -1255,13 +1255,13 @@ ROM_END
 
 ROM_START( xday2 )
 	ROM_REGION( 0xa80000, REGION_CPU1, 0 )
-	ROM_LOAD16_BYTE( "xds1mpr0.4b", 0x080001, 0x080000, CRC(83539aaa) ) /* 0xc00000 */
-	ROM_LOAD16_BYTE( "xds1mpr1.8b", 0x080000, 0x080000, CRC(468b36de) )
+	ROM_LOAD16_BYTE( "xds1mpr0.4b", 0x080001, 0x080000, CRC(83539aaa) SHA1(42d97bb2daaf5ff48efac70f0ff37869c5ba177d) ) /* 0xc00000 */
+	ROM_LOAD16_BYTE( "xds1mpr1.8b", 0x080000, 0x080000, CRC(468b36de) SHA1(52817be9913a6938ce6add2834ba1a727b1d677e) )
 
-	ROM_LOAD16_BYTE( "xds1dat0.4b", 0x280001, 0x200000, CRC(42cecc8b) ) /* 0x400000 */
-	ROM_LOAD16_BYTE( "xds1dat1.8b", 0x280000, 0x200000, CRC(d250b7e8) )
-	ROM_LOAD16_BYTE( "xds1dat2.4c", 0x680001, 0x200000, CRC(99d72a08) )
-	ROM_LOAD16_BYTE( "xds1dat3.8c", 0x680000, 0x200000, CRC(8980acc4) )
+	ROM_LOAD16_BYTE( "xds1dat0.4b", 0x280001, 0x200000, CRC(42cecc8b) SHA1(7510f16b908dd0f7828887dcfa26c5e4643df66c) ) /* 0x400000 */
+	ROM_LOAD16_BYTE( "xds1dat1.8b", 0x280000, 0x200000, CRC(d250b7e8) SHA1(b99251ae8e25fae062d33e74ff800ab43fb308a2) )
+	ROM_LOAD16_BYTE( "xds1dat2.4c", 0x680001, 0x200000, CRC(99d72a08) SHA1(4615b43b9a81240ffee8b0f021037f554f4f1f24) )
+	ROM_LOAD16_BYTE( "xds1dat3.8c", 0x680000, 0x200000, CRC(8980acc4) SHA1(ecd94a3d3a38923e8e322cd8863671af26e30812) )
 ROM_END
 
 GAMEX( 1992,bkrtmaq,  0,        namcona1w, namcona1_quiz,	bkrtmaq,  ROT0, "Namco", "Bakuretsu Quiz Ma-Q Dai Bouken (Japan)", GAME_IMPERFECT_SOUND )

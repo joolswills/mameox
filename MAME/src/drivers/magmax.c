@@ -74,39 +74,97 @@ static void scanline_callback(int scanline)
 	timer_set( cpu_getscanlinetime( scanline ), scanline, scanline_callback );
 }
 
-MACHINE_INIT( magmax )
+static MACHINE_INIT( magmax )
 {
 	timer_set(cpu_getscanlinetime( 64 ), 64, scanline_callback );
+#if 0
+	{
+		int i;
+		for (i=0; i<9; i++)
+			logerror("SOUND Chan#%i name=%s\n", i, mixer_get_name(i) );
+	}
+#endif
 }
 
 
+static int gain_control = 0;
 
 WRITE_HANDLER( ay8910_portA_0_w )
 {
+int percent;
+
 /*There are three AY8910 chips and four(!) separate amplifiers on the board
-* Each of AY channels is hardware mapped in following order:
-* amplifier 0 <- AY0 CHA
-* amplifier 1 <- AY0 CHB + AY0 CHC + AY1 CHA + AY1 CHB
-* amplifier 2 <- AY1 CHC + AY2 CHA
-* amplifier 3 <- AY2 CHB + AY2 CHC
+* Each of AY channels is hardware mapped in following way:
+* amplifier 0 gain x 1.00 <- AY0 CHA
+* amplifier 1 gain x 1.00 <- AY0 CHB + AY0 CHC + AY1 CHA + AY1 CHB
+* amplifier 2 gain x 4.54 (150K/33K) <- AY1 CHC + AY2 CHA
+* amplifier 3 gain x 4.54 (150K/33K) <- AY2 CHB + AY2 CHC
 *
 * Each of the amps has its own analog cuircit:
 * amp0, amp1 and amp2 are different from each other; amp3 is the same as amp2
 *
 * Outputs of those amps are inputs to post amps, each having own cuircit
 * that is partially controlled by AY #0 port A.
-* PORT A BIT 0 - control postamp 0
-* PORT A BIT 1 - control postamp 1
-* PORT A BIT 2 - control postamp 2
-* PORT A BIT 3 - control postamp 3
+* PORT A BIT 0 - control postamp 0 (gain x10.0 | gain x 5.00)
+* PORT A BIT 1 - control postamp 1 (gain x4.54 | gain x 2.27)
+* PORT A BIT 2 - control postamp 2 (gain x1.00 | gain x 0.50)
+* PORT A BIT 3 - control postamp 3 (gain x1.00 | gain x 0.50)
 *
 * The "control" means assert/clear input pins on chip called 4066 (it is analog switch)
-* This is not implemented here.
+* which results in volume gain (exactly 2 times).
+* I use mixer_set_volume() to emulate the effect.
+
+gain summary:
+port A control ON         OFF
+amp0 = *1*10.0=10.0  *1*5.0   = 5.0
+amp1 = *1*4.54=4.54  *1*2.27  = 2.27
+amp2 = *4.54*1=4.54  *4.54*0.5= 2.27
+amp3 = *4.54*1=4.54  *4.54*0.5= 2.27
 */
 
+/*
+bit0 - SOUND Chan#0 name=AY-3-8910 #0 Ch A
 
-		//missing implementation
+bit1 - SOUND Chan#1 name=AY-3-8910 #0 Ch B
+bit1 - SOUND Chan#2 name=AY-3-8910 #0 Ch C
+bit1 - SOUND Chan#3 name=AY-3-8910 #1 Ch A
+bit1 - SOUND Chan#4 name=AY-3-8910 #1 Ch B
 
+bit2 - SOUND Chan#5 name=AY-3-8910 #1 Ch C
+bit2 - SOUND Chan#6 name=AY-3-8910 #2 Ch A
+
+bit3 - SOUND Chan#7 name=AY-3-8910 #2 Ch B
+bit3 - SOUND Chan#8 name=AY-3-8910 #2 Ch C
+*/
+
+	if (gain_control == (data & 0x0f))
+		return;
+
+	gain_control = data & 0x0f;
+
+	/*usrintf_showmessage("gain_ctrl = %2x",data&0x0f);*/
+
+	percent = (gain_control & 1) ? 100 : 50;
+	mixer_set_volume(0,percent);
+	set_RC_filter(0,10000,100000000,0,10000);	/* 10K, 10000pF = 0.010uF */
+
+	percent = (gain_control & 2) ? 45 : 23;
+	mixer_set_volume(1,percent);
+	mixer_set_volume(2,percent);
+	mixer_set_volume(3,percent);
+	mixer_set_volume(4,percent);
+	set_RC_filter(1,4700,100000000,0,4700);	/*  4.7K, 4700pF = 0.0047uF */
+	set_RC_filter(2,4700,100000000,0,4700);	/*  4.7K, 4700pF = 0.0047uF */
+	set_RC_filter(3,4700,100000000,0,4700);	/*  4.7K, 4700pF = 0.0047uF */
+	set_RC_filter(4,4700,100000000,0,4700);	/*  4.7K, 4700pF = 0.0047uF */
+
+	percent = (gain_control & 4) ? 45 : 23;
+	mixer_set_volume(5,percent);
+	mixer_set_volume(6,percent);
+
+	percent = (gain_control & 8) ? 45 : 23;
+	mixer_set_volume(7,percent);
+	mixer_set_volume(8,percent);
 }
 
 static WRITE16_HANDLER( magmax_vreg_w )
@@ -124,52 +182,52 @@ static WRITE16_HANDLER( magmax_vreg_w )
 
 
 
-static MEMORY_READ16_START( magmax_readmem )
-	{ 0x000000, 0x013fff, MRA16_ROM },
-	{ 0x018000, 0x018fff, MRA16_RAM },
-	{ 0x020000, 0x0207ff, MRA16_RAM },
-	{ 0x028000, 0x0281ff, MRA16_RAM },
-	{ 0x030000, 0x030001, input_port_0_word_r },
-	{ 0x030002, 0x030003, input_port_1_word_r },
-	{ 0x030004, 0x030005, input_port_2_word_r },
-	{ 0x030006, 0x030007, input_port_3_word_r },
-MEMORY_END
+static ADDRESS_MAP_START( magmax_readmem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x013fff) AM_READ(MRA16_ROM)
+	AM_RANGE(0x018000, 0x018fff) AM_READ(MRA16_RAM)
+	AM_RANGE(0x020000, 0x0207ff) AM_READ(MRA16_RAM)
+	AM_RANGE(0x028000, 0x0281ff) AM_READ(MRA16_RAM)
+	AM_RANGE(0x030000, 0x030001) AM_READ(input_port_0_word_r)
+	AM_RANGE(0x030002, 0x030003) AM_READ(input_port_1_word_r)
+	AM_RANGE(0x030004, 0x030005) AM_READ(input_port_2_word_r)
+	AM_RANGE(0x030006, 0x030007) AM_READ(input_port_3_word_r)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE16_START( magmax_writemem )
-	{ 0x000000, 0x013fff, MWA16_ROM },
-	{ 0x018000, 0x018fff, MWA16_RAM },
-	{ 0x020000, 0x0207ff, MWA16_RAM, &videoram16, &videoram_size },
-	{ 0x028000, 0x0281ff, MWA16_RAM, &spriteram16, &spriteram_size },
-	{ 0x030010, 0x030011, magmax_vreg_w },
-	{ 0x030012, 0x030013, MWA16_RAM, &magmax_scroll_x },
-	{ 0x030014, 0x030015, MWA16_RAM, &magmax_scroll_y },
-	{ 0x03001c, 0x03001d, magmax_sound_w },
-	{ 0x03001e, 0x03001f, MWA16_NOP },	/* IRQ ack */
-MEMORY_END
+static ADDRESS_MAP_START( magmax_writemem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x013fff) AM_WRITE(MWA16_ROM)
+	AM_RANGE(0x018000, 0x018fff) AM_WRITE(MWA16_RAM)
+	AM_RANGE(0x020000, 0x0207ff) AM_WRITE(MWA16_RAM) AM_BASE(&videoram16) AM_SIZE(&videoram_size)
+	AM_RANGE(0x028000, 0x0281ff) AM_WRITE(MWA16_RAM) AM_BASE(&spriteram16) AM_SIZE(&spriteram_size)
+	AM_RANGE(0x030010, 0x030011) AM_WRITE(magmax_vreg_w)
+	AM_RANGE(0x030012, 0x030013) AM_WRITE(MWA16_RAM) AM_BASE(&magmax_scroll_x)
+	AM_RANGE(0x030014, 0x030015) AM_WRITE(MWA16_RAM) AM_BASE(&magmax_scroll_y)
+	AM_RANGE(0x03001c, 0x03001d) AM_WRITE(magmax_sound_w)
+	AM_RANGE(0x03001e, 0x03001f) AM_WRITE(MWA16_NOP)	/* IRQ ack */
+ADDRESS_MAP_END
 
-static MEMORY_READ_START( magmax_soundreadmem )
-	{ 0x0000, 0x3fff, MRA_ROM },
-	{ 0x4000, 0x4000, magmax_sound_irq_ack },
-	{ 0x6000, 0x67ff, MRA_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( magmax_soundreadmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x3fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x4000, 0x4000) AM_READ(magmax_sound_irq_ack)
+	AM_RANGE(0x6000, 0x67ff) AM_READ(MRA8_RAM)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( magmax_soundwritemem )
-	{ 0x0000, 0x3fff, MWA_ROM },
-	{ 0x6000, 0x67ff, MWA_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( magmax_soundwritemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x3fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x6000, 0x67ff) AM_WRITE(MWA8_RAM)
+ADDRESS_MAP_END
 
-static PORT_READ_START( magmax_soundreadport )
-	{ 0x06, 0x06, magmax_sound_r },
-PORT_END
+static ADDRESS_MAP_START( magmax_soundreadport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x06, 0x06) AM_READ(magmax_sound_r)
+ADDRESS_MAP_END
 
-static PORT_WRITE_START( magmax_soundwriteport )
-	{ 0x00, 0x00, AY8910_control_port_0_w },
-	{ 0x01, 0x01, AY8910_write_port_0_w },
-	{ 0x02, 0x02, AY8910_control_port_1_w },
-	{ 0x03, 0x03, AY8910_write_port_1_w },
-	{ 0x04, 0x04, AY8910_control_port_2_w },
-	{ 0x05, 0x05, AY8910_write_port_2_w },
-PORT_END
+static ADDRESS_MAP_START( magmax_soundwriteport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x00, 0x00) AM_WRITE(AY8910_control_port_0_w)
+	AM_RANGE(0x01, 0x01) AM_WRITE(AY8910_write_port_0_w)
+	AM_RANGE(0x02, 0x02) AM_WRITE(AY8910_control_port_1_w)
+	AM_RANGE(0x03, 0x03) AM_WRITE(AY8910_write_port_1_w)
+	AM_RANGE(0x04, 0x04) AM_WRITE(AY8910_control_port_2_w)
+	AM_RANGE(0x05, 0x05) AM_WRITE(AY8910_write_port_2_w)
+ADDRESS_MAP_END
 
 
 INPUT_PORTS_START( magmax )
@@ -287,7 +345,7 @@ static struct AY8910interface ay8910_interface =
 {
 	3,			/* 3 chips */
 	10000000/8,		/* 1.25 MHz */
-	{ 35, 35, 35 },
+	{ 40, 40, 40 },
 	{ 0, 0, 0 }, /*read port A*/
 	{ 0, 0, 0 }, /*read port B*/
 	{ ay8910_portA_0_w, 0, 0 }, /*write port A*/
@@ -299,17 +357,18 @@ static MACHINE_DRIVER_START( magmax )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000, 8000000)	/* 8 MHz */
-	MDRV_CPU_MEMORY(magmax_readmem,magmax_writemem)
+	MDRV_CPU_PROGRAM_MAP(magmax_readmem,magmax_writemem)
 	MDRV_CPU_VBLANK_INT(irq1_line_hold,1)
 
 	MDRV_CPU_ADD(Z80,10000000/4)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)	/* 2.5 MHz */
-	MDRV_CPU_MEMORY(magmax_soundreadmem,magmax_soundwritemem)
-	MDRV_CPU_PORTS(magmax_soundreadport,magmax_soundwriteport)
+	MDRV_CPU_PROGRAM_MAP(magmax_soundreadmem,magmax_soundwritemem)
+	MDRV_CPU_IO_MAP(magmax_soundreadport,magmax_soundwriteport)
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(DEFAULT_60HZ_VBLANK_DURATION)
-
+	MDRV_INTERLEAVE(10)
+ 
 	MDRV_MACHINE_INIT(magmax)
 
 	/* video hardware */

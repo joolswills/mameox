@@ -41,6 +41,7 @@
  *************************************/
 
 static UINT8 which_input;
+static data16_t *mo_command;
 
 static data16_t *bslapstic_base;
 static void *bslapstic_bank0;
@@ -92,6 +93,13 @@ static WRITE16_HANDLER( mo_control_w )
 {
 	if (ACCESSING_LSB)
 		atarirle_control_w(0, data & 7);
+}
+
+
+static WRITE16_HANDLER( mo_command_w )
+{
+	COMBINE_DATA(mo_command);
+	atarirle_command_w(0, (data == 0 && atarig1_pitfight) ? ATARIRLE_COMMAND_CHECKSUM : ATARIRLE_COMMAND_DRAW);
 }
 
 
@@ -204,35 +212,26 @@ static void pitfighb_cheap_slapstic_init(void)
  *
  *************************************/
 
-static MEMORY_READ16_START( main_readmem )
-	{ 0x000000, 0x07ffff, MRA16_ROM },
-	{ 0xfc0000, 0xfc0001, special_port0_r },
-	{ 0xfc8000, 0xfc8001, a2d_data_r },
-	{ 0xfd0000, 0xfd0001, atarigen_sound_upper_r },
-	{ 0xfd8000, 0xfdffff, atarigen_eeprom_r },
-/*	{ 0xfe0000, 0xfe7fff, from_r },*/
-	{ 0xfe8000, 0xfe89ff, MRA16_RAM },
-	{ 0xff0000, 0xffffff, MRA16_RAM },
-MEMORY_END
-
-
-static MEMORY_WRITE16_START( main_writemem )
-	{ 0x000000, 0x07ffff, MWA16_ROM },
-	{ 0xf80000, 0xf80001, watchdog_reset16_w },
-	{ 0xf88000, 0xf8ffff, atarigen_eeprom_enable_w },
-	{ 0xf90000, 0xf90001, atarigen_sound_upper_w },
-	{ 0xf98000, 0xf98001, atarigen_sound_reset_w },
-	{ 0xfa0000, 0xfa0001, mo_control_w },
-	{ 0xfb0000, 0xfb0001, atarigen_video_int_ack_w },
-	{ 0xfc8000, 0xfc8007, a2d_select_w },
-	{ 0xfd8000, 0xfdffff, atarigen_eeprom_w, &atarigen_eeprom, &atarigen_eeprom_size },
-	{ 0xfe8000, 0xfe89ff, atarigen_666_paletteram_w, &paletteram16 },
-	{ 0xff0000, 0xff0fff, atarirle_0_spriteram_w, &atarirle_0_spriteram },
-	{ 0xff1000, 0xff3fff, MWA16_RAM },
-	{ 0xff4000, 0xff5fff, atarigen_playfield_w, &atarigen_playfield },
-	{ 0xff6000, 0xff6fff, atarigen_alpha_w, &atarigen_alpha },
-	{ 0xff7000, 0xffffff, MWA16_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( main_map, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x07ffff) AM_ROM
+	AM_RANGE(0xf80000, 0xf80001) AM_WRITE(watchdog_reset16_w)
+	AM_RANGE(0xf88000, 0xf8ffff) AM_WRITE(atarigen_eeprom_enable_w)
+	AM_RANGE(0xf90000, 0xf90001) AM_WRITE(atarigen_sound_upper_w)
+	AM_RANGE(0xf98000, 0xf98001) AM_WRITE(atarigen_sound_reset_w)
+	AM_RANGE(0xfa0000, 0xfa0001) AM_WRITE(mo_control_w)
+	AM_RANGE(0xfb0000, 0xfb0001) AM_WRITE(atarigen_video_int_ack_w)
+	AM_RANGE(0xfc0000, 0xfc0001) AM_READ(special_port0_r)
+	AM_RANGE(0xfc8000, 0xfc8001) AM_READWRITE(a2d_data_r, a2d_select_w)
+	AM_RANGE(0xfd0000, 0xfd0001) AM_READ(atarigen_sound_upper_r)
+	AM_RANGE(0xfd8000, 0xfdffff) AM_READWRITE(atarigen_eeprom_r, atarigen_eeprom_w) AM_BASE(&atarigen_eeprom) AM_SIZE(&atarigen_eeprom_size)
+/*	AM_RANGE(0xfe0000, 0xfe7fff) AM_READ(from_r)*/
+	AM_RANGE(0xfe8000, 0xfe89ff) AM_WRITE(atarigen_666_paletteram_w) AM_BASE(&paletteram16)
+	AM_RANGE(0xff0000, 0xff0fff) AM_WRITE(atarirle_0_spriteram_w) AM_BASE(&atarirle_0_spriteram)
+	AM_RANGE(0xff2000, 0xff2001) AM_WRITE(mo_command_w) AM_BASE(&mo_command)
+	AM_RANGE(0xff4000, 0xff5fff) AM_WRITE(atarigen_playfield_w) AM_BASE(&atarigen_playfield)
+	AM_RANGE(0xff6000, 0xff6fff) AM_WRITE(atarigen_alpha_w) AM_BASE(&atarigen_alpha)
+	AM_RANGE(0xff0000, 0xffffff) AM_RAM
+ADDRESS_MAP_END
 
 
 
@@ -415,7 +414,7 @@ static MACHINE_DRIVER_START( atarig1 )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000, ATARI_CLOCK_14MHz)
-	MDRV_CPU_MEMORY(main_readmem,main_writemem)
+	MDRV_CPU_PROGRAM_MAP(main_map,0)
 	MDRV_CPU_VBLANK_INT(atarigen_video_int_gen,1)
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -569,17 +568,17 @@ ROM_END
 
 ROM_START( hydrap2 )
 	ROM_REGION( 0x80000, REGION_CPU1, 0 )	/* 8*64k for 68000 code */
-	ROM_LOAD16_BYTE( "05c", 0x00001, 0x10000, CRC(531ebb3b) )
-	ROM_LOAD16_BYTE( "05e", 0x00000, 0x10000, CRC(6d77b124) )
-	ROM_LOAD16_BYTE( "15c", 0x20001, 0x10000, CRC(2f823b49) )
-	ROM_LOAD16_BYTE( "15e", 0x20000, 0x10000, CRC(cfda9f58) )
-	ROM_LOAD16_BYTE( "20c", 0x40001, 0x10000, CRC(a501e37b) )
-	ROM_LOAD16_BYTE( "20e", 0x40000, 0x10000, CRC(f75541ca) )
-	ROM_LOAD16_BYTE( "30c", 0x60001, 0x10000, CRC(89604306) )
-	ROM_LOAD16_BYTE( "30e", 0x60000, 0x10000, CRC(25221b17) )
+	ROM_LOAD16_BYTE( "05c", 0x00001, 0x10000, CRC(531ebb3b) SHA1(866de3e2c747bd272c5235f9717ebeaeca90735b) )
+	ROM_LOAD16_BYTE( "05e", 0x00000, 0x10000, CRC(6d77b124) SHA1(a485a783211a052ca01aa400b3c5e59a2dba6faa) )
+	ROM_LOAD16_BYTE( "15c", 0x20001, 0x10000, CRC(2f823b49) SHA1(db457b43e528a6d447802259707a00f02bf92f2e) )
+	ROM_LOAD16_BYTE( "15e", 0x20000, 0x10000, CRC(cfda9f58) SHA1(7b2727751978f35b57f8a56d8db7d1cd9378f6af) )
+	ROM_LOAD16_BYTE( "20c", 0x40001, 0x10000, CRC(a501e37b) SHA1(7cf9dbe19d305304543793045cf2da934ff34d1e) )
+	ROM_LOAD16_BYTE( "20e", 0x40000, 0x10000, CRC(f75541ca) SHA1(c3f8756b25b0d9f4d2d0e51a2fcc23f5a158ff87) )
+	ROM_LOAD16_BYTE( "30c", 0x60001, 0x10000, CRC(89604306) SHA1(ccac6eabb174903f4ee144fce53a169daa734e07) )
+	ROM_LOAD16_BYTE( "30e", 0x60000, 0x10000, CRC(25221b17) SHA1(bb14117f256c3db6881bb91cace297d4c636e684) )
 
 	ROM_REGION( 0x14000, REGION_CPU2, 0 )	/* 64k for 6502 code */
-	ROM_LOAD( "aud.1b",      0x10000, 0x4000, CRC(e1b5188a) )
+	ROM_LOAD( "aud.1b",      0x10000, 0x4000, CRC(e1b5188a) SHA1(e9f2a78df49fa085a9363ca194e2ceb5fa5409c4) )
 	ROM_CONTINUE(            0x04000, 0xc000 )
 
 	ROM_REGION( 0x0a0000, REGION_GFX1, ROMREGION_DISPOSE )
@@ -598,27 +597,27 @@ ROM_START( hydrap2 )
 	ROM_LOAD( "hydr1027.bin",  0x000000, 0x20000, CRC(f9135b9b) SHA1(48c0ad0d3e592d191d1385e30530bdb69a095452) ) /* alphanumerics */
 
 	ROM_REGION16_BE( 0x100000, REGION_GFX3, 0 )
-	ROM_LOAD16_BYTE( "hydr1001.bin", 0x00001, 0x10000, CRC(3f757a53) SHA1(be2b7f8b907ef9ea24b24b7210ead70cdbad3506) )
-	ROM_LOAD16_BYTE( "hydr1002.bin", 0x00000, 0x10000, CRC(a1169469) SHA1(b5ab65ca9d98ef1e79518eaa519fba0cee92c86e) )
-	ROM_LOAD16_BYTE( "hydr1003.bin", 0x20001, 0x10000, CRC(aa21ec33) SHA1(dec65b670c64b3630f6ccbbcc3212f6771908de9) )
-	ROM_LOAD16_BYTE( "hydr1004.bin", 0x20000, 0x10000, CRC(c0a2be66) SHA1(b1e454d8b8c80a3f3d087a6eccd555c1ee1e5be6) )
-	ROM_LOAD16_BYTE( "hydr1005.bin", 0x40001, 0x10000, CRC(80c285b3) SHA1(bfcb342d2ea5d91562bfca7fac27744682c1d9af) )
-	ROM_LOAD16_BYTE( "hydr1006.bin", 0x40000, 0x10000, CRC(ad831c59) SHA1(bd6b52fe4ecfacb5a8c7edb9a67f7d2ed51122e2) )
-	ROM_LOAD16_BYTE( "hydr1007.bin", 0x60001, 0x10000, CRC(e0688cc0) SHA1(984266a4f0a4b38be06a20f346851c4d8643512c) )
-	ROM_LOAD16_BYTE( "hydr1008.bin", 0x60000, 0x10000, CRC(e6827f6b) SHA1(fd8ca175a065e199a383597f12fbf241f101b608) )
-	ROM_LOAD16_BYTE( "hydr1009.bin", 0x80001, 0x10000, CRC(33624d07) SHA1(7847c51c75ad2f0432ebeb7a224ae833a03b5d87) )
-	ROM_LOAD16_BYTE( "hydr1010.bin", 0x80000, 0x10000, CRC(9de4c689) SHA1(2ceb3db68ab368105c324a7763ff90448ecd3c49) )
-	ROM_LOAD16_BYTE( "hydr1011.bin", 0xa0001, 0x10000, CRC(d55c6e49) SHA1(dd49b4082d645770a3e5bf7f4b043f2ecc84bf89) )
-	ROM_LOAD16_BYTE( "hydr1012.bin", 0xa0000, 0x10000, CRC(43af45d0) SHA1(8fc14d534a2f0b3e6df0090c3dd5284b0028aa04) )
-	ROM_LOAD16_BYTE( "hydr1013.bin", 0xc0001, 0x10000, CRC(2647a82b) SHA1(b261919842a8277bff15bf6e0f16ca046b580f77) )
-	ROM_LOAD16_BYTE( "hydr1014.bin", 0xc0000, 0x10000, CRC(8897d5e9) SHA1(3a5cdc7bf633118453f0028b16f5c22b78cd5904) )
-	ROM_LOAD16_BYTE( "hydr1015.bin", 0xe0001, 0x10000, CRC(cf7f69fd) SHA1(93866f66ae7f4071abc66bd310bd15847e2a950a) )
-	ROM_LOAD16_BYTE( "hydr1016.bin", 0xe0000, 0x10000, CRC(61aaf14f) SHA1(946caff64902ebdda991372b54c29bd0a0fa13c3) )
+	ROM_LOAD16_BYTE( "hydr1001.bin", 0x00001, 0x10000, NO_DUMP CRC(3f757a53) SHA1(be2b7f8b907ef9ea24b24b7210ead70cdbad3506) )
+	ROM_LOAD16_BYTE( "hydr1002.bin", 0x00000, 0x10000, NO_DUMP CRC(a1169469) SHA1(b5ab65ca9d98ef1e79518eaa519fba0cee92c86e) )
+	ROM_LOAD16_BYTE( "hydr1003.bin", 0x20001, 0x10000, NO_DUMP CRC(aa21ec33) SHA1(dec65b670c64b3630f6ccbbcc3212f6771908de9) )
+	ROM_LOAD16_BYTE( "hydr1004.bin", 0x20000, 0x10000, NO_DUMP CRC(c0a2be66) SHA1(b1e454d8b8c80a3f3d087a6eccd555c1ee1e5be6) )
+	ROM_LOAD16_BYTE( "hydr1005.bin", 0x40001, 0x10000, NO_DUMP CRC(80c285b3) SHA1(bfcb342d2ea5d91562bfca7fac27744682c1d9af) )
+	ROM_LOAD16_BYTE( "hydr1006.bin", 0x40000, 0x10000, NO_DUMP CRC(ad831c59) SHA1(bd6b52fe4ecfacb5a8c7edb9a67f7d2ed51122e2) )
+	ROM_LOAD16_BYTE( "hydr1007.bin", 0x60001, 0x10000, NO_DUMP CRC(e0688cc0) SHA1(984266a4f0a4b38be06a20f346851c4d8643512c) )
+	ROM_LOAD16_BYTE( "hydr1008.bin", 0x60000, 0x10000, NO_DUMP CRC(e6827f6b) SHA1(fd8ca175a065e199a383597f12fbf241f101b608) )
+	ROM_LOAD16_BYTE( "hydr1009.bin", 0x80001, 0x10000, NO_DUMP CRC(33624d07) SHA1(7847c51c75ad2f0432ebeb7a224ae833a03b5d87) )
+	ROM_LOAD16_BYTE( "hydr1010.bin", 0x80000, 0x10000, NO_DUMP CRC(9de4c689) SHA1(2ceb3db68ab368105c324a7763ff90448ecd3c49) )
+	ROM_LOAD16_BYTE( "hydr1011.bin", 0xa0001, 0x10000, NO_DUMP CRC(d55c6e49) SHA1(dd49b4082d645770a3e5bf7f4b043f2ecc84bf89) )
+	ROM_LOAD16_BYTE( "hydr1012.bin", 0xa0000, 0x10000, NO_DUMP CRC(43af45d0) SHA1(8fc14d534a2f0b3e6df0090c3dd5284b0028aa04) )
+	ROM_LOAD16_BYTE( "hydr1013.bin", 0xc0001, 0x10000, NO_DUMP CRC(2647a82b) SHA1(b261919842a8277bff15bf6e0f16ca046b580f77) )
+	ROM_LOAD16_BYTE( "hydr1014.bin", 0xc0000, 0x10000, NO_DUMP CRC(8897d5e9) SHA1(3a5cdc7bf633118453f0028b16f5c22b78cd5904) )
+	ROM_LOAD16_BYTE( "hydr1015.bin", 0xe0001, 0x10000, NO_DUMP CRC(cf7f69fd) SHA1(93866f66ae7f4071abc66bd310bd15847e2a950a) )
+	ROM_LOAD16_BYTE( "hydr1016.bin", 0xe0000, 0x10000, NO_DUMP CRC(61aaf14f) SHA1(946caff64902ebdda991372b54c29bd0a0fa13c3) )
 
 	ROM_REGION( 0x30000, REGION_SOUND1, 0 )	/* 192k for ADPCM samples */
-	ROM_LOAD( "hydr1037.bin",  0x00000, 0x10000, BAD_DUMP CRC(b974d3d0) SHA1(67ecb17386f4be00c03661de14deff77b8ca85d0)  )
-	ROM_LOAD( "hydr1038.bin",  0x10000, 0x10000, BAD_DUMP CRC(a2eda15b) SHA1(358888ffdeb3d0e98f59e239de6d7e1f7e15aca2)  )
-	ROM_LOAD( "hydr1039.bin",  0x20000, 0x10000, BAD_DUMP CRC(eb9eaeb7) SHA1(cd8e076b07588879f1a0e6c0fb9de9889480bebb)  )
+	ROM_LOAD( "hydr1037.bin",  0x00000, 0x10000, NO_DUMP CRC(b974d3d0) SHA1(67ecb17386f4be00c03661de14deff77b8ca85d0)  )
+	ROM_LOAD( "hydr1038.bin",  0x10000, 0x10000, NO_DUMP CRC(a2eda15b) SHA1(358888ffdeb3d0e98f59e239de6d7e1f7e15aca2)  )
+	ROM_LOAD( "hydr1039.bin",  0x20000, 0x10000, NO_DUMP CRC(eb9eaeb7) SHA1(cd8e076b07588879f1a0e6c0fb9de9889480bebb)  )
 
 	ROM_REGION( 0x0600, REGION_PROMS, ROMREGION_DISPOSE )	/* microcode for growth renderer */
 	ROM_LOAD( "079-1040.bin",  0x0000, 0x0200, CRC(43d6f3d4) SHA1(a072099df1db8db3589130c67a86a362e03d70ff) )
@@ -842,58 +841,24 @@ ROM_END
  *
  *************************************/
 
-static DRIVER_INIT( hydra )
+static void init_g1_common(offs_t slapstic_base, int slapstic, int is_pitfight)
 {
 	atarigen_eeprom_default = NULL;
-	atarigen_slapstic_init(0, 0x078000, 116);
+	if (slapstic == -1)
+		pitfighb_cheap_slapstic_init();
+	else if (slapstic != 0)
+		atarigen_slapstic_init(0, slapstic_base, slapstic);
 	atarijsa_init(1, 4, 0, 0x8000);
-	atarigen_init_6502_speedup(1, 0x4159, 0x4171);
 
-	atarig1_pitfight = 0;
+	atarig1_pitfight = is_pitfight;
 }
 
+static DRIVER_INIT( hydra )    { init_g1_common(0x078000, 116, 0); }
+static DRIVER_INIT( hydrap )   { init_g1_common(0x000000,   0, 0); }
 
-static DRIVER_INIT( hydrap )
-{
-	atarigen_eeprom_default = NULL;
-	atarijsa_init(1, 4, 0, 0x8000);
-	atarigen_init_6502_speedup(1, 0x4159, 0x4171);
-
-	atarig1_pitfight = 0;
-}
-
-
-static DRIVER_INIT( pitfight )
-{
-	atarigen_eeprom_default = NULL;
-	atarigen_slapstic_init(0, 0x038000, 111);
-	atarijsa_init(1, 4, 0, 0x8000);
-	atarigen_init_6502_speedup(1, 0x4159, 0x4171);
-
-	atarig1_pitfight = 1;
-}
-
-
-static DRIVER_INIT( pitfighj )
-{
-	atarigen_eeprom_default = NULL;
-	atarigen_slapstic_init(0, 0x038000, 113);
-	atarijsa_init(1, 4, 0, 0x8000);
-	atarigen_init_6502_speedup(1, 0x4159, 0x4171);
-
-	atarig1_pitfight = 1;
-}
-
-
-static DRIVER_INIT( pitfighb )
-{
-	atarigen_eeprom_default = NULL;
-	pitfighb_cheap_slapstic_init();
-	atarijsa_init(1, 4, 0, 0x8000);
-	atarigen_init_6502_speedup(1, 0x4159, 0x4171);
-
-	atarig1_pitfight = 1;
-}
+static DRIVER_INIT( pitfight ) { init_g1_common(0x038000, 111, 1); }
+static DRIVER_INIT( pitfighj ) { init_g1_common(0x038000, 113, 1); }
+static DRIVER_INIT( pitfighb ) { init_g1_common(0x038000,  -1, 1); }
 
 
 
@@ -906,8 +871,9 @@ static DRIVER_INIT( pitfighb )
 GAME( 1990, hydra,    0,        atarig1, hydra,    hydra,    ROT0, "Atari Games", "Hydra" )
 GAME( 1990, hydrap,   hydra,    atarig1, hydra,    hydrap,   ROT0, "Atari Games", "Hydra (prototype 5/14/90)" )
 GAME( 1990, hydrap2,  hydra,    atarig1, hydra,    hydrap,   ROT0, "Atari Games", "Hydra (prototype 5/25/90)" )
-GAME( 1990, pitfight, 0,        atarig1, pitfight, pitfight, ROT0, "Atari Games", "Pit Fighter (version 4)" )
-GAME( 1990, pitfigh3, pitfight, atarig1, pitfight, pitfight, ROT0, "Atari Games", "Pit Fighter (version 3)" )
+
+GAME( 1990, pitfight, 0,        atarig1, pitfight, pitfight, ROT0, "Atari Games", "Pit Fighter (rev 4)" )
+GAME( 1990, pitfigh3, pitfight, atarig1, pitfight, pitfight, ROT0, "Atari Games", "Pit Fighter (rev 3)" )
 GAME( 1990, pitfighj, pitfight, atarig1, pitfighj, pitfighj, ROT0, "Atari Games", "Pit Fighter (Japan, 2 players)" )
 GAME( 1990, pitfighb, pitfight, atarig1, pitfight, pitfighb, ROT0, "Atari Games", "Pit Fighter (bootleg)" )
 #pragma code_seg()

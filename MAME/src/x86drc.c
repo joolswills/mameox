@@ -59,7 +59,8 @@ struct drccore *drc_init(UINT8 cpunum, struct drcconfig *config)
 	drc->cb_entrygen  = config->cb_entrygen;
 	drc->uses_fp      = config->uses_fp;
 	drc->uses_sse     = config->uses_sse;
-	
+	drc->fpcw_curr    = fp_control[0];
+
 	/* allocate cache */
 	drc->cache_base = osd_malloc(config->cache_size);
 	if (!drc->cache_base)
@@ -81,7 +82,7 @@ struct drccore *drc_init(UINT8 cpunum, struct drcconfig *config)
 		return NULL;
 	memset(drc->lookup_l1, 0, sizeof(*drc->lookup_l1) * (1 << drc->l1bits));
 	memset(drc->lookup_l2_recompile, 0, sizeof(*drc->lookup_l2_recompile) * (1 << drc->l2bits));
-	
+
 	/* allocate the sequence and tentative lists */
 	drc->sequence_count_max = config->max_instructions;
 	drc->sequence_list = osd_malloc(drc->sequence_count_max * sizeof(*drc->sequence_list));
@@ -89,7 +90,7 @@ struct drccore *drc_init(UINT8 cpunum, struct drcconfig *config)
 	drc->tentative_list = osd_malloc(drc->tentative_count_max * sizeof(*drc->tentative_list));
 	if (!drc->sequence_list || !drc->tentative_list)
 		return NULL;
-	
+
 	/* seed the cache */
 	drc_cache_reset(drc);
 	return drc;
@@ -173,13 +174,13 @@ void drc_exit(struct drccore *drc)
 	/* free the default l2 table */
 	if (drc->lookup_l2_recompile)
 		free(drc->lookup_l2_recompile);
-	
+
 	/* free the lists */
 	if (drc->sequence_list)
 		free(drc->sequence_list);
 	if (drc->tentative_list)
 		free(drc->tentative_list);
-	
+
 	/* and the drc itself */
 	free(drc);
 }
@@ -217,7 +218,7 @@ void drc_begin_sequence(struct drccore *drc, UINT32 pc)
 		drc->cache_top = cache_save;
 	}
 
-	/* note the current location for this instruction */		
+	/* note the current location for this instruction */
 	drc->lookup_l1[l1index][l2index] = drc->cache_top;
 }
 
@@ -229,7 +230,7 @@ void drc_begin_sequence(struct drccore *drc, UINT32 pc)
 void drc_end_sequence(struct drccore *drc)
 {
 	int i, j;
-	
+
 	/* fix up any internal links */
 	for (i = 0; i < drc->tentative_count; i++)
 		for (j = 0; j < drc->sequence_count; j++)
@@ -430,9 +431,91 @@ void drc_append_tentative_fixed_dispatcher(struct drccore *drc, UINT32 newpc)
 	drc_append_set_fp_rounding
 ------------------------------------------------------------------*/
 
-void drc_append_set_fp_rounding(struct drccore *drc, UINT8 rounding)
+void drc_append_set_fp_rounding(struct drccore *drc, UINT8 regindex)
+{
+	_fldcw_m16isd(regindex, 2, &fp_control[0]);						// fldcw [fp_control + reg*2]
+	_fnstcw_m16abs(&drc->fpcw_curr);								// fnstcw [fpcw_curr]
+}
+
+
+
+/*------------------------------------------------------------------
+	drc_append_set_temp_fp_rounding
+------------------------------------------------------------------*/
+
+void drc_append_set_temp_fp_rounding(struct drccore *drc, UINT8 rounding)
 {
 	_fldcw_m16abs(&fp_control[rounding]);							// fldcw [fp_control]
+}
+
+
+
+/*------------------------------------------------------------------
+	drc_append_restore_fp_rounding
+------------------------------------------------------------------*/
+
+void drc_append_restore_fp_rounding(struct drccore *drc)
+{
+	_fldcw_m16abs(&drc->fpcw_curr);									// fldcw [fpcw_curr]
+}
+
+
+
+/*------------------------------------------------------------------
+	drc_dasm
+
+	An attempt to make a disassembler for DRC code; currently limited
+	by the functionality of DasmI386
+------------------------------------------------------------------*/
+
+void drc_dasm(FILE *f, unsigned pc, void *begin, void *end)
+{
+#if 0
+	unsigned DasmI386(char* buffer, unsigned _pc);
+
+	char buffer[256];
+	char buffer2[256];
+	unsigned addr = (unsigned) begin;
+	unsigned addr_end = (unsigned) end;
+	unsigned offset;
+	UINT8 *saved_op_rom;
+	UINT8 *saved_op_ram;
+	size_t saved_op_mem_min;
+	size_t saved_op_mem_max;
+
+	activecpu_dasm(buffer, pc);
+	if (addr == addr_end)
+	{
+		logerror("%08x: %s\t(NOP)\n", pc, buffer);
+	}
+	else
+	{
+		logerror("%08x: %s\t(%08x-%08x)\n", pc, buffer, addr, addr_end - 1);
+
+		saved_op_rom		= opcode_base;
+		saved_op_ram		= opcode_arg_base;
+		saved_op_mem_min	= opcode_memory_min;
+		saved_op_mem_max	= opcode_memory_max;
+		opcode_base = opcode_arg_base = (UINT8 *) 0;
+		opcode_memory_min = (size_t) 0;
+		opcode_memory_max = (size_t) -1;
+
+		while(addr < addr_end)
+		{
+			offset = DasmI386(buffer, addr);
+			sprintf(buffer2, "\t%08x: %s\n", addr, buffer);
+			logerror("%s", buffer2);
+			if (f)
+				fputs(buffer2, f);
+			addr += offset;
+		}
+
+		opcode_base = saved_op_rom;
+		opcode_arg_base = saved_op_ram;
+		opcode_memory_min = saved_op_mem_min;
+		opcode_memory_max = saved_op_mem_max;
+	}
+#endif
 }
 
 
@@ -452,7 +535,7 @@ static void append_entry_point(struct drccore *drc)
 	if (drc->uses_fp)
 	{
 		_fnstcw_m16abs(&drc->fpcw_save);							// fstcw [fpcw_save]
-		_fldcw_m16abs(&fp_control[0]);								// fldcw [fp_control]
+		_fldcw_m16abs(&drc->fpcw_curr);								// fldcw [fpcw_curr]
 	}
 	drc_append_restore_volatiles(drc);								// load volatiles
 	if (drc->cb_entrygen)
@@ -500,6 +583,42 @@ static void append_out_of_cycles(struct drccore *drc)
 	_popad();														// popad
 	_ret();															// ret
 }
+
+
+
+/*------------------------------------------------------------------
+	drc_x86_get_features()
+------------------------------------------------------------------*/
+UINT32 drc_x86_get_features(void)
+{
+	UINT32 features = 0;
+#ifdef _MSC_VER
+	__asm 
+	{
+		mov eax, 1
+		xor ebx, ebx
+		xor ecx, ecx
+		xor edx, edx
+		cpuid
+		mov features, edx
+	}
+#else /* !_MSC_VER */
+	__asm__
+	(
+		"movl $1,%%eax       ; "
+		"xorl %%ebx,%%ebx    ; "
+		"xorl %%ecx,%%ecx    ; "
+		"xorl %%edx,%%edx    ; "
+		"cpuid               ; "
+		"movl %%edx,%0       ; "
+	: "=&a" (features)		/* result has to go in eax */
+	: 				/* no inputs */
+	: "%ebx", "%ecx", "%edx"	/* clobbers ebx, ecx and edx */
+	);
+#endif /* MSC_VER */
+	return features;
+}
+
 
 
 /*------------------------------------------------------------------

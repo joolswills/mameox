@@ -21,17 +21,17 @@ VIDEO_UPDATE(grtwall)
 {
 
 }
-static MEMORY_READ16_START( grtwall_readmem )
-	{ 0x000000, 0x07ffff, MRA16_ROM },
-	{ 0x100000, 0x103fff, MRA16_RAM },
+static ADDRESS_MAP_START( grtwall_readmem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x07ffff) AM_READ(MRA16_ROM)
+	AM_RANGE(0x100000, 0x103fff) AM_READ(MRA16_RAM)
 
-MEMORY_END
+ADDRESS_MAP_END
 
-static MEMORY_WRITE16_START( grtwall_writemem )
-	{ 0x000000, 0x07ffff, MWA16_ROM },
-	{ 0x100000, 0x103fff, MWA16_RAM },
+static ADDRESS_MAP_START( grtwall_writemem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x07ffff) AM_WRITE(MWA16_ROM)
+	AM_RANGE(0x100000, 0x103fff) AM_WRITE(MWA16_RAM)
 
-MEMORY_END
+ADDRESS_MAP_END
 
 
 static struct GfxLayout grtwall_charlayout =
@@ -77,7 +77,7 @@ INPUT_PORTS_END
 
 static MACHINE_DRIVER_START( grtwall )
 	MDRV_CPU_ADD(M68000, 12000000)
-	MDRV_CPU_MEMORY(grtwall_readmem,grtwall_writemem)
+	MDRV_CPU_PROGRAM_MAP(grtwall_readmem,grtwall_writemem)
 //	MDRV_CPU_VBLANK_INT(irq6_line_hold,1)
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -128,13 +128,13 @@ static DRIVER_INIT( grtwall )
 
 ROM_START( grtwall )
 	ROM_REGION( 0x100000, REGION_CPU1, 0 ) /* 68000 Code */
-	ROM_LOAD16_WORD_SWAP( "wlcc4096.rom",         0x00000, 0x100000, CRC(3b16729f) ) // 1ST+2ND IDENTICAL
+	ROM_LOAD16_WORD_SWAP( "wlcc4096.rom",         0x00000, 0x100000, CRC(3b16729f) SHA1(4ef4e5cbd6ccc65775e36c2c8b459bc1767d6574) ) // 1ST+2ND IDENTICAL
 
 	ROM_REGION( 0x200000, REGION_GFX1, 0 ) /* GFX? */
-	ROM_LOAD( "m0201-ig.rom",         0x00000, 0x200000, CRC(ec54452c) )
+	ROM_LOAD( "m0201-ig.rom",         0x00000, 0x200000, CRC(ec54452c) SHA1(0ee7ffa3d4845af083944e64faf5a1c78247aaa2) )
 
 	ROM_REGION( 0x100000, REGION_SOUND1, 0 ) /* Samples? */
-	ROM_LOAD( "040-c3c2.snd",         0x00000, 0x100000, CRC(220949aa) )  // 1ST+2ND IDENTICAL
+	ROM_LOAD( "040-c3c2.snd",         0x00000, 0x100000, CRC(220949aa) SHA1(1e0dba168a0687d32aaaed42714ae24358f4a3e7) )  // 1ST+2ND IDENTICAL
 ROM_END
 
 GAMEX( 1994, grtwall, 0, grtwall, grtwall, grtwall, ROT0, "IGS", "The Great Wall", GAME_NO_SOUND | GAME_NOT_WORKING )

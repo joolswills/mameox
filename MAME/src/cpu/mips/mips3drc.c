@@ -194,7 +194,7 @@ typedef struct
 	/* COP registers */
 	UINT64		cpr[4][32];
 	UINT64		ccr[4][32];
-	UINT32		cf[4][8];
+	UINT8		cf[4][8];
 
 	/* internal stuff */
 	struct drccore *drc;
@@ -249,13 +249,17 @@ static UINT32 recompile_cop0(struct drccore *drc, UINT32 pc, UINT32 op);
 static UINT32 recompile_cop1(struct drccore *drc, UINT32 pc, UINT32 op);
 static UINT32 recompile_cop1x(struct drccore *drc, UINT32 pc, UINT32 op);
 
+static void update_cycle_counting(void);
+
+static offs_t mips3_dasm(char *buffer, offs_t pc);
+
 
 
 /*###################################################################################################
 **	PUBLIC GLOBAL VARIABLES
 **#################################################################################################*/
 
-int	mips3_icount=50000;
+static int	mips3_icount;
 
 
 
@@ -273,7 +277,6 @@ static FILE *symfile;
 #endif
 
 static UINT8 in_delay_slot = 0;
-static UINT32 drcoptions[MAX_CPU];
 
 static UINT32 scratchspace[10];
 
@@ -284,14 +287,14 @@ static void **ram_write_table;
 
 static const memory_handlers be_memory =
 {
-	cpu_readmem32bedw,  cpu_readmem32bedw_word,  cpu_readmem32bedw_dword,
-	cpu_writemem32bedw, cpu_writemem32bedw_word, cpu_writemem32bedw_dword
+	program_read_byte_32be,  program_read_word_32be,  program_read_dword_32be,
+	program_write_byte_32be, program_write_word_32be, program_write_dword_32be
 };
 
 static const memory_handlers le_memory =
 {
-	cpu_readmem32ledw,  cpu_readmem32ledw_word,  cpu_readmem32ledw_dword,
-	cpu_writemem32ledw, cpu_writemem32ledw_word, cpu_writemem32ledw_dword
+	program_read_byte_32le,  program_read_word_32le,  program_read_dword_32le,
+	program_write_byte_32le, program_write_word_32le, program_write_dword_32le
 };
 
 
@@ -300,7 +303,7 @@ static const memory_handlers le_memory =
 **	IRQ HANDLING
 **#################################################################################################*/
 
-void mips3_set_irq_line(int irqline, int state)
+static void set_irq_line(int irqline, int state)
 {
 	if (state != CLEAR_LINE)
 		mips3.cpr[0][COP0_Cause] |= 0x400 << irqline;
@@ -309,29 +312,20 @@ void mips3_set_irq_line(int irqline, int state)
 }
 
 
-void mips3_set_irq_callback(int (*callback)(int irqline))
-{
-	mips3.irq_callback = callback;
-}
-
-
 
 /*###################################################################################################
 **	CONTEXT SWITCHING
 **#################################################################################################*/
 
-unsigned mips3_get_context(void *dst)
+static void mips3_get_context(void *dst)
 {
 	/* copy the context */
 	if (dst)
 		*(mips3_regs *)dst = mips3;
-
-	/* return the context size */
-	return sizeof(mips3_regs);
 }
 
 
-void mips3_set_context(void *src)
+static void mips3_set_context(void *src)
 {
 	/* copy the context */
 	if (src)
@@ -350,7 +344,7 @@ static void compare_int_callback(int cpu)
 }
 
 
-void mips3_init(void)
+static void mips3_init(void)
 {
 	struct drcconfig drconfig;
 	
@@ -411,20 +405,19 @@ static void mips3_reset(void *param, int bigendian)
 	mips3.count_zero_time = activecpu_gettotalcycles64();
 	
 	/* reset the DRC */
-	mips3.drcoptions = drcoptions[cpu_getactivecpu()];
 	drc_cache_reset(mips3.drc);
 }
 
 
-#if HAS_R4600
-void r4600be_reset(void *param)
+#if (HAS_R4600)
+static void r4600be_reset(void *param)
 {
 	mips3_reset(param, 1);
 	mips3.cpr[0][COP0_PRId] = 0x2000;
 	mips3.is_mips4 = 0;
 }
 
-void r4600le_reset(void *param)
+static void r4600le_reset(void *param)
 {
 	mips3_reset(param, 0);
 	mips3.cpr[0][COP0_PRId] = 0x2000;
@@ -433,15 +426,15 @@ void r4600le_reset(void *param)
 #endif
 
 
-#if HAS_R5000
-void r5000be_reset(void *param)
+#if (HAS_R5000)
+static void r5000be_reset(void *param)
 {
 	mips3_reset(param, 1);
 	mips3.cpr[0][COP0_PRId] = 0x2300;
 	mips3.is_mips4 = 1;
 }
 
-void r5000le_reset(void *param)
+static void r5000le_reset(void *param)
 {
 	mips3_reset(param, 0);
 	mips3.cpr[0][COP0_PRId] = 0x2300;
@@ -450,16 +443,10 @@ void r5000le_reset(void *param)
 #endif
 
 
-void mips3drc_set_options(UINT8 cpunum, UINT32 opts)
+static int mips3_execute(int cycles)
 {
-	drcoptions[cpunum] = opts;
-}
-
-
-
-int mips3_execute(int cycles)
-{
-//printf("mips3_execute (PC=%08X)\n", mips3.pc);
+	/* update the cycle timing */
+	update_cycle_counting();
 
 	/* count cycles and interrupt cycles */
 	mips3_icount = cycles;
@@ -468,7 +455,7 @@ int mips3_execute(int cycles)
 }
 
 
-void mips3_exit(void)
+static void mips3_exit(void)
 {
 	/* free cache memory */
 	if (mips3.icache)
@@ -525,22 +512,22 @@ static void mips3drc_reset(struct drccore *drc)
 	update_cycle_counting
 ------------------------------------------------------------------*/
 
-static UINT32 update_cycle_counting(void)
+static void update_cycle_counting(void)
 {
-	UINT32 count = (activecpu_gettotalcycles64() - mips3.count_zero_time) / 2;
-	UINT32 compare = mips3.cpr[0][COP0_Compare];
-	UINT32 cyclesleft = compare - count;
-	double newtime;
-
-//printf("Update: count=%08X  compare=%08X  delta=%08X  SR=%08X  time=%f\n", count, compare, cyclesleft, (UINT32)SR, TIME_IN_CYCLES(((UINT64)cyclesleft * 2), cpu_getactivecpu()));
-
 	/* modify the timer to go off */
-	newtime = TIME_IN_CYCLES(((UINT64)cyclesleft * 2), cpu_getactivecpu());
-	if (mips3.cpr[0][COP0_Status] & 0x8000)
-		timer_adjust(mips3.compare_int_timer, newtime, cpu_getactivecpu(), 0);
+	if ((mips3.cpr[0][COP0_Status] & 0x8000) && mips3.cpr[0][COP0_Compare] != 0xffffffff)
+	{
+		UINT32 count = (activecpu_gettotalcycles64() - mips3.count_zero_time) / 2;
+		UINT32 compare = mips3.cpr[0][COP0_Compare];
+		UINT32 cyclesleft = compare - count;
+		double newtime = TIME_IN_CYCLES(((UINT64)cyclesleft * 2), cpu_getactivecpu());
+		
+		/* due to accuracy issues, don't bother setting timers unless they're for less than 100msec */
+		if (newtime < TIME_IN_MSEC(100))
+			timer_adjust(mips3.compare_int_timer, newtime, cpu_getactivecpu(), 0);
+	}
 	else
 		timer_adjust(mips3.compare_int_timer, TIME_NEVER, cpu_getactivecpu(), 0);
-	return count;
 }
 
 
@@ -593,9 +580,9 @@ static void mips3drc_recompile(struct drccore *drc)
 		if (ram_read_table && ram_write_table)
 			for (i = 0; i < 65536; i++)
 			{
-				ram_read_table[i] = memory_get_read_ptr(cpu_getactivecpu(), i << 16);
+				ram_read_table[i] = memory_get_read_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, i << 16);
 				if (ram_read_table[i]) ram_read_table[i] = (UINT8 *)ram_read_table[i] - (i << 16);
-				ram_write_table[i] = memory_get_write_ptr(cpu_getactivecpu(), i << 16);
+				ram_write_table[i] = memory_get_write_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, i << 16);
 				if (ram_write_table[i]) ram_write_table[i] = (UINT8 *)ram_write_table[i] - (i << 16);
 			}
 	}
@@ -606,11 +593,8 @@ static void mips3drc_recompile(struct drccore *drc)
 	/* loose verification case: one verification here only */
 	if (!(mips3.drcoptions & MIPS3DRC_STRICT_VERIFY))
 	{
-		if (mips3.bigendian)
-			change_pc32bedw(pc);
-		else
-			change_pc32ledw(pc);
-		drc_append_verify_code(drc, (UINT32 *)&OP_ROM[pc], 4);
+		change_pc(pc);
+		drc_append_verify_code(drc, cpu_opptr(pc), 4);
 	}
 
 	/* loop until we hit an unconditional branch */
@@ -672,11 +656,8 @@ static UINT32 compile_one(struct drccore *drc, UINT32 pc)
 	drc_register_code_at_cache_top(drc, pc);
 
 	/* get a pointer to the current instruction */
-	if (mips3.bigendian)
-		change_pc32bedw(pc);
-	else
-		change_pc32ledw(pc);
-	opptr = (UINT32 *)&OP_ROM[pc];
+	change_pc(pc);
+	opptr = cpu_opptr(pc);
 	
 #ifdef MAME_DEBUG
 {
@@ -920,7 +901,7 @@ static UINT32 recompile_lui(struct drccore *drc, UINT32 pc, UINT32 op)
 {
 	UINT32 address = UIMMVAL << 16;
 	UINT32 targetreg = RTREG;
-	UINT32 nextop = *(UINT32 *)&OP_ROM[pc + 4];
+	UINT32 nextop = cpu_readop32(pc + 4);
 	UINT8 nextrsreg = (nextop >> 21) & 31;
 	UINT8 nextrtreg = (nextop >> 16) & 31;
 	INT32 nextsimm = (INT16)nextop;
@@ -949,9 +930,9 @@ static UINT32 recompile_lui(struct drccore *drc, UINT32 pc, UINT32 op)
 
 				/* see if this points to a RAM-like area */
 				if (mips3.bigendian)
-					memory = memory_get_read_ptr(cpu_getactivecpu(), BYTE4_XOR_BE(address + nextsimm));
+					memory = memory_get_read_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, BYTE4_XOR_BE(address + nextsimm));
 				else
-					memory = memory_get_read_ptr(cpu_getactivecpu(), address + nextsimm);
+					memory = memory_get_read_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, address + nextsimm);
 				if (!memory)
 					break;
 				
@@ -969,9 +950,9 @@ static UINT32 recompile_lui(struct drccore *drc, UINT32 pc, UINT32 op)
 
 				/* see if this points to a RAM-like area */
 				if (mips3.bigendian)
-					memory = memory_get_read_ptr(cpu_getactivecpu(), BYTE4_XOR_BE(address + nextsimm));
+					memory = memory_get_read_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, BYTE4_XOR_BE(address + nextsimm));
 				else
-					memory = memory_get_read_ptr(cpu_getactivecpu(), address + nextsimm);
+					memory = memory_get_read_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, address + nextsimm);
 				if (!memory)
 					break;
 				
@@ -988,7 +969,7 @@ static UINT32 recompile_lui(struct drccore *drc, UINT32 pc, UINT32 op)
 					break;
 
 				/* see if this points to a RAM-like area */
-				memory = memory_get_read_ptr(cpu_getactivecpu(), address + nextsimm);
+				memory = memory_get_read_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, address + nextsimm);
 				if (!memory)
 					break;
 				
@@ -1006,9 +987,9 @@ static UINT32 recompile_lui(struct drccore *drc, UINT32 pc, UINT32 op)
 
 				/* see if this points to a RAM-like area */
 				if (mips3.bigendian)
-					memory = memory_get_read_ptr(cpu_getactivecpu(), BYTE4_XOR_BE(address + nextsimm));
+					memory = memory_get_read_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, BYTE4_XOR_BE(address + nextsimm));
 				else
-					memory = memory_get_read_ptr(cpu_getactivecpu(), address + nextsimm);
+					memory = memory_get_read_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, address + nextsimm);
 				if (!memory)
 					break;
 				
@@ -1026,9 +1007,9 @@ static UINT32 recompile_lui(struct drccore *drc, UINT32 pc, UINT32 op)
 
 				/* see if this points to a RAM-like area */
 				if (mips3.bigendian)
-					memory = memory_get_read_ptr(cpu_getactivecpu(), BYTE4_XOR_BE(address + nextsimm));
+					memory = memory_get_read_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, BYTE4_XOR_BE(address + nextsimm));
 				else
-					memory = memory_get_read_ptr(cpu_getactivecpu(), address + nextsimm);
+					memory = memory_get_read_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, address + nextsimm);
 				if (!memory)
 					break;
 				
@@ -1045,7 +1026,7 @@ static UINT32 recompile_lui(struct drccore *drc, UINT32 pc, UINT32 op)
 					break;
 
 				/* see if this points to a RAM-like area */
-				memory = memory_get_read_ptr(cpu_getactivecpu(), address + nextsimm);
+				memory = memory_get_read_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, address + nextsimm);
 				if (!memory)
 					break;
 				
@@ -1062,7 +1043,7 @@ static UINT32 recompile_lui(struct drccore *drc, UINT32 pc, UINT32 op)
 					break;
 
 				/* see if this points to a RAM-like area */
-				memory = memory_get_read_ptr(cpu_getactivecpu(), address + nextsimm);
+				memory = memory_get_read_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, address + nextsimm);
 				if (!memory)
 					break;
 				
@@ -1077,7 +1058,7 @@ static UINT32 recompile_lui(struct drccore *drc, UINT32 pc, UINT32 op)
 					break;
 
 				/* see if this points to a RAM-like area */
-				memory = memory_get_read_ptr(cpu_getactivecpu(), address + nextsimm);
+				memory = memory_get_read_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, address + nextsimm);
 				if (!memory)
 					break;
 				
@@ -1092,7 +1073,7 @@ static UINT32 recompile_lui(struct drccore *drc, UINT32 pc, UINT32 op)
 					break;
 
 				/* see if this points to a RAM-like area */
-				memory = memory_get_read_ptr(cpu_getactivecpu(), address + nextsimm);
+				memory = memory_get_read_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, address + nextsimm);
 				if (!memory)
 					break;
 				
@@ -1107,7 +1088,7 @@ static UINT32 recompile_lui(struct drccore *drc, UINT32 pc, UINT32 op)
 					break;
 
 				/* see if this points to a RAM-like area */
-				memory = memory_get_read_ptr(cpu_getactivecpu(), address + nextsimm);
+				memory = memory_get_read_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, address + nextsimm);
 				if (!memory)
 					break;
 				
@@ -1122,7 +1103,7 @@ static UINT32 recompile_lui(struct drccore *drc, UINT32 pc, UINT32 op)
 					break;
 
 				/* see if this points to a RAM-like area */
-				memory = memory_get_read_ptr(cpu_getactivecpu(), address + nextsimm);
+				memory = memory_get_read_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, address + nextsimm);
 				if (!memory)
 					break;
 				
@@ -1139,9 +1120,9 @@ static UINT32 recompile_lui(struct drccore *drc, UINT32 pc, UINT32 op)
 
 				/* see if this points to a RAM-like area */
 				if (mips3.bigendian)
-					memory = memory_get_write_ptr(cpu_getactivecpu(), BYTE4_XOR_BE(address + nextsimm));
+					memory = memory_get_write_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, BYTE4_XOR_BE(address + nextsimm));
 				else
-					memory = memory_get_write_ptr(cpu_getactivecpu(), address + nextsimm);
+					memory = memory_get_write_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, address + nextsimm);
 				if (!memory)
 					break;
 				
@@ -1162,9 +1143,9 @@ static UINT32 recompile_lui(struct drccore *drc, UINT32 pc, UINT32 op)
 
 				/* see if this points to a RAM-like area */
 				if (mips3.bigendian)
-					memory = memory_get_write_ptr(cpu_getactivecpu(), BYTE4_XOR_BE(address + nextsimm));
+					memory = memory_get_write_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, BYTE4_XOR_BE(address + nextsimm));
 				else
-					memory = memory_get_write_ptr(cpu_getactivecpu(), address + nextsimm);
+					memory = memory_get_write_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, address + nextsimm);
 				if (!memory)
 					break;
 				
@@ -1184,7 +1165,7 @@ static UINT32 recompile_lui(struct drccore *drc, UINT32 pc, UINT32 op)
 					break;
 
 				/* see if this points to a RAM-like area */
-				memory = memory_get_write_ptr(cpu_getactivecpu(), address + nextsimm);
+				memory = memory_get_write_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, address + nextsimm);
 				if (!memory)
 					break;
 				
@@ -1204,7 +1185,7 @@ static UINT32 recompile_lui(struct drccore *drc, UINT32 pc, UINT32 op)
 					break;
 
 				/* see if this points to a RAM-like area */
-				memory = memory_get_write_ptr(cpu_getactivecpu(), address + nextsimm);
+				memory = memory_get_write_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, address + nextsimm);
 				if (!memory)
 					break;
 				
@@ -1219,7 +1200,7 @@ static UINT32 recompile_lui(struct drccore *drc, UINT32 pc, UINT32 op)
 					break;
 
 				/* see if this points to a RAM-like area */
-				memory = memory_get_write_ptr(cpu_getactivecpu(), address + nextsimm);
+				memory = memory_get_write_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, address + nextsimm);
 				if (!memory)
 					break;
 				
@@ -1234,7 +1215,7 @@ static UINT32 recompile_lui(struct drccore *drc, UINT32 pc, UINT32 op)
 					break;
 
 				/* see if this points to a RAM-like area */
-				memory = memory_get_write_ptr(cpu_getactivecpu(), address + nextsimm);
+				memory = memory_get_write_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, address + nextsimm);
 				if (!memory)
 					break;
 				
@@ -1249,7 +1230,7 @@ static UINT32 recompile_lui(struct drccore *drc, UINT32 pc, UINT32 op)
 					break;
 
 				/* see if this points to a RAM-like area */
-				memory = memory_get_write_ptr(cpu_getactivecpu(), address + nextsimm);
+				memory = memory_get_write_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, address + nextsimm);
 				if (!memory)
 					break;
 				
@@ -1264,7 +1245,7 @@ static UINT32 recompile_lui(struct drccore *drc, UINT32 pc, UINT32 op)
 					break;
 
 				/* see if this points to a RAM-like area */
-				memory = memory_get_write_ptr(cpu_getactivecpu(), address + nextsimm);
+				memory = memory_get_write_ptr(cpu_getactivecpu(), ADDRESS_SPACE_PROGRAM, address + nextsimm);
 				if (!memory)
 					break;
 				
@@ -1412,7 +1393,7 @@ static UINT32 recompile_instruction(struct drccore *drc, UINT32 pc)
 		0x00ffffff,0xffffffff
 	};
 	struct linkdata link1, link2, link3;
-	UINT32 op = *(UINT32 *)&OP_ROM[pc];
+	UINT32 op = cpu_readop32(pc);
 	int cycles;
 
 	switch (op >> 26)
@@ -1832,7 +1813,7 @@ static UINT32 recompile_instruction(struct drccore *drc, UINT32 pc)
 		case 0x1a:	/* LDL */
 			if (!mips3.bigendian)
 			{
-				UINT32 nextop = *(UINT32 *)&OP_ROM[pc + 4];
+				UINT32 nextop = cpu_readop32(pc + 4);
 				if ((nextop >> 26) == 0x1b &&
 					(nextop & 0x03ff0000) == (op & 0x03ff0000) &&
 					(INT16)nextop == SIMMVAL - 7)
@@ -1889,7 +1870,7 @@ static UINT32 recompile_instruction(struct drccore *drc, UINT32 pc)
 		case 0x1b:	/* LDR */
 			if (!mips3.bigendian)
 			{
-				UINT32 nextop = *(UINT32 *)&OP_ROM[pc + 4];
+				UINT32 nextop = cpu_readop32(pc + 4);
 				if ((nextop >> 26) == 0x1a &&
 					(nextop & 0x03ff0000) == (op & 0x03ff0000) &&
 					(INT16)nextop == SIMMVAL + 7)
@@ -1992,7 +1973,7 @@ static UINT32 recompile_instruction(struct drccore *drc, UINT32 pc)
 		case 0x22:	/* LWL */
 			if (!mips3.bigendian)
 			{
-				UINT32 nextop = *(UINT32 *)&OP_ROM[pc + 4];
+				UINT32 nextop = cpu_readop32(pc + 4);
 				if ((nextop >> 26) == 0x26 &&
 					(nextop & 0x03ff0000) == (op & 0x03ff0000) &&
 					(INT16)nextop == SIMMVAL - 3)
@@ -2096,7 +2077,7 @@ static UINT32 recompile_instruction(struct drccore *drc, UINT32 pc)
 		case 0x26:	/* LWR */
 			if (!mips3.bigendian)
 			{
-				UINT32 nextop = *(UINT32 *)&OP_ROM[pc + 4];
+				UINT32 nextop = cpu_readop32(pc + 4);
 				if ((nextop >> 26) == 0x22 &&
 					(nextop & 0x03ff0000) == (op & 0x03ff0000) &&
 					(INT16)nextop == SIMMVAL + 3)
@@ -2195,7 +2176,7 @@ static UINT32 recompile_instruction(struct drccore *drc, UINT32 pc)
 
 		case 0x2a:	/* SWL */
 /*{
-UINT32 nextop = *(UINT32 *)&OP_ROM[pc + 4];
+UINT32 nextop = cpu_readop32(pc + 4);
 if ((nextop >> 26) == 0x2e &&
 	(nextop & 0x03ff0000) == (op & 0x03ff0000) &&
 	(INT16)nextop == SIMMVAL - 3)
@@ -2285,7 +2266,7 @@ if ((nextop >> 26) == 0x2e &&
 			
 		case 0x2c:	/* SDL */
 /*{
-UINT32 nextop = *(UINT32 *)&OP_ROM[pc + 4];
+UINT32 nextop = cpu_readop32(pc + 4);
 if ((nextop >> 26) == 0x2d &&
 	(nextop & 0x03ff0000) == (op & 0x03ff0000) &&
 	(INT16)nextop == SIMMVAL - 7)
@@ -2354,7 +2335,7 @@ if ((nextop >> 26) == 0x2d &&
 
 		case 0x2d:	/* SDR */
 /*{
-UINT32 nextop = *(UINT32 *)&OP_ROM[pc + 4];
+UINT32 nextop = cpu_readop32(pc + 4);
 if ((nextop >> 26) == 0x2c &&
 	(nextop & 0x03ff0000) == (op & 0x03ff0000) &&
 	(INT16)nextop == SIMMVAL + 7)
@@ -2423,7 +2404,7 @@ if ((nextop >> 26) == 0x2c &&
 
 		case 0x2e:	/* SWR */
 /*{
-UINT32 nextop = *(UINT32 *)&OP_ROM[pc + 4];
+UINT32 nextop = cpu_readop32(pc + 4);
 if ((nextop >> 26) == 0x2a &&
 	(nextop & 0x03ff0000) == (op & 0x03ff0000) &&
 	(INT16)nextop == SIMMVAL + 3)
@@ -2483,8 +2464,7 @@ if ((nextop >> 26) == 0x2a &&
 				_push_imm(SIMMVAL);													// push	SIMMVAL
 			_call(mips3.memory.readlong);											// call	readlong
 			_add_r32_imm(REG_ESP, 4);												// add  esp,4
-			_cdq();																	// cdq
-			_mov_m64abs_r64(&mips3.cpr[1][RTREG], REG_EDX, REG_EAX);				// mov	[rtreg],edx:eax
+			_mov_m32abs_r32(&mips3.cpr[1][RTREG], REG_EAX);							// mov	[rtreg],eax
 			_mov_r32_m32abs(REG_EBP, &mips3_icount);								// mov	ebp,[mips3_icount]
 			return RECOMPILE_SUCCESSFUL_CP(1,4);
 
@@ -2502,8 +2482,7 @@ if ((nextop >> 26) == 0x2a &&
 				_push_imm(SIMMVAL);													// push	SIMMVAL
 			_call(mips3.memory.readlong);											// call	readlong
 			_add_r32_imm(REG_ESP, 4);												// add  esp,4
-			_cdq();																	// cdq
-			_mov_m64abs_r64(&mips3.cpr[2][RTREG], REG_EDX, REG_EAX);				// mov	[rtreg],edx:eax
+			_mov_m32abs_r32(&mips3.cpr[2][RTREG], REG_EAX);							// mov	[rtreg],eax
 			_mov_r32_m32abs(REG_EBP, &mips3_icount);								// mov	ebp,[mips3_icount]
 			return RECOMPILE_SUCCESSFUL_CP(1,4);
 
@@ -2798,7 +2777,7 @@ static UINT32 recompile_special(struct drccore *drc, UINT32 pc, UINT32 op)
 				_jmp((void *)mips3.generate_invalidop_exception);					// jmp	generate_invalidop_exception
 				return RECOMPILE_SUCCESSFUL | RECOMPILE_MAY_CAUSE_EXCEPTION | RECOMPILE_END_OF_STRING;
 			}
-			_cmp_m32abs_imm(&mips3.cf[1][(op >> 18) & 7], 0);						// cmp	[cf[x]],0
+			_cmp_m8abs_imm(&mips3.cf[1][(op >> 18) & 7], 0);						// cmp	[cf[x]],0
 			_jcc_short_link(((op >> 16) & 1) ? COND_Z : COND_NZ, &link1);			// jz/nz skip
 			_mov_r64_m64abs(REG_EDX, REG_EAX, &mips3.r[RSREG]);						// mov	edx:eax,[rsreg]
 			_mov_m64abs_r64(&mips3.r[RDREG], REG_EDX, REG_EAX);						// mov	[rdreg],edx:eax
@@ -3049,7 +3028,7 @@ static UINT32 recompile_special(struct drccore *drc, UINT32 pc, UINT32 op)
 			_pop_r32(REG_EAX);														// pop	eax
 			_cdq();																	// cdq
 			_mov_m64abs_r64(&mips3.hi, REG_EDX, REG_EAX);							// mov	[hi],edx:eax
-			return RECOMPILE_SUCCESSFUL_CP(1,4);
+			return RECOMPILE_SUCCESSFUL_CP(4,4);
 
 		case 0x19:	/* MULTU */
 			_mov_r32_m32abs(REG_ECX, &mips3.r[RTREG]);								// mov	ecx,[rtreg].lo
@@ -3061,7 +3040,7 @@ static UINT32 recompile_special(struct drccore *drc, UINT32 pc, UINT32 op)
 			_pop_r32(REG_EAX);														// pop	eax
 			_cdq();																	// cdq
 			_mov_m64abs_r64(&mips3.hi, REG_EDX, REG_EAX);							// mov	[hi],edx:eax
-			return RECOMPILE_SUCCESSFUL_CP(1,4);
+			return RECOMPILE_SUCCESSFUL_CP(4,4);
 
 		case 0x1a:	/* DIV */
 			if (RTREG != 0)
@@ -3080,7 +3059,7 @@ static UINT32 recompile_special(struct drccore *drc, UINT32 pc, UINT32 op)
 				_mov_m64abs_r64(&mips3.hi, REG_EDX, REG_EAX);						// mov	[hi],edx:eax
 				_resolve_link(&link1);												// skip:
 			}
-			return RECOMPILE_SUCCESSFUL_CP(1,4);
+			return RECOMPILE_SUCCESSFUL_CP(36,4);
 			
 		case 0x1b:	/* DIVU */
 			if (RTREG != 0)
@@ -3099,7 +3078,7 @@ static UINT32 recompile_special(struct drccore *drc, UINT32 pc, UINT32 op)
 				_mov_m64abs_r64(&mips3.hi, REG_EDX, REG_EAX);						// mov	[hi],edx:eax
 				_resolve_link(&link1);												// skip:
 			}
-			return RECOMPILE_SUCCESSFUL_CP(1,4);
+			return RECOMPILE_SUCCESSFUL_CP(36,4);
 
 		case 0x1c:	/* DMULT */
 			_mov_r64_m64abs(REG_EDX, REG_EAX, &mips3.r[RSREG]);						// mov	edx:eax,[rsreg]
@@ -3160,7 +3139,7 @@ static UINT32 recompile_special(struct drccore *drc, UINT32 pc, UINT32 op)
 			_mov_m64abs_r64(&mips3.lo, REG_EBX, REG_EAX);							// mov	[lo],ebx:eax
 			_mov_m64abs_r64(&mips3.hi, REG_EDX, REG_ECX);							// mov	[lo],edx:ecx
 			_resolve_link(&link3);													// noflip:
-			return RECOMPILE_SUCCESSFUL_CP(1,4);
+			return RECOMPILE_SUCCESSFUL_CP(8,4);
 
 		case 0x1d:	/* DMULTU */
 			_mov_r32_m32abs(REG_EAX, LO(&mips3.r[RSREG]));							// mov	eax,[rsreg].lo
@@ -3186,21 +3165,21 @@ static UINT32 recompile_special(struct drccore *drc, UINT32 pc, UINT32 op)
 			_adc_r32_imm(REG_EDX, 0);												// adc	edx,0
 			_mov_m32abs_r32(LO(&mips3.hi), REG_EBX);								// mov	[hi].lo,ebx
 			_mov_m32abs_r32(HI(&mips3.hi), REG_EDX);								// mov	[hi].hi,edx
-			return RECOMPILE_SUCCESSFUL_CP(1,4);
+			return RECOMPILE_SUCCESSFUL_CP(8,4);
 					
 		case 0x1e:	/* DDIV */
 			_push_imm(&mips3.r[RTREG]);												// push	[rtreg]
 			_push_imm(&mips3.r[RSREG]);												// push	[rsreg]
 			_call((void *)ddiv);													// call ddiv
 			_add_r32_imm(REG_ESP, 8);												// add	esp,8
-			return RECOMPILE_SUCCESSFUL_CP(1,4);
+			return RECOMPILE_SUCCESSFUL_CP(68,4);
 
 		case 0x1f:	/* DDIVU */
 			_push_imm(&mips3.r[RTREG]);												// push	[rtreg]
 			_push_imm(&mips3.r[RSREG]);												// push	[rsreg]
 			_call((void *)ddivu);													// call ddivu
 			_add_r32_imm(REG_ESP, 8);												// add	esp,8
-			return RECOMPILE_SUCCESSFUL_CP(1,4);
+			return RECOMPILE_SUCCESSFUL_CP(68,4);
 
 		case 0x20:	/* ADD */
 			if (RSREG != 0 && RTREG != 0)
@@ -4151,19 +4130,29 @@ static UINT32 recompile_set_cop0_reg(struct drccore *drc, UINT8 reg)
 
 static UINT32 recompile_get_cop0_reg(struct drccore *drc, UINT8 reg)
 {
+	struct linkdata link1;
+
 	switch (reg)
 	{
 		case COP0_Count:
+			_sub_r32_imm(REG_EBP, 24);												// sub  ebp,24
+			_jcc_short_link(COND_NS, &link1);										// jns	notneg
+			_xor_r32_r32(REG_EBP, REG_EBP);											// xor	ebp,ebp
+			_resolve_link(&link1);													// notneg:
 			_mov_m32abs_r32(&mips3_icount, REG_EBP);								// mov	[mips3_icount],ebp
 			_call((void *)activecpu_gettotalcycles64);								// call	activecpu_gettotalcycles64
 			_sub_r32_m32abs(REG_EAX, LO(&mips3.count_zero_time));					// sub	eax,[mips3.count_zero_time+0]
 			_sbb_r32_m32abs(REG_EDX, HI(&mips3.count_zero_time));					// sbb	edx,[mips3.count_zero_time+4]
 			_shrd_r32_r32_imm(REG_EAX, REG_EDX, 1);									// shrd	eax,edx,1
-			return RECOMPILE_SUCCESSFUL_CP(100,4);
+			return RECOMPILE_SUCCESSFUL_CP(1,4);
 
 		case COP0_Cause:
+			_sub_r32_imm(REG_EBP, 25);												// sub  ebp,24
+			_jcc_short_link(COND_NS, &link1);										// jns	notneg
+			_xor_r32_r32(REG_EBP, REG_EBP);											// xor	ebp,ebp
+			_resolve_link(&link1);													// notneg:
 			_mov_r32_m32abs(REG_EAX, &mips3.cpr[0][reg]);							// mov	eax,[mips3.cpr[0][reg]]
-			return RECOMPILE_SUCCESSFUL_CP(100,4);
+			return RECOMPILE_SUCCESSFUL_CP(1,4);
 
 		default:
 			_mov_r32_m32abs(REG_EAX, &mips3.cpr[0][reg]);							// mov	eax,[mips3.cpr[0][reg]]
@@ -4324,7 +4313,7 @@ static UINT32 recompile_cop0(struct drccore *drc, UINT32 pc, UINT32 op)
 static UINT32 recompile_cop1(struct drccore *drc, UINT32 pc, UINT32 op)
 {
 	struct linkdata link1;
-	int cycles;
+	int cycles, i;
 
 	if (mips3.drcoptions & MIPS3DRC_STRICT_COP1)
 	{
@@ -4352,6 +4341,23 @@ static UINT32 recompile_cop1(struct drccore *drc, UINT32 pc, UINT32 op)
 			if (RTREG != 0)
 			{
 				_mov_r32_m32abs(REG_EAX, &mips3.ccr[1][RDREG]);						// mov	eax,[mips3.ccr[1][RDREG]]
+				if (RDREG == 31)
+				{
+					_and_r32_imm(REG_EAX, ~0xfe800000);								// and	eax,~0xfe800000
+					_xor_r32_r32(REG_EBX, REG_EBX);									// xor	ebx,ebx
+					_cmp_m8abs_imm(&mips3.cf[1][0], 0);								// cmp	[cf[0]],0
+					_setcc_r8(COND_NZ, REG_BL);										// setnz bl
+					_shl_r32_imm(REG_EBX, 23);										// shl	ebx,23
+					_or_r32_r32(REG_EAX, REG_EBX);									// or	eax,ebx
+					if (mips3.is_mips4)
+						for (i = 1; i <= 7; i++)
+						{
+							_cmp_m8abs_imm(&mips3.cf[1][i], 0);						// cmp	[cf[i]],0
+							_setcc_r8(COND_NZ, REG_BL);								// setnz bl
+							_shl_r32_imm(REG_EBX, 24+i);							// shl	ebx,24+i
+							_or_r32_r32(REG_EAX, REG_EBX);							// or	eax,ebx
+						}
+				}
 				_cdq();																// cdq
 				_mov_m64abs_r64(&mips3.r[RTREG], REG_EDX, REG_EAX);					// mov	[mips3.r[RTREG]],edx:eax
 			}
@@ -4362,10 +4368,9 @@ static UINT32 recompile_cop1(struct drccore *drc, UINT32 pc, UINT32 op)
 			{
 				_mov_r32_m32abs(REG_EAX, &mips3.r[RTREG]);							// mov	eax,[mips3.r[RTREG]]
 				_mov_m32abs_r32(LO(&mips3.cpr[1][RDREG]), REG_EAX);					// mov	[mips3.cpr[1][RDREG]],eax
-				_mov_m32abs_imm(HI(&mips3.cpr[1][RDREG]), 0);						// mov	[mips3.cpr[1][RDREG]],0
 			}
 			else
-				_mov_m64abs_imm32(&mips3.cpr[1][RDREG], 0);							// mov	[mips3.cpr[1][RDREG]],0
+				_mov_m32abs_imm(&mips3.cpr[1][RDREG], 0);							// mov	[mips3.cpr[1][RDREG]],0
 			return RECOMPILE_SUCCESSFUL_CP(1,4);
 
 		case 0x05:	/* DMTCz */
@@ -4382,14 +4387,32 @@ static UINT32 recompile_cop1(struct drccore *drc, UINT32 pc, UINT32 op)
 				_mov_m32abs_r32(&mips3.ccr[1][RDREG], REG_EAX);						// mov	[mips3.ccr[1][RDREG]],eax
 			}
 			else
-				_mov_m32abs_imm(&mips3.ccr[1][RDREG], 0);							// mov	[mips3.cpr[1][RDREG]],0
+				_mov_m32abs_imm(&mips3.ccr[1][RDREG], 0);							// mov	[mips3.ccr[1][RDREG]],0
+			if (RDREG == 31)
+			{
+				_mov_r32_m32abs(REG_EAX, LO(&mips3.ccr[1][RDREG]));					// mov	eax,[mips3.ccr[1][RDREG]]
+				_test_r32_imm(REG_EAX, 1 << 23);									// test	eax,1<<23
+				_setcc_m8abs(COND_NZ, &mips3.cf[1][0]);								// setnz [cf[0]]
+				if (mips3.is_mips4)
+					for (i = 1; i <= 7; i++)
+					{
+						_test_r32_imm(REG_EAX, 1 << (24+i));						// test	eax,1<<(24+i)
+						_setcc_m8abs(COND_NZ, &mips3.cf[1][i]);						// setnz [cf[i]]
+					}
+				_and_r32_imm(REG_EAX, 3);											// and	eax,3
+				_test_r32_imm(REG_EAX, 1);											// test eax,1
+				_jcc_near_link(COND_Z, &link1);										// jz	skip
+				_xor_r32_imm(REG_EAX, 2);											// xor  eax,2
+				_resolve_link(&link1);												// skip:
+				drc_append_set_fp_rounding(drc, REG_EAX);							// set_rounding(EAX)
+			}
 			return RECOMPILE_SUCCESSFUL_CP(1,4);
 
 		case 0x08:	/* BC */
 			switch ((op >> 16) & 3)
 			{
 				case 0x00:	/* BCzF */
-					_cmp_m32abs_imm(&mips3.cf[1][mips3.is_mips4 ? ((op >> 18) & 7) : 0], 0);	// cmp	[cf[x]],0
+					_cmp_m8abs_imm(&mips3.cf[1][mips3.is_mips4 ? ((op >> 18) & 7) : 0], 0);	// cmp	[cf[x]],0
 					_jcc_near_link(COND_NZ, &link1);								// jnz	link1
 					cycles = recompile_delay_slot(drc, pc + 4);						// <next instruction>
 					append_branch_or_dispatch(drc, pc + 4 + (SIMMVAL << 2), 1+cycles);// <branch or dispatch>
@@ -4397,7 +4420,7 @@ static UINT32 recompile_cop1(struct drccore *drc, UINT32 pc, UINT32 op)
 					return RECOMPILE_SUCCESSFUL_CP(1,4);
 				
 				case 0x01:	/* BCzT */
-					_cmp_m32abs_imm(&mips3.cf[1][mips3.is_mips4 ? ((op >> 18) & 7) : 0], 0);	// cmp	[cf[x]],0
+					_cmp_m8abs_imm(&mips3.cf[1][mips3.is_mips4 ? ((op >> 18) & 7) : 0], 0);	// cmp	[cf[x]],0
 					_jcc_near_link(COND_Z, &link1);									// jz	link1
 					cycles = recompile_delay_slot(drc, pc + 4);						// <next instruction>
 					append_branch_or_dispatch(drc, pc + 4 + (SIMMVAL << 2), 1+cycles);// <branch or dispatch>
@@ -4405,7 +4428,7 @@ static UINT32 recompile_cop1(struct drccore *drc, UINT32 pc, UINT32 op)
 					return RECOMPILE_SUCCESSFUL_CP(1,4);
 
 				case 0x02:	/* BCzFL */
-					_cmp_m32abs_imm(&mips3.cf[1][mips3.is_mips4 ? ((op >> 18) & 7) : 0], 0);	// cmp	[cf[x]],0
+					_cmp_m8abs_imm(&mips3.cf[1][mips3.is_mips4 ? ((op >> 18) & 7) : 0], 0);	// cmp	[cf[x]],0
 					_jcc_near_link(COND_NZ, &link1);								// jnz	link1
 					cycles = recompile_delay_slot(drc, pc + 4);						// <next instruction>
 					append_branch_or_dispatch(drc, pc + 4 + (SIMMVAL << 2), 1+cycles);// <branch or dispatch>
@@ -4413,7 +4436,7 @@ static UINT32 recompile_cop1(struct drccore *drc, UINT32 pc, UINT32 op)
 					return RECOMPILE_SUCCESSFUL_CP(1,8);
 
 				case 0x03:	/* BCzTL */
-					_cmp_m32abs_imm(&mips3.cf[1][mips3.is_mips4 ? ((op >> 18) & 7) : 0], 0);	// cmp	[cf[x]],0
+					_cmp_m8abs_imm(&mips3.cf[1][mips3.is_mips4 ? ((op >> 18) & 7) : 0], 0);	// cmp	[cf[x]],0
 					_jcc_near_link(COND_Z, &link1);									// jz	link1
 					cycles = recompile_delay_slot(drc, pc + 4);						// <next instruction>
 					append_branch_or_dispatch(drc, pc + 4 + (SIMMVAL << 2), 1+cycles);// <branch or dispatch>
@@ -4599,33 +4622,23 @@ static UINT32 recompile_cop1(struct drccore *drc, UINT32 pc, UINT32 op)
 				case 0x05:
 					if (IS_SINGLE(op))	/* ABS.S */
 					{
-						if (FSREG == FDREG)
-							_and_m32abs_imm(LO(&mips3.cpr[1][FSREG]), 0x7fffffff);		// and	[fsreg].lo,0x7fffffff
-						else
-						{
-							_mov_r32_m32abs(REG_EAX, LO(&mips3.cpr[1][FSREG]));			// mov	eax,[fsreg].lo
-							_and_r32_imm(REG_EAX, 0x7fffffff);							// and	eax,0x7fffffff
-							_mov_m32abs_r32(LO(&mips3.cpr[1][FDREG]), REG_EAX);			// mov	[fdreg].lo,eax
-						}
+						_fld_m32abs(&mips3.cpr[1][FSREG]);								// fld	[fsreg]
+						_fabs();														// fabs
+						_fstp_m32abs(&mips3.cpr[1][FDREG]);								// fstp	[fdreg]
 					}
 					else				/* ABS.D */
 					{
-						if (FSREG == FDREG)
-							_and_m32abs_imm(HI(&mips3.cpr[1][FSREG]), 0x7fffffff);		// and	[fsreg].hi,0x7fffffff
-						else
-						{
-							_mov_r64_m64abs(REG_EDX, REG_EAX, &mips3.cpr[1][FSREG]);	// mov	edx:eax,[fsreg]
-							_and_r32_imm(REG_EDX, 0x7fffffff);							// and	edx,0x7fffffff
-							_mov_m64abs_r64(&mips3.cpr[1][FDREG], REG_EDX, REG_EAX);	// mov	[fdreg],edx:eax
-						}
+						_fld_m64abs(&mips3.cpr[1][FSREG]);								// fld	[fsreg]
+						_fabs();														// fabs
+						_fstp_m64abs(&mips3.cpr[1][FDREG]);								// fstp	[fdreg]
 					}
 					return RECOMPILE_SUCCESSFUL_CP(1,4);
 
 				case 0x06:
 					if (IS_SINGLE(op))	/* MOV.S */
 					{
-						_mov_r32_m32abs(REG_EAX, &mips3.cpr[1][FSREG]);				// mov	eax,[fsreg]
-						_mov_m32abs_r32(&mips3.cpr[1][FDREG], REG_EAX);				// mov	[fdreg],eax
+						_mov_r32_m32abs(REG_EAX, &mips3.cpr[1][FSREG]);					// mov	eax,[fsreg]
+						_mov_m32abs_r32(&mips3.cpr[1][FDREG], REG_EAX);					// mov	[fdreg],eax
 					}
 					else				/* MOV.D */
 						_mov_m64abs_m64abs(&mips3.cpr[1][FDREG], &mips3.cpr[1][FSREG]);
@@ -4634,98 +4647,96 @@ static UINT32 recompile_cop1(struct drccore *drc, UINT32 pc, UINT32 op)
 				case 0x07:
 					if (IS_SINGLE(op))	/* NEG.S */
 					{
-						if (FSREG == FDREG)
-							_xor_m32abs_imm(LO(&mips3.cpr[1][FSREG]), 0x80000000);		// xor	[fsreg].lo,0x80000000
-						else
-						{
-							_mov_r32_m32abs(REG_EAX, LO(&mips3.cpr[1][FSREG]));			// mov	eax,[fsreg].lo
-							_xor_r32_imm(REG_EAX, 0x80000000);							// xor	eax,0x80000000
-							_mov_m32abs_r32(LO(&mips3.cpr[1][FDREG]), REG_EAX);			// mov	[fdreg].lo,eax
-						}
+						_fld_m32abs(&mips3.cpr[1][FSREG]);								// fld	[fsreg]
+						_fchs();														// fchs
+						_fstp_m32abs(&mips3.cpr[1][FDREG]);								// fstp	[fdreg]
 					}
 					else				/* NEG.D */
 					{
-						if (FSREG == FDREG)
-							_and_m32abs_imm(HI(&mips3.cpr[1][FSREG]), 0x80000000);		// xor	[fsreg].hi,0x80000000
-						else
-						{
-							_mov_r64_m64abs(REG_EDX, REG_EAX, &mips3.cpr[1][FSREG]);	// mov	edx:eax,[fsreg]
-							_xor_r32_imm(REG_EDX, 0x80000000);							// xor	edx,0x7fffffff
-							_mov_m64abs_r64(&mips3.cpr[1][FDREG], REG_EDX, REG_EAX);	// mov	[fdreg],edx:eax
-						}
+						_fld_m64abs(&mips3.cpr[1][FSREG]);								// fld	[fsreg]
+						_fchs();														// fchs
+						_fstp_m64abs(&mips3.cpr[1][FDREG]);								// fstp	[fdreg]
 					}
 					return RECOMPILE_SUCCESSFUL_CP(1,4);
 
 				case 0x08:
-					drc_append_set_fp_rounding(drc, FPRND_NEAR);
+					drc_append_set_temp_fp_rounding(drc, FPRND_NEAR);
 					if (IS_SINGLE(op))	/* ROUND.L.S */
 						_fld_m32abs(&mips3.cpr[1][FSREG]);							// fld	[fsreg]
 					else				/* ROUND.L.D */
 						_fld_m64abs(&mips3.cpr[1][FSREG]);							// fld	[fsreg]
 					_fistp_m64abs(&mips3.cpr[1][FDREG]);							// fistp [fdreg]
+					drc_append_restore_fp_rounding(drc);
 					return RECOMPILE_SUCCESSFUL_CP(1,4);
 
 				case 0x09:
-					drc_append_set_fp_rounding(drc, FPRND_CHOP);
+					drc_append_set_temp_fp_rounding(drc, FPRND_CHOP);
 					if (IS_SINGLE(op))	/* TRUNC.L.S */
 						_fld_m32abs(&mips3.cpr[1][FSREG]);							// fld	[fsreg]
 					else				/* TRUNC.L.D */
 						_fld_m64abs(&mips3.cpr[1][FSREG]);							// fld	[fsreg]
 					_fistp_m64abs(&mips3.cpr[1][FDREG]);							// fistp [fdreg]
+					drc_append_restore_fp_rounding(drc);
 					return RECOMPILE_SUCCESSFUL_CP(1,4);
 
 				case 0x0a:
-					drc_append_set_fp_rounding(drc, FPRND_UP);
+					drc_append_set_temp_fp_rounding(drc, FPRND_UP);
 					if (IS_SINGLE(op))	/* CEIL.L.S */
 						_fld_m32abs(&mips3.cpr[1][FSREG]);							// fld	[fsreg]
 					else				/* CEIL.L.D */
 						_fld_m64abs(&mips3.cpr[1][FSREG]);							// fld	[fsreg]
 					_fistp_m64abs(&mips3.cpr[1][FDREG]);							// fistp [fdreg]
+					drc_append_restore_fp_rounding(drc);
 					return RECOMPILE_SUCCESSFUL_CP(1,4);
 
 				case 0x0b:
-					drc_append_set_fp_rounding(drc, FPRND_DOWN);
+					drc_append_set_temp_fp_rounding(drc, FPRND_DOWN);
 					if (IS_SINGLE(op))	/* FLOOR.L.S */
 						_fld_m32abs(&mips3.cpr[1][FSREG]);							// fld	[fsreg]
 					else				/* FLOOR.L.D */
 						_fld_m64abs(&mips3.cpr[1][FSREG]);							// fld	[fsreg]
 					_fistp_m64abs(&mips3.cpr[1][FDREG]);							// fistp [fdreg]
+					drc_append_restore_fp_rounding(drc);
 					return RECOMPILE_SUCCESSFUL_CP(1,4);
 
 				case 0x0c:
-					drc_append_set_fp_rounding(drc, FPRND_NEAR);
+					drc_append_set_temp_fp_rounding(drc, FPRND_NEAR);
 					if (IS_SINGLE(op))	/* ROUND.W.S */
 						_fld_m32abs(&mips3.cpr[1][FSREG]);							// fld	[fsreg]
 					else				/* ROUND.W.D */
 						_fld_m64abs(&mips3.cpr[1][FSREG]);							// fld	[fsreg]
 					_fistp_m32abs(&mips3.cpr[1][FDREG]);							// fistp [fdreg]
+					drc_append_restore_fp_rounding(drc);
 					return RECOMPILE_SUCCESSFUL_CP(1,4);
 
 				case 0x0d:
-					drc_append_set_fp_rounding(drc, FPRND_CHOP);
+					drc_append_set_temp_fp_rounding(drc, FPRND_CHOP);
 					if (IS_SINGLE(op))	/* TRUNC.W.S */
 						_fld_m32abs(&mips3.cpr[1][FSREG]);							// fld	[fsreg]
 					else				/* TRUNC.W.D */
 						_fld_m64abs(&mips3.cpr[1][FSREG]);							// fld	[fsreg]
 					_fistp_m32abs(&mips3.cpr[1][FDREG]);							// fistp [fdreg]
+					drc_append_restore_fp_rounding(drc);
 					return RECOMPILE_SUCCESSFUL_CP(1,4);
 
 				case 0x0e:
-					drc_append_set_fp_rounding(drc, FPRND_UP);
+					drc_append_set_temp_fp_rounding(drc, FPRND_UP);
 					if (IS_SINGLE(op))	/* CEIL.W.S */
 						_fld_m32abs(&mips3.cpr[1][FSREG]);							// fld	[fsreg]
 					else				/* CEIL.W.D */
 						_fld_m64abs(&mips3.cpr[1][FSREG]);							// fld	[fsreg]
 					_fistp_m32abs(&mips3.cpr[1][FDREG]);							// fistp [fdreg]
+					drc_append_restore_fp_rounding(drc);
 					return RECOMPILE_SUCCESSFUL_CP(1,4);
 
 				case 0x0f:
-					drc_append_set_fp_rounding(drc, FPRND_DOWN);
+					drc_append_set_temp_fp_rounding(drc, FPRND_DOWN);
 					if (IS_SINGLE(op))	/* FLOOR.W.S */
 						_fld_m32abs(&mips3.cpr[1][FSREG]);							// fld	[fsreg]
 					else				/* FLOOR.W.D */
 						_fld_m64abs(&mips3.cpr[1][FSREG]);							// fld	[fsreg]
 					_fistp_m32abs(&mips3.cpr[1][FDREG]);							// fistp [fdreg]
+					drc_append_restore_fp_rounding(drc);
 					return RECOMPILE_SUCCESSFUL_CP(1,4);
 
 				case 0x11:	/* R5000 */
@@ -4734,7 +4745,7 @@ static UINT32 recompile_cop1(struct drccore *drc, UINT32 pc, UINT32 op)
 						_jmp((void *)mips3.generate_invalidop_exception);			// jmp	generate_invalidop_exception
 						return RECOMPILE_SUCCESSFUL | RECOMPILE_END_OF_STRING;
 					}
-					_cmp_m32abs_imm(&mips3.cf[1][(op >> 18) & 7], 0);				// cmp	[cf[x]],0
+					_cmp_m8abs_imm(&mips3.cf[1][(op >> 18) & 7], 0);				// cmp	[cf[x]],0
 					_jcc_short_link(((op >> 16) & 1) ? COND_Z : COND_NZ, &link1);	// jz/nz skip
 					if (IS_SINGLE(op))	/* MOVT/F.S */
 					{
@@ -4872,12 +4883,12 @@ static UINT32 recompile_cop1(struct drccore *drc, UINT32 pc, UINT32 op)
 
 				case 0x30:
 				case 0x38:
-					_mov_m32abs_imm(&mips3.cf[1][mips3.is_mips4 ? ((op >> 8) & 7) : 0], 0);	/* C.F.S/D */
+					_mov_m8abs_imm(&mips3.cf[1][mips3.is_mips4 ? ((op >> 8) & 7) : 0], 0);	/* C.F.S/D */
 					return RECOMPILE_SUCCESSFUL_CP(1,4);
 
 				case 0x31:
 				case 0x39:
-					_mov_m32abs_imm(&mips3.cf[1][mips3.is_mips4 ? ((op >> 8) & 7) : 0], 0);	/* C.UN.S/D */
+					_mov_m8abs_imm(&mips3.cf[1][mips3.is_mips4 ? ((op >> 8) & 7) : 0], 0);	/* C.UN.S/D */
 					return RECOMPILE_SUCCESSFUL_CP(1,4);
 
 				case 0x32:
@@ -4910,8 +4921,8 @@ static UINT32 recompile_cop1(struct drccore *drc, UINT32 pc, UINT32 op)
 						}
 						_fcompp();														// fcompp
 						_fnstsw_ax();													// fnstsw ax
-						_and_r32_imm(REG_EAX, 0x4000);									// and	eax,0x4000
-						_mov_m32abs_r32(&mips3.cf[1][mips3.is_mips4 ? ((op >> 8) & 7) : 0], REG_EAX); // mov [cf[x]],eax
+						_sahf();														// sahf
+						_setcc_m8abs(COND_E, &mips3.cf[1][mips3.is_mips4 ? ((op >> 8) & 7) : 0]); // sete [cf[x]]
 					}
 					return RECOMPILE_SUCCESSFUL_CP(1,4);
 
@@ -4945,8 +4956,8 @@ static UINT32 recompile_cop1(struct drccore *drc, UINT32 pc, UINT32 op)
 						}
 						_fucompp();														// fucompp
 						_fnstsw_ax();													// fnstsw ax
-						_and_r32_imm(REG_EAX, 0x4000);									// and	eax,0x4000
-						_mov_m32abs_r32(&mips3.cf[1][mips3.is_mips4 ? ((op >> 8) & 7) : 0], REG_EAX); // mov [cf[x]],eax
+						_sahf();														// sahf
+						_setcc_m8abs(COND_E, &mips3.cf[1][mips3.is_mips4 ? ((op >> 8) & 7) : 0]); // sete [cf[x]]
 					}
 					return RECOMPILE_SUCCESSFUL_CP(1,4);
 
@@ -4964,7 +4975,7 @@ static UINT32 recompile_cop1(struct drccore *drc, UINT32 pc, UINT32 op)
 							_movsd_r128_m64abs(REG_XMM0, &mips3.cpr[1][FSREG]);			// movsd xmm0,[fsreg]
 							_comisd_r128_m64abs(REG_XMM0, &mips3.cpr[1][FTREG]);		// comisd xmm0,[ftreg]
 						}
-						_setcc_m8abs(COND_B, &mips3.cf[1][mips3.is_mips4 ? ((op >> 8) & 7) : 0]); // setl [cf[x]]
+						_setcc_m8abs(COND_B, &mips3.cf[1][mips3.is_mips4 ? ((op >> 8) & 7) : 0]); // setb [cf[x]]
 					}
 					else
 					{
@@ -4980,8 +4991,8 @@ static UINT32 recompile_cop1(struct drccore *drc, UINT32 pc, UINT32 op)
 						}
 						_fcompp();														// fcompp
 						_fnstsw_ax();													// fnstsw ax
-						_and_r32_imm(REG_EAX, 0x0100);									// and	eax,0x0100
-						_mov_m32abs_r32(&mips3.cf[1][mips3.is_mips4 ? ((op >> 8) & 7) : 0], REG_EAX); // mov [cf[x]],eax
+						_sahf();														// sahf
+						_setcc_m8abs(COND_B, &mips3.cf[1][mips3.is_mips4 ? ((op >> 8) & 7) : 0]); // setb [cf[x]]
 					}
 					return RECOMPILE_SUCCESSFUL_CP(1,4);
 
@@ -4999,7 +5010,7 @@ static UINT32 recompile_cop1(struct drccore *drc, UINT32 pc, UINT32 op)
 							_movsd_r128_m64abs(REG_XMM0, &mips3.cpr[1][FSREG]);			// movsd xmm0,[fsreg]
 							_ucomisd_r128_m64abs(REG_XMM0, &mips3.cpr[1][FTREG]);		// ucomisd xmm0,[ftreg]
 						}
-						_setcc_m8abs(COND_B, &mips3.cf[1][mips3.is_mips4 ? ((op >> 8) & 7) : 0]); // setl [cf[x]]
+						_setcc_m8abs(COND_B, &mips3.cf[1][mips3.is_mips4 ? ((op >> 8) & 7) : 0]); // setb [cf[x]]
 					}
 					else
 					{
@@ -5015,8 +5026,8 @@ static UINT32 recompile_cop1(struct drccore *drc, UINT32 pc, UINT32 op)
 						}
 						_fucompp();														// fucompp
 						_fnstsw_ax();													// fnstsw ax
-						_and_r32_imm(REG_EAX, 0x0100);									// and	eax,0x0100
-						_mov_m32abs_r32(&mips3.cf[1][mips3.is_mips4 ? ((op >> 8) & 7) : 0], REG_EAX); // mov [cf[x]],eax
+						_sahf();														// sahf
+						_setcc_m8abs(COND_B, &mips3.cf[1][mips3.is_mips4 ? ((op >> 8) & 7) : 0]); // setb [cf[x]]
 					}
 					return RECOMPILE_SUCCESSFUL_CP(1,4);
 
@@ -5050,8 +5061,8 @@ static UINT32 recompile_cop1(struct drccore *drc, UINT32 pc, UINT32 op)
 						}
 						_fcompp();														// fcompp
 						_fnstsw_ax();													// fnstsw ax
-						_and_r32_imm(REG_EAX, 0x4100);									// and	eax,0x4100
-						_mov_m32abs_r32(&mips3.cf[1][mips3.is_mips4 ? ((op >> 8) & 7) : 0], REG_EAX); // mov [cf[x]],eax
+						_sahf();														// sahf
+						_setcc_m8abs(COND_BE, &mips3.cf[1][mips3.is_mips4 ? ((op >> 8) & 7) : 0]); // setbe [cf[x]]
 					}
 					return RECOMPILE_SUCCESSFUL_CP(1,4);
 
@@ -5085,8 +5096,8 @@ static UINT32 recompile_cop1(struct drccore *drc, UINT32 pc, UINT32 op)
 						}
 						_fucompp();														// fucompp
 						_fnstsw_ax();													// fnstsw ax
-						_and_r32_imm(REG_EAX, 0x4100);									// and	eax,0x4100
-						_mov_m32abs_r32(&mips3.cf[1][mips3.is_mips4 ? ((op >> 8) & 7) : 0], REG_EAX); // mov [cf[x]],eax
+						_sahf();														// sahf
+						_setcc_m8abs(COND_BE, &mips3.cf[1][mips3.is_mips4 ? ((op >> 8) & 7) : 0]); // setbe [cf[x]]
 					}
 					return RECOMPILE_SUCCESSFUL_CP(1,4);
 			}
@@ -5122,7 +5133,7 @@ static UINT32 recompile_cop1x(struct drccore *drc, UINT32 pc, UINT32 op)
 			_add_r32_m32abs(REG_EAX, &mips3.r[RTREG]);								// add	eax,[rtreg]
 			_push_r32(REG_EAX);														// push	eax
 			_call(mips3.memory.readlong);											// call	readlong
-			_add_r32_imm(REG_EAX, 4);												// add	eax,4
+			_add_r32_imm(REG_ESP, 4);												// add	esp,4
 			_mov_m32abs_r32(&mips3.cpr[1][FDREG], REG_EAX);							// mov	[fdreg],eax
 			_mov_r32_m32abs(REG_EBP, &mips3_icount);								// mov	ebp,[mips3_icount]
 			return RECOMPILE_SUCCESSFUL_CP(1,4);
@@ -5145,7 +5156,7 @@ static UINT32 recompile_cop1x(struct drccore *drc, UINT32 pc, UINT32 op)
 		
 		case 0x08:		/* SWXC1 */
 			_mov_m32abs_r32(&mips3_icount, REG_EBP);								// mov	[mips3_icount],ebp
-			_push_m32abs(&mips3.cpr[1][FSREG]);											// push	[fdreg],eax
+			_push_m32abs(&mips3.cpr[1][FSREG]);										// push	[fsreg]
 			_mov_r32_m32abs(REG_EAX, &mips3.r[RSREG]);								// mov	eax,[rsreg]
 			_add_r32_m32abs(REG_EAX, &mips3.r[RTREG]);								// add	eax,[rtreg]
 			_push_r32(REG_EAX);														// push	eax
@@ -5349,276 +5360,6 @@ static UINT32 recompile_cop1x(struct drccore *drc, UINT32 pc, UINT32 op)
 	return RECOMPILE_SUCCESSFUL | RECOMPILE_END_OF_STRING;
 }
 
-/*###################################################################################################
-**	REGISTER SNOOP
-**#################################################################################################*/
-
-unsigned mips3_get_reg(int regnum)
-{
-	switch (regnum)
-	{
-		case REG_PC:
-		case MIPS3_PC:		return mips3.pc;
-		case MIPS3_SR:		return mips3.cpr[0][COP0_Status];
-		case MIPS3_EPC:		return mips3.cpr[0][COP0_EPC];
-		case MIPS3_CAUSE:	return mips3.cpr[0][COP0_Cause];
-		case MIPS3_COUNT:	return mips3.cpr[0][COP0_Count];
-		case MIPS3_COMPARE:	return mips3.cpr[0][COP0_Compare];
-
-		case MIPS3_R0:		return (UINT32)mips3.r[0];
-		case MIPS3_R1:		return (UINT32)mips3.r[1];
-		case MIPS3_R2:		return (UINT32)mips3.r[2];
-		case MIPS3_R3:		return (UINT32)mips3.r[3];
-		case MIPS3_R4:		return (UINT32)mips3.r[4];
-		case MIPS3_R5:		return (UINT32)mips3.r[5];
-		case MIPS3_R6:		return (UINT32)mips3.r[6];
-		case MIPS3_R7:		return (UINT32)mips3.r[7];
-		case MIPS3_R8:		return (UINT32)mips3.r[8];
-		case MIPS3_R9:		return (UINT32)mips3.r[9];
-		case MIPS3_R10:		return (UINT32)mips3.r[10];
-		case MIPS3_R11:		return (UINT32)mips3.r[11];
-		case MIPS3_R12:		return (UINT32)mips3.r[12];
-		case MIPS3_R13:		return (UINT32)mips3.r[13];
-		case MIPS3_R14:		return (UINT32)mips3.r[14];
-		case MIPS3_R15:		return (UINT32)mips3.r[15];
-		case MIPS3_R16:		return (UINT32)mips3.r[16];
-		case MIPS3_R17:		return (UINT32)mips3.r[17];
-		case MIPS3_R18:		return (UINT32)mips3.r[18];
-		case MIPS3_R19:		return (UINT32)mips3.r[19];
-		case MIPS3_R20:		return (UINT32)mips3.r[20];
-		case MIPS3_R21:		return (UINT32)mips3.r[21];
-		case MIPS3_R22:		return (UINT32)mips3.r[22];
-		case MIPS3_R23:		return (UINT32)mips3.r[23];
-		case MIPS3_R24:		return (UINT32)mips3.r[24];
-		case MIPS3_R25:		return (UINT32)mips3.r[25];
-		case MIPS3_R26:		return (UINT32)mips3.r[26];
-		case MIPS3_R27:		return (UINT32)mips3.r[27];
-		case MIPS3_R28:		return (UINT32)mips3.r[28];
-		case MIPS3_R29:		return (UINT32)mips3.r[29];
-		case MIPS3_R30:		return (UINT32)mips3.r[30];
-//		case REG_SP:
-		case MIPS3_R31:		return (UINT32)mips3.r[31];
-		case MIPS3_HI:		return (UINT32)mips3.hi;
-		case MIPS3_LO:		return (UINT32)mips3.lo;
-
-		case MIPS3_R0LO:	return (UINT32)mips3.r[0];
-		case MIPS3_R1LO:	return (UINT32)mips3.r[1];
-		case MIPS3_R2LO:	return (UINT32)mips3.r[2];
-		case MIPS3_R3LO:	return (UINT32)mips3.r[3];
-		case MIPS3_R4LO:	return (UINT32)mips3.r[4];
-		case MIPS3_R5LO:	return (UINT32)mips3.r[5];
-		case MIPS3_R6LO:	return (UINT32)mips3.r[6];
-		case MIPS3_R7LO:	return (UINT32)mips3.r[7];
-		case MIPS3_R8LO:	return (UINT32)mips3.r[8];
-		case MIPS3_R9LO:	return (UINT32)mips3.r[9];
-		case MIPS3_R10LO:	return (UINT32)mips3.r[10];
-		case MIPS3_R11LO:	return (UINT32)mips3.r[11];
-		case MIPS3_R12LO:	return (UINT32)mips3.r[12];
-		case MIPS3_R13LO:	return (UINT32)mips3.r[13];
-		case MIPS3_R14LO:	return (UINT32)mips3.r[14];
-		case MIPS3_R15LO:	return (UINT32)mips3.r[15];
-		case MIPS3_R16LO:	return (UINT32)mips3.r[16];
-		case MIPS3_R17LO:	return (UINT32)mips3.r[17];
-		case MIPS3_R18LO:	return (UINT32)mips3.r[18];
-		case MIPS3_R19LO:	return (UINT32)mips3.r[19];
-		case MIPS3_R20LO:	return (UINT32)mips3.r[20];
-		case MIPS3_R21LO:	return (UINT32)mips3.r[21];
-		case MIPS3_R22LO:	return (UINT32)mips3.r[22];
-		case MIPS3_R23LO:	return (UINT32)mips3.r[23];
-		case MIPS3_R24LO:	return (UINT32)mips3.r[24];
-		case MIPS3_R25LO:	return (UINT32)mips3.r[25];
-		case MIPS3_R26LO:	return (UINT32)mips3.r[26];
-		case MIPS3_R27LO:	return (UINT32)mips3.r[27];
-		case MIPS3_R28LO:	return (UINT32)mips3.r[28];
-		case MIPS3_R29LO:	return (UINT32)mips3.r[29];
-		case MIPS3_R30LO:	return (UINT32)mips3.r[30];
-		case MIPS3_R31LO:	return (UINT32)mips3.r[31];
-		case MIPS3_HILO:	return (UINT32)mips3.hi;
-		case MIPS3_LOLO:	return (UINT32)mips3.lo;
-
-		case MIPS3_R0HI:	return (UINT32)(mips3.r[0] >> 32);
-		case MIPS3_R1HI:	return (UINT32)(mips3.r[1] >> 32);
-		case MIPS3_R2HI:	return (UINT32)(mips3.r[2] >> 32);
-		case MIPS3_R3HI:	return (UINT32)(mips3.r[3] >> 32);
-		case MIPS3_R4HI:	return (UINT32)(mips3.r[4] >> 32);
-		case MIPS3_R5HI:	return (UINT32)(mips3.r[5] >> 32);
-		case MIPS3_R6HI:	return (UINT32)(mips3.r[6] >> 32);
-		case MIPS3_R7HI:	return (UINT32)(mips3.r[7] >> 32);
-		case MIPS3_R8HI:	return (UINT32)(mips3.r[8] >> 32);
-		case MIPS3_R9HI:	return (UINT32)(mips3.r[9] >> 32);
-		case MIPS3_R10HI:	return (UINT32)(mips3.r[10] >> 32);
-		case MIPS3_R11HI:	return (UINT32)(mips3.r[11] >> 32);
-		case MIPS3_R12HI:	return (UINT32)(mips3.r[12] >> 32);
-		case MIPS3_R13HI:	return (UINT32)(mips3.r[13] >> 32);
-		case MIPS3_R14HI:	return (UINT32)(mips3.r[14] >> 32);
-		case MIPS3_R15HI:	return (UINT32)(mips3.r[15] >> 32);
-		case MIPS3_R16HI:	return (UINT32)(mips3.r[16] >> 32);
-		case MIPS3_R17HI:	return (UINT32)(mips3.r[17] >> 32);
-		case MIPS3_R18HI:	return (UINT32)(mips3.r[18] >> 32);
-		case MIPS3_R19HI:	return (UINT32)(mips3.r[19] >> 32);
-		case MIPS3_R20HI:	return (UINT32)(mips3.r[20] >> 32);
-		case MIPS3_R21HI:	return (UINT32)(mips3.r[21] >> 32);
-		case MIPS3_R22HI:	return (UINT32)(mips3.r[22] >> 32);
-		case MIPS3_R23HI:	return (UINT32)(mips3.r[23] >> 32);
-		case MIPS3_R24HI:	return (UINT32)(mips3.r[24] >> 32);
-		case MIPS3_R25HI:	return (UINT32)(mips3.r[25] >> 32);
-		case MIPS3_R26HI:	return (UINT32)(mips3.r[26] >> 32);
-		case MIPS3_R27HI:	return (UINT32)(mips3.r[27] >> 32);
-		case MIPS3_R28HI:	return (UINT32)(mips3.r[28] >> 32);
-		case MIPS3_R29HI:	return (UINT32)(mips3.r[29] >> 32);
-		case MIPS3_R30HI:	return (UINT32)(mips3.r[30] >> 32);
-		case MIPS3_R31HI:	return (UINT32)(mips3.r[31] >> 32);
-		case MIPS3_HIHI:	return (UINT32)(mips3.hi >> 32);
-		case MIPS3_LOHI:	return (UINT32)(mips3.lo >> 32);
-
-		case REG_PREVIOUSPC: return mips3.pc;
-
-		default:
-			if (regnum <= REG_SP_CONTENTS)
-			{
-//				unsigned offset = REG_SP_CONTENTS - regnum;
-//				if (offset < PC_STACK_DEPTH)
-//					return mips3.pc_stack[offset];
-			}
-	}
-	return 0;
-}
-
-
-
-/*###################################################################################################
-**	REGISTER MODIFY
-**#################################################################################################*/
-
-void mips3_set_reg(int regnum, unsigned val)
-{
-	switch (regnum)
-	{
-		case REG_PC:
-		case MIPS3_PC:		mips3.pc = val;	break;
-		case MIPS3_SR:		mips3.cpr[0][COP0_Status] = val; break;
-		case MIPS3_EPC:		mips3.cpr[0][COP0_EPC] = val; break;
-		case MIPS3_CAUSE:	mips3.cpr[0][COP0_Cause] = val; break;
-		case MIPS3_COUNT:	mips3.cpr[0][COP0_Count] = val; break;
-		case MIPS3_COMPARE:	mips3.cpr[0][COP0_Compare] = val; break;
-
-		case MIPS3_R0:		mips3.r[0] = (INT32)val;	break;
-		case MIPS3_R1:		mips3.r[1] = (INT32)val;	break;
-		case MIPS3_R2:		mips3.r[2] = (INT32)val;	break;
-		case MIPS3_R3:		mips3.r[3] = (INT32)val;	break;
-		case MIPS3_R4:		mips3.r[4] = (INT32)val;	break;
-		case MIPS3_R5:		mips3.r[5] = (INT32)val;	break;
-		case MIPS3_R6:		mips3.r[6] = (INT32)val;	break;
-		case MIPS3_R7:		mips3.r[7] = (INT32)val;	break;
-		case MIPS3_R8:		mips3.r[8] = (INT32)val;	break;
-		case MIPS3_R9:		mips3.r[9] = (INT32)val;	break;
-		case MIPS3_R10:		mips3.r[10] = (INT32)val;	break;
-		case MIPS3_R11:		mips3.r[11] = (INT32)val;	break;
-		case MIPS3_R12:		mips3.r[12] = (INT32)val;	break;
-		case MIPS3_R13:		mips3.r[13] = (INT32)val;	break;
-		case MIPS3_R14:		mips3.r[14] = (INT32)val;	break;
-		case MIPS3_R15:		mips3.r[15] = (INT32)val;	break;
-		case MIPS3_R16:		mips3.r[16] = (INT32)val;	break;
-		case MIPS3_R17:		mips3.r[17] = (INT32)val;	break;
-		case MIPS3_R18:		mips3.r[18] = (INT32)val;	break;
-		case MIPS3_R19:		mips3.r[19] = (INT32)val;	break;
-		case MIPS3_R20:		mips3.r[20] = (INT32)val;	break;
-		case MIPS3_R21:		mips3.r[21] = (INT32)val;	break;
-		case MIPS3_R22:		mips3.r[22] = (INT32)val;	break;
-		case MIPS3_R23:		mips3.r[23] = (INT32)val;	break;
-		case MIPS3_R24:		mips3.r[24] = (INT32)val;	break;
-		case MIPS3_R25:		mips3.r[25] = (INT32)val;	break;
-		case MIPS3_R26:		mips3.r[26] = (INT32)val;	break;
-		case MIPS3_R27:		mips3.r[27] = (INT32)val;	break;
-		case MIPS3_R28:		mips3.r[28] = (INT32)val;	break;
-		case MIPS3_R29:		mips3.r[29] = (INT32)val;	break;
-		case MIPS3_R30:		mips3.r[30] = (INT32)val;	break;
-//		case REG_SP:
-		case MIPS3_R31:		mips3.r[31] = (INT32)val;	break;
-		case MIPS3_HI:		mips3.hi = (INT32)val;		break;
-		case MIPS3_LO:		mips3.lo = (INT32)val;		break;
-
-		case MIPS3_R0LO:	mips3.r[0] = (mips3.r[0] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R1LO:	mips3.r[1] = (mips3.r[1] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R2LO:	mips3.r[2] = (mips3.r[2] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R3LO:	mips3.r[3] = (mips3.r[3] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R4LO:	mips3.r[4] = (mips3.r[4] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R5LO:	mips3.r[5] = (mips3.r[5] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R6LO:	mips3.r[6] = (mips3.r[6] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R7LO:	mips3.r[7] = (mips3.r[7] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R8LO:	mips3.r[8] = (mips3.r[8] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R9LO:	mips3.r[9] = (mips3.r[9] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R10LO:	mips3.r[10] = (mips3.r[10] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R11LO:	mips3.r[11] = (mips3.r[11] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R12LO:	mips3.r[12] = (mips3.r[12] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R13LO:	mips3.r[13] = (mips3.r[13] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R14LO:	mips3.r[14] = (mips3.r[14] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R15LO:	mips3.r[15] = (mips3.r[15] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R16LO:	mips3.r[16] = (mips3.r[16] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R17LO:	mips3.r[17] = (mips3.r[17] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R18LO:	mips3.r[18] = (mips3.r[18] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R19LO:	mips3.r[19] = (mips3.r[19] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R20LO:	mips3.r[20] = (mips3.r[20] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R21LO:	mips3.r[21] = (mips3.r[21] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R22LO:	mips3.r[22] = (mips3.r[22] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R23LO:	mips3.r[23] = (mips3.r[23] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R24LO:	mips3.r[24] = (mips3.r[24] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R25LO:	mips3.r[25] = (mips3.r[25] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R26LO:	mips3.r[26] = (mips3.r[26] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R27LO:	mips3.r[27] = (mips3.r[27] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R28LO:	mips3.r[28] = (mips3.r[28] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R29LO:	mips3.r[29] = (mips3.r[29] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R30LO:	mips3.r[30] = (mips3.r[30] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_R31LO:	mips3.r[31] = (mips3.r[31] & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_HILO:	mips3.hi = (mips3.hi & ~((UINT64)0xffffffff)) | val;	break;
-		case MIPS3_LOLO:	mips3.lo = (mips3.lo & ~((UINT64)0xffffffff)) | val;	break;
-
-		case MIPS3_R0HI:	mips3.r[0] = (mips3.r[0] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R1HI:	mips3.r[1] = (mips3.r[1] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R2HI:	mips3.r[2] = (mips3.r[2] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R3HI:	mips3.r[3] = (mips3.r[3] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R4HI:	mips3.r[4] = (mips3.r[4] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R5HI:	mips3.r[5] = (mips3.r[5] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R6HI:	mips3.r[6] = (mips3.r[6] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R7HI:	mips3.r[7] = (mips3.r[7] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R8HI:	mips3.r[8] = (mips3.r[8] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R9HI:	mips3.r[9] = (mips3.r[9] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R10HI:	mips3.r[10] = (mips3.r[10] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R11HI:	mips3.r[11] = (mips3.r[11] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R12HI:	mips3.r[12] = (mips3.r[12] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R13HI:	mips3.r[13] = (mips3.r[13] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R14HI:	mips3.r[14] = (mips3.r[14] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R15HI:	mips3.r[15] = (mips3.r[15] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R16HI:	mips3.r[16] = (mips3.r[16] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R17HI:	mips3.r[17] = (mips3.r[17] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R18HI:	mips3.r[18] = (mips3.r[18] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R19HI:	mips3.r[19] = (mips3.r[19] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R20HI:	mips3.r[20] = (mips3.r[20] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R21HI:	mips3.r[21] = (mips3.r[21] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R22HI:	mips3.r[22] = (mips3.r[22] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R23HI:	mips3.r[23] = (mips3.r[23] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R24HI:	mips3.r[24] = (mips3.r[24] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R25HI:	mips3.r[25] = (mips3.r[25] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R26HI:	mips3.r[26] = (mips3.r[26] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R27HI:	mips3.r[27] = (mips3.r[27] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R28HI:	mips3.r[28] = (mips3.r[28] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R29HI:	mips3.r[29] = (mips3.r[29] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R30HI:	mips3.r[30] = (mips3.r[30] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_R31HI:	mips3.r[31] = (mips3.r[31] & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_HIHI:	mips3.hi = (mips3.hi & 0xffffffff) | ((UINT64)val << 32);	break;
-		case MIPS3_LOHI:	mips3.lo = (mips3.lo & 0xffffffff) | ((UINT64)val << 32);	break;
-
-		default:
-			if (regnum <= REG_SP_CONTENTS)
-			{
-//				unsigned offset = REG_SP_CONTENTS - regnum;
-//				if (offset < PC_STACK_DEPTH)
-//					mips3.pc_stack[offset] = val;
-			}
-    }
-}
-
-
 
 /*###################################################################################################
 **	DEBUGGER DEFINITIONS
@@ -5660,147 +5401,335 @@ static UINT8 mips3_win_layout[] =
 
 
 /*###################################################################################################
-**	DEBUGGER STRINGS
-**#################################################################################################*/
-
-const char *mips3_info(void *context, int regnum)
-{
-	static char buffer[16][47+1];
-	static int which = 0;
-	mips3_regs *r = context;
-
-	which = (which + 1) % 16;
-    buffer[which][0] = '\0';
-
-	if (!context)
-		r = &mips3;
-
-    switch( regnum )
-	{
-		case CPU_INFO_REG+MIPS3_PC:  	sprintf(buffer[which], "PC: %08X", r->pc); break;
-		case CPU_INFO_REG+MIPS3_SR:  	sprintf(buffer[which], "SR: %08X", (UINT32)r->cpr[0][COP0_Status]); break;
-		case CPU_INFO_REG+MIPS3_EPC:  	sprintf(buffer[which], "EPC:%08X", (UINT32)r->cpr[0][COP0_EPC]); break;
-		case CPU_INFO_REG+MIPS3_CAUSE: 	sprintf(buffer[which], "Cause:%08X", (UINT32)r->cpr[0][COP0_Cause]); break;
-		case CPU_INFO_REG+MIPS3_COUNT: 	sprintf(buffer[which], "Count:%08X", (UINT32)((activecpu_gettotalcycles64() - mips3.count_zero_time) / 2)); break;
-		case CPU_INFO_REG+MIPS3_COMPARE:sprintf(buffer[which], "Compare:%08X", (UINT32)r->cpr[0][COP0_Compare]); break;
-
-		case CPU_INFO_REG+MIPS3_R0:		sprintf(buffer[which], "R0: %08X%08X", (UINT32)(r->r[0] >> 32), (UINT32)r->r[0]); break;
-		case CPU_INFO_REG+MIPS3_R1:		sprintf(buffer[which], "R1: %08X%08X", (UINT32)(r->r[1] >> 32), (UINT32)r->r[1]); break;
-		case CPU_INFO_REG+MIPS3_R2:		sprintf(buffer[which], "R2: %08X%08X", (UINT32)(r->r[2] >> 32), (UINT32)r->r[2]); break;
-		case CPU_INFO_REG+MIPS3_R3:		sprintf(buffer[which], "R3: %08X%08X", (UINT32)(r->r[3] >> 32), (UINT32)r->r[3]); break;
-		case CPU_INFO_REG+MIPS3_R4:		sprintf(buffer[which], "R4: %08X%08X", (UINT32)(r->r[4] >> 32), (UINT32)r->r[4]); break;
-		case CPU_INFO_REG+MIPS3_R5:		sprintf(buffer[which], "R5: %08X%08X", (UINT32)(r->r[5] >> 32), (UINT32)r->r[5]); break;
-		case CPU_INFO_REG+MIPS3_R6:		sprintf(buffer[which], "R6: %08X%08X", (UINT32)(r->r[6] >> 32), (UINT32)r->r[6]); break;
-		case CPU_INFO_REG+MIPS3_R7:		sprintf(buffer[which], "R7: %08X%08X", (UINT32)(r->r[7] >> 32), (UINT32)r->r[7]); break;
-		case CPU_INFO_REG+MIPS3_R8:		sprintf(buffer[which], "R8: %08X%08X", (UINT32)(r->r[8] >> 32), (UINT32)r->r[8]); break;
-		case CPU_INFO_REG+MIPS3_R9:		sprintf(buffer[which], "R9: %08X%08X", (UINT32)(r->r[9] >> 32), (UINT32)r->r[9]); break;
-		case CPU_INFO_REG+MIPS3_R10:	sprintf(buffer[which], "R10:%08X%08X", (UINT32)(r->r[10] >> 32), (UINT32)r->r[10]); break;
-		case CPU_INFO_REG+MIPS3_R11:	sprintf(buffer[which], "R11:%08X%08X", (UINT32)(r->r[11] >> 32), (UINT32)r->r[11]); break;
-		case CPU_INFO_REG+MIPS3_R12:	sprintf(buffer[which], "R12:%08X%08X", (UINT32)(r->r[12] >> 32), (UINT32)r->r[12]); break;
-		case CPU_INFO_REG+MIPS3_R13:	sprintf(buffer[which], "R13:%08X%08X", (UINT32)(r->r[13] >> 32), (UINT32)r->r[13]); break;
-		case CPU_INFO_REG+MIPS3_R14:	sprintf(buffer[which], "R14:%08X%08X", (UINT32)(r->r[14] >> 32), (UINT32)r->r[14]); break;
-		case CPU_INFO_REG+MIPS3_R15:	sprintf(buffer[which], "R15:%08X%08X", (UINT32)(r->r[15] >> 32), (UINT32)r->r[15]); break;
-		case CPU_INFO_REG+MIPS3_R16:	sprintf(buffer[which], "R16:%08X%08X", (UINT32)(r->r[16] >> 32), (UINT32)r->r[16]); break;
-		case CPU_INFO_REG+MIPS3_R17:	sprintf(buffer[which], "R17:%08X%08X", (UINT32)(r->r[17] >> 32), (UINT32)r->r[17]); break;
-		case CPU_INFO_REG+MIPS3_R18:	sprintf(buffer[which], "R18:%08X%08X", (UINT32)(r->r[18] >> 32), (UINT32)r->r[18]); break;
-		case CPU_INFO_REG+MIPS3_R19:	sprintf(buffer[which], "R19:%08X%08X", (UINT32)(r->r[19] >> 32), (UINT32)r->r[19]); break;
-		case CPU_INFO_REG+MIPS3_R20:	sprintf(buffer[which], "R20:%08X%08X", (UINT32)(r->r[20] >> 32), (UINT32)r->r[20]); break;
-		case CPU_INFO_REG+MIPS3_R21:	sprintf(buffer[which], "R21:%08X%08X", (UINT32)(r->r[21] >> 32), (UINT32)r->r[21]); break;
-		case CPU_INFO_REG+MIPS3_R22:	sprintf(buffer[which], "R22:%08X%08X", (UINT32)(r->r[22] >> 32), (UINT32)r->r[22]); break;
-		case CPU_INFO_REG+MIPS3_R23:	sprintf(buffer[which], "R23:%08X%08X", (UINT32)(r->r[23] >> 32), (UINT32)r->r[23]); break;
-		case CPU_INFO_REG+MIPS3_R24:	sprintf(buffer[which], "R24:%08X%08X", (UINT32)(r->r[24] >> 32), (UINT32)r->r[24]); break;
-		case CPU_INFO_REG+MIPS3_R25:	sprintf(buffer[which], "R25:%08X%08X", (UINT32)(r->r[25] >> 32), (UINT32)r->r[25]); break;
-		case CPU_INFO_REG+MIPS3_R26:	sprintf(buffer[which], "R26:%08X%08X", (UINT32)(r->r[26] >> 32), (UINT32)r->r[26]); break;
-		case CPU_INFO_REG+MIPS3_R27:	sprintf(buffer[which], "R27:%08X%08X", (UINT32)(r->r[27] >> 32), (UINT32)r->r[27]); break;
-		case CPU_INFO_REG+MIPS3_R28:	sprintf(buffer[which], "R28:%08X%08X", (UINT32)(r->r[28] >> 32), (UINT32)r->r[28]); break;
-		case CPU_INFO_REG+MIPS3_R29:	sprintf(buffer[which], "R29:%08X%08X", (UINT32)(r->r[29] >> 32), (UINT32)r->r[29]); break;
-		case CPU_INFO_REG+MIPS3_R30:	sprintf(buffer[which], "R30:%08X%08X", (UINT32)(r->r[30] >> 32), (UINT32)r->r[30]); break;
-		case CPU_INFO_REG+MIPS3_R31:	sprintf(buffer[which], "R31:%08X%08X", (UINT32)(r->r[31] >> 32), (UINT32)r->r[31]); break;
-		case CPU_INFO_REG+MIPS3_HI:		sprintf(buffer[which], "HI: %08X%08X", (UINT32)(r->hi >> 32), (UINT32)r->hi); break;
-		case CPU_INFO_REG+MIPS3_LO:		sprintf(buffer[which], "LO: %08X%08X", (UINT32)(r->lo >> 32), (UINT32)r->lo); break;
-
-		case CPU_INFO_NAME: return "MIPS III";
-		case CPU_INFO_FAMILY: return r->bigendian ? "MIPS III (big-endian)" : "MIPS III (little-endian)";
-		case CPU_INFO_VERSION: return "1.0";
-		case CPU_INFO_FILE: return __FILE__;
-		case CPU_INFO_CREDITS: return "Copyright (C) Aaron Giles 2000-2002";
-		case CPU_INFO_REG_LAYOUT: return (const char *)mips3_reg_layout;
-		case CPU_INFO_WIN_LAYOUT: return (const char *)mips3_win_layout;
-		case CPU_INFO_REG+10000: return "         ";
-    }
-	return buffer[which];
-}
-
-
-const char *r4600_info(void *context, int regnum)
-{
-	static char buffer[16][47+1];
-	static int which = 0;
-	mips3_regs *r = context;
-
-	which = (which + 1) % 16;
-    buffer[which][0] = '\0';
-
-	if (!context)
-		r = &mips3;
-
-    switch( regnum )
-	{
-		case CPU_INFO_NAME: return "R4600";
-		case CPU_INFO_FAMILY: return r->bigendian ? "MIPS R4600 (big-endian)" : "MIPS R4600 (little-endian)";
-		default: return mips3_info(context, regnum);
-    }
-	return buffer[which];
-}
-
-
-const char *r5000_info(void *context, int regnum)
-{
-	static char buffer[16][47+1];
-	static int which = 0;
-	mips3_regs *r = context;
-
-	which = (which + 1) % 16;
-    buffer[which][0] = '\0';
-
-	if (!context)
-		r = &mips3;
-
-    switch( regnum )
-	{
-		case CPU_INFO_NAME: return "R5000";
-		case CPU_INFO_FAMILY: return r->bigendian ? "MIPS R5000 (big-endian)" : "MIPS R5000 (little-endian)";
-		default: return mips3_info(context, regnum);
-    }
-	return buffer[which];
-}
-
-
-
-/*###################################################################################################
 **	DISASSEMBLY HOOK
 **#################################################################################################*/
 
-unsigned mips3_dasm(char *buffer, unsigned pc)
+static offs_t mips3_dasm(char *buffer, offs_t pc)
 {
 #ifdef MAME_DEBUG
 	extern unsigned dasmmips3(char *, unsigned);
 	unsigned result;
-	if (mips3.bigendian)
-		change_pc32bedw(pc);
-	else
-		change_pc32ledw(pc);
+	change_pc(pc);
     result = dasmmips3(buffer, pc);
-	if (mips3.bigendian)
-		change_pc32bedw(mips3.pc);
-	else
-		change_pc32ledw(mips3.pc);
+	change_pc(mips3.pc);
     return result;
 #else
 	sprintf(buffer, "$%04X", cpu_readop32(pc));
 	return 4;
 #endif
 }
+
+
+/**************************************************************************
+ * Generic set_info
+ **************************************************************************/
+
+static void mips3_set_info(UINT32 state, union cpuinfo *info)
+{
+	switch (state)
+	{
+		/* --- the following bits of info are set as 64-bit signed integers --- */
+		case CPUINFO_INT_IRQ_STATE + MIPS3_IRQ0:		set_irq_line(MIPS3_IRQ0, info->i);		break;
+		case CPUINFO_INT_IRQ_STATE + MIPS3_IRQ1:		set_irq_line(MIPS3_IRQ1, info->i);		break;
+		case CPUINFO_INT_IRQ_STATE + MIPS3_IRQ2:		set_irq_line(MIPS3_IRQ2, info->i);		break;
+		case CPUINFO_INT_IRQ_STATE + MIPS3_IRQ3:		set_irq_line(MIPS3_IRQ3, info->i);		break;
+		case CPUINFO_INT_IRQ_STATE + MIPS3_IRQ4:		set_irq_line(MIPS3_IRQ4, info->i);		break;
+		case CPUINFO_INT_IRQ_STATE + MIPS3_IRQ5:		set_irq_line(MIPS3_IRQ5, info->i);		break;
+
+		case CPUINFO_INT_PC:
+		case CPUINFO_INT_REGISTER + MIPS3_PC:			mips3.pc = info->i;						break;
+		case CPUINFO_INT_REGISTER + MIPS3_SR:			mips3.cpr[0][COP0_Status] = info->i; 	break;
+		case CPUINFO_INT_REGISTER + MIPS3_EPC:			mips3.cpr[0][COP0_EPC] = info->i; 		break;
+		case CPUINFO_INT_REGISTER + MIPS3_CAUSE:		mips3.cpr[0][COP0_Cause] = info->i;		break;
+		case CPUINFO_INT_REGISTER + MIPS3_COUNT:		mips3.cpr[0][COP0_Count] = info->i; 	break;
+		case CPUINFO_INT_REGISTER + MIPS3_COMPARE:		mips3.cpr[0][COP0_Compare] = info->i; 	break;
+
+		case CPUINFO_INT_REGISTER + MIPS3_R0:			mips3.r[0] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R1:			mips3.r[1] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R2:			mips3.r[2] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R3:			mips3.r[3] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R4:			mips3.r[4] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R5:			mips3.r[5] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R6:			mips3.r[6] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R7:			mips3.r[7] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R8:			mips3.r[8] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R9:			mips3.r[9] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R10:			mips3.r[10] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R11:			mips3.r[11] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R12:			mips3.r[12] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R13:			mips3.r[13] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R14:			mips3.r[14] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R15:			mips3.r[15] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R16:			mips3.r[16] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R17:			mips3.r[17] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R18:			mips3.r[18] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R19:			mips3.r[19] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R20:			mips3.r[20] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R21:			mips3.r[21] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R22:			mips3.r[22] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R23:			mips3.r[23] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R24:			mips3.r[24] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R25:			mips3.r[25] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R26:			mips3.r[26] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R27:			mips3.r[27] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R28:			mips3.r[28] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R29:			mips3.r[29] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R30:			mips3.r[30] = info->i;					break;
+		case CPUINFO_INT_SP:	
+		case CPUINFO_INT_REGISTER + MIPS3_R31:			mips3.r[31] = info->i;					break;
+		case CPUINFO_INT_REGISTER + MIPS3_HI:			mips3.hi = info->i;						break;
+		case CPUINFO_INT_REGISTER + MIPS3_LO:			mips3.lo = info->i;						break;
+		
+		case CPUINFO_INT_MIPS3_DRC_OPTIONS:				mips3.drcoptions = info->i;				break;
+		
+		/* --- the following bits of info are set as pointers to data or functions --- */
+		case CPUINFO_PTR_IRQ_CALLBACK:					mips3.irq_callback = info->irqcallback;	break;
+	}
+}
+
+
+
+/**************************************************************************
+ * Generic get_info
+ **************************************************************************/
+
+void mips3_get_info(UINT32 state, union cpuinfo *info)
+{
+	switch (state)
+	{
+		/* --- the following bits of info are returned as 64-bit signed integers --- */
+		case CPUINFO_INT_CONTEXT_SIZE:					info->i = sizeof(mips3);				break;
+		case CPUINFO_INT_IRQ_LINES:						info->i = 6;							break;
+		case CPUINFO_INT_DEFAULT_IRQ_VECTOR:			info->i = 0;							break;
+		case CPUINFO_INT_ENDIANNESS:					info->i = CPU_IS_LE;					break;
+		case CPUINFO_INT_CLOCK_DIVIDER:					info->i = 1;							break;
+		case CPUINFO_INT_MIN_INSTRUCTION_BYTES:			info->i = 4;							break;
+		case CPUINFO_INT_MAX_INSTRUCTION_BYTES:			info->i = 4;							break;
+		case CPUINFO_INT_MIN_CYCLES:					info->i = 1;							break;
+		case CPUINFO_INT_MAX_CYCLES:					info->i = 40;							break;
+		
+		case CPUINFO_INT_DATABUS_WIDTH + ADDRESS_SPACE_PROGRAM:	info->i = 32;					break;
+		case CPUINFO_INT_ADDRBUS_WIDTH + ADDRESS_SPACE_PROGRAM: info->i = 32;					break;
+		case CPUINFO_INT_ADDRBUS_SHIFT + ADDRESS_SPACE_PROGRAM: info->i = 0;					break;
+		case CPUINFO_INT_DATABUS_WIDTH + ADDRESS_SPACE_DATA:	info->i = 0;					break;
+		case CPUINFO_INT_ADDRBUS_WIDTH + ADDRESS_SPACE_DATA: 	info->i = 0;					break;
+		case CPUINFO_INT_ADDRBUS_SHIFT + ADDRESS_SPACE_DATA: 	info->i = 0;					break;
+		case CPUINFO_INT_DATABUS_WIDTH + ADDRESS_SPACE_IO:		info->i = 0;					break;
+		case CPUINFO_INT_ADDRBUS_WIDTH + ADDRESS_SPACE_IO: 		info->i = 0;					break;
+		case CPUINFO_INT_ADDRBUS_SHIFT + ADDRESS_SPACE_IO: 		info->i = 0;					break;
+
+		case CPUINFO_INT_IRQ_STATE + MIPS3_IRQ0:		info->i = (mips3.cpr[0][COP0_Cause] & 0x400) ? ASSERT_LINE : CLEAR_LINE;	break;
+		case CPUINFO_INT_IRQ_STATE + MIPS3_IRQ1:		info->i = (mips3.cpr[0][COP0_Cause] & 0x800) ? ASSERT_LINE : CLEAR_LINE;	break;
+		case CPUINFO_INT_IRQ_STATE + MIPS3_IRQ2:		info->i = (mips3.cpr[0][COP0_Cause] & 0x1000) ? ASSERT_LINE : CLEAR_LINE;	break;
+		case CPUINFO_INT_IRQ_STATE + MIPS3_IRQ3:		info->i = (mips3.cpr[0][COP0_Cause] & 0x2000) ? ASSERT_LINE : CLEAR_LINE;	break;
+		case CPUINFO_INT_IRQ_STATE + MIPS3_IRQ4:		info->i = (mips3.cpr[0][COP0_Cause] & 0x4000) ? ASSERT_LINE : CLEAR_LINE;	break;
+		case CPUINFO_INT_IRQ_STATE + MIPS3_IRQ5:		info->i = (mips3.cpr[0][COP0_Cause] & 0x8000) ? ASSERT_LINE : CLEAR_LINE;	break;
+
+		case CPUINFO_INT_PREVIOUSPC:					/* not implemented */					break;
+
+		case CPUINFO_INT_PC:
+		case CPUINFO_INT_REGISTER + MIPS3_PC:			info->i = mips3.pc;						break;
+		case CPUINFO_INT_REGISTER + MIPS3_SR:			info->i = mips3.cpr[0][COP0_Status];	break;
+		case CPUINFO_INT_REGISTER + MIPS3_EPC:			info->i = mips3.cpr[0][COP0_EPC];		break;
+		case CPUINFO_INT_REGISTER + MIPS3_CAUSE:		info->i = mips3.cpr[0][COP0_Cause];		break;
+		case CPUINFO_INT_REGISTER + MIPS3_COUNT:		info->i = ((activecpu_gettotalcycles64() - mips3.count_zero_time) / 2); break;
+		case CPUINFO_INT_REGISTER + MIPS3_COMPARE:		info->i = mips3.cpr[0][COP0_Compare];	break;
+
+		case CPUINFO_INT_REGISTER + MIPS3_R0:			info->i = mips3.r[0];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R1:			info->i = mips3.r[1];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R2:			info->i = mips3.r[2];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R3:			info->i = mips3.r[3];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R4:			info->i = mips3.r[4];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R5:			info->i = mips3.r[5];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R6:			info->i = mips3.r[6];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R7:			info->i = mips3.r[7];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R8:			info->i = mips3.r[8];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R9:			info->i = mips3.r[9];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R10:			info->i = mips3.r[10];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R11:			info->i = mips3.r[11];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R12:			info->i = mips3.r[12];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R13:			info->i = mips3.r[13];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R14:			info->i = mips3.r[14];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R15:			info->i = mips3.r[15];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R16:			info->i = mips3.r[16];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R17:			info->i = mips3.r[17];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R18:			info->i = mips3.r[18];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R19:			info->i = mips3.r[19];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R20:			info->i = mips3.r[20];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R21:			info->i = mips3.r[21];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R22:			info->i = mips3.r[22];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R23:			info->i = mips3.r[23];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R24:			info->i = mips3.r[24];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R25:			info->i = mips3.r[25];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R26:			info->i = mips3.r[26];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R27:			info->i = mips3.r[27];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R28:			info->i = mips3.r[28];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R29:			info->i = mips3.r[29];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_R30:			info->i = mips3.r[30];					break;
+		case CPUINFO_INT_SP:
+		case CPUINFO_INT_REGISTER + MIPS3_R31:			info->i = mips3.r[31];					break;
+		case CPUINFO_INT_REGISTER + MIPS3_HI:			info->i = mips3.hi;						break;
+		case CPUINFO_INT_REGISTER + MIPS3_LO:			info->i = mips3.lo;						break;
+
+		/* --- the following bits of info are returned as pointers to data or functions --- */
+		case CPUINFO_PTR_SET_INFO:						info->setinfo = mips3_set_info;			break;
+		case CPUINFO_PTR_GET_CONTEXT:					info->getcontext = mips3_get_context;	break;
+		case CPUINFO_PTR_SET_CONTEXT:					info->setcontext = mips3_set_context;	break;
+		case CPUINFO_PTR_INIT:							info->init = mips3_init;				break;
+		case CPUINFO_PTR_RESET:							/* provided per-CPU */					break;
+		case CPUINFO_PTR_EXIT:							info->exit = mips3_exit;				break;
+		case CPUINFO_PTR_EXECUTE:						info->execute = mips3_execute;			break;
+		case CPUINFO_PTR_BURN:							info->burn = NULL;						break;
+		case CPUINFO_PTR_DISASSEMBLE:					info->disassemble = mips3_dasm;			break;
+		case CPUINFO_PTR_IRQ_CALLBACK:					info->irqcallback = mips3.irq_callback;	break;
+		case CPUINFO_PTR_INSTRUCTION_COUNTER:			info->icount = &mips3_icount;			break;
+		case CPUINFO_PTR_REGISTER_LAYOUT:				info->p = mips3_reg_layout;				break;
+		case CPUINFO_PTR_WINDOW_LAYOUT:					info->p = mips3_win_layout;				break;
+
+		/* --- the following bits of info are returned as NULL-terminated strings --- */
+		case CPUINFO_STR_NAME:							strcpy(info->s = cpuintrf_temp_str(), "MIPS III"); break;
+		case CPUINFO_STR_CORE_FAMILY:					strcpy(info->s = cpuintrf_temp_str(), "MIPS III"); break;
+		case CPUINFO_STR_CORE_VERSION:					strcpy(info->s = cpuintrf_temp_str(), "1.0"); break;
+		case CPUINFO_STR_CORE_FILE:						strcpy(info->s = cpuintrf_temp_str(), __FILE__); break;
+		case CPUINFO_STR_CORE_CREDITS:					strcpy(info->s = cpuintrf_temp_str(), "Copyright (C) Aaron Giles 2000-2004"); break;
+
+		case CPUINFO_STR_FLAGS:							strcpy(info->s = cpuintrf_temp_str(), " "); break;
+
+		case CPUINFO_STR_REGISTER + MIPS3_PC:			sprintf(info->s = cpuintrf_temp_str(), "PC: %08X", mips3.pc); break;
+		case CPUINFO_STR_REGISTER + MIPS3_SR:			sprintf(info->s = cpuintrf_temp_str(), "SR: %08X", (UINT32)mips3.cpr[0][COP0_Status]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_EPC:			sprintf(info->s = cpuintrf_temp_str(), "EPC:%08X", (UINT32)mips3.cpr[0][COP0_EPC]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_CAUSE: 		sprintf(info->s = cpuintrf_temp_str(), "Cause:%08X", (UINT32)mips3.cpr[0][COP0_Cause]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_COUNT: 		sprintf(info->s = cpuintrf_temp_str(), "Count:%08X", (UINT32)((activecpu_gettotalcycles64() - mips3.count_zero_time) / 2)); break;
+		case CPUINFO_STR_REGISTER + MIPS3_COMPARE:		sprintf(info->s = cpuintrf_temp_str(), "Compare:%08X", (UINT32)mips3.cpr[0][COP0_Compare]); break;
+
+		case CPUINFO_STR_REGISTER + MIPS3_R0:			sprintf(info->s = cpuintrf_temp_str(), "R0: %08X%08X", (UINT32)(mips3.r[0] >> 32), (UINT32)mips3.r[0]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R1:			sprintf(info->s = cpuintrf_temp_str(), "R1: %08X%08X", (UINT32)(mips3.r[1] >> 32), (UINT32)mips3.r[1]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R2:			sprintf(info->s = cpuintrf_temp_str(), "R2: %08X%08X", (UINT32)(mips3.r[2] >> 32), (UINT32)mips3.r[2]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R3:			sprintf(info->s = cpuintrf_temp_str(), "R3: %08X%08X", (UINT32)(mips3.r[3] >> 32), (UINT32)mips3.r[3]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R4:			sprintf(info->s = cpuintrf_temp_str(), "R4: %08X%08X", (UINT32)(mips3.r[4] >> 32), (UINT32)mips3.r[4]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R5:			sprintf(info->s = cpuintrf_temp_str(), "R5: %08X%08X", (UINT32)(mips3.r[5] >> 32), (UINT32)mips3.r[5]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R6:			sprintf(info->s = cpuintrf_temp_str(), "R6: %08X%08X", (UINT32)(mips3.r[6] >> 32), (UINT32)mips3.r[6]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R7:			sprintf(info->s = cpuintrf_temp_str(), "R7: %08X%08X", (UINT32)(mips3.r[7] >> 32), (UINT32)mips3.r[7]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R8:			sprintf(info->s = cpuintrf_temp_str(), "R8: %08X%08X", (UINT32)(mips3.r[8] >> 32), (UINT32)mips3.r[8]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R9:			sprintf(info->s = cpuintrf_temp_str(), "R9: %08X%08X", (UINT32)(mips3.r[9] >> 32), (UINT32)mips3.r[9]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R10:			sprintf(info->s = cpuintrf_temp_str(), "R10:%08X%08X", (UINT32)(mips3.r[10] >> 32), (UINT32)mips3.r[10]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R11:			sprintf(info->s = cpuintrf_temp_str(), "R11:%08X%08X", (UINT32)(mips3.r[11] >> 32), (UINT32)mips3.r[11]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R12:			sprintf(info->s = cpuintrf_temp_str(), "R12:%08X%08X", (UINT32)(mips3.r[12] >> 32), (UINT32)mips3.r[12]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R13:			sprintf(info->s = cpuintrf_temp_str(), "R13:%08X%08X", (UINT32)(mips3.r[13] >> 32), (UINT32)mips3.r[13]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R14:			sprintf(info->s = cpuintrf_temp_str(), "R14:%08X%08X", (UINT32)(mips3.r[14] >> 32), (UINT32)mips3.r[14]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R15:			sprintf(info->s = cpuintrf_temp_str(), "R15:%08X%08X", (UINT32)(mips3.r[15] >> 32), (UINT32)mips3.r[15]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R16:			sprintf(info->s = cpuintrf_temp_str(), "R16:%08X%08X", (UINT32)(mips3.r[16] >> 32), (UINT32)mips3.r[16]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R17:			sprintf(info->s = cpuintrf_temp_str(), "R17:%08X%08X", (UINT32)(mips3.r[17] >> 32), (UINT32)mips3.r[17]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R18:			sprintf(info->s = cpuintrf_temp_str(), "R18:%08X%08X", (UINT32)(mips3.r[18] >> 32), (UINT32)mips3.r[18]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R19:			sprintf(info->s = cpuintrf_temp_str(), "R19:%08X%08X", (UINT32)(mips3.r[19] >> 32), (UINT32)mips3.r[19]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R20:			sprintf(info->s = cpuintrf_temp_str(), "R20:%08X%08X", (UINT32)(mips3.r[20] >> 32), (UINT32)mips3.r[20]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R21:			sprintf(info->s = cpuintrf_temp_str(), "R21:%08X%08X", (UINT32)(mips3.r[21] >> 32), (UINT32)mips3.r[21]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R22:			sprintf(info->s = cpuintrf_temp_str(), "R22:%08X%08X", (UINT32)(mips3.r[22] >> 32), (UINT32)mips3.r[22]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R23:			sprintf(info->s = cpuintrf_temp_str(), "R23:%08X%08X", (UINT32)(mips3.r[23] >> 32), (UINT32)mips3.r[23]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R24:			sprintf(info->s = cpuintrf_temp_str(), "R24:%08X%08X", (UINT32)(mips3.r[24] >> 32), (UINT32)mips3.r[24]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R25:			sprintf(info->s = cpuintrf_temp_str(), "R25:%08X%08X", (UINT32)(mips3.r[25] >> 32), (UINT32)mips3.r[25]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R26:			sprintf(info->s = cpuintrf_temp_str(), "R26:%08X%08X", (UINT32)(mips3.r[26] >> 32), (UINT32)mips3.r[26]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R27:			sprintf(info->s = cpuintrf_temp_str(), "R27:%08X%08X", (UINT32)(mips3.r[27] >> 32), (UINT32)mips3.r[27]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R28:			sprintf(info->s = cpuintrf_temp_str(), "R28:%08X%08X", (UINT32)(mips3.r[28] >> 32), (UINT32)mips3.r[28]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R29:			sprintf(info->s = cpuintrf_temp_str(), "R29:%08X%08X", (UINT32)(mips3.r[29] >> 32), (UINT32)mips3.r[29]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R30:			sprintf(info->s = cpuintrf_temp_str(), "R30:%08X%08X", (UINT32)(mips3.r[30] >> 32), (UINT32)mips3.r[30]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_R31:			sprintf(info->s = cpuintrf_temp_str(), "R31:%08X%08X", (UINT32)(mips3.r[31] >> 32), (UINT32)mips3.r[31]); break;
+		case CPUINFO_STR_REGISTER + MIPS3_HI:			sprintf(info->s = cpuintrf_temp_str(), "HI: %08X%08X", (UINT32)(mips3.hi >> 32), (UINT32)mips3.hi); break;
+		case CPUINFO_STR_REGISTER + MIPS3_LO:			sprintf(info->s = cpuintrf_temp_str(), "LO: %08X%08X", (UINT32)(mips3.lo >> 32), (UINT32)mips3.lo); break;
+	}
+}
+
+
+#if (HAS_R4600)
+/**************************************************************************
+ * CPU-specific set_info
+ **************************************************************************/
+
+void r4600be_get_info(UINT32 state, union cpuinfo *info)
+{
+	switch (state)
+	{
+		/* --- the following bits of info are returned as 64-bit signed integers --- */
+		case CPUINFO_INT_ENDIANNESS:					info->i = CPU_IS_BE;					break;
+
+		/* --- the following bits of info are returned as pointers to data or functions --- */
+		case CPUINFO_PTR_RESET:							info->reset = r4600be_reset;			break;
+
+		/* --- the following bits of info are returned as NULL-terminated strings --- */
+		case CPUINFO_STR_NAME:							strcpy(info->s = cpuintrf_temp_str(), "R4600 (big)"); break;
+
+		default:
+			mips3_get_info(state, info);
+			break;
+	}
+}
+
+
+void r4600le_get_info(UINT32 state, union cpuinfo *info)
+{
+	switch (state)
+	{
+		/* --- the following bits of info are returned as 64-bit signed integers --- */
+		case CPUINFO_INT_ENDIANNESS:					info->i = CPU_IS_LE;					break;
+
+		/* --- the following bits of info are returned as pointers to data or functions --- */
+		case CPUINFO_PTR_RESET:							info->reset = r4600le_reset;			break;
+
+		/* --- the following bits of info are returned as NULL-terminated strings --- */
+		case CPUINFO_STR_NAME:							strcpy(info->s = cpuintrf_temp_str(), "R4600 (little)"); break;
+
+		default:
+			mips3_get_info(state, info);
+			break;
+	}
+}
+#endif
+
+
+#if (HAS_R5000)
+/**************************************************************************
+ * CPU-specific set_info
+ **************************************************************************/
+
+void r5000be_get_info(UINT32 state, union cpuinfo *info)
+{
+	switch (state)
+	{
+		/* --- the following bits of info are returned as 64-bit signed integers --- */
+		case CPUINFO_INT_ENDIANNESS:					info->i = CPU_IS_BE;					break;
+
+		/* --- the following bits of info are returned as pointers to data or functions --- */
+		case CPUINFO_PTR_RESET:							info->reset = r5000be_reset;			break;
+
+		/* --- the following bits of info are returned as NULL-terminated strings --- */
+		case CPUINFO_STR_NAME:							strcpy(info->s = cpuintrf_temp_str(), "R5000 (big)"); break;
+
+		default:
+			mips3_get_info(state, info);
+			break;
+	}
+}
+
+
+void r5000le_get_info(UINT32 state, union cpuinfo *info)
+{
+	switch (state)
+	{
+		/* --- the following bits of info are returned as 64-bit signed integers --- */
+		case CPUINFO_INT_ENDIANNESS:					info->i = CPU_IS_LE;					break;
+
+		/* --- the following bits of info are returned as pointers to data or functions --- */
+		case CPUINFO_PTR_RESET:							info->reset = r5000le_reset;			break;
+
+		/* --- the following bits of info are returned as NULL-terminated strings --- */
+		case CPUINFO_STR_NAME:							strcpy(info->s = cpuintrf_temp_str(), "R5000 (little)"); break;
+
+		default:
+			mips3_get_info(state, info);
+			break;
+	}
+}
+#endif
 
 #pragma code_seg()
 #pragma data_seg()

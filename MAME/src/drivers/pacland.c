@@ -40,14 +40,20 @@ f000-ffff MCU internal ROM
 #include "cpu/m6800/m6800.h"
 
 
-static unsigned char *sharedram1;
+static UINT8 *sharedram1;
 
-WRITE_HANDLER( pacland_scroll0_w );
-WRITE_HANDLER( pacland_scroll1_w );
-WRITE_HANDLER( pacland_bankswitch_w );
-PALETTE_INIT( pacland );
-VIDEO_START( pacland );
-VIDEO_UPDATE( pacland );
+extern UINT8 *pacland_videoram2;
+
+extern WRITE_HANDLER( pacland_videoram_w );
+extern WRITE_HANDLER( pacland_videoram2_w );
+extern WRITE_HANDLER( pacland_scroll0_w );
+extern WRITE_HANDLER( pacland_scroll1_w );
+extern WRITE_HANDLER( pacland_bankswitch_w );
+extern WRITE_HANDLER( pacland_flipscreen_w );
+
+extern PALETTE_INIT( pacland );
+extern VIDEO_START( pacland );
+extern VIDEO_UPDATE( pacland );
 
 
 static READ_HANDLER( sharedram1_r )
@@ -103,63 +109,64 @@ static WRITE_HANDLER( pacland_led_w )
 }
 
 
-static MEMORY_READ_START( readmem )
-	{ 0x0000, 0x1fff, videoram_r },
-	{ 0x2000, 0x37ff, MRA_RAM },
-	{ 0x4000, 0x5fff, MRA_BANK1 },
-	{ 0x6800, 0x68ff, namcos1_wavedata_r },		/* PSG device, shared RAM */
-	{ 0x6800, 0x6bff, sharedram1_r },
-	{ 0x7800, 0x7800, MRA_NOP },	/* ??? */
-	{ 0x8000, 0xffff, MRA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x1fff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x2000, 0x37ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x4000, 0x5fff) AM_READ(MRA8_BANK1)
+	AM_RANGE(0x6800, 0x68ff) AM_READ(namcos1_wavedata_r)		/* PSG device, shared RAM */
+	AM_RANGE(0x6800, 0x6bff) AM_READ(sharedram1_r)
+	AM_RANGE(0x7800, 0x7800) AM_READ(MRA8_NOP)	/* ??? */
+	AM_RANGE(0x8000, 0xffff) AM_READ(MRA8_ROM)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( writemem )
-	{ 0x0000, 0x1fff, videoram_w, &videoram, &videoram_size },
-	{ 0x2000, 0x37ff, MWA_RAM },
-	{ 0x2700, 0x27ff, MWA_RAM, &spriteram, &spriteram_size },
-	{ 0x2f00, 0x2fff, MWA_RAM, &spriteram_2 },
-	{ 0x3700, 0x37ff, MWA_RAM, &spriteram_3 },
-	{ 0x3800, 0x3801, pacland_scroll0_w },
-	{ 0x3a00, 0x3a01, pacland_scroll1_w },
-	{ 0x3c00, 0x3c00, pacland_bankswitch_w },
-	{ 0x4000, 0x5fff, MWA_ROM },
-	{ 0x6800, 0x68ff, namcos1_wavedata_w }, /* PSG device, shared RAM */
-	{ 0x6800, 0x6bff, sharedram1_w, &sharedram1 },
-	{ 0x7000, 0x7000, MWA_NOP },	/* ??? */
-	{ 0x7800, 0x7800, MWA_NOP },	/* ??? */
-	{ 0x8000, 0x8800, pacland_halt_mcu_w },
-	{ 0x9800, 0x9800, MWA_NOP },	/* ??? */
-	{ 0x8000, 0xffff, MWA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x0fff) AM_WRITE(pacland_videoram_w) AM_BASE(&videoram)
+	AM_RANGE(0x1000, 0x1fff) AM_WRITE(pacland_videoram2_w) AM_BASE(&pacland_videoram2)
+	AM_RANGE(0x2000, 0x37ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x2700, 0x27ff) AM_WRITE(MWA8_RAM) AM_BASE(&spriteram) AM_SIZE(&spriteram_size)
+	AM_RANGE(0x2f00, 0x2fff) AM_WRITE(MWA8_RAM) AM_BASE(&spriteram_2)
+	AM_RANGE(0x3700, 0x37ff) AM_WRITE(MWA8_RAM) AM_BASE(&spriteram_3)
+	AM_RANGE(0x3800, 0x3801) AM_WRITE(pacland_scroll0_w)
+	AM_RANGE(0x3a00, 0x3a01) AM_WRITE(pacland_scroll1_w)
+	AM_RANGE(0x3c00, 0x3c00) AM_WRITE(pacland_bankswitch_w)
+	AM_RANGE(0x4000, 0x5fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x6800, 0x68ff) AM_WRITE(namcos1_wavedata_w) /* PSG device, shared RAM */
+	AM_RANGE(0x6800, 0x6bff) AM_WRITE(sharedram1_w) AM_BASE(&sharedram1)
+	AM_RANGE(0x7000, 0x7000) AM_WRITE(MWA8_NOP)	/* ??? */
+	AM_RANGE(0x7800, 0x7800) AM_WRITE(MWA8_NOP)	/* ??? */
+	AM_RANGE(0x8000, 0x8800) AM_WRITE(pacland_halt_mcu_w)
+	AM_RANGE(0x9000, 0x9800) AM_WRITE(pacland_flipscreen_w)
+	//AM_RANGE(0x8000, 0xffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
-static MEMORY_READ_START( mcu_readmem )
-	{ 0x0000, 0x001f, hd63701_internal_registers_r },
-	{ 0x0080, 0x00ff, MRA_RAM },
-	{ 0x1000, 0x10ff, namcos1_wavedata_r },			/* PSG device, shared RAM */
-	{ 0x1100, 0x113f, MRA_RAM }, /* PSG device */
-	{ 0x1000, 0x13ff, sharedram1_r },
-	{ 0x8000, 0x9fff, MRA_ROM },
-	{ 0xc000, 0xc800, MRA_RAM },
-	{ 0xd000, 0xd000, dsw0_r },
-	{ 0xd000, 0xd001, dsw1_r },
-	{ 0xd000, 0xd002, input_port_2_r },
-	{ 0xd000, 0xd003, input_port_3_r },
-	{ 0xf000, 0xffff, MRA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( mcu_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x001f) AM_READ(hd63701_internal_registers_r)
+	AM_RANGE(0x0080, 0x00ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x1000, 0x10ff) AM_READ(namcos1_wavedata_r)			/* PSG device, shared RAM */
+	AM_RANGE(0x1100, 0x113f) AM_READ(MRA8_RAM) /* PSG device */
+	AM_RANGE(0x1000, 0x13ff) AM_READ(sharedram1_r)
+	AM_RANGE(0x8000, 0x9fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0xc000, 0xc800) AM_READ(MRA8_RAM)
+	AM_RANGE(0xd000, 0xd000) AM_READ(dsw0_r)
+	AM_RANGE(0xd000, 0xd001) AM_READ(dsw1_r)
+	AM_RANGE(0xd000, 0xd002) AM_READ(input_port_2_r)
+	AM_RANGE(0xd000, 0xd003) AM_READ(input_port_3_r)
+	AM_RANGE(0xf000, 0xffff) AM_READ(MRA8_ROM)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( mcu_writemem )
-	{ 0x0000, 0x001f, hd63701_internal_registers_w },
-	{ 0x0080, 0x00ff, MWA_RAM },
-	{ 0x1000, 0x10ff, namcos1_wavedata_w, &namco_wavedata },		/* PSG device, shared RAM */
-	{ 0x1100, 0x113f, namcos1_sound_w, &namco_soundregs }, /* PSG device */
-	{ 0x1000, 0x13ff, sharedram1_w },
-	{ 0x2000, 0x2000, MWA_NOP }, // ???? (w)
-	{ 0x4000, 0x4000, MWA_NOP }, // ???? (w)
-	{ 0x6000, 0x6000, MWA_NOP }, // ???? (w)
-	{ 0x8000, 0x9fff, MWA_ROM },
-	{ 0xc000, 0xc7ff, MWA_RAM },
-	{ 0xf000, 0xffff, MWA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( mcu_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x001f) AM_WRITE(hd63701_internal_registers_w)
+	AM_RANGE(0x0080, 0x00ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x1000, 0x10ff) AM_WRITE(namcos1_wavedata_w) AM_BASE(&namco_wavedata)		/* PSG device, shared RAM */
+	AM_RANGE(0x1100, 0x113f) AM_WRITE(namcos1_sound_w) AM_BASE(&namco_soundregs) /* PSG device */
+	AM_RANGE(0x1000, 0x13ff) AM_WRITE(sharedram1_w)
+	AM_RANGE(0x2000, 0x2000) AM_WRITE(MWA8_NOP) // ???? (w)
+	AM_RANGE(0x4000, 0x4000) AM_WRITE(MWA8_NOP) // ???? (w)
+	AM_RANGE(0x6000, 0x6000) AM_WRITE(MWA8_NOP) // ???? (w)
+	AM_RANGE(0x8000, 0x9fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0xc000, 0xc7ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xf000, 0xffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
 
 static READ_HANDLER( readFF )
@@ -167,15 +174,15 @@ static READ_HANDLER( readFF )
 	return 0xff;
 }
 
-static PORT_READ_START( mcu_readport )
-	{ HD63701_PORT1, HD63701_PORT1, input_port_4_r },
-	{ HD63701_PORT2, HD63701_PORT2, readFF },	/* leds won't work otherwise */
-PORT_END
+static ADDRESS_MAP_START( mcu_readport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(HD63701_PORT1, HD63701_PORT1) AM_READ(input_port_4_r)
+	AM_RANGE(HD63701_PORT2, HD63701_PORT2) AM_READ(readFF)	/* leds won't work otherwise */
+ADDRESS_MAP_END
 
-static PORT_WRITE_START( mcu_writeport )
-	{ HD63701_PORT1, HD63701_PORT1, pacland_coin_w },
-	{ HD63701_PORT2, HD63701_PORT2, pacland_led_w },
-PORT_END
+static ADDRESS_MAP_START( mcu_writeport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(HD63701_PORT1, HD63701_PORT1) AM_WRITE(pacland_coin_w)
+	AM_RANGE(HD63701_PORT2, HD63701_PORT2) AM_WRITE(pacland_led_w)
+ADDRESS_MAP_END
 
 
 
@@ -199,33 +206,31 @@ INPUT_PORTS_START( pacland )
 	PORT_DIPSETTING(    0x00, "3" )
 	PORT_DIPSETTING(    0x40, "4" )
 	PORT_DIPSETTING(    0x60, "5" )
-	PORT_DIPNAME( 0x80, 0x00, "Test Mode" )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( On ) )
+	//PORT_SERVICE( 0x80, IP_ACTIVE_LOW )
 
 	PORT_START      /* DSWB */
-	PORT_DIPNAME( 0x01, 0x00, "Start Level Select" )
+	PORT_DIPNAME( 0x01, 0x00, "Trip Select" )
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x02, 0x00, "Freeze" )
 	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x02, DEF_STR( On ) )
-	PORT_BITX(    0x04, 0x00, IPT_DIPSWITCH_NAME | IPF_CHEAT, "Round Select", IP_KEY_NONE, IP_JOY_NONE )
+	PORT_DIPNAME( 0x04, 0x00, "Round Select" )
 	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x04, DEF_STR( On ) )
 	PORT_DIPNAME( 0x18, 0x00, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(    0x08, "Easy" )
-	PORT_DIPSETTING(    0x00, "Medium" )
-	PORT_DIPSETTING(    0x10, "Hard" )
-	PORT_DIPSETTING(    0x18, "Hardest" )
+	PORT_DIPSETTING(    0x00, "A" )
+	PORT_DIPSETTING(    0x08, "B" )
+	PORT_DIPSETTING(    0x10, "C" )
+	PORT_DIPSETTING(    0x18, "D" )
 	PORT_DIPNAME( 0xe0, 0x00, DEF_STR( Bonus_Life ) )
-	PORT_DIPSETTING(    0x00, "30K,80K,130K,300K,500K,1M" )
-	PORT_DIPSETTING(    0x20, "30K,100K,200K,400K,600K,1M" )
-	PORT_DIPSETTING(    0x40, "40K,100K,180K,300K,500K,1M" )
-	PORT_DIPSETTING(    0x60, "30K,80K,Every 100K" )
-	PORT_DIPSETTING(    0x80, "50K,150K,Every 200K" )
-	PORT_DIPSETTING(    0xa0, "30K,80K,150K" )
-	PORT_DIPSETTING(    0xc0, "40K,100K,200K" )
+	PORT_DIPSETTING(    0x00, "30K 80K 130K 300K 500K 1M" )
+	PORT_DIPSETTING(    0x20, "30K 100K 200K 400K 600K 1M" )
+	PORT_DIPSETTING(    0x40, "40K 100K 180K 300K 500K 1M" )
+	PORT_DIPSETTING(    0x60, "30K 80K 100K+" )
+	PORT_DIPSETTING(    0x80, "50K 150K 200K+" )
+	PORT_DIPSETTING(    0xa0, "30K 80K 150K" )
+	PORT_DIPSETTING(    0xc0, "40K 100K 200K" )
 	PORT_DIPSETTING(    0xe0, "40K" )
 
 	PORT_START	/* Memory Mapped Port */
@@ -311,13 +316,13 @@ static MACHINE_DRIVER_START( pacland )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M6809, 1500000)	/* 1.500 MHz (?) */
-	MDRV_CPU_MEMORY(readmem,writemem)
+	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
 	MDRV_CPU_VBLANK_INT(irq0_line_hold,1)
 
 	MDRV_CPU_ADD(HD63701, 6000000/3.9)	/* or compatible 6808 with extra instructions */
 //			6000000/4,		/* ??? */
-	MDRV_CPU_MEMORY(mcu_readmem,mcu_writemem)
-	MDRV_CPU_PORTS(mcu_readport,mcu_writeport)
+	MDRV_CPU_PROGRAM_MAP(mcu_readmem,mcu_writemem)
+	MDRV_CPU_IO_MAP(mcu_readport,mcu_writeport)
 	MDRV_CPU_VBLANK_INT(irq0_line_hold,1)
 
 	MDRV_FRAMES_PER_SECOND(60.606060)
@@ -493,10 +498,10 @@ ROM_END
 
 
 
-GAMEX( 1984, pacland,  0,       pacland, pacland, 0, ROT0, "Namco", "Pac-Land (set 1)", GAME_NO_COCKTAIL )
-GAMEX( 1984, pacland2, pacland, pacland, pacland, 0, ROT0, "Namco", "Pac-Land (set 2)", GAME_NO_COCKTAIL )
-GAMEX( 1984, pacland3, pacland, pacland, pacland, 0, ROT0, "Namco", "Pac-Land (set 3)", GAME_NO_COCKTAIL )
-GAMEX( 1984, paclandm, pacland, pacland, pacland, 0, ROT0, "[Namco] (Bally Midway license)", "Pac-Land (Midway)", GAME_NO_COCKTAIL )
+GAME( 1984, pacland,  0,       pacland, pacland, 0, ROT0, "Namco", "Pac-Land (set 1)" )
+GAME( 1984, pacland2, pacland, pacland, pacland, 0, ROT0, "Namco", "Pac-Land (set 2)" )
+GAME( 1984, pacland3, pacland, pacland, pacland, 0, ROT0, "Namco", "Pac-Land (set 3)" )
+GAME( 1984, paclandm, pacland, pacland, pacland, 0, ROT0, "[Namco] (Bally Midway license)", "Pac-Land (Midway)" )
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

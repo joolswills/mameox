@@ -1052,8 +1052,8 @@ static void FUNCTION_NAME(pixblt)(int src_is_linear, int dst_is_linear)
 		}
 		else
 		{
-			word_write = cpu_writemem29lew_word;
-			word_read = cpu_readmem29lew_word;
+			word_write = program_write_word_16le;
+			word_read = program_read_word_16le;
 		}
 
 		/* compute the starting addresses */
@@ -1297,8 +1297,8 @@ static void FUNCTION_NAME(pixblt_r)(int src_is_linear, int dst_is_linear)
 		}
 		else
 		{
-			word_write = cpu_writemem29lew_word;
-			word_read = cpu_readmem29lew_word;
+			word_write = program_write_word_16le;
+			word_read = program_read_word_16le;
 		}
 
 		/* compute the starting addresses */
@@ -1545,8 +1545,8 @@ static void FUNCTION_NAME(pixblt_b)(int dst_is_linear)
 		}
 		else
 		{
-			word_write = cpu_writemem29lew_word;
-			word_read = cpu_readmem29lew_word;
+			word_write = program_write_word_16le;
+			word_read = program_read_word_16le;
 		}
 
 		/* compute the starting addresses */
@@ -1746,8 +1746,8 @@ static void FUNCTION_NAME(fill)(int dst_is_linear)
 		}
 		else
 		{
-			word_write = cpu_writemem29lew_word;
-			word_read = cpu_readmem29lew_word;
+			word_write = program_write_word_16le;
+			word_read = program_read_word_16le;
 		}
 
 		/* compute the bounds of the operation */

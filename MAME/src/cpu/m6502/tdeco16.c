@@ -197,7 +197,7 @@ OP(13) { int tmp; m6502_ICount -= 3; RD_IMM;
 #define deco16_47 m6502_47								/* 5 RMB4 ZPG */
 OP(67) {
 	int tmp; m6502_ICount -= 2; RD_IMM;
-	m6502.a=cpu_readport16(0);
+	m6502.a=io_read_byte_8(0);
 
 //	logerror("%04x: VBL (0x67)\n",activecpu_get_pc());
 
@@ -285,7 +285,7 @@ OP(0b) { int tmp; m6502_ICount -= 3; RD_IMM;
 OP(4b) { int tmp; m6502_ICount -= 3; RD_IMM;
 	logerror("%04x: OP4B %02x\n",activecpu_get_pc(),tmp);
 
-//	m6502.a=cpu_readport16(0);
+//	m6502.a=io_read_byte_8(0);
 
 //tilt??
 
@@ -377,7 +377,7 @@ OP(bb) {
 OP(8f) { int tmp; m6502_ICount -= 3; RD_IMM;
 	logerror("%04x: BANK (8F) %02x\n",activecpu_get_pc(),tmp);
 
-	cpu_writeport16(0,tmp);
+	io_write_byte_8(0,tmp);
 
 //swap bank in/out
 

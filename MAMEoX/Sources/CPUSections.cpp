@@ -284,6 +284,13 @@ static void RegisterCPUSectionNames( void )
   RegisterSectionID( CPU_Z180, "CPU2" );
   RegisterSectionID( CPU_Z80, "CPU1" );
   RegisterSectionID( CPU_Z8000, "CPU21" );
+  RegisterSectionID( CPU_PSXCPU, "CPU27" );
+  RegisterSectionID( CPU_R3000BE, "CPU27" );
+  RegisterSectionID( CPU_R3000LE, "CPU27" );
+  RegisterSectionID( CPU_R4600BE, "CPU27" );
+  RegisterSectionID( CPU_R4600LE, "CPU27" );
+  RegisterSectionID( CPU_R5000BE, "CPU27" );
+  RegisterSectionID( CPU_R5000LE, "CPU27" );
 }
 #pragma code_seg()
 #pragma data_seg()

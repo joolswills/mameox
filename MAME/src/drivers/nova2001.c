@@ -59,65 +59,60 @@ extern VIDEO_UPDATE( nova2001 );
 
 
 
-static MEMORY_READ_START( readmem )
-	{ 0x0000, 0x7fff, MRA_ROM },
-	{ 0xa000, 0xb7ff, MRA_RAM },
-	{ 0xc000, 0xc000, AY8910_read_port_0_r },
-	{ 0xc001, 0xc001, AY8910_read_port_1_r },
-	{ 0xc004, 0xc004, watchdog_reset_r },
-	{ 0xc006, 0xc006, input_port_0_r },
-	{ 0xc007, 0xc007, input_port_1_r },
-	{ 0xc00e, 0xc00e, input_port_2_r },
-	{ 0xe000, 0xe7ff, MRA_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0xa000, 0xb7ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xc000, 0xc000) AM_READ(AY8910_read_port_0_r)
+	AM_RANGE(0xc001, 0xc001) AM_READ(AY8910_read_port_1_r)
+	AM_RANGE(0xc004, 0xc004) AM_READ(watchdog_reset_r)
+	AM_RANGE(0xc006, 0xc006) AM_READ(input_port_0_r)
+	AM_RANGE(0xc007, 0xc007) AM_READ(input_port_1_r)
+	AM_RANGE(0xc00e, 0xc00e) AM_READ(input_port_2_r)
+	AM_RANGE(0xe000, 0xe7ff) AM_READ(MRA8_RAM)
+ADDRESS_MAP_END
 
 
-static MEMORY_WRITE_START( writemem )
-	{ 0x0000, 0x7fff, MWA_ROM },
-	{ 0xa000, 0xa3ff, nova2001_videoram2_w, &nova2001_videoram2 },
-	{ 0xa400, 0xa7ff, nova2001_colorram2_w, &nova2001_colorram2 },
-	{ 0xa800, 0xabff, nova2001_videoram_w, &videoram },
-	{ 0xac00, 0xafff, nova2001_colorram_w, &colorram },
-	{ 0xb000, 0xb7ff, MWA_RAM, &spriteram, &spriteram_size },
-	{ 0xbfff, 0xbfff, nova2001_flipscreen_w },
-	{ 0xc000, 0xc000, AY8910_write_port_0_w },
-	{ 0xc001, 0xc001, AY8910_write_port_1_w },
-	{ 0xc002, 0xc002, AY8910_control_port_0_w },
-	{ 0xc003, 0xc003, AY8910_control_port_1_w },
-	{ 0xe000, 0xe7ff, MWA_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0xa000, 0xa3ff) AM_WRITE(nova2001_videoram2_w) AM_BASE(&nova2001_videoram2)
+	AM_RANGE(0xa400, 0xa7ff) AM_WRITE(nova2001_colorram2_w) AM_BASE(&nova2001_colorram2)
+	AM_RANGE(0xa800, 0xabff) AM_WRITE(nova2001_videoram_w) AM_BASE(&videoram)
+	AM_RANGE(0xac00, 0xafff) AM_WRITE(nova2001_colorram_w) AM_BASE(&colorram)
+	AM_RANGE(0xb000, 0xb7ff) AM_WRITE(MWA8_RAM) AM_BASE(&spriteram) AM_SIZE(&spriteram_size)
+	AM_RANGE(0xbfff, 0xbfff) AM_WRITE(nova2001_flipscreen_w)
+	AM_RANGE(0xc000, 0xc000) AM_WRITE(AY8910_write_port_0_w)
+	AM_RANGE(0xc001, 0xc001) AM_WRITE(AY8910_write_port_1_w)
+	AM_RANGE(0xc002, 0xc002) AM_WRITE(AY8910_control_port_0_w)
+	AM_RANGE(0xc003, 0xc003) AM_WRITE(AY8910_control_port_1_w)
+	AM_RANGE(0xe000, 0xe7ff) AM_WRITE(MWA8_RAM)
+ADDRESS_MAP_END
 
 
 
 INPUT_PORTS_START( nova2001 )
     PORT_START
-    PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_UP | IPF_8WAY )
-    PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN | IPF_8WAY )
-    PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT | IPF_8WAY )
+    PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    | IPF_8WAY )
+    PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  | IPF_8WAY )
+    PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  | IPF_8WAY )
     PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_8WAY )
-    PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN )
-    PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
-    PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON2 )
-    PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_BUTTON1 )
+    PORT_BIT( 0x30, IP_ACTIVE_LOW, IPT_UNUSED )
+    PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON2 )	// pause
+    PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_BUTTON1 )	// fire
 
-    PORT_START    /* player 2 controls */
-    PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_UP | IPF_8WAY | IPF_COCKTAIL )
-    PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN | IPF_8WAY | IPF_COCKTAIL )
-    PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT | IPF_8WAY | IPF_COCKTAIL )
+    PORT_START
+    PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    | IPF_8WAY | IPF_COCKTAIL )
+    PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  | IPF_8WAY | IPF_COCKTAIL )
+    PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  | IPF_8WAY | IPF_COCKTAIL )
     PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_8WAY | IPF_COCKTAIL )
-    PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN )
-    PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
+    PORT_BIT( 0x30, IP_ACTIVE_LOW, IPT_UNUSED )
     PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON2 | IPF_COCKTAIL )
     PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_BUTTON1 | IPF_COCKTAIL )
 
     PORT_START
-	PORT_BIT_IMPULSE( 0x01, IP_ACTIVE_LOW, IPT_COIN1,4 )
+	PORT_BIT_IMPULSE( 0x01, IP_ACTIVE_LOW, IPT_COIN1, 4 )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_START1 )
     PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_START2 )
-    PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNKNOWN )
-    PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN )
-    PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
-    PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
+    PORT_BIT( 0x78, IP_ACTIVE_LOW, IPT_UNUSED )
     PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_VBLANK )
 
     PORT_START  /* dsw0 */
@@ -156,15 +151,7 @@ INPUT_PORTS_START( nova2001 )
 	PORT_DIPNAME( 0x08, 0x08, "High Score Names" )
 	PORT_DIPSETTING(    0x00, "3 Letters" )
 	PORT_DIPSETTING(    0x08, "8 Letters" )
-    PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-    PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-    PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-    PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-    PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-    PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-    PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-    PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-    PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+    PORT_BIT( 0x70, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_SERVICE( 0x80, IP_ACTIVE_LOW )
 INPUT_PORTS_END
 
@@ -220,8 +207,8 @@ static struct AY8910interface ay8910_interface =
 static MACHINE_DRIVER_START( nova2001 )
 
 	/* basic machine hardware */
-	MDRV_CPU_ADD(Z80, 3000000)	/* 3 MHz */
-	MDRV_CPU_MEMORY(readmem,writemem)
+	MDRV_CPU_ADD(Z80, 12000000/4)	// 3 MHz
+	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
 	MDRV_CPU_VBLANK_INT(irq0_line_hold,1)
 
 	MDRV_FRAMES_PER_SECOND(60)

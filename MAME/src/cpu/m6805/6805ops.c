@@ -851,7 +851,6 @@ INLINE void rti( void )
 	PULLBYTE(A);
 	PULLBYTE(X);
 	PULLWORD(pPC);
-	PC &= m6805.amask;
 #if IRQ_LEVEL_DETECT
 	if( m6805.irq_state != CLEAR_LINE && (CC & IFLAG) == 0 )
 		m6805.pending_interrupts |= M6805_INT_IRQ;
@@ -862,7 +861,6 @@ INLINE void rti( void )
 INLINE void rts( void )
 {
 	PULLWORD(pPC);
-	PC &= m6805.amask;
 }
 
 /* $82 ILLEGAL */
@@ -875,7 +873,7 @@ INLINE void swi( void )
 	PUSHBYTE(m6805.a);
 	PUSHBYTE(m6805.cc);
 	SEI;
-	if(SUBTYPE==SUBTYPE_HD63705) RM16( 0x1ffa, &pPC ); else RM16( AMASK - 3, &pPC );
+	if(SUBTYPE==SUBTYPE_HD63705) RM16( 0x1ffa, &pPC ); else RM16( 0xfffc, &pPC );
 }
 
 /* $84 ILLEGAL */

@@ -6,10 +6,7 @@
 #pragma comment(linker, "/merge:CC8=CPU8")
 #pragma comment(linker, "/merge:CB8=CPU8")
 #pragma comment(linker, "/merge:CK8=CPU8")
-/*
- * Only STTASK missing
- *
- */
+
 
 UINT32 opINCB(void) /* TRUSTED */
 {
@@ -370,6 +367,52 @@ UINT32 opRETIS(void)
 	return 0;
 }
 
+UINT32 opSTTASK(void)
+{
+	int i;
+	UINT32 adr;
+
+	modAdd=PC + 1;
+	modDim=2;
+
+	amLength1 = ReadAM();
+
+	adr = TCB;
+
+	UPDATEPSW();
+	v60WritePSW(PSW | 0x10000000);
+
+	MemWrite32(adr, TKCW);
+	adr += 4;
+	if(SYCW & 0x100) {
+		MemWrite32(adr, L0SP);
+		adr += 4;
+	}
+	if(SYCW & 0x200) {
+		MemWrite32(adr, L1SP);
+		adr += 4;
+	}
+	if(SYCW & 0x400) {
+		MemWrite32(adr, L2SP);
+		adr += 4;
+	}
+	if(SYCW & 0x800) {
+		MemWrite32(adr, L3SP);
+		adr += 4;
+	}
+
+	// 31 registers supported, _not_ 32
+	for(i=0; i<31; i++)
+		if(amOut & (1<<i)) {
+			MemWrite32(adr, v60.reg[i]);
+			adr += 4;
+		}
+
+	// #### Ignore the virtual addressing crap.
+
+	return amLength1 + 1;
+}
+
 UINT32 opGETPSW(void)
 {
 	UPDATEPSW();
@@ -616,6 +659,9 @@ UINT32 opPUSH_1(void) { modM=1; return opPUSH(); }
 
 UINT32 opPOP_0(void) { modM=0; return opPOP(); }
 UINT32 opPOP_1(void) { modM=1; return opPOP(); }
+
+UINT32 opSTTASK_0(void) { modM=0; return opSTTASK(); }
+UINT32 opSTTASK_1(void) { modM=1; return opSTTASK(); }
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

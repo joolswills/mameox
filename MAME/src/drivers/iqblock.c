@@ -128,36 +128,36 @@ MACHINE_INIT( iqblock )
 
 
 
-static MEMORY_READ_START( readmem )
-	{ 0x0000, 0xefff, MRA_ROM },
-	{ 0xf000, 0xffff, MRA_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0xefff) AM_READ(MRA8_ROM)
+	AM_RANGE(0xf000, 0xffff) AM_READ(MRA8_RAM)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( writemem )
-	{ 0x0000, 0xefff, MWA_ROM },
-	{ 0xf000, 0xffff, MWA_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0xefff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0xf000, 0xffff) AM_WRITE(MWA8_RAM)
+ADDRESS_MAP_END
 
 
-static PORT_READ_START( readport )
-	{ 0x5080, 0x5083, ppi8255_0_r },
-	{ 0x5090, 0x5090, input_port_3_r },
-	{ 0x50a0, 0x50a0, input_port_4_r },
-	{ 0x7000, 0x7fff, iqblock_bgvideoram_r },
-	{ 0x8000, 0xffff, extrarom_r },
-PORT_END
+static ADDRESS_MAP_START( readport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x5080, 0x5083) AM_READ(ppi8255_0_r)
+	AM_RANGE(0x5090, 0x5090) AM_READ(input_port_3_r)
+	AM_RANGE(0x50a0, 0x50a0) AM_READ(input_port_4_r)
+	AM_RANGE(0x7000, 0x7fff) AM_READ(iqblock_bgvideoram_r)
+	AM_RANGE(0x8000, 0xffff) AM_READ(extrarom_r)
+ADDRESS_MAP_END
 
-static PORT_WRITE_START( writeport )
-	{ 0x2000, 0x23ff, paletteram_xBBBBBGGGGGRRRRR_split1_w },
-	{ 0x2800, 0x2bff, paletteram_xBBBBBGGGGGRRRRR_split2_w },
-	{ 0x6000, 0x603f, iqblock_fgscroll_w },
-	{ 0x6800, 0x69ff, iqblock_fgvideoram_w },	/* initialized up to 6fff... bug or larger tilemap? */
-	{ 0x7000, 0x7fff, iqblock_bgvideoram_w },
-	{ 0x5080, 0x5083, ppi8255_0_w },
-	{ 0x50b0, 0x50b0, YM2413_register_port_0_w }, // UM3567_register_port_0_w
-	{ 0x50b1, 0x50b1, YM2413_data_port_0_w }, // UM3567_data_port_0_w
-	{ 0x50c0, 0x50c0, iqblock_irqack_w },
-PORT_END
+static ADDRESS_MAP_START( writeport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x2000, 0x23ff) AM_WRITE(paletteram_xBBBBBGGGGGRRRRR_split1_w)
+	AM_RANGE(0x2800, 0x2bff) AM_WRITE(paletteram_xBBBBBGGGGGRRRRR_split2_w)
+	AM_RANGE(0x6000, 0x603f) AM_WRITE(iqblock_fgscroll_w)
+	AM_RANGE(0x6800, 0x69ff) AM_WRITE(iqblock_fgvideoram_w)	/* initialized up to 6fff... bug or larger tilemap? */
+	AM_RANGE(0x7000, 0x7fff) AM_WRITE(iqblock_bgvideoram_w)
+	AM_RANGE(0x5080, 0x5083) AM_WRITE(ppi8255_0_w)
+	AM_RANGE(0x50b0, 0x50b0) AM_WRITE(YM2413_register_port_0_w) // UM3567_register_port_0_w
+	AM_RANGE(0x50b1, 0x50b1) AM_WRITE(YM2413_data_port_0_w) // UM3567_data_port_0_w
+	AM_RANGE(0x50c0, 0x50c0) AM_WRITE(iqblock_irqack_w)
+ADDRESS_MAP_END
 
 
 
@@ -306,8 +306,8 @@ static MACHINE_DRIVER_START( iqblock )
 	/* basic machine hardware */
 	MDRV_CPU_ADD(Z80,12000000/2)	/* 6 MHz */
 	MDRV_CPU_FLAGS(CPU_16BIT_PORT)
-	MDRV_CPU_MEMORY(readmem,writemem)
-	MDRV_CPU_PORTS(readport,writeport)
+	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
+	MDRV_CPU_IO_MAP(readport,writeport)
 	MDRV_CPU_VBLANK_INT(iqblock_interrupt,16)
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -333,8 +333,8 @@ static MACHINE_DRIVER_START( cabaret )
 	/* basic machine hardware */
 	MDRV_CPU_ADD(Z180,12000000/2)	/* 6 MHz , appears to use Z180 instructions */
 	MDRV_CPU_FLAGS(CPU_16BIT_PORT)
-	MDRV_CPU_MEMORY(readmem,writemem)
-	MDRV_CPU_PORTS(readport,writeport)
+	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
+	MDRV_CPU_IO_MAP(readport,writeport)
 	MDRV_CPU_VBLANK_INT(iqblock_interrupt,16)
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -399,20 +399,20 @@ ROM_END
 
 ROM_START( cabaret )
 	ROM_REGION( 0x20000, REGION_CPU1, 0 )	/* 64k for code + 64K for extra RAM */
-	ROM_LOAD( "cg-8v204.u97",  0x0000, 0x10000, CRC(44cebf77) )
+	ROM_LOAD( "cg-8v204.u97",  0x0000, 0x10000, CRC(44cebf77) SHA1(e3f4e4abf41388f0eed50cf9a0fd0b14aa2f8b93) )
 
 	ROM_REGION( 0x8000, REGION_USER1, 0 )
-	ROM_LOAD( "cg-7.u98",  0x0000, 0x8000, CRC(b93ae6f8) )	/* background maps, read by the CPU */
+	ROM_LOAD( "cg-7.u98",  0x0000, 0x8000, CRC(b93ae6f8) SHA1(accb87045c278d5d79fff65bb763aa6e8025a945) )	/* background maps, read by the CPU */
 
 	ROM_REGION( 0x60000, REGION_GFX1, ROMREGION_DISPOSE )
-	ROM_LOAD( "cg-4.u43",  0x00000, 0x20000, CRC(e509f50a) )
-	ROM_LOAD( "cg-5.u44",  0x20000, 0x20000, CRC(e2cbf489) )
-	ROM_LOAD( "cg-6.u45",  0x40000, 0x20000, CRC(4f2fced7) )
+	ROM_LOAD( "cg-4.u43",  0x00000, 0x20000, CRC(e509f50a) SHA1(7e68ca54642c92cdb348d5cf9466065938d0e027) )
+	ROM_LOAD( "cg-5.u44",  0x20000, 0x20000, CRC(e2cbf489) SHA1(3a15ed7efd5696656e6d55b54ec0ff779bdb0d98) )
+	ROM_LOAD( "cg-6.u45",  0x40000, 0x20000, CRC(4f2fced7) SHA1(b954856ffdc97fbc99fd3ec087376fbf466d2d5a) )
 
 	ROM_REGION( 0xc000, REGION_GFX2, ROMREGION_DISPOSE )
-	ROM_LOAD( "cg-1.u40",  0x0000, 0x4000, CRC(7dee8b1f) )
-	ROM_LOAD( "cg-2.u41",  0x4000, 0x4000, CRC(ce8dea39) )
-	ROM_LOAD( "cg-3.u42",  0x8000, 0x4000, CRC(7e1f821f) )
+	ROM_LOAD( "cg-1.u40",  0x0000, 0x4000, CRC(7dee8b1f) SHA1(80dbdf6aab9b02cc000956b7894023552428e6a1) )
+	ROM_LOAD( "cg-2.u41",  0x4000, 0x4000, CRC(ce8dea39) SHA1(b30d1678a7b98cd821d2ce7383a83cb7c9f31b5f) )
+	ROM_LOAD( "cg-3.u42",  0x8000, 0x4000, CRC(7e1f821f) SHA1(b709d49f9d1890fe3b8ca7f90affc0017a0ad95e) )
 ROM_END
 
 

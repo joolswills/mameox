@@ -45,40 +45,40 @@ extern int simpsons_firq_enabled;
 
 ***************************************************************************/
 
-static MEMORY_READ_START( readmem )
-	{ 0x0000, 0x0fff, MRA_BANK3 },
-	{ 0x1f80, 0x1f80, input_port_4_r },
-	{ 0x1f81, 0x1f81, simpsons_eeprom_r },
-	{ 0x1f90, 0x1f90, input_port_0_r },
-	{ 0x1f91, 0x1f91, input_port_1_r },
-	{ 0x1f92, 0x1f92, input_port_2_r },
-	{ 0x1f93, 0x1f93, input_port_3_r },
-	{ 0x1fc4, 0x1fc4, simpsons_sound_interrupt_r },
-	{ 0x1fc6, 0x1fc7, simpsons_sound_r },	/* K053260 */
-	{ 0x1fc8, 0x1fc9, K053246_r },
-	{ 0x1fca, 0x1fca, watchdog_reset_r },
-	{ 0x2000, 0x3fff, MRA_BANK4 },
-	{ 0x0000, 0x3fff, K052109_r },
-	{ 0x4856, 0x4856, simpsons_speedup2_r },
-	{ 0x4942, 0x4942, simpsons_speedup1_r },
-	{ 0x4000, 0x5fff, MRA_RAM },
-	{ 0x6000, 0x7fff, MRA_BANK1 },
-	{ 0x8000, 0xffff, MRA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x0fff) AM_READ(MRA8_BANK3)
+	AM_RANGE(0x1f80, 0x1f80) AM_READ(input_port_4_r)
+	AM_RANGE(0x1f81, 0x1f81) AM_READ(simpsons_eeprom_r)
+	AM_RANGE(0x1f90, 0x1f90) AM_READ(input_port_0_r)
+	AM_RANGE(0x1f91, 0x1f91) AM_READ(input_port_1_r)
+	AM_RANGE(0x1f92, 0x1f92) AM_READ(input_port_2_r)
+	AM_RANGE(0x1f93, 0x1f93) AM_READ(input_port_3_r)
+	AM_RANGE(0x1fc4, 0x1fc4) AM_READ(simpsons_sound_interrupt_r)
+	AM_RANGE(0x1fc6, 0x1fc7) AM_READ(simpsons_sound_r)	/* K053260 */
+	AM_RANGE(0x1fc8, 0x1fc9) AM_READ(K053246_r)
+	AM_RANGE(0x1fca, 0x1fca) AM_READ(watchdog_reset_r)
+	AM_RANGE(0x2000, 0x3fff) AM_READ(MRA8_BANK4)
+	AM_RANGE(0x0000, 0x3fff) AM_READ(K052109_r)
+	AM_RANGE(0x4856, 0x4856) AM_READ(simpsons_speedup2_r)
+	AM_RANGE(0x4942, 0x4942) AM_READ(simpsons_speedup1_r)
+	AM_RANGE(0x4000, 0x5fff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x6000, 0x7fff) AM_READ(MRA8_BANK1)
+	AM_RANGE(0x8000, 0xffff) AM_READ(MRA8_ROM)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( writemem )
-	{ 0x0000, 0x0fff, MWA_BANK3 },
-	{ 0x1fa0, 0x1fa7, K053246_w },
-	{ 0x1fb0, 0x1fbf, K053251_w },
-	{ 0x1fc0, 0x1fc0, simpsons_coin_counter_w },
-	{ 0x1fc2, 0x1fc2, simpsons_eeprom_w },
-	{ 0x1fc6, 0x1fc7, K053260_0_w },
-	{ 0x2000, 0x3fff, MWA_BANK4 },
-	{ 0x0000, 0x3fff, K052109_w },
-	{ 0x4000, 0x5fff, MWA_RAM },
-	{ 0x6000, 0x7fff, MWA_ROM },
-	{ 0x8000, 0xffff, MWA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x0fff) AM_WRITE(MWA8_BANK3)
+	AM_RANGE(0x1fa0, 0x1fa7) AM_WRITE(K053246_w)
+	AM_RANGE(0x1fb0, 0x1fbf) AM_WRITE(K053251_w)
+	AM_RANGE(0x1fc0, 0x1fc0) AM_WRITE(simpsons_coin_counter_w)
+	AM_RANGE(0x1fc2, 0x1fc2) AM_WRITE(simpsons_eeprom_w)
+	AM_RANGE(0x1fc6, 0x1fc7) AM_WRITE(K053260_0_w)
+	AM_RANGE(0x2000, 0x3fff) AM_WRITE(MWA8_BANK4)
+	AM_RANGE(0x0000, 0x3fff) AM_WRITE(K052109_w)
+	AM_RANGE(0x4000, 0x5fff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x6000, 0x7fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x8000, 0xffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
 static WRITE_HANDLER( z80_bankswitch_w )
 {
@@ -112,24 +112,24 @@ static WRITE_HANDLER( z80_arm_nmi_w )
 	timer_set(TIME_IN_USEC(50),0,nmi_callback);	/* kludge until the K053260 is emulated correctly */
 }
 
-static MEMORY_READ_START( z80_readmem )
-	{ 0x0000, 0x7fff, MRA_ROM },
-	{ 0x8000, 0xbfff, MRA_BANK2 },
-	{ 0xf000, 0xf7ff, MRA_RAM },
-	{ 0xf801, 0xf801, YM2151_status_port_0_r },
-	{ 0xfc00, 0xfc2f, K053260_0_r },
-MEMORY_END
+static ADDRESS_MAP_START( z80_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x8000, 0xbfff) AM_READ(MRA8_BANK2)
+	AM_RANGE(0xf000, 0xf7ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xf801, 0xf801) AM_READ(YM2151_status_port_0_r)
+	AM_RANGE(0xfc00, 0xfc2f) AM_READ(K053260_0_r)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( z80_writemem )
-	{ 0x0000, 0x7fff, MWA_ROM },
-	{ 0x8000, 0xbfff, MWA_ROM },
-	{ 0xf000, 0xf7ff, MWA_RAM },
-	{ 0xf800, 0xf800, YM2151_register_port_0_w },
-	{ 0xf801, 0xf801, YM2151_data_port_0_w },
-	{ 0xfa00, 0xfa00, z80_arm_nmi_w },
-	{ 0xfc00, 0xfc2f, K053260_0_w },
-	{ 0xfe00, 0xfe00, z80_bankswitch_w },
-MEMORY_END
+static ADDRESS_MAP_START( z80_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x8000, 0xbfff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0xf000, 0xf7ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xf800, 0xf800) AM_WRITE(YM2151_register_port_0_w)
+	AM_RANGE(0xf801, 0xf801) AM_WRITE(YM2151_data_port_0_w)
+	AM_RANGE(0xfa00, 0xfa00) AM_WRITE(z80_arm_nmi_w)
+	AM_RANGE(0xfc00, 0xfc2f) AM_WRITE(K053260_0_w)
+	AM_RANGE(0xfe00, 0xfe00) AM_WRITE(z80_bankswitch_w)
+ADDRESS_MAP_END
 
 /***************************************************************************
 
@@ -321,12 +321,12 @@ static MACHINE_DRIVER_START( simpsons )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(KONAMI, 3000000) /* ? */
-	MDRV_CPU_MEMORY(readmem,writemem)
+	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
 	MDRV_CPU_VBLANK_INT(simpsons_irq,1)	/* IRQ triggered by the 052109, FIRQ by the sprite hardware */
 
 	MDRV_CPU_ADD(Z80, 3579545)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)
-	MDRV_CPU_MEMORY(z80_readmem,z80_writemem)
+	MDRV_CPU_PROGRAM_MAP(z80_readmem,z80_writemem)
 								/* NMIs are generated by the 053260 */
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(DEFAULT_REAL_60HZ_VBLANK_DURATION)
@@ -410,6 +410,33 @@ ROM_START( simpsn2p )
 	ROM_LOAD( "simp_1d.rom", 0x100000, 0x040000, CRC(78778013) SHA1(edbd6d83b0d1a20df39bb160b92395586fa3c32d) )
 ROM_END
 
+ROM_START( simps2pa )
+	ROM_REGION( 0x8b000, REGION_CPU1, 0 ) /* code + banked roms + banked ram */
+        ROM_LOAD( "simp2.16c",    0x010000, 0x020000, CRC(580ce1d6) SHA1(5b07fb8e8041e1663980aa35d853fdc13b22dac5) )
+        ROM_LOAD( "simp1.17c",    0x030000, 0x020000, CRC(07ceeaea) SHA1(c18255ae1d578c2d53de80d6323cdf41cbe47b57) )
+        ROM_LOAD( "simp4.13c",    0x050000, 0x020000, CRC(54e6df66) SHA1(1b83ae56cf1deb51b04880fa421f06568c938a99) )
+        ROM_LOAD( "simp3.15c",    0x070000, 0x018000, CRC(96636225) SHA1(5de95606e5c9337f18bc42f4df791cacafa20399) )
+	ROM_CONTINUE(		      0x08000, 0x08000 )
+
+	ROM_REGION( 0x28000, REGION_CPU2, 0 ) /* Z80 code + banks */
+	ROM_LOAD( "simp5.6g",       0x00000, 0x08000, CRC(76c1850c) SHA1(9047c6b26c4e33c74eb7400a807d3d9f206f7bbe) )
+	ROM_CONTINUE(			  0x10000, 0x18000 )
+
+	ROM_REGION( 0x100000, REGION_GFX1, 0 ) /* graphics ( dont dispose as the program can read them, 0 ) */
+	ROM_LOAD( "simp_18h.rom", 0x000000, 0x080000, CRC(ba1ec910) SHA1(0805ccb641271dea43185dc0365732260db1763d) )	/* tiles */
+	ROM_LOAD( "simp_16h.rom", 0x080000, 0x080000, CRC(cf2bbcab) SHA1(47afea47f9bc8cb5eb1c7b7fbafe954b3e749aeb) )
+
+	ROM_REGION( 0x400000, REGION_GFX2, 0 ) /* graphics ( dont dispose as the program can read them, 0 ) */
+	ROM_LOAD( "simp_3n.rom",  0x000000, 0x100000, CRC(7de500ad) SHA1(61b76b8f402e3bde1509679aaaa28ef08cafb0ab) )	/* sprites */
+	ROM_LOAD( "simp_8n.rom",  0x100000, 0x100000, CRC(aa085093) SHA1(925239d79bf607021d371263352618876f59c1f8) )
+	ROM_LOAD( "simp_12n.rom", 0x200000, 0x100000, CRC(577dbd53) SHA1(e603e03e3dcba766074561faa92afafa5761953d) )
+	ROM_LOAD( "simp_16l.rom", 0x300000, 0x100000, CRC(55fab05d) SHA1(54db8559d71ed257de9a29c8808654eaea0df9e2) )
+
+	ROM_REGION( 0x140000, REGION_SOUND1, 0 ) /* samples for the 053260 */
+	ROM_LOAD( "simp_1f.rom", 0x000000, 0x100000, CRC(1397a73b) SHA1(369422c84cca5472967af54b8351e29fcd69f621) )
+	ROM_LOAD( "simp_1d.rom", 0x100000, 0x040000, CRC(78778013) SHA1(edbd6d83b0d1a20df39bb160b92395586fa3c32d) )
+ROM_END
+
 ROM_START( simps2pj )
 	ROM_REGION( 0x8b000, REGION_CPU1, 0 ) /* code + banked roms + banked ram */
 	ROM_LOAD( "072-s02.16c",  0x10000, 0x20000, CRC(265f7a47) SHA1(d39c19a5e303f822313409343b209947f4c47ae4) )
@@ -453,6 +480,7 @@ static DRIVER_INIT( simpsons )
 
 GAME( 1991, simpsons, 0,        simpsons, simpsons, simpsons, ROT0, "Konami", "The Simpsons (4 Players)" )
 GAME( 1991, simpsn2p, simpsons, simpsons, simpsn2p, simpsons, ROT0, "Konami", "The Simpsons (2 Players)" )
+GAME( 1991, simps2pa, simpsons, simpsons, simpsons, simpsons, ROT0, "Konami", "The Simpsons (2 Players alt)" )
 GAME( 1991, simps2pj, simpsons, simpsons, simpsn2p, simpsons, ROT0, "Konami", "The Simpsons (2 Players Japan)" )
 #pragma code_seg()
 #pragma data_seg()

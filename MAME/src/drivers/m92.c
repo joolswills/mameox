@@ -266,93 +266,93 @@ static WRITE_HANDLER( m92_sound_status_w )
 
 /*****************************************************************************/
 
-static MEMORY_READ_START( readmem )
-	{ 0x00000, 0x9ffff, MRA_ROM },
-	{ 0xa0000, 0xbffff, MRA_BANK1 },
-	{ 0xc0000, 0xcffff, MRA_BANK2 }, /* Mirror of rom:  Used by In The Hunt as protection */
-	{ 0xd0000, 0xdffff, m92_vram_r },
-	{ 0xe0000, 0xeffff, MRA_RAM },
-	{ 0xf8000, 0xf87ff, MRA_RAM },
-	{ 0xf8800, 0xf8fff, m92_paletteram_r },
-	{ 0xffff0, 0xfffff, MRA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x00000, 0x9ffff) AM_READ(MRA8_ROM)
+	AM_RANGE(0xa0000, 0xbffff) AM_READ(MRA8_BANK1)
+	AM_RANGE(0xc0000, 0xcffff) AM_READ(MRA8_BANK2) /* Mirror of rom:  Used by In The Hunt as protection */
+	AM_RANGE(0xd0000, 0xdffff) AM_READ(m92_vram_r)
+	AM_RANGE(0xe0000, 0xeffff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xf8000, 0xf87ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xf8800, 0xf8fff) AM_READ(m92_paletteram_r)
+	AM_RANGE(0xffff0, 0xfffff) AM_READ(MRA8_ROM)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( writemem )
-	{ 0x00000, 0xbffff, MWA_ROM },
-	{ 0xd0000, 0xdffff, m92_vram_w, &m92_vram_data },
-	{ 0xe0000, 0xeffff, MWA_RAM, &m92_ram }, /* System ram */
-	{ 0xf8000, 0xf87ff, MWA_RAM, &spriteram, &spriteram_size },
-	{ 0xf8800, 0xf8fff, m92_paletteram_w },
-	{ 0xf9000, 0xf900f, m92_spritecontrol_w, &m92_spritecontrol },
-	{ 0xf9800, 0xf9801, m92_videocontrol_w },
-	{ 0xffff0, 0xfffff, MWA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x00000, 0xbffff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0xd0000, 0xdffff) AM_WRITE(m92_vram_w) AM_BASE(&m92_vram_data)
+	AM_RANGE(0xe0000, 0xeffff) AM_WRITE(MWA8_RAM) AM_BASE(&m92_ram) /* System ram */
+	AM_RANGE(0xf8000, 0xf87ff) AM_WRITE(MWA8_RAM) AM_BASE(&spriteram) AM_SIZE(&spriteram_size)
+	AM_RANGE(0xf8800, 0xf8fff) AM_WRITE(m92_paletteram_w)
+	AM_RANGE(0xf9000, 0xf900f) AM_WRITE(m92_spritecontrol_w) AM_BASE(&m92_spritecontrol)
+	AM_RANGE(0xf9800, 0xf9801) AM_WRITE(m92_videocontrol_w)
+	AM_RANGE(0xffff0, 0xfffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
-static MEMORY_READ_START( lethalth_readmem ) /* Same as above but with different VRAM addressing PAL */
-	{ 0x00000, 0x7ffff, MRA_ROM },
-	{ 0x80000, 0x8ffff, m92_vram_r },
-	{ 0xe0000, 0xeffff, MRA_RAM },
-	{ 0xf8000, 0xf87ff, MRA_RAM },
-	{ 0xf8800, 0xf8fff, paletteram_r },
-	{ 0xffff0, 0xfffff, MRA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( lethalth_readmem, ADDRESS_SPACE_PROGRAM, 8 ) /* Same as above but with different VRAM addressing PAL */
+	AM_RANGE(0x00000, 0x7ffff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x80000, 0x8ffff) AM_READ(m92_vram_r)
+	AM_RANGE(0xe0000, 0xeffff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xf8000, 0xf87ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xf8800, 0xf8fff) AM_READ(paletteram_r)
+	AM_RANGE(0xffff0, 0xfffff) AM_READ(MRA8_ROM)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( lethalth_writemem )
-	{ 0x00000, 0x7ffff, MWA_ROM },
-	{ 0x80000, 0x8ffff, m92_vram_w, &m92_vram_data },
-	{ 0xe0000, 0xeffff, MWA_RAM, &m92_ram }, /* System ram */
-	{ 0xf8000, 0xf87ff, MWA_RAM, &spriteram, &spriteram_size },
-	{ 0xf8800, 0xf8fff, m92_paletteram_w },
-	{ 0xf9000, 0xf900f, m92_spritecontrol_w, &m92_spritecontrol },
-	{ 0xf9800, 0xf9801, m92_videocontrol_w },
-	{ 0xffff0, 0xfffff, MWA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( lethalth_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x00000, 0x7ffff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x80000, 0x8ffff) AM_WRITE(m92_vram_w) AM_BASE(&m92_vram_data)
+	AM_RANGE(0xe0000, 0xeffff) AM_WRITE(MWA8_RAM) AM_BASE(&m92_ram) /* System ram */
+	AM_RANGE(0xf8000, 0xf87ff) AM_WRITE(MWA8_RAM) AM_BASE(&spriteram) AM_SIZE(&spriteram_size)
+	AM_RANGE(0xf8800, 0xf8fff) AM_WRITE(m92_paletteram_w)
+	AM_RANGE(0xf9000, 0xf900f) AM_WRITE(m92_spritecontrol_w) AM_BASE(&m92_spritecontrol)
+	AM_RANGE(0xf9800, 0xf9801) AM_WRITE(m92_videocontrol_w)
+	AM_RANGE(0xffff0, 0xfffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
-static PORT_READ_START( readport )
-	{ 0x00, 0x00, input_port_0_r }, /* Player 1 */
-	{ 0x01, 0x01, input_port_1_r }, /* Player 2 */
-	{ 0x02, 0x02, m92_port_4_r },   /* Coins & VBL */
-	{ 0x03, 0x03, input_port_7_r }, /* Dip 3 */
-	{ 0x04, 0x04, input_port_6_r }, /* Dip 2 */
-	{ 0x05, 0x05, input_port_5_r }, /* Dip 1 */
-	{ 0x06, 0x06, input_port_2_r }, /* Player 3 */
-	{ 0x07, 0x07, input_port_3_r },	/* Player 4 */
-	{ 0x08, 0x09, m92_sound_status_r },	/* answer from sound CPU */
-PORT_END
+static ADDRESS_MAP_START( readport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x00, 0x00) AM_READ(input_port_0_r) /* Player 1 */
+	AM_RANGE(0x01, 0x01) AM_READ(input_port_1_r) /* Player 2 */
+	AM_RANGE(0x02, 0x02) AM_READ(m92_port_4_r)   /* Coins & VBL */
+	AM_RANGE(0x03, 0x03) AM_READ(input_port_7_r) /* Dip 3 */
+	AM_RANGE(0x04, 0x04) AM_READ(input_port_6_r) /* Dip 2 */
+	AM_RANGE(0x05, 0x05) AM_READ(input_port_5_r) /* Dip 1 */
+	AM_RANGE(0x06, 0x06) AM_READ(input_port_2_r) /* Player 3 */
+	AM_RANGE(0x07, 0x07) AM_READ(input_port_3_r)	/* Player 4 */
+	AM_RANGE(0x08, 0x09) AM_READ(m92_sound_status_r)	/* answer from sound CPU */
+ADDRESS_MAP_END
 
-static PORT_WRITE_START( writeport )
-	{ 0x00, 0x01, m92_soundlatch_w },
-	{ 0x02, 0x03, m92_coincounter_w },
-	{ 0x20, 0x21, m92_bankswitch_w },
-	{ 0x40, 0x43, MWA_NOP }, /* Interrupt controller, only written to at bootup */
-	{ 0x80, 0x87, m92_pf1_control_w },
-	{ 0x88, 0x8f, m92_pf2_control_w },
-	{ 0x90, 0x97, m92_pf3_control_w },
-	{ 0x98, 0x9f, m92_master_control_w },
-//	{ 0xc0, 0xc1, m92_unknown_w },	// sound related?
-PORT_END
+static ADDRESS_MAP_START( writeport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x00, 0x01) AM_WRITE(m92_soundlatch_w)
+	AM_RANGE(0x02, 0x03) AM_WRITE(m92_coincounter_w)
+	AM_RANGE(0x20, 0x21) AM_WRITE(m92_bankswitch_w)
+	AM_RANGE(0x40, 0x43) AM_WRITE(MWA8_NOP) /* Interrupt controller, only written to at bootup */
+	AM_RANGE(0x80, 0x87) AM_WRITE(m92_pf1_control_w)
+	AM_RANGE(0x88, 0x8f) AM_WRITE(m92_pf2_control_w)
+	AM_RANGE(0x90, 0x97) AM_WRITE(m92_pf3_control_w)
+	AM_RANGE(0x98, 0x9f) AM_WRITE(m92_master_control_w)
+//	AM_RANGE(0xc0, 0xc1) AM_WRITE(m92_unknown_w)	// sound related?
+ADDRESS_MAP_END
 
 /******************************************************************************/
 
-static MEMORY_READ_START( sound_readmem )
-	{ 0x00000, 0x1ffff, MRA_ROM },
-	{ 0xa0000, 0xa3fff, MRA_RAM },
-	{ 0xa8042, 0xa8043, YM2151_status_port_0_r },
-	{ 0xa8044, 0xa8045, m92_soundlatch_r },
-	{ 0xffff0, 0xfffff, MRA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x00000, 0x1ffff) AM_READ(MRA8_ROM)
+	AM_RANGE(0xa0000, 0xa3fff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xa8042, 0xa8043) AM_READ(YM2151_status_port_0_r)
+	AM_RANGE(0xa8044, 0xa8045) AM_READ(m92_soundlatch_r)
+	AM_RANGE(0xffff0, 0xfffff) AM_READ(MRA8_ROM)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( sound_writemem )
-	{ 0x00000, 0x1ffff, MWA_ROM },
-	{ 0x9ff00, 0x9ffff, MWA_NOP }, /* Irq controller? */
-	{ 0xa0000, 0xa3fff, MWA_RAM, &m92_snd_ram },
-	{ 0xa8000, 0xa803f, IremGA20_w },
-	{ 0xa8040, 0xa8041, YM2151_register_port_0_w },
-	{ 0xa8042, 0xa8043, YM2151_data_port_0_w },
-	{ 0xa8044, 0xa8045, m92_sound_irq_ack_w },
-	{ 0xa8046, 0xa8047, m92_sound_status_w },
-	{ 0xffff0, 0xfffff, MWA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x00000, 0x1ffff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x9ff00, 0x9ffff) AM_WRITE(MWA8_NOP) /* Irq controller? */
+	AM_RANGE(0xa0000, 0xa3fff) AM_WRITE(MWA8_RAM) AM_BASE(&m92_snd_ram)
+	AM_RANGE(0xa8000, 0xa803f) AM_WRITE(IremGA20_w)
+	AM_RANGE(0xa8040, 0xa8041) AM_WRITE(YM2151_register_port_0_w)
+	AM_RANGE(0xa8042, 0xa8043) AM_WRITE(YM2151_data_port_0_w)
+	AM_RANGE(0xa8044, 0xa8045) AM_WRITE(m92_sound_irq_ack_w)
+	AM_RANGE(0xa8046, 0xa8047) AM_WRITE(m92_sound_status_w)
+	AM_RANGE(0xffff0, 0xfffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
 /******************************************************************************/
 
@@ -1185,12 +1185,12 @@ static MACHINE_DRIVER_START( raster )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(V33,18000000/2)	/* NEC V33, 18 MHz clock */
-	MDRV_CPU_MEMORY(readmem,writemem)
-	MDRV_CPU_PORTS(readport,writeport)
+	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
+	MDRV_CPU_IO_MAP(readport,writeport)
 	MDRV_CPU_VBLANK_INT(m92_raster_interrupt,M92_SCANLINES) /* First visible line 8? */
 
 	MDRV_CPU_ADD(V30, 14318180/2)	/* 14.31818 MHz */
-	MDRV_CPU_MEMORY(sound_readmem,sound_writemem)
+	MDRV_CPU_PROGRAM_MAP(sound_readmem,sound_writemem)
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(DEFAULT_60HZ_VBLANK_DURATION)
@@ -1215,13 +1215,13 @@ static MACHINE_DRIVER_START( nonraster )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(V33, 18000000/2)	 /* NEC V33, 18 MHz clock */
-	MDRV_CPU_MEMORY(readmem,writemem)
-	MDRV_CPU_PORTS(readport,writeport)
+	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
+	MDRV_CPU_IO_MAP(readport,writeport)
 	MDRV_CPU_VBLANK_INT(m92_interrupt,1)
 
 	MDRV_CPU_ADD(V30, 14318180/2)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)	/* 14.31818 MHz */
-	MDRV_CPU_MEMORY(sound_readmem,sound_writemem)
+	MDRV_CPU_PROGRAM_MAP(sound_readmem,sound_writemem)
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(DEFAULT_60HZ_VBLANK_DURATION)
@@ -1246,13 +1246,13 @@ static MACHINE_DRIVER_START( lethalth )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(V33, 18000000/2)	/* NEC V33, 18 MHz clock */
-	MDRV_CPU_MEMORY(lethalth_readmem,lethalth_writemem)
-	MDRV_CPU_PORTS(readport,writeport)
+	MDRV_CPU_PROGRAM_MAP(lethalth_readmem,lethalth_writemem)
+	MDRV_CPU_IO_MAP(readport,writeport)
 	MDRV_CPU_VBLANK_INT(m92_interrupt,1)
 
 	MDRV_CPU_ADD(V30, 14318180/2)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)	/* 14.31818 MHz */
-	MDRV_CPU_MEMORY(sound_readmem,sound_writemem)
+	MDRV_CPU_PROGRAM_MAP(sound_readmem,sound_writemem)
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(DEFAULT_60HZ_VBLANK_DURATION)
@@ -1277,13 +1277,13 @@ static MACHINE_DRIVER_START( psoldier )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(V33, 18000000/2)		/* NEC V33, 18 MHz clock */
-	MDRV_CPU_MEMORY(readmem,writemem)
-	MDRV_CPU_PORTS(readport,writeport)
+	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
+	MDRV_CPU_IO_MAP(readport,writeport)
 	MDRV_CPU_VBLANK_INT(m92_interrupt,1)
 
 	MDRV_CPU_ADD(V30, 14318180/2)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)	/* 14.31818 MHz */
-	MDRV_CPU_MEMORY(sound_readmem,sound_writemem)
+	MDRV_CPU_PROGRAM_MAP(sound_readmem,sound_writemem)
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(DEFAULT_60HZ_VBLANK_DURATION)
@@ -1908,6 +1908,37 @@ ROM_START( leaguemn )
 	ROM_LOAD( "lh534k0k.8" ,0x000000, 0x080000, CRC(735e6380) SHA1(bf019815e579ef2393c00869f101a01f746e04d6) )
 ROM_END
 
+ROM_START( ssoldier )
+	ROM_REGION( 0x100000, REGION_CPU1, 0 )
+	ROM_LOAD16_BYTE( "f3-h0-h.bin",  0x000001, 0x040000, CRC(b63fb9da) SHA1(429beb7ebc98815809fdd0ff69fcb4a14e1d8a14) )
+	ROM_LOAD16_BYTE( "f3-l0-h.bin",  0x000000, 0x040000, CRC(419361a2) SHA1(42284a7afedefdb58a9b505e87effeee8bb5a9d8) )
+	ROM_LOAD16_BYTE( "f3-h1-a.bin",  0x080001, 0x020000, CRC(e3d9f619) SHA1(7f450413d1fae7250d2fcbe0ff4ee13d52fa15e8) )
+	ROM_LOAD16_BYTE( "f3-l1-a.bin",  0x080000, 0x020000, CRC(8cb5c396) SHA1(af130632b4ffb846cf355064391130d8c7ba73ad) )
+
+	ROM_REGION( 0x100000 * 2, REGION_CPU2, 0 ) /* 1MB for the audio CPU */
+	ROM_LOAD16_BYTE( "f3_sh0.sh0",0x000001, 0x010000, CRC(90b55e5e) SHA1(cf77ccb68a10a29289bc42db348f480e21c3a558) )
+	ROM_LOAD16_BYTE( "f3_sl0.sl0",0x000000, 0x010000, CRC(77c16d57) SHA1(68c7f026b718b700f1f9162f53cdc859b65944b9) )
+
+	ROM_REGION( 0x200000, REGION_GFX1, ROMREGION_DISPOSE ) /* Tiles */
+	ROM_LOAD( "f3_w50.c0",  0x000000, 0x040000, CRC(47e788ee) SHA1(79a6624c9a36f380057c4fbda511128d62f9161e) )
+	ROM_LOAD( "f3_w51.c1",  0x080000, 0x040000, CRC(8e535e3f) SHA1(a51a5a660d13e95da559e7c1eaf23479eddd196f) )
+	ROM_LOAD( "f3_w52.c2",  0x100000, 0x040000, CRC(a6eb2e56) SHA1(db45fd5ffefbe407247069c611a1d40849770297) )
+	ROM_LOAD( "f3_w53.c3",  0x180000, 0x040000, CRC(2f992807) SHA1(bc0fe02b7ad31cb06ab0bf3f91de4ca5130893f1) )
+
+	ROM_REGION( 0x800000, REGION_GFX2, ROMREGION_DISPOSE ) /* Sprites */
+	ROM_LOAD16_BYTE( "f3_w37.000", 0x000001, 0x100000, CRC(fd4cda03) SHA1(34bfabb5a0fdc96507d3c3c028a0b087c406a0d1) )
+	ROM_LOAD16_BYTE( "f3_w38.001", 0x000000, 0x100000, CRC(755bab10) SHA1(8d3a584f5e34da24a162c1812ec5a3fea49778d7) )
+	ROM_LOAD16_BYTE( "f3_w39.010", 0x200001, 0x100000, CRC(b21ced92) SHA1(0af44bddaef77f9427f7073dfc96e8a59d7a9ba5) )
+	ROM_LOAD16_BYTE( "f3_w40.011", 0x200000, 0x100000, CRC(2e906889) SHA1(2aee05ce8f0074302090f1b1c58054c4a861ae68) )
+	ROM_LOAD16_BYTE( "f3_w41.020", 0x400001, 0x100000, CRC(02455d10) SHA1(4f83d8349d39b220a2150a52d0202c7f8d2b588f) )
+	ROM_LOAD16_BYTE( "f3_w42.021", 0x400000, 0x100000, CRC(124589b9) SHA1(dc8f95a0ff205fd24136738941a8931c16c380a4) )
+	ROM_LOAD16_BYTE( "f3_w43.030", 0x600001, 0x100000, CRC(dae7327a) SHA1(3c742b57f30df3ee8d5f5b36dc890af1ec396df5) )
+	ROM_LOAD16_BYTE( "f3_w44.031", 0x600000, 0x100000, CRC(d0fc84ac) SHA1(19154f81c4182be1fe835b5647fa30360c3507aa) )
+
+	ROM_REGION( 0x80000, REGION_SOUND1, ROMREGION_SOUNDONLY )
+	ROM_LOAD( "f3_w95.da" ,0x000000, 0x080000, CRC(f7ca432b) SHA1(274458b68f906e6043bc36110a4903280647ac2d) )
+ROM_END
+
 ROM_START( psoldier )
 	ROM_REGION( 0x100000, REGION_CPU1, 0 )
 	ROM_LOAD16_BYTE( "f3_h0d.h0",  0x000001, 0x040000, CRC(38f131fd) SHA1(0e513a5edfd8ab14440c360000a40b9d750cb54a) )
@@ -2074,6 +2105,18 @@ static READ_HANDLER( psoldier_cycle_r )
 	return m92_ram[0x1aec + offset];
 }
 
+static READ_HANDLER( ssoldier_cycle_r )
+{
+	int a=m92_ram[0]+(m92_ram[1]<<8);
+	int b=m92_ram[0x1aec]+(m92_ram[0x1aed]<<8);
+	int c=m92_ram[0x1aea]+(m92_ram[0x1aeb]<<8);
+
+	if (activecpu_get_pc()==0x2e36 && b!=a && c!=a && offset==0)
+		cpu_spinuntil_int();
+
+	return m92_ram[0x1aec + offset];
+}
+
 static READ_HANDLER( psoldier_snd_cycle_r )
 {
 	int a=m92_snd_ram[0xc34];
@@ -2216,17 +2259,20 @@ static READ_HANDLER( gunforc2_snd_cycle_r )
 
 /***************************************************************************/
 
-static void m92_startup(void)
+static void m92_startup(int hasbanks)
 {
 	unsigned char *RAM = memory_region(REGION_CPU1);
 
-	memcpy(RAM+0xffff0,RAM+0x7fff0,0x10); /* Start vector */
-	bankaddress = 0xa0000; /* Initial bank */
-	set_m92_bank();
+	if (hasbanks)
+	{
+		memcpy(RAM+0xffff0,RAM+0x7fff0,0x10); /* Start vector */
+		bankaddress = 0xa0000; /* Initial bank */
+		set_m92_bank();
 
-	/* Mirror used by In The Hunt for protection */
-	memcpy(RAM+0xc0000,RAM+0x00000,0x10000);
-	cpu_setbank(2,&RAM[0xc0000]);
+		/* Mirror used by In The Hunt for protection */
+		memcpy(RAM+0xc0000,RAM+0x00000,0x10000);
+		cpu_setbank(2,&RAM[0xc0000]);
+	}
 
 	RAM = memory_region(REGION_CPU2);
 	memcpy(RAM+0xffff0,RAM+0x1fff0,0x10); /* Sound cpu Start vector */
@@ -2237,9 +2283,9 @@ static void m92_startup(void)
 	m92_sprite_buffer_busy=0x80;
 }
 
-static void init_m92(const unsigned char *decryption_table)
+static void init_m92(const unsigned char *decryption_table, int hasbanks)
 {
-	m92_startup();
+	m92_startup(hasbanks);
 	setvector_callback(VECTOR_INIT);
 	irem_cpu_decrypt(1,decryption_table);
 
@@ -2252,36 +2298,36 @@ static void init_m92(const unsigned char *decryption_table)
 static DRIVER_INIT( bmaster )
 {
 	install_mem_read_handler(0, 0xe6fde, 0xe6fdf, bmaster_cycle_r);
-	init_m92(bomberman_decryption_table);
+	init_m92(bomberman_decryption_table, 1);
 }
 
 static DRIVER_INIT( gunforce )
 {
 	install_mem_read_handler(0, 0xe61d0, 0xe61d1, gunforce_cycle_r);
-	init_m92(gunforce_decryption_table);
+	init_m92(gunforce_decryption_table, 1);
 }
 
 static DRIVER_INIT( hook )
 {
 	install_mem_read_handler(0, 0xe0012, 0xe0013, hook_cycle_r);
-	init_m92(hook_decryption_table);
+	init_m92(hook_decryption_table, 1);
 }
 
 static DRIVER_INIT( mysticri )
 {
-	init_m92(mysticri_decryption_table);
+	init_m92(mysticri_decryption_table, 1);
 }
 
 static DRIVER_INIT( uccops )
 {
 	install_mem_read_handler(0, 0xe3a02, 0xe3a03, uccops_cycle_r);
-	init_m92(dynablaster_decryption_table);
+	init_m92(dynablaster_decryption_table, 1);
 }
 
 static DRIVER_INIT( rtypeleo )
 {
 	install_mem_read_handler(0, 0xe0032, 0xe0033, rtypeleo_cycle_r);
-	init_m92(rtypeleo_decryption_table);
+	init_m92(rtypeleo_decryption_table, 1);
 	m92_irq_vectorbase=0x20;
 	m92_game_kludge=1;
 }
@@ -2289,14 +2335,14 @@ static DRIVER_INIT( rtypeleo )
 static DRIVER_INIT( rtypelej )
 {
 	install_mem_read_handler(0, 0xe0032, 0xe0033, rtypelej_cycle_r);
-	init_m92(rtypeleo_decryption_table);
+	init_m92(rtypeleo_decryption_table, 1);
 	m92_irq_vectorbase=0x20;
 	m92_game_kludge=1;
 }
 
 static DRIVER_INIT( majtitl2 )
 {
-	init_m92(majtitl2_decryption_table);
+	init_m92(majtitl2_decryption_table, 1);
 
 	/* This game has an eprom on the game board */
 	install_mem_read_handler(0, 0xf0000, 0xf3fff, m92_eeprom_r);
@@ -2308,14 +2354,17 @@ static DRIVER_INIT( majtitl2 )
 static DRIVER_INIT( inthunt )
 {
 	install_mem_read_handler(0, 0xe025e, 0xe025f, inthunt_cycle_r);
-	init_m92(inthunt_decryption_table);
+	init_m92(inthunt_decryption_table, 1);
 }
 
 static DRIVER_INIT( lethalth )
 {
 	install_mem_read_handler(0, 0xe001e, 0xe001f, lethalth_cycle_r);
-	init_m92(lethalth_decryption_table);
+	init_m92(lethalth_decryption_table, 0);
 	m92_irq_vectorbase=0x20;
+	
+	/* NOP out the bankswitcher */
+	install_port_write_handler(0, 0x20, 0x21, MWA8_NOP);
 
 	/* This game sets the raster IRQ position, but the interrupt routine
 		is just an iret, no need to emulate it */
@@ -2327,9 +2376,20 @@ static DRIVER_INIT( nbbatman )
 {
 	unsigned char *RAM = memory_region(REGION_CPU1);
 
-	init_m92(leagueman_decryption_table);
+	init_m92(leagueman_decryption_table, 1);
 
 	memcpy(RAM+0x80000,RAM+0x100000,0x20000);
+}
+
+static DRIVER_INIT( ssoldier )
+{
+ install_mem_read_handler(0, 0xe1aec, 0xe1aed, ssoldier_cycle_r);
+ install_mem_read_handler(1, 0xa0c34, 0xa0c35, psoldier_snd_cycle_r);
+
+ init_m92(psoldier_decryption_table, 1);
+ m92_irq_vectorbase=0x20;
+ /* main CPU expects an answer even before writing the first command */
+ sound_status = 0x80;
 }
 
 static DRIVER_INIT( psoldier )
@@ -2337,7 +2397,7 @@ static DRIVER_INIT( psoldier )
 	install_mem_read_handler(0, 0xe1aec, 0xe1aed, psoldier_cycle_r);
 	install_mem_read_handler(1, 0xa0c34, 0xa0c35, psoldier_snd_cycle_r);
 
-	init_m92(psoldier_decryption_table);
+	init_m92(psoldier_decryption_table, 1);
 	m92_irq_vectorbase=0x20;
 	/* main CPU expects an answer even before writing the first command */
 	sound_status = 0x80;
@@ -2346,13 +2406,13 @@ static DRIVER_INIT( psoldier )
 static DRIVER_INIT( dsccr94j )
 {
 	install_mem_read_handler(0, 0xe8636, 0xe8637, dsccr94j_cycle_r);
-	init_m92(dsoccr94_decryption_table);
+	init_m92(dsoccr94_decryption_table, 1);
 }
 
 static DRIVER_INIT( gunforc2 )
 {
 	unsigned char *RAM = memory_region(REGION_CPU1);
-	init_m92(lethalth_decryption_table);
+	init_m92(lethalth_decryption_table, 1);
 	memcpy(RAM+0x80000,RAM+0x100000,0x20000);
 
 	install_mem_read_handler(0, 0xe9fa0, 0xe9fa1, gunforc2_cycle_r);
@@ -2384,7 +2444,8 @@ GAME( 1993, inthuntu, inthunt,  raster,    inthunt,  inthunt,  ROT0,   "Irem Ame
 GAME( 1993, kaiteids, inthunt,  raster,    inthunt,  inthunt,  ROT0,   "Irem",         "Kaitei Daisensou (Japan)" )
 GAMEX(1993, nbbatman, 0,        raster,    nbbatman, nbbatman, ROT0,   "Irem America", "Ninja Baseball Batman (US)", GAME_IMPERFECT_GRAPHICS )
 GAMEX(1993, leaguemn, nbbatman, raster,    nbbatman, nbbatman, ROT0,   "Irem",         "Yakyuu Kakutou League-Man (Japan)", GAME_IMPERFECT_GRAPHICS )
-GAMEX(1993, psoldier, 0,        psoldier,  psoldier, psoldier, ROT0,   "Irem",         "Perfect Soldiers (Japan)", GAME_IMPERFECT_SOUND )
+GAMEX(1993, ssoldier, 0,  psoldier,  psoldier, ssoldier, ROT0,   "Irem America", "Superior Soldiers (US)", GAME_IMPERFECT_SOUND )
+GAMEX(1993, psoldier, ssoldier, psoldier,  psoldier, psoldier, ROT0,   "Irem",         "Perfect Soldiers (Japan)", GAME_IMPERFECT_SOUND )
 GAME( 1994, dsccr94j, dsoccr94, psoldier,  dsccr94j, dsccr94j, ROT0,   "Irem",         "Dream Soccer '94 (Japan)" )
 GAME( 1994, gunforc2, 0,        raster,    gunforc2, gunforc2, ROT0,   "Irem",         "Gunforce 2 (US)" )
 GAME( 1994, geostorm, gunforc2, raster,    gunforc2, gunforc2, ROT0,   "Irem",         "Geostorm (Japan)" )

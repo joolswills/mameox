@@ -186,11 +186,11 @@ void osd_pause( int paused )
 void __cdecl logerror( const char *fmt, ... )
 {
 #ifdef ENABLE_LOGERROR
-	char buf[1024];
+  char buf[1024] = {0};
 
   va_list arg;
   va_start( arg, fmt );
-  vsprintf( buf, fmt, arg );
+  vsnprintf( buf, 1023, fmt, arg );
   va_end( arg );
 
 	PRINTMSG( T_ERROR, buf );
@@ -203,11 +203,11 @@ void __cdecl logerror( const char *fmt, ... )
 void osd_print_error( const char *fmt, ... )
 {
   wchar_t wBuf[1024];
-  char buf[1024];
+  char buf[1024] = {0};
 
   va_list arg;
   va_start( arg, fmt );
-  vsprintf( buf, fmt, arg );
+  vsnprintf( buf, 1023, fmt, arg );
   va_end( arg );
 
   mbstowcs( wBuf, buf, 1023 );
@@ -248,4 +248,19 @@ void osd_autobootsavestate( const char *gameName )
       return;
     }
   }
+}
+
+//---------------------------------------------------------------------
+//	osd_die
+//---------------------------------------------------------------------
+void osd_die( const char *fmt, ... )
+{
+  char buf[1024] = {0};
+
+  va_list arg;
+  va_start( arg, fmt );
+  vsnprintf( buf, 1023, fmt, arg );
+  va_end( arg );
+
+  fatalerror( buf );
 }

@@ -148,21 +148,21 @@ MACHINE_INIT( dlair )
 }
 
 
-static MEMORY_READ_START( readmem )
-	{ 0x0000, 0x7fff, MRA_ROM },
-	{ 0xa000, 0xa7ff, MRA_RAM },
-	{ 0xc000, 0xc7ff, MRA_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0xa000, 0xa7ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xc000, 0xc7ff) AM_READ(MRA8_RAM)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( writemem )
-	{ 0x0000, 0x7fff, MWA_ROM },
-	{ 0xa000, 0xa7ff, MWA_RAM },
-	{ 0xc000, 0xc3ff, videoram_w, &videoram, &videoram_size },
-	{ 0xc400, 0xc7ff, MWA_RAM },
-	{ 0xe000, 0xe000, dlair_led0_w },
-	{ 0xe008, 0xe008, dlair_led1_w },
-	{ 0xe030, 0xe030, watchdog_reset_w },
-MEMORY_END
+static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0xa000, 0xa7ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xc000, 0xc3ff) AM_WRITE(videoram_w) AM_BASE(&videoram) AM_SIZE(&videoram_size)
+	AM_RANGE(0xc400, 0xc7ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xe000, 0xe000) AM_WRITE(dlair_led0_w)
+	AM_RANGE(0xe008, 0xe008) AM_WRITE(dlair_led1_w)
+	AM_RANGE(0xe030, 0xe030) AM_WRITE(watchdog_reset_w)
+ADDRESS_MAP_END
 
 static unsigned char pip[4];
 static READ_HANDLER( pip_r )
@@ -177,15 +177,15 @@ logerror("PC %04x: write %02x to I/O port %02x\n",activecpu_get_pc(),data,offset
 z80ctc_0_w(offset,data);
 }
 
-static PORT_READ_START( readport )
-	{ 0x00, 0x03, pip_r },
-//	{ 0x80, 0x83, z80ctc_0_r },
-PORT_END
+static ADDRESS_MAP_START( readport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x00, 0x03) AM_READ(pip_r)
+//	AM_RANGE(0x80, 0x83) AM_READ(z80ctc_0_r)
+ADDRESS_MAP_END
 
-static PORT_WRITE_START( writeport )
-	{ 0x00, 0x03, pip_w },
-//	{ 0x80, 0x83, z80ctc_0_w },
-PORT_END
+static ADDRESS_MAP_START( writeport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x00, 0x03) AM_WRITE(pip_w)
+//	AM_RANGE(0x80, 0x83) AM_WRITE(z80ctc_0_w)
+ADDRESS_MAP_END
 
 
 
@@ -229,8 +229,8 @@ static MACHINE_DRIVER_START( dlair )
 	/* basic machine hardware */
 	MDRV_CPU_ADD(Z80, 3072000)	/* 3.072 MHz ? */
 	MDRV_CPU_CONFIG(daisy_chain)
-	MDRV_CPU_MEMORY(readmem,writemem)
-	MDRV_CPU_PORTS(readport,writeport)
+	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
+	MDRV_CPU_IO_MAP(readport,writeport)
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(DEFAULT_60HZ_VBLANK_DURATION)
@@ -260,13 +260,13 @@ MACHINE_DRIVER_END
 
 ROM_START( dlair )
 	ROM_REGION( 0x10000, REGION_CPU1, 0 )	/* 64k for code */
-	ROM_LOAD( "u45",          0x0000, 0x2000, CRC(329b354a) )
-	ROM_LOAD( "u46",          0x2000, 0x2000, CRC(8479612b) )
-	ROM_LOAD( "u47",          0x4000, 0x2000, CRC(6a66f6b4) )
-	ROM_LOAD( "u48",          0x6000, 0x2000, CRC(36575106) )
+	ROM_LOAD( "u45",          0x0000, 0x2000, CRC(329b354a) SHA1(54bbc5aa647d3c20166a57f9d3aa5569e7289af8) )
+	ROM_LOAD( "u46",          0x2000, 0x2000, CRC(8479612b) SHA1(b5543a06928274bde0e1bdda0747d936feaff177) )
+	ROM_LOAD( "u47",          0x4000, 0x2000, CRC(6a66f6b4) SHA1(2bee981870e61977565439c34568952043656cfa) )
+	ROM_LOAD( "u48",          0x6000, 0x2000, CRC(36575106) SHA1(178e26e7d5c7f879bc55c2fb170f3bb47a709610) )
 
 	ROM_REGION( 0x2000, REGION_GFX1, ROMREGION_DISPOSE )
-	ROM_LOAD( "u33",          0x0000, 0x2000, CRC(e7506d96) )
+	ROM_LOAD( "u33",          0x0000, 0x2000, CRC(e7506d96) SHA1(610ae25bd8db13b18b9e681e855ffa978043255b) )
 ROM_END
 
 

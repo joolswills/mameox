@@ -153,127 +153,127 @@ static READ_HANDLER( depthch_input_port_1_r )
 }
 
 
-static MEMORY_READ_START( vicdual_readmem )
-	{ 0x0000, 0x7fff, MRA_ROM },
-	{ 0x8000, 0x83ff, videoram_r },
-	{ 0x8400, 0x87ff, vicdual_ram_r },
-	{ 0x8800, 0x8fff, vicdual_characterram_r },
-	{ 0x9000, 0x93ff, videoram_r },
-	{ 0x9400, 0x97ff, vicdual_ram_r },
-	{ 0x9800, 0x9fff, vicdual_characterram_r },
-	{ 0xa000, 0xa3ff, videoram_r },
-	{ 0xa400, 0xa7ff, vicdual_ram_r },
-	{ 0xa800, 0xafff, vicdual_characterram_r },
-	{ 0xb000, 0xb3ff, videoram_r },
-	{ 0xb400, 0xb7ff, vicdual_ram_r },
-	{ 0xb800, 0xbfff, vicdual_characterram_r },
-	{ 0xc000, 0xc3ff, videoram_r },
-	{ 0xc400, 0xc7ff, vicdual_ram_r },
-	{ 0xc800, 0xcfff, vicdual_characterram_r },
-	{ 0xd000, 0xd3ff, videoram_r },
-	{ 0xd400, 0xd7ff, vicdual_ram_r },
-	{ 0xd800, 0xdfff, vicdual_characterram_r },
-	{ 0xe000, 0xe3ff, videoram_r },
-	{ 0xe400, 0xe7ff, vicdual_ram_r },
-	{ 0xe800, 0xefff, vicdual_characterram_r },
-	{ 0xf000, 0xf3ff, videoram_r },
-	{ 0xf400, 0xf7ff, vicdual_ram_r },
-	{ 0xf800, 0xffff, vicdual_characterram_r },
-MEMORY_END
+static ADDRESS_MAP_START( vicdual_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x8000, 0x83ff) AM_READ(videoram_r)
+	AM_RANGE(0x8400, 0x87ff) AM_READ(vicdual_ram_r)
+	AM_RANGE(0x8800, 0x8fff) AM_READ(vicdual_characterram_r)
+	AM_RANGE(0x9000, 0x93ff) AM_READ(videoram_r)
+	AM_RANGE(0x9400, 0x97ff) AM_READ(vicdual_ram_r)
+	AM_RANGE(0x9800, 0x9fff) AM_READ(vicdual_characterram_r)
+	AM_RANGE(0xa000, 0xa3ff) AM_READ(videoram_r)
+	AM_RANGE(0xa400, 0xa7ff) AM_READ(vicdual_ram_r)
+	AM_RANGE(0xa800, 0xafff) AM_READ(vicdual_characterram_r)
+	AM_RANGE(0xb000, 0xb3ff) AM_READ(videoram_r)
+	AM_RANGE(0xb400, 0xb7ff) AM_READ(vicdual_ram_r)
+	AM_RANGE(0xb800, 0xbfff) AM_READ(vicdual_characterram_r)
+	AM_RANGE(0xc000, 0xc3ff) AM_READ(videoram_r)
+	AM_RANGE(0xc400, 0xc7ff) AM_READ(vicdual_ram_r)
+	AM_RANGE(0xc800, 0xcfff) AM_READ(vicdual_characterram_r)
+	AM_RANGE(0xd000, 0xd3ff) AM_READ(videoram_r)
+	AM_RANGE(0xd400, 0xd7ff) AM_READ(vicdual_ram_r)
+	AM_RANGE(0xd800, 0xdfff) AM_READ(vicdual_characterram_r)
+	AM_RANGE(0xe000, 0xe3ff) AM_READ(videoram_r)
+	AM_RANGE(0xe400, 0xe7ff) AM_READ(vicdual_ram_r)
+	AM_RANGE(0xe800, 0xefff) AM_READ(vicdual_characterram_r)
+	AM_RANGE(0xf000, 0xf3ff) AM_READ(videoram_r)
+	AM_RANGE(0xf400, 0xf7ff) AM_READ(vicdual_ram_r)
+	AM_RANGE(0xf800, 0xffff) AM_READ(vicdual_characterram_r)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( vicdual_writemem )
-	{ 0x0000, 0x7fff, MWA_ROM },
-	{ 0x8000, 0x83ff, videoram_w, &videoram, &videoram_size },
-	{ 0x8400, 0x87ff, vicdual_ram_w, &vicdual_ram },
-	{ 0x8800, 0x8fff, vicdual_characterram_w, &vicdual_characterram },
-	{ 0x9000, 0x93ff, videoram_w, &videoram, &videoram_size },
-	{ 0x9400, 0x97ff, vicdual_ram_w, &vicdual_ram },
-	{ 0x9800, 0x9fff, vicdual_characterram_w, &vicdual_characterram},
-	{ 0xa000, 0xa3ff, videoram_w },
-	{ 0xa400, 0xa7ff, vicdual_ram_w },
-	{ 0xa800, 0xafff, vicdual_characterram_w },
-	{ 0xb000, 0xb3ff, videoram_w },
-	{ 0xb400, 0xb7ff, vicdual_ram_w },
-	{ 0xb800, 0xbfff, vicdual_characterram_w },
-	{ 0xc000, 0xc3ff, videoram_w },
-	{ 0xc400, 0xc7ff, vicdual_ram_w },
-	{ 0xc800, 0xcfff, vicdual_characterram_w },
-	{ 0xd000, 0xd3ff, videoram_w },
-	{ 0xd400, 0xd7ff, vicdual_ram_w },
-	{ 0xd800, 0xdfff, vicdual_characterram_w },
-	{ 0xe000, 0xe3ff, videoram_w },
-	{ 0xe400, 0xe7ff, vicdual_ram_w },
-	{ 0xe800, 0xefff, vicdual_characterram_w },
-	{ 0xf000, 0xf3ff, videoram_w },
-	{ 0xf400, 0xf7ff, vicdual_ram_w },
-	{ 0xf800, 0xffff, vicdual_characterram_w },
-MEMORY_END
+static ADDRESS_MAP_START( vicdual_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x8000, 0x83ff) AM_WRITE(videoram_w) AM_BASE(&videoram) AM_SIZE(&videoram_size)
+	AM_RANGE(0x8400, 0x87ff) AM_WRITE(vicdual_ram_w) AM_BASE(&vicdual_ram)
+	AM_RANGE(0x8800, 0x8fff) AM_WRITE(vicdual_characterram_w) AM_BASE(&vicdual_characterram)
+	AM_RANGE(0x9000, 0x93ff) AM_WRITE(videoram_w) AM_BASE(&videoram) AM_SIZE(&videoram_size)
+	AM_RANGE(0x9400, 0x97ff) AM_WRITE(vicdual_ram_w) AM_BASE(&vicdual_ram)
+	AM_RANGE(0x9800, 0x9fff) AM_WRITE(vicdual_characterram_w) AM_BASE(&vicdual_characterram)
+	AM_RANGE(0xa000, 0xa3ff) AM_WRITE(videoram_w)
+	AM_RANGE(0xa400, 0xa7ff) AM_WRITE(vicdual_ram_w)
+	AM_RANGE(0xa800, 0xafff) AM_WRITE(vicdual_characterram_w)
+	AM_RANGE(0xb000, 0xb3ff) AM_WRITE(videoram_w)
+	AM_RANGE(0xb400, 0xb7ff) AM_WRITE(vicdual_ram_w)
+	AM_RANGE(0xb800, 0xbfff) AM_WRITE(vicdual_characterram_w)
+	AM_RANGE(0xc000, 0xc3ff) AM_WRITE(videoram_w)
+	AM_RANGE(0xc400, 0xc7ff) AM_WRITE(vicdual_ram_w)
+	AM_RANGE(0xc800, 0xcfff) AM_WRITE(vicdual_characterram_w)
+	AM_RANGE(0xd000, 0xd3ff) AM_WRITE(videoram_w)
+	AM_RANGE(0xd400, 0xd7ff) AM_WRITE(vicdual_ram_w)
+	AM_RANGE(0xd800, 0xdfff) AM_WRITE(vicdual_characterram_w)
+	AM_RANGE(0xe000, 0xe3ff) AM_WRITE(videoram_w)
+	AM_RANGE(0xe400, 0xe7ff) AM_WRITE(vicdual_ram_w)
+	AM_RANGE(0xe800, 0xefff) AM_WRITE(vicdual_characterram_w)
+	AM_RANGE(0xf000, 0xf3ff) AM_WRITE(videoram_w)
+	AM_RANGE(0xf400, 0xf7ff) AM_WRITE(vicdual_ram_w)
+	AM_RANGE(0xf800, 0xffff) AM_WRITE(vicdual_characterram_w)
+ADDRESS_MAP_END
 
 
 /* Safari has extra RAM */
-static MEMORY_READ_START( safari_readmem )
-	{ 0x0000, 0x7fff, MRA_ROM },
-	{ 0x8000, 0x87ff, MRA_RAM },
-	{ 0xe000, 0xe3ff, videoram_r },
-	{ 0xe400, 0xe7ff, vicdual_ram_r },
-	{ 0xe800, 0xefff, vicdual_characterram_r },
-MEMORY_END
+static ADDRESS_MAP_START( safari_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x8000, 0x87ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xe000, 0xe3ff) AM_READ(videoram_r)
+	AM_RANGE(0xe400, 0xe7ff) AM_READ(vicdual_ram_r)
+	AM_RANGE(0xe800, 0xefff) AM_READ(vicdual_characterram_r)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( safari_writemem )
-	{ 0x0000, 0x7fff, MWA_ROM },
-	{ 0x8000, 0x87ff, MWA_RAM },
-	{ 0xe000, 0xe3ff, videoram_w, &videoram, &videoram_size },
-	{ 0xe400, 0xe7ff, vicdual_ram_w, &vicdual_ram },
-	{ 0xe800, 0xefff, vicdual_characterram_w, &vicdual_characterram },
-MEMORY_END
-
-
-static PORT_READ_START( readport_2ports )
-	{ 0x01, 0x01, input_port_0_r },
-	{ 0x08, 0x08, input_port_1_r },
-PORT_END
-
-static PORT_READ_START( readport_3ports )
-	{ 0x01, 0x01, input_port_0_r },
-	{ 0x04, 0x04, input_port_1_r },
-	{ 0x08, 0x08, input_port_2_r },
-PORT_END
-
-static PORT_READ_START( readport_4ports )
-	{ 0x00, 0x00, input_port_0_r },
-	{ 0x01, 0x01, input_port_1_r },
-	{ 0x02, 0x02, input_port_2_r },
-	{ 0x03, 0x03, input_port_3_r },
-PORT_END
-
-static PORT_READ_START( readport_safari )
-	{ 0x03, 0x03, input_port_0_r },
-	{ 0x08, 0x08, input_port_1_r },
-PORT_END
+static ADDRESS_MAP_START( safari_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x8000, 0x87ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xe000, 0xe3ff) AM_WRITE(videoram_w) AM_BASE(&videoram) AM_SIZE(&videoram_size)
+	AM_RANGE(0xe400, 0xe7ff) AM_WRITE(vicdual_ram_w) AM_BASE(&vicdual_ram)
+	AM_RANGE(0xe800, 0xefff) AM_WRITE(vicdual_characterram_w) AM_BASE(&vicdual_characterram)
+ADDRESS_MAP_END
 
 
-static PORT_WRITE_START( writeport )
-	{ 0x40, 0x40, vicdual_palette_bank_w },
-PORT_END
+static ADDRESS_MAP_START( readport_2ports, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x01, 0x01) AM_READ(input_port_0_r)
+	AM_RANGE(0x08, 0x08) AM_READ(input_port_1_r)
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( readport_3ports, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x01, 0x01) AM_READ(input_port_0_r)
+	AM_RANGE(0x04, 0x04) AM_READ(input_port_1_r)
+	AM_RANGE(0x08, 0x08) AM_READ(input_port_2_r)
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( readport_4ports, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x00, 0x00) AM_READ(input_port_0_r)
+	AM_RANGE(0x01, 0x01) AM_READ(input_port_1_r)
+	AM_RANGE(0x02, 0x02) AM_READ(input_port_2_r)
+	AM_RANGE(0x03, 0x03) AM_READ(input_port_3_r)
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( readport_safari, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x03, 0x03) AM_READ(input_port_0_r)
+	AM_RANGE(0x08, 0x08) AM_READ(input_port_1_r)
+ADDRESS_MAP_END
 
 
-static MEMORY_READ_START( i8039_readmem )
-	{ 0x0000, 0x07ff, MRA_ROM },
-MEMORY_END
-
-static MEMORY_WRITE_START( i8039_writemem )
-	{ 0x0000, 0x07ff, MWA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( writeport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x40, 0x40) AM_WRITE(vicdual_palette_bank_w)
+ADDRESS_MAP_END
 
 
-static PORT_READ_START( i8039_readport )
-	{ I8039_t1, I8039_t1, carnival_music_port_t1_r },
-PORT_END
+static ADDRESS_MAP_START( i8039_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x07ff) AM_READ(MRA8_ROM)
+ADDRESS_MAP_END
 
-static PORT_WRITE_START( i8039_writeport )
-	{ I8039_p1, I8039_p1, carnival_music_port_1_w },
-	{ I8039_p2, I8039_p2, carnival_music_port_2_w },
-PORT_END
+static ADDRESS_MAP_START( i8039_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x07ff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
+
+
+static ADDRESS_MAP_START( i8039_readport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(I8039_t1, I8039_t1) AM_READ(carnival_music_port_t1_r)
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( i8039_writeport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(I8039_p1, I8039_p1) AM_WRITE(carnival_music_port_1_w)
+	AM_RANGE(I8039_p2, I8039_p2) AM_WRITE(carnival_music_port_2_w)
+ADDRESS_MAP_END
 
 
 
@@ -344,6 +344,54 @@ INPUT_PORTS_START( frogs )
 	PORT_BIT_IMPULSE( 0x80, IP_ACTIVE_LOW, IPT_COIN1 | IPF_RESETCPU, 30 )
 INPUT_PORTS_END
 
+INPUT_PORTS_START( sspacaho )
+	PORT_START	/* IN0 */
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    | IPF_4WAY | IPF_COCKTAIL )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON1 | IPF_COCKTAIL )
+	PORT_DIPNAME( 0x04, 0x04, "S.A. Lives (1/2)" )
+	PORT_DIPSETTING(    0x00, "+0" )
+	PORT_DIPSETTING(    0x04, "+1" )
+	PORT_DIPNAME( 0x08, 0x00, "H.O. Lives" )
+	PORT_DIPSETTING(    0x00, "3" )
+	PORT_DIPSETTING(    0x08, "4" )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  | IPF_4WAY )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    | IPF_4WAY )
+	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
+
+	PORT_START	/* IN1 */
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_4WAY | IPF_COCKTAIL )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_DIPNAME( 0x04, 0x00, "S.A. Lives (2/2)" )
+	PORT_DIPSETTING(    0x00, "+0" )
+	PORT_DIPSETTING(    0x04, "+2" )
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_VBLANK )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  | IPF_4WAY )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_4WAY )
+	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
+
+	PORT_START	/* IN2 */
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  | IPF_4WAY | IPF_COCKTAIL )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_DIPNAME( 0x04, 0x00, "S.A. Bonus Life" )
+	PORT_DIPSETTING(    0x00, "10000" )
+ 	PORT_DIPSETTING(    0x04, "15000" )
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_START1 )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON1 )
+	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
+
+	PORT_START	/* IN3 */
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  | IPF_4WAY | IPF_COCKTAIL )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_DIPNAME( 0x04, 0x00, "S.A. Bonus Life For Final UFO" )
+	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_BIT_IMPULSE( 0x08, IP_ACTIVE_LOW, IPT_COIN1 | IPF_RESETCPU, 30 )
+	PORT_BITX(0x10, IP_ACTIVE_LOW, IPT_BUTTON2 | IPF_TOGGLE, "Game Select", IP_KEY_DEFAULT, IP_JOY_DEFAULT )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START2 )
+	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
+INPUT_PORTS_END
+
 INPUT_PORTS_START( sspaceat )
 	PORT_START	/* IN0 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_2WAY )
@@ -356,9 +404,9 @@ INPUT_PORTS_START( sspaceat )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  | IPF_2WAY )
 
 	PORT_START	/* IN1 */
-	PORT_DIPNAME( 0x01, 0x00, "Bonus Life After 1st Stage" )
-	PORT_DIPSETTING(    0x01, DEF_STR( No ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( Yes ) )
+	PORT_DIPNAME( 0x01, 0x00, "Bonus Life For Final UFO" )
+	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0e, 0x0e, DEF_STR( Lives ) )
 	PORT_DIPSETTING(    0x0e, "3" )
 	PORT_DIPSETTING(    0x0c, "4" )
@@ -372,14 +420,14 @@ INPUT_PORTS_START( sspaceat )
 	PORT_DIPNAME( 0x10, 0x00, DEF_STR( Bonus_Life ) )
 	PORT_DIPSETTING(    0x00, "10000" )
 	PORT_DIPSETTING(    0x10, "15000" )
-	PORT_BIT( 0x60, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* probably unused */
+	PORT_BIT( 0x60, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_DIPNAME( 0x80, 0x00, "Credits Display" )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START	/* IN2 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_VBLANK )
-	PORT_BIT( 0x7e, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* probably unused */
+	PORT_BIT( 0x7e, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT_IMPULSE( 0x80, IP_ACTIVE_LOW, IPT_COIN1 | IPF_RESETCPU, 30 )
 INPUT_PORTS_END
 
@@ -492,7 +540,7 @@ INPUT_PORTS_START( samurai )
 	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Lives ) )
 	PORT_DIPSETTING(    0x04, "3" )
 	PORT_DIPSETTING(    0x00, "4" )
-	PORT_BITX(    0x08, 0x08, IPT_DIPSWITCH_NAME | IPF_CHEAT, "Infinite Lives", IP_KEY_NONE, IP_JOY_NONE )
+	PORT_BITX(    0x08, 0x08, IPT_DIPSWITCH_NAME, "Infinite Lives", IP_KEY_NONE, IP_JOY_NONE )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  | IPF_4WAY )
@@ -865,6 +913,59 @@ INPUT_PORTS_START( carnvckt )
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
 INPUT_PORTS_END
 
+INPUT_PORTS_START( brdrline )
+	PORT_START	/* IN0 */
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_UP | IPF_4WAY | IPF_COCKTAIL )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON1 | IPF_COCKTAIL )
+	PORT_DIPNAME( 0x04, 0x04, "Infinite Lives" )
+	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x08, 0x00, DEF_STR( Cabinet ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( Upright ) )
+	PORT_DIPSETTING(    0x08, DEF_STR( Cocktail ) )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN | IPF_4WAY )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_UP	 | IPF_4WAY )
+	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+
+	PORT_START	/* IN1 */
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_4WAY | IPF_COCKTAIL )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN ) /* probably unused */
+	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Lives ) )
+	PORT_DIPSETTING(    0x04, "3" )
+	PORT_DIPSETTING(    0x00, "4" )
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_VBLANK )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  | IPF_4WAY )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_4WAY )
+	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
+
+	PORT_START	/* IN2 */
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN | IPF_4WAY | IPF_COCKTAIL )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )	/* probably unused */
+	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Lives ) )
+	PORT_DIPSETTING(    0x04, "3" )
+	PORT_DIPSETTING(    0x00, "5" )
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNKNOWN )	/* timer - unused */
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_START1 )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON1 )
+	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
+
+	PORT_START	/* IN3 */
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT | IPF_4WAY | IPF_COCKTAIL )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )	/* probably unused */
+	PORT_DIPNAME( 0x04, 0x00, DEF_STR( Unused ) )
+	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_BIT_IMPULSE( 0x08, IP_ACTIVE_LOW, IPT_COIN1 | IPF_RESETCPU, 30 )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN )	/* probably unused */
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START2 )
+	PORT_BIT( 0xc0, IP_ACTIVE_LOW, IPT_UNUSED )
+INPUT_PORTS_END
+
 INPUT_PORTS_START( digger )
 	PORT_START	/* IN0 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_START1 )
@@ -1098,8 +1199,8 @@ static MACHINE_DRIVER_START( 2ports )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD_TAG("main", Z80, 15468480/8)
-	MDRV_CPU_MEMORY(vicdual_readmem,vicdual_writemem)
-	MDRV_CPU_PORTS(readport_2ports,writeport)
+	MDRV_CPU_PROGRAM_MAP(vicdual_readmem,vicdual_writemem)
+	MDRV_CPU_IO_MAP(readport_2ports,writeport)
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(5000)	/* frames per second, vblank duration */
@@ -1124,7 +1225,7 @@ static MACHINE_DRIVER_START( 3ports )
 	/* basic machine hardware */
 	MDRV_IMPORT_FROM(2ports)
 	MDRV_CPU_MODIFY("main")
-	MDRV_CPU_PORTS(readport_3ports,writeport)
+	MDRV_CPU_IO_MAP(readport_3ports,writeport)
 MACHINE_DRIVER_END
 
 
@@ -1133,7 +1234,7 @@ static MACHINE_DRIVER_START( 4ports )
 	/* basic machine hardware */
 	MDRV_IMPORT_FROM(2ports)
 	MDRV_CPU_MODIFY("main")
-	MDRV_CPU_PORTS(readport_4ports,writeport)
+	MDRV_CPU_IO_MAP(readport_4ports,writeport)
 MACHINE_DRIVER_END
 
 
@@ -1142,8 +1243,8 @@ static MACHINE_DRIVER_START( safari )
 	/* basic machine hardware */
 	MDRV_IMPORT_FROM(2ports)
 	MDRV_CPU_MODIFY("main")
-	MDRV_CPU_MEMORY(safari_readmem,safari_writemem)
-	MDRV_CPU_PORTS(readport_safari,writeport)
+	MDRV_CPU_PROGRAM_MAP(safari_readmem,safari_writemem)
+	MDRV_CPU_IO_MAP(readport_safari,writeport)
 MACHINE_DRIVER_END
 
 
@@ -1205,13 +1306,13 @@ static MACHINE_DRIVER_START( carnival )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(Z80,15468480/8)
-	MDRV_CPU_MEMORY(vicdual_readmem,vicdual_writemem)
-	MDRV_CPU_PORTS(readport_4ports,writeport)
+	MDRV_CPU_PROGRAM_MAP(vicdual_readmem,vicdual_writemem)
+	MDRV_CPU_IO_MAP(readport_4ports,writeport)
 
 	MDRV_CPU_ADD(I8039,( ( 3579545 / 5 ) / 3 ))
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)
-	MDRV_CPU_MEMORY(i8039_readmem,i8039_writemem)
-	MDRV_CPU_PORTS(i8039_readport,i8039_writeport)
+	MDRV_CPU_PROGRAM_MAP(i8039_readmem,i8039_writemem)
+	MDRV_CPU_IO_MAP(i8039_readport,i8039_writeport)
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(5000)
@@ -1439,6 +1540,23 @@ ROM_START( invho2 )
 	ROM_LOAD( "316-0287.u49", 0x0000, 0x0020, CRC(d4374b01) SHA1(85ea0915f23571358e2e0c2b66b968e7b93f4bd6) )
 ROM_END
 
+ROM_START( sspacaho )
+	ROM_REGION( 0x10000, REGION_CPU1, 0 )	/* 64k for code */
+	ROM_LOAD( "epr00001.bin", 0x0000, 0x0800, CRC(ba62f57a) SHA1(7cfc079c6afe317b6c389c06802fdf1f83858510) )
+	ROM_LOAD( "epr00002.bin", 0x0800, 0x0800, CRC(94b3c59c) SHA1(e6ee1c25fb45d03d514421c231d794f9da05f47f) )
+	ROM_LOAD( "epr00003.bin", 0x1000, 0x0800, CRC(df13aef2) SHA1(61d210eeb59fe132e14fdd7eb6a39ebc55168097) )
+	ROM_LOAD( "epr00004.bin", 0x1800, 0x0800, CRC(8431e15e) SHA1(b028e718ee90f37c848e5f83494be61cb90338e2) )
+	ROM_LOAD( "epr00005.bin", 0x2000, 0x0800, CRC(eec2b6e7) SHA1(4ed830755b4d1da6111afc6c16c7c633521ccb9c) )
+	ROM_LOAD( "epr00006.bin", 0x2800, 0x0800, CRC(780e47ed) SHA1(533879b8abf0e69644fd8b784dbe9bf10cde6d9f) )
+	ROM_LOAD( "epr00007.bin", 0x3000, 0x0800, CRC(8189a2fa) SHA1(3c13a394f48adb8f7c6b8203bd0749921461ea06) )
+	ROM_LOAD( "epr00008.bin", 0x3800, 0x0800, CRC(34a64a80) SHA1(a588fae0ecaa80677887d8c95ef8896a4bdd77ee) )
+
+	ROM_REGION( 0x0060, REGION_PROMS, 0 )
+	ROM_LOAD( "316-0138.u44", 0x0000, 0x0020, CRC(67104ea9) SHA1(26b6bd2a1973b83bb9af4e3385d8cb14cb3f62f2) )
+	ROM_LOAD( "316-0043.u87", 0x0020, 0x0020, CRC(e60a7960) SHA1(b8b8716e859c57c35310efc4594262afedb84823) )
+	ROM_LOAD( "316-0042.u88", 0x0040, 0x0020, CRC(a1506b9d) SHA1(037c3db2ea40eca459e8acba9d1506dd28d72d10) )
+ROM_END
+
 ROM_START( samurai )
 	ROM_REGION( 0x10000, REGION_CPU1, 0 )	/* 64k for code */
 	ROM_LOAD( "epr289.u33",   0x0000, 0x0400, CRC(a1a9cb03) SHA1(1875a86ad5938295dd5db6bb045be46eba8638ba) )
@@ -1639,6 +1757,29 @@ ROM_START( carnvckt )
 	ROM_LOAD( "crvl.snd",     0x0000, 0x0400, CRC(0dbaa2b0) SHA1(eae7fc362a0ff8f908c42e093c7dbb603659373c) )
 ROM_END
 
+ROM_START( brdrlinb )
+	ROM_REGION( 0x10000, REGION_CPU1, 0 )	/* 64k for code */
+	ROM_LOAD( "border1.33",   0x0000, 0x0800, CRC(48387706) SHA1(b4db2f05e722812370b0b24cd15061d6fc578560) ) // karateco
+	ROM_LOAD( "border2.30",   0x0800, 0x0800, CRC(1d669b60) SHA1(47ef5141591e177419fa352968be26ecc6fafd89) )
+	ROM_LOAD( "border3.29",   0x1000, 0x0800, CRC(6e4d6fb3) SHA1(4747359c4f09e93c563b93ee1189743894332b47) )
+	ROM_LOAD( "border4.27",   0x1800, 0x0800, CRC(718446d8) SHA1(cc15cb37ebb51970fcdebf74ab4308a25b40af2a) )
+	ROM_LOAD( "border5.08",   0x2000, 0x0800, CRC(a0584337) SHA1(1fd9c60dc42a178c88d4e4e4b4d5de495ea906c6) )
+	ROM_LOAD( "border6.06",   0x2800, 0x0800, CRC(cb30fb98) SHA1(96ea83111e8ccf409fe40f19ce200a50ea9ea288) )
+	ROM_LOAD( "border7.04",   0x3000, 0x0800, CRC(200c5321) SHA1(f9faa6125dd2adc69c4ba9d962c0998f815ccd1c) )
+	ROM_LOAD( "border8.02",   0x3800, 0x0800, CRC(735e140d) SHA1(1c0b6cf2d8c88601084dfcb8d7490b85ef1a86d5) )
+
+	ROM_REGION( 0x0020, REGION_PROMS, 0 )
+	ROM_LOAD( "borderc.49",   0x0000, 0x0020, CRC(bc6be94e) SHA1(34e113ec25e19212b74907d35be5cb8714a8249c) )
+
+	ROM_REGION( 0x0800, REGION_CPU2, 0 )	/* sound ROM */
+	ROM_LOAD( "bords.bin",    0x0000, 0x0400, CRC(a23e1d9f) SHA1(ce209571f6341aa6f036a015e666673098bc98ea) )
+
+	ROM_REGION( 0x0020, REGION_USER1, 0 )	/* misc PROM */
+	ROM_LOAD( "border.32",   0x0000, 0x0020, CRC(c128d0ba) SHA1(0ce9febbb7e2f5388ed999a479e3d385dba0b342) )
+	ROM_LOAD( "bordera.15",  0x0000, 0x0020, CRC(6449e678) SHA1(421c45c8fba3c2bc2a7ebbea2c837c8fa1a5a2f3) )
+	ROM_LOAD( "borderb.14",  0x0000, 0x0020, CRC(55dcdef1) SHA1(6fbd041edc258b7e1b99bbe9526612cfb1b541f8) )
+ROM_END
+
 ROM_START( digger )
 	ROM_REGION( 0x10000, REGION_CPU1, 0 )	/* 64k for code */
 	ROM_LOAD( "684.u27",      0x0000, 0x0400, CRC(bba0d7c2) SHA1(1e55dd95b07b562dcc1e52ecf9460d302b14ee60) )
@@ -1831,6 +1972,7 @@ GAMEX(1978, frogs,    0,        2ports,   frogs,    nosamples, ROT0,   "Gremlin"
 GAMEX(1979, sspaceat, 0,        3ports,   sspaceat, nosamples, ROT270, "Sega", "Space Attack (upright)", GAME_NO_SOUND )
 GAMEX(1979, sspacat2, sspaceat, 3ports,   sspaceat, nosamples, ROT270, "Sega", "Space Attack (upright, older)", GAME_NO_SOUND )
 GAMEX(1979, sspacatc, sspaceat, 3ports,   sspaceat, nosamples, ROT270, "Sega", "Space Attack (cocktail)", GAME_NO_SOUND )
+GAMEX(1979, sspacaho, 0,        4ports,   sspacaho, nosamples, ROT270, "Sega", "Space Attack / Head On", GAME_NO_SOUND )
 GAMEX(1979, headon,   0,        2ports,   headon,   nosamples, ROT0,   "Gremlin", "Head On (2 players)", GAME_NO_SOUND )
 GAMEX(1979, headonb,  headon,   2ports,   headon,   nosamples, ROT0,   "Gremlin", "Head On (1 player)", GAME_NO_SOUND )
 GAMEX(1979, headon2,  0,        3ports,   headon2,  nosamples, ROT0,   "Sega", "Head On 2", GAME_NO_SOUND )
@@ -1843,6 +1985,7 @@ GAMEX(1980, spacetrk, 0,        4ports,   spacetrk, nosamples, ROT270, "Sega", "
 GAMEX(1980, sptrekct, spacetrk, 4ports,   sptrekct, nosamples, ROT270, "Sega", "Space Trek (cocktail)", GAME_NO_SOUND )
 GAME( 1980, carnival, 0,        carnival, carnival, carnival,  ROT270, "Sega", "Carnival (upright)" )
 GAME( 1980, carnvckt, carnival, carnival, carnvckt, carnival,  ROT270, "Sega", "Carnival (cocktail)" )
+GAMEX(1981, brdrlinb, 0,        4ports,   brdrline, carnival,  ROT270, "bootleg", "Borderline (bootleg)", GAME_NO_SOUND )
 GAMEX(1980, digger,   0,        3ports,   digger,   nosamples, ROT270, "Sega", "Digger", GAME_NO_SOUND )
 GAME( 1981, pulsar,   0,        pulsar,   pulsar,   pulsar,    ROT270, "Sega", "Pulsar" )
 GAMEX(1979, heiankyo, 0,        4ports,   heiankyo, nosamples, ROT270, "Denki Onkyo", "Heiankyo Alien", GAME_NO_SOUND )

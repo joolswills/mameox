@@ -154,6 +154,7 @@ struct GameOptions options;
 /* the active video display */
 static struct mame_display current_display;
 static UINT8 visible_area_changed;
+static UINT8 refresh_rate_changed;
 
 /* video updating */
 static UINT8 full_refresh_pending;
@@ -188,17 +189,19 @@ static struct artwork_callbacks mame_artwork_callbacks =
 
 ***************************************************************************/
 
-static void *mame_hard_disk_open(const char *filename, const char *mode);
-static void mame_hard_disk_close(void *file);
-static UINT32 mame_hard_disk_read(void *file, UINT64 offset, UINT32 count, void *buffer);
-static UINT32 mame_hard_disk_write(void *file, UINT64 offset, UINT32 count, const void *buffer);
+static struct chd_interface_file *mame_chd_open(const char *filename, const char *mode);
+static void mame_chd_close(struct chd_interface_file *file);
+static UINT32 mame_chd_read(struct chd_interface_file *file, UINT64 offset, UINT32 count, void *buffer);
+static UINT32 mame_chd_write(struct chd_interface_file *file, UINT64 offset, UINT32 count, const void *buffer);
+static UINT64 mame_chd_length(struct chd_interface_file *file);
 
-static struct hard_disk_interface mame_hard_disk_interface =
+static struct chd_interface mame_chd_interface =
 {
-	mame_hard_disk_open,
-	mame_hard_disk_close,
-	mame_hard_disk_read,
-	mame_hard_disk_write
+	mame_chd_open,
+	mame_chd_close,
+	mame_chd_read,
+	mame_chd_write,
+	mame_chd_length
 };
 
 
@@ -296,6 +299,11 @@ int run_game(int game)
 	Machine->gamedrv = gamedrv = drivers[game];
 	expand_machine_driver(gamedrv->drv, &internal_drv);
 	Machine->drv = &internal_drv;
+	Machine->refresh_rate = Machine->drv->frames_per_second;
+
+	/* initialize the CPU interfaces first */
+	if (cpuintrf_init())
+		return 1;
 
 	/* initialize the game options */
 	if (init_game_options())
@@ -384,7 +392,7 @@ static int init_machine(void)
 	}
 
 	/* init the hard drive interface now, before attempting to load */
-	hard_disk_set_interface(&mame_hard_disk_interface);
+	chd_set_interface(&mame_chd_interface);
 
 	/* load the ROMs if we have some */
 	if (gamedrv->rom && rom_load(gamedrv->rom) != 0)
@@ -533,7 +541,7 @@ void run_machine_core(void)
 	if (settingsloaded || options.skip_disclaimer || showcopyright(artwork_get_ui_bitmap()) == 0)
 	{
 		/* show info about incorrect behaviour (wrong colors etc.) */
-		if (showgamewarnings(artwork_get_ui_bitmap()) == 0)
+		if (options.skip_warnings || showgamewarnings(artwork_get_ui_bitmap()) == 0)
 		{
 			/* show info about the game */
 			if (options.skip_gameinfo || showgameinfo(artwork_get_ui_bitmap()) == 0)
@@ -615,7 +623,7 @@ static void shutdown_machine(void)
 		free_memory_region(i);
 
 	/* close all hard drives */
-	hard_disk_close_all();
+	chd_close_all();
 
 	/* reset the CPU system */
 	cpu_exit();
@@ -626,9 +634,6 @@ static void shutdown_machine(void)
 
 	/* close down the input system */
 	code_close();
-
-	/* close down the localization */
-	uistring_shutdown();
 
 	/* reset the saved states */
 	state_save_reset();
@@ -728,6 +733,9 @@ static int vh_open(void)
 	if (!Machine->scrbitmap)
 		goto cant_create_scrbitmap;
 
+	/* set the default refresh rate */
+	set_refresh_rate(Machine->drv->frames_per_second);
+
 	/* set the default visible area */
 	set_visible_area(0,1,0,1);	// make sure everything is recalculated on multiple runs
 	set_visible_area(
@@ -779,7 +787,7 @@ static int vh_open(void)
 	last_fps_time = osd_cycles();
 	rendered_frames_since_last_fps = frames_since_last_fps = 0;
 	performance.game_speed_percent = 100;
-	performance.frames_per_second = Machine->drv->frames_per_second;
+	performance.frames_per_second = Machine->refresh_rate;
 	performance.vector_updates_last_second = 0;
 
 	/* reset video statics and get out of here */
@@ -1110,6 +1118,29 @@ void set_visible_area(int min_x, int max_x, int min_y, int max_y)
 
 
 /*-------------------------------------------------
+	set_refresh_rate - adjusts the refresh rate
+	of the video mode dynamically
+-------------------------------------------------*/
+
+void set_refresh_rate(float fps)
+{
+	/* bail if already equal */
+	if (Machine->refresh_rate == fps)
+		return;
+
+	/* "dirty" the rate for the next display update */
+	refresh_rate_changed = 1;
+
+	/* set the new values in the Machine struct */
+	Machine->refresh_rate = fps;
+
+	/* recompute scanline timing */
+	cpu_compute_scanline_timing();
+}
+
+
+
+/*-------------------------------------------------
 	schedule_full_refresh - force a full erase
 	and refresh the next frame
 -------------------------------------------------*/
@@ -1225,6 +1256,11 @@ void update_video_and_audio(void)
 	if (visible_area_changed)
 		current_display.changed_flags |= GAME_VISIBLE_AREA_CHANGED;
 
+	/* set the refresh rate */
+	current_display.game_refresh_rate = Machine->refresh_rate;
+	if (refresh_rate_changed)
+		current_display.changed_flags |= GAME_REFRESH_RATE_CHANGED;
+
 	/* set the vector dirty list */
 	if (Machine->drv->video_attributes & VIDEO_TYPE_VECTOR)
 		if (!full_refresh_pending && !ui_dirty && !skipped_it)
@@ -1266,6 +1302,7 @@ void update_video_and_audio(void)
 
 	/* reset dirty flags */
 	visible_area_changed = 0;
+	refresh_rate_changed = 0;
 	if (ui_dirty) ui_dirty--;
 }
 
@@ -1291,7 +1328,7 @@ static void recompute_fps(int skipped_it)
 		double frames_per_sec = (double)frames_since_last_fps / seconds_elapsed;
 
 		/* compute the performance data */
-		performance.game_speed_percent = 100.0 * frames_per_sec / Machine->drv->frames_per_second;
+		performance.game_speed_percent = 100.0 * frames_per_sec / Machine->refresh_rate;
 		performance.frames_per_second = (double)rendered_frames_since_last_fps / seconds_elapsed;
 
 		/* reset the info */
@@ -1302,7 +1339,7 @@ static void recompute_fps(int skipped_it)
 
 	/* for vector games, compute the vector update count once/second */
 	vfcount++;
-	if (vfcount >= (int)Machine->drv->frames_per_second)
+	if (vfcount >= (int)Machine->refresh_rate)
 	{
 #ifndef MESS
 		/* from vidhrdw/avgdvg.c */
@@ -1311,7 +1348,7 @@ static void recompute_fps(int skipped_it)
 		performance.vector_updates_last_second = vector_updates;
 		vector_updates = 0;
 #endif
-		vfcount -= (int)Machine->drv->frames_per_second;
+		vfcount -= (int)Machine->refresh_rate;
 	}
 }
 
@@ -1571,11 +1608,11 @@ void machine_remove_sound(struct InternalMachineDriver *machine, const char *tag
 
 
 /*-------------------------------------------------
-	mame_hard_disk_open - interface for opening
+	mame_chd_open - interface for opening
 	a hard disk image
 -------------------------------------------------*/
 
-void *mame_hard_disk_open(const char *filename, const char *mode)
+struct chd_interface_file *mame_chd_open(const char *filename, const char *mode)
 {
 	/* look for read-only drives first in the ROM path */
 	if (mode[0] == 'r' && !strchr(mode, '+'))
@@ -1595,17 +1632,17 @@ void *mame_hard_disk_open(const char *filename, const char *mode)
 	}
 
 	/* look for read/write drives in the diff area */
-	return mame_fopen(NULL, filename, FILETYPE_IMAGE_DIFF, 1);
+	return (struct chd_interface_file *)mame_fopen(NULL, filename, FILETYPE_IMAGE_DIFF, 1);
 }
 
 
 
 /*-------------------------------------------------
-	mame_hard_disk_close - interface for closing
+	mame_chd_close - interface for closing
 	a hard disk image
 -------------------------------------------------*/
 
-void mame_hard_disk_close(void *file)
+void mame_chd_close(struct chd_interface_file *file)
 {
 	mame_fclose((mame_file *)file);
 }
@@ -1613,11 +1650,11 @@ void mame_hard_disk_close(void *file)
 
 
 /*-------------------------------------------------
-	mame_hard_disk_read - interface for reading
+	mame_chd_read - interface for reading
 	from a hard disk image
 -------------------------------------------------*/
 
-UINT32 mame_hard_disk_read(void *file, UINT64 offset, UINT32 count, void *buffer)
+UINT32 mame_chd_read(struct chd_interface_file *file, UINT64 offset, UINT32 count, void *buffer)
 {
 	mame_fseek((mame_file *)file, offset, SEEK_SET);
 	return mame_fread((mame_file *)file, buffer, count);
@@ -1626,14 +1663,25 @@ UINT32 mame_hard_disk_read(void *file, UINT64 offset, UINT32 count, void *buffer
 
 
 /*-------------------------------------------------
-	mame_hard_disk_write - interface for writing
+	mame_chd_write - interface for writing
 	to a hard disk image
 -------------------------------------------------*/
 
-UINT32 mame_hard_disk_write(void *file, UINT64 offset, UINT32 count, const void *buffer)
+UINT32 mame_chd_write(struct chd_interface_file *file, UINT64 offset, UINT32 count, const void *buffer)
 {
 	mame_fseek((mame_file *)file, offset, SEEK_SET);
 	return mame_fwrite((mame_file *)file, buffer, count);
+}
+
+
+/*-------------------------------------------------
+	mame_chd_length - interface for getting
+	the length a hard disk image
+-------------------------------------------------*/
+
+UINT64 mame_chd_length(struct chd_interface_file *file)
+{
+	return mame_fsize((mame_file *)file);
 }
 
 
@@ -1782,7 +1830,6 @@ static int validitychecks(void)
 				}
 				if (ROMENTRY_ISFILE(romp))
 				{
-					int pre,post;
 					const char *hash;
 
 					last_name = c = ROM_GETNAME(romp);
@@ -1796,24 +1843,6 @@ static int validitychecks(void)
 						c++;
 					}
 
-					c = ROM_GETNAME(romp);
-					pre = 0;
-					post = 0;
-					while (*c && *c != '.')
-					{
-						pre++;
-						c++;
-					}
-					while (*c)
-					{
-						post++;
-						c++;
-					}
-					if (pre > 8 || post > 4)
-					{
-						logerror("%s: %s has >8.3 ROM name %s\n",drivers[i]->source_file,drivers[i]->name,ROM_GETNAME(romp));
-						error = 1;
-					}
 
 					hash = ROM_GETHASHDATA(romp);
 					if (!hash_verify_string(hash))
@@ -1847,231 +1876,72 @@ static int validitychecks(void)
 			{
 				if (drv.cpu[cpu].cpu_type)
 				{
-					int alignunit,databus_width;
 
-
-					alignunit = cputype_align_unit(drv.cpu[cpu].cpu_type);
-					databus_width = cputype_databus_width(drv.cpu[cpu].cpu_type);
-
-					if (drv.cpu[cpu].memory_read)
-					{
-						const struct Memory_ReadAddress *mra = drv.cpu[cpu].memory_read;
-
-						if (!IS_MEMPORT_MARKER(mra) || (mra->end & MEMPORT_DIRECTION_MASK) != MEMPORT_DIRECTION_READ)
+					int space,mapnum;
+					for (space = 0;space < ADDRESS_SPACES;space++)
+						for (mapnum = 0;mapnum < 2;mapnum++)
 						{
-							logerror("%s: %s wrong MEMPORT_READ_START\n",drivers[i]->source_file,drivers[i]->name);
-							error = 1;
-						}
 
-						switch (databus_width)
-						{
-							case 8:
-								if ((mra->end & MEMPORT_WIDTH_MASK) != MEMPORT_WIDTH_8)
-								{
-									logerror("%s: %s cpu #%d uses wrong data width memory handlers! (width = %d, memory = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,mra->end);
-									error = 1;
-								}
-								break;
-							case 16:
-								if ((mra->end & MEMPORT_WIDTH_MASK) != MEMPORT_WIDTH_16)
-								{
-									logerror("%s: %s cpu #%d uses wrong data width memory handlers! (width = %d, memory = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,mra->end);
-									error = 1;
-								}
-								break;
-							case 32:
-								if ((mra->end & MEMPORT_WIDTH_MASK) != MEMPORT_WIDTH_32)
-								{
-									logerror("%s: %s cpu #%d uses wrong data width memory handlers! (width = %d, memory = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,mra->end);
-									error = 1;
-								}
-								break;
-						}
+							int alignunit,databus_width,addr_shift;
 
-						while (!IS_MEMPORT_END(mra))
-						{
-							if (!IS_MEMPORT_MARKER(mra))
+							databus_width = cputype_databus_width(drv.cpu[cpu].cpu_type, space);
+							addr_shift = cputype_addrbus_shift(drv.cpu[cpu].cpu_type, space);
+							alignunit = databus_width/8;
+
+#define SPACE_SHIFT(a)		((addr_shift < 0) ? ((a) << -addr_shift) : ((a) >> addr_shift))
+#define SPACE_SHIFT_END(a)	((addr_shift < 0) ? (((a) << -addr_shift) | ((1 << -addr_shift) - 1)) : ((a) >> addr_shift))
+
+							if (drv.cpu[cpu].construct_map[space][mapnum])
 							{
-								if (mra->end < mra->start)
+								struct address_map_t address_map[MAX_ADDRESS_MAP_SIZE];
+								const struct address_map_t *map = address_map;
+								UINT32 flags, val;
+
+								memset(address_map, 0, sizeof(address_map));
+								(*drv.cpu[cpu].construct_map[space][mapnum])(address_map);
+
+								if (IS_AMENTRY_END(map))
+									continue;
+								if (!IS_AMENTRY_EXTENDED(map))
 								{
-									logerror("%s: %s wrong memory read handler start = %08x > end = %08x\n",drivers[i]->source_file,drivers[i]->name,mra->start,mra->end);
+									printf("%s: %s wrong MEMORY_READ_START\n",drivers[i]->source_file,drivers[i]->name);
 									error = 1;
 								}
-								if ((mra->start & (alignunit-1)) != 0 || (mra->end & (alignunit-1)) != (alignunit-1))
+
+								flags = AM_EXTENDED_FLAGS(map);
+								if (flags & AMEF_SPECIFIES_DBITS)
 								{
-									logerror("%s: %s wrong memory read handler start = %08x, end = %08x ALIGN = %d\n",drivers[i]->source_file,drivers[i]->name,mra->start,mra->end,alignunit);
-									error = 1;
+									val = (flags & AMEF_DBITS_MASK) >> AMEF_DBITS_SHIFT;
+									val = (val + 1) * 8;
+									if (val != databus_width)
+									{
+										printf("%s: %s cpu #%d uses wrong data width memory handlers! (width = %d, memory = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,AM_EXTENDED_FLAGS(map));
+										error = 1;
+									}
+								}
+
+								while (!IS_AMENTRY_END(map))
+								{
+									if (!IS_AMENTRY_EXTENDED(map))
+									{
+										if (!IS_AMENTRY_MATCH_MASK(map))
+										{
+											if (map->end < map->start)
+											{
+												printf("%s: %s wrong memory read handler start = %08x > end = %08x\n",drivers[i]->source_file,drivers[i]->name,map->start,map->end);
+												error = 1;
+											}
+											if ((SPACE_SHIFT(map->start) & (alignunit-1)) != 0 || (SPACE_SHIFT_END(map->end) & (alignunit-1)) != (alignunit-1))
+											{
+												printf("%s: %s wrong memory read handler start = %08x, end = %08x ALIGN = %d\n",drivers[i]->source_file,drivers[i]->name,map->start,map->end,alignunit);
+												error = 1;
+											}
+										}
+									}
+									map++;
 								}
 							}
-							mra++;
 						}
-					}
-					if (drv.cpu[cpu].memory_write)
-					{
-						const struct Memory_WriteAddress *mwa = drv.cpu[cpu].memory_write;
-
-						if (mwa->start != MEMPORT_MARKER ||
-								(mwa->end & MEMPORT_DIRECTION_MASK) != MEMPORT_DIRECTION_WRITE)
-						{
-							logerror("%s: %s wrong MEMPORT_WRITE_START\n",drivers[i]->source_file,drivers[i]->name);
-							error = 1;
-						}
-
-						switch (databus_width)
-						{
-							case 8:
-								if ((mwa->end & MEMPORT_WIDTH_MASK) != MEMPORT_WIDTH_8)
-								{
-									logerror("%s: %s cpu #%d uses wrong data width memory handlers! (width = %d, memory = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,mwa->end);
-									error = 1;
-								}
-								break;
-							case 16:
-								if ((mwa->end & MEMPORT_WIDTH_MASK) != MEMPORT_WIDTH_16)
-								{
-									logerror("%s: %s cpu #%d uses wrong data width memory handlers! (width = %d, memory = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,mwa->end);
-									error = 1;
-								}
-								break;
-							case 32:
-								if ((mwa->end & MEMPORT_WIDTH_MASK) != MEMPORT_WIDTH_32)
-								{
-									logerror("%s: %s cpu #%d uses wrong data width memory handlers! (width = %d, memory = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,mwa->end);
-									error = 1;
-								}
-								break;
-						}
-
-						while (!IS_MEMPORT_END(mwa))
-						{
-							if (!IS_MEMPORT_MARKER(mwa))
-							{
-								if (mwa->end < mwa->start)
-								{
-									logerror("%s: %s wrong memory write handler start = %08x > end = %08x\n",drivers[i]->source_file,drivers[i]->name,mwa->start,mwa->end);
-									error = 1;
-								}
-								if ((mwa->start & (alignunit-1)) != 0 || (mwa->end & (alignunit-1)) != (alignunit-1))
-								{
-									logerror("%s: %s wrong memory write handler start = %08x, end = %08x ALIGN = %d\n",drivers[i]->source_file,drivers[i]->name,mwa->start,mwa->end,alignunit);
-									error = 1;
-								}
-							}
-							mwa++;
-						}
-					}
-
-					if (drv.cpu[cpu].port_read)
-					{
-						const struct IO_ReadPort *pra = drv.cpu[cpu].port_read;
-
-						if (!IS_MEMPORT_MARKER(pra) || (pra->end & MEMPORT_DIRECTION_MASK) != MEMPORT_DIRECTION_READ)
-						{
-							printf("%s: %s wrong PORT_READ_START\n",drivers[i]->source_file,drivers[i]->name);
-							error = 1;
-						}
-
-						switch (databus_width)
-						{
-							case 8:
-								if ((pra->end & MEMPORT_WIDTH_MASK) != MEMPORT_WIDTH_8)
-								{
-									printf("%s: %s cpu #%d uses wrong data width port handlers! (width = %d, port = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,pra->end);
-									error = 1;
-								}
-								break;
-							case 16:
-								if ((pra->end & MEMPORT_WIDTH_MASK) != MEMPORT_WIDTH_16)
-								{
-									printf("%s: %s cpu #%d uses wrong data width port handlers! (width = %d, port = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,pra->end);
-									error = 1;
-								}
-								break;
-							case 32:
-								if ((pra->end & MEMPORT_WIDTH_MASK) != MEMPORT_WIDTH_32)
-								{
-									printf("%s: %s cpu #%d uses wrong data width port handlers! (width = %d, port = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,pra->end);
-									error = 1;
-								}
-								break;
-						}
-
-						while (!IS_MEMPORT_END(pra))
-						{
-							if (!IS_MEMPORT_MARKER(pra))
-							{
-								if (pra->end < pra->start)
-								{
-									printf("%s: %s wrong port read handler start = %08x > end = %08x\n",drivers[i]->source_file,drivers[i]->name,pra->start,pra->end);
-									error = 1;
-								}
-								if ((pra->start & (alignunit-1)) != 0 || (pra->end & (alignunit-1)) != (alignunit-1))
-								{
-									printf("%s: %s wrong port read handler start = %08x, end = %08x ALIGN = %d\n",drivers[i]->source_file,drivers[i]->name,pra->start,pra->end,alignunit);
-									error = 1;
-								}
-							
-							}
-							pra++;
-						}
-					}
-
-					if (drv.cpu[cpu].port_write)
-					{
-						const struct IO_WritePort *pwa = drv.cpu[cpu].port_write;
-
-						if (pwa->start != MEMPORT_MARKER ||
-								(pwa->end & MEMPORT_DIRECTION_MASK) != MEMPORT_DIRECTION_WRITE)
-						{
-							printf("%s: %s wrong PORT_WRITE_START\n",drivers[i]->source_file,drivers[i]->name);
-							error = 1;
-						}
-
-						switch (databus_width)
-						{
-							case 8:
-								if ((pwa->end & MEMPORT_WIDTH_MASK) != MEMPORT_WIDTH_8)
-								{
-									printf("%s: %s cpu #%d uses wrong data width port handlers! (width = %d, port = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,pwa->end);
-									error = 1;
-								}
-								break;
-							case 16:
-								if ((pwa->end & MEMPORT_WIDTH_MASK) != MEMPORT_WIDTH_16)
-								{
-									printf("%s: %s cpu #%d uses wrong data width port handlers! (width = %d, port = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,pwa->end);
-									error = 1;
-								}
-								break;
-							case 32:
-								if ((pwa->end & MEMPORT_WIDTH_MASK) != MEMPORT_WIDTH_32)
-								{
-									printf("%s: %s cpu #%d uses wrong data width port handlers! (width = %d, port = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,pwa->end);
-									error = 1;
-								}
-								break;
-						}
-
-						while (!IS_MEMPORT_END(pwa))
-						{
-							if (!IS_MEMPORT_MARKER(pwa))
-							{
-								if (pwa->end < pwa->start)
-								{
-									printf("%s: %s wrong port write handler start = %08x > end = %08x\n",drivers[i]->source_file,drivers[i]->name,pwa->start,pwa->end);
-									error = 1;
-								}
-								if ((pwa->start & (alignunit-1)) != 0 || (pwa->end & (alignunit-1)) != (alignunit-1))
-								{
-									printf("%s: %s wrong port write handler start = %08x, end = %08x ALIGN = %d\n",drivers[i]->source_file,drivers[i]->name,pwa->start,pwa->end,alignunit);
-									error = 1;
-								}
-						
-							}
-							pwa++;
-						}
-					}
-
 				}
 			}
 

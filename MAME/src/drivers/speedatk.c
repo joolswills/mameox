@@ -16,8 +16,6 @@ TODO:
  - Coinage Dip Switch doesn't match the readme? Also there are wrong coin insertions even
    with the bit impulse macro. There are chances that there's a circuitry which controls
    both...
- - Wrong Colors: the palette entry seems right, but the colortable interface is completely
-   wrong.
 
 How to play:
  - A to D selects a card.
@@ -158,40 +156,40 @@ static READ_HANDLER( read_8001 )
 	return 1;
 }
 
-static MEMORY_READ_START( readmem )
-	{ 0x0000, 0x7fff, MRA_ROM },
-	{ 0x8000, 0x8000, key_matrix_r },
-	{ 0x8001, 0x8001, read_8001 },
-	{ 0x8588, 0x858f, MRA_RAM },
-	{ 0x8800, 0x8bff, MRA_RAM },
-	{ 0x8c00, 0x8fff, MRA_RAM },
-	{ 0xa000, 0xa3ff, MRA_RAM },
-	{ 0xb000, 0xb3ff, MRA_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x8000, 0x8000) AM_READ(key_matrix_r)
+	AM_RANGE(0x8001, 0x8001) AM_READ(read_8001)
+	AM_RANGE(0x8588, 0x858f) AM_READ(MRA8_RAM)
+	AM_RANGE(0x8800, 0x8bff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x8c00, 0x8fff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xa000, 0xa3ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xb000, 0xb3ff) AM_READ(MRA8_RAM)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( writemem )
-	{ 0x0000, 0x7fff, MWA_ROM },
-	{ 0x8000, 0x8000, key_matrix_w },
-	{ 0x8588, 0x858f, MWA_RAM },
-	{ 0x8800, 0x8bff, MWA_RAM },
-	{ 0x8c00, 0x8fff, MWA_RAM },
-	{ 0xa000, 0xa3ff, speedatk_videoram_w, &videoram },
-	{ 0xb000, 0xb3ff, speedatk_colorram_w ,&colorram },
-MEMORY_END
+static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x8000, 0x8000) AM_WRITE(key_matrix_w)
+	AM_RANGE(0x8588, 0x858f) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x8800, 0x8bff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x8c00, 0x8fff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xa000, 0xa3ff) AM_WRITE(speedatk_videoram_w) AM_BASE(&videoram)
+	AM_RANGE(0xb000, 0xb3ff) AM_WRITE(speedatk_colorram_w) AM_BASE(&colorram)
+ADDRESS_MAP_END
 
-static PORT_READ_START( readport )
-	{ 0x40, 0x40, input_port_0_r },
+static ADDRESS_MAP_START( readport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x40, 0x40) AM_READ(input_port_0_r)
 	/* are these not used? after they're read it sets bit 7 */
-	{ 0x60, 0x60, MRA_NOP },
-	{ 0x61, 0x61, MRA_NOP },
-	{ 0x68, 0x68, MRA_NOP },
-PORT_END
+	AM_RANGE(0x60, 0x60) AM_READ(MRA8_NOP)
+	AM_RANGE(0x61, 0x61) AM_READ(MRA8_NOP)
+	AM_RANGE(0x68, 0x68) AM_READ(MRA8_NOP)
+ADDRESS_MAP_END
 
-static PORT_WRITE_START( writeport )
-	{ 0x01, 0x01, speedatk_flip_screen_w },
-	{ 0x40, 0x40, AY8910_control_port_0_w },
-	{ 0x41, 0x41, AY8910_write_port_0_w },
-PORT_END
+static ADDRESS_MAP_START( writeport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x01, 0x01) AM_WRITE(speedatk_flip_screen_w)
+	AM_RANGE(0x40, 0x40) AM_WRITE(AY8910_control_port_0_w)
+	AM_RANGE(0x41, 0x41) AM_WRITE(AY8910_write_port_0_w)
+ADDRESS_MAP_END
 
 INPUT_PORTS_START( speedatk )
 	PORT_START
@@ -250,8 +248,8 @@ static struct GfxLayout charlayout_1bpp =
 {
 	8,8,
 	RGN_FRAC(1,1),
-	1,
-	{ 0 },
+	3,
+	{ 0, 0, 0 },
 	{ 0, 1, 2, 3, 4, 5, 6, 7 },
 	{ 0*8, 1*8, 2*8, 3*8, 4*8, 5*8, 6*8, 7*8 },
 	8*8
@@ -262,7 +260,7 @@ static struct GfxLayout charlayout_3bpp =
 	8,8,
 	RGN_FRAC(1,3),
 	3,
-	{ RGN_FRAC(0,3), RGN_FRAC(2,3), RGN_FRAC(1,3) },
+	{ RGN_FRAC(2,3), RGN_FRAC(1,3), RGN_FRAC(0,3) },
 	{ 0, 1, 2, 3, 4, 5, 6, 7 },
 	{ 0*8, 1*8, 2*8, 3*8, 4*8, 5*8, 6*8, 7*8 },
 	8*8
@@ -271,8 +269,8 @@ static struct GfxLayout charlayout_3bpp =
 
 static struct GfxDecodeInfo gfxdecodeinfo[] =
 {
-	{ REGION_GFX1, 0, &charlayout_1bpp,   0, 16 },
-	{ REGION_GFX2, 0, &charlayout_3bpp,   0, 16 },
+	{ REGION_GFX1, 0, &charlayout_1bpp,   0, 32 },
+	{ REGION_GFX2, 0, &charlayout_3bpp,   0, 32 },
 	{ -1 }
 };
 
@@ -289,8 +287,8 @@ static struct AY8910interface ay8910_interface =
 
 static MACHINE_DRIVER_START( speedatk )
 	MDRV_CPU_ADD(Z80,12000000/2)
-	MDRV_CPU_MEMORY(readmem,writemem)
-	MDRV_CPU_PORTS(readport,writeport)
+	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
+	MDRV_CPU_IO_MAP(readport,writeport)
 	MDRV_CPU_VBLANK_INT(irq0_line_hold,1)
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -326,15 +324,15 @@ ROM_START( speedatk )
 	ROM_REGION( 0x6000, REGION_GFX2, ROMREGION_DISPOSE )
 	ROM_LOAD( "cb0-5",        0x0000, 0x2000, CRC(47a966e7) SHA1(fdaa0f88656afc431bae367679ce6298fa962e0f) )
 	ROM_LOAD( "cb0-6",        0x2000, 0x2000, CRC(cc1da937) SHA1(1697bb008bfa5c33a282bd470ac39c324eea7509) )
-	ROM_LOAD( "cb0-7",        0x4000, 0x2000, CRC(a86007b5) SHA1(8e5cab76c37a8d53e1355000cd1a0a85ffae0e8c) )
-	ROM_FILL( 				  0x4000, 0x1000, 0x00 ) //Don't load the Text for this GFX.
+	ROM_COPY( REGION_GFX2,    0x0000, 0x4000, 0x1000 ) /* Fill the blank space with cards gfx */
+	ROM_COPY( REGION_GFX1,    0x1000, 0x5000, 0x1000 ) /* Gfx from cb0-7 */
 
 	ROM_REGION( 0x0120, REGION_PROMS, 0 )
 	ROM_LOAD( "cb1.bpr",      0x0000, 0x0020, CRC(a0176c23) SHA1(133fb9eef8a6595cac2dcd7edce4789899a59e84) ) /* color PROM */
 	ROM_LOAD( "cb2.bpr",      0x0020, 0x0100, CRC(a604cf96) SHA1(a4ef6e77dcd3abe4c27e8e636222a5ee711a51f5) ) /* lookup table */
 ROM_END
 
-GAMEX( 1984, speedatk, 0, speedatk, speedatk, 0, ROT0, "Seta Kikaku Corp.", "Speed Attack!", GAME_WRONG_COLORS )
+GAME( 1984, speedatk, 0, speedatk, speedatk, 0, ROT0, "Seta Kikaku Corp.", "Speed Attack!" )
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

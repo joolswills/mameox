@@ -320,14 +320,18 @@ The first sprite data is located at f20b,then f21b and so on.
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
-MACHINE_INIT( psychic5 );
-VIDEO_START( psychic5 );
-VIDEO_UPDATE( psychic5 );
-WRITE_HANDLER( psychic5_paged_ram_w );
-READ_HANDLER( psychic5_paged_ram_r );
-WRITE_HANDLER( psychic5_vram_page_select_w );
-READ_HANDLER( psychic5_vram_page_select_r );
 
+extern WRITE_HANDLER( psychic5_paged_ram_w );
+extern WRITE_HANDLER( psychic5_vram_page_select_w );
+extern WRITE_HANDLER( psychic5_title_screen_w );
+
+extern READ_HANDLER( psychic5_paged_ram_r );
+extern READ_HANDLER( psychic5_vram_page_select_r );
+
+extern MACHINE_INIT( psychic5 );
+
+extern VIDEO_START( psychic5 );
+extern VIDEO_UPDATE( psychic5 );
 
 static int psychic5_bank_latch = 0x0;
 
@@ -339,7 +343,7 @@ READ_HANDLER( psychic5_bankselect_r )
 
 WRITE_HANDLER( psychic5_bankselect_w )
 {
-	unsigned char *RAM = memory_region(REGION_CPU1);
+	UINT8 *RAM = memory_region(REGION_CPU1);
 	int bankaddress;
 
 	if (data != psychic5_bank_latch)
@@ -347,6 +351,18 @@ WRITE_HANDLER( psychic5_bankselect_w )
 		psychic5_bank_latch = data;
 		bankaddress = 0x10000 + ((data & 3) * 0x4000);
 		cpu_setbank(1,&RAM[bankaddress]);	 /* Select 4 banks of 16k */
+	}
+}
+
+WRITE_HANDLER( psychic5_coin_counter_w )
+{
+	coin_counter_w(0, data & 0x01);
+	coin_counter_w(1, data & 0x02);
+
+	// bit 7 toggles flip screen
+	if (data & 0x80)
+	{
+		flip_screen_set(!flip_screen);
 	}
 }
 
@@ -359,55 +375,57 @@ INTERRUPT_GEN( psychic5_interrupt )
 }
 
 
-static MEMORY_READ_START( readmem )
-	{ 0x0000, 0x7fff, MRA_ROM },
-	{ 0x8000, 0xbfff, MRA_BANK1 },
-	{ 0xc000, 0xdfff, psychic5_paged_ram_r },
-	{ 0xe000, 0xefff, MRA_RAM },
-	{ 0xf000, 0xf000, MRA_RAM },
-	{ 0xf001, 0xf001, MRA_RAM },			// unknown
-	{ 0xf002, 0xf002, psychic5_bankselect_r },
-	{ 0xf003, 0xf003, psychic5_vram_page_select_r },
-	{ 0xf004, 0xf004, MRA_RAM },			// unknown
-	{ 0xf005, 0xf005, MRA_RAM },			// unknown
-	{ 0xf006, 0xf1ff, MRA_NOP },
-	{ 0xf200, 0xf7ff, MRA_RAM },
-	{ 0xf800, 0xffff, MRA_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x8000, 0xbfff) AM_READ(MRA8_BANK1)
+	AM_RANGE(0xc000, 0xdfff) AM_READ(psychic5_paged_ram_r)
+	AM_RANGE(0xe000, 0xefff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xf000, 0xf000) AM_READ(MRA8_RAM)
+	AM_RANGE(0xf001, 0xf001) AM_READ(MRA8_NOP)	// ???
+	AM_RANGE(0xf002, 0xf002) AM_READ(psychic5_bankselect_r)
+	AM_RANGE(0xf003, 0xf003) AM_READ(psychic5_vram_page_select_r)
+	AM_RANGE(0xf004, 0xf004) AM_READ(MRA8_NOP)	// ???
+	AM_RANGE(0xf005, 0xf005) AM_READ(MRA8_NOP)	// ???
+	AM_RANGE(0xf006, 0xf1ff) AM_READ(MRA8_NOP)
+	AM_RANGE(0xf200, 0xf7ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xf800, 0xffff) AM_READ(MRA8_RAM)
+ADDRESS_MAP_END
+WRITE_HANDLER(peek_w){usrintf_showmessage("offset %u data %u", offset, data);}
 
-static MEMORY_WRITE_START( writemem )
-	{ 0x0000, 0x7fff, MWA_ROM },
-	{ 0x8000, 0xbfff, MWA_BANK1 },
-	{ 0xc000, 0xdfff, psychic5_paged_ram_w },
-	{ 0xe000, 0xefff, MWA_RAM },
-	{ 0xf000, 0xf000, soundlatch_w },
-	{ 0xf001, 0xf001, MWA_RAM },			// unknown
-	{ 0xf002, 0xf002, psychic5_bankselect_w },
-	{ 0xf003, 0xf003, psychic5_vram_page_select_w },
-	{ 0xf004, 0xf004, MWA_RAM },			// unknown
-	{ 0xf005, 0xf005, MWA_RAM },			// unknown
-	{ 0xf006, 0xf1ff, MWA_NOP },
-	{ 0xf200, 0xf7ff, MWA_RAM, &spriteram, &spriteram_size },
-	{ 0xf800, 0xffff, MWA_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x8000, 0xbfff) AM_WRITE(MWA8_BANK1)
+	AM_RANGE(0xc000, 0xdfff) AM_WRITE(psychic5_paged_ram_w)
+	AM_RANGE(0xe000, 0xefff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xf000, 0xf000) AM_WRITE(soundlatch_w)
+	AM_RANGE(0xf001, 0xf001) AM_WRITE(psychic5_coin_counter_w)
+	AM_RANGE(0xf002, 0xf002) AM_WRITE(psychic5_bankselect_w)
+	AM_RANGE(0xf003, 0xf003) AM_WRITE(psychic5_vram_page_select_w)
+	AM_RANGE(0xf004, 0xf004) AM_WRITE(MWA8_NOP)	// ???
+	AM_RANGE(0xf005, 0xf005) AM_WRITE(psychic5_title_screen_w)
+	AM_RANGE(0xf006, 0xf1ff) AM_WRITE(MWA8_NOP)
+	AM_RANGE(0xf200, 0xf7ff) AM_WRITE(MWA8_RAM) AM_BASE(&spriteram) AM_SIZE(&spriteram_size)
+	AM_RANGE(0xf800, 0xffff) AM_WRITE(MWA8_RAM)
+ADDRESS_MAP_END
 
-static MEMORY_READ_START( sound_readmem )
-	{ 0x0000, 0x7fff, MRA_ROM },
-	{ 0xc000, 0xc7ff, MRA_RAM },
-	{ 0xe000, 0xe000, soundlatch_r },
-MEMORY_END
+static ADDRESS_MAP_START( sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0xc000, 0xc7ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xe000, 0xe000) AM_READ(soundlatch_r)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( sound_writemem )
-	{ 0x0000, 0x7fff, MWA_ROM },
-	{ 0xc000, 0xc7ff, MWA_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0xc000, 0xc7ff) AM_WRITE(MWA8_RAM)
+ADDRESS_MAP_END
 
-static PORT_WRITE_START( sound_writeport )
-	{ 0x00, 0x00, YM2203_control_port_0_w },
-	{ 0x01, 0x01, YM2203_write_port_0_w },
-	{ 0x80, 0x80, YM2203_control_port_1_w },
-	{ 0x81, 0x81, YM2203_write_port_1_w },
-PORT_END
+static ADDRESS_MAP_START( sound_writeport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x00, 0x00) AM_WRITE(YM2203_control_port_0_w)
+	AM_RANGE(0x01, 0x01) AM_WRITE(YM2203_write_port_0_w)
+	AM_RANGE(0x80, 0x80) AM_WRITE(YM2203_control_port_1_w)
+	AM_RANGE(0x81, 0x81) AM_WRITE(YM2203_write_port_1_w)
+ADDRESS_MAP_END
+
 
 INPUT_PORTS_START( psychic5 )
     PORT_START
@@ -441,13 +459,13 @@ INPUT_PORTS_START( psychic5 )
     PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
     PORT_START  /* dsw0 */
-    PORT_DIPNAME( 0x01, 0x00, DEF_STR( Unknown ) )
+    PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
     PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
     PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-    PORT_DIPNAME( 0x02, 0x00, DEF_STR( Unknown ) )
+    PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
     PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
     PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-    PORT_DIPNAME( 0x04, 0x00, DEF_STR( Unknown ) )
+    PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
     PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
     PORT_DIPSETTING(    0x00, DEF_STR( On ) )
     PORT_DIPNAME( 0x08, 0x08, DEF_STR( Difficulty ) )
@@ -547,13 +565,13 @@ static MACHINE_DRIVER_START( psychic5 )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(Z80, 6000000)
-	MDRV_CPU_MEMORY(readmem,writemem)
+	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
 	MDRV_CPU_VBLANK_INT(psychic5_interrupt,2)
 
 	MDRV_CPU_ADD(Z80, 6000000)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)
-	MDRV_CPU_MEMORY(sound_readmem,sound_writemem)
-	MDRV_CPU_PORTS(0,sound_writeport)
+	MDRV_CPU_PROGRAM_MAP(sound_readmem,sound_writemem)
+	MDRV_CPU_IO_MAP(0,sound_writeport)
 
 	MDRV_FRAMES_PER_SECOND(53.8)
 	MDRV_VBLANK_DURATION(DEFAULT_60HZ_VBLANK_DURATION)
@@ -604,7 +622,7 @@ ROM_END
 
 
 
-GAMEX( 1987, psychic5, 0, psychic5, psychic5, 0, ROT270, "Jaleco", "Psychic 5", GAME_NO_COCKTAIL )
+GAME( 1987, psychic5, 0, psychic5, psychic5, 0, ROT270, "Jaleco", "Psychic 5" )
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

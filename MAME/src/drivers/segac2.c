@@ -918,68 +918,68 @@ ZunkYou
 
 ******************************************************************************/
 
-static MEMORY_READ16_START( readmem )
-	{ 0x000000, 0x1fffff, MRA16_ROM },					/* Main 68k Program Roms */
-	{ 0x800000, 0x800001, prot_r },						/* The Protection Chip? */
-	{ 0x840000, 0x84001f, iochip_r },					/* I/O Chip */
-	{ 0x840100, 0x840107, ym3438_r },					/* Ym3438 Sound Chip Status Register */
-	{ 0x8c0000, 0x8c0fff, palette_r },					/* Palette Ram */
-	{ 0xc00000, 0xc0001f, segac2_vdp_r },				/* VDP Access */
-	{ 0xff0000, 0xffffff, MRA16_RAM },					/* Main Ram */
-MEMORY_END
+static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x1fffff) AM_READ(MRA16_ROM)					/* Main 68k Program Roms */
+	AM_RANGE(0x800000, 0x800001) AM_READ(prot_r)						/* The Protection Chip? */
+	AM_RANGE(0x840000, 0x84001f) AM_READ(iochip_r)					/* I/O Chip */
+	AM_RANGE(0x840100, 0x840107) AM_READ(ym3438_r)					/* Ym3438 Sound Chip Status Register */
+	AM_RANGE(0x8c0000, 0x8c0fff) AM_READ(palette_r)					/* Palette Ram */
+	AM_RANGE(0xc00000, 0xc0001f) AM_READ(segac2_vdp_r)				/* VDP Access */
+	AM_RANGE(0xff0000, 0xffffff) AM_READ(MRA16_RAM)					/* Main Ram */
+ADDRESS_MAP_END
 
-static MEMORY_WRITE16_START( writemem )
-	{ 0x000000, 0x1fffff, MWA16_ROM },					/* Main 68k Program Roms */
-	{ 0x800000, 0x800001, prot_w },						/* The Protection Chip? */
-	{ 0x800200, 0x800201, control_w },					/* Seems to be global controls */
-	{ 0x840000, 0x84001f, iochip_w },					/* I/O Chip */
-	{ 0x840100, 0x840107, ym3438_w },					/* Ym3438 Sound Chip Writes */
-	{ 0x880000, 0x880001, upd7759_w },					/* UPD7759 Sound Writes */
-	{ 0x880134, 0x880135, counter_timer_w },			/* Bookkeeping */
-	{ 0x880334, 0x880335, counter_timer_w },			/* Bookkeeping (mirror) */
-	{ 0x8c0000, 0x8c0fff, palette_w, &paletteram16 },	/* Palette Ram */
-	{ 0xc00000, 0xc0000f, segac2_vdp_w },				/* VDP Access */
-	{ 0xc00010, 0xc00017, sn76489_w },					/* SN76489 Access */
-	{ 0xff0000, 0xffffff, MWA16_RAM, &main_ram },		/* Main Ram */
-MEMORY_END
+static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x1fffff) AM_WRITE(MWA16_ROM)					/* Main 68k Program Roms */
+	AM_RANGE(0x800000, 0x800001) AM_WRITE(prot_w)						/* The Protection Chip? */
+	AM_RANGE(0x800200, 0x800201) AM_WRITE(control_w)					/* Seems to be global controls */
+	AM_RANGE(0x840000, 0x84001f) AM_WRITE(iochip_w)					/* I/O Chip */
+	AM_RANGE(0x840100, 0x840107) AM_WRITE(ym3438_w)					/* Ym3438 Sound Chip Writes */
+	AM_RANGE(0x880000, 0x880001) AM_WRITE(upd7759_w)					/* UPD7759 Sound Writes */
+	AM_RANGE(0x880134, 0x880135) AM_WRITE(counter_timer_w)			/* Bookkeeping */
+	AM_RANGE(0x880334, 0x880335) AM_WRITE(counter_timer_w)			/* Bookkeeping (mirror) */
+	AM_RANGE(0x8c0000, 0x8c0fff) AM_WRITE(palette_w) AM_BASE(&paletteram16)	/* Palette Ram */
+	AM_RANGE(0xc00000, 0xc0000f) AM_WRITE(segac2_vdp_w)				/* VDP Access */
+	AM_RANGE(0xc00010, 0xc00017) AM_WRITE(sn76489_w)					/* SN76489 Access */
+	AM_RANGE(0xff0000, 0xffffff) AM_WRITE(MWA16_RAM) AM_BASE(&main_ram)		/* Main Ram */
+ADDRESS_MAP_END
 
 
-static MEMORY_READ16_START( puckpkmn_readmem )
-	{ 0x000000, 0x1fffff, MRA16_ROM },					/* Main 68k Program Roms */
-	{ 0x700010, 0x700011, input_port_0_word_r },		/* Input (P2) */
-	{ 0x700012, 0x700013, input_port_1_word_r },		/* Input (P1) */
-	{ 0x700014, 0x700015, input_port_2_word_r },		/* Input (?) */
-	{ 0x700016, 0x700017, input_port_3_word_r },		/* Input (DSW1) */
-	{ 0x700018, 0x700019, input_port_4_word_r },		/* Input (DSW2) */
-	{ 0x700022, 0x700023, OKIM6295_status_0_lsb_r },	/* M6295 Sound Chip Status Register */
-	{ 0xa04000, 0xa04001, puckpkmn_YM3438_r },			/* Ym3438 Sound Chip Status Register */
-	{ 0xc00000, 0xc0001f, segac2_vdp_r },				/* VDP Access */
-	{ 0xe00000, 0xe1ffff, MRA16_BANK1 },				/* VDP sees the roms here */
-	{ 0xfe0000, 0xfeffff, MRA16_BANK2 },				/* VDP sees the ram here */
-	{ 0xff0000, 0xffffff, MRA16_RAM	},					/* Main Ram */
+static ADDRESS_MAP_START( puckpkmn_readmem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x1fffff) AM_READ(MRA16_ROM)					/* Main 68k Program Roms */
+	AM_RANGE(0x700010, 0x700011) AM_READ(input_port_0_word_r)		/* Input (P2) */
+	AM_RANGE(0x700012, 0x700013) AM_READ(input_port_1_word_r)		/* Input (P1) */
+	AM_RANGE(0x700014, 0x700015) AM_READ(input_port_2_word_r)		/* Input (?) */
+	AM_RANGE(0x700016, 0x700017) AM_READ(input_port_3_word_r)		/* Input (DSW1) */
+	AM_RANGE(0x700018, 0x700019) AM_READ(input_port_4_word_r)		/* Input (DSW2) */
+	AM_RANGE(0x700022, 0x700023) AM_READ(OKIM6295_status_0_lsb_r)	/* M6295 Sound Chip Status Register */
+	AM_RANGE(0xa04000, 0xa04001) AM_READ(puckpkmn_YM3438_r)			/* Ym3438 Sound Chip Status Register */
+	AM_RANGE(0xc00000, 0xc0001f) AM_READ(segac2_vdp_r)				/* VDP Access */
+	AM_RANGE(0xe00000, 0xe1ffff) AM_READ(MRA16_BANK1)				/* VDP sees the roms here */
+	AM_RANGE(0xfe0000, 0xfeffff) AM_READ(MRA16_BANK2)				/* VDP sees the ram here */
+	AM_RANGE(0xff0000, 0xffffff) AM_READ(MRA16_RAM	)					/* Main Ram */
 
 	/* Unknown reads: */
-//	{ 0xa10000, 0xa10001, MRA16_NOP },					/* ? once */
-	{ 0xa10002, 0xa10005, MRA16_NOP },					/* ? alternative way of reading inputs ? */
-	{ 0xa11100, 0xa11101, MRA16_NOP },					/* ? */
-MEMORY_END
+//	AM_RANGE(0xa10000, 0xa10001) AM_READ(MRA16_NOP)					/* ? once */
+	AM_RANGE(0xa10002, 0xa10005) AM_READ(MRA16_NOP)					/* ? alternative way of reading inputs ? */
+	AM_RANGE(0xa11100, 0xa11101) AM_READ(MRA16_NOP)					/* ? */
+ADDRESS_MAP_END
 
-static MEMORY_WRITE16_START( puckpkmn_writemem )
-	{ 0x000000, 0x1fffff, MWA16_ROM },					/* Main 68k Program Roms */
-	{ 0x700022, 0x700023, OKIM6295_data_0_lsb_w },		/* M6295 Sound Chip Writes */
-	{ 0xa04000, 0xa04003, puckpkmn_YM3438_w },			/* Ym3438 Sound Chip Writes */
-	{ 0xc00000, 0xc0000f, segac2_vdp_w },				/* VDP Access */
-	{ 0xc00010, 0xc00017, sn76489_w },					/* SN76489 Access */
-	{ 0xff0000, 0xffffff, MWA16_RAM, &main_ram },		/* Main Ram */
+static ADDRESS_MAP_START( puckpkmn_writemem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x1fffff) AM_WRITE(MWA16_ROM)					/* Main 68k Program Roms */
+	AM_RANGE(0x700022, 0x700023) AM_WRITE(OKIM6295_data_0_lsb_w)		/* M6295 Sound Chip Writes */
+	AM_RANGE(0xa04000, 0xa04003) AM_WRITE(puckpkmn_YM3438_w)			/* Ym3438 Sound Chip Writes */
+	AM_RANGE(0xc00000, 0xc0000f) AM_WRITE(segac2_vdp_w)				/* VDP Access */
+	AM_RANGE(0xc00010, 0xc00017) AM_WRITE(sn76489_w)					/* SN76489 Access */
+	AM_RANGE(0xff0000, 0xffffff) AM_WRITE(MWA16_RAM) AM_BASE(&main_ram)		/* Main Ram */
 
 	/* Unknown writes: */
-	{ 0xa00000, 0xa00551, MWA16_RAM },					/* ? */
-	{ 0xa10002, 0xa10005, MWA16_NOP },					/* ? alternative way of reading inputs ? */
-//	{ 0xa10008, 0xa1000d, MWA16_NOP },					/* ? once */
-//	{ 0xa14000, 0xa14003, MWA16_NOP },					/* ? once */
-	{ 0xa11100, 0xa11101, MWA16_NOP },					/* ? */
-	{ 0xa11200, 0xa11201, MWA16_NOP },					/* ? */
-MEMORY_END
+	AM_RANGE(0xa00000, 0xa00551) AM_WRITE(MWA16_RAM)					/* ? */
+	AM_RANGE(0xa10002, 0xa10005) AM_WRITE(MWA16_NOP)					/* ? alternative way of reading inputs ? */
+//	AM_RANGE(0xa10008, 0xa1000d) AM_WRITE(MWA16_NOP)					/* ? once */
+//	AM_RANGE(0xa14000, 0xa14003) AM_WRITE(MWA16_NOP)					/* ? once */
+	AM_RANGE(0xa11100, 0xa11101) AM_WRITE(MWA16_NOP)					/* ? */
+	AM_RANGE(0xa11200, 0xa11201) AM_WRITE(MWA16_NOP)					/* ? */
+ADDRESS_MAP_END
 
 /******************** Sega Genesis ******************************/
 
@@ -1354,36 +1354,36 @@ static READ16_HANDLER( megaplay_instr_r )
 }
 
 
-static MEMORY_READ16_START( genesis_readmem )
-	{ 0x000000, 0x3fffff, MRA16_ROM },					/* Cartridge Program Rom */
-	{ 0xa10000, 0xa1001f, genesis_io_r },				/* Genesis Input */
-	{ 0xa00000, 0xa0ffff, genesis_68k_to_z80_r },
-	{ 0xc00000, 0xc0001f, segac2_vdp_r },				/* VDP Access */
-	{ 0xfe0000, 0xfeffff, MRA16_BANK3 },				/* Main Ram */
-	{ 0xff0000, 0xffffff, MRA16_RAM },					/* Main Ram */
-MEMORY_END
+static ADDRESS_MAP_START( genesis_readmem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x3fffff) AM_READ(MRA16_ROM)					/* Cartridge Program Rom */
+	AM_RANGE(0xa10000, 0xa1001f) AM_READ(genesis_io_r)				/* Genesis Input */
+	AM_RANGE(0xa00000, 0xa0ffff) AM_READ(genesis_68k_to_z80_r)
+	AM_RANGE(0xc00000, 0xc0001f) AM_READ(segac2_vdp_r)				/* VDP Access */
+	AM_RANGE(0xfe0000, 0xfeffff) AM_READ(MRA16_BANK3)				/* Main Ram */
+	AM_RANGE(0xff0000, 0xffffff) AM_READ(MRA16_RAM)					/* Main Ram */
+ADDRESS_MAP_END
 
-static MEMORY_READ16_START( megaplay_genesis_readmem )
-	{ 0x000000, 0x3fffff, MRA16_ROM },					/* Cartridge Program Rom */
-//	{ 0x300000, 0x30ffff, megaplay_instr_r },           /* Cartridge info ROM */
-//	{ 0x310000, 0x3fffff, MRA16_ROM },					/* Cartridge Program Rom */
-	{ 0xa10000, 0xa1001f, megaplay_genesis_io_r },				/* Genesis Input */
-	{ 0xa00000, 0xa0ffff, genesis_68k_to_z80_r },
-	{ 0xc00000, 0xc0001f, segac2_vdp_r },				/* VDP Access */
-	{ 0xfe0000, 0xfeffff, MRA16_BANK3 },				/* Main Ram */
-	{ 0xff0000, 0xffffff, MRA16_RAM },					/* Main Ram */
-MEMORY_END
+static ADDRESS_MAP_START( megaplay_genesis_readmem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x3fffff) AM_READ(MRA16_ROM)					/* Cartridge Program Rom */
+//	AM_RANGE(0x300000, 0x30ffff) AM_READ(megaplay_instr_r)           /* Cartridge info ROM */
+//	AM_RANGE(0x310000, 0x3fffff) AM_READ(MRA16_ROM)					/* Cartridge Program Rom */
+	AM_RANGE(0xa10000, 0xa1001f) AM_READ(megaplay_genesis_io_r)				/* Genesis Input */
+	AM_RANGE(0xa00000, 0xa0ffff) AM_READ(genesis_68k_to_z80_r)
+	AM_RANGE(0xc00000, 0xc0001f) AM_READ(segac2_vdp_r)				/* VDP Access */
+	AM_RANGE(0xfe0000, 0xfeffff) AM_READ(MRA16_BANK3)				/* Main Ram */
+	AM_RANGE(0xff0000, 0xffffff) AM_READ(MRA16_RAM)					/* Main Ram */
+ADDRESS_MAP_END
 
-static MEMORY_WRITE16_START( genesis_writemem )
-	{ 0x000000, 0x3fffff, MWA16_ROM },					/* Cartridge Program Rom */
-	{ 0xa10000, 0xa1001f, genesis_io_w, &genesis_io_ram },				/* Genesis Input */
-	{ 0xa11000, 0xa11203, genesis_ctrl_w },
-	{ 0xa00000, 0xa0ffff, genesis_68k_to_z80_w },
-	{ 0xc00000, 0xc0000f, segac2_vdp_w },				/* VDP Access */
-	{ 0xc00010, 0xc00017, sn76489_w },					/* SN76489 Access */
-	{ 0xfe0000, 0xfeffff, MWA16_BANK3 },				/* Main Ram */
-	{ 0xff0000, 0xffffff, MWA16_RAM, &genesis_68k_ram },/* Main Ram */
-MEMORY_END
+static ADDRESS_MAP_START( genesis_writemem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x3fffff) AM_WRITE(MWA16_ROM)					/* Cartridge Program Rom */
+	AM_RANGE(0xa10000, 0xa1001f) AM_WRITE(genesis_io_w) AM_BASE(&genesis_io_ram)				/* Genesis Input */
+	AM_RANGE(0xa11000, 0xa11203) AM_WRITE(genesis_ctrl_w)
+	AM_RANGE(0xa00000, 0xa0ffff) AM_WRITE(genesis_68k_to_z80_w)
+	AM_RANGE(0xc00000, 0xc0000f) AM_WRITE(segac2_vdp_w)				/* VDP Access */
+	AM_RANGE(0xc00010, 0xc00017) AM_WRITE(sn76489_w)					/* SN76489 Access */
+	AM_RANGE(0xfe0000, 0xfeffff) AM_WRITE(MWA16_BANK3)				/* Main Ram */
+	AM_RANGE(0xff0000, 0xffffff) AM_WRITE(MWA16_RAM) AM_BASE(&genesis_68k_ram)/* Main Ram */
+ADDRESS_MAP_END
 
 /* Z80 Sound Hardware - based on MESS code, to be improved, it can do some strange things */
 
@@ -1514,19 +1514,19 @@ static WRITE16_HANDLER ( genesis_z80_ram_w )
 	if (ACCESSING_MSB) genesis_z80_ram[offset<<1] = (data >> 8) & 0xff;
 }
 
-static MEMORY_READ_START(genesis_z80_readmem)
- 	{ 0x0000, 0x1fff, MRA_BANK1 },
- 	{ 0x2000, 0x3fff, MRA_BANK2 }, /* mirror */
-	{ 0x4000, 0x7fff, genesis_z80_r },
-	{ 0x8000, 0xffff, genesis_z80_bank_r },
-MEMORY_END
+static ADDRESS_MAP_START( genesis_z80_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+ 	AM_RANGE(0x0000, 0x1fff) AM_READ(MRA8_BANK1)
+ 	AM_RANGE(0x2000, 0x3fff) AM_READ(MRA8_BANK2) /* mirror */
+	AM_RANGE(0x4000, 0x7fff) AM_READ(genesis_z80_r)
+	AM_RANGE(0x8000, 0xffff) AM_READ(genesis_z80_bank_r)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START(genesis_z80_writemem)
-	{ 0x0000, 0x1fff, MWA_BANK1, &genesis_z80_ram },
- 	{ 0x2000, 0x3fff, MWA_BANK2 }, /* mirror */
-	{ 0x4000, 0x7fff, genesis_z80_w },
- //	{ 0x8000, 0xffff, genesis_z80_bank_w },
-MEMORY_END
+static ADDRESS_MAP_START( genesis_z80_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x1fff) AM_WRITE(MWA8_BANK1) AM_BASE(&genesis_z80_ram)
+ 	AM_RANGE(0x2000, 0x3fff) AM_WRITE(MWA8_BANK2) /* mirror */
+	AM_RANGE(0x4000, 0x7fff) AM_WRITE(genesis_z80_w)
+ //	AM_RANGE(0x8000, 0xffff) AM_WRITE(genesis_z80_bank_w)
+ADDRESS_MAP_END
 
 /* MEGATECH specific */
 
@@ -1690,71 +1690,71 @@ static WRITE_HANDLER( megaplay_game_w )
 
 
 
-static MEMORY_READ_START(megatech_bios_readmem)
- 	{ 0x0000, 0x2fff, MRA_ROM },
-	{ 0x3000, 0x3fff, MRA_RAM },
-	{ 0x4000, 0x4fff, MRA_RAM },
-	{ 0x5000, 0x5fff, MRA_RAM },
-	{ 0x6000, 0x63ff, MRA_RAM },
-	{ 0x6400, 0x6400, input_port_10_r },
-	{ 0x6401, 0x6401, input_port_11_r },
-	{ 0x6800, 0x6800, input_port_6_r },
-	{ 0x6801, 0x6801, input_port_7_r },
-	{ 0x6802, 0x6807, bios_ctrl_r },
-//	{ 0x6805, 0x6805, input_port_8_r },
-	{ 0x6808, 0x6fff, MRA_RAM },
-	{ 0x7000, 0x77ff, MRA_RAM },
-	{ 0x8000, 0xffff, megatech_instr_r },
-MEMORY_END
+static ADDRESS_MAP_START( megatech_bios_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+ 	AM_RANGE(0x0000, 0x2fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x3000, 0x3fff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x4000, 0x4fff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x5000, 0x5fff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x6000, 0x63ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x6400, 0x6400) AM_READ(input_port_10_r)
+	AM_RANGE(0x6401, 0x6401) AM_READ(input_port_11_r)
+	AM_RANGE(0x6800, 0x6800) AM_READ(input_port_6_r)
+	AM_RANGE(0x6801, 0x6801) AM_READ(input_port_7_r)
+	AM_RANGE(0x6802, 0x6807) AM_READ(bios_ctrl_r)
+//	AM_RANGE(0x6805, 0x6805) AM_READ(input_port_8_r)
+	AM_RANGE(0x6808, 0x6fff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x7000, 0x77ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x8000, 0xffff) AM_READ(megatech_instr_r)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START(megatech_bios_writemem)
-	{ 0x0000, 0x2fff, MWA_ROM },
-	{ 0x3000, 0x3fff, MWA_RAM },
-	{ 0x4000, 0x4fff, MWA_RAM },
-	{ 0x5000, 0x5fff, MWA_RAM },
-	{ 0x6000, 0x63ff, MWA_RAM },
-	{ 0x6802, 0x6807, bios_ctrl_w },
-	{ 0x6808, 0x6fff, MWA_RAM },
-	{ 0x7000, 0x7fff, MWA_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( megatech_bios_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x2fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x3000, 0x3fff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x4000, 0x4fff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x5000, 0x5fff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x6000, 0x63ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x6802, 0x6807) AM_WRITE(bios_ctrl_w)
+	AM_RANGE(0x6808, 0x6fff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x7000, 0x7fff) AM_WRITE(MWA8_RAM)
+ADDRESS_MAP_END
 
-static MEMORY_READ_START(megaplay_bios_readmem)
- 	{ 0x0000, 0x2fff, MRA_ROM },
-	{ 0x3000, 0x4fff, MRA_RAM },
-	{ 0x5000, 0x5fff, MRA_RAM },
-	{ 0x6200, 0x6200, input_port_7_r },
-	{ 0x6201, 0x6201, input_port_8_r },
-	{ 0x6400, 0x6400, input_port_5_r },
-	{ 0x6401, 0x6401, input_port_6_r },
-//	{ 0x6202, 0x6202, input_port_2_r },
-	{ 0x6203, 0x6203, megaplay_bios_banksel_r },
-	{ 0x6402, 0x6402, megaplay_bios_6402_r },
-	{ 0x6403, 0x6403, megaplay_bios_gamesel_r },
-	{ 0x6404, 0x6404, megaplay_bios_6404_r },
-	{ 0x6600, 0x6600, megaplay_bios_6600_r },
-	{ 0x6800, 0x6fff, MRA_RAM },
-	{ 0x7000, 0x77ff, MRA_RAM },
-	{ 0x8000, 0xffff, bank_r },
-//	{ 0xc000, 0xffff, megaplay_instr_r },
-//	{ 0xc000, 0xffff, MRA_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( megaplay_bios_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+ 	AM_RANGE(0x0000, 0x2fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x3000, 0x4fff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x5000, 0x5fff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x6200, 0x6200) AM_READ(input_port_7_r)
+	AM_RANGE(0x6201, 0x6201) AM_READ(input_port_8_r)
+	AM_RANGE(0x6400, 0x6400) AM_READ(input_port_5_r)
+	AM_RANGE(0x6401, 0x6401) AM_READ(input_port_6_r)
+//	AM_RANGE(0x6202, 0x6202) AM_READ(input_port_2_r)
+	AM_RANGE(0x6203, 0x6203) AM_READ(megaplay_bios_banksel_r)
+	AM_RANGE(0x6402, 0x6402) AM_READ(megaplay_bios_6402_r)
+	AM_RANGE(0x6403, 0x6403) AM_READ(megaplay_bios_gamesel_r)
+	AM_RANGE(0x6404, 0x6404) AM_READ(megaplay_bios_6404_r)
+	AM_RANGE(0x6600, 0x6600) AM_READ(megaplay_bios_6600_r)
+	AM_RANGE(0x6800, 0x6fff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x7000, 0x77ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x8000, 0xffff) AM_READ(bank_r)
+//	AM_RANGE(0xc000, 0xffff) AM_READ(megaplay_instr_r)
+//	AM_RANGE(0xc000, 0xffff) AM_READ(MRA8_RAM)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START(megaplay_bios_writemem)
-	{ 0x0000, 0x2fff, MWA_ROM },
-	{ 0x3000, 0x4fff, MWA_RAM },
-	{ 0x5000, 0x5fff, MWA_RAM },
-	{ 0x6000, 0x6000, megaplay_game_w },
-	{ 0x6203, 0x6203, megaplay_bios_banksel_w },
-	{ 0x6204, 0x6204, megaplay_bios_width_w },
-	{ 0x6402, 0x6402, megaplay_bios_6402_w },
-	{ 0x6403, 0x6403, megaplay_bios_gamesel_w },
-	{ 0x6404, 0x6404, megaplay_bios_6404_w },
-	{ 0x6600, 0x6600, megaplay_bios_6600_w },
-	{ 0x6001, 0x67ff, MWA_RAM },
-	{ 0x6800, 0x6fff, MWA_RAM },
-	{ 0x7000, 0x77ff, MWA_RAM },
-	{ 0x8000, 0xffff, bank_w },
-MEMORY_END
+static ADDRESS_MAP_START( megaplay_bios_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x2fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x3000, 0x4fff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x5000, 0x5fff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x6000, 0x6000) AM_WRITE(megaplay_game_w)
+	AM_RANGE(0x6203, 0x6203) AM_WRITE(megaplay_bios_banksel_w)
+	AM_RANGE(0x6204, 0x6204) AM_WRITE(megaplay_bios_width_w)
+	AM_RANGE(0x6402, 0x6402) AM_WRITE(megaplay_bios_6402_w)
+	AM_RANGE(0x6403, 0x6403) AM_WRITE(megaplay_bios_gamesel_w)
+	AM_RANGE(0x6404, 0x6404) AM_WRITE(megaplay_bios_6404_w)
+	AM_RANGE(0x6600, 0x6600) AM_WRITE(megaplay_bios_6600_w)
+	AM_RANGE(0x6001, 0x67ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x6800, 0x6fff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x7000, 0x77ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x8000, 0xffff) AM_WRITE(bank_w)
+ADDRESS_MAP_END
 
 
 
@@ -1815,29 +1815,29 @@ static WRITE_HANDLER (megatech_bios_port_7f_w)
 }
 
 
-static PORT_READ_START( megatech_bios_readport )
-	{ 0xdc, 0xdc, megatech_bios_port_dc_r },  // player inputs
-	{ 0xdd, 0xdd, megatech_bios_port_dd_r },  // other player 2 inputs
-	{ 0xbe, 0xbf, megatech_bios_port_be_bf_r },			/* VDP */
-PORT_END
+static ADDRESS_MAP_START( megatech_bios_readport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0xdc, 0xdc) AM_READ(megatech_bios_port_dc_r)  // player inputs
+	AM_RANGE(0xdd, 0xdd) AM_READ(megatech_bios_port_dd_r)  // other player 2 inputs
+	AM_RANGE(0xbe, 0xbf) AM_READ(megatech_bios_port_be_bf_r)			/* VDP */
+ADDRESS_MAP_END
 
-static PORT_WRITE_START( megatech_bios_writeport )
-	{ 0x3f, 0x3f, megatech_bios_port_ctrl_w },
-	{ 0x7f, 0x7f, megatech_bios_port_7f_w },
-	{ 0xbe, 0xbf, megatech_bios_port_be_bf_w },			/* VDP */
-PORT_END
+static ADDRESS_MAP_START( megatech_bios_writeport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x3f, 0x3f) AM_WRITE(megatech_bios_port_ctrl_w)
+	AM_RANGE(0x7f, 0x7f) AM_WRITE(megatech_bios_port_7f_w)
+	AM_RANGE(0xbe, 0xbf) AM_WRITE(megatech_bios_port_be_bf_w)			/* VDP */
+ADDRESS_MAP_END
 
-static PORT_READ_START( megaplay_bios_readport )
-//	{ 0xdc, 0xdc, megatech_bios_port_dc_r },  // player inputs
-//	{ 0xdd, 0xdd, megatech_bios_port_dd_r },  // other player 2 inputs
-	{ 0xbe, 0xbf, megatech_bios_port_be_bf_r },			/* VDP */
-PORT_END
+static ADDRESS_MAP_START( megaplay_bios_readport, ADDRESS_SPACE_IO, 8 )
+//	AM_RANGE(0xdc, 0xdc) AM_READ(megatech_bios_port_dc_r)  // player inputs
+//	AM_RANGE(0xdd, 0xdd) AM_READ(megatech_bios_port_dd_r)  // other player 2 inputs
+	AM_RANGE(0xbe, 0xbf) AM_READ(megatech_bios_port_be_bf_r)			/* VDP */
+ADDRESS_MAP_END
 
-static PORT_WRITE_START( megaplay_bios_writeport )
-//	{ 0x3f, 0x3f, megatech_bios_port_ctrl_w },
-//	{ 0x7f, 0x7f, megatech_bios_port_7f_w },
-	{ 0xbe, 0xbf, megatech_bios_port_be_bf_w },			/* VDP */
-PORT_END
+static ADDRESS_MAP_START( megaplay_bios_writeport, ADDRESS_SPACE_IO, 8 )
+//	AM_RANGE(0x3f, 0x3f) AM_WRITE(megatech_bios_port_ctrl_w)
+//	AM_RANGE(0x7f, 0x7f) AM_WRITE(megatech_bios_port_7f_w)
+	AM_RANGE(0xbe, 0xbf) AM_WRITE(megatech_bios_port_be_bf_w)			/* VDP */
+ADDRESS_MAP_END
 
 static UINT8 hintcount;			/* line interrupt counter, decreased each scanline */
 extern UINT8 vintpending;
@@ -3106,7 +3106,7 @@ static MACHINE_DRIVER_START( segac )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD_TAG("main",M68000, MASTER_CLOCK/7) 		/* yes, there is a divide-by-7 circuit */
-	MDRV_CPU_MEMORY(readmem,writemem)
+	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
 	MDRV_CPU_VBLANK_INT(vblank_interrupt,1)
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -3145,7 +3145,7 @@ static MACHINE_DRIVER_START( puckpkmn )
 	/* basic machine hardware */
 	MDRV_IMPORT_FROM( segac )
 	MDRV_CPU_MODIFY("main")
-	MDRV_CPU_MEMORY(puckpkmn_readmem,puckpkmn_writemem)
+	MDRV_CPU_PROGRAM_MAP(puckpkmn_readmem,puckpkmn_writemem)
 
 	/* video hardware */
 	MDRV_VIDEO_START(puckpkmn)
@@ -3158,11 +3158,11 @@ MACHINE_DRIVER_END
 static MACHINE_DRIVER_START( genesis )
 	/*basic machine hardware */
 	MDRV_CPU_ADD_TAG("main", M68000, 53693100 / 7)
-	MDRV_CPU_MEMORY(genesis_readmem, genesis_writemem)
+	MDRV_CPU_PROGRAM_MAP(genesis_readmem, genesis_writemem)
 	MDRV_CPU_VBLANK_INT(vblank_interrupt,1)
 
 	MDRV_CPU_ADD_TAG("sound", Z80, 53693100 / 15)
-	MDRV_CPU_MEMORY(genesis_z80_readmem, genesis_z80_writemem)
+	MDRV_CPU_PROGRAM_MAP(genesis_z80_readmem, genesis_z80_writemem)
 	MDRV_CPU_VBLANK_INT(irq0_line_hold, 1) /* from vdp at scanline 0xe0 */
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -3203,8 +3203,8 @@ static MACHINE_DRIVER_START( megatech )
 	MDRV_PALETTE_LENGTH(2048+32) /* +32 for megatech bios vdp part */
 
 	MDRV_CPU_ADD_TAG("megatech_bios", Z80, 53693100 / 15) /* ?? */
-	MDRV_CPU_MEMORY(megatech_bios_readmem, megatech_bios_writemem)
-	MDRV_CPU_PORTS(megatech_bios_readport,megatech_bios_writeport)
+	MDRV_CPU_PROGRAM_MAP(megatech_bios_readmem, megatech_bios_writemem)
+	MDRV_CPU_IO_MAP(megatech_bios_readport,megatech_bios_writeport)
 	MDRV_CPU_VBLANK_INT(megatech_irq, 262)
 MACHINE_DRIVER_END
 
@@ -3213,7 +3213,7 @@ static MACHINE_DRIVER_START( megaplay )
 	/* basic machine hardware */
 	MDRV_IMPORT_FROM( genesis )
 
-	MDRV_CPU_MEMORY(megaplay_genesis_readmem, genesis_writemem)
+	MDRV_CPU_PROGRAM_MAP(megaplay_genesis_readmem, genesis_writemem)
 
 	MDRV_VIDEO_START(megaplay)
 	MDRV_VIDEO_UPDATE(megaplay)
@@ -3224,8 +3224,8 @@ static MACHINE_DRIVER_START( megaplay )
 	MDRV_PALETTE_LENGTH(2048+32) /* +32 for megaplay bios vdp part */
 
 	MDRV_CPU_ADD_TAG("megaplay_bios", Z80, 53693100 / 15) /* ?? */
-	MDRV_CPU_MEMORY(megaplay_bios_readmem, megaplay_bios_writemem)
-	MDRV_CPU_PORTS(megaplay_bios_readport,megaplay_bios_writeport)
+	MDRV_CPU_PROGRAM_MAP(megaplay_bios_readmem, megaplay_bios_writemem)
+	MDRV_CPU_IO_MAP(megaplay_bios_readport,megaplay_bios_writeport)
 	MDRV_CPU_VBLANK_INT(megatech_irq, 262)
 MACHINE_DRIVER_END
 
@@ -3316,8 +3316,6 @@ ROM sockets U63 & U64 empty
 Hi-res PCB scan available on request.
 Screenshots available on my site at http://unemulated.emuunlim.com (under PCB Shop Raid #2)
 
-More info reqd? email me.
-theguru@emuunlim.com
 
 ****************************************************************************/
 
@@ -3578,46 +3576,46 @@ ROM_END
 
 ROM_START( pclubj ) /* Print Club (c)1995 Atlus */
 	ROM_REGION( 0x200000, REGION_CPU1, 0 )
-	ROM_LOAD16_BYTE( "epr18171.32", 0x000000, 0x080000, CRC(6c8eb8e2) )
-	ROM_LOAD16_BYTE( "epr18170.31", 0x000001, 0x080000, CRC(72c631e6) )
-	ROM_LOAD16_BYTE( "epr18173.34", 0x100000, 0x080000, CRC(9809dc72) )
-	ROM_LOAD16_BYTE( "epr18172.33", 0x100001, 0x080000, CRC(c61d819b) )
+	ROM_LOAD16_BYTE( "epr18171.32", 0x000000, 0x080000, CRC(6c8eb8e2) SHA1(bbd885a83269524215c1d8470544086e3e82c05c) )
+	ROM_LOAD16_BYTE( "epr18170.31", 0x000001, 0x080000, CRC(72c631e6) SHA1(77c4ed793db6cb75346998f38a637db64fd258bd) )
+	ROM_LOAD16_BYTE( "epr18173.34", 0x100000, 0x080000, CRC(9809dc72) SHA1(6dbe6b7d4e525aa9b6174f8dc5aee12a5e00a009) )
+	ROM_LOAD16_BYTE( "epr18172.33", 0x100001, 0x080000, CRC(c61d819b) SHA1(4813ed3161e16099f482e0cf8df3cbe6c01c619c) )
 
 	ROM_REGION( 0x080000, REGION_SOUND1, 0 )
-	ROM_LOAD( "epr18169.4", 0x000000, 0x080000, CRC(5c00ccfb) )
+	ROM_LOAD( "epr18169.4", 0x000000, 0x080000, CRC(5c00ccfb) SHA1(d043ffa6528bb9b76774c96df4edf8222a1878a4) )
 ROM_END
 
 ROM_START( pclubjv2 ) /* Print Club vol.2 (c)1995 Atlus */
 	ROM_REGION( 0x200000, REGION_CPU1, 0 )
-	ROM_LOAD16_BYTE( "p2jwn.u32", 0x000000, 0x080000, CRC(dfc0f7f1) )
-	ROM_LOAD16_BYTE( "p2jwn.u31", 0x000001, 0x080000, CRC(6ab4c694) )
-	ROM_LOAD16_BYTE( "p2jwn.u34", 0x100000, 0x080000, CRC(854fd456) )
-	ROM_LOAD16_BYTE( "p2jwn.u33", 0x100001, 0x080000, CRC(64428a69) )
+	ROM_LOAD16_BYTE( "p2jwn.u32", 0x000000, 0x080000, CRC(dfc0f7f1) SHA1(d2399f3ff05006590903f943cd77a9c709b9b5b1) )
+	ROM_LOAD16_BYTE( "p2jwn.u31", 0x000001, 0x080000, CRC(6ab4c694) SHA1(d8cfaa1a49e86842079c6e3800a95c5afaf76ab6) )
+	ROM_LOAD16_BYTE( "p2jwn.u34", 0x100000, 0x080000, CRC(854fd456) SHA1(eff7413a7acd8ee37cb73bc8dfd4f4ae53c04836) )
+	ROM_LOAD16_BYTE( "p2jwn.u33", 0x100001, 0x080000, CRC(64428a69) SHA1(e2c5ead4b35db76fda1db03adcd020bde5ca1dd2) )
 
 	ROM_REGION( 0x080000, REGION_SOUND1, 0 )
-	ROM_LOAD( "epr18169.4", 0x000000, 0x080000, CRC(5c00ccfb) )
+	ROM_LOAD( "epr18169.4", 0x000000, 0x080000, CRC(5c00ccfb) SHA1(d043ffa6528bb9b76774c96df4edf8222a1878a4) )
 ROM_END
 
 ROM_START( pclubjv4 ) /* Print Club vol.4 (c)1996 Atlus */
 	ROM_REGION( 0x200000, REGION_CPU1, 0 )
-	ROM_LOAD16_BYTE( "p4jsm.u32", 0x000000, 0x080000, CRC(36ff5f80) )
-	ROM_LOAD16_BYTE( "p4jsm.u31", 0x000001, 0x080000, CRC(f3c021ad) )
-	ROM_LOAD16_BYTE( "p4jsm.u34", 0x100000, 0x080000, CRC(d0fd4b33) )
-	ROM_LOAD16_BYTE( "p4jsm.u33", 0x100001, 0x080000, CRC(ec667875) )
+	ROM_LOAD16_BYTE( "p4jsm.u32", 0x000000, 0x080000, CRC(36ff5f80) SHA1(33872aa00c8ca3f54dd7503a44562fbdad92df7d) )
+	ROM_LOAD16_BYTE( "p4jsm.u31", 0x000001, 0x080000, CRC(f3c021ad) SHA1(34792d861265b609d5022955eb7d2f471c63dfb8) )
+	ROM_LOAD16_BYTE( "p4jsm.u34", 0x100000, 0x080000, CRC(d0fd4b33) SHA1(c272404f09bdb6596740ab150eb158cc22cc9aa6) )
+	ROM_LOAD16_BYTE( "p4jsm.u33", 0x100001, 0x080000, CRC(ec667875) SHA1(d235a1d8dfa90e1c638e1f079ce528f61450e1f0) )
 
 	ROM_REGION( 0x080000, REGION_SOUND1, 0 )
-	ROM_LOAD( "epr18169.4", 0x000000, 0x080000, CRC(5c00ccfb) )
+	ROM_LOAD( "epr18169.4", 0x000000, 0x080000, CRC(5c00ccfb) SHA1(d043ffa6528bb9b76774c96df4edf8222a1878a4) )
 ROM_END
 
 ROM_START( pclubjv5 ) /* Print Club vol.5 (c)1996 Atlus */
 	ROM_REGION( 0x200000, REGION_CPU1, 0 )
-	ROM_LOAD16_BYTE( "p5jat.u32", 0x000000, 0x080000, CRC(72220e69) )
-	ROM_LOAD16_BYTE( "p5jat.u31", 0x000001, 0x080000, CRC(06d83fde) )
-	ROM_LOAD16_BYTE( "p5jat.u34", 0x100000, 0x080000, CRC(b172ab58) )
-	ROM_LOAD16_BYTE( "p5jat.u33", 0x100001, 0x080000, CRC(ba38ec50) )
+	ROM_LOAD16_BYTE( "p5jat.u32", 0x000000, 0x080000, CRC(72220e69) SHA1(615de759d73469841987fb028eaf5d5598c32553) )
+	ROM_LOAD16_BYTE( "p5jat.u31", 0x000001, 0x080000, CRC(06d83fde) SHA1(dc68375ccb16cde7900eb05f702bc15e7e702ea5) )
+	ROM_LOAD16_BYTE( "p5jat.u34", 0x100000, 0x080000, CRC(b172ab58) SHA1(47a70bd678f6c4dafe70b83bd3db678cf44de48b) )
+	ROM_LOAD16_BYTE( "p5jat.u33", 0x100001, 0x080000, CRC(ba38ec50) SHA1(666fdba56d8a4dab041015c5e8102305b491d293) )
 
 	ROM_REGION( 0x080000, REGION_SOUND1, 0 )
-	ROM_LOAD( "epr18169.4", 0x000000, 0x080000, CRC(5c00ccfb) )
+	ROM_LOAD( "epr18169.4", 0x000000, 0x080000, CRC(5c00ccfb) SHA1(d043ffa6528bb9b76774c96df4edf8222a1878a4) )
 ROM_END
 
 /* MegaTech Games - Genesis & sms! Games with a timer */
@@ -3923,7 +3921,7 @@ ROM_END
 
 ROM_START( mt_parlg ) /* Parlour Games.  */
 	ROM_REGION( 0x400000, REGION_CPU1, 0 )
-	ROM_LOAD16_WORD_SWAP( "mp11404.ic1", 0x000000, 0x020000, CRC(E030E66C) SHA1(06664DAF208F07CB00B603B12ECCFC3F01213A17) ) 
+	ROM_LOAD16_WORD_SWAP( "mp11404.ic1", 0x000000, 0x020000, CRC(E030E66C) SHA1(06664DAF208F07CB00B603B12ECCFC3F01213A17) )
 	ROM_REGION( 0x10000, REGION_CPU2, 0 ) /* z80 */
 
 	ROM_REGION( 0x8000, REGION_USER1, 0 ) /* Game Instructions */
@@ -3935,7 +3933,7 @@ ROM_END
 
 ROM_START( mt_shnbi ) /* Shinobi. */
 	ROM_REGION( 0x400000, REGION_CPU1, 0 )
-	ROM_LOAD16_WORD_SWAP( "mp11706.ic1", 0x000000, 0x040000, CRC(0C6FAC4E) SHA1(7C0778C055DC9C2B0AAE1D166DBDB4734E55B9D1) ) 
+	ROM_LOAD16_WORD_SWAP( "mp11706.ic1", 0x000000, 0x040000, CRC(0C6FAC4E) SHA1(7C0778C055DC9C2B0AAE1D166DBDB4734E55B9D1) )
 	ROM_REGION( 0x10000, REGION_CPU2, 0 ) /* z80 */
 
 	ROM_REGION( 0x8000, REGION_USER1, 0 ) /* Game Instructions */
@@ -3947,7 +3945,7 @@ ROM_END
 
 ROM_START( mt_revsh ) /* The Revenge Of Shinobi. */
 	ROM_REGION( 0x400000, REGION_CPU1, 0 )
-	ROM_LOAD16_WORD_SWAP( "mp12675.ic1", 0x000000, 0x080000, CRC(672A1D4D) SHA1(5FD0AF14C8F2CF8CEAB1AE61A5A19276D861289A) ) 
+	ROM_LOAD16_WORD_SWAP( "mp12675.ic1", 0x000000, 0x080000, CRC(672A1D4D) SHA1(5FD0AF14C8F2CF8CEAB1AE61A5A19276D861289A) )
 	ROM_REGION( 0x10000, REGION_CPU2, 0 ) /* z80 */
 
 	ROM_REGION( 0x8000, REGION_USER1, 0 ) /* Game Instructions */
@@ -3959,11 +3957,23 @@ ROM_END
 
 ROM_START( mt_aftrb ) /* Afterburner. */
 	ROM_REGION( 0x400000, REGION_CPU1, 0 )
-	ROM_LOAD16_WORD_SWAP( "mp11271.ic1", 0x000000, 0x080000, CRC(1C951F8E) SHA1(51531DF038783C84640A0CAB93122E0B59E3B69A) ) 
+	ROM_LOAD16_WORD_SWAP( "mp11271.ic1", 0x000000, 0x080000, CRC(1C951F8E) SHA1(51531DF038783C84640A0CAB93122E0B59E3B69A) )
 	ROM_REGION( 0x10000, REGION_CPU2, 0 ) /* z80 */
 
 	ROM_REGION( 0x8000, REGION_USER1, 0 ) /* Game Instructions */
 	ROM_LOAD( "12368-10.ic2", 0x000000, 0x08000, CRC(2A7CB590) SHA1(2236963BDDC89CA9045B530259CC7B5CCF889EAF) )
+
+	ROM_REGION( 0x10000, REGION_CPU3, 0 ) /* Bios */
+	ROM_LOAD( "epr12664.20", 0x000000, 0x8000, CRC(f71e9526) SHA1(1c7887541d02c41426992d17f8e3db9e03975953) )
+ROM_END
+
+ROM_START( mt_tgolf ) /* Arnold Palmer Tournament Golf */
+	ROM_REGION( 0x400000, REGION_CPU1, 0 )
+	ROM_LOAD16_WORD_SWAP( "mp12645f.ic1", 0x000000, 0x080000, CRC(c07ef8d2) SHA1(9d111fdc7bb92d52bfa048cd134aa488b4f475ef) )
+	ROM_REGION( 0x10000, REGION_CPU2, 0 ) /* z80 */
+
+	ROM_REGION( 0x8000, REGION_USER1, 0 ) /* Game Instructions */
+	ROM_LOAD( "12368-31.ic2", 0x000000, 0x08000, CRC(30af7e4a) SHA1(baf91d527393dc90aba9371abcb1e690bcc83c7e) )
 
 	ROM_REGION( 0x10000, REGION_CPU3, 0 ) /* Bios */
 	ROM_LOAD( "epr12664.20", 0x000000, 0x8000, CRC(f71e9526) SHA1(1c7887541d02c41426992d17f8e3db9e03975953) )
@@ -4461,7 +4471,7 @@ GAMEX( 1996, pclubjv5, pclubj,   segac2, pclub,    pclub,    ROT0, "Atlus",     
 /* 28 */ GAMEX( 1989, mt_revsh, megatech, megatech, megatech, segac2, ROT0, "Sega",                  "MegaTech: The Revenge Of Shinobi", GAME_NOT_WORKING )
 /* 29 */ GAMEX( 1989, mt_parlg, megatech, megatech, megatech, segac2, ROT0, "Sega",                  "MegaTech: Parlour Games", GAME_NOT_WORKING ) /* sms! */
 /* 30 */ // unknown
-/* 31 */ // unknown
+/* 31 */ GAMEX( 1989, mt_tgolf, megatech, megatech, megatech, segac2, ROT0, "Sega",                  "MegaTech: Arnold Palmer Tournament Golf", GAME_NOT_WORKING )
 /* 32 */ // unknown
 /* 33 */ // unknown
 /* 34 */ // unknown

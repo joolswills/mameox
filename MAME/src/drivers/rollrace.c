@@ -43,59 +43,61 @@ WRITE_HANDLER( ra_fake_d800_w )
 /*	logerror("d900: %02X\n",data);*/
 }
 
-static MEMORY_READ_START (readmem)
-	{ 0x0000, 0x7fff, MRA_ROM },
-	{ 0xc000, 0xcfff, MRA_RAM },
-	{ 0xd900, 0xd900, ra_fake_d800_r }, /* protection ??*/
-	{ 0xe000, 0xe3ff, MRA_RAM },
-	{ 0xe400, 0xe47f, MRA_RAM },
-	{ 0xec00, 0xec0f, MRA_NOP }, /* Analog sound effects ??*/
-	{ 0xf000, 0xf0ff, MRA_RAM },
-	{ 0xf800, 0xf800, input_port_0_r },		/* player1*/
-        { 0xf801, 0xf801, input_port_1_r },		/* player2*/
-	{ 0xf804, 0xf804, input_port_3_r },
-	{ 0xf802, 0xf802, input_port_2_r },
-	{ 0xf805, 0xf805, input_port_4_r },
-	{ 0xd806, 0xd806, MRA_NOP }, /* looks like a watchdog, bit4 checked*/
-MEMORY_END
+static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x8000, 0x9fff) AM_READ(MRA8_ROM) /* only rollace2 */
+	AM_RANGE(0xc000, 0xcfff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xd900, 0xd900) AM_READ(ra_fake_d800_r) /* protection ??*/
+	AM_RANGE(0xe000, 0xe3ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xe400, 0xe47f) AM_READ(MRA8_RAM)
+	AM_RANGE(0xec00, 0xec0f) AM_READ(MRA8_NOP) /* Analog sound effects ??*/
+	AM_RANGE(0xf000, 0xf0ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xf800, 0xf800) AM_READ(input_port_0_r)		/* player1*/
+	AM_RANGE(0xf801, 0xf801) AM_READ(input_port_1_r)		/* player2*/
+	AM_RANGE(0xf804, 0xf804) AM_READ(input_port_3_r)
+	AM_RANGE(0xf802, 0xf802) AM_READ(input_port_2_r)
+	AM_RANGE(0xf805, 0xf805) AM_READ(input_port_4_r)
+	AM_RANGE(0xd806, 0xd806) AM_READ(MRA8_NOP) /* looks like a watchdog, bit4 checked*/
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START (writemem)
-	{ 0x0000, 0x7fff, MWA_ROM },
-	{ 0xc000, 0xcfff, MWA_RAM },
-	{ 0xd900, 0xd900, ra_fake_d800_w }, /* protection ?? */
-	{ 0xe000, 0xe3ff, videoram_w, &videoram, &videoram_size },
-	{ 0xe400, 0xe47f, colorram_w, &colorram },
-	{ 0xe800, 0xe800, soundlatch_w },
-	{ 0xec00, 0xec0f, MWA_NOP }, /* Analog sound effects ?? ec00 sound enable ?*/
-	{ 0xf000, 0xf0ff, MWA_RAM , &spriteram, &spriteram_size },
-	{ 0xfc00, 0xfc00, rollrace_flipx_w },
-	{ 0xfc01, 0xfc01, interrupt_enable_w },
-	{ 0xfc02, 0xfc03, MWA_NOP }, /* coin counters */
-	{ 0xfc04, 0xfc05, rollrace_charbank_w },
-	{ 0xfc06, 0xfc06, rollrace_spritebank_w },
-	{ 0xf400, 0xf400, rollrace_backgroundcolor_w },
-	{ 0xf801, 0xf801, rollrace_bkgpen_w },
-	{ 0xf802, 0xf802, rollrace_backgroundpage_w },
-	{ 0xf803, 0xf803, rollrace_flipy_w },
-MEMORY_END
+static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x8000, 0x9fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0xc000, 0xcfff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xd900, 0xd900) AM_WRITE(ra_fake_d800_w) /* protection ?? */
+	AM_RANGE(0xe000, 0xe3ff) AM_WRITE(videoram_w) AM_BASE(&videoram) AM_SIZE(&videoram_size)
+	AM_RANGE(0xe400, 0xe47f) AM_WRITE(colorram_w) AM_BASE(&colorram)
+	AM_RANGE(0xe800, 0xe800) AM_WRITE(soundlatch_w)
+	AM_RANGE(0xec00, 0xec0f) AM_WRITE(MWA8_NOP) /* Analog sound effects ?? ec00 sound enable ?*/
+	AM_RANGE(0xf000, 0xf0ff) AM_WRITE(MWA8_RAM) AM_BASE(&spriteram) AM_SIZE(&spriteram_size)
+	AM_RANGE(0xfc00, 0xfc00) AM_WRITE(rollrace_flipx_w)
+	AM_RANGE(0xfc01, 0xfc01) AM_WRITE(interrupt_enable_w)
+	AM_RANGE(0xfc02, 0xfc03) AM_WRITE(MWA8_NOP) /* coin counters */
+	AM_RANGE(0xfc04, 0xfc05) AM_WRITE(rollrace_charbank_w)
+	AM_RANGE(0xfc06, 0xfc06) AM_WRITE(rollrace_spritebank_w)
+	AM_RANGE(0xf400, 0xf400) AM_WRITE(rollrace_backgroundcolor_w)
+	AM_RANGE(0xf801, 0xf801) AM_WRITE(rollrace_bkgpen_w)
+	AM_RANGE(0xf802, 0xf802) AM_WRITE(rollrace_backgroundpage_w)
+	AM_RANGE(0xf803, 0xf803) AM_WRITE(rollrace_flipy_w)
+ADDRESS_MAP_END
 
-static MEMORY_READ_START (readmem_snd)
-		{ 0x0000, 0x0fff, MRA_ROM },
-		{ 0x2000, 0x2fff, MRA_RAM },
-		{ 0x3000, 0x3000, soundlatch_r },
-MEMORY_END
+static ADDRESS_MAP_START( readmem_snd, ADDRESS_SPACE_PROGRAM, 8 )
+		AM_RANGE(0x0000, 0x0fff) AM_READ(MRA8_ROM)
+		AM_RANGE(0x2000, 0x2fff) AM_READ(MRA8_RAM)
+		AM_RANGE(0x3000, 0x3000) AM_READ(soundlatch_r)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START (writemem_snd)
-		{ 0x0000, 0x0fff, MWA_ROM },
-		{ 0x2000, 0x2fff, MWA_RAM },
-		{ 0x3000, 0x3000, interrupt_enable_w },
-		{ 0x4000, 0x4000, AY8910_control_port_0_w },
-		{ 0x4001, 0x4001, AY8910_write_port_0_w },
-		{ 0x5000, 0x5000, AY8910_control_port_1_w },
-		{ 0x5001, 0x5001, AY8910_write_port_1_w },
-		{ 0x6000, 0x6000, AY8910_control_port_2_w },
-		{ 0x6001, 0x6001, AY8910_write_port_2_w },
-MEMORY_END
+static ADDRESS_MAP_START( writemem_snd, ADDRESS_SPACE_PROGRAM, 8 )
+		AM_RANGE(0x0000, 0x0fff) AM_WRITE(MWA8_ROM)
+		AM_RANGE(0x2000, 0x2fff) AM_WRITE(MWA8_RAM)
+		AM_RANGE(0x3000, 0x3000) AM_WRITE(interrupt_enable_w)
+		AM_RANGE(0x4000, 0x4000) AM_WRITE(AY8910_control_port_0_w)
+		AM_RANGE(0x4001, 0x4001) AM_WRITE(AY8910_write_port_0_w)
+		AM_RANGE(0x5000, 0x5000) AM_WRITE(AY8910_control_port_1_w)
+		AM_RANGE(0x5001, 0x5001) AM_WRITE(AY8910_write_port_1_w)
+		AM_RANGE(0x6000, 0x6000) AM_WRITE(AY8910_control_port_2_w)
+		AM_RANGE(0x6001, 0x6001) AM_WRITE(AY8910_write_port_2_w)
+ADDRESS_MAP_END
 
 
 INPUT_PORTS_START( rollrace )
@@ -257,12 +259,12 @@ static MACHINE_DRIVER_START( rollrace )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(Z80,18432000/6)			/* ?? */
-	MDRV_CPU_MEMORY(readmem,writemem)
+	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
 	MDRV_CPU_VBLANK_INT(nmi_line_pulse,1)
 
 	MDRV_CPU_ADD(Z80,14318000/6)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)			/* ?? */
-	MDRV_CPU_MEMORY(readmem_snd,writemem_snd)
+	MDRV_CPU_PROGRAM_MAP(readmem_snd,writemem_snd)
 	MDRV_CPU_VBLANK_INT(nmi_line_pulse,3)
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -271,7 +273,7 @@ static MACHINE_DRIVER_START( rollrace )
 	/* video hardware */
 	MDRV_VIDEO_ATTRIBUTES(VIDEO_TYPE_RASTER)
 	MDRV_SCREEN_SIZE(256, 256)
-	MDRV_VISIBLE_AREA(0,255,16, 255-16)
+	MDRV_VISIBLE_AREA(16,255,16, 255-16)
 	MDRV_GFXDECODE(gfxdecodeinfo)
 	MDRV_PALETTE_LENGTH(256)
 	MDRV_COLORTABLE_LENGTH(32*8)
@@ -281,7 +283,15 @@ static MACHINE_DRIVER_START( rollrace )
 	MDRV_VIDEO_UPDATE(rollrace)
 
 	/* sound hardware */
-	MDRV_SOUND_ADD(AY8910, ra_ay8910_interface)														\
+	MDRV_SOUND_ADD(AY8910, ra_ay8910_interface)
+MACHINE_DRIVER_END
+
+static MACHINE_DRIVER_START( rollace2 )
+
+	/* basic machine hardware */
+	MDRV_IMPORT_FROM(rollrace)
+
+	MDRV_VISIBLE_AREA(0,255-24,16, 255-16)
 MACHINE_DRIVER_END
 
 
@@ -338,7 +348,7 @@ ROM_START( fightrol )
 	ROM_LOAD( "8.6f", 0x0000, 0x1000, CRC(6ec3c545) SHA1(1a2477b9e1563734195b0743f5dbbb005e06022e) )
 ROM_END
 
-ROM_START( rollrace )
+ROM_START( rollace )
 	ROM_REGION( 0x10000, REGION_CPU1,0 )	/* 64k for code */
 	ROM_LOAD( "w1.8k", 0x0000, 0x2000, CRC(c0bd3cf3) SHA1(a44d69b8c3249b5093261a32d0e0404992fa7f7a) )
 	ROM_LOAD( "w2.8h", 0x2000, 0x2000, CRC(c1900a75) SHA1(f7ec968b6bcb6ee6db98628cdf566ae0a501edba) )
@@ -385,10 +395,57 @@ ROM_START( rollrace )
 	ROM_LOAD( "8.6f", 0x0000, 0x1000, CRC(6ec3c545) SHA1(1a2477b9e1563734195b0743f5dbbb005e06022e) )
 ROM_END
 
+ROM_START( rollace2 )
+	ROM_REGION( 0x10000, REGION_CPU1,0 )	/* 64k for code */
+	ROM_LOAD( "8k.764", 0x0000, 0x2000, CRC(a7abff82) SHA1(d49635f98b28b2b5e2833d25b0961addac2c3e6f) )
+	ROM_LOAD( "8h.764", 0x2000, 0x2000, CRC(9716ba03) SHA1(8a7bfc1dce3b1b0c634690e0637e0a30776c0334) )
+	ROM_LOAD( "8f.764", 0x4000, 0x2000, CRC(3eadb0e8) SHA1(6ff5b76360597f3a6a9718e505295c8557e569ae) )
+	ROM_LOAD( "8d.764", 0x6000, 0x2000, CRC(baac14db) SHA1(9707b59a6506eb11c0a6b88364a784469ccdbb96) )
+	ROM_LOAD( "8c.764", 0x8000, 0x2000, CRC(b418ce84) SHA1(876be297a671328138a9238d42871f22bb568cda) )
 
+	ROM_REGION( 0x6000,REGION_GFX1,ROMREGION_DISPOSE )	/* characters */
+	ROM_LOAD( "7m.764", 0x0000, 0x2000, CRC(8b9b27af) SHA1(a52894adb739f14a5949b6d15dd7b03ce5716d9a) )
+	ROM_LOAD( "8m.764", 0x2000, 0x2000, CRC(2dfc38f2) SHA1(c0ad3a7d1f5249c159c355d709cc3039fbb7a3b2) )
+	ROM_LOAD( "9m.764", 0x4000, 0x2000, CRC(2e3a825b) SHA1(d0d25d9a0fe31d46cb6cc999da3d9fc14f23251f) )
+
+	ROM_REGION( 0x6000, REGION_GFX2,ROMREGION_DISPOSE )	/* road graphics */
+	ROM_LOAD ( "6.20k", 0x0000, 0x2000, CRC(003d7515) SHA1(d8d84d690478cad16101f2ef9a1ae1ae74d01c88) )
+	ROM_LOAD ( "7.18k", 0x2000, 0x2000, CRC(27843afa) SHA1(81d3031a2c06086461110696a0ee11d32992ecac) )
+	ROM_LOAD ( "5.20f", 0x4000, 0x2000, CRC(51dd0108) SHA1(138c0aba6c952204e794216193def17b390c4ba2) )
+
+	ROM_REGION( 0x6000, REGION_GFX3,ROMREGION_DISPOSE ) 	/* sprite bank 0*/
+	ROM_LOAD ( "17n.764",0x0000, 0x2000, CRC(3365703c) SHA1(7cf374ba25f4fd163a66c0aea74ddfd3003c7992) )
+	ROM_LOAD ( "9.17r",  0x2000, 0x2000, CRC(69b23461) SHA1(73eca5e721425f37df311454bd5b4e632b096eba) )
+	ROM_LOAD ( "17t.764",0x4000, 0x2000, CRC(5e84cc9b) SHA1(33cdf7b756ade8c0dd1dcdad583af4de02cd51eb) )
+
+	ROM_REGION( 0x6000, REGION_GFX4,ROMREGION_DISPOSE ) 	/* sprite bank 1*/
+	ROM_LOAD ( "11.18m", 0x0000, 0x2000, CRC(06a5d849) SHA1(b9f604edf4fdc053b738041493aef91dd730fe6b) )
+	ROM_LOAD ( "12.18r", 0x2000, 0x2000, CRC(569815ef) SHA1(db261799892f60b2274b73fb25cde58219bb44db) )
+	ROM_LOAD ( "13.18t", 0x4000, 0x2000, CRC(4f8af872) SHA1(6c07ff0733b8d8440309c9ae0db0876587b740a6) )
+
+	ROM_REGION( 0x6000, REGION_GFX5,ROMREGION_DISPOSE )	/* sprite bank 2*/
+	ROM_LOAD ( "14.19m", 0x0000, 0x2000, CRC(93f3c649) SHA1(38d6bb4b6108a67b135ae1a145532f4a0c2568b8) )
+	ROM_LOAD ( "15.19r", 0x2000, 0x2000, CRC(5b3d87e4) SHA1(e47f7b62bf7101afba8d5e181f4bd8f8eb6eeb08) )
+	ROM_LOAD ( "16.19u", 0x4000, 0x2000, CRC(a2c24b64) SHA1(e76558785ea337ab902fb6f94dc1a4bdfcd6335e) )
+
+	ROM_REGION( 0x8000, REGION_USER1,ROMREGION_NODISPOSE )	/* road layout */
+	ROM_LOAD ( "1.17a",  0x0000, 0x2000, CRC(f0fa72fc) SHA1(b73e794df635630f29a79adfe2951dc8f1d17e20) )
+	ROM_LOAD ( "3.18b",  0x2000, 0x2000, CRC(954268f7) SHA1(07057296e0281f90b18dfe4223aad18bff7cfa6e) )
+	ROM_LOAD ( "17d.764",0x4000, 0x2000, CRC(32e69320) SHA1(d399a8c3b0319178d75f68f1a9b65b3efd91e00a) )
+	ROM_LOAD ( "4.18d",  0x6000, 0x2000, CRC(3d9e16ab) SHA1(e99628ffc54e3ff4818313a287ca111617120910) )
+
+	ROM_REGION( 0x300, REGION_PROMS,ROMREGION_NODISPOSE )	/* colour */
+	ROM_LOAD("tbp24s10.7u", 0x0000, 0x0100, CRC(9d199d33) SHA1(b8982f7da2b85f10d117177e4e73cbb486931cf5) )
+	ROM_LOAD("tbp24s10.7t", 0x0100, 0x0100, CRC(c0426582) SHA1(8e3e4d1e76243cce272aa099d2d6ad4fa6c99f7c) )
+	ROM_LOAD("tbp24s10.6t", 0x0200, 0x0100, CRC(c096e05c) SHA1(cb5b509e6124453f381a683ba446f8f4493d4610) )
+
+	ROM_REGION( 0x10000,REGION_CPU2,0 )
+	ROM_LOAD( "8.6f", 0x0000, 0x1000, CRC(6ec3c545) SHA1(1a2477b9e1563734195b0743f5dbbb005e06022e) )
+ROM_END
 
 GAMEX( 1983, fightrol, 0,        rollrace, rollrace, 0, ROT270, "[Kaneko] (Taito license)", "Fighting Roller", GAME_IMPERFECT_SOUND|GAME_IMPERFECT_COLORS )
-GAMEX( 1983, rollrace, fightrol, rollrace, rollrace, 0, ROT270, "[Kaneko] (Williams license)", "Roller Aces", GAME_IMPERFECT_SOUND|GAME_IMPERFECT_COLORS )
+GAMEX( 1983, rollace,  fightrol, rollrace, rollrace, 0, ROT270, "[Kaneko] (Williams license)", "Roller Aces (set 1)", GAME_IMPERFECT_SOUND|GAME_IMPERFECT_COLORS )
+GAMEX( 1983, rollace2, fightrol, rollace2, rollrace, 0, ROT90,  "[Kaneko] (Williams license)", "Roller Aces (set 2)", GAME_IMPERFECT_SOUND|GAME_IMPERFECT_COLORS )
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

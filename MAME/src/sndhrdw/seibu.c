@@ -23,9 +23,12 @@
 	to prevent this.  It is emulated by user timers to control the z80
 	interrupt vector.
 
-	(*What on earth _is_ the YM3931??  There are no unknown memory writes)
+	* The YM3931 is the main/sub cpu interface, similar to Konami's K054986A
+	  or Taito's TC0140SYT.  It also provides the Z80 memory map and
+	  interrupt control.  It's not a Yamaha chip :-)
 
 	Emulation by Bryan McPhail, mish@tendril.co.uk
+	ADPCM by R. Belmont and Jarek Burczynski
 
 ***************************************************************************/
 
@@ -115,6 +118,88 @@ void seibu_sound_decrypt(int cpu_region,int length)
 
 /***************************************************************************/
 
+/*
+	Handlers for early Seibu/Tad games with dual channel ADPCM
+*/
+
+static int start, end, start1, end1;
+
+// "decrypt" is a bit flowery here, as it's probably just line-swapping to
+// simplify PCB layout/routing rather than intentional protection, but it
+// still fits, especially since the Z80s for all these games are truly encrypted.
+
+void seibu_adpcm_decrypt(int region)
+{
+	data8_t *ROM = memory_region(region);
+	int i;
+
+	for (i = 0; i < memory_region_length(region); i++)
+	{
+		ROM[i] = BITSWAP8(ROM[i], 7, 5, 3, 1, 6, 4, 2, 0);
+	}
+}
+
+WRITE_HANDLER( seibu_adpcm_adr_1_w )
+{
+	if (offset)
+	{
+		end = data<<8;
+	}
+	else
+	{
+		start = data<<8;
+	}
+}
+
+WRITE_HANDLER( seibu_adpcm_ctl_1_w )
+{
+	// sequence is 00 02 01 each time.
+	switch (data)
+	{
+		case 0:
+  			ADPCM_stop(0);
+			break;
+		case 2:
+			break;
+		case 1:
+			ADPCM_play(0, start, end-start);
+			break;
+
+	}
+}
+
+WRITE_HANDLER( seibu_adpcm_adr_2_w )
+{
+	if (offset)
+	{
+		end1 = data<<8;
+	}
+	else
+	{
+		start1 = data<<8;
+	}
+}
+
+WRITE_HANDLER( seibu_adpcm_ctl_2_w )
+{
+	// sequence is 00 02 01 each time.
+	switch (data)
+	{
+		case 0:
+  			ADPCM_stop(1);
+			break;
+		case 2:
+			break;
+		case 1:
+			start1 += 0x10000;
+			end1 += 0x10000;
+			ADPCM_play(1, start1, end1-start1);
+			break;
+
+	}
+}
+
+/***************************************************************************/
 
 static int sound_cpu;
 
@@ -310,86 +395,108 @@ WRITE16_HANDLER( seibu_main_mustb_w )
 
 /***************************************************************************/
 
-MEMORY_READ_START( seibu_sound_readmem )
-	{ 0x0000, 0x1fff, MRA_ROM },
-	{ 0x2000, 0x27ff, MRA_RAM },
-	{ 0x4008, 0x4008, YM3812_status_port_0_r },
-	{ 0x4010, 0x4011, seibu_soundlatch_r },
-	{ 0x4012, 0x4012, seibu_main_data_pending_r },
-	{ 0x4013, 0x4013, input_port_0_r },
-	{ 0x6000, 0x6000, OKIM6295_status_0_r },
-	{ 0x8000, 0xffff, MRA_BANK1 },
-MEMORY_END
+ADDRESS_MAP_START( seibu_sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x1fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x2000, 0x27ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x4008, 0x4008) AM_READ(YM3812_status_port_0_r)
+	AM_RANGE(0x4010, 0x4011) AM_READ(seibu_soundlatch_r)
+	AM_RANGE(0x4012, 0x4012) AM_READ(seibu_main_data_pending_r)
+	AM_RANGE(0x4013, 0x4013) AM_READ(input_port_0_r)
+	AM_RANGE(0x6000, 0x6000) AM_READ(OKIM6295_status_0_r)
+	AM_RANGE(0x8000, 0xffff) AM_READ(MRA8_BANK1)
+ADDRESS_MAP_END
 
-MEMORY_WRITE_START( seibu_sound_writemem )
-	{ 0x0000, 0x1fff, MWA_ROM },
-	{ 0x2000, 0x27ff, MWA_RAM },
-	{ 0x4000, 0x4000, seibu_pending_w },
-	{ 0x4001, 0x4001, seibu_irq_clear_w },
-	{ 0x4002, 0x4002, seibu_rst10_ack_w },
-	{ 0x4003, 0x4003, seibu_rst18_ack_w },
-	{ 0x4007, 0x4007, seibu_bank_w },
-	{ 0x4008, 0x4008, YM3812_control_port_0_w },
-	{ 0x4009, 0x4009, YM3812_write_port_0_w },
-	{ 0x4018, 0x4019, seibu_main_data_w },
-	{ 0x401b, 0x401b, seibu_coin_w },
-	{ 0x6000, 0x6000, OKIM6295_data_0_w },
-	{ 0x8000, 0xffff, MWA_ROM },
-MEMORY_END
+ADDRESS_MAP_START( seibu_sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x1fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x2000, 0x27ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x4000, 0x4000) AM_WRITE(seibu_pending_w)
+	AM_RANGE(0x4001, 0x4001) AM_WRITE(seibu_irq_clear_w)
+	AM_RANGE(0x4002, 0x4002) AM_WRITE(seibu_rst10_ack_w)
+	AM_RANGE(0x4003, 0x4003) AM_WRITE(seibu_rst18_ack_w)
+	AM_RANGE(0x4007, 0x4007) AM_WRITE(seibu_bank_w)
+	AM_RANGE(0x4008, 0x4008) AM_WRITE(YM3812_control_port_0_w)
+	AM_RANGE(0x4009, 0x4009) AM_WRITE(YM3812_write_port_0_w)
+	AM_RANGE(0x4018, 0x4019) AM_WRITE(seibu_main_data_w)
+	AM_RANGE(0x401b, 0x401b) AM_WRITE(seibu_coin_w)
+	AM_RANGE(0x6000, 0x6000) AM_WRITE(OKIM6295_data_0_w)
+	AM_RANGE(0x8000, 0xffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
-MEMORY_READ_START( seibu2_sound_readmem )
-	{ 0x0000, 0x1fff, MRA_ROM },
-	{ 0x2000, 0x27ff, MRA_RAM },
-	{ 0x4009, 0x4009, YM2151_status_port_0_r },
-	{ 0x4010, 0x4011, seibu_soundlatch_r },
-	{ 0x4012, 0x4012, seibu_main_data_pending_r },
-	{ 0x4013, 0x4013, input_port_0_r },
-	{ 0x6000, 0x6000, OKIM6295_status_0_r },
-	{ 0x8000, 0xffff, MRA_BANK1 },
-MEMORY_END
+ADDRESS_MAP_START( seibu2_sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x1fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x2000, 0x27ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x4009, 0x4009) AM_READ(YM2151_status_port_0_r)
+	AM_RANGE(0x4010, 0x4011) AM_READ(seibu_soundlatch_r)
+	AM_RANGE(0x4012, 0x4012) AM_READ(seibu_main_data_pending_r)
+	AM_RANGE(0x4013, 0x4013) AM_READ(input_port_0_r)
+	AM_RANGE(0x6000, 0x6000) AM_READ(OKIM6295_status_0_r)
+	AM_RANGE(0x8000, 0xffff) AM_READ(MRA8_BANK1)
+ADDRESS_MAP_END
 
-MEMORY_WRITE_START( seibu2_sound_writemem )
-	{ 0x0000, 0x1fff, MWA_ROM },
-	{ 0x2000, 0x27ff, MWA_RAM },
-	{ 0x4000, 0x4000, seibu_pending_w },
-	{ 0x4001, 0x4001, seibu_irq_clear_w },
-	{ 0x4002, 0x4002, seibu_rst10_ack_w },
-	{ 0x4003, 0x4003, seibu_rst18_ack_w },
-	{ 0x4007, 0x4007, seibu_bank_w },
-	{ 0x4008, 0x4008, YM2151_register_port_0_w },
-	{ 0x4009, 0x4009, YM2151_data_port_0_w },
-	{ 0x4018, 0x4019, seibu_main_data_w },
-	{ 0x401b, 0x401b, seibu_coin_w },
-	{ 0x6000, 0x6000, OKIM6295_data_0_w },
-	{ 0x8000, 0xffff, MWA_ROM },
-MEMORY_END
+ADDRESS_MAP_START( seibu2_sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x1fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x2000, 0x27ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x4000, 0x4000) AM_WRITE(seibu_pending_w)
+	AM_RANGE(0x4001, 0x4001) AM_WRITE(seibu_irq_clear_w)
+	AM_RANGE(0x4002, 0x4002) AM_WRITE(seibu_rst10_ack_w)
+	AM_RANGE(0x4003, 0x4003) AM_WRITE(seibu_rst18_ack_w)
+	AM_RANGE(0x4007, 0x4007) AM_WRITE(seibu_bank_w)
+	AM_RANGE(0x4008, 0x4008) AM_WRITE(YM2151_register_port_0_w)
+	AM_RANGE(0x4009, 0x4009) AM_WRITE(YM2151_data_port_0_w)
+	AM_RANGE(0x4018, 0x4019) AM_WRITE(seibu_main_data_w)
+	AM_RANGE(0x401b, 0x401b) AM_WRITE(seibu_coin_w)
+	AM_RANGE(0x6000, 0x6000) AM_WRITE(OKIM6295_data_0_w)
+	AM_RANGE(0x8000, 0xffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
-MEMORY_READ_START( seibu3_sound_readmem )
-	{ 0x0000, 0x1fff, MRA_ROM },
-	{ 0x2000, 0x27ff, MRA_RAM },
-	{ 0x4008, 0x4008, YM2203_status_port_0_r },
-	{ 0x4009, 0x4009, YM2203_read_port_0_r },
-	{ 0x4010, 0x4011, seibu_soundlatch_r },
-	{ 0x4012, 0x4012, seibu_main_data_pending_r },
-	{ 0x4013, 0x4013, input_port_0_r },
-	{ 0x6008, 0x6008, YM2203_status_port_1_r },
-	{ 0x6009, 0x6009, YM2203_read_port_1_r },
-	{ 0x8000, 0xffff, MRA_BANK1 },
-MEMORY_END
+ADDRESS_MAP_START( seibu3_sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x1fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x2000, 0x27ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x4008, 0x4008) AM_READ(YM2203_status_port_0_r)
+	AM_RANGE(0x4009, 0x4009) AM_READ(YM2203_read_port_0_r)
+	AM_RANGE(0x4010, 0x4011) AM_READ(seibu_soundlatch_r)
+	AM_RANGE(0x4012, 0x4012) AM_READ(seibu_main_data_pending_r)
+	AM_RANGE(0x4013, 0x4013) AM_READ(input_port_0_r)
+	AM_RANGE(0x6008, 0x6008) AM_READ(YM2203_status_port_1_r)
+	AM_RANGE(0x6009, 0x6009) AM_READ(YM2203_read_port_1_r)
+	AM_RANGE(0x8000, 0xffff) AM_READ(MRA8_BANK1)
+ADDRESS_MAP_END
 
-MEMORY_WRITE_START( seibu3_sound_writemem )
-	{ 0x0000, 0x1fff, MWA_ROM },
-	{ 0x2000, 0x27ff, MWA_RAM },
-	{ 0x4000, 0x4000, seibu_pending_w },
-	{ 0x4001, 0x4001, seibu_irq_clear_w },
-	{ 0x4002, 0x4002, seibu_rst10_ack_w },
-	{ 0x4003, 0x4003, seibu_rst18_ack_w },
-	{ 0x4007, 0x4007, seibu_bank_w },
-	{ 0x4008, 0x4008, YM2203_control_port_0_w },
-	{ 0x4009, 0x4009, YM2203_write_port_0_w },
-	{ 0x4018, 0x4019, seibu_main_data_w },
-	{ 0x401b, 0x401b, seibu_coin_w },
-	{ 0x6008, 0x6008, YM2203_control_port_1_w },
-	{ 0x6009, 0x6009, YM2203_write_port_1_w },
-	{ 0x8000, 0xffff, MWA_ROM },
-MEMORY_END
+ADDRESS_MAP_START( seibu3_sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x1fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x2000, 0x27ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x4000, 0x4000) AM_WRITE(seibu_pending_w)
+	AM_RANGE(0x4001, 0x4001) AM_WRITE(seibu_irq_clear_w)
+	AM_RANGE(0x4002, 0x4002) AM_WRITE(seibu_rst10_ack_w)
+	AM_RANGE(0x4003, 0x4003) AM_WRITE(seibu_rst18_ack_w)
+	AM_RANGE(0x4007, 0x4007) AM_WRITE(seibu_bank_w)
+	AM_RANGE(0x4008, 0x4008) AM_WRITE(YM2203_control_port_0_w)
+	AM_RANGE(0x4009, 0x4009) AM_WRITE(YM2203_write_port_0_w)
+	AM_RANGE(0x4018, 0x4019) AM_WRITE(seibu_main_data_w)
+	AM_RANGE(0x401b, 0x401b) AM_WRITE(seibu_coin_w)
+	AM_RANGE(0x6008, 0x6008) AM_WRITE(YM2203_control_port_1_w)
+	AM_RANGE(0x6009, 0x6009) AM_WRITE(YM2203_write_port_1_w)
+	AM_RANGE(0x8000, 0xffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
+
+ADDRESS_MAP_START( seibu3_adpcm_sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x1fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x2000, 0x27ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x4000, 0x4000) AM_WRITE(seibu_pending_w)
+	AM_RANGE(0x4001, 0x4001) AM_WRITE(seibu_irq_clear_w)
+	AM_RANGE(0x4002, 0x4002) AM_WRITE(seibu_rst10_ack_w)
+	AM_RANGE(0x4003, 0x4003) AM_WRITE(seibu_rst18_ack_w)
+	AM_RANGE(0x4005, 0x4006) AM_WRITE(seibu_adpcm_adr_1_w)
+	AM_RANGE(0x4007, 0x4007) AM_WRITE(seibu_bank_w)
+	AM_RANGE(0x4008, 0x4008) AM_WRITE(YM2203_control_port_0_w)
+	AM_RANGE(0x4009, 0x4009) AM_WRITE(YM2203_write_port_0_w)
+	AM_RANGE(0x4018, 0x4019) AM_WRITE(seibu_main_data_w)
+	AM_RANGE(0x401a, 0x401a) AM_WRITE(seibu_adpcm_ctl_1_w)
+	AM_RANGE(0x401b, 0x401b) AM_WRITE(seibu_coin_w)
+	AM_RANGE(0x6005, 0x6006) AM_WRITE(seibu_adpcm_adr_2_w)
+	AM_RANGE(0x6008, 0x6008) AM_WRITE(YM2203_control_port_1_w)
+	AM_RANGE(0x6009, 0x6009) AM_WRITE(YM2203_write_port_1_w)
+	AM_RANGE(0x601a, 0x601a) AM_WRITE(seibu_adpcm_ctl_2_w)
+	AM_RANGE(0x8000, 0xffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
+

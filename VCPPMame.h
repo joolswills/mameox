@@ -3,12 +3,18 @@
 //
 // Header file used to compile M.A.M.E. with Visual C++
 //
-// This file was taken from the MameX source tree
+// This file was originally taken from the MameX source tree
 //---------------------------------------------------------------------------
 
 #pragma once
 
+#include <stddef.h>
+
 #define LSB_FIRST
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 //---------------------------------------------------------------------------
 // Disable Compiler Warnings
@@ -23,6 +29,26 @@
 #pragma warning(disable:4530)   // "C++ exception handler used, but unwind semantics are not enabled"
 #pragma warning(disable:4550)		// "expression evaluates .. missing an argument list"
 #pragma warning(disable:4761)		// "integral size mismatch in argument"
+
+
+//---------------------------------------------------------------------------
+// Prototypes to get rid of warnings
+
+  // Defined in xbox_Main.cpp, replaces the stock MAME call which
+  // does an exit() (causing the appearance of a hard crash)
+extern int fatalerror( const char *fmt, ... );
+
+  // Defined in xbox_Miscelaneous, replaces stock malloc() calls
+  // as the MAME core is very bad about catching failed mallocs.
+  // This code acts as a bottleneck to catch malloc failures and
+  // handle them gracefully.
+extern void *osd_malloc( size_t );
+extern void *osd_calloc( size_t num, size_t size );
+extern void *osd_realloc( void *memblock, size_t size );
+
+  // Defined in xbox_Miscelaneous, this is called to automatically
+  // load a save state when starting a game.
+extern void osd_autobootsavestate( const char *gameName );
 
 
 //---------------------------------------------------------------------------
@@ -133,6 +159,8 @@
 
 #define HAS_E132XS      1   // New: 0.73
 
+#define HAS_ADSP2104    1   // New: 0.77-0.79
+
 #define HAS_GENSYNC     1   // [EBA] PatchMAME 0.62.1
 
 //---------------------------------------------------------------------------
@@ -206,3 +234,12 @@
 #define HAS_TIA         1   // New: 0.68
 
 #define HAS_SP0250      1   // New 0.72
+#define HAS_SCSP        1   // New 0.77-0.79
+#define HAS_PSXSPU      1   // New 0.77-0.79
+#define HAS_YMF271      1   // New 0.77-0.79
+
+
+#ifdef __cplusplus
+}
+#endif
+

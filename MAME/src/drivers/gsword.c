@@ -300,104 +300,110 @@ WRITE_HANDLER( adpcm_soundcommand_w )
 	cpu_set_nmi_line(2, PULSE_LINE);
 }
 
-static MEMORY_READ_START( gsword_readmem )
-	{ 0x0000, 0x8fff, MRA_ROM },
-	{ 0x9000, 0x9fff, MRA_RAM },
-	{ 0xb000, 0xb7ff, MRA_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( gsword_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x8fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x9000, 0x9fff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xa000, 0xa37f) AM_READ(MRA8_RAM)
+	AM_RANGE(0xa380, 0xa3ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xa400, 0xa77f) AM_READ(MRA8_RAM)
+	AM_RANGE(0xa780, 0xa7ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xb000, 0xb7ff) AM_READ(MRA8_RAM)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( gsword_writemem )
-	{ 0x0000, 0x8fff, MWA_ROM },
-	{ 0x9000, 0x9fff, MWA_RAM },
-	{ 0xa380, 0xa3ff, MWA_RAM, &gsword_spritetile_ram },
-	{ 0xa780, 0xa7ff, MWA_RAM, &gsword_spritexy_ram, &gsword_spritexy_size },
-	{ 0xa980, 0xa980, gsword_charbank_w },
-	{ 0xaa80, 0xaa80, gsword_videoctrl_w },	/* flip screen, char palette bank */
-	{ 0xab00, 0xab00, gsword_scroll_w },
-	{ 0xab80, 0xabff, MWA_RAM, &gsword_spriteattrib_ram },
-	{ 0xb000, 0xb7ff, gsword_videoram_w, &videoram },
-MEMORY_END
+static ADDRESS_MAP_START( gsword_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x8fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x9000, 0x9fff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xa000, 0xa37f) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xa380, 0xa3ff) AM_WRITE(MWA8_RAM) AM_BASE(&gsword_spritetile_ram)
+	AM_RANGE(0xa400, 0xa77f) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xa780, 0xa7ff) AM_WRITE(MWA8_RAM) AM_BASE(&gsword_spritexy_ram) AM_SIZE(&gsword_spritexy_size)
+	AM_RANGE(0xa980, 0xa980) AM_WRITE(gsword_charbank_w)
+	AM_RANGE(0xaa80, 0xaa80) AM_WRITE(gsword_videoctrl_w)	/* flip screen, char palette bank */
+	AM_RANGE(0xab00, 0xab00) AM_WRITE(gsword_scroll_w)
+	AM_RANGE(0xab80, 0xabff) AM_WRITE(MWA8_RAM) AM_BASE(&gsword_spriteattrib_ram)
+	AM_RANGE(0xb000, 0xb7ff) AM_WRITE(gsword_videoram_w) AM_BASE(&videoram)
+ADDRESS_MAP_END
 
-static MEMORY_READ_START( readmem_cpu2 )
-	{ 0x0000, 0x3fff, MRA_ROM },
-	{ 0x4000, 0x43ff, MRA_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( readmem_cpu2, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x3fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x4000, 0x43ff) AM_READ(MRA8_RAM)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( writemem_cpu2 )
-	{ 0x0000, 0x3fff, MWA_ROM },
-	{ 0x4000, 0x43ff, MWA_RAM },
-	{ 0x6000, 0x6000, adpcm_soundcommand_w },
-MEMORY_END
+static ADDRESS_MAP_START( writemem_cpu2, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x3fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x4000, 0x43ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x6000, 0x6000) AM_WRITE(adpcm_soundcommand_w)
+ADDRESS_MAP_END
 
-static MEMORY_READ_START( readmem_cpu3 )
-	{ 0x0000, 0x5fff, MRA_ROM },
-	{ 0xa000, 0xa000, soundlatch_r },
-MEMORY_END
+static ADDRESS_MAP_START( readmem_cpu3, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x5fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0xa000, 0xa000) AM_READ(soundlatch_r)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( writemem_cpu3 )
-	{ 0x0000, 0x5fff, MWA_ROM },
-	{ 0x8000, 0x8000, gsword_adpcm_data_w },
-MEMORY_END
+static ADDRESS_MAP_START( writemem_cpu3, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x5fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x8000, 0x8000) AM_WRITE(gsword_adpcm_data_w)
+ADDRESS_MAP_END
 
-static PORT_READ_START( readport )
-	{ 0x7e, 0x7f, TAITO8741_0_r },
-PORT_END
+static ADDRESS_MAP_START( readport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x7e, 0x7f) AM_READ(TAITO8741_0_r)
+ADDRESS_MAP_END
 
-static PORT_WRITE_START( writeport )
-	{ 0x7e, 0x7f, TAITO8741_0_w },
-PORT_END
+static ADDRESS_MAP_START( writeport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x7e, 0x7f) AM_WRITE(TAITO8741_0_w)
+ADDRESS_MAP_END
 
-static PORT_READ_START( readport_cpu2 )
-	{ 0x00, 0x01, TAITO8741_2_r },
-	{ 0x20, 0x21, TAITO8741_3_r },
-	{ 0x40, 0x41, TAITO8741_1_r },
-	{ 0x60, 0x60, gsword_fake_0_r },
-	{ 0x61, 0x61, AY8910_read_port_0_r },
-	{ 0x80, 0x80, gsword_fake_1_r },
-	{ 0x81, 0x81, AY8910_read_port_1_r },
-	{ 0xe0, 0xe0, IORP_NOP }, /* ?? */
-PORT_END
+static ADDRESS_MAP_START( readport_cpu2, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x00, 0x01) AM_READ(TAITO8741_2_r)
+	AM_RANGE(0x20, 0x21) AM_READ(TAITO8741_3_r)
+	AM_RANGE(0x40, 0x41) AM_READ(TAITO8741_1_r)
+	AM_RANGE(0x60, 0x60) AM_READ(gsword_fake_0_r)
+	AM_RANGE(0x61, 0x61) AM_READ(AY8910_read_port_0_r)
+	AM_RANGE(0x80, 0x80) AM_READ(gsword_fake_1_r)
+	AM_RANGE(0x81, 0x81) AM_READ(AY8910_read_port_1_r)
+	AM_RANGE(0xe0, 0xe0) AM_READ(MRA8_NOP) /* ?? */
+ADDRESS_MAP_END
 
-static PORT_WRITE_START( writeport_cpu2 )
-	{ 0x00, 0x01, TAITO8741_2_w },
-	{ 0x20, 0x21, TAITO8741_3_w },
-	{ 0x40, 0x41, TAITO8741_1_w },
-	{ 0x60, 0x60, gsword_AY8910_control_port_0_w },
-	{ 0x61, 0x61, AY8910_write_port_0_w },
-	{ 0x80, 0x80, gsword_AY8910_control_port_1_w },
-	{ 0x81, 0x81, AY8910_write_port_1_w },
-	{ 0xa0, 0xa0, IOWP_NOP }, /* ?? */
-	{ 0xe0, 0xe0, IOWP_NOP }, /* watch dog ?*/
-PORT_END
-
-
+static ADDRESS_MAP_START( writeport_cpu2, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x00, 0x01) AM_WRITE(TAITO8741_2_w)
+	AM_RANGE(0x20, 0x21) AM_WRITE(TAITO8741_3_w)
+	AM_RANGE(0x40, 0x41) AM_WRITE(TAITO8741_1_w)
+	AM_RANGE(0x60, 0x60) AM_WRITE(gsword_AY8910_control_port_0_w)
+	AM_RANGE(0x61, 0x61) AM_WRITE(AY8910_write_port_0_w)
+	AM_RANGE(0x80, 0x80) AM_WRITE(gsword_AY8910_control_port_1_w)
+	AM_RANGE(0x81, 0x81) AM_WRITE(AY8910_write_port_1_w)
+	AM_RANGE(0xa0, 0xa0) AM_WRITE(MWA8_NOP) /* ?? */
+	AM_RANGE(0xe0, 0xe0) AM_WRITE(MWA8_NOP) /* watch dog ?*/
+ADDRESS_MAP_END
 
 
 
-static MEMORY_READ_START( josvolly_sound_readmem )
-	{ 0x0000, 0x0fff, MRA_ROM },
-//	{ 0x2000, 0x3fff, MRA_ROM }, another ROM probably, not sure which one (tested on boot)
-	{ 0x4000, 0x43ff, MRA_RAM },
-//	{ 0xa000, 0xa000, soundlatch_r },
-MEMORY_END
 
-static MEMORY_WRITE_START( josvolly_sound_writemem )
-	{ 0x0000, 0x0fff, MWA_ROM },
-	{ 0x4000, 0x43ff, MWA_RAM },
-//	{ 0x8000, 0x8000, gsword_adpcm_data_w },
-MEMORY_END
 
-static PORT_READ_START( josvolly_sound_readport )
-	{ 0x00, 0x00, AY8910_read_port_0_r },
-	{ 0x40, 0x40, AY8910_read_port_1_r },
-PORT_END
+static ADDRESS_MAP_START( josvolly_sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x0fff) AM_READ(MRA8_ROM)
+//	AM_RANGE(0x2000, 0x3fff) AM_READ(MRA8_ROM) another ROM probably, not sure which one (tested on boot)
+	AM_RANGE(0x4000, 0x43ff) AM_READ(MRA8_RAM)
+//	AM_RANGE(0xa000, 0xa000) AM_READ(soundlatch_r)
+ADDRESS_MAP_END
 
-static PORT_WRITE_START( josvolly_sound_writeport )
-	{ 0x00, 0x00, AY8910_control_port_0_w },
-	{ 0x01, 0x01, AY8910_write_port_0_w },
-	{ 0x40, 0x40, AY8910_control_port_1_w },
-	{ 0x41, 0x41, AY8910_write_port_1_w },
-PORT_END
+static ADDRESS_MAP_START( josvolly_sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x0fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x4000, 0x43ff) AM_WRITE(MWA8_RAM)
+//	AM_RANGE(0x8000, 0x8000) AM_WRITE(gsword_adpcm_data_w)
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( josvolly_sound_readport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x00, 0x00) AM_READ(AY8910_read_port_0_r)
+	AM_RANGE(0x40, 0x40) AM_READ(AY8910_read_port_1_r)
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( josvolly_sound_writeport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x00, 0x00) AM_WRITE(AY8910_control_port_0_w)
+	AM_RANGE(0x01, 0x01) AM_WRITE(AY8910_write_port_0_w)
+	AM_RANGE(0x40, 0x40) AM_WRITE(AY8910_control_port_1_w)
+	AM_RANGE(0x41, 0x41) AM_WRITE(AY8910_write_port_1_w)
+ADDRESS_MAP_END
 
 
 
@@ -589,14 +595,14 @@ static MACHINE_DRIVER_START( josvolly )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(Z80, 3000000)
-	MDRV_CPU_MEMORY(gsword_readmem,gsword_writemem)
-	MDRV_CPU_PORTS(readport,writeport)
+	MDRV_CPU_PROGRAM_MAP(gsword_readmem,gsword_writemem)
+	MDRV_CPU_IO_MAP(readport,writeport)
 	MDRV_CPU_VBLANK_INT(irq0_line_hold,1)
 
 	MDRV_CPU_ADD(Z80, 3000000)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)
-	MDRV_CPU_MEMORY(josvolly_sound_readmem,josvolly_sound_writemem)
-	MDRV_CPU_PORTS(josvolly_sound_readport,josvolly_sound_writeport)
+	MDRV_CPU_PROGRAM_MAP(josvolly_sound_readmem,josvolly_sound_writemem)
+	MDRV_CPU_IO_MAP(josvolly_sound_readport,josvolly_sound_writeport)
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(DEFAULT_REAL_60HZ_VBLANK_DURATION)
@@ -624,18 +630,18 @@ static MACHINE_DRIVER_START( gsword )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(Z80, 3000000)
-	MDRV_CPU_MEMORY(gsword_readmem,gsword_writemem)
-	MDRV_CPU_PORTS(readport,writeport)
+	MDRV_CPU_PROGRAM_MAP(gsword_readmem,gsword_writemem)
+	MDRV_CPU_IO_MAP(readport,writeport)
 	MDRV_CPU_VBLANK_INT(irq0_line_hold,1)
 
 	MDRV_CPU_ADD(Z80, 3000000)
-	MDRV_CPU_MEMORY(readmem_cpu2,writemem_cpu2)
-	MDRV_CPU_PORTS(readport_cpu2,writeport_cpu2)
+	MDRV_CPU_PROGRAM_MAP(readmem_cpu2,writemem_cpu2)
+	MDRV_CPU_IO_MAP(readport_cpu2,writeport_cpu2)
 	MDRV_CPU_VBLANK_INT(gsword_snd_interrupt,4)
 
 	MDRV_CPU_ADD(Z80, 3000000)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)
-	MDRV_CPU_MEMORY(readmem_cpu3,writemem_cpu3)
+	MDRV_CPU_PROGRAM_MAP(readmem_cpu3,writemem_cpu3)
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(DEFAULT_REAL_60HZ_VBLANK_DURATION)
@@ -668,34 +674,34 @@ MACHINE_DRIVER_END
 
 ROM_START( josvolly )
 	ROM_REGION( 0x10000, REGION_CPU1, 0 )	/* 64K for main CPU */
-	ROM_LOAD( "aa2-1.2c",     0x0000, 0x2000, CRC(27f740a5) )
-	ROM_LOAD( "aa1-2.2d",     0x2000, 0x2000, CRC(3e02e3e1) )
-	ROM_LOAD( "aa0-3.2e",     0x4000, 0x2000, CRC(72843ffe) )
-	ROM_LOAD( "aa1-4.2f",     0x6000, 0x2000, CRC(22c1466e) )
+	ROM_LOAD( "aa2-1.2c",     0x0000, 0x2000, CRC(27f740a5) SHA1(3e038386e743fdf718e795a944ff4b631a492958) )
+	ROM_LOAD( "aa1-2.2d",     0x2000, 0x2000, CRC(3e02e3e1) SHA1(cc0aee321cf5232438cd6e38635c9060056ad361) )
+	ROM_LOAD( "aa0-3.2e",     0x4000, 0x2000, CRC(72843ffe) SHA1(fe70727bbcb0622df81eca2969c1a85398767479) )
+	ROM_LOAD( "aa1-4.2f",     0x6000, 0x2000, CRC(22c1466e) SHA1(d86093903e473252c35170e35d7f9ee34194086d) )
 
 	ROM_REGION( 0x10000, REGION_CPU2, 0 )	/* 64K for 2nd CPU */
-	ROM_LOAD( "aa3-12.2h",    0x0000, 0x1000, CRC(3796bbf6) )
+	ROM_LOAD( "aa3-12.2h",    0x0000, 0x1000, CRC(3796bbf6) SHA1(8741f556ddb06e7779d1e8abc3d06688881f8269) )
 
 	ROM_REGION( 0x04000, REGION_USER1, 0 )	/* music data and samples - not sure where it's mapped */
-	ROM_LOAD( "aa0-13.2j",    0x0000, 0x2000, CRC(58cc89ac) )
-	ROM_LOAD( "aa0-14.4j",    0x2000, 0x2000, CRC(436fe91f) )
+	ROM_LOAD( "aa0-13.2j",    0x0000, 0x2000, CRC(58cc89ac) SHA1(9785ec27e593b3e249da7a1b6b025c6d573e28f9) )
+	ROM_LOAD( "aa0-14.4j",    0x2000, 0x2000, CRC(436fe91f) SHA1(feb29501090c6db911e13ce6e9935ba004b0ce7e) )
 
 	ROM_REGION( 0x4000, REGION_GFX1, ROMREGION_DISPOSE )
-	ROM_LOAD( "aa0-10.9n",    0x0000, 0x2000, CRC(207c4f42) )	/* tiles */
-	ROM_LOAD( "aa1-11.9p",    0x2000, 0x1000, CRC(c130464a) )
+	ROM_LOAD( "aa0-10.9n",    0x0000, 0x2000, CRC(207c4f42) SHA1(4cf2922d55cfc9e68cc07c3252ea3b5619b8aca5) )	/* tiles */
+	ROM_LOAD( "aa1-11.9p",    0x2000, 0x1000, CRC(c130464a) SHA1(9d23577b8aaaffeefff3d8f93668d1b2bd0ba3d9) )
 
 	ROM_REGION( 0x2000, REGION_GFX2, ROMREGION_DISPOSE )
-	ROM_LOAD( "aa0-6.9e",     0x0000, 0x2000, CRC(c2c2401a) )	/* sprites */
+	ROM_LOAD( "aa0-6.9e",     0x0000, 0x2000, CRC(c2c2401a) SHA1(ef987d53d9e502277086f39b455174d3539572e6) )	/* sprites */
 
 	ROM_REGION( 0x4000, REGION_GFX3, ROMREGION_DISPOSE )
-	ROM_LOAD( "aa0-7.9f",     0x0000, 0x2000, CRC(da836231) )
-	ROM_LOAD( "aa0-8.9h",     0x2000, 0x2000, CRC(a0426d57) )
+	ROM_LOAD( "aa0-7.9f",     0x0000, 0x2000, CRC(da836231) SHA1(209723778b705dba8206b56c3b8f0996f02ba8d5) )
+	ROM_LOAD( "aa0-8.9h",     0x2000, 0x2000, CRC(a0426d57) SHA1(d029408e005ea57f4902c081203f3d3980a5f927) )
 
 	ROM_REGION( 0x0460, REGION_PROMS, 0 )
-	ROM_LOAD( "a1.10k",       0x0000, 0x0100, CRC(09f7b56a) )	/* palette red? */
-	ROM_LOAD( "a2.9k",        0x0100, 0x0100, CRC(852eceac) )	/* palette green? */
-	ROM_LOAD( "a3.9j",        0x0200, 0x0100, CRC(1312718b) )	/* palette blue? */
-	ROM_LOAD( "a4.8c",        0x0300, 0x0100, CRC(1dcec967) )	/* sprite lookup table */
+	ROM_LOAD( "a1.10k",       0x0000, 0x0100, CRC(09f7b56a) SHA1(9b82d1d4ebab14b366dc0ca95c933e37811ac155) )	/* palette red? */
+	ROM_LOAD( "a2.9k",        0x0100, 0x0100, CRC(852eceac) SHA1(6ed7011b45cf767d6503b92d29a14a7b8e099a76) )	/* palette green? */
+	ROM_LOAD( "a3.9j",        0x0200, 0x0100, CRC(1312718b) SHA1(4a7d7eae4d8ea085eead46758832fddac7aff0b0) )	/* palette blue? */
+	ROM_LOAD( "a4.8c",        0x0300, 0x0100, CRC(1dcec967) SHA1(4d36842c2fd929a6508a58bc8ea7e0372296e575) )	/* sprite lookup table */
 	ROM_LOAD( "003.4e",       0x0400, 0x0020, CRC(43a548b8) SHA1(d01529d7f8f5101232cdf3490fdb2c61bf179181) )	/* address decoder? not used */
 	ROM_LOAD( "004.4d",       0x0420, 0x0020, CRC(43a548b8) SHA1(d01529d7f8f5101232cdf3490fdb2c61bf179181) )	/* address decoder? not used */
 	ROM_LOAD( "005.3h",       0x0440, 0x0020, CRC(e8d6dec0) SHA1(d15cba9a4b24255d41046b15c2409391ab13ce95) )	/* address decoder? not used */

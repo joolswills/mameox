@@ -368,6 +368,15 @@ void osd_pause(int paused);
 /* Used to report fatal errors to the user in the case that the system has no stdout */
 void osd_print_error( const char *fmt, ... );
 
+/* aborts the program in some unexpected fatal way */
+#ifdef __GNUC__
+void CLIB_DECL osd_die(const char *text,...)
+      __attribute__ ((format (printf, 1, 2)));
+#else
+void CLIB_DECL osd_die(const char *text,...);
+#endif
+
+
 
 #if defined MAME_NET || defined XMAME_NET
 /* network */

@@ -66,34 +66,34 @@ WRITE_HANDLER( sbugger_videoram_w );
 
 /* memory maps */
 
-static MEMORY_READ_START( readmem )
-	{ 0x0000, 0x37ff, MRA_ROM },
+static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x37ff) AM_READ(MRA8_ROM)
 
-	{ 0xc800, 0xcfff, MRA_RAM }, /* video ram */
+	AM_RANGE(0xc800, 0xcfff) AM_READ(MRA8_RAM) /* video ram */
 
-	{ 0xe000, 0xe0ff, MRA_RAM }, /* sp is set to e0ff */
+	AM_RANGE(0xe000, 0xe0ff) AM_READ(MRA8_RAM) /* sp is set to e0ff */
 
-	{ 0xf400, 0xffff, MRA_RAM },
+	AM_RANGE(0xf400, 0xffff) AM_READ(MRA8_RAM)
 
-MEMORY_END
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( writemem )
-	{ 0x0000, 0x37ff, MWA_ROM },
+static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x37ff) AM_WRITE(MWA8_ROM)
 
-	{ 0xc800, 0xcbff, sbugger_videoram_attr_w, &sbugger_videoram_attr },
-	{ 0xcc00, 0xcfff, sbugger_videoram_w, &sbugger_videoram },
+	AM_RANGE(0xc800, 0xcbff) AM_WRITE(sbugger_videoram_attr_w) AM_BASE(&sbugger_videoram_attr)
+	AM_RANGE(0xcc00, 0xcfff) AM_WRITE(sbugger_videoram_w) AM_BASE(&sbugger_videoram)
 
-	{ 0xe000, 0xe0ff, MWA_RAM }, /* sp is set to e0ff */
+	AM_RANGE(0xe000, 0xe0ff) AM_WRITE(MWA8_RAM) /* sp is set to e0ff */
 
-	{ 0xf400, 0xffff, MWA_RAM },
+	AM_RANGE(0xf400, 0xffff) AM_WRITE(MWA8_RAM)
 
-MEMORY_END
+ADDRESS_MAP_END
 
-static PORT_READ_START( readport )
-	{ 0xe1, 0xe1, input_port_0_r },
-	{ 0xe2, 0xe2, input_port_1_r },
-	{ 0xe3, 0xe3, input_port_2_r },
-PORT_END
+static ADDRESS_MAP_START( readport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0xe1, 0xe1) AM_READ(input_port_0_r)
+	AM_RANGE(0xe2, 0xe2) AM_READ(input_port_1_r)
+	AM_RANGE(0xe3, 0xe3) AM_READ(input_port_2_r)
+ADDRESS_MAP_END
 
 /* there are some port writes */
 
@@ -200,8 +200,8 @@ INPUT_PORTS_END
 
 static MACHINE_DRIVER_START( sbugger )
 	MDRV_CPU_ADD(8085A, 6000000/2)        /* 3.00 MHz??? */
-	MDRV_CPU_MEMORY(readmem,writemem)
-	MDRV_CPU_PORTS(readport,0)
+	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
+	MDRV_CPU_IO_MAP(readport,0)
 
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -226,16 +226,16 @@ MACHINE_DRIVER_END
 ROM_START( sbugger )
 	ROM_REGION( 0x10000, REGION_CPU1, 0 ) /* 8085 Code */
 
-	ROM_LOAD( "spbugger.u35", 0x0000, 0x0800, CRC(7c2000a1) ) // seems to map at 0
-	ROM_LOAD( "spbugger.u22", 0x0800, 0x0800, BAD_DUMP CRC(66e00c53)  ) // FIXED BITS (xxxx1111)  it jumps here .... bad rom?
-	ROM_LOAD( "spbugger.u34", 0x1000, 0x0800, CRC(db357dde) ) // seems to map at 1000
-	ROM_LOAD( "spbugger.u21", 0x1800, 0x0800, CRC(618a5b2a) ) // seems to map at 1800
-	ROM_LOAD( "spbugger.u20", 0x2000, 0x0800, CRC(8957563c) ) // seems to map at 2000
-	ROM_LOAD( "spbugger.u33", 0x2800, 0x0800, CRC(f6cb1399) ) // seems to map at 2800
-	ROM_LOAD( "spbugger.u32", 0x3000, 0x0800, CRC(f49af2b3) ) // seems to map at 3000
+	ROM_LOAD( "spbugger.u35", 0x0000, 0x0800, CRC(7c2000a1) SHA1(01a60745ea8e9a70de37d1a785fad1d17eafc812) ) // seems to map at 0
+	ROM_LOAD( "spbugger.u22", 0x0800, 0x0800, BAD_DUMP CRC(66e00c53) SHA1(49ca567a98978308306cdb8455c61c022668693b) ) // FIXED BITS (xxxx1111)  it jumps here .... bad rom?
+	ROM_LOAD( "spbugger.u34", 0x1000, 0x0800, CRC(db357dde) SHA1(363392b971f48e9d99f4167aa17f0c885b0865ee) ) // seems to map at 1000
+	ROM_LOAD( "spbugger.u21", 0x1800, 0x0800, CRC(618a5b2a) SHA1(aa7a40b1944f09c396f675d7dd3a8c3c35bf01f1) ) // seems to map at 1800
+	ROM_LOAD( "spbugger.u20", 0x2000, 0x0800, CRC(8957563c) SHA1(b33a75fcf375d2a1a766105f87dd8e4d42db3d76) ) // seems to map at 2000
+	ROM_LOAD( "spbugger.u33", 0x2800, 0x0800, CRC(f6cb1399) SHA1(53cb67e29a238c5ac20c6be9423d850e004212c1) ) // seems to map at 2800
+	ROM_LOAD( "spbugger.u32", 0x3000, 0x0800, CRC(f49af2b3) SHA1(1519ee4786b78546767827d3a9508e7ddb646765) ) // seems to map at 3000
 
 	ROM_REGION( 0x1000, REGION_GFX1, ROMREGION_DISPOSE ) /* GFX */
-	ROM_LOAD( "spbugger.gfx", 0x0000, 0x1000, CRC(d3f345b5) )
+	ROM_LOAD( "spbugger.gfx", 0x0000, 0x1000, CRC(d3f345b5) SHA1(a5082ffc3043352e9b731af95770bdd62fb928bf) )
 ROM_END
 
 /* game drivers */

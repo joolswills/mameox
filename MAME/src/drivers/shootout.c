@@ -32,14 +32,16 @@
 
 	TODO:
 
-	- Remove the silly input port hack
+	- Fix coin counter
+	- Lots of unmapped memory reads
 
 *******************************************************************************/
 
 /*
-	
+
 	2003-06-01	Added cocktail support to shootout
 	2003-10-08	Added cocktail support to shootouj/shootoub
+	2003-10-21	Removed input port hack
 
 */
 
@@ -47,16 +49,15 @@
 #include "vidhrdw/generic.h"
 #include "cpu/m6502/m6502.h"
 
-/* externals: from vidhrdw */
 UINT8 *shootout_textram;
-WRITE_HANDLER( shootout_videoram_w );
-WRITE_HANDLER( shootout_textram_w );
 
-VIDEO_START( shootout );
-VIDEO_UPDATE( shootout );
-VIDEO_UPDATE( shootouj );
+extern WRITE_HANDLER( shootout_videoram_w );
+extern WRITE_HANDLER( shootout_textram_w );
 
-PALETTE_INIT( shootout );
+extern PALETTE_INIT( shootout );
+extern VIDEO_START( shootout );
+extern VIDEO_UPDATE( shootout );
+extern VIDEO_UPDATE( shootouj );
 
 /*******************************************************************************/
 
@@ -79,147 +80,145 @@ static WRITE_HANDLER( sound_cpu_command_w )
 
 static WRITE_HANDLER( shootout_flipscreen_w )
 {
-	flip_screen_set(data);
-}
-
-/* stub for reading input ports as active low (makes building ports much easier) */
-static READ_HANDLER( low_input_r )
-{
-	return ~readinputport( offset );
+	flip_screen_set(data & 0x01);
 }
 
 static WRITE_HANDLER( shootout_coin_counter_w )
 {
-	coin_counter_w( offset, data );
+	coin_counter_w(0, data);
 }
 
 /*******************************************************************************/
 
-static MEMORY_READ_START( readmem )
-	{ 0x0000, 0x0fff, MRA_RAM },
-	{ 0x1000, 0x1003, low_input_r },
-	{ 0x2000, 0x27ff, MRA_RAM },	/* foreground */
-	{ 0x2800, 0x2fff, MRA_RAM },	/* background */
-	{ 0x4000, 0x7fff, MRA_BANK1 },
-	{ 0x8000, 0xffff, MRA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x0fff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x1000, 0x1000) AM_READ(input_port_0_r)
+	AM_RANGE(0x1001, 0x1001) AM_READ(input_port_1_r)
+	AM_RANGE(0x1002, 0x1002) AM_READ(input_port_2_r)
+	AM_RANGE(0x1003, 0x1003) AM_READ(input_port_3_r)
+	AM_RANGE(0x2000, 0x27ff) AM_READ(MRA8_RAM)	/* foreground */
+	AM_RANGE(0x2800, 0x2fff) AM_READ(MRA8_RAM)	/* background */
+	AM_RANGE(0x4000, 0x7fff) AM_READ(MRA8_BANK1)
+	AM_RANGE(0x8000, 0xffff) AM_READ(MRA8_ROM)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( writemem )
-	{ 0x0000, 0x0fff, MWA_RAM },
-	{ 0x1000, 0x1000, shootout_bankswitch_w },
-	{ 0x1001, 0x1001, shootout_flipscreen_w },
-	{ 0x1002, 0x1002, shootout_coin_counter_w },
-	{ 0x1003, 0x1003, sound_cpu_command_w },
-	{ 0x1004, 0x17ff, MWA_RAM },
-	{ 0x1800, 0x19ff, MWA_RAM, &spriteram, &spriteram_size },
-	{ 0x2000, 0x27ff, shootout_textram_w, &shootout_textram },
-	{ 0x2800, 0x2fff, shootout_videoram_w, &videoram },
-	{ 0x4000, 0xffff, MWA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x0fff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x1000, 0x1000) AM_WRITE(shootout_bankswitch_w)
+	AM_RANGE(0x1001, 0x1001) AM_WRITE(shootout_flipscreen_w)
+	AM_RANGE(0x1002, 0x1002) AM_WRITE(shootout_coin_counter_w)
+	AM_RANGE(0x1003, 0x1003) AM_WRITE(sound_cpu_command_w)
+	AM_RANGE(0x1004, 0x17ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x1800, 0x19ff) AM_WRITE(MWA8_RAM) AM_BASE(&spriteram) AM_SIZE(&spriteram_size)
+	AM_RANGE(0x2000, 0x27ff) AM_WRITE(shootout_textram_w) AM_BASE(&shootout_textram)
+	AM_RANGE(0x2800, 0x2fff) AM_WRITE(shootout_videoram_w) AM_BASE(&videoram)
+	AM_RANGE(0x4000, 0xffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
-static MEMORY_READ_START( readmem_alt )
-	{ 0x0000, 0x0fff, MRA_RAM },
-	{ 0x1000, 0x1003, low_input_r },
-	{ 0x2000, 0x21ff, MRA_RAM },
-	{ 0x2800, 0x2800, YM2203_status_port_0_r },
-	{ 0x3000, 0x37ff, MRA_RAM },	/* foreground */
-	{ 0x3800, 0x3fff, MRA_RAM },	/* background */
-	{ 0x4000, 0x7fff, MRA_BANK1 },
-	{ 0x8000, 0xffff, MRA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( readmem_alt, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x0fff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x1000, 0x1000) AM_READ(input_port_0_r)
+	AM_RANGE(0x1001, 0x1001) AM_READ(input_port_1_r)
+	AM_RANGE(0x1002, 0x1002) AM_READ(input_port_2_r)
+	AM_RANGE(0x1003, 0x1003) AM_READ(input_port_3_r)
+	AM_RANGE(0x2000, 0x21ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x2800, 0x2800) AM_READ(YM2203_status_port_0_r)
+	AM_RANGE(0x3000, 0x37ff) AM_READ(MRA8_RAM)	/* foreground */
+	AM_RANGE(0x3800, 0x3fff) AM_READ(MRA8_RAM)	/* background */
+	AM_RANGE(0x4000, 0x7fff) AM_READ(MRA8_BANK1)
+	AM_RANGE(0x8000, 0xffff) AM_READ(MRA8_ROM)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( writemem_alt )
-	{ 0x0000, 0x0fff, MWA_RAM },
-	{ 0x1800, 0x1800, shootout_coin_counter_w },
-	{ 0x2000, 0x21ff, MWA_RAM, &spriteram, &spriteram_size },
-	{ 0x2800, 0x2800, YM2203_control_port_0_w },
-	{ 0x2801, 0x2801, YM2203_write_port_0_w },
-	{ 0x3000, 0x37ff, shootout_textram_w, &shootout_textram },
-	{ 0x3800, 0x3fff, shootout_videoram_w, &videoram },
-	{ 0x4000, 0xffff, MWA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( writemem_alt, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x0fff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x1800, 0x1800) AM_WRITE(shootout_coin_counter_w)
+	AM_RANGE(0x2000, 0x21ff) AM_WRITE(MWA8_RAM) AM_BASE(&spriteram) AM_SIZE(&spriteram_size)
+	AM_RANGE(0x2800, 0x2800) AM_WRITE(YM2203_control_port_0_w)
+	AM_RANGE(0x2801, 0x2801) AM_WRITE(YM2203_write_port_0_w)
+	AM_RANGE(0x3000, 0x37ff) AM_WRITE(shootout_textram_w) AM_BASE(&shootout_textram)
+	AM_RANGE(0x3800, 0x3fff) AM_WRITE(shootout_videoram_w) AM_BASE(&videoram)
+	AM_RANGE(0x4000, 0xffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
 /*******************************************************************************/
 
-static MEMORY_READ_START( sound_readmem )
-	{ 0x0000, 0x07ff, MRA_RAM },
-	{ 0x4000, 0x4000, YM2203_status_port_0_r },
-	{ 0xa000, 0xa000, soundlatch_r },
-	{ 0xc000, 0xffff, MRA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x07ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x4000, 0x4000) AM_READ(YM2203_status_port_0_r)
+	AM_RANGE(0xa000, 0xa000) AM_READ(soundlatch_r)
+	AM_RANGE(0xc000, 0xffff) AM_READ(MRA8_ROM)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( sound_writemem )
-	{ 0x0000, 0x07ff, MWA_RAM },
-	{ 0x4000, 0x4000, YM2203_control_port_0_w },
-	{ 0x4001, 0x4001, YM2203_write_port_0_w },
-	{ 0xd000, 0xd000, interrupt_enable_w },
-	{ 0xc000, 0xffff, MWA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x07ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x4000, 0x4000) AM_WRITE(YM2203_control_port_0_w)
+	AM_RANGE(0x4001, 0x4001) AM_WRITE(YM2203_write_port_0_w)
+	AM_RANGE(0xd000, 0xd000) AM_WRITE(interrupt_enable_w)
+	AM_RANGE(0xc000, 0xffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
 /*******************************************************************************/
 
 INPUT_PORTS_START( shootout )
 	PORT_START	/* DSW1 */
-	PORT_DIPNAME( 0x03, 0x00, DEF_STR( Coin_A ) )
-	PORT_DIPSETTING(	0x03, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(	0x00, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(	0x01, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(	0x02, DEF_STR( 1C_3C ) )
-	PORT_DIPNAME( 0x0c, 0x00, DEF_STR( Coin_B ) )
-	PORT_DIPSETTING(	0x0c, DEF_STR( 2C_1C ) )
-	PORT_DIPSETTING(	0x00, DEF_STR( 1C_1C ) )
-	PORT_DIPSETTING(	0x04, DEF_STR( 1C_2C ) )
-	PORT_DIPSETTING(	0x08, DEF_STR( 1C_3C ) )
-	PORT_DIPNAME( 0x10, 0x00, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(	0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(	0x10, DEF_STR( On ) )
+	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Coin_A ) )
+	PORT_DIPSETTING(	0x00, DEF_STR( 2C_1C ) )
+	PORT_DIPSETTING(	0x03, DEF_STR( 1C_1C ) )
+	PORT_DIPSETTING(	0x02, DEF_STR( 1C_2C ) )
+	PORT_DIPSETTING(	0x01, DEF_STR( 1C_3C ) )
+	PORT_DIPNAME( 0x0c, 0x0c, DEF_STR( Coin_B ) )
+	PORT_DIPSETTING(	0x00, DEF_STR( 2C_1C ) )
+	PORT_DIPSETTING(	0x0c, DEF_STR( 1C_1C ) )
+	PORT_DIPSETTING(	0x08, DEF_STR( 1C_2C ) )
+	PORT_DIPSETTING(	0x04, DEF_STR( 1C_3C ) )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Demo_Sounds ) )
 	PORT_DIPSETTING(	0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(	0x20, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Cabinet ) )
-	PORT_DIPSETTING(	0x40, DEF_STR( Upright ) )
-	PORT_DIPSETTING(	0x00, DEF_STR( Cocktail ) )
-	PORT_DIPNAME( 0x80, 0x00, "Freeze" )
-	PORT_DIPSETTING(	0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(	0x80, DEF_STR( On ) )
+	PORT_DIPNAME( 0x40, 0x00, DEF_STR( Cabinet ) )
+	PORT_DIPSETTING(	0x00, DEF_STR( Upright ) )
+	PORT_DIPSETTING(	0x40, DEF_STR( Cocktail ) )
+	PORT_DIPNAME( 0x80, 0x80, "Freeze" )
+	PORT_DIPSETTING(	0x80, DEF_STR( Off ) )
+	PORT_DIPSETTING(	0x00, DEF_STR( On ) )
 
 	PORT_START
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_JOYSTICK_RIGHT | IPF_8WAY )
-	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_JOYSTICK_LEFT  | IPF_8WAY )
-	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_JOYSTICK_UP    | IPF_8WAY )
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_JOYSTICK_DOWN  | IPF_8WAY )
-	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_BUTTON1 )
-	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_BUTTON2 )
-	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_START1 )
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_START2 )
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_8WAY )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  | IPF_8WAY )
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    | IPF_8WAY )
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  | IPF_8WAY )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 )
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_START1 )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_START2 )
 
 	PORT_START
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_JOYSTICK_RIGHT | IPF_COCKTAIL )
-	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_JOYSTICK_LEFT  | IPF_COCKTAIL )
-	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_JOYSTICK_UP    | IPF_COCKTAIL )
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_JOYSTICK_DOWN  | IPF_COCKTAIL )
-	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_BUTTON1 | IPF_COCKTAIL )
-	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_BUTTON2 | IPF_COCKTAIL )
-	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_COIN1 )
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_COIN2 )
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_8WAY | IPF_COCKTAIL )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  | IPF_8WAY | IPF_COCKTAIL )
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    | IPF_8WAY | IPF_COCKTAIL )
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  | IPF_8WAY | IPF_COCKTAIL )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 | IPF_COCKTAIL )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 | IPF_COCKTAIL )
+	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_COIN2 )
+	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_COIN1 )
 
 	PORT_START	/* DSW2 */
-	PORT_DIPNAME( 0x03, 0x00, DEF_STR( Lives ) )
-	PORT_DIPSETTING(	0x02, "1" )
-	PORT_DIPSETTING(	0x00, "3" )
-	PORT_DIPSETTING(	0x01, "5" )
-	PORT_BITX(0,		0x03, IPT_DIPSWITCH_SETTING | IPF_CHEAT, "Infinite", IP_KEY_NONE, IP_JOY_NONE )
-	PORT_DIPNAME( 0x0c, 0x00, DEF_STR( Bonus_Life ) )
-	PORT_DIPSETTING(	0x00, "20k 70k" )
-	PORT_DIPSETTING(	0x04, "30k 80k" )
-	PORT_DIPSETTING(	0x08, "40k 90k" )
-	PORT_DIPSETTING(	0x0c, "70k" )
-	PORT_DIPNAME( 0x30, 0x00, DEF_STR( Difficulty ) )
-	PORT_DIPSETTING(	0x00, "Easy" )
-	PORT_DIPSETTING(	0x10, "Medium" )
-	PORT_DIPSETTING(	0x20, "Hard" )
-	PORT_DIPSETTING(	0x30, "Hardest" )
-	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_UNKNOWN ) /* this is set when either coin is inserted */
+	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Lives ) )
+	PORT_DIPSETTING(	0x01, "1" )
+	PORT_DIPSETTING(	0x03, "3" )
+	PORT_DIPSETTING(	0x02, "5" )
+	PORT_DIPSETTING(	0x00, "Infinite" )
+	PORT_DIPNAME( 0x0c, 0x0c, DEF_STR( Bonus_Life ) )
+	PORT_DIPSETTING(	0x0c, "20K 70K" )
+	PORT_DIPSETTING(	0x08, "30K 80K" )
+	PORT_DIPSETTING(	0x04, "40K 90K" )
+	PORT_DIPSETTING(	0x00, "70K" )
+	PORT_DIPNAME( 0x30, 0x30, DEF_STR( Difficulty ) )
+	PORT_DIPSETTING(	0x30, "Easy" )
+	PORT_DIPSETTING(	0x20, "Normal" )
+	PORT_DIPSETTING(	0x10, "Hard" )
+	PORT_DIPSETTING(	0x00, "Very Hard" )
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_SPECIAL ) /* this is set when either coin is inserted */
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_VBLANK )
 INPUT_PORTS_END
 
@@ -314,12 +313,12 @@ static MACHINE_DRIVER_START( shootout )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M6502, 2000000)	/* 2 MHz? */
-	MDRV_CPU_MEMORY(readmem,writemem)
+	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
 	MDRV_CPU_VBLANK_INT(shootout_interrupt,1) /* nmi's are triggered at coin up */
 
 	MDRV_CPU_ADD(M6502, 1500000)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)
-	MDRV_CPU_MEMORY(sound_readmem,sound_writemem)
+	MDRV_CPU_PROGRAM_MAP(sound_readmem,sound_writemem)
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(DEFAULT_REAL_60HZ_VBLANK_DURATION)
@@ -344,7 +343,7 @@ static MACHINE_DRIVER_START( shootouj )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M6502, 2000000)	/* 2 MHz? */
-	MDRV_CPU_MEMORY(readmem_alt,writemem_alt)
+	MDRV_CPU_PROGRAM_MAP(readmem_alt,writemem_alt)
 	MDRV_CPU_VBLANK_INT(shootout_interrupt,1) /* nmi's are triggered at coin up */
 
 	MDRV_FRAMES_PER_SECOND(60)

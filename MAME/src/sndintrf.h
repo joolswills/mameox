@@ -170,6 +170,15 @@ struct MachineSound
 #if (HAS_SP0250)
 #include "sound/sp0250.h"
 #endif
+#if (HAS_SCSP)
+#include "sound/scsp.h"
+#endif
+#if (HAS_PSXSPU)
+#include "sound/psx.h"
+#endif
+#if (HAS_YMF271)
+#include "sound/ymf271.h"
+#endif
 
 #ifdef MESS
 #if (HAS_BEEP)
@@ -366,6 +375,15 @@ enum
 #endif
 #if (HAS_SP0250)
 	SOUND_SP0250,
+#endif
+#if (HAS_SCSP)
+	SOUND_SCSP,
+#endif
+#if (HAS_PSXSPU)
+	SOUND_PSXSPU,
+#endif
+#if (HAS_YMF271)
+	SOUND_YMF271,
 #endif
 
 #ifdef MESS

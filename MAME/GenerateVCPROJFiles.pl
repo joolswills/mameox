@@ -4,7 +4,8 @@ open( OUTFILE, ">MAME.vcproj" ) || die "Failed to create MAME.vcproj!\n";
 
 
 @ExcludedDirectories = ( "./src/windows",
-						 "./src/dbgfonts" );
+						 "./src/dbgfonts",
+						 "./src/cpu/gensync" );
 
 @ExcludedFiles = ( 
 	"./src/cpu/adsp2100/2100dasm.c",
@@ -115,14 +116,17 @@ open( OUTFILE, ">MAME.vcproj" ) || die "Failed to create MAME.vcproj!\n";
 	"./src/cpu/pic16c5x/dis16c5x.c",
 	"./src/drivers/jrcrypt.c",
 	"./src/drivers/fuuki16.c",
+	"./src/drivers/monaco.c",
 	"./src/sound/disc_dev.c",
 	"./src/sound/disc_flt.c",
 	"./src/sound/disc_inp.c",
 	"./src/sound/disc_mth.c",
 	"./src/sound/disc_out.c",
 	"./src/sound/disc_wav.c",
+	"./src/sound/scsplfo.c",
 	"./src/vidhrdw/jagblit.c",
 	"./src/vidhrdw/jagobj.c",
+	"./src/vidhrdw/voodblit.c",
 	"./src/xml2info/ascii.h",
 	"./src/xml2info/asciitab.h",
 	"./src/xml2info/expat.h",
@@ -143,7 +147,8 @@ open( OUTFILE, ">MAME.vcproj" ) || die "Failed to create MAME.vcproj!\n";
 	"./src/xml2info/xmltok_ns.c",
 	"./src/hdcomp.c",
 	"./src/romcmp.c",
-	"./src/mameblit.c" );
+	"./src/mameblit.c",
+	"./src/chdman.c" );
 
 print OUTFILE <<"EOF";
 <?xml version="1.0" encoding="Windows-1252"?>

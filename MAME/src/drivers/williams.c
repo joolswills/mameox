@@ -521,22 +521,22 @@
  *
  *************************************/
 
-static MEMORY_READ_START( defender_readmem )
-	{ 0x0000, 0x97ff, MRA_BANK1 },
-	{ 0x9800, 0xbfff, MRA_RAM },
-	{ 0xc000, 0xcfff, MRA_BANK2 },
-	{ 0xd000, 0xffff, MRA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( defender_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x97ff) AM_READ(MRA8_BANK1)
+	AM_RANGE(0x9800, 0xbfff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xc000, 0xcfff) AM_READ(MRA8_BANK2)
+	AM_RANGE(0xd000, 0xffff) AM_READ(MRA8_ROM)
+ADDRESS_MAP_END
 
 
-static MEMORY_WRITE_START( defender_writemem )
-	{ 0x0000, 0x97ff, williams_videoram_w, &videoram, &videoram_size },
-	{ 0x9800, 0xbfff, MWA_RAM },
-	{ 0xc000, 0xcfff, MWA_BANK2, &defender_bank_base },
-	{ 0xc000, 0xc00f, MWA_RAM, &paletteram },
-	{ 0xd000, 0xdfff, defender_bank_select_w },
-	{ 0xe000, 0xffff, MWA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( defender_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x97ff) AM_WRITE(williams_videoram_w) AM_BASE(&videoram) AM_SIZE(&videoram_size)
+	AM_RANGE(0x9800, 0xbfff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xc000, 0xcfff) AM_WRITE(MWA8_BANK2) AM_BASE(&defender_bank_base)
+	AM_RANGE(0xc000, 0xc00f) AM_WRITE(MWA8_RAM) AM_BASE(&paletteram)
+	AM_RANGE(0xd000, 0xdfff) AM_WRITE(defender_bank_select_w)
+	AM_RANGE(0xe000, 0xffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
 
 
@@ -546,29 +546,29 @@ MEMORY_END
  *
  *************************************/
 
-static MEMORY_READ_START( williams_readmem )
-	{ 0x0000, 0x97ff, MRA_BANK1 },
-	{ 0x9800, 0xbfff, MRA_RAM },
-	{ 0xc804, 0xc807, pia_0_r },
-	{ 0xc80c, 0xc80f, pia_1_r },
-	{ 0xcb00, 0xcb00, williams_video_counter_r },
-	{ 0xcc00, 0xcfff, MRA_RAM },
-	{ 0xd000, 0xffff, MRA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( williams_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x97ff) AM_READ(MRA8_BANK1)
+	AM_RANGE(0x9800, 0xbfff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xc804, 0xc807) AM_READ(pia_0_r)
+	AM_RANGE(0xc80c, 0xc80f) AM_READ(pia_1_r)
+	AM_RANGE(0xcb00, 0xcb00) AM_READ(williams_video_counter_r)
+	AM_RANGE(0xcc00, 0xcfff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xd000, 0xffff) AM_READ(MRA8_ROM)
+ADDRESS_MAP_END
 
 
-static MEMORY_WRITE_START( williams_writemem )
-	{ 0x0000, 0x97ff, williams_videoram_w, &williams_bank_base, &videoram_size },
-	{ 0x9800, 0xbfff, MWA_RAM },
-	{ 0xc000, 0xc00f, paletteram_BBGGGRRR_w, &paletteram },
-	{ 0xc804, 0xc807, pia_0_w },
-	{ 0xc80c, 0xc80f, pia_1_w },
-	{ 0xc900, 0xc900, williams_vram_select_w },
-	{ 0xca00, 0xca07, williams_blitter_w, &williams_blitterram },
-	{ 0xcbff, 0xcbff, watchdog_reset_w },
-	{ 0xcc00, 0xcfff, MWA_RAM },
-	{ 0xd000, 0xffff, MWA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( williams_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x97ff) AM_WRITE(williams_videoram_w) AM_BASE(&williams_bank_base) AM_SIZE(&videoram_size)
+	AM_RANGE(0x9800, 0xbfff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xc000, 0xc00f) AM_WRITE(paletteram_BBGGGRRR_w) AM_BASE(&paletteram)
+	AM_RANGE(0xc804, 0xc807) AM_WRITE(pia_0_w)
+	AM_RANGE(0xc80c, 0xc80f) AM_WRITE(pia_1_w)
+	AM_RANGE(0xc900, 0xc900) AM_WRITE(williams_vram_select_w)
+	AM_RANGE(0xca00, 0xca07) AM_WRITE(williams_blitter_w) AM_BASE(&williams_blitterram)
+	AM_RANGE(0xcbff, 0xcbff) AM_WRITE(watchdog_reset_w)
+	AM_RANGE(0xcc00, 0xcfff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xd000, 0xffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
 
 
@@ -578,36 +578,36 @@ MEMORY_END
  *
  *************************************/
 
-static MEMORY_READ_START( blaster_readmem )
-	{ 0x0000, 0x3fff, MRA_BANK1 },
-	{ 0x4000, 0x96ff, MRA_BANK2 },
-	{ 0x9700, 0xbfff, MRA_RAM },
-	{ 0xc804, 0xc807, pia_0_r },
-	{ 0xc80c, 0xc80f, pia_1_r },
-	{ 0xcb00, 0xcb00, williams_video_counter_r },
-	{ 0xcc00, 0xcfff, MRA_RAM },
-	{ 0xd000, 0xffff, MRA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( blaster_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x3fff) AM_READ(MRA8_BANK1)
+	AM_RANGE(0x4000, 0x96ff) AM_READ(MRA8_BANK2)
+	AM_RANGE(0x9700, 0xbfff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xc804, 0xc807) AM_READ(pia_0_r)
+	AM_RANGE(0xc80c, 0xc80f) AM_READ(pia_1_r)
+	AM_RANGE(0xcb00, 0xcb00) AM_READ(williams_video_counter_r)
+	AM_RANGE(0xcc00, 0xcfff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xd000, 0xffff) AM_READ(MRA8_ROM)
+ADDRESS_MAP_END
 
 
-static MEMORY_WRITE_START( blaster_writemem )
-	{ 0x0000, 0x96ff, williams_videoram_w, &williams_bank_base, &videoram_size },
-	{ 0x9700, 0xbaff, MWA_RAM },
-	{ 0xbb00, 0xbbff, blaster_palette_0_w, &blaster_color_zero_table },
-	{ 0xbc00, 0xbcff, MWA_RAM, &blaster_color_zero_flags },
-	{ 0xbd00, 0xbfff, MWA_RAM },
-	{ 0xc000, 0xc00f, paletteram_BBGGGRRR_w, &paletteram },
-	{ 0xc804, 0xc807, pia_0_w },
-	{ 0xc80c, 0xc80f, pia_1_w },
-	{ 0xc900, 0xc900, blaster_vram_select_w },
-	{ 0xc940, 0xc940, blaster_remap_select_w },
-	{ 0xc980, 0xc980, blaster_bank_select_w },
-	{ 0xc9c0, 0xc9c0, MWA_RAM, &blaster_video_bits },
-	{ 0xca00, 0xca07, williams_blitter_w, &williams_blitterram },
-	{ 0xcbff, 0xcbff, watchdog_reset_w },
-	{ 0xcc00, 0xcfff, MWA_RAM },
-	{ 0xd000, 0xffff, MWA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( blaster_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x96ff) AM_WRITE(williams_videoram_w) AM_BASE(&williams_bank_base) AM_SIZE(&videoram_size)
+	AM_RANGE(0x9700, 0xbaff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xbb00, 0xbbff) AM_WRITE(blaster_palette_0_w) AM_BASE(&blaster_color_zero_table)
+	AM_RANGE(0xbc00, 0xbcff) AM_WRITE(MWA8_RAM) AM_BASE(&blaster_color_zero_flags)
+	AM_RANGE(0xbd00, 0xbfff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xc000, 0xc00f) AM_WRITE(paletteram_BBGGGRRR_w) AM_BASE(&paletteram)
+	AM_RANGE(0xc804, 0xc807) AM_WRITE(pia_0_w)
+	AM_RANGE(0xc80c, 0xc80f) AM_WRITE(pia_1_w)
+	AM_RANGE(0xc900, 0xc900) AM_WRITE(blaster_vram_select_w)
+	AM_RANGE(0xc940, 0xc940) AM_WRITE(blaster_remap_select_w)
+	AM_RANGE(0xc980, 0xc980) AM_WRITE(blaster_bank_select_w)
+	AM_RANGE(0xc9c0, 0xc9c0) AM_WRITE(MWA8_RAM) AM_BASE(&blaster_video_bits)
+	AM_RANGE(0xca00, 0xca07) AM_WRITE(williams_blitter_w) AM_BASE(&williams_blitterram)
+	AM_RANGE(0xcbff, 0xcbff) AM_WRITE(watchdog_reset_w)
+	AM_RANGE(0xcc00, 0xcfff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xd000, 0xffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
 
 
@@ -617,39 +617,39 @@ MEMORY_END
  *
  *************************************/
 
-static MEMORY_READ_START( williams2_readmem )
-	{ 0x0000, 0x7fff, MRA_BANK1 },
-	{ 0x8000, 0x87ff, MRA_BANK2 },
-	{ 0x8800, 0x8fff, MRA_BANK3 },
-	{ 0x9000, 0xbfff, MRA_RAM },
-	{ 0xc000, 0xc7ff, MRA_RAM },
-	{ 0xc980, 0xc983, pia_1_r },
-	{ 0xc984, 0xc987, pia_0_r },
-	{ 0xcbe0, 0xcbe0, williams_video_counter_r },
-	{ 0xcc00, 0xcfff, MRA_RAM },
-	{ 0xd000, 0xffff, MRA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( williams2_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_READ(MRA8_BANK1)
+	AM_RANGE(0x8000, 0x87ff) AM_READ(MRA8_BANK2)
+	AM_RANGE(0x8800, 0x8fff) AM_READ(MRA8_BANK3)
+	AM_RANGE(0x9000, 0xbfff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xc000, 0xc7ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xc980, 0xc983) AM_READ(pia_1_r)
+	AM_RANGE(0xc984, 0xc987) AM_READ(pia_0_r)
+	AM_RANGE(0xcbe0, 0xcbe0) AM_READ(williams_video_counter_r)
+	AM_RANGE(0xcc00, 0xcfff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xd000, 0xffff) AM_READ(MRA8_ROM)
+ADDRESS_MAP_END
 
 
-static MEMORY_WRITE_START( williams2_writemem )
-	{ 0x0000, 0x8fff, williams2_videoram_w, &videoram, &videoram_size },
-	{ 0x9000, 0xbfff, MWA_RAM },
-	{ 0xc000, 0xc7ff, MWA_RAM },
-	{ 0xc800, 0xc800, williams2_bank_select_w },
-	{ 0xc880, 0xc887, williams_blitter_w, &williams_blitterram },
-	{ 0xc900, 0xc900, watchdog_reset_w },
-	{ 0xc980, 0xc983, pia_1_w },
-	{ 0xc984, 0xc987, pia_0_w },
-	{ 0xc98c, 0xc98c, williams2_7segment_w },
-	{ 0xcb00, 0xcb00, williams2_fg_select_w },
-	{ 0xcb20, 0xcb20, williams2_bg_select_w },
-	{ 0xcb40, 0xcb40, MWA_RAM, &williams2_xscroll_low },
-	{ 0xcb60, 0xcb60, MWA_RAM, &williams2_xscroll_high },
-	{ 0xcb80, 0xcb80, MWA_RAM },
-	{ 0xcba0, 0xcba0, MWA_RAM, &williams2_blit_inhibit },
-	{ 0xcc00, 0xcfff, MWA_RAM },
-	{ 0xd000, 0xffff, MWA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( williams2_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x8fff) AM_WRITE(williams2_videoram_w) AM_BASE(&videoram) AM_SIZE(&videoram_size)
+	AM_RANGE(0x9000, 0xbfff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xc000, 0xc7ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xc800, 0xc800) AM_WRITE(williams2_bank_select_w)
+	AM_RANGE(0xc880, 0xc887) AM_WRITE(williams_blitter_w) AM_BASE(&williams_blitterram)
+	AM_RANGE(0xc900, 0xc900) AM_WRITE(watchdog_reset_w)
+	AM_RANGE(0xc980, 0xc983) AM_WRITE(pia_1_w)
+	AM_RANGE(0xc984, 0xc987) AM_WRITE(pia_0_w)
+	AM_RANGE(0xc98c, 0xc98c) AM_WRITE(williams2_7segment_w)
+	AM_RANGE(0xcb00, 0xcb00) AM_WRITE(williams2_fg_select_w)
+	AM_RANGE(0xcb20, 0xcb20) AM_WRITE(williams2_bg_select_w)
+	AM_RANGE(0xcb40, 0xcb40) AM_WRITE(MWA8_RAM) AM_BASE(&williams2_xscroll_low)
+	AM_RANGE(0xcb60, 0xcb60) AM_WRITE(MWA8_RAM) AM_BASE(&williams2_xscroll_high)
+	AM_RANGE(0xcb80, 0xcb80) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xcba0, 0xcba0) AM_WRITE(MWA8_RAM) AM_BASE(&williams2_blit_inhibit)
+	AM_RANGE(0xcc00, 0xcfff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xd000, 0xffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
 
 
@@ -659,20 +659,20 @@ MEMORY_END
  *
  *************************************/
 
-static MEMORY_READ_START( sound_readmem )
-	{ 0x0000, 0x007f, MRA_RAM },
-	{ 0x0400, 0x0403, pia_2_r },
-	{ 0x8400, 0x8403, pia_2_r },	/* used by Colony 7, perhaps others? */
-	{ 0xb000, 0xffff, MRA_ROM },	/* most games start at $F000, Sinistar starts at $B000 */
-MEMORY_END
+static ADDRESS_MAP_START( sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x007f) AM_READ(MRA8_RAM)
+	AM_RANGE(0x0400, 0x0403) AM_READ(pia_2_r)
+	AM_RANGE(0x8400, 0x8403) AM_READ(pia_2_r)	/* used by Colony 7, perhaps others? */
+	AM_RANGE(0xb000, 0xffff) AM_READ(MRA8_ROM)	/* most games start at $F000, Sinistar starts at $B000 */
+ADDRESS_MAP_END
 
 
-static MEMORY_WRITE_START( sound_writemem )
-	{ 0x0000, 0x007f, MWA_RAM },
-	{ 0x0400, 0x0403, pia_2_w },
-	{ 0x8400, 0x8403, pia_2_w },	/* used by Colony 7, perhaps others? */
-	{ 0xb000, 0xffff, MWA_ROM },	/* most games start at $F000, Sinistar starts at $B000 */
-MEMORY_END
+static ADDRESS_MAP_START( sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x007f) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x0400, 0x0403) AM_WRITE(pia_2_w)
+	AM_RANGE(0x8400, 0x8403) AM_WRITE(pia_2_w)	/* used by Colony 7, perhaps others? */
+	AM_RANGE(0xb000, 0xffff) AM_WRITE(MWA8_ROM)	/* most games start at $F000, Sinistar starts at $B000 */
+ADDRESS_MAP_END
 
 
 
@@ -682,18 +682,18 @@ MEMORY_END
  *
  *************************************/
 
-static MEMORY_READ_START( williams2_sound_readmem )
-	{ 0x0000, 0x00ff, MRA_RAM },
-	{ 0x2000, 0x2003, pia_2_r },
-	{ 0xe000, 0xffff, MRA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( williams2_sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x00ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x2000, 0x2003) AM_READ(pia_2_r)
+	AM_RANGE(0xe000, 0xffff) AM_READ(MRA8_ROM)
+ADDRESS_MAP_END
 
 
-static MEMORY_WRITE_START( williams2_sound_writemem )
-	{ 0x0000, 0x00ff, MWA_RAM },
-	{ 0x2000, 0x2003, pia_2_w },
-	{ 0xe000, 0xffff, MWA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( williams2_sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x00ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x2000, 0x2003) AM_WRITE(pia_2_w)
+	AM_RANGE(0xe000, 0xffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
 
 
@@ -711,11 +711,11 @@ INPUT_PORTS_START( defender )
 	PORT_BITX(0x08, IP_ACTIVE_HIGH, IPT_BUTTON4, "Hyperspace", IP_KEY_DEFAULT, IP_JOY_DEFAULT )
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_START2 )
 	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_START1 )
-	PORT_BITX(0x40, IP_ACTIVE_HIGH, IPT_BUTTON6, "Reverse", IP_KEY_DEFAULT, IP_JOY_DEFAULT )
-	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_JOYSTICK_DOWN | IPF_8WAY )
+	PORT_BITX(0x40, IP_ACTIVE_HIGH, IPT_BUTTON5, "Reverse", IP_KEY_DEFAULT, IP_JOY_DEFAULT )
+	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_JOYSTICK_DOWN | IPF_8WAY)
 
 	PORT_START      /* IN1 */
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_JOYSTICK_UP | IPF_8WAY )
+	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_JOYSTICK_UP | IPF_8WAY)
 	PORT_BIT( 0xfe, IP_ACTIVE_HIGH, IPT_UNKNOWN )
 
 	PORT_START      /* IN2 */
@@ -1294,11 +1294,11 @@ static MACHINE_DRIVER_START( defender )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD_TAG("main", M6809, 1000000)
-	MDRV_CPU_MEMORY(defender_readmem,defender_writemem)
+	MDRV_CPU_PROGRAM_MAP(defender_readmem,defender_writemem)
 
 	MDRV_CPU_ADD_TAG("sound", M6808, 3579000/4)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)
-	MDRV_CPU_MEMORY(sound_readmem,sound_writemem)
+	MDRV_CPU_PROGRAM_MAP(sound_readmem,sound_writemem)
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(DEFAULT_60HZ_VBLANK_DURATION)
@@ -1326,7 +1326,7 @@ static MACHINE_DRIVER_START( williams )
 	MDRV_IMPORT_FROM(defender)
 
 	MDRV_CPU_MODIFY("main")
-	MDRV_CPU_MEMORY(williams_readmem,williams_writemem)
+	MDRV_CPU_PROGRAM_MAP(williams_readmem,williams_writemem)
 
 	MDRV_MACHINE_INIT(williams)
 MACHINE_DRIVER_END
@@ -1358,7 +1358,7 @@ static MACHINE_DRIVER_START( blaster )
 	MDRV_IMPORT_FROM(williams)
 
 	MDRV_CPU_MODIFY("main")
-	MDRV_CPU_MEMORY(blaster_readmem,blaster_writemem)
+	MDRV_CPU_PROGRAM_MAP(blaster_readmem,blaster_writemem)
 
 	/* video hardware */
 	MDRV_PALETTE_LENGTH(16+240)
@@ -1371,11 +1371,11 @@ static MACHINE_DRIVER_START( williams2 )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD_TAG("main", M6809, 1000000)
-	MDRV_CPU_MEMORY(williams2_readmem,williams2_writemem)
+	MDRV_CPU_PROGRAM_MAP(williams2_readmem,williams2_writemem)
 
 	MDRV_CPU_ADD_TAG("sound", M6808, 3579000/4)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)
-	MDRV_CPU_MEMORY(williams2_sound_readmem,williams2_sound_writemem)
+	MDRV_CPU_PROGRAM_MAP(williams2_sound_readmem,williams2_sound_writemem)
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(DEFAULT_60HZ_VBLANK_DURATION)
@@ -1481,18 +1481,18 @@ ROM_END
 
 ROM_START( defndjeu )
 	ROM_REGION( 0x15000, REGION_CPU1, 0 )
-	ROM_LOAD( "15", 0x0d000, 0x1000, CRC(706a24bd) )
-	ROM_LOAD( "16", 0x0e000, 0x1000, CRC(03201532) )
-	ROM_LOAD( "17", 0x0f000, 0x1000, CRC(25287eca) )
+	ROM_LOAD( "15", 0x0d000, 0x1000, CRC(706a24bd) SHA1(60cef3d4f7204eff42de2c08244863e83bc842b4) )
+	ROM_LOAD( "16", 0x0e000, 0x1000, CRC(03201532) SHA1(77e8c10ba0ecb6e7a7cb4229a5025c4b9ea4c73e) )
+	ROM_LOAD( "17", 0x0f000, 0x1000, CRC(25287eca) SHA1(ec81181a5a0ac2adf7c0dabbec638f886c13e6ec) )
 	/* bank 0 is the place for CMOS ram */
-	ROM_LOAD( "18", 0x10000, 0x1000, CRC(e99d5679) )
-	ROM_LOAD( "19", 0x11000, 0x1000, CRC(769f5984) )
-	ROM_LOAD( "20", 0x12000, 0x1000, CRC(12fa0788) )
-	ROM_LOAD( "21", 0x13000, 0x1000, CRC(bddb71a3) )
+	ROM_LOAD( "18", 0x10000, 0x1000, CRC(e99d5679) SHA1(b4344a32aed6cc64284661c03993a59718289c82) )
+	ROM_LOAD( "19", 0x11000, 0x1000, CRC(769f5984) SHA1(0ea49754b45bc214fd2b69846ede738994f07ee3) )
+	ROM_LOAD( "20", 0x12000, 0x1000, CRC(12fa0788) SHA1(7464386521c9db0153caf1ea05a353f0018651e5) )
+	ROM_LOAD( "21", 0x13000, 0x1000, CRC(bddb71a3) SHA1(ecba4c09a9d59fd7aa02efa240461df89159d2ec) )
 	ROM_RELOAD(     0x14000, 0x1000 )
 
 	ROM_REGION( 0x10000, REGION_CPU2, 0 )
-	ROM_LOAD( "s", 0xf800, 0x0800, CRC(cb79ae42) )
+	ROM_LOAD( "s", 0xf800, 0x0800, CRC(cb79ae42) SHA1(d22bef68ef62aa012f1919338a33621138c2278b) )
 ROM_END
 
 
@@ -2374,8 +2374,8 @@ static DRIVER_INIT( sinistar )
 	CONFIGURE_PIAS(williams_49way_pia_0_intf, williams_pia_1_intf, sinistar_snd_pia_intf);
 
 	/* install RAM instead of ROM in the Dxxx slot */
-	install_mem_read_handler (0, 0xd000, 0xdfff, MRA_RAM);
-	install_mem_write_handler(0, 0xd000, 0xdfff, MWA_RAM);
+	install_mem_read_handler (0, 0xd000, 0xdfff, MRA8_RAM);
+	install_mem_write_handler(0, 0xd000, 0xdfff, MWA8_RAM);
 }
 
 
@@ -2391,8 +2391,8 @@ static DRIVER_INIT( playball )
 	CONFIGURE_PIAS(williams_pia_0_intf, playball_pia_1_intf, sinistar_snd_pia_intf);
 
 	/* install RAM instead of ROM in the Dxxx slot */
-	install_mem_read_handler (0, 0xd000, 0xdfff, MRA_RAM);
-	install_mem_write_handler(0, 0xd000, 0xdfff, MWA_RAM);
+	install_mem_read_handler (0, 0xd000, 0xdfff, MRA8_RAM);
+	install_mem_write_handler(0, 0xd000, 0xdfff, MWA8_RAM);
 }
 
 
@@ -2450,8 +2450,8 @@ static DRIVER_INIT( mysticm )
 	CONFIGURE_PIAS(mysticm_pia_0_intf, williams2_pia_1_intf, williams2_snd_pia_intf);
 
 	/* install RAM instead of ROM in the Dxxx slot */
-	install_mem_read_handler (0, 0xd000, 0xdfff, MRA_RAM);
-	install_mem_write_handler(0, 0xd000, 0xdfff, MWA_RAM);
+	install_mem_read_handler (0, 0xd000, 0xdfff, MRA8_RAM);
+	install_mem_write_handler(0, 0xd000, 0xdfff, MWA8_RAM);
 }
 
 
@@ -2486,8 +2486,8 @@ static DRIVER_INIT( inferno )
 	CONFIGURE_PIAS(williams2_muxed_pia_0_intf, williams2_pia_1_intf, williams2_snd_pia_intf);
 
 	/* install RAM instead of ROM in the Dxxx slot */
-	install_mem_read_handler (0, 0xd000, 0xdfff, MRA_RAM);
-	install_mem_write_handler(0, 0xd000, 0xdfff, MWA_RAM);
+	install_mem_read_handler (0, 0xd000, 0xdfff, MRA8_RAM);
+	install_mem_write_handler(0, 0xd000, 0xdfff, MWA8_RAM);
 }
 
 

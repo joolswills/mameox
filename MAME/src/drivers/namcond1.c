@@ -32,24 +32,24 @@
 
 /*************************************************************/
 
-static MEMORY_READ16_START( readmem )
-	{ 0x000000, 0x0fffff, MRA16_ROM },
-	{ 0x400000, 0x40ffff, namcond1_shared_ram_r },  // shared ram
-	{ 0x800000, 0x80000f, ygv608_r },
-	{ 0xA00000, 0xA03FFF, MRA16_RAM },              // EEPROM
+static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x0fffff) AM_READ(MRA16_ROM)
+	AM_RANGE(0x400000, 0x40ffff) AM_READ(namcond1_shared_ram_r)  // shared ram
+	AM_RANGE(0x800000, 0x80000f) AM_READ(ygv608_r)
+	AM_RANGE(0xA00000, 0xA03FFF) AM_READ(MRA16_RAM)              // EEPROM
 #ifdef MAME_DEBUG
-	{ 0xB00000, 0xB00001, debug_trigger },
+	AM_RANGE(0xB00000, 0xB00001) AM_READ(debug_trigger)
 #endif
-	{ 0xc3ff00, 0xc3ffff, namcond1_cuskey_r },
-MEMORY_END
+	AM_RANGE(0xc3ff00, 0xc3ffff) AM_READ(namcond1_cuskey_r)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE16_START( writemem )
-	{ 0x000000, 0x0fffff, MWA16_NOP },
-	{ 0x400000, 0x40ffff, namcond1_shared_ram_w, &namcond1_shared_ram },        // shared ram?
-	{ 0x800000, 0x80000f, ygv608_w },
-	{ 0xA00000, 0xA03FFF, MWA16_RAM, &namcond1_eeprom },
-	{ 0xc3ff00, 0xc3ff0f, namcond1_cuskey_w },
-MEMORY_END
+static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x0fffff) AM_WRITE(MWA16_NOP)
+	AM_RANGE(0x400000, 0x40ffff) AM_WRITE(namcond1_shared_ram_w) AM_BASE(&namcond1_shared_ram)        // shared ram?
+	AM_RANGE(0x800000, 0x80000f) AM_WRITE(ygv608_w)
+	AM_RANGE(0xA00000, 0xA03FFF) AM_WRITE(MWA16_RAM) AM_BASE(&namcond1_eeprom)
+	AM_RANGE(0xc3ff00, 0xc3ff0f) AM_WRITE(namcond1_cuskey_w)
+ADDRESS_MAP_END
 
 /*************************************************************/
 
@@ -187,7 +187,7 @@ static MACHINE_DRIVER_START( namcond1 )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000, 12288000)
-	MDRV_CPU_MEMORY(readmem,writemem)
+	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
 	MDRV_CPU_VBLANK_INT(irq1_line_hold, 1)
 	MDRV_CPU_PERIODIC_INT(ygv608_timed_interrupt, 1000)
 
@@ -258,35 +258,35 @@ ROM_END
 
 ROM_START( ncv2 )
 	ROM_REGION( 0x100000,REGION_CPU1, 0 )		/* 16MB for Main CPU */
-	ROM_LOAD16_WORD( "ncs1mn0.14e", 0x00000, 0x80000, CRC(fb8a4123) )
-	ROM_LOAD16_WORD( "ncs1mn1.13e", 0x80000, 0x80000, CRC(7a5ef23b) )
+	ROM_LOAD16_WORD( "ncs1mn0.14e", 0x00000, 0x80000, CRC(fb8a4123) SHA1(47acdfe9b5441d0e3649aaa9780e676f760c4e42) )
+	ROM_LOAD16_WORD( "ncs1mn1.13e", 0x80000, 0x80000, CRC(7a5ef23b) SHA1(0408742424a6abad512b5baff63409fe44353e10) )
 
 
 	ROM_REGION( 0x80000,REGION_CPU2, 0 )		/* sub CPU */
-	ROM_LOAD( "ncs1sub.1d",          0x00000, 0x80000, CRC(365cadbf) )
+	ROM_LOAD( "ncs1sub.1d",          0x00000, 0x80000, CRC(365cadbf) SHA1(7263220e1630239e3e88b828c00389d02628bd7d) )
 
 	ROM_REGION( 0x400000,REGION_GFX1, ROMREGION_DISPOSE )	/* 4MB character generator */
-	ROM_LOAD( "ncs1cg0.10e",         0x000000, 0x200000, CRC(fdd24dbe) )
-	ROM_LOAD( "ncs1cg1.10e",         0x200000, 0x200000, CRC(007b19de) )
+	ROM_LOAD( "ncs1cg0.10e",         0x000000, 0x200000, CRC(fdd24dbe) SHA1(4dceaae3d853075f58a7408be879afc91d80292e) )
+	ROM_LOAD( "ncs1cg1.10e",         0x200000, 0x200000, CRC(007b19de) SHA1(d3c093543511ec1dd2f8be6db45f33820123cabc) )
 
 	ROM_REGION( 0x200000,REGION_SOUND1, 0 ) 	/* 2MB sound data */
-    ROM_LOAD( "ncs1voic.7c",     0x000000, 0x200000, CRC(ed05fd88) )
+    ROM_LOAD( "ncs1voic.7c",     0x000000, 0x200000, CRC(ed05fd88) SHA1(ad88632c89a9946708fc6b4c9247e1bae9b2944b) )
 ROM_END
 
 ROM_START( ncv2j )
 	ROM_REGION( 0x100000,REGION_CPU1, 0 )		/* 16MB for Main CPU */
-	ROM_LOAD16_WORD( "ncs1mn0j.14e", 0x00000, 0x80000, CRC(99991192) )
-	ROM_LOAD16_WORD( "ncs1mn1j.13e", 0x80000, 0x80000, CRC(af4ba4f6) )
+	ROM_LOAD16_WORD( "ncs1mn0j.14e", 0x00000, 0x80000, CRC(99991192) SHA1(e0b0e15ae23560b77119b3d3e4b2d2bb9d8b36c9) )
+	ROM_LOAD16_WORD( "ncs1mn1j.13e", 0x80000, 0x80000, CRC(af4ba4f6) SHA1(ff5adfdd462cfd3f17fbe2401dfc88ff8c71b6f8) )
 
 	ROM_REGION( 0x80000,REGION_CPU2, 0 )		/* sub CPU */
-	ROM_LOAD( "ncs1sub.1d",          0x00000, 0x80000, CRC(365cadbf) )
+	ROM_LOAD( "ncs1sub.1d",          0x00000, 0x80000, CRC(365cadbf) SHA1(7263220e1630239e3e88b828c00389d02628bd7d) )
 
 	ROM_REGION( 0x400000,REGION_GFX1, ROMREGION_DISPOSE )	/* 4MB character generator */
-	ROM_LOAD( "ncs1cg0.10e",         0x000000, 0x200000, CRC(fdd24dbe) )
-	ROM_LOAD( "ncs1cg1.10e",         0x200000, 0x200000, CRC(007b19de) )
+	ROM_LOAD( "ncs1cg0.10e",         0x000000, 0x200000, CRC(fdd24dbe) SHA1(4dceaae3d853075f58a7408be879afc91d80292e) )
+	ROM_LOAD( "ncs1cg1.10e",         0x200000, 0x200000, CRC(007b19de) SHA1(d3c093543511ec1dd2f8be6db45f33820123cabc) )
 
 	ROM_REGION( 0x200000,REGION_SOUND1, 0 ) 	/* 2MB sound data */
-    ROM_LOAD( "ncs1voic.7c",     0x000000, 0x200000, CRC(ed05fd88) )
+    ROM_LOAD( "ncs1voic.7c",     0x000000, 0x200000, CRC(ed05fd88) SHA1(ad88632c89a9946708fc6b4c9247e1bae9b2944b) )
 ROM_END
 
 #if 0

@@ -202,41 +202,41 @@ static struct AY8910interface ay8910_interface =
 
 
 
-static MEMORY_READ_START( readmem )
-	{ 0x0000, 0x7fff, MRA_ROM },
-	{ 0x8000, 0xbfff, MRA_BANK1 },
-	{ 0xe000, 0xffff, MRA_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x8000, 0xbfff) AM_READ(MRA8_BANK1)
+	AM_RANGE(0xe000, 0xffff) AM_READ(MRA8_RAM)
+ADDRESS_MAP_END
 
 
-static MEMORY_WRITE_START( writemem )
-	{ 0x0000, 0xbfff, MWA_ROM },
-	{ 0xe000, 0xe0ff, MWA_RAM, &spriteram, &spriteram_size },
-	{ 0xe100, 0xe7ff, MWA_RAM },
-	{ 0xe800, 0xefff, pb_videoram_w,&pb_videoram },
-	{ 0xf000, 0xffff, MWA_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0xbfff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0xe000, 0xe0ff) AM_WRITE(MWA8_RAM) AM_BASE(&spriteram) AM_SIZE(&spriteram_size)
+	AM_RANGE(0xe100, 0xe7ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xe800, 0xefff) AM_WRITE(pb_videoram_w) AM_BASE(&pb_videoram)
+	AM_RANGE(0xf000, 0xffff) AM_WRITE(MWA8_RAM)
+ADDRESS_MAP_END
 
 
 
-static PORT_READ_START( readport )
-	{ 0x0000, 0x01ff, paletteram_r },
-	{ 0x0401, 0x0401, AY8910_read_port_0_r },
-	{ 0x0408, 0x0408, data_408_r},
-	{ 0x0418, 0x0418, MRA_NOP },  //?
-	{ 0x041b, 0x041b, MRA_NOP },  //?
-PORT_END
+static ADDRESS_MAP_START( readport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x0000, 0x01ff) AM_READ(paletteram_r)
+	AM_RANGE(0x0401, 0x0401) AM_READ(AY8910_read_port_0_r)
+	AM_RANGE(0x0408, 0x0408) AM_READ(data_408_r)
+	AM_RANGE(0x0418, 0x0418) AM_READ(MRA8_NOP)  //?
+	AM_RANGE(0x041b, 0x041b) AM_READ(MRA8_NOP)  //?
+ADDRESS_MAP_END
 
-static PORT_WRITE_START( writeport )
-	{ 0x0000, 0x01ff, paletteram_BBGGRRII_w },
-	{	0x0200, 0x03ff, MWA_NOP},
-	{ 0x0402, 0x0402, AY8910_write_port_0_w },
-	{ 0x0403, 0x0403, AY8910_control_port_0_w },
-	{ 0x408, 0x408, select_408_w},
-	{ 0x410, 0x410, data_410_w },
-	{ 0x41a, 0x41a, data_41a_w},
-	{ 0x419, 0x419, MWA_NOP },  //? watchdog ?
-PORT_END
+static ADDRESS_MAP_START( writeport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x0000, 0x01ff) AM_WRITE(paletteram_BBGGRRII_w)
+	AM_RANGE(	0x0200, 0x03ff) AM_WRITE(MWA8_NOP)
+	AM_RANGE(0x0402, 0x0402) AM_WRITE(AY8910_write_port_0_w)
+	AM_RANGE(0x0403, 0x0403) AM_WRITE(AY8910_control_port_0_w)
+	AM_RANGE(0x408, 0x408) AM_WRITE(select_408_w)
+	AM_RANGE(0x410, 0x410) AM_WRITE(data_410_w)
+	AM_RANGE(0x41a, 0x41a) AM_WRITE(data_41a_w)
+	AM_RANGE(0x419, 0x419) AM_WRITE(MWA8_NOP)  //? watchdog ?
+ADDRESS_MAP_END
 
 INPUT_PORTS_START( pbillian )
 
@@ -380,8 +380,8 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 
 static MACHINE_DRIVER_START( pbillian )
 	MDRV_CPU_ADD(Z80,6000000)		 /* 6 MHz */
-	MDRV_CPU_PORTS(readport,writeport)
-	MDRV_CPU_MEMORY(readmem,writemem)
+	MDRV_CPU_IO_MAP(readport,writeport)
+	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
 	MDRV_CPU_FLAGS(CPU_16BIT_PORT)
 	MDRV_CPU_VBLANK_INT(nmi_line_pulse,1)
 
@@ -424,18 +424,18 @@ ROM_END
 
 ROM_START( hotsmash )
 	ROM_REGION( 0x018000, REGION_CPU1, 0 )
-	ROM_LOAD( "b18-04",  0x00000, 0x08000, CRC(981bde2c) )
+	ROM_LOAD( "b18-04",  0x00000, 0x08000, CRC(981bde2c) SHA1(ebcc901a036cde16b33d534d423500d74523b781) )
 	
 	ROM_REGION( 0x0800, REGION_CPU2, 0 )
 	ROM_LOAD( "b18-06.mcu", 0x00000, 0x0800, NO_DUMP ) 
 	
 	ROM_REGION( 0x8000, REGION_SOUND1, 0 )
-	ROM_LOAD( "b18-05",  0x0000, 0x08000, CRC(dab5e718) )
+	ROM_LOAD( "b18-05",  0x0000, 0x08000, CRC(dab5e718) SHA1(6cf6486f283f5177dfdc657b1627fbfa3f0743e8) )
 
 	ROM_REGION( 0x018000, REGION_GFX1, ROMREGION_DISPOSE )
-	ROM_LOAD( "b18-01",  0x00000, 0x08000, CRC(870a4c04) )
-	ROM_LOAD( "b18-02",  0x08000, 0x08000, CRC(4e625cac) )
-	ROM_LOAD( "b18-03",  0x14000, 0x04000, CRC(1c82717d) )
+	ROM_LOAD( "b18-01",  0x00000, 0x08000, CRC(870a4c04) SHA1(a029108bcda40755c8320d2ee297f42d816aa7c0) )
+	ROM_LOAD( "b18-02",  0x08000, 0x08000, CRC(4e625cac) SHA1(2c21b32240eaada9a5f909a2ec5b335372c8c994) )
+	ROM_LOAD( "b18-03",  0x14000, 0x04000, CRC(1c82717d) SHA1(6942c8877e24ac51ed71036e771a1655d82f3491) )
 ROM_END	
 
 static DRIVER_INIT( pbillian ){	is_pbillian=1;}

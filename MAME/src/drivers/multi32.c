@@ -492,71 +492,71 @@ static WRITE16_HANDLER( multi32_io_B_w )
 	}
 }
 
-static MEMORY_READ16_START( multi32_readmem )
-	{ 0x000000, 0x1fffff, MRA16_ROM },
-	{ 0x200000, 0x23ffff, MRA16_RAM }, // work RAM
-	{ 0x300000, 0x31ffff, sys32_videoram_r }, // Tile Ram
-	{ 0x400000, 0x41ffff, MRA16_RAM }, // sprite RAM
-	{ 0x500000, 0x50000d, MRA16_RAM },	// Unknown
-//	{ 0x500002, 0x500003, jp_v60_read_cab },
+static ADDRESS_MAP_START( multi32_readmem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x1fffff) AM_READ(MRA16_ROM)
+	AM_RANGE(0x200000, 0x23ffff) AM_READ(MRA16_RAM) // work RAM
+	AM_RANGE(0x300000, 0x31ffff) AM_READ(sys32_videoram_r) // Tile Ram
+	AM_RANGE(0x400000, 0x41ffff) AM_READ(MRA16_RAM) // sprite RAM
+	AM_RANGE(0x500000, 0x50000d) AM_READ(MRA16_RAM)	// Unknown
+//	AM_RANGE(0x500002, 0x500003) AM_READ(jp_v60_read_cab)
 
-	{ 0x600000, 0x6100ff, MRA16_RAM }, // Palette + mixer registers (Monitor A)
-	{ 0x680000, 0x69004f, MRA16_RAM }, // Palette + mixer registers (Monitor B)
+	AM_RANGE(0x600000, 0x6100ff) AM_READ(MRA16_RAM) // Palette + mixer registers (Monitor A)
+	AM_RANGE(0x680000, 0x69004f) AM_READ(MRA16_RAM) // Palette + mixer registers (Monitor B)
 
-	{ 0x700000, 0x701fff, MRA16_RAM },	// shared RAM
-	{ 0x800000, 0x80000f, MRA16_RAM },	// Unknown
-	{ 0x80007e, 0x80007f, MRA16_RAM },	// Unknown f1lap
-	{ 0x801000, 0x801003, MRA16_RAM },	// Unknown
-	{ 0xa00000, 0xa00001, MRA16_RAM }, // Unknown dbzvrvs
+	AM_RANGE(0x700000, 0x701fff) AM_READ(MRA16_RAM)	// shared RAM
+	AM_RANGE(0x800000, 0x80000f) AM_READ(MRA16_RAM)	// Unknown
+	AM_RANGE(0x80007e, 0x80007f) AM_READ(MRA16_RAM)	// Unknown f1lap
+	AM_RANGE(0x801000, 0x801003) AM_READ(MRA16_RAM)	// Unknown
+	AM_RANGE(0xa00000, 0xa00001) AM_READ(MRA16_RAM) // Unknown dbzvrvs
 
-	{ 0xc00000, 0xc0003f, multi32_io_r },
-	{ 0xc00050, 0xc0005f, multi32_io_analog_r },
-	{ 0xc00060, 0xc0007f, multi32_io_2_r },
-	{ 0xc80000, 0xc8007f, multi32_io_B_r },
+	AM_RANGE(0xc00000, 0xc0003f) AM_READ(multi32_io_r)
+	AM_RANGE(0xc00050, 0xc0005f) AM_READ(multi32_io_analog_r)
+	AM_RANGE(0xc00060, 0xc0007f) AM_READ(multi32_io_2_r)
+	AM_RANGE(0xc80000, 0xc8007f) AM_READ(multi32_io_B_r)
 
-	{ 0xd80000, 0xd80001, sys32_read_random },
-	{ 0xd80002, 0xd80003, MRA16_RAM }, // Unknown harddunk
-	{ 0xe00000, 0xe0000f, MRA16_RAM },   // Unknown
-	{ 0xe80000, 0xe80003, MRA16_RAM }, // Unknown
-	{ 0xf00000, 0xffffff, MRA16_BANK1 }, // High rom mirror
-MEMORY_END
+	AM_RANGE(0xd80000, 0xd80001) AM_READ(sys32_read_random)
+	AM_RANGE(0xd80002, 0xd80003) AM_READ(MRA16_RAM) // Unknown harddunk
+	AM_RANGE(0xe00000, 0xe0000f) AM_READ(MRA16_RAM)   // Unknown
+	AM_RANGE(0xe80000, 0xe80003) AM_READ(MRA16_RAM) // Unknown
+	AM_RANGE(0xf00000, 0xffffff) AM_READ(MRA16_BANK1) // High rom mirror
+ADDRESS_MAP_END
 
-static MEMORY_WRITE16_START( multi32_writemem )
-	{ 0x000000, 0x1fffff, MWA16_ROM },
-	{ 0x200000, 0x23ffff, MWA16_RAM, &system32_workram },
-	{ 0x300000, 0x31ffff, sys32_videoram_w },
-	{ 0x400000, 0x41ffff, sys32_spriteram_w, &sys32_spriteram16 }, // Sprites
-	{ 0x500000, 0x50000d, MWA16_RAM },	// Unknown
+static ADDRESS_MAP_START( multi32_writemem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x1fffff) AM_WRITE(MWA16_ROM)
+	AM_RANGE(0x200000, 0x23ffff) AM_WRITE(MWA16_RAM) AM_BASE(&system32_workram)
+	AM_RANGE(0x300000, 0x31ffff) AM_WRITE(sys32_videoram_w)
+	AM_RANGE(0x400000, 0x41ffff) AM_WRITE(sys32_spriteram_w) AM_BASE(&sys32_spriteram16) // Sprites
+	AM_RANGE(0x500000, 0x50000d) AM_WRITE(MWA16_RAM)	// Unknown
 
-	{ 0x600000, 0x607fff, multi32_paletteram16_xBBBBBGGGGGRRRRR_scrambled_word_w, &scrambled_paletteram16[0] },	// magic data-line-scrambled mirror of palette RAM * we need to shuffle data written then?
-	{ 0x608000, 0x60ffff, multi32_paletteram16_xBGRBBBBGGGGRRRR_word_w, &paletteram16 }, // Palettes
-	{ 0x610000, 0x6100ff, MWA16_RAM, &system32_mixerregs[0] }, // mixer chip registers
+	AM_RANGE(0x600000, 0x607fff) AM_WRITE(multi32_paletteram16_xBBBBBGGGGGRRRRR_scrambled_word_w) AM_BASE(&scrambled_paletteram16[0])	// magic data-line-scrambled mirror of palette RAM * we need to shuffle data written then?
+	AM_RANGE(0x608000, 0x60ffff) AM_WRITE(multi32_paletteram16_xBGRBBBBGGGGRRRR_word_w) AM_BASE(&paletteram16) // Palettes
+	AM_RANGE(0x610000, 0x6100ff) AM_WRITE(MWA16_RAM) AM_BASE(&system32_mixerregs[0]) // mixer chip registers
 
-	{ 0x680000, 0x687fff, multi32_paletteram16_xBBBBBGGGGGRRRRR_scrambled_word_b_w, &scrambled_paletteram16[1] },	// magic data-line-scrambled mirror of palette RAM * we need to shuffle data written then?
-	{ 0x688000, 0x68ffff, multi32_paletteram16_xBGRBBBBGGGGRRRR_word_b_w, &paletteram16_b }, // Monitor B palette
-	{ 0x690000, 0x69004f, MWA16_RAM, &system32_mixerregs[1] }, // monitor B mixer registers
+	AM_RANGE(0x680000, 0x687fff) AM_WRITE(multi32_paletteram16_xBBBBBGGGGGRRRRR_scrambled_word_b_w) AM_BASE(&scrambled_paletteram16[1])	// magic data-line-scrambled mirror of palette RAM * we need to shuffle data written then?
+	AM_RANGE(0x688000, 0x68ffff) AM_WRITE(multi32_paletteram16_xBGRBBBBGGGGRRRR_word_b_w) AM_BASE(&paletteram16_b) // Monitor B palette
+	AM_RANGE(0x690000, 0x69004f) AM_WRITE(MWA16_RAM) AM_BASE(&system32_mixerregs[1]) // monitor B mixer registers
 
-	{ 0x700000, 0x701fff, MWA16_RAM, &system32_shared_ram }, // Shared ram with the z80
-	{ 0x800000, 0x80000f, MWA16_RAM },	// Unknown
-	{ 0x80007e, 0x80007f, MWA16_RAM },	// Unknown f1lap
-	{ 0x801000, 0x801003, MWA16_RAM },	// Unknown
-	{ 0x81002a, 0x81002b, MWA16_RAM },	// Unknown dbzvrvs
-	{ 0x810100, 0x810101, MWA16_RAM },	// Unknown dbzvrvs
-	{ 0xa00000, 0xa00fff, MWA16_RAM, &sys32_protram },	// protection RAM
+	AM_RANGE(0x700000, 0x701fff) AM_WRITE(MWA16_RAM) AM_BASE(&system32_shared_ram) // Shared ram with the z80
+	AM_RANGE(0x800000, 0x80000f) AM_WRITE(MWA16_RAM)	// Unknown
+	AM_RANGE(0x80007e, 0x80007f) AM_WRITE(MWA16_RAM)	// Unknown f1lap
+	AM_RANGE(0x801000, 0x801003) AM_WRITE(MWA16_RAM)	// Unknown
+	AM_RANGE(0x81002a, 0x81002b) AM_WRITE(MWA16_RAM)	// Unknown dbzvrvs
+	AM_RANGE(0x810100, 0x810101) AM_WRITE(MWA16_RAM)	// Unknown dbzvrvs
+	AM_RANGE(0xa00000, 0xa00fff) AM_WRITE(MWA16_RAM) AM_BASE(&sys32_protram)	// protection RAM
 
-	{ 0xc00000, 0xc0003f, multi32_io_w },
-	{ 0xc00050, 0xc0005f, multi32_io_analog_w },
-	{ 0xc00060, 0xc0007f, multi32_io_2_w },
-	{ 0xc80000, 0xc8007f, multi32_io_B_w },
+	AM_RANGE(0xc00000, 0xc0003f) AM_WRITE(multi32_io_w)
+	AM_RANGE(0xc00050, 0xc0005f) AM_WRITE(multi32_io_analog_w)
+	AM_RANGE(0xc00060, 0xc0007f) AM_WRITE(multi32_io_2_w)
+	AM_RANGE(0xc80000, 0xc8007f) AM_WRITE(multi32_io_B_w)
 
-	{ 0xd00000, 0xd00005, MWA16_RAM }, // Unknown
-	{ 0xd00006, 0xd00007, irq_ack_w },
-	{ 0xd00008, 0xd0000b, MWA16_RAM }, // Unknown
-	{ 0xd80000, 0xd80003, MWA16_RAM }, // Unknown titlef / harddunk
-	{ 0xe00000, 0xe0000f, MWA16_RAM },   // Unknown
-	{ 0xe80000, 0xe80003, MWA16_RAM }, // Unknown
-	{ 0xf00000, 0xffffff, MWA16_ROM },
-MEMORY_END
+	AM_RANGE(0xd00000, 0xd00005) AM_WRITE(MWA16_RAM) // Unknown
+	AM_RANGE(0xd00006, 0xd00007) AM_WRITE(irq_ack_w)
+	AM_RANGE(0xd00008, 0xd0000b) AM_WRITE(MWA16_RAM) // Unknown
+	AM_RANGE(0xd80000, 0xd80003) AM_WRITE(MWA16_RAM) // Unknown titlef / harddunk
+	AM_RANGE(0xe00000, 0xe0000f) AM_WRITE(MWA16_RAM)   // Unknown
+	AM_RANGE(0xe80000, 0xe80003) AM_WRITE(MWA16_RAM) // Unknown
+	AM_RANGE(0xf00000, 0xffffff) AM_WRITE(MWA16_ROM)
+ADDRESS_MAP_END
 
 
 static MACHINE_INIT( system32 )
@@ -635,18 +635,18 @@ static WRITE_HANDLER( sys32_shared_snd_w )
 	RAM[offset] = data;
 }
 
-static MEMORY_READ_START( multi32_sound_readmem )
-	{ 0x0000, 0x9fff, MRA_ROM },
-	{ 0xa000, 0xbfff, system32_bank_r },
-	{ 0xc000, 0xdfff, MultiPCM_reg_0_r },
-	{ 0xe000, 0xffff, sys32_shared_snd_r },
-MEMORY_END
+static ADDRESS_MAP_START( multi32_sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x9fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0xa000, 0xbfff) AM_READ(system32_bank_r)
+	AM_RANGE(0xc000, 0xdfff) AM_READ(MultiPCM_reg_0_r)
+	AM_RANGE(0xe000, 0xffff) AM_READ(sys32_shared_snd_r)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( multi32_sound_writemem )
-	{ 0x0000, 0x9fff, MWA_ROM },
-	{ 0xc000, 0xdfff, MultiPCM_reg_0_w },
-	{ 0xe000, 0xffff, sys32_shared_snd_w },
-MEMORY_END
+static ADDRESS_MAP_START( multi32_sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x9fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0xc000, 0xdfff) AM_WRITE(MultiPCM_reg_0_w)
+	AM_RANGE(0xe000, 0xffff) AM_WRITE(sys32_shared_snd_w)
+ADDRESS_MAP_END
 
 static WRITE_HANDLER( sys32_soundbank_w )
 {
@@ -658,19 +658,19 @@ static WRITE_HANDLER( sys32_soundbank_w )
 	sys32_SoundMemBank = &RAM[Bank+0x10000];
 }
 
-static PORT_READ_START( multi32_sound_readport )
-	{ 0x80, 0x80, YM2612_status_port_0_A_r },
-PORT_END
+static ADDRESS_MAP_START( multi32_sound_readport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x80, 0x80) AM_READ(YM2612_status_port_0_A_r)
+ADDRESS_MAP_END
 
-static PORT_WRITE_START( multi32_sound_writeport )
-	{ 0x80, 0x80, YM2612_control_port_0_A_w },
-	{ 0x81, 0x81, YM2612_data_port_0_A_w },
-	{ 0x82, 0x82, YM2612_control_port_0_B_w },
-	{ 0x83, 0x83, YM2612_data_port_0_B_w },
-	{ 0xa0, 0xa0, sys32_soundbank_w },
-	{ 0xb0, 0xb0, MultiPCM_bank_0_w },
-	{ 0xc1, 0xc1, IOWP_NOP },
-PORT_END
+static ADDRESS_MAP_START( multi32_sound_writeport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x80, 0x80) AM_WRITE(YM2612_control_port_0_A_w)
+	AM_RANGE(0x81, 0x81) AM_WRITE(YM2612_data_port_0_A_w)
+	AM_RANGE(0x82, 0x82) AM_WRITE(YM2612_control_port_0_B_w)
+	AM_RANGE(0x83, 0x83) AM_WRITE(YM2612_data_port_0_B_w)
+	AM_RANGE(0xa0, 0xa0) AM_WRITE(sys32_soundbank_w)
+	AM_RANGE(0xb0, 0xb0) AM_WRITE(MultiPCM_bank_0_w)
+	AM_RANGE(0xc1, 0xc1) AM_WRITE(MWA8_NOP)
+ADDRESS_MAP_END
 
 struct YM2612interface mul32_ym3438_interface =
 {
@@ -705,12 +705,12 @@ static MACHINE_DRIVER_START( base )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(V60, 20000000/10) // Reality is 20mhz but V60/V70 timings are unknown
-	MDRV_CPU_MEMORY(multi32_readmem,multi32_writemem)
+	MDRV_CPU_PROGRAM_MAP(multi32_readmem,multi32_writemem)
 	MDRV_CPU_VBLANK_INT(system32_interrupt,2)
 
 	MDRV_CPU_ADD(Z80, Z80_CLOCK)
-	MDRV_CPU_MEMORY(multi32_sound_readmem, multi32_sound_writemem)
-	MDRV_CPU_PORTS(multi32_sound_readport, multi32_sound_writeport)
+	MDRV_CPU_PROGRAM_MAP(multi32_sound_readmem, multi32_sound_writemem)
+	MDRV_CPU_IO_MAP(multi32_sound_readport, multi32_sound_writeport)
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(100 /*DEFAULT_60HZ_VBLANK_DURATION*/)
@@ -1152,31 +1152,31 @@ ROM_END
 
 ROM_START( titlef )
 	ROM_REGION( 0x200000, REGION_CPU1, 0 ) /* v60 code */
-	ROM_LOAD32_WORD( "tf-15386.rom", 0x000000, 0x40000, CRC(7ceaf15d) )
+	ROM_LOAD32_WORD( "tf-15386.rom", 0x000000, 0x40000, CRC(7ceaf15d) SHA1(0295ac248e5814fbe7caecb346ccbcaf8abf67dc) )
 	ROM_RELOAD(                      0x080000, 0x040000 )
-	ROM_LOAD32_WORD( "tf-15387.rom", 0x000002, 0x40000, CRC(aaf3cb03) )
+	ROM_LOAD32_WORD( "tf-15387.rom", 0x000002, 0x40000, CRC(aaf3cb03) SHA1(2956ee95b038fd08933174e16f84617c043034c3) )
 	ROM_RELOAD(                      0x080002, 0x040000 )
 
 	ROM_REGION( 0x30000, REGION_CPU2, 0 ) /* sound CPU */
-	ROM_LOAD("tf-15384.rom", 0x00000, 0x20000, CRC(0f7d208d) )
+	ROM_LOAD("tf-15384.rom", 0x00000, 0x20000, CRC(0f7d208d) SHA1(5425120480f813210fae28951e8bfd5acb08ca53) )
 	ROM_RELOAD(              0x10000, 0x20000             )
 
 	ROM_REGION( 0x400000, REGION_GFX1, ROMREGION_DISPOSE ) /* tiles */
-	ROM_LOAD16_BYTE( "tf-15381.rom", 0x000000, 0x200000, CRC(162cc4d6) )
-	ROM_LOAD16_BYTE( "tf-15382.rom", 0x000001, 0x200000, CRC(fd03a130) )
+	ROM_LOAD16_BYTE( "tf-15381.rom", 0x000000, 0x200000, CRC(162cc4d6) SHA1(2369d3d76ab5ef8f033aa45530ab957f0e5ff028) )
+	ROM_LOAD16_BYTE( "tf-15382.rom", 0x000001, 0x200000, CRC(fd03a130) SHA1(040c36383ef5d8298af714958cd5b0a4c7556ae7) )
 
 	ROM_REGION( 0x1000000, REGION_GFX2, 0 ) /* sprites */
-	ROMX_LOAD( "tf-15379.rom", 0x000000, 0x200000, CRC(e5c74b11) , ROM_SKIP(6)|ROM_GROUPWORD )
-	ROMX_LOAD( "tf-15375.rom", 0x000002, 0x200000, CRC(046a9b50) , ROM_SKIP(6)|ROM_GROUPWORD )
-	ROMX_LOAD( "tf-15371.rom", 0x000004, 0x200000, CRC(999046c6) , ROM_SKIP(6)|ROM_GROUPWORD )
-	ROMX_LOAD( "tf-15373.rom", 0x000006, 0x200000, CRC(9b3294d9) , ROM_SKIP(6)|ROM_GROUPWORD )
-	ROMX_LOAD( "tf-15380.rom", 0x800000, 0x200000, CRC(6ea0e58d) , ROM_SKIP(6)|ROM_GROUPWORD )
-	ROMX_LOAD( "tf-15376.rom", 0x800002, 0x200000, CRC(de3e05c5) , ROM_SKIP(6)|ROM_GROUPWORD )
-	ROMX_LOAD( "tf-15372.rom", 0x800004, 0x200000, CRC(c187c36a) , ROM_SKIP(6)|ROM_GROUPWORD )
-	ROMX_LOAD( "tf-15374.rom", 0x800006, 0x200000, CRC(e026aab0) , ROM_SKIP(6)|ROM_GROUPWORD )
+	ROMX_LOAD( "tf-15379.rom", 0x000000, 0x200000, CRC(e5c74b11) SHA1(67e4460efe5dcd88ffc12024b255efc843e6a8b5) , ROM_SKIP(6)|ROM_GROUPWORD )
+	ROMX_LOAD( "tf-15375.rom", 0x000002, 0x200000, CRC(046a9b50) SHA1(2b4c53f2a0264835cb7197daa9b3461c212541e8) , ROM_SKIP(6)|ROM_GROUPWORD )
+	ROMX_LOAD( "tf-15371.rom", 0x000004, 0x200000, CRC(999046c6) SHA1(37ce4e8aaf537b5366eacabaf36e4477b5624121) , ROM_SKIP(6)|ROM_GROUPWORD )
+	ROMX_LOAD( "tf-15373.rom", 0x000006, 0x200000, CRC(9b3294d9) SHA1(19542f14ce09753385a44098dfd1aaf331e7af0e) , ROM_SKIP(6)|ROM_GROUPWORD )
+	ROMX_LOAD( "tf-15380.rom", 0x800000, 0x200000, CRC(6ea0e58d) SHA1(1c4b761522157b0b9d086181ba6f6994879d8fdf) , ROM_SKIP(6)|ROM_GROUPWORD )
+	ROMX_LOAD( "tf-15376.rom", 0x800002, 0x200000, CRC(de3e05c5) SHA1(cac0d04ecd37e5836d246c0809bcfc11430df591) , ROM_SKIP(6)|ROM_GROUPWORD )
+	ROMX_LOAD( "tf-15372.rom", 0x800004, 0x200000, CRC(c187c36a) SHA1(bb55c2a768a43ef19a7847a4aa113523fee26c20) , ROM_SKIP(6)|ROM_GROUPWORD )
+	ROMX_LOAD( "tf-15374.rom", 0x800006, 0x200000, CRC(e026aab0) SHA1(75dfaef6d50c3d1d7f27aa5e44fcbc0ff2173c6f) , ROM_SKIP(6)|ROM_GROUPWORD )
 
 	ROM_REGION( 0x300000, REGION_SOUND1, 0 ) /* Sega PCM sound data */
-	ROM_LOAD("tf-15385.rom", 0x000000, 0x200000, CRC(5a9b0aa0) )
+	ROM_LOAD("tf-15385.rom", 0x000000, 0x200000, CRC(5a9b0aa0) SHA1(d208aa165f9eea05e3b8c3f406ff44374e4f6887) )
 
 	ROM_REGION( 0x20000, REGION_GFX3, 0 ) /* FG tiles */
 ROM_END

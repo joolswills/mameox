@@ -960,7 +960,7 @@ static void vdp_dma_68k(void)
 	/* handle the DMA */
 	for (count = 0; count < length; count++)
 	{
-		vdp_data_w(cpu_readmem24bew_word(source));
+		vdp_data_w(program_read_word(source));
 		source += 2;
 	}
 }

@@ -14,7 +14,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "mips.h"
+#include "psx.h"
 
 #ifndef STANDALONE
 #include "memory.h"
@@ -443,7 +443,8 @@ unsigned DasmMIPS( char *buffer, UINT32 oldpc )
 					}
 					break;
 				case 0x04:
-					if( GTE_CT( op ) == 0x012 )
+					if( GTE_CT( op ) == 0x012 ||
+						GTE_CT( op ) == 0x412 )
 					{
 						sprintf( buffer, "mvmva%s %s + %s * %s (lm=%s)",
 							s_gtesf[ GTE_SF( op ) ], s_gtecv[ GTE_CV( op ) ], s_gtemx[ GTE_MX( op ) ],
@@ -469,7 +470,7 @@ unsigned DasmMIPS( char *buffer, UINT32 oldpc )
 					}
 					break;
 				case 0x0a:
-					if( GTE_MX( op ) == 0 && GTE_V( op ) == 0 && GTE_CV( op ) == 0 && GTE_LM( op ) == 1 )
+					if( GTE_CT( op ) == 0x428 )
 					{
 						sprintf( buffer, "sqr%s", s_gtesf[ GTE_SF( op ) ] );
 					}
@@ -493,13 +494,13 @@ unsigned DasmMIPS( char *buffer, UINT32 oldpc )
 					}
 					break;
 				case 0x0f:
-					if( INS_CO( op ) == 0x0f80416 )
-					{
-						sprintf( buffer, "ncdt" );
-					}
-					else if( INS_CO( op ) == 0x0f8002A )
+					if( INS_CO( op ) == 0x0f8002A )
 					{
 						sprintf( buffer, "dpct" );
+					}
+					else if( INS_CO( op ) == 0x0f80416 )
+					{
+						sprintf( buffer, "ncdt" );
 					}
 					break;
 				case 0x10:
@@ -545,19 +546,19 @@ unsigned DasmMIPS( char *buffer, UINT32 oldpc )
 					}
 					break;
 				case 0x17:
-					if( GTE_MX( op ) == 0 && GTE_V( op ) == 0 && GTE_CV( op ) == 0 && GTE_LM( op ) == 0 )
+					if( GTE_CT( op ) == 0x00c )
 					{
 						sprintf( buffer, "op%s", s_gtesf[ GTE_SF( op ) ] );
 					}
 					break;
 				case 0x19:
-					if( GTE_MX( op ) == 0 && GTE_V( op ) == 0 && GTE_CV( op ) == 0 && GTE_LM( op ) == 0 )
+					if( GTE_CT( op ) == 0x03d )
 					{
 						sprintf( buffer, "gpf%s", s_gtesf[ GTE_SF( op ) ] );
 					}
 					break;
 				case 0x1a:
-					if( GTE_MX( op ) == 0 && GTE_V( op ) == 0 && GTE_CV( op ) == 0 && GTE_LM( op ) == 0 )
+					if( GTE_CT( op ) == 0x03e )
 					{
 						sprintf( buffer, "gpl%s", s_gtesf[ GTE_SF( op ) ] );
 					}

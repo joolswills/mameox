@@ -271,42 +271,42 @@ static INTERRUPT_GEN( shougi_vblank_nmi )
 }
 
 
-static MEMORY_READ_START( readmem )
-	{ 0x0000, 0x3fff, MRA_ROM },
-	{ 0x4000, 0x43ff, MRA_RAM },		/* 2114 x 2 (0x400 x 4bit each) */
-	{ 0x4800, 0x4800, input_port_2_r },
-	{ 0x5000, 0x5000, input_port_0_r },
-	{ 0x5800, 0x5800, input_port_0_r },
-	{ 0x7000, 0x73ff, MRA_RAM },		/* 2114 x 2 (0x400 x 4bit each) */
-	{ 0x7800, 0x7bff, cpu_sharedram_r },/* 2114 x 2 (0x400 x 4bit each) */
-	{ 0x8000, 0xffff, MRA_RAM },		/* 4116 x 16 (32K) */
-MEMORY_END
+static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x3fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x4000, 0x43ff) AM_READ(MRA8_RAM)		/* 2114 x 2 (0x400 x 4bit each) */
+	AM_RANGE(0x4800, 0x4800) AM_READ(input_port_2_r)
+	AM_RANGE(0x5000, 0x5000) AM_READ(input_port_0_r)
+	AM_RANGE(0x5800, 0x5800) AM_READ(input_port_0_r)
+	AM_RANGE(0x7000, 0x73ff) AM_READ(MRA8_RAM)		/* 2114 x 2 (0x400 x 4bit each) */
+	AM_RANGE(0x7800, 0x7bff) AM_READ(cpu_sharedram_r)/* 2114 x 2 (0x400 x 4bit each) */
+	AM_RANGE(0x8000, 0xffff) AM_READ(MRA8_RAM)		/* 4116 x 16 (32K) */
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( writemem )
-	{ 0x0000, 0x3fff, MWA_ROM },
-	{ 0x4000, 0x43ff, MWA_RAM },		/* main RAM */
+static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x3fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x4000, 0x43ff) AM_WRITE(MWA8_RAM)		/* main RAM */
 	/* 4800-480f connected to the 74LS259, A3 is data line so 4800-4807 write 0, and 4808-480f write 1 */
-	{ 0x4800, 0x4800, cpu_shared_ctrl_sub_w },
-	{ 0x4808, 0x4808, cpu_shared_ctrl_main_w },
-	{ 0x4801, 0x4801, nmi_disable_and_clear_line_w },
-	{ 0x4809, 0x4809, nmi_enable_w },
-	{ 0x4802, 0x4802, MWA_NOP },
-	{ 0x480a, 0x480a, MWA_NOP },
-	{ 0x4803, 0x4803, MWA_NOP },
-	{ 0x480b, 0x480b, MWA_NOP },
-	{ 0x4804, 0x4804, MWA_NOP },//halt/run MCU
-	{ 0x480c, 0x480c, MWA_NOP },//halt/run MCU
+	AM_RANGE(0x4800, 0x4800) AM_WRITE(cpu_shared_ctrl_sub_w)
+	AM_RANGE(0x4808, 0x4808) AM_WRITE(cpu_shared_ctrl_main_w)
+	AM_RANGE(0x4801, 0x4801) AM_WRITE(nmi_disable_and_clear_line_w)
+	AM_RANGE(0x4809, 0x4809) AM_WRITE(nmi_enable_w)
+	AM_RANGE(0x4802, 0x4802) AM_WRITE(MWA8_NOP)
+	AM_RANGE(0x480a, 0x480a) AM_WRITE(MWA8_NOP)
+	AM_RANGE(0x4803, 0x4803) AM_WRITE(MWA8_NOP)
+	AM_RANGE(0x480b, 0x480b) AM_WRITE(MWA8_NOP)
+	AM_RANGE(0x4804, 0x4804) AM_WRITE(MWA8_NOP)//halt/run MCU
+	AM_RANGE(0x480c, 0x480c) AM_WRITE(MWA8_NOP)//halt/run MCU
 
-	{ 0x4807, 0x4807, MWA_NOP },//?????? connected to +5v via resistor
-	{ 0x480f, 0x480f, MWA_NOP },
+	AM_RANGE(0x4807, 0x4807) AM_WRITE(MWA8_NOP)//?????? connected to +5v via resistor
+	AM_RANGE(0x480f, 0x480f) AM_WRITE(MWA8_NOP)
 
-	{ 0x5800, 0x5800, shougi_watchdog_reset_w },		/* game won't boot if watchdog doesn't work */
-	{ 0x6000, 0x6000, AY8910_control_port_0_w },
-	{ 0x6800, 0x6800, AY8910_write_port_0_w },
-	{ 0x7000, 0x73ff, MWA_RAM },						/* sharedram main/MCU */
-	{ 0x7800, 0x7bff, cpu_sharedram_main_w, &cpu_sharedram },/* sharedram main/sub */
-	{ 0x8000, 0xffff, videoram_w, &videoram, &videoram_size },	/* 4116 x 16 (32K) */
-MEMORY_END
+	AM_RANGE(0x5800, 0x5800) AM_WRITE(shougi_watchdog_reset_w)		/* game won't boot if watchdog doesn't work */
+	AM_RANGE(0x6000, 0x6000) AM_WRITE(AY8910_control_port_0_w)
+	AM_RANGE(0x6800, 0x6800) AM_WRITE(AY8910_write_port_0_w)
+	AM_RANGE(0x7000, 0x73ff) AM_WRITE(MWA8_RAM)						/* sharedram main/MCU */
+	AM_RANGE(0x7800, 0x7bff) AM_WRITE(cpu_sharedram_main_w) AM_BASE(&cpu_sharedram)/* sharedram main/sub */
+	AM_RANGE(0x8000, 0xffff) AM_WRITE(videoram_w) AM_BASE(&videoram) AM_SIZE(&videoram_size)	/* 4116 x 16 (32K) */
+ADDRESS_MAP_END
 
 
 
@@ -321,19 +321,19 @@ static READ_HANDLER ( dummy_r )
 		return 0;
 }
 
-static PORT_READ_START( readport_sub )
-	{ 0x00,0x00, dummy_r},
-PORT_END
+static ADDRESS_MAP_START( readport_sub, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x00, 0x00) AM_READ(dummy_r)
+ADDRESS_MAP_END
 
-static MEMORY_READ_START( readmem_sub )
-	{ 0x0000, 0x5fff, MRA_ROM },
-	{ 0x6000, 0x63ff, cpu_sharedram_r },	/* sharedram main/sub */
-MEMORY_END
+static ADDRESS_MAP_START( readmem_sub, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x5fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x6000, 0x63ff) AM_READ(cpu_sharedram_r)	/* sharedram main/sub */
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( writemem_sub )
-	{ 0x0000, 0x5fff, MWA_ROM },
-	{ 0x6000, 0x63ff, cpu_sharedram_sub_w },	/* sharedram main/sub */
-MEMORY_END
+static ADDRESS_MAP_START( writemem_sub, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x5fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x6000, 0x63ff) AM_WRITE(cpu_sharedram_sub_w)	/* sharedram main/sub */
+ADDRESS_MAP_END
 
 
 
@@ -385,12 +385,12 @@ static struct AY8910interface ay8910_interface =
 static MACHINE_DRIVER_START( shougi )
 
 	MDRV_CPU_ADD(Z80,10000000/4)
-	MDRV_CPU_MEMORY(readmem,writemem)
+	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
 	MDRV_CPU_VBLANK_INT(shougi_vblank_nmi,1)
 
 	MDRV_CPU_ADD(Z80,10000000/4)
-	MDRV_CPU_MEMORY(readmem_sub,writemem_sub)
-	MDRV_CPU_PORTS(readport_sub,0)
+	MDRV_CPU_PROGRAM_MAP(readmem_sub,writemem_sub)
+	MDRV_CPU_IO_MAP(readport_sub,0)
 	/* NMIs triggered in shougi_vblank_nmi() */
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -415,40 +415,40 @@ MACHINE_DRIVER_END
 
 ROM_START( shougi )
 	ROM_REGION( 0x10000, REGION_CPU1, 0 )
-	ROM_LOAD( "1.3a",    0x0000, 0x1000, CRC(b601303f) )
-	ROM_LOAD( "3.3c",    0x1000, 0x1000, CRC(2b8c7314) )
-	ROM_LOAD( "2.3b",    0x2000, 0x1000, CRC(09cb831f) )
-	ROM_LOAD( "4.3d",    0x3000, 0x1000, CRC(ad1a642a) )
+	ROM_LOAD( "1.3a",    0x0000, 0x1000, CRC(b601303f) SHA1(ed07fb09053e15be49f4cb66e8916d1bdff48336) )
+	ROM_LOAD( "3.3c",    0x1000, 0x1000, CRC(2b8c7314) SHA1(5d21e425889f8dc118fcd2ba8cfc6fb8f94ddc5f) )
+	ROM_LOAD( "2.3b",    0x2000, 0x1000, CRC(09cb831f) SHA1(5a83a22d9245f980fe6a495433e51437d1f95644) )
+	ROM_LOAD( "4.3d",    0x3000, 0x1000, CRC(ad1a642a) SHA1(d12b10f94a568d1126384e14af4b53c5e5b1a0d0) )
 
 	ROM_REGION( 0x10000, REGION_CPU2, 0 )
-	ROM_LOAD( "5.3e",    0x0000, 0x1000, CRC(ff1f07d0) )
-	ROM_LOAD( "8.3j",    0x1000, 0x1000, CRC(6230c4c1) )
-	ROM_LOAD( "6.3f",    0x2000, 0x1000, CRC(d5a91b16) )
-	ROM_LOAD( "9.3k",    0x3000, 0x1000, CRC(dbbfa66e) )
-	ROM_LOAD( "7.3h",    0x4000, 0x1000, CRC(7ea8ec4a) )
+	ROM_LOAD( "5.3e",    0x0000, 0x1000, CRC(ff1f07d0) SHA1(ae5bab09916b6d4ad8d3568ea39501850bdc6991) )
+	ROM_LOAD( "8.3j",    0x1000, 0x1000, CRC(6230c4c1) SHA1(0b2c81bb02c270ed3bb5b42c4bd4eb25023090cb) )
+	ROM_LOAD( "6.3f",    0x2000, 0x1000, CRC(d5a91b16) SHA1(1d21295667c3eb186f9e7f867763f2f2697fd350) )
+	ROM_LOAD( "9.3k",    0x3000, 0x1000, CRC(dbbfa66e) SHA1(fcf23fcc65e8253325937acaf7aad4253be5e6df) )
+	ROM_LOAD( "7.3h",    0x4000, 0x1000, CRC(7ea8ec4a) SHA1(d3b999a683f49c911871d0ae6bb2022e73e3cfb8) )
 	/* shougi has one socket empty */
 
 	ROM_REGION( 0x0020, REGION_PROMS, 0 )
-	ROM_LOAD( "pr.2l",   0x0000, 0x0020, CRC(cd3559ff) )
+	ROM_LOAD( "pr.2l",   0x0000, 0x0020, CRC(cd3559ff) SHA1(a1291b06a8a337943660b2ef62c94c49d58a6fb5) )
 ROM_END
 
 ROM_START( shougi2 )
 	ROM_REGION( 0x10000, REGION_CPU1, 0 )
-	ROM_LOAD( "1-2.3a",    0x0000, 0x1000, CRC(16d75306) )
-	ROM_LOAD( "3-2.3c",    0x1000, 0x1000, CRC(35b6d98b) )
-	ROM_LOAD( "2-2.3b",    0x2000, 0x1000, CRC(b38affed) )
-	ROM_LOAD( "4-2.3d",    0x3000, 0x1000, CRC(1abdb6bf) )
+	ROM_LOAD( "1-2.3a",    0x0000, 0x1000, CRC(16d75306) SHA1(2d090396abd1fe2b31cb8450cc5d2fbde75e0230) )
+	ROM_LOAD( "3-2.3c",    0x1000, 0x1000, CRC(35b6d98b) SHA1(fc125acd4d504d9c883e685b9c6e5a509dc75c69) )
+	ROM_LOAD( "2-2.3b",    0x2000, 0x1000, CRC(b38affed) SHA1(44529233358923f114285533270b2a3c078b70f4) )
+	ROM_LOAD( "4-2.3d",    0x3000, 0x1000, CRC(1abdb6bf) SHA1(9c7630c0e4bcaa4296a442b0e9828b96d91da77f) )
 
 	ROM_REGION( 0x10000, REGION_CPU2, 0 )
-	ROM_LOAD( "5-2.3e",    0x0000, 0x1000, CRC(0ba89dd4) )
-	ROM_LOAD( "8-2.3j",    0x1000, 0x1000, CRC(0ae0c8c1) )
-	ROM_LOAD( "6-2.3f",    0x2000, 0x1000, CRC(d98abcae) )
-	ROM_LOAD( "9-2.3k",    0x3000, 0x1000, CRC(4e0e6c90) )
-	ROM_LOAD( "7-2.3h",    0x4000, 0x1000, CRC(5f37ebc6) )
-	ROM_LOAD( "10-2.3l",   0x5000, 0x1000, CRC(a26385fd) )
+	ROM_LOAD( "5-2.3e",    0x0000, 0x1000, CRC(0ba89dd4) SHA1(d4d3b7bccccf3b7e07e2d9d776426a22b4ff422e) )
+	ROM_LOAD( "8-2.3j",    0x1000, 0x1000, CRC(0ae0c8c1) SHA1(91f6f88d38c96c793137e7aaa763cab1b769e098) )
+	ROM_LOAD( "6-2.3f",    0x2000, 0x1000, CRC(d98abcae) SHA1(f280b627f81f2c727268b9694d833e487ff6b08d) )
+	ROM_LOAD( "9-2.3k",    0x3000, 0x1000, CRC(4e0e6c90) SHA1(b8462eec0a13d8bdf7d314eb285b5bd27d40631c) )
+	ROM_LOAD( "7-2.3h",    0x4000, 0x1000, CRC(5f37ebc6) SHA1(2e5c4c2f455979e2ad2c66c5aa9f4d92194796af) )
+	ROM_LOAD( "10-2.3l",   0x5000, 0x1000, CRC(a26385fd) SHA1(2adb21bb4f67a378014bc1edda48daca349d17e1) )
 
 	ROM_REGION( 0x0020, REGION_PROMS, 0 )
-	ROM_LOAD( "pr.2l",   0x0000, 0x0020, CRC(cd3559ff) )
+	ROM_LOAD( "pr.2l",   0x0000, 0x0020, CRC(cd3559ff) SHA1(a1291b06a8a337943660b2ef62c94c49d58a6fb5) )
 ROM_END
 
 GAMEX( 198?, shougi,  0,        shougi,  shougi,  0, ROT0, "Alpha Denshi", "Shougi", GAME_UNEMULATED_PROTECTION | GAME_NOT_WORKING )

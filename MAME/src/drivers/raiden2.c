@@ -174,55 +174,55 @@ static READ_HANDLER ( raiden2_kludge_r )
 
 /* MEMORY MAPS */
 
-static MEMORY_READ_START( raiden2_readmem )
-	{ 0x00000, 0x003ff, MRA_RAM },
+static ADDRESS_MAP_START( raiden2_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x00000, 0x003ff) AM_READ(MRA8_RAM)
 
 	/* I have my doubts these are really mapped here, protection? */
-	{ 0x00740, 0x00740, input_port_2_r }, // dip 1
-	{ 0x00741, 0x00741, input_port_3_r }, // dip 2
-	{ 0x00744, 0x00744, input_port_0_r }, // player 1
-	{ 0x00745, 0x00745, input_port_1_r }, // player 2
-	{ 0x0074b, 0x0074d, input_port_4_r }, // start buttons
-	{ 0x00400, 0x007ff, raiden2_kludge_r },
+	AM_RANGE(0x00740, 0x00740) AM_READ(input_port_2_r) // dip 1
+	AM_RANGE(0x00741, 0x00741) AM_READ(input_port_3_r) // dip 2
+	AM_RANGE(0x00744, 0x00744) AM_READ(input_port_0_r) // player 1
+	AM_RANGE(0x00745, 0x00745) AM_READ(input_port_1_r) // player 2
+	AM_RANGE(0x0074b, 0x0074d) AM_READ(input_port_4_r) // start buttons
+	AM_RANGE(0x00400, 0x007ff) AM_READ(raiden2_kludge_r)
 
-	{ 0x00800, 0x0afff, MRA_RAM },
+	AM_RANGE(0x00800, 0x0afff) AM_READ(MRA8_RAM)
 
-	{ 0x0b000, 0x0bfff, MRA_RAM }, // protection?
+	AM_RANGE(0x0b000, 0x0bfff) AM_READ(MRA8_RAM) // protection?
 
-	{ 0x0c000, 0x0cfff, MRA_RAM }, // sprites
-	{ 0x0d000, 0x0d7ff, MRA_RAM }, // background
-	{ 0x0d800, 0x0dfff, MRA_RAM }, // middle
-	{ 0x0e800, 0x0f7ff, MRA_RAM }, // front
-	{ 0x0f800, 0x0ffff, MRA_RAM }, /* Stack area */
+	AM_RANGE(0x0c000, 0x0cfff) AM_READ(MRA8_RAM) // sprites
+	AM_RANGE(0x0d000, 0x0d7ff) AM_READ(MRA8_RAM) // background
+	AM_RANGE(0x0d800, 0x0dfff) AM_READ(MRA8_RAM) // middle
+	AM_RANGE(0x0e800, 0x0f7ff) AM_READ(MRA8_RAM) // front
+	AM_RANGE(0x0f800, 0x0ffff) AM_READ(MRA8_RAM) /* Stack area */
 
-	{ 0x10000, 0x1efff, MRA_RAM },
+	AM_RANGE(0x10000, 0x1efff) AM_READ(MRA8_RAM)
 
-	{ 0x1f000, 0x1ffff, MRA_RAM }, // palette
+	AM_RANGE(0x1f000, 0x1ffff) AM_READ(MRA8_RAM) // palette
 
-	{ 0x20000, 0x3ffff, MRA_BANK1 }, // rom
-	{ 0x40000, 0xfffff, MRA_BANK2 }, // rom
-MEMORY_END
+	AM_RANGE(0x20000, 0x3ffff) AM_READ(MRA8_BANK1) // rom
+	AM_RANGE(0x40000, 0xfffff) AM_READ(MRA8_BANK2) // rom
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( raiden2_writemem )
-	{ 0x00000, 0x003ff, MWA_RAM },
-//	{ 0x00400, 0x007ff, MWA_RAM },
-	{ 0x00800, 0x0afff, MWA_RAM },
+static ADDRESS_MAP_START( raiden2_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x00000, 0x003ff) AM_WRITE(MWA8_RAM)
+//	AM_RANGE(0x00400, 0x007ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x00800, 0x0afff) AM_WRITE(MWA8_RAM)
 
-	{ 0x0b000, 0x0bfff, MWA_RAM }, // protection?
+	AM_RANGE(0x0b000, 0x0bfff) AM_WRITE(MWA8_RAM) // protection?
 
-	{ 0x0c000, 0x0cfff, MWA_RAM, &spriteram, &spriteram_size },
-	{ 0x0d000, 0x0d7ff, raiden2_background_w, &back_data },
-	{ 0x0d800, 0x0dfff, raiden2_midground_w, &mid_data },
-	{ 0x0e000, 0x0e7ff, raiden2_foreground_w, &fore_data },
-	{ 0x0e800, 0x0f7ff, raiden2_text_w, &videoram },
-	{ 0x0f800, 0x0ffff, MWA_RAM }, /* Stack area */
+	AM_RANGE(0x0c000, 0x0cfff) AM_WRITE(MWA8_RAM) AM_BASE(&spriteram) AM_SIZE(&spriteram_size)
+	AM_RANGE(0x0d000, 0x0d7ff) AM_WRITE(raiden2_background_w) AM_BASE(&back_data)
+	AM_RANGE(0x0d800, 0x0dfff) AM_WRITE(raiden2_midground_w) AM_BASE(&mid_data)
+	AM_RANGE(0x0e000, 0x0e7ff) AM_WRITE(raiden2_foreground_w) AM_BASE(&fore_data)
+	AM_RANGE(0x0e800, 0x0f7ff) AM_WRITE(raiden2_text_w) AM_BASE(&videoram)
+	AM_RANGE(0x0f800, 0x0ffff) AM_WRITE(MWA8_RAM) /* Stack area */
 
-	{ 0x10000, 0x1efff, MWA_RAM },
+	AM_RANGE(0x10000, 0x1efff) AM_WRITE(MWA8_RAM)
 
-	{ 0x1f000, 0x1ffff, paletteram_xBBBBBGGGGGRRRRR_w, &paletteram },
+	AM_RANGE(0x1f000, 0x1ffff) AM_WRITE(paletteram_xBBBBBGGGGGRRRRR_w) AM_BASE(&paletteram)
 
-	{ 0x20000, 0xfffff, MWA_ROM },
-MEMORY_END
+	AM_RANGE(0x20000, 0xfffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
 /* INPUT PORTS */
 
@@ -342,7 +342,7 @@ static MACHINE_DRIVER_START( raiden2 )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(V30,32000000/2) /* NEC V30 CPU, 32? Mhz */
-	MDRV_CPU_MEMORY(raiden2_readmem,raiden2_writemem)
+	MDRV_CPU_PROGRAM_MAP(raiden2_readmem,raiden2_writemem)
 	MDRV_CPU_VBLANK_INT(raiden2_interrupt,1)
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -363,28 +363,28 @@ MACHINE_DRIVER_END
 
 ROM_START( raiden2 )
 	ROM_REGION( 0x200000, REGION_CPU1, 0 ) /* v30 main cpu */
-	ROM_LOAD16_BYTE("prg0",   0x100000, 0x80000, CRC(09475ec4) )
-	ROM_LOAD16_BYTE("prg1",   0x100001, 0x80000, CRC(4609b5f2) )
+	ROM_LOAD16_BYTE("prg0",   0x100000, 0x80000, CRC(09475ec4) SHA1(05027f2d8f9e11fcbd485659eda68ada286dae32) )
+	ROM_LOAD16_BYTE("prg1",   0x100001, 0x80000, CRC(4609b5f2) SHA1(272d2aa75b8ea4d133daddf42c4fc9089093df2e) )
 
 	ROM_REGION( 0x20000, REGION_CPU2, 0 ) /* 64k code for sound Z80 */
-	ROM_LOAD( "snd",  0x000000, 0x10000, CRC(f51a28f9) )
+	ROM_LOAD( "snd",  0x000000, 0x10000, CRC(f51a28f9) SHA1(7ae2e2ba0c8159a544a8fd2bb0c2c694ba849302) )
 
 	ROM_REGION( 0x020000, REGION_GFX1, ROMREGION_DISPOSE ) /* chars */
-	ROM_LOAD( "px0",	0x000000,	0x020000,	CRC(c9ec9469) )
+	ROM_LOAD( "px0",	0x000000,	0x020000,	CRC(c9ec9469) SHA1(a29f480a1bee073be7a177096ef58e1887a5af24) )
 
 	ROM_REGION( 0x400000, REGION_GFX2, ROMREGION_DISPOSE ) /* background gfx */
-	ROM_LOAD( "bg1",   0x000000, 0x200000, CRC(e61ad38e) )
-	ROM_LOAD( "bg2",   0x200000, 0x200000, CRC(a694a4bb) )
+	ROM_LOAD( "bg1",   0x000000, 0x200000, CRC(e61ad38e) SHA1(63b06cd38db946ad3fc5c1482dc863ef80b58fec) )
+	ROM_LOAD( "bg2",   0x200000, 0x200000, CRC(a694a4bb) SHA1(39c2614d0effc899fe58f735604283097769df77) )
 
 	ROM_REGION( 0x800000, REGION_GFX3, ROMREGION_DISPOSE ) /* sprite gfx (encrypted) */
-	ROM_LOAD( "obj1",  0x000000, 0x200000, CRC(ff08ef0b) )
-	ROM_LOAD( "obj2",  0x200000, 0x200000, CRC(638eb771) )
-	ROM_LOAD( "obj3",  0x400000, 0x200000, CRC(897a0322) )
-	ROM_LOAD( "obj4",  0x600000, 0x200000, CRC(b676e188) )
+	ROM_LOAD( "obj1",  0x000000, 0x200000, CRC(ff08ef0b) SHA1(a1858430e8171ca8bab785457ef60e151b5e5cf1) )
+	ROM_LOAD( "obj2",  0x200000, 0x200000, CRC(638eb771) SHA1(9774cc070e71668d7d1d20795502dccd21ca557b) )
+	ROM_LOAD( "obj3",  0x400000, 0x200000, CRC(897a0322) SHA1(abb2737a2446da5b364fc2d96524b43d808f4126) )
+	ROM_LOAD( "obj4",  0x600000, 0x200000, CRC(b676e188) SHA1(19cc838f1ccf9c4203cd0e5365e5d99ff3a4ff0f) )
 
 	ROM_REGION( 0x100000, REGION_SOUND1, 0 )	/* ADPCM samples */
-	ROM_LOAD( "voi1", 0x00000, 0x80000, CRC(f340457b) )
-	ROM_LOAD( "voi2", 0x80000, 0x80000, CRC(d321ff54) )
+	ROM_LOAD( "voi1", 0x00000, 0x80000, CRC(f340457b) SHA1(8169acb24c82f68d223a31af38ee36eb6cb3adf4) )
+	ROM_LOAD( "voi2", 0x80000, 0x80000, CRC(d321ff54) SHA1(b61e602525f36eb28a1408ffb124abfbb6a08706) )
 ROM_END
 
 /* INIT */

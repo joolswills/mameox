@@ -177,7 +177,7 @@ static void SLL_C(void)
 static void JEA(void)
 {
 	PC = EA;
-	change_pc16( PCD );
+	change_pc( PCD );
 }
 
 /* 48 29: 0100 1000 0010 1001 */
@@ -189,7 +189,7 @@ static void CALB(void)
 	WM( SPD, PCL );
 
 	PC = BC;
-	change_pc16( PCD );
+	change_pc( PCD );
 }
 
 /* 48 2a: 0100 1000 0010 1010 */
@@ -8094,7 +8094,7 @@ static void INRW_wa(void)
 static void JB(void)
 {
 	PC = BC;
-	change_pc16( PCD );
+	change_pc( PCD );
 }
 
 /* 22: 0010 0010 */
@@ -8317,7 +8317,7 @@ static void CALL_w(void)
 	WM( SPD, PCL );
 
 	PC = w.w.l;
-	change_pc16( PCD );
+	change_pc( PCD );
 }
 
 /* 41: 0100 0001 */
@@ -8433,7 +8433,7 @@ static void JRE(void)
 		PC -= 256 - offs;
 	else
 		PC += offs;
-	change_pc16( PCD );
+	change_pc( PCD );
 }
 
 /* 50: 0101 0000 */
@@ -8480,7 +8480,7 @@ static void JMP_w(void)
 	RDOPARG( w.b.h );
 
 	PCD = w.d;
-	change_pc16( PCD );
+	change_pc( PCD );
 }
 
 /* 55: 0101 0101 oooo oooo xxxx xxxx */
@@ -8846,7 +8846,7 @@ static void RETI(void)
 	SP++;
 	PSW = RM( SPD );
 	SP++;
-	change_pc16( PCD );
+	change_pc( PCD );
 }
 
 /* 63: 0110 0011 oooo oooo */
@@ -8982,7 +8982,7 @@ static void SOFTI(void)
 	WM( SPD, PCL );
 
 	PC = 0x0060;
-	change_pc16( PCD );
+	change_pc( PCD );
 }
 
 /* 74: prefix */
@@ -9029,7 +9029,7 @@ static void CALF(void)
 	WM( SPD, PCL );
 
 	PCD = w.d;
-	change_pc16( PCD );
+	change_pc( PCD );
 }
 
 /* 80: 100t tttt */
@@ -9055,7 +9055,7 @@ static void CALT(void)
 	    PCL=RM(w.w.l);
 	    PCH=RM(w.w.l+1);
 
-	change_pc16( PCD );
+	change_pc( PCD );
 	    logerror ("!!!!!!!%.4x calt %.2x %.4x; game master table position not known\n",PPC, OP, PCD);
 	}
 }
@@ -9253,7 +9253,7 @@ static void RET(void)
 	SP++;
 	PCH = RM( SPD );
 	SP++;
-	change_pc16( PCD );
+	change_pc( PCD );
 }
 
 /* b9: 1011 1001 */
@@ -9264,7 +9264,7 @@ static void RETS(void)
 	PCH = RM( SPD );
 	SP++;
 	PSW|=SK;	/* skip one instruction */
-	change_pc16( PCD );
+	change_pc( PCD );
 }
 
 /* ba: 1011 1010 */
@@ -9320,7 +9320,7 @@ static void JR(void)
 {
 	INT8 offs = (INT8)(OP << 2) >> 2;
 	PC += offs;
-	change_pc16(PCD);
+	change_pc(PCD);
 }
 
 #pragma code_seg()

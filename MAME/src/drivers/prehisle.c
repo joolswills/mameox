@@ -19,14 +19,17 @@
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
-VIDEO_UPDATE( prehisle );
-WRITE16_HANDLER( prehisle_video16_w );
-WRITE16_HANDLER( prehisle_control16_w );
-READ16_HANDLER( prehisle_control16_r );
-VIDEO_START( prehisle );
+extern WRITE16_HANDLER( prehisle_bg_videoram16_w );
+extern WRITE16_HANDLER( prehisle_fg_videoram16_w );
+extern WRITE16_HANDLER( prehisle_control16_w );
+extern READ16_HANDLER( prehisle_control16_r );
 
-static data16_t *prehisle_ram16;
-extern data16_t *prehisle_video16;
+extern VIDEO_START( prehisle );
+extern VIDEO_UPDATE( prehisle );
+
+extern UINT16 *prehisle_bg_videoram16;
+
+static UINT16 *prehisle_ram16;
 
 /******************************************************************************/
 
@@ -38,26 +41,26 @@ static WRITE16_HANDLER( prehisle_sound16_w )
 
 /*******************************************************************************/
 
-static MEMORY_READ16_START( prehisle_readmem )
-	{ 0x000000, 0x03ffff, MRA16_ROM },
-	{ 0x070000, 0x073fff, MRA16_RAM },
-	{ 0x090000, 0x0907ff, MRA16_RAM },
-	{ 0x0a0000, 0x0a07ff, MRA16_RAM },
-	{ 0x0b0000, 0x0b3fff, MRA16_RAM },
-	{ 0x0d0000, 0x0d07ff, MRA16_RAM },
-	{ 0x0e0000, 0x0e00ff, prehisle_control16_r },
-MEMORY_END
+static ADDRESS_MAP_START( prehisle_readmem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x03ffff) AM_READ(MRA16_ROM)
+	AM_RANGE(0x070000, 0x073fff) AM_READ(MRA16_RAM)
+	AM_RANGE(0x090000, 0x0907ff) AM_READ(MRA16_RAM)
+	AM_RANGE(0x0a0000, 0x0a07ff) AM_READ(MRA16_RAM)
+	AM_RANGE(0x0b0000, 0x0b3fff) AM_READ(MRA16_RAM)
+	AM_RANGE(0x0d0000, 0x0d07ff) AM_READ(MRA16_RAM)
+	AM_RANGE(0x0e0000, 0x0e00ff) AM_READ(prehisle_control16_r)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE16_START( prehisle_writemem )
-	{ 0x000000, 0x03ffff, MWA16_ROM },
-	{ 0x070000, 0x073fff, MWA16_RAM, &prehisle_ram16 },
-	{ 0x090000, 0x0907ff, MWA16_RAM, &videoram16 },
-	{ 0x0a0000, 0x0a07ff, MWA16_RAM, &spriteram16 },
-	{ 0x0b0000, 0x0b3fff, prehisle_video16_w, &prehisle_video16 },
-	{ 0x0d0000, 0x0d07ff, paletteram16_RRRRGGGGBBBBxxxx_word_w, &paletteram16 },
-	{ 0x0f0070, 0x0ff071, prehisle_sound16_w },
-	{ 0x0f0000, 0x0ff0ff, prehisle_control16_w },
-MEMORY_END
+static ADDRESS_MAP_START( prehisle_writemem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x03ffff) AM_WRITE(MWA16_ROM)
+	AM_RANGE(0x070000, 0x073fff) AM_WRITE(MWA16_RAM) AM_BASE(&prehisle_ram16)
+	AM_RANGE(0x090000, 0x0907ff) AM_WRITE(prehisle_fg_videoram16_w) AM_BASE(&videoram16)
+	AM_RANGE(0x0a0000, 0x0a07ff) AM_WRITE(MWA16_RAM) AM_BASE(&spriteram16)
+	AM_RANGE(0x0b0000, 0x0b3fff) AM_WRITE(prehisle_bg_videoram16_w) AM_BASE(&prehisle_bg_videoram16)
+	AM_RANGE(0x0d0000, 0x0d07ff) AM_WRITE(paletteram16_RRRRGGGGBBBBxxxx_word_w) AM_BASE(&paletteram16)
+	AM_RANGE(0x0f0070, 0x0ff071) AM_WRITE(prehisle_sound16_w)
+	AM_RANGE(0x0f0000, 0x0ff0ff) AM_WRITE(prehisle_control16_w)
+ADDRESS_MAP_END
 
 /******************************************************************************/
 
@@ -68,35 +71,36 @@ static WRITE_HANDLER( D7759_write_port_0_w )
 	UPD7759_start_w (0,1);
 }
 
-static MEMORY_READ_START( prehisle_sound_readmem )
-	{ 0x0000, 0xefff, MRA_ROM },
-	{ 0xf000, 0xf7ff, MRA_RAM },
-	{ 0xf800, 0xf800, soundlatch_r },
-MEMORY_END
+static ADDRESS_MAP_START( prehisle_sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0xefff) AM_READ(MRA8_ROM)
+	AM_RANGE(0xf000, 0xf7ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xf800, 0xf800) AM_READ(soundlatch_r)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( prehisle_sound_writemem )
-	{ 0x0000, 0xefff, MWA_ROM },
-	{ 0xf000, 0xf7ff, MWA_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( prehisle_sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0xefff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0xf000, 0xf7ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xf800, 0xf800) AM_WRITE(MWA8_NOP)	// ???
+ADDRESS_MAP_END
 
-static PORT_READ_START( prehisle_sound_readport )
-	{ 0x00, 0x00, YM3812_status_port_0_r },
-PORT_END
+static ADDRESS_MAP_START( prehisle_sound_readport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x00, 0x00) AM_READ(YM3812_status_port_0_r)
+ADDRESS_MAP_END
 
-static PORT_WRITE_START( prehisle_sound_writeport )
-	{ 0x00, 0x00, YM3812_control_port_0_w },
-	{ 0x20, 0x20, YM3812_write_port_0_w },
-	{ 0x40, 0x40, D7759_write_port_0_w},
-	{ 0x80, 0x80, UPD7759_0_reset_w },
-PORT_END
+static ADDRESS_MAP_START( prehisle_sound_writeport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x00, 0x00) AM_WRITE(YM3812_control_port_0_w)
+	AM_RANGE(0x20, 0x20) AM_WRITE(YM3812_write_port_0_w)
+	AM_RANGE(0x40, 0x40) AM_WRITE(D7759_write_port_0_w)
+	AM_RANGE(0x80, 0x80) AM_WRITE(UPD7759_0_reset_w)
+ADDRESS_MAP_END
 
 /******************************************************************************/
 
 INPUT_PORTS_START( prehisle )
 	PORT_START	/* Player 1 controls */
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_UP | IPF_8WAY )
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN | IPF_8WAY )
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT | IPF_8WAY )
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    | IPF_8WAY )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  | IPF_8WAY )
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  | IPF_8WAY )
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_8WAY )
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 )
@@ -104,9 +108,9 @@ INPUT_PORTS_START( prehisle )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_START1 )
 
 	PORT_START	/* Player 2 controls */
-	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_UP | IPF_8WAY | IPF_PLAYER2 )
-	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN | IPF_8WAY | IPF_PLAYER2 )
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT | IPF_8WAY | IPF_PLAYER2 )
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    | IPF_8WAY | IPF_PLAYER2 )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  | IPF_8WAY | IPF_PLAYER2 )
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  | IPF_8WAY | IPF_PLAYER2 )
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_8WAY | IPF_PLAYER2 )
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 | IPF_PLAYER2 )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 | IPF_PLAYER2 )
@@ -116,12 +120,10 @@ INPUT_PORTS_START( prehisle )
 	PORT_START	/* coin */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN1 )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_COIN2 )
-	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_COIN3 )
-	PORT_BITX(0x08, IP_ACTIVE_LOW, IPT_SERVICE, DEF_STR( Service_Mode ), KEYCODE_F2, IP_JOY_NONE )
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE1 )
+	PORT_SERVICE_NO_TOGGLE( 0x08, IP_ACTIVE_LOW )
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_TILT )
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0xe0, IP_ACTIVE_LOW, IPT_UNUSED )
 
 	PORT_START	/* Dip switches */
 	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Flip_Screen ) )
@@ -137,9 +139,9 @@ INPUT_PORTS_START( prehisle )
 	PORT_DIPSETTING(	0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(	0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x30, 0x30, DEF_STR( Coinage ) )
-	PORT_DIPSETTING(	0x00, "A 4/1 B 1/4" )
-	PORT_DIPSETTING(	0x10, "A 3/1 B 1/3" )
-	PORT_DIPSETTING(	0x20, "A 2/1 B 1/2" )
+	PORT_DIPSETTING(	0x00, "A 4C/1C B 1C/4C" )
+	PORT_DIPSETTING(	0x10, "A 3C/1C B 1C/3C" )
+	PORT_DIPSETTING(	0x20, "A 2C/1C B 1C/2C" )
 	PORT_DIPSETTING(	0x30, DEF_STR( 1C_1C ) )
 	PORT_DIPNAME( 0xc0, 0xc0, DEF_STR( Lives ) )
 	PORT_DIPSETTING(	0x80, "2" )
@@ -150,18 +152,18 @@ INPUT_PORTS_START( prehisle )
 	PORT_START
 	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Difficulty ) )
 	PORT_DIPSETTING(	0x02, "Easy" )
-	PORT_DIPSETTING(	0x03, "Normal" )
-	PORT_DIPSETTING(	0x01, "Hard" )
-	PORT_DIPSETTING(	0x00, "Hardest" )
+	PORT_DIPSETTING(	0x03, "Standard" )
+	PORT_DIPSETTING(	0x01, "Middle" )
+	PORT_DIPSETTING(	0x00, "Difficult" )
 	PORT_DIPNAME( 0x0c, 0x0c, "Game Mode" )
 	PORT_DIPSETTING(	0x08, "Demo Sounds Off" )
 	PORT_DIPSETTING(	0x0c, "Demo Sounds On" )
 	PORT_DIPSETTING(	0x00, "Freeze" )
-	PORT_BITX( 0,		0x04, IPT_DIPSWITCH_SETTING | IPF_CHEAT, "Infinite Lives", IP_KEY_NONE, IP_JOY_NONE )
+	PORT_DIPSETTING(	0x04, "Infinite Lives" )
 	PORT_DIPNAME( 0x30, 0x30, DEF_STR( Bonus_Life ) )
-	PORT_DIPSETTING(	0x30, "100000 200000" )
-	PORT_DIPSETTING(	0x20, "150000 300000" )
-	PORT_DIPSETTING(	0x10, "300000 500000" )
+	PORT_DIPSETTING(	0x30, "100K 200K" )
+	PORT_DIPSETTING(	0x20, "150K 300K" )
+	PORT_DIPSETTING(	0x10, "300K 500K" )
 	PORT_DIPSETTING(	0x00, "None" )
 	PORT_DIPNAME( 0x40, 0x40, "Allow Continue" )
 	PORT_DIPSETTING(	0x00, DEF_STR( No ) )
@@ -247,13 +249,13 @@ static MACHINE_DRIVER_START( prehisle )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000, 12000000)
-	MDRV_CPU_MEMORY(prehisle_readmem,prehisle_writemem)
+	MDRV_CPU_PROGRAM_MAP(prehisle_readmem,prehisle_writemem)
 	MDRV_CPU_VBLANK_INT(irq4_line_hold,1)
 
 	MDRV_CPU_ADD(Z80, 4000000)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)
-	MDRV_CPU_MEMORY(prehisle_sound_readmem,prehisle_sound_writemem)
-	MDRV_CPU_PORTS(prehisle_sound_readport,prehisle_sound_writeport)
+	MDRV_CPU_PROGRAM_MAP(prehisle_sound_readmem,prehisle_sound_writemem)
+	MDRV_CPU_IO_MAP(prehisle_sound_readport,prehisle_sound_writeport)
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(DEFAULT_REAL_60HZ_VBLANK_DURATION)
@@ -414,9 +416,9 @@ static DRIVER_INIT( gensitou )
 
 /******************************************************************************/
 
-GAMEX( 1989, prehisle, 0,		 prehisle, prehisle, prehisle, ROT0, "SNK", "Prehistoric Isle in 1930 (World)", GAME_NO_COCKTAIL )
-GAMEX( 1989, prehislu, prehisle, prehisle, prehisle, prehislu, ROT0, "SNK of America", "Prehistoric Isle in 1930 (US)", GAME_NO_COCKTAIL )
-GAMEX( 1989, gensitou, prehisle, prehisle, prehisle, gensitou, ROT0, "SNK", "Genshi-Tou 1930's", GAME_NO_COCKTAIL )
+GAME( 1989, prehisle, 0,		prehisle, prehisle, prehisle, ROT0, "SNK", "Prehistoric Isle in 1930 (World)" )
+GAME( 1989, prehislu, prehisle, prehisle, prehisle, prehislu, ROT0, "SNK of America", "Prehistoric Isle in 1930 (US)" )
+GAME( 1989, gensitou, prehisle, prehisle, prehisle, gensitou, ROT0, "SNK", "Genshi-Tou 1930's" )
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

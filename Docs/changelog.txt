@@ -1,3 +1,138 @@
+Version 0.79.1b
+
+   -------------------------------------------------------------
+  - \MAMEoX\Includes: 
+    - MAMEoX.h
+      - Upped version number
+
+  - \MAME\src\drivers\monaco.c
+    - Disabled compilation of the monaco driver until a proper
+      merge of PatchMAME is completed.
+
+   -------------------------------------------------------------
+
+ --- Integrated MAME version 0.79, changes follow -------------------
+ Changes in the \MAME\src directory
+
+ Additions:
+
+   cpu\
+     mips\
+       psx.c
+       psx.h
+
+   drivers\
+     ashnojoe.c
+     crospang.c
+     deco_mlc.c
+     funybubl.c
+     goal92.c
+     jchan.c
+     konamigq.c
+     malzak.c
+     namcos10.c
+     namcos12.c
+     quizpani.c
+     rabbit.c
+     runaway.c
+     seattle.c
+     sspeedr.c
+     stvhacks.c
+     supertnk.c
+     tceptor.c
+     vmetal.c
+
+   machine\
+     am53cf96.c
+     am53cf96.h
+     namcoio.c
+     namcoio.h
+     scudsp.c
+     scudsp.h
+     stvcd.c
+     stvcd.h
+
+   sndhrdw\
+     cage.c
+     cage.h
+
+   sound\
+     psx.c
+     psx.h
+     scsp.c
+     scsp.h
+     scsplfo.c
+     ymf271.c
+     ymf271.h
+
+   vidhrdw\
+     ashnojoe.c
+     compgolf.c
+     crospang.c
+     deco_mlc.c
+     funybubl.c
+     goal92.c
+     kopunch.c
+     malzak.c
+     quizpani.c
+     runaway.c
+     sspeedr.c
+     tceptor.c
+     voodblit.c
+     voodoo.c
+     voodoo.h
+
+   \
+     chd.c
+     chd.h
+     chdman.c
+
+ Removals:
+
+   cpu\
+     mips\
+       mips.c
+       mips.h
+     z80\
+       z80daa.h
+
+   drivers\
+     avengrgs.c
+     congo.c
+     geebee.c
+     grobda.c
+     phozon.c
+     superpac.c
+
+   includes\
+     dominos.h
+     tunhunt.h
+     videopin.h
+
+   machine\
+     dominoes.c
+     geebee.c
+     grobda.c
+     mappy.c
+     phozon.c
+     superpac.c
+     toypop.c
+     videopin.c
+
+   vidhrdw\
+     avengrgs.c
+     gameplan.c
+     geebee.c
+     grobda.c
+     phozon.c
+     superpac.c
+     taito_x.c
+
+   \
+     hdcomp.c
+
+
+*********************************************************************
 Version 0.76.1b
 
    -------------------------------------------------------------

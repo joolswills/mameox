@@ -13,8 +13,8 @@
 	driver by Aaron Giles
 
 	Games supported:
-		* Cruis'n USA (1994)
-		* Cruis'n World (1996)
+		* Cruis'n USA (1994) [3 sets]
+		* Cruis'n World (1996) [3 sets]
 		* War Gods (1996)
 		* Off Road Challenge (1997)
 
@@ -22,8 +22,6 @@
 		* textures for automatic/manual selection get overwritten in Cruis'n World
 		* rendering needs to be looked at a little more closely to fix some holes
 		* in Cruis'n World attract mode, right side of sky looks like it has wrapped
-		* War Gods sound handling is seriously wonky
-		* War Gods won't go into service mode unless you reset mid-game first
 		* Off Road Challenge has polygon sorting issues, among other problems
 
 **************************************************************************/
@@ -54,6 +52,7 @@ static double timer_rate;
 
 static data32_t *tms32031_control;
 
+static data32_t *midvplus_misc;
 
 
 
@@ -68,7 +67,6 @@ static MACHINE_INIT( midvunit )
 	dcs_reset_w(1);
 	dcs_reset_w(0);
 
-	cpu_setbank(1, memory_region(REGION_USER1));
 	memcpy(ram_base, memory_region(REGION_USER1), 0x20000*4);
 
 	timer[0] = timer_alloc(NULL);
@@ -81,7 +79,6 @@ static MACHINE_INIT( midvplus )
 	dcs_reset_w(1);
 	dcs_reset_w(0);
 
-//	cpu_setbank(1, ram_base);
 	memcpy(ram_base, memory_region(REGION_USER1), 0x20000*4);
 
 	timer[0] = timer_alloc(NULL);
@@ -406,8 +403,6 @@ static WRITE32_HANDLER( offroadc_serial_data_w )
  *
  *************************************/
 
-static data32_t *midvplus_misc;
-
 static READ32_HANDLER( midvplus_misc_r )
 {
 	data32_t result = midvplus_misc[offset];
@@ -444,10 +439,11 @@ static WRITE32_HANDLER( midvplus_misc_w )
 	{
 		case 0:
 			/* bit 0x10 resets watchdog */
-			if ((olddata ^ midvplus_misc[offset]) == 0x0010)
+			if ((olddata ^ midvplus_misc[offset]) & 0x0010)
+			{
+				watchdog_reset_w(0, 0);
 				logit = 0;
-//			if ((olddata ^ midvplus_misc[offset]) & 0x0010)
-//				watchdog_reset_w(0, 0);
+			}
 			break;
 
 		case 3:
@@ -486,97 +482,61 @@ static void midvplus_xf1_w(UINT8 val)
  *
  *************************************/
 
-#define ADDR_RANGE(s,e) ((s)*4), ((e)*4+3)
-
-static MEMORY_READ32_START( vunit_readmem )
-	{ ADDR_RANGE(0x000000, 0x01ffff), MRA32_RAM },
-	{ ADDR_RANGE(0x400000, 0x41ffff), MRA32_RAM },
-	{ ADDR_RANGE(0x808000, 0x80807f), tms32031_control_r },
-	{ ADDR_RANGE(0x809800, 0x809fff), MRA32_RAM },
-	{ ADDR_RANGE(0x900000, 0x97ffff), midvunit_videoram_r },
-	{ ADDR_RANGE(0x980000, 0x980000), midvunit_dma_queue_entries_r },
-	{ ADDR_RANGE(0x980020, 0x980020), midvunit_scanline_r },
-	{ ADDR_RANGE(0x980040, 0x980040), midvunit_page_control_r },
-	{ ADDR_RANGE(0x980080, 0x980080), MRA32_NOP },
-	{ ADDR_RANGE(0x980082, 0x980083), midvunit_dma_trigger_r },
-	{ ADDR_RANGE(0x990000, 0x990000), MRA32_NOP },	// link PAL (low 4 bits must == 4)
-	{ ADDR_RANGE(0x991030, 0x991030), port1_r },
-//	{ ADDR_RANGE(0x991050, 0x991050), MRA32_RAM },	// seems to be another port
-	{ ADDR_RANGE(0x991060, 0x991060), port0_r },
-	{ ADDR_RANGE(0x992000, 0x992000), port2_r },
-	{ ADDR_RANGE(0x993000, 0x993000), midvunit_adc_r },
-	{ ADDR_RANGE(0x997000, 0x997000), MRA32_NOP },	// communications
-	{ ADDR_RANGE(0x9c0000, 0x9c1fff), midvunit_cmos_r },
-	{ ADDR_RANGE(0x9e0000, 0x9e7fff), MRA32_RAM },
-	{ ADDR_RANGE(0xa00000, 0xbfffff), midvunit_textureram_r },
-	{ ADDR_RANGE(0xc00000, 0xffffff), MRA32_BANK1 },
-MEMORY_END
-
-
-static MEMORY_WRITE32_START( vunit_writemem )
-	{ ADDR_RANGE(0x000000, 0x01ffff), MWA32_RAM, &ram_base },
-	{ ADDR_RANGE(0x400000, 0x41ffff), MWA32_RAM },
-	{ ADDR_RANGE(0x600000, 0x600000), midvunit_dma_queue_w },
-	{ ADDR_RANGE(0x808000, 0x80807f), tms32031_control_w, &tms32031_control },
-	{ ADDR_RANGE(0x809800, 0x809fff), MWA32_RAM },
-	{ ADDR_RANGE(0x900000, 0x97ffff), midvunit_videoram_w, (data32_t **)&midvunit_videoram },
-	{ ADDR_RANGE(0x980020, 0x98002b), midvunit_video_control_w },
-	{ ADDR_RANGE(0x980040, 0x980040), midvunit_page_control_w },
-	{ ADDR_RANGE(0x980080, 0x980080), MWA32_NOP },
-	{ ADDR_RANGE(0x993000, 0x993000), midvunit_adc_w },
-	{ ADDR_RANGE(0x994000, 0x994000), midvunit_control_w },
-	{ ADDR_RANGE(0x995000, 0x995000), MWA32_NOP },	// force feedback?
-	{ ADDR_RANGE(0x995020, 0x995020), midvunit_cmos_protect_w },
-	{ ADDR_RANGE(0x997000, 0x997000), MWA32_NOP },	// link communications
-	{ ADDR_RANGE(0x9a0000, 0x9a0000), midvunit_sound_w },
-	{ ADDR_RANGE(0x9c0000, 0x9c1fff), midvunit_cmos_w, (data32_t **)&generic_nvram, &generic_nvram_size },
-	{ ADDR_RANGE(0x9e0000, 0x9e7fff), midvunit_paletteram_w, &paletteram32 },
-	{ ADDR_RANGE(0xa00000, 0xbfffff), midvunit_textureram_w, &midvunit_textureram },
-	{ ADDR_RANGE(0xc00000, 0xffffff), MWA32_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( midvunit_map, ADDRESS_SPACE_PROGRAM, 32 )
+	AM_RANGE(0x000000, 0x01ffff) AM_RAM AM_BASE(&ram_base)
+	AM_RANGE(0x400000, 0x41ffff) AM_RAM
+	AM_RANGE(0x600000, 0x600000) AM_WRITE(midvunit_dma_queue_w)
+	AM_RANGE(0x808000, 0x80807f) AM_READWRITE(tms32031_control_r, tms32031_control_w) AM_BASE(&tms32031_control)
+	AM_RANGE(0x809800, 0x809fff) AM_RAM
+	AM_RANGE(0x900000, 0x97ffff) AM_READWRITE(midvunit_videoram_r, midvunit_videoram_w) AM_BASE((data32_t **)&midvunit_videoram)
+	AM_RANGE(0x980000, 0x980000) AM_READ(midvunit_dma_queue_entries_r)
+	AM_RANGE(0x980020, 0x980020) AM_READ(midvunit_scanline_r)
+	AM_RANGE(0x980020, 0x98002b) AM_WRITE(midvunit_video_control_w)
+	AM_RANGE(0x980040, 0x980040) AM_READWRITE(midvunit_page_control_r, midvunit_page_control_w)
+	AM_RANGE(0x980080, 0x980080) AM_NOP
+	AM_RANGE(0x980082, 0x980083) AM_READ(midvunit_dma_trigger_r)
+	AM_RANGE(0x990000, 0x990000) AM_READ(MRA32_NOP)	// link PAL (low 4 bits must == 4)
+	AM_RANGE(0x991030, 0x991030) AM_READ(port1_r)
+//	AM_RANGE(0x991050, 0x991050) AM_READ(MRA32_RAM)	// seems to be another port
+	AM_RANGE(0x991060, 0x991060) AM_READ(port0_r)
+	AM_RANGE(0x992000, 0x992000) AM_READ(port2_r)
+	AM_RANGE(0x993000, 0x993000) AM_READWRITE(midvunit_adc_r, midvunit_adc_w)
+	AM_RANGE(0x994000, 0x994000) AM_WRITE(midvunit_control_w)
+	AM_RANGE(0x995000, 0x995000) AM_WRITE(MWA32_NOP)	// force feedback?
+	AM_RANGE(0x995020, 0x995020) AM_WRITE(midvunit_cmos_protect_w)
+	AM_RANGE(0x997000, 0x997000) AM_NOP	// communications
+	AM_RANGE(0x9a0000, 0x9a0000) AM_WRITE(midvunit_sound_w)
+	AM_RANGE(0x9c0000, 0x9c1fff) AM_READWRITE(midvunit_cmos_r, midvunit_cmos_w) AM_BASE((data32_t **)&generic_nvram) AM_SIZE(&generic_nvram_size)
+	AM_RANGE(0x9e0000, 0x9e7fff) AM_READWRITE(MRA32_RAM, midvunit_paletteram_w) AM_BASE(&paletteram32)
+	AM_RANGE(0xa00000, 0xbfffff) AM_READWRITE(midvunit_textureram_r, midvunit_textureram_w) AM_BASE(&midvunit_textureram)
+	AM_RANGE(0xc00000, 0xffffff) AM_ROM AM_REGION(REGION_USER1, 0)
+ADDRESS_MAP_END
 
 
 static struct tms32031_config midvplus_config = { 0, NULL, midvplus_xf1_w };
 
-static MEMORY_READ32_START( midvplus_readmem )
-	{ ADDR_RANGE(0x000000, 0x01ffff), MRA32_RAM },
-	{ ADDR_RANGE(0x400000, 0x41ffff), MRA32_RAM },
-	{ ADDR_RANGE(0x808000, 0x80807f), tms32031_control_r },
-	{ ADDR_RANGE(0x809800, 0x809fff), MRA32_RAM },
-	{ ADDR_RANGE(0x900000, 0x97ffff), midvunit_videoram_r },
-	{ ADDR_RANGE(0x980000, 0x980000), midvunit_dma_queue_entries_r },
-	{ ADDR_RANGE(0x980020, 0x980020), midvunit_scanline_r },
-	{ ADDR_RANGE(0x980040, 0x980040), midvunit_page_control_r },
-	{ ADDR_RANGE(0x980080, 0x980080), MRA32_NOP },
-	{ ADDR_RANGE(0x980082, 0x980083), midvunit_dma_trigger_r },
-	{ ADDR_RANGE(0x990000, 0x99000f), midway_io_asic_r },
-	{ ADDR_RANGE(0x9a0000, 0x9a0007), midway_ide_asic_r },
-	{ ADDR_RANGE(0x9c0000, 0x9c7fff), MRA32_RAM },
-	{ ADDR_RANGE(0x9d0000, 0x9d000f), midvplus_misc_r },
-	{ ADDR_RANGE(0xa00000, 0xbfffff), midvunit_textureram_r },
-	{ ADDR_RANGE(0xc00000, 0xcfffff), MRA32_RAM },
-MEMORY_END
-
-
-static MEMORY_WRITE32_START( midvplus_writemem )
-	{ ADDR_RANGE(0x000000, 0x01ffff), MWA32_RAM, &ram_base },
-	{ ADDR_RANGE(0x400000, 0x41ffff), MWA32_RAM, &fastram_base },
-	{ ADDR_RANGE(0x600000, 0x600000), midvunit_dma_queue_w },
-	{ ADDR_RANGE(0x808000, 0x80807f), tms32031_control_w, &tms32031_control },
-	{ ADDR_RANGE(0x809800, 0x809fff), MWA32_RAM },
-	{ ADDR_RANGE(0x900000, 0x97ffff), midvunit_videoram_w, (data32_t **)&midvunit_videoram },
-	{ ADDR_RANGE(0x980020, 0x98002b), midvunit_video_control_w },
-	{ ADDR_RANGE(0x980040, 0x980040), midvunit_page_control_w },
-	{ ADDR_RANGE(0x980080, 0x980080), MWA32_NOP },
-	{ ADDR_RANGE(0x990000, 0x99000f), midway_io_asic_w },
-	{ ADDR_RANGE(0x994000, 0x994000), midvunit_control_w },
-	{ ADDR_RANGE(0x995020, 0x995020), midvunit_cmos_protect_w },
-	{ ADDR_RANGE(0x9a0000, 0x9a0007), midway_ide_asic_w },
-	{ ADDR_RANGE(0x9c0000, 0x9c7fff), midvunit_paletteram_w, &paletteram32 },
-	{ ADDR_RANGE(0x9d0000, 0x9d000f), midvplus_misc_w, &midvplus_misc },
-	{ ADDR_RANGE(0xa00000, 0xbfffff), midvunit_textureram_w, &midvunit_textureram },
-	{ ADDR_RANGE(0xc00000, 0xcfffff), MWA32_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( midvplus_map, ADDRESS_SPACE_PROGRAM, 32 )
+	AM_RANGE(0x000000, 0x01ffff) AM_RAM AM_BASE(&ram_base)
+	AM_RANGE(0x400000, 0x41ffff) AM_RAM AM_BASE(&fastram_base)
+	AM_RANGE(0x600000, 0x600000) AM_WRITE(midvunit_dma_queue_w)
+	AM_RANGE(0x808000, 0x80807f) AM_READWRITE(tms32031_control_r, tms32031_control_w) AM_BASE(&tms32031_control)
+	AM_RANGE(0x809800, 0x809fff) AM_RAM
+	AM_RANGE(0x900000, 0x97ffff) AM_READWRITE(midvunit_videoram_r, midvunit_videoram_w) AM_BASE((data32_t **)&midvunit_videoram)
+	AM_RANGE(0x980000, 0x980000) AM_READ(midvunit_dma_queue_entries_r)
+	AM_RANGE(0x980020, 0x980020) AM_READ(midvunit_scanline_r)
+	AM_RANGE(0x980020, 0x98002b) AM_WRITE(midvunit_video_control_w)
+	AM_RANGE(0x980040, 0x980040) AM_READWRITE(midvunit_page_control_r, midvunit_page_control_w)
+	AM_RANGE(0x980080, 0x980080) AM_NOP
+	AM_RANGE(0x980082, 0x980083) AM_READ(midvunit_dma_trigger_r)
+	AM_RANGE(0x990000, 0x99000f) AM_READWRITE(midway_ioasic_r, midway_ioasic_w)
+	AM_RANGE(0x994000, 0x994000) AM_WRITE(midvunit_control_w)
+	AM_RANGE(0x995020, 0x995020) AM_WRITE(midvunit_cmos_protect_w)
+	AM_RANGE(0x9a0000, 0x9a0007) AM_READWRITE(midway_ide_asic_r, midway_ide_asic_w)
+	AM_RANGE(0x9c0000, 0x9c7fff) AM_READWRITE(MRA32_RAM, midvunit_paletteram_w) AM_BASE(&paletteram32)
+	AM_RANGE(0x9d0000, 0x9d000f) AM_READWRITE(midvplus_misc_r, midvplus_misc_w) AM_BASE(&midvplus_misc)
+	AM_RANGE(0xa00000, 0xbfffff) AM_READWRITE(midvunit_textureram_r, midvunit_textureram_w) AM_BASE(&midvunit_textureram)
+	AM_RANGE(0xc00000, 0xcfffff) AM_RAM
+ADDRESS_MAP_END
 
 
 
@@ -705,8 +665,8 @@ INPUT_PORTS_START( crusnusa )
 	PORT_START		/* gas pedal */
 	PORT_ANALOG( 0xff, 0x00, IPT_PEDAL, 25, 20, 0x00, 0xff )
 
-	PORT_START		/* brake pedal hack removed*/
-	PORT_ANALOG( 0xff, 0x00, IPT_PEDAL2, 25, 20, 0x00, 0xff )
+	PORT_START		/* brake pedal */
+	PORT_ANALOG( 0xff, 0x00, IPT_PEDAL | IPF_PLAYER2, 25, 20, 0x00, 0xff )
 INPUT_PORTS_END
 
 
@@ -826,8 +786,8 @@ INPUT_PORTS_START( crusnwld )
 	PORT_START		/* gas pedal */
 	PORT_ANALOG( 0xff, 0x00, IPT_PEDAL, 25, 20, 0x00, 0xff )
 
-	PORT_START		/* brake pedal hack removed*/
-	PORT_ANALOG( 0xff, 0x00, IPT_PEDAL2, 25, 20, 0x00, 0xff )
+	PORT_START		/* brake pedal */
+	PORT_ANALOG( 0xff, 0x00, IPT_PEDAL | IPF_PLAYER2, 25, 20, 0x00, 0xff )
 INPUT_PORTS_END
 
 
@@ -921,8 +881,8 @@ INPUT_PORTS_START( offroadc )
 	PORT_START		/* gas pedal */
 	PORT_ANALOG( 0xff, 0x00, IPT_PEDAL, 25, 20, 0x00, 0xff )
 
-	PORT_START		/* brake pedal hack removed*/
-	PORT_ANALOG( 0xff, 0x00, IPT_PEDAL2, 25, 20, 0x00, 0xff )
+	PORT_START		/* brake pedal */
+	PORT_ANALOG( 0xff, 0x00, IPT_PEDAL | IPF_PLAYER2, 25, 20, 0x00, 0xff )
 INPUT_PORTS_END
 
 
@@ -998,7 +958,8 @@ INPUT_PORTS_START( wargods )
 	PORT_BIT( 0x0400, IP_ACTIVE_LOW, IPT_START4 )
 	PORT_BITX(0x0800, IP_ACTIVE_LOW, 0, "Volume Down", KEYCODE_MINUS, IP_JOY_NONE )
 	PORT_BITX(0x1000, IP_ACTIVE_LOW, 0, "Volume Up", KEYCODE_EQUALS, IP_JOY_NONE )
-	PORT_BIT( 0xe000, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0x6000, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_SPECIAL )	/* Bill */
 
 	PORT_START
 	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    | IPF_PLAYER1 | IPF_8WAY )
@@ -1041,7 +1002,7 @@ MACHINE_DRIVER_START( midvcommon )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD_TAG("main", TMS32031, 50000000)
-	MDRV_CPU_MEMORY(vunit_readmem,vunit_writemem)
+	MDRV_CPU_PROGRAM_MAP(midvunit_map,0)
 
 	MDRV_FRAMES_PER_SECOND(57)
 	MDRV_VBLANK_DURATION(DEFAULT_60HZ_VBLANK_DURATION)
@@ -1074,12 +1035,13 @@ MACHINE_DRIVER_START( midvplus )
 	/* basic machine hardware */
 	MDRV_CPU_MODIFY("main")
 	MDRV_CPU_CONFIG(midvplus_config)
-	MDRV_CPU_MEMORY(midvplus_readmem,midvplus_writemem)
+	MDRV_CPU_PROGRAM_MAP(midvplus_map,0)
 
 	MDRV_MACHINE_INIT(midvplus)
-
+	MDRV_NVRAM_HANDLER(midway_serial_pic2)
+	
 	/* sound hardware */
-	MDRV_IMPORT_FROM(dcs_audio_ram)
+	MDRV_IMPORT_FROM(dcs2_audio)
 MACHINE_DRIVER_END
 
 
@@ -1091,17 +1053,15 @@ MACHINE_DRIVER_END
  *************************************/
 
 ROM_START( crusnusa )
-	ROM_REGION( 0x80000, REGION_CPU1, 0 )		/* dummy 32C031 region */
-
-	ROM_REGION( ADSP2100_SIZE + 0x800000, REGION_CPU2, 0 )	/* ADSP-2105 data */
-	ROM_LOAD( "cusa.u2",  ADSP2100_SIZE + 0x000000, 0x80000, CRC(b9338332) SHA1(e5c420e63c4eba0010a68c7e0a57ef210e2c83d2) )
-	ROM_LOAD( "cusa.u3",  ADSP2100_SIZE + 0x100000, 0x80000, CRC(cd8325d6) SHA1(d65d7263e056ca1d637adb44cafef523e0831a34) )
-	ROM_LOAD( "cusa.u4",  ADSP2100_SIZE + 0x200000, 0x80000, CRC(fab457f3) SHA1(2b4b647838b7a8100afc25ca1ffdc74ed67ae00a) )
-	ROM_LOAD( "cusa.u5",  ADSP2100_SIZE + 0x300000, 0x80000, CRC(becc92f4) SHA1(6dffa73ff5270155c44f295e443d5e77c03c0338) )
-	ROM_LOAD( "cusa.u6",  ADSP2100_SIZE + 0x400000, 0x80000, CRC(a9f915d3) SHA1(6a16a2d7a807a775673e7121b54f37c583581203) )
-	ROM_LOAD( "cusa.u7",  ADSP2100_SIZE + 0x500000, 0x80000, CRC(424f0bbc) SHA1(f38a431fc0fb7102c51f2d5b6f716dd4669a9822) )
-	ROM_LOAD( "cusa.u8",  ADSP2100_SIZE + 0x600000, 0x80000, CRC(03c28199) SHA1(393b009acd3eceb346b8fff45ae2bdf4f53d041f) )
-	ROM_LOAD( "cusa.u9",  ADSP2100_SIZE + 0x700000, 0x80000, CRC(24ba6371) SHA1(f60a9ff73b3645e2c8bad67e2f6debc61b5e0653) )
+	ROM_REGION( 0x800000, REGION_SOUND1, 0 )	/* sound data */
+	ROM_LOAD( "cusa.u2",  0x000000, 0x80000, CRC(b9338332) SHA1(e5c420e63c4eba0010a68c7e0a57ef210e2c83d2) )
+	ROM_LOAD( "cusa.u3",  0x100000, 0x80000, CRC(cd8325d6) SHA1(d65d7263e056ca1d637adb44cafef523e0831a34) )
+	ROM_LOAD( "cusa.u4",  0x200000, 0x80000, CRC(fab457f3) SHA1(2b4b647838b7a8100afc25ca1ffdc74ed67ae00a) )
+	ROM_LOAD( "cusa.u5",  0x300000, 0x80000, CRC(becc92f4) SHA1(6dffa73ff5270155c44f295e443d5e77c03c0338) )
+	ROM_LOAD( "cusa.u6",  0x400000, 0x80000, CRC(a9f915d3) SHA1(6a16a2d7a807a775673e7121b54f37c583581203) )
+	ROM_LOAD( "cusa.u7",  0x500000, 0x80000, CRC(424f0bbc) SHA1(f38a431fc0fb7102c51f2d5b6f716dd4669a9822) )
+	ROM_LOAD( "cusa.u8",  0x600000, 0x80000, CRC(03c28199) SHA1(393b009acd3eceb346b8fff45ae2bdf4f53d041f) )
+	ROM_LOAD( "cusa.u9",  0x700000, 0x80000, CRC(24ba6371) SHA1(f60a9ff73b3645e2c8bad67e2f6debc61b5e0653) )
 
 	ROM_REGION32_LE( 0xa00000, REGION_USER1, 0 )
 	ROM_LOAD32_BYTE( "cusa-l41.u10", 0x000000, 0x80000, CRC(eb9372d1) SHA1(ab1e489b23b4540c4e0d1d9a6c9a2c9317f5c099) )
@@ -1128,17 +1088,15 @@ ROM_END
 
 
 ROM_START( crusnu40 )
-	ROM_REGION( 0x80000, REGION_CPU1, 0 )		/* dummy 32C031 region */
-
-	ROM_REGION( ADSP2100_SIZE + 0x800000, REGION_CPU2, 0 )	/* ADSP-2105 data */
-	ROM_LOAD( "cusa.u2",  ADSP2100_SIZE + 0x000000, 0x80000, CRC(b9338332) SHA1(e5c420e63c4eba0010a68c7e0a57ef210e2c83d2) )
-	ROM_LOAD( "cusa.u3",  ADSP2100_SIZE + 0x100000, 0x80000, CRC(cd8325d6) SHA1(d65d7263e056ca1d637adb44cafef523e0831a34) )
-	ROM_LOAD( "cusa.u4",  ADSP2100_SIZE + 0x200000, 0x80000, CRC(fab457f3) SHA1(2b4b647838b7a8100afc25ca1ffdc74ed67ae00a) )
-	ROM_LOAD( "cusa.u5",  ADSP2100_SIZE + 0x300000, 0x80000, CRC(becc92f4) SHA1(6dffa73ff5270155c44f295e443d5e77c03c0338) )
-	ROM_LOAD( "cusa.u6",  ADSP2100_SIZE + 0x400000, 0x80000, CRC(a9f915d3) SHA1(6a16a2d7a807a775673e7121b54f37c583581203) )
-	ROM_LOAD( "cusa.u7",  ADSP2100_SIZE + 0x500000, 0x80000, CRC(424f0bbc) SHA1(f38a431fc0fb7102c51f2d5b6f716dd4669a9822) )
-	ROM_LOAD( "cusa.u8",  ADSP2100_SIZE + 0x600000, 0x80000, CRC(03c28199) SHA1(393b009acd3eceb346b8fff45ae2bdf4f53d041f) )
-	ROM_LOAD( "cusa.u9",  ADSP2100_SIZE + 0x700000, 0x80000, CRC(24ba6371) SHA1(f60a9ff73b3645e2c8bad67e2f6debc61b5e0653) )
+	ROM_REGION( 0x800000, REGION_SOUND1, 0 )	/* sound data */
+	ROM_LOAD( "cusa.u2",  0x000000, 0x80000, CRC(b9338332) SHA1(e5c420e63c4eba0010a68c7e0a57ef210e2c83d2) )
+	ROM_LOAD( "cusa.u3",  0x100000, 0x80000, CRC(cd8325d6) SHA1(d65d7263e056ca1d637adb44cafef523e0831a34) )
+	ROM_LOAD( "cusa.u4",  0x200000, 0x80000, CRC(fab457f3) SHA1(2b4b647838b7a8100afc25ca1ffdc74ed67ae00a) )
+	ROM_LOAD( "cusa.u5",  0x300000, 0x80000, CRC(becc92f4) SHA1(6dffa73ff5270155c44f295e443d5e77c03c0338) )
+	ROM_LOAD( "cusa.u6",  0x400000, 0x80000, CRC(a9f915d3) SHA1(6a16a2d7a807a775673e7121b54f37c583581203) )
+	ROM_LOAD( "cusa.u7",  0x500000, 0x80000, CRC(424f0bbc) SHA1(f38a431fc0fb7102c51f2d5b6f716dd4669a9822) )
+	ROM_LOAD( "cusa.u8",  0x600000, 0x80000, CRC(03c28199) SHA1(393b009acd3eceb346b8fff45ae2bdf4f53d041f) )
+	ROM_LOAD( "cusa.u9",  0x700000, 0x80000, CRC(24ba6371) SHA1(f60a9ff73b3645e2c8bad67e2f6debc61b5e0653) )
 
 	ROM_REGION32_LE( 0xa00000, REGION_USER1, 0 )
 	ROM_LOAD32_BYTE( "cusa-l4.u10",  0x000000, 0x80000, CRC(7526d8bf) SHA1(ef00ea3b6e1923d3e4d10bf3601b080a009fb711) )
@@ -1165,17 +1123,15 @@ ROM_END
 
 
 ROM_START( crusnu21 )
-	ROM_REGION( 0x80000, REGION_CPU1, 0 )		/* dummy 32C031 region */
-
-	ROM_REGION( ADSP2100_SIZE + 0x800000, REGION_CPU2, 0 )	/* ADSP-2105 data */
-	ROM_LOAD( "cusa.u2",  ADSP2100_SIZE + 0x000000, 0x80000, CRC(b9338332) SHA1(e5c420e63c4eba0010a68c7e0a57ef210e2c83d2) )
-	ROM_LOAD( "cusa.u3",  ADSP2100_SIZE + 0x100000, 0x80000, CRC(cd8325d6) SHA1(d65d7263e056ca1d637adb44cafef523e0831a34) )
-	ROM_LOAD( "cusa.u4",  ADSP2100_SIZE + 0x200000, 0x80000, CRC(fab457f3) SHA1(2b4b647838b7a8100afc25ca1ffdc74ed67ae00a) )
-	ROM_LOAD( "cusa.u5",  ADSP2100_SIZE + 0x300000, 0x80000, CRC(becc92f4) SHA1(6dffa73ff5270155c44f295e443d5e77c03c0338) )
-	ROM_LOAD( "cusa.u6",  ADSP2100_SIZE + 0x400000, 0x80000, CRC(a9f915d3) SHA1(6a16a2d7a807a775673e7121b54f37c583581203) )
-	ROM_LOAD( "cusa.u7",  ADSP2100_SIZE + 0x500000, 0x80000, CRC(424f0bbc) SHA1(f38a431fc0fb7102c51f2d5b6f716dd4669a9822) )
-	ROM_LOAD( "cusa.u8",  ADSP2100_SIZE + 0x600000, 0x80000, CRC(03c28199) SHA1(393b009acd3eceb346b8fff45ae2bdf4f53d041f) )
-	ROM_LOAD( "cusa.u9",  ADSP2100_SIZE + 0x700000, 0x80000, CRC(24ba6371) SHA1(f60a9ff73b3645e2c8bad67e2f6debc61b5e0653) )
+	ROM_REGION( 0x800000, REGION_SOUND1, 0 )	/* sound data */
+	ROM_LOAD( "cusa.u2",  0x000000, 0x80000, CRC(b9338332) SHA1(e5c420e63c4eba0010a68c7e0a57ef210e2c83d2) )
+	ROM_LOAD( "cusa.u3",  0x100000, 0x80000, CRC(cd8325d6) SHA1(d65d7263e056ca1d637adb44cafef523e0831a34) )
+	ROM_LOAD( "cusa.u4",  0x200000, 0x80000, CRC(fab457f3) SHA1(2b4b647838b7a8100afc25ca1ffdc74ed67ae00a) )
+	ROM_LOAD( "cusa.u5",  0x300000, 0x80000, CRC(becc92f4) SHA1(6dffa73ff5270155c44f295e443d5e77c03c0338) )
+	ROM_LOAD( "cusa.u6",  0x400000, 0x80000, CRC(a9f915d3) SHA1(6a16a2d7a807a775673e7121b54f37c583581203) )
+	ROM_LOAD( "cusa.u7",  0x500000, 0x80000, CRC(424f0bbc) SHA1(f38a431fc0fb7102c51f2d5b6f716dd4669a9822) )
+	ROM_LOAD( "cusa.u8",  0x600000, 0x80000, CRC(03c28199) SHA1(393b009acd3eceb346b8fff45ae2bdf4f53d041f) )
+	ROM_LOAD( "cusa.u9",  0x700000, 0x80000, CRC(24ba6371) SHA1(f60a9ff73b3645e2c8bad67e2f6debc61b5e0653) )
 
 	ROM_REGION32_LE( 0xa00000, REGION_USER1, 0 )
 	ROM_LOAD32_BYTE( "cusa-l21.u10", 0x000000, 0x80000, CRC(bb759945) SHA1(dbf5270503cb58adb0abd34a8aece5933063ec66) )
@@ -1202,17 +1158,15 @@ ROM_END
 
 
 ROM_START( crusnwld )
-	ROM_REGION( 0x80000, REGION_CPU1, 0 )		/* dummy 32C031 region */
-
-	ROM_REGION( ADSP2100_SIZE + 0x800000, REGION_CPU2, 0 )	/* ADSP-2105 data */
-	ROM_LOAD( "cwld.u2",  ADSP2100_SIZE + 0x000000, 0x80000, CRC(7a233c89) SHA1(ecfad4bc48a69cd3399e3b3266c81574082e0169) )
-	ROM_LOAD( "cwld.u3",  ADSP2100_SIZE + 0x100000, 0x80000, CRC(be9a5ff0) SHA1(98d69dbfa6aa8462cdd46772e991ee418b79c653) )
-	ROM_LOAD( "cwld.u4",  ADSP2100_SIZE + 0x200000, 0x80000, CRC(69f02d84) SHA1(0fb4ff750de78505f241ae6cd18fccf3ddf4223f) )
-	ROM_LOAD( "cwld.u5",  ADSP2100_SIZE + 0x300000, 0x80000, CRC(9d0b9071) SHA1(05edf9073399a942a9d0b969274a7ebf4ca677da) )
-	ROM_LOAD( "cwld.u6",  ADSP2100_SIZE + 0x400000, 0x80000, CRC(df28f492) SHA1(c61f3870f59458b7bb5efbf93d697e3fa44a7830) )
-	ROM_LOAD( "cwld.u7",  ADSP2100_SIZE + 0x500000, 0x80000, CRC(0128913e) SHA1(c11bc115877310c17f9b57f72b29d19b0ad71afa) )
-	ROM_LOAD( "cwld.u8",  ADSP2100_SIZE + 0x600000, 0x80000, CRC(5127c08e) SHA1(4f0eae73817270fa156829100b66f0ff88fa422c) )
-	ROM_LOAD( "cwld.u9",  ADSP2100_SIZE + 0x700000, 0x80000, CRC(84cdc781) SHA1(62287aa72903698d1890908adde53c39f8bd200c) )
+	ROM_REGION( 0x800000, REGION_SOUND1, 0 )	/* sound data */
+	ROM_LOAD( "cwld.u2",  0x000000, 0x80000, CRC(7a233c89) SHA1(ecfad4bc48a69cd3399e3b3266c81574082e0169) )
+	ROM_LOAD( "cwld.u3",  0x100000, 0x80000, CRC(be9a5ff0) SHA1(98d69dbfa6aa8462cdd46772e991ee418b79c653) )
+	ROM_LOAD( "cwld.u4",  0x200000, 0x80000, CRC(69f02d84) SHA1(0fb4ff750de78505f241ae6cd18fccf3ddf4223f) )
+	ROM_LOAD( "cwld.u5",  0x300000, 0x80000, CRC(9d0b9071) SHA1(05edf9073399a942a9d0b969274a7ebf4ca677da) )
+	ROM_LOAD( "cwld.u6",  0x400000, 0x80000, CRC(df28f492) SHA1(c61f3870f59458b7bb5efbf93d697e3fa44a7830) )
+	ROM_LOAD( "cwld.u7",  0x500000, 0x80000, CRC(0128913e) SHA1(c11bc115877310c17f9b57f72b29d19b0ad71afa) )
+	ROM_LOAD( "cwld.u8",  0x600000, 0x80000, CRC(5127c08e) SHA1(4f0eae73817270fa156829100b66f0ff88fa422c) )
+	ROM_LOAD( "cwld.u9",  0x700000, 0x80000, CRC(84cdc781) SHA1(62287aa72903698d1890908adde53c39f8bd200c) )
 
 	ROM_REGION32_LE( 0x1000000, REGION_USER1, 0 )
 	ROM_LOAD32_BYTE( "cwld_l23.u10", 0x0000000, 0x100000, CRC(956e0642) SHA1(c023d41159bac9b468d6fc411005f66b15b9dff6) )
@@ -1235,17 +1189,15 @@ ROM_END
 
 
 ROM_START( crusnw20 )
-	ROM_REGION( 0x80000, REGION_CPU1, 0 )		/* dummy 32C031 region */
-
-	ROM_REGION( ADSP2100_SIZE + 0x800000, REGION_CPU2, 0 )	/* ADSP-2105 data */
-	ROM_LOAD( "cwld.u2",  ADSP2100_SIZE + 0x000000, 0x80000, CRC(7a233c89) SHA1(ecfad4bc48a69cd3399e3b3266c81574082e0169) )
-	ROM_LOAD( "cwld.u3",  ADSP2100_SIZE + 0x100000, 0x80000, CRC(be9a5ff0) SHA1(98d69dbfa6aa8462cdd46772e991ee418b79c653) )
-	ROM_LOAD( "cwld.u4",  ADSP2100_SIZE + 0x200000, 0x80000, CRC(69f02d84) SHA1(0fb4ff750de78505f241ae6cd18fccf3ddf4223f) )
-	ROM_LOAD( "cwld.u5",  ADSP2100_SIZE + 0x300000, 0x80000, CRC(9d0b9071) SHA1(05edf9073399a942a9d0b969274a7ebf4ca677da) )
-	ROM_LOAD( "cwld.u6",  ADSP2100_SIZE + 0x400000, 0x80000, CRC(df28f492) SHA1(c61f3870f59458b7bb5efbf93d697e3fa44a7830) )
-	ROM_LOAD( "cwld.u7",  ADSP2100_SIZE + 0x500000, 0x80000, CRC(0128913e) SHA1(c11bc115877310c17f9b57f72b29d19b0ad71afa) )
-	ROM_LOAD( "cwld.u8",  ADSP2100_SIZE + 0x600000, 0x80000, CRC(5127c08e) SHA1(4f0eae73817270fa156829100b66f0ff88fa422c) )
-	ROM_LOAD( "cwld.u9",  ADSP2100_SIZE + 0x700000, 0x80000, CRC(84cdc781) SHA1(62287aa72903698d1890908adde53c39f8bd200c) )
+	ROM_REGION( 0x800000, REGION_SOUND1, 0 )	/* sound data */
+	ROM_LOAD( "cwld.u2",  0x000000, 0x80000, CRC(7a233c89) SHA1(ecfad4bc48a69cd3399e3b3266c81574082e0169) )
+	ROM_LOAD( "cwld.u3",  0x100000, 0x80000, CRC(be9a5ff0) SHA1(98d69dbfa6aa8462cdd46772e991ee418b79c653) )
+	ROM_LOAD( "cwld.u4",  0x200000, 0x80000, CRC(69f02d84) SHA1(0fb4ff750de78505f241ae6cd18fccf3ddf4223f) )
+	ROM_LOAD( "cwld.u5",  0x300000, 0x80000, CRC(9d0b9071) SHA1(05edf9073399a942a9d0b969274a7ebf4ca677da) )
+	ROM_LOAD( "cwld.u6",  0x400000, 0x80000, CRC(df28f492) SHA1(c61f3870f59458b7bb5efbf93d697e3fa44a7830) )
+	ROM_LOAD( "cwld.u7",  0x500000, 0x80000, CRC(0128913e) SHA1(c11bc115877310c17f9b57f72b29d19b0ad71afa) )
+	ROM_LOAD( "cwld.u8",  0x600000, 0x80000, CRC(5127c08e) SHA1(4f0eae73817270fa156829100b66f0ff88fa422c) )
+	ROM_LOAD( "cwld.u9",  0x700000, 0x80000, CRC(84cdc781) SHA1(62287aa72903698d1890908adde53c39f8bd200c) )
 
 	ROM_REGION32_LE( 0x1000000, REGION_USER1, 0 )
 	ROM_LOAD32_BYTE( "u10_v20.u10",  0x0000000, 0x100000, CRC(2a04da6d) SHA1(0aab4f3dc4853de11234245ac14baa14cb3867f3) )
@@ -1268,17 +1220,15 @@ ROM_END
 
 
 ROM_START( crusnw13 )
-	ROM_REGION( 0x80000, REGION_CPU1, 0 )		/* dummy 32C031 region */
-
-	ROM_REGION( ADSP2100_SIZE + 0x800000, REGION_CPU2, 0 )	/* ADSP-2105 data */
-	ROM_LOAD( "cwld.u2",  ADSP2100_SIZE + 0x000000, 0x80000, CRC(7a233c89) SHA1(ecfad4bc48a69cd3399e3b3266c81574082e0169) )
-	ROM_LOAD( "cwld.u3",  ADSP2100_SIZE + 0x100000, 0x80000, CRC(be9a5ff0) SHA1(98d69dbfa6aa8462cdd46772e991ee418b79c653) )
-	ROM_LOAD( "cwld.u4",  ADSP2100_SIZE + 0x200000, 0x80000, CRC(69f02d84) SHA1(0fb4ff750de78505f241ae6cd18fccf3ddf4223f) )
-	ROM_LOAD( "cwld.u5",  ADSP2100_SIZE + 0x300000, 0x80000, CRC(9d0b9071) SHA1(05edf9073399a942a9d0b969274a7ebf4ca677da) )
-	ROM_LOAD( "cwld.u6",  ADSP2100_SIZE + 0x400000, 0x80000, CRC(df28f492) SHA1(c61f3870f59458b7bb5efbf93d697e3fa44a7830) )
-	ROM_LOAD( "cwld.u7",  ADSP2100_SIZE + 0x500000, 0x80000, CRC(0128913e) SHA1(c11bc115877310c17f9b57f72b29d19b0ad71afa) )
-	ROM_LOAD( "cwld.u8",  ADSP2100_SIZE + 0x600000, 0x80000, CRC(5127c08e) SHA1(4f0eae73817270fa156829100b66f0ff88fa422c) )
-	ROM_LOAD( "cwld.u9",  ADSP2100_SIZE + 0x700000, 0x80000, CRC(84cdc781) SHA1(62287aa72903698d1890908adde53c39f8bd200c) )
+	ROM_REGION( 0x800000, REGION_SOUND1, 0 )	/* sound data */
+	ROM_LOAD( "cwld.u2",  0x000000, 0x80000, CRC(7a233c89) SHA1(ecfad4bc48a69cd3399e3b3266c81574082e0169) )
+	ROM_LOAD( "cwld.u3",  0x100000, 0x80000, CRC(be9a5ff0) SHA1(98d69dbfa6aa8462cdd46772e991ee418b79c653) )
+	ROM_LOAD( "cwld.u4",  0x200000, 0x80000, CRC(69f02d84) SHA1(0fb4ff750de78505f241ae6cd18fccf3ddf4223f) )
+	ROM_LOAD( "cwld.u5",  0x300000, 0x80000, CRC(9d0b9071) SHA1(05edf9073399a942a9d0b969274a7ebf4ca677da) )
+	ROM_LOAD( "cwld.u6",  0x400000, 0x80000, CRC(df28f492) SHA1(c61f3870f59458b7bb5efbf93d697e3fa44a7830) )
+	ROM_LOAD( "cwld.u7",  0x500000, 0x80000, CRC(0128913e) SHA1(c11bc115877310c17f9b57f72b29d19b0ad71afa) )
+	ROM_LOAD( "cwld.u8",  0x600000, 0x80000, CRC(5127c08e) SHA1(4f0eae73817270fa156829100b66f0ff88fa422c) )
+	ROM_LOAD( "cwld.u9",  0x700000, 0x80000, CRC(84cdc781) SHA1(62287aa72903698d1890908adde53c39f8bd200c) )
 
 	ROM_REGION32_LE( 0x1000000, REGION_USER1, 0 )
 	ROM_LOAD32_BYTE( "cwld_l13.u10", 0x0000000, 0x100000, BAD_DUMP CRC(956bac74) SHA1(bf0b121670df23f2cc64302d9f215e7c81187bbb)  )
@@ -1301,17 +1251,15 @@ ROM_END
 
 
 ROM_START( offroadc )
-	ROM_REGION( 0x80000, REGION_CPU1, 0 )		/* dummy 32C031 region */
-
-	ROM_REGION( ADSP2100_SIZE + 0x800000, REGION_CPU2, 0 )	/* ADSP-2105 data */
-	ROM_LOAD( "offroadc.u2",  ADSP2100_SIZE + 0x000000, 0x80000, CRC(69976e9d) SHA1(63c886ac2563c43a10840f49f929f8613cd94de2) )
-	ROM_LOAD( "offroadc.u3",  ADSP2100_SIZE + 0x100000, 0x80000, CRC(2db9b548) SHA1(4f454a3e6a8851b0ef5d325dd28102d57ea11a11) )
-	ROM_LOAD( "offroadc.u4",  ADSP2100_SIZE + 0x200000, 0x80000, CRC(42bdf9d0) SHA1(04add0f0ee7fa61de1913cc0b988345d3d430cde) )
-	ROM_LOAD( "offroadc.u5",  ADSP2100_SIZE + 0x300000, 0x80000, CRC(569cc84b) SHA1(08b917cc41fae6b6a3e9d9461a783d3d2865e72a) )
-	ROM_LOAD( "offroadc.u6",  ADSP2100_SIZE + 0x400000, 0x80000, CRC(0896f679) SHA1(dde39ef17834256909ef2c9fcd5b5fb9939d5178) )
-	ROM_LOAD( "offroadc.u7",  ADSP2100_SIZE + 0x500000, 0x80000, CRC(fe242d6a) SHA1(8fbac22ed23044841f309ce58c5b1affcdd5d114) )
-	ROM_LOAD( "offroadc.u8",  ADSP2100_SIZE + 0x600000, 0x80000, CRC(5da13f12) SHA1(2bb5e929e8bc6c70cb4475024a6b0bb07ac25244) )
-	ROM_LOAD( "offroadc.u9",  ADSP2100_SIZE + 0x700000, 0x80000, CRC(7ad27f69) SHA1(b33665d0593a95b58d529720aae49e90449bf714) )
+	ROM_REGION( 0x800000, REGION_SOUND1, 0 )	/* sound data */
+	ROM_LOAD( "offroadc.u2",  0x000000, 0x80000, CRC(69976e9d) SHA1(63c886ac2563c43a10840f49f929f8613cd94de2) )
+	ROM_LOAD( "offroadc.u3",  0x100000, 0x80000, CRC(2db9b548) SHA1(4f454a3e6a8851b0ef5d325dd28102d57ea11a11) )
+	ROM_LOAD( "offroadc.u4",  0x200000, 0x80000, CRC(42bdf9d0) SHA1(04add0f0ee7fa61de1913cc0b988345d3d430cde) )
+	ROM_LOAD( "offroadc.u5",  0x300000, 0x80000, CRC(569cc84b) SHA1(08b917cc41fae6b6a3e9d9461a783d3d2865e72a) )
+	ROM_LOAD( "offroadc.u6",  0x400000, 0x80000, CRC(0896f679) SHA1(dde39ef17834256909ef2c9fcd5b5fb9939d5178) )
+	ROM_LOAD( "offroadc.u7",  0x500000, 0x80000, CRC(fe242d6a) SHA1(8fbac22ed23044841f309ce58c5b1affcdd5d114) )
+	ROM_LOAD( "offroadc.u8",  0x600000, 0x80000, CRC(5da13f12) SHA1(2bb5e929e8bc6c70cb4475024a6b0bb07ac25244) )
+	ROM_LOAD( "offroadc.u9",  0x700000, 0x80000, CRC(7ad27f69) SHA1(b33665d0593a95b58d529720aae49e90449bf714) )
 
 	ROM_REGION32_LE( 0x1000000, REGION_USER1, 0 )
 	ROM_LOAD32_BYTE( "offroadc.u10", 0x0000000, 0x100000, CRC(4729660c) SHA1(0baff6a27015f4eb3fe0a981ecbac33d140e872a) )
@@ -1334,16 +1282,14 @@ ROM_END
 
 
 ROM_START( wargods )
-	ROM_REGION( 0x80000, REGION_CPU1, 0 )		/* dummy 32C031 region */
-
-	ROM_REGION( ADSP2100_SIZE + 0x208000, REGION_CPU2, 0 )	/* ADSP-2105 data */
-	ROM_LOAD( "u2.rom",   ADSP2100_SIZE + 0x000000, 0x8000, CRC(bec7d3ae) SHA1(db80aa4a645804a4574b07b9f34dec6b6b64190d) )
+	ROM_REGION( 0x208000, REGION_SOUND1, 0 )	/* sound data */
+	ROM_LOAD( "u2.rom",   0x000000, 0x8000, CRC(bec7d3ae) SHA1(db80aa4a645804a4574b07b9f34dec6b6b64190d) )
 
 	ROM_REGION32_LE( 0x1000000, REGION_USER1, 0 )
 	ROM_LOAD( "u41.rom", 0x000000, 0x20000, CRC(398c54cc) SHA1(6c4b5d6ec5c844dcbf181f9d86a9196a088ed2db) )
 
 	DISK_REGION( REGION_DISKS )
-	DISK_IMAGE( "wargods.chd", 0, MD5(9a41ae319a67fc626377b6d9ea34c860) )
+	DISK_IMAGE( "wargods", 0, MD5(9a41ae319a67fc626377b6d9ea34c860) SHA1(4b02f8f33027a0e7b2c750c10da1fe22222b3e1e) )
 ROM_END
 
 
@@ -1354,31 +1300,52 @@ ROM_END
  *
  *************************************/
 
-static DRIVER_INIT( crusnusa )
+static data32_t *generic_speedup;
+static READ32_HANDLER( generic_speedup_r )
 {
-	dcs_init();
-	adc_shift = 24;
+	activecpu_eat_cycles(100);
+	return generic_speedup[offset];
 }
 
 
-static DRIVER_INIT( crusnwld )
+static void init_crusnusa_common(offs_t speedup)
+{
+	dcs_init();
+	adc_shift = 24;
+
+	/* speedups */
+	generic_speedup = install_mem_read32_handler(0, speedup, speedup + 1, generic_speedup_r);
+}
+static DRIVER_INIT( crusnusa ) { init_crusnusa_common(0xc93e); }
+static DRIVER_INIT( crusnu40 ) { init_crusnusa_common(0xc957); }
+static DRIVER_INIT( crusnu21 ) { init_crusnusa_common(0xc051); }
+
+
+static void init_crusnwld_common(offs_t speedup)
 {
 	dcs_init();
 	adc_shift = 16;
 
 	/* control register is different */
-	install_mem_write32_handler(0, ADDR_RANGE(0x994000, 0x994000), crusnwld_control_w);
+	install_mem_write32_handler(0, 0x994000, 0x994000, crusnwld_control_w);
 
 	/* valid values are 450 or 460 */
 	midway_serial_pic_init(450);
-	install_mem_read32_handler(0, ADDR_RANGE(0x991030, 0x991030), offroadc_serial_status_r);
-	install_mem_read32_handler(0, ADDR_RANGE(0x996000, 0x996000), offroadc_serial_data_r);
-	install_mem_write32_handler(0, ADDR_RANGE(0x996000, 0x996000), offroadc_serial_data_w);
+	install_mem_read32_handler(0, 0x991030, 0x991030, offroadc_serial_status_r);
+	install_mem_read32_handler(0, 0x996000, 0x996000, offroadc_serial_data_r);
+	install_mem_write32_handler(0, 0x996000, 0x996000, offroadc_serial_data_w);
 
 	/* install strange protection device */
-	install_mem_read32_handler(0, ADDR_RANGE(0x9d0000, 0x9d1fff), bit_data_r);
-	install_mem_write32_handler(0, ADDR_RANGE(0x9d0000, 0x9d0000), bit_reset_w);
+	install_mem_read32_handler(0, 0x9d0000, 0x9d1fff, bit_data_r);
+	install_mem_write32_handler(0, 0x9d0000, 0x9d0000, bit_reset_w);
+
+	/* speedups */
+	if (speedup)
+		generic_speedup = install_mem_read32_handler(0, speedup, speedup + 1, generic_speedup_r);
 }
+static DRIVER_INIT( crusnwld ) { init_crusnwld_common(0xd4c0); }
+static DRIVER_INIT( crusnw20 ) { init_crusnwld_common(0xd49c); }
+static DRIVER_INIT( crusnw13 ) { init_crusnwld_common(0); }
 
 
 static DRIVER_INIT( offroadc )
@@ -1387,13 +1354,16 @@ static DRIVER_INIT( offroadc )
 	adc_shift = 16;
 
 	/* control register is different */
-	install_mem_write32_handler(0, ADDR_RANGE(0x994000, 0x994000), crusnwld_control_w);
+	install_mem_write32_handler(0, 0x994000, 0x994000, crusnwld_control_w);
 
 	/* valid values are 230 or 234 */
-	midway_serial_pic2_init(230);
-	install_mem_read32_handler(0, ADDR_RANGE(0x991030, 0x991030), offroadc_serial_status_r);
-	install_mem_read32_handler(0, ADDR_RANGE(0x996000, 0x996000), offroadc_serial_data_r);
-	install_mem_write32_handler(0, ADDR_RANGE(0x996000, 0x996000), offroadc_serial_data_w);
+	midway_serial_pic2_init(230, 94);
+	install_mem_read32_handler(0, 0x991030, 0x991030, offroadc_serial_status_r);
+	install_mem_read32_handler(0, 0x996000, 0x996000, offroadc_serial_data_r);
+	install_mem_write32_handler(0, 0x996000, 0x996000, offroadc_serial_data_w);
+
+	/* speedups */
+	generic_speedup = install_mem_read32_handler(0, 0x195aa, 0x195aa, generic_speedup_r);
 }
 
 
@@ -1404,14 +1374,27 @@ static struct ide_interface ide_intf =
 
 static DRIVER_INIT( wargods )
 {
-	dcs_ram_init();
-	adc_shift = 16;
+	UINT8 default_nvram[256];
 
-	/* valid values are 452 */
-	midway_io_asic_init(452);
-
-	/* prepare the IDE */
+	/* initialize the subsystems */
+	dcs2_init(0x3839);
 	ide_controller_init(0, &ide_intf);
+	midway_ioasic_init(0, 452/* no alternates */, 94, NULL);
+	adc_shift = 16;
+	
+	/* we need proper VRAM */
+	memset(default_nvram, 0xff, sizeof(default_nvram));
+	default_nvram[0x0e] = default_nvram[0x2e] = 0x67;
+	default_nvram[0x0f] = default_nvram[0x2f] = 0x32;
+	default_nvram[0x10] = default_nvram[0x30] = 0x0a;
+	default_nvram[0x11] = default_nvram[0x31] = 0x00;
+	default_nvram[0x12] = default_nvram[0x32] = 0xaf;
+	default_nvram[0x17] = default_nvram[0x37] = 0xd8;
+	default_nvram[0x18] = default_nvram[0x38] = 0xe7;
+	midway_serial_pic2_set_default_nvram(default_nvram);
+
+	/* speedups */
+	generic_speedup = install_mem_read32_handler(0, 0x2f4c, 0x2f4c, generic_speedup_r);
 }
 
 
@@ -1423,14 +1406,14 @@ static DRIVER_INIT( wargods )
  *************************************/
 
 GAME( 1994, crusnusa, 0,        midvunit, crusnusa, crusnusa, ROT0, "Midway", "Cruis'n USA (rev L4.1)" )
-GAME( 1994, crusnu40, crusnusa, midvunit, crusnusa, crusnusa, ROT0, "Midway", "Cruis'n USA (rev L4.0)" )
-GAME( 1994, crusnu21, crusnusa, midvunit, crusnusa, crusnusa, ROT0, "Midway", "Cruis'n USA (rev L2.1)" )
+GAME( 1994, crusnu40, crusnusa, midvunit, crusnusa, crusnu40, ROT0, "Midway", "Cruis'n USA (rev L4.0)" )
+GAME( 1994, crusnu21, crusnusa, midvunit, crusnusa, crusnu21, ROT0, "Midway", "Cruis'n USA (rev L2.1)" )
 GAME( 1996, crusnwld, 0,        midvunit, crusnwld, crusnwld, ROT0, "Midway", "Cruis'n World (rev L2.3)" )
 GAME( 1996, crusnw20, crusnwld, midvunit, crusnwld, crusnwld, ROT0, "Midway", "Cruis'n World (rev L2.0)" )
 GAME( 1996, crusnw13, crusnwld, midvunit, crusnwld, crusnwld, ROT0, "Midway", "Cruis'n World (rev L1.3)" )
-GAMEX(1997, offroadc, 0,        midvunit, offroadc, offroadc, ROT0, "Midway", "Off Road Challenge", GAME_NOT_WORKING )
+GAMEX( 1997, offroadc, 0,        midvunit, offroadc, offroadc, ROT0, "Midway", "Off Road Challenge", GAME_NOT_WORKING )
 
-GAMEX(1996, wargods,  0,        midvplus, wargods,  wargods,  ROT0, "Midway", "War Gods", GAME_IMPERFECT_SOUND )
+GAME( 1995, wargods,  0,        midvplus, wargods,  wargods,  ROT0, "Midway", "War Gods" )
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

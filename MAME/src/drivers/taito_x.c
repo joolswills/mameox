@@ -13,6 +13,9 @@ Taito X-system
 
 driver by Richard Bush, Howie Cohen and Yochizo
 
+25th Nov 2003
+vidhrdw merged with vidhrdw/seta.c
+
 
 Supported games:
 ----------------------------------------------------
@@ -23,6 +26,7 @@ Supported games:
   Daisenpu (Japan)        Taito Corp.           1988
   Balloon Brothers        East Technology Corp. 1990
   Gigandes                East Technology Corp. 1990
+  Last Striker            East Technology Corp. 1989
 
 Please tell me the games worked on this board.
 
@@ -181,6 +185,43 @@ East Technology 1992
                                                     0
 
 
+Kyuukyoku no Striker
+East Technology/Taito, 1989
+
+This game runs on Seta hardware and also using one Taito custom chip.
+
+
+PCB Layout
+----------
+
+PO-057A
+|------------------------------- |
+|  YM2610    IC.18D  6264        |
+|YM3016                          |
+|    Z80  TCO140SYT        68000 |
+| X1-004  X1-001A          PE.9A |
+|J         X1-002A  6264   62256 |
+|A                  6264         |
+|M           16MHz         PO.4A |
+|M X1-007           DSW1   62256 |
+|A X1-006           DSW2         |
+|              M-8-3             |
+|M-8-5  M-8-4  M-8-2             |
+|              M-8-1             |
+|              M-8-0             |
+|--------------------------------|
+
+Notes:
+        All M-8-x ROMs are held on a plug-in sub-board.
+        The sub-board has printed on it "East Technology" and has PCB Number PO-046A
+
+         68000 clock: 8.000MHz
+           Z80 clock: 4.000MHz
+        YM2610 clock: 8.000MHz
+               Vsync: 58Hz
+               HSync: 15.22kHz
+
+
 C-Chip notes
 ------------
 
@@ -194,16 +235,7 @@ its place. The East Technology games on this hardware follow Daisenpu.
 #include "state.h"
 #include "vidhrdw/generic.h"
 #include "sndhrdw/taitosnd.h"
-
-
-VIDEO_UPDATE( superman );
-VIDEO_START( superman );
-VIDEO_START( ballbros );
-
-extern size_t supes_videoram_size;
-extern size_t supes_attribram_size;
-extern data16_t *supes_videoram;
-extern data16_t *supes_attribram;
+#include "seta.h"
 
 MACHINE_INIT( cchip1 );
 READ16_HANDLER ( cchip1_word_r );
@@ -264,6 +296,23 @@ static WRITE16_HANDLER( daisenpu_input_w )
 }
 
 
+static WRITE16_HANDLER( kyustrkr_input_w )
+{
+	switch (offset)
+	{
+		case 0x04:	/* coin counters and lockout */
+			coin_counter_w(0,data & 0x01);
+			coin_counter_w(1,data & 0x02);
+			coin_lockout_w(0,data & 0x04);
+			coin_lockout_w(1,data & 0x08);
+//logerror("taitox coin control %04x to offset %04x\n",data,offset);
+			break;
+
+		default:
+			logerror("taitox unknown input write %04x to offset %04x\n",data,offset);
+	}
+}
+
 /**************************************************************************/
 
 static int banknum = -1;
@@ -282,188 +331,188 @@ static WRITE_HANDLER( sound_bankswitch_w )
 
 /**************************************************************************/
 
-static MEMORY_READ16_START( superman_readmem )
-	{ 0x000000, 0x07ffff, MRA16_ROM },
-	{ 0x500000, 0x500007, superman_dsw_input_r  },
-	{ 0x800000, 0x800001, MRA16_NOP },
-	{ 0x800002, 0x800003, taitosound_comm16_lsb_r },
-	{ 0x900000, 0x900fff, cchip1_word_r } ,
-	{ 0xb00000, 0xb00fff, paletteram16_word_r },
-	{ 0xd00000, 0xd007ff, MRA16_RAM },	/* video attribute ram */
-	{ 0xe00000, 0xe03fff, MRA16_RAM },	/* object ram */
-	{ 0xf00000, 0xf03fff, MRA16_RAM },	/* Main RAM */
-MEMORY_END
+static ADDRESS_MAP_START( superman_readmem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x07ffff) AM_READ(MRA16_ROM)
+	AM_RANGE(0x500000, 0x500007) AM_READ(superman_dsw_input_r)
+	AM_RANGE(0x800000, 0x800001) AM_READ(MRA16_NOP)
+	AM_RANGE(0x800002, 0x800003) AM_READ(taitosound_comm16_lsb_r)
+	AM_RANGE(0x900000, 0x900fff) AM_READ(cchip1_word_r)
+	AM_RANGE(0xb00000, 0xb00fff) AM_READ(paletteram16_word_r)
+	AM_RANGE(0xd00000, 0xd007ff) AM_READ(MRA16_RAM)	/* video attribute ram */
+	AM_RANGE(0xe00000, 0xe03fff) AM_READ(MRA16_RAM)	/* object ram */
+	AM_RANGE(0xf00000, 0xf03fff) AM_READ(MRA16_RAM)	/* Main RAM */
+ADDRESS_MAP_END
 
-static MEMORY_WRITE16_START( superman_writemem )
-	{ 0x000000, 0x07ffff, MWA16_ROM },
-	{ 0x300000, 0x300001, MWA16_NOP },	/* written each frame at $3a9c, mostly 0x10 */
-	{ 0x400000, 0x400001, MWA16_NOP },	/* written each frame at $3aa2, mostly 0x10 */
-	{ 0x600000, 0x600001, MWA16_NOP },	/* written each frame at $3ab0, mostly 0x10 */
-	{ 0x800000, 0x800001, taitosound_port16_lsb_w },
-	{ 0x800002, 0x800003, taitosound_comm16_lsb_w },
-	{ 0x900000, 0x900fff, cchip1_word_w },
-	{ 0xb00000, 0xb00fff, paletteram16_xRRRRRGGGGGBBBBB_word_w, &paletteram16 },
-	{ 0xd00000, 0xd007ff, MWA16_RAM, &supes_attribram, &supes_attribram_size },
-	{ 0xe00000, 0xe03fff, MWA16_RAM, &supes_videoram, &supes_videoram_size },
-	{ 0xf00000, 0xf03fff, MWA16_RAM },			/* Main RAM */
-MEMORY_END
+static ADDRESS_MAP_START( superman_writemem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x07ffff) AM_WRITE(MWA16_ROM)
+	AM_RANGE(0x300000, 0x300001) AM_WRITE(MWA16_NOP)	/* written each frame at $3a9c, mostly 0x10 */
+	AM_RANGE(0x400000, 0x400001) AM_WRITE(MWA16_NOP)	/* written each frame at $3aa2, mostly 0x10 */
+	AM_RANGE(0x600000, 0x600001) AM_WRITE(MWA16_NOP)	/* written each frame at $3ab0, mostly 0x10 */
+	AM_RANGE(0x800000, 0x800001) AM_WRITE(taitosound_port16_lsb_w)
+	AM_RANGE(0x800002, 0x800003) AM_WRITE(taitosound_comm16_lsb_w)
+	AM_RANGE(0x900000, 0x900fff) AM_WRITE(cchip1_word_w)
+	AM_RANGE(0xb00000, 0xb00fff) AM_WRITE(paletteram16_xRRRRRGGGGGBBBBB_word_w) AM_BASE(&paletteram16)
+	AM_RANGE(0xd00000, 0xd007ff) AM_WRITE(MWA16_RAM) AM_BASE(&spriteram16	)	// Sprites Y
+	AM_RANGE(0xe00000, 0xe03fff) AM_WRITE(MWA16_RAM) AM_BASE(&spriteram16_2	)	// Sprites Code + X + Attr
+	AM_RANGE(0xf00000, 0xf03fff) AM_WRITE(MWA16_RAM)			/* Main RAM */
+ADDRESS_MAP_END
 
-static MEMORY_READ16_START( daisenpu_readmem )
-	{ 0x000000, 0x03ffff, MRA16_ROM },
-	{ 0x500000, 0x50000f, superman_dsw_input_r },
-	{ 0x800000, 0x800001, MRA16_NOP },
-	{ 0x800002, 0x800003, taitosound_comm16_lsb_r },
-	{ 0x900000, 0x90000f, daisenpu_input_r },
-	{ 0xb00000, 0xb00fff, paletteram16_word_r },
-	{ 0xd00000, 0xd00fff, MRA16_RAM },	/* video attribute ram */
-	{ 0xe00000, 0xe03fff, MRA16_RAM },	/* object ram */
-	{ 0xf00000, 0xf03fff, MRA16_RAM },	/* Main RAM */
-MEMORY_END
+static ADDRESS_MAP_START( daisenpu_readmem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x03ffff) AM_READ(MRA16_ROM)
+	AM_RANGE(0x500000, 0x50000f) AM_READ(superman_dsw_input_r)
+	AM_RANGE(0x800000, 0x800001) AM_READ(MRA16_NOP)
+	AM_RANGE(0x800002, 0x800003) AM_READ(taitosound_comm16_lsb_r)
+	AM_RANGE(0x900000, 0x90000f) AM_READ(daisenpu_input_r)
+	AM_RANGE(0xb00000, 0xb00fff) AM_READ(paletteram16_word_r)
+	AM_RANGE(0xd00000, 0xd00fff) AM_READ(MRA16_RAM)	/* video attribute ram */
+	AM_RANGE(0xe00000, 0xe03fff) AM_READ(MRA16_RAM)	/* object ram */
+	AM_RANGE(0xf00000, 0xf03fff) AM_READ(MRA16_RAM)	/* Main RAM */
+ADDRESS_MAP_END
 
-static MEMORY_WRITE16_START( daisenpu_writemem )
-	{ 0x000000, 0x03ffff, MWA16_ROM },
-//	{ 0x400000, 0x400001, MWA16_NOP },	/* written each frame at $2ac, values change */
-//	{ 0x600000, 0x600001, MWA16_NOP },	/* written each frame at $2a2, values change */
-	{ 0x800000, 0x800001, taitosound_port16_lsb_w },
-	{ 0x800002, 0x800003, taitosound_comm16_lsb_w },
-	{ 0x900000, 0x90000f, daisenpu_input_w },
-	{ 0xb00000, 0xb00fff, paletteram16_xRRRRRGGGGGBBBBB_word_w, &paletteram16 },
-	{ 0xd00000, 0xd00fff, MWA16_RAM, &supes_attribram, &supes_attribram_size },
-	{ 0xe00000, 0xe03fff, MWA16_RAM, &supes_videoram, &supes_videoram_size },
-	{ 0xf00000, 0xf03fff, MWA16_RAM },			/* Main RAM */
-MEMORY_END
+static ADDRESS_MAP_START( daisenpu_writemem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x03ffff) AM_WRITE(MWA16_ROM)
+//	AM_RANGE(0x400000, 0x400001) AM_WRITE(MWA16_NOP)	/* written each frame at $2ac, values change */
+//	AM_RANGE(0x600000, 0x600001) AM_WRITE(MWA16_NOP)	/* written each frame at $2a2, values change */
+	AM_RANGE(0x800000, 0x800001) AM_WRITE(taitosound_port16_lsb_w)
+	AM_RANGE(0x800002, 0x800003) AM_WRITE(taitosound_comm16_lsb_w)
+	AM_RANGE(0x900000, 0x90000f) AM_WRITE(daisenpu_input_w)
+	AM_RANGE(0xb00000, 0xb00fff) AM_WRITE(paletteram16_xRRRRRGGGGGBBBBB_word_w) AM_BASE(&paletteram16)
+	AM_RANGE(0xd00000, 0xd007ff) AM_WRITE(MWA16_RAM) AM_BASE(&spriteram16	)	// Sprites Y
+	AM_RANGE(0xe00000, 0xe03fff) AM_WRITE(MWA16_RAM) AM_BASE(&spriteram16_2	)	// Sprites Code + X + Attr
+	AM_RANGE(0xf00000, 0xf03fff) AM_WRITE(MWA16_RAM)			/* Main RAM */
+ADDRESS_MAP_END
 
-static MEMORY_READ16_START( gigandes_readmem )
-	{ 0x000000, 0x07ffff, MRA16_ROM },
-	{ 0x500000, 0x500007, superman_dsw_input_r },
-	{ 0x800000, 0x800001, MRA16_NOP },
-	{ 0x800002, 0x800003, taitosound_comm16_lsb_r },
-	{ 0x900000, 0x90000f, daisenpu_input_r },
-	{ 0xb00000, 0xb00fff, paletteram16_word_r },
-	{ 0xd00000, 0xd007ff, MRA16_RAM },	/* video attribute ram */
-	{ 0xe00000, 0xe03fff, MRA16_RAM },	/* object ram */
-	{ 0xf00000, 0xf03fff, MRA16_RAM },	/* Main RAM */
-MEMORY_END
+static ADDRESS_MAP_START( gigandes_readmem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x07ffff) AM_READ(MRA16_ROM)
+	AM_RANGE(0x500000, 0x500007) AM_READ(superman_dsw_input_r)
+	AM_RANGE(0x800000, 0x800001) AM_READ(MRA16_NOP)
+	AM_RANGE(0x800002, 0x800003) AM_READ(taitosound_comm16_lsb_r)
+	AM_RANGE(0x900000, 0x90000f) AM_READ(daisenpu_input_r)
+	AM_RANGE(0xb00000, 0xb00fff) AM_READ(paletteram16_word_r)
+	AM_RANGE(0xd00000, 0xd007ff) AM_READ(MRA16_RAM)	/* video attribute ram */
+	AM_RANGE(0xe00000, 0xe03fff) AM_READ(MRA16_RAM)	/* object ram */
+	AM_RANGE(0xf00000, 0xf03fff) AM_READ(MRA16_RAM)	/* Main RAM */
+ADDRESS_MAP_END
 
-static MEMORY_WRITE16_START( gigandes_writemem )
-	{ 0x000000, 0x07ffff, MWA16_ROM },
-	{ 0x400000, 0x400001, MWA16_NOP },	/* 0x1 written each frame at $d42, watchdog? */
-	{ 0x600000, 0x600001, MWA16_NOP },	/* 0x1 written each frame at $d3c, watchdog? */
-	{ 0x800000, 0x800001, taitosound_port16_lsb_w },
-	{ 0x800002, 0x800003, taitosound_comm16_lsb_w },
-	{ 0x900000, 0x90000f, daisenpu_input_w },
-	{ 0xb00000, 0xb00fff, paletteram16_xRRRRRGGGGGBBBBB_word_w, &paletteram16 },
-	{ 0xd00000, 0xd007ff, MWA16_RAM, &supes_attribram, &supes_attribram_size },
-	{ 0xe00000, 0xe03fff, MWA16_RAM, &supes_videoram, &supes_videoram_size },
-	{ 0xf00000, 0xf03fff, MWA16_RAM },			/* Main RAM */
-MEMORY_END
+static ADDRESS_MAP_START( gigandes_writemem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x07ffff) AM_WRITE(MWA16_ROM)
+	AM_RANGE(0x400000, 0x400001) AM_WRITE(MWA16_NOP)	/* 0x1 written each frame at $d42, watchdog? */
+	AM_RANGE(0x600000, 0x600001) AM_WRITE(MWA16_NOP)	/* 0x1 written each frame at $d3c, watchdog? */
+	AM_RANGE(0x800000, 0x800001) AM_WRITE(taitosound_port16_lsb_w)
+	AM_RANGE(0x800002, 0x800003) AM_WRITE(taitosound_comm16_lsb_w)
+	AM_RANGE(0x900000, 0x90000f) AM_WRITE(daisenpu_input_w)
+	AM_RANGE(0xb00000, 0xb00fff) AM_WRITE(paletteram16_xRRRRRGGGGGBBBBB_word_w) AM_BASE(&paletteram16)
+	AM_RANGE(0xd00000, 0xd007ff) AM_WRITE(MWA16_RAM) AM_BASE(&spriteram16	)	// Sprites Y
+	AM_RANGE(0xe00000, 0xe03fff) AM_WRITE(MWA16_RAM) AM_BASE(&spriteram16_2	)	// Sprites Code + X + Attr
+	AM_RANGE(0xf00000, 0xf03fff) AM_WRITE(MWA16_RAM)			/* Main RAM */
+ADDRESS_MAP_END
 
-static MEMORY_READ16_START( ballbros_readmem )
-	{ 0x000000, 0x03ffff, MRA16_ROM },
-	{ 0x500000, 0x50000f, superman_dsw_input_r },
-	{ 0x800000, 0x800001, MRA16_NOP },
-	{ 0x800002, 0x800003, taitosound_comm16_lsb_r },
-	{ 0x900000, 0x90000f, daisenpu_input_r },
-	{ 0xb00000, 0xb00fff, paletteram16_word_r },
-	{ 0xd00000, 0xd007ff, MRA16_RAM },	/* video attribute ram */
-	{ 0xe00000, 0xe03fff, MRA16_RAM },	/* object ram */
-	{ 0xf00000, 0xf03fff, MRA16_RAM },	/* Main RAM */
-MEMORY_END
+static ADDRESS_MAP_START( ballbros_readmem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x03ffff) AM_READ(MRA16_ROM)
+	AM_RANGE(0x500000, 0x50000f) AM_READ(superman_dsw_input_r)
+	AM_RANGE(0x800000, 0x800001) AM_READ(MRA16_NOP)
+	AM_RANGE(0x800002, 0x800003) AM_READ(taitosound_comm16_lsb_r)
+	AM_RANGE(0x900000, 0x90000f) AM_READ(daisenpu_input_r)
+	AM_RANGE(0xb00000, 0xb00fff) AM_READ(paletteram16_word_r)
+	AM_RANGE(0xd00000, 0xd007ff) AM_READ(MRA16_RAM)	/* video attribute ram */
+	AM_RANGE(0xe00000, 0xe03fff) AM_READ(MRA16_RAM)	/* object ram */
+	AM_RANGE(0xf00000, 0xf03fff) AM_READ(MRA16_RAM)	/* Main RAM */
+ADDRESS_MAP_END
 
-static MEMORY_WRITE16_START( ballbros_writemem )
-	{ 0x000000, 0x03ffff, MWA16_ROM },
-	{ 0x400000, 0x400001, MWA16_NOP },	/* 0x1 written each frame at $c56, watchdog? */
-	{ 0x600000, 0x600001, MWA16_NOP },	/* 0x1 written each frame at $c4e, watchdog? */
-	{ 0x800000, 0x800001, taitosound_port16_lsb_w },
-	{ 0x800002, 0x800003, taitosound_comm16_lsb_w },
-	{ 0x900000, 0x90000f, daisenpu_input_w },
-	{ 0xb00000, 0xb00fff, paletteram16_xRRRRRGGGGGBBBBB_word_w, &paletteram16 },
-	{ 0xd00000, 0xd007ff, MWA16_RAM, &supes_attribram, &supes_attribram_size },
-	{ 0xe00000, 0xe03fff, MWA16_RAM, &supes_videoram, &supes_videoram_size },
-	{ 0xf00000, 0xf03fff, MWA16_RAM },			/* Main RAM */
-MEMORY_END
+static ADDRESS_MAP_START( ballbros_writemem, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000000, 0x03ffff) AM_WRITE(MWA16_ROM)
+	AM_RANGE(0x400000, 0x400001) AM_WRITE(MWA16_NOP)	/* 0x1 written each frame at $c56, watchdog? */
+	AM_RANGE(0x600000, 0x600001) AM_WRITE(MWA16_NOP)	/* 0x1 written each frame at $c4e, watchdog? */
+	AM_RANGE(0x800000, 0x800001) AM_WRITE(taitosound_port16_lsb_w)
+	AM_RANGE(0x800002, 0x800003) AM_WRITE(taitosound_comm16_lsb_w)
+	AM_RANGE(0x900000, 0x90000f) AM_WRITE(daisenpu_input_w)
+	AM_RANGE(0xb00000, 0xb00fff) AM_WRITE(paletteram16_xRRRRRGGGGGBBBBB_word_w) AM_BASE(&paletteram16)
+	AM_RANGE(0xd00000, 0xd007ff) AM_WRITE(MWA16_RAM) AM_BASE(&spriteram16	)	// Sprites Y
+	AM_RANGE(0xe00000, 0xe03fff) AM_WRITE(MWA16_RAM) AM_BASE(&spriteram16_2	)	// Sprites Code + X + Attr
+	AM_RANGE(0xf00000, 0xf03fff) AM_WRITE(MWA16_RAM)			/* Main RAM */
+ADDRESS_MAP_END
 
 
 /**************************************************************************/
 
-static MEMORY_READ_START( sound_readmem )
-	{ 0x0000, 0x3fff, MRA_ROM },
-	{ 0x4000, 0x7fff, MRA_BANK2 },
-	{ 0xc000, 0xdfff, MRA_RAM },
-	{ 0xe000, 0xe000, YM2610_status_port_0_A_r },
-	{ 0xe001, 0xe001, YM2610_read_port_0_r },
-	{ 0xe002, 0xe002, YM2610_status_port_0_B_r },
-	{ 0xe200, 0xe200, MRA_NOP },
-	{ 0xe201, 0xe201, taitosound_slave_comm_r },
-	{ 0xea00, 0xea00, MRA_NOP },
-MEMORY_END
+static ADDRESS_MAP_START( sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x3fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x4000, 0x7fff) AM_READ(MRA8_BANK2)
+	AM_RANGE(0xc000, 0xdfff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xe000, 0xe000) AM_READ(YM2610_status_port_0_A_r)
+	AM_RANGE(0xe001, 0xe001) AM_READ(YM2610_read_port_0_r)
+	AM_RANGE(0xe002, 0xe002) AM_READ(YM2610_status_port_0_B_r)
+	AM_RANGE(0xe200, 0xe200) AM_READ(MRA8_NOP)
+	AM_RANGE(0xe201, 0xe201) AM_READ(taitosound_slave_comm_r)
+	AM_RANGE(0xea00, 0xea00) AM_READ(MRA8_NOP)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( sound_writemem )
-	{ 0x0000, 0x7fff, MWA_ROM },
-	{ 0xc000, 0xdfff, MWA_RAM },
-	{ 0xe000, 0xe000, YM2610_control_port_0_A_w },
-	{ 0xe001, 0xe001, YM2610_data_port_0_A_w },
-	{ 0xe002, 0xe002, YM2610_control_port_0_B_w },
-	{ 0xe003, 0xe003, YM2610_data_port_0_B_w },
-	{ 0xe200, 0xe200, taitosound_slave_port_w },
-	{ 0xe201, 0xe201, taitosound_slave_comm_w },
-	{ 0xe400, 0xe403, MWA_NOP }, /* pan */
-	{ 0xee00, 0xee00, MWA_NOP }, /* ? */
-	{ 0xf000, 0xf000, MWA_NOP }, /* ? */
-	{ 0xf200, 0xf200, sound_bankswitch_w }, /* bankswitch ? */
-MEMORY_END
+static ADDRESS_MAP_START( sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0xc000, 0xdfff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xe000, 0xe000) AM_WRITE(YM2610_control_port_0_A_w)
+	AM_RANGE(0xe001, 0xe001) AM_WRITE(YM2610_data_port_0_A_w)
+	AM_RANGE(0xe002, 0xe002) AM_WRITE(YM2610_control_port_0_B_w)
+	AM_RANGE(0xe003, 0xe003) AM_WRITE(YM2610_data_port_0_B_w)
+	AM_RANGE(0xe200, 0xe200) AM_WRITE(taitosound_slave_port_w)
+	AM_RANGE(0xe201, 0xe201) AM_WRITE(taitosound_slave_comm_w)
+	AM_RANGE(0xe400, 0xe403) AM_WRITE(MWA8_NOP) /* pan */
+	AM_RANGE(0xee00, 0xee00) AM_WRITE(MWA8_NOP) /* ? */
+	AM_RANGE(0xf000, 0xf000) AM_WRITE(MWA8_NOP) /* ? */
+	AM_RANGE(0xf200, 0xf200) AM_WRITE(sound_bankswitch_w) /* bankswitch ? */
+ADDRESS_MAP_END
 
-static MEMORY_READ_START( daisenpu_sound_readmem )
-	{ 0x0000, 0x3fff, MRA_ROM },
-	{ 0x4000, 0x7fff, MRA_BANK2 },
-	{ 0xc000, 0xdfff, MRA_RAM },
-	{ 0xe000, 0xe001, YM2151_status_port_0_r },
-	{ 0xe200, 0xe200, MRA_NOP },
-	{ 0xe201, 0xe201, taitosound_slave_comm_r },
-	{ 0xea00, 0xea00, MRA_NOP },
-MEMORY_END
+static ADDRESS_MAP_START( daisenpu_sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x3fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x4000, 0x7fff) AM_READ(MRA8_BANK2)
+	AM_RANGE(0xc000, 0xdfff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xe000, 0xe001) AM_READ(YM2151_status_port_0_r)
+	AM_RANGE(0xe200, 0xe200) AM_READ(MRA8_NOP)
+	AM_RANGE(0xe201, 0xe201) AM_READ(taitosound_slave_comm_r)
+	AM_RANGE(0xea00, 0xea00) AM_READ(MRA8_NOP)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( daisenpu_sound_writemem )
-	{ 0x0000, 0x7fff, MWA_ROM },
-	{ 0xc000, 0xdfff, MWA_RAM },
-	{ 0xe000, 0xe000, YM2151_register_port_0_w },
-	{ 0xe001, 0xe001, YM2151_data_port_0_w },
-	{ 0xe200, 0xe200, taitosound_slave_port_w },
-	{ 0xe201, 0xe201, taitosound_slave_comm_w },
-	{ 0xe400, 0xe403, MWA_NOP }, /* pan */
-	{ 0xee00, 0xee00, MWA_NOP }, /* ? */
-	{ 0xf000, 0xf000, MWA_NOP },
-	{ 0xf200, 0xf200, sound_bankswitch_w },
-MEMORY_END
+static ADDRESS_MAP_START( daisenpu_sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0xc000, 0xdfff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xe000, 0xe000) AM_WRITE(YM2151_register_port_0_w)
+	AM_RANGE(0xe001, 0xe001) AM_WRITE(YM2151_data_port_0_w)
+	AM_RANGE(0xe200, 0xe200) AM_WRITE(taitosound_slave_port_w)
+	AM_RANGE(0xe201, 0xe201) AM_WRITE(taitosound_slave_comm_w)
+	AM_RANGE(0xe400, 0xe403) AM_WRITE(MWA8_NOP) /* pan */
+	AM_RANGE(0xee00, 0xee00) AM_WRITE(MWA8_NOP) /* ? */
+	AM_RANGE(0xf000, 0xf000) AM_WRITE(MWA8_NOP)
+	AM_RANGE(0xf200, 0xf200) AM_WRITE(sound_bankswitch_w)
+ADDRESS_MAP_END
 
-static MEMORY_READ_START( ballbros_sound_readmem )
-	{ 0x0000, 0x3fff, MRA_ROM },
-	{ 0x4000, 0x7fff, MRA_BANK2 },
-	{ 0xc000, 0xdfff, MRA_RAM },
-	{ 0xe000, 0xe000, YM2610_status_port_0_A_r },
-	{ 0xe001, 0xe001, YM2610_read_port_0_r },
-	{ 0xe002, 0xe002, YM2610_status_port_0_B_r },
-	{ 0xe003, 0xe003, YM2610_read_port_0_r },
-	{ 0xe200, 0xe200, MRA_NOP },
-	{ 0xe200, 0xe200, MRA_NOP },
-	{ 0xe201, 0xe201, taitosound_slave_comm_r },
-	{ 0xea00, 0xea00, MRA_NOP },
-MEMORY_END
+static ADDRESS_MAP_START( ballbros_sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x3fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x4000, 0x7fff) AM_READ(MRA8_BANK2)
+	AM_RANGE(0xc000, 0xdfff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xe000, 0xe000) AM_READ(YM2610_status_port_0_A_r)
+	AM_RANGE(0xe001, 0xe001) AM_READ(YM2610_read_port_0_r)
+	AM_RANGE(0xe002, 0xe002) AM_READ(YM2610_status_port_0_B_r)
+	AM_RANGE(0xe003, 0xe003) AM_READ(YM2610_read_port_0_r)
+	AM_RANGE(0xe200, 0xe200) AM_READ(MRA8_NOP)
+	AM_RANGE(0xe200, 0xe200) AM_READ(MRA8_NOP)
+	AM_RANGE(0xe201, 0xe201) AM_READ(taitosound_slave_comm_r)
+	AM_RANGE(0xea00, 0xea00) AM_READ(MRA8_NOP)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( ballbros_sound_writemem )
-	{ 0x0000, 0x7fff, MWA_ROM },
-	{ 0xc000, 0xdfff, MWA_RAM },
-	{ 0xe000, 0xe000, YM2610_control_port_0_A_w },
-	{ 0xe001, 0xe001, YM2610_data_port_0_A_w },
-	{ 0xe002, 0xe002, YM2610_control_port_0_B_w },
-	{ 0xe003, 0xe003, YM2610_data_port_0_B_w },
-	{ 0xe200, 0xe200, taitosound_slave_port_w },
-	{ 0xe201, 0xe201, taitosound_slave_comm_w },
-	{ 0xe400, 0xe403, MWA_NOP }, /* pan */
-	{ 0xee00, 0xee00, MWA_NOP }, /* ? */
-	{ 0xf000, 0xf000, MWA_NOP }, /* ? */
-	{ 0xf200, 0xf200, sound_bankswitch_w }, /* bankswitch ? */
-MEMORY_END
+static ADDRESS_MAP_START( ballbros_sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0xc000, 0xdfff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0xe000, 0xe000) AM_WRITE(YM2610_control_port_0_A_w)
+	AM_RANGE(0xe001, 0xe001) AM_WRITE(YM2610_data_port_0_A_w)
+	AM_RANGE(0xe002, 0xe002) AM_WRITE(YM2610_control_port_0_B_w)
+	AM_RANGE(0xe003, 0xe003) AM_WRITE(YM2610_data_port_0_B_w)
+	AM_RANGE(0xe200, 0xe200) AM_WRITE(taitosound_slave_port_w)
+	AM_RANGE(0xe201, 0xe201) AM_WRITE(taitosound_slave_comm_w)
+	AM_RANGE(0xe400, 0xe403) AM_WRITE(MWA8_NOP) /* pan */
+	AM_RANGE(0xee00, 0xee00) AM_WRITE(MWA8_NOP) /* ? */
+	AM_RANGE(0xf000, 0xf000) AM_WRITE(MWA8_NOP) /* ? */
+	AM_RANGE(0xf200, 0xf200) AM_WRITE(sound_bankswitch_w) /* bankswitch ? */
+ADDRESS_MAP_END
 
 
 /**************************************************************************/
@@ -869,6 +918,71 @@ INPUT_PORTS_START( ballbros )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 INPUT_PORTS_END
 
+INPUT_PORTS_START( kyustrkr )
+	PORT_START /* DSW A / DSW B */
+	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Coin_A ) )
+	PORT_DIPSETTING(    0x01, DEF_STR( 2C_1C ))
+	PORT_DIPSETTING(    0x03, DEF_STR( 1C_1C ))
+	PORT_DIPSETTING(    0x00, DEF_STR( 2C_3C ))
+	PORT_DIPSETTING(    0x02, DEF_STR( 1C_2C ))
+	PORT_DIPNAME( 0x0c, 0x0c, DEF_STR( Coin_B ) )
+	PORT_DIPSETTING(    0x04, DEF_STR( 2C_1C ))
+	PORT_DIPSETTING(    0x0c, DEF_STR( 1C_1C ))
+	PORT_DIPSETTING(    0x00, DEF_STR( 2C_3C ))
+	PORT_DIPSETTING(    0x08, DEF_STR( 1C_2C ))
+	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x60, 0x40, DEF_STR( Difficulty ) )
+	PORT_DIPSETTING(    0x60, "Easy" )
+	PORT_DIPSETTING(    0x40, "Medium" )
+	PORT_DIPSETTING(    0x20, "Hard" )
+	PORT_DIPSETTING(    0x00, "Hardest" )
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )	// Free play in test mode, does not work
+	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+
+	PORT_START /* DSW C / DSW D */
+	PORT_DIPNAME( 0x01, 0x00, DEF_STR( Demo_Sounds ) )
+	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x02, 0x00, DEF_STR( Flip_Screen ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x02, DEF_STR( On ) )
+	PORT_DIPNAME( 0x04, 0x00, "Allow Continue" )
+	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x40, 0x00, "Language" )
+	PORT_DIPSETTING(    0x00, "English" )
+	PORT_DIPSETTING(    0x40, "Japanese" )
+	PORT_SERVICE( 0x80, IP_ACTIVE_LOW )
+
+	PORT_START      /* IN0 */
+	TAITO_X_PLAYERS_INPUT( IPF_PLAYER1 )
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON3 | IPF_PLAYER1 )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_START1 )
+
+	PORT_START      /* IN1 */
+	TAITO_X_PLAYERS_INPUT( IPF_PLAYER2 )
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON3 | IPF_PLAYER2 )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_START2 )
+
+	PORT_START      /* IN2 */
+	TAITO_X_SYSTEM_INPUT
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
+INPUT_PORTS_END
 
 /**************************************************************************/
 
@@ -969,11 +1083,11 @@ static MACHINE_DRIVER_START( superman )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000, 8000000)	/* 8 MHz? */
-	MDRV_CPU_MEMORY(superman_readmem,superman_writemem)
+	MDRV_CPU_PROGRAM_MAP(superman_readmem,superman_writemem)
 	MDRV_CPU_VBLANK_INT(irq6_line_hold,1)
 
 	MDRV_CPU_ADD(Z80, 4000000)	/* 4 MHz ??? */
-	MDRV_CPU_MEMORY(sound_readmem,sound_writemem)
+	MDRV_CPU_PROGRAM_MAP(sound_readmem,sound_writemem)
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(DEFAULT_60HZ_VBLANK_DURATION)
@@ -983,12 +1097,12 @@ static MACHINE_DRIVER_START( superman )
 	/* video hardware */
 	MDRV_VIDEO_ATTRIBUTES(VIDEO_TYPE_RASTER)
 	MDRV_SCREEN_SIZE(52*8, 32*8)
-	MDRV_VISIBLE_AREA(2*8, 50*8-1, 2*8, 32*8-1)
+	MDRV_VISIBLE_AREA(0*8, 48*8-1, 1*8, 31*8-1)
 	MDRV_GFXDECODE(superman_gfxdecodeinfo)
 	MDRV_PALETTE_LENGTH(2048)
 
-	MDRV_VIDEO_START(superman)
-	MDRV_VIDEO_UPDATE(superman)
+	MDRV_VIDEO_START(seta_no_layers)
+	MDRV_VIDEO_UPDATE(seta_no_layers)
 
 	/* sound hardware */
 	MDRV_SOUND_ATTRIBUTES(SOUND_SUPPORTS_STEREO)
@@ -1000,11 +1114,11 @@ static MACHINE_DRIVER_START( daisenpu )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000, 8000000)	/* 8 MHz? */
-	MDRV_CPU_MEMORY(daisenpu_readmem,daisenpu_writemem)
+	MDRV_CPU_PROGRAM_MAP(daisenpu_readmem,daisenpu_writemem)
 	MDRV_CPU_VBLANK_INT(irq2_line_hold,1)
 
 	MDRV_CPU_ADD(Z80, 4000000)	/* 4 MHz ??? */
-	MDRV_CPU_MEMORY(daisenpu_sound_readmem,daisenpu_sound_writemem)
+	MDRV_CPU_PROGRAM_MAP(daisenpu_sound_readmem,daisenpu_sound_writemem)
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(DEFAULT_60HZ_VBLANK_DURATION)
@@ -1014,28 +1128,27 @@ static MACHINE_DRIVER_START( daisenpu )
 	/* video hardware */
 	MDRV_VIDEO_ATTRIBUTES(VIDEO_TYPE_RASTER)
 	MDRV_SCREEN_SIZE(52*8, 32*8)
-	MDRV_VISIBLE_AREA(2*8, 50*8-1, 3*8, 31*8-1)
+	MDRV_VISIBLE_AREA(0*8, 48*8-1, 2*8, 30*8-1)
 	MDRV_GFXDECODE(superman_gfxdecodeinfo)
 	MDRV_PALETTE_LENGTH(2048)
 
-	MDRV_VIDEO_START(superman)
-	MDRV_VIDEO_UPDATE(superman)
+	MDRV_VIDEO_START(seta_no_layers)
+	MDRV_VIDEO_UPDATE(seta_no_layers)
 
 	/* sound hardware */
 	MDRV_SOUND_ATTRIBUTES(SOUND_SUPPORTS_STEREO)
 	MDRV_SOUND_ADD(YM2151, ym2151_interface)
 MACHINE_DRIVER_END
 
-
 static MACHINE_DRIVER_START( gigandes )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000, 8000000)	/* 8 MHz? */
-	MDRV_CPU_MEMORY(gigandes_readmem,gigandes_writemem)
+	MDRV_CPU_PROGRAM_MAP(gigandes_readmem,gigandes_writemem)
 	MDRV_CPU_VBLANK_INT(irq2_line_hold,1)
 
 	MDRV_CPU_ADD(Z80, 4000000)	/* 4 MHz ??? */
-	MDRV_CPU_MEMORY(ballbros_sound_readmem,ballbros_sound_writemem)
+	MDRV_CPU_PROGRAM_MAP(ballbros_sound_readmem,ballbros_sound_writemem)
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(DEFAULT_60HZ_VBLANK_DURATION)
@@ -1045,12 +1158,12 @@ static MACHINE_DRIVER_START( gigandes )
 	/* video hardware */
 	MDRV_VIDEO_ATTRIBUTES(VIDEO_TYPE_RASTER)
 	MDRV_SCREEN_SIZE(52*8, 32*8)
-	MDRV_VISIBLE_AREA(2*8, 50*8-1, 2*8, 32*8-1)
+	MDRV_VISIBLE_AREA(0*8, 48*8-1, 1*8, 31*8-1)
 	MDRV_GFXDECODE(superman_gfxdecodeinfo)
 	MDRV_PALETTE_LENGTH(2048)
 
-	MDRV_VIDEO_START(superman)
-	MDRV_VIDEO_UPDATE(superman)
+	MDRV_VIDEO_START(seta_no_layers)
+	MDRV_VIDEO_UPDATE(seta_no_layers)
 
 	/* sound hardware */
 	MDRV_SOUND_ATTRIBUTES(SOUND_SUPPORTS_STEREO)
@@ -1062,11 +1175,11 @@ static MACHINE_DRIVER_START( ballbros )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M68000, 8000000)	/* 8 MHz? */
-	MDRV_CPU_MEMORY(ballbros_readmem,ballbros_writemem)
+	MDRV_CPU_PROGRAM_MAP(ballbros_readmem,ballbros_writemem)
 	MDRV_CPU_VBLANK_INT(irq2_line_hold,1)
 
 	MDRV_CPU_ADD(Z80, 4000000)	/* 4 MHz ??? */
-	MDRV_CPU_MEMORY(ballbros_sound_readmem,ballbros_sound_writemem)
+	MDRV_CPU_PROGRAM_MAP(ballbros_sound_readmem,ballbros_sound_writemem)
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(DEFAULT_60HZ_VBLANK_DURATION)
@@ -1076,13 +1189,13 @@ static MACHINE_DRIVER_START( ballbros )
 	/* video hardware */
 	MDRV_VIDEO_ATTRIBUTES(VIDEO_TYPE_RASTER)
 	MDRV_SCREEN_SIZE(52*8, 32*8)
-	MDRV_VISIBLE_AREA(2*8, 50*8-1, 2*8, 32*8-1)
+	MDRV_VISIBLE_AREA(0*8, 48*8-1, 1*8, 31*8-1)
 
 	MDRV_GFXDECODE(ballbros_gfxdecodeinfo)
 	MDRV_PALETTE_LENGTH(2048)
 
-	MDRV_VIDEO_START(ballbros)
-	MDRV_VIDEO_UPDATE(superman)
+	MDRV_VIDEO_START(seta_no_layers)
+	MDRV_VIDEO_UPDATE(seta_no_layers)
 
 	/* sound hardware */
 	MDRV_SOUND_ATTRIBUTES(SOUND_SUPPORTS_STEREO)
@@ -1215,18 +1328,46 @@ ROM_START( ballbros )
 ROM_END
 
 
+ROM_START( kyustrkr )
+	ROM_REGION( 0x40000, REGION_CPU1, 0 )     /* 512k for 68000 code */
+	ROM_LOAD16_BYTE( "pe.9a", 0x00000, 0x20000, CRC(082b5f96) SHA1(97c08b506b2a07d63f3323359b8564aa3621f483) )
+	ROM_LOAD16_BYTE( "po.4a", 0x00001, 0x20000, CRC(0100361e) SHA1(45791f697c86309c459d0d8c3d3e967a3ece3ede) )
+
+	ROM_REGION( 0x1c000, REGION_CPU2, 0 )     /* 64k for Z80 code */
+	ROM_LOAD( "ic.18d", 0x00000, 0x4000, CRC(92cfb788) SHA1(41cd5433584df05652bd0ce8c5a35dc38262d6f2) )
+	ROM_CONTINUE(       0x10000, 0xc000 ) /* banked stuff */
+
+	ROM_REGION( 0x80000, REGION_GFX1, ROMREGION_DISPOSE )
+	ROM_LOAD( "m-8-3.u3",     0x00000, 0x20000, CRC(1c4084e6) SHA1(addea2ba07bddb41fbe7f0fc859e744990bb9ff5) )
+	ROM_LOAD( "m-8-2.u4",     0x20000, 0x20000, CRC(ada21c4d) SHA1(a683c8d798370c50d9bd5e67e91d7ed0f1659c20) )
+	ROM_LOAD( "m-8-1.u5",     0x40000, 0x20000, CRC(9d95aad6) SHA1(3391b14196fea12223ab247d909791bc68fc8d56) )
+	ROM_LOAD( "m-8-0.u6",     0x60000, 0x20000, CRC(0dfb6ed3) SHA1(0937614c8f97040d0216363bfb2bc21161128a3c) )
+
+	ROM_REGION( 0x80000, REGION_SOUND1, 0 )	/* ADPCM samples */
+	ROM_LOAD( "m-8-5.u2",     0x00000, 0x20000, CRC(d9d90e0a) SHA1(1011548b4fb5f1a194c93ded512e74cda2c06ceb) )
+
+	ROM_REGION( 0x80000, REGION_SOUND2, 0 )	/* Delta-T samples */
+	ROM_LOAD( "m-8-4.u1",     0x00000, 0x20000, CRC(d3f6047a) SHA1(0db6d762bbe2d68cddf30e06125b904e1021b96d) )
+ROM_END
+
 DRIVER_INIT( taitox )
 {
 	state_save_register_int("taitof2", 0, "sound region", &banknum);
 	state_save_register_func_postload(reset_sound_region);
 }
 
+DRIVER_INIT( kyustrkr )
+{
+	init_taitox();
+	install_mem_write16_handler (0, 0x900000, 0x90000f, kyustrkr_input_w);
+}
 
 GAME( 1988, superman, 0,        superman, superman, taitox,   ROT0,   "Taito Corporation", "Superman" )
 GAME( 1989, twinhawk, 0,        daisenpu, twinhawk, taitox,   ROT270, "Taito Corporation Japan", "Twin Hawk (World)" )
 GAME( 1989, twinhwku, twinhawk, daisenpu, twinhwku, taitox,   ROT270, "Taito America Corporation", "Twin Hawk (US)" )
 GAME( 1989, daisenpu, twinhawk, daisenpu, daisenpu, taitox,   ROT270, "Taito Corporation", "Daisenpu (Japan)" )
 GAME( 1989, gigandes, 0,        gigandes, gigandes, taitox,   ROT0,   "East Technology", "Gigandes" )
+GAME( 1989, kyustrkr, 0,        ballbros, kyustrkr, kyustrkr, ROT180, "East Technology", "Last Striker / Kyuukyoku no Striker" )
 GAME( 1992, ballbros, 0,        ballbros, ballbros, taitox,   ROT0,   "East Technology", "Balloon Brothers" )
 #pragma code_seg()
 #pragma data_seg()

@@ -87,101 +87,101 @@ static READ_HANDLER( deco16_io_r )
 
 /***************************************************************************/
 
-static MEMORY_READ_START( prosport_readmem )
-	{ 0x0200, 0x021f, paletteram_r },
-	{ 0x0000, 0x0fff, MRA_RAM },
-	{ 0x1000, 0x2fff, MRA_RAM },
-	{ 0x8000, 0x800f, deco16_io_r },
-	{ 0x4000, 0xffff, MRA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( prosport_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0200, 0x021f) AM_READ(paletteram_r)
+	AM_RANGE(0x0000, 0x0fff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x1000, 0x2fff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x8000, 0x800f) AM_READ(deco16_io_r)
+	AM_RANGE(0x4000, 0xffff) AM_READ(MRA8_ROM)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( prosport_writemem )
-	{ 0x0200, 0x021f, prosport_paletteram_w, &paletteram },
-	{ 0x0000, 0x0fff, MWA_RAM },
-	{ 0x1200, 0x1fff, MWA_RAM },
-	{ 0x3000, 0x37ff, liberate_videoram_w, &videoram },
-	{ 0x3800, 0x3fff, MWA_RAM, &spriteram },
-	{ 0x8000, 0x800f, deco16_io_w },
-	{ 0x4000, 0xffff, MWA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( prosport_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0200, 0x021f) AM_WRITE(prosport_paletteram_w) AM_BASE(&paletteram)
+	AM_RANGE(0x0000, 0x0fff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x1200, 0x1fff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x3000, 0x37ff) AM_WRITE(liberate_videoram_w) AM_BASE(&videoram)
+	AM_RANGE(0x3800, 0x3fff) AM_WRITE(MWA8_RAM) AM_BASE(&spriteram)
+	AM_RANGE(0x8000, 0x800f) AM_WRITE(deco16_io_w)
+	AM_RANGE(0x4000, 0xffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
-static MEMORY_READ_START( liberate_readmem )
-	{ 0x0000, 0x0fff, MRA_RAM },
-	{ 0x1000, 0x3fff, MRA_ROM }, /* Mirror of main rom */
-	{ 0x4000, 0x7fff, deco16_bank_r },
-	{ 0x8000, 0x800f, deco16_io_r },
-	{ 0x6200, 0x67ff, MRA_RAM },
-	{ 0x8000, 0xffff, MRA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( liberate_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x0fff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x1000, 0x3fff) AM_READ(MRA8_ROM) /* Mirror of main rom */
+	AM_RANGE(0x4000, 0x7fff) AM_READ(deco16_bank_r)
+	AM_RANGE(0x8000, 0x800f) AM_READ(deco16_io_r)
+	AM_RANGE(0x6200, 0x67ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x8000, 0xffff) AM_READ(MRA8_ROM)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( liberate_writemem )
-	{ 0x0000, 0x0fff, MWA_RAM },
-	{ 0x1000, 0x3fff, MWA_ROM }, /* Mirror of main rom */
-	{ 0x4000, 0x47ff, liberate_videoram_w, &videoram },
-	{ 0x4800, 0x4fff, MWA_RAM, &spriteram },
-	{ 0x6200, 0x67ff, MWA_RAM, &scratchram },
-	{ 0x8000, 0x800f, deco16_io_w },
-	{ 0x8000, 0xffff, MWA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( liberate_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x0fff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x1000, 0x3fff) AM_WRITE(MWA8_ROM) /* Mirror of main rom */
+	AM_RANGE(0x4000, 0x47ff) AM_WRITE(liberate_videoram_w) AM_BASE(&videoram)
+	AM_RANGE(0x4800, 0x4fff) AM_WRITE(MWA8_RAM) AM_BASE(&spriteram)
+	AM_RANGE(0x6200, 0x67ff) AM_WRITE(MWA8_RAM) AM_BASE(&scratchram)
+	AM_RANGE(0x8000, 0x800f) AM_WRITE(deco16_io_w)
+	AM_RANGE(0x8000, 0xffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
-static PORT_READ_START( deco16_readport )
-	{ 0x00, 0x00, input_port_0_r },
-PORT_END
+static ADDRESS_MAP_START( deco16_readport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x00, 0x00) AM_READ(input_port_0_r)
+ADDRESS_MAP_END
 
-static PORT_WRITE_START( deco16_writeport )
-	{ 0x00, 0x00, deco16_bank_w },
-PORT_END
+static ADDRESS_MAP_START( deco16_writeport, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x00, 0x00) AM_WRITE(deco16_bank_w)
+ADDRESS_MAP_END
 
-static MEMORY_READ_START( liberatb_readmem )
-	{ 0x00fe, 0x00fe, input_port_0_r },
-	{ 0x0000, 0x0fff, MRA_RAM },
-	{ 0x1000, 0x3fff, MRA_ROM }, /* Mirror of main rom */
-	{ 0x4000, 0x7fff, deco16_bank_r },
-	{ 0xf000, 0xf00f, deco16_io_r },
-	{ 0x8000, 0xffff, MRA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( liberatb_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x00fe, 0x00fe) AM_READ(input_port_0_r)
+	AM_RANGE(0x0000, 0x0fff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x1000, 0x3fff) AM_READ(MRA8_ROM) /* Mirror of main rom */
+	AM_RANGE(0x4000, 0x7fff) AM_READ(deco16_bank_r)
+	AM_RANGE(0xf000, 0xf00f) AM_READ(deco16_io_r)
+	AM_RANGE(0x8000, 0xffff) AM_READ(MRA8_ROM)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( liberatb_writemem )
-	{ 0x0000, 0x0fff, MWA_RAM },
-	{ 0x1000, 0x3fff, MWA_ROM }, /* Mirror of main rom */
-	{ 0x4000, 0x47ff, liberate_videoram_w, &videoram },
-	{ 0x4800, 0x4fff, MWA_RAM, &spriteram },
-	{ 0x6200, 0x67ff, MWA_RAM, &scratchram },
-//	{ 0xf000, 0xf00f, deco16_io_w },
-	{ 0x8000, 0xffff, MWA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( liberatb_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x0fff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x1000, 0x3fff) AM_WRITE(MWA8_ROM) /* Mirror of main rom */
+	AM_RANGE(0x4000, 0x47ff) AM_WRITE(liberate_videoram_w) AM_BASE(&videoram)
+	AM_RANGE(0x4800, 0x4fff) AM_WRITE(MWA8_RAM) AM_BASE(&spriteram)
+	AM_RANGE(0x6200, 0x67ff) AM_WRITE(MWA8_RAM) AM_BASE(&scratchram)
+//	AM_RANGE(0xf000, 0xf00f) AM_WRITE(deco16_io_w)
+	AM_RANGE(0x8000, 0xffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
 /***************************************************************************/
 
-static MEMORY_READ_START( prosoccr_sound_readmem )
-    { 0x0000, 0x01ff, MRA_RAM },
-	{ 0xa000, 0xa000, soundlatch_r },
-    { 0xe000, 0xffff, MRA_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( prosoccr_sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+    AM_RANGE(0x0000, 0x01ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xa000, 0xa000) AM_READ(soundlatch_r)
+    AM_RANGE(0xe000, 0xffff) AM_READ(MRA8_RAM)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( prosoccr_sound_writemem )
-    { 0x0000, 0x01ff, MWA_RAM },
-	{ 0x2000, 0x2000, AY8910_write_port_0_w },
-	{ 0x4000, 0x4000, AY8910_control_port_0_w },
-	{ 0x6000, 0x6000, AY8910_write_port_1_w },
-	{ 0x8000, 0x8000, AY8910_control_port_1_w },
-    { 0xe000, 0xffff, MWA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( prosoccr_sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+    AM_RANGE(0x0000, 0x01ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x2000, 0x2000) AM_WRITE(AY8910_write_port_0_w)
+	AM_RANGE(0x4000, 0x4000) AM_WRITE(AY8910_control_port_0_w)
+	AM_RANGE(0x6000, 0x6000) AM_WRITE(AY8910_write_port_1_w)
+	AM_RANGE(0x8000, 0x8000) AM_WRITE(AY8910_control_port_1_w)
+    AM_RANGE(0xe000, 0xffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
-static MEMORY_READ_START( sound_readmem )
-    { 0x0000, 0x01ff, MRA_RAM },
-	{ 0xb000, 0xb000, soundlatch_r },
-    { 0xc000, 0xffff, MRA_RAM },
-MEMORY_END
+static ADDRESS_MAP_START( sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+    AM_RANGE(0x0000, 0x01ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xb000, 0xb000) AM_READ(soundlatch_r)
+    AM_RANGE(0xc000, 0xffff) AM_READ(MRA8_RAM)
+ADDRESS_MAP_END
 
-static MEMORY_WRITE_START( sound_writemem )
-    { 0x0000, 0x01ff, MWA_RAM },
-	{ 0x3000, 0x3000, AY8910_write_port_0_w },
-	{ 0x4000, 0x4000, AY8910_control_port_0_w },
-	{ 0x7000, 0x7000, AY8910_write_port_1_w },
-	{ 0x8000, 0x8000, AY8910_control_port_1_w },
-    { 0xc000, 0xffff, MWA_ROM },
-MEMORY_END
+static ADDRESS_MAP_START( sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+    AM_RANGE(0x0000, 0x01ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x3000, 0x3000) AM_WRITE(AY8910_write_port_0_w)
+	AM_RANGE(0x4000, 0x4000) AM_WRITE(AY8910_control_port_0_w)
+	AM_RANGE(0x7000, 0x7000) AM_WRITE(AY8910_write_port_1_w)
+	AM_RANGE(0x8000, 0x8000) AM_WRITE(AY8910_control_port_1_w)
+    AM_RANGE(0xc000, 0xffff) AM_WRITE(MWA8_ROM)
+ADDRESS_MAP_END
 
 /***************************************************************************/
 
@@ -404,8 +404,91 @@ INPUT_PORTS_START( liberate )
 	PORT_DIPSETTING(    0x00, DEF_STR( Upright ) )
 	PORT_DIPSETTING(    0x40, DEF_STR( Cocktail ) )
 	PORT_DIPNAME( 0x80, 0x80, "Manufacturer" )
-	PORT_DIPSETTING(    0x00, "Data East USA" )
-	PORT_DIPSETTING(    0x80, "Data East Corporation" )
+	PORT_DIPSETTING(    0x00, "(Invalid) Data East USA (Dual Assault)" )
+	PORT_DIPSETTING(    0x80, "Data East Corporation (Liberation)" )
+
+	PORT_START
+	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Lives ) )
+	PORT_DIPSETTING(    0x03, "3" )
+	PORT_DIPSETTING(    0x01, "4" )
+	PORT_DIPSETTING(    0x02, "5" )
+	PORT_DIPSETTING(    0x00, "Infinite" )
+	PORT_DIPNAME( 0x0c, 0x0c, "Bonus" )
+	PORT_DIPSETTING(    0x00, "20000" )
+	PORT_DIPSETTING(    0x0c, "20000 30000" )
+	PORT_DIPSETTING(    0x08, "30000 50000" )
+	PORT_DIPSETTING(    0x04, "50000 70000" )
+	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) ) /* Difficulty? */
+	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) ) /* Difficulty? */
+	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+INPUT_PORTS_END
+
+INPUT_PORTS_START( dualaslt )
+	PORT_START
+	PORT_BIT( 0xff, IP_ACTIVE_HIGH, IPT_VBLANK )
+
+	PORT_START
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_8WAY )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT | IPF_8WAY )
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_UP | IPF_8WAY )
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN | IPF_8WAY )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 )
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
+
+	PORT_START
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_8WAY | IPF_COCKTAIL )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT | IPF_8WAY | IPF_COCKTAIL )
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_UP  | IPF_8WAY | IPF_COCKTAIL )
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN | IPF_8WAY | IPF_COCKTAIL )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 | IPF_COCKTAIL )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 | IPF_COCKTAIL )
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_VBLANK )
+
+	PORT_START
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN1 )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_COIN2 )
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_START1 )
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_START2 )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_SERVICE1 )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
+
+	PORT_START
+	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Coin_A ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( 2C_1C ) )
+	PORT_DIPSETTING(    0x03, DEF_STR( 1C_1C ) )
+	PORT_DIPSETTING(    0x02, DEF_STR( 1C_2C ) )
+	PORT_DIPSETTING(    0x01, DEF_STR( 1C_3C ) )
+	PORT_DIPNAME( 0x0c, 0x0c, DEF_STR( Coin_B ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( 2C_1C ) )
+	PORT_DIPSETTING(    0x0c, DEF_STR( 1C_1C ) )
+	PORT_DIPSETTING(    0x08, DEF_STR( 1C_2C ) )
+	PORT_DIPSETTING(    0x04, DEF_STR( 1C_3C ) )
+	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x40, 0x00, DEF_STR( Cabinet ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( Upright ) )
+	PORT_DIPSETTING(    0x40, DEF_STR( Cocktail ) )
+	PORT_DIPNAME( 0x80, 0x00, "Manufacturer / Title" )
+	PORT_DIPSETTING(    0x00, "Data East USA (Dual Assault)" )
+	PORT_DIPSETTING(    0x80, "(Invalid) Data East Corporation (Liberation)" )
 
 	PORT_START
 	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Lives ) )
@@ -551,12 +634,12 @@ static MACHINE_DRIVER_START( prosoccr )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(DECO16, 3000000)
-	MDRV_CPU_MEMORY(liberate_readmem,liberate_writemem)
-	MDRV_CPU_PORTS(deco16_readport,deco16_writeport)
+	MDRV_CPU_PROGRAM_MAP(liberate_readmem,liberate_writemem)
+	MDRV_CPU_IO_MAP(deco16_readport,deco16_writeport)
 
 	MDRV_CPU_ADD(M6502, 1500000)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)
-	MDRV_CPU_MEMORY(prosoccr_sound_readmem,prosoccr_sound_writemem)
+	MDRV_CPU_PROGRAM_MAP(prosoccr_sound_readmem,prosoccr_sound_writemem)
 	MDRV_CPU_VBLANK_INT(nmi_line_pulse,16)
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -582,12 +665,12 @@ static MACHINE_DRIVER_START( prosport )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(DECO16, 2000000)
-	MDRV_CPU_MEMORY(prosport_readmem,prosport_writemem)
-	MDRV_CPU_PORTS(deco16_readport,deco16_writeport)
+	MDRV_CPU_PROGRAM_MAP(prosport_readmem,prosport_writemem)
+	MDRV_CPU_IO_MAP(deco16_readport,deco16_writeport)
 
 	MDRV_CPU_ADD(M6502, 1500000)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)
-	MDRV_CPU_MEMORY(sound_readmem,sound_writemem)
+	MDRV_CPU_PROGRAM_MAP(sound_readmem,sound_writemem)
 	MDRV_CPU_VBLANK_INT(nmi_line_pulse,16)
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -612,13 +695,13 @@ static MACHINE_DRIVER_START( boomrang )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(DECO16, 2000000)
-	MDRV_CPU_MEMORY(liberate_readmem,liberate_writemem)
-	MDRV_CPU_PORTS(deco16_readport,deco16_writeport)
+	MDRV_CPU_PROGRAM_MAP(liberate_readmem,liberate_writemem)
+	MDRV_CPU_IO_MAP(deco16_readport,deco16_writeport)
 	MDRV_CPU_VBLANK_INT(deco16_interrupt,1)
 
 	MDRV_CPU_ADD(M6502, 1500000)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)
-	MDRV_CPU_MEMORY(sound_readmem,sound_writemem)
+	MDRV_CPU_PROGRAM_MAP(sound_readmem,sound_writemem)
 	MDRV_CPU_VBLANK_INT(nmi_line_pulse,16)
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -644,13 +727,13 @@ static MACHINE_DRIVER_START( liberate )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(DECO16, 2000000)
-	MDRV_CPU_MEMORY(liberate_readmem,liberate_writemem)
-	MDRV_CPU_PORTS(deco16_readport,deco16_writeport)
+	MDRV_CPU_PROGRAM_MAP(liberate_readmem,liberate_writemem)
+	MDRV_CPU_IO_MAP(deco16_readport,deco16_writeport)
 	MDRV_CPU_VBLANK_INT(deco16_interrupt,1)
 
 	MDRV_CPU_ADD(M6502, 1500000)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)
-	MDRV_CPU_MEMORY(sound_readmem,sound_writemem)
+	MDRV_CPU_PROGRAM_MAP(sound_readmem,sound_writemem)
 	MDRV_CPU_VBLANK_INT(nmi_line_pulse,16)
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -676,13 +759,12 @@ static MACHINE_DRIVER_START( liberatb )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M6502, 2000000)
-	MDRV_CPU_MEMORY(liberatb_readmem,liberatb_writemem)
-	MDRV_CPU_PORTS(deco16_readport,deco16_writeport)
+	MDRV_CPU_PROGRAM_MAP(liberatb_readmem,liberatb_writemem)
 	MDRV_CPU_VBLANK_INT(deco16_interrupt,1) //todo
 
 	MDRV_CPU_ADD(M6502, 1500000)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)
-	MDRV_CPU_MEMORY(sound_readmem,sound_writemem)
+	MDRV_CPU_PROGRAM_MAP(sound_readmem,sound_writemem)
 	MDRV_CPU_VBLANK_INT(nmi_line_pulse,16)
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -708,60 +790,60 @@ MACHINE_DRIVER_END
 
 ROM_START( prosoccr )
 	ROM_REGION(0x10000, REGION_CPU1, 0)
-	ROM_LOAD( "am07.7e",  0x8000, 0x2000, CRC(55415fb5) )
-	ROM_LOAD( "am08.9e",  0xa000, 0x2000, CRC(73d45d0d) )
-	ROM_LOAD( "am09.10e", 0xc000, 0x2000, CRC(a7ee0b3a) )
-	ROM_LOAD( "am10.11e", 0xe000, 0x2000, CRC(5571bdb8) )
+	ROM_LOAD( "am07.7e",  0x8000, 0x2000, CRC(55415fb5) SHA1(676feb07d4fbd76aae8349b46f7edc8f357f2ddf) )
+	ROM_LOAD( "am08.9e",  0xa000, 0x2000, CRC(73d45d0d) SHA1(07736286087478af404bd9c6b279d631a01cf4e2) )
+	ROM_LOAD( "am09.10e", 0xc000, 0x2000, CRC(a7ee0b3a) SHA1(87e487f863bd90c5b979c2d3c4317869ba1d71d9) )
+	ROM_LOAD( "am10.11e", 0xe000, 0x2000, CRC(5571bdb8) SHA1(a3740650453c9e4f78dcc7826eb112d0d9f65b22) )
 //low reload??
 	ROM_REGION( 0x10000 * 2, REGION_CPU2, 0 )
-	ROM_LOAD( "am06.10a", 0xe000, 0x2000, CRC(37a0c74f) )
+	ROM_LOAD( "am06.10a", 0xe000, 0x2000, CRC(37a0c74f) SHA1(5757b9eaf5b1129ee2d03b0ab6c3b15c120cf43c) )
 
 	ROM_REGION( 0x6000, REGION_GFX1, ROMREGION_DISPOSE )
-	ROM_LOAD( "am00.2b",  0x0000, 0x2000, CRC(f3c8b649) )
-	ROM_LOAD( "am01.5b",  0x2000, 0x2000, CRC(24785bda) )
-	ROM_LOAD( "am02.7b",  0x4000, 0x2000, CRC(c5af58ea) )
+	ROM_LOAD( "am00.2b",  0x0000, 0x2000, CRC(f3c8b649) SHA1(d2d42484e80d9241dac77a78c68314f88e0cbe5d) )
+	ROM_LOAD( "am01.5b",  0x2000, 0x2000, CRC(24785bda) SHA1(536bdda766b46771223f01e463fa4c61e0dd545c) )
+	ROM_LOAD( "am02.7b",  0x4000, 0x2000, CRC(c5af58ea) SHA1(a73d537b88befb76d67cc17d241e78c572c5b737) )
 
 	ROM_REGION( 0x8000, REGION_GFX2, ROMREGION_DISPOSE )
-	ROM_LOAD( "am03.10b", 0x0000, 0x2000, CRC(47dc31dc) )
-	ROM_LOAD( "am04.c10", 0x2000, 0x2000, CRC(e057d827) )
+	ROM_LOAD( "am03.10b", 0x0000, 0x2000, CRC(47dc31dc) SHA1(7f492477e30a0353251a43e7e726551c3861b63f) )
+	ROM_LOAD( "am04.c10", 0x2000, 0x2000, CRC(e057d827) SHA1(81ca4351777de5c32f4cf65547287c8169ba1494) )
 
 	ROM_REGION(0x04000, REGION_USER1, 0 )
-	ROM_LOAD( "am05.d12", 0x0000, 0x2000,  CRC(f63e5a73) )
+	ROM_LOAD( "am05.d12", 0x0000, 0x2000,  CRC(f63e5a73) SHA1(50e7a1a0eb3bf8df3264bcba441c5fbd7dec52f4) )
 
 	ROM_REGION( 64, REGION_PROMS, 0 )
-	ROM_LOAD( "k1",    0, 32,  CRC(ebdc8343) ) /* Colour */
-	ROM_LOAD( "e13",  32, 32,  CRC(6909a061) ) /* Timing? */
+	ROM_LOAD( "k1",    0, 32,  CRC(ebdc8343) SHA1(c9ae04da662f40237de24f5f01e97051e99e8c15) ) /* Colour */
+	ROM_LOAD( "e13",  32, 32,  CRC(6909a061) SHA1(b9b2c1a7fec46027bfcc2c744946e27681c82b40) ) /* Timing? */
 ROM_END
 
 ROM_START( prosport )
 	ROM_REGION(0x10000, REGION_CPU1, 0)
-	ROM_LOAD( "ic21ar09.bin", 0x4000, 0x2000,  CRC(4faa8d12) )
-	ROM_LOAD( "ic22ar10.bin", 0x6000, 0x2000,  CRC(389e405b) )
-	ROM_LOAD( "ic23ar11.bin", 0x8000, 0x2000,  CRC(c0bc7f2a) )
-	ROM_LOAD( "ic24ar12.bin", 0xa000, 0x2000,  CRC(4acd3f0d) )
-	ROM_LOAD( "ic25ar13.bin", 0xc000, 0x2000,  CRC(2bdabdf3) )
-	ROM_LOAD( "ic26ar14.bin", 0xe000, 0x2000,  CRC(10ccfddb) )
+	ROM_LOAD( "ic21ar09.bin", 0x4000, 0x2000,  CRC(4faa8d12) SHA1(326216eb67d54ecd01701e4677f62b5c11b6763e) )
+	ROM_LOAD( "ic22ar10.bin", 0x6000, 0x2000,  CRC(389e405b) SHA1(263088e49ab14a0017b2ad130bd78afcd0f13a4b) )
+	ROM_LOAD( "ic23ar11.bin", 0x8000, 0x2000,  CRC(c0bc7f2a) SHA1(15d806bb8e28215178dbac0157d75e3ead42f6e9) )
+	ROM_LOAD( "ic24ar12.bin", 0xa000, 0x2000,  CRC(4acd3f0d) SHA1(8bce597e4ba12d3cafa997653947e3aa6180b6c0) )
+	ROM_LOAD( "ic25ar13.bin", 0xc000, 0x2000,  CRC(2bdabdf3) SHA1(530cd84dc7fbfdd6805bc555c0e9a5fa2175bc59) )
+	ROM_LOAD( "ic26ar14.bin", 0xe000, 0x2000,  CRC(10ccfddb) SHA1(6c2d3cfd7be7cb4d3a217b1a70273ded5bd7e126) )
 
 	ROM_REGION( 0x10000 * 2, REGION_CPU2, 0 )
-	ROM_LOAD( "ic43ar16.bin", 0xc000, 0x2000,  CRC(113a4f89) )
-	ROM_LOAD( "ic42ar15.bin", 0xe000, 0x2000,  CRC(635425a6) )
+	ROM_LOAD( "ic43ar16.bin", 0xc000, 0x2000,  CRC(113a4f89) SHA1(abbc7f5ad543f3500c0194100d236ac942e4739f) )
+	ROM_LOAD( "ic42ar15.bin", 0xe000, 0x2000,  CRC(635425a6) SHA1(2b95c3252046462f8886a309d02ea3a15b693780) )
 
 	ROM_REGION( 0x12000, REGION_GFX1, ROMREGION_DISPOSE )
-	ROM_LOAD( "ic52ar00.bin",   0x00000, 0x2000, CRC(1e16adde) )
-	ROM_LOAD( "ic53ar01.bin",   0x02000, 0x2000, CRC(4b7a6431) )
-	ROM_LOAD( "ic54ar02.bin",   0x04000, 0x2000, CRC(039eba80) )
+	ROM_LOAD( "ic52ar00.bin",   0x00000, 0x2000, CRC(1e16adde) SHA1(229f68a687cbc9ac0d393e4db49d91f646eea7a6) )
+	ROM_LOAD( "ic53ar01.bin",   0x02000, 0x2000, CRC(4b7a6431) SHA1(a8a23dffc3bf9fb3b806985272822904578e460e) )
+	ROM_LOAD( "ic54ar02.bin",   0x04000, 0x2000, CRC(039eba80) SHA1(bd15f707f4d5dded8dd3373de5cb2a8d91a731d6) )
 
-	ROM_LOAD( "ic55ar03.bin",   0x06000, 0x2000, CRC(caecafcb) )
-	ROM_LOAD( "ic56ar04.bin",   0x08000, 0x2000, CRC(d555835e) )
-	ROM_LOAD( "ic57ar05.bin",   0x0a000, 0x2000, CRC(9d05c4cc) )
+	ROM_LOAD( "ic55ar03.bin",   0x06000, 0x2000, CRC(caecafcb) SHA1(74c0e5aad65c162b9e58c1c37ec481cf3aa99056) )
+	ROM_LOAD( "ic56ar04.bin",   0x08000, 0x2000, CRC(d555835e) SHA1(4e3f1b6418aec948aaf27d05a4736995763dd1aa) )
+	ROM_LOAD( "ic57ar05.bin",   0x0a000, 0x2000, CRC(9d05c4cc) SHA1(898e4971d850c5f26513c4aabd548a41fdcf2b4f) )
 
-	ROM_LOAD( "ic58ar06.bin",   0x0c000, 0x2000, CRC(903ea834) )
-	ROM_LOAD( "ic59ar07.bin",   0x0e000, 0x2000, CRC(e6527838) )
-	ROM_LOAD( "ic60ar08.bin",   0x10000, 0x2000, CRC(ff1e6b01) )
+	ROM_LOAD( "ic58ar06.bin",   0x0c000, 0x2000, CRC(903ea834) SHA1(93fc69a2b460ed4cc8945f34a761b9841eba15a3) )
+	ROM_LOAD( "ic59ar07.bin",   0x0e000, 0x2000, CRC(e6527838) SHA1(e40acbcfda7d73ce4c1faa1c05e17d21bfc7f0d4) )
+	ROM_LOAD( "ic60ar08.bin",   0x10000, 0x2000, CRC(ff1e6b01) SHA1(4561b718be41c67d713f6d7f10decc4d2eed9acc) )
 
 	ROM_REGION( 0x2000, REGION_GFX2, ROMREGION_DISPOSE )
-	ROM_LOAD( "ic46ar18.bin",   0x00000, 0x1000, CRC(d23998d3) )
-	ROM_LOAD( "ic45ar17.bin",   0x01000, 0x1000, CRC(5f1c621e) )
+	ROM_LOAD( "ic46ar18.bin",   0x00000, 0x1000, CRC(d23998d3) SHA1(4d3545a0e1df2eb7927ec6fa4a35abd21321016c) )
+	ROM_LOAD( "ic45ar17.bin",   0x01000, 0x1000, CRC(5f1c621e) SHA1(29ce85d3d5da5ee16bb67644b0555ab9bce52d05) )
 ROM_END
 
 ROM_START( boomrang )
@@ -837,6 +919,36 @@ ROM_START( liberate )
 
 	ROM_REGION(0x4000, REGION_USER1, 0 )
 	ROM_LOAD( "bt10.bin",  0x0000, 0x4000,  CRC(ee335397) SHA1(2d54f93d330357033b8ebc4bc052383c25156311) )
+
+	ROM_REGION( 32, REGION_PROMS, 0 )
+	ROM_LOAD( "bt14.bin", 0x0000, 32,  CRC(20281d61) SHA1(905dd2744c148d50332fcad34a57dc573d41bb0a) )
+ROM_END
+
+ROM_START( dualaslt )
+	ROM_REGION( 0x10000*2, REGION_CPU1, 0 )
+	ROM_LOAD( "bt12",       0x8000, 0x4000, CRC(1434ee46) SHA1(c431982c25323787b8e2ac1b433fc0e81650fbf9) )
+	ROM_RELOAD(             0x0000, 0x4000 )
+	ROM_LOAD( "bt13",       0xc000, 0x4000, CRC(38e0ffa4) SHA1(c450960cdcfa9b2b136f96bc1e3a37995a37f60c) )
+
+	ROM_REGION( 0x10000 * 2, REGION_CPU2, 0 )
+	ROM_LOAD( "bt11.bin",  0xe000, 0x2000,  CRC(b549ccaa) SHA1(e4c8350fea61ed85d21037cbd4c3c50f9a9de09f) )
+
+	ROM_REGION( 0x12000, REGION_GFX1, ROMREGION_DISPOSE )
+	ROM_LOAD( "bt04-5",   0x00000, 0x4000, CRC(159a3e85) SHA1(e916ee7e96c7c64d9ef05ff410d0cbba4d1b8ad0) ) 	/* Chars/Sprites */
+	ROM_LOAD( "bt03.bin", 0x04000, 0x2000, CRC(29ad1b59) SHA1(4d5a385ccad4cdebe87300ef08e1220bc9303673) )
+	ROM_LOAD( "bt06-5",   0x06000, 0x4000, CRC(3b5a80c8) SHA1(8b55b18ab46a64381fc135e84ab82fc451ee722d) )
+	ROM_LOAD( "bt05.bin", 0x0a000, 0x2000, CRC(a8896c20) SHA1(c21412c8a6b10719d324ce7ecb01ec4e9d803932) )
+	ROM_LOAD( "bt08-5",   0x0c000, 0x4000, CRC(b0cebde8) SHA1(9ed418705f56bc43fd864dbfb412cd7062229006) )
+	ROM_LOAD( "bt07.bin", 0x10000, 0x2000, CRC(f919e8e2) SHA1(e9eafa10f024aa522947f6098480bddf1fbe960f) )
+
+	ROM_REGION( 0x8000, REGION_GFX2, ROMREGION_DISPOSE )
+	ROM_LOAD( "bt01",     0x0000, 0x2000, CRC(c0ddbeb5) SHA1(043c3ef2aa62a0e8b650d4daddb944e694078e01) )
+	ROM_LOAD( "bt02a",    0x2000, 0x2000, CRC(846d9d24) SHA1(d0c395876601cf666dcf40a0f95e461095a98df4) )
+ 	ROM_LOAD( "bt00.bin", 0x4000, 0x2000, CRC(b744454d) SHA1(664619c3907c538f353d8ac04d66086dcfbd53d4) )
+
+	ROM_REGION(0x4000, REGION_USER1, 0 )
+	ROM_LOAD( "bt09",  0x0000, 0x2000, CRC(2ea31472) SHA1(2e3125b53755260a036dfc2940970eeb4c5c058b) )
+	ROM_LOAD( "bt10a", 0x2000, 0x2000, CRC(69d9aa8d) SHA1(4587481d304bf34de56ab027668b22e716ee1da7) )
 
 	ROM_REGION( 32, REGION_PROMS, 0 )
 	ROM_LOAD( "bt14.bin", 0x0000, 32,  CRC(20281d61) SHA1(905dd2744c148d50332fcad34a57dc573d41bb0a) )
@@ -925,6 +1037,7 @@ GAMEX(1983, prosport, 0,        prosport,  liberate, prosport, ROT270, "Data Eas
 GAME( 1983, boomrang, 0,        boomrang,  boomrang, prosport, ROT270, "Data East Corporation", "Boomer Rang'r / Genesis" )
 GAME( 1984, kamikcab, 0,        boomrang,  kamikcab, prosport, ROT270, "Data East Corporation", "Kamikaze Cabbie" )
 GAME( 1984, liberate, 0,        liberate,  liberate, liberate, ROT270, "Data East Corporation", "Liberation" )
+GAME( 1984, dualaslt, liberate, liberate,  dualaslt, liberate, ROT270, "Data East USA", "Dual Assault" )
 GAMEX(1984, liberatb, liberate, liberatb,  liberate, prosport, ROT270, "bootleg",               "Liberation (bootleg)", GAME_NOT_WORKING )
 #pragma code_seg()
 #pragma data_seg()
