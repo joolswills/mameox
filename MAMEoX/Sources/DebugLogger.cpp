@@ -20,23 +20,28 @@
 
 
 //= G L O B A L = V A R S ============================================
-static char         g_debugLoggerStringFIFO[DBG_FIFO_SZ][MAX_DBG_STRINGSZ];
-static ULONG        g_fifoWriteHead = 0;
-static ULONG        g_fifoReadHead = 0;
-
-static HANDLE       g_workerThread = INVALID_HANDLE_VALUE;
-static DWORD        g_workerThreadID = 0;
-
 static const char   g_LevelName[][4] = {	"TRC",
                                           "INF", 
 																	        "ERR" };
 
-const char          g_logClientConnected[] = "LogClntConnected";
-const char          g_logClientFlushed[] = "LogClntFlushed";
-static HANDLE       g_logClientConnectedEvent = NULL;
-static HANDLE       g_logClientFlushedEvent = NULL;
+#if defined _DEBUGLOGGER
+  static char         g_debugLoggerStringFIFO[DBG_FIFO_SZ][MAX_DBG_STRINGSZ];
+  static ULONG        g_fifoWriteHead = 0;
+  static ULONG        g_fifoReadHead = 0;
 
-static ULONG        g_messageID = 0;
+  static HANDLE       g_workerThread = INVALID_HANDLE_VALUE;
+  static DWORD        g_workerThreadID = 0;
+
+  const char          g_logClientConnected[] = "LogClntConnected";
+  const char          g_logClientFlushed[] = "LogClntFlushed";
+  static HANDLE       g_logClientConnectedEvent = NULL;
+  static HANDLE       g_logClientFlushedEvent = NULL;
+  static ULONG        g_messageID = 0;
+#else if defined _DEBUG
+  static char         g_debugLoggerString[MAX_DBG_STRINGSZ];
+#endif
+
+
 
 //= P R O T O T Y P E S ===============================================
 DWORD WINAPI debugloggermain( void *data );
@@ -224,6 +229,28 @@ sendingComplete:
 
 extern "C" {
 
+
+#ifdef _DEBUG
+//-------------------------------------------------------
+//  Helper_OutputDebugStringPrintMsg
+//-------------------------------------------------------
+void Helper_OutputDebugStringPrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNumber, const char *function, const char *fmt, ... )
+{
+  sprintf(  g_debugLoggerString, 
+            "<%s %-24.24s [%6.6lu] %-24.24s> ", 
+            (msgLevel & MT_TRACE) ? g_LevelName[0] : ((msgLevel & MT_INFO) ? g_LevelName[1] : g_LevelName[2]),
+            strrchr(fileName, '\\') + 1, 
+            lineNumber,
+						function );
+
+  va_list arg;
+  va_start( arg, fmt );
+  vsprintf( &g_debugLoggerString[strlen(g_debugLoggerString)], fmt, arg );
+  va_end( arg );
+
+  OutputDebugString( g_debugLoggerString );
+}
+#endif
 
 #ifdef _DEBUGLOGGER
 //-------------------------------------------------------

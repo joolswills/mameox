@@ -22,6 +22,17 @@
 #define MT_DEFAULT     MT_ALL
 
 
+#ifdef _DEBUG
+  #define DebugLoggerFlush()							
+  #define DebugLoggerWaitForLogClient()		
+  #define PRINTMSG												Helper_OutputDebugStringPrintMsg
+#else
+  #define DebugLoggerFlush()							
+  #define DebugLoggerWaitForLogClient()		
+  #define PRINTMSG												Helper_InlineNOPDebugLoggerPrintMsg
+#endif
+
+/*
 #ifdef _DEBUGLOGGER
 #define DebugLoggerFlush()							Helper_DebugLoggerFlush()
 #define DebugLoggerWaitForLogClient()		Helper_DebugLoggerWaitForLogClient()
@@ -32,7 +43,7 @@
 #define DebugLoggerWaitForLogClient()		
 #define PRINTMSG												Helper_InlineNOPDebugLoggerPrintMsg
 #endif
-
+*/
 
   // To kill an output type, just define it to T_NOLOG
 #define T_NOLOG        NEVERMODULE, LASTLOG, NULL, 0
@@ -62,6 +73,12 @@ HRESULT DebugLoggerInit( void );
   //! \brief    Send a message to the debug logger
   //----------------------------------------------------------------------------
 void Helper_DebugLoggerPrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNumber, const char *function, const char *fmt, ... );
+
+  //----------------------------------------------------------------------------
+  //  Helper_OutputDebugStringPrintMsg
+  //! \brief    Send a message to the debugger/xboxwatson tool
+  //----------------------------------------------------------------------------
+void Helper_OutputDebugStringPrintMsg( ULONG msgLevel, const char *fileName, ULONG lineNumber, const char *function, const char *fmt, ... );
 
   //----------------------------------------------------------------------------
   //  Helper_InlineNOPDebugLoggerPrintMsg

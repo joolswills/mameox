@@ -262,6 +262,9 @@
 				RelativePath="Includes\Sections.h">
 			</File>
 			<File
+				RelativePath="Includes\StdString.h">
+			</File>
+			<File
 				RelativePath="Includes\System_IniFile.h">
 			</File>
 			<File

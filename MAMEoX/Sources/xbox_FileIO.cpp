@@ -25,7 +25,6 @@
 #define CREATEOROPENPATH( _pth__, _wtReq__ )  tempStr = strdup( _pth__ ); \
                                               if( !Helper_CreateOrOpenSystemPath( &tempStr, (_wtReq__) ) ) { \
                                                 PRINTMSG( T_ERROR, "Failed to create or open system path %s!", tempStr ); \
-                                                _RPT1( _CRT_ERROR, "Could not create or open system path %s!\n", tempStr ); \
                                               }
 
 #define FILE_BUFFER_SIZE	256
@@ -334,11 +333,9 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
   {
     Helper_ConvertSlashToBackslash( strFullPath.GetBuffer(strFullPath.GetLength()+10) );
 
-    CStdString strBuff;
-    strBuff.Format("Opening file: %s\n", strFullPath);
-    OutputDebugString(strBuff);
+    PRINTMSG( T_INFO, "Opening file: %s", strFullPath );
 
-    ret->m_handle = CreateFile(	strFullPath,
+    ret->m_handle = CreateFile(	strFullPath.c_str(),
       dwDesiredAccess,
       0,
       NULL,
@@ -355,7 +352,6 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
       if( !(dwDesiredAccess & GENERIC_WRITE) || err != ERROR_PATH_NOT_FOUND )
       {
         PRINTMSG( T_ERROR, "Failed opening file %s: 0x%X!", strFullPath, err );
-        _RPT2( _CRT_WARN, "Failed opening file %s: 0x%X!\n", strFullPath, err );
         delete ret;
         return NULL;
       }
@@ -374,7 +370,6 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
       if( ret->m_handle == INVALID_HANDLE_VALUE )
       {
         PRINTMSG( T_ERROR, "Failed opening file %s: 0x%X!", strFullPath, err );
-        _RPT2( _CRT_WARN, "Failed opening file %s: 0x%X!\n", strFullPath, err );
         delete ret;
         return NULL;
       }
@@ -421,7 +416,6 @@ INT32 osd_fseek( osd_file *file, INT64 offset, int whence )
       file->m_offset = file->m_end + offset;
       break;
     default:
-      _RPT0( _CRT_WARN, "Invalid whence parameter in osd_fseek\n" );
       PRINTMSG( T_ERROR, "Invalid whence parameter in osd_fseek" );
       return 1;
     }
@@ -429,7 +423,6 @@ INT32 osd_fseek( osd_file *file, INT64 offset, int whence )
     // Validate arg
     if( (UINT32)offset > file->m_end || offset < 0)
     {
-      _RPT0( _CRT_WARN, "Offset value too high or low in osd_fseek\n" );
       PRINTMSG( T_ERROR, "Offset value too high or low in osd_fseek" );
       return 1;
     }

@@ -126,8 +126,8 @@ INT32 osd_start_audio_stream( INT32 stereo )
 
 	// determine the number of samples per frame
 	g_samplesPerFrame = (DOUBLE)Machine->sample_rate / (DOUBLE)Machine->drv->frames_per_second;
-  _RPT1( _CRT_WARN, "Samples per frame: %f\n", g_samplesPerFrame );
-  _RPT1( _CRT_WARN, "Consumed per frame: %f\n", (DOUBLE)Machine->sample_rate / 60.0 );
+  PRINTMSG( T_INFO, "Samples per frame: %f\n", g_samplesPerFrame );
+  PRINTMSG( T_INFO, "Consumed per frame: %f\n", (DOUBLE)Machine->sample_rate / 60.0 );
 
   g_samplesPerFrame = (DOUBLE)Machine->sample_rate / 60.0; /*(double)Machine->drv->frames_per_second*/;
  
@@ -286,7 +286,7 @@ static BOOL Helper_DirectSoundInitialize( void )
 
 	if( !g_pDSound && (hr = DirectSoundCreate( NULL, &g_pDSound, NULL )) != S_OK )
 	{
-    _RPT1( _CRT_WARN, "DirectSoundCreate failed: 0x%X!", hr );
+    PRINTMSG( T_INFO, "DirectSoundCreate failed: 0x%X!", hr );
 		PRINTMSG( T_ERROR, "DirectSoundCreate failed: 0x%X!", hr );
 		return FALSE;
 	}
@@ -311,8 +311,8 @@ static BOOL Helper_DirectSoundInitialize( void )
 	
   #ifdef LOG_SOUND
 	  _RPTF2( _CRT_WARN, "stream_buffer_size = %d (max %d)\n", g_streamBufferSize, MAX_BUFFER_SIZE );
-	  _RPTF1( _CRT_WARN, "lower_thresh = %d\n", g_lowerThresh);
-	  _RPTF1( _CRT_WARN, "upper_thresh = %d\n", g_upperThresh);
+	  PRINTMSG( T_INFO, "lower_thresh = %d\n", g_lowerThresh);
+	  PRINTMSG( T_INFO, "upper_thresh = %d\n", g_upperThresh);
   #endif
 
 	// create the buffers
@@ -327,7 +327,7 @@ static BOOL Helper_DirectSoundInitialize( void )
   hr = IDirectSoundBuffer_Play( g_pStreamBuffer, 0, 0, DSBPLAY_LOOPING );
   if ( hr != DS_OK )
   {
-    _RPT1( _CRT_WARN, "Error playing: %08x\n", (UINT32)hr );
+    PRINTMSG( T_INFO, "Error playing: %08x\n", (UINT32)hr );
     Helper_DirectSoundTerminate();
     return FALSE;
   }
@@ -374,7 +374,7 @@ static BOOL Helper_DirectSoundCreateBuffers( void )
   // If size is 0, we don't need a buffer
   if( !g_streamBufferSize )
   {
-    _RPT0( _CRT_WARN, "g_streamBufferSize == 0 in Helper_DirectSoundCreateBuffers!\n" );
+    PRINTMSG( T_INFO, "g_streamBufferSize == 0 in Helper_DirectSoundCreateBuffers!\n" );
     return TRUE;
   }
 
@@ -466,7 +466,7 @@ static void Helper_UpdateSampleAdjustment( void )
   buffered = g_lowerThresh;
 
   #ifdef LOG_SOUND
-    _RPT1( _CRT_WARN, "Helper_UpdateSampleAdjustment: %d buffered\n", buffered );
+    PRINTMSG( T_INFO, "Helper_UpdateSampleAdjustment: %d buffered\n", buffered );
   #endif
 
 	if( buffered < g_lowerThresh )
@@ -482,7 +482,7 @@ static void Helper_UpdateSampleAdjustment( void )
 		g_currentAdjustment = (consecutive_lows < MAX_SAMPLE_ADJUST) ? consecutive_lows : MAX_SAMPLE_ADJUST;
 
     #ifdef LOG_SOUND
-      _RPTF1( _CRT_WARN, "too low - adjusting to %d\n", g_currentAdjustment );
+      PRINTMSG( T_INFO, "too low - adjusting to %d\n", g_currentAdjustment );
     #endif
 	}
 	else if( buffered > g_upperThresh )
@@ -498,7 +498,7 @@ static void Helper_UpdateSampleAdjustment( void )
 		g_currentAdjustment = (consecutive_highs < MAX_SAMPLE_ADJUST) ? -consecutive_highs : -MAX_SAMPLE_ADJUST;
 		
     #ifdef LOG_SOUND
-    _RPTF1( _CRT_WARN, "too high - adjusting to %d\n", g_currentAdjustment );
+    PRINTMSG( T_INFO, "too high - adjusting to %d\n", g_currentAdjustment );
     #endif
 	}
 	else
@@ -516,7 +516,7 @@ static void Helper_UpdateSampleAdjustment( void )
 			g_currentAdjustment = 0;
 
       #ifdef LOG_SOUND
-			  _RPTF1( _CRT_WARN, "%d consecutive_mids - resetting adjustment\n", consecutive_mids );
+			  PRINTMSG( T_INFO, "%d consecutive_mids - resetting adjustment\n", consecutive_mids );
       #endif
     }
 	}

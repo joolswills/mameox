@@ -1010,7 +1010,7 @@ static HRESULT LoadPackedResources( void )
 
   if( xprh.dwMagic != XPR_MAGIC_VALUE )
   {
-    _RPT0( _CRT_WARN, "ERROR: Invalid Xbox Packed Resource (.xpr) file" );
+    PRINTMSG( T_INFO, "ERROR: Invalid Xbox Packed Resource (.xpr) file" );
     fclose( file );
     return E_INVALIDARG;
   }

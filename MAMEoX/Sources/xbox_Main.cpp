@@ -418,7 +418,7 @@ static BOOL Helper_RunRom( UINT32 romIndex )
 
   std::string DriverName = drivers[romIndex]->source_file;
   
-  _RPT1( _CRT_WARN, "*** Driver name: %s\n", drivers[romIndex]->source_file );
+  PRINTMSG( T_INFO, "*** Driver name: %s\n", drivers[romIndex]->source_file );
 
     // Unload all loaded XBE data sections, as we'll only be using the one
     // for the file we're loading
@@ -454,10 +454,7 @@ static BOOL Helper_RunRom( UINT32 romIndex )
     //
     // Should be perfectly fine w/ the strstr
   if( !LoadDriverSectionByName( strstr(DriverName.c_str(),"src\\drivers\\") ) )
-  {
-    _RPT1( _CRT_WARN, "Failed to load section for file %s!", DriverName.c_str() );
     PRINTMSG( T_ERROR, "Failed to load section for file %s!", DriverName.c_str() );
-  }
   else
   {
 		ret = run_game( romIndex );
