@@ -48,6 +48,8 @@ public:
 		m_gameListCursorSpeedBandTimeout( 0.0f ),
 		m_gameListPageOffset( 0.0f ),
     m_superscrollMode( FALSE ),
+		m_allowclones( FALSE ),
+		m_additionalinfo( FALSE ),
     m_superscrollCharacterIdx( 0 ),
     m_driverInfoList( drivers ),
     m_numDrivers( numDrivers ),
@@ -153,6 +155,8 @@ protected:
   UINT32                m_numDrivers;               //!<  The total number of drivers supported by the core
   MAMEDriverData_t      *m_driverInfoList;          //!<  Drivers supported by the MAME core
   BOOL                  m_superscrollMode;          //!<  Whether or not to display in superscroll mode
+	BOOL									m_allowclones;							//!<	Whether or not to allow clones
+	BOOL									m_additionalinfo;						//!<	Game list with additional informations
   UINT32                m_superscrollCharacterIdx;  //!<  Character for superscroll mode
   UINT32                m_superscrollJumpTable[NUM_SUPERSCROLL_CHARS]; //!<  Jump indices for superscroll
 
