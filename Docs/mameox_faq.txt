@@ -1,6 +1,6 @@
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@@@                          MAMEoX FAQ v 0.13                          @@@
+@@@                          MAMEoX FAQ v 0.14                          @@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@                                                                     @@@
 @@@           MAMEoX v 0.71.b3, based on the MAME v 0.70 core           @@@
@@ -20,7 +20,8 @@
                    MAMEoX. (Thanks GoDKiLLaX!)      
  07/22/2003 - 0.13 Updated version, added question about what
                    do do if MAMEoX will not load up.  Also 
-                   added a note about neogeo bios.                              
+                   added a note about neogeo bios.
+ 07/23/2003 - 0.14 Changed screenshot information.                                                
 
  1.0 Purpose:
  ------------
@@ -142,9 +143,11 @@
  -------------------------------------------------------------------------
  Q.  Does MAMEoX support screenshots?
 
- A.  Support for taking screenshots has been added, but there is currently
-     no way to display them within MAMEoX. This feature will be implemented
-     in a future version.
+ A.  Yes.  Take a screenshot in game by pressing B+A+Back.  To view the
+     the screenshot, use the detail view (press the white button until it
+     is displayed).  You can also view screenshots when the screensaver
+     kicks in.  Alternatively, you can download screenshots from various
+     sources (we can't provide you with links).    
  -------------------------------------------------------------------------
  Q.  I modified/added my INI file in the MAMEoX/INI directory, but none of 
      the changes seem to work?  What am I doing wrong?
