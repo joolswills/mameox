@@ -145,7 +145,7 @@ int AuditRomSet (int game, tAuditRecord **audit)
 
 	if (!gAudits)
 	{
-		gAudits = (tAuditRecord *)malloc (AUD_MAX_ROMS * sizeof (tAuditRecord));
+		gAudits = (tAuditRecord *)osd_malloc (AUD_MAX_ROMS * sizeof (tAuditRecord));
 
 		// Make sure the memory is cleared - it's needed by the hashing
 		//  engine
@@ -505,7 +505,7 @@ int AuditSampleSet (int game, tMissingSample **audit)
 
 	/* allocate missing samples list (if necessary) */
 	if (!gMissingSamples)
-		gMissingSamples = (tMissingSample *)malloc (AUD_MAX_SAMPLES * sizeof (tMissingSample));
+		gMissingSamples = (tMissingSample *)osd_malloc (AUD_MAX_SAMPLES * sizeof (tMissingSample));
 
 	if (gMissingSamples)
 		*audit = aud = gMissingSamples;

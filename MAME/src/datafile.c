@@ -104,7 +104,7 @@ static int GetGameNameIndex(const char *name)
 		while (drivers[num_games] != NULL)
 			num_games++;
 
-		sorted_drivers = (driver_data_type *)malloc(sizeof(driver_data_type) * num_games);
+		sorted_drivers = (driver_data_type *)osd_malloc(sizeof(driver_data_type) * num_games);
 		for (i=0;i<num_games;i++)
 		{
 			sorted_drivers[i].name = drivers[i]->name;

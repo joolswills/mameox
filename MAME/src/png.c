@@ -41,7 +41,7 @@ int png_unfilter(struct png_info *p)
 	INT32 prediction, pA, pB, pC, dA, dB, dC;
 	UINT8 *src, *dst;
 
-	if((p->image = (UINT8 *)malloc (p->height*p->rowbytes))==NULL)
+	if((p->image = (UINT8 *)osd_malloc (p->height*p->rowbytes))==NULL)
 	{
 		logerror("Out of memory\n");
 		free (p->fimage);
@@ -125,7 +125,7 @@ int png_inflate_image (struct png_info *p)
 
 	fbuff_size = p->height * (p->rowbytes + 1);
 
-	if((p->fimage = (UINT8 *)malloc (fbuff_size))==NULL)
+	if((p->fimage = (UINT8 *)osd_malloc (fbuff_size))==NULL)
 	{
 		logerror("Out of memory\n");
 		free (p->zimage);
@@ -188,7 +188,7 @@ int png_read_file(mame_file *fp, struct png_info *p)
 
 		if (chunk_length)
 		{
-			if ((chunk_data = (UINT8 *)malloc(chunk_length+1))==NULL)
+			if ((chunk_data = (UINT8 *)osd_malloc(chunk_length+1))==NULL)
 			{
 				logerror("Out of memory\n");
 				return 0;
@@ -314,7 +314,7 @@ int png_read_file(mame_file *fp, struct png_info *p)
 			break;
 		}
 	}
-	if ((p->zimage = (UINT8 *)malloc(p->zlength))==NULL)
+	if ((p->zimage = (UINT8 *)osd_malloc(p->zlength))==NULL)
 	{
 		logerror("Out of memory\n");
 		return 0;
@@ -373,7 +373,7 @@ int png_read_file(mame_file *fp, struct png_info *p)
 
 		if (chunk_length)
 		{
-			if ((chunk_data = (UINT8 *)malloc(chunk_length+1))==NULL)
+			if ((chunk_data = (UINT8 *)osd_malloc(chunk_length+1))==NULL)
 			{
 				logerror("Out of memory\n");
 				return 0;
@@ -464,7 +464,7 @@ int png_expand_buffer_8bit (struct png_info *p)
 
 	if (p->bit_depth < 8)
 	{
-		if ((outbuf = (UINT8 *)malloc(p->width*p->height))==NULL)
+		if ((outbuf = (UINT8 *)osd_malloc(p->width*p->height))==NULL)
 		{
 			logerror("Out of memory\n");
 			return 0;
@@ -673,7 +673,7 @@ int png_filter(struct png_info *p)
 	int i;
 	UINT8 *src, *dst;
 
-	if((p->fimage = (UINT8 *)malloc (p->height*(p->rowbytes+1)))==NULL)
+	if((p->fimage = (UINT8 *)osd_malloc (p->height*(p->rowbytes+1)))==NULL)
 	{
 		logerror("Out of memory\n");
 		return 0;
@@ -698,7 +698,7 @@ int png_deflate_image(struct png_info *p)
 
 	zbuff_size = (p->height*(p->rowbytes+1))*1.1+12;
 
-	if((p->zimage = (UINT8 *)malloc (zbuff_size))==NULL)
+	if((p->zimage = (UINT8 *)osd_malloc (zbuff_size))==NULL)
 	{
 		logerror("Out of memory\n");
 		return 0;
@@ -770,7 +770,7 @@ static int png_create_datastream(void *fp, struct mame_bitmap *bitmap)
 	if ((bitmap->depth == 16) && (Machine->drv->total_colors <= 256))
 	{
 		p.color_type = 3;
-		if((p.palette = (UINT8 *)malloc (3*256))==NULL)
+		if((p.palette = (UINT8 *)osd_malloc (3*256))==NULL)
 		{
 			logerror("Out of memory\n");
 			return 0;
@@ -781,7 +781,7 @@ static int png_create_datastream(void *fp, struct mame_bitmap *bitmap)
 			palette_get_color(i,&p.palette[3*i],&p.palette[3*i+1],&p.palette[3*i+2]);
 
 		p.num_palette = 256;
-		if((p.image = (UINT8 *)malloc (p.height*p.width))==NULL)
+		if((p.image = (UINT8 *)osd_malloc (p.height*p.width))==NULL)
 		{
 			logerror("Out of memory\n");
 			return 0;
@@ -803,7 +803,7 @@ static int png_create_datastream(void *fp, struct mame_bitmap *bitmap)
 		p.color_type = 2;
 		p.rowbytes = p.width * 3;
 		p.bit_depth = 8;
-		if((p.image = (UINT8 *)malloc (p.height * p.rowbytes))==NULL)
+		if((p.image = (UINT8 *)osd_malloc (p.height * p.rowbytes))==NULL)
 		{
 			logerror("Out of memory\n");
 			return 0;

@@ -42,7 +42,7 @@ int code_init(void)
 		&& __code_joy_last + 1 == __code_max );
 
 	/* allocate */
-	code_map = (struct code_info*)malloc( __code_max * sizeof(struct code_info) );
+	code_map = (struct code_info*)osd_malloc( __code_max * sizeof(struct code_info) );
 	if (!code_map)
 		return -1;
 

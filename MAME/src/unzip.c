@@ -88,7 +88,7 @@ static int ecd_read(ZIP* zip) {
 		}
 
 		/* allocate buffer */
-		buf = (char*)malloc( buf_length );
+		buf = (char*)osd_malloc( buf_length );
 		if (!buf) {
 			return -1;
 		}
@@ -101,7 +101,7 @@ static int ecd_read(ZIP* zip) {
 		if (ecd_find_sig(buf, buf_length, &offset)) {
 			zip->ecd_length = buf_length - offset;
 
-			zip->ecd = (char*)malloc( zip->ecd_length );
+			zip->ecd = (char*)osd_malloc( zip->ecd_length );
 			if (!zip->ecd) {
 				free(buf);
 				return -1;
@@ -181,7 +181,7 @@ static int ecd_read(ZIP* zip) {
 */
 ZIP* openzip(int pathtype, int pathindex, const char* zipfile) {
 	/* allocate */
-	ZIP* zip = (ZIP*)malloc( sizeof(ZIP) );
+	ZIP* zip = (ZIP*)osd_malloc( sizeof(ZIP) );
 	if (!zip) {
 		return 0;
 	}
@@ -256,7 +256,7 @@ ZIP* openzip(int pathtype, int pathindex, const char* zipfile) {
 	}
 
 	/* read from start of central directory */
-	zip->cd = (char*)malloc( zip->size_of_cent_dir );
+	zip->cd = (char*)osd_malloc( zip->size_of_cent_dir );
 	if (!zip->cd) {
 		free(zip->ecd);
 		osd_fclose(zip->fp);
@@ -280,7 +280,7 @@ ZIP* openzip(int pathtype, int pathindex, const char* zipfile) {
 	zip->cd_pos = 0;
 
 	/* file name */
-	zip->zip = (char*)malloc(strlen(zipfile)+1);
+	zip->zip = (char*)osd_malloc(strlen(zipfile)+1);
 	if (!zip->zip) {
 		free(zip->cd);
 		free(zip->ecd);
@@ -339,7 +339,7 @@ struct zipent* readzip(ZIP* zip) {
 
 	/* copy filename */
 	free(zip->ent.name);
-	zip->ent.name = (char*)malloc(zip->ent.filename_length + 1);
+	zip->ent.name = (char*)osd_malloc(zip->ent.filename_length + 1);
 	memcpy(zip->ent.name, zip->cd+zip->cd_pos+ZIPCFN, zip->ent.filename_length);
 	zip->ent.name[zip->ent.filename_length] = 0;
 
@@ -484,7 +484,7 @@ static int inflate_file(osd_file* in_file, unsigned in_size, unsigned char* out_
         return -1;
 	}
 
-	in_buffer = (unsigned char*)malloc(INFLATE_INPUT_BUFFER_MAX+1);
+	in_buffer = (unsigned char*)osd_malloc(INFLATE_INPUT_BUFFER_MAX+1);
 	if (!in_buffer)
 		return -1;
 
@@ -781,7 +781,7 @@ int /* error */ load_zipped_file (int pathtype, int pathindex, const char* zipfi
 				(ent->crc32 && !strcmp(crc, filename)))
 		{
 			*length = ent->uncompressed_size;
-			*buf = (unsigned char*)malloc( *length );
+			*buf = (unsigned char*)osd_malloc( *length );
 			if (!*buf) {
 				if (!gUnzipQuiet)
 					printf("load_zipped_file(): Unable to allocate %d bytes of RAM\n",*length);

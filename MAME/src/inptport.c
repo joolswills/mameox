@@ -2489,7 +2489,7 @@ struct InputPort* input_port_allocate(const struct InputPortTiny *src)
 
 	total = input_port_count(src);
 
-	base = (struct InputPort*)malloc(total * sizeof(struct InputPort));
+	base = (struct InputPort*)osd_malloc(total * sizeof(struct InputPort));
 	dst = base;
 
 	while (src->type != IPT_END)

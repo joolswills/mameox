@@ -6,7 +6,6 @@ local @newFILEs;
 local @FILEs = `find ./MAME/src/*.c`;
 
 
-
 print "Converting all stock malloc() calls to osd_malloc...\n";
 
 foreach( @FILEs ) {
@@ -21,8 +20,8 @@ foreach( @FILEs ) {
 	sysread( FILE, $File, $size );
 	close( FILE );
 
-	if( $File =~ /\s+(m|c|re)alloc\s*\(/ ) {
-		$File =~ s/(\s+)((m|c|re)alloc\s*)\(/$1osd_$2\(/g;
+	if( $File =~ /(\s+|\(.+\*\))(m|c|re)alloc\s*\(/ ) {
+		$File =~ s/(\s+|\(.+\*\))((m|c|re)alloc\s*)\(/$1osd_$2\(/g;
 
 		open( FILE, ">$FileName" ) || die "Failed to open $FileName for writing!\n";
 		syswrite( FILE, $File, length($File) );
