@@ -13,125 +13,52 @@
 
 //= D E F I N E S ======================================================
 
-#define NORMAL_ITEM_COLOR				D3DCOLOR_XRGB( 0, 0, 58 )
-#define SELECTED_ITEM_COLOR     D3DCOLOR_XRGB( 255, 255, 255 )
-#define BORDER_COLOR            D3DCOLOR_XRGB( 0, 191, 243 )
-#define BACKDROP_COLOR          D3DCOLOR_XRGB( 105, 105, 105 )
+  //--- Layout defines -----------------------------------------
+#define HEADER_COLOR            D3DCOLOR_XRGB( 0, 0, 0 )
+#define ITEM_COLOR			        D3DCOLOR_XRGB( 0, 0, 0 )
+#define DARKENBACKGROUND_COLOR  D3DCOLOR_ARGB( 160, 0, 0, 0 )
+#define HIGHLIGHTBAR_COLOR      D3DCOLOR_ARGB( 255, 125, 129, 162 )
 
-	// Analog trigger deadzone
-#define DEADZONE								0.25f
-#define DEADZONE_RECTIFIER			1.0f / (1.0f - DEADZONE)
-#define CURSOR_SPEED            0.3f                // The cursor velocity modifier
+#define TITLEBAR_ROW            m_titleArea.top
+#define FIRSTDATA_ROW           m_bodyArea.top
+
+#define HIGHLIGHTBAR_LEFT       m_bodyArea.left
+#define HIGHLIGHTBAR_RIGHT      m_bodyArea.right
+#define NAME_START              m_bodyArea.left + 7
+#define DATA_START              NAME_START + 4
+#define TEXTBOX_RIGHT           HIGHLIGHTBAR_RIGHT   // The right edge of the text box
+#define COLUMN_PADDING          9     // Number of pixels to subtract from the column width before truncating text
+
 
 	// Number of seconds between valid DPAD readings
 #define DPADCURSORMOVE_TIMEOUT	0.20f
 
-#define X_POS		( 80 )
-#define Y_POS		( 25 )
-#define WIDTH		( 512 - (X_POS<<1) )
-
 //= G L O B A L = V A R S ==============================================
 
-static WCHAR  *g_keyboardData[4] = { L"1234567890.",
-                                     L"ABCDEFGHIJK",
-                                     L"LMNOPQRSTUV",
-                                     L"WXYZ:/@\\" };
+static WCHAR  *g_keyboardData[4] = { L"1234567890",
+                                     L"ABCDEFGHIJKLM",
+                                     L"NOPQRSTUVWXYZ",
+                                     L".:/\\@" };
 
 //= S T R U C T U R E S ===============================================
-struct CUSTOMVERTEX
-{
-	D3DXVECTOR3   pos;      // The transformed position for the vertex
-  DWORD         diffuse;  // The diffuse color
-};
 
 //= P R O T O T Y P E S ================================================
-void Die( LPDIRECT3DDEVICE8 m_displayDevice, const char *fmt, ... ); // Defined in main.cpp
 
 //= F U N C T I O N S ==================================================
 
 //------------------------------------------------------------
 // Constructor
 //------------------------------------------------------------
-CVirtualKeyboard::CVirtualKeyboard( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet ) :
-	m_displayDevice( displayDevice ),
-	m_fontSet( fontSet ),
-	m_cursorPositionX( 0 ),
-  m_cursorPositionY( 0 ),
-	m_dpadCursorDelay( 0.0f ),
-	m_buttonDelay( 0.0f ),
-  m_inputState( VKS_INPROGRESS ),
-  m_minChars( 0 ),
-  m_maxChars( 1024 )
+CVirtualKeyboard::CVirtualKeyboard( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CTextureSet &textureSet ) :
+  CBasePopupView( displayDevice, fontSet, textureSet )
 {
-  m_fontSet.FixedWidthFont().GetTextExtent( L"Wijg,", &m_textWidth, &m_textHeight );
-  m_textWidth = m_fontSet.FixedWidthFont().GetTextWidth( L"W" );
-  m_maxDisplayableChars = (VK_SCREEN_WIDTH - 10) / m_textWidth;
-
-    // Create a vertex buffer to render the backdrop image to the renderTargetTexture
-  m_displayDevice->CreateVertexBuffer(  (sizeof(CUSTOMVERTEX) << 2),
-																        D3DUSAGE_WRITEONLY,
-																	      D3DFVF_XYZ | D3DFVF_DIFFUSE,
-																	      D3DPOOL_MANAGED,
-																	      &m_backdropVB );
-
-	CUSTOMVERTEX *pVertices;
-	m_backdropVB->Lock( 0,										// Offset to lock
-														  0,										// Size to lock
-														  (BYTE**)&pVertices,		// ppbData
-														  0 );									// Flags
-
-    #define XPOS 0.96f
-    #define YPOS 0.9f
-
-		pVertices[0].pos.x = -XPOS;
-		pVertices[0].pos.y = YPOS;
-		pVertices[0].pos.z = 1.0f;
-    pVertices[0].diffuse = BACKDROP_COLOR;
-
-		pVertices[1].pos.x = XPOS;
-		pVertices[1].pos.y = YPOS;
-		pVertices[1].pos.z = 1.0f;
-    pVertices[1].diffuse = BACKDROP_COLOR;
-  	
-		pVertices[2].pos.x = XPOS;
-		pVertices[2].pos.y = -YPOS;
-		pVertices[2].pos.z = 1.0f;
-    pVertices[2].diffuse = BACKDROP_COLOR;
-  	
-		pVertices[3].pos.x = -XPOS;
-		pVertices[3].pos.y = -YPOS;
-		pVertices[3].pos.z = 1.0f;
-    pVertices[3].diffuse = BACKDROP_COLOR;
-
-  m_backdropVB->Unlock();
-
-
-  if( FAILED( D3DXCreateTexture(  displayDevice,
-                                  256, 
-                                  128, 
-                                  1, 
-                                  0L, 
-                                  D3DFMT_LIN_X8R8G8B8, 
-                                  D3DPOOL_DEFAULT, 
-                                  &m_renderTarget ) ) )
-  {
-    Die( displayDevice, "Fatal error while creating virtual keyboard target texture!" );
-  }
-}
-
-//------------------------------------------------------------
-// Destructor
-//------------------------------------------------------------
-CVirtualKeyboard::~CVirtualKeyboard( void ) 
-{
-  SAFE_RELEASE( m_renderTarget );
-  SAFE_RELEASE( m_backdropVB );
+  Reset();
 }
 
 //---------------------------------------------------------------------
 //	MoveCursor
 //---------------------------------------------------------------------
-void CVirtualKeyboard::MoveCursor( CInputManager &gp )
+void CVirtualKeyboard::MoveCursor( CInputManager &gp, BOOL unused )
 {
 	static UINT64		lastTime = 0;
 	UINT64 curTime = osd_cycles();
@@ -161,20 +88,24 @@ void CVirtualKeyboard::MoveCursor( CInputManager &gp )
   }
 
 
+
   if( m_dpadCursorDelay == 0.0f )
   {
     if( gp.IsOneOfButtonsPressed( GP_DPAD_DOWN | GP_LA_DOWN ) )
 	  {
-      if( m_cursorPositionY < 2 )
+      if( m_cursorPositionY < GetNumBodyLines() - 1 )
         ++m_cursorPositionY;
-      else if( m_cursorPositionY == 2 )
-      {
-        ++m_cursorPositionY;
+      else
+        m_cursorPositionY = 0;
 
-          // Force m_cursorPositionX to be in range
-        if( m_cursorPositionX > wcslen( g_keyboardData[3] ) + 1 )
-          m_cursorPositionX = wcslen( g_keyboardData[3] ) + 1;
+        // Force m_cursorPositionX to be in range
+      if( m_cursorPositionY < 4 )
+      {
+        if( m_cursorPositionX >= wcslen( g_keyboardData[m_cursorPositionY] ) )
+          m_cursorPositionX = wcslen( g_keyboardData[m_cursorPositionY] ) - 1;
       }
+//      else
+//        m_cursorPositionX = 0;
 
 		  m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
 	  }
@@ -182,27 +113,39 @@ void CVirtualKeyboard::MoveCursor( CInputManager &gp )
 	  {
       if( m_cursorPositionY )
         --m_cursorPositionY;
+      else
+        m_cursorPositionY = GetNumBodyLines() - 1;
+
+        // Force m_cursorPositionX to be in range
+      if( m_cursorPositionY < 4 )
+      {
+        if( m_cursorPositionX >= wcslen( g_keyboardData[m_cursorPositionY] ) )
+          m_cursorPositionX = wcslen( g_keyboardData[m_cursorPositionY] ) - 1;
+      }
+
 		  m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
 	  }
     if( gp.IsOneOfButtonsPressed( GP_DPAD_LEFT | GP_LA_LEFT ) )
 	  {
-      if( m_cursorPositionX )
-        --m_cursorPositionX;
+      if( m_cursorPositionY < 4 )
+      {
+        if( m_cursorPositionX )
+          --m_cursorPositionX;
+        else
+          m_cursorPositionX = wcslen( g_keyboardData[m_cursorPositionY] ) - 1;
+      }
 		  m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
 	  }
     else if( gp.IsOneOfButtonsPressed( GP_DPAD_RIGHT | GP_LA_RIGHT ) )
 	  {
-      if( m_cursorPositionY < 3 )
+      if( m_cursorPositionY < 4 )
       {
         if( m_cursorPositionX < wcslen( g_keyboardData[m_cursorPositionY] ) - 1 )
           ++m_cursorPositionX;
+        else
+          m_cursorPositionX = 0;
       }
-      else
-      {
-          // Allow the cursor position to go to OK and Cancel
-        if( m_cursorPositionX < wcslen( g_keyboardData[3] ) + 1 )
-          ++m_cursorPositionX;
-      }
+
 		  m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
 	  }
   }
@@ -211,22 +154,22 @@ void CVirtualKeyboard::MoveCursor( CInputManager &gp )
   if( m_buttonDelay == 0.0f )
   {
     if( gp.IsButtonPressed( GP_A ) )
-    {
+    {       
       m_buttonDelay = DPADCURSORMOVE_TIMEOUT;
-      if( m_cursorPositionY == 3 )
+     
+        // See if the cursor is on OK or Cancel
+      if( m_cursorPositionY == 5 )
       {
-        if( m_cursorPositionX == wcslen( g_keyboardData[3] ) )
-        {
-          m_inputState = VKS_ACCEPTED;
-          return;
-        }
-        else if( m_cursorPositionX == wcslen( g_keyboardData[3] ) + 1 )
-        {
-          m_inputState = VKS_CANCELLED;
-          return;
-        }
+        m_inputState = MENU_ACCEPTED;
+        return;
+      }
+      else if( m_cursorPositionY == 4 )
+      {
+        m_inputState = MENU_CANCELLED;
+        return;
       }
 
+        // Add the new char
       char newChar[2] = {0};
       wctomb( &newChar[0], g_keyboardData[m_cursorPositionY][m_cursorPositionX] );
       m_data += newChar;
@@ -236,6 +179,7 @@ void CVirtualKeyboard::MoveCursor( CInputManager &gp )
     }
     else if( gp.IsButtonPressed( GP_B ) )
     {
+        // Remove the last character from the data string
       m_buttonDelay = DPADCURSORMOVE_TIMEOUT;
       if( m_data.length() )
       {
@@ -247,72 +191,134 @@ void CVirtualKeyboard::MoveCursor( CInputManager &gp )
   }
 
   if( gp.IsButtonPressed( GP_BACK ) )
-    m_inputState = VKS_CANCELLED;
+    m_inputState = MENU_CANCELLED;
   else if( gp.IsButtonPressed( GP_START ) )
-    m_inputState = VKS_ACCEPTED;
-  
+    m_inputState = MENU_ACCEPTED;
 }
+
 
 //---------------------------------------------------------------------
 //	Draw
 //---------------------------------------------------------------------
-void CVirtualKeyboard::Draw( void )
+void CVirtualKeyboard::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 {
-  RenderToTextureToken_t token;
-  D3DVIEWPORT8 vp = { 0, 0, VK_SCREEN_WIDTH, VK_SCREEN_HEIGHT, 0.0f, 1.0f };
-  RenderToTextureStart( token, m_displayDevice, m_renderTarget, vp );
+  if( clearScreen )  
+	  m_displayDevice->Clear(	0L,																// Count
+		  											NULL,															// Rects to clear
+			  										D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+				  									D3DCOLOR_XRGB(0,0,0),							// Color
+					  								1.0f,															// Z
+						  							0L );															// Stencil
 
-	m_displayDevice->Clear(	0L,																// Count
-		  										NULL,															// Rects to clear
-			  									D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
-				  								BORDER_COLOR,				// Color
-					  							1.0f,															// Z
-						  						0L );															// Stencil
+    // Figure out the width of the widest char that needs to be displayed
+  #define CHAR_PADDING  4.0f
+  FLOAT characterWidth = m_fontSet.FixedWidthFont().GetTextWidth( L"W" ) + CHAR_PADDING;
+  FLOAT fontHeight  = m_fontSet.FixedWidthFontHeight();
 
-    // Render the backdrop
-  m_displayDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_DIFFUSE );
-  m_displayDevice->SetStreamSource(	0,												  // Stream number
-																    m_backdropVB,	                // Stream data
-																    sizeof(CUSTOMVERTEX) );		  // Vertex stride
-  m_displayDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
+  RenderBackdrop( fontHeight );
 
-	m_fontSet.FixedWidthFont().Begin();
+    //-- Render the highlight bar for the selected item -------------------------------------
+  FLOAT selectedItemYPos = (fontHeight * (ULONG)m_cursorPositionY);
 
-    WCHAR buf[256];
-    #define X_OFFSET    30
+  m_displayDevice->SetTexture( 0, NULL );
+  m_displayDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
+  m_displayDevice->SetRenderState( D3DRS_SRCBLEND,         D3DBLEND_SRCALPHA );
+  m_displayDevice->SetRenderState( D3DRS_DESTBLEND,        D3DBLEND_INVSRCALPHA );
+  m_displayDevice->SetVertexShader( D3DFVF_XYZRHW | D3DFVF_DIFFUSE );
 
-    mbstowcs( buf, m_data.c_str(), 255 );
-    m_fontSet.FixedWidthFont().DrawText( 15, 10, SELECTED_ITEM_COLOR, &buf[m_dataDrawStartPosition] );
+    // Highlight the entire bar for cancel/ok
+  if( m_cursorPositionY >= 4 )
+  {
+    m_displayDevice->Begin( D3DPT_QUADLIST );
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
+      
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos, 1.0f, 1.0f );
+      
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_RIGHT, FIRSTDATA_ROW + selectedItemYPos + fontHeight, 1.0f, 1.0f );
 
-    FLOAT keyWidth = m_textWidth + 4;
-    FLOAT keyHeight = m_textHeight + 2;
-    #define ITEMCOLOR() (x == m_cursorPositionX && m_cursorPositionY == y) ? SELECTED_ITEM_COLOR : NORMAL_ITEM_COLOR
-    buf[1] = L'\0';
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos + fontHeight, 1.0f, 1.0f );
+    m_displayDevice->End();
+  }
+  else
+  {
+      // Highlight only the selected letter
+    FLOAT selectedItemXPos = (characterWidth * (ULONG)m_cursorPositionX) - (CHAR_PADDING / 2.0f);
+    m_displayDevice->Begin( D3DPT_QUADLIST );
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 
+                                        DATA_START + selectedItemXPos, 
+                                        FIRSTDATA_ROW + selectedItemYPos, 
+                                        1.0f, 
+                                        1.0f );
+      
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 
+                                        DATA_START + selectedItemXPos + characterWidth + 1, 
+                                        FIRSTDATA_ROW + selectedItemYPos, 
+                                        1.0f, 
+                                        1.0f );
+      
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 
+                                        DATA_START + selectedItemXPos + characterWidth + 1, 
+                                        FIRSTDATA_ROW + selectedItemYPos + fontHeight + 1, 
+                                        1.0f, 
+                                        1.0f );
 
-    // Row 1: 1234567890.
-    // Row 2: ABCDEFGHIJK
-    // Row 3: LMNOPQRSTUV
-    // Row 4: WXYZ:/ OK Cancel
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, 
+                                        DATA_START + selectedItemXPos, 
+                                        FIRSTDATA_ROW + selectedItemYPos + fontHeight + 1, 
+                                        1.0f, 
+                                        1.0f );
+    m_displayDevice->End();
+  }
+
+    // Render the data
+  WCHAR wBuf[256];
+  m_fontSet.FixedWidthFont().Begin();
+    mbstowcs( wBuf, &m_data.c_str()[m_dataDrawStartPosition], 256 );
+    m_fontSet.FixedWidthFont().DrawText( NAME_START,
+                                        TITLEBAR_ROW,
+                                        HEADER_COLOR,
+                                        wBuf,
+                                        XBFONT_TRUNCATED,
+                                        TEXTBOX_RIGHT - NAME_START );
+  m_fontSet.FixedWidthFont().End();
+
+
+    // Render the virtual keys
+  m_fontSet.FixedWidthFont().Begin();
     for( UINT32 y = 0; y < 4; ++y )
+    {
       for( UINT32 x = 0; x < wcslen(g_keyboardData[y]); ++x )
       {
-        buf[0] = g_keyboardData[y][x];
-        m_fontSet.FixedWidthFont().DrawText( (x * keyWidth) + X_OFFSET, (y * keyHeight) + 35, ITEMCOLOR(), buf );
+        wBuf[1] = L'\0';
+        wBuf[0] = g_keyboardData[y][x];
+        m_fontSet.FixedWidthFont().DrawText( DATA_START + (characterWidth * x) + (CHAR_PADDING / 2.0f), 
+                                            FIRSTDATA_ROW + (fontHeight * y),
+                                            ITEM_COLOR,
+                                            wBuf );
       }
+    }
 
-      
-      
-    m_fontSet.FixedWidthFont().DrawText(  ((wcslen(g_keyboardData[3]) + 1) * keyWidth) + X_OFFSET, 
-                      (3*keyHeight) + 35, 
-                      ( m_cursorPositionY == 3 && m_cursorPositionX == wcslen(g_keyboardData[3]) ? SELECTED_ITEM_COLOR : NORMAL_ITEM_COLOR ),
-                      L"OK" );
+    m_fontSet.FixedWidthFont().DrawText( DATA_START,
+                                        FIRSTDATA_ROW + (fontHeight * 4),
+                                        ITEM_COLOR,
+                                        L"Cancel" );
+    
+    m_fontSet.FixedWidthFont().DrawText( DATA_START,
+                                        FIRSTDATA_ROW + (fontHeight * 5),
+                                        ITEM_COLOR,
+                                        L"OK" );
+  m_fontSet.FixedWidthFont().End();
 
-    m_fontSet.FixedWidthFont().DrawText(  ((wcslen(g_keyboardData[3]) + 3) * keyWidth) + X_OFFSET, 
-                      (3*keyHeight) + 35, 
-                      ( m_cursorPositionY == 3 && m_cursorPositionX == wcslen(g_keyboardData[3]) + 1 ? SELECTED_ITEM_COLOR : NORMAL_ITEM_COLOR ), 
-                      L"CANCEL" );
-
-	m_fontSet.FixedWidthFont().End();
-
-  RenderToTextureStop( token );
+  if( flipOnCompletion )
+	  m_displayDevice->Present( NULL, NULL, NULL, NULL );	
 }
+
+

@@ -18,8 +18,8 @@
 #define TITLEBAR_ROW            menuTop + 5
 #define FIRSTDATA_ROW           bodyTop + 3
 
-#define HIGHLIGHTBAR_LEFT       menuLeft + 2
-#define HIGHLIGHTBAR_RIGHT      menuLeft + menuWidth - 2
+#define HIGHLIGHTBAR_LEFT       menuLeft + 4
+#define HIGHLIGHTBAR_RIGHT      menuLeft + menuWidth - 4
 #define NAME_START              menuLeft + 9
 
 

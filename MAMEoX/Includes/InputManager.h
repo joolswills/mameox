@@ -268,7 +268,7 @@ public:
 
 		//------------------------------------------------------
 		//	WaitForNoButton
-		//! \brief		Wait for all button to be released on the
+		//! \brief		Wait for all buttons to be released on the
 		//!            selected joypad
 		//!
 		//! \param		gamepadNum - Joypad to test (0xFF = all)
@@ -291,6 +291,64 @@ public:
 
 			if( gamepadNum == 3 || gamepadNum == 0xFF )
         keyPressed |= m_gamepads[3].IsAnyButtonPressed();
+
+		} while( keyPressed );
+	}
+
+		//------------------------------------------------------
+		//	WaitForAnyInput
+		//! \brief		Wait for anything to be pressed/moved 
+		//!            on the selected joypad
+		//!
+		//! \param		gamepadNum - Joypad to test (0xFF = all)
+		//------------------------------------------------------
+	void WaitForAnyInput( DWORD gamepadNum = 0xFF ) {
+		BOOL keyPressed = FALSE;
+		do
+		{
+			keyPressed = FALSE;
+			PollDevices();
+
+			if( gamepadNum == 0 || gamepadNum == 0xFF )
+        keyPressed |= m_gamepads[0].GetInputState();
+
+			if( gamepadNum == 1 || gamepadNum == 0xFF )
+        keyPressed |= m_gamepads[1].GetInputState();
+
+			if( gamepadNum == 2 || gamepadNum == 0xFF )
+        keyPressed |= m_gamepads[2].GetInputState();
+
+			if( gamepadNum == 3 || gamepadNum == 0xFF )
+        keyPressed |= m_gamepads[3].GetInputState();
+
+		} while( !keyPressed );
+	}
+
+		//------------------------------------------------------
+		//	WaitForNoInput
+		//! \brief		Wait for everything to be released on the
+		//!            selected joypad
+		//!
+		//! \param		gamepadNum - Joypad to test (0xFF = all)
+		//------------------------------------------------------
+	void WaitForNoInput( DWORD gamepadNum = 0xFF ) {
+		BOOL keyPressed = FALSE;
+		do
+		{
+			keyPressed = FALSE;
+			PollDevices();
+
+			if( gamepadNum == 0 || gamepadNum == 0xFF )
+        keyPressed |= m_gamepads[0].GetInputState();
+
+			if( gamepadNum == 1 || gamepadNum == 0xFF )
+        keyPressed |= m_gamepads[1].GetInputState();
+
+			if( gamepadNum == 2 || gamepadNum == 0xFF )
+        keyPressed |= m_gamepads[2].GetInputState();
+
+			if( gamepadNum == 3 || gamepadNum == 0xFF )
+        keyPressed |= m_gamepads[3].GetInputState();
 
 		} while( keyPressed );
 	}

@@ -447,7 +447,7 @@ void PollGamepads( void )
 //-------------------------------------------------------------
 void WaitForAnyButton( void )
 {
-	g_inputManager.WaitForAnyButton( 0 );
+	g_inputManager.WaitForAnyButton();
 }
 
 //-------------------------------------------------------------
@@ -455,8 +455,25 @@ void WaitForAnyButton( void )
 //-------------------------------------------------------------
 void WaitForNoButton( void )
 {
-	g_inputManager.WaitForNoButton( 0 );
+	g_inputManager.WaitForNoButton();
 }
+
+//-------------------------------------------------------------
+// WaitForAnyInput
+//-------------------------------------------------------------
+void WaitForAnyInput( void )
+{
+	g_inputManager.WaitForAnyInput();
+}
+
+//-------------------------------------------------------------
+// WaitForNoInput
+//-------------------------------------------------------------
+void WaitForNoInput( void )
+{
+	g_inputManager.WaitForNoInput();
+}
+
 
 //-------------------------------------------------------------
 //	GetLightgunCalibratedPosition

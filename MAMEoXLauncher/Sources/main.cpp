@@ -244,7 +244,7 @@ void __cdecl main( void )
     //--- Create the views -------------------------------------------------------
   CHelp help( pD3DDevice, 
               g_fontSet, 
-              NULL );
+              g_textureSet.GetBasicBackdrop() );
 	if( !help.LoadHelpFile() )
   {
     Die( pD3DDevice, 
@@ -344,6 +344,7 @@ void __cdecl main( void )
       showStartMenu = TRUE;
       g_inputManager.WaitForNoButton();
     }
+/*
     else if( g_inputManager.IsOnlyButtonPressed( GP_B | GP_Y ) )
     {
       if( currentView != VIEW_OPTIONS )
@@ -377,6 +378,7 @@ void __cdecl main( void )
       Helper_SetStartMenuItems( startMenu, currentView );
       g_inputManager.WaitForNoButton();
     }
+*/
     else if( g_inputManager.IsButtonPressed( GP_RIGHT_ANALOG ) )
     {
         // Toggle the right analog stick mode

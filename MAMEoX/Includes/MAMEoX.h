@@ -210,15 +210,27 @@ void EndFontRender( BOOL present );
 
 	//-------------------------------------------------------------------
 	//	WaitForAnyButton
-	//! \brief		Block until any button is pressed on gamepad 1
+	//! \brief		Block until any button is pressed on any gamepad
 	//-------------------------------------------------------------------
 void WaitForAnyButton( void );
 
 	//-------------------------------------------------------------------
 	//	WaitForNoButton
-	//! \brief		Block until all buttons are released on gamepad 1
+	//! \brief		Block until all buttons are released on all gamepads
 	//-------------------------------------------------------------------
 void WaitForNoButton( void );
+
+	//-------------------------------------------------------------------
+	//	WaitForAnyInput
+	//! \brief		Block until anything is pressed on any gamepad
+	//-------------------------------------------------------------------
+void WaitForAnyInput( void );
+
+	//-------------------------------------------------------------------
+	//	WaitForNoInput
+	//! \brief		Block until everything is released on every gamepad
+	//-------------------------------------------------------------------
+void WaitForNoInput( void );
 
 
 #ifdef _DEBUG

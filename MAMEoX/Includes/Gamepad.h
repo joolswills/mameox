@@ -128,12 +128,13 @@ public:
   SHORT GetAnalogAxisState( gamepadAnalogID_t analogID, gamepadAxisID_t axisID ) const;
 
 		//------------------------------------------------------
-		//	GetButtonState
-    //! \brief    Returns button state of the gamepad
+		//	GetInputState
+    //! \brief    Returns the input state of the gamepad
     //!
-    //! \return   UINT32 - button state of the gamepad
+    //! \return   UINT32 - input state of the gamepad, made up
+    //!                    of or'd gamepadButtonID_t values
 		//------------------------------------------------------
-  UINT32 GetButtonState( void ) const;
+  UINT32 GetInputState( void ) const;
 
 		//------------------------------------------------------
 		//	IsAnyButtonPressed
@@ -185,6 +186,20 @@ public:
 		//!            gamepad
 		//------------------------------------------------------
 	void WaitForNoButton( void );
+
+		//------------------------------------------------------
+		//	WaitForAnyInput
+		//! \brief		Wait for anything to be pressed/moved on
+		//!            the gamepad
+		//------------------------------------------------------
+	void WaitForAnyInput( void );
+
+		//------------------------------------------------------
+		//	WaitForNoInput
+		//! \brief		Wait for everything to be released on the
+		//!            gamepad
+		//------------------------------------------------------
+  void WaitForNoInput( void );
 
 		//------------------------------------------------------
 		//	SetGamepadFeedbackState

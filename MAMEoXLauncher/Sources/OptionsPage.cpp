@@ -253,48 +253,7 @@ COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice,
   m_pageData[OPTPAGE_DIRECTORIES].m_changeFunct = ::ChangeDirectoryPathPage;
   m_pageData[OPTPAGE_DIRECTORIES].m_numItems = 16;
 
-  m_virtualKeyboard = new CVirtualKeyboard( displayDevice, m_fontSet );
-
-    // Create a vertex buffer to render the backdrop image to the renderTargetTexture
-  m_displayDevice->CreateVertexBuffer(  (sizeof(CUSTOMVERTEX) << 2),
-																        D3DUSAGE_WRITEONLY,
-																	      D3DFVF_XYZ | D3DFVF_TEX1,
-																	      D3DPOOL_MANAGED,
-																	      &m_virtualKeyboardVertexBuffer );
-
-	CUSTOMVERTEX *pVertices;
-	m_virtualKeyboardVertexBuffer->Lock(  0,										// Offset to lock
-												                0,										// Size to lock
-												                (BYTE**)&pVertices,		// ppbData
-												                0 );									// Flags
-
-    FLOAT posX = (VK_SCREEN_WIDTH / 640.0f);
-    FLOAT posY = (VK_SCREEN_HEIGHT / 480.0f);
-		pVertices[0].pos.x = -posX;
-		pVertices[0].pos.y = posY;
-		pVertices[0].pos.z = 1.0f;
-    pVertices[0].tu = 0.0f;
-    pVertices[0].tv = 0.0f;
-
-		pVertices[1].pos.x = posX;
-		pVertices[1].pos.y = posY;
-		pVertices[1].pos.z = 1.0f;
-    pVertices[1].tu = VK_SCREEN_WIDTH;
-    pVertices[1].tv = 0.0f;
-  	
-		pVertices[2].pos.x = posX;
-		pVertices[2].pos.y = -posY;
-		pVertices[2].pos.z = 1.0f;
-    pVertices[2].tu = VK_SCREEN_WIDTH;
-    pVertices[2].tv = VK_SCREEN_HEIGHT;
-  	
-		pVertices[3].pos.x = -posX;
-		pVertices[3].pos.y = -posY;
-		pVertices[3].pos.z = 1.0f;
-    pVertices[3].tu = 0.0f;
-    pVertices[3].tv = VK_SCREEN_HEIGHT;
-
-  m_virtualKeyboardVertexBuffer->Unlock();
+  m_virtualKeyboard = new CVirtualKeyboard( displayDevice, m_fontSet, m_textureSet );
 }
 
 //---------------------------------------------------------------------
@@ -304,8 +263,6 @@ COptionsPage::~COptionsPage( void )
 {
   if( m_virtualKeyboard )
     delete m_virtualKeyboard;
-
-  SAFE_RELEASE( m_virtualKeyboardVertexBuffer );
 }
 
 //---------------------------------------------------------------------
@@ -324,6 +281,7 @@ void COptionsPage::MoveCursor( CInputManager &gp, BOOL useSpeedbanding )
 
     if( m_virtualKeyboard->IsInputFinished() )
     {
+      gp.WaitForNoInput();
       m_virtualKeyboard->Reset();
       m_virtualKeyboardMode = FALSE;
       m_optToggleDelay = TRIGGERSWITCH_TIMEOUT; // Set the delay timer to avoid accepting buttons from the VK
@@ -402,12 +360,12 @@ void COptionsPage::MoveCursor( CInputManager &gp, BOOL useSpeedbanding )
     else
       m_cursorPosition = m_pageData[m_pageNumber].m_numItems - 1;
   }
-  else if( gp.IsOneOfButtonsPressed( GP_DPAD_LEFT | GP_LA_LEFT ) && m_optToggleDelay == 0.0f )
+  else if( gp.IsOneOfButtonsPressed( GP_DPAD_LEFT | GP_LA_LEFT | GP_B ) && m_optToggleDelay == 0.0f )
 	{
 		m_optToggleDelay = TRIGGERSWITCH_TIMEOUT;
     m_pageData[m_pageNumber].m_changeFunct( this, FALSE );
   }
-  else if( gp.IsOneOfButtonsPressed( GP_DPAD_RIGHT | GP_LA_RIGHT ) && m_optToggleDelay == 0.0f )
+  else if( gp.IsOneOfButtonsPressed( GP_DPAD_RIGHT | GP_LA_RIGHT | GP_A ) && m_optToggleDelay == 0.0f )
 	{
 		m_optToggleDelay = TRIGGERSWITCH_TIMEOUT;
     m_pageData[m_pageNumber].m_changeFunct( this, TRUE );
@@ -656,16 +614,8 @@ void COptionsPage::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   m_displayDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
   m_displayDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
 
-
   if( m_virtualKeyboardMode )
-  {
-    m_virtualKeyboard->Draw();
-    m_displayDevice->SetTexture( 0, m_virtualKeyboard->GetTexture() );
-    m_displayDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX1 );
-    m_displayDevice->SetStreamSource(	0, m_virtualKeyboardVertexBuffer, sizeof(CUSTOMVERTEX) );
-    m_displayDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
-  }
-
+    m_virtualKeyboard->Draw( FALSE, FALSE );
 
   if( flipOnCompletion )
 	  m_displayDevice->Present( NULL, NULL, NULL, NULL );	
@@ -971,6 +921,7 @@ void COptionsPage::ChangeGeneralPage( BOOL direction )
     {
       m_virtualKeyboardMode = TRUE;
 	    m_virtualKeyboard->SetData( cheatfile );
+      WaitForNoInput();
     }
     else
     {
@@ -990,6 +941,7 @@ void COptionsPage::ChangeGeneralPage( BOOL direction )
     {
       m_virtualKeyboardMode = TRUE;
 	    m_virtualKeyboard->SetData( history_filename );
+      WaitForNoInput();
     }
     else
     {
@@ -1296,6 +1248,7 @@ void COptionsPage::ChangeNetworkPage( BOOL direction )
     if( !m_virtualKeyboardMode )
     {
       m_virtualKeyboardMode = TRUE;
+      WaitForNoInput();
       switch( (DWORD)m_cursorPosition )
       {
         // IP address
@@ -1358,6 +1311,7 @@ void COptionsPage::ChangeDirectoryPathPage( BOOL direction )
   if( !m_virtualKeyboardMode )
   {
     m_virtualKeyboardMode = TRUE;
+    WaitForNoInput();
     switch( (DWORD)m_cursorPosition )
     {
       // Alternate drive letter

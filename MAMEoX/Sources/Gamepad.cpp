@@ -131,6 +131,40 @@ void CGamepad::WaitForNoButton( void )
   } while( IsAnyButtonPressed() );
 }
 
+//------------------------------------------------------
+//	WaitForAnyInput
+//------------------------------------------------------
+void CGamepad::WaitForAnyInput( void ) 
+{
+  if( !m_gamepadDeviceHandle )
+  {
+    PRINTMSG( T_INFO, "WaitForAnyInput called on invalid gamepad!" );
+    return;
+  }
+
+	do
+	{
+		PollDevice();
+  } while( !GetInputState() );
+}
+
+//------------------------------------------------------
+//	WaitForNoInput
+//------------------------------------------------------
+void CGamepad::WaitForNoInput( void ) 
+{
+  if( !m_gamepadDeviceHandle )
+  {
+    PRINTMSG( T_INFO, "WaitForNoInput called on invalid gamepad!" );
+    return;
+  }
+
+	do
+	{
+		PollDevice();
+  } while( GetInputState() );
+}
+
 
 //------------------------------------------------------
 //	IsConnected
@@ -212,9 +246,9 @@ SHORT CGamepad::GetAnalogAxisState( gamepadAnalogID_t analogID, gamepadAxisID_t 
 }
 
 //------------------------------------------------------
-//	GetButtonState
+//	GetInputState
 //------------------------------------------------------
-UINT32 CGamepad::GetButtonState( void ) const
+UINT32 CGamepad::GetInputState( void ) const
 {
   if( !IsConnected() )
     return 0;
@@ -265,7 +299,7 @@ UINT32 CGamepad::GetButtonState( void ) const
 //------------------------------------------------------
 BOOL CGamepad::IsAnyButtonPressed( void ) const
 {
-	UINT32 state = GetButtonState();
+	UINT32 state = GetInputState();
 
 	  // Only Buttons
 	state &= ( GP_A | GP_B | GP_X | GP_Y | 
@@ -282,7 +316,7 @@ BOOL CGamepad::IsAnyButtonPressed( void ) const
 //------------------------------------------------------
 BOOL CGamepad::IsButtonPressed( UINT32 buttonID ) const
 {
-  return ( (GetButtonState() & buttonID) == buttonID );
+  return ( (GetInputState() & buttonID) == buttonID );
 }
 
 //------------------------------------------------------
@@ -290,7 +324,7 @@ BOOL CGamepad::IsButtonPressed( UINT32 buttonID ) const
 //------------------------------------------------------
 BOOL CGamepad::IsOnlyButtonPressed( UINT32 buttonID ) const
 {
-  return ( GetButtonState() == buttonID );
+  return ( GetInputState() == buttonID );
 }
 
 //------------------------------------------------------
@@ -298,7 +332,7 @@ BOOL CGamepad::IsOnlyButtonPressed( UINT32 buttonID ) const
 //------------------------------------------------------
 BOOL CGamepad::IsOneOfButtonsPressed( UINT32 buttonID ) const
 {
-  return ( GetButtonState() & buttonID );
+  return ( GetInputState() & buttonID );
 }
 
 

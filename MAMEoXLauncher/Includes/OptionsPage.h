@@ -121,7 +121,6 @@ protected:
 
   BOOL                      m_virtualKeyboardMode;          //!< Whether or not to show the virtual keyboard
   CVirtualKeyboard          *m_virtualKeyboard;             //!< Virtual keyboard instance
-  LPDIRECT3DVERTEXBUFFER8   m_virtualKeyboardVertexBuffer;
 
   CTextureSet               &m_textureSet;
 
