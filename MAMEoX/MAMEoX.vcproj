@@ -60,7 +60,7 @@
 				AdditionalLibraryDirectories="..\MAME\Release;&quot;..\libsmb++\Release&quot;"
 				GenerateDebugInformation="FALSE"
 				ProgramDatabaseFile=".\Release/MAMEoX.pdb"
-				GenerateMapFile="FALSE"
+				GenerateMapFile="TRUE"
 				OptimizeReferences="2"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>

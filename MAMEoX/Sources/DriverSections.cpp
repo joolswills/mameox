@@ -167,6 +167,7 @@ BOOL UnloadDriverSections( void )
         (*i).first == "src\\drivers\\namcos21.c" ||
         (*i).first == "src\\drivers\\namcos22.c" ||
         (*i).first == "src\\drivers\\namcos86.c" ||
+        (*i).first == "src\\drivers\\namcos11.c" ||
         (*i).first == "src\\drivers\\system1.c" ||
         (*i).first == "src\\drivers\\system16.c" ||
         (*i).first == "src\\drivers\\system18.c" ||
@@ -460,7 +461,6 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\kinst.c", "280" );
   RegisterSectionName( "src\\drivers\\klax.c", "281" );
   RegisterSectionName( "src\\drivers\\kncljoe.c", "282" );
-  RegisterSectionName( "src\\drivers\\konamigx.c", "283" );
   RegisterSectionName( "src\\drivers\\kopunch.c", "284" );
   RegisterSectionName( "src\\drivers\\kyugo.c", "285" );
   RegisterSectionName( "src\\drivers\\labyrunr.c", "286" );
@@ -642,7 +642,6 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\scregg.c", "464" );
   RegisterSectionName( "src\\drivers\\sega.c", "465" );
   RegisterSectionName( "src\\drivers\\segac2.c", "466" );
-  RegisterSectionName( "src\\drivers\\segar.c", "467" );
   RegisterSectionName( "src\\drivers\\segasyse.c", "468" );
   RegisterSectionName( "src\\drivers\\seicross.c", "469" );
   RegisterSectionName( "src\\drivers\\senjyo.c", "470" );
@@ -827,10 +826,13 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\yunsung8.c", "649" );
   RegisterSectionName( "src\\drivers\\zac2650.c", "650" );
   RegisterSectionName( "src\\drivers\\zaccaria.c", "651" );
-  RegisterSectionName( "src\\drivers\\zaxxon.c", "652" );
   RegisterSectionName( "src\\drivers\\zerozone.c", "653" );
   RegisterSectionName( "src\\drivers\\zn.c", "654" );
   RegisterSectionName( "src\\drivers\\zodiack.c", "655" );
+  RegisterSectionName( "src\\drivers\\boxer.c", "656" );
+  RegisterSectionName( "src\\drivers\\enigma2.c", "657" );
+  RegisterSectionName( "src\\drivers\\namcos11.c", "2" );
+  RegisterSectionName( "src\\drivers\\r2dtank.c", "659" );
 }
 #pragma code_seg()
 #pragma data_seg()

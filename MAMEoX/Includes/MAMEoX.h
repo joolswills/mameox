@@ -35,11 +35,11 @@ extern "C" {
 #endif
 
   // Version number
-#define RELEASE_STRING            ".4b"
-#define LRELEASE_STRING           L".4b"
+#define RELEASE_STRING            ".1b"
+#define LRELEASE_STRING           L".1b"
 
-#define VERSION_STRING            "0.70" RELEASE_STRING
-#define LVERSION_STRING           L"0.70" LRELEASE_STRING
+#define VERSION_STRING            "0.71" RELEASE_STRING
+#define LVERSION_STRING           L"0.71" LRELEASE_STRING
 
 
 #define DRIVERLIST_FILESTAMP      "MAMEoX" VERSION_STRING

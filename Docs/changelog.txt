@@ -1,5 +1,5 @@
 
-Version 0.70.4b
+Version 0.71.1b
 
    -------------------------------------------------------------
   - \MAME\src:
@@ -85,6 +85,32 @@ Version 0.70.4b
 
     - BasePopupView.cpp
       - Added base class for "popup" views (VirtualKeyboard/StartMenu)
+
+ --- Integrated MAME version 0.71, changes follow -------------------
+
+ Changes in the \MAME\src directory
+
+ Removals:
+
+ Additions:
+   \
+
+   drivers\
+     boxer.c
+     enigma2.c
+     namcos11.c
+     r2dtank.c
+
+   includes\
+     psx.h
+
+   machine\
+     psx.c
+
+   vidhrdw\
+     boxer.c
+     psx.c
+
 
 *********************************************************************
 Version 0.70.3b

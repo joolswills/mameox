@@ -124,10 +124,12 @@ INT32 osd_start_audio_stream( INT32 stereo )
   g_bufferOverflows = 0;
 
 	  // determine the number of samples per frame    
-//  if( g_rendererOptions.m_vsync )
-//	  g_samplesPerFrame = (DOUBLE)Machine->sample_rate / 60.0;
-// else
-	  g_samplesPerFrame = (DOUBLE)Machine->sample_rate / (DOUBLE)Machine->drv->frames_per_second;
+
+    // Force it to 60 FPS, as we're always going to be running close to this value
+  //if( g_rendererOptions.m_vsync )
+  //  g_samplesPerFrame = (DOUBLE)Machine->sample_rate / 60.0;
+  //else
+  g_samplesPerFrame = (DOUBLE)Machine->sample_rate / (DOUBLE)Machine->drv->frames_per_second;
 
   PRINTMSG( T_INFO, "Samples per frame: %f\n", g_samplesPerFrame );
   PRINTMSG( T_INFO, "Consumed per frame: %f\n", (DOUBLE)Machine->sample_rate / 60.0 );
@@ -216,7 +218,7 @@ cycles_t actualFrameCycles = osd_cycles() - lastFrameEndTime;
         {
 	        prev_overflows = g_bufferOverflows;
 	        prev_underflows = g_bufferUnderflows;
-          PRINTMSG_TO_CONSOLE( T_INFO, "overflows=%d underflows=%d\n", g_bufferOverflows, g_bufferUnderflows );
+          PRINTMSG_TO_CONSOLE( T_NOPOSITION, "overflows=%d underflows=%d\n", g_bufferOverflows, g_bufferUnderflows );
         }
       }
 //    #endif
@@ -231,7 +233,7 @@ cycles_t actualFrameCycles = osd_cycles() - lastFrameEndTime;
 
 
 
-PRINTMSG_TO_CONSOLE( T_INFO, "FPS: %f", ((DOUBLE)osd_cycles_per_second() / (DOUBLE)actualFrameCycles) );
+  PRINTMSG_TO_CONSOLE( T_NOPOSITION, "FPS %f SPF %3.3f SR: %lu", ((DOUBLE)osd_cycles_per_second() / (DOUBLE)actualFrameCycles), g_samplesPerFrame, Machine->sample_rate );
 lastFrameEndTime = osd_cycles();
 
 
@@ -489,7 +491,7 @@ static void Helper_UpdateSampleAdjustment( void )
     g_currentAdjustment = (consecutive_lows < MAX_SAMPLE_ADJUST) ? consecutive_lows : MAX_SAMPLE_ADJUST;
 
     //#ifdef LOG_SOUND
-    PRINTMSG_TO_CONSOLE( T_INFO, "too low - adjusting to %d\n", g_currentAdjustment );
+    PRINTMSG_TO_CONSOLE( T_NOPOSITION, "too low - adjusting to %d\n", g_currentAdjustment );
     //#endif
 	}
 	else if( buffered > g_upperThresh )
@@ -503,7 +505,7 @@ static void Helper_UpdateSampleAdjustment( void )
     g_currentAdjustment = (consecutive_highs < MAX_SAMPLE_ADJUST) ? -consecutive_highs : -MAX_SAMPLE_ADJUST;
 		
     //#ifdef LOG_SOUND
-    PRINTMSG_TO_CONSOLE( T_INFO, "too high - adjusting to %d\n", g_currentAdjustment );
+    PRINTMSG_TO_CONSOLE( T_NOPOSITION, "too high - adjusting to %d\n", g_currentAdjustment );
     //#endif
 	}
 	else
@@ -538,7 +540,7 @@ static void Helper_CopySampleData( INT16 *data, UINT32 totalToCopy )
   totalToCopy = (totalToCopy > g_streamBufferSize - Helper_BytesInStreamBuffer() ? g_streamBufferSize - Helper_BytesInStreamBuffer() : totalToCopy );
   if( !totalToCopy )
     return;
-
+ 
   // attempt to lock the stream buffer
   result = IDirectSoundBuffer_Lock( g_pStreamBuffer,
                                     g_streamBufferIn, 
@@ -572,7 +574,7 @@ static void Helper_CopySampleData( INT16 *data, UINT32 totalToCopy )
     memcpy( buffer2, data, cur_bytes );
 
     if( totalToCopy > length2 )
-      PRINTMSG_TO_CONSOLE( T_INFO, "Overflow!" );
+      PRINTMSG_TO_CONSOLE( T_NOPOSITION, "Overflow!" );
   }
 
 

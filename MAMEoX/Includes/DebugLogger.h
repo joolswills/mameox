@@ -58,7 +58,7 @@
 #define T_TRACE        MT_TRACE, __FILE__, __LINE__, __FUNCTION__
 #define T_ERROR        MT_ERROR, __FILE__, __LINE__, __FUNCTION__
 #define T_INFO         MT_INFO, __FILE__, __LINE__, __FUNCTION__
-
+#define T_NOPOSITION   MT_INFO, NULL, 0, NULL
 
 #define EZ_TRACE()		PRINTMSG( T_TRACE, "" ); DebugLoggerFlush();
 

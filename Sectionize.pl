@@ -365,7 +365,7 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 @CapcomFamily = ( "cps1.c", "cps2.c" );
 
 @NamcoFamily = ( "namcoic.c", "namcona1.c", "namconb1.c", "namcond1.c", "namcos1.c",
-                 "namcos2.c", "namcos21.c", "namcos22.c", "namcos86.c" );
+                 "namcos2.c", "namcos21.c", "namcos22.c", "namcos86.c", "namcos11.c" );
 
 @SegaFamily = ( "multi32.c", "system1.c", "system16.c", "system18.c", "system24.c", "system32.c",
 				"aburner.c", "sharrier.c", "outrun.c" );
