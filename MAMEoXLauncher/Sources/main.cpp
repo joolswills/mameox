@@ -341,10 +341,10 @@ void __cdecl main( void )
 											  1.0f,															// Z
 											  0L );															// Stencil
 
-	g_pD3DVertexBuffer->Lock( 0,										// Offset to lock
-														0,										// Size to lock
-														(BYTE**)&pVertices,		// ppbData
-														0 );									// Flags
+		g_pD3DVertexBuffer->Lock( 0,										// Offset to lock
+															0,										// Size to lock
+															(BYTE**)&pVertices,		// ppbData
+															0 );									// Flags
 
     FLOAT lx = (FLOAT)((gp0->sThumbLX - 300)) / 32767.0f;
     FLOAT rx = (FLOAT)((gp0->sThumbLX + 300)) / 32767.0f;
@@ -517,6 +517,21 @@ void __cdecl main( void )
         // Toggle options mode
       optionsMode = !optionsMode;
       xButtonTimeout = XBUTTON_TIMEOUT;
+    }
+    else if(  gp0->bAnalogButtons[XINPUT_GAMEPAD_B] > 150 && 
+              gp0->bAnalogButtons[XINPUT_GAMEPAD_A] > 150 && 
+              xButtonTimeout == 0.0f )
+    {
+        // Reload ROMS
+      ShowLoadingScreen( pD3DDevice );
+      // Create the MAME driver list
+			mameoxLaunchData->m_gameIndex = 0;
+	    mameoxLaunchData->m_cursorPosition = 0.0f; 
+			mameoxLaunchData->m_pageOffset = 0.0f;
+		  mameoxLaunchData->m_totalMAMEGames = 0;
+	    mameoxLaunchData->m_command = LAUNCH_CREATE_MAME_GAME_LIST;
+      XLaunchNewImage( "D:\\MAMEoX.xbe", &g_launchData );
+		  Die( pD3DDevice, "Could not execute MAMEoX.xbe!" );
     }
     else if(  gp0->bAnalogButtons[XINPUT_GAMEPAD_B] < 150 && 
               gp0->bAnalogButtons[XINPUT_GAMEPAD_X] > 150 && 
