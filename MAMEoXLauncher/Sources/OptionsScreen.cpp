@@ -515,7 +515,7 @@ void COptionsScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
 
 		desc->Render( m_displayDevice, 
-									LEFTTRIGGERTEXT_START + leftTriggerLength, 
+									LEFTTRIGGERTEXT_START + leftTriggerLength + 1, 
 									TRIGGER_TOP, 
 									leftTriggerIconTailRight, 
 									TRIGGER_BOTTOM );

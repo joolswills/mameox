@@ -36,7 +36,8 @@ public:
                       MAMEDriverData_t *drivers, 
                       UINT32 numDrivers ) :
     CListView( displayDevice, fontSet, RESOURCE_INVALID ),
-    m_displayTimeout( 0 )
+    m_displayTimeout( 0 ),
+		m_screenshotTexture( NULL )
   {
     if( !m_numDrivers )
       m_numDrivers = numDrivers;
