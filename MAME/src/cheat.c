@@ -8487,8 +8487,8 @@ static void LoadCheatFile(char * fileName)
 		int			address;
 		int			data;
 		int			extendData;
-		char		name[256];
-		char		description[256];
+		char		name[512];
+		char		description[512];
 #ifdef MESS
 		int			crc;
 #endif
