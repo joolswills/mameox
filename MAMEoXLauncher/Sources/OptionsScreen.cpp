@@ -175,7 +175,7 @@ COptionsScreen::COptionsScreen( LPDIRECT3DDEVICE8	displayDevice,
 
   RECT area = { 320 - (VIRTUALKEYBOARD_WIDTH>>1), 240 - (VIRTUALKEYBOARD_HEIGHT >> 1), 
                 320 + (VIRTUALKEYBOARD_WIDTH>>1), 240 + (VIRTUALKEYBOARD_HEIGHT >> 1) };
-  m_virtualKeyboard = new CVirtualKeyboard( displayDevice, m_fontSet, m_textureSet, area );
+  m_virtualKeyboard = new CVirtualKeyboardView( displayDevice, m_fontSet, m_textureSet, area );
 
   area.left = LISTPOS_LEFT;
   area.top = LISTPOS_TOP;

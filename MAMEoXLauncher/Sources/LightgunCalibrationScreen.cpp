@@ -5,7 +5,7 @@
 	*/
 
 //= I N C L U D E S ====================================================
-#include "LightgunCalibratorScreen.h"
+#include "LightgunCalibrationScreen.h"
 #include "DebugLogger.h"
 #include "XBFont.h"
 
@@ -44,7 +44,7 @@ extern "C" {
 //---------------------------------------------------------------------
 //  MoveCursor
 //---------------------------------------------------------------------
-void CLightgunCalibratorScreen::MoveCursor( CInputManager &inputManager, BOOL unused )
+void CLightgunCalibrationScreen::MoveCursor( CInputManager &inputManager, BOOL unused )
 {
   const XINPUT_CAPABILITIES *gpCaps;
     // Make sure we've got a lightgun to calibrate
@@ -154,7 +154,7 @@ void CLightgunCalibratorScreen::MoveCursor( CInputManager &inputManager, BOOL un
 //---------------------------------------------------------------------
 //  Draw
 //---------------------------------------------------------------------
-void CLightgunCalibratorScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
+void CLightgunCalibrationScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 {
   if( clearScreen )  
 	  m_displayDevice->Clear(	0L,																// Count
@@ -314,7 +314,7 @@ void CLightgunCalibratorScreen::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 //---------------------------------------------------------------------
 //  FindNextGun
 //---------------------------------------------------------------------
-BOOL CLightgunCalibratorScreen::FindNextGun( void )
+BOOL CLightgunCalibrationScreen::FindNextGun( void )
 {
     // Find the first attached lightgun
   for( ; m_currentInputDeviceIndex < 4; ++m_currentInputDeviceIndex )
@@ -333,7 +333,7 @@ BOOL CLightgunCalibratorScreen::FindNextGun( void )
 //---------------------------------------------------------------------
 //  GetCalibratedCursorPosition
 //---------------------------------------------------------------------
-void CLightgunCalibratorScreen::GetCalibratedCursorPosition( CInputManager &inputManager )
+void CLightgunCalibrationScreen::GetCalibratedCursorPosition( CInputManager &inputManager )
 {
   lightgunCalibration_t &calibData = g_calibrationData[m_currentInputDeviceIndex];
 

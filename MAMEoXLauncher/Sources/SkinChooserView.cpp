@@ -12,7 +12,7 @@
 #include <string>
 
 //= D E F I N E S ======================================================
-#if 0
+
 
   //--- Layout defines -----------------------------------------
 #define HEADER_COLOR            D3DCOLOR_XRGB( 0, 0, 0 )
@@ -175,8 +175,3 @@ void CSkinChooserView::Draw( BOOL clearScreen, BOOL flipOnCompletion )
   if( flipOnCompletion )
 	  m_displayDevice->Present( NULL, NULL, NULL, NULL );	
 }
-
-
-
-#endif
-

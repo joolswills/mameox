@@ -50,7 +50,7 @@ static WCHAR  *g_keyboardData[4] = { L"1234567890",
 //------------------------------------------------------------
 // Constructor
 //------------------------------------------------------------
-CVirtualKeyboard::CVirtualKeyboard( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CTextureSet &textureSet, const RECT &area ) :
+CVirtualKeyboardView::CVirtualKeyboardView( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CTextureSet &textureSet, const RECT &area ) :
   CBasePopupView( displayDevice, fontSet, textureSet, area )
 {
   Reset();
@@ -59,7 +59,7 @@ CVirtualKeyboard::CVirtualKeyboard( LPDIRECT3DDEVICE8	displayDevice, CFontSet &f
 //---------------------------------------------------------------------
 //	MoveCursor
 //---------------------------------------------------------------------
-void CVirtualKeyboard::MoveCursor( CInputManager &gp, BOOL unused )
+void CVirtualKeyboardView::MoveCursor( CInputManager &gp, BOOL unused )
 {
 	static UINT64		lastTime = 0;
 	UINT64 curTime = osd_cycles();
@@ -297,7 +297,7 @@ void CVirtualKeyboard::MoveCursor( CInputManager &gp, BOOL unused )
 //---------------------------------------------------------------------
 //	Draw
 //---------------------------------------------------------------------
-void CVirtualKeyboard::Draw( BOOL clearScreen, BOOL flipOnCompletion )
+void CVirtualKeyboardView::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 {
   if( clearScreen )  
 	  m_displayDevice->Clear(	0L,																// Count

@@ -131,7 +131,7 @@ protected:
   FLOAT                     m_optToggleDelay;               //!< Counter used to slow down option toggle buttons
 
   BOOL                      m_virtualKeyboardMode;          //!< Whether or not to show the virtual keyboard
-  CVirtualKeyboard          *m_virtualKeyboard;             //!< Virtual keyboard instance
+  CVirtualKeyboardView          *m_virtualKeyboard;             //!< Virtual keyboard instance
 
   CTextureSet               &m_textureSet;
   CBaseMenuView             *m_menuRenderer;                //!<  Resizable menu renderer

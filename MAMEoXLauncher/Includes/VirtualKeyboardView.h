@@ -17,17 +17,17 @@
 //= C L A S S E S ======================================================
 
 /**
-	* \class		CVirtualKeyboard
+	* \class		CVirtualKeyboardView
 	* \brief		The virtual keyboard class
 	*/
-class CVirtualKeyboard : public CBasePopupView
+class CVirtualKeyboardView : public CBasePopupView
 {
 public:
 
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-	CVirtualKeyboard( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CTextureSet &textureSet, const RECT &area );
+	CVirtualKeyboardView( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CTextureSet &textureSet, const RECT &area );
 
 		//------------------------------------------------------------
 		// Reset

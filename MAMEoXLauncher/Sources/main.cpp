@@ -32,10 +32,11 @@
 #include "ROMListScreen.h"
 #include "HelpScreen.h"
 #include "OptionsScreen.h"
-#include "LightgunCalibratorScreen.h"
+#include "LightgunCalibrationScreen.h"
 #include "StartMenuView.h"
 #include "ScreensaverScreen.h"
 #include "TVCalibrationScreen.h"
+#include "SkinChooserView.h"
 
 //= D E F I N E S =====================================================
 
@@ -56,7 +57,8 @@ typedef enum viewmode
   VIEW_OPTIONS,
   VIEW_LIGHTGUNCALIBRATOR,
   VIEW_HELP,
-  VIEW_SCREENSETUP
+  VIEW_SCREENSETUP,
+	VIEW_SKINCHOOSER
 } viewmode;
 
 
@@ -73,7 +75,7 @@ typedef enum startmenuitemdata
   MI_COPYSYSTEMFILESFROMDVD,
   MI_ROMLIST,
   MI_SCREENSETUP,
-	MI_SKINMENU
+	MI_SKINCHOOSER
 } startmenuitemdata;
 
 //= S T R U C T U R E S ===============================================
@@ -129,7 +131,7 @@ void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... );
 extern "C" void DrawProgressbarMessage( LPDIRECT3DDEVICE8 pD3DDevice, const char *message, const char *itemName, DWORD currentItem, DWORD totalItems );
 static BOOL Helper_LoadDriverInfoFile( void );
 static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice );
-static void Helper_SetStartMenuItems( CStartMenu &startMenu, viewmode currentViewMode );
+static void Helper_SetStartMenuItems( CStartMenuView &startMenu, viewmode currentViewMode );
 static void Helper_SaveOptionsAndReboot( LPDIRECT3DDEVICE8 pD3DDevice, CROMListScreen & );
 static BOOL Helper_CopySystemFilesFromDVD( LPDIRECT3DDEVICE8 pD3DDevice );
 
@@ -747,12 +749,12 @@ void __cdecl main( void )
                               g_textureSet,
                               options );
 
-  CLightgunCalibratorScreen lightgunCalibrator( pD3DDevice,
+  CLightgunCalibrationScreen lightgunCalibrator( pD3DDevice,
                                                 g_fontSet,
                                                 g_textureSet );
 
   RECT area = { 320 - (STARTMENU_WIDTH>>1), 0, 320 + (STARTMENU_WIDTH>>1), 480 };
-  CStartMenu startMenu( pD3DDevice,
+  CStartMenuView startMenu( pD3DDevice,
                         g_fontSet,
                         g_textureSet, 
                         area );
@@ -766,6 +768,8 @@ void __cdecl main( void )
     // TV calibration object
   CTVCalibrationScreen TVCalibrationScreen( pD3DDevice, g_fontSet, g_textureSet );
 
+		// Skin chooser
+	CSkinChooserView skinChooser( pD3DDevice, g_fontSet, g_textureSet, area );
 
     //-- Initialize the rendering engine -------------------------------
   D3DXMATRIX matWorld;
@@ -976,6 +980,16 @@ void __cdecl main( void )
         Helper_SetStartMenuItems( startMenu, currentView );
       }      
       break;
+
+
+      // *** VIEW_SKINCHOOSER *** //
+		case VIEW_SKINCHOOSER:
+/*
+      if( !showStartMenu )
+        help.MoveCursor( g_inputManager );
+      help.DrawToTexture( renderTargetTexture );
+*/
+			break;
     }
 
       // Now render the texture to the screen 
@@ -1068,6 +1082,11 @@ void __cdecl main( void )
           case MI_SCREENSETUP:
             currentView = VIEW_SCREENSETUP;
             break;
+
+            // *** MI_SKINCHOOSER *** //
+					case MI_SKINCHOOSER:
+						currentView = VIEW_SKINCHOOSER;
+						break;
           }
         }
         startMenu.Reset();
@@ -1130,7 +1149,7 @@ void __cdecl main( void )
 //-------------------------------------------------------------
 // Helper_SetStartMenuItems
 //-------------------------------------------------------------
-static void Helper_SetStartMenuItems( CStartMenu &startMenu, viewmode currentView )
+static void Helper_SetStartMenuItems( CStartMenuView &startMenu, viewmode currentView )
 {
   switch( currentView )
   {
@@ -1168,7 +1187,7 @@ static void Helper_SetStartMenuItems( CStartMenu &startMenu, viewmode currentVie
     if( g_FileIOConfig.m_ConfigPath[0] == g_FileIOConfig.m_ALTDrive[0] )
       startMenu.AddMenuItem( "Copy system files from DVD", MI_COPYSYSTEMFILESFROMDVD );
 
-		startMenu.AddMenuItem( "Choose Skin", MI_SKINMENU );
+		startMenu.AddMenuItem( "Choose Skin", MI_SKINCHOOSER );
 
     break;
 

@@ -1,5 +1,5 @@
 /**
-	* \file			LightgunCalibratorScreen.h
+	* \file			LightgunCalibrationScreen.h
 	* \brief		Helper class to handle lightgun calibration
 	*
 	*/
@@ -13,17 +13,17 @@
 //= C L A S S E S ======================================================
 
 /**
-	* \class		CLightgunCalibratorScreen
+	* \class		CLightgunCalibrationScreen
 	* \brief		The lightgun calibration helper class
 	*/
-class CLightgunCalibratorScreen : public CListView
+class CLightgunCalibrationScreen : public CListView
 {
 public:
 
 		//------------------------------------------------------------
     // Constructor
 		//------------------------------------------------------------
-	CLightgunCalibratorScreen(  LPDIRECT3DDEVICE8 displayDevice, 
+	CLightgunCalibrationScreen(  LPDIRECT3DDEVICE8 displayDevice, 
                         CFontSet &fontSet,
                         CTextureSet &textureSet ) :
     CListView( displayDevice, fontSet, NULL ),

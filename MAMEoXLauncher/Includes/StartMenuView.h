@@ -20,17 +20,17 @@
 //= C L A S S E S ======================================================
 
 /**
-	* \class		CStartMenu
+	* \class		CStartMenuView
 	* \brief		The generic modal menu window
 	*/
-class CStartMenu : public CBasePopupView
+class CStartMenuView : public CBasePopupView
 {
 public:
 
 		//------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------
-  CStartMenu( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CTextureSet &textureSet, const RECT &area ) :
+  CStartMenuView( LPDIRECT3DDEVICE8	displayDevice, CFontSet &fontSet, CTextureSet &textureSet, const RECT &area ) :
     CBasePopupView( displayDevice, fontSet, textureSet, area ) {
       Reset();
     }

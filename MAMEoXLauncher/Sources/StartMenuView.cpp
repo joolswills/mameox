@@ -43,7 +43,7 @@
 //---------------------------------------------------------------------
 //	MoveCursor
 //---------------------------------------------------------------------
-void CStartMenu::MoveCursor( CInputManager &gp, BOOL unused )
+void CStartMenuView::MoveCursor( CInputManager &gp, BOOL unused )
 {
 	static UINT64		lastTime = 0;
 	UINT64 curTime = osd_cycles();
@@ -107,7 +107,7 @@ void CStartMenu::MoveCursor( CInputManager &gp, BOOL unused )
 //---------------------------------------------------------------------
 //	Draw
 //---------------------------------------------------------------------
-void CStartMenu::Draw( BOOL clearScreen, BOOL flipOnCompletion )
+void CStartMenuView::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 {
   if( clearScreen )  
 	  m_displayDevice->Clear(	0L,																// Count
