@@ -96,9 +96,11 @@ void InitializeFileIO( void )
 
   CREATEOROPENPATH( ARTPATH );
 	g_pathNames[FILETYPE_IMAGE] = g_pathNames[FILETYPE_IMAGE_DIFF] =
-																g_pathNames[FILETYPE_SAMPLE] = 
 																g_pathNames[FILETYPE_ARTWORK] = 
 																tempStr;
+
+  CREATEOROPENPATH( AUDIOPATH );
+  g_pathNames[FILETYPE_SAMPLE] = tempStr;
 
   CREATEOROPENPATH( CONFIGPATH );
   g_pathNames[FILETYPE_CONFIG] = tempStr;

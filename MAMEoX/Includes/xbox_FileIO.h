@@ -26,6 +26,7 @@ extern "C" {
 #define NVRAMPATH					"D:\\NVRAM"
 #define CONFIGPATH        "D:\\CFG"
 #define ROMPATH						"D:\\ROMS"
+#define AUDIOPATH         "D:\\SAMPLES"
 #define ROMLISTPATH				"Z:\\MAMEoX"
 #define ROMLISTFILENAME		"ROMS.list"
 #define INIFILENAME       "MAMEoX.ini"

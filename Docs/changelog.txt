@@ -4,8 +4,10 @@
 
 
 
-
-
+	- xbox_FileIO.h:
+		- Added AUDIOPATH for audio samples
+	- xbox_FileIO.c:
+		- Fixed: Audio samples were redirected to the "ART" dir
 	- xbox_JoystickMouse.c:
 		- Fixed a bug causing gamepad 3 buttons to be mapped
 			as gamepad 4 and vice versa.
