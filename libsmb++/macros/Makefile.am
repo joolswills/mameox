@@ -1,0 +1,1 @@
+EXTRA_DIST = bool.m4 curses.m4

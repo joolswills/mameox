@@ -1,0 +1,205 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.51 [en] (X11; I; SunOS 5.7 sun4u) [Netscape]">
+   <meta name="AUTHOR" content="Brodu Nicolas">
+   <meta name="CREATED" content="19990523;19412100">
+   <meta name="CHANGEDBY" content="Brodu Nicolas">
+   <meta name="CHANGED" content="20000216;18485100">
+   <title>Libsmb on-line documentation</title>
+<style>
+	<!--
+		A:link { color: #ee1100 }
+		A:visited { color: #aa0000 }
+	-->
+	</style>
+</head>
+<body bgcolor="#FFFFFF" link="#EE1100" vlink="#AA0000">
+
+<center><img SRC="onLineDoc.jpg" NAME="Graphic1" BORDER=0 height=40 width=599 align=BOTTOM></center>
+
+<p><b><u><font color="#000080">Index :</font></u></b>
+<p><a href="#method list">Method list</a>
+<br>&nbsp;&nbsp;&nbsp; <a href="#file management">File management</a>
+<br>&nbsp;&nbsp;&nbsp; <a href="#options">Options</a>
+<br>&nbsp;&nbsp;&nbsp; <a href="#utility functions">Utility functions</a>
+<br>&nbsp;&nbsp;&nbsp; <a href="#name service">Name service</a>
+<br><a href="#related classes">Related classes</a>
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<h2>
+<a NAME="method list"></a><i><u><font color="#000080">Method list</font></u></i></h2>
+
+<h3>
+<a NAME="file management"></a><font color="#000080">File management (SMB
+class)</font></h3>
+<font color="#333333">Opens a file. URLs are accepted. Works as its standard
+equivalent.</font>
+<br><font color="#198A8A">int </font><a href="methods/open.html">open</a>(<font color="#198A8A">const
+char</font>* file="", <font color="#198A8A">int</font> flags=O_RDWR, <font color="#198A8A">int</font>
+mode=<font color="#0000FF">0644</font>)
+<p><font color="#333333">Create a file. URLs are accepted. Works as its
+standard equivalent.</font>
+<br><font color="#198A8A">int </font><a href="methods/creat.html">creat</a>(<font color="#198A8A">const
+char</font>* file="", <font color="#198A8A">int</font> mode=<font color="#0000FF">0644</font>)
+<p><font color="#333333">Reads from an "opened" file descriptor. Does caching.</font>
+<br><font color="#198A8A">int </font><a href="methods/read.html">read</a>(<font color="#198A8A">int</font>
+fd, <font color="#198A8A">void</font> *buf, <font color="#198A8A">uint32</font>
+count)
+<p><font color="#333333">Writes to "opened" file descriptor. Does caching.</font>
+<br><font color="#198A8A">int </font><a href="methods/write.html">write</a>(<font color="#198A8A">int</font>
+fd, <font color="#198A8A">void</font> *buf, <font color="#198A8A">uint32</font>
+count)
+<p><font color="#333333">Close the file associated with this file descriptor</font>
+<br><font color="#198A8A">int</font> <a href="methods/close.html">close</a>(<font color="#198A8A">int</font>
+fd)
+<p><font color="#333333">Flush forces a write of all buffered data for
+the given fd</font>
+<br><font color="#198A8A">int</font> <a href="methods/flush.html">flush</a>(<font color="#198A8A">int</font>
+fd)
+<p><font color="#333333">Position the file position pointer for this file
+descriptor</font>
+<br><font color="#198A8A">int32 </font><a href="methods/lseek.html">lseek</a>(<font color="#198A8A">int</font>
+fd, <font color="#198A8A">int32</font> offset, <font color="#198A8A">int</font>
+from)
+<p><font color="#333333">Unlink will delete or unlink the file depending
+on target OS</font>
+<br><font color="#198A8A">int </font><a href="methods/unlink.html">unlink</a>(<font color="#198A8A">const
+char</font> *file)
+<p><font color="#333333">Renames a file, but doesn't move it between directories</font>
+<br><font color="#198A8A">int</font> <a href="methods/rename.html">rename</a>(<font color="#198A8A">const
+char</font> *fileURL, <font color="#198A8A">const char</font> *newname)
+<p><font color="#333333">Stats a file/directory. URLs are accepted. Works
+as its standard equivalent.</font>
+<br><font color="#198A8A">int </font><a href="methods/stat.html">stat</a>(<font color="#198A8A">const
+char</font> *filename, <font color="#198A8A">struct</font> stat *buf)
+<p><font color="#333333">Stats the file/directory corresponding to this
+fd.</font>
+<br><font color="#198A8A">int</font> <a href="methods/fstat.html">fstat</a>(<font color="#198A8A">int</font>
+fd, <font color="#198A8A">struct</font> stat *buf)
+<p><font color="#333333">Opens a directory referenced by URL. Returns a
+directory descriptor.</font>
+<br><font color="#198A8A">int </font><a href="methods/opendir.html">opendir</a>(<font color="#198A8A">const
+char</font> *name)
+<p><font color="#333333">Reads from an "opened" directory descriptor. Does
+caching.</font>
+<br>SMBdirent* <a href="methods/readdir.html">readdir</a>(<font color="#198A8A">int</font>
+dirdesc)
+<p><font color="#333333">Close the directory associated with this file
+descriptor</font>
+<br><font color="#198A8A">int </font><a href="methods/closedir.html">closedir</a>(<font color="#198A8A">int</font>
+dirdesc)
+<p><font color="#333333">Position the position pointer for this directory
+descriptor.</font>
+<br><font color="#198A8A">int </font><a href="methods/rewinddir.html">rewinddir</a>(<font color="#198A8A">int</font>
+dirdesc)
+<p><font color="#333333">Creates a directory with URL pathname</font>
+<br><font color="#198A8A">int </font><a href="methods/mkdir.html">mkdir</a>(<font color="#198A8A">const
+char</font> *pathname)
+<p><font color="#333333">Deletes the directory pointed by the URL pathname</font>
+<br><font color="#198A8A">int</font> <a href="methods/rmdir.html">rmdir</a>(<font color="#198A8A">const
+char</font> *pathname)
+<h3>
+<br>
+<br>
+<BR></h3>
+
+<h3>
+<a NAME="options"></a><font color="#000080">Options (SMB class)</font></h3>
+<font color="#333333">Specify a callback for the library to get user answers
+(passwords, login names)</font>
+<br><font color="#198A8A">void </font><a href="methods/setPasswordCallback.html">setPasswordCallback</a>(SmbAnswerCallback
+*getObject)
+<p><font color="#333333">Specify a default user, instead of anonymous access</font>
+<br><font color="#198A8A">void </font><a href="methods/setDefaultUser.html">setDefaultUser</a>(<font color="#198A8A">const
+char</font> *userName)
+<p><font color="#333333">Makes browsing possible without samba installed
+locally</font>
+<br><font color="#198A8A">void </font><a href="methods/setDefaultBrowseServer.html">setDefaultBrowseServer</a>(<font color="#198A8A">const
+char</font> *serverName)
+<p><font color="#333333">Set the charset to use (in native code only)</font>
+<br><font color="#198A8A">void</font> <a href="methods/setCharSet.html">setCharSet</a>(<font color="#198A8A">const
+char</font> *aCharSet)
+<h3>
+<br>
+<br>
+<BR></h3>
+
+<h3>
+<a NAME="utility functions"></a><font color="#000080">Utility functions
+(Util class)</font></h3>
+<font color="#333333">Parser for smb URLs. It can interpret "." and ".."
+as subdirectories, and query for hosts/workgroups.</font>
+<br><font color="#198A8A">void </font><a href="methods/parse.html">parse</a>(<font color="#198A8A">const
+char</font> *name, <font color="#198A8A">bool</font> interpretDirs =
+<font color="#0000FF">true</font>)
+<p><font color="#333333">Those functions return the corresponding components
+of the last parsed URL. See "parse" for details.</font>
+<br><font color="#198A8A">char</font>* user()
+<br><font color="#198A8A">char</font>* password()
+<br><font color="#198A8A">char</font>* ip()
+<br><font color="#198A8A">char</font>* workgroup()
+<br><font color="#198A8A">char</font>* host()
+<br><font color="#198A8A">char</font>* share()
+<br><font color="#198A8A">char</font>* path()
+<p><font color="#333333">It's also possible to override the current values
+(used mainly internally)</font>
+<br><font color="#198A8A">char</font>* user(<font color="#198A8A">const
+char</font>* newValue)
+<br><font color="#198A8A">char</font>* password(<font color="#198A8A">const
+char</font>* newValue)
+<br><font color="#198A8A">char</font>* ip(<font color="#198A8A">const char</font>*
+newValue)
+<br><font color="#198A8A">char</font>* workgroup(<font color="#198A8A">const
+char</font>* newValue)
+<br><font color="#198A8A">char</font>* host(<font color="#198A8A">const
+char</font>* newValue)
+<br><font color="#198A8A">char</font>* share(<font color="#198A8A">const
+char</font>* newValue)
+<br><font color="#198A8A">char</font>* dir(<font color="#198A8A">const
+char</font>* newValue)
+<p><font color="#333333">Does the opposite of the parser</font>
+<br><font color="#198A8A">char</font>* <a href="methods/buildURL.html">buildURL</a>(<font color="#198A8A">const
+char</font>* user=<font color="#0000FF">0</font>, <font color="#198A8A">const
+char</font>* password=<font color="#0000FF">0</font>, <font color="#198A8A">const
+char</font>* workgroup=<font color="#0000FF">0</font>, <font color="#198A8A">const
+char</font> *host=<font color="#0000FF">0</font>, <font color="#198A8A">const
+char</font>* share=<font color="#0000FF">0</font>, <font color="#198A8A">const
+char</font>* path=<font color="#0000FF">0</font>, <font color="#198A8A">const
+char</font>* ip=<font color="#0000FF">0</font>)
+<p><font color="#333333">Appends a string to a URL, making it another URL.
+Subdirs ".." and "." can be recognized and interpreted</font>
+<br><font color="#198A8A">char</font>* <a href="methods/append.html">append</a>(<font color="#198A8A">const
+char</font>* URL, <font color="#198A8A">const char</font> *string,
+<font color="#198A8A">bool</font>
+interpretDirs = <font color="#0000FF">true</font>)
+<h3>
+<br>
+<br>
+<BR></h3>
+
+<h3>
+<a NAME="name service"></a><font color="#000080">Name service (NMB class)</font></h3>
+<font color="#333333">Name query that can find NetBIOS names as well.</font>
+<br><font color="#198A8A">struct</font> hostent* <a href="methods/gethostbyname.html">gethostbyname</a>(<font color="#198A8A">const
+char</font> *name)
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<h2>
+<a NAME="related classes"></a><i><u><font color="#000080">Related classes</font></u></i></h2>
+<font color="#333333">This class replaces the structure dirent, and provides
+more useful fields</font>
+<br><font color="#198A8A">class </font><a href="methods/SMBdirent.html">SMBdirent</a>
+<p><font color="#333333">Derive this class to implement a way for the library
+to get user feedback.</font>
+<br><font color="#198A8A">class </font><a href="methods/SmbAnswerCallback.html">SmbAnswerCallback</a>
+<br>
+<hr>
+<div align=right>
+<p><i><font color="#4C4C4C">Copyright &copy; Nicolas Brodu, 1999 - 2000</font></i></div>
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+#!/bin/sh
+#
+# Script for configuring a program that links to libsmb++
+# As long as samba libs are not in library path, this is necessary
+
+# This should be set by configure
+LIBS="@LINK_FLAGS@"
+CXXFLAGS="@COMPILE_FLAGS@"
+version="@VERSION@"
+prefix="@prefix@"
+modestring="@MODESAMBA@"
+if [ "x$prefix" = "x" -o "x$prefix" = "xNONE" ]
+then
+	prefix="/usr/local"
+fi
+
+if [ $# -eq 0 ]
+then
+	# Dump the config
+	echo "C++ SMB library (libsmb++) version $version configuration:"
+	echo ""
+	echo "  prefix   = $prefix"
+	echo "  CXXFLAGS = $CXXFLAGS"
+	echo "  LIBS     = $LIBS"
+	echo "  $modestring"
+	if test "$modestring" != "Using native code"
+	then
+		echo "  smb.conf location: @SMB_CONF_FILE@"
+	fi
+	echo ""
+	echo "Arguments --version, --prefix, --cxxflags, --libs and --mode will dump"
+	echo "the corresponding parameters individualy"
+	echo "Argument --smb-conf works only in Samba mode."
+	echo ""
+	echo "Use these variables for any compilation, or set them in your configure.in"
+	echo ""
+	echo "Nicolas Brodu, 2000 02 03"
+	exit
+fi
+
+if [ "$1" = "--cflags" -o "$1" = "--cxxflags" ]
+then
+	echo $CXXFLAGS
+	exit
+fi
+
+if [ "$1" = "--libs" ]
+then
+	echo $LIBS
+	exit
+fi
+
+if [ "$1" = "--version" ]
+then
+	echo $version
+	exit
+fi
+
+if [ "$1" = "--prefix" ]
+then
+	echo $prefix
+	exit
+fi
+
+if [ "$1" = "--mode" ]
+then
+	echo "$modestring"
+	exit
+fi
+
+if test "$modestring" != "Using native code"
+then
+	if [ "$1" = "--smb-conf" ]
+	then
+		echo "@SMB_CONF_FILE@"
+		exit
+	fi
+fi
+
+
+
+

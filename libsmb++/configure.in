@@ -1,0 +1,366 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(src/SessionPacket.cpp)
+
+PACKAGE=libsmb++
+VERSION=0.9.1
+LIBVERSION=0:0:0
+AC_SUBST(LIBVERSION)
+AC_SUBST(VERSION)
+
+AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
+
+AM_CONFIG_HEADER(config.h src/defines.h)
+dnl AM_ACLOCAL_INCLUDE(macros)
+
+dnl generic programs
+AM_PROG_LIBTOOL
+LIBTOOL="$LIBTOOL --silent"
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+
+AC_CACHE_CHECK([for sed], ac_cv_sed_found,
+[
+	AC_CHECK_PROG(ac_cv_sed_found, sed, "yes", "no")
+])
+
+dnl Checks for programs.
+AC_PROG_CXX
+AC_LANG_CPLUSPLUS
+
+dnl Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS(fcntl.h)
+
+AC_CHECK_CURSES
+
+dnl optional arguments
+
+AC_ARG_WITH(docdir,
+[  --with-docdir=/path     specify documentation directory [PREFIX/doc/PACKAGE]]
+)
+if test "x$with_docdir" = "x" ; then
+	docdir='$(prefix)/doc/$(PACKAGE)'
+else
+	docdir="$with_docdir"
+fi
+
+AC_ARG_WITH(samba-libs,
+[  --with-samba-libs=path  Use Samba libs in path.                     [search]],
+,with_samba_libs=no)
+
+native_mode="yes"
+AC_ARG_ENABLE(native-mode,
+[  --enable-native-mode    Use the native code by default            [disabled]],
+ , native_mode="no")
+
+AC_ARG_WITH(smb-conf,
+[  --with-smb-conf=path    (samba mode) location for smb.conf          [search]],
+,with_smb_conf=no)
+
+AC_ARG_ENABLE(debug,
+[  --enable-debug=level    (native mode) enable debug <= level       [disabled]],
+ ,enable_debug=no)
+
+if test "x$enable_debug" != "xno"; then 
+	AC_DEFINE_UNQUOTED(DEBUG,$enable_debug)
+fi
+
+dnl optional arguments
+AC_ARG_ENABLE(dnsquery,
+[  --enable-dnsquery       (native mode) enable DNS queries           [enabled]],
+ ,enable_dnsquery=yes)
+
+if test "x$enable_dnsquery" != "xno"; then 
+	AC_DEFINE_UNQUOTED(DNSQUERY,$enable_dnsquery)
+fi
+
+AC_ARG_WITH(scope,
+[  --with-scope=name       (native mode) specify a NetBIOS scope     [no scope]],
+,with_scope=no)
+
+if test "x$with_scope" != "xno"; then
+	AC_DEFINE_UNQUOTED(NBSCOPE,"$with_scope")
+fi
+
+AC_ARG_ENABLE(naive,
+[  --enable-naive          (native mode) SMB hosts are reliable...   [disabled]],
+ ,enable_naive=no)
+
+if test "x$enable_naive" = "xno"; then
+	AC_DEFINE(OVERKILL)
+fi
+
+SAMBA_LIBS="";
+
+AC_CACHE_CHECK([for Samba libs], ac_cv_lib_samba,
+[
+	possible_locations="/usr/local/samba/lib /usr/local/lib /usr/samba/lib /usr/lib /lib /opt/samba/lib"
+	if test "x$with_samba_libs" != "xno"; then
+		possible_locations="$with_samba_libs $possible_locations"
+	fi
+	if test "x$native_mode" = "xyes"; then
+		possible_locations=""
+	fi
+	
+	for f in $possible_locations
+	do
+		if test -r $f/libsmb.so -a -r $f/libsamba.so -a -r $f/libnmb.so -a -r $f/libmsrpc.so
+		then
+			SAMBA_LIBS=$f
+			break
+		fi
+	done
+
+if test "x$SAMBA_LIBS" != "x"
+then
+	ac_cv_lib_samba=$SAMBA_LIBS
+else
+	ac_cv_lib_samba="no. Falling back on native code."
+fi
+])
+
+AC_CACHE_CHECK([for smb.conf file], ac_cv_smb_conf,
+[
+if test "x$ac_cv_lib_samba" != "xno. Falling back on native code."
+then
+	found_smb_conf="no"
+	
+	if test "x$with_smb_conf" != "xno"; then
+		if test -r $with_smb_conf
+		then
+			found_smb_conf=$with_smb_conf
+		else
+			echo ""
+			echo ""
+			echo "Warning: Cannot access $with_smb_conf."
+			echo "Reverting to search mode."
+			echo ""
+			echo -n "checking for smb.conf file... "
+		fi
+	fi
+	
+	if test "$found_smb_conf" = "no"
+	then
+		possible_locations="$ac_cv_lib_samba /usr/local/samba/lib /usr/local/samba /usr/local/samba/etc /usr/samba/lib /usr/samba /usr/samba/etc /etc /usr/local/etc /usr/etc /opt/samba/lib /opt/samba /opt/samba/etc"
+
+		for f in $possible_locations
+		do
+			if test -r $f/smb.conf
+			then
+				found_smb_conf=$f/smb.conf
+				break
+			fi
+		done
+	fi
+	
+	if test "$found_smb_conf" != "no"
+	then
+		ac_cv_smb_conf=$found_smb_conf
+	else
+		ac_cv_smb_conf="no"
+	fi
+else
+		ac_cv_smb_conf="Using native code, skipping."
+fi
+])
+
+if test "x$prefix" = "xNONE" -o "x$prefix" = "x"
+then
+	LINK_FLAGS="-lsmb++"
+	COMPILE_FLAGS=""
+else
+	LINK_FLAGS="-L$prefix/lib -Wl,-rpath,$prefix/lib -lsmb++"
+	COMPILE_FLAGS="-I$prefix/include"
+fi
+
+if test "x$ac_cv_lib_samba" != "xno. Falling back on native code."
+then
+	if test "$ac_cv_smb_conf" = "no"
+	then
+		echo ""
+		echo "************************************************************"
+		echo "Error! Using Samba, but smb.conf file not found."
+		echo "Please delete config.cache and use the --with-smb-conf flag,"
+		echo "or check your Samba configuration."
+		echo "************************************************************"
+		echo ""
+		exit
+	fi
+	config_file="$ac_cv_smb_conf"
+	AC_DEFINE_UNQUOTED(CONFIGFILE, "$config_file")
+	SMB_CONF_FILE="$config_file"
+	LINK_FLAGS="$LINK_FLAGS -L$ac_cv_lib_samba -Wl,-rpath,$ac_cv_lib_samba -lsmb -lsamba -lnmb -lmsrpc"
+	EXTRA_FLAGS="-L$ac_cv_lib_samba -Wl,-rpath,$ac_cv_lib_samba -lsmb -lsamba -lnmb -lmsrpc"
+	AC_DEFINE_UNQUOTED(USE_SAMBA,1)
+	MODESAMBA="Using samba libraries in $ac_cv_lib_samba"
+else
+	EXTRA_FLAGS=""
+	MODESAMBA="Using native code"
+fi
+
+AC_SUBST(MODESAMBA)
+AC_SUBST(SMB_CONF_FILE)
+AC_SUBST(EXTRA_FLAGS)
+AC_SUBST(LINK_FLAGS)
+AC_SUBST(COMPILE_FLAGS)
+
+dnl Checks for typedefs,   structures, and compiler characteristics.
+AC_CHECK_SIZEOF(char,1)
+AC_CHECK_SIZEOF(short,2)
+AC_CHECK_SIZEOF(int,4)
+AC_CHECK_SIZEOF(long,4)
+AC_C_BIGENDIAN
+dnl AC_C_CONST
+dnl AC_C_INLINE
+AC_TYPE_UID_T
+AC_TYPE_OFF_T
+AC_TYPE_SIZE_T
+AC_CHECK_BOOL
+
+dnl from Samba configure.in
+
+AC_CACHE_CHECK([for off64_t],samba_cv_HAVE_OFF64_T,[
+AC_TRY_RUN([#include <stdio.h>
+#include <sys/stat.h>
+main() { struct stat64 st; off64_t s; if (sizeof(off_t) == sizeof(off64_t)) exit(1); exit((lstat64("/dev/null", &st)==0)?0:1); }],
+samba_cv_HAVE_OFF64_T=yes,samba_cv_HAVE_OFF64_T=no,samba_cv_HAVE_OFF64_T=cross)])
+if test x"$samba_cv_HAVE_OFF64_T" = x"yes"; then
+    AC_DEFINE(HAVE_OFF64_T)
+fi
+
+
+dnl Check for libraries.
+SOCKET_LIBS=""
+AC_CACHE_CHECK([for socket library], ac_cv_lib_socket,
+[
+	LIBS_SAVE=$LIBS
+	LIBS='-lsocket'
+	AC_TRY_LINK(dnl do nothing but link...
+		[],	[],
+		ac_cv_lib_socket='-lsocket',
+		ac_cv_lib_socket=no
+	)
+	LIBS=$LIBS_SAVE
+])
+if eval "test ! \"`echo $ac_cv_lib_socket`\" = no"; then
+	SOCKET_LIBS="$SOCKET_LIBS -lsocket"
+	LINK_FLAGS="$LINK_FLAGS -lsocket"
+fi
+AC_CACHE_CHECK([for nsl library], ac_cv_lib_nsl,
+[
+	LIBS_SAVE=$LIBS
+	LIBS='-lnsl'
+	AC_TRY_LINK(dnl do nothing but link...
+		[],	[],
+		ac_cv_lib_nsl='-lnsl',
+		ac_cv_lib_nsl=no
+	)
+	LIBS=$LIBS_SAVE
+])
+if eval "test ! \"`echo $ac_cv_lib_nsl`\" = no"; then
+	SOCKET_LIBS="$SOCKET_LIBS -lnsl"
+	LINK_FLAGS="$LINK_FLAGS -lnsl"
+fi
+AC_CACHE_CHECK([for resolv library], ac_cv_lib_resolv,
+[
+	LIBS_SAVE=$LIBS
+	LIBS='-lresolv'
+	AC_TRY_LINK(dnl do nothing but link...
+		[],	[],
+		ac_cv_lib_resolv='-lresolv',
+		ac_cv_lib_resolv=no
+	)
+	LIBS=$LIBS_SAVE
+])
+if eval "test ! \"`echo $ac_cv_lib_resolv`\" = no"; then
+	SOCKET_LIBS="$SOCKET_LIBS -lresolv"
+	LINK_FLAGS="$LINK_FLAGS -lresolv"
+fi
+AC_SUBST(SOCKET_LIBS)
+
+dnl check for debug flags
+CPPFLAGS="$CPPFLAGS $CURSES_INCLUDES"
+CCFLAGS=""
+if test "x$enable_debug" = "xno"
+then
+	for i in $CXXFLAGS
+	do
+		if test ! "$i" = "-g"
+		then
+			CCFLAGS="$CCFLAGS $i"
+		fi
+	done
+else
+	CCFLAGS="-Wall $CXXFLAGS"
+fi
+CXXFLAGS="$CCFLAGS"
+
+
+dnl New directories for automake/libtool
+
+libdir='$(prefix)/lib'
+AC_SUBST(libdir)
+AC_SUBST(docdir)
+
+dnl ALL THIS SECTION IS COMMENTED OUT, SEE THE ANGRY COMMENT IN SRC/MAKEFILE.AM
+
+dnl Now define which files to compile (depending on native or Samba)
+
+dnl common_sources="types.cpp Options.cpp Util.cpp utiltst.cpp Resolve.cpp strtool.cpp FileManagementInterface.cpp NameQueryInterface.cpp"
+dnl native_sources="DES.cpp IOTypes.cpp NMBIO.cpp SMBIO.cpp NetBIOSPacket.cpp SMBPacket.cpp SessionIO.cpp CharCnv.cpp IODescriptors.cpp SessionPacket.cpp NBHostCache.cpp NameServicePacket.cpp NativeNMB.cpp"
+dnl sambalib_sources="SambaLink.cpp SambaNMB.cpp"
+
+dnl AARGL. I spent 4 hours discovering all the files _MUST_ be in the same
+dnl directory for automake.
+
+dnl LSRC=""
+dnl ESRC=""
+dnl if test "$SRCSUBDIR" = "native"
+dnl then
+dnl 	LSRC="$native_sources"
+dnl 	ESRC="$sambalib_sources"
+dnl else
+dnl 	LSRC="$sambalib_sources"
+dnl 	ESRC="$native_sources"
+dnl fi
+
+dnl AC_SUBST(ESRC)
+dnl AC_SUBST(LSRC)
+
+AC_OUTPUT( \
+	Makefile \
+	doc/Makefile \
+	doc/methods/Makefile \
+	src/Makefile \
+	src/smb++-config \
+	macros/Makefile \
+	libsmb.spec \
+)
+
+dnl If sed isn't present, no need to create a bug while trying to correct another!
+dnl if test "x$ac_cv_sed_found" = "xyes"; then
+
+dnl libtool/automake bug on Solaris: syntax error for '-rpath $(libdir)'
+dnl replace it by '-rpath$(libdir)' without space
+
+dnl echo "post-processing src/Makefile"
+dnl sed -e 's/-rpath \$(libdir)/-rpath\$(libdir)/' src/Makefile > config.tmp.sed
+dnl mv config.tmp.sed src/Makefile
+
+dnl second bug on Solaris, for an unknown reason it looks for libsmb.lai
+dnl during install, and it's not present
+
+dnl This would create a link, fool libtool, but not give a correct result
+
+dnl if test ! -d src/.libs ; then
+dnl 	mkdir src/.libs
+dnl fi
+dnl echo "" >> src/Makefile
+dnl echo "solaris-bug-workaround:" >> src/Makefile
+dnl echo "	cd .libs && if test ! -r libsmb++.lai ; then $LN_S libsmb++.la libsmb++.lai; fi && cd .." >> src/Makefile
+
+dnl sed -e 's/install-libLTLIBRARIES: \$(lib_LTLIBRARIES)/install-libLTLIBRARIES: solaris-bug-workaround \$(lib_LTLIBRARIES)/' src/Makefile > config.tmp.sed
+dnl mv config.tmp.sed src/Makefile
+
+dnl fi
