@@ -491,6 +491,40 @@ static BOOL Helper_SaveDriverInfoFile( void )
 
 			// Write the year
     WRITEDATA( drivers[i]->year, len );
+
+      // Write the number of players
+    UINT32 numPlayers = 0;
+    const InputPortTiny *inport = drivers[i]->input_ports;
+    for( ; (inport->type & ~IPF_MASK) != IPT_END; ++inport )
+    {
+		  if( (inport->type & ~IPF_MASK) != IPT_EXTENSION )
+		  {
+			  switch (inport->type & IPF_PLAYERMASK)
+			  {
+				  case IPF_PLAYER1:
+            if( numPlayers < 1 )
+              numPlayers = 1;
+					  break;
+
+				  case IPF_PLAYER2:
+            if( numPlayers < 2 )
+              numPlayers = 2;
+					  break;
+
+				  case IPF_PLAYER3:
+            if( numPlayers < 3 )
+              numPlayers = 3;
+					  break;
+
+				  case IPF_PLAYER4:
+            if( numPlayers < 4 )
+              numPlayers = 4;
+					  break;
+			  }
+      }
+    }
+
+    WRITEDATA( &numPlayers, sizeof(numPlayers) );
 	}
 
     // Grab the signature

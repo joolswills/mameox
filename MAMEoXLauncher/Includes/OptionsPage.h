@@ -28,6 +28,7 @@ typedef enum PageID
   OPTPAGE_NETWORK,
   OPTPAGE_DIRECTORIES_1,
   OPTPAGE_DIRECTORIES_2,
+  OPTPAGE_ROMLIST,
   OPTPAGE_LAST
 } PageID;
 
@@ -51,6 +52,7 @@ void DrawVectorPage( COptionsPage * );
 void DrawNetworkPage( COptionsPage * );
 void DrawDirectoryPathPage1( COptionsPage * );
 void DrawDirectoryPathPage2( COptionsPage * );
+void DrawROMListPage( COptionsPage * );
 
 void ChangeGeneralPage( COptionsPage *, BOOL direction );
 void ChangeSoundPage( COptionsPage *, BOOL direction );
@@ -59,6 +61,7 @@ void ChangeVectorPage( COptionsPage *, BOOL direction );
 void ChangeNetworkPage( COptionsPage *, BOOL direction );
 void ChangeDirectoryPathPage1( COptionsPage *, BOOL direction );
 void ChangeDirectoryPathPage2( COptionsPage *, BOOL direction );
+void ChangeROMListPage( COptionsPage *, BOOL direction );
 
 //= C L A S S E S ======================================================
 
@@ -110,6 +113,7 @@ public:
   void DrawNetworkPage( void );
   void DrawDirectoryPathPage1( void );
   void DrawDirectoryPathPage2( void );
+  void DrawROMListPage( void );
 
   void ChangeGeneralPage( BOOL direction );
   void ChangeSoundPage( BOOL direction );
@@ -118,6 +122,7 @@ public:
   void ChangeNetworkPage( BOOL direction );
   void ChangeDirectoryPathPage1( BOOL direction );
   void ChangeDirectoryPathPage2( BOOL direction );
+  void ChangeROMListPage( BOOL direction );
 
 protected:
   UINT32                    m_pageNumber;                   //!< The options page number

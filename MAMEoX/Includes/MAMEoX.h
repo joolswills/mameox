@@ -5,15 +5,21 @@
 
 #pragma once
 
+
+//= I N C L U D E S ====================================================
+#include <Xtl.h>
+#include "DebugLogger.h"
+
 #ifdef __cplusplus
+
+#include "StdString.h"
+
 extern "C" {
 #endif
 
-//= I N C L U D E S ====================================================
 #include "osdepend.h"
 #include "osd_cpu.h"
-#include "DebugLogger.h"
-#include <Xtl.h>
+
 
 //= D E F I N E S ======================================================
 #ifdef _DEBUG
@@ -63,14 +69,29 @@ typedef enum fonttype
   FONTTYPE_LARGETHIN
 } fonttype;
 
+typedef enum ROMListFilterMode
+{
+  FM_NONE                   = 0,          //!< Don't filter
+  FM_CLONE                  = (1<<0),     //!< Filter out clones
+  FM_NUMPLAYERS             = (1<<1),     //!< Filter based on the number of players
+  FM_GENRE                  = (1<<2),     //!< Filter on the Genre
+  FM_ROMSTATUS_SLOW         = (1<<3),     //!< Filter out "Slow" games
+  FM_ROMSTATUS_OUTOFMEM     = (1<<4),     //!< Filter out "Out of Memory" games
+  FM_ROMSTATUS_CRASH        = (1<<5),     //!< Filter out "Crash" games
+  FM_ROMSTATUS_NONWORKING   = (1<<6),     //!< Filter out "Other nonworking" games
+  FM_ROMSTATUS_UNPLAYABLE   = FM_ROMSTATUS_OUTOFMEM | FM_ROMSTATUS_CRASH | FM_ROMSTATUS_NONWORKING,  //!< Filter out any games that cannot be played
+  FM_ROMSTATUS_IMPERFECT    = FM_ROMSTATUS_SLOW | FM_ROMSTATUS_UNPLAYABLE  //!< Filter all imperfect games
+} ROMListFilterMode;
+
 typedef enum ROMListSortMode
 {
-  SM_BYNAME = 0x00,
-  SM_BYMANUFACTURER,
-  SM_BYYEAR,
-  SM_BYPARENT,
-  SM_BYGENRE,
-  SM_BYNUMPLAYERS
+  SM_BYNAME = 0x00,               //!< Sort by the ROM name
+  SM_BYROMSTATUS,                 //!< Sort by the ROM working status
+  SM_BYMANUFACTURER,              //!< Sort by the manufacturer
+  SM_BYYEAR,                      //!< Sort by the year
+  SM_BYPARENT,                    //!< Sort by the parent for clones, alphabetically otherwise
+  SM_BYNUMPLAYERS,                //!< Sort by the number of players
+  SM_BYGENRE                      //!< Sort by genre
 } ROMListSortMode;
 
 //= S T R U C T U R E S ================================================
@@ -81,20 +102,21 @@ typedef struct MAMEoXLaunchData_t
   DWORD                 m_gameIndex;                    //!<  The index of the currently selected game
   DWORD                 m_driverListGenerationAttempts; //!<  The number of attempts made at generating the driver list
 
-  float                 m_cursorPosition;     //!<  Cursor position within the ROM list
-  float                 m_pageOffset;         //!<  Page offset within the ROM list
+  FLOAT                 m_cursorPosition;     //!<  Cursor position within the ROM list
+  FLOAT                 m_pageOffset;         //!<  Page offset within the ROM list
   UINT32                m_superscrollIndex;   //!<  Superscroll index for the ROM list
 } MAMEoXLaunchData_t;
 
 typedef struct MAMEDriverData_t
 {
-  DWORD m_index;          //!<  The index of this driver in the sorted list
-  char  *m_romFileName;   //!<  Main ROM zip file name
-  char  *m_description;   //!<  Description from the MAME core
-  BOOL  m_isClone;        //!<  Whether or not the game is a clone
-	char  *m_cloneFileName;	//!<  Clone ROM zip file name
-	char  *m_manufacturer;	//!<  Manufacturer name
-	char  *m_year;					//!<  Year
+  UINT32  m_index;          //!<  The index of this driver in the sorted list
+  char    *m_romFileName;   //!<  Main ROM zip file name
+  char    *m_description;   //!<  Description from the MAME core
+  BOOL    m_isClone;        //!<  Whether or not the game is a clone
+	char    *m_cloneFileName;	//!<  Clone ROM zip file name
+	char    *m_manufacturer;	//!<  Manufacturer name
+	char    *m_year;					//!<  Year
+  UINT32  m_numPlayers;     //!<  Number of players
 } MAMEDriverData_t;
 
 typedef struct lightgunCalibration_t
@@ -114,18 +136,27 @@ typedef struct RenderToTextureToken_t
   LPDIRECT3DTEXTURE8  m_texture;
 } RenderToTextureToken_t;
 
+
+#ifdef __cplusplus
 typedef struct ROMListOptions_t
 {
-  BOOL              m_verboseMode;      //!<  Whether or not to show verbose info (manufacturer, year, etc...)
-  BOOL              m_displayClones;    //!<  Whether or not to show clones
-  ROMListSortMode   m_sortMode;         //!<  The current sort mode
-} ROMListOptions_t;
+  BOOL              m_verboseMode;        //!<  Whether or not to show verbose info (manufacturer, year, etc...)
+  ROMListSortMode   m_sortMode;           //!<  The current sort mode
+  BOOL              m_showROMStatus;      //!<  Whether or not to colorize based on ROM Status
 
+  UINT32            m_filterMode;         //!<  General filter mode bitvector (uses ROMListFilterMode flags)
+  UINT32            m_numPlayersFilter;
+//  CStdString        m_genreFilter;
+} ROMListOptions_t;
+#endif
 
 //= G L O B A L = V A R S ==============================================
 extern lightgunCalibration_t    g_calibrationData[4];     //!< Lightgun calibration data
-extern ROMListOptions_t         g_romListOptions;         //!<  ROM List display options that persist via the INI
 extern MAMEoXLaunchData_t       g_persistentLaunchData;   //!<  Launch data that persists via the INI
+
+#ifdef __cplusplus
+extern ROMListOptions_t         g_romListOptions;         //!<  ROM List display options that persist via the INI
+#endif
 
 //= P R O T O T Y P E S ================================================
   //-------------------------------------------------------------------

@@ -29,6 +29,9 @@ extern "C" {
   //--- Layout defines -----------------------------------------
 #define HEADER_COLOR          D3DCOLOR_XRGB( 0, 0, 0 )
 #define ITEM_COLOR			      D3DCOLOR_XRGB( 0, 0, 0 )
+#define ITEM_WARNING_COLOR    D3DCOLOR_XRGB( 100, 100, 0 )
+#define ITEM_NONWORKING_COLOR D3DCOLOR_XRGB( 100, 0, 0 )
+
 #define HIGHLIGHTBAR_COLOR    D3DCOLOR_ARGB( 180, 175, 179, 212 )
 #define SCROLLICON_COLOR      D3DCOLOR_XRGB( 255, 255, 255 )
 
@@ -78,16 +81,28 @@ extern "C" {
 	// Number of seconds between valid DPAD readings
 #define DPADCURSORMOVE_TIMEOUT	0.20f
 
-
-
 //= G L O B A L = V A R S ==============================================
-const char        g_superscrollCharacterSet[NUM_SUPERSCROLL_CHARS+1] = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  // Static member initialization
+MAMEDriverData_t       *CROMList::m_driverInfoList = NULL;
+UINT32                 CROMList::m_numDrivers = 0;
+std::vector<ROMStatus> CROMList::m_ROMStatus;
 
 
 //= P R O T O T Y P E S ================================================
 BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage );              // Defined in main.cpp
 void DestroyBackdrop( void );                                   // Defined in main.cpp
 void Die( LPDIRECT3DDEVICE8 m_displayDevice, const char *fmt, ... ); // Defined in main.cpp
+
+
+  // Compare functions for ROM List sorting
+static BOOL Compare_Manufacturer( UINT32 a, UINT32 b );
+static BOOL Compare_Year( UINT32 a, UINT32 b );
+static BOOL Compare_ParentROM( UINT32 a, UINT32 b );
+static BOOL Compare_Genre( UINT32 a, UINT32 b );
+static BOOL Compare_NumPlayers( UINT32 a, UINT32 b );
+static BOOL Compare_ROMStatus( UINT32 a, UINT32 b );
+
+static BOOL Helper_ReadXMLTag( osd_file *file, CStdString *tagName );
 
 //= F U N C T I O N S ==================================================
 
@@ -99,9 +114,8 @@ BOOL CROMList::LoadROMList( BOOL bGenerate, BOOL allowClones )
 	PRINTMSG( T_TRACE, "LoadROMList" );
 
   m_maxPageSize = MAXPAGESIZE;
-	m_ROMListWithClones.clear();
-  m_ROMListNoClones.clear();
-  m_options.m_displayClones = allowClones;
+	m_ROMListFull.clear();
+  m_ROMListFiltered.clear();
 
 	m_displayDevice->Clear(	0L,																// Count
 													NULL,															// Rects to clear
@@ -120,6 +134,7 @@ BOOL CROMList::LoadROMList( BOOL bGenerate, BOOL allowClones )
   if( LoadROMListFile() )
   {
     UpdateSortedList();
+    LoadROMStatusFile();
     m_numLinesInList = m_currentSortedList.size();
     return TRUE;
   }
@@ -137,8 +152,8 @@ BOOL CROMList::GenerateROMList( void )
 	PRINTMSG( T_TRACE, "GenerateROMList" );
 
   m_shouldGenerateROMList = FALSE;
-	m_ROMListWithClones.clear();
-  m_ROMListNoClones.clear();
+	m_ROMListFull.clear();
+  m_ROMListFiltered.clear();
 
 	std::vector< CStdString > zipFileNames;
 	WIN32_FIND_DATA findData;
@@ -190,9 +205,9 @@ BOOL CROMList::GenerateROMList( void )
   // Check the zip files against the list of all known zip files
 	for(DWORD i = 0; i < m_numDrivers; ++i )
 	{
-      // Only redraw every 16th ROM, as rendering takes up
+      // Only redraw every 8th ROM, as rendering takes up
       // the vast majority of the overall time
-    if( !(i & 0x0F) )
+    if( !(i & 0x07) )
       DrawZipCheckProgress( i );
     CStdString driverFileName = m_driverInfoList[i].m_romFileName;
     driverFileName.ToLower();
@@ -201,14 +216,10 @@ BOOL CROMList::GenerateROMList( void )
                                                       zipFileNames.end(), 
                                                       driverFileName );
     if( it != zipFileNames.end() )
-    {
-      if( !m_driverInfoList[i].m_isClone )
-        m_ROMListNoClones.push_back( i );
-      m_ROMListWithClones.push_back( i );
-    }
+      m_ROMListFull.push_back( i );
 	}
 
-	PRINTMSG( T_INFO, "Found %lu games, %lu unique!", m_ROMListWithClones.size(), m_ROMListNoClones.size() );
+	PRINTMSG( T_INFO, "Found %lu games!", m_ROMListFull.size() );
 
   if( !SaveROMListFile() )
   {
@@ -218,6 +229,7 @@ BOOL CROMList::GenerateROMList( void )
 
     // Create the superscroll jump table
   UpdateSortedList();
+  LoadROMStatusFile();
   m_numLinesInList = m_currentSortedList.size();
 	return TRUE;
 }
@@ -228,7 +240,7 @@ BOOL CROMList::GenerateROMList( void )
 BOOL CROMList::SaveROMListFile( void )
 {
 		// Write the indices to the ROM list file
-	std::string	romListFile = g_ROMListPath;
+	CStdString romListFile = g_ROMListPath;
 	romListFile += "\\";
 	romListFile += ROMLISTFILENAME;
 
@@ -307,12 +319,12 @@ BOOL CROMList::SaveROMListFile( void )
     }
 
     // Write the number of indices
-  DWORD numROMs = m_ROMListWithClones.size();
+  DWORD numROMs = m_ROMListFull.size();
   WRITEDATA( &numROMs, sizeof(numROMs) );
 
     // Write the indices
-	std::vector<UINT32>::iterator it = m_ROMListWithClones.begin();
-	for( ; it != m_ROMListWithClones.end(); ++it )
+	std::vector<UINT32>::iterator it = m_ROMListFull.begin();
+	for( ; it != m_ROMListFull.end(); ++it )
 	{
 		DWORD idx = (*it);
     WRITEDATA( &idx, sizeof(idx) );
@@ -495,11 +507,123 @@ BOOL CROMList::LoadROMListFile( void )
     DWORD idx;
     READDATA_NOMALLOC( &idx, sizeof(idx) );
 
-		m_ROMListWithClones.push_back( idx );
-    if( !m_driverInfoList[idx].m_isClone )
-      m_ROMListNoClones.push_back( idx );
+		m_ROMListFull.push_back( idx );
   }
   free( fileData );
+
+  return TRUE;
+}
+
+
+//---------------------------------------------------------------------
+//	LoadROMStatusFile
+//---------------------------------------------------------------------
+BOOL CROMList::LoadROMStatusFile( void )
+{
+  m_ROMStatus.clear();
+
+  UINT32 i = 0;
+  for( ; i < m_numDrivers; ++i )
+    m_ROMStatus.push_back( STATUS_UNKNOWN );
+
+    // Open the ROMStatus.XML file (in the General directory)
+  osd_file *file = osd_fopen( FILETYPE_HISTORY, 0, ROMSTATUSFILENAME, "r" );
+  if( !file )
+  {
+    PRINTMSG( T_ERROR, "Failed to open rom status file: %s", ROMSTATUSFILENAME );
+    return FALSE;
+  }
+
+  char buffer[2] = {0};
+  CStdString tagName = "";
+  CStdString closingTagName = "";
+  CStdString tagData = "";
+  CStdString romName = "";
+  ROMStatus  romStatus = STATUS_UNKNOWN;
+
+  while( osd_fread( file, buffer, 1 ) )
+  {
+    /*
+      <Rom name="005" version="?">
+        <Status>Working</Status> 
+        <Statusnumber>1</Statusnumber> 
+      </Rom>
+    */
+    
+      // Go through the XML file, reading each <ROM> entry into the temp vars
+    if( buffer[0] == '<' )
+    {
+        // Read the entire tag
+      if( !Helper_ReadXMLTag( file, &tagName ) )
+        break;
+
+      if( tagName == "</rom>" )
+      {
+          // Just finished reading a ROM entry
+          // Go through the m_driverInfoList and find the entry matching that read from the XML file
+        for( i = 0; i < m_numDrivers && stricmp( m_driverInfoList[i].m_romFileName, romName.c_str() ); ++i )
+          ;
+
+          // Set m_ROMStatus at the same index
+        if( i != m_numDrivers )
+          m_ROMStatus[i] = romStatus;
+        else
+          PRINTMSG( T_INFO, "Unknown driver %s in status XML file!", "" );
+
+        romName = "";
+        romStatus = STATUS_UNKNOWN;
+      }
+      else if( tagName.substr( 0, 2 ) == "<?" || 
+          tagName.substr( 0, 2 ) == "<!" || 
+          tagName.substr( 0, 2 ) == "</" ||
+          tagName == "<roms>" )
+      {
+          // Just ignore it
+      }
+      else if( tagName.substr( 0, 5 ) == "<rom " )
+      {
+          // Don't parse the whole tag, as we want the subfields separate
+        romName = tagName.substr( 11 );
+        i = romName.find( '"' );
+        if( i != romName.npos )
+          romName = romName.substr( 0, i );
+      }
+      else
+      {
+        tagData = "";
+
+findEndTag:
+          // Read until we find the end of this tag
+        while( osd_fread( file, buffer, 1 ) && buffer[0] != '<' )
+          tagData += buffer;
+
+          // Read the tag
+        if( !Helper_ReadXMLTag( file, &closingTagName ) )
+          break;
+
+        if( closingTagName.substr( 0, 2 ) != "</" || closingTagName.substr( 2 ) != tagName.substr( 1 ) )
+        {
+            // We've found a tag, but it's not the one we're looking for. Add it to the data and continue
+            // searching
+          tagData += closingTagName;
+          goto findEndTag;
+        }
+
+
+          // Handle the basic tags
+        if( tagName == "<statusnumber>" )
+        {
+            // Parse out the status ID
+          UINT32 statusNum;
+          sscanf( tagData.c_str(), "%lu", &statusNum );
+          if( statusNum < STATUS_MAX )
+            romStatus = (ROMStatus)statusNum;
+        }
+      }
+    }
+  }
+
+  osd_fclose( file );
 
   return TRUE;
 }
@@ -564,7 +688,11 @@ void CROMList::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
   {
       // No need to regenerate the list, just switch to
       // the noclones (or clones) list
-		m_options.m_displayClones = !m_options.m_displayClones;
+    if( m_options.m_filterMode & FM_CLONE )
+      m_options.m_filterMode &= ~FM_CLONE;
+    else
+      m_options.m_filterMode |= FM_CLONE;
+
     UpdateSortedList();
     m_numLinesInList = m_currentSortedList.size();
     gp.WaitForNoButton();
@@ -618,46 +746,30 @@ void CROMList::SuperScrollModeMoveCursor( CInputManager &gp, FLOAT elapsedTime )
   if( gp.IsOneOfButtonsPressed( GP_DPAD_DOWN | GP_LA_DOWN ) && m_dpadCursorDelay == 0.0f )
 	{
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
-    UINT32 startPos = m_superscrollCharacterIdx;
-    while( 1 )
-    {
-        // Wrap around
-      if( ++m_superscrollCharacterIdx >= NUM_SUPERSCROLL_CHARS )
-        m_superscrollCharacterIdx = 0;
-      if( m_superscrollJumpTable[m_superscrollCharacterIdx] != INVALID_SUPERSCROLL_JUMP_IDX ||
-          m_superscrollCharacterIdx == startPos )
-        return;
-    }
+    UINT32 startPos = m_currentSuperscrollIndex;
+
+    if( ++m_currentSuperscrollIndex >= m_superscrollJumpTable.size() )
+      m_currentSuperscrollIndex = 0;
 	}
   else if( gp.IsOneOfButtonsPressed( GP_DPAD_UP | GP_LA_UP ) && m_dpadCursorDelay == 0.0f )
 	{
 		m_dpadCursorDelay = DPADCURSORMOVE_TIMEOUT;
-    UINT32 startPos = m_superscrollCharacterIdx;
-    while( 1 )
-    {
-        // Wrap around
-      if( !m_superscrollCharacterIdx )
-        m_superscrollCharacterIdx = NUM_SUPERSCROLL_CHARS - 1;
-      else
-        --m_superscrollCharacterIdx;
+    UINT32 startPos = m_currentSuperscrollIndex;
 
-      if( m_superscrollJumpTable[m_superscrollCharacterIdx] != INVALID_SUPERSCROLL_JUMP_IDX ||
-          m_superscrollCharacterIdx == startPos )
-        return;
-    }
+    if( !m_currentSuperscrollIndex )
+      m_currentSuperscrollIndex = m_superscrollJumpTable.size() - 1;
+    else
+      --m_currentSuperscrollIndex;
 	}
 
-    // This should always succeed, as SuperScrollModeMoveCursor only presents valid
-    // character indices to the user
-  char currentChar = toupper( m_driverInfoList[ GetCurrentGameIndex() ].m_description[0] );
-  if( !(currentChar >= 'A' && currentChar <= 'Z') )
-    currentChar = '#';
-  UINT32 absCursorPos = m_superscrollJumpTable[m_superscrollCharacterIdx];
-  
-    // Jump if there's a place to jump to, and we're not already in the section starting
-    // with the selected superscroll letter
-  if( absCursorPos != INVALID_SUPERSCROLL_JUMP_IDX && currentChar != g_superscrollCharacterSet[m_superscrollCharacterIdx])
-    SetAbsoluteCursorPosition( absCursorPos );
+    // Jump the cursor if there's a place to jump to, and we're not 
+    // already in the section starting with the selected superscroll value
+  CStdString curVal, curROMVal;
+  GetFriendlySuperscrollIndexStringForROM( &curROMVal, GetAbsoluteCursorPosition() );
+  GetFriendlySuperscrollIndexStringForJumpTableIndex( &curVal, m_currentSuperscrollIndex );
+
+  if( curVal != curROMVal )
+    SetAbsoluteCursorPosition( m_superscrollJumpTable[m_currentSuperscrollIndex] );
 }
 
 //---------------------------------------------------------------------
@@ -830,23 +942,26 @@ void CROMList::NormalModeMoveCursor( CInputManager &gp, FLOAT elapsedTime )
 	}
 
 
-    // Make the superscroll char index == whatever we're on now 
-  char CurrentGameSuperscrollChar = '#';
+    // If the superscroll index is not set to this ROM, make it so
+  CStdString curVal, currentROMVal;
+  GetFriendlySuperscrollIndexStringForJumpTableIndex( &curVal, m_currentSuperscrollIndex );
+
   if( GetCurrentGameIndex() != INVALID_ROM_INDEX )
-    CurrentGameSuperscrollChar = toupper( m_driverInfoList[GetCurrentGameIndex()].m_description[0] );
-  if( !(CurrentGameSuperscrollChar >= 'A' && CurrentGameSuperscrollChar <= 'Z') )
-    CurrentGameSuperscrollChar = '#';
-
-  if( g_superscrollCharacterSet[m_superscrollCharacterIdx] != CurrentGameSuperscrollChar )
   {
-    for( m_superscrollCharacterIdx = 0; m_superscrollCharacterIdx < INVALID_SUPERSCROLL_JUMP_IDX; ++m_superscrollCharacterIdx )
+    GetFriendlySuperscrollIndexStringForROM( &currentROMVal, GetAbsoluteCursorPosition() );
+    if( curVal != currentROMVal )
     {
-      if( g_superscrollCharacterSet[m_superscrollCharacterIdx] == CurrentGameSuperscrollChar )
-        return;
-    }
+      for( m_currentSuperscrollIndex = 0; m_currentSuperscrollIndex < m_superscrollJumpTable.size(); ++m_currentSuperscrollIndex )
+      {
+        GetFriendlySuperscrollIndexStringForJumpTableIndex( &curVal, m_currentSuperscrollIndex );
 
-    PRINTMSG( T_ERROR, "Unhandled superscroll char %c (0x%X)", CurrentGameSuperscrollChar, CurrentGameSuperscrollChar );
-    m_superscrollCharacterIdx = 0;
+        if( curVal == currentROMVal )
+          return;
+      }
+
+      PRINTMSG( T_ERROR, "Could not find valid jump table index for ROM %lu [%s]!", GetCurrentGameIndex(), currentROMVal.c_str() );
+      m_currentSuperscrollIndex = 0;
+    }
   }
 }
 
@@ -901,15 +1016,17 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 
 	m_fontSet.SmallThinFont().Begin();
 
+	  swprintf( name, L"Names (%s)  ", ( m_options.m_filterMode != FM_NONE ) ? L"Filtered " : L"Full List" );
     if( m_superscrollMode )
     {
         // Display the superscroll character
-      WCHAR displayString[2] = L"";
-      mbtowc( displayString, &g_superscrollCharacterSet[m_superscrollCharacterIdx], 1 );
-		  swprintf( name, L"Names %s [%s]", ( m_options.m_displayClones == FALSE ) ? L"(No Clones)" : L"(Clones)   ", displayString );
+      WCHAR displayString[64] = L"";
+      CStdString tempBuf;
+      GetFriendlySuperscrollIndexStringForJumpTableIndex( &tempBuf, m_currentSuperscrollIndex );
+
+      mbstowcs( displayString, tempBuf.c_str(), 64 );
+		  swprintf( &name[wcslen(name)], L"[%s]", displayString );
     }
-    else
-  	  swprintf( name, L"Names %s", ( m_options.m_displayClones == FALSE ) ? L"(No Clones)" : L"(Clones)   " );
 
 	  m_fontSet.SmallThinFont().DrawText( NAME_COLUMN, TITLEBAR_ROW, HEADER_COLOR, name );
 	  if( m_options.m_verboseMode )
@@ -920,43 +1037,69 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 	  }
 
 
-		  // Render the titles
+		  // Render the ROM info
 	  FLOAT yPos = 0.0f;
     FLOAT pageSize = GetCurrentPageSize();
 	  ULONG absListIDX = (ULONG)m_pageOffset;
 
-	  for( DWORD i = 0; i < pageSize; ++i )
+	  for( DWORD i = absListIDX; i < pageSize + absListIDX; ++i )
 	  {
-		  mbstowcs( name, m_driverInfoList[ m_currentSortedList[ absListIDX++ ] ].m_description, 255 );
+      DWORD color = ITEM_COLOR;
+
+        // Set the ROM color based on its status
+      if( m_options.m_showROMStatus )
+      {
+        ROMStatus &status = m_ROMStatus[m_currentSortedList[ i ]];
+        switch( status )
+        {
+        case STATUS_UNKNOWN:
+        case STATUS_WORKING:
+        default:
+            // Do nothing, ITEM_COLOR is already correct
+          break;
+
+        case STATUS_SLOW:
+          color = ITEM_WARNING_COLOR;
+          break;
+
+        case STATUS_CRASH:
+        case STATUS_OUT_OF_MEMORY:
+        case STATUS_GENERAL_NONWORKING:
+          color = ITEM_NONWORKING_COLOR;
+          break;
+        }
+      }
+
+		  mbstowcs( name, m_driverInfoList[ m_currentSortedList[i] ].m_description, 255 );
 		  m_fontSet.SmallThinFont().DrawText( NAME_COLUMN,
                                           FIRSTDATA_ROW + yPos,
-                                          ITEM_COLOR,
+                                          color,
                                           name,
                                           XBFONT_TRUNCATED,
                                           ( m_options.m_verboseMode ? MANUFACTURER_COLUMN : TEXTBOX_RIGHT ) - (NAME_COLUMN + COLUMN_PADDING) );
 
 		  if( m_options.m_verboseMode )
 		  {
-			  mbstowcs( name, m_driverInfoList[ m_currentSortedList[ absListIDX - 1 ] ].m_manufacturer, 255 );
+			  mbstowcs( name, m_driverInfoList[ m_currentSortedList[i] ].m_manufacturer, 255 );
 			  m_fontSet.SmallThinFont().DrawText( MANUFACTURER_COLUMN,
                                             FIRSTDATA_ROW + yPos,
-                                            ITEM_COLOR,
+                                            color,
                                             name,
                                             XBFONT_TRUNCATED,
                                             YEAR_COLUMN - (MANUFACTURER_COLUMN + COLUMN_PADDING) );
 
-			  mbstowcs( name, m_driverInfoList[ m_currentSortedList[ absListIDX - 1 ] ].m_year, 255 );
+			  mbstowcs( name, m_driverInfoList[ m_currentSortedList[i] ].m_year, 255 );
 			  m_fontSet.SmallThinFont().DrawText( YEAR_COLUMN, 
                                             FIRSTDATA_ROW + yPos, 
-                                            ITEM_COLOR, 
+                                            color, 
                                             name, 
                                             XBFONT_TRUNCATED,
                                             CLONE_COLUMN - (YEAR_COLUMN + COLUMN_PADDING) );
 
-			  mbstowcs( name, m_driverInfoList[ m_currentSortedList[ absListIDX - 1 ] ].m_cloneFileName, 255 );
+			  mbstowcs( name, m_driverInfoList[ m_currentSortedList[i] ].m_cloneFileName, 255 );
 			  m_fontSet.SmallThinFont().DrawText( CLONE_COLUMN, 
                                             FIRSTDATA_ROW + yPos,
-                                            ITEM_COLOR,
+                                            color,
                                             name,
                                             XBFONT_TRUNCATED,
                                             TEXTBOX_RIGHT - (CLONE_COLUMN + COLUMN_PADDING) );
@@ -965,26 +1108,7 @@ void CROMList::Draw( BOOL clearScreen, BOOL flipOnCompletion )
 			  // Inc the Y position
 		  yPos += textHeight;
 	  }
-
-  /*
-    #if defined(_PROFILER) || defined(_DEBUG)
-      MEMORYSTATUS memStatus;
-      GlobalMemoryStatus( &memStatus );
-
-      WCHAR memStr[256];
-      swprintf( memStr, 
-                L"Memory: %lu/%lu",
-                memStatus.dwAvailPhys, 
-                memStatus.dwTotalPhys );
-
-      m_fontSet.SmallThinFont().DrawText( 256, Y_POS + yPos, D3DCOLOR_XRGB(100,220,220), memStr, XBFONT_CENTER_X );
-    #else
-      m_fontSet.SmallThinFont().DrawText( 256, Y_POS + yPos, D3DCOLOR_XRGB(100,220,220), L"Press X for help", XBFONT_CENTER_X );
-    #endif
-  */
-
 	m_fontSet.SmallThinFont().End();
-
 
 
     //-- Render the scroll up and/or scroll down icons --------------------------------------------
@@ -1157,18 +1281,35 @@ void CROMList::DrawZipCheckProgress( DWORD index )
 //---------------------------------------------------------------------
 //	RemoveCurrentGameIndex
 //---------------------------------------------------------------------
-void CROMList::RemoveCurrentGameIndex( void )
+BOOL CROMList::RemoveCurrentGameIndex( void )
 {
 	UINT32 curCursorPos = (ULONG)m_pageOffset + (ULONG)m_cursorPosition;
 	std::vector<UINT32>::iterator it = m_currentSortedList.begin();
 	for( UINT32 i = 0; i < curCursorPos; ++i )
 		++it;
 
+
+  UINT32 index = (*it);
 	m_currentSortedList.erase( it );
 
-    // Note: This needs to be fixed to remove from both
-    //       ROM lists, as well as write the list back
-    //       to the file.
+    // Remove the item from the full listing
+  it = std::find( m_ROMListFull.begin(), m_ROMListFull.end(), index );
+  if( it != m_ROMListFull.end() )
+    m_ROMListFull.erase( it );
+
+    // Remove the item from the filtered listing
+  it = std::find( m_ROMListFiltered.begin(), m_ROMListFiltered.end(), index );
+  if( it != m_ROMListFiltered.end() )
+    m_ROMListFiltered.erase( it );
+
+    // Write out the new list to file
+  if( !SaveROMListFile() )
+  {
+    PRINTMSG( T_INFO, "Failed to store the ROM list file!" );
+    return FALSE;
+  }
+
+  return TRUE;
 }
 
 //---------------------------------------------------------------------
@@ -1176,58 +1317,25 @@ void CROMList::RemoveCurrentGameIndex( void )
 //---------------------------------------------------------------------
 void CROMList::GenerateSuperscrollJumpTable( void )
 {
-    // Invalidate jump table
-  for( UINT32 idx = 0; idx < NUM_SUPERSCROLL_CHARS; ++idx )
-    m_superscrollJumpTable[idx] = INVALID_SUPERSCROLL_JUMP_IDX;
-  
-  char charToLookFor = g_superscrollCharacterSet[0];
-  for( UINT32 j = 0, i = 0; j < m_currentSortedList.size() ; ++j )
+    // Invalidate the jump table
+  m_superscrollJumpTable.clear();
+  m_currentSuperscrollIndex = 0;
+
+  CStdString lastVal = "", curVal = "";
+  for( UINT32 i = 0; i < m_currentSortedList.size(); ++i )
   {
-    char currentChar = toupper( m_driverInfoList[ m_currentSortedList[j] ].m_description[0] );
+      // Get the superscroll string for the current ROM
+    GetFriendlySuperscrollIndexStringForROM( &curVal, i );
 
-      // Map any non-alphanumerics to '#'
-    if( !(currentChar >= 'A' && currentChar <= 'Z') )
-      currentChar = '#';
+      // If the value is different from the last one, add the
+      // index to the table
+    if( lastVal != curVal )
     {
-      if( currentChar == charToLookFor )
-      {
-          // Fill out the jump table
-        if( m_superscrollJumpTable[i] == INVALID_SUPERSCROLL_JUMP_IDX )
-        {
-          m_superscrollJumpTable[i] = j;
-
-            // Dump out if we've found a 'Z', as there's nothing important left in the list
-          if( charToLookFor == g_superscrollCharacterSet[NUM_SUPERSCROLL_CHARS-1] )
-            return;
-
-            // Look for the next character in the set
-          charToLookFor = g_superscrollCharacterSet[++i];
-        }
-      }
-      else if( currentChar > charToLookFor )
-      {
-          // We've passed the character we were looking for
-        while( charToLookFor != currentChar )
-          charToLookFor = g_superscrollCharacterSet[++i];
-          
-          // Fill out the jump table for the char we found
-        if( m_superscrollJumpTable[i] == INVALID_SUPERSCROLL_JUMP_IDX )
-        {
-          m_superscrollJumpTable[i] = j;
-
-            // Dump out if we've found a 'Z', as there's nothing important left in the list
-          if( charToLookFor == g_superscrollCharacterSet[NUM_SUPERSCROLL_CHARS-1] )
-            return;
-
-            // Look for the next character in the set
-          charToLookFor = g_superscrollCharacterSet[++i];
-        }
-      }
+      lastVal = curVal;
+      m_superscrollJumpTable.push_back( i );
     }
   }
-
 }
-
 
 //---------------------------------------------------------------------
 //	UpdateSortedList
@@ -1236,40 +1344,55 @@ void CROMList::UpdateSortedList( void )
 {
   UINT32 oldDriverIndex = GetCurrentGameIndex();
 
-  if( m_options.m_displayClones )
-    m_currentSortedList = m_ROMListWithClones;
+  if( m_options.m_filterMode == FM_NONE )
+    m_currentSortedList = m_ROMListFull;
   else
-    m_currentSortedList = m_ROMListNoClones;
-/*
-  if( m_options.m_verboseMode && m_options.m_sortMode != SM_BYNAME )
   {
-      // Sort the list in some different manner
-    switch( m_options.m_sortMode )
-    {
-    case SM_BYMANUFACTURER:
-      break;
-
-    case SM_BYPARENT:
-      break;
-
-    case SM_BYGENRE:
-        // This will require changes to the superscroll function
-      break;
-
-    case SM_BYNUMPLAYERS:
-        // This will require changes to the superscroll function
-      break;
-
-    case SM_BYYEAR: 
-        // This will require changes to the superscroll function
-      break;
-
-    default:
-      PRINTMSG( T_ERROR, "Invalid sort mode %lu", m_options.m_sortMode );
-      break;
-    }
+      // Reapply the filter
+    UpdateFilteredList();
+    m_currentSortedList = m_ROMListFiltered;
   }
-*/
+
+
+    // Sort the list
+  switch( m_options.m_sortMode )
+  {
+    // *** SM_BYNAME *** //
+  case SM_BYNAME:
+  default:
+     // Nothing to do, it's sorted by name by default
+    break;
+
+    // *** SM_BYMANUFACTURER *** //
+  case SM_BYMANUFACTURER:
+    std::stable_sort( m_currentSortedList.begin(), m_currentSortedList.end(), Compare_Manufacturer );
+    break;
+
+    // *** SM_BYYEAR *** //
+  case SM_BYYEAR:
+    std::stable_sort( m_currentSortedList.begin(), m_currentSortedList.end(), Compare_Year );
+    break;
+
+    // *** SM_BYPARENT *** //
+  case SM_BYPARENT:
+    std::stable_sort( m_currentSortedList.begin(), m_currentSortedList.end(), Compare_ParentROM );
+    break;
+
+    // *** SM_BYGENRE *** //
+  case SM_BYGENRE:
+    std::stable_sort( m_currentSortedList.begin(), m_currentSortedList.end(), Compare_Genre );
+    break;
+
+    // *** SM_BYNUMPLAYERS *** //
+  case SM_BYNUMPLAYERS:
+    std::stable_sort( m_currentSortedList.begin(), m_currentSortedList.end(), Compare_NumPlayers );
+    break;
+
+    // *** SM_BYROMSTATUS *** //
+  case SM_BYROMSTATUS:
+    std::stable_sort( m_currentSortedList.begin(), m_currentSortedList.end(), Compare_ROMStatus );
+    break;
+  }
 
     // Attempt to find the ROM that the user was on in the old sort mode
     // in the new sort mode. If it can't be found, leave the cursor alone
@@ -1291,17 +1414,69 @@ void CROMList::UpdateSortedList( void )
   GenerateSuperscrollJumpTable();
 
     // Reposition the superscroll cursor in the new table
-  UINT32 idx = GetCurrentGameIndex();
-  if( idx != INVALID_ROM_INDEX )
+  if( GetCurrentGameIndex() != INVALID_ROM_INDEX )
   {
-    char currentChar = toupper( m_driverInfoList[idx].m_description[0] );
-    if( !(currentChar >= 'A' && currentChar <= 'Z') )
-      currentChar = '#';
+    CStdString currentString;
+    GetFriendlySuperscrollIndexStringForROM( &currentString, GetAbsoluteCursorPosition() );
 
-    m_superscrollCharacterIdx = 0;
-    UINT32 &curIDX = m_superscrollCharacterIdx;
-    for( curIDX = 0;  curIDX < NUM_SUPERSCROLL_CHARS && g_superscrollCharacterSet[curIDX] != currentChar; ++curIDX )
-      ;
+    UINT32 &curIDX = m_currentSuperscrollIndex;
+    for( curIDX = 0; curIDX < m_superscrollJumpTable.size(); ++curIDX )
+    {
+      CStdString indexString;
+      GetFriendlySuperscrollIndexStringForJumpTableIndex( &indexString, curIDX );
+
+      if( indexString == currentString )
+        break;
+    }
+  }
+}
+
+
+//---------------------------------------------------------------------
+//  UpdateFilteredList
+//---------------------------------------------------------------------
+void CROMList::UpdateFilteredList( void )
+{
+  m_ROMListFiltered.clear();
+
+  std::vector<UINT32>::iterator i = m_ROMListFull.begin();
+  for( ; i != m_ROMListFull.end(); ++i )
+  {
+    BOOL validEntry = TRUE;
+    MAMEDriverData_t &driverData = m_driverInfoList[*i];
+    ROMStatus        &driverStatus = m_ROMStatus[*i];
+
+      // Filter on CLONE status
+    if( m_options.m_filterMode & FM_CLONE )
+      validEntry = !driverData.m_isClone;
+
+      // Filter on the number of players
+    if( m_options.m_filterMode & FM_NUMPLAYERS )
+      validEntry = driverData.m_numPlayers >= m_options.m_numPlayersFilter;
+
+      // Filter on the genre
+    if( m_options.m_filterMode & FM_GENRE )
+    {
+    }
+
+      // Filter out ROMs marked as "SLOW"
+    if( m_options.m_filterMode & FM_ROMSTATUS_SLOW )
+      validEntry = (driverStatus != STATUS_SLOW);
+
+      // Filter out ROMs marked as "Out of memory"
+    if( m_options.m_filterMode & FM_ROMSTATUS_OUTOFMEM )
+      validEntry = (driverStatus != STATUS_OUT_OF_MEMORY);
+
+      // Filter out ROMs marked as "Crash"
+    if( m_options.m_filterMode & FM_ROMSTATUS_CRASH )
+      validEntry = (driverStatus != STATUS_CRASH);
+
+      // Filter out ROMs marked as "Other nonworking"
+    if( m_options.m_filterMode & FM_ROMSTATUS_NONWORKING )
+      validEntry = (driverStatus != STATUS_GENERAL_NONWORKING);
+
+    if( validEntry )
+      m_ROMListFiltered.push_back( *i );
   }
 }
 
@@ -1330,6 +1505,246 @@ void CROMList::SetAbsoluteCursorPosition( UINT32 pos )
     m_cursorPosition = (FLOAT)pageHalfwayPoint;
   }
 }
+
+//---------------------------------------------------------------------
+//  GetFriendlySuperscrollIndexStringForJumpTableIndex
+//---------------------------------------------------------------------
+void CROMList::GetFriendlySuperscrollIndexStringForJumpTableIndex( CStdString *ret, UINT32 superscrollTableIndex )
+{
+  UINT32 jumpIndex;
+
+  assert( ret );
+  if( superscrollTableIndex >= m_superscrollJumpTable.size() || 
+      (jumpIndex = m_superscrollJumpTable[superscrollTableIndex]) == INVALID_ROM_INDEX )
+    *ret = "Invalid";
+
+  GetFriendlySuperscrollIndexStringForROM( ret, jumpIndex );
+}
+
+//---------------------------------------------------------------------
+//  GetFriendlySuperscrollIndexValue
+//---------------------------------------------------------------------
+void CROMList::GetFriendlySuperscrollIndexStringForROM( CStdString *ret, UINT32 sortedListIndex )
+{
+  UINT32 romIndex;
+  if( sortedListIndex >= m_currentSortedList.size() || 
+      (romIndex = m_currentSortedList[sortedListIndex]) == INVALID_ROM_INDEX )
+    *ret = "Invalid";
+
+  MAMEDriverData_t &driver = m_driverInfoList[romIndex];
+  ROMStatus        &status = m_ROMStatus[romIndex];
+
+  switch( m_options.m_sortMode )
+  {
+    // *** SM_BYNAME *** //
+  case SM_BYNAME:
+  default:
+    {
+      char buf[2] = {0};
+      buf[0] = toupper( driver.m_description[0] );
+
+      if( !(buf[0] >= 'A' && buf[0] <= 'Z') )
+        buf[0] = '#';
+      *ret = buf;
+    }
+    break;
+
+    // *** SM_BYMANUFACTURER *** //
+  case SM_BYMANUFACTURER:
+    if( driver.m_manufacturer )
+      *ret = driver.m_manufacturer;
+    else
+      *ret = "Unknown";
+    break;
+
+    // *** SM_BYYEAR *** //
+  case SM_BYYEAR:
+    if( driver.m_year )
+      *ret = driver.m_year;
+    else
+      *ret = "Unknown";
+    break;
+
+    // *** SM_BYPARENT *** //
+  case SM_BYPARENT:
+    if( driver.m_cloneFileName )
+      *ret = driver.m_cloneFileName;
+    else
+      *ret = "No parent";
+    break;
+
+    // *** SM_BYGENRE *** //
+  case SM_BYGENRE:
+    *ret = "Unsupported";
+    break;
+
+    // *** SM_BYNUMPLAYERS *** //
+  case SM_BYNUMPLAYERS:
+    {
+      char tempBuf[4] = {0};
+      sprintf( tempBuf, "%lu", driver.m_numPlayers );
+      *ret = tempBuf;
+    }
+    break;
+
+    // *** SM_BYROMSTATUS *** //
+  case SM_BYROMSTATUS:
+    switch( status )
+    {
+    case STATUS_UNKNOWN:
+      *ret = "Unknown";
+      break;
+
+    case STATUS_WORKING:
+      *ret = "Working";
+      break;
+
+    case STATUS_SLOW:
+      *ret = "Slow";
+      break;
+
+    case STATUS_CRASH:
+      *ret = "Crashes";
+      break;
+
+    case STATUS_OUT_OF_MEMORY:
+      *ret = "Out of memory";
+      break;
+
+    case STATUS_GENERAL_NONWORKING:
+      *ret = "Other non-working";
+      break;
+    }
+    break;
+  }
+}
+
+
+//---------------------------------------------------------------------
+//  Compare_Manufacturer
+//---------------------------------------------------------------------
+static BOOL Compare_Manufacturer( UINT32 a, UINT32 b )
+{
+  MAMEDriverData_t &aDriver = CROMList::m_driverInfoList[a];
+  MAMEDriverData_t &bDriver = CROMList::m_driverInfoList[b];
+
+    // Compare the manufacturer string, sorting by name if they're equal
+  int cmp = stricmp( aDriver.m_manufacturer, bDriver.m_manufacturer );
+  if( !cmp )
+    cmp = stricmp( aDriver.m_description, bDriver.m_description );
+
+  return cmp < 0;
+}
+
+//---------------------------------------------------------------------
+//  Compare_Year
+//---------------------------------------------------------------------
+static BOOL Compare_Year( UINT32 a, UINT32 b )
+{
+  MAMEDriverData_t &aDriver = CROMList::m_driverInfoList[a];
+  MAMEDriverData_t &bDriver = CROMList::m_driverInfoList[b];
+
+    // Compare the year string, sorting by name if they're equal
+  int cmp = stricmp( aDriver.m_year, bDriver.m_year );
+  if( !cmp )
+    cmp = stricmp( aDriver.m_description, bDriver.m_description );
+
+  return cmp < 0;
+}
+
+//---------------------------------------------------------------------
+//  Compare_ParentROM
+//---------------------------------------------------------------------
+static BOOL Compare_ParentROM( UINT32 a, UINT32 b )
+{
+  MAMEDriverData_t &aDriver = CROMList::m_driverInfoList[a];
+  MAMEDriverData_t &bDriver = CROMList::m_driverInfoList[b];
+
+    // Compare the parent rom string, sorting by name if they're equal
+  int cmp = stricmp( aDriver.m_cloneFileName, bDriver.m_cloneFileName );
+  if( !cmp )
+    cmp = stricmp( aDriver.m_description, bDriver.m_description );
+
+  return cmp < 0;
+}
+
+//---------------------------------------------------------------------
+//  Compare_Genre
+//---------------------------------------------------------------------
+static BOOL Compare_Genre( UINT32 a, UINT32 b )
+{
+  MAMEDriverData_t &aDriver = CROMList::m_driverInfoList[a];
+  MAMEDriverData_t &bDriver = CROMList::m_driverInfoList[b];
+
+    // There is no genre available yet, just sort by name
+  int cmp = 0; //stricmp( aDriver.m_cloneFileName, bDriver.m_cloneFileName );
+  if( !cmp )
+    cmp = stricmp( aDriver.m_description, bDriver.m_description );
+
+  return cmp < 0;
+}
+
+//---------------------------------------------------------------------
+//  Compare_NumPlayers
+//---------------------------------------------------------------------
+static BOOL Compare_NumPlayers( UINT32 a, UINT32 b )
+{
+  MAMEDriverData_t &aDriver = CROMList::m_driverInfoList[a];
+  MAMEDriverData_t &bDriver = CROMList::m_driverInfoList[b];
+
+    // Sort by number of players or name string (more players go
+    // towards the top)
+  int cmp = aDriver.m_numPlayers < bDriver.m_numPlayers;
+  if( !cmp )
+    cmp = stricmp( aDriver.m_description, bDriver.m_description );
+
+  return cmp < 0;
+}
+
+//---------------------------------------------------------------------
+//  Compare_ROMStatus
+//---------------------------------------------------------------------
+static BOOL Compare_ROMStatus( UINT32 a, UINT32 b )
+{
+  MAMEDriverData_t &aDriver = CROMList::m_driverInfoList[a];
+  MAMEDriverData_t &bDriver = CROMList::m_driverInfoList[b];
+  ROMStatus        &aStatus = CROMList::m_ROMStatus[a];
+  ROMStatus        &bStatus = CROMList::m_ROMStatus[b];
+
+    // Sort by the rom status, putting lower (better working) numbers first
+  int cmp = aStatus < bStatus;
+  if( !cmp )
+    return stricmp( aDriver.m_description, bDriver.m_description ) < 0;
+
+  return cmp > 0;
+}
+
+//---------------------------------------------------------------------
+//  Helper_ReadXMLTag
+//---------------------------------------------------------------------
+static BOOL Helper_ReadXMLTag( osd_file *file, CStdString *tagName )
+{
+  char buffer[2] = {0};
+  if( !tagName )
+    return FALSE;
+
+  *tagName = "<";
+  while( osd_fread( file, buffer, 1 ) && buffer[0] != '>' )
+  {
+    buffer[0] = tolower( buffer[0] );
+    if( buffer[0] != '\n' && buffer[0] != '\r' )
+      *tagName += buffer;
+  }
+
+    // Did we find the end of the tag?
+  if( buffer[0] != '>' )
+    return FALSE;
+
+    // Cat on the tag end
+  *tagName += ">";
+  return TRUE;
+}
+
 
 
 

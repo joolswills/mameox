@@ -7,11 +7,11 @@
 
 //= I N C L U D E S ====================================================
 
+#include <xtl.h>
 #include "osdepend.h"
 #include "osd_cpu.h"
 #include "fileio.h"
 #include "StdString.h"
-#include <xtl.h>
 
 //= D E F I N E S ======================================================
 
@@ -47,6 +47,7 @@
 #define DRIVERLISTFILENAME  "DRIVERS.list"
 #define ROMLISTFILENAME		  "ROMS.list"
 #define INIFILENAME         "MAMEoX.ini"
+#define ROMSTATUSFILENAME   "ROMStatus.xml"
 
   //!<  Define this to force all open() calls on the ROM directory
   //!<  to fail if they do not end in the letters "zip"

@@ -93,15 +93,11 @@ extern "C" {
 extern BOOL g_soundEnabled; // Sound processing override, defined in xbox_Main.cpp
 //static UINT32 g_samplerates[2] = { 22700, 44100 };
 
-//= S T R U C T U R E S ===============================================
-struct CUSTOMVERTEX
-{
-	D3DXVECTOR3   pos;      // The transformed position for the vertex
-  FLOAT         tu, tv;   // The texture coordinates
-};
-
 //= P R O T O T Y P E S ===============================================
 void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... );
+
+
+//= S T R U C T U R E S ===============================================
 
 //= F U N C T I O N S ==================================================
 
@@ -153,6 +149,11 @@ COptionsPage::COptionsPage( LPDIRECT3DDEVICE8	displayDevice,
   m_pageData[OPTPAGE_DIRECTORIES_2].m_drawFunct = ::DrawDirectoryPathPage2;
   m_pageData[OPTPAGE_DIRECTORIES_2].m_changeFunct = ::ChangeDirectoryPathPage2;
   m_pageData[OPTPAGE_DIRECTORIES_2].m_numItems = 10;
+
+  wcscpy( m_pageData[OPTPAGE_ROMLIST].m_title, L"ROM List Options" );
+  m_pageData[OPTPAGE_ROMLIST].m_drawFunct = ::DrawROMListPage;
+  m_pageData[OPTPAGE_ROMLIST].m_changeFunct = ::ChangeROMListPage;
+  m_pageData[OPTPAGE_ROMLIST].m_numItems = 3;
 
   m_virtualKeyboard = new CVirtualKeyboard( displayDevice, m_fontSet, m_textureSet );
 }
@@ -214,7 +215,7 @@ void COptionsPage::MoveCursor( CInputManager &gp, BOOL useSpeedbanding )
 	{
 		m_optToggleDelay -= elapsedTime;
     if( m_optToggleDelay < 0.0f || 
-        !gp.IsOneOfButtonsPressed( GP_DPAD_LEFT | GP_DPAD_RIGHT | GP_LA_LEFT | GP_LA_RIGHT ) )
+        !gp.IsOneOfButtonsPressed( GP_DPAD_LEFT | GP_DPAD_RIGHT | GP_LA_LEFT | GP_LA_RIGHT | GP_A | GP_B ) )
 			m_optToggleDelay = 0.0f;
 	}
 
@@ -829,12 +830,46 @@ void COptionsPage::DrawDirectoryPathPage2( void )
   ENDPAGE();
 }
 
+//---------------------------------------------------------------------
+//	DrawROMListPage
+//---------------------------------------------------------------------
+void COptionsPage::DrawROMListPage( void )
+{
+  static WCHAR *sortMode[] = {  L"By name", 
+                                L"By ROM status",
+                                L"By manufacturer", 
+                                L"By year", 
+                                L"By parent ROM",
+                                L"By number of players", 
+                                L"By genre" };
+
+  STARTPAGE();
+
+  DRAWITEM( L"Verbose mode", g_romListOptions.m_verboseMode ? L"Enabled" : L"Disabled" );
+
+  DRAWITEM( L"Colorize ROM status", g_romListOptions.m_showROMStatus ? L"Yes" : L"No" );
+
+  DRAWITEM( L"Sort mode", sortMode[(UINT32)g_romListOptions.m_sortMode] );
+
+/*
+  DRAWITEM( L"Filter mode", g_romListOptions.m_filterMode
+   =                iniFile.GetProfileInt( "ROMListOptions", "FilterMode", (UINT32)FM_NONE );
+  g_romListOptions.m_numPlayersFilter =          iniFile.GetProfileInt( "ROMListOptions", "Filter_NumPlayers", 0 );
+*/
+  ENDPAGE();
+}
+
+
+
+
+
+
 
 
 //---------------------------------------------------------------------
 //  ChangeGeneralPage
 //---------------------------------------------------------------------
-void COptionsPage::ChangeGeneralPage( BOOL direction )
+void COptionsPage::ChangeGeneralPage( BOOL movingRight )
 {
   switch( (DWORD)m_cursorPosition )
   {
@@ -898,7 +933,7 @@ void COptionsPage::ChangeGeneralPage( BOOL direction )
 //---------------------------------------------------------------------
 //  ChangeSoundPage
 //---------------------------------------------------------------------
-void COptionsPage::ChangeSoundPage( BOOL direction )
+void COptionsPage::ChangeSoundPage( BOOL movingRight )
 {
   switch( (DWORD)m_cursorPosition )
   {
@@ -930,7 +965,7 @@ void COptionsPage::ChangeSoundPage( BOOL direction )
 //---------------------------------------------------------------------
 //  ChangeVideoPage
 //---------------------------------------------------------------------
-void COptionsPage::ChangeVideoPage( BOOL direction )
+void COptionsPage::ChangeVideoPage( BOOL movingRight )
 {
   switch( (DWORD)m_cursorPosition )
   {
@@ -947,7 +982,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
 
     // Frameskip mode
   case 2:
-    if( !direction )
+    if( !movingRight )
     {
         // Reduce
       if( g_rendererOptions.m_frameskip == 0 )
@@ -976,7 +1011,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
 
     // Screen rotation
   case 4:
-    if( !direction )
+    if( !movingRight )
     {
       if( g_rendererOptions.m_screenRotation > SR_0 )
         g_rendererOptions.m_screenRotation = (screenrotation_t)( (LONG)g_rendererOptions.m_screenRotation - 1 );
@@ -995,7 +1030,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
     // Brightness
   case 5:
     {
-      if( !direction )
+      if( !movingRight )
         options.brightness -= 0.01f;
       else
         options.brightness += 0.01f;
@@ -1010,7 +1045,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
     // Paused brightness
   case 6:
     {
-      if( !direction )
+      if( !movingRight )
         options.pause_bright -= 0.01f;
       else
         options.pause_bright += 0.01f;
@@ -1025,7 +1060,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
     // Gamma
   case 7:
     {
-      if( !direction )
+      if( !movingRight )
         options.gamma -= 0.01f;
       else
         options.gamma += 0.01f;
@@ -1050,7 +1085,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
 
     // Minification filter
   case 8:
-    if( !direction )
+    if( !movingRight )
     {
       if( g_rendererOptions.m_minFilter > D3DTEXF_POINT )
         g_rendererOptions.m_minFilter = (D3DTEXTUREFILTERTYPE)( (LONG)g_rendererOptions.m_minFilter - 1 );
@@ -1068,7 +1103,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
 
     // Magnification filter
   case 9:
-    if( !direction )
+    if( !movingRight )
     {
       if( g_rendererOptions.m_magFilter > D3DTEXF_POINT )
         g_rendererOptions.m_magFilter = (D3DTEXTUREFILTERTYPE)( (LONG)g_rendererOptions.m_magFilter - 1 );
@@ -1105,7 +1140,7 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
       if( currentState == (sizeof(artworkState) / sizeof(DWORD)) )
         currentState = 0;
 
-      if( !direction )
+      if( !movingRight )
       {
         if( currentState )
           --currentState;
@@ -1130,22 +1165,22 @@ void COptionsPage::ChangeVideoPage( BOOL direction )
 //---------------------------------------------------------------------
 //  ChangeVectorPage
 //---------------------------------------------------------------------
-void COptionsPage::ChangeVectorPage( BOOL direction )
+void COptionsPage::ChangeVectorPage( BOOL movingRight )
 {
   switch( (DWORD)m_cursorPosition )
   {
   case 0:
     {
-      if( !direction && options.beam > 1 )
+      if( !movingRight && options.beam > 1 )
         --options.beam;
-      else if( direction && options.beam < 5 )
+      else if( movingRight && options.beam < 5 )
         ++options.beam;
     }
     break;
 
   case 1:
     {
-      if( !direction )
+      if( !movingRight )
         options.vector_flicker -= 0.01f;
       else
         options.vector_flicker += 0.01f;
@@ -1159,7 +1194,7 @@ void COptionsPage::ChangeVectorPage( BOOL direction )
 
   case 2:
     {
-      if( !direction )
+      if( !movingRight )
         options.vector_intensity -= 0.01f;
       else
         options.vector_intensity += 0.01f;
@@ -1179,18 +1214,18 @@ void COptionsPage::ChangeVectorPage( BOOL direction )
 
   case 4:
     {
-      if( !direction && options.vector_width > 100 )
+      if( !movingRight && options.vector_width > 100 )
         --options.vector_width;
-      else if( direction && options.vector_width < 640 )
+      else if( movingRight && options.vector_width < 640 )
         ++options.vector_width;
     }
     break;
 
   case 5:
     {
-      if( !direction && options.vector_height > 100 )
+      if( !movingRight && options.vector_height > 100 )
         --options.vector_height;
-      else if( direction && options.vector_height < 480 )
+      else if( movingRight && options.vector_height < 480 )
         ++options.vector_height;
     }
     break;
@@ -1200,7 +1235,7 @@ void COptionsPage::ChangeVectorPage( BOOL direction )
 //---------------------------------------------------------------------
 //  ChangeNetworkPage
 //---------------------------------------------------------------------
-void COptionsPage::ChangeNetworkPage( BOOL direction )
+void COptionsPage::ChangeNetworkPage( BOOL movingRight )
 {
   if( !m_cursorPosition )
   {
@@ -1269,7 +1304,7 @@ void COptionsPage::ChangeNetworkPage( BOOL direction )
 //---------------------------------------------------------------------
 //  ChangeDirectoryPathPage1
 //---------------------------------------------------------------------
-void COptionsPage::ChangeDirectoryPathPage1( BOOL direction )
+void COptionsPage::ChangeDirectoryPathPage1( BOOL movingRight )
 {
   if( !m_virtualKeyboardMode )
   {
@@ -1351,7 +1386,7 @@ void COptionsPage::ChangeDirectoryPathPage1( BOOL direction )
 //---------------------------------------------------------------------
 //  ChangeDirectoryPathPage2
 //---------------------------------------------------------------------
-void COptionsPage::ChangeDirectoryPathPage2( BOOL direction )
+void COptionsPage::ChangeDirectoryPathPage2( BOOL movingRight )
 {
   if( !m_virtualKeyboardMode )
   {
@@ -1470,6 +1505,42 @@ void COptionsPage::ChangeDirectoryPathPage2( BOOL direction )
   }
 }
 
+//---------------------------------------------------------------------
+//  ChangeROMListPage
+//---------------------------------------------------------------------
+void COptionsPage::ChangeROMListPage( BOOL movingRight )
+{
+  switch( (DWORD)m_cursorPosition )
+  {
+    // Verbose mode
+  case 0:
+    g_romListOptions.m_verboseMode = !g_romListOptions.m_verboseMode;
+    break;
+
+    // Colorize ROM status
+  case 1:
+    g_romListOptions.m_showROMStatus = !g_romListOptions.m_showROMStatus;
+    break;
+
+    // Sort mode
+  case 2:
+    if( !movingRight )
+    {
+      if( g_romListOptions.m_sortMode != SM_BYNAME )
+        g_romListOptions.m_sortMode = (ROMListSortMode)((UINT32)g_romListOptions.m_sortMode - 1);
+      else
+        g_romListOptions.m_sortMode = SM_BYNUMPLAYERS;
+    }
+    else
+    {
+      if( g_romListOptions.m_sortMode < SM_BYNUMPLAYERS )
+        g_romListOptions.m_sortMode = (ROMListSortMode)((UINT32)g_romListOptions.m_sortMode + 1);
+      else
+        g_romListOptions.m_sortMode = SM_BYNAME;
+    }
+    break;
+  }
+}
 
 
 
@@ -1537,62 +1608,78 @@ void DrawDirectoryPathPage2( COptionsPage *ptr )
   ptr->DrawDirectoryPathPage2();
 }
 
+//---------------------------------------------------------------------
+//  DrawROMListPage
+//---------------------------------------------------------------------
+void DrawROMListPage( COptionsPage *ptr )
+{
+  ptr->DrawROMListPage();
+}
+
 
 
 //---------------------------------------------------------------------
 //  ChangeGeneralPage
 //---------------------------------------------------------------------
-void ChangeGeneralPage( COptionsPage *ptr, BOOL direction )
+void ChangeGeneralPage( COptionsPage *ptr, BOOL movingRight )
 {
-  ptr->ChangeGeneralPage( direction );
+  ptr->ChangeGeneralPage( movingRight );
 }
 
 //---------------------------------------------------------------------
 //  ChangeSoundPage
 //---------------------------------------------------------------------
-void ChangeSoundPage( COptionsPage *ptr, BOOL direction )
+void ChangeSoundPage( COptionsPage *ptr, BOOL movingRight )
 {
-  ptr->ChangeSoundPage( direction );
+  ptr->ChangeSoundPage( movingRight );
 }
 
 //---------------------------------------------------------------------
 //  ChangeVideoPage
 //---------------------------------------------------------------------
-void ChangeVideoPage( COptionsPage *ptr, BOOL direction )
+void ChangeVideoPage( COptionsPage *ptr, BOOL movingRight )
 {
-  ptr->ChangeVideoPage( direction );
+  ptr->ChangeVideoPage( movingRight );
 }
 
 //---------------------------------------------------------------------
 //  ChangeVectorPage
 //---------------------------------------------------------------------
-void ChangeVectorPage( COptionsPage *ptr, BOOL direction )
+void ChangeVectorPage( COptionsPage *ptr, BOOL movingRight )
 {
-  ptr->ChangeVectorPage( direction );
+  ptr->ChangeVectorPage( movingRight );
 }
 
 //---------------------------------------------------------------------
 //  ChangeNetworkPage
 //---------------------------------------------------------------------
-void ChangeNetworkPage( COptionsPage *ptr, BOOL direction )
+void ChangeNetworkPage( COptionsPage *ptr, BOOL movingRight )
 {
-  ptr->ChangeNetworkPage( direction );
+  ptr->ChangeNetworkPage( movingRight );
 }
 
 //---------------------------------------------------------------------
 //  ChangeDirectoryPathPage1
 //---------------------------------------------------------------------
-void ChangeDirectoryPathPage1( COptionsPage *ptr, BOOL direction )
+void ChangeDirectoryPathPage1( COptionsPage *ptr, BOOL movingRight )
 {
-  ptr->ChangeDirectoryPathPage1( direction );
+  ptr->ChangeDirectoryPathPage1( movingRight );
 }
 
 //---------------------------------------------------------------------
 //  ChangeDirectoryPathPage2
 //---------------------------------------------------------------------
-void ChangeDirectoryPathPage2( COptionsPage *ptr, BOOL direction )
+void ChangeDirectoryPathPage2( COptionsPage *ptr, BOOL movingRight )
 {
-  ptr->ChangeDirectoryPathPage2( direction );
+  ptr->ChangeDirectoryPathPage2( movingRight );
+}
+
+//---------------------------------------------------------------------
+//  ChangeROMListPage
+//---------------------------------------------------------------------
+void ChangeROMListPage( COptionsPage *ptr, BOOL movingRight )
+{
+  ptr->ChangeROMListPage( movingRight );
 }
 
 

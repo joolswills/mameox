@@ -72,6 +72,14 @@ Version 0.71.1b
         clones/no clones
       - Changed it so that MAMEoX will attempt to keep the 
         cursor on the selected ROM when toggling clones/no clones
+      - Fixed: ROM list cache file not updated when ROM is removed
+        from the list via "Remove Selected ROM" feature
+      - Put in support for various sort modes and filters, filters are
+        not activated yet, sortmodes may be changed in the options
+        screen.
+      - Put in support for ROMSTATUS.XML name colorization (the color
+        of the name in the ROM list is changed based on the reported
+        working/nonworking status of the ROM).
 
     - OptionsPage.cpp
       - Integrated new gfx from r4dius
@@ -79,6 +87,7 @@ Version 0.71.1b
       - Added frame skip option
       - Split directories up into two separate options
       - Removed history.dat support
+      - Added page for ROMList settings
 
     - LightgunCalibrator.cpp
       - Changed text from "Push B to discard changes" to

@@ -566,6 +566,8 @@ void __cdecl main( void )
 
                 // Options Menu
               case 1:
+                  // Update the rom list options for display in the options page
+                g_romListOptions = romList.GetOptions();
                 currentView = VIEW_OPTIONS;
                 break;
 
@@ -591,9 +593,12 @@ void __cdecl main( void )
               switch( startMenu.GetCursorPosition() )
               {
               case 0:
+                romList.SetOptions( g_romListOptions );
                 currentView = VIEW_ROMLIST;
                 break;
+
               case 1:
+                romList.SetOptions( g_romListOptions );
                 currentView = VIEW_HELP;
                 break;
               }
@@ -606,6 +611,7 @@ void __cdecl main( void )
               case 0:
                 currentView = VIEW_ROMLIST;
                 break;
+
               case 1:
                 currentView = VIEW_HELP;
                 break;
@@ -921,6 +927,9 @@ static BOOL Helper_LoadDriverInfoFile( void )
 
       // Read the year
     READDATA( g_driverData[i].m_year, len, char );
+
+      // Read the number of players
+    READDATA_NOMALLOC( &g_driverData[i].m_numPlayers, sizeof(g_driverData[i].m_numPlayers) );
   }
   free( fileData );
 
