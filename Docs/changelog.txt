@@ -1,27 +1,22 @@
-Opcode (5/25/03):
-------------------
-  - Added Network settings to INI file
-  - Added File Path settings to the INI file
-  - Moved INI file to always be in U:\4d414d45\INI\MAMEoX.ini
-  - Added SMB support for loading files (ROMS!!) from smb shares
-    format of smb share is exactly like xbox media player,
-    i.e. smb://user:password@computer/sharedirectory
-    as of this release files can only be READ from shares, not Written
-  - Changed file handling to not cache files into memory but
-    rather load them like the mame core does (not sure if this saves
-    memory or not, can't hurt though.)
-------------------
-
-  - \MAMEoXLauncher\sources\ROMList.cpp:
-    - Black button to toogle clones on/off
-    - White button for advanced game list (not yet)
-    - Show Whith / whithout Clones in the header
-
 Version 0.65b
 
   - Changed the include path for the
     XDK files to an environment var
     XDK_SAMPLES
+
+    Opcode (5/25/03):
+  ------------------
+    - Added Network settings to INI file
+    - Added File Path settings to the INI file
+    - Moved INI file to always be in U:\4d414d45\INI\MAMEoX.ini
+    - Added SMB support for loading files (ROMS!!) from smb shares
+      format of smb share is exactly like xbox media player,
+      i.e. smb://user:password@computer/sharedirectory
+      as of this release files can only be READ from shares, not Written
+    - Changed file handling to not cache files into memory but
+      rather load them like the mame core does (not sure if this saves
+      memory or not, can't hurt though.)
+  ------------------
 
   - \MAMEoXLauncher\Sources\main.cpp:
     - Reloading ROMS on button B+A now
