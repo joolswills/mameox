@@ -1,11 +1,11 @@
-#pragma code_seg("C305")
-#pragma data_seg("D305")
-#pragma bss_seg("B305")
-#pragma const_seg("K305")
-#pragma comment(linker, "/merge:D305=305")
-#pragma comment(linker, "/merge:C305=305")
-#pragma comment(linker, "/merge:B305=305")
-#pragma comment(linker, "/merge:K305=305")
+#pragma code_seg("C19")
+#pragma data_seg("D19")
+#pragma bss_seg("B19")
+#pragma const_seg("K19")
+#pragma comment(linker, "/merge:D19=19")
+#pragma comment(linker, "/merge:C19=19")
+#pragma comment(linker, "/merge:B19=19")
+#pragma comment(linker, "/merge:K19=19")
 /*****************************************************************************
 
 	Irem M90/M97 system games:

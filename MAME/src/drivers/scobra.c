@@ -1,3 +1,11 @@
+#pragma code_seg("C8")
+#pragma data_seg("D8")
+#pragma bss_seg("B8")
+#pragma const_seg("K8")
+#pragma comment(linker, "/merge:D8=8")
+#pragma comment(linker, "/merge:C8=8")
+#pragma comment(linker, "/merge:B8=8")
+#pragma comment(linker, "/merge:K8=8")
 /***************************************************************************
 
  Super Cobra hardware
@@ -1808,3 +1816,7 @@ GAME( 1981, hustler,  0,        hustler,  hustler,  hustler,      ROT90,  "Konam
 GAME( 1981, billiard, hustler,  hustler,  hustler,  billiard,     ROT90,  "bootleg", "The Billiards" )
 GAME( 1981, hustlerb, hustler,  hustlerb, hustler,  scramble_ppi, ROT90,  "bootleg", "Video Hustler (bootleg)" )
 GAME( 198?, mimonksc, mimonkey, mimonksc, mimonksc, mimonksc,     ROT90,  "bootleg", "Mighty Monkey (bootleg on Super Cobra hardware)" )
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

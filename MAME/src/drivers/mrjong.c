@@ -1,11 +1,11 @@
-#pragma code_seg("C351")
-#pragma data_seg("D351")
-#pragma bss_seg("B351")
-#pragma const_seg("K351")
-#pragma comment(linker, "/merge:D351=351")
-#pragma comment(linker, "/merge:C351=351")
-#pragma comment(linker, "/merge:B351=351")
-#pragma comment(linker, "/merge:K351=351")
+#pragma code_seg("C427")
+#pragma data_seg("D427")
+#pragma bss_seg("B427")
+#pragma const_seg("K427")
+#pragma comment(linker, "/merge:D427=427")
+#pragma comment(linker, "/merge:C427=427")
+#pragma comment(linker, "/merge:B427=427")
+#pragma comment(linker, "/merge:K427=427")
 /***************************************************************************
 
 Mr.Jong

@@ -1,11 +1,11 @@
-#pragma code_seg("C563")
-#pragma data_seg("D563")
-#pragma bss_seg("B563")
-#pragma const_seg("K563")
-#pragma comment(linker, "/merge:D563=563")
-#pragma comment(linker, "/merge:C563=563")
-#pragma comment(linker, "/merge:B563=563")
-#pragma comment(linker, "/merge:K563=563")
+#pragma code_seg("C650")
+#pragma data_seg("D650")
+#pragma bss_seg("B650")
+#pragma const_seg("K650")
+#pragma comment(linker, "/merge:D650=650")
+#pragma comment(linker, "/merge:C650=650")
+#pragma comment(linker, "/merge:B650=650")
+#pragma comment(linker, "/merge:K650=650")
 /*** Tecmo Bowl (c)1987 Tecmo
 
 driver by David Haywood

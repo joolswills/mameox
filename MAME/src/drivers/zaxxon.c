@@ -1,3 +1,11 @@
+#pragma code_seg("C27")
+#pragma data_seg("D27")
+#pragma bss_seg("B27")
+#pragma const_seg("K27")
+#pragma comment(linker, "/merge:D27=27")
+#pragma comment(linker, "/merge:C27=27")
+#pragma comment(linker, "/merge:B27=27")
+#pragma comment(linker, "/merge:K27=27")
 /***************************************************************************
 
 Notes:
@@ -1320,3 +1328,7 @@ GAME( 1984, futspy,   0,         futspy,   futspy,   futspy,   ROT270, "Sega",  
 GAMEX(1983, razmataz, 0,         razmataz, razmataz, razmataz, ROT270, "Sega",    "Razzmatazz", GAME_NO_SOUND )
 GAMEX(1983, ixion,    0,         ixion,    ixion,    ixion,    ROT270, "Sega",    "Ixion (prototype)", GAME_NO_SOUND )
 
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -101,6 +101,14 @@ Version 0.71.1b
     - BasePopupView.cpp
       - Added base class for "popup" views (VirtualKeyboard/StartMenu)
 
+   -------------------------------------------------------------
+  - \Sectionize.pl
+    - Switched to a more aggressive handling of silent XBE dependencies.
+      This will undoubtedly break games that used to work until they are
+      reported and thrown into the new families, but it gives up about a 
+      meg of RAM.
+
+
  --- Integrated MAME version 0.71, changes follow -------------------
 
  Changes in the \MAME\src directory

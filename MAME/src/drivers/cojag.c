@@ -1,11 +1,11 @@
-#pragma code_seg("C125")
-#pragma data_seg("D125")
-#pragma bss_seg("B125")
-#pragma const_seg("K125")
-#pragma comment(linker, "/merge:D125=125")
-#pragma comment(linker, "/merge:C125=125")
-#pragma comment(linker, "/merge:B125=125")
-#pragma comment(linker, "/merge:K125=125")
+#pragma code_seg("C191")
+#pragma data_seg("D191")
+#pragma bss_seg("B191")
+#pragma const_seg("K191")
+#pragma comment(linker, "/merge:D191=191")
+#pragma comment(linker, "/merge:C191=191")
+#pragma comment(linker, "/merge:B191=191")
+#pragma comment(linker, "/merge:K191=191")
 /***************************************************************************
 
 	Atari CoJag hardware

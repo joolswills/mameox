@@ -1,11 +1,11 @@
-#pragma code_seg("C172")
-#pragma data_seg("D172")
-#pragma bss_seg("B172")
-#pragma const_seg("K172")
-#pragma comment(linker, "/merge:D172=172")
-#pragma comment(linker, "/merge:C172=172")
-#pragma comment(linker, "/merge:B172=172")
-#pragma comment(linker, "/merge:K172=172")
+#pragma code_seg("C238")
+#pragma data_seg("D238")
+#pragma bss_seg("B238")
+#pragma const_seg("K238")
+#pragma comment(linker, "/merge:D238=238")
+#pragma comment(linker, "/merge:C238=238")
+#pragma comment(linker, "/merge:B238=238")
+#pragma comment(linker, "/merge:K238=238")
 /***************************************************************************
 
 	Model Racing Dribbling hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C474")
-#pragma data_seg("D474")
-#pragma bss_seg("B474")
-#pragma const_seg("K474")
-#pragma comment(linker, "/merge:D474=474")
-#pragma comment(linker, "/merge:C474=474")
-#pragma comment(linker, "/merge:B474=474")
-#pragma comment(linker, "/merge:K474=474")
+#pragma code_seg("C559")
+#pragma data_seg("D559")
+#pragma bss_seg("B559")
+#pragma const_seg("K559")
+#pragma comment(linker, "/merge:D559=559")
+#pragma comment(linker, "/merge:C559=559")
+#pragma comment(linker, "/merge:B559=559")
+#pragma comment(linker, "/merge:K559=559")
 /*********************************************************
 Sega hardware based on their SG-1000 console
 Driver by Tomasz Slanina  dox@space.pl

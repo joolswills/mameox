@@ -1,11 +1,11 @@
-#pragma code_seg("C458")
-#pragma data_seg("D458")
-#pragma bss_seg("B458")
-#pragma const_seg("K458")
-#pragma comment(linker, "/merge:D458=458")
-#pragma comment(linker, "/merge:C458=458")
-#pragma comment(linker, "/merge:B458=458")
-#pragma comment(linker, "/merge:K458=458")
+#pragma code_seg("C541")
+#pragma data_seg("D541")
+#pragma bss_seg("B541")
+#pragma const_seg("K541")
+#pragma comment(linker, "/merge:D541=541")
+#pragma comment(linker, "/merge:C541=541")
+#pragma comment(linker, "/merge:B541=541")
+#pragma comment(linker, "/merge:K541=541")
 /*
    Run and Gun / Slam Dunk
    (c) 1993 Konami

@@ -1,11 +1,11 @@
-#pragma code_seg("C577")
-#pragma data_seg("D577")
-#pragma bss_seg("B577")
-#pragma const_seg("K577")
-#pragma comment(linker, "/merge:D577=577")
-#pragma comment(linker, "/merge:C577=577")
-#pragma comment(linker, "/merge:B577=577")
-#pragma comment(linker, "/merge:K577=577")
+#pragma code_seg("C664")
+#pragma data_seg("D664")
+#pragma bss_seg("B664")
+#pragma const_seg("K664")
+#pragma comment(linker, "/merge:D664=664")
+#pragma comment(linker, "/merge:C664=664")
+#pragma comment(linker, "/merge:B664=664")
+#pragma comment(linker, "/merge:K664=664")
 /***************************************************************************
 
 	Raster Elite Tickee Tickats hardware

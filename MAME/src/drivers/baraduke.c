@@ -1,11 +1,11 @@
-#pragma code_seg("C62")
-#pragma data_seg("D62")
-#pragma bss_seg("B62")
-#pragma const_seg("K62")
-#pragma comment(linker, "/merge:D62=62")
-#pragma comment(linker, "/merge:C62=62")
-#pragma comment(linker, "/merge:B62=62")
-#pragma comment(linker, "/merge:K62=62")
+#pragma code_seg("C126")
+#pragma data_seg("D126")
+#pragma bss_seg("B126")
+#pragma const_seg("K126")
+#pragma comment(linker, "/merge:D126=126")
+#pragma comment(linker, "/merge:C126=126")
+#pragma comment(linker, "/merge:B126=126")
+#pragma comment(linker, "/merge:K126=126")
 /***************************************************************************
 
 Baraduke/Metro-Cross (c) Namco 1985

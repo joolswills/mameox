@@ -1,11 +1,11 @@
-#pragma code_seg("C516")
-#pragma data_seg("D516")
-#pragma bss_seg("B516")
-#pragma const_seg("K516")
-#pragma comment(linker, "/merge:D516=516")
-#pragma comment(linker, "/merge:C516=516")
-#pragma comment(linker, "/merge:B516=516")
-#pragma comment(linker, "/merge:K516=516")
+#pragma code_seg("C602")
+#pragma data_seg("D602")
+#pragma bss_seg("B602")
+#pragma const_seg("K602")
+#pragma comment(linker, "/merge:D602=602")
+#pragma comment(linker, "/merge:C602=602")
+#pragma comment(linker, "/merge:B602=602")
+#pragma comment(linker, "/merge:K602=602")
 /***************************************************************************
 
   Speed Rumbler

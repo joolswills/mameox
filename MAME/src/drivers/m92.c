@@ -1,11 +1,11 @@
-#pragma code_seg("C306")
-#pragma data_seg("D306")
-#pragma bss_seg("B306")
-#pragma const_seg("K306")
-#pragma comment(linker, "/merge:D306=306")
-#pragma comment(linker, "/merge:C306=306")
-#pragma comment(linker, "/merge:B306=306")
-#pragma comment(linker, "/merge:K306=306")
+#pragma code_seg("C380")
+#pragma data_seg("D380")
+#pragma bss_seg("B380")
+#pragma const_seg("K380")
+#pragma comment(linker, "/merge:D380=380")
+#pragma comment(linker, "/merge:C380=380")
+#pragma comment(linker, "/merge:B380=380")
+#pragma comment(linker, "/merge:K380=380")
 /*****************************************************************************
 
 	Irem M92 system games:

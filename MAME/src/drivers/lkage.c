@@ -1,11 +1,11 @@
-#pragma code_seg("C297")
-#pragma data_seg("D297")
-#pragma bss_seg("B297")
-#pragma const_seg("K297")
-#pragma comment(linker, "/merge:D297=297")
-#pragma comment(linker, "/merge:C297=297")
-#pragma comment(linker, "/merge:B297=297")
-#pragma comment(linker, "/merge:K297=297")
+#pragma code_seg("C370")
+#pragma data_seg("D370")
+#pragma bss_seg("B370")
+#pragma const_seg("K370")
+#pragma comment(linker, "/merge:D370=370")
+#pragma comment(linker, "/merge:C370=370")
+#pragma comment(linker, "/merge:B370=370")
+#pragma comment(linker, "/merge:K370=370")
 /***************************************************************************
 
 Legend of Kage

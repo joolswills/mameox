@@ -1,3 +1,11 @@
+#pragma code_seg("C22")
+#pragma data_seg("D22")
+#pragma bss_seg("B22")
+#pragma const_seg("K22")
+#pragma comment(linker, "/merge:D22=22")
+#pragma comment(linker, "/merge:C22=22")
+#pragma comment(linker, "/merge:B22=22")
+#pragma comment(linker, "/merge:K22=22")
 /***************************************************************************
 
 	Taito F3 Package System (aka F3 Cybercore System)
@@ -3181,3 +3189,7 @@ GAME( 1997, popnpop,  0,        f3,      f3, popnpop,  ROT0,   "Taito Corporatio
 GAME( 1997, popnpopj, popnpop,  f3,      f3, popnpop,  ROT0,   "Taito Corporation",         "Pop 'N Pop (Japan)" )
 GAME( 1997, popnpopu, popnpop,  f3,      f3, popnpop,  ROT0,   "Taito Corporation",         "Pop 'N Pop (US)" )
 GAME( 1998, landmakr, 0,        f3,      f3, landmakr, ROT0,   "Taito Corporation",         "Land Maker (Japan)" )
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,11 +1,11 @@
-#pragma code_seg("C266")
-#pragma data_seg("D266")
-#pragma bss_seg("B266")
-#pragma const_seg("K266")
-#pragma comment(linker, "/merge:D266=266")
-#pragma comment(linker, "/merge:C266=266")
-#pragma comment(linker, "/merge:B266=266")
-#pragma comment(linker, "/merge:K266=266")
+#pragma code_seg("C338")
+#pragma data_seg("D338")
+#pragma bss_seg("B338")
+#pragma const_seg("K338")
+#pragma comment(linker, "/merge:D338=338")
+#pragma comment(linker, "/merge:C338=338")
+#pragma comment(linker, "/merge:B338=338")
+#pragma comment(linker, "/merge:K338=338")
 /***************************************************************************
 
 	Incredible Technologies/Strata system

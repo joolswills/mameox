@@ -1,11 +1,11 @@
-#pragma code_seg("C222")
-#pragma data_seg("D222")
-#pragma bss_seg("B222")
-#pragma const_seg("K222")
-#pragma comment(linker, "/merge:D222=222")
-#pragma comment(linker, "/merge:C222=222")
-#pragma comment(linker, "/merge:B222=222")
-#pragma comment(linker, "/merge:K222=222")
+#pragma code_seg("C292")
+#pragma data_seg("D292")
+#pragma bss_seg("B292")
+#pragma const_seg("K292")
+#pragma comment(linker, "/merge:D292=292")
+#pragma comment(linker, "/merge:C292=292")
+#pragma comment(linker, "/merge:B292=292")
+#pragma comment(linker, "/merge:K292=292")
 /***************************************************************************
 
 Grand Cross Pinball

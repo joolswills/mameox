@@ -1,11 +1,11 @@
-#pragma code_seg("C447")
-#pragma data_seg("D447")
-#pragma bss_seg("B447")
-#pragma const_seg("K447")
-#pragma comment(linker, "/merge:D447=447")
-#pragma comment(linker, "/merge:C447=447")
-#pragma comment(linker, "/merge:B447=447")
-#pragma comment(linker, "/merge:K447=447")
+#pragma code_seg("C530")
+#pragma data_seg("D530")
+#pragma bss_seg("B530")
+#pragma const_seg("K530")
+#pragma comment(linker, "/merge:D530=530")
+#pragma comment(linker, "/merge:C530=530")
+#pragma comment(linker, "/merge:B530=530")
+#pragma comment(linker, "/merge:K530=530")
 /***************************************************************************
 
 Real Mahjong Haihai                (c)1985 Alba

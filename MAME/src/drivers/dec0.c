@@ -1,11 +1,11 @@
-#pragma code_seg("C154")
-#pragma data_seg("D154")
-#pragma bss_seg("B154")
-#pragma const_seg("K154")
-#pragma comment(linker, "/merge:D154=154")
-#pragma comment(linker, "/merge:C154=154")
-#pragma comment(linker, "/merge:B154=154")
-#pragma comment(linker, "/merge:K154=154")
+#pragma code_seg("C220")
+#pragma data_seg("D220")
+#pragma bss_seg("B220")
+#pragma const_seg("K220")
+#pragma comment(linker, "/merge:D220=220")
+#pragma comment(linker, "/merge:C220=220")
+#pragma comment(linker, "/merge:B220=220")
+#pragma comment(linker, "/merge:K220=220")
 /***************************************************************************
 
   Data East 16 bit games - Bryan McPhail, mish@tendril.co.uk

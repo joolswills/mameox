@@ -1,11 +1,11 @@
-#pragma code_seg("C409")
-#pragma data_seg("D409")
-#pragma bss_seg("B409")
-#pragma const_seg("K409")
-#pragma comment(linker, "/merge:D409=409")
-#pragma comment(linker, "/merge:C409=409")
-#pragma comment(linker, "/merge:B409=409")
-#pragma comment(linker, "/merge:K409=409")
+#pragma code_seg("C488")
+#pragma data_seg("D488")
+#pragma bss_seg("B488")
+#pragma const_seg("K488")
+#pragma comment(linker, "/merge:D488=488")
+#pragma comment(linker, "/merge:C488=488")
+#pragma comment(linker, "/merge:B488=488")
+#pragma comment(linker, "/merge:K488=488")
 /***************************************************************************
 
 Phoenix hardware games

@@ -1,3 +1,11 @@
+#pragma code_seg("C14")
+#pragma data_seg("D14")
+#pragma bss_seg("B14")
+#pragma const_seg("K14")
+#pragma comment(linker, "/merge:D14=14")
+#pragma comment(linker, "/merge:C14=14")
+#pragma comment(linker, "/merge:B14=14")
+#pragma comment(linker, "/merge:K14=14")
 /***************************************************************************
 
 Gottlieb driver : dedicated to Warren Davis, Jeff Lee, Tim Skelly & David Thiel
@@ -1905,3 +1913,7 @@ GAME( 1983, screwloo, 0,     gottlieb2,screwloo, gottlieb, ROT0,   "Mylstar", "S
 GAME( 1984, curvebal, 0,     gottlieb, curvebal, 0,        ROT270, "Mylstar", "Curve Ball" )
 GAMEX(1984, usvsthem, 0,     usvsthem, usvsthem, gottlieb, ROT0,   "Mylstar", "Us vs. Them", GAME_NOT_WORKING )
 GAMEX(1984, 3stooges, 0,     stooges,  3stooges, gottlieb, ROT0,   "Mylstar", "The Three Stooges In Brides Is Brides", GAME_IMPERFECT_SOUND )
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

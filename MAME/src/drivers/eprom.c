@@ -1,11 +1,11 @@
-#pragma code_seg("C177")
-#pragma data_seg("D177")
-#pragma bss_seg("B177")
-#pragma const_seg("K177")
-#pragma comment(linker, "/merge:D177=177")
-#pragma comment(linker, "/merge:C177=177")
-#pragma comment(linker, "/merge:B177=177")
-#pragma comment(linker, "/merge:K177=177")
+#pragma code_seg("C244")
+#pragma data_seg("D244")
+#pragma bss_seg("B244")
+#pragma const_seg("K244")
+#pragma comment(linker, "/merge:D244=244")
+#pragma comment(linker, "/merge:C244=244")
+#pragma comment(linker, "/merge:B244=244")
+#pragma comment(linker, "/merge:K244=244")
 /***************************************************************************
 
 	Atari Escape hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C311")
-#pragma data_seg("D311")
-#pragma bss_seg("B311")
-#pragma const_seg("K311")
-#pragma comment(linker, "/merge:D311=311")
-#pragma comment(linker, "/merge:C311=311")
-#pragma comment(linker, "/merge:B311=311")
-#pragma comment(linker, "/merge:K311=311")
+#pragma code_seg("C385")
+#pragma data_seg("D385")
+#pragma bss_seg("B385")
+#pragma const_seg("K385")
+#pragma comment(linker, "/merge:D385=385")
+#pragma comment(linker, "/merge:C385=385")
+#pragma comment(linker, "/merge:B385=385")
+#pragma comment(linker, "/merge:K385=385")
 /* Main Event - SNK */
 
 /*

@@ -1,11 +1,11 @@
-#pragma code_seg("C463")
-#pragma data_seg("D463")
-#pragma bss_seg("B463")
-#pragma const_seg("K463")
-#pragma comment(linker, "/merge:D463=463")
-#pragma comment(linker, "/merge:C463=463")
-#pragma comment(linker, "/merge:B463=463")
-#pragma comment(linker, "/merge:K463=463")
+#pragma code_seg("C546")
+#pragma data_seg("D546")
+#pragma bss_seg("B546")
+#pragma const_seg("K546")
+#pragma comment(linker, "/merge:D546=546")
+#pragma comment(linker, "/merge:C546=546")
+#pragma comment(linker, "/merge:B546=546")
+#pragma comment(linker, "/merge:K546=546")
 /* Space Bugger */
 
 /* is the rom mapping ok, are the roms good? it jumps to the 0x800 region and I don't have a rom for there,

@@ -1,11 +1,11 @@
-#pragma code_seg("C506")
-#pragma data_seg("D506")
-#pragma bss_seg("B506")
-#pragma const_seg("K506")
-#pragma comment(linker, "/merge:D506=506")
-#pragma comment(linker, "/merge:C506=506")
-#pragma comment(linker, "/merge:B506=506")
-#pragma comment(linker, "/merge:K506=506")
+#pragma code_seg("C592")
+#pragma data_seg("D592")
+#pragma bss_seg("B592")
+#pragma const_seg("K592")
+#pragma comment(linker, "/merge:D592=592")
+#pragma comment(linker, "/merge:C592=592")
+#pragma comment(linker, "/merge:B592=592")
+#pragma comment(linker, "/merge:K592=592")
 /***************************************************************************
 
 							Speed Buggy / Buggy Boy

@@ -1,3 +1,11 @@
+#pragma code_seg("C25")
+#pragma data_seg("D25")
+#pragma bss_seg("B25")
+#pragma const_seg("K25")
+#pragma comment(linker, "/merge:D25=25")
+#pragma comment(linker, "/merge:C25=25")
+#pragma comment(linker, "/merge:B25=25")
+#pragma comment(linker, "/merge:K25=25")
 #define GX_DEBUG     0
 #define GX_SKIPIDLE  1
 
@@ -3017,3 +3025,7 @@ GAMEX( 1996, vsnetscr, konamigx, gxtype3,  type3, konamigx, ROT0, "Konami", "Ver
    directed to a different monitor to create the dual-mon effect.  Probably should be a
    separate driver. */
 GAMEX( 1996, rungun2,  konamigx, gxtype4,  type3, konamigx, ROT0, "Konami", "Run and Gun 2 (Ver UAA)", GAME_NOT_WORKING )
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,11 +1,11 @@
-#pragma code_seg("C88")
-#pragma data_seg("D88")
-#pragma bss_seg("B88")
-#pragma const_seg("K88")
-#pragma comment(linker, "/merge:D88=88")
-#pragma comment(linker, "/merge:C88=88")
-#pragma comment(linker, "/merge:B88=88")
-#pragma comment(linker, "/merge:K88=88")
+#pragma code_seg("C152")
+#pragma data_seg("D152")
+#pragma bss_seg("B152")
+#pragma const_seg("K152")
+#pragma comment(linker, "/merge:D152=152")
+#pragma comment(linker, "/merge:C152=152")
+#pragma comment(linker, "/merge:B152=152")
+#pragma comment(linker, "/merge:K152=152")
 /***************************************************************************
 
 Bottom of the Ninth (c) 1989 Konami

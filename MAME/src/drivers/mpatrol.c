@@ -1,3 +1,11 @@
+#pragma code_seg("C6")
+#pragma data_seg("D6")
+#pragma bss_seg("B6")
+#pragma const_seg("K6")
+#pragma comment(linker, "/merge:D6=6")
+#pragma comment(linker, "/merge:C6=6")
+#pragma comment(linker, "/merge:B6=6")
+#pragma comment(linker, "/merge:K6=6")
 /***************************************************************************
 
 Moon Patrol memory map (preliminary)
@@ -468,3 +476,7 @@ ROM_END
 
 GAME( 1982, mpatrol,  0,       mpatrol, mpatrol,  0, ROT0, "Irem", "Moon Patrol" )
 GAME( 1982, mpatrolw, mpatrol, mpatrol, mpatrolw, 0, ROT0, "Irem (Williams license)", "Moon Patrol (Williams)" )
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

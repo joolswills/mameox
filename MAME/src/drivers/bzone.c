@@ -1,3 +1,11 @@
+#pragma code_seg("C12")
+#pragma data_seg("D12")
+#pragma bss_seg("B12")
+#pragma const_seg("K12")
+#pragma comment(linker, "/merge:D12=12")
+#pragma comment(linker, "/merge:C12=12")
+#pragma comment(linker, "/merge:B12=12")
+#pragma comment(linker, "/merge:K12=12")
 /***************************************************************************
 
 	Atari Battlezone hardware
@@ -913,3 +921,7 @@ GAME( 1980, bzone2,   bzone, bzone,    bzone,    bzone,    ROT0, "Atari", "Battl
 GAMEX(1980, bzonec,   bzone, bzone,    bzone,    bzone,    ROT0, "Atari", "Battle Zone (cocktail)", GAME_NO_COCKTAIL )
 GAME( 1980, bradley,  0,     bradley,  bradley,  bradley,  ROT0, "Atari", "Bradley Trainer" )
 GAME( 1980, redbaron, 0,     redbaron, redbaron, redbaron, ROT0, "Atari", "Red Baron" )
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

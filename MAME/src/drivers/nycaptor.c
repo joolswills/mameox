@@ -1,11 +1,11 @@
-#pragma code_seg("C383")
-#pragma data_seg("D383")
-#pragma bss_seg("B383")
-#pragma const_seg("K383")
-#pragma comment(linker, "/merge:D383=383")
-#pragma comment(linker, "/merge:C383=383")
-#pragma comment(linker, "/merge:B383=383")
-#pragma comment(linker, "/merge:K383=383")
+#pragma code_seg("C461")
+#pragma data_seg("D461")
+#pragma bss_seg("B461")
+#pragma const_seg("K461")
+#pragma comment(linker, "/merge:D461=461")
+#pragma comment(linker, "/merge:C461=461")
+#pragma comment(linker, "/merge:B461=461")
+#pragma comment(linker, "/merge:K461=461")
 /***************************************************************************
     N.Y. Captor - Taito '85
 

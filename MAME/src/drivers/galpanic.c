@@ -1,11 +1,11 @@
-#pragma code_seg("C215")
-#pragma data_seg("D215")
-#pragma bss_seg("B215")
-#pragma const_seg("K215")
-#pragma comment(linker, "/merge:D215=215")
-#pragma comment(linker, "/merge:C215=215")
-#pragma comment(linker, "/merge:B215=215")
-#pragma comment(linker, "/merge:K215=215")
+#pragma code_seg("C285")
+#pragma data_seg("D285")
+#pragma bss_seg("B285")
+#pragma const_seg("K285")
+#pragma comment(linker, "/merge:D285=285")
+#pragma comment(linker, "/merge:C285=285")
+#pragma comment(linker, "/merge:B285=285")
+#pragma comment(linker, "/merge:K285=285")
 /***************************************************************************
 
 Gals Panic       1990 Kaneko

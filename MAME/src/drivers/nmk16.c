@@ -1,11 +1,11 @@
-#pragma code_seg("C382")
-#pragma data_seg("D382")
-#pragma bss_seg("B382")
-#pragma const_seg("K382")
-#pragma comment(linker, "/merge:D382=382")
-#pragma comment(linker, "/merge:C382=382")
-#pragma comment(linker, "/merge:B382=382")
-#pragma comment(linker, "/merge:K382=382")
+#pragma code_seg("C459")
+#pragma data_seg("D459")
+#pragma bss_seg("B459")
+#pragma const_seg("K459")
+#pragma comment(linker, "/merge:D459=459")
+#pragma comment(linker, "/merge:C459=459")
+#pragma comment(linker, "/merge:B459=459")
+#pragma comment(linker, "/merge:K459=459")
 /********************************************************************
 
 Urashima Mahjong         UPL        68000 <unknown cpu> OKIM6295

@@ -1,11 +1,11 @@
-#pragma code_seg("C64")
-#pragma data_seg("D64")
-#pragma bss_seg("B64")
-#pragma const_seg("K64")
-#pragma comment(linker, "/merge:D64=64")
-#pragma comment(linker, "/merge:C64=64")
-#pragma comment(linker, "/merge:B64=64")
-#pragma comment(linker, "/merge:K64=64")
+#pragma code_seg("C128")
+#pragma data_seg("D128")
+#pragma bss_seg("B128")
+#pragma const_seg("K128")
+#pragma comment(linker, "/merge:D128=128")
+#pragma comment(linker, "/merge:C128=128")
+#pragma comment(linker, "/merge:B128=128")
+#pragma comment(linker, "/merge:K128=128")
 /***************************************************************************
 
 	Battle Lane Vol. 5

@@ -1,11 +1,11 @@
-#pragma code_seg("C574")
-#pragma data_seg("D574")
-#pragma bss_seg("B574")
-#pragma const_seg("K574")
-#pragma comment(linker, "/merge:D574=574")
-#pragma comment(linker, "/merge:C574=574")
-#pragma comment(linker, "/merge:B574=574")
-#pragma comment(linker, "/merge:K574=574")
+#pragma code_seg("C661")
+#pragma data_seg("D661")
+#pragma bss_seg("B661")
+#pragma const_seg("K661")
+#pragma comment(linker, "/merge:D661=661")
+#pragma comment(linker, "/merge:C661=661")
+#pragma comment(linker, "/merge:B661=661")
+#pragma comment(linker, "/merge:K661=661")
 /***************************************************************************
 
 Thunder Hoop II: Strikes Back (c) 1994 Gaelco

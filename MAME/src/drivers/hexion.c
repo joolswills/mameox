@@ -1,11 +1,11 @@
-#pragma code_seg("C252")
-#pragma data_seg("D252")
-#pragma bss_seg("B252")
-#pragma const_seg("K252")
-#pragma comment(linker, "/merge:D252=252")
-#pragma comment(linker, "/merge:C252=252")
-#pragma comment(linker, "/merge:B252=252")
-#pragma comment(linker, "/merge:K252=252")
+#pragma code_seg("C324")
+#pragma data_seg("D324")
+#pragma bss_seg("B324")
+#pragma const_seg("K324")
+#pragma comment(linker, "/merge:D324=324")
+#pragma comment(linker, "/merge:C324=324")
+#pragma comment(linker, "/merge:B324=324")
+#pragma comment(linker, "/merge:K324=324")
 /***************************************************************************
 
 Hexion (GX122) (c) 1992 Konami

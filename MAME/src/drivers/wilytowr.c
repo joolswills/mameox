@@ -1,11 +1,11 @@
-#pragma code_seg("C631")
-#pragma data_seg("D631")
-#pragma bss_seg("B631")
-#pragma const_seg("K631")
-#pragma comment(linker, "/merge:D631=631")
-#pragma comment(linker, "/merge:C631=631")
-#pragma comment(linker, "/merge:B631=631")
-#pragma comment(linker, "/merge:K631=631")
+#pragma code_seg("C721")
+#pragma data_seg("D721")
+#pragma bss_seg("B721")
+#pragma const_seg("K721")
+#pragma comment(linker, "/merge:D721=721")
+#pragma comment(linker, "/merge:C721=721")
+#pragma comment(linker, "/merge:B721=721")
+#pragma comment(linker, "/merge:K721=721")
 /***************************************************************************
 
 Wily Towr   (c) 1984 Irem

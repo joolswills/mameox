@@ -1,11 +1,11 @@
-#pragma code_seg("C112")
-#pragma data_seg("D112")
-#pragma bss_seg("B112")
-#pragma const_seg("K112")
-#pragma comment(linker, "/merge:D112=112")
-#pragma comment(linker, "/merge:C112=112")
-#pragma comment(linker, "/merge:B112=112")
-#pragma comment(linker, "/merge:K112=112")
+#pragma code_seg("C178")
+#pragma data_seg("D178")
+#pragma bss_seg("B178")
+#pragma const_seg("K178")
+#pragma comment(linker, "/merge:D178=178")
+#pragma comment(linker, "/merge:C178=178")
+#pragma comment(linker, "/merge:B178=178")
+#pragma comment(linker, "/merge:K178=178")
 /*
 China Gate.
 By Paul Hampson from First Principles

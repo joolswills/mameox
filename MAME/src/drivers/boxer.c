@@ -1,11 +1,11 @@
-#pragma code_seg("C656")
-#pragma data_seg("D656")
-#pragma bss_seg("B656")
-#pragma const_seg("K656")
-#pragma comment(linker, "/merge:D656=656")
-#pragma comment(linker, "/merge:C656=656")
-#pragma comment(linker, "/merge:B656=656")
-#pragma comment(linker, "/merge:K656=656")
+#pragma code_seg("C153")
+#pragma data_seg("D153")
+#pragma bss_seg("B153")
+#pragma const_seg("K153")
+#pragma comment(linker, "/merge:D153=153")
+#pragma comment(linker, "/merge:C153=153")
+#pragma comment(linker, "/merge:B153=153")
+#pragma comment(linker, "/merge:K153=153")
 /***************************************************************************
 
 Atari Boxer (prototype) driver

@@ -1,11 +1,11 @@
-#pragma code_seg("C91")
-#pragma data_seg("D91")
-#pragma bss_seg("B91")
-#pragma const_seg("K91")
-#pragma comment(linker, "/merge:D91=91")
-#pragma comment(linker, "/merge:C91=91")
-#pragma comment(linker, "/merge:B91=91")
-#pragma comment(linker, "/merge:K91=91")
+#pragma code_seg("C156")
+#pragma data_seg("D156")
+#pragma bss_seg("B156")
+#pragma const_seg("K156")
+#pragma comment(linker, "/merge:D156=156")
+#pragma comment(linker, "/merge:C156=156")
+#pragma comment(linker, "/merge:B156=156")
+#pragma comment(linker, "/merge:K156=156")
 /***************************************************************************
 
 Burger Time

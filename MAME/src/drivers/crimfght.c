@@ -1,11 +1,11 @@
-#pragma code_seg("C138")
-#pragma data_seg("D138")
-#pragma bss_seg("B138")
-#pragma const_seg("K138")
-#pragma comment(linker, "/merge:D138=138")
-#pragma comment(linker, "/merge:C138=138")
-#pragma comment(linker, "/merge:B138=138")
-#pragma comment(linker, "/merge:K138=138")
+#pragma code_seg("C204")
+#pragma data_seg("D204")
+#pragma bss_seg("B204")
+#pragma const_seg("K204")
+#pragma comment(linker, "/merge:D204=204")
+#pragma comment(linker, "/merge:C204=204")
+#pragma comment(linker, "/merge:B204=204")
+#pragma comment(linker, "/merge:K204=204")
 /***************************************************************************
 
 Crime Fighters (Konami GX821) (c) 1989 Konami

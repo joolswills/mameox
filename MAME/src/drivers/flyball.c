@@ -1,11 +1,11 @@
-#pragma code_seg("C200")
-#pragma data_seg("D200")
-#pragma bss_seg("B200")
-#pragma const_seg("K200")
-#pragma comment(linker, "/merge:D200=200")
-#pragma comment(linker, "/merge:C200=200")
-#pragma comment(linker, "/merge:B200=200")
-#pragma comment(linker, "/merge:K200=200")
+#pragma code_seg("C269")
+#pragma data_seg("D269")
+#pragma bss_seg("B269")
+#pragma const_seg("K269")
+#pragma comment(linker, "/merge:D269=269")
+#pragma comment(linker, "/merge:C269=269")
+#pragma comment(linker, "/merge:B269=269")
+#pragma comment(linker, "/merge:K269=269")
 /***************************************************************************
 
 Atari Flyball Driver

@@ -1,11 +1,11 @@
-#pragma code_seg("C71")
-#pragma data_seg("D71")
-#pragma bss_seg("B71")
-#pragma const_seg("K71")
-#pragma comment(linker, "/merge:D71=71")
-#pragma comment(linker, "/merge:C71=71")
-#pragma comment(linker, "/merge:B71=71")
-#pragma comment(linker, "/merge:K71=71")
+#pragma code_seg("C135")
+#pragma data_seg("D135")
+#pragma bss_seg("B135")
+#pragma const_seg("K135")
+#pragma comment(linker, "/merge:D135=135")
+#pragma comment(linker, "/merge:C135=135")
+#pragma comment(linker, "/merge:B135=135")
+#pragma comment(linker, "/merge:K135=135")
 /*
 
   Beezer - (c) 1982 Tong Electronic

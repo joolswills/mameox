@@ -1,11 +1,11 @@
-#pragma code_seg("C140")
-#pragma data_seg("D140")
-#pragma bss_seg("B140")
-#pragma const_seg("K140")
-#pragma comment(linker, "/merge:D140=140")
-#pragma comment(linker, "/merge:C140=140")
-#pragma comment(linker, "/merge:B140=140")
-#pragma comment(linker, "/merge:K140=140")
+#pragma code_seg("C206")
+#pragma data_seg("D206")
+#pragma bss_seg("B206")
+#pragma const_seg("K206")
+#pragma comment(linker, "/merge:D206=206")
+#pragma comment(linker, "/merge:C206=206")
+#pragma comment(linker, "/merge:B206=206")
+#pragma comment(linker, "/merge:K206=206")
 /* Cross Shooter (c) 1987 Seibu */
 
 /*

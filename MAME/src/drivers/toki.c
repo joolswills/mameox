@@ -1,11 +1,11 @@
-#pragma code_seg("C584")
-#pragma data_seg("D584")
-#pragma bss_seg("B584")
-#pragma const_seg("K584")
-#pragma comment(linker, "/merge:D584=584")
-#pragma comment(linker, "/merge:C584=584")
-#pragma comment(linker, "/merge:B584=584")
-#pragma comment(linker, "/merge:K584=584")
+#pragma code_seg("C672")
+#pragma data_seg("D672")
+#pragma bss_seg("B672")
+#pragma const_seg("K672")
+#pragma comment(linker, "/merge:D672=672")
+#pragma comment(linker, "/merge:C672=672")
+#pragma comment(linker, "/merge:B672=672")
+#pragma comment(linker, "/merge:K672=672")
 /***************************************************************************
 
 Toki

@@ -1,11 +1,11 @@
-#pragma code_seg("C161")
-#pragma data_seg("D161")
-#pragma bss_seg("B161")
-#pragma const_seg("K161")
-#pragma comment(linker, "/merge:D161=161")
-#pragma comment(linker, "/merge:C161=161")
-#pragma comment(linker, "/merge:B161=161")
-#pragma comment(linker, "/merge:K161=161")
+#pragma code_seg("C227")
+#pragma data_seg("D227")
+#pragma bss_seg("B227")
+#pragma const_seg("K227")
+#pragma comment(linker, "/merge:D227=227")
+#pragma comment(linker, "/merge:C227=227")
+#pragma comment(linker, "/merge:B227=227")
+#pragma comment(linker, "/merge:K227=227")
 /* Diver Boy
  (c)1992 Device Electronics
 

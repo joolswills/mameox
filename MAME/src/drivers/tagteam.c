@@ -1,11 +1,11 @@
-#pragma code_seg("C548")
-#pragma data_seg("D548")
-#pragma bss_seg("B548")
-#pragma const_seg("K548")
-#pragma comment(linker, "/merge:D548=548")
-#pragma comment(linker, "/merge:C548=548")
-#pragma comment(linker, "/merge:B548=548")
-#pragma comment(linker, "/merge:K548=548")
+#pragma code_seg("C634")
+#pragma data_seg("D634")
+#pragma bss_seg("B634")
+#pragma const_seg("K634")
+#pragma comment(linker, "/merge:D634=634")
+#pragma comment(linker, "/merge:C634=634")
+#pragma comment(linker, "/merge:B634=634")
+#pragma comment(linker, "/merge:K634=634")
 /***************************************************************************
 
 Tag Team Wrestling hardware description:

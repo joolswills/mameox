@@ -1,3 +1,11 @@
+#pragma code_seg("C9")
+#pragma data_seg("D9")
+#pragma bss_seg("B9")
+#pragma const_seg("K9")
+#pragma comment(linker, "/merge:D9=9")
+#pragma comment(linker, "/merge:C9=9")
+#pragma comment(linker, "/merge:B9=9")
+#pragma comment(linker, "/merge:K9=9")
 /***************************************************************************
 
 	Atari Rampart hardware
@@ -504,3 +512,7 @@ static DRIVER_INIT( rampart )
 GAME( 1990, rampart,  0,       rampart, rampart,  rampart, ROT0, "Atari Games", "Rampart (3-player Trackball)" )
 GAME( 1990, ramprt2p, rampart, rampart, ramprt2p, rampart, ROT0, "Atari Games", "Rampart (2-player Joystick)" )
 GAME( 1990, rampartj, rampart, rampart, ramprt2p, rampart, ROT0, "Atari Games", "Rampart (Japan, 2-player Joystick)" )
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

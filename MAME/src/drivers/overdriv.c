@@ -1,11 +1,11 @@
-#pragma code_seg("C397")
-#pragma data_seg("D397")
-#pragma bss_seg("B397")
-#pragma const_seg("K397")
-#pragma comment(linker, "/merge:D397=397")
-#pragma comment(linker, "/merge:C397=397")
-#pragma comment(linker, "/merge:B397=397")
-#pragma comment(linker, "/merge:K397=397")
+#pragma code_seg("C475")
+#pragma data_seg("D475")
+#pragma bss_seg("B475")
+#pragma const_seg("K475")
+#pragma comment(linker, "/merge:D475=475")
+#pragma comment(linker, "/merge:C475=475")
+#pragma comment(linker, "/merge:B475=475")
+#pragma comment(linker, "/merge:K475=475")
 /***************************************************************************
 
 Over Drive (GX789) (c) 1990 Konami

@@ -1,11 +1,11 @@
-#pragma code_seg("C598")
-#pragma data_seg("D598")
-#pragma bss_seg("B598")
-#pragma const_seg("K598")
-#pragma comment(linker, "/merge:D598=598")
-#pragma comment(linker, "/merge:C598=598")
-#pragma comment(linker, "/merge:B598=598")
-#pragma comment(linker, "/merge:K598=598")
+#pragma code_seg("C687")
+#pragma data_seg("D687")
+#pragma bss_seg("B687")
+#pragma const_seg("K687")
+#pragma comment(linker, "/merge:D687=687")
+#pragma comment(linker, "/merge:C687=687")
+#pragma comment(linker, "/merge:B687=687")
+#pragma comment(linker, "/merge:K687=687")
 /****************************************************************************
 
 Tug Boat

@@ -1,11 +1,11 @@
-#pragma code_seg("C622")
-#pragma data_seg("D622")
-#pragma bss_seg("B622")
-#pragma const_seg("K622")
-#pragma comment(linker, "/merge:D622=622")
-#pragma comment(linker, "/merge:C622=622")
-#pragma comment(linker, "/merge:B622=622")
-#pragma comment(linker, "/merge:K622=622")
+#pragma code_seg("C711")
+#pragma data_seg("D711")
+#pragma bss_seg("B711")
+#pragma const_seg("K711")
+#pragma comment(linker, "/merge:D711=711")
+#pragma comment(linker, "/merge:C711=711")
+#pragma comment(linker, "/merge:B711=711")
+#pragma comment(linker, "/merge:K711=711")
 /****************************************************************************
 
 Wall Crash by Midcoin (c) 1984

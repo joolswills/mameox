@@ -1,3 +1,11 @@
+#pragma code_seg("C17")
+#pragma data_seg("D17")
+#pragma bss_seg("B17")
+#pragma const_seg("K17")
+#pragma comment(linker, "/merge:D17=17")
+#pragma comment(linker, "/merge:C17=17")
+#pragma comment(linker, "/merge:B17=17")
+#pragma comment(linker, "/merge:K17=17")
 /***************************************************************************
 
 Time Pilot memory map (preliminary)
@@ -443,3 +451,7 @@ GAME( 1982, timeplt,  0,       timeplt, timeplt, 0, ROT90,  "Konami", "Time Pilo
 GAME( 1982, timepltc, timeplt, timeplt, timeplt, 0, ROT90,  "Konami (Centuri license)", "Time Pilot (Centuri)" )
 GAME( 1982, spaceplt, timeplt, timeplt, timeplt, 0, ROT90,  "bootleg", "Space Pilot" )
 GAME( 1988, psurge,   0,       timeplt, psurge,  0, ROT270, "<unknown>", "Power Surge" )
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,11 +1,11 @@
-#pragma code_seg("C459")
-#pragma data_seg("D459")
-#pragma bss_seg("B459")
-#pragma const_seg("K459")
-#pragma comment(linker, "/merge:D459=459")
-#pragma comment(linker, "/merge:C459=459")
-#pragma comment(linker, "/merge:B459=459")
-#pragma comment(linker, "/merge:K459=459")
+#pragma code_seg("C542")
+#pragma data_seg("D542")
+#pragma bss_seg("B542")
+#pragma const_seg("K542")
+#pragma comment(linker, "/merge:D542=542")
+#pragma comment(linker, "/merge:C542=542")
+#pragma comment(linker, "/merge:B542=542")
+#pragma comment(linker, "/merge:K542=542")
 /****************************************************************************
 
 Safari Rally by SNK/Taito

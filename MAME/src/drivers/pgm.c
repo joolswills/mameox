@@ -1,11 +1,11 @@
-#pragma code_seg("C408")
-#pragma data_seg("D408")
-#pragma bss_seg("B408")
-#pragma const_seg("K408")
-#pragma comment(linker, "/merge:D408=408")
-#pragma comment(linker, "/merge:C408=408")
-#pragma comment(linker, "/merge:B408=408")
-#pragma comment(linker, "/merge:K408=408")
+#pragma code_seg("C487")
+#pragma data_seg("D487")
+#pragma bss_seg("B487")
+#pragma const_seg("K487")
+#pragma comment(linker, "/merge:D487=487")
+#pragma comment(linker, "/merge:C487=487")
+#pragma comment(linker, "/merge:B487=487")
+#pragma comment(linker, "/merge:K487=487")
 /* PGM System (c)1997 IGS
 
 Based on Information from ElSemi

@@ -1,11 +1,11 @@
-#pragma code_seg("C443")
-#pragma data_seg("D443")
-#pragma bss_seg("B443")
-#pragma const_seg("K443")
-#pragma comment(linker, "/merge:D443=443")
-#pragma comment(linker, "/merge:C443=443")
-#pragma comment(linker, "/merge:B443=443")
-#pragma comment(linker, "/merge:K443=443")
+#pragma code_seg("C526")
+#pragma data_seg("D526")
+#pragma bss_seg("B526")
+#pragma const_seg("K526")
+#pragma comment(linker, "/merge:D526=526")
+#pragma comment(linker, "/merge:C526=526")
+#pragma comment(linker, "/merge:B526=526")
+#pragma comment(linker, "/merge:K526=526")
 /***************************************************************************
 
 Zero Hour / Red Clash

@@ -1,11 +1,11 @@
-#pragma code_seg("C191")
-#pragma data_seg("D191")
-#pragma bss_seg("B191")
-#pragma const_seg("K191")
-#pragma comment(linker, "/merge:D191=191")
-#pragma comment(linker, "/merge:C191=191")
-#pragma comment(linker, "/merge:B191=191")
-#pragma comment(linker, "/merge:K191=191")
+#pragma code_seg("C260")
+#pragma data_seg("D260")
+#pragma bss_seg("B260")
+#pragma const_seg("K260")
+#pragma comment(linker, "/merge:D260=260")
+#pragma comment(linker, "/merge:C260=260")
+#pragma comment(linker, "/merge:B260=260")
+#pragma comment(linker, "/merge:K260=260")
 /* Field Combat (c)1985 Jaleco */
 
 /* todo:

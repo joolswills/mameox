@@ -1,11 +1,11 @@
-#pragma code_seg("C157")
-#pragma data_seg("D157")
-#pragma bss_seg("B157")
-#pragma const_seg("K157")
-#pragma comment(linker, "/merge:D157=157")
-#pragma comment(linker, "/merge:C157=157")
-#pragma comment(linker, "/merge:B157=157")
-#pragma comment(linker, "/merge:K157=157")
+#pragma code_seg("C223")
+#pragma data_seg("D223")
+#pragma bss_seg("B223")
+#pragma const_seg("K223")
+#pragma comment(linker, "/merge:D223=223")
+#pragma comment(linker, "/merge:C223=223")
+#pragma comment(linker, "/merge:B223=223")
+#pragma comment(linker, "/merge:K223=223")
 /***********************************************************************
 
 	DECO Cassette System driver

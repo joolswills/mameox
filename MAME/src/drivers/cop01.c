@@ -1,11 +1,11 @@
-#pragma code_seg("C131")
-#pragma data_seg("D131")
-#pragma bss_seg("B131")
-#pragma const_seg("K131")
-#pragma comment(linker, "/merge:D131=131")
-#pragma comment(linker, "/merge:C131=131")
-#pragma comment(linker, "/merge:B131=131")
-#pragma comment(linker, "/merge:K131=131")
+#pragma code_seg("C197")
+#pragma data_seg("D197")
+#pragma bss_seg("B197")
+#pragma const_seg("K197")
+#pragma comment(linker, "/merge:D197=197")
+#pragma comment(linker, "/merge:C197=197")
+#pragma comment(linker, "/merge:B197=197")
+#pragma comment(linker, "/merge:K197=197")
 /***************************************************************************
 
 Cops 01      (c) 1985 Nichibutsu

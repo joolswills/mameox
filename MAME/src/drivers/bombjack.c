@@ -1,11 +1,11 @@
-#pragma code_seg("C86")
-#pragma data_seg("D86")
-#pragma bss_seg("B86")
-#pragma const_seg("K86")
-#pragma comment(linker, "/merge:D86=86")
-#pragma comment(linker, "/merge:C86=86")
-#pragma comment(linker, "/merge:B86=86")
-#pragma comment(linker, "/merge:K86=86")
+#pragma code_seg("C150")
+#pragma data_seg("D150")
+#pragma bss_seg("B150")
+#pragma const_seg("K150")
+#pragma comment(linker, "/merge:D150=150")
+#pragma comment(linker, "/merge:C150=150")
+#pragma comment(linker, "/merge:B150=150")
+#pragma comment(linker, "/merge:K150=150")
 /***************************************************************************
 
 Bomb Jack

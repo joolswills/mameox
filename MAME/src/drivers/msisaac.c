@@ -1,11 +1,11 @@
-#pragma code_seg("C353")
-#pragma data_seg("D353")
-#pragma bss_seg("B353")
-#pragma const_seg("K353")
-#pragma comment(linker, "/merge:D353=353")
-#pragma comment(linker, "/merge:C353=353")
-#pragma comment(linker, "/merge:B353=353")
-#pragma comment(linker, "/merge:K353=353")
+#pragma code_seg("C429")
+#pragma data_seg("D429")
+#pragma bss_seg("B429")
+#pragma const_seg("K429")
+#pragma comment(linker, "/merge:D429=429")
+#pragma comment(linker, "/merge:C429=429")
+#pragma comment(linker, "/merge:B429=429")
+#pragma comment(linker, "/merge:K429=429")
 /****************************************************************************
 
 	Metal Soldier Isaac II	(c) Taito 1985

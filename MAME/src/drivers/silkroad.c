@@ -1,11 +1,11 @@
-#pragma code_seg("C488")
-#pragma data_seg("D488")
-#pragma bss_seg("B488")
-#pragma const_seg("K488")
-#pragma comment(linker, "/merge:D488=488")
-#pragma comment(linker, "/merge:C488=488")
-#pragma comment(linker, "/merge:B488=488")
-#pragma comment(linker, "/merge:K488=488")
+#pragma code_seg("C573")
+#pragma data_seg("D573")
+#pragma bss_seg("B573")
+#pragma const_seg("K573")
+#pragma comment(linker, "/merge:D573=573")
+#pragma comment(linker, "/merge:C573=573")
+#pragma comment(linker, "/merge:B573=573")
+#pragma comment(linker, "/merge:K573=573")
 #include "driver.h"
 
 /* The Legend of Silk Road - Unico 1999 */

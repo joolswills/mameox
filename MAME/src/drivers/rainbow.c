@@ -1,11 +1,11 @@
-#pragma code_seg("C440")
-#pragma data_seg("D440")
-#pragma bss_seg("B440")
-#pragma const_seg("K440")
-#pragma comment(linker, "/merge:D440=440")
-#pragma comment(linker, "/merge:C440=440")
-#pragma comment(linker, "/merge:B440=440")
-#pragma comment(linker, "/merge:K440=440")
+#pragma code_seg("C520")
+#pragma data_seg("D520")
+#pragma bss_seg("B520")
+#pragma const_seg("K520")
+#pragma comment(linker, "/merge:D520=520")
+#pragma comment(linker, "/merge:C520=520")
+#pragma comment(linker, "/merge:B520=520")
+#pragma comment(linker, "/merge:K520=520")
 /***************************************************************************
 
 Rainbow Islands  (c) Taito 1987   + Jumping

@@ -1,11 +1,11 @@
-#pragma code_seg("C185")
-#pragma data_seg("D185")
-#pragma bss_seg("B185")
-#pragma const_seg("K185")
-#pragma comment(linker, "/merge:D185=185")
-#pragma comment(linker, "/merge:C185=185")
-#pragma comment(linker, "/merge:B185=185")
-#pragma comment(linker, "/merge:K185=185")
+#pragma code_seg("C14")
+#pragma data_seg("D14")
+#pragma bss_seg("B14")
+#pragma const_seg("K14")
+#pragma comment(linker, "/merge:D14=14")
+#pragma comment(linker, "/merge:C14=14")
+#pragma comment(linker, "/merge:B14=14")
+#pragma comment(linker, "/merge:K14=14")
 /****************************************************************************
 
 	Exterminator memory map

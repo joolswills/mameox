@@ -1,11 +1,11 @@
-#pragma code_seg("C412")
-#pragma data_seg("D412")
-#pragma bss_seg("B412")
-#pragma const_seg("K412")
-#pragma comment(linker, "/merge:D412=412")
-#pragma comment(linker, "/merge:C412=412")
-#pragma comment(linker, "/merge:B412=412")
-#pragma comment(linker, "/merge:K412=412")
+#pragma code_seg("C23")
+#pragma data_seg("D23")
+#pragma bss_seg("B23")
+#pragma const_seg("K23")
+#pragma comment(linker, "/merge:D23=23")
+#pragma comment(linker, "/merge:C23=23")
+#pragma comment(linker, "/merge:B23=23")
+#pragma comment(linker, "/merge:K23=23")
 /***************************************************************************
 
 	Pipe Dream

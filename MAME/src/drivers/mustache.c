@@ -1,11 +1,11 @@
-#pragma code_seg("C357")
-#pragma data_seg("D357")
-#pragma bss_seg("B357")
-#pragma const_seg("K357")
-#pragma comment(linker, "/merge:D357=357")
-#pragma comment(linker, "/merge:C357=357")
-#pragma comment(linker, "/merge:B357=357")
-#pragma comment(linker, "/merge:K357=357")
+#pragma code_seg("C433")
+#pragma data_seg("D433")
+#pragma bss_seg("B433")
+#pragma const_seg("K433")
+#pragma comment(linker, "/merge:D433=433")
+#pragma comment(linker, "/merge:C433=433")
+#pragma comment(linker, "/merge:B433=433")
+#pragma comment(linker, "/merge:K433=433")
 /***************************************************************************
 
 	Mustache Boy

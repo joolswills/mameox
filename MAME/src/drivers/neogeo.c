@@ -1,11 +1,11 @@
-#pragma code_seg("C375")
-#pragma data_seg("D375")
-#pragma bss_seg("B375")
-#pragma const_seg("K375")
-#pragma comment(linker, "/merge:D375=375")
-#pragma comment(linker, "/merge:C375=375")
-#pragma comment(linker, "/merge:B375=375")
-#pragma comment(linker, "/merge:K375=375")
+#pragma code_seg("C452")
+#pragma data_seg("D452")
+#pragma bss_seg("B452")
+#pragma const_seg("K452")
+#pragma comment(linker, "/merge:D452=452")
+#pragma comment(linker, "/merge:C452=452")
+#pragma comment(linker, "/merge:B452=452")
+#pragma comment(linker, "/merge:K452=452")
 /***************************************************************************
 	M.A.M.E. Neo Geo driver presented to you by the Shin Emu Keikaku team.
 

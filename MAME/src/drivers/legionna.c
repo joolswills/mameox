@@ -1,11 +1,11 @@
-#pragma code_seg("C291")
-#pragma data_seg("D291")
-#pragma bss_seg("B291")
-#pragma const_seg("K291")
-#pragma comment(linker, "/merge:D291=291")
-#pragma comment(linker, "/merge:C291=291")
-#pragma comment(linker, "/merge:B291=291")
-#pragma comment(linker, "/merge:K291=291")
+#pragma code_seg("C363")
+#pragma data_seg("D363")
+#pragma bss_seg("B363")
+#pragma const_seg("K363")
+#pragma comment(linker, "/merge:D363=363")
+#pragma comment(linker, "/merge:C363=363")
+#pragma comment(linker, "/merge:B363=363")
+#pragma comment(linker, "/merge:K363=363")
 /***************************************************************************
 
 Legionnaire (c) Tad 1992

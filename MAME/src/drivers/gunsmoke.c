@@ -1,11 +1,11 @@
-#pragma code_seg("C244")
-#pragma data_seg("D244")
-#pragma bss_seg("B244")
-#pragma const_seg("K244")
-#pragma comment(linker, "/merge:D244=244")
-#pragma comment(linker, "/merge:C244=244")
-#pragma comment(linker, "/merge:B244=244")
-#pragma comment(linker, "/merge:K244=244")
+#pragma code_seg("C315")
+#pragma data_seg("D315")
+#pragma bss_seg("B315")
+#pragma const_seg("K315")
+#pragma comment(linker, "/merge:D315=315")
+#pragma comment(linker, "/merge:C315=315")
+#pragma comment(linker, "/merge:B315=315")
+#pragma comment(linker, "/merge:K315=315")
 /***************************************************************************
 
   GUNSMOKE

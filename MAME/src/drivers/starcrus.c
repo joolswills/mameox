@@ -1,11 +1,11 @@
-#pragma code_seg("C523")
-#pragma data_seg("D523")
-#pragma bss_seg("B523")
-#pragma const_seg("K523")
-#pragma comment(linker, "/merge:D523=523")
-#pragma comment(linker, "/merge:C523=523")
-#pragma comment(linker, "/merge:B523=523")
-#pragma comment(linker, "/merge:K523=523")
+#pragma code_seg("C609")
+#pragma data_seg("D609")
+#pragma bss_seg("B609")
+#pragma const_seg("K609")
+#pragma comment(linker, "/merge:D609=609")
+#pragma comment(linker, "/merge:C609=609")
+#pragma comment(linker, "/merge:B609=609")
+#pragma comment(linker, "/merge:K609=609")
 /***************************************************************************
 
 Ramtek Star Cruiser Driver

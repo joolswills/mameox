@@ -1,11 +1,11 @@
-#pragma code_seg("C524")
-#pragma data_seg("D524")
-#pragma bss_seg("B524")
-#pragma const_seg("K524")
-#pragma comment(linker, "/merge:D524=524")
-#pragma comment(linker, "/merge:C524=524")
-#pragma comment(linker, "/merge:B524=524")
-#pragma comment(linker, "/merge:K524=524")
+#pragma code_seg("C610")
+#pragma data_seg("D610")
+#pragma bss_seg("B610")
+#pragma const_seg("K610")
+#pragma comment(linker, "/merge:D610=610")
+#pragma comment(linker, "/merge:C610=610")
+#pragma comment(linker, "/merge:B610=610")
+#pragma comment(linker, "/merge:K610=610")
 /***************************************************************************
 
 	Star Fire/Fire One system

@@ -1,11 +1,11 @@
-#pragma code_seg("C509")
-#pragma data_seg("D509")
-#pragma bss_seg("B509")
-#pragma const_seg("K509")
-#pragma comment(linker, "/merge:D509=509")
-#pragma comment(linker, "/merge:C509=509")
-#pragma comment(linker, "/merge:B509=509")
-#pragma comment(linker, "/merge:K509=509")
+#pragma code_seg("C595")
+#pragma data_seg("D595")
+#pragma bss_seg("B595")
+#pragma const_seg("K595")
+#pragma comment(linker, "/merge:D595=595")
+#pragma comment(linker, "/merge:C595=595")
+#pragma comment(linker, "/merge:B595=595")
+#pragma comment(linker, "/merge:K595=595")
 /*** DRIVER INFO & NOTES ******************************************************
  Speed Spin (c)1994 TCH
   driver by David Haywood & Farfetch'd

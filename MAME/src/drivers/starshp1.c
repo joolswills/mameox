@@ -1,11 +1,11 @@
-#pragma code_seg("C525")
-#pragma data_seg("D525")
-#pragma bss_seg("B525")
-#pragma const_seg("K525")
-#pragma comment(linker, "/merge:D525=525")
-#pragma comment(linker, "/merge:C525=525")
-#pragma comment(linker, "/merge:B525=525")
-#pragma comment(linker, "/merge:K525=525")
+#pragma code_seg("C611")
+#pragma data_seg("D611")
+#pragma bss_seg("B611")
+#pragma const_seg("K611")
+#pragma comment(linker, "/merge:D611=611")
+#pragma comment(linker, "/merge:C611=611")
+#pragma comment(linker, "/merge:B611=611")
+#pragma comment(linker, "/merge:K611=611")
 /***************************************************************************
 
 Atari Starship 1 driver

@@ -1,3 +1,11 @@
+#pragma code_seg("C21")
+#pragma data_seg("D21")
+#pragma bss_seg("B21")
+#pragma const_seg("K21")
+#pragma comment(linker, "/merge:D21=21")
+#pragma comment(linker, "/merge:C21=21")
+#pragma comment(linker, "/merge:B21=21")
+#pragma comment(linker, "/merge:K21=21")
 /***************************************************************************
 
 Konami games memory map (preliminary)
@@ -801,3 +809,7 @@ GAME( 1983, hyprolym, trackfld, trackfld, trackfld, trackfld, ROT0, "Konami", "H
 GAME( 1983, hyprolyb, trackfld, hyprolyb, trackfld, trackfld, ROT0, "bootleg", "Hyper Olympic (bootleg)" )
 GAMEX(1985, whizquiz, 0,        trackfld, trackfld, mastkin,  ROT0, "Zilec-Zenitone", "Whiz Quiz", GAME_NOT_WORKING )
 GAMEX(1988, mastkin,  0,        mastkin,  mastkin,  mastkin,  ROT0, "Du Tech", "The Masters of Kin", GAME_WRONG_COLORS )
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

@@ -1,11 +1,11 @@
-#pragma code_seg("C254")
-#pragma data_seg("D254")
-#pragma bss_seg("B254")
-#pragma const_seg("K254")
-#pragma comment(linker, "/merge:D254=254")
-#pragma comment(linker, "/merge:C254=254")
-#pragma comment(linker, "/merge:B254=254")
-#pragma comment(linker, "/merge:K254=254")
+#pragma code_seg("C326")
+#pragma data_seg("D326")
+#pragma bss_seg("B326")
+#pragma const_seg("K326")
+#pragma comment(linker, "/merge:D326=326")
+#pragma comment(linker, "/merge:C326=326")
+#pragma comment(linker, "/merge:B326=326")
+#pragma comment(linker, "/merge:K326=326")
 /* Hit Me driver by the EMUL8, led by Dan Boris
 
    It doesn't work?  should the timer stuff have changed?

@@ -1,11 +1,11 @@
-#pragma code_seg("C171")
-#pragma data_seg("D171")
-#pragma bss_seg("B171")
-#pragma const_seg("K171")
-#pragma comment(linker, "/merge:D171=171")
-#pragma comment(linker, "/merge:C171=171")
-#pragma comment(linker, "/merge:B171=171")
-#pragma comment(linker, "/merge:K171=171")
+#pragma code_seg("C237")
+#pragma data_seg("D237")
+#pragma bss_seg("B237")
+#pragma const_seg("K237")
+#pragma comment(linker, "/merge:D237=237")
+#pragma comment(linker, "/merge:C237=237")
+#pragma comment(linker, "/merge:B237=237")
+#pragma comment(linker, "/merge:K237=237")
 /*
 
 Dragon Master (c)1994 Unico

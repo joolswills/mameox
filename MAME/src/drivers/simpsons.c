@@ -1,11 +1,11 @@
-#pragma code_seg("C489")
-#pragma data_seg("D489")
-#pragma bss_seg("B489")
-#pragma const_seg("K489")
-#pragma comment(linker, "/merge:D489=489")
-#pragma comment(linker, "/merge:C489=489")
-#pragma comment(linker, "/merge:B489=489")
-#pragma comment(linker, "/merge:K489=489")
+#pragma code_seg("C574")
+#pragma data_seg("D574")
+#pragma bss_seg("B574")
+#pragma const_seg("K574")
+#pragma comment(linker, "/merge:D574=574")
+#pragma comment(linker, "/merge:C574=574")
+#pragma comment(linker, "/merge:B574=574")
+#pragma comment(linker, "/merge:K574=574")
 /***************************************************************************
 
 The Simpsons (c) 1991 Konami Co. Ltd

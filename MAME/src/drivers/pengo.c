@@ -1,3 +1,11 @@
+#pragma code_seg("C15")
+#pragma data_seg("D15")
+#pragma bss_seg("B15")
+#pragma const_seg("K15")
+#pragma comment(linker, "/merge:D15=15")
+#pragma comment(linker, "/merge:C15=15")
+#pragma comment(linker, "/merge:B15=15")
+#pragma comment(linker, "/merge:K15=15")
 /***************************************************************************
 
 	Sega Pengo
@@ -534,3 +542,7 @@ GAME( 1982, pengo2,  pengo, pengo, pengo, pengo, ROT90, "Sega", "Pengo (set 2)" 
 GAME( 1982, pengo2u, pengo, pengo, pengo, 0,     ROT90, "Sega", "Pengo (set 2 not encrypted)" )
 GAME( 1982, pengob,  pengo, pengo, pengo, penta, ROT90, "bootleg", "Pengo (bootleg)" )
 GAME( 1982, penta,   pengo, pengo, pengo, penta, ROT90, "bootleg", "Penta" )
+#pragma code_seg()
+#pragma data_seg()
+#pragma bss_seg()
+#pragma const_seg()

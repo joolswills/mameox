@@ -1,11 +1,11 @@
-#pragma code_seg("C194")
-#pragma data_seg("D194")
-#pragma bss_seg("B194")
-#pragma const_seg("K194")
-#pragma comment(linker, "/merge:D194=194")
-#pragma comment(linker, "/merge:C194=194")
-#pragma comment(linker, "/merge:B194=194")
-#pragma comment(linker, "/merge:K194=194")
+#pragma code_seg("C263")
+#pragma data_seg("D263")
+#pragma bss_seg("B263")
+#pragma const_seg("K263")
+#pragma comment(linker, "/merge:D263=263")
+#pragma comment(linker, "/merge:C263=263")
+#pragma comment(linker, "/merge:B263=263")
+#pragma comment(linker, "/merge:K263=263")
 /***************************************************************************
 
 Fire Trap memory map

@@ -1,11 +1,11 @@
-#pragma code_seg("C498")
-#pragma data_seg("D498")
-#pragma bss_seg("B498")
-#pragma const_seg("K498")
-#pragma comment(linker, "/merge:D498=498")
-#pragma comment(linker, "/merge:C498=498")
-#pragma comment(linker, "/merge:B498=498")
-#pragma comment(linker, "/merge:K498=498")
+#pragma code_seg("C583")
+#pragma data_seg("D583")
+#pragma bss_seg("B583")
+#pragma const_seg("K583")
+#pragma comment(linker, "/merge:D583=583")
+#pragma comment(linker, "/merge:C583=583")
+#pragma comment(linker, "/merge:B583=583")
+#pragma comment(linker, "/merge:K583=583")
 /***************************************************************************
 
 Slapshot (c) Taito 1994
