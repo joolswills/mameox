@@ -20,11 +20,12 @@
 			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="3"
+				Optimization="1"
 				GlobalOptimizations="TRUE"
 				InlineFunctionExpansion="1"
 				FavorSizeOrSpeed="2"
 				OmitFramePointers="TRUE"
+				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories=".\Includes;..\MAME\src;..\;&quot;$(XDK)\Samples\XBox\Common\Include\&quot;;&quot;..\libsmb++\src&quot;"
 				PreprocessorDefinitions="WIN32,_XBOX,NDEBUG"
