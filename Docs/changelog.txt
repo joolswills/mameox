@@ -75,6 +75,7 @@ Version 0.71.3b (CVS)
       - Made menu functions token based instead of cursor position 
         based. This makes it much easier to have fully dynamic menus
       - Added a simple screensaver (thanks to Noodle for the suggestion)
+      - Added screendump command (bound to left analog) for launcher
 
     - Renamed ROMList, OptionsPage, Help, LightgunCalibrator to 
       xxxxScreen format to increase "findability"
