@@ -2353,11 +2353,16 @@ void update_analog_port(int port)
 			/* and, if needed, reverse pedal input */
 			if (type == IPT_PEDAL || type == IPT_PEDAL2)
 			{
-				new  = -new;
-				prev = -prev;
+          // [EBA] The games want pedals to be from 0 -> 256
+          //       but all analog joysticks go from -128 -> 128,
+          //       which requires insane sensitivity
+        new = -1 * (int)(((float)new - 128.0f));
+        prev = -1 * (int)(((float)prev - 128.0f));
+				//new  = -new;
+				//prev = -prev;
 				if (in->type & IPF_REVERSE)		// a reversed pedal is diff than normal reverse
-				{								// 128 = no gas, 0 = all gas
-					new  = 128-new;				// the default "new=-new" doesn't handle this
+				{								              // 128 = no gas, 0 = all gas
+					new  = 128-new;				      // the default "new=-new" doesn't handle this
 					prev = 128-prev;
 				}
 			}
