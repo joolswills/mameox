@@ -1294,9 +1294,9 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 	pD3DVertexBuffer->Unlock();
 
   LPDIRECT3DTEXTURE8 pTexture = (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_SplashScreenBackdrop_OFFSET];
-  #define TEXTFADE_MINIMUM            180.0f
+  #define TEXTFADE_MINIMUM            150.0f
   #define TEXTFADE_MAXIMUM            255.0f
-  #define TEXTFADE_FRAMES_PER_STEP    15.0f
+  #define TEXTFADE_FRAMES_PER_STEP    10.0f
   FLOAT textFadeColor = 255.0f;
   FLOAT fadeDirection = -1.0f;
 
@@ -1305,7 +1305,7 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
   const WCHAR credits[] = L"       The MAMEoX team:"\
                           L"       Programming - Erik Abair, opcode, luckyMIC, ips" \
                           L"       Testing - falz, enkak, noodle1009" \
-                          L"       Graphical design - r4dius" \
+                          L"       Graphical design - r4dius, Stephen Cameron" \
                           L"       Special thanks to MAME developers everywhere";
 
   FLOAT creditsPosition = 0.0f;
@@ -1491,20 +1491,86 @@ void GetScreenPosition( FLOAT *xOffset, FLOAT *yOffset )
   if( yOffset )
     *yOffset = g_rendererOptions.m_screenOffsetY;
 }
-  
-//-------------------------------------------------------------
-//	osd_init
-//-------------------------------------------------------------
-int osd_init( void )
-{
-	return 0;
-}
+
 
 //-------------------------------------------------------------
-//	osd_exit
+//	ShowLoadingScreen
 //-------------------------------------------------------------
-void osd_exit( void )
+void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 {
+  LPDIRECT3DVERTEXBUFFER8 pVertexBuffer = NULL;
+
+  pD3DDevice->CreateVertexBuffer( (sizeof(CUSTOMVERTEX) << 2),
+							                    D3DUSAGE_WRITEONLY,
+																	D3DFVF_XYZ | D3DFVF_TEX1,
+																	D3DPOOL_MANAGED,
+																	&pVertexBuffer );
+
+	CUSTOMVERTEX *pVertices;
+	pVertexBuffer->Lock( 0,										// Offset to lock
+											 0,										// Size to lock
+											 (BYTE**)&pVertices,		// ppbData
+											 0 );									// Flags
+		pVertices[0].pos.x = -0.9f;
+		pVertices[0].pos.y = 0.9f;
+		pVertices[0].pos.z = 1.0f;
+    pVertices[0].tu = 0.0f;
+    pVertices[0].tv = 0.0f;
+
+		pVertices[1].pos.x = 0.9f;
+		pVertices[1].pos.y = 0.9f;
+		pVertices[1].pos.z = 1.0f;
+    pVertices[1].tu = 1.0f;
+    pVertices[1].tv = 0.0f;
+
+		pVertices[2].pos.x = 0.9f;
+		pVertices[2].pos.y = -0.9f;
+		pVertices[2].pos.z = 1.0f;
+    pVertices[2].tu = 1.0f;
+    pVertices[2].tv = 1.0f;
+
+		pVertices[3].pos.x = -0.9f;
+		pVertices[3].pos.y = -0.9f;
+		pVertices[3].pos.z = 1.0f;
+    pVertices[3].tu = 0.0f;
+    pVertices[3].tv = 1.0f;
+	pVertexBuffer->Unlock();
+
+  LPDIRECT3DTEXTURE8 pTexture = (LPDIRECT3DTEXTURE8)&g_pResourceSysMemData[resource_MessageScreenBackdrop_OFFSET];
+
+	pD3DDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
+	pD3DDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
+	pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
+  pD3DDevice->SetRenderState( D3DRS_ZENABLE, FALSE );
+
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_MINFILTER, D3DTEXF_LINEAR );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_MAGFILTER, D3DTEXF_LINEAR );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+  pD3DDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
+
+		// Clear the backbuffer
+  pD3DDevice->Clear(	0L,																// Count
+											NULL,															// Rects to clear
+											D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+                      D3DCOLOR_XRGB(0,0,0),							// Color
+											1.0f,															// Z
+											0L );															// Stencil
+
+
+  pD3DDevice->SetStreamSource(	0,												// Stream number
+																pVertexBuffer,					// Stream data
+																sizeof(CUSTOMVERTEX) );		// Vertex stride
+	pD3DDevice->SetTexture( 0, pTexture );
+  pD3DDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
+
+  g_font.Begin();
+  g_font.DrawText( 320, 240, D3DCOLOR_RGBA( 255, 255, 255, 255),   L"Loading. Please wait...", XBFONT_CENTER_X );
+  g_font.End();
+
+
+  pD3DDevice->Present( NULL, NULL, NULL, NULL );
+  pD3DDevice->PersistDisplay();
 }
 
 }	// End Extern "C"

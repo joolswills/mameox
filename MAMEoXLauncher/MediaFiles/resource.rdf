@@ -29,3 +29,11 @@ Texture SplashScreenBackdrop
   Format D3DFMT_X8R8G8B8
   Levels 1
 }
+
+Texture MessageScreenBackdrop
+{
+  Source mox-messagescreen.jpg
+  Format D3DFMT_X8R8G8B8
+  Levels 1
+}
+

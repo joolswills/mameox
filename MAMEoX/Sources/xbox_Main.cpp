@@ -655,5 +655,28 @@ int fatalerror( const char *fmt, ... )
   return 0;
 }
 
+
+//-------------------------------------------------------------
+//	ShowLoadingScreen
+//-------------------------------------------------------------
+void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice )
+{
+
+		// Clear the backbuffer
+  pD3DDevice->Clear(	0L,																// Count
+											NULL,															// Rects to clear
+											D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+                      D3DCOLOR_XRGB(0,0,0),							// Color
+											1.0f,															// Z
+											0L );															// Stencil
+
+  g_font.Begin();
+  g_font.DrawText( 320, 240, D3DCOLOR_RGBA( 255, 255, 255, 255),   L"Loading. Please wait...", XBFONT_CENTER_X );
+  g_font.End();
+
+  pD3DDevice->Present( NULL, NULL, NULL, NULL );
+  pD3DDevice->PersistDisplay();
+}
+
 }	// End Extern "C"
 

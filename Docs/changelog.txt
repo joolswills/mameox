@@ -31,6 +31,11 @@ Version 0.70.3b
       - Moved resize variables from globals to members of the
         render setup struct
 
+    - xbox_Miscelaneous.c
+      - Switched back to | character now that it is supported
+        by the Hawaiian Punk font
+
+
    -------------------------------------------------------------
   - \MAMEoXLauncher\Sources:
 
@@ -38,6 +43,7 @@ Version 0.70.3b
       - Put in code to reposition the screen as well as resize
       - Fixed: Backup (B+X) feature doesn't work anymore, just
                shows help screen.
+       - Put in new loading screen (thanks Stephen)
 
    -------------------------------------------------------------
   - \Sectionize.pl
