@@ -102,15 +102,17 @@ BOOL CSkinTriggerInfo::ParseINI(	CSystem_IniFile &iniFile, const CStdString &sec
 
 	CSkinText temp;
 	if( temp.ParseINI( iniFile, sectionName, entryName ) )
+	{
 		m_text = new CSkinText( temp );
 
-		// Make sure we have valid offsets for the text widget
-	if( m_text->m_left == VALUE_INVALID )
-		m_text->m_left = 0.0f;
-	if( m_text->m_top == VALUE_INVALID )
-		m_text->m_top = 0.0f;
-	if( m_text->m_bottom <= m_text->m_top )
-		m_text->m_bottom = m_text->m_top + GetHeight();
+			// Make sure we have valid offsets for the text widget
+		if( m_text->m_left == VALUE_INVALID )
+			m_text->m_left = 0.0f;
+		if( m_text->m_top == VALUE_INVALID )
+			m_text->m_top = 0.0f;
+		if( m_text->m_bottom <= m_text->m_top )
+			m_text->m_bottom = m_text->m_top + GetHeight();
+	}
 
 	return (m_left != VALUE_INVALID && m_top != VALUE_INVALID );
 }
