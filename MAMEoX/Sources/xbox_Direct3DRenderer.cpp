@@ -529,12 +529,12 @@ static void Helper_RenderPalettized16( void *dest, struct mame_bitmap *bitmap, c
 //-------------------------------------------------------------
 static void Helper_RenderVectors( void *dest, struct mame_bitmap *bitmap, const struct rectangle *bnds, vector_pixel_t *vectorList )
 {
-  UINT32 *destBuf = (UINT32*)dest;
-  if( !bitmap || !bitmap->base || !destBuf )
+  if( !bitmap || !bitmap->base || !dest )
     return;
 
   if( bitmap->depth == 32 )
   {
+    UINT32 *destBuf = (UINT32*)dest;
     UINT32 *sourceBuf = (UINT32*)bitmap->base;
 
 	  if( g_createParams.orientation & ORIENTATION_SWAP_XY )
@@ -560,6 +560,7 @@ static void Helper_RenderVectors( void *dest, struct mame_bitmap *bitmap, const 
   }
   else
   {
+    UINT16 *destBuf = (UINT16*)dest;
     UINT16 *sourceBuf = (UINT16*)bitmap->base;
 
 	  if( g_createParams.orientation & ORIENTATION_SWAP_XY )
