@@ -371,10 +371,10 @@ protected:
 		if(	(m_gamepadDeviceBitmap & portMask ) && !m_gamepadDeviceHandles[portNumber] )
 		{
 				// Attach
-			m_gamepadDeviceHandles[0] = XInputOpen( XDEVICE_TYPE_GAMEPAD,
-																							portName,				
-																							XDEVICE_NO_SLOT,			// Gamepad, so no slot
-																							NULL );								// No special polling params
+			m_gamepadDeviceHandles[portNumber] = XInputOpen( XDEVICE_TYPE_GAMEPAD,
+																							         portName,				
+																							         XDEVICE_NO_SLOT,			// Gamepad, so no slot
+																							         NULL );								// No special polling params
 		}
 		else if( !(m_gamepadDeviceBitmap & portMask ) && m_gamepadDeviceHandles[portNumber] )
 		{
@@ -460,7 +460,7 @@ protected:
 		{
 				// Detach
 			XInputClose( m_memunitDeviceHandles[bottom] );
-			m_memunitDeviceHandles[top] = NULL;
+			m_memunitDeviceHandles[bottom] = NULL;
 		}
 
 	}
