@@ -1484,7 +1484,7 @@ void ShowLoadingScreen( LPDIRECT3DDEVICE8 pD3DDevice )
 	pD3DDevice->SetTexture( 0, NULL );
 
   g_fontSet.DefaultFont().Begin();
-  g_fontSet.DefaultFont().DrawText( 320, 240, D3DCOLOR_RGBA( 255, 255, 255, 255),   L"Loading. Please wait...", XBFONT_CENTER_X );
+  g_fontSet.DefaultFont().DrawText( 320, 240, D3DCOLOR_XRGB( 0, 0, 0 ),   L"Loading. Please wait...", XBFONT_CENTER_X );
   g_fontSet.DefaultFont().End();
 
 
@@ -1542,11 +1542,11 @@ void DrawProgressbarMessage( LPDIRECT3DDEVICE8 pD3DDevice, const char *message, 
 
 	g_fontSet.DefaultFont().Begin();	
     mbstowcs( wBuf, message, 256 );
-	  g_fontSet.DefaultFont().DrawText( 320, 200, D3DCOLOR_RGBA( 255, 255, 255, 255 ), wBuf, XBFONT_CENTER_X );
+	  g_fontSet.DefaultFont().DrawText( 320, 200, D3DCOLOR_XRGB( 0, 0, 0 ), wBuf, XBFONT_CENTER_X );
  	
 		  // Draw the current filename
 	  mbstowcs( wBuf, itemName, 256 );
-	  g_fontSet.DefaultFont().DrawText( 320, 260, D3DCOLOR_RGBA( 60, 100, 255, 255 ), wBuf, XBFONT_CENTER_X );
+	  g_fontSet.DefaultFont().DrawText( 320, 260, D3DCOLOR_XRGB( 60, 100, 255 ), wBuf, XBFONT_CENTER_X );
 	g_fontSet.DefaultFont().End();
 
 
