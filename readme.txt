@@ -4,10 +4,14 @@
 Installation:
 
 
-1) Unzip MAME 0.67 (or later, this document was written at the time of 0.67)
-   into the MAME directory.
+X) This step is currently unnecessary, as the source distribution includes the
+   latest supported MAME core.
 
-2) Unzip ZLIB to the ZLIB directory. You only need the following files:
+   XX Unzip MAME 0.67 (or later, this document was written at the time of 0.67)
+   XX into the MAME directory.
+
+
+1) Unzip ZLIB to the ZLIB directory. You only need the following files:
 	adler32.c
 	compress.c
 	crc32.c
@@ -37,13 +41,38 @@ Installation:
 
 	(Also the project files, and any license text files)
 
-3) Run the Sectionize.pl script to break the various ROMs into XBE sections
+X) This step is currently unnecessary, as the source distribution includes the
+   latest supported MAME core, pre patched w/ Sectionize.pl
+
+
+   Run the Sectionize.pl script to break the various ROMs into XBE sections
     (this is done to reduce runtime memory requirements)
 
-4) Open the MAMEoX.sln file (the dsw file is probably out of date) and
-    build the solution for Release mode. Note that you may also have to
-    patch the resulting XBE file if your set does not execute debug files.
+2) Open the MAMEoX.sln file and build the solution for Release mode (or Debug
+    mode if you're doing actual development). 
+    
+    This can be done via the following steps:
+	a) Build menu -> Configuration Manager...
+	   Change the "Active Solution Configuration" field to "Release"
+	   Click "Close"
+	b) Build menu -> Build solution
 
+    Note: You may have to change the include/link paths, depending on where
+          you placed MAME and the SDK files. This can be done via the "properties"
+	  submenu of the MAMEoX (and possibly the MAME) project.
+
+    Note: You may also have to patch the resulting XBE file if your 
+    set does not execute debug files.
+
+
+
+
+---------------------------------------------------------------------------
+Compilation Errors:
+
+
+NOTE: If you use the SourceForge distribution you shouldn't get any compiler
+	errors. If you do, please submit them as a bug.
 
 Chances are good that you'll see some compile errors:
   a) png_get_info is defined multiple times: You can safely #ifdef this
@@ -127,11 +156,10 @@ Chances are good that you'll see some compile errors:
     - samples : This is where you should put all of your audio sample zips
     default.xbe : The executable file
 
+
+
 ---------------------------------------------------------------------------
 Usage:
-
-  At any time, pressing Left Trigger, Right Trigger, and the Black button
-  on Joypad 1 will jump to the dashboard.
 
   Available ROMs screen:
     A - Play selected ROM
@@ -155,9 +183,13 @@ Usage:
 			(where the parts of the screen are not visibile) or suboptimal
 			usage (where there is a big black border around the game screen)
 
+    Pressing Left Trigger, Right Trigger, and the Black button
+       on Joypad 1 will jump to the dashboard.
+
+
 
   MAME input mappings:
-    As of version 0.5, there is no INI file to reconfigure the keypad mappings.
+    As of version 0.5a, there is no INI file to reconfigure the keypad mappings.
     Reconfiguration can be done via editing the osd_customize_inputport_defaults
     function in xbox_JoystickMouse.c.
 
