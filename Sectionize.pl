@@ -370,7 +370,7 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 @PengoFamily = ( "pengo.c",  "pacman.c" );									# eyes
 @Megasys1Family = ( "megasys1.c", "cischeat.c" );							# F-1 Grand Prix Star II
 @LocoMotionFamily = ( "rallyx.c", "timeplt.c", "locomotn.c", 
-					  "tutankhm.c" );										# Loco-Motion, Tutankham
+					  "tutankhm.c", "pooyan.c" );							# Loco-Motion, Tutankham, Pooyan
 @ExidyFamily = ( "exidy.c", "victory.c" );									# Victory
 @M72Family = ( "m72.c", "m90.c", "vigilant.c" );							# Bomber Man World (World), Vigilante
 @LelandFamily = ( "leland.c", "ataxx.c" );									# Asylum (prototype)

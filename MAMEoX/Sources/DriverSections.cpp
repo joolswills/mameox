@@ -203,6 +203,7 @@ BOOL UnloadDriverSections( void )
         (*i).first == "src\\drivers\\timeplt.c" ||
         (*i).first == "src\\drivers\\locomotn.c" ||
         (*i).first == "src\\drivers\\tutankhm.c" ||
+        (*i).first == "src\\drivers\\pooyan.c" ||
         (*i).first == "src\\drivers\\victory.c" ||
         (*i).first == "src\\drivers\\m90.c" ||
         (*i).first == "src\\drivers\\vigilant.c" ||
@@ -655,7 +656,6 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\policetr.c", "498" );
   RegisterSectionName( "src\\drivers\\polyplay.c", "499" );
   RegisterSectionName( "src\\drivers\\poolshrk.c", "500" );
-  RegisterSectionName( "src\\drivers\\pooyan.c", "501" );
   RegisterSectionName( "src\\drivers\\popeye.c", "502" );
   RegisterSectionName( "src\\drivers\\popper.c", "503" );
   RegisterSectionName( "src\\drivers\\portrait.c", "504" );
@@ -860,6 +860,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\vicdual.c", "703" );
   RegisterSectionName( "src\\drivers\\victory.c", "18" );
   RegisterSectionName( "src\\drivers\\videopin.c", "705" );
+  RegisterSectionName( "src\\drivers\\vigilant.c", "19" );
   RegisterSectionName( "src\\drivers\\vindictr.c", "707" );
   RegisterSectionName( "src\\drivers\\volfied.c", "708" );
   RegisterSectionName( "src\\drivers\\vsnes.c", "709" );
@@ -899,7 +900,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\zerozone.c", "743" );
   RegisterSectionName( "src\\drivers\\zn.c", "744" );
   RegisterSectionName( "src\\drivers\\zodiack.c", "745" );
-  RegisterSectionName( "src\\drivers\\vigilant.c", "19" );
+  RegisterSectionName( "src\\drivers\\pooyan.c", "17" );
 }
 #pragma code_seg()
 #pragma data_seg()
