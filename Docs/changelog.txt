@@ -58,7 +58,11 @@ Version 0.71.2b (CVS)
       - Fixed Backup feature (yet again, this is what, the 3rd time
         I broke it? I'm still surprised that people use it :))
       - Added code to allow 4 ROM paths
-
+      - Changed backup feature to use CopyFile, as it was broken in 
+        the change to multiple ROM paths (break #4 :)). For some 
+        reason MoveFile craps out when I try to move across 
+        partitions (or maybe just different logical drive letters)
+        
     - OptionsPage.cpp
       - Changed the text for "problem ROM" filters
       - Added code to allow 4 ROM paths

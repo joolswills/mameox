@@ -1413,10 +1413,15 @@ BOOL CROMList::Helper_MoveCurrentGameToBackupDir( CStdString &path )
     CreateDirectory( g_ROMBackupPath, NULL );
 
     PRINTMSG( T_INFO, "Moving ROM %s to %s!", oldPath.c_str(), newPath.c_str() );
-    if( !MoveFile( oldPath.c_str(), newPath.c_str() ) )
+
+      // For some reason MoveFile seems to fail if I move from one partition to
+      // another. For this reason, do a copy & delete
+//    if( !MoveFile( oldPath.c_str(), newPath.c_str() ) )
+    if( !CopyFile( oldPath.c_str(), newPath.c_str(), FALSE ) )
       PRINTMSG( T_ERROR, "Failed moving ROM %s to %s!", oldPath.c_str(), newPath.c_str() );
     else
     {
+      DeleteFile( oldPath.c_str() );
     	RemoveCurrentGameIndex();
       return TRUE;
     }
