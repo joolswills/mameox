@@ -184,25 +184,20 @@ BOOL CSkinScreenshot::ParseINI(	CSystem_IniFile &iniFile, const CStdString &sect
 	CStdString temp = iniFile.GetProfileString( sectionName, entryName + ".Screenshot.Color", "" );
 	if( temp != "" )
 	{
-PRINTMSG(( T_INFO, "Single color: %s from %s", temp.c_str(), (entryName + ".Screenshot.Color").c_str() ));
 		m_cornerColors[0] = m_cornerColors[1] = m_cornerColors[2] = m_cornerColors[3] = StringToColor( temp );
 	}
 	else
 	{
 		temp = iniFile.GetProfileString( sectionName, entryName + ".Screenshot.Color.UpperLeft", "" );
-PRINTMSG(( T_INFO, "color: %s", temp.c_str() ));
 		m_cornerColors[0] = StringToColor( temp );
 
 		temp = iniFile.GetProfileString( sectionName, entryName + ".Screenshot.Color.UpperRight", "" );
-PRINTMSG(( T_INFO, "color: %s", temp.c_str() ));
 		m_cornerColors[1] = StringToColor( temp );
 
 		temp = iniFile.GetProfileString( sectionName, entryName + ".Screenshot.Color.LowerRight", "" );
-PRINTMSG(( T_INFO, "color: %s", temp.c_str() ));
 		m_cornerColors[2] = StringToColor( temp );
 
 		temp = iniFile.GetProfileString( sectionName, entryName + ".Screenshot.Color.LowerLeft", "" );
-PRINTMSG(( T_INFO, "color: %s", temp.c_str() ));
 		m_cornerColors[3] = StringToColor( temp );
 	}
 

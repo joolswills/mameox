@@ -42,15 +42,18 @@ void CSkinText::Render( LPDIRECT3DDEVICE8 displayDevice, const WCHAR *str ) cons
 void CSkinText::Render( LPDIRECT3DDEVICE8 displayDevice, const WCHAR *str, FLOAT x, FLOAT y ) const
 {
 	FLOAT maxWidth = 0;
+	UINT32 flags = m_fontFlags;
 
-	if( m_fontFlags & XBFONT_TRUNCATED && m_right >= m_left )
+	if( flags & XBFONT_TRUNCATED && m_right >= m_left )
 		maxWidth = m_right - m_left;
+	else
+		flags &= ~XBFONT_TRUNCATED;
 
 //if( !(m_fontFlags & XBFONT_CENTER_Y)  )
 //	y += g_fontSet.GetFont( m_fontType ).GetFontHeight();
 
 
-	g_fontSet.GetFont( m_fontType ).DrawText( x, y, m_color, str, m_fontFlags, maxWidth );
+	g_fontSet.GetFont( m_fontType ).DrawText( x, y, m_color, str, flags, maxWidth );
 }	
 
 //---------------------------------------------------------------------
@@ -75,8 +78,11 @@ void CSkinText::RenderAtRect(	LPDIRECT3DDEVICE8 displayDevice,
 	if( flags & XBFONT_CENTER_Y && bottom >= top )
 		top += (bottom - top) / 2.0f;
 
-	if( flags & XBFONT_TRUNCATED && right >= left )
-		maxWidth = right - left;
+	if( flags & XBFONT_TRUNCATED && m_right >= m_left )
+		maxWidth = m_right - m_left;
+	else
+		flags &= ~XBFONT_TRUNCATED;
+
 
 /*
 	if( !(flags & XBFONT_CENTER_Y)  )
@@ -184,7 +190,6 @@ BOOL CSkinText::ParseINI(	CSystem_IniFile &iniFile,
 		if( strstr( temp.c_str(), "centerhorizontal" ) )
 			m_fontFlags |= XBFONT_CENTER_X;
 	}
-
 
 	return (m_left != VALUE_INVALID && m_top != VALUE_INVALID ) || colorSetup;
 }
