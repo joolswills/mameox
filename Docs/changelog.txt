@@ -8,12 +8,32 @@ Version 0.71.3b (CVS)
 
    -------------------------------------------------------------
   - \MAMEoX\Sources: 
+    - xbox_FileIO.c
+      - Added handling for MAMEoX system files to apply speed
+        buffering to all writes/reads
+      - Fixed some bugs in the osd_fseek stuff, made fseeks
+        immediate, as there's no real need to buffer them (and
+        doing so breaks fwrites)
+
+    - xbox_Main.cpp
+      - Added handling for MAMEoX system files to apply speed
+        buffering to all writes/reads
 
    -------------------------------------------------------------
   - \MAMEoXLauncher\Includes:
+    - ROMList.h
+      - Added favorite status/num times played support
 
    -------------------------------------------------------------
   - \MAMEoXLauncher\Sources:
+    - ROMList.cpp
+      - Added favorite status/num times played support
+      - Added handling for MAMEoX system files to apply speed
+        buffering to all writes/reads
+
+    - main.cpp
+      - Added handling for MAMEoX system files to apply speed
+        buffering to all writes/reads
 
    -------------------------------------------------------------
   - \Sectionize.pl

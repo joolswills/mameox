@@ -30,12 +30,10 @@
 #define DEFAULT_CONFIGPATH          "D:\\CFG"
 #define DEFAULT_ROMPATH						  "D:\\ROMS"
 #define DEFAULT_AUDIOPATH           "D:\\SAMPLES"
-#define DEFAULT_DEFAULTROMLISTPATH  "T:\\ROMS"
 #define DEFAULT_ROMBACKUPPATH       "D:\\ROMS\\BACKUP"
 #define DEFAULT_HDIMAGEPATH         "D:\\HDIMAGES"
 #define DEFAULT_HISCOREPATH         "D:\\HISCORES"
 #define DEFAULT_SCREENSHOTPATH      "D:\\SCREENSHOTS"
-  
 
 #define DEFAULT_CMAPPING            "\\Device\\Harddisk0\\Partition1"
 #define DEFAULT_EMAPPING            "\\Device\\Harddisk0\\Partition1"
@@ -43,17 +41,25 @@
 #define DEFAULT_GMAPPING            "\\Device\\Cdrom0"
 #define DEFAULT_HMAPPING            "\\Device\\Harddisk0\\Partition6"
 
+  // Path for internal files (should always be on the T or U drive)
+#define DEFAULT_MAMEOXSYSTEMPATH    "T:\\ROMS"
 
-#define DRIVERLISTFILENAME  "DRIVERS.list"
-#define ROMLISTFILENAME		  "ROMS.list"
-#define INIFILENAME         "MAMEoX.ini"
-#define ROMSTATUSFILENAME   "ROMStatus.xml"
+#define INIFILENAME           "MAMEoX.ini"
+#define DRIVERLISTFILENAME    "DRIVERS.list"
+#define ROMLISTFILENAME		    "ROMS.list"
+#define ROMSTATUSFILENAME     "ROMStatus.xml"
+#define ROMMETADATAFILENAME   "ROMS.metadata"
 
   //!<  Define this to force all open() calls on the ROM directory
   //!<  to fail if they do not end in the letters "zip"
   //!<  This can drastically speed up the ROM loading process, as
   //!<  we don't waste any time searching for files that are definitely not there
 #define ALL_ROMS_ZIPPED
+
+
+  // Special filetype for 
+#define FILETYPE_MAMEOX_SYSTEM        FILETYPE_end
+#define FILETYPE_MAMEOX_END           FILETYPE_MAMEOX_SYSTEM + 1
 
 //= S T R U C T U R E S ===============================================
 struct FileIOConfig_t
@@ -72,7 +78,6 @@ struct FileIOConfig_t
   CStdString m_RomBackupPath;
   CStdString m_HDImagePath;
   CStdString m_HiScorePath;
-  CStdString m_DefaultRomListPath;
   CStdString m_ScreenshotPath;
 
   CStdString m_LetterCMapping;
@@ -96,7 +101,6 @@ struct FileIOConfig_t
     m_RomPath2            = DEFAULT_ROMPATH;
     m_RomPath3            = DEFAULT_ROMPATH;
     m_AudioPath           = DEFAULT_AUDIOPATH;
-    m_DefaultRomListPath  = DEFAULT_DEFAULTROMLISTPATH;
     m_RomBackupPath       = DEFAULT_ROMBACKUPPATH;
     m_HDImagePath         = DEFAULT_HDIMAGEPATH;
     m_HiScorePath         = DEFAULT_HISCOREPATH;
@@ -121,7 +125,6 @@ struct FileIOConfig_t
     m_RomPath2.MakeLower();
     m_RomPath3.MakeLower();
     m_AudioPath.MakeLower();
-    m_DefaultRomListPath.MakeLower();
     m_RomBackupPath.MakeLower();
     m_HDImagePath.MakeLower();
     m_HiScorePath.MakeLower();
@@ -136,7 +139,6 @@ struct FileIOConfig_t
 };
 
 //= G L O B A L = V A R S ==============================================
-extern const char       *g_ROMListPath;
 extern const char       *g_ROMBackupPath;
 extern FileIOConfig_t   g_FileIOConfig;
 

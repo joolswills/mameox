@@ -50,10 +50,9 @@ struct _osd_file
 
 
 //= G L O B A L = V A R S ==============================================
-const char            *g_ROMListPath = NULL;
 const char            *g_ROMBackupPath = NULL;
 FileIOConfig_t        g_FileIOConfig;
-const char            *g_pathNames[FILETYPE_end][4] = {NULL};
+const char            *g_pathNames[FILETYPE_MAMEOX_END][4] = {NULL};
 std::set<CStdString>  g_setcSMBFilesCached;
 
 
@@ -104,12 +103,6 @@ void InitializeFileIO( void )
     // Try to create/open all of the paths. If any fail,
     //     switch the drive letter to ALTDRIVE, as we must be
     //     running off of a DVD
-
-
-    // Make sure the rom list path is available
-  CREATEOROPENPATH( g_FileIOConfig.m_DefaultRomListPath.c_str(), TRUE );
-  g_ROMListPath = tempStr;
-
   CREATEOROPENPATH( g_FileIOConfig.m_RomBackupPath.c_str(), TRUE );
   g_ROMBackupPath = tempStr;
 
@@ -156,6 +149,10 @@ void InitializeFileIO( void )
 
   CREATEOROPENPATH( g_FileIOConfig.m_ScreenshotPath.c_str(), TRUE );
   g_pathNames[FILETYPE_SCREENSHOT][0] = tempStr;
+
+  CREATEOROPENPATH( DEFAULT_MAMEOXSYSTEMPATH, TRUE );
+  g_pathNames[FILETYPE_MAMEOX_SYSTEM][0] = tempStr;
+
 }
 
 //---------------------------------------------------------------------
@@ -194,6 +191,10 @@ int osd_get_path_count( int pathtype )
 	case FILETYPE_CTRLR:
 	case FILETYPE_INI:
 		return 1;
+
+    // Internal MAMEoX system files
+  case FILETYPE_MAMEOX_SYSTEM:
+    return 1;
 	}
 
 	return 0;
@@ -296,7 +297,7 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
 
   CStdString strPath = g_pathNames[pathtype][pathindex];
   strPath.MakeLower();
-  CStdString strFullPath;
+  CStdString strFullPath = "";
 
   // Default to a non smb type file
   ret->m_bIsSMB = FALSE;
@@ -343,9 +344,7 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
     }
   }
   else
-  {
     strFullPath.Format( "%s\\%s", g_pathNames[pathtype][pathindex], filename );
-  }
 
   // Only load the file from disk if it isn't a smb file
   if ( ret->m_bIsSMB == FALSE )
@@ -441,9 +440,7 @@ INT32 osd_fseek( osd_file *file, INT64 offset, int whence )
     return 1;
 
   if ( file->m_bIsSMB )
-  {
     file->m_SmbHandler.Seek(offset, whence);
-  }
   else
   {
     osd_fflush( file );
@@ -453,23 +450,40 @@ INT32 osd_fseek( osd_file *file, INT64 offset, int whence )
     case SEEK_SET:	
       file->m_offset = offset;
       break;
+
     case SEEK_CUR:	
       file->m_offset += offset;
       break;
+
     case SEEK_END:
       file->m_offset = file->m_end + offset;
       break;
+
     default:
       PRINTMSG( T_ERROR, "Invalid whence parameter in osd_fseek" );
       return 1;
     }
 
-    // Validate arg
-    if( (UINT32)offset > file->m_end || offset < 0)
+      // Validate arg
+    if( file->m_offset > file->m_end )
     {
       PRINTMSG( T_ERROR, "Offset value too high or low in osd_fseek" );
       return 1;
     }
+
+      // attempt to seek to the current location if we're not there already
+    if( file->m_offset != file->m_filepos )
+    {
+      LONG upperPos = (LONG)(file->m_offset >> 32);
+      DWORD result = SetFilePointer( file->m_handle, (UINT32)file->m_offset, &upperPos, FILE_BEGIN );
+      if (result == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR)
+      {
+        file->m_filepos = ~0;
+        return 1; //length - bytes_left;
+      }
+      file->m_filepos = file->m_offset;
+      file->m_bufferbytes = 0;
+    }  
   }
 
 	return 0;
@@ -524,7 +538,7 @@ UINT32 osd_fread( osd_file *file, void *buffer, UINT32 length )
   else
   {
     // handle data from within the buffer
-    if (file->m_offset >= file->m_bufferbase && file->m_offset < file->m_bufferbase + file->m_bufferbytes)
+    if (file->m_offset >= file->m_bufferbase && file->m_offset < file->m_bufferbase + file->m_bufferbytes )
     {
       // copy as much as we can
       bytes_to_copy = (int)(file->m_bufferbase + file->m_bufferbytes - file->m_offset);
@@ -540,19 +554,6 @@ UINT32 osd_fread( osd_file *file, void *buffer, UINT32 length )
       // if that's it, we're done
       if (bytes_left == 0)
         return length;
-    }
-
-    // attempt to seek to the current location if we're not there already
-    if( file->m_offset != file->m_filepos )
-    {
-      LONG upperPos = (LONG)(file->m_offset >> 32);
-      result = SetFilePointer(file->m_handle, (UINT32)file->m_offset, &upperPos, FILE_BEGIN);
-      if (result == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR)
-      {
-        file->m_filepos = ~0;
-        return length - bytes_left;
-      }
-      file->m_filepos = file->m_offset;
     }
 
     // if we have a small read remaining, do it to the buffer and copy out the results

@@ -149,10 +149,7 @@ void __cdecl main( void )
     
     if( g_FileIOConfig.m_ConfigPath.Left(6) == "smb://" )
       g_FileIOConfig.m_ConfigPath = DEFAULT_CONFIGPATH;
-    
-    if( g_FileIOConfig.m_DefaultRomListPath.Left(6) == "smb://" )
-      g_FileIOConfig.m_DefaultRomListPath = DEFAULT_DEFAULTROMLISTPATH;
-    
+        
     if( g_FileIOConfig.m_GeneralPath.Left(6) == "smb://" )
       g_FileIOConfig.m_GeneralPath = DEFAULT_GENERALPATH;
     
@@ -661,6 +658,8 @@ void __cdecl main( void )
       // Run the user selected ROM
     if( romList.IsGameSelected() )
     {
+      ShowLoadingScreen( pD3DDevice );
+
         // Pack info to be passed to MAMEoX
       mameoxLaunchData->m_gameIndex = romList.GetCurrentGameIndex();
       romList.GetCursorPosition(  &mameoxLaunchData->m_cursorPosition, 
@@ -673,7 +672,7 @@ void __cdecl main( void )
                                   &g_persistentLaunchData.m_pageOffset,
                                   &g_persistentLaunchData.m_superscrollIndex );
       SaveOptions();
-      ShowLoadingScreen( pD3DDevice );
+      romList.SaveROMMetadataFile();
       DWORD retVal = XLaunchNewImage( "D:\\MAMEoX.xbe", &g_launchData );
       Die( pD3DDevice, "Failed to launch D:\\MAMEoX.xbe! 0x%X", retVal );
     }
@@ -739,56 +738,43 @@ static BOOL Helper_LoadDriverInfoFile( void )
 	DWORD BytesRead = 0;
 	DWORD len;
   MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
-  std::string		driverListFile = g_ROMListPath;
-	driverListFile += "\\";
-	driverListFile += DRIVERLISTFILENAME;
-
+  CStdString driverListFile = DEFAULT_MAMEOXSYSTEMPATH "\\" DRIVERLISTFILENAME;
 	PRINTMSG( T_INFO, "Load driver list: %s", driverListFile.c_str() );
-	HANDLE hFile = CreateFile(	driverListFile.c_str(),
-															GENERIC_READ,
-															0,
-															NULL,
-															OPEN_EXISTING,
-															FILE_ATTRIBUTE_NORMAL,
-															NULL );
-	if( hFile == INVALID_HANDLE_VALUE )
+
+  osd_file *file = osd_fopen( FILETYPE_MAMEOX_SYSTEM, 0, DRIVERLISTFILENAME, "r" );
+	if( !file )
 	{
 		PRINTMSG( T_ERROR, "Could not open file %s!", driverListFile.c_str() );
 		return FALSE;
 	}
 
     // Grab the entire file at once so we can check its signature
-  LARGE_INTEGER fileSize;
-  if( !GetFileSizeEx( hFile, &fileSize ) || fileSize.HighPart )
-  {
-    CloseHandle( hFile );
-		DeleteFile( driverListFile.c_str() );
-    PRINTMSG( T_ERROR, "Could not get filesize for %s!", driverListFile.c_str() );
-    return FALSE;
-  }
+  osd_fseek( file, 0, SEEK_END );
+  INT32 fileSize = osd_ftell( file );
+  osd_fseek( file, 0, SEEK_SET );
   
-  UCHAR *fileData = (UCHAR*)malloc( fileSize.LowPart );
+  UCHAR *fileData = (UCHAR*)malloc( fileSize );
   if( !fileData )
   {
-    CloseHandle( hFile );
+    osd_fclose( file );
 		DeleteFile( driverListFile.c_str() );
     PRINTMSG( T_ERROR, 
               "Could not malloc space for %s (%lu bytes required)!", 
               driverListFile.c_str(), 
-              fileSize.LowPart );
+              fileSize );
     return FALSE;
   }
 
     // Read the entire file into memory
-  if( !ReadFile( hFile, fileData, fileSize.LowPart, &BytesRead, NULL ) || BytesRead != fileSize.LowPart )
+  if( osd_fread( file, fileData, fileSize ) != fileSize )
   {
     free( fileData );
-    CloseHandle( hFile );
+    osd_fclose( file );
 		DeleteFile( driverListFile.c_str() );
     PRINTMSG( T_ERROR, "Failed to read file %s!", driverListFile.c_str() );
     return FALSE;
   }
-  CloseHandle( hFile );
+  osd_fclose( file );
 
     // Check the signature
   if( memcmp( fileData, DRIVERLIST_FILESTAMP, sizeof(DRIVERLIST_FILESTAMP) - 1 ) )
@@ -820,7 +806,7 @@ static BOOL Helper_LoadDriverInfoFile( void )
   }
 
   const BYTE *listData = fileData + ((sizeof(DRIVERLIST_FILESTAMP) - 1) + sigSize);
-  DWORD listDataSize = fileSize.LowPart - ((sizeof(DRIVERLIST_FILESTAMP) - 1) + sigSize);
+  DWORD listDataSize = fileSize - ((sizeof(DRIVERLIST_FILESTAMP) - 1) + sigSize);
   if( XCalculateSignatureUpdate( sigHandle, listData, listDataSize ) != ERROR_SUCCESS )
   {
     free( fileData );
@@ -855,7 +841,7 @@ static BOOL Helper_LoadDriverInfoFile( void )
     // Define a macro to "read" a block of data and ensure that we're not reading past the end of
     //  the file
   #define READDATA( _data__, _dataSize__, _dataType__ ) \
-    if( (DWORD)((listData + (_dataSize__)) - fileData) > fileSize.LowPart ) \
+    if( (DWORD)((listData + (_dataSize__)) - fileData) > fileSize ) \
     { \
       if( g_driverData ) \
         free( g_driverData ); \
@@ -880,7 +866,7 @@ static BOOL Helper_LoadDriverInfoFile( void )
     }
 
   #define READDATA_NOMALLOC( _data__, _dataSize__ ) \
-    if( (DWORD)((listData + (_dataSize__)) - fileData) > fileSize.LowPart ) \
+    if( (DWORD)((listData + (_dataSize__)) - fileData) > fileSize ) \
     { \
       if( g_driverData ) \
         free( g_driverData ); \
@@ -1305,6 +1291,7 @@ static void Helper_SaveOptionsAndReboot( LPDIRECT3DDEVICE8 pD3DDevice, CROMList 
                               &g_persistentLaunchData.m_pageOffset,
                               &g_persistentLaunchData.m_superscrollIndex );
   SaveOptions();
+  romList.SaveROMMetadataFile();
   LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
   DWORD retVal = XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
   Die( pD3DDevice, "Failed to launch the dashboard! 0x%X", retVal );

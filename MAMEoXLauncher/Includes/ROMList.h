@@ -203,14 +203,21 @@ public:
   BOOL ShouldGenerateROMList( void ) { return m_shouldGenerateROMList; }
   BOOL ShouldRefreshROMStatus( void ) { return m_shouldGenerateROMList; }
 
+		//------------------------------------------------------------
+		// SaveROMMetadataFile
+		//! \brief		Save ROM metadata to a file, should be done before exiting the ROM list
+		//------------------------------------------------------------
+  BOOL SaveROMMetadataFile( void );
+
 
     //! Vector of ROMStatus types marking the status of each entry in
     //! the MAME driver array. Therefore, to access this, take the
     //! UINT32 index for any given position in the currentSortedList
     //! and use that number as the index in the status array
-  static std::vector<ROMStatus>   m_ROMStatus;
-  static MAMEDriverData_t         *m_driverInfoList;          //!<  Drivers supported by the MAME core
-  static UINT32                   m_numDrivers;               //!<  The total number of drivers supported by the core
+  static std::vector<ROMStatus>                 m_ROMStatus;                //!<  Working status for a given ROM
+  static std::vector<MAMEoXDriverMetadata_t>    m_driverMetadata;           //!<  Metadata for drivers (num times played, favorite status)
+  static MAMEDriverData_t                       *m_driverInfoList;          //!<  Drivers supported by the MAME core
+  static UINT32                                 m_numDrivers;               //!<  The total number of drivers supported by the core
 
 protected:
 
@@ -223,6 +230,8 @@ protected:
     // Helper functions to save/load the rom list, with integrity checks
   BOOL SaveROMListFile( void );
   BOOL LoadROMListFile( void );
+  BOOL LoadROMMetadataFile( void );
+  BOOL UpdateROMMetadataFile( void );   // Convert the metadata file from an older format to the newest
 
 		//------------------------------------------------------------
 		// LoadROMStatusFile

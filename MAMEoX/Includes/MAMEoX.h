@@ -117,6 +117,15 @@ typedef enum ROMListSortMode
   SM_BYGENRE                      //!< Sort by genre
 } ROMListSortMode;
 
+typedef enum MAMEoXFavoriteStatus
+{
+  FS_INDIFFERENT = 0x00,          //!< The game is neutral or unrated
+  FS_STRONGDISLIKE,               //!< The game is strongly disliked
+  FS_DISLIKE,                     //!< The game is disliked
+  FS_LIKE,                        //!< The game is liked
+  FS_STRONGLIKE                   //!< The game is strongly liked
+} MAMEoXFavoriteStatus;
+
 //= S T R U C T U R E S ================================================
 typedef struct MAMEoXLaunchData_t
 {
@@ -132,15 +141,29 @@ typedef struct MAMEoXLaunchData_t
 
 typedef struct MAMEDriverData_t
 {
-  UINT32  m_index;          //!<  The index of this driver in the sorted list
-  char    *m_romFileName;   //!<  Main ROM zip file name
-  char    *m_description;   //!<  Description from the MAME core
-  BOOL    m_isClone;        //!<  Whether or not the game is a clone
-	char    *m_cloneFileName;	//!<  Clone ROM zip file name
-	char    *m_manufacturer;	//!<  Manufacturer name
-	char    *m_year;					//!<  Year
-  UINT32  m_numPlayers;     //!<  Number of players
+  UINT32                  m_index;          //!<  The index of this driver in the sorted list
+  char                    *m_romFileName;   //!<  Main ROM zip file name
+  char                    *m_description;   //!<  Description from the MAME core
+  BOOL                    m_isClone;        //!<  Whether or not the game is a clone
+	char                    *m_cloneFileName;	//!<  Clone ROM zip file name
+	char                    *m_manufacturer;	//!<  Manufacturer name
+	char                    *m_year;					//!<  Year
+  UINT32                  m_numPlayers;     //!<  Number of players
 } MAMEDriverData_t;
+
+  //! \struct MAMEoXDriverMetadata_t
+  //! \brief  Contains MAMEoX specific data about ROMs
+typedef struct MAMEoXDriverMetadata_t
+{
+  UINT32                  m_romIndex;       //!<  The rom index, used as the ID unless there's a core upgrade
+    //!         The ROM filename, used as the fallback "ID" for this ROM as it's more stable than an index
+    //! \note   In the current implementation we don't recover this string on exit, as it's automatically
+    //!         done when launching the core XBE.
+  char                    *m_romFileName;   
+  MAMEoXFavoriteStatus    m_favoriteStatus; //!<  Favorite status for this ROM
+  UINT32                  m_timesPlayed;    //!<  The number of times this ROM has been played
+} MAMEoXDriverMetadata_t;
+
 
 typedef struct lightgunCalibration_t
 {

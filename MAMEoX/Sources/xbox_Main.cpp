@@ -361,48 +361,34 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
 static BOOL Helper_SaveDriverInfoFile( void )
 {
 	DWORD len;
-	std::string		driverListFile = g_ROMListPath;
-	driverListFile += "\\";
-	driverListFile += DRIVERLISTFILENAME;
-
+	CStdString driverListFile = DEFAULT_MAMEOXSYSTEMPATH "\\" DRIVERLISTFILENAME;
 	PRINTMSG( T_INFO, "Store driver list: %s", driverListFile.c_str() );
 
-
-	HANDLE hFile = CreateFile(	driverListFile.c_str(),
-															GENERIC_READ | GENERIC_WRITE,
-															0,
-															NULL,
-															CREATE_ALWAYS,
-															FILE_ATTRIBUTE_NORMAL,
-															NULL );
-	if( !hFile )
+  osd_file *file = osd_fopen( FILETYPE_MAMEOX_SYSTEM, 0, DRIVERLISTFILENAME, "w" );
+	if( !file )
 	{
 		PRINTMSG( T_ERROR, "Could not create file %s!", driverListFile.c_str() );
 		return FALSE;
 	}
 
-  DWORD bytesWritten;
-  if( !WriteFile( hFile, DRIVERLIST_FILESTAMP, sizeof(DRIVERLIST_FILESTAMP) - 1, &bytesWritten, NULL ) ||
-      bytesWritten != sizeof(DRIVERLIST_FILESTAMP) - 1 )
+  if( osd_fwrite( file, DRIVERLIST_FILESTAMP, sizeof(DRIVERLIST_FILESTAMP) - 1 ) != sizeof(DRIVERLIST_FILESTAMP) - 1 )
 	{
 		PRINTMSG( T_ERROR, "Write failed!" );
-		CloseHandle( hFile );
+		osd_fclose( file );
 
 			// Delete the file
 		DeleteFile( driverListFile.c_str() );
 		return FALSE;
 	}
 
-
   MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
-
 
     // Calculate a signature for the list, so we can validate it when reading
     //  to eliminate corrupt data
   HANDLE sigHandle = XCalculateSignatureBegin( XCALCSIG_FLAG_SAVE_GAME );
   if( sigHandle == INVALID_HANDLE_VALUE )
   {
-    CloseHandle( hFile );
+    osd_fclose( file );
 		DeleteFile( driverListFile.c_str() );
     PRINTMSG( T_ERROR, "Could not calculate driver list signature!" );
     Die( g_graphicsManager.GetD3DDevice(), "Could not calculate driver list signature!" );
@@ -412,17 +398,17 @@ static BOOL Helper_SaveDriverInfoFile( void )
   void *sigData = calloc( 1, sigSize );
   if( !sigData )
   {
-    CloseHandle( hFile );
+    osd_fclose( file );
 		DeleteFile( driverListFile.c_str() );
     PRINTMSG( T_ERROR, "Could not allocate memory for driver list signature!" );
     Die( g_graphicsManager.GetD3DDevice(), "Could not allocate memory for driver list signature!" );
   }
 
     // Write in a blank signature
-  if( !WriteFile( hFile, sigData, sigSize, &bytesWritten, NULL ) || bytesWritten != sigSize )
+  if( osd_fwrite( file, sigData, sigSize ) != sigSize )
   {
     free( sigData );
-    CloseHandle( hFile );
+    osd_fclose( file );
 		DeleteFile( driverListFile.c_str() );
     PRINTMSG( T_ERROR, "Failed writing blank signature!" );
     Die( g_graphicsManager.GetD3DDevice(), "Failed writing blank signature!" );
@@ -433,12 +419,11 @@ static BOOL Helper_SaveDriverInfoFile( void )
     // Define a macro to write a block of data and calculate the data signature
   #define WRITEDATA( _data__, _dataSize__ ) \
     if( XCalculateSignatureUpdate( sigHandle, (const BYTE *)(_data__), (_dataSize__) ) != ERROR_SUCCESS || \
-        !WriteFile( hFile, (_data__), (_dataSize__), &bytesWritten, NULL ) || \
-        bytesWritten != (_dataSize__) ) \
+        osd_fwrite( file, (_data__), (_dataSize__) ) != (_dataSize__) ) \
     { \
       PRINTMSG( T_ERROR, "Write failed!" ); \
       free( sigData ); \
-      CloseHandle( hFile ); \
+      osd_fclose( file ); \
       DeleteFile( driverListFile.c_str() ); \
       return FALSE; \
     }
@@ -542,25 +527,25 @@ static BOOL Helper_SaveDriverInfoFile( void )
   if( XCalculateSignatureEnd( sigHandle, sigData ) != ERROR_SUCCESS )
   {
     free( sigData );
-    CloseHandle( hFile );
+    osd_fclose( file );
 		DeleteFile( driverListFile.c_str() );
     PRINTMSG( T_ERROR, "Failed getting signature!" );
     Die( g_graphicsManager.GetD3DDevice(), "Failed getting signature!" );
   }
 
     // Write in the real signature
-  SetFilePointer( hFile, sizeof(DRIVERLIST_FILESTAMP) - 1, NULL, FILE_BEGIN );
-  if( !WriteFile( hFile, sigData, sigSize, &bytesWritten, NULL ) || bytesWritten != sigSize )
+  osd_fseek( file, sizeof(DRIVERLIST_FILESTAMP) - 1, SEEK_SET );
+  if( osd_fwrite( file, sigData, sigSize ) != sigSize )
   {
     free( sigData );
-    CloseHandle( hFile );
+    osd_fclose( file );
 		DeleteFile( driverListFile.c_str() );
     PRINTMSG( T_ERROR, "Failed writing signature!" );
     Die( g_graphicsManager.GetD3DDevice(), "Failed writing signature!" );
   }
 
   free( sigData );
-	CloseHandle( hFile );
+	osd_fclose( file );
   return TRUE;
 }
 

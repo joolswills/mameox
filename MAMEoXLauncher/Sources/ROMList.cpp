@@ -82,12 +82,14 @@ extern "C" {
 	// Number of seconds between valid DPAD readings
 #define DPADCURSORMOVE_TIMEOUT	0.20f
 
+
+
 //= G L O B A L = V A R S ==============================================
   // Static member initialization
-MAMEDriverData_t       *CROMList::m_driverInfoList = NULL;
-UINT32                 CROMList::m_numDrivers = 0;
-std::vector<ROMStatus> CROMList::m_ROMStatus;
-
+MAMEDriverData_t                        *CROMList::m_driverInfoList = NULL;
+UINT32                                  CROMList::m_numDrivers = 0;
+std::vector<ROMStatus>                  CROMList::m_ROMStatus;
+std::vector<MAMEoXDriverMetadata_t>     CROMList::m_driverMetadata;
 
 //= P R O T O T Y P E S ================================================
 BOOL CreateBackdrop( FLOAT xUsage, FLOAT yUsage );              // Defined in main.cpp
@@ -187,6 +189,7 @@ BOOL CROMList::GenerateROMList( void )
 
     // Load the XML status file
   LoadROMStatusFile();
+  LoadROMMetadataFile();
 
   if( !SaveROMListFile() )
   {
@@ -253,7 +256,7 @@ BOOL CROMList::Helper_GenerateROMList( CStdString &path )
 	PRINTMSG( T_INFO, "Found %lu zip files!", zipFileNames.size() );
 
   // Check the zip files against the list of all known zip files
-	for(DWORD i = 0; i < m_numDrivers; ++i )
+	for(DWORD i = 0; i < m_numDrivers && zipFileNames.size(); ++i )
 	{
       // Only redraw every 8th ROM, as rendering takes up
       // the vast majority of the overall time
@@ -267,8 +270,12 @@ BOOL CROMList::Helper_GenerateROMList( CStdString &path )
                                                       driverFileName );
 
     if( it != zipFileNames.end() )
+    {
       if( std::find( m_ROMListFull.begin(), m_ROMListFull.end(), i ) == m_ROMListFull.end() )
         m_ROMListFull.push_back( i );
+
+      zipFileNames.erase( it );
+    }
 	}
 
 	PRINTMSG( T_INFO, "Found %lu games!", m_ROMListFull.size() );
@@ -282,32 +289,22 @@ BOOL CROMList::Helper_GenerateROMList( CStdString &path )
 BOOL CROMList::SaveROMListFile( void )
 {
 		// Write the indices to the ROM list file
-	CStdString romListFile = g_ROMListPath;
-	romListFile += "\\";
-	romListFile += ROMLISTFILENAME;
-
+	CStdString romListFile = DEFAULT_MAMEOXSYSTEMPATH "\\" ROMLISTFILENAME;
 	PRINTMSG( T_INFO, "Store ROM list: %s", romListFile.c_str() );
 
-	HANDLE hFile = CreateFile(	romListFile.c_str(),
-															GENERIC_READ | GENERIC_WRITE,
-															0,
-															NULL,
-															CREATE_ALWAYS,
-															FILE_ATTRIBUTE_NORMAL,
-															NULL );
-	if( !hFile )
+
+  osd_file *file = osd_fopen( FILETYPE_MAMEOX_SYSTEM, 0, ROMLISTFILENAME, "w" );
+	if( !file )
 	{
 		PRINTMSG( T_ERROR, "Could not create file %s!", romListFile.c_str() );
 		return FALSE;
 	}
 
     // Sign the file
-  DWORD bytesWritten;
-  if( !WriteFile( hFile, DRIVERLIST_FILESTAMP, sizeof(DRIVERLIST_FILESTAMP) - 1, &bytesWritten, NULL ) ||
-      bytesWritten != sizeof(DRIVERLIST_FILESTAMP) - 1 )
+  if( osd_fwrite( file, DRIVERLIST_FILESTAMP, sizeof(DRIVERLIST_FILESTAMP) - 1 ) != sizeof(DRIVERLIST_FILESTAMP) - 1 )
 	{
 		PRINTMSG( T_ERROR, "Write failed!" );
-		CloseHandle( hFile );
+		osd_fclose( file );
 
 			// Delete the file
 		DeleteFile( romListFile.c_str() );
@@ -320,7 +317,7 @@ BOOL CROMList::SaveROMListFile( void )
   HANDLE sigHandle = XCalculateSignatureBegin( XCALCSIG_FLAG_SAVE_GAME );
   if( sigHandle == INVALID_HANDLE_VALUE )
   {
-    CloseHandle( hFile );
+    osd_fclose( file );
 		DeleteFile( romListFile.c_str() );
     PRINTMSG( T_ERROR, "Could not calculate driver list signature!" );
     return FALSE;
@@ -330,35 +327,36 @@ BOOL CROMList::SaveROMListFile( void )
   void *sigData = calloc( 1, sigSize );
   if( !sigData )
   {
-    CloseHandle( hFile );
+    osd_fclose( file );
 		DeleteFile( romListFile.c_str() );
     PRINTMSG( T_ERROR, "Could not allocate memory for driver list signature!" );
     return FALSE;
   }
 
     // Write in a blank signature
-  if( !WriteFile( hFile, sigData, sigSize, &bytesWritten, NULL ) || bytesWritten != sigSize )
+  if( osd_fwrite( file, sigData, sigSize ) != sigSize )
   {
     free( sigData );
-    CloseHandle( hFile );
+    osd_fclose( file );
 		DeleteFile( romListFile.c_str() );
     PRINTMSG( T_ERROR, "Failed writing blank signature!" );
     return FALSE;
   }
 
 
+
     // Define a macro to write a block of data and calculate the data signature
   #define WRITEDATA( _data__, _dataSize__ ) \
     if( XCalculateSignatureUpdate( sigHandle, (const BYTE *)(_data__), (_dataSize__) ) != ERROR_SUCCESS || \
-        !WriteFile( hFile, (_data__), (_dataSize__), &bytesWritten, NULL ) || \
-        bytesWritten != (_dataSize__) ) \
+        osd_fwrite( file, (_data__), (_dataSize__) ) != (_dataSize__) ) \
     { \
       PRINTMSG( T_ERROR, "Write failed!" ); \
       free( sigData ); \
-      CloseHandle( hFile ); \
+      osd_fclose( file ); \
       DeleteFile( romListFile.c_str() ); \
       return FALSE; \
     }
+
 
     // Write the number of indices
   DWORD numROMs = m_ROMListFull.size();
@@ -380,25 +378,25 @@ BOOL CROMList::SaveROMListFile( void )
   if( XCalculateSignatureEnd( sigHandle, sigData ) != ERROR_SUCCESS )
   {
     free( sigData );
-    CloseHandle( hFile );
+    osd_fclose( file );
 		DeleteFile( romListFile.c_str() );
     PRINTMSG( T_ERROR, "Failed getting signature!" );
     return FALSE;
   }
 
     // Write in the real signature
-  SetFilePointer( hFile, sizeof(DRIVERLIST_FILESTAMP) - 1, NULL, FILE_BEGIN );
-  if( !WriteFile( hFile, sigData, sigSize, &bytesWritten, NULL ) || bytesWritten != sigSize )
+  osd_fseek( file, sizeof(DRIVERLIST_FILESTAMP) - 1, SEEK_SET );
+  if( osd_fwrite( file, sigData, sigSize ) != sigSize )
   {
     free( sigData );
-    CloseHandle( hFile );
+    osd_fclose( file );
 		DeleteFile( romListFile.c_str() );
     PRINTMSG( T_ERROR, "Failed writing signature!" );
     return FALSE;
   }
 
   free( sigData );
-	CloseHandle( hFile );
+	osd_fclose( file );
   return TRUE;
 }
 
@@ -410,63 +408,48 @@ BOOL CROMList::LoadROMListFile( void )
 {
   m_ROMListFull.clear();
   m_ROMStatus.clear();
+  m_driverMetadata.clear();
 
   UINT32 i = 0;
   for( ; i < m_numDrivers; ++i )
     m_ROMStatus.push_back( STATUS_UNKNOWN );
 
-	std::string		romListFile = g_ROMListPath;
-	romListFile += "\\";
-	romListFile += ROMLISTFILENAME;
-
+  std::string romListFile = DEFAULT_MAMEOXSYSTEMPATH "\\" ROMLISTFILENAME;
 	PRINTMSG( T_INFO, "Load ROM list: %s", romListFile.c_str() );
-	HANDLE hFile = CreateFile(	romListFile.c_str(),
-															GENERIC_READ,
-															0,
-															NULL,
-															OPEN_EXISTING,
-															FILE_ATTRIBUTE_NORMAL,
-															NULL );
-
-	if( hFile == INVALID_HANDLE_VALUE )
+  osd_file *file = osd_fopen( FILETYPE_MAMEOX_SYSTEM, 0, ROMLISTFILENAME, "r" );
+	if( !file )
 	{
     PRINTMSG( T_ERROR, "Failed to open ROM list file %s!", romListFile.c_str() );
     return FALSE;
   }
 
     // Grab the entire file at once so we can check its signature
-  LARGE_INTEGER fileSize;
-  if( !GetFileSizeEx( hFile, &fileSize ) || fileSize.HighPart )
-  {
-    CloseHandle( hFile );
-		DeleteFile( romListFile.c_str() );
-    PRINTMSG( T_ERROR, "Could not get filesize for %s!", romListFile.c_str() );
-    return FALSE;
-  }
+  osd_fseek( file, 0, SEEK_END );
+  INT32 fileSize = osd_ftell( file );
+  osd_fseek( file, 0, SEEK_SET );
   
-  UCHAR *fileData = (UCHAR*)malloc( fileSize.LowPart );
+  UCHAR *fileData = (UCHAR*)malloc( fileSize );
   if( !fileData )
   {
-    CloseHandle( hFile );
+    osd_fclose( file );
 		DeleteFile( romListFile.c_str() );
     PRINTMSG( T_ERROR, 
               "Could not malloc space for %s (%lu bytes required)!", 
               romListFile.c_str(), 
-              fileSize.LowPart );
+              fileSize );
     return FALSE;
   }
 
     // Read the entire file into memory
-  DWORD BytesRead;
-  if( !ReadFile( hFile, fileData, fileSize.LowPart, &BytesRead, NULL ) || BytesRead != fileSize.LowPart )
+  if( osd_fread( file, fileData, fileSize ) != fileSize )
   {
     free( fileData );
-    CloseHandle( hFile );
+    osd_fclose( file );
 		DeleteFile( romListFile.c_str() );
     PRINTMSG( T_ERROR, "Failed to read file %s!", romListFile.c_str() );
     return FALSE;
   }
-  CloseHandle( hFile );
+  osd_fclose( file );
 
     // Check the signature
   if( memcmp( fileData, DRIVERLIST_FILESTAMP, sizeof(DRIVERLIST_FILESTAMP) - 1 ) )
@@ -498,7 +481,7 @@ BOOL CROMList::LoadROMListFile( void )
   }
 
   const BYTE *listData = fileData + ((sizeof(DRIVERLIST_FILESTAMP) - 1) + sigSize);
-  DWORD listDataSize = fileSize.LowPart - ((sizeof(DRIVERLIST_FILESTAMP) - 1) + sigSize);
+  DWORD listDataSize = fileSize - ((sizeof(DRIVERLIST_FILESTAMP) - 1) + sigSize);
   if( XCalculateSignatureUpdate( sigHandle, listData, listDataSize ) != ERROR_SUCCESS )
   {
     free( fileData );
@@ -529,8 +512,35 @@ BOOL CROMList::LoadROMListFile( void )
   }
   free( sigData );
 
+
+
+
+
+    // Define a macro to "read" a block of data and ensure that we're not reading past the end of
+    //  the file
+  #define READDATA( _data__, _dataSize__, _dataType__ ) \
+    if( (DWORD)((listData + (_dataSize__)) - fileData) > fileSize ) \
+    { \
+      free( fileData ); \
+      DeleteFile( romListFile.c_str() ); \
+      PRINTMSG( T_ERROR, "Attempt to read beyond the end of the file!" ); \
+      return FALSE; \
+    } \
+    else \
+    { \
+    if( !(_data__) && !((_data__) = (_dataType__##*)malloc( (_dataSize__) )) ) \
+      { \
+        free( fileData ); \
+        DeleteFile( romListFile.c_str() ); \
+        PRINTMSG( T_ERROR, "Failed to malloc data array. %lu bytes requested!", (_dataSize__) ); \
+        return FALSE; \
+      } \
+      memcpy( (_data__), listData, (_dataSize__) ); \
+      listData += (_dataSize__); \
+    }
+
   #define READDATA_NOMALLOC( _data__, _dataSize__ ) \
-    if( (DWORD)((listData + (_dataSize__)) - fileData) > fileSize.LowPart ) \
+    if( (DWORD)((listData + (_dataSize__)) - fileData) > fileSize ) \
     { \
       free( fileData ); \
       DeleteFile( romListFile.c_str() ); \
@@ -565,6 +575,520 @@ BOOL CROMList::LoadROMListFile( void )
       // Read the ROM status
     READDATA_NOMALLOC( &status, sizeof(status) );
     m_ROMStatus[idx] = (ROMStatus)status;
+  }
+  free( fileData );
+
+  if( !LoadROMMetadataFile() )
+    PRINTMSG( T_ERROR, "Failed loading ROM metadata file!" );
+
+
+  return TRUE;
+}
+
+
+//---------------------------------------------------------------------
+//	SaveROMMetadataFile
+//---------------------------------------------------------------------
+BOOL CROMList::SaveROMMetadataFile( void )
+{
+  CStdString romMetadataFile = DEFAULT_MAMEOXSYSTEMPATH "\\" ROMMETADATAFILENAME;
+
+		// Write the indices to the ROM list file
+	PRINTMSG( T_TRACE, "SaveROMMetadataFile" );
+  osd_file *file = osd_fopen( FILETYPE_MAMEOX_SYSTEM, 0, ROMMETADATAFILENAME, "w" );
+	if( !file )
+	{
+		PRINTMSG( T_ERROR, "Could not create file %s!", romMetadataFile.c_str() );
+		return FALSE;
+	}
+
+    // Sign the file
+  if( osd_fwrite( file, DRIVERLIST_FILESTAMP, sizeof(DRIVERLIST_FILESTAMP) - 1 ) != sizeof(DRIVERLIST_FILESTAMP) - 1 )
+	{
+		PRINTMSG( T_ERROR, "Write failed!" );
+		osd_fclose( file );
+
+			// Delete the file
+		DeleteFile( romMetadataFile.c_str() );
+		return FALSE;
+	}
+
+    // Calculate a signature for the list, so we can validate it when reading
+    //  to eliminate corrupt data
+  HANDLE sigHandle = XCalculateSignatureBegin( XCALCSIG_FLAG_SAVE_GAME );
+  if( sigHandle == INVALID_HANDLE_VALUE )
+  {
+    osd_fclose( file );
+		DeleteFile( romMetadataFile.c_str() );
+    PRINTMSG( T_ERROR, "Could not calculate driver list signature!" );
+    return FALSE;
+  }
+
+  DWORD sigSize = XCalculateSignatureGetSize( XCALCSIG_FLAG_SAVE_GAME );
+  void *sigData = calloc( 1, sigSize );
+  if( !sigData )
+  {
+    osd_fclose( file );
+		DeleteFile( romMetadataFile.c_str() );
+    PRINTMSG( T_ERROR, "Could not allocate memory for driver list signature!" );
+    return FALSE;
+  }
+
+    // Write in a blank signature
+  if( osd_fwrite( file, sigData, sigSize ) != sigSize )
+  {
+    free( sigData );
+    osd_fclose( file );
+		DeleteFile( romMetadataFile.c_str() );
+    PRINTMSG( T_ERROR, "Failed writing blank signature!" );
+    return FALSE;
+  }
+
+
+
+    // Define a macro to write a block of data and calculate the data signature
+  #define METADATA_WRITEDATA( _data__, _dataSize__ ) \
+    if( XCalculateSignatureUpdate( sigHandle, (const BYTE *)(_data__), (_dataSize__) ) != ERROR_SUCCESS || \
+        osd_fwrite( file, (_data__), (_dataSize__) ) != (_dataSize__) ) \
+    { \
+      PRINTMSG( T_ERROR, "Write failed!" ); \
+      free( sigData ); \
+      osd_fclose( file ); \
+      DeleteFile( romMetadataFile.c_str() ); \
+      return FALSE; \
+    }
+
+
+    // Write the number of indices
+  DWORD numROMs = m_driverMetadata.size();
+  METADATA_WRITEDATA( &numROMs, sizeof(numROMs) );
+
+    // Write the indices
+	std::vector<MAMEoXDriverMetadata_t>::iterator it = m_driverMetadata.begin();
+	for( ; it != m_driverMetadata.end(); ++it )
+	{
+    DWORD len;
+
+    METADATA_WRITEDATA( &(*it).m_romIndex, sizeof((*it).m_romIndex) );
+
+      // Write the filename
+    len = strlen( (*it).m_romFileName );
+    METADATA_WRITEDATA( &len, sizeof(len) );
+    METADATA_WRITEDATA( (*it).m_romFileName, len );
+
+      // Write the favorite status
+    METADATA_WRITEDATA( &(*it).m_favoriteStatus, sizeof((*it).m_favoriteStatus) );
+
+      // Write the number of times played
+    METADATA_WRITEDATA( &(*it).m_timesPlayed, sizeof((*it).m_timesPlayed) );
+	}
+
+
+    // Grab the signature
+  if( XCalculateSignatureEnd( sigHandle, sigData ) != ERROR_SUCCESS )
+  {
+    free( sigData );
+    osd_fclose( file );
+		DeleteFile( romMetadataFile.c_str() );
+    PRINTMSG( T_ERROR, "Failed getting signature!" );
+    return FALSE;
+  }
+
+    // Write in the real signature
+  osd_fseek( file, sizeof(DRIVERLIST_FILESTAMP) - 1, SEEK_SET );
+  if( osd_fwrite( file, sigData, sigSize ) != sigSize )
+  {
+    free( sigData );
+    osd_fclose( file );
+		DeleteFile( romMetadataFile.c_str() );
+    PRINTMSG( T_ERROR, "Failed writing signature!" );
+    return FALSE;
+  }
+
+  free( sigData );
+	osd_fclose( file );
+  return TRUE;
+}
+
+//---------------------------------------------------------------------
+//	LoadROMMetadataFile
+//---------------------------------------------------------------------
+BOOL CROMList::LoadROMMetadataFile( void )
+{
+	CStdString romMetadataFile = DEFAULT_MAMEOXSYSTEMPATH "\\" ROMMETADATAFILENAME;
+  UINT32 i = 0;
+  MAMEoXDriverMetadata_t emptyMetadata;
+  memset( &emptyMetadata, 0, sizeof(emptyMetadata) );
+   
+    // Set the driver metadata to defaults
+  m_driverMetadata.clear();
+  for( ; i < m_numDrivers; ++i )
+  {
+      // Don't free this string,, as we don't dup it
+    emptyMetadata.m_romFileName = m_driverInfoList[i].m_romFileName;
+    emptyMetadata.m_romIndex = i;
+    m_driverMetadata.push_back( emptyMetadata );
+  }
+
+	PRINTMSG( T_INFO, "Load ROM metadata: %s", romMetadataFile.c_str() );
+  osd_file *file = osd_fopen( FILETYPE_MAMEOX_SYSTEM, 0, ROMMETADATAFILENAME, "r" );
+	if( !file )
+	{
+    PRINTMSG( T_ERROR, "Failed to open ROM metadata file %s!", romMetadataFile.c_str() );
+    return FALSE;
+  }
+
+    // Grab the entire file at once so we can check its signature
+  osd_fseek( file, 0, SEEK_END );
+  INT32 fileSize = osd_ftell( file );
+  osd_fseek( file, 0, SEEK_SET );
+  
+  UCHAR *fileData = (UCHAR*)malloc( fileSize );
+  if( !fileData )
+  {
+    osd_fclose( file );
+		DeleteFile( romMetadataFile.c_str() );
+    PRINTMSG( T_ERROR, 
+              "Could not malloc space for %s (%lu bytes required)!", 
+              romMetadataFile.c_str(), 
+              fileSize );
+    return FALSE;
+  }
+
+    // Read the entire file into memory
+  if( osd_fread( file, fileData, fileSize ) != fileSize )
+  {
+    free( fileData );
+    osd_fclose( file );
+		DeleteFile( romMetadataFile.c_str() );
+    PRINTMSG( T_ERROR, "Failed to read file %s!", romMetadataFile.c_str() );
+    return FALSE;
+  }
+  osd_fclose( file );
+
+    // Check the signature
+  if( memcmp( fileData, DRIVERLIST_FILESTAMP, sizeof(DRIVERLIST_FILESTAMP) - 1 ) )
+  {
+    free( fileData );
+      // If the signature is not correct, it's quite possible that the file is
+      // intact but from an older version. Try updating it to the latest
+      // version so we don't lose usage statistics
+		return UpdateROMMetadataFile();
+  }
+
+    // Test the data signature
+  HANDLE sigHandle = XCalculateSignatureBegin( XCALCSIG_FLAG_SAVE_GAME );
+  if( sigHandle == INVALID_HANDLE_VALUE )
+  {
+    free( fileData );
+		DeleteFile( romMetadataFile.c_str() );
+    PRINTMSG( T_ERROR, "Could not calculate driver list signature!" );
+    return FALSE;
+  }
+
+  DWORD sigSize = XCalculateSignatureGetSize( XCALCSIG_FLAG_SAVE_GAME );
+  void *sigData = calloc( 1, sigSize );
+  if( !sigData )
+  {
+    free( fileData );
+		DeleteFile( romMetadataFile.c_str() );
+    PRINTMSG( T_ERROR, "Could not allocate memory for driver list signature!" );
+    return FALSE;
+  }
+
+  const BYTE *listData = fileData + ((sizeof(DRIVERLIST_FILESTAMP) - 1) + sigSize);
+  DWORD listDataSize = fileSize - ((sizeof(DRIVERLIST_FILESTAMP) - 1) + sigSize);
+  if( XCalculateSignatureUpdate( sigHandle, listData, listDataSize ) != ERROR_SUCCESS )
+  {
+    free( fileData );
+    free( sigData );
+		DeleteFile( romMetadataFile.c_str() );
+    PRINTMSG( T_ERROR, "Failed to calculate data signature!" );
+    return FALSE;
+  }
+  
+
+    // Grab the signature
+  if( XCalculateSignatureEnd( sigHandle, sigData ) != ERROR_SUCCESS )
+  {
+    free( fileData );
+    free( sigData );
+		DeleteFile( romMetadataFile.c_str() );
+    PRINTMSG( T_ERROR, "Failed getting signature!" );
+    return FALSE;
+  }
+
+    // Test the signature
+  if( memcmp( (fileData + (sizeof(DRIVERLIST_FILESTAMP)-1)), sigData, sigSize ) )
+  {
+    free( fileData );
+    free( sigData );
+		DeleteFile( romMetadataFile.c_str() );
+    PRINTMSG( T_ERROR, "Data signature mismatch!" );
+    return FALSE;
+  }
+  free( sigData );
+
+
+    // Define a macro to "read" a block of data and ensure that we're not reading past the end of
+    //  the file
+  #define METADATA_READDATA( _data__, _dataSize__, _dataType__ ) \
+    if( (DWORD)((listData + (_dataSize__)) - fileData) > fileSize ) \
+    { \
+      free( fileData ); \
+      DeleteFile( romMetadataFile.c_str() ); \
+      PRINTMSG( T_ERROR, "Attempt to read beyond the end of the file!" ); \
+      return FALSE; \
+    } \
+    else \
+    { \
+    if( !(_data__) && !((_data__) = (_dataType__##*)malloc( (_dataSize__) )) ) \
+      { \
+        free( fileData ); \
+        DeleteFile( romMetadataFile.c_str() ); \
+        PRINTMSG( T_ERROR, "Failed to malloc data array. %lu bytes requested!", (_dataSize__) ); \
+        return FALSE; \
+      } \
+      memcpy( (_data__), listData, (_dataSize__) ); \
+      listData += (_dataSize__); \
+    }
+
+  #define METADATA_READDATA_NOMALLOC( _data__, _dataSize__ ) \
+    if( (DWORD)((listData + (_dataSize__)) - fileData) > fileSize ) \
+    { \
+      free( fileData ); \
+      DeleteFile( romMetadataFile.c_str() ); \
+      PRINTMSG( T_ERROR, "Attempt to read beyond the end of the file!" ); \
+      return FALSE; \
+    } \
+    else \
+    { \
+    if( !(_data__) ) \
+      { \
+        free( fileData ); \
+        DeleteFile( romMetadataFile.c_str() ); \
+        PRINTMSG( T_ERROR, "Attempt to read into NULL destination buffer!" ); \
+        return FALSE; \
+      } \
+      memcpy( (_data__), listData, (_dataSize__) ); \
+      listData += (_dataSize__); \
+    }
+
+    // Read in the number of items
+  DWORD numItems;
+  METADATA_READDATA_NOMALLOC( &numItems, sizeof(numItems) );
+
+  for( DWORD i = 0; i < numItems; ++i )
+  {
+    DWORD len;
+    MAMEoXDriverMetadata_t metadata;
+    memset( &metadata, 0, sizeof(metadata) );
+
+      // Read the index
+    METADATA_READDATA_NOMALLOC( &metadata.m_romIndex, sizeof(metadata.m_romIndex) );
+
+      // Read the filename
+    METADATA_READDATA_NOMALLOC( &len, sizeof(len) );
+    METADATA_READDATA( metadata.m_romFileName, len, char );
+
+      // Read the favorite status
+    METADATA_READDATA_NOMALLOC( &metadata.m_favoriteStatus, sizeof(metadata.m_favoriteStatus) );
+
+    METADATA_READDATA_NOMALLOC( &metadata.m_timesPlayed, sizeof(metadata.m_timesPlayed) );
+
+      // Add the loaded data to the metadata list
+    m_driverMetadata[metadata.m_romIndex] = metadata;
+  }
+  free( fileData );
+
+  return TRUE;
+}
+
+//---------------------------------------------------------------------
+//	UpdateROMMetadataFile
+//---------------------------------------------------------------------
+BOOL CROMList::UpdateROMMetadataFile( void )
+{
+	CStdString romMetadataFile = DEFAULT_MAMEOXSYSTEMPATH "\\" ROMMETADATAFILENAME;
+  UINT32 i = 0;
+  MAMEoXDriverMetadata_t emptyMetadata;
+  memset( &emptyMetadata, 0, sizeof(emptyMetadata) );
+   
+    // Set the driver metadata to defaults
+  m_driverMetadata.clear();
+  for( ; i < m_numDrivers; ++i )
+  {
+    emptyMetadata.m_romIndex = i;
+    m_driverMetadata.push_back( emptyMetadata );
+  }
+
+	PRINTMSG( T_INFO, "Load ROM metadata: %s", romMetadataFile.c_str() );
+	osd_file *file = osd_fopen( FILETYPE_MAMEOX_SYSTEM, 0, ROMMETADATAFILENAME, "r" );
+	if( !file )
+	{
+    PRINTMSG( T_ERROR, "Failed to open ROM metadata file %s!", romMetadataFile.c_str() );
+    return FALSE;
+  }
+
+    // Grab the entire file at once so we can check its signature
+  osd_fseek( file, 0, SEEK_END );
+  INT32 fileSize = osd_ftell( file );
+  osd_fseek( file, 0, SEEK_SET );
+  
+  UCHAR *fileData = (UCHAR*)malloc( fileSize );
+  if( !fileData )
+  {
+    osd_fclose( file );
+		DeleteFile( romMetadataFile.c_str() );
+    PRINTMSG( T_ERROR, 
+              "Could not malloc space for %s (%lu bytes required)!", 
+              romMetadataFile.c_str(), 
+              fileSize );
+    return FALSE;
+  }
+
+    // Read the entire file into memory
+  if( osd_fread( file, fileData, fileSize ) != fileSize )
+  {
+    free( fileData );
+    osd_fclose( file );
+		DeleteFile( romMetadataFile.c_str() );
+    PRINTMSG( T_ERROR, "Failed to read file %s!", romMetadataFile.c_str() );
+    return FALSE;
+  }
+  osd_fclose( file );
+
+    // Don't waste time on the signature, it's invalid regardless
+
+    // Test the data signature
+  HANDLE sigHandle = XCalculateSignatureBegin( XCALCSIG_FLAG_SAVE_GAME );
+  if( sigHandle == INVALID_HANDLE_VALUE )
+  {
+    free( fileData );
+		DeleteFile( romMetadataFile.c_str() );
+    PRINTMSG( T_ERROR, "Could not calculate driver list signature!" );
+    return FALSE;
+  }
+
+  DWORD sigSize = XCalculateSignatureGetSize( XCALCSIG_FLAG_SAVE_GAME );
+  void *sigData = calloc( 1, sigSize );
+  if( !sigData )
+  {
+    free( fileData );
+		DeleteFile( romMetadataFile.c_str() );
+    PRINTMSG( T_ERROR, "Could not allocate memory for driver list signature!" );
+    return FALSE;
+  }
+
+  const BYTE *listData = fileData + ((sizeof(DRIVERLIST_FILESTAMP) - 1) + sigSize);
+  DWORD listDataSize = fileSize - ((sizeof(DRIVERLIST_FILESTAMP) - 1) + sigSize);
+  if( XCalculateSignatureUpdate( sigHandle, listData, listDataSize ) != ERROR_SUCCESS )
+  {
+    free( fileData );
+    free( sigData );
+		DeleteFile( romMetadataFile.c_str() );
+    PRINTMSG( T_ERROR, "Failed to calculate data signature!" );
+    return FALSE;
+  }
+  
+
+
+    // Grab the signature
+  if( XCalculateSignatureEnd( sigHandle, sigData ) != ERROR_SUCCESS )
+  {
+    free( fileData );
+    free( sigData );
+		DeleteFile( romMetadataFile.c_str() );
+    PRINTMSG( T_ERROR, "Failed getting signature!" );
+    return FALSE;
+  }
+
+    // Test the signature
+  if( memcmp( (fileData + (sizeof(DRIVERLIST_FILESTAMP)-1)), sigData, sigSize ) )
+  {
+    free( fileData );
+    free( sigData );
+		DeleteFile( romMetadataFile.c_str() );
+    PRINTMSG( T_ERROR, "Data signature mismatch!" );
+    return FALSE;
+  }
+  free( sigData );
+
+
+    // Define a macro to "read" a block of data and ensure that we're not reading past the end of
+    //  the file
+  #define METADATA_READDATA( _data__, _dataSize__, _dataType__ ) \
+    if( (DWORD)((listData + (_dataSize__)) - fileData) > fileSize ) \
+    { \
+      free( fileData ); \
+      DeleteFile( romMetadataFile.c_str() ); \
+      PRINTMSG( T_ERROR, "Attempt to read beyond the end of the file!" ); \
+      return FALSE; \
+    } \
+    else \
+    { \
+    if( !(_data__) && !((_data__) = (_dataType__##*)malloc( (_dataSize__) )) ) \
+      { \
+        free( fileData ); \
+        DeleteFile( romMetadataFile.c_str() ); \
+        PRINTMSG( T_ERROR, "Failed to malloc data array. %lu bytes requested!", (_dataSize__) ); \
+        return FALSE; \
+      } \
+      memcpy( (_data__), listData, (_dataSize__) ); \
+      listData += (_dataSize__); \
+    }
+
+  #define METADATA_READDATA_NOMALLOC( _data__, _dataSize__ ) \
+    if( (DWORD)((listData + (_dataSize__)) - fileData) > fileSize ) \
+    { \
+      free( fileData ); \
+      DeleteFile( romMetadataFile.c_str() ); \
+      PRINTMSG( T_ERROR, "Attempt to read beyond the end of the file!" ); \
+      return FALSE; \
+    } \
+    else \
+    { \
+    if( !(_data__) ) \
+      { \
+        free( fileData ); \
+        DeleteFile( romMetadataFile.c_str() ); \
+        PRINTMSG( T_ERROR, "Attempt to read into NULL destination buffer!" ); \
+        return FALSE; \
+      } \
+      memcpy( (_data__), listData, (_dataSize__) ); \
+      listData += (_dataSize__); \
+    }
+
+    // Read in the number of items
+  DWORD numItems;
+  METADATA_READDATA_NOMALLOC( &numItems, sizeof(numItems) );
+
+  for( DWORD i = 0; i < numItems; ++i )
+  {
+    DWORD len;
+    MAMEoXDriverMetadata_t metadata;
+
+      // Read the index
+    METADATA_READDATA_NOMALLOC( &metadata.m_romIndex, sizeof(metadata.m_romIndex) );
+
+      // Read the filename
+    METADATA_READDATA_NOMALLOC( &len, sizeof(len) );
+    METADATA_READDATA( metadata.m_romFileName, len, char );
+
+      // Read the favorite status
+    METADATA_READDATA_NOMALLOC( &metadata.m_favoriteStatus, sizeof(metadata.m_favoriteStatus) );
+
+    METADATA_READDATA_NOMALLOC( &metadata.m_timesPlayed, sizeof(metadata.m_timesPlayed) );
+
+	  DrawZipData( "Updating metadata file", metadata.m_romFileName, i );
+
+      // Find the index for this ROM
+    UINT32 index;
+      // Go through the m_driverInfoList and find the entry matching that read from the XML file
+    for( index = 0; index < m_numDrivers && stricmp( m_driverInfoList[index].m_romFileName, metadata.m_romFileName ); ++i )
+      ;
+
+    m_driverMetadata[index] = metadata;
   }
   free( fileData );
 
@@ -714,7 +1238,7 @@ findEndTag:
 //---------------------------------------------------------------------
 void CROMList::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
 {
-  	// Handle user input
+   	// Handle user input
   if(  gp.IsButtonPressed( GP_B | GP_A ) )
   {
     m_shouldGenerateROMList = TRUE;
@@ -725,7 +1249,12 @@ void CROMList::MoveCursor( CInputManager &gp, BOOL useSpeedBanding )
 			// Run the selected ROM
     if( GetCurrentGameIndex() != INVALID_ROM_INDEX  )
     {
-      m_gameSelected = TRUE;
+      if( !m_gameSelected )
+      {
+        m_gameSelected = TRUE;
+        ++m_driverMetadata[GetCurrentGameIndex()].m_timesPlayed;
+        PRINTMSG( T_INFO, "m_driverMetadata[GetCurrentGameIndex()].m_timesPlayed %lu", m_driverMetadata[GetCurrentGameIndex()].m_timesPlayed );
+      }
     }
 	}
 	else if( gp.IsButtonPressed( GP_WHITE ) )
