@@ -1217,9 +1217,9 @@ void COptionsPage::ChangeVectorPage( BOOL direction )
   case 4:
     {
       if( !direction && options.vector_width > 100 )
-        --options.vector_height;
+        --options.vector_width;
       else if( direction && options.vector_width < 640 )
-        ++options.vector_height;
+        ++options.vector_width;
     }
     break;
 
