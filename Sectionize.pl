@@ -360,14 +360,14 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 @MoonPatrolFamily = ( "mpatrol.c", "yard.c" );								# 10 Yard Fight07/07/2003
 @SNKFamily = ( "snk.c", "hal21.c" );										# ASO - Armored Scrum Object, Athena
 @AmidarFamily = ( "galaxian.c", "scramble.c", "scobra.c", 
-                  "amidar.c", "frogger.c" );								# Amidar, Frog (Galaxian Hardware)
+                  "amidar.c", "frogger.c", "pacman.c",
+				  "pengo.c" );												# Amidar, Frog (Galaxian Hardware), Pac-Man (Galaxian Hardware), eyes
 @RampartFamily = ( "rampart.c", "arcadecl.c" );								# Arcade Classics
 @RastanFamily = ( "rastan.c", "asuka.c", "opwolf.c", "rainbow.c" );			# Asuka & Asuka, Operation Wolf, Rainbow Islands
 @EspialFamily = ( "espial.c", "marineb.c" );								# Battle Cruiser M-12
 @BZoneFamily = ( "bzone.c", "bwidow.c" );									# Gravitar
 @Nova2001Family = ( "nova2001.c", "pkunwar.c" );							# Penguin-Kun War
 @GottLiebFamily = ( "gottlieb.c", "exterm.c" );							    # exterminator
-@PengoFamily = ( "pengo.c",  "pacman.c" );									# eyes
 @Megasys1Family = ( "megasys1.c", "cischeat.c" );							# F-1 Grand Prix Star II
 @LocoMotionFamily = ( "rallyx.c", "timeplt.c", "locomotn.c", 
 					  "tutankhm.c", "pooyan.c" );							# Loco-Motion, Tutankham, Pooyan
@@ -391,7 +391,7 @@ print "Sectionizing drivers, sound hardware, and video hardware...\n";
 
 local @Families = ( \@CapcomFamily, \@NamcoFamily, \@SegaFamily, \@MidwayMCRFamily, \@TwinCobraFamily,
 					\@MoonPatrolFamily, \@SNKFamily, \@AmidarFamily, \@RampartFamily, \@RastanFamily,
-					\@EspialFamily, \@BZoneFamily, \@Nova2001Family, \@GottLiebFamily, \@PengoFamily,
+					\@EspialFamily, \@BZoneFamily, \@Nova2001Family, \@GottLiebFamily, 
 					\@Megasys1Family, \@LocoMotionFamily, \@ExidyFamily, \@M72Family, \@LelandFamily,
 					\@TrackFldFamily, \@Taito_F3Family, \@FromanceFamily, \@MidYUnitFamily, \@KonamiGXFamily,
 					\@SegarFamily, \@ZaxxonFamily, \@WizFamily, \@TetrisPlus2Family );
