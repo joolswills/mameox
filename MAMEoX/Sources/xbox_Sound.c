@@ -327,7 +327,7 @@ static BOOL Helper_DirectSoundInitialize( void )
   hr = IDirectSoundBuffer_Play( g_pStreamBuffer, 0, 0, DSBPLAY_LOOPING );
   if ( hr != DS_OK )
   {
-    _RPT1( _CRT_WARN, "Error playing: %08x\n", (UINT32)result );
+    _RPT1( _CRT_WARN, "Error playing: %08x\n", (UINT32)hr );
     Helper_DirectSoundTerminate();
     return FALSE;
   }
