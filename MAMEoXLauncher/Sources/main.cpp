@@ -4,7 +4,6 @@
 	*
 	*/
 
-#define _LOGDEBUGMESSAGES
 
 //= I N C L U D E S ====================================================
 #include "MAMEoX.h"
