@@ -504,6 +504,24 @@ void Helper_CreateDirectoryPath( char *path, BOOL has_filename )
 	CreateDirectory( path, NULL );
 }
 
+//---------------------------------------------------------------------
+//	ComposeFilePath
+//---------------------------------------------------------------------
+BOOL ComposeFilePath( char *buf, UINT32 maxLen, UINT32 pathtype, UINT32 pathindex, const char *filename )
+{
+  if( !buf || !filename )
+    return FALSE;
+
+  if( maxLen < strlen(g_pathNames[pathtype]) + strlen(filename) + 2 )
+    return FALSE;
+
+  sprintf( buf, "%s\\%s", g_pathNames[pathtype], filename );
+	Helper_ConvertSlashToBackslash( buf );
+
+  return TRUE;
+}
+
+
 
 //---------------------------------------------------------------------
 //	Helper_ConvertSlashToBackslash

@@ -12,6 +12,7 @@ extern "C" {
 //= I N C L U D E S ====================================================
 #include "osdepend.h"
 #include "osd_cpu.h"
+#include "fileio.h"
 
 //= D E F I N E S ======================================================
 
@@ -27,6 +28,7 @@ extern "C" {
 #define ROMPATH						"D:\\ROMS"
 #define ROMLISTPATH				"Z:\\MAMEoX"
 #define ROMLISTFILENAME		"ROMS.list"
+#define INIFILENAME       "MAMEoX.ini"
 
   //!<  Define this to force all open() calls on the ROM directory
   //!<  to fail if they do not end in the letters "zip"
@@ -52,6 +54,22 @@ void InitializeFileIO( void );
 	//!	\param		hasFilename - Whether or not "path" includes the name of a file
 	//-------------------------------------
 void Helper_CreateDirectoryPath( char *path, BOOL hasFilename );
+
+	//-------------------------------------
+	//	ComposeFilePath
+	//! \brief		Returns the full file path for the given options
+	//!
+	//!	\param		buf - [OUT] The buffer where the file path should be stored
+	//!	\param		maxLen - The maximum number of characters to store in buf
+  //! \param    pathtype - The path type (see fileio.h)
+  //! \param    pathindex - The path index (always set to 0)
+  //! \param    filename - The filename to append to the path
+  //!
+  //! \return   BOOL - Operation status
+  //! \retval   TRUE - Valid path returned
+  //! \retval   FALSE - No path returned
+	//-------------------------------------
+BOOL ComposeFilePath( char *buf, UINT32 maxLen, UINT32 pathtype, UINT32 pathindex, const char *filename );
 
 #ifdef __cplusplus
 }

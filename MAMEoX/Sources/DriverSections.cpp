@@ -43,6 +43,7 @@ void CheckDriverSectionRAM( void )
     {
       UINT32 sz = XGetSectionSize( h );
       PRINTMSG( T_INFO, "Driver %s [CODE]: %lu", (*i).first.c_str(), sz );
+      _RPT2( _CRT_WARN, "Driver %s [CODE]: %lu\n", (*i).first.c_str(), sz );
     }
     else
       PRINTMSG( T_ERROR, "Invalid section %s for file %s!", (*i).second.c_str(), (*i).first.c_str() );
@@ -54,6 +55,7 @@ void CheckDriverSectionRAM( void )
     {
       UINT32 sz = XGetSectionSize( h );
       PRINTMSG( T_INFO, "Driver %s [DATA]: %lu", (*i).first.c_str(), sz );
+      _RPT2( _CRT_WARN, "Driver %s [DATA]: %lu\n", (*i).first.c_str(), sz );
     }
     else
       PRINTMSG( T_ERROR, "Invalid section %s for file %s!", (*i).second.c_str(), (*i).first.c_str() );
@@ -65,6 +67,7 @@ void CheckDriverSectionRAM( void )
     {
       UINT32 sz = XGetSectionSize( h );
       PRINTMSG( T_INFO, "Driver %s [BSS]: %lu", (*i).first.c_str(), sz );
+      _RPT2( _CRT_WARN, "Driver %s [BSS]: %lu\n", (*i).first.c_str(), sz );
     }
     else
       PRINTMSG( T_ERROR, "Invalid section %s for file %s!", (*i).second.c_str(), (*i).first.c_str() );
@@ -76,6 +79,7 @@ void CheckDriverSectionRAM( void )
     {
       UINT32 sz = XGetSectionSize( h );
       PRINTMSG( T_INFO, "Driver %s [CONST]: %lu", (*i).first.c_str(), sz );
+      _RPT2( _CRT_WARN, "Driver %s [CONST]: %lu\n", (*i).first.c_str(), sz );
     }
     else
       PRINTMSG( T_ERROR, "Invalid section %s for file %s!", (*i).second.c_str(), (*i).first.c_str() );
@@ -108,6 +112,10 @@ BOOL LoadDriverSectionByName( const char *DriverFileName )
   void *addr;
   sectionName = DATA_PREFIX;
   sectionName += (*i).second.c_str();
+
+  _RPT2( _CRT_WARN, "LoadDriverSectionByName %s = %s\n", DriverFileName, (*i).second.c_str() );
+
+
   addr = XLoadSection( sectionName.c_str() );
   if( !addr )
   {
