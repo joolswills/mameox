@@ -395,8 +395,8 @@ static void LoadOptions( void )
   options.pause_bright = iniFile.GetProfileFloat( "Video", "PauseBrightness", 0.65f );     // brightness when in pause
 	options.gamma = iniFile.GetProfileFloat( "Video", "Gamma", 1.0f );			        // gamma correction of the display
 	options.color_depth = iniFile.GetProfileInt( "Video", "ColorDepth", 32 );
-	options.vector_width = iniFile.GetProfileInt( "Video", "ColorDepth", 640 );	      // requested width for vector games; 0 means default (640)
-	options.vector_height = iniFile.GetProfileInt( "Video", "ColorDepth", 480 );	    // requested height for vector games; 0 means default (480)
+	options.vector_width = iniFile.GetProfileInt( "Video", "VectorWidth", 640 );	      // requested width for vector games; 0 means default (640)
+	options.vector_height = iniFile.GetProfileInt( "Video", "VectorHeight", 480 );	    // requested height for vector games; 0 means default (480)
 	// int		ui_orientation;	        // orientation of the UI relative to the video
 
 	options.beam = iniFile.GetProfileInt( "VectorOptions", "BeamWidth", 2 );			            // vector beam width
@@ -431,8 +431,8 @@ static void SaveOptions( void )
   iniFile.WriteProfileFloat( "Video", "PauseBrightness", options.pause_bright );     // brightness when in pause
 	iniFile.WriteProfileFloat( "Video", "Gamma", options.gamma );			        // gamma correction of the display
 	iniFile.WriteProfileInt( "Video", "ColorDepth", options.color_depth );
-	iniFile.WriteProfileInt( "Video", "ColorDepth", options.vector_width );	      // requested width for vector games; 0 means default (640)
-	iniFile.WriteProfileInt( "Video", "ColorDepth", options.vector_height );	    // requested height for vector games; 0 means default (480)
+	iniFile.WriteProfileInt( "Video", "VectorWidth", options.vector_width );	      // requested width for vector games; 0 means default (640)
+	iniFile.WriteProfileInt( "Video", "VectorHeight", options.vector_height );	    // requested height for vector games; 0 means default (480)
 	iniFile.WriteProfileInt( "VectorOptions", "BeamWidth", options.beam );			            // vector beam width
 	iniFile.WriteProfileFloat( "VectorOptions", "FlickerEffect", options.vector_flicker );	  // vector beam flicker effect control
 	iniFile.WriteProfileFloat( "VectorOptions", "BeamIntensity", options.vector_intensity );  // vector beam intensity
