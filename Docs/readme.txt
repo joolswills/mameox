@@ -71,7 +71,6 @@ X) This step is currently unnecessary, as the source distribution includes the
   - <Your Directory Name>
     - general  : This is where cfg files, cheat file, and other general files 
                  are stored
-    - ini : This is where ini files are stored
     - Media
       > Font.xpr : This should be taken from the SDK. The project currently
                    has no fonts (or graphics in general, see "Contributions")
@@ -99,6 +98,13 @@ X) This step is currently unnecessary, as the source distribution includes the
    NOTE: Starting with version 0.64b, if you are playing MAMEoX off of a CD/DVD,
          most of these directories will be created on the U:, which is probably
 	 mapped from E:\UDATA\4d414d45 (MAME in hex)
+
+   NOTE: Starting with version 0.65b the INI file will only be read from 
+         e:\UDATA\4d414d45. Any INI directory on the D: will be ignored. The
+	 INI can be modified from within MAME by pressing B + Y on the ROMList
+	 screen. (As of 0.66b there are still some things that can't be changed
+	 from within the program, such as filenames and directory paths. This
+	 will change in the near future)
 
 ---------------------------------------------------------------------------
 Compilation Errors:
@@ -254,7 +260,11 @@ Usage:
   Enabling cheats:
 1) Edit your INI file and set the CheatsEnabled field to 1. 
    (Version 0.64b (CVS) has an INI editor built in, so this 
-    will become easier in the future) 
+    will become easier in the future)
+   UPDATE: With the release of 0.64b it is now easier to enable
+           cheats by pressing B + Y in the ROMList screen and
+	   pressing right or left on the dpad on the appropriate
+	   option.
 
 2) Copy your cheat.dat file to the GENERAL directory 
 
