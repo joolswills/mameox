@@ -64,9 +64,9 @@ extern "C" {
 
   //-- Position of button icons within the buttons conglomerate
 #define ASSET_BUTTON_TOPROW_TOP         0.0f
-#define ASSET_BUTTON_TOPROW_BOTTOM      33.0f
-#define ASSET_BUTTON_BOTTOMROW_TOP      35.0f
-#define ASSET_BUTTON_BOTTOMROW_BOTTOM   67.0f
+#define ASSET_BUTTON_TOPROW_BOTTOM      31.0f
+#define ASSET_BUTTON_BOTTOMROW_TOP      34.0f
+#define ASSET_BUTTON_BOTTOMROW_BOTTOM   64.0f
 
 #define ASSET_BUTTON_LEFTCOLUMN_LEFT    0.0f
 #define ASSET_BUTTON_LEFTCOLUMN_RIGHT   33.0f

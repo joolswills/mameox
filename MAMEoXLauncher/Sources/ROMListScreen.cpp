@@ -67,25 +67,30 @@ extern "C" {
 #define SCROLLDOWN_LEFT       (SCROLLDOWN_RIGHT - 32)
 
   //-- Button help messages ------
-#define HELP_A_ICON_X       250
-#define HELP_A_ICON_Y       40
-#define HELP_A_TEXT_X       (HELP_A_ICON_X + m_textureSet.GetButtonWidth() + 4)
-#define HELP_A_TEXT_Y       (HELP_A_ICON_Y + 5)
-
-#define HELP_X_ICON_X       370
-#define HELP_X_ICON_Y       40
-#define HELP_X_TEXT_X       (HELP_X_ICON_X + m_textureSet.GetButtonWidth() + 4)
-#define HELP_X_TEXT_Y       (HELP_X_ICON_Y + 5)
-
-#define HELP_Y_ICON_X       450
-#define HELP_Y_ICON_Y       40
-#define HELP_Y_TEXT_X       (HELP_Y_ICON_X + m_textureSet.GetButtonWidth() + 4)
-#define HELP_Y_TEXT_Y       (HELP_Y_ICON_Y + 5)
-
 #define HELP_START_ICON_X   200
 #define HELP_START_ICON_Y   40
 #define HELP_START_TEXT_X   (HELP_START_ICON_X + m_textureSet.GetSTARTButtonWidth() + 4)
 #define HELP_START_TEXT_Y   (HELP_START_ICON_Y + 5)
+
+//#define HELP_A_ICON_X       250
+#define HELP_A_ICON_X       285
+#define HELP_A_ICON_Y       40
+#define HELP_A_TEXT_X       (HELP_A_ICON_X + m_textureSet.GetButtonWidth() + 4)
+#define HELP_A_TEXT_Y       (HELP_A_ICON_Y + 5)
+
+//#define HELP_X_ICON_X       370
+#define HELP_X_ICON_X       405
+#define HELP_X_ICON_Y       40
+#define HELP_X_TEXT_X       (HELP_X_ICON_X + m_textureSet.GetButtonWidth() + 4)
+#define HELP_X_TEXT_Y       (HELP_X_ICON_Y + 5)
+
+//#define HELP_Y_ICON_X       450
+#define HELP_Y_ICON_X       485
+#define HELP_Y_ICON_Y       40
+#define HELP_Y_TEXT_X       (HELP_Y_ICON_X + m_textureSet.GetButtonWidth() + 4)
+#define HELP_Y_TEXT_Y       (HELP_Y_ICON_Y + 5)
+
+
 
 
 
@@ -1230,7 +1235,7 @@ BOOL CROMListScreen::UpdateROMMetadataFile( void )
       // Find the index for this ROM
     UINT32 index;
       // Go through the m_driverInfoList and find the entry matching that read from the XML file
-    for( index = 0; index < m_numDrivers && stricmp( m_driverInfoList[index].m_romFileName, metadata.m_romFileName ); ++i )
+    for( index = 0; index < m_numDrivers && stricmp( m_driverInfoList[index].m_romFileName, metadata.m_romFileName ); ++index )
       ;
 
     m_driverMetadata[index] = metadata;
