@@ -245,7 +245,7 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
 
 	PRINTMSG( T_TRACE, "osd_fopen" );
 
-	ret =  new osd_file; 
+	ret = (osd_file*)calloc( 1, sizeof(osd_file) ); 
 	if( !ret )
 	{
 		PRINTMSG( T_ERROR, "Malloc failed creating osd_file instance!" );
@@ -309,7 +309,7 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
       ret->m_bIsSMB = TRUE;
       if (!ret->m_SmbHandler.Open(strFullPath.c_str()))
       {
-        delete ret ;
+        free( ret );
         return NULL;
       }
     }
@@ -343,7 +343,7 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
       if( !(dwDesiredAccess & GENERIC_WRITE) || err != ERROR_PATH_NOT_FOUND )
       {
         PRINTMSG( T_ERROR, "Failed opening file %s: 0x%X!", strFullPath.c_str(), err );
-        delete ret;
+        free( ret );
         return NULL;
       }
 
@@ -361,7 +361,7 @@ osd_file *osd_fopen( int pathtype, int pathindex, const char *filename, const ch
       if( ret->m_handle == INVALID_HANDLE_VALUE )
       {
         PRINTMSG( T_ERROR, "Failed opening file %s: 0x%X!", strFullPath.c_str(), err );
-        delete ret;
+        free( ret );
         return NULL;
       }
     }

@@ -30,7 +30,7 @@
 #define DEFAULT_CONFIGPATH          "D:\\CFG"
 #define DEFAULT_ROMPATH						  "D:\\ROMS"
 #define DEFAULT_AUDIOPATH           "D:\\SAMPLES"
-#define DEFAULT_DEFAULTROMLISTPATH  "D:\\ROMS"
+#define DEFAULT_DEFAULTROMLISTPATH  "T:\\ROMS"
 #define DEFAULT_ROMBACKUPPATH       "D:\\ROMS\\BACKUP"
 #define DEFAULT_HDIMAGEPATH         "D:\\HDIMAGES"
 #define DEFAULT_HISCOREPATH         "D:\\HISCORES"
@@ -56,10 +56,10 @@ struct SFileIOConfig
   CStdString m_ConfigPath;
   CStdString m_RomPath;
   CStdString m_AudioPath;
-  CStdString m_DefaultRomListPath;
   CStdString m_RomBackupPath;
   CStdString m_HDImagePath;
   CStdString m_HiScorePath;
+  CStdString m_DefaultRomListPath;
 
   SFileIOConfig()
   {
