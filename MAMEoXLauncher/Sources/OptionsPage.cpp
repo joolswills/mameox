@@ -517,7 +517,8 @@ void COptionsPage::DrawVideoPage( void )
 */
 
   WCHAR text[256] = {0};
-  const WCHAR filterNames[][16] = { L"Point", 
+  const WCHAR filterNames[][16] = { L"None",
+                                    L"Point", 
                                     L"Linear", 
                                     L"Anisotropic", 
                                     L"Quincunx", 
