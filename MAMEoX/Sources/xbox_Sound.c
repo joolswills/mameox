@@ -199,13 +199,13 @@ INT32 osd_update_audio_stream( INT16 *buffer )
     if (final_bytes < original_bytes)
       ++g_bufferOverflows;
 
-    // reset underflow/overflow tracking
-    if (++g_totalFrames == IGNORE_UNDERFLOW_FRAMES)
-      g_bufferOverflows = g_bufferUnderflows = 0;
-    else if( g_totalFrames > IGNORE_UNDERFLOW_FRAMES )
-      g_totalFrames = IGNORE_UNDERFLOW_FRAMES + 1;
-
     #ifdef LOG_SOUND
+      // reset underflow/overflow tracking
+      if (++g_totalFrames == IGNORE_UNDERFLOW_FRAMES)
+        g_bufferOverflows = g_bufferUnderflows = 0;
+      else if( g_totalFrames > IGNORE_UNDERFLOW_FRAMES )
+        g_totalFrames = IGNORE_UNDERFLOW_FRAMES + 1;
+
       {
         static int prev_overflows = 0, prev_underflows = 0;
         if( g_totalFrames > IGNORE_UNDERFLOW_FRAMES && (g_bufferOverflows != prev_overflows || g_bufferUnderflows != prev_underflows) )
@@ -302,6 +302,7 @@ static BOOL Helper_DirectSoundInitialize( void )
 	g_streamBufferSize = (g_streamBufferSize * g_streamFormat.nBlockAlign) / 4;
 	g_streamBufferSize = (g_streamBufferSize * 30) / Machine->drv->frames_per_second;
 	g_streamBufferSize = (g_streamBufferSize / 1024) * 1024;  // Drop remainder
+  g_streamBufferSize *= 2;
 
 	// compute the upper/lower thresholds
 	g_lowerThresh = g_streamBufferSize / 5;
@@ -469,15 +470,16 @@ static void Helper_UpdateSampleAdjustment( void )
 
 	if( buffered < g_lowerThresh )
 	{
-		// we have too few samples in the buffer
-		if( ++consecutive_lows > MAX_SAMPLE_ADJUST )
-      consecutive_lows = MAX_SAMPLE_ADJUST;
+    // keep track of how many consecutive times we get this condition
+    consecutive_lows++;
+    consecutive_mids = 0;
+    consecutive_highs = 0;
 
 		consecutive_mids = 0;
 		consecutive_highs = 0;
 
-		  // adjust so that we generate more samples per frame to compensate
-		g_currentAdjustment = (consecutive_lows < MAX_SAMPLE_ADJUST) ? consecutive_lows : MAX_SAMPLE_ADJUST;
+    // adjust so that we generate more samples per frame to compensate
+    g_currentAdjustment = (consecutive_lows < MAX_SAMPLE_ADJUST) ? consecutive_lows : MAX_SAMPLE_ADJUST;
 
     #ifdef LOG_SOUND
       PRINTMSG( T_INFO, "too low - adjusting to %d\n", g_currentAdjustment );
@@ -485,15 +487,13 @@ static void Helper_UpdateSampleAdjustment( void )
 	}
 	else if( buffered > g_upperThresh )
 	{
-			// we have too many samples in the buffer
-		consecutive_lows = 0;
-		consecutive_mids = 0;
+    // keep track of how many consecutive times we get this condition
+    consecutive_lows = 0;
+    consecutive_mids = 0;
+    consecutive_highs++;
 
-		if( ++consecutive_highs > MAX_SAMPLE_ADJUST )
-      consecutive_highs = MAX_SAMPLE_ADJUST;
-
-		// adjust so that we generate fewer samples per frame to compensate
-		g_currentAdjustment = (consecutive_highs < MAX_SAMPLE_ADJUST) ? -consecutive_highs : -MAX_SAMPLE_ADJUST;
+    // adjust so that we generate more samples per frame to compensate
+    g_currentAdjustment = (consecutive_highs < MAX_SAMPLE_ADJUST) ? -consecutive_highs : -MAX_SAMPLE_ADJUST;
 		
     #ifdef LOG_SOUND
     PRINTMSG( T_INFO, "too high - adjusting to %d\n", g_currentAdjustment );
@@ -501,12 +501,10 @@ static void Helper_UpdateSampleAdjustment( void )
 	}
 	else
 	{
-		// We have the right number of samples in the buffer
-		consecutive_lows = 0;
-		if( ++consecutive_mids > NUM_TARGET_FRAMES_BEFORE_ADJUST_RESET )
-      consecutive_mids = NUM_TARGET_FRAMES_BEFORE_ADJUST_RESET + 1;
-
-		consecutive_highs = 0;
+    // keep track of how many consecutive times we get this condition
+    consecutive_lows = 0;
+    consecutive_mids++;
+    consecutive_highs = 0;
 
 		// after 10 or so of these, revert back to no adjustment
 		if( consecutive_mids >= NUM_TARGET_FRAMES_BEFORE_ADJUST_RESET && g_currentAdjustment )
