@@ -124,8 +124,8 @@ BOOL LoadPNGFile(	const CStdString &filename, PNGFile_t *ret )
   * your application support gamma correction.
   */
 
+/*
   int intent;
-
   if (png_get_sRGB(ret->m_pngPtr, ret->m_infoPtr, &intent))
     png_set_gamma(ret->m_pngPtr, screen_gamma, 0.45455);
   else
@@ -136,7 +136,7 @@ BOOL LoadPNGFile(	const CStdString &filename, PNGFile_t *ret )
     else
         png_set_gamma(ret->m_pngPtr, screen_gamma, 0.45455);
   }
-
+*/
 
   /* Optional call to gamma correct and add the background to the palette
   * and update info structure.  REQUIRED if you are expecting libpng to
