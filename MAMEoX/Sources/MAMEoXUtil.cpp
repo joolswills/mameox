@@ -425,16 +425,23 @@ void CheckRAM( void )
             memStatus.dwAvailPhys, 
             memStatus.dwTotalPhys );
 
-  BeginFontRender( TRUE );
-  FontRender( 320, 200, D3DCOLOR_XRGB(255,200,200), L"This is a DEBUG version of MAMEoX!", 2 );
-  FontRender( 320, 280, D3DCOLOR_XRGB(255,255,255), L"Mem: Avail/Total", 2 );
-  FontRender( 320, 300, D3DCOLOR_XRGB(255,255,255), memStr, 2 );
-  EndFontRender();
 
   RequireController( 0 );
+  CGamepad *gp = g_inputManager.GetGamepad( 0 );
 	g_inputManager.WaitForNoButton( 0 );
-	g_inputManager.WaitForAnyButton( 0 );
+
+  while( !gp->IsAnyButtonPressed() )
+  {
+    RequireController( 0 );
+
+    BeginFontRender( TRUE );
+    FontRender( 320, 200, D3DCOLOR_XRGB(255,200,200), L"This is a DEBUG version of MAMEoX!", 2 );
+    FontRender( 320, 280, D3DCOLOR_XRGB(255,255,255), L"Mem: Avail/Total", 2 );
+    FontRender( 320, 300, D3DCOLOR_XRGB(255,255,255), memStr, 2 );
+    EndFontRender();
+  }
 	g_inputManager.WaitForNoButton( 0 );
+
 }
 #endif
 

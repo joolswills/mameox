@@ -262,6 +262,10 @@ void __cdecl main( void )
 #endif
   LoadOptions();
 
+		// Initialize the input subsystem
+	g_inputManager.Create( 4, 0 );  // 4 controllers, no memory cards
+
+
 	// Intialize the various MAME OSD-specific subsystems
 	InitializeFileIO();
 	InitializeTiming();
@@ -305,8 +309,6 @@ void __cdecl main( void )
 
   SaveOptions(); 
 
-		// Initialize the input subsystem
-	g_inputManager.Create( 4, 0 );  // 4 controllers, no memory cards
 
   if( FAILED( LoadPackedResources() ) )
   {

@@ -99,6 +99,9 @@ void __cdecl main( void )
 
   LoadOptions();
 
+	  // Initialize the input subsystem
+	g_inputManager.Create( 4, 0 );  // 4 controllers, no memory cards
+
 	  // Intialize the various MAMEoX subsystems
   InitializeTiming();
 	InitializeFileIO();
@@ -106,8 +109,6 @@ void __cdecl main( void )
   
   SaveOptions();
 
-	  // Initialize the input subsystem
-	g_inputManager.Create( 4, 0 );  // 4 controllers, no memory cards
 CHECKRAM();
 
     // Check the launch data to ensure that we've been started properly
@@ -408,31 +409,34 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
   va_end( arg );
 
 	PRINTMSG( T_ERROR, "Die: %s", buf );
-
-		// Display the error to the user
-	pD3DDevice->Clear(	0L,																// Count
-											NULL,															// Rects to clear
-											D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
-											D3DCOLOR_XRGB(0,0,0),							// Color
-											1.0f,															// Z
-											0L );															// Stencil
-
-	g_font.Begin();
-	
-	WCHAR wBuf[1024];
-	mbstowcs( wBuf, buf, strlen(buf) + 1 );
-
-	g_font.DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
-	g_font.DrawText( 320, 320, D3DCOLOR_RGBA( 255, 125, 125, 255), L"Press any button to reboot.", XBFONT_CENTER_X );
-
-	g_font.End();
-	pD3DDevice->Present( NULL, NULL, NULL, NULL );
-
-
   RequireController( 0 );
+  CGamepad *gp = g_inputManager.GetGamepad( 0 );
 	g_inputManager.WaitForNoButton( 0 );
-	g_inputManager.WaitForAnyButton( 0 );
-	g_inputManager.WaitForNoButton( 0 );
+
+  while( !gp->IsAnyButtonPressed() )
+  {
+    RequireController( 0 );
+		  // Display the error to the user
+	  pD3DDevice->Clear(	0L,																// Count
+											  NULL,															// Rects to clear
+											  D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	// Flags
+											  D3DCOLOR_XRGB(0,0,0),							// Color
+											  1.0f,															// Z
+											  0L );															// Stencil
+
+	  g_font.Begin();
+  	
+	  WCHAR wBuf[1024];
+	  mbstowcs( wBuf, buf, strlen(buf) + 1 );
+
+	  g_font.DrawText( 320, 60, D3DCOLOR_RGBA( 255, 255, 255, 255), wBuf, XBFONT_CENTER_X );
+	  g_font.DrawText( 320, 320, D3DCOLOR_RGBA( 255, 125, 125, 255), L"Press any button to reboot.", XBFONT_CENTER_X );
+
+	  g_font.End();
+	  pD3DDevice->Present( NULL, NULL, NULL, NULL );
+  }
+
+  g_inputManager.WaitForNoButton( 0 );
 
     // Make sure MAMEoXLauncher acts as though it was launched from the dashboard
   MAMEoXLaunchData_t *mameoxLaunchData = (MAMEoXLaunchData_t*)g_launchData.Data;
