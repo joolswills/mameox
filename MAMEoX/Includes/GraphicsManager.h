@@ -37,21 +37,43 @@ public:
     D3DPRESENT_PARAMETERS params; 
     memset( &params, 0, sizeof(params) );
     
-    params.BackBufferWidth				= 640;
-    params.BackBufferHeight				= 480;
+		DWORD vidStandard = XGetVideoStandard();
+		PRINTMSG(( T_INFO, "Video Standard: 0x%X", vidStandard ));
+
+		DWORD vidFlags = XGetVideoFlags();
+		PRINTMSG(( T_INFO, "Video Flags: 0x%X", vidFlags ));
+
+		m_backBufferWidth = 640;
+		m_backBufferHeight = 480;
+
     params.BackBufferFormat				= D3DFMT_X8R8G8B8;
     params.BackBufferCount				= 1;
     params.EnableAutoDepthStencil = FALSE;
     params.AutoDepthStencilFormat = D3DFMT_D24S8;
     params.SwapEffect							= D3DSWAPEFFECT_FLIP;
     params.FullScreen_RefreshRateInHz = 60;
-//    params.FullScreen_PresentationInterval = enableVSYNC ? D3DPRESENT_INTERVAL_ONE : D3DPRESENT_INTERVAL_IMMEDIATE;
     params.FullScreen_PresentationInterval = enableVSYNC ? D3DPRESENT_INTERVAL_ONE_OR_IMMEDIATE : D3DPRESENT_INTERVAL_IMMEDIATE;
 
 
-      // Since many games run at 60Hz, it's easier to be at 60Hz for proper sound emulation
-    if( XGetVideoStandard() == XC_VIDEO_STANDARD_PAL_I && !(XGetVideoFlags() & XC_VIDEO_FLAGS_PAL_60Hz) )
-      params.Flags = D3DPRESENTFLAG_EMULATE_REFRESH_RATE;
+    if( vidStandard == XC_VIDEO_STANDARD_PAL_I )
+		{
+			if( !(vidFlags & XC_VIDEO_FLAGS_PAL_60Hz) )
+			{
+					// Since many games run at 60Hz, it's easier to be at 60Hz for proper sound emulation
+				params.Flags = D3DPRESENTFLAG_EMULATE_REFRESH_RATE;
+				//m_backBufferHeight = 576;		// Set the buffer to full PAL height to disable scaling
+			}
+		}
+
+			// Use progressive mode if it's available
+		if( vidFlags & XC_VIDEO_FLAGS_HDTV_480p )
+			params.Flags |= D3DPRESENTFLAG_PROGRESSIVE;
+
+
+    params.BackBufferWidth				= m_backBufferWidth;
+		params.BackBufferHeight				= m_backBufferHeight;
+
+
 
 		if( m_pD3D->CreateDevice( D3DADAPTER_DEFAULT,										// Adapter
 															D3DDEVTYPE_HAL,												// Devtype
@@ -76,6 +98,9 @@ protected:
 	static BOOL								m_created;					//!<	Whether or not this singleton has been created
 	LPDIRECT3D8								m_pD3D;							//!<	Main Direct3D interface
 	LPDIRECT3DDEVICE8					m_pD3DDevice;				//!<	The rendering device
+
+	UINT32										m_backBufferWidth;		//!<	The width of the screen
+	UINT32										m_backBufferHeight;		//!<	The height of the screen
 };
 
 #endif
