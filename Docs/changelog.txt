@@ -7,6 +7,12 @@ Version 0.71.2b (CVS)
     - MAMEoX.h
       - Upped version number
 
+    - InputDevice.h
+      - Added virtual input device base class
+
+    - Keyboard.h
+      - Added some debug keyboard routines
+
    -------------------------------------------------------------
   - \MAMEoX\Sources: 
 
@@ -36,6 +42,7 @@ Version 0.71.2b (CVS)
    -------------------------------------------------------------
   - \Sectionize.pl
     - Fixed dep for Operation Wolf
+    - Fixed dep for Rainbow Islands
 
 *********************************************************************
 Version 0.71.1b

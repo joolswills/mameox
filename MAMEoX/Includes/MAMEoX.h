@@ -3,6 +3,7 @@
 	* \brief		Global utility functions
 	*/
 
+  // Must be defined to include the KB functions
 #pragma once
 
 

@@ -2,15 +2,15 @@
 	* \file		InputManager.h
 	*
 	*/
-
-#ifndef _INPUTMANAGER_H__
-#define _INPUTMANAGER_H__
+#pragma once
 
 
 //= I N C L U D E S ===========================================================
-#include <Xtl.h>
-#include "Gamepad.h"
 #include "MAMEoX.h"
+#include <xkbd.h>
+
+#include "Gamepad.h"
+#include "Keyboard.h"
 
 //= D E F I N E S =============================================================
   // Lighgun calibration step giving the UL corner numbers
@@ -27,8 +27,13 @@ public:
 		//------------------------------------------------------
 		//	Constructor
 		//------------------------------------------------------
-	CInputManager( void ) {
-		memset( this, NULL, sizeof(*this) );
+  CInputManager( void ) :
+    m_maxGamepadDevices( 0 ),
+	  m_maxMemUnitDevices( 0 ),
+    m_maxKeyboardDevices( 0 ),
+	  m_gamepadDeviceBitmap( 0 ),
+	  m_memunitDeviceBitmap( 0 ),
+    m_keyboardDeviceBitmap( 0 ) {
 	}
 
 
@@ -42,7 +47,7 @@ public:
     //! \param    maxMemUnits - The maximum number of memory
     //!                         units supported by the app.
 		//------------------------------------------------------
-	BOOL Create( DWORD maxGamepads, DWORD maxMemUnits ) {
+	BOOL Create( DWORD maxGamepads = 4, DWORD maxMemUnits = 0, BOOL useKeyboard = FALSE ) {
 		if( m_created )
 			return FALSE;
 
@@ -51,19 +56,35 @@ public:
 
 		m_maxGamepadDevices = maxGamepads;
 		m_maxMemUnitDevices = maxMemUnits;
+    m_maxKeyboardDevices = 0;
+    m_maxKeyboardDevices = (useKeyboard ? 1 : 0);
 
-		XDEVICE_PREALLOC_TYPE preallocArray[2] = { { XDEVICE_TYPE_GAMEPAD, 1 },
-																							{ XDEVICE_TYPE_MEMORY_UNIT, 1 } };
+		XDEVICE_PREALLOC_TYPE preallocArray[] = { { XDEVICE_TYPE_GAMEPAD, 1 },
+																							{ XDEVICE_TYPE_MEMORY_UNIT, 1 },
+                                              { XDEVICE_TYPE_DEBUG_KEYBOARD, 0 } };
 		preallocArray[0].dwPreallocCount = m_maxGamepadDevices;
 		preallocArray[1].dwPreallocCount = m_maxMemUnitDevices;
+    preallocArray[2].dwPreallocCount = m_maxKeyboardDevices;
 
 			// Initialize the input subsystem
-		XInitDevices( 2,								// DWORD dwPreallocTypeCount
+		XInitDevices( 3,								// DWORD dwPreallocTypeCount
 									preallocArray );	// PXDEVICE_PREALLOC_TYPE PreallocTypes
+
+    if( m_maxKeyboardDevices )
+    {
+        // Set up the keyboard queue
+      XINPUT_DEBUG_KEYQUEUE_PARAMETERS kbParams;
+      kbParams.dwFlags = XINPUT_DEBUG_KEYQUEUE_FLAG_KEYDOWN | XINPUT_DEBUG_KEYQUEUE_FLAG_KEYREPEAT;
+      kbParams.dwQueueSize = 13;
+      kbParams.dwRepeatDelay = 100;
+      kbParams.dwRepeatInterval = 100;
+      XInputDebugInitKeyboardQueue(&kbParams );
+    }
 
 			// Get the list of devices currently attached to the system
 		m_gamepadDeviceBitmap = XGetDevices( XDEVICE_TYPE_GAMEPAD );
 		m_memunitDeviceBitmap = XGetDevices( XDEVICE_TYPE_MEMORY_UNIT );
+    m_keyboardDeviceBitmap = XGetDevices( XDEVICE_TYPE_DEBUG_KEYBOARD ); 
     
       // Create the gamepads
     for( UINT32 i = 0; i < 4; ++i )
@@ -77,6 +98,10 @@ public:
       else
         maxMemUnits = 0;
     }
+
+      // Create the keyboard
+    if( m_maxKeyboardDevices )
+      m_keyboard.Create( this );
 
     PollDevices();
 
@@ -101,10 +126,24 @@ public:
                                   XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_Y - calibData.m_yData[CALIB_UL] ); \
       }
 
+      gpAttached = m_gamepads[0].IsConnected(); 
+      m_gamepads[0].AttachRemoveDevices(); 
+      if( !gpAttached && m_gamepads[0].IsConnected() ) {
+        lightgunCalibration_t &calibData = g_calibrationData[0]; 
+        m_gamepads[0].SetLightgunCalibration( XINPUT_LIGHTGUN_CALIBRATION_CENTER_X - calibData.m_xData[CALIB_C], 
+                                  XINPUT_LIGHTGUN_CALIBRATION_CENTER_Y - calibData.m_yData[CALIB_C], 
+                                  XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_X - calibData.m_xData[CALIB_UL],  
+                                  XINPUT_LIGHTGUN_CALIBRATION_UPPERLEFT_Y - calibData.m_yData[CALIB_UL] ); 
+      }
+
+
     ATTACH_AND_RESTORE( 0 );
     ATTACH_AND_RESTORE( 1 );
     ATTACH_AND_RESTORE( 2 );
     ATTACH_AND_RESTORE( 3 );
+
+    if( m_maxKeyboardDevices )
+      m_keyboard.AttachRemoveDevices();
 	}
 
 
@@ -118,15 +157,24 @@ public:
 		XGetDeviceChanges( XDEVICE_TYPE_GAMEPAD,
 											 &insertions,                  
 											 &removals );
-
-		m_gamepadDeviceBitmap |= insertions;
 		m_gamepadDeviceBitmap &= ~removals;
+		m_gamepadDeviceBitmap |= insertions;
+
 
 		XGetDeviceChanges( XDEVICE_TYPE_MEMORY_UNIT,
 											 &insertions,                  
 											 &removals );
-		m_memunitDeviceBitmap |= insertions;
 		m_memunitDeviceBitmap &= ~removals;
+		m_memunitDeviceBitmap |= insertions;
+
+    if( m_maxKeyboardDevices )
+    {
+		  XGetDeviceChanges( XDEVICE_TYPE_DEBUG_KEYBOARD,
+											  &insertions,                  
+											  &removals );
+		  m_keyboardDeviceBitmap &= ~removals;
+		  m_keyboardDeviceBitmap |= insertions;    
+    }
 
 		AttachRemoveDevices();
 
@@ -134,6 +182,8 @@ public:
     m_gamepads[1].PollDevice();
     m_gamepads[2].PollDevice();
     m_gamepads[3].PollDevice();
+
+      // Keyboards do not poll
 	}
 
 
@@ -146,7 +196,7 @@ public:
   void WaitForControllerInsertion( DWORD device ) {
     if( device < 4 )
     {
-      while( !m_gamepads[device].IsConnected() )
+      while( !m_gamepads[device].IsConnected() && (m_maxKeyboardDevices ? !m_keyboard.IsConnected() : TRUE) )
         PollDevices();
     }
   }
@@ -232,17 +282,17 @@ public:
 	}
 
 		//------------------------------------------------------
-		//	SetGamepadFeedbackState
+		//	SetFeedbackState
     //! Send a force feedback effect to a gamepad
     //!
     //! \param  deviceNumber - The gamepad to send to (0-3)
     //! \param  feedback - Struct describing the effect to send
 		//------------------------------------------------------
-	inline BOOL SetGamepadFeedbackState( DWORD deviceNumber, const XINPUT_FEEDBACK &feedback ) {
+	inline BOOL SetDeviceFeedbackState( DWORD deviceNumber, const XINPUT_FEEDBACK &feedback ) {
     if( deviceNumber > 3 )
       return FALSE;
 
-    return m_gamepads[deviceNumber].SetGamepadFeedbackState( feedback );
+    return m_gamepads[deviceNumber].SetDeviceFeedbackState( feedback );
 	}
 
 
@@ -416,7 +466,7 @@ public:
 
   DWORD GetGamepadDeviceBitmap( void ) const { return m_gamepadDeviceBitmap; }
   DWORD GetMUDeviceBitmap( void ) const { return m_memunitDeviceBitmap; }
-
+  DWORD GetKeyboardDeviceBitmap( void ) const { return m_keyboardDeviceBitmap; }
 
 protected:
 
@@ -424,12 +474,12 @@ protected:
 
 	DWORD						m_maxGamepadDevices;				//!<	The max number of gamepad devices to poll
 	DWORD						m_maxMemUnitDevices;				//!<	The max number of mem units to poll
+  DWORD           m_maxKeyboardDevices;       //!<  The max number of keyboards to poll (can only be 0 or 1)
 
 	DWORD						m_gamepadDeviceBitmap;			//!<	Bitmap storing which gamepad devices are currently attached
 	DWORD						m_memunitDeviceBitmap;			//!<	Bitmap storing which mem unit devices are currently attached
+  DWORD           m_keyboardDeviceBitmap;     //!<	Bitmap storing which keyboard devices are currently attached
 
-  CGamepad        m_gamepads[4];
+  CGamepad        m_gamepads[4];              //!<  The gamepad objects
+  CKeyboard       m_keyboard;                 //!<  The keyboard object
 };
-
-#endif
-

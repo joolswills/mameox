@@ -21,7 +21,7 @@
 				Optimization="0"
 				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories=".\Includes;..\MAMEoX\Includes;..\MAME\src;..\;&quot;$(XDK)\Samples\XBox\Common\Include&quot;;&quot;..\libsmb++\src&quot;"
-				PreprocessorDefinitions="_DEBUG;_XBOX"
+				PreprocessorDefinitions="_DEBUG;_XBOX;DEBUG_KEYBOARD"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="5"
@@ -36,7 +36,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="xapilibd.lib d3d8d.lib d3dx8d.lib xgraphicsd.lib dsoundd.lib dmusicd.lib xnetd.lib xboxkrnl.lib libsmbd.lib"
+				AdditionalDependencies="xkbd.lib xapilibd.lib d3d8d.lib d3dx8d.lib xgraphicsd.lib dsoundd.lib dmusicd.lib xnetd.lib xboxkrnl.lib libsmbd.lib"
 				OutputFile="../MAMEoX/Debug/MAMEoXLauncher.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;..\libsmb++\Debug&quot;"
@@ -83,7 +83,7 @@
 				OmitFramePointers="TRUE"
 				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories=".\Includes;..\MAMEoX\Includes;..\MAME\src;..\;&quot;$(XDK)\Samples\XBox\Common\Include&quot;;&quot;..\libsmb++\src&quot;"
-				PreprocessorDefinitions="NDEBUG;_XBOX"
+				PreprocessorDefinitions="NDEBUG;_XBOX;DEBUG_KEYBOARD"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
 				RuntimeLibrary="4"
@@ -100,7 +100,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/LTCG"
-				AdditionalDependencies="xapilib.lib d3d8.lib d3dx8.lib xgraphics.lib dsound.lib dmusic.lib xboxkrnl.lib Xnet.lib libsmb.lib"
+				AdditionalDependencies="xkbd.lib xapilib.lib d3d8.lib d3dx8.lib xgraphics.lib dsound.lib dmusic.lib xboxkrnl.lib Xnet.lib libsmb.lib"
 				OutputFile="../MAMEoX/Release/MAMEoXLauncher.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;..\libsmb++\Release&quot;"
@@ -234,7 +234,13 @@
 				RelativePath="Includes\Help.h">
 			</File>
 			<File
+				RelativePath="..\MAMEoX\Includes\InputDevice.h">
+			</File>
+			<File
 				RelativePath="..\MAMEoX\Includes\InputManager.h">
+			</File>
+			<File
+				RelativePath="..\MAMEoX\Includes\Keyboard.h">
 			</File>
 			<File
 				RelativePath=".\Includes\LightgunCalibrator.h">

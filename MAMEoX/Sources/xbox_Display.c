@@ -5,14 +5,12 @@
 	*/
 
 //= I N C L U D E S ====================================================
-#include <Xtl.h>
+#include "MAMEoX.h"
 
 #include "osd_cpu.h"
 #include "osdepend.h"
 #include "driver.h"
 #include "usrintrf.h"
-
-#include "MAMEoX.h"
 
 #include "xbox_Direct3DRenderer.h"
 #include "DebugLogger.h"

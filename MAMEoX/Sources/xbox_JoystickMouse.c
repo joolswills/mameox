@@ -7,7 +7,7 @@
 	*/
 
 //= I N C L U D E S ====================================================
-#include <Xtl.h>
+#include "MAMEoX.h"
 #include <assert.h>
 #include <stdio.h>
 
@@ -15,7 +15,6 @@
 #include "osdepend.h"
 #include "inptport.h"
 
-#include "MAMEoX.h"
 #include "DebugLogger.h"
 
 //= D E F I N E S ======================================================

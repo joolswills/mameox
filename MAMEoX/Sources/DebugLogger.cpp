@@ -1,7 +1,7 @@
 
 
 //= I N C L U D E S ==================================================
-#include <xtl.h>
+#include "MAMEoX.h"
 #include <xbdm.h>
 #include <stdio.h>
 #include <stdarg.h>

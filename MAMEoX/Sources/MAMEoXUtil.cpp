@@ -6,9 +6,8 @@
 
 
 //= I N C L U D E S ====================================================
-#include <Xtl.h>
-
 #include "MAMEoX.h"
+
 #include "InputManager.h"
 #include "GraphicsManager.h"
 #include "DebugLogger.h"

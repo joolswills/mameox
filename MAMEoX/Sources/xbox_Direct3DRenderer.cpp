@@ -6,12 +6,11 @@
 	*/
 
 //= I N C L U D E S ====================================================
-#include <Xtl.h>
+#include "MAMEoX.h"
 
 #include <stdarg.h>
 #include <stdio.h>
 
-#include "MAMEoX.h"
 #include "DebugLogger.h"
 #include "GraphicsManager.h"
 #include "xbox_Direct3DRenderer.h"

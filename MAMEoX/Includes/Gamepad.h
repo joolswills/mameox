@@ -7,9 +7,7 @@
 #pragma once
 
 //= I N C L U D E S ===========================================================
-#include <Xtl.h>
-#include "osd_cpu.h"
-
+#include "InputDevice.h"
 
 //= D E F I N E S =============================================================
 #define BUTTON_PRESS_THRESHOLD      50    //!< Press threshold for analog buttons
@@ -65,7 +63,7 @@ class CInputManager;
   //! \class    CGamepad
   //! \brief    Simple wrapper around the XINPUT_STATE and XINPUT_CAPABILITIES
   //!           structures, providing utility functions such as IsButtonPressed
-class CGamepad
+class CGamepad : public CInputDevice
 {
 public:
 		//------------------------------------------------------
@@ -88,14 +86,6 @@ public:
                 CInputManager *inputManager );
 
 		//------------------------------------------------------
-		//	IsConnected
-    //! \brief    Checks to see if this gamepad is connected
-    //!
-    //! \return   BOOL - TRUE if the gamepad is connected
-		//------------------------------------------------------
-  BOOL IsConnected( void ) const;
-
-		//------------------------------------------------------
 		//	IsMUConnected
     //! \brief    Returns TRUE if a memory unit is inserted
     //!           in the requested slot
@@ -105,6 +95,13 @@ public:
     //! \return   BOOL - TRUE if an MU is inserted
 		//------------------------------------------------------
   BOOL IsMUConnected( BOOL bottomMU = FALSE ) const;
+
+		//------------------------------------------------------
+		//	PollDevice
+    //! \brief    Poll the associated physical device for
+    //!           its current state
+		//------------------------------------------------------
+	virtual void PollDevice( void );
 
 		//------------------------------------------------------
 		//	GetAnalogButtonState
@@ -201,35 +198,6 @@ public:
 		//------------------------------------------------------
   void WaitForNoInput( void );
 
-		//------------------------------------------------------
-		//	SetGamepadFeedbackState
-    //! Send a force feedback effect to a gamepad
-    //!
-    //! \param  feedback - Struct describing the effect to send
-		//------------------------------------------------------
-	inline BOOL SetGamepadFeedbackState( const XINPUT_FEEDBACK &feedback ) {
-
-			// Make sure an op isn't already in progress
-		if( m_feedback.Header.dwStatus == ERROR_IO_PENDING )
-			return FALSE;
-
-			// Store the var to ensure persistency (XInputSetState is async)
-		m_feedback = feedback;
-		if( m_gamepadDeviceHandle )
-		{
-			if( XInputSetState( m_gamepadDeviceHandle, &m_feedback ) != ERROR_IO_PENDING )
-				return FALSE;
-		}
-
-		return TRUE;
-	}
-
-		//------------------------------------------------------
-		//	PollDevice
-    //! \brief    Poll the associated physical device for
-    //!           its current state
-		//------------------------------------------------------
-	void PollDevice( void );
 
 		//------------------------------------------------------
 		//	AttachRemoveDevices
@@ -302,19 +270,7 @@ public:
 		//------------------------------------------------------
 	inline void AttachRemoveMemUnitDevicePair( void );
 
-  CInputManager       *m_inputManager;
-
-	DWORD               m_portMask, m_portName;
 	DWORD               m_topMemPortMask, m_bottomMemPortMask;
-
-  DWORD               m_gamepadIndex;             //!<  Index of this gamepad
-	HANDLE					    m_gamepadDeviceHandle;	    //!<	Input handles for gamepads
 	HANDLE					    m_memunitDeviceHandles[2];	//!<	Input handles for mem units
-
-
-	XINPUT_STATE		    m_state;	      //!<	Gamepad device state struct
-	XINPUT_FEEDBACK     m_feedback;			//!<	Feedback struct
-  XINPUT_CAPABILITIES m_caps;         //!<  Gamepad device capabilities
-
 };
 

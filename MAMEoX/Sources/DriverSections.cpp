@@ -7,11 +7,10 @@
   */
 
 //= I N C L U D E S ====================================================
-#include <Xtl.h>
+#include "MAMEoX.h"
 #include <stdio.h>
 #include <map>
 #include <string>
-#include "MAMEoX.h"
 #include "DebugLogger.h"
 extern "C" {
 #include "osd_cpu.h"
@@ -194,6 +193,7 @@ BOOL UnloadDriverSections( void )
         (*i).first == "src\\drivers\\arcadecl.c" ||
         (*i).first == "src\\drivers\\asuka.c" ||
         (*i).first == "src\\drivers\\opwolf.c" ||
+        (*i).first == "src\\drivers\\rainbow.c" ||
         (*i).first == "src\\drivers\\marineb.c" ||
         (*i).first == "src\\drivers\\bwidow.c" ||
         (*i).first == "src\\drivers\\pkunwar.c" ||
@@ -620,6 +620,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\omegaf.c", "467" );
   RegisterSectionName( "src\\drivers\\omegrace.c", "468" );
   RegisterSectionName( "src\\drivers\\oneshot.c", "469" );
+  RegisterSectionName( "src\\drivers\\opwolf.c", "10" );
   RegisterSectionName( "src\\drivers\\orbit.c", "471" );
   RegisterSectionName( "src\\drivers\\othldrby.c", "472" );
   RegisterSectionName( "src\\drivers\\othunder.c", "473" );
@@ -669,7 +670,6 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\raiden.c", "517" );
   RegisterSectionName( "src\\drivers\\raiden2.c", "518" );
   RegisterSectionName( "src\\drivers\\raiders5.c", "519" );
-  RegisterSectionName( "src\\drivers\\rainbow.c", "520" );
   RegisterSectionName( "src\\drivers\\rallyx.c", "17" );
   RegisterSectionName( "src\\drivers\\rampart.c", "9" );
   RegisterSectionName( "src\\drivers\\rastan.c", "10" );
@@ -895,7 +895,7 @@ static void RegisterDriverSectionNames( void )
   RegisterSectionName( "src\\drivers\\zerozone.c", "743" );
   RegisterSectionName( "src\\drivers\\zn.c", "744" );
   RegisterSectionName( "src\\drivers\\zodiack.c", "745" );
-  RegisterSectionName( "src\\drivers\\opwolf.c", "10" );
+  RegisterSectionName( "src\\drivers\\rainbow.c", "10" );
 }
 #pragma code_seg()
 #pragma data_seg()

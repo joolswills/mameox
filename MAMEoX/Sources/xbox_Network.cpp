@@ -9,12 +9,13 @@
 #include "osd_cpu.h"
 
 #include "DebugLogger.h"
+#include "MAMEoX.h"
+
 #include "Undocumented.h"
 #include "System_IniFile.h"
 
 #include "xbox_Network.h"
 
-#include <XTL.h>
 
 
 

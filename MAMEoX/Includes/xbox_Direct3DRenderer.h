@@ -8,7 +8,7 @@
 
 //= I N C L U D E S ====================================================
 #ifdef __cplusplus
-#include <Xtl.h>
+#include "MAMEoX.h"
 #include "GraphicsManager.h"
 #include "XBFont.h"
 

@@ -6,8 +6,8 @@
 
 
 //= I N C L U D E S ====================================================
-#include <Xtl.h>
-#include <XGraphics.h>
+#include "MAMEoX.h"
+
 #include <stdarg.h>
 #include <stdio.h>
 #include <crtdbg.h>
@@ -16,8 +16,7 @@
 #include <xbdm.h>
 #endif
 
-#include "MAMEoX.h"
-#include "Resource.h"
+//#include "Resource.h"
 
 #include "InputManager.h"
 #include "GraphicsManager.h"

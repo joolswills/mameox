@@ -1,3 +1,4 @@
+#if 0
 /**
 	* \file		Gamepad.cpp
   *         Simple wrapper around the XINPUT_STATE and XINPUT_CAPABILITIES
@@ -26,8 +27,7 @@
 //------------------------------------------------------
 CGamepad::CGamepad( void ) : CInputDevice()
 {
-	m_topMemPortMask = m_bottomMemPortMask = 0;
-	m_memunitDeviceHandles[0] = m_memunitDeviceHandles[1] = NULL;
+	memset( this, NULL, sizeof(*this) );
 }
 
 //------------------------------------------------------
@@ -467,5 +467,5 @@ void CGamepad::AttachRemoveMemUnitDevicePair( void )
 	}
 }
 
-
+#endif
 

@@ -8,7 +8,6 @@
 #ifdef __cplusplus
 
 //= I N C L U D E S ===========================================================
-#include <Xtl.h>
 #include "MAMEoX.h"
 #include "osd_cpu.h"
 #include "xbfont.h"

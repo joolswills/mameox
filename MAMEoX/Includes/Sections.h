@@ -7,7 +7,7 @@
   */
 #pragma once
 //= I N C L U D E S ====================================================
-#include <XTL.h>
+#include "MAMEoX.h"
 #ifdef __cplusplus
 extern "C" {
 #endif

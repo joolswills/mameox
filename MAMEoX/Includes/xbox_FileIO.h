@@ -7,7 +7,7 @@
 
 //= I N C L U D E S ====================================================
 
-#include <xtl.h>
+#include "MAMEoX.h"
 #include "osdepend.h"
 #include "osd_cpu.h"
 #include "fileio.h"

@@ -4,7 +4,7 @@
 #define _DEBUGLOGGER_H__
 
 //= I N C L U D E S ==================================================
-#include <xtl.h>
+#include "MAMEoX.h"
 #include <crtdbg.h>
 
 

@@ -1,7 +1,7 @@
 #pragma once
 
+#include "MAMEoX.h"
 #include "smb++.h"
-#include <XTL.h>
 #include "StdString.h"
 #include <Vector>
 #include <StdIO.h>
