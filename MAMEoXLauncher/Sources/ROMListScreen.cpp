@@ -35,12 +35,16 @@ extern "C" {
 
 #define HIGHLIGHTBAR_COLOR    D3DCOLOR_ARGB( 180, 175, 179, 212 )
 #define SCROLLICON_COLOR      D3DCOLOR_XRGB( 255, 255, 255 )
+#define SPACER_COLOR          D3DCOLOR_XRGB( 255, 255, 255 )
 
 #define TITLEBAR_ROW          101
 #define FIRSTDATA_ROW         125
 
 #define HIGHLIGHTBAR_LEFT     34
 #define HIGHLIGHTBAR_RIGHT    607
+
+#define SPACER_WIDTH          2
+
 #define NAME_COLUMN           42
 #define MANUFACTURER_COLUMN   305
 #define YEAR_COLUMN           437
@@ -1877,6 +1881,36 @@ void CROMListScreen::DrawVerboseList( void )
     m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, HIGHLIGHTBAR_COLOR );
     m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, HIGHLIGHTBAR_LEFT, FIRSTDATA_ROW + selectedItemYPos + textHeight, 1.0f, 1.0f );
   m_displayDevice->End();
+
+
+    // Draw the vertical spacers
+  m_displayDevice->Begin( D3DPT_QUADLIST );
+
+    #define DRAWSPACER( spacerLeft ) { \
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SPACER_COLOR ); \
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft), LISTPOS_TOP, 1.0f, 1.0f ); \
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SPACER_COLOR ); \
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft) + SPACER_WIDTH, LISTPOS_TOP, 1.0f, 1.0f ); \
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SPACER_COLOR ); \
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft) + SPACER_WIDTH, LISTPOS_BOTTOM, 1.0f, 1.0f ); \
+      m_displayDevice->SetVertexDataColor( D3DVSDE_DIFFUSE, SPACER_COLOR ); \
+      m_displayDevice->SetVertexData4f( D3DVSDE_VERTEX, (spacerLeft), LISTPOS_BOTTOM, 1.0f, 1.0f ); \
+    }
+
+      // Manufacturer
+    DRAWSPACER( MANUFACTURER_COLUMN - 4 )
+
+      // Year column
+    DRAWSPACER( YEAR_COLUMN - 4 )
+
+      // Number of players column
+    DRAWSPACER( NUMPLAYERS_COLUMN - 4 )
+
+      // Clone column
+    DRAWSPACER( CLONE_COLUMN - 4 )
+
+  m_displayDevice->End();
+
 
 	m_fontSet.SmallThinFont().Begin();
 
