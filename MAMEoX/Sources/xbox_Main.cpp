@@ -256,13 +256,10 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
   va_end( arg );
 
 	PRINTMSG( T_ERROR, "Die: %s", buf );
-  RequireController( 0 );
-  CGamepad *gp = g_inputManager.GetGamepad( 0 );
 	g_inputManager.WaitForNoButton( 0 );
 
-  while( !gp->IsAnyButtonPressed() )
+  while( !g_inputManager.IsAnyButtonPressed() )
   {
-    RequireController( 0 );
 		  // Display the error to the user
 	  pD3DDevice->Clear(	0L,																// Count
 											  NULL,															// Rects to clear
@@ -290,9 +287,8 @@ static void Die( LPDIRECT3DDEVICE8 pD3DDevice, const char *fmt, ... )
   ShowLoadingScreen( pD3DDevice );
   DWORD retVal = XLaunchNewImage( "D:\\default.xbe", &g_launchData );
 
-  while( !gp->IsAnyButtonPressed() )
+  while( !g_inputManager.IsAnyButtonPressed() )
   {
-    RequireController( 0 );
 		  // Display the error to the user
 	  pD3DDevice->Clear(	0L,																// Count
 											  NULL,															// Rects to clear
@@ -637,9 +633,8 @@ int fatalerror( const char *fmt, ... )
 
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
 
-  while( !gp->IsAnyButtonPressed() )
+  while( !g_inputManager.IsAnyButtonPressed() )
   {
-    RequireController( 0 );
 		  // Display the error to the user
 	  pD3DDevice->Clear(	0L,																// Count
 											  NULL,															// Rects to clear
