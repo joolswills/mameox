@@ -65,6 +65,23 @@ X) This step is currently unnecessary, as the source distribution includes the
     set does not execute debug files.
 
 
+3) Create a directory for the program on your box. The directory must match
+   the following structure:
+
+  - <Your Directory Name>
+    - general  : This is where cfg files and whatnot are stored
+    - ini : This is where ini files are stored
+    - Media
+      > Font.xpr : This should be taken from the SDK. The project currently
+                   has no fonts (or graphics in general, see "Contributions")
+    - roms : This is where you should put all of your ROM files/directories
+      - backup : Directory where "deleted" ROMs are stored
+    - samples : This is where you should put all of your audio sample zips
+    default.xbe : The executable file
+
+   UPDATE: You shouldn't have to actually create any of the sub directories (except
+   roms and roms/backup) as of v0.5a. They will be automatically created when you
+   first run MAMEoX.
 
 
 ---------------------------------------------------------------------------
@@ -142,20 +159,7 @@ Chances are good that you'll see some compile errors:
 	has not been added to the linked list.
 
 
-  Create a directory for the program on your box. The directory must match
-  the following structure:
-
-  - <Your Directory Name>
-    - general  : This is where cfg files and whatnot are stored
-    - ini : This is where ini files are stored
-    - Media
-      > Font.xpr : This should be taken from the SDK. The project currently
-                   has no fonts (or graphics in general, see "Contributions")
-    - roms : This is where you should put all of your ROM files/directories
-      - backup : Directory where "deleted" ROMs are stored
-    - samples : This is where you should put all of your audio sample zips
-    default.xbe : The executable file
-
+ 
 
 
 ---------------------------------------------------------------------------
