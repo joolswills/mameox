@@ -1,11 +1,11 @@
-#pragma code_seg("C249")
-#pragma data_seg("D249")
-#pragma bss_seg("B249")
-#pragma const_seg("K249")
-#pragma comment(linker, "/merge:D249=249")
-#pragma comment(linker, "/merge:C249=249")
-#pragma comment(linker, "/merge:B249=249")
-#pragma comment(linker, "/merge:K249=249")
+#pragma code_seg("C262")
+#pragma data_seg("D262")
+#pragma bss_seg("B262")
+#pragma const_seg("K262")
+#pragma comment(linker, "/merge:D262=262")
+#pragma comment(linker, "/merge:C262=262")
+#pragma comment(linker, "/merge:B262=262")
+#pragma comment(linker, "/merge:K262=262")
 /*
 Dorachan (Dora-Chan ?) (c) 1980 Craul Denshi
 Driver by Tomasz Slanina

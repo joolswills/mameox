@@ -1,11 +1,11 @@
-#pragma code_seg("C234")
-#pragma data_seg("D234")
-#pragma bss_seg("B234")
-#pragma const_seg("K234")
-#pragma comment(linker, "/merge:D234=234")
-#pragma comment(linker, "/merge:C234=234")
-#pragma comment(linker, "/merge:B234=234")
-#pragma comment(linker, "/merge:K234=234")
+#pragma code_seg("C247")
+#pragma data_seg("D247")
+#pragma bss_seg("B247")
+#pragma const_seg("K247")
+#pragma comment(linker, "/merge:D247=247")
+#pragma comment(linker, "/merge:C247=247")
+#pragma comment(linker, "/merge:B247=247")
+#pragma comment(linker, "/merge:K247=247")
 /***************************************************************************
 
 Cobra Command:

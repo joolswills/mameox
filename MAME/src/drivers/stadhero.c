@@ -1,11 +1,11 @@
-#pragma code_seg("C652")
-#pragma data_seg("D652")
-#pragma bss_seg("B652")
-#pragma const_seg("K652")
-#pragma comment(linker, "/merge:D652=652")
-#pragma comment(linker, "/merge:C652=652")
-#pragma comment(linker, "/merge:B652=652")
-#pragma comment(linker, "/merge:K652=652")
+#pragma code_seg("C663")
+#pragma data_seg("D663")
+#pragma bss_seg("B663")
+#pragma const_seg("K663")
+#pragma comment(linker, "/merge:D663=663")
+#pragma comment(linker, "/merge:C663=663")
+#pragma comment(linker, "/merge:B663=663")
+#pragma comment(linker, "/merge:K663=663")
 /***************************************************************************
 
 	Stadium Hero (Japan)			(c) 1988 Data East Corporation

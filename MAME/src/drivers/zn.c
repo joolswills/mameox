@@ -1,11 +1,11 @@
-#pragma code_seg("C797")
-#pragma data_seg("D797")
-#pragma bss_seg("B797")
-#pragma const_seg("K797")
-#pragma comment(linker, "/merge:D797=797")
-#pragma comment(linker, "/merge:C797=797")
-#pragma comment(linker, "/merge:B797=797")
-#pragma comment(linker, "/merge:K797=797")
+#pragma code_seg("C808")
+#pragma data_seg("D808")
+#pragma bss_seg("B808")
+#pragma const_seg("K808")
+#pragma comment(linker, "/merge:D808=808")
+#pragma comment(linker, "/merge:C808=808")
+#pragma comment(linker, "/merge:B808=808")
+#pragma comment(linker, "/merge:K808=808")
 /***************************************************************************
 
   Sony ZN1/ZN2 - Arcade PSX Hardware

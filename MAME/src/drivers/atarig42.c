@@ -1,11 +1,11 @@
-#pragma code_seg("C123")
-#pragma data_seg("D123")
-#pragma bss_seg("B123")
-#pragma const_seg("K123")
-#pragma comment(linker, "/merge:D123=123")
-#pragma comment(linker, "/merge:C123=123")
-#pragma comment(linker, "/merge:B123=123")
-#pragma comment(linker, "/merge:K123=123")
+#pragma code_seg("C136")
+#pragma data_seg("D136")
+#pragma bss_seg("B136")
+#pragma const_seg("K136")
+#pragma comment(linker, "/merge:D136=136")
+#pragma comment(linker, "/merge:C136=136")
+#pragma comment(linker, "/merge:B136=136")
+#pragma comment(linker, "/merge:K136=136")
 /***************************************************************************
 
 	Atari G42 hardware

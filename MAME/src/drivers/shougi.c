@@ -1,11 +1,11 @@
-#pragma code_seg("C608")
-#pragma data_seg("D608")
-#pragma bss_seg("B608")
-#pragma const_seg("K608")
-#pragma comment(linker, "/merge:D608=608")
-#pragma comment(linker, "/merge:C608=608")
-#pragma comment(linker, "/merge:B608=608")
-#pragma comment(linker, "/merge:K608=608")
+#pragma code_seg("C619")
+#pragma data_seg("D619")
+#pragma bss_seg("B619")
+#pragma const_seg("K619")
+#pragma comment(linker, "/merge:D619=619")
+#pragma comment(linker, "/merge:C619=619")
+#pragma comment(linker, "/merge:B619=619")
+#pragma comment(linker, "/merge:K619=619")
 /***************************************************************************
 
 Driver by Jarek Burczynski, started by Tomasz Slanina  dox@space.pl

@@ -1,11 +1,11 @@
-#pragma code_seg("C277")
-#pragma data_seg("D277")
-#pragma bss_seg("B277")
-#pragma const_seg("K277")
-#pragma comment(linker, "/merge:D277=277")
-#pragma comment(linker, "/merge:C277=277")
-#pragma comment(linker, "/merge:B277=277")
-#pragma comment(linker, "/merge:K277=277")
+#pragma code_seg("C290")
+#pragma data_seg("D290")
+#pragma bss_seg("B290")
+#pragma const_seg("K290")
+#pragma comment(linker, "/merge:D290=290")
+#pragma comment(linker, "/merge:C290=290")
+#pragma comment(linker, "/merge:B290=290")
+#pragma comment(linker, "/merge:K290=290")
 /***************************************************************************
 
 Finalizer (GX523) (c) 1985 Konami

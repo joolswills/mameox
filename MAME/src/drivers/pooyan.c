@@ -1,11 +1,11 @@
-#pragma code_seg("C16")
-#pragma data_seg("D16")
-#pragma bss_seg("B16")
-#pragma const_seg("K16")
-#pragma comment(linker, "/merge:D16=16")
-#pragma comment(linker, "/merge:C16=16")
-#pragma comment(linker, "/merge:B16=16")
-#pragma comment(linker, "/merge:K16=16")
+#pragma code_seg("C28")
+#pragma data_seg("D28")
+#pragma bss_seg("B28")
+#pragma const_seg("K28")
+#pragma comment(linker, "/merge:D28=28")
+#pragma comment(linker, "/merge:C28=28")
+#pragma comment(linker, "/merge:B28=28")
+#pragma comment(linker, "/merge:K28=28")
 /***************************************************************************
 
 Notes:

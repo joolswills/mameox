@@ -1,11 +1,11 @@
-#pragma code_seg("C406")
-#pragma data_seg("D406")
-#pragma bss_seg("B406")
-#pragma const_seg("K406")
-#pragma comment(linker, "/merge:D406=406")
-#pragma comment(linker, "/merge:C406=406")
-#pragma comment(linker, "/merge:B406=406")
-#pragma comment(linker, "/merge:K406=406")
+#pragma code_seg("C4")
+#pragma data_seg("D4")
+#pragma bss_seg("B4")
+#pragma const_seg("K4")
+#pragma comment(linker, "/merge:D4=4")
+#pragma comment(linker, "/merge:C4=4")
+#pragma comment(linker, "/merge:B4=4")
+#pragma comment(linker, "/merge:K4=4")
 /***************************************************************************
 
   Mad Motor video emulation - Bryan McPhail, mish@tendril.co.uk

@@ -1,11 +1,11 @@
-#pragma code_seg("C145")
-#pragma data_seg("D145")
-#pragma bss_seg("B145")
-#pragma const_seg("K145")
-#pragma comment(linker, "/merge:D145=145")
-#pragma comment(linker, "/merge:C145=145")
-#pragma comment(linker, "/merge:B145=145")
-#pragma comment(linker, "/merge:K145=145")
+#pragma code_seg("C158")
+#pragma data_seg("D158")
+#pragma bss_seg("B158")
+#pragma const_seg("K158")
+#pragma comment(linker, "/merge:D158=158")
+#pragma comment(linker, "/merge:C158=158")
+#pragma comment(linker, "/merge:B158=158")
+#pragma comment(linker, "/merge:K158=158")
 #include "driver.h"
 #include "cpu/m6809/m6809.h"
 #include "machine/6522via.h"

@@ -1,11 +1,11 @@
-#pragma code_seg("C233")
-#pragma data_seg("D233")
-#pragma bss_seg("B233")
-#pragma const_seg("K233")
-#pragma comment(linker, "/merge:D233=233")
-#pragma comment(linker, "/merge:C233=233")
-#pragma comment(linker, "/merge:B233=233")
-#pragma comment(linker, "/merge:K233=233")
+#pragma code_seg("C4")
+#pragma data_seg("D4")
+#pragma bss_seg("B4")
+#pragma const_seg("K4")
+#pragma comment(linker, "/merge:D4=4")
+#pragma comment(linker, "/merge:C4=4")
+#pragma comment(linker, "/merge:B4=4")
+#pragma comment(linker, "/merge:K4=4")
 /***************************************************************************
 
   Dec0 Video emulation - Bryan McPhail, mish@tendril.co.uk

@@ -1,11 +1,11 @@
-#pragma code_seg("C24")
-#pragma data_seg("D24")
-#pragma bss_seg("B24")
-#pragma const_seg("K24")
-#pragma comment(linker, "/merge:D24=24")
-#pragma comment(linker, "/merge:C24=24")
-#pragma comment(linker, "/merge:B24=24")
-#pragma comment(linker, "/merge:K24=24")
+#pragma code_seg("C29")
+#pragma data_seg("D29")
+#pragma bss_seg("B29")
+#pragma const_seg("K29")
+#pragma comment(linker, "/merge:D29=29")
+#pragma comment(linker, "/merge:C29=29")
+#pragma comment(linker, "/merge:B29=29")
+#pragma comment(linker, "/merge:K29=29")
 #define MW_DEBUG     0
 #define MW_SKIPIDLE  1
 /**************************************************************************

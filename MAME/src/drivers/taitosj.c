@@ -1,11 +1,11 @@
-#pragma code_seg("C691")
-#pragma data_seg("D691")
-#pragma bss_seg("B691")
-#pragma const_seg("K691")
-#pragma comment(linker, "/merge:D691=691")
-#pragma comment(linker, "/merge:C691=691")
-#pragma comment(linker, "/merge:B691=691")
-#pragma comment(linker, "/merge:K691=691")
+#pragma code_seg("C702")
+#pragma data_seg("D702")
+#pragma bss_seg("B702")
+#pragma const_seg("K702")
+#pragma comment(linker, "/merge:D702=702")
+#pragma comment(linker, "/merge:C702=702")
+#pragma comment(linker, "/merge:B702=702")
+#pragma comment(linker, "/merge:K702=702")
 /***************************************************************************
 
 Taito SJ system memory map

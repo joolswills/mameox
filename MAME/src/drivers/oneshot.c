@@ -1,11 +1,11 @@
-#pragma code_seg("C501")
-#pragma data_seg("D501")
-#pragma bss_seg("B501")
-#pragma const_seg("K501")
-#pragma comment(linker, "/merge:D501=501")
-#pragma comment(linker, "/merge:C501=501")
-#pragma comment(linker, "/merge:B501=501")
-#pragma comment(linker, "/merge:K501=501")
+#pragma code_seg("C513")
+#pragma data_seg("D513")
+#pragma bss_seg("B513")
+#pragma const_seg("K513")
+#pragma comment(linker, "/merge:D513=513")
+#pragma comment(linker, "/merge:C513=513")
+#pragma comment(linker, "/merge:B513=513")
+#pragma comment(linker, "/merge:K513=513")
 /* One Shot One Kill & Maddonna
    Driver by David Haywood and Paul Priest
    Dip Switches and Inputs by Stephane Humbert

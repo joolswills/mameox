@@ -1,11 +1,11 @@
-#pragma code_seg("C530")
-#pragma data_seg("D530")
-#pragma bss_seg("B530")
-#pragma const_seg("K530")
-#pragma comment(linker, "/merge:D530=530")
-#pragma comment(linker, "/merge:C530=530")
-#pragma comment(linker, "/merge:B530=530")
-#pragma comment(linker, "/merge:K530=530")
+#pragma code_seg("C542")
+#pragma data_seg("D542")
+#pragma bss_seg("B542")
+#pragma const_seg("K542")
+#pragma comment(linker, "/merge:D542=542")
+#pragma comment(linker, "/merge:C542=542")
+#pragma comment(linker, "/merge:B542=542")
+#pragma comment(linker, "/merge:K542=542")
 /***************************************************************************
 
 	P&P Marketing Police Trainer hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C504")
-#pragma data_seg("D504")
-#pragma bss_seg("B504")
-#pragma const_seg("K504")
-#pragma comment(linker, "/merge:D504=504")
-#pragma comment(linker, "/merge:C504=504")
-#pragma comment(linker, "/merge:B504=504")
-#pragma comment(linker, "/merge:K504=504")
+#pragma code_seg("C516")
+#pragma data_seg("D516")
+#pragma bss_seg("B516")
+#pragma const_seg("K516")
+#pragma comment(linker, "/merge:D516=516")
+#pragma comment(linker, "/merge:C516=516")
+#pragma comment(linker, "/merge:B516=516")
+#pragma comment(linker, "/merge:K516=516")
 /***************************************************************************
 
 Othello Derby

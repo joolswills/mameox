@@ -1,11 +1,11 @@
-#pragma code_seg("C617")
-#pragma data_seg("D617")
-#pragma bss_seg("B617")
-#pragma const_seg("K617")
-#pragma comment(linker, "/merge:D617=617")
-#pragma comment(linker, "/merge:C617=617")
-#pragma comment(linker, "/merge:B617=617")
-#pragma comment(linker, "/merge:K617=617")
+#pragma code_seg("C628")
+#pragma data_seg("D628")
+#pragma bss_seg("B628")
+#pragma const_seg("K628")
+#pragma comment(linker, "/merge:D628=628")
+#pragma comment(linker, "/merge:C628=628")
+#pragma comment(linker, "/merge:B628=628")
+#pragma comment(linker, "/merge:K628=628")
 /***************************************************************************
 
 	Atari Sky Diver hardware

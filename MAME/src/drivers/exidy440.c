@@ -1,11 +1,11 @@
-#pragma code_seg("C268")
-#pragma data_seg("D268")
-#pragma bss_seg("B268")
-#pragma const_seg("K268")
-#pragma comment(linker, "/merge:D268=268")
-#pragma comment(linker, "/merge:C268=268")
-#pragma comment(linker, "/merge:B268=268")
-#pragma comment(linker, "/merge:K268=268")
+#pragma code_seg("C281")
+#pragma data_seg("D281")
+#pragma bss_seg("B281")
+#pragma const_seg("K281")
+#pragma comment(linker, "/merge:D281=281")
+#pragma comment(linker, "/merge:C281=281")
+#pragma comment(linker, "/merge:B281=281")
+#pragma comment(linker, "/merge:K281=281")
 /***************************************************************************
 
 	Exidy 440 hardware

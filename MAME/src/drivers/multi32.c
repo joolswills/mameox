@@ -1,11 +1,11 @@
-#pragma code_seg("C3")
-#pragma data_seg("D3")
-#pragma bss_seg("B3")
-#pragma const_seg("K3")
-#pragma comment(linker, "/merge:D3=3")
-#pragma comment(linker, "/merge:C3=3")
-#pragma comment(linker, "/merge:B3=3")
-#pragma comment(linker, "/merge:K3=3")
+#pragma code_seg("C35")
+#pragma data_seg("D35")
+#pragma bss_seg("B35")
+#pragma const_seg("K35")
+#pragma comment(linker, "/merge:D35=35")
+#pragma comment(linker, "/merge:C35=35")
+#pragma comment(linker, "/merge:B35=35")
+#pragma comment(linker, "/merge:K35=35")
 /*
 	Sega Multi System 32 hardware
 

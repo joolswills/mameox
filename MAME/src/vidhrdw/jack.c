@@ -1,11 +1,11 @@
-#pragma code_seg("C358")
-#pragma data_seg("D358")
-#pragma bss_seg("B358")
-#pragma const_seg("K358")
-#pragma comment(linker, "/merge:D358=358")
-#pragma comment(linker, "/merge:C358=358")
-#pragma comment(linker, "/merge:B358=358")
-#pragma comment(linker, "/merge:K358=358")
+#pragma code_seg("C371")
+#pragma data_seg("D371")
+#pragma bss_seg("B371")
+#pragma const_seg("K371")
+#pragma comment(linker, "/merge:D371=371")
+#pragma comment(linker, "/merge:C371=371")
+#pragma comment(linker, "/merge:B371=371")
+#pragma comment(linker, "/merge:K371=371")
 /***************************************************************************
 
   vidhrdw/jack.c

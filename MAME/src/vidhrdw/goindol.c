@@ -1,11 +1,11 @@
-#pragma code_seg("C317")
-#pragma data_seg("D317")
-#pragma bss_seg("B317")
-#pragma const_seg("K317")
-#pragma comment(linker, "/merge:D317=317")
-#pragma comment(linker, "/merge:C317=317")
-#pragma comment(linker, "/merge:B317=317")
-#pragma comment(linker, "/merge:K317=317")
+#pragma code_seg("C330")
+#pragma data_seg("D330")
+#pragma bss_seg("B330")
+#pragma const_seg("K330")
+#pragma comment(linker, "/merge:D330=330")
+#pragma comment(linker, "/merge:C330=330")
+#pragma comment(linker, "/merge:B330=330")
+#pragma comment(linker, "/merge:K330=330")
 /***************************************************************************
   Goindol
 

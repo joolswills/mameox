@@ -1,11 +1,11 @@
-#pragma code_seg("C450")
-#pragma data_seg("D450")
-#pragma bss_seg("B450")
-#pragma const_seg("K450")
-#pragma comment(linker, "/merge:D450=450")
-#pragma comment(linker, "/merge:C450=450")
-#pragma comment(linker, "/merge:B450=450")
-#pragma comment(linker, "/merge:K450=450")
+#pragma code_seg("C462")
+#pragma data_seg("D462")
+#pragma bss_seg("B462")
+#pragma const_seg("K462")
+#pragma comment(linker, "/merge:D462=462")
+#pragma comment(linker, "/merge:C462=462")
+#pragma comment(linker, "/merge:B462=462")
+#pragma comment(linker, "/merge:K462=462")
 /***************************************************************************
 
  Wild West C.O.W.boys of Moo Mesa

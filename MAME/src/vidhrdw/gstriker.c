@@ -1,11 +1,11 @@
-#pragma code_seg("C327")
-#pragma data_seg("D327")
-#pragma bss_seg("B327")
-#pragma const_seg("K327")
-#pragma comment(linker, "/merge:D327=327")
-#pragma comment(linker, "/merge:C327=327")
-#pragma comment(linker, "/merge:B327=327")
-#pragma comment(linker, "/merge:K327=327")
+#pragma code_seg("C340")
+#pragma data_seg("D340")
+#pragma bss_seg("B340")
+#pragma const_seg("K340")
+#pragma comment(linker, "/merge:D340=340")
+#pragma comment(linker, "/merge:C340=340")
+#pragma comment(linker, "/merge:B340=340")
+#pragma comment(linker, "/merge:K340=340")
 #include "driver.h"
 #include "gstriker.h"
 

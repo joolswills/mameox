@@ -1,11 +1,11 @@
-#pragma code_seg("C376")
-#pragma data_seg("D376")
-#pragma bss_seg("B376")
-#pragma const_seg("K376")
-#pragma comment(linker, "/merge:D376=376")
-#pragma comment(linker, "/merge:C376=376")
-#pragma comment(linker, "/merge:B376=376")
-#pragma comment(linker, "/merge:K376=376")
+#pragma code_seg("C29")
+#pragma data_seg("D29")
+#pragma bss_seg("B29")
+#pragma const_seg("K29")
+#pragma comment(linker, "/merge:D29=29")
+#pragma comment(linker, "/merge:C29=29")
+#pragma comment(linker, "/merge:B29=29")
+#pragma comment(linker, "/merge:K29=29")
 /***************************************************************************
 
   Konami GQ System - Arcade PSX Hardware

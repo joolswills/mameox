@@ -1,11 +1,11 @@
-#pragma code_seg("C607")
-#pragma data_seg("D607")
-#pragma bss_seg("B607")
-#pragma const_seg("K607")
-#pragma comment(linker, "/merge:D607=607")
-#pragma comment(linker, "/merge:C607=607")
-#pragma comment(linker, "/merge:B607=607")
-#pragma comment(linker, "/merge:K607=607")
+#pragma code_seg("C618")
+#pragma data_seg("D618")
+#pragma bss_seg("B618")
+#pragma const_seg("K618")
+#pragma comment(linker, "/merge:D618=618")
+#pragma comment(linker, "/merge:C618=618")
+#pragma comment(linker, "/merge:B618=618")
+#pragma comment(linker, "/merge:K618=618")
 /*
 	Video Hardware for Shoot Out
 	prom GB09.K6 may be related to background tile-sprite priority

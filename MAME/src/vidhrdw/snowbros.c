@@ -1,11 +1,11 @@
-#pragma code_seg("C625")
-#pragma data_seg("D625")
-#pragma bss_seg("B625")
-#pragma const_seg("K625")
-#pragma comment(linker, "/merge:D625=625")
-#pragma comment(linker, "/merge:C625=625")
-#pragma comment(linker, "/merge:B625=625")
-#pragma comment(linker, "/merge:K625=625")
+#pragma code_seg("C636")
+#pragma data_seg("D636")
+#pragma bss_seg("B636")
+#pragma const_seg("K636")
+#pragma comment(linker, "/merge:D636=636")
+#pragma comment(linker, "/merge:C636=636")
+#pragma comment(linker, "/merge:B636=636")
+#pragma comment(linker, "/merge:K636=636")
 /***************************************************************************
 
   Snow Brothers by ToaPlan - GFX driver.

@@ -1,11 +1,11 @@
-#pragma code_seg("C390")
-#pragma data_seg("D390")
-#pragma bss_seg("B390")
-#pragma const_seg("K390")
-#pragma comment(linker, "/merge:D390=390")
-#pragma comment(linker, "/merge:C390=390")
-#pragma comment(linker, "/merge:B390=390")
-#pragma comment(linker, "/merge:K390=390")
+#pragma code_seg("C7")
+#pragma data_seg("D7")
+#pragma bss_seg("B7")
+#pragma const_seg("K7")
+#pragma comment(linker, "/merge:D7=7")
+#pragma comment(linker, "/merge:C7=7")
+#pragma comment(linker, "/merge:B7=7")
+#pragma comment(linker, "/merge:K7=7")
 /***************************************************************************
 
 	The Game Room Lethal Justice hardware

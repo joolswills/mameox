@@ -1,11 +1,11 @@
-#pragma code_seg("C36")
-#pragma data_seg("D36")
-#pragma bss_seg("B36")
-#pragma const_seg("K36")
-#pragma comment(linker, "/merge:D36=36")
-#pragma comment(linker, "/merge:C36=36")
-#pragma comment(linker, "/merge:B36=36")
-#pragma comment(linker, "/merge:K36=36")
+#pragma code_seg("C11")
+#pragma data_seg("D11")
+#pragma bss_seg("B11")
+#pragma const_seg("K11")
+#pragma comment(linker, "/merge:D11=11")
+#pragma comment(linker, "/merge:C11=11")
+#pragma comment(linker, "/merge:B11=11")
+#pragma comment(linker, "/merge:K11=11")
 /***************************************************************************
 
 	Atari Escape hardware

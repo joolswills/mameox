@@ -1,11 +1,11 @@
-#pragma code_seg("C91")
-#pragma data_seg("D91")
-#pragma bss_seg("B91")
-#pragma const_seg("K91")
-#pragma comment(linker, "/merge:D91=91")
-#pragma comment(linker, "/merge:C91=91")
-#pragma comment(linker, "/merge:B91=91")
-#pragma comment(linker, "/merge:K91=91")
+#pragma code_seg("C104")
+#pragma data_seg("D104")
+#pragma bss_seg("B104")
+#pragma const_seg("K104")
+#pragma comment(linker, "/merge:D104=104")
+#pragma comment(linker, "/merge:C104=104")
+#pragma comment(linker, "/merge:B104=104")
+#pragma comment(linker, "/merge:K104=104")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 

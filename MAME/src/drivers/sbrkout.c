@@ -1,11 +1,11 @@
-#pragma code_seg("C582")
-#pragma data_seg("D582")
-#pragma bss_seg("B582")
-#pragma const_seg("K582")
-#pragma comment(linker, "/merge:D582=582")
-#pragma comment(linker, "/merge:C582=582")
-#pragma comment(linker, "/merge:B582=582")
-#pragma comment(linker, "/merge:K582=582")
+#pragma code_seg("C593")
+#pragma data_seg("D593")
+#pragma bss_seg("B593")
+#pragma const_seg("K593")
+#pragma comment(linker, "/merge:D593=593")
+#pragma comment(linker, "/merge:C593=593")
+#pragma comment(linker, "/merge:B593=593")
+#pragma comment(linker, "/merge:K593=593")
 /***************************************************************************
 
 	Atari Super Breakout hardware

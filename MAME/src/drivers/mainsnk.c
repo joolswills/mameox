@@ -1,11 +1,11 @@
-#pragma code_seg("C409")
-#pragma data_seg("D409")
-#pragma bss_seg("B409")
-#pragma const_seg("K409")
-#pragma comment(linker, "/merge:D409=409")
-#pragma comment(linker, "/merge:C409=409")
-#pragma comment(linker, "/merge:B409=409")
-#pragma comment(linker, "/merge:K409=409")
+#pragma code_seg("C422")
+#pragma data_seg("D422")
+#pragma bss_seg("B422")
+#pragma const_seg("K422")
+#pragma comment(linker, "/merge:D422=422")
+#pragma comment(linker, "/merge:C422=422")
+#pragma comment(linker, "/merge:B422=422")
+#pragma comment(linker, "/merge:K422=422")
 /* Main Event - SNK 
    driver by	David Haywood
    		Tomasz Slanina	

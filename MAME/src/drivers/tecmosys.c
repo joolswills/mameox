@@ -1,11 +1,11 @@
-#pragma code_seg("C701")
-#pragma data_seg("D701")
-#pragma bss_seg("B701")
-#pragma const_seg("K701")
-#pragma comment(linker, "/merge:D701=701")
-#pragma comment(linker, "/merge:C701=701")
-#pragma comment(linker, "/merge:B701=701")
-#pragma comment(linker, "/merge:K701=701")
+#pragma code_seg("C712")
+#pragma data_seg("D712")
+#pragma bss_seg("B712")
+#pragma const_seg("K712")
+#pragma comment(linker, "/merge:D712=712")
+#pragma comment(linker, "/merge:C712=712")
+#pragma comment(linker, "/merge:B712=712")
+#pragma comment(linker, "/merge:K712=712")
 /* Tecmo System
  Driver by Farfetch & David Haywood
 

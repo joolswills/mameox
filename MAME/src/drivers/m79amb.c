@@ -1,11 +1,11 @@
-#pragma code_seg("C402")
-#pragma data_seg("D402")
-#pragma bss_seg("B402")
-#pragma const_seg("K402")
-#pragma comment(linker, "/merge:D402=402")
-#pragma comment(linker, "/merge:C402=402")
-#pragma comment(linker, "/merge:B402=402")
-#pragma comment(linker, "/merge:K402=402")
+#pragma code_seg("C415")
+#pragma data_seg("D415")
+#pragma bss_seg("B415")
+#pragma const_seg("K415")
+#pragma comment(linker, "/merge:D415=415")
+#pragma comment(linker, "/merge:C415=415")
+#pragma comment(linker, "/merge:B415=415")
+#pragma comment(linker, "/merge:K415=415")
 /* Ramtek M79 Ambush */
 
 #include "driver.h"

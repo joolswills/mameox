@@ -1,11 +1,11 @@
-#pragma code_seg("C698")
-#pragma data_seg("D698")
-#pragma bss_seg("B698")
-#pragma const_seg("K698")
-#pragma comment(linker, "/merge:D698=698")
-#pragma comment(linker, "/merge:C698=698")
-#pragma comment(linker, "/merge:B698=698")
-#pragma comment(linker, "/merge:K698=698")
+#pragma code_seg("C10")
+#pragma data_seg("D10")
+#pragma bss_seg("B10")
+#pragma const_seg("K10")
+#pragma comment(linker, "/merge:D10=10")
+#pragma comment(linker, "/merge:C10=10")
+#pragma comment(linker, "/merge:B10=10")
+#pragma comment(linker, "/merge:K10=10")
 /*
  *	Thunder Ceptor board
  *	(C) 1986 Namco

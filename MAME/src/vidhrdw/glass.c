@@ -1,11 +1,11 @@
-#pragma code_seg("C314")
-#pragma data_seg("D314")
-#pragma bss_seg("B314")
-#pragma const_seg("K314")
-#pragma comment(linker, "/merge:D314=314")
-#pragma comment(linker, "/merge:C314=314")
-#pragma comment(linker, "/merge:B314=314")
-#pragma comment(linker, "/merge:K314=314")
+#pragma code_seg("C327")
+#pragma data_seg("D327")
+#pragma bss_seg("B327")
+#pragma const_seg("K327")
+#pragma comment(linker, "/merge:D327=327")
+#pragma comment(linker, "/merge:C327=327")
+#pragma comment(linker, "/merge:B327=327")
+#pragma comment(linker, "/merge:K327=327")
 /***************************************************************************
 
   Glass Video Hardware

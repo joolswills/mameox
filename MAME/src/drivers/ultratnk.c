@@ -1,11 +1,11 @@
-#pragma code_seg("C744")
-#pragma data_seg("D744")
-#pragma bss_seg("B744")
-#pragma const_seg("K744")
-#pragma comment(linker, "/merge:D744=744")
-#pragma comment(linker, "/merge:C744=744")
-#pragma comment(linker, "/merge:B744=744")
-#pragma comment(linker, "/merge:K744=744")
+#pragma code_seg("C755")
+#pragma data_seg("D755")
+#pragma bss_seg("B755")
+#pragma const_seg("K755")
+#pragma comment(linker, "/merge:D755=755")
+#pragma comment(linker, "/merge:C755=755")
+#pragma comment(linker, "/merge:B755=755")
+#pragma comment(linker, "/merge:K755=755")
 /***************************************************************************
 
 	Atari/Kee Ultra Tank hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C258")
-#pragma data_seg("D258")
-#pragma bss_seg("B258")
-#pragma const_seg("K258")
-#pragma comment(linker, "/merge:D258=258")
-#pragma comment(linker, "/merge:C258=258")
-#pragma comment(linker, "/merge:B258=258")
-#pragma comment(linker, "/merge:K258=258")
+#pragma code_seg("C271")
+#pragma data_seg("D271")
+#pragma bss_seg("B271")
+#pragma const_seg("K271")
+#pragma comment(linker, "/merge:D271=271")
+#pragma comment(linker, "/merge:C271=271")
+#pragma comment(linker, "/merge:B271=271")
+#pragma comment(linker, "/merge:K271=271")
 /********************************************************************
 
 Enigma 2 (c) Zilec Electronics

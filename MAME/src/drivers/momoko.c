@@ -1,11 +1,11 @@
-#pragma code_seg("C448")
-#pragma data_seg("D448")
-#pragma bss_seg("B448")
-#pragma const_seg("K448")
-#pragma comment(linker, "/merge:D448=448")
-#pragma comment(linker, "/merge:C448=448")
-#pragma comment(linker, "/merge:B448=448")
-#pragma comment(linker, "/merge:K448=448")
+#pragma code_seg("C461")
+#pragma data_seg("D461")
+#pragma bss_seg("B461")
+#pragma const_seg("K461")
+#pragma comment(linker, "/merge:D461=461")
+#pragma comment(linker, "/merge:C461=461")
+#pragma comment(linker, "/merge:B461=461")
+#pragma comment(linker, "/merge:K461=461")
 /*****************************************************************************
 
 Momoko 120% (c) 1986 Jaleco

@@ -1,11 +1,11 @@
-#pragma code_seg("C283")
-#pragma data_seg("D283")
-#pragma bss_seg("B283")
-#pragma const_seg("K283")
-#pragma comment(linker, "/merge:D283=283")
-#pragma comment(linker, "/merge:C283=283")
-#pragma comment(linker, "/merge:B283=283")
-#pragma comment(linker, "/merge:K283=283")
+#pragma code_seg("C296")
+#pragma data_seg("D296")
+#pragma bss_seg("B296")
+#pragma const_seg("K296")
+#pragma comment(linker, "/merge:D296=296")
+#pragma comment(linker, "/merge:C296=296")
+#pragma comment(linker, "/merge:B296=296")
+#pragma comment(linker, "/merge:K296=296")
 /* Flower Video Hardware */
 
 #include "driver.h"

@@ -1,11 +1,11 @@
-#pragma code_seg("C673")
-#pragma data_seg("D673")
-#pragma bss_seg("B673")
-#pragma const_seg("K673")
-#pragma comment(linker, "/merge:D673=673")
-#pragma comment(linker, "/merge:C673=673")
-#pragma comment(linker, "/merge:B673=673")
-#pragma comment(linker, "/merge:K673=673")
+#pragma code_seg("C684")
+#pragma data_seg("D684")
+#pragma bss_seg("B684")
+#pragma const_seg("K684")
+#pragma comment(linker, "/merge:D684=684")
+#pragma comment(linker, "/merge:C684=684")
+#pragma comment(linker, "/merge:B684=684")
+#pragma comment(linker, "/merge:K684=684")
 /* Super Kaneko Nova System Vidhrdw */
 
 /*

@@ -1,11 +1,11 @@
-#pragma code_seg("C764")
-#pragma data_seg("D764")
-#pragma bss_seg("B764")
-#pragma const_seg("K764")
-#pragma comment(linker, "/merge:D764=764")
-#pragma comment(linker, "/merge:C764=764")
-#pragma comment(linker, "/merge:B764=764")
-#pragma comment(linker, "/merge:K764=764")
+#pragma code_seg("C775")
+#pragma data_seg("D775")
+#pragma bss_seg("B775")
+#pragma const_seg("K775")
+#pragma comment(linker, "/merge:D775=775")
+#pragma comment(linker, "/merge:C775=775")
+#pragma comment(linker, "/merge:B775=775")
+#pragma comment(linker, "/merge:K775=775")
 /***************************************************************************
 
 Namco early 8080-based games

@@ -1,11 +1,11 @@
-#pragma code_seg("C418")
-#pragma data_seg("D418")
-#pragma bss_seg("B418")
-#pragma const_seg("K418")
-#pragma comment(linker, "/merge:D418=418")
-#pragma comment(linker, "/merge:C418=418")
-#pragma comment(linker, "/merge:B418=418")
-#pragma comment(linker, "/merge:K418=418")
+#pragma code_seg("C431")
+#pragma data_seg("D431")
+#pragma bss_seg("B431")
+#pragma const_seg("K431")
+#pragma comment(linker, "/merge:D431=431")
+#pragma comment(linker, "/merge:C431=431")
+#pragma comment(linker, "/merge:B431=431")
+#pragma comment(linker, "/merge:K431=431")
 /*****************************************************************************
 
 Kikiippatsu Mayumi-chan (c) 1988 Victory L.L.C.

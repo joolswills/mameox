@@ -1,11 +1,11 @@
-#pragma code_seg("C408")
-#pragma data_seg("D408")
-#pragma bss_seg("B408")
-#pragma const_seg("K408")
-#pragma comment(linker, "/merge:D408=408")
-#pragma comment(linker, "/merge:C408=408")
-#pragma comment(linker, "/merge:B408=408")
-#pragma comment(linker, "/merge:K408=408")
+#pragma code_seg("C421")
+#pragma data_seg("D421")
+#pragma bss_seg("B421")
+#pragma const_seg("K421")
+#pragma comment(linker, "/merge:D421=421")
+#pragma comment(linker, "/merge:C421=421")
+#pragma comment(linker, "/merge:B421=421")
+#pragma comment(linker, "/merge:K421=421")
 /***************************************************************************
 
   The Main Event, (c) 1988 Konami

@@ -1,11 +1,11 @@
-#pragma code_seg("C569")
-#pragma data_seg("D569")
-#pragma bss_seg("B569")
-#pragma const_seg("K569")
-#pragma comment(linker, "/merge:D569=569")
-#pragma comment(linker, "/merge:C569=569")
-#pragma comment(linker, "/merge:B569=569")
-#pragma comment(linker, "/merge:K569=569")
+#pragma code_seg("C4")
+#pragma data_seg("D4")
+#pragma bss_seg("B4")
+#pragma const_seg("K4")
+#pragma comment(linker, "/merge:D4=4")
+#pragma comment(linker, "/merge:C4=4")
+#pragma comment(linker, "/merge:B4=4")
+#pragma comment(linker, "/merge:K4=4")
 /***************************************************************************
 
 	'Rohga' era hardware:

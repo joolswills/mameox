@@ -1,11 +1,11 @@
-#pragma code_seg("C8")
-#pragma data_seg("D8")
-#pragma bss_seg("B8")
-#pragma const_seg("K8")
-#pragma comment(linker, "/merge:D8=8")
-#pragma comment(linker, "/merge:C8=8")
-#pragma comment(linker, "/merge:B8=8")
-#pragma comment(linker, "/merge:K8=8")
+#pragma code_seg("C5")
+#pragma data_seg("D5")
+#pragma bss_seg("B5")
+#pragma const_seg("K5")
+#pragma comment(linker, "/merge:D5=5")
+#pragma comment(linker, "/merge:C5=5")
+#pragma comment(linker, "/merge:B5=5")
+#pragma comment(linker, "/merge:K5=5")
 /***************************************************************************
 
  Amidar hardware

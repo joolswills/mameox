@@ -1,11 +1,11 @@
-#pragma code_seg("C202")
-#pragma data_seg("D202")
-#pragma bss_seg("B202")
-#pragma const_seg("K202")
-#pragma comment(linker, "/merge:D202=202")
-#pragma comment(linker, "/merge:C202=202")
-#pragma comment(linker, "/merge:B202=202")
-#pragma comment(linker, "/merge:K202=202")
+#pragma code_seg("C4")
+#pragma data_seg("D4")
+#pragma bss_seg("B4")
+#pragma const_seg("K4")
+#pragma comment(linker, "/merge:D4=4")
+#pragma comment(linker, "/merge:C4=4")
+#pragma comment(linker, "/merge:B4=4")
+#pragma comment(linker, "/merge:K4=4")
 /***************************************************************************
 
    Caveman Ninja Video emulation - Bryan McPhail, mish@tendril.co.uk

@@ -1,11 +1,11 @@
-#pragma code_seg("C523")
-#pragma data_seg("D523")
-#pragma bss_seg("B523")
-#pragma const_seg("K523")
-#pragma comment(linker, "/merge:D523=523")
-#pragma comment(linker, "/merge:C523=523")
-#pragma comment(linker, "/merge:B523=523")
-#pragma comment(linker, "/merge:K523=523")
+#pragma code_seg("C535")
+#pragma data_seg("D535")
+#pragma bss_seg("B535")
+#pragma const_seg("K535")
+#pragma comment(linker, "/merge:D535=535")
+#pragma comment(linker, "/merge:C535=535")
+#pragma comment(linker, "/merge:B535=535")
+#pragma comment(linker, "/merge:K535=535")
 /*---
 
 Pirates      (c)1994 NIX  (DEC 14 1994 17:32:29) displayed in cabinet test mode

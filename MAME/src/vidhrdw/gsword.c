@@ -1,11 +1,11 @@
-#pragma code_seg("C328")
-#pragma data_seg("D328")
-#pragma bss_seg("B328")
-#pragma const_seg("K328")
-#pragma comment(linker, "/merge:D328=328")
-#pragma comment(linker, "/merge:C328=328")
-#pragma comment(linker, "/merge:B328=328")
-#pragma comment(linker, "/merge:K328=328")
+#pragma code_seg("C341")
+#pragma data_seg("D341")
+#pragma bss_seg("B341")
+#pragma const_seg("K341")
+#pragma comment(linker, "/merge:D341=341")
+#pragma comment(linker, "/merge:C341=341")
+#pragma comment(linker, "/merge:B341=341")
+#pragma comment(linker, "/merge:K341=341")
 /***************************************************************************
   Great Swordsman
 

@@ -1,11 +1,3 @@
-#pragma code_seg("C532")
-#pragma data_seg("D532")
-#pragma bss_seg("B532")
-#pragma const_seg("K532")
-#pragma comment(linker, "/merge:D532=532")
-#pragma comment(linker, "/merge:C532=532")
-#pragma comment(linker, "/merge:B532=532")
-#pragma comment(linker, "/merge:K532=532")
 /***************************************************************************
 	pong.c
 	Sound handler
@@ -67,7 +59,3 @@ void pong_sh_update(void)
 	mixer_set_volume(channel+1,pong_vblank_sound ? 100 : 0);
 	mixer_set_volume(channel+2,pong_score_sound ? 100 : 0);
 }
-#pragma code_seg()
-#pragma data_seg()
-#pragma bss_seg()
-#pragma const_seg()

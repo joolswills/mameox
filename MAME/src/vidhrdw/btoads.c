@@ -1,11 +1,11 @@
-#pragma code_seg("C169")
-#pragma data_seg("D169")
-#pragma bss_seg("B169")
-#pragma const_seg("K169")
-#pragma comment(linker, "/merge:D169=169")
-#pragma comment(linker, "/merge:C169=169")
-#pragma comment(linker, "/merge:B169=169")
-#pragma comment(linker, "/merge:K169=169")
+#pragma code_seg("C7")
+#pragma data_seg("D7")
+#pragma bss_seg("B7")
+#pragma const_seg("K7")
+#pragma comment(linker, "/merge:D7=7")
+#pragma comment(linker, "/merge:C7=7")
+#pragma comment(linker, "/merge:B7=7")
+#pragma comment(linker, "/merge:K7=7")
 /*************************************************************************
 
 	BattleToads

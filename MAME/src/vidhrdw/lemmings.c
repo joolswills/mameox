@@ -1,11 +1,11 @@
-#pragma code_seg("C388")
-#pragma data_seg("D388")
-#pragma bss_seg("B388")
-#pragma const_seg("K388")
-#pragma comment(linker, "/merge:D388=388")
-#pragma comment(linker, "/merge:C388=388")
-#pragma comment(linker, "/merge:B388=388")
-#pragma comment(linker, "/merge:K388=388")
+#pragma code_seg("C401")
+#pragma data_seg("D401")
+#pragma bss_seg("B401")
+#pragma const_seg("K401")
+#pragma comment(linker, "/merge:D401=401")
+#pragma comment(linker, "/merge:C401=401")
+#pragma comment(linker, "/merge:B401=401")
+#pragma comment(linker, "/merge:K401=401")
 /***************************************************************************
 
 	Lemmings video emulation - Bryan McPhail, mish@tendril.co.uk

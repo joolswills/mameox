@@ -1,11 +1,11 @@
-#pragma code_seg("C21")
-#pragma data_seg("D21")
-#pragma bss_seg("B21")
-#pragma const_seg("K21")
-#pragma comment(linker, "/merge:D21=21")
-#pragma comment(linker, "/merge:C21=21")
-#pragma comment(linker, "/merge:B21=21")
-#pragma comment(linker, "/merge:K21=21")
+#pragma code_seg("C3")
+#pragma data_seg("D3")
+#pragma bss_seg("B3")
+#pragma const_seg("K3")
+#pragma comment(linker, "/merge:D3=3")
+#pragma comment(linker, "/merge:C3=3")
+#pragma comment(linker, "/merge:B3=3")
+#pragma comment(linker, "/merge:K3=3")
 #include "driver.h"
 
 static int counter,vector_reg,imr_status;

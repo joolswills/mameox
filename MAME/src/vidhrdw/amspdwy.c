@@ -1,11 +1,11 @@
-#pragma code_seg("C104")
-#pragma data_seg("D104")
-#pragma bss_seg("B104")
-#pragma const_seg("K104")
-#pragma comment(linker, "/merge:D104=104")
-#pragma comment(linker, "/merge:C104=104")
-#pragma comment(linker, "/merge:B104=104")
-#pragma comment(linker, "/merge:K104=104")
+#pragma code_seg("C117")
+#pragma data_seg("D117")
+#pragma bss_seg("B117")
+#pragma const_seg("K117")
+#pragma comment(linker, "/merge:D117=117")
+#pragma comment(linker, "/merge:C117=117")
+#pragma comment(linker, "/merge:B117=117")
+#pragma comment(linker, "/merge:K117=117")
 /***************************************************************************
 
 							-= American Speedway =-

@@ -1,11 +1,11 @@
-#pragma code_seg("C180")
-#pragma data_seg("D180")
-#pragma bss_seg("B180")
-#pragma const_seg("K180")
-#pragma comment(linker, "/merge:D180=180")
-#pragma comment(linker, "/merge:C180=180")
-#pragma comment(linker, "/merge:B180=180")
-#pragma comment(linker, "/merge:K180=180")
+#pragma code_seg("C193")
+#pragma data_seg("D193")
+#pragma bss_seg("B193")
+#pragma const_seg("K193")
+#pragma comment(linker, "/merge:D193=193")
+#pragma comment(linker, "/merge:C193=193")
+#pragma comment(linker, "/merge:B193=193")
+#pragma comment(linker, "/merge:K193=193")
 /***************************************************************************
 
 							  -= Cave Hardware =-

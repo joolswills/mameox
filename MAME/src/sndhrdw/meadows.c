@@ -1,11 +1,11 @@
-#pragma code_seg("C425")
-#pragma data_seg("D425")
-#pragma bss_seg("B425")
-#pragma const_seg("K425")
-#pragma comment(linker, "/merge:D425=425")
-#pragma comment(linker, "/merge:C425=425")
-#pragma comment(linker, "/merge:B425=425")
-#pragma comment(linker, "/merge:K425=425")
+#pragma code_seg("C438")
+#pragma data_seg("D438")
+#pragma bss_seg("B438")
+#pragma const_seg("K438")
+#pragma comment(linker, "/merge:D438=438")
+#pragma comment(linker, "/merge:C438=438")
+#pragma comment(linker, "/merge:B438=438")
+#pragma comment(linker, "/merge:K438=438")
 /***************************************************************************
 	meadows.c
 	Sound handler

@@ -1,11 +1,11 @@
-#pragma code_seg("C237")
-#pragma data_seg("D237")
-#pragma bss_seg("B237")
-#pragma const_seg("K237")
-#pragma comment(linker, "/merge:D237=237")
-#pragma comment(linker, "/merge:C237=237")
-#pragma comment(linker, "/merge:B237=237")
-#pragma comment(linker, "/merge:K237=237")
+#pragma code_seg("C250")
+#pragma data_seg("D250")
+#pragma bss_seg("B250")
+#pragma const_seg("K250")
+#pragma comment(linker, "/merge:D250=250")
+#pragma comment(linker, "/merge:C250=250")
+#pragma comment(linker, "/merge:B250=250")
+#pragma comment(linker, "/merge:K250=250")
 /***********************************************************************
 
 	DECO Cassette System machine

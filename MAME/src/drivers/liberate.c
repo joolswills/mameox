@@ -1,11 +1,11 @@
-#pragma code_seg("C391")
-#pragma data_seg("D391")
-#pragma bss_seg("B391")
-#pragma const_seg("K391")
-#pragma comment(linker, "/merge:D391=391")
-#pragma comment(linker, "/merge:C391=391")
-#pragma comment(linker, "/merge:B391=391")
-#pragma comment(linker, "/merge:K391=391")
+#pragma code_seg("C404")
+#pragma data_seg("D404")
+#pragma bss_seg("B404")
+#pragma const_seg("K404")
+#pragma comment(linker, "/merge:D404=404")
+#pragma comment(linker, "/merge:C404=404")
+#pragma comment(linker, "/merge:B404=404")
+#pragma comment(linker, "/merge:K404=404")
 /*******************************************************************************
 
 	Pro Soccer						(c) 1983 Data East Corporation

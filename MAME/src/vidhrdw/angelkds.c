@@ -1,11 +1,11 @@
-#pragma code_seg("C105")
-#pragma data_seg("D105")
-#pragma bss_seg("B105")
-#pragma const_seg("K105")
-#pragma comment(linker, "/merge:D105=105")
-#pragma comment(linker, "/merge:C105=105")
-#pragma comment(linker, "/merge:B105=105")
-#pragma comment(linker, "/merge:K105=105")
+#pragma code_seg("C118")
+#pragma data_seg("D118")
+#pragma bss_seg("B118")
+#pragma const_seg("K118")
+#pragma comment(linker, "/merge:D118=118")
+#pragma comment(linker, "/merge:C118=118")
+#pragma comment(linker, "/merge:B118=118")
+#pragma comment(linker, "/merge:K118=118")
 /* vidhrdw/angelkds.c - see drivers/angelkds.c for more info */
 
 /* graphical issues

@@ -1,11 +1,11 @@
-#pragma code_seg("C133")
-#pragma data_seg("D133")
-#pragma bss_seg("B133")
-#pragma const_seg("K133")
-#pragma comment(linker, "/merge:D133=133")
-#pragma comment(linker, "/merge:C133=133")
-#pragma comment(linker, "/merge:B133=133")
-#pragma comment(linker, "/merge:K133=133")
+#pragma code_seg("C5")
+#pragma data_seg("D5")
+#pragma bss_seg("B5")
+#pragma const_seg("K5")
+#pragma comment(linker, "/merge:D5=5")
+#pragma comment(linker, "/merge:C5=5")
+#pragma comment(linker, "/merge:B5=5")
+#pragma comment(linker, "/merge:K5=5")
 /***************************************************************************
 
 Bagman memory map

@@ -1,11 +1,11 @@
-#pragma code_seg("C741")
-#pragma data_seg("D741")
-#pragma bss_seg("B741")
-#pragma const_seg("K741")
-#pragma comment(linker, "/merge:D741=741")
-#pragma comment(linker, "/merge:C741=741")
-#pragma comment(linker, "/merge:B741=741")
-#pragma comment(linker, "/merge:K741=741")
+#pragma code_seg("C45")
+#pragma data_seg("D45")
+#pragma bss_seg("B45")
+#pragma const_seg("K45")
+#pragma comment(linker, "/merge:D45=45")
+#pragma comment(linker, "/merge:C45=45")
+#pragma comment(linker, "/merge:B45=45")
+#pragma comment(linker, "/merge:K45=45")
 /*
 Konami "Twin16"
 

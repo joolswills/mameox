@@ -1,11 +1,11 @@
-#pragma code_seg("C653")
-#pragma data_seg("D653")
-#pragma bss_seg("B653")
-#pragma const_seg("K653")
-#pragma comment(linker, "/merge:D653=653")
-#pragma comment(linker, "/merge:C653=653")
-#pragma comment(linker, "/merge:B653=653")
-#pragma comment(linker, "/merge:K653=653")
+#pragma code_seg("C664")
+#pragma data_seg("D664")
+#pragma bss_seg("B664")
+#pragma const_seg("K664")
+#pragma comment(linker, "/merge:D664=664")
+#pragma comment(linker, "/merge:C664=664")
+#pragma comment(linker, "/merge:B664=664")
+#pragma comment(linker, "/merge:K664=664")
 /* Ramtek - Star Cruiser */
 
 #include "driver.h"

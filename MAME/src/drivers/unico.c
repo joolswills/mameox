@@ -1,11 +1,11 @@
-#pragma code_seg("C746")
-#pragma data_seg("D746")
-#pragma bss_seg("B746")
-#pragma const_seg("K746")
-#pragma comment(linker, "/merge:D746=746")
-#pragma comment(linker, "/merge:C746=746")
-#pragma comment(linker, "/merge:B746=746")
-#pragma comment(linker, "/merge:K746=746")
+#pragma code_seg("C757")
+#pragma data_seg("D757")
+#pragma bss_seg("B757")
+#pragma const_seg("K757")
+#pragma comment(linker, "/merge:D757=757")
+#pragma comment(linker, "/merge:C757=757")
+#pragma comment(linker, "/merge:B757=757")
+#pragma comment(linker, "/merge:K757=757")
 /***************************************************************************
 
 							  -= Unico Games =-

@@ -1,11 +1,11 @@
-#pragma code_seg("C737")
-#pragma data_seg("D737")
-#pragma bss_seg("B737")
-#pragma const_seg("K737")
-#pragma comment(linker, "/merge:D737=737")
-#pragma comment(linker, "/merge:C737=737")
-#pragma comment(linker, "/merge:B737=737")
-#pragma comment(linker, "/merge:K737=737")
+#pragma code_seg("C4")
+#pragma data_seg("D4")
+#pragma bss_seg("B4")
+#pragma const_seg("K4")
+#pragma comment(linker, "/merge:D4=4")
+#pragma comment(linker, "/merge:C4=4")
+#pragma comment(linker, "/merge:B4=4")
+#pragma comment(linker, "/merge:K4=4")
 /***************************************************************************
 
    Tumblepop Video emulation - Bryan McPhail, mish@tendril.co.uk

@@ -1,11 +1,11 @@
-#pragma code_seg("C415")
-#pragma data_seg("D415")
-#pragma bss_seg("B415")
-#pragma const_seg("K415")
-#pragma comment(linker, "/merge:D415=415")
-#pragma comment(linker, "/merge:C415=415")
-#pragma comment(linker, "/merge:B415=415")
-#pragma comment(linker, "/merge:K415=415")
+#pragma code_seg("C428")
+#pragma data_seg("D428")
+#pragma bss_seg("B428")
+#pragma const_seg("K428")
+#pragma comment(linker, "/merge:D428=428")
+#pragma comment(linker, "/merge:C428=428")
+#pragma comment(linker, "/merge:B428=428")
+#pragma comment(linker, "/merge:K428=428")
 /******************************************************************************
 
 Markham (c) 1983 Sun Electronics

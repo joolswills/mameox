@@ -1,11 +1,11 @@
-#pragma code_seg("C264")
-#pragma data_seg("D264")
-#pragma bss_seg("B264")
-#pragma const_seg("K264")
-#pragma comment(linker, "/merge:D264=264")
-#pragma comment(linker, "/merge:C264=264")
-#pragma comment(linker, "/merge:B264=264")
-#pragma comment(linker, "/merge:K264=264")
+#pragma code_seg("C277")
+#pragma data_seg("D277")
+#pragma bss_seg("B277")
+#pragma const_seg("K277")
+#pragma comment(linker, "/merge:D277=277")
+#pragma comment(linker, "/merge:C277=277")
+#pragma comment(linker, "/merge:B277=277")
+#pragma comment(linker, "/merge:K277=277")
 /***************************************************************************
 
   vidhrdw.c

@@ -1,11 +1,11 @@
-#pragma code_seg("C405")
-#pragma data_seg("D405")
-#pragma bss_seg("B405")
-#pragma const_seg("K405")
-#pragma comment(linker, "/merge:D405=405")
-#pragma comment(linker, "/merge:C405=405")
-#pragma comment(linker, "/merge:B405=405")
-#pragma comment(linker, "/merge:K405=405")
+#pragma code_seg("C418")
+#pragma data_seg("D418")
+#pragma bss_seg("B418")
+#pragma const_seg("K418")
+#pragma comment(linker, "/merge:D418=418")
+#pragma comment(linker, "/merge:C418=418")
+#pragma comment(linker, "/merge:B418=418")
+#pragma comment(linker, "/merge:K418=418")
 /*** DRIVER INFO **************************************************************
 
 Macross Plus                        (c)1996 Banpresto

@@ -1,11 +1,11 @@
-#pragma code_seg("C420")
-#pragma data_seg("D420")
-#pragma bss_seg("B420")
-#pragma const_seg("K420")
-#pragma comment(linker, "/merge:D420=420")
-#pragma comment(linker, "/merge:C420=420")
-#pragma comment(linker, "/merge:B420=420")
-#pragma comment(linker, "/merge:K420=420")
+#pragma code_seg("C433")
+#pragma data_seg("D433")
+#pragma bss_seg("B433")
+#pragma const_seg("K433")
+#pragma comment(linker, "/merge:D433=433")
+#pragma comment(linker, "/merge:C433=433")
+#pragma comment(linker, "/merge:B433=433")
+#pragma comment(linker, "/merge:K433=433")
 /* Magical Cat Adventure / Nostradamus Video Hardware */
 
 /*

@@ -1,11 +1,11 @@
-#pragma code_seg("C3")
-#pragma data_seg("D3")
-#pragma bss_seg("B3")
-#pragma const_seg("K3")
-#pragma comment(linker, "/merge:D3=3")
-#pragma comment(linker, "/merge:C3=3")
-#pragma comment(linker, "/merge:B3=3")
-#pragma comment(linker, "/merge:K3=3")
+#pragma code_seg("C687")
+#pragma data_seg("D687")
+#pragma bss_seg("B687")
+#pragma const_seg("K687")
+#pragma comment(linker, "/merge:D687=687")
+#pragma comment(linker, "/merge:C687=687")
+#pragma comment(linker, "/merge:B687=687")
+#pragma comment(linker, "/merge:K687=687")
 /*************************************************************************
 
   System1 / System 2.   By Jarek Parchanski & Mirko Buffoni.

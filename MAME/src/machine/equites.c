@@ -1,11 +1,11 @@
-#pragma code_seg("C261")
-#pragma data_seg("D261")
-#pragma bss_seg("B261")
-#pragma const_seg("K261")
-#pragma comment(linker, "/merge:D261=261")
-#pragma comment(linker, "/merge:C261=261")
-#pragma comment(linker, "/merge:B261=261")
-#pragma comment(linker, "/merge:K261=261")
+#pragma code_seg("C274")
+#pragma data_seg("D274")
+#pragma bss_seg("B274")
+#pragma const_seg("K274")
+#pragma comment(linker, "/merge:D274=274")
+#pragma comment(linker, "/merge:C274=274")
+#pragma comment(linker, "/merge:B274=274")
+#pragma comment(linker, "/merge:K274=274")
 /*******************************************************************************
 
 Equites           (c) 1984 Alpha Denshi Co./Sega

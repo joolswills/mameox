@@ -1,11 +1,11 @@
-#pragma code_seg("C98")
-#pragma data_seg("D98")
-#pragma bss_seg("B98")
-#pragma const_seg("K98")
-#pragma comment(linker, "/merge:D98=98")
-#pragma comment(linker, "/merge:C98=98")
-#pragma comment(linker, "/merge:B98=98")
-#pragma comment(linker, "/merge:K98=98")
+#pragma code_seg("C111")
+#pragma data_seg("D111")
+#pragma bss_seg("B111")
+#pragma const_seg("K111")
+#pragma comment(linker, "/merge:D111=111")
+#pragma comment(linker, "/merge:C111=111")
+#pragma comment(linker, "/merge:B111=111")
+#pragma comment(linker, "/merge:K111=111")
 /***************************************************************************
 
 								Air Buster

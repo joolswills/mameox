@@ -1,11 +1,11 @@
-#pragma code_seg("C576")
-#pragma data_seg("D576")
-#pragma bss_seg("B576")
-#pragma const_seg("K576")
-#pragma comment(linker, "/merge:D576=576")
-#pragma comment(linker, "/merge:C576=576")
-#pragma comment(linker, "/merge:B576=576")
-#pragma comment(linker, "/merge:K576=576")
+#pragma code_seg("C587")
+#pragma data_seg("D587")
+#pragma bss_seg("B587")
+#pragma const_seg("K587")
+#pragma comment(linker, "/merge:D587=587")
+#pragma comment(linker, "/merge:C587=587")
+#pragma comment(linker, "/merge:B587=587")
+#pragma comment(linker, "/merge:K587=587")
 /***************************************************************************
 
 	Atari Runaway video emulation

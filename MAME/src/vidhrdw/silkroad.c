@@ -1,11 +1,11 @@
-#pragma code_seg("C612")
-#pragma data_seg("D612")
-#pragma bss_seg("B612")
-#pragma const_seg("K612")
-#pragma comment(linker, "/merge:D612=612")
-#pragma comment(linker, "/merge:C612=612")
-#pragma comment(linker, "/merge:B612=612")
-#pragma comment(linker, "/merge:K612=612")
+#pragma code_seg("C623")
+#pragma data_seg("D623")
+#pragma bss_seg("B623")
+#pragma const_seg("K623")
+#pragma comment(linker, "/merge:D623=623")
+#pragma comment(linker, "/merge:C623=623")
+#pragma comment(linker, "/merge:B623=623")
+#pragma comment(linker, "/merge:K623=623")
 #include "driver.h"
 
 /* Sprites probably need to be delayed */

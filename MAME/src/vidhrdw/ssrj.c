@@ -1,11 +1,11 @@
-#pragma code_seg("C649")
-#pragma data_seg("D649")
-#pragma bss_seg("B649")
-#pragma const_seg("K649")
-#pragma comment(linker, "/merge:D649=649")
-#pragma comment(linker, "/merge:C649=649")
-#pragma comment(linker, "/merge:B649=649")
-#pragma comment(linker, "/merge:K649=649")
+#pragma code_seg("C660")
+#pragma data_seg("D660")
+#pragma bss_seg("B660")
+#pragma const_seg("K660")
+#pragma comment(linker, "/merge:D660=660")
+#pragma comment(linker, "/merge:C660=660")
+#pragma comment(linker, "/merge:B660=660")
+#pragma comment(linker, "/merge:K660=660")
 #include "vidhrdw/generic.h"
 
 static struct tilemap *tilemap1,*tilemap2,*tilemap4;

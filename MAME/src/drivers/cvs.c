@@ -1,11 +1,11 @@
-#pragma code_seg("C220")
-#pragma data_seg("D220")
-#pragma bss_seg("B220")
-#pragma const_seg("K220")
-#pragma comment(linker, "/merge:D220=220")
-#pragma comment(linker, "/merge:C220=220")
-#pragma comment(linker, "/merge:B220=220")
-#pragma comment(linker, "/merge:K220=220")
+#pragma code_seg("C5")
+#pragma data_seg("D5")
+#pragma bss_seg("B5")
+#pragma const_seg("K5")
+#pragma comment(linker, "/merge:D5=5")
+#pragma comment(linker, "/merge:C5=5")
+#pragma comment(linker, "/merge:B5=5")
+#pragma comment(linker, "/merge:K5=5")
 /***************************************************************************
 
 Century CVS System

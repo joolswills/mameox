@@ -1,11 +1,11 @@
-#pragma code_seg("C699")
-#pragma data_seg("D699")
-#pragma bss_seg("B699")
-#pragma const_seg("K699")
-#pragma comment(linker, "/merge:D699=699")
-#pragma comment(linker, "/merge:C699=699")
-#pragma comment(linker, "/merge:B699=699")
-#pragma comment(linker, "/merge:K699=699")
+#pragma code_seg("C710")
+#pragma data_seg("D710")
+#pragma bss_seg("B710")
+#pragma const_seg("K710")
+#pragma comment(linker, "/merge:D710=710")
+#pragma comment(linker, "/merge:C710=710")
+#pragma comment(linker, "/merge:B710=710")
+#pragma comment(linker, "/merge:K710=710")
 /***************************************************************************
 
 tecmo.c

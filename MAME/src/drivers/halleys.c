@@ -1,11 +1,11 @@
-#pragma code_seg("C335")
-#pragma data_seg("D335")
-#pragma bss_seg("B335")
-#pragma const_seg("K335")
-#pragma comment(linker, "/merge:D335=335")
-#pragma comment(linker, "/merge:C335=335")
-#pragma comment(linker, "/merge:B335=335")
-#pragma comment(linker, "/merge:K335=335")
+#pragma code_seg("C348")
+#pragma data_seg("D348")
+#pragma bss_seg("B348")
+#pragma const_seg("K348")
+#pragma comment(linker, "/merge:D348=348")
+#pragma comment(linker, "/merge:C348=348")
+#pragma comment(linker, "/merge:B348=348")
+#pragma comment(linker, "/merge:K348=348")
 /*
 Halley's Comet, 1986 Taito
 

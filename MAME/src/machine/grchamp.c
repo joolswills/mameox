@@ -1,11 +1,11 @@
-#pragma code_seg("C323")
-#pragma data_seg("D323")
-#pragma bss_seg("B323")
-#pragma const_seg("K323")
-#pragma comment(linker, "/merge:D323=323")
-#pragma comment(linker, "/merge:C323=323")
-#pragma comment(linker, "/merge:B323=323")
-#pragma comment(linker, "/merge:K323=323")
+#pragma code_seg("C336")
+#pragma data_seg("D336")
+#pragma bss_seg("B336")
+#pragma const_seg("K336")
+#pragma comment(linker, "/merge:D336=336")
+#pragma comment(linker, "/merge:C336=336")
+#pragma comment(linker, "/merge:B336=336")
+#pragma comment(linker, "/merge:K336=336")
 #include "driver.h"
 
 extern UINT8 grchamp_videoreg0;

@@ -1,11 +1,11 @@
-#pragma code_seg("C284")
-#pragma data_seg("D284")
-#pragma bss_seg("B284")
-#pragma const_seg("K284")
-#pragma comment(linker, "/merge:D284=284")
-#pragma comment(linker, "/merge:C284=284")
-#pragma comment(linker, "/merge:B284=284")
-#pragma comment(linker, "/merge:K284=284")
+#pragma code_seg("C297")
+#pragma data_seg("D297")
+#pragma bss_seg("B297")
+#pragma const_seg("K297")
+#pragma comment(linker, "/merge:D297=297")
+#pragma comment(linker, "/merge:C297=297")
+#pragma comment(linker, "/merge:B297=297")
+#pragma comment(linker, "/merge:K297=297")
 /***************************************************************************
 
 The FairyLand Story

@@ -1,11 +1,11 @@
-#pragma code_seg("C97")
-#pragma data_seg("D97")
-#pragma bss_seg("B97")
-#pragma const_seg("K97")
-#pragma comment(linker, "/merge:D97=97")
-#pragma comment(linker, "/merge:C97=97")
-#pragma comment(linker, "/merge:B97=97")
-#pragma comment(linker, "/merge:K97=97")
+#pragma code_seg("C110")
+#pragma data_seg("D110")
+#pragma bss_seg("B110")
+#pragma const_seg("K110")
+#pragma comment(linker, "/merge:D110=110")
+#pragma comment(linker, "/merge:C110=110")
+#pragma comment(linker, "/merge:B110=110")
+#pragma comment(linker, "/merge:K110=110")
 /***************************************************************************
 
 							  -= Afega Games =-

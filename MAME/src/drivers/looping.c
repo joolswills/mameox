@@ -1,11 +1,11 @@
-#pragma code_seg("C395")
-#pragma data_seg("D395")
-#pragma bss_seg("B395")
-#pragma const_seg("K395")
-#pragma comment(linker, "/merge:D395=395")
-#pragma comment(linker, "/merge:C395=395")
-#pragma comment(linker, "/merge:B395=395")
-#pragma comment(linker, "/merge:K395=395")
+#pragma code_seg("C408")
+#pragma data_seg("D408")
+#pragma bss_seg("B408")
+#pragma const_seg("K408")
+#pragma comment(linker, "/merge:D408=408")
+#pragma comment(linker, "/merge:C408=408")
+#pragma comment(linker, "/merge:B408=408")
+#pragma comment(linker, "/merge:K408=408")
 /*
 To Do:
 - get sound working

@@ -1,11 +1,11 @@
-#pragma code_seg("C478")
-#pragma data_seg("D478")
-#pragma bss_seg("B478")
-#pragma const_seg("K478")
-#pragma comment(linker, "/merge:D478=478")
-#pragma comment(linker, "/merge:C478=478")
-#pragma comment(linker, "/merge:B478=478")
-#pragma comment(linker, "/merge:K478=478")
+#pragma code_seg("C36")
+#pragma data_seg("D36")
+#pragma bss_seg("B36")
+#pragma const_seg("K36")
+#pragma comment(linker, "/merge:D36=36")
+#pragma comment(linker, "/merge:C36=36")
+#pragma comment(linker, "/merge:B36=36")
+#pragma comment(linker, "/merge:K36=36")
 /******************************************************************************
 
 	nbmj8688 - Nichibutsu Mahjong games for years 1986-1988

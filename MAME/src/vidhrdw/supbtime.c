@@ -1,11 +1,11 @@
-#pragma code_seg("C667")
-#pragma data_seg("D667")
-#pragma bss_seg("B667")
-#pragma const_seg("K667")
-#pragma comment(linker, "/merge:D667=667")
-#pragma comment(linker, "/merge:C667=667")
-#pragma comment(linker, "/merge:B667=667")
-#pragma comment(linker, "/merge:K667=667")
+#pragma code_seg("C4")
+#pragma data_seg("D4")
+#pragma bss_seg("B4")
+#pragma const_seg("K4")
+#pragma comment(linker, "/merge:D4=4")
+#pragma comment(linker, "/merge:C4=4")
+#pragma comment(linker, "/merge:B4=4")
+#pragma comment(linker, "/merge:K4=4")
 /***************************************************************************
 
    Super Burger Time Video emulation - Bryan McPhail, mish@tendril.co.uk

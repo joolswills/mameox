@@ -1,11 +1,11 @@
-#pragma code_seg("C2")
-#pragma data_seg("D2")
-#pragma bss_seg("B2")
-#pragma const_seg("K2")
-#pragma comment(linker, "/merge:D2=2")
-#pragma comment(linker, "/merge:C2=2")
-#pragma comment(linker, "/merge:B2=2")
-#pragma comment(linker, "/merge:K2=2")
+#pragma code_seg("C10")
+#pragma data_seg("D10")
+#pragma bss_seg("B10")
+#pragma const_seg("K10")
+#pragma comment(linker, "/merge:D10=10")
+#pragma comment(linker, "/merge:C10=10")
+#pragma comment(linker, "/merge:B10=10")
+#pragma comment(linker, "/merge:K10=10")
 /* vidhrdw/namconb1.c */
 
 #include "driver.h"

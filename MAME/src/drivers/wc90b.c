@@ -1,11 +1,11 @@
-#pragma code_seg("C767")
-#pragma data_seg("D767")
-#pragma bss_seg("B767")
-#pragma const_seg("K767")
-#pragma comment(linker, "/merge:D767=767")
-#pragma comment(linker, "/merge:C767=767")
-#pragma comment(linker, "/merge:B767=767")
-#pragma comment(linker, "/merge:K767=767")
+#pragma code_seg("C49")
+#pragma data_seg("D49")
+#pragma bss_seg("B49")
+#pragma const_seg("K49")
+#pragma comment(linker, "/merge:D49=49")
+#pragma comment(linker, "/merge:C49=49")
+#pragma comment(linker, "/merge:B49=49")
+#pragma comment(linker, "/merge:K49=49")
 /*
 World Cup 90 bootleg driver
 ---------------------------

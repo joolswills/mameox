@@ -1,11 +1,11 @@
-#pragma code_seg("C238")
-#pragma data_seg("D238")
-#pragma bss_seg("B238")
-#pragma const_seg("K238")
-#pragma comment(linker, "/merge:D238=238")
-#pragma comment(linker, "/merge:C238=238")
-#pragma comment(linker, "/merge:B238=238")
-#pragma comment(linker, "/merge:K238=238")
+#pragma code_seg("C251")
+#pragma data_seg("D251")
+#pragma bss_seg("B251")
+#pragma const_seg("K251")
+#pragma comment(linker, "/merge:D251=251")
+#pragma comment(linker, "/merge:C251=251")
+#pragma comment(linker, "/merge:B251=251")
+#pragma comment(linker, "/merge:K251=251")
 /***************************************************************************
 
 Deniam games

@@ -1,11 +1,11 @@
-#pragma code_seg("C364")
-#pragma data_seg("D364")
-#pragma bss_seg("B364")
-#pragma const_seg("K364")
-#pragma comment(linker, "/merge:D364=364")
-#pragma comment(linker, "/merge:C364=364")
-#pragma comment(linker, "/merge:B364=364")
-#pragma comment(linker, "/merge:K364=364")
+#pragma code_seg("C377")
+#pragma data_seg("D377")
+#pragma bss_seg("B377")
+#pragma const_seg("K377")
+#pragma comment(linker, "/merge:D377=377")
+#pragma comment(linker, "/merge:C377=377")
+#pragma comment(linker, "/merge:B377=377")
+#pragma comment(linker, "/merge:K377=377")
 /***************************************************************************
 
 	Atari Return of the Jedi hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C162")
-#pragma data_seg("D162")
-#pragma bss_seg("B162")
-#pragma const_seg("K162")
-#pragma comment(linker, "/merge:D162=162")
-#pragma comment(linker, "/merge:C162=162")
-#pragma comment(linker, "/merge:B162=162")
-#pragma comment(linker, "/merge:K162=162")
+#pragma code_seg("C175")
+#pragma data_seg("D175")
+#pragma bss_seg("B175")
+#pragma const_seg("K175")
+#pragma comment(linker, "/merge:D175=175")
+#pragma comment(linker, "/merge:C175=175")
+#pragma comment(linker, "/merge:B175=175")
+#pragma comment(linker, "/merge:K175=175")
 /***************************************************************************
 
 Bomb Jack

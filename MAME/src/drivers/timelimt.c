@@ -1,11 +1,11 @@
-#pragma code_seg("C714")
-#pragma data_seg("D714")
-#pragma bss_seg("B714")
-#pragma const_seg("K714")
-#pragma comment(linker, "/merge:D714=714")
-#pragma comment(linker, "/merge:C714=714")
-#pragma comment(linker, "/merge:B714=714")
-#pragma comment(linker, "/merge:K714=714")
+#pragma code_seg("C725")
+#pragma data_seg("D725")
+#pragma bss_seg("B725")
+#pragma const_seg("K725")
+#pragma comment(linker, "/merge:D725=725")
+#pragma comment(linker, "/merge:C725=725")
+#pragma comment(linker, "/merge:B725=725")
+#pragma comment(linker, "/merge:K725=725")
 /***************************************************************************
 
 Time Limit (c) 1983 Chuo

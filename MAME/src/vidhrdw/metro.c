@@ -1,11 +1,11 @@
-#pragma code_seg("C430")
-#pragma data_seg("D430")
-#pragma bss_seg("B430")
-#pragma const_seg("K430")
-#pragma comment(linker, "/merge:D430=430")
-#pragma comment(linker, "/merge:C430=430")
-#pragma comment(linker, "/merge:B430=430")
-#pragma comment(linker, "/merge:K430=430")
+#pragma code_seg("C443")
+#pragma data_seg("D443")
+#pragma bss_seg("B443")
+#pragma const_seg("K443")
+#pragma comment(linker, "/merge:D443=443")
+#pragma comment(linker, "/merge:C443=443")
+#pragma comment(linker, "/merge:B443=443")
+#pragma comment(linker, "/merge:K443=443")
 /***************************************************************************
 
 							  -= Metro Games =-

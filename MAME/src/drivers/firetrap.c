@@ -1,11 +1,11 @@
-#pragma code_seg("C279")
-#pragma data_seg("D279")
-#pragma bss_seg("B279")
-#pragma const_seg("K279")
-#pragma comment(linker, "/merge:D279=279")
-#pragma comment(linker, "/merge:C279=279")
-#pragma comment(linker, "/merge:B279=279")
-#pragma comment(linker, "/merge:K279=279")
+#pragma code_seg("C292")
+#pragma data_seg("D292")
+#pragma bss_seg("B292")
+#pragma const_seg("K292")
+#pragma comment(linker, "/merge:D292=292")
+#pragma comment(linker, "/merge:C292=292")
+#pragma comment(linker, "/merge:B292=292")
+#pragma comment(linker, "/merge:K292=292")
 /***************************************************************************
 
 Fire Trap memory map

@@ -1,11 +1,11 @@
-#pragma code_seg("C19")
-#pragma data_seg("D19")
-#pragma bss_seg("B19")
-#pragma const_seg("K19")
-#pragma comment(linker, "/merge:D19=19")
-#pragma comment(linker, "/merge:C19=19")
-#pragma comment(linker, "/merge:B19=19")
-#pragma comment(linker, "/merge:K19=19")
+#pragma code_seg("C9")
+#pragma data_seg("D9")
+#pragma bss_seg("B9")
+#pragma const_seg("K9")
+#pragma comment(linker, "/merge:D9=9")
+#pragma comment(linker, "/merge:C9=9")
+#pragma comment(linker, "/merge:B9=9")
+#pragma comment(linker, "/merge:K9=9")
 /***************************************************************************
 
 	Cinemat/Leland driver

@@ -1,11 +1,11 @@
-#pragma code_seg("C383")
-#pragma data_seg("D383")
-#pragma bss_seg("B383")
-#pragma const_seg("K383")
-#pragma comment(linker, "/merge:D383=383")
-#pragma comment(linker, "/merge:C383=383")
-#pragma comment(linker, "/merge:B383=383")
-#pragma comment(linker, "/merge:K383=383")
+#pragma code_seg("C396")
+#pragma data_seg("D396")
+#pragma bss_seg("B396")
+#pragma const_seg("K396")
+#pragma comment(linker, "/merge:D396=396")
+#pragma comment(linker, "/merge:C396=396")
+#pragma comment(linker, "/merge:B396=396")
+#pragma comment(linker, "/merge:K396=396")
 /***************************************************************************
 
  Lasso and similar hardware

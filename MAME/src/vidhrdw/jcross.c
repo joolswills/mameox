@@ -1,11 +1,11 @@
-#pragma code_seg("C363")
-#pragma data_seg("D363")
-#pragma bss_seg("B363")
-#pragma const_seg("K363")
-#pragma comment(linker, "/merge:D363=363")
-#pragma comment(linker, "/merge:C363=363")
-#pragma comment(linker, "/merge:B363=363")
-#pragma comment(linker, "/merge:K363=363")
+#pragma code_seg("C26")
+#pragma data_seg("D26")
+#pragma bss_seg("B26")
+#pragma const_seg("K26")
+#pragma comment(linker, "/merge:D26=26")
+#pragma comment(linker, "/merge:C26=26")
+#pragma comment(linker, "/merge:B26=26")
+#pragma comment(linker, "/merge:K26=26")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "cpu/z80/z80.h"

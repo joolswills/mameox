@@ -1,11 +1,11 @@
-#pragma code_seg("C581")
-#pragma data_seg("D581")
-#pragma bss_seg("B581")
-#pragma const_seg("K581")
-#pragma comment(linker, "/merge:D581=581")
-#pragma comment(linker, "/merge:C581=581")
-#pragma comment(linker, "/merge:B581=581")
-#pragma comment(linker, "/merge:K581=581")
+#pragma code_seg("C592")
+#pragma data_seg("D592")
+#pragma bss_seg("B592")
+#pragma const_seg("K592")
+#pragma comment(linker, "/merge:D592=592")
+#pragma comment(linker, "/merge:C592=592")
+#pragma comment(linker, "/merge:B592=592")
+#pragma comment(linker, "/merge:K592=592")
 /**********************************************************
 Strike Bowling  (c)1982 Taito
 

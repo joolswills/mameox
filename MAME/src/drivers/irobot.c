@@ -1,11 +1,11 @@
-#pragma code_seg("C354")
-#pragma data_seg("D354")
-#pragma bss_seg("B354")
-#pragma const_seg("K354")
-#pragma comment(linker, "/merge:D354=354")
-#pragma comment(linker, "/merge:C354=354")
-#pragma comment(linker, "/merge:B354=354")
-#pragma comment(linker, "/merge:K354=354")
+#pragma code_seg("C367")
+#pragma data_seg("D367")
+#pragma bss_seg("B367")
+#pragma const_seg("K367")
+#pragma comment(linker, "/merge:D367=367")
+#pragma comment(linker, "/merge:C367=367")
+#pragma comment(linker, "/merge:B367=367")
+#pragma comment(linker, "/merge:K367=367")
 /***************************************************************************
 
 	Atari I, Robot hardware

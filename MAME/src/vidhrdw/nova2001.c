@@ -1,11 +1,11 @@
-#pragma code_seg("C13")
-#pragma data_seg("D13")
-#pragma bss_seg("B13")
-#pragma const_seg("K13")
-#pragma comment(linker, "/merge:D13=13")
-#pragma comment(linker, "/merge:C13=13")
-#pragma comment(linker, "/merge:B13=13")
-#pragma comment(linker, "/merge:K13=13")
+#pragma code_seg("C38")
+#pragma data_seg("D38")
+#pragma bss_seg("B38")
+#pragma const_seg("K38")
+#pragma comment(linker, "/merge:D38=38")
+#pragma comment(linker, "/merge:C38=38")
+#pragma comment(linker, "/merge:B38=38")
+#pragma comment(linker, "/merge:K38=38")
 /*******************************************************************************
 
      Nova 2001 - Video Description:

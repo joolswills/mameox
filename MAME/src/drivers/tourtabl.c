@@ -1,11 +1,11 @@
-#pragma code_seg("C724")
-#pragma data_seg("D724")
-#pragma bss_seg("B724")
-#pragma const_seg("K724")
-#pragma comment(linker, "/merge:D724=724")
-#pragma comment(linker, "/merge:C724=724")
-#pragma comment(linker, "/merge:B724=724")
-#pragma comment(linker, "/merge:K724=724")
+#pragma code_seg("C735")
+#pragma data_seg("D735")
+#pragma bss_seg("B735")
+#pragma const_seg("K735")
+#pragma comment(linker, "/merge:D735=735")
+#pragma comment(linker, "/merge:C735=735")
+#pragma comment(linker, "/merge:B735=735")
+#pragma comment(linker, "/merge:K735=735")
 /***************************************************************************
 
   Atari Tournament Table driver

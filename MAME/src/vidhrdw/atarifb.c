@@ -1,11 +1,11 @@
-#pragma code_seg("C121")
-#pragma data_seg("D121")
-#pragma bss_seg("B121")
-#pragma const_seg("K121")
-#pragma comment(linker, "/merge:D121=121")
-#pragma comment(linker, "/merge:C121=121")
-#pragma comment(linker, "/merge:B121=121")
-#pragma comment(linker, "/merge:K121=121")
+#pragma code_seg("C134")
+#pragma data_seg("D134")
+#pragma bss_seg("B134")
+#pragma const_seg("K134")
+#pragma comment(linker, "/merge:D134=134")
+#pragma comment(linker, "/merge:C134=134")
+#pragma comment(linker, "/merge:B134=134")
+#pragma comment(linker, "/merge:K134=134")
 /*************************************************************************
 
 	Atari Football hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C410")
-#pragma data_seg("D410")
-#pragma bss_seg("B410")
-#pragma const_seg("K410")
-#pragma comment(linker, "/merge:D410=410")
-#pragma comment(linker, "/merge:C410=410")
-#pragma comment(linker, "/merge:B410=410")
-#pragma comment(linker, "/merge:K410=410")
+#pragma code_seg("C5")
+#pragma data_seg("D5")
+#pragma bss_seg("B5")
+#pragma const_seg("K5")
+#pragma comment(linker, "/merge:D5=5")
+#pragma comment(linker, "/merge:C5=5")
+#pragma comment(linker, "/merge:B5=5")
+#pragma comment(linker, "/merge:K5=5")
 /*
 
   Malzak

@@ -1,11 +1,11 @@
-#pragma code_seg("C7")
-#pragma data_seg("D7")
-#pragma bss_seg("B7")
-#pragma const_seg("K7")
-#pragma comment(linker, "/merge:D7=7")
-#pragma comment(linker, "/merge:C7=7")
-#pragma comment(linker, "/merge:B7=7")
-#pragma comment(linker, "/merge:K7=7")
+#pragma code_seg("C26")
+#pragma data_seg("D26")
+#pragma bss_seg("B26")
+#pragma const_seg("K26")
+#pragma comment(linker, "/merge:D26=26")
+#pragma comment(linker, "/merge:C26=26")
+#pragma comment(linker, "/merge:B26=26")
+#pragma comment(linker, "/merge:K26=26")
 /*
 snk.c
 various SNK triple Z80 games

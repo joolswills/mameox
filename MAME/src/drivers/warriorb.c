@@ -1,11 +1,11 @@
-#pragma code_seg("C765")
-#pragma data_seg("D765")
-#pragma bss_seg("B765")
-#pragma const_seg("K765")
-#pragma comment(linker, "/merge:D765=765")
-#pragma comment(linker, "/merge:C765=765")
-#pragma comment(linker, "/merge:B765=765")
-#pragma comment(linker, "/merge:K765=765")
+#pragma code_seg("C48")
+#pragma data_seg("D48")
+#pragma bss_seg("B48")
+#pragma const_seg("K48")
+#pragma comment(linker, "/merge:D48=48")
+#pragma comment(linker, "/merge:C48=48")
+#pragma comment(linker, "/merge:B48=48")
+#pragma comment(linker, "/merge:K48=48")
 /***************************************************************************
 
 Taito Dual Screen Games

@@ -1,11 +1,11 @@
-#pragma code_seg("C629")
-#pragma data_seg("D629")
-#pragma bss_seg("B629")
-#pragma const_seg("K629")
-#pragma comment(linker, "/merge:D629=629")
-#pragma comment(linker, "/merge:C629=629")
-#pragma comment(linker, "/merge:B629=629")
-#pragma comment(linker, "/merge:K629=629")
+#pragma code_seg("C640")
+#pragma data_seg("D640")
+#pragma bss_seg("B640")
+#pragma const_seg("K640")
+#pragma comment(linker, "/merge:D640=640")
+#pragma comment(linker, "/merge:C640=640")
+#pragma comment(linker, "/merge:B640=640")
+#pragma comment(linker, "/merge:K640=640")
 /* vidhrdw/spbactn.c - see drivers/spbactn.c for more info */
 /* rather similar to galspnbl.c */
 

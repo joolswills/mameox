@@ -1,11 +1,11 @@
-#pragma code_seg("C693")
-#pragma data_seg("D693")
-#pragma bss_seg("B693")
-#pragma const_seg("K693")
-#pragma comment(linker, "/merge:D693=693")
-#pragma comment(linker, "/merge:C693=693")
-#pragma comment(linker, "/merge:B693=693")
-#pragma comment(linker, "/merge:K693=693")
+#pragma code_seg("C704")
+#pragma data_seg("D704")
+#pragma bss_seg("B704")
+#pragma const_seg("K704")
+#pragma comment(linker, "/merge:D704=704")
+#pragma comment(linker, "/merge:C704=704")
+#pragma comment(linker, "/merge:B704=704")
+#pragma comment(linker, "/merge:K704=704")
 /*
 *	Video Driver for Tank Busters
 */

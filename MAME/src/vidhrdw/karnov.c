@@ -1,11 +1,11 @@
-#pragma code_seg("C369")
-#pragma data_seg("D369")
-#pragma bss_seg("B369")
-#pragma const_seg("K369")
-#pragma comment(linker, "/merge:D369=369")
-#pragma comment(linker, "/merge:C369=369")
-#pragma comment(linker, "/merge:B369=369")
-#pragma comment(linker, "/merge:K369=369")
+#pragma code_seg("C382")
+#pragma data_seg("D382")
+#pragma bss_seg("B382")
+#pragma const_seg("K382")
+#pragma comment(linker, "/merge:D382=382")
+#pragma comment(linker, "/merge:C382=382")
+#pragma comment(linker, "/merge:B382=382")
+#pragma comment(linker, "/merge:K382=382")
 /*******************************************************************************
 
 	Karnov - Bryan McPhail, mish@tendril.co.uk

@@ -1,11 +1,11 @@
-#pragma code_seg("C730")
-#pragma data_seg("D730")
-#pragma bss_seg("B730")
-#pragma const_seg("K730")
-#pragma comment(linker, "/merge:D730=730")
-#pragma comment(linker, "/merge:C730=730")
-#pragma comment(linker, "/merge:B730=730")
-#pragma comment(linker, "/merge:K730=730")
+#pragma code_seg("C10")
+#pragma data_seg("D10")
+#pragma bss_seg("B10")
+#pragma const_seg("K10")
+#pragma comment(linker, "/merge:D10=10")
+#pragma comment(linker, "/merge:C10=10")
+#pragma comment(linker, "/merge:B10=10")
+#pragma comment(linker, "/merge:K10=10")
 /****************************************************************************
 
 Tropical Angel

@@ -1,11 +1,11 @@
-#pragma code_seg("C155")
-#pragma data_seg("D155")
-#pragma bss_seg("B155")
-#pragma const_seg("K155")
-#pragma comment(linker, "/merge:D155=155")
-#pragma comment(linker, "/merge:C155=155")
-#pragma comment(linker, "/merge:B155=155")
-#pragma comment(linker, "/merge:K155=155")
+#pragma code_seg("C168")
+#pragma data_seg("D168")
+#pragma bss_seg("B168")
+#pragma const_seg("K168")
+#pragma comment(linker, "/merge:D168=168")
+#pragma comment(linker, "/merge:C168=168")
+#pragma comment(linker, "/merge:B168=168")
+#pragma comment(linker, "/merge:K168=168")
 /****************************************************************************
 
 Blockade/Comotion/Blasto/Hustle Memory MAP

@@ -1,11 +1,11 @@
-#pragma code_seg("C367")
-#pragma data_seg("D367")
-#pragma bss_seg("B367")
-#pragma const_seg("K367")
-#pragma comment(linker, "/merge:D367=367")
-#pragma comment(linker, "/merge:C367=367")
-#pragma comment(linker, "/merge:B367=367")
-#pragma comment(linker, "/merge:K367=367")
+#pragma code_seg("C24")
+#pragma data_seg("D24")
+#pragma bss_seg("B24")
+#pragma const_seg("K24")
+#pragma comment(linker, "/merge:D24=24")
+#pragma comment(linker, "/merge:C24=24")
+#pragma comment(linker, "/merge:B24=24")
+#pragma comment(linker, "/merge:K24=24")
 /***************************************************************************
 
 							-= Kaneko 16 Bit Games =-

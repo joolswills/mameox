@@ -1,11 +1,11 @@
-#pragma code_seg("C702")
-#pragma data_seg("D702")
-#pragma bss_seg("B702")
-#pragma const_seg("K702")
-#pragma comment(linker, "/merge:D702=702")
-#pragma comment(linker, "/merge:C702=702")
-#pragma comment(linker, "/merge:B702=702")
-#pragma comment(linker, "/merge:K702=702")
+#pragma code_seg("C713")
+#pragma data_seg("D713")
+#pragma bss_seg("B713")
+#pragma const_seg("K713")
+#pragma comment(linker, "/merge:D713=713")
+#pragma comment(linker, "/merge:C713=713")
+#pragma comment(linker, "/merge:B713=713")
+#pragma comment(linker, "/merge:K713=713")
 /***************************************************************************
 
 Tehkan World Cup - (c) Tehkan 1985

@@ -1,11 +1,11 @@
-#pragma code_seg("C659")
-#pragma data_seg("D659")
-#pragma bss_seg("B659")
-#pragma const_seg("K659")
-#pragma comment(linker, "/merge:D659=659")
-#pragma comment(linker, "/merge:C659=659")
-#pragma comment(linker, "/merge:B659=659")
-#pragma comment(linker, "/merge:K659=659")
+#pragma code_seg("C670")
+#pragma data_seg("D670")
+#pragma bss_seg("B670")
+#pragma const_seg("K670")
+#pragma comment(linker, "/merge:D670=670")
+#pragma comment(linker, "/merge:C670=670")
+#pragma comment(linker, "/merge:B670=670")
+#pragma comment(linker, "/merge:K670=670")
 /*
 
 Steel Force

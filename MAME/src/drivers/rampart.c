@@ -1,11 +1,11 @@
-#pragma code_seg("C9")
-#pragma data_seg("D9")
-#pragma bss_seg("B9")
-#pragma const_seg("K9")
-#pragma comment(linker, "/merge:D9=9")
-#pragma comment(linker, "/merge:C9=9")
-#pragma comment(linker, "/merge:B9=9")
-#pragma comment(linker, "/merge:K9=9")
+#pragma code_seg("C6")
+#pragma data_seg("D6")
+#pragma bss_seg("B6")
+#pragma const_seg("K6")
+#pragma comment(linker, "/merge:D6=6")
+#pragma comment(linker, "/merge:C6=6")
+#pragma comment(linker, "/merge:B6=6")
+#pragma comment(linker, "/merge:K6=6")
 /***************************************************************************
 
 	Atari Rampart hardware

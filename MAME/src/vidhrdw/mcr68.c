@@ -1,11 +1,11 @@
-#pragma code_seg("C4")
-#pragma data_seg("D4")
-#pragma bss_seg("B4")
-#pragma const_seg("K4")
-#pragma comment(linker, "/merge:D4=4")
-#pragma comment(linker, "/merge:C4=4")
-#pragma comment(linker, "/merge:B4=4")
-#pragma comment(linker, "/merge:K4=4")
+#pragma code_seg("C7")
+#pragma data_seg("D7")
+#pragma bss_seg("B7")
+#pragma const_seg("K7")
+#pragma comment(linker, "/merge:D7=7")
+#pragma comment(linker, "/merge:C7=7")
+#pragma comment(linker, "/merge:B7=7")
+#pragma comment(linker, "/merge:K7=7")
 /***************************************************************************
 
 	Midway MCR-68k system

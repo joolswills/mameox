@@ -1,11 +1,11 @@
-#pragma code_seg("C309")
-#pragma data_seg("D309")
-#pragma bss_seg("B309")
-#pragma const_seg("K309")
-#pragma comment(linker, "/merge:D309=309")
-#pragma comment(linker, "/merge:C309=309")
-#pragma comment(linker, "/merge:B309=309")
-#pragma comment(linker, "/merge:K309=309")
+#pragma code_seg("C322")
+#pragma data_seg("D322")
+#pragma bss_seg("B322")
+#pragma const_seg("K322")
+#pragma comment(linker, "/merge:D322=322")
+#pragma comment(linker, "/merge:C322=322")
+#pragma comment(linker, "/merge:B322=322")
+#pragma comment(linker, "/merge:K322=322")
 /***************************************************************************
 
 Gangbusters(GX878) (c) 1988 Konami

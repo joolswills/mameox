@@ -1,11 +1,11 @@
-#pragma code_seg("C316")
-#pragma data_seg("D316")
-#pragma bss_seg("B316")
-#pragma const_seg("K316")
-#pragma comment(linker, "/merge:D316=316")
-#pragma comment(linker, "/merge:C316=316")
-#pragma comment(linker, "/merge:B316=316")
-#pragma comment(linker, "/merge:K316=316")
+#pragma code_seg("C25")
+#pragma data_seg("D25")
+#pragma bss_seg("B25")
+#pragma const_seg("K25")
+#pragma comment(linker, "/merge:D25=25")
+#pragma comment(linker, "/merge:C25=25")
+#pragma comment(linker, "/merge:B25=25")
+#pragma comment(linker, "/merge:K25=25")
 /***************************************************************************
 
 	Goal '92

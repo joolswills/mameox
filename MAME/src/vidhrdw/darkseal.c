@@ -1,11 +1,11 @@
-#pragma code_seg("C223")
-#pragma data_seg("D223")
-#pragma bss_seg("B223")
-#pragma const_seg("K223")
-#pragma comment(linker, "/merge:D223=223")
-#pragma comment(linker, "/merge:C223=223")
-#pragma comment(linker, "/merge:B223=223")
-#pragma comment(linker, "/merge:K223=223")
+#pragma code_seg("C4")
+#pragma data_seg("D4")
+#pragma bss_seg("B4")
+#pragma const_seg("K4")
+#pragma comment(linker, "/merge:D4=4")
+#pragma comment(linker, "/merge:C4=4")
+#pragma comment(linker, "/merge:B4=4")
+#pragma comment(linker, "/merge:K4=4")
 /***************************************************************************
 
    Dark Seal Video emulation - Bryan McPhail, mish@tendril.co.uk

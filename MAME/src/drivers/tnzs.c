@@ -1,11 +1,11 @@
-#pragma code_seg("C717")
-#pragma data_seg("D717")
-#pragma bss_seg("B717")
-#pragma const_seg("K717")
-#pragma comment(linker, "/merge:D717=717")
-#pragma comment(linker, "/merge:C717=717")
-#pragma comment(linker, "/merge:B717=717")
-#pragma comment(linker, "/merge:K717=717")
+#pragma code_seg("C728")
+#pragma data_seg("D728")
+#pragma bss_seg("B728")
+#pragma const_seg("K728")
+#pragma comment(linker, "/merge:D728=728")
+#pragma comment(linker, "/merge:C728=728")
+#pragma comment(linker, "/merge:B728=728")
+#pragma comment(linker, "/merge:K728=728")
 /***************************************************************************
 
 The New Zealand Story driver, used for tnzs & tnzs2.

@@ -1,11 +1,11 @@
-#pragma code_seg("C18")
-#pragma data_seg("D18")
-#pragma bss_seg("B18")
-#pragma const_seg("K18")
-#pragma comment(linker, "/merge:D18=18")
-#pragma comment(linker, "/merge:C18=18")
-#pragma comment(linker, "/merge:B18=18")
-#pragma comment(linker, "/merge:K18=18")
+#pragma code_seg("C30")
+#pragma data_seg("D30")
+#pragma bss_seg("B30")
+#pragma const_seg("K30")
+#pragma comment(linker, "/merge:D30=30")
+#pragma comment(linker, "/merge:C30=30")
+#pragma comment(linker, "/merge:B30=30")
+#pragma comment(linker, "/merge:K30=30")
 /*****************************************************************************
 
 	Irem M90 system.  There is 1 video chip - NANAO GA-25, it produces

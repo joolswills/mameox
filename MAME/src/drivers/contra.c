@@ -1,11 +1,11 @@
-#pragma code_seg("C207")
-#pragma data_seg("D207")
-#pragma bss_seg("B207")
-#pragma const_seg("K207")
-#pragma comment(linker, "/merge:D207=207")
-#pragma comment(linker, "/merge:C207=207")
-#pragma comment(linker, "/merge:B207=207")
-#pragma comment(linker, "/merge:K207=207")
+#pragma code_seg("C220")
+#pragma data_seg("D220")
+#pragma bss_seg("B220")
+#pragma const_seg("K220")
+#pragma comment(linker, "/merge:D220=220")
+#pragma comment(linker, "/merge:C220=220")
+#pragma comment(linker, "/merge:B220=220")
+#pragma comment(linker, "/merge:K220=220")
 /***************************************************************************
 
 Contra/Gryzor (c) 1987 Konami

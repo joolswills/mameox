@@ -1,11 +1,11 @@
-#pragma code_seg("C12")
-#pragma data_seg("D12")
-#pragma bss_seg("B12")
-#pragma const_seg("K12")
-#pragma comment(linker, "/merge:D12=12")
-#pragma comment(linker, "/merge:C12=12")
-#pragma comment(linker, "/merge:B12=12")
-#pragma comment(linker, "/merge:K12=12")
+#pragma code_seg("C14")
+#pragma data_seg("D14")
+#pragma bss_seg("B14")
+#pragma const_seg("K14")
+#pragma comment(linker, "/merge:D14=14")
+#pragma comment(linker, "/merge:C14=14")
+#pragma comment(linker, "/merge:B14=14")
+#pragma comment(linker, "/merge:K14=14")
 /***************************************************************************
 
 	Atari Battlezone hardware

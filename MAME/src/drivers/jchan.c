@@ -1,11 +1,11 @@
-#pragma code_seg("C362")
-#pragma data_seg("D362")
-#pragma bss_seg("B362")
-#pragma const_seg("K362")
-#pragma comment(linker, "/merge:D362=362")
-#pragma comment(linker, "/merge:C362=362")
-#pragma comment(linker, "/merge:B362=362")
-#pragma comment(linker, "/merge:K362=362")
+#pragma code_seg("C375")
+#pragma data_seg("D375")
+#pragma bss_seg("B375")
+#pragma const_seg("K375")
+#pragma comment(linker, "/merge:D375=375")
+#pragma comment(linker, "/merge:C375=375")
+#pragma comment(linker, "/merge:B375=375")
+#pragma comment(linker, "/merge:K375=375")
 /* Jackie Chan - Kung Fu Master
 
 (c) Kaneko 1995

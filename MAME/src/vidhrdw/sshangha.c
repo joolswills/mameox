@@ -1,11 +1,11 @@
-#pragma code_seg("C645")
-#pragma data_seg("D645")
-#pragma bss_seg("B645")
-#pragma const_seg("K645")
-#pragma comment(linker, "/merge:D645=645")
-#pragma comment(linker, "/merge:C645=645")
-#pragma comment(linker, "/merge:B645=645")
-#pragma comment(linker, "/merge:K645=645")
+#pragma code_seg("C656")
+#pragma data_seg("D656")
+#pragma bss_seg("B656")
+#pragma const_seg("K656")
+#pragma comment(linker, "/merge:D656=656")
+#pragma comment(linker, "/merge:C656=656")
+#pragma comment(linker, "/merge:B656=656")
+#pragma comment(linker, "/merge:K656=656")
 /***************************************************************************
 
 	Uses Data East custom chip 55 for backgrounds, with a special 8bpp mode

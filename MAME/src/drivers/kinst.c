@@ -1,11 +1,11 @@
-#pragma code_seg("C373")
-#pragma data_seg("D373")
-#pragma bss_seg("B373")
-#pragma const_seg("K373")
-#pragma comment(linker, "/merge:D373=373")
-#pragma comment(linker, "/merge:C373=373")
-#pragma comment(linker, "/merge:B373=373")
-#pragma comment(linker, "/merge:K373=373")
+#pragma code_seg("C7")
+#pragma data_seg("D7")
+#pragma bss_seg("B7")
+#pragma const_seg("K7")
+#pragma comment(linker, "/merge:D7=7")
+#pragma comment(linker, "/merge:C7=7")
+#pragma comment(linker, "/merge:B7=7")
+#pragma comment(linker, "/merge:K7=7")
 /***************************************************************************
 
 	Killer Instinct hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C759")
-#pragma data_seg("D759")
-#pragma bss_seg("B759")
-#pragma const_seg("K759")
-#pragma comment(linker, "/merge:D759=759")
-#pragma comment(linker, "/merge:C759=759")
-#pragma comment(linker, "/merge:B759=759")
-#pragma comment(linker, "/merge:K759=759")
+#pragma code_seg("C770")
+#pragma data_seg("D770")
+#pragma bss_seg("B770")
+#pragma const_seg("K770")
+#pragma comment(linker, "/merge:D770=770")
+#pragma comment(linker, "/merge:C770=770")
+#pragma comment(linker, "/merge:B770=770")
+#pragma comment(linker, "/merge:K770=770")
 /******************************************************************
 
 Volfied (c) 1989 Taito Corporation

@@ -1,11 +1,11 @@
-#pragma code_seg("C256")
-#pragma data_seg("D256")
-#pragma bss_seg("B256")
-#pragma const_seg("K256")
-#pragma comment(linker, "/merge:D256=256")
-#pragma comment(linker, "/merge:C256=256")
-#pragma comment(linker, "/merge:B256=256")
-#pragma comment(linker, "/merge:K256=256")
+#pragma code_seg("C269")
+#pragma data_seg("D269")
+#pragma bss_seg("B269")
+#pragma const_seg("K269")
+#pragma comment(linker, "/merge:D269=269")
+#pragma comment(linker, "/merge:C269=269")
+#pragma comment(linker, "/merge:B269=269")
+#pragma comment(linker, "/merge:K269=269")
 /***************************************************************************
 
 	Dynamite Duke						(c) 1989 Seibu Kaihatsu/Fabtek

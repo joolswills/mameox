@@ -1,11 +1,11 @@
-#pragma code_seg("C10")
-#pragma data_seg("D10")
-#pragma bss_seg("B10")
-#pragma const_seg("K10")
-#pragma comment(linker, "/merge:D10=10")
-#pragma comment(linker, "/merge:C10=10")
-#pragma comment(linker, "/merge:B10=10")
-#pragma comment(linker, "/merge:K10=10")
+#pragma code_seg("C8")
+#pragma data_seg("D8")
+#pragma bss_seg("B8")
+#pragma const_seg("K8")
+#pragma comment(linker, "/merge:D8=8")
+#pragma comment(linker, "/merge:C8=8")
+#pragma comment(linker, "/merge:B8=8")
+#pragma comment(linker, "/merge:K8=8")
 /****************************************************************************
 
 Operation Wolf  (c) Taito 1987

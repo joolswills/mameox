@@ -1,11 +1,11 @@
-#pragma code_seg("C108")
-#pragma data_seg("D108")
-#pragma bss_seg("B108")
-#pragma const_seg("K108")
-#pragma comment(linker, "/merge:D108=108")
-#pragma comment(linker, "/merge:C108=108")
-#pragma comment(linker, "/merge:B108=108")
-#pragma comment(linker, "/merge:K108=108")
+#pragma code_seg("C121")
+#pragma data_seg("D121")
+#pragma bss_seg("B121")
+#pragma const_seg("K121")
+#pragma comment(linker, "/merge:D121=121")
+#pragma comment(linker, "/merge:C121=121")
+#pragma comment(linker, "/merge:B121=121")
+#pragma comment(linker, "/merge:K121=121")
 /***************************************************************************
 
 	Sun Electronics Arabian hardware

@@ -1,11 +1,3 @@
-#pragma code_seg("C532")
-#pragma data_seg("D532")
-#pragma bss_seg("B532")
-#pragma const_seg("K532")
-#pragma comment(linker, "/merge:D532=532")
-#pragma comment(linker, "/merge:C532=532")
-#pragma comment(linker, "/merge:B532=532")
-#pragma comment(linker, "/merge:K532=532")
 /**************************************************************************
 	pong.c
 	Video handler
@@ -896,7 +888,3 @@ INLINE void pong_7seg(int h0, int n)
     }
 }
 
-#pragma code_seg()
-#pragma data_seg()
-#pragma bss_seg()
-#pragma const_seg()

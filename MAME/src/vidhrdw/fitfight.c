@@ -1,11 +1,11 @@
-#pragma code_seg("C281")
-#pragma data_seg("D281")
-#pragma bss_seg("B281")
-#pragma const_seg("K281")
-#pragma comment(linker, "/merge:D281=281")
-#pragma comment(linker, "/merge:C281=281")
-#pragma comment(linker, "/merge:B281=281")
-#pragma comment(linker, "/merge:K281=281")
+#pragma code_seg("C294")
+#pragma data_seg("D294")
+#pragma bss_seg("B294")
+#pragma const_seg("K294")
+#pragma comment(linker, "/merge:D294=294")
+#pragma comment(linker, "/merge:C294=294")
+#pragma comment(linker, "/merge:B294=294")
+#pragma comment(linker, "/merge:K294=294")
 /* Fit of Fighting Video Hardware */
 
 #include "driver.h"

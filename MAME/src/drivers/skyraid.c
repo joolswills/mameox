@@ -1,11 +1,11 @@
-#pragma code_seg("C620")
-#pragma data_seg("D620")
-#pragma bss_seg("B620")
-#pragma const_seg("K620")
-#pragma comment(linker, "/merge:D620=620")
-#pragma comment(linker, "/merge:C620=620")
-#pragma comment(linker, "/merge:B620=620")
-#pragma comment(linker, "/merge:K620=620")
+#pragma code_seg("C631")
+#pragma data_seg("D631")
+#pragma bss_seg("B631")
+#pragma const_seg("K631")
+#pragma comment(linker, "/merge:D631=631")
+#pragma comment(linker, "/merge:C631=631")
+#pragma comment(linker, "/merge:B631=631")
+#pragma comment(linker, "/merge:K631=631")
 /***************************************************************************
 
 Atari Sky Raider driver

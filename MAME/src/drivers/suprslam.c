@@ -1,11 +1,11 @@
-#pragma code_seg("C674")
-#pragma data_seg("D674")
-#pragma bss_seg("B674")
-#pragma const_seg("K674")
-#pragma comment(linker, "/merge:D674=674")
-#pragma comment(linker, "/merge:C674=674")
-#pragma comment(linker, "/merge:B674=674")
-#pragma comment(linker, "/merge:K674=674")
+#pragma code_seg("C685")
+#pragma data_seg("D685")
+#pragma bss_seg("B685")
+#pragma const_seg("K685")
+#pragma comment(linker, "/merge:D685=685")
+#pragma comment(linker, "/merge:C685=685")
+#pragma comment(linker, "/merge:B685=685")
+#pragma comment(linker, "/merge:K685=685")
 /*** DRIVER INFORMATION & NOTES ***********************************************
 
 Super Slams - Driver by David Haywood

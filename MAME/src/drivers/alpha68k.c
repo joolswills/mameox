@@ -1,11 +1,11 @@
-#pragma code_seg("C101")
-#pragma data_seg("D101")
-#pragma bss_seg("B101")
-#pragma const_seg("K101")
-#pragma comment(linker, "/merge:D101=101")
-#pragma comment(linker, "/merge:C101=101")
-#pragma comment(linker, "/merge:B101=101")
-#pragma comment(linker, "/merge:K101=101")
+#pragma code_seg("C114")
+#pragma data_seg("D114")
+#pragma bss_seg("B114")
+#pragma const_seg("K114")
+#pragma comment(linker, "/merge:D114=114")
+#pragma comment(linker, "/merge:C114=114")
+#pragma comment(linker, "/merge:B114=114")
+#pragma comment(linker, "/merge:K114=114")
 /***************************************************************************
 
 	SNK/Alpha 68000 based games:

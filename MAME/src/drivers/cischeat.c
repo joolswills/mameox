@@ -1,11 +1,11 @@
-#pragma code_seg("C15")
-#pragma data_seg("D15")
-#pragma bss_seg("B15")
-#pragma const_seg("K15")
-#pragma comment(linker, "/merge:D15=15")
-#pragma comment(linker, "/merge:C15=15")
-#pragma comment(linker, "/merge:B15=15")
-#pragma comment(linker, "/merge:K15=15")
+#pragma code_seg("C13")
+#pragma data_seg("D13")
+#pragma bss_seg("B13")
+#pragma const_seg("K13")
+#pragma comment(linker, "/merge:D13=13")
+#pragma comment(linker, "/merge:C13=13")
+#pragma comment(linker, "/merge:B13=13")
+#pragma comment(linker, "/merge:K13=13")
 /***************************************************************************
 
 							-= Jaleco Driving Games =-

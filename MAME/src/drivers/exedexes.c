@@ -1,11 +1,11 @@
-#pragma code_seg("C265")
-#pragma data_seg("D265")
-#pragma bss_seg("B265")
-#pragma const_seg("K265")
-#pragma comment(linker, "/merge:D265=265")
-#pragma comment(linker, "/merge:C265=265")
-#pragma comment(linker, "/merge:B265=265")
-#pragma comment(linker, "/merge:K265=265")
+#pragma code_seg("C278")
+#pragma data_seg("D278")
+#pragma bss_seg("B278")
+#pragma const_seg("K278")
+#pragma comment(linker, "/merge:D278=278")
+#pragma comment(linker, "/merge:C278=278")
+#pragma comment(linker, "/merge:B278=278")
+#pragma comment(linker, "/merge:K278=278")
 /***************************************************************************
 
 Exed Exes

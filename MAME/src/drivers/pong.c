@@ -1,11 +1,3 @@
-#pragma code_seg("C532")
-#pragma data_seg("D532")
-#pragma bss_seg("B532")
-#pragma const_seg("K532")
-#pragma comment(linker, "/merge:D532=532")
-#pragma comment(linker, "/merge:C532=532")
-#pragma comment(linker, "/merge:B532=532")
-#pragma comment(linker, "/merge:K532=532")
 /***************************************************************************
 	pong.c
 	Machine driver
@@ -100,7 +92,3 @@ MACHINE_DRIVER_END
 #define rom_pong 0	/* this game has no ROMs */
 
 GAME( 1972, pong, 0, pong, pong, 0, ROT0, "Atari", "Pong" )
-#pragma code_seg()
-#pragma data_seg()
-#pragma bss_seg()
-#pragma const_seg()

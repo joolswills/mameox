@@ -1,11 +1,3 @@
-#pragma code_seg("C449")
-#pragma data_seg("D449")
-#pragma bss_seg("B449")
-#pragma const_seg("K449")
-#pragma comment(linker, "/merge:D449=449")
-#pragma comment(linker, "/merge:C449=449")
-#pragma comment(linker, "/merge:B449=449")
-#pragma comment(linker, "/merge:K449=449")
 /*
 Monaco GP Simulator v0.1
 http://www.jps.net/camilty/monman.htm
@@ -1235,7 +1227,3 @@ void init_monaco( void )
 
 /*          rom     parent  machine inp     init */
 GAME( 1979, monaco, 0,      monaco, monaco, monaco,   ROT90, "Sega", "Monaco GP" )
-#pragma code_seg()
-#pragma data_seg()
-#pragma bss_seg()
-#pragma const_seg()

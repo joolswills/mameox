@@ -1,11 +1,11 @@
-#pragma code_seg("C648")
-#pragma data_seg("D648")
-#pragma bss_seg("B648")
-#pragma const_seg("K648")
-#pragma comment(linker, "/merge:D648=648")
-#pragma comment(linker, "/merge:C648=648")
-#pragma comment(linker, "/merge:B648=648")
-#pragma comment(linker, "/merge:K648=648")
+#pragma code_seg("C659")
+#pragma data_seg("D659")
+#pragma bss_seg("B659")
+#pragma const_seg("K659")
+#pragma comment(linker, "/merge:D659=659")
+#pragma comment(linker, "/merge:C659=659")
+#pragma comment(linker, "/merge:B659=659")
+#pragma comment(linker, "/merge:K659=659")
 /***************************************************************************
 
 Taito Super Speed Race video emulation

@@ -1,11 +1,11 @@
-#pragma code_seg("C671")
-#pragma data_seg("D671")
-#pragma bss_seg("B671")
-#pragma const_seg("K671")
-#pragma comment(linker, "/merge:D671=671")
-#pragma comment(linker, "/merge:C671=671")
-#pragma comment(linker, "/merge:B671=671")
-#pragma comment(linker, "/merge:K671=671")
+#pragma code_seg("C682")
+#pragma data_seg("D682")
+#pragma bss_seg("B682")
+#pragma const_seg("K682")
+#pragma comment(linker, "/merge:D682=682")
+#pragma comment(linker, "/merge:C682=682")
+#pragma comment(linker, "/merge:B682=682")
+#pragma comment(linker, "/merge:K682=682")
 /***************************************************************************
 
 Super Tank

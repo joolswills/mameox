@@ -1,11 +1,11 @@
-#pragma code_seg("C29")
-#pragma data_seg("D29")
-#pragma bss_seg("B29")
-#pragma const_seg("K29")
-#pragma comment(linker, "/merge:D29=29")
-#pragma comment(linker, "/merge:C29=29")
-#pragma comment(linker, "/merge:B29=29")
-#pragma comment(linker, "/merge:K29=29")
+#pragma code_seg("C17")
+#pragma data_seg("D17")
+#pragma bss_seg("B17")
+#pragma const_seg("K17")
+#pragma comment(linker, "/merge:D17=17")
+#pragma comment(linker, "/merge:C17=17")
+#pragma comment(linker, "/merge:B17=17")
+#pragma comment(linker, "/merge:K17=17")
 /***************************************************************************
 				Wiping
 			    (C) 1982 Nichibutsu

@@ -1,11 +1,11 @@
-#pragma code_seg("C690")
-#pragma data_seg("D690")
-#pragma bss_seg("B690")
-#pragma const_seg("K690")
-#pragma comment(linker, "/merge:D690=690")
-#pragma comment(linker, "/merge:C690=690")
-#pragma comment(linker, "/merge:B690=690")
-#pragma comment(linker, "/merge:K690=690")
+#pragma code_seg("C701")
+#pragma data_seg("D701")
+#pragma bss_seg("B701")
+#pragma const_seg("K701")
+#pragma comment(linker, "/merge:D701=701")
+#pragma comment(linker, "/merge:C701=701")
+#pragma comment(linker, "/merge:B701=701")
+#pragma comment(linker, "/merge:K701=701")
 /***************************************************************************
 
 Taito Air System

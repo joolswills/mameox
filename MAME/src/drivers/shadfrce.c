@@ -1,11 +1,11 @@
-#pragma code_seg("C600")
-#pragma data_seg("D600")
-#pragma bss_seg("B600")
-#pragma const_seg("K600")
-#pragma comment(linker, "/merge:D600=600")
-#pragma comment(linker, "/merge:C600=600")
-#pragma comment(linker, "/merge:B600=600")
-#pragma comment(linker, "/merge:K600=600")
+#pragma code_seg("C611")
+#pragma data_seg("D611")
+#pragma bss_seg("B611")
+#pragma const_seg("K611")
+#pragma comment(linker, "/merge:D611=611")
+#pragma comment(linker, "/merge:C611=611")
+#pragma comment(linker, "/merge:B611=611")
+#pragma comment(linker, "/merge:K611=611")
 /*******************************************************************************
  Shadow Force (c)1993 Technos
  Preliminary Driver by David Haywood

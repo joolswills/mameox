@@ -1,11 +1,11 @@
-#pragma code_seg("C547")
-#pragma data_seg("D547")
-#pragma bss_seg("B547")
-#pragma const_seg("K547")
-#pragma comment(linker, "/merge:D547=547")
-#pragma comment(linker, "/merge:C547=547")
-#pragma comment(linker, "/merge:B547=547")
-#pragma comment(linker, "/merge:K547=547")
+#pragma code_seg("C558")
+#pragma data_seg("D558")
+#pragma bss_seg("B558")
+#pragma const_seg("K558")
+#pragma comment(linker, "/merge:D558=558")
+#pragma comment(linker, "/merge:C558=558")
+#pragma comment(linker, "/merge:B558=558")
+#pragma comment(linker, "/merge:K558=558")
 /***************************************************************************
 
 	Atari Quantum hardware

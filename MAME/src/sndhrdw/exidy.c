@@ -1,11 +1,11 @@
-#pragma code_seg("C17")
-#pragma data_seg("D17")
-#pragma bss_seg("B17")
-#pragma const_seg("K17")
-#pragma comment(linker, "/merge:D17=17")
-#pragma comment(linker, "/merge:C17=17")
-#pragma comment(linker, "/merge:B17=17")
-#pragma comment(linker, "/merge:K17=17")
+#pragma code_seg("C21")
+#pragma data_seg("D21")
+#pragma bss_seg("B21")
+#pragma const_seg("K21")
+#pragma comment(linker, "/merge:D21=21")
+#pragma comment(linker, "/merge:C21=21")
+#pragma comment(linker, "/merge:B21=21")
+#pragma comment(linker, "/merge:K21=21")
 /*************************************************************************
 
 	Exidy 6502 hardware

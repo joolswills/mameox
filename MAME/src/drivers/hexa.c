@@ -1,11 +1,11 @@
-#pragma code_seg("C340")
-#pragma data_seg("D340")
-#pragma bss_seg("B340")
-#pragma const_seg("K340")
-#pragma comment(linker, "/merge:D340=340")
-#pragma comment(linker, "/merge:C340=340")
-#pragma comment(linker, "/merge:B340=340")
-#pragma comment(linker, "/merge:K340=340")
+#pragma code_seg("C353")
+#pragma data_seg("D353")
+#pragma bss_seg("B353")
+#pragma const_seg("K353")
+#pragma comment(linker, "/merge:D353=353")
+#pragma comment(linker, "/merge:C353=353")
+#pragma comment(linker, "/merge:B353=353")
+#pragma comment(linker, "/merge:K353=353")
 /****************************************************************************
 
 HEXA

@@ -1,11 +1,11 @@
-#pragma code_seg("C252")
-#pragma data_seg("D252")
-#pragma bss_seg("B252")
-#pragma const_seg("K252")
-#pragma comment(linker, "/merge:D252=252")
-#pragma comment(linker, "/merge:C252=252")
-#pragma comment(linker, "/merge:B252=252")
-#pragma comment(linker, "/merge:K252=252")
+#pragma code_seg("C20")
+#pragma data_seg("D20")
+#pragma bss_seg("B20")
+#pragma const_seg("K20")
+#pragma comment(linker, "/merge:D20=20")
+#pragma comment(linker, "/merge:C20=20")
+#pragma comment(linker, "/merge:B20=20")
+#pragma comment(linker, "/merge:K20=20")
 // remaining gfx glitches
 
 // layer priority register not fully understood

@@ -1,11 +1,11 @@
-#pragma code_seg("C273")
-#pragma data_seg("D273")
-#pragma bss_seg("B273")
-#pragma const_seg("K273")
-#pragma comment(linker, "/merge:D273=273")
-#pragma comment(linker, "/merge:C273=273")
-#pragma comment(linker, "/merge:B273=273")
-#pragma comment(linker, "/merge:K273=273")
+#pragma code_seg("C286")
+#pragma data_seg("D286")
+#pragma bss_seg("B286")
+#pragma const_seg("K286")
+#pragma comment(linker, "/merge:D286=286")
+#pragma comment(linker, "/merge:C286=286")
+#pragma comment(linker, "/merge:B286=286")
+#pragma comment(linker, "/merge:K286=286")
 /***************************************************************************
 
 					  -= Fantasy Land / Galaxy Gunners =-

@@ -1,11 +1,11 @@
-#pragma code_seg("C2")
-#pragma data_seg("D2")
-#pragma bss_seg("B2")
-#pragma const_seg("K2")
-#pragma comment(linker, "/merge:D2=2")
-#pragma comment(linker, "/merge:C2=2")
-#pragma comment(linker, "/merge:B2=2")
-#pragma comment(linker, "/merge:K2=2")
+#pragma code_seg("C487")
+#pragma data_seg("D487")
+#pragma bss_seg("B487")
+#pragma const_seg("K487")
+#pragma comment(linker, "/merge:D487=487")
+#pragma comment(linker, "/merge:C487=487")
+#pragma comment(linker, "/merge:B487=487")
+#pragma comment(linker, "/merge:K487=487")
 /**
  * video hardware for Namco System22
  *

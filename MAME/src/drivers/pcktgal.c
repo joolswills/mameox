@@ -1,11 +1,11 @@
-#pragma code_seg("C517")
-#pragma data_seg("D517")
-#pragma bss_seg("B517")
-#pragma const_seg("K517")
-#pragma comment(linker, "/merge:D517=517")
-#pragma comment(linker, "/merge:C517=517")
-#pragma comment(linker, "/merge:B517=517")
-#pragma comment(linker, "/merge:K517=517")
+#pragma code_seg("C529")
+#pragma data_seg("D529")
+#pragma bss_seg("B529")
+#pragma const_seg("K529")
+#pragma comment(linker, "/merge:D529=529")
+#pragma comment(linker, "/merge:C529=529")
+#pragma comment(linker, "/merge:B529=529")
+#pragma comment(linker, "/merge:K529=529")
 /***************************************************************************
 
 	Pocket Gal						(c) 1987 Data East Corporation

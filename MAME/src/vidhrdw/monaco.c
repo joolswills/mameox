@@ -1,11 +1,3 @@
-#pragma code_seg("C449")
-#pragma data_seg("D449")
-#pragma bss_seg("B449")
-#pragma const_seg("K449")
-#pragma comment(linker, "/merge:D449=449")
-#pragma comment(linker, "/merge:C449=449")
-#pragma comment(linker, "/merge:B449=449")
-#pragma comment(linker, "/merge:K449=449")
 /* Monaco GP video hardware simulation */
 
 #include "driver.h"
@@ -654,7 +646,3 @@ VIDEO_START( monaco )
 // 255,215,0: yellow trim
 	return 0;
 }
-#pragma code_seg()
-#pragma data_seg()
-#pragma bss_seg()
-#pragma const_seg()

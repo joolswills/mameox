@@ -1,11 +1,11 @@
-#pragma code_seg("C563")
-#pragma data_seg("D563")
-#pragma bss_seg("B563")
-#pragma const_seg("K563")
-#pragma comment(linker, "/merge:D563=563")
-#pragma comment(linker, "/merge:C563=563")
-#pragma comment(linker, "/merge:B563=563")
-#pragma comment(linker, "/merge:K563=563")
+#pragma code_seg("C574")
+#pragma data_seg("D574")
+#pragma bss_seg("B574")
+#pragma const_seg("K574")
+#pragma comment(linker, "/merge:D574=574")
+#pragma comment(linker, "/merge:C574=574")
+#pragma comment(linker, "/merge:B574=574")
+#pragma comment(linker, "/merge:K574=574")
 /***************************************************************************
 
 	Renegade Video Hardware

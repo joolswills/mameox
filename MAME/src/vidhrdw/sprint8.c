@@ -1,11 +1,11 @@
-#pragma code_seg("C641")
-#pragma data_seg("D641")
-#pragma bss_seg("B641")
-#pragma const_seg("K641")
-#pragma comment(linker, "/merge:D641=641")
-#pragma comment(linker, "/merge:C641=641")
-#pragma comment(linker, "/merge:B641=641")
-#pragma comment(linker, "/merge:K641=641")
+#pragma code_seg("C652")
+#pragma data_seg("D652")
+#pragma bss_seg("B652")
+#pragma const_seg("K652")
+#pragma comment(linker, "/merge:D652=652")
+#pragma comment(linker, "/merge:C652=652")
+#pragma comment(linker, "/merge:B652=652")
+#pragma comment(linker, "/merge:K652=652")
 /***************************************************************************
 
 Atari Sprint 8 video emulation
