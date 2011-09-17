@@ -1,11 +1,11 @@
-#pragma code_seg("C702")
-#pragma data_seg("D702")
-#pragma bss_seg("B702")
-#pragma const_seg("K702")
-#pragma comment(linker, "/merge:D702=702")
-#pragma comment(linker, "/merge:C702=702")
-#pragma comment(linker, "/merge:B702=702")
-#pragma comment(linker, "/merge:K702=702")
+#pragma code_seg("C742")
+#pragma data_seg("D742")
+#pragma bss_seg("B742")
+#pragma const_seg("K742")
+#pragma comment(linker, "/merge:D742=742")
+#pragma comment(linker, "/merge:C742=742")
+#pragma comment(linker, "/merge:B742=742")
+#pragma comment(linker, "/merge:K742=742")
 /***************************************************************************
 
   machine.c
@@ -25,7 +25,7 @@
 static unsigned char fromz80,toz80;
 static int zaccept,zready;
 
-WRITE_HANDLER( taitosj_bankswitch_w );
+WRITE8_HANDLER( taitosj_bankswitch_w );
 
 
 MACHINE_INIT( taitosj )
@@ -38,11 +38,11 @@ MACHINE_INIT( taitosj )
 	zaccept = 1;
 	zready = 0;
  	if (Machine->drv->cpu[2].cpu_type != CPU_DUMMY)
-	cpu_set_irq_line(2,0,CLEAR_LINE);
+	cpunum_set_input_line(2,0,CLEAR_LINE);
 }
 
 
-WRITE_HANDLER( taitosj_bankswitch_w )
+WRITE8_HANDLER( taitosj_bankswitch_w )
 {
 	unsigned char *RAM = memory_region(REGION_CPU1);
 
@@ -64,7 +64,7 @@ WRITE_HANDLER( taitosj_bankswitch_w )
  direct access to the Z80 memory space. It can also trigger IRQs on the Z80.
 
 ***************************************************************************/
-READ_HANDLER( taitosj_fake_data_r )
+READ8_HANDLER( taitosj_fake_data_r )
 {
 #if DEBUG_MCU
 logerror("%04x: protection read\n",activecpu_get_pc());
@@ -72,14 +72,14 @@ logerror("%04x: protection read\n",activecpu_get_pc());
 	return 0;
 }
 
-WRITE_HANDLER( taitosj_fake_data_w )
+WRITE8_HANDLER( taitosj_fake_data_w )
 {
 #if DEBUG_MCU
 logerror("%04x: protection write %02x\n",activecpu_get_pc(),data);
 #endif
 }
 
-READ_HANDLER( taitosj_fake_status_r )
+READ8_HANDLER( taitosj_fake_status_r )
 {
 #if DEBUG_MCU
 logerror("%04x: protection status read\n",activecpu_get_pc());
@@ -89,7 +89,7 @@ logerror("%04x: protection status read\n",activecpu_get_pc());
 
 
 /* timer callback : */
-READ_HANDLER( taitosj_mcu_data_r )
+READ8_HANDLER( taitosj_mcu_data_r )
 {
 #if DEBUG_MCU
 logerror("%04x: protection read %02x\n",activecpu_get_pc(),toz80);
@@ -102,11 +102,11 @@ logerror("%04x: protection read %02x\n",activecpu_get_pc(),toz80);
 void taitosj_mcu_real_data_w(int data)
 {
 	zready = 1;
-	cpu_set_irq_line(2,0,ASSERT_LINE);
+	cpunum_set_input_line(2,0,ASSERT_LINE);
 	fromz80 = data;
 }
 
-WRITE_HANDLER( taitosj_mcu_data_w )
+WRITE8_HANDLER( taitosj_mcu_data_w )
 {
 #if DEBUG_MCU
 logerror("%04x: protection write %02x\n",activecpu_get_pc(),data);
@@ -116,7 +116,7 @@ logerror("%04x: protection write %02x\n",activecpu_get_pc(),data);
 	cpu_boost_interleave(0, TIME_IN_USEC(10));
 }
 
-READ_HANDLER( taitosj_mcu_status_r )
+READ8_HANDLER( taitosj_mcu_status_r )
 {
 	/* temporarily boost the interleave to sync things up */
 	cpu_boost_interleave(0, TIME_IN_USEC(10));
@@ -128,7 +128,7 @@ READ_HANDLER( taitosj_mcu_status_r )
 
 static unsigned char portA_in,portA_out;
 
-READ_HANDLER( taitosj_68705_portA_r )
+READ8_HANDLER( taitosj_68705_portA_r )
 {
 #if DEBUG_MCU
 logerror("%04x: 68705 port A read %02x\n",activecpu_get_pc(),portA_in);
@@ -136,7 +136,7 @@ logerror("%04x: 68705 port A read %02x\n",activecpu_get_pc(),portA_in);
 	return portA_in;
 }
 
-WRITE_HANDLER( taitosj_68705_portA_w )
+WRITE8_HANDLER( taitosj_68705_portA_w )
 {
 #if DEBUG_MCU
 logerror("%04x: 68705 port A write %02x\n",activecpu_get_pc(),data);
@@ -166,7 +166,7 @@ logerror("%04x: 68705 port A write %02x\n",activecpu_get_pc(),data);
  *               the main Z80 memory location to access)
  */
 
-READ_HANDLER( taitosj_68705_portB_r )
+READ8_HANDLER( taitosj_68705_portB_r )
 {
 	return 0xff;
 }
@@ -186,7 +186,7 @@ void taitosj_mcu_status_real_w(int data)
 	zaccept = 0;
 }
 
-WRITE_HANDLER( taitosj_68705_portB_w )
+WRITE8_HANDLER( taitosj_68705_portB_w )
 {
 #if DEBUG_MCU
 logerror("%04x: 68705 port B write %02x\n",activecpu_get_pc(),data);
@@ -202,7 +202,7 @@ logerror("%04x: 68705  68INTRQ **NOT SUPPORTED**!\n",activecpu_get_pc());
 	{
 		/* 68705 is going to read data from the Z80 */
 		timer_set(TIME_NOW,0,taitosj_mcu_data_real_r);
-		cpu_set_irq_line(2,0,CLEAR_LINE);
+		cpunum_set_input_line(2,0,CLEAR_LINE);
 		portA_in = fromz80;
 #if DEBUG_MCU
 logerror("%04x: 68705 <- Z80 %02x\n",activecpu_get_pc(),portA_in);
@@ -263,7 +263,7 @@ logerror("%04x: 68705 address high %02x\n",activecpu_get_pc(),portA_out);
  *                  passes through)
  */
 
-READ_HANDLER( taitosj_68705_portC_r )
+READ8_HANDLER( taitosj_68705_portC_r )
 {
 	int res;
 
@@ -280,7 +280,7 @@ logerror("%04x: 68705 port C read %02x\n",activecpu_get_pc(),res);
 
 static int protection_value;
 
-WRITE_HANDLER( alpine_protection_w )
+WRITE8_HANDLER( alpine_protection_w )
 {
 	switch (data)
 	{
@@ -304,13 +304,13 @@ WRITE_HANDLER( alpine_protection_w )
 	}
 }
 
-WRITE_HANDLER( alpinea_bankswitch_w )
+WRITE8_HANDLER( alpinea_bankswitch_w )
 {
     taitosj_bankswitch_w(offset, data);
 	protection_value = data >> 2;
 }
 
-READ_HANDLER( alpine_port_2_r )
+READ8_HANDLER( alpine_port_2_r )
 {
 	return input_port_2_r(offset) | protection_value;
 }

@@ -143,7 +143,7 @@ VIDEO_START( kncljoe )
 
 ***************************************************************************/
 
-WRITE_HANDLER( kncljoe_videoram_w )
+WRITE8_HANDLER( kncljoe_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -152,7 +152,7 @@ WRITE_HANDLER( kncljoe_videoram_w )
 	}
 }
 
-WRITE_HANDLER( kncljoe_control_w )
+WRITE8_HANDLER( kncljoe_control_w )
 {
 	int i;
 
@@ -198,7 +198,7 @@ WRITE_HANDLER( kncljoe_control_w )
 	}
 }
 
-WRITE_HANDLER( kncljoe_scroll_w )
+WRITE8_HANDLER( kncljoe_scroll_w )
 {
 	int scrollx;
 

@@ -1,11 +1,11 @@
-#pragma code_seg("C549")
-#pragma data_seg("D549")
-#pragma bss_seg("B549")
-#pragma const_seg("K549")
-#pragma comment(linker, "/merge:D549=549")
-#pragma comment(linker, "/merge:C549=549")
-#pragma comment(linker, "/merge:B549=549")
-#pragma comment(linker, "/merge:K549=549")
+#pragma code_seg("C580")
+#pragma data_seg("D580")
+#pragma bss_seg("B580")
+#pragma const_seg("K580")
+#pragma comment(linker, "/merge:D580=580")
+#pragma comment(linker, "/merge:C580=580")
+#pragma comment(linker, "/merge:B580=580")
+#pragma comment(linker, "/merge:K580=580")
 /***************************************************************************
 
 						  -= Power Instinct =-
@@ -371,14 +371,14 @@ VIDEO_UPDATE( powerins )
 	tilemap_set_scrolly( tilemap_1, 0,  0x00);
 
 #ifdef MAME_DEBUG
-if (keyboard_pressed(KEYCODE_Z))
+if (code_pressed(KEYCODE_Z))
 {
 	int msk = 0;
 
-	if (keyboard_pressed(KEYCODE_Q))	msk |= 1;
-	if (keyboard_pressed(KEYCODE_W))	msk |= 2;
-//	if (keyboard_pressed(KEYCODE_E))	msk |= 4;
-	if (keyboard_pressed(KEYCODE_A))	msk |= 8;
+	if (code_pressed(KEYCODE_Q))	msk |= 1;
+	if (code_pressed(KEYCODE_W))	msk |= 2;
+//	if (code_pressed(KEYCODE_E))	msk |= 4;
+	if (code_pressed(KEYCODE_A))	msk |= 8;
 	if (msk != 0) layers_ctrl &= msk;
 }
 #endif

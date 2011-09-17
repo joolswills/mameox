@@ -1,11 +1,11 @@
-#pragma code_seg("C175")
-#pragma data_seg("D175")
-#pragma bss_seg("B175")
-#pragma const_seg("K175")
-#pragma comment(linker, "/merge:D175=175")
-#pragma comment(linker, "/merge:C175=175")
-#pragma comment(linker, "/merge:B175=175")
-#pragma comment(linker, "/merge:K175=175")
+#pragma code_seg("C177")
+#pragma data_seg("D177")
+#pragma bss_seg("B177")
+#pragma const_seg("K177")
+#pragma comment(linker, "/merge:D177=177")
+#pragma comment(linker, "/merge:C177=177")
+#pragma comment(linker, "/merge:B177=177")
+#pragma comment(linker, "/merge:K177=177")
 /***************************************************************************
 
 Bomb Jack
@@ -79,10 +79,10 @@ NMI interrupts for music timing
 #include "state.h"
 
 
-extern WRITE_HANDLER( bombjack_videoram_w );
-extern WRITE_HANDLER( bombjack_colorram_w );
-extern WRITE_HANDLER( bombjack_background_w );
-extern WRITE_HANDLER( bombjack_flipscreen_w );
+extern WRITE8_HANDLER( bombjack_videoram_w );
+extern WRITE8_HANDLER( bombjack_colorram_w );
+extern WRITE8_HANDLER( bombjack_background_w );
+extern WRITE8_HANDLER( bombjack_flipscreen_w );
 
 extern VIDEO_START( bombjack );
 extern VIDEO_UPDATE( bombjack );
@@ -95,13 +95,13 @@ static void soundlatch_callback(int param)
 	latch = param;
 }
 
-WRITE_HANDLER( bombjack_soundlatch_w )
+WRITE8_HANDLER( bombjack_soundlatch_w )
 {
 	/* make all the CPUs synchronize, and only AFTER that write the new command to the latch */
 	timer_set(TIME_NOW,data,soundlatch_callback);
 }
 
-READ_HANDLER( bombjack_soundlatch_r )
+READ8_HANDLER( bombjack_soundlatch_r )
 {
 	int res;
 

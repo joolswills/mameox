@@ -1,11 +1,11 @@
-#pragma code_seg("C643")
-#pragma data_seg("D643")
-#pragma bss_seg("B643")
-#pragma const_seg("K643")
-#pragma comment(linker, "/merge:D643=643")
-#pragma comment(linker, "/merge:C643=643")
-#pragma comment(linker, "/merge:B643=643")
-#pragma comment(linker, "/merge:K643=643")
+#pragma code_seg("C679")
+#pragma data_seg("D679")
+#pragma bss_seg("B679")
+#pragma const_seg("K679")
+#pragma comment(linker, "/merge:D679=679")
+#pragma comment(linker, "/merge:C679=679")
+#pragma comment(linker, "/merge:B679=679")
+#pragma comment(linker, "/merge:K679=679")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "cpu/m6502/m6502.h"
@@ -114,18 +114,18 @@ INTERRUPT_GEN( spdodgeb_interrupt )
 	if (iloop > 1 && iloop < 32)
 	{
 		scrollx[31-iloop] = lastscroll;
-		cpu_set_irq_line(0, M6502_IRQ_LINE, HOLD_LINE);
+		cpunum_set_input_line(0, M6502_IRQ_LINE, HOLD_LINE);
 	}
 	else if (!iloop)
-		cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 }
 
-WRITE_HANDLER( spdodgeb_scrollx_lo_w )
+WRITE8_HANDLER( spdodgeb_scrollx_lo_w )
 {
 	lastscroll = (lastscroll & 0x100) | data;
 }
 
-WRITE_HANDLER( spdodgeb_ctrl_w )
+WRITE8_HANDLER( spdodgeb_ctrl_w )
 {
 	UINT8 *rom = memory_region(REGION_CPU1);
 
@@ -149,7 +149,7 @@ WRITE_HANDLER( spdodgeb_ctrl_w )
 	sprite_palbank = (data & 0xc0) >> 6;
 }
 
-WRITE_HANDLER( spdodgeb_videoram_w )
+WRITE8_HANDLER( spdodgeb_videoram_w )
 {
 	if (spdodgeb_videoram[offset] != data)
 	{

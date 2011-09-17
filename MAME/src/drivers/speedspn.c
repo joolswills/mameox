@@ -1,11 +1,11 @@
-#pragma code_seg("C646")
-#pragma data_seg("D646")
-#pragma bss_seg("B646")
-#pragma const_seg("K646")
-#pragma comment(linker, "/merge:D646=646")
-#pragma comment(linker, "/merge:C646=646")
-#pragma comment(linker, "/merge:B646=646")
-#pragma comment(linker, "/merge:K646=646")
+#pragma code_seg("C682")
+#pragma data_seg("D682")
+#pragma bss_seg("B682")
+#pragma const_seg("K682")
+#pragma comment(linker, "/merge:D682=682")
+#pragma comment(linker, "/merge:C682=682")
+#pragma comment(linker, "/merge:B682=682")
+#pragma comment(linker, "/merge:K682=682")
 /*** DRIVER INFO & NOTES ******************************************************
  Speed Spin (c)1994 TCH
   driver by David Haywood & Farfetch'd
@@ -63,22 +63,22 @@ TCH-SS9.u34     "     /               AB2Bh
 /* in vidhrdw */
 extern data8_t *speedspn_attram;
 
-WRITE_HANDLER( speedspn_vidram_w );
-WRITE_HANDLER( speedspn_attram_w );
-READ_HANDLER( speedspn_vidram_r );
+WRITE8_HANDLER( speedspn_vidram_w );
+WRITE8_HANDLER( speedspn_attram_w );
+READ8_HANDLER( speedspn_vidram_r );
 VIDEO_START(speedspn);
 VIDEO_UPDATE(speedspn);
-WRITE_HANDLER(speedspn_banked_vidram_change);
-WRITE_HANDLER(speedspn_global_display_w);
+WRITE8_HANDLER(speedspn_banked_vidram_change);
+WRITE8_HANDLER(speedspn_global_display_w);
 
-static READ_HANDLER(speedspn_irq_ack_r)
+static READ8_HANDLER(speedspn_irq_ack_r)
 {
 	// I think this simply acknowledges the IRQ #0, it's read within the handler and the
 	//  value is discarded
 	return 0;
 }
 
-static WRITE_HANDLER(speedspn_banked_rom_change)
+static WRITE8_HANDLER(speedspn_banked_rom_change)
 {
 	/* is this weird banking some form of protection? */
 
@@ -107,10 +107,10 @@ static WRITE_HANDLER(speedspn_banked_rom_change)
 
 /*** SOUND RELATED ***********************************************************/
 
-static WRITE_HANDLER(speedspn_sound_w)
+static WRITE8_HANDLER(speedspn_sound_w)
 {
 	soundlatch_w(1,data);
-	cpu_set_irq_line(1,0,HOLD_LINE);
+	cpunum_set_input_line(1,0,HOLD_LINE);
 }
 
 /*** MEMORY MAPS *************************************************************/

@@ -2172,14 +2172,15 @@ void CROMListScreen::DrawDetailedList( void )
 		const CSkinScreenshot *screenshot = g_loadedSkin->GetSkinElementScreenshot(SKINELEMENT_ROMLISTSCREEN_BODY_SCROLLAREA_SINGLEROW_DETAIL_SCREENSHOT);
 
     //swprintf( name, L"[%lu]", 0 );
-		screenshot->RenderAsOffset( m_displayDevice,
-																m_screenshotTexture,
-																m_screenshotRect,
-																area->m_left,
-																area->m_top,
-																driverData.m_screenOrientation & ORIENTATION_SWAP_XY,
-																driverData.m_screenOrientation & ORIENTATION_FLIP_X,
-																driverData.m_screenOrientation & ORIENTATION_FLIP_Y );
+		if ( m_screenshotTexture )
+			screenshot->RenderAsOffset( m_displayDevice,
+																	m_screenshotTexture,
+																	m_screenshotRect,
+																	area->m_left,
+																	area->m_top,
+																	driverData.m_screenOrientation & ORIENTATION_SWAP_XY,
+																	driverData.m_screenOrientation & ORIENTATION_FLIP_X,
+																	driverData.m_screenOrientation & ORIENTATION_FLIP_Y );
 	}
 
 	FLOAT titleBarLeft = 0.0f;

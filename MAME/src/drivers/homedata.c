@@ -1,11 +1,11 @@
-#pragma code_seg("C359")
-#pragma data_seg("D359")
-#pragma bss_seg("B359")
-#pragma const_seg("K359")
-#pragma comment(linker, "/merge:D359=359")
-#pragma comment(linker, "/merge:C359=359")
-#pragma comment(linker, "/merge:B359=359")
-#pragma comment(linker, "/merge:K359=359")
+#pragma code_seg("C374")
+#pragma data_seg("D374")
+#pragma bss_seg("B374")
+#pragma const_seg("K374")
+#pragma comment(linker, "/merge:D374=374")
+#pragma comment(linker, "/merge:C374=374")
+#pragma comment(linker, "/merge:B374=374")
+#pragma comment(linker, "/merge:K374=374")
 /***************************************************************************
 
 Homedata Games
@@ -240,12 +240,12 @@ static int vblank;
 static INTERRUPT_GEN( homedata_irq )
 {
 	vblank = 1;
-	cpu_set_irq_line(0,M6809_FIRQ_LINE,HOLD_LINE);
+	cpunum_set_input_line(0,M6809_FIRQ_LINE,HOLD_LINE);
 }
 
 static INTERRUPT_GEN( upd7807_irq )
 {
-	cpu_set_irq_line(1,UPD7810_INTF1,HOLD_LINE);
+	cpunum_set_input_line(1,UPD7810_INTF1,HOLD_LINE);
 }
 
 
@@ -259,7 +259,7 @@ static INTERRUPT_GEN( upd7807_irq )
 
 static int keyb;
 
-static READ_HANDLER( mrokumei_keyboard_r )
+static READ8_HANDLER( mrokumei_keyboard_r )
 {
 	int res = 0x3f,i;
 
@@ -292,7 +292,7 @@ static READ_HANDLER( mrokumei_keyboard_r )
 	return res;
 }
 
-static WRITE_HANDLER( mrokumei_keyboard_select_w )
+static WRITE8_HANDLER( mrokumei_keyboard_select_w )
 {
 	keyb = data;
 }
@@ -301,7 +301,7 @@ static WRITE_HANDLER( mrokumei_keyboard_select_w )
 
 static int sndbank;
 
-static READ_HANDLER( mrokumei_sound_io_r )
+static READ8_HANDLER( mrokumei_sound_io_r )
 {
 	if (sndbank & 4)
 		return(soundlatch_r(0));
@@ -309,7 +309,7 @@ static READ_HANDLER( mrokumei_sound_io_r )
 		return memory_region(REGION_CPU2)[0x10000 + offset + (sndbank & 1) * 0x10000];
 }
 
-static WRITE_HANDLER( mrokumei_sound_bank_w )
+static WRITE8_HANDLER( mrokumei_sound_bank_w )
 {
 	/* bit 0 = ROM bank
 	   bit 2 = ROM or soundlatch
@@ -317,7 +317,7 @@ static WRITE_HANDLER( mrokumei_sound_bank_w )
 	sndbank = data;
 }
 
-static WRITE_HANDLER( mrokumei_sound_io_w )
+static WRITE8_HANDLER( mrokumei_sound_io_w )
 {
 	switch (offset & 0xff)
 	{
@@ -330,10 +330,10 @@ static WRITE_HANDLER( mrokumei_sound_io_w )
 	}
 }
 
-static WRITE_HANDLER( mrokumei_sound_cmd_w )
+static WRITE8_HANDLER( mrokumei_sound_cmd_w )
 {
 	soundlatch_w(offset,data);
-	cpu_set_irq_line(1,0,HOLD_LINE);
+	cpunum_set_input_line(1,0,HOLD_LINE);
 }
 
 
@@ -347,17 +347,17 @@ static WRITE_HANDLER( mrokumei_sound_cmd_w )
 
 static int upd7807_porta,upd7807_portc;
 
-static READ_HANDLER( reikaids_upd7807_porta_r )
+static READ8_HANDLER( reikaids_upd7807_porta_r )
 {
 	return upd7807_porta;
 }
 
-static WRITE_HANDLER( reikaids_upd7807_porta_w )
+static WRITE8_HANDLER( reikaids_upd7807_porta_w )
 {
 	upd7807_porta = data;
 }
 
-static WRITE_HANDLER( reikaids_upd7807_portc_w )
+static WRITE8_HANDLER( reikaids_upd7807_portc_w )
 {
 	/* port C layout:
 	   7 coin counter
@@ -402,7 +402,7 @@ static MACHINE_INIT( reikaids_upd7807 )
 	reikaids_upd7807_portc_w(0,0xff);
 }
 
-READ_HANDLER( reikaids_io_r )
+READ8_HANDLER( reikaids_io_r )
 {
 	int res = readinputport(2);	// bit 4 = coin, bit 5 = service
 
@@ -420,13 +420,13 @@ READ_HANDLER( reikaids_io_r )
 
 static int snd_command;
 
-static READ_HANDLER( reikaids_snd_command_r )
+static READ8_HANDLER( reikaids_snd_command_r )
 {
 //logerror("%04x: sndmcd_r (%02x)\n",activecpu_get_pc(),snd_command);
 	return snd_command;
 }
 
-static WRITE_HANDLER( reikaids_snd_command_w )
+static WRITE8_HANDLER( reikaids_snd_command_w )
 {
 	snd_command = data;
 //logerror("%04x: coprocessor_command_w %02x\n",activecpu_get_pc(),data);
@@ -444,19 +444,19 @@ static WRITE_HANDLER( reikaids_snd_command_w )
 
 static int to_cpu,from_cpu;
 
-static WRITE_HANDLER( pteacher_snd_command_w )
+static WRITE8_HANDLER( pteacher_snd_command_w )
 {
 //logerror("%04x: snd_command_w %02x\n",activecpu_get_pc(),data);
 	from_cpu = data;
 }
 
-static READ_HANDLER( pteacher_snd_r )
+static READ8_HANDLER( pteacher_snd_r )
 {
 //logerror("%04x: pteacher_snd_r %02x\n",activecpu_get_pc(),to_cpu);
 	return to_cpu;
 }
 
-static READ_HANDLER( pteacher_io_r )
+static READ8_HANDLER( pteacher_io_r )
 {
 	/* bit 6: !vblank
 	 * bit 7: visible page
@@ -472,7 +472,7 @@ static READ_HANDLER( pteacher_io_r )
 	return res;
 }
 
-static READ_HANDLER( pteacher_keyboard_r )
+static READ8_HANDLER( pteacher_keyboard_r )
 {
 	int dips = readinputport(0);
 
@@ -494,7 +494,7 @@ static READ_HANDLER( pteacher_keyboard_r )
 	return 0xff;
 }
 
-static READ_HANDLER( pteacher_upd7807_porta_r )
+static READ8_HANDLER( pteacher_upd7807_porta_r )
 {
 	if (!BIT(upd7807_portc,6))
 		upd7807_porta = from_cpu;
@@ -504,18 +504,18 @@ logerror("%04x: read PA with PC *not* clear\n",activecpu_get_pc());
 	return upd7807_porta;
 }
 
-static WRITE_HANDLER( pteacher_snd_answer_w )
+static WRITE8_HANDLER( pteacher_snd_answer_w )
 {
 	to_cpu = data;
 //logerror("%04x: to_cpu = %02x\n",activecpu_get_pc(),to_cpu);
 }
 
-static WRITE_HANDLER( pteacher_upd7807_porta_w )
+static WRITE8_HANDLER( pteacher_upd7807_porta_w )
 {
 	upd7807_porta = data;
 }
 
-static WRITE_HANDLER( pteacher_upd7807_portc_w )
+static WRITE8_HANDLER( pteacher_upd7807_portc_w )
 {
 	/* port C layout:
 	   7 coin counter
@@ -550,7 +550,7 @@ static MACHINE_INIT( pteacher_upd7807 )
 /********************************************************************************/
 
 
-static WRITE_HANDLER( bankswitch_w )
+static WRITE8_HANDLER( bankswitch_w )
 {
 	data8_t *rom = memory_region(REGION_CPU1);
 	int len = memory_region_length(REGION_CPU1) - 0x10000+0x4000;
@@ -575,6 +575,7 @@ ADDRESS_MAP_START( mrokumei_readmem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0x0000, 0x3fff) AM_READ(MRA8_RAM) /* videoram */
 	AM_RANGE(0x4000, 0x5fff) AM_READ(MRA8_RAM)
 	AM_RANGE(0x6000, 0x6fff) AM_READ(MRA8_RAM) /* work ram */
+	AM_RANGE(0x7000, 0x77ff) AM_READ(MRA8_RAM) /* hourouki expects this to act as RAM */
 	AM_RANGE(0x7800, 0x7800) AM_READ(MRA8_RAM) /* only used to store the result of the ROM check */
 	AM_RANGE(0x7801, 0x7802) AM_READ(mrokumei_keyboard_r)	// also vblank and active page
 	AM_RANGE(0x7803, 0x7803) AM_READ(input_port_2_r)	// coin, service
@@ -588,6 +589,7 @@ ADDRESS_MAP_START( mrokumei_writemem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0x0000, 0x3fff) AM_WRITE(mrokumei_videoram_w) AM_BASE(&videoram)
 	AM_RANGE(0x4000, 0x5fff) AM_WRITE(MWA8_RAM)
 	AM_RANGE(0x6000, 0x6fff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x7000, 0x77ff) AM_WRITE(MWA8_RAM)
 	AM_RANGE(0x7800, 0x7800) AM_WRITE(MWA8_RAM) /* only used to store the result of the ROM check */
 	AM_RANGE(0x7ff0, 0x7ffd) AM_WRITE(MWA8_RAM) AM_BASE(&homedata_vreg)
 	AM_RANGE(0x8000, 0x8000) AM_WRITE(mrokumei_blitter_start_w)	// in some games also ROM bank switch to access service ROM
@@ -1837,15 +1839,15 @@ static DRIVER_INIT( jogakuen )
 	/* it seems that Mahjong Jogakuen runs on the same board as the others,
 	   but with just these two addresses swapped. Instead of creating a new
 	   MachineDriver, I just fix them here. */
-	install_mem_write_handler(0, 0x8007, 0x8007, pteacher_blitter_bank_w);
-	install_mem_write_handler(0, 0x8005, 0x8005, pteacher_gfx_bank_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x8007, 0x8007, 0, 0, pteacher_blitter_bank_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x8005, 0x8005, 0, 0, pteacher_gfx_bank_w);
 }
 
 static DRIVER_INIT( mjikaga )
 {
 	/* Mahjong Ikagadesuka is different as well. */
-	install_mem_read_handler(0, 0x7802, 0x7802, pteacher_snd_r);
-	install_mem_write_handler(1, 0x0123, 0x0123, pteacher_snd_answer_w);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x7802, 0x7802, 0, 0, pteacher_snd_r);
+	memory_install_write8_handler(1, ADDRESS_SPACE_PROGRAM, 0x0123, 0x0123, 0, 0, pteacher_snd_answer_w);
 }
 
 static DRIVER_INIT( reikaids )

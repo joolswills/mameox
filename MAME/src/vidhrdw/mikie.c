@@ -1,11 +1,11 @@
-#pragma code_seg("C451")
-#pragma data_seg("D451")
-#pragma bss_seg("B451")
-#pragma const_seg("K451")
-#pragma comment(linker, "/merge:D451=451")
-#pragma comment(linker, "/merge:C451=451")
-#pragma comment(linker, "/merge:B451=451")
-#pragma comment(linker, "/merge:K451=451")
+#pragma code_seg("C476")
+#pragma data_seg("D476")
+#pragma bss_seg("B476")
+#pragma const_seg("K476")
+#pragma comment(linker, "/merge:D476=476")
+#pragma comment(linker, "/merge:C476=476")
+#pragma comment(linker, "/merge:B476=476")
+#pragma comment(linker, "/merge:K476=476")
 /***************************************************************************
 
   vidhrdw.c
@@ -98,7 +98,7 @@ PALETTE_INIT( mikie )
 	}
 }
 
-WRITE_HANDLER( mikie_videoram_w )
+WRITE8_HANDLER( mikie_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -107,7 +107,7 @@ WRITE_HANDLER( mikie_videoram_w )
 	}
 }
 
-WRITE_HANDLER( mikie_colorram_w )
+WRITE8_HANDLER( mikie_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -116,7 +116,7 @@ WRITE_HANDLER( mikie_colorram_w )
 	}
 }
 
-WRITE_HANDLER( mikie_palettebank_w )
+WRITE8_HANDLER( mikie_palettebank_w )
 {
 	if (palettebank != (data & 0x07))
 	{
@@ -125,7 +125,7 @@ WRITE_HANDLER( mikie_palettebank_w )
 	}
 }
 
-WRITE_HANDLER( mikie_flipscreen_w )
+WRITE8_HANDLER( mikie_flipscreen_w )
 {
 	if (flip_screen != (data & 0x01))
 	{

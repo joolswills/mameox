@@ -1,11 +1,11 @@
-#pragma code_seg("C547")
-#pragma data_seg("D547")
-#pragma bss_seg("B547")
-#pragma const_seg("K547")
-#pragma comment(linker, "/merge:D547=547")
-#pragma comment(linker, "/merge:C547=547")
-#pragma comment(linker, "/merge:B547=547")
-#pragma comment(linker, "/merge:K547=547")
+#pragma code_seg("C578")
+#pragma data_seg("D578")
+#pragma bss_seg("B578")
+#pragma const_seg("K578")
+#pragma comment(linker, "/merge:D578=578")
+#pragma comment(linker, "/merge:C578=578")
+#pragma comment(linker, "/merge:B578=578")
+#pragma comment(linker, "/merge:K578=578")
 /*
 Popper
 
@@ -91,20 +91,20 @@ Notes:
 extern data8_t *popper_videoram, *popper_attribram, *popper_ol_videoram, *popper_ol_attribram, *popper_spriteram;
 extern size_t popper_spriteram_size;
 
-WRITE_HANDLER( popper_videoram_w );
-WRITE_HANDLER( popper_attribram_w );
-WRITE_HANDLER( popper_ol_videoram_w );
-WRITE_HANDLER( popper_ol_attribram_w );
-WRITE_HANDLER( popper_flipscreen_w );
-WRITE_HANDLER( popper_e002_w );
-WRITE_HANDLER( popper_gfx_bank_w );
+WRITE8_HANDLER( popper_videoram_w );
+WRITE8_HANDLER( popper_attribram_w );
+WRITE8_HANDLER( popper_ol_videoram_w );
+WRITE8_HANDLER( popper_ol_attribram_w );
+WRITE8_HANDLER( popper_flipscreen_w );
+WRITE8_HANDLER( popper_e002_w );
+WRITE8_HANDLER( popper_gfx_bank_w );
 
 PALETTE_INIT( popper );
 VIDEO_START( popper );
 VIDEO_UPDATE( popper );
 static data8_t *popper_sharedram;
 
-static READ_HANDLER( popper_sharedram_r )
+static READ8_HANDLER( popper_sharedram_r )
 {
 	return popper_sharedram[offset];
 }
@@ -136,7 +136,7 @@ static READ_HANDLER( popper_sharedram_r )
 //                      -----x--  free play
 //                      ------x-  continue
 //                      -------x  sound
-static READ_HANDLER( popper_input_ports_r )
+static READ8_HANDLER( popper_input_ports_r )
 {
 	data8_t data=0;
 	switch (offset)
@@ -154,13 +154,13 @@ static READ_HANDLER( popper_input_ports_r )
 	return data;
 }
 
-static READ_HANDLER( popper_soundcpu_nmi_r )
+static READ8_HANDLER( popper_soundcpu_nmi_r )
 {
-	cpu_set_nmi_line(1,PULSE_LINE);
+	cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 	return 0;
 }
 
-static WRITE_HANDLER( popper_sharedram_w )
+static WRITE8_HANDLER( popper_sharedram_w )
 {
 	popper_sharedram[offset]=data;
 }

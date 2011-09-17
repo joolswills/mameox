@@ -1,11 +1,11 @@
-#pragma code_seg("C454")
-#pragma data_seg("D454")
-#pragma bss_seg("B454")
-#pragma const_seg("K454")
-#pragma comment(linker, "/merge:D454=454")
-#pragma comment(linker, "/merge:C454=454")
-#pragma comment(linker, "/merge:B454=454")
-#pragma comment(linker, "/merge:K454=454")
+#pragma code_seg("C479")
+#pragma data_seg("D479")
+#pragma bss_seg("B479")
+#pragma const_seg("K479")
+#pragma comment(linker, "/merge:D479=479")
+#pragma comment(linker, "/merge:C479=479")
+#pragma comment(linker, "/merge:B479=479")
+#pragma comment(linker, "/merge:K479=479")
 /***************************************************************************
 
 	Atari Missile Command hardware

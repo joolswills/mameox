@@ -1,11 +1,11 @@
-#pragma code_seg("C533")
-#pragma data_seg("D533")
-#pragma bss_seg("B533")
-#pragma const_seg("K533")
-#pragma comment(linker, "/merge:D533=533")
-#pragma comment(linker, "/merge:C533=533")
-#pragma comment(linker, "/merge:B533=533")
-#pragma comment(linker, "/merge:K533=533")
+#pragma code_seg("C564")
+#pragma data_seg("D564")
+#pragma bss_seg("B564")
+#pragma const_seg("K564")
+#pragma comment(linker, "/merge:D564=564")
+#pragma comment(linker, "/merge:C564=564")
+#pragma comment(linker, "/merge:B564=564")
+#pragma comment(linker, "/merge:K564=564")
 /***************************************************************************
 
   vidhrdw.c
@@ -103,7 +103,7 @@ PALETTE_INIT( pingpong )
 		COLOR(0,i) = (*(color_prom++) & 0x0f) + 0x10;
 }
 
-WRITE_HANDLER( pingpong_videoram_w )
+WRITE8_HANDLER( pingpong_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -112,7 +112,7 @@ WRITE_HANDLER( pingpong_videoram_w )
 	}
 }
 
-WRITE_HANDLER( pingpong_colorram_w )
+WRITE8_HANDLER( pingpong_colorram_w )
 {
 	if (colorram[offset] != data)
 	{

@@ -1,11 +1,11 @@
-#pragma code_seg("C153")
-#pragma data_seg("D153")
-#pragma bss_seg("B153")
-#pragma const_seg("K153")
-#pragma comment(linker, "/merge:D153=153")
-#pragma comment(linker, "/merge:C153=153")
-#pragma comment(linker, "/merge:B153=153")
-#pragma comment(linker, "/merge:K153=153")
+#pragma code_seg("C154")
+#pragma data_seg("D154")
+#pragma bss_seg("B154")
+#pragma const_seg("K154")
+#pragma comment(linker, "/merge:D154=154")
+#pragma comment(linker, "/merge:C154=154")
+#pragma comment(linker, "/merge:B154=154")
+#pragma comment(linker, "/merge:K154=154")
 /* battlex.c - by David Haywood
 
 Stephh's notes :
@@ -52,11 +52,11 @@ XTAL: 10.0 MHz
 #include "vidhrdw/generic.h"
 
 
-extern WRITE_HANDLER( battlex_palette_w );
-extern WRITE_HANDLER( battlex_videoram_w );
-extern WRITE_HANDLER( battlex_scroll_x_lsb_w );
-extern WRITE_HANDLER( battlex_scroll_x_msb_w );
-extern WRITE_HANDLER( battlex_flipscreen_w );
+extern WRITE8_HANDLER( battlex_palette_w );
+extern WRITE8_HANDLER( battlex_videoram_w );
+extern WRITE8_HANDLER( battlex_scroll_x_lsb_w );
+extern WRITE8_HANDLER( battlex_scroll_x_msb_w );
+extern WRITE8_HANDLER( battlex_flipscreen_w );
 
 extern PALETTE_INIT( battlex );
 extern VIDEO_START( battlex );

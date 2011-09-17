@@ -1,11 +1,11 @@
-#pragma code_seg("C651")
-#pragma data_seg("D651")
-#pragma bss_seg("B651")
-#pragma const_seg("K651")
-#pragma comment(linker, "/merge:D651=651")
-#pragma comment(linker, "/merge:C651=651")
-#pragma comment(linker, "/merge:B651=651")
-#pragma comment(linker, "/merge:K651=651")
+#pragma code_seg("C687")
+#pragma data_seg("D687")
+#pragma bss_seg("B687")
+#pragma const_seg("K687")
+#pragma comment(linker, "/merge:D687=687")
+#pragma comment(linker, "/merge:C687=687")
+#pragma comment(linker, "/merge:B687=687")
+#pragma comment(linker, "/merge:K687=687")
 /***************************************************************************
 
 Atari Sprint 4 video emulation
@@ -57,7 +57,7 @@ VIDEO_START( sprint4 )
 }
 
 
-WRITE_HANDLER( sprint4_video_ram_w )
+WRITE8_HANDLER( sprint4_video_ram_w )
 {
 	if (data != sprint4_video_ram[offset])
 	{

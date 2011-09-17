@@ -23,7 +23,7 @@
 static int flipscreen[2];
 
 
-WRITE_HANDLER( pkunwar_flipscreen_w )
+WRITE8_HANDLER( pkunwar_flipscreen_w )
 {
 	if (flipscreen[0] != (data & 1))
 	{

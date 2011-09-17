@@ -1,11 +1,11 @@
-#pragma code_seg("C147")
-#pragma data_seg("D147")
-#pragma bss_seg("B147")
-#pragma const_seg("K147")
-#pragma comment(linker, "/merge:D147=147")
-#pragma comment(linker, "/merge:C147=147")
-#pragma comment(linker, "/merge:B147=147")
-#pragma comment(linker, "/merge:K147=147")
+#pragma code_seg("C148")
+#pragma data_seg("D148")
+#pragma bss_seg("B148")
+#pragma const_seg("K148")
+#pragma comment(linker, "/merge:D148=148")
+#pragma comment(linker, "/merge:C148=148")
+#pragma comment(linker, "/merge:B148=148")
+#pragma comment(linker, "/merge:K148=148")
 /***************************************************************************
 
   vidhrdw/balsente.c
@@ -90,7 +90,7 @@ VIDEO_START( balsente )
  *
  *************************************/
 
-WRITE_HANDLER( balsente_videoram_w )
+WRITE8_HANDLER( balsente_videoram_w )
 {
 	videoram[offset] = data;
 
@@ -147,7 +147,7 @@ static void update_palette(void)
 }
 
 
-WRITE_HANDLER( balsente_palette_select_w )
+WRITE8_HANDLER( balsente_palette_select_w )
 {
 	/* only update if changed */
 	if (palettebank_vis != (data & 3))
@@ -168,7 +168,7 @@ WRITE_HANDLER( balsente_palette_select_w )
  *
  *************************************/
 
-WRITE_HANDLER( balsente_paletteram_w )
+WRITE8_HANDLER( balsente_paletteram_w )
 {
 	int r, g, b;
 

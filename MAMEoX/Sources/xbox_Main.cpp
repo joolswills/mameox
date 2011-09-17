@@ -34,7 +34,9 @@ extern "C" {
 #include "osd_cpu.h"
 #include "driver.h"
 #include "mame.h"
+#include "virtualmemory.h"
 }
+
 
 //= D E F I N E S =====================================================
 
@@ -74,7 +76,82 @@ static BOOL Helper_SaveDriverInfoFile( void );
 static void DrawDriverProgressData( const char *fileName, DWORD index, DWORD total );
 static BOOL Helper_IsBIOS( const GameDriver *drv );
 
+
+
+//= D E F I N E S  =====================================================
+//#define ENABLE_LOGERROR     // Enable the logerror function (this can spit out a _lot_ of data)
+
+extern "C" {
+void InitVirtualMem( DWORD romIndex );
+void auto_free(void);
+
+}
+
 //= F U N C T I O N S =================================================
+
+
+int ExceptionFilter(LPEXCEPTION_POINTERS e)
+{
+	int slotnumber ;
+	DWORD pagenumber ;
+	VIRTMEM_LOC *slot ;
+	int numfree ;
+	DWORD offset ;
+	DWORD newAddress, oldAddress ;
+	DWORD numwritten, numread ;
+	DWORD addr ;
+
+
+    // we are only interested in access violations (memory faults)
+    if (e->ExceptionRecord->ExceptionCode != EXCEPTION_ACCESS_VIOLATION)
+        return EXCEPTION_CONTINUE_SEARCH;
+
+    // the exception information includes the type of access (read
+    // or write), and the address of the fault
+    //bool writing = (e->ExceptionRecord->ExceptionInformation[0] != 0);
+    addr = (DWORD)e->ExceptionRecord->ExceptionInformation[1];
+
+
+	if ( ( addr < g_virtualmem_locs[0].baseAddress  ) || ( addr >= ( g_virtualmem_locs[0].baseAddress  + ( VIRTUAL_MEMORY_TOTAL_SIZE) ) ) )
+	{
+        return EXCEPTION_CONTINUE_SEARCH;
+	}
+
+	offset = addr - g_virtualmem_locs[0].baseAddress   ;
+
+	slotnumber = offset >> ( VIRTUAL_MEMORY_PAGE_PER_CHUNK_BITS + VIRTUAL_MEMORY_PAGE_BITS ) ;
+
+	slot = &(g_virtualmem_locs[slotnumber]) ;
+
+#ifdef _DEBUG
+	slot->hitnum++ ;
+#endif
+
+	pagenumber = ( offset >> VIRTUAL_MEMORY_PAGE_BITS ) & VIRTUAL_MEMORY_PAGE_MASK ;
+
+	offset = pagenumber << VIRTUAL_MEMORY_PAGE_BITS ;
+
+	newAddress = slot->baseAddress + offset ;
+
+	oldAddress = slot->allocatedPages[*(slot->head)] ;
+
+	SetFilePointer( g_vmemfile, slot->fileoffset + ( oldAddress - slot->baseAddress ), 0, FILE_BEGIN ) ;
+	WriteFile( g_vmemfile, (unsigned char*)(oldAddress), VIRTUAL_MEMORY_PAGESIZE, &numwritten, NULL ) ;
+
+	VirtualFree( (LPVOID)oldAddress, VIRTUAL_MEMORY_PAGESIZE, MEM_DECOMMIT ) ;
+
+	VirtualAlloc( (LPVOID)newAddress, VIRTUAL_MEMORY_PAGESIZE, MEM_COMMIT, PAGE_READWRITE ) ;
+
+	SetFilePointer( g_vmemfile, slot->fileoffset + offset, 0, FILE_BEGIN ) ;
+	ReadFile( g_vmemfile, (void*)newAddress, VIRTUAL_MEMORY_PAGESIZE, &numread, NULL ) ;
+
+	slot->allocatedPages[*(slot->head)] = newAddress ;
+	*(slot->head) = ((*(slot->head))+1)%( slot->numpages ) ;
+
+    return EXCEPTION_CONTINUE_EXECUTION;
+}
+
+
 
 //-------------------------------------------------------------
 //	main
@@ -82,6 +159,10 @@ static BOOL Helper_IsBIOS( const GameDriver *drv );
 void __cdecl main( void )
 {
 		// Start up the debug logger thread
+
+	//Sleep(15000) ;
+
+
 	DebugLoggerInit();
 
   Enable128MegCaching();
@@ -93,8 +174,76 @@ void __cdecl main( void )
   LoadOptions();      // Must be done before graphics mgr (for VSYNC) and before input mgr (lightgun calib data)
 	InitializeFileIO(); // Initialize fileIO (must be done after LoadOptions!)
 
+
+	//-----------------------------
+  InitDriverSectionizer();
+  InitCPUSectionizer();
+
+
+
+
+  if( mameoxLaunchData->m_command == LAUNCH_CREATE_MAME_GAME_LIST )
+  {
+		mameoxLaunchData->m_gameIndex = 0;
+
+  }
+  else
+  {
+
+    qsort( drivers, mameoxLaunchData->m_totalMAMEGames, sizeof(drivers[0]), compareDriverNames );
+
+	const char *DriverName = drivers[mameoxLaunchData->m_gameIndex]->source_file;
+	  
+	PRINTMSG(( T_INFO, "*** Driver name: %s\n", drivers[mameoxLaunchData->m_gameIndex]->source_file ));
+
+		// VC6 seems to be calling this with the full path so strstr just trims down the path
+		// appropriately. NOTE: we probably don't need this to conditionally compile and could
+		// just leave the first call but would like someone with VS.net to test first just in case :)
+		//
+		// [EBA] Should be perfectly fine w/ the strstr
+		const char *driverName = strstr(DriverName,"drivers\\");
+		if( !driverName || !driverName[8] )
+		{
+			PRINTMSG(( T_ERROR, "Invalid driver name at index %lu!", mameoxLaunchData->m_gameIndex ));
+			return ;
+			//fatalerror( "An unrecoverable error has occurred!\r\nInvalid driver name at index %lu!", romIndex );
+		}
+
+	if( !LoadDriverSectionByName( &driverName[8] ) )
+		{
+		PRINTMSG(( T_ERROR, "Failed to load section for file %s!", DriverName ));
+		return ;
+			//fatalerror( "An unrecoverable error has occurred!\r\nFailed to load XBE section for file %s!", &driverName[8] );
+		}
+
+		// Unload all the other XBE data sections, as we'll only be using the one
+		// for the file we're loading
+		// Note that we do this _after_ the LoadDriverSectionByName.
+		// This increments the refcount on the driver causing the system 
+		// not to release anything allocated by the segment back to the heap
+		// (MAME shouldn't allocate anything at this point, but it's good to be safe)
+	UnloadDriverSections();
+	//UnloadCPUSections();          // CPU sections are unloaded in mame/src/cpuexec.c
+
+		// Free up unneeded sectionizer memory
+	TerminateDriverSectionizer();
+
+  }
+
+
+
+
+
+
+
+
+
+
+//------------------------------------ 
+
+
 		// Initialize the graphics subsystem
-  g_graphicsManager.Create( g_rendererOptions.m_vsync );
+  g_graphicsManager.Create( g_rendererOptions.m_vsync, ( mameoxLaunchData->m_command == LAUNCH_CREATE_MAME_GAME_LIST ) );
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
 
     // Create the fonts or die
@@ -116,8 +265,8 @@ void __cdecl main( void )
   CHECKRAM();
 
     // Register the loadable section names for lookup at runtime
-  InitDriverSectionizer();
-  InitCPUSectionizer();
+  //InitDriverSectionizer();
+  //InitCPUSectionizer();
 
   DEBUGGERCHECKRAM()
 
@@ -164,9 +313,14 @@ void __cdecl main( void )
     XFreeSection( "XGRPH" );
 
       // Sort the game drivers and run the ROM
-    qsort( drivers, mameoxLaunchData->m_totalMAMEGames, sizeof(drivers[0]), compareDriverNames );
+    //qsort( drivers, mameoxLaunchData->m_totalMAMEGames, sizeof(drivers[0]), compareDriverNames );
 
-    Helper_RunRom( mameoxLaunchData->m_gameIndex );
+	__try {
+		InitVirtualMem( mameoxLaunchData->m_gameIndex  );
+		Helper_RunRom( mameoxLaunchData->m_gameIndex );
+    } __except(ExceptionFilter(GetExceptionInformation())) {
+        //handle all other bad exceptions here
+    };
 
       // NOTE: The driver list is invalid after Helper_RunRom, so don't do anything with it
       // until the MAMEoX.xbe utility has been rebooted.
@@ -226,6 +380,8 @@ static BOOL Helper_RunRom( UINT32 romIndex )
   DmStartProfiling( "xd:\\perf.log", 0 );
   #endif
 
+#if 0
+
   std::string DriverName = drivers[romIndex]->source_file;
   
   PRINTMSG(( T_INFO, "*** Driver name: %s\n", drivers[romIndex]->source_file ));
@@ -260,6 +416,8 @@ static BOOL Helper_RunRom( UINT32 romIndex )
     // Free up unneeded sectionizer memory
   TerminateDriverSectionizer();
 //  TerminateCPUSectionizer();    // CPU sectionizer is unloaded in mame/src/cpuexec.c
+
+#endif
 
     // Override sound processing
   DWORD samplerate = options.samplerate;
@@ -509,35 +667,41 @@ static BOOL Helper_SaveDriverInfoFile( void )
 
       // Write the number of players
     UINT32 numPlayers = 0;
-    const InputPortTiny *inport = drivers[i]->input_ports;
-    for( ; (inport->type & ~IPF_MASK) != IPT_END; ++inport )
-    {
-		  if( (inport->type & ~IPF_MASK) != IPT_EXTENSION )
-		  {
-			  switch (inport->type & IPF_PLAYERMASK)
-			  {
-				  case IPF_PLAYER1:
-            if( numPlayers < 1 )
-              numPlayers = 1;
-					  break;
 
-				  case IPF_PLAYER2:
-            if( numPlayers < 2 )
-              numPlayers = 2;
-					  break;
+	if ( drivers[i]->construct_ipt )
+	{
+		const InputPort *inport = input_port_allocate(drivers[i]->construct_ipt);
 
-				  case IPF_PLAYER3:
-            if( numPlayers < 3 )
-              numPlayers = 3;
-					  break;
+		while (inport->type != IPT_END)
+		{
 
-				  case IPF_PLAYER4:
-            if( numPlayers < 4 )
-              numPlayers = 4;
-					  break;
-			  }
-      }
-    }
+			switch (inport->player )
+			{
+				case 0:
+					if( numPlayers < 1 )
+					numPlayers = 1;
+					break;
+
+				case 1:
+					if( numPlayers < 2 )
+					numPlayers = 2;
+					break;
+
+				case 2:
+					if( numPlayers < 3 )
+					numPlayers = 3;
+					break;
+
+				case 3:
+					if( numPlayers < 4 )
+					numPlayers = 4;
+					break;
+			}
+			inport++ ;
+		}
+	}
+  
+	auto_free() ;
 
     WRITEDATA( &numPlayers, sizeof(numPlayers) );
 
@@ -577,6 +741,9 @@ static BOOL Helper_SaveDriverInfoFile( void )
 static void DrawDriverProgressData( const char *fileName, DWORD index, DWORD total )
 {
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
+
+	if ( pD3DDevice == NULL )
+		return ;
 
 		// Display the error to the user
 	pD3DDevice->Clear(	0L,																// Count

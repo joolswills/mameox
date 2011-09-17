@@ -107,12 +107,12 @@ static READ16_HANDLER( opwolf_lightgun_r )
 	return 0xff;
 }
 
-static READ_HANDLER( z80_input1_r )
+static READ8_HANDLER( z80_input1_r )
 {
 	return input_port_0_word_r(0,0);	/* irrelevant mirror ? */
 }
 
-static READ_HANDLER( z80_input2_r )
+static READ8_HANDLER( z80_input2_r )
 {
 	return input_port_0_word_r(0,0);	/* needed for coins */
 }
@@ -122,7 +122,7 @@ static READ_HANDLER( z80_input2_r )
 				SOUND
 ******************************************************/
 
-static WRITE_HANDLER( sound_bankswitch_w )
+static WRITE8_HANDLER( sound_bankswitch_w )
 {
 	cpu_setbank( 10, memory_region(REGION_CPU2) + ((data-1) & 0x03) * 0x4000 + 0x10000 );
 }
@@ -207,7 +207,7 @@ static UINT8 adpcm_c[0x08];
 //5 - different values
 //6 - different values
 
-static WRITE_HANDLER( opwolf_adpcm_b_w )
+static WRITE8_HANDLER( opwolf_adpcm_b_w )
 {
 	int start;
 	int end;
@@ -227,7 +227,7 @@ static WRITE_HANDLER( opwolf_adpcm_b_w )
 }
 
 
-static WRITE_HANDLER( opwolf_adpcm_c_w )
+static WRITE8_HANDLER( opwolf_adpcm_c_w )
 {
 	int start;
 	int end;
@@ -247,12 +247,12 @@ static WRITE_HANDLER( opwolf_adpcm_c_w )
 }
 
 
-static WRITE_HANDLER( opwolf_adpcm_d_w )
+static WRITE8_HANDLER( opwolf_adpcm_d_w )
 {
 	/*logerror("CPU #1         d00%i-data=%2x   pc=%4x\n",offset,data,activecpu_get_pc() );*/
 }
 
-static WRITE_HANDLER( opwolf_adpcm_e_w )
+static WRITE8_HANDLER( opwolf_adpcm_e_w )
 {
 	/*logerror("CPU #1         e00%i-data=%2x   pc=%4x\n",offset,data,activecpu_get_pc() );*/
 }
@@ -428,7 +428,7 @@ static struct GfxDecodeInfo opwolfb_gfxdecodeinfo[] =
 
 static void irq_handler(int irq)
 {
-	cpu_set_irq_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 

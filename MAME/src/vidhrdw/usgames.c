@@ -1,11 +1,11 @@
-#pragma code_seg("C758")
-#pragma data_seg("D758")
-#pragma bss_seg("B758")
-#pragma const_seg("K758")
-#pragma comment(linker, "/merge:D758=758")
-#pragma comment(linker, "/merge:C758=758")
-#pragma comment(linker, "/merge:B758=758")
-#pragma comment(linker, "/merge:K758=758")
+#pragma code_seg("C800")
+#pragma data_seg("D800")
+#pragma bss_seg("B800")
+#pragma const_seg("K800")
+#pragma comment(linker, "/merge:D800=800")
+#pragma comment(linker, "/merge:C800=800")
+#pragma comment(linker, "/merge:B800=800")
+#pragma comment(linker, "/merge:K800=800")
 #include "driver.h"
 
 data8_t *usg_videoram,*usg_charram;
@@ -63,13 +63,13 @@ VIDEO_START(usg)
 }
 
 
-WRITE_HANDLER( usg_videoram_w )
+WRITE8_HANDLER( usg_videoram_w )
 {
 	usg_videoram[offset] = data;
 	tilemap_mark_tile_dirty(usg_tilemap,offset/2);
 }
 
-WRITE_HANDLER( usg_charram_w )
+WRITE8_HANDLER( usg_charram_w )
 {
 	usg_charram[offset] = data;
 

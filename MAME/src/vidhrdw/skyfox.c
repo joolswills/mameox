@@ -1,11 +1,11 @@
-#pragma code_seg("C629")
-#pragma data_seg("D629")
-#pragma bss_seg("B629")
-#pragma const_seg("K629")
-#pragma comment(linker, "/merge:D629=629")
-#pragma comment(linker, "/merge:C629=629")
-#pragma comment(linker, "/merge:B629=629")
-#pragma comment(linker, "/merge:K629=629")
+#pragma code_seg("C665")
+#pragma data_seg("D665")
+#pragma bss_seg("B665")
+#pragma const_seg("K665")
+#pragma comment(linker, "/merge:D665=665")
+#pragma comment(linker, "/merge:C665=665")
+#pragma comment(linker, "/merge:B665=665")
+#pragma comment(linker, "/merge:K665=665")
 /***************************************************************************
 
 						-= Sky Fox / Exerizer =-
@@ -62,12 +62,12 @@ int skyfox_bg_pos, skyfox_bg_ctrl;
 
 ***************************************************************************/
 
-READ_HANDLER( skyfox_vregs_r )	// for debug
+READ8_HANDLER( skyfox_vregs_r )	// for debug
 {
 	return vreg[offset];
 }
 
-WRITE_HANDLER( skyfox_vregs_w )
+WRITE8_HANDLER( skyfox_vregs_w )
 {
 	vreg[offset] = data;
 

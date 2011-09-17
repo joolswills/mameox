@@ -1,11 +1,11 @@
-#pragma code_seg("C718")
-#pragma data_seg("D718")
-#pragma bss_seg("B718")
-#pragma const_seg("K718")
-#pragma comment(linker, "/merge:D718=718")
-#pragma comment(linker, "/merge:C718=718")
-#pragma comment(linker, "/merge:B718=718")
-#pragma comment(linker, "/merge:K718=718")
+#pragma code_seg("C760")
+#pragma data_seg("D760")
+#pragma bss_seg("B760")
+#pragma const_seg("K760")
+#pragma comment(linker, "/merge:D760=760")
+#pragma comment(linker, "/merge:C760=760")
+#pragma comment(linker, "/merge:B760=760")
+#pragma comment(linker, "/merge:K760=760")
 /***************************************************************************
 
 The Pit/Round Up/Intrepid/Super Mouse memory map (preliminary)
@@ -68,21 +68,21 @@ Port I/O Write:
 
 extern unsigned char *thepit_attributesram;
 extern unsigned char *intrepid_sprite_bank_select;
-WRITE_HANDLER( thepit_attributes_w );
+WRITE8_HANDLER( thepit_attributes_w );
 
 PALETTE_INIT( thepit );
 PALETTE_INIT( suprmous );
 VIDEO_UPDATE( thepit );
-READ_HANDLER( thepit_input_port_0_r );
-WRITE_HANDLER( thepit_sound_enable_w );
-WRITE_HANDLER( intrepid_graphics_bank_select_w );
+READ8_HANDLER( thepit_input_port_0_r );
+WRITE8_HANDLER( thepit_sound_enable_w );
+WRITE8_HANDLER( intrepid_graphics_bank_select_w );
 
-static WRITE_HANDLER( flip_screen_x_w )
+static WRITE8_HANDLER( flip_screen_x_w )
 {
 	flip_screen_x_set(data);
 }
 
-static WRITE_HANDLER( flip_screen_y_w )
+static WRITE8_HANDLER( flip_screen_y_w )
 {
 	flip_screen_y_set(data);
 }

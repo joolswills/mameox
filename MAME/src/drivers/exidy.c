@@ -144,7 +144,7 @@
  *
  *************************************/
 
-static WRITE_HANDLER( fax_bank_select_w )
+static WRITE8_HANDLER( fax_bank_select_w )
 {
 	UINT8 *RAM = memory_region(REGION_CPU1);
 
@@ -1057,15 +1057,21 @@ ROM_END
 
 ROM_START( targ )
 	ROM_REGION( 0x10000, REGION_CPU1, 0 ) /* 64k for code */
-	ROM_LOAD( "targ10a1",    0x1800, 0x0800, CRC(969744e1) SHA1(e123bdb02b3b5f6a59c1e7c9ef557fe6bb19c62c) )
-	ROM_LOAD( "targ09a1",    0x2000, 0x0800, CRC(a177a72d) SHA1(0e705e3e32021e55af4414fa0e2ccbc4980ee848) )
-	ROM_LOAD( "targ08a1",    0x2800, 0x0800, CRC(6e6928a5) SHA1(10c725b27225ac5aad8639b081df68dd61522cf2) )
-	ROM_LOAD( "targ07a4",    0x3000, 0x0800, CRC(e2f37f93) SHA1(b66743c296d3d4caba3bcbe6aa68cd6edd414816) )
-	ROM_LOAD( "targ06a3",    0x3800, 0x0800, CRC(a60a1bfc) SHA1(17c0e67e1a0b263b57d70a148cc5d5099fecbb40) )
+	ROM_LOAD( "hrl10a-1",    0x1800, 0x0800, CRC(969744e1) SHA1(e123bdb02b3b5f6a59c1e7c9ef557fe6bb19c62c) )
+	ROM_LOAD( "hrl9a-1",    0x2000, 0x0800, CRC(a177a72d) SHA1(0e705e3e32021e55af4414fa0e2ccbc4980ee848) )
+	ROM_LOAD( "hrl8a-1",    0x2800, 0x0800, CRC(6e6928a5) SHA1(10c725b27225ac5aad8639b081df68dd61522cf2) )
+	ROM_LOAD( "hrl7a-1",    0x3000, 0x0800, CRC(e2f37f93) SHA1(b66743c296d3d4caba3bcbe6aa68cd6edd414816) )
+	ROM_LOAD( "hrl6a-1",    0x3800, 0x0800, CRC(a60a1bfc) SHA1(17c0e67e1a0b263b57d70a148cc5d5099fecbb40) )
 	ROM_RELOAD(              0xf800, 0x0800 ) /* for the reset/interrupt vectors */
 
 	ROM_REGION( 0x0400, REGION_GFX1, ROMREGION_DISPOSE )
-	ROM_LOAD( "targ11d1",    0x0000, 0x0400, CRC(9f03513e) SHA1(aa4763e49df65e5686a96431543580b8d8285893) )
+	ROM_LOAD( "hrl11d-1",    0x0000, 0x0400, CRC(9f03513e) SHA1(aa4763e49df65e5686a96431543580b8d8285893) )
+
+	ROM_REGION( 0x0160, REGION_PROMS, 0 )
+	ROM_LOAD( "hrl5c-1", 0x0000, 0x0100, CRC(a24290d0) SHA1(5f2888d168de874021b51c5d19a62fb8165e4454) )	/* unknown */
+	ROM_LOAD( "stl6d-1", 0x0100, 0x0020, CRC(e26f9053) SHA1(eec35b6aa2c2d305418306bf4a1754a0583f109f) )	/* unknown */
+	ROM_LOAD( "hra2b-1", 0x0120, 0x0020, CRC(38e8024b) SHA1(adf1c1770695f7614c95eceb803f662c5b096a76) )	/* unknown */
+	ROM_LOAD( "hrl14h-1",0x0140, 0x0020, CRC(f76b4fcf) SHA1(197e0cc508ffeb5cefa4046bdfb158939d598225) )	/* unknown */
 ROM_END
 
 ROM_START( targc )
@@ -1078,7 +1084,7 @@ ROM_START( targc )
 	ROM_RELOAD(              0xf800, 0x0800 ) /* for the reset/interrupt vectors */
 
 	ROM_REGION( 0x0400, REGION_GFX1, ROMREGION_DISPOSE )
-	ROM_LOAD( "targ11d1",    0x0000, 0x0400, CRC(9f03513e) SHA1(aa4763e49df65e5686a96431543580b8d8285893) )
+	ROM_LOAD( "hrl11d-1",    0x0000, 0x0400, CRC(9f03513e) SHA1(aa4763e49df65e5686a96431543580b8d8285893) )
 ROM_END
 
 ROM_START( spectar )
@@ -1127,7 +1133,7 @@ ROM_START( rallys )
 	ROM_RELOAD(              0xfc00, 0x0400 ) /* for the reset/interrupt vectors */
 
 	ROM_REGION( 0x0400, REGION_GFX1, ROMREGION_DISPOSE )
-	ROM_LOAD( "targ11d1",    0x0000, 0x0400, CRC(9f03513e) SHA1(aa4763e49df65e5686a96431543580b8d8285893) )
+	ROM_LOAD( "hrl11d-1",    0x0000, 0x0400, CRC(9f03513e) SHA1(aa4763e49df65e5686a96431543580b8d8285893) )
 
 	ROM_REGION( 0x0020, REGION_PROMS, 0 )
 	ROM_LOAD( "targ82s.123", 0x0000, 0x0020, CRC(9eb9125c) SHA1(660ad9b2c7c28c3fda4b10c1401c03165d131c61) )	/* unknown */
@@ -1403,7 +1409,7 @@ DRIVER_INIT( sidetrac )
 	targ_spec_flag 			= 0;
 
 	/* sound is handled directly instead of via a PIA */
-	install_mem_write_handler(0, 0x5200, 0x5201, targ_sh_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x5200, 0x5201, 0, 0, targ_sh_w);
 }
 
 DRIVER_INIT( targ )
@@ -1418,7 +1424,7 @@ DRIVER_INIT( targ )
 	targ_spec_flag 			= 1;
 
 	/* sound is handled directly instead of via a PIA */
-	install_mem_write_handler(0, 0x5200, 0x5201, targ_sh_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x5200, 0x5201, 0, 0, targ_sh_w);
 }
 
 DRIVER_INIT( spectar )
@@ -1433,7 +1439,7 @@ DRIVER_INIT( spectar )
 	targ_spec_flag 			= 0;
 
 	/* sound is handled directly instead of via a PIA */
-	install_mem_write_handler(0, 0x5200, 0x5201, targ_sh_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x5200, 0x5201, 0, 0, targ_sh_w);
 }
 
 DRIVER_INIT( mtrap )
@@ -1460,8 +1466,8 @@ DRIVER_INIT( pepper2 )
 	exidy_collision_invert	= 0x04;
 
 	/* two 6116 character RAMs */
-	install_mem_write_handler(0, 0x4800, 0x4fff, MWA8_NOP);
-	exidy_characterram = install_mem_write_handler(0, 0x6000, 0x6fff, exidy_characterram_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x4800, 0x4fff, 0, 0, MWA8_NOP);
+	exidy_characterram = memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x6000, 0x6fff, 0, 0, exidy_characterram_w);
 }
 
 DRIVER_INIT( fax )
@@ -1487,7 +1493,7 @@ DRIVER_INIT( phantoma )
 	targ_spec_flag 			= 0;
 
 	/* sound is handled directly instead of via a PIA */
-	install_mem_write_handler(0, 0x5200, 0x5201, targ_sh_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x5200, 0x5201, 0, 0, targ_sh_w);
 }
 
 /*************************************

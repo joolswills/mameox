@@ -1,11 +1,11 @@
-#pragma code_seg("C320")
-#pragma data_seg("D320")
-#pragma bss_seg("B320")
-#pragma const_seg("K320")
-#pragma comment(linker, "/merge:D320=320")
-#pragma comment(linker, "/merge:C320=320")
-#pragma comment(linker, "/merge:B320=320")
-#pragma comment(linker, "/merge:K320=320")
+#pragma code_seg("C333")
+#pragma data_seg("D333")
+#pragma bss_seg("B333")
+#pragma const_seg("K333")
+#pragma comment(linker, "/merge:D333=333")
+#pragma comment(linker, "/merge:C333=333")
+#pragma comment(linker, "/merge:B333=333")
+#pragma comment(linker, "/merge:K333=333")
 /***************************************************************************
 
 	Atari Gauntlet hardware

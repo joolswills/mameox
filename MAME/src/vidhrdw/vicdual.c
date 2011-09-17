@@ -1,11 +1,11 @@
-#pragma code_seg("C764")
-#pragma data_seg("D764")
-#pragma bss_seg("B764")
-#pragma const_seg("K764")
-#pragma comment(linker, "/merge:D764=764")
-#pragma comment(linker, "/merge:C764=764")
-#pragma comment(linker, "/merge:B764=764")
-#pragma comment(linker, "/merge:K764=764")
+#pragma code_seg("C806")
+#pragma data_seg("D806")
+#pragma bss_seg("B806")
+#pragma const_seg("K806")
+#pragma comment(linker, "/merge:D806=806")
+#pragma comment(linker, "/merge:C806=806")
+#pragma comment(linker, "/merge:B806=806")
+#pragma comment(linker, "/merge:K806=806")
 /***************************************************************************
 
   vidhrdw.c
@@ -111,7 +111,7 @@ PALETTE_INIT( vicdual )
 
 
 
-WRITE_HANDLER( vicdual_characterram_w )
+WRITE8_HANDLER( vicdual_characterram_w )
 {
 	if (vicdual_characterram[offset] != data)
 	{
@@ -121,12 +121,12 @@ WRITE_HANDLER( vicdual_characterram_w )
 	}
 }
 
-READ_HANDLER( vicdual_characterram_r )
+READ8_HANDLER( vicdual_characterram_r )
 {
 	return vicdual_characterram[offset];
 }
 
-WRITE_HANDLER( vicdual_palette_bank_w )
+WRITE8_HANDLER( vicdual_palette_bank_w )
 {
 	if (palette_bank != (data & 3))
 	{

@@ -1,11 +1,11 @@
-#pragma code_seg("C504")
-#pragma data_seg("D504")
-#pragma bss_seg("B504")
-#pragma const_seg("K504")
-#pragma comment(linker, "/merge:D504=504")
-#pragma comment(linker, "/merge:C504=504")
-#pragma comment(linker, "/merge:B504=504")
-#pragma comment(linker, "/merge:K504=504")
+#pragma code_seg("C533")
+#pragma data_seg("D533")
+#pragma bss_seg("B533")
+#pragma const_seg("K533")
+#pragma comment(linker, "/merge:D533=533")
+#pragma comment(linker, "/merge:C533=533")
+#pragma comment(linker, "/merge:B533=533")
+#pragma comment(linker, "/merge:K533=533")
 /***************************************************************************
 
   snes.c

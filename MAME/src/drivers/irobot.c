@@ -1,11 +1,11 @@
-#pragma code_seg("C367")
-#pragma data_seg("D367")
-#pragma bss_seg("B367")
-#pragma const_seg("K367")
-#pragma comment(linker, "/merge:D367=367")
-#pragma comment(linker, "/merge:C367=367")
-#pragma comment(linker, "/merge:B367=367")
-#pragma comment(linker, "/merge:K367=367")
+#pragma code_seg("C382")
+#pragma data_seg("D382")
+#pragma bss_seg("B382")
+#pragma const_seg("K382")
+#pragma comment(linker, "/merge:D382=382")
+#pragma comment(linker, "/merge:C382=382")
+#pragma comment(linker, "/merge:B382=382")
+#pragma comment(linker, "/merge:K382=382")
 /***************************************************************************
 
 	Atari I, Robot hardware
@@ -95,7 +95,7 @@
  *
  *************************************/
 
-WRITE_HANDLER( irobot_nvram_w )
+WRITE8_HANDLER( irobot_nvram_w )
 {
 	generic_nvram[offset] = data & 0x0f;
 }
@@ -108,15 +108,15 @@ WRITE_HANDLER( irobot_nvram_w )
  *
  *************************************/
 
-static WRITE_HANDLER( irobot_clearirq_w )
+static WRITE8_HANDLER( irobot_clearirq_w )
 {
-    cpu_set_irq_line(0, M6809_IRQ_LINE ,CLEAR_LINE);
+    cpunum_set_input_line(0, M6809_IRQ_LINE ,CLEAR_LINE);
 }
 
 
-static WRITE_HANDLER( irobot_clearfirq_w )
+static WRITE8_HANDLER( irobot_clearfirq_w )
 {
-    cpu_set_irq_line(0, M6809_FIRQ_LINE ,CLEAR_LINE);
+    cpunum_set_input_line(0, M6809_FIRQ_LINE ,CLEAR_LINE);
 }
 
 

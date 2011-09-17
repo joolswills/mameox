@@ -1,11 +1,11 @@
-#pragma code_seg("C296")
-#pragma data_seg("D296")
-#pragma bss_seg("B296")
-#pragma const_seg("K296")
-#pragma comment(linker, "/merge:D296=296")
-#pragma comment(linker, "/merge:C296=296")
-#pragma comment(linker, "/merge:B296=296")
-#pragma comment(linker, "/merge:K296=296")
+#pragma code_seg("C307")
+#pragma data_seg("D307")
+#pragma bss_seg("B307")
+#pragma const_seg("K307")
+#pragma comment(linker, "/merge:D307=307")
+#pragma comment(linker, "/merge:C307=307")
+#pragma comment(linker, "/merge:B307=307")
+#pragma comment(linker, "/merge:K307=307")
 /***************************************************************************
 
 	Flower sound driver (quick hack of the Wiping sound driver)
@@ -207,7 +207,7 @@ void flower_sh_stop(void)
 
 /********************************************************************************/
 
-WRITE_HANDLER( flower_sound1_w )
+WRITE8_HANDLER( flower_sound1_w )
 {
 	sound_channel *voice;
 	int base;
@@ -243,7 +243,7 @@ WRITE_HANDLER( flower_sound1_w )
 	}
 }
 
-WRITE_HANDLER( flower_sound2_w )
+WRITE8_HANDLER( flower_sound2_w )
 {
 	sound_channel *voice;
 	int base = offset & 0xf8;

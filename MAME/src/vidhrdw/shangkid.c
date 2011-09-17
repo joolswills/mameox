@@ -1,11 +1,11 @@
-#pragma code_seg("C614")
-#pragma data_seg("D614")
-#pragma bss_seg("B614")
-#pragma const_seg("K614")
-#pragma comment(linker, "/merge:D614=614")
-#pragma comment(linker, "/merge:C614=614")
-#pragma comment(linker, "/merge:B614=614")
-#pragma comment(linker, "/merge:K614=614")
+#pragma code_seg("C650")
+#pragma data_seg("D650")
+#pragma bss_seg("B650")
+#pragma const_seg("K650")
+#pragma comment(linker, "/merge:D650=650")
+#pragma comment(linker, "/merge:C650=650")
+#pragma comment(linker, "/merge:B650=650")
+#pragma comment(linker, "/merge:K650=650")
 /* vidhrdw/shangkid */
 
 #include "driver.h"
@@ -63,7 +63,7 @@ VIDEO_START( shangkid )
 	return background?0:1;
 }
 
-WRITE_HANDLER( shangkid_videoram_w )
+WRITE8_HANDLER( shangkid_videoram_w )
 {
 	if( videoram[offset]!=data ){
 		videoram[offset] = data;

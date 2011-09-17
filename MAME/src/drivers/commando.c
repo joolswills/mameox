@@ -1,11 +1,11 @@
-#pragma code_seg("C218")
-#pragma data_seg("D218")
-#pragma bss_seg("B218")
-#pragma const_seg("K218")
-#pragma comment(linker, "/merge:D218=218")
-#pragma comment(linker, "/merge:C218=218")
-#pragma comment(linker, "/merge:B218=218")
-#pragma comment(linker, "/merge:K218=218")
+#pragma code_seg("C223")
+#pragma data_seg("D223")
+#pragma bss_seg("B223")
+#pragma const_seg("K223")
+#pragma comment(linker, "/merge:D223=223")
+#pragma comment(linker, "/merge:C223=223")
+#pragma comment(linker, "/merge:B223=223")
+#pragma comment(linker, "/merge:K223=223")
 /***************************************************************************
 
 Commando memory map (preliminary)
@@ -57,11 +57,11 @@ Note : there is an ingame typo bug that doesn't display the bonus life values
 extern unsigned char *commando_fgvideoram;
 extern unsigned char *commando_bgvideoram;
 
-WRITE_HANDLER( commando_fgvideoram_w );
-WRITE_HANDLER( commando_bgvideoram_w );
-WRITE_HANDLER( commando_scrollx_w );
-WRITE_HANDLER( commando_scrolly_w );
-WRITE_HANDLER( commando_c804_w );
+WRITE8_HANDLER( commando_fgvideoram_w );
+WRITE8_HANDLER( commando_bgvideoram_w );
+WRITE8_HANDLER( commando_scrollx_w );
+WRITE8_HANDLER( commando_scrolly_w );
+WRITE8_HANDLER( commando_c804_w );
 VIDEO_START( commando );
 VIDEO_UPDATE( commando );
 VIDEO_EOF( commando );
@@ -70,7 +70,7 @@ VIDEO_EOF( commando );
 
 static INTERRUPT_GEN( commando_interrupt )
 {
-	cpu_set_irq_line_and_vector(0, 0, HOLD_LINE, 0xd7);	/* RST 10h - VBLANK */
+	cpunum_set_input_line_and_vector(0, 0, HOLD_LINE, 0xd7);	/* RST 10h - VBLANK */
 }
 
 

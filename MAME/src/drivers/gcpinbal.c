@@ -1,11 +1,11 @@
-#pragma code_seg("C323")
-#pragma data_seg("D323")
-#pragma bss_seg("B323")
-#pragma const_seg("K323")
-#pragma comment(linker, "/merge:D323=323")
-#pragma comment(linker, "/merge:C323=323")
-#pragma comment(linker, "/merge:B323=323")
-#pragma comment(linker, "/merge:K323=323")
+#pragma code_seg("C336")
+#pragma data_seg("D336")
+#pragma bss_seg("B336")
+#pragma const_seg("K336")
+#pragma comment(linker, "/merge:D336=336")
+#pragma comment(linker, "/merge:C336=336")
+#pragma comment(linker, "/merge:B336=336")
+#pragma comment(linker, "/merge:K336=336")
 /***************************************************************************
 
 Grand Cross Pinball
@@ -53,7 +53,7 @@ static int start, end, bank;
 
 void gcpinbal_interrupt1(int x)
 {
-	cpu_set_irq_line(0,1,HOLD_LINE);
+	cpunum_set_input_line(0,1,HOLD_LINE);
 }
 
 void gcpinbal_interrupt3(int x)
@@ -61,7 +61,7 @@ void gcpinbal_interrupt3(int x)
 	// IRQ3 is from the M6585
 	if (!ADPCM_playing(0))
 	{
-		cpu_set_irq_line(0,3,HOLD_LINE);
+		cpunum_set_input_line(0,3,HOLD_LINE);
 	}
 }
 
@@ -71,7 +71,7 @@ static INTERRUPT_GEN( gcpinbal_interrupt )
 
 	timer_set(TIME_IN_CYCLES(500,0),0, gcpinbal_interrupt1);
 	timer_set(TIME_IN_CYCLES(1000,0),0, gcpinbal_interrupt3);
-	cpu_set_irq_line(0, 4, HOLD_LINE);
+	cpunum_set_input_line(0, 4, HOLD_LINE);
 }
 
 

@@ -1,11 +1,11 @@
-#pragma code_seg("C793")
-#pragma data_seg("D793")
-#pragma bss_seg("B793")
-#pragma const_seg("K793")
-#pragma comment(linker, "/merge:D793=793")
-#pragma comment(linker, "/merge:C793=793")
-#pragma comment(linker, "/merge:B793=793")
-#pragma comment(linker, "/merge:K793=793")
+#pragma code_seg("C835")
+#pragma data_seg("D835")
+#pragma bss_seg("B835")
+#pragma const_seg("K835")
+#pragma comment(linker, "/merge:D835=835")
+#pragma comment(linker, "/merge:C835=835")
+#pragma comment(linker, "/merge:B835=835")
+#pragma comment(linker, "/merge:K835=835")
 /***************************************************************************
 
 X-Men
@@ -120,7 +120,7 @@ static WRITE16_HANDLER( sound_cmd_w )
 
 static WRITE16_HANDLER( sound_irq_w )
 {
-	cpu_set_irq_line(1, 0, HOLD_LINE);
+	cpunum_set_input_line(1, 0, HOLD_LINE);
 }
 
 static WRITE16_HANDLER( xmen_18fa00_w )
@@ -138,7 +138,7 @@ static void sound_reset_bank(void)
 	cpu_setbank(4, memory_region(REGION_CPU2) + 0x10000 + (sound_curbank & 0x07) * 0x4000);
 }
 
-static WRITE_HANDLER( sound_bankswitch_w )
+static WRITE8_HANDLER( sound_bankswitch_w )
 {
 	sound_curbank = data;
 	sound_reset_bank();

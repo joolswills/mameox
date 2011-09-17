@@ -1,11 +1,11 @@
-#pragma code_seg("C528")
-#pragma data_seg("D528")
-#pragma bss_seg("B528")
-#pragma const_seg("K528")
-#pragma comment(linker, "/merge:D528=528")
-#pragma comment(linker, "/merge:C528=528")
-#pragma comment(linker, "/merge:B528=528")
-#pragma comment(linker, "/merge:K528=528")
+#pragma code_seg("C559")
+#pragma data_seg("D559")
+#pragma bss_seg("B559")
+#pragma const_seg("K559")
+#pragma comment(linker, "/merge:D559=559")
+#pragma comment(linker, "/merge:C559=559")
+#pragma comment(linker, "/merge:B559=559")
+#pragma comment(linker, "/merge:K559=559")
 /***************************************************************************
 
   vidhrdw.c
@@ -21,7 +21,7 @@ struct tilemap *pb_tilemap;
 extern data8_t *pb_videoram;
 extern int is_pbillian;
 
-WRITE_HANDLER( pb_videoram_w )
+WRITE8_HANDLER( pb_videoram_w )
 {
 	pb_videoram[offset] = data;
 	tilemap_mark_tile_dirty(pb_tilemap,offset&0x3ff);

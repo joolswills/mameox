@@ -1,11 +1,11 @@
-#pragma code_seg("C557")
-#pragma data_seg("D557")
-#pragma bss_seg("B557")
-#pragma const_seg("K557")
-#pragma comment(linker, "/merge:D557=557")
-#pragma comment(linker, "/merge:C557=557")
-#pragma comment(linker, "/merge:B557=557")
-#pragma comment(linker, "/merge:K557=557")
+#pragma code_seg("C590")
+#pragma data_seg("D590")
+#pragma bss_seg("B590")
+#pragma const_seg("K590")
+#pragma comment(linker, "/merge:D590=590")
+#pragma comment(linker, "/merge:C590=590")
+#pragma comment(linker, "/merge:B590=590")
+#pragma comment(linker, "/merge:K590=590")
 /***************************************************************************
 
 	Taito Qix hardware
@@ -80,7 +80,7 @@ void qix_scanline_callback(int scanline)
  *
  *************************************/
 
-READ_HANDLER( qix_scanline_r )
+READ8_HANDLER( qix_scanline_r )
 {
 	int scanline = cpu_getscanline();
 	return (scanline <= 0xff) ? scanline : 0;
@@ -94,7 +94,7 @@ READ_HANDLER( qix_scanline_r )
  *
  *************************************/
 
-WRITE_HANDLER( slither_vram_mask_w )
+WRITE8_HANDLER( slither_vram_mask_w )
 {
 	/* Slither appears to extend the basic hardware by providing */
 	/* a mask register which controls which data bits get written */
@@ -119,7 +119,7 @@ WRITE_HANDLER( slither_vram_mask_w )
  *
  *************************************/
 
-READ_HANDLER( qix_videoram_r )
+READ8_HANDLER( qix_videoram_r )
 {
 	/* add in the upper bit of the address latch */
 	offset += (qix_videoaddress[0] & 0x80) << 8;
@@ -127,7 +127,7 @@ READ_HANDLER( qix_videoram_r )
 }
 
 
-WRITE_HANDLER( qix_videoram_w )
+WRITE8_HANDLER( qix_videoram_w )
 {
 	/* add in the upper bit of the address latch */
 	offset += (qix_videoaddress[0] & 0x80) << 8;
@@ -153,7 +153,7 @@ WRITE_HANDLER( qix_videoram_w )
  *
  *************************************/
 
-READ_HANDLER( qix_addresslatch_r )
+READ8_HANDLER( qix_addresslatch_r )
 {
 	/* compute the value at the address latch */
 	offset = (qix_videoaddress[0] << 8) | qix_videoaddress[1];
@@ -162,7 +162,7 @@ READ_HANDLER( qix_addresslatch_r )
 
 
 
-WRITE_HANDLER( qix_addresslatch_w )
+WRITE8_HANDLER( qix_addresslatch_w )
 {
 	/* compute the value at the address latch */
 	offset = (qix_videoaddress[0] << 8) | qix_videoaddress[1];
@@ -179,7 +179,7 @@ WRITE_HANDLER( qix_addresslatch_w )
  *
  *************************************/
 
-WRITE_HANDLER( qix_paletteram_w )
+WRITE8_HANDLER( qix_paletteram_w )
 {
 	/* this conversion table should be about right. It gives a reasonable */
 	/* gray scale in the test screen, and the red, green and blue squares */
@@ -222,7 +222,7 @@ WRITE_HANDLER( qix_paletteram_w )
 }
 
 
-WRITE_HANDLER( qix_palettebank_w )
+WRITE8_HANDLER( qix_palettebank_w )
 {
 	/* set the bank value */
 	if (qix_palettebank != (data & 3))

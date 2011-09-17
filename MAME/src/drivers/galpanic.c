@@ -1,11 +1,11 @@
-#pragma code_seg("C316")
-#pragma data_seg("D316")
-#pragma bss_seg("B316")
-#pragma const_seg("K316")
-#pragma comment(linker, "/merge:D316=316")
-#pragma comment(linker, "/merge:C316=316")
-#pragma comment(linker, "/merge:B316=316")
-#pragma comment(linker, "/merge:K316=316")
+#pragma code_seg("C329")
+#pragma data_seg("D329")
+#pragma bss_seg("B329")
+#pragma const_seg("K329")
+#pragma comment(linker, "/merge:D329=329")
+#pragma comment(linker, "/merge:C329=329")
+#pragma comment(linker, "/merge:B329=329")
+#pragma comment(linker, "/merge:K329=329")
 /***************************************************************************
 
 Gals Panic       1990 Kaneko
@@ -122,18 +122,18 @@ static INTERRUPT_GEN( galpanic_interrupt )
 {
 	/* IRQ 3 drives the game, IRQ 5 updates the palette */
 	if (cpu_getiloops() != 0)
-		cpu_set_irq_line(0, 5, HOLD_LINE);
+		cpunum_set_input_line(0, 5, HOLD_LINE);
 	else
-		cpu_set_irq_line(0, 3, HOLD_LINE);
+		cpunum_set_input_line(0, 3, HOLD_LINE);
 }
 
 static INTERRUPT_GEN( galhustl_interrupt )
 {
 	switch ( cpu_getiloops() )
 	{
-		case 2:  cpu_set_irq_line(0, 5, HOLD_LINE); break;
-		case 1:  cpu_set_irq_line(0, 4, HOLD_LINE); break;
-		case 0:  cpu_set_irq_line(0, 3, HOLD_LINE); break;
+		case 2:  cpunum_set_input_line(0, 5, HOLD_LINE); break;
+		case 1:  cpunum_set_input_line(0, 4, HOLD_LINE); break;
+		case 0:  cpunum_set_input_line(0, 3, HOLD_LINE); break;
 	}
 }
 
@@ -571,9 +571,9 @@ INPUT_PORTS_START( galpanib )
 	PORT_DIPSETTING(      0x0030, "3" )
 	PORT_DIPSETTING(      0x0020, "4" )
 	PORT_DIPSETTING(      0x0000, "5" )
-	PORT_DIPNAME( 0x0040, 0x0040, DEF_STR( Unknown ) )	/* demo sounds? - see notes */
-	PORT_DIPSETTING(      0x0040, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
+	PORT_DIPNAME( 0x0040, 0x0040, DEF_STR( Demo_Sounds ) )
+	PORT_DIPSETTING(      0x0000, DEF_STR( Off ) )
+	PORT_DIPSETTING(      0x0040, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0080, 0x0080, DEF_STR( Unused ) )
 	PORT_DIPSETTING(      0x0080, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
@@ -616,9 +616,9 @@ INPUT_PORTS_START( fantasia )
 	PORT_DIPSETTING(      0x0030, "3" )
 	PORT_DIPSETTING(      0x0020, "4" )
 	PORT_DIPSETTING(      0x0000, "5" )
-	PORT_DIPNAME( 0x0040, 0x0040, DEF_STR( Unknown ) )	/* demo sounds? - same "trap    #$d" as in 'galpanic' */
-	PORT_DIPSETTING(      0x0040, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
+	PORT_DIPNAME( 0x0040, 0x0040, DEF_STR( Demo_Sounds ) )
+	PORT_DIPSETTING(      0x0000, DEF_STR( Off ) )
+	PORT_DIPSETTING(      0x0040, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0080, 0x0080, DEF_STR( Unused ) )
 	PORT_DIPSETTING(      0x0080, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
@@ -705,9 +705,9 @@ INPUT_PORTS_START( missw96 )
 	PORT_DIPSETTING(      0x0030, "3" )
 	PORT_DIPSETTING(      0x0020, "4" )
 	PORT_DIPSETTING(      0x0000, "5" )
-	PORT_DIPNAME( 0x0040, 0x0040, DEF_STR( Unknown ) )	/* demo sounds? - same "trap    #$d" as in 'galpanic' */
-	PORT_DIPSETTING(      0x0040, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
+	PORT_DIPNAME( 0x0040, 0x0040, DEF_STR( Demo_Sounds ) )
+	PORT_DIPSETTING(      0x0000, DEF_STR( Off ) )
+	PORT_DIPSETTING(      0x0040, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0080, 0x0080, DEF_STR( Unused ) )
 	PORT_DIPSETTING(      0x0080, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
@@ -1063,9 +1063,9 @@ ROM_START( fantsy95 )
 
 	ROM_REGION( 0x140000, REGION_SOUND1, 0 )	/* OKIM6295 samples */
 	/* 00000-2ffff is fixed, 30000-3ffff is bank switched from all the ROMs */
-	ROM_LOAD( "musc1.1", 0x00000, 0x80000, CRC(3117e2ef) SHA1(6581a7104556d44f814c537bbd74998922927034) )
+	ROM_LOAD( "music1.1", 0x00000, 0x80000, CRC(3117e2ef) SHA1(6581a7104556d44f814c537bbd74998922927034) )
 	ROM_RELOAD(               0x40000, 0x80000 )
-	ROM_LOAD( "musc2.2", 0xc0000, 0x80000, CRC(0c1109f9) SHA1(0e4ea534a32b1649e2e9bb8af7254b917ec03a90) )
+	ROM_LOAD( "music2.2", 0xc0000, 0x80000, CRC(0c1109f9) SHA1(0e4ea534a32b1649e2e9bb8af7254b917ec03a90) )
 ROM_END
 
 ROM_START( newfant )

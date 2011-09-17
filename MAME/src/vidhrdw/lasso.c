@@ -1,11 +1,11 @@
-#pragma code_seg("C396")
-#pragma data_seg("D396")
-#pragma bss_seg("B396")
-#pragma const_seg("K396")
-#pragma comment(linker, "/merge:D396=396")
-#pragma comment(linker, "/merge:C396=396")
-#pragma comment(linker, "/merge:B396=396")
-#pragma comment(linker, "/merge:K396=396")
+#pragma code_seg("C413")
+#pragma data_seg("D413")
+#pragma bss_seg("B413")
+#pragma const_seg("K413")
+#pragma comment(linker, "/merge:D413=413")
+#pragma comment(linker, "/merge:C413=413")
+#pragma comment(linker, "/merge:B413=413")
+#pragma comment(linker, "/merge:K413=413")
 /***************************************************************************
 
  Lasso and similar hardware
@@ -191,7 +191,7 @@ VIDEO_START( pinbo )
  *
  *************************************/
 
-WRITE_HANDLER( lasso_videoram_w )
+WRITE8_HANDLER( lasso_videoram_w )
 {
 	if (lasso_videoram[offset] != data)
 	{
@@ -200,7 +200,7 @@ WRITE_HANDLER( lasso_videoram_w )
 	}
 }
 
-WRITE_HANDLER( lasso_colorram_w )
+WRITE8_HANDLER( lasso_colorram_w )
 {
 	if (lasso_colorram[offset] != data)
 	{
@@ -210,7 +210,7 @@ WRITE_HANDLER( lasso_colorram_w )
 }
 
 
-static WRITE_HANDLER( lasso_flip_screen_w )
+static WRITE8_HANDLER( lasso_flip_screen_w )
 {
 	/* don't know which is which, but they are always set together */
 	flip_screen_x = data & 0x01;
@@ -221,7 +221,7 @@ static WRITE_HANDLER( lasso_flip_screen_w )
 }
 
 
-WRITE_HANDLER( lasso_video_control_w )
+WRITE8_HANDLER( lasso_video_control_w )
 {
 	int bank = (data & 0x04) >> 2;
 
@@ -234,7 +234,7 @@ WRITE_HANDLER( lasso_video_control_w )
 	lasso_flip_screen_w(offset, data);
 }
 
-WRITE_HANDLER( wwjgtin_video_control_w )
+WRITE8_HANDLER( wwjgtin_video_control_w )
 {
 	int bank = ((data & 0x04) ? 0 : 1) + ((data & 0x10) ? 2 : 0);
 	wwjgtin_track_enable = data & 0x08;
@@ -248,7 +248,7 @@ WRITE_HANDLER( wwjgtin_video_control_w )
 	lasso_flip_screen_w(offset, data);
 }
 
-WRITE_HANDLER( pinbo_video_control_w )
+WRITE8_HANDLER( pinbo_video_control_w )
 {
 	/* no need to dirty the tilemap -- only the sprites use the global bank */
 	gfxbank = (data & 0x0c) >> 2;
@@ -258,7 +258,7 @@ WRITE_HANDLER( pinbo_video_control_w )
 
 
 /* The bg_tilemap color can be changed */
-WRITE_HANDLER( lasso_backcolor_w )
+WRITE8_HANDLER( lasso_backcolor_w )
 {
 	int i;
 	for( i=0; i<0x40; i+=4 ) /* stuff into color#0 of each palette */
@@ -267,7 +267,7 @@ WRITE_HANDLER( lasso_backcolor_w )
 
 
 /* The last 4 color (= last palette) entries can be changed */
-WRITE_HANDLER( wwjgtin_lastcolor_w )
+WRITE8_HANDLER( wwjgtin_lastcolor_w )
 {
 	lasso_set_color(0x3f - offset,data);
 }

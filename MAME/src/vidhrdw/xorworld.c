@@ -1,19 +1,15 @@
-#pragma code_seg("C794")
-#pragma data_seg("D794")
-#pragma bss_seg("B794")
-#pragma const_seg("K794")
-#pragma comment(linker, "/merge:D794=794")
-#pragma comment(linker, "/merge:C794=794")
-#pragma comment(linker, "/merge:B794=794")
-#pragma comment(linker, "/merge:K794=794")
+#pragma code_seg("C836")
+#pragma data_seg("D836")
+#pragma bss_seg("B836")
+#pragma const_seg("K836")
+#pragma comment(linker, "/merge:D836=836")
+#pragma comment(linker, "/merge:C836=836")
+#pragma comment(linker, "/merge:B836=836")
+#pragma comment(linker, "/merge:K836=836")
 #include "driver.h"
 #include "vidhrdw/generic.h"
-#include "tilemap.h"
 
-data16_t *xorworld_videoram;
-data16_t *xorworld_spriteram;
-
-static struct tilemap *screen;
+static struct tilemap *bg_tilemap;
 
 /***************************************************************************
 
@@ -63,11 +59,11 @@ PALETTE_INIT( xorworld )
 	}
 }
 
-/***************************************************************************
-
-	Callbacks for the TileMap code
-
-***************************************************************************/
+WRITE16_HANDLER( xorworld_videoram16_w )
+{
+	COMBINE_DATA(&videoram16[offset]);
+	tilemap_mark_tile_dirty(bg_tilemap, offset);
+}
 
 /*
 	Tile format
@@ -79,43 +75,20 @@ PALETTE_INIT( xorworld )
 	  0	 | xxxx---- -------- | color
 */
 
-static void get_tile_info_xorworld_screen(int tile_index)
+static void get_bg_tile_info(int tile_index)
 {
-	int data = xorworld_videoram[tile_index];
+	int data = videoram16[tile_index];
 	int code = data & 0x0fff;
 
 	SET_TILE_INFO(0, code, data >> 12, 0);
 }
 
-
-/***************************************************************************
-
-	Memory Handlers
-
-***************************************************************************/
-
-READ16_HANDLER( xorworld_vram_r )
-{
-	return xorworld_videoram[offset];
-}
-
-WRITE16_HANDLER( xorworld_vram_w )
-{
-	COMBINE_DATA(&xorworld_videoram[offset]);
-	tilemap_mark_tile_dirty(screen, offset);
-}
-
-/***************************************************************************
-
-	Start the video hardware emulation.
-
-***************************************************************************/
-
 VIDEO_START( xorworld )
 {
-	screen = tilemap_create(get_tile_info_xorworld_screen,tilemap_scan_rows,TILEMAP_OPAQUE,8,8,32,32);
+	bg_tilemap = tilemap_create(get_bg_tile_info, tilemap_scan_rows,
+		TILEMAP_OPAQUE, 8, 8, 32, 32);
 
-	if (!screen)
+	if (!bg_tilemap)
 		return 1;
 
 	return 0;
@@ -134,35 +107,26 @@ VIDEO_START( xorworld )
 	  1  | xxxx---- -------- | sprite color
 */
 
-static void xorworld_draw_sprites(struct mame_bitmap *bitmap)
+static void xorworld_draw_sprites( struct mame_bitmap *bitmap, const struct rectangle *cliprect )
 {
 	int i;
-	const struct GfxElement *gfx = Machine->gfx[1];
 
-	for (i = 0; i < 0x40; i += 2){		
-		int sx = xorworld_spriteram[i] & 0x00ff;
-		int sy = 240 - (((xorworld_spriteram[i] & 0xff00) >> 8) & 0xff);
-		int number = (xorworld_spriteram[i+1] & 0x0ffc) >> 2;
-		int color = (xorworld_spriteram[i+1] & 0xf000) >> 12;
+	for (i = 0; i < 0x40; i += 2)
+	{		
+		int sx = spriteram16[i] & 0x00ff;
+		int sy = 240 - (((spriteram16[i] & 0xff00) >> 8) & 0xff);
+		int code = (spriteram16[i+1] & 0x0ffc) >> 2;
+		int color = (spriteram16[i+1] & 0xf000) >> 12;
 
-		drawgfx(bitmap,gfx,number,
-						color,0,0,
-						sx,sy,
-						&Machine->visible_area,TRANSPARENCY_PEN,0);
+		drawgfx(bitmap, Machine->gfx[1], code, color, 0, 0, sx, sy, 
+			cliprect, TRANSPARENCY_PEN, 0);
 	}
 }
 
-/***************************************************************************
-
-	Display Refresh
-
-***************************************************************************/
-
 VIDEO_UPDATE( xorworld )
 {	
-	tilemap_draw(bitmap, cliprect, screen, 0, 0);
-
-	xorworld_draw_sprites(bitmap);
+	tilemap_draw(bitmap, cliprect, bg_tilemap, 0, 0);
+	xorworld_draw_sprites(bitmap, cliprect);
 }
 #pragma code_seg()
 #pragma data_seg()

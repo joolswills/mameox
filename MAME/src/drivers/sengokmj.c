@@ -1,11 +1,11 @@
-#pragma code_seg("C604")
-#pragma data_seg("D604")
-#pragma bss_seg("B604")
-#pragma const_seg("K604")
-#pragma comment(linker, "/merge:D604=604")
-#pragma comment(linker, "/merge:C604=604")
-#pragma comment(linker, "/merge:B604=604")
-#pragma comment(linker, "/merge:K604=604")
+#pragma code_seg("C640")
+#pragma data_seg("D640")
+#pragma bss_seg("B640")
+#pragma const_seg("K640")
+#pragma comment(linker, "/merge:D640=640")
+#pragma comment(linker, "/merge:C640=640")
+#pragma comment(linker, "/merge:B640=640")
+#pragma comment(linker, "/merge:K640=640")
 /******************************************************************************************
 
 Sengoku Mahjong (c) 1991 Sigma
@@ -82,22 +82,22 @@ Dumped by Uki
 #include "vidhrdw/generic.h"
 #include "sndhrdw/seibu.h"
 
-extern data8_t *bg_vram,*md_vram,*tx_vram,*fg_vram;
+extern data8_t *sm_bgvram,*md_vram,*tx_vram,*fg_vram;
 static UINT8 sengokumj_mux_data;
 
-READ_HANDLER( sengoku_bg_vram_r );
-READ_HANDLER( sengoku_fg_vram_r );
-READ_HANDLER( sengoku_md_vram_r );
-READ_HANDLER( sengoku_tx_vram_r );
-WRITE_HANDLER( sengoku_bg_vram_w );
-WRITE_HANDLER( sengoku_fg_vram_w );
-WRITE_HANDLER( sengoku_md_vram_w );
-WRITE_HANDLER( sengoku_tx_vram_w );
+READ8_HANDLER( sengoku_sm_bgvram_r );
+READ8_HANDLER( sengoku_fg_vram_r );
+READ8_HANDLER( sengoku_md_vram_r );
+READ8_HANDLER( sengoku_tx_vram_r );
+WRITE8_HANDLER( sengoku_sm_bgvram_w );
+WRITE8_HANDLER( sengoku_fg_vram_w );
+WRITE8_HANDLER( sengoku_md_vram_w );
+WRITE8_HANDLER( sengoku_tx_vram_w );
 VIDEO_START( sengokmj );
 VIDEO_UPDATE( sengokmj );
 
 /*Multiplexer device for the mahjong panel*/
-READ_HANDLER( mahjong_panel_0_r )
+READ8_HANDLER( mahjong_panel_0_r )
 {
 	switch(sengokumj_mux_data)
 	{
@@ -112,12 +112,12 @@ READ_HANDLER( mahjong_panel_0_r )
 	return readinputport(3);
 }
 
-READ_HANDLER( mahjong_panel_1_r )
+READ8_HANDLER( mahjong_panel_1_r )
 {
 	return readinputport(9);
 }
 
-WRITE_HANDLER( mahjong_panel_w )
+WRITE8_HANDLER( mahjong_panel_w )
 {
 	if(offset == 1)	{ sengokumj_mux_data = data; }
 }
@@ -165,7 +165,7 @@ static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0x08000, 0x087ff) AM_READ(MRA8_RAM)
 	AM_RANGE(0x08800, 0x097ff) AM_READ(MRA8_RAM)
 	AM_RANGE(0x09800, 0x09fff) AM_READ(MRA8_RAM)
-	AM_RANGE(0x0c000, 0x0c7ff) AM_READ(sengoku_bg_vram_r)
+	AM_RANGE(0x0c000, 0x0c7ff) AM_READ(sengoku_sm_bgvram_r)
 	AM_RANGE(0x0c800, 0x0cfff) AM_READ(sengoku_fg_vram_r)
 	AM_RANGE(0x0d000, 0x0d7ff) AM_READ(sengoku_md_vram_r)
 	AM_RANGE(0x0d800, 0x0e7ff) AM_READ(sengoku_tx_vram_r)
@@ -181,7 +181,7 @@ static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0x08000, 0x087ff) AM_WRITE(MWA8_RAM)
 	AM_RANGE(0x08800, 0x097ff) AM_WRITE(MWA8_RAM)
 	AM_RANGE(0x09800, 0x09fff) AM_WRITE(MWA8_RAM)
-	AM_RANGE(0x0c000, 0x0c7ff) AM_WRITE(sengoku_bg_vram_w) AM_BASE(&bg_vram)
+	AM_RANGE(0x0c000, 0x0c7ff) AM_WRITE(sengoku_sm_bgvram_w) AM_BASE(&sm_bgvram)
 	AM_RANGE(0x0c800, 0x0cfff) AM_WRITE(sengoku_fg_vram_w) AM_BASE(&fg_vram)
 	AM_RANGE(0x0d000, 0x0d7ff) AM_WRITE(sengoku_md_vram_w) AM_BASE(&md_vram)
 	AM_RANGE(0x0d800, 0x0e7ff) AM_WRITE(sengoku_tx_vram_w) AM_BASE(&tx_vram)
@@ -214,7 +214,7 @@ SEIBU_SOUND_SYSTEM_YM3812_HARDWARE(14318180/4,8000,REGION_SOUND1);
 
 static INTERRUPT_GEN( sengokmj_interrupt )
 {
-	cpu_set_irq_line_and_vector(0,0,HOLD_LINE,0xcb/4);
+	cpunum_set_input_line_and_vector(0,0,HOLD_LINE,0xcb/4);
 }
 
 /***************************************************************************************/

@@ -1,11 +1,11 @@
-#pragma code_seg("C384")
-#pragma data_seg("D384")
-#pragma bss_seg("B384")
-#pragma const_seg("K384")
-#pragma comment(linker, "/merge:D384=384")
-#pragma comment(linker, "/merge:C384=384")
-#pragma comment(linker, "/merge:B384=384")
-#pragma comment(linker, "/merge:K384=384")
+#pragma code_seg("C399")
+#pragma data_seg("D399")
+#pragma bss_seg("B399")
+#pragma const_seg("K399")
+#pragma comment(linker, "/merge:D399=399")
+#pragma comment(linker, "/merge:C399=399")
+#pragma comment(linker, "/merge:B399=399")
+#pragma comment(linker, "/merge:K399=399")
 /* Kick Goal - Vidhrdw */
 
 #include "driver.h"

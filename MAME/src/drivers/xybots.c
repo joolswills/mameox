@@ -1,11 +1,11 @@
-#pragma code_seg("C796")
-#pragma data_seg("D796")
-#pragma bss_seg("B796")
-#pragma const_seg("K796")
-#pragma comment(linker, "/merge:D796=796")
-#pragma comment(linker, "/merge:C796=796")
-#pragma comment(linker, "/merge:B796=796")
-#pragma comment(linker, "/merge:K796=796")
+#pragma code_seg("C838")
+#pragma data_seg("D838")
+#pragma bss_seg("B838")
+#pragma const_seg("K838")
+#pragma comment(linker, "/merge:D838=838")
+#pragma comment(linker, "/merge:C838=838")
+#pragma comment(linker, "/merge:B838=838")
+#pragma comment(linker, "/merge:K838=838")
 /***************************************************************************
 
 	Atari Xybots hardware
@@ -48,9 +48,9 @@ static void update_interrupts(void)
 		newstate = 2;
 
 	if (newstate)
-		cpu_set_irq_line(0, newstate, ASSERT_LINE);
+		cpunum_set_input_line(0, newstate, ASSERT_LINE);
 	else
-		cpu_set_irq_line(0, 7, CLEAR_LINE);
+		cpunum_set_input_line(0, 7, CLEAR_LINE);
 }
 
 

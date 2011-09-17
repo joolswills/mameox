@@ -1,11 +1,11 @@
-#pragma code_seg("C341")
-#pragma data_seg("D341")
-#pragma bss_seg("B341")
-#pragma const_seg("K341")
-#pragma comment(linker, "/merge:D341=341")
-#pragma comment(linker, "/merge:C341=341")
-#pragma comment(linker, "/merge:B341=341")
-#pragma comment(linker, "/merge:K341=341")
+#pragma code_seg("C355")
+#pragma data_seg("D355")
+#pragma bss_seg("B355")
+#pragma const_seg("K355")
+#pragma comment(linker, "/merge:D355=355")
+#pragma comment(linker, "/merge:C355=355")
+#pragma comment(linker, "/merge:B355=355")
+#pragma comment(linker, "/merge:K355=355")
 /***************************************************************************
   Great Swordsman
 
@@ -125,7 +125,7 @@ PALETTE_INIT( gsword )
 		COLOR(1,i) = sprite_lookup_table[*(color_prom++)];
 }
 
-WRITE_HANDLER( gsword_videoram_w )
+WRITE8_HANDLER( gsword_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -134,7 +134,7 @@ WRITE_HANDLER( gsword_videoram_w )
 	}
 }
 
-WRITE_HANDLER( gsword_charbank_w )
+WRITE8_HANDLER( gsword_charbank_w )
 {
 	if (charbank != data)
 	{
@@ -143,7 +143,7 @@ WRITE_HANDLER( gsword_charbank_w )
 	}
 }
 
-WRITE_HANDLER( gsword_videoctrl_w )
+WRITE8_HANDLER( gsword_videoctrl_w )
 {
 	if (data & 0x8f)
 	{
@@ -171,7 +171,7 @@ WRITE_HANDLER( gsword_videoctrl_w )
 	/* other bits unused */
 }
 
-WRITE_HANDLER( gsword_scroll_w )
+WRITE8_HANDLER( gsword_scroll_w )
 {
 	tilemap_set_scrolly(bg_tilemap, 0, data);
 }

@@ -1,11 +1,11 @@
-#pragma code_seg("C317")
-#pragma data_seg("D317")
-#pragma bss_seg("B317")
-#pragma const_seg("K317")
-#pragma comment(linker, "/merge:D317=317")
-#pragma comment(linker, "/merge:C317=317")
-#pragma comment(linker, "/merge:B317=317")
-#pragma comment(linker, "/merge:K317=317")
+#pragma code_seg("C330")
+#pragma data_seg("D330")
+#pragma bss_seg("B330")
+#pragma const_seg("K330")
+#pragma comment(linker, "/merge:D330=330")
+#pragma comment(linker, "/merge:C330=330")
+#pragma comment(linker, "/merge:B330=330")
+#pragma comment(linker, "/merge:K330=330")
 /***************************************************************************
 
 Hot Pinball
@@ -46,7 +46,7 @@ static WRITE16_HANDLER( soundcommand_w )
 	if (ACCESSING_LSB)
 	{
 		soundlatch_w(offset,data & 0xff);
-		cpu_set_irq_line(1,IRQ_LINE_NMI,PULSE_LINE);
+		cpunum_set_input_line(1,INPUT_LINE_NMI,PULSE_LINE);
 	}
 }
 
@@ -314,7 +314,7 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 
 static void irqhandler(int linestate)
 {
-	cpu_set_irq_line(1,0,linestate);
+	cpunum_set_input_line(1,0,linestate);
 }
 
 static struct YM3812interface ym3812_interface =

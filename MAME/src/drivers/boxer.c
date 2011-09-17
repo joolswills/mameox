@@ -1,11 +1,11 @@
-#pragma code_seg("C178")
-#pragma data_seg("D178")
-#pragma bss_seg("B178")
-#pragma const_seg("K178")
-#pragma comment(linker, "/merge:D178=178")
-#pragma comment(linker, "/merge:C178=178")
-#pragma comment(linker, "/merge:B178=178")
-#pragma comment(linker, "/merge:K178=178")
+#pragma code_seg("C180")
+#pragma data_seg("D180")
+#pragma bss_seg("B180")
+#pragma const_seg("K180")
+#pragma comment(linker, "/merge:D180=180")
+#pragma comment(linker, "/merge:C180=180")
+#pragma comment(linker, "/merge:B180=180")
+#pragma comment(linker, "/merge:K180=180")
 /***************************************************************************
 
 Atari Boxer (prototype) driver
@@ -31,7 +31,7 @@ static void pot_interrupt(int mask)
 {
 	if (pot_latch & mask)
 	{
-		cpu_set_nmi_line(0, ASSERT_LINE);
+		cpunum_set_input_line(0, INPUT_LINE_NMI, ASSERT_LINE);
 	}
 
 	pot_state |= mask;
@@ -40,7 +40,7 @@ static void pot_interrupt(int mask)
 
 static void periodic_callback(int scanline)
 {
-	cpu_set_irq_line(0, 0, ASSERT_LINE);
+	cpunum_set_input_line(0, 0, ASSERT_LINE);
 
 	if (scanline == 0)
 	{
@@ -99,7 +99,7 @@ static MACHINE_INIT( boxer )
 }
 
 
-static READ_HANDLER( boxer_input_r )
+static READ8_HANDLER( boxer_input_r )
 {
 	UINT8 val = readinputport(0);
 
@@ -112,7 +112,7 @@ static READ_HANDLER( boxer_input_r )
 }
 
 
-static READ_HANDLER( boxer_misc_r )
+static READ8_HANDLER( boxer_misc_r )
 {
 	UINT8 val = 0;
 
@@ -139,25 +139,25 @@ static READ_HANDLER( boxer_misc_r )
 }
 
 
-static READ_HANDLER( boxer_bad_address_r )
+static READ8_HANDLER( boxer_bad_address_r )
 {
-	cpu_set_reset_line(0, PULSE_LINE);
+	cpunum_set_input_line(0, INPUT_LINE_RESET, PULSE_LINE);
 
 	return 0;
 }
 
 
-static WRITE_HANDLER( boxer_bell_w )
+static WRITE8_HANDLER( boxer_bell_w )
 {
 }
 
 
-static WRITE_HANDLER( boxer_sound_w )
+static WRITE8_HANDLER( boxer_sound_w )
 {
 }
 
 
-static WRITE_HANDLER( boxer_pot_w )
+static WRITE8_HANDLER( boxer_pot_w )
 {
 	/* BIT0 => HPOT1 */
 	/* BIT1 => VPOT1 */
@@ -168,17 +168,17 @@ static WRITE_HANDLER( boxer_pot_w )
 
 	pot_latch = data & 0x3f;
 
-	cpu_set_nmi_line(0, CLEAR_LINE);
+	cpunum_set_input_line(0, INPUT_LINE_NMI, CLEAR_LINE);
 }
 
 
-static WRITE_HANDLER( boxer_irq_reset_w )
+static WRITE8_HANDLER( boxer_irq_reset_w )
 {
-	cpu_set_irq_line(0, 0, CLEAR_LINE);
+	cpunum_set_input_line(0, 0, CLEAR_LINE);
 }
 
 
-static WRITE_HANDLER( boxer_crowd_w )
+static WRITE8_HANDLER( boxer_crowd_w )
 {
 	/* BIT0 => ATTRACT */
 	/* BIT1 => CROWD-1 */
@@ -189,16 +189,16 @@ static WRITE_HANDLER( boxer_crowd_w )
 }
 
 
-static WRITE_HANDLER( boxer_led_w )
+static WRITE8_HANDLER( boxer_led_w )
 {
 	set_led_status(1, !(data & 1));
 	set_led_status(0, !(data & 2));
 }
 
 
-static WRITE_HANDLER( boxer_bad_address_w )
+static WRITE8_HANDLER( boxer_bad_address_w )
 {
-	cpu_set_reset_line(0, PULSE_LINE);
+	cpunum_set_input_line(0, INPUT_LINE_RESET, PULSE_LINE);
 }
 
 

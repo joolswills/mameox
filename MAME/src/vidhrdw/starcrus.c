@@ -1,11 +1,12 @@
-#pragma code_seg("C664")
-#pragma data_seg("D664")
-#pragma bss_seg("B664")
-#pragma const_seg("K664")
-#pragma comment(linker, "/merge:D664=664")
-#pragma comment(linker, "/merge:C664=664")
-#pragma comment(linker, "/merge:B664=664")
-#pragma comment(linker, "/merge:K664=664")
+#pragma code_seg("C702")
+#pragma data_seg("D702")
+#pragma bss_seg("B702")
+#pragma const_seg("K702")
+#pragma comment(linker, "/merge:D702=702")
+#pragma comment(linker, "/merge:C702=702")
+#pragma comment(linker, "/merge:B702=702")
+#pragma comment(linker, "/merge:K702=702")
+
 /* Ramtek - Star Cruiser */
 
 #include "driver.h"
@@ -51,14 +52,14 @@ int starcrus_explode_sound_playing = 0;
 int starcrus_launch1_sound_playing = 0;
 int starcrus_launch2_sound_playing = 0;
 
-WRITE_HANDLER( starcrus_s1_x_w ) { s1_x = data^0xff; }
-WRITE_HANDLER( starcrus_s1_y_w ) { s1_y = data^0xff; }
-WRITE_HANDLER( starcrus_s2_x_w ) { s2_x = data^0xff; }
-WRITE_HANDLER( starcrus_s2_y_w ) { s2_y = data^0xff; }
-WRITE_HANDLER( starcrus_p1_x_w ) { p1_x = data^0xff; }
-WRITE_HANDLER( starcrus_p1_y_w ) { p1_y = data^0xff; }
-WRITE_HANDLER( starcrus_p2_x_w ) { p2_x = data^0xff; }
-WRITE_HANDLER( starcrus_p2_y_w ) { p2_y = data^0xff; }
+WRITE8_HANDLER( starcrus_s1_x_w ) { s1_x = data^0xff; }
+WRITE8_HANDLER( starcrus_s1_y_w ) { s1_y = data^0xff; }
+WRITE8_HANDLER( starcrus_s2_x_w ) { s2_x = data^0xff; }
+WRITE8_HANDLER( starcrus_s2_y_w ) { s2_y = data^0xff; }
+WRITE8_HANDLER( starcrus_p1_x_w ) { p1_x = data^0xff; }
+WRITE8_HANDLER( starcrus_p1_y_w ) { p1_y = data^0xff; }
+WRITE8_HANDLER( starcrus_p2_x_w ) { p2_x = data^0xff; }
+WRITE8_HANDLER( starcrus_p2_y_w ) { p2_y = data^0xff; }
 
 VIDEO_START( starcrus )
 {
@@ -77,7 +78,7 @@ VIDEO_START( starcrus )
 	return 0;
 }
 
-WRITE_HANDLER( starcrus_ship_parm_1_w )
+WRITE8_HANDLER( starcrus_ship_parm_1_w )
 {
     s1_sprite = data&0x1f;
     engine1_on = ((data&0x20)>>5)^0x01;
@@ -101,7 +102,7 @@ WRITE_HANDLER( starcrus_ship_parm_1_w )
 	}
 }
 
-WRITE_HANDLER( starcrus_ship_parm_2_w )
+WRITE8_HANDLER( starcrus_ship_parm_2_w )
 {
     s2_sprite = data&0x1f;
     set_led_status(2,~data & 0x80); 		/* game over lamp */
@@ -127,7 +128,7 @@ WRITE_HANDLER( starcrus_ship_parm_2_w )
 
 }
 
-WRITE_HANDLER( starcrus_proj_parm_1_w )
+WRITE8_HANDLER( starcrus_proj_parm_1_w )
 {
     p1_sprite = data&0x0f;
     launch1_on = ((data&0x20)>>5)^0x01;
@@ -164,7 +165,7 @@ WRITE_HANDLER( starcrus_proj_parm_1_w )
 	}
 }
 
-WRITE_HANDLER( starcrus_proj_parm_2_w )
+WRITE8_HANDLER( starcrus_proj_parm_2_w )
 {
     p2_sprite = data&0x0f;
     launch2_on = ((data&0x20)>>5)^0x01;
@@ -578,7 +579,7 @@ VIDEO_UPDATE( starcrus )
 
 }
 
-READ_HANDLER( starcrus_coll_det_r )
+READ8_HANDLER( starcrus_coll_det_r )
 {
     return collision_reg ^ 0xff;
 }

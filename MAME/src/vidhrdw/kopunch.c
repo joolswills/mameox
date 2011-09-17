@@ -1,11 +1,11 @@
-#pragma code_seg("C391")
-#pragma data_seg("D391")
-#pragma bss_seg("B391")
-#pragma const_seg("K391")
-#pragma comment(linker, "/merge:D391=391")
-#pragma comment(linker, "/merge:C391=391")
-#pragma comment(linker, "/merge:B391=391")
-#pragma comment(linker, "/merge:K391=391")
+#pragma code_seg("C407")
+#pragma data_seg("D407")
+#pragma bss_seg("B407")
+#pragma const_seg("K407")
+#pragma comment(linker, "/merge:D407=407")
+#pragma comment(linker, "/merge:C407=407")
+#pragma comment(linker, "/merge:B407=407")
+#pragma comment(linker, "/merge:K407=407")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -46,7 +46,7 @@ PALETTE_INIT( kopunch )
 	}
 }
 
-WRITE_HANDLER( kopunch_videoram_w )
+WRITE8_HANDLER( kopunch_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -55,7 +55,7 @@ WRITE_HANDLER( kopunch_videoram_w )
 	}
 }
 
-WRITE_HANDLER( kopunch_videoram2_w )
+WRITE8_HANDLER( kopunch_videoram2_w )
 {
 	if (kopunch_videoram2[offset] != data)
 	{
@@ -64,19 +64,19 @@ WRITE_HANDLER( kopunch_videoram2_w )
 	}
 }
 
-WRITE_HANDLER( kopunch_scroll_x_w )
+WRITE8_HANDLER( kopunch_scroll_x_w )
 {
 	scroll[0] = data; // REMOVE
 	tilemap_set_scrollx(fg_tilemap, 0, data);
 }
 
-WRITE_HANDLER( kopunch_scroll_y_w )
+WRITE8_HANDLER( kopunch_scroll_y_w )
 {
 	scroll[1] = data; // REMOVE
 	tilemap_set_scrolly(fg_tilemap, 0, data);
 }
 
-WRITE_HANDLER( kopunch_gfxbank_w )
+WRITE8_HANDLER( kopunch_gfxbank_w )
 {
 	if (gfxbank != (data & 0x07))
 	{

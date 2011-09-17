@@ -1,11 +1,11 @@
-#pragma code_seg("C290")
-#pragma data_seg("D290")
-#pragma bss_seg("B290")
-#pragma const_seg("K290")
-#pragma comment(linker, "/merge:D290=290")
-#pragma comment(linker, "/merge:C290=290")
-#pragma comment(linker, "/merge:B290=290")
-#pragma comment(linker, "/merge:K290=290")
+#pragma code_seg("C301")
+#pragma data_seg("D301")
+#pragma bss_seg("B301")
+#pragma const_seg("K301")
+#pragma comment(linker, "/merge:D301=301")
+#pragma comment(linker, "/merge:C301=301")
+#pragma comment(linker, "/merge:B301=301")
+#pragma comment(linker, "/merge:K301=301")
 /***************************************************************************
 
   vidhrdw.c
@@ -92,7 +92,7 @@ VIDEO_START( finalizr )
 
 
 
-WRITE_HANDLER( finalizr_videoctrl_w )
+WRITE8_HANDLER( finalizr_videoctrl_w )
 {
 	if (charbank != (data & 3))
 	{

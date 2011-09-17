@@ -1,11 +1,11 @@
-#pragma code_seg("C262")
-#pragma data_seg("D262")
-#pragma bss_seg("B262")
-#pragma const_seg("K262")
-#pragma comment(linker, "/merge:D262=262")
-#pragma comment(linker, "/merge:C262=262")
-#pragma comment(linker, "/merge:B262=262")
-#pragma comment(linker, "/merge:K262=262")
+#pragma code_seg("C272")
+#pragma data_seg("D272")
+#pragma bss_seg("B272")
+#pragma const_seg("K272")
+#pragma comment(linker, "/merge:D272=272")
+#pragma comment(linker, "/merge:C272=272")
+#pragma comment(linker, "/merge:B272=272")
+#pragma comment(linker, "/merge:K272=272")
 /*
 Dorachan (Dora-Chan ?) (c) 1980 Craul Denshi
 Driver by Tomasz Slanina
@@ -21,9 +21,9 @@ Todo:
 #include "vidhrdw/generic.h"
 extern int dorachan_ctrl;
 
-WRITE_HANDLER( dorachan_videoram_w );
+WRITE8_HANDLER( dorachan_videoram_w );
 
-static READ_HANDLER( dorachan_protection_r )
+static READ8_HANDLER( dorachan_protection_r )
 {
 
 	switch (activecpu_get_previouspc())
@@ -36,13 +36,13 @@ static READ_HANDLER( dorachan_protection_r )
 	return 0xff;
 }
 
-static READ_HANDLER( dorachan_status_r )
+static READ8_HANDLER( dorachan_status_r )
 {
 /* to avoid resetting (when player 2 starts) bit 0 need to be reversed when screen is flipped */
 	return ((cpu_getscanline()>100)?1:0)^(dorachan_ctrl>>6);
 }
 
-static WRITE_HANDLER(dorachan_ctrl_w)
+static WRITE8_HANDLER(dorachan_ctrl_w)
 {
 	dorachan_ctrl=data;
 }

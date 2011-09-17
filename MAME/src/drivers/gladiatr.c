@@ -1,11 +1,11 @@
-#pragma code_seg("C326")
-#pragma data_seg("D326")
-#pragma bss_seg("B326")
-#pragma const_seg("K326")
-#pragma comment(linker, "/merge:D326=326")
-#pragma comment(linker, "/merge:C326=326")
-#pragma comment(linker, "/merge:B326=326")
-#pragma comment(linker, "/merge:K326=326")
+#pragma code_seg("C340")
+#pragma data_seg("D340")
+#pragma bss_seg("B340")
+#pragma const_seg("K340")
+#pragma comment(linker, "/merge:D340=340")
+#pragma comment(linker, "/merge:C340=340")
+#pragma comment(linker, "/merge:B340=340")
+#pragma comment(linker, "/merge:K340=340")
 /*
 Taito Gladiator (1986)
 Known ROM SETS: Golden Castle, Ohgon no Siro
@@ -113,21 +113,21 @@ E0     - Comunication port to 6809
 
 /*Video functions*/
 extern unsigned char *gladiator_text;
-WRITE_HANDLER( gladiatr_video_registers_w );
-READ_HANDLER( gladiatr_video_registers_r );
-WRITE_HANDLER( gladiatr_paletteram_rg_w );
-WRITE_HANDLER( gladiatr_paletteram_b_w );
+WRITE8_HANDLER( gladiatr_video_registers_w );
+READ8_HANDLER( gladiatr_video_registers_r );
+WRITE8_HANDLER( gladiatr_paletteram_rg_w );
+WRITE8_HANDLER( gladiatr_paletteram_b_w );
 extern VIDEO_START( gladiatr );
 extern VIDEO_UPDATE( gladiatr );
-WRITE_HANDLER( gladiatr_spritebank_w );
+WRITE8_HANDLER( gladiatr_spritebank_w );
 
 /*Rom bankswitching*/
 static int banka;
-WRITE_HANDLER( gladiatr_bankswitch_w );
-READ_HANDLER( gladiatr_bankswitch_r );
+WRITE8_HANDLER( gladiatr_bankswitch_w );
+READ8_HANDLER( gladiatr_bankswitch_r );
 
 /*Rom bankswitching*/
-WRITE_HANDLER( gladiatr_bankswitch_w ){
+WRITE8_HANDLER( gladiatr_bankswitch_w ){
 	static int bank1[2] = { 0x10000, 0x12000 };
 	static int bank2[2] = { 0x14000, 0x18000 };
 	unsigned char *RAM = memory_region(REGION_CPU1);
@@ -136,11 +136,11 @@ WRITE_HANDLER( gladiatr_bankswitch_w ){
 	cpu_setbank(2,&RAM[bank2[(data & 0x03)]]);
 }
 
-READ_HANDLER( gladiatr_bankswitch_r ){
+READ8_HANDLER( gladiatr_bankswitch_r ){
 	return banka;
 }
 
-static READ_HANDLER( gladiator_dsw1_r )
+static READ8_HANDLER( gladiator_dsw1_r )
 {
 	int orig = readinputport(0); /* DSW1 */
 /*Reverse all bits for Input Port 0*/
@@ -151,7 +151,7 @@ return   ((orig&0x01)<<7) | ((orig&0x02)<<5)
        | ((orig&0x40)>>5) | ((orig&0x80)>>7);;
 }
 
-static READ_HANDLER( gladiator_dsw2_r )
+static READ8_HANDLER( gladiator_dsw2_r )
 {
 	int orig = readinputport(1); /* DSW2 */
 /*Bits 2-7 are reversed for Input Port 1*/
@@ -162,7 +162,7 @@ return	  (orig&0x01) | (orig&0x02)
 	| ((orig&0x40)>>3) | ((orig&0x80)>>5);
 }
 
-static READ_HANDLER( gladiator_controll_r )
+static READ8_HANDLER( gladiator_controll_r )
 {
 	int coins = 0;
 
@@ -180,7 +180,7 @@ static READ_HANDLER( gladiator_controll_r )
 	return 0;
 }
 
-static READ_HANDLER( gladiator_button3_r )
+static READ8_HANDLER( gladiator_button3_r )
 {
 	switch(offset)
 	{
@@ -213,19 +213,19 @@ static MACHINE_INIT( gladiator )
 
 #if 1
 /* !!!!! patch to IRQ timming for 2nd CPU !!!!! */
-WRITE_HANDLER( gladiatr_irq_patch_w )
+WRITE8_HANDLER( gladiatr_irq_patch_w )
 {
-	cpu_set_irq_line(1,0,HOLD_LINE);
+	cpunum_set_input_line(1,0,HOLD_LINE);
 }
 #endif
 
 /* YM2203 port A handler (input) */
-static READ_HANDLER( gladiator_dsw3_r )
+static READ8_HANDLER( gladiator_dsw3_r )
 {
 	return input_port_2_r(offset)^0xff;
 }
 /* YM2203 port B handler (output) */
-static WRITE_HANDLER( gladiator_int_control_w )
+static WRITE8_HANDLER( gladiator_int_control_w )
 {
 	/* bit 7   : SSRST = sound reset ? */
 	/* bit 6-1 : N.C.                  */
@@ -235,11 +235,11 @@ static WRITE_HANDLER( gladiator_int_control_w )
 static void gladiator_ym_irq(int irq)
 {
 	/* NMI IRQ is not used by gladiator sound program */
-	cpu_set_nmi_line(1,irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1, INPUT_LINE_NMI, irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 /*Sound Functions*/
-static WRITE_HANDLER( glad_adpcm_w )
+static WRITE8_HANDLER( glad_adpcm_w )
 {
 	unsigned char *RAM = memory_region(REGION_CPU3);
 	/* bit6 = bank offset */
@@ -253,15 +253,15 @@ static WRITE_HANDLER( glad_adpcm_w )
 	MSM5205_vclk_w (0,(data>>4)&1); /* bit4     */
 }
 
-static WRITE_HANDLER( glad_cpu_sound_command_w )
+static WRITE8_HANDLER( glad_cpu_sound_command_w )
 {
 	soundlatch_w(0,data);
-	cpu_set_nmi_line(2,ASSERT_LINE);
+	cpunum_set_input_line(2, INPUT_LINE_NMI, ASSERT_LINE);
 }
 
-static READ_HANDLER( glad_cpu_sound_command_r )
+static READ8_HANDLER( glad_cpu_sound_command_r )
 {
-	cpu_set_nmi_line(2,CLEAR_LINE);
+	cpunum_set_input_line(2, INPUT_LINE_NMI, CLEAR_LINE);
 	return soundlatch_r(0);
 }
 

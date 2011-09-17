@@ -1,11 +1,11 @@
-#pragma code_seg("C155")
-#pragma data_seg("D155")
-#pragma bss_seg("B155")
-#pragma const_seg("K155")
-#pragma comment(linker, "/merge:D155=155")
-#pragma comment(linker, "/merge:C155=155")
-#pragma comment(linker, "/merge:B155=155")
-#pragma comment(linker, "/merge:K155=155")
+#pragma code_seg("C156")
+#pragma data_seg("D156")
+#pragma bss_seg("B156")
+#pragma const_seg("K156")
+#pragma comment(linker, "/merge:D156=156")
+#pragma comment(linker, "/merge:C156=156")
+#pragma comment(linker, "/merge:B156=156")
+#pragma comment(linker, "/merge:K156=156")
 /***************************************************************************
 
 	Beast Busters			A9003	(c) 1989 SNK Corporation
@@ -269,7 +269,7 @@ static READ16_HANDLER( kludge_r )
 static WRITE16_HANDLER( sound_cpu_w )
 {
 	soundlatch_w(0,data&0xff);
-	cpu_set_irq_line(1,IRQ_LINE_NMI,PULSE_LINE);
+	cpunum_set_input_line(1,INPUT_LINE_NMI,PULSE_LINE);
 }
 
 static READ16_HANDLER( mechatt_gun_r )
@@ -650,7 +650,7 @@ static struct GfxDecodeInfo gfxdecodeinfo_mechatt[] =
 
 static void sound_irq( int irq )
 {
-	cpu_set_irq_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 static struct YM2608interface ym2608_interface =
@@ -700,9 +700,9 @@ static NVRAM_HANDLER( bbusters )
 static INTERRUPT_GEN( bbuster )
 {
 	if (cpu_getiloops()==0)
-		cpu_set_irq_line(0, 6, HOLD_LINE); /* VBL */
+		cpunum_set_input_line(0, 6, HOLD_LINE); /* VBL */
 	else
-		cpu_set_irq_line(0, 2, HOLD_LINE); /* at least 6 interrupts per frame to read gun controls */
+		cpunum_set_input_line(0, 2, HOLD_LINE); /* at least 6 interrupts per frame to read gun controls */
 }
 
 static VIDEO_EOF( bbuster )

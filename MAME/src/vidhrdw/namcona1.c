@@ -1,11 +1,11 @@
-#pragma code_seg("C478")
-#pragma data_seg("D478")
-#pragma bss_seg("B478")
-#pragma const_seg("K478")
-#pragma comment(linker, "/merge:D478=478")
-#pragma comment(linker, "/merge:C478=478")
-#pragma comment(linker, "/merge:B478=478")
-#pragma comment(linker, "/merge:K478=478")
+#pragma code_seg("C506")
+#pragma data_seg("D506")
+#pragma bss_seg("B506")
+#pragma const_seg("K506")
+#pragma comment(linker, "/merge:D506=506")
+#pragma comment(linker, "/merge:C506=506")
+#pragma comment(linker, "/merge:B506=506")
+#pragma comment(linker, "/merge:K506=506")
 /*	Namco System NA1/2 Video Hardware */
 
 #include "vidhrdw/generic.h"

@@ -1,11 +1,11 @@
-#pragma code_seg("C710")
-#pragma data_seg("D710")
-#pragma bss_seg("B710")
-#pragma const_seg("K710")
-#pragma comment(linker, "/merge:D710=710")
-#pragma comment(linker, "/merge:C710=710")
-#pragma comment(linker, "/merge:B710=710")
-#pragma comment(linker, "/merge:K710=710")
+#pragma code_seg("C752")
+#pragma data_seg("D752")
+#pragma bss_seg("B752")
+#pragma const_seg("K752")
+#pragma comment(linker, "/merge:D752=752")
+#pragma comment(linker, "/merge:C752=752")
+#pragma comment(linker, "/merge:B752=752")
+#pragma comment(linker, "/merge:K752=752")
 /***************************************************************************
 
   video hardware for Tecmo games
@@ -125,7 +125,7 @@ VIDEO_START( tecmo )
 
 ***************************************************************************/
 
-WRITE_HANDLER( tecmo_txvideoram_w )
+WRITE8_HANDLER( tecmo_txvideoram_w )
 {
 	if (tecmo_txvideoram[offset] != data)
 	{
@@ -134,7 +134,7 @@ WRITE_HANDLER( tecmo_txvideoram_w )
 	}
 }
 
-WRITE_HANDLER( tecmo_fgvideoram_w )
+WRITE8_HANDLER( tecmo_fgvideoram_w )
 {
 	if (tecmo_fgvideoram[offset] != data)
 	{
@@ -143,7 +143,7 @@ WRITE_HANDLER( tecmo_fgvideoram_w )
 	}
 }
 
-WRITE_HANDLER( tecmo_bgvideoram_w )
+WRITE8_HANDLER( tecmo_bgvideoram_w )
 {
 	if (tecmo_bgvideoram[offset] != data)
 	{
@@ -152,7 +152,7 @@ WRITE_HANDLER( tecmo_bgvideoram_w )
 	}
 }
 
-WRITE_HANDLER( tecmo_fgscroll_w )
+WRITE8_HANDLER( tecmo_fgscroll_w )
 {
 	static UINT8 scroll[3];
 
@@ -162,7 +162,7 @@ WRITE_HANDLER( tecmo_fgscroll_w )
 	tilemap_set_scrolly(fg_tilemap,0,scroll[2]);
 }
 
-WRITE_HANDLER( tecmo_bgscroll_w )
+WRITE8_HANDLER( tecmo_bgscroll_w )
 {
 	static UINT8 scroll[3];
 
@@ -172,7 +172,7 @@ WRITE_HANDLER( tecmo_bgscroll_w )
 	tilemap_set_scrolly(bg_tilemap,0,scroll[2]);
 }
 
-WRITE_HANDLER( tecmo_flipscreen_w )
+WRITE8_HANDLER( tecmo_flipscreen_w )
 {
 	flip_screen_set(data & 1);
 }

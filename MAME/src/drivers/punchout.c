@@ -1,11 +1,11 @@
-#pragma code_seg("C555")
-#pragma data_seg("D555")
-#pragma bss_seg("B555")
-#pragma const_seg("K555")
-#pragma comment(linker, "/merge:D555=555")
-#pragma comment(linker, "/merge:C555=555")
-#pragma comment(linker, "/merge:B555=555")
-#pragma comment(linker, "/merge:K555=555")
+#pragma code_seg("C587")
+#pragma data_seg("D587")
+#pragma bss_seg("B587")
+#pragma const_seg("K587")
+#pragma comment(linker, "/merge:D587=587")
+#pragma comment(linker, "/merge:C587=587")
+#pragma comment(linker, "/merge:B587=587")
+#pragma comment(linker, "/merge:K587=587")
 /***************************************************************************
 
 Punch Out memory map (preliminary)
@@ -117,10 +117,10 @@ extern unsigned char *punchout_scroll;
 extern unsigned char *punchout_bigsprite1;
 extern unsigned char *punchout_bigsprite2;
 extern unsigned char *punchout_palettebank;
-WRITE_HANDLER( punchout_videoram2_w );
-WRITE_HANDLER( punchout_bigsprite1ram_w );
-WRITE_HANDLER( punchout_bigsprite2ram_w );
-WRITE_HANDLER( punchout_palettebank_w );
+WRITE8_HANDLER( punchout_videoram2_w );
+WRITE8_HANDLER( punchout_bigsprite1ram_w );
+WRITE8_HANDLER( punchout_bigsprite2ram_w );
+WRITE8_HANDLER( punchout_palettebank_w );
 VIDEO_START( punchout );
 VIDEO_START( armwrest );
 PALETTE_INIT( punchout );
@@ -135,7 +135,7 @@ DRIVER_INIT( armwrest );
 
 
 
-READ_HANDLER( punchout_input_3_r )
+READ8_HANDLER( punchout_input_3_r )
 {
 	int data = input_port_3_r(offset);
 	/* bit 4 is busy pin level */
@@ -144,33 +144,33 @@ READ_HANDLER( punchout_input_3_r )
 	return data;
 }
 
-WRITE_HANDLER( punchout_speech_reset_w )
+WRITE8_HANDLER( punchout_speech_reset_w )
 {
 	VLM5030_RST( data&0x01 );
 }
 
-WRITE_HANDLER( punchout_speech_st_w )
+WRITE8_HANDLER( punchout_speech_st_w )
 {
 	VLM5030_ST( data&0x01 );
 }
 
-WRITE_HANDLER( punchout_speech_vcu_w )
+WRITE8_HANDLER( punchout_speech_vcu_w )
 {
 	VLM5030_VCU( data & 0x01 );
 }
 
-WRITE_HANDLER( punchout_2a03_reset_w )
+WRITE8_HANDLER( punchout_2a03_reset_w )
 {
 	if (data & 1)
-		cpu_set_reset_line(1,ASSERT_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_RESET, ASSERT_LINE);
 	else
-		cpu_set_reset_line(1,CLEAR_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_RESET, CLEAR_LINE);
 }
 
 static int prot_mode_sel = -1; /* Mode selector */
 static int prot_mem[16];
 
-static READ_HANDLER( spunchout_prot_r ) {
+static READ8_HANDLER( spunchout_prot_r ) {
 
 	switch ( offset ) {
 		case 0x00:
@@ -245,7 +245,7 @@ static READ_HANDLER( spunchout_prot_r ) {
 	return prot_mem[offset];
 }
 
-static WRITE_HANDLER( spunchout_prot_w ) {
+static WRITE8_HANDLER( spunchout_prot_w ) {
 
 	switch ( offset ) {
 		case 0x00:
@@ -305,90 +305,90 @@ static WRITE_HANDLER( spunchout_prot_w ) {
 	prot_mem[offset] = data;
 }
 
-static READ_HANDLER( spunchout_prot_0_r ) {
+static READ8_HANDLER( spunchout_prot_0_r ) {
 	return spunchout_prot_r( 0 );
 }
 
-static WRITE_HANDLER( spunchout_prot_0_w ) {
+static WRITE8_HANDLER( spunchout_prot_0_w ) {
 	spunchout_prot_w( 0, data );
 }
 
-static READ_HANDLER( spunchout_prot_1_r ) {
+static READ8_HANDLER( spunchout_prot_1_r ) {
 	return spunchout_prot_r( 1 );
 }
 
-static WRITE_HANDLER( spunchout_prot_1_w ) {
+static WRITE8_HANDLER( spunchout_prot_1_w ) {
 	spunchout_prot_w( 1, data );
 }
 
-static READ_HANDLER( spunchout_prot_2_r ) {
+static READ8_HANDLER( spunchout_prot_2_r ) {
 	return spunchout_prot_r( 2 );
 }
 
-static WRITE_HANDLER( spunchout_prot_2_w ) {
+static WRITE8_HANDLER( spunchout_prot_2_w ) {
 	spunchout_prot_w( 2, data );
 }
 
-static READ_HANDLER( spunchout_prot_3_r ) {
+static READ8_HANDLER( spunchout_prot_3_r ) {
 	return spunchout_prot_r( 3 );
 }
 
-static WRITE_HANDLER( spunchout_prot_3_w ) {
+static WRITE8_HANDLER( spunchout_prot_3_w ) {
 	spunchout_prot_w( 3, data );
 }
 
-static READ_HANDLER( spunchout_prot_5_r ) {
+static READ8_HANDLER( spunchout_prot_5_r ) {
 	return spunchout_prot_r( 5 );
 }
 
-static WRITE_HANDLER( spunchout_prot_5_w ) {
+static WRITE8_HANDLER( spunchout_prot_5_w ) {
 	spunchout_prot_w( 5, data );
 }
 
 
-static READ_HANDLER( spunchout_prot_6_r ) {
+static READ8_HANDLER( spunchout_prot_6_r ) {
 	return spunchout_prot_r( 6 );
 }
 
-static WRITE_HANDLER( spunchout_prot_6_w ) {
+static WRITE8_HANDLER( spunchout_prot_6_w ) {
 	spunchout_prot_w( 6, data );
 }
 
-static READ_HANDLER( spunchout_prot_9_r ) {
+static READ8_HANDLER( spunchout_prot_9_r ) {
 	return spunchout_prot_r( 9 );
 }
 
-static READ_HANDLER( spunchout_prot_b_r ) {
+static READ8_HANDLER( spunchout_prot_b_r ) {
 	return spunchout_prot_r( 11 );
 }
 
-static WRITE_HANDLER( spunchout_prot_b_w ) {
+static WRITE8_HANDLER( spunchout_prot_b_w ) {
 	spunchout_prot_w( 11, data );
 }
 
-static READ_HANDLER( spunchout_prot_c_r ) {
+static READ8_HANDLER( spunchout_prot_c_r ) {
 	return spunchout_prot_r( 12 );
 }
 
-static WRITE_HANDLER( spunchout_prot_d_w ) {
+static WRITE8_HANDLER( spunchout_prot_d_w ) {
 	spunchout_prot_w( 13, data );
 }
 
-static READ_HANDLER( spunchout_prot_a_r ) {
+static READ8_HANDLER( spunchout_prot_a_r ) {
 	return spunchout_prot_r( 10 );
 }
 
-static WRITE_HANDLER( spunchout_prot_a_w ) {
+static WRITE8_HANDLER( spunchout_prot_a_w ) {
 	spunchout_prot_w( 10, data );
 }
 
 #if 0
-static READ_HANDLER( spunchout_prot_f_r ) {
+static READ8_HANDLER( spunchout_prot_f_r ) {
 	return spunchout_prot_r( 15 );
 }
 #endif
 
-static WRITE_HANDLER( spunchout_prot_f_w ) {
+static WRITE8_HANDLER( spunchout_prot_f_w ) {
 	spunchout_prot_w( 15, data );
 }
 

@@ -1,11 +1,11 @@
-#pragma code_seg("C331")
-#pragma data_seg("D331")
-#pragma bss_seg("B331")
-#pragma const_seg("K331")
-#pragma comment(linker, "/merge:D331=331")
-#pragma comment(linker, "/merge:C331=331")
-#pragma comment(linker, "/merge:B331=331")
-#pragma comment(linker, "/merge:K331=331")
+#pragma code_seg("C345")
+#pragma data_seg("D345")
+#pragma bss_seg("B345")
+#pragma const_seg("K345")
+#pragma comment(linker, "/merge:D345=345")
+#pragma comment(linker, "/merge:C345=345")
+#pragma comment(linker, "/merge:B345=345")
+#pragma comment(linker, "/merge:K345=345")
 /******************************************************************************
 
 	Gomoku Narabe Renju
@@ -29,14 +29,14 @@ PALETTE_INIT(gomoku);
 VIDEO_START(gomoku);
 VIDEO_UPDATE(gomoku);
 
-WRITE_HANDLER( gomoku_videoram_w );
-WRITE_HANDLER( gomoku_colorram_w );
-WRITE_HANDLER( gomoku_bgram_w );
-WRITE_HANDLER( gomoku_flipscreen_w );
-WRITE_HANDLER( gomoku_bg_dispsw_w );
+WRITE8_HANDLER( gomoku_videoram_w );
+WRITE8_HANDLER( gomoku_colorram_w );
+WRITE8_HANDLER( gomoku_bgram_w );
+WRITE8_HANDLER( gomoku_flipscreen_w );
+WRITE8_HANDLER( gomoku_bg_dispsw_w );
 
 extern data8_t *gomoku_soundregs;
-WRITE_HANDLER( gomoku_sound_w );
+WRITE8_HANDLER( gomoku_sound_w );
 
 extern data8_t *gomoku_videoram;
 extern data8_t *gomoku_colorram;
@@ -46,7 +46,7 @@ int gomoku_sh_start(const struct MachineSound *msound);
 void gomoku_sh_stop(void);
 
 /* input ports are rotated 90 degrees */
-static READ_HANDLER( input_port_r )
+static READ8_HANDLER( input_port_r )
 {
 	int i, res;
 
@@ -59,7 +59,7 @@ static READ_HANDLER( input_port_r )
 
 
 static ADDRESS_MAP_START( readmem_gomoku, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0x3fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x0000, 0x47ff) AM_READ(MRA8_ROM)
 	AM_RANGE(0x4800, 0x4fff) AM_READ(MRA8_RAM)
 	AM_RANGE(0x5000, 0x53ff) AM_READ(MRA8_RAM)
 	AM_RANGE(0x5400, 0x57ff) AM_READ(MRA8_RAM)
@@ -68,7 +68,7 @@ static ADDRESS_MAP_START( readmem_gomoku, ADDRESS_SPACE_PROGRAM, 8 )
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( writemem_gomoku, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0x3fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x0000, 0x47ff) AM_WRITE(MWA8_ROM)
 	AM_RANGE(0x4800, 0x4fff) AM_WRITE(MWA8_RAM)
 	AM_RANGE(0x5000, 0x53ff) AM_WRITE(gomoku_videoram_w) AM_BASE(&gomoku_videoram)
 	AM_RANGE(0x5400, 0x57ff) AM_WRITE(gomoku_colorram_w) AM_BASE(&gomoku_colorram)
@@ -201,6 +201,7 @@ ROM_START( gomoku )
 	ROM_LOAD( "rj_2.7c",      0x1000, 0x1000, CRC(26a28516) SHA1(53d5d134cd91020fa06e380d355deb1df6b9cb6e) )
 	ROM_LOAD( "rj_3.7d",      0x2000, 0x1000, CRC(d05db072) SHA1(9697c932c6dcee6f8536c9f0b3c84a719a7d3dee) )
 	ROM_LOAD( "rj_4.7f",      0x3000, 0x1000, CRC(6e3d1c18) SHA1(e2f7e4c0de3c78d1b8e686152458972f996b023a) )
+	ROM_LOAD( "rj_5.4e",      0x4000, 0x0800, CRC(eaf541b4) SHA1(bc7e7ec1ba68f71ab9ac86f9ae77971ddb9ce3a4) )
 
 	ROM_REGION( 0x1000, REGION_GFX1, ROMREGION_DISPOSE )	// text char
 	ROM_LOAD( "rj_6.4r",      0x0000, 0x1000, CRC(ed26ae36) SHA1(61cb73d7f2568e88e1c2981e7af3e9a3b26797d3) )
@@ -222,7 +223,6 @@ ROM_START( gomoku )
 	ROM_LOAD( "rj_prom.7r",   0x0000, 0x0100, CRC(3004585a) SHA1(711b68140827f0f3dc71f2576fcf9b905c999e8d) )
 
 	ROM_REGION( 0x0800, REGION_USER4, 0 )	// program ?
-	ROM_LOAD( "rj_5.4e",      0x0000, 0x0800, CRC(eaf541b4) SHA1(bc7e7ec1ba68f71ab9ac86f9ae77971ddb9ce3a4) )
 
 	ROM_REGION( 0x0020, REGION_USER5, 0 )	// –³‚¢‚Æ‹N“®‚¹‚¸
 	ROM_LOAD( "rj_prom.9k",   0x0000, 0x0020, CRC(cff72923) SHA1(4f61375028ab62da46ed119bc81052f5f98c28d4) )

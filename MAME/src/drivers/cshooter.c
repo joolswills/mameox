@@ -1,11 +1,11 @@
-#pragma code_seg("C232")
-#pragma data_seg("D232")
-#pragma bss_seg("B232")
-#pragma const_seg("K232")
-#pragma comment(linker, "/merge:D232=232")
-#pragma comment(linker, "/merge:C232=232")
-#pragma comment(linker, "/merge:B232=232")
-#pragma comment(linker, "/merge:K232=232")
+#pragma code_seg("C238")
+#pragma data_seg("D238")
+#pragma bss_seg("B238")
+#pragma const_seg("K238")
+#pragma comment(linker, "/merge:D238=238")
+#pragma comment(linker, "/merge:C238=238")
+#pragma comment(linker, "/merge:B238=238")
+#pragma comment(linker, "/merge:K238=238")
 /* Cross Shooter (c) 1987 Seibu */
 
 /*
@@ -112,7 +112,7 @@ static void get_cstx_tile_info(int tile_index)
 			0)
 }
 
-WRITE_HANDLER(cshooter_txram_w)
+WRITE8_HANDLER(cshooter_txram_w)
 {
 	cshooter_txram[offset] = data;
 	tilemap_mark_tile_dirty(cshooter_txtilemap,offset/2);
@@ -135,7 +135,7 @@ VIDEO_UPDATE(cshooter)
 
 INTERRUPT_GEN( cshooter_interrupt )
 {
-	cpu_set_irq_line_and_vector(0, 0, HOLD_LINE, 0x08); // almost certainly wrong?
+	cpunum_set_input_line_and_vector(0, 0, HOLD_LINE, 0x08); // almost certainly wrong?
 }
 
 
@@ -146,7 +146,7 @@ static MACHINE_INIT( cshooter )
 	cshooter_counter = 0;
 }
 
-READ_HANDLER ( cshooter_coin_r )
+READ8_HANDLER ( cshooter_coin_r )
 {
 	/* Even reads must return 0xff - Odd reads must return the contents of input port 5.
 	   Code at 0x5061 is executed once during P.O.S.T. where there is one read.
@@ -155,11 +155,11 @@ READ_HANDLER ( cshooter_coin_r )
 	return ( (cshooter_counter++ & 1) ? 0xff : input_port_5_r(0) );
 }
 
-WRITE_HANDLER ( cshooter_c500_w )
+WRITE8_HANDLER ( cshooter_c500_w )
 {
 }
 
-WRITE_HANDLER ( cshooter_c700_w )
+WRITE8_HANDLER ( cshooter_c700_w )
 {
 }
 

@@ -1,11 +1,11 @@
-#pragma code_seg("C134")
-#pragma data_seg("D134")
-#pragma bss_seg("B134")
-#pragma const_seg("K134")
-#pragma comment(linker, "/merge:D134=134")
-#pragma comment(linker, "/merge:C134=134")
-#pragma comment(linker, "/merge:B134=134")
-#pragma comment(linker, "/merge:K134=134")
+#pragma code_seg("C135")
+#pragma data_seg("D135")
+#pragma bss_seg("B135")
+#pragma const_seg("K135")
+#pragma comment(linker, "/merge:D135=135")
+#pragma comment(linker, "/merge:C135=135")
+#pragma comment(linker, "/merge:B135=135")
+#pragma comment(linker, "/merge:K135=135")
 /***************************************************************************
 
 	Atari Football hardware
@@ -536,9 +536,17 @@ static struct GfxDecodeInfo soccer_gfxdecodeinfo[] =
 /* atarifb Sound System Analog emulation                                */
 /************************************************************************/
 
-int atarifbWhistl555 = DISC_555_ASTBL_CAP | DISC_555_ASTBL_AC;
+const struct discrete_555_astbl_desc atarifbWhistl555 =
+{
+	DISC_555_OUT_CAP | DISC_555_OUT_AC,
+	5,		// B+ voltage of 555
+	5.0 - 1.7,	// High output voltage of 555 (Usually v555 - 1.7)
+	5.0 * 2.0 /3.0,	// normally 2/3 of v555
+	5.0 / 3.0	// normally 1/3 of v555
+};
 
-const struct discrete_lfsr_desc atarifb_lfsr={
+const struct discrete_lfsr_desc atarifb_lfsr =
+{
 	16,			/* Bit Length */
 	0,			/* Reset Value */
 	0,			/* Use Bit 0 as XOR input 0 */
@@ -599,7 +607,8 @@ static DISCRETE_SOUND_START(atarifb_sound_interface)
 	/************************************************/
 	/* Whistle effect is a triggered 555 cap charge */
 	/************************************************/
-	DISCRETE_555_ASTABLE(ATARIFB_WHISTLE_SND, ATARIFB_WHISTLE_EN, 1000, 2200, 2200, 1e-7, NODE_NC, &atarifbWhistl555)
+	DISCRETE_555_ASTABLE(NODE_20, ATARIFB_WHISTLE_EN, 2200, 2200, 1e-7, NODE_NC, &atarifbWhistl555)
+	DISCRETE_MULTIPLY(ATARIFB_WHISTLE_SND, ATARIFB_WHISTLE_EN, NODE_20, 1000.0/3.3)
 
 	DISCRETE_ADDER3(NODE_90, ATARIFB_ATTRACT_EN, ATARIFB_HIT_SND, ATARIFB_WHISTLE_SND, ATARIFB_CROWD_SND)
 	DISCRETE_GAIN(NODE_91, NODE_90, 65534.0/(506.7+1000.0+760.0))
@@ -660,7 +669,8 @@ static DISCRETE_SOUND_START(abaseb_sound_interface)
 	/************************************************/
 	/* Whistle effect is a triggered 555 cap charge */
 	/************************************************/
-	DISCRETE_555_ASTABLE(ABASEB_WHISTLE_SND, ABASEB_WHISTLE_EN, 1000, 2200, 2200, 1e-7, NODE_NC, &atarifbWhistl555)
+	DISCRETE_555_ASTABLE(NODE_20, ABASEB_WHISTLE_EN, 2200, 2200, 1e-7, NODE_NC, &atarifbWhistl555)
+	DISCRETE_MULTIPLY(ATARIFB_WHISTLE_SND, ABASEB_WHISTLE_EN, NODE_20, 1000.0/5)
 
 	DISCRETE_ADDER3(NODE_90, ABASEB_ATTRACT_EN, ABASEB_HIT_SND, ABASEB_WHISTLE_SND, ABASEB_CROWD_SND)
 	DISCRETE_GAIN(NODE_91, NODE_90, 65534.0/(506.7+1000.0+760.0))
@@ -895,9 +905,9 @@ static DRIVER_INIT( atarifb4 )
 	/* Tell the video code to draw the plays for this version */
 	atarifb_game = 2;
 
-	install_mem_read_handler(0, 0x4000, 0x4000, atarifb4_in0_r);
-	install_mem_read_handler(0, 0x4001, 0x4001, input_port_1_r);
-	install_mem_read_handler(0, 0x4002, 0x4002, atarifb4_in2_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x4000, 0x4000, 0, 0, atarifb4_in0_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x4001, 0x4001, 0, 0, input_port_1_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x4002, 0x4002, 0, 0, atarifb4_in2_r);
 }
 
 

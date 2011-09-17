@@ -1,11 +1,12 @@
-#pragma code_seg("C797")
-#pragma data_seg("D797")
-#pragma bss_seg("B797")
-#pragma const_seg("K797")
-#pragma comment(linker, "/merge:D797=797")
-#pragma comment(linker, "/merge:C797=797")
-#pragma comment(linker, "/merge:B797=797")
-#pragma comment(linker, "/merge:K797=797")
+#pragma code_seg("C839")
+#pragma data_seg("D839")
+#pragma bss_seg("B839")
+#pragma const_seg("K839")
+#pragma comment(linker, "/merge:D839=839")
+#pragma comment(linker, "/merge:C839=839")
+#pragma comment(linker, "/merge:B839=839")
+#pragma comment(linker, "/merge:K839=839")
+
 #include "driver.h"
 
 extern data8_t *xyonix_vidram;
@@ -52,7 +53,7 @@ static void get_xyonix_tile_info(int tile_index)
 	SET_TILE_INFO(0,tileno,attr >> 4,0)
 }
 
-WRITE_HANDLER( xyonix_vidram_w )
+WRITE8_HANDLER( xyonix_vidram_w )
 {
 	xyonix_vidram[offset] = data;
 	tilemap_mark_tile_dirty(xyonix_tilemap,(offset-1)&0x0fff);

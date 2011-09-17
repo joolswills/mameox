@@ -1,11 +1,11 @@
-#pragma code_seg("C707")
-#pragma data_seg("D707")
-#pragma bss_seg("B707")
-#pragma const_seg("K707")
-#pragma comment(linker, "/merge:D707=707")
-#pragma comment(linker, "/merge:C707=707")
-#pragma comment(linker, "/merge:B707=707")
-#pragma comment(linker, "/merge:K707=707")
+#pragma code_seg("C748")
+#pragma data_seg("D748")
+#pragma bss_seg("B748")
+#pragma const_seg("K748")
+#pragma comment(linker, "/merge:D748=748")
+#pragma comment(linker, "/merge:C748=748")
+#pragma comment(linker, "/merge:B748=748")
+#pragma comment(linker, "/merge:K748=748")
 #include "driver.h"
 #include "taxidrvr.h"
 
@@ -17,7 +17,7 @@ int taxidrvr_bghide;
 static int spritectrl[9];
 
 
-WRITE_HANDLER( taxidrvr_spritectrl_w )
+WRITE8_HANDLER( taxidrvr_spritectrl_w )
 {
 	spritectrl[offset] = data;
 }

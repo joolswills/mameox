@@ -94,7 +94,7 @@ PALETTE_INIT( mario )
 		COLOR(1,i) = i;
 }
 
-WRITE_HANDLER( mario_videoram_w )
+WRITE8_HANDLER( mario_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -103,7 +103,7 @@ WRITE_HANDLER( mario_videoram_w )
 	}
 }
 
-WRITE_HANDLER( mario_gfxbank_w )
+WRITE8_HANDLER( mario_gfxbank_w )
 {
 	if (gfx_bank != (data & 0x01))
 	{
@@ -112,7 +112,7 @@ WRITE_HANDLER( mario_gfxbank_w )
 	}
 }
 
-WRITE_HANDLER( mario_palettebank_w )
+WRITE8_HANDLER( mario_palettebank_w )
 {
 	if (palette_bank != (data & 0x01))
 	{
@@ -121,7 +121,7 @@ WRITE_HANDLER( mario_palettebank_w )
 	}
 }
 
-WRITE_HANDLER( mario_scroll_w )
+WRITE8_HANDLER( mario_scroll_w )
 {
 	tilemap_set_scrollx(bg_tilemap, 0, data + 17);
 }

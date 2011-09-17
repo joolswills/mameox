@@ -1,11 +1,11 @@
-#pragma code_seg("C408")
-#pragma data_seg("D408")
-#pragma bss_seg("B408")
-#pragma const_seg("K408")
-#pragma comment(linker, "/merge:D408=408")
-#pragma comment(linker, "/merge:C408=408")
-#pragma comment(linker, "/merge:B408=408")
-#pragma comment(linker, "/merge:K408=408")
+#pragma code_seg("C426")
+#pragma data_seg("D426")
+#pragma bss_seg("B426")
+#pragma const_seg("K426")
+#pragma comment(linker, "/merge:D426=426")
+#pragma comment(linker, "/merge:C426=426")
+#pragma comment(linker, "/merge:B426=426")
+#pragma comment(linker, "/merge:K426=426")
 /*
 To Do:
 - get sound working
@@ -109,17 +109,17 @@ static void get_tile_info( int offset )
 			0)
 }
 
-WRITE_HANDLER( looping_flip_screen_x_w )
+WRITE8_HANDLER( looping_flip_screen_x_w )
 {
 	flip_screen_x_set(~data & 0x01);
 }
 
-WRITE_HANDLER( looping_flip_screen_y_w )
+WRITE8_HANDLER( looping_flip_screen_y_w )
 {
 	flip_screen_y_set(~data & 0x01);
 }
 
-WRITE_HANDLER( looping_colorram_w )
+WRITE8_HANDLER( looping_colorram_w )
 {
 	int i,offs;
 	if( colorram[offset]!=data )
@@ -155,7 +155,7 @@ VIDEO_START( looping )
 	return -1;
 }
 
-WRITE_HANDLER( looping_videoram_w )
+WRITE8_HANDLER( looping_videoram_w )
 {
 	if( videoram[offset]!=data )
 	{
@@ -213,46 +213,46 @@ VIDEO_UPDATE( looping )
 	draw_sprites( bitmap,cliprect );
 }
 
-WRITE_HANDLER( looping_intack )
+WRITE8_HANDLER( looping_intack )
 {
 	if (data==0)
 	{
-		cpu_irq_line_vector_w(0, 0, 4);
-		cpu_set_irq_line(0, 0, CLEAR_LINE);
+		cpunum_set_input_line_vector(0, 0, 4);
+		cpunum_set_input_line(0, 0, CLEAR_LINE);
 	}
 }
 
 INTERRUPT_GEN( looping_interrupt )
 {
-	cpu_irq_line_vector_w(0, 0, 4);
-	cpu_set_irq_line(0, 0, ASSERT_LINE);
+	cpunum_set_input_line_vector(0, 0, 4);
+	cpunum_set_input_line(0, 0, ASSERT_LINE);
 }
 
 /****** sound *******/
 
-WRITE_HANDLER( looping_soundlatch_w )
+WRITE8_HANDLER( looping_soundlatch_w )
 {
 	soundlatch_w(offset, data);
-	cpu_irq_line_vector_w(1, 0, 4);
-	cpu_set_irq_line(1, 0, ASSERT_LINE);
+	cpunum_set_input_line_vector(1, 0, 4);
+	cpunum_set_input_line(1, 0, ASSERT_LINE);
 }
 
-WRITE_HANDLER( looping_souint_clr )
+WRITE8_HANDLER( looping_souint_clr )
 {
 	if (data==0)
 	{
-		cpu_irq_line_vector_w(1, 0, 4);
-		cpu_set_irq_line(1, 0, CLEAR_LINE);
+		cpunum_set_input_line_vector(1, 0, 4);
+		cpunum_set_input_line(1, 0, CLEAR_LINE);
 	}
 }
 
 void looping_spcint(int state)
 {
-	cpu_irq_line_vector_w(1, 0, 6);
-	cpu_set_irq_line(1, 0, state);
+	cpunum_set_input_line_vector(1, 0, 6);
+	cpunum_set_input_line(1, 0, state);
 }
 
-WRITE_HANDLER( looping_sound_sw )
+WRITE8_HANDLER( looping_sound_sw )
 {
 	/* this can be improved by adding the missing
 	   signals for decay etc. (see schematics) */

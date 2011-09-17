@@ -1,11 +1,11 @@
-#pragma code_seg("C137")
-#pragma data_seg("D137")
-#pragma bss_seg("B137")
-#pragma const_seg("K137")
-#pragma comment(linker, "/merge:D137=137")
-#pragma comment(linker, "/merge:C137=137")
-#pragma comment(linker, "/merge:B137=137")
-#pragma comment(linker, "/merge:K137=137")
+#pragma code_seg("C138")
+#pragma data_seg("D138")
+#pragma bss_seg("B138")
+#pragma const_seg("K138")
+#pragma comment(linker, "/merge:D138=138")
+#pragma comment(linker, "/merge:C138=138")
+#pragma comment(linker, "/merge:B138=138")
+#pragma comment(linker, "/merge:K138=138")
 /***************************************************************************
 
 	Atari GT hardware
@@ -74,9 +74,9 @@ static void update_interrupts(void)
 		newstate = 6;
 
 	if (newstate)
-		cpu_set_irq_line(0, newstate, ASSERT_LINE);
+		cpunum_set_input_line(0, newstate, ASSERT_LINE);
 	else
-		cpu_set_irq_line(0, 7, CLEAR_LINE);
+		cpunum_set_input_line(0, 7, CLEAR_LINE);
 }
 
 
@@ -1143,7 +1143,7 @@ static DRIVER_INIT( tmek )
 	protection_w = tmek_protection_w;
 
 	/* temp hack */
-	install_mem_write32_handler(0, 0xd72000, 0xd75fff, tmek_pf_w);
+	memory_install_write32_handler(0, ADDRESS_SPACE_PROGRAM, 0xd72000, 0xd75fff, 0, 0, tmek_pf_w);
 }
 
 

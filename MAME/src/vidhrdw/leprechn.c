@@ -1,11 +1,11 @@
-#pragma code_seg("C402")
-#pragma data_seg("D402")
-#pragma bss_seg("B402")
-#pragma const_seg("K402")
-#pragma comment(linker, "/merge:D402=402")
-#pragma comment(linker, "/merge:C402=402")
-#pragma comment(linker, "/merge:B402=402")
-#pragma comment(linker, "/merge:K402=402")
+#pragma code_seg("C419")
+#pragma data_seg("D419")
+#pragma bss_seg("B419")
+#pragma const_seg("K419")
+#pragma comment(linker, "/merge:D419=419")
+#pragma comment(linker, "/merge:C419=419")
+#pragma comment(linker, "/merge:B419=419")
+#pragma comment(linker, "/merge:K419=419")
 /***************************************************************************
 
   vidhrdw.c
@@ -55,7 +55,7 @@ VIDEO_START( leprechn )
 }
 
 
-WRITE_HANDLER( leprechn_graphics_command_w )
+WRITE8_HANDLER( leprechn_graphics_command_w )
 {
     graphics_command = data & 0x38;
 }
@@ -69,7 +69,7 @@ static void clear_screen_done_callback(int param)
 }
 
 
-WRITE_HANDLER( leprechn_videoram_w )
+WRITE8_HANDLER( leprechn_videoram_w )
 {
 	int sx,sy;
 
@@ -144,7 +144,7 @@ WRITE_HANDLER( leprechn_videoram_w )
 }
 
 
-READ_HANDLER( leprechn_videoram_r )
+READ8_HANDLER( leprechn_videoram_r )
 {
     return videoram[y * Machine->drv->screen_width + x];
 }

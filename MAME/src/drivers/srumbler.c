@@ -1,11 +1,11 @@
-#pragma code_seg("C655")
-#pragma data_seg("D655")
-#pragma bss_seg("B655")
-#pragma const_seg("K655")
-#pragma comment(linker, "/merge:D655=655")
-#pragma comment(linker, "/merge:C655=655")
-#pragma comment(linker, "/merge:B655=655")
-#pragma comment(linker, "/merge:K655=655")
+#pragma code_seg("C691")
+#pragma data_seg("D691")
+#pragma bss_seg("B691")
+#pragma const_seg("K691")
+#pragma comment(linker, "/merge:D691=691")
+#pragma comment(linker, "/merge:C691=691")
+#pragma comment(linker, "/merge:B691=691")
+#pragma comment(linker, "/merge:K691=691")
 /***************************************************************************
 
   Speed Rumbler
@@ -22,10 +22,10 @@
 
 extern unsigned char *srumbler_backgroundram,*srumbler_foregroundram;
 
-WRITE_HANDLER( srumbler_background_w );
-WRITE_HANDLER( srumbler_foreground_w );
-WRITE_HANDLER( srumbler_scroll_w );
-WRITE_HANDLER( srumbler_4009_w );
+WRITE8_HANDLER( srumbler_background_w );
+WRITE8_HANDLER( srumbler_foreground_w );
+WRITE8_HANDLER( srumbler_scroll_w );
+WRITE8_HANDLER( srumbler_4009_w );
 
 VIDEO_START( srumbler );
 VIDEO_UPDATE( srumbler );
@@ -33,7 +33,7 @@ VIDEO_EOF( srumbler );
 
 
 
-static WRITE_HANDLER( srumbler_bankswitch_w )
+static WRITE8_HANDLER( srumbler_bankswitch_w )
 {
 	/*
 	  banking is controlled by two PROMs. 0000-4fff is mapped to the same
@@ -67,11 +67,11 @@ static INTERRUPT_GEN( srumbler_interrupt )
 {
 	if (cpu_getiloops()==0)
 	{
-		cpu_set_irq_line(0,0,HOLD_LINE);
+		cpunum_set_input_line(0,0,HOLD_LINE);
 	}
 	else
 	{
-		cpu_set_irq_line(0,M6809_FIRQ_LINE,HOLD_LINE);
+		cpunum_set_input_line(0,M6809_FIRQ_LINE,HOLD_LINE);
 	}
 }
 

@@ -16,6 +16,8 @@ VIDEO_STOP( voodoo );
 VIDEO_UPDATE( voodoo );
 
 void voodoo_set_init_enable(data32_t newval);
+void voodoo_set_vblank_callback(void (*vblank)(int));
+UINT32 voodoo_fifo_words_left(void);
 
 void voodoo_reset(void);
 

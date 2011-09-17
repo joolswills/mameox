@@ -1,11 +1,11 @@
-#pragma code_seg("C337")
-#pragma data_seg("D337")
-#pragma bss_seg("B337")
-#pragma const_seg("K337")
-#pragma comment(linker, "/merge:D337=337")
-#pragma comment(linker, "/merge:C337=337")
-#pragma comment(linker, "/merge:B337=337")
-#pragma comment(linker, "/merge:K337=337")
+#pragma code_seg("C351")
+#pragma data_seg("D351")
+#pragma bss_seg("B351")
+#pragma const_seg("K351")
+#pragma comment(linker, "/merge:D351=351")
+#pragma comment(linker, "/merge:C351=351")
+#pragma comment(linker, "/merge:B351=351")
+#pragma comment(linker, "/merge:K351=351")
 /***************************************************************************
 
 	Videa Gridlee hardware
@@ -90,7 +90,7 @@ VIDEO_START( gridlee )
  *
  *************************************/
 
-WRITE_HANDLER( gridlee_cocktail_flip_w )
+WRITE8_HANDLER( gridlee_cocktail_flip_w )
 {
 	if (gridlee_cocktail_flip != (data & 1))
 	{
@@ -107,7 +107,7 @@ WRITE_HANDLER( gridlee_cocktail_flip_w )
  *
  *************************************/
 
-WRITE_HANDLER( gridlee_videoram_w )
+WRITE8_HANDLER( gridlee_videoram_w )
 {
 	videoram[offset] = data;
 
@@ -124,7 +124,7 @@ WRITE_HANDLER( gridlee_videoram_w )
  *
  *************************************/
 
-WRITE_HANDLER( gridlee_palette_select_w )
+WRITE8_HANDLER( gridlee_palette_select_w )
 {
 	/* update the scanline palette */
 	if (palettebank_vis != (data & 0x3f))

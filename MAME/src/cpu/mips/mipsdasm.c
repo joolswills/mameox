@@ -15,10 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "psx.h"
-
-#ifndef STANDALONE
 #include "memory.h"
-#endif
 
 static char *make_signed_hex_str_16( UINT32 value )
 {
@@ -109,19 +106,24 @@ static const char *s_gtelm[] =
 	"0", "1"
 };
 
+static char *make_address( UINT32 op )
+{
+	static char s_address[ 20 ];
+#ifndef STANDALONE
+	sprintf( s_address, "%s(%s) ; 0x%08x", make_signed_hex_str_16( INS_IMMEDIATE( op ) ), s_cpugenreg[ INS_RS( op ) ],
+		(UINT32)( activecpu_get_reg( MIPS_R0 + INS_RS( op ) ) + (INT16)INS_IMMEDIATE( op ) ) );
+#else
+	sprintf( s_address, "%s(%s)", make_signed_hex_str_16( INS_IMMEDIATE( op ) ), s_cpugenreg[ INS_RS( op ) ] );
+#endif
+	return s_address;
+}
+
 unsigned DasmMIPS( char *buffer, UINT32 oldpc )
 {
 	UINT32 pc, op;
 
 	pc = oldpc;
-#ifndef STANDALONE
 	op = cpu_readop32( pc );
-#else
-	op = ( filebuf[ pc + order[ 0 ] - offset ] << 24 ) |
-		( filebuf[ pc + order[ 1 ] - offset ] << 16 ) |
-		( filebuf[ pc + order[ 2 ] - offset ] << 8 ) |
-		( filebuf[ pc + order[ 3 ] - offset ] );
-#endif
 	pc += 4;
 
 	sprintf( buffer, "dw      $%08x", op );
@@ -428,7 +430,7 @@ unsigned DasmMIPS( char *buffer, UINT32 oldpc )
 			case 1:
 				sprintf( buffer, "cop2    $%07x", INS_COFUN( op ) );
 
-				switch( GTE_OP( op ) )
+				switch( GTE_FUNCT( op ) )
 				{
 				case 0x01:
 					if( INS_CO( op ) == 0x0180001 )
@@ -436,131 +438,136 @@ unsigned DasmMIPS( char *buffer, UINT32 oldpc )
 						sprintf( buffer, "rtps" );
 					}
 					break;
-				case 0x02:
-					if( INS_CO( op ) == 0x0280030 )
+				case 0x06:
+					if( INS_CO( op ) == 0x0400006 ||
+						INS_CO( op ) == 0x1400006 ||
+						INS_CO( op ) == 0x0155cc6 )
 					{
-						sprintf( buffer, "rtpt" );
+						sprintf( buffer, "nclip" );
 					}
 					break;
-				case 0x04:
-					if( GTE_CT( op ) == 0x012 ||
-						GTE_CT( op ) == 0x412 )
+				case 0x0c:
+					if( GTE_OP( op ) == 0x17 )
+					{
+						sprintf( buffer, "op%s", s_gtesf[ GTE_SF( op ) ] );
+					}
+					break;
+				case 0x10:
+					if( INS_CO( op ) == 0x0780010 )
+					{
+						sprintf( buffer, "dpcs" );
+					}
+					break;
+				case 0x11:
+					if( INS_CO( op ) == 0x0980011 )
+					{
+						sprintf( buffer, "intpl" );
+					}
+					break;
+				case 0x12:
+					if( GTE_OP( op ) == 0x04 )
 					{
 						sprintf( buffer, "mvmva%s %s + %s * %s (lm=%s)",
 							s_gtesf[ GTE_SF( op ) ], s_gtecv[ GTE_CV( op ) ], s_gtemx[ GTE_MX( op ) ],
 							s_gtev[ GTE_V( op ) ],  s_gtelm[ GTE_LM( op ) ] );
 					}
 					break;
-				case 0x06:
-					if( INS_CO( op ) == 0x0680029 )
-					{
-						sprintf( buffer, "dcpl" );
-					}
-					break;
-				case 0x07:
-					if( INS_CO( op ) == 0x0780010 )
-					{
-						sprintf( buffer, "dpcs" );
-					}
-					break;
-				case 0x09:
-					if( INS_CO( op ) == 0x0980011 )
-					{
-						sprintf( buffer, "intpl" );
-					}
-					break;
-				case 0x0a:
-					if( GTE_CT( op ) == 0x428 )
-					{
-						sprintf( buffer, "sqr%s", s_gtesf[ GTE_SF( op ) ] );
-					}
-					break;
-				case 0x0c:
-					if( INS_CO( op ) == 0x0c8041e )
-					{
-						sprintf( buffer, "ncs" );
-					}
-					break;
-				case 0x0d:
-					if( INS_CO( op ) == 0x0d80420 )
-					{
-						sprintf( buffer, "nct" );
-					}
-					break;
-				case 0x0e:
+				case 0x13:
 					if( INS_CO( op ) == 0x0e80413 )
 					{
 						sprintf( buffer, "ncds" );
 					}
 					break;
-				case 0x0f:
-					if( INS_CO( op ) == 0x0f8002A )
-					{
-						sprintf( buffer, "dpct" );
-					}
-					else if( INS_CO( op ) == 0x0f80416 )
-					{
-						sprintf( buffer, "ncdt" );
-					}
-					break;
-				case 0x10:
-					if( INS_CO( op ) == 0x108041b )
-					{
-						sprintf( buffer, "nccs" );
-					}
-					break;
-				case 0x11:
-					if( INS_CO( op ) == 0x118043f )
-					{
-						sprintf( buffer, "ncct" );
-					}
-					break;
-				case 0x12:
+				case 0x14:
 					if( INS_CO( op ) == 0x1280414 )
 					{
 						sprintf( buffer, "cdp" );
 					}
 					break;
-				case 0x13:
+				case 0x16:
+					if( INS_CO( op ) == 0x0f80416 )
+					{
+						sprintf( buffer, "ncdt" );
+					}
+					break;
+				case 0x1b:
+					if( INS_CO( op ) == 0x108041b )
+					{
+						sprintf( buffer, "nccs" );
+					}
+					break;
+				case 0x1c:
 					if( INS_CO( op ) == 0x138041c )
 					{
 						sprintf( buffer, "cc" );
 					}
 					break;
-				case 0x14:
-					if( INS_CO( op ) == 0x1400006 )
+				case 0x1e:
+					if( INS_CO( op ) == 0x0c8041e )
 					{
-						sprintf( buffer, "nclip" );
+						sprintf( buffer, "ncs" );
 					}
 					break;
-				case 0x15:
+				case 0x20:
+					if( INS_CO( op ) == 0x0d80420 )
+					{
+						sprintf( buffer, "nct" );
+					}
+					break;
+				case 0x28:
+					if( GTE_OP( op ) == 0x0a && GTE_LM( op ) == 1 )
+					{
+						sprintf( buffer, "sqr%s", s_gtesf[ GTE_SF( op ) ] );
+					}
+					break;
+				case 0x29:
+					if( INS_CO( op ) == 0x0680029 )
+					{
+						sprintf( buffer, "dcpl" );
+					}
+					break;
+				case 0x2a:
+					if( INS_CO( op ) == 0x0f8002a )
+					{
+						sprintf( buffer, "dpct" );
+					}
+					break;
+				case 0x2d:
 					if( INS_CO( op ) == 0x158002d )
 					{
 						sprintf( buffer, "avsz3" );
 					}
 					break;
-				case 0x16:
+				case 0x2e:
 					if( INS_CO( op ) == 0x168002e )
 					{
 						sprintf( buffer, "avsz4" );
 					}
 					break;
-				case 0x17:
-					if( GTE_CT( op ) == 0x00c )
+				case 0x30:
+					if( INS_CO( op ) == 0x0280030 )
 					{
-						sprintf( buffer, "op%s", s_gtesf[ GTE_SF( op ) ] );
+						sprintf( buffer, "rtpt" );
 					}
 					break;
-				case 0x19:
-					if( GTE_CT( op ) == 0x03d )
+				case 0x3d:
+					if( GTE_OP( op ) == 0x09 ||
+						GTE_OP( op ) == 0x19 )
 					{
 						sprintf( buffer, "gpf%s", s_gtesf[ GTE_SF( op ) ] );
 					}
 					break;
-				case 0x1a:
-					if( GTE_CT( op ) == 0x03e )
+				case 0x3e:
+					if( GTE_OP( op ) == 0x1a )
 					{
 						sprintf( buffer, "gpl%s", s_gtesf[ GTE_SF( op ) ] );
+					}
+					break;
+				case 0x3f:
+					if( INS_CO( op ) == 0x108043f ||
+						INS_CO( op ) == 0x118043f )
+					{
+						sprintf( buffer, "ncct" );
 					}
 					break;
 				}
@@ -569,52 +576,52 @@ unsigned DasmMIPS( char *buffer, UINT32 oldpc )
 		}
 		break;
 	case OP_LB:
-		sprintf( buffer, "lb      %s,%s(%s)", s_cpugenreg[ INS_RT( op ) ], make_signed_hex_str_16( INS_IMMEDIATE( op ) ), s_cpugenreg[ INS_RS( op ) ] );
+		sprintf( buffer, "lb      %s,%s", s_cpugenreg[ INS_RT( op ) ], make_address( op ) );
 		break;
 	case OP_LH:
-		sprintf( buffer, "lh      %s,%s(%s)", s_cpugenreg[ INS_RT( op ) ], make_signed_hex_str_16( INS_IMMEDIATE( op ) ), s_cpugenreg[ INS_RS( op ) ] );
+		sprintf( buffer, "lh      %s,%s", s_cpugenreg[ INS_RT( op ) ], make_address( op ) );
 		break;
 	case OP_LWL:
-		sprintf( buffer, "lwl     %s,%s(%s)", s_cpugenreg[ INS_RT( op ) ], make_signed_hex_str_16( INS_IMMEDIATE( op ) ), s_cpugenreg[ INS_RS( op ) ] );
+		sprintf( buffer, "lwl     %s,%s", s_cpugenreg[ INS_RT( op ) ], make_address( op ) );
 		break;
 	case OP_LW:
-		sprintf( buffer, "lw      %s,%s(%s)", s_cpugenreg[ INS_RT( op ) ], make_signed_hex_str_16( INS_IMMEDIATE( op ) ), s_cpugenreg[ INS_RS( op ) ] );
+		sprintf( buffer, "lw      %s,%s", s_cpugenreg[ INS_RT( op ) ], make_address( op ) );
 		break;
 	case OP_LBU:
-		sprintf( buffer, "lbu     %s,%s(%s)", s_cpugenreg[ INS_RT( op ) ], make_signed_hex_str_16( INS_IMMEDIATE( op ) ), s_cpugenreg[ INS_RS( op ) ] );
+		sprintf( buffer, "lbu     %s,%s", s_cpugenreg[ INS_RT( op ) ], make_address( op ) );
 		break;
 	case OP_LHU:
-		sprintf( buffer, "lhu     %s,%s(%s)", s_cpugenreg[ INS_RT( op ) ], make_signed_hex_str_16( INS_IMMEDIATE( op ) ), s_cpugenreg[ INS_RS( op ) ] );
+		sprintf( buffer, "lhu     %s,%s", s_cpugenreg[ INS_RT( op ) ], make_address( op ) );
 		break;
 	case OP_LWR:
-		sprintf( buffer, "lwr     %s,%s(%s)", s_cpugenreg[ INS_RT( op ) ], make_signed_hex_str_16( INS_IMMEDIATE( op ) ), s_cpugenreg[ INS_RS( op ) ] );
+		sprintf( buffer, "lwr     %s,%s", s_cpugenreg[ INS_RT( op ) ], make_address( op ) );
 		break;
 	case OP_SB:
-		sprintf( buffer, "sb      %s,%s(%s)", s_cpugenreg[ INS_RT( op ) ], make_signed_hex_str_16( INS_IMMEDIATE( op ) ), s_cpugenreg[ INS_RS( op ) ] );
+		sprintf( buffer, "sb      %s,%s", s_cpugenreg[ INS_RT( op ) ], make_address( op ) );
 		break;
 	case OP_SH:
-		sprintf( buffer, "sh      %s,%s(%s)", s_cpugenreg[ INS_RT( op ) ], make_signed_hex_str_16( INS_IMMEDIATE( op ) ), s_cpugenreg[ INS_RS( op ) ] );
+		sprintf( buffer, "sh      %s,%s", s_cpugenreg[ INS_RT( op ) ], make_address( op ) );
 		break;
 	case OP_SWL:
-		sprintf( buffer, "swl     %s,%s(%s)", s_cpugenreg[ INS_RT( op ) ], make_signed_hex_str_16( INS_IMMEDIATE( op ) ), s_cpugenreg[ INS_RS( op ) ] );
+		sprintf( buffer, "swl     %s,%s", s_cpugenreg[ INS_RT( op ) ], make_address( op ) );
 		break;
 	case OP_SW:
-		sprintf( buffer, "sw      %s,%s(%s)", s_cpugenreg[ INS_RT( op ) ], make_signed_hex_str_16( INS_IMMEDIATE( op ) ), s_cpugenreg[ INS_RS( op ) ] );
+		sprintf( buffer, "sw      %s,%s", s_cpugenreg[ INS_RT( op ) ], make_address( op ) );
 		break;
 	case OP_SWR:
-		sprintf( buffer, "swr     %s,%s(%s)", s_cpugenreg[ INS_RT( op ) ], make_signed_hex_str_16( INS_IMMEDIATE( op ) ), s_cpugenreg[ INS_RS( op ) ] );
+		sprintf( buffer, "swr     %s,%s", s_cpugenreg[ INS_RT( op ) ], make_address( op ) );
 		break;
 	case OP_LWC1:
-		sprintf( buffer, "lwc1    %s,%s(%s)", s_cp1genreg[ INS_RT( op ) ], make_signed_hex_str_16( INS_IMMEDIATE( op ) ), s_cpugenreg[ INS_RS( op ) ] );
+		sprintf( buffer, "lwc1    %s,%s", s_cp1genreg[ INS_RT( op ) ], make_address( op ) );
 		break;
 	case OP_LWC2:
-		sprintf( buffer, "lwc2    %s,%s(%s)", s_cp2genreg[ INS_RT( op ) ], make_signed_hex_str_16( INS_IMMEDIATE( op ) ), s_cpugenreg[ INS_RS( op ) ] );
+		sprintf( buffer, "lwc2    %s,%s", s_cp2genreg[ INS_RT( op ) ], make_address( op ) );
 		break;
 	case OP_SWC1:
-		sprintf( buffer, "swc1    %s,%s(%s)", s_cp1genreg[ INS_RT( op ) ], make_signed_hex_str_16( INS_IMMEDIATE( op ) ), s_cpugenreg[ INS_RS( op ) ] );
+		sprintf( buffer, "swc1    %s,%s", s_cp1genreg[ INS_RT( op ) ], make_address( op ) );
 		break;
 	case OP_SWC2:
-		sprintf( buffer, "swc2    %s,%s(%s)", s_cp2genreg[ INS_RT( op ) ], make_signed_hex_str_16( INS_IMMEDIATE( op ) ), s_cpugenreg[ INS_RS( op ) ] );
+		sprintf( buffer, "swc2    %s,%s", s_cp2genreg[ INS_RT( op ) ], make_address( op ) );
 		break;
 	}
 	return pc - oldpc;

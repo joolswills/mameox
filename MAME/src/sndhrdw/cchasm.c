@@ -1,11 +1,11 @@
-#pragma code_seg("C197")
-#pragma data_seg("D197")
-#pragma bss_seg("B197")
-#pragma const_seg("K197")
-#pragma comment(linker, "/merge:D197=197")
-#pragma comment(linker, "/merge:C197=197")
-#pragma comment(linker, "/merge:B197=197")
-#pragma comment(linker, "/merge:K197=197")
+#pragma code_seg("C200")
+#pragma data_seg("D200")
+#pragma bss_seg("B200")
+#pragma const_seg("K200")
+#pragma comment(linker, "/merge:D200=200")
+#pragma comment(linker, "/merge:C200=200")
+#pragma comment(linker, "/merge:B200=200")
+#pragma comment(linker, "/merge:K200=200")
 /***************************************************************************
 
 	Cinematronics Cosmic Chasm hardware
@@ -19,7 +19,7 @@
 
 static int sound_flags;
 
-READ_HANDLER( cchasm_snd_io_r )
+READ8_HANDLER( cchasm_snd_io_r )
 {
     int coin;
 
@@ -49,7 +49,7 @@ READ_HANDLER( cchasm_snd_io_r )
     }
 }
 
-WRITE_HANDLER( cchasm_snd_io_w )
+WRITE8_HANDLER( cchasm_snd_io_w )
 {
     switch (offset & 0x61 )
     {
@@ -76,7 +76,7 @@ WRITE_HANDLER( cchasm_snd_io_w )
     case 0x41:
         sound_flags |= 0x40;
         soundlatch4_w (offset, data);
-        cpu_set_irq_line(0, 1, HOLD_LINE);
+        cpunum_set_input_line(0, 1, HOLD_LINE);
         break;
 
     case 0x61:
@@ -104,7 +104,7 @@ WRITE16_HANDLER( cchasm_io_w )
 			sound_flags |= 0x80;
 			soundlatch2_w (offset, data);
 			z80ctc_0_trg2_w (0, 1);
-			cpu_set_irq_line(1, IRQ_LINE_NMI, PULSE_LINE);
+			cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 			break;
 		case 2:
 			led = data;
@@ -138,10 +138,10 @@ static int output[2];
 
 static void ctc_interrupt (int state)
 {
-	cpu_set_irq_line_and_vector(1, 0, HOLD_LINE, Z80_VECTOR(0,state));
+	cpunum_set_input_line_and_vector(1, 0, HOLD_LINE, Z80_VECTOR(0,state));
 }
 
-static WRITE_HANDLER( ctc_timer_1_w )
+static WRITE8_HANDLER( ctc_timer_1_w )
 {
 
     if (data) /* rising edge */
@@ -152,7 +152,7 @@ static WRITE_HANDLER( ctc_timer_1_w )
     }
 }
 
-static WRITE_HANDLER( ctc_timer_2_w )
+static WRITE8_HANDLER( ctc_timer_2_w )
 {
 
     if (data) /* rising edge */

@@ -1,11 +1,11 @@
-#pragma code_seg("C644")
-#pragma data_seg("D644")
-#pragma bss_seg("B644")
-#pragma const_seg("K644")
-#pragma comment(linker, "/merge:D644=644")
-#pragma comment(linker, "/merge:C644=644")
-#pragma comment(linker, "/merge:B644=644")
-#pragma comment(linker, "/merge:K644=644")
+#pragma code_seg("C680")
+#pragma data_seg("D680")
+#pragma bss_seg("B680")
+#pragma const_seg("K680")
+#pragma comment(linker, "/merge:D680=680")
+#pragma comment(linker, "/merge:C680=680")
+#pragma comment(linker, "/merge:B680=680")
+#pragma comment(linker, "/merge:K680=680")
 /*****************************************************************************************
 
  Speed Attack video hardware emulation
@@ -72,7 +72,7 @@ PALETTE_INIT( speedatk )
 		colortable[i] = color_prom[i];	
 }
 
-WRITE_HANDLER( speedatk_videoram_w )
+WRITE8_HANDLER( speedatk_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -81,7 +81,7 @@ WRITE_HANDLER( speedatk_videoram_w )
 	}
 }
 
-WRITE_HANDLER( speedatk_colorram_w )
+WRITE8_HANDLER( speedatk_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -90,7 +90,7 @@ WRITE_HANDLER( speedatk_colorram_w )
 	}
 }
 
-WRITE_HANDLER( speedatk_flip_screen_w )
+WRITE8_HANDLER( speedatk_flip_screen_w )
 {
 	flip_screen_set(data);
 }

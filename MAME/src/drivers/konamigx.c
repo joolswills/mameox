@@ -6,9 +6,6 @@
 #pragma comment(linker, "/merge:C29=29")
 #pragma comment(linker, "/merge:B29=29")
 #pragma comment(linker, "/merge:K29=29")
-#define GX_DEBUG     0
-#define GX_SKIPIDLE  1
-
 /**************************************************************************
  *
  * konamigx.c - Konami System GX
@@ -44,7 +41,7 @@
  * d00000: 054157 ROM readback for memory test
  * d20000: sprite RAM (4k)
  * d40000: 054157/056832 tilemap generator    (VACSET)
- * d44000: tile bank selectors		          (VSCCS)
+ * d44000: tile bank selectors	              (VSCCS)
  * d48000: 053246/055673 sprite generator     (OBJSET1)
  * d4a000: more readback for sprite generator (OBJSET2)
  * d4c000: CCU1 registers                     (CCUS1)
@@ -105,6 +102,9 @@
  *
  */
 
+#define GX_DEBUG     0
+#define GX_SKIPIDLE  1
+
 #include "driver.h"
 #include "state.h"
 
@@ -147,8 +147,6 @@ static data16_t *gx_sndram;
 static int gx_rdport1_3, gx_syncen;
 
 static void *dmadelay_timer;
-
-
 
 /**********************************************************************************/
 /*
@@ -212,11 +210,6 @@ static struct sprite_entry {
 	int pri;
 	unsigned int adr;
 } sprites[0x100];
-
-static int pri_comp(const void *s1, const void *s2)
-{
-	return ((struct sprite_entry *)s1)->pri - ((struct sprite_entry *)s2)->pri;
-}
 
 static void generate_sprites(UINT32 src, UINT32 spr, int count)
 {
@@ -455,7 +448,7 @@ static WRITE32_HANDLER( esc_w )
 		if (konamigx_wrport1_1 & 0x10)
 		{
 			gx_rdport1_3 &= ~8;
-			cpu_set_irq_line(0, 4, HOLD_LINE);
+			cpunum_set_input_line(0, 4, HOLD_LINE);
 		}
 	}
 	else
@@ -471,7 +464,6 @@ static WRITE32_HANDLER( esc_w )
 		/* unknown constant (never been seen in any game..) */
 	}
 }
-
 
 /**********************************************************************************/
 /* NVRAM and EEPROM handlers */
@@ -575,13 +567,13 @@ static WRITE32_HANDLER( control_w )
 		{
 			// enable 68k
 			// clear the halt condition and reset the 68000
-			cpu_set_halt_line(1, CLEAR_LINE);
-			cpu_set_reset_line(1, PULSE_LINE);
+			cpunum_set_input_line(1, INPUT_LINE_HALT, CLEAR_LINE);
+			cpunum_set_input_line(1, INPUT_LINE_RESET, PULSE_LINE);
 		}
 		else
 		{
 			// disable 68k
-			cpu_set_halt_line(1, ASSERT_LINE);
+			cpunum_set_input_line(1, INPUT_LINE_HALT, ASSERT_LINE);
 		}
 
 		K053246_set_OBJCHA_line((data&0x100000) ? ASSERT_LINE : CLEAR_LINE);
@@ -600,8 +592,8 @@ static WRITE32_HANDLER( control_w )
   waitskip.data = DATA;      \
   waitskip.mask = MASK;      \
   resume_trigger= 1000;      \
-  install_mem_read32_handler \
-  (0, (BASE+START)&~3, (BASE+END)|3, waitskip_r);}
+  memory_install_read32_handler \
+  (0, ADDRESS_SPACE_PROGRAM, (BASE+START)&~3, (BASE+END)|3, 0, 0, waitskip_r);}
 
 static struct { UINT32 offs, pc, mask, data; } waitskip;
 static int suspension_active, resume_trigger;
@@ -643,33 +635,19 @@ static WRITE32_HANDLER( ccu_w )
 		// vblank interrupt ACK
 		if (!(mem_mask & 0xff000000))
 		{
-			cpu_set_irq_line(0, 1, CLEAR_LINE);
+			cpunum_set_input_line(0, 1, CLEAR_LINE);
 			gx_syncen |= 0x20;
 		}
 
 		// hblank interrupt ACK
 		if (!(mem_mask & 0x0000ff00))
 		{
-			cpu_set_irq_line(0, 2, CLEAR_LINE);
+			cpunum_set_input_line(0, 2, CLEAR_LINE);
 			gx_syncen |= 0x40;
 		}
 	}
 }
 
-
-static int konamigx_irq_callback(int irqline)
-{
-	switch (irqline)
-	{
-		// IRQ 3 ACK (object DMA end)
-		case 2: gx_rdport1_3 |= 0x80; break;
-
-		// IRQ 4 ACK (ESC)
-		case 3: gx_rdport1_3 |= 0x8; break;
-	}
-
-	return(0); // DUMMY: really don't know how to return appropriate values as in irq_line_vector[0][irqline]
-}
 
 /*
 	GX object DMA timings:
@@ -694,7 +672,7 @@ static void dmaend_callback(int data)
 
 		// lower OBJINT-REQ flag and trigger interrupt
 		gx_rdport1_3 &= ~0x80;
-		cpu_set_irq_line(0, 3, HOLD_LINE);
+		cpunum_set_input_line(0, 3, HOLD_LINE);
 	}
 }
 
@@ -728,7 +706,7 @@ static INTERRUPT_GEN(konamigx_vbinterrupt)
 		if ((konamigx_wrport1_1 & 0x81) == 0x81 || (gx_syncen & 1))
 		{
 			gx_syncen &= ~1;
-			cpu_set_irq_line(0, 1, HOLD_LINE);
+			cpunum_set_input_line(0, 1, HOLD_LINE);
 		}
 	}
 
@@ -750,7 +728,7 @@ static INTERRUPT_GEN(konamigx_vbinterrupt_type4)
 		if ((konamigx_wrport1_1 & 0x81) == 0x81 || (gx_syncen & 1))
 		{
 			gx_syncen &= ~1;
-			cpu_set_irq_line(0, 1, HOLD_LINE);
+			cpunum_set_input_line(0, 1, HOLD_LINE);
 		}
 	}
 
@@ -773,7 +751,7 @@ static INTERRUPT_GEN(konamigx_hbinterrupt)
 			if ((konamigx_wrport1_1 & 0x82) == 0x82 || (gx_syncen & 2))
 			{
 				gx_syncen &= ~2;
-				cpu_set_irq_line(0, 2, HOLD_LINE);
+				cpunum_set_input_line(0, 2, HOLD_LINE);
 			}
 		}
 	}
@@ -840,7 +818,7 @@ INLINE void write_snd_020(int reg, int val)
 
 	if (reg == 7)
 	{
-		cpu_set_irq_line(1, 1, HOLD_LINE);
+		cpunum_set_input_line(1, 1, HOLD_LINE);
 	}
 }
 
@@ -1118,12 +1096,29 @@ static WRITE32_HANDLER( type4_prot_w )
 						program_write_word(0xc01400+i, program_read_word(0xc01000+i));
 					}
 				}
-				else if(last_prot_op == 0x57a)
+				else if(last_prot_op == 0x57a)	// winspike
 				{
 					program_write_dword(0xc10f00, program_read_dword(0xc00f10));
 					program_write_dword(0xc10f04, program_read_dword(0xc00f14));
 					program_write_dword(0xc0fe00, program_read_dword(0xc00f30));
 					program_write_dword(0xc0fe04, program_read_dword(0xc00f34));
+				}
+				else if(last_prot_op == 0xd97)	// rushhero
+				{
+					int src = 0xc09ff0;
+					int dst = 0xd20000;
+					int spr;
+
+					for (spr = 0; spr < 256; spr++)
+					{
+						for (i = 0; i <= 0x10; i += 4)
+						{
+							program_write_dword(dst + i, program_read_dword(src+i));
+						}
+
+						src -= 0x10;
+						dst += 0x10;
+					}
 				}
 				else
 				{
@@ -1133,7 +1128,7 @@ static WRITE32_HANDLER( type4_prot_w )
 				if (konamigx_wrport1_1 & 0x10)
 				{
 					gx_rdport1_3 &= ~8;
-					cpu_set_irq_line(0, 4, HOLD_LINE);
+					cpunum_set_input_line(0, 4, HOLD_LINE);
 				}
 
 				// don't accidentally do a phony command
@@ -1151,26 +1146,34 @@ static WRITE32_HANDLER( type1_cablamps_w )
 }
 
 /**********************************************************************************/
-/* 68020 memory handlers */
+/* 68EC020 memory handlers */
+/**********************************************************************************/
 
-static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 32 )
-	AM_RANGE(0x000000, 0x01ffff) AM_READ(MRA32_ROM)		// bios
-	AM_RANGE(0x200000, 0x2fffff) AM_READ(MRA32_ROM)		// game program
-	AM_RANGE(0x400000, 0x5fffff) AM_READ(MRA32_ROM)		// data ROM
-	AM_RANGE(0xc00000, 0xc1ffff) AM_READ(MRA32_RAM)		// work ram
-	AM_RANGE(0xd00000, 0xd01fff) AM_READ(K056832_5bpp_rom_long_r)	// tile ROM readthrough (for test menu)
-	AM_RANGE(0xd20000, 0xd20fff) AM_READ(K053247_long_r)	// sprite RAM
-	AM_RANGE(0xd21000, 0xd23fff) AM_READ(MRA32_RAM)		// additional RAM in the sprite region
-	AM_RANGE(0xd44000, 0xd44003) AM_READ(le2_gun_H_r)	// gun horizontal position
-	AM_RANGE(0xd44004, 0xd44007) AM_READ(le2_gun_V_r)	// gun vertical position
-	AM_RANGE(0xd4c000, 0xd4c01f) AM_READ(ccu_r)			// CRT control unit
-	AM_RANGE(0xd52010, 0xd5201f) AM_READ(sound020_r)		// shared RAM with sound 68000
-	AM_RANGE(0xd5a000, 0xd5a003) AM_READ(eeprom_r)		// EEPROM read
-	AM_RANGE(0xd5c000, 0xd5c003) AM_READ(players_r)		// player 1 & 2 JAMMA inputs
-	AM_RANGE(0xd5e000, 0xd5e003) AM_READ(service_r)		// service switch
-	AM_RANGE(0xd90000, 0xd97fff) AM_READ(MRA32_RAM)		// palette RAM
-	AM_RANGE(0xda0000, 0xda1fff) AM_READ(K056832_ram_long_r)	// tilemap RAM
-	AM_RANGE(0xda2000, 0xda3fff) AM_READ(K056832_ram_long_r)	// tilemap RAM mirror read
+static ADDRESS_MAP_START( gx_base_memmap, ADDRESS_SPACE_PROGRAM, 32 )
+	AM_RANGE(0x000000, 0x01ffff) AM_ROM	// BIOS ROM
+	AM_RANGE(0x200000, 0x3fffff) AM_ROM	// main program ROM
+	AM_RANGE(0x400000, 0x7fffff) AM_ROM	// data ROM
+	AM_RANGE(0xc00000, 0xc1ffff) AM_RAM AM_BASE(&gx_workram)	// work RAM
+	AM_RANGE(0xd00000, 0xd01fff) AM_READ(K056832_5bpp_rom_long_r)
+	AM_RANGE(0xd20000, 0xd20fff) AM_READWRITE(K053247_long_r, K053247_long_w)
+	AM_RANGE(0xd21000, 0xd23fff) AM_RAM
+	AM_RANGE(0xd40000, 0xd4003f) AM_WRITE(K056832_long_w)
+	AM_RANGE(0xd44000, 0xd4400f) AM_WRITE(konamigx_tilebank_w)
+	AM_RANGE(0xd48000, 0xd48007) AM_WRITE(K053246_long_w)
+	AM_RANGE(0xd4a010, 0xd4a01f) AM_WRITE(K053247_reg_long_w)
+	AM_RANGE(0xd4c000, 0xd4c01f) AM_READWRITE(ccu_r, ccu_w)
+	AM_RANGE(0xd4e000, 0xd4e01f) AM_WRITENOP
+	AM_RANGE(0xd50000, 0xd500ff) AM_WRITE(K055555_long_w)
+	AM_RANGE(0xd52000, 0xd5200f) AM_WRITE(sound020_w)
+	AM_RANGE(0xd52010, 0xd5201f) AM_READ(sound020_r)	
+	AM_RANGE(0xd56000, 0xd56003) AM_WRITE(eeprom_w)
+	AM_RANGE(0xd58000, 0xd58003) AM_WRITE(control_w)
+	AM_RANGE(0xd5a000, 0xd5a003) AM_READ(eeprom_r)		
+	AM_RANGE(0xd5c000, 0xd5c003) AM_READ(players_r)		
+	AM_RANGE(0xd5e000, 0xd5e003) AM_READ(service_r)		
+	AM_RANGE(0xd80000, 0xd8001f) AM_WRITE(K054338_long_w)
+	AM_RANGE(0xda0000, 0xda1fff) AM_READWRITE(K056832_ram_long_r, K056832_ram_long_w)
+	AM_RANGE(0xda2000, 0xda3fff) AM_READWRITE(K056832_ram_long_r, K056832_ram_long_w)
 #if GX_DEBUG
 	AM_RANGE(0xd40000, 0xd4003f) AM_READ(K056832_long_r)
 	AM_RANGE(0xd50000, 0xd500ff) AM_READ(K055555_long_r)
@@ -1178,183 +1181,54 @@ static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 32 )
 #endif
 ADDRESS_MAP_END
 
-static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 32 )
-	AM_RANGE(0xc00000, 0xc1ffff) AM_WRITE(MWA32_RAM) AM_BASE(&gx_workram)
-	AM_RANGE(0xcc0000, 0xcc0003) AM_WRITE(esc_w)
-	AM_RANGE(0xd20000, 0xd20fff) AM_WRITE(K053247_long_w)
-	AM_RANGE(0xd21000, 0xd23fff) AM_WRITE(MWA32_RAM)
-	AM_RANGE(0xd40000, 0xd4003f) AM_WRITE(K056832_long_w)		// VACSET
-	AM_RANGE(0xd44000, 0xd4400f) AM_WRITE(konamigx_tilebank_w)// VSCCS
-	AM_RANGE(0xd48000, 0xd48007) AM_WRITE(K053246_long_w)		// OBJSET1
-	AM_RANGE(0xd4a010, 0xd4a01f) AM_WRITE(K053247_reg_long_w)	// OBJSET2
-	AM_RANGE(0xd4c000, 0xd4c01f) AM_WRITE(ccu_w)				// CCU1(ccu_w)
-	AM_RANGE(0xd4e000, 0xd4e01f) AM_WRITE(MWA32_NOP)			// CCU2(not used by GX)
-	AM_RANGE(0xd50000, 0xd500ff) AM_WRITE(K055555_long_w)		// PCU2
-	AM_RANGE(0xd52000, 0xd5200f) AM_WRITE(sound020_w)
-	AM_RANGE(0xd56000, 0xd56003) AM_WRITE(eeprom_w)
-	AM_RANGE(0xd58000, 0xd58003) AM_WRITE(control_w)
-	AM_RANGE(0xd80000, 0xd8001f) AM_WRITE(K054338_long_w)		// CLTC
-	AM_RANGE(0xda0000, 0xda1fff) AM_WRITE(K056832_ram_long_w)
-	AM_RANGE(0xda2000, 0xda3fff) AM_WRITE(K056832_ram_long_w)	// tilemap RAM mirror write
-	AM_RANGE(0xd90000, 0xd97fff) AM_WRITE(konamigx_palette_w) AM_BASE(&paletteram32)
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( type1readmem, ADDRESS_SPACE_PROGRAM, 32 )
-	AM_RANGE(0x000000, 0x01ffff) AM_READ(MRA32_ROM)		// bios
-	AM_RANGE(0x200000, 0x2fffff) AM_READ(MRA32_ROM)		// game program
-	AM_RANGE(0x400000, 0x7fffff) AM_READ(MRA32_ROM)		// data ROM
-	AM_RANGE(0xc00000, 0xc1ffff) AM_READ(MRA32_RAM)		// work ram
-	AM_RANGE(0xd00000, 0xd01fff) AM_READ(K056832_6bpp_rom_long_r)
-	AM_RANGE(0xd20000, 0xd20fff) AM_READ(K053247_long_r)	// sprite RAM
-	AM_RANGE(0xd21000, 0xd23fff) AM_READ(MRA32_RAM)		// additional RAM in the sprite region
+static ADDRESS_MAP_START( gx_type1_map, ADDRESS_SPACE_PROGRAM, 32 )
 	AM_RANGE(0xd4a000, 0xd4a01f) AM_READ(gx6bppspr_r)	// sprite ROM readback
-	AM_RANGE(0xd4c000, 0xd4c01f) AM_READ(ccu_r)			// CRT control unit
-	AM_RANGE(0xd52010, 0xd5201f) AM_READ(sound020_r)		// shared RAM with sound 68000
-	AM_RANGE(0xd5a000, 0xd5a003) AM_READ(eeprom_r)		// EEPROM read
-	AM_RANGE(0xd5c000, 0xd5c003) AM_READ(players_r)		// player 1 & 2 JAMMA inputs
-	AM_RANGE(0xd5e000, 0xd5e003) AM_READ(service_r) 		// service switch
-	AM_RANGE(0xd90000, 0xd97fff) AM_READ(MRA32_RAM)		// palette RAM
-	AM_RANGE(0xda0000, 0xda1fff) AM_READ(K056832_ram_long_r)	// tilemap RAM
-	AM_RANGE(0xda2000, 0xda3fff) AM_READ(K056832_ram_long_r)	// tilemap RAM mirror read
-	AM_RANGE(0xdc0000, 0xdc1fff) AM_READ(MRA32_RAM)		// LAN?  (Racin Force has, KOG doesn't)
-	AM_RANGE(0xdd0000, 0xdd00ff) AM_READ(MRA32_NOP)		// LAN board
-	AM_RANGE(0xddc000, 0xddcfff) AM_READ(adc0834_r)
-	AM_RANGE(0xe80000, 0xe81fff) AM_READ(MRA32_RAM)	// chips 21L+19L / S
-	AM_RANGE(0xec0000, 0xedffff) AM_READ(MRA32_RAM)	// chips 20J+23J+18J / S
-	AM_RANGE(0xf00000, 0xf3ffff) AM_READ(type1_roz_r1)	// ROM readback
-	AM_RANGE(0xf40000, 0xf7ffff) AM_READ(type1_roz_r2)	// ROM readback
-	AM_RANGE(0xf80000, 0xf80fff) AM_READ(MRA32_RAM)	// chip 21Q / S
-	AM_RANGE(0xfc0000, 0xfc00ff) AM_READ(MRA32_RAM)	// chip 22N / S
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( type1writemem, ADDRESS_SPACE_PROGRAM, 32 )
-	AM_RANGE(0xc00000, 0xc1ffff) AM_WRITE(MWA32_RAM) AM_BASE(&gx_workram)
-	AM_RANGE(0xcc0000, 0xcc0003) AM_WRITE(esc_w)
-	AM_RANGE(0xd20000, 0xd20fff) AM_WRITE(K053247_long_w)
-	AM_RANGE(0xd21000, 0xd23fff) AM_WRITE(MWA32_RAM)
-	AM_RANGE(0xd40000, 0xd4003f) AM_WRITE(K056832_long_w)		// VACSET
-	AM_RANGE(0xd44000, 0xd4400f) AM_WRITE(konamigx_tilebank_w)	// VSCCS
-	AM_RANGE(0xd48000, 0xd48007) AM_WRITE(K053246_long_w)		// OBJSET1
-	AM_RANGE(0xd4a010, 0xd4a01f) AM_WRITE(K053247_reg_long_w)	// OBJSET2
-	AM_RANGE(0xd4c000, 0xd4c01f) AM_WRITE(ccu_w)			// CCU1(ccu_w)
-	AM_RANGE(0xd4e000, 0xd4e01f) AM_WRITE(MWA32_NOP)		// CCU2(not used by GX)
-	AM_RANGE(0xd50000, 0xd500ff) AM_WRITE(K055555_long_w)		// PCU2
-	AM_RANGE(0xd52000, 0xd5200f) AM_WRITE(sound020_w)
-	AM_RANGE(0xd56000, 0xd56003) AM_WRITE(eeprom_w)
-	AM_RANGE(0xd58000, 0xd58003) AM_WRITE(control_w)
-	AM_RANGE(0xd80000, 0xd8001f) AM_WRITE(K054338_long_w)		// CLTC
-	AM_RANGE(0xda0000, 0xda1fff) AM_WRITE(K056832_ram_long_w)
-	AM_RANGE(0xda2000, 0xda3fff) AM_WRITE(K056832_ram_long_w)	// tilemap RAM mirror write
-	AM_RANGE(0xd90000, 0xd97fff) AM_WRITE(konamigx_palette_w) AM_BASE(&paletteram32)
-	AM_RANGE(0xdc0000, 0xdc1fff) AM_WRITE(MWA32_RAM)		// LAN? (Racin Force has, KOG doesn't)
-	AM_RANGE(0xdd0000, 0xdd00ff) AM_WRITE(MWA32_NOP)		// LAN board
+	AM_RANGE(0xd90000, 0xd97fff) AM_RAM AM_WRITE(konamigx_palette_w) AM_BASE(&paletteram32)
+	AM_RANGE(0xdc0000, 0xdc1fff) AM_RAM			// LAN RAM? (Racin' Force has, Open Golf doesn't)
+	AM_RANGE(0xdd0000, 0xdd00ff) AM_READNOP AM_WRITENOP	// LAN board
 	AM_RANGE(0xdda000, 0xddafff) AM_WRITE(adc0834_w)
+	AM_RANGE(0xddc000, 0xddcfff) AM_READ(adc0834_r)
 	AM_RANGE(0xdde000, 0xdde003) AM_WRITE(type1_cablamps_w)
-	AM_RANGE(0xe00000, 0xe0001f) AM_WRITE(MWA32_RAM) AM_BASE((data32_t**)&K053936_1_ctrl)
+	AM_RANGE(0xe00000, 0xe0001f) AM_RAM AM_BASE((data32_t**)&K053936_1_ctrl) 
 	AM_RANGE(0xe20000, 0xe2000f) AM_WRITE(MWA32_NOP)
 	AM_RANGE(0xe40000, 0xe40003) AM_WRITE(MWA32_NOP)
-	AM_RANGE(0xe80000, 0xe81fff) AM_WRITE(MWA32_RAM) AM_BASE((data32_t**)&K053936_1_linectrl)
-	AM_RANGE(0xec0000, 0xedffff) AM_WRITE(konamigx_t1_psacmap_w) AM_BASE(&gx_psacram)
-	AM_RANGE(0xf80000, 0xf80fff) AM_WRITE(MWA32_RAM)
-	AM_RANGE(0xfc0000, 0xfc00ff) AM_WRITE(MWA32_RAM)
+	AM_RANGE(0xe80000, 0xe81fff) AM_RAM AM_BASE((data32_t**)&K053936_1_linectrl) 	// chips 21L+19L / S
+	AM_RANGE(0xec0000, 0xedffff) AM_RAM AM_WRITE(konamigx_t1_psacmap_w) AM_BASE(&gx_psacram)  // chips 20J+23J+18J / S
+	AM_RANGE(0xf00000, 0xf3ffff) AM_READ(type1_roz_r1)	// ROM readback
+	AM_RANGE(0xf40000, 0xf7ffff) AM_READ(type1_roz_r2)	// ROM readback
+	AM_RANGE(0xf80000, 0xf80fff) AM_RAM	// chip 21Q / S
+	AM_RANGE(0xfc0000, 0xfc00ff) AM_RAM	// chip 22N / S
 ADDRESS_MAP_END
 
-static ADDRESS_MAP_START( type3readmem, ADDRESS_SPACE_PROGRAM, 32 )
-	AM_RANGE(0x000000, 0x01ffff) AM_READ(MRA32_ROM)		// bios
-	AM_RANGE(0x200000, 0x2fffff) AM_READ(MRA32_ROM)		// game program
-	AM_RANGE(0x400000, 0x5fffff) AM_READ(MRA32_ROM)		// data ROM
-	AM_RANGE(0xc00000, 0xc1ffff) AM_READ(MRA32_RAM)		// work ram
-	AM_RANGE(0xd00000, 0xd01fff) AM_READ(K056832_rom_long_r)	// tile ROM readthrough (for test menu)
-	AM_RANGE(0xd20000, 0xd20fff) AM_READ(K053247_long_r)	// sprite RAM
-	AM_RANGE(0xd21000, 0xd23fff) AM_READ(MRA32_RAM)		// additional RAM in the sprite region
-//	AM_RANGE(0xd4a000, 0xd4bfff) AM_READ(K053246_long_r)	// sprite ROM readthrough (for test menu)
-	AM_RANGE(0xd4c000, 0xd4c01f) AM_READ(ccu_r)			// CRT control unit
-	AM_RANGE(0xd52010, 0xd5201f) AM_READ(sound020_r)		// shared RAM with sound 68000
-	AM_RANGE(0xd5a000, 0xd5a003) AM_READ(eeprom_r)		// EEPROM read
-	AM_RANGE(0xd5c000, 0xd5c003) AM_READ(players_r)		// player 1 & 2 JAMMA inputs
-	AM_RANGE(0xd5e000, 0xd5e003) AM_READ(service_r) 		// service switch
-	AM_RANGE(0xd90000, 0xd97fff) AM_READ(MRA32_RAM)		// palette RAM
-	AM_RANGE(0xda0000, 0xda1fff) AM_READ(K056832_ram_long_r)	// tilemap RAM
-	AM_RANGE(0xe60000, 0xe60fff) AM_READ(MRA32_RAM)
-	AM_RANGE(0xe80000, 0xe87fff) AM_READ(MRA32_RAM)
-	AM_RANGE(0xea0000, 0xea3fff) AM_READ(MRA32_RAM)
+static ADDRESS_MAP_START( gx_type2_map, ADDRESS_SPACE_PROGRAM, 32 )
+	AM_RANGE(0xcc0000, 0xcc0003) AM_WRITE(esc_w)
+	AM_RANGE(0xd90000, 0xd97fff) AM_RAM AM_WRITE(konamigx_palette_w) AM_BASE(&paletteram32)
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( gx_type3_map, ADDRESS_SPACE_PROGRAM, 32 )
+	AM_RANGE(0xd90000, 0xd97fff) AM_RAM
+	AM_RANGE(0xcc0000, 0xcc0007) AM_WRITE(type4_prot_w)
+	AM_RANGE(0xe00000, 0xe0001f) AM_RAM AM_BASE((data32_t**)&K053936_1_ctrl)
+	AM_RANGE(0xe20000, 0xe20003) AM_WRITE(MWA32_NOP)
+	AM_RANGE(0xe40000, 0xe40003) AM_WRITE(MWA32_NOP)
+	AM_RANGE(0xe60000, 0xe60fff) AM_RAM AM_BASE((data32_t**)&K053936_1_linectrl) 
+	AM_RANGE(0xe80000, 0xe87fff) AM_RAM AM_WRITE(konamigx_555_palette_w) AM_BASE(&paletteram32) 	// main monitor palette (twice as large as reality)
+	AM_RANGE(0xea0000, 0xea3fff) AM_RAM AM_WRITE(konamigx_555_palette2_w) AM_BASE(&gx_subpaletteram32) // sub monitor palette
 	AM_RANGE(0xec0000, 0xec0003) AM_READ(type3_sync_r)
-	AM_RANGE(0xf00000, 0xf07fff) AM_READ(MRA32_RAM)
+	AM_RANGE(0xf00000, 0xf07fff) AM_RAM
 ADDRESS_MAP_END
 
-static ADDRESS_MAP_START( type3writemem, ADDRESS_SPACE_PROGRAM, 32 )
-	AM_RANGE(0xc00000, 0xc1ffff) AM_WRITE(MWA32_RAM) AM_BASE(&gx_workram)
+static ADDRESS_MAP_START( gx_type4_map, ADDRESS_SPACE_PROGRAM, 32 )
 	AM_RANGE(0xcc0000, 0xcc0007) AM_WRITE(type4_prot_w)
-	AM_RANGE(0xd20000, 0xd20fff) AM_WRITE(K053247_long_w)
-	AM_RANGE(0xd21000, 0xd23fff) AM_WRITE(MWA32_RAM)
-	AM_RANGE(0xd44000, 0xd4400f) AM_WRITE(konamigx_tilebank_w)
-	AM_RANGE(0xd4a018, 0xd4a01b) AM_WRITE(MWA32_NOP)
-	AM_RANGE(0xd4c01c, 0xd4c01f) AM_WRITE(MWA32_NOP)
-	AM_RANGE(0xd50000, 0xd5007f) AM_WRITE(K055555_long_w)
-	AM_RANGE(0xd52000, 0xd5200f) AM_WRITE(sound020_w)
-	AM_RANGE(0xd40000, 0xd4003f) AM_WRITE(K056832_long_w)
-	AM_RANGE(0xd48000, 0xd4803f) AM_WRITE(K053246_long_w)
-	AM_RANGE(0xd56000, 0xd56003) AM_WRITE(eeprom_w)
-	AM_RANGE(0xd58000, 0xd58003) AM_WRITE(control_w)
-	AM_RANGE(0xd80000, 0xd800ff) AM_WRITE(K054338_long_w)
-	AM_RANGE(0xda0000, 0xda1fff) AM_WRITE(K056832_ram_long_w)
-	AM_RANGE(0xd90000, 0xd97fff) AM_WRITE(MWA32_RAM)
-	AM_RANGE(0xe00000, 0xe0001f) AM_WRITE(MWA32_RAM) AM_BASE((data32_t**)&K053936_1_ctrl)
+	AM_RANGE(0xd90000, 0xd97fff) AM_RAM
+	AM_RANGE(0xe00000, 0xe0001f) AM_RAM AM_BASE((data32_t**)&K053936_1_ctrl)
 	AM_RANGE(0xe20000, 0xe20003) AM_WRITE(MWA32_NOP)
 	AM_RANGE(0xe40000, 0xe40003) AM_WRITE(MWA32_NOP)
-	AM_RANGE(0xe60000, 0xe60fff) AM_WRITE(MWA32_RAM) AM_BASE((data32_t**)&K053936_1_linectrl)
-	AM_RANGE(0xe80000, 0xe87fff) AM_WRITE(konamigx_555_palette_w) AM_BASE(&paletteram32) 	// main monitor palette (twice as large as reality)
-	AM_RANGE(0xea0000, 0xea3fff) AM_WRITE(konamigx_555_palette2_w) AM_BASE(&gx_subpaletteram32) // sub monitor palette
-	AM_RANGE(0xf00000, 0xf07fff) AM_WRITE(MWA32_RAM)
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( type4readmem, ADDRESS_SPACE_PROGRAM, 32 )
-	AM_RANGE(0x000000, 0x01ffff) AM_READ(MRA32_ROM)		// bios
-	AM_RANGE(0x200000, 0x2fffff) AM_READ(MRA32_ROM)		// game program
-	AM_RANGE(0x400000, 0x5fffff) AM_READ(MRA32_ROM)		// data ROM
-	AM_RANGE(0xc00000, 0xc1ffff) AM_READ(MRA32_RAM)		// work ram
-	AM_RANGE(0xd00000, 0xd01fff) AM_READ(K056832_rom_long_r)	// tile ROM readthrough (for test menu)
-	AM_RANGE(0xd20000, 0xd20fff) AM_READ(K053247_long_r)	// sprite RAM
-	AM_RANGE(0xd21000, 0xd23fff) AM_READ(MRA32_RAM)		// additional RAM in the sprite region
-	AM_RANGE(0xd4a000, 0xd4bfff) AM_READ(K053246_long_r)	// sprite ROM readthrough (for test menu)
-	AM_RANGE(0xd4c000, 0xd4c01f) AM_READ(ccu_r)			// CRT control unit
-	AM_RANGE(0xd52010, 0xd5201f) AM_READ(sound020_r)		// shared RAM with sound 68000
-	AM_RANGE(0xd5a000, 0xd5a003) AM_READ(eeprom_r)		// EEPROM read
-	AM_RANGE(0xd5c000, 0xd5c003) AM_READ(players_r)		// player 1 & 2 JAMMA inputs
-	AM_RANGE(0xd5e000, 0xd5e003) AM_READ(service_r) 		// service switch
-	AM_RANGE(0xd90000, 0xd97fff) AM_READ(MRA32_RAM)		// palette RAM
-	AM_RANGE(0xda0000, 0xda1fff) AM_READ(K056832_ram_long_r)	// tilemap RAM
-	AM_RANGE(0xe60000, 0xe60fff) AM_READ(MRA32_RAM)
-	AM_RANGE(0xe80000, 0xe8ffff) AM_READ(MRA32_RAM)
-	AM_RANGE(0xea0000, 0xea7fff) AM_READ(MRA32_RAM)
+	AM_RANGE(0xe60000, 0xe60fff) AM_RAM AM_BASE((data32_t**)&K053936_1_linectrl)  // 29C & 29G (PSAC2 line control) 
+	AM_RANGE(0xe80000, 0xe8ffff) AM_RAM AM_WRITE(konamigx_palette_w) AM_BASE(&paletteram32) // 11G/13G/15G (main screen palette RAM) (twice as large as reality)
+	AM_RANGE(0xea0000, 0xea7fff) AM_RAM AM_WRITE(konamigx_palette2_w) AM_BASE(&gx_subpaletteram32) // 5G/7G/9G (sub screen palette RAM)
 	AM_RANGE(0xec0000, 0xec0003) AM_READ(type3_sync_r)		// type 4 polls this too
-	AM_RANGE(0xf00000, 0xf07fff) AM_READ(MRA32_RAM)
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( type4writemem, ADDRESS_SPACE_PROGRAM, 32 )
-	AM_RANGE(0xc00000, 0xc1ffff) AM_WRITE(MWA32_RAM) AM_BASE(&gx_workram)
-	AM_RANGE(0xcc0000, 0xcc0007) AM_WRITE(type4_prot_w)
-	AM_RANGE(0xd44000, 0xd4400f) AM_WRITE(konamigx_tilebank_w)
-	AM_RANGE(0xd4a018, 0xd4a01b) AM_WRITE(MWA32_NOP)
-	AM_RANGE(0xd4c01c, 0xd4c01f) AM_WRITE(MWA32_NOP)
-	AM_RANGE(0xd50000, 0xd5007f) AM_WRITE(K055555_long_w)
-	AM_RANGE(0xd20000, 0xd20fff) AM_WRITE(K053247_long_w)
-	AM_RANGE(0xd21000, 0xd23fff) AM_WRITE(MWA32_RAM)
-	AM_RANGE(0xd52000, 0xd5200f) AM_WRITE(sound020_w)
-	AM_RANGE(0xd40000, 0xd4003f) AM_WRITE(K056832_long_w)
-	AM_RANGE(0xd48000, 0xd4803f) AM_WRITE(K053246_long_w)
-	AM_RANGE(0xd56000, 0xd56003) AM_WRITE(eeprom_w)
-	AM_RANGE(0xd58000, 0xd58003) AM_WRITE(control_w)
-	AM_RANGE(0xd80000, 0xd800ff) AM_WRITE(K054338_long_w)
-	AM_RANGE(0xd90000, 0xd97fff) AM_WRITE(MWA32_RAM)
-	AM_RANGE(0xda0000, 0xda1fff) AM_WRITE(K056832_ram_long_w)
-	AM_RANGE(0xe00000, 0xe0001f) AM_WRITE(MWA32_RAM) AM_BASE((data32_t**)&K053936_1_ctrl)
-	AM_RANGE(0xe20000, 0xe20003) AM_WRITE(MWA32_NOP)
-	AM_RANGE(0xe40000, 0xe40003) AM_WRITE(MWA32_NOP)
-	AM_RANGE(0xe60000, 0xe60fff) AM_WRITE(MWA32_RAM) AM_BASE((data32_t**)&K053936_1_linectrl)  // 29C & 29G (PSAC2 line control)
-	AM_RANGE(0xe80000, 0xe8ffff) AM_WRITE(konamigx_palette_w) AM_BASE(&paletteram32) // 11G/13G/15G (main screen palette RAM) (twice as large as reality)
-	AM_RANGE(0xea0000, 0xea7fff) AM_WRITE(konamigx_palette2_w) AM_BASE(&gx_subpaletteram32) // 5G/7G/9G (sub screen palette RAM)
-	AM_RANGE(0xf00000, 0xf07fff) AM_WRITE(konamigx_t4_psacmap_w) AM_BASE(&gx_psacram)	// PSAC2 tilemap
+	AM_RANGE(0xf00000, 0xf07fff) AM_RAM AM_WRITE(konamigx_t4_psacmap_w) AM_BASE(&gx_psacram)	// PSAC2 tilemap       
 ADDRESS_MAP_END
 
 /**********************************************************************************/
@@ -1392,29 +1266,16 @@ static WRITE16_HANDLER( sndcomm68k_w )
 }
 
 /* 68000 memory handling */
-static ADDRESS_MAP_START( sndreadmem, ADDRESS_SPACE_PROGRAM, 16 )
+static ADDRESS_MAP_START( gxsndmap, ADDRESS_SPACE_PROGRAM, 16 )
 	AM_RANGE(0x000000, 0x03ffff) AM_READ(MRA16_ROM)
-	AM_RANGE(0x100000, 0x10ffff) AM_READ(MRA16_RAM)
-	AM_RANGE(0x200000, 0x2004ff) AM_READ(dual539_r)
-	AM_RANGE(0x300000, 0x300001) AM_READ(tms57002_data_word_r)
-	AM_RANGE(0x400010, 0x40001f) AM_READ(sndcomm68k_r)
-	AM_RANGE(0x500000, 0x500001) AM_READ(tms57002_status_word_r)
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( sndwritemem, ADDRESS_SPACE_PROGRAM, 16 )
-	AM_RANGE(0x100000, 0x10ffff) AM_WRITE(MWA16_RAM) AM_BASE(&gx_sndram)
-	AM_RANGE(0x200000, 0x2004ff) AM_WRITE(dual539_w)
-	AM_RANGE(0x300000, 0x300001) AM_WRITE(tms57002_data_word_w)
+	AM_RANGE(0x100000, 0x10ffff) AM_RAM AM_BASE(&gx_sndram)
+	AM_RANGE(0x200000, 0x2004ff) AM_READWRITE(dual539_r, dual539_w)
+	AM_RANGE(0x300000, 0x300001) AM_READWRITE(tms57002_data_word_r, tms57002_data_word_w)
 	AM_RANGE(0x400000, 0x40000f) AM_WRITE(sndcomm68k_w)
-	AM_RANGE(0x500000, 0x500001) AM_WRITE(tms57002_control_word_w)
-	AM_RANGE(0x580000, 0x580001) AM_WRITE(MWA16_NOP) // unknown write
+	AM_RANGE(0x400010, 0x40001f) AM_READ(sndcomm68k_r)
+	AM_RANGE(0x500000, 0x500001) AM_READWRITE(tms57002_status_word_r, tms57002_control_word_w)
+	AM_RANGE(0x580000, 0x580001) AM_WRITENOP
 ADDRESS_MAP_END
-
-/* 68000 timer interrupt controller */
-static INTERRUPT_GEN(gxaudio_interrupt)
-{
-	cpu_set_irq_line(1, 2, HOLD_LINE);
-}
 
 static struct K054539interface k054539_interface =
 {
@@ -1436,13 +1297,11 @@ static struct GfxLayout bglayout_8bpp =
 {
 	16,16,
 	RGN_FRAC(1,1),
-	4,
-	{ 0, 1, 2, 3 },
-	{ 1*4, 0*4, 3*4, 2*4, 5*4, 4*4, 7*4, 6*4,
-			9*4, 8*4, 11*4, 10*4, 13*4, 12*4, 15*4, 14*4 },
-	{ 0*64, 1*64, 2*64, 3*64, 4*64, 5*64, 6*64, 7*64,
-			8*64, 9*64, 10*64, 11*64, 12*64, 13*64, 14*64, 15*64, },
-	16*64
+	8,
+	{ 0, 1, 2, 3, 4, 5, 6, 7 },
+	{ 0*8, 1*8, 2*8, 3*8, 4*8, 5*8, 6*8, 7*8, 8*8, 9*8, 10*8, 11*8, 12*8, 13*8, 14*8, 15*8 },
+	{ 0*128, 1*128, 2*128, 3*128, 4*128, 5*128, 6*128, 7*128, 8*128, 9*128, 10*128, 11*128, 12*128, 13*128, 14*128, 15*128 },
+	16*128
 };
 
 struct GfxLayout t1_charlayout6 =
@@ -1494,7 +1353,7 @@ static struct GfxDecodeInfo gfxdecodeinfo_type34[] =
 static MACHINE_DRIVER_START( konamigx )
 	/* basic machine hardware */
 	MDRV_CPU_ADD_TAG("main", M68EC020, 24000000)
-	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
+	MDRV_CPU_PROGRAM_MAP(gx_base_memmap, gx_type2_map)
 	MDRV_CPU_VBLANK_INT(konamigx_vbinterrupt, 1)
 
 	/* note: part is a -8, crystals are 18.4 and 32.0 MHz, and
@@ -1502,7 +1361,7 @@ static MACHINE_DRIVER_START( konamigx )
 	   running at least this fast.  so the higher speed is probably a HACK... */
 	MDRV_CPU_ADD_TAG("sound", M68000, 9200000)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)
-	MDRV_CPU_PROGRAM_MAP(sndreadmem,sndwritemem)
+	MDRV_CPU_PROGRAM_MAP(gxsndmap, 0)
 	MDRV_CPU_PERIODIC_INT(irq2_line_hold, 480)
 
 	MDRV_INTERLEAVE(32);
@@ -1555,7 +1414,7 @@ static MACHINE_DRIVER_START( opengolf )
 	MDRV_VIDEO_START(opengolf)
 
 	MDRV_CPU_MODIFY("main")
-	MDRV_CPU_PROGRAM_MAP(type1readmem, type1writemem)
+	MDRV_CPU_PROGRAM_MAP(gx_base_memmap, gx_type1_map)
 MACHINE_DRIVER_END
 
 static MACHINE_DRIVER_START( racinfrc )
@@ -1565,18 +1424,19 @@ static MACHINE_DRIVER_START( racinfrc )
 	MDRV_VIDEO_START(racinfrc)
 
 	MDRV_CPU_MODIFY("main")
-	MDRV_CPU_PROGRAM_MAP(type1readmem, type1writemem)
+	MDRV_CPU_PROGRAM_MAP(gx_base_memmap, gx_type1_map)
 MACHINE_DRIVER_END
 
 static MACHINE_DRIVER_START( gxtype3 )
 	MDRV_IMPORT_FROM(konamigx)
 
 	MDRV_CPU_MODIFY("main")
-	MDRV_CPU_PROGRAM_MAP(type3readmem, type3writemem)
+	MDRV_CPU_PROGRAM_MAP(gx_base_memmap, gx_type3_map)
 	MDRV_CPU_VBLANK_INT(konamigx_hbinterrupt, 262)
 
 	MDRV_VIDEO_START(konamigx_type3)
 	MDRV_PALETTE_LENGTH(16384)
+	MDRV_SCREEN_SIZE(64*8, 32*8)
 	MDRV_VISIBLE_AREA(0, 64*8-1, 0, 32*8-1)
 	MDRV_GFXDECODE(gfxdecodeinfo_type34)
 MACHINE_DRIVER_END
@@ -1585,9 +1445,10 @@ static MACHINE_DRIVER_START( gxtype4 )
 	MDRV_IMPORT_FROM(konamigx)
 
 	MDRV_CPU_MODIFY("main")
-	MDRV_CPU_PROGRAM_MAP(type4readmem, type4writemem)
+	MDRV_CPU_PROGRAM_MAP(gx_base_memmap, gx_type4_map)
 	MDRV_CPU_VBLANK_INT(konamigx_hbinterrupt, 262)
 
+	MDRV_SCREEN_SIZE(64*8, 32*8)
 	MDRV_VISIBLE_AREA(0, 64*8-1, 0, 32*8-1)
 	MDRV_PALETTE_LENGTH(16384)
 	MDRV_GFXDECODE(gfxdecodeinfo_type34)
@@ -1716,18 +1577,6 @@ INPUT_PORTS_START( konamigx )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START
-	PORT_DIPNAME( 0x03, 0x02, "Background Detail" )
-	PORT_DIPSETTING(    0x00, "Low" )
-	PORT_DIPSETTING(    0x01, "Med" )
-	PORT_DIPSETTING(    0x02, "High" )
-
-	PORT_START
-	PORT_DIPNAME( 0x03, 0x02, "Character Detail" )
-	PORT_DIPSETTING(    0x00, "Low" )
-	PORT_DIPSETTING(    0x01, "Med" )
-	PORT_DIPSETTING(    0x02, "High" )
 INPUT_PORTS_END
 
 
@@ -1851,18 +1700,6 @@ INPUT_PORTS_START( racinfrc )
 
 	PORT_START
 	PORT_ANALOGX( 0xff, 0x00, IPT_PEDAL, 35, 5, 0, 0x68, KEYCODE_LCONTROL, IP_JOY_DEFAULT, IP_KEY_DEFAULT, IP_JOY_DEFAULT )
-
-	PORT_START
-	PORT_DIPNAME( 0x03, 0x02, "Background Detail" )
-	PORT_DIPSETTING(    0x00, "Low" )
-	PORT_DIPSETTING(    0x01, "Med" )
-	PORT_DIPSETTING(    0x02, "High" )
-
-	PORT_START
-	PORT_DIPNAME( 0x03, 0x02, "Character Detail" )
-	PORT_DIPSETTING(    0x00, "Low" )
-	PORT_DIPSETTING(    0x01, "Med" )
-	PORT_DIPSETTING(    0x02, "High" )
 INPUT_PORTS_END
 
 INPUT_PORTS_START( le2 )
@@ -1976,18 +1813,6 @@ INPUT_PORTS_START( le2 )
 
 	PORT_START
 	PORT_ANALOG( 0xff, 0x00, IPT_LIGHTGUN_Y | IPF_PLAYER2, 35, 15, 0, 0xff )
-
-	PORT_START
-	PORT_DIPNAME( 0x03, 0x02, "Background Detail" )
-	PORT_DIPSETTING(    0x00, "Low" )
-	PORT_DIPSETTING(    0x01, "Med" )
-	PORT_DIPSETTING(    0x02, "High" )
-
-	PORT_START
-	PORT_DIPNAME( 0x03, 0x02, "Character Detail" )
-	PORT_DIPSETTING(    0x00, "Low" )
-	PORT_DIPSETTING(    0x01, "Med" )
-	PORT_DIPSETTING(    0x02, "High" )
 INPUT_PORTS_END
 
 INPUT_PORTS_START( gokuparo )
@@ -2076,18 +1901,6 @@ INPUT_PORTS_START( gokuparo )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START
-	PORT_DIPNAME( 0x03, 0x02, "Background Detail" )
-	PORT_DIPSETTING(    0x00, "Low" )
-	PORT_DIPSETTING(    0x01, "Med" )
-	PORT_DIPSETTING(    0x02, "High" )
-
-	PORT_START
-	PORT_DIPNAME( 0x03, 0x02, "Character Detail" )
-	PORT_DIPSETTING(    0x00, "Low" )
-	PORT_DIPSETTING(    0x01, "Med" )
-	PORT_DIPSETTING(    0x02, "High" )
 INPUT_PORTS_END
 
 INPUT_PORTS_START( puzldama )
@@ -2176,17 +1989,6 @@ INPUT_PORTS_START( puzldama )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START
-	PORT_DIPNAME( 0x03, 0x02, "Background Detail" )
-	PORT_DIPSETTING(    0x00, "Low" )
-	PORT_DIPSETTING(    0x01, "Med" )
-	PORT_DIPSETTING(    0x02, "High" )
-
-	PORT_START
-	PORT_DIPNAME( 0x03, 0x02, "Character Detail" )
-	PORT_DIPSETTING(    0x00, "Low" )
-	PORT_DIPSETTING(    0x01, "Med" )
 	PORT_DIPSETTING(    0x02, "High" )
 INPUT_PORTS_END
 
@@ -2276,17 +2078,6 @@ INPUT_PORTS_START( dragoonj )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START
-	PORT_DIPNAME( 0x03, 0x02, "Background Detail" )
-	PORT_DIPSETTING(    0x00, "Low" )
-	PORT_DIPSETTING(    0x01, "Med" )
-	PORT_DIPSETTING(    0x02, "High" )
-
-	PORT_START
-	PORT_DIPNAME( 0x03, 0x02, "Character Detail" )
-	PORT_DIPSETTING(    0x00, "Low" )
-	PORT_DIPSETTING(    0x01, "Med" )
 	PORT_DIPSETTING(    0x02, "High" )
 INPUT_PORTS_END
 
@@ -2376,17 +2167,6 @@ INPUT_PORTS_START( type3 )
 	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START
-	PORT_DIPNAME( 0x03, 0x02, "Background Detail" )
-	PORT_DIPSETTING(    0x00, "Low" )
-	PORT_DIPSETTING(    0x01, "Med" )
-	PORT_DIPSETTING(    0x02, "High" )
-
-	PORT_START
-	PORT_DIPNAME( 0x03, 0x02, "Character Detail" )
-	PORT_DIPSETTING(    0x00, "Low" )
-	PORT_DIPSETTING(    0x01, "Med" )
 	PORT_DIPSETTING(    0x02, "High" )
 INPUT_PORTS_END
 
@@ -2905,8 +2685,8 @@ ROM_START( dragoona )
 	/* main program */
 	ROM_REGION( 0x600000, REGION_CPU1, 0 )
 	GX_BIOS
-	ROM_LOAD32_WORD_SWAP( "417aab02.31b", 0x200002, 512*1024, CRC(0421c19c) )
-	ROM_LOAD32_WORD_SWAP( "417aab03.27b", 0x200000, 512*1024, CRC(813dd8d5) )
+	ROM_LOAD32_WORD_SWAP( "417aab02.31b", 0x200002, 512*1024, CRC(0421c19c) SHA1(7b79685047df996f6eda6d9bd6327d7a1cf40dd6) )
+	ROM_LOAD32_WORD_SWAP( "417aab03.27b", 0x200000, 512*1024, CRC(813dd8d5) SHA1(fb07e4836662d179902b751fefcf19f004a4f009) )
 
 	/* data roms */
 	ROM_LOAD32_WORD_SWAP( "417a04.26c", 0x400002, 1024*1024, CRC(dc574747) SHA1(43cbb6a08c27bb96bb25568c3b636c44fff3e08e) )
@@ -2986,8 +2766,8 @@ ROM_START( soccersa )
 	/* main program */
 	ROM_REGION( 0x600000, REGION_CPU1, 0 )
 	GX_BIOS
-	ROM_LOAD32_WORD_SWAP( "427aaa02.28m", 0x200000, 512*1024, CRC(a001d4bf)  )
-	ROM_LOAD32_WORD_SWAP( "427aaa03.30m", 0x200002, 512*1024, CRC(83d37f48)  )
+	ROM_LOAD32_WORD_SWAP( "427aaa02.28m", 0x200000, 512*1024, CRC(a001d4bf) SHA1(424d6ee1fed8c0278bf87e989f88a90b34387068) )
+	ROM_LOAD32_WORD_SWAP( "427aaa03.30m", 0x200002, 512*1024, CRC(83d37f48) SHA1(c96e564ec39d74c9f4447d7f339d7861a7cead14) )
 
 	/* data roms */
 	ROM_LOAD32_WORD_SWAP( "427a04.28r",   0x400000, 0x080000, CRC(c7d3e1a2) SHA1(5e1e4f4c97def36902ad853248014a7af62e0c5e) )
@@ -3136,6 +2916,41 @@ ROM_START( le2u )
 	ROM_LOAD( "312a18.7g", 0x200000, 1*1024*1024, CRC(5717abd7) SHA1(d304d733e7fca0363ea6b3872c2d3bbe4edf1179) )
 ROM_END
 
+/* Lethal Enforcers II (Japan version) */
+ROM_START( le2j )
+	/* main program */
+	ROM_REGION( 0x300000, REGION_CPU1, 0 )
+	GX_BIOS
+        ROM_LOAD32_BYTE( "312jaa05.26b", 0x200000, 0x020000, BAD_DUMP CRC(7eaa6ce2) SHA1(59d3460be98ac32ebea0422c2a9962556a9e964e) )
+        ROM_LOAD32_BYTE( "312jaa04.28b", 0x200001, 0x020000, BAD_DUMP CRC(c3d19ddc) SHA1(3bc3e705567e8e59e56a40ae64381082c4f22271) )
+        ROM_LOAD32_BYTE( "312jaa03.30b", 0x200002, 0x020000, BAD_DUMP CRC(465e3d03) SHA1(8efeb775f6d9f1dfcebdbc79d0c832107278c063) )
+        ROM_LOAD32_BYTE( "312jaa02.33b", 0x200003, 0x020000, BAD_DUMP CRC(e971cb87) SHA1(53e2e7c4b96e4331df27d4788aa1bb81efddf9f0) )
+
+	/* sound program */
+	ROM_REGION( 0x40000, REGION_CPU2, 0 )
+	ROM_LOAD16_BYTE("312b06.9c", 0x000000, 128*1024, CRC(a6f62539) SHA1(b333e02c55237a0429d8c5386ec68b67797a1107) )
+	ROM_LOAD16_BYTE("312b07.7c", 0x000001, 128*1024, CRC(1aa19c41) SHA1(5b879fb17ac514f266e63db6af50f2f4af7da32c) )
+
+	/* tiles */
+	ROM_REGION( 0x800000, REGION_GFX1, ROMREGION_ERASE00 )
+	ROM_LOAD16_BYTE( "312a14.17h", 0x000000, 2*1024*1024, CRC(dc862f19) SHA1(8ec9f8715b622462fb8c79a48162c161eb9fe13b) )
+	ROM_LOAD16_BYTE( "312a12.22h", 0x000001, 2*1024*1024, CRC(98c04ddd) SHA1(7bc7af21625466e75003da9fd950437249e75b78) )
+	ROM_LOAD16_BYTE( "312a15.15h", 0x400000, 2*1024*1024, CRC(516f2941) SHA1(07415fec2d96fe6b707f801a9e9e963186d83d6a) )
+	ROM_LOAD16_BYTE( "312a13.20h", 0x400001, 2*1024*1024, CRC(16e5fdaa) SHA1(f04e09ee4207eb2bd67533997d36f4b3cf42a439) )
+
+	/* sprites */
+	ROM_REGION( 0x800000, REGION_GFX2, ROMREGION_ERASE00 )
+	_64_WORD_ROM_LOAD( "312a08.33g", 0x000000, 2*1024*1024, CRC(29015d56) SHA1(7273270804ecefd8f59469c2c2a8a89fb045a12b) )
+	_64_WORD_ROM_LOAD( "312a09.30g", 0x000002, 2*1024*1024, CRC(b2c5d6d5) SHA1(8248612275ca862c6688de5c6f24f37aeb3f9fe5) )
+	_64_WORD_ROM_LOAD( "312a10.28g", 0x000004, 2*1024*1024, CRC(3c570d04) SHA1(ebbf7d28726e98c8895c9bf901f8b2dd38018c77) )
+	_64_WORD_ROM_LOAD( "312a11.25g", 0x000006, 2*1024*1024, CRC(5f474357) SHA1(1f6d99f1ea69e07a65731ea4eae5917452cfcab6) )
+
+	/* sound data */
+	ROM_REGION( 0x400000, REGION_SOUND1, 0 )
+	ROM_LOAD( "312a17.9g", 0x000000, 2*1024*1024, CRC(ed101448) SHA1(ef1342f37fbbb092eddee0c237b40989ad42cf26) )
+	ROM_LOAD( "312a18.7g", 0x200000, 1*1024*1024, CRC(5717abd7) SHA1(d304d733e7fca0363ea6b3872c2d3bbe4edf1179) )
+ROM_END
+
 /* Racin' Force */
 ROM_START( racinfrc )
 	/* main program */
@@ -3183,13 +2998,67 @@ ROM_START( racinfrc )
 	ROM_LOAD( "250a18.12y", 0x200000, 2*1024*1024, CRC(8014a2eb) SHA1(d82f0a7d559340ae05a78ecc8bb69bb35b9c0658) )
 ROM_END
 
-/* Konami Open Golf Championship */
+/* Konami's Open Golf Championship - Europe version EAE */
 ROM_START( opengolf )
+	/* main program */
+	ROM_REGION( 0x800000, REGION_CPU1, 0 )
+	GX_BIOS
+	ROM_LOAD32_WORD_SWAP( "218eae02.34n", 0x200000, 512*1024, CRC(6f99ddb0) SHA1(99b18c571ce5b67dc8572ffef737b7b6beaf740e) )
+	ROM_LOAD32_WORD_SWAP( "218eae03.31n", 0x200002, 512*1024, CRC(c173cf3c) SHA1(f78fd40717997e913b0183f9f2d03a0433071c93) )
+	ROM_LOAD32_WORD_SWAP( "218eae02.34n", 0x300000, 512*1024, CRC(6f99ddb0) SHA1(99b18c571ce5b67dc8572ffef737b7b6beaf740e) )
+	ROM_LOAD32_WORD_SWAP( "218eae03.31n", 0x300002, 512*1024, CRC(c173cf3c) SHA1(f78fd40717997e913b0183f9f2d03a0433071c93) )
+
+	/* data roms */
+	ROM_LOAD32_WORD_SWAP( "218a04.34s", 0x400000, 512*1024, CRC(e50043a7) SHA1(d3a8e214362c34c4151408f422c9b1c723f7f01c) )
+	ROM_LOAD32_WORD_SWAP( "218a05.31s", 0x400002, 512*1024, CRC(46c6b5d3) SHA1(e59c6d2dac9db635589149e4b4852e5f6a9c3c4f) )
+
+	/* sound program */
+	ROM_REGION( 0x40000, REGION_CPU2, 0 )
+	ROM_LOAD16_BYTE("218a06.8p", 0x000000, 128*1024, CRC(6755ccf9) SHA1(3bcb18302c385a937c748cf586970c12cef21b38) )
+	ROM_LOAD16_BYTE("218a07.6p", 0x000001, 128*1024, CRC(221e5293) SHA1(44b0b4fa37da4c19c29d4d2e5b93b94fbec03633) )
+
+	/* tiles */
+	ROM_REGION( 0x600000, REGION_GFX1, ROMREGION_ERASE00 )
+	TILE_WORD_ROM_LOAD( "218a15.19y", 0x000000, 2*1024*1024, CRC(78ddc8af) SHA1(24313881dbf7e1b06da008080b0143c3ca5e15b1) )
+	TILE_WORD_ROM_LOAD( "218a16.16y", 0x280000, 512*1024,    CRC(a41a3ec8) SHA1(dfef4c3e4d6d4e453a4958f2bd52788497c64093) )
+	TILE_BYTE_ROM_LOAD( "218a14.22y", 0x000004, 1*1024*1024, CRC(508cd75e) SHA1(adfaac92bc55f60b178a5817c48774a664d8980d) )
+
+	/* sprites */
+	ROM_REGION( 0x900000, REGION_GFX2, ROMREGION_ERASE00 )
+	_48_WORD_ROM_LOAD( "218a12.26y", 0x000000, 2*1024*1024, CRC(83158653) SHA1(b7e43d63f12a793b18ce9fc9cc2c38352d211905) )
+	_48_WORD_ROM_LOAD( "218a10.31y", 0x000002, 2*1024*1024, CRC(059bfee3) SHA1(e7f4621313b7f9a6cad81d455700172654bc7404) )
+	_48_WORD_ROM_LOAD( "218a08.35y", 0x000004, 2*1024*1024, CRC(5b7098f3) SHA1(91bedf731e94d1554f9a8f86f79425a2c58bbaf9) )
+	_48_WORD_ROM_LOAD( "218a13.24y", 0x600000, 1*1024*1024, CRC(b9ffd12a) SHA1(f8a689957b8ff966a38f999a679cdbf18a6dfc77) )
+	_48_WORD_ROM_LOAD( "218a11.28y", 0x600002, 1*1024*1024, CRC(b57231e5) SHA1(e1cd1854e909ca53dc2c32b27e5f9bb2217b0e4c) )
+	_48_WORD_ROM_LOAD( "218a09.33y", 0x600004, 1*1024*1024, CRC(13627443) SHA1(b51758e19ed7d6bb1e313f7c8a509ad1aad8b22c) )
+
+	/* K053936 tiles (CROM and HROM from the schematics) */
+	ROM_REGION( 0x800000, REGION_GFX3, ROMREGION_ERASE00 )
+	T1_PSAC8_ROM_LOAD( "218a20.10d", 0x000000, 0x200000, CRC(f0ac2d6f) SHA1(acae9e20d663932a9a44a2e1089546338442c71f) )
+	T1_PSAC8_ROM_LOAD( "218a21.7d",  0x000001, 0x200000, CRC(cb15122a) SHA1(2d159dcfbd4a7fc6e824c1be0cc5b81dee7ce8a3) )
+	T1_PSAC8_ROM_LOAD( "218a22.5d",  0x000002, 0x200000, CRC(1b08d7dc) SHA1(2b963dbc415a30d3545ea730e47a592798f30a45) )
+	T1_PSAC8_ROM_LOAD( "218a23.3d",  0x000003, 0x200000, CRC(1e4224b5) SHA1(f34849d500a35001944da6b8864c796e7a0a7224) )
+
+	ROM_REGION( 0x600000, REGION_GFX4, ROMREGION_ERASE00 )
+	T1_PSAC6_ROM_LOAD( "218a24.10h", 0x000000, 0x200000, CRC(e938d96a) SHA1(176a9bfd252f01bc034ca348d018705926a1a545) )
+	T1_PSAC6_ROM_LOAD( "218a25.7h",  0x000001, 0x200000, CRC(11600c2d) SHA1(721c9361761dd20810ff18c63543b222c98a47a4) )
+	T1_PSAC6_ROM_LOAD( "218a26.5h",  0x000002, 0x200000, CRC(b37e4b7a) SHA1(3d21e540a366f6ef8ba761855fceecd8591179d7) )
+
+	/* sound data */
+	ROM_REGION( 0x400000, REGION_SOUND1, 0 )
+	ROM_LOAD( "218a17.14y", 0x000000, 2*1024*1024, CRC(0b525127) SHA1(218b306c12e1094a676815b7dddaf13bf19be2d5) )
+	ROM_LOAD( "218a18.12y", 0x200000, 1*1024*1024, CRC(98ec4cfb) SHA1(638753f9d9269719a37133b9c39c242507fdd8ac) )
+ROM_END
+
+/* Konami's Open Golf Championship - Europe version EAD */
+ROM_START( opengol2 )
 	/* main program */
 	ROM_REGION( 0x800000, REGION_CPU1, 0 )
 	GX_BIOS
 	ROM_LOAD32_WORD_SWAP( "218ead02.34n", 0x200000, 512*1024, CRC(eeb58816) SHA1(fe88a4515b552975f78897543bc564495b69dd68) )
 	ROM_LOAD32_WORD_SWAP( "218ead03.31n", 0x200002, 512*1024, CRC(5c36f84c) SHA1(8dcbc9e1a8857be9d407a9d0e962a62b963e7187) )
+	ROM_LOAD32_WORD_SWAP( "218ead02.34n", 0x300000, 512*1024, CRC(eeb58816) SHA1(fe88a4515b552975f78897543bc564495b69dd68) )
+	ROM_LOAD32_WORD_SWAP( "218ead03.31n", 0x300002, 512*1024, CRC(5c36f84c) SHA1(8dcbc9e1a8857be9d407a9d0e962a62b963e7187) )
 
 	/* data roms */
 	ROM_LOAD32_WORD_SWAP( "218a04.34s", 0x400000, 512*1024, CRC(e50043a7) SHA1(d3a8e214362c34c4151408f422c9b1c723f7f01c) )
@@ -3306,7 +3175,7 @@ MACHINE_INIT(konamigx)
 	tms57002_init();
 
 	// sound CPU initially disabled?
-	cpu_set_halt_line(1, ASSERT_LINE);
+	cpunum_set_input_line(1, INPUT_LINE_HALT, ASSERT_LINE);
 }
 
 static DRIVER_INIT(konamigx)
@@ -3348,6 +3217,9 @@ static DRIVER_INIT(konamigx)
 			ADD_SKIPPER32(0x2010f0, 0xc00000, 0xfe, 0x13f, -1, 0xff)
 		#endif
 
+		memory_install_read32_handler(0, ADDRESS_SPACE_PROGRAM, 0xd44000, 0xd44003, 0, 0, le2_gun_H_r );
+		memory_install_read32_handler(0, ADDRESS_SPACE_PROGRAM, 0xd44004, 0xd44007, 0, 0, le2_gun_V_r );
+
 		snd020_hack = 1;
 		konamigx_cfgport = 13;
 	}
@@ -3385,7 +3257,7 @@ static DRIVER_INIT(konamigx)
 
 	else if (!strcmp(Machine->gamedrv->name, "tkmmpzdm"))
 	{
-    int i;
+		int i;
 		data32_t *rom = (data32_t*)memory_region(REGION_CPU1);
 
 		// The display is initialized after POST but the copyright screen disabled
@@ -3410,7 +3282,7 @@ static DRIVER_INIT(konamigx)
 
 	else if ((!strcmp(Machine->gamedrv->name, "dragoonj")) || (!strcmp(Machine->gamedrv->name, "dragoona")))
 	{
-    int i;
+		int i;
 		esc_cb = dragoonj_esc;
 		konamigx_cfgport = 7;
 
@@ -3470,7 +3342,7 @@ static DRIVER_INIT(konamigx)
 		snd020_hack = 2;
 		konamigx_cfgport = 8;
 		// Winning Spike uses the type 4 Xilinx protection
-		install_mem_write32_handler(0, 0xcc0000, 0xcc0007, type4_prot_w );
+		memory_install_write32_handler(0, ADDRESS_SPACE_PROGRAM, 0xcc0000, 0xcc0007, 0, 0, type4_prot_w );
 	}
 
 	else if (!strcmp(Machine->gamedrv->name, "soccerss"))
@@ -3505,14 +3377,14 @@ static DRIVER_INIT(konamigx)
 	switch (readback)
 	{
 		case BPP5:
-			install_mem_read32_handler(0, 0xd4a000, 0xd4a00f, gx5bppspr_r);
+			memory_install_read32_handler(0, ADDRESS_SPACE_PROGRAM, 0xd4a000, 0xd4a00f, 0, 0, gx5bppspr_r);
 		break;
 
 		case BPP66:
-			install_mem_read32_handler(0, 0xd00000, 0xd01fff, K056832_6bpp_rom_long_r);
+			memory_install_read32_handler(0, ADDRESS_SPACE_PROGRAM, 0xd00000, 0xd01fff, 0, 0, K056832_6bpp_rom_long_r);
 
 		case BPP6:
-			install_mem_read32_handler(0, 0xd4a000, 0xd4a00f, gx6bppspr_r);
+			memory_install_read32_handler(0, ADDRESS_SPACE_PROGRAM, 0xd4a000, 0xd4a00f, 0, 0, gx6bppspr_r);
 		break;
 	}
 
@@ -3528,10 +3400,12 @@ static DRIVER_INIT(konamigx)
 GAMEX(1994, konamigx, 0, konamigx, konamigx, konamigx, ROT0, "Konami", "System GX", NOT_A_DRIVER )
 
 
-/* Type 1: standard with an add-on 53936 on the ROM board, analog inputs, and LAN (link) capability */
-/* needs the 53936 to be playable */
-GAMEX( 1994, racinfrc, konamigx, racinfrc, racinfrc, konamigx, ROT0, "Konami", "Racin' Force (ver UAB)", GAME_IMPERFECT_GRAPHICS | GAME_NOT_WORKING  )
-GAMEX( 1994, opengolf, konamigx, opengolf,  racinfrc, konamigx, ROT0, "Konami", "Konami's Open Golf Championship (ver EAD)", GAME_IMPERFECT_GRAPHICS | GAME_NOT_WORKING  )
+/* Type 1: standard with an add-on 53936 on the ROM board, analog inputs, */
+/* and optional LAN capability (only on Racin' Force - chips aren't present on the golf games) */
+/* needs the ROZ layer to be playable */
+GAMEX( 1994, racinfrc, konamigx, racinfrc,  racinfrc, konamigx, ROT0, "Konami", "Racin' Force (ver UAB)", GAME_IMPERFECT_GRAPHICS | GAME_NOT_WORKING  )
+GAMEX( 1994, opengolf, konamigx, opengolf,  racinfrc, konamigx, ROT0, "Konami", "Konami's Open Golf Championship (ver EAE)", GAME_IMPERFECT_GRAPHICS | GAME_NOT_WORKING  )
+GAMEX( 1994, opengol2, opengolf, opengolf,  racinfrc, konamigx, ROT0, "Konami", "Konami's Open Golf Championship (ver EAD)", GAME_IMPERFECT_GRAPHICS | GAME_NOT_WORKING  )
 GAMEX( 1994, ggreats2, opengolf, opengolf,  racinfrc, konamigx, ROT0, "Konami", "Golfing Greats 2 (ver JAC)", GAME_IMPERFECT_GRAPHICS | GAME_NOT_WORKING )
 
 
@@ -3539,6 +3413,7 @@ GAMEX( 1994, ggreats2, opengolf, opengolf,  racinfrc, konamigx, ROT0, "Konami", 
 /* these games work and are playable with minor graphics glitches */
 GAMEX( 1994, le2,      konamigx, le2,      le2,      konamigx, ROT0, "Konami", "Lethal Enforcers II: Gun Fighters (ver EAA)", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1994, le2u,     le2,      le2,      le2,      konamigx, ROT0, "Konami", "Lethal Enforcers II: Gun Fighters (ver UAA)", GAME_IMPERFECT_GRAPHICS )
+GAMEX( 1994, le2j,     le2,      le2,      le2,      konamigx, ROT0, "Konami", "Lethal Enforcers II: Gun Fighters (ver JAA)", GAME_IMPERFECT_GRAPHICS | GAME_NOT_WORKING)
 GAMEX( 1994, gokuparo, konamigx, konamigx, gokuparo, konamigx, ROT0, "Konami", "Gokujyou Parodius (ver JAD)", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1994, puzldama, konamigx, konamigx, puzldama, konamigx, ROT0, "Konami", "Taisen Puzzle-dama (ver JAA)", GAME_IMPERFECT_GRAPHICS )
 GAMEX( 1995, tbyahhoo, konamigx, konamigx, gokuparo, konamigx, ROT0, "Konami", "Twin Bee Yahhoo! (ver JAA)", GAME_IMPERFECT_GRAPHICS )

@@ -1,11 +1,11 @@
-#pragma code_seg("C109")
-#pragma data_seg("D109")
-#pragma bss_seg("B109")
-#pragma const_seg("K109")
-#pragma comment(linker, "/merge:D109=109")
-#pragma comment(linker, "/merge:C109=109")
-#pragma comment(linker, "/merge:B109=109")
-#pragma comment(linker, "/merge:K109=109")
+#pragma code_seg("C110")
+#pragma data_seg("D110")
+#pragma bss_seg("B110")
+#pragma const_seg("K110")
+#pragma comment(linker, "/merge:D110=110")
+#pragma comment(linker, "/merge:C110=110")
+#pragma comment(linker, "/merge:B110=110")
+#pragma comment(linker, "/merge:K110=110")
 /***************************************************************************
 
 Various Video System Co. games using the C7-01 GGA, VS8803, VS8904, VS8905
@@ -98,7 +98,7 @@ static WRITE16_HANDLER( sound_command_w )
 	{
 		pending_command = 1;
 		soundlatch_w(offset,data & 0xff);
-		cpu_set_irq_line(1, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 	}
 }
 
@@ -108,7 +108,7 @@ static WRITE16_HANDLER( turbofrc_sound_command_w )
 	{
 		pending_command = 1;
 		soundlatch_w(offset,(data >> 8) & 0xff);
-		cpu_set_irq_line(1, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 	}
 }
 
@@ -117,12 +117,12 @@ static READ16_HANDLER( pending_command_r )
 	return pending_command;
 }
 
-static WRITE_HANDLER( pending_command_clear_w )
+static WRITE8_HANDLER( pending_command_clear_w )
 {
 	pending_command = 0;
 }
 
-static WRITE_HANDLER( aerofgt_sh_bankswitch_w )
+static WRITE8_HANDLER( aerofgt_sh_bankswitch_w )
 {
 	data8_t *rom = memory_region(REGION_CPU2) + 0x10000;
 
@@ -521,7 +521,7 @@ INPUT_PORTS_START( karatblz )
 	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_BUTTON4 | IPF_PLAYER4 )
 
 	PORT_START
-	PORT_DIPNAME( 0x0007, 0x0007, DEF_STR( Coinage ) )
+	PORT_DIPNAME( 0x0007, 0x0007, DEF_STR( Coinage ) ) /* Coins 1, 2, 3 & 4 */
 	PORT_DIPSETTING(      0x0004, DEF_STR( 4C_1C ) )
 	PORT_DIPSETTING(      0x0005, DEF_STR( 3C_1C ) )
 	PORT_DIPSETTING(      0x0006, DEF_STR( 2C_1C ) )
@@ -536,11 +536,11 @@ INPUT_PORTS_START( karatblz )
 	PORT_DIPNAME( 0x0010, 0x0010, DEF_STR( Lives ) )
 	PORT_DIPSETTING(      0x0000, "1" )
 	PORT_DIPSETTING(      0x0010, "2" )
-	PORT_DIPNAME( 0x0060, 0x0060, DEF_STR( Cabinet ) )
-	PORT_DIPSETTING(      0x0060, "2 Players" )
-	PORT_DIPSETTING(      0x0040, "3 Players" )
-	PORT_DIPSETTING(      0x0020, "4 Players" )
-	PORT_DIPSETTING(      0x0000, "4 Players (Team)" )
+	PORT_DIPNAME( 0x0060, 0x0060, DEF_STR( Cabinet ) )	/* Game Type */
+	PORT_DIPSETTING(      0x0060, "2 Players" )		/* 1 Unit / 2 Players */
+	PORT_DIPSETTING(      0x0040, "3 Players" )		/* 1 Unit / 3 Players */
+	PORT_DIPSETTING(      0x0020, "4 Players" )		/* 1 Unit / 4 Players */
+	PORT_DIPSETTING(      0x0000, "4 Players (Team)" )	/* 2 Units / 4 Players */
 	/*  With 4 player (Team) selected and Same Coin Slot:
 		Coin A & B credit together for use by _only_ player 1 or player 2
 		Coin C & D credit together for use by _only_ player 3 or player 4
@@ -549,18 +549,17 @@ INPUT_PORTS_START( karatblz )
 	PORT_DIPSETTING(      0x0080, "Same" )
 	PORT_DIPSETTING(      0x0000, "Individual" )
 	PORT_SERVICE( 0x0100, IP_ACTIVE_LOW )
-	PORT_DIPNAME( 0x0600, 0x0600, DEF_STR( Difficulty ) )
+	PORT_DIPNAME( 0x0600, 0x0200, "Number of Enemies" ) /* Default is "Hard" */
 	PORT_DIPSETTING(      0x0400, "Easy" )
 	PORT_DIPSETTING(      0x0600, "Normal" )
 	PORT_DIPSETTING(      0x0200, "Hard" )
 	PORT_DIPSETTING(      0x0000, "Hardest" )
-	PORT_DIPNAME( 0x0800, 0x0800, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0800, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x1000, 0x1000, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x1000, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x2000, 0x2000, "Freeze" )
+	PORT_DIPNAME( 0x1800, 0x0800, "Strength of Enemies" ) /* Default is "Hard" */
+	PORT_DIPSETTING(      0x1000, "Easy" )
+	PORT_DIPSETTING(      0x1800, "Normal" )
+	PORT_DIPSETTING(      0x0800, "Hard" )
+	PORT_DIPSETTING(      0x0000, "Hardest" )
+	PORT_DIPNAME( 0x2000, 0x2000, "Freeze" )	/* Listed in manual as N.C. (aka No Connection) */
 	PORT_DIPSETTING(      0x2000, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 	PORT_DIPNAME( 0x4000, 0x0000, DEF_STR( Demo_Sounds ) )
@@ -695,15 +694,15 @@ INPUT_PORTS_START( turbofrc )
 	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_UNKNOWN )//START1 )
 
 	PORT_START
-	PORT_DIPNAME( 0x0001, 0x0001, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0001, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0002, 0x0002, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0002, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0004, 0x0004, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(      0x0004, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
+	PORT_DIPNAME( 0x0007, 0x0007, DEF_STR( Coinage ) ) /* Coins 1, 2 & 3 */
+	PORT_DIPSETTING(      0x0004, DEF_STR( 4C_1C ) )
+	PORT_DIPSETTING(      0x0005, DEF_STR( 3C_1C ) )
+	PORT_DIPSETTING(      0x0006, DEF_STR( 2C_1C ) )
+	PORT_DIPSETTING(      0x0007, DEF_STR( 1C_1C ) )
+	PORT_DIPSETTING(      0x0003, DEF_STR( 1C_2C ) )
+	PORT_DIPSETTING(      0x0002, DEF_STR( 1C_3C ) )
+	PORT_DIPSETTING(      0x0001, DEF_STR( 1C_5C ) )
+	PORT_DIPSETTING(      0x0000, DEF_STR( 1C_6C ) )
 	PORT_DIPNAME( 0x0008, 0x0008, "2 Coins to Start, 1 to Continue" )
 	PORT_DIPSETTING(      0x0008, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
@@ -1019,7 +1018,7 @@ static struct GfxDecodeInfo aerofgt_gfxdecodeinfo[] =
 
 static void irqhandler(int irq)
 {
-	cpu_set_irq_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 static struct YM2610interface ym2610_interface =

@@ -1,11 +1,11 @@
-#pragma code_seg("C467")
-#pragma data_seg("D467")
-#pragma bss_seg("B467")
-#pragma const_seg("K467")
-#pragma comment(linker, "/merge:D467=467")
-#pragma comment(linker, "/merge:C467=467")
-#pragma comment(linker, "/merge:B467=467")
-#pragma comment(linker, "/merge:K467=467")
+#pragma code_seg("C493")
+#pragma data_seg("D493")
+#pragma bss_seg("B493")
+#pragma const_seg("K493")
+#pragma comment(linker, "/merge:D493=493")
+#pragma comment(linker, "/merge:C493=493")
+#pragma comment(linker, "/merge:B493=493")
+#pragma comment(linker, "/merge:K493=493")
 /******************************************************************
 
 Mr. F. Lea
@@ -18,14 +18,14 @@ Mr. F. Lea
 
 static int mrflea_gfx_bank;
 
-WRITE_HANDLER( mrflea_gfx_bank_w ){
+WRITE8_HANDLER( mrflea_gfx_bank_w ){
 	mrflea_gfx_bank = data;
 	if( data & ~0x14 ){
 		logerror( "unknown gfx bank: 0x%02x\n", data );
 	}
 }
 
-WRITE_HANDLER( mrflea_videoram_w ){
+WRITE8_HANDLER( mrflea_videoram_w ){
 	int bank = offset/0x400;
 	offset &= 0x3ff;
 	videoram[offset] = data;
@@ -35,7 +35,7 @@ WRITE_HANDLER( mrflea_videoram_w ){
 	*/
 }
 
-WRITE_HANDLER( mrflea_spriteram_w ){
+WRITE8_HANDLER( mrflea_spriteram_w ){
 	if( offset&2 ){ /* tile_number */
 		spriteram[offset|1] = offset&1;
 		offset &= ~1;

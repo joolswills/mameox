@@ -1,11 +1,11 @@
-#pragma code_seg("C701")
-#pragma data_seg("D701")
-#pragma bss_seg("B701")
-#pragma const_seg("K701")
-#pragma comment(linker, "/merge:D701=701")
-#pragma comment(linker, "/merge:C701=701")
-#pragma comment(linker, "/merge:B701=701")
-#pragma comment(linker, "/merge:K701=701")
+#pragma code_seg("C740")
+#pragma data_seg("D740")
+#pragma bss_seg("B740")
+#pragma const_seg("K740")
+#pragma comment(linker, "/merge:D740=740")
+#pragma comment(linker, "/merge:C740=740")
+#pragma comment(linker, "/merge:B740=740")
+#pragma comment(linker, "/merge:K740=740")
 /***************************************************************************
 
 Functions to emulate the video hardware of the machine.
@@ -384,13 +384,13 @@ VIDEO_UPDATE( taitoair )
 	fillbitmap(bitmap, Machine->pens[0x41], cliprect);
 
 #ifdef MAME_DEBUG
-	if ( !keyboard_pressed(KEYCODE_A) )
+	if ( !code_pressed(KEYCODE_A) )
 		TC0080VCO_tilemap_draw(bitmap,cliprect,0,0,0);
-	if ( !keyboard_pressed(KEYCODE_S) )
+	if ( !code_pressed(KEYCODE_S) )
 		taitoair_draw_sprites(bitmap,cliprect,0);
-	if ( !keyboard_pressed(KEYCODE_D) )
+	if ( !code_pressed(KEYCODE_D) )
 		TC0080VCO_tilemap_draw(bitmap,cliprect,1,0,0);
-	if ( !keyboard_pressed(KEYCODE_F) )
+	if ( !code_pressed(KEYCODE_F) )
 		taitoair_draw_sprites(bitmap,cliprect,1);
 #else
 	TC0080VCO_tilemap_draw(bitmap,cliprect,0,0,0);

@@ -1,11 +1,11 @@
-#pragma code_seg("C666")
-#pragma data_seg("D666")
-#pragma bss_seg("B666")
-#pragma const_seg("K666")
-#pragma comment(linker, "/merge:D666=666")
-#pragma comment(linker, "/merge:C666=666")
-#pragma comment(linker, "/merge:B666=666")
-#pragma comment(linker, "/merge:K666=666")
+#pragma code_seg("C704")
+#pragma data_seg("D704")
+#pragma bss_seg("B704")
+#pragma const_seg("K704")
+#pragma comment(linker, "/merge:D704=704")
+#pragma comment(linker, "/merge:C704=704")
+#pragma comment(linker, "/merge:B704=704")
+#pragma comment(linker, "/merge:K704=704")
 /***************************************************************************
 
 Atari Starship 1 video emulation
@@ -103,7 +103,7 @@ VIDEO_START( starshp1 )
 }
 
 
-READ_HANDLER( starshp1_rng_r )
+READ8_HANDLER( starshp1_rng_r )
 {
 	int x = cpu_gethorzbeampos();
 	int y = cpu_getscanline();
@@ -117,7 +117,7 @@ READ_HANDLER( starshp1_rng_r )
 }
 
 
-WRITE_HANDLER( starshp1_ssadd_w )
+WRITE8_HANDLER( starshp1_ssadd_w )
 {
 	/*
 	 * The range of sprite position values doesn't suffice to
@@ -133,7 +133,7 @@ WRITE_HANDLER( starshp1_ssadd_w )
 }
 
 
-WRITE_HANDLER( starshp1_sspic_w )
+WRITE8_HANDLER( starshp1_sspic_w )
 {
 	/*
 	 * Some mysterious game code at address $2CCE is causing
@@ -148,7 +148,7 @@ WRITE_HANDLER( starshp1_sspic_w )
 }
 
 
-WRITE_HANDLER( starshp1_playfield_w )
+WRITE8_HANDLER( starshp1_playfield_w )
 {
 	if (starshp1_mux != 0)
 	{

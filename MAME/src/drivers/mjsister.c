@@ -1,11 +1,11 @@
-#pragma code_seg("C457")
-#pragma data_seg("D457")
-#pragma bss_seg("B457")
-#pragma const_seg("K457")
-#pragma comment(linker, "/merge:D457=457")
-#pragma comment(linker, "/merge:C457=457")
-#pragma comment(linker, "/merge:B457=457")
-#pragma comment(linker, "/merge:K457=457")
+#pragma code_seg("C482")
+#pragma data_seg("D482")
+#pragma bss_seg("B482")
+#pragma const_seg("K482")
+#pragma comment(linker, "/merge:D482=482")
+#pragma comment(linker, "/merge:C482=482")
+#pragma comment(linker, "/merge:B482=482")
+#pragma comment(linker, "/merge:K482=482")
 /*****************************************************************************
 
 Mahjong Sisters (c) 1986 Toa Plan
@@ -27,7 +27,7 @@ extern int colorbank;
 
 VIDEO_START( mjsister );
 VIDEO_UPDATE( mjsister );
-WRITE_HANDLER( mjsister_videoram_w );
+WRITE8_HANDLER( mjsister_videoram_w );
 
 static int mjsister_input_sel1;
 static int mjsister_input_sel2;
@@ -50,12 +50,12 @@ static void dac_callback(int param)
 		dac_busy = 0;
 }
 
-static WRITE_HANDLER( mjsister_dac_adr_s_w )
+static WRITE8_HANDLER( mjsister_dac_adr_s_w )
 {
 	dac_adr_s = data;
 }
 
-static WRITE_HANDLER( mjsister_dac_adr_e_w )
+static WRITE8_HANDLER( mjsister_dac_adr_e_w )
 {
 	dac_adr_e = data;
 	dac_adr = dac_adr_s << 8;
@@ -71,7 +71,7 @@ static MACHINE_INIT( mjsister )
 	dac_busy = 0;
 }
 
-static WRITE_HANDLER( mjsister_banksel1_w )
+static WRITE8_HANDLER( mjsister_banksel1_w )
 {
 	data8_t *BANKROM = memory_region(REGION_CPU1);
 	int tmp = colorbank;
@@ -107,7 +107,7 @@ static WRITE_HANDLER( mjsister_banksel1_w )
 	cpu_setbank(1,&BANKROM[rombank0*0x10000+rombank1*0x8000]+0x10000);
 }
 
-static WRITE_HANDLER( mjsister_banksel2_w )
+static WRITE8_HANDLER( mjsister_banksel2_w )
 {
 	data8_t *BANKROM = memory_region(REGION_CPU1);
 
@@ -126,17 +126,17 @@ static WRITE_HANDLER( mjsister_banksel2_w )
 	cpu_setbank(1,&BANKROM[rombank0*0x10000+rombank1*0x8000]+0x10000);
 }
 
-static WRITE_HANDLER( mjsister_input_sel1_w )
+static WRITE8_HANDLER( mjsister_input_sel1_w )
 {
 	mjsister_input_sel1 = data;
 }
 
-static WRITE_HANDLER( mjsister_input_sel2_w )
+static WRITE8_HANDLER( mjsister_input_sel2_w )
 {
 	mjsister_input_sel2 = data;
 }
 
-static READ_HANDLER( mjsister_keys_r )
+static READ8_HANDLER( mjsister_keys_r )
 {
 	int p,i,ret = 0;
 

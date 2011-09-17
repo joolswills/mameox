@@ -1,11 +1,11 @@
-#pragma code_seg("C613")
-#pragma data_seg("D613")
-#pragma bss_seg("B613")
-#pragma const_seg("K613")
-#pragma comment(linker, "/merge:D613=613")
-#pragma comment(linker, "/merge:C613=613")
-#pragma comment(linker, "/merge:B613=613")
-#pragma comment(linker, "/merge:K613=613")
+#pragma code_seg("C649")
+#pragma data_seg("D649")
+#pragma bss_seg("B649")
+#pragma const_seg("K649")
+#pragma comment(linker, "/merge:D649=649")
+#pragma comment(linker, "/merge:C649=649")
+#pragma comment(linker, "/merge:B649=649")
+#pragma comment(linker, "/merge:K649=649")
 /***************************************************************************
 
 Shanghai
@@ -619,7 +619,7 @@ usrintf_showmessage("unsupported command %s (%04x)",instruction_name[fifo[0]>>10
 
 static int regno;
 
-static READ_HANDLER( HD63484_status_r )
+static READ8_HANDLER( HD63484_status_r )
 {
 	if (offset == 1) return 0xff;	/* high 8 bits - not used */
 
@@ -627,7 +627,7 @@ static READ_HANDLER( HD63484_status_r )
 	return 0x22|4;	/* write FIFO ready + command end    + read FIFO ready */
 }
 
-static WRITE_HANDLER( HD63484_address_w )
+static WRITE8_HANDLER( HD63484_address_w )
 {
 	static unsigned char reg[2];
 
@@ -637,7 +637,7 @@ static WRITE_HANDLER( HD63484_address_w )
 //	logerror("PC %05x: HD63484 select register %02x\n",activecpu_get_pc(),regno);
 }
 
-static WRITE_HANDLER( HD63484_data_w )
+static WRITE8_HANDLER( HD63484_data_w )
 {
 	static unsigned char dat[2];
 
@@ -657,7 +657,7 @@ logerror("PC %05x: HD63484 register %02x write %04x\n",activecpu_get_pc(),regno,
 	}
 }
 
-static READ_HANDLER( HD63484_data_r )
+static READ8_HANDLER( HD63484_data_r )
 {
 	int res;
 
@@ -766,10 +766,10 @@ VIDEO_UPDATE( shanghai )
 
 static INTERRUPT_GEN( shanghai_interrupt )
 {
-	cpu_set_irq_line_and_vector(0,0,HOLD_LINE,0x80);
+	cpunum_set_input_line_and_vector(0,0,HOLD_LINE,0x80);
 }
 
-static WRITE_HANDLER( shanghai_coin_w )
+static WRITE8_HANDLER( shanghai_coin_w )
 {
 	coin_counter_w(0,data & 1);
 	coin_counter_w(1,data & 2);

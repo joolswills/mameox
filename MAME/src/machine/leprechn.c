@@ -1,11 +1,11 @@
-#pragma code_seg("C402")
-#pragma data_seg("D402")
-#pragma bss_seg("B402")
-#pragma const_seg("K402")
-#pragma comment(linker, "/merge:D402=402")
-#pragma comment(linker, "/merge:C402=402")
-#pragma comment(linker, "/merge:B402=402")
-#pragma comment(linker, "/merge:K402=402")
+#pragma code_seg("C419")
+#pragma data_seg("D419")
+#pragma bss_seg("B419")
+#pragma const_seg("K419")
+#pragma comment(linker, "/merge:D419=419")
+#pragma comment(linker, "/merge:C419=419")
+#pragma comment(linker, "/merge:B419=419")
+#pragma comment(linker, "/merge:K419=419")
 #include "driver.h"
 #include "cpu/m6502/m6502.h"
 #include "machine/6522via.h"
@@ -14,12 +14,12 @@
 
 static data8_t input_port_select;
 
-static WRITE_HANDLER( leprechn_input_port_select_w )
+static WRITE8_HANDLER( leprechn_input_port_select_w )
 {
     input_port_select = data;
 }
 
-static READ_HANDLER( leprechn_input_port_r )
+static READ8_HANDLER( leprechn_input_port_r )
 {
     switch (input_port_select)
     {
@@ -41,16 +41,16 @@ static READ_HANDLER( leprechn_input_port_r )
 }
 
 
-static WRITE_HANDLER( leprechn_coin_counter_w )
+static WRITE8_HANDLER( leprechn_coin_counter_w )
 {
 	coin_counter_w(offset, !data);
 }
 
 
-static WRITE_HANDLER( leprechn_sh_w )
+static WRITE8_HANDLER( leprechn_sh_w )
 {
     soundlatch_w(offset,data);
-    cpu_set_irq_line(1,M6502_IRQ_LINE,HOLD_LINE);
+    cpunum_set_input_line(1,M6502_IRQ_LINE,HOLD_LINE);
 }
 
 
@@ -90,7 +90,7 @@ DRIVER_INIT( leprechn )
 }
 
 
-READ_HANDLER( leprechn_sh_0805_r )
+READ8_HANDLER( leprechn_sh_0805_r )
 {
     return 0xc0;
 }

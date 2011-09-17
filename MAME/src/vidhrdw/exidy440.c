@@ -1,11 +1,11 @@
-#pragma code_seg("C281")
-#pragma data_seg("D281")
-#pragma bss_seg("B281")
-#pragma const_seg("K281")
-#pragma comment(linker, "/merge:D281=281")
-#pragma comment(linker, "/merge:C281=281")
-#pragma comment(linker, "/merge:B281=281")
-#pragma comment(linker, "/merge:K281=281")
+#pragma code_seg("C292")
+#pragma data_seg("D292")
+#pragma bss_seg("B292")
+#pragma const_seg("K292")
+#pragma comment(linker, "/merge:D292=292")
+#pragma comment(linker, "/merge:C292=292")
+#pragma comment(linker, "/merge:B292=292")
+#pragma comment(linker, "/merge:K292=292")
 /***************************************************************************
 
 	Exidy 440 video system
@@ -105,7 +105,7 @@ VIDEO_START( exidy440 )
  *
  *************************************/
 
-READ_HANDLER( exidy440_videoram_r )
+READ8_HANDLER( exidy440_videoram_r )
 {
 	UINT8 *base = &local_videoram[(*exidy440_scanline * 256 + offset) * 2];
 
@@ -114,7 +114,7 @@ READ_HANDLER( exidy440_videoram_r )
 }
 
 
-WRITE_HANDLER( exidy440_videoram_w )
+WRITE8_HANDLER( exidy440_videoram_w )
 {
 	UINT8 *base = &local_videoram[(*exidy440_scanline * 256 + offset) * 2];
 
@@ -134,13 +134,13 @@ WRITE_HANDLER( exidy440_videoram_w )
  *
  *************************************/
 
-READ_HANDLER( exidy440_paletteram_r )
+READ8_HANDLER( exidy440_paletteram_r )
 {
 	return local_paletteram[palettebank_io * 512 + offset];
 }
 
 
-WRITE_HANDLER( exidy440_paletteram_w )
+WRITE8_HANDLER( exidy440_paletteram_w )
 {
 	/* update palette ram in the I/O bank */
 	local_paletteram[palettebank_io * 512 + offset] = data;
@@ -167,7 +167,7 @@ WRITE_HANDLER( exidy440_paletteram_w )
  *
  *************************************/
 
-READ_HANDLER( exidy440_horizontal_pos_r )
+READ8_HANDLER( exidy440_horizontal_pos_r )
 {
 	/* clear the FIRQ on a read here */
 	exidy440_firq_beam = 0;
@@ -179,7 +179,7 @@ READ_HANDLER( exidy440_horizontal_pos_r )
 }
 
 
-READ_HANDLER( exidy440_vertical_pos_r )
+READ8_HANDLER( exidy440_vertical_pos_r )
 {
 	int result;
 
@@ -199,7 +199,7 @@ READ_HANDLER( exidy440_vertical_pos_r )
  *
  *************************************/
 
-WRITE_HANDLER( exidy440_spriteram_w )
+WRITE8_HANDLER( exidy440_spriteram_w )
 {
 	force_partial_update(cpu_getscanline());
 	spriteram[offset] = data;
@@ -213,7 +213,7 @@ WRITE_HANDLER( exidy440_spriteram_w )
  *
  *************************************/
 
-WRITE_HANDLER( exidy440_control_w )
+WRITE8_HANDLER( exidy440_control_w )
 {
 	int oldvis = palettebank_vis;
 
@@ -247,7 +247,7 @@ WRITE_HANDLER( exidy440_control_w )
 }
 
 
-WRITE_HANDLER( exidy440_interrupt_clear_w )
+WRITE8_HANDLER( exidy440_interrupt_clear_w )
 {
 	/* clear the VBLANK FIRQ on a write here */
 	exidy440_firq_vblank = 0;
@@ -265,9 +265,9 @@ WRITE_HANDLER( exidy440_interrupt_clear_w )
 void exidy440_update_firq(void)
 {
 	if (exidy440_firq_vblank || (firq_enable && exidy440_firq_beam))
-		cpu_set_irq_line(0, 1, ASSERT_LINE);
+		cpunum_set_input_line(0, 1, ASSERT_LINE);
 	else
-		cpu_set_irq_line(0, 1, CLEAR_LINE);
+		cpunum_set_input_line(0, 1, CLEAR_LINE);
 }
 
 

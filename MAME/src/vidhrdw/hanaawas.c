@@ -1,11 +1,11 @@
-#pragma code_seg("C349")
-#pragma data_seg("D349")
-#pragma bss_seg("B349")
-#pragma const_seg("K349")
-#pragma comment(linker, "/merge:D349=349")
-#pragma comment(linker, "/merge:C349=349")
-#pragma comment(linker, "/merge:B349=349")
-#pragma comment(linker, "/merge:K349=349")
+#pragma code_seg("C363")
+#pragma data_seg("D363")
+#pragma bss_seg("B363")
+#pragma const_seg("K363")
+#pragma comment(linker, "/merge:D363=363")
+#pragma comment(linker, "/merge:C363=363")
+#pragma comment(linker, "/merge:B363=363")
+#pragma comment(linker, "/merge:K363=363")
 /***************************************************************************
 
   vidhrdw.c
@@ -77,7 +77,7 @@ PALETTE_INIT( hanaawas )
 	}
 }
 
-WRITE_HANDLER( hanaawas_videoram_w )
+WRITE8_HANDLER( hanaawas_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -86,7 +86,7 @@ WRITE_HANDLER( hanaawas_videoram_w )
 	}
 }
 
-WRITE_HANDLER( hanaawas_colorram_w )
+WRITE8_HANDLER( hanaawas_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -98,7 +98,7 @@ WRITE_HANDLER( hanaawas_colorram_w )
 	}
 }
 
-WRITE_HANDLER( hanaawas_portB_w )
+WRITE8_HANDLER( hanaawas_portB_w )
 {
 	/* bit 7 is flip screen */
 	if (flip_screen != (~data & 0x80))

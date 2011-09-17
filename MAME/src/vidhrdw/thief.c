@@ -1,11 +1,11 @@
-#pragma code_seg("C719")
-#pragma data_seg("D719")
-#pragma bss_seg("B719")
-#pragma const_seg("K719")
-#pragma comment(linker, "/merge:D719=719")
-#pragma comment(linker, "/merge:C719=719")
-#pragma comment(linker, "/merge:B719=719")
-#pragma comment(linker, "/merge:K719=719")
+#pragma code_seg("C761")
+#pragma data_seg("D761")
+#pragma bss_seg("B761")
+#pragma const_seg("K761")
+#pragma comment(linker, "/merge:D761=761")
+#pragma comment(linker, "/merge:C761=761")
+#pragma comment(linker, "/merge:B761=761")
+#pragma comment(linker, "/merge:K761=761")
 /*	video hardware for Pacific Novelty games:
 **	Thief/Nato Defense
 */
@@ -40,21 +40,21 @@ enum {
 
 /***************************************************************************/
 
-READ_HANDLER( thief_context_ram_r ){
+READ8_HANDLER( thief_context_ram_r ){
 	return thief_coprocessor.context_ram[0x40*thief_coprocessor.bank+offset];
 }
 
-WRITE_HANDLER( thief_context_ram_w ){
+WRITE8_HANDLER( thief_context_ram_w ){
 	thief_coprocessor.context_ram[0x40*thief_coprocessor.bank+offset] = data;
 }
 
-WRITE_HANDLER( thief_context_bank_w ){
+WRITE8_HANDLER( thief_context_bank_w ){
 	thief_coprocessor.bank = data&0xf;
 }
 
 /***************************************************************************/
 
-WRITE_HANDLER( thief_video_control_w ){
+WRITE8_HANDLER( thief_video_control_w ){
 	if( (data^thief_video_control)&1 ){
 		/* screen flipped */
 		memset( dirtybuffer, 0x00, 0x2000*2 );
@@ -70,11 +70,11 @@ WRITE_HANDLER( thief_video_control_w ){
 */
 }
 
-WRITE_HANDLER( thief_vtcsel_w ){
+WRITE8_HANDLER( thief_vtcsel_w ){
 	/* TMS9927 VTAC registers */
 }
 
-WRITE_HANDLER( thief_color_map_w ){
+WRITE8_HANDLER( thief_color_map_w ){
 /*
 	--xx----	blue
 	----xx--	green
@@ -89,7 +89,7 @@ WRITE_HANDLER( thief_color_map_w ){
 
 /***************************************************************************/
 
-WRITE_HANDLER( thief_color_plane_w ){
+WRITE8_HANDLER( thief_color_plane_w ){
 /*
 	--xx----	selects bitplane to read from (0..3)
 	----xxxx	selects bitplane(s) to write to (0x0 = none, 0xf = all)
@@ -98,13 +98,13 @@ WRITE_HANDLER( thief_color_plane_w ){
 	thief_read_mask = (data>>4)&3;
 }
 
-READ_HANDLER( thief_videoram_r ){
+READ8_HANDLER( thief_videoram_r ){
 	unsigned char *source = &videoram[offset];
 	if( thief_video_control&0x02 ) source+=0x2000*4; /* foreground/background */
 	return source[thief_read_mask*0x2000];
 }
 
-WRITE_HANDLER( thief_videoram_w ){
+WRITE8_HANDLER( thief_videoram_w ){
 	UINT8 *dest = &videoram[offset];
 	if( thief_video_control&0x02 ){
 		dest+=0x2000*4; /* foreground/background */
@@ -212,7 +212,7 @@ static UINT16 fetch_image_addr( void ){
 	return addr;
 }
 
-WRITE_HANDLER( thief_blit_w ){
+WRITE8_HANDLER( thief_blit_w ){
 	int i, offs, xoffset, dy;
 	UINT8 *gfx_rom = memory_region( REGION_GFX1 );
 	UINT8 x = thief_coprocessor.param[SCREEN_XPOS];
@@ -272,7 +272,7 @@ WRITE_HANDLER( thief_blit_w ){
 	}
 }
 
-READ_HANDLER( thief_coprocessor_r ){
+READ8_HANDLER( thief_coprocessor_r ){
 	switch( offset ){
  	case SCREEN_XPOS: /* xpos */
 	case SCREEN_YPOS: /* ypos */
@@ -315,7 +315,7 @@ READ_HANDLER( thief_coprocessor_r ){
 	return thief_coprocessor.param[offset];
 }
 
-WRITE_HANDLER( thief_coprocessor_w ){
+WRITE8_HANDLER( thief_coprocessor_w ){
 	switch( offset ){
 	case GFX_PORT:
 		{

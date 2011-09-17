@@ -6,6 +6,7 @@
 #pragma comment(linker, "/merge:C40=40")
 #pragma comment(linker, "/merge:B40=40")
 #pragma comment(linker, "/merge:K40=40")
+
 #include "driver.h"
 
 
@@ -18,7 +19,7 @@ static int protection_value;
 static int protection_ret = 0;
 
 
-READ_HANDLER( mmonkey_protection_r )
+READ8_HANDLER( mmonkey_protection_r )
 {
 	unsigned char *RAM = memory_region(REGION_CPU1);
 
@@ -34,7 +35,7 @@ READ_HANDLER( mmonkey_protection_r )
 
 
 
-WRITE_HANDLER( mmonkey_protection_w )
+WRITE8_HANDLER( mmonkey_protection_w )
 {
 	unsigned char *RAM = memory_region(REGION_CPU1);
 

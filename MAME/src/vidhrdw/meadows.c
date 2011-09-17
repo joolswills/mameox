@@ -1,11 +1,11 @@
-#pragma code_seg("C438")
-#pragma data_seg("D438")
-#pragma bss_seg("B438")
-#pragma const_seg("K438")
-#pragma comment(linker, "/merge:D438=438")
-#pragma comment(linker, "/merge:C438=438")
-#pragma comment(linker, "/merge:B438=438")
-#pragma comment(linker, "/merge:K438=438")
+#pragma code_seg("C460")
+#pragma data_seg("D460")
+#pragma bss_seg("B460")
+#pragma const_seg("K460")
+#pragma comment(linker, "/merge:D460=460")
+#pragma comment(linker, "/merge:C460=460")
+#pragma comment(linker, "/merge:B460=460")
+#pragma comment(linker, "/merge:K460=460")
 /***************************************************************************
 
 	Meadows S2650 driver
@@ -59,7 +59,7 @@ VIDEO_START( meadows )
  *
  *************************************/
 
-WRITE_HANDLER( meadows_videoram_w )
+WRITE8_HANDLER( meadows_videoram_w )
 {
 	videoram[offset] = data;
 	tilemap_mark_tile_dirty(bg_tilemap, offset);
@@ -73,7 +73,7 @@ WRITE_HANDLER( meadows_videoram_w )
  *
  *************************************/
 
-WRITE_HANDLER( meadows_spriteram_w )
+WRITE8_HANDLER( meadows_spriteram_w )
 {
 	if (spriteram[offset] != data)
 		force_partial_update(cpu_getscanline());

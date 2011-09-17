@@ -1,11 +1,11 @@
-#pragma code_seg("C353")
-#pragma data_seg("D353")
-#pragma bss_seg("B353")
-#pragma const_seg("K353")
-#pragma comment(linker, "/merge:D353=353")
-#pragma comment(linker, "/merge:C353=353")
-#pragma comment(linker, "/merge:B353=353")
-#pragma comment(linker, "/merge:K353=353")
+#pragma code_seg("C367")
+#pragma data_seg("D367")
+#pragma bss_seg("B367")
+#pragma const_seg("K367")
+#pragma comment(linker, "/merge:D367=367")
+#pragma comment(linker, "/merge:C367=367")
+#pragma comment(linker, "/merge:B367=367")
+#pragma comment(linker, "/merge:K367=367")
 /****************************************************************************
 
 HEXA
@@ -46,8 +46,8 @@ NOTES:
 
 VIDEO_START( hexa );
 VIDEO_UPDATE( hexa );
-WRITE_HANDLER( hexa_videoram_w );
-WRITE_HANDLER( hexa_d008_w );
+WRITE8_HANDLER( hexa_videoram_w );
+WRITE8_HANDLER( hexa_d008_w );
 
 
 

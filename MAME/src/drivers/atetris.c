@@ -1,11 +1,11 @@
-#pragma code_seg("C142")
-#pragma data_seg("D142")
-#pragma bss_seg("B142")
-#pragma const_seg("K142")
-#pragma comment(linker, "/merge:D142=142")
-#pragma comment(linker, "/merge:C142=142")
-#pragma comment(linker, "/merge:B142=142")
-#pragma comment(linker, "/merge:K142=142")
+#pragma code_seg("C143")
+#pragma data_seg("D143")
+#pragma bss_seg("B143")
+#pragma const_seg("K143")
+#pragma comment(linker, "/merge:D143=143")
+#pragma comment(linker, "/merge:C143=143")
+#pragma comment(linker, "/merge:B143=143")
+#pragma comment(linker, "/merge:K143=143")
 /***************************************************************************
 
 	Atari Tetris hardware
@@ -83,7 +83,7 @@ static UINT8 nvram_write_enable;
 static void interrupt_gen(int scanline)
 {
 	/* assert/deassert the interrupt */
-	cpu_set_irq_line(0, 0, (scanline & 32) ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(0, 0, (scanline & 32) ? ASSERT_LINE : CLEAR_LINE);
 
 	/* set the next timer */
 	scanline += 32;
@@ -93,9 +93,9 @@ static void interrupt_gen(int scanline)
 }
 
 
-static WRITE_HANDLER( irq_ack_w )
+static WRITE8_HANDLER( irq_ack_w )
 {
-	cpu_set_irq_line(0, 0, CLEAR_LINE);
+	cpunum_set_input_line(0, 0, CLEAR_LINE);
 }
 
 
@@ -125,7 +125,7 @@ static MACHINE_INIT( atetris )
  *
  *************************************/
 
-static READ_HANDLER( atetris_slapstic_r )
+static READ8_HANDLER( atetris_slapstic_r )
 {
 	int result = slapstic_base[0x2000 + offset];
 	int new_bank = slapstic_tweak(offset) & 1;
@@ -147,7 +147,7 @@ static READ_HANDLER( atetris_slapstic_r )
  *
  *************************************/
 
-static WRITE_HANDLER( coincount_w )
+static WRITE8_HANDLER( coincount_w )
 {
 	coin_counter_w(0, (data >> 5) & 1);
 	coin_counter_w(1, (data >> 4) & 1);
@@ -161,7 +161,7 @@ static WRITE_HANDLER( coincount_w )
  *
  *************************************/
 
-static WRITE_HANDLER( nvram_w )
+static WRITE8_HANDLER( nvram_w )
 {
 	if (nvram_write_enable)
 		generic_nvram[offset] = data;
@@ -169,7 +169,7 @@ static WRITE_HANDLER( nvram_w )
 }
 
 
-static WRITE_HANDLER( nvram_enable_w )
+static WRITE8_HANDLER( nvram_enable_w )
 {
 	nvram_write_enable = 1;
 }
@@ -189,6 +189,26 @@ static ADDRESS_MAP_START( main_map, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0x2400, 0x25ff) AM_READWRITE(MRA8_RAM, nvram_w) AM_BASE(&generic_nvram) AM_SIZE(&generic_nvram_size)
 	AM_RANGE(0x2800, 0x280f) AM_READWRITE(pokey1_r, pokey1_w)
 	AM_RANGE(0x2810, 0x281f) AM_READWRITE(pokey2_r, pokey2_w)
+	AM_RANGE(0x3000, 0x3000) AM_WRITE(watchdog_reset_w)
+	AM_RANGE(0x3400, 0x3400) AM_WRITE(nvram_enable_w)
+	AM_RANGE(0x3800, 0x3800) AM_WRITE(irq_ack_w)
+	AM_RANGE(0x3c00, 0x3c00) AM_WRITE(coincount_w)
+	AM_RANGE(0x4000, 0x5fff) AM_ROM
+	AM_RANGE(0x6000, 0x7fff) AM_READ(atetris_slapstic_r)
+	AM_RANGE(0x8000, 0xffff) AM_ROM
+ADDRESS_MAP_END
+
+
+static ADDRESS_MAP_START( atetrsb2_map, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x0fff) AM_RAM
+	AM_RANGE(0x1000, 0x1fff) AM_READWRITE(MRA8_RAM, atetris_videoram_w) AM_BASE(&videoram) AM_SIZE(&videoram_size)
+	AM_RANGE(0x2000, 0x20ff) AM_READWRITE(MRA8_RAM, paletteram_RRRGGGBB_w) AM_BASE(&paletteram)
+	AM_RANGE(0x2400, 0x25ff) AM_READWRITE(MRA8_RAM, nvram_w) AM_BASE(&generic_nvram) AM_SIZE(&generic_nvram_size)
+	AM_RANGE(0x2802, 0x2802) AM_WRITE(SN76496_0_w)
+	AM_RANGE(0x2804, 0x2804) AM_WRITE(SN76496_1_w)
+	AM_RANGE(0x2806, 0x2806) AM_WRITE(SN76496_2_w)
+	AM_RANGE(0x2808, 0x2808) AM_READ(input_port_0_r) /* IN0 */
+	AM_RANGE(0x2818, 0x2818) AM_READ(input_port_1_r) /* IN1 */
 	AM_RANGE(0x3000, 0x3000) AM_WRITE(watchdog_reset_w)
 	AM_RANGE(0x3400, 0x3400) AM_WRITE(nvram_enable_w)
 	AM_RANGE(0x3800, 0x3800) AM_WRITE(irq_ack_w)
@@ -311,6 +331,12 @@ static struct POKEYinterface pokey_interface =
 	{ input_port_0_r, input_port_1_r }
 };
 
+static struct SN76496interface sn76496_interface =
+{
+	3,	/* 3 chips */
+	{ 14745600/8, 14745600/8, 14745600/8 }, /* Need correct values here */
+	{ 50, 50, 50 }
+};
 
 
 /*************************************
@@ -346,6 +372,31 @@ static MACHINE_DRIVER_START( atetris )
 MACHINE_DRIVER_END
 
 
+static MACHINE_DRIVER_START( atetrsb2 )
+
+	/* basic machine hardware */
+	MDRV_CPU_ADD(M6502,14745600/8)
+	MDRV_CPU_PROGRAM_MAP(atetrsb2_map,0)
+
+	MDRV_FRAMES_PER_SECOND(60)
+	MDRV_VBLANK_DURATION(DEFAULT_REAL_60HZ_VBLANK_DURATION)
+
+	MDRV_MACHINE_INIT(atetris)
+	MDRV_NVRAM_HANDLER(generic_1fill)
+
+	/* video hardware */
+	MDRV_VIDEO_ATTRIBUTES(VIDEO_TYPE_RASTER)
+	MDRV_SCREEN_SIZE(42*8, 30*8)
+	MDRV_VISIBLE_AREA(0*8, 42*8-1, 0*8, 30*8-1)
+	MDRV_GFXDECODE(gfxdecodeinfo)
+	MDRV_PALETTE_LENGTH(256)
+
+	MDRV_VIDEO_START(atetris)
+	MDRV_VIDEO_UPDATE(atetris)
+
+	/* sound hardware */
+	MDRV_SOUND_ADD(SN76496, sn76496_interface)
+MACHINE_DRIVER_END
 
 /*************************************
  *
@@ -385,6 +436,16 @@ ROM_START( atetrisb )
 	/* however doesn't seem to be required to run the game in this driver. */
 	ROM_REGION( 0x0800, REGION_USER1, 0 )
 	ROM_LOAD( "tetris.03",    0x0000, 0x0800, CRC(26618c0b) SHA1(4d6470bf3a79be3b0766e246abe00582d4c85a97) )
+ROM_END
+
+
+ROM_START( atetrsb2 )
+	ROM_REGION( 0x18000, REGION_CPU1, 0 )
+	ROM_LOAD( "k1-01",    0x10000, 0x8000, CRC(fa056809) SHA1(e4ccccdf9b04b68127c7b03ae263519cf00f94cb) )
+	ROM_CONTINUE(         0x08000, 0x8000 )
+
+	ROM_REGION( 0x10000, REGION_GFX1, ROMREGION_DISPOSE )
+	ROM_LOAD( "1101.35a",     0x0000, 0x10000, CRC(84a1939f) SHA1(d8577985fc8ed4e74f74c68b7c00c4855b7c3270) )
 ROM_END
 
 
@@ -430,11 +491,12 @@ static DRIVER_INIT( atetris )
  *
  *************************************/
 
-GAME( 1988, atetris,  0,       atetris, atetris,  atetris, ROT0,   "Atari Games", "Tetris (set 1)" )
-GAME( 1988, atetrisa, atetris, atetris, atetris,  atetris, ROT0,   "Atari Games", "Tetris (set 2)" )
-GAME( 1988, atetrisb, atetris, atetris, atetris,  atetris, ROT0,   "bootleg",     "Tetris (bootleg)" )
-GAME( 1989, atetcktl, atetris, atetris, atetcktl, atetris, ROT270, "Atari Games", "Tetris (Cocktail set 1)" )
-GAME( 1989, atetckt2, atetris, atetris, atetcktl, atetris, ROT270, "Atari Games", "Tetris (Cocktail set 2)" )
+GAME( 1988, atetris,  0,       atetris,  atetris,  atetris, ROT0,   "Atari Games", "Tetris (set 1)" )
+GAME( 1988, atetrisa, atetris, atetris,  atetris,  atetris, ROT0,   "Atari Games", "Tetris (set 2)" )
+GAME( 1988, atetrisb, atetris, atetris,  atetris,  atetris, ROT0,   "bootleg",     "Tetris (bootleg set 1)" )
+GAME( 1988, atetrsb2, atetris, atetrsb2, atetris,  atetris, ROT0,   "bootleg 2",   "Tetris (bootleg set 2)" )
+GAME( 1989, atetcktl, atetris, atetris,  atetcktl, atetris, ROT270, "Atari Games", "Tetris (Cocktail set 1)" )
+GAME( 1989, atetckt2, atetris, atetris,  atetcktl, atetris, ROT270, "Atari Games", "Tetris (Cocktail set 2)" )
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

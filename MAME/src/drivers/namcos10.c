@@ -1,11 +1,11 @@
-#pragma code_seg("C482")
-#pragma data_seg("D482")
-#pragma bss_seg("B482")
-#pragma const_seg("K482")
-#pragma comment(linker, "/merge:D482=482")
-#pragma comment(linker, "/merge:C482=482")
-#pragma comment(linker, "/merge:B482=482")
-#pragma comment(linker, "/merge:K482=482")
+#pragma code_seg("C510")
+#pragma data_seg("D510")
+#pragma bss_seg("B510")
+#pragma const_seg("K510")
+#pragma comment(linker, "/merge:D510=510")
+#pragma comment(linker, "/merge:C510=510")
+#pragma comment(linker, "/merge:B510=510")
+#pragma comment(linker, "/merge:K510=510")
 /***************************************************************************
 
   Namco System 10 - Arcade PSX Hardware
@@ -13,7 +13,8 @@
   Driver by smf
 
   Only one rom for Mr Driller 2 is dumped, it is encrypted using an xor and then a bitswap.
-  All it currently does is try to access the controller port.
+  All it currently does is output debug information to the asynchronous serial port and
+  crash with a blue screen.
 
 */
 
@@ -21,16 +22,12 @@
 #include "cpu/mips/psx.h"
 #include "includes/psx.h"
 
-static INTERRUPT_GEN( namcos10_vblank )
-{
-}
-
 static ADDRESS_MAP_START( namcos10_map, ADDRESS_SPACE_PROGRAM, 32 )
-	ADDRESS_MAP_FLAGS( AMEF_ABITS(29) )
-	AM_RANGE(0x00000000, 0x003fffff) AM_RAM AM_BASE(&psxram) AM_SIZE(&psxramsize)    /* ram */
-	AM_RANGE(0x1f800000, 0x1f8003ff) AM_RAM				  /* scratchpad */
+	AM_RANGE(0x00000000, 0x003fffff) AM_RAM AM_SHARE(1) AM_BASE(&g_p_n_psxram) AM_SIZE(&g_n_psxramsize) /* ram */
+	AM_RANGE(0x1f400000, 0x1f7fffff) AM_ROM AM_REGION(REGION_USER1, 0x400000) /* ?? */
+	AM_RANGE(0x1f800000, 0x1f8003ff) AM_RAM /* scratchpad */
 	AM_RANGE(0x1f801000, 0x1f801007) AM_WRITENOP
-	AM_RANGE(0x1f801008, 0x1f80100b) AM_RAM    /* ?? */
+	AM_RANGE(0x1f801008, 0x1f80100b) AM_RAM /* ?? */
 	AM_RANGE(0x1f80100c, 0x1f80102f) AM_WRITENOP
 	AM_RANGE(0x1f801010, 0x1f801013) AM_READNOP
 	AM_RANGE(0x1f801014, 0x1f801017) AM_READNOP
@@ -42,22 +39,29 @@ static ADDRESS_MAP_START( namcos10_map, ADDRESS_SPACE_PROGRAM, 32 )
 	AM_RANGE(0x1f801810, 0x1f801817) AM_READWRITE(psx_gpu_r, psx_gpu_w)
 	AM_RANGE(0x1f801820, 0x1f801827) AM_READWRITE(psx_mdec_r, psx_mdec_w)
 	AM_RANGE(0x1f801c00, 0x1f801dff) AM_NOP
-	AM_RANGE(0x1f802020, 0x1f802033) AM_RAM
+	AM_RANGE(0x1f802020, 0x1f802033) AM_RAM /* ?? */
 	AM_RANGE(0x1f802040, 0x1f802043) AM_WRITENOP
-	AM_RANGE(0x1fc00000, 0x1fffffff) AM_ROM AM_REGION(REGION_USER2, 0)    /* bios mirror */
+	AM_RANGE(0x1fc00000, 0x1fffffff) AM_ROM AM_SHARE(2) AM_REGION(REGION_USER1, 0) /* bios */
+	AM_RANGE(0x80000000, 0x803fffff) AM_RAM AM_SHARE(1) /* ram mirror */
+	AM_RANGE(0x9fc00000, 0x9fffffff) AM_ROM AM_SHARE(2) /* bios mirror */
+	AM_RANGE(0xa0000000, 0xa03fffff) AM_RAM AM_SHARE(1) /* ram mirror */
+	AM_RANGE(0xbfc00000, 0xbfffffff) AM_ROM AM_SHARE(2) /* bios mirror */
+	AM_RANGE(0xfffe0130, 0xfffe0133) AM_WRITENOP
 ADDRESS_MAP_END
 
 static DRIVER_INIT( namcos10 )
 {
 	int i;
-	data16_t *RAM = (data16_t *)memory_region( REGION_USER2 );
+	data16_t *RAM = (data16_t *)memory_region( REGION_USER1 );
 
-	for( i = 0; i < memory_region_length( REGION_USER2 ) / 2; i++ )
+	for( i = 0; i < memory_region_length( REGION_USER1 ) / 2; i++ )
 	{
 		RAM[ i ] = BITSWAP16( RAM[ i ] ^ 0xaaaa,
 			0xc, 0xd, 0xf, 0xe, 0xb, 0xa, 0x9, 0x8,
 			0x7, 0x6, 0x4, 0x1, 0x2, 0x5, 0x0, 0x3 );
 	}
+
+	psx_driver_init();
 }
 
 MACHINE_INIT( namcos10 )
@@ -69,7 +73,7 @@ static MACHINE_DRIVER_START( namcos10 )
 	/* basic machine hardware */
 	MDRV_CPU_ADD( PSXCPU, 33868800 / 2 ) /* 33MHz ?? */
 	MDRV_CPU_PROGRAM_MAP( namcos10_map, 0 )
-	MDRV_CPU_VBLANK_INT( namcos10_vblank, 1 )
+	MDRV_CPU_VBLANK_INT( psx_vblank, 1 )
 
 	MDRV_FRAMES_PER_SECOND( 60 )
 	MDRV_VBLANK_DURATION( 0 )
@@ -79,17 +83,12 @@ static MACHINE_DRIVER_START( namcos10 )
 
 	/* video hardware */
 	MDRV_VIDEO_ATTRIBUTES( VIDEO_TYPE_RASTER )
-#if defined( MAME_DEBUG )
 	MDRV_SCREEN_SIZE( 1024, 1024 )
-	MDRV_VISIBLE_AREA( 0, 1023, 0, 1023 )
-#else
-	MDRV_SCREEN_SIZE( 640, 480 )
 	MDRV_VISIBLE_AREA( 0, 639, 0, 479 )
-#endif
 	MDRV_PALETTE_LENGTH( 65536 )
 
 	MDRV_PALETTE_INIT( psx )
-	MDRV_VIDEO_START( psx_type2_1024x1024 )
+	MDRV_VIDEO_START( psx_type2 )
 	MDRV_VIDEO_UPDATE( psx )
 	MDRV_VIDEO_STOP( psx )
 
@@ -150,7 +149,7 @@ INPUT_PORTS_START( namcos10 )
 INPUT_PORTS_END
 
 ROM_START( mrdrilr2 )
-	ROM_REGION32_LE( 0x800000, REGION_USER2, 0 ) /* main prg */
+	ROM_REGION32_LE( 0x800000, REGION_USER1, 0 ) /* main prg */
 	ROM_LOAD( "dr21vera.1a",  0x000000, 0x800000, CRC(f93532a2) SHA1(8b72f2868978be1f0e0abd11425a3c8b2b0c4e99) )
 ROM_END
 

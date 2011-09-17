@@ -19,8 +19,8 @@
 #ifdef MESS
   #include "mess.h"
 #include "mesintrf.h"
+#include "inputx.h"
 #endif
-
 
 #include "MAMEoX.h"
 #include "XBESectionUtil.h"
@@ -41,7 +41,6 @@ extern unsigned int coinlockedout[COIN_COUNTERS];
 /* MARTINEZ.F 990207 Memory Card */
 #ifndef MESS
 #ifndef TINY_COMPILE
-#ifndef CPSMAME
 #ifndef MMSND
 int 		memcard_menu(struct mame_bitmap *bitmap, int);
 extern int	mcd_action;
@@ -50,7 +49,6 @@ extern int	memcard_status;
 extern int	memcard_number;
 extern int	memcard_manager;
 extern struct GameDriver driver_neogeo;
-#endif
 #endif
 #endif
 #endif
@@ -706,11 +704,6 @@ static void ui_multitextbox_ex(struct mame_bitmap *bitmap, const char *begin, co
 
 
 
-#if 0
-#pragma mark -
-#pragma mark BOXES & LINES
-#endif
-
 /*-------------------------------------------------
 	ui_drawbox - draw a black box with white border
 -------------------------------------------------*/
@@ -835,11 +828,6 @@ static void drawbar(struct mame_bitmap *bitmap, int leftx, int topy, int width, 
 }
 
 
-
-#if 0
-#pragma mark -
-#pragma mark BOXES & LINES
-#endif
 
 void ui_displaymenu(struct mame_bitmap *bitmap,const char **items,const char **subitems,char *flag,int selected,int arrowize_subitem)
 {
@@ -1553,9 +1541,7 @@ static int switchmenu(struct mame_bitmap *bitmap, int selected, UINT32 switch_na
 	total = 0;
 	while (in->type != IPT_END)
 	{
-		if ((in->type & ~IPF_MASK) == switch_name && input_port_name(in) != 0 &&
-				(in->type & IPF_UNUSED) == 0 &&
-				!(!options.cheat && (in->type & IPF_CHEAT)))
+		if (in->type == switch_name && input_port_active(in))
 		{
 			entry[total] = in;
 			menu_item[total] = input_port_name(in);
@@ -1579,11 +1565,11 @@ static int switchmenu(struct mame_bitmap *bitmap, int selected, UINT32 switch_na
 		if (i < total - 1)
 		{
 			in = entry[i] + 1;
-			while ((in->type & ~IPF_MASK) == switch_setting &&
+			while (in->type == switch_setting &&
 					in->default_value != entry[i]->default_value)
 				in++;
 
-			if ((in->type & ~IPF_MASK) != switch_setting)
+			if (in->type != switch_setting)
 				menu_subitem[i] = ui_getstring (UI_INVALID);
 			else menu_subitem[i] = input_port_name(in);
 		}
@@ -1594,34 +1580,34 @@ static int switchmenu(struct mame_bitmap *bitmap, int selected, UINT32 switch_na
 	if (sel < total - 1)
 	{
 		in = entry[sel] + 1;
-		while ((in->type & ~IPF_MASK) == switch_setting &&
+		while (in->type == switch_setting &&
 				in->default_value != entry[sel]->default_value)
 			in++;
 
-		if ((in->type & ~IPF_MASK) != switch_setting)
+		if (in->type != switch_setting)
 			/* invalid setting: revert to a valid one */
 			arrowize |= 1;
 		else
 		{
 			if (((in-1)->type & ~IPF_MASK) == switch_setting &&
-					!(!options.cheat && ((in-1)->type & IPF_CHEAT)))
+					!(!options.cheat && ((in-1)->cheat)))
 				arrowize |= 1;
 		}
 	}
 	if (sel < total - 1)
 	{
 		in = entry[sel] + 1;
-		while ((in->type & ~IPF_MASK) == switch_setting &&
+		while (in->type == switch_setting &&
 				in->default_value != entry[sel]->default_value)
 			in++;
 
-		if ((in->type & ~IPF_MASK) != switch_setting)
+		if (in->type != switch_setting)
 			/* invalid setting: revert to a valid one */
 			arrowize |= 2;
 		else
 		{
 			if (((in+1)->type & ~IPF_MASK) == switch_setting &&
-					!(!options.cheat && ((in+1)->type & IPF_CHEAT)))
+					!(!options.cheat && ((in+1)->cheat)))
 				arrowize |= 2;
 		}
 	}
@@ -1639,17 +1625,17 @@ static int switchmenu(struct mame_bitmap *bitmap, int selected, UINT32 switch_na
 		if (sel < total - 1)
 		{
 			in = entry[sel] + 1;
-			while ((in->type & ~IPF_MASK) == switch_setting &&
+			while (in->type == switch_setting &&
 					in->default_value != entry[sel]->default_value)
 				in++;
 
-			if ((in->type & ~IPF_MASK) != switch_setting)
+			if (in->type != switch_setting)
 				/* invalid setting: revert to a valid one */
 				entry[sel]->default_value = (entry[sel]+1)->default_value & entry[sel]->mask;
 			else
 			{
 				if (((in+1)->type & ~IPF_MASK) == switch_setting &&
-						!(!options.cheat && ((in+1)->type & IPF_CHEAT)))
+						!(!options.cheat && ((in+1)->cheat)))
 					entry[sel]->default_value = (in+1)->default_value & entry[sel]->mask;
 			}
 
@@ -1663,17 +1649,17 @@ static int switchmenu(struct mame_bitmap *bitmap, int selected, UINT32 switch_na
 		if (sel < total - 1)
 		{
 			in = entry[sel] + 1;
-			while ((in->type & ~IPF_MASK) == switch_setting &&
+			while (in->type == switch_setting &&
 					in->default_value != entry[sel]->default_value)
 				in++;
 
-			if ((in->type & ~IPF_MASK) != switch_setting)
+			if (in->type != switch_setting)
 				/* invalid setting: revert to a valid one */
 				entry[sel]->default_value = (entry[sel]+1)->default_value & entry[sel]->mask;
 			else
 			{
 				if (((in-1)->type & ~IPF_MASK) == switch_setting &&
-						!(!options.cheat && ((in-1)->type & IPF_CHEAT)))
+						!(!options.cheat && ((in-1)->cheat)))
 					entry[sel]->default_value = (in-1)->default_value & entry[sel]->mask;
 			}
 
@@ -1715,6 +1701,13 @@ static int setconfiguration(struct mame_bitmap *bitmap, int selected)
 {
 	return switchmenu(bitmap, selected, IPT_CONFIG_NAME, IPT_CONFIG_SETTING);
 }
+
+
+
+static int setcategories(struct mame_bitmap *bitmap, int selected)
+{
+	return switchmenu(bitmap, selected, IPT_CATEGORY_NAME, IPT_CATEGORY_SETTING);
+}
 #endif /* MESS */
 
 
@@ -1748,7 +1741,7 @@ static int setdefcodesettings(struct mame_bitmap *bitmap,int selected)
 	total = 0;
 	while (in->type != IPT_END)
 	{
-		if (in->name != 0  && (in->type & ~IPF_MASK) != IPT_UNKNOWN && (in->type & ~IPF_MASK) != IPT_OSD_RESERVED && (in->type & IPF_UNUSED) == 0
+		if (in->name != 0  && in->type != IPT_UNKNOWN && in->type != IPT_OSD_RESERVED && !(in->type & IPF_UNUSED)
 			&& !(!options.cheat && (in->type & IPF_CHEAT)))
 		{
 			entry[total] = in;
@@ -1860,6 +1853,7 @@ static int setcodesettings(struct mame_bitmap *bitmap,int selected)
 	const char *menu_item[500];
 	const char *menu_subitem[500];
 	struct InputPort *entry[500];
+	InputSeq *seq[500];
 	char flag[500];
 	int i,sel;
 	struct InputPort *in;
@@ -1877,12 +1871,23 @@ static int setcodesettings(struct mame_bitmap *bitmap,int selected)
 	total = 0;
 	while (in->type != IPT_END)
 	{
-		if (input_port_name(in) != 0 && seq_get_1(&in->seq) != CODE_NONE && (in->type & ~IPF_MASK) != IPT_UNKNOWN && (in->type & ~IPF_MASK) != IPT_OSD_RESERVED)
+		for (i = 0; i < input_port_seq_count(in); i++)
+		{
+			if (input_port_name(in) != 0 && seq_get_1(&in->seq[i]) != CODE_NONE
+				&& (in->type != IPT_UNKNOWN)
+#ifdef MESS
+			&& ((in->category == 0) || input_category_active(in->category))
+#endif /* MESS */
+				&& in->type != IPT_OSD_RESERVED)
 		{
 			entry[total] = in;
+				//seq[total] = input_port_seq(in, i);
+			//we never want a pointer to the default structure - copy it instead
+				seq[total] = input_port_seq_copy_default(in, i);
 			menu_item[total] = input_port_name(in);
 
 			total++;
+		}
 		}
 
 		in++;
@@ -1898,11 +1903,11 @@ static int setcodesettings(struct mame_bitmap *bitmap,int selected)
 	{
 		if (i < total - 1)
 		{
-			seq_name(input_port_seq(entry[i]),menu_subitem_buffer[i],sizeof(menu_subitem_buffer[0]));
+			seq_name(seq[i], menu_subitem_buffer[i], sizeof(menu_subitem_buffer[0]));
 			menu_subitem[i] = menu_subitem_buffer[i];
 
 			/* If the key isn't the default, flag it */
-			if (seq_get_1(&entry[i]->seq) != CODE_DEFAULT)
+			if (seq_get_1(seq[i]) != CODE_DEFAULT)
 				flag[i] = 1;
 			else
 				flag[i] = 0;
@@ -1918,15 +1923,15 @@ static int setcodesettings(struct mame_bitmap *bitmap,int selected)
 		menu_subitem[sel & SEL_MASK] = "    ";
 		ui_displaymenu(bitmap,menu_item,menu_subitem,flag,sel & SEL_MASK,3);
 
-		ret = seq_read_async(&entry[sel & SEL_MASK]->seq,record_first_insert);
+		ret = seq_read_async(seq[sel & SEL_MASK],record_first_insert);
 
 		if (ret >= 0)
 		{
 			sel &= SEL_MASK;
 
-			if (ret > 0 || seq_get_1(&entry[sel]->seq) == CODE_NONE)
+			if (ret > 0 || seq_get_1(seq[sel]) == CODE_NONE)
 			{
-				seq_set_1(&entry[sel]->seq, CODE_DEFAULT);
+				seq_set_1(seq[sel], CODE_DEFAULT);
 				ret = 1;
 			}
 
@@ -2072,7 +2077,7 @@ static int settraksettings(struct mame_bitmap *bitmap,int selected)
 	while (in->type != IPT_END)
 	{
 		if (((in->type & 0xff) > IPT_ANALOG_START) && ((in->type & 0xff) < IPT_ANALOG_END)
-				&& !(!options.cheat && (in->type & IPF_CHEAT)))
+				&& !(!options.cheat && (in->cheat)))
 		{
 			entry[total] = in;
 			total++;
@@ -2103,9 +2108,9 @@ static int settraksettings(struct mame_bitmap *bitmap,int selected)
 			int reverse;
 
 			strcpy (label[i], input_port_name(entry[i/ENTRIES]));
-			sensitivity = IP_GET_SENSITIVITY(entry[i/ENTRIES]);
-			delta = IP_GET_DELTA(entry[i/ENTRIES]);
-			reverse = (entry[i/ENTRIES]->type & IPF_REVERSE);
+			sensitivity = entry[i/ENTRIES]->u.analog.sensitivity;
+			delta = entry[i/ENTRIES]->u.analog.delta;
+			reverse = entry[i/ENTRIES]->u.analog.reverse;
 
 			strcat (label[i], " ");
 			switch (i%ENTRIES)
@@ -2151,33 +2156,27 @@ static int settraksettings(struct mame_bitmap *bitmap,int selected)
 		if(sel != total2 - 1)
 		{
 			if ((sel % ENTRIES) == 0)
-			/* keyboard/joystick delta */
 			{
-				int val = IP_GET_DELTA(entry[sel/ENTRIES]);
+				/* keyboard/joystick delta */
+				int val = entry[sel/ENTRIES]->u.analog.delta;
 
 				val --;
 				if (val < 1) val = 1;
-				IP_SET_DELTA(entry[sel/ENTRIES],val);
+				entry[sel/ENTRIES]->u.analog.delta = val;
 			}
 			else if ((sel % ENTRIES) == 1)
-			/* reverse */
 			{
-				int reverse = entry[sel/ENTRIES]->type & IPF_REVERSE;
-				if (reverse)
-					reverse=0;
-				else
-					reverse=IPF_REVERSE;
-				entry[sel/ENTRIES]->type &= ~IPF_REVERSE;
-				entry[sel/ENTRIES]->type |= reverse;
+				/* reverse */
+				entry[sel/ENTRIES]->u.analog.reverse ^= 1;
 			}
 			else if ((sel % ENTRIES) == 2)
-			/* sensitivity */
 			{
-				int val = IP_GET_SENSITIVITY(entry[sel/ENTRIES]);
+				/* sensitivity */
+				int val = entry[sel/ENTRIES]->u.analog.sensitivity;
 
 				val --;
 				if (val < 1) val = 1;
-				IP_SET_SENSITIVITY(entry[sel/ENTRIES],val);
+				entry[sel/ENTRIES]->u.analog.sensitivity = val;
 			}
 		}
 	}
@@ -2187,33 +2186,27 @@ static int settraksettings(struct mame_bitmap *bitmap,int selected)
 		if(sel != total2 - 1)
 		{
 			if ((sel % ENTRIES) == 0)
-			/* keyboard/joystick delta */
 			{
-				int val = IP_GET_DELTA(entry[sel/ENTRIES]);
+				/* keyboard/joystick delta */
+				int val = entry[sel/ENTRIES]->u.analog.delta;
 
 				val ++;
 				if (val > 255) val = 255;
-				IP_SET_DELTA(entry[sel/ENTRIES],val);
+				entry[sel/ENTRIES]->u.analog.delta = val;
 			}
 			else if ((sel % ENTRIES) == 1)
-			/* reverse */
 			{
-				int reverse = entry[sel/ENTRIES]->type & IPF_REVERSE;
-				if (reverse)
-					reverse=0;
-				else
-					reverse=IPF_REVERSE;
-				entry[sel/ENTRIES]->type &= ~IPF_REVERSE;
-				entry[sel/ENTRIES]->type |= reverse;
+				/* reverse */
+				entry[sel/ENTRIES]->u.analog.reverse ^= 1;
 			}
 			else if ((sel % ENTRIES) == 2)
-			/* sensitivity */
 			{
-				int val = IP_GET_SENSITIVITY(entry[sel/ENTRIES]);
+				/* sensitivity */
+				int val = entry[sel/ENTRIES]->u.analog.sensitivity;
 
 				val ++;
 				if (val > 255) val = 255;
-				IP_SET_SENSITIVITY(entry[sel/ENTRIES],val);
+				entry[sel/ENTRIES]->u.analog.sensitivity = val;
 			}
 		}
 	}
@@ -2339,10 +2332,10 @@ int showcopyright(struct mame_bitmap *bitmap)
 			setup_selected = 0;////
 			return 1;
 		}
-		if (keyboard_pressed_memory(KEYCODE_O) ||
+		if (code_pressed_memory(KEYCODE_O) ||
 				input_ui_pressed(IPT_UI_LEFT))
 			done = 1;
-		if (done == 1 && (keyboard_pressed_memory(KEYCODE_K) ||
+		if (done == 1 && (code_pressed_memory(KEYCODE_K) ||
 				input_ui_pressed(IPT_UI_RIGHT)))
 			done = 2;
 	} while (done < 2);
@@ -2520,7 +2513,7 @@ static int displaygameinfo(struct mame_bitmap *bitmap,int selected)
 
 int showgamewarnings(struct mame_bitmap *bitmap)
 {
-//	int i;
+	int i;
 	char buf[2048];
 
 	if (Machine->gamedrv->flags &
@@ -2581,7 +2574,7 @@ int showgamewarnings(struct mame_bitmap *bitmap)
 		if (Machine->gamedrv->flags & (GAME_NOT_WORKING | GAME_UNEMULATED_PROTECTION))
 		{
 			const struct GameDriver *maindrv;
-//			int foundworking;
+			int foundworking;
 
 			if (Machine->gamedrv->flags & GAME_NOT_WORKING)
 			{
@@ -2634,7 +2627,6 @@ int showgamewarnings(struct mame_bitmap *bitmap)
 				}
 				i++;
 			}
-
         // Unload the unnecessary sections to save memory if possible
       LoadDriverSectionByName( strstr( maindrv->source_file, "src\\drivers\\" ) );
       UnloadDriverSections();
@@ -2972,7 +2964,6 @@ static int displayhistory (struct mame_bitmap *bitmap, int selected)
 
 #ifndef MESS
 #ifndef TINY_COMPILE
-#ifndef CPSMAME
 #ifndef MMSND
 int memcard_menu(struct mame_bitmap *bitmap, int selection)
 {
@@ -3104,23 +3095,17 @@ int memcard_menu(struct mame_bitmap *bitmap, int selection)
 #endif
 #endif
 #endif
-#endif
 
 
 #ifndef MESS
 enum { UI_SWITCH = 0,UI_DEFCODE,UI_CODE,UI_ANALOG,UI_CALIBRATE,
 		UI_STATS,UI_GAMEINFO, UI_HISTORY,
-		UI_CHEAT,UI_RESET,UI_MEMCARD,UI_RAPIDFIRE,UI_EXIT };
+		UI_CHEAT,UI_RESET,UI_MEMCARD,UI_EXIT };
 #else
 enum { UI_SWITCH = 0,UI_DEFCODE,UI_CODE,UI_ANALOG,UI_CALIBRATE,
 		UI_GAMEINFO, UI_IMAGEINFO,UI_FILEMANAGER,UI_TAPECONTROL,
-		UI_HISTORY,UI_CHEAT,UI_RESET,UI_MEMCARD,UI_RAPIDFIRE,UI_EXIT,
-		UI_CONFIGURATION };
-#endif
-
-
-#ifdef XMAME
-extern int setrapidfire(struct mame_bitmap *bitmap, int selected);
+		UI_HISTORY,UI_CHEAT,UI_RESET,UI_MEMCARD,UI_EXIT,
+		UI_CONFIGURATION, UI_CATEGORIES };
 #endif
 
 
@@ -3130,113 +3115,137 @@ static int menu_action[MAX_SETUPMENU_ITEMS];
 static int menu_total;
 
 
+static void append_menu(int uistring, int action)
+{
+	menu_item[menu_total] = ui_getstring(uistring);
+	menu_action[menu_total++] = action;
+}
+
+
+static int has_dipswitches(void)
+{
+	struct InputPort *in;
+	int num;
+
+	/* Determine if there are any dip switches */
+	num = 0;
+	for (in = Machine->input_ports; in->type != IPT_END; in++)
+	{
+		if (in->type == IPT_DIPSWITCH_NAME && input_port_active(in))
+			num++;
+	}
+	return num > 0;
+}
+
+
+static int has_analog(void)
+{
+	struct InputPort *in;
+	int num;
+
+	/* Determine if there are any analog controls */
+	num = 0;
+	for (in = Machine->input_ports; in->type != IPT_END; in++)
+ 	{
+		if (in->type > IPT_ANALOG_START && in->type < IPT_ANALOG_END && input_port_active(in))
+			num++;
+	}
+	return num > 0;
+}
+
+
+#ifdef MESS
+static int has_configurables(void)
+{
+	struct InputPort *in;
+	int num;
+
+	num = 0;
+	for (in = Machine->input_ports; in->type != IPT_END; in++)
+	{
+		if (in->type == IPT_CONFIG_NAME && input_port_active(in))
+			num++;
+	}
+	return num > 0;
+}
+
+
+static int has_categories(void)
+{
+	struct InputPort *in;
+	int num;
+
+	num = 0;
+	for (in = Machine->input_ports; in->type != IPT_END; in++)
+	{
+		if (in->category > 0 && input_port_active(in))
+			num++;
+	}
+	return num > 0;
+}
+#endif /* MESS */
+
+
 static void setup_menu_init(void)
 {
 	menu_total = 0;
 
-	menu_item[menu_total] = ui_getstring (UI_inputgeneral); menu_action[menu_total++] = UI_DEFCODE;
-	menu_item[menu_total] = ui_getstring (UI_inputspecific); menu_action[menu_total++] = UI_CODE;
+	append_menu(UI_inputgeneral, UI_DEFCODE);
+	append_menu(UI_inputspecific, UI_CODE);
+
+	if (has_dipswitches())
+		append_menu(UI_dipswitches, UI_SWITCH);
+
 #ifdef MESS
-	menu_item[menu_total] = ui_getstring (UI_configuration); menu_action[menu_total++] = UI_CONFIGURATION;
+	if (has_configurables())
+		append_menu(UI_configuration, UI_CONFIGURATION);
+	if (has_categories())
+		append_menu(UI_categories, UI_CATEGORIES);
 #endif /* MESS */
 
-	/* Determine if there are any dip switches */
+
+	if (has_analog())
+		append_menu(UI_analogcontrols, UI_ANALOG);
+  
+  	/* Joystick calibration possible? */
+  	if ((osd_joystick_needs_calibration()) != 0)
 	{
-		struct InputPort *in;
-		int num;
-
-		in = Machine->input_ports;
-
-		num = 0;
-		while (in->type != IPT_END)
-		{
-			if ((in->type & ~IPF_MASK) == IPT_DIPSWITCH_NAME && input_port_name(in) != 0 &&
-					(in->type & IPF_UNUSED) == 0 &&	!(!options.cheat && (in->type & IPF_CHEAT)))
-				num++;
-			in++;
-		}
-
-		if (num != 0)
-		{
-			menu_item[menu_total] = ui_getstring (UI_dipswitches); menu_action[menu_total++] = UI_SWITCH;
-		}
-	}
-
-#ifdef XMAME
-	{
-		extern int rapidfire_enable;
-
-		if (rapidfire_enable != 0)
-		{
-			menu_item[menu_total] = "Rapid Fire";
-			menu_action[menu_total++] = UI_RAPIDFIRE;
-		}
-	}
-#endif
-
-	/* Determine if there are any analog controls */
-	{
-		struct InputPort *in;
-		int num;
-
-		in = Machine->input_ports;
-
-		num = 0;
-		while (in->type != IPT_END)
-		{
-			if (((in->type & 0xff) > IPT_ANALOG_START) && ((in->type & 0xff) < IPT_ANALOG_END)
-					&& !(!options.cheat && (in->type & IPF_CHEAT)))
-				num++;
-			in++;
-		}
-
-		if (num != 0)
-		{
-			menu_item[menu_total] = ui_getstring (UI_analogcontrols); menu_action[menu_total++] = UI_ANALOG;
-		}
-	}
-
-	/* Joystick calibration possible? */
-	if ((osd_joystick_needs_calibration()) != 0)
-	{
-		menu_item[menu_total] = ui_getstring (UI_calibrate); menu_action[menu_total++] = UI_CALIBRATE;
+		append_menu(UI_calibrate, UI_CALIBRATE);
 	}
 
 #ifndef MESS
-	menu_item[menu_total] = ui_getstring (UI_bookkeeping); menu_action[menu_total++] = UI_STATS;
-	menu_item[menu_total] = ui_getstring (UI_gameinfo); menu_action[menu_total++] = UI_GAMEINFO;
-	menu_item[menu_total] = ui_getstring (UI_history); menu_action[menu_total++] = UI_HISTORY;
-#else
-	menu_item[menu_total] = ui_getstring (UI_imageinfo); menu_action[menu_total++] = UI_IMAGEINFO;
-	menu_item[menu_total] = ui_getstring (UI_filemanager); menu_action[menu_total++] = UI_FILEMANAGER;
+	append_menu(UI_bookkeeping, UI_STATS);
+	append_menu(UI_gameinfo, UI_GAMEINFO);
+	append_menu(UI_history, UI_HISTORY);
+#else /* MESS */
+	append_menu(UI_imageinfo, UI_IMAGEINFO);
+	append_menu(UI_filemanager, UI_FILEMANAGER);
 #if HAS_WAVE
-	menu_item[menu_total] = ui_getstring (UI_tapecontrol); menu_action[menu_total++] = UI_TAPECONTROL;
-#endif
-	menu_item[menu_total] = ui_getstring (UI_history); menu_action[menu_total++] = UI_HISTORY;
-#endif
+	append_menu(UI_tapecontrol, UI_TAPECONTROL);
+#endif /* HAS_WAVE */
+	append_menu(UI_history, UI_HISTORY);
+#endif /* !MESS */
 
 	if (options.cheat)
 	{
-		menu_item[menu_total] = ui_getstring (UI_cheat); menu_action[menu_total++] = UI_CHEAT;
+		append_menu(UI_cheat, UI_CHEAT);
 	}
 
 #ifndef MESS
 #ifndef TINY_COMPILE
-#ifndef CPSMAME
 #ifndef MMSND
 	if (Machine->gamedrv->clone_of == &driver_neogeo ||
 			(Machine->gamedrv->clone_of &&
 				Machine->gamedrv->clone_of->clone_of == &driver_neogeo))
 	{
-		menu_item[menu_total] = ui_getstring (UI_memorycard); menu_action[menu_total++] = UI_MEMCARD;
+		append_menu(UI_memorycard, UI_MEMCARD);
 	}
 #endif
 #endif
 #endif
-#endif
 
-	menu_item[menu_total] = ui_getstring (UI_resetgame); menu_action[menu_total++] = UI_RESET;
-	menu_item[menu_total] = ui_getstring (UI_returntogame); menu_action[menu_total++] = UI_EXIT;
+	append_menu(UI_resetgame, UI_RESET);
+	append_menu(UI_returntogame, UI_EXIT);
 	menu_item[menu_total] = 0; /* terminate array */
 }
 
@@ -3255,11 +3264,6 @@ static int setup_menu(struct mame_bitmap *bitmap, int selected)
 	{
 		switch (menu_action[sel & SEL_MASK])
 		{
-#ifdef XMAME
-			case UI_RAPIDFIRE:
-				res = setrapidfire(bitmap, sel >> SEL_BITS);
-				break;
-#endif
 			case UI_SWITCH:
 				res = setdipswitches(bitmap, sel >> SEL_BITS);
 				break;
@@ -3298,6 +3302,9 @@ static int setup_menu(struct mame_bitmap *bitmap, int selected)
 			case UI_CONFIGURATION:
 				res = setconfiguration(bitmap, sel >> SEL_BITS);
 				break;
+			case UI_CATEGORIES:
+				res = setcategories(bitmap, sel >> SEL_BITS);
+				break;
 #endif /* MESS */
 			case UI_HISTORY:
 				res = displayhistory(bitmap, sel >> SEL_BITS);
@@ -3307,12 +3314,10 @@ static int setup_menu(struct mame_bitmap *bitmap, int selected)
 				break;
 #ifndef MESS
 #ifndef TINY_COMPILE
-#ifndef CPSMAME
 #ifndef MMSND
 			case UI_MEMCARD:
 				res = memcard_menu(bitmap, sel >> SEL_BITS);
 				break;
-#endif
 #endif
 #endif
 #endif
@@ -3342,9 +3347,6 @@ static int setup_menu(struct mame_bitmap *bitmap, int selected)
 	{
 		switch (menu_action[sel])
 		{
-#ifdef XMAME
-			case UI_RAPIDFIRE:
-#endif
 			case UI_SWITCH:
 			case UI_DEFCODE:
 			case UI_CODE:
@@ -3359,6 +3361,7 @@ static int setup_menu(struct mame_bitmap *bitmap, int selected)
 			case UI_FILEMANAGER:
 			case UI_TAPECONTROL:
 			case UI_CONFIGURATION:
+			case UI_CATEGORIES:
 #endif /* !MESS */
 			case UI_HISTORY:
 			case UI_CHEAT:
@@ -3430,75 +3433,26 @@ static void displayosd(struct mame_bitmap *bitmap,const char *text,int percentag
 	displaytext(bitmap,dt);
 }
 
-/* K.Wilkins Feb2003 Additional of Disrete Sound System ADJUSTMENT sliders */
-#if HAS_DISCRETE
-static void onscrd_discrete(struct mame_bitmap *bitmap,int increment,int arg)
+static void onscrd_adjuster(struct mame_bitmap *bitmap,int increment,int arg)
 {
-	int ourval,initial;
-	char buf[40];
-	struct discrete_sh_adjuster adjuster;
+	struct InputPort *in = &Machine->input_ports[arg];
+	char buf[80];
+	int value;
 
-	ourval=0;
-	initial=0;
-	strcpy(buf,"ADJUSTER ERROR");
-
-	/* Use ARG to select correct DISCRETE_ADJUST in sound subsystem */
-	if(discrete_sh_adjuster_get(arg,&adjuster)==-1)
+	if (increment)
 	{
-		/* Serious error, init has setup a non-existant slider, should NEVER happen */
-		logerror("onscrd_discrete() - osd_menu_init has setup invalid slider No %d",arg);
+		value = in->default_value & 0xff;
+		value += increment;
+		if (value > 100) value = 100;
+		if (value < 0) value = 0;
+		in->default_value = (in->default_value & ~0xff) | value;
 	}
-	else
-	{
-		if(adjuster.islogscale)
-		{
-			double loginc,logspan,logval,logmin,loginit;
-			logspan=log10(adjuster.max)-log10(adjuster.min);
-			loginit=log10(adjuster.initial);
-			logmin=log10(adjuster.min);
-			logval=log10(adjuster.value);
-			loginc=(logspan/100)*increment;
-			logval+=loginc;
-			adjuster.value=pow(10,logval);
+	value = in->default_value & 0xff;
 
-			/* Keep within sensible bounds */
-			if(adjuster.value > adjuster.max)
-			{
-				adjuster.value=adjuster.max;
-				ourval=100;
-			}
-			if(adjuster.value < adjuster.min)
-			{
-				adjuster.value=adjuster.min;
-				ourval=0;
-			}
+	sprintf(buf,"%s %d%%",in->name,value);
 
-			ourval=(int) (100.0*((logval-logmin)/logspan));
-			initial=(int) (100.0*((loginit-logmin)/logspan));
-		}
-		else
-		{
-			double finc;
-			finc=((adjuster.max-adjuster.min)/100)*increment;
-			adjuster.value+=finc;
-
-			/* Keep within sensible bounds */
-			if(adjuster.value > adjuster.max) adjuster.value=adjuster.max;
-			if(adjuster.value < adjuster.min) adjuster.value=adjuster.min;
-
-			ourval=(int) (100.0*((adjuster.value-adjuster.min)/(adjuster.max-adjuster.min)));
-			initial=(int) (100.0*((adjuster.initial-adjuster.min)/(adjuster.max-adjuster.min)));
-		}
-
-		/* Update the system */
-		discrete_sh_adjuster_set(arg,&adjuster);
-
-		sprintf(buf,"%s %d%%",adjuster.name,ourval);
-	}
-	displayosd(bitmap,buf,ourval,initial);
+	displayosd(bitmap,buf,value,in->default_value >> 8);
 }
-#endif /* HAS_DISCRETE */
-/* K.Wilkins Feb2003 Additional of Disrete Sound System ADJUSTMENT sliders */
 
 static void onscrd_volume(struct mame_bitmap *bitmap,int increment,int arg)
 {
@@ -3701,18 +3655,18 @@ static void onscrd_overclock(struct mame_bitmap *bitmap,int increment,int arg)
 		increment *= 5;
 	if( increment )
 	{
-		overclock = timer_get_overclock(arg);
+		overclock = cpunum_get_clockscale(arg);
 		overclock += 0.01 * increment;
 		if (overclock < 0.01) overclock = 0.01;
 		if (overclock > 2.0) overclock = 2.0;
 		if( doallcpus )
 			for( cpu = 0; cpu < cpu_gettotalcpu(); cpu++ )
-				timer_set_overclock(cpu, overclock);
+				cpunum_set_clockscale(cpu, overclock);
 		else
-			timer_set_overclock(arg, overclock);
+			cpunum_set_clockscale(arg, overclock);
 	}
 
-	oc = 100 * timer_get_overclock(arg) + 0.5;
+	oc = 100 * cpunum_get_clockscale(arg) + 0.5;
 
 	if( doallcpus )
 		sprintf(buf,"%s %s %3d%%", ui_getstring (UI_allcpus), ui_getstring (UI_overclock), oc);
@@ -3728,11 +3682,8 @@ static int onscrd_total_items;
 
 static void onscrd_init(void)
 {
+	struct InputPort *in;
 	int item,ch;
-#if HAS_DISCRETE
-	int soundnum;
-#endif /* HAS_DISCRETE */
-
 
 	item = 0;
 
@@ -3751,33 +3702,16 @@ static void onscrd_init(void)
 				item++;
 			}
 		}
-
-		/* K.Wilkins Feb2003 Additional of Disrete Sound System ADJUSTMENT sliders */
-#if HAS_DISCRETE
-		/* See if there is a discrete sound sub-system present */
-		for (soundnum = 0; soundnum < MAX_SOUND; soundnum++)
-		{
-			if (Machine->drv->sound[soundnum].sound_type == SOUND_DISCRETE)
-			{
-				/* For each DISCRETE_ADJUST node then there is a slider, there can only be one SOUND_DISCRETE */
-				/* in the machinbe sound delcaration so this WONT trigger more than once                      */
-				{
-					int count;
-					count=discrete_sh_adjuster_count((struct discrete_sound_block*)Machine->drv->sound[soundnum].sound_interface);
-
-					for(ch=0;ch<count;ch++)
-					{
-						onscrd_fnc[item] = onscrd_discrete;
-						onscrd_arg[item] = ch;
-						item++;
-					}
-				}
-			}
-		}
-#endif /* HAS_DISCRETE */
-		/* K.Wilkins Feb2003 Additional of Disrete Sound System ADJUSTMENT sliders */
 	}
 
+	for (in = Machine->input_ports; in && in->type != IPT_END; in++)
+		if ((in->type & 0xff) == IPT_ADJUSTER)
+		{
+			onscrd_fnc[item] = onscrd_adjuster;
+			onscrd_arg[item] = in - Machine->input_ports;
+			item++;
+		}
+	
 	if (options.cheat)
 	{
 		for (ch = 0;ch < cpu_gettotalcpu();ch++)
@@ -3911,9 +3845,9 @@ void do_loadsave(struct mame_bitmap *bitmap, int request_loadsave)
 		InputCode code;
 
 		if (request_loadsave == LOADSAVE_SAVE)
-      displaymessage(bitmap, "Save position? A,B,X,Y");
+			displaymessage(bitmap, "Save position? A,B,X,Y");
 		else
-      displaymessage(bitmap, "Load position? A,B,X,Y");
+			displaymessage(bitmap, "Load position? A,B,X,Y");
 
 		update_video_and_audio();
 		reset_partial_updates();
@@ -3960,7 +3894,7 @@ void do_loadsave(struct mame_bitmap *bitmap, int request_loadsave)
 			else if (code >= KEYCODE_0_PAD && code <= KEYCODE_9_PAD)
 				file = '0' + (code - KEYCODE_0);
 		}
-*/
+		*/
 	}
 	while (!file);
 
@@ -4102,9 +4036,6 @@ int handle_user_interface(struct mame_bitmap *bitmap)
 			osd_selected = 0;	/* disable on screen display */
 			schedule_full_refresh();
 		}
-#ifdef XMAME
-		update_video_and_audio(); /* for rapid-fire support */
-#endif
 	}
 	if (setup_selected != 0) setup_selected = setup_menu(bitmap, setup_selected);
 
@@ -4124,7 +4055,7 @@ int handle_user_interface(struct mame_bitmap *bitmap)
 
 
 #if 0
-	if (keyboard_pressed_memory(KEYCODE_BACKSPACE))
+	if (code_pressed_memory(KEYCODE_BACKSPACE))
 	{
 		if (jukebox_selected != -1)
 		{
@@ -4142,11 +4073,11 @@ int handle_user_interface(struct mame_bitmap *bitmap)
 	{
 		char buf[40];
 		watchdog_reset_w(0,0);
-		if (keyboard_pressed_memory(KEYCODE_LCONTROL))
+		if (code_pressed_memory(KEYCODE_LCONTROL))
 		{
 #include "cpu/z80/z80.h"
 			soundlatch_w(0,jukebox_selected);
-			cpu_set_irq_line(1,IRQ_LINE_NMI,PULSE_LINE);
+			cpunum_set_input_line(1,INPUT_LINE_NMI,PULSE_LINE);
 		}
 		if (input_ui_pressed_repeat(IPT_UI_RIGHT,8))
 		{
@@ -4198,9 +4129,6 @@ int handle_user_interface(struct mame_bitmap *bitmap)
 
 		while (!input_ui_pressed(IPT_UI_PAUSE))
 		{
-#ifdef MAME_NET
-			osd_net_sync();
-#endif /* MAME_NET */
 			profiler_mark(PROFILER_VIDEO);
 			if (osd_skip_this_frame() == 0)
 			{

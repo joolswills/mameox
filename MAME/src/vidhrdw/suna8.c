@@ -1,11 +1,11 @@
-#pragma code_seg("C677")
-#pragma data_seg("D677")
-#pragma bss_seg("B677")
-#pragma const_seg("K677")
-#pragma comment(linker, "/merge:D677=677")
-#pragma comment(linker, "/merge:C677=677")
-#pragma comment(linker, "/merge:B677=677")
-#pragma comment(linker, "/merge:K677=677")
+#pragma code_seg("C715")
+#pragma data_seg("D715")
+#pragma bss_seg("B715")
+#pragma const_seg("K715")
+#pragma comment(linker, "/merge:D715=715")
+#pragma comment(linker, "/merge:C715=715")
+#pragma comment(linker, "/merge:B715=715")
+#pragma comment(linker, "/merge:K715=715")
 /***************************************************************************
 
 							-=  SunA 8 Bit Games =-
@@ -89,8 +89,8 @@ data8_t suna8_unknown;
 
 /* Functions defined in vidhrdw: */
 
-WRITE_HANDLER( suna8_spriteram_w );			// for debug
-WRITE_HANDLER( suna8_banked_spriteram_w );	// for debug
+WRITE8_HANDLER( suna8_spriteram_w );			// for debug
+WRITE8_HANDLER( suna8_banked_spriteram_w );	// for debug
 
 VIDEO_START( suna8 );
 VIDEO_UPDATE( suna8 );
@@ -106,7 +106,7 @@ static int tiles, rombank, page;
 static void get_tile_info(int tile_index)
 {
 	data8_t code, attr;
-	if (keyboard_pressed(KEYCODE_X))
+	if (code_pressed(KEYCODE_X))
 	{	data8_t *rom = memory_region(REGION_CPU1) + 0x10000 + 0x4000*rombank;
 		code = rom[ 2 * tile_index + 0 ];
 		attr = rom[ 2 * tile_index + 1 ];	}
@@ -122,19 +122,19 @@ static void get_tile_info(int tile_index)
 #endif
 
 
-READ_HANDLER( suna8_banked_paletteram_r )
+READ8_HANDLER( suna8_banked_paletteram_r )
 {
 	offset += suna8_palettebank * 0x200;
 	return paletteram[offset];
 }
 
-READ_HANDLER( suna8_banked_spriteram_r )
+READ8_HANDLER( suna8_banked_spriteram_r )
 {
 	offset += suna8_spritebank * 0x2000;
 	return spriteram[offset];
 }
 
-WRITE_HANDLER( suna8_spriteram_w )
+WRITE8_HANDLER( suna8_spriteram_w )
 {
 	if (spriteram[offset] != data)
 	{
@@ -145,7 +145,7 @@ WRITE_HANDLER( suna8_spriteram_w )
 	}
 }
 
-WRITE_HANDLER( suna8_banked_spriteram_w )
+WRITE8_HANDLER( suna8_banked_spriteram_w )
 {
 	offset += suna8_spritebank * 0x2000;
 	if (spriteram[offset] != data)
@@ -160,7 +160,7 @@ WRITE_HANDLER( suna8_banked_spriteram_w )
 /*
 	Banked Palette RAM. The data is scrambled
 */
-WRITE_HANDLER( brickzn_banked_paletteram_w )
+WRITE8_HANDLER( brickzn_banked_paletteram_w )
 {
 	int r,g,b;
 	UINT16 rgb;
@@ -434,16 +434,16 @@ VIDEO_UPDATE( suna8 )
 
 #ifdef MAME_DEBUG
 #if TILEMAPS
-	if (keyboard_pressed(KEYCODE_Z) || keyboard_pressed(KEYCODE_X))
+	if (code_pressed(KEYCODE_Z) || code_pressed(KEYCODE_X))
 	{
 		int max_tiles = memory_region_length(REGION_GFX1) / (0x400 * 0x20);
 
-		if (keyboard_pressed_memory(KEYCODE_Q))	{ page--;	tilemap_mark_all_tiles_dirty(ALL_TILEMAPS);	}
-		if (keyboard_pressed_memory(KEYCODE_W))	{ page++;	tilemap_mark_all_tiles_dirty(ALL_TILEMAPS);	}
-		if (keyboard_pressed_memory(KEYCODE_E))	{ tiles--;	tilemap_mark_all_tiles_dirty(ALL_TILEMAPS);	}
-		if (keyboard_pressed_memory(KEYCODE_R))	{ tiles++;	tilemap_mark_all_tiles_dirty(ALL_TILEMAPS);	}
-		if (keyboard_pressed_memory(KEYCODE_A))	{ rombank--;	tilemap_mark_all_tiles_dirty(ALL_TILEMAPS);	}
-		if (keyboard_pressed_memory(KEYCODE_S))	{ rombank++;	tilemap_mark_all_tiles_dirty(ALL_TILEMAPS);	}
+		if (code_pressed_memory(KEYCODE_Q))	{ page--;	tilemap_mark_all_tiles_dirty(ALL_TILEMAPS);	}
+		if (code_pressed_memory(KEYCODE_W))	{ page++;	tilemap_mark_all_tiles_dirty(ALL_TILEMAPS);	}
+		if (code_pressed_memory(KEYCODE_E))	{ tiles--;	tilemap_mark_all_tiles_dirty(ALL_TILEMAPS);	}
+		if (code_pressed_memory(KEYCODE_R))	{ tiles++;	tilemap_mark_all_tiles_dirty(ALL_TILEMAPS);	}
+		if (code_pressed_memory(KEYCODE_A))	{ rombank--;	tilemap_mark_all_tiles_dirty(ALL_TILEMAPS);	}
+		if (code_pressed_memory(KEYCODE_S))	{ rombank++;	tilemap_mark_all_tiles_dirty(ALL_TILEMAPS);	}
 
 		rombank  &= 0xf;
 		page  &= (suna8_text_dim > 0)?3:7;

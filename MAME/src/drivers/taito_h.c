@@ -1,11 +1,11 @@
-#pragma code_seg("C697")
-#pragma data_seg("D697")
-#pragma bss_seg("B697")
-#pragma const_seg("K697")
-#pragma comment(linker, "/merge:D697=697")
-#pragma comment(linker, "/merge:C697=697")
-#pragma comment(linker, "/merge:B697=697")
-#pragma comment(linker, "/merge:K697=697")
+#pragma code_seg("C736")
+#pragma data_seg("D736")
+#pragma bss_seg("B736")
+#pragma const_seg("K736")
+#pragma comment(linker, "/merge:D736=736")
+#pragma comment(linker, "/merge:C736=736")
+#pragma comment(linker, "/merge:B736=736")
+#pragma comment(linker, "/merge:K736=736")
 /***************************************************************************
 
 Taito H system
@@ -111,7 +111,7 @@ VIDEO_UPDATE( dleague );
 /* Handler called by the YM2610 emulator when the internal timers cause an IRQ */
 static void irqhandler(int irq)
 {
-	cpu_set_irq_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 static struct YM2610interface syvalion_ym2610_interface =
@@ -214,7 +214,7 @@ static void reset_sound_region(void)
 	cpu_setbank(1, memory_region(REGION_CPU2) + (banknum * 0x4000) + 0x10000);
 }
 
-static WRITE_HANDLER( sound_bankswitch_w )
+static WRITE8_HANDLER( sound_bankswitch_w )
 {
 	banknum = (data - 1) & 3;
 	reset_sound_region();

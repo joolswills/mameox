@@ -1,11 +1,11 @@
-#pragma code_seg("C444")
-#pragma data_seg("D444")
-#pragma bss_seg("B444")
-#pragma const_seg("K444")
-#pragma comment(linker, "/merge:D444=444")
-#pragma comment(linker, "/merge:C444=444")
-#pragma comment(linker, "/merge:B444=444")
-#pragma comment(linker, "/merge:K444=444")
+#pragma code_seg("C467")
+#pragma data_seg("D467")
+#pragma bss_seg("B467")
+#pragma const_seg("K467")
+#pragma comment(linker, "/merge:D467=467")
+#pragma comment(linker, "/merge:C467=467")
+#pragma comment(linker, "/merge:B467=467")
+#pragma comment(linker, "/merge:K467=467")
 #include "driver.h"
 
 
@@ -70,28 +70,28 @@ INTERRUPT_GEN( mexico86_m68705_interrupt )
 {
 	/* I don't know how to handle the interrupt line so I just toggle it every time. */
 	if (cpu_getiloops() & 1)
-		cpu_set_irq_line(2,0,CLEAR_LINE);
+		cpunum_set_input_line(2,0,CLEAR_LINE);
 	else
-		cpu_set_irq_line(2,0,ASSERT_LINE);
+		cpunum_set_input_line(2,0,ASSERT_LINE);
 }
 
 
 
 static unsigned char portA_in,portA_out,ddrA;
 
-READ_HANDLER( mexico86_68705_portA_r )
+READ8_HANDLER( mexico86_68705_portA_r )
 {
 //logerror("%04x: 68705 port A read %02x\n",activecpu_get_pc(),portA_in);
 	return (portA_out & ddrA) | (portA_in & ~ddrA);
 }
 
-WRITE_HANDLER( mexico86_68705_portA_w )
+WRITE8_HANDLER( mexico86_68705_portA_w )
 {
 //logerror("%04x: 68705 port A write %02x\n",activecpu_get_pc(),data);
 	portA_out = data;
 }
 
-WRITE_HANDLER( mexico86_68705_ddrA_w )
+WRITE8_HANDLER( mexico86_68705_ddrA_w )
 {
 	ddrA = data;
 }
@@ -116,14 +116,14 @@ WRITE_HANDLER( mexico86_68705_ddrA_w )
 
 static unsigned char portB_in,portB_out,ddrB;
 
-READ_HANDLER( mexico86_68705_portB_r )
+READ8_HANDLER( mexico86_68705_portB_r )
 {
 	return (portB_out & ddrB) | (portB_in & ~ddrB);
 }
 
 static int address,latch;
 
-WRITE_HANDLER( mexico86_68705_portB_w )
+WRITE8_HANDLER( mexico86_68705_portB_w )
 {
 //logerror("%04x: 68705 port B write %02x\n",activecpu_get_pc(),data);
 
@@ -160,9 +160,9 @@ WRITE_HANDLER( mexico86_68705_portB_w )
 	}
 	if ((ddrB & 0x20) && (data & 0x20) && (~portB_out & 0x20))
 	{
-		cpu_irq_line_vector_w(0,0,mexico86_protection_ram[0]);
-		//cpu_set_irq_line(0,0,PULSE_LINE);
-		cpu_set_irq_line(0, 0, HOLD_LINE); //AT: HOLD_LINE works better in Z80 interrupt mode 1.
+		cpunum_set_input_line_vector(0,0,mexico86_protection_ram[0]);
+		//cpunum_set_input_line(0,0,PULSE_LINE);
+		cpunum_set_input_line(0, 0, HOLD_LINE); //AT: HOLD_LINE works better in Z80 interrupt mode 1.
 	}
 	if ((ddrB & 0x40) && (~data & 0x40) && (portB_out & 0x40))
 	{
@@ -176,7 +176,7 @@ logerror("%04x: 68705 unknown port B bit %02x\n",activecpu_get_pc(),data);
 	portB_out = data;
 }
 
-WRITE_HANDLER( mexico86_68705_ddrB_w )
+WRITE8_HANDLER( mexico86_68705_ddrB_w )
 {
 	ddrB = data;
 }

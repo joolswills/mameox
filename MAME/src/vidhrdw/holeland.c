@@ -1,11 +1,11 @@
-#pragma code_seg("C358")
-#pragma data_seg("D358")
-#pragma bss_seg("B358")
-#pragma const_seg("K358")
-#pragma comment(linker, "/merge:D358=358")
-#pragma comment(linker, "/merge:C358=358")
-#pragma comment(linker, "/merge:B358=358")
-#pragma comment(linker, "/merge:K358=358")
+#pragma code_seg("C373")
+#pragma data_seg("D373")
+#pragma bss_seg("B373")
+#pragma const_seg("K373")
+#pragma comment(linker, "/merge:D373=373")
+#pragma comment(linker, "/merge:C373=373")
+#pragma comment(linker, "/merge:B373=373")
+#pragma comment(linker, "/merge:K373=373")
 /***************************************************************************
 
   vidhrdw.c
@@ -32,10 +32,10 @@ static void holeland_get_tile_info(int tile_index)
 	int attr = colorram[tile_index];
 	int tile_number = videoram[tile_index] | ((attr & 0x03) << 8);
 
-/*if (keyboard_pressed(KEYCODE_Q) && (attr & 0x10)) tile_number = rand(); */
-/*if (keyboard_pressed(KEYCODE_W) && (attr & 0x20)) tile_number = rand(); */
-/*if (keyboard_pressed(KEYCODE_E) && (attr & 0x40)) tile_number = rand(); */
-/*if (keyboard_pressed(KEYCODE_R) && (attr & 0x80)) tile_number = rand(); */
+/*if (code_pressed(KEYCODE_Q) && (attr & 0x10)) tile_number = rand(); */
+/*if (code_pressed(KEYCODE_W) && (attr & 0x20)) tile_number = rand(); */
+/*if (code_pressed(KEYCODE_E) && (attr & 0x40)) tile_number = rand(); */
+/*if (code_pressed(KEYCODE_R) && (attr & 0x80)) tile_number = rand(); */
 	SET_TILE_INFO(
 			0,
 			tile_number,
@@ -83,7 +83,7 @@ VIDEO_START( crzrally )
 	return 0;
 }
 
-WRITE_HANDLER( holeland_videoram_w )
+WRITE8_HANDLER( holeland_videoram_w )
 {
 	if( videoram[offset]!=data )
 	{
@@ -92,7 +92,7 @@ WRITE_HANDLER( holeland_videoram_w )
 	}
 }
 
-WRITE_HANDLER( holeland_colorram_w )
+WRITE8_HANDLER( holeland_colorram_w )
 {
 	if( colorram[offset]!=data )
 	{
@@ -101,7 +101,7 @@ WRITE_HANDLER( holeland_colorram_w )
 	}
 }
 
-WRITE_HANDLER( holeland_pal_offs_w )
+WRITE8_HANDLER( holeland_pal_offs_w )
 {
 	static int po[2];
 	if ((data & 1) != po[offset])
@@ -112,12 +112,12 @@ WRITE_HANDLER( holeland_pal_offs_w )
 	}
 }
 
-WRITE_HANDLER( holeland_scroll_w )
+WRITE8_HANDLER( holeland_scroll_w )
 {
 	tilemap_set_scrollx(bg_tilemap, 0, data);
 }
 
-WRITE_HANDLER( holeland_flipscreen_w )
+WRITE8_HANDLER( holeland_flipscreen_w )
 {
 	if (offset) flip_screen_y_set(data);
 	else        flip_screen_x_set(data);

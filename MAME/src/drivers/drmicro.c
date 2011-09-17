@@ -1,11 +1,11 @@
-#pragma code_seg("C267")
-#pragma data_seg("D267")
-#pragma bss_seg("B267")
-#pragma const_seg("K267")
-#pragma comment(linker, "/merge:D267=267")
-#pragma comment(linker, "/merge:C267=267")
-#pragma comment(linker, "/merge:B267=267")
-#pragma comment(linker, "/merge:K267=267")
+#pragma code_seg("C277")
+#pragma data_seg("D277")
+#pragma bss_seg("B277")
+#pragma const_seg("K277")
+#pragma comment(linker, "/merge:D277=277")
+#pragma comment(linker, "/merge:C277=277")
+#pragma comment(linker, "/merge:B277=277")
+#pragma comment(linker, "/merge:K277=277")
 /*****************************************************************************
 
 Dr. Micro (c) 1983 Sanritsu
@@ -25,11 +25,11 @@ PALETTE_INIT( drmicro );
 VIDEO_START( drmicro );
 VIDEO_UPDATE( drmicro );
 
-WRITE_HANDLER( drmicro_flipscreen_w );
-WRITE_HANDLER( drmicro_priority_w );
+WRITE8_HANDLER( drmicro_flipscreen_w );
+WRITE8_HANDLER( drmicro_priority_w );
 
-READ_HANDLER( drmicro_videoram_r );
-WRITE_HANDLER( drmicro_videoram_w );
+READ8_HANDLER( drmicro_videoram_r );
+WRITE8_HANDLER( drmicro_videoram_w );
 
 extern void drmicro_flip_w( int flip );
 
@@ -40,10 +40,10 @@ static int drmicro_nmi_enable;
 INTERRUPT_GEN( drmicro_interrupt )
 {
 	if (drmicro_nmi_enable)
-		 cpu_set_nmi_line(0, PULSE_LINE);
+		 cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 }
 
-static WRITE_HANDLER( nmi_enable_w )
+static WRITE8_HANDLER( nmi_enable_w )
 {	// bit2,3 unknown
 	drmicro_nmi_enable = data & 1;
 	drmicro_flip_w(data & 2);
@@ -73,7 +73,7 @@ static void pcm_w(int irq)
 		MSM5205_reset_w(0, 1);
 }
 
-static WRITE_HANDLER( pcm_set_w )
+static WRITE8_HANDLER( pcm_set_w )
 {
 	pcm_adr = ((data & 0x3f) << 9);
 	pcm_w(0);

@@ -1,11 +1,11 @@
-#pragma code_seg("C621")
-#pragma data_seg("D621")
-#pragma bss_seg("B621")
-#pragma const_seg("K621")
-#pragma comment(linker, "/merge:D621=621")
-#pragma comment(linker, "/merge:C621=621")
-#pragma comment(linker, "/merge:B621=621")
-#pragma comment(linker, "/merge:K621=621")
+#pragma code_seg("C657")
+#pragma data_seg("D657")
+#pragma bss_seg("B657")
+#pragma const_seg("K657")
+#pragma comment(linker, "/merge:D657=657")
+#pragma comment(linker, "/merge:C657=657")
+#pragma comment(linker, "/merge:B657=657")
+#pragma comment(linker, "/merge:K657=657")
 /***************************************************************************
 
   vidhrdw.c
@@ -28,7 +28,7 @@ static unsigned int hflop_74a_n, hcount_191, vcount_191, latch_374;
 
 static struct tilemap *bg_tilemap, *fg_tilemap;
 
-WRITE_HANDLER( sidearms_videoram_w )
+WRITE8_HANDLER( sidearms_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -37,7 +37,7 @@ WRITE_HANDLER( sidearms_videoram_w )
 	}
 }
 
-WRITE_HANDLER( sidearms_colorram_w )
+WRITE8_HANDLER( sidearms_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -46,7 +46,7 @@ WRITE_HANDLER( sidearms_colorram_w )
 	}
 }
 
-WRITE_HANDLER( sidearms_c804_w )
+WRITE8_HANDLER( sidearms_c804_w )
 {
 	/* bits 0 and 1 are coin counters */
 	coin_counter_w(0, data & 0x01);
@@ -90,13 +90,13 @@ WRITE_HANDLER( sidearms_c804_w )
 	}
 }
 
-WRITE_HANDLER( sidearms_gfxctrl_w )
+WRITE8_HANDLER( sidearms_gfxctrl_w )
 {
 	objon = data & 0x01;
 	bgon = data & 0x02;
 }
 
-WRITE_HANDLER( sidearms_star_scrollx_w )
+WRITE8_HANDLER( sidearms_star_scrollx_w )
 {
 	unsigned int last_state = hcount_191;
 
@@ -108,7 +108,7 @@ WRITE_HANDLER( sidearms_star_scrollx_w )
 		hflop_74a_n ^= 1;
 }
 
-WRITE_HANDLER( sidearms_star_scrolly_w )
+WRITE8_HANDLER( sidearms_star_scrolly_w )
 {
 	vcount_191++;
 	vcount_191 &= 0xff;

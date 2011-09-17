@@ -1,11 +1,11 @@
-#pragma code_seg("C772")
-#pragma data_seg("D772")
-#pragma bss_seg("B772")
-#pragma const_seg("K772")
-#pragma comment(linker, "/merge:D772=772")
-#pragma comment(linker, "/merge:C772=772")
-#pragma comment(linker, "/merge:B772=772")
-#pragma comment(linker, "/merge:K772=772")
+#pragma code_seg("C814")
+#pragma data_seg("D814")
+#pragma bss_seg("B814")
+#pragma const_seg("K814")
+#pragma comment(linker, "/merge:D814=814")
+#pragma comment(linker, "/merge:C814=814")
+#pragma comment(linker, "/merge:B814=814")
+#pragma comment(linker, "/merge:K814=814")
 /***************************************************************************
 
 Vulgus memory map (preliminary)
@@ -55,10 +55,10 @@ extern unsigned char *vulgus_fgvideoram;
 extern unsigned char *vulgus_bgvideoram;
 extern unsigned char *vulgus_scroll_low,*vulgus_scroll_high;
 
-WRITE_HANDLER( vulgus_fgvideoram_w );
-WRITE_HANDLER( vulgus_bgvideoram_w );
-WRITE_HANDLER( vulgus_c804_w );
-WRITE_HANDLER( vulgus_palette_bank_w );
+WRITE8_HANDLER( vulgus_fgvideoram_w );
+WRITE8_HANDLER( vulgus_bgvideoram_w );
+WRITE8_HANDLER( vulgus_c804_w );
+WRITE8_HANDLER( vulgus_palette_bank_w );
 VIDEO_START( vulgus );
 PALETTE_INIT( vulgus );
 VIDEO_UPDATE( vulgus );
@@ -67,8 +67,8 @@ VIDEO_UPDATE( vulgus );
 
 static INTERRUPT_GEN( vulgus_interrupt )
 {
-	if (cpu_getiloops() != 0) cpu_set_irq_line_and_vector(0, 0, HOLD_LINE, 0xcf);	/* RST 08h */
-	else cpu_set_irq_line_and_vector(0, 0, HOLD_LINE, 0xd7);	/* RST 10h - vblank */
+	if (cpu_getiloops() != 0) cpunum_set_input_line_and_vector(0, 0, HOLD_LINE, 0xcf);	/* RST 08h */
+	else cpunum_set_input_line_and_vector(0, 0, HOLD_LINE, 0xd7);	/* RST 10h - vblank */
 }
 
 

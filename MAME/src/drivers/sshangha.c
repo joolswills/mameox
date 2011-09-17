@@ -1,11 +1,11 @@
-#pragma code_seg("C656")
-#pragma data_seg("D656")
-#pragma bss_seg("B656")
-#pragma const_seg("K656")
-#pragma comment(linker, "/merge:D656=656")
-#pragma comment(linker, "/merge:C656=656")
-#pragma comment(linker, "/merge:B656=656")
-#pragma comment(linker, "/merge:K656=656")
+#pragma code_seg("C692")
+#pragma data_seg("D692")
+#pragma bss_seg("B692")
+#pragma const_seg("K692")
+#pragma comment(linker, "/merge:D692=692")
+#pragma comment(linker, "/merge:C692=692")
+#pragma comment(linker, "/merge:B692=692")
+#pragma comment(linker, "/merge:K692=692")
 /***************************************************************************
 
   Super Shanghai Dragon's Eye             (c) 1992 Hot-B
@@ -89,14 +89,14 @@ static WRITE16_HANDLER( sshangha_protection16_w )
 
 	if (offset == (0x260 >> 1)) {
 		//soundlatch_w(0,data&0xff);
-		//cpu_set_irq_line(1, IRQ_LINE_NMI, PULSE_LINE);
+		//cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 	}
 }
 
 static WRITE16_HANDLER( sshangha_sound_w )
 {
 	soundlatch_w(0,data&0xff);
-	cpu_set_irq_line(1, IRQ_LINE_NMI, PULSE_LINE);
+	cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 }
 
 /* Protection/IO chip 146 */
@@ -352,7 +352,7 @@ static struct OKIM6295interface okim6295_interface =
 
 static void irqhandler(int state)
 {
-	cpu_set_irq_line(1,0,state);
+	cpunum_set_input_line(1,0,state);
 }
 
 static struct YM2203interface ym2203_interface =

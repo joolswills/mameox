@@ -1,11 +1,11 @@
-#pragma code_seg("C478")
-#pragma data_seg("D478")
-#pragma bss_seg("B478")
-#pragma const_seg("K478")
-#pragma comment(linker, "/merge:D478=478")
-#pragma comment(linker, "/merge:C478=478")
-#pragma comment(linker, "/merge:B478=478")
-#pragma comment(linker, "/merge:K478=478")
+#pragma code_seg("C506")
+#pragma data_seg("D506")
+#pragma bss_seg("B506")
+#pragma const_seg("K506")
+#pragma comment(linker, "/merge:D506=506")
+#pragma comment(linker, "/merge:C506=506")
+#pragma comment(linker, "/merge:B506=506")
+#pragma comment(linker, "/merge:K506=506")
 /***************************************************************************
 Namco NA-1 / NA-2 System
 
@@ -982,7 +982,7 @@ INTERRUPT_GEN( namcona1_interrupt )
 	{
 		if( (namcona1_vreg[0x1a/2]&(1<<level))==0 )
 		{
-			cpu_set_irq_line(0, level+1, HOLD_LINE);
+			cpunum_set_input_line(0, level+1, HOLD_LINE);
 		}
 	}
 }

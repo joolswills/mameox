@@ -1,11 +1,11 @@
-#pragma code_seg("C176")
-#pragma data_seg("D176")
-#pragma bss_seg("B176")
-#pragma const_seg("K176")
-#pragma comment(linker, "/merge:D176=176")
-#pragma comment(linker, "/merge:C176=176")
-#pragma comment(linker, "/merge:B176=176")
-#pragma comment(linker, "/merge:K176=176")
+#pragma code_seg("C178")
+#pragma data_seg("D178")
+#pragma bss_seg("B178")
+#pragma const_seg("K178")
+#pragma comment(linker, "/merge:D178=178")
+#pragma comment(linker, "/merge:C178=178")
+#pragma comment(linker, "/merge:B178=178")
+#pragma comment(linker, "/merge:K178=178")
 #include "driver.h"
 
 /* macro to convert 4-bit unsigned samples to 8-bit signed samples */

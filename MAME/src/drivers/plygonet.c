@@ -1,11 +1,11 @@
-#pragma code_seg("C540")
-#pragma data_seg("D540")
-#pragma bss_seg("B540")
-#pragma const_seg("K540")
-#pragma comment(linker, "/merge:D540=540")
-#pragma comment(linker, "/merge:C540=540")
-#pragma comment(linker, "/merge:B540=540")
-#pragma comment(linker, "/merge:K540=540")
+#pragma code_seg("C571")
+#pragma data_seg("D571")
+#pragma bss_seg("B571")
+#pragma const_seg("K571")
+#pragma comment(linker, "/merge:D571=571")
+#pragma comment(linker, "/merge:C571=571")
+#pragma comment(linker, "/merge:B571=571")
+#pragma comment(linker, "/merge:K571=571")
 /*
 	Polygonet Commanders (Konami, 1993)
 
@@ -154,9 +154,9 @@ static READ32_HANDLER( psac_rom_r )
 static INTERRUPT_GEN(polygonet_interrupt)
 {
 	if (cpu_getiloops())
-		cpu_set_irq_line(0, MC68000_IRQ_5, HOLD_LINE);
+		cpunum_set_input_line(0, MC68000_IRQ_5, HOLD_LINE);
 	else
-		cpu_set_irq_line(0, MC68000_IRQ_3, HOLD_LINE);
+		cpunum_set_input_line(0, MC68000_IRQ_3, HOLD_LINE);
 }
 
 /* sound CPU communications */
@@ -184,7 +184,7 @@ static WRITE32_HANDLER( sound_w )
 
 static WRITE32_HANDLER( sound_irq_w )
 {
-	cpu_set_irq_line(1, 0, HOLD_LINE);
+	cpunum_set_input_line(1, 0, HOLD_LINE);
 }
 
 /* hack DSP communications, just enough to pass the ram/rom test */
@@ -326,7 +326,7 @@ static void reset_sound_region(void)
 	cpu_setbank(2, memory_region(REGION_CPU2) + 0x10000 + cur_sound_region*0x4000);
 }
 
-static WRITE_HANDLER( sound_bankswitch_w )
+static WRITE8_HANDLER( sound_bankswitch_w )
 {
 	cur_sound_region = (data & 0x1f);
 
@@ -335,7 +335,7 @@ static WRITE_HANDLER( sound_bankswitch_w )
 
 static INTERRUPT_GEN(audio_interrupt)
 {
-	cpu_set_nmi_line(1, PULSE_LINE);
+	cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 }
 
 static ADDRESS_MAP_START( sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )

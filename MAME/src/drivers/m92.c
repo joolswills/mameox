@@ -104,6 +104,101 @@ Fire Barrel                   1993  Rev 3.52 M92
 Dream Soccer '94              1994  Rev 3.53 M92
 Gunforce 2                    1994  Rev 3.53 M92
 
+Gun Force
+1991, Irem Corp.
+
+PCB Layout
+----------
+
+Top board (Standard M92 Main Board)
+
+M92-A-B   05C04170B1
+|---------------------------|-----|--------------------|
+|         MC3403  MC3403    |NANAO|                    |
+|   064D                    |GA20 |         DSW3       |
+|         MC3403  MC3403    |-----|                    |
+|                             YM2151                   |
+|   MC3403              YM3014                         |
+|                                                      |
+|J      CN6                           |-------|        |
+|                      D71059C        |NEC    |        |
+|A              6264                  |D71036L|        |
+|                      62256   18MHz  |V33    |        |
+|M                                    |-------|        |
+|               6264   62256                           |
+|M                           M92A-7J-.41(PAL)          |
+|                                     M92A-9J-.51(PAL) |
+|A                                                     |
+|                               |-----|     |-----|    |
+| CN4(4P)                       |NANAO|     |NANAO|    |
+|                               |GA21 |     |GA22 |    |
+|       M92A-3M-.11(PAL)        |-----|     |-----|    |
+|                                                      |
+|                       6264      6116                 |
+| CN5(3P)                                              |
+|       DSW2    DSW1    6264      6116      26.66666MHz|
+|------------------------------------------------------|
+Notes:
+      V33 clock   : 9.000MHz
+      GA20 clock  : 3.579545MHz (pin38)
+      YM2151 clock: 3.579545MHz
+      VSync       : 60Hz
+
+      6116 : 2K x8 SRAM
+      6264 : 8K x8 SRAM
+      62256: 32K x8 SRAM
+
+      CN4: Connector for 4th player controls
+      CN5: Connector for 3rd player controls
+      CN6: Connector for 2nd speaker (for stereo output)
+
+      Custom chips:
+                   NANAO GA20 (QFP80) - Sound chip
+                   NANAO GA21 (QFP136)
+                   NANAO GA22 (QFP160)
+
+
+
+Bottom board (Game Board, differs per game)
+
+M92-B-B   05C04171B1
+|--------------------------------------------------------|
+|              ROM_C0.9          ROM_001.29*  ROM_000.38 |
+|                        |-----|                         |
+|14.31818MHz   ROM_C1.10 |NANAO| ROM_011.30*  ROM_010.39 |
+|                        |GA23 |                         |
+| |----------| ROM_C2.11 |-----| ROM_021.31*  ROM_020.40 |
+| |NANAO     |                                           |
+| |08J27261A1| ROM_C3.12         ROM_031.32*  ROM_030.41 |
+| |011       |                                           |
+| |9108KK700 |                                           |
+| |----------|                                           |
+|                                                        |
+|               GF_B-SH0-.14                             |
+|                                                        |
+|                                       M92_B-7H-.43(PAL)|
+|                                                        |
+|               6264                  GF_B-L0-C.25       |
+|                                                        |
+|                                     GF_B-L1-C.26       |
+|               6264        62256                        |
+|  M92B-2L-.7(PAL)                    GF_B-H1-C.27       |
+|                           62256                        |
+|  ROM_DA.8     GF_B-SL0.17           GF_B-H0-C.28       |
+|                                                        |
+|--------------------------------------------------------|
+Notes:
+      *: Unpopulated position (shown for reference for other M92 games)
+
+      6264 : 8K x8 SRAM
+      62256: 32K x8 SRAM
+
+      Custom chips:
+                   NANAO 08J27261A1 (PLCC84, encrypted V30 sound CPU, clocked at 14.31818MHz on pins 78 & 79)
+                   NANAO GA23 (QFP180)
+
+
+
 *****************************************************************************/
 
 #include "driver.h"
@@ -127,16 +222,16 @@ static unsigned char *m92_ram,*m92_snd_ram;
 #define M92_SCANLINES	256
 
 /* From vidhrdw/m92.c */
-WRITE_HANDLER( m92_spritecontrol_w );
-WRITE_HANDLER( m92_videocontrol_w );
-READ_HANDLER( m92_paletteram_r );
-WRITE_HANDLER( m92_paletteram_w );
-READ_HANDLER( m92_vram_r );
-WRITE_HANDLER( m92_vram_w );
-WRITE_HANDLER( m92_pf1_control_w );
-WRITE_HANDLER( m92_pf2_control_w );
-WRITE_HANDLER( m92_pf3_control_w );
-WRITE_HANDLER( m92_master_control_w );
+WRITE8_HANDLER( m92_spritecontrol_w );
+WRITE8_HANDLER( m92_videocontrol_w );
+READ8_HANDLER( m92_paletteram_r );
+WRITE8_HANDLER( m92_paletteram_w );
+READ8_HANDLER( m92_vram_r );
+WRITE8_HANDLER( m92_vram_w );
+WRITE8_HANDLER( m92_pf1_control_w );
+WRITE8_HANDLER( m92_pf2_control_w );
+WRITE8_HANDLER( m92_pf3_control_w );
+WRITE8_HANDLER( m92_master_control_w );
 VIDEO_START( m92 );
 VIDEO_UPDATE( m92 );
 void m92_vh_raster_partial_refresh(struct mame_bitmap *bitmap,int start_line,int end_line);
@@ -156,21 +251,21 @@ static void set_m92_bank(void)
 
 /*****************************************************************************/
 
-static READ_HANDLER( m92_eeprom_r )
+static READ8_HANDLER( m92_eeprom_r )
 {
 	unsigned char *RAM = memory_region(REGION_USER1);
 //	logerror("%05x: EEPROM RE %04x\n",activecpu_get_pc(),offset);
 	return RAM[offset/2];
 }
 
-static WRITE_HANDLER( m92_eeprom_w )
+static WRITE8_HANDLER( m92_eeprom_w )
 {
 	unsigned char *RAM = memory_region(REGION_USER1);
 //	logerror("%05x: EEPROM WR %04x\n",activecpu_get_pc(),offset);
 	RAM[offset/2]=data;
 }
 
-static WRITE_HANDLER( m92_coincounter_w )
+static WRITE8_HANDLER( m92_coincounter_w )
 {
 	if (offset==0) {
 		coin_counter_w(0,data & 0x01);
@@ -181,14 +276,14 @@ static WRITE_HANDLER( m92_coincounter_w )
 	}
 }
 
-static WRITE_HANDLER( m92_bankswitch_w )
+static WRITE8_HANDLER( m92_bankswitch_w )
 {
 	if (offset==1) return; /* Unused top byte */
 	bankaddress = 0x100000 + ((data&0x7)*0x10000);
 	set_m92_bank();
 }
 
-static READ_HANDLER( m92_port_4_r )
+static READ8_HANDLER( m92_port_4_r )
 {
 	return readinputport(4) | m92_sprite_buffer_busy; /* Bit 7 low indicates busy */
 }
@@ -209,17 +304,17 @@ static void setvector_callback(int param)
 	}
 
 	if (irqvector & 0x2)		/* YM2151 has precedence */
-		cpu_irq_line_vector_w(1,0,0x18);
+		cpunum_set_input_line_vector(1,0,0x18);
 	else if (irqvector & 0x1)	/* V30 */
-		cpu_irq_line_vector_w(1,0,0x19);
+		cpunum_set_input_line_vector(1,0,0x19);
 
 	if (irqvector == 0)	/* no IRQs pending */
-		cpu_set_irq_line(1,0,CLEAR_LINE);
+		cpunum_set_input_line(1,0,CLEAR_LINE);
 	else	/* IRQ pending */
-		cpu_set_irq_line(1,0,ASSERT_LINE);
+		cpunum_set_input_line(1,0,ASSERT_LINE);
 }
 
-static WRITE_HANDLER( m92_soundlatch_w )
+static WRITE8_HANDLER( m92_soundlatch_w )
 {
 	if (offset==0)
 	{
@@ -229,7 +324,7 @@ static WRITE_HANDLER( m92_soundlatch_w )
 	}
 }
 
-static READ_HANDLER( m92_sound_status_r )
+static READ8_HANDLER( m92_sound_status_r )
 {
 //logerror("%06x: read sound status\n",activecpu_get_pc());
 	if (offset == 0)
@@ -237,7 +332,7 @@ static READ_HANDLER( m92_sound_status_r )
 	return sound_status>>8;
 }
 
-static READ_HANDLER( m92_soundlatch_r )
+static READ8_HANDLER( m92_soundlatch_r )
 {
 	if (offset == 0)
 	{
@@ -248,17 +343,17 @@ static READ_HANDLER( m92_soundlatch_r )
 	else return 0xff;
 }
 
-static WRITE_HANDLER( m92_sound_irq_ack_w )
+static WRITE8_HANDLER( m92_sound_irq_ack_w )
 {
 	if (offset == 0)
 		timer_set(TIME_NOW,V30_CLEAR,setvector_callback);
 }
 
-static WRITE_HANDLER( m92_sound_status_w )
+static WRITE8_HANDLER( m92_sound_status_w )
 {
 	if (offset == 0) {
 		sound_status = data | (sound_status&0xff00);
-		cpu_set_irq_line_and_vector(0,0,HOLD_LINE,M92_IRQ_3);
+		cpunum_set_input_line_and_vector(0,0,HOLD_LINE,M92_IRQ_3);
 	}
 	else
 		sound_status = (data<<8) | (sound_status&0xff);
@@ -337,6 +432,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0x00000, 0x1ffff) AM_READ(MRA8_ROM)
 	AM_RANGE(0xa0000, 0xa3fff) AM_READ(MRA8_RAM)
+	AM_RANGE(0xa8000, 0xa803f) AM_READ(IremGA20_r)
 	AM_RANGE(0xa8042, 0xa8043) AM_READ(YM2151_status_port_0_r)
 	AM_RANGE(0xa8044, 0xa8045) AM_READ(m92_soundlatch_r)
 	AM_RANGE(0xffff0, 0xfffff) AM_READ(MRA8_ROM)
@@ -1146,7 +1242,7 @@ static INTERRUPT_GEN( m92_interrupt )
 	if (osd_skip_this_frame()==0)
 		m92_vh_raster_partial_refresh(Machine->scrbitmap,0,249);
 
-	cpu_set_irq_line_and_vector(0, 0, HOLD_LINE, M92_IRQ_0); /* VBL */
+	cpunum_set_input_line_and_vector(0, 0, HOLD_LINE, M92_IRQ_0); /* VBL */
 }
 
 static INTERRUPT_GEN( m92_raster_interrupt )
@@ -1159,7 +1255,7 @@ static INTERRUPT_GEN( m92_raster_interrupt )
 		if (osd_skip_this_frame()==0)
 			m92_vh_raster_partial_refresh(Machine->scrbitmap,last_line,line+1);
 		last_line=line+1;
-		cpu_set_irq_line_and_vector(0, 0, HOLD_LINE, M92_IRQ_2);
+		cpunum_set_input_line_and_vector(0, 0, HOLD_LINE, M92_IRQ_2);
 	}
 
 	/* Redraw screen, then set vblank and trigger the VBL interrupt */
@@ -1167,7 +1263,7 @@ static INTERRUPT_GEN( m92_raster_interrupt )
 		if (osd_skip_this_frame()==0)
 			m92_vh_raster_partial_refresh(Machine->scrbitmap,last_line,249);
 		last_line=249;
-		cpu_set_irq_line_and_vector(0, 0, HOLD_LINE, M92_IRQ_0);
+		cpunum_set_input_line_and_vector(0, 0, HOLD_LINE, M92_IRQ_0);
 	}
 
 	/* End of vblank */
@@ -1178,7 +1274,7 @@ static INTERRUPT_GEN( m92_raster_interrupt )
 
 void m92_sprite_interrupt(void)
 {
-	cpu_set_irq_line_and_vector(0,0,HOLD_LINE,M92_IRQ_1);
+	cpunum_set_input_line_and_vector(0,0,HOLD_LINE,M92_IRQ_1);
 }
 
 static MACHINE_DRIVER_START( raster )
@@ -2057,7 +2153,7 @@ ROM_END
 
 /***************************************************************************/
 
-static READ_HANDLER( lethalth_cycle_r )
+static READ8_HANDLER( lethalth_cycle_r )
 {
 	if (activecpu_get_pc()==0x1f4 && m92_ram[0x1e]==2 && offset==0)
 		cpu_spinuntil_int();
@@ -2065,7 +2161,7 @@ static READ_HANDLER( lethalth_cycle_r )
 	return m92_ram[0x1e + offset];
 }
 
-static READ_HANDLER( hook_cycle_r )
+static READ8_HANDLER( hook_cycle_r )
 {
 	if (activecpu_get_pc()==0x55ba && m92_ram[0x12]==0 && m92_ram[0x13]==0 && offset==0)
 		cpu_spinuntil_int();
@@ -2073,7 +2169,7 @@ static READ_HANDLER( hook_cycle_r )
 	return m92_ram[0x12 + offset];
 }
 
-static READ_HANDLER( bmaster_cycle_r )
+static READ8_HANDLER( bmaster_cycle_r )
 {
 	int d=activecpu_geticount();
 
@@ -2093,7 +2189,7 @@ static READ_HANDLER( bmaster_cycle_r )
 	return m92_ram[0x6fde + offset];
 }
 
-static READ_HANDLER( psoldier_cycle_r )
+static READ8_HANDLER( psoldier_cycle_r )
 {
 	int a=m92_ram[0]+(m92_ram[1]<<8);
 	int b=m92_ram[0x1aec]+(m92_ram[0x1aed]<<8);
@@ -2105,7 +2201,7 @@ static READ_HANDLER( psoldier_cycle_r )
 	return m92_ram[0x1aec + offset];
 }
 
-static READ_HANDLER( ssoldier_cycle_r )
+static READ8_HANDLER( ssoldier_cycle_r )
 {
 	int a=m92_ram[0]+(m92_ram[1]<<8);
 	int b=m92_ram[0x1aec]+(m92_ram[0x1aed]<<8);
@@ -2117,7 +2213,7 @@ static READ_HANDLER( ssoldier_cycle_r )
 	return m92_ram[0x1aec + offset];
 }
 
-static READ_HANDLER( psoldier_snd_cycle_r )
+static READ8_HANDLER( psoldier_snd_cycle_r )
 {
 	int a=m92_snd_ram[0xc34];
 //logerror("%08x: %d %d\n",activecpu_get_pc(),a,offset);
@@ -2128,14 +2224,14 @@ static READ_HANDLER( psoldier_snd_cycle_r )
 	return m92_snd_ram[0xc34 + offset];
 }
 
-static READ_HANDLER( inthunt_cycle_r )
+static READ8_HANDLER( inthunt_cycle_r )
 {
 	int d=activecpu_geticount();
 	int line = 256 - cpu_getiloops();
 
 	/* If possible skip this cpu segment - idle loop */
 	if (d>159 && d<0xf0000000 && line<247) {
-		if (activecpu_get_pc()==0x858 && m92_ram[0x25f]==0 && offset==1) {
+		if (activecpu_get_pc()==0x858 && m92_ram[0x25f]==0 && offset==1) { // 0x858
 			/* Adjust in-game counter, based on cycles left to run */
 			int old;
 
@@ -2151,7 +2247,32 @@ static READ_HANDLER( inthunt_cycle_r )
 	return m92_ram[0x25e + offset];
 }
 
-static READ_HANDLER( uccops_cycle_r )
+static READ8_HANDLER( kaiteids_cycle_r ) // by bkc
+{
+	int d=activecpu_geticount();
+	int line = 256 - cpu_getiloops();
+
+	/* If possible skip this cpu segment - idle loop */
+	if (d>159 && d<0xf0000000 && line<247) {
+		if ((activecpu_get_pc()==0x885 || activecpu_get_pc()==0x8ac) 
+			&& m92_ram[0x25f]==0 && offset==1) { // 0x8ac , 0x885
+			/* Adjust in-game counter, based on cycles left to run */
+			int old;
+
+			old=m92_ram[0xb898]+(m92_ram[0xb899]<<8);
+			old=(old+d/82)&0xffff; /* 82 cycles per increment */
+			m92_ram[0xb898]=old&0xff;
+			m92_ram[0xb899]=old>>8;
+
+			cpu_spinuntil_int();
+		}
+	}
+
+	return m92_ram[0x25e + offset];
+}
+
+
+static READ8_HANDLER( uccops_cycle_r )
 {
 	int a=m92_ram[0x3f28]+(m92_ram[0x3f29]<<8);
 	int b=m92_ram[0x3a00]+(m92_ram[0x3a01]<<8);
@@ -2173,7 +2294,7 @@ static READ_HANDLER( uccops_cycle_r )
 	return m92_ram[0x3a02 + offset];
 }
 
-static READ_HANDLER( rtypeleo_cycle_r )
+static READ8_HANDLER( rtypeleo_cycle_r )
 {
 	if (activecpu_get_pc()==0x30791 && offset==0 && m92_ram[0x32]==2 && m92_ram[0x33]==0)
 		cpu_spinuntil_int();
@@ -2181,7 +2302,7 @@ static READ_HANDLER( rtypeleo_cycle_r )
 	return m92_ram[0x32 + offset];
 }
 
-static READ_HANDLER( rtypelej_cycle_r )
+static READ8_HANDLER( rtypelej_cycle_r )
 {
 	if (activecpu_get_pc()==0x307a3 && offset==0 && m92_ram[0x32]==2 && m92_ram[0x33]==0)
 		cpu_spinuntil_int();
@@ -2189,7 +2310,7 @@ static READ_HANDLER( rtypelej_cycle_r )
 	return m92_ram[0x32 + offset];
 }
 
-static READ_HANDLER( gunforce_cycle_r )
+static READ8_HANDLER( gunforce_cycle_r )
 {
 	int a=m92_ram[0x6542]+(m92_ram[0x6543]<<8);
 	int b=m92_ram[0x61d0]+(m92_ram[0x61d1]<<8);
@@ -2210,7 +2331,7 @@ static READ_HANDLER( gunforce_cycle_r )
 	return m92_ram[0x61d0 + offset];
 }
 
-static READ_HANDLER( dsccr94j_cycle_r )
+static READ8_HANDLER( dsccr94j_cycle_r )
 {
 	int a=m92_ram[0x965a]+(m92_ram[0x965b]<<8);
 	int d=activecpu_geticount();
@@ -2227,7 +2348,7 @@ static READ_HANDLER( dsccr94j_cycle_r )
 	return m92_ram[0x8636 + offset];
 }
 
-static READ_HANDLER( gunforc2_cycle_r )
+static READ8_HANDLER( gunforc2_cycle_r )
 {
 	int a=m92_ram[0x9fa0]+(m92_ram[0x9fa1]<<8);
 	int b=m92_ram[0x9fa2]+(m92_ram[0x9fa3]<<8);
@@ -2246,7 +2367,7 @@ static READ_HANDLER( gunforc2_cycle_r )
 	return m92_ram[0x9fa0 + offset];
 }
 
-static READ_HANDLER( gunforc2_snd_cycle_r )
+static READ8_HANDLER( gunforc2_snd_cycle_r )
 {
 	int a=m92_snd_ram[0xc31];
 
@@ -2297,19 +2418,19 @@ static void init_m92(const unsigned char *decryption_table, int hasbanks)
 
 static DRIVER_INIT( bmaster )
 {
-	install_mem_read_handler(0, 0xe6fde, 0xe6fdf, bmaster_cycle_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xe6fde, 0xe6fdf, 0, 0, bmaster_cycle_r);
 	init_m92(bomberman_decryption_table, 1);
 }
 
 static DRIVER_INIT( gunforce )
 {
-	install_mem_read_handler(0, 0xe61d0, 0xe61d1, gunforce_cycle_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xe61d0, 0xe61d1, 0, 0, gunforce_cycle_r);
 	init_m92(gunforce_decryption_table, 1);
 }
 
 static DRIVER_INIT( hook )
 {
-	install_mem_read_handler(0, 0xe0012, 0xe0013, hook_cycle_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xe0012, 0xe0013, 0, 0, hook_cycle_r);
 	init_m92(hook_decryption_table, 1);
 }
 
@@ -2320,13 +2441,13 @@ static DRIVER_INIT( mysticri )
 
 static DRIVER_INIT( uccops )
 {
-	install_mem_read_handler(0, 0xe3a02, 0xe3a03, uccops_cycle_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xe3a02, 0xe3a03, 0, 0, uccops_cycle_r);
 	init_m92(dynablaster_decryption_table, 1);
 }
 
 static DRIVER_INIT( rtypeleo )
 {
-	install_mem_read_handler(0, 0xe0032, 0xe0033, rtypeleo_cycle_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xe0032, 0xe0033, 0, 0, rtypeleo_cycle_r);
 	init_m92(rtypeleo_decryption_table, 1);
 	m92_irq_vectorbase=0x20;
 	m92_game_kludge=1;
@@ -2334,7 +2455,7 @@ static DRIVER_INIT( rtypeleo )
 
 static DRIVER_INIT( rtypelej )
 {
-	install_mem_read_handler(0, 0xe0032, 0xe0033, rtypelej_cycle_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xe0032, 0xe0033, 0, 0, rtypelej_cycle_r);
 	init_m92(rtypeleo_decryption_table, 1);
 	m92_irq_vectorbase=0x20;
 	m92_game_kludge=1;
@@ -2345,26 +2466,33 @@ static DRIVER_INIT( majtitl2 )
 	init_m92(majtitl2_decryption_table, 1);
 
 	/* This game has an eprom on the game board */
-	install_mem_read_handler(0, 0xf0000, 0xf3fff, m92_eeprom_r);
-	install_mem_write_handler(0, 0xf0000, 0xf3fff, m92_eeprom_w);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xf0000, 0xf3fff, 0, 0, m92_eeprom_r);
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0xf0000, 0xf3fff, 0, 0, m92_eeprom_w);
 
 	m92_game_kludge=2;
 }
 
-static DRIVER_INIT( inthunt )
+static DRIVER_INIT( kaiteids )
 {
-	install_mem_read_handler(0, 0xe025e, 0xe025f, inthunt_cycle_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xe025e, 0xe025f, 0, 0, kaiteids_cycle_r);
 	init_m92(inthunt_decryption_table, 1);
 }
 
+static DRIVER_INIT( inthunt )
+{
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xe025e, 0xe025f, 0, 0, inthunt_cycle_r);
+	init_m92(inthunt_decryption_table, 1);
+}
+
+
 static DRIVER_INIT( lethalth )
 {
-	install_mem_read_handler(0, 0xe001e, 0xe001f, lethalth_cycle_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xe001e, 0xe001f, 0, 0, lethalth_cycle_r);
 	init_m92(lethalth_decryption_table, 0);
 	m92_irq_vectorbase=0x20;
-	
+
 	/* NOP out the bankswitcher */
-	install_port_write_handler(0, 0x20, 0x21, MWA8_NOP);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x20, 0x21, 0, 0, MWA8_NOP);
 
 	/* This game sets the raster IRQ position, but the interrupt routine
 		is just an iret, no need to emulate it */
@@ -2383,8 +2511,8 @@ static DRIVER_INIT( nbbatman )
 
 static DRIVER_INIT( ssoldier )
 {
- install_mem_read_handler(0, 0xe1aec, 0xe1aed, ssoldier_cycle_r);
- install_mem_read_handler(1, 0xa0c34, 0xa0c35, psoldier_snd_cycle_r);
+ memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xe1aec, 0xe1aed, 0, 0, ssoldier_cycle_r);
+ memory_install_read8_handler(1, ADDRESS_SPACE_PROGRAM, 0xa0c34, 0xa0c35, 0, 0, psoldier_snd_cycle_r);
 
  init_m92(psoldier_decryption_table, 1);
  m92_irq_vectorbase=0x20;
@@ -2394,8 +2522,8 @@ static DRIVER_INIT( ssoldier )
 
 static DRIVER_INIT( psoldier )
 {
-	install_mem_read_handler(0, 0xe1aec, 0xe1aed, psoldier_cycle_r);
-	install_mem_read_handler(1, 0xa0c34, 0xa0c35, psoldier_snd_cycle_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xe1aec, 0xe1aed, 0, 0, psoldier_cycle_r);
+	memory_install_read8_handler(1, ADDRESS_SPACE_PROGRAM, 0xa0c34, 0xa0c35, 0, 0, psoldier_snd_cycle_r);
 
 	init_m92(psoldier_decryption_table, 1);
 	m92_irq_vectorbase=0x20;
@@ -2405,7 +2533,7 @@ static DRIVER_INIT( psoldier )
 
 static DRIVER_INIT( dsccr94j )
 {
-	install_mem_read_handler(0, 0xe8636, 0xe8637, dsccr94j_cycle_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xe8636, 0xe8637, 0, 0, dsccr94j_cycle_r);
 	init_m92(dsoccr94_decryption_table, 1);
 }
 
@@ -2415,8 +2543,8 @@ static DRIVER_INIT( gunforc2 )
 	init_m92(lethalth_decryption_table, 1);
 	memcpy(RAM+0x80000,RAM+0x100000,0x20000);
 
-	install_mem_read_handler(0, 0xe9fa0, 0xe9fa1, gunforc2_cycle_r);
-	install_mem_read_handler(1, 0xa0c30, 0xa0c31, gunforc2_snd_cycle_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xe9fa0, 0xe9fa1, 0, 0, gunforc2_cycle_r);
+	memory_install_read8_handler(1, ADDRESS_SPACE_PROGRAM, 0xa0c30, 0xa0c31, 0, 0, gunforc2_snd_cycle_r);
 }
 
 /***************************************************************************/
@@ -2441,7 +2569,7 @@ GAME( 1992, rtypeleo, 0,        raster,    rtypeleo, rtypeleo, ROT0,   "Irem",  
 GAME( 1992, rtypelej, rtypeleo, raster,    rtypeleo, rtypelej, ROT0,   "Irem",         "R-Type Leo (Japan rev. D)" )
 GAME( 1993, inthunt,  0,        raster,    inthunt,  inthunt,  ROT0,   "Irem",         "In The Hunt (World)" )
 GAME( 1993, inthuntu, inthunt,  raster,    inthunt,  inthunt,  ROT0,   "Irem America", "In The Hunt (US)" )
-GAME( 1993, kaiteids, inthunt,  raster,    inthunt,  inthunt,  ROT0,   "Irem",         "Kaitei Daisensou (Japan)" )
+GAME( 1993, kaiteids, inthunt,  raster,    inthunt,  kaiteids,  ROT0,   "Irem",         "Kaitei Daisensou (Japan)" )
 GAMEX(1993, nbbatman, 0,        raster,    nbbatman, nbbatman, ROT0,   "Irem America", "Ninja Baseball Batman (US)", GAME_IMPERFECT_GRAPHICS )
 GAMEX(1993, leaguemn, nbbatman, raster,    nbbatman, nbbatman, ROT0,   "Irem",         "Yakyuu Kakutou League-Man (Japan)", GAME_IMPERFECT_GRAPHICS )
 GAMEX(1993, ssoldier, 0,  psoldier,  psoldier, ssoldier, ROT0,   "Irem America", "Superior Soldiers (US)", GAME_IMPERFECT_SOUND )

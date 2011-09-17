@@ -18,7 +18,7 @@
 
 
 /* in sndhrdw/pleiads.c */
-WRITE_HANDLER( pleiads_sound_control_c_w );
+WRITE8_HANDLER( pleiads_sound_control_c_w );
 
 static unsigned char *videoram_pg1;
 static unsigned char *videoram_pg2;
@@ -203,12 +203,12 @@ VIDEO_START( phoenix )
 
 ***************************************************************************/
 
-READ_HANDLER( phoenix_videoram_r )
+READ8_HANDLER( phoenix_videoram_r )
 {
 	return current_videoram_pg[offset];
 }
 
-WRITE_HANDLER( phoenix_videoram_w )
+WRITE8_HANDLER( phoenix_videoram_w )
 {
 	unsigned char *rom = memory_region(REGION_CPU1);
 
@@ -227,7 +227,7 @@ WRITE_HANDLER( phoenix_videoram_w )
 }
 
 
-WRITE_HANDLER( phoenix_videoreg_w )
+WRITE8_HANDLER( phoenix_videoreg_w )
 {
     if (current_videoram_pg_index != (data & 1))
 	{
@@ -250,7 +250,7 @@ WRITE_HANDLER( phoenix_videoreg_w )
 	}
 }
 
-WRITE_HANDLER( pleiads_videoreg_w )
+WRITE8_HANDLER( pleiads_videoreg_w )
 {
     if (current_videoram_pg_index != (data & 1))
 	{
@@ -285,13 +285,13 @@ WRITE_HANDLER( pleiads_videoreg_w )
 }
 
 
-WRITE_HANDLER( phoenix_scroll_w )
+WRITE8_HANDLER( phoenix_scroll_w )
 {
 	tilemap_set_scrollx(bg_tilemap,0,data);
 }
 
 
-READ_HANDLER( phoenix_input_port_0_r )
+READ8_HANDLER( phoenix_input_port_0_r )
 {
 	if (cocktail_mode)
 		return (input_port_0_r(0) & 0x07) | (input_port_1_r(0) & 0xf8);
@@ -299,7 +299,7 @@ READ_HANDLER( phoenix_input_port_0_r )
 		return input_port_0_r(0);
 }
 
-READ_HANDLER( pleiads_input_port_0_r )
+READ8_HANDLER( pleiads_input_port_0_r )
 {
 	int ret = phoenix_input_port_0_r(0) & 0xf7;
 
@@ -322,7 +322,7 @@ READ_HANDLER( pleiads_input_port_0_r )
 	return ret;
 }
 
-READ_HANDLER( survival_input_port_0_r )
+READ8_HANDLER( survival_input_port_0_r )
 {
 	int ret = phoenix_input_port_0_r(0);
 
@@ -334,7 +334,7 @@ READ_HANDLER( survival_input_port_0_r )
 	return ret;
 }
 
-READ_HANDLER( survival_protection_r )
+READ8_HANDLER( survival_protection_r )
 {
 	if (activecpu_get_pc() == 0x2017)
 	{

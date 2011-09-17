@@ -169,7 +169,7 @@ static UINT8 r6532_read_timer(int n, int enable)
 			r6532[n]->cleared = 1;
 		}
 
-		return (count >= -256) ? count : 0;
+		return count;
 	}
 }
 
@@ -257,14 +257,14 @@ static UINT8 r6532_read(int n, offs_t offset)
 }
 
 
-WRITE_HANDLER( r6532_0_w ) { r6532_write(0, offset, data); }
-WRITE_HANDLER( r6532_1_w ) { r6532_write(1, offset, data); }
+WRITE8_HANDLER( r6532_0_w ) { r6532_write(0, offset, data); }
+WRITE8_HANDLER( r6532_1_w ) { r6532_write(1, offset, data); }
 
-READ_HANDLER( r6532_0_r ) { return r6532_read(0, offset); }
-READ_HANDLER( r6532_1_r ) { return r6532_read(1, offset); }
+READ8_HANDLER( r6532_0_r ) { return r6532_read(0, offset); }
+READ8_HANDLER( r6532_1_r ) { return r6532_read(1, offset); }
 
-WRITE_HANDLER( r6532_0_PA7_w ) { r6532_PA7_write(0, offset, data); }
-WRITE_HANDLER( r6532_1_PA7_w ) { r6532_PA7_write(1, offset, data); }
+WRITE8_HANDLER( r6532_0_PA7_w ) { r6532_PA7_write(0, offset, data); }
+WRITE8_HANDLER( r6532_1_PA7_w ) { r6532_PA7_write(1, offset, data); }
 
 
 void r6532_init(int n, const struct R6532interface* intf)
@@ -278,10 +278,10 @@ void r6532_init(int n, const struct R6532interface* intf)
 	r6532[n]->DDRA = 0;
 	r6532[n]->DDRB = 0;
 
-	r6532[n]->shift = 0;
+	r6532[n]->shift = 10;
 	r6532[n]->cleared = 0;
 
-	r6532[n]->target = 0;
+	r6532[n]->target = 0xff << 10;
 
 	r6532[n]->pa7_enable = 0;
 	r6532[n]->pa7_direction = 0;

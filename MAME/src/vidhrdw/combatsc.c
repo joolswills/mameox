@@ -1,11 +1,11 @@
-#pragma code_seg("C217")
-#pragma data_seg("D217")
-#pragma bss_seg("B217")
-#pragma const_seg("K217")
-#pragma comment(linker, "/merge:D217=217")
-#pragma comment(linker, "/merge:C217=217")
-#pragma comment(linker, "/merge:B217=217")
-#pragma comment(linker, "/merge:K217=217")
+#pragma code_seg("C222")
+#pragma data_seg("D222")
+#pragma bss_seg("B222")
+#pragma const_seg("K222")
+#pragma comment(linker, "/merge:D222=222")
+#pragma comment(linker, "/merge:C222=222")
+#pragma comment(linker, "/merge:B222=222")
+#pragma comment(linker, "/merge:K222=222")
 /***************************************************************************
 
   vidhrdw.c
@@ -291,12 +291,12 @@ VIDEO_START( combascb )
 
 ***************************************************************************/
 
-READ_HANDLER( combasc_video_r )
+READ8_HANDLER( combasc_video_r )
 {
 	return videoram[offset];
 }
 
-WRITE_HANDLER( combasc_video_w )
+WRITE8_HANDLER( combasc_video_w )
 {
 	if( videoram[offset]!=data )
 	{
@@ -316,7 +316,7 @@ WRITE_HANDLER( combasc_video_w )
 }
 
 
-WRITE_HANDLER( combasc_vreg_w )
+WRITE8_HANDLER( combasc_vreg_w )
 {
 	if (data != combasc_vreg)
 	{
@@ -329,23 +329,23 @@ WRITE_HANDLER( combasc_vreg_w )
 	}
 }
 
-WRITE_HANDLER( combascb_sh_irqtrigger_w )
+WRITE8_HANDLER( combascb_sh_irqtrigger_w )
 {
 	soundlatch_w(offset,data);
-	cpu_set_irq_line_and_vector(1,0,HOLD_LINE,0xff);
+	cpunum_set_input_line_and_vector(1,0,HOLD_LINE,0xff);
 }
 
-READ_HANDLER( combascb_io_r )
+READ8_HANDLER( combascb_io_r )
 {
 	return readinputport(offset);
 }
 
-WRITE_HANDLER( combascb_priority_w )
+WRITE8_HANDLER( combascb_priority_w )
 {
 	priority = data & 0x20;
 }
 
-WRITE_HANDLER( combasc_bankselect_w )
+WRITE8_HANDLER( combasc_bankselect_w )
 {
 	unsigned char *page = memory_region(REGION_CPU1) + 0x10000;
 
@@ -374,7 +374,7 @@ WRITE_HANDLER( combasc_bankselect_w )
 	}
 }
 
-WRITE_HANDLER( combascb_bankselect_w )
+WRITE8_HANDLER( combascb_bankselect_w )
 {
 	if (data & 0x40)
 	{
@@ -405,15 +405,15 @@ WRITE_HANDLER( combascb_bankselect_w )
 		if (data == 0x1f)
 		{
 			cpu_setbank(1,page + 0x20000 + 0x4000 * (data & 1));
-			install_mem_read_handler (0, 0x4400, 0x4403, combascb_io_r);/* IO RAM & Video Registers */
-			install_mem_write_handler(0, 0x4400, 0x4400, combascb_priority_w);
-			install_mem_write_handler(0, 0x4800, 0x4800, combascb_sh_irqtrigger_w);
-			install_mem_write_handler(0, 0x4c00, 0x4c00, combasc_vreg_w);
+			memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x4400, 0x4403, 0, 0, combascb_io_r);/* IO RAM & Video Registers */
+			memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x4400, 0x4400, 0, 0, combascb_priority_w);
+			memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x4800, 0x4800, 0, 0, combascb_sh_irqtrigger_w);
+			memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x4c00, 0x4c00, 0, 0, combasc_vreg_w);
 		}
 		else
 		{
-			install_mem_read_handler (0, 0x4000, 0x7fff, MRA8_BANK1);	/* banked ROM */
-			install_mem_write_handler(0, 0x4000, 0x7fff, MWA8_ROM);
+			memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x4000, 0x7fff, 0, 0, MRA8_BANK1);	/* banked ROM */
+			memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x4000, 0x7fff, 0, 0, MWA8_ROM);
 		}
 	}
 }
@@ -435,7 +435,7 @@ MACHINE_INIT( combasc )
 	combasc_bankselect_w( 0,0 );
 }
 
-WRITE_HANDLER( combasc_pf_control_w )
+WRITE8_HANDLER( combasc_pf_control_w )
 {
 	K007121_ctrl_w(combasc_video_circuit,offset,data);
 
@@ -451,12 +451,12 @@ WRITE_HANDLER( combasc_pf_control_w )
 	}
 }
 
-READ_HANDLER( combasc_scrollram_r )
+READ8_HANDLER( combasc_scrollram_r )
 {
 	return combasc_scrollram[offset];
 }
 
-WRITE_HANDLER( combasc_scrollram_w )
+WRITE8_HANDLER( combasc_scrollram_w )
 {
 	combasc_scrollram[offset] = data;
 }

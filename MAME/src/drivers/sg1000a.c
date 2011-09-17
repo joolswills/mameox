@@ -1,11 +1,11 @@
-#pragma code_seg("C609")
-#pragma data_seg("D609")
-#pragma bss_seg("B609")
-#pragma const_seg("K609")
-#pragma comment(linker, "/merge:D609=609")
-#pragma comment(linker, "/merge:C609=609")
-#pragma comment(linker, "/merge:B609=609")
-#pragma comment(linker, "/merge:K609=609")
+#pragma code_seg("C645")
+#pragma data_seg("D645")
+#pragma bss_seg("B645")
+#pragma const_seg("K645")
+#pragma comment(linker, "/merge:D645=645")
+#pragma comment(linker, "/merge:C645=645")
+#pragma comment(linker, "/merge:B645=645")
+#pragma comment(linker, "/merge:K645=645")
 /*********************************************************
 Sega hardware based on their SG-1000 console
 Driver by Tomasz Slanina  dox@space.pl
@@ -155,7 +155,7 @@ static INTERRUPT_GEN( sg100a_interrupt )
 
 static void vdp_interrupt (int state)
 {
-	cpu_set_irq_line(0,0, HOLD_LINE);
+	cpunum_set_input_line(0,0, HOLD_LINE);
 }
 
 static const TMS9928a_interface tms9928a_interface =

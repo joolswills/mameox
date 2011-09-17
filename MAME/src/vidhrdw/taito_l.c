@@ -1,11 +1,11 @@
-#pragma code_seg("C698")
-#pragma data_seg("D698")
-#pragma bss_seg("B698")
-#pragma const_seg("K698")
-#pragma comment(linker, "/merge:D698=698")
-#pragma comment(linker, "/merge:C698=698")
-#pragma comment(linker, "/merge:B698=698")
-#pragma comment(linker, "/merge:K698=698")
+#pragma code_seg("C737")
+#pragma data_seg("D737")
+#pragma bss_seg("B737")
+#pragma const_seg("K737")
+#pragma comment(linker, "/merge:D737=737")
+#pragma comment(linker, "/merge:C737=737")
+#pragma comment(linker, "/merge:B737=737")
+#pragma comment(linker, "/merge:K737=737")
 #include "driver.h"
 
 
@@ -115,7 +115,7 @@ VIDEO_START( taitol )
 
 ***************************************************************************/
 
-WRITE_HANDLER( horshoes_bankg_w )
+WRITE8_HANDLER( horshoes_bankg_w )
 {
 	if (horshoes_gfxbank != data)
 	{
@@ -126,7 +126,7 @@ WRITE_HANDLER( horshoes_bankg_w )
 	}
 }
 
-WRITE_HANDLER( taitol_bankc_w )
+WRITE8_HANDLER( taitol_bankc_w )
 {
 	if (bankc[offset] != data)
 	{
@@ -138,13 +138,13 @@ WRITE_HANDLER( taitol_bankc_w )
 	}
 }
 
-READ_HANDLER( taitol_bankc_r )
+READ8_HANDLER( taitol_bankc_r )
 {
 	return bankc[offset];
 }
 
 
-WRITE_HANDLER( taitol_control_w )
+WRITE8_HANDLER( taitol_control_w )
 {
 //	logerror("Control Write %02x (%04x)\n", data, activecpu_get_pc());
 
@@ -164,7 +164,7 @@ WRITE_HANDLER( taitol_control_w )
 	/* bit 5 display enable - handled in vh_screenrefresh() */
 }
 
-READ_HANDLER( taitol_control_r )
+READ8_HANDLER( taitol_control_r )
 {
 //	logerror("Control Read %02x (%04x)\n", cur_ctrl, activecpu_get_pc());
 	return cur_ctrl;

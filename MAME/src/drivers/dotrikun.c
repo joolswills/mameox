@@ -1,11 +1,11 @@
-#pragma code_seg("C263")
-#pragma data_seg("D263")
-#pragma bss_seg("B263")
-#pragma const_seg("K263")
-#pragma comment(linker, "/merge:D263=263")
-#pragma comment(linker, "/merge:C263=263")
-#pragma comment(linker, "/merge:B263=263")
-#pragma comment(linker, "/merge:K263=263")
+#pragma code_seg("C273")
+#pragma data_seg("D273")
+#pragma bss_seg("B273")
+#pragma const_seg("K273")
+#pragma comment(linker, "/merge:D273=273")
+#pragma comment(linker, "/merge:C273=273")
+#pragma comment(linker, "/merge:B273=273")
+#pragma comment(linker, "/merge:K273=273")
 /***************************************************************************
 
 Dottori Kun (Head On's mini game)
@@ -33,11 +33,11 @@ SOUND : (none)
 #include "cpu/z80/z80.h"
 
 
-WRITE_HANDLER( dotrikun_videoram_w );
+WRITE8_HANDLER( dotrikun_videoram_w );
 VIDEO_UPDATE( dotrikun );
 VIDEO_START( dotrikun );
 
-WRITE_HANDLER( dotrikun_color_w );
+WRITE8_HANDLER( dotrikun_color_w );
 
 
 static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )

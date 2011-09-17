@@ -1,11 +1,11 @@
-#pragma code_seg("C117")
-#pragma data_seg("D117")
-#pragma bss_seg("B117")
-#pragma const_seg("K117")
-#pragma comment(linker, "/merge:D117=117")
-#pragma comment(linker, "/merge:C117=117")
-#pragma comment(linker, "/merge:B117=117")
-#pragma comment(linker, "/merge:K117=117")
+#pragma code_seg("C118")
+#pragma data_seg("D118")
+#pragma bss_seg("B118")
+#pragma const_seg("K118")
+#pragma comment(linker, "/merge:D118=118")
+#pragma comment(linker, "/merge:C118=118")
+#pragma comment(linker, "/merge:B118=118")
+#pragma comment(linker, "/merge:K118=118")
 /***************************************************************************
 
 							-= American Speedway =-
@@ -27,14 +27,14 @@
 static struct tilemap *tilemap;
 
 
-WRITE_HANDLER( amspdwy_paletteram_w )
+WRITE8_HANDLER( amspdwy_paletteram_w )
 {
 	data ^= 0xff;
 	paletteram_BBGGGRRR_w(offset,data);
 //	paletteram_RRRGGGBB_w(offset,data);
 }
 
-WRITE_HANDLER( amspdwy_flipscreen_w )
+WRITE8_HANDLER( amspdwy_flipscreen_w )
 {
 	static int flip = 0;
 	flip ^= 1;
@@ -65,7 +65,7 @@ static void get_tile_info( int tile_index )
 			0)
 }
 
-WRITE_HANDLER( amspdwy_videoram_w )
+WRITE8_HANDLER( amspdwy_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -74,7 +74,7 @@ WRITE_HANDLER( amspdwy_videoram_w )
 	}
 }
 
-WRITE_HANDLER( amspdwy_colorram_w )
+WRITE8_HANDLER( amspdwy_colorram_w )
 {
 	if (colorram[offset] != data)
 	{

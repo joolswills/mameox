@@ -1,11 +1,11 @@
-#pragma code_seg("C132")
-#pragma data_seg("D132")
-#pragma bss_seg("B132")
-#pragma const_seg("K132")
-#pragma comment(linker, "/merge:D132=132")
-#pragma comment(linker, "/merge:C132=132")
-#pragma comment(linker, "/merge:B132=132")
-#pragma comment(linker, "/merge:K132=132")
+#pragma code_seg("C133")
+#pragma data_seg("D133")
+#pragma bss_seg("B133")
+#pragma const_seg("K133")
+#pragma comment(linker, "/merge:D133=133")
+#pragma comment(linker, "/merge:C133=133")
+#pragma comment(linker, "/merge:B133=133")
+#pragma comment(linker, "/merge:K133=133")
 /***************************************************************************
 
   vidhrdw.c
@@ -136,20 +136,20 @@ static void common_videoram_w(int offset, int data, int color)
 	}
 }
 
-WRITE_HANDLER( astrof_videoram_w )
+WRITE8_HANDLER( astrof_videoram_w )
 {
 	// Astro Fighter's palette is set in astrof_video_control2_w, D0 is unused
 	common_videoram_w(offset, data, *astrof_color & 0x0e);
 }
 
-WRITE_HANDLER( tomahawk_videoram_w )
+WRITE8_HANDLER( tomahawk_videoram_w )
 {
 	// Tomahawk's palette is set per byte
 	common_videoram_w(offset, data, (*astrof_color & 0x0e) | ((*astrof_color & 0x01) << 4));
 }
 
 
-WRITE_HANDLER( astrof_video_control1_w )
+WRITE8_HANDLER( astrof_video_control1_w )
 {
 	// Video control register 1
 	//
@@ -176,7 +176,7 @@ WRITE_HANDLER( astrof_video_control1_w )
 // 			   in the color PROM
 // Bit 4-7   = Not hooked up
 
-WRITE_HANDLER( astrof_video_control2_w )
+WRITE8_HANDLER( astrof_video_control2_w )
 {
 	if (palette_bank != (data & 0x04))
 	{
@@ -193,7 +193,7 @@ WRITE_HANDLER( astrof_video_control2_w )
 	/* Defer changing the colors to avoid flicker */
 }
 
-WRITE_HANDLER( tomahawk_video_control2_w )
+WRITE8_HANDLER( tomahawk_video_control2_w )
 {
 	if (palette_bank == -1)
 	{
@@ -211,7 +211,7 @@ WRITE_HANDLER( tomahawk_video_control2_w )
 }
 
 
-READ_HANDLER( tomahawk_protection_r )
+READ8_HANDLER( tomahawk_protection_r )
 {
 	/* flip the byte */
 

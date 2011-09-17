@@ -42,6 +42,7 @@ P0-053-A				91 Strike Gunner S.T.G				Athena / Tecmo
 P0-053-A				92 Quiz Kokology					Tecmo
 P0-055-B				89 Wit's							Athena
 P0-055-D				90 Thunder & Lightning				Romstar / Visco
+Promat PCB				94 Wiggie Waggie(5)    				--
 P0-063-A				91 Rezon							Allumer
 P0-068-B (M6100723A)	92 Block Carnival					Visco
 P0-072-2 (prototype)	92 Blandia (prototype)				Allumer
@@ -76,6 +77,10 @@ PO-122-A (SZR-001)		95 Zombie Raid						American Sammy
     version?  the sound system has been replaced with an OKI M6295
     hardware is definitely bootleg. standard simple layout board with no
     custom chips and no manufacturer on the pcb.
+(5) The game code is based on Thunder and Lightning but the PCB is custom
+    there are a few gfx emulation bugs (flipping of some border tiles and
+    sprites not leaving the screen correctly) its possible the custom hw
+    doesn't behave *exactly* the same as the original seta hw
 
 Notes:
 - The NEC D4701 used by Caliber 50 is a mouse interface IC (uPD4701c).
@@ -1178,7 +1183,7 @@ void uPD71054_update_timer( int no )
 ------------------------------*/
 void uPD71054_timer_callback( int no )
 {
-	cpu_set_irq_line( 0, 4, HOLD_LINE );
+	cpunum_set_input_line( 0, 4, HOLD_LINE );
 	uPD71054_update_timer( no );
 }
 
@@ -1281,7 +1286,7 @@ static struct x1_010_interface seta_sound_intf_16MHz2 =
 
 static void utoukond_ym3438_interrupt(int linestate)
 {
-	cpu_set_nmi_line(1,linestate);
+	cpunum_set_input_line(1, INPUT_LINE_NMI, linestate);
 }
 
 static struct YM2612interface utoukond_ym3438_intf =
@@ -1362,7 +1367,7 @@ static WRITE16_HANDLER( sub_ctrl_w )
 			if (ACCESSING_LSB)
 			{
 				if ( !(old_data&1) && (data&1) )
-					cpu_set_reset_line(1,PULSE_LINE);
+					cpunum_set_input_line(1, INPUT_LINE_RESET, PULSE_LINE);
 				old_data = data;
 			}
 			break;
@@ -1426,12 +1431,12 @@ static READ16_HANDLER( seta_dsw_r )
 
 /* DSW reading for 8 bit CPUs */
 
-static READ_HANDLER( dsw1_r )
+static READ8_HANDLER( dsw1_r )
 {
 	return (readinputport(3) >> 8) & 0xff;
 }
 
-static READ_HANDLER( dsw2_r )
+static READ8_HANDLER( dsw2_r )
 {
 	return (readinputport(3) >> 0) & 0xff;
 }
@@ -1578,7 +1583,7 @@ WRITE16_HANDLER( calibr50_soundlatch_w )
 	if (ACCESSING_LSB)
 	{
 		soundlatch_word_w(0,data,mem_mask);
-		cpu_set_nmi_line(1,PULSE_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 		cpu_spinuntil_time(TIME_IN_USEC(50));	// Allow the other cpu to reply
 	}
 }
@@ -2555,6 +2560,36 @@ static ADDRESS_MAP_START( thunderl_writemem, ADDRESS_SPACE_PROGRAM, 16 )
 	AM_RANGE(0xe04000, 0xe07fff) AM_WRITE(MWA16_RAM					)	// (wits)
 ADDRESS_MAP_END
 
+/***************************************************************************
+                    Wiggie Waggie
+***************************************************************************/
+
+static int wiggie_soundlatch;
+
+READ8_HANDLER( wiggie_soundlatch_r )
+{
+	return wiggie_soundlatch;
+}
+
+static WRITE16_HANDLER( wiggie_soundlatch_w )
+{
+	wiggie_soundlatch = data >> 8;
+	cpunum_set_input_line(1,0, PULSE_LINE);
+}
+
+
+static ADDRESS_MAP_START( wiggie_sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x8000, 0x87ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x9800, 0x9800) AM_READ(OKIM6295_status_0_r)
+	AM_RANGE(0xa000, 0xa000) AM_READ(wiggie_soundlatch_r)
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( wiggie_sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x8000, 0x87ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x9800, 0x9800) AM_WRITE(OKIM6295_data_0_w)
+ADDRESS_MAP_END
 
 /***************************************************************************
 					Ultraman Club / SD Gundam Neo Battling
@@ -2597,7 +2632,7 @@ static WRITE16_HANDLER( utoukond_soundlatch_w )
 {
 	if (ACCESSING_LSB)
 	{
-		cpu_set_irq_line(1,0,HOLD_LINE);
+		cpunum_set_input_line(1,0,HOLD_LINE);
 		soundlatch_w(0,data & 0xff);
 	}
 }
@@ -2643,7 +2678,7 @@ ADDRESS_MAP_END
 
 ***************************************************************************/
 
-static WRITE_HANDLER( sub_bankswitch_w )
+static WRITE8_HANDLER( sub_bankswitch_w )
 {
 	data8_t *rom = memory_region(REGION_CPU2);
 	int bank = data >> 4;
@@ -2651,7 +2686,7 @@ static WRITE_HANDLER( sub_bankswitch_w )
 	cpu_setbank(1, &rom[bank * 0x4000 + 0xc000]);
 }
 
-static WRITE_HANDLER( sub_bankswitch_lockout_w )
+static WRITE8_HANDLER( sub_bankswitch_lockout_w )
 {
 	sub_bankswitch_w(offset,data);
 	seta_coin_lockout_w(data);
@@ -2662,7 +2697,7 @@ static WRITE_HANDLER( sub_bankswitch_lockout_w )
 								Thundercade
 ***************************************************************************/
 
-static READ_HANDLER( ff_r )	{return 0xff;}
+static READ8_HANDLER( ff_r )	{return 0xff;}
 
 static ADDRESS_MAP_START( tndrcade_sub_readmem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0x0000, 0x01ff) AM_READ(MRA8_RAM				)	// RAM
@@ -2720,7 +2755,7 @@ ADDRESS_MAP_END
 								DownTown
 ***************************************************************************/
 
-READ_HANDLER( downtown_ip_r )
+READ8_HANDLER( downtown_ip_r )
 {
 	int dir1 = readinputport(4);	// analog port
 	int dir2 = readinputport(5);	// analog port
@@ -2765,7 +2800,7 @@ ADDRESS_MAP_END
 						Caliber 50 / U.S. Classic
 ***************************************************************************/
 
-WRITE_HANDLER( calibr50_soundlatch2_w )
+WRITE8_HANDLER( calibr50_soundlatch2_w )
 {
 	soundlatch2_w(0,data);
 	cpu_spinuntil_time(TIME_IN_USEC(50));	// Allow the other cpu to reply
@@ -3445,14 +3480,14 @@ INPUT_PORTS_START( drgnunit )
 	PORT_DIPSETTING(      0x0010, "2" )
 	PORT_DIPSETTING(      0x0030, "3" )
 	PORT_DIPSETTING(      0x0020, "5" )
-	PORT_DIPNAME( 0x0040, 0x0040, "Unknown 1-6" )
+	PORT_DIPNAME( 0x0040, 0x0040, "Unknown 1-6" )	/* Labeled "Don't Touch" in manual */
 	PORT_DIPSETTING(      0x0040, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0080, 0x0080, "Unknown 1-7*" )
+	PORT_DIPNAME( 0x0080, 0x0080, "Unknown 1-7*" )	/* Labeled "Don't Touch" in manual */
 	PORT_DIPSETTING(      0x0080, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 
-	PORT_DIPNAME( 0x0100, 0x0100, "Unknown 2-0" )
+	PORT_DIPNAME( 0x0100, 0x0100, "Unknown 2-0" )	/* Labeled "Don't Touch" in manual */
 	PORT_DIPSETTING(      0x0100, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0200, 0x0200, DEF_STR( Flip_Screen ) )
@@ -4257,12 +4292,11 @@ INPUT_PORTS_START( metafox )
 	PORT_DIPSETTING(      0x0200, "Easy"    )
 	PORT_DIPSETTING(      0x0100, "Hard"    )
 	PORT_DIPSETTING(      0x0000, "Hardest" )
-	PORT_DIPNAME( 0x0400, 0x0400, "Unknown 2-2" )
-	PORT_DIPSETTING(      0x0400, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
-	PORT_DIPNAME( 0x0800, 0x0800, "Unknown 2-3" )
-	PORT_DIPSETTING(      0x0800, DEF_STR( Off ) )
-	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
+	PORT_DIPNAME( 0x0c00, 0x0000, DEF_STR( Bonus_Life ) )
+	PORT_DIPSETTING(      0x000c, "None" )
+	PORT_DIPSETTING(      0x0008, "60K Only" )
+	PORT_DIPSETTING(      0x0000, "60k & 90k" )
+	PORT_DIPSETTING(      0x0004, "90K Only" )
 	PORT_DIPNAME( 0x3000, 0x3000, DEF_STR( Lives ) )
 	PORT_DIPSETTING(      0x1000, "1" )
 	PORT_DIPSETTING(      0x0000, "2" )
@@ -5177,7 +5211,7 @@ INPUT_PORTS_START( tndrcade )
 	PORT_DIPNAME( 0x000c, 0x000c, DEF_STR( Bonus_Life ) )
 	PORT_DIPSETTING(      0x000c, "50K  Only" )
 	PORT_DIPSETTING(      0x0004, "50K, Every 150K" )
-	PORT_DIPSETTING(      0x0004, "70K, Every 200K" )
+	PORT_DIPSETTING(      0x0000, "70K, Every 200K" )
 	PORT_DIPSETTING(      0x0008, "100K Only" )
 	PORT_DIPNAME( 0x0030, 0x0030, DEF_STR( Lives ) )
 	PORT_DIPSETTING(      0x0010, "1" )
@@ -5244,7 +5278,7 @@ INPUT_PORTS_START( tndrcadj )
 	PORT_DIPNAME( 0x000c, 0x000c, DEF_STR( Bonus_Life ) )
 	PORT_DIPSETTING(      0x000c, "50K  Only" )
 	PORT_DIPSETTING(      0x0004, "50K, Every 150K" )
-	PORT_DIPSETTING(      0x0004, "70K, Every 200K" )
+	PORT_DIPSETTING(      0x0000, "70K, Every 200K" )
 	PORT_DIPSETTING(      0x0008, "100K Only" )
 	PORT_DIPNAME( 0x0030, 0x0030, DEF_STR( Lives ) )
 	PORT_DIPSETTING(      0x0010, "1" )
@@ -6060,6 +6094,33 @@ static struct GfxDecodeInfo tndrcade_gfxdecodeinfo[] =
 };
 
 /***************************************************************************
+                                Wiggie Waggle
+****************************************************************************/
+
+static struct GfxLayout wiggie_layout =
+{
+	16,16,
+	RGN_FRAC(1,4),
+	4,
+	{ RGN_FRAC(0,4),RGN_FRAC(1,4),RGN_FRAC(2,4),RGN_FRAC(3,4) },
+	{ 0,1,2,3,4,5,6,7,
+	 64,65,66,67,68,69,70,71 },
+	{ 0*8, 16*8, 4*8, 20*8,
+	  2*8, 18*8, 6*8, 22*8,
+	  1*8, 17*8, 5*8, 21*8,
+	  3*8, 19*8, 7*8, 23*8,	},
+	16*16
+};
+
+
+static struct GfxDecodeInfo wiggie_gfxdecodeinfo[] =
+{
+	{ REGION_GFX1, 0, &wiggie_layout,   0x0, 32  }, /* bg tiles */
+	{ -1 } /* end of array */
+};
+
+
+/***************************************************************************
 								U.S. Classic
 ***************************************************************************/
 
@@ -6106,8 +6167,8 @@ static INTERRUPT_GEN( seta_interrupt_1_and_2 )
 {
 	switch (cpu_getiloops())
 	{
-		case 0:		cpu_set_irq_line(0, 1, HOLD_LINE);	break;
-		case 1:		cpu_set_irq_line(0, 2, HOLD_LINE);	break;
+		case 0:		cpunum_set_input_line(0, 1, HOLD_LINE);	break;
+		case 1:		cpunum_set_input_line(0, 2, HOLD_LINE);	break;
 	}
 }
 
@@ -6115,8 +6176,8 @@ static INTERRUPT_GEN( seta_interrupt_2_and_4 )
 {
 	switch (cpu_getiloops())
 	{
-		case 0:		cpu_set_irq_line(0, 2, HOLD_LINE);	break;
-		case 1:		cpu_set_irq_line(0, 4, HOLD_LINE);	break;
+		case 0:		cpunum_set_input_line(0, 2, HOLD_LINE);	break;
+		case 1:		cpunum_set_input_line(0, 4, HOLD_LINE);	break;
 	}
 }
 
@@ -6127,8 +6188,8 @@ static INTERRUPT_GEN( seta_sub_interrupt )
 {
 	switch (cpu_getiloops())
 	{
-		case 0:		cpu_set_irq_line(1, IRQ_LINE_NMI, PULSE_LINE);	break;
-		case 1:		cpu_set_irq_line(1, 0, HOLD_LINE);				break;
+		case 0:		cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);	break;
+		case 1:		cpunum_set_input_line(1, 0, HOLD_LINE);				break;
 	}
 }
 
@@ -6162,9 +6223,9 @@ static struct YM3812interface ym3812_interface =
 static INTERRUPT_GEN( tndrcade_sub_interrupt )
 {
 	if (cpu_getiloops() & 1)
-		cpu_set_irq_line(1, 0, HOLD_LINE);
+		cpunum_set_input_line(1, 0, HOLD_LINE);
 	else if (cpu_getiloops() == 0)
-		cpu_set_irq_line(1, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 }
 
 static MACHINE_DRIVER_START( tndrcade )
@@ -6295,8 +6356,8 @@ INTERRUPT_GEN( calibr50_interrupt )
 		case 0:
 		case 1:
 		case 2:
-		case 3:		cpu_set_irq_line(0, 4, HOLD_LINE);	break;
-		case 4:		cpu_set_irq_line(0, 2, HOLD_LINE);	break;
+		case 3:		cpunum_set_input_line(0, 4, HOLD_LINE);	break;
+		case 4:		cpunum_set_input_line(0, 2, HOLD_LINE);	break;
 	}
 }
 
@@ -6320,7 +6381,7 @@ static MACHINE_DRIVER_START( usclssic )
 	MDRV_SCREEN_SIZE(64*8, 32*8)
 	MDRV_VISIBLE_AREA(0*8, 48*8-1, 1*8, 31*8-1)
 	MDRV_GFXDECODE(usclssic_gfxdecodeinfo)
-	MDRV_PALETTE_LENGTH(16*32)
+	MDRV_PALETTE_LENGTH(16*32+0x200)
 	MDRV_COLORTABLE_LENGTH(16*32 + 64*32)		/* sprites, layer */
 
 	MDRV_PALETTE_INIT(usclssic)	/* layer is 6 planes deep */
@@ -6708,7 +6769,7 @@ MACHINE_DRIVER_END
 #if __uPD71054_TIMER
 static INTERRUPT_GEN( wrofaero_interrupt )
 {
-	cpu_set_irq_line( 0, 2, HOLD_LINE );
+	cpunum_set_input_line( 0, 2, HOLD_LINE );
 }
 
 MACHINE_INIT( wrofaero ) { uPD71054_timer_init(); }
@@ -7107,6 +7168,43 @@ static MACHINE_DRIVER_START( thunderl )
 	MDRV_SOUND_ADD(X1_010, seta_sound_intf_16MHz)
 MACHINE_DRIVER_END
 
+static struct OKIM6295interface wiggie_okim6295_interface =
+{
+	1,						/* 1 chip */
+	{ 1000000/132 },	/* 1Mhz / 132 (pin 7 = 5v)*/
+	{ REGION_SOUND1 },		/* memory region */
+	{ 100 }
+};
+
+
+static MACHINE_DRIVER_START( wiggie )
+
+	/* basic machine hardware */
+	MDRV_CPU_ADD(M68000, 8000000)
+	MDRV_CPU_PROGRAM_MAP(thunderl_readmem,thunderl_writemem)
+	MDRV_CPU_VBLANK_INT(irq2_line_hold,1)
+
+	MDRV_CPU_ADD(Z80, 4000000)
+	MDRV_CPU_PROGRAM_MAP(wiggie_sound_readmem,wiggie_sound_writemem)
+
+	MDRV_FRAMES_PER_SECOND(60)
+	MDRV_VBLANK_DURATION(DEFAULT_60HZ_VBLANK_DURATION)
+
+	/* video hardware */
+	MDRV_VIDEO_ATTRIBUTES(VIDEO_TYPE_RASTER)
+	MDRV_SCREEN_SIZE(64*8, 32*8)
+	MDRV_VISIBLE_AREA(0*8, 48*8-1, 1*8, 31*8-1)
+	MDRV_GFXDECODE(wiggie_gfxdecodeinfo)
+	MDRV_PALETTE_LENGTH(512)	/* sprites only */
+
+	MDRV_VIDEO_START(seta_no_layers)
+	MDRV_VIDEO_UPDATE(seta_no_layers) /* just draw the sprites */
+
+	/* sound hardware */
+	MDRV_SOUND_ADD(OKIM6295, wiggie_okim6295_interface)
+MACHINE_DRIVER_END
+
+
 static MACHINE_DRIVER_START( wits )
 
 	/* basic machine hardware */
@@ -7469,6 +7567,10 @@ ROM_START( usclssic )
 	ROM_LOAD( "ue001020.130", 0x500000, 0x080000, CRC(bc07403f) SHA1(f994b6d1dee23f5dabdb328f955f4380a8ca9d52) )
 	ROM_LOAD( "ue001021.131", 0x580000, 0x080000, CRC(98c03efd) SHA1(761c51d5573e6f35c48b8b9ee5d88cbde02e92a7) )
 
+	ROM_REGION( 0x400, REGION_PROMS, 0 )	/* Extra Colours (not used yet) */
+	ROM_LOAD16_BYTE( "ue1-022.prm", 0x000, 0x200, CRC(1a23129e) SHA1(110eb54ab83ecb8375164a5c96f522b2737c379c) )
+	ROM_LOAD16_BYTE( "ue1-023.prm", 0x001, 0x200, CRC(a13192a4) SHA1(86e312e0f7400b7fa08fbe8fced1eb95a32502ca) )
+
 	ROM_REGION( 0x080000, REGION_SOUND1, 0 )	/* Samples */
 	ROM_LOAD( "ue001005.132", 0x000000, 0x080000, CRC(c5fea37c) SHA1(af4f09dd36af06e50262f607ff14eedc33beffd2) )
 ROM_END
@@ -7626,6 +7728,27 @@ ROM_START( thunderl )
 	ROM_REGION( 0x100000, REGION_SOUND1, 0 )	/* Samples */
 	ROM_LOAD( "r28", 0x000000, 0x080000, CRC(a043615d) SHA1(e483fa9fd8e922578a9d7b6ced0750643089ca78) )
 	ROM_LOAD( "r27", 0x080000, 0x080000, CRC(cb8425a3) SHA1(655afa295fbe99acc79c4004f03ed832560cff5b) )
+ROM_END
+
+/* Wiggie does NOT run on a seta board, but is a hack / bootleg of Thunder & Lightning (just like
+   Promat's Perestroika Girls is a hack / bootleg of Taito's Super Qix */
+
+ROM_START( wiggie )
+	ROM_REGION( 0x40000, REGION_CPU1, 0 ) /* 68000 Code */
+	ROM_LOAD16_BYTE( "wiggie.f19", 0x00000, 0x10000, CRC(24b58f16) SHA1(96ef92ab79258da9322dd7e706bf05ac5143f7b7) )
+	ROM_LOAD16_BYTE( "wiggie.f21", 0x00001, 0x10000, CRC(83ba6edb) SHA1(fa74fb39599ed877317db73d02d14df5b475fc35) )
+
+	ROM_REGION( 0x40000, REGION_CPU2, 0 ) /* sound cpu code */
+	ROM_LOAD( "wiggie.a5", 0x00000, 0x10000, CRC(8078d77b) SHA1(4e6855d396a1bace2810b13b7dd08ccf5de89bd8) )
+
+	ROM_REGION( 0x040000, REGION_SOUND1, 0 ) /* Samples */
+	ROM_LOAD( "wiggie.d1", 0x00000, 0x40000, CRC(27fbe12a) SHA1(73f476a03b321ed1ae89104f5b32d77153fabb82))
+
+	ROM_REGION( 0x80000, REGION_GFX1, 0 )
+	ROM_LOAD( "wiggie.k16", 0x00000, 0x20000, CRC(4fb40b8a) SHA1(120c9fd677071485a9f8accc2385117baf542b9c) )
+	ROM_LOAD( "wiggie.k18", 0x20000, 0x20000, CRC(ebc418e9) SHA1(a9af9bebce56608b0533d7d147191ebdceaca4e4) )
+	ROM_LOAD( "wiggie.k19", 0x40000, 0x20000, CRC(c073501b) SHA1(4b4cd0fed5efe12bcd10f98a71becc212e7e753a) )
+	ROM_LOAD( "wiggie.k21", 0x60000, 0x20000, CRC(22f6fa39) SHA1(d3e86e156434153335c5d2ce71417f35097f5ab7) )
 ROM_END
 
 ROM_START( rezon )
@@ -8289,11 +8412,11 @@ logerror("%04x: twineagl_200100_w %d = %02x\n",activecpu_get_pc(),offset,data);
 DRIVER_INIT( twineagl )
 {
 	/* debug? */
-	install_mem_read16_handler (0, 0x800000, 0x8000ff, twineagl_debug_r);
+	memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x800000, 0x8000ff, 0, 0, twineagl_debug_r);
 
 	/* This allows 2 simultaneous players and the use of the "Copyright" Dip Switch. */
-	install_mem_read16_handler (0, 0x200100, 0x20010f, twineagl_200100_r);
-	install_mem_write16_handler(0, 0x200100, 0x20010f, twineagl_200100_w);
+	memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x200100, 0x20010f, 0, 0, twineagl_200100_r);
+	memory_install_write16_handler(0, ADDRESS_SPACE_PROGRAM, 0x200100, 0x20010f, 0, 0, twineagl_200100_w);
 }
 
 
@@ -8323,8 +8446,8 @@ static WRITE16_HANDLER( downtown_protection_w )
 
 DRIVER_INIT( downtown )
 {
-	install_mem_read16_handler (0, 0x200000, 0x2001ff, downtown_protection_r);
-	install_mem_write16_handler(0, 0x200000, 0x2001ff, downtown_protection_w);
+	memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x200000, 0x2001ff, 0, 0, downtown_protection_r);
+	memory_install_write16_handler(0, ADDRESS_SPACE_PROGRAM, 0x200000, 0x2001ff, 0, 0, downtown_protection_w);
 }
 
 
@@ -8344,7 +8467,7 @@ READ16_HANDLER( arbalest_debug_r )
 
 DRIVER_INIT( arbalest )
 {
-	install_mem_read16_handler(0, 0x80000, 0x8000f, arbalest_debug_r);
+	memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x80000, 0x8000f, 0, 0, arbalest_debug_r);
 }
 
 
@@ -8353,8 +8476,8 @@ DRIVER_INIT( metafox )
 	data16_t *RAM = (data16_t *) memory_region(REGION_CPU1);
 
 	/* This game uses the 21c000-21ffff area for protection? */
-//	install_mem_read16_handler (0, 0x21c000, 0x21ffff, MRA16_NOP);
-//	install_mem_write16_handler(0, 0x21c000, 0x21ffff, MWA16_NOP);
+//	memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x21c000, 0x21ffff, 0, 0, MRA16_NOP);
+//	memory_install_write16_handler(0, ADDRESS_SPACE_PROGRAM, 0x21c000, 0x21ffff, 0, 0, MWA16_NOP);
 
 	RAM[0x8ab1c/2] = 0x4e71;	// patch protection test: "cp error"
 	RAM[0x8ab1e/2] = 0x4e71;
@@ -8400,14 +8523,14 @@ DRIVER_INIT ( blandia )
 
 DRIVER_INIT( eightfrc )
 {
-	install_mem_read16_handler(0, 0x500004, 0x500005, MRA16_NOP);	// watchdog??
+	memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x500004, 0x500005, 0, 0, MRA16_NOP);	// watchdog??
 }
 
 
 DRIVER_INIT( zombraid )
 {
-	install_mem_read16_handler (0, 0xf00002, 0xf00003, zombraid_gun_r);
-	install_mem_write16_handler(0, 0xf00000, 0xf00001, zombraid_gun_w);
+	memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0xf00002, 0xf00003, 0, 0, zombraid_gun_r);
+	memory_install_write16_handler(0, ADDRESS_SPACE_PROGRAM, 0xf00000, 0xf00001, 0, 0, zombraid_gun_w);
 }
 
 
@@ -8425,9 +8548,40 @@ DRIVER_INIT( kiwame )
 
 DRIVER_INIT( rezon )
 {
-	install_mem_read16_handler(0, 0x500006, 0x500007, MRA16_NOP);	// irq ack?
+	memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x500006, 0x500007, 0, 0, MRA16_NOP);	// irq ack?
 }
 
+static DRIVER_INIT(wiggie)
+{
+	data8_t *src;
+	int len;
+	data8_t temp[16];
+	int i,j;
+
+	src = memory_region(REGION_CPU1);
+	len = memory_region_length(REGION_CPU1);
+	for (i = 0;i < len;i += 16)
+	{
+		memcpy(temp,&src[i],16);
+		for (j = 0;j < 16;j++)
+		{
+			static int convtable[16] =
+			{
+				0x0, 0x1, 0x8, 0x9,
+				0x2, 0x3, 0xa, 0xb,
+				0x4, 0x5, 0xc, 0xd,
+				0x6, 0x7, 0xe, 0xf
+			};
+
+			src[i+j] = temp[convtable[j]];
+		}
+
+
+	}
+
+	memory_install_write16_handler(0, ADDRESS_SPACE_PROGRAM, 0xB00008, 0xB00009, 0, 0, wiggie_soundlatch_w);
+
+}
 
 
 /***************************************************************************
@@ -8453,6 +8607,7 @@ GAME( 1989, metafox,  0,        metafox,  metafox,  metafox,  ROT270, "Seta",   
 GAME( 1989, drgnunit, 0,        drgnunit, drgnunit, 0,        ROT0,   "Seta",                   "Dragon Unit / Castle of Dragon" )
 GAME( 1989, wits,     0,        wits,     wits,     0,        ROT0,   "Athena (Visco license)", "Wit's (Japan)" ) // Country/License: DSW
 GAME( 1990, thunderl, 0,        thunderl, thunderl, 0,        ROT270, "Seta",                   "Thunder & Lightning" ) // Country/License: DSW
+GAME( 1994, wiggie,   0,        wiggie,   thunderl, wiggie,   ROT270, "Promat",                 "Wiggie Waggie" ) // hack of Thunder & Lightning
 GAME( 1991, rezon,    0,        rezon,    rezon,    rezon,    ROT0,   "Allumer",                "Rezon" )
 GAME( 1991, stg,      0,        drgnunit, stg,      0,        ROT270, "Athena / Tecmo",         "Strike Gunner S.T.G" )
 GAME( 1991, pairlove, 0,        pairlove, pairlove, 0,        ROT270, "Athena",                 "Pairs Love" )

@@ -1,11 +1,11 @@
-#pragma code_seg("C637")
-#pragma data_seg("D637")
-#pragma bss_seg("B637")
-#pragma const_seg("K637")
-#pragma comment(linker, "/merge:D637=637")
-#pragma comment(linker, "/merge:C637=637")
-#pragma comment(linker, "/merge:B637=637")
-#pragma comment(linker, "/merge:K637=637")
+#pragma code_seg("C673")
+#pragma data_seg("D673")
+#pragma bss_seg("B673")
+#pragma const_seg("K673")
+#pragma comment(linker, "/merge:D673=673")
+#pragma comment(linker, "/merge:C673=673")
+#pragma comment(linker, "/merge:B673=673")
+#pragma comment(linker, "/merge:K673=673")
 /***************************************************************************
 
 Solomon's Key
@@ -20,19 +20,19 @@ driver by Mirko Buffoni
 extern UINT8 *solomon_videoram2;
 extern UINT8 *solomon_colorram2;
 
-extern WRITE_HANDLER( solomon_videoram_w );
-extern WRITE_HANDLER( solomon_colorram_w );
-extern WRITE_HANDLER( solomon_videoram2_w );
-extern WRITE_HANDLER( solomon_colorram2_w );
-extern WRITE_HANDLER( solomon_flipscreen_w );
+extern WRITE8_HANDLER( solomon_videoram_w );
+extern WRITE8_HANDLER( solomon_colorram_w );
+extern WRITE8_HANDLER( solomon_videoram2_w );
+extern WRITE8_HANDLER( solomon_colorram2_w );
+extern WRITE8_HANDLER( solomon_flipscreen_w );
 
 extern VIDEO_START( solomon );
 extern VIDEO_UPDATE( solomon );
 
-static WRITE_HANDLER( solomon_sh_command_w )
+static WRITE8_HANDLER( solomon_sh_command_w )
 {
 	soundlatch_w(offset,data);
-	cpu_set_irq_line(1,IRQ_LINE_NMI,PULSE_LINE);
+	cpunum_set_input_line(1,INPUT_LINE_NMI,PULSE_LINE);
 }
 
 

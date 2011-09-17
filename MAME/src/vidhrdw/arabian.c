@@ -1,11 +1,11 @@
-#pragma code_seg("C121")
-#pragma data_seg("D121")
-#pragma bss_seg("B121")
-#pragma const_seg("K121")
-#pragma comment(linker, "/merge:D121=121")
-#pragma comment(linker, "/merge:C121=121")
-#pragma comment(linker, "/merge:B121=121")
-#pragma comment(linker, "/merge:K121=121")
+#pragma code_seg("C122")
+#pragma data_seg("D122")
+#pragma bss_seg("B122")
+#pragma const_seg("K122")
+#pragma comment(linker, "/merge:D122=122")
+#pragma comment(linker, "/merge:C122=122")
+#pragma comment(linker, "/merge:B122=122")
+#pragma comment(linker, "/merge:K122=122")
 /***************************************************************************
 
   vidhrdw.c
@@ -285,7 +285,7 @@ static void blit_area(UINT8 plane, UINT16 src, UINT8 x, UINT8 y, UINT8 sx, UINT8
  *
  *************************************/
 
-WRITE_HANDLER( arabian_blitter_w )
+WRITE8_HANDLER( arabian_blitter_w )
 {
 	/* write the data */
 	offset &= 7;
@@ -315,7 +315,7 @@ WRITE_HANDLER( arabian_blitter_w )
  *
  *************************************/
 
-WRITE_HANDLER( arabian_videoram_w )
+WRITE8_HANDLER( arabian_videoram_w )
 {
 	UINT8 *base;
 	UINT8 x, y;

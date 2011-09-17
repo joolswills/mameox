@@ -95,7 +95,7 @@ PALETTE_INIT( nova2001 )
 	}
 }
 
-WRITE_HANDLER( nova2001_videoram_w )
+WRITE8_HANDLER( nova2001_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -104,7 +104,7 @@ WRITE_HANDLER( nova2001_videoram_w )
 	}
 }
 
-WRITE_HANDLER( nova2001_colorram_w )
+WRITE8_HANDLER( nova2001_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -113,7 +113,7 @@ WRITE_HANDLER( nova2001_colorram_w )
 	}
 }
 
-WRITE_HANDLER( nova2001_videoram2_w )
+WRITE8_HANDLER( nova2001_videoram2_w )
 {
 	if (nova2001_videoram2[offset] != data)
 	{
@@ -122,7 +122,7 @@ WRITE_HANDLER( nova2001_videoram2_w )
 	}
 }
 
-WRITE_HANDLER( nova2001_colorram2_w )
+WRITE8_HANDLER( nova2001_colorram2_w )
 {
 	if (nova2001_colorram2[offset] != data)
 	{
@@ -131,17 +131,17 @@ WRITE_HANDLER( nova2001_colorram2_w )
 	}
 }
 
-WRITE_HANDLER( nova2001_scroll_x_w )
+WRITE8_HANDLER( nova2001_scroll_x_w )
 {
 	tilemap_set_scrollx(bg_tilemap, 0, data - (flip_screen ? 0 : 7));
 }
 
-WRITE_HANDLER( nova2001_scroll_y_w )
+WRITE8_HANDLER( nova2001_scroll_y_w )
 {
 	tilemap_set_scrolly(bg_tilemap, 0, data);
 }
 
-WRITE_HANDLER( nova2001_flipscreen_w )
+WRITE8_HANDLER( nova2001_flipscreen_w )
 {
 	if (flip_screen != (~data & 0x01))
 	{

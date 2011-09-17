@@ -114,11 +114,11 @@ static pic16C5x_Regs R;
 static UINT16 temp_config;
 static UINT8  old_T0;
 static INT8   old_data;
-static UINT8 picRAMmask;
-static int inst_cycles;
-static int delay_timer;
-static int picmodel;
-static int pic16C5x_reset_vector;
+static UINT8  picRAMmask;
+static int    inst_cycles;
+static int    delay_timer;
+static int    picmodel;
+static int    pic16C5x_reset_vector;
 static int    pic16C5x_icount;
 typedef void (*opcode_fn) (void);
 static unsigned cycles_000_other[16];
@@ -711,14 +711,17 @@ static void pic16C5x_init(void)
 	state_save_register_UINT8("pic16C5x", cpu, "W", &R.W, 1);
 	state_save_register_UINT8("pic16C5x", cpu, "ALU", &R.ALU, 1);
 	state_save_register_UINT8("pic16C5x", cpu, "Option", &R.OPTION, 1);
-	state_save_register_UINT8("pic16C5x", cpu, "TRISA", &R.TRISA, 1);
-	state_save_register_UINT8("pic16C5x", cpu, "TRISB", &R.TRISB, 1);
-	state_save_register_UINT8("pic16C5x", cpu, "TRISC", &R.TRISC, 1);
+	state_save_register_UINT8("pic16C5x", cpu, "TMR0", &R.TMR0, 1);
+	state_save_register_UINT8("pic16C5x", cpu, "PCL", &R.PCL, 1);
+	state_save_register_UINT8("pic16C5x", cpu, "STR", &R.STATUS, 1);
+	state_save_register_UINT8("pic16C5x", cpu, "FSR", &R.FSR, 1);
 	state_save_register_UINT8("pic16C5x", cpu, "PORTA", &R.PORTA, 1);
 	state_save_register_UINT8("pic16C5x", cpu, "PORTB", &R.PORTB, 1);
 	state_save_register_UINT8("pic16C5x", cpu, "PORTC", &R.PORTC, 1);
+	state_save_register_UINT8("pic16C5x", cpu, "TRISA", &R.TRISA, 1);
+	state_save_register_UINT8("pic16C5x", cpu, "TRISB", &R.TRISB, 1);
+	state_save_register_UINT8("pic16C5x", cpu, "TRISC", &R.TRISC, 1);
 	state_save_register_UINT8("pic16C5x", cpu, "Old_T0", &old_T0, 1);
-	state_save_register_UINT8("pic16C5x", cpu, "STR", &R.STATUS, 1);
 	state_save_register_UINT8("pic16C5x", cpu, "RAM_mask", &picRAMmask, 1);
 	state_save_register_UINT16("pic16C5x", cpu, "WDT", &R.WDT, 1);
 	state_save_register_UINT16("pic16C5x", cpu, "Prescaler", &R.prescaler, 1);
@@ -738,7 +741,7 @@ static void pic16C5x_init(void)
  *	Reset registers to their initial values
  ****************************************************************************/
 
-void pic16C5x_reset_regs(void)
+static void pic16C5x_reset_regs(void)
 {
 	R.PC     = pic16C5x_reset_vector;
 	R.CONFIG = temp_config;
@@ -755,7 +758,7 @@ void pic16C5x_reset_regs(void)
 	inst_cycles = 0;
 }
 
-void pic16C5x_soft_reset(void)
+static void pic16C5x_soft_reset(void)
 {
 	R.STATUS &= 0x1f;
 	pic16C5x_reset_regs();
@@ -973,99 +976,9 @@ static offs_t pic16C5x_dasm(char *buffer, offs_t pc)
 
 
 
-#if (HAS_PIC16C54)
-/****************************************************************************
- *	PIC16C54
- ****************************************************************************/
-
-void pic16C54_reset(void *param)
-{
-	picmodel = 0x16C54;
-	picRAMmask = 0x1f;
-	pic16C5x_reset_vector = PIC16C54_RESET_VECTOR;
-	pic16C5x_reset_regs();
-	R.STATUS = 0x00;
-	SET(TO_FLAG);
-	SET(PD_FLAG);
-}
-
-#endif
-
-
-#if (HAS_PIC16C55)
-/****************************************************************************
- *	PIC16C55
- ****************************************************************************/
-
-void pic16C55_reset(void *param)
-{
-	picmodel = 0x16C55;
-	picRAMmask = 0x1f;
-	pic16C5x_reset_vector = PIC16C55_RESET_VECTOR;
-	pic16C5x_reset_regs();
-	R.STATUS = 0x00;
-	SET(TO_FLAG);
-	SET(PD_FLAG);
-}
-#endif
-
-
-#if (HAS_PIC16C56)
-/****************************************************************************
- *	PIC16C56
- ****************************************************************************/
-
-void pic16C56_reset(void *param)
-{
-	picmodel = 0x16C56;
-	picRAMmask = 0x1f;
-	pic16C5x_reset_vector = PIC16C56_RESET_VECTOR;
-	pic16C5x_reset_regs();
-	R.STATUS = 0x00;
-	SET(TO_FLAG);
-	SET(PD_FLAG);
-}
-#endif
-
-
-#if (HAS_PIC16C57)
-/****************************************************************************
- *	PIC16C57
- ****************************************************************************/
-
-void pic16C57_reset(void *param)
-{
-	picmodel = 0x16C57;
-	picRAMmask = 0x7f;
-	pic16C5x_reset_vector = PIC16C57_RESET_VECTOR;
-	pic16C5x_reset_regs();
-	R.STATUS = 0x00;
-	SET(TO_FLAG);
-	SET(PD_FLAG);
-}
-#endif
-
-
-#if (HAS_PIC16C58)
-/****************************************************************************
- *	PIC16C58
- ****************************************************************************/
-
-void pic16C58_reset(void *param)
-{
-	picmodel = 0x16C58;
-	picRAMmask = 0x7f;
-	pic16C5x_reset_vector = PIC16C57_RESET_VECTOR;
-	pic16C5x_reset_regs();
-	R.STATUS = 0x00;
-	SET(TO_FLAG);
-	SET(PD_FLAG);
-}
-#endif
-
 
 /**************************************************************************
- * Generic set_info
+ *	Generic set_info
  **************************************************************************/
 
 static void pic16C5x_set_info(UINT32 state, union cpuinfo *info)
@@ -1097,7 +1010,7 @@ static void pic16C5x_set_info(UINT32 state, union cpuinfo *info)
 
 
 /**************************************************************************
- * Generic get_info
+ *	Generic get_info
  **************************************************************************/
 
 static void pic16C5x_get_info(UINT32 state, union cpuinfo *info)
@@ -1106,7 +1019,7 @@ static void pic16C5x_get_info(UINT32 state, union cpuinfo *info)
 	{
 		/* --- the following bits of info are returned as 64-bit signed integers --- */
 		case CPUINFO_INT_CONTEXT_SIZE:					info->i = sizeof(R);					break;
-		case CPUINFO_INT_IRQ_LINES:						info->i = 0;							break;
+		case CPUINFO_INT_INPUT_LINES:					info->i = 0;							break;
 		case CPUINFO_INT_DEFAULT_IRQ_VECTOR:			info->i = 0;							break;
 		case CPUINFO_INT_ENDIANNESS:					info->i = CPU_IS_LE;					break;
 		case CPUINFO_INT_CLOCK_DIVIDER:					info->i = PIC16C5x_CLOCK_DIVIDER;		break;
@@ -1114,15 +1027,15 @@ static void pic16C5x_get_info(UINT32 state, union cpuinfo *info)
 		case CPUINFO_INT_MAX_INSTRUCTION_BYTES:			info->i = 2;							break;
 		case CPUINFO_INT_MIN_CYCLES:					info->i = 1*CLK;						break;
 		case CPUINFO_INT_MAX_CYCLES:					info->i = 10*CLK;						break;
-		
+
 		case CPUINFO_INT_DATABUS_WIDTH + ADDRESS_SPACE_PROGRAM:	info->i = 16;					break;
-		case CPUINFO_INT_ADDRBUS_WIDTH + ADDRESS_SPACE_PROGRAM: info->i = 11;					break;
+		case CPUINFO_INT_ADDRBUS_WIDTH + ADDRESS_SPACE_PROGRAM: info->i = 9;					break;
 		case CPUINFO_INT_ADDRBUS_SHIFT + ADDRESS_SPACE_PROGRAM: info->i = -1;					break;
 		case CPUINFO_INT_DATABUS_WIDTH + ADDRESS_SPACE_DATA:	info->i = 8;					break;
 		case CPUINFO_INT_ADDRBUS_WIDTH + ADDRESS_SPACE_DATA: 	info->i = 5;					break;
 		case CPUINFO_INT_ADDRBUS_SHIFT + ADDRESS_SPACE_DATA: 	info->i = 0;					break;
 		case CPUINFO_INT_DATABUS_WIDTH + ADDRESS_SPACE_IO:		info->i = 8;					break;
-		case CPUINFO_INT_ADDRBUS_WIDTH + ADDRESS_SPACE_IO: 		info->i = 8;					break;
+		case CPUINFO_INT_ADDRBUS_WIDTH + ADDRESS_SPACE_IO: 		info->i = 5;					break;
 		case CPUINFO_INT_ADDRBUS_SHIFT + ADDRESS_SPACE_IO: 		info->i = 0;					break;
 
 		case CPUINFO_INT_PREVIOUSPC:					info->i = R.PREVPC;						break;
@@ -1202,9 +1115,39 @@ static void pic16C5x_get_info(UINT32 state, union cpuinfo *info)
 }
 
 
+
 #if (HAS_PIC16C54)
+/****************************************************************************
+ *	Internal Memory Map
+ ****************************************************************************/
+
+static ADDRESS_MAP_START( pic16c54_rom, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000, 0x1ff) AM_ROM
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( pic16c54_ram, ADDRESS_SPACE_DATA, 8 )
+	AM_RANGE(0x00, 0x1f) AM_RAM
+ADDRESS_MAP_END
+
+
+/****************************************************************************
+ *	PIC16C54 Reset
+ ****************************************************************************/
+
+void pic16C54_reset(void *param)
+{
+	picmodel = 0x16C54;
+	picRAMmask = 0x1f;
+	pic16C5x_reset_vector = 0x1ff;
+	pic16C5x_reset_regs();
+	R.STATUS = 0x00;
+	SET(TO_FLAG);
+	SET(PD_FLAG);
+}
+
+
 /**************************************************************************
- * CPU-specific set_info
+ *	CPU-specific get_info
  **************************************************************************/
 
 void pic16C54_get_info(UINT32 state, union cpuinfo *info)
@@ -1214,6 +1157,8 @@ void pic16C54_get_info(UINT32 state, union cpuinfo *info)
 		/* --- the following bits of info are returned as pointers to data or functions --- */
 		case CPUINFO_PTR_RESET:							info->reset = pic16C54_reset;			break;
 		case CPUINFO_PTR_REGISTER_LAYOUT:				info->p = pic16C5x_2p_reg_layout;		break;
+		case CPUINFO_PTR_INTERNAL_MEMORY_MAP + ADDRESS_SPACE_PROGRAM:		info->internal_map = construct_map_pic16c54_rom; break;
+		case CPUINFO_PTR_INTERNAL_MEMORY_MAP + ADDRESS_SPACE_DATA:			info->internal_map = construct_map_pic16c54_ram; break;
 
 		/* --- the following bits of info are returned as NULL-terminated strings --- */
 		case CPUINFO_STR_NAME:							strcpy(info->s = cpuintrf_temp_str(), "PIC16C54"); break;
@@ -1227,8 +1172,37 @@ void pic16C54_get_info(UINT32 state, union cpuinfo *info)
 
 
 #if (HAS_PIC16C55)
+/****************************************************************************
+ *	Internal Memory Map
+ ****************************************************************************/
+
+static ADDRESS_MAP_START( pic16c55_rom, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000, 0x1ff) AM_ROM
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( pic16c55_ram, ADDRESS_SPACE_DATA, 8 )
+	AM_RANGE(0x00, 0x1f) AM_RAM
+ADDRESS_MAP_END
+
+
+/****************************************************************************
+ *	PIC16C55 Reset
+ ****************************************************************************/
+
+void pic16C55_reset(void *param)
+{
+	picmodel = 0x16C55;
+	picRAMmask = 0x1f;
+	pic16C5x_reset_vector = 0x1ff;
+	pic16C5x_reset_regs();
+	R.STATUS = 0x00;
+	SET(TO_FLAG);
+	SET(PD_FLAG);
+}
+
+
 /**************************************************************************
- * CPU-specific set_info
+ *	CPU-specific get_info
  **************************************************************************/
 
 void pic16C55_get_info(UINT32 state, union cpuinfo *info)
@@ -1238,6 +1212,8 @@ void pic16C55_get_info(UINT32 state, union cpuinfo *info)
 		/* --- the following bits of info are returned as pointers to data or functions --- */
 		case CPUINFO_PTR_RESET:							info->reset = pic16C55_reset;			break;
 		case CPUINFO_PTR_REGISTER_LAYOUT:				info->p = pic16C5x_3p_reg_layout;		break;
+		case CPUINFO_PTR_INTERNAL_MEMORY_MAP + ADDRESS_SPACE_PROGRAM:		info->internal_map = construct_map_pic16c55_rom; break;
+		case CPUINFO_PTR_INTERNAL_MEMORY_MAP + ADDRESS_SPACE_DATA:			info->internal_map = construct_map_pic16c55_ram; break;
 
 		/* --- the following bits of info are returned as NULL-terminated strings --- */
 		case CPUINFO_STR_NAME:							strcpy(info->s = cpuintrf_temp_str(), "PIC16C55"); break;
@@ -1251,8 +1227,37 @@ void pic16C55_get_info(UINT32 state, union cpuinfo *info)
 
 
 #if (HAS_PIC16C56)
+/****************************************************************************
+ *	Internal Memory Map
+ ****************************************************************************/
+
+static ADDRESS_MAP_START( pic16c56_rom, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000, 0x3ff) AM_ROM
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( pic16c56_ram, ADDRESS_SPACE_DATA, 8 )
+	AM_RANGE(0x00, 0x1f) AM_RAM
+ADDRESS_MAP_END
+
+
+/****************************************************************************
+ *	PIC16C56 Reset
+ ****************************************************************************/
+
+void pic16C56_reset(void *param)
+{
+	picmodel = 0x16C56;
+	picRAMmask = 0x1f;
+	pic16C5x_reset_vector = 0x3ff;
+	pic16C5x_reset_regs();
+	R.STATUS = 0x00;
+	SET(TO_FLAG);
+	SET(PD_FLAG);
+}
+
+
 /**************************************************************************
- * CPU-specific set_info
+ *	CPU-specific get_info
  **************************************************************************/
 
 void pic16C56_get_info(UINT32 state, union cpuinfo *info)
@@ -1262,6 +1267,10 @@ void pic16C56_get_info(UINT32 state, union cpuinfo *info)
 		/* --- the following bits of info are returned as pointers to data or functions --- */
 		case CPUINFO_PTR_RESET:							info->reset = pic16C56_reset;			break;
 		case CPUINFO_PTR_REGISTER_LAYOUT:				info->p = pic16C5x_2p_reg_layout;		break;
+		case CPUINFO_PTR_INTERNAL_MEMORY_MAP + ADDRESS_SPACE_PROGRAM:		info->internal_map = construct_map_pic16c56_rom; break;
+		case CPUINFO_PTR_INTERNAL_MEMORY_MAP + ADDRESS_SPACE_DATA:			info->internal_map = construct_map_pic16c56_ram; break;
+
+		case CPUINFO_INT_ADDRBUS_WIDTH + ADDRESS_SPACE_PROGRAM: info->i = 10;					break;
 
 		/* --- the following bits of info are returned as NULL-terminated strings --- */
 		case CPUINFO_STR_NAME:							strcpy(info->s = cpuintrf_temp_str(), "PIC16C56"); break;
@@ -1275,8 +1284,40 @@ void pic16C56_get_info(UINT32 state, union cpuinfo *info)
 
 
 #if (HAS_PIC16C57)
+/****************************************************************************
+ *	Internal Memory Map
+ ****************************************************************************/
+
+static ADDRESS_MAP_START( pic16c57_rom, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000, 0x7ff) AM_ROM
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( pic16c57_ram, ADDRESS_SPACE_DATA, 8 )
+	AM_RANGE(0x00, 0x1f) AM_RAM
+	AM_RANGE(0x30, 0x3f) AM_RAM
+	AM_RANGE(0x50, 0x5f) AM_RAM
+	AM_RANGE(0x70, 0x7f) AM_RAM
+ADDRESS_MAP_END
+
+
+/****************************************************************************
+ *	PIC16C57 Reset
+ ****************************************************************************/
+
+void pic16C57_reset(void *param)
+{
+	picmodel = 0x16C57;
+	picRAMmask = 0x7f;
+	pic16C5x_reset_vector = 0x7ff;
+	pic16C5x_reset_regs();
+	R.STATUS = 0x00;
+	SET(TO_FLAG);
+	SET(PD_FLAG);
+}
+
+
 /**************************************************************************
- * CPU-specific set_info
+ *	CPU-specific get_info
  **************************************************************************/
 
 void pic16C57_get_info(UINT32 state, union cpuinfo *info)
@@ -1286,7 +1327,10 @@ void pic16C57_get_info(UINT32 state, union cpuinfo *info)
 		/* --- the following bits of info are returned as pointers to data or functions --- */
 		case CPUINFO_PTR_RESET:							info->reset = pic16C57_reset;			break;
 		case CPUINFO_PTR_REGISTER_LAYOUT:				info->p = pic16C5x_3p_reg_layout;		break;
+		case CPUINFO_PTR_INTERNAL_MEMORY_MAP + ADDRESS_SPACE_PROGRAM:		info->internal_map = construct_map_pic16c57_rom; break;
+		case CPUINFO_PTR_INTERNAL_MEMORY_MAP + ADDRESS_SPACE_DATA:			info->internal_map = construct_map_pic16c57_ram; break;
 
+		case CPUINFO_INT_ADDRBUS_WIDTH + ADDRESS_SPACE_PROGRAM: info->i = 11;					break;
 		case CPUINFO_INT_ADDRBUS_WIDTH + ADDRESS_SPACE_DATA: 	info->i = 7;					break;
 
 		/* --- the following bits of info are returned as NULL-terminated strings --- */
@@ -1301,8 +1345,40 @@ void pic16C57_get_info(UINT32 state, union cpuinfo *info)
 
 
 #if (HAS_PIC16C58)
+/****************************************************************************
+ *	Internal Memory Map
+ ****************************************************************************/
+
+static ADDRESS_MAP_START( pic16c58_rom, ADDRESS_SPACE_PROGRAM, 16 )
+	AM_RANGE(0x000, 0x7ff) AM_ROM
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( pic16c58_ram, ADDRESS_SPACE_DATA, 8 )
+	AM_RANGE(0x00, 0x1f) AM_RAM
+	AM_RANGE(0x30, 0x3f) AM_RAM
+	AM_RANGE(0x50, 0x5f) AM_RAM
+	AM_RANGE(0x70, 0x7f) AM_RAM
+ADDRESS_MAP_END
+
+
+/****************************************************************************
+ *	PIC16C58 Reset
+ ****************************************************************************/
+
+void pic16C58_reset(void *param)
+{
+	picmodel = 0x16C58;
+	picRAMmask = 0x7f;
+	pic16C5x_reset_vector = 0x7ff;
+	pic16C5x_reset_regs();
+	R.STATUS = 0x00;
+	SET(TO_FLAG);
+	SET(PD_FLAG);
+}
+
+
 /**************************************************************************
- * CPU-specific set_info
+ *	CPU-specific get_info
  **************************************************************************/
 
 void pic16C58_get_info(UINT32 state, union cpuinfo *info)
@@ -1312,7 +1388,10 @@ void pic16C58_get_info(UINT32 state, union cpuinfo *info)
 		/* --- the following bits of info are returned as pointers to data or functions --- */
 		case CPUINFO_PTR_RESET:							info->reset = pic16C58_reset;			break;
 		case CPUINFO_PTR_REGISTER_LAYOUT:				info->p = pic16C5x_2p_reg_layout;		break;
+		case CPUINFO_PTR_INTERNAL_MEMORY_MAP + ADDRESS_SPACE_PROGRAM:		info->internal_map = construct_map_pic16c58_rom; break;
+		case CPUINFO_PTR_INTERNAL_MEMORY_MAP + ADDRESS_SPACE_DATA:			info->internal_map = construct_map_pic16c58_ram; break;
 
+		case CPUINFO_INT_ADDRBUS_WIDTH + ADDRESS_SPACE_PROGRAM: info->i = 11;					break;
 		case CPUINFO_INT_ADDRBUS_WIDTH + ADDRESS_SPACE_DATA: 	info->i = 7;					break;
 
 		/* --- the following bits of info are returned as NULL-terminated strings --- */

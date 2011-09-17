@@ -1,11 +1,11 @@
-#pragma code_seg("C254")
-#pragma data_seg("D254")
-#pragma bss_seg("B254")
-#pragma const_seg("K254")
-#pragma comment(linker, "/merge:D254=254")
-#pragma comment(linker, "/merge:C254=254")
-#pragma comment(linker, "/merge:B254=254")
-#pragma comment(linker, "/merge:K254=254")
+#pragma code_seg("C264")
+#pragma data_seg("D264")
+#pragma bss_seg("B264")
+#pragma const_seg("K264")
+#pragma comment(linker, "/merge:D264=264")
+#pragma comment(linker, "/merge:C264=264")
+#pragma comment(linker, "/merge:B264=264")
+#pragma comment(linker, "/merge:K264=264")
 /* Diver Boy
  (c)1992 Device Electronics
 
@@ -68,11 +68,11 @@ static WRITE16_HANDLER( soundcmd_w )
 	if (ACCESSING_LSB)
 	{
 		soundlatch_w(0,data & 0xff);
-		cpu_set_irq_line(1,0,HOLD_LINE);
+		cpunum_set_input_line(1,0,HOLD_LINE);
 	}
 }
 
-static WRITE_HANDLER( okibank_w )
+static WRITE8_HANDLER( okibank_w )
 {
 	/* bit 2 might be reset */
 //	usrintf_showmessage("%02x",data);

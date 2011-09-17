@@ -226,17 +226,17 @@ struct data_accessors_t
 #define STATIC_BANK22			22						/* banked memory #22 */
 #define STATIC_BANK23			23						/* banked memory #23 */
 #define STATIC_BANK24			24						/* banked memory #24 */
-#define STATIC_RAM				25						/* RAM - standard reads/writes */
-#define STATIC_ROM				26						/* ROM - just like RAM, but writes to the bit-bucket */
-#define STATIC_RAMROM			27						/* RAMROM - use for access in encrypted 8-bit systems */
-#define STATIC_NOP				28						/* NOP - reads are 0, writes to the bit-bucket */
-#define STATIC_UNUSED1			29						/* unused - reserved for future use */
-#define STATIC_UNUSED2			30						/* unused - reserved for future use */
-#define STATIC_UNMAP			31						/* unmapped - all unmapped memory goes here */
-#define STATIC_COUNT			32						/* total number of static handlers */
+/* entries 25-58 are reserved for dynamically allocated internal banks */
+#define STATIC_RAM				59						/* RAM - standard reads/writes */
+#define STATIC_ROM				60						/* ROM - standard reads, no writes */
+#define STATIC_RAMROM			61						/* RAMROM - use for access in encrypted 8-bit systems */
+#define STATIC_NOP				62						/* unmapped - all unmapped memory goes here */
+#define STATIC_UNMAP			63						/* unmapped - all unmapped memory goes here */
+#define STATIC_COUNT			64						/* total number of static handlers */
 
 /* ----- banking constants ----- */
-#define MAX_BANKS				24						/* maximum number of banks */
+#define MAX_BANKS				58						/* maximum number of banks */
+#define MAX_EXPLICIT_BANKS		24						/* maximum number of explicitly-defined banks */
 #define STATIC_BANKMAX			(STATIC_RAM - 1)		/* handler constant of last bank */
 
 
@@ -280,7 +280,6 @@ struct data_accessors_t
 #define MRA8_NOP				((read8_handler)STATIC_NOP)
 #define MRA8_RAM				((read8_handler)STATIC_RAM)
 #define MRA8_ROM				((read8_handler)STATIC_ROM)
-#define MRA8_RAMROM				((read8_handler)STATIC_RAMROM)
 
 /* 8-bit writes */
 #define MWA8_BANK1				((write8_handler)STATIC_BANK1)
@@ -877,14 +876,14 @@ void *		memory_get_write_ptr(int cpunum, int spacenum, offs_t offset);
 void		memory_set_bankptr(int banknum, void *base);
 
 /* ----- dynamic address space mapping ----- */
-data8_t *	memory_install_read8_handler  (int cpunum, int spacenum, offs_t start, offs_t end, offs_t mask, read8_handler handler);
-data16_t *	memory_install_read16_handler (int cpunum, int spacenum, offs_t start, offs_t end, offs_t mask, read16_handler handler);
-data32_t *	memory_install_read32_handler (int cpunum, int spacenum, offs_t start, offs_t end, offs_t mask, read32_handler handler);
-data64_t *	memory_install_read64_handler (int cpunum, int spacenum, offs_t start, offs_t end, offs_t mask, read64_handler handler);
-data8_t *	memory_install_write8_handler (int cpunum, int spacenum, offs_t start, offs_t end, offs_t mask, write8_handler handler);
-data16_t *	memory_install_write16_handler(int cpunum, int spacenum, offs_t start, offs_t end, offs_t mask, write16_handler handler);
-data32_t *	memory_install_write32_handler(int cpunum, int spacenum, offs_t start, offs_t end, offs_t mask, write32_handler handler);
-data64_t *	memory_install_write64_handler(int cpunum, int spacenum, offs_t start, offs_t end, offs_t mask, write64_handler handler);
+data8_t *	memory_install_read8_handler  (int cpunum, int spacenum, offs_t start, offs_t end, offs_t mask, offs_t mirror, read8_handler handler);
+data16_t *	memory_install_read16_handler (int cpunum, int spacenum, offs_t start, offs_t end, offs_t mask, offs_t mirror, read16_handler handler);
+data32_t *	memory_install_read32_handler (int cpunum, int spacenum, offs_t start, offs_t end, offs_t mask, offs_t mirror, read32_handler handler);
+data64_t *	memory_install_read64_handler (int cpunum, int spacenum, offs_t start, offs_t end, offs_t mask, offs_t mirror, read64_handler handler);
+data8_t *	memory_install_write8_handler (int cpunum, int spacenum, offs_t start, offs_t end, offs_t mask, offs_t mirror, write8_handler handler);
+data16_t *	memory_install_write16_handler(int cpunum, int spacenum, offs_t start, offs_t end, offs_t mask, offs_t mirror, write16_handler handler);
+data32_t *	memory_install_write32_handler(int cpunum, int spacenum, offs_t start, offs_t end, offs_t mask, offs_t mirror, write32_handler handler);
+data64_t *	memory_install_write64_handler(int cpunum, int spacenum, offs_t start, offs_t end, offs_t mask, offs_t mirror, write64_handler handler);
 
 
 
@@ -1013,34 +1012,6 @@ do {																					\
 /* ----- bank switching macro ----- */
 #define cpu_setbank(bank, base) memory_set_bankptr(bank, base)
 
-
-
-/***************************************************************************
-
-	Backwards compatibility
-
-***************************************************************************/
-
-#define install_mem_read_handler(c,s,e,h)		memory_install_read8_handler(c,ADDRESS_SPACE_PROGRAM,s,e,0,h)
-#define install_mem_read16_handler(c,s,e,h)		memory_install_read16_handler(c,ADDRESS_SPACE_PROGRAM,s,e,0,h)
-#define install_mem_read32_handler(c,s,e,h)		memory_install_read32_handler(c,ADDRESS_SPACE_PROGRAM,s,e,0,h)
-#define install_mem_read64_handler(c,s,e,h)		memory_install_read64_handler(c,ADDRESS_SPACE_PROGRAM,s,e,0,h)
-#define install_mem_write_handler(c,s,e,h)		memory_install_write8_handler(c,ADDRESS_SPACE_PROGRAM,s,e,0,h)
-#define install_mem_write16_handler(c,s,e,h)	memory_install_write16_handler(c,ADDRESS_SPACE_PROGRAM,s,e,0,h)
-#define install_mem_write32_handler(c,s,e,h)	memory_install_write32_handler(c,ADDRESS_SPACE_PROGRAM,s,e,0,h)
-#define install_mem_write64_handler(c,s,e,h)	memory_install_write64_handler(c,ADDRESS_SPACE_PROGRAM,s,e,0,h)
-
-#define install_port_read_handler(c,s,e,h)		memory_install_read8_handler(c,ADDRESS_SPACE_IO,s,e,0,h)
-#define install_port_read16_handler(c,s,e,h)	memory_install_read16_handler(c,ADDRESS_SPACE_IO,s,e,0,h)
-#define install_port_read32_handler(c,s,e,h)	memory_install_read32_handler(c,ADDRESS_SPACE_IO,s,e,0,h)
-#define install_port_read64_handler(c,s,e,h)	memory_install_read64_handler(c,ADDRESS_SPACE_IO,s,e,0,h)
-#define install_port_write_handler(c,s,e,h)		memory_install_write8_handler(c,ADDRESS_SPACE_IO,s,e,0,h)
-#define install_port_write16_handler(c,s,e,h)	memory_install_write16_handler(c,ADDRESS_SPACE_IO,s,e,0,h)
-#define install_port_write32_handler(c,s,e,h)	memory_install_write32_handler(c,ADDRESS_SPACE_IO,s,e,0,h)
-#define install_port_write64_handler(c,s,e,h)	memory_install_write64_handler(c,ADDRESS_SPACE_IO,s,e,0,h)
-
-#define READ_HANDLER READ8_HANDLER
-#define WRITE_HANDLER WRITE8_HANDLER
 
 #ifdef __cplusplus
 }

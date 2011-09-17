@@ -1,11 +1,11 @@
-#pragma code_seg("C418")
-#pragma data_seg("D418")
-#pragma bss_seg("B418")
-#pragma const_seg("K418")
-#pragma comment(linker, "/merge:D418=418")
-#pragma comment(linker, "/merge:C418=418")
-#pragma comment(linker, "/merge:B418=418")
-#pragma comment(linker, "/merge:K418=418")
+#pragma code_seg("C438")
+#pragma data_seg("D438")
+#pragma bss_seg("B438")
+#pragma const_seg("K438")
+#pragma comment(linker, "/merge:D438=438")
+#pragma comment(linker, "/merge:C438=438")
+#pragma comment(linker, "/merge:B438=438")
+#pragma comment(linker, "/merge:K438=438")
 /* Macross Plus - Vidhrdw
   see DRIVER file for notes */
 

@@ -74,6 +74,7 @@ enum
 	CPU_M6809E,
 	CPU_KONAMI,
 	CPU_M68000,
+	CPU_M68008,
 	CPU_M68010,
 	CPU_M68EC020,
 	CPU_M68020,
@@ -88,6 +89,7 @@ enum
 	CPU_TMS9985,
 	CPU_TMS9989,
 	CPU_TMS9995,
+	CPU_TMS99100,
 	CPU_TMS99105A,
 	CPU_TMS99110A,
 	CPU_Z8000,
@@ -101,6 +103,7 @@ enum
 	CPU_ADSP2104,
 	CPU_ADSP2105,
 	CPU_ADSP2115,
+	CPU_ADSP2181,
 	CPU_PSXCPU,
 	CPU_ASAP,
 	CPU_UPD7810,
@@ -111,8 +114,14 @@ enum
 	CPU_R3000LE,
 	CPU_R4600BE,
 	CPU_R4600LE,
+	CPU_R4700BE,
+	CPU_R4700LE,
 	CPU_R5000BE,
 	CPU_R5000LE,
+	CPU_QED5271BE,
+	CPU_QED5271LE,
+	CPU_RM7000BE,
+	CPU_RM7000LE,
 	CPU_ARM,
 	CPU_SH2,
 	CPU_DSP32C,
@@ -124,24 +133,20 @@ enum
 	CPU_G65816,
 	CPU_SPC700,
 	CPU_E132XS,
-
-
-  // [EBA] PatchMAME (Pong + Monaco)
-#if (HAS_GENSYNC)
-	CPU_GENSYNC,
-#endif
-
+	CPU_I386,
+	CPU_I960,
 
 #ifdef MESS
 	CPU_APEXC,
 	CPU_CDP1802,
-	CPU_CP1600,
+	CPU_CP1610,
 	CPU_F8,
 	CPU_LH5801,
 	CPU_PDP1,
 	CPU_SATURN,
 	CPU_SC61860,
 	CPU_Z80GB,
+	CPU_TMS7000,
 #endif
     CPU_COUNT
 };
@@ -166,9 +171,26 @@ enum
 	INTERNAL_CLEAR_LINE = 100 + CLEAR_LINE,
 	INTERNAL_ASSERT_LINE = 100 + ASSERT_LINE,
 
-	/* interrupt parameters */
-	MAX_IRQ_LINES =	32+1,			 /* maximum number of IRQ lines per CPU */
-	IRQ_LINE_NMI = MAX_IRQ_LINES - 1 /* IRQ line for NMIs */
+	/* input lines */
+	MAX_INPUT_LINES = 32+3,
+	INPUT_LINE_IRQ0 = 0,
+	INPUT_LINE_IRQ1 = 1,
+	INPUT_LINE_IRQ2 = 2,
+	INPUT_LINE_IRQ3 = 3,
+	INPUT_LINE_IRQ4 = 4,
+	INPUT_LINE_IRQ5 = 5,
+	INPUT_LINE_IRQ6 = 6,
+	INPUT_LINE_IRQ7 = 7,
+	INPUT_LINE_IRQ8 = 8,
+	INPUT_LINE_IRQ9 = 9,
+	INPUT_LINE_NMI = MAX_INPUT_LINES - 3,
+	
+	/* special input lines that are implemented in the core */
+	INPUT_LINE_RESET = MAX_INPUT_LINES - 2,
+	INPUT_LINE_HALT = MAX_INPUT_LINES - 1,
+	
+	/* output lines */
+	MAX_OUTPUT_LINES = 32
 };
 
 
@@ -188,10 +210,11 @@ enum
 enum
 {
 	/* --- the following bits of info are returned as 64-bit signed integers --- */
-	CPUINFO_INT_FIRST = (0 << 16),
-	
+	CPUINFO_INT_FIRST = 0x00000,
+
 	CPUINFO_INT_CONTEXT_SIZE = CPUINFO_INT_FIRST,		/* R/O: size of CPU context in bytes */
-	CPUINFO_INT_IRQ_LINES,								/* R/O: number of IRQ lines */
+	CPUINFO_INT_INPUT_LINES,							/* R/O: number of input lines */
+	CPUINFO_INT_OUTPUT_LINES,							/* R/O: number of output lines */
 	CPUINFO_INT_DEFAULT_IRQ_VECTOR,						/* R/O: default IRQ vector */
 	CPUINFO_INT_ENDIANNESS,								/* R/O: either CPU_IS_BE or CPU_IS_LE */
 	CPUINFO_INT_CLOCK_DIVIDER,							/* R/O: internal clock divider */
@@ -210,16 +233,18 @@ enum
 	CPUINFO_INT_SP,										/* R/W: the current stack pointer value */
 	CPUINFO_INT_PC,										/* R/W: the current PC value */
 	CPUINFO_INT_PREVIOUSPC,								/* R/W: the previous PC value */
-	CPUINFO_INT_IRQ_STATE,								/* R/W: states for each IRQ line */
-	CPUINFO_INT_IRQ_STATE_LAST = CPUINFO_INT_IRQ_STATE + MAX_IRQ_LINES - 1,
+	CPUINFO_INT_INPUT_STATE,							/* R/W: states for each input line */
+	CPUINFO_INT_INPUT_STATE_LAST = CPUINFO_INT_INPUT_STATE + MAX_INPUT_LINES - 1,
+	CPUINFO_INT_OUTPUT_STATE,							/* R/W: states for each output line */
+	CPUINFO_INT_OUTPUT_STATE_LAST = CPUINFO_INT_OUTPUT_STATE + MAX_OUTPUT_LINES - 1,
 	CPUINFO_INT_REGISTER,								/* R/W: values of up to MAX_REGs registers */
 	CPUINFO_INT_REGISTER_LAST = CPUINFO_INT_REGISTER + MAX_REGS - 1,
-	
-	CPUINFO_INT_CPU_SPECIFIC,							/* R/W: CPU-specific values start here */
-	
+
+	CPUINFO_INT_CPU_SPECIFIC = 0x08000,					/* R/W: CPU-specific values start here */
+
 	/* --- the following bits of info are returned as pointers to data or functions --- */
-	CPUINFO_PTR_FIRST = (1 << 16),
-	
+	CPUINFO_PTR_FIRST = 0x10000,
+
 	CPUINFO_PTR_SET_INFO = CPUINFO_PTR_FIRST,			/* R/O: void (*set_info)(UINT32 state, INT64 data, void *ptr) */
 	CPUINFO_PTR_GET_CONTEXT,							/* R/O: void (*get_context)(void *buffer) */
 	CPUINFO_PTR_SET_CONTEXT,							/* R/O: void (*set_context)(void *buffer) */
@@ -233,12 +258,14 @@ enum
 	CPUINFO_PTR_INSTRUCTION_COUNTER,					/* R/O: int *icount */
 	CPUINFO_PTR_REGISTER_LAYOUT,						/* R/O: struct debug_register_layout *layout */
 	CPUINFO_PTR_WINDOW_LAYOUT,							/* R/O: struct debug_window_layout *layout */
+	CPUINFO_PTR_INTERNAL_MEMORY_MAP,					/* R/O: construct_map_t map */
+	CPUINFO_PTR_INTERNAL_MEMORY_MAP_LAST = CPUINFO_PTR_INTERNAL_MEMORY_MAP + ADDRESS_SPACES - 1,
 
-	CPUINFO_PTR_CPU_SPECIFIC,							/* R/W: CPU-specific values start here */
-	
+	CPUINFO_PTR_CPU_SPECIFIC = 0x18000,					/* R/W: CPU-specific values start here */
+
 	/* --- the following bits of info are returned as NULL-terminated strings --- */
-	CPUINFO_STR_FIRST = (2 << 16),
-	
+	CPUINFO_STR_FIRST = 0x20000,
+
 	CPUINFO_STR_NAME = CPUINFO_STR_FIRST,				/* R/O: name of the CPU */
 	CPUINFO_STR_CORE_FAMILY,							/* R/O: family of the CPU */
 	CPUINFO_STR_CORE_VERSION,							/* R/O: version of the CPU core */
@@ -248,7 +275,7 @@ enum
 	CPUINFO_STR_REGISTER,								/* R/O: string representation of up to MAX_REGs registers */
 	CPUINFO_STR_REGISTER_LAST = CPUINFO_STR_REGISTER + MAX_REGS - 1,
 
-	CPUINFO_STR_CPU_SPECIFIC							/* R/W: CPU-specific values start here */
+	CPUINFO_STR_CPU_SPECIFIC = 0x28000					/* R/W: CPU-specific values start here */
 };
 
 
@@ -257,7 +284,7 @@ union cpuinfo
 	INT64	i;											/* generic integers */
 	void *	p;											/* generic pointers */
 	char *	s;											/* generic strings */
-	
+
 	void	(*setinfo)(UINT32 state, union cpuinfo *info);/* CPUINFO_PTR_SET_INFO */
 	void	(*getcontext)(void *context);				/* CPUINFO_PTR_GET_CONTEXT */
 	void	(*setcontext)(void *context);				/* CPUINFO_PTR_SET_CONTEXT */
@@ -269,6 +296,7 @@ union cpuinfo
 	offs_t	(*disassemble)(char *buffer, offs_t pc);	/* CPUINFO_PTR_DISASSEMBLE */
 	int		(*irqcallback)(int state);					/* CPUINFO_PTR_IRQCALLBACK */
 	int *	icount;										/* CPUINFO_PTR_INSTRUCTION_COUNTER */
+	construct_map_t internal_map;						/* CPUINFO_PTR_INTERNAL_MEMORY_MAP */
 };
 
 
@@ -318,7 +346,7 @@ struct cpu_interface
 	int			(*execute)(int cycles);
 	void		(*burn)(int cycles);
 	offs_t		(*disassemble)(char *buffer, offs_t pc);
-	
+
 	/* other info */
 	size_t		context_size;
 	int			address_shift;
@@ -380,8 +408,8 @@ int activecpu_get_icount(void);
 /* ensure banking is reset properly */
 void activecpu_reset_banking(void);
 
-/* set the IRQ line on a CPU -- drivers use cpu_set_irq_line() */
-void activecpu_set_irq_line(int irqline, int state);
+/* set the input line on a CPU -- drivers use cpu_set_input_line() */
+void activecpu_set_input_line(int irqline, int state);
 
 /* return the PC, corrected to a byte offset, on the active CPU */
 offs_t activecpu_get_pc_byte(void);
@@ -399,7 +427,8 @@ const char *activecpu_flags(void);
 const char *activecpu_dump_state(void);
 
 #define activecpu_context_size()				activecpu_get_info_int(CPUINFO_INT_CONTEXT_SIZE)
-#define activecpu_irq_lines()					activecpu_get_info_int(CPUINFO_INT_IRQ_LINES)
+#define activecpu_input_lines()					activecpu_get_info_int(CPUINFO_INT_INPUT_LINES)
+#define activecpu_output_lines()				activecpu_get_info_int(CPUINFO_INT_OUTPUT_LINES)
 #define activecpu_default_irq_vector()			activecpu_get_info_int(CPUINFO_INT_DEFAULT_IRQ_VECTOR)
 #define activecpu_endianness()					activecpu_get_info_int(CPUINFO_INT_ENDIANNESS)
 #define activecpu_clock_divider()				activecpu_get_info_int(CPUINFO_INT_CLOCK_DIVIDER)
@@ -424,7 +453,7 @@ const char *activecpu_dump_state(void);
 #define activecpu_reg_string(reg)				activecpu_get_info_string(CPUINFO_STR_REGISTER + (reg))
 
 #define activecpu_set_reg(reg, val)				activecpu_set_info_int(CPUINFO_INT_REGISTER + (reg), (val))
-#define activecpu_set_irq_callback(val)			activecpu_set_info_ptr(CPUINFO_PTR_IRQ_CALLBACK, (val)
+#define activecpu_set_irq_callback(val)			activecpu_set_info_ptr(CPUINFO_PTR_IRQ_CALLBACK, (void *) (val))
 
 
 
@@ -472,7 +501,8 @@ offs_t cpunum_dasm(int cpunum, char *buffer, offs_t pc);
 const char *cpunum_dump_state(int cpunum);
 
 #define cpunum_context_size(cpunum)				cpunum_get_info_int(cpunum, CPUINFO_INT_CONTEXT_SIZE)
-#define cpunum_irq_lines(cpunum)				cpunum_get_info_int(cpunum, CPUINFO_INT_IRQ_LINES)
+#define cpunum_input_lines(cpunum)				cpunum_get_info_int(cpunum, CPUINFO_INT_INPUT_LINES)
+#define cpunum_output_lines(cpunum)				cpunum_get_info_int(cpunum, CPUINFO_INT_OUTPUT_LINES)
 #define cpunum_default_irq_vector(cpunum)		cpunum_get_info_int(cpunum, CPUINFO_INT_DEFAULT_IRQ_VECTOR)
 #define cpunum_endianness(cpunum)				cpunum_get_info_int(cpunum, CPUINFO_INT_ENDIANNESS)
 #define cpunum_clock_divider(cpunum)			cpunum_get_info_int(cpunum, CPUINFO_INT_CLOCK_DIVIDER)
@@ -500,6 +530,7 @@ const char *cpunum_dump_state(int cpunum);
 #define cpunum_set_irq_callback(cpunum, val)	cpunum_set_info_ptr(cpunum, CPUINFO_PTR_IRQ_CALLBACK, (val)
 
 
+
 /*************************************
  *
  *	 CPU type acccessors
@@ -512,7 +543,8 @@ void *cputype_get_info_ptr(int cputype, UINT32 state);
 const char *cputype_get_info_string(int cputype, UINT32 state);
 
 #define cputype_context_size(cputype)			cputype_get_info_int(cputype, CPUINFO_INT_CONTEXT_SIZE)
-#define cputype_irq_lines(cputype)				cputype_get_info_int(cputype, CPUINFO_INT_IRQ_LINES)
+#define cputype_input_lines(cputype)			cputype_get_info_int(cputype, CPUINFO_INT_INPUT_LINES)
+#define cputype_output_lines(cputype)			cputype_get_info_int(cputype, CPUINFO_INT_OUTPUT_LINES)
 #define cputype_default_irq_vector(cputype)		cputype_get_info_int(cputype, CPUINFO_INT_DEFAULT_IRQ_VECTOR)
 #define cputype_endianness(cputype)				cputype_get_info_int(cputype, CPUINFO_INT_ENDIANNESS)
 #define cputype_clock_divider(cputype)			cputype_get_info_int(cputype, CPUINFO_INT_CLOCK_DIVIDER)
@@ -554,9 +586,9 @@ void cpu_set_m68k_reset(int cpunum, void (*resetfn)(void));
  *
  *************************************/
 
-#define		activecpu_get_previouspc()	((offs_t)activecpu_get_reg(REG_PREVIOUSPC))
-#define		activecpu_get_pc()			((offs_t)activecpu_get_reg(REG_PC))
-#define		activecpu_get_sp()			activecpu_get_reg(REG_SP)
+#define		activecpu_get_previouspc()			((offs_t)activecpu_get_reg(REG_PREVIOUSPC))
+#define		activecpu_get_pc()					((offs_t)activecpu_get_reg(REG_PC))
+#define		activecpu_get_sp()					activecpu_get_reg(REG_SP)
 
 
 
@@ -569,7 +601,7 @@ void cpu_set_m68k_reset(int cpunum, void (*resetfn)(void));
 /* return a pointer to the interface struct for a given CPU type */
 INLINE const struct cpu_interface *cputype_get_interface(int cputype)
 {
-	extern const struct cpu_interface cpuintrf[];
+	extern struct cpu_interface cpuintrf[];
 	return &cpuintrf[cputype];
 }
 

@@ -1,11 +1,11 @@
-#pragma code_seg("C637")
-#pragma data_seg("D637")
-#pragma bss_seg("B637")
-#pragma const_seg("K637")
-#pragma comment(linker, "/merge:D637=637")
-#pragma comment(linker, "/merge:C637=637")
-#pragma comment(linker, "/merge:B637=637")
-#pragma comment(linker, "/merge:K637=637")
+#pragma code_seg("C673")
+#pragma data_seg("D673")
+#pragma bss_seg("B673")
+#pragma const_seg("K673")
+#pragma comment(linker, "/merge:D673=673")
+#pragma comment(linker, "/merge:C673=673")
+#pragma comment(linker, "/merge:B673=673")
+#pragma comment(linker, "/merge:K673=673")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -14,7 +14,7 @@ UINT8 *solomon_colorram2;
 
 static struct tilemap *bg_tilemap, *fg_tilemap;
 
-WRITE_HANDLER( solomon_videoram_w )
+WRITE8_HANDLER( solomon_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -23,7 +23,7 @@ WRITE_HANDLER( solomon_videoram_w )
 	}
 }
 
-WRITE_HANDLER( solomon_colorram_w )
+WRITE8_HANDLER( solomon_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -32,7 +32,7 @@ WRITE_HANDLER( solomon_colorram_w )
 	}
 }
 
-WRITE_HANDLER( solomon_videoram2_w )
+WRITE8_HANDLER( solomon_videoram2_w )
 {
 	if (solomon_videoram2[offset] != data)
 	{
@@ -41,7 +41,7 @@ WRITE_HANDLER( solomon_videoram2_w )
 	}
 }
 
-WRITE_HANDLER( solomon_colorram2_w )
+WRITE8_HANDLER( solomon_colorram2_w )
 {
 	if (solomon_colorram2[offset] != data)
 	{
@@ -50,7 +50,7 @@ WRITE_HANDLER( solomon_colorram2_w )
 	}
 }
 
-WRITE_HANDLER( solomon_flipscreen_w )
+WRITE8_HANDLER( solomon_flipscreen_w )
 {
 	if (flip_screen != (data & 0x01))
 	{

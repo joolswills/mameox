@@ -1,11 +1,11 @@
-#pragma code_seg("C471")
-#pragma data_seg("D471")
-#pragma bss_seg("B471")
-#pragma const_seg("K471")
-#pragma comment(linker, "/merge:D471=471")
-#pragma comment(linker, "/merge:C471=471")
-#pragma comment(linker, "/merge:B471=471")
-#pragma comment(linker, "/merge:K471=471")
+#pragma code_seg("C497")
+#pragma data_seg("D497")
+#pragma bss_seg("B497")
+#pragma const_seg("K497")
+#pragma comment(linker, "/merge:D497=497")
+#pragma comment(linker, "/merge:C497=497")
+#pragma comment(linker, "/merge:B497=497")
+#pragma comment(linker, "/merge:K497=497")
 /* Mug Smashers (c)199? Electronic Devices (Italy) / 3D Games (England)
 	driver by David Haywood - Dip Switches and Inputs by Stephane Humbert
 
@@ -68,7 +68,7 @@ static WRITE16_HANDLER( mugsmash_reg2_w )
 	{
 	case 1:
 		soundlatch_w(1,data&0xff);
-		cpu_set_irq_line( 1, IRQ_LINE_NMI, PULSE_LINE );
+		cpunum_set_input_line( 1, INPUT_LINE_NMI, PULSE_LINE );
 		break;
 
 	default:
@@ -426,7 +426,7 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 
 static void irq_handler(int irq)
 {
-	cpu_set_irq_line( 1, 0 , irq ? ASSERT_LINE : CLEAR_LINE );
+	cpunum_set_input_line( 1, 0 , irq ? ASSERT_LINE : CLEAR_LINE );
 }
 
 static struct YM2151interface ym2151_interface =

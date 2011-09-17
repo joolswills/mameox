@@ -1,11 +1,11 @@
-#pragma code_seg("C633")
-#pragma data_seg("D633")
-#pragma bss_seg("B633")
-#pragma const_seg("K633")
-#pragma comment(linker, "/merge:D633=633")
-#pragma comment(linker, "/merge:C633=633")
-#pragma comment(linker, "/merge:B633=633")
-#pragma comment(linker, "/merge:K633=633")
+#pragma code_seg("C669")
+#pragma data_seg("D669")
+#pragma bss_seg("B669")
+#pragma const_seg("K669")
+#pragma comment(linker, "/merge:D669=669")
+#pragma comment(linker, "/merge:C669=669")
+#pragma comment(linker, "/merge:B669=669")
+#pragma comment(linker, "/merge:K669=669")
 #include "driver.h"
 #include "state.h"
 #include "vidhrdw/generic.h"
@@ -545,31 +545,31 @@ VIDEO_UPDATE( slapshot )
 #endif
 
 #ifdef MAME_DEBUG
-	if (keyboard_pressed_memory (KEYCODE_Z))
+	if (code_pressed_memory (KEYCODE_Z))
 	{
 		dislayer[0] ^= 1;
 		usrintf_showmessage("bg0: %01x",dislayer[0]);
 	}
 
-	if (keyboard_pressed_memory (KEYCODE_X))
+	if (code_pressed_memory (KEYCODE_X))
 	{
 		dislayer[1] ^= 1;
 		usrintf_showmessage("bg1: %01x",dislayer[1]);
 	}
 
-	if (keyboard_pressed_memory (KEYCODE_C))
+	if (code_pressed_memory (KEYCODE_C))
 	{
 		dislayer[2] ^= 1;
 		usrintf_showmessage("bg2: %01x",dislayer[2]);
 	}
 
-	if (keyboard_pressed_memory (KEYCODE_V))
+	if (code_pressed_memory (KEYCODE_V))
 	{
 		dislayer[3] ^= 1;
 		usrintf_showmessage("bg3: %01x",dislayer[3]);
 	}
 
-	if (keyboard_pressed_memory (KEYCODE_B))
+	if (code_pressed_memory (KEYCODE_B))
 	{
 		dislayer[4] ^= 1;
 		usrintf_showmessage("text: %01x",dislayer[4]);

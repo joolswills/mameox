@@ -1,11 +1,11 @@
-#pragma code_seg("C125")
-#pragma data_seg("D125")
-#pragma bss_seg("B125")
-#pragma const_seg("K125")
-#pragma comment(linker, "/merge:D125=125")
-#pragma comment(linker, "/merge:C125=125")
-#pragma comment(linker, "/merge:B125=125")
-#pragma comment(linker, "/merge:K125=125")
+#pragma code_seg("C126")
+#pragma data_seg("D126")
+#pragma bss_seg("B126")
+#pragma const_seg("K126")
+#pragma comment(linker, "/merge:D126=126")
+#pragma comment(linker, "/merge:C126=126")
+#pragma comment(linker, "/merge:B126=126")
+#pragma comment(linker, "/merge:K126=126")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -312,8 +312,8 @@ VIDEO_UPDATE( armedf )
 	tilemap_draw( bitmap, cliprect, tx_tilemap, 0, 0);
 	if( sprite_enable ) draw_sprites( bitmap, cliprect, 0 );
 
-	if( keyboard_pressed(KEYCODE_1 ) ||
-		keyboard_pressed(KEYCODE_2 ) )
+	if( code_pressed(KEYCODE_1 ) ||
+		code_pressed(KEYCODE_2 ) )
 	{ /* HACK! wipe the text layer */
 		unsigned i;
 		for( i=0; i<0x800; i++ )

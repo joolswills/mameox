@@ -30,17 +30,21 @@
 #define PER_PIXEL_LOD			(1)
 #define ALPHA_BLENDING			(1)
 #define FOGGING					(1)
+#define RESOLUTION_DIVIDE_SHIFT	(0)
 
 /* debugging */
-#define DISPLAY_SWAP_BUFFERS	(0)
-#define DISPLAY_TEXTURE_MODES	(0)
-#define DISPLAY_STATISTICS		(0)
 #define DISPLAY_DEPTHBUF		(0)
+
+#define LOG_UPDATE_SWAP			(0)
 #define LOG_RENDERERS			(0)
 #define LOG_REGISTERS			(0)
 #define LOG_COMMANDS			(0)
 #define LOG_CMDFIFO				(0)
 #define LOG_CMDFIFO_VERBOSE		(0)
+#define LOG_MEMFIFO				(0)
+#define LOG_TEXTURERAM			(0)
+#define LOG_FRAMEBUFFER			(0)
+
 #define TRACK_LOD				(0)
 
 /* constants */
@@ -70,12 +74,23 @@ struct setup_vert
 	float w1,s1,t1;
 };
 
+/* one FIFO entry */
+struct fifo_entry
+{
+	write32_handler writefunc;
+	offs_t offset;
+	data32_t data;
+	data32_t mem_mask;
+};
 
 
 /* core constants */
 static UINT8 tmus;
 static UINT8 voodoo2;
 static offs_t texram_mask;
+static void (*client_vblank_callback)(int);
+static UINT8 vblank_state;
+static UINT8 display_statistics;
 
 /* VRAM and various buffers */
 static UINT16 *framebuf[2];
@@ -114,14 +129,20 @@ static UINT8 fog_blend[64];
 static UINT8 fog_delta[64];
 
 /* VBLANK and swapping */
-static void *vblank_timer;
+static mame_timer *vblank_timer;
 static int vblank_count;
-static int swaps_pending;
-static int vblanks_before_swap;
-static int blocked_on_swap;
-static int pending_fastfill;
-static UINT32 pending_fastfill_zaColor;
-static UINT32 pending_fastfill_color1;
+static UINT8 blocked_on_swap;
+static UINT8 swap_vblanks;
+static UINT8 swap_dont_swap;
+static UINT8 num_pending_swaps;
+
+/* FIFOs */
+static struct fifo_entry *memory_fifo;
+static UINT32 memory_fifo_count;
+static UINT32 memory_fifo_size;
+static UINT8 memory_fifo_lfb;
+static UINT8 memory_fifo_texture;
+static UINT8 memory_fifo_in_process;
 
 /* fbzMode variables */
 static struct rectangle *fbz_cliprect;
@@ -190,14 +211,16 @@ static struct setup_vert setup_verts[3];
 static struct setup_vert setup_pending;
 
 /* debugging/stats */
-#if DISPLAY_STATISTICS
 static UINT32 polycount, pixelcount, lastfps, framecount, totalframes;
-#endif
+static char stats_buffer[10][20];
 static UINT16 modes_used;
 static offs_t status_lastpc;
 static int status_lastpc_count;
+static UINT8 loglod = 0;
+static int total_swaps;
+static UINT8 cheating_allowed;
 
-#if LOG_RENDERERS
+#if (LOG_RENDERERS)
 #define RENDERER_LIST_MAX	1024
 static UINT32 renderer_list[RENDERER_LIST_MAX][10];
 static int renderer_listcount;
@@ -276,11 +299,7 @@ static void fastfill(void);
 
 
 
-#if DISPLAY_STATISTICS
 #define ADD_TO_PIXEL_COUNT(a)	do { if ((a) > 0) pixelcount += (a); } while (0)
-#else
-#define ADD_TO_PIXEL_COUNT(a)
-#endif
 
 
 /*************************************
@@ -611,94 +630,205 @@ INLINE UINT16 float_to_depth(float val)
 
 /*************************************
  *
+ *	FIFO management
+ *
+ *************************************/
+
+INLINE void add_to_memory_fifo(write32_handler handler, offs_t offset, data32_t data, data32_t mem_mask)
+{
+	struct fifo_entry *entry;
+	
+	/* fill in the entry */
+ 	entry = &memory_fifo[memory_fifo_count++];
+ 	entry->writefunc = handler;
+	entry->offset = offset;
+	entry->data = data;
+	entry->mem_mask = mem_mask;
+
+	/* if we just ran out of room, we must block the CPU until we empty */
+	if (memory_fifo_count >= memory_fifo_size)
+	{
+		if (LOG_MEMFIFO)
+			logerror("Blocking CPU due to running out of memory FIFO entries!\n");
+		cpu_spinuntil_trigger(13579);
+	}
+	
+	if (memory_fifo_count % 1000 == 0)
+	{
+		if (LOG_MEMFIFO)
+			logerror("Memory FIFO = %d entries\n", memory_fifo_count);
+	}
+}
+
+
+static void update_memory_fifo(void)
+{
+	/* memory FIFO enabled? */
+	if ((voodoo_regs[fbiInit0] >> 13) & 1)
+	{
+		/* yes: get parameters */
+		memory_fifo_size = 0xffff;
+	}
+	else
+	{
+		/* no: use standard PCI parameters */
+		memory_fifo_size = 64;
+	}
+
+	/* extract other parameters */
+	memory_fifo_lfb = (voodoo_regs[fbiInit0] >> 11) & 1;
+	memory_fifo_texture = (voodoo_regs[fbiInit0] >> 12) & 1;
+}
+
+
+static void empty_memory_fifo(void)
+{
+	int fifo_index;
+
+	/* set a flag so we don't recurse */
+	if (memory_fifo_in_process)
+		return;
+	memory_fifo_in_process = 1;
+	
+	if (LOG_MEMFIFO)
+		logerror("empty_memory_fifo: %d entries\n", memory_fifo_count);
+	
+	/* loop while we're not blocked */
+	for (fifo_index = 0; !blocked_on_swap && fifo_index < memory_fifo_count; fifo_index++)
+	{
+		struct fifo_entry *entry = &memory_fifo[fifo_index];
+		(*entry->writefunc)(entry->offset, entry->data, entry->mem_mask);
+	}
+	
+	/* chomp all the entries */
+	if (fifo_index == 0 && memory_fifo_count > 0)
+	{
+		if (LOG_MEMFIFO)
+			logerror("empty_memory_fifo called while still blocked on swap!\n");
+	}
+	else if (fifo_index != memory_fifo_count)
+	{
+		if (LOG_MEMFIFO)
+			logerror("empty_memory_fifo: consumed %d entries, %d remain\n", fifo_index, memory_fifo_count - fifo_index);
+		memmove(&memory_fifo[0], &memory_fifo[fifo_index], (memory_fifo_count - fifo_index) * sizeof(memory_fifo[0]));
+	}
+	else
+	{
+		if (LOG_MEMFIFO)
+			logerror("empty_memory_fifo: consumed %d entries\n", memory_fifo_count);
+	}
+	
+	/* update the count */
+	memory_fifo_count -= fifo_index;
+	
+	/* if we're below the threshhold, get the CPU going again */
+	if (memory_fifo_count < memory_fifo_size)
+		cpu_trigger(13579);
+
+	memory_fifo_in_process = 0;
+}
+
+
+
+/*************************************
+ *
  *	VBLANK callback/buffer swapping
  *
  *************************************/
  
-#if (TRACK_LOD)
-static int loglod = 0;
-#endif
-
 static void swap_buffers(void)
 {
 	UINT16 *temp;
 
-#if DISPLAY_SWAP_BUFFERS
-static int swaps;
-swaps++;
-usrintf_showmessage("Swaps = %d", swaps);
-#endif
-	
+	if (LOG_UPDATE_SWAP)
+		logerror("---- swapbuffers\n");
+
+	/* force a partial update */
 	force_partial_update(cpu_getscanline());
-	temp = frontbuf;
-	frontbuf = backbuf;
-	backbuf = temp;
 	
-#if DISPLAY_TEXTURE_MODES
-{
-	char tempstr[100];
-	int i;
-	tempstr[0] = 0;
-	for (i = 0; i < 16; i++)
-		if (modes_used & (1 << i))
-			sprintf(&tempstr[strlen(tempstr)], "%d ", i);
-	usrintf_showmessage("%s", tempstr);
-	modes_used = 0;
-}
-#endif
-	
-#if DISPLAY_STATISTICS
-{
-	int screen_area = (Machine->visible_area.max_x - Machine->visible_area.min_x + 1) * (Machine->visible_area.max_y - Machine->visible_area.min_y + 1);
-	usrintf_showmessage("Polys:%d  Render:%d%%  FPS:%d",
-			polycount, pixelcount * 100 / screen_area, lastfps);
-	polycount = pixelcount = 0;
-	framecount++;
-}
-#endif
-
-	logerror("---- swapbuffers\n");
-
-	if (pending_fastfill)
+	/* swap -- but only if we're actually swapping */
+	if (!swap_dont_swap)
 	{
-		UINT32 temp_zaColor = voodoo_regs[zaColor];
-		UINT32 temp_color1 = voodoo_regs[color1];
-		voodoo_regs[zaColor] = pending_fastfill_zaColor;
-		voodoo_regs[color1] = pending_fastfill_color1;
-		fastfill();
-		voodoo_regs[zaColor] = temp_zaColor;
-		voodoo_regs[color1] = temp_color1;
-		pending_fastfill = 0;
+		temp = frontbuf;
+		frontbuf = backbuf;
+		backbuf = temp;
 	}
-
-	cpu_trigger(13579);
 	
-#if (TRACK_LOD)
-	loglod = keyboard_pressed(KEYCODE_L);
-#endif
+	/* no longer blocked */
+	blocked_on_swap = 0;
+	if (num_pending_swaps > 0)
+		num_pending_swaps--;
+	
+	/* empty the FIFO */
+	empty_memory_fifo();
+	
+	/* update the statistics (debug) */
+	if (display_statistics)
+	{
+		int screen_area = (Machine->visible_area.max_x - Machine->visible_area.min_x + 1) * (Machine->visible_area.max_y - Machine->visible_area.min_y + 1);
+		int i;
+
+		total_swaps++;
+
+		sprintf(&stats_buffer[0][0], "Poly:%5d", polycount);
+		sprintf(&stats_buffer[1][0], "Rend:%5d%%", pixelcount * 100 / screen_area);
+		sprintf(&stats_buffer[2][0], " FPS:%5d", lastfps);
+		sprintf(&stats_buffer[3][0], "Swap:%5d", total_swaps);
+		sprintf(&stats_buffer[4][0], "Pend:%5d", num_pending_swaps);
+		sprintf(&stats_buffer[5][0], "FIFO:%5d", memory_fifo_count);
+		sprintf(&stats_buffer[6][0], "TexM:");
+		for (i = 0; i < 16; i++)
+			stats_buffer[6][i+5] = (modes_used & (1 << i)) ? "0123456789ABCDEF"[i] : ' ';
+		stats_buffer[6][16+5] = 0;
+
+		polycount = pixelcount = 0;
+		modes_used = 0;
+		framecount++;
+	}
+}
+
+
+static void vblank_off_callback(int param)
+{
+	vblank_state = 0;
+	
+	/* call the client */
+	if (client_vblank_callback)
+		(*client_vblank_callback)(0);
+
+	/* go to the end of the next frame */
+	timer_adjust(vblank_timer, cpu_getscanlinetime(Machine->visible_area.max_y + 1), 0, TIME_NEVER);
 }
 
 
 static void vblank_callback(int scanline)
 {
+	vblank_state = 1;
 	vblank_count++;
 	
-	logerror("---- vblank\n");
-
-	/* any pending swapbuffers */
-	if (swaps_pending && vblank_count > vblanks_before_swap)
+	if (LOG_UPDATE_SWAP)
 	{
-		vblank_count = 0;
-		swaps_pending--;
-		swap_buffers();
-
-		if (blocked_on_swap)
-			blocked_on_swap = 0;
+		if (num_pending_swaps > 0)
+			logerror("---- vblank (blocked=%d, pend=%d, vnum=%d, vbc=%d)\n", blocked_on_swap, num_pending_swaps, vblank_count, swap_vblanks);
+		else
+			logerror("---- vblank (blocked=%d, pend=%d)\n", blocked_on_swap, num_pending_swaps);
 	}
 
-	/* reset for next time */
-	timer_adjust(vblank_timer, cpu_getscanlinetime(scanline), scanline, 0);
+	/* any pending swapbuffers */
+	if (blocked_on_swap && vblank_count > swap_vblanks)
+	{
+		vblank_count = 0;
+		swap_buffers();
+	}
+
+	/* set a timer for the next off state */
+	timer_set(cpu_getscanlinetime(0), 0, vblank_off_callback);
+
+	/* call the client */
+	if (client_vblank_callback)
+		(*client_vblank_callback)(1);
 }
+
 
 
 
@@ -727,6 +857,11 @@ int voodoo_start_common(void)
 	framebuf[1] = auto_malloc(sizeof(UINT16) * FRAMEBUF_WIDTH * FRAMEBUF_HEIGHT);
 	depthbuf = auto_malloc(sizeof(UINT16) * FRAMEBUF_WIDTH * FRAMEBUF_HEIGHT);
 	if (!framebuf[0] || !framebuf[1] || !depthbuf)
+		return 1;
+	
+	/* allocate memory for the memory fifo */
+	memory_fifo = auto_malloc(65536 * sizeof(memory_fifo[0]));
+	if (!memory_fifo)
 		return 1;
 	
 	/* allocate memory for the cmdfifo */
@@ -835,10 +970,8 @@ void voodoo_reset(void)
 	
 	/* VBLANK and swapping */
 	vblank_count = 0;
-	swaps_pending = 0;
-	vblanks_before_swap = 0;
+	num_pending_swaps = 0;
 	blocked_on_swap = 0;
-	pending_fastfill = 0;
 	
 	/* fbzMode variables */
 	fbz_cliprect = &fbz_noclip;
@@ -875,6 +1008,8 @@ void voodoo_reset(void)
 	
 	/* triangle setup */
 	setup_count = 0;
+	
+	update_memory_fifo();
 }
 
 
@@ -945,19 +1080,30 @@ VIDEO_UPDATE( voodoo )
 {
 	int x, y;
 
-#if DISPLAY_STATISTICS
-	totalframes++;
-	if (totalframes == (int)Machine->drv->frames_per_second)
+	if (LOG_UPDATE_SWAP)
+		logerror("--- video update (%d-%d) ---\n", cliprect->min_y, cliprect->max_y);
+
+	/* draw the screen */
+#if (RESOLUTION_DIVIDE_SHIFT != 0)
+	for (y = cliprect->min_y; y <= cliprect->max_y; y++)
 	{
-		lastfps = framecount;
-		framecount = totalframes = 0;
+		UINT16 *dest = (UINT16 *)bitmap->line[y];
+		UINT16 *source = &frontbuf[1024 * ((y >> RESOLUTION_DIVIDE_SHIFT) << RESOLUTION_DIVIDE_SHIFT)];
+		for (x = cliprect->min_x; x <= cliprect->max_x; x++)
+			dest[x] = pen_lookup[source[(x >> RESOLUTION_DIVIDE_SHIFT) << RESOLUTION_DIVIDE_SHIFT]];
+	}
+#else
+	for (y = cliprect->min_y; y <= cliprect->max_y; y++)
+	{
+		UINT16 *dest = (UINT16 *)bitmap->line[y];
+		UINT16 *source = &frontbuf[1024 * y];
+		for (x = cliprect->min_x; x <= cliprect->max_x; x++)
+			*dest++ = pen_lookup[*source++];
 	}
 #endif
 
-	logerror("--- video update (%d-%d) ---\n", cliprect->min_y, cliprect->max_y);
-
-#if (DISPLAY_DEPTHBUF)
-	if (keyboard_pressed(KEYCODE_D))
+	/* alternately, display the depth buffer in red (debug) */
+	if (DISPLAY_DEPTHBUF && code_pressed(KEYCODE_D))
 	{
 		for (y = cliprect->min_y; y <= cliprect->max_y; y++)
 		{
@@ -966,17 +1112,35 @@ VIDEO_UPDATE( voodoo )
 			for (x = cliprect->min_x; x <= cliprect->max_x; x++)
 				*dest++ = pen_lookup[~*source++ & 0xf800];
 		}
-		return;
 	}
-#endif
 
-	for (y = cliprect->min_y; y <= cliprect->max_y; y++)
+	/* update statistics (debug) */
+	if (code_pressed(KEYCODE_BACKSLASH))
 	{
-		UINT16 *dest = (UINT16 *)bitmap->line[y];
-		UINT16 *source = &frontbuf[1024 * y];
-		for (x = cliprect->min_x; x <= cliprect->max_x; x++)
-			*dest++ = pen_lookup[*source++];
+		while (code_pressed(KEYCODE_BACKSLASH)) ;
+		display_statistics = !display_statistics;
 	}
+	if (display_statistics)
+	{
+		ui_text(bitmap, &stats_buffer[0][0], 0, Machine->uifontheight * 0);
+		ui_text(bitmap, &stats_buffer[1][0], 0, Machine->uifontheight * 1);
+		ui_text(bitmap, &stats_buffer[2][0], 0, Machine->uifontheight * 2);
+		ui_text(bitmap, &stats_buffer[3][0], 0, Machine->uifontheight * 3);
+		ui_text(bitmap, &stats_buffer[4][0], 0, Machine->uifontheight * 4);
+		ui_text(bitmap, &stats_buffer[5][0], 0, Machine->uifontheight * 5);
+		ui_text(bitmap, &stats_buffer[6][0], 0, Machine->uifontheight * 6);
+
+		totalframes++;
+		if (totalframes == (int)Machine->drv->frames_per_second)
+		{
+			lastfps = framecount;
+			framecount = totalframes = 0;
+		}
+	}
+
+	/* note of if the LOD logging key is pressed (debug) */
+	if (TRACK_LOD)
+		loglod = code_pressed(KEYCODE_L);
 }
 
 
@@ -990,6 +1154,23 @@ VIDEO_UPDATE( voodoo )
 void voodoo_set_init_enable(data32_t newval)
 {
 	init_enable = newval;
+}
+
+
+void voodoo_set_vblank_callback(void (*vblank)(int))
+{
+	client_vblank_callback = vblank;
+}
+
+
+UINT32 voodoo_fifo_words_left(void)
+{
+	/* if we're blocked, return a real number */
+	if (blocked_on_swap)
+		return memory_fifo_size - memory_fifo_count;
+	
+	/* otherwise, return infinity */
+	return 0x7fffffff;
 }
 
 
@@ -1038,17 +1219,54 @@ static void fastfill(void)
 	UINT16 *buffer = *fbz_draw_buffer;
 	UINT16 dither[16];
 	int x, y;
-
+	
 	/* frame buffer clear? */
 	if (fbz_rgb_write)
 	{
+		if (LOG_COMMANDS)
+			logerror("FASTFILL RGB = %06X\n", voodoo_regs[color1] & 0xffffff);
+
 		/* determine dithering */
-		dither_to_matrix(voodoo_regs[color1], dither);
+		if (!fbz_dithering)
+			dither[0] = (((voodoo_regs[color1] >> 19) & 0x1f) << 11) | (((voodoo_regs[color1] >> 10) & 0x3f) << 5) | (((voodoo_regs[color1] >> 3) & 0x1f) << 0);
+		else
+			dither_to_matrix(voodoo_regs[color1], dither);
 	
 		/* loop over y */
+#if (RESOLUTION_DIVIDE_SHIFT != 0)
+		if (cheating_allowed)
+		{
+			for (y = sy; y < ey; y++)
+			{
+				int effy = (fbz_invert_y ? (inverted_yorigin - y) : y) & (FRAMEBUF_HEIGHT-1);
+				UINT16 *dest = &buffer[effy * FRAMEBUF_WIDTH];
+
+				if (effy & ((1 << RESOLUTION_DIVIDE_SHIFT) - 1))
+					continue;
+
+				/* if not dithered, it's easy */
+				if (!fbz_dithering)
+				{
+					UINT16 color = dither[0];
+					for (x = (sx >> RESOLUTION_DIVIDE_SHIFT) << RESOLUTION_DIVIDE_SHIFT; x < ex; x += (1 << RESOLUTION_DIVIDE_SHIFT))
+						dest[x] = color;
+				}
+				
+				/* dithered is a little trickier */
+				else
+				{
+					UINT16 *dbase = dither + 4 * (y & 3);
+					for (x = (sx >> RESOLUTION_DIVIDE_SHIFT) << RESOLUTION_DIVIDE_SHIFT; x < ex; x += (1 << RESOLUTION_DIVIDE_SHIFT))
+						dest[x] = dbase[x & 3];
+				}
+			}
+		}
+		else
+#endif
 		for (y = sy; y < ey; y++)
 		{
-			UINT16 *dest = &buffer[(fbz_invert_y ? (inverted_yorigin - y) : y) * FRAMEBUF_WIDTH + sx];
+			int effy = (fbz_invert_y ? (inverted_yorigin - y) : y) & (FRAMEBUF_HEIGHT-1);
+			UINT16 *dest = &buffer[effy * FRAMEBUF_WIDTH + sx];
 
 			/* if not dithered, it's easy */
 			if (!fbz_dithering)
@@ -1072,12 +1290,29 @@ static void fastfill(void)
 	if (fbz_depth_write)
 	{
 		UINT16 color = voodoo_regs[zaColor];
-		logerror("FASTFILL depth = %04X\n", color);
+		if (LOG_COMMANDS)
+			logerror("FASTFILL depth = %04X\n", color);
 
 		/* loop over y */
+#if (RESOLUTION_DIVIDE_SHIFT != 0)
+		if (cheating_allowed)
+		{
+			for (y = sy; y < ey; y++)
+			{
+				int effy = (fbz_invert_y ? (inverted_yorigin - y) : y) & (FRAMEBUF_HEIGHT-1);
+				UINT16 *dest = &depthbuf[effy * FRAMEBUF_WIDTH];
+				if (effy & ((1 << RESOLUTION_DIVIDE_SHIFT) - 1))
+					continue;
+				for (x = (sx >> RESOLUTION_DIVIDE_SHIFT) << RESOLUTION_DIVIDE_SHIFT; x < ex; x += (1 << RESOLUTION_DIVIDE_SHIFT))
+					dest[x] = color;
+			}
+		}
+		else
+#endif
 		for (y = sy; y < ey; y++)
 		{
-			UINT16 *dest = &depthbuf[y * FRAMEBUF_WIDTH + sx];
+			int effy = (fbz_invert_y ? (inverted_yorigin - y) : y) & (FRAMEBUF_HEIGHT-1);
+			UINT16 *dest = &depthbuf[effy * FRAMEBUF_WIDTH + sx];
 			for (x = sx; x < ex; x++)
 				*dest++ = color;
 		}
@@ -1140,11 +1375,10 @@ static void draw_triangle(void)
 {
 	int totalpix = voodoo_regs[fbiPixelsIn];
 	UINT32 temp;
+
+	profiler_mark(PROFILER_USER1);
 	
 	voodoo_regs[fbiTrianglesOut] = (voodoo_regs[fbiTrianglesOut] + 1) & 0xffffff;
-	
-	if (LOG_COMMANDS)
-		logerror("%06X:FLOAT TRIANGLE command\n", activecpu_get_pc());
 
 	SETUP_FPU();
 	temp = voodoo_regs[fbzColorPath] & FBZCOLORPATH_MASK;
@@ -1275,10 +1509,11 @@ done:
 	RESTORE_FPU();
 	totalpix = voodoo_regs[fbiPixelsIn] - totalpix;
 	if (totalpix < 0) totalpix += 0x1000000;
+
+	profiler_mark(PROFILER_END);
+
 	log_renderer(totalpix);
-#if DISPLAY_STATISTICS
 	polycount++;
-#endif
 }
 
 
@@ -1382,6 +1617,7 @@ static void setup_and_draw_triangle(void)
 	}
 
 	/* draw the triangle */
+	cheating_allowed = 1;
 	draw_triangle();
 }
 
@@ -1550,8 +1786,8 @@ static UINT32 execute_cmdfifo(void)
 			voodoo_regs[sSetupMode] = ((command >> 10) & 0xfff) | ((command >> 6) & 0xf0000);
 			for (i = 0; i < count; i++)
 			{
-				setup_pending.x = TRUNC_TO_INT(*(float *)src++ * 16. + 0.5) * (1. / 16.);
-				setup_pending.y = TRUNC_TO_INT(*(float *)src++ * 16. + 0.5) * (1. / 16.);
+				setup_pending.x = (INT16)TRUNC_TO_INT(*(float *)src++ * 16. + 0.5) * (1. / 16.);
+				setup_pending.y = (INT16)TRUNC_TO_INT(*(float *)src++ * 16. + 0.5) * (1. / 16.);
 
 				if (command & 0x10000000)
 				{
@@ -1659,6 +1895,15 @@ static UINT32 execute_cmdfifo(void)
 
 WRITE32_HANDLER( voodoo2_regs_w )
 {
+	/* if we're blocked on a swap, all writes must go into the FIFO */
+	if (blocked_on_swap)
+	{
+		add_to_memory_fifo(voodoo2_regs_w, offset, data, mem_mask);
+		if (offset == swapbufferCMD)
+			num_pending_swaps++;
+		return;
+	}
+
 	/* handle legacy writes */
 	if (!(voodoo_regs[fbiInit7] & 0x100))
 		voodoo_regs_w(offset, data, mem_mask);
@@ -1754,34 +1999,45 @@ WRITE32_HANDLER( voodoo2_regs_w )
 
 WRITE32_HANDLER( voodoo_regs_w )
 {
-	int chips = (offset >> 8) & 0x0f;
+	int regnum, chips;
+
+	/* if we're blocked on a swap, all writes must go into the FIFO */
+	if (blocked_on_swap)
+	{
+		add_to_memory_fifo(voodoo_regs_w, offset, data, mem_mask);
+		if (offset == swapbufferCMD)
+			num_pending_swaps++;
+		return;
+	}
+
+	chips = (offset >> 8) & 0x0f;
 	if (chips == 0) chips = 0x0f;
 	
 	if ((offset & 0x800c0) == 0x80000 && (voodoo_regs[fbiInit3] & 1))
-		offset = register_alias_map[offset & 0x3f];
+		regnum = register_alias_map[offset & 0x3f];
 	else
-		offset &= 0xff;
+		regnum = offset & 0xff;
 	
 	if (chips & 1)
-		voodoo_regs[0x000 + offset] = data;
+		voodoo_regs[0x000 + regnum] = data;
 	if (chips & 2)
-		voodoo_regs[0x100 + offset] = data;
+		voodoo_regs[0x100 + regnum] = data;
 	if (chips & 4)
-		voodoo_regs[0x200 + offset] = data;
+		voodoo_regs[0x200 + regnum] = data;
 	if (chips & 8)
-		voodoo_regs[0x300 + offset] = data;
+		voodoo_regs[0x300 + regnum] = data;
 
 	status_lastpc = ~0;
 
 	if (LOG_REGISTERS)
 	{
-		if (offset < fvertexAx || offset > fdWdY)
-			logerror("%06X:voodoo %s(%d) write = %08X\n", activecpu_get_pc(), (offset < 0x384/4) ? voodoo_reg_name[offset] : "oob", chips, data);
+		if (regnum < fvertexAx || regnum > fdWdY)
+			logerror("%06X:voodoo %s(%d) write = %08X\n", memory_fifo_in_process ? 0 : activecpu_get_pc(), (regnum < 0x384/4) ? voodoo_reg_name[regnum] : "oob", chips, data);
 		else
-			logerror("%06X:voodoo %s(%d) write = %f\n", activecpu_get_pc(), (offset < 0x384/4) ? voodoo_reg_name[offset] : "oob", chips, *(float *)&data);
+			logerror("%06X:voodoo %s(%d) write = %f\n", memory_fifo_in_process ? 0 : activecpu_get_pc(), (regnum < 0x384/4) ? voodoo_reg_name[regnum] : "oob", chips, *(float *)&data);
 	}
 	
-	switch (offset)
+	switch (regnum)
 	{
 		/* fixed-point vertex data */
 		case vertexAx:
@@ -1895,22 +2151,22 @@ WRITE32_HANDLER( voodoo_regs_w )
 		
 		/* floating-point vertex data */
 		case fvertexAx:
-			if (chips & 1) tri_va.x = TRUNC_TO_INT(*(float *)&data * 16. + 0.5) * (1. / 16.);
+			if (chips & 1) tri_va.x = (INT16)TRUNC_TO_INT(*(float *)&data * 16. + 0.5) * (1. / 16.);
 			break;
 		case fvertexAy:
-			if (chips & 1) tri_va.y = TRUNC_TO_INT(*(float *)&data * 16. + 0.5) * (1. / 16.);
+			if (chips & 1) tri_va.y = (INT16)TRUNC_TO_INT(*(float *)&data * 16. + 0.5) * (1. / 16.);
 			break;
 		case fvertexBx:
-			if (chips & 1) tri_vb.x = TRUNC_TO_INT(*(float *)&data * 16. + 0.5) * (1. / 16.);
+			if (chips & 1) tri_vb.x = (INT16)TRUNC_TO_INT(*(float *)&data * 16. + 0.5) * (1. / 16.);
 			break;
 		case fvertexBy:
-			if (chips & 1) tri_vb.y = TRUNC_TO_INT(*(float *)&data * 16. + 0.5) * (1. / 16.);
+			if (chips & 1) tri_vb.y = (INT16)TRUNC_TO_INT(*(float *)&data * 16. + 0.5) * (1. / 16.);
 			break;
 		case fvertexCx:
-			if (chips & 1) tri_vc.x = TRUNC_TO_INT(*(float *)&data * 16. + 0.5) * (1. / 16.);
+			if (chips & 1) tri_vc.x = (INT16)TRUNC_TO_INT(*(float *)&data * 16. + 0.5) * (1. / 16.);
 			break;
 		case fvertexCy:
-			if (chips & 1) tri_vc.y = TRUNC_TO_INT(*(float *)&data * 16. + 0.5) * (1. / 16.);
+			if (chips & 1) tri_vc.y = (INT16)TRUNC_TO_INT(*(float *)&data * 16. + 0.5) * (1. / 16.);
 			break;
 		
 		/* floating-point starting data */
@@ -2050,6 +2306,8 @@ WRITE32_HANDLER( voodoo_regs_w )
 			setup_pending.b = *(float *)&data;
 			break;
 		case sDrawTriCMD:
+			if (LOG_COMMANDS)
+				logerror("%06X:DRAW TRIANGLE command\n", memory_fifo_in_process ? 0 : activecpu_get_pc());
 			if (!(voodoo_regs[sSetupMode] & 0x10000))	/* strip mode */
 				setup_verts[0] = setup_verts[1];
 			setup_verts[1] = setup_verts[2];
@@ -2058,12 +2316,23 @@ WRITE32_HANDLER( voodoo_regs_w )
 				setup_and_draw_triangle();
 			break;
 		case sBeginTriCMD:
+			if (LOG_COMMANDS)
+				logerror("%06X:BEGIN TRIANGLE command\n", memory_fifo_in_process ? 0 : activecpu_get_pc());
 			setup_count = 1;
 			setup_verts[0] = setup_verts[1] = setup_verts[2] = setup_pending;
 			break;
 		
 		case triangleCMD:
+//			if (LOG_COMMANDS)
+//				logerror("%06X:FIXED TRIANGLE command\n", memory_fifo_in_process ? 0 : activecpu_get_pc());
+			cheating_allowed = (tri_va.x != 0 || tri_va.y != 0 || tri_vb.x > 50 || tri_vb.y != 0 || tri_vc.x != 0 || tri_vc.y > 50);
+			draw_triangle();
+			break;
+			
 		case ftriangleCMD:
+//			if (LOG_COMMANDS)
+//				logerror("%06X:FLOAT TRIANGLE command\n", memory_fifo_in_process ? 0 : activecpu_get_pc());
+			cheating_allowed = 1;
 			draw_triangle();
 			break;
 		
@@ -2163,7 +2432,7 @@ WRITE32_HANDLER( voodoo_regs_w )
 			/* bit 16 = byte swizzle LFB reads */
 
 			/* extract parameters we can handle */
-			lfb_write_format = data & 0x0f;
+			lfb_write_format = (data & 0x0f) + ((data >> 5) & 0x30);
 			lfb_write_buffer = buffer_access[(data >> 4) & 3];
 			lfb_read_buffer = buffer_access[(data >> 6) & 3];
 			lfb_flipy = (data >> 13) & 1;
@@ -2181,24 +2450,23 @@ WRITE32_HANDLER( voodoo_regs_w )
 	
 		case nopCMD:
 			if (LOG_COMMANDS)
-				logerror("%06X:NOP command\n", activecpu_get_pc());
+				logerror("%06X:NOP command\n", memory_fifo_in_process ? 0 : activecpu_get_pc());
 			break;
 	
 		case fastfillCMD:
 			if (LOG_COMMANDS)
-				logerror("%06X:FASTFILL command\n", activecpu_get_pc());
-			if (blocked_on_swap)
-			{
-				pending_fastfill = 1;
-				pending_fastfill_zaColor = voodoo_regs[zaColor];
-				pending_fastfill_color1 = voodoo_regs[color1];
-			}
-			else
-				fastfill();
+				logerror("%06X:FASTFILL command\n", memory_fifo_in_process ? 0 : activecpu_get_pc());
+			fastfill();
 			break;
 	
 		case swapbufferCMD:
-//printf("%08X:swapbuffer %02X\n", activecpu_get_pc(), data);
+			if (LOG_COMMANDS)
+				logerror("%06X:SWAPBUFFER command = %08X (pend=%d)\n", memory_fifo_in_process ? 0 : activecpu_get_pc(), data, num_pending_swaps);
+
+			/* extract parameters */
+			swap_vblanks = (data >> 1) & 0x7f;
+			swap_dont_swap = (voodoo2 && (data & 0x200) != 0);
+
 			/* immediate? */
 			if (!(data & 1))
 				swap_buffers();
@@ -2206,13 +2474,12 @@ WRITE32_HANDLER( voodoo_regs_w )
 			/* deferred */
 			else
 			{
-				swaps_pending++;
-				vblanks_before_swap = (data >> 1) & 0x7f;
 				blocked_on_swap = 1;
+				
+				/* if we're not executing from the FIFO, we need to bump the pending swap count */
+				if (!memory_fifo_in_process)
+					num_pending_swaps++;
 			}
-		
-			if (LOG_COMMANDS)
-				logerror("%06X:SWAPBUFFER command = %08X\n", activecpu_get_pc(), data);
 			break;
 	
 		case fbiInit4:
@@ -2227,7 +2494,7 @@ WRITE32_HANDLER( voodoo_regs_w )
 			if (data & 0x3ff0000)
 				video_height = (data >> 16) & 0x3ff;
 			set_visible_area(0, video_width - 1, 0, video_height - 1);
-			timer_adjust(vblank_timer, cpu_getscanlinetime(video_height), video_height, 0);
+			timer_adjust(vblank_timer, cpu_getscanlinetime(video_height), 0, TIME_NEVER);
 			reset_buffers();
 			break;
 			
@@ -2242,6 +2509,12 @@ WRITE32_HANDLER( voodoo_regs_w )
 			/* bit 2 = FBI FIFO reset (1) */
 			/* bit 4 = Stall PCI enable for high water mark */
 			/* bit 6-10 = PCI FIFO empty entries for low water mark (0x10) */
+			update_memory_fifo();
+			if ((data >> 2) & 1)
+			{
+				memory_fifo_count = 0;
+				num_pending_swaps = 0;
+			}
 			break;
 			
 		case fbiInit1:
@@ -2389,7 +2662,7 @@ WRITE32_HANDLER( voodoo_regs_w )
 				trex_lod_offset[0] = &lod_offset_table[(data >> 21) & 3][0];
 				trex_lod_width_shift[0] = &lod_width_shift[(data >> 20) & 7][0];
 				if (LOG_REGISTERS)
-					logerror("%06X:trex[0] -- lodmin=%02X lodmax=%02X size=%dx%d\n", activecpu_get_pc(), trex_lodmin[0], trex_lodmax[0], trex_width[0], trex_height[0]);
+					logerror("%06X:trex[0] -- lodmin=%02X lodmax=%02X size=%dx%d\n", memory_fifo_in_process ? 0 : activecpu_get_pc(), trex_lodmin[0], trex_lodmax[0], trex_width[0], trex_height[0]);
 			}
 			if (chips & 4)
 			{
@@ -2403,7 +2676,7 @@ WRITE32_HANDLER( voodoo_regs_w )
 				trex_lod_offset[1] = &lod_offset_table[(data >> 21) & 3][0];
 				trex_lod_width_shift[1] = &lod_width_shift[(data >> 20) & 7][0];
 				if (LOG_REGISTERS)
-					logerror("%06X:trex[1] -- lodmin=%02X lodmax=%02X size=%dx%d\n", activecpu_get_pc(), trex_lodmin[1], trex_lodmax[1], trex_width[1], trex_height[1]);
+					logerror("%06X:trex[1] -- lodmin=%02X lodmax=%02X size=%dx%d\n", memory_fifo_in_process ? 0 : activecpu_get_pc(), trex_lodmin[1], trex_lodmax[1], trex_width[1], trex_height[1]);
 			}
 			if (chips & 8)
 			{
@@ -2417,7 +2690,26 @@ WRITE32_HANDLER( voodoo_regs_w )
 				trex_lod_offset[2] = &lod_offset_table[(data >> 21) & 3][0];
 				trex_lod_width_shift[2] = &lod_width_shift[(data >> 20) & 7][0];
 				if (LOG_REGISTERS)
-					logerror("%06X:trex[2] -- lodmin=%02X lodmax=%02X size=%dx%d\n",activecpu_get_pc(),  trex_lodmin[2], trex_lodmax[2], trex_width[2], trex_height[2]);
+					logerror("%06X:trex[2] -- lodmin=%02X lodmax=%02X size=%dx%d\n",memory_fifo_in_process ? 0 : activecpu_get_pc(),  trex_lodmin[2], trex_lodmax[2], trex_width[2], trex_height[2]);
+			}
+			break;
+		
+		case hSync:
+			break;
+		case vSync:
+			if (voodoo_regs[hSync] != 0 && voodoo_regs[vSync] != 0)
+			{
+				float vtotal = (voodoo_regs[vSync] >> 16) + (voodoo_regs[vSync] & 0xffff);
+				float stdfps = 15750 / vtotal, stddiff = fabs(stdfps - Machine->drv->frames_per_second);
+				float medfps = 25000 / vtotal, meddiff = fabs(medfps - Machine->drv->frames_per_second);
+				float vgafps = 31500 / vtotal, vgadiff = fabs(vgafps - Machine->drv->frames_per_second);
+
+				if (stddiff < meddiff && stddiff < vgadiff)
+					set_refresh_rate(stdfps);
+				else if (meddiff < vgadiff)
+					set_refresh_rate(medfps);
+				else
+					set_refresh_rate(vgafps);
 			}
 			break;
 		
@@ -2427,7 +2719,7 @@ WRITE32_HANDLER( voodoo_regs_w )
 		case nccTable+3:
 			if (chips & 2)
 			{
-				int base = 4 * (offset - (nccTable+0));
+				int base = 4 * (regnum - (nccTable+0));
 				ncc_y[0][0][base+0] = (data >>  0) & 0xff;
 				ncc_y[0][0][base+1] = (data >>  8) & 0xff;
 				ncc_y[0][0][base+2] = (data >> 16) & 0xff;
@@ -2437,7 +2729,7 @@ WRITE32_HANDLER( voodoo_regs_w )
 			}
 			if (chips & 4)
 			{
-				int base = 4 * (offset - (nccTable+0));
+				int base = 4 * (regnum - (nccTable+0));
 				ncc_y[1][0][base+0] = (data >>  0) & 0xff;
 				ncc_y[1][0][base+1] = (data >>  8) & 0xff;
 				ncc_y[1][0][base+2] = (data >> 16) & 0xff;
@@ -2455,12 +2747,12 @@ WRITE32_HANDLER( voodoo_regs_w )
 			{
 				if (data & 0x80000000)
 				{
-					texel_lookup[0][5][((data >> 23) & 0xfe) | (~offset & 1)] = 0xff000000 | data;
+					texel_lookup[0][5][((data >> 23) & 0xfe) | (~regnum & 1)] = 0xff000000 | data;
 					texel_lookup_dirty[0][14] = 1;
 				}
 				else
 				{
-					int base = offset - (nccTable+4);
+					int base = regnum - (nccTable+4);
 					ncc_ir[0][0][base] = (INT32)(data <<  5) >> 23;
 					ncc_ig[0][0][base] = (INT32)(data << 14) >> 23;
 					ncc_ib[0][0][base] = (INT32)(data << 23) >> 23;
@@ -2472,12 +2764,12 @@ WRITE32_HANDLER( voodoo_regs_w )
 			{
 				if (data & 0x80000000)
 				{
-					texel_lookup[1][5][((data >> 23) & 0xfe) | (~offset & 1)] = 0xff000000 | data;
+					texel_lookup[1][5][((data >> 23) & 0xfe) | (~regnum & 1)] = 0xff000000 | data;
 					texel_lookup_dirty[1][14] = 1;
 				}
 				else
 				{
-					int base = offset - (nccTable+4);
+					int base = regnum - (nccTable+4);
 					ncc_ir[1][0][base] = (INT32)(data <<  5) >> 23;
 					ncc_ig[1][0][base] = (INT32)(data << 14) >> 23;
 					ncc_ib[1][0][base] = (INT32)(data << 23) >> 23;
@@ -2495,12 +2787,12 @@ WRITE32_HANDLER( voodoo_regs_w )
 			{
 				if (data & 0x80000000)
 				{
-					texel_lookup[0][5][((data >> 23) & 0xfe) | (~offset & 1)] = 0xff000000 | data;
+					texel_lookup[0][5][((data >> 23) & 0xfe) | (~regnum & 1)] = 0xff000000 | data;
 					texel_lookup_dirty[0][14] = 1;
 				}
 				else
 				{
-					int base = offset - (nccTable+8);
+					int base = regnum - (nccTable+8);
 					ncc_qr[0][0][base] = (INT32)(data <<  5) >> 23;
 					ncc_qg[0][0][base] = (INT32)(data << 14) >> 23;
 					ncc_qb[0][0][base] = (INT32)(data << 23) >> 23;
@@ -2512,12 +2804,12 @@ WRITE32_HANDLER( voodoo_regs_w )
 			{
 				if (data & 0x80000000)
 				{
-					texel_lookup[1][5][((data >> 23) & 0xfe) | (~offset & 1)] = 0xff000000 | data;
+					texel_lookup[1][5][((data >> 23) & 0xfe) | (~regnum & 1)] = 0xff000000 | data;
 					texel_lookup_dirty[1][14] = 1;
 				}
 				else
 				{
-					int base = offset - (nccTable+8);
+					int base = regnum - (nccTable+8);
 					ncc_qr[1][0][base] = (INT32)(data <<  5) >> 23;
 					ncc_qg[1][0][base] = (INT32)(data << 14) >> 23;
 					ncc_qb[1][0][base] = (INT32)(data << 23) >> 23;
@@ -2533,7 +2825,7 @@ WRITE32_HANDLER( voodoo_regs_w )
 		case nccTable+15:
 			if (chips & 2)
 			{
-				int base = 4 * (offset - (nccTable+12));
+				int base = 4 * (regnum - (nccTable+12));
 				ncc_y[0][1][base+0] = (data >>  0) & 0xff;
 				ncc_y[0][1][base+1] = (data >>  8) & 0xff;
 				ncc_y[0][1][base+2] = (data >> 16) & 0xff;
@@ -2543,7 +2835,7 @@ WRITE32_HANDLER( voodoo_regs_w )
 			}
 			if (chips & 4)
 			{
-				int base = 4 * (offset - (nccTable+12));
+				int base = 4 * (regnum - (nccTable+12));
 				ncc_y[1][1][base+0] = (data >>  0) & 0xff;
 				ncc_y[1][1][base+1] = (data >>  8) & 0xff;
 				ncc_y[1][1][base+2] = (data >> 16) & 0xff;
@@ -2559,7 +2851,7 @@ WRITE32_HANDLER( voodoo_regs_w )
 		case nccTable+19:
 			if (chips & 2)
 			{
-				int base = offset - (nccTable+16);
+				int base = regnum - (nccTable+16);
 				ncc_ir[0][1][base] = (INT32)(data <<  5) >> 23;
 				ncc_ig[0][1][base] = (INT32)(data << 14) >> 23;
 				ncc_ib[0][1][base] = (INT32)(data << 23) >> 23;
@@ -2568,7 +2860,7 @@ WRITE32_HANDLER( voodoo_regs_w )
 			}
 			if (chips & 4)
 			{
-				int base = offset - (nccTable+16);
+				int base = regnum - (nccTable+16);
 				ncc_ir[1][1][base] = (INT32)(data <<  5) >> 23;
 				ncc_ig[1][1][base] = (INT32)(data << 14) >> 23;
 				ncc_ib[1][1][base] = (INT32)(data << 23) >> 23;
@@ -2583,7 +2875,7 @@ WRITE32_HANDLER( voodoo_regs_w )
 		case nccTable+23:
 			if (chips & 2)
 			{
-				int base = offset - (nccTable+20);
+				int base = regnum - (nccTable+20);
 				ncc_qr[0][1][base] = (INT32)(data <<  5) >> 23;
 				ncc_qg[0][1][base] = (INT32)(data << 14) >> 23;
 				ncc_qb[0][1][base] = (INT32)(data << 23) >> 23;
@@ -2592,7 +2884,7 @@ WRITE32_HANDLER( voodoo_regs_w )
 			}
 			if (chips & 4)
 			{
-				int base = offset - (nccTable+20);
+				int base = regnum - (nccTable+20);
 				ncc_qr[1][1][base] = (INT32)(data <<  5) >> 23;
 				ncc_qg[1][1][base] = (INT32)(data << 14) >> 23;
 				ncc_qb[1][1][base] = (INT32)(data << 23) >> 23;
@@ -2610,7 +2902,7 @@ WRITE32_HANDLER( voodoo_regs_w )
 		case fogTable+24:	case fogTable+25:	case fogTable+26:	case fogTable+27:
 		case fogTable+28:	case fogTable+29:	case fogTable+30:	case fogTable+31:
 		{
-			int base = (offset - fogTable) * 2;
+			int base = (regnum - fogTable) * 2;
 			fog_delta[base + 0] = (data >> 0) & 0xff;
 			fog_blend[base + 0] = (data >> 8) & 0xff;
 			fog_delta[base + 1] = (data >> 16) & 0xff;
@@ -2646,14 +2938,20 @@ READ32_HANDLER( voodoo_regs_r )
 	{
 		case status:
 		{
+			int fifo_space;
+			
 			result = 0;
 			
-			/* FIFO free space */
-			if (!blocked_on_swap)
-				result |= 0x3f;
+			/* compute free FIFO space */
+			fifo_space = memory_fifo_size - memory_fifo_count;
+			if (fifo_space < 0)
+				fifo_space = 0;
+			
+			/* PCI FIFO free space */
+			result |= (fifo_space < 0x3f) ? fifo_space : 0x3f;
 			
 			/* vertical retrace */
-			result |= (cpu_getvblank()) << 6;
+			result |= vblank_state << 6;
 			
 			/* FBI graphics engine busy */
 			result |= blocked_on_swap << 7;
@@ -2662,17 +2960,16 @@ READ32_HANDLER( voodoo_regs_r )
 			result |= 0 << 8;
 			
 			/* SST-1 overall busy */
-			result |= blocked_on_swap << 9;
+			result |= (blocked_on_swap || memory_fifo_count > 0) << 9;
 			
 			/* buffer displayed (0-2) */
 			result |= (frontbuf == framebuf[1]) << 10;
 			
 			/* memory FIFO free space */
-			if (!blocked_on_swap)
-				result |= 0xffff << 12;
+			result |= ((voodoo_regs[fbiInit0] >> 13) & 1) ? (fifo_space << 12) : (0xffff << 12);
 			
 			/* swap buffers pending */
-			result |= swaps_pending << 28;
+			result |= num_pending_swaps << 28;
 			
 			activecpu_eat_cycles(100);
 			
@@ -2684,10 +2981,10 @@ READ32_HANDLER( voodoo_regs_r )
 				else
 				{
 					if (status_lastpc_count)
-						logerror("%06X:voodoo status read = %08X (x%d)\n", activecpu_get_pc(), result, status_lastpc_count);
+						logerror("%06X:voodoo status read = %08X (x%d)\n", status_lastpc, result, status_lastpc_count);
 					status_lastpc_count = 0;
 					status_lastpc = pc;
-					logerror("%06X:voodoo status read = %08X\n", activecpu_get_pc(), result);
+					logerror("%06X:voodoo status read = %08X\n", pc, result);
 				}
 			}
 			break;
@@ -2730,172 +3027,489 @@ READ32_HANDLER( voodoo_regs_r )
  *
  *************************************/
 
-static void lfbwrite_0(offs_t offset, data32_t data, data32_t mem_mask)
+static void lfbwrite_0_argb(offs_t offset, data32_t data, data32_t mem_mask)
 {
 	UINT16 *buffer = *lfb_write_buffer;
 	int y = offset / (FRAMEBUF_WIDTH/2);
 	int x = (offset % (FRAMEBUF_WIDTH/2)) * 2;
 	if (lfb_flipy)
 		y = inverted_yorigin - y;
+	y &= FRAMEBUF_HEIGHT-1;
 	if (ACCESSING_LSW32)
 		buffer[y * FRAMEBUF_WIDTH + x] = data;
 	if (ACCESSING_MSW32)
 		buffer[y * FRAMEBUF_WIDTH + x + 1] = data >> 16;
-//	logerror("%06X:LFB write mode 0 @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+//	logerror("%06X:LFB write mode 0 ARGB @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
 }
 
-static void lfbwrite_1(offs_t offset, data32_t data, data32_t mem_mask)
+static void lfbwrite_0_abgr(offs_t offset, data32_t data, data32_t mem_mask)
 {
 	UINT16 *buffer = *lfb_write_buffer;
 	int y = offset / (FRAMEBUF_WIDTH/2);
 	int x = (offset % (FRAMEBUF_WIDTH/2)) * 2;
 	if (lfb_flipy)
 		y = inverted_yorigin - y;
+	y &= FRAMEBUF_HEIGHT-1;
 	if (ACCESSING_LSW32)
-		buffer[y * FRAMEBUF_WIDTH + x] = ((data << 1) & 0xffe0) | (data & 0x001f);
+		buffer[y * FRAMEBUF_WIDTH + x] = ((data >> 11) & 0x001f) | (data & 0x07e0) | ((data << 11) & 0xf800);
 	if (ACCESSING_MSW32)
-		buffer[y * FRAMEBUF_WIDTH + x + 1] = ((data >> 15) & 0xffe0) | ((data >> 16) & 0x001f);
-//	logerror("%06X:LFB write mode 1 @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+		buffer[y * FRAMEBUF_WIDTH + x + 1] = ((data >> 27) & 0x001f) | ((data >> 16) & 0x07e0) | ((data >> 5) & 0xf800);
+//	logerror("%06X:LFB write mode 0 ABGR @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
 }
 
-static void lfbwrite_2(offs_t offset, data32_t data, data32_t mem_mask)
+static void lfbwrite_0_rgba(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 0 RGBA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_0_bgra(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 0 BGRA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+
+static void lfbwrite_1_argb(offs_t offset, data32_t data, data32_t mem_mask)
 {
 	UINT16 *buffer = *lfb_write_buffer;
 	int y = offset / (FRAMEBUF_WIDTH/2);
 	int x = (offset % (FRAMEBUF_WIDTH/2)) * 2;
 	if (lfb_flipy)
 		y = inverted_yorigin - y;
+	y &= FRAMEBUF_HEIGHT-1;
 	if (ACCESSING_LSW32)
 		buffer[y * FRAMEBUF_WIDTH + x] = ((data << 1) & 0xffe0) | (data & 0x001f);
 	if (ACCESSING_MSW32)
 		buffer[y * FRAMEBUF_WIDTH + x + 1] = ((data >> 15) & 0xffe0) | ((data >> 16) & 0x001f);
-//	logerror("%06X:LFB write mode 2 @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+//	logerror("%06X:LFB write mode 1 ARGB @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
 }
 
-static void lfbwrite_3(offs_t offset, data32_t data, data32_t mem_mask)
+static void lfbwrite_1_abgr(offs_t offset, data32_t data, data32_t mem_mask)
 {
-	logerror("%06X:Unimplementd LFB write mode 3 @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+	UINT16 *buffer = *lfb_write_buffer;
+	int y = offset / (FRAMEBUF_WIDTH/2);
+	int x = (offset % (FRAMEBUF_WIDTH/2)) * 2;
+	if (lfb_flipy)
+		y = inverted_yorigin - y;
+	y &= FRAMEBUF_HEIGHT-1;
+	if (ACCESSING_LSW32)
+		buffer[y * FRAMEBUF_WIDTH + x] = ((data >> 10) & 0x001f) | ((data << 1) & 0x07e0) | ((data << 11) & 0xf800);
+	if (ACCESSING_MSW32)
+		buffer[y * FRAMEBUF_WIDTH + x + 1] = ((data >> 26) & 0x001f) | ((data >> 15) & 0x07e0) | ((data >> 5) & 0xf800);
+//	logerror("%06X:LFB write mode 1 ABGR @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
 }
 
-static void lfbwrite_4(offs_t offset, data32_t data, data32_t mem_mask)
+static void lfbwrite_1_rgba(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 1 RGBA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_1_bgra(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 1 BGRA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+
+static void lfbwrite_2_argb(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	UINT16 *buffer = *lfb_write_buffer;
+	int y = offset / (FRAMEBUF_WIDTH/2);
+	int x = (offset % (FRAMEBUF_WIDTH/2)) * 2;
+	if (lfb_flipy)
+		y = inverted_yorigin - y;
+	y &= FRAMEBUF_HEIGHT-1;
+	if (ACCESSING_LSW32)
+		buffer[y * FRAMEBUF_WIDTH + x] = ((data << 1) & 0xffe0) | (data & 0x001f);
+	if (ACCESSING_MSW32)
+		buffer[y * FRAMEBUF_WIDTH + x + 1] = ((data >> 15) & 0xffe0) | ((data >> 16) & 0x001f);
+//	logerror("%06X:LFB write mode 2 ARGB @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_2_abgr(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 2 ABGR @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_2_rgba(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 2 RGBA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_2_bgra(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 2 BGRA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+
+static void lfbwrite_3_argb(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 3 ARGB @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_3_abgr(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 3 ABGR @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_3_rgba(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 3 RGBA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_3_bgra(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 3 BGRA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+
+static void lfbwrite_4_argb(offs_t offset, data32_t data, data32_t mem_mask)
 {
 	UINT16 *buffer = *lfb_write_buffer;
 	int y = offset / FRAMEBUF_WIDTH;
 	int x = offset % FRAMEBUF_WIDTH;
 	if (lfb_flipy)
 		y = inverted_yorigin - y;
+	y &= FRAMEBUF_HEIGHT-1;
 	buffer[y * FRAMEBUF_WIDTH + x] = (((data >> 19) & 0x1f) << 11) | (((data >> 10) & 0x3f) << 5) | (((data >> 3) & 0x1f) << 0);
-//	logerror("%06X:LFB write mode 4 @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+//	logerror("%06X:LFB write mode 4 ARGB @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
 }
 
-static void lfbwrite_5(offs_t offset, data32_t data, data32_t mem_mask)
+static void lfbwrite_4_abgr(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 4 ABGR @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_4_rgba(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 4 RGBA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_4_bgra(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 4 BGRA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+
+static void lfbwrite_5_argb(offs_t offset, data32_t data, data32_t mem_mask)
 {
 	UINT16 *buffer = *lfb_write_buffer;
 	int y = offset / FRAMEBUF_WIDTH;
 	int x = offset % FRAMEBUF_WIDTH;
 	if (lfb_flipy)
 		y = inverted_yorigin - y;
+	y &= FRAMEBUF_HEIGHT-1;
 	buffer[y * FRAMEBUF_WIDTH + x] = (((data >> 19) & 0x1f) << 11) | (((data >> 10) & 0x3f) << 5) | (((data >> 3) & 0x1f) << 0);
-//	logerror("%06X:LFB write mode 5 @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+//	logerror("%06X:LFB write mode 5 ARGB @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
 }
 
-static void lfbwrite_6(offs_t offset, data32_t data, data32_t mem_mask)
+static void lfbwrite_5_abgr(offs_t offset, data32_t data, data32_t mem_mask)
 {
-	logerror("%06X:Unimplementd LFB write mode 6 @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+	osd_die("%06X:Unimplementd LFB write mode 5 ABGR @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
 }
 
-static void lfbwrite_7(offs_t offset, data32_t data, data32_t mem_mask)
+static void lfbwrite_5_rgba(offs_t offset, data32_t data, data32_t mem_mask)
 {
-	logerror("%06X:Unimplementd LFB write mode 7 @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+	osd_die("%06X:Unimplementd LFB write mode 5 RGBA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
 }
 
-static void lfbwrite_8(offs_t offset, data32_t data, data32_t mem_mask)
+static void lfbwrite_5_bgra(offs_t offset, data32_t data, data32_t mem_mask)
 {
-	logerror("%06X:Unimplementd LFB write mode 8 @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+	osd_die("%06X:Unimplementd LFB write mode 5 BGRA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
 }
 
-static void lfbwrite_9(offs_t offset, data32_t data, data32_t mem_mask)
+
+static void lfbwrite_6_argb(offs_t offset, data32_t data, data32_t mem_mask)
 {
-	logerror("%06X:Unimplementd LFB write mode 9 @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+	osd_die("%06X:Unimplementd LFB write mode 6 ARGB @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
 }
 
-static void lfbwrite_a(offs_t offset, data32_t data, data32_t mem_mask)
+static void lfbwrite_6_abgr(offs_t offset, data32_t data, data32_t mem_mask)
 {
-	logerror("%06X:Unimplementd LFB write mode a @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+	osd_die("%06X:Unimplementd LFB write mode 6 ABGR @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
 }
 
-static void lfbwrite_b(offs_t offset, data32_t data, data32_t mem_mask)
+static void lfbwrite_6_rgba(offs_t offset, data32_t data, data32_t mem_mask)
 {
-	logerror("%06X:Unimplementd LFB write mode b @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+	osd_die("%06X:Unimplementd LFB write mode 6 RGBA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
 }
 
-static void lfbwrite_c(offs_t offset, data32_t data, data32_t mem_mask)
+static void lfbwrite_6_bgra(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 6 BGRA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+
+static void lfbwrite_7_argb(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 7 ARGB @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_7_abgr(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 7 ABGR @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_7_rgba(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 7 RGBA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_7_bgra(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 7 BGRA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+
+static void lfbwrite_8_argb(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 8 ARGB @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_8_abgr(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 8 ABGR @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_8_rgba(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 8 RGBA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_8_bgra(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 8 BGRA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+
+static void lfbwrite_9_argb(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 9 ARGB @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_9_abgr(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 9 ABGR @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_9_rgba(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 9 RGBA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_9_bgra(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode 9 BGRA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+
+static void lfbwrite_a_argb(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode a ARGB @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_a_abgr(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode a ABGR @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_a_rgba(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode a RGBA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_a_bgra(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode a BGRA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+
+static void lfbwrite_b_argb(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode b ARGB @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_b_abgr(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode b ABGR @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_b_rgba(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode b RGBA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_b_bgra(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode b BGRA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+
+static void lfbwrite_c_argb(offs_t offset, data32_t data, data32_t mem_mask)
 {
 	UINT16 *buffer = *lfb_write_buffer;
 	int y = offset / FRAMEBUF_WIDTH;
 	int x = offset % FRAMEBUF_WIDTH;
 	if (lfb_flipy)
 		y = inverted_yorigin - y;
+	y &= FRAMEBUF_HEIGHT-1;
 	if (ACCESSING_LSW32)
 		buffer[y * FRAMEBUF_WIDTH + x] = data;
 	if (ACCESSING_MSW32)
 		depthbuf[y * FRAMEBUF_WIDTH + x] = data >> 16;
-//	logerror("%06X:LFB write mode c @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+//	logerror("%06X:LFB write mode c ARGB @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
 }
 
-static void lfbwrite_d(offs_t offset, data32_t data, data32_t mem_mask)
+static void lfbwrite_c_abgr(offs_t offset, data32_t data, data32_t mem_mask)
 {
 	UINT16 *buffer = *lfb_write_buffer;
 	int y = offset / FRAMEBUF_WIDTH;
 	int x = offset % FRAMEBUF_WIDTH;
 	if (lfb_flipy)
 		y = inverted_yorigin - y;
+	y &= FRAMEBUF_HEIGHT-1;
 	if (ACCESSING_LSW32)
-		buffer[y * FRAMEBUF_WIDTH + x] = ((data << 1) & 0xffc0) | (data & 0x001f);
+		buffer[y * FRAMEBUF_WIDTH + x] = ((data >> 11) & 0x001f) | (data & 0x07e0) | ((data << 11) & 0xf800);
 	if (ACCESSING_MSW32)
 		depthbuf[y * FRAMEBUF_WIDTH + x] = data >> 16;
-//	logerror("%06X:LFB write mode d @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+//	logerror("%06X:LFB write mode c ABGR @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
 }
 
-static void lfbwrite_e(offs_t offset, data32_t data, data32_t mem_mask)
+static void lfbwrite_c_rgba(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode c RGBA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_c_bgra(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode c BGRA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+
+static void lfbwrite_d_argb(offs_t offset, data32_t data, data32_t mem_mask)
 {
 	UINT16 *buffer = *lfb_write_buffer;
 	int y = offset / FRAMEBUF_WIDTH;
 	int x = offset % FRAMEBUF_WIDTH;
 	if (lfb_flipy)
 		y = inverted_yorigin - y;
+	y &= FRAMEBUF_HEIGHT-1;
 	if (ACCESSING_LSW32)
 		buffer[y * FRAMEBUF_WIDTH + x] = ((data << 1) & 0xffc0) | (data & 0x001f);
 	if (ACCESSING_MSW32)
 		depthbuf[y * FRAMEBUF_WIDTH + x] = data >> 16;
-//	logerror("%06X:LFB write mode e @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+//	logerror("%06X:LFB write mode d ARGB @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
 }
 
-static void lfbwrite_f(offs_t offset, data32_t data, data32_t mem_mask)
+static void lfbwrite_d_abgr(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode d ABGR @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_d_rgba(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode d RGBA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_d_bgra(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode d BGRA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+
+static void lfbwrite_e_argb(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	UINT16 *buffer = *lfb_write_buffer;
+	int y = offset / FRAMEBUF_WIDTH;
+	int x = offset % FRAMEBUF_WIDTH;
+	if (lfb_flipy)
+		y = inverted_yorigin - y;
+	y &= FRAMEBUF_HEIGHT-1;
+	if (ACCESSING_LSW32)
+		buffer[y * FRAMEBUF_WIDTH + x] = ((data << 1) & 0xffc0) | (data & 0x001f);
+	if (ACCESSING_MSW32)
+		depthbuf[y * FRAMEBUF_WIDTH + x] = data >> 16;
+//	logerror("%06X:LFB write mode e ARGB @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_e_abgr(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode e ABGR @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_e_rgba(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode e RGBA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_e_bgra(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode e BGRA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+
+static void lfbwrite_f_argb(offs_t offset, data32_t data, data32_t mem_mask)
 {
 	int y = offset / (FRAMEBUF_WIDTH/2);
 	int x = (offset % (FRAMEBUF_WIDTH/2)) * 2;
 	if (lfb_flipy)
 		y = inverted_yorigin - y;
+	y &= FRAMEBUF_HEIGHT-1;
 	if (ACCESSING_LSW32)
-		depthbuf[y * FRAMEBUF_WIDTH + x] = ((data << 1) & 0xffe0) | (data & 0x001f);
+		depthbuf[y * FRAMEBUF_WIDTH + x] = data;
 	if (ACCESSING_MSW32)
-		depthbuf[y * FRAMEBUF_WIDTH + x + 1] = ((data >> 15) & 0xffe0) | ((data >> 16) & 0x001f);
-//	logerror("%06X:LFB write mode f @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+		depthbuf[y * FRAMEBUF_WIDTH + x + 1] = data >> 16;
+//	logerror("%06X:LFB write mode f ARGB @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
 }
 
-static void (*lfbwrite[16])(offs_t offset, data32_t data, data32_t mem_mask) =
+static void lfbwrite_f_abgr(offs_t offset, data32_t data, data32_t mem_mask)
 {
-	lfbwrite_0,	lfbwrite_1,	lfbwrite_2,	lfbwrite_3,	
-	lfbwrite_4,	lfbwrite_5,	lfbwrite_6,	lfbwrite_7,	
-	lfbwrite_8,	lfbwrite_9,	lfbwrite_a,	lfbwrite_b,	
-	lfbwrite_c,	lfbwrite_d,	lfbwrite_e,	lfbwrite_f
+	osd_die("%06X:Unimplementd LFB write mode f ABGR @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_f_rgba(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode f RGBA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+static void lfbwrite_f_bgra(offs_t offset, data32_t data, data32_t mem_mask)
+{
+	osd_die("%06X:Unimplementd LFB write mode f BGRA @ %08X = %08X & %08X\n", activecpu_get_pc(), offset, data, ~mem_mask);
+}
+
+
+static void (*lfbwrite[16*4])(offs_t offset, data32_t data, data32_t mem_mask) =
+{
+	lfbwrite_0_argb,	lfbwrite_1_argb,	lfbwrite_2_argb,	lfbwrite_3_argb,	
+	lfbwrite_4_argb,	lfbwrite_5_argb,	lfbwrite_6_argb,	lfbwrite_7_argb,	
+	lfbwrite_8_argb,	lfbwrite_9_argb,	lfbwrite_a_argb,	lfbwrite_b_argb,	
+	lfbwrite_c_argb,	lfbwrite_d_argb,	lfbwrite_e_argb,	lfbwrite_f_argb,
+	
+	lfbwrite_0_abgr,	lfbwrite_1_abgr,	lfbwrite_2_abgr,	lfbwrite_3_abgr,	
+	lfbwrite_4_abgr,	lfbwrite_5_abgr,	lfbwrite_6_abgr,	lfbwrite_7_abgr,	
+	lfbwrite_8_abgr,	lfbwrite_9_abgr,	lfbwrite_a_abgr,	lfbwrite_b_abgr,	
+	lfbwrite_c_abgr,	lfbwrite_d_abgr,	lfbwrite_e_abgr,	lfbwrite_f_abgr,
+	
+	lfbwrite_0_rgba,	lfbwrite_1_rgba,	lfbwrite_2_rgba,	lfbwrite_3_rgba,	
+	lfbwrite_4_rgba,	lfbwrite_5_rgba,	lfbwrite_6_rgba,	lfbwrite_7_rgba,	
+	lfbwrite_8_rgba,	lfbwrite_9_rgba,	lfbwrite_a_rgba,	lfbwrite_b_rgba,	
+	lfbwrite_c_rgba,	lfbwrite_d_rgba,	lfbwrite_e_rgba,	lfbwrite_f_rgba,
+	
+	lfbwrite_0_bgra,	lfbwrite_1_bgra,	lfbwrite_2_bgra,	lfbwrite_3_bgra,	
+	lfbwrite_4_bgra,	lfbwrite_5_bgra,	lfbwrite_6_bgra,	lfbwrite_7_bgra,	
+	lfbwrite_8_bgra,	lfbwrite_9_bgra,	lfbwrite_a_bgra,	lfbwrite_b_bgra,	
+	lfbwrite_c_bgra,	lfbwrite_d_bgra,	lfbwrite_e_bgra,	lfbwrite_f_bgra
 };
 
 WRITE32_HANDLER( voodoo_framebuf_w )
 {
-	if (blocked_on_swap)
-		cpu_spinuntil_trigger(13579);
+	/* if we're blocked on a swap, all writes must go into the FIFO */
+	if (blocked_on_swap && memory_fifo_lfb)
+	{
+		add_to_memory_fifo(voodoo_framebuf_w, offset, data, mem_mask);
+		return;
+	}
+
+	if (LOG_FRAMEBUFFER && offset % 0x100 == 0)
+		logerror("%06X:(B=%d):voodoo_framebuf_w[%06X] = %08X & %08X\n", activecpu_get_pc(), blocked_on_swap, offset, data, ~mem_mask);
 	(*lfbwrite[lfb_write_format])(offset, data, mem_mask);
 }
 
@@ -2910,24 +3524,17 @@ WRITE32_HANDLER( voodoo_framebuf_w )
 READ32_HANDLER( voodoo_framebuf_r )
 {
 	UINT16 *buffer = *lfb_read_buffer;
-/*
-	UINT32 result;
-	if (lfb_flipy)
-	{
-		int y = offset / (1024/4);
-		y = inverted_yorigin - y;
-		offset = y * (1024/4) + (offset & 0x3ff/4);
-	}
-	result = buffer[offset * 2] | (buffer[offset * 2 + 1] << 16);
-*/
 	int y = offset / (FRAMEBUF_WIDTH/2);
 	int x = (offset % (FRAMEBUF_WIDTH/2)) * 2;
 	UINT32 result;
+
 	if (lfb_flipy)
 		y = inverted_yorigin - y;
+	y &= FRAMEBUF_HEIGHT-1;
 	result = buffer[y * FRAMEBUF_WIDTH + x] | (buffer[y * FRAMEBUF_WIDTH + x + 1] << 16);
 
-	logerror("%06X:voodoo_framebuf_r[%06X] = %08X & %08X\n", activecpu_get_pc(), offset, result, ~mem_mask);
+	if (LOG_FRAMEBUFFER && offset % 0x100 == 0)
+		logerror("%06X:voodoo_framebuf_r[%06X] = %08X & %08X\n", activecpu_get_pc(), offset, result, ~mem_mask);
 	return result;
 } 
 
@@ -2950,10 +3557,18 @@ WRITE32_HANDLER( voodoo_textureram_w )
 	int twidth = trex_width[trex];
 	int theight = trex_height[trex];
 
+	/* if we're blocked on a swap, all writes must go into the FIFO */
+	if (blocked_on_swap && memory_fifo_texture)
+	{
+		add_to_memory_fifo(voodoo_textureram_w, offset, data, mem_mask);
+		return;
+	}
+
 	if (trex >= tmus)
 	{
-		if (trex != 3)
-			printf("TMU %d write\n", trex);
+//	Blitz hits this during its POST
+//		if (trex != 3)
+//			printf("TMU %d write\n", trex);
 		return;
 	}
 	
@@ -2966,8 +3581,9 @@ WRITE32_HANDLER( voodoo_textureram_w )
 	if (voodoo_regs[trex_base + tLOD] & 0x04000000)
 		data = (data >> 16) | (data << 16);
 
-if (s == 0 && t == 0)	
-	logerror("%06X:voodoo_textureram_w[%d,%06X,%d,%02X,%02X]", activecpu_get_pc(), trex, tbaseaddr & texram_mask, lod >> 2, s, t);
+	if (LOG_TEXTURERAM && s == 0 && t == 0)	
+		logerror("%06X:voodoo_textureram_w[%d,%06X,%d,%02X,%02X]", activecpu_get_pc(), trex, tbaseaddr & texram_mask, lod >> 2, s, t);
+		
 	while (lod != 0)
 	{
 		lod -= 4;
@@ -2994,8 +3610,10 @@ if (s == 0 && t == 0)
 			tbaseaddr += t * twidth + ((s << 1) & 0xfc);
 		else
 			tbaseaddr += t * twidth + (s & 0xfc);
-if (s == 0 && t == 0)	
-	logerror(" -> %06X = %08X\n", tbaseaddr, data);
+		
+		if (LOG_TEXTURERAM && s == 0 && t == 0)	
+			logerror(" -> %06X = %08X\n", tbaseaddr, data);
+			
 		dest[BYTE4_XOR_LE(tbaseaddr + 0)] = (data >> 0) & 0xff;
 		dest[BYTE4_XOR_LE(tbaseaddr + 1)] = (data >> 8) & 0xff;
 		dest[BYTE4_XOR_LE(tbaseaddr + 2)] = (data >> 16) & 0xff;
@@ -3006,8 +3624,10 @@ if (s == 0 && t == 0)
 		UINT16 *dest = (UINT16 *)textureram[trex];
 		tbaseaddr /= 2;
 		tbaseaddr += t * twidth + s;
-if (s == 0 && t == 0)	
-	logerror(" -> %06X = %08X\n", tbaseaddr*2, data);
+
+		if (LOG_TEXTURERAM && s == 0 && t == 0)	
+			logerror(" -> %06X = %08X\n", tbaseaddr*2, data);
+			
 		dest[BYTE_XOR_LE(tbaseaddr + 0)] = (data >> 0) & 0xffff;
 		dest[BYTE_XOR_LE(tbaseaddr + 1)] = (data >> 16) & 0xffff;
 	}

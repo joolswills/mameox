@@ -1,11 +1,11 @@
-#pragma code_seg("C361")
-#pragma data_seg("D361")
-#pragma bss_seg("B361")
-#pragma const_seg("K361")
-#pragma comment(linker, "/merge:D361=361")
-#pragma comment(linker, "/merge:C361=361")
-#pragma comment(linker, "/merge:B361=361")
-#pragma comment(linker, "/merge:K361=361")
+#pragma code_seg("C376")
+#pragma data_seg("D376")
+#pragma bss_seg("B376")
+#pragma const_seg("K376")
+#pragma comment(linker, "/merge:D376=376")
+#pragma comment(linker, "/merge:C376=376")
+#pragma comment(linker, "/merge:B376=376")
+#pragma comment(linker, "/merge:K376=376")
 /******************************************************************************
 
 	Video Hardware for Nichibutsu Mahjong series.
@@ -66,7 +66,7 @@ PALETTE_INIT( hyhoo )
 	}
 }
 
-WRITE_HANDLER( hyhoo_palette_w )
+WRITE8_HANDLER( hyhoo_palette_w )
 {
 	hyhoo_palette[offset & 0x0f] = (data ^ 0xff);
 }

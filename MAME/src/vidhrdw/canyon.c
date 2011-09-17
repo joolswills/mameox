@@ -1,11 +1,11 @@
-#pragma code_seg("C189")
-#pragma data_seg("D189")
-#pragma bss_seg("B189")
-#pragma const_seg("K189")
-#pragma comment(linker, "/merge:D189=189")
-#pragma comment(linker, "/merge:C189=189")
-#pragma comment(linker, "/merge:B189=189")
-#pragma comment(linker, "/merge:K189=189")
+#pragma code_seg("C191")
+#pragma data_seg("D191")
+#pragma bss_seg("B191")
+#pragma const_seg("K191")
+#pragma comment(linker, "/merge:D191=191")
+#pragma comment(linker, "/merge:C191=191")
+#pragma comment(linker, "/merge:B191=191")
+#pragma comment(linker, "/merge:K191=191")
 /***************************************************************************
 
 Atari Canyon Bomber video emulation
@@ -19,7 +19,7 @@ static struct tilemap *tilemap;
 UINT8* canyon_videoram;
 
 
-WRITE_HANDLER( canyon_videoram_w )
+WRITE8_HANDLER( canyon_videoram_w )
 {
 	if (canyon_videoram[offset] != data)
 	{

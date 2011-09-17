@@ -1,3 +1,4 @@
+
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -189,7 +190,7 @@ MACHINE_INIT( mspacman )
 }
 
 
-WRITE_HANDLER( mspacman_activate_rom )
+WRITE8_HANDLER( mspacman_activate_rom )
 {
 	unsigned char *RAM = memory_region(REGION_CPU1);
 

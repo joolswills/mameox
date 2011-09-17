@@ -1,11 +1,11 @@
-#pragma code_seg("C328")
-#pragma data_seg("D328")
-#pragma bss_seg("B328")
-#pragma const_seg("K328")
-#pragma comment(linker, "/merge:D328=328")
-#pragma comment(linker, "/merge:C328=328")
-#pragma comment(linker, "/merge:B328=328")
-#pragma comment(linker, "/merge:K328=328")
+#pragma code_seg("C342")
+#pragma data_seg("D342")
+#pragma bss_seg("B342")
+#pragma const_seg("K342")
+#pragma comment(linker, "/merge:D342=342")
+#pragma comment(linker, "/merge:C342=342")
+#pragma comment(linker, "/merge:B342=342")
+#pragma comment(linker, "/merge:K342=342")
 /***************************************************************************
 
   vidhrdw.c
@@ -82,27 +82,27 @@ VIDEO_START( gng )
 
 ***************************************************************************/
 
-WRITE_HANDLER( gng_fgvideoram_w )
+WRITE8_HANDLER( gng_fgvideoram_w )
 {
 	gng_fgvideoram[offset] = data;
 	tilemap_mark_tile_dirty(fg_tilemap,offset & 0x3ff);
 }
 
-WRITE_HANDLER( gng_bgvideoram_w )
+WRITE8_HANDLER( gng_bgvideoram_w )
 {
 	gng_bgvideoram[offset] = data;
 	tilemap_mark_tile_dirty(bg_tilemap,offset & 0x3ff);
 }
 
 
-WRITE_HANDLER( gng_bgscrollx_w )
+WRITE8_HANDLER( gng_bgscrollx_w )
 {
 	static unsigned char scrollx[2];
 	scrollx[offset] = data;
 	tilemap_set_scrollx( bg_tilemap, 0, scrollx[0] + 256 * scrollx[1] );
 }
 
-WRITE_HANDLER( gng_bgscrolly_w )
+WRITE8_HANDLER( gng_bgscrolly_w )
 {
 	static unsigned char scrolly[2];
 	scrolly[offset] = data;
@@ -110,7 +110,7 @@ WRITE_HANDLER( gng_bgscrolly_w )
 }
 
 
-WRITE_HANDLER( gng_flipscreen_w )
+WRITE8_HANDLER( gng_flipscreen_w )
 {
 	flip_screen_set(~data & 1);
 }

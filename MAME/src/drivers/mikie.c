@@ -1,11 +1,11 @@
-#pragma code_seg("C451")
-#pragma data_seg("D451")
-#pragma bss_seg("B451")
-#pragma const_seg("K451")
-#pragma comment(linker, "/merge:D451=451")
-#pragma comment(linker, "/merge:C451=451")
-#pragma comment(linker, "/merge:B451=451")
-#pragma comment(linker, "/merge:K451=451")
+#pragma code_seg("C476")
+#pragma data_seg("D476")
+#pragma bss_seg("B476")
+#pragma const_seg("K476")
+#pragma comment(linker, "/merge:D476=476")
+#pragma comment(linker, "/merge:C476=476")
+#pragma comment(linker, "/merge:B476=476")
+#pragma comment(linker, "/merge:K476=476")
 /***************************************************************************
 
 Mikie memory map (preliminary)
@@ -28,16 +28,16 @@ MAIN BOARD:
 #include "vidhrdw/generic.h"
 #include "cpu/m6809/m6809.h"
 
-extern WRITE_HANDLER( mikie_videoram_w );
-extern WRITE_HANDLER( mikie_colorram_w );
-extern WRITE_HANDLER( mikie_palettebank_w );
-extern WRITE_HANDLER( mikie_flipscreen_w );
+extern WRITE8_HANDLER( mikie_videoram_w );
+extern WRITE8_HANDLER( mikie_colorram_w );
+extern WRITE8_HANDLER( mikie_palettebank_w );
+extern WRITE8_HANDLER( mikie_flipscreen_w );
 
 extern PALETTE_INIT( mikie );
 extern VIDEO_START( mikie );
 extern VIDEO_UPDATE( mikie );
 
-static READ_HANDLER( mikie_sh_timer_r )
+static READ8_HANDLER( mikie_sh_timer_r )
 {
 	int clock;
 
@@ -48,7 +48,7 @@ static READ_HANDLER( mikie_sh_timer_r )
 	return clock;
 }
 
-static WRITE_HANDLER( mikie_sh_irqtrigger_w )
+static WRITE8_HANDLER( mikie_sh_irqtrigger_w )
 {
 	static int last;
 
@@ -56,13 +56,13 @@ static WRITE_HANDLER( mikie_sh_irqtrigger_w )
 	if (last == 0 && data == 1)
 	{
 		/* setting bit 0 low then high triggers IRQ on the sound CPU */
-		cpu_set_irq_line_and_vector(1,0,HOLD_LINE,0xff);
+		cpunum_set_input_line_and_vector(1,0,HOLD_LINE,0xff);
 	}
 
 	last = data;
 }
 
-static WRITE_HANDLER( mikie_coin_counter_w )
+static WRITE8_HANDLER( mikie_coin_counter_w )
 {
 	coin_counter_w(offset,data);
 }

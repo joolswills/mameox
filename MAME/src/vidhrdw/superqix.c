@@ -1,11 +1,11 @@
-#pragma code_seg("C681")
-#pragma data_seg("D681")
-#pragma bss_seg("B681")
-#pragma const_seg("K681")
-#pragma comment(linker, "/merge:D681=681")
-#pragma comment(linker, "/merge:C681=681")
-#pragma comment(linker, "/merge:B681=681")
-#pragma comment(linker, "/merge:K681=681")
+#pragma code_seg("C719")
+#pragma data_seg("D719")
+#pragma bss_seg("B719")
+#pragma const_seg("K719")
+#pragma comment(linker, "/merge:D719=719")
+#pragma comment(linker, "/merge:C719=719")
+#pragma comment(linker, "/merge:B719=719")
+#pragma comment(linker, "/merge:K719=719")
 /***************************************************************************
 
   vidhrdw.c
@@ -26,7 +26,7 @@ int sqix_current_bitmap;
 
 static struct tilemap *bg_tilemap;
 
-WRITE_HANDLER( superqix_videoram_w )
+WRITE8_HANDLER( superqix_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -35,7 +35,7 @@ WRITE_HANDLER( superqix_videoram_w )
 	}
 }
 
-WRITE_HANDLER( superqix_colorram_w )
+WRITE8_HANDLER( superqix_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -44,12 +44,12 @@ WRITE_HANDLER( superqix_colorram_w )
 	}
 }
 
-READ_HANDLER( superqix_bitmapram_r )
+READ8_HANDLER( superqix_bitmapram_r )
 {
 	return superqix_bitmapram[offset];
 }
 
-WRITE_HANDLER( superqix_bitmapram_w )
+WRITE8_HANDLER( superqix_bitmapram_w )
 {
 	if (data != superqix_bitmapram[offset])
 	{
@@ -65,12 +65,12 @@ WRITE_HANDLER( superqix_bitmapram_w )
 	}
 }
 
-READ_HANDLER( superqix_bitmapram2_r )
+READ8_HANDLER( superqix_bitmapram2_r )
 {
 	return superqix_bitmapram2[offset];
 }
 
-WRITE_HANDLER( superqix_bitmapram2_w )
+WRITE8_HANDLER( superqix_bitmapram2_w )
 {
 	if (data != superqix_bitmapram2[offset])
 	{
@@ -86,7 +86,7 @@ WRITE_HANDLER( superqix_bitmapram2_w )
 	}
 }
 
-WRITE_HANDLER( superqix_0410_w )
+WRITE8_HANDLER( superqix_0410_w )
 {
 	int bankaddress;
 	UINT8 *RAM = memory_region(REGION_CPU1);
@@ -116,7 +116,7 @@ WRITE_HANDLER( superqix_0410_w )
 	cpu_setbank(1,&RAM[bankaddress]);
 }
 
-WRITE_HANDLER( superqix_flipscreen_w )
+WRITE8_HANDLER( superqix_flipscreen_w )
 {
 	flip_screen_set(!data);
 }

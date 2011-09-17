@@ -1,11 +1,11 @@
-#pragma code_seg("C135")
-#pragma data_seg("D135")
-#pragma bss_seg("B135")
-#pragma const_seg("K135")
-#pragma comment(linker, "/merge:D135=135")
-#pragma comment(linker, "/merge:C135=135")
-#pragma comment(linker, "/merge:B135=135")
-#pragma comment(linker, "/merge:K135=135")
+#pragma code_seg("C136")
+#pragma data_seg("D136")
+#pragma bss_seg("B136")
+#pragma const_seg("K136")
+#pragma comment(linker, "/merge:D136=136")
+#pragma comment(linker, "/merge:C136=136")
+#pragma comment(linker, "/merge:B136=136")
+#pragma comment(linker, "/merge:K136=136")
 /***************************************************************************
 
 	Atari G1 hardware

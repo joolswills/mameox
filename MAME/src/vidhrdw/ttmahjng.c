@@ -1,11 +1,11 @@
-#pragma code_seg("C745")
-#pragma data_seg("D745")
-#pragma bss_seg("B745")
-#pragma const_seg("K745")
-#pragma comment(linker, "/merge:D745=745")
-#pragma comment(linker, "/merge:C745=745")
-#pragma comment(linker, "/merge:B745=745")
-#pragma comment(linker, "/merge:K745=745")
+#pragma code_seg("C787")
+#pragma data_seg("D787")
+#pragma bss_seg("B787")
+#pragma const_seg("K787")
+#pragma comment(linker, "/merge:D787=787")
+#pragma comment(linker, "/merge:C787=787")
+#pragma comment(linker, "/merge:B787=787")
+#pragma comment(linker, "/merge:K787=787")
 /***************************************************************************
 
   vidhrdw.c
@@ -70,7 +70,7 @@ VIDEO_START( ttmahjng )
 /***************************************************************************
   ttmahjng_out0_w
 ***************************************************************************/
-WRITE_HANDLER( ttmahjng_out0_w )
+WRITE8_HANDLER( ttmahjng_out0_w )
 {
 	static int last_write = 0;
 
@@ -88,7 +88,7 @@ WRITE_HANDLER( ttmahjng_out0_w )
 /***************************************************************************
   ttmahjng_out1_w
 ***************************************************************************/
-WRITE_HANDLER( ttmahjng_out1_w )
+WRITE8_HANDLER( ttmahjng_out1_w )
 {
 	static int last_write = 0;
 
@@ -108,7 +108,7 @@ WRITE_HANDLER( ttmahjng_out1_w )
 /***************************************************************************
   ttmahjng_sharedram_r
 ***************************************************************************/
-READ_HANDLER( ttmahjng_sharedram_r )
+READ8_HANDLER( ttmahjng_sharedram_r )
 {
 	return ttmahjng_sharedram[offset];
 }
@@ -116,7 +116,7 @@ READ_HANDLER( ttmahjng_sharedram_r )
 /***************************************************************************
   ttmahjng_sharedram_w
 ***************************************************************************/
-WRITE_HANDLER( ttmahjng_sharedram_w )
+WRITE8_HANDLER( ttmahjng_sharedram_w )
 {
 	ttmahjng_sharedram[offset] = data;
 }
@@ -124,7 +124,7 @@ WRITE_HANDLER( ttmahjng_sharedram_w )
 /***************************************************************************
   ttmahjng_videoram1_r
 ***************************************************************************/
-READ_HANDLER( ttmahjng_videoram1_r )
+READ8_HANDLER( ttmahjng_videoram1_r )
 {
 	return ttmahjng_videoram1[offset];
 }
@@ -132,7 +132,7 @@ READ_HANDLER( ttmahjng_videoram1_r )
 /***************************************************************************
   ttmahjng_videoram2_r
 ***************************************************************************/
-READ_HANDLER( ttmahjng_videoram2_r )
+READ8_HANDLER( ttmahjng_videoram2_r )
 {
 	return ttmahjng_videoram1[offset];
 }
@@ -140,7 +140,7 @@ READ_HANDLER( ttmahjng_videoram2_r )
 /***************************************************************************
   ttmahjng_videoram1_w
 ***************************************************************************/
-WRITE_HANDLER( ttmahjng_videoram1_w )
+WRITE8_HANDLER( ttmahjng_videoram1_w )
 {
 	ttmahjng_videoram1[offset] = data;
 
@@ -150,7 +150,7 @@ WRITE_HANDLER( ttmahjng_videoram1_w )
 /***************************************************************************
   ttmahjng_videoram2_w
 ***************************************************************************/
-WRITE_HANDLER( ttmahjng_videoram2_w )
+WRITE8_HANDLER( ttmahjng_videoram2_w )
 {
 	ttmahjng_videoram2[offset] = data;
 

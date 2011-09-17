@@ -1,11 +1,11 @@
-#pragma code_seg("C645")
-#pragma data_seg("D645")
-#pragma bss_seg("B645")
-#pragma const_seg("K645")
-#pragma comment(linker, "/merge:D645=645")
-#pragma comment(linker, "/merge:C645=645")
-#pragma comment(linker, "/merge:B645=645")
-#pragma comment(linker, "/merge:K645=645")
+#pragma code_seg("C681")
+#pragma data_seg("D681")
+#pragma bss_seg("B681")
+#pragma const_seg("K681")
+#pragma comment(linker, "/merge:D681=681")
+#pragma comment(linker, "/merge:C681=681")
+#pragma comment(linker, "/merge:B681=681")
+#pragma comment(linker, "/merge:K681=681")
 /***************************************************************************
 
 Speed Ball map
@@ -65,22 +65,22 @@ size_t speedbal_sprites_dataram_size;
 
 VIDEO_START( speedbal );
 VIDEO_UPDATE( speedbal );
-READ_HANDLER( speedbal_foreground_videoram_r );
-WRITE_HANDLER( speedbal_foreground_videoram_w );
-READ_HANDLER( speedbal_background_videoram_r );
-WRITE_HANDLER( speedbal_background_videoram_w );
+READ8_HANDLER( speedbal_foreground_videoram_r );
+WRITE8_HANDLER( speedbal_foreground_videoram_w );
+READ8_HANDLER( speedbal_background_videoram_r );
+WRITE8_HANDLER( speedbal_background_videoram_w );
 
 
 unsigned char *speedbal_sharedram;
 
-READ_HANDLER( speedbal_sharedram_r )
+READ8_HANDLER( speedbal_sharedram_r )
 {
 //  if (offset==0x0) speedbal_sharedram[offset]+=1;
   return speedbal_sharedram[offset];
 }
 
 
-WRITE_HANDLER( speedbal_sharedram_w )
+WRITE8_HANDLER( speedbal_sharedram_w )
 {
     speedbal_sharedram[offset] = data;
 }
@@ -105,12 +105,14 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0x0000, 0x7fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0xd000, 0xdbff) AM_READ(MRA8_RAM)
 	AM_RANGE(0xdc00, 0xdfff) AM_READ(speedbal_sharedram_r) // shared with MAIN CPU
 	AM_RANGE(0xf000, 0xffff) AM_READ(MRA8_RAM)
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0x0000, 0x7fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0xd000, 0xdbff) AM_WRITE(MWA8_RAM)
 	AM_RANGE(0xdc00, 0xdfff) AM_WRITE(speedbal_sharedram_w) // shared with MAIN CPU
 	AM_RANGE(0xf000, 0xffff) AM_WRITE(MWA8_RAM)
 ADDRESS_MAP_END

@@ -1,11 +1,11 @@
-#pragma code_seg("C415")
-#pragma data_seg("D415")
-#pragma bss_seg("B415")
-#pragma const_seg("K415")
-#pragma comment(linker, "/merge:D415=415")
-#pragma comment(linker, "/merge:C415=415")
-#pragma comment(linker, "/merge:B415=415")
-#pragma comment(linker, "/merge:K415=415")
+#pragma code_seg("C435")
+#pragma data_seg("D435")
+#pragma bss_seg("B435")
+#pragma const_seg("K435")
+#pragma comment(linker, "/merge:D435=435")
+#pragma comment(linker, "/merge:C435=435")
+#pragma comment(linker, "/merge:B435=435")
+#pragma comment(linker, "/merge:K435=435")
 /***************************************************************************
 
   vidhrdw.c
@@ -25,12 +25,12 @@ enum { BLACK, WHITE };
 
 static unsigned char mask = 0;
 
-WRITE_HANDLER( ramtek_mask_w )
+WRITE8_HANDLER( ramtek_mask_w )
 {
 	mask = data;
 }
 
-WRITE_HANDLER( ramtek_videoram_w )
+WRITE8_HANDLER( ramtek_videoram_w )
 {
 	data = data & ~mask;
 

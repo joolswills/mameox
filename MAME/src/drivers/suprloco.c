@@ -1,11 +1,11 @@
-#pragma code_seg("C683")
-#pragma data_seg("D683")
-#pragma bss_seg("B683")
-#pragma const_seg("K683")
-#pragma comment(linker, "/merge:D683=683")
-#pragma comment(linker, "/merge:C683=683")
-#pragma comment(linker, "/merge:B683=683")
-#pragma comment(linker, "/merge:K683=683")
+#pragma code_seg("C721")
+#pragma data_seg("D721")
+#pragma bss_seg("B721")
+#pragma const_seg("K721")
+#pragma comment(linker, "/merge:D721=721")
+#pragma comment(linker, "/merge:C721=721")
+#pragma comment(linker, "/merge:B721=721")
+#pragma comment(linker, "/merge:K721=721")
 /******************************************************************************
 
 Super Locomotive
@@ -29,17 +29,17 @@ extern unsigned char *suprloco_videoram;
 PALETTE_INIT( suprloco );
 VIDEO_START( suprloco );
 VIDEO_UPDATE( suprloco );
-WRITE_HANDLER( suprloco_videoram_w );
-WRITE_HANDLER( suprloco_scrollram_w );
-READ_HANDLER( suprloco_scrollram_r );
-WRITE_HANDLER( suprloco_control_w );
-READ_HANDLER( suprloco_control_r );
+WRITE8_HANDLER( suprloco_videoram_w );
+WRITE8_HANDLER( suprloco_scrollram_w );
+READ8_HANDLER( suprloco_scrollram_r );
+WRITE8_HANDLER( suprloco_control_w );
+READ8_HANDLER( suprloco_control_r );
 
 
-static WRITE_HANDLER( suprloco_soundport_w )
+static WRITE8_HANDLER( suprloco_soundport_w )
 {
 	soundlatch_w(0,data);
-	cpu_set_irq_line(1,IRQ_LINE_NMI,PULSE_LINE);
+	cpunum_set_input_line(1,INPUT_LINE_NMI,PULSE_LINE);
 	/* spin for a while to let the Z80 read the command (fixes hanging sound in Regulus) */
 	cpu_spinuntil_time(TIME_IN_USEC(50));
 }

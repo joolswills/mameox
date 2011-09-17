@@ -1,11 +1,11 @@
-#pragma code_seg("C464")
-#pragma data_seg("D464")
-#pragma bss_seg("B464")
-#pragma const_seg("K464")
-#pragma comment(linker, "/merge:D464=464")
-#pragma comment(linker, "/merge:C464=464")
-#pragma comment(linker, "/merge:B464=464")
-#pragma comment(linker, "/merge:K464=464")
+#pragma code_seg("C490")
+#pragma data_seg("D490")
+#pragma bss_seg("B490")
+#pragma const_seg("K490")
+#pragma comment(linker, "/merge:D490=490")
+#pragma comment(linker, "/merge:C490=490")
+#pragma comment(linker, "/merge:B490=490")
+#pragma comment(linker, "/merge:K490=490")
 /*******************************************************************************
 
      Mouser
@@ -28,16 +28,16 @@ unsigned char mouser_nmi_enable;
 
 /* From "vidhrdw/mouser.c" */
 PALETTE_INIT( mouser );
-WRITE_HANDLER( mouser_flip_screen_x_w );
-WRITE_HANDLER( mouser_flip_screen_y_w );
-WRITE_HANDLER( mouser_spriteram_w );
-WRITE_HANDLER( mouser_colorram_w );
+WRITE8_HANDLER( mouser_flip_screen_x_w );
+WRITE8_HANDLER( mouser_flip_screen_y_w );
+WRITE8_HANDLER( mouser_spriteram_w );
+WRITE8_HANDLER( mouser_colorram_w );
 VIDEO_UPDATE( mouser );
 
 /* Mouser has external masking circuitry around
  * the NMI input on the main CPU */
 
-WRITE_HANDLER( mouser_nmi_enable_w )
+WRITE8_HANDLER( mouser_nmi_enable_w )
 {
 	mouser_nmi_enable = data;
 }
@@ -50,13 +50,13 @@ INTERRUPT_GEN( mouser_nmi_interrupt )
 
 /* Sound CPU interrupted on write */
 
-WRITE_HANDLER( mouser_sound_interrupt_w )
+WRITE8_HANDLER( mouser_sound_interrupt_w )
 {
 	mouser_sound_byte = data;
-	cpu_set_irq_line(1, 0, PULSE_LINE);
+	cpunum_set_input_line(1, 0, PULSE_LINE);
 }
 
-READ_HANDLER( mouser_sound_byte_r )
+READ8_HANDLER( mouser_sound_byte_r )
 {
 	return mouser_sound_byte;
 }

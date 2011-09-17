@@ -1,11 +1,11 @@
-#pragma code_seg("C456")
-#pragma data_seg("D456")
-#pragma bss_seg("B456")
-#pragma const_seg("K456")
-#pragma comment(linker, "/merge:D456=456")
-#pragma comment(linker, "/merge:C456=456")
-#pragma comment(linker, "/merge:B456=456")
-#pragma comment(linker, "/merge:K456=456")
+#pragma code_seg("C481")
+#pragma data_seg("D481")
+#pragma bss_seg("B481")
+#pragma const_seg("K481")
+#pragma comment(linker, "/merge:D481=481")
+#pragma comment(linker, "/merge:C481=481")
+#pragma comment(linker, "/merge:B481=481")
+#pragma comment(linker, "/merge:K481=481")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -56,7 +56,7 @@ VIDEO_START( mjkjidai )
 
 ***************************************************************************/
 
-WRITE_HANDLER( mjkjidai_videoram_w )
+WRITE8_HANDLER( mjkjidai_videoram_w )
 {
 	if (mjkjidai_videoram[offset] != data)
 	{
@@ -65,7 +65,7 @@ WRITE_HANDLER( mjkjidai_videoram_w )
 	}
 }
 
-WRITE_HANDLER( mjkjidai_ctrl_w )
+WRITE8_HANDLER( mjkjidai_ctrl_w )
 {
 	data8_t *rom = memory_region(REGION_CPU1);
 

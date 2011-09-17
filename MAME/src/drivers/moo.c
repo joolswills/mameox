@@ -1,11 +1,11 @@
-#pragma code_seg("C462")
-#pragma data_seg("D462")
-#pragma bss_seg("B462")
-#pragma const_seg("K462")
-#pragma comment(linker, "/merge:D462=462")
-#pragma comment(linker, "/merge:C462=462")
-#pragma comment(linker, "/merge:B462=462")
-#pragma comment(linker, "/merge:K462=462")
+#pragma code_seg("C488")
+#pragma data_seg("D488")
+#pragma bss_seg("B488")
+#pragma const_seg("K488")
+#pragma comment(linker, "/merge:D488=488")
+#pragma comment(linker, "/merge:C488=488")
+#pragma comment(linker, "/merge:B488=488")
+#pragma comment(linker, "/merge:K488=488")
 #define MOO_DEBUG 0
 #define MOO_DMADELAY (100)
 
@@ -175,7 +175,7 @@ static void moo_objdma(int type)
 static void dmaend_callback(int data)
 {
 	if (cur_control2 & 0x800)
-		cpu_set_irq_line(0, 4, HOLD_LINE);
+		cpunum_set_input_line(0, 4, HOLD_LINE);
 }
 
 static INTERRUPT_GEN(moo_interrupt)
@@ -190,7 +190,7 @@ static INTERRUPT_GEN(moo_interrupt)
 
 	// trigger V-blank interrupt
 	if (cur_control2 & 0x20)
-		cpu_set_irq_line(0, 5, HOLD_LINE);
+		cpunum_set_input_line(0, 5, HOLD_LINE);
 }
 
 static INTERRUPT_GEN(moobl_interrupt)
@@ -201,7 +201,7 @@ static INTERRUPT_GEN(moobl_interrupt)
 	timer_set(TIME_IN_USEC(MOO_DMADELAY), 0, dmaend_callback);
 
 	// trigger V-blank interrupt
-	cpu_set_irq_line(0, 5, HOLD_LINE);
+	cpunum_set_input_line(0, 5, HOLD_LINE);
 }
 
 static WRITE16_HANDLER( sound_cmd1_w )
@@ -221,7 +221,7 @@ static WRITE16_HANDLER( sound_cmd2_w )
 
 static WRITE16_HANDLER( sound_irq_w )
 {
-	cpu_set_irq_line(1, 0, HOLD_LINE);
+	cpunum_set_input_line(1, 0, HOLD_LINE);
 }
 
 static READ16_HANDLER( sound_status_r )
@@ -250,7 +250,7 @@ static READ16_HANDLER( sound_status_r )
 	return latch;
 }
 
-static WRITE_HANDLER( sound_bankswitch_w )
+static WRITE8_HANDLER( sound_bankswitch_w )
 {
 	cpu_setbank(2, memory_region(REGION_CPU2) + 0x10000 + (data&0xf)*0x4000);
 }

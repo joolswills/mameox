@@ -1,11 +1,11 @@
-#pragma code_seg("C551")
-#pragma data_seg("D551")
-#pragma bss_seg("B551")
-#pragma const_seg("K551")
-#pragma comment(linker, "/merge:D551=551")
-#pragma comment(linker, "/merge:C551=551")
-#pragma comment(linker, "/merge:B551=551")
-#pragma comment(linker, "/merge:K551=551")
+#pragma code_seg("C582")
+#pragma data_seg("D582")
+#pragma bss_seg("B582")
+#pragma const_seg("K582")
+#pragma comment(linker, "/merge:D582=582")
+#pragma comment(linker, "/merge:C582=582")
+#pragma comment(linker, "/merge:B582=582")
+#pragma comment(linker, "/merge:K582=582")
 /***************************************************************************
 
 							-= Psikyo Games =-
@@ -312,6 +312,9 @@ Note:	Not all sprites are displayed: in the top part of spriteram
 
 static void psikyo_draw_sprites(struct mame_bitmap *bitmap, const struct rectangle *cliprect, int trans_pen)
 {
+	/* tile layers 0 & 1 have priorities 1 & 2 */
+	int pri[] = { 0, 0xfc, 0xff, 0xff };
+
 	int offs;
 
 	data16_t *spritelist	=	(data16_t *)(spritebuf2 + 0x1800/4);
@@ -404,7 +407,7 @@ static void psikyo_draw_sprites(struct mame_bitmap *bitmap, const struct rectang
 							flipx, flipy,
 							x + dx * 16, y + dy * 16,
 							cliprect,TRANSPARENCY_PEN,trans_pen,
-							(attr & 0xc0) ? 2 : 0);	// layer 0&1 have pri 0&1
+							pri[(attr & 0xc0) >> 6]);
 				else
 					pdrawgfxzoom(bitmap,Machine->gfx[0],
 								TILES[addr+1] * 256 + TILES[addr],
@@ -413,7 +416,7 @@ static void psikyo_draw_sprites(struct mame_bitmap *bitmap, const struct rectang
 								x + (dx * zoomx) / 2, y + (dy * zoomy) / 2,
 								cliprect,TRANSPARENCY_PEN,trans_pen,
 								zoomx << 11,zoomy << 11,
-								(attr & 0xc0) ? 2 : 0);	// layer 0&1 have pri 0&1
+								pri[(attr & 0xc0) >> 6]);
 
 				code++;
 			}
@@ -456,6 +459,17 @@ VIDEO_UPDATE( psikyo )
 
 	/* Layers enable (not quite right) */
 
+	/* bit  0   : layer enable
+	        1   : opaque tiles (used in Gunbird attract mode)
+	        2   : ?
+	        3   : transparent colour (0 or 15)
+	        4- 5: ?
+	        6- 7: tilemap size
+	        8   : per-line rowscroll
+	        9   : per-tile rowscroll
+	       10   : tilebank (btlkroad/gunbird/s1945jn only)
+	       11-15: ? */
+
 /*
 	gunbird:	L:00d0-04d0	S:0008 (00e1 04e1 0009 or 00e2 04e2 000a, for a blink, on scene transitions)
 	sngkace:	L:00d0-00d0	S:0008 (00d1 00d1 0009, for a blink, on scene transitions)
@@ -473,7 +487,7 @@ VIDEO_UPDATE( psikyo )
 		L:0178-0588,                 2 needs size 3 More Intro
 */
 
-	/* For gfx banking for s1945jo/gunbird/btlkroad */
+	/* For gfx banking for s1945jn/gunbird/btlkroad */
 	if(psikyo_ka302c_banking)
 	{
 		psikyo_switch_banks(0, (layer0_ctrl&0x400)>>10);
@@ -535,19 +549,42 @@ VIDEO_UPDATE( psikyo )
 
 	tilemap_set_scrolly(tmptilemap1, 0, layer1_scrolly );
 
-	for (i=0; i<256; i++)	// 256 screen lines
+	for (i=0; i<256; i++)	/* 256 screen lines */
 	{
+		int x0 = 0, x1 = 0;
+
+		/* layer 0 */
+		if (layer0_ctrl & 0x0300)
+		{
+			if (layer0_ctrl & 0x0200)
+				/* per-tile rowscroll */
+				x0 = ((data16_t *)psikyo_vregs)[BYTE_XOR_BE(0x000/2 + i/16)];
+			else
+				/* per-line rowscroll */
+				x0 = ((data16_t *)psikyo_vregs)[BYTE_XOR_BE(0x000/2 + i)];
+		}
+
 		tilemap_set_scrollx(
 			tmptilemap0,
 			(i+layer0_scrolly) % tilemap_width(tm0size),
-			layer0_scrollx + ((layer0_ctrl & 0x0100) ? ((data16_t *)psikyo_vregs)[BYTE_XOR_BE(0x000/2 + i)] : 0) );
-//			layer0_scrollx + ((data16_t *)psikyo_vregs)[BYTE_XOR_BE(0x000/2 + i)] );
+			layer0_scrollx + x0 );
+
+
+		/* layer 1 */
+		if (layer1_ctrl & 0x0300)
+		{
+			if (layer1_ctrl & 0x0200)
+				/* per-tile rowscroll */
+				x1 = ((data16_t *)psikyo_vregs)[BYTE_XOR_BE(0x200/2 + i/16)];
+			else
+				/* per-line rowscroll */
+				x1 = ((data16_t *)psikyo_vregs)[BYTE_XOR_BE(0x200/2 + i)];
+		}
 
 		tilemap_set_scrollx(
 			tmptilemap1,
 			(i+layer1_scrolly) % tilemap_width(tm1size),
-			layer1_scrollx + ((layer1_ctrl & 0x0100) ? ((data16_t *)psikyo_vregs)[BYTE_XOR_BE(0x200/2 + i)] : 0) );
-//			layer1_scrollx + ((data16_t *)psikyo_vregs)[BYTE_XOR_BE(0x200/2 + i)] );
+			layer1_scrollx + x1 );
 	}
 
 	tilemap_set_transparent_pen(tilemap_0_size0,(layer0_ctrl & 8 ?0:15));
@@ -565,13 +602,13 @@ VIDEO_UPDATE( psikyo )
 	fillbitmap(priority_bitmap,0,cliprect);
 
 	if (layers_ctrl & 1)
-		tilemap_draw(bitmap,cliprect,tmptilemap0, TILEMAP_IGNORE_TRANSPARENCY, 0);
+		tilemap_draw(bitmap,cliprect,tmptilemap0, layer0_ctrl & 2 ? TILEMAP_IGNORE_TRANSPARENCY : 0, 1);
 
 	if (layers_ctrl & 2)
-		tilemap_draw(bitmap,cliprect,tmptilemap1, 0,                           1);
+		tilemap_draw(bitmap,cliprect,tmptilemap1, layer1_ctrl & 2 ? TILEMAP_IGNORE_TRANSPARENCY : 0, 2);
 
-	/* Sprites can go below layer 1 (and 0?) */
-	if (layers_ctrl & 4)	psikyo_draw_sprites(bitmap,cliprect,(spr_ctrl & 4 ?0:15));
+	if (layers_ctrl & 4)
+		psikyo_draw_sprites(bitmap,cliprect,(spr_ctrl & 4 ? 0 : 15));
 
 }
 

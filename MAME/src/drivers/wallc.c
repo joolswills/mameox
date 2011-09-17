@@ -1,11 +1,11 @@
-#pragma code_seg("C773")
-#pragma data_seg("D773")
-#pragma bss_seg("B773")
-#pragma const_seg("K773")
-#pragma comment(linker, "/merge:D773=773")
-#pragma comment(linker, "/merge:C773=773")
-#pragma comment(linker, "/merge:B773=773")
-#pragma comment(linker, "/merge:K773=773")
+#pragma code_seg("C815")
+#pragma data_seg("D815")
+#pragma bss_seg("B815")
+#pragma const_seg("K815")
+#pragma comment(linker, "/merge:D815=815")
+#pragma comment(linker, "/merge:C815=815")
+#pragma comment(linker, "/merge:B815=815")
+#pragma comment(linker, "/merge:K815=815")
 /****************************************************************************
 
 Wall Crash by Midcoin (c) 1984
@@ -122,7 +122,7 @@ static PALETTE_INIT( wallc )
 	}
 }
 
-static WRITE_HANDLER( wallc_videoram_w )
+static WRITE8_HANDLER( wallc_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -156,7 +156,7 @@ VIDEO_UPDATE( wallc )
 }
 
 static int wcb0=-1;
-static WRITE_HANDLER( wc_b0 )
+static WRITE8_HANDLER( wc_b0 )
 {
 	if (wcb0!=data)
 	{
@@ -165,7 +165,7 @@ static WRITE_HANDLER( wc_b0 )
 	}
 }
 static int wcb1=-1;
-static WRITE_HANDLER( wc_b1 )
+static WRITE8_HANDLER( wc_b1 )
 {
 	if (wcb1!=data)
 	{
@@ -174,7 +174,7 @@ static WRITE_HANDLER( wc_b1 )
 	}
 }
 static int wcb2=-1;
-static WRITE_HANDLER( wc_b2 )
+static WRITE8_HANDLER( wc_b2 )
 {
 	if (wcb2!=data)
 	{

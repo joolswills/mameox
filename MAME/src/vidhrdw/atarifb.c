@@ -1,11 +1,11 @@
-#pragma code_seg("C134")
-#pragma data_seg("D134")
-#pragma bss_seg("B134")
-#pragma const_seg("K134")
-#pragma comment(linker, "/merge:D134=134")
-#pragma comment(linker, "/merge:C134=134")
-#pragma comment(linker, "/merge:B134=134")
-#pragma comment(linker, "/merge:K134=134")
+#pragma code_seg("C135")
+#pragma data_seg("D135")
+#pragma bss_seg("B135")
+#pragma const_seg("K135")
+#pragma comment(linker, "/merge:D135=135")
+#pragma comment(linker, "/merge:C135=135")
+#pragma comment(linker, "/merge:B135=135")
+#pragma comment(linker, "/merge:K135=135")
 /*************************************************************************
 
 	Atari Football hardware
@@ -30,19 +30,19 @@ struct rectangle right_area =    { 34*8, 38*8-1, 0*8, 32*8-1 };
 
 /***************************************************************************
 ***************************************************************************/
-WRITE_HANDLER( atarifb_alphap1_vram_w )
+WRITE8_HANDLER( atarifb_alphap1_vram_w )
 {
 	atarifb_alphap1_vram[offset] = data;
 }
 
-WRITE_HANDLER( atarifb_alphap2_vram_w )
+WRITE8_HANDLER( atarifb_alphap2_vram_w )
 {
 	atarifb_alphap2_vram[offset] = data;
 }
 
 /***************************************************************************
 ***************************************************************************/
-WRITE_HANDLER( atarifb_scroll_w )
+WRITE8_HANDLER( atarifb_scroll_w )
 {
 	if (data - 8 != *atarifb_scroll_register)
 	{

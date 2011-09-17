@@ -1,11 +1,11 @@
-#pragma code_seg("C173")
-#pragma data_seg("D173")
-#pragma bss_seg("B173")
-#pragma const_seg("K173")
-#pragma comment(linker, "/merge:D173=173")
-#pragma comment(linker, "/merge:C173=173")
-#pragma comment(linker, "/merge:B173=173")
-#pragma comment(linker, "/merge:K173=173")
+#pragma code_seg("C174")
+#pragma data_seg("D174")
+#pragma bss_seg("B174")
+#pragma const_seg("K174")
+#pragma comment(linker, "/merge:D174=174")
+#pragma comment(linker, "/merge:C174=174")
+#pragma comment(linker, "/merge:B174=174")
+#pragma comment(linker, "/merge:K174=174")
 /***************************************************************************
 
 Blue Print memory map (preliminary)
@@ -58,30 +58,30 @@ write:
 extern unsigned char *blueprnt_scrollram;
 
 PALETTE_INIT( blueprnt );
-WRITE_HANDLER( blueprnt_flipscreen_w );
+WRITE8_HANDLER( blueprnt_flipscreen_w );
 VIDEO_UPDATE( blueprnt );
 
 
 
 static int dipsw;
 
-static WRITE_HANDLER( dipsw_w )
+static WRITE8_HANDLER( dipsw_w )
 {
 	dipsw = data;
 }
 
-static READ_HANDLER( blueprnt_sh_dipsw_r )
+static READ8_HANDLER( blueprnt_sh_dipsw_r )
 {
 	return dipsw;
 }
 
-static WRITE_HANDLER( blueprnt_sound_command_w )
+static WRITE8_HANDLER( blueprnt_sound_command_w )
 {
 	soundlatch_w(offset,data);
-	cpu_set_irq_line(1,IRQ_LINE_NMI,PULSE_LINE);
+	cpunum_set_input_line(1,INPUT_LINE_NMI,PULSE_LINE);
 }
 
-static WRITE_HANDLER( blueprnt_coin_w )
+static WRITE8_HANDLER( blueprnt_coin_w )
 {
 	static int lastval;
 

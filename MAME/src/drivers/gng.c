@@ -1,11 +1,11 @@
-#pragma code_seg("C328")
-#pragma data_seg("D328")
-#pragma bss_seg("B328")
-#pragma const_seg("K328")
-#pragma comment(linker, "/merge:D328=328")
-#pragma comment(linker, "/merge:C328=328")
-#pragma comment(linker, "/merge:B328=328")
-#pragma comment(linker, "/merge:K328=328")
+#pragma code_seg("C342")
+#pragma data_seg("D342")
+#pragma bss_seg("B342")
+#pragma const_seg("K342")
+#pragma comment(linker, "/merge:D342=342")
+#pragma comment(linker, "/merge:C342=342")
+#pragma comment(linker, "/merge:B342=342")
+#pragma comment(linker, "/merge:K342=342")
 /***************************************************************************
 
 Ghosts'n Goblins
@@ -33,18 +33,18 @@ Notes:
 
 extern unsigned char *gng_fgvideoram;
 extern unsigned char *gng_bgvideoram;
-WRITE_HANDLER( gng_fgvideoram_w );
-WRITE_HANDLER( gng_bgvideoram_w );
-WRITE_HANDLER( gng_bgscrollx_w );
-WRITE_HANDLER( gng_bgscrolly_w );
-WRITE_HANDLER( gng_flipscreen_w );
+WRITE8_HANDLER( gng_fgvideoram_w );
+WRITE8_HANDLER( gng_bgvideoram_w );
+WRITE8_HANDLER( gng_bgscrollx_w );
+WRITE8_HANDLER( gng_bgscrolly_w );
+WRITE8_HANDLER( gng_flipscreen_w );
 VIDEO_START( gng );
 VIDEO_UPDATE( gng );
 VIDEO_EOF( gng );
 
 
 
-static WRITE_HANDLER( gng_bankswitch_w )
+static WRITE8_HANDLER( gng_bankswitch_w )
 {
 	unsigned char *rom = memory_region(REGION_CPU1);
 
@@ -59,7 +59,7 @@ static WRITE_HANDLER( gng_bankswitch_w )
 	}
 }
 
-static WRITE_HANDLER( gng_coin_counter_w )
+static WRITE8_HANDLER( gng_coin_counter_w )
 {
 	coin_counter_w(offset,data);
 }
@@ -694,14 +694,14 @@ ROM_END
 
 
 
-static READ_HANDLER( diamond_hack_r )
+static READ8_HANDLER( diamond_hack_r )
 {
 	return 0;
 }
 
 static DRIVER_INIT( diamond )
 {
-	install_mem_read_handler(0,0x6000,0x6000,diamond_hack_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x6000, 0x6000, 0, 0, diamond_hack_r);
 }
 
 

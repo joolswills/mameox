@@ -1,11 +1,11 @@
-#pragma code_seg("C797")
-#pragma data_seg("D797")
-#pragma bss_seg("B797")
-#pragma const_seg("K797")
-#pragma comment(linker, "/merge:D797=797")
-#pragma comment(linker, "/merge:C797=797")
-#pragma comment(linker, "/merge:B797=797")
-#pragma comment(linker, "/merge:K797=797")
+#pragma code_seg("C839")
+#pragma data_seg("D839")
+#pragma bss_seg("B839")
+#pragma const_seg("K839")
+#pragma comment(linker, "/merge:D839=839")
+#pragma comment(linker, "/merge:C839=839")
+#pragma comment(linker, "/merge:B839=839")
+#pragma comment(linker, "/merge:K839=839")
 /* Xyonix *********************************************************************
 
 driver by David Haywood and Stephh
@@ -34,14 +34,14 @@ data8_t *xyonix_vidram;
 
 /* in vidhrdw/xyonix.c */
 PALETTE_INIT( xyonix );
-WRITE_HANDLER( xyonix_vidram_w );
+WRITE8_HANDLER( xyonix_vidram_w );
 VIDEO_START(xyonix);
 VIDEO_UPDATE(xyonix);
 
 
-static WRITE_HANDLER( xyonix_irqack_w )
+static WRITE8_HANDLER( xyonix_irqack_w )
 {
-	cpu_set_irq_line(0, 0, CLEAR_LINE);
+	cpunum_set_input_line(0, 0, CLEAR_LINE);
 }
 
 
@@ -87,7 +87,7 @@ void handle_coins(int coin)
 }
 
 
-READ_HANDLER ( xyonix_io_r )
+READ8_HANDLER ( xyonix_io_r )
 {
 	int regPC = activecpu_get_pc();
 
@@ -147,7 +147,7 @@ READ_HANDLER ( xyonix_io_r )
 	return 0xff;
 }
 
-WRITE_HANDLER ( xyonix_io_w )
+WRITE8_HANDLER ( xyonix_io_w )
 {
 //	logerror ("xyonix_port_e0_w %02x - PC = %04x\n", data, activecpu_get_pc());
 	e0_data = data;

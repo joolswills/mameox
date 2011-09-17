@@ -1,11 +1,11 @@
-#pragma code_seg("C404")
-#pragma data_seg("D404")
-#pragma bss_seg("B404")
-#pragma const_seg("K404")
-#pragma comment(linker, "/merge:D404=404")
-#pragma comment(linker, "/merge:C404=404")
-#pragma comment(linker, "/merge:B404=404")
-#pragma comment(linker, "/merge:K404=404")
+#pragma code_seg("C422")
+#pragma data_seg("D422")
+#pragma bss_seg("B422")
+#pragma const_seg("K422")
+#pragma comment(linker, "/merge:D422=422")
+#pragma comment(linker, "/merge:C422=422")
+#pragma comment(linker, "/merge:B422=422")
+#pragma comment(linker, "/merge:K422=422")
 /*******************************************************************************
 
 	Pro Soccer						(c) 1983 Data East Corporation
@@ -39,13 +39,13 @@ VIDEO_START( liberate );
 static int deco16_bank;
 static data8_t *scratchram;
 
-WRITE_HANDLER( deco16_io_w );
-WRITE_HANDLER( prosport_paletteram_w );
-WRITE_HANDLER( liberate_videoram_w );
+WRITE8_HANDLER( deco16_io_w );
+WRITE8_HANDLER( prosport_paletteram_w );
+WRITE8_HANDLER( liberate_videoram_w );
 
 /***************************************************************************/
 
-static READ_HANDLER( deco16_bank_r )
+static READ8_HANDLER( deco16_bank_r )
 {
 	const data8_t *ROM = memory_region(REGION_USER1);
 
@@ -63,12 +63,12 @@ static READ_HANDLER( deco16_bank_r )
 	return 0;
 }
 
-static WRITE_HANDLER( deco16_bank_w )
+static WRITE8_HANDLER( deco16_bank_w )
 {
 	deco16_bank=data;
 }
 
-static READ_HANDLER( deco16_io_r )
+static READ8_HANDLER( deco16_io_r )
 {
 	const data8_t *ROM = memory_region(REGION_CPU1);
 
@@ -137,7 +137,11 @@ static ADDRESS_MAP_START( liberatb_readmem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0x0000, 0x0fff) AM_READ(MRA8_RAM)
 	AM_RANGE(0x1000, 0x3fff) AM_READ(MRA8_ROM) /* Mirror of main rom */
 	AM_RANGE(0x4000, 0x7fff) AM_READ(deco16_bank_r)
-	AM_RANGE(0xf000, 0xf00f) AM_READ(deco16_io_r)
+	AM_RANGE(0xf000, 0xf000) AM_READ(input_port_1_r)
+	AM_RANGE(0xf001, 0xf001) AM_READ(input_port_2_r)
+	AM_RANGE(0xf002, 0xf002) AM_READ(input_port_3_r)
+	AM_RANGE(0xf003, 0xf003) AM_READ(input_port_4_r)
+	AM_RANGE(0xf004, 0xf004) AM_READ(input_port_5_r)
 	AM_RANGE(0x8000, 0xffff) AM_READ(MRA8_ROM)
 ADDRESS_MAP_END
 
@@ -147,7 +151,7 @@ static ADDRESS_MAP_START( liberatb_writemem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0x4000, 0x47ff) AM_WRITE(liberate_videoram_w) AM_BASE(&videoram)
 	AM_RANGE(0x4800, 0x4fff) AM_WRITE(MWA8_RAM) AM_BASE(&spriteram)
 	AM_RANGE(0x6200, 0x67ff) AM_WRITE(MWA8_RAM) AM_BASE(&scratchram)
-//	AM_RANGE(0xf000, 0xf00f) AM_WRITE(deco16_io_w)
+	AM_RANGE(0xf000, 0xf00f) AM_WRITE(deco16_io_w)
 	AM_RANGE(0x8000, 0xffff) AM_WRITE(MWA8_ROM)
 ADDRESS_MAP_END
 
@@ -515,6 +519,91 @@ INPUT_PORTS_START( dualaslt )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 INPUT_PORTS_END
 
+INPUT_PORTS_START( liberatb )
+	PORT_START
+	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_TILT )
+	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_VBLANK )
+	PORT_BIT( 0xf9, IP_ACTIVE_LOW,  IPT_UNKNOWN )
+
+	PORT_START
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_8WAY )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT | IPF_8WAY )
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_UP | IPF_8WAY )
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN | IPF_8WAY )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 )
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
+
+	PORT_START
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_8WAY | IPF_COCKTAIL )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT | IPF_8WAY | IPF_COCKTAIL )
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_UP  | IPF_8WAY | IPF_COCKTAIL )
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN | IPF_8WAY | IPF_COCKTAIL )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 | IPF_COCKTAIL )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 | IPF_COCKTAIL )
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
+
+	PORT_START
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN1 )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_COIN2 )
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_START1 )
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_START2 )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_SERVICE1 )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
+
+	PORT_START
+	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Coin_A ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( 2C_1C ) )
+	PORT_DIPSETTING(    0x03, DEF_STR( 1C_1C ) )
+	PORT_DIPSETTING(    0x02, DEF_STR( 1C_2C ) )
+	PORT_DIPSETTING(    0x01, DEF_STR( 1C_3C ) )
+	PORT_DIPNAME( 0x0c, 0x0c, DEF_STR( Coin_B ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( 2C_1C ) )
+	PORT_DIPSETTING(    0x0c, DEF_STR( 1C_1C ) )
+	PORT_DIPSETTING(    0x08, DEF_STR( 1C_2C ) )
+	PORT_DIPSETTING(    0x04, DEF_STR( 1C_3C ) )
+	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x40, 0x00, DEF_STR( Cabinet ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( Upright ) )
+	PORT_DIPSETTING(    0x40, DEF_STR( Cocktail ) )
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+
+	PORT_START
+	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Lives ) )
+	PORT_DIPSETTING(    0x03, "3" )
+	PORT_DIPSETTING(    0x02, "4" )
+	PORT_DIPSETTING(    0x01, "5" )
+	PORT_DIPSETTING(    0x00, "Infinite" )
+	PORT_DIPNAME( 0x0c, 0x0c, "Bonus" )
+	PORT_DIPSETTING(    0x00, "20000" )
+	PORT_DIPSETTING(    0x0c, "20000 30000" )
+	PORT_DIPSETTING(    0x08, "30000 50000" )
+	PORT_DIPSETTING(    0x04, "50000 70000" )
+	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) ) /* Difficulty? */
+	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) ) /* Difficulty? */
+	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+INPUT_PORTS_END
+
 /***************************************************************************/
 
 static struct GfxLayout charlayout =
@@ -611,7 +700,7 @@ static INTERRUPT_GEN( deco16_interrupt )
 	static int latch=0;
 	int p=~readinputport(3);
 	if (p&0x43 && !latch) {
-		cpu_set_irq_line(0,DECO16_IRQ_LINE,ASSERT_LINE);
+		cpunum_set_input_line(0,DECO16_IRQ_LINE,ASSERT_LINE);
 		latch=1;
 	} else {
 		if (!(p&0x43))
@@ -760,7 +849,7 @@ static MACHINE_DRIVER_START( liberatb )
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M6502, 2000000)
 	MDRV_CPU_PROGRAM_MAP(liberatb_readmem,liberatb_writemem)
-	MDRV_CPU_VBLANK_INT(deco16_interrupt,1) //todo
+	MDRV_CPU_VBLANK_INT(deco16_interrupt,1)
 
 	MDRV_CPU_ADD(M6502, 1500000)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)
@@ -1037,8 +1126,8 @@ GAMEX(1983, prosport, 0,        prosport,  liberate, prosport, ROT270, "Data Eas
 GAME( 1983, boomrang, 0,        boomrang,  boomrang, prosport, ROT270, "Data East Corporation", "Boomer Rang'r / Genesis" )
 GAME( 1984, kamikcab, 0,        boomrang,  kamikcab, prosport, ROT270, "Data East Corporation", "Kamikaze Cabbie" )
 GAME( 1984, liberate, 0,        liberate,  liberate, liberate, ROT270, "Data East Corporation", "Liberation" )
-GAME( 1984, dualaslt, liberate, liberate,  dualaslt, liberate, ROT270, "Data East USA", "Dual Assault" )
-GAMEX(1984, liberatb, liberate, liberatb,  liberate, prosport, ROT270, "bootleg",               "Liberation (bootleg)", GAME_NOT_WORKING )
+GAME( 1984, dualaslt, liberate, liberate,  dualaslt, liberate, ROT270, "Data East USA",         "Dual Assault" )
+GAME( 1984, liberatb, liberate, liberatb,  liberatb, prosport, ROT270, "bootleg",               "Liberation (bootleg)" )
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

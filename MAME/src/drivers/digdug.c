@@ -1,11 +1,11 @@
-#pragma code_seg("C253")
-#pragma data_seg("D253")
-#pragma bss_seg("B253")
-#pragma const_seg("K253")
-#pragma comment(linker, "/merge:D253=253")
-#pragma comment(linker, "/merge:C253=253")
-#pragma comment(linker, "/merge:B253=253")
-#pragma comment(linker, "/merge:K253=253")
+#pragma code_seg("C263")
+#pragma data_seg("D263")
+#pragma bss_seg("B263")
+#pragma const_seg("K263")
+#pragma comment(linker, "/merge:D263=263")
+#pragma comment(linker, "/merge:C263=263")
+#pragma comment(linker, "/merge:B263=263")
+#pragma comment(linker, "/merge:K263=263")
 /***************************************************************************
 
 Dig Dug

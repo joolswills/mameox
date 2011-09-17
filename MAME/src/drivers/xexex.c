@@ -1,11 +1,11 @@
-#pragma code_seg("C792")
-#pragma data_seg("D792")
-#pragma bss_seg("B792")
-#pragma const_seg("K792")
-#pragma comment(linker, "/merge:D792=792")
-#pragma comment(linker, "/merge:C792=792")
-#pragma comment(linker, "/merge:B792=792")
-#pragma comment(linker, "/merge:K792=792")
+#pragma code_seg("C834")
+#pragma data_seg("D834")
+#pragma bss_seg("B834")
+#pragma const_seg("K834")
+#pragma comment(linker, "/merge:D834=834")
+#pragma comment(linker, "/merge:C834=834")
+#pragma comment(linker, "/merge:B834=834")
+#pragma comment(linker, "/merge:K834=834")
 #define XE_DEBUG 0
 #define XE_SKIPIDLE 1
 #define XE_DMADELAY (256)
@@ -279,7 +279,7 @@ static WRITE16_HANDLER( sound_cmd2_w )
 
 static WRITE16_HANDLER( sound_irq_w )
 {
-	cpu_set_irq_line(1, 0, HOLD_LINE);
+	cpunum_set_input_line(1, 0, HOLD_LINE);
 }
 
 static READ16_HANDLER( sound_status_r )
@@ -292,7 +292,7 @@ static void reset_sound_region(void)
 	cpu_setbank(2, memory_region(REGION_CPU2) + 0x10000 + cur_sound_region*0x4000);
 }
 
-static WRITE_HANDLER( sound_bankswitch_w )
+static WRITE8_HANDLER( sound_bankswitch_w )
 {
 	cur_sound_region = data & 7;
 	reset_sound_region();
@@ -321,7 +321,7 @@ static void dmaend_callback(int data)
 
 		// IRQ 5 is the "object DMA end interrupt" and shouldn't be triggered
 		// if object data isn't ready for DMA within the frame.
-		cpu_set_irq_line(0, 5, HOLD_LINE);
+		cpunum_set_input_line(0, 5, HOLD_LINE);
 	}
 }
 
@@ -334,7 +334,7 @@ static INTERRUPT_GEN( xexex_interrupt )
 		case 0:
 			// IRQ 6 is for test mode only
 			if (cur_control2 & 0x0020)
-				cpu_set_irq_line(0, 6, HOLD_LINE);
+				cpunum_set_input_line(0, 6, HOLD_LINE);
 		break;
 
 		case 1:
@@ -350,7 +350,7 @@ static INTERRUPT_GEN( xexex_interrupt )
 			// IRQ 4 is the V-blank interrupt. It controls color, sound and
 			// vital game logics that shouldn't be interfered by frame-drop.
 			if (cur_control2 & 0x0800)
-				cpu_set_irq_line(0, 4, HOLD_LINE);
+				cpunum_set_input_line(0, 4, HOLD_LINE);
 		break;
 	}
 }
@@ -562,7 +562,7 @@ ROM_END
 ROM_START( xexexj )
 	ROM_REGION( 0x180000, REGION_CPU1, 0 )
 	ROM_LOAD16_BYTE( "067jaa01.16d", 0x000000, 0x40000, CRC(06e99784) SHA1(d53fe3724608992a6938c36aa2719dc545d6b89e) )
-	ROM_LOAD16_BYTE( "067jaa02.16e", 0x000001, 0x40000, CRC(30ae5bc4) SHA1(60491e31eef64a9206d1372afa32d83c6c0968b3) )
+	ROM_LOAD16_BYTE( "067jaa02.16f", 0x000001, 0x40000, CRC(30ae5bc4) SHA1(60491e31eef64a9206d1372afa32d83c6c0968b3) )
 	ROM_LOAD16_BYTE( "xex_b03.rom",  0x100000, 0x40000, CRC(97833086) SHA1(a564f7b1b52c774d78a59f4418c7ecccaf94ad41) )
 	ROM_LOAD16_BYTE( "xex_b04.rom",  0x100001, 0x40000, CRC(26ec5dc8) SHA1(9da62683bfa8f16607cbea2d59a1446ec8588c5b) )
 

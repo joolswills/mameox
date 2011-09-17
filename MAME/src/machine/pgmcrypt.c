@@ -206,3 +206,60 @@ void pgm_djlzz_decrypt(void)
 		src[i] = x;
 	}
 }
+
+void pgm_dw3_decrypt(void)
+{
+
+//	int i;
+//	unsigned short *src=(unsigned short *) (OP_ROM+0x100000);
+
+	int i;
+	data16_t *src = (data16_t *) (memory_region(REGION_CPU1)+0x100000);
+
+	int rom_size = 0x100000;
+
+	for(i=0; i<rom_size/2; i++) {
+		data16_t x = src[i];
+
+		if((i & 0x005460) == 0x001400)
+			x ^= 0x0100;
+
+		if((i & 0x005450) == 0x001040)
+			x ^= 0x0100;
+
+		if((i & 0x005e00) == 0x001c00)
+			x ^= 0x40;
+
+		if((i & 0x005580) == 0x001100)
+			x ^= 0x40;
+
+
+
+		src[i] = x;
+	}
+}
+
+void pgm_killbld_decrypt(void)
+{
+
+//	int i;
+//	unsigned short *src=(unsigned short *) (OP_ROM+0x100000);
+
+	int i;
+	data16_t *src = (data16_t *) (memory_region(REGION_CPU1)+0x100000);
+
+	int rom_size = 0x100000;
+
+	for(i=0; i<rom_size/2; i++) {
+		data16_t x = src[i];
+
+		if((i & 0x6d00) == 0x0400 || (i & 0x6c80) == 0x0880)
+			x ^= 0x0800;
+		if((i & 0x7500) == 0x2400 || (i & 0x7600) == 0x3200)
+			x ^= 0x0010;
+
+		src[i] = x;
+	}
+}
+
+

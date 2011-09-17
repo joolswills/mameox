@@ -464,7 +464,7 @@ print GENERATEDFILE "{\n";
 print "Pass 1...\n";
 
 #local @CPUDirs = `find ./MAME/src/cpu -path \'*/CVS\' -prune -o -type d -a -print`;
-@FILEs    = sort( `find $MAME_CPU_DIR -name *.c` );
+@FILEs    = sort( `find $MAME_CPU_DIR -name *.c | sed "s/\\\\/\\//g"` );
 @newFILEs = ();
 local $OldCPUName = "";
 
@@ -1418,7 +1418,8 @@ EOF
 sub BuildDriverMap() {
 
 	local @newFILEs;
-	local @FILEs = sort( `find $MAME_DRIVER_DIR -name *.c` );
+#	local @FILEs = sort( `find $MAME_DRIVER_DIR -name "*.c"` );
+	local @FILEs = sort( `find $MAME_DRIVER_DIR -name *.c | sed "s/\\\\/\\//g"` );
 	$autoNameNumber = scalar( @DriverFamilies ) + 50;
 
 	# Do two passes, one to find the last autoNameNumber, another to actually
@@ -1427,6 +1428,8 @@ sub BuildDriverMap() {
 
 	DRIVER_PASS1_NEXTFILE:
 	foreach $DriverFileName ( @FILEs ) {
+#		print $DriverFileName ;
+#		die "ending" ;
 		chomp( $DriverFileName );
 
 			# Change the DriverName to what will be present in the actual MAME code
@@ -1527,7 +1530,7 @@ sub BuildDriverMap() {
 				$DriverNameToSectionMap{$DriverNoPath} = $Family;
 		} else {
 			$DriverNameToSectionMap{$DriverNoPath} = $autoNameNumber;
-		}
+ 		}
 
 		($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
 		 $atime,$mtime,$ctime,$blksize,$blocks) = stat( $DriverFileName );

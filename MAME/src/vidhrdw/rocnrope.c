@@ -79,7 +79,7 @@ PALETTE_INIT( rocnrope )
 		COLOR(0,i) = *(color_prom++) & 0x0f;
 }
 
-WRITE_HANDLER( rocnrope_videoram_w )
+WRITE8_HANDLER( rocnrope_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -88,7 +88,7 @@ WRITE_HANDLER( rocnrope_videoram_w )
 	}
 }
 
-WRITE_HANDLER( rocnrope_colorram_w )
+WRITE8_HANDLER( rocnrope_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -97,7 +97,7 @@ WRITE_HANDLER( rocnrope_colorram_w )
 	}
 }
 
-WRITE_HANDLER( rocnrope_flipscreen_w )
+WRITE8_HANDLER( rocnrope_flipscreen_w )
 {
 	if (flip_screen != (~data & 0x01))
 	{

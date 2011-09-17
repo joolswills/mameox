@@ -1,11 +1,11 @@
-#pragma code_seg("C804")
-#pragma data_seg("D804")
-#pragma bss_seg("B804")
-#pragma const_seg("K804")
-#pragma comment(linker, "/merge:D804=804")
-#pragma comment(linker, "/merge:C804=804")
-#pragma comment(linker, "/merge:B804=804")
-#pragma comment(linker, "/merge:K804=804")
+#pragma code_seg("C846")
+#pragma data_seg("D846")
+#pragma bss_seg("B846")
+#pragma const_seg("K846")
+#pragma comment(linker, "/merge:D846=846")
+#pragma comment(linker, "/merge:C846=846")
+#pragma comment(linker, "/merge:B846=846")
+#pragma comment(linker, "/merge:K846=846")
 /*************************************************************/
 /*                                                           */
 /* Zaccaria/Zelco S2650 based games video                    */
@@ -31,7 +31,7 @@ static struct tilemap *bg_tilemap;
 /* once it's workings are fully understood.                   */
 /**************************************************************/
 
-WRITE_HANDLER( tinvader_videoram_w )
+WRITE8_HANDLER( tinvader_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -40,7 +40,7 @@ WRITE_HANDLER( tinvader_videoram_w )
 	}
 }
 
-WRITE_HANDLER( zac_s2636_w )
+WRITE8_HANDLER( zac_s2636_w )
 {
 	if (s2636ram[offset] != data)
     {
@@ -49,13 +49,13 @@ WRITE_HANDLER( zac_s2636_w )
     }
 }
 
-READ_HANDLER( zac_s2636_r )
+READ8_HANDLER( zac_s2636_r )
 {
 	if(offset!=0xCB) return s2636ram[offset];
     else return CollisionSprite;
 }
 
-READ_HANDLER( tinvader_port_0_r )
+READ8_HANDLER( tinvader_port_0_r )
 {
 	return input_port_0_r(0) - CollisionBackground;
 }

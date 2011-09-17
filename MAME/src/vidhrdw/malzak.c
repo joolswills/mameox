@@ -24,8 +24,6 @@
 #include "vidhrdw/generic.h"
 #include "vidhrdw/s2636.h"
 
-
-  // [EBA] Use the vars defined in vidhrdw\cvs.c
 extern unsigned char* s2636_1_ram;
 extern unsigned char* s2636_2_ram;
 
@@ -56,8 +54,7 @@ struct	{
 
 unsigned char* saa5050_vidram;  /* Video RAM for SAA 5050 */
 
-  // [EBA] Use the vars defined in vidhrdw\cvs.c
-extern struct mame_bitmap* collision_bitmap;
+static struct mame_bitmap* collision_bitmap;
 
 int temp_x,temp_y;
 
@@ -68,8 +65,8 @@ struct
 	int code;
 } field[256];
 
-unsigned char s2636_1_dirty[4];
-unsigned char s2636_2_dirty[4];
+extern unsigned char s2636_1_dirty[4];
+extern unsigned char s2636_2_dirty[4];
 
 VIDEO_START( malzak )
 {
@@ -232,7 +229,7 @@ VIDEO_UPDATE( malzak )
 	Update_Bitmap(bitmap,s2636_2_ram,s2636_2_dirty,2,collision_bitmap);
 }
 
-WRITE_HANDLER( playfield_w )
+WRITE8_HANDLER( playfield_w )
 {
 	int tile = ((temp_x / 16) * 16) + (offset / 16);
 

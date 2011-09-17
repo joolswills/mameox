@@ -1,11 +1,11 @@
-#pragma code_seg("C548")
-#pragma data_seg("D548")
-#pragma bss_seg("B548")
-#pragma const_seg("K548")
-#pragma comment(linker, "/merge:D548=548")
-#pragma comment(linker, "/merge:C548=548")
-#pragma comment(linker, "/merge:B548=548")
-#pragma comment(linker, "/merge:K548=548")
+#pragma code_seg("C579")
+#pragma data_seg("D579")
+#pragma bss_seg("B579")
+#pragma const_seg("K579")
+#pragma comment(linker, "/merge:D579=579")
+#pragma comment(linker, "/merge:C579=579")
+#pragma comment(linker, "/merge:B579=579")
+#pragma comment(linker, "/merge:K579=579")
 /*
 Portraits 1983 (c) Olympia
 
@@ -35,8 +35,8 @@ int portrait_scrollx_hi, portrait_scrollx_lo;
 PALETTE_INIT( portrait );
 VIDEO_START( portrait );
 VIDEO_UPDATE( portrait );
-WRITE_HANDLER( portrait_bgvideo_write );
-WRITE_HANDLER( portrait_fgvideo_write );
+WRITE8_HANDLER( portrait_bgvideo_write );
+WRITE8_HANDLER( portrait_fgvideo_write );
 
 static struct GfxLayout tile_layout =
 {
@@ -65,7 +65,7 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 	{ -1 } /* end of array */
 };
 
-static READ_HANDLER(a000_r)
+static READ8_HANDLER(a000_r)
 {
 	switch( offset )
 	{
@@ -114,7 +114,7 @@ static READ_HANDLER(a000_r)
 	}
 }
 
-static WRITE_HANDLER(a000_w)
+static WRITE8_HANDLER(a000_w)
 {
 	switch( offset )
 	{

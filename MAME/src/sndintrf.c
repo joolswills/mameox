@@ -24,10 +24,10 @@ static void soundlatch_callback(int param)
 	read_debug = 0;
 }
 
-WRITE_HANDLER( soundlatch_w )
+WRITE8_HANDLER( soundlatch_w )
 {
 	/* make all the CPUs synchronize, and only AFTER that write the new command to the latch */
-	timer_set(TIME_NOW,data,soundlatch_callback);
+	mame_timer_set(time_zero,data,soundlatch_callback);
 }
 
 WRITE16_HANDLER( soundlatch_word_w )
@@ -36,10 +36,10 @@ WRITE16_HANDLER( soundlatch_word_w )
 	COMBINE_DATA(&word);
 
 	/* make all the CPUs synchronize, and only AFTER that write the new command to the latch */
-	timer_set(TIME_NOW,word,soundlatch_callback);
+	mame_timer_set(time_zero,word,soundlatch_callback);
 }
 
-READ_HANDLER( soundlatch_r )
+READ8_HANDLER( soundlatch_r )
 {
 	read_debug = 1;
 	return latch;
@@ -51,7 +51,7 @@ READ16_HANDLER( soundlatch_word_r )
 	return latch;
 }
 
-WRITE_HANDLER( soundlatch_clear_w )
+WRITE8_HANDLER( soundlatch_clear_w )
 {
 	latch = cleared_value;
 }
@@ -67,10 +67,10 @@ static void soundlatch2_callback(int param)
 	read_debug2 = 0;
 }
 
-WRITE_HANDLER( soundlatch2_w )
+WRITE8_HANDLER( soundlatch2_w )
 {
 	/* make all the CPUs synchronize, and only AFTER that write the new command to the latch */
-	timer_set(TIME_NOW,data,soundlatch2_callback);
+	mame_timer_set(time_zero,data,soundlatch2_callback);
 }
 
 WRITE16_HANDLER( soundlatch2_word_w )
@@ -79,10 +79,10 @@ WRITE16_HANDLER( soundlatch2_word_w )
 	COMBINE_DATA(&word);
 
 	/* make all the CPUs synchronize, and only AFTER that write the new command to the latch */
-	timer_set(TIME_NOW,word,soundlatch2_callback);
+	mame_timer_set(time_zero,word,soundlatch2_callback);
 }
 
-READ_HANDLER( soundlatch2_r )
+READ8_HANDLER( soundlatch2_r )
 {
 	read_debug2 = 1;
 	return latch2;
@@ -94,7 +94,7 @@ READ16_HANDLER( soundlatch2_word_r )
 	return latch2;
 }
 
-WRITE_HANDLER( soundlatch2_clear_w )
+WRITE8_HANDLER( soundlatch2_clear_w )
 {
 	latch2 = cleared_value;
 }
@@ -110,10 +110,10 @@ static void soundlatch3_callback(int param)
 	read_debug3 = 0;
 }
 
-WRITE_HANDLER( soundlatch3_w )
+WRITE8_HANDLER( soundlatch3_w )
 {
 	/* make all the CPUs synchronize, and only AFTER that write the new command to the latch */
-	timer_set(TIME_NOW,data,soundlatch3_callback);
+	mame_timer_set(time_zero,data,soundlatch3_callback);
 }
 
 WRITE16_HANDLER( soundlatch3_word_w )
@@ -122,10 +122,10 @@ WRITE16_HANDLER( soundlatch3_word_w )
 	COMBINE_DATA(&word);
 
 	/* make all the CPUs synchronize, and only AFTER that write the new command to the latch */
-	timer_set(TIME_NOW,word,soundlatch3_callback);
+	mame_timer_set(time_zero,word,soundlatch3_callback);
 }
 
-READ_HANDLER( soundlatch3_r )
+READ8_HANDLER( soundlatch3_r )
 {
 	read_debug3 = 1;
 	return latch3;
@@ -137,7 +137,7 @@ READ16_HANDLER( soundlatch3_word_r )
 	return latch3;
 }
 
-WRITE_HANDLER( soundlatch3_clear_w )
+WRITE8_HANDLER( soundlatch3_clear_w )
 {
 	latch3 = cleared_value;
 }
@@ -153,10 +153,10 @@ static void soundlatch4_callback(int param)
 	read_debug4 = 0;
 }
 
-WRITE_HANDLER( soundlatch4_w )
+WRITE8_HANDLER( soundlatch4_w )
 {
 	/* make all the CPUs synchronize, and only AFTER that write the new command to the latch */
-	timer_set(TIME_NOW,data,soundlatch4_callback);
+	mame_timer_set(time_zero,data,soundlatch4_callback);
 }
 
 WRITE16_HANDLER( soundlatch4_word_w )
@@ -165,10 +165,10 @@ WRITE16_HANDLER( soundlatch4_word_w )
 	COMBINE_DATA(&word);
 
 	/* make all the CPUs synchronize, and only AFTER that write the new command to the latch */
-	timer_set(TIME_NOW,word,soundlatch4_callback);
+	mame_timer_set(time_zero,word,soundlatch4_callback);
 }
 
-READ_HANDLER( soundlatch4_r )
+READ8_HANDLER( soundlatch4_r )
 {
 	read_debug4 = 1;
 	return latch4;
@@ -180,7 +180,7 @@ READ16_HANDLER( soundlatch4_word_r )
 	return latch4;
 }
 
-WRITE_HANDLER( soundlatch4_clear_w )
+WRITE8_HANDLER( soundlatch4_clear_w )
 {
 	latch4 = cleared_value;
 }
@@ -201,7 +201,7 @@ void soundlatch_setclearedvalue(int value)
 
 ***************************************************************************/
 
-static void *sound_update_timer;
+static mame_timer *sound_update_timer;
 
 
 struct snd_interface
@@ -239,6 +239,9 @@ void custom_sh_update(void)
 #endif
 #if (HAS_DAC)
 int DAC_num(const struct MachineSound *msound) { return ((struct DACinterface*)msound->sound_interface)->num; }
+#endif
+#if (HAS_DMADAC)
+int DMADAC_num(const struct MachineSound *msound) { return ((struct dmadac_interface*)msound->sound_interface)->num; }
 #endif
 #if (HAS_ADPCM)
 int ADPCM_num(const struct MachineSound *msound) { return ((struct ADPCMinterface*)msound->sound_interface)->num; }
@@ -339,6 +342,15 @@ int MSM5232_clock(const struct MachineSound *msound) { return ((struct MSM5232in
 #if (HAS_ASTROCADE)
 int ASTROCADE_clock(const struct MachineSound *msound) { return ((struct astrocade_interface*)msound->sound_interface)->baseclock; }
 int ASTROCADE_num(const struct MachineSound *msound) { return ((struct astrocade_interface*)msound->sound_interface)->num; }
+#endif
+#if (HAS_NAMCO_52XX)
+int namco_52xx_clock(const struct MachineSound *msound) { return ((struct namco_52xx_interface*)msound->sound_interface)->baseclock; }
+#endif
+#if (HAS_NAMCO_54XX)
+int namco_54xx_clock(const struct MachineSound *msound) { return ((struct namco_54xx_interface*)msound->sound_interface)->baseclock; }
+#endif
+#if (HAS_NAMCO_63701X)
+int namco_63701x_clock(const struct MachineSound *msound) { return ((struct namco_63701x_interface*)msound->sound_interface)->baseclock; }
 #endif
 #if (HAS_K051649)
 int K051649_clock(const struct MachineSound *msound) { return ((struct k051649_interface*)msound->sound_interface)->master_clock; }
@@ -452,6 +464,18 @@ struct snd_interface sndintf[] =
 		DAC_num,
 		0,
 		DAC_sh_start,
+		0,
+		0,
+		0
+	},
+#endif
+#if (HAS_DMADAC)
+    {
+		SOUND_DMADAC,
+		"DMA-driven DAC",
+		DMADAC_num,
+		0,
+		dmadac_sh_start,
 		0,
 		0,
 		0
@@ -692,6 +716,66 @@ struct snd_interface sndintf[] =
 		0,
 		namco_sh_start,
 		namco_sh_stop,
+		0,
+		0
+	},
+#endif
+#if (HAS_NAMCO_15XX)
+    {
+		SOUND_NAMCO_15XX,
+		"Namco 15XX",
+		0,
+		0,
+		namco_sh_start,
+		namco_sh_stop,
+		0,
+		0
+	},
+#endif
+#if (HAS_NAMCO_CUS30)
+    {
+		SOUND_NAMCO_CUS30,
+		"Namco CUS30",
+		0,
+		0,
+		namco_sh_start,
+		namco_sh_stop,
+		0,
+		0
+	},
+#endif
+#if (HAS_NAMCO_52XX)
+    {
+		SOUND_NAMCO_52XX,
+		"Namco 52XX",
+		0,
+		namco_52xx_clock,
+		namco_52xx_sh_start,
+		namco_52xx_sh_stop,
+		0,
+		0
+	},
+#endif
+#if (HAS_NAMCO_54XX)
+    {
+		SOUND_NAMCO_54XX,
+		"Namco 54XX",
+		0,
+		namco_54xx_clock,
+		namco_54xx_sh_start,
+		namco_54xx_sh_stop,
+		0,
+		0
+	},
+#endif
+#if (HAS_NAMCO_63701X)
+    {
+		SOUND_NAMCO_63701X,
+		"Namco 63701X",
+		0,
+		namco_63701x_clock,
+		namco_63701x_sh_start,
+		namco_63701x_sh_stop,
 		0,
 		0
 	},
@@ -1152,6 +1236,42 @@ struct snd_interface sndintf[] =
 		0
 	},
 #endif
+#if (HAS_CDDA)
+	{
+		SOUND_CDDA,
+		"CD Audio",
+		0,
+		0,
+		CDDA_sh_start,
+		CDDA_sh_stop,
+		0,
+		0
+	},
+#endif
+#if (HAS_ICS2115)
+	{
+		SOUND_ICS2115,
+		"ICS2115",
+		0,
+		0,
+		ics2115_sh_start,
+		ics2115_sh_stop,
+		0,
+		0
+	},
+#endif
+#if (HAS_ST0016)
+	{
+		SOUND_ST0016,
+		"ST-0016",
+		0,
+		0,
+		st0016_sh_start,
+		st0016_sh_stop,
+		0,
+		0
+	},
+#endif
 
 
 
@@ -1221,7 +1341,7 @@ logerror("Sound #%d wrong ID %d: check enum SOUND_... in src/sndintrf.h!\n",i,sn
 	/* samples will be read later if needed */
 	Machine->samples = 0;
 
-	sound_update_timer = timer_alloc(NULL);
+	sound_update_timer = mame_timer_alloc(NULL);
 
 	if (mixer_sh_start() != 0)
 		return 1;
@@ -1287,7 +1407,7 @@ void sound_update(void)
 	streams_sh_update();
 	mixer_sh_update();
 
-	timer_adjust(sound_update_timer, TIME_NEVER, 0, 0);
+	mame_timer_adjust(sound_update_timer, time_never, 0, time_never);
 
 	profiler_mark(PROFILER_END);
 }
@@ -1341,7 +1461,8 @@ int sound_clock(const struct MachineSound *msound)
 
 int sound_scalebufferpos(int value)
 {
-	int result = (int)((double)value * timer_timeelapsed(sound_update_timer) * Machine->refresh_rate);
+	mame_time elapsed = mame_timer_timeelapsed(sound_update_timer);
+	int result = (int)((double)value * mame_time_to_double(elapsed) * Machine->refresh_rate);
 	if (value >= 0) return (result < value) ? result : value;
 	else return (result > value) ? result : value;
 }

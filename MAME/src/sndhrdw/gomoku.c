@@ -1,11 +1,11 @@
-#pragma code_seg("C331")
-#pragma data_seg("D331")
-#pragma bss_seg("B331")
-#pragma const_seg("K331")
-#pragma comment(linker, "/merge:D331=331")
-#pragma comment(linker, "/merge:C331=331")
-#pragma comment(linker, "/merge:B331=331")
-#pragma comment(linker, "/merge:K331=331")
+#pragma code_seg("C345")
+#pragma data_seg("D345")
+#pragma bss_seg("B345")
+#pragma const_seg("K345")
+#pragma comment(linker, "/merge:D345=345")
+#pragma comment(linker, "/merge:C345=345")
+#pragma comment(linker, "/merge:B345=345")
+#pragma comment(linker, "/merge:K345=345")
 /***************************************************************************
 
 	Gomoku sound driver (quick hack of the Wiping sound driver)
@@ -214,7 +214,7 @@ void gomoku_sh_stop(void)
 
 /********************************************************************************/
 
-WRITE_HANDLER( gomoku_sound_w )
+WRITE8_HANDLER( gomoku_sound_w )
 {
 	sound_channel *voice;
 	int base;

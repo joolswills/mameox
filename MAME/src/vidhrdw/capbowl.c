@@ -1,11 +1,11 @@
-#pragma code_seg("C190")
-#pragma data_seg("D190")
-#pragma bss_seg("B190")
-#pragma const_seg("K190")
-#pragma comment(linker, "/merge:D190=190")
-#pragma comment(linker, "/merge:C190=190")
-#pragma comment(linker, "/merge:B190=190")
-#pragma comment(linker, "/merge:K190=190")
+#pragma code_seg("C192")
+#pragma data_seg("D192")
+#pragma bss_seg("B192")
+#pragma const_seg("K192")
+#pragma comment(linker, "/merge:D192=192")
+#pragma comment(linker, "/merge:C192=192")
+#pragma comment(linker, "/merge:B192=192")
+#pragma comment(linker, "/merge:K192=192")
 /***************************************************************************
 
 	Coors Light Bowling/Bowl-O-Rama hardware
@@ -17,7 +17,10 @@
 #include "cpu/m6809/m6809.h"
 #include "capbowl.h"
 
-unsigned char *capbowl_rowaddress;
+UINT8 *capbowl_rowaddress;
+
+static offs_t blitter_addr;
+
 
 
 /*************************************
@@ -28,7 +31,7 @@ unsigned char *capbowl_rowaddress;
 
 static void generate_interrupt(int state)
 {
-	cpu_set_irq_line(0, M6809_FIRQ_LINE, state);
+	cpunum_set_input_line(0, M6809_FIRQ_LINE, state);
 }
 
 static struct tms34061_interface tms34061intf =
@@ -50,10 +53,7 @@ static struct tms34061_interface tms34061intf =
 VIDEO_START( capbowl )
 {
 	/* initialize TMS34061 emulation */
-    if (tms34061_start(&tms34061intf))
-		return 1;
-
-	return 0;
+    return tms34061_start(&tms34061intf);
 }
 
 
@@ -64,7 +64,7 @@ VIDEO_START( capbowl )
  *
  *************************************/
 
-WRITE_HANDLER( capbowl_tms34061_w )
+WRITE8_HANDLER( capbowl_tms34061_w )
 {
 	int func = (offset >> 8) & 3;
 	int col = offset & 0xff;
@@ -79,7 +79,7 @@ WRITE_HANDLER( capbowl_tms34061_w )
 }
 
 
-READ_HANDLER( capbowl_tms34061_r )
+READ8_HANDLER( capbowl_tms34061_r )
 {
 	int func = (offset >> 8) & 3;
 	int col = offset & 0xff;
@@ -91,6 +91,69 @@ READ_HANDLER( capbowl_tms34061_r )
 
 	/* Row address (RA0-RA8) is not dependent on the offset */
 	return tms34061_r(col, *capbowl_rowaddress, func);
+}
+
+
+
+/*************************************
+ *
+ *	Bowl-o-rama blitter
+ *
+ *************************************/
+
+WRITE8_HANDLER( bowlrama_blitter_w )
+{
+	switch (offset)
+	{
+		case 0x08:	  /* Write address high byte (only 2 bits used) */
+			blitter_addr = (blitter_addr & ~0xff0000) | (data << 16);
+			break;
+
+		case 0x17:    /* Write address mid byte (8 bits)   */
+			blitter_addr = (blitter_addr & ~0x00ff00) | (data << 8);
+			break;
+
+		case 0x18:	  /* Write Address low byte (8 bits)   */
+			blitter_addr = (blitter_addr & ~0x0000ff) | (data << 0);
+			break;
+
+		default:
+			logerror("PC=%04X Write to unsupported blitter address %02X Data=%02X\n", activecpu_get_pc(), offset, data);
+			break;
+	}
+}
+
+
+READ8_HANDLER( bowlrama_blitter_r )
+{
+	data8_t data = memory_region(REGION_GFX1)[blitter_addr];
+	data8_t result = 0;
+
+	switch (offset)
+	{
+		/* Read Mask: Graphics data are 4bpp (2 pixels per byte).
+			This function returns 0's for new pixel data.
+			This allows data to be read as a mask, AND the mask with
+			the screen data, then OR new data read by read data command. */
+		case 0:
+			if (!(data & 0xf0))
+				result |= 0xf0;		/* High nibble is transparent */
+			if (!(data & 0x0f))
+				result |= 0x0f;		/* Low nibble is transparent */
+			break;
+
+		/* Read data and increment address */
+		case 4:
+			result = data;
+			blitter_addr = (blitter_addr + 1) & 0x3ffff;
+			break;
+
+		default:
+			logerror("PC=%04X Read from unsupported blitter address %02X\n", activecpu_get_pc(), offset);
+			break;
+	}
+
+	return result;
 }
 
 

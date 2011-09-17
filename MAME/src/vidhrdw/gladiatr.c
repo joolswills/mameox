@@ -1,11 +1,13 @@
-#pragma code_seg("C326")
-#pragma data_seg("D326")
-#pragma bss_seg("B326")
-#pragma const_seg("K326")
-#pragma comment(linker, "/merge:D326=326")
-#pragma comment(linker, "/merge:C326=326")
-#pragma comment(linker, "/merge:B326=326")
-#pragma comment(linker, "/merge:K326=326")
+#pragma code_seg("C340")
+#pragma data_seg("D340")
+#pragma bss_seg("B340")
+#pragma const_seg("K340")
+#pragma comment(linker, "/merge:D340=340")
+#pragma comment(linker, "/merge:C340=340")
+#pragma comment(linker, "/merge:B340=340")
+#pragma comment(linker, "/merge:K340=340")
+
+
 /***************************************************************************
 	Video Hardware description for Taito Gladiator
 
@@ -48,26 +50,26 @@ static void update_color(int offset)
 	palette_set_color(513,0xff,0xff,0xff);
 }
 
-WRITE_HANDLER( gladiatr_paletteram_rg_w )
+WRITE8_HANDLER( gladiatr_paletteram_rg_w )
 {
 	paletteram[offset] = data;
 	update_color(offset);
 }
 
-WRITE_HANDLER( gladiatr_paletteram_b_w )
+WRITE8_HANDLER( gladiatr_paletteram_b_w )
 {
 	paletteram_2[offset] = data;
 	update_color(offset);
 }
 
 
-WRITE_HANDLER( gladiatr_spritebank_w );
-WRITE_HANDLER( gladiatr_spritebank_w ){
+WRITE8_HANDLER( gladiatr_spritebank_w );
+WRITE8_HANDLER( gladiatr_spritebank_w ){
 	sprite_bank = (data)?4:2;
 }
 
-READ_HANDLER( gladiatr_video_registers_r );
-READ_HANDLER( gladiatr_video_registers_r ){
+READ8_HANDLER( gladiatr_video_registers_r );
+READ8_HANDLER( gladiatr_video_registers_r ){
 	switch( offset ){
 		case 0x080: return video_attributes;
 		case 0x100: return base_scroll;
@@ -76,8 +78,8 @@ READ_HANDLER( gladiatr_video_registers_r ){
 	return 0;
 }
 
-WRITE_HANDLER( gladiatr_video_registers_w );
-WRITE_HANDLER( gladiatr_video_registers_w ){
+WRITE8_HANDLER( gladiatr_video_registers_w );
+WRITE8_HANDLER( gladiatr_video_registers_w ){
 	switch( offset ){
 		case 0x000: break;
 		case 0x080: video_attributes = data; break;

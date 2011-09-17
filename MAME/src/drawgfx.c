@@ -2,6 +2,7 @@
 
 #include "driver.h"
 
+
 #ifdef LSB_FIRST
 #define SHIFT0 0
 #define SHIFT1 8
@@ -550,6 +551,7 @@ int pdrawgfx_shadow_lowpri = 0;
 #define INCREMENT_DST(n) {dstdata+=(n);pridata += (n);}
 #define LOOKUP(n) (colorbase + (n))
 #define SETPIXELCOLOR(dest,n) { if (((1 << (pridata[dest] & 0x1f)) & pmask) == 0) { if (pridata[dest] & 0x80 && palette_shadow_table) { dstdata[dest] = palette_shadow_table[n];} else { dstdata[dest] = (n);} } pridata[dest] = (pridata[dest] & 0x7f) | afterdrawmask; }
+//#define SETPIXELCOLOR(dest,n) { if (((1 << (pridata[dest] & 0x1f)) & pmask) == 0) { if (pridata[dest] & 0x80) { dstdata[dest] = palette_shadow_table[n];} else { dstdata[dest] = (n);} } pridata[dest] = (pridata[dest] & 0x7f) | afterdrawmask; }
 #define DECLARE_SWAP_RAW_PRI(function,args,body) void function##_raw_pri8 args body
 #include "drawgfx.c"
 #undef DECLARE_SWAP_RAW_PRI
@@ -560,6 +562,7 @@ int pdrawgfx_shadow_lowpri = 0;
 #define COLOR_ARG const pen_t *paldata,UINT8 *pridata,UINT32 pmask
 #define LOOKUP(n) (paldata[n])
 #define SETPIXELCOLOR(dest,n) { if (((1 << (pridata[dest] & 0x1f)) & pmask) == 0 && palette_shadow_table) { if (pridata[dest] & 0x80) { dstdata[dest] = palette_shadow_table[n];} else { dstdata[dest] = (n);} } pridata[dest] = (pridata[dest] & 0x7f) | afterdrawmask; }
+//#define SETPIXELCOLOR(dest,n) { if (((1 << (pridata[dest] & 0x1f)) & pmask) == 0) { if (pridata[dest] & 0x80) { dstdata[dest] = palette_shadow_table[n];} else { dstdata[dest] = (n);} } pridata[dest] = (pridata[dest] & 0x7f) | afterdrawmask; }
 #define DECLARE_SWAP_RAW_PRI(function,args,body) void function##_pri8 args body
 #include "drawgfx.c"
 #undef DECLARE_SWAP_RAW_PRI
@@ -2586,8 +2589,8 @@ INLINE void common_drawgfxzoom( struct mame_bitmap *dest_bmp,const struct GfxEle
 											dest[x] = color + c;
 											break;
 										case DRAWMODE_SHADOW:
-                      if( palette_shadow_table ) // [EBA] Check palette_shadow_table for validity
-											  dest[x] = palette_shadow_table[dest[x]];
+											if( palette_shadow_table ) // [EBA] Check palette_shadow_table for validity
+												dest[x] = palette_shadow_table[dest[x]];
 											break;
 										}
 									}
@@ -4389,10 +4392,10 @@ DECLARE_SWAP_RAW_PRI(blockmove_8toN_pen_table,(COMMON_ARGS,
 					case DRAWMODE_SHADOW:
             if( palette_shadow_table ) // [EBA] Check palette_shadow_table for validity
             {
-						  afterdrawmask = eax;
-						  SETPIXELCOLOR(0,palette_shadow_table[*dstdata])
-						  afterdrawmask = 31;
-            }
+						afterdrawmask = eax;
+						SETPIXELCOLOR(0,palette_shadow_table[*dstdata])
+						afterdrawmask = 31;
+			}
 						break;
 					}
 				}
@@ -4426,10 +4429,10 @@ DECLARE_SWAP_RAW_PRI(blockmove_8toN_pen_table,(COMMON_ARGS,
 					case DRAWMODE_SHADOW:
             if( palette_shadow_table ) // [EBA] Check palette_shadow_table for validity
             {
-						  afterdrawmask = eax;
-						  SETPIXELCOLOR(0,palette_shadow_table[*dstdata])
-						  afterdrawmask = 31;
-            }
+						afterdrawmask = eax;
+						SETPIXELCOLOR(0,palette_shadow_table[*dstdata])
+						afterdrawmask = 31;
+			}
 						break;
 					}
 				}

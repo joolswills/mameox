@@ -24,6 +24,7 @@ static int background_priority = 0;
 static int spritebank;
 
 static struct tilemap *bg_tilemap;
+static int swap_bg_ramrom;
 
 /***************************************************************************
 
@@ -52,7 +53,7 @@ static struct tilemap *bg_tilemap;
   bit 0 -- 2  kohm resistor  -- BLUE
 
 ***************************************************************************/
-WRITE_HANDLER( gottlieb_paletteram_w )
+WRITE8_HANDLER( gottlieb_paletteram_w )
 {
 	int bit0, bit1, bit2, bit3;
 	int r, g, b, val;
@@ -95,7 +96,7 @@ WRITE_HANDLER( gottlieb_paletteram_w )
 	palette_set_color(offset / 2, r, g, b);
 }
 
-WRITE_HANDLER( gottlieb_video_outputs_w )
+WRITE8_HANDLER( gottlieb_video_outputs_w )
 {
 	extern void gottlieb_knocker(void);
 	int last = 0;
@@ -122,7 +123,7 @@ WRITE_HANDLER( gottlieb_video_outputs_w )
 	last = data;
 }
 
-WRITE_HANDLER( usvsthem_video_outputs_w )
+WRITE8_HANDLER( usvsthem_video_outputs_w )
 {
 	background_priority = data & 0x01;
 
@@ -137,7 +138,7 @@ WRITE_HANDLER( usvsthem_video_outputs_w )
 	/* bit 3 genlock control (1 = show laserdisc image) */
 }
 
-WRITE_HANDLER( gottlieb_videoram_w )
+WRITE8_HANDLER( gottlieb_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -146,15 +147,15 @@ WRITE_HANDLER( gottlieb_videoram_w )
 	}
 }
 
-WRITE_HANDLER( gottlieb_charram_w )
+WRITE8_HANDLER( gottlieb_charram_w )
 {
 	if (gottlieb_charram[offset] != data)
 	{
 		gottlieb_charram[offset] = data;
 
-		decodechar(Machine->gfx[0], offset / 32, gottlieb_charram, 
+		decodechar(Machine->gfx[0], offset / 32, gottlieb_charram,
 			Machine->drv->gfxdecodeinfo[0].gfxlayout);
-		
+
 		tilemap_mark_all_tiles_dirty(bg_tilemap);
 	}
 }
@@ -163,12 +164,12 @@ static void get_bg_tile_info(int tile_index)
 {
 	int code = videoram[tile_index];
 
-	SET_TILE_INFO(0, code, 0, 0)
+	SET_TILE_INFO(0, code^swap_bg_ramrom, 0, 0)
 }
 
-VIDEO_START( gottlieb )
+static int gottlieb_video_start_common(void)
 {
-	bg_tilemap = tilemap_create(get_bg_tile_info, tilemap_scan_rows, 
+	bg_tilemap = tilemap_create(get_bg_tile_info, tilemap_scan_rows,
 		TILEMAP_TRANSPARENT, 8, 8, 32, 32);
 
 	if ( !bg_tilemap )
@@ -177,6 +178,18 @@ VIDEO_START( gottlieb )
 	tilemap_set_transparent_pen(bg_tilemap, 0);
 
 	return 0;
+}
+
+VIDEO_START( gottlieb )
+{
+	swap_bg_ramrom = 0x00;
+	return gottlieb_video_start_common();
+}
+
+VIDEO_START( vidvince )
+{
+	swap_bg_ramrom = 0x80;
+	return gottlieb_video_start_common();
 }
 
 static void gottlieb_draw_sprites( struct mame_bitmap *bitmap )

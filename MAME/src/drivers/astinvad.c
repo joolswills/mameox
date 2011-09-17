@@ -1,11 +1,11 @@
-#pragma code_seg("C130")
-#pragma data_seg("D130")
-#pragma bss_seg("B130")
-#pragma const_seg("K130")
-#pragma comment(linker, "/merge:D130=130")
-#pragma comment(linker, "/merge:C130=130")
-#pragma comment(linker, "/merge:B130=130")
-#pragma comment(linker, "/merge:K130=130")
+#pragma code_seg("C131")
+#pragma data_seg("D131")
+#pragma bss_seg("B131")
+#pragma const_seg("K131")
+#pragma comment(linker, "/merge:D131=131")
+#pragma comment(linker, "/merge:C131=131")
+#pragma comment(linker, "/merge:B131=131")
+#pragma comment(linker, "/merge:K131=131")
 /***************************************************************************
 
 Misc early Z80 games with simple color bitmap graphics
@@ -31,13 +31,13 @@ extern VIDEO_START( astinvad );
 extern VIDEO_START( spcking2 );
 extern VIDEO_START( spaceint );
 
-extern WRITE_HANDLER( astinvad_sound1_w );
-extern WRITE_HANDLER( astinvad_sound2_w );
-extern WRITE_HANDLER( astinvad_videoram_w );
-extern WRITE_HANDLER( spaceint_sound1_w );
-extern WRITE_HANDLER( spaceint_sound2_w );
-extern WRITE_HANDLER( spaceint_videoram_w );
-extern WRITE_HANDLER( spaceint_color_w);
+extern WRITE8_HANDLER( astinvad_sound1_w );
+extern WRITE8_HANDLER( astinvad_sound2_w );
+extern WRITE8_HANDLER( astinvad_videoram_w );
+extern WRITE8_HANDLER( spaceint_sound1_w );
+extern WRITE8_HANDLER( spaceint_sound2_w );
+extern WRITE8_HANDLER( spaceint_videoram_w );
+extern WRITE8_HANDLER( spaceint_color_w);
 
 extern struct Samplesinterface astinvad_samples_interface;
 
@@ -248,9 +248,9 @@ INPUT_PORTS_END
 static INTERRUPT_GEN( spaceint_interrupt )
 {
 	if (readinputport(2) & 1)	/* coin */
-		cpu_set_nmi_line(0, PULSE_LINE);
+		cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 
-	cpu_set_irq_line(0, 0, HOLD_LINE);
+	cpunum_set_input_line(0, 0, HOLD_LINE);
 }
 
 

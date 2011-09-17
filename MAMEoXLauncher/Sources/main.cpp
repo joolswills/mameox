@@ -114,6 +114,15 @@ RendererOptions_t    g_rendererOptions;
   // Fake sound override toggle
 BOOL g_soundEnabled = TRUE;
 
+extern "C" {
+
+unsigned int g_vmemThreshold = 0x400000;
+unsigned int g_vmemCommitSize = 0x100000;
+unsigned int g_vmemDistribute = 0xFFFF;
+unsigned int g_forcevmem = 0 ;
+}
+
+
   // Fake filter functions for GFilterManager (so it can be used to list
   //   filter names in the OptionsScreen)
 void AdMame2x32( UINT8 *, UINT32, UINT8 *, UINT8 *, UINT32, INT32, INT32 ) {}
@@ -131,6 +140,7 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice );
 static void Helper_SetStartMenuItems( CStartMenuView &startMenu, viewmode currentViewMode );
 static void Helper_SaveOptionsAndReboot( LPDIRECT3DDEVICE8 pD3DDevice, CROMListScreen &, CSkinChooserScreen & );
 static BOOL Helper_CopySystemFilesFromDVD( LPDIRECT3DDEVICE8 pD3DDevice );
+
 
 //= F U N C T I O N S =================================================
 
@@ -152,7 +162,7 @@ void __cdecl main( void )
   srand( time(NULL) );
 
 		// Initialize the graphics subsystem
-	g_graphicsManager.Create( TRUE );
+	g_graphicsManager.Create( TRUE, FALSE );
 	LPDIRECT3DDEVICE8 pD3DDevice = g_graphicsManager.GetD3DDevice();
 	pD3DDevice->SetRenderState( D3DRS_CULLMODE,         D3DCULL_NONE );
 	pD3DDevice->SetRenderState( D3DRS_LIGHTING,         FALSE );
@@ -171,7 +181,6 @@ void __cdecl main( void )
   pD3DDevice->SetTextureStageState( 0, D3DTSS_ADDRESSW, D3DTADDRESS_CLAMP );
 
 
-
     // Create the fonts or die
   if( !g_fontSet.Create() )
   {
@@ -185,6 +194,7 @@ void __cdecl main( void )
 
 	// Intialize the various MAME OSD-specific subsystems
 	InitializeTiming();
+
 
   if( !g_NetworkConfig.m_networkDisabled )
     InitializeNetwork();
@@ -806,7 +816,7 @@ static void Helper_SetStartMenuItems( CStartMenuView &startMenu, viewmode curren
     if( g_FileIOConfig.m_configPath[0] == g_FileIOConfig.m_ALTDrive[0] )
       startMenu.AddMenuItem( "Copy system files from DVD", MI_COPYSYSTEMFILESFROMDVD );
 
-		startMenu.AddMenuItem( "Choose Skin", MI_SKINCHOOSER );
+		//startMenu.AddMenuItem( "Choose Skin", MI_SKINCHOOSER );
 
     break;
 
@@ -1285,7 +1295,7 @@ static void ShowSplashScreen( LPDIRECT3DDEVICE8 pD3DDevice )
     //-- Set up the credits ------------------------------------------
   #define CREDITS_FRAMES_PER_STEP     0.5f;
   const WCHAR credits[] = L"       The MAMEoX team:"\
-                          L"       Programming - Erik Abair, opcode" \
+                          L"       Programming - Erik Abair, opcode, XPort" \
                           L"       Testing - falz, enkak, noodle1009, bmetz" \
                           L"       Graphical design - r4dius, Stephen Cameron" \
                           L"       Special thanks to Klaus of www.wolfsoft.de, and to MAME developers everywhere";
@@ -1723,6 +1733,18 @@ int fatalerror( const char *fmt, ... )
     // Execution should never get here
   return 0;
 }
+
+
+#undef free
+#include <memory.h>
+
+void osd_free( void *ptr )
+{
+	free( ptr ) ;
+}
+
+
+
 
 }	// End Extern "C"
 

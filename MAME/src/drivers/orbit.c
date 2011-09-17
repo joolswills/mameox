@@ -1,11 +1,11 @@
-#pragma code_seg("C515")
-#pragma data_seg("D515")
-#pragma bss_seg("B515")
-#pragma const_seg("K515")
-#pragma comment(linker, "/merge:D515=515")
-#pragma comment(linker, "/merge:C515=515")
-#pragma comment(linker, "/merge:B515=515")
-#pragma comment(linker, "/merge:K515=515")
+#pragma code_seg("C545")
+#pragma data_seg("D545")
+#pragma bss_seg("B545")
+#pragma const_seg("K545")
+#pragma comment(linker, "/merge:D545=545")
+#pragma comment(linker, "/merge:C545=545")
+#pragma comment(linker, "/merge:B545=545")
+#pragma comment(linker, "/merge:K545=545")
 /***************************************************************************
 
 Atari Orbit Driver
@@ -33,8 +33,8 @@ extern VIDEO_UPDATE( orbit );
 extern UINT8* orbit_playfield_ram;
 extern UINT8* orbit_sprite_ram;
 
-extern WRITE_HANDLER( orbit_playfield_w );
-extern WRITE_HANDLER( orbit_sprite_w );
+extern WRITE8_HANDLER( orbit_playfield_w );
+extern WRITE8_HANDLER( orbit_sprite_w );
 
 static int orbit_nmi_enable;
 
@@ -45,7 +45,7 @@ static INTERRUPT_GEN( orbit_interrupt )
 {
 	if (orbit_nmi_enable)
 	{
-		cpu_set_nmi_line(0, PULSE_LINE);
+		cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 	}
 }
 
@@ -80,30 +80,30 @@ static MACHINE_INIT( orbit )
 }
 
 
-WRITE_HANDLER( orbit_note_w )
+WRITE8_HANDLER( orbit_note_w )
 {
 	discrete_sound_w(0, (~data) & 0xff);
 }
 
-WRITE_HANDLER( orbit_note_amp_w )
+WRITE8_HANDLER( orbit_note_amp_w )
 {
 	discrete_sound_w(1, data & 0x0f);
 	discrete_sound_w(2, (data >> 4) & 0x0f);
 }
 
-WRITE_HANDLER( orbit_noise_amp_w )
+WRITE8_HANDLER( orbit_noise_amp_w )
 {
 	discrete_sound_w(3, data & 0x0f);
 	discrete_sound_w(4, (data & 0xf0) >> 4);
 }
 
-WRITE_HANDLER( orbit_noise_rst_w )
+WRITE8_HANDLER( orbit_noise_rst_w )
 {
 	discrete_sound_w(6, 0);
 }
 
 
-WRITE_HANDLER( orbit_misc_w )
+WRITE8_HANDLER( orbit_misc_w )
 {
 	UINT8 bit = offset >> 1;
 
@@ -118,13 +118,13 @@ WRITE_HANDLER( orbit_misc_w )
 }
 
 
-WRITE_HANDLER( orbit_zeropage_w )
+WRITE8_HANDLER( orbit_zeropage_w )
 {
 	memory_region(REGION_CPU1)[offset & 0xff] = data;
 }
 
 
-READ_HANDLER( orbit_zeropage_r )
+READ8_HANDLER( orbit_zeropage_r )
 {
 	return memory_region(REGION_CPU1)[offset & 0xff];
 }
@@ -417,7 +417,8 @@ static DISCRETE_SOUND_START(orbit_sound_interface)
 	DISCRETE_ADDER3(NODE_91, 1, ORBIT_WARNING_SND, ORBIT_NOISE2_SND, ORBIT_ANOTE2_SND)
 	DISCRETE_GAIN(NODE_92, NODE_90, 65534.0/(962.1+755.4+1000.0))
 	DISCRETE_GAIN(NODE_93, NODE_91, 65534.0/(962.1+755.4+1000.0))
-	DISCRETE_OUTPUT_STEREO(NODE_93, NODE_92, 100)
+	DISCRETE_OUTPUT(NODE_93, MIXER(100,MIXER_PAN_LEFT))
+	DISCRETE_OUTPUT(NODE_92, MIXER(100,MIXER_PAN_RIGHT))
 DISCRETE_SOUND_END
 
 

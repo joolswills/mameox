@@ -1,11 +1,11 @@
-#pragma code_seg("C740")
-#pragma data_seg("D740")
-#pragma bss_seg("B740")
-#pragma const_seg("K740")
-#pragma comment(linker, "/merge:D740=740")
-#pragma comment(linker, "/merge:C740=740")
-#pragma comment(linker, "/merge:B740=740")
-#pragma comment(linker, "/merge:K740=740")
+#pragma code_seg("C782")
+#pragma data_seg("D782")
+#pragma bss_seg("B782")
+#pragma const_seg("K782")
+#pragma comment(linker, "/merge:D782=782")
+#pragma comment(linker, "/merge:C782=782")
+#pragma comment(linker, "/merge:B782=782")
+#pragma comment(linker, "/merge:K782=782")
 /***************************************************************************
 
 Atari Triple Hunt video emulation

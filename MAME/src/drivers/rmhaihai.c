@@ -1,11 +1,11 @@
-#pragma code_seg("C576")
-#pragma data_seg("D576")
-#pragma bss_seg("B576")
-#pragma const_seg("K576")
-#pragma comment(linker, "/merge:D576=576")
-#pragma comment(linker, "/merge:C576=576")
-#pragma comment(linker, "/merge:B576=576")
-#pragma comment(linker, "/merge:K576=576")
+#pragma code_seg("C610")
+#pragma data_seg("D610")
+#pragma bss_seg("B610")
+#pragma const_seg("K610")
+#pragma comment(linker, "/merge:D610=610")
+#pragma comment(linker, "/merge:C610=610")
+#pragma comment(linker, "/merge:B610=610")
+#pragma comment(linker, "/merge:K610=610")
 /***************************************************************************
 
 Real Mahjong Haihai                (c)1985 Alba
@@ -42,7 +42,7 @@ TODO:
 static int gfxbank;
 static struct tilemap *bg_tilemap;
 
-WRITE_HANDLER( rmhaihai_videoram_w )
+WRITE8_HANDLER( rmhaihai_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -51,7 +51,7 @@ WRITE_HANDLER( rmhaihai_videoram_w )
 	}
 }
 
-WRITE_HANDLER( rmhaihai_colorram_w )
+WRITE8_HANDLER( rmhaihai_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -89,7 +89,7 @@ VIDEO_UPDATE( rmhaihai )
 
 static int keyboard_cmd;
 
-static READ_HANDLER( keyboard_r )
+static READ8_HANDLER( keyboard_r )
 {
 logerror("%04x: keyboard_r\n",activecpu_get_pc());
 	switch(activecpu_get_pc())
@@ -137,25 +137,25 @@ logerror("%04x: keyboard_r\n",activecpu_get_pc());
 	return 0;
 }
 
-static WRITE_HANDLER( keyboard_w )
+static WRITE8_HANDLER( keyboard_w )
 {
 logerror("%04x: keyboard_w %02x\n",activecpu_get_pc(),data);
 	keyboard_cmd = data;
 }
 
-static READ_HANDLER( samples_r )
+static READ8_HANDLER( samples_r )
 {
 	return memory_region(REGION_SOUND1)[offset];
 }
 
-static WRITE_HANDLER( adpcm_w )
+static WRITE8_HANDLER( adpcm_w )
 {
 	MSM5205_data_w(0,data);         /* bit0..3  */
 	MSM5205_reset_w(0,(data>>5)&1); /* bit 5    */
 	MSM5205_vclk_w (0,(data>>4)&1); /* bit4     */
 }
 
-static WRITE_HANDLER( ctrl_w )
+static WRITE8_HANDLER( ctrl_w )
 {
 	flip_screen_set(data & 0x01);
 
@@ -169,7 +169,7 @@ static WRITE_HANDLER( ctrl_w )
 	gfxbank = (data & 0x40) >> 6;	/* rmhaisei only */
 }
 
-static WRITE_HANDLER( themj_rombank_w )
+static WRITE8_HANDLER( themj_rombank_w )
 {
 	data8_t *rom = memory_region(REGION_CPU1) + 0x10000;
 	int bank = data & 0x03;

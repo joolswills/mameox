@@ -1,11 +1,11 @@
-#pragma code_seg("C749")
-#pragma data_seg("D749")
-#pragma bss_seg("B749")
-#pragma const_seg("K749")
-#pragma comment(linker, "/merge:D749=749")
-#pragma comment(linker, "/merge:C749=749")
-#pragma comment(linker, "/merge:B749=749")
-#pragma comment(linker, "/merge:K749=749")
+#pragma code_seg("C791")
+#pragma data_seg("D791")
+#pragma bss_seg("B791")
+#pragma const_seg("K791")
+#pragma comment(linker, "/merge:D791=791")
+#pragma comment(linker, "/merge:C791=791")
+#pragma comment(linker, "/merge:B791=791")
+#pragma comment(linker, "/merge:K791=791")
 /*************************************************************************
 
 	Atari Tunnel Hunt hardware
@@ -57,7 +57,7 @@ static struct tilemap *fg_tilemap;
 
 /****************************************************************************************/
 
-WRITE_HANDLER( tunhunt_videoram_w )
+WRITE8_HANDLER( tunhunt_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -66,7 +66,7 @@ WRITE_HANDLER( tunhunt_videoram_w )
 	}
 }
 
-WRITE_HANDLER( tunhunt_mott_w )
+WRITE8_HANDLER( tunhunt_mott_w )
 {
 	if( spriteram[offset]!=data )
 	{

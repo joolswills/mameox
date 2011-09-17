@@ -30,6 +30,7 @@ typedef enum PageID
   OPTPAGE_DIRECTORIES_1,
   OPTPAGE_DIRECTORIES_2,
   OPTPAGE_ROMLIST,
+  OPTPAGE_VMM,
   OPTPAGE_LAST
 } PageID;
 
@@ -54,6 +55,7 @@ void DrawNetworkPage( COptionsScreen * );
 void DrawDirectoryPathPage1( COptionsScreen * );
 void DrawDirectoryPathPage2( COptionsScreen * );
 void DrawROMListPage( COptionsScreen * );
+void DrawVMMPage( COptionsScreen * );
 
 void ChangeGeneralPage( COptionsScreen *, BOOL direction );
 void ChangeSoundPage( COptionsScreen *, BOOL direction );
@@ -63,6 +65,7 @@ void ChangeNetworkPage( COptionsScreen *, BOOL direction );
 void ChangeDirectoryPathPage1( COptionsScreen *, BOOL direction );
 void ChangeDirectoryPathPage2( COptionsScreen *, BOOL direction );
 void ChangeROMListPage( COptionsScreen *, BOOL direction );
+void ChangeVMMPage( COptionsScreen *, BOOL direction );
 
 //= C L A S S E S ======================================================
 
@@ -114,6 +117,7 @@ public:
   void DrawDirectoryPathPage1( void );
   void DrawDirectoryPathPage2( void );
   void DrawROMListPage( void );
+  void DrawVMMPage( void );
 
   void ChangeGeneralPage( BOOL direction );
   void ChangeSoundPage( BOOL direction );
@@ -123,6 +127,7 @@ public:
   void ChangeDirectoryPathPage1( BOOL direction );
   void ChangeDirectoryPathPage2( BOOL direction );
   void ChangeROMListPage( BOOL direction );
+  void ChangeVMMPage( BOOL direction );
 
 protected:
   UINT32                    m_pageNumber;                   //!< The options page number

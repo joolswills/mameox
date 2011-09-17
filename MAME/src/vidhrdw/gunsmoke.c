@@ -1,11 +1,11 @@
-#pragma code_seg("C345")
-#pragma data_seg("D345")
-#pragma bss_seg("B345")
-#pragma const_seg("K345")
-#pragma comment(linker, "/merge:D345=345")
-#pragma comment(linker, "/merge:C345=345")
-#pragma comment(linker, "/merge:B345=345")
-#pragma comment(linker, "/merge:K345=345")
+#pragma code_seg("C359")
+#pragma data_seg("D359")
+#pragma bss_seg("B359")
+#pragma const_seg("K359")
+#pragma comment(linker, "/merge:D359=359")
+#pragma comment(linker, "/merge:C359=359")
+#pragma comment(linker, "/merge:B359=359")
+#pragma comment(linker, "/merge:K359=359")
 /***************************************************************************
 
   vidhrdw.c
@@ -116,7 +116,7 @@ VIDEO_START( gunsmoke )
 
 
 
-WRITE_HANDLER( gunsmoke_c804_w )
+WRITE8_HANDLER( gunsmoke_c804_w )
 {
 	int bankaddress;
 	unsigned char *RAM = memory_region(REGION_CPU1);
@@ -141,7 +141,7 @@ WRITE_HANDLER( gunsmoke_c804_w )
 
 
 
-WRITE_HANDLER( gunsmoke_d806_w )
+WRITE8_HANDLER( gunsmoke_d806_w )
 {
 	/* bits 0-2 select the sprite 3 bank */
 	sprite3bank = data & 0x07;

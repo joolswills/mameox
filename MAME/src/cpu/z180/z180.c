@@ -835,6 +835,7 @@ static data8_t z180_readcontrol(offs_t port)
 
 	case Z180_STAT0:
 		data = IO_STAT0 & Z180_STAT0_RMASK;
+data |= 0x02; // kludge for 20pacgal
 		LOG(("Z180 #%d STAT0  rd $%02x ($%02x)\n", cpu_getactivecpu(), data, Z180.io[port & 0x3f]));
 		break;
 
@@ -2146,12 +2147,12 @@ static void z180_set_context (void *src)
 	z180_change_pc(_PCD);
 }
 
-READ_HANDLER( z180_internal_r )
+READ8_HANDLER( z180_internal_r )
 {
 	return Z180.io[offset & 0x3f];
 }
 
-WRITE_HANDLER( z180_internal_w )
+WRITE8_HANDLER( z180_internal_w )
 {
 	union cpuinfo info;
 	info.i = data;
@@ -2163,7 +2164,7 @@ WRITE_HANDLER( z180_internal_w )
  ****************************************************************************/
 static void set_irq_line(int irqline, int state)
 {
-	if (irqline == IRQ_LINE_NMI)
+	if (irqline == INPUT_LINE_NMI)
 	{
 		if( Z180.nmi_state == state ) return;
 
@@ -2185,7 +2186,7 @@ static void set_irq_line(int irqline, int state)
 	}
 	else
 	{
-		LOG(("Z180 #%d set_irq_line %d\n",cpu_getactivecpu() , state));
+		LOG(("Z180 #%d set_irq_line %d = %d\n",cpu_getactivecpu() , irqline,state));
 		Z180.irq_state[irqline] = state;
 		if( state == CLEAR_LINE ) return;
 
@@ -2252,10 +2253,14 @@ static void z180_set_info(UINT32 state, union cpuinfo *info)
 	switch (state)
 	{
 		/* --- the following bits of info are set as 64-bit signed integers --- */
-		case CPUINFO_INT_IRQ_STATE + IRQ_LINE_NMI:		set_irq_line(IRQ_LINE_NMI, info->i);	break;
-		case CPUINFO_INT_IRQ_STATE + Z180_INT0:			set_irq_line(Z180_INT0, info->i);		break;
-		case CPUINFO_INT_IRQ_STATE + Z180_INT1:			set_irq_line(Z180_INT1, info->i);		break;
-		case CPUINFO_INT_IRQ_STATE + Z180_INT2:			set_irq_line(Z180_INT2, info->i);		break;
+		case CPUINFO_INT_INPUT_STATE + INPUT_LINE_NMI:	set_irq_line(INPUT_LINE_NMI, info->i);	break;
+		case CPUINFO_INT_INPUT_STATE + Z180_INT0:		set_irq_line(Z180_INT0, info->i);		break;
+		case CPUINFO_INT_INPUT_STATE + Z180_INT1:		set_irq_line(Z180_INT1, info->i);		break;
+		case CPUINFO_INT_INPUT_STATE + Z180_INT2:		set_irq_line(Z180_INT2, info->i);		break;
+
+/* TODO: timer interrupts are triggered internally, this is just a kludge to get 20pacgal running */
+		case CPUINFO_INT_INPUT_STATE + Z180_INT_PRT0:	set_irq_line(Z180_INT_PRT0, info->i);	break;
+
 
 		case CPUINFO_INT_PC:							_PC = info->i; z180_change_pc(_PCD);	break;
 		case CPUINFO_INT_REGISTER + Z180_PC:			Z180.PC.w.l = info->i;					break;
@@ -2346,7 +2351,7 @@ static void z180_set_info(UINT32 state, union cpuinfo *info)
 		case CPUINFO_INT_REGISTER + Z180_OMCR:			Z180.io[0x3e] = info->i;				break;
 		case CPUINFO_INT_REGISTER + Z180_IOCR:			Z180.io[0x3f] = info->i;				break;
 		case CPUINFO_INT_REGISTER + Z180_IOLINES:		z180_write_iolines(info->i);			break;
-		
+
 		/* --- the following bits of info are set as pointers to data or functions --- */
 		case CPUINFO_PTR_IRQ_CALLBACK:					Z180.irq_callback = info->irqcallback;	break;
 		case CPUINFO_PTR_Z180_CYCLE_TABLE + Z180_TABLE_op: cc[Z180_TABLE_op] = info->p;			break;
@@ -2369,7 +2374,7 @@ void z180_get_info(UINT32 state, union cpuinfo *info)
 	{
 		/* --- the following bits of info are returned as 64-bit signed integers --- */
 		case CPUINFO_INT_CONTEXT_SIZE:					info->i = sizeof(Z180);					break;
-		case CPUINFO_INT_IRQ_LINES:						info->i = 1;							break;
+		case CPUINFO_INT_INPUT_LINES:					info->i = 1;							break;
 		case CPUINFO_INT_DEFAULT_IRQ_VECTOR:			info->i = 0xff;							break;
 		case CPUINFO_INT_ENDIANNESS:					info->i = CPU_IS_LE;					break;
 		case CPUINFO_INT_CLOCK_DIVIDER:					info->i = 1;							break;
@@ -2377,7 +2382,7 @@ void z180_get_info(UINT32 state, union cpuinfo *info)
 		case CPUINFO_INT_MAX_INSTRUCTION_BYTES:			info->i = 4;							break;
 		case CPUINFO_INT_MIN_CYCLES:					info->i = 1;							break;
 		case CPUINFO_INT_MAX_CYCLES:					info->i = 16;							break;
-		
+
 		case CPUINFO_INT_DATABUS_WIDTH + ADDRESS_SPACE_PROGRAM:	info->i = 8;					break;
 		case CPUINFO_INT_ADDRBUS_WIDTH + ADDRESS_SPACE_PROGRAM: info->i = 20;					break;
 		case CPUINFO_INT_ADDRBUS_SHIFT + ADDRESS_SPACE_PROGRAM: info->i = 0;					break;
@@ -2388,10 +2393,10 @@ void z180_get_info(UINT32 state, union cpuinfo *info)
 		case CPUINFO_INT_ADDRBUS_WIDTH + ADDRESS_SPACE_IO: 		info->i = 16;					break;
 		case CPUINFO_INT_ADDRBUS_SHIFT + ADDRESS_SPACE_IO: 		info->i = 0;					break;
 
-		case CPUINFO_INT_IRQ_STATE + IRQ_LINE_NMI:		info->i = Z180.nmi_state;				break;
-		case CPUINFO_INT_IRQ_STATE + Z180_INT0:			info->i = Z180.irq_state[0];			break;
-		case CPUINFO_INT_IRQ_STATE + Z180_INT1:			info->i = Z180.irq_state[1];			break;
-		case CPUINFO_INT_IRQ_STATE + Z180_INT2:			info->i = Z180.irq_state[2];			break;
+		case CPUINFO_INT_INPUT_STATE + INPUT_LINE_NMI:	info->i = Z180.nmi_state;				break;
+		case CPUINFO_INT_INPUT_STATE + Z180_INT0:		info->i = Z180.irq_state[0];			break;
+		case CPUINFO_INT_INPUT_STATE + Z180_INT1:		info->i = Z180.irq_state[1];			break;
+		case CPUINFO_INT_INPUT_STATE + Z180_INT2:		info->i = Z180.irq_state[2];			break;
 
 		case CPUINFO_INT_PREVIOUSPC:					info->i = Z180.PREPC.w.l;				break;
 

@@ -1,11 +1,11 @@
-#pragma code_seg("C757")
-#pragma data_seg("D757")
-#pragma bss_seg("B757")
-#pragma const_seg("K757")
-#pragma comment(linker, "/merge:D757=757")
-#pragma comment(linker, "/merge:C757=757")
-#pragma comment(linker, "/merge:B757=757")
-#pragma comment(linker, "/merge:K757=757")
+#pragma code_seg("C799")
+#pragma data_seg("D799")
+#pragma bss_seg("B799")
+#pragma const_seg("K799")
+#pragma comment(linker, "/merge:D799=799")
+#pragma comment(linker, "/merge:C799=799")
+#pragma comment(linker, "/merge:B799=799")
+#pragma comment(linker, "/merge:K799=799")
 /***************************************************************************
 
 							  -= Unico Games =-
@@ -367,13 +367,13 @@ VIDEO_UPDATE( unico )
 	tilemap_set_scrollx(tilemap_2, 0, *unico_scrollx_2);
 
 #ifdef MAME_DEBUG
-if ( keyboard_pressed(KEYCODE_Z) || keyboard_pressed(KEYCODE_X) )
+if ( code_pressed(KEYCODE_Z) || code_pressed(KEYCODE_X) )
 {
 	int msk = 0;
-	if (keyboard_pressed(KEYCODE_Q))	msk |= 1;
-	if (keyboard_pressed(KEYCODE_W))	msk |= 2;
-	if (keyboard_pressed(KEYCODE_E))	msk |= 4;
-	if (keyboard_pressed(KEYCODE_A))	msk |= 8;
+	if (code_pressed(KEYCODE_Q))	msk |= 1;
+	if (code_pressed(KEYCODE_W))	msk |= 2;
+	if (code_pressed(KEYCODE_E))	msk |= 4;
+	if (code_pressed(KEYCODE_A))	msk |= 8;
 	if (msk != 0) layers_ctrl &= msk;
 }
 #endif
@@ -417,13 +417,13 @@ VIDEO_UPDATE( zeropnt2 )
 	tilemap_set_scrolly(tilemap_2, 0, unico_scroll32[1] >> 16);
 
 #ifdef MAME_DEBUG
-if ( keyboard_pressed(KEYCODE_Z) || keyboard_pressed(KEYCODE_X) )
+if ( code_pressed(KEYCODE_Z) || code_pressed(KEYCODE_X) )
 {
 	int msk = 0;
-	if (keyboard_pressed(KEYCODE_Q))	msk |= 1;
-	if (keyboard_pressed(KEYCODE_W))	msk |= 2;
-	if (keyboard_pressed(KEYCODE_E))	msk |= 4;
-	if (keyboard_pressed(KEYCODE_A))	msk |= 8;
+	if (code_pressed(KEYCODE_Q))	msk |= 1;
+	if (code_pressed(KEYCODE_W))	msk |= 2;
+	if (code_pressed(KEYCODE_E))	msk |= 4;
+	if (code_pressed(KEYCODE_A))	msk |= 8;
 	if (msk != 0) layers_ctrl &= msk;
 }
 #endif

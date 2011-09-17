@@ -1,11 +1,11 @@
-#pragma code_seg("C188")
-#pragma data_seg("D188")
-#pragma bss_seg("B188")
-#pragma const_seg("K188")
-#pragma comment(linker, "/merge:D188=188")
-#pragma comment(linker, "/merge:C188=188")
-#pragma comment(linker, "/merge:B188=188")
-#pragma comment(linker, "/merge:K188=188")
+#pragma code_seg("C190")
+#pragma data_seg("D190")
+#pragma bss_seg("B190")
+#pragma const_seg("K190")
+#pragma comment(linker, "/merge:D190=190")
+#pragma comment(linker, "/merge:C190=190")
+#pragma comment(linker, "/merge:B190=190")
+#pragma comment(linker, "/merge:K190=190")
 /******************************************************************
 
 Cabal  (c)1998 Tad
@@ -137,7 +137,7 @@ WRITE16_HANDLER( cabal_sound_irq_trigger_word_w )
 
 WRITE16_HANDLER( cabalbl_sound_irq_trigger_word_w )
 {
-	cpu_set_irq_line( 1, IRQ_LINE_NMI, PULSE_LINE );
+	cpunum_set_input_line( 1, INPUT_LINE_NMI, PULSE_LINE );
 }
 
 
@@ -205,7 +205,7 @@ ADDRESS_MAP_END
 
 /*********************************************************************/
 
-static READ_HANDLER( cabalbl_snd_r )
+static READ8_HANDLER( cabalbl_snd_r )
 {
 	switch(offset){
 		case 0x06: return input_port_3_r(0);
@@ -215,7 +215,7 @@ static READ_HANDLER( cabalbl_snd_r )
 	}
 }
 
-static WRITE_HANDLER( cabalbl_snd_w )
+static WRITE8_HANDLER( cabalbl_snd_w )
 {
 	switch( offset ){
 		case 0x00: cabalbl_play_adpcm( 0, data ); break;
@@ -530,7 +530,7 @@ static struct YM2151interface ym2151_interface =
 
 static void irqhandler(int irq)
 {
-	cpu_set_irq_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 static struct YM2151interface cabalbl_ym2151_interface =

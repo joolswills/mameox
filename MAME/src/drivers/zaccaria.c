@@ -1,11 +1,11 @@
-#pragma code_seg("C805")
-#pragma data_seg("D805")
-#pragma bss_seg("B805")
-#pragma const_seg("K805")
-#pragma comment(linker, "/merge:D805=805")
-#pragma comment(linker, "/merge:C805=805")
-#pragma comment(linker, "/merge:B805=805")
-#pragma comment(linker, "/merge:K805=805")
+#pragma code_seg("C847")
+#pragma data_seg("D847")
+#pragma bss_seg("B847")
+#pragma const_seg("K847")
+#pragma comment(linker, "/merge:D847=847")
+#pragma comment(linker, "/merge:C847=847")
+#pragma comment(linker, "/merge:B847=847")
+#pragma comment(linker, "/merge:K847=847")
 /***************************************************************************
 
 Jack Rabbit memory map (preliminary)
@@ -51,16 +51,16 @@ extern data8_t *zaccaria_videoram,*zaccaria_attributesram;
 
 PALETTE_INIT( zaccaria );
 VIDEO_START( zaccaria );
-WRITE_HANDLER( zaccaria_videoram_w );
-WRITE_HANDLER( zaccaria_attributes_w );
-WRITE_HANDLER( zaccaria_flip_screen_x_w );
-WRITE_HANDLER( zaccaria_flip_screen_y_w );
+WRITE8_HANDLER( zaccaria_videoram_w );
+WRITE8_HANDLER( zaccaria_attributes_w );
+WRITE8_HANDLER( zaccaria_flip_screen_x_w );
+WRITE8_HANDLER( zaccaria_flip_screen_y_w );
 VIDEO_UPDATE( zaccaria );
 
 
 static int dsw;
 
-static WRITE_HANDLER( zaccaria_dsw_sel_w )
+static WRITE8_HANDLER( zaccaria_dsw_sel_w )
 {
 	switch (data & 0xf0)
 	{
@@ -82,14 +82,14 @@ logerror("PC %04x: portsel = %02x\n",activecpu_get_pc(),data);
 	}
 }
 
-static READ_HANDLER( zaccaria_dsw_r )
+static READ8_HANDLER( zaccaria_dsw_r )
 {
 	return readinputport(dsw);
 }
 
 
 
-static WRITE_HANDLER( ay8910_port0a_w )
+static WRITE8_HANDLER( ay8910_port0a_w )
 {
 	// bits 0-2 go to a weird kind of DAC ??
 	// bits 3-4 control the analog drum emulation on 8910 #0 ch. A
@@ -105,12 +105,12 @@ static WRITE_HANDLER( ay8910_port0a_w )
 }
 
 
-void zaccaria_irq0a(int state) { cpu_set_nmi_line(1,  state ? ASSERT_LINE : CLEAR_LINE); }
-void zaccaria_irq0b(int state) { cpu_set_irq_line(1,0,state ? ASSERT_LINE : CLEAR_LINE); }
+void zaccaria_irq0a(int state) { cpunum_set_input_line(1, INPUT_LINE_NMI, state ? ASSERT_LINE : CLEAR_LINE); }
+void zaccaria_irq0b(int state) { cpunum_set_input_line(1,0,state ? ASSERT_LINE : CLEAR_LINE); }
 
 static int active_8910,port0a,acs;
 
-static READ_HANDLER( zaccaria_port0a_r )
+static READ8_HANDLER( zaccaria_port0a_r )
 {
 	if (active_8910 == 0)
 		return AY8910_read_port_0_r(0);
@@ -118,12 +118,12 @@ static READ_HANDLER( zaccaria_port0a_r )
 		return AY8910_read_port_1_r(0);
 }
 
-static WRITE_HANDLER( zaccaria_port0a_w )
+static WRITE8_HANDLER( zaccaria_port0a_w )
 {
 	port0a = data;
 }
 
-static WRITE_HANDLER( zaccaria_port0b_w )
+static WRITE8_HANDLER( zaccaria_port0b_w )
 {
 	static int last;
 
@@ -174,18 +174,18 @@ static INTERRUPT_GEN( zaccaria_cb1_toggle )
 
 static int port1a,port1b;
 
-static READ_HANDLER( zaccaria_port1a_r )
+static READ8_HANDLER( zaccaria_port1a_r )
 {
 	if (~port1b & 1) return tms5220_status_r(0);
 	else return port1a;
 }
 
-static WRITE_HANDLER( zaccaria_port1a_w )
+static WRITE8_HANDLER( zaccaria_port1a_w )
 {
 	port1a = data;
 }
 
-static WRITE_HANDLER( zaccaria_port1b_w )
+static WRITE8_HANDLER( zaccaria_port1b_w )
 {
 	port1b = data;
 
@@ -201,7 +201,7 @@ static WRITE_HANDLER( zaccaria_port1b_w )
 	set_led_status(0,~data & 0x10);
 }
 
-static READ_HANDLER( zaccaria_ca2_r )
+static READ8_HANDLER( zaccaria_ca2_r )
 {
 // TODO: this doesn't work, why?
 //	return !tms5220_ready_r();
@@ -258,19 +258,19 @@ static MACHINE_INIT( zaccaria )
 }
 
 
-static WRITE_HANDLER( sound_command_w )
+static WRITE8_HANDLER( sound_command_w )
 {
 	soundlatch_w(0,data);
-	cpu_set_irq_line(2,0,(data & 0x80) ? CLEAR_LINE : ASSERT_LINE);
+	cpunum_set_input_line(2,0,(data & 0x80) ? CLEAR_LINE : ASSERT_LINE);
 }
 
-static WRITE_HANDLER( sound1_command_w )
+static WRITE8_HANDLER( sound1_command_w )
 {
 	pia_0_ca1_w(0,data & 0x80);
 	soundlatch2_w(0,data);
 }
 
-static WRITE_HANDLER( mc1408_data_w )
+static WRITE8_HANDLER( mc1408_data_w )
 {
 	DAC_data_w(1,data);
 }
@@ -278,7 +278,7 @@ static WRITE_HANDLER( mc1408_data_w )
 
 struct GameDriver monymony_driver;
 
-static READ_HANDLER( zaccaria_prot1_r )
+static READ8_HANDLER( zaccaria_prot1_r )
 {
 	switch (offset)
 	{
@@ -298,7 +298,7 @@ static READ_HANDLER( zaccaria_prot1_r )
 	}
 }
 
-static READ_HANDLER( zaccaria_prot2_r )
+static READ8_HANDLER( zaccaria_prot2_r )
 {
 	switch (offset)
 	{
@@ -320,12 +320,12 @@ static READ_HANDLER( zaccaria_prot2_r )
 }
 
 
-static WRITE_HANDLER( coin_w )
+static WRITE8_HANDLER( coin_w )
 {
 	coin_counter_w(0,data & 1);
 }
 
-static WRITE_HANDLER( nmienable_w )
+static WRITE8_HANDLER( nmienable_w )
 {
 	interrupt_enable_w(0,data & 1);
 }

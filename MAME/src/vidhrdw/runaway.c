@@ -1,11 +1,11 @@
-#pragma code_seg("C587")
-#pragma data_seg("D587")
-#pragma bss_seg("B587")
-#pragma const_seg("K587")
-#pragma comment(linker, "/merge:D587=587")
-#pragma comment(linker, "/merge:C587=587")
-#pragma comment(linker, "/merge:B587=587")
-#pragma comment(linker, "/merge:K587=587")
+#pragma code_seg("C621")
+#pragma data_seg("D621")
+#pragma bss_seg("B621")
+#pragma const_seg("K621")
+#pragma comment(linker, "/merge:D621=621")
+#pragma comment(linker, "/merge:C621=621")
+#pragma comment(linker, "/merge:B621=621")
+#pragma comment(linker, "/merge:K621=621")
 /***************************************************************************
 
 	Atari Runaway video emulation
@@ -24,7 +24,7 @@ static int tile_bank = 0;
 
 
 
-WRITE_HANDLER( runaway_paletteram_w )
+WRITE8_HANDLER( runaway_paletteram_w )
 {
 	int R =
 		0x21 * ((~data >> 2) & 1) +
@@ -46,7 +46,7 @@ WRITE_HANDLER( runaway_paletteram_w )
 
 
 
-WRITE_HANDLER( runaway_video_ram_w )
+WRITE8_HANDLER( runaway_video_ram_w )
 {
 	if (data != runaway_video_ram[offset])
 	{
@@ -58,7 +58,7 @@ WRITE_HANDLER( runaway_video_ram_w )
 
 
 
-WRITE_HANDLER( runaway_tile_bank_w )
+WRITE8_HANDLER( runaway_tile_bank_w )
 {
 	if ((data & 1) != tile_bank)
 	{

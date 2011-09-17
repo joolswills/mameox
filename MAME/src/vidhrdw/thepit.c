@@ -1,11 +1,11 @@
-#pragma code_seg("C718")
-#pragma data_seg("D718")
-#pragma bss_seg("B718")
-#pragma const_seg("K718")
-#pragma comment(linker, "/merge:D718=718")
-#pragma comment(linker, "/merge:C718=718")
-#pragma comment(linker, "/merge:B718=718")
-#pragma comment(linker, "/merge:K718=718")
+#pragma code_seg("C760")
+#pragma data_seg("D760")
+#pragma bss_seg("B760")
+#pragma const_seg("K760")
+#pragma comment(linker, "/merge:D760=760")
+#pragma comment(linker, "/merge:C760=760")
+#pragma comment(linker, "/merge:B760=760")
+#pragma comment(linker, "/merge:K760=760")
 /***************************************************************************
 
   vidhrdw.c
@@ -147,7 +147,7 @@ PALETTE_INIT( suprmous )
 }
 
 
-WRITE_HANDLER( thepit_attributes_w )
+WRITE8_HANDLER( thepit_attributes_w )
 {
 	if ((offset & 1) && thepit_attributesram[offset] != data)
 	{
@@ -162,13 +162,13 @@ WRITE_HANDLER( thepit_attributes_w )
 }
 
 
-WRITE_HANDLER( intrepid_graphics_bank_select_w )
+WRITE8_HANDLER( intrepid_graphics_bank_select_w )
 {
 	set_vh_global_attribute(&graphics_bank, data << 1);
 }
 
 
-READ_HANDLER( thepit_input_port_0_r )
+READ8_HANDLER( thepit_input_port_0_r )
 {
 	/* Read either the real or the fake input ports depending on the
 	   horizontal flip switch. (This is how the real PCB does it) */
@@ -183,7 +183,7 @@ READ_HANDLER( thepit_input_port_0_r )
 }
 
 
-WRITE_HANDLER( thepit_sound_enable_w )
+WRITE8_HANDLER( thepit_sound_enable_w )
 {
 	mixer_sound_enable_global_w(data);
 }

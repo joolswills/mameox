@@ -1,11 +1,11 @@
-#pragma code_seg("C405")
-#pragma data_seg("D405")
-#pragma bss_seg("B405")
-#pragma const_seg("K405")
-#pragma comment(linker, "/merge:D405=405")
-#pragma comment(linker, "/merge:C405=405")
-#pragma comment(linker, "/merge:B405=405")
-#pragma comment(linker, "/merge:K405=405")
+#pragma code_seg("C423")
+#pragma data_seg("D423")
+#pragma bss_seg("B423")
+#pragma const_seg("K423")
+#pragma comment(linker, "/merge:D423=423")
+#pragma comment(linker, "/merge:C423=423")
+#pragma comment(linker, "/merge:B423=423")
+#pragma comment(linker, "/merge:K423=423")
 /***************************************************************************
 
 	Atari Liberator hardware
@@ -156,13 +156,13 @@ static UINT8 *liberatr_ctrld;
  *
  *************************************/
 
-static WRITE_HANDLER( liberatr_led_w )
+static WRITE8_HANDLER( liberatr_led_w )
 {
 	set_led_status(offset,~data & 0x10);
 }
 
 
-static WRITE_HANDLER( liberatr_coin_counter_w )
+static WRITE8_HANDLER( liberatr_coin_counter_w )
 {
 	coin_counter_w(offset ^ 0x01, data);
 }
@@ -175,7 +175,7 @@ static WRITE_HANDLER( liberatr_coin_counter_w )
  *
  *************************************/
 
-static READ_HANDLER( liberatr_input_port_0_r )
+static READ8_HANDLER( liberatr_input_port_0_r )
 {
 	int	res ;
 	int xdelta, ydelta;

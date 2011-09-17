@@ -10,7 +10,7 @@
 
 #include <stddef.h>
 
-#define LSB_FIRST
+#define LSB_FIRST 1
 
 #ifdef __cplusplus
 extern "C" {
@@ -252,6 +252,16 @@ extern void osd_autobootsavestate( const char *gameName );
 #define HAS_SCSP        1   // New 0.77-0.79
 #define HAS_PSXSPU      1   // New 0.77-0.79
 #define HAS_YMF271      1   // New 0.77-0.79
+
+#define HAS_CDDA	1   // New 0.80-0.84
+#define HAS_NAMCO_52XX	1   // New 0.80-0.84
+#define HAS_NAMCO_54XX	1   // New 0.80-0.84
+#define HAS_NAMCO_63701X 1  // New 0.80-0.84
+#define HAS_ICS2115	1   // New 0.80-0.84
+#define HAS_DMADAC	1   // New 0.80-0.84
+#define HAS_ST0016	1   // New 0.80-0.84
+#define HAS_NAMCO_CUS30	1   // New 0.80-0.84
+#define HAS_NAMCO_15XX	1   // New 0.80-0.84
 
 
 #ifdef __cplusplus

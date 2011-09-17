@@ -1,11 +1,11 @@
-#pragma code_seg("C527")
-#pragma data_seg("D527")
-#pragma bss_seg("B527")
-#pragma const_seg("K527")
-#pragma comment(linker, "/merge:D527=527")
-#pragma comment(linker, "/merge:C527=527")
-#pragma comment(linker, "/merge:B527=527")
-#pragma comment(linker, "/merge:K527=527")
+#pragma code_seg("C557")
+#pragma data_seg("D557")
+#pragma bss_seg("B557")
+#pragma const_seg("K557")
+#pragma comment(linker, "/merge:D557=557")
+#pragma comment(linker, "/merge:C557=557")
+#pragma comment(linker, "/merge:B557=557")
+#pragma comment(linker, "/merge:K557=557")
 /***************************************************************************
 
   vidhrdw.c
@@ -23,7 +23,7 @@ static int scroll;
 
 static struct tilemap *bg_tilemap, *fg_tilemap;
 
-WRITE_HANDLER( pbaction_videoram_w )
+WRITE8_HANDLER( pbaction_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -32,7 +32,7 @@ WRITE_HANDLER( pbaction_videoram_w )
 	}
 }
 
-WRITE_HANDLER( pbaction_colorram_w )
+WRITE8_HANDLER( pbaction_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -41,7 +41,7 @@ WRITE_HANDLER( pbaction_colorram_w )
 	}
 }
 
-WRITE_HANDLER( pbaction_videoram2_w )
+WRITE8_HANDLER( pbaction_videoram2_w )
 {
 	if (pbaction_videoram2[offset] != data)
 	{
@@ -50,7 +50,7 @@ WRITE_HANDLER( pbaction_videoram2_w )
 	}
 }
 
-WRITE_HANDLER( pbaction_colorram2_w )
+WRITE8_HANDLER( pbaction_colorram2_w )
 {
 	if (pbaction_colorram2[offset] != data)
 	{
@@ -59,7 +59,7 @@ WRITE_HANDLER( pbaction_colorram2_w )
 	}
 }
 
-WRITE_HANDLER( pbaction_scroll_w )
+WRITE8_HANDLER( pbaction_scroll_w )
 {
 	scroll = data - 3;
 	if (flip_screen) scroll = -scroll;
@@ -67,7 +67,7 @@ WRITE_HANDLER( pbaction_scroll_w )
 	tilemap_set_scrollx(fg_tilemap, 0, scroll);
 }
 
-WRITE_HANDLER( pbaction_flipscreen_w )
+WRITE8_HANDLER( pbaction_flipscreen_w )
 {
 	flip_screen_set(data & 0x01);
 }

@@ -1,11 +1,11 @@
-#pragma code_seg("C228")
-#pragma data_seg("D228")
-#pragma bss_seg("B228")
-#pragma const_seg("K228")
-#pragma comment(linker, "/merge:D228=228")
-#pragma comment(linker, "/merge:C228=228")
-#pragma comment(linker, "/merge:B228=228")
-#pragma comment(linker, "/merge:K228=228")
+#pragma code_seg("C234")
+#pragma data_seg("D234")
+#pragma bss_seg("B234")
+#pragma const_seg("K234")
+#pragma comment(linker, "/merge:D234=234")
+#pragma comment(linker, "/merge:C234=234")
+#pragma comment(linker, "/merge:B234=234")
+#pragma comment(linker, "/merge:K234=234")
 /***************************************************************************
 
 	Kitco Crowns Golf hardware
@@ -37,7 +37,7 @@ static struct mame_bitmap *highbit;
  *
  *************************************/
 
-WRITE_HANDLER( crgolf_videoram_bit0_w )
+WRITE8_HANDLER( crgolf_videoram_bit0_w )
 {
 	struct mame_bitmap *screen = (*crgolf_screen_select & 1) ? screenb : screena;
 	int x = (offset % 32) * 8;
@@ -55,7 +55,7 @@ WRITE_HANDLER( crgolf_videoram_bit0_w )
 }
 
 
-WRITE_HANDLER( crgolf_videoram_bit1_w )
+WRITE8_HANDLER( crgolf_videoram_bit1_w )
 {
 	struct mame_bitmap *screen = (*crgolf_screen_select & 1) ? screenb : screena;
 	int x = (offset % 32) * 8;
@@ -73,7 +73,7 @@ WRITE_HANDLER( crgolf_videoram_bit1_w )
 }
 
 
-WRITE_HANDLER( crgolf_videoram_bit2_w )
+WRITE8_HANDLER( crgolf_videoram_bit2_w )
 {
 	struct mame_bitmap *screen = (*crgolf_screen_select & 1) ? screenb : screena;
 	int x = (offset % 32) * 8;
@@ -98,7 +98,7 @@ WRITE_HANDLER( crgolf_videoram_bit2_w )
  *
  *************************************/
 
-READ_HANDLER( crgolf_videoram_bit0_r )
+READ8_HANDLER( crgolf_videoram_bit0_r )
 {
 	struct mame_bitmap *screen = (*crgolf_screen_select & 1) ? screenb : screena;
 	int x = (offset % 32) * 8;
@@ -116,7 +116,7 @@ READ_HANDLER( crgolf_videoram_bit0_r )
 }
 
 
-READ_HANDLER( crgolf_videoram_bit1_r )
+READ8_HANDLER( crgolf_videoram_bit1_r )
 {
 	struct mame_bitmap *screen = (*crgolf_screen_select & 1) ? screenb : screena;
 	int x = (offset % 32) * 8;
@@ -134,7 +134,7 @@ READ_HANDLER( crgolf_videoram_bit1_r )
 }
 
 
-READ_HANDLER( crgolf_videoram_bit2_r )
+READ8_HANDLER( crgolf_videoram_bit2_r )
 {
 	struct mame_bitmap *screen = (*crgolf_screen_select & 1) ? screenb : screena;
 	int x = (offset % 32) * 8;

@@ -195,7 +195,7 @@ static WRITE16_HANDLER( sys16_3d_coinctrl_w )
 static WRITE16_HANDLER( sound_command_nmi_w ){
 	if( ACCESSING_LSB ){
 		soundlatch_w( 0,data&0xff );
-		cpu_set_nmi_line(1, PULSE_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 	}
 }
 #endif
@@ -222,7 +222,7 @@ static WRITE16_HANDLER( sys16_coinctrl_w )
 
 static INTERRUPT_GEN( sys16_interrupt ){
 	if(sys16_custom_irq) sys16_custom_irq();
-	cpu_set_irq_line(cpu_getactivecpu(), 4, HOLD_LINE); /* Interrupt vector 4, used by VBlank */
+	cpunum_set_input_line(cpu_getactivecpu(), 4, HOLD_LINE); /* Interrupt vector 4, used by VBlank */
 }
 
 static ADDRESS_MAP_START( sound_readport, ADDRESS_SPACE_IO, 8 )
@@ -260,10 +260,10 @@ static WRITE16_HANDLER( sound_shared_ram_w )
 	}
 }
 
-static READ_HANDLER( sound2_shared_ram_r ){
+static READ8_HANDLER( sound2_shared_ram_r ){
 	return sound_shared_ram[offset];
 }
-static WRITE_HANDLER( sound2_shared_ram_w ){
+static WRITE8_HANDLER( sound2_shared_ram_w ){
 	sound_shared_ram[offset] = data;
 }
 
@@ -970,10 +970,10 @@ static WRITE16_HANDLER( outrun_ctrl1_w )
 		ctrl1 = data;
 		if(changed & 1) {
 			if(data & 1) {
-				cpu_set_halt_line(2, CLEAR_LINE);
-				cpu_set_reset_line(2, PULSE_LINE);
+				cpunum_set_input_line(2, INPUT_LINE_HALT, CLEAR_LINE);
+				cpunum_set_input_line(2, INPUT_LINE_RESET, PULSE_LINE);
 			} else
-				cpu_set_halt_line(2, ASSERT_LINE);
+				cpunum_set_input_line(2, INPUT_LINE_HALT, ASSERT_LINE);
 		}
 
 //		sys16_kill_set(data & 0x20);
@@ -986,7 +986,7 @@ static WRITE16_HANDLER( outrun_ctrl1_w )
 
 static void outrun_reset(void)
 {
-       cpu_set_reset_line(2, PULSE_LINE);
+       cpunum_set_input_line(2, INPUT_LINE_RESET, PULSE_LINE);
 }
 
 
@@ -1087,7 +1087,7 @@ static MACHINE_INIT( outrun ){
 	if (!strcmp(Machine->gamedrv->name,"outrun")) sys16_patch_code( 0x55ed, 0x00);
 	if (!strcmp(Machine->gamedrv->name,"outruna")) sys16_patch_code( 0x5661, 0x00);
 	if (!strcmp(Machine->gamedrv->name,"outrunb")) sys16_patch_code( 0x5661, 0x00);
-	if (!strcmp(Machine->gamedrv->name,"outrunp")) sys16_patch_code( 0x559f, 0x00);
+	if (!strcmp(Machine->gamedrv->name,"outrundx")) sys16_patch_code( 0x559f, 0x00);
 
      cpu_set_m68k_reset(0, outrun_reset);
 
@@ -1276,8 +1276,8 @@ INPUT_PORTS_END
 /***************************************************************************/
 static INTERRUPT_GEN( or_interrupt ){
 	int intleft=cpu_getiloops();
-	if(intleft!=0) cpu_set_irq_line(0, 2, HOLD_LINE);
-	else cpu_set_irq_line(0, 4, HOLD_LINE);
+	if(intleft!=0) cpunum_set_input_line(0, 2, HOLD_LINE);
+	else cpunum_set_input_line(0, 4, HOLD_LINE);
 }
 
 
@@ -1567,8 +1567,8 @@ GAME( 1986, outrun,   0,        outrun,   outrun,   outrun,   ROT0,         "Seg
 GAME( 1986, outruna,  outrun,   outrun,   outrun,   outrun,   ROT0,         "Sega",    "Out Run (set 2)" )
 GAME( 1986, outrunb,  outrun,   outrun,   outrun,   outrunb,  ROT0,         "bootleg", "Out Run (set 3)" )
 GAME( 1986, outrundx, outrun,   outrun,   outrun,   outrun,   ROT0,         "Sega",    "Out Run (Deluxe?)" )
-GAMEX(19??, toutrun,  0,        outrun,   outrun,   outrun,   ROT0,         "Sega", "Turbo Outrun (set 1)", GAME_NOT_WORKING )
-GAMEX(19??, toutruna, toutrun,  outrun,   outrun,   outrun,   ROT0,         "Sega", "Turbo Outrun (set 2)", GAME_NOT_WORKING )
+GAMEX(1989, toutrun,  0,        outrun,   outrun,   outrun,   ROT0,         "Sega",	   "Turbo Out Run (set 1)", GAME_NOT_WORKING )
+GAMEX(1989, toutruna, toutrun,  outrun,   outrun,   outrun,   ROT0,         "Sega",    "Turbo Out Run (set 2)", GAME_NOT_WORKING )
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

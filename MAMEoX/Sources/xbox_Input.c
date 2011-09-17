@@ -1200,6 +1200,15 @@ static void Helper_CustomizeInputPortDefaults( struct ipd *defaults )
       REMAP_SEQ_1( AXISCODE( 3, JT_LSTICK_DOWN ) );
       break;
 
+
+
+
+
+
+
+
+
+
 		}
 	}
 }

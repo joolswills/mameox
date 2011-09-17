@@ -1,11 +1,12 @@
-#pragma code_seg("C563")
-#pragma data_seg("D563")
-#pragma bss_seg("B563")
-#pragma const_seg("K563")
-#pragma comment(linker, "/merge:D563=563")
-#pragma comment(linker, "/merge:C563=563")
-#pragma comment(linker, "/merge:B563=563")
-#pragma comment(linker, "/merge:K563=563")
+#pragma code_seg("C597")
+#pragma data_seg("D597")
+#pragma bss_seg("B597")
+#pragma const_seg("K597")
+#pragma comment(linker, "/merge:D597=597")
+#pragma comment(linker, "/merge:C597=597")
+#pragma comment(linker, "/merge:B597=597")
+#pragma comment(linker, "/merge:K597=597")
+
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -16,35 +17,35 @@ static int flipscreen,ALTERNATE;
 
 /******************************************************************************/
 
-READ_HANDLER( raiden_background_r )
+READ8_HANDLER( raiden_background_r )
 {
 	return raiden_back_data[offset];
 }
 
-READ_HANDLER( raiden_foreground_r )
+READ8_HANDLER( raiden_foreground_r )
 {
 	return raiden_fore_data[offset];
 }
 
-WRITE_HANDLER( raiden_background_w )
+WRITE8_HANDLER( raiden_background_w )
 {
 	raiden_back_data[offset]=data;
 	tilemap_mark_tile_dirty( bg_layer,offset/2);
 }
 
-WRITE_HANDLER( raiden_foreground_w )
+WRITE8_HANDLER( raiden_foreground_w )
 {
 	raiden_fore_data[offset]=data;
 	tilemap_mark_tile_dirty( fg_layer,offset/2);
 }
 
-WRITE_HANDLER( raiden_text_w )
+WRITE8_HANDLER( raiden_text_w )
 {
 	videoram[offset]=data;
 	tilemap_mark_tile_dirty( tx_layer,offset/2);
 }
 
-WRITE_HANDLER( raidena_text_w )
+WRITE8_HANDLER( raidena_text_w )
 {
 	videoram[offset]=data;
 	tilemap_mark_tile_dirty( tx_layer,offset/2);
@@ -122,7 +123,7 @@ VIDEO_START( raidena )
 	return 0;
 }
 
-WRITE_HANDLER( raiden_control_w )
+WRITE8_HANDLER( raiden_control_w )
 {
 	/* All other bits unknown - could be playfield enables */
 
@@ -141,7 +142,6 @@ static void draw_sprites(struct mame_bitmap *bitmap,const struct rectangle *clip
 	{
 		/* Don't draw empty sprite table entries */
 		if (buffered_spriteram[offs+7]!=0xf) continue;
-		if (buffered_spriteram[offs+0]==0xf0f) continue;
 		if (!(pri_mask&buffered_spriteram[offs+5])) continue;
 
 		fx= buffered_spriteram[offs+1]&0x20;

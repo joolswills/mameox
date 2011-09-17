@@ -1,11 +1,11 @@
-#pragma code_seg("C148")
-#pragma data_seg("D148")
-#pragma bss_seg("B148")
-#pragma const_seg("K148")
-#pragma comment(linker, "/merge:D148=148")
-#pragma comment(linker, "/merge:C148=148")
-#pragma comment(linker, "/merge:B148=148")
-#pragma comment(linker, "/merge:K148=148")
+#pragma code_seg("C149")
+#pragma data_seg("D149")
+#pragma bss_seg("B149")
+#pragma const_seg("K149")
+#pragma comment(linker, "/merge:D149=149")
+#pragma comment(linker, "/merge:C149=149")
+#pragma comment(linker, "/merge:B149=149")
+#pragma comment(linker, "/merge:K149=149")
 /***************************************************************************
 
 Bank Panic memory map (preliminary)
@@ -48,12 +48,12 @@ write:
 extern UINT8 *bankp_videoram2;
 extern UINT8 *bankp_colorram2;
 
-extern WRITE_HANDLER( bankp_videoram_w );
-extern WRITE_HANDLER( bankp_colorram_w );
-extern WRITE_HANDLER( bankp_videoram2_w );
-extern WRITE_HANDLER( bankp_colorram2_w );
-extern WRITE_HANDLER( bankp_scroll_w );
-extern WRITE_HANDLER( bankp_out_w );
+extern WRITE8_HANDLER( bankp_videoram_w );
+extern WRITE8_HANDLER( bankp_colorram_w );
+extern WRITE8_HANDLER( bankp_videoram2_w );
+extern WRITE8_HANDLER( bankp_colorram2_w );
+extern WRITE8_HANDLER( bankp_scroll_w );
+extern WRITE8_HANDLER( bankp_out_w );
 
 extern PALETTE_INIT( bankp );
 extern VIDEO_START( bankp );
@@ -61,33 +61,21 @@ extern VIDEO_UPDATE( bankp );
 
 
 
-static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0xdfff) AM_READ(MRA8_ROM)
-	AM_RANGE(0xe000, 0xe7ff) AM_READ(MRA8_RAM)
-	AM_RANGE(0xf000, 0xffff) AM_READ(MRA8_RAM)
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0xdfff) AM_WRITE(MWA8_ROM)
-	AM_RANGE(0xe000, 0xe7ff) AM_WRITE(MWA8_RAM)
-	AM_RANGE(0xf000, 0xf3ff) AM_WRITE(bankp_videoram_w) AM_BASE(&videoram)
-	AM_RANGE(0xf400, 0xf7ff) AM_WRITE(bankp_colorram_w) AM_BASE(&colorram)
-	AM_RANGE(0xf800, 0xfbff) AM_WRITE(bankp_videoram2_w) AM_BASE(&bankp_videoram2)
-	AM_RANGE(0xfc00, 0xffff) AM_WRITE(bankp_colorram2_w) AM_BASE(&bankp_colorram2)
+static ADDRESS_MAP_START( bankp_map, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0xdfff) AM_ROM
+	AM_RANGE(0xe000, 0xefff) AM_RAM
+	AM_RANGE(0xf000, 0xf3ff) AM_RAM AM_WRITE(bankp_videoram_w) AM_BASE(&videoram)
+	AM_RANGE(0xf400, 0xf7ff) AM_RAM AM_WRITE(bankp_colorram_w) AM_BASE(&colorram)
+	AM_RANGE(0xf800, 0xfbff) AM_RAM AM_WRITE(bankp_videoram2_w) AM_BASE(&bankp_videoram2)
+	AM_RANGE(0xfc00, 0xffff) AM_RAM AM_WRITE(bankp_colorram2_w) AM_BASE(&bankp_colorram2)
 ADDRESS_MAP_END
 
 
-static ADDRESS_MAP_START( readport, ADDRESS_SPACE_IO, 8 )
-	AM_RANGE(0x00, 0x00) AM_READ(input_port_0_r)	/* IN0 */
-	AM_RANGE(0x01, 0x01) AM_READ(input_port_1_r)	/* IN1 */
-	AM_RANGE(0x02, 0x02) AM_READ(input_port_2_r)	/* IN2 */
-	AM_RANGE(0x04, 0x04) AM_READ(input_port_3_r)	/* DSW */
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( writeport, ADDRESS_SPACE_IO, 8 )
-	AM_RANGE(0x00, 0x00) AM_WRITE(SN76496_0_w)
-	AM_RANGE(0x01, 0x01) AM_WRITE(SN76496_1_w)
-	AM_RANGE(0x02, 0x02) AM_WRITE(SN76496_2_w)
+static ADDRESS_MAP_START( bankp_io_map, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x00, 0x00) AM_READWRITE(input_port_0_r, SN76496_0_w)
+	AM_RANGE(0x01, 0x01) AM_READWRITE(input_port_1_r, SN76496_1_w)
+	AM_RANGE(0x02, 0x02) AM_READWRITE(input_port_2_r, SN76496_2_w)
+	AM_RANGE(0x04, 0x04) AM_READ(input_port_3_r)
 	AM_RANGE(0x05, 0x05) AM_WRITE(bankp_scroll_w)
 	AM_RANGE(0x07, 0x07) AM_WRITE(bankp_out_w)
 ADDRESS_MAP_END
@@ -96,20 +84,20 @@ ADDRESS_MAP_END
 
 INPUT_PORTS_START( bankp )
 	PORT_START	/* IN0 */
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_UNKNOWN )	/* probably unused */
+	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_UNUSED )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_JOYSTICK_RIGHT | IPF_2WAY )
-	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_UNKNOWN )	/* probably unused */
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_JOYSTICK_LEFT | IPF_2WAY )
+	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_UNUSED )
+	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_JOYSTICK_LEFT  | IPF_2WAY )
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_BUTTON1 )
 	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_COIN1 )
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_COIN2 )
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_BUTTON2 )
 
 	PORT_START	/* IN1 */
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_UNKNOWN )	/* probably unused */
+	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_UNUSED )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_JOYSTICK_RIGHT | IPF_2WAY | IPF_COCKTAIL )
-	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_UNKNOWN )	/* probably unused */
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_JOYSTICK_LEFT | IPF_2WAY | IPF_COCKTAIL )
+	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_UNUSED )
+	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_JOYSTICK_LEFT  | IPF_2WAY | IPF_COCKTAIL )
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_BUTTON1 | IPF_COCKTAIL )
 	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_START1 )
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_START2 )
@@ -118,8 +106,8 @@ INPUT_PORTS_START( bankp )
 	PORT_START	/* IN2 */
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_BUTTON3 )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_BUTTON3 | IPF_COCKTAIL )
-	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_COIN3 )
-	PORT_BIT( 0xf8, IP_ACTIVE_HIGH, IPT_UNKNOWN )	/* probably unused */
+	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_SERVICE1 )
+	PORT_BIT( 0xf8, IP_ACTIVE_HIGH, IPT_UNUSED )
 
 	PORT_START	/* DSW */
 	PORT_DIPNAME( 0x03, 0x00, "Coin A/B" )
@@ -134,8 +122,8 @@ INPUT_PORTS_START( bankp )
 	PORT_DIPSETTING(    0x00, "3" )
 	PORT_DIPSETTING(    0x08, "4" )
 	PORT_DIPNAME( 0x10, 0x00, DEF_STR( Bonus_Life ) )
-	PORT_DIPSETTING(    0x00, "70K 200K 500K ..." )
-	PORT_DIPSETTING(    0x10, "100K 400K 800K ..." )
+	PORT_DIPSETTING(    0x00, "70K 200K 500K" )
+	PORT_DIPSETTING(    0x10, "100K 400K 800K" )
 	PORT_DIPNAME( 0x20, 0x00, DEF_STR( Difficulty ) )
 	PORT_DIPSETTING(    0x00, "Easy" )
 	PORT_DIPSETTING(    0x20, "Hard" )
@@ -182,7 +170,7 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 static struct SN76496interface sn76496_interface =
 {
 	3,	/* 3 chips */
-	{ 3867120, 3867120, 3867120 },	/* ?? the main oscillator is 15.46848 MHz */
+	{ 15468480/4, 15468480/4, 15468480/4 },
 	{ 100, 100, 100 }
 };
 
@@ -191,9 +179,9 @@ static struct SN76496interface sn76496_interface =
 static MACHINE_DRIVER_START( bankp )
 
 	/* basic machine hardware */
-	MDRV_CPU_ADD(Z80, 3867120)	/* ?? the main oscillator is 15.46848 MHz */
-	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
-	MDRV_CPU_IO_MAP(readport,writeport)
+	MDRV_CPU_ADD(Z80, 15468480/4)
+	MDRV_CPU_PROGRAM_MAP(bankp_map, 0)
+	MDRV_CPU_IO_MAP(bankp_io_map, 0)
 	MDRV_CPU_VBLANK_INT(nmi_line_pulse,1)
 
 	MDRV_FRAMES_PER_SECOND(60)

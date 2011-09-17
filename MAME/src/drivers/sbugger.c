@@ -1,11 +1,11 @@
-#pragma code_seg("C594")
-#pragma data_seg("D594")
-#pragma bss_seg("B594")
-#pragma const_seg("K594")
-#pragma comment(linker, "/merge:D594=594")
-#pragma comment(linker, "/merge:C594=594")
-#pragma comment(linker, "/merge:B594=594")
-#pragma comment(linker, "/merge:K594=594")
+#pragma code_seg("C628")
+#pragma data_seg("D628")
+#pragma bss_seg("B628")
+#pragma const_seg("K628")
+#pragma comment(linker, "/merge:D628=628")
+#pragma comment(linker, "/merge:C628=628")
+#pragma comment(linker, "/merge:B628=628")
+#pragma comment(linker, "/merge:K628=628")
 /* Space Bugger */
 
 /* is the rom mapping ok, are the roms good? it jumps to the 0x800 region and I don't have a rom for there,
@@ -61,8 +61,8 @@ data8_t* sbugger_videoram, *sbugger_videoram_attr;
 PALETTE_INIT(sbugger);
 VIDEO_UPDATE(sbugger);
 VIDEO_START(sbugger);
-WRITE_HANDLER( sbugger_videoram_attr_w );
-WRITE_HANDLER( sbugger_videoram_w );
+WRITE8_HANDLER( sbugger_videoram_attr_w );
+WRITE8_HANDLER( sbugger_videoram_w );
 
 /* memory maps */
 

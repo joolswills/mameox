@@ -1,11 +1,11 @@
-#pragma code_seg("C780")
-#pragma data_seg("D780")
-#pragma bss_seg("B780")
-#pragma const_seg("K780")
-#pragma comment(linker, "/merge:D780=780")
-#pragma comment(linker, "/merge:C780=780")
-#pragma comment(linker, "/merge:B780=780")
-#pragma comment(linker, "/merge:K780=780")
+#pragma code_seg("C822")
+#pragma data_seg("D822")
+#pragma bss_seg("B822")
+#pragma const_seg("K822")
+#pragma comment(linker, "/merge:D822=822")
+#pragma comment(linker, "/merge:C822=822")
+#pragma comment(linker, "/merge:B822=822")
+#pragma comment(linker, "/merge:K822=822")
 /*******************************************************************************
  Welltris (c)1991 Video System
 
@@ -338,7 +338,7 @@ VIDEO_UPDATE( welltris );
 
 
 
-static WRITE_HANDLER( welltris_sh_bankswitch_w )
+static WRITE8_HANDLER( welltris_sh_bankswitch_w )
 {
 	data8_t *rom = memory_region(REGION_CPU2) + 0x10000;
 
@@ -354,7 +354,7 @@ static WRITE16_HANDLER( sound_command_w )
 	{
 		pending_command = 1;
 		soundlatch_w(0, data & 0xff);
-		cpu_set_nmi_line(1, PULSE_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 	}
 }
 
@@ -363,7 +363,7 @@ static READ16_HANDLER( in0_r )
 	return readinputport(0) | (pending_command ? 0x80 : 0);
 }
 
-static WRITE_HANDLER( pending_command_clear_w )
+static WRITE8_HANDLER( pending_command_clear_w )
 {
 	pending_command = 0;
 }
@@ -724,7 +724,7 @@ static struct GfxDecodeInfo welltris_gfxdecodeinfo[] =
 
 static void irqhandler(int irq)
 {
-	cpu_set_irq_line(1, 0, irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1, 0, irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 static struct YM2610interface ym2610_interface =

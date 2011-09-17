@@ -1,11 +1,11 @@
-#pragma code_seg("C259")
-#pragma data_seg("D259")
-#pragma bss_seg("B259")
-#pragma const_seg("K259")
-#pragma comment(linker, "/merge:D259=259")
-#pragma comment(linker, "/merge:C259=259")
-#pragma comment(linker, "/merge:B259=259")
-#pragma comment(linker, "/merge:K259=259")
+#pragma code_seg("C269")
+#pragma data_seg("D269")
+#pragma bss_seg("B269")
+#pragma const_seg("K269")
+#pragma comment(linker, "/merge:D269=269")
+#pragma comment(linker, "/merge:C269=269")
+#pragma comment(linker, "/merge:B269=269")
+#pragma comment(linker, "/merge:K269=269")
 /***************************************************************************
 
   vidhrdw.c
@@ -148,7 +148,7 @@ PALETTE_INIT( dorunrun )
 	convert_color_prom(colortable,color_prom,1);
 }
 
-WRITE_HANDLER( docastle_videoram_w )
+WRITE8_HANDLER( docastle_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -158,7 +158,7 @@ WRITE_HANDLER( docastle_videoram_w )
 	}
 }
 
-WRITE_HANDLER( docastle_colorram_w )
+WRITE8_HANDLER( docastle_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -168,27 +168,27 @@ WRITE_HANDLER( docastle_colorram_w )
 	}
 }
 
-READ_HANDLER( docastle_flipscreen_off_r )
+READ8_HANDLER( docastle_flipscreen_off_r )
 {
 	flip_screen_set(0);
 	tilemap_mark_all_tiles_dirty(ALL_TILEMAPS);
 	return 0;
 }
 
-READ_HANDLER( docastle_flipscreen_on_r )
+READ8_HANDLER( docastle_flipscreen_on_r )
 {
 	flip_screen_set(1);
 	tilemap_mark_all_tiles_dirty(ALL_TILEMAPS);
 	return 1;
 }
 
-WRITE_HANDLER( docastle_flipscreen_off_w )
+WRITE8_HANDLER( docastle_flipscreen_off_w )
 {
 	flip_screen_set(0);
 	tilemap_mark_all_tiles_dirty(ALL_TILEMAPS);
 }
 
-WRITE_HANDLER( docastle_flipscreen_on_w )
+WRITE8_HANDLER( docastle_flipscreen_on_w )
 {
 	flip_screen_set(1);
 	tilemap_mark_all_tiles_dirty(ALL_TILEMAPS);

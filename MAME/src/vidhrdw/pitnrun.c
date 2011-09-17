@@ -1,11 +1,11 @@
-#pragma code_seg("C536")
-#pragma data_seg("D536")
-#pragma bss_seg("B536")
-#pragma const_seg("K536")
-#pragma comment(linker, "/merge:D536=536")
-#pragma comment(linker, "/merge:C536=536")
-#pragma comment(linker, "/merge:B536=536")
-#pragma comment(linker, "/merge:K536=536")
+#pragma code_seg("C567")
+#pragma data_seg("D567")
+#pragma bss_seg("B567")
+#pragma const_seg("K567")
+#pragma comment(linker, "/merge:D567=567")
+#pragma comment(linker, "/merge:C567=567")
+#pragma comment(linker, "/merge:B567=567")
+#pragma comment(linker, "/merge:K567=567")
 /***************************************************************************
 
   - BG layer 32x128 , 8x8 tiles 4bpp , 2 palettes  (2nd is black )
@@ -60,30 +60,30 @@ static void get_tile_info2(int tile_index)
 		0)
 }
 
-WRITE_HANDLER( pitnrun_videoram_w )
+WRITE8_HANDLER( pitnrun_videoram_w )
 {
 	videoram[offset] = data;
 	tilemap_mark_all_tiles_dirty( fg );
 }
 
-WRITE_HANDLER( pitnrun_videoram2_w )
+WRITE8_HANDLER( pitnrun_videoram2_w )
 {
 	videoram2[offset] = data;
 	tilemap_mark_all_tiles_dirty( bg );
 }
 
 
-READ_HANDLER( pitnrun_videoram_r )
+READ8_HANDLER( pitnrun_videoram_r )
 {
 	return videoram[offset];
 }
 
-READ_HANDLER( pitnrun_videoram2_r )
+READ8_HANDLER( pitnrun_videoram2_r )
 {
 	return videoram2[offset];
 }
 
-WRITE_HANDLER( pitnrun_char_bank_select )
+WRITE8_HANDLER( pitnrun_char_bank_select )
 {
 	if(pitnrun_char_bank!=data)
 	{
@@ -93,28 +93,28 @@ WRITE_HANDLER( pitnrun_char_bank_select )
 }
 
 
-WRITE_HANDLER( pitnrun_scroll_w )
+WRITE8_HANDLER( pitnrun_scroll_w )
 {
 	pitnrun_scroll = (pitnrun_scroll & (0xff<<((offset)?0:8))) |( data<<((offset)?8:0));
 	tilemap_set_scrollx( bg, 0, pitnrun_scroll);
 }
 
-WRITE_HANDLER(pitnrun_ha_w)
+WRITE8_HANDLER(pitnrun_ha_w)
 {
 	pitnrun_ha=data;
 }
 
-WRITE_HANDLER(pitnrun_h_heed_w)
+WRITE8_HANDLER(pitnrun_h_heed_w)
 {
 	pitnrun_h_heed=data;
 }
 
-WRITE_HANDLER(pitnrun_v_heed_w)
+WRITE8_HANDLER(pitnrun_v_heed_w)
 {
 	pitnrun_v_heed=data;
 }
 
-WRITE_HANDLER(pitnrun_color_select_w)
+WRITE8_HANDLER(pitnrun_color_select_w)
 {
 	pitnrun_color_select=data;
 	tilemap_mark_all_tiles_dirty(ALL_TILEMAPS);
@@ -237,19 +237,19 @@ VIDEO_UPDATE( pitnrun )
 	struct rectangle myclip=*cliprect; 
 
 #ifdef MAME_DEBUG
-	if (keyboard_pressed_memory(KEYCODE_Q))
+	if (code_pressed_memory(KEYCODE_Q))
 	{
 		unsigned char *ROM = memory_region(REGION_CPU1);
 		ROM[0x84f6]=0; /* lap 0 - normal */
 	}
 	
-	if (keyboard_pressed_memory(KEYCODE_W))
+	if (code_pressed_memory(KEYCODE_W))
 	{
 		unsigned char *ROM = memory_region(REGION_CPU1);
 		ROM[0x84f6]=6; /* lap 6 = spotlight */
 	}
 	
-	if (keyboard_pressed_memory(KEYCODE_E))
+	if (code_pressed_memory(KEYCODE_E))
 	{
 		unsigned char *ROM = memory_region(REGION_CPU1);
 		ROM[0x84f6]=2; /* lap 3 (trial 2)= lightnings */

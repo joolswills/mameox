@@ -201,7 +201,7 @@ INTERRUPT_GEN( exidy_vblank_interrupt )
 	int_condition &= ~0x80;
 
 	/* set the IRQ line */
-	cpu_set_irq_line(0, 0, ASSERT_LINE);
+	cpunum_set_input_line(0, 0, ASSERT_LINE);
 }
 
 
@@ -211,14 +211,14 @@ INTERRUPT_GEN( teetert_vblank_interrupt )
 	exidy_vblank_interrupt();
 	
 	/* plus a pulse on the NMI line */
-	cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);
+	cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 }
 
 
-READ_HANDLER( exidy_interrupt_r )
+READ8_HANDLER( exidy_interrupt_r )
 {
 	/* clear any interrupts */
-	cpu_set_irq_line(0, 0, CLEAR_LINE);
+	cpunum_set_input_line(0, 0, CLEAR_LINE);
 
 	/* return the latched condition */
 	return int_condition;
@@ -232,7 +232,7 @@ READ_HANDLER( exidy_interrupt_r )
  *
  *************************************/
 
-WRITE_HANDLER( exidy_characterram_w )
+WRITE8_HANDLER( exidy_characterram_w )
 {
 	if (exidy_characterram[offset] != data)
 	{
@@ -249,7 +249,7 @@ WRITE_HANDLER( exidy_characterram_w )
  *
  *************************************/
 
-WRITE_HANDLER( exidy_color_w )
+WRITE8_HANDLER( exidy_color_w )
 {
 	int i;
 
@@ -327,7 +327,7 @@ static void collision_irq_callback(int param)
 	latch_condition(param);
 
 	/* set the IRQ line */
-	cpu_set_irq_line(0, 0, ASSERT_LINE);
+	cpunum_set_input_line(0, 0, ASSERT_LINE);
 }
 
 

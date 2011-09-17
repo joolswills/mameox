@@ -1,11 +1,11 @@
-#pragma code_seg("C295")
-#pragma data_seg("D295")
-#pragma bss_seg("B295")
-#pragma const_seg("K295")
-#pragma comment(linker, "/merge:D295=295")
-#pragma comment(linker, "/merge:C295=295")
-#pragma comment(linker, "/merge:B295=295")
-#pragma comment(linker, "/merge:K295=295")
+#pragma code_seg("C306")
+#pragma data_seg("D306")
+#pragma bss_seg("B306")
+#pragma const_seg("K306")
+#pragma comment(linker, "/merge:D306=306")
+#pragma comment(linker, "/merge:C306=306")
+#pragma comment(linker, "/merge:B306=306")
+#pragma comment(linker, "/merge:K306=306")
 /***************************************************************************
 
   Functions to emulate the video hardware of the machine.
@@ -104,7 +104,7 @@ VIDEO_START( flkatck )
 
 ***************************************************************************/
 
-WRITE_HANDLER( flkatck_k007121_w )
+WRITE8_HANDLER( flkatck_k007121_w )
 {
 	if (offset < 0x1000){	/* tiles */
 		if (k007121_ram[offset] != data)
@@ -120,7 +120,7 @@ WRITE_HANDLER( flkatck_k007121_w )
 		k007121_ram[offset] = data;
 }
 
-WRITE_HANDLER( flkatck_k007121_regs_w )
+WRITE8_HANDLER( flkatck_k007121_regs_w )
 {
 	switch (offset)
 	{

@@ -1,11 +1,11 @@
-#pragma code_seg("C498")
-#pragma data_seg("D498")
-#pragma bss_seg("B498")
-#pragma const_seg("K498")
-#pragma comment(linker, "/merge:D498=498")
-#pragma comment(linker, "/merge:C498=498")
-#pragma comment(linker, "/merge:B498=498")
-#pragma comment(linker, "/merge:K498=498")
+#pragma code_seg("C527")
+#pragma data_seg("D527")
+#pragma bss_seg("B527")
+#pragma const_seg("K527")
+#pragma comment(linker, "/merge:D527=527")
+#pragma comment(linker, "/merge:C527=527")
+#pragma comment(linker, "/merge:B527=527")
+#pragma comment(linker, "/merge:K527=527")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "state.h"
@@ -43,12 +43,12 @@ static void get_bg_tile_info(int tile_index){
 			0)
 }
 
-WRITE_HANDLER( ninjakid_fg_videoram_w ){
+WRITE8_HANDLER( ninjakid_fg_videoram_w ){
 	videoram[offset] = data;
 	tilemap_mark_tile_dirty(fg_tilemap,offset&0x3ff);
 }
 
-WRITE_HANDLER( ninjakid_bg_videoram_w ){
+WRITE8_HANDLER( ninjakid_bg_videoram_w ){
 
 	int y = (offset + ((ninjakun_yscroll & 0xf8) << 2) ) & 0x3e0;
 	int x = (offset + (ninjakun_xscroll >> 3) ) & 0x1f;
@@ -58,7 +58,7 @@ WRITE_HANDLER( ninjakid_bg_videoram_w ){
 	tilemap_mark_tile_dirty(bg_tilemap,x+y);
 }
 
-READ_HANDLER( ninjakid_bg_videoram_r )
+READ8_HANDLER( ninjakid_bg_videoram_r )
 {
 	int y = (offset + ((ninjakun_yscroll & 0xf8) << 2) ) & 0x3e0;
 	int x = (offset + (ninjakun_xscroll >> 3) ) & 0x1f;
@@ -69,12 +69,12 @@ READ_HANDLER( ninjakid_bg_videoram_r )
 
 /******************************************************************************/
 
-WRITE_HANDLER( ninjakun_flipscreen_w ){
+WRITE8_HANDLER( ninjakun_flipscreen_w ){
 	flipscreen = data?(TILEMAP_FLIPX|TILEMAP_FLIPY):0;
 	tilemap_set_flip( ALL_TILEMAPS,flipscreen );
 }
 
-READ_HANDLER( ninjakun_io_8000_r ){
+READ8_HANDLER( ninjakun_io_8000_r ){
 	switch( offset ){
 	case 0: /* control */
 		return AY8910_read_port_0_r( 0 );
@@ -138,7 +138,7 @@ READ_HANDLER( ninjakun_io_8000_r ){
 */
 
 
-WRITE_HANDLER( ninjakun_io_8000_w ){
+WRITE8_HANDLER( ninjakun_io_8000_w ){
 	switch( offset ){
 	case 0x0: /* control#1 */
 		ninjakun_io_8000_ctrl[0] = data;
@@ -180,7 +180,7 @@ WRITE_HANDLER( ninjakun_io_8000_w ){
 	}
 }
 
-WRITE_HANDLER( ninjakun_paletteram_w )
+WRITE8_HANDLER( ninjakun_paletteram_w )
 {
 	int i;
 

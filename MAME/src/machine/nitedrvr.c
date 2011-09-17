@@ -1,11 +1,11 @@
-#pragma code_seg("C500")
-#pragma data_seg("D500")
-#pragma bss_seg("B500")
-#pragma const_seg("K500")
-#pragma comment(linker, "/merge:D500=500")
-#pragma comment(linker, "/merge:C500=500")
-#pragma comment(linker, "/merge:B500=500")
-#pragma comment(linker, "/merge:K500=500")
+#pragma code_seg("C529")
+#pragma data_seg("D529")
+#pragma bss_seg("B529")
+#pragma const_seg("K529")
+#pragma comment(linker, "/merge:D529=529")
+#pragma comment(linker, "/merge:C529=529")
+#pragma comment(linker, "/merge:B529=529")
+#pragma comment(linker, "/merge:K529=529")
 /***************************************************************************
 
 	Atari Night Driver hardware
@@ -30,7 +30,7 @@ static int nitedrvr_crash_data_en = 0x00;	// IC D8
 /***************************************************************************
 nitedrvr_ram_r
 ***************************************************************************/
-READ_HANDLER( nitedrvr_ram_r )
+READ8_HANDLER( nitedrvr_ram_r )
 {
 	return nitedrvr_ram[offset];
 }
@@ -38,7 +38,7 @@ READ_HANDLER( nitedrvr_ram_r )
 /***************************************************************************
 nitedrvr_ram_w
 ***************************************************************************/
-WRITE_HANDLER( nitedrvr_ram_w )
+WRITE8_HANDLER( nitedrvr_ram_w )
 {
 	nitedrvr_ram[offset]=data;
 }
@@ -88,13 +88,13 @@ static int nitedrvr_steering(void)
 /***************************************************************************
 nitedrvr_steering_reset
 ***************************************************************************/
-READ_HANDLER( nitedrvr_steering_reset_r )
+READ8_HANDLER( nitedrvr_steering_reset_r )
 {
 	nitedrvr_steering_val=0x00;
 	return 0;
 }
 
-WRITE_HANDLER( nitedrvr_steering_reset_w )
+WRITE8_HANDLER( nitedrvr_steering_reset_w )
 {
 	nitedrvr_steering_val=0x00;
 }
@@ -128,7 +128,7 @@ Night Driver looks for the following:
 Fill in the steering and gear bits in a special way.
 ***************************************************************************/
 
-READ_HANDLER( nitedrvr_in0_r )
+READ8_HANDLER( nitedrvr_in0_r )
 {
 	int gear;
 
@@ -188,7 +188,7 @@ Night Driver looks for the following:
 Fill in the track difficulty switch and special signal in a special way.
 ***************************************************************************/
 
-READ_HANDLER( nitedrvr_in1_r )
+READ8_HANDLER( nitedrvr_in1_r )
 {
 	static int ac_line=0x00;
 	int port;
@@ -236,7 +236,7 @@ D3 = !SPEED4
 D4 = SKID1
 D5 = SKID2
 ***************************************************************************/
-WRITE_HANDLER( nitedrvr_out0_w )
+WRITE8_HANDLER( nitedrvr_out0_w )
 {
 	discrete_sound_w(3, (~data) & 0x0f);		// Motor freq data*
 	discrete_sound_w(1, (data & 0x10) ? 1 : 0);	// Skid1 enable
@@ -253,7 +253,7 @@ D3 = Not used?
 D4 = LED START
 D5 = Spare (Not used)
 ***************************************************************************/
-WRITE_HANDLER( nitedrvr_out1_w )
+WRITE8_HANDLER( nitedrvr_out1_w )
 {
 	set_led_status(0,data & 0x10);
 

@@ -1,11 +1,11 @@
-#pragma code_seg("C594")
-#pragma data_seg("D594")
-#pragma bss_seg("B594")
-#pragma const_seg("K594")
-#pragma comment(linker, "/merge:D594=594")
-#pragma comment(linker, "/merge:C594=594")
-#pragma comment(linker, "/merge:B594=594")
-#pragma comment(linker, "/merge:K594=594")
+#pragma code_seg("C628")
+#pragma data_seg("D628")
+#pragma bss_seg("B628")
+#pragma const_seg("K628")
+#pragma comment(linker, "/merge:D628=628")
+#pragma comment(linker, "/merge:C628=628")
+#pragma comment(linker, "/merge:B628=628")
+#pragma comment(linker, "/merge:K628=628")
 /* Space Bugger - Video Hardware */
 
 #include "driver.h"
@@ -24,13 +24,13 @@ static void get_sbugger_tile_info(int tile_index)
 	SET_TILE_INFO(0,tileno,color,0)
 }
 
-WRITE_HANDLER( sbugger_videoram_w )
+WRITE8_HANDLER( sbugger_videoram_w )
 {
 	sbugger_videoram[offset] = data;
 	tilemap_mark_tile_dirty(sbugger_tilemap,offset);
 }
 
-WRITE_HANDLER( sbugger_videoram_attr_w )
+WRITE8_HANDLER( sbugger_videoram_attr_w )
 {
 	sbugger_videoram_attr[offset] = data;
 	tilemap_mark_tile_dirty(sbugger_tilemap,offset);

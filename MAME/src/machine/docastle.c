@@ -1,11 +1,11 @@
-#pragma code_seg("C259")
-#pragma data_seg("D259")
-#pragma bss_seg("B259")
-#pragma const_seg("K259")
-#pragma comment(linker, "/merge:D259=259")
-#pragma comment(linker, "/merge:C259=259")
-#pragma comment(linker, "/merge:B259=259")
-#pragma comment(linker, "/merge:K259=259")
+#pragma code_seg("C269")
+#pragma data_seg("D269")
+#pragma bss_seg("B269")
+#pragma const_seg("K269")
+#pragma comment(linker, "/merge:D269=269")
+#pragma comment(linker, "/merge:C269=269")
+#pragma comment(linker, "/merge:B269=269")
+#pragma comment(linker, "/merge:K269=269")
 /***************************************************************************
 
   machine.c
@@ -24,7 +24,7 @@ static unsigned char buffer0[9],buffer1[9];
 
 
 
-READ_HANDLER( docastle_shared0_r )
+READ8_HANDLER( docastle_shared0_r )
 {
 	if (offset == 8) logerror("CPU #0 shared0r  clock = %d\n",activecpu_gettotalcycles());
 
@@ -32,7 +32,7 @@ READ_HANDLER( docastle_shared0_r )
 	/* to make dip switches work in Do Run Run. */
 	if (offset == 8)
 	{
-		cpu_set_irq_line(1,IRQ_LINE_NMI,PULSE_LINE);
+		cpunum_set_input_line(1,INPUT_LINE_NMI,PULSE_LINE);
 		cpu_spinuntil_trigger(500);
 	}
 
@@ -40,14 +40,14 @@ READ_HANDLER( docastle_shared0_r )
 }
 
 
-READ_HANDLER( docastle_shared1_r )
+READ8_HANDLER( docastle_shared1_r )
 {
 	if (offset == 8) logerror("CPU #1 shared1r  clock = %d\n",activecpu_gettotalcycles());
 	return buffer1[offset];
 }
 
 
-WRITE_HANDLER( docastle_shared0_w )
+WRITE8_HANDLER( docastle_shared0_w )
 {
 	if (offset == 8) logerror("CPU #1 shared0w %02x %02x %02x %02x %02x %02x %02x %02x %02x clock = %d\n",
 		buffer0[0],buffer0[1],buffer0[2],buffer0[3],buffer0[4],buffer0[5],buffer0[6],buffer0[7],data,activecpu_gettotalcycles());
@@ -60,7 +60,7 @@ WRITE_HANDLER( docastle_shared0_w )
 }
 
 
-WRITE_HANDLER( docastle_shared1_w )
+WRITE8_HANDLER( docastle_shared1_w )
 {
 	buffer1[offset] = data;
 
@@ -76,9 +76,9 @@ WRITE_HANDLER( docastle_shared1_w )
 
 
 
-WRITE_HANDLER( docastle_nmitrigger_w )
+WRITE8_HANDLER( docastle_nmitrigger_w )
 {
-	cpu_set_irq_line(1,IRQ_LINE_NMI,PULSE_LINE);
+	cpunum_set_input_line(1,INPUT_LINE_NMI,PULSE_LINE);
 }
 #pragma code_seg()
 #pragma data_seg()

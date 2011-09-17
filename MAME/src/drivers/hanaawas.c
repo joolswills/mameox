@@ -1,11 +1,11 @@
-#pragma code_seg("C349")
-#pragma data_seg("D349")
-#pragma bss_seg("B349")
-#pragma const_seg("K349")
-#pragma comment(linker, "/merge:D349=349")
-#pragma comment(linker, "/merge:C349=349")
-#pragma comment(linker, "/merge:B349=349")
-#pragma comment(linker, "/merge:K349=349")
+#pragma code_seg("C363")
+#pragma data_seg("D363")
+#pragma bss_seg("B363")
+#pragma const_seg("K363")
+#pragma comment(linker, "/merge:D363=363")
+#pragma comment(linker, "/merge:C363=363")
+#pragma comment(linker, "/merge:B363=363")
+#pragma comment(linker, "/merge:K363=363")
 /***************************************************************************
 
   Hana Awase driver by Zsolt Vasvari
@@ -41,16 +41,16 @@ TODO:
 #include "vidhrdw/generic.h"
 
 
-extern WRITE_HANDLER( hanaawas_videoram_w );
-extern WRITE_HANDLER( hanaawas_colorram_w );
-extern WRITE_HANDLER( hanaawas_portB_w );
+extern WRITE8_HANDLER( hanaawas_videoram_w );
+extern WRITE8_HANDLER( hanaawas_colorram_w );
+extern WRITE8_HANDLER( hanaawas_portB_w );
 
 extern PALETTE_INIT( hanaawas );
 extern VIDEO_START( hanaawas );
 extern VIDEO_UPDATE( hanaawas );
 
 
-static READ_HANDLER( hanaawas_input_port_0_r )
+static READ8_HANDLER( hanaawas_input_port_0_r )
 {
 	int i,ordinal = 0;
 	UINT16 buttons;

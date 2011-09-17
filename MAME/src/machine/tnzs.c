@@ -1,11 +1,11 @@
-#pragma code_seg("C728")
-#pragma data_seg("D728")
-#pragma bss_seg("B728")
-#pragma const_seg("K728")
-#pragma comment(linker, "/merge:D728=728")
-#pragma comment(linker, "/merge:C728=728")
-#pragma comment(linker, "/merge:B728=728")
-#pragma comment(linker, "/merge:K728=728")
+#pragma code_seg("C770")
+#pragma data_seg("D770")
+#pragma bss_seg("B770")
+#pragma const_seg("K770")
+#pragma comment(linker, "/merge:D770=770")
+#pragma comment(linker, "/merge:C770=770")
+#pragma comment(linker, "/merge:B770=770")
+#pragma comment(linker, "/merge:K770=770")
 /***************************************************************************
 
   machine.c
@@ -48,7 +48,7 @@ static unsigned char mcu_coinsA,mcu_coinsB,mcu_credits;
 
 
 
-static READ_HANDLER( mcu_tnzs_r )
+static READ8_HANDLER( mcu_tnzs_r )
 {
 	unsigned char data;
 
@@ -68,7 +68,7 @@ static READ_HANDLER( mcu_tnzs_r )
 	return data;
 }
 
-static WRITE_HANDLER( mcu_tnzs_w )
+static WRITE8_HANDLER( mcu_tnzs_w )
 {
 //	logerror("PC %04x: write %02x to mcu $c00%01x\n", activecpu_get_previouspc(), data, offset);
 
@@ -79,7 +79,7 @@ static WRITE_HANDLER( mcu_tnzs_w )
 }
 
 
-READ_HANDLER( tnzs_port1_r )
+READ8_HANDLER( tnzs_port1_r )
 {
 	int data = 0;
 
@@ -96,7 +96,7 @@ READ_HANDLER( tnzs_port1_r )
 	return data;
 }
 
-READ_HANDLER( tnzs_port2_r )
+READ8_HANDLER( tnzs_port2_r )
 {
 	int data = input_port_4_r(0);
 
@@ -105,7 +105,7 @@ READ_HANDLER( tnzs_port2_r )
 	return data;
 }
 
-WRITE_HANDLER( tnzs_port2_w )
+WRITE8_HANDLER( tnzs_port2_w )
 {
 	logerror("I8742:%04x  Write %02x to port 2\n", activecpu_get_previouspc(), data);
 
@@ -119,7 +119,7 @@ WRITE_HANDLER( tnzs_port2_w )
 
 
 
-READ_HANDLER( arknoid2_sh_f000_r )
+READ8_HANDLER( arknoid2_sh_f000_r )
 {
 	int val;
 
@@ -223,7 +223,7 @@ static void mcu_handle_coins(int coin)
 
 
 
-static READ_HANDLER( mcu_arknoid2_r )
+static READ8_HANDLER( mcu_arknoid2_r )
 {
 	const char *mcu_startup = "\x55\xaa\x5a";
 
@@ -285,7 +285,7 @@ static READ_HANDLER( mcu_arknoid2_r )
 	}
 }
 
-static WRITE_HANDLER( mcu_arknoid2_w )
+static WRITE8_HANDLER( mcu_arknoid2_w )
 {
 	if (offset == 0)
 	{
@@ -328,7 +328,7 @@ static WRITE_HANDLER( mcu_arknoid2_w )
 }
 
 
-static READ_HANDLER( mcu_extrmatn_r )
+static READ8_HANDLER( mcu_extrmatn_r )
 {
 	const char *mcu_startup = "\x5a\xa5\x55";
 
@@ -413,7 +413,7 @@ static READ_HANDLER( mcu_extrmatn_r )
 	}
 }
 
-static WRITE_HANDLER( mcu_extrmatn_w )
+static WRITE8_HANDLER( mcu_extrmatn_w )
 {
 	if (offset == 0)
 	{
@@ -496,7 +496,7 @@ DRIVER_INIT( drtoppel )
 	memcpy(&RAM[0x08000],&RAM[0x18000],0x4000);
 
 	/* drtoppel writes to the palette RAM area even if it has PROMs! We have to patch it out. */
-	install_mem_write_handler(0, 0xf800, 0xfbff, MWA8_NOP);
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0xf800, 0xfbff, 0, 0, MWA8_NOP);
 }
 
 DRIVER_INIT( chukatai )
@@ -535,9 +535,9 @@ DRIVER_INIT( insectx )
 	mcu_type = MCU_NONE_INSECTX;
 
 	/* this game has no mcu, replace the handler with plain input port handlers */
-	install_mem_read_handler(1, 0xc000, 0xc000, input_port_2_r );
-	install_mem_read_handler(1, 0xc001, 0xc001, input_port_3_r );
-	install_mem_read_handler(1, 0xc002, 0xc002, input_port_4_r );
+	memory_install_read8_handler(1, ADDRESS_SPACE_PROGRAM, 0xc000, 0xc000, 0, 0, input_port_2_r );
+	memory_install_read8_handler(1, ADDRESS_SPACE_PROGRAM, 0xc001, 0xc001, 0, 0, input_port_3_r );
+	memory_install_read8_handler(1, ADDRESS_SPACE_PROGRAM, 0xc002, 0xc002, 0, 0, input_port_4_r );
 }
 
 DRIVER_INIT( kageki )
@@ -546,7 +546,7 @@ DRIVER_INIT( kageki )
 }
 
 
-READ_HANDLER( tnzs_mcu_r )
+READ8_HANDLER( tnzs_mcu_r )
 {
 	switch (mcu_type)
 	{
@@ -567,7 +567,7 @@ READ_HANDLER( tnzs_mcu_r )
 	}
 }
 
-WRITE_HANDLER( tnzs_mcu_w )
+WRITE8_HANDLER( tnzs_mcu_w )
 {
 	switch (mcu_type)
 	{
@@ -607,7 +607,7 @@ INTERRUPT_GEN( arknoid2_interrupt )
 			break;
 	}
 
-	cpu_set_irq_line(0, 0, HOLD_LINE);
+	cpunum_set_input_line(0, 0, HOLD_LINE);
 }
 
 MACHINE_INIT( tnzs )
@@ -639,7 +639,7 @@ MACHINE_INIT( tnzs )
 }
 
 
-READ_HANDLER( tnzs_workram_r )
+READ8_HANDLER( tnzs_workram_r )
 {
 	/* Location $EF10 workaround required to stop TNZS getting */
 	/* caught in and endless loop due to shared ram sync probs */
@@ -664,12 +664,12 @@ READ_HANDLER( tnzs_workram_r )
 	return tnzs_workram[offset];
 }
 
-READ_HANDLER( tnzs_workram_sub_r )
+READ8_HANDLER( tnzs_workram_sub_r )
 {
 	return tnzs_workram[offset];
 }
 
-WRITE_HANDLER( tnzs_workram_w )
+WRITE8_HANDLER( tnzs_workram_w )
 {
 	/* Location $EF10 workaround required to stop TNZS getting */
 	/* caught in and endless loop due to shared ram sync probs */
@@ -698,12 +698,12 @@ WRITE_HANDLER( tnzs_workram_w )
 		tnzs_workram[offset] = data;
 }
 
-WRITE_HANDLER( tnzs_workram_sub_w )
+WRITE8_HANDLER( tnzs_workram_sub_w )
 {
 	tnzs_workram[offset] = data;
 }
 
-WRITE_HANDLER( tnzs_bankswitch_w )
+WRITE8_HANDLER( tnzs_bankswitch_w )
 {
 	unsigned char *RAM = memory_region(REGION_CPU1);
 
@@ -711,15 +711,15 @@ WRITE_HANDLER( tnzs_bankswitch_w )
 
 	/* bit 4 resets the second CPU */
 	if (data & 0x10)
-		cpu_set_reset_line(1,CLEAR_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_RESET, CLEAR_LINE);
 	else
-		cpu_set_reset_line(1,ASSERT_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_RESET, ASSERT_LINE);
 
 	/* bits 0-2 select RAM/ROM bank */
 	cpu_setbank (1, &RAM[0x10000 + 0x4000 * (data & 0x07)]);
 }
 
-WRITE_HANDLER( tnzs_bankswitch1_w )
+WRITE8_HANDLER( tnzs_bankswitch1_w )
 {
 	unsigned char *RAM = memory_region(REGION_CPU2);
 
@@ -733,7 +733,7 @@ WRITE_HANDLER( tnzs_bankswitch1_w )
 				if (data & 0x04)
 				{
 					if (Machine->drv->cpu[2].cpu_type == CPU_I8X41)
-						cpu_set_reset_line(2,PULSE_LINE);
+						cpunum_set_input_line(2, INPUT_LINE_RESET, PULSE_LINE);
 				}
 				/* Coin count and lockout is handled by the i8742 */
 				break;

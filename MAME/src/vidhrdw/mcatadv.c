@@ -1,11 +1,11 @@
-#pragma code_seg("C433")
-#pragma data_seg("D433")
-#pragma bss_seg("B433")
-#pragma const_seg("K433")
-#pragma comment(linker, "/merge:D433=433")
-#pragma comment(linker, "/merge:C433=433")
-#pragma comment(linker, "/merge:B433=433")
-#pragma comment(linker, "/merge:K433=433")
+#pragma code_seg("C455")
+#pragma data_seg("D455")
+#pragma bss_seg("B455")
+#pragma const_seg("K455")
+#pragma comment(linker, "/merge:D455=455")
+#pragma comment(linker, "/merge:C455=455")
+#pragma comment(linker, "/merge:B455=455")
+#pragma comment(linker, "/merge:K455=455")
 /* Magical Cat Adventure / Nostradamus Video Hardware */
 
 /*
@@ -215,18 +215,18 @@ VIDEO_UPDATE( mcatadv )
 	for (i=0; i<=3; i++)
 	{
 #ifdef MAME_DEBUG
-		if (!keyboard_pressed(KEYCODE_Q))
+		if (!code_pressed(KEYCODE_Q))
 #endif
 			tilemap_draw(bitmap, cliprect, mcatadv_tilemap1, i, i);
 #ifdef MAME_DEBUG
-		if (!keyboard_pressed(KEYCODE_W))
+		if (!code_pressed(KEYCODE_W))
 #endif
 			tilemap_draw(bitmap, cliprect, mcatadv_tilemap2, i, i);
 	}
 
 	profiler_mark(PROFILER_USER1);
 #ifdef MAME_DEBUG
-	if (!keyboard_pressed(KEYCODE_E))
+	if (!code_pressed(KEYCODE_E))
 #endif
 		mcatadv_drawsprites (bitmap, cliprect);
 	profiler_mark(PROFILER_END);

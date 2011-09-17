@@ -1,11 +1,11 @@
-#pragma code_seg("C428")
-#pragma data_seg("D428")
-#pragma bss_seg("B428")
-#pragma const_seg("K428")
-#pragma comment(linker, "/merge:D428=428")
-#pragma comment(linker, "/merge:C428=428")
-#pragma comment(linker, "/merge:B428=428")
-#pragma comment(linker, "/merge:K428=428")
+#pragma code_seg("C450")
+#pragma data_seg("D450")
+#pragma bss_seg("B450")
+#pragma const_seg("K450")
+#pragma comment(linker, "/merge:D450=450")
+#pragma comment(linker, "/merge:C450=450")
+#pragma comment(linker, "/merge:B450=450")
+#pragma comment(linker, "/merge:K450=450")
 /*****************************************************************************
 
 Markham (c) 1983 Sun Electronics
@@ -19,9 +19,9 @@ Markham (c) 1983 Sun Electronics
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
-extern WRITE_HANDLER( markham_videoram_w );
-extern WRITE_HANDLER( markham_scroll_x_w );
-extern WRITE_HANDLER( markham_flipscreen_w );
+extern WRITE8_HANDLER( markham_videoram_w );
+extern WRITE8_HANDLER( markham_scroll_x_w );
+extern WRITE8_HANDLER( markham_flipscreen_w );
 
 extern PALETTE_INIT( markham );
 extern VIDEO_START( markham );
@@ -32,17 +32,17 @@ static UINT8 *markham_sharedram;
 /****************************************************************************/
 
 
-WRITE_HANDLER( markham_sharedram_w )
+WRITE8_HANDLER( markham_sharedram_w )
 {
 	markham_sharedram[offset] = data;
 }
 
-READ_HANDLER( markham_sharedram_r )
+READ8_HANDLER( markham_sharedram_r )
 {
 	return markham_sharedram[offset];
 }
 
-READ_HANDLER( markham_e004_r )
+READ8_HANDLER( markham_e004_r )
 {
 	return 0;
 }

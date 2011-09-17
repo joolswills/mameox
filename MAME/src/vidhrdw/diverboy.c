@@ -1,11 +1,11 @@
-#pragma code_seg("C254")
-#pragma data_seg("D254")
-#pragma bss_seg("B254")
-#pragma const_seg("K254")
-#pragma comment(linker, "/merge:D254=254")
-#pragma comment(linker, "/merge:C254=254")
-#pragma comment(linker, "/merge:B254=254")
-#pragma comment(linker, "/merge:K254=254")
+#pragma code_seg("C264")
+#pragma data_seg("D264")
+#pragma bss_seg("B264")
+#pragma const_seg("K264")
+#pragma comment(linker, "/merge:D264=264")
+#pragma comment(linker, "/merge:C264=264")
+#pragma comment(linker, "/merge:B264=264")
+#pragma comment(linker, "/merge:K264=264")
 /* Diver Boy - Video Hardware */
 
 #include "driver.h"

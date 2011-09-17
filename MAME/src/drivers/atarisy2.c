@@ -1,11 +1,11 @@
-#pragma code_seg("C140")
-#pragma data_seg("D140")
-#pragma bss_seg("B140")
-#pragma const_seg("K140")
-#pragma comment(linker, "/merge:D140=140")
-#pragma comment(linker, "/merge:C140=140")
-#pragma comment(linker, "/merge:B140=140")
-#pragma comment(linker, "/merge:K140=140")
+#pragma code_seg("C141")
+#pragma data_seg("D141")
+#pragma bss_seg("B141")
+#pragma const_seg("K141")
+#pragma comment(linker, "/merge:D141=141")
+#pragma comment(linker, "/merge:C141=141")
+#pragma comment(linker, "/merge:B141=141")
+#pragma comment(linker, "/merge:K141=141")
 /***************************************************************************
 
 	Atari System 2 hardware
@@ -170,24 +170,24 @@ static UINT8 p2portrd_state;
 static void update_interrupts(void)
 {
 	if (atarigen_video_int_state)
-		cpu_set_irq_line(0, 3, ASSERT_LINE);
+		cpunum_set_input_line(0, 3, ASSERT_LINE);
 	else
-		cpu_set_irq_line(0, 3, CLEAR_LINE);
+		cpunum_set_input_line(0, 3, CLEAR_LINE);
 
 	if (atarigen_scanline_int_state)
-		cpu_set_irq_line(0, 2, ASSERT_LINE);
+		cpunum_set_input_line(0, 2, ASSERT_LINE);
 	else
-		cpu_set_irq_line(0, 2, CLEAR_LINE);
+		cpunum_set_input_line(0, 2, CLEAR_LINE);
 
 	if (p2portwr_state)
-		cpu_set_irq_line(0, 1, ASSERT_LINE);
+		cpunum_set_input_line(0, 1, ASSERT_LINE);
 	else
-		cpu_set_irq_line(0, 1, CLEAR_LINE);
+		cpunum_set_input_line(0, 1, CLEAR_LINE);
 
 	if (p2portrd_state)
-		cpu_set_irq_line(0, 0, ASSERT_LINE);
+		cpunum_set_input_line(0, 0, ASSERT_LINE);
 	else
-		cpu_set_irq_line(0, 0, CLEAR_LINE);
+		cpunum_set_input_line(0, 0, CLEAR_LINE);
 }
 
 
@@ -261,7 +261,7 @@ static WRITE16_HANDLER( int1_ack_w )
 {
 	/* reset sound CPU */
 	if (ACCESSING_LSB)
-		cpu_set_reset_line(1, (data & 1) ? ASSERT_LINE : CLEAR_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_RESET, (data & 1) ? ASSERT_LINE : CLEAR_LINE);
 }
 
 
@@ -338,7 +338,7 @@ static READ16_HANDLER( switch_r )
 }
 
 
-static READ_HANDLER( switch_6502_r )
+static READ8_HANDLER( switch_6502_r )
 {
 	int result = input_port_0_r(offset);
 
@@ -351,7 +351,7 @@ static READ_HANDLER( switch_6502_r )
 }
 
 
-static WRITE_HANDLER( switch_6502_w )
+static WRITE8_HANDLER( switch_6502_w )
 {
 	(void)offset;
 
@@ -385,7 +385,7 @@ static READ16_HANDLER( adc_r )
 }
 
 
-static READ_HANDLER( leta_r )
+static READ8_HANDLER( leta_r )
 {
     if (pedal_count == -1)   /* 720 */
 	{
@@ -409,7 +409,7 @@ static READ_HANDLER( leta_r )
  *
  *************************************/
 
-static WRITE_HANDLER( mixer_w )
+static WRITE8_HANDLER( mixer_w )
 {
 	atarigen_set_ym2151_vol((data & 7) * 100 / 7);
 	atarigen_set_pokey_vol(((data >> 3) & 3) * 100 / 3);
@@ -417,7 +417,7 @@ static WRITE_HANDLER( mixer_w )
 }
 
 
-static WRITE_HANDLER( sound_enable_w )
+static WRITE8_HANDLER( sound_enable_w )
 {
 }
 
@@ -433,7 +433,7 @@ static READ16_HANDLER( sound_r )
 }
 
 
-static WRITE_HANDLER( sound_6502_w )
+static WRITE8_HANDLER( sound_6502_w )
 {
 	/* clock the state through */
 	p2portwr_state = (interrupt_enable & 2) != 0;
@@ -444,7 +444,7 @@ static WRITE_HANDLER( sound_6502_w )
 }
 
 
-static READ_HANDLER( sound_6502_r )
+static READ8_HANDLER( sound_6502_r )
 {
 	/* clock the state through */
 	p2portrd_state = (interrupt_enable & 1) != 0;
@@ -462,13 +462,13 @@ static READ_HANDLER( sound_6502_r )
  *
  *************************************/
 
-static WRITE_HANDLER( tms5220_w )
+static WRITE8_HANDLER( tms5220_w )
 {
 	tms5220_data = data;
 }
 
 
-static WRITE_HANDLER( tms5220_strobe_w )
+static WRITE8_HANDLER( tms5220_strobe_w )
 {
 	if (!(offset & 1) && tms5220_data_strobe)
 		if (has_tms5220)
@@ -484,7 +484,7 @@ static WRITE_HANDLER( tms5220_strobe_w )
  *
  *************************************/
 
-static WRITE_HANDLER( coincount_w )
+static WRITE8_HANDLER( coincount_w )
 {
 	coin_counter_w(0, (data >> 0) & 1);
 	coin_counter_w(1, (data >> 1) & 1);

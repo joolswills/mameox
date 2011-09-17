@@ -1,11 +1,11 @@
-#pragma code_seg("C593")
-#pragma data_seg("D593")
-#pragma bss_seg("B593")
-#pragma const_seg("K593")
-#pragma comment(linker, "/merge:D593=593")
-#pragma comment(linker, "/merge:C593=593")
-#pragma comment(linker, "/merge:B593=593")
-#pragma comment(linker, "/merge:K593=593")
+#pragma code_seg("C627")
+#pragma data_seg("D627")
+#pragma bss_seg("B627")
+#pragma const_seg("K627")
+#pragma comment(linker, "/merge:D627=627")
+#pragma comment(linker, "/merge:C627=627")
+#pragma comment(linker, "/merge:B627=627")
+#pragma comment(linker, "/merge:K627=627")
 /*************************************************************************
 
 	Atari Super Breakout hardware
@@ -21,7 +21,7 @@ UINT8 *sbrkout_vert_ram;
 
 static struct tilemap *bg_tilemap;
 
-WRITE_HANDLER( sbrkout_videoram_w )
+WRITE8_HANDLER( sbrkout_videoram_w )
 {
 	if (videoram[offset] != data)
 	{

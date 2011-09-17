@@ -1,11 +1,11 @@
-#pragma code_seg("C244")
-#pragma data_seg("D244")
-#pragma bss_seg("B244")
-#pragma const_seg("K244")
-#pragma comment(linker, "/merge:D244=244")
-#pragma comment(linker, "/merge:C244=244")
-#pragma comment(linker, "/merge:B244=244")
-#pragma comment(linker, "/merge:K244=244")
+#pragma code_seg("C252")
+#pragma data_seg("D252")
+#pragma bss_seg("B252")
+#pragma const_seg("K252")
+#pragma comment(linker, "/merge:D252=252")
+#pragma comment(linker, "/merge:C252=252")
+#pragma comment(linker, "/merge:B252=252")
+#pragma comment(linker, "/merge:K252=252")
 /***************************************************************************
 
 Double Dribble(GX690) (c) Konami 1986
@@ -30,31 +30,31 @@ extern unsigned char *ddrible_fg_videoram;
 extern unsigned char *ddrible_bg_videoram;
 
 /* video hardware memory handlers */
-WRITE_HANDLER( ddrible_fg_videoram_w );
-WRITE_HANDLER( ddrible_bg_videoram_w );
+WRITE8_HANDLER( ddrible_fg_videoram_w );
+WRITE8_HANDLER( ddrible_bg_videoram_w );
 
 /* video hardware functions */
 PALETTE_INIT( ddrible );
 VIDEO_START( ddrible );
 VIDEO_UPDATE( ddrible );
-WRITE_HANDLER( K005885_0_w );
-WRITE_HANDLER( K005885_1_w );
+WRITE8_HANDLER( K005885_0_w );
+WRITE8_HANDLER( K005885_1_w );
 
 
 static INTERRUPT_GEN( ddrible_interrupt_0 )
 {
 	if (ddrible_int_enable_0)
-		cpu_set_irq_line(0, M6809_FIRQ_LINE, HOLD_LINE);
+		cpunum_set_input_line(0, M6809_FIRQ_LINE, HOLD_LINE);
 }
 
 static INTERRUPT_GEN( ddrible_interrupt_1 )
 {
 	if (ddrible_int_enable_1)
-		cpu_set_irq_line(1, M6809_FIRQ_LINE, HOLD_LINE);
+		cpunum_set_input_line(1, M6809_FIRQ_LINE, HOLD_LINE);
 }
 
 
-static WRITE_HANDLER( ddrible_bankswitch_w )
+static WRITE8_HANDLER( ddrible_bankswitch_w )
 {
 	int bankaddress;
 	unsigned char *RAM = memory_region(REGION_CPU1);
@@ -64,27 +64,27 @@ static WRITE_HANDLER( ddrible_bankswitch_w )
 }
 
 
-static READ_HANDLER( ddrible_sharedram_r )
+static READ8_HANDLER( ddrible_sharedram_r )
 {
 	return ddrible_sharedram[offset];
 }
 
-static WRITE_HANDLER( ddrible_sharedram_w )
+static WRITE8_HANDLER( ddrible_sharedram_w )
 {
 	ddrible_sharedram[offset] = data;
 }
 
-static READ_HANDLER( ddrible_snd_sharedram_r )
+static READ8_HANDLER( ddrible_snd_sharedram_r )
 {
 	return ddrible_snd_sharedram[offset];
 }
 
-static WRITE_HANDLER( ddrible_snd_sharedram_w )
+static WRITE8_HANDLER( ddrible_snd_sharedram_w )
 {
 	ddrible_snd_sharedram[offset] = data;
 }
 
-static WRITE_HANDLER( ddrible_coin_counter_w )
+static WRITE8_HANDLER( ddrible_coin_counter_w )
 {
 	/* b4-b7: unused */
 	/* b2-b3: unknown */
@@ -94,14 +94,14 @@ static WRITE_HANDLER( ddrible_coin_counter_w )
 	coin_counter_w(1,(data >> 1) & 0x01);
 }
 
-static READ_HANDLER( ddrible_vlm5030_busy_r )
+static READ8_HANDLER( ddrible_vlm5030_busy_r )
 {
 	return rand(); /* patch */
 	if (VLM5030_BSY()) return 1;
 	else return 0;
 }
 
-static WRITE_HANDLER( ddrible_vlm5030_ctrl_w )
+static WRITE8_HANDLER( ddrible_vlm5030_ctrl_w )
 {
 	unsigned char *SPEECH_ROM = memory_region(REGION_SOUND1);
 	/* b7 : vlm data bus OE   */

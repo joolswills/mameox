@@ -1,11 +1,11 @@
-#pragma code_seg("C457")
-#pragma data_seg("D457")
-#pragma bss_seg("B457")
-#pragma const_seg("K457")
-#pragma comment(linker, "/merge:D457=457")
-#pragma comment(linker, "/merge:C457=457")
-#pragma comment(linker, "/merge:B457=457")
-#pragma comment(linker, "/merge:K457=457")
+#pragma code_seg("C482")
+#pragma data_seg("D482")
+#pragma bss_seg("B482")
+#pragma const_seg("K482")
+#pragma comment(linker, "/merge:D482=482")
+#pragma comment(linker, "/merge:C482=482")
+#pragma comment(linker, "/merge:B482=482")
+#pragma comment(linker, "/merge:K482=482")
 /*****************************************************************************
 
 Mahjong Sisters (c) 1986 Toa Plan
@@ -76,7 +76,7 @@ void mjsister_plot1(int offset,unsigned char data)
 	plot_pixel(mjsister_tmpbitmap1, x*2+1, y, Machine->pens[c2] );
 }
 
-WRITE_HANDLER( mjsister_videoram_w )
+WRITE8_HANDLER( mjsister_videoram_w )
 {
 	if (vrambank)
 	{

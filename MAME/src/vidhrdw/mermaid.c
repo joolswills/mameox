@@ -1,11 +1,11 @@
-#pragma code_seg("C441")
-#pragma data_seg("D441")
-#pragma bss_seg("B441")
-#pragma const_seg("K441")
-#pragma comment(linker, "/merge:D441=441")
-#pragma comment(linker, "/merge:C441=441")
-#pragma comment(linker, "/merge:B441=441")
-#pragma comment(linker, "/merge:K441=441")
+#pragma code_seg("C464")
+#pragma data_seg("D464")
+#pragma bss_seg("B464")
+#pragma const_seg("K464")
+#pragma comment(linker, "/merge:D464=464")
+#pragma comment(linker, "/merge:C464=464")
+#pragma comment(linker, "/merge:B464=464")
+#pragma comment(linker, "/merge:K464=464")
 /***************************************************************************
 
   vidhrdw.c
@@ -39,12 +39,12 @@ static struct rectangle flip_spritevisiblearea =
 };
 
 
-WRITE_HANDLER( mermaid_flip_screen_x_w )
+WRITE8_HANDLER( mermaid_flip_screen_x_w )
 {
 	flip_screen_x_set(data & 0x01);
 }
 
-WRITE_HANDLER( mermaid_flip_screen_y_w )
+WRITE8_HANDLER( mermaid_flip_screen_y_w )
 {
 	flip_screen_y_set(data & 0x01);
 }

@@ -1,11 +1,11 @@
-#pragma code_seg("C623")
-#pragma data_seg("D623")
-#pragma bss_seg("B623")
-#pragma const_seg("K623")
-#pragma comment(linker, "/merge:D623=623")
-#pragma comment(linker, "/merge:C623=623")
-#pragma comment(linker, "/merge:B623=623")
-#pragma comment(linker, "/merge:K623=623")
+#pragma code_seg("C659")
+#pragma data_seg("D659")
+#pragma bss_seg("B659")
+#pragma const_seg("K659")
+#pragma comment(linker, "/merge:D659=659")
+#pragma comment(linker, "/merge:C659=659")
+#pragma comment(linker, "/merge:B659=659")
+#pragma comment(linker, "/merge:K659=659")
 #include "driver.h"
 
 /* Sprites probably need to be delayed */
@@ -174,9 +174,9 @@ VIDEO_UPDATE(silkroad)
 	tilemap_set_scrollx( fg2_tilemap, 0, (silkroad_regs[2] & 0x0000ffff) >> 0 );
 
 /*
-	if (keyboard_pressed(KEYCODE_A)) enable1 ^= 1;
-	if (keyboard_pressed(KEYCODE_S)) enable2 ^= 1;
-	if (keyboard_pressed(KEYCODE_D)) enable3 ^= 1;
+	if (code_pressed(KEYCODE_A)) enable1 ^= 1;
+	if (code_pressed(KEYCODE_S)) enable2 ^= 1;
+	if (code_pressed(KEYCODE_D)) enable3 ^= 1;
 */
 
 	if(enable1)	tilemap_draw(bitmap,cliprect,fg_tilemap,0,0);

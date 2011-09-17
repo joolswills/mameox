@@ -1,11 +1,11 @@
-#pragma code_seg("C199")
-#pragma data_seg("D199")
-#pragma bss_seg("B199")
-#pragma const_seg("K199")
-#pragma comment(linker, "/merge:D199=199")
-#pragma comment(linker, "/merge:C199=199")
-#pragma comment(linker, "/merge:B199=199")
-#pragma comment(linker, "/merge:K199=199")
+#pragma code_seg("C202")
+#pragma data_seg("D202")
+#pragma bss_seg("B202")
+#pragma const_seg("K202")
+#pragma comment(linker, "/merge:D202=202")
+#pragma comment(linker, "/merge:C202=202")
+#pragma comment(linker, "/merge:B202=202")
+#pragma comment(linker, "/merge:K202=202")
 /***************************************************************************
 
 	Atari Centipede hardware
@@ -14,6 +14,7 @@
 		* Centipede (5 sets)
 		* Warlords
 		* Millipede
+		* Bulls Eye Darts
 
 	Known bugs:
 		* are coins supposed to take over a second to register?
@@ -280,6 +281,7 @@
 ***************************************************************************/
 
 #include "driver.h"
+#include "cpu/s2650/s2650.h"
 #include "vidhrdw/generic.h"
 #include "machine/atari_vg.h"
 #include "centiped.h"
@@ -302,7 +304,7 @@ static void generate_interrupt(int scanline)
 {
 	/* IRQ is clocked on the rising edge of 16V, equal to the previous 32V */
 	if (scanline & 16)
-		cpu_set_irq_line(0, 0, ((scanline - 1) & 32) ? ASSERT_LINE : CLEAR_LINE);
+		cpunum_set_input_line(0, 0, ((scanline - 1) & 32) ? ASSERT_LINE : CLEAR_LINE);
 
 	/* call back again after 16 scanlines */
 	scanline += 16;
@@ -315,7 +317,7 @@ static void generate_interrupt(int scanline)
 static MACHINE_INIT( centiped )
 {
 	timer_set(cpu_getscanlinetime(0), 0, generate_interrupt);
-	cpu_set_irq_line(0, 0, CLEAR_LINE);
+	cpunum_set_input_line(0, 0, CLEAR_LINE);
 	dsw_select = 0;
 }
 
@@ -329,9 +331,9 @@ static MACHINE_INIT( magworm )
 }
 
 
-static WRITE_HANDLER( irq_ack_w )
+static WRITE8_HANDLER( irq_ack_w )
 {
-	cpu_set_irq_line(0, 0, CLEAR_LINE);
+	cpunum_set_input_line(0, 0, CLEAR_LINE);
 }
 
 
@@ -385,27 +387,40 @@ INLINE int read_trackball(int idx, int switch_port)
 }
 
 
-static READ_HANDLER( centiped_IN0_r )
+static READ8_HANDLER( centiped_IN0_r )
 {
 	return read_trackball(0, 0);
 }
 
 
-static READ_HANDLER( centiped_IN2_r )
+static READ8_HANDLER( centiped_IN2_r )
 {
 	return read_trackball(1, 2);
 }
 
 
-static READ_HANDLER( milliped_IN1_r )
+static READ8_HANDLER( milliped_IN1_r )
 {
 	return read_trackball(1, 1);
 }
 
 
-static WRITE_HANDLER( input_select_w )
+static WRITE8_HANDLER( input_select_w )
 {
 	dsw_select = (~data >> 7) & 1;
+}
+
+
+static READ8_HANDLER( bullsdrt_data_port_r )
+{
+	switch (activecpu_get_pc())
+	{
+		case 0x0033:
+		case 0x6b19:
+			return 0x01;
+	}
+	
+	return 0;
 }
 
 
@@ -416,21 +431,27 @@ static WRITE_HANDLER( input_select_w )
  *
  *************************************/
 
-static WRITE_HANDLER( led_w )
+static WRITE8_HANDLER( led_w )
 {
 	set_led_status(offset, ~data & 0x80);
 }
 
 
-static READ_HANDLER( centipdb_rand_r )
+static READ8_HANDLER( centipdb_rand_r )
 {
 	return mame_rand() % 0xff;
 }
 
 
-static WRITE_HANDLER( coin_count_w )
+static WRITE8_HANDLER( coin_count_w )
 {
 	coin_counter_w(offset, data);
+}
+
+
+static WRITE8_HANDLER( bullsdrt_coin_count_w )
+{
+	coin_counter_w(0, data);
 }
 
 
@@ -441,14 +462,14 @@ static WRITE_HANDLER( coin_count_w )
  *
  *************************************/
 
-static WRITE_HANDLER( centipdb_AY8910_w )
+static WRITE8_HANDLER( centipdb_AY8910_w )
 {
 	AY8910_control_port_0_w(0, offset);
 	AY8910_write_port_0_w(0, data);
 }
 
 
-static READ_HANDLER( centipdb_AY8910_r )
+static READ8_HANDLER( centipdb_AY8910_r )
 {
 	AY8910_control_port_0_w(0, offset);
 	return AY8910_read_port_0_r(0);
@@ -572,6 +593,43 @@ ADDRESS_MAP_END
 
 
 
+/****************************************
+ *
+ *	Bulls Eye Darts CPU memory handlers
+ *
+ ****************************************/
+
+static ADDRESS_MAP_START( bullsdrt_map, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x0fff) AM_ROM
+	AM_RANGE(0x1000, 0x1000) AM_MIRROR(0x6000) AM_READ(input_port_3_r)
+	AM_RANGE(0x1080, 0x1080) AM_MIRROR(0x6000) AM_READ(centiped_IN0_r)
+	AM_RANGE(0x1081, 0x1081) AM_MIRROR(0x6000) AM_READ(input_port_1_r)
+	AM_RANGE(0x1082, 0x1082) AM_MIRROR(0x6000) AM_READ(centiped_IN2_r)
+	AM_RANGE(0x1200, 0x123f) AM_MIRROR(0x6000) AM_READWRITE(atari_vg_earom_r, atari_vg_earom_w)
+	AM_RANGE(0x1280, 0x1280) AM_MIRROR(0x6000) AM_WRITE(atari_vg_earom_ctrl_w)
+	AM_RANGE(0x1300, 0x1300) AM_MIRROR(0x6000) AM_READ(input_port_4_r)
+	AM_RANGE(0x1400, 0x140f) AM_MIRROR(0x6000) AM_WRITE(centiped_paletteram_w) AM_BASE(&paletteram)
+	AM_RANGE(0x1481, 0x1481) AM_MIRROR(0x6000) AM_WRITE(bullsdrt_coin_count_w)
+	AM_RANGE(0x1483, 0x1484) AM_MIRROR(0x6000) AM_WRITE(led_w)
+	AM_RANGE(0x1487, 0x1487) AM_MIRROR(0x6000) AM_WRITE(centiped_flip_screen_w)
+	AM_RANGE(0x1500, 0x1500) AM_MIRROR(0x6000) AM_WRITE(watchdog_reset_w)
+	AM_RANGE(0x1580, 0x1580) AM_MIRROR(0x6000) AM_NOP
+	AM_RANGE(0x1800, 0x1bbf) AM_MIRROR(0x6000) AM_WRITE(centiped_videoram_w) AM_BASE(&videoram)
+	AM_RANGE(0x1bc0, 0x1bff) AM_MIRROR(0x6000) AM_RAM AM_BASE(&spriteram)
+	AM_RANGE(0x1c00, 0x1fff) AM_MIRROR(0x6000) AM_RAM
+	AM_RANGE(0x2000, 0x2fff) AM_ROM
+	AM_RANGE(0x4000, 0x4fff) AM_ROM
+	AM_RANGE(0x6000, 0x6fff) AM_ROM
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( bullsdrt_port_map, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x00, 0x00) AM_WRITE(bullsdrt_sprites_bank_w)
+	AM_RANGE(0x20, 0x3f) AM_WRITE(bullsdrt_tilesbank_w) AM_BASE(&bullsdrt_tiles_bankram)
+	AM_RANGE(S2650_DATA_PORT, S2650_DATA_PORT) AM_READWRITE(bullsdrt_data_port_r, SN76496_0_w)
+ADDRESS_MAP_END
+
+
+
 /*************************************
  *
  *	Port definitions
@@ -601,7 +659,7 @@ INPUT_PORTS_START( GAMENAME )													\
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_TILT )									\
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )									\
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_COIN2 )									\
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SERVICE1 )									\
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SERVICE1 )								\
 																				\
 	PORT_START	/* IN2 */														\
 	PORT_BIT( 0x0f, IP_ACTIVE_HIGH, IPT_SPECIAL )	/* trackball data */		\
@@ -1040,6 +1098,92 @@ INPUT_PORTS_START( warlords )
 INPUT_PORTS_END
 
 
+INPUT_PORTS_START( bullsdrt )
+	PORT_START	/* IN0 */
+	PORT_BIT( 0x0f, IP_ACTIVE_HIGH, IPT_SPECIAL )	/* trackball data */
+	PORT_BIT( 0x30, IP_ACTIVE_LOW,  IPT_UNKNOWN )
+	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_VBLANK )
+	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL )	/* trackball sign bit */
+
+	PORT_START	/* IN1 */
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_START1 )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_START2 )
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON1 )
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_COIN2 )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN3 )
+
+	PORT_START	/* IN2 */
+	PORT_BIT( 0x0f, IP_ACTIVE_HIGH, IPT_SPECIAL )	/* trackball data */
+	PORT_BIT( 0x70, IP_ACTIVE_LOW,  IPT_UNKNOWN )
+	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL )	/* trackball sign bit */
+
+	PORT_START
+	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x02, 0x02, "Award Free Game" )
+	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+
+	PORT_START
+	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+
+	PORT_START
+	/* not used */
+
+	PORT_START	/* IN6, fake trackball input port. */
+	PORT_ANALOG( 0xff, 0x80, IPT_TRACKBALL_X | IPF_REVERSE, 50, 10, 0x1d, 0xcb )
+
+	PORT_START	/* IN7, fake trackball input port. */
+	PORT_ANALOG( 0xff, 0x80, IPT_TRACKBALL_Y, 50, 10, 0x1d, 0xcb )
+INPUT_PORTS_END
+
+
+
 /*************************************
  *
  *	Graphics layouts: Centipede/Millipede
@@ -1198,6 +1342,14 @@ static struct POKEYinterface warlords_pokey_interface =
 };
 
 
+static struct SN76496interface sn76496_interface =
+{
+	1,
+	{ 12096000/8 },
+	{ 100 }
+};
+
+
 /*************************************
  *
  *	Machine drivers
@@ -1305,6 +1457,36 @@ static MACHINE_DRIVER_START( warlords )
 	/* sound hardware */
 	MDRV_SOUND_REPLACE("pokey", POKEY, warlords_pokey_interface)
 MACHINE_DRIVER_END
+
+
+static MACHINE_DRIVER_START( bullsdrt )
+
+	/* basic machine hardware */
+	MDRV_CPU_ADD(S2650, 12096000/8)
+	MDRV_CPU_PROGRAM_MAP(bullsdrt_map,0)
+	MDRV_CPU_IO_MAP(bullsdrt_port_map,0)
+
+	MDRV_FRAMES_PER_SECOND(60)
+	MDRV_VBLANK_DURATION(1460)
+
+	MDRV_NVRAM_HANDLER(atari_vg)
+
+	/* video hardware */
+	MDRV_VIDEO_ATTRIBUTES(VIDEO_TYPE_RASTER)
+	MDRV_SCREEN_SIZE(32*8, 32*8)
+	MDRV_VISIBLE_AREA(0*8, 32*8-1, 0*8, 30*8-1)
+	MDRV_GFXDECODE(centiped_gfxdecodeinfo)
+	MDRV_PALETTE_LENGTH(4+4)
+	MDRV_COLORTABLE_LENGTH(4+4*4*4*4)
+	MDRV_PALETTE_INIT(centiped)
+
+	MDRV_VIDEO_START(bullsdrt)
+	MDRV_VIDEO_UPDATE(bullsdrt)
+
+	/* sound hardware */
+	MDRV_SOUND_ADD(SN76496, sn76496_interface)
+MACHINE_DRIVER_END
+
 
 
 /*************************************
@@ -1442,6 +1624,23 @@ ROM_START( warlords )
 ROM_END
 
 
+ROM_START( bullsdrt )
+	ROM_REGION( 0x8000, REGION_CPU1, 0 )	/* 32k for code */
+	ROM_LOAD( "27128.bin", 0x0000, 0x1000, CRC(2729f585) SHA1(6ffbfa5b62c497c3932ab71d0e3f407cae99cb59) )
+	ROM_CONTINUE(          0x2000, 0x1000 )
+	ROM_CONTINUE(          0x4000, 0x1000 )
+	ROM_CONTINUE(          0x6000, 0x1000 )
+
+	ROM_REGION( 0x4000, REGION_GFX1, ROMREGION_DISPOSE )
+	ROM_LOAD( "2764_b.bin",   0x0000, 0x2000, CRC(49a19aba) SHA1(77869b7a7aae24dcbc4c7f1a3d4bcd26ea3f4fac) )
+	ROM_LOAD( "2764_a.bin",   0x2000, 0x2000, CRC(361ff09d) SHA1(4b57417085bc9ee174196ca638dc7e6d3626f801) )
+
+	ROM_REGION( 0x0200, REGION_PROMS, 0 ) /* unknown */
+	ROM_LOAD( "82s147.bin",   0x0000, 0x0200, CRC(d841b7e0) SHA1(aab32645a613cd027aed98437db24704763cc147) )
+ROM_END
+
+
+
 /*************************************
  *
  *	Driver initialization
@@ -1450,17 +1649,23 @@ ROM_END
 
 static DRIVER_INIT( centipdb )
 {
-	install_mem_write_handler(0, 0x1000, 0x100f, centipdb_AY8910_w);
-	install_mem_read_handler(0, 0x1000, 0x100f, centipdb_AY8910_r);
-	install_mem_read_handler(0, 0x1780, 0x1780, centipdb_rand_r);
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x1000, 0x100f, 0, 0, centipdb_AY8910_w);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x1000, 0x100f, 0, 0, centipdb_AY8910_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x1780, 0x1780, 0, 0, centipdb_rand_r);
 }
 
 
 static DRIVER_INIT( magworm )
 {
-	install_mem_write_handler(0, 0x1001, 0x1001, AY8910_control_port_0_w);
-	install_mem_write_handler(0, 0x1003, 0x1003, AY8910_write_port_0_w);
-	install_mem_read_handler(0, 0x1003, 0x1003, AY8910_read_port_0_r);
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x1001, 0x1001, 0, 0, AY8910_control_port_0_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x1003, 0x1003, 0, 0, AY8910_write_port_0_w);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x1003, 0x1003, 0, 0, AY8910_read_port_0_r);
+}
+
+
+static DRIVER_INIT( bullsdrt )
+{
+	dsw_select = 0;
 }
 
 
@@ -1481,6 +1686,8 @@ GAME( 1980, magworm,  centiped, magworm,  magworm,  magworm,  ROT270, "bootleg",
 GAME( 1982, milliped, 0,        milliped, milliped, 0,        ROT270, "Atari",   "Millipede" )
 
 GAME( 1980, warlords, 0,        warlords, warlords, 0,        ROT0,   "Atari",   "Warlords" )
+
+GAMEX(1985, bullsdrt, 0,        bullsdrt, bullsdrt, bullsdrt, ROT270, "Shinkai Inc. (Magic Eletronics Inc. licence)", "Bulls Eye Darts", GAME_IMPERFECT_COLORS )
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

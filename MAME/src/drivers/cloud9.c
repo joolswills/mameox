@@ -1,11 +1,11 @@
-#pragma code_seg("C213")
-#pragma data_seg("D213")
-#pragma bss_seg("B213")
-#pragma const_seg("K213")
-#pragma comment(linker, "/merge:D213=213")
-#pragma comment(linker, "/merge:C213=213")
-#pragma comment(linker, "/merge:B213=213")
-#pragma comment(linker, "/merge:K213=213")
+#pragma code_seg("C217")
+#pragma data_seg("D217")
+#pragma bss_seg("B217")
+#pragma const_seg("K217")
+#pragma comment(linker, "/merge:D217=217")
+#pragma comment(linker, "/merge:C217=217")
+#pragma comment(linker, "/merge:B217=217")
+#pragma comment(linker, "/merge:K217=217")
 /***************************************************************************
 
 	Atari Cloud 9 (prototype) hardware
@@ -77,13 +77,13 @@
  *
  *************************************/
 
-static WRITE_HANDLER( cloud9_led_w )
+static WRITE8_HANDLER( cloud9_led_w )
 {
 	set_led_status(offset,~data & 0x80);
 }
 
 
-static WRITE_HANDLER( cloud9_coin_counter_w )
+static WRITE8_HANDLER( cloud9_coin_counter_w )
 {
 	coin_counter_w(offset,data);
 }
@@ -96,30 +96,14 @@ static WRITE_HANDLER( cloud9_coin_counter_w )
  *
  *************************************/
 
-static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0x0002) AM_READ(cloud9_bitmap_regs_r)
-	AM_RANGE(0x0003, 0x05ff) AM_READ(MRA8_RAM)
-	AM_RANGE(0x0600, 0x3fff) AM_READ(MRA8_RAM)
-	AM_RANGE(0x5500, 0x557f) AM_READ(MRA8_RAM)
-	AM_RANGE(0x5800, 0x5800) AM_READ(input_port_0_r)
-	AM_RANGE(0x5801, 0x5801) AM_READ(input_port_1_r)
-	AM_RANGE(0x5900, 0x5900) AM_READ(input_port_2_r)
-	AM_RANGE(0x5901, 0x5901) AM_READ(input_port_3_r)
-	AM_RANGE(0x5a00, 0x5a0f) AM_READ(pokey1_r)
-	AM_RANGE(0x5b00, 0x5b0f) AM_READ(pokey2_r)
-	AM_RANGE(0x5c00, 0x5cff) AM_READ(MRA8_RAM)	/* EAROM */
-	AM_RANGE(0x6000, 0xffff) AM_READ(MRA8_ROM)
-ADDRESS_MAP_END
-
-
-static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0x0002) AM_WRITE(cloud9_bitmap_regs_w) AM_BASE(&cloud9_bitmap_regs)
-	AM_RANGE(0x0003, 0x05ff) AM_WRITE(MWA8_RAM)
-	AM_RANGE(0x0600, 0x3fff) AM_WRITE(cloud9_bitmap_w) AM_BASE(&videoram) AM_SIZE(&videoram_size)
+static ADDRESS_MAP_START( main_map, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x0002) AM_READWRITE(cloud9_bitmap_regs_r, cloud9_bitmap_regs_w) AM_BASE(&cloud9_bitmap_regs)
+	AM_RANGE(0x0003, 0x05ff) AM_RAM
+	AM_RANGE(0x0600, 0x3fff) AM_READWRITE(MRA8_RAM, cloud9_bitmap_w) AM_BASE(&videoram) AM_SIZE(&videoram_size)
 	AM_RANGE(0x5000, 0x50ff) AM_WRITE(MWA8_RAM) AM_BASE(&spriteram)
 	AM_RANGE(0x5400, 0x5400) AM_WRITE(watchdog_reset_w)
 	AM_RANGE(0x5480, 0x5480) AM_WRITE(MWA8_NOP)	/* IRQ Ack */
-	AM_RANGE(0x5500, 0x557f) AM_WRITE(cloud9_paletteram_w) AM_BASE(&paletteram)
+	AM_RANGE(0x5500, 0x557f) AM_READWRITE(MRA8_RAM, cloud9_paletteram_w) AM_BASE(&paletteram)
 	AM_RANGE(0x5580, 0x5580) AM_WRITE(MWA8_RAM) AM_BASE(&cloud9_auto_inc_x)
 	AM_RANGE(0x5581, 0x5581) AM_WRITE(MWA8_RAM) AM_BASE(&cloud9_auto_inc_y)
 	AM_RANGE(0x5584, 0x5584) AM_WRITE(MWA8_RAM) AM_BASE(&cloud9_both_banks)
@@ -127,10 +111,14 @@ static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0x5587, 0x5587) AM_WRITE(MWA8_RAM) AM_BASE(&cloud9_color_bank)
 	AM_RANGE(0x5600, 0x5601) AM_WRITE(cloud9_coin_counter_w)
 	AM_RANGE(0x5602, 0x5603) AM_WRITE(cloud9_led_w)
-	AM_RANGE(0x5a00, 0x5a0f) AM_WRITE(pokey1_w)
-	AM_RANGE(0x5b00, 0x5b0f) AM_WRITE(pokey2_w)
-	AM_RANGE(0x5c00, 0x5cff) AM_WRITE(MWA8_RAM) AM_BASE(&generic_nvram) AM_SIZE(&generic_nvram_size)
-	AM_RANGE(0x6000, 0xffff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x5800, 0x5800) AM_READ(input_port_0_r)
+	AM_RANGE(0x5801, 0x5801) AM_READ(input_port_1_r)
+	AM_RANGE(0x5900, 0x5900) AM_READ(input_port_2_r)
+	AM_RANGE(0x5901, 0x5901) AM_READ(input_port_3_r)
+	AM_RANGE(0x5a00, 0x5a0f) AM_READWRITE(pokey1_r, pokey1_w)
+	AM_RANGE(0x5b00, 0x5b0f) AM_READWRITE(pokey2_r, pokey2_w)
+	AM_RANGE(0x5c00, 0x5cff) AM_RAM AM_BASE(&generic_nvram) AM_SIZE(&generic_nvram_size)
+	AM_RANGE(0x6000, 0xffff) AM_ROM
 ADDRESS_MAP_END
 
 
@@ -267,7 +255,7 @@ static MACHINE_DRIVER_START( cloud9 )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M6502,12096000/8)	/* 1.512 MHz?? */
-	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
+	MDRV_CPU_PROGRAM_MAP(main_map,0)
 	MDRV_CPU_VBLANK_INT(irq0_line_hold,4)
 
 	MDRV_FRAMES_PER_SECOND(60)

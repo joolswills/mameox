@@ -1,11 +1,11 @@
-#pragma code_seg("C277")
-#pragma data_seg("D277")
-#pragma bss_seg("B277")
-#pragma const_seg("K277")
-#pragma comment(linker, "/merge:D277=277")
-#pragma comment(linker, "/merge:C277=277")
-#pragma comment(linker, "/merge:B277=277")
-#pragma comment(linker, "/merge:K277=277")
+#pragma code_seg("C288")
+#pragma data_seg("D288")
+#pragma bss_seg("B288")
+#pragma const_seg("K288")
+#pragma comment(linker, "/merge:D288=288")
+#pragma comment(linker, "/merge:C288=288")
+#pragma comment(linker, "/merge:B288=288")
+#pragma comment(linker, "/merge:K288=288")
 /***************************************************************************
 
 Exciting Soccer - (c) 1983 Alpha Denshi Co.
@@ -34,10 +34,10 @@ based on wich Coin input was connected.
 #include "vidhrdw/generic.h"
 
 /* from vidhrdw */
-extern WRITE_HANDLER( exctsccr_videoram_w );
-extern WRITE_HANDLER( exctsccr_colorram_w );
-extern WRITE_HANDLER( exctsccr_gfx_bank_w );
-extern WRITE_HANDLER( exctsccr_flipscreen_w );
+extern WRITE8_HANDLER( exctsccr_videoram_w );
+extern WRITE8_HANDLER( exctsccr_colorram_w );
+extern WRITE8_HANDLER( exctsccr_gfx_bank_w );
+extern WRITE8_HANDLER( exctsccr_flipscreen_w );
 
 extern PALETTE_INIT( exctsccr );
 extern VIDEO_START( exctsccr );
@@ -45,11 +45,11 @@ extern VIDEO_UPDATE( exctsccr );
 
 /* from machine */
 extern UINT8 *exctsccr_mcu_ram;
-extern WRITE_HANDLER( exctsccr_mcu_w );
-extern WRITE_HANDLER( exctsccr_mcu_control_w );
+extern WRITE8_HANDLER( exctsccr_mcu_w );
+extern WRITE8_HANDLER( exctsccr_mcu_control_w );
 
 
-WRITE_HANDLER( exctsccr_DAC_data_w )
+WRITE8_HANDLER( exctsccr_DAC_data_w )
 {
 	DAC_signed_data_w(offset,data << 2);
 }

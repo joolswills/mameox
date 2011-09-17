@@ -1,11 +1,11 @@
-#pragma code_seg("C604")
-#pragma data_seg("D604")
-#pragma bss_seg("B604")
-#pragma const_seg("K604")
-#pragma comment(linker, "/merge:D604=604")
-#pragma comment(linker, "/merge:C604=604")
-#pragma comment(linker, "/merge:B604=604")
-#pragma comment(linker, "/merge:K604=604")
+#pragma code_seg("C640")
+#pragma data_seg("D640")
+#pragma bss_seg("B640")
+#pragma const_seg("K640")
+#pragma comment(linker, "/merge:D640=640")
+#pragma comment(linker, "/merge:C640=640")
+#pragma comment(linker, "/merge:B640=640")
+#pragma comment(linker, "/merge:K640=640")
 /******************************************************************************************
 
 Sengoku Mahjong Video Hardware section
@@ -16,47 +16,48 @@ Sengoku Mahjong Video Hardware section
 #include "vidhrdw/generic.h"
 
 static struct tilemap *bg_tilemap,*md_tilemap,*tx_tilemap,*fg_tilemap;
-data8_t *bg_vram,*md_vram,*tx_vram,*fg_vram;
+data8_t *sm_bgvram;
+data8_t *md_vram,*tx_vram,*fg_vram;
 
-READ_HANDLER( sengoku_bg_vram_r )
+READ8_HANDLER( sengoku_sm_bgvram_r )
 {
-	return bg_vram[offset];
+	return sm_bgvram[offset];
 }
 
-READ_HANDLER( sengoku_md_vram_r )
+READ8_HANDLER( sengoku_md_vram_r )
 {
 	return md_vram[offset];
 }
 
-READ_HANDLER( sengoku_tx_vram_r )
+READ8_HANDLER( sengoku_tx_vram_r )
 {
 	return tx_vram[offset];
 }
 
-READ_HANDLER( sengoku_fg_vram_r )
+READ8_HANDLER( sengoku_fg_vram_r )
 {
 	return fg_vram[offset];
 }
 
-WRITE_HANDLER( sengoku_bg_vram_w )
+WRITE8_HANDLER( sengoku_sm_bgvram_w )
 {
-	bg_vram[offset] = data;
+	sm_bgvram[offset] = data;
 	tilemap_mark_tile_dirty(bg_tilemap,offset/2);
 }
 
-WRITE_HANDLER( sengoku_md_vram_w )
+WRITE8_HANDLER( sengoku_md_vram_w )
 {
 	md_vram[offset] = data;
 	tilemap_mark_tile_dirty(md_tilemap,offset/2);
 }
 
-WRITE_HANDLER( sengoku_tx_vram_w )
+WRITE8_HANDLER( sengoku_tx_vram_w )
 {
 	tx_vram[offset] = data;
 	tilemap_mark_tile_dirty(tx_tilemap,offset/2);
 }
 
-WRITE_HANDLER( sengoku_fg_vram_w )
+WRITE8_HANDLER( sengoku_fg_vram_w )
 {
 	fg_vram[offset] = data;
 	tilemap_mark_tile_dirty(fg_tilemap,offset/2);
@@ -64,7 +65,7 @@ WRITE_HANDLER( sengoku_fg_vram_w )
 
 static void sengoku_bg_tile_info(int tile_index)
 {
-	int tile = bg_vram[tile_index*2] + (bg_vram[2*tile_index+1] << 8);
+	int tile = sm_bgvram[tile_index*2] + (sm_bgvram[2*tile_index+1] << 8);
 	int color = (tile >> 12) & 0x0f;
 
 	tile &= 0xfff;

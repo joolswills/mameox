@@ -1,11 +1,11 @@
-#pragma code_seg("C108")
-#pragma data_seg("D108")
-#pragma bss_seg("B108")
-#pragma const_seg("K108")
-#pragma comment(linker, "/merge:D108=108")
-#pragma comment(linker, "/merge:C108=108")
-#pragma comment(linker, "/merge:B108=108")
-#pragma comment(linker, "/merge:K108=108")
+#pragma code_seg("C109")
+#pragma data_seg("D109")
+#pragma bss_seg("B109")
+#pragma const_seg("K109")
+#pragma comment(linker, "/merge:D109=109")
+#pragma comment(linker, "/merge:C109=109")
+#pragma comment(linker, "/merge:B109=109")
+#pragma comment(linker, "/merge:K109=109")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -87,12 +87,12 @@ VIDEO_START( aeroboto )
 
 ***************************************************************************/
 
-READ_HANDLER( aeroboto_in0_r )
+READ8_HANDLER( aeroboto_in0_r )
 {
 	return readinputport(flip_screen ? 1 : 0);
 }
 
-WRITE_HANDLER( aeroboto_3000_w )
+WRITE8_HANDLER( aeroboto_3000_w )
 {
 	/* bit 0 selects both flip screen and player1/player2 controls */
 	flip_screen_set(data & 0x01);
@@ -108,7 +108,7 @@ WRITE_HANDLER( aeroboto_3000_w )
 	aeroboto_starsoff = data & 0x4;
 }
 
-WRITE_HANDLER( aeroboto_videoram_w )
+WRITE8_HANDLER( aeroboto_videoram_w )
 {
 	if (aeroboto_videoram[offset] != data)
 	{
@@ -117,7 +117,7 @@ WRITE_HANDLER( aeroboto_videoram_w )
 	}
 }
 
-WRITE_HANDLER( aeroboto_tilecolor_w )
+WRITE8_HANDLER( aeroboto_tilecolor_w )
 {
 	if (aeroboto_tilecolor[offset] != data)
 	{

@@ -203,4 +203,3 @@ UINT32 hard_disk_write(struct hard_disk_file *file, UINT32 lbasector, UINT32 num
 		return 1;
 	return 0;
 }
-

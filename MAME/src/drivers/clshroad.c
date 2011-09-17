@@ -35,9 +35,9 @@ data8_t *clshroad_sharedram;
 extern data8_t *clshroad_vram_0, *clshroad_vram_1;
 extern data8_t *clshroad_vregs;
 
-WRITE_HANDLER( clshroad_vram_0_w );
-WRITE_HANDLER( clshroad_vram_1_w );
-WRITE_HANDLER( clshroad_flipscreen_w );
+WRITE8_HANDLER( clshroad_vram_0_w );
+WRITE8_HANDLER( clshroad_vram_1_w );
+WRITE8_HANDLER( clshroad_flipscreen_w );
 
 PALETTE_INIT( firebatl );
 PALETTE_INIT( clshroad );
@@ -48,7 +48,7 @@ VIDEO_UPDATE( clshroad );
 extern unsigned char *wiping_soundregs;
 int wiping_sh_start(const struct MachineSound *msound);
 void wiping_sh_stop(void);
-WRITE_HANDLER( wiping_sound_w );
+WRITE8_HANDLER( wiping_sound_w );
 
 
 
@@ -60,10 +60,10 @@ MACHINE_INIT( clshroad )
 
 /* Shared RAM with the sound CPU */
 
-READ_HANDLER ( clshroad_sharedram_r )	{	return clshroad_sharedram[offset];	}
-WRITE_HANDLER( clshroad_sharedram_w )	{	clshroad_sharedram[offset] = data;	}
+READ8_HANDLER ( clshroad_sharedram_r )	{	return clshroad_sharedram[offset];	}
+WRITE8_HANDLER( clshroad_sharedram_w )	{	clshroad_sharedram[offset] = data;	}
 
-READ_HANDLER( clshroad_input_r )
+READ8_HANDLER( clshroad_input_r )
 {
 	return	((~readinputport(0) & (1 << offset)) ? 1 : 0) |
 			((~readinputport(1) & (1 << offset)) ? 2 : 0) |
@@ -216,47 +216,34 @@ INPUT_PORTS_START( firebatl )
 	PORT_BIT(  0x80, IP_ACTIVE_LOW, IPT_START2 )
 
 	PORT_START	// IN2 - DSW 1
-	PORT_DIPNAME( 0x01, 0x01, "Unknown 1-0" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "Unknown 1-1" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_BITX(    0x04, 0x00, IPT_DIPSWITCH_NAME | IPF_CHEAT, "Infinite Lives", IP_KEY_NONE, IP_JOY_NONE )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "Unknown 1-3" )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "Unknown 1-4" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, "Unknown 1-5" )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, "Unknown 1-6" )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x7f, 0x03, DEF_STR( Lives ) )
+	PORT_DIPSETTING(    0x00, "1" )
+	PORT_DIPSETTING(    0x01, "2" )
+	PORT_DIPSETTING(    0x03, "3" )
+	PORT_DIPSETTING(    0x07, "4" )
+	PORT_DIPSETTING(    0x0f, "5" )
+	PORT_DIPSETTING(    0x1f, "6" )
+	PORT_DIPSETTING(    0x3f, "7" )
+	PORT_DIPSETTING(    0x7f, "Infinite Lives" )
 	PORT_DIPNAME( 0x80, 0x80, "Unknown 1-7" )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START	// IN3 - DSW 2
-	PORT_DIPNAME( 0x01, 0x01, "Unknown 2-0" )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, "Unknown 2-1" )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, "Unknown 2-2" )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, "Unknown 2-3" )
+	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Coinage ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( 3C_1C ) )
+	PORT_DIPSETTING(    0x01, DEF_STR( 2C_1C ) )
+	PORT_DIPSETTING(    0x03, DEF_STR( 1C_1C ) )
+	PORT_DIPSETTING(    0x02, DEF_STR( 1C_2C ) )
+	PORT_DIPNAME( 0x04, 0x00, DEF_STR( Cabinet ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( Upright ) )
+	PORT_DIPSETTING(    0x04, DEF_STR( Cocktail ) )
+	PORT_DIPNAME( 0x08, 0x00, DEF_STR( Demo_Sounds ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "Unknown 2-4" )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Bonus_Life ) )
+	PORT_DIPSETTING(    0x10, "10K 30K+" )
+	PORT_DIPSETTING(    0x00, "20K 30K+" )
 	PORT_DIPNAME( 0x20, 0x20, "Unknown 2-5" )
 	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )

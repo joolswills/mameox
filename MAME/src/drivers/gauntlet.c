@@ -1,11 +1,11 @@
-#pragma code_seg("C320")
-#pragma data_seg("D320")
-#pragma bss_seg("B320")
-#pragma const_seg("K320")
-#pragma comment(linker, "/merge:D320=320")
-#pragma comment(linker, "/merge:C320=320")
-#pragma comment(linker, "/merge:B320=320")
-#pragma comment(linker, "/merge:K320=320")
+#pragma code_seg("C333")
+#pragma data_seg("D333")
+#pragma bss_seg("B333")
+#pragma const_seg("K333")
+#pragma comment(linker, "/merge:D333=333")
+#pragma comment(linker, "/merge:C333=333")
+#pragma comment(linker, "/merge:B333=333")
+#pragma comment(linker, "/merge:K333=333")
 /***************************************************************************
 
 	Atari Gauntlet hardware
@@ -160,9 +160,9 @@ static void update_interrupts(void)
 		newstate |= 6;
 
 	if (newstate)
-		cpu_set_irq_line(0, newstate, ASSERT_LINE);
+		cpunum_set_input_line(0, newstate, ASSERT_LINE);
 	else
-		cpu_set_irq_line(0, 7, CLEAR_LINE);
+		cpunum_set_input_line(0, 7, CLEAR_LINE);
 }
 
 
@@ -259,7 +259,7 @@ static WRITE16_HANDLER( sound_reset_w )
 
 		if ((oldword ^ sound_reset_val) & 1)
 		{
-			cpu_set_reset_line(1, (sound_reset_val & 1) ? CLEAR_LINE : ASSERT_LINE);
+			cpunum_set_input_line(1, INPUT_LINE_RESET, (sound_reset_val & 1) ? CLEAR_LINE : ASSERT_LINE);
 			atarigen_sound_reset();
 		}
 	}
@@ -273,7 +273,7 @@ static WRITE16_HANDLER( sound_reset_w )
  *
  *************************************/
 
-static READ_HANDLER( switch_6502_r )
+static READ8_HANDLER( switch_6502_r )
 {
 	int temp = 0x30;
 
@@ -293,7 +293,7 @@ static READ_HANDLER( switch_6502_r )
  *
  *************************************/
 
-static WRITE_HANDLER( tms5220_w )
+static WRITE8_HANDLER( tms5220_w )
 {
 	speech_val = data;
 }
@@ -306,7 +306,7 @@ static WRITE_HANDLER( tms5220_w )
  *
  *************************************/
 
-static WRITE_HANDLER( sound_ctl_w )
+static WRITE8_HANDLER( sound_ctl_w )
 {
 	switch (offset & 7)
 	{
@@ -339,7 +339,7 @@ static WRITE_HANDLER( sound_ctl_w )
  *
  *************************************/
 
-static WRITE_HANDLER( mixer_w )
+static WRITE8_HANDLER( mixer_w )
 {
 	atarigen_set_ym2151_vol((data & 7) * 100 / 7);
 	atarigen_set_pokey_vol(((data >> 3) & 3) * 100 / 3);
@@ -1608,7 +1608,7 @@ static DRIVER_INIT( vindctr2 )
 	common_init(118, 1);
 
 	/* install our special ports */
-	install_mem_read16_handler(0, 0x803000, 0x803003, vindctr2_port01_r);
+	memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x803000, 0x803003, 0, 0, vindctr2_port01_r);
 
 	/* highly strange -- the address bits on the chip at 2J (and only that
 	   chip) are scrambled -- this is verified on the schematics! */

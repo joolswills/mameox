@@ -1,11 +1,11 @@
-#pragma code_seg("C119")
-#pragma data_seg("D119")
-#pragma bss_seg("B119")
-#pragma const_seg("K119")
-#pragma comment(linker, "/merge:D119=119")
-#pragma comment(linker, "/merge:C119=119")
-#pragma comment(linker, "/merge:B119=119")
-#pragma comment(linker, "/merge:K119=119")
+#pragma code_seg("C120")
+#pragma data_seg("D120")
+#pragma bss_seg("B120")
+#pragma const_seg("K120")
+#pragma comment(linker, "/merge:D120=120")
+#pragma comment(linker, "/merge:C120=120")
+#pragma comment(linker, "/merge:B120=120")
+#pragma comment(linker, "/merge:K120=120")
 /***************************************************************************
 
   vidhrdw.c
@@ -134,13 +134,13 @@ VIDEO_START( appoooh )
 	return 0;
 }
 
-WRITE_HANDLER( appoooh_scroll_w )
+WRITE8_HANDLER( appoooh_scroll_w )
 {
 	scroll_x = data;
 }
 
 
-WRITE_HANDLER( appoooh_fg_videoram_w )
+WRITE8_HANDLER( appoooh_fg_videoram_w )
 {
 	if (appoooh_fg_videoram[offset] != data)
 	{
@@ -149,7 +149,7 @@ WRITE_HANDLER( appoooh_fg_videoram_w )
 	}
 }
 
-WRITE_HANDLER( appoooh_fg_colorram_w )
+WRITE8_HANDLER( appoooh_fg_colorram_w )
 {
 	if (appoooh_fg_colorram[offset] != data)
 	{
@@ -158,7 +158,7 @@ WRITE_HANDLER( appoooh_fg_colorram_w )
 	}
 }
 
-WRITE_HANDLER( appoooh_bg_videoram_w )
+WRITE8_HANDLER( appoooh_bg_videoram_w )
 {
 	if (appoooh_bg_videoram[offset] != data)
 	{
@@ -167,7 +167,7 @@ WRITE_HANDLER( appoooh_bg_videoram_w )
 	}
 }
 
-WRITE_HANDLER( appoooh_bg_colorram_w )
+WRITE8_HANDLER( appoooh_bg_colorram_w )
 {
 	if (appoooh_bg_colorram[offset] != data)
 	{
@@ -176,7 +176,7 @@ WRITE_HANDLER( appoooh_bg_colorram_w )
 	}
 }
 
-WRITE_HANDLER( appoooh_out_w )
+WRITE8_HANDLER( appoooh_out_w )
 {
 	/* bit 0 controls NMI */
 	interrupt_enable_w(0,data & 0x01);

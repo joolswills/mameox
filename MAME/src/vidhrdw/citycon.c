@@ -1,11 +1,11 @@
-#pragma code_seg("C210")
-#pragma data_seg("D210")
-#pragma bss_seg("B210")
-#pragma const_seg("K210")
-#pragma comment(linker, "/merge:D210=210")
-#pragma comment(linker, "/merge:C210=210")
-#pragma comment(linker, "/merge:B210=210")
-#pragma comment(linker, "/merge:K210=210")
+#pragma code_seg("C214")
+#pragma data_seg("D214")
+#pragma bss_seg("B214")
+#pragma const_seg("K214")
+#pragma comment(linker, "/merge:D214=214")
+#pragma comment(linker, "/merge:C214=214")
+#pragma comment(linker, "/merge:B214=214")
+#pragma comment(linker, "/merge:K214=214")
 /***************************************************************************
 
   vidhrdw.c
@@ -89,7 +89,7 @@ VIDEO_START( citycon )
 
 ***************************************************************************/
 
-WRITE_HANDLER( citycon_videoram_w )
+WRITE8_HANDLER( citycon_videoram_w )
 {
 	if (citycon_videoram[offset] != data)
 	{
@@ -99,13 +99,13 @@ WRITE_HANDLER( citycon_videoram_w )
 }
 
 
-WRITE_HANDLER( citycon_linecolor_w )
+WRITE8_HANDLER( citycon_linecolor_w )
 {
 	citycon_linecolor[offset] = data;
 }
 
 
-WRITE_HANDLER( citycon_background_w )
+WRITE8_HANDLER( citycon_background_w )
 {
 	/* bits 4-7 control the background image */
 	if (bg_image != (data >> 4))

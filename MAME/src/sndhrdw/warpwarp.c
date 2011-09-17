@@ -1,11 +1,11 @@
-#pragma code_seg("C775")
-#pragma data_seg("D775")
-#pragma bss_seg("B775")
-#pragma const_seg("K775")
-#pragma comment(linker, "/merge:D775=775")
-#pragma comment(linker, "/merge:C775=775")
-#pragma comment(linker, "/merge:B775=775")
-#pragma comment(linker, "/merge:K775=775")
+#pragma code_seg("C817")
+#pragma data_seg("D817")
+#pragma bss_seg("B817")
+#pragma const_seg("K817")
+#pragma comment(linker, "/merge:D817=817")
+#pragma comment(linker, "/merge:C817=817")
+#pragma comment(linker, "/merge:B817=817")
+#pragma comment(linker, "/merge:K817=817")
 /****************************************************************************
  *
  * warpwarp.c
@@ -40,7 +40,7 @@ static void sound_volume_decay(int param)
 		sound_volume = 0;
 }
 
-WRITE_HANDLER( warpwarp_sound_w )
+WRITE8_HANDLER( warpwarp_sound_w )
 {
 	stream_update(channel,0);
 	sound_latch = data & 0x0f;
@@ -75,7 +75,7 @@ WRITE_HANDLER( warpwarp_sound_w )
     }
 }
 
-WRITE_HANDLER( warpwarp_music1_w )
+WRITE8_HANDLER( warpwarp_music1_w )
 {
     stream_update(channel,0);
 	music1_latch = data & 0x3f;
@@ -87,7 +87,7 @@ static void music_volume_decay(int param)
         music_volume = 0;
 }
 
-WRITE_HANDLER( warpwarp_music2_w )
+WRITE8_HANDLER( warpwarp_music2_w )
 {
     stream_update(channel,0);
 	music2_latch = data & 0x3f;

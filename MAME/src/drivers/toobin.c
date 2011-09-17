@@ -1,11 +1,11 @@
-#pragma code_seg("C732")
-#pragma data_seg("D732")
-#pragma bss_seg("B732")
-#pragma const_seg("K732")
-#pragma comment(linker, "/merge:D732=732")
-#pragma comment(linker, "/merge:C732=732")
-#pragma comment(linker, "/merge:B732=732")
-#pragma comment(linker, "/merge:K732=732")
+#pragma code_seg("C774")
+#pragma data_seg("D774")
+#pragma bss_seg("B774")
+#pragma const_seg("K774")
+#pragma comment(linker, "/merge:D774=774")
+#pragma comment(linker, "/merge:C774=774")
+#pragma comment(linker, "/merge:B774=774")
+#pragma comment(linker, "/merge:K774=774")
 /***************************************************************************
 
 	Atari Toobin' hardware
@@ -58,9 +58,9 @@ static void update_interrupts(void)
 		newstate |= 2;
 
 	if (newstate)
-		cpu_set_irq_line(0, newstate, ASSERT_LINE);
+		cpunum_set_input_line(0, newstate, ASSERT_LINE);
 	else
-		cpu_set_irq_line(0, 7, CLEAR_LINE);
+		cpunum_set_input_line(0, 7, CLEAR_LINE);
 }
 
 

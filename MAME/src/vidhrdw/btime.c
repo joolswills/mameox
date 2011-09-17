@@ -171,13 +171,13 @@ VIDEO_START( btime )
 
 
 
-WRITE_HANDLER( btime_paletteram_w )
+WRITE8_HANDLER( btime_paletteram_w )
 {
     /* RGB output is inverted */
     paletteram_BBGGGRRR_w(offset,~data);
 }
 
-WRITE_HANDLER( lnc_videoram_w )
+WRITE8_HANDLER( lnc_videoram_w )
 {
     if (videoram[offset] != data || colorram[offset] != *lnc_charbank)
     {
@@ -188,7 +188,7 @@ WRITE_HANDLER( lnc_videoram_w )
     }
 }
 
-READ_HANDLER( btime_mirrorvideoram_r )
+READ8_HANDLER( btime_mirrorvideoram_r )
 {
     int x,y;
 
@@ -200,7 +200,7 @@ READ_HANDLER( btime_mirrorvideoram_r )
     return videoram_r(offset);
 }
 
-READ_HANDLER( btime_mirrorcolorram_r )
+READ8_HANDLER( btime_mirrorcolorram_r )
 {
     int x,y;
 
@@ -212,7 +212,7 @@ READ_HANDLER( btime_mirrorcolorram_r )
     return colorram_r(offset);
 }
 
-WRITE_HANDLER( btime_mirrorvideoram_w )
+WRITE8_HANDLER( btime_mirrorvideoram_w )
 {
     int x,y;
 
@@ -224,7 +224,7 @@ WRITE_HANDLER( btime_mirrorvideoram_w )
     videoram_w(offset,data);
 }
 
-WRITE_HANDLER( lnc_mirrorvideoram_w )
+WRITE8_HANDLER( lnc_mirrorvideoram_w )
 {
     int x,y;
 
@@ -236,7 +236,7 @@ WRITE_HANDLER( lnc_mirrorvideoram_w )
     lnc_videoram_w(offset,data);
 }
 
-WRITE_HANDLER( btime_mirrorcolorram_w )
+WRITE8_HANDLER( btime_mirrorcolorram_w )
 {
     int x,y;
 
@@ -248,7 +248,7 @@ WRITE_HANDLER( btime_mirrorcolorram_w )
     colorram_w(offset,data);
 }
 
-WRITE_HANDLER( deco_charram_w )
+WRITE8_HANDLER( deco_charram_w )
 {
     if (deco_charram[offset] == data)  return;
 
@@ -263,7 +263,7 @@ WRITE_HANDLER( deco_charram_w )
     char_dirty  [offset >> 3] = 1;
 }
 
-WRITE_HANDLER( bnj_background_w )
+WRITE8_HANDLER( bnj_background_w )
 {
     if (bnj_backgroundram[offset] != data)
     {
@@ -273,7 +273,7 @@ WRITE_HANDLER( bnj_background_w )
     }
 }
 
-WRITE_HANDLER( bnj_scroll1_w )
+WRITE8_HANDLER( bnj_scroll1_w )
 {
     // Dirty screen if background is being turned off
     if (bnj_scroll1 && !data)
@@ -284,12 +284,12 @@ WRITE_HANDLER( bnj_scroll1_w )
     bnj_scroll1 = data;
 }
 
-WRITE_HANDLER( bnj_scroll2_w )
+WRITE8_HANDLER( bnj_scroll2_w )
 {
     bnj_scroll2 = data;
 }
 
-WRITE_HANDLER( zoar_video_control_w )
+WRITE8_HANDLER( zoar_video_control_w )
 {
     // Zoar video control
     //
@@ -301,7 +301,7 @@ WRITE_HANDLER( zoar_video_control_w )
 	flip_screen_set(data & 0x80);
 }
 
-WRITE_HANDLER( btime_video_control_w )
+WRITE8_HANDLER( btime_video_control_w )
 {
     // Btime video control
     //
@@ -311,7 +311,7 @@ WRITE_HANDLER( btime_video_control_w )
 	flip_screen_set(data & 0x01);
 }
 
-WRITE_HANDLER( bnj_video_control_w )
+WRITE8_HANDLER( bnj_video_control_w )
 {
     /* Bnj/Lnc works a little differently than the btime/eggs (apparently). */
     /* According to the information at: */
@@ -327,7 +327,7 @@ WRITE_HANDLER( bnj_video_control_w )
         btime_video_control_w(offset, data);
 }
 
-WRITE_HANDLER( lnc_video_control_w )
+WRITE8_HANDLER( lnc_video_control_w )
 {
     // I have a feeling that this only works by coincidence. I couldn't
     // figure out how NMI's are disabled by the sound processor
@@ -336,7 +336,7 @@ WRITE_HANDLER( lnc_video_control_w )
     bnj_video_control_w(offset, data & 0x01);
 }
 
-WRITE_HANDLER( disco_video_control_w )
+WRITE8_HANDLER( disco_video_control_w )
 {
 	set_vh_global_attribute(&btime_palette, (data >> 2) & 0x03);
 
@@ -350,7 +350,7 @@ WRITE_HANDLER( disco_video_control_w )
 INTERRUPT_GEN( lnc_sound_interrupt )
 {
     if (lnc_sound_interrupt_enabled)
-    	cpu_set_irq_line(1, IRQ_LINE_NMI, PULSE_LINE);
+    	cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 }
 
 

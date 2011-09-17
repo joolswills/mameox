@@ -1,11 +1,11 @@
-#pragma code_seg("C761")
-#pragma data_seg("D761")
-#pragma bss_seg("B761")
-#pragma const_seg("K761")
-#pragma comment(linker, "/merge:D761=761")
-#pragma comment(linker, "/merge:C761=761")
-#pragma comment(linker, "/merge:B761=761")
-#pragma comment(linker, "/merge:K761=761")
+#pragma code_seg("C803")
+#pragma data_seg("D803")
+#pragma bss_seg("B803")
+#pragma const_seg("K803")
+#pragma comment(linker, "/merge:D803=803")
+#pragma comment(linker, "/merge:C803=803")
+#pragma comment(linker, "/merge:B803=803")
+#pragma comment(linker, "/merge:K803=803")
 /***************************************************************************
 
   vidhrdw.c
@@ -105,31 +105,31 @@ VIDEO_START( vastar )
 
 ***************************************************************************/
 
-WRITE_HANDLER( vastar_fgvideoram_w )
+WRITE8_HANDLER( vastar_fgvideoram_w )
 {
 	vastar_fgvideoram[offset] = data;
 	tilemap_mark_tile_dirty(fg_tilemap,offset & 0x3ff);
 }
 
-WRITE_HANDLER( vastar_bg1videoram_w )
+WRITE8_HANDLER( vastar_bg1videoram_w )
 {
 	vastar_bg1videoram[offset] = data;
 	tilemap_mark_tile_dirty(bg1_tilemap,offset & 0x3ff);
 }
 
-WRITE_HANDLER( vastar_bg2videoram_w )
+WRITE8_HANDLER( vastar_bg2videoram_w )
 {
 	vastar_bg2videoram[offset] = data;
 	tilemap_mark_tile_dirty(bg2_tilemap,offset & 0x3ff);
 }
 
 
-READ_HANDLER( vastar_bg1videoram_r )
+READ8_HANDLER( vastar_bg1videoram_r )
 {
 	return vastar_bg1videoram[offset];
 }
 
-READ_HANDLER( vastar_bg2videoram_r )
+READ8_HANDLER( vastar_bg2videoram_r )
 {
 	return vastar_bg2videoram[offset];
 }

@@ -1,11 +1,11 @@
-#pragma code_seg("C392")
-#pragma data_seg("D392")
-#pragma bss_seg("B392")
-#pragma const_seg("K392")
-#pragma comment(linker, "/merge:D392=392")
-#pragma comment(linker, "/merge:C392=392")
-#pragma comment(linker, "/merge:B392=392")
-#pragma comment(linker, "/merge:K392=392")
+#pragma code_seg("C409")
+#pragma data_seg("D409")
+#pragma bss_seg("B409")
+#pragma const_seg("K409")
+#pragma comment(linker, "/merge:D409=409")
+#pragma comment(linker, "/merge:C409=409")
+#pragma comment(linker, "/merge:B409=409")
+#pragma comment(linker, "/merge:K409=409")
 /***************************************************************************
 
 	Kyugo hardware games
@@ -735,6 +735,47 @@ ROM_START( gyrodine )
 	ROM_LOAD( "m1.2c",  0x0320, 0x0020, CRC(83a39201) SHA1(4fdc722c9e20ee152c890342ef0dce18e35e2ef8) ) /* timing? (not used) */
 ROM_END
 
+ROM_START( gyrodinc )
+	ROM_REGION( 0x10000, REGION_CPU1, 0 ) /* 64k for code */
+	ROM_LOAD( "rom2",   0x0000, 0x2000, CRC(85ddea38) SHA1(fe7e8d7962850b17c39cac627994d78768b094f8) )
+	ROM_LOAD( "a21.03", 0x2000, 0x2000, CRC(4e9323bd) SHA1(86ae4c6a29898fdb0e559ec2aac99fc874910fea) )
+	ROM_LOAD( "a21.04", 0x4000, 0x2000, CRC(57e659d4) SHA1(4c0e73d0661360731691a32a6e94f41b69315f93) )
+	ROM_LOAD( "a21.05", 0x6000, 0x2000, CRC(1e7293f3) SHA1(64695b80b409b02314334fb325f4d0c42a6d4d5b) )
+
+	ROM_REGION( 0x10000, REGION_CPU2, 0 ) /* 64k for code */
+	ROM_LOAD( "a21.01", 0x0000, 0x2000, CRC(b2ce0aa2) SHA1(576754105819aec64781a5c8e8540b21fcfd346b) )
+
+	ROM_REGION( 0x01000, REGION_GFX1, ROMREGION_DISPOSE )
+	ROM_LOAD( "a21.15", 0x00000, 0x1000, CRC(adba18d0) SHA1(b1afd7d8f2a8545a00525a23e087d9ca975a6401) ) /* chars */
+
+	ROM_REGION( 0x06000, REGION_GFX2, ROMREGION_DISPOSE )
+	ROM_LOAD( "a21.08", 0x00000, 0x2000, CRC(a57df1c9) SHA1(63505f63e978c52c43fe863dca056b52f7ebd501) ) /* tiles - plane 0 */
+	ROM_LOAD( "a21.07", 0x02000, 0x2000, CRC(63623ba3) SHA1(bcb80fc0edf7c4d1f82a2ff6d0bad9d2ccaf48c6) ) /* tiles - plane 1 */
+	ROM_LOAD( "a21.06", 0x04000, 0x2000, CRC(4cc969a9) SHA1(0b89f4142c2fcc0a882fbc3514d8d11027e78e01) ) /* tiles - plane 2 */
+
+	ROM_REGION( 0x18000, REGION_GFX3, ROMREGION_DISPOSE )
+	ROM_LOAD( "a21.14", 0x00000, 0x2000, CRC(9c5c4d5b) SHA1(0d0c9efb63b761acfaf51d17c525f94430ad703d) ) /* sprites - plane 0 */
+	/* 0x03000-0x04fff empty */
+	ROM_LOAD( "a21.13", 0x04000, 0x2000, CRC(d36b5aad) SHA1(8fac23474ffd3a62e2283eadbc8d278cd9c70105) ) /* sprites - plane 0 */
+	/* 0x07000-0x08fff empty */
+	ROM_LOAD( "a21.12", 0x08000, 0x2000, CRC(f387aea2) SHA1(de4aad7ad9ecc6a058b88c67bb18ee02605d9951) ) /* sprites - plane 1 */
+	/* 0x0b000-0x0cfff empty */
+	ROM_LOAD( "a21.11", 0x0c000, 0x2000, CRC(87967d7d) SHA1(d8026df749947a16f643d9b28640c9d293edd4a7) ) /* sprites - plane 1 */
+	/* 0x0f000-0x10fff empty */
+	ROM_LOAD( "a21.10", 0x10000, 0x2000, CRC(59640ab4) SHA1(747cb265f4504399837111c0dd48f07e05a57cc4) ) /* sprites - plane 2 */
+	/* 0x13000-0x14fff empty */
+	ROM_LOAD( "a21.09", 0x14000, 0x2000, CRC(22ad88d8) SHA1(3bdf93ca582d7454fc9e70bd6ce3cd076e0762aa) ) /* sprites - plane 2 */
+	/* 0x17000-0x18fff empty */
+
+	ROM_REGION( 0x0340, REGION_PROMS, 0 )
+	ROM_LOAD( "a21.16", 0x0000, 0x0100, CRC(cc25fb56) SHA1(5f533c4b4f49ba147c83d6a20d1e795c71db3c41) ) /* red */
+	ROM_LOAD( "a21.17", 0x0100, 0x0100, CRC(ca054448) SHA1(4bad8147905cbe9ec8bb5bcd8016e9950c5d95a9) ) /* green */
+	ROM_LOAD( "a21.18", 0x0200, 0x0100, CRC(23c0c449) SHA1(4a37821a6a16ae0cfdcfb0fa64733c03ba9e4815) ) /* blue */
+	ROM_LOAD( "a21.20", 0x0300, 0x0020, CRC(efc4985e) SHA1(b2fa02e388fbbe1077e79699efccb2d47cb83ba5) ) /* char lookup table */
+	ROM_LOAD( "m1.2c",  0x0320, 0x0020, CRC(83a39201) SHA1(4fdc722c9e20ee152c890342ef0dce18e35e2ef8) ) /* timing? (not used) */	
+ROM_END
+
+
 ROM_START( sonofphx )
 	ROM_REGION( 0x10000, REGION_CPU1, 0 ) /* 64k for code */
 	ROM_LOAD( "5.f4",   0x0000, 0x2000, CRC(e0d2c6cf) SHA1(87befaefa3e4f07523e9c4db19f13ff9309a7dcc) )
@@ -949,6 +990,40 @@ ROM_START( srdmissn )
 	ROM_LOAD( "m1.2c",  0x0320, 0x0020, CRC(83a39201) SHA1(4fdc722c9e20ee152c890342ef0dce18e35e2ef8) ) /* timing? not used */
 ROM_END
 
+ROM_START( fx )
+	ROM_REGION( 0x10000, REGION_CPU1, 0 ) /* 64k for code */
+	ROM_LOAD( "fx.01", 0x0000, 0x4000, CRC(b651754b) SHA1(05024276aeac0c2a3d62f3a6f1027518fe206784) )
+	ROM_LOAD( "fx.02", 0x4000, 0x4000, CRC(f3d2dcc1) SHA1(466bed28ecf25f9e2653662d7cc382ceb916d8db) )
+
+	ROM_REGION( 0x10000, REGION_CPU2, 0 ) /* 64k for code */
+	ROM_LOAD( "fx.03", 0x0000, 0x4000, CRC(8907df6b) SHA1(a6d3e804fdaaeddca6f6f1e29dc35f25ed9490ae) )
+	ROM_LOAD( "fx.04", 0x4000, 0x4000, CRC(c665834f) SHA1(91ffb32790df324b5f47f8b88f47a1b6ec689cce) )
+
+	ROM_REGION( 0x01000, REGION_GFX1, ROMREGION_DISPOSE )
+	ROM_LOAD( "fx.05", 0x0000, 0x1000, CRC(4a504286) SHA1(0d5ca6ce24ebaad466235fdb22471ac1ad7703db) )
+
+	ROM_REGION( 0x06000, REGION_GFX2, ROMREGION_DISPOSE )
+	ROM_LOAD( "17.9h",  0x00000, 0x2000, CRC(41211458) SHA1(bb080f4d7b92a1dadb7e554fd640e14ddbbcfcb6) ) /* tiles - plane 1 */
+	ROM_LOAD( "18.10h", 0x02000, 0x2000, CRC(740eccd4) SHA1(a1ce4b1a9e7c26a7322b7cdd6c734889900485be) ) /* tiles - plane 0 */
+	ROM_LOAD( "16.11h", 0x04000, 0x2000, CRC(c1f4a5db) SHA1(b9a0e57fac6317dceec3d4fbcde25b6b883fbbb1) ) /* tiles - plane 2 */
+
+	ROM_REGION( 0x18000, REGION_GFX3, ROMREGION_DISPOSE )
+	ROM_LOAD( "14.6a",  0x00000, 0x4000, CRC(3d4c0447) SHA1(a064d43f5e8e0ac6ce441148057623f4a32f6056) ) /* sprites - plane 0 */
+	ROM_LOAD( "13.7a",  0x04000, 0x4000, CRC(22414a67) SHA1(aaeb1bd196967d201d0dfc06de88419d6651f788) ) /* sprites - plane 0 */
+	ROM_LOAD( "12.8a",  0x08000, 0x4000, CRC(61e34283) SHA1(35fff04aae4d5ab3269c1cd2c306c21507dde073) ) /* sprites - plane 1 */
+	ROM_LOAD( "11.9a",  0x0c000, 0x4000, CRC(bbbaffef) SHA1(f2de9eebd9f566a4aea9a30bfd4d0a7643ea320c) ) /* sprites - plane 1 */
+	ROM_LOAD( "10.10a", 0x10000, 0x4000, CRC(de564f97) SHA1(fa5e9a807ef170f01df9c1d7c9124e418a29c3bb) ) /* sprites - plane 2 */
+	ROM_LOAD( "9.11a",  0x14000, 0x4000, CRC(890dc815) SHA1(61a1f7a3ff9bde31e0f7427cea115a4c140798af) ) /* sprites - plane 2 */
+
+	ROM_REGION( 0x0340, REGION_PROMS, 0 )
+	ROM_LOAD( "mr.1j",  0x0000, 0x0100, CRC(110a436e) SHA1(1559a3bfc80c0e13f94dc929171af12010e1de28) ) /* red */
+	ROM_LOAD( "mg.1h",  0x0100, 0x0100, CRC(0fbfd9f0) SHA1(eb69f076c2f12f17238c5189645da54a85bbc2be) ) /* green */
+	ROM_LOAD( "mb.1f",  0x0200, 0x0100, CRC(a342890c) SHA1(6f2223ed68392b15a8751dba9bb28b85fd1d8dc0) ) /* blue */
+	ROM_LOAD( "m2.5j",  0x0300, 0x0020, CRC(190a55ad) SHA1(de8a847bff8c343d69b853a215e6ee775ef2ef96) ) /* char lookup table */
+	ROM_LOAD( "m1.2c",  0x0320, 0x0020, CRC(83a39201) SHA1(4fdc722c9e20ee152c890342ef0dce18e35e2ef8) ) /* timing? not used */
+ROM_END
+
+
 ROM_START( airwolf )
 	ROM_REGION( 0x10000, REGION_CPU1, 0 ) /* 64k for code */
 	ROM_LOAD( "b.2s",        0x0000, 0x8000, CRC(8c993cce) SHA1(925a5a9a2ee382556e2c2e928fd483344eba72c3) )
@@ -1096,18 +1171,18 @@ ROM_END
 static DRIVER_INIT( gyrodine )
 {
 	/* add watchdog */
-	install_mem_write_handler(0, 0xe000, 0xe000, watchdog_reset_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0xe000, 0xe000, 0, 0, watchdog_reset_w);
 }
 
 static DRIVER_INIT( srdmissn )
 {
 	/* shared RAM is mapped at 0xe000 as well  */
-	install_mem_read_handler (0, 0xe000, 0xe7ff, kyugo_sharedram_r);
-	install_mem_write_handler(0, 0xe000, 0xe7ff, kyugo_sharedram_w);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xe000, 0xe7ff, 0, 0, kyugo_sharedram_r);
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0xe000, 0xe7ff, 0, 0, kyugo_sharedram_w);
 
 	/* extra RAM on sub CPU  */
-	install_mem_read_handler (1, 0x8800, 0x8fff, MRA8_RAM);
-	install_mem_write_handler(1, 0x8800, 0x8fff, MWA8_RAM);
+	memory_install_read8_handler(1, ADDRESS_SPACE_PROGRAM, 0x8800, 0x8fff, 0, 0, MRA8_RAM);
+	memory_install_write8_handler(1, ADDRESS_SPACE_PROGRAM, 0x8800, 0x8fff, 0, 0, MWA8_RAM);
 }
 
 
@@ -1118,12 +1193,14 @@ static DRIVER_INIT( srdmissn )
  *************************************/
 
 GAME( 1984, gyrodine, 0,        gyrodine, gyrodine, gyrodine, ROT90, "Taito Corporation", "Gyrodine" )
+GAME( 1984, gyrodinc, gyrodine, gyrodine, gyrodine, gyrodine, ROT90, "Taito Corporation (Crux license)", "Gyrodine (Crux)" )
 GAME( 1985, sonofphx, 0,        sonofphx, sonofphx, 0,        ROT90, "Associated Overseas MFR, Inc", "Son of Phoenix" )
 GAME( 1985, repulse,  sonofphx, sonofphx, sonofphx, 0,        ROT90, "Sega", "Repulse" )
 GAME( 1985, 99lstwar, sonofphx, sonofphx, sonofphx, 0,        ROT90, "Proma", "'99: The Last War" )
 GAME( 1985, 99lstwra, sonofphx, sonofphx, sonofphx, 0,        ROT90, "Proma", "'99: The Last War (alternate)" )
 GAME( 1985, flashgal, 0,        flashgal, flashgal, 0,        ROT0,  "Sega", "Flashgal" )
 GAME( 1986, srdmissn, 0,        srdmissn, srdmissn, srdmissn, ROT90, "Taito Corporation", "S.R.D. Mission" )
+GAME( 1986, fx,		  srdmissn, srdmissn, srdmissn, srdmissn, ROT90, "bootleg", "F-X" )
 GAME( 1986?,legend,   0,        legend,   legend,   srdmissn, ROT0,  "Sega / Coreland ?", "Legend" )
 GAME( 1987, airwolf,  0,        srdmissn, airwolf,  srdmissn, ROT0,  "Kyugo", "Airwolf" )
 GAME( 1987, skywolf,  airwolf,  srdmissn, skywolf,  srdmissn, ROT0,  "bootleg", "Sky Wolf (set 1)" )

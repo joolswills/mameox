@@ -1,11 +1,11 @@
-#pragma code_seg("C713")
-#pragma data_seg("D713")
-#pragma bss_seg("B713")
-#pragma const_seg("K713")
-#pragma comment(linker, "/merge:D713=713")
-#pragma comment(linker, "/merge:C713=713")
-#pragma comment(linker, "/merge:B713=713")
-#pragma comment(linker, "/merge:K713=713")
+#pragma code_seg("C755")
+#pragma data_seg("D755")
+#pragma bss_seg("B755")
+#pragma const_seg("K755")
+#pragma comment(linker, "/merge:D755=755")
+#pragma comment(linker, "/merge:C755=755")
+#pragma comment(linker, "/merge:B755=755")
+#pragma comment(linker, "/merge:K755=755")
 /***************************************************************************
 
 Tehkan World Cup - (c) Tehkan 1985
@@ -28,7 +28,7 @@ static UINT8 led0,led1;
 
 static struct tilemap *bg_tilemap, *fg_tilemap;
 
-WRITE_HANDLER( tehkanwc_videoram_w )
+WRITE8_HANDLER( tehkanwc_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -37,7 +37,7 @@ WRITE_HANDLER( tehkanwc_videoram_w )
 	}
 }
 
-WRITE_HANDLER( tehkanwc_colorram_w )
+WRITE8_HANDLER( tehkanwc_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -46,7 +46,7 @@ WRITE_HANDLER( tehkanwc_colorram_w )
 	}
 }
 
-WRITE_HANDLER( tehkanwc_videoram2_w )
+WRITE8_HANDLER( tehkanwc_videoram2_w )
 {
 	if (tehkanwc_videoram2[offset] != data)
 	{
@@ -55,31 +55,31 @@ WRITE_HANDLER( tehkanwc_videoram2_w )
 	}
 }
 
-WRITE_HANDLER( tehkanwc_scroll_x_w )
+WRITE8_HANDLER( tehkanwc_scroll_x_w )
 {
 	scroll_x[offset] = data;
 }
 
-WRITE_HANDLER( tehkanwc_scroll_y_w )
+WRITE8_HANDLER( tehkanwc_scroll_y_w )
 {
 	tilemap_set_scrolly(bg_tilemap, 0, data);
 }
 
-WRITE_HANDLER( tehkanwc_flipscreen_x_w )
+WRITE8_HANDLER( tehkanwc_flipscreen_x_w )
 {
 	flip_screen_x_set(data & 0x40);
 }
 
-WRITE_HANDLER( tehkanwc_flipscreen_y_w )
+WRITE8_HANDLER( tehkanwc_flipscreen_y_w )
 {
 	flip_screen_y_set(data & 0x40);
 }
 
-WRITE_HANDLER( gridiron_led0_w )
+WRITE8_HANDLER( gridiron_led0_w )
 {
 	led0 = data;
 }
-WRITE_HANDLER( gridiron_led1_w )
+WRITE8_HANDLER( gridiron_led1_w )
 {
 	led1 = data;
 }

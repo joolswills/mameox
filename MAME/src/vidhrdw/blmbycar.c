@@ -1,11 +1,11 @@
-#pragma code_seg("C167")
-#pragma data_seg("D167")
-#pragma bss_seg("B167")
-#pragma const_seg("K167")
-#pragma comment(linker, "/merge:D167=167")
-#pragma comment(linker, "/merge:C167=167")
-#pragma comment(linker, "/merge:B167=167")
-#pragma comment(linker, "/merge:K167=167")
+#pragma code_seg("C168")
+#pragma data_seg("D168")
+#pragma bss_seg("B168")
+#pragma const_seg("K168")
+#pragma comment(linker, "/merge:D168=168")
+#pragma comment(linker, "/merge:C168=168")
+#pragma comment(linker, "/merge:B168=168")
+#pragma comment(linker, "/merge:K168=168")
 /***************************************************************************
 
 							  -= Blomby Car =-
@@ -252,14 +252,14 @@ VIDEO_UPDATE( blmbycar )
 	tilemap_set_scrollx( tilemap_1, 0, blmbycar_scroll_1[ 1 ]);
 
 #ifdef MAME_DEBUG
-if (keyboard_pressed(KEYCODE_Z))
+if (code_pressed(KEYCODE_Z))
 {
 	int msk = 0;
 
-	if (keyboard_pressed(KEYCODE_Q))	msk |= 1;
-	if (keyboard_pressed(KEYCODE_W))	msk |= 2;
-//	if (keyboard_pressed(KEYCODE_E))	msk |= 4;
-	if (keyboard_pressed(KEYCODE_A))	msk |= 8;
+	if (code_pressed(KEYCODE_Q))	msk |= 1;
+	if (code_pressed(KEYCODE_W))	msk |= 2;
+//	if (code_pressed(KEYCODE_E))	msk |= 4;
+	if (code_pressed(KEYCODE_A))	msk |= 8;
 	if (msk != 0) layers_ctrl &= msk;
 }
 #endif

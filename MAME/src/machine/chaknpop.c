@@ -1,11 +1,11 @@
-#pragma code_seg("C200")
-#pragma data_seg("D200")
-#pragma bss_seg("B200")
-#pragma const_seg("K200")
-#pragma comment(linker, "/merge:D200=200")
-#pragma comment(linker, "/merge:C200=200")
-#pragma comment(linker, "/merge:B200=200")
-#pragma comment(linker, "/merge:K200=200")
+#pragma code_seg("C203")
+#pragma data_seg("D203")
+#pragma bss_seg("B203")
+#pragma const_seg("K203")
+#pragma comment(linker, "/merge:D203=203")
+#pragma comment(linker, "/merge:C203=203")
+#pragma comment(linker, "/merge:B203=203")
+#pragma comment(linker, "/merge:K203=203")
 /*
  *	Chack'n Pop (C) 1983 TAITO Corp.
  *	simulate 68705 MCU
@@ -76,14 +76,14 @@ static void mcu_update_seed(data8_t data)
   Memory handlers
 ***************************************************************************/
 
-READ_HANDLER( chaknpop_mcu_portA_r )
+READ8_HANDLER( chaknpop_mcu_portA_r )
 {
 	//logerror("%04x: MCU portA read\n", activecpu_get_pc());
 	return mcu_result;
 }
 
 
-READ_HANDLER( chaknpop_mcu_portB_r )
+READ8_HANDLER( chaknpop_mcu_portB_r )
 {
 	//logerror("%04x: MCU portB read\n", activecpu_get_pc());
 
@@ -93,13 +93,13 @@ READ_HANDLER( chaknpop_mcu_portB_r )
 	return 0xff;
 }
 
-READ_HANDLER( chaknpop_mcu_portC_r )
+READ8_HANDLER( chaknpop_mcu_portC_r )
 {
 	//logerror("%04x: MCU portC read\n", activecpu_get_pc());
 	return 0x00;
 }
 
-WRITE_HANDLER( chaknpop_mcu_portA_w )
+WRITE8_HANDLER( chaknpop_mcu_portA_w )
 {
 	data8_t *RAM = memory_region(REGION_CPU1);
 	data8_t mcu_command;
@@ -148,12 +148,12 @@ WRITE_HANDLER( chaknpop_mcu_portA_w )
 	}
 }
 
-WRITE_HANDLER( chaknpop_mcu_portB_w )
+WRITE8_HANDLER( chaknpop_mcu_portB_w )
 {
 	//logerror("%04x: MCU portB write 0x%02x\n", activecpu_get_pc(), data);
 }
 
-WRITE_HANDLER( chaknpop_mcu_portC_w )
+WRITE8_HANDLER( chaknpop_mcu_portC_w )
 {
 	//logerror("%04x: MCU portC write 0x%02x\n", activecpu_get_pc(), data);
 }

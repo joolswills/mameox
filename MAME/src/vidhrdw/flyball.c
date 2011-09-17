@@ -1,11 +1,11 @@
-#pragma code_seg("C298")
-#pragma data_seg("D298")
-#pragma bss_seg("B298")
-#pragma const_seg("K298")
-#pragma comment(linker, "/merge:D298=298")
-#pragma comment(linker, "/merge:C298=298")
-#pragma comment(linker, "/merge:B298=298")
-#pragma comment(linker, "/merge:K298=298")
+#pragma code_seg("C309")
+#pragma data_seg("D309")
+#pragma bss_seg("B309")
+#pragma const_seg("K309")
+#pragma comment(linker, "/merge:D309=309")
+#pragma comment(linker, "/merge:C309=309")
+#pragma comment(linker, "/merge:B309=309")
+#pragma comment(linker, "/merge:K309=309")
 /***************************************************************************
 
 Atari Flyball video emulation

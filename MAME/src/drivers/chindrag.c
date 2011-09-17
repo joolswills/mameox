@@ -1,11 +1,11 @@
-#pragma code_seg("C204")
-#pragma data_seg("D204")
-#pragma bss_seg("B204")
-#pragma const_seg("K204")
-#pragma comment(linker, "/merge:D204=204")
-#pragma comment(linker, "/merge:C204=204")
-#pragma comment(linker, "/merge:B204=204")
-#pragma comment(linker, "/merge:K204=204")
+#pragma code_seg("C208")
+#pragma data_seg("D208")
+#pragma bss_seg("B208")
+#pragma const_seg("K208")
+#pragma comment(linker, "/merge:D208=208")
+#pragma comment(linker, "/merge:C208=208")
+#pragma comment(linker, "/merge:B208=208")
+#pragma comment(linker, "/merge:K208=208")
 /* China Dragon / Dragon World */
 
 #include "driver.h"

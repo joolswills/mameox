@@ -1,11 +1,11 @@
-#pragma code_seg("C346")
-#pragma data_seg("D346")
-#pragma bss_seg("B346")
-#pragma const_seg("K346")
-#pragma comment(linker, "/merge:D346=346")
-#pragma comment(linker, "/merge:C346=346")
-#pragma comment(linker, "/merge:B346=346")
-#pragma comment(linker, "/merge:K346=346")
+#pragma code_seg("C360")
+#pragma data_seg("D360")
+#pragma bss_seg("B360")
+#pragma const_seg("K360")
+#pragma comment(linker, "/merge:D360=360")
+#pragma comment(linker, "/merge:C360=360")
+#pragma comment(linker, "/merge:B360=360")
+#pragma comment(linker, "/merge:K360=360")
 /***************************************************************************
 
   vidhrdw.c
@@ -103,7 +103,7 @@ VIDEO_START( gyruss )
 
 
 
-WRITE_HANDLER( gyruss_flipscreen_w )
+WRITE8_HANDLER( gyruss_flipscreen_w )
 {
 	if (flipscreen != (data & 1))
 	{
@@ -115,7 +115,7 @@ WRITE_HANDLER( gyruss_flipscreen_w )
 
 
 /* Return the current video scan line */
-READ_HANDLER( gyruss_scanline_r )
+READ8_HANDLER( gyruss_scanline_r )
 {
 	return scanline;
 }

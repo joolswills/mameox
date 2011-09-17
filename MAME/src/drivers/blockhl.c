@@ -1,11 +1,11 @@
-#pragma code_seg("C169")
-#pragma data_seg("D169")
-#pragma bss_seg("B169")
-#pragma const_seg("K169")
-#pragma comment(linker, "/merge:D169=169")
-#pragma comment(linker, "/merge:C169=169")
-#pragma comment(linker, "/merge:B169=169")
-#pragma comment(linker, "/merge:K169=169")
+#pragma code_seg("C170")
+#pragma data_seg("D170")
+#pragma bss_seg("B170")
+#pragma const_seg("K170")
+#pragma comment(linker, "/merge:D170=170")
+#pragma comment(linker, "/merge:C170=170")
+#pragma comment(linker, "/merge:B170=170")
+#pragma comment(linker, "/merge:K170=170")
 /***************************************************************************
 
 Block Hole (GX973) (c) 1989 Konami
@@ -47,10 +47,10 @@ static int rombank;
 static INTERRUPT_GEN( blockhl_interrupt )
 {
 	if (K052109_is_IRQ_enabled() && rombank == 0)	/* kludge to prevent crashes */
-		cpu_set_irq_line(0, KONAMI_IRQ_LINE, HOLD_LINE);
+		cpunum_set_input_line(0, KONAMI_IRQ_LINE, HOLD_LINE);
 }
 
-static READ_HANDLER( bankedram_r )
+static READ8_HANDLER( bankedram_r )
 {
 	if (palette_selected)
 		return paletteram_r(offset);
@@ -58,7 +58,7 @@ static READ_HANDLER( bankedram_r )
 		return ram[offset];
 }
 
-static WRITE_HANDLER( bankedram_w )
+static WRITE8_HANDLER( bankedram_w )
 {
 	if (palette_selected)
 		paletteram_xBBBBBGGGGGRRRRR_swap_w(offset,data);
@@ -66,9 +66,9 @@ static WRITE_HANDLER( bankedram_w )
 		ram[offset] = data;
 }
 
-WRITE_HANDLER( blockhl_sh_irqtrigger_w )
+WRITE8_HANDLER( blockhl_sh_irqtrigger_w )
 {
-	cpu_set_irq_line_and_vector(1, 0, HOLD_LINE, 0xff);
+	cpunum_set_input_line_and_vector(1, 0, HOLD_LINE, 0xff);
 }
 
 

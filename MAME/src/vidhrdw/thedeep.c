@@ -1,11 +1,11 @@
-#pragma code_seg("C717")
-#pragma data_seg("D717")
-#pragma bss_seg("B717")
-#pragma const_seg("K717")
-#pragma comment(linker, "/merge:D717=717")
-#pragma comment(linker, "/merge:C717=717")
-#pragma comment(linker, "/merge:B717=717")
-#pragma comment(linker, "/merge:K717=717")
+#pragma code_seg("C759")
+#pragma data_seg("D759")
+#pragma bss_seg("B759")
+#pragma const_seg("K759")
+#pragma comment(linker, "/merge:D759=759")
+#pragma comment(linker, "/merge:C759=759")
+#pragma comment(linker, "/merge:B759=759")
+#pragma comment(linker, "/merge:K759=759")
 /***************************************************************************
 
 							-= Run Deep / The Deep =-
@@ -83,7 +83,7 @@ static void get_tile_info_1( int tile_index )
 			0)
 }
 
-WRITE_HANDLER( thedeep_vram_0_w )
+WRITE8_HANDLER( thedeep_vram_0_w )
 {
 	if (thedeep_vram_0[offset] != data)
 	{
@@ -92,7 +92,7 @@ WRITE_HANDLER( thedeep_vram_0_w )
 	}
 }
 
-WRITE_HANDLER( thedeep_vram_1_w )
+WRITE8_HANDLER( thedeep_vram_1_w )
 {
 	if (thedeep_vram_1[offset] != data)
 	{

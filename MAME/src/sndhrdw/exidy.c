@@ -122,9 +122,9 @@ static double freq_to_step;
 
 static void exidy_irq(int state);
 
-WRITE_HANDLER(victory_sound_response_w);
-WRITE_HANDLER(victory_sound_irq_clear_w);
-WRITE_HANDLER(victory_main_ack_w);
+WRITE8_HANDLER(victory_sound_response_w);
+WRITE8_HANDLER(victory_sound_irq_clear_w);
+WRITE8_HANDLER(victory_main_ack_w);
 
 /* PIA 0 */
 static struct pia6821_interface pia_0_intf =
@@ -160,7 +160,7 @@ static struct pia6821_interface victory_pia_0_intf =
 
 INLINE void update_irq_state(void)
 {
-	cpu_set_irq_line(1, M6502_IRQ_LINE, (pia_irq_state | riot_irq_state) ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1, M6502_IRQ_LINE, (pia_irq_state | riot_irq_state) ? ASSERT_LINE : CLEAR_LINE);
 }
 
 
@@ -481,7 +481,7 @@ static void riot_interrupt(int parm)
  *
  *************************************/
 
-WRITE_HANDLER( exidy_shriot_w )
+WRITE8_HANDLER( exidy_shriot_w )
 {
 	/* mask to the low 7 bits */
 	offset &= 0x7f;
@@ -493,7 +493,7 @@ WRITE_HANDLER( exidy_shriot_w )
 		{
 			case 0:	/* port A */
 				if (has_hc55516)
-					cpu_set_reset_line(2, (data & 0x10) ? CLEAR_LINE : ASSERT_LINE);
+					cpunum_set_input_line(2, INPUT_LINE_RESET, (data & 0x10) ? CLEAR_LINE : ASSERT_LINE);
 				riot_porta_data = (riot_porta_data & ~riot_porta_ddr) | (data & riot_porta_ddr);
 				break;
 
@@ -559,7 +559,7 @@ WRITE_HANDLER( exidy_shriot_w )
  *
  *************************************/
 
-READ_HANDLER( exidy_shriot_r )
+READ8_HANDLER( exidy_shriot_r )
 {
 	/* mask to the low 7 bits */
 	offset &= 0x7f;
@@ -631,7 +631,7 @@ READ_HANDLER( exidy_shriot_r )
  *
  *************************************/
 
-WRITE_HANDLER( exidy_sh8253_w )
+WRITE8_HANDLER( exidy_sh8253_w )
 {
 	int chan;
 
@@ -668,7 +668,7 @@ WRITE_HANDLER( exidy_sh8253_w )
 }
 
 
-READ_HANDLER( exidy_sh8253_r )
+READ8_HANDLER( exidy_sh8253_r )
 {
     logerror("8253(R): %x\n",offset);
 	return 0;
@@ -682,14 +682,14 @@ READ_HANDLER( exidy_sh8253_r )
  *
  *************************************/
 
-READ_HANDLER( exidy_sh6840_r )
+READ8_HANDLER( exidy_sh6840_r )
 {
     logerror("6840R %x\n",offset);
     return 0;
 }
 
 
-WRITE_HANDLER( exidy_sh6840_w )
+WRITE8_HANDLER( exidy_sh6840_w )
 {
 	/* force an update of the stream */
 	stream_update(exidy_stream, 0);
@@ -739,7 +739,7 @@ WRITE_HANDLER( exidy_sh6840_w )
  *
  *************************************/
 
-WRITE_HANDLER( exidy_sfxctrl_w )
+WRITE8_HANDLER( exidy_sfxctrl_w )
 {
 	stream_update(exidy_stream, 0);
 
@@ -766,7 +766,7 @@ WRITE_HANDLER( exidy_sfxctrl_w )
  *
  *************************************/
 
-WRITE_HANDLER( mtrap_voiceio_w )
+WRITE8_HANDLER( mtrap_voiceio_w )
 {
     if (!(offset & 0x10))
     {
@@ -778,7 +778,7 @@ WRITE_HANDLER( mtrap_voiceio_w )
 }
 
 
-READ_HANDLER( mtrap_voiceio_r )
+READ8_HANDLER( mtrap_voiceio_r )
 {
 	if (!(offset & 0x80))
 	{

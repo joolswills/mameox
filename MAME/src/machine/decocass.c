@@ -1,11 +1,11 @@
-#pragma code_seg("C250")
-#pragma data_seg("D250")
-#pragma bss_seg("B250")
-#pragma const_seg("K250")
-#pragma comment(linker, "/merge:D250=250")
-#pragma comment(linker, "/merge:C250=250")
-#pragma comment(linker, "/merge:B250=250")
-#pragma comment(linker, "/merge:K250=250")
+#pragma code_seg("C260")
+#pragma data_seg("D260")
+#pragma bss_seg("B260")
+#pragma const_seg("K260")
+#pragma comment(linker, "/merge:D260=260")
+#pragma comment(linker, "/merge:C260=260")
+#pragma comment(linker, "/merge:B260=260")
+#pragma comment(linker, "/merge:K260=260")
 /***********************************************************************
 
 	DECO Cassette System machine
@@ -94,62 +94,62 @@ static data8_t decocass_quadrature_decoder[4];
 static data8_t decocass_sound_ack;
 static void *decocass_sound_timer;
 
-WRITE_HANDLER( decocass_coin_counter_w )
+WRITE8_HANDLER( decocass_coin_counter_w )
 {
 }
 
-WRITE_HANDLER( decocass_sound_command_w )
+WRITE8_HANDLER( decocass_sound_command_w )
 {
 	LOG(2,("CPU #%d sound command -> $%02x\n", cpu_getactivecpu(), data));
 	soundlatch_w(0,data);
 	decocass_sound_ack |= 0x80;
 	/* remove snd cpu data ack bit. i don't see it in the schems, but... */
 	decocass_sound_ack &= ~0x40;
-	cpu_set_irq_line(1, M6502_IRQ_LINE, ASSERT_LINE);
+	cpunum_set_input_line(1, M6502_IRQ_LINE, ASSERT_LINE);
 }
 
-READ_HANDLER( decocass_sound_data_r )
+READ8_HANDLER( decocass_sound_data_r )
 {
 	data8_t data = soundlatch2_r(0);
 	LOG(2,("CPU #%d sound data    <- $%02x\n", cpu_getactivecpu(), data));
 	return data;
 }
 
-READ_HANDLER( decocass_sound_ack_r )
+READ8_HANDLER( decocass_sound_ack_r )
 {
 	data8_t data = decocass_sound_ack;	/* D6+D7 */
 	LOG(2,("CPU #%d sound ack     <- $%02x\n", cpu_getactivecpu(), data));
 	return data;
 }
 
-WRITE_HANDLER( decocass_sound_data_w )
+WRITE8_HANDLER( decocass_sound_data_w )
 {
 	LOG(2,("CPU #%d sound data    -> $%02x\n", cpu_getactivecpu(), data));
 	soundlatch2_w(0, data);
 	decocass_sound_ack |= 0x40;
 }
 
-READ_HANDLER( decocass_sound_command_r )
+READ8_HANDLER( decocass_sound_command_r )
 {
 	data8_t data = soundlatch_r(0);
 	LOG(2,("CPU #%d sound command <- $%02x\n", cpu_getactivecpu(), data));
-	cpu_set_irq_line(1, M6502_IRQ_LINE, CLEAR_LINE);
+	cpunum_set_input_line(1, M6502_IRQ_LINE, CLEAR_LINE);
 	decocass_sound_ack &= ~0x80;
 	return data;
 }
 
 static void decocass_sound_nmi_pulse( int param )
 {
-	cpu_set_nmi_line(1, PULSE_LINE);
+	cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 }
 
-WRITE_HANDLER( decocass_sound_nmi_enable_w )
+WRITE8_HANDLER( decocass_sound_nmi_enable_w )
 {
 	LOG(2,("CPU #%d sound NMI enb -> $%02x\n", cpu_getactivecpu(), data));
 	timer_adjust(decocass_sound_timer, TIME_IN_HZ(256 * 57 / 8 / 2), 0, TIME_IN_HZ(256 * 57 / 8 / 2));
 }
 
-READ_HANDLER( decocass_sound_nmi_enable_r )
+READ8_HANDLER( decocass_sound_nmi_enable_r )
 {
 	data8_t data = 0xff;
 	LOG(2,("CPU #%d sound NMI enb <- $%02x\n", cpu_getactivecpu(), data));
@@ -157,7 +157,7 @@ READ_HANDLER( decocass_sound_nmi_enable_r )
 	return data;
 }
 
-READ_HANDLER( decocass_sound_data_ack_reset_r )
+READ8_HANDLER( decocass_sound_data_ack_reset_r )
 {
 	data8_t data = 0xff;
 	LOG(2,("CPU #%d sound ack rst <- $%02x\n", cpu_getactivecpu(), data));
@@ -165,18 +165,18 @@ READ_HANDLER( decocass_sound_data_ack_reset_r )
 	return data;
 }
 
-WRITE_HANDLER( decocass_sound_data_ack_reset_w )
+WRITE8_HANDLER( decocass_sound_data_ack_reset_w )
 {
 	LOG(2,("CPU #%d sound ack rst -> $%02x\n", cpu_getactivecpu(), data));
 	decocass_sound_ack &= ~0x40;
 }
 
-WRITE_HANDLER( decocass_nmi_reset_w )
+WRITE8_HANDLER( decocass_nmi_reset_w )
 {
-	cpu_set_nmi_line( 0, CLEAR_LINE );
+	cpunum_set_input_line(0, INPUT_LINE_NMI, CLEAR_LINE );
 }
 
-WRITE_HANDLER( decocass_quadrature_decoder_reset_w )
+WRITE8_HANDLER( decocass_quadrature_decoder_reset_w )
 {
 	/* just latch the analog controls here */
 	decocass_quadrature_decoder[0] = input_port_3_r(0);
@@ -185,7 +185,7 @@ WRITE_HANDLER( decocass_quadrature_decoder_reset_w )
 	decocass_quadrature_decoder[3] = input_port_6_r(0);
 }
 
-WRITE_HANDLER( decocass_adc_w )
+WRITE8_HANDLER( decocass_adc_w )
 {
 }
 
@@ -199,7 +199,7 @@ WRITE_HANDLER( decocass_adc_w )
  * E6x6    ""
  * E6x7    a/d converter read
  */
-READ_HANDLER( decocass_input_r )
+READ8_HANDLER( decocass_input_r )
 {
 	data8_t data = 0xff;
 	switch (offset & 7)
@@ -273,20 +273,20 @@ READ_HANDLER( decocass_input_r )
 #define BIT6(x) (((x)>>6)&1)
 #define BIT7(x) (((x)>>7)&1)
 
-WRITE_HANDLER( decocass_reset_w )
+WRITE8_HANDLER( decocass_reset_w )
 {
 	LOG(1,("%9.7f 6502-PC: %04x decocass_reset_w(%02x): $%02x\n", timer_get_time(), activecpu_get_previouspc(), offset, data));
 	decocass_reset = data;
 
 	/* CPU #1 active hight reset */
-	cpu_set_reset_line( 1, data & 0x01 );
+	cpunum_set_input_line(1, INPUT_LINE_RESET, data & 0x01 );
 
 	/* on reset also remove the sound timer */
 	if (data & 1)
 		timer_adjust(decocass_sound_timer, TIME_NEVER, 0, 0);
 
 	/* 8041 active low reset */
-	cpu_set_reset_line( 2, (data & 0x08) ^ 0x08 );
+	cpunum_set_input_line(2, INPUT_LINE_RESET, (data & 0x08) ^ 0x08 );
 }
 
 #ifdef MAME_DEBUG
@@ -557,7 +557,7 @@ static void decocass_fno(offs_t offset, data8_t data)
  *
  ***************************************************************************/
 
-READ_HANDLER( decocass_type1_r )
+READ8_HANDLER( decocass_type1_r )
 {
 	static data8_t latch1;
 	data8_t data;
@@ -642,7 +642,7 @@ READ_HANDLER( decocass_type1_r )
  * table by applying data to the dongle and logging the outputs.
  */
 
-READ_HANDLER( decocass_type1_map1_r )
+READ8_HANDLER( decocass_type1_map1_r )
 {
 	static data8_t map[] = {
 		0x01,0x34,0x03,0x36,0xa4,0x15,0xa6,0x17,
@@ -715,7 +715,7 @@ READ_HANDLER( decocass_type1_map1_r )
 	return data;
 }
 
-READ_HANDLER( decocass_type1_map2_r )
+READ8_HANDLER( decocass_type1_map2_r )
 {
 	static data8_t map[] = {
 /* 00 */0x06,0x1f,0x8f,0x0c,0x02,0x1b,0x8b,0x08,
@@ -801,7 +801,7 @@ READ_HANDLER( decocass_type1_map2_r )
 	return data;
 }
 
-READ_HANDLER( decocass_type1_map3_r )
+READ8_HANDLER( decocass_type1_map3_r )
 {
 	static data8_t map[] = {
 /* 00 */0x03,0x36,0x01,0x34,0xa6,0x17,0xa4,0x15,
@@ -897,7 +897,7 @@ READ_HANDLER( decocass_type1_map3_r )
  *	- Tornado
  *
  ***************************************************************************/
-READ_HANDLER( decocass_type2_r )
+READ8_HANDLER( decocass_type2_r )
 {
 	data8_t data;
 
@@ -926,7 +926,7 @@ READ_HANDLER( decocass_type2_r )
 	return data;
 }
 
-WRITE_HANDLER( decocass_type2_w )
+WRITE8_HANDLER( decocass_type2_w )
 {
 	if (1 == type2_xx_latch)
 	{
@@ -977,7 +977,7 @@ WRITE_HANDLER( decocass_type2_w )
  *	- Peter Pepper's Ice Cream Factory
  *
  ***************************************************************************/
-READ_HANDLER( decocass_type3_r )
+READ8_HANDLER( decocass_type3_r )
 {
 	data8_t data, save;
 
@@ -1178,7 +1178,7 @@ READ_HANDLER( decocass_type3_r )
 	return data;
 }
 
-WRITE_HANDLER( decocass_type3_w )
+WRITE8_HANDLER( decocass_type3_w )
 {
 	if (1 == (offset & 1))
 	{
@@ -1217,7 +1217,7 @@ WRITE_HANDLER( decocass_type3_w )
  *
  ***************************************************************************/
 
-READ_HANDLER( decocass_type4_r )
+READ8_HANDLER( decocass_type4_r )
 {
 	data8_t data;
 
@@ -1262,7 +1262,7 @@ READ_HANDLER( decocass_type4_r )
 	return data;
 }
 
-WRITE_HANDLER( decocass_type4_w )
+WRITE8_HANDLER( decocass_type4_w )
 {
 	if (1 == (offset & 1))
 	{
@@ -1300,7 +1300,7 @@ WRITE_HANDLER( decocass_type4_w )
  *
  ***************************************************************************/
 
-READ_HANDLER( decocass_type5_r )
+READ8_HANDLER( decocass_type5_r )
 {
 	data8_t data;
 
@@ -1342,7 +1342,7 @@ READ_HANDLER( decocass_type5_r )
 	return data;
 }
 
-WRITE_HANDLER( decocass_type5_w )
+WRITE8_HANDLER( decocass_type5_w )
 {
 	if (1 == (offset & 1))
 	{
@@ -1374,7 +1374,7 @@ WRITE_HANDLER( decocass_type5_w )
  *
  ***************************************************************************/
 
-READ_HANDLER( decocass_e5xx_r )
+READ8_HANDLER( decocass_e5xx_r )
 {
 	data8_t data;
 
@@ -1414,7 +1414,7 @@ READ_HANDLER( decocass_e5xx_r )
 	return data;
 }
 
-WRITE_HANDLER( decocass_e5xx_w )
+WRITE8_HANDLER( decocass_e5xx_w )
 {
 	if (decocass_dongle_w)
 	{
@@ -1783,7 +1783,7 @@ static void tape_stop(void)
 }
 
 
-WRITE_HANDLER( i8041_p1_w )
+WRITE8_HANDLER( i8041_p1_w )
 {
 	static int i8041_p1_old;
 
@@ -1874,7 +1874,7 @@ WRITE_HANDLER( i8041_p1_w )
 	i8041_p1 = data;
 }
 
-READ_HANDLER( i8041_p1_r )
+READ8_HANDLER( i8041_p1_r )
 {
 	data8_t data = i8041_p1;
 	static int i8041_p1_old;
@@ -1898,7 +1898,7 @@ READ_HANDLER( i8041_p1_r )
 	return data;
 }
 
-WRITE_HANDLER( i8041_p2_w )
+WRITE8_HANDLER( i8041_p2_w )
 {
 	static int i8041_p2_old;
 
@@ -1921,7 +1921,7 @@ WRITE_HANDLER( i8041_p2_w )
 	i8041_p2 = data;
 }
 
-READ_HANDLER( i8041_p2_r )
+READ8_HANDLER( i8041_p2_r )
 {
 	data8_t data;
 	static int i8041_p2_old;

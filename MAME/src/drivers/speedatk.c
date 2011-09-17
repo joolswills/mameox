@@ -1,11 +1,11 @@
-#pragma code_seg("C644")
-#pragma data_seg("D644")
-#pragma bss_seg("B644")
-#pragma const_seg("K644")
-#pragma comment(linker, "/merge:D644=644")
-#pragma comment(linker, "/merge:C644=644")
-#pragma comment(linker, "/merge:B644=644")
-#pragma comment(linker, "/merge:K644=644")
+#pragma code_seg("C680")
+#pragma data_seg("D680")
+#pragma bss_seg("B680")
+#pragma const_seg("K680")
+#pragma comment(linker, "/merge:D680=680")
+#pragma comment(linker, "/merge:C680=680")
+#pragma comment(linker, "/merge:B680=680")
+#pragma comment(linker, "/merge:K680=680")
 /*****************************************************************************************
 
 Speed Attack! (c) 1984 Seta Kikaku Corp.
@@ -87,9 +87,9 @@ PS / PD :  key matrix
 
 static UINT8 mux_data;
 
-extern WRITE_HANDLER( speedatk_videoram_w );
-extern WRITE_HANDLER( speedatk_colorram_w );
-extern WRITE_HANDLER( speedatk_flip_screen_w );
+extern WRITE8_HANDLER( speedatk_videoram_w );
+extern WRITE8_HANDLER( speedatk_colorram_w );
+extern WRITE8_HANDLER( speedatk_flip_screen_w );
 extern PALETTE_INIT( speedatk );
 extern VIDEO_START( speedatk );
 extern VIDEO_UPDATE( speedatk );
@@ -98,7 +98,7 @@ extern VIDEO_UPDATE( speedatk );
  * example pressing button A + button B it causes an output of button C.               *
  * This function converts the bit inputs of this game into the usual way MAME does,and *
  * it handles the multiplexer device between player one and two.                       */
-static READ_HANDLER( key_matrix_r )
+static READ8_HANDLER( key_matrix_r )
 {
 	switch(mux_data)
 	{
@@ -146,12 +146,12 @@ static READ_HANDLER( key_matrix_r )
 	return 0x00;
 }
 
-static WRITE_HANDLER( key_matrix_w )
+static WRITE8_HANDLER( key_matrix_w )
 {
 	mux_data = data;
 }
 
-static READ_HANDLER( read_8001 )
+static READ8_HANDLER( read_8001 )
 {
 	return 1;
 }

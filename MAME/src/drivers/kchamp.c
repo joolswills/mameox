@@ -1,11 +1,11 @@
-#pragma code_seg("C383")
-#pragma data_seg("D383")
-#pragma bss_seg("B383")
-#pragma const_seg("K383")
-#pragma comment(linker, "/merge:D383=383")
-#pragma comment(linker, "/merge:C383=383")
-#pragma comment(linker, "/merge:B383=383")
-#pragma comment(linker, "/merge:K383=383")
+#pragma code_seg("C398")
+#pragma data_seg("D398")
+#pragma bss_seg("B398")
+#pragma const_seg("K398")
+#pragma comment(linker, "/merge:D398=398")
+#pragma comment(linker, "/merge:C398=398")
+#pragma comment(linker, "/merge:B398=398")
+#pragma comment(linker, "/merge:K398=398")
 /***************************************************************************
 
 Karate Champ - (c) 1984 Data East
@@ -75,9 +75,9 @@ IO ports and memory map changes. Dip switches differ too.
 
 
 /* from vidhrdw */
-extern WRITE_HANDLER( kchamp_videoram_w );
-extern WRITE_HANDLER( kchamp_colorram_w );
-extern WRITE_HANDLER( kchamp_flipscreen_w );
+extern WRITE8_HANDLER( kchamp_videoram_w );
+extern WRITE8_HANDLER( kchamp_colorram_w );
+extern WRITE8_HANDLER( kchamp_flipscreen_w );
 
 extern PALETTE_INIT( kchamp );
 extern VIDEO_START( kchamp );
@@ -118,29 +118,29 @@ static ADDRESS_MAP_START( sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0x6000, 0xffff) AM_WRITE(MWA8_RAM)
 ADDRESS_MAP_END
 
-static WRITE_HANDLER( control_w ) {
+static WRITE8_HANDLER( control_w ) {
 	nmi_enable = data & 1;
 }
 
-static WRITE_HANDLER( sound_reset_w ) {
+static WRITE8_HANDLER( sound_reset_w ) {
 	if ( !( data & 1 ) )
-		cpu_set_reset_line(1,PULSE_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_RESET, PULSE_LINE);
 }
 
-static WRITE_HANDLER( sound_control_w ) {
+static WRITE8_HANDLER( sound_control_w ) {
 	MSM5205_reset_w( 0, !( data & 1 ) );
 	sound_nmi_enable = ( ( data >> 1 ) & 1 );
 }
 
-static WRITE_HANDLER( sound_command_w ) {
+static WRITE8_HANDLER( sound_command_w ) {
 	soundlatch_w( 0, data );
-	cpu_set_irq_line_and_vector( 1, 0, HOLD_LINE, 0xff );
+	cpunum_set_input_line_and_vector( 1, 0, HOLD_LINE, 0xff );
 }
 
 static int msm_data = 0;
 static int msm_play_lo_nibble = 1;
 
-static WRITE_HANDLER( sound_msm_w ) {
+static WRITE8_HANDLER( sound_msm_w ) {
 	msm_data = data;
 	msm_play_lo_nibble = 1;
 }
@@ -204,12 +204,12 @@ static ADDRESS_MAP_START( kc_sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0xe000, 0xe2ff) AM_WRITE(MWA8_RAM)
 ADDRESS_MAP_END
 
-static READ_HANDLER( sound_reset_r ) {
-	cpu_set_reset_line(1,PULSE_LINE);
+static READ8_HANDLER( sound_reset_r ) {
+	cpunum_set_input_line(1, INPUT_LINE_RESET, PULSE_LINE);
 	return 0;
 }
 
-static WRITE_HANDLER( kc_sound_control_w ) {
+static WRITE8_HANDLER( kc_sound_control_w ) {
 	if ( offset == 0 )
 		sound_nmi_enable = ( ( data >> 7 ) & 1 );
 //	else
@@ -399,7 +399,7 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 static INTERRUPT_GEN( kc_interrupt ) {
 
 	if ( nmi_enable )
-		cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 }
 
 static void msmint( int data ) {
@@ -415,7 +415,7 @@ static void msmint( int data ) {
 
 	if ( !( counter ^= 1 ) ) {
 		if ( sound_nmi_enable ) {
-			cpu_set_irq_line( 1, IRQ_LINE_NMI, PULSE_LINE );
+			cpunum_set_input_line( 1, INPUT_LINE_NMI, PULSE_LINE );
 		}
 	}
 }
@@ -447,7 +447,7 @@ static struct MSM5205interface msm_interface =
 static INTERRUPT_GEN( sound_int ) {
 
 	if ( sound_nmi_enable )
-		cpu_set_irq_line(1, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 }
 
 static struct DACinterface dac_interface =

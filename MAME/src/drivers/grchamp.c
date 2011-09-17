@@ -1,11 +1,11 @@
-#pragma code_seg("C336")
-#pragma data_seg("D336")
-#pragma bss_seg("B336")
-#pragma const_seg("K336")
-#pragma comment(linker, "/merge:D336=336")
-#pragma comment(linker, "/merge:C336=336")
-#pragma comment(linker, "/merge:B336=336")
-#pragma comment(linker, "/merge:K336=336")
+#pragma code_seg("C350")
+#pragma data_seg("D350")
+#pragma bss_seg("B350")
+#pragma const_seg("K350")
+#pragma comment(linker, "/merge:D350=350")
+#pragma comment(linker, "/merge:C350=350")
+#pragma comment(linker, "/merge:B350=350")
+#pragma comment(linker, "/merge:K350=350")
 /***************************************************************************
 
 Grand Champion
@@ -57,28 +57,28 @@ Notes:
 extern PALETTE_INIT( grchamp );
 extern VIDEO_START( grchamp );
 extern VIDEO_UPDATE( grchamp );
-extern WRITE_HANDLER( grchamp_videoram_w );
+extern WRITE8_HANDLER( grchamp_videoram_w );
 extern UINT8 *grchamp_videoram;
 extern UINT8 *grchamp_radar;
 extern UINT8 grchamp_player_ypos;
 
-extern WRITE_HANDLER( grchamp_player_xpos_w );
-extern WRITE_HANDLER( grchamp_player_ypos_w );
-extern WRITE_HANDLER( grchamp_tile_select_w );
-extern WRITE_HANDLER( grchamp_rain_xpos_w );
-extern WRITE_HANDLER( grchamp_rain_ypos_w );
+extern WRITE8_HANDLER( grchamp_player_xpos_w );
+extern WRITE8_HANDLER( grchamp_player_ypos_w );
+extern WRITE8_HANDLER( grchamp_tile_select_w );
+extern WRITE8_HANDLER( grchamp_rain_xpos_w );
+extern WRITE8_HANDLER( grchamp_rain_ypos_w );
 
 /* from machine */
 extern int grchamp_cpu_irq_enable[2];
 extern DRIVER_INIT( grchamp );
-extern READ_HANDLER( grchamp_port_0_r );
-extern READ_HANDLER( grchamp_port_1_r );
-extern WRITE_HANDLER( grchamp_port_1_w );
+extern READ8_HANDLER( grchamp_port_0_r );
+extern READ8_HANDLER( grchamp_port_1_r );
+extern WRITE8_HANDLER( grchamp_port_1_w );
 
-extern WRITE_HANDLER( grchamp_control0_w );
-extern WRITE_HANDLER( grchamp_coinled_w );
-extern WRITE_HANDLER( grchamp_sound_w );
-extern WRITE_HANDLER( grchamp_comm_w );
+extern WRITE8_HANDLER( grchamp_control0_w );
+extern WRITE8_HANDLER( grchamp_coinled_w );
+extern WRITE8_HANDLER( grchamp_sound_w );
+extern WRITE8_HANDLER( grchamp_comm_w );
 
 extern int grchamp_collision;
 
@@ -94,19 +94,19 @@ UINT8 grchamp_led_reg[8][3];
 **	1 digit for rank (?)
 */
 
-WRITE_HANDLER( grchamp_led_data0_w )
+WRITE8_HANDLER( grchamp_led_data0_w )
 {
 	grchamp_led_data0 = data;
 }
-WRITE_HANDLER( grchamp_led_data1_w )
+WRITE8_HANDLER( grchamp_led_data1_w )
 {
 	grchamp_led_data1 = data;
 }
-WRITE_HANDLER( grchamp_led_data2_w )
+WRITE8_HANDLER( grchamp_led_data2_w )
 {
 	grchamp_led_data2 = data;
 }
-WRITE_HANDLER( grchamp_led_data3_w )
+WRITE8_HANDLER( grchamp_led_data3_w )
 {
 	if( data )
 	{
@@ -121,22 +121,22 @@ WRITE_HANDLER( grchamp_led_data3_w )
 
 static int PC3259_data;
 
-WRITE_HANDLER( PC3259_control_w )
+WRITE8_HANDLER( PC3259_control_w )
 {
 	PC3259_data = data;
 }
 
-READ_HANDLER( PC3259_0_r )
+READ8_HANDLER( PC3259_0_r )
 { /* 0x01 (401a)*/
 	return 0xff; /* unknown */
 }
 
-READ_HANDLER( PC3259_1_r )
+READ8_HANDLER( PC3259_1_r )
 { /* 0x09 (401b)*/
 	return 0xff; /* unknown */
 }
 
-READ_HANDLER( PC3259_2_r )
+READ8_HANDLER( PC3259_2_r )
 { /* 0x11 (401c)*/
 	int result = 0;
 	if( grchamp_player_ypos<128 )
@@ -150,7 +150,7 @@ READ_HANDLER( PC3259_2_r )
 	return result;
 }
 
-READ_HANDLER( PC3259_3_r )
+READ8_HANDLER( PC3259_3_r )
 { /* 0x19 (401d)*/
 	int result = grchamp_collision?1:0; /* crash */
 	return result;
@@ -251,11 +251,11 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 /***************************************************************************/
 #if 0
 static UINT8 *shareram;
-static WRITE_HANDLER( shareram_w )
+static WRITE8_HANDLER( shareram_w )
 {
 	shareram[offset] = data;
 }
-static READ_HANDLER( shareram_r )
+static READ8_HANDLER( shareram_r )
 {
 	return shareram[offset];
 }
@@ -378,7 +378,7 @@ static INTERRUPT_GEN( grchamp_interrupt )
 	if ( grchamp_cpu_irq_enable[cpu] )
 	{
 		grchamp_cpu_irq_enable[cpu] = 0;
-		cpu_set_irq_line(cpu, 0, HOLD_LINE);
+		cpunum_set_input_line(cpu, 0, HOLD_LINE);
 	}
 }
 

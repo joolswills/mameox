@@ -1,11 +1,11 @@
-#pragma code_seg("C627")
-#pragma data_seg("D627")
-#pragma bss_seg("B627")
-#pragma const_seg("K627")
-#pragma comment(linker, "/merge:D627=627")
-#pragma comment(linker, "/merge:C627=627")
-#pragma comment(linker, "/merge:B627=627")
-#pragma comment(linker, "/merge:K627=627")
+#pragma code_seg("C663")
+#pragma data_seg("D663")
+#pragma bss_seg("B663")
+#pragma const_seg("K663")
+#pragma comment(linker, "/merge:D663=663")
+#pragma comment(linker, "/merge:C663=663")
+#pragma comment(linker, "/merge:B663=663")
+#pragma comment(linker, "/merge:K663=663")
 /***************************************************************************
 
   IPM Invader (M10 m10 hardware)
@@ -23,6 +23,75 @@ Notes:
 TODO:
 - Dip switches
 
+Head On
+-------
+Irem, 1979? / 1980?
+
+PCB Layout
+----------
+
+    M-15L
+   |---------------------------------------------------------------------------------|
+   |                                                                                 |
+   | DSW(8)  74175   74175   7400  74LS08   74121   M53214     |-------|      E1.9A  |
+   |                                                           | 6502  |             |
+   |          7432   74175   7404    7427    7442  74LS241     |-------|             |
+   |                                                                          E2.9B  |
+   |                                                                                 |
+   |        74LS74    7432  74161   74161    7442  74LS241  74LS367  74LS367         |
+ |-|                                                                          E3.9C  |
+ |          M53214 74LS367   7442    7486    8216     2114  74LS157  74LS367         |
+ |                                                                                   |
+ |4         M53214 74LS367  74161    7486    8216     2114  74LS157     2111  E4.9D  |
+ |4                                                                                  |
+ |W         M53214 74LS367  74161    7486    8216     2114  74LS157     2111         |
+ |A                                                                           E5.9F  |
+ |Y         M53214 74LS367  74161    7486    8216    74166     2114  74LS157         |
+ |                         11.73MHz                                                  |
+ |            7400    7432  7404    74161    8216    74166     2114  74LS157  E6.9G  |
+ |-|                                                                                 |
+   |   VR3 VR2 VR1    7432  7404     7400  *74173     7400  74LS139  74LS157         |
+   |                                       *74S04                                    |
+   |                                                                                 |
+   |---------------------------------------------------------------------------------|
+Notes:
+      All IC's are listed
+      All ROMs type 2708 (1K x8)
+
+      6502 clock: 1.173MHz
+               *: These 2 IC's piggybacked. 74S04 on top
+         VR1/2/3: 5K potentiometers
+            2114: 1K x4 SRAM
+            2111: 256bytes x4 SRAM
+            8216: 256bytes x1 SRAM
+
+Sound PCB
+---------
+
+M-15S
+|---------------------------|
+|                           |
+|  NE555  NE555             |
+|                           |
+|  NE555  NE555             |
+|               LM3900   VR1|
+|                           |
+|  c1815x9               VR2|
+|                           |
+|               LM3900   VR3|
+|                           |
+|                        VR4|
+|                           |
+|                        VR5|
+|    TA7222                 |
+|---------------------------|
+Notes:
+      PCB contains lots of resistors, capacitors, transistors etc.
+
+      VR1/2/3/4/5: Potentiometers for volume of each sound
+            C1815: Transistor (x9)
+           TA7222: Power Amp
+
 ***************************************************************************/
 
 #include "driver.h"
@@ -32,8 +101,8 @@ extern UINT8* iremm15_chargen;
 
 VIDEO_UPDATE( skychut );
 VIDEO_UPDATE( iremm15 );
-WRITE_HANDLER( skychut_colorram_w );
-WRITE_HANDLER( skychut_ctrl_w );
+WRITE8_HANDLER( skychut_colorram_w );
+WRITE8_HANDLER( skychut_ctrl_w );
 
 static UINT8 *memory;
 
@@ -110,9 +179,9 @@ ADDRESS_MAP_END
 INTERRUPT_GEN( skychut_interrupt )
 {
 	if (readinputport(2) & 1)	/* Left Coin */
-        cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);
+        cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
     else
-    	cpu_set_irq_line(0, 0, HOLD_LINE);
+    	cpunum_set_input_line(0, 0, HOLD_LINE);
 }
 
 INPUT_PORTS_START( skychut )
@@ -168,6 +237,42 @@ INPUT_PORTS_START( spacebeam )
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_JOYSTICK_RIGHT | IPF_COCKTAIL )
 INPUT_PORTS_END
 
+INPUT_PORTS_START( headoni )
+	PORT_START
+	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_START1 )
+	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_START2 )
+	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_BUTTON1 )
+	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_JOYSTICK_UP )
+	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_JOYSTICK_DOWN )
+	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_JOYSTICK_LEFT )
+	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_JOYSTICK_RIGHT )
+	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_UNKNOWN )
+
+	PORT_START	/* IN1 */
+	PORT_DIPNAME(0x03, 0x01, DEF_STR( Lives ) )
+	PORT_DIPSETTING (  0x00, "2" )
+	PORT_DIPSETTING (  0x01, "3" )
+	PORT_DIPSETTING (  0x02, "4" )
+	PORT_DIPSETTING (  0x03, "5" )
+	PORT_DIPNAME(0x08, 0x00, "?" )
+	PORT_DIPSETTING (  0x00, DEF_STR( Off ) )
+	PORT_DIPSETTING (  0x08, DEF_STR( On ) )
+	PORT_DIPNAME(0x30, 0x10, DEF_STR( Coinage ) )
+	PORT_DIPSETTING (  0x00, "Testmode" )
+	PORT_DIPSETTING (  0x10, "1 Coin 1 Play" )
+	PORT_DIPSETTING (  0x20, "1 Coin 2 Plays" )
+
+	PORT_START	/* FAKE */
+	PORT_BIT_IMPULSE( 0x01, IP_ACTIVE_HIGH, IPT_COIN1, 1 )
+
+	PORT_START	/* IN3 */
+	PORT_BIT( 0x03, 0, IPT_UNUSED )
+	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_BUTTON1 | IPF_COCKTAIL )
+	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_JOYSTICK_LEFT  | IPF_COCKTAIL )
+	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_JOYSTICK_RIGHT | IPF_COCKTAIL )
+INPUT_PORTS_END
+
+
 
 static struct GfxLayout charlayout =
 {
@@ -217,7 +322,7 @@ MACHINE_DRIVER_END
 static MACHINE_DRIVER_START( greenberet )
 
 	/* basic machine hardware */
-	MDRV_CPU_ADD(M6502,20000000/8)
+	MDRV_CPU_ADD_TAG("main", M6502,11730000/10)
 	MDRV_CPU_PROGRAM_MAP(greenberet_readmem,greenberet_writemem)
 	MDRV_CPU_VBLANK_INT(skychut_interrupt,1)
 
@@ -227,7 +332,7 @@ static MACHINE_DRIVER_START( greenberet )
 	/* video hardware */
 	MDRV_VIDEO_ATTRIBUTES(VIDEO_TYPE_RASTER)
 	MDRV_SCREEN_SIZE(32*8, 32*8)
-	MDRV_VISIBLE_AREA(1*8, 31*8-1, 2*8, 30*8-1)
+	MDRV_VISIBLE_AREA(0*8, 32*8-1, 2*8, 30*8-1)
 	MDRV_PALETTE_LENGTH(8)
 	MDRV_COLORTABLE_LENGTH(2*8)
 
@@ -236,6 +341,12 @@ static MACHINE_DRIVER_START( greenberet )
 	MDRV_VIDEO_UPDATE(iremm15)
 
 	/* sound hardware */
+MACHINE_DRIVER_END
+
+
+static MACHINE_DRIVER_START( headoni )
+	MDRV_IMPORT_FROM(greenberet)
+	MDRV_CPU_REPLACE("main", M6502,11730000/16)
 MACHINE_DRIVER_END
 
 
@@ -307,6 +418,17 @@ ROM_START( spacbeam )
 	ROM_LOAD( "m6b", 0x2400, 0x0400, CRC(12afb0c2) SHA1(bf6ed90cf4815f0fb41d435954d4c346a55098f5) )
 ROM_END
 
+ROM_START( headoni )
+	ROM_REGION( 0x10000, REGION_CPU1, 0 )
+	ROM_LOAD( "e1.9a", 0x1000, 0x0400, CRC(05da5265) SHA1(17e0c9261978770325a0befdcdd8a1b07ed39df0) )
+	ROM_LOAD( "e2.9b", 0x1400, 0x0400, CRC(dada26a8) SHA1(1368ade1c0c57d33d15594370cf1edf95fc44fd1) )
+	ROM_LOAD( "e3.9c", 0x1800, 0x0400, CRC(61ff24f5) SHA1(0e68aedd01b765fb2af76f914b3d287ecf30f716) )
+	ROM_LOAD( "e4.9d", 0x1c00, 0x0400, CRC(ce4c5a67) SHA1(8db493d43f311a29127405aad7693bc08b570b14) )
+	ROM_RELOAD(      0xfc00, 0x0400 )	/* for the reset and interrupt vectors */
+	ROM_LOAD( "e5.9f", 0x2000, 0x0400, CRC(b5232439) SHA1(39b8fb4bbd00a73b9a2b68bc3e88fb45d3f62d7c) )
+	ROM_LOAD( "e6.9g", 0x2400, 0x0400, CRC(99acd1a6) SHA1(799382c1b079aad3034a1cc738dc06954978a0ac) )
+ROM_END
+
 ROM_START( greenber )
 	ROM_REGION( 0x10000, REGION_CPU1, 0 )
 	ROM_LOAD( "gb1", 0x1000, 0x0400, CRC(018ff672) SHA1(54d082a332831afc28b47704a5656da0a8a902fa) ) // ok
@@ -325,6 +447,7 @@ GAMEX( 1979, andromed, 0, skychut,    skychut,   0, ROT270, "Irem", "Andromeda (
 GAMEX( 1979?,ipminvad, 0, skychut,    skychut,   0, ROT270, "Irem", "IPM Invader", GAME_NO_COCKTAIL | GAME_NO_SOUND | GAME_IMPERFECT_COLORS )
 GAMEX( 1980, skychut,  0, skychut,    skychut,   0, ROT270, "Irem", "Sky Chuter", GAME_NO_COCKTAIL | GAME_NO_SOUND | GAME_IMPERFECT_COLORS )
 GAMEX( 1979, spacbeam, 0, greenberet, spacebeam, 0, ROT270, "Irem", "Space Beam", GAME_NO_COCKTAIL | GAME_NO_SOUND | GAME_IMPERFECT_COLORS )
+GAMEX( 1979?,headoni,  0, headoni,    headoni,   0, ROT270, "Irem", "Head On (Irem, M-15 Hardware)", GAME_NO_COCKTAIL | GAME_NO_SOUND | GAME_IMPERFECT_COLORS )
 GAMEX( 1980, greenber, 0, greenberet, spacebeam, 0, ROT270, "Irem", "Green Beret (Irem)", GAME_NO_COCKTAIL | GAME_NO_SOUND | GAME_IMPERFECT_COLORS | GAME_NOT_WORKING )
 #pragma code_seg()
 #pragma data_seg()

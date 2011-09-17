@@ -1,11 +1,11 @@
-#pragma code_seg("C358")
-#pragma data_seg("D358")
-#pragma bss_seg("B358")
-#pragma const_seg("K358")
-#pragma comment(linker, "/merge:D358=358")
-#pragma comment(linker, "/merge:C358=358")
-#pragma comment(linker, "/merge:B358=358")
-#pragma comment(linker, "/merge:K358=358")
+#pragma code_seg("C373")
+#pragma data_seg("D373")
+#pragma bss_seg("B373")
+#pragma const_seg("K373")
+#pragma comment(linker, "/merge:D373=373")
+#pragma comment(linker, "/merge:C373=373")
+#pragma comment(linker, "/merge:B373=373")
+#pragma comment(linker, "/merge:K373=373")
 /***************************************************************************
 
 Hole Land
@@ -27,11 +27,11 @@ VIDEO_START( crzrally );
 VIDEO_UPDATE( holeland );
 VIDEO_UPDATE( crzrally );
 
-WRITE_HANDLER( holeland_videoram_w );
-WRITE_HANDLER( holeland_colorram_w );
-WRITE_HANDLER( holeland_flipscreen_w );
-WRITE_HANDLER( holeland_pal_offs_w );
-WRITE_HANDLER( holeland_scroll_w );
+WRITE8_HANDLER( holeland_videoram_w );
+WRITE8_HANDLER( holeland_colorram_w );
+WRITE8_HANDLER( holeland_flipscreen_w );
+WRITE8_HANDLER( holeland_pal_offs_w );
+WRITE8_HANDLER( holeland_scroll_w );
 
 
 static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )

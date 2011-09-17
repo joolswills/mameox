@@ -1,11 +1,11 @@
-#pragma code_seg("C293")
-#pragma data_seg("D293")
-#pragma bss_seg("B293")
-#pragma const_seg("K293")
-#pragma comment(linker, "/merge:D293=293")
-#pragma comment(linker, "/merge:C293=293")
-#pragma comment(linker, "/merge:B293=293")
-#pragma comment(linker, "/merge:K293=293")
+#pragma code_seg("C304")
+#pragma data_seg("D304")
+#pragma bss_seg("B304")
+#pragma const_seg("K304")
+#pragma comment(linker, "/merge:D304=304")
+#pragma comment(linker, "/merge:C304=304")
+#pragma comment(linker, "/merge:B304=304")
+#pragma comment(linker, "/merge:K304=304")
 /***************************************************************************
 
 Atari Fire Truck + Super Bug + Monte Carlo video emulation
@@ -183,33 +183,33 @@ static void get_tile_info2(int tile_index)
 }
 
 
-WRITE_HANDLER( firetrk_vert_w )
+WRITE8_HANDLER( firetrk_vert_w )
 {
 	tilemap_set_scrolly(tilemap1, 0, data);
 	tilemap_set_scrolly(tilemap2, 0, data);
 }
 
 
-WRITE_HANDLER( firetrk_horz_w )
+WRITE8_HANDLER( firetrk_horz_w )
 {
 	tilemap_set_scrollx(tilemap1, 0, data - 37);
 	tilemap_set_scrollx(tilemap2, 0, data - 37);
 }
 
 
-WRITE_HANDLER( firetrk_drone_hpos_w )
+WRITE8_HANDLER( firetrk_drone_hpos_w )
 {
 	drone_hpos = data;
 }
 
 
-WRITE_HANDLER( firetrk_drone_vpos_w )
+WRITE8_HANDLER( firetrk_drone_vpos_w )
 {
 	drone_vpos = data;
 }
 
 
-WRITE_HANDLER( firetrk_car_rot_w )
+WRITE8_HANDLER( firetrk_car_rot_w )
 {
 	if (GAME_IS_FIRETRUCK)
 	{
@@ -264,7 +264,7 @@ WRITE_HANDLER( firetrk_car_rot_w )
 }
 
 
-WRITE_HANDLER( firetrk_drone_rot_w )
+WRITE8_HANDLER( firetrk_drone_rot_w )
 {
 	car[1].number = data & 0x07;
 
@@ -291,7 +291,7 @@ WRITE_HANDLER( firetrk_drone_rot_w )
 }
 
 
-WRITE_HANDLER( firetrk_playfield_w )
+WRITE8_HANDLER( firetrk_playfield_w )
 {
 	if (firetrk_playfield_ram[offset] != data)
 	{

@@ -1,11 +1,11 @@
-#pragma code_seg("C430")
-#pragma data_seg("D430")
-#pragma bss_seg("B430")
-#pragma const_seg("K430")
-#pragma comment(linker, "/merge:D430=430")
-#pragma comment(linker, "/merge:C430=430")
-#pragma comment(linker, "/merge:B430=430")
-#pragma comment(linker, "/merge:K430=430")
+#pragma code_seg("C452")
+#pragma data_seg("D452")
+#pragma bss_seg("B452")
+#pragma const_seg("K452")
+#pragma comment(linker, "/merge:D452=452")
+#pragma comment(linker, "/merge:C452=452")
+#pragma comment(linker, "/merge:B452=452")
+#pragma comment(linker, "/merge:K452=452")
 /***************************************************************************
 
 Mat Mania
@@ -40,46 +40,46 @@ extern size_t matmania_videoram3_size;
 extern unsigned char *matmania_scroll;
 extern unsigned char *matmania_pageselect;
 
-WRITE_HANDLER( matmania_paletteram_w );
+WRITE8_HANDLER( matmania_paletteram_w );
 PALETTE_INIT( matmania );
 VIDEO_UPDATE( matmania );
 VIDEO_UPDATE( maniach );
-WRITE_HANDLER( matmania_videoram3_w );
-WRITE_HANDLER( matmania_colorram3_w );
+WRITE8_HANDLER( matmania_videoram3_w );
+WRITE8_HANDLER( matmania_colorram3_w );
 VIDEO_START( matmania );
 VIDEO_UPDATE( matmania );
 
-READ_HANDLER( maniach_68705_portA_r );
-WRITE_HANDLER( maniach_68705_portA_w );
-READ_HANDLER( maniach_68705_portB_r );
-WRITE_HANDLER( maniach_68705_portB_w );
-READ_HANDLER( maniach_68705_portC_r );
-WRITE_HANDLER( maniach_68705_portC_w );
-WRITE_HANDLER( maniach_68705_ddrA_w );
-WRITE_HANDLER( maniach_68705_ddrB_w );
-WRITE_HANDLER( maniach_68705_ddrC_w );
-WRITE_HANDLER( maniach_mcu_w );
-READ_HANDLER( maniach_mcu_r );
-READ_HANDLER( maniach_mcu_status_r );
+READ8_HANDLER( maniach_68705_portA_r );
+WRITE8_HANDLER( maniach_68705_portA_w );
+READ8_HANDLER( maniach_68705_portB_r );
+WRITE8_HANDLER( maniach_68705_portB_w );
+READ8_HANDLER( maniach_68705_portC_r );
+WRITE8_HANDLER( maniach_68705_portC_w );
+WRITE8_HANDLER( maniach_68705_ddrA_w );
+WRITE8_HANDLER( maniach_68705_ddrB_w );
+WRITE8_HANDLER( maniach_68705_ddrC_w );
+WRITE8_HANDLER( maniach_mcu_w );
+READ8_HANDLER( maniach_mcu_r );
+READ8_HANDLER( maniach_mcu_status_r );
 
 
 
-WRITE_HANDLER( matmania_sh_command_w )
+WRITE8_HANDLER( matmania_sh_command_w )
 {
 	soundlatch_w(offset,data);
-	cpu_set_irq_line(1,M6502_IRQ_LINE,HOLD_LINE);
+	cpunum_set_input_line(1,M6502_IRQ_LINE,HOLD_LINE);
 }
 
-WRITE_HANDLER( matmania_dac_w )
+WRITE8_HANDLER( matmania_dac_w )
 {
 	DAC_signed_data_w(0,data);
 }
 
 
-WRITE_HANDLER( maniach_sh_command_w )
+WRITE8_HANDLER( maniach_sh_command_w )
 {
 	soundlatch_w(offset,data);
-	cpu_set_irq_line(1,M6809_IRQ_LINE,HOLD_LINE);
+	cpunum_set_input_line(1,M6809_IRQ_LINE,HOLD_LINE);
 }
 
 
@@ -401,7 +401,7 @@ MACHINE_DRIVER_END
 /* handler called by the 3526 emulator when the internal timers cause an IRQ */
 static void irqhandler(int linestate)
 {
-	cpu_set_irq_line(1,1,linestate);
+	cpunum_set_input_line(1,1,linestate);
 }
 
 static struct YM3526interface ym3526_interface =

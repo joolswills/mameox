@@ -1,11 +1,11 @@
-#pragma code_seg("C405")
-#pragma data_seg("D405")
-#pragma bss_seg("B405")
-#pragma const_seg("K405")
-#pragma comment(linker, "/merge:D405=405")
-#pragma comment(linker, "/merge:C405=405")
-#pragma comment(linker, "/merge:B405=405")
-#pragma comment(linker, "/merge:K405=405")
+#pragma code_seg("C423")
+#pragma data_seg("D423")
+#pragma bss_seg("B423")
+#pragma const_seg("K423")
+#pragma comment(linker, "/merge:D423=423")
+#pragma comment(linker, "/merge:C423=423")
+#pragma comment(linker, "/merge:B423=423")
+#pragma comment(linker, "/merge:K423=423")
 /***************************************************************************
 
   liberator.c - 'vidhrdw.c'
@@ -93,12 +93,12 @@ INLINE void bitmap_common_w(UINT8 x, UINT8 y, int data)
 	plot_pixel(tmpbitmap, x, y, pen);
 }
 
-WRITE_HANDLER( liberatr_bitmap_xy_w )
+WRITE8_HANDLER( liberatr_bitmap_xy_w )
 {
 	bitmap_common_w(*liberatr_x, *liberatr_y, data);
 }
 
-WRITE_HANDLER( liberatr_bitmap_w )
+WRITE8_HANDLER( liberatr_bitmap_w )
 {
 	UINT8 x = (offset & 0x3f) << 2;
 	UINT8 y = (offset >> 6);
@@ -112,13 +112,13 @@ WRITE_HANDLER( liberatr_bitmap_w )
 }
 
 
-READ_HANDLER( liberatr_bitmap_xy_r )
+READ8_HANDLER( liberatr_bitmap_xy_r )
 {
 	return liberatr_videoram[((*liberatr_y)<<8) | (*liberatr_x)];
 }
 
 
-WRITE_HANDLER( liberatr_colorram_w )
+WRITE8_HANDLER( liberatr_colorram_w )
 {
 	UINT8 r,g,b;
 

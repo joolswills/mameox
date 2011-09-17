@@ -1,11 +1,11 @@
-#pragma code_seg("C455")
-#pragma data_seg("D455")
-#pragma bss_seg("B455")
-#pragma const_seg("K455")
-#pragma comment(linker, "/merge:D455=455")
-#pragma comment(linker, "/merge:C455=455")
-#pragma comment(linker, "/merge:B455=455")
-#pragma comment(linker, "/merge:K455=455")
+#pragma code_seg("C480")
+#pragma data_seg("D480")
+#pragma bss_seg("B480")
+#pragma const_seg("K480")
+#pragma comment(linker, "/merge:D480=480")
+#pragma comment(linker, "/merge:C480=480")
+#pragma comment(linker, "/merge:B480=480")
+#pragma comment(linker, "/merge:K480=480")
 /***************************************************************************
 
 "Mitchell hardware". Actually used mostly by Capcom.
@@ -53,21 +53,21 @@ void block_decode(void);
 VIDEO_START( pang );
 VIDEO_UPDATE( pang );
 
-WRITE_HANDLER( mgakuen_paletteram_w );
-READ_HANDLER( mgakuen_paletteram_r );
-WRITE_HANDLER( mgakuen_videoram_w );
-READ_HANDLER( mgakuen_videoram_r );
-WRITE_HANDLER( mgakuen_objram_w );
-READ_HANDLER( mgakuen_objram_r );
+WRITE8_HANDLER( mgakuen_paletteram_w );
+READ8_HANDLER( mgakuen_paletteram_r );
+WRITE8_HANDLER( mgakuen_videoram_w );
+READ8_HANDLER( mgakuen_videoram_r );
+WRITE8_HANDLER( mgakuen_objram_w );
+READ8_HANDLER( mgakuen_objram_r );
 
-WRITE_HANDLER( pang_video_bank_w );
-WRITE_HANDLER( pang_videoram_w );
-READ_HANDLER( pang_videoram_r );
-WRITE_HANDLER( pang_colorram_w );
-READ_HANDLER( pang_colorram_r );
-WRITE_HANDLER( pang_gfxctrl_w );
-WRITE_HANDLER( pang_paletteram_w );
-READ_HANDLER( pang_paletteram_r );
+WRITE8_HANDLER( pang_video_bank_w );
+WRITE8_HANDLER( pang_videoram_w );
+READ8_HANDLER( pang_videoram_r );
+WRITE8_HANDLER( pang_colorram_w );
+READ8_HANDLER( pang_colorram_r );
+WRITE8_HANDLER( pang_gfxctrl_w );
+WRITE8_HANDLER( pang_paletteram_w );
+READ8_HANDLER( pang_paletteram_r );
 
 extern unsigned char *pang_videoram;
 extern unsigned char *pang_colorram;
@@ -76,7 +76,7 @@ extern size_t pang_videoram_size;
 
 
 
-static WRITE_HANDLER( pang_bankswitch_w )
+static WRITE8_HANDLER( pang_bankswitch_w )
 {
 	int bankaddress;
 	unsigned char *RAM = memory_region(REGION_CPU1);
@@ -131,7 +131,7 @@ static NVRAM_HANDLER( mitchell )
 	}
 }
 
-static READ_HANDLER( pang_port5_r )
+static READ8_HANDLER( pang_port5_r )
 {
 	int bit;
 	extern const struct GameDriver driver_mgakuen2;
@@ -151,17 +151,17 @@ if (Machine->gamedrv == &driver_mgakuen2)	/* hack... music doesn't work otherwis
 	return (input_port_0_r(0) & 0x76) | bit;
 }
 
-static WRITE_HANDLER( eeprom_cs_w )
+static WRITE8_HANDLER( eeprom_cs_w )
 {
 	EEPROM_set_cs_line(data ? CLEAR_LINE : ASSERT_LINE);
 }
 
-static WRITE_HANDLER( eeprom_clock_w )
+static WRITE8_HANDLER( eeprom_clock_w )
 {
 	EEPROM_set_clock_line(data ? CLEAR_LINE : ASSERT_LINE);
 }
 
-static WRITE_HANDLER( eeprom_serial_w )
+static WRITE8_HANDLER( eeprom_serial_w )
 {
 	EEPROM_write_bit(data);
 }
@@ -176,7 +176,7 @@ static WRITE_HANDLER( eeprom_serial_w )
 
 static int dial[2],dial_selected;
 
-static READ_HANDLER( block_input_r )
+static READ8_HANDLER( block_input_r )
 {
 	static int dir[2];
 
@@ -218,7 +218,7 @@ static READ_HANDLER( block_input_r )
 	}
 }
 
-static WRITE_HANDLER( block_dial_control_w )
+static WRITE8_HANDLER( block_dial_control_w )
 {
 	if (data == 0x08)
 	{
@@ -235,7 +235,7 @@ static WRITE_HANDLER( block_dial_control_w )
 
 static int keymatrix;
 
-static READ_HANDLER( mahjong_input_r )
+static READ8_HANDLER( mahjong_input_r )
 {
 	int i;
 
@@ -245,7 +245,7 @@ static READ_HANDLER( mahjong_input_r )
 	return 0xff;
 }
 
-static WRITE_HANDLER( mahjong_input_select_w )
+static WRITE8_HANDLER( mahjong_input_select_w )
 {
 	keymatrix = data;
 }
@@ -253,7 +253,7 @@ static WRITE_HANDLER( mahjong_input_select_w )
 
 static int input_type;
 
-static READ_HANDLER( input_r )
+static READ8_HANDLER( input_r )
 {
 	switch (input_type)
 	{
@@ -280,7 +280,7 @@ static READ_HANDLER( input_r )
 	}
 }
 
-static WRITE_HANDLER( input_w )
+static WRITE8_HANDLER( input_w )
 {
 	switch (input_type)
 	{
@@ -1369,11 +1369,33 @@ ROM_START( spang )
 	/* c0000-fffff empty */
 
 	ROM_REGION( 0x040000, REGION_GFX2, ROMREGION_DISPOSE )
-	ROM_LOAD( "spe_10.rom",   0x000000, 0x20000, CRC(eedd0ade) SHA1(f2da2eb743c68c5c9a56a94709527110cef5d91d) )	/* sprites */
-	ROM_LOAD( "spe_09.rom",   0x020000, 0x20000, CRC(04b41b75) SHA1(946ed04a17f1f71085143d43905aa310ce1e05f4) )
+	ROM_LOAD( "spj10_2k.bin",   0x000000, 0x20000, CRC(eedd0ade) SHA1(f2da2eb743c68c5c9a56a94709527110cef5d91d) )	/* sprites */
+	ROM_LOAD( "spj09_1k.bin",   0x020000, 0x20000, CRC(04b41b75) SHA1(946ed04a17f1f71085143d43905aa310ce1e05f4) )
 
 	ROM_REGION( 0x80000, REGION_SOUND1, 0 )	/* OKIM */
 	ROM_LOAD( "spe_01.rom",   0x00000, 0x20000, CRC(2d19c133) SHA1(b3ec226f35494dfc259e910895cec8a49dd2f846) )
+ROM_END
+
+ROM_START( spangj )
+	ROM_REGION( 2*0x50000, REGION_CPU1, 0 )	/* 320k for code + 320k for decrypted opcodes */
+	ROM_LOAD( "spj_11h.bin",    0x00000, 0x08000, CRC(1a548b0b) SHA1(3aa65028876ab6e176f5b227366e65212c944888) )
+	ROM_LOAD( "spj7_13h.bin",   0x10000, 0x20000, CRC(14c2b765) SHA1(af0f965dd13d878bae7850cf8419b26511090579) )
+	ROM_LOAD( "spj8_14h.bin",   0x30000, 0x20000, CRC(4be4e5b7) SHA1(6273e8bf5d9f5b100ecda20001808dcf86411d83) )
+
+	ROM_REGION( 0x100000, REGION_GFX1, ROMREGION_DISPOSE )
+	ROM_LOAD( "spj02_1e.bin",   0x000000, 0x20000,  CRC(419f69d7) SHA1(e3431b5ce3e687ba9a45cb6e0e0a2dfa3a9e5b29) )	/* chars */
+	ROM_LOAD( "spj03_3e.bin",   0x020000, 0x20000, CRC(3ae28bc1) SHA1(4f6d9a86f624598ebc0825b50941adfb7436e98a) )
+	/* 40000-7ffff empty */
+	ROM_LOAD( "spj04_1g.bin",   0x080000, 0x20000, CRC(6870506f) SHA1(13a12c012ea2efb0c8cd9dcfb4b5757ac08ee912) )
+	ROM_LOAD( "spj05_2g.bin",   0x0a0000, 0x20000, CRC(4a060884) SHA1(f83d713aee4230fc04a1d5f1d4d79c64a5bf2753) )
+	/* c0000-fffff empty */
+
+	ROM_REGION( 0x040000, REGION_GFX2, ROMREGION_DISPOSE )
+	ROM_LOAD( "spj10_2k.bin",   0x000000, 0x20000, CRC(eedd0ade) SHA1(f2da2eb743c68c5c9a56a94709527110cef5d91d) )	/* sprites */
+	ROM_LOAD( "spj09_1k.bin",   0x020000, 0x20000, CRC(04b41b75) SHA1(946ed04a17f1f71085143d43905aa310ce1e05f4) )
+
+	ROM_REGION( 0x80000, REGION_SOUND1, 0 )	/* OKIM */
+	ROM_LOAD( "spj01_1d.bin",   0x00000, 0x20000, CRC(b96ea126) SHA1(83fa71994518d40b8938520faa8701c63b7f579e) )
 ROM_END
 
 ROM_START( sbbros )
@@ -1678,6 +1700,7 @@ GAME( 1989, pompingw, pang,     pang,    pang,     pang,     ROT0,   "Mitchell",
 GAME( 1989, cworld,   0,        pang,    qtono1,   cworld,   ROT0,   "Capcom", "Capcom World (Japan)" )
 GAME( 1990, hatena,   0,        pang,    qtono1,   hatena,   ROT0,   "Capcom", "Adventure Quiz 2 Hatena Hatena no Dai-Bouken (Japan)" )
 GAME( 1990, spang,    0,        pang,    pang,     spang,    ROT0,   "Mitchell", "Super Pang (World)" )
+GAMEX( 1990, spangj,   spang,    pang,    pang,     spang,    ROT0,   "Mitchell", "Super Pang (Japan)", GAME_NOT_WORKING ) // wrong decode
 GAME( 1990, sbbros,   spang,    pang,    pang,     sbbros,   ROT0,   "Mitchell + Capcom", "Super Buster Bros. (US)" )
 GAME( 1990, marukin,  0,        marukin, marukin,  marukin,  ROT0,   "Yuga", "Super Marukin-Ban" )
 GAME( 1991, qtono1,   0,        pang,    qtono1,   qtono1,   ROT0,   "Capcom", "Quiz Tonosama no Yabou (Japan)" )

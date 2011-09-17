@@ -1,11 +1,11 @@
-#pragma code_seg("C745")
-#pragma data_seg("D745")
-#pragma bss_seg("B745")
-#pragma const_seg("K745")
-#pragma comment(linker, "/merge:D745=745")
-#pragma comment(linker, "/merge:C745=745")
-#pragma comment(linker, "/merge:B745=745")
-#pragma comment(linker, "/merge:K745=745")
+#pragma code_seg("C787")
+#pragma data_seg("D787")
+#pragma bss_seg("B787")
+#pragma const_seg("K787")
+#pragma comment(linker, "/merge:D787=787")
+#pragma comment(linker, "/merge:C787=787")
+#pragma comment(linker, "/merge:B787=787")
+#pragma comment(linker, "/merge:K787=787")
 /***************************************************************************
 
 
@@ -20,24 +20,24 @@ extern size_t ttmahjng_videoram_size;
 
 PALETTE_INIT( ttmahjng );
 VIDEO_START( ttmahjng );
-WRITE_HANDLER( ttmahjng_out0_w );
-WRITE_HANDLER( ttmahjng_out1_w );
-WRITE_HANDLER( ttmahjng_videoram1_w );
-WRITE_HANDLER( ttmahjng_videoram2_w );
-READ_HANDLER( ttmahjng_videoram1_r );
-READ_HANDLER( ttmahjng_videoram2_r );
-WRITE_HANDLER( ttmahjng_sharedram_w );
-READ_HANDLER( ttmahjng_sharedram_r );
+WRITE8_HANDLER( ttmahjng_out0_w );
+WRITE8_HANDLER( ttmahjng_out1_w );
+WRITE8_HANDLER( ttmahjng_videoram1_w );
+WRITE8_HANDLER( ttmahjng_videoram2_w );
+READ8_HANDLER( ttmahjng_videoram1_r );
+READ8_HANDLER( ttmahjng_videoram2_r );
+WRITE8_HANDLER( ttmahjng_sharedram_w );
+READ8_HANDLER( ttmahjng_sharedram_r );
 VIDEO_UPDATE( ttmahjng );
 
 
 static int psel;
-WRITE_HANDLER( input_port_matrix_w )
+WRITE8_HANDLER( input_port_matrix_w )
 {
 	psel = data;
 }
 
-READ_HANDLER( input_port_matrix_r )
+READ8_HANDLER( input_port_matrix_r )
 {
 	int	cdata;
 

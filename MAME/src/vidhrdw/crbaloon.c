@@ -1,11 +1,11 @@
-#pragma code_seg("C227")
-#pragma data_seg("D227")
-#pragma bss_seg("B227")
-#pragma const_seg("K227")
-#pragma comment(linker, "/merge:D227=227")
-#pragma comment(linker, "/merge:C227=227")
-#pragma comment(linker, "/merge:B227=227")
-#pragma comment(linker, "/merge:K227=227")
+#pragma code_seg("C233")
+#pragma data_seg("D233")
+#pragma bss_seg("B233")
+#pragma const_seg("K233")
+#pragma comment(linker, "/merge:D233=233")
+#pragma comment(linker, "/merge:C233=233")
+#pragma comment(linker, "/merge:B233=233")
+#pragma comment(linker, "/merge:K233=233")
 /***************************************************************************
 
   vidhrdw.c
@@ -65,7 +65,7 @@ PALETTE_INIT( crbaloon )
 	}
 }
 
-WRITE_HANDLER( crbaloon_videoram_w )
+WRITE8_HANDLER( crbaloon_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -74,7 +74,7 @@ WRITE_HANDLER( crbaloon_videoram_w )
 	}
 }
 
-WRITE_HANDLER( crbaloon_colorram_w )
+WRITE8_HANDLER( crbaloon_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -83,12 +83,12 @@ WRITE_HANDLER( crbaloon_colorram_w )
 	}
 }
 
-WRITE_HANDLER( crbaloon_spritectrl_w )
+WRITE8_HANDLER( crbaloon_spritectrl_w )
 {
 	spritectrl[offset] = data;
 }
 
-WRITE_HANDLER( crbaloon_flipscreen_w )
+WRITE8_HANDLER( crbaloon_flipscreen_w )
 {
 	if (flip_screen != (data & 0x01))
 	{

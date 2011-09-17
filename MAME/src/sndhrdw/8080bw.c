@@ -42,39 +42,31 @@
 #include "vidhrdw/generic.h"
 #include "8080bw.h"
 
-static WRITE_HANDLER( invad2ct_sh_port1_w );
-static WRITE_HANDLER( invaders_sh_port3_w );
-static WRITE_HANDLER( invaders_sh_port5_w );
-static WRITE_HANDLER( invad2ct_sh_port7_w );
+static WRITE8_HANDLER( invad2ct_sh_port1_w );
+static WRITE8_HANDLER( invaders_sh_port3_w );
+static WRITE8_HANDLER( invaders_sh_port5_w );
+static WRITE8_HANDLER( invad2ct_sh_port7_w );
 
-static WRITE_HANDLER( sheriff_sh_port4_w );
-static WRITE_HANDLER( sheriff_sh_port5_w );
-static WRITE_HANDLER( sheriff_sh_port6_w );
+static WRITE8_HANDLER( ballbomb_sh_port3_w );
+static WRITE8_HANDLER( ballbomb_sh_port5_w );
 
-static WRITE_HANDLER( helifire_sh_port4_w );
-static WRITE_HANDLER( helifire_sh_port5_w );
-static WRITE_HANDLER( helifire_sh_port6_w );
+static WRITE8_HANDLER( boothill_sh_port3_w );
+static WRITE8_HANDLER( boothill_sh_port5_w );
 
-static WRITE_HANDLER( ballbomb_sh_port3_w );
-static WRITE_HANDLER( ballbomb_sh_port5_w );
-
-static WRITE_HANDLER( boothill_sh_port3_w );
-static WRITE_HANDLER( boothill_sh_port5_w );
-
-static WRITE_HANDLER( clowns_sh_port7_w );
+static WRITE8_HANDLER( clowns_sh_port7_w );
 extern struct Samplesinterface circus_samples_interface;
 
-static WRITE_HANDLER( seawolf_sh_port5_w );
+static WRITE8_HANDLER( seawolf_sh_port5_w );
 
-static WRITE_HANDLER( schaser_sh_port3_w );
-static WRITE_HANDLER( schaser_sh_port5_w );
+static WRITE8_HANDLER( schaser_sh_port3_w );
+static WRITE8_HANDLER( schaser_sh_port5_w );
 static int  schaser_sh_start(const struct MachineSound *msound);
 static void schaser_sh_stop(void);
 static void schaser_sh_update(void);
 
-static WRITE_HANDLER( polaris_sh_port2_w );
-static WRITE_HANDLER( polaris_sh_port4_w );
-static WRITE_HANDLER( polaris_sh_port6_w );
+static WRITE8_HANDLER( polaris_sh_port2_w );
+static WRITE8_HANDLER( polaris_sh_port4_w );
+static WRITE8_HANDLER( polaris_sh_port6_w );
 
 
 struct SN76477interface invaders_sn76477_interface =
@@ -177,8 +169,8 @@ struct Samplesinterface invad2ct_samples_interface =
 
 MACHINE_INIT( invaders )
 {
-	install_port_write_handler(0, 0x03, 0x03, invaders_sh_port3_w);
-	install_port_write_handler(0, 0x05, 0x05, invaders_sh_port5_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x03, 0x03, 0, 0, invaders_sh_port3_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x05, 0x05, 0, 0, invaders_sh_port5_w);
 
 	SN76477_envelope_1_w(0, 1);
 	SN76477_envelope_2_w(0, 0);
@@ -190,8 +182,8 @@ MACHINE_INIT( invaders )
 
 MACHINE_INIT( sstrangr )
 {
-	install_port_write_handler(0, 0x42, 0x42, invaders_sh_port3_w);
-	install_port_write_handler(0, 0x44, 0x44, invaders_sh_port5_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x42, 0x42, 0, 0, invaders_sh_port3_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x44, 0x44, 0, 0, invaders_sh_port5_w);
 
 	SN76477_envelope_1_w(0, 1);
 	SN76477_envelope_2_w(0, 0);
@@ -205,8 +197,8 @@ MACHINE_INIT( invad2ct )
 {
 	machine_init_invaders();
 
-	install_port_write_handler(0, 0x01, 0x01, invad2ct_sh_port1_w);
-	install_port_write_handler(0, 0x07, 0x07, invad2ct_sh_port7_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x01, 0x01, 0, 0, invad2ct_sh_port1_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x07, 0x07, 0, 0, invad2ct_sh_port7_w);
 
 	SN76477_envelope_1_w(1, 1);
 	SN76477_envelope_2_w(1, 0);
@@ -281,28 +273,28 @@ static void invaders_sh_2_w(int board, int data, unsigned char *last)
 }
 
 
-static WRITE_HANDLER( invad2ct_sh_port1_w )
+static WRITE8_HANDLER( invad2ct_sh_port1_w )
 {
 	static unsigned char last = 0;
 
 	invaders_sh_1_w(1, data, &last);
 }
 
-static WRITE_HANDLER( invaders_sh_port3_w )
+static WRITE8_HANDLER( invaders_sh_port3_w )
 {
 	static unsigned char last = 0;
 
 	invaders_sh_1_w(0, data, &last);
 }
 
-static WRITE_HANDLER( invaders_sh_port5_w )
+static WRITE8_HANDLER( invaders_sh_port5_w )
 {
 	static unsigned char last = 0;
 
 	invaders_sh_2_w(0, data, &last);
 }
 
-static WRITE_HANDLER( invad2ct_sh_port7_w )
+static WRITE8_HANDLER( invad2ct_sh_port7_w )
 {
 	static unsigned char last = 0;
 
@@ -318,8 +310,8 @@ static WRITE_HANDLER( invad2ct_sh_port7_w )
 
 MACHINE_INIT( gunfight )
 {
-	install_port_read_handler(0, 0x00, 0x00, gunfight_port_0_r);
-	install_port_read_handler(0, 0x01, 0x01, gunfight_port_1_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_IO, 0x00, 0x00, 0, 0, gunfight_port_0_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_IO, 0x01, 0x01, 0, 0, gunfight_port_1_r);
 }
 
 
@@ -352,14 +344,14 @@ i dont know for sure... but that is my guess....... */
 
 MACHINE_INIT( boothill )
 {
-	install_port_read_handler (0, 0x00, 0x00, boothill_port_0_r);
-	install_port_read_handler (0, 0x01, 0x01, boothill_port_1_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_IO, 0x00, 0x00, 0, 0, boothill_port_0_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_IO, 0x01, 0x01, 0, 0, boothill_port_1_r);
 
-	install_port_write_handler(0, 0x03, 0x03, boothill_sh_port3_w);
-	install_port_write_handler(0, 0x05, 0x05, boothill_sh_port5_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x03, 0x03, 0, 0, boothill_sh_port3_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x05, 0x05, 0, 0, boothill_sh_port5_w);
 }
 
-static WRITE_HANDLER( boothill_sh_port3_w )
+static WRITE8_HANDLER( boothill_sh_port3_w )
 {
 	switch (data)
 	{
@@ -380,7 +372,7 @@ static WRITE_HANDLER( boothill_sh_port3_w )
 }
 
 /* HC 4/14/98 */
-static WRITE_HANDLER( boothill_sh_port5_w )
+static WRITE8_HANDLER( boothill_sh_port5_w )
 {
 	switch (data)
 	{
@@ -402,16 +394,16 @@ static WRITE_HANDLER( boothill_sh_port5_w )
 
 MACHINE_INIT( ballbomb )
 {
-	install_port_write_handler(0, 0x03, 0x03, ballbomb_sh_port3_w);
-	install_port_write_handler(0, 0x05, 0x05, ballbomb_sh_port5_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x03, 0x03, 0, 0, ballbomb_sh_port3_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x05, 0x05, 0, 0, ballbomb_sh_port5_w);
 }
 
-static WRITE_HANDLER( ballbomb_sh_port3_w )
+static WRITE8_HANDLER( ballbomb_sh_port3_w )
 {
 	c8080bw_screen_red_w(data & 0x04);
 }
 
-static WRITE_HANDLER( ballbomb_sh_port5_w )
+static WRITE8_HANDLER( ballbomb_sh_port5_w )
 {
 	c8080bw_flip_screen_w(data & 0x20);
 }
@@ -502,9 +494,9 @@ DISCRETE_SOUND_START(polaris_sound_interface)
 	DISCRETE_INPUT(POLARIS_SX9_EN      , 0x08, 0x000f, 0.0)
 	DISCRETE_INPUT(POLARIS_SX10_EN     , 0x09, 0x000f, 0.0)
 
-	DISCRETE_ADJUSTMENT(POLARIS_ADJ_VR1, 1, 0, 1000, 800, DISC_LINADJ, "Sub Volume VR1")
-	DISCRETE_ADJUSTMENT(POLARIS_ADJ_VR2, 1, 0, 1000, 700, DISC_LINADJ, "Sub Volume VR2")
-	DISCRETE_ADJUSTMENT(POLARIS_ADJ_VR3, 1, 0, 1000, 900, DISC_LINADJ, "Sub Volume VR3")
+	DISCRETE_ADJUSTMENT(POLARIS_ADJ_VR1, 1, 0, 1000, DISC_LINADJ, 4)
+	DISCRETE_ADJUSTMENT(POLARIS_ADJ_VR2, 1, 0, 1000, DISC_LINADJ, 5)
+	DISCRETE_ADJUSTMENT(POLARIS_ADJ_VR3, 1, 0, 1000, DISC_LINADJ, 6)
 
 /******************************************************************************
  *
@@ -706,17 +698,17 @@ DISCRETE_SOUND_END
 
 MACHINE_INIT( polaris )
 {
-	install_port_write_handler(0, 0x02, 0x02, polaris_sh_port2_w);
-	install_port_write_handler(0, 0x04, 0x04, polaris_sh_port4_w);
-	install_port_write_handler(0, 0x06, 0x06, polaris_sh_port6_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x02, 0x02, 0, 0, polaris_sh_port2_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x04, 0x04, 0, 0, polaris_sh_port4_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x06, 0x06, 0, 0, polaris_sh_port6_w);
 }
 
-static WRITE_HANDLER( polaris_sh_port2_w )
+static WRITE8_HANDLER( polaris_sh_port2_w )
 {
 	discrete_sound_w(0, (~data) & 0xff);
 }
 
-static WRITE_HANDLER( polaris_sh_port4_w )
+static WRITE8_HANDLER( polaris_sh_port4_w )
 {
 	/* 0x01 - SX0 - Shot */
 	discrete_sound_w(1, data & 0x01);
@@ -736,7 +728,7 @@ static WRITE_HANDLER( polaris_sh_port4_w )
 	discrete_sound_w(5, (data & 0x20) >> 5);
 }
 
-static WRITE_HANDLER( polaris_sh_port6_w )
+static WRITE8_HANDLER( polaris_sh_port6_w )
 {
 	coin_lockout_global_w(data & 0x04);  /* SX8 */
 
@@ -758,351 +750,13 @@ static WRITE_HANDLER( polaris_sh_port6_w )
 
 /*******************************************************/
 /*                                                     */
-/* Nintendo "Sheriff"                              	   */
-/*                                                     */
-/*******************************************************/
-
-struct DACinterface sheriff_dac_interface =
-{
-	1,
-	{ 50 }
-};
-
-struct SN76477interface sheriff_sn76477_interface =
-{
-	1,	/* 1 chip */
-	{ 50 },  /* mixing level   pin description		 */
-	{ RES_K( 36)   },		/*	4  noise_res		 */
-	{ RES_K(100)   },		/*	5  filter_res		 */
-	{ CAP_U(0.001) },		/*	6  filter_cap		 */
-	{ RES_K(620)   },		/*	7  decay_res		 */
-	{ CAP_U(1.0)   },		/*	8  attack_decay_cap  */
-	{ RES_K(20)    },		/* 10  attack_res		 */
-	{ RES_K(150)   },		/* 11  amplitude_res	 */
-	{ RES_K(47)    },		/* 12  feedback_res 	 */
-	{ 0            },		/* 16  vco_voltage		 */
-	{ CAP_U(0.001) },		/* 17  vco_cap			 */
-	{ RES_M(1.5)   },		/* 18  vco_res			 */
-	{ 0.0		   },		/* 19  pitch_voltage	 */
-	{ RES_M(1.5)   },		/* 20  slf_res			 */
-	{ CAP_U(0.047) },		/* 21  slf_cap			 */
-	{ CAP_U(0.047) },		/* 23  oneshot_cap		 */
-	{ RES_K(560)   }		/* 24  oneshot_res		 */
-};
-
-
-static void sheriff_74123_0_output_changed_cb(void)
-{
-logerror("74123 0 triggered\n");
-	SN76477_vco_w    (0,  TTL74123_output_r(0));
-	SN76477_mixer_b_w(0, !TTL74123_output_r(0));
-
-	SN76477_enable_w(0, TTL74123_output_comp_r(0) && TTL74123_output_comp_r(1));
-}
-
-static void sheriff_74123_1_output_changed_cb(void)
-{
-logerror("74123 1 triggered\n");
-	SN76477_set_vco_voltage(0, !TTL74123_output_comp_r(1) ? 5.0 : 0.0);
-
-	SN76477_enable_w(0, TTL74123_output_comp_r(0) && TTL74123_output_comp_r(1));
-}
-
-static struct TTL74123_interface sheriff_74123_0_intf =
-{
-	RES_K(33),
-	CAP_U(33),
-	sheriff_74123_0_output_changed_cb
-};
-
-static struct TTL74123_interface sheriff_74123_1_intf =
-{
-	RES_K(33),
-	CAP_U(33),
-	sheriff_74123_1_output_changed_cb
-};
-
-
-MACHINE_INIT( sheriff )
-{
-	install_port_write_handler(0, 0x04, 0x04, sheriff_sh_port4_w);
-	install_port_write_handler(0, 0x05, 0x05, sheriff_sh_port5_w);
-	install_port_write_handler(0, 0x06, 0x06, sheriff_sh_port6_w);
-
-	TTL74123_config(0, &sheriff_74123_0_intf);
-	TTL74123_config(1, &sheriff_74123_1_intf);
-
-	/* set up the fixed connections */
-	TTL74123_reset_comp_w  (0, 1);
-	TTL74123_trigger_comp_w(0, 0);
-
-	TTL74123_trigger_comp_w(1, 0);
-
-	SN76477_envelope_1_w(0, 1);
-	SN76477_envelope_2_w(0, 0);
-	SN76477_noise_clock_w(0, 0);
-	SN76477_mixer_a_w(0, 0);
-	SN76477_mixer_c_w(0, 0);
-}
-
-
-static int sheriff_t0,sheriff_t1,sheriff_p1,sheriff_p2;
-
-
-static WRITE_HANDLER( sheriff_sh_port4_w )
-{
-static int last = -1;
-	// 0 - P2.7 - GAME
-	// 1 - P2.5 - EXCEL
-	// 2 - P2.6 - IMAN BRK
-	// 3 - P2.3 - GMAN BRK
-	// 4 - P2.4 - GMAN TRIG
-	// 5 - P2.1 - BRD APR
-if ((last & 0x10) != (data & 0x10))
-{
-logerror("***Gun: %02X %04X\n", data & 0x14, activecpu_get_pc());
-last = data;
-}
-
-	sheriff_t0 = data & 1;
-
-	sheriff_p1 = (sheriff_p1 & 0x4f) |
-				 ((data & 0x02) << 3) |		/* P1.4 */
-				 ((data & 0x08) << 2) |		/* P1.5 */
-				 ((data & 0x20) << 2);		/* P1.7 */
-
-	soundlatch_w(0, sheriff_p1);
-
-	cpu_set_irq_line(1, 0, ((sheriff_p1 & 0x70) == 0x70) ? ASSERT_LINE : CLEAR_LINE);
-
-	TTL74123_trigger_w   (0, data & 0x04);
-
-	TTL74123_reset_comp_w(1, ~data & 0x04);
-	TTL74123_trigger_w   (1, data & 0x10);
-}
-
-static WRITE_HANDLER( sheriff_sh_port5_w )
-{
-	// 0 - P2.8  - IMAN S0
-	// 1 - P2.9  - IMAN S1
-	// 2 - P2.10 - IMAN S2
-	// 3 - P2.11 - IMAN S3
-	// 4 - P2.2  - ARROW
-	// 5 - P2.12 - BRD BRK
-
-	sheriff_t1 = (data >> 5) & 1;
-
-	sheriff_p1 = (sheriff_p1 & 0xb0) |
-				 ((data & 0x01) << 3) |		/* P1.3 */
-				 ((data & 0x02) << 1) |		/* P1.2 */
-				 ((data & 0x04) >> 1) |		/* P1.1 */
-				 ((data & 0x08) >> 3) |		/* P1.0 */
-				 ((data & 0x10) << 2);		/* P1.6 */
-
-	soundlatch_w(0, sheriff_p1);
-
-	cpu_set_irq_line(1, 0, ((sheriff_p1 & 0x70) == 0x70) ? ASSERT_LINE : CLEAR_LINE);
-}
-
-static WRITE_HANDLER( sheriff_sh_port6_w )
-{
-	flip_screen_set(data & 0x20);
-}
-
-
-READ_HANDLER( sheriff_sh_t0_r )
-{
-	return sheriff_t0;
-}
-
-READ_HANDLER( sheriff_sh_t1_r )
-{
-	return sheriff_t1;
-}
-
-READ_HANDLER( sheriff_sh_p1_r )
-{
-	return soundlatch_r(0);;
-}
-
-READ_HANDLER( sheriff_sh_p2_r )
-{
-	return sheriff_p2;
-}
-
-WRITE_HANDLER( sheriff_sh_p2_w )
-{
-	sheriff_p2 = data;
-
-	DAC_data_w(0, sheriff_p2 & 0x80 ? 0xff : 0x00);
-}
-
-
-/*******************************************************/
-/*                                                     */
-/* Nintendo "HeliFire"		                           */
-/*                                                     */
-/*******************************************************/
-
-/* Note: the game uses 8-bit DAC and a RC circuit to control the DAC's volume */
-
-/* I used 16 bits for the DAC data for better quality of the volume control */
-
-/* the following resistances are a guesswork */
-#define R1		500		/* DAC Vref charge resistance */
-#define R2		16000	/* DAC Vref discharge resistance */
-#define C43		10.0e-6	/* C43 is 10 uF in the schematics */
-
-#define VMIN	0		/* I'm not sure whether the circuit can discharge to zero level? */
-#define VMAX	32768
-
-static int Vref;		/* reference voltage for the 8-bit DAC */
-static int counter;
-
-static double ar_rate;
-static double dr_rate;
-
-static int Vref_control;		/* 1 - charge capacitor, 0 - discharge it */
-static int samplerate = 400;	/* 400 changes per second - arbitrary resolution */
-static void	*capacitor_timer;	/* samplerate timer for capacitor calculations */
-
-static int current_dac_data;
-
-void cap_timer_callback (int param_not_used)
-{
-	switch( Vref_control)
-	{
-		case 1:		/* capacitor charge */
-			if (Vref < VMAX)
-			{
-				counter -= (int)((VMAX - Vref) / ar_rate);
-				if ( counter <= 0 )
-				{
-					int n = -counter / samplerate + 1;
-					counter += n * samplerate;
-					if ( (Vref += n) > VMAX )
-						Vref = VMAX;
-				}
-				/*logerror("vref charge=%4x\n",Vref);*/
-			}
-			break;
-
-		default:	/* capacitor discharge */
-			if (Vref > VMIN)
-			{
-				counter -= (int)((Vref - VMIN) / dr_rate);
-				if ( counter <= 0 )
-				{
-					int n = -counter / samplerate + 1;
-					counter += n * samplerate;
-					if ( (Vref -= n) < VMIN )
-						Vref = VMIN;
-				}
-				/*logerror("vref discharge=%4x\n",Vref);*/
-			}
-			break;
-	}
-
-	DAC_data_16_w(0, (current_dac_data * Vref) >> 8 );
-}
-
-MACHINE_INIT( helifire )
-{
-	install_port_write_handler(0, 0x04, 0x04, helifire_sh_port4_w);
-	install_port_write_handler(0, 0x05, 0x05, helifire_sh_port5_w);
-	install_port_write_handler(0, 0x06, 0x06, helifire_sh_port6_w);
-
-	Vref = 0;
-	Vref_control = 0;
-
-	counter = 0;
-	ar_rate= (double)R1 * (double)C43;
-	dr_rate= (double)R2 * (double)C43;
-
-	capacitor_timer = timer_alloc(cap_timer_callback);
-	timer_adjust(capacitor_timer, TIME_IN_HZ(samplerate), 0, TIME_IN_HZ(samplerate));
-}
-
-static int helifire_t0, helifire_t1;//, helifire_p1, helifire_p2;
-static int helifire_snd_latch;
-
-static WRITE_HANDLER( helifire_sh_port4_w )
-{
-	// 0 - P2.7 -      ->D0
-	// 1 - NC
-	// 2 - P2.6 -      ->INT
-	// 3 - P2.3 -      ->T0
-	// 4 - P2.4 -      ->T1
-	// 5 - P2.1 - GAME ->D3
-
-	data ^= 0xff; /* negated on page 2 just before going to P2 */
-
-	helifire_t1 = (data&0x10) >> 4;
-	helifire_t0 = (data&0x08) >> 3;
-
-	helifire_snd_latch = (helifire_snd_latch & 0x06) |
-				 ((data & 0x01) << 0) |
-				 ((data & 0x20) >> 2);
-
-	cpu_set_irq_line(1, 0, (data & 0x04) ? ASSERT_LINE : CLEAR_LINE);
-
-logerror("port04 write: %02x &4=%1x\n", data, data&4);
-}
-
-static WRITE_HANDLER( helifire_sh_port5_w )
-{
-	// 0 - P2.8  -     ->D1 (or D2 ?)
-	// 1 - P2.9  -     ->D2 (or D1 ?)
-	// 2 - P2.10 - 
-	// 3 - P2.11 - 
-	// 4 - P2.2  - 
-	// 5 - P2.12 -     ->PB4
-
-	data ^= 0xff; /* negated on page 2 just before going to P2 */
-
-	helifire_snd_latch = (helifire_snd_latch & 0x09) |
-				 ((data & 0x01) << 1) |
-				 ((data & 0x02) << 1);
-
-	c8080bw_helifire_colors_change_w(data & 0x20); /* 1 - don't change colors, 0 - change font and object colors */
-
-logerror("port05 write: %02x\n",data);
-
-}
-
-static WRITE_HANDLER( helifire_sh_port6_w )
-{
-	flip_screen_set(data & 0x20);
-}
-
-WRITE_HANDLER( helifire_sh_p1_w )
-{
-	current_dac_data = data;
-
-	DAC_data_16_w(0, (current_dac_data * Vref) >> 8);
-}
-
-
-WRITE_HANDLER( helifire_sh_p2_w )
-{
-	Vref_control = (data&0x80) >> 7;
-	/*logerror("dac_vref_charge=%1x\n", Vref_control);*/
-}
-
-READ_HANDLER( helifire_sh_p1_r )
-{
-	return helifire_snd_latch;
-}
-
-/*******************************************************/
-/*                                                     */
 /* Midway "Phantom II"		                           */
 /*                                                     */
 /*******************************************************/
 
 MACHINE_INIT( phantom2 )
 {
-	install_port_write_handler(0, 0x04, 0x04, watchdog_reset_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x04, 0x04, 0, 0, watchdog_reset_w);
 }
 
 
@@ -1114,8 +768,8 @@ MACHINE_INIT( phantom2 )
 
 MACHINE_INIT( bowler )
 {
-	install_port_write_handler(0, 0x04, 0x04, watchdog_reset_w);
-	install_port_write_handler(0, 0x07, 0x07, bowler_bonus_display_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x04, 0x04, 0, 0, watchdog_reset_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x07, 0x07, 0, 0, bowler_bonus_display_w);
 }
 
 
@@ -1182,13 +836,13 @@ Port 2:
 
 */
 
-	install_port_read_handler (0, 0x01, 0x01, seawolf_port_1_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_IO, 0x01, 0x01, 0, 0, seawolf_port_1_r);
 
-	install_port_write_handler(0, 0x05, 0x05, seawolf_sh_port5_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x05, 0x05, 0, 0, seawolf_sh_port5_w);
 
 }
 
-static WRITE_HANDLER( seawolf_sh_port5_w )
+static WRITE8_HANDLER( seawolf_sh_port5_w )
 {
 	if (data & 0x01)
 		sample_start (0, 0, 0);  /* Ship Hit */
@@ -1213,9 +867,9 @@ static WRITE_HANDLER( seawolf_sh_port5_w )
 
 MACHINE_INIT( desertgu )
 {
-	install_port_read_handler (0, 0x01, 0x01, desertgu_port_1_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_IO, 0x01, 0x01, 0, 0, desertgu_port_1_r);
 
-	install_port_write_handler(0, 0x07, 0x07, desertgu_controller_select_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x07, 0x07, 0, 0, desertgu_controller_select_w);
 }
 
 
@@ -1287,8 +941,8 @@ static INT16 backgroundwave[32] =
 
 MACHINE_INIT( schaser )
 {
-	install_port_write_handler(0, 0x03, 0x03, schaser_sh_port3_w);
-	install_port_write_handler(0, 0x05, 0x05, schaser_sh_port5_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x03, 0x03, 0, 0, schaser_sh_port3_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x05, 0x05, 0, 0, schaser_sh_port5_w);
 
 	SN76477_mixer_a_w(0, 0);
 	SN76477_mixer_c_w(0, 0);
@@ -1297,7 +951,7 @@ MACHINE_INIT( schaser )
 	SN76477_envelope_2_w(0, 0);
 }
 
-static WRITE_HANDLER( schaser_sh_port3_w )
+static WRITE8_HANDLER( schaser_sh_port3_w )
 {
 	int explosion;
 
@@ -1334,7 +988,7 @@ static WRITE_HANDLER( schaser_sh_port3_w )
 	SN76477_mixer_b_w(0, explosion);
 }
 
-static WRITE_HANDLER( schaser_sh_port5_w )
+static WRITE8_HANDLER( schaser_sh_port5_w )
 {
 	/* bit 0 - Music (DAC) (SX6)
 	   bit 1 - Sound Enable (SX7)
@@ -1373,7 +1027,7 @@ static void schaser_sh_update(void)
 }
 
 
-static WRITE_HANDLER( clowns_sh_port7_w )
+static WRITE8_HANDLER( clowns_sh_port7_w )
 {
 /* bit 0x08 seems to always be enabled.  Possibly sound enable? */
 /* A new sample set needs to be made with 3 different balloon sounds,
@@ -1400,7 +1054,7 @@ MACHINE_INIT( clowns )
 	/* Ports 5 & 6 are probably the music channels. They change value when
 	 * a bonus is made. */
 
-	install_port_write_handler (0, 0x07, 0x07, clowns_sh_port7_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x07, 0x07, 0, 0, clowns_sh_port7_w);
 }
 #pragma code_seg()
 #pragma data_seg()

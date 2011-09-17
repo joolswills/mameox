@@ -1,11 +1,11 @@
-#pragma code_seg("C562")
-#pragma data_seg("D562")
-#pragma bss_seg("B562")
-#pragma const_seg("K562")
-#pragma comment(linker, "/merge:D562=562")
-#pragma comment(linker, "/merge:C562=562")
-#pragma comment(linker, "/merge:B562=562")
-#pragma comment(linker, "/merge:K562=562")
+#pragma code_seg("C596")
+#pragma data_seg("D596")
+#pragma bss_seg("B596")
+#pragma const_seg("K596")
+#pragma comment(linker, "/merge:D596=596")
+#pragma comment(linker, "/merge:C596=596")
+#pragma comment(linker, "/merge:B596=596")
+#pragma comment(linker, "/merge:K596=596")
 /*  68020 + IMAGETEK 15000 hardware
 
 Rabbit (c) 1997 Electronic Arts

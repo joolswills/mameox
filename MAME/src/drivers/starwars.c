@@ -1,11 +1,11 @@
-#pragma code_seg("C667")
-#pragma data_seg("D667")
-#pragma bss_seg("B667")
-#pragma const_seg("K667")
-#pragma comment(linker, "/merge:D667=667")
-#pragma comment(linker, "/merge:C667=667")
-#pragma comment(linker, "/merge:B667=667")
-#pragma comment(linker, "/merge:K667=667")
+#pragma code_seg("C705")
+#pragma data_seg("D705")
+#pragma bss_seg("B705")
+#pragma const_seg("K705")
+#pragma comment(linker, "/merge:D705=705")
+#pragma comment(linker, "/merge:C705=705")
+#pragma comment(linker, "/merge:B705=705")
+#pragma comment(linker, "/merge:K705=705")
 /***************************************************************************
 
 	Atari Star Wars hardware
@@ -78,9 +78,9 @@ MACHINE_INIT( starwars )
  *
  *************************************/
 
-static WRITE_HANDLER( irq_ack_w )
+static WRITE8_HANDLER( irq_ack_w )
 {
-	cpu_set_irq_line(0, M6809_IRQ_LINE, CLEAR_LINE);
+	cpunum_set_input_line(0, M6809_IRQ_LINE, CLEAR_LINE);
 }
 
 
@@ -91,7 +91,7 @@ static WRITE_HANDLER( irq_ack_w )
  *
  *************************************/
 
-READ_HANDLER( esb_slapstic_r )
+READ8_HANDLER( esb_slapstic_r )
 {
 	int result = slapstic_base[offset];
 	int new_bank = slapstic_tweak(offset);
@@ -106,7 +106,7 @@ READ_HANDLER( esb_slapstic_r )
 }
 
 
-WRITE_HANDLER( esb_slapstic_w )
+WRITE8_HANDLER( esb_slapstic_w )
 {
 	int new_bank = slapstic_tweak(offset);
 
@@ -581,11 +581,11 @@ static DRIVER_INIT( esb )
 	memory_set_opbase_handler(0, esb_setopbase);
 
 	/* install read/write handlers for it */
-	install_mem_read_handler(0, 0x8000, 0x9fff, esb_slapstic_r);
-	install_mem_write_handler(0, 0x8000, 0x9fff, esb_slapstic_w);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x8000, 0x9fff, 0, 0, esb_slapstic_r);
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x8000, 0x9fff, 0, 0, esb_slapstic_w);
 
 	/* install additional banking */
-	install_mem_read_handler(0, 0xa000, 0xffff, MRA8_BANK2);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xa000, 0xffff, 0, 0, MRA8_BANK2);
 
 	/* prepare the mathbox */
 	starwars_is_esb = 1;

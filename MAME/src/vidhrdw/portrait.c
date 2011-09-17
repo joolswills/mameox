@@ -1,11 +1,11 @@
-#pragma code_seg("C548")
-#pragma data_seg("D548")
-#pragma bss_seg("B548")
-#pragma const_seg("K548")
-#pragma comment(linker, "/merge:D548=548")
-#pragma comment(linker, "/merge:C548=548")
-#pragma comment(linker, "/merge:B548=548")
-#pragma comment(linker, "/merge:K548=548")
+#pragma code_seg("C579")
+#pragma data_seg("D579")
+#pragma bss_seg("B579")
+#pragma const_seg("K579")
+#pragma comment(linker, "/merge:D579=579")
+#pragma comment(linker, "/merge:C579=579")
+#pragma comment(linker, "/merge:B579=579")
+#pragma comment(linker, "/merge:K579=579")
 /***************************************************************************
 
   vidhrdw.c
@@ -20,7 +20,7 @@ extern int portrait_scrollx_hi, portrait_scrollx_lo;
 data8_t *portrait_bgvideoram, *portrait_fgvideoram, *portrait_spriteram;
 static struct tilemap *foreground, *background;
 
-WRITE_HANDLER( portrait_bgvideo_write )
+WRITE8_HANDLER( portrait_bgvideo_write )
 {
 	if (portrait_bgvideoram[offset] != data)
 	{
@@ -29,7 +29,7 @@ WRITE_HANDLER( portrait_bgvideo_write )
 	}
 }
 
-WRITE_HANDLER( portrait_fgvideo_write )
+WRITE8_HANDLER( portrait_fgvideo_write )
 {
 	if (portrait_fgvideoram[offset] != data)
 	{

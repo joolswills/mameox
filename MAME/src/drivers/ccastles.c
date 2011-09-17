@@ -1,11 +1,11 @@
-#pragma code_seg("C196")
-#pragma data_seg("D196")
-#pragma bss_seg("B196")
-#pragma const_seg("K196")
-#pragma comment(linker, "/merge:D196=196")
-#pragma comment(linker, "/merge:C196=196")
-#pragma comment(linker, "/merge:B196=196")
-#pragma comment(linker, "/merge:K196=196")
+#pragma code_seg("C199")
+#pragma data_seg("D199")
+#pragma bss_seg("B199")
+#pragma const_seg("K199")
+#pragma comment(linker, "/merge:D199=199")
+#pragma comment(linker, "/merge:C199=199")
+#pragma comment(linker, "/merge:B199=199")
+#pragma comment(linker, "/merge:K199=199")
 /***************************************************************************
 
 	Atari Crystal Castles hardware
@@ -101,20 +101,20 @@
  *
  *************************************/
 
-static WRITE_HANDLER( ccastles_led_w )
+static WRITE8_HANDLER( ccastles_led_w )
 {
 	set_led_status(offset,~data & 1);
 }
 
 
-static WRITE_HANDLER( ccastles_coin_counter_w )
+static WRITE8_HANDLER( ccastles_coin_counter_w )
 {
 	/* this is not working, haven't investigated why */
 	coin_counter_w(offset^1, ~data);
 }
 
 
-static WRITE_HANDLER( ccastles_bankswitch_w )
+static WRITE8_HANDLER( ccastles_bankswitch_w )
 {
 	unsigned char *RAM = memory_region(REGION_CPU1);
 
@@ -124,7 +124,7 @@ static WRITE_HANDLER( ccastles_bankswitch_w )
 }
 
 
-static WRITE_HANDLER( flip_screen_w )
+static WRITE8_HANDLER( flip_screen_w )
 {
 	flip_screen_set(data);
 }

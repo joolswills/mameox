@@ -1,11 +1,11 @@
-#pragma code_seg("C212")
-#pragma data_seg("D212")
-#pragma bss_seg("B212")
-#pragma const_seg("K212")
-#pragma comment(linker, "/merge:D212=212")
-#pragma comment(linker, "/merge:C212=212")
-#pragma comment(linker, "/merge:B212=212")
-#pragma comment(linker, "/merge:K212=212")
+#pragma code_seg("C216")
+#pragma data_seg("D216")
+#pragma bss_seg("B216")
+#pragma const_seg("K216")
+#pragma comment(linker, "/merge:D216=216")
+#pragma comment(linker, "/merge:C216=216")
+#pragma comment(linker, "/merge:B216=216")
+#pragma comment(linker, "/merge:K216=216")
 /***************************************************************************
 
 	Atari Cloak & Dagger hardware
@@ -48,7 +48,7 @@ static struct tilemap *bg_tilemap;
   bit 0 -- diode |< -- pullup 1 kohm -- 10  kohm resistor -- pulldown 100 pf -- BLUE
 
 ***************************************************************************/
-WRITE_HANDLER( cloak_paletteram_w )
+WRITE8_HANDLER( cloak_paletteram_w )
 {
 	int r,g,b;
 	int bit0,bit1,bit2;
@@ -78,7 +78,7 @@ WRITE_HANDLER( cloak_paletteram_w )
 	palette_set_color(offset & 0x3f,r,g,b);
 }
 
-WRITE_HANDLER( cloak_clearbmp_w )
+WRITE8_HANDLER( cloak_clearbmp_w )
 {
 	bmap = data & 0x01;
 
@@ -110,7 +110,7 @@ static void adjust_xy(int offset)
 	}
 }
 
-READ_HANDLER( graph_processor_r )
+READ8_HANDLER( graph_processor_r )
 {
 	int ret;
 
@@ -128,7 +128,7 @@ READ_HANDLER( graph_processor_r )
 	return ret;
 }
 
-WRITE_HANDLER( graph_processor_w )
+WRITE8_HANDLER( graph_processor_w )
 {
 	int color;
 
@@ -155,7 +155,7 @@ WRITE_HANDLER( graph_processor_w )
 		}
 }
 
-WRITE_HANDLER( cloak_videoram_w )
+WRITE8_HANDLER( cloak_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -164,7 +164,7 @@ WRITE_HANDLER( cloak_videoram_w )
 	}
 }
 
-WRITE_HANDLER( cloak_flipscreen_w )
+WRITE8_HANDLER( cloak_flipscreen_w )
 {
 	flip_screen_set(data & 0x80);
 }

@@ -1,11 +1,11 @@
-#pragma code_seg("C734")
-#pragma data_seg("D734")
-#pragma bss_seg("B734")
-#pragma const_seg("K734")
-#pragma comment(linker, "/merge:D734=734")
-#pragma comment(linker, "/merge:C734=734")
-#pragma comment(linker, "/merge:B734=734")
-#pragma comment(linker, "/merge:K734=734")
+#pragma code_seg("C776")
+#pragma data_seg("D776")
+#pragma bss_seg("B776")
+#pragma const_seg("K776")
+#pragma comment(linker, "/merge:D776=776")
+#pragma comment(linker, "/merge:C776=776")
+#pragma comment(linker, "/merge:B776=776")
+#pragma comment(linker, "/merge:K776=776")
 /***************************************************************************
 
 Tora Tora (c) 1980 GamePlan
@@ -34,7 +34,7 @@ TODO:
 
 
 
-WRITE_HANDLER( toratora_videoram_w )
+WRITE8_HANDLER( toratora_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -55,7 +55,7 @@ WRITE_HANDLER( toratora_videoram_w )
 	}
 }
 
-WRITE_HANDLER( toratora_clear_tv_w )
+WRITE8_HANDLER( toratora_clear_tv_w )
 {
 	for (offset = 0;offset < 0x2000;offset++)
 		toratora_videoram_w(offset,0);
@@ -69,27 +69,27 @@ INTERRUPT_GEN( toratora_interrupt )
 	/* for simplicity, I generate an IRQ every vblank. In reality, the IRQ
 	   should be generated every time the status of an input
 	   (buttons + coins) changes. */
-	cpu_set_irq_line(0, 0, HOLD_LINE);
+	cpunum_set_input_line(0, 0, HOLD_LINE);
 }
 
 
 
-static READ_HANDLER( porta_0_r )
+static READ8_HANDLER( porta_0_r )
 {
 	return readinputport(0) & 0x0f;
 }
 
-static READ_HANDLER( ca1_0_r )
+static READ8_HANDLER( ca1_0_r )
 {
 	return (readinputport(0) & 0x10) >> 4;	/* coin A */
 }
 
-static READ_HANDLER( ca2_0_r )
+static READ8_HANDLER( ca2_0_r )
 {
 	return (readinputport(0) & 0x20) >> 5;	/* coin B */
 }
 
-static WRITE_HANDLER( portb_0_w )
+static WRITE8_HANDLER( portb_0_w )
 {
 	/* this is the coin counter output, however it is controlled by changing
 	   the PIA DDR (FF/DF) so we don't have a way to know which is which
@@ -98,18 +98,18 @@ static WRITE_HANDLER( portb_0_w )
 
 
 
-static READ_HANDLER( portb_1_r )
+static READ8_HANDLER( portb_1_r )
 {
 	logerror("%04x: read DIP\n",activecpu_get_pc());
 	return readinputport(1);
 }
 
-static WRITE_HANDLER( ca2_1_w )
+static WRITE8_HANDLER( ca2_1_w )
 {
 	logerror("76477 #0 VCO SEL = %d\n",data & 1);
 }
 
-static WRITE_HANDLER( cb2_1_w )
+static WRITE8_HANDLER( cb2_1_w )
 {
 	logerror("DIP tristate %sactive\n",(data & 1) ? "in" : "");
 }
@@ -155,12 +155,12 @@ INTERRUPT_GEN( toratora_timer )
 	if (timer & 0x100) usrintf_showmessage("watchdog!");
 }
 
-static READ_HANDLER( toratora_timer_r )
+static READ8_HANDLER( toratora_timer_r )
 {
 	return timer;
 }
 
-static WRITE_HANDLER( toratora_clear_timer_w )
+static WRITE8_HANDLER( toratora_clear_timer_w )
 {
 	timer = 0;
 }

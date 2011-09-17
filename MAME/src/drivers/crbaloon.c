@@ -1,11 +1,11 @@
-#pragma code_seg("C227")
-#pragma data_seg("D227")
-#pragma bss_seg("B227")
-#pragma const_seg("K227")
-#pragma comment(linker, "/merge:D227=227")
-#pragma comment(linker, "/merge:C227=227")
-#pragma comment(linker, "/merge:B227=227")
-#pragma comment(linker, "/merge:K227=227")
+#pragma code_seg("C233")
+#pragma data_seg("D233")
+#pragma bss_seg("B233")
+#pragma const_seg("K233")
+#pragma comment(linker, "/merge:D233=233")
+#pragma comment(linker, "/merge:C233=233")
+#pragma comment(linker, "/merge:B233=233")
+#pragma comment(linker, "/merge:K233=233")
 /***************************************************************************
 
 Crazy Balloon memory map (preliminary)
@@ -61,10 +61,10 @@ write:
 #include "vidhrdw/generic.h"
 
 
-extern WRITE_HANDLER( crbaloon_videoram_w );
-extern WRITE_HANDLER( crbaloon_colorram_w );
-extern WRITE_HANDLER( crbaloon_spritectrl_w );
-extern WRITE_HANDLER( crbaloon_flipscreen_w );
+extern WRITE8_HANDLER( crbaloon_videoram_w );
+extern WRITE8_HANDLER( crbaloon_colorram_w );
+extern WRITE8_HANDLER( crbaloon_spritectrl_w );
+extern WRITE8_HANDLER( crbaloon_flipscreen_w );
 
 extern PALETTE_INIT( crbaloon );
 extern VIDEO_START( crbaloon );
@@ -85,7 +85,7 @@ static MACHINE_INIT( crbaloon )
     SN76477_enable_w(0, 0);
 }
 
-WRITE_HANDLER( crbaloon_06_w )
+WRITE8_HANDLER( crbaloon_06_w )
 {
 	val06 = data;
 
@@ -131,19 +131,19 @@ WRITE_HANDLER( crbaloon_06_w )
 	}
 }
 
-WRITE_HANDLER( crbaloon_08_w )
+WRITE8_HANDLER( crbaloon_08_w )
 {
 	val08 = data;
 
 	crbaloon_flipscreen_w(offset,data & 1);
 }
 
-WRITE_HANDLER( crbaloon_0a_w )
+WRITE8_HANDLER( crbaloon_0a_w )
 {
 	val0a = data;
 }
 
-READ_HANDLER( crbaloon_IN2_r )
+READ8_HANDLER( crbaloon_IN2_r )
 {
 	extern int crbaloon_collision;
 
@@ -165,7 +165,7 @@ logerror("PC %04x: %02x low\n",activecpu_get_pc(),offset);
 	}
 }
 
-READ_HANDLER( crbaloon_IN3_r )
+READ8_HANDLER( crbaloon_IN3_r )
 {
 	if (val08 & 0x02)
 		/* enable coin & start input? Wild guess!!! */
@@ -185,7 +185,7 @@ logerror("PC %04x: 03 low\n",activecpu_get_pc());
 }
 
 
-READ_HANDLER( crbaloon_IN_r )
+READ8_HANDLER( crbaloon_IN_r )
 {
 	switch (offset & 0x03)
 	{

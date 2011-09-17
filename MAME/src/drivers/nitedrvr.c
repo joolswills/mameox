@@ -1,11 +1,11 @@
-#pragma code_seg("C500")
-#pragma data_seg("D500")
-#pragma bss_seg("B500")
-#pragma const_seg("K500")
-#pragma comment(linker, "/merge:D500=500")
-#pragma comment(linker, "/merge:C500=500")
-#pragma comment(linker, "/merge:B500=500")
-#pragma comment(linker, "/merge:K500=500")
+#pragma code_seg("C529")
+#pragma data_seg("D529")
+#pragma bss_seg("B529")
+#pragma const_seg("K529")
+#pragma comment(linker, "/merge:D529=529")
+#pragma comment(linker, "/merge:C529=529")
+#pragma comment(linker, "/merge:B529=529")
+#pragma comment(linker, "/merge:K529=529")
 /***************************************************************************
 
 	Atari Night Driver hardware
@@ -49,20 +49,20 @@ extern UINT8 *nitedrvr_ram;
 extern int nitedrvr_gear;
 extern int nitedrvr_track;
 
-extern READ_HANDLER( nitedrvr_in0_r );
-extern READ_HANDLER( nitedrvr_in1_r );
-extern READ_HANDLER( nitedrvr_ram_r );
-extern READ_HANDLER( nitedrvr_steering_reset_r );
-extern WRITE_HANDLER( nitedrvr_steering_reset_w );
-extern WRITE_HANDLER( nitedrvr_out0_w );
-extern WRITE_HANDLER( nitedrvr_out1_w );
-extern WRITE_HANDLER( nitedrvr_ram_w );
+extern READ8_HANDLER( nitedrvr_in0_r );
+extern READ8_HANDLER( nitedrvr_in1_r );
+extern READ8_HANDLER( nitedrvr_ram_r );
+extern READ8_HANDLER( nitedrvr_steering_reset_r );
+extern WRITE8_HANDLER( nitedrvr_steering_reset_w );
+extern WRITE8_HANDLER( nitedrvr_out0_w );
+extern WRITE8_HANDLER( nitedrvr_out1_w );
+extern WRITE8_HANDLER( nitedrvr_ram_w );
 extern void nitedrvr_crash_toggle(int dummy);
 
 extern UINT8 *nitedrvr_hvc;
 
-extern WRITE_HANDLER( nitedrvr_videoram_w );
-extern WRITE_HANDLER( nitedrvr_hvc_w );
+extern WRITE8_HANDLER( nitedrvr_videoram_w );
+extern WRITE8_HANDLER( nitedrvr_hvc_w );
 
 extern VIDEO_START( nitedrvr );
 extern VIDEO_UPDATE( nitedrvr );
@@ -194,6 +194,8 @@ INPUT_PORTS_START( nitedrvr )
 	PORT_START		/* fake port used for steering */
 	PORT_ANALOG( 0xff, 0x00, IPT_DIAL, 100, 10, 0, 0 )
 
+	PORT_START
+	PORT_ADJUSTER( 60, "Motor RPM" )
 INPUT_PORTS_END
 
 
@@ -302,7 +304,7 @@ static DISCRETE_SOUND_START(nitedrvr_sound_interface)
 	/* 0k = 214Hz.   250k = 4416Hz                  */
 	/************************************************/
 	DISCRETE_RCFILTER(NODE_20, 1, NITEDRVR_MOTOR_DATA, 123037, 2.2e-6)
-	DISCRETE_ADJUSTMENT(NODE_21, 1, (214.0-27.0)/12/31, (4416.0-27.0)/12/31, (382.0-27.0)/12/31, DISC_LOGADJ, "Motor RPM")
+	DISCRETE_ADJUSTMENT(NODE_21, 1, (214.0-27.0)/12/31, (4416.0-27.0)/12/31, DISC_LOGADJ, 6)
 	DISCRETE_MULTIPLY(NODE_22, 1, NODE_20, NODE_21)
 
 	DISCRETE_MULTADD(NODE_23, 1, NODE_22, 2, 27.0/6)	/* F1 = /12*2 = /6 */

@@ -1,11 +1,11 @@
-#pragma code_seg("C492")
-#pragma data_seg("D492")
-#pragma bss_seg("B492")
-#pragma const_seg("K492")
-#pragma comment(linker, "/merge:D492=492")
-#pragma comment(linker, "/merge:C492=492")
-#pragma comment(linker, "/merge:B492=492")
-#pragma comment(linker, "/merge:K492=492")
+#pragma code_seg("C521")
+#pragma data_seg("D521")
+#pragma bss_seg("B521")
+#pragma const_seg("K521")
+#pragma comment(linker, "/merge:D521=521")
+#pragma comment(linker, "/merge:C521=521")
+#pragma comment(linker, "/merge:B521=521")
+#pragma comment(linker, "/merge:K521=521")
 /******************************************************************************
 
 	Video Hardware for Nichibutsu Mahjong series.
@@ -46,7 +46,7 @@ static void pstadium_gfxdraw(void);
 
 ******************************************************************************/
 
-WRITE_HANDLER( pstadium_palette_w )
+WRITE8_HANDLER( pstadium_palette_w )
 {
 	int r, g, b;
 
@@ -67,7 +67,7 @@ WRITE_HANDLER( pstadium_palette_w )
 	palette_set_color((offset >> 1), r, g, b);
 }
 
-WRITE_HANDLER( galkoku_palette_w )
+WRITE8_HANDLER( galkoku_palette_w )
 {
 	int r, g, b;
 
@@ -88,7 +88,7 @@ WRITE_HANDLER( galkoku_palette_w )
 	palette_set_color((offset >> 1), r, g, b);
 }
 
-WRITE_HANDLER( galkaika_palette_w )
+WRITE8_HANDLER( galkaika_palette_w )
 {
 	int r, g, b;
 
@@ -219,12 +219,12 @@ void pstadium_paltblnum_w(int data)
 	pstadium_paltblnum = data;
 }
 
-READ_HANDLER( pstadium_paltbl_r )
+READ8_HANDLER( pstadium_paltbl_r )
 {
 	return pstadium_paltbl[offset];
 }
 
-WRITE_HANDLER( pstadium_paltbl_w )
+WRITE8_HANDLER( pstadium_paltbl_w )
 {
 	pstadium_paltbl[((pstadium_paltblnum & 0x7f) * 0x10) + (offset & 0x0f)] = data;
 }

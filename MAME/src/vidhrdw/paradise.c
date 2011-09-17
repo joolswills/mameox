@@ -1,11 +1,11 @@
-#pragma code_seg("C523")
-#pragma data_seg("D523")
-#pragma bss_seg("B523")
-#pragma const_seg("K523")
-#pragma comment(linker, "/merge:D523=523")
-#pragma comment(linker, "/merge:C523=523")
-#pragma comment(linker, "/merge:B523=523")
-#pragma comment(linker, "/merge:K523=523")
+#pragma code_seg("C553")
+#pragma data_seg("D553")
+#pragma bss_seg("B553")
+#pragma const_seg("K553")
+#pragma comment(linker, "/merge:D553=553")
+#pragma comment(linker, "/merge:C553=553")
+#pragma comment(linker, "/merge:B553=553")
+#pragma comment(linker, "/merge:K553=553")
 /***************************************************************************
 
 							  -= Paradise / Target Ball =-
@@ -44,19 +44,19 @@ data8_t *paradise_vram_0,*paradise_vram_1,*paradise_vram_2;
 
 static data8_t paradise_palbank, paradise_priority;
 
-WRITE_HANDLER( paradise_flipscreen_w )
+WRITE8_HANDLER( paradise_flipscreen_w )
 {
 	flip_screen_set(data ? 0 : 1);
 }
 
-WRITE_HANDLER( tgtball_flipscreen_w )
+WRITE8_HANDLER( tgtball_flipscreen_w )
 {
 	flip_screen_set(data ? 1 : 0);
 }
 
 
 /* 800 bytes for red, followed by 800 bytes for green & 800 bytes for blue */
-WRITE_HANDLER( paradise_palette_w )
+WRITE8_HANDLER( paradise_palette_w )
 {
 	paletteram[offset] = data;
 	offset %= 0x800;
@@ -79,7 +79,7 @@ WRITE_HANDLER( paradise_palette_w )
 static struct tilemap *tilemap_0,*tilemap_1,*tilemap_2;
 
 /* Background */
-WRITE_HANDLER( paradise_vram_0_w )
+WRITE8_HANDLER( paradise_vram_0_w )
 {
 	if (paradise_vram_0[offset] != data)
 	{
@@ -89,7 +89,7 @@ WRITE_HANDLER( paradise_vram_0_w )
 }
 
 /* 16 color tiles with paradise_palbank as color code */
-WRITE_HANDLER( paradise_palbank_w )
+WRITE8_HANDLER( paradise_palbank_w )
 {
 	int i;
 	int bank1 = (data & 0x0e) | 1;
@@ -114,7 +114,7 @@ static void get_tile_info_0( int tile_index )
 
 
 /* Midground */
-WRITE_HANDLER( paradise_vram_1_w )
+WRITE8_HANDLER( paradise_vram_1_w )
 {
 	if (paradise_vram_1[offset] != data)
 	{
@@ -131,7 +131,7 @@ static void get_tile_info_1( int tile_index )
 
 
 /* Foreground */
-WRITE_HANDLER( paradise_vram_2_w )
+WRITE8_HANDLER( paradise_vram_2_w )
 {
 	if (paradise_vram_2[offset] != data)
 	{
@@ -148,7 +148,7 @@ static void get_tile_info_2( int tile_index )
 
 /* 256 x 256 bitmap. 4 bits per pixel so every byte encodes 2 pixels */
 
-WRITE_HANDLER( paradise_pixmap_w )
+WRITE8_HANDLER( paradise_pixmap_w )
 {
 	int x,y;
 
@@ -204,7 +204,7 @@ VIDEO_START( paradise )
 ***************************************************************************/
 
 /* Sprites / Layers priority */
-WRITE_HANDLER( paradise_priority_w )
+WRITE8_HANDLER( paradise_priority_w )
 {
 	paradise_priority = data;
 }
@@ -246,14 +246,14 @@ VIDEO_UPDATE( paradise )
 	int layers_ctrl = -1;
 
 #ifdef MAME_DEBUG
-if (keyboard_pressed(KEYCODE_Z))
+if (code_pressed(KEYCODE_Z))
 {
 	int mask = 0;
-	if (keyboard_pressed(KEYCODE_Q))	mask |= 1;
-	if (keyboard_pressed(KEYCODE_W))	mask |= 2;
-	if (keyboard_pressed(KEYCODE_E))	mask |= 4;
-	if (keyboard_pressed(KEYCODE_R))	mask |= 8;
-	if (keyboard_pressed(KEYCODE_A))	mask |= 16;
+	if (code_pressed(KEYCODE_Q))	mask |= 1;
+	if (code_pressed(KEYCODE_W))	mask |= 2;
+	if (code_pressed(KEYCODE_E))	mask |= 4;
+	if (code_pressed(KEYCODE_R))	mask |= 8;
+	if (code_pressed(KEYCODE_A))	mask |= 16;
 	if (mask != 0) layers_ctrl &= mask;
 }
 #endif

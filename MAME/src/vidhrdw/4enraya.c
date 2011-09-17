@@ -1,11 +1,11 @@
-#pragma code_seg("C102")
-#pragma data_seg("D102")
-#pragma bss_seg("B102")
-#pragma const_seg("K102")
-#pragma comment(linker, "/merge:D102=102")
-#pragma comment(linker, "/merge:C102=102")
-#pragma comment(linker, "/merge:B102=102")
-#pragma comment(linker, "/merge:K102=102")
+#pragma code_seg("C103")
+#pragma data_seg("D103")
+#pragma bss_seg("B103")
+#pragma const_seg("K103")
+#pragma comment(linker, "/merge:D103=103")
+#pragma comment(linker, "/merge:C103=103")
+#pragma comment(linker, "/merge:B103=103")
+#pragma comment(linker, "/merge:K103=103")
 /***************************************************************************
 
   vidhrdw.c
@@ -19,7 +19,7 @@
 
 static struct tilemap *tilemap;
 
-WRITE_HANDLER( fenraya_videoram_w )
+WRITE8_HANDLER( fenraya_videoram_w )
 {
 	videoram[(offset&0x3ff)*2]=data;
 	videoram[(offset&0x3ff)*2+1]=(offset&0xc00)>>10;

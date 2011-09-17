@@ -1,11 +1,11 @@
-#pragma code_seg("C713")
-#pragma data_seg("D713")
-#pragma bss_seg("B713")
-#pragma const_seg("K713")
-#pragma comment(linker, "/merge:D713=713")
-#pragma comment(linker, "/merge:C713=713")
-#pragma comment(linker, "/merge:B713=713")
-#pragma comment(linker, "/merge:K713=713")
+#pragma code_seg("C755")
+#pragma data_seg("D755")
+#pragma bss_seg("B755")
+#pragma const_seg("K755")
+#pragma comment(linker, "/merge:D755=755")
+#pragma comment(linker, "/merge:C755=755")
+#pragma comment(linker, "/merge:B755=755")
+#pragma comment(linker, "/merge:K755=755")
 /***************************************************************************
 
 Tehkan World Cup - (c) Tehkan 1985
@@ -93,15 +93,15 @@ TO DO :
 
 extern UINT8 *tehkanwc_videoram2;
 
-extern WRITE_HANDLER( tehkanwc_videoram_w );
-extern WRITE_HANDLER( tehkanwc_colorram_w );
-extern WRITE_HANDLER( tehkanwc_videoram2_w );
-extern WRITE_HANDLER( tehkanwc_scroll_x_w );
-extern WRITE_HANDLER( tehkanwc_scroll_y_w );
-extern WRITE_HANDLER( tehkanwc_flipscreen_x_w );
-extern WRITE_HANDLER( tehkanwc_flipscreen_y_w );
-extern WRITE_HANDLER( gridiron_led0_w );
-extern WRITE_HANDLER( gridiron_led1_w );
+extern WRITE8_HANDLER( tehkanwc_videoram_w );
+extern WRITE8_HANDLER( tehkanwc_colorram_w );
+extern WRITE8_HANDLER( tehkanwc_videoram2_w );
+extern WRITE8_HANDLER( tehkanwc_scroll_x_w );
+extern WRITE8_HANDLER( tehkanwc_scroll_y_w );
+extern WRITE8_HANDLER( tehkanwc_flipscreen_x_w );
+extern WRITE8_HANDLER( tehkanwc_flipscreen_y_w );
+extern WRITE8_HANDLER( gridiron_led0_w );
+extern WRITE8_HANDLER( gridiron_led1_w );
 
 extern VIDEO_START( tehkanwc );
 extern VIDEO_UPDATE( tehkanwc );
@@ -109,29 +109,29 @@ extern VIDEO_UPDATE( tehkanwc );
 
 static UINT8 *shared_ram;
 
-static READ_HANDLER( shared_r )
+static READ8_HANDLER( shared_r )
 {
 	return shared_ram[offset];
 }
 
-static WRITE_HANDLER( shared_w )
+static WRITE8_HANDLER( shared_w )
 {
 	shared_ram[offset] = data;
 }
 
-static WRITE_HANDLER( sub_cpu_halt_w )
+static WRITE8_HANDLER( sub_cpu_halt_w )
 {
 	if (data)
-		cpu_set_reset_line(1,CLEAR_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_RESET, CLEAR_LINE);
 	else
-		cpu_set_reset_line(1,ASSERT_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_RESET, ASSERT_LINE);
 }
 
 
 
 static int track0[2],track1[2];
 
-static READ_HANDLER( tehkanwc_track_0_r )
+static READ8_HANDLER( tehkanwc_track_0_r )
 {
 	int joy;
 
@@ -141,7 +141,7 @@ static READ_HANDLER( tehkanwc_track_0_r )
 	return readinputport(3 + offset) - track0[offset];
 }
 
-static READ_HANDLER( tehkanwc_track_1_r )
+static READ8_HANDLER( tehkanwc_track_1_r )
 {
 	int joy;
 
@@ -151,13 +151,13 @@ static READ_HANDLER( tehkanwc_track_1_r )
 	return readinputport(6 + offset) - track1[offset];
 }
 
-static WRITE_HANDLER( tehkanwc_track_0_reset_w )
+static WRITE8_HANDLER( tehkanwc_track_0_reset_w )
 {
 	/* reset the trackball counters */
 	track0[offset] = readinputport(3 + offset) + data;
 }
 
-static WRITE_HANDLER( tehkanwc_track_1_reset_w )
+static WRITE8_HANDLER( tehkanwc_track_1_reset_w )
 {
 	/* reset the trackball counters */
 	track1[offset] = readinputport(6 + offset) + data;
@@ -165,18 +165,18 @@ static WRITE_HANDLER( tehkanwc_track_1_reset_w )
 
 
 
-static WRITE_HANDLER( sound_command_w )
+static WRITE8_HANDLER( sound_command_w )
 {
 	soundlatch_w(offset,data);
-	cpu_set_irq_line(2,IRQ_LINE_NMI,PULSE_LINE);
+	cpunum_set_input_line(2,INPUT_LINE_NMI,PULSE_LINE);
 }
 
 static void reset_callback(int param)
 {
-	cpu_set_reset_line(2,PULSE_LINE);
+	cpunum_set_input_line(2, INPUT_LINE_RESET, PULSE_LINE);
 }
 
-static WRITE_HANDLER( sound_answer_w )
+static WRITE8_HANDLER( sound_answer_w )
 {
 	soundlatch2_w(0,data);
 
@@ -190,27 +190,27 @@ static WRITE_HANDLER( sound_answer_w )
 
 static int msm_data_offs;
 
-static READ_HANDLER( tehkanwc_portA_r )
+static READ8_HANDLER( tehkanwc_portA_r )
 {
 	return msm_data_offs & 0xff;
 }
 
-static READ_HANDLER( tehkanwc_portB_r )
+static READ8_HANDLER( tehkanwc_portB_r )
 {
 	return (msm_data_offs >> 8) & 0xff;
 }
 
-static WRITE_HANDLER( tehkanwc_portA_w )
+static WRITE8_HANDLER( tehkanwc_portA_w )
 {
 	msm_data_offs = (msm_data_offs & 0xff00) | data;
 }
 
-static WRITE_HANDLER( tehkanwc_portB_w )
+static WRITE8_HANDLER( tehkanwc_portB_w )
 {
 	msm_data_offs = (msm_data_offs & 0x00ff) | (data << 8);
 }
 
-static WRITE_HANDLER( msm_reset_w )
+static WRITE8_HANDLER( msm_reset_w )
 {
 	MSM5205_reset_w(0,data ? 0 : 1);
 }

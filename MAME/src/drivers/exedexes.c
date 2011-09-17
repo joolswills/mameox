@@ -1,11 +1,11 @@
-#pragma code_seg("C278")
-#pragma data_seg("D278")
-#pragma bss_seg("B278")
-#pragma const_seg("K278")
-#pragma comment(linker, "/merge:D278=278")
-#pragma comment(linker, "/merge:C278=278")
-#pragma comment(linker, "/merge:B278=278")
-#pragma comment(linker, "/merge:K278=278")
+#pragma code_seg("C289")
+#pragma data_seg("D289")
+#pragma bss_seg("B289")
+#pragma const_seg("K289")
+#pragma comment(linker, "/merge:D289=289")
+#pragma comment(linker, "/merge:C289=289")
+#pragma comment(linker, "/merge:B289=289")
+#pragma comment(linker, "/merge:K289=289")
 /***************************************************************************
 
 Exed Exes
@@ -25,10 +25,10 @@ extern UINT8 *exedexes_bg_scroll;
 extern UINT8 *exedexes_nbg_yscroll;
 extern UINT8 *exedexes_nbg_xscroll;
 
-extern WRITE_HANDLER( exedexes_videoram_w );
-extern WRITE_HANDLER( exedexes_colorram_w );
-extern WRITE_HANDLER( exedexes_c804_w );
-extern WRITE_HANDLER( exedexes_gfxctrl_w );
+extern WRITE8_HANDLER( exedexes_videoram_w );
+extern WRITE8_HANDLER( exedexes_colorram_w );
+extern WRITE8_HANDLER( exedexes_c804_w );
+extern WRITE8_HANDLER( exedexes_gfxctrl_w );
 
 extern PALETTE_INIT( exedexes );
 extern VIDEO_START( exedexes );
@@ -40,9 +40,9 @@ extern VIDEO_EOF( exedexes );
 static INTERRUPT_GEN( exedexes_interrupt )
 {
 	if (cpu_getiloops() != 0)
-		cpu_set_irq_line_and_vector(0, 0, HOLD_LINE, 0xcf);	/* RST 08h */
+		cpunum_set_input_line_and_vector(0, 0, HOLD_LINE, 0xcf);	/* RST 08h */
 	else
-		cpu_set_irq_line_and_vector(0, 0, HOLD_LINE, 0xd7);	/* RST 10h - vblank */
+		cpunum_set_input_line_and_vector(0, 0, HOLD_LINE, 0xd7);	/* RST 10h - vblank */
 }
 
 

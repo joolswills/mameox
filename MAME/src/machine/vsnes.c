@@ -1,11 +1,11 @@
-#pragma code_seg("C771")
-#pragma data_seg("D771")
-#pragma bss_seg("B771")
-#pragma const_seg("K771")
-#pragma comment(linker, "/merge:D771=771")
-#pragma comment(linker, "/merge:C771=771")
-#pragma comment(linker, "/merge:B771=771")
-#pragma comment(linker, "/merge:K771=771")
+#pragma code_seg("C813")
+#pragma data_seg("D813")
+#pragma bss_seg("B813")
+#pragma const_seg("K813")
+#pragma comment(linker, "/merge:D813=813")
+#pragma comment(linker, "/merge:C813=813")
+#pragma comment(linker, "/merge:B813=813")
+#pragma comment(linker, "/merge:K813=813")
 /***************************************************************************
 
 Nintendo VS UniSystem and DualSystem - (c) 1984 Nintendo of America
@@ -117,7 +117,7 @@ static int remap_colors( int num, int addr, int data )
  *	Input Ports
  *
  *************************************/
-WRITE_HANDLER( vsnes_in0_w )
+WRITE8_HANDLER( vsnes_in0_w )
 {
 	/* Toggling bit 0 high then low resets both controllers */
 	if ( data & 1 )
@@ -128,7 +128,7 @@ WRITE_HANDLER( vsnes_in0_w )
 	}
 }
 
-READ_HANDLER( gun_in0_r )
+READ8_HANDLER( gun_in0_r )
 {
 	int ret = ( input_latch[0] ) & 1;
 
@@ -153,7 +153,7 @@ READ_HANDLER( gun_in0_r )
 }
 
 
-READ_HANDLER( vsnes_in0_r )
+READ8_HANDLER( vsnes_in0_r )
 {
 
 	int ret = ( input_latch[0] ) & 1;
@@ -169,7 +169,7 @@ READ_HANDLER( vsnes_in0_r )
 }
 
 
-READ_HANDLER( vsnes_in1_r )
+READ8_HANDLER( vsnes_in1_r )
 {
 	int ret = ( input_latch[1] ) & 1;
 
@@ -181,7 +181,7 @@ READ_HANDLER( vsnes_in1_r )
 	return ret;
 }
 
-WRITE_HANDLER( vsnes_in0_1_w )
+WRITE8_HANDLER( vsnes_in0_1_w )
 {
 	/* Toggling bit 0 high then low resets both controllers */
 	if ( data & 1 )
@@ -192,7 +192,7 @@ WRITE_HANDLER( vsnes_in0_1_w )
 	}
 }
 
-READ_HANDLER( vsnes_in0_1_r )
+READ8_HANDLER( vsnes_in0_1_r )
 {
 	int ret = ( input_latch[2] ) & 1;
 
@@ -204,7 +204,7 @@ READ_HANDLER( vsnes_in0_1_r )
 	return ret;
 }
 
-READ_HANDLER( vsnes_in1_1_r )
+READ8_HANDLER( vsnes_in1_1_r )
 {
 	int ret = ( input_latch[3] ) & 1;
 
@@ -278,7 +278,7 @@ DRIVER_INIT( vsnes )
  *
  **********************************************************************************/
 
-static WRITE_HANDLER( vsnormal_vrom_banking )
+static WRITE8_HANDLER( vsnormal_vrom_banking )
 {
 	/* switch vrom */
 	ppu2c03b_set_videorom_bank( 0, 0, 8, ( data & 4 ) ? 1 : 0, 512 );
@@ -294,10 +294,10 @@ static WRITE_HANDLER( vsnormal_vrom_banking )
 DRIVER_INIT( vsnormal )
 {
 	/* vrom switching is enabled with bit 2 of $4016 */
-	install_mem_write_handler( 0, 0x4016, 0x4016, vsnormal_vrom_banking );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x4016, 0x4016, 0, 0, vsnormal_vrom_banking );
 }
 
-static WRITE_HANDLER( ppuRC2C05_protection )
+static WRITE8_HANDLER( ppuRC2C05_protection )
 {
 	/* This PPU has registers mapped at $2000 and $2001 inverted */
 	/* and no remapped color */
@@ -324,8 +324,8 @@ DRIVER_INIT( suprmrio )
 	init_vsnormal();
 
 	/* extra ram at $6000 is enabled with bit 1 of $4016 */
-	install_mem_read_handler( 0, 0x6000, 0x7fff, MRA8_RAM );
-	install_mem_write_handler( 0, 0x6000, 0x7fff, MWA8_RAM );
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x6000, 0x7fff, 0, 0, MRA8_RAM );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x6000, 0x7fff, 0, 0, MWA8_RAM );
 
 	/* now override the vidaccess callback */
 	/* we need to remap color tables */
@@ -337,7 +337,7 @@ DRIVER_INIT( suprmrio )
 
 /* Gun Games - VROM Banking in controller 0 write */
 
-static WRITE_HANDLER( gun_in0_w )
+static WRITE8_HANDLER( gun_in0_w )
 {
 	static int zapstore;
 
@@ -386,14 +386,13 @@ static WRITE_HANDLER( gun_in0_w )
 	}
 
     zapstore = data;
-
 }
 
 DRIVER_INIT( duckhunt )
 {
-	install_mem_read_handler ( 0, 0x4016, 0x4016, gun_in0_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x4016, 0x4016, 0, 0, gun_in0_r);
 	/* vrom switching is enabled with bit 2 of $4016 */
-	install_mem_write_handler( 0, 0x4016, 0x4016, gun_in0_w );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x4016, 0x4016, 0, 0, gun_in0_w );
 
 	/* common init */
 	init_vsnes();
@@ -407,7 +406,7 @@ DRIVER_INIT( duckhunt )
 
 /* The Goonies, VS Gradius: ROMs bankings at $8000-$ffff */
 
-static WRITE_HANDLER( goonies_rom_banking )
+static WRITE8_HANDLER( goonies_rom_banking )
 {
 	int reg = ( offset >> 12 ) & 0x07;
 	int bankoffset = ( data & 7 ) * 0x2000 + 0x10000;
@@ -443,7 +442,7 @@ DRIVER_INIT( goonies )
 	memcpy( &memory_region( REGION_CPU1 )[0x08000], &memory_region( REGION_CPU1 )[0x18000], 0x8000 );
 
 	/* banking is done with writes to the $8000-$ffff area */
-	install_mem_write_handler( 0, 0x8000, 0xffff, goonies_rom_banking );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x8000, 0xffff, 0, 0, goonies_rom_banking );
 
 	/* common init */
 	init_vsnes();
@@ -459,7 +458,7 @@ DRIVER_INIT( vsgradus )
 	memcpy( &memory_region( REGION_CPU1 )[0x08000], &memory_region( REGION_CPU1 )[0x18000], 0x8000 );
 
 	/* banking is done with writes to the $8000-$ffff area */
-	install_mem_write_handler( 0, 0x8000, 0xffff, goonies_rom_banking );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x8000, 0xffff, 0, 0, goonies_rom_banking );
 
 	/* common init */
 	init_vsnes();
@@ -484,9 +483,9 @@ DRIVER_INIT( vspinbal )
 DRIVER_INIT( hogalley )
 {
 
-	install_mem_read_handler ( 0, 0x4016, 0x4016, gun_in0_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x4016, 0x4016, 0, 0, gun_in0_r);
 	/* vrom switching is enabled with bit 2 of $4016 */
-	install_mem_write_handler( 0, 0x4016, 0x4016, gun_in0_w );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x4016, 0x4016, 0, 0, gun_in0_w );
 
 	/* common init */
 	init_vsnes();
@@ -503,30 +502,38 @@ DRIVER_INIT( hogalley )
 
 /* Vs. Gumshoe */
 
-static READ_HANDLER( vsgshoe_security_r )
+static READ8_HANDLER( vsgshoe_security_r )
 {
 	/* low part must be 0x1c */
 	return ppu2c03b_0_r( 2 ) | 0x1c;
 }
 
+static WRITE8_HANDLER( vsgshoe_gun_in0_w )
+{
+	static int old_bank = 0;
+	int addr;
+	if((data & 0x04) != old_bank)
+	{
+		old_bank = data & 0x04;
+		addr = old_bank ? 0x12000: 0x10000;
+		memcpy (&memory_region( REGION_CPU1 )[0x08000], &memory_region( REGION_CPU1 )[addr], 0x2000);
+	}
+
+	gun_in0_w(offset, data);
+}
+
 DRIVER_INIT( vsgshoe )
 {
-
-	//Game
-	memcpy (&memory_region( REGION_CPU1 )[0x08000], &memory_region( REGION_CPU1 )[0x10000], 0x2000);
-
-	//Title Screen
-	//memcpy (&memory_region( REGION_CPU1 )[0x08000], &memory_region( REGION_CPU1 )[0x12000], 0x2000);
-
-	memcpy (&memory_region( REGION_CPU1 )[0x0a000], &memory_region( REGION_CPU1 )[0x14000], 0x6000);
+	/* set up the default bank */
+	memcpy (&memory_region( REGION_CPU1 )[0x08000], &memory_region( REGION_CPU1 )[0x12000], 0x2000);
 
 	/* Protection */
-	install_mem_read_handler( 0,0x2002, 0x2002, vsgshoe_security_r );
-	install_mem_write_handler( 0, 0x2000, 0x2001, ppuRC2C05_protection );
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x2002, 0x2002, 0, 0, vsgshoe_security_r );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x2000, 0x2001, 0, 0, ppuRC2C05_protection );
 
-	install_mem_read_handler ( 0, 0x4016, 0x4016, gun_in0_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x4016, 0x4016, 0, 0, gun_in0_r);
 	/* vrom switching is enabled with bit 2 of $4016 */
-	install_mem_write_handler( 0, 0x4016, 0x4016, gun_in0_w );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x4016, 0x4016, 0, 0, vsgshoe_gun_in0_w );
 
 	/* common init */
 	init_vsnes();
@@ -542,7 +549,7 @@ DRIVER_INIT( vsgshoe )
 static int drmario_shiftreg;
 static int drmario_shiftcount;
 
-static WRITE_HANDLER( drmario_rom_banking )
+static WRITE8_HANDLER( drmario_rom_banking )
 {
 	/* basically, a MMC1 mapper from the nes */
 	static int size16k, switchlow, vrom4k;
@@ -660,7 +667,7 @@ DRIVER_INIT( drmario )
 	memcpy( &memory_region( REGION_CPU1 )[0x0c000], &memory_region( REGION_CPU1 )[0x1c000], 0x4000 );
 
 	/* MMC1 mapper at writes to $8000-$ffff */
-	install_mem_write_handler( 0, 0x8000, 0xffff, drmario_rom_banking );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x8000, 0xffff, 0, 0, drmario_rom_banking );
 
 	drmario_shiftreg = 0;
 	drmario_shiftcount = 0;
@@ -742,7 +749,7 @@ DRIVER_INIT( vsslalom )
 
 /* Castelvania: ROMs bankings at $8000-$ffff */
 
-static WRITE_HANDLER( castlevania_rom_banking )
+static WRITE8_HANDLER( castlevania_rom_banking )
 {
 	int rombank = 0x10000 + ( data & 7 ) * 0x4000;
 
@@ -755,7 +762,7 @@ DRIVER_INIT( cstlevna )
 	memcpy( &memory_region( REGION_CPU1 )[0x08000], &memory_region( REGION_CPU1 )[0x28000], 0x8000 );
 
    	/* banking is done with writes to the $8000-$ffff area */
-	install_mem_write_handler( 0, 0x8000, 0xffff, castlevania_rom_banking );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x8000, 0xffff, 0, 0, castlevania_rom_banking );
 
 	/* common init */
 	init_vsnes();
@@ -770,7 +777,7 @@ DRIVER_INIT( cstlevna )
 
 /* VS Top Gun: ROMs bankings at $8000-$ffff, plus some protection */
 
-static READ_HANDLER( topgun_security_r )
+static READ8_HANDLER( topgun_security_r )
 {
 	/* low part must be 0x1b */
 	return ppu2c03b_0_r( 2 ) | 0x1b;
@@ -782,11 +789,11 @@ DRIVER_INIT( topgun )
 	memcpy( &memory_region( REGION_CPU1 )[0x08000], &memory_region( REGION_CPU1 )[0x28000], 0x8000 );
 
    	/* banking is done with writes to the $8000-$ffff area */
-	install_mem_write_handler( 0, 0x8000, 0xffff, castlevania_rom_banking );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x8000, 0xffff, 0, 0, castlevania_rom_banking );
 
 	/* tap on the PPU, due to some tricky protection */
-	install_mem_read_handler( 0, 0x2002, 0x2002, topgun_security_r );
-	install_mem_write_handler( 0, 0x2000, 0x2001, ppuRC2C05_protection );
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x2002, 0x2002, 0, 0, topgun_security_r );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x2000, 0x2001, 0, 0, ppuRC2C05_protection );
 
 	/* common init */
 	init_vsnes();
@@ -841,14 +848,14 @@ static void mapper4_irq ( int num, int scanline, int vblank, int blanked )
 			if (IRQ_count == 0)
 			{
 				IRQ_count = IRQ_count_latch;
-				cpu_set_irq_line (0, 0, HOLD_LINE);
+				cpunum_set_input_line (0, 0, HOLD_LINE);
 			}
 			IRQ_count --;
 		}
 	}
 }
 
-static WRITE_HANDLER( mapper4_w )
+static WRITE8_HANDLER( mapper4_w )
 {
 	static UINT8 last_bank = 0xff;
 
@@ -964,11 +971,11 @@ DRIVER_INIT( MMC3 )
 	memcpy( &memory_region( REGION_CPU1 )[0xe000], &memory_region( REGION_CPU1 )[(MMC3_prg_chunks-1) * 0x4000 + 0x12000], 0x2000 );
 
 	/* MMC3 mapper at writes to $8000-$ffff */
-	install_mem_write_handler( 0, 0x8000, 0xffff, mapper4_w );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x8000, 0xffff, 0, 0, mapper4_w );
 
 	/* extra ram at $6000-$7fff */
-	install_mem_read_handler( 0, 0x6000, 0x7fff, MRA8_RAM );
-	install_mem_write_handler( 0, 0x6000, 0x7fff, MWA8_RAM );
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x6000, 0x7fff, 0, 0, MRA8_RAM );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x6000, 0x7fff, 0, 0, MWA8_RAM );
 
 	/* common init */
 	init_vsnes();
@@ -976,7 +983,7 @@ DRIVER_INIT( MMC3 )
 
 /* Vs. RBI Baseball */
 
-static READ_HANDLER( rbi_hack_r)
+static READ8_HANDLER( rbi_hack_r)
 {
 	/* Supplied by Ben Parnell <xodnizel@home.com> of FCE Ultra fame */
 
@@ -1012,7 +1019,7 @@ DRIVER_INIT( rbibb )
 	init_MMC3();
 
 	/* RBI Base ball hack */
-	install_mem_read_handler(0,0x5e00, 0x5e01, rbi_hack_r) ;
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x5e00, 0x5e01, 0, 0, rbi_hack_r) ;
 
 	remapped_colortable = rp2c04003_colortable;
 }
@@ -1021,12 +1028,12 @@ DRIVER_INIT( rbibb )
 
 static int supxevs_prot_index = 0;
 
-static READ_HANDLER( supxevs_read_prot_1_r )
+static READ8_HANDLER( supxevs_read_prot_1_r )
 {
 	return 0x05;
 }
 
-static READ_HANDLER( supxevs_read_prot_2_r )
+static READ8_HANDLER( supxevs_read_prot_2_r )
 {
 	if( supxevs_prot_index )
 		return 0;
@@ -1034,7 +1041,7 @@ static READ_HANDLER( supxevs_read_prot_2_r )
 		return 0x01;
 }
 
-static READ_HANDLER( supxevs_read_prot_3_r )
+static READ8_HANDLER( supxevs_read_prot_3_r )
 {
 	if( supxevs_prot_index )
 		return 0xd1;
@@ -1042,7 +1049,7 @@ static READ_HANDLER( supxevs_read_prot_3_r )
 		return 0x89;
 }
 
-static READ_HANDLER( supxevs_read_prot_4_r )
+static READ8_HANDLER( supxevs_read_prot_4_r )
 {
 	if( supxevs_prot_index )
 	{
@@ -1062,17 +1069,17 @@ DRIVER_INIT( supxevs )
 	init_MMC3();
 
 	/* Vs. Super Xevious Protection */
-	install_mem_read_handler( 0, 0x54ff, 0x54ff, supxevs_read_prot_1_r );
-	install_mem_read_handler( 0, 0x5678, 0x5678, supxevs_read_prot_2_r );
-	install_mem_read_handler( 0, 0x578f, 0x578f, supxevs_read_prot_3_r );
-	install_mem_read_handler( 0, 0x5567, 0x5567, supxevs_read_prot_4_r );
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x54ff, 0x54ff, 0, 0, supxevs_read_prot_1_r );
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x5678, 0x5678, 0, 0, supxevs_read_prot_2_r );
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x578f, 0x578f, 0, 0, supxevs_read_prot_3_r );
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x5567, 0x5567, 0, 0, supxevs_read_prot_4_r );
 
 	remapped_colortable = rp2c04001_colortable;
 }
 
 /* Vs. TKO Boxing */
 
-static READ_HANDLER( tko_security_r )
+static READ8_HANDLER( tko_security_r )
 {
 	static int security_counter;
 	static UINT8 security_data[] = {
@@ -1097,7 +1104,7 @@ DRIVER_INIT( tkoboxng )
 	init_MMC3();
 
 	/* security device at $5e00-$5e01 */
-	install_mem_read_handler( 0, 0x5e00, 0x5e01, tko_security_r );
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x5e00, 0x5e01, 0, 0, tko_security_r );
 
 	/* now override the vidaccess callback */
 	/* we need to remap color tables */
@@ -1111,8 +1118,8 @@ DRIVER_INIT( vsfdf )
 {
 	init_MMC3();
 
-	install_mem_read_handler ( 0, 0x4016, 0x4016, gun_in0_r );
-	install_mem_write_handler( 0, 0x4016, 0x4016, gun_in0_w );
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x4016, 0x4016, 0, 0, gun_in0_r );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x4016, 0x4016, 0, 0, gun_in0_w );
 
 	vsnes_gun_controller = 1;
 	vsnes_do_vrom_bank = 0;
@@ -1123,7 +1130,7 @@ DRIVER_INIT( vsfdf )
 /**********************************************************************************/
 /* Platoon rom banking */
 
-static WRITE_HANDLER( mapper68_rom_banking ){
+static WRITE8_HANDLER( mapper68_rom_banking ){
 
 	switch (offset & 0x7000)
 	{
@@ -1161,7 +1168,7 @@ DRIVER_INIT( platoon )
 	memcpy( &memory_region( REGION_CPU1 )[0x08000], &memory_region( REGION_CPU1 )[0x10000], 0x4000 );
 	memcpy( &memory_region( REGION_CPU1 )[0x0c000], &memory_region( REGION_CPU1 )[0x2c000], 0x4000 );
 
-	install_mem_write_handler( 0, 0x8000, 0xffff, mapper68_rom_banking );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x8000, 0xffff, 0, 0, mapper68_rom_banking );
 
 	init_vsnes();
 
@@ -1173,27 +1180,27 @@ DRIVER_INIT( platoon )
 /* Vs. Raid on Bungeling Bay (Japan) */
 
 static int ret;
-static WRITE_HANDLER ( set_bnglngby_irq_w )
+static WRITE8_HANDLER ( set_bnglngby_irq_w )
 {
 	ret = data;
-	cpu_set_irq_line( 0, 0, ( data & 2 ) ? ASSERT_LINE : CLEAR_LINE );
+	cpunum_set_input_line( 0, 0, ( data & 2 ) ? ASSERT_LINE : CLEAR_LINE );
 	/* other values ??? */
 	/* 0, 4, 84 */
 }
 
-static READ_HANDLER ( set_bnglngby_irq_r )
+static READ8_HANDLER ( set_bnglngby_irq_r )
 {
 	return ret;
 }
 
 DRIVER_INIT( bnglngby )
 {
-	install_mem_read_handler( 0, 0x0231, 0x0231, set_bnglngby_irq_r );
-	install_mem_write_handler( 0, 0x0231, 0x0231, set_bnglngby_irq_w );
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x0231, 0x0231, 0, 0, set_bnglngby_irq_r );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x0231, 0x0231, 0, 0, set_bnglngby_irq_w );
 
 	/* extra ram */
-	install_mem_read_handler( 0, 0x6000, 0x7fff, MRA8_RAM );
-	install_mem_write_handler( 0, 0x6000, 0x7fff, MWA8_RAM );
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x6000, 0x7fff, 0, 0, MRA8_RAM );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x6000, 0x7fff, 0, 0, MWA8_RAM );
 
 	ret = 0;
 
@@ -1209,7 +1216,7 @@ DRIVER_INIT( bnglngby )
 /**********************************************************************************/
 /* Vs. Ninja Jajamaru Kun */
 
-static READ_HANDLER( jajamaru_security_r )
+static READ8_HANDLER( jajamaru_security_r )
 {
 	/* low part must be 0x40 */
 	return ppu2c03b_0_r( 2 ) | 0x40;
@@ -1222,8 +1229,8 @@ DRIVER_INIT( jajamaru )
 	//Maybe it should be a DOP (double NOP)
 
 	/* Protection */
-	install_mem_read_handler( 0, 0x2002, 0x2002, jajamaru_security_r );
-	install_mem_write_handler( 0, 0x2000, 0x2001, ppuRC2C05_protection );
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x2002, 0x2002, 0, 0, jajamaru_security_r );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x2000, 0x2001, 0, 0, ppuRC2C05_protection );
 
 	/* common init */
 	init_vsnes();
@@ -1236,7 +1243,7 @@ DRIVER_INIT( jajamaru )
 
 /* Vs. Mighty Bomb Jack */
 
-static READ_HANDLER( mightybj_security_r )
+static READ8_HANDLER( mightybj_security_r )
 {
 	/* low part must be 0x3d */
 	return ppu2c03b_0_r( 2 ) | 0x3d;
@@ -1245,8 +1252,8 @@ static READ_HANDLER( mightybj_security_r )
 DRIVER_INIT( mightybj )
 {
 	/* Protection */
-	install_mem_read_handler( 0, 0x2002, 0x2002, mightybj_security_r );
-	install_mem_write_handler( 0, 0x2000, 0x2001, ppuRC2C05_protection );
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x2002, 0x2002, 0, 0, mightybj_security_r );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x2000, 0x2001, 0, 0, ppuRC2C05_protection );
 
 	/* common init */
 	init_vsnes();
@@ -1255,7 +1262,7 @@ DRIVER_INIT( mightybj )
 /**********************************************************************************/
 /* VS Tennis */
 
-static WRITE_HANDLER( vstennis_vrom_banking )
+static WRITE8_HANDLER( vstennis_vrom_banking )
 {
 	int other_cpu = cpu_getactivecpu() ^ 1;
 
@@ -1263,7 +1270,7 @@ static WRITE_HANDLER( vstennis_vrom_banking )
 	ppu2c03b_set_videorom_bank( cpu_getactivecpu(), 0, 8, ( data & 4 ) ? 1 : 0, 512 );
 
 	/* bit 1 ( data & 2 ) triggers irq on the other cpu */
-	cpu_set_irq_line( other_cpu, 0, ( data & 2 ) ? CLEAR_LINE : ASSERT_LINE );
+	cpunum_set_input_line( other_cpu, 0, ( data & 2 ) ? CLEAR_LINE : ASSERT_LINE );
 
 	/* move along */
 	if ( cpu_getactivecpu() == 0 )
@@ -1275,14 +1282,14 @@ static WRITE_HANDLER( vstennis_vrom_banking )
 DRIVER_INIT( vstennis )
 {
 	/* vrom switching is enabled with bit 2 of $4016 */
-	install_mem_write_handler( 0, 0x4016, 0x4016, vstennis_vrom_banking );
-	install_mem_write_handler( 1, 0x4016, 0x4016, vstennis_vrom_banking );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x4016, 0x4016, 0, 0, vstennis_vrom_banking );
+	memory_install_write8_handler(1, ADDRESS_SPACE_PROGRAM, 0x4016, 0x4016, 0, 0, vstennis_vrom_banking );
 
 	/* shared ram at $6000 */
-	install_mem_read_handler( 0, 0x6000, 0x7fff, MRA8_BANK1 );
-	install_mem_write_handler( 0, 0x6000, 0x7fff, MWA8_BANK1 );
-	install_mem_read_handler( 1, 0x6000, 0x7fff, MRA8_BANK1 );
-	install_mem_write_handler( 1, 0x6000, 0x7fff, MWA8_BANK1 );
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x6000, 0x7fff, 0, 0, MRA8_BANK1 );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x6000, 0x7fff, 0, 0, MWA8_BANK1 );
+	memory_install_read8_handler(1, ADDRESS_SPACE_PROGRAM, 0x6000, 0x7fff, 0, 0, MRA8_BANK1 );
+	memory_install_write8_handler(1, ADDRESS_SPACE_PROGRAM, 0x6000, 0x7fff, 0, 0, MWA8_BANK1 );
 
 	cpu_setbank(1, &memory_region(REGION_CPU1)[0x6000]);
 }
@@ -1352,8 +1359,8 @@ DRIVER_INIT( btlecity )
 DRIVER_INIT( vstetris )
 {
 	/* extra ram at $6000 is enabled with bit 1 of $4016 */
-	install_mem_read_handler( 0, 0x6000, 0x7fff, MRA8_RAM );
-	install_mem_write_handler( 0, 0x6000, 0x7fff, MWA8_RAM );
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x6000, 0x7fff, 0, 0, MRA8_RAM );
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x6000, 0x7fff, 0, 0, MWA8_RAM );
 
 	init_vsnes();
 	init_vsnormal();

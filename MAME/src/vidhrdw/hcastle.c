@@ -1,11 +1,11 @@
-#pragma code_seg("C352")
-#pragma data_seg("D352")
-#pragma bss_seg("B352")
-#pragma const_seg("K352")
-#pragma comment(linker, "/merge:D352=352")
-#pragma comment(linker, "/merge:C352=352")
-#pragma comment(linker, "/merge:B352=352")
-#pragma comment(linker, "/merge:K352=352")
+#pragma code_seg("C366")
+#pragma data_seg("D366")
+#pragma bss_seg("B366")
+#pragma const_seg("K366")
+#pragma comment(linker, "/merge:D366=366")
+#pragma comment(linker, "/merge:C366=366")
+#pragma comment(linker, "/merge:B366=366")
+#pragma comment(linker, "/merge:K366=366")
 /***************************************************************************
 
 	Haunted Castle video emulation
@@ -136,7 +136,7 @@ VIDEO_START( hcastle )
 
 ***************************************************************************/
 
-WRITE_HANDLER( hcastle_pf1_video_w )
+WRITE8_HANDLER( hcastle_pf1_video_w )
 {
 	if (hcastle_pf1_videoram[offset] != data)
 	{
@@ -145,7 +145,7 @@ WRITE_HANDLER( hcastle_pf1_video_w )
 	}
 }
 
-WRITE_HANDLER( hcastle_pf2_video_w )
+WRITE8_HANDLER( hcastle_pf2_video_w )
 {
 	if (hcastle_pf2_videoram[offset] != data)
 	{
@@ -154,17 +154,17 @@ WRITE_HANDLER( hcastle_pf2_video_w )
 	}
 }
 
-WRITE_HANDLER( hcastle_gfxbank_w )
+WRITE8_HANDLER( hcastle_gfxbank_w )
 {
 	gfx_bank = data;
 }
 
-READ_HANDLER( hcastle_gfxbank_r )
+READ8_HANDLER( hcastle_gfxbank_r )
 {
 	return gfx_bank;
 }
 
-WRITE_HANDLER( hcastle_pf1_control_w )
+WRITE8_HANDLER( hcastle_pf1_control_w )
 {
 	if (offset==3)
 	{
@@ -180,7 +180,7 @@ WRITE_HANDLER( hcastle_pf1_control_w )
 	K007121_ctrl_0_w(offset,data);
 }
 
-WRITE_HANDLER( hcastle_pf2_control_w )
+WRITE8_HANDLER( hcastle_pf2_control_w )
 {
 	if (offset==3)
 	{

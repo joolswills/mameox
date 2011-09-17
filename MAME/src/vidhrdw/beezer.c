@@ -1,11 +1,11 @@
-#pragma code_seg("C158")
-#pragma data_seg("D158")
-#pragma bss_seg("B158")
-#pragma const_seg("K158")
-#pragma comment(linker, "/merge:D158=158")
-#pragma comment(linker, "/merge:C158=158")
-#pragma comment(linker, "/merge:B158=158")
-#pragma comment(linker, "/merge:K158=158")
+#pragma code_seg("C159")
+#pragma data_seg("D159")
+#pragma bss_seg("B159")
+#pragma const_seg("K159")
+#pragma comment(linker, "/merge:D159=159")
+#pragma comment(linker, "/merge:C159=159")
+#pragma comment(linker, "/merge:B159=159")
+#pragma comment(linker, "/merge:K159=159")
 #include "driver.h"
 #include "cpu/m6809/m6809.h"
 #include "machine/6522via.h"
@@ -18,9 +18,9 @@ INTERRUPT_GEN( beezer_interrupt )
 	scanline = (scanline + 1) % 0x80;
 	via_0_ca2_w (0, scanline & 0x10);
 	if ((scanline & 0x78) == 0x78)
-		cpu_set_irq_line(0, M6809_FIRQ_LINE, ASSERT_LINE);
+		cpunum_set_input_line(0, M6809_FIRQ_LINE, ASSERT_LINE);
 	else
-		cpu_set_irq_line(0, M6809_FIRQ_LINE, CLEAR_LINE);
+		cpunum_set_input_line(0, M6809_FIRQ_LINE, CLEAR_LINE);
 }
 
 VIDEO_UPDATE( beezer )
@@ -40,7 +40,7 @@ VIDEO_UPDATE( beezer )
 	copybitmap(bitmap,tmpbitmap,0,0,0,0,&Machine->visible_area,TRANSPARENCY_NONE,0);
 }
 
-WRITE_HANDLER( beezer_map_w )
+WRITE8_HANDLER( beezer_map_w )
 {
 	/*
 	  bit 7 -- 330  ohm resistor  -- BLUE
@@ -73,7 +73,7 @@ WRITE_HANDLER( beezer_map_w )
 	palette_set_color(offset, r, g, b);
 }
 
-WRITE_HANDLER( beezer_ram_w )
+WRITE8_HANDLER( beezer_ram_w )
 {
 	int x, y;
 	x = offset % 0x100;
@@ -88,7 +88,7 @@ WRITE_HANDLER( beezer_ram_w )
 	videoram[offset] = data;
 }
 
-READ_HANDLER( beezer_line_r )
+READ8_HANDLER( beezer_line_r )
 {
 	return (scanline & 0xfe) << 1;
 }

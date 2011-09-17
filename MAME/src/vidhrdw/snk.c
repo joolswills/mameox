@@ -659,7 +659,6 @@ VIDEO_UPDATE( gwar )
 		tdfever_draw_tx( bitmap, text_attribute, 0, 0, gwar_tx_baseaddr );
 	}
 }
-
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

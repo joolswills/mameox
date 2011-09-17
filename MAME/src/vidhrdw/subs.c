@@ -1,11 +1,11 @@
-#pragma code_seg("C675")
-#pragma data_seg("D675")
-#pragma bss_seg("B675")
-#pragma const_seg("K675")
-#pragma comment(linker, "/merge:D675=675")
-#pragma comment(linker, "/merge:C675=675")
-#pragma comment(linker, "/merge:B675=675")
-#pragma comment(linker, "/merge:K675=675")
+#pragma code_seg("C713")
+#pragma data_seg("D713")
+#pragma bss_seg("B713")
+#pragma const_seg("K713")
+#pragma comment(linker, "/merge:D713=713")
+#pragma comment(linker, "/merge:C713=713")
+#pragma comment(linker, "/merge:B713=713")
+#pragma comment(linker, "/merge:K713=713")
 /***************************************************************************
 
 	Atari Subs hardware
@@ -16,7 +16,7 @@
 #include "vidhrdw/generic.h"
 #include "subs.h"
 
-WRITE_HANDLER( subs_invert1_w )
+WRITE8_HANDLER( subs_invert1_w )
 {
 	if ((offset & 0x01) == 1)
 	{
@@ -30,7 +30,7 @@ WRITE_HANDLER( subs_invert1_w )
 	}
 }
 
-WRITE_HANDLER( subs_invert2_w )
+WRITE8_HANDLER( subs_invert2_w )
 {
 	if ((offset & 0x01) == 1)
 	{

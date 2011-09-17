@@ -1,11 +1,11 @@
-#pragma code_seg("C245")
-#pragma data_seg("D245")
-#pragma bss_seg("B245")
-#pragma const_seg("K245")
-#pragma comment(linker, "/merge:D245=245")
-#pragma comment(linker, "/merge:C245=245")
-#pragma comment(linker, "/merge:B245=245")
-#pragma comment(linker, "/merge:K245=245")
+#pragma code_seg("C253")
+#pragma data_seg("D253")
+#pragma bss_seg("B253")
+#pragma const_seg("K253")
+#pragma comment(linker, "/merge:D253=253")
+#pragma comment(linker, "/merge:C253=253")
+#pragma comment(linker, "/merge:B253=253")
+#pragma comment(linker, "/merge:K253=253")
 /***************************************************************************
 
 	Dead Angle							(c) 1988 Seibu Kaihatsu
@@ -30,26 +30,26 @@
 static UINT8 *deadang_shared_ram;
 extern UINT8 *deadang_video_data, *deadang_scroll_ram;
 
-extern WRITE_HANDLER( deadang_foreground_w );
-extern WRITE_HANDLER( deadang_text_w );
-extern WRITE_HANDLER( deadang_bank_w );
+extern WRITE8_HANDLER( deadang_foreground_w );
+extern WRITE8_HANDLER( deadang_text_w );
+extern WRITE8_HANDLER( deadang_bank_w );
 
 extern VIDEO_START( deadang );
 extern VIDEO_UPDATE( deadang );
 
 /* Read/Write Handlers */
 
-static READ_HANDLER( deadang_shared_r )
+static READ8_HANDLER( deadang_shared_r )
 {
 	return deadang_shared_ram[offset];
 }
 
-static WRITE_HANDLER( deadang_shared_w )
+static WRITE8_HANDLER( deadang_shared_w )
 {
 	deadang_shared_ram[offset] = data;
 }
 
-READ_HANDLER( ghunter_trackball_low_r )
+READ8_HANDLER( ghunter_trackball_low_r )
 {
 	switch (offset)
 	{
@@ -59,7 +59,7 @@ READ_HANDLER( ghunter_trackball_low_r )
 
 	return 0;
 }
-READ_HANDLER( ghunter_trackball_high_r )
+READ8_HANDLER( ghunter_trackball_high_r )
 {
 	switch (offset)
 	{
@@ -311,9 +311,9 @@ SEIBU_SOUND_SYSTEM_ADPCM_HARDWARE
 static INTERRUPT_GEN( deadang_interrupt )
 {
 	if (cpu_getiloops())
-		cpu_set_irq_line_and_vector(cpu_getactivecpu(), 0, HOLD_LINE, 0xc8/4);	/* VBL */
+		cpunum_set_input_line_and_vector(cpu_getactivecpu(), 0, HOLD_LINE, 0xc8/4);	/* VBL */
 	else
-		cpu_set_irq_line_and_vector(cpu_getactivecpu(), 0, HOLD_LINE, 0xc4/4);	/* VBL */
+		cpunum_set_input_line_and_vector(cpu_getactivecpu(), 0, HOLD_LINE, 0xc4/4);	/* VBL */
 }
 
 /* Machine Drivers */
@@ -457,8 +457,8 @@ static DRIVER_INIT( ghunter )
 	seibu_sound_decrypt(REGION_CPU3, 0x2000);
 	seibu_adpcm_decrypt(REGION_SOUND1);
 
-	install_mem_read_handler(0, 0x80000, 0x80001, ghunter_trackball_low_r);
-	install_mem_read_handler(0, 0xb0000, 0xb0001, ghunter_trackball_high_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x80000, 0x80001, 0, 0, ghunter_trackball_low_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xb0000, 0xb0001, 0, 0, ghunter_trackball_high_r);
 }
 
 /* Game Drivers */

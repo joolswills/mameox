@@ -1,11 +1,11 @@
-#pragma code_seg("C618")
-#pragma data_seg("D618")
-#pragma bss_seg("B618")
-#pragma const_seg("K618")
-#pragma comment(linker, "/merge:D618=618")
-#pragma comment(linker, "/merge:C618=618")
-#pragma comment(linker, "/merge:B618=618")
-#pragma comment(linker, "/merge:K618=618")
+#pragma code_seg("C654")
+#pragma data_seg("D654")
+#pragma bss_seg("B654")
+#pragma const_seg("K654")
+#pragma comment(linker, "/merge:D654=654")
+#pragma comment(linker, "/merge:C654=654")
+#pragma comment(linker, "/merge:B654=654")
+#pragma comment(linker, "/merge:K654=654")
 /*
 	Video Hardware for Shoot Out
 	prom GB09.K6 may be related to background tile-sprite priority
@@ -71,13 +71,13 @@ static void get_fg_tile_info(int tile_index){
 			0)
 }
 
-WRITE_HANDLER( shootout_videoram_w ){
+WRITE8_HANDLER( shootout_videoram_w ){
 	if( videoram[offset]!=data ){
 		videoram[offset] = data;
 		tilemap_mark_tile_dirty( background, offset&0x3ff );
 	}
 }
-WRITE_HANDLER( shootout_textram_w ){
+WRITE8_HANDLER( shootout_textram_w ){
 	if( shootout_textram[offset]!=data ){
 		shootout_textram[offset] = data;
 		tilemap_mark_tile_dirty( foreground, offset&0x3ff );

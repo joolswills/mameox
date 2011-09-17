@@ -1,11 +1,11 @@
-#pragma code_seg("C612")
-#pragma data_seg("D612")
-#pragma bss_seg("B612")
-#pragma const_seg("K612")
-#pragma comment(linker, "/merge:D612=612")
-#pragma comment(linker, "/merge:C612=612")
-#pragma comment(linker, "/merge:B612=612")
-#pragma comment(linker, "/merge:K612=612")
+#pragma code_seg("C648")
+#pragma data_seg("D648")
+#pragma bss_seg("B648")
+#pragma const_seg("K648")
+#pragma comment(linker, "/merge:D648=648")
+#pragma comment(linker, "/merge:C648=648")
+#pragma comment(linker, "/merge:B648=648")
+#pragma comment(linker, "/merge:K648=648")
 /***************************************************************************
 
 Shanghai 3           (c)1993 Sunsoft     (68000     AY8910 OKI6295)
@@ -111,7 +111,7 @@ static WRITE16_HANDLER( heberpop_sound_command_w )
 	if (ACCESSING_LSB)
 	{
 		soundlatch_w(0,data & 0xff);
-		cpu_set_irq_line_and_vector(1,0,HOLD_LINE,0xff);	/* RST 38h */
+		cpunum_set_input_line_and_vector(1,0,HOLD_LINE,0xff);	/* RST 38h */
 	}
 }
 
@@ -495,7 +495,7 @@ static struct AY8910interface ay8910_interface =
 
 static void irqhandler(int linestate)
 {
-	cpu_set_nmi_line(1,linestate);
+	cpunum_set_input_line(1, INPUT_LINE_NMI, linestate);
 }
 
 static struct YM2612interface ym3438_interface =

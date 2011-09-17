@@ -1,11 +1,11 @@
-#pragma code_seg("C461")
-#pragma data_seg("D461")
-#pragma bss_seg("B461")
-#pragma const_seg("K461")
-#pragma comment(linker, "/merge:D461=461")
-#pragma comment(linker, "/merge:C461=461")
-#pragma comment(linker, "/merge:B461=461")
-#pragma comment(linker, "/merge:K461=461")
+#pragma code_seg("C487")
+#pragma data_seg("D487")
+#pragma bss_seg("B487")
+#pragma const_seg("K487")
+#pragma comment(linker, "/merge:D487=487")
+#pragma comment(linker, "/merge:C487=487")
+#pragma comment(linker, "/merge:B487=487")
+#pragma comment(linker, "/merge:K487=487")
 /*****************************************************************************
 
 Momoko 120% (c) 1986 Jaleco
@@ -32,18 +32,18 @@ extern data8_t *momoko_bg_scrolly;
 
 VIDEO_UPDATE( momoko );
 
-WRITE_HANDLER( momoko_fg_scrollx_w );
-WRITE_HANDLER( momoko_fg_scrolly_w );
-WRITE_HANDLER( momoko_text_scrolly_w );
-WRITE_HANDLER( momoko_text_mode_w );
-WRITE_HANDLER( momoko_bg_scrollx_w );
-WRITE_HANDLER( momoko_bg_scrolly_w );
-WRITE_HANDLER( momoko_flipscreen_w );
-WRITE_HANDLER( momoko_fg_select_w);
-WRITE_HANDLER( momoko_bg_select_w);
-WRITE_HANDLER( momoko_bg_priority_w);
+WRITE8_HANDLER( momoko_fg_scrollx_w );
+WRITE8_HANDLER( momoko_fg_scrolly_w );
+WRITE8_HANDLER( momoko_text_scrolly_w );
+WRITE8_HANDLER( momoko_text_mode_w );
+WRITE8_HANDLER( momoko_bg_scrollx_w );
+WRITE8_HANDLER( momoko_bg_scrolly_w );
+WRITE8_HANDLER( momoko_flipscreen_w );
+WRITE8_HANDLER( momoko_fg_select_w);
+WRITE8_HANDLER( momoko_bg_select_w);
+WRITE8_HANDLER( momoko_bg_priority_w);
 
-WRITE_HANDLER( momoko_bg_read_bank_w )
+WRITE8_HANDLER( momoko_bg_read_bank_w )
 {
 	data8_t *BG_MAP = memory_region(REGION_USER1);
 	int bank_address = (data & 0x1f) * 0x1000;

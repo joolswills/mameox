@@ -1,11 +1,11 @@
-#pragma code_seg("C340")
-#pragma data_seg("D340")
-#pragma bss_seg("B340")
-#pragma const_seg("K340")
-#pragma comment(linker, "/merge:D340=340")
-#pragma comment(linker, "/merge:C340=340")
-#pragma comment(linker, "/merge:B340=340")
-#pragma comment(linker, "/merge:K340=340")
+#pragma code_seg("C354")
+#pragma data_seg("D354")
+#pragma bss_seg("B354")
+#pragma const_seg("K354")
+#pragma comment(linker, "/merge:D354=354")
+#pragma comment(linker, "/merge:C354=354")
+#pragma comment(linker, "/merge:B354=354")
+#pragma comment(linker, "/merge:K354=354")
 /*** DRIVER INFO **************************************************************
 
 Grand Striker, V Goal Soccer, World Cup '94
@@ -211,7 +211,7 @@ static WRITE16_HANDLER( sound_command_w )
 	{
 		pending_command = 1;
 		soundlatch_w(offset,data & 0xff);
-		cpu_set_irq_line(1, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 	}
 }
 
@@ -222,12 +222,12 @@ static READ16_HANDLER( pending_command_r )
 }
 #endif
 
-static WRITE_HANDLER( gs_sh_pending_command_clear_w )
+static WRITE8_HANDLER( gs_sh_pending_command_clear_w )
 {
 	pending_command = 0;
 }
 
-static WRITE_HANDLER( gs_sh_bankswitch_w )
+static WRITE8_HANDLER( gs_sh_bankswitch_w )
 {
 	unsigned char *RAM = memory_region(REGION_CPU2);
 	int bankaddress;
@@ -280,9 +280,9 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 static void gs_ym2610_irq(int irq)
 {
 	if (irq)
-		cpu_set_irq_line(1, 0, ASSERT_LINE);
+		cpunum_set_input_line(1, 0, ASSERT_LINE);
 	else
-		cpu_set_irq_line(1, 0, CLEAR_LINE);
+		cpunum_set_input_line(1, 0, CLEAR_LINE);
 }
 
 static struct YM2610interface ym2610_interface =

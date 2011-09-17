@@ -1,11 +1,11 @@
-#pragma code_seg("C213")
-#pragma data_seg("D213")
-#pragma bss_seg("B213")
-#pragma const_seg("K213")
-#pragma comment(linker, "/merge:D213=213")
-#pragma comment(linker, "/merge:C213=213")
-#pragma comment(linker, "/merge:B213=213")
-#pragma comment(linker, "/merge:K213=213")
+#pragma code_seg("C217")
+#pragma data_seg("D217")
+#pragma bss_seg("B217")
+#pragma const_seg("K217")
+#pragma comment(linker, "/merge:D217=217")
+#pragma comment(linker, "/merge:C217=217")
+#pragma comment(linker, "/merge:B217=217")
+#pragma comment(linker, "/merge:K217=217")
 /***************************************************************************
 
 	Atari Cloud 9 (prototype) hardware
@@ -32,7 +32,7 @@ unsigned char *cloud9_color_bank;
   Cloud 9 uses 9-bit color, in the form RRRGGGBB, with the LSB of B stored
   in the $40 bit of the address.
 ***************************************************************************/
-WRITE_HANDLER( cloud9_paletteram_w )
+WRITE8_HANDLER( cloud9_paletteram_w )
 {
 	int bit0,bit1,bit2;
 	int r,g,b;
@@ -133,7 +133,7 @@ static void convert_point(unsigned int x, unsigned int y, unsigned char **vptr, 
 /***************************************************************************
   cloud9_bitmap_regs_r
 ***************************************************************************/
-READ_HANDLER( cloud9_bitmap_regs_r )
+READ8_HANDLER( cloud9_bitmap_regs_r )
 {
 	unsigned char *vptr;
 	int vpixel;
@@ -168,7 +168,7 @@ READ_HANDLER( cloud9_bitmap_regs_r )
 /***************************************************************************
   cloud9_bitmap_regs_w
 ***************************************************************************/
-WRITE_HANDLER( cloud9_bitmap_regs_w )
+WRITE8_HANDLER( cloud9_bitmap_regs_w )
 {
 	unsigned int x, y;
 
@@ -217,7 +217,7 @@ WRITE_HANDLER( cloud9_bitmap_regs_w )
 /***************************************************************************
   cloud9_bitmap_w
 ***************************************************************************/
-WRITE_HANDLER( cloud9_bitmap_w )
+WRITE8_HANDLER( cloud9_bitmap_w )
 {
 	UINT8 x, y;
 

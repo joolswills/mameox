@@ -1,11 +1,11 @@
-#pragma code_seg("C749")
-#pragma data_seg("D749")
-#pragma bss_seg("B749")
-#pragma const_seg("K749")
-#pragma comment(linker, "/merge:D749=749")
-#pragma comment(linker, "/merge:C749=749")
-#pragma comment(linker, "/merge:B749=749")
-#pragma comment(linker, "/merge:K749=749")
+#pragma code_seg("C791")
+#pragma data_seg("D791")
+#pragma bss_seg("B791")
+#pragma const_seg("K791")
+#pragma comment(linker, "/merge:D791=791")
+#pragma comment(linker, "/merge:C791=791")
+#pragma comment(linker, "/merge:B791=791")
+#pragma comment(linker, "/merge:K791=791")
 /***************************************************************************
 
 	Atari Tunnel Hunt hardware
@@ -60,8 +60,8 @@
 #include "vidhrdw/generic.h"
 
 
-extern WRITE_HANDLER( tunhunt_videoram_w );
-extern WRITE_HANDLER( tunhunt_mott_w );
+extern WRITE8_HANDLER( tunhunt_videoram_w );
+extern WRITE8_HANDLER( tunhunt_mott_w );
 
 extern PALETTE_INIT( tunhunt );
 extern VIDEO_START( tunhunt );
@@ -76,7 +76,7 @@ extern VIDEO_UPDATE( tunhunt );
 
 UINT8 tunhunt_control;
 
-WRITE_HANDLER( tunhunt_control_w )
+WRITE8_HANDLER( tunhunt_control_w )
 {
 	/*
 		0x01	coin counter#2	"right counter"
@@ -101,44 +101,44 @@ WRITE_HANDLER( tunhunt_control_w )
  *
  *************************************/
 
-static READ_HANDLER( tunhunt_button_r )
+static READ8_HANDLER( tunhunt_button_r )
 {
 	int data = readinputport( 0 );
 	return ((data>>offset)&1)?0x00:0x80;
 }
 
 
-static READ_HANDLER( dsw1_r )
+static READ8_HANDLER( dsw1_r )
 {
 	return readinputport(3)&0xff;
 }
 
 
-static READ_HANDLER( dsw2_0r )
+static READ8_HANDLER( dsw2_0r )
 {
 	return (readinputport(3)&0x0100)?0x80:0x00;
 }
 
 
-static READ_HANDLER( dsw2_1r )
+static READ8_HANDLER( dsw2_1r )
 {
 	return (readinputport(3)&0x0200)?0x80:0x00;
 }
 
 
-static READ_HANDLER( dsw2_2r )
+static READ8_HANDLER( dsw2_2r )
 {
 	return (readinputport(3)&0x0400)?0x80:0x00;
 }
 
 
-static READ_HANDLER( dsw2_3r )
+static READ8_HANDLER( dsw2_3r )
 {
 	return (readinputport(3)&0x0800)?0x80:0x00;
 }
 
 
-static READ_HANDLER( dsw2_4r )
+static READ8_HANDLER( dsw2_4r )
 {
 	return (readinputport(3)&0x1000)?0x80:0x00;
 }

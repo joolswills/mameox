@@ -1,11 +1,11 @@
-#pragma code_seg("C806")
-#pragma data_seg("D806")
-#pragma bss_seg("B806")
-#pragma const_seg("K806")
-#pragma comment(linker, "/merge:D806=806")
-#pragma comment(linker, "/merge:C806=806")
-#pragma comment(linker, "/merge:B806=806")
-#pragma comment(linker, "/merge:K806=806")
+#pragma code_seg("C848")
+#pragma data_seg("D848")
+#pragma bss_seg("B848")
+#pragma const_seg("K848")
+#pragma comment(linker, "/merge:D848=848")
+#pragma comment(linker, "/merge:C848=848")
+#pragma comment(linker, "/merge:B848=848")
+#pragma comment(linker, "/merge:K848=848")
 /*
 
 	SEGA Zaxxon Hardware - Sound
@@ -114,7 +114,7 @@ struct sa sa[TOTAL_SOUNDS] =
 	{ 11, 11, 1, 1, 1 },	/* background */
 };
 
-WRITE_HANDLER( zaxxon_sound_w )
+WRITE8_HANDLER( zaxxon_sound_w )
 {
 	int line;
 	int noise;

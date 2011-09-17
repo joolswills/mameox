@@ -1,11 +1,11 @@
-#pragma code_seg("C517")
-#pragma data_seg("D517")
-#pragma bss_seg("B517")
-#pragma const_seg("K517")
-#pragma comment(linker, "/merge:D517=517")
-#pragma comment(linker, "/merge:C517=517")
-#pragma comment(linker, "/merge:B517=517")
-#pragma comment(linker, "/merge:K517=517")
+#pragma code_seg("C547")
+#pragma data_seg("D547")
+#pragma bss_seg("B547")
+#pragma const_seg("K547")
+#pragma comment(linker, "/merge:D547=547")
+#pragma comment(linker, "/merge:C547=547")
+#pragma comment(linker, "/merge:B547=547")
+#pragma comment(linker, "/merge:K547=547")
 /***************************************************************************
 
 Operation Thunderbolt  (Taito)
@@ -79,7 +79,7 @@ extern data16_t *othunder_ram;
 
 static void othunder_gun_interrupt(int x)
 {
-	cpu_set_irq_line(0,6,HOLD_LINE);
+	cpunum_set_input_line(0,6,HOLD_LINE);
 }
 
 
@@ -225,7 +225,7 @@ static void reset_sound_region(void)
 	cpu_setbank( 10, memory_region(REGION_CPU2) + (banknum * 0x4000) + 0x10000 );
 }
 
-static WRITE_HANDLER( sound_bankswitch_w )
+static WRITE8_HANDLER( sound_bankswitch_w )
 {
 	banknum = (data - 1) & 7;
 	reset_sound_region();
@@ -531,7 +531,7 @@ static struct GfxDecodeInfo othunder_gfxdecodeinfo[] =
 /* handler called by the YM2610 emulator when the internal timers cause an IRQ */
 static void irqhandler(int irq)
 {
-	cpu_set_irq_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 static struct YM2610interface ym2610_interface =

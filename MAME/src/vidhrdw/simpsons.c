@@ -1,11 +1,11 @@
-#pragma code_seg("C624")
-#pragma data_seg("D624")
-#pragma bss_seg("B624")
-#pragma const_seg("K624")
-#pragma comment(linker, "/merge:D624=624")
-#pragma comment(linker, "/merge:C624=624")
-#pragma comment(linker, "/merge:B624=624")
-#pragma comment(linker, "/merge:K624=624")
+#pragma code_seg("C660")
+#pragma data_seg("D660")
+#pragma bss_seg("B660")
+#pragma const_seg("K660")
+#pragma comment(linker, "/merge:D660=660")
+#pragma comment(linker, "/merge:C660=660")
+#pragma comment(linker, "/merge:B660=660")
+#pragma comment(linker, "/merge:K660=660")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/konamiic.h"
@@ -70,17 +70,17 @@ VIDEO_START( simpsons )
 
 ***************************************************************************/
 
-static READ_HANDLER( simpsons_K052109_r )
+static READ8_HANDLER( simpsons_K052109_r )
 {
 	return K052109_r(offset + 0x2000);
 }
 
-static WRITE_HANDLER( simpsons_K052109_w )
+static WRITE8_HANDLER( simpsons_K052109_w )
 {
 	K052109_w(offset + 0x2000,data);
 }
 
-static READ_HANDLER( simpsons_K053247_r )
+static READ8_HANDLER( simpsons_K053247_r )
 {
 	int offs;
 
@@ -96,7 +96,7 @@ static READ_HANDLER( simpsons_K053247_r )
 	else return simpsons_xtraram[offset - 0x1000];
 }
 
-static WRITE_HANDLER( simpsons_K053247_w )
+static WRITE8_HANDLER( simpsons_K053247_w )
 {
 	int offs;
 
@@ -116,24 +116,24 @@ void simpsons_video_banking(int bank)
 {
 	if (bank & 1)
 	{
-		install_mem_read_handler (0,0x0000,0x0fff,paletteram_r);
-		install_mem_write_handler(0,0x0000,0x0fff,paletteram_xBBBBBGGGGGRRRRR_swap_w);
+		memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x0000, 0x0fff, 0, 0, paletteram_r);
+		memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x0000, 0x0fff, 0, 0, paletteram_xBBBBBGGGGGRRRRR_swap_w);
 	}
 	else
 	{
-		install_mem_read_handler (0,0x0000,0x0fff,K052109_r);
-		install_mem_write_handler(0,0x0000,0x0fff,K052109_w);
+		memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x0000, 0x0fff, 0, 0, K052109_r);
+		memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x0000, 0x0fff, 0, 0, K052109_w);
 	}
 
 	if (bank & 2)
 	{
-		install_mem_read_handler (0,0x2000,0x3fff,simpsons_K053247_r);
-		install_mem_write_handler(0,0x2000,0x3fff,simpsons_K053247_w);
+		memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x2000, 0x3fff, 0, 0, simpsons_K053247_r);
+		memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x2000, 0x3fff, 0, 0, simpsons_K053247_w);
 	}
 	else
 	{
-		install_mem_read_handler (0,0x2000,0x3fff,simpsons_K052109_r);
-		install_mem_write_handler(0,0x2000,0x3fff,simpsons_K052109_w);
+		memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0x2000, 0x3fff, 0, 0, simpsons_K052109_r);
+		memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0x2000, 0x3fff, 0, 0, simpsons_K052109_w);
 	}
 }
 

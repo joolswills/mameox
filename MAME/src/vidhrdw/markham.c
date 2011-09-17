@@ -1,11 +1,11 @@
-#pragma code_seg("C428")
-#pragma data_seg("D428")
-#pragma bss_seg("B428")
-#pragma const_seg("K428")
-#pragma comment(linker, "/merge:D428=428")
-#pragma comment(linker, "/merge:C428=428")
-#pragma comment(linker, "/merge:B428=428")
-#pragma comment(linker, "/merge:K428=428")
+#pragma code_seg("C450")
+#pragma data_seg("D450")
+#pragma bss_seg("B450")
+#pragma const_seg("K450")
+#pragma comment(linker, "/merge:D450=450")
+#pragma comment(linker, "/merge:C450=450")
+#pragma comment(linker, "/merge:B450=450")
+#pragma comment(linker, "/merge:K450=450")
 /******************************************************************************
 
 Markham (c) 1983 Sun Electronics
@@ -50,7 +50,7 @@ PALETTE_INIT( markham )
 
 }
 
-WRITE_HANDLER( markham_videoram_w )
+WRITE8_HANDLER( markham_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -59,12 +59,12 @@ WRITE_HANDLER( markham_videoram_w )
 	}
 }
 
-WRITE_HANDLER( markham_scroll_x_w )
+WRITE8_HANDLER( markham_scroll_x_w )
 {
 	markham_xscroll[offset] = data;
 }
 
-WRITE_HANDLER( markham_flipscreen_w )
+WRITE8_HANDLER( markham_flipscreen_w )
 {
 	if (flip_screen != (data & 0x01))
 	{

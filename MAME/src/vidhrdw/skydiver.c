@@ -1,11 +1,11 @@
-#pragma code_seg("C628")
-#pragma data_seg("D628")
-#pragma bss_seg("B628")
-#pragma const_seg("K628")
-#pragma comment(linker, "/merge:D628=628")
-#pragma comment(linker, "/merge:C628=628")
-#pragma comment(linker, "/merge:B628=628")
-#pragma comment(linker, "/merge:K628=628")
+#pragma code_seg("C664")
+#pragma data_seg("D664")
+#pragma bss_seg("B664")
+#pragma const_seg("K664")
+#pragma comment(linker, "/merge:D664=664")
+#pragma comment(linker, "/merge:C664=664")
+#pragma comment(linker, "/merge:B664=664")
+#pragma comment(linker, "/merge:K664=664")
 /***************************************************************************
 
 	Atari Sky Diver hardware
@@ -75,7 +75,7 @@ VIDEO_START( skydiver )
  *
  *************************************/
 
-WRITE_HANDLER( skydiver_videoram_w )
+WRITE8_HANDLER( skydiver_videoram_w )
 {
 	if (skydiver_videoram[offset] != data)
 	{
@@ -85,76 +85,76 @@ WRITE_HANDLER( skydiver_videoram_w )
 }
 
 
-READ_HANDLER( skydiver_wram_r )
+READ8_HANDLER( skydiver_wram_r )
 {
 	return skydiver_videoram[offset | 0x380];
 }
 
-WRITE_HANDLER( skydiver_wram_w )
+WRITE8_HANDLER( skydiver_wram_w )
 {
 	skydiver_videoram[offset | 0x0380] = data;
 }
 
 
-WRITE_HANDLER( skydiver_width_w )
+WRITE8_HANDLER( skydiver_width_w )
 {
 	width = offset;
 }
 
 
-WRITE_HANDLER( skydiver_coin_lockout_w )
+WRITE8_HANDLER( skydiver_coin_lockout_w )
 {
 	coin_lockout_global_w(!offset);
 }
 
 
-WRITE_HANDLER( skydiver_start_lamp_1_w )
+WRITE8_HANDLER( skydiver_start_lamp_1_w )
 {
 	set_led_status(0, offset);
 }
 
-WRITE_HANDLER( skydiver_start_lamp_2_w )
+WRITE8_HANDLER( skydiver_start_lamp_2_w )
 {
 	set_led_status(1, offset);
 }
 
 
-WRITE_HANDLER( skydiver_lamp_s_w )
+WRITE8_HANDLER( skydiver_lamp_s_w )
 {
 	artwork_show("lamps", offset);
 }
 
-WRITE_HANDLER( skydiver_lamp_k_w )
+WRITE8_HANDLER( skydiver_lamp_k_w )
 {
 	artwork_show("lampk", offset);
 }
 
-WRITE_HANDLER( skydiver_lamp_y_w )
+WRITE8_HANDLER( skydiver_lamp_y_w )
 {
 	artwork_show("lampy", offset);
 }
 
-WRITE_HANDLER( skydiver_lamp_d_w )
+WRITE8_HANDLER( skydiver_lamp_d_w )
 {
 	artwork_show("lampd", offset);
 }
 
-WRITE_HANDLER( skydiver_lamp_i_w )
+WRITE8_HANDLER( skydiver_lamp_i_w )
 {
 	artwork_show("lampi", offset);
 }
 
-WRITE_HANDLER( skydiver_lamp_v_w )
+WRITE8_HANDLER( skydiver_lamp_v_w )
 {
 	artwork_show("lampv", offset);
 }
 
-WRITE_HANDLER( skydiver_lamp_e_w )
+WRITE8_HANDLER( skydiver_lamp_e_w )
 {
 	artwork_show("lampe", offset);
 }
 
-WRITE_HANDLER( skydiver_lamp_r_w )
+WRITE8_HANDLER( skydiver_lamp_r_w )
 {
 	artwork_show("lampr", offset);
 }

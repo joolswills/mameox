@@ -1,11 +1,11 @@
-#pragma code_seg("C581")
-#pragma data_seg("D581")
-#pragma bss_seg("B581")
-#pragma const_seg("K581")
-#pragma comment(linker, "/merge:D581=581")
-#pragma comment(linker, "/merge:C581=581")
-#pragma comment(linker, "/merge:B581=581")
-#pragma comment(linker, "/merge:K581=581")
+#pragma code_seg("C615")
+#pragma data_seg("D615")
+#pragma bss_seg("B615")
+#pragma const_seg("K615")
+#pragma comment(linker, "/merge:D615=615")
+#pragma comment(linker, "/merge:C615=615")
+#pragma comment(linker, "/merge:B615=615")
+#pragma comment(linker, "/merge:K615=615")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/konamiic.h"
@@ -24,10 +24,10 @@ static int bg_colorbase,sprite_colorbase,zoom_colorbase;
 static void sprite_callback(int *code,int *color,int *priority_mask)
 {
 #if 0
-if (keyboard_pressed(KEYCODE_Q) && (*color & 0x80)) *color = rand();
-if (keyboard_pressed(KEYCODE_W) && (*color & 0x40)) *color = rand();
-if (keyboard_pressed(KEYCODE_E) && (*color & 0x20)) *color = rand();
-if (keyboard_pressed(KEYCODE_R) && (*color & 0x10)) *color = rand();
+if (code_pressed(KEYCODE_Q) && (*color & 0x80)) *color = rand();
+if (code_pressed(KEYCODE_W) && (*color & 0x40)) *color = rand();
+if (code_pressed(KEYCODE_E) && (*color & 0x20)) *color = rand();
+if (code_pressed(KEYCODE_R) && (*color & 0x10)) *color = rand();
 #endif
 	*priority_mask = (*color & 0x10) ? 0 : 0x02;
 	*color = sprite_colorbase + (*color & 0x0f);

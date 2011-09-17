@@ -1,11 +1,11 @@
-#pragma code_seg("C288")
-#pragma data_seg("D288")
-#pragma bss_seg("B288")
-#pragma const_seg("K288")
-#pragma comment(linker, "/merge:D288=288")
-#pragma comment(linker, "/merge:C288=288")
-#pragma comment(linker, "/merge:B288=288")
-#pragma comment(linker, "/merge:K288=288")
+#pragma code_seg("C299")
+#pragma data_seg("D299")
+#pragma bss_seg("B299")
+#pragma const_seg("K299")
+#pragma comment(linker, "/merge:D299=299")
+#pragma comment(linker, "/merge:C299=299")
+#pragma comment(linker, "/merge:B299=299")
+#pragma comment(linker, "/merge:K299=299")
 /***************************************************************************
 
 Fast Lane(GX752) (c) 1987 Konami
@@ -26,8 +26,8 @@ TODO:
 
 /* from vidhrdw/fastlane.c */
 extern unsigned char *fastlane_k007121_regs,*fastlane_videoram1,*fastlane_videoram2;
-WRITE_HANDLER( fastlane_vram1_w );
-WRITE_HANDLER( fastlane_vram2_w );
+WRITE8_HANDLER( fastlane_vram1_w );
+WRITE8_HANDLER( fastlane_vram2_w );
 PALETTE_INIT( fastlane );
 VIDEO_START( fastlane );
 VIDEO_UPDATE( fastlane );
@@ -37,16 +37,16 @@ static INTERRUPT_GEN( fastlane_interrupt )
 	if (cpu_getiloops() == 0)
 	{
 		if (K007121_ctrlram[0][0x07] & 0x02)
-			cpu_set_irq_line(0, HD6309_IRQ_LINE, HOLD_LINE);
+			cpunum_set_input_line(0, HD6309_IRQ_LINE, HOLD_LINE);
 	}
 	else if (cpu_getiloops() % 2)
 	{
 		if (K007121_ctrlram[0][0x07] & 0x01)
-			cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);
+			cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 	}
 }
 
-WRITE_HANDLER( k007121_registers_w )
+WRITE8_HANDLER( k007121_registers_w )
 {
 	if (offset < 8)
 		K007121_ctrl_0_w(offset,data);
@@ -54,7 +54,7 @@ WRITE_HANDLER( k007121_registers_w )
 		fastlane_k007121_regs[offset] = data;
 }
 
-static WRITE_HANDLER( fastlane_bankswitch_w )
+static WRITE8_HANDLER( fastlane_bankswitch_w )
 {
 	int bankaddress;
 	unsigned char *RAM = memory_region(REGION_CPU1);
@@ -76,19 +76,19 @@ static WRITE_HANDLER( fastlane_bankswitch_w )
 /* Read and write handlers for one K007232 chip:
    even and odd register are mapped swapped */
 
-static READ_HANDLER( fastlane_K007232_read_port_0_r )
+static READ8_HANDLER( fastlane_K007232_read_port_0_r )
 {
 	return K007232_read_port_0_r(offset ^ 1);
 }
-static WRITE_HANDLER( fastlane_K007232_write_port_0_w )
+static WRITE8_HANDLER( fastlane_K007232_write_port_0_w )
 {
 	K007232_write_port_0_w(offset ^ 1, data);
 }
-static READ_HANDLER( fastlane_K007232_read_port_1_r )
+static READ8_HANDLER( fastlane_K007232_read_port_1_r )
 {
 	return K007232_read_port_1_r(offset ^ 1);
 }
-static WRITE_HANDLER( fastlane_K007232_write_port_1_w )
+static WRITE8_HANDLER( fastlane_K007232_write_port_1_w )
 {
 	K007232_write_port_1_w(offset ^ 1, data);
 }

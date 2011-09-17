@@ -651,7 +651,7 @@ static void m6800_set_context(void *src)
 
 static void set_irq_line(int irqline, int state)
 {
-	if (irqline == IRQ_LINE_NMI)
+	if (irqline == INPUT_LINE_NMI)
 	{
 		if (m6800.nmi_state == state) return;
 		LOG(("M6800#%d set_nmi_line %d \n", cpu_getactivecpu(), state));
@@ -1706,12 +1706,12 @@ void hd63701_trap_pc(void)
 	TAKE_TRAP;
 }
 
-READ_HANDLER( hd63701_internal_registers_r )
+READ8_HANDLER( hd63701_internal_registers_r )
 {
 	return m6803_internal_registers_r(offset);
 }
 
-WRITE_HANDLER( hd63701_internal_registers_w )
+WRITE8_HANDLER( hd63701_internal_registers_w )
 {
 	m6803_internal_registers_w(offset,data);
 }
@@ -2047,7 +2047,7 @@ static offs_t nsc8105_dasm(char *buffer, offs_t pc)
 
 #if (HAS_M6803||HAS_HD63701)
 
-READ_HANDLER( m6803_internal_registers_r )
+READ8_HANDLER( m6803_internal_registers_r )
 {
 	switch (offset)
 	{
@@ -2130,7 +2130,7 @@ READ_HANDLER( m6803_internal_registers_r )
 	}
 }
 
-WRITE_HANDLER( m6803_internal_registers_w )
+WRITE8_HANDLER( m6803_internal_registers_w )
 {
 	static int latch09;
 
@@ -2260,9 +2260,9 @@ static void m6800_set_info(UINT32 state, union cpuinfo *info)
 	switch (state)
 	{
 		/* --- the following bits of info are set as 64-bit signed integers --- */
-		case CPUINFO_INT_IRQ_STATE + M6800_IRQ_LINE:set_irq_line(M6800_IRQ_LINE, info->i);		break;
-		case CPUINFO_INT_IRQ_STATE + M6800_TIN_LINE:set_irq_line(M6800_TIN_LINE, info->i);		break;
-		case CPUINFO_INT_IRQ_STATE + IRQ_LINE_NMI:	set_irq_line(IRQ_LINE_NMI, info->i);		break;
+		case CPUINFO_INT_INPUT_STATE + M6800_IRQ_LINE:set_irq_line(M6800_IRQ_LINE, info->i);		break;
+		case CPUINFO_INT_INPUT_STATE + M6800_TIN_LINE:set_irq_line(M6800_TIN_LINE, info->i);		break;
+		case CPUINFO_INT_INPUT_STATE + INPUT_LINE_NMI:set_irq_line(INPUT_LINE_NMI, info->i);		break;
 
 		case CPUINFO_INT_PC:							PC = info->i; CHANGE_PC();				break;
 		case CPUINFO_INT_REGISTER + M6800_PC:			m6800.pc.w.l = info->i;					break;
@@ -2290,7 +2290,7 @@ void m6800_get_info(UINT32 state, union cpuinfo *info)
 	{
 		/* --- the following bits of info are returned as 64-bit signed integers --- */
 		case CPUINFO_INT_CONTEXT_SIZE:					info->i = sizeof(m6800);				break;
-		case CPUINFO_INT_IRQ_LINES:						info->i = 2;							break;
+		case CPUINFO_INT_INPUT_LINES:					info->i = 2;							break;
 		case CPUINFO_INT_DEFAULT_IRQ_VECTOR:			info->i = 0;							break;
 		case CPUINFO_INT_ENDIANNESS:					info->i = CPU_IS_BE;					break;
 		case CPUINFO_INT_CLOCK_DIVIDER:					info->i = 1;							break;
@@ -2309,9 +2309,9 @@ void m6800_get_info(UINT32 state, union cpuinfo *info)
 		case CPUINFO_INT_ADDRBUS_WIDTH + ADDRESS_SPACE_IO: 		info->i = 0;					break;
 		case CPUINFO_INT_ADDRBUS_SHIFT + ADDRESS_SPACE_IO: 		info->i = 0;					break;
 
-		case CPUINFO_INT_IRQ_STATE + M6800_IRQ_LINE:	info->i = m6800.irq_state[M6800_IRQ_LINE]; break;
-		case CPUINFO_INT_IRQ_STATE + M6800_TIN_LINE:	info->i = m6800.irq_state[M6800_TIN_LINE]; break;
-		case CPUINFO_INT_IRQ_STATE + IRQ_LINE_NMI:		info->i = m6800.nmi_state;				break;
+		case CPUINFO_INT_INPUT_STATE + M6800_IRQ_LINE:	info->i = m6800.irq_state[M6800_IRQ_LINE]; break;
+		case CPUINFO_INT_INPUT_STATE + M6800_TIN_LINE:	info->i = m6800.irq_state[M6800_TIN_LINE]; break;
+		case CPUINFO_INT_INPUT_STATE + INPUT_LINE_NMI:	info->i = m6800.nmi_state;				break;
 
 		case CPUINFO_INT_PREVIOUSPC:					info->i = m6800.ppc.w.l;				break;
 

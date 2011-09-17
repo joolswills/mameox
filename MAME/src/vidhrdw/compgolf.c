@@ -1,11 +1,11 @@
-#pragma code_seg("C219")
-#pragma data_seg("D219")
-#pragma bss_seg("B219")
-#pragma const_seg("K219")
-#pragma comment(linker, "/merge:D219=219")
-#pragma comment(linker, "/merge:C219=219")
-#pragma comment(linker, "/merge:B219=219")
-#pragma comment(linker, "/merge:K219=219")
+#pragma code_seg("C224")
+#pragma data_seg("D224")
+#pragma bss_seg("B224")
+#pragma const_seg("K224")
+#pragma comment(linker, "/merge:D224=224")
+#pragma comment(linker, "/merge:C224=224")
+#pragma comment(linker, "/merge:B224=224")
+#pragma comment(linker, "/merge:K224=224")
 /****************************************************************************************
 
  Competition Golf Final Round
@@ -45,13 +45,13 @@ PALETTE_INIT( compgolf )
 	}
 }
 
-WRITE_HANDLER( compgolf_video_w )
+WRITE8_HANDLER( compgolf_video_w )
 {
 	videoram[offset] = data;
 	tilemap_mark_tile_dirty(text_tilemap, offset/2);
 }
 
-WRITE_HANDLER( compgolf_back_w )
+WRITE8_HANDLER( compgolf_back_w )
 {
 	compgolf_bg_ram[offset] = data;
 	tilemap_mark_tile_dirty(background_tilemap, offset/2);

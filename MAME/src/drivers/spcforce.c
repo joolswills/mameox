@@ -1,11 +1,11 @@
-#pragma code_seg("C641")
-#pragma data_seg("D641")
-#pragma bss_seg("B641")
-#pragma const_seg("K641")
-#pragma comment(linker, "/merge:D641=641")
-#pragma comment(linker, "/merge:C641=641")
-#pragma comment(linker, "/merge:B641=641")
-#pragma comment(linker, "/merge:K641=641")
+#pragma code_seg("C677")
+#pragma data_seg("D677")
+#pragma bss_seg("B677")
+#pragma const_seg("K677")
+#pragma comment(linker, "/merge:D677=677")
+#pragma comment(linker, "/merge:C677=677")
+#pragma comment(linker, "/merge:B677=677")
+#pragma comment(linker, "/merge:K677=677")
 /***************************************************************************
 
 Space Force Memory Map
@@ -47,24 +47,24 @@ a000-a3ff	R/W X/Y scroll position of each character (can be scrolled up
 
 extern unsigned char *spcforce_scrollram;
 
-WRITE_HANDLER( spcforce_flip_screen_w );
+WRITE8_HANDLER( spcforce_flip_screen_w );
 VIDEO_UPDATE( spcforce );
 
 
 static int spcforce_SN76496_latch;
 static int spcforce_SN76496_select;
 
-static WRITE_HANDLER( spcforce_SN76496_latch_w )
+static WRITE8_HANDLER( spcforce_SN76496_latch_w )
 {
 	spcforce_SN76496_latch = data;
 }
 
-static READ_HANDLER( spcforce_SN76496_select_r )
+static READ8_HANDLER( spcforce_SN76496_select_r )
 {
 	return spcforce_SN76496_select;
 }
 
-static WRITE_HANDLER( spcforce_SN76496_select_w )
+static WRITE8_HANDLER( spcforce_SN76496_select_w )
 {
     spcforce_SN76496_select = data;
 
@@ -73,16 +73,16 @@ static WRITE_HANDLER( spcforce_SN76496_select_w )
 	if (~data & 0x10)  SN76496_2_w(0, spcforce_SN76496_latch);
 }
 
-static READ_HANDLER( spcforce_t0_r )
+static READ8_HANDLER( spcforce_t0_r )
 {
 	/* SN76496 status according to Al - not supported by MAME?? */
 	return rand() & 1;
 }
 
 
-static WRITE_HANDLER( spcforce_soundtrigger_w )
+static WRITE8_HANDLER( spcforce_soundtrigger_w )
 {
-	cpu_set_irq_line(1, 0, (~data & 0x08) ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1, 0, (~data & 0x08) ? ASSERT_LINE : CLEAR_LINE);
 }
 
 

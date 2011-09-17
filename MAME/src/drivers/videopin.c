@@ -1,11 +1,11 @@
-#pragma code_seg("C766")
-#pragma data_seg("D766")
-#pragma bss_seg("B766")
-#pragma const_seg("K766")
-#pragma comment(linker, "/merge:D766=766")
-#pragma comment(linker, "/merge:C766=766")
-#pragma comment(linker, "/merge:B766=766")
-#pragma comment(linker, "/merge:K766=766")
+#pragma code_seg("C808")
+#pragma data_seg("D808")
+#pragma bss_seg("B808")
+#pragma const_seg("K808")
+#pragma comment(linker, "/merge:D808=808")
+#pragma comment(linker, "/merge:C808=808")
+#pragma comment(linker, "/merge:B808=808")
+#pragma comment(linker, "/merge:K808=808")
 /*************************************************************************
 
 	Atari Video Pinball driver
@@ -23,8 +23,8 @@
 
 extern UINT8* videopin_video_ram;
 
-extern WRITE_HANDLER( videopin_video_ram_w );
-extern WRITE_HANDLER( videopin_ball_w );
+extern WRITE8_HANDLER( videopin_video_ram_w );
+extern WRITE8_HANDLER( videopin_ball_w );
 
 extern VIDEO_START( videopin );
 extern VIDEO_UPDATE( videopin );
@@ -35,8 +35,8 @@ static double time_released;
 static UINT8 prev = 0;
 static UINT8 mask = 0;
 
-static WRITE_HANDLER(videopin_out1_w);
-static WRITE_HANDLER(videopin_out2_w);
+static WRITE8_HANDLER(videopin_out1_w);
+static WRITE8_HANDLER(videopin_out2_w);
 
 
 static void update_plunger(void)
@@ -51,7 +51,7 @@ static void update_plunger(void)
 
 			if (!mask)
 			{
-				cpu_set_nmi_line(0, ASSERT_LINE);
+				cpunum_set_input_line(0, INPUT_LINE_NMI, ASSERT_LINE);
 			}
 		}
 		else
@@ -68,7 +68,7 @@ static void interrupt_callback(int scanline)
 {
 	update_plunger();
 
-	cpu_set_irq_line(0, 0, ASSERT_LINE);
+	cpunum_set_input_line(0, 0, ASSERT_LINE);
 
 	scanline = scanline + 32;
 
@@ -98,7 +98,7 @@ static double calc_plunger_pos(void)
 }
 
 
-static READ_HANDLER( videopin_misc_r )
+static READ8_HANDLER( videopin_misc_r )
 {
 	double plunger = calc_plunger_pos();
 
@@ -126,7 +126,7 @@ static READ_HANDLER( videopin_misc_r )
 }
 
 
-static WRITE_HANDLER( videopin_led_w )
+static WRITE8_HANDLER( videopin_led_w )
 {
 	static const char* matrix[8][4] =
 	{
@@ -152,11 +152,11 @@ static WRITE_HANDLER( videopin_led_w )
 		set_led_status(0, data & 8);   /* start button */
 	}
 
-	cpu_set_irq_line(0, 0, CLEAR_LINE);
+	cpunum_set_input_line(0, 0, CLEAR_LINE);
 }
 
 
-static WRITE_HANDLER( videopin_out1_w )
+static WRITE8_HANDLER( videopin_out1_w )
 {
 	/* D0 => OCTAVE0  */
 	/* D1 => OCTACE1  */
@@ -171,7 +171,7 @@ static WRITE_HANDLER( videopin_out1_w )
 
 	if (mask)
 	{
-		cpu_set_nmi_line(0, CLEAR_LINE);
+		cpunum_set_input_line(0, INPUT_LINE_NMI, CLEAR_LINE);
 	}
 
 	coin_lockout_global_w(~data & 0x08);
@@ -181,7 +181,7 @@ static WRITE_HANDLER( videopin_out1_w )
 }
 
 
-static WRITE_HANDLER( videopin_out2_w )
+static WRITE8_HANDLER( videopin_out2_w )
 {
 	/* D0 => VOL0      */
 	/* D1 => VOL1      */
@@ -201,7 +201,7 @@ static WRITE_HANDLER( videopin_out2_w )
 }
 
 
-static WRITE_HANDLER( videopin_note_dvsr_w )
+static WRITE8_HANDLER( videopin_note_dvsr_w )
 {
 	/* note data */
 	discrete_sound_w(1, ~data &0xff);

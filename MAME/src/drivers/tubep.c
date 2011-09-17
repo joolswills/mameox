@@ -1,11 +1,11 @@
-#pragma code_seg("C746")
-#pragma data_seg("D746")
-#pragma bss_seg("B746")
-#pragma const_seg("K746")
-#pragma comment(linker, "/merge:D746=746")
-#pragma comment(linker, "/merge:C746=746")
-#pragma comment(linker, "/merge:B746=746")
-#pragma comment(linker, "/merge:K746=746")
+#pragma code_seg("C788")
+#pragma data_seg("D788")
+#pragma bss_seg("B788")
+#pragma const_seg("K788")
+#pragma comment(linker, "/merge:D788=788")
+#pragma comment(linker, "/merge:C788=788")
+#pragma comment(linker, "/merge:B788=788")
+#pragma comment(linker, "/merge:K788=788")
 /***************************************************************************
 
 Tube Panic
@@ -126,34 +126,34 @@ static int sound_latch;
 /*************************** Main CPU on main PCB **************************/
 
 
-static WRITE_HANDLER ( cpu_sharedram_w )
+static WRITE8_HANDLER ( cpu_sharedram_w )
 {
 	cpu_sharedram[offset] = data;
 }
-static READ_HANDLER ( cpu_sharedram_r )
+static READ8_HANDLER ( cpu_sharedram_r )
 {
 	return cpu_sharedram[offset];
 }
 
-static WRITE_HANDLER ( tubep_sprite_sharedram_w )
+static WRITE8_HANDLER ( tubep_sprite_sharedram_w )
 {
 	tubep_sprite_sharedram[offset] = data;
 }
-static READ_HANDLER ( tubep_sprite_sharedram_r )
+static READ8_HANDLER ( tubep_sprite_sharedram_r )
 {
 	return tubep_sprite_sharedram[offset];
 }
-static WRITE_HANDLER ( tubep_sprite_colorsharedram_w )
+static WRITE8_HANDLER ( tubep_sprite_colorsharedram_w )
 {
 	tubep_sprite_colorsharedram[offset] = data;
 }
-static READ_HANDLER ( tubep_sprite_colorsharedram_r )
+static READ8_HANDLER ( tubep_sprite_colorsharedram_r )
 {
 	return tubep_sprite_colorsharedram[offset];
 }
 
 
-static WRITE_HANDLER( tubep_LS259_w )
+static WRITE8_HANDLER( tubep_LS259_w )
 {
 	switch(offset)
 	{
@@ -183,7 +183,7 @@ static WRITE_HANDLER( tubep_LS259_w )
 }
 
 
-static WRITE_HANDLER( tubep_backgroundram_w )
+static WRITE8_HANDLER( tubep_backgroundram_w )
 {
 	tubep_backgroundram[offset] = data;
 }
@@ -213,14 +213,14 @@ ADDRESS_MAP_END
 
 
 
-static WRITE_HANDLER( main_cpu_irq_line_clear_w )
+static WRITE8_HANDLER( main_cpu_irq_line_clear_w )
 {
-//	cpu_set_irq_line(0,CLEAR_LINE);
+//	cpunum_set_input_line(0,CLEAR_LINE);
 //not used - handled by MAME anyway (because it is usual Vblank int)
 	return;
 }
 
-static WRITE_HANDLER( tubep_soundlatch_w )
+static WRITE8_HANDLER( tubep_soundlatch_w )
 {
 	sound_latch = (data&0x7f) | 0x80;
 }
@@ -253,7 +253,7 @@ static ADDRESS_MAP_START( tubep_g_writemem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0xf800, 0xffff) AM_WRITE(tubep_sprite_sharedram_w)			/* program copies here part of shared ram ?? */
 ADDRESS_MAP_END
 
-static READ_HANDLER( tubep_soundlatch_r )
+static READ8_HANDLER( tubep_soundlatch_r )
 {
  	int res;
 
@@ -265,13 +265,13 @@ static READ_HANDLER( tubep_soundlatch_r )
 	return res;
 }
 
-static READ_HANDLER( tubep_sound_irq_ack )
+static READ8_HANDLER( tubep_sound_irq_ack )
 {
-	cpu_set_irq_line(2, 0, CLEAR_LINE);
+	cpunum_set_input_line(2, 0, CLEAR_LINE);
 	return 0;
 }
 
-static WRITE_HANDLER( tubep_sound_unknown )
+static WRITE8_HANDLER( tubep_sound_unknown )
 {
 	/*logerror("Sound CPU writes to port 0x07 - unknown function\n");*/
 	return;
@@ -308,7 +308,7 @@ static void scanline_callback(int scanline)
 	/* interrupt is generated whenever line V6 from video part goes lo->hi */
 	/* that is when scanline is 64 and 192 accordingly */
 
-	cpu_set_irq_line(2,0,ASSERT_LINE);	/* sound cpu interrupt (music tempo) */
+	cpunum_set_input_line(2,0,ASSERT_LINE);	/* sound cpu interrupt (music tempo) */
 
 	scanline += 128;
 	scanline &= 255;
@@ -333,7 +333,7 @@ static MACHINE_INIT( tubep )
 
 /****************************************************************/
 
-static WRITE_HANDLER( rjammer_LS259_w )
+static WRITE8_HANDLER( rjammer_LS259_w )
 {
 	switch(offset)
 	{
@@ -349,10 +349,10 @@ static WRITE_HANDLER( rjammer_LS259_w )
 	}
 }
 
-static WRITE_HANDLER( rjammer_soundlatch_w )
+static WRITE8_HANDLER( rjammer_soundlatch_w )
 {
 	sound_latch = data;
-	cpu_set_nmi_line(2, PULSE_LINE);
+	cpunum_set_input_line(2, INPUT_LINE_NMI, PULSE_LINE);
 }
 
 static ADDRESS_MAP_START( rjammer_readport, ADDRESS_SPACE_IO, 8 )
@@ -432,13 +432,13 @@ ADDRESS_MAP_END
 
 
 
-static READ_HANDLER( rjammer_soundlatch_r )
+static READ8_HANDLER( rjammer_soundlatch_r )
 {
  	int res = sound_latch;
 	return res;
 }
 
-static WRITE_HANDLER( rjammer_voice_startstop_w )
+static WRITE8_HANDLER( rjammer_voice_startstop_w )
 {
 	/* bit 0 of data selects voice start/stop (reset pin on MSM5205)*/
 	// 0 -stop; 1-start
@@ -446,7 +446,7 @@ static WRITE_HANDLER( rjammer_voice_startstop_w )
 
 	return;
 }
-static WRITE_HANDLER( rjammer_voice_frequency_select_w )
+static WRITE8_HANDLER( rjammer_voice_frequency_select_w )
 {
 	/* bit 0 of data selects voice frequency on MSM5205 */
 	// 0 -4 KHz; 1- 8KHz
@@ -468,7 +468,7 @@ static void rjammer_adpcm_vck (int data)
 	if (ls74==1)
 	{
 		MSM5205_data_w(0, (ls377>>0) & 15 );
-		cpu_set_irq_line(2, 0, ASSERT_LINE );
+		cpunum_set_input_line(2, 0, ASSERT_LINE );
 	}
 	else
 	{
@@ -477,7 +477,7 @@ static void rjammer_adpcm_vck (int data)
 
 }
 
-static WRITE_HANDLER( rjammer_voice_input_w )
+static WRITE8_HANDLER( rjammer_voice_input_w )
 {
 	/* 8 bits of adpcm data for MSM5205 */
 	/* need to buffer the data, and switch two nibbles on two following interrupts*/
@@ -489,11 +489,11 @@ static WRITE_HANDLER( rjammer_voice_input_w )
 			I do it here because this port (0x80) is first one accessed
 			in the interrupt routine.
 	*/
-	cpu_set_irq_line(2, 0, CLEAR_LINE );
+	cpunum_set_input_line(2, 0, CLEAR_LINE );
 	return;
 }
 
-static WRITE_HANDLER( rjammer_voice_intensity_control_w )
+static WRITE8_HANDLER( rjammer_voice_intensity_control_w )
 {
 	/* 4 LSB bits select the intensity (analog circuit that alters the output from MSM5205) */
 	// need to buffer the data
@@ -528,27 +528,27 @@ static ADDRESS_MAP_START( rjammer_sound_writeport, ADDRESS_SPACE_IO, 8 )
 ADDRESS_MAP_END
 
 
-static WRITE_HANDLER( ay8910_portA_0_w )
+static WRITE8_HANDLER( ay8910_portA_0_w )
 {
 		//analog sound control
 }
-static WRITE_HANDLER( ay8910_portB_0_w )
+static WRITE8_HANDLER( ay8910_portB_0_w )
 {
 		//analog sound control
 }
-static WRITE_HANDLER( ay8910_portA_1_w )
+static WRITE8_HANDLER( ay8910_portA_1_w )
 {
 		//analog sound control
 }
-static WRITE_HANDLER( ay8910_portB_1_w )
+static WRITE8_HANDLER( ay8910_portB_1_w )
 {
 		//analog sound control
 }
-static WRITE_HANDLER( ay8910_portA_2_w )
+static WRITE8_HANDLER( ay8910_portA_2_w )
 {
 		//analog sound control
 }
-static WRITE_HANDLER( ay8910_portB_2_w )
+static WRITE8_HANDLER( ay8910_portB_2_w )
 {
 		//analog sound control
 }

@@ -1,11 +1,11 @@
-#pragma code_seg("C355")
-#pragma data_seg("D355")
-#pragma bss_seg("B355")
-#pragma const_seg("K355")
-#pragma comment(linker, "/merge:D355=355")
-#pragma comment(linker, "/merge:C355=355")
-#pragma comment(linker, "/merge:B355=355")
-#pragma comment(linker, "/merge:K355=355")
+#pragma code_seg("C369")
+#pragma data_seg("D369")
+#pragma bss_seg("B369")
+#pragma const_seg("K369")
+#pragma comment(linker, "/merge:D369=369")
+#pragma comment(linker, "/merge:C369=369")
+#pragma comment(linker, "/merge:B369=369")
+#pragma comment(linker, "/merge:K369=369")
 /****************************************************************************
 
 Higemaru
@@ -18,9 +18,9 @@ driver by Mirko Buffoni
 #include "vidhrdw/generic.h"
 
 
-extern WRITE_HANDLER( higemaru_videoram_w );
-extern WRITE_HANDLER( higemaru_colorram_w );
-extern WRITE_HANDLER( higemaru_c800_w );
+extern WRITE8_HANDLER( higemaru_videoram_w );
+extern WRITE8_HANDLER( higemaru_colorram_w );
+extern WRITE8_HANDLER( higemaru_c800_w );
 
 extern PALETTE_INIT( higemaru );
 extern VIDEO_START( higemaru );
@@ -30,9 +30,9 @@ extern VIDEO_UPDATE( higemaru );
 INTERRUPT_GEN( higemaru_interrupt )
 {
 	if (cpu_getiloops() == 0) 
-		cpu_set_irq_line_and_vector(0,0,HOLD_LINE,0xcf);	/* RST 08h */
+		cpunum_set_input_line_and_vector(0,0,HOLD_LINE,0xcf);	/* RST 08h */
 	else
-		cpu_set_irq_line_and_vector(0,0,HOLD_LINE,0xd7);	/* RST 10h */
+		cpunum_set_input_line_and_vector(0,0,HOLD_LINE,0xd7);	/* RST 10h */
 }
 
 

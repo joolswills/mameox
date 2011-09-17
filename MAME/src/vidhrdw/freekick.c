@@ -1,11 +1,11 @@
-#pragma code_seg("C300")
-#pragma data_seg("D300")
-#pragma bss_seg("B300")
-#pragma const_seg("K300")
-#pragma comment(linker, "/merge:D300=300")
-#pragma comment(linker, "/merge:C300=300")
-#pragma comment(linker, "/merge:B300=300")
-#pragma comment(linker, "/merge:K300=300")
+#pragma code_seg("C311")
+#pragma data_seg("D311")
+#pragma bss_seg("B311")
+#pragma const_seg("K311")
+#pragma comment(linker, "/merge:D311=311")
+#pragma comment(linker, "/merge:C311=311")
+#pragma comment(linker, "/merge:B311=311")
+#pragma comment(linker, "/merge:K311=311")
 /* Free Kick Video Hardware */
 
 #include "driver.h"
@@ -34,7 +34,7 @@ VIDEO_START(freekick)
 
 
 
-WRITE_HANDLER( freek_videoram_w )
+WRITE8_HANDLER( freek_videoram_w )
 {
 	freek_videoram[offset] = data;
 	tilemap_mark_tile_dirty(freek_tilemap,offset&0x3ff);

@@ -1,11 +1,11 @@
-#pragma code_seg("C781")
-#pragma data_seg("D781")
-#pragma bss_seg("B781")
-#pragma const_seg("K781")
-#pragma comment(linker, "/merge:D781=781")
-#pragma comment(linker, "/merge:C781=781")
-#pragma comment(linker, "/merge:B781=781")
-#pragma comment(linker, "/merge:K781=781")
+#pragma code_seg("C823")
+#pragma data_seg("D823")
+#pragma bss_seg("B823")
+#pragma const_seg("K823")
+#pragma comment(linker, "/merge:D823=823")
+#pragma comment(linker, "/merge:C823=823")
+#pragma comment(linker, "/merge:B823=823")
+#pragma comment(linker, "/merge:K823=823")
 /***************************************************************************
 
 World Grand Prix	(c) Taito Corporation 1989
@@ -394,7 +394,7 @@ static void parse_control(void)
 	/* bit 0 enables cpu B */
 	/* however this fails when recovering from a save state
 	   if cpu B is disabled !! */
-	cpu_set_reset_line(2,(cpua_ctrl &0x1) ? CLEAR_LINE : ASSERT_LINE);
+	cpunum_set_input_line(2, INPUT_LINE_RESET, (cpua_ctrl &0x1) ? CLEAR_LINE : ASSERT_LINE);
 
 	/* bit 1 is "vibration" acc. to test mode */
 }
@@ -420,20 +420,20 @@ static WRITE16_HANDLER( cpua_ctrl_w )	/* assumes Z80 sandwiched between 68Ks */
 /*
 void wgp_interrupt4(int x)
 {
-	cpu_set_irq_line(0,4,HOLD_LINE);
+	cpunum_set_input_line(0,4,HOLD_LINE);
 }
 */
 
 void wgp_interrupt6(int x)
 {
-	cpu_set_irq_line(0,6,HOLD_LINE);
+	cpunum_set_input_line(0,6,HOLD_LINE);
 }
 
 /* 68000 B */
 
 void wgp_cpub_interrupt6(int x)
 {
-	cpu_set_irq_line(2,6,HOLD_LINE);	/* assumes Z80 sandwiched between the 68Ks */
+	cpunum_set_input_line(2,6,HOLD_LINE);	/* assumes Z80 sandwiched between the 68Ks */
 }
 
 
@@ -446,7 +446,7 @@ void wgp_cpub_interrupt6(int x)
 static INTERRUPT_GEN( wgp_cpub_interrupt )
 {
 	timer_set(TIME_IN_CYCLES(200000-500,0),0, wgp_cpub_interrupt6);
-	cpu_set_irq_line(2, 4, HOLD_LINE);
+	cpunum_set_input_line(2, 4, HOLD_LINE);
 }
 
 
@@ -579,7 +579,7 @@ static void reset_sound_region(void)	/* assumes Z80 sandwiched between the 68Ks 
 	cpu_setbank( 10, memory_region(REGION_CPU2) + (banknum * 0x4000) + 0x10000 );
 }
 
-static WRITE_HANDLER( sound_bankswitch_w )
+static WRITE8_HANDLER( sound_bankswitch_w )
 {
 	banknum = (data - 1) & 7;
 	reset_sound_region();
@@ -1159,7 +1159,7 @@ static struct GfxDecodeInfo wgp_gfxdecodeinfo[] =
 /* handler called by the YM2610 emulator when the internal timers cause an IRQ */
 static void irqhandler(int irq)	// assumes Z80 sandwiched between 68Ks
 {
-	cpu_set_irq_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 static struct YM2610interface ym2610_interface =

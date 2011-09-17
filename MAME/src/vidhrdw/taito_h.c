@@ -1,11 +1,11 @@
-#pragma code_seg("C697")
-#pragma data_seg("D697")
-#pragma bss_seg("B697")
-#pragma const_seg("K697")
-#pragma comment(linker, "/merge:D697=697")
-#pragma comment(linker, "/merge:C697=697")
-#pragma comment(linker, "/merge:B697=697")
-#pragma comment(linker, "/merge:K697=697")
+#pragma code_seg("C736")
+#pragma data_seg("D736")
+#pragma bss_seg("B736")
+#pragma const_seg("K736")
+#pragma comment(linker, "/merge:D736=736")
+#pragma comment(linker, "/merge:C736=736")
+#pragma comment(linker, "/merge:B736=736")
+#pragma comment(linker, "/merge:K736=736")
 /***************************************************************************
 
 Functions to emulate the video hardware of the machine.
@@ -468,13 +468,13 @@ VIDEO_UPDATE( recordbr )
 	fillbitmap(bitmap, Machine->pens[0], cliprect);
 
 #ifdef MAME_DEBUG
-	if ( !keyboard_pressed(KEYCODE_A) )
+	if ( !code_pressed(KEYCODE_A) )
 		TC0080VCO_tilemap_draw(bitmap,cliprect,0,TILEMAP_IGNORE_TRANSPARENCY,0);
-	if ( !keyboard_pressed(KEYCODE_S) )
+	if ( !code_pressed(KEYCODE_S) )
 		recordbr_draw_sprites(bitmap,cliprect,0);
-	if ( !keyboard_pressed(KEYCODE_D) )
+	if ( !code_pressed(KEYCODE_D) )
 		TC0080VCO_tilemap_draw(bitmap,cliprect,1,0,0);
-	if ( !keyboard_pressed(KEYCODE_F) )
+	if ( !code_pressed(KEYCODE_F) )
 		recordbr_draw_sprites(bitmap,cliprect,1);
 #else
 	TC0080VCO_tilemap_draw(bitmap,cliprect,0,TILEMAP_IGNORE_TRANSPARENCY,0);
@@ -498,13 +498,13 @@ VIDEO_UPDATE( dleague )
 	fillbitmap(bitmap, Machine->pens[0], cliprect);
 
 #ifdef MAME_DEBUG
-	if ( !keyboard_pressed(KEYCODE_A) )
+	if ( !code_pressed(KEYCODE_A) )
 		TC0080VCO_tilemap_draw(bitmap,cliprect,0,TILEMAP_IGNORE_TRANSPARENCY,0);
-	if ( !keyboard_pressed(KEYCODE_S) )
+	if ( !code_pressed(KEYCODE_S) )
 		dleague_draw_sprites(bitmap,cliprect,0);
-	if ( !keyboard_pressed(KEYCODE_D) )
+	if ( !code_pressed(KEYCODE_D) )
 		TC0080VCO_tilemap_draw(bitmap,cliprect,1,0,0);
-	if ( !keyboard_pressed(KEYCODE_F) )
+	if ( !code_pressed(KEYCODE_F) )
 		dleague_draw_sprites(bitmap,cliprect,1);
 #else
 	TC0080VCO_tilemap_draw(bitmap,cliprect,0,TILEMAP_IGNORE_TRANSPARENCY,0);

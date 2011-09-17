@@ -1,11 +1,11 @@
-#pragma code_seg("C395")
-#pragma data_seg("D395")
-#pragma bss_seg("B395")
-#pragma const_seg("K395")
-#pragma comment(linker, "/merge:D395=395")
-#pragma comment(linker, "/merge:C395=395")
-#pragma comment(linker, "/merge:B395=395")
-#pragma comment(linker, "/merge:K395=395")
+#pragma code_seg("C412")
+#pragma data_seg("D412")
+#pragma bss_seg("B412")
+#pragma const_seg("K412")
+#pragma comment(linker, "/merge:D412=412")
+#pragma comment(linker, "/merge:C412=412")
+#pragma comment(linker, "/merge:B412=412")
+#pragma comment(linker, "/merge:K412=412")
 /***************************************************************************
 
   vidhrdw.c
@@ -25,12 +25,12 @@ UINT8 *ladyfrog_scrlram;
 UINT8 *ladyfrog_spriteram;
 extern UINT8 *ladyfrog_sharedram;
 
-WRITE_HANDLER(ladyfrog_spriteram_w)
+WRITE8_HANDLER(ladyfrog_spriteram_w)
 {
 	ladyfrog_spriteram[offset]=data;
 }
 
-READ_HANDLER(ladyfrog_spriteram_r)
+READ8_HANDLER(ladyfrog_spriteram_r)
 {
 	return ladyfrog_spriteram[offset];
 }
@@ -47,18 +47,18 @@ static void get_tile_info(int tile_index)
 			)
 }
 
-WRITE_HANDLER( ladyfrog_videoram_w )
+WRITE8_HANDLER( ladyfrog_videoram_w )
 {
 	videoram[offset] = data;
 	tilemap_mark_tile_dirty(tilemap,offset>>1);
 }
 
-READ_HANDLER( ladyfrog_videoram_r )
+READ8_HANDLER( ladyfrog_videoram_r )
 {
 	return videoram[offset];
 }
 
-WRITE_HANDLER( ladyfrog_palette_w )
+WRITE8_HANDLER( ladyfrog_palette_w )
 {
 	if (offset & 0x100)
 		paletteram_xxxxBBBBGGGGRRRR_split2_w((offset & 0xff) + (palette_bank << 8),data);
@@ -66,7 +66,7 @@ WRITE_HANDLER( ladyfrog_palette_w )
 		paletteram_xxxxBBBBGGGGRRRR_split1_w((offset & 0xff) + (palette_bank << 8),data);
 }
 
-READ_HANDLER( ladyfrog_palette_r )
+READ8_HANDLER( ladyfrog_palette_r )
 {
 	if (offset & 0x100)
 		return paletteram_2[ (offset & 0xff) + (palette_bank << 8) ];
@@ -74,30 +74,30 @@ READ_HANDLER( ladyfrog_palette_r )
 		return paletteram  [ (offset & 0xff) + (palette_bank << 8) ];
 }
 
-WRITE_HANDLER( ladyfrog_gfxctrl_w )
+WRITE8_HANDLER( ladyfrog_gfxctrl_w )
 {
 	palette_bank = (data & 0x20) >> 5;
 
 }
 
-WRITE_HANDLER( ladyfrog_gfxctrl2_w )
+WRITE8_HANDLER( ladyfrog_gfxctrl2_w )
 {
 	tilebank=((data & 0x18) >> 3)^3;
 	tilemap_mark_all_tiles_dirty( tilemap );
 }
 
 
-READ_HANDLER( ladyfrog_gfxctrl_r )
+READ8_HANDLER( ladyfrog_gfxctrl_r )
 {
 		return 	gfxctrl;
 }
 
-READ_HANDLER( ladyfrog_scrlram_r )
+READ8_HANDLER( ladyfrog_scrlram_r )
 {
 	return ladyfrog_scrlram[offset];
 }
 
-WRITE_HANDLER( ladyfrog_scrlram_w )
+WRITE8_HANDLER( ladyfrog_scrlram_w )
 {
 	ladyfrog_scrlram[offset] = data;
 	tilemap_set_scrolly(tilemap, offset, data );

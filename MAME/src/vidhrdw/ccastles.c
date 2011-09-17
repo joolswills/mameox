@@ -1,11 +1,11 @@
-#pragma code_seg("C196")
-#pragma data_seg("D196")
-#pragma bss_seg("B196")
-#pragma const_seg("K196")
-#pragma comment(linker, "/merge:D196=196")
-#pragma comment(linker, "/merge:C196=196")
-#pragma comment(linker, "/merge:B196=196")
-#pragma comment(linker, "/merge:K196=196")
+#pragma code_seg("C199")
+#pragma data_seg("D199")
+#pragma bss_seg("B199")
+#pragma const_seg("K199")
+#pragma comment(linker, "/merge:D199=199")
+#pragma comment(linker, "/merge:C199=199")
+#pragma comment(linker, "/merge:B199=199")
+#pragma comment(linker, "/merge:K199=199")
 /***************************************************************************
 
 	Atari Crystal Castles hardware
@@ -52,7 +52,7 @@ unsigned char *ccastles_scrolly;
   bit 0 -- inverter -- 1  kohm resistor  -- GREEN
 
 ***************************************************************************/
-WRITE_HANDLER( ccastles_paletteram_w )
+WRITE8_HANDLER( ccastles_paletteram_w )
 {
 	int r,g,b;
 	int bit0,bit1,bit2;
@@ -108,7 +108,7 @@ VIDEO_START( ccastles )
 
 
 
-READ_HANDLER( ccastles_bitmode_r )
+READ8_HANDLER( ccastles_bitmode_r )
 {
 	int addr;
 
@@ -145,7 +145,7 @@ READ_HANDLER( ccastles_bitmode_r )
 	return 0;
 }
 
-WRITE_HANDLER( ccastles_bitmode_w )
+WRITE8_HANDLER( ccastles_bitmode_w )
 {
 	int addr;
 

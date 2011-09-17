@@ -64,6 +64,7 @@ extern int win_window_mode;
 //============================================================
 
 UINT8						win_trying_to_quit;
+int							win_use_mouse;
 
 
 
@@ -83,7 +84,6 @@ static cycles_t				last_poll;
 //static int					hotrod;
 //static int					hotrodse;
 static float				a2d_deadzone;
-static int					use_mouse;
 static int					use_joystick;
 static int					use_lightgun;
 static int					use_lightgun_dual;
@@ -155,7 +155,7 @@ struct rc_option input_opts[] =
 	{ "Input device options", NULL, rc_seperator, NULL, NULL, 0, 0, NULL, NULL },
 //	{ "hotrod", NULL, rc_bool, &hotrod, "0", 0, 0, NULL, "preconfigure for hotrod" },
 //	{ "hotrodse", NULL, rc_bool, &hotrodse, "0", 0, 0, NULL, "preconfigure for hotrod se" },
-	{ "mouse", NULL, rc_bool, &use_mouse, "0", 0, 0, NULL, "enable mouse input" },
+	{ "mouse", NULL, rc_bool, &win_use_mouse, "0", 0, 0, NULL, "enable mouse input" },
 	{ "joystick", "joy", rc_bool, &use_joystick, "0", 0, 0, NULL, "enable joystick input" },
 	{ "lightgun", "gun", rc_bool, &use_lightgun, "0", 0, 0, NULL, "enable lightgun input" },
 	{ "dual_lightgun", "dual", rc_bool, &use_lightgun_dual, "0", 0, 0, NULL, "enable dual lightgun input" },
@@ -223,14 +223,8 @@ static struct KeyboardInfo keylist[MAX_KEYS];
 #define VKCODE(keycode)				(((keycode) >> 8) & 0xff)
 #define ASCIICODE(keycode)			(((keycode) >> 16) & 0xff)
 
-// table entry indices
-#define MAME_KEY		0
-#define DI_KEY			1
-#define VIRTUAL_KEY		2
-#define ASCII_KEY		3
-
 // master translation table
-static int key_trans_table[][4] =
+const int win_key_trans_table[][4] =
 {
 	// MAME key				dinput key			virtual key		ascii
 	{ KEYCODE_ESC, 			DIK_ESCAPE,			VK_ESCAPE,	 	27 },
@@ -338,7 +332,8 @@ static int key_trans_table[][4] =
 	{ KEYCODE_DEL, 			DIK_DELETE,			VK_DELETE, 		0 },
 	{ KEYCODE_LWIN, 		DIK_LWIN,			VK_LWIN, 		0 },
 	{ KEYCODE_RWIN, 		DIK_RWIN,			VK_RWIN, 		0 },
-	{ KEYCODE_MENU, 		DIK_APPS,			VK_APPS, 		0 }
+	{ KEYCODE_MENU, 		DIK_APPS,			VK_APPS, 		0 },
+	{ -1 }
 };
 
 
@@ -805,7 +800,7 @@ void win_pause_input(int paused)
 
 		// acquire all our mice if active
 		if (mouse_active && !win_has_menu())
-			for (i = 0; i < mouse_count && (use_mouse||use_lightgun); i++)
+			for (i = 0; i < mouse_count && (win_use_mouse||use_lightgun); i++)
 				IDirectInputDevice_Acquire(mouse_device[i]);
 	}
 
@@ -904,7 +899,7 @@ void win_poll_input(void)
 
 	// poll all our mice if active
 	if (mouse_active && !win_has_menu())
-		for (i = 0; i < mouse_count && (use_mouse||use_lightgun); i++)
+		for (i = 0; i < mouse_count && (win_use_mouse||use_lightgun); i++)
 		{
 			// first poll the device
 			if (mouse_device2[i])
@@ -931,7 +926,7 @@ void win_poll_input(void)
 
 int win_is_mouse_captured(void)
 {
-	return (!input_paused && mouse_active && mouse_count > 0 && use_mouse && !win_has_menu());
+	return (!input_paused && mouse_active && mouse_count > 0 && win_use_mouse && !win_has_menu());
 }
 
 
@@ -1068,17 +1063,17 @@ static void init_keylist(void)
 				int entry;
 
 				// find the table entry, if there is one
-				for (entry = 0; entry < ELEMENTS(key_trans_table); entry++)
-					if (key_trans_table[entry][DI_KEY] == key)
+				for (entry = 0; win_key_trans_table[entry][0] >= 0; entry++)
+					if (win_key_trans_table[entry][DI_KEY] == key)
 						break;
 
 				// compute the code, which encodes DirectInput, virtual, and ASCII codes
 				code = KEYCODE(key, 0, 0);
 				standardcode = KEYCODE_OTHER;
-				if (entry < ELEMENTS(key_trans_table))
+				if (entry < win_key_trans_table[entry][0] >= 0)
 				{
-					code = KEYCODE(key, key_trans_table[entry][VIRTUAL_KEY], key_trans_table[entry][ASCII_KEY]);
-					standardcode = key_trans_table[entry][MAME_KEY];
+					code = KEYCODE(key, win_key_trans_table[entry][VIRTUAL_KEY], win_key_trans_table[entry][ASCII_KEY]);
+					standardcode = win_key_trans_table[entry][MAME_KEY];
 				}
 
 				// fill in the key description
@@ -1447,7 +1442,7 @@ void osd_analogjoy_read(int player, int analog_axis[], InputCode analogjoy_input
 	int i;
 
 	// if the mouse isn't yet active, make it so
-	if (!mouse_active && use_mouse && !win_has_menu())
+	if (!mouse_active && win_use_mouse && !win_has_menu())
 	{
 		mouse_active = 1;
 		win_pause_input(0);
@@ -1521,7 +1516,7 @@ void osd_lightgun_read(int player,int *deltax,int *deltay)
 	POINT point;
 
 	// if the mouse isn't yet active, make it so
-	if (!mouse_active && (use_mouse||use_lightgun) && !win_has_menu())
+	if (!mouse_active && (win_use_mouse||use_lightgun) && !win_has_menu())
 	{
 		mouse_active = 1;
 		win_pause_input(0);
@@ -1618,7 +1613,7 @@ void osd_lightgun_read(int player,int *deltax,int *deltay)
 void osd_trak_read(int player, int *deltax, int *deltay)
 {
 	// if the mouse isn't yet active, make it so
-	if (!mouse_active && use_mouse && !win_has_menu())
+	if (!mouse_active && win_use_mouse && !win_has_menu())
 	{
 		mouse_active = 1;
 		win_pause_input(0);
@@ -1972,7 +1967,7 @@ void osd_customize_inputport_defaults(struct ipd *defaults)
 	// if a custom controller has been selected
 	if (ctrlrtype && *ctrlrtype != 0 && (stricmp(ctrlrtype,"Standard") != 0))
 	{
-		const struct InputPortTiny* input = Machine->gamedrv->input_ports;
+		const struct InputPort* input = Machine->input_ports;
 		int paddle = 0, dial = 0, trackball = 0, adstick = 0, pedal = 0, lightgun = 0;
 
 		// process the controller-specific default file
@@ -2059,11 +2054,11 @@ void osd_customize_inputport_defaults(struct ipd *defaults)
 		if (ctrlrname)
 			fprintf (stderr,"\"%s\" controller support enabled\n",ctrlrname);
 
-		fprintf(stderr, "Mouse support %sabled\n",use_mouse ? "en" : "dis");
+		fprintf(stderr, "Mouse support %sabled\n",win_use_mouse ? "en" : "dis");
 		fprintf(stderr, "Joystick support %sabled\n",use_joystick ? "en" : "dis");
 		fprintf(stderr, "Keyboards=%d  Mice=%d  Joysticks=%d\n",
 			keyboard_count,
-			use_mouse ? mouse_count : 0,
+			win_use_mouse ? mouse_count : 0,
 			use_joystick ? joystick_count : 0);
 	}
 }

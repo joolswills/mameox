@@ -1,11 +1,11 @@
-#pragma code_seg("C556")
-#pragma data_seg("D556")
-#pragma bss_seg("B556")
-#pragma const_seg("K556")
-#pragma comment(linker, "/merge:D556=556")
-#pragma comment(linker, "/merge:C556=556")
-#pragma comment(linker, "/merge:B556=556")
-#pragma comment(linker, "/merge:K556=556")
+#pragma code_seg("C588")
+#pragma data_seg("D588")
+#pragma bss_seg("B588")
+#pragma const_seg("K588")
+#pragma comment(linker, "/merge:D588=588")
+#pragma comment(linker, "/merge:C588=588")
+#pragma comment(linker, "/merge:B588=588")
+#pragma comment(linker, "/merge:K588=588")
 /***************************************************************************
 
 	Pushman							(c) 1990 Comad
@@ -70,7 +70,7 @@ static WRITE16_HANDLER( pushman_68705_w )
 
 	if (offset==1)
 	{
-        cpu_set_irq_line(2,M68705_IRQ_LINE,HOLD_LINE);
+        cpunum_set_input_line(2,M68705_IRQ_LINE,HOLD_LINE);
 		cpu_spin();
 		new_latch=0;
 	}
@@ -119,12 +119,12 @@ static WRITE16_HANDLER( bballs_68705_w )
 }
 
 
-static READ_HANDLER( pushman_68000_r )
+static READ8_HANDLER( pushman_68000_r )
 {
 	return shared_ram[offset];
 }
 
-static WRITE_HANDLER( pushman_68000_w )
+static WRITE8_HANDLER( pushman_68000_w )
 {
 	if (offset==2 && (shared_ram[2]&2)==0 && data&2) {
 		latch=(shared_ram[1]<<8)|shared_ram[0];
@@ -435,7 +435,7 @@ static struct GfxDecodeInfo pushman_gfxdecodeinfo[] =
 
 static void irqhandler(int irq)
 {
-    cpu_set_irq_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
+    cpunum_set_input_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 static struct YM2203interface ym2203_interface =
@@ -613,7 +613,7 @@ ROM_START( bballs )
 	ROM_LOAD( "bb_prom.e9",   0x0000, 0x0100, CRC(ec80ae36) SHA1(397ec8fc1b106c8b8d4bf6798aa429e8768a101a) )	/* priority (not used) */
 ROM_END
 
-GAME( 1990, pushman,  0,       pushman, pushman, 0, ROT0, "Comad", "Pushman" )
+GAMEX(1990, pushman,  0,       pushman, pushman, 0, ROT0, "Comad", "Pushman", GAME_NOT_WORKING )
 GAME( 1990, pushmans, pushman, pushman, pushman, 0, ROT0, "Comad (American Sammy license)", "Pushman (American Sammy license)" )
 GAME( 1991, bballs,   0,       bballs,  bballs,  0, ROT0, "Comad", "Bouncing Balls" )
 #pragma code_seg()

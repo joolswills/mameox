@@ -1,11 +1,11 @@
-#pragma code_seg("C285")
-#pragma data_seg("D285")
-#pragma bss_seg("B285")
-#pragma const_seg("K285")
-#pragma comment(linker, "/merge:D285=285")
-#pragma comment(linker, "/merge:C285=285")
-#pragma comment(linker, "/merge:B285=285")
-#pragma comment(linker, "/merge:K285=285")
+#pragma code_seg("C296")
+#pragma data_seg("D296")
+#pragma bss_seg("B296")
+#pragma const_seg("K296")
+#pragma comment(linker, "/merge:D296=296")
+#pragma comment(linker, "/merge:C296=296")
+#pragma comment(linker, "/merge:B296=296")
+#pragma comment(linker, "/merge:K296=296")
 /***************************************************************************
 
 F-1 Grand Prix       (c) 1991 Video System Co.
@@ -63,7 +63,7 @@ static READ16_HANDLER( extrarom2_r )
 	return rom[offset] | (rom[offset+1] << 8);
 }
 
-static WRITE_HANDLER( f1gp_sh_bankswitch_w )
+static WRITE8_HANDLER( f1gp_sh_bankswitch_w )
 {
 	data8_t *rom = memory_region(REGION_CPU3) + 0x10000;
 
@@ -79,7 +79,7 @@ static WRITE16_HANDLER( sound_command_w )
 	{
 		pending_command = 1;
 		soundlatch_w(offset,data & 0xff);
-		cpu_set_irq_line(2, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line(2, INPUT_LINE_NMI, PULSE_LINE);
 	}
 }
 
@@ -88,7 +88,7 @@ static READ16_HANDLER( command_pending_r )
 	return (pending_command ? 0xff : 0);
 }
 
-static WRITE_HANDLER( pending_command_clear_w )
+static WRITE8_HANDLER( pending_command_clear_w )
 {
 	pending_command = 0;
 }
@@ -479,7 +479,7 @@ static struct GfxDecodeInfo f1gp2_gfxdecodeinfo[] =
 
 static void irqhandler(int irq)
 {
-	cpu_set_irq_line(2,0,irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(2,0,irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 static struct YM2610interface ym2610_interface =

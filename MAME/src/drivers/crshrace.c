@@ -1,11 +1,11 @@
-#pragma code_seg("C231")
-#pragma data_seg("D231")
-#pragma bss_seg("B231")
-#pragma const_seg("K231")
-#pragma comment(linker, "/merge:D231=231")
-#pragma comment(linker, "/merge:C231=231")
-#pragma comment(linker, "/merge:B231=231")
-#pragma comment(linker, "/merge:K231=231")
+#pragma code_seg("C237")
+#pragma data_seg("D237")
+#pragma bss_seg("B237")
+#pragma const_seg("K237")
+#pragma comment(linker, "/merge:D237=237")
+#pragma comment(linker, "/merge:C237=237")
+#pragma comment(linker, "/merge:B237=237")
+#pragma comment(linker, "/merge:K237=237")
 /***************************************************************************
 
 Crash Race       (c) 1993 Video System Co.
@@ -158,7 +158,7 @@ static READ16_HANDLER( extrarom2_r )
 	return rom[offset] | (rom[offset+1] << 8);
 }
 
-static WRITE_HANDLER( crshrace_sh_bankswitch_w )
+static WRITE8_HANDLER( crshrace_sh_bankswitch_w )
 {
 	data8_t *rom = memory_region(REGION_CPU2) + 0x10000;
 
@@ -174,7 +174,7 @@ static WRITE16_HANDLER( sound_command_w )
 	{
 		pending_command = 1;
 		soundlatch_w(offset,data & 0xff);
-		cpu_set_irq_line(1, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 	}
 }
 
@@ -183,7 +183,7 @@ static READ16_HANDLER( country_sndpending_r )
 	return readinputport(5) | (pending_command ? 0x8000 : 0);
 }
 
-static WRITE_HANDLER( pending_command_clear_w )
+static WRITE8_HANDLER( pending_command_clear_w )
 {
 	pending_command = 0;
 }
@@ -615,7 +615,7 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 
 static void irqhandler(int irq)
 {
-	cpu_set_irq_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 static struct YM2610interface ym2610_interface =

@@ -1,11 +1,11 @@
-#pragma code_seg("C526")
-#pragma data_seg("D526")
-#pragma bss_seg("B526")
-#pragma const_seg("K526")
-#pragma comment(linker, "/merge:D526=526")
-#pragma comment(linker, "/merge:C526=526")
-#pragma comment(linker, "/merge:B526=526")
-#pragma comment(linker, "/merge:K526=526")
+#pragma code_seg("C556")
+#pragma data_seg("D556")
+#pragma bss_seg("B556")
+#pragma const_seg("K556")
+#pragma comment(linker, "/merge:D556=556")
+#pragma comment(linker, "/merge:C556=556")
+#pragma comment(linker, "/merge:B556=556")
+#pragma comment(linker, "/merge:K556=556")
 /******************************************************************************
 
 	Game Driver for Nichibutsu Mahjong series.
@@ -89,7 +89,7 @@ static ADDRESS_MAP_START( writemem_pastelgl, ADDRESS_SPACE_PROGRAM, 8 )
 ADDRESS_MAP_END
 
 
-static READ_HANDLER( io_pastelgl_r )
+static READ8_HANDLER( io_pastelgl_r )
 {
 	offset = (((offset & 0xff00) >> 8) | ((offset & 0x00ff) << 8));
 
@@ -113,7 +113,7 @@ static ADDRESS_MAP_START( readport_pastelgl, ADDRESS_SPACE_IO, 8 )
 	AM_RANGE(0x0000, 0xffff) AM_READ(io_pastelgl_r)
 ADDRESS_MAP_END
 
-static WRITE_HANDLER( io_pastelgl_w )
+static WRITE8_HANDLER( io_pastelgl_w )
 {
 	offset = (((offset & 0xff00) >> 8) | ((offset & 0x00ff) << 8));
 

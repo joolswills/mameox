@@ -1,11 +1,11 @@
-#pragma code_seg("C219")
-#pragma data_seg("D219")
-#pragma bss_seg("B219")
-#pragma const_seg("K219")
-#pragma comment(linker, "/merge:D219=219")
-#pragma comment(linker, "/merge:C219=219")
-#pragma comment(linker, "/merge:B219=219")
-#pragma comment(linker, "/merge:K219=219")
+#pragma code_seg("C224")
+#pragma data_seg("D224")
+#pragma bss_seg("B224")
+#pragma const_seg("K224")
+#pragma comment(linker, "/merge:D224=224")
+#pragma comment(linker, "/merge:C224=224")
+#pragma comment(linker, "/merge:B224=224")
+#pragma comment(linker, "/merge:K224=224")
 /****************************************************************************************
 
 Competition Golf Final Round (c) 1986 / 1985 Data East
@@ -24,23 +24,23 @@ as well.
 extern data8_t *compgolf_bg_ram;
 extern int compgolf_scrollx_lo, compgolf_scrolly_lo, compgolf_scrollx_hi, compgolf_scrolly_hi;
 
-extern WRITE_HANDLER( compgolf_video_w );
-extern WRITE_HANDLER( compgolf_back_w );
+extern WRITE8_HANDLER( compgolf_video_w );
+extern WRITE8_HANDLER( compgolf_back_w );
 extern PALETTE_INIT ( compgolf );
 extern VIDEO_START  ( compgolf );
 extern VIDEO_UPDATE ( compgolf );
 
-static WRITE_HANDLER( compgolf_scrollx_lo_w )
+static WRITE8_HANDLER( compgolf_scrollx_lo_w )
 {
 	compgolf_scrollx_lo = data;
 }
 
-static WRITE_HANDLER( compgolf_scrolly_lo_w )
+static WRITE8_HANDLER( compgolf_scrolly_lo_w )
 {
 	compgolf_scrolly_lo = data;
 }
 
-static WRITE_HANDLER( compgolf_ctrl_w )
+static WRITE8_HANDLER( compgolf_ctrl_w )
 {
 	/* bit 4 and 6 are always set */
 
@@ -206,7 +206,7 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 
 static void sound_irq(int linestate)
 {
-	cpu_set_irq_line(0,0,linestate);
+	cpunum_set_input_line(0,0,linestate);
 }
 
 static struct YM2203interface ym2203_interface =

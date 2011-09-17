@@ -1,11 +1,11 @@
-#pragma code_seg("C157")
-#pragma data_seg("D157")
-#pragma bss_seg("B157")
-#pragma const_seg("K157")
-#pragma comment(linker, "/merge:D157=157")
-#pragma comment(linker, "/merge:C157=157")
-#pragma comment(linker, "/merge:B157=157")
-#pragma comment(linker, "/merge:K157=157")
+#pragma code_seg("C158")
+#pragma data_seg("D158")
+#pragma bss_seg("B158")
+#pragma const_seg("K158")
+#pragma comment(linker, "/merge:D158=158")
+#pragma comment(linker, "/merge:C158=158")
+#pragma comment(linker, "/merge:B158=158")
+#pragma comment(linker, "/merge:K158=158")
 /***************************************************************************
 
 	Atari "Stella on Steroids" hardware
@@ -129,7 +129,7 @@ WRITE32_HANDLER( beathead_finescroll_w )
 	if ((oldword & 8) && !(newword & 8) && current_scanline != 0)
 	{
 		logerror("Suspending time! (scanline = %d)\n", current_scanline);
-		cpu_set_halt_line(0, ASSERT_LINE);
+		cpunum_set_input_line(0, INPUT_LINE_HALT, ASSERT_LINE);
 	}
 }
 

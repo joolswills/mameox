@@ -4,7 +4,7 @@
 # Created: 1993-05-16
 # Public domain
 
-# $Id$
+# $Id: mkinstalldirs,v 1.1 2003/05/25 19:53:48 opcode02 Exp $
 
 errstatus=0
 

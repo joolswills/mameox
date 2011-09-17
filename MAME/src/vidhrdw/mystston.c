@@ -1,11 +1,11 @@
-#pragma code_seg("C475")
-#pragma data_seg("D475")
-#pragma bss_seg("B475")
-#pragma const_seg("K475")
-#pragma comment(linker, "/merge:D475=475")
-#pragma comment(linker, "/merge:C475=475")
-#pragma comment(linker, "/merge:B475=475")
-#pragma comment(linker, "/merge:K475=475")
+#pragma code_seg("C501")
+#pragma data_seg("D501")
+#pragma bss_seg("B501")
+#pragma const_seg("K501")
+#pragma comment(linker, "/merge:D501=501")
+#pragma comment(linker, "/merge:C501=501")
+#pragma comment(linker, "/merge:B501=501")
+#pragma comment(linker, "/merge:K501=501")
 /***************************************************************************
 
 	vidhrdw.c
@@ -77,7 +77,7 @@ PALETTE_INIT( mystston )
 	}
 }
 
-WRITE_HANDLER( mystston_videoram_w )
+WRITE8_HANDLER( mystston_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -86,7 +86,7 @@ WRITE_HANDLER( mystston_videoram_w )
 	}
 }
 
-WRITE_HANDLER( mystston_videoram2_w )
+WRITE8_HANDLER( mystston_videoram2_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -95,12 +95,12 @@ WRITE_HANDLER( mystston_videoram2_w )
 	}
 }
 
-WRITE_HANDLER( mystston_scroll_w )
+WRITE8_HANDLER( mystston_scroll_w )
 {
 	tilemap_set_scrolly(bg_tilemap, 0, data);
 }
 
-WRITE_HANDLER( mystston_control_w )
+WRITE8_HANDLER( mystston_control_w )
 {
 	// bits 0 and 1 are foreground text color
 	if (mystston_fgcolor != ((data & 0x01) << 1) + ((data & 0x02) >> 1))

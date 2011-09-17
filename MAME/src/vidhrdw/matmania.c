@@ -1,11 +1,11 @@
-#pragma code_seg("C430")
-#pragma data_seg("D430")
-#pragma bss_seg("B430")
-#pragma const_seg("K430")
-#pragma comment(linker, "/merge:D430=430")
-#pragma comment(linker, "/merge:C430=430")
-#pragma comment(linker, "/merge:B430=430")
-#pragma comment(linker, "/merge:K430=430")
+#pragma code_seg("C452")
+#pragma data_seg("D452")
+#pragma bss_seg("B452")
+#pragma const_seg("K452")
+#pragma comment(linker, "/merge:D452=452")
+#pragma comment(linker, "/merge:C452=452")
+#pragma comment(linker, "/merge:B452=452")
+#pragma comment(linker, "/merge:K452=452")
 /***************************************************************************
 
 	vidhrdw.c
@@ -95,7 +95,7 @@ PALETTE_INIT( matmania )
 
 
 
-WRITE_HANDLER( matmania_paletteram_w )
+WRITE8_HANDLER( matmania_paletteram_w )
 {
 	int bit0,bit1,bit2,bit3,val;
 	int r,g,b;
@@ -158,7 +158,7 @@ VIDEO_START( matmania )
 
 
 
-WRITE_HANDLER( matmania_videoram3_w )
+WRITE8_HANDLER( matmania_videoram3_w )
 {
 	if (matmania_videoram3[offset] != data)
 	{
@@ -170,7 +170,7 @@ WRITE_HANDLER( matmania_videoram3_w )
 
 
 
-WRITE_HANDLER( matmania_colorram3_w )
+WRITE8_HANDLER( matmania_colorram3_w )
 {
 	if (matmania_colorram3[offset] != data)
 	{

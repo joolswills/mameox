@@ -1,11 +1,11 @@
-#pragma code_seg("C578")
-#pragma data_seg("D578")
-#pragma bss_seg("B578")
-#pragma const_seg("K578")
-#pragma comment(linker, "/merge:D578=578")
-#pragma comment(linker, "/merge:C578=578")
-#pragma comment(linker, "/merge:B578=578")
-#pragma comment(linker, "/merge:K578=578")
+#pragma code_seg("C612")
+#pragma data_seg("D612")
+#pragma bss_seg("B612")
+#pragma const_seg("K612")
+#pragma comment(linker, "/merge:D612=612")
+#pragma comment(linker, "/merge:C612=612")
+#pragma comment(linker, "/merge:B612=612")
+#pragma comment(linker, "/merge:K612=612")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/konamiic.h"
@@ -55,7 +55,7 @@ static void sprite_callback(int *code,int *color)
 }
 
 
-WRITE_HANDLER( rockrage_vreg_w ){
+WRITE8_HANDLER( rockrage_vreg_w ){
 	/* bits 4-7: unused */
 	/* bit 3: bit 4 of bank # (layer 0) */
 	/* bit 2: bit 1 of bank # (layer 0) */

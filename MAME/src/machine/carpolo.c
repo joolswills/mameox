@@ -1,11 +1,11 @@
-#pragma code_seg("C192")
-#pragma data_seg("D192")
-#pragma bss_seg("B192")
-#pragma const_seg("K192")
-#pragma comment(linker, "/merge:D192=192")
-#pragma comment(linker, "/merge:C192=192")
-#pragma comment(linker, "/merge:B192=192")
-#pragma comment(linker, "/merge:K192=192")
+#pragma code_seg("C194")
+#pragma data_seg("D194")
+#pragma bss_seg("B194")
+#pragma const_seg("K194")
+#pragma comment(linker, "/merge:D194=194")
+#pragma comment(linker, "/merge:C194=194")
+#pragma comment(linker, "/merge:B194=194")
+#pragma comment(linker, "/merge:K194=194")
 /***************************************************************************
 
 	Exidy Car Polo hardware
@@ -96,7 +96,7 @@ static data8_t last_wheel_value[4];
 
 static void TTL74148_3S_cb(void)
 {
-	cpu_set_irq_line(0, M6502_IRQ_LINE, TTL74148_output_valid_r(TTL74148_3S) ? CLEAR_LINE : ASSERT_LINE);
+	cpunum_set_input_line(0, M6502_IRQ_LINE, TTL74148_output_valid_r(TTL74148_3S) ? CLEAR_LINE : ASSERT_LINE);
 }
 
 
@@ -173,7 +173,7 @@ void carpolo_generate_car_border_interrupt(int car, int horizontal_border)
 }
 
 
-READ_HANDLER( carpolo_ball_screen_collision_cause_r )
+READ8_HANDLER( carpolo_ball_screen_collision_cause_r )
 {
 	/* bit 0 - 0=ball collided with border
 	   bit 1 - 0=ball collided with goal
@@ -182,19 +182,19 @@ READ_HANDLER( carpolo_ball_screen_collision_cause_r )
 	return ball_screen_collision_cause;
 }
 
-READ_HANDLER( carpolo_car_ball_collision_x_r )
+READ8_HANDLER( carpolo_car_ball_collision_x_r )
 {
 	/* the x coordinate of the colliding pixel */
 	return car_ball_collision_x;
 }
 
-READ_HANDLER( carpolo_car_ball_collision_y_r )
+READ8_HANDLER( carpolo_car_ball_collision_y_r )
 {
 	/* the y coordinate of the colliding pixel */
 	return car_ball_collision_y;
 }
 
-READ_HANDLER( carpolo_car_car_collision_cause_r )
+READ8_HANDLER( carpolo_car_car_collision_cause_r )
 {
 	/* bit 0 - car 4 collided
 	   bit 1 - car 3 collided
@@ -203,7 +203,7 @@ READ_HANDLER( carpolo_car_car_collision_cause_r )
 	return car_car_collision_cause;
 }
 
-READ_HANDLER( carpolo_car_goal_collision_cause_r )
+READ8_HANDLER( carpolo_car_goal_collision_cause_r )
 {
 	/* bit 0-1 - which car collided
 	   bit 2   - horizontal timing bit 1TEC4 (not accessed)
@@ -211,14 +211,14 @@ READ_HANDLER( carpolo_car_goal_collision_cause_r )
 	return car_goal_collision_cause;
 }
 
-READ_HANDLER( carpolo_car_ball_collision_cause_r )
+READ8_HANDLER( carpolo_car_ball_collision_cause_r )
 {
 	/* bit 0-1 - which car collided
 	   bit 2-3 - unconnected */
 	return car_ball_collision_cause;
 }
 
-READ_HANDLER( carpolo_car_border_collision_cause_r )
+READ8_HANDLER( carpolo_car_border_collision_cause_r )
 {
 	/* bit 0-1 - which car collided
 	   bit 2   - 0=vertical border, 1=horizontal border */
@@ -226,7 +226,7 @@ READ_HANDLER( carpolo_car_border_collision_cause_r )
 }
 
 
-READ_HANDLER( carpolo_interrupt_cause_r )
+READ8_HANDLER( carpolo_interrupt_cause_r )
 {
 	/* the output of the 148 goes to bits 1-3 (which is priority ^ 7) */
 	return (TTL74148_output_r(TTL74148_3S) << 1) | priority_0_extension;
@@ -317,61 +317,61 @@ INTERRUPT_GEN( carpolo_timer_interrupt )
 }
 
 
-static WRITE_HANDLER( coin1_interrupt_clear_w )
+static WRITE8_HANDLER( coin1_interrupt_clear_w )
 {
 	TTL7474_clear_w(TTL7474_2S_1, data);
 	TTL7474_update(TTL7474_2S_1);
 }
 
-static WRITE_HANDLER( coin2_interrupt_clear_w )
+static WRITE8_HANDLER( coin2_interrupt_clear_w )
 {
 	TTL7474_clear_w(TTL7474_2S_2, data);
 	TTL7474_update(TTL7474_2S_2);
 }
 
-static WRITE_HANDLER( coin3_interrupt_clear_w )
+static WRITE8_HANDLER( coin3_interrupt_clear_w )
 {
 	TTL7474_clear_w(TTL7474_2U_1, data);
 	TTL7474_update(TTL7474_2U_1);
 }
 
-static WRITE_HANDLER( coin4_interrupt_clear_w )
+static WRITE8_HANDLER( coin4_interrupt_clear_w )
 {
 	TTL7474_clear_w(TTL7474_2U_2, data);
 	TTL7474_update(TTL7474_2U_2);
 }
 
-WRITE_HANDLER( carpolo_ball_screen_interrupt_clear_w )
+WRITE8_HANDLER( carpolo_ball_screen_interrupt_clear_w )
 {
 	TTL74148_input_line_w(TTL74148_3S, BALL_SCREEN_PRIORITY_LINE, 1);
 	TTL74148_update(TTL74148_3S);
 }
 
-WRITE_HANDLER( carpolo_car_car_interrupt_clear_w )
+WRITE8_HANDLER( carpolo_car_car_interrupt_clear_w )
 {
 	TTL74148_input_line_w(TTL74148_3S, CAR_CAR_PRIORITY_LINE, 1);
 	TTL74148_update(TTL74148_3S);
 }
 
-WRITE_HANDLER( carpolo_car_goal_interrupt_clear_w )
+WRITE8_HANDLER( carpolo_car_goal_interrupt_clear_w )
 {
 	TTL74148_input_line_w(TTL74148_3S, CAR_GOAL_PRIORITY_LINE, 1);
 	TTL74148_update(TTL74148_3S);
 }
 
-WRITE_HANDLER( carpolo_car_ball_interrupt_clear_w )
+WRITE8_HANDLER( carpolo_car_ball_interrupt_clear_w )
 {
 	TTL74148_input_line_w(TTL74148_3S, PRI0_PRIORTITY_LINE, 1);
 	TTL74148_update(TTL74148_3S);
 }
 
-WRITE_HANDLER( carpolo_car_border_interrupt_clear_w )
+WRITE8_HANDLER( carpolo_car_border_interrupt_clear_w )
 {
 	TTL74148_input_line_w(TTL74148_3S, PRI0_PRIORTITY_LINE, 1);
 	TTL74148_update(TTL74148_3S);
 }
 
-WRITE_HANDLER( carpolo_timer_interrupt_clear_w )
+WRITE8_HANDLER( carpolo_timer_interrupt_clear_w )
 {
 	TTL74148_input_line_w(TTL74148_3S, PRI0_PRIORTITY_LINE, 1);
 	TTL74148_update(TTL74148_3S);
@@ -384,7 +384,7 @@ WRITE_HANDLER( carpolo_timer_interrupt_clear_w )
  *
  *************************************/
 
-static WRITE_HANDLER( pia_0_port_a_w )
+static WRITE8_HANDLER( pia_0_port_a_w )
 {
 	/* bit 0 - Coin counter
 	   bit 1 - Player 4 crash sound
@@ -410,7 +410,7 @@ static WRITE_HANDLER( pia_0_port_a_w )
 }
 
 
-static WRITE_HANDLER( pia_0_port_b_w )
+static WRITE8_HANDLER( pia_0_port_b_w )
 {
 	/* bit 0 - Strobe speed bits sound
 	   bit 1 - Speed bit 0 sound
@@ -425,7 +425,7 @@ static WRITE_HANDLER( pia_0_port_b_w )
 	TTL74153_update(TTL74153_1K);
 }
 
-static READ_HANDLER( pia_0_port_b_r )
+static READ8_HANDLER( pia_0_port_b_r )
 {
 	/* bit 4 - Pedal bit 0
 	   bit 5 - Pedal bit 1 */
@@ -435,7 +435,7 @@ static READ_HANDLER( pia_0_port_b_r )
 }
 
 
-static READ_HANDLER( pia_1_port_a_r )
+static READ8_HANDLER( pia_1_port_a_r )
 {
 	data8_t ret;
 
@@ -458,7 +458,7 @@ static READ_HANDLER( pia_1_port_a_r )
 }
 
 
-static READ_HANDLER( pia_1_port_b_r )
+static READ8_HANDLER( pia_1_port_b_r )
 {
 	data8_t ret;
 

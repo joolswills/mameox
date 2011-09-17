@@ -1,11 +1,11 @@
-#pragma code_seg("C757")
-#pragma data_seg("D757")
-#pragma bss_seg("B757")
-#pragma const_seg("K757")
-#pragma comment(linker, "/merge:D757=757")
-#pragma comment(linker, "/merge:C757=757")
-#pragma comment(linker, "/merge:B757=757")
-#pragma comment(linker, "/merge:K757=757")
+#pragma code_seg("C799")
+#pragma data_seg("D799")
+#pragma bss_seg("B799")
+#pragma const_seg("K799")
+#pragma comment(linker, "/merge:D799=799")
+#pragma comment(linker, "/merge:C799=799")
+#pragma comment(linker, "/merge:B799=799")
+#pragma comment(linker, "/merge:K799=799")
 /***************************************************************************
 
 							  -= Unico Games =-
@@ -657,7 +657,7 @@ MACHINE_INIT( unico )
 static struct YM3812interface unico_ym3812_intf =
 {
 	1,
-	4000000,		/* ? */ //Would guess it as identical to zeropt2, any samples for confirmation?
+	3579545,		/* ? */ //Would guess it as identical to zeropt2, any samples for confirmation?
 	{ 40 },
 	{ 0 },	/* IRQ Line */
 };

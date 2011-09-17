@@ -1,11 +1,11 @@
-#pragma code_seg("C578")
-#pragma data_seg("D578")
-#pragma bss_seg("B578")
-#pragma const_seg("K578")
-#pragma comment(linker, "/merge:D578=578")
-#pragma comment(linker, "/merge:C578=578")
-#pragma comment(linker, "/merge:B578=578")
-#pragma comment(linker, "/merge:K578=578")
+#pragma code_seg("C612")
+#pragma data_seg("D612")
+#pragma bss_seg("B612")
+#pragma const_seg("K612")
+#pragma comment(linker, "/merge:D612=612")
+#pragma comment(linker, "/merge:C612=612")
+#pragma comment(linker, "/merge:B612=612")
+#pragma comment(linker, "/merge:K612=612")
 /***************************************************************************
 
 Rock'n'Rage(GX620) (c) 1986 Konami
@@ -25,16 +25,16 @@ extern int rockrage_irq_enable;
 /* from vidhrdw */
 VIDEO_START( rockrage );
 VIDEO_UPDATE( rockrage );
-WRITE_HANDLER( rockrage_vreg_w );
+WRITE8_HANDLER( rockrage_vreg_w );
 PALETTE_INIT( rockrage );
 
 static INTERRUPT_GEN( rockrage_interrupt )
 {
 	if (K007342_is_INT_enabled())
-        cpu_set_irq_line(0, HD6309_IRQ_LINE, HOLD_LINE);
+        cpunum_set_input_line(0, HD6309_IRQ_LINE, HOLD_LINE);
 }
 
-static WRITE_HANDLER( rockrage_bankswitch_w )
+static WRITE8_HANDLER( rockrage_bankswitch_w )
 {
 	int bankaddress;
 	unsigned char *RAM = memory_region(REGION_CPU1);
@@ -50,17 +50,17 @@ static WRITE_HANDLER( rockrage_bankswitch_w )
 	/* other bits unknown */
 }
 
-static WRITE_HANDLER( rockrage_sh_irqtrigger_w )
+static WRITE8_HANDLER( rockrage_sh_irqtrigger_w )
 {
 	soundlatch_w(offset, data);
-	cpu_set_irq_line(1,M6809_IRQ_LINE,HOLD_LINE);
+	cpunum_set_input_line(1,M6809_IRQ_LINE,HOLD_LINE);
 }
 
-static READ_HANDLER( rockrage_VLM5030_busy_r ) {
+static READ8_HANDLER( rockrage_VLM5030_busy_r ) {
 	return ( VLM5030_BSY() ? 1 : 0 );
 }
 
-static WRITE_HANDLER( rockrage_speech_w ) {
+static WRITE8_HANDLER( rockrage_speech_w ) {
 	/* bit2 = data bus enable */
 	VLM5030_RST( ( data >> 1 ) & 0x01 );
 	VLM5030_ST(  ( data >> 0 ) & 0x01 );

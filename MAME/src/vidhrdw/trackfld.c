@@ -85,7 +85,7 @@ PALETTE_INIT( trackfld )
 		COLOR(0,i) = (*(color_prom++) & 0x0f) + 0x10;
 }
 
-WRITE_HANDLER( trackfld_videoram_w )
+WRITE8_HANDLER( trackfld_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -94,7 +94,7 @@ WRITE_HANDLER( trackfld_videoram_w )
 	}
 }
 
-WRITE_HANDLER( trackfld_colorram_w )
+WRITE8_HANDLER( trackfld_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -103,7 +103,7 @@ WRITE_HANDLER( trackfld_colorram_w )
 	}
 }
 
-WRITE_HANDLER( trackfld_flipscreen_w )
+WRITE8_HANDLER( trackfld_flipscreen_w )
 {
 	if (flip_screen != data)
 	{

@@ -263,7 +263,7 @@ BOOL CSystem_IniFile::GetValueString( const std::string &section,
 		{
 				// Make sure the entire INI entry matches, and that entryName is not just a substring of the entry
 			std::string temp = (*i);
-			if( strcasecmp( entryName.c_str(), CSystem_StringModifier::TokenStr( temp ).c_str() ) )
+			if( strcasecmp( entryName.c_str(), CSystem_StringModifier::TokenStr( temp, '=' ).c_str() ) )
 				continue;
 
 			char *front = strchr( (*i).c_str(), '=' );

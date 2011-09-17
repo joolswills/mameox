@@ -1,11 +1,11 @@
-#pragma code_seg("C189")
-#pragma data_seg("D189")
-#pragma bss_seg("B189")
-#pragma const_seg("K189")
-#pragma comment(linker, "/merge:D189=189")
-#pragma comment(linker, "/merge:C189=189")
-#pragma comment(linker, "/merge:B189=189")
-#pragma comment(linker, "/merge:K189=189")
+#pragma code_seg("C191")
+#pragma data_seg("D191")
+#pragma bss_seg("B191")
+#pragma const_seg("K191")
+#pragma comment(linker, "/merge:D191=191")
+#pragma comment(linker, "/merge:C191=191")
+#pragma comment(linker, "/merge:B191=191")
+#pragma comment(linker, "/merge:K191=191")
 /***************************************************************************
 
 	Atari Canyon Bomber hardware
@@ -42,7 +42,7 @@
 
 #include "driver.h"
 
-extern WRITE_HANDLER( canyon_videoram_w );
+extern WRITE8_HANDLER( canyon_videoram_w );
 
 extern VIDEO_START( canyon );
 extern VIDEO_UPDATE( canyon );
@@ -75,7 +75,7 @@ static PALETTE_INIT( canyon )
  *
  *************************************/
 
-static READ_HANDLER( canyon_switches_r )
+static READ8_HANDLER( canyon_switches_r )
 {
 	UINT8 val = 0;
 
@@ -92,13 +92,13 @@ static READ_HANDLER( canyon_switches_r )
 }
 
 
-static READ_HANDLER( canyon_options_r )
+static READ8_HANDLER( canyon_options_r )
 {
 	return (readinputport(0) >> (2 * (~offset & 3))) & 3;
 }
 
 
-static READ_HANDLER( canyon_wram_r )
+static READ8_HANDLER( canyon_wram_r )
 {
 	return memory_region(REGION_CPU1)[offset];
 }
@@ -111,37 +111,37 @@ static READ_HANDLER( canyon_wram_r )
  *
  *************************************/
 
-static WRITE_HANDLER( canyon_led_w )
+static WRITE8_HANDLER( canyon_led_w )
 {
 	set_led_status(offset & 0x01, offset & 0x02);
 }
 
 
-static WRITE_HANDLER( canyon_motor_w )
+static WRITE8_HANDLER( canyon_motor_w )
 {
 	discrete_sound_w(offset & 0x01, data & 0x0f);
 }
 
 
-static WRITE_HANDLER( canyon_explode_w )
+static WRITE8_HANDLER( canyon_explode_w )
 {
 	discrete_sound_w(6, data / 16);
 }
 
 
-static WRITE_HANDLER( canyon_attract_w )
+static WRITE8_HANDLER( canyon_attract_w )
 {
 	discrete_sound_w(4 + (offset & 0x01), !(offset & 0x02));
 }
 
 
-static WRITE_HANDLER( canyon_whistle_w )
+static WRITE8_HANDLER( canyon_whistle_w )
 {
 	discrete_sound_w(2 + (offset & 0x01), (offset & 0x02) >> 1);
 }
 
 
-static WRITE_HANDLER( canyon_wram_w )
+static WRITE8_HANDLER( canyon_wram_w )
 {
 	memory_region(REGION_CPU1)[offset] = data;
 }
@@ -211,6 +211,17 @@ INPUT_PORTS_START( canyon )
 	PORT_BITX( 0x40, IP_ACTIVE_HIGH, IPT_BUTTON7, "Hiscore Reset", KEYCODE_H, IP_JOY_DEFAULT )
 	PORT_BIT ( 0x80, IP_ACTIVE_HIGH, IPT_TILT ) /* SLAM */
 
+	PORT_START
+	PORT_ADJUSTER( 20, "Motor 1 RPM" )
+
+	PORT_START
+	PORT_ADJUSTER( 30, "Motor 2 RPM" )
+
+	PORT_START
+	PORT_ADJUSTER( 70, "Whistle 1 Freq" )
+
+	PORT_START
+	PORT_ADJUSTER( 80, "Whistle 2 Freq" )
 INPUT_PORTS_END
 
 
@@ -267,10 +278,17 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 
 
 /************************************************************************/
-/* canyon Sound System Analog emulation                               */
+/* canyon Sound System Analog emulation                                 */
 /************************************************************************/
 
-int canyonWhistl555 = DISC_555_ASTBL_CAP | DISC_555_ASTBL_AC;
+const struct discrete_555_astbl_desc canyonWhistl555 =
+{
+	DISC_555_OUT_CAP | DISC_555_OUT_AC,
+	5,		// B+ voltage of 555
+	5.0 - 1.7,	// High output voltage of 555 (Usually v555 - 1.7)
+	5.0 * 2.0 /3.0,	// normally 2/3 of v555
+	5.0 / 3.0	// normally 1/3 of v555
+};
 
 const struct discrete_lfsr_desc canyon_lfsr={
 	16,                 /* Bit Length */
@@ -365,7 +383,7 @@ static DISCRETE_SOUND_START(canyon_sound_interface)
 	/* 0k = 214Hz.   250k = 4416Hz                  */
 	/************************************************/
 	DISCRETE_RCFILTER(NODE_20, 1, CANYON_MOTORSND1_DATA, 123000, 1e-6)
-	DISCRETE_ADJUSTMENT(NODE_21, 1, (214.0-27.0)/12/15, (4416.0-27.0)/12/15, (382.0-27.0)/12/15, DISC_LOGADJ, "Motor 1 RPM")
+	DISCRETE_ADJUSTMENT(NODE_21, 1, (214.0-27.0)/12/15, (4416.0-27.0)/12/15, DISC_LOGADJ, 3)
 	DISCRETE_MULTIPLY(NODE_22, 1, NODE_20, NODE_21)
 
 	DISCRETE_MULTADD(NODE_23, 1, NODE_22, 2, 27.0/6)	/* F1 = /12*2 = /6 */
@@ -388,7 +406,7 @@ static DISCRETE_SOUND_START(canyon_sound_interface)
 	/* it to sound different from motor 1.          */
 	/************************************************/
 	DISCRETE_RCFILTER(NODE_40, 1, CANYON_MOTORSND2_DATA, 123000, 1e-6)
-	DISCRETE_ADJUSTMENT(NODE_41, 1, (214.0-27.0)/12/15, (4416.0-27.0)/12/15, (522.0-27.0)/12/15, DISC_LOGADJ, "Motor 2 RPM")
+	DISCRETE_ADJUSTMENT(NODE_41, 1, (214.0-27.0)/12/15, (4416.0-27.0)/12/15, DISC_LOGADJ, 4)
 	DISCRETE_MULTIPLY(NODE_42, 1, NODE_40, NODE_41)
 
 	DISCRETE_MULTADD(NODE_43, 1, NODE_42, 2, 27.0/6)	/* F1 = /12*2 = /6 */
@@ -429,15 +447,17 @@ static DISCRETE_SOUND_START(canyon_sound_interface)
 	/* frequency, then decays at the rate set by    */
 	/* a 68k resistor and 22uf capacitor.           */
 	/************************************************/
-	DISCRETE_ADJUSTMENT(NODE_70, 1, 50000, 100000, 85000, DISC_LINADJ, "Whistle 1 Freq")	/* R59 */
-	DISCRETE_MULTADD(NODE_71, 1, CANYON_WHISTLESND1_EN, ((3.05-0.33)/5)*519.4, (0.33/5.0)*519.4)
+	DISCRETE_ADJUSTMENT(NODE_70, 1, 50000, 100000, DISC_LINADJ, 5)	/* R59 */
+	DISCRETE_MULTADD(NODE_71, 1, CANYON_WHISTLESND1_EN, 3.05-0.33, 0.33)
 	DISCRETE_RCDISC2(NODE_72, CANYON_WHISTLESND1_EN, NODE_71, 1.0, NODE_71, 68000.0, 2.2e-5)	/* CV */
-	DISCRETE_555_ASTABLE(CANYON_WHISTLESND1, CANYON_WHISTLESND1_EN, 519.4, 33000, NODE_70, 1e-8, NODE_72, &canyonWhistl555)
+	DISCRETE_555_ASTABLE(NODE_73, CANYON_WHISTLESND1_EN, 33000, NODE_70, 1e-8, NODE_72, &canyonWhistl555)
+	DISCRETE_MULTIPLY(CANYON_WHISTLESND1, CANYON_WHISTLESND1_EN, NODE_73, 519.4/3.3)
 
-	DISCRETE_ADJUSTMENT(NODE_75, 1, 50000, 100000, 90000, DISC_LINADJ, "Whistle 2 Freq")	/* R69 */
-	DISCRETE_MULTADD(NODE_76, 1, CANYON_WHISTLESND2_EN, ((3.05-0.33)/5)*519.4, (0.33/5.0)*519.4)
+	DISCRETE_ADJUSTMENT(NODE_75, 1, 50000, 100000, DISC_LINADJ, 6)	/* R69 */
+	DISCRETE_MULTADD(NODE_76, 1, CANYON_WHISTLESND2_EN, 3.05-0.33, 0.33)
 	DISCRETE_RCDISC2(NODE_77, CANYON_WHISTLESND2_EN, NODE_76, 1.0, NODE_76, 68000.0, 2.2e-5)	/* CV */
-	DISCRETE_555_ASTABLE(CANYON_WHISTLESND2, CANYON_WHISTLESND2_EN, 519.4, 33000, NODE_75, 1e-8, NODE_77, &canyonWhistl555)
+	DISCRETE_555_ASTABLE(NODE_78, CANYON_WHISTLESND2_EN, 33000, NODE_75, 1e-8, NODE_77, &canyonWhistl555)
+	DISCRETE_MULTIPLY(CANYON_WHISTLESND2, CANYON_WHISTLESND2_EN, NODE_78, 519.4/3.3)
 
 	/************************************************/
 	/* Combine all 5 sound sources.                 */
@@ -449,7 +469,8 @@ static DISCRETE_SOUND_START(canyon_sound_interface)
 	DISCRETE_GAIN(CANYON_FINAL_MIX1, NODE_90, 77)
 	DISCRETE_GAIN(CANYON_FINAL_MIX2, NODE_91, 77)
 
-	DISCRETE_OUTPUT_STEREO(CANYON_FINAL_MIX1, CANYON_FINAL_MIX2, 100)
+	DISCRETE_OUTPUT(CANYON_FINAL_MIX1, MIXER(100,MIXER_PAN_LEFT))
+	DISCRETE_OUTPUT(CANYON_FINAL_MIX2, MIXER(100,MIXER_PAN_RIGHT))
 DISCRETE_SOUND_END
 
 

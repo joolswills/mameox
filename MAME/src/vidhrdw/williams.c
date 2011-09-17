@@ -230,13 +230,13 @@ VIDEO_UPDATE( williams )
  *
  *************************************/
 
-WRITE_HANDLER( williams_videoram_w )
+WRITE8_HANDLER( williams_videoram_w )
 {
 	williams_videoram[offset] = data;
 }
 
 
-READ_HANDLER( williams_video_counter_r )
+READ8_HANDLER( williams_video_counter_r )
 {
 	return cpu_getscanline() & 0xfc;
 }
@@ -379,7 +379,7 @@ static void williams2_update_bg_color(unsigned int offset)
 }
 
 
-WRITE_HANDLER( williams2_fg_select_w )
+WRITE8_HANDLER( williams2_fg_select_w )
 {
 	unsigned int i, palindex;
 
@@ -395,7 +395,7 @@ WRITE_HANDLER( williams2_fg_select_w )
 }
 
 
-WRITE_HANDLER( williams2_bg_select_w )
+WRITE8_HANDLER( williams2_bg_select_w )
 {
 	unsigned int i, palindex;
 
@@ -436,7 +436,7 @@ WRITE_HANDLER( williams2_bg_select_w )
  *
  *************************************/
 
-WRITE_HANDLER( williams2_videoram_w )
+WRITE8_HANDLER( williams2_videoram_w )
 {
 	/* bank 3 doesn't touch the screen */
 	if ((williams2_bank & 0x03) == 0x03)
@@ -496,13 +496,13 @@ VIDEO_START( blaster )
  *
  *************************************/
 
-WRITE_HANDLER( blaster_remap_select_w )
+WRITE8_HANDLER( blaster_remap_select_w )
 {
 	blaster_remap = blaster_remap_lookup + data * 256;
 }
 
 
-WRITE_HANDLER( blaster_palette_0_w )
+WRITE8_HANDLER( blaster_palette_0_w )
 {
 	blaster_color_zero_table[offset] = data;
 	data ^= 0xff;
@@ -585,7 +585,7 @@ WRITE_HANDLER( blaster_palette_0_w )
  *
  *************************************/
 
-WRITE_HANDLER( williams_blitter_w )
+WRITE8_HANDLER( williams_blitter_w )
 {
 	int sstart, dstart, w, h, count;
 

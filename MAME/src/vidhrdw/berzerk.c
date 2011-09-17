@@ -1,11 +1,11 @@
-#pragma code_seg("C159")
-#pragma data_seg("D159")
-#pragma bss_seg("B159")
-#pragma const_seg("K159")
-#pragma comment(linker, "/merge:D159=159")
-#pragma comment(linker, "/merge:C159=159")
-#pragma comment(linker, "/merge:B159=159")
-#pragma comment(linker, "/merge:K159=159")
+#pragma code_seg("C160")
+#pragma data_seg("D160")
+#pragma bss_seg("B160")
+#pragma const_seg("K160")
+#pragma comment(linker, "/merge:D160=160")
+#pragma comment(linker, "/merge:C160=160")
+#pragma comment(linker, "/merge:B160=160")
+#pragma comment(linker, "/merge:K160=160")
 /***************************************************************************
 
   vidhrdw.c
@@ -65,7 +65,7 @@ INLINE void copy_byte(UINT8 x, UINT8 y, data8_t data, data8_t col)
 }
 
 
-WRITE_HANDLER( berzerk_videoram_w )
+WRITE8_HANDLER( berzerk_videoram_w )
 {
 	offs_t coloroffset;
 	UINT8 x, y;
@@ -83,7 +83,7 @@ WRITE_HANDLER( berzerk_videoram_w )
 }
 
 
-WRITE_HANDLER( berzerk_colorram_w )
+WRITE8_HANDLER( berzerk_colorram_w )
 {
 	int i;
 	UINT8 x, y;
@@ -105,7 +105,7 @@ WRITE_HANDLER( berzerk_colorram_w )
 }
 
 
-WRITE_HANDLER( berzerk_magicram_w )
+WRITE8_HANDLER( berzerk_magicram_w )
 {
 	data16_t data2;
 	data8_t data3;
@@ -163,7 +163,7 @@ WRITE_HANDLER( berzerk_magicram_w )
 }
 
 
-WRITE_HANDLER( berzerk_magicram_control_w )
+WRITE8_HANDLER( berzerk_magicram_control_w )
 {
 	magicram_control = data;
 	magicram_latch = 0;
@@ -171,7 +171,7 @@ WRITE_HANDLER( berzerk_magicram_control_w )
 }
 
 
-READ_HANDLER( berzerk_port_4e_r )
+READ8_HANDLER( berzerk_port_4e_r )
 {
 	return input_port_3_r(0) | collision;
 }

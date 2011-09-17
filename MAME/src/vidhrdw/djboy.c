@@ -1,11 +1,11 @@
-#pragma code_seg("C255")
-#pragma data_seg("D255")
-#pragma bss_seg("B255")
-#pragma const_seg("K255")
-#pragma comment(linker, "/merge:D255=255")
-#pragma comment(linker, "/merge:C255=255")
-#pragma comment(linker, "/merge:B255=255")
-#pragma comment(linker, "/merge:K255=255")
+#pragma code_seg("C265")
+#pragma data_seg("D265")
+#pragma bss_seg("B265")
+#pragma const_seg("K265")
+#pragma comment(linker, "/merge:D265=265")
+#pragma comment(linker, "/merge:C265=265")
+#pragma comment(linker, "/merge:B265=265")
+#pragma comment(linker, "/merge:K265=265")
 /**
  * @file vidhrdw/djboy.c
  *
@@ -22,12 +22,12 @@ void djboy_set_videoreg( data8_t data )
 	djboy_videoreg = data;
 }
 
-WRITE_HANDLER( djboy_scrollx_w )
+WRITE8_HANDLER( djboy_scrollx_w )
 {
 	djboy_scrollx = data;
 }
 
-WRITE_HANDLER( djboy_scrolly_w )
+WRITE8_HANDLER( djboy_scrolly_w )
 {
 	djboy_scrolly = data;
 }
@@ -43,7 +43,7 @@ static void get_bg_tile_info(int tile_index)
 			0)
 }
 
-WRITE_HANDLER( djboy_videoram_w )
+WRITE8_HANDLER( djboy_videoram_w )
 {
 	if( videoram[offset] != data)
 	{
@@ -102,7 +102,7 @@ draw_sprites( struct mame_bitmap *bitmap,const struct rectangle *cliprect )
 	} /* next page */
 } /* draw_sprites */
 
-WRITE_HANDLER( djboy_paletteram_w )
+WRITE8_HANDLER( djboy_paletteram_w )
 {
 	int r,g,b;
 	int val;

@@ -1,11 +1,11 @@
-#pragma code_seg("C542")
-#pragma data_seg("D542")
-#pragma bss_seg("B542")
-#pragma const_seg("K542")
-#pragma comment(linker, "/merge:D542=542")
-#pragma comment(linker, "/merge:C542=542")
-#pragma comment(linker, "/merge:B542=542")
-#pragma comment(linker, "/merge:K542=542")
+#pragma code_seg("C573")
+#pragma data_seg("D573")
+#pragma bss_seg("B573")
+#pragma const_seg("K573")
+#pragma comment(linker, "/merge:D573=573")
+#pragma comment(linker, "/merge:C573=573")
+#pragma comment(linker, "/merge:B573=573")
+#pragma comment(linker, "/merge:K573=573")
 /***************************************************************************
 
 	P&P Marketing Police Trainer hardware
@@ -251,12 +251,12 @@ WRITE32_HANDLER( policetr_video_w )
 
 				/* latch 0x50 clears IRQ4 */
 				case 0x50:
-					cpu_set_irq_line(0, R3000_IRQ4, CLEAR_LINE);
+					cpunum_set_input_line(0, R3000_IRQ4, CLEAR_LINE);
 					break;
 
 				/* latch 0x60 clears IRQ5 */
 				case 0x60:
-					cpu_set_irq_line(0, R3000_IRQ5, CLEAR_LINE);
+					cpunum_set_input_line(0, R3000_IRQ5, CLEAR_LINE);
 					break;
 
 				/* log anything else */

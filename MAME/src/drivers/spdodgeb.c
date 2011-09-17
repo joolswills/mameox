@@ -1,11 +1,11 @@
-#pragma code_seg("C643")
-#pragma data_seg("D643")
-#pragma bss_seg("B643")
-#pragma const_seg("K643")
-#pragma comment(linker, "/merge:D643=643")
-#pragma comment(linker, "/merge:C643=643")
-#pragma comment(linker, "/merge:B643=643")
-#pragma comment(linker, "/merge:K643=643")
+#pragma code_seg("C679")
+#pragma data_seg("D679")
+#pragma bss_seg("B679")
+#pragma const_seg("K679")
+#pragma comment(linker, "/merge:D679=679")
+#pragma comment(linker, "/merge:C679=679")
+#pragma comment(linker, "/merge:B679=679")
+#pragma comment(linker, "/merge:K679=679")
 /***************************************************************************
 
 Super Dodgeball / Nekketsu Koukou Dodgeball Bu
@@ -36,9 +36,9 @@ PALETTE_INIT( spdodgeb );
 VIDEO_START( spdodgeb );
 VIDEO_UPDATE( spdodgeb );
 INTERRUPT_GEN( spdodgeb_interrupt );
-WRITE_HANDLER( spdodgeb_scrollx_lo_w );
-WRITE_HANDLER( spdodgeb_ctrl_w );
-WRITE_HANDLER( spdodgeb_videoram_w );
+WRITE8_HANDLER( spdodgeb_scrollx_lo_w );
+WRITE8_HANDLER( spdodgeb_ctrl_w );
+WRITE8_HANDLER( spdodgeb_videoram_w );
 
 
 /* private globals */
@@ -47,13 +47,13 @@ static int adpcm_pos[2],adpcm_end[2],adpcm_idle[2];
 /* end of private globals */
 
 
-static WRITE_HANDLER( sound_command_w )
+static WRITE8_HANDLER( sound_command_w )
 {
 	soundlatch_w(offset,data);
-	cpu_set_irq_line(1,M6809_IRQ_LINE,HOLD_LINE);
+	cpunum_set_input_line(1,M6809_IRQ_LINE,HOLD_LINE);
 }
 
-static WRITE_HANDLER( spd_adpcm_w )
+static WRITE8_HANDLER( spd_adpcm_w )
 {
 	int chip = offset & 1;
 
@@ -233,7 +233,7 @@ static void mcu63705_update_inputs(void)
 }
 #endif
 
-static READ_HANDLER( mcu63701_r )
+static READ8_HANDLER( mcu63701_r )
 {
 //	logerror("CPU #0 PC %04x: read from port %02x of 63701 data address 3801\n",activecpu_get_pc(),offset);
 
@@ -249,7 +249,7 @@ static READ_HANDLER( mcu63701_r )
 	}
 }
 
-static WRITE_HANDLER( mcu63701_w )
+static WRITE8_HANDLER( mcu63701_w )
 {
 //	logerror("CPU #0 PC %04x: write %02x to 63701 control address 3800\n",activecpu_get_pc(),data);
 	mcu63701_command = data;
@@ -257,7 +257,7 @@ static WRITE_HANDLER( mcu63701_w )
 }
 
 
-static READ_HANDLER( port_0_r )
+static READ8_HANDLER( port_0_r )
 {
 	int port = readinputport(0);
 
@@ -419,7 +419,7 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 
 static void irq_handler(int irq)
 {
-	cpu_set_irq_line(1,M6809_FIRQ_LINE,irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1,M6809_FIRQ_LINE,irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 static struct YM3812interface ym3812_interface =

@@ -1,11 +1,11 @@
-#pragma code_seg("C377")
-#pragma data_seg("D377")
-#pragma bss_seg("B377")
-#pragma const_seg("K377")
-#pragma comment(linker, "/merge:D377=377")
-#pragma comment(linker, "/merge:C377=377")
-#pragma comment(linker, "/merge:B377=377")
-#pragma comment(linker, "/merge:K377=377")
+#pragma code_seg("C392")
+#pragma data_seg("D392")
+#pragma bss_seg("B392")
+#pragma const_seg("K392")
+#pragma comment(linker, "/merge:D392=392")
+#pragma comment(linker, "/merge:C392=392")
+#pragma comment(linker, "/merge:B392=392")
+#pragma comment(linker, "/merge:K392=392")
 /***************************************************************************
 
 	Atari Return of the Jedi hardware
@@ -107,7 +107,7 @@ VIDEO_START( jedi )
  *
  *************************************/
 
-WRITE_HANDLER( jedi_paletteram_w )
+WRITE8_HANDLER( jedi_paletteram_w )
 {
     int r, g, b, bits, intensity;
     UINT32 color;
@@ -134,7 +134,7 @@ WRITE_HANDLER( jedi_paletteram_w )
  *
  *************************************/
 
-WRITE_HANDLER( jedi_backgroundram_w )
+WRITE8_HANDLER( jedi_backgroundram_w )
 {
 	if (jedi_backgroundram[offset] != data)
 	{
@@ -151,7 +151,7 @@ WRITE_HANDLER( jedi_backgroundram_w )
  *
  *************************************/
 
-WRITE_HANDLER( jedi_alpha_banksel_w )
+WRITE8_HANDLER( jedi_alpha_banksel_w )
 {
 	if (jedi_alpha_bank != 2 * (data & 0x80))
 	{
@@ -168,13 +168,13 @@ WRITE_HANDLER( jedi_alpha_banksel_w )
  *
  *************************************/
 
-WRITE_HANDLER( jedi_vscroll_w )
+WRITE8_HANDLER( jedi_vscroll_w )
 {
     jedi_vscroll = data | (offset << 8);
 }
 
 
-WRITE_HANDLER( jedi_hscroll_w )
+WRITE8_HANDLER( jedi_hscroll_w )
 {
     jedi_hscroll = data | (offset << 8);
 }
@@ -187,13 +187,13 @@ WRITE_HANDLER( jedi_hscroll_w )
  *
  *************************************/
 
-WRITE_HANDLER( jedi_video_off_w )
+WRITE8_HANDLER( jedi_video_off_w )
 {
 	video_off = data;
 }
 
 
-WRITE_HANDLER( jedi_PIXIRAM_w )
+WRITE8_HANDLER( jedi_PIXIRAM_w )
 {
 	smooth_table = data & 0x03;
 	memset(bgdirty, 1, jedi_backgroundram_size);

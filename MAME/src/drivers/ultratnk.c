@@ -1,11 +1,11 @@
-#pragma code_seg("C755")
-#pragma data_seg("D755")
-#pragma bss_seg("B755")
-#pragma const_seg("K755")
-#pragma comment(linker, "/merge:D755=755")
-#pragma comment(linker, "/merge:C755=755")
-#pragma comment(linker, "/merge:B755=755")
-#pragma comment(linker, "/merge:K755=755")
+#pragma code_seg("C797")
+#pragma data_seg("D797")
+#pragma bss_seg("B797")
+#pragma const_seg("K797")
+#pragma comment(linker, "/merge:D797=797")
+#pragma comment(linker, "/merge:C797=797")
+#pragma comment(linker, "/merge:B797=797")
+#pragma comment(linker, "/merge:K797=797")
 /***************************************************************************
 
 	Atari/Kee Ultra Tank hardware
@@ -115,7 +115,7 @@ static void ultratnk_draw_sprites( struct mame_bitmap *bitmap )
  *
  *************************************/
 
-static WRITE_HANDLER( ultratnk_videoram_w )
+static WRITE8_HANDLER( ultratnk_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -160,7 +160,7 @@ VIDEO_UPDATE( ultratnk )
  *
  *************************************/
 
-static WRITE_HANDLER( da_latch_w )
+static WRITE8_HANDLER( da_latch_w )
 {
 	int joybits = readinputport(4);
 	ultratnk_controls = readinputport(3); /* start and fire buttons */
@@ -186,19 +186,19 @@ static WRITE_HANDLER( da_latch_w )
 }
 
 
-static READ_HANDLER( ultratnk_controls_r )
+static READ8_HANDLER( ultratnk_controls_r )
 {
 	return (ultratnk_controls << offset) & 0x80;
 }
 
 
-static READ_HANDLER( ultratnk_barrier_r )
+static READ8_HANDLER( ultratnk_barrier_r )
 {
 	return readinputport(2) & 0x80;
 }
 
 
-static READ_HANDLER( ultratnk_coin_r )
+static READ8_HANDLER( ultratnk_coin_r )
 {
 	switch (offset & 0x06)
 	{
@@ -212,13 +212,13 @@ static READ_HANDLER( ultratnk_coin_r )
 }
 
 
-static READ_HANDLER( ultratnk_tilt_r )
+static READ8_HANDLER( ultratnk_tilt_r )
 {
 	return (readinputport(2) << 5) & 0x80;	/* tilt */
 }
 
 
-static READ_HANDLER( ultratnk_dipsw_r )
+static READ8_HANDLER( ultratnk_dipsw_r )
 {
 	int dipsw = readinputport(0);
 	switch( offset )
@@ -238,17 +238,17 @@ static READ_HANDLER( ultratnk_dipsw_r )
  *	Sound handlers
  *
  *************************************/
-WRITE_HANDLER( ultratnk_fire_w )
+WRITE8_HANDLER( ultratnk_fire_w )
 {
 	discrete_sound_w(offset/2, offset&1);
 }
 
-WRITE_HANDLER( ultratnk_attract_w )
+WRITE8_HANDLER( ultratnk_attract_w )
 {
 	discrete_sound_w(5, (data & 1));
 }
 
-WRITE_HANDLER( ultratnk_explosion_w )
+WRITE8_HANDLER( ultratnk_explosion_w )
 {
 	discrete_sound_w(4, data % 16);
 }
@@ -266,7 +266,7 @@ static INTERRUPT_GEN( ultratnk_interrupt )
 	if (readinputport(1) & 0x40 )
 	{
 		/* only do NMI interrupt if not in TEST mode */
-		cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 	}
 }
 
@@ -278,7 +278,7 @@ static INTERRUPT_GEN( ultratnk_interrupt )
  *
  *************************************/
 
-static READ_HANDLER( ultratnk_collision_r )
+static READ8_HANDLER( ultratnk_collision_r )
 {
 	/**	Note: hardware collision detection is not emulated.
 	 *	However, the game is fully playable, since the game software uses it
@@ -293,19 +293,19 @@ static READ_HANDLER( ultratnk_collision_r )
 }
 
 
-static WRITE_HANDLER( ultratnk_leds_w )
+static WRITE8_HANDLER( ultratnk_leds_w )
 {
 	set_led_status(offset/2,offset&1);
 }
 
 
-static READ_HANDLER( mirror_r )
+static READ8_HANDLER( mirror_r )
 {
 	return mirror_ram[offset];
 }
 
 
-static WRITE_HANDLER( mirror_w )
+static WRITE8_HANDLER( mirror_w )
 {
 	mirror_ram[offset] = data;
 }
@@ -415,6 +415,12 @@ INPUT_PORTS_START( ultratnk )
 	PORT_BIT( 0xa0, IP_ACTIVE_HIGH, IPT_JOYSTICKLEFT_UP    | IPF_PLAYER2 )	/* note that this sets 2 bits */
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_JOYSTICKRIGHT_DOWN | IPF_PLAYER2 )
 	PORT_BIT( 0x50, IP_ACTIVE_HIGH, IPT_JOYSTICKRIGHT_UP   | IPF_PLAYER2 )	/* note that this sets 2 bits */
+
+	PORT_START		/* 5 */
+	PORT_ADJUSTER( 5, "Motor 1 RPM" )
+
+	PORT_START		/* 6 */
+	PORT_ADJUSTER( 10, "Motor 2 RPM" )
 INPUT_PORTS_END
 
 
@@ -548,7 +554,7 @@ static DISCRETE_SOUND_START(ultratnk_sound_interface)
 	/* 0k = 214Hz.   250k = 4416Hz                  */
 	/************************************************/
 	DISCRETE_RCFILTER(NODE_20, 1, ULTRATNK_MOTORSND1_DATA, 123000, 2.2e-6)
-	DISCRETE_ADJUSTMENT(NODE_21, 1, (214.0-27.0)/12/15, (4416.0-27.0)/12/15, (382.0-27.0)/12/15, DISC_LOGADJ, "Motor 1 RPM")
+	DISCRETE_ADJUSTMENT(NODE_21, 1, (214.0-27.0)/12/15, (4416.0-27.0)/12/15, DISC_LOGADJ, 5)
 	DISCRETE_MULTIPLY(NODE_22, 1, NODE_20, NODE_21)
 
 	DISCRETE_MULTADD(NODE_23, 1, NODE_22, 2, 27.0/6)	/* F1 = /12*2 = /6 */
@@ -571,7 +577,7 @@ static DISCRETE_SOUND_START(ultratnk_sound_interface)
 	/* it to sound different from Tank1.            */
 	/************************************************/
 	DISCRETE_RCFILTER(NODE_40, 1, ULTRATNK_MOTORSND2_DATA, 123000, 2.2e-6)
-	DISCRETE_ADJUSTMENT(NODE_41, 1, (214.0-27.0)/12/15, (4416.0-27.0)/12/15, (522.0-27.0)/12/15, DISC_LOGADJ, "Motor 2 RPM")
+	DISCRETE_ADJUSTMENT(NODE_41, 1, (214.0-27.0)/12/15, (4416.0-27.0)/12/15, DISC_LOGADJ, 6)
 	DISCRETE_MULTIPLY(NODE_42, 1, NODE_40, NODE_41)
 
 	DISCRETE_MULTADD(NODE_43, 1, NODE_42, 2, 27.0/6)	/* F1 = /12*2 = /6 */

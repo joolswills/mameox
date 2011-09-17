@@ -1,11 +1,11 @@
-#pragma code_seg("C458")
-#pragma data_seg("D458")
-#pragma bss_seg("B458")
-#pragma const_seg("K458")
-#pragma comment(linker, "/merge:D458=458")
-#pragma comment(linker, "/merge:C458=458")
-#pragma comment(linker, "/merge:B458=458")
-#pragma comment(linker, "/merge:K458=458")
+#pragma code_seg("C483")
+#pragma data_seg("D483")
+#pragma bss_seg("B483")
+#pragma const_seg("K483")
+#pragma comment(linker, "/merge:D483=483")
+#pragma comment(linker, "/merge:C483=483")
+#pragma comment(linker, "/merge:B483=483")
+#pragma comment(linker, "/merge:K483=483")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -47,7 +47,7 @@ VIDEO_START( mnight )
 }
 
 
-WRITE_HANDLER( mnight_bgvideoram_w )
+WRITE8_HANDLER( mnight_bgvideoram_w )
 {
 	if (mnight_background_videoram[offset] != data)
 	{
@@ -56,13 +56,13 @@ WRITE_HANDLER( mnight_bgvideoram_w )
 	}
 }
 
-WRITE_HANDLER( mnight_fgvideoram_w )
+WRITE8_HANDLER( mnight_fgvideoram_w )
 {
 	if (mnight_foreground_videoram[offset] != data)
 		mnight_foreground_videoram[offset] = data;
 }
 
-WRITE_HANDLER( mnight_background_enable_w )
+WRITE8_HANDLER( mnight_background_enable_w )
 {
 	if (bg_enable!=data)
 	{
@@ -75,7 +75,7 @@ WRITE_HANDLER( mnight_background_enable_w )
 	}
 }
 
-WRITE_HANDLER( mnight_sprite_overdraw_w )
+WRITE8_HANDLER( mnight_sprite_overdraw_w )
 {
 	if (sp_overdraw != (data&1))
 	{

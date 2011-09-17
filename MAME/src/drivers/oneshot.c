@@ -1,11 +1,11 @@
-#pragma code_seg("C513")
-#pragma data_seg("D513")
-#pragma bss_seg("B513")
-#pragma const_seg("K513")
-#pragma comment(linker, "/merge:D513=513")
-#pragma comment(linker, "/merge:C513=513")
-#pragma comment(linker, "/merge:B513=513")
-#pragma comment(linker, "/merge:K513=513")
+#pragma code_seg("C542")
+#pragma data_seg("D542")
+#pragma bss_seg("B542")
+#pragma const_seg("K542")
+#pragma comment(linker, "/merge:D542=542")
+#pragma comment(linker, "/merge:C542=542")
+#pragma comment(linker, "/merge:B542=542")
+#pragma comment(linker, "/merge:K542=542")
 /* One Shot One Kill & Maddonna
    Driver by David Haywood and Paul Priest
    Dip Switches and Inputs by Stephane Humbert
@@ -368,7 +368,7 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 
 static void irq_handler(int irq)
 {
-	cpu_set_irq_line(1, 0, irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1, 0, irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 static struct YM3812interface ym3812_interface =

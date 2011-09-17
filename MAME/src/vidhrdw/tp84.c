@@ -1,11 +1,11 @@
-#pragma code_seg("C737")
-#pragma data_seg("D737")
-#pragma bss_seg("B737")
-#pragma const_seg("K737")
-#pragma comment(linker, "/merge:D737=737")
-#pragma comment(linker, "/merge:C737=737")
-#pragma comment(linker, "/merge:B737=737")
-#pragma comment(linker, "/merge:K737=737")
+#pragma code_seg("C779")
+#pragma data_seg("D779")
+#pragma bss_seg("B779")
+#pragma const_seg("K779")
+#pragma comment(linker, "/merge:D779=779")
+#pragma comment(linker, "/merge:C779=779")
+#pragma comment(linker, "/merge:B779=779")
+#pragma comment(linker, "/merge:K779=779")
 /***************************************************************************
 
 	vidhrdw.c
@@ -125,7 +125,7 @@ PALETTE_INIT( tp84 )
 }
 
 
-WRITE_HANDLER( tp84_videoram_w )
+WRITE8_HANDLER( tp84_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -134,7 +134,7 @@ WRITE_HANDLER( tp84_videoram_w )
 	}
 }
 
-WRITE_HANDLER( tp84_colorram_w )
+WRITE8_HANDLER( tp84_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -143,7 +143,7 @@ WRITE_HANDLER( tp84_colorram_w )
 	}
 }
 
-WRITE_HANDLER( tp84_videoram2_w )
+WRITE8_HANDLER( tp84_videoram2_w )
 {
 	if (tp84_videoram2[offset] != data)
 	{
@@ -152,7 +152,7 @@ WRITE_HANDLER( tp84_videoram2_w )
 	}
 }
 
-WRITE_HANDLER( tp84_colorram2_w )
+WRITE8_HANDLER( tp84_colorram2_w )
 {
 	if (tp84_colorram2[offset] != data)
 	{
@@ -161,38 +161,30 @@ WRITE_HANDLER( tp84_colorram2_w )
 	}
 }
 
-WRITE_HANDLER( tp84_scroll_x_w )
+WRITE8_HANDLER( tp84_scroll_x_w )
 {
 	tilemap_set_scrollx(bg_tilemap, 0, data);
 }
 
-WRITE_HANDLER( tp84_scroll_y_w )
+WRITE8_HANDLER( tp84_scroll_y_w )
 {
 	tilemap_set_scrolly(bg_tilemap, 0, data);
 }
 
-WRITE_HANDLER( tp84_flipscreen_x_w )
+WRITE8_HANDLER( tp84_flipscreen_x_w )
 {
-	if (flip_screen_x != (data & 0x01))
-	{
-		flip_screen_x_set(data & 0x01);
-		tilemap_mark_all_tiles_dirty(ALL_TILEMAPS);
-	}
+	flip_screen_x_set(data & 0x01);
 }
 
-WRITE_HANDLER( tp84_flipscreen_y_w )
+WRITE8_HANDLER( tp84_flipscreen_y_w )
 {
-	if (flip_screen_y != (data & 0x01))
-	{
-		flip_screen_y_set(data & 0x01);
-		tilemap_mark_all_tiles_dirty(ALL_TILEMAPS);
-	}
+	flip_screen_y_set(data & 0x01);
 }
 
 /*****
   col0 is a register to index the color Proms
 *****/
-WRITE_HANDLER( tp84_col0_w )
+WRITE8_HANDLER( tp84_col0_w )
 {
 	if (col0 != data)
 	{
@@ -202,7 +194,7 @@ WRITE_HANDLER( tp84_col0_w )
 }
 
 /* Return the current video scan line */
-READ_HANDLER( tp84_scanline_r )
+READ8_HANDLER( tp84_scanline_r )
 {
 	return scanline;
 }

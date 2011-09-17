@@ -1,11 +1,11 @@
-#pragma code_seg("C130")
-#pragma data_seg("D130")
-#pragma bss_seg("B130")
-#pragma const_seg("K130")
-#pragma comment(linker, "/merge:D130=130")
-#pragma comment(linker, "/merge:C130=130")
-#pragma comment(linker, "/merge:B130=130")
-#pragma comment(linker, "/merge:K130=130")
+#pragma code_seg("C131")
+#pragma data_seg("D131")
+#pragma bss_seg("B131")
+#pragma const_seg("K131")
+#pragma comment(linker, "/merge:D131=131")
+#pragma comment(linker, "/merge:C131=131")
+#pragma comment(linker, "/merge:B131=131")
+#pragma comment(linker, "/merge:K131=131")
 /***************************************************************************
 
 	Video emulation for Astro Invader, Space Intruder et al
@@ -26,7 +26,7 @@ void astinvad_set_flash(int data)
 }
 
 
-WRITE_HANDLER( spaceint_color_w )
+WRITE8_HANDLER( spaceint_color_w )
 {
 	spaceint_color = data & 15;
 }
@@ -85,7 +85,7 @@ static void astinvad_refresh(int offset)
 }
 
 
-WRITE_HANDLER( spaceint_videoram_w )
+WRITE8_HANDLER( spaceint_videoram_w )
 {
 	videoram[offset] = data;
 	colorram[offset] = spaceint_color;
@@ -94,7 +94,7 @@ WRITE_HANDLER( spaceint_videoram_w )
 }
 
 
-WRITE_HANDLER( astinvad_videoram_w )
+WRITE8_HANDLER( astinvad_videoram_w )
 {
 	videoram[offset] = data;
 

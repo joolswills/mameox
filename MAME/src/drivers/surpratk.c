@@ -1,11 +1,11 @@
-#pragma code_seg("C686")
-#pragma data_seg("D686")
-#pragma bss_seg("B686")
-#pragma const_seg("K686")
-#pragma comment(linker, "/merge:D686=686")
-#pragma comment(linker, "/merge:C686=686")
-#pragma comment(linker, "/merge:B686=686")
-#pragma comment(linker, "/merge:K686=686")
+#pragma code_seg("C725")
+#pragma data_seg("D725")
+#pragma bss_seg("B725")
+#pragma const_seg("K725")
+#pragma comment(linker, "/merge:D725=725")
+#pragma comment(linker, "/merge:C725=725")
+#pragma comment(linker, "/merge:B725=725")
+#pragma comment(linker, "/merge:K725=725")
 /***************************************************************************
 
 Surprise Attack (Konami GX911) (c) 1990 Konami
@@ -33,10 +33,10 @@ static unsigned char *ram;
 
 static INTERRUPT_GEN( surpratk_interrupt )
 {
-	if (K052109_is_IRQ_enabled()) cpu_set_irq_line(0,0,HOLD_LINE);
+	if (K052109_is_IRQ_enabled()) cpunum_set_input_line(0,0,HOLD_LINE);
 }
 
-static READ_HANDLER( bankedram_r )
+static READ8_HANDLER( bankedram_r )
 {
 	if (videobank & 0x02)
 	{
@@ -51,7 +51,7 @@ static READ_HANDLER( bankedram_r )
 		return ram[offset];
 }
 
-static WRITE_HANDLER( bankedram_w )
+static WRITE8_HANDLER( bankedram_w )
 {
 	if (videobank & 0x02)
 	{
@@ -66,7 +66,7 @@ static WRITE_HANDLER( bankedram_w )
 		ram[offset] = data;
 }
 
-static WRITE_HANDLER( surpratk_videobank_w )
+static WRITE8_HANDLER( surpratk_videobank_w )
 {
 logerror("%04x: videobank = %02x\n",activecpu_get_pc(),data);
 	/* bit 0 = select 053245 at 0000-07ff */
@@ -75,7 +75,7 @@ logerror("%04x: videobank = %02x\n",activecpu_get_pc(),data);
 	videobank = data;
 }
 
-static WRITE_HANDLER( surpratk_5fc0_w )
+static WRITE8_HANDLER( surpratk_5fc0_w )
 {
 	if ((data & 0xf4) != 0x10) logerror("%04x: 3fc0 = %02x\n",activecpu_get_pc(),data);
 
@@ -231,7 +231,7 @@ INPUT_PORTS_END
 
 static void irqhandler(int linestate)
 {
-	cpu_set_irq_line(0,KONAMI_FIRQ_LINE,linestate);
+	cpunum_set_input_line(0,KONAMI_FIRQ_LINE,linestate);
 }
 
 static struct YM2151interface ym2151_interface =

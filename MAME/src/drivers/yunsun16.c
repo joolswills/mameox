@@ -1,11 +1,11 @@
-#pragma code_seg("C802")
-#pragma data_seg("D802")
-#pragma bss_seg("B802")
-#pragma const_seg("K802")
-#pragma comment(linker, "/merge:D802=802")
-#pragma comment(linker, "/merge:C802=802")
-#pragma comment(linker, "/merge:B802=802")
-#pragma comment(linker, "/merge:K802=802")
+#pragma code_seg("C844")
+#pragma data_seg("D844")
+#pragma bss_seg("B844")
+#pragma const_seg("K844")
+#pragma comment(linker, "/merge:D844=844")
+#pragma comment(linker, "/merge:C844=844")
+#pragma comment(linker, "/merge:B844=844")
+#pragma comment(linker, "/merge:K844=844")
 /***************************************************************************
 
 						  -= Yun Sung 16 Bit Games =-
@@ -122,7 +122,7 @@ number 0 on each voice. That sample is 00000-00000.
 		if ((data&0xff)!=0x3a)
 		{
 		soundlatch_w(0,data & 0xff);
-		cpu_set_nmi_line(1,PULSE_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 		}
 	}
 }
@@ -130,7 +130,7 @@ number 0 on each voice. That sample is 00000-00000.
 DRIVER_INIT( magicbub )
 {
 //	remove_mem_write16_handler (0, 0x800180, 0x800181 );
-	install_mem_write16_handler(0, 0x800188, 0x800189, magicbub_sound_command_w);
+	memory_install_write16_handler(0, ADDRESS_SPACE_PROGRAM, 0x800188, 0x800189, 0, 0, magicbub_sound_command_w);
 }
 
 /***************************************************************************
@@ -404,7 +404,7 @@ static struct GfxDecodeInfo yunsun16_gfxdecodeinfo[] =
 
 static void soundirq(int state)
 {
-	cpu_set_irq_line(1, 0, state);
+	cpunum_set_input_line(1, 0, state);
 }
 
 static struct YM3812interface magicbub_ym3812_intf =

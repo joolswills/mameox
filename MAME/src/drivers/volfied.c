@@ -1,11 +1,11 @@
-#pragma code_seg("C770")
-#pragma data_seg("D770")
-#pragma bss_seg("B770")
-#pragma const_seg("K770")
-#pragma comment(linker, "/merge:D770=770")
-#pragma comment(linker, "/merge:C770=770")
-#pragma comment(linker, "/merge:B770=770")
-#pragma comment(linker, "/merge:K770=770")
+#pragma code_seg("C812")
+#pragma data_seg("D812")
+#pragma bss_seg("B812")
+#pragma const_seg("K812")
+#pragma comment(linker, "/merge:D812=812")
+#pragma comment(linker, "/merge:C812=812")
+#pragma comment(linker, "/merge:B812=812")
+#pragma comment(linker, "/merge:K812=812")
 /******************************************************************
 
 Volfied (c) 1989 Taito Corporation
@@ -306,7 +306,7 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 
 static void irqhandler(int irq)
 {
-	cpu_set_irq_line(1, 0, irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1, 0, irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 static struct YM2203interface ym2203_interface =

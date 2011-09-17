@@ -1,11 +1,11 @@
-#pragma code_seg("C378")
-#pragma data_seg("D378")
-#pragma bss_seg("B378")
-#pragma const_seg("K378")
-#pragma comment(linker, "/merge:D378=378")
-#pragma comment(linker, "/merge:C378=378")
-#pragma comment(linker, "/merge:B378=378")
-#pragma comment(linker, "/merge:K378=378")
+#pragma code_seg("C393")
+#pragma data_seg("D393")
+#pragma bss_seg("B393")
+#pragma const_seg("K393")
+#pragma comment(linker, "/merge:D393=393")
+#pragma comment(linker, "/merge:C393=393")
+#pragma comment(linker, "/merge:B393=393")
+#pragma comment(linker, "/merge:K393=393")
 /***************************************************************************
 
 	Bally/Midway Jr. Pac-Man
@@ -105,7 +105,7 @@ VIDEO_START( jrpacman )
 
 
 
-WRITE_HANDLER( jrpacman_videoram_w )
+WRITE8_HANDLER( jrpacman_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -130,7 +130,7 @@ WRITE_HANDLER( jrpacman_videoram_w )
 
 
 
-WRITE_HANDLER( jrpacman_palettebank_w )
+WRITE8_HANDLER( jrpacman_palettebank_w )
 {
 	if (*jrpacman_palettebank != data)
 	{
@@ -141,7 +141,7 @@ WRITE_HANDLER( jrpacman_palettebank_w )
 
 
 
-WRITE_HANDLER( jrpacman_colortablebank_w )
+WRITE8_HANDLER( jrpacman_colortablebank_w )
 {
 	if (*jrpacman_colortablebank != data)
 	{
@@ -152,7 +152,7 @@ WRITE_HANDLER( jrpacman_colortablebank_w )
 
 
 
-WRITE_HANDLER( jrpacman_charbank_w )
+WRITE8_HANDLER( jrpacman_charbank_w )
 {
 	if (*jrpacman_charbank != data)
 	{
@@ -162,7 +162,7 @@ WRITE_HANDLER( jrpacman_charbank_w )
 }
 
 
-WRITE_HANDLER( jrpacman_flipscreen_w )
+WRITE8_HANDLER( jrpacman_flipscreen_w )
 {
 	if (flipscreen != (data & 1))
 	{

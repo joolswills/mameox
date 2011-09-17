@@ -1,11 +1,11 @@
-#pragma code_seg("C336")
-#pragma data_seg("D336")
-#pragma bss_seg("B336")
-#pragma const_seg("K336")
-#pragma comment(linker, "/merge:D336=336")
-#pragma comment(linker, "/merge:C336=336")
-#pragma comment(linker, "/merge:B336=336")
-#pragma comment(linker, "/merge:K336=336")
+#pragma code_seg("C350")
+#pragma data_seg("D350")
+#pragma bss_seg("B350")
+#pragma const_seg("K350")
+#pragma comment(linker, "/merge:D350=350")
+#pragma comment(linker, "/merge:C350=350")
+#pragma comment(linker, "/merge:B350=350")
+#pragma comment(linker, "/merge:K350=350")
 /*	video hardware for Taito Grand Champion */
 
 #include "driver.h"
@@ -29,28 +29,28 @@ UINT8 *grchamp_radar;		/* bitmap for radar */
 
 struct tilemap *tilemap[3];
 
-WRITE_HANDLER( grchamp_player_xpos_w )
+WRITE8_HANDLER( grchamp_player_xpos_w )
 {
 	grchamp_player_xpos = data;
 }
 
-WRITE_HANDLER( grchamp_player_ypos_w )
+WRITE8_HANDLER( grchamp_player_ypos_w )
 {
 	grchamp_player_ypos = data;
 }
 
-WRITE_HANDLER( grchamp_tile_select_w )
+WRITE8_HANDLER( grchamp_tile_select_w )
 {
 	/* tile select: bits 4..7:rain; bits 0..3:player car */
 	grchamp_tile_number = data;
 }
 
-WRITE_HANDLER( grchamp_rain_xpos_w )
+WRITE8_HANDLER( grchamp_rain_xpos_w )
 {
 	grchamp_rain_xpos = data;
 }
 
-WRITE_HANDLER( grchamp_rain_ypos_w )
+WRITE8_HANDLER( grchamp_rain_ypos_w )
 {
 	grchamp_rain_ypos = data;
 }
@@ -99,7 +99,7 @@ PALETTE_INIT( grchamp )
 	palette_set_color(0x43,0,0,0);
 }
 
-WRITE_HANDLER( grchamp_videoram_w )
+WRITE8_HANDLER( grchamp_videoram_w )
 {
 	if( grchamp_videoram[offset]!=data )
 	{

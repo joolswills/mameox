@@ -1,11 +1,11 @@
-#pragma code_seg("C440")
-#pragma data_seg("D440")
-#pragma bss_seg("B440")
-#pragma const_seg("K440")
-#pragma comment(linker, "/merge:D440=440")
-#pragma comment(linker, "/merge:C440=440")
-#pragma comment(linker, "/merge:B440=440")
-#pragma comment(linker, "/merge:K440=440")
+#pragma code_seg("C462")
+#pragma data_seg("D462")
+#pragma bss_seg("B462")
+#pragma const_seg("K462")
+#pragma comment(linker, "/merge:D462=462")
+#pragma comment(linker, "/merge:C462=462")
+#pragma comment(linker, "/merge:B462=462")
+#pragma comment(linker, "/merge:K462=462")
 /***************************************************************************
 
   vidhrdw.c
@@ -92,7 +92,7 @@ PALETTE_INIT( megazone )
 		COLOR(0,i) = (*(color_prom++) & 0x0f) + 0x10;
 }
 
-WRITE_HANDLER( megazone_flipscreen_w )
+WRITE8_HANDLER( megazone_flipscreen_w )
 {
 	if (flipscreen != (data & 1))
 	{

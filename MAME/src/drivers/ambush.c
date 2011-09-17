@@ -1,11 +1,11 @@
-#pragma code_seg("C115")
-#pragma data_seg("D115")
-#pragma bss_seg("B115")
-#pragma const_seg("K115")
-#pragma comment(linker, "/merge:D115=115")
-#pragma comment(linker, "/merge:C115=115")
-#pragma comment(linker, "/merge:B115=115")
-#pragma comment(linker, "/merge:K115=115")
+#pragma code_seg("C116")
+#pragma data_seg("D116")
+#pragma bss_seg("B116")
+#pragma const_seg("K116")
+#pragma comment(linker, "/merge:D116=116")
+#pragma comment(linker, "/merge:C116=116")
+#pragma comment(linker, "/merge:B116=116")
+#pragma comment(linker, "/merge:K116=116")
 /***************************************************************************
 
 Ambush Memory Map (preliminary)
@@ -52,13 +52,13 @@ PALETTE_INIT( ambush );
 VIDEO_UPDATE( ambush );
 
 
-static WRITE_HANDLER( ambush_coin_counter_w )
+static WRITE8_HANDLER( ambush_coin_counter_w )
 {
 	coin_counter_w(0, data & 0x01);
 	coin_counter_w(1, data & 0x02);
 }
 
-static WRITE_HANDLER( flip_screen_w )
+static WRITE8_HANDLER( flip_screen_w )
 {
 	flip_screen_set(data);
 }

@@ -1,11 +1,11 @@
-#pragma code_seg("C775")
-#pragma data_seg("D775")
-#pragma bss_seg("B775")
-#pragma const_seg("K775")
-#pragma comment(linker, "/merge:D775=775")
-#pragma comment(linker, "/merge:C775=775")
-#pragma comment(linker, "/merge:B775=775")
-#pragma comment(linker, "/merge:K775=775")
+#pragma code_seg("C817")
+#pragma data_seg("D817")
+#pragma bss_seg("B817")
+#pragma const_seg("K817")
+#pragma comment(linker, "/merge:D817=817")
+#pragma comment(linker, "/merge:C817=817")
+#pragma comment(linker, "/merge:B817=817")
+#pragma comment(linker, "/merge:K817=817")
 /***************************************************************************
 
 Namco early 8080-based games
@@ -355,7 +355,7 @@ static WRITE8_HANDLER( warpwarp_out3_w )
 			warpwarp_ball_on = data & 1;
 			cpu_interrupt_enable(0,data & 1);
 			if (~data & 1)
-				cpu_set_irq_line(0, 0, CLEAR_LINE);
+				cpunum_set_input_line(0, 0, CLEAR_LINE);
 			break;
 		case 7:
 			flip_screen_set(data & 1);

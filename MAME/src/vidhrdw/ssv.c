@@ -1,11 +1,11 @@
-#pragma code_seg("C661")
-#pragma data_seg("D661")
-#pragma bss_seg("B661")
-#pragma const_seg("K661")
-#pragma comment(linker, "/merge:D661=661")
-#pragma comment(linker, "/merge:C661=661")
-#pragma comment(linker, "/merge:B661=661")
-#pragma comment(linker, "/merge:K661=661")
+#pragma code_seg("C698")
+#pragma data_seg("D698")
+#pragma bss_seg("B698")
+#pragma const_seg("K698")
+#pragma comment(linker, "/merge:D698=698")
+#pragma comment(linker, "/merge:C698=698")
+#pragma comment(linker, "/merge:B698=698")
+#pragma comment(linker, "/merge:K698=698")
 /***************************************************************************
 
 					-= Seta, Sammy, Visco (SSV) System =-
@@ -589,11 +589,11 @@ static void ssv_draw_row(struct mame_bitmap *bitmap, int sx, int sy, int scroll)
 
 /* Draw the "background layer" using multiple tilemap sprites */
 
-static void ssv_draw_layer(struct mame_bitmap *bitmap)
+static void ssv_draw_layer(struct mame_bitmap *bitmap,int  nr)
 {
 	int sy;
 	for ( sy = 0; sy <= Machine->visible_area.max_y; sy += 0x40 )
-		ssv_draw_row(bitmap, 0, sy, 0);
+		ssv_draw_row(bitmap, 0, sy, nr);
 }
 
 /* Draw sprites in the sprites list */
@@ -677,7 +677,8 @@ static void ssv_draw_sprites(struct mame_bitmap *bitmap)
 				// Kludge for srmp4
 				if (ssv_scroll[0x7a/2] == 0x4940)	sy+=0x60;
 
-				ssv_draw_row(bitmap, sx, sy, scroll);
+				if (ssv_special !=3) // dynagears draws rows over sprites?! (but needs rows for hi-score table..)
+					ssv_draw_row(bitmap, sx, sy, scroll);
 			}
 /* 	"normal" sprite
 	hot spots:
@@ -751,7 +752,7 @@ else
 				}
 
 				#ifdef MAME_DEBUG
-				if (keyboard_pressed(KEYCODE_Z))	/* Display some info on each sprite */
+				if (code_pressed(KEYCODE_Z))	/* Display some info on each sprite */
 				{	struct DisplayText dt[2];	char buf[10];
 					sprintf(buf, "%02X",/*(s2[2] & ~0x3ff)>>8*/mode>>8);
 					dt[0].text = buf;	dt[0].color = ((s1[0] & 0x0200) ? UI_COLOR_INVERSE : UI_COLOR_NORMAL);
@@ -790,8 +791,18 @@ VIDEO_UPDATE( ssv )
 
 	if (!enable_video)	return;
 
-	ssv_draw_layer(bitmap);		// "background layer"
-	ssv_draw_sprites(bitmap);	// sprites list
+	if (ssv_special !=3)
+	{
+		ssv_draw_layer(bitmap,0);		// "background layer"
+		ssv_draw_sprites(bitmap);	// sprites list
+	} // dynagears is weird, whats really going on?
+	else
+	{
+		ssv_draw_layer(bitmap,0);
+		ssv_draw_layer(bitmap,1);
+		ssv_draw_sprites(bitmap);
+		ssv_draw_layer(bitmap,3);
+	}
 }
 #pragma code_seg()
 #pragma data_seg()

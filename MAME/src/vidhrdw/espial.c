@@ -138,7 +138,7 @@ VIDEO_START( netwars )
  *
  *************************************/
 
-WRITE_HANDLER( espial_videoram_w )
+WRITE8_HANDLER( espial_videoram_w )
 {
 	if (espial_videoram[offset] != data)
 	{
@@ -148,7 +148,7 @@ WRITE_HANDLER( espial_videoram_w )
 }
 
 
-WRITE_HANDLER( espial_colorram_w )
+WRITE8_HANDLER( espial_colorram_w )
 {
 	if (espial_colorram[offset] != data)
 	{
@@ -158,7 +158,7 @@ WRITE_HANDLER( espial_colorram_w )
 }
 
 
-WRITE_HANDLER( espial_attributeram_w )
+WRITE8_HANDLER( espial_attributeram_w )
 {
 	if (espial_attributeram[offset] != data)
 	{
@@ -168,14 +168,14 @@ WRITE_HANDLER( espial_attributeram_w )
 }
 
 
-WRITE_HANDLER( espial_scrollram_w )
+WRITE8_HANDLER( espial_scrollram_w )
 {
 	espial_scrollram[offset] = data;
 	tilemap_set_scrolly(tilemap, offset, data);
 }
 
 
-WRITE_HANDLER( espial_flipscreen_w )
+WRITE8_HANDLER( espial_flipscreen_w )
 {
 	flipscreen = data;
 

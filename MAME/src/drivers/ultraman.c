@@ -1,11 +1,11 @@
-#pragma code_seg("C754")
-#pragma data_seg("D754")
-#pragma bss_seg("B754")
-#pragma const_seg("K754")
-#pragma comment(linker, "/merge:D754=754")
-#pragma comment(linker, "/merge:C754=754")
-#pragma comment(linker, "/merge:B754=754")
-#pragma comment(linker, "/merge:K754=754")
+#pragma code_seg("C796")
+#pragma data_seg("D796")
+#pragma bss_seg("B796")
+#pragma const_seg("K796")
+#pragma comment(linker, "/merge:D796=796")
+#pragma comment(linker, "/merge:C796=796")
+#pragma comment(linker, "/merge:B796=796")
+#pragma comment(linker, "/merge:K796=796")
 /***************************************************************************
 
 Ultraman (c) 1991  Banpresto / Bandai
@@ -111,7 +111,7 @@ static WRITE16_HANDLER( sound_cmd_w )
 static WRITE16_HANDLER( sound_irq_trigger_w )
 {
 	if (ACCESSING_LSB)
-		cpu_set_irq_line(1,IRQ_LINE_NMI,PULSE_LINE);
+		cpunum_set_input_line(1,INPUT_LINE_NMI,PULSE_LINE);
 }
 
 

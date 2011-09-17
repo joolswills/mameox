@@ -1,11 +1,11 @@
-#pragma code_seg("C167")
-#pragma data_seg("D167")
-#pragma bss_seg("B167")
-#pragma const_seg("K167")
-#pragma comment(linker, "/merge:D167=167")
-#pragma comment(linker, "/merge:C167=167")
-#pragma comment(linker, "/merge:B167=167")
-#pragma comment(linker, "/merge:K167=167")
+#pragma code_seg("C168")
+#pragma data_seg("D168")
+#pragma bss_seg("B168")
+#pragma const_seg("K168")
+#pragma comment(linker, "/merge:D168=168")
+#pragma comment(linker, "/merge:C168=168")
+#pragma comment(linker, "/merge:B168=168")
+#pragma comment(linker, "/merge:K168=168")
 /***************************************************************************
 
 							  -= Blomby Car =-

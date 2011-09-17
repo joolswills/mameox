@@ -1,11 +1,11 @@
-#pragma code_seg("C572")
-#pragma data_seg("D572")
-#pragma bss_seg("B572")
-#pragma const_seg("K572")
-#pragma comment(linker, "/merge:D572=572")
-#pragma comment(linker, "/merge:C572=572")
-#pragma comment(linker, "/merge:B572=572")
-#pragma comment(linker, "/merge:K572=572")
+#pragma code_seg("C606")
+#pragma data_seg("D606")
+#pragma bss_seg("B606")
+#pragma const_seg("K606")
+#pragma comment(linker, "/merge:D606=606")
+#pragma comment(linker, "/merge:C606=606")
+#pragma comment(linker, "/merge:B606=606")
+#pragma comment(linker, "/merge:K606=606")
 /***************************************************************************
 
 Zero Hour / Red Clash
@@ -34,14 +34,14 @@ TODO:
 #include "vidhrdw/generic.h"
 
 
-extern WRITE_HANDLER( redclash_videoram_w );
-extern WRITE_HANDLER( redclash_gfxbank_w );
-extern WRITE_HANDLER( redclash_flipscreen_w );
+extern WRITE8_HANDLER( redclash_videoram_w );
+extern WRITE8_HANDLER( redclash_gfxbank_w );
+extern WRITE8_HANDLER( redclash_flipscreen_w );
 
-extern WRITE_HANDLER( redclash_star0_w );
-extern WRITE_HANDLER( redclash_star1_w );
-extern WRITE_HANDLER( redclash_star2_w );
-extern WRITE_HANDLER( redclash_star_reset_w );
+extern WRITE8_HANDLER( redclash_star0_w );
+extern WRITE8_HANDLER( redclash_star1_w );
+extern WRITE8_HANDLER( redclash_star2_w );
+extern WRITE8_HANDLER( redclash_star_reset_w );
 
 extern PALETTE_INIT( redclash );
 extern VIDEO_START( redclash );
@@ -55,14 +55,14 @@ extern VIDEO_UPDATE( redclash );
 INTERRUPT_GEN( redclash_interrupt )
 {
 	if (readinputport(4) & 1)	/* Left Coin */
-		cpu_set_irq_line(0,0,ASSERT_LINE);
+		cpunum_set_input_line(0,0,ASSERT_LINE);
 	else if (readinputport(4) & 2)	/* Right Coin */
-		cpu_set_nmi_line(0,PULSE_LINE);
+		cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 }
 
-static WRITE_HANDLER( irqack_w )
+static WRITE8_HANDLER( irqack_w )
 {
-	cpu_set_irq_line(0,0,CLEAR_LINE);
+	cpunum_set_input_line(0,0,CLEAR_LINE);
 }
 
 

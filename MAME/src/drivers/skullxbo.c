@@ -1,11 +1,11 @@
-#pragma code_seg("C625")
-#pragma data_seg("D625")
-#pragma bss_seg("B625")
-#pragma const_seg("K625")
-#pragma comment(linker, "/merge:D625=625")
-#pragma comment(linker, "/merge:C625=625")
-#pragma comment(linker, "/merge:B625=625")
-#pragma comment(linker, "/merge:K625=625")
+#pragma code_seg("C661")
+#pragma data_seg("D661")
+#pragma bss_seg("B661")
+#pragma const_seg("K661")
+#pragma comment(linker, "/merge:D661=661")
+#pragma comment(linker, "/merge:C661=661")
+#pragma comment(linker, "/merge:B661=661")
+#pragma comment(linker, "/merge:K661=661")
 /***************************************************************************
 
 	Atari Skull & Crossbones hardware
@@ -50,9 +50,9 @@ static void update_interrupts(void)
 		newstate = 4;
 
 	if (newstate)
-		cpu_set_irq_line(0, newstate, ASSERT_LINE);
+		cpunum_set_input_line(0, newstate, ASSERT_LINE);
 	else
-		cpu_set_irq_line(0, 7, CLEAR_LINE);
+		cpunum_set_input_line(0, 7, CLEAR_LINE);
 }
 
 

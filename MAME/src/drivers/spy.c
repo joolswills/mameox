@@ -1,11 +1,11 @@
-#pragma code_seg("C653")
-#pragma data_seg("D653")
-#pragma bss_seg("B653")
-#pragma const_seg("K653")
-#pragma comment(linker, "/merge:D653=653")
-#pragma comment(linker, "/merge:C653=653")
-#pragma comment(linker, "/merge:B653=653")
-#pragma comment(linker, "/merge:K653=653")
+#pragma code_seg("C689")
+#pragma data_seg("D689")
+#pragma bss_seg("B689")
+#pragma const_seg("K689")
+#pragma comment(linker, "/merge:D689=689")
+#pragma comment(linker, "/merge:C689=689")
+#pragma comment(linker, "/merge:B689=689")
+#pragma comment(linker, "/merge:K689=689")
 /***************************************************************************
 
 S.P.Y. (c) 1989 Konami
@@ -40,14 +40,14 @@ static data8_t *pmcram;
 static INTERRUPT_GEN( spy_interrupt )
 {
 	if (K052109_is_IRQ_enabled())
-		cpu_set_irq_line(0, 0, HOLD_LINE);
+		cpunum_set_input_line(0, 0, HOLD_LINE);
 }
 
 
 static int rambank,pmcbank;
 static unsigned char *ram;
 
-static READ_HANDLER( spy_bankedram1_r )
+static READ8_HANDLER( spy_bankedram1_r )
 {
 	if (rambank & 1)
 	{
@@ -70,7 +70,7 @@ static READ_HANDLER( spy_bankedram1_r )
 		return ram[offset];
 }
 
-static WRITE_HANDLER( spy_bankedram1_w )
+static WRITE8_HANDLER( spy_bankedram1_w )
 {
 	if (rambank & 1)
 	{
@@ -158,7 +158,7 @@ this is the data written to internal ram on startup:
 3f: 5f 7e 00 ce 08
 */
 
-static WRITE_HANDLER( bankswitch_w )
+static WRITE8_HANDLER( bankswitch_w )
 {
 	unsigned char *rom = memory_region(REGION_CPU1);
 	int offs;
@@ -252,7 +252,7 @@ void spy_collision(void)
 }
 //ZT
 
-static WRITE_HANDLER( spy_3f90_w )
+static WRITE8_HANDLER( spy_3f90_w )
 {
 	extern int spy_video_enable;
 	static int old;
@@ -330,19 +330,19 @@ for (i = 0;i < 0xfe;i++)
 */
 		spy_collision();
 //ZT
-		cpu_set_irq_line(0,M6809_FIRQ_LINE,HOLD_LINE);
+		cpunum_set_input_line(0,M6809_FIRQ_LINE,HOLD_LINE);
 	}
 
 	old = data;
 }
 
 
-static WRITE_HANDLER( spy_sh_irqtrigger_w )
+static WRITE8_HANDLER( spy_sh_irqtrigger_w )
 {
-	cpu_set_irq_line_and_vector(1,0,HOLD_LINE,0xff);
+	cpunum_set_input_line_and_vector(1,0,HOLD_LINE,0xff);
 }
 
-static WRITE_HANDLER( sound_bank_w )
+static WRITE8_HANDLER( sound_bank_w )
 {
 	int bank_A,bank_B;
 
@@ -527,7 +527,7 @@ static struct K007232_interface k007232_interface =
 
 static void irqhandler(int linestate)
 {
-	cpu_set_nmi_line(1,linestate);
+	cpunum_set_input_line(1, INPUT_LINE_NMI, linestate);
 }
 
 static struct YM3812interface ym3812_interface =
@@ -557,7 +557,7 @@ static MACHINE_DRIVER_START( spy )
 	/* video hardware */
 	MDRV_VIDEO_ATTRIBUTES(VIDEO_TYPE_RASTER | VIDEO_HAS_SHADOWS)
 	MDRV_SCREEN_SIZE(64*8, 32*8)
-	MDRV_VISIBLE_AREA(14*8, (64-14)*8-1, 2*8, 30*8-1 )
+	MDRV_VISIBLE_AREA(13*8, (64-13)*8-1, 2*8, 30*8-1 )
 	MDRV_PALETTE_LENGTH(1024)
 
 	MDRV_VIDEO_START(spy)

@@ -1,11 +1,11 @@
-#pragma code_seg("C730")
-#pragma data_seg("D730")
-#pragma bss_seg("B730")
-#pragma const_seg("K730")
-#pragma comment(linker, "/merge:D730=730")
-#pragma comment(linker, "/merge:C730=730")
-#pragma comment(linker, "/merge:B730=730")
-#pragma comment(linker, "/merge:K730=730")
+#pragma code_seg("C772")
+#pragma data_seg("D772")
+#pragma bss_seg("B772")
+#pragma const_seg("K772")
+#pragma comment(linker, "/merge:D772=772")
+#pragma comment(linker, "/merge:C772=772")
+#pragma comment(linker, "/merge:B772=772")
+#pragma comment(linker, "/merge:K772=772")
 /*****************************************************************************
 
 		ToaPlan      game hardware from 1991 - 1994
@@ -45,6 +45,7 @@ Supported games:
 	battleg		RA9503		Raizing/8ing	Battle Garegga (Type 2)
 	battlega	RA9503		Raizing/8ing	Battle Garegga
 	battlegb	RA9503		Raizing/8ing	Battle Garegga (New Version?)
+	battlegc	RA9503		Raizing/8ing	Battle Garegga
 	batrider	RA9704		Raizing/8ing	Armed Police Batrider - Rev B (Japan - Ver. Fri Feb 13 1998)
 	batridra	RA9704		Raizing/8ing	Armed Police Batrider (Japan - Ver. Mon Dec 22 1997)
 	batridrk	RA9704		Raizing/8ing	Armed Police Batrider (Korea - Ver. Fri Feb 13 1998)
@@ -380,8 +381,8 @@ static DRIVER_INIT( T2_noZ80 )
 
 static DRIVER_INIT( fixeight )
 {
-	install_mem_read16_handler(0, 0x28f002, 0x28fbff, MRA16_RAM );
-	install_mem_write16_handler(0, 0x28f002, 0x28fbff, MWA16_RAM );
+	memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x28f002, 0x28fbff, 0, 0, MRA16_RAM );
+	memory_install_write16_handler(0, ADDRESS_SPACE_PROGRAM, 0x28f002, 0x28fbff, 0, 0, MWA16_RAM );
 
 	toaplan2_sub_cpu = CPU_2_Zx80;
 }
@@ -507,7 +508,7 @@ static void toaplan2_irq(int irq_line)
 
 	if(current_scanline == 245)
 	{
-		cpu_set_irq_line(0, irq_line, HOLD_LINE);
+		cpunum_set_input_line(0, irq_line, HOLD_LINE);
 		vblank_irq = 1;
 	}
 
@@ -555,7 +556,7 @@ static READ16_HANDLER( video_count_r )
 	return video_status;
 }
 
-static WRITE_HANDLER( toaplan2_coin_w )
+static WRITE8_HANDLER( toaplan2_coin_w )
 {
 	/* +----------------+------ Bits 7-5 not used ------+--------------+ */
 	/* | Coin Lockout 2 | Coin Lockout 1 | Coin Count 2 | Coin Count 1 | */
@@ -848,14 +849,14 @@ static READ16_HANDLER( Zx80_status_port_r )
 		/* game keeping service mode. It writes/reads the settings to/from */
 		/* these shared RAM locations. The secondary CPU reads/writes them */
 		/* from/to nvram to store the settings (a 93C45 EEPROM) */
-		install_mem_read16_handler (0, 0x28f002, 0x28f003, MRA16_RAM);
-		install_mem_read16_handler (0, 0x28f004, 0x28f005, input_port_5_word_r);	/* Dip Switch A - Wrong !!! */
-		install_mem_read16_handler (0, 0x28f006, 0x28f007, input_port_6_word_r);	/* Dip Switch B - Wrong !!! */
-		install_mem_read16_handler (0, 0x28f008, 0x28f009, input_port_7_word_r);	/* Territory Jumper block - Wrong !!! */
-		install_mem_read16_handler (0, 0x28f00a, 0x28fbff, MRA16_RAM);
-		install_mem_write16_handler (0, 0x28f002, 0x28f003, MWA16_RAM);
-		install_mem_write16_handler (0, 0x28f004, 0x28f009, MWA16_NOP);
-		install_mem_write16_handler (0, 0x28f00a, 0x28fbff, MWA16_RAM);
+		memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x28f002, 0x28f003, 0, 0, MRA16_RAM);
+		memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x28f004, 0x28f005, 0, 0, input_port_5_word_r);	/* Dip Switch A - Wrong !!! */
+		memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x28f006, 0x28f007, 0, 0, input_port_6_word_r);	/* Dip Switch B - Wrong !!! */
+		memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x28f008, 0x28f009, 0, 0, input_port_7_word_r);	/* Territory Jumper block - Wrong !!! */
+		memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x28f00a, 0x28fbff, 0, 0, MRA16_RAM);
+		memory_install_write16_handler(0, ADDRESS_SPACE_PROGRAM, 0x28f002, 0x28f003, 0, 0, MWA16_RAM);
+		memory_install_write16_handler(0, ADDRESS_SPACE_PROGRAM, 0x28f004, 0x28f009, 0, 0, MWA16_NOP);
+		memory_install_write16_handler(0, ADDRESS_SPACE_PROGRAM, 0x28f00a, 0x28fbff, 0, 0, MWA16_RAM);
 
 		mcu_data = 0xffff;
 	}
@@ -923,18 +924,18 @@ static READ16_HANDLER( battleg_commram_r )
 static WRITE16_HANDLER( battleg_commram_w )
 {
 	COMBINE_DATA(&battleg_commram16[offset]);
-	cpu_set_irq_line(1, 0, HOLD_LINE);
+	cpunum_set_input_line(1, 0, HOLD_LINE);
 	if (offset == 0) cpu_yield();	/* Command issued so switch control */
 }
 
-static READ_HANDLER( battleg_commram_check_r0 )
+static READ8_HANDLER( battleg_commram_check_r0 )
 {
 	data8_t *battleg_common_RAM = (data8_t *)battleg_commram16;
 
 	return battleg_common_RAM[BYTE_XOR_BE(offset * 2 + 1)];
 }
 
-static WRITE_HANDLER( battleg_commram_check_w0 )
+static WRITE8_HANDLER( battleg_commram_check_w0 )
 {
 	data8_t *battleg_common_RAM = (data8_t *)battleg_commram16;
 
@@ -947,7 +948,7 @@ static READ16_HANDLER( battleg_z80check_r )
 	return raizing_shared_ram[offset + 0x10] & 0xff;
 }
 
-static WRITE_HANDLER( battleg_bankswitch_w )
+static WRITE8_HANDLER( battleg_bankswitch_w )
 {
 	data8_t *RAM = (data8_t *)memory_region(REGION_CPU2);
 	int bankaddress;
@@ -980,31 +981,31 @@ static void raizing_oki6295_set_bankbase( int chip, int channel, int base )
 }
 
 
-static WRITE_HANDLER( raizing_okim6295_bankselect_0 )
+static WRITE8_HANDLER( raizing_okim6295_bankselect_0 )
 {
 	raizing_oki6295_set_bankbase( 0, 0,  (data       & 0x0f) * 0x10000);
 	raizing_oki6295_set_bankbase( 0, 1, ((data >> 4) & 0x0f) * 0x10000);
 }
 
-static WRITE_HANDLER( raizing_okim6295_bankselect_1 )
+static WRITE8_HANDLER( raizing_okim6295_bankselect_1 )
 {
 	raizing_oki6295_set_bankbase( 0, 2,  (data       & 0x0f) * 0x10000);
 	raizing_oki6295_set_bankbase( 0, 3, ((data >> 4) & 0x0f) * 0x10000);
 }
 
-static WRITE_HANDLER( raizing_okim6295_bankselect_2 )
+static WRITE8_HANDLER( raizing_okim6295_bankselect_2 )
 {
 	raizing_oki6295_set_bankbase( 1, 0,  (data       & 0x0f) * 0x10000);
 	raizing_oki6295_set_bankbase( 1, 1, ((data >> 4) & 0x0f) * 0x10000);
 }
 
-static WRITE_HANDLER( raizing_okim6295_bankselect_3 )
+static WRITE8_HANDLER( raizing_okim6295_bankselect_3 )
 {
 	raizing_oki6295_set_bankbase( 1, 2,  (data       & 0x0f) * 0x10000);
 	raizing_oki6295_set_bankbase( 1, 3, ((data >> 4) & 0x0f) * 0x10000);
 }
 
-static WRITE_HANDLER( batrider_bankswitch_w )
+static WRITE8_HANDLER( batrider_bankswitch_w )
 {
 	data8_t *RAM = (data8_t *)memory_region(REGION_CPU2);
 	int bankaddress;
@@ -1176,48 +1177,48 @@ static WRITE16_HANDLER ( raizing_sndcomms_w )
 //	logerror("68K (PC:%06x) writing %04x to $50001%01x\n",activecpu_get_pc(),data,((offset*2)+4));
 	COMBINE_DATA(&raizing_cpu_comm16[offset]);
 
-	cpu_set_nmi_line(1, ASSERT_LINE);
+	cpunum_set_input_line(1, INPUT_LINE_NMI, ASSERT_LINE);
 	cpu_yield();
 }
 
 /****** Battle Bakraid Z80 handlers ******/
-static READ_HANDLER ( raizing_command_r )
+static READ8_HANDLER ( raizing_command_r )
 {
 	data8_t *raizing_cpu_comm = (data8_t *)raizing_cpu_comm16;
 
 	logerror("Z80 (PC:%04x) reading %02x from $48\n",activecpu_get_pc(),raizing_cpu_comm[BYTE_XOR_BE(1)]);
 	return raizing_cpu_comm[BYTE_XOR_BE(1)];
 }
-static READ_HANDLER ( raizing_request_r )
+static READ8_HANDLER ( raizing_request_r )
 {
 	data8_t *raizing_cpu_comm = (data8_t *)raizing_cpu_comm16;
 
 	logerror("Z80 (PC:%04x) reading %02x from $4A\n",activecpu_get_pc(),raizing_cpu_comm[BYTE_XOR_BE(3)]);
 	return raizing_cpu_comm[BYTE_XOR_BE(3)];
 }
-static WRITE_HANDLER ( raizing_command_ack_w )
+static WRITE8_HANDLER ( raizing_command_ack_w )
 {
 //	logerror("Z80 (PC:%04x) writing %02x to $40\n",activecpu_get_pc(),data);
 	raizing_cpu_reply[0] = data;
 }
-static WRITE_HANDLER ( raizing_request_ack_w )
+static WRITE8_HANDLER ( raizing_request_ack_w )
 {
 //	logerror("Z80 (PC:%04x) writing %02x to $42\n",activecpu_get_pc(),data);
 	raizing_cpu_reply[1] = data;
 }
 
 
-static WRITE_HANDLER ( raizing_clear_nmi_w )
+static WRITE8_HANDLER ( raizing_clear_nmi_w )
 {
 //	logerror("Clear NMI on the Z80 (Z80 PC:%06x writing %04x)\n",activecpu_get_pc(),data);
-	cpu_set_nmi_line(1, CLEAR_LINE);
+	cpunum_set_input_line(1, INPUT_LINE_NMI, CLEAR_LINE);
 	cpu_yield();
 }
 
 static WRITE16_HANDLER ( bbakraid_trigger_z80_irq )
 {
 //	logerror("Triggering IRQ on the Z80 (PC:%06x)\n",activecpu_get_pc());
-	cpu_set_irq_line(1, 0, HOLD_LINE);
+	cpunum_set_input_line(1, 0, HOLD_LINE);
 	cpu_yield();
 }
 
@@ -1229,7 +1230,7 @@ static void bbakraid_irqhandler (int state)
 
 static INTERRUPT_GEN( bbakraid_snd_interrupt )
 {
-	cpu_set_irq_line(1, 0, HOLD_LINE);
+	cpunum_set_input_line(1, 0, HOLD_LINE);
 }
 
 
@@ -3766,7 +3767,7 @@ static struct GfxDecodeInfo batrider_gfxdecodeinfo[] =
 
 static void irqhandler(int linestate)
 {
-	cpu_set_irq_line(1,0,linestate);
+	cpunum_set_input_line(1,0,linestate);
 }
 
 static struct YM3812interface ym3812_interface =
@@ -4560,7 +4561,7 @@ ROM_END
 
 ROM_START( fixeight )
 	ROM_REGION( 0x080000, REGION_CPU1, 0 )			/* Main 68K code */
-	ROM_LOAD16_WORD_SWAP( "tp-026-1", 0x000000, 0x080000, CRC(f7b1746a) )
+	ROM_LOAD16_WORD_SWAP( "tp-026-1", 0x000000, 0x080000, CRC(f7b1746a) SHA1(0bbea6f111b818bc9b9b2060af4fe900f37cf7f9) )
 
 #if Zx80
 	ROM_REGION( 0x10000, REGION_CPU2, 0 )			/* Secondary CPU code */
@@ -4570,15 +4571,15 @@ ROM_START( fixeight )
 #endif
 
 	ROM_REGION( 0x400000, REGION_GFX1, ROMREGION_DISPOSE )
-	ROM_LOAD( "tp-026-3", 0x000000, 0x200000, CRC(e5578d98) )
-	ROM_LOAD( "tp-026-4", 0x200000, 0x200000, CRC(b760cb53) )
+	ROM_LOAD( "tp-026-3", 0x000000, 0x200000, CRC(e5578d98) SHA1(280d2b716d955e767d311fc9596823852435b6d7) )
+	ROM_LOAD( "tp-026-4", 0x200000, 0x200000, CRC(b760cb53) SHA1(bc9c5e49e45cdda0f774be0038aa4deb21d4d285) )
 
 	ROM_REGION( 0x40000, REGION_SOUND1, 0 )			/* ADPCM Samples */
-	ROM_LOAD( "tp-026-2", 0x00000, 0x40000, CRC(85063f1f) )
+	ROM_LOAD( "tp-026-2", 0x00000, 0x40000, CRC(85063f1f) SHA1(1bf4d77494de421c98f6273b9876e60d827a6826) )
 
 	ROM_REGION( 0x80, REGION_USER1, 0 )
 	/* Serial EEPROM (93C45) connected to Secondary CPU */
-	ROM_LOAD( "93c45.u21", 0x00, 0x80, CRC(40d75df0) )
+	ROM_LOAD( "93c45.u21", 0x00, 0x80, CRC(40d75df0) SHA1(a22f1cc74ce9bc9bfe53f48f6a43ab60e921052b) )
 ROM_END
 
 ROM_START( grindstm )
@@ -4695,6 +4696,8 @@ ROM_END
 
 /* -------------------------- Raizing games ------------------------- */
 
+/* one of these sstriker sets might be bad .. they're very similar */
+
 ROM_START( sstriker )
 	ROM_REGION( 0x080000, REGION_CPU1, 0 )			/* Main 68K code */
 	ROM_LOAD16_WORD_SWAP( "ra-ma-01.01", 0x000000, 0x080000, CRC(92259f84) SHA1(127e62e407d95efd360bfe2cac9577f326abf6ef) )
@@ -4712,6 +4715,25 @@ ROM_START( sstriker )
 	ROM_REGION( 0x40000, REGION_SOUND1, 0 )			/* ADPCM Samples */
 	ROM_LOAD( "ra_ma_01.06", 0x00000, 0x40000, CRC(6edb2ab8) SHA1(e3032e8eda2686f30df4b7a088c5a4d4d45782ed) )
 ROM_END
+
+ROM_START( sstrikra )
+	ROM_REGION( 0x080000, REGION_CPU1, 0 )			/* Main 68K code */
+	ROM_LOAD16_WORD_SWAP( "rama1_01.bin", 0x000000, 0x080000, CRC(708fd51d) SHA1(167186d4cf13af37ec0fa6a59c738c54dbbf3c7c) )
+
+	ROM_REGION( 0x10000, REGION_CPU2, 0 )			/* Sound Z80 code */
+	ROM_LOAD( "ra_ma_01.02", 0x00000, 0x10000, CRC(eabfa46d) SHA1(402c99ebf88f9025f74f0a28ced22b7882a65eb3) )
+
+	ROM_REGION( 0x200000, REGION_GFX1, ROMREGION_DISPOSE )
+	ROM_LOAD( "ra_ma_01.03",  0x000000, 0x100000, CRC(54e2bd95) SHA1(341359dd46152615675bb90e8a184216c8feebff) )
+	ROM_LOAD( "ra_ma_01.04",  0x100000, 0x100000, CRC(21cd378f) SHA1(e1695bccec949d18b1c03e9c42dca384554b0d7c) )
+
+	ROM_REGION( 0x008000, REGION_GFX2, ROMREGION_DISPOSE )
+	ROM_LOAD( "ra-ma-01.05",  0x000000, 0x008000, CRC(88b58841) SHA1(1d16b538c11a291bd1f46a510bfbd6259b45a0b5) )
+
+	ROM_REGION( 0x40000, REGION_SOUND1, 0 )			/* ADPCM Samples */
+	ROM_LOAD( "ra_ma_01.06", 0x00000, 0x40000, CRC(6edb2ab8) SHA1(e3032e8eda2686f30df4b7a088c5a4d4d45782ed) )
+ROM_END
+
 
 ROM_START( mahoudai )
 	ROM_REGION( 0x080000, REGION_CPU1, 0 )			/* Main 68K code */
@@ -4817,6 +4839,28 @@ ROM_START( battlegb )
 	ROM_REGION( 0x100000, REGION_CPU1, 0 )			/* Main 68K code */
 	ROM_LOAD16_BYTE( "prg_0.bin", 0x000000, 0x080000, CRC(951ecc07) SHA1(a82e4b59e4a974566e59f3ab2fbae1aec7d88a2b) )
 	ROM_LOAD16_BYTE( "prg_1.bin", 0x000001, 0x080000, CRC(729a60c6) SHA1(cb6f5d138bb82c32910f42d8ee16fa573a23cef3) )
+
+	ROM_REGION( 0x28000, REGION_CPU2, 0 )			/* Sound Z80 code + bank */
+	ROM_LOAD( "snd.bin", 0x00000, 0x08000, CRC(68632952) SHA1(fb834db83157948e2b420b6051102a9c6ac3969b) )
+	ROM_CONTINUE(        0x10000, 0x18000 )
+
+	ROM_REGION( 0x800000, REGION_GFX1, ROMREGION_DISPOSE )
+	ROM_LOAD( "rom4.bin",  0x000000, 0x200000, CRC(b333d81f) SHA1(5481465f1304334fd55798be2f44324c57c2dbcb) )
+	ROM_LOAD( "rom3.bin",  0x200000, 0x200000, CRC(51b9ebfb) SHA1(30e0c326f5175aa436df8dba08f6f4e08130b92f) )
+	ROM_LOAD( "rom2.bin",  0x400000, 0x200000, CRC(b330e5e2) SHA1(5d48e9d56f99d093b6390e0af1609fd796df2d35) )
+	ROM_LOAD( "rom1.bin",  0x600000, 0x200000, CRC(7eafdd70) SHA1(7c8da8e86c3f9491719b1d7d5d285568d7614f38) )
+
+	ROM_REGION( 0x010000, REGION_GFX2, ROMREGION_DISPOSE )
+	ROM_LOAD( "text.u81", 0x00000, 0x08000, CRC(e67fd534) SHA1(987d0edffc2c243a13d4567319ea3d185eaadbf8) )
+
+	ROM_REGION( 0x140000, REGION_SOUND1, 0 )		/* ADPCM Samples */
+	ROM_LOAD( "rom5.bin", 0x040000, 0x100000, CRC(f6d49863) SHA1(3a3c354852adad06e8a051511abfab7606bce382) )
+ROM_END
+
+ROM_START( battlegc )
+	ROM_REGION( 0x100000, REGION_CPU1, 0 )			/* Main 68K code */
+	ROM_LOAD16_BYTE( "prg_0.rom", 0x000000, 0x080000, CRC(26e0019e) SHA1(5197001f5d59246b137e19ed1952a8207b25d4c0) )
+	ROM_LOAD16_BYTE( "prg_1.rom", 0x000001, 0x080000, CRC(2ccfdd1e) SHA1(7a9f11f851854f3f8389b9c3c0906ebb8dc28712) )
 
 	ROM_REGION( 0x28000, REGION_CPU2, 0 )			/* Sound Z80 code + bank */
 	ROM_LOAD( "snd.bin", 0x00000, 0x08000, CRC(68632952) SHA1(fb834db83157948e2b420b6051102a9c6ac3969b) )
@@ -4978,11 +5022,13 @@ GAMEX( 1993, batugnsp, batsugun, batsugun, batsugun, T2_Zx80,  ROT270, "Toaplan"
 GAME ( 1994, snowbro2, 0,        snowbro2, snowbro2, T2_noZ80, ROT0,   "[Toaplan] Hanafram", "Snow Bros. 2 - With New Elves / Otenki Paradise" )
 GAME ( 1993, mahoudai, 0,        mahoudai, mahoudai, T2_Z80,   ROT270, "Raizing (Able license)", "Mahou Daisakusen (Japan)" )
 GAME ( 1993, sstriker, mahoudai, mahoudai, sstriker, T2_Z80,   ROT270, "Raizing", "Sorcer Striker (World)" ) // from korean board
+GAME ( 1993, sstrikra, mahoudai, mahoudai, sstriker, T2_Z80,   ROT270, "Raizing", "Sorcer Striker (World, alt)" ) // from korean board
 GAME ( 1994, shippumd, 0,        shippumd, shippumd, T2_Z80,   ROT270, "Raizing / Eighting", "Shippu Mahou Daisakusen (Japan)" )
 GAME ( 1994, kingdmgp, shippumd, shippumd, kingdmgp, T2_Z80,   ROT270, "Raizing / Eighting", "Kingdom Grandprix (World)" ) // from korean board, missing letters on credits screen but this is correct
 GAME ( 1996, battleg,  0,        battleg,  battleg,  battleg,  ROT270, "Raizing / Eighting", "Battle Garegga - Type 2 (Denmark / China) (Tue Apr 2 1996)" )
 GAME ( 1996, battlega, battleg,  battleg,  battlega, battleg,  ROT270, "Raizing / Eighting", "Battle Garegga (Europe / USA / Japan / Asia) (Sat Feb 3 1996)" )
 GAME ( 1996, battlegb, battleg,  battleg,  battlegb, battleg,  ROT270, "Raizing / Eighting", "Battle Garegga (Austria / Hong Kong) (Sat Mar 2 1996)" ) // displays New Version when set to HK
+GAME ( 1996, battlegc, battleg,  battleg,  battlegb, battleg,  ROT270, "Raizing / Eighting", "Battle Garegga (Austria / Hong Kong) (Sat Feb 3 1996)" )
 GAME ( 1998, batrider, 0,        batrider, batrider, battleg,  ROT270, "Raizing / Eighting", "Armed Police Batrider (Japan, version B)" )
 GAME ( 1998, batridra, batrider, batrider, batrider, battleg,  ROT270, "Raizing / Eighting", "Armed Police Batrider (Japan, version A)" )
 GAME ( 1998, batridrk, batrider, batrider, batrider, battleg,  ROT270, "Raizing / Eighting", "Armed Police Batrider (Korea, version B)" )

@@ -1,11 +1,11 @@
-#pragma code_seg("C574")
-#pragma data_seg("D574")
-#pragma bss_seg("B574")
-#pragma const_seg("K574")
-#pragma comment(linker, "/merge:D574=574")
-#pragma comment(linker, "/merge:C574=574")
-#pragma comment(linker, "/merge:B574=574")
-#pragma comment(linker, "/merge:K574=574")
+#pragma code_seg("C608")
+#pragma data_seg("D608")
+#pragma bss_seg("B608")
+#pragma const_seg("K608")
+#pragma comment(linker, "/merge:D608=608")
+#pragma comment(linker, "/merge:C608=608")
+#pragma comment(linker, "/merge:B608=608")
+#pragma comment(linker, "/merge:K608=608")
 /***************************************************************************
 
 Renegade
@@ -114,17 +114,17 @@ $8000 - $ffff	ROM
 
 extern VIDEO_UPDATE( renegade );
 extern VIDEO_START( renegade );
-WRITE_HANDLER( renegade_scroll0_w );
-WRITE_HANDLER( renegade_scroll1_w );
-WRITE_HANDLER( renegade_videoram_w );
-WRITE_HANDLER( renegade_videoram2_w );
-WRITE_HANDLER( renegade_flipscreen_w );
+WRITE8_HANDLER( renegade_scroll0_w );
+WRITE8_HANDLER( renegade_scroll1_w );
+WRITE8_HANDLER( renegade_videoram_w );
+WRITE8_HANDLER( renegade_videoram2_w );
+WRITE8_HANDLER( renegade_flipscreen_w );
 
 extern UINT8 *renegade_videoram2;
 
 /********************************************************************************************/
 
-static WRITE_HANDLER( adpcm_play_w )
+static WRITE8_HANDLER( adpcm_play_w )
 {
 	int offs;
 	int len;
@@ -142,10 +142,10 @@ static WRITE_HANDLER( adpcm_play_w )
 		logerror("out of range adpcm command: 0x%02x\n",data);
 }
 
-static WRITE_HANDLER( sound_w )
+static WRITE8_HANDLER( sound_w )
 {
 	soundlatch_w(offset,data);
-	cpu_set_irq_line(1,M6809_IRQ_LINE,HOLD_LINE);
+	cpunum_set_input_line(1,M6809_IRQ_LINE,HOLD_LINE);
 }
 
 /********************************************************************************************/
@@ -191,7 +191,7 @@ static size_t mcu_input_size;
 static int mcu_output_byte;
 static int mcu_key;
 
-static READ_HANDLER( mcu_reset_r )
+static READ8_HANDLER( mcu_reset_r )
 {
 	mcu_key = -1;
 	mcu_input_size = 0;
@@ -199,7 +199,7 @@ static READ_HANDLER( mcu_reset_r )
 	return 0;
 }
 
-static WRITE_HANDLER( mcu_w )
+static WRITE8_HANDLER( mcu_w )
 {
 	mcu_output_byte = 0;
 
@@ -348,7 +348,7 @@ static void mcu_process_command( void )
 	}
 }
 
-static READ_HANDLER( mcu_r )
+static READ8_HANDLER( mcu_r )
 {
 	int result = 1;
 
@@ -364,7 +364,7 @@ static READ_HANDLER( mcu_r )
 
 static int bank;
 
-static WRITE_HANDLER( bankswitch_w )
+static WRITE8_HANDLER( bankswitch_w )
 {
 	if( (data&1)!=bank )
 	{
@@ -391,12 +391,12 @@ static INTERRUPT_GEN( renegade_interrupt )
 	static int count;
 	count = !count;
 	if( count )
-		cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 	else
-		cpu_set_irq_line(0, 0, HOLD_LINE);
+		cpunum_set_input_line(0, 0, HOLD_LINE);
 }
 
-static WRITE_HANDLER( renegade_coin_counter_w )
+static WRITE8_HANDLER( renegade_coin_counter_w )
 {
 	//coin_counter_w(offset,data);
 }
@@ -650,7 +650,7 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 /* handler called by the 3526 emulator when the internal timers cause an IRQ */
 static void irqhandler(int linestate)
 {
-	cpu_set_irq_line(1,M6809_FIRQ_LINE,linestate);
+	cpunum_set_input_line(1,M6809_FIRQ_LINE,linestate);
 }
 
 static struct YM3526interface ym3526_interface = {

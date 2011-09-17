@@ -1,11 +1,11 @@
-#pragma code_seg("C381")
-#pragma data_seg("D381")
-#pragma bss_seg("B381")
-#pragma const_seg("K381")
-#pragma comment(linker, "/merge:D381=381")
-#pragma comment(linker, "/merge:C381=381")
-#pragma comment(linker, "/merge:B381=381")
-#pragma comment(linker, "/merge:K381=381")
+#pragma code_seg("C396")
+#pragma data_seg("D396")
+#pragma bss_seg("B396")
+#pragma const_seg("K396")
+#pragma comment(linker, "/merge:D396=396")
+#pragma comment(linker, "/merge:C396=396")
+#pragma comment(linker, "/merge:B396=396")
+#pragma comment(linker, "/merge:K396=396")
 /***************************************************************************
 
 	Sun Electronics Kangaroo hardware
@@ -83,7 +83,7 @@ VIDEO_START( kangaroo )
 
 
 
-WRITE_HANDLER( kangaroo_video_control_w )
+WRITE8_HANDLER( kangaroo_video_control_w )
 {
 	/* A & B bitmap control latch (A=playfield B=motion)
 		  bit 5 FLIP A
@@ -102,7 +102,7 @@ WRITE_HANDLER( kangaroo_video_control_w )
 }
 
 
-WRITE_HANDLER( kangaroo_bank_select_w )
+WRITE8_HANDLER( kangaroo_bank_select_w )
 {
 	unsigned char *RAM = memory_region(REGION_GFX1);
 
@@ -119,7 +119,7 @@ WRITE_HANDLER( kangaroo_bank_select_w )
 
 
 
-WRITE_HANDLER( kangaroo_color_mask_w )
+WRITE8_HANDLER( kangaroo_color_mask_w )
 {
 	int i;
 
@@ -153,7 +153,7 @@ WRITE_HANDLER( kangaroo_color_mask_w )
 
 
 
-WRITE_HANDLER( kangaroo_blitter_w )
+WRITE8_HANDLER( kangaroo_blitter_w )
 {
 	kangaroo_blitter[offset] = data;
 
@@ -236,7 +236,7 @@ INLINE void kangaroo_redraw_4pixels(int x, int y)
 	kangaroo_plot_pixel(tmpbitmap2, x+3, y, videoram[offs+3] >> 4,   16, flipB);
 }
 
-WRITE_HANDLER( kangaroo_videoram_w )
+WRITE8_HANDLER( kangaroo_videoram_w )
 {
 	int a_Z_R,a_G_B,b_Z_R,b_G_B;
 	int sx, sy, offs;

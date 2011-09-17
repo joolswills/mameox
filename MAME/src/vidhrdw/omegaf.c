@@ -1,11 +1,11 @@
-#pragma code_seg("C511")
-#pragma data_seg("D511")
-#pragma bss_seg("B511")
-#pragma const_seg("K511")
-#pragma comment(linker, "/merge:D511=511")
-#pragma comment(linker, "/merge:C511=511")
-#pragma comment(linker, "/merge:B511=511")
-#pragma comment(linker, "/merge:K511=511")
+#pragma code_seg("C540")
+#pragma data_seg("D540")
+#pragma bss_seg("B540")
+#pragma const_seg("K540")
+#pragma comment(linker, "/merge:D540=540")
+#pragma comment(linker, "/merge:C540=540")
+#pragma comment(linker, "/merge:B540=540")
+#pragma comment(linker, "/merge:K540=540")
 /***************************************************************************
 
 Functions to emulate the video hardware of the machine.
@@ -333,37 +333,37 @@ VIDEO_START( robokid )
   Memory handler
 ***************************************************************************/
 
-WRITE_HANDLER( omegaf_bg0_bank_w )
+WRITE8_HANDLER( omegaf_bg0_bank_w )
 {
 	omegaf_bg0_bank = data & bank_mask;
 }
 
-WRITE_HANDLER( omegaf_bg1_bank_w )
+WRITE8_HANDLER( omegaf_bg1_bank_w )
 {
 	omegaf_bg1_bank = data & bank_mask;
 }
 
-WRITE_HANDLER( omegaf_bg2_bank_w )
+WRITE8_HANDLER( omegaf_bg2_bank_w )
 {
 	omegaf_bg2_bank = data & bank_mask;
 }
 
-READ_HANDLER( omegaf_bg0_videoram_r )
+READ8_HANDLER( omegaf_bg0_videoram_r )
 {
 	return omegaf_bg0_videoram[ (omegaf_bg0_bank << 10) | offset ];
 }
 
-READ_HANDLER( omegaf_bg1_videoram_r )
+READ8_HANDLER( omegaf_bg1_videoram_r )
 {
 	return omegaf_bg1_videoram[ (omegaf_bg1_bank << 10) | offset ];
 }
 
-READ_HANDLER( omegaf_bg2_videoram_r )
+READ8_HANDLER( omegaf_bg2_videoram_r )
 {
 	return omegaf_bg2_videoram[ (omegaf_bg2_bank << 10) | offset ];
 }
 
-WRITE_HANDLER( omegaf_bg0_videoram_w )
+WRITE8_HANDLER( omegaf_bg0_videoram_w )
 {
 	int address;
 	int tile_index;
@@ -378,7 +378,7 @@ WRITE_HANDLER( omegaf_bg0_videoram_w )
 	}
 }
 
-WRITE_HANDLER( omegaf_bg1_videoram_w )
+WRITE8_HANDLER( omegaf_bg1_videoram_w )
 {
 	int address;
 	int tile_index;
@@ -393,7 +393,7 @@ WRITE_HANDLER( omegaf_bg1_videoram_w )
 	}
 }
 
-WRITE_HANDLER( omegaf_bg2_videoram_w )
+WRITE8_HANDLER( omegaf_bg2_videoram_w )
 {
 	int address;
 	int tile_index;
@@ -408,7 +408,7 @@ WRITE_HANDLER( omegaf_bg2_videoram_w )
 	}
 }
 
-WRITE_HANDLER( robokid_bg0_videoram_w )
+WRITE8_HANDLER( robokid_bg0_videoram_w )
 {
 	int address;
 	int tile_index;
@@ -423,7 +423,7 @@ WRITE_HANDLER( robokid_bg0_videoram_w )
 	}
 }
 
-WRITE_HANDLER( robokid_bg1_videoram_w )
+WRITE8_HANDLER( robokid_bg1_videoram_w )
 {
 	int address;
 	int tile_index;
@@ -438,7 +438,7 @@ WRITE_HANDLER( robokid_bg1_videoram_w )
 	}
 }
 
-WRITE_HANDLER( robokid_bg2_videoram_w )
+WRITE8_HANDLER( robokid_bg2_videoram_w )
 {
 	int address;
 	int tile_index;
@@ -453,7 +453,7 @@ WRITE_HANDLER( robokid_bg2_videoram_w )
 	}
 }
 
-WRITE_HANDLER( omegaf_bg0_scrollx_w )
+WRITE8_HANDLER( omegaf_bg0_scrollx_w )
 {
 	int scrollx;
 
@@ -464,7 +464,7 @@ WRITE_HANDLER( omegaf_bg0_scrollx_w )
 	tilemap_set_scrollx( bg0_tilemap, 0, scrollx );
 }
 
-WRITE_HANDLER( omegaf_bg0_scrolly_w )
+WRITE8_HANDLER( omegaf_bg0_scrolly_w )
 {
 	int scrolly;
 
@@ -475,7 +475,7 @@ WRITE_HANDLER( omegaf_bg0_scrolly_w )
 	tilemap_set_scrolly( bg0_tilemap, 0, scrolly );
 }
 
-WRITE_HANDLER( omegaf_bg1_scrollx_w )
+WRITE8_HANDLER( omegaf_bg1_scrollx_w )
 {
 	int scrollx;
 
@@ -486,7 +486,7 @@ WRITE_HANDLER( omegaf_bg1_scrollx_w )
 	tilemap_set_scrollx( bg1_tilemap, 0, scrollx );
 }
 
-WRITE_HANDLER( omegaf_bg1_scrolly_w )
+WRITE8_HANDLER( omegaf_bg1_scrolly_w )
 {
 	int scrolly;
 
@@ -497,7 +497,7 @@ WRITE_HANDLER( omegaf_bg1_scrolly_w )
 	tilemap_set_scrolly( bg1_tilemap, 0, scrolly );
 }
 
-WRITE_HANDLER( omegaf_bg2_scrollx_w )
+WRITE8_HANDLER( omegaf_bg2_scrollx_w )
 {
 	int scrollx;
 
@@ -508,7 +508,7 @@ WRITE_HANDLER( omegaf_bg2_scrollx_w )
 	tilemap_set_scrollx( bg2_tilemap, 0, scrollx );
 }
 
-WRITE_HANDLER( omegaf_bg2_scrolly_w )
+WRITE8_HANDLER( omegaf_bg2_scrolly_w )
 {
 	int scrolly;
 
@@ -519,7 +519,7 @@ WRITE_HANDLER( omegaf_bg2_scrolly_w )
 	tilemap_set_scrolly( bg2_tilemap, 0, scrolly );
 }
 
-WRITE_HANDLER( omegaf_fgvideoram_w )
+WRITE8_HANDLER( omegaf_fgvideoram_w )
 {
 	if (omegaf_fg_videoram[offset] != data)
 	{
@@ -528,25 +528,25 @@ WRITE_HANDLER( omegaf_fgvideoram_w )
 	}
 }
 
-WRITE_HANDLER( omegaf_bg0_enabled_w )
+WRITE8_HANDLER( omegaf_bg0_enabled_w )
 {
 	if (bg0_enabled != data)
 		bg0_enabled = data;
 }
 
-WRITE_HANDLER( omegaf_bg1_enabled_w )
+WRITE8_HANDLER( omegaf_bg1_enabled_w )
 {
 	if (bg1_enabled != data)
 		bg1_enabled = data;
 }
 
-WRITE_HANDLER( omegaf_bg2_enabled_w )
+WRITE8_HANDLER( omegaf_bg2_enabled_w )
 {
 	if (bg2_enabled != data)
 		bg2_enabled = data;
 }
 
-WRITE_HANDLER( omegaf_sprite_overdraw_w )
+WRITE8_HANDLER( omegaf_sprite_overdraw_w )
 {
 	logerror( "sprite overdraw flag : %02x\n", data );
 	if (sprite_overdraw_enabled != (data & 1))
@@ -556,7 +556,7 @@ WRITE_HANDLER( omegaf_sprite_overdraw_w )
 	}
 }
 
-WRITE_HANDLER( omegaf_flipscreen_w )
+WRITE8_HANDLER( omegaf_flipscreen_w )
 {
 	flip_screen_set(data & 0x80);
 }

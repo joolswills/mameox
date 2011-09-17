@@ -1,11 +1,11 @@
-#pragma code_seg("C135")
-#pragma data_seg("D135")
-#pragma bss_seg("B135")
-#pragma const_seg("K135")
-#pragma comment(linker, "/merge:D135=135")
-#pragma comment(linker, "/merge:C135=135")
-#pragma comment(linker, "/merge:B135=135")
-#pragma comment(linker, "/merge:K135=135")
+#pragma code_seg("C136")
+#pragma data_seg("D136")
+#pragma bss_seg("B136")
+#pragma const_seg("K136")
+#pragma comment(linker, "/merge:D136=136")
+#pragma comment(linker, "/merge:C136=136")
+#pragma comment(linker, "/merge:B136=136")
+#pragma comment(linker, "/merge:K136=136")
 /***************************************************************************
 
 	Atari G1 hardware
@@ -66,9 +66,9 @@ static void update_interrupts(void)
 		newstate = 2;
 
 	if (newstate)
-		cpu_set_irq_line(0, newstate, ASSERT_LINE);
+		cpunum_set_input_line(0, newstate, ASSERT_LINE);
 	else
-		cpu_set_irq_line(0, 7, CLEAR_LINE);
+		cpunum_set_input_line(0, 7, CLEAR_LINE);
 }
 
 
@@ -193,7 +193,7 @@ static READ16_HANDLER( pitfighb_cheap_slapstic_r )
 static void pitfighb_cheap_slapstic_init(void)
 {
 	/* install a read handler */
-	bslapstic_base = install_mem_read16_handler(0, 0x038000, 0x03ffff, pitfighb_cheap_slapstic_r);
+	bslapstic_base = memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x038000, 0x03ffff, 0, 0, pitfighb_cheap_slapstic_r);
 
 	/* allocate memory for a copy of bank 0 */
 	bslapstic_bank0 = auto_malloc(0x2000);
@@ -225,7 +225,7 @@ static ADDRESS_MAP_START( main_map, ADDRESS_SPACE_PROGRAM, 16 )
 	AM_RANGE(0xfd0000, 0xfd0001) AM_READ(atarigen_sound_upper_r)
 	AM_RANGE(0xfd8000, 0xfdffff) AM_READWRITE(atarigen_eeprom_r, atarigen_eeprom_w) AM_BASE(&atarigen_eeprom) AM_SIZE(&atarigen_eeprom_size)
 /*	AM_RANGE(0xfe0000, 0xfe7fff) AM_READ(from_r)*/
-	AM_RANGE(0xfe8000, 0xfe89ff) AM_WRITE(atarigen_666_paletteram_w) AM_BASE(&paletteram16)
+	AM_RANGE(0xfe8000, 0xfe89ff) AM_READWRITE(MRA16_RAM, atarigen_666_paletteram_w) AM_BASE(&paletteram16)
 	AM_RANGE(0xff0000, 0xff0fff) AM_WRITE(atarirle_0_spriteram_w) AM_BASE(&atarirle_0_spriteram)
 	AM_RANGE(0xff2000, 0xff2001) AM_WRITE(mo_command_w) AM_BASE(&mo_command)
 	AM_RANGE(0xff4000, 0xff5fff) AM_WRITE(atarigen_playfield_w) AM_BASE(&atarigen_playfield)

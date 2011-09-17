@@ -1,11 +1,11 @@
-#pragma code_seg("C278")
-#pragma data_seg("D278")
-#pragma bss_seg("B278")
-#pragma const_seg("K278")
-#pragma comment(linker, "/merge:D278=278")
-#pragma comment(linker, "/merge:C278=278")
-#pragma comment(linker, "/merge:B278=278")
-#pragma comment(linker, "/merge:K278=278")
+#pragma code_seg("C289")
+#pragma data_seg("D289")
+#pragma bss_seg("B289")
+#pragma const_seg("K289")
+#pragma comment(linker, "/merge:D289=289")
+#pragma comment(linker, "/merge:C289=289")
+#pragma comment(linker, "/merge:B289=289")
+#pragma comment(linker, "/merge:K289=289")
 /***************************************************************************
 
   vidhrdw.c
@@ -100,7 +100,7 @@ PALETTE_INIT( exedexes )
 	}
 }
 
-WRITE_HANDLER( exedexes_videoram_w )
+WRITE8_HANDLER( exedexes_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -109,7 +109,7 @@ WRITE_HANDLER( exedexes_videoram_w )
 	}
 }
 
-WRITE_HANDLER( exedexes_colorram_w )
+WRITE8_HANDLER( exedexes_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -118,7 +118,7 @@ WRITE_HANDLER( exedexes_colorram_w )
 	}
 }
 
-WRITE_HANDLER( exedexes_c804_w )
+WRITE8_HANDLER( exedexes_c804_w )
 {
 	/* bits 0 and 1 are coin counters */
 	coin_counter_w(0, data & 0x01);
@@ -133,7 +133,7 @@ WRITE_HANDLER( exedexes_c804_w )
 	/* other bits seem to be unused */
 }
 
-WRITE_HANDLER( exedexes_gfxctrl_w )
+WRITE8_HANDLER( exedexes_gfxctrl_w )
 {
 	/* bit 4 is bg enable */
 	sc2on = data & 0x10;

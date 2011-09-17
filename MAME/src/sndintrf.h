@@ -19,6 +19,9 @@ struct MachineSound
 #if (HAS_DAC)
 #include "sound/dac.h"
 #endif
+#if (HAS_DMADAC)
+#include "sound/dmadac.h"
+#endif
 #if (HAS_DISCRETE)
 #include "sound/discrete.h"
 #endif
@@ -71,8 +74,17 @@ struct MachineSound
 #if (HAS_ASTROCADE)
 #include "sound/astrocde.h"
 #endif
-#if (HAS_NAMCO)
+#if (HAS_NAMCO || HAS_NAMCO_15XX || HAS_NAMCO_CUS30)
 #include "sound/namco.h"
+#endif
+#if (HAS_NAMCO_52XX)
+#include "sound/namco52.h"
+#endif
+#if (HAS_NAMCO_54XX)
+#include "sound/namco54.h"
+#endif
+#if (HAS_NAMCO_63701X)
+#include "sound/n63701x.h"
 #endif
 #if (HAS_NAMCONA)
 #include "sound/namcona.h"
@@ -179,6 +191,15 @@ struct MachineSound
 #if (HAS_YMF271)
 #include "sound/ymf271.h"
 #endif
+#if (HAS_CDDA)
+#include "sound/cdda.h"
+#endif
+#if (HAS_ICS2115)
+#include "sound/ics2115.h"
+#endif
+#if (HAS_ST0016)
+#include "sound/st0016.h"
+#endif
 
 #ifdef MESS
 #if (HAS_BEEP)
@@ -207,6 +228,9 @@ enum
 #endif
 #if (HAS_DAC)
 	SOUND_DAC,
+#endif
+#if (HAS_DMADAC)
+	SOUND_DMADAC,
 #endif
 #if (HAS_DISCRETE)
 	SOUND_DISCRETE,
@@ -270,6 +294,21 @@ enum
 #endif
 #if (HAS_NAMCO)
 	SOUND_NAMCO,
+#endif
+#if (HAS_NAMCO_15XX)
+	SOUND_NAMCO_15XX,
+#endif
+#if (HAS_NAMCO_CUS30)
+	SOUND_NAMCO_CUS30,
+#endif
+#if (HAS_NAMCO_52XX)
+	SOUND_NAMCO_52XX,
+#endif
+#if (HAS_NAMCO_54XX)
+	SOUND_NAMCO_54XX,
+#endif
+#if (HAS_NAMCO_63701X)
+	SOUND_NAMCO_63701X,
 #endif
 #if (HAS_NAMCONA)
 	SOUND_NAMCONA,
@@ -385,6 +424,15 @@ enum
 #if (HAS_YMF271)
 	SOUND_YMF271,
 #endif
+#if (HAS_CDDA)
+	SOUND_CDDA,
+#endif
+#if (HAS_ICS2115)
+	SOUND_ICS2115,
+#endif
+#if (HAS_ST0016)
+	SOUND_ST0016,
+#endif
 
 #ifdef MESS
 #if (HAS_BEEP)
@@ -426,28 +474,28 @@ int sound_clock(const struct MachineSound *msound);
 int sound_scalebufferpos(int value);
 
 
-READ_HANDLER( soundlatch_r );
-READ_HANDLER( soundlatch2_r );
-READ_HANDLER( soundlatch3_r );
-READ_HANDLER( soundlatch4_r );
+READ8_HANDLER( soundlatch_r );
+READ8_HANDLER( soundlatch2_r );
+READ8_HANDLER( soundlatch3_r );
+READ8_HANDLER( soundlatch4_r );
 READ16_HANDLER( soundlatch_word_r );
 READ16_HANDLER( soundlatch2_word_r );
 READ16_HANDLER( soundlatch3_word_r );
 READ16_HANDLER( soundlatch4_word_r );
 
-WRITE_HANDLER( soundlatch_w );
-WRITE_HANDLER( soundlatch2_w );
-WRITE_HANDLER( soundlatch3_w );
-WRITE_HANDLER( soundlatch4_w );
+WRITE8_HANDLER( soundlatch_w );
+WRITE8_HANDLER( soundlatch2_w );
+WRITE8_HANDLER( soundlatch3_w );
+WRITE8_HANDLER( soundlatch4_w );
 WRITE16_HANDLER( soundlatch_word_w );
 WRITE16_HANDLER( soundlatch2_word_w );
 WRITE16_HANDLER( soundlatch3_word_w );
 WRITE16_HANDLER( soundlatch4_word_w );
 
-WRITE_HANDLER( soundlatch_clear_w );
-WRITE_HANDLER( soundlatch2_clear_w );
-WRITE_HANDLER( soundlatch3_clear_w );
-WRITE_HANDLER( soundlatch4_clear_w );
+WRITE8_HANDLER( soundlatch_clear_w );
+WRITE8_HANDLER( soundlatch2_clear_w );
+WRITE8_HANDLER( soundlatch3_clear_w );
+WRITE8_HANDLER( soundlatch4_clear_w );
 
 
 /* If you're going to use soundlatchX_clear_w, and the cleared value is

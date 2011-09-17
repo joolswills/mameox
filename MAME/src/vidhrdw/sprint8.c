@@ -1,11 +1,11 @@
-#pragma code_seg("C652")
-#pragma data_seg("D652")
-#pragma bss_seg("B652")
-#pragma const_seg("K652")
-#pragma comment(linker, "/merge:D652=652")
-#pragma comment(linker, "/merge:C652=652")
-#pragma comment(linker, "/merge:B652=652")
-#pragma comment(linker, "/merge:K652=652")
+#pragma code_seg("C688")
+#pragma data_seg("D688")
+#pragma bss_seg("B688")
+#pragma const_seg("K688")
+#pragma comment(linker, "/merge:D688=688")
+#pragma comment(linker, "/merge:C688=688")
+#pragma comment(linker, "/merge:B688=688")
+#pragma comment(linker, "/merge:K688=688")
 /***************************************************************************
 
 Atari Sprint 8 video emulation
@@ -77,7 +77,7 @@ static void get_tile_info2(int tile_index)
 }
 
 
-WRITE_HANDLER( sprint8_video_ram_w )
+WRITE8_HANDLER( sprint8_video_ram_w )
 {
 	if (data != sprint8_video_ram[offset])
 	{

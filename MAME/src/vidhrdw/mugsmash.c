@@ -1,11 +1,11 @@
-#pragma code_seg("C471")
-#pragma data_seg("D471")
-#pragma bss_seg("B471")
-#pragma const_seg("K471")
-#pragma comment(linker, "/merge:D471=471")
-#pragma comment(linker, "/merge:C471=471")
-#pragma comment(linker, "/merge:B471=471")
-#pragma comment(linker, "/merge:K471=471")
+#pragma code_seg("C497")
+#pragma data_seg("D497")
+#pragma bss_seg("B497")
+#pragma const_seg("K497")
+#pragma comment(linker, "/merge:D497=497")
+#pragma comment(linker, "/merge:C497=497")
+#pragma comment(linker, "/merge:B497=497")
+#pragma comment(linker, "/merge:K497=497")
 /* vidhrdw/mugsmash.c - see drivers/mugsmash.c for more info */
 
 #include "driver.h"

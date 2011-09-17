@@ -1,11 +1,11 @@
-#pragma code_seg("C649")
-#pragma data_seg("D649")
-#pragma bss_seg("B649")
-#pragma const_seg("K649")
-#pragma comment(linker, "/merge:D649=649")
-#pragma comment(linker, "/merge:C649=649")
-#pragma comment(linker, "/merge:B649=649")
-#pragma comment(linker, "/merge:K649=649")
+#pragma code_seg("C685")
+#pragma data_seg("D685")
+#pragma bss_seg("B685")
+#pragma const_seg("K685")
+#pragma comment(linker, "/merge:D685=685")
+#pragma comment(linker, "/merge:C685=685")
+#pragma comment(linker, "/merge:B685=685")
+#pragma comment(linker, "/merge:K685=685")
 /*
 Super Cross II (JPN Ver.)
 (c)1986 GM Shoji
@@ -50,7 +50,7 @@ PALETTE_INIT( sprcros2 )
 	}
 }
 
-WRITE_HANDLER( sprcros2_fgvideoram_w )
+WRITE8_HANDLER( sprcros2_fgvideoram_w )
 {
 	if (sprcros2_fgvideoram[offset] != data)
 	{
@@ -59,7 +59,7 @@ WRITE_HANDLER( sprcros2_fgvideoram_w )
 	}
 }
 
-WRITE_HANDLER( sprcros2_bgvideoram_w )
+WRITE8_HANDLER( sprcros2_bgvideoram_w )
 {
 	if (sprcros2_bgvideoram[offset] != data)
 	{
@@ -68,7 +68,7 @@ WRITE_HANDLER( sprcros2_bgvideoram_w )
 	}
 }
 
-WRITE_HANDLER( sprcros2_bgscrollx_w )
+WRITE8_HANDLER( sprcros2_bgscrollx_w )
 {
 	if(sprcros2_m_port7&0x02)
 		tilemap_set_scrollx(sprcros2_bgtilemap,0,0x100-data);
@@ -76,7 +76,7 @@ WRITE_HANDLER( sprcros2_bgscrollx_w )
 		tilemap_set_scrollx(sprcros2_bgtilemap,0,data);
 }
 
-WRITE_HANDLER( sprcros2_bgscrolly_w )
+WRITE8_HANDLER( sprcros2_bgscrolly_w )
 {
 	tilemap_set_scrolly(sprcros2_bgtilemap,0,data);
 }

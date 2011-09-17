@@ -1,11 +1,11 @@
-#pragma code_seg("C605")
-#pragma data_seg("D605")
-#pragma bss_seg("B605")
-#pragma const_seg("K605")
-#pragma comment(linker, "/merge:D605=605")
-#pragma comment(linker, "/merge:C605=605")
-#pragma comment(linker, "/merge:B605=605")
-#pragma comment(linker, "/merge:K605=605")
+#pragma code_seg("C641")
+#pragma data_seg("D641")
+#pragma bss_seg("B641")
+#pragma const_seg("K641")
+#pragma comment(linker, "/merge:D641=641")
+#pragma comment(linker, "/merge:C641=641")
+#pragma comment(linker, "/merge:B641=641")
+#pragma comment(linker, "/merge:K641=641")
 #include "driver.h"
 #include "machine/z80fmly.h"
 #include <math.h>
@@ -14,7 +14,7 @@
 /* z80 pio */
 static void pio_interrupt(int state)
 {
-	cpu_set_irq_line_and_vector (1, 0, HOLD_LINE, Z80_VECTOR(0,state) );
+	cpunum_set_input_line_and_vector (1, 0, HOLD_LINE, Z80_VECTOR(0,state) );
 }
 
 static z80pio_interface pio_intf =
@@ -28,7 +28,7 @@ static z80pio_interface pio_intf =
 /* z80 ctc */
 static void ctc_interrupt (int state)
 {
-	cpu_set_irq_line_and_vector (1, 0, HOLD_LINE, Z80_VECTOR(1,state) );
+	cpunum_set_input_line_and_vector (1, 0, HOLD_LINE, Z80_VECTOR(1,state) );
 }
 
 static z80ctc_interface ctc_intf =
@@ -53,7 +53,7 @@ static int single_volume = 0;
 static int channel;
 
 
-WRITE_HANDLER( senjyo_volume_w )
+WRITE8_HANDLER( senjyo_volume_w )
 {
 	single_volume = data & 0x0f;
 	mixer_set_volume(channel,single_volume * 100 / 15);

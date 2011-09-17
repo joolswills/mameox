@@ -7,7 +7,7 @@
 #pragma comment(linker, "/merge:CB4=CPU4")
 #pragma comment(linker, "/merge:CK4=CPU4")
 /*****************************************************************************
- *  Deco CPU15 instructions - still very work in progress!
+ *  Deco CPU16 instructions - still very work in progress!
  *
  *****************************************************************************/
 

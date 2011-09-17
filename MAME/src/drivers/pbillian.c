@@ -1,11 +1,11 @@
-#pragma code_seg("C528")
-#pragma data_seg("D528")
-#pragma bss_seg("B528")
-#pragma const_seg("K528")
-#pragma comment(linker, "/merge:D528=528")
-#pragma comment(linker, "/merge:C528=528")
-#pragma comment(linker, "/merge:B528=528")
-#pragma comment(linker, "/merge:K528=528")
+#pragma code_seg("C559")
+#pragma data_seg("D559")
+#pragma bss_seg("B559")
+#pragma const_seg("K559")
+#pragma comment(linker, "/merge:D559=559")
+#pragma comment(linker, "/merge:C559=559")
+#pragma comment(linker, "/merge:B559=559")
+#pragma comment(linker, "/merge:K559=559")
 /******************************************************************************
  Prebillian  1986 Taito WORKING
  Hot Smash   1987 Taito NOT WORKING (protection? see notes)
@@ -109,8 +109,8 @@ DSW2 stored @ $f237
 ******************************************************************************/
 #include "driver.h"
 #include "vidhrdw/generic.h"
-WRITE_HANDLER( pb_videoram_w );
-WRITE_HANDLER(data_41a_w);
+WRITE8_HANDLER( pb_videoram_w );
+WRITE8_HANDLER(data_41a_w);
 
 int pbillian_sh_start(const struct MachineSound*);
 
@@ -120,12 +120,12 @@ VIDEO_UPDATE(pbillian);
 data8_t select_403,select_407,select_408,is_pbillian;
 data8_t *pb_videoram;
 
-static WRITE_HANDLER(select_408_w)
+static WRITE8_HANDLER(select_408_w)
 {
 	select_408=data;
 }  
 
-static WRITE_HANDLER(data_410_w)
+static WRITE8_HANDLER(data_410_w)
 {
 	coin_counter_w(0,data&2);
 	coin_counter_w(1,data&4);
@@ -133,7 +133,7 @@ static WRITE_HANDLER(data_410_w)
 	flip_screen_set(data&0x20);
 }
 
-static READ_HANDLER(data_408_r)
+static READ8_HANDLER(data_408_r)
 {
 	/* 
 		Hot Smash
@@ -175,7 +175,7 @@ static READ_HANDLER(data_408_r)
 	return 0;
 }
 
-static READ_HANDLER(ay_port_a_r)
+static READ8_HANDLER(ay_port_a_r)
 {
 	 /* bits 76------  latches ?  0x40 should be ok for prebillian but not for hot smash*/
 	 return (rand()&0xc0)|input_port_5_r(0);

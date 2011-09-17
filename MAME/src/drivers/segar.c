@@ -73,9 +73,9 @@
 static INTERRUPT_GEN( segar_interrupt )
 {
 	if (readinputport(5) & 1)       /* get status of the F2 key */
-		cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);	/* trigger self test */
+		cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);	/* trigger self test */
 	else
-		cpu_set_irq_line(0, 0, HOLD_LINE);
+		cpunum_set_input_line(0, 0, HOLD_LINE);
 }
 
 
@@ -103,7 +103,7 @@ static INTERRUPT_GEN( segar_interrupt )
 
 ***************************************************************************/
 
-static READ_HANDLER( segar_ports_r )
+static READ8_HANDLER( segar_ports_r )
 {
 	int dip1, dip2;
 
@@ -139,17 +139,17 @@ static READ_HANDLER( segar_ports_r )
  *
  *************************************/
 
-static WRITE_HANDLER( sindbadm_soundport_w )
+static WRITE8_HANDLER( sindbadm_soundport_w )
 {
 	soundlatch_w(0,data);
-	cpu_set_irq_line(1, IRQ_LINE_NMI, PULSE_LINE);
+	cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 	/* spin for a while to let the Z80 read the command */
 	cpu_spinuntil_time(TIME_IN_USEC(50));
 }
 
 
 /* the data lines are flipped */
-static WRITE_HANDLER( sindbadm_SN76496_0_w )
+static WRITE8_HANDLER( sindbadm_SN76496_0_w )
 {
 	int flipped = ((data >> 7) & 0x01) | ((data >> 5) & 0x02) | ((data >> 3) & 0x04) | ((data >> 1) & 0x08) |
 			      ((data << 1) & 0x10) | ((data << 3) & 0x20) | ((data << 5) & 0x40) | ((data << 7) & 0x80);
@@ -157,7 +157,7 @@ static WRITE_HANDLER( sindbadm_SN76496_0_w )
 }
 
 
-static WRITE_HANDLER( sindbadm_SN76496_1_w )
+static WRITE8_HANDLER( sindbadm_SN76496_1_w )
 {
 	int flipped = ((data >> 7) & 0x01) | ((data >> 5) & 0x02) | ((data >> 3) & 0x04) | ((data >> 1) & 0x08) |
 			      ((data << 1) & 0x10) | ((data << 3) & 0x20) | ((data << 5) & 0x40) | ((data << 7) & 0x80);
@@ -1160,7 +1160,7 @@ static MACHINE_DRIVER_START( segar )
 	MDRV_GFXDECODE(gfxdecodeinfo)
 	MDRV_PALETTE_LENGTH(16*4+1)
 	MDRV_COLORTABLE_LENGTH(16*4+1)
-	
+
 	MDRV_PALETTE_INIT(segar)
 	MDRV_VIDEO_START(segar)
 	MDRV_VIDEO_UPDATE(segar)
@@ -1458,6 +1458,44 @@ ROM_START( monsterb )
 	ROM_LOAD( "1518a.bin",    0x0000, 0x2000, CRC(2d5932fe) SHA1(a9ca239a062e047b307cf3d0740cb6492a55abb4) ) /* ??? */
 ROM_END
 
+ROM_START( monster2 )
+	ROM_REGION( 0x14000, REGION_CPU1, 0 )     /* 64k for code + space for background */
+	ROM_LOAD( "epr-1548",     0x0000, 0x2000, CRC(239f77c1) SHA1(2945e4b135c1c46bf3e0d947b3d9be052f12e8d8) )
+	ROM_LOAD( "epr-1549",     0x2000, 0x2000, CRC(40aeb223) SHA1(8e0cc1b53ded819673719ffe1fd69feb1ca6fa29) )
+	ROM_LOAD( "epr-1550",     0x4000, 0x2000, CRC(b42bb2b3) SHA1(88bd5b027c46cde9f89e90f50ae2c381681ae483) )
+	ROM_LOAD( "epr-1551",     0x6000, 0x2000, CRC(ad7728cc) SHA1(e9ca8a92dae39528ae7a003cb641af4342067b14) )
+	ROM_LOAD( "epr-1552",     0x8000, 0x2000, CRC(e876e216) SHA1(31301f2b576689aefcb42a4233f8fafb7f4791a7) )
+	ROM_LOAD( "epr-1553",     0xa000, 0x2000, CRC(4a839fb2) SHA1(3a15d74a0abd0548cb90c13f4d5baebe3ec83d23) )
+
+	ROM_REGION( 0x1000, REGION_CPU2, 0 )      /* 4k for 7751 onboard ROM */
+	ROM_LOAD( "7751.bin",     0x0000, 0x0400, CRC(6a9534fc) SHA1(67ad94674db5c2aab75785668f610f6f4eccd158) ) /* 7751 - U34 */
+
+	ROM_REGION( 0x4000, REGION_GFX1, ROMREGION_DISPOSE ) /* background graphics */
+	/* same as 1516 / 1517 but proper labels should always be used */
+	ROM_LOAD( "epr-1661",     0x0000, 0x2000, CRC(e93a2281) SHA1(61c9022edfb8fee2b7214d87d6bbed415fba9601) ) /* ??? */
+	ROM_LOAD( "epr-1662",     0x2000, 0x2000, CRC(1e589101) SHA1(6805644e18e5b18b96e6a407ec217f02c8931ec2) ) /* ??? */
+
+	ROM_REGION( 0x2000, REGION_SOUND1, 0 )      /* 8k for sound */
+	ROM_LOAD( "epr-1543",  0x0000, 0x1000, CRC(b525ce8f) SHA1(61e541061a0a579101e52ffa2431540010b9df3e) ) /* U19 */
+	ROM_LOAD( "epr-1544",  0x1000, 0x1000, CRC(56c79fb0) SHA1(26de83efcc97318220603f83acf4387f6d70d806) ) /* U23 */
+
+	ROM_REGION( 0x0020, REGION_SOUND2, 0 )      /* 32 bytes for sound PROM */
+	ROM_LOAD( "spr-1512",   0x0000, 0x0020, CRC(414ebe9b) SHA1(3df8694e3d26635d19fd4cdf02bd0998e8538b5b) )  /* U31 */
+
+	ROM_REGION( 0x2000, REGION_USER1, 0 )		      /* background charmaps */
+	ROM_LOAD( "epr-1554",     0x0000, 0x2000, CRC(a87937d0) SHA1(cfc2fca52bd74beb2f20ece07e9dd3e3f1038f7c) ) /* ??? */
+
+	ROM_REGION( 0x2000, REGION_USER2, 0 )		      /* other proms (unused) */
+	ROM_LOAD( "pr-1535",     0x0000, 0x20, CRC(087df496) SHA1(b6905626595f7a5587a0fd5db0d0bbf7f1fdf695) ) /* ??? */
+	ROM_LOAD( "pr-1536",     0x0000, 0x20, CRC(57c65534) SHA1(5714720ddb3c90f10fd880faa9c18990c7947a0d) ) /* ??? */
+	ROM_LOAD( "pr-1537",     0x0000, 0x20, CRC(e4451c6c) SHA1(8a4290fccca37564db3a4415057602c7f530947f) ) /* ??? */
+	ROM_LOAD( "pr-1538",     0x0000, 0x100, CRC(025996b1) SHA1(16e927c3a94c46ab2d870a37aa0dfacb4f95bdbf) ) /* ??? */
+	ROM_LOAD( "pr-1539",     0x0000, 0x100, CRC(dd18a9ab) SHA1(365e2f36e60c54f2d782b0c918350f6b565aeda8) ) /* ??? */
+	ROM_LOAD( "pr-1540",     0x0000, 0x100, CRC(e767ab01) SHA1(97a1f891f95a2f862ee1319033411d51c47bd593) ) /* ??? */
+	ROM_LOAD( "pr-1541",     0x0000, 0x100, CRC(411aa2a5) SHA1(bc6a7119679aaa22f171a9038f49265e8cd4a166) ) /* ??? */
+	ROM_LOAD( "pr-5021",     0x0000, 0x20, CRC(ad1f2839) SHA1(765fdb90cbd1ab1551851a9a0c8ed0cb15928a25) ) /* ??? */
+ROM_END
+
 
 ROM_START( spaceod )
 	ROM_REGION( 0x10000, REGION_CPU1, 0 )     /* 64k for code */
@@ -1499,7 +1537,8 @@ ROM_END
 
 ROM_START( pignewt )
 	ROM_REGION( 0x10000, REGION_CPU1, 0 )     /* 64k for code */
-	ROM_LOAD( "cpu.u25",    0x0000, 0x0800, NO_DUMP ) /* U25 */
+//	ROM_LOAD( "cpu.u25",    0x0000, 0x0800, NO_DUMP ) /* U25 */ why was it NO_DUMP not BAD_DUMP?
+	ROM_LOAD( "cpu.u25",    0x0000, 0x0800, BAD_DUMP CRC(eccc814d) SHA1(d999d7d433bde5d7773cd7afaf3e673089ba2544)) /* U25 */
 	ROM_LOAD( "1888c",      0x0800, 0x0800, CRC(fd18ed09) SHA1(8bba49d93ae72dbc0497a5a24991c5da26d169d3) ) /* U1 */
 	ROM_LOAD( "1889c",      0x1000, 0x0800, CRC(f633f5ff) SHA1(b647bebfd8a2093b0b0b7587f7c816aade796b26) ) /* U2 */
 	ROM_LOAD( "1890c",      0x1800, 0x0800, CRC(22009d7f) SHA1(2c90460ecf8d9fd9fab4a4e6e78ec634ad5f84ef) ) /* U3 */
@@ -1537,7 +1576,8 @@ ROM_END
 
 ROM_START( pignewta )
 	ROM_REGION( 0x10000, REGION_CPU1, 0 )     /* 64k for code */
-	ROM_LOAD( "cpu.u25",    0x0000, 0x0800, NO_DUMP ) /* U25 */
+//	ROM_LOAD( "cpu.u25",    0x0000, 0x0800, NO_DUMP ) /* U25 */ why was it NO_DUMP not BAD_DUMP?
+	ROM_LOAD( "cpu.u25",    0x0000, 0x0800, BAD_DUMP CRC(eccc814d) SHA1(d999d7d433bde5d7773cd7afaf3e673089ba2544)) /* U25 */
 	ROM_LOAD( "1888a",      0x0800, 0x0800, CRC(491c0835) SHA1(65c917ebcfa8e5199e9923c04626c067fda3c637) ) /* U1 */
 	ROM_LOAD( "1889a",      0x1000, 0x0800, CRC(0dcf0af2) SHA1(788c24c87f44f9206c994286c7ba093d365f056f) ) /* U2 */
 	ROM_LOAD( "1890a",      0x1800, 0x0800, CRC(640b8b2e) SHA1(838c3283ad92eb4390e9935e420322c4b0426800) ) /* U3 */
@@ -1610,8 +1650,8 @@ static DRIVER_INIT( astrob )
 	/* This game uses the 315-0062 security chip */
 	sega_security(62);
 
-	install_port_write_handler(0, 0x38, 0x38, sega_sh_speechboard_w);
-	install_port_write_handler(0, 0x3e, 0x3f, astrob_audio_ports_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x38, 0x38, 0, 0, sega_sh_speechboard_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x3e, 0x3f, 0, 0, astrob_audio_ports_w);
 }
 
 
@@ -1627,8 +1667,22 @@ static DRIVER_INIT( monsterb )
 	/* This game uses the 315-0082 security chip */
 	sega_security(82);
 
-	install_port_write_handler(0, 0x0c, 0x0f, monsterb_audio_8255_w);
-	install_port_write_handler(0, 0xbc, 0xbc, monsterb_back_port_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x0c, 0x0f, 0, 0, monsterb_audio_8255_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0xbc, 0xbc, 0, 0, monsterb_back_port_w);
+}
+
+static DRIVER_INIT( monster2 )
+{
+
+	/* This game uses an encrypted CPU */
+//	monster2_decode();
+	spatter_decode();
+
+	/* This game uses the 315-0082 security chip */
+	sega_security(82);
+
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x0c, 0x0f, 0, 0, monsterb_audio_8255_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0xbc, 0xbc, 0, 0, monsterb_back_port_w);
 }
 
 
@@ -1637,12 +1691,12 @@ static DRIVER_INIT( spaceod )
 	/* This game uses the 315-0063 security chip */
 	sega_security(63);
 
-	install_port_write_handler(0, 0x08, 0x08, spaceod_back_port_w);
-	install_port_write_handler(0, 0x09, 0x09, spaceod_backshift_clear_w);
-	install_port_write_handler(0, 0x0a, 0x0a, spaceod_backshift_w);
-	install_port_write_handler(0, 0x0b, 0x0c, spaceod_nobackfill_w);
-	install_port_write_handler(0, 0x0d, 0x0d, spaceod_backfill_w);
-	install_port_write_handler(0, 0x0e, 0x0f, spaceod_audio_ports_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x08, 0x08, 0, 0, spaceod_back_port_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x09, 0x09, 0, 0, spaceod_backshift_clear_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x0a, 0x0a, 0, 0, spaceod_backshift_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x0b, 0x0c, 0, 0, spaceod_nobackfill_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x0d, 0x0d, 0, 0, spaceod_backfill_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x0e, 0x0f, 0, 0, spaceod_audio_ports_w);
 }
 
 
@@ -1651,9 +1705,9 @@ static DRIVER_INIT( pignewt )
 	/* This game uses the 315-0063? security chip */
 	sega_security(63);
 
-	install_port_write_handler(0, 0xb4, 0xb5, pignewt_back_color_w);  /* Just guessing */
-	install_port_write_handler(0, 0xb8, 0xbc, pignewt_back_ports_w);   /* Just guessing */
-	install_port_write_handler(0, 0xbe, 0xbe, MWA8_NOP);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0xb4, 0xb5, 0, 0, pignewt_back_color_w);  /* Just guessing */
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0xb8, 0xbc, 0, 0, pignewt_back_ports_w);   /* Just guessing */
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0xbe, 0xbe, 0, 0, MWA8_NOP);
 }
 
 
@@ -1676,6 +1730,7 @@ GAME( 1981, astrob2,  astrob,  astrob,   astrob2,  astrob,   ROT270, "Sega", "As
 GAMEX(1981, astrob1,  astrob,  astrob,   astrob1,  astrob,   ROT270, "Sega", "Astro Blaster (version 1)", GAME_NOT_WORKING )
 GAMEX(1981, 005,      0,       005,      005,      005,      ROT270, "Sega", "005", GAME_NO_SOUND )
 GAME( 1982, monsterb, 0,       monsterb, monsterb, monsterb, ROT270, "Sega", "Monster Bash" )
+GAME( 1982, monster2, monsterb,monsterb, monsterb, monster2, ROT270, "Sega", "Monster Bash (2 board version)" )
 GAME( 1981, spaceod,  0,       spaceod,  spaceod,  spaceod,  ROT270, "Sega", "Space Odyssey" )
 GAMEX(1983, pignewt,  0,       pignewt,  pignewt,  pignewt,  ROT270, "Sega", "Pig Newton (version C)", GAME_NO_SOUND )
 GAMEX(1983, pignewta, pignewt, pignewt,  pignewta, pignewt,  ROT270, "Sega", "Pig Newton (version A)", GAME_NO_SOUND )

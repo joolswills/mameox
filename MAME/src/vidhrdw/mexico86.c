@@ -1,11 +1,11 @@
-#pragma code_seg("C444")
-#pragma data_seg("D444")
-#pragma bss_seg("B444")
-#pragma const_seg("K444")
-#pragma comment(linker, "/merge:D444=444")
-#pragma comment(linker, "/merge:C444=444")
-#pragma comment(linker, "/merge:B444=444")
-#pragma comment(linker, "/merge:K444=444")
+#pragma code_seg("C467")
+#pragma data_seg("D467")
+#pragma bss_seg("B467")
+#pragma const_seg("K467")
+#pragma comment(linker, "/merge:D467=467")
+#pragma comment(linker, "/merge:C467=467")
+#pragma comment(linker, "/merge:B467=467")
+#pragma comment(linker, "/merge:K467=467")
 #include "driver.h"
 
 unsigned char *mexico86_videoram,*mexico86_objectram;
@@ -14,7 +14,7 @@ static int charbank;
 
 
 
-WRITE_HANDLER( mexico86_bankswitch_w )
+WRITE8_HANDLER( mexico86_bankswitch_w )
 {
 	unsigned char *RAM = memory_region(REGION_CPU1);
 

@@ -1,11 +1,11 @@
-#pragma code_seg("C480")
-#pragma data_seg("D480")
-#pragma bss_seg("B480")
-#pragma const_seg("K480")
-#pragma comment(linker, "/merge:D480=480")
-#pragma comment(linker, "/merge:C480=480")
-#pragma comment(linker, "/merge:B480=480")
-#pragma comment(linker, "/merge:K480=480")
+#pragma code_seg("C508")
+#pragma data_seg("D508")
+#pragma bss_seg("B508")
+#pragma const_seg("K508")
+#pragma comment(linker, "/merge:D508=508")
+#pragma comment(linker, "/merge:C508=508")
+#pragma comment(linker, "/merge:B508=508")
+#pragma comment(linker, "/merge:K508=508")
 /*************************************************************
 
     Namco ND-1 Driver - Mark McDougall

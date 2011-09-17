@@ -1,11 +1,11 @@
-#pragma code_seg("C441")
-#pragma data_seg("D441")
-#pragma bss_seg("B441")
-#pragma const_seg("K441")
-#pragma comment(linker, "/merge:D441=441")
-#pragma comment(linker, "/merge:C441=441")
-#pragma comment(linker, "/merge:B441=441")
-#pragma comment(linker, "/merge:K441=441")
+#pragma code_seg("C464")
+#pragma data_seg("D464")
+#pragma bss_seg("B464")
+#pragma const_seg("K464")
+#pragma comment(linker, "/merge:D464=464")
+#pragma comment(linker, "/merge:C464=464")
+#pragma comment(linker, "/merge:B464=464")
+#pragma comment(linker, "/merge:K464=464")
 /***************************************************************************
 
 Mermaid
@@ -27,26 +27,26 @@ extern unsigned char* mermaid_foreground_scrollram;
 
 PALETTE_INIT( mermaid );
 VIDEO_UPDATE( mermaid );
-WRITE_HANDLER( mermaid_flip_screen_x_w );
-WRITE_HANDLER( mermaid_flip_screen_y_w );
+WRITE8_HANDLER( mermaid_flip_screen_x_w );
+WRITE8_HANDLER( mermaid_flip_screen_y_w );
 
 
 static unsigned char *mermaid_AY8910_enable;
 
-static WRITE_HANDLER( mermaid_AY8910_write_port_w )
+static WRITE8_HANDLER( mermaid_AY8910_write_port_w )
 {
 	if (mermaid_AY8910_enable[0])  AY8910_write_port_0_w(offset, data);
 	if (mermaid_AY8910_enable[1])  AY8910_write_port_1_w(offset, data);
 }
 
-static WRITE_HANDLER( mermaid_AY8910_control_port_w )
+static WRITE8_HANDLER( mermaid_AY8910_control_port_w )
 {
 	if (mermaid_AY8910_enable[0])  AY8910_control_port_0_w(offset, data);
 	if (mermaid_AY8910_enable[1])  AY8910_control_port_1_w(offset, data);
 }
 
 #if 0
-static READ_HANDLER( mermaid_f800_r )
+static READ8_HANDLER( mermaid_f800_r )
 {
 	// collision register active LO
 	// Bit 0

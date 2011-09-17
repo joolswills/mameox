@@ -1,11 +1,11 @@
-#pragma code_seg("C574")
-#pragma data_seg("D574")
-#pragma bss_seg("B574")
-#pragma const_seg("K574")
-#pragma comment(linker, "/merge:D574=574")
-#pragma comment(linker, "/merge:C574=574")
-#pragma comment(linker, "/merge:B574=574")
-#pragma comment(linker, "/merge:K574=574")
+#pragma code_seg("C608")
+#pragma data_seg("D608")
+#pragma bss_seg("B608")
+#pragma const_seg("K608")
+#pragma comment(linker, "/merge:D608=608")
+#pragma comment(linker, "/merge:C608=608")
+#pragma comment(linker, "/merge:B608=608")
+#pragma comment(linker, "/merge:K608=608")
 /***************************************************************************
 
 	Renegade Video Hardware
@@ -20,7 +20,7 @@ int renegade_scrollx;
 static struct tilemap *bg_tilemap;
 static struct tilemap *fg_tilemap;
 
-WRITE_HANDLER( renegade_videoram_w )
+WRITE8_HANDLER( renegade_videoram_w )
 {
 	if( videoram[offset]!=data )
 	{
@@ -30,7 +30,7 @@ WRITE_HANDLER( renegade_videoram_w )
 	}
 }
 
-WRITE_HANDLER( renegade_videoram2_w )
+WRITE8_HANDLER( renegade_videoram2_w )
 {
 	if( renegade_videoram2[offset]!=data )
 	{
@@ -40,17 +40,17 @@ WRITE_HANDLER( renegade_videoram2_w )
 	}
 }
 
-WRITE_HANDLER( renegade_flipscreen_w )
+WRITE8_HANDLER( renegade_flipscreen_w )
 {
 	flip_screen_set(~data & 0x01);
 }
 
-WRITE_HANDLER( renegade_scroll0_w )
+WRITE8_HANDLER( renegade_scroll0_w )
 {
 	renegade_scrollx = (renegade_scrollx&0xff00)|data;
 }
 
-WRITE_HANDLER( renegade_scroll1_w )
+WRITE8_HANDLER( renegade_scroll1_w )
 {
 	renegade_scrollx = (renegade_scrollx&0xFF)|(data<<8);
 }

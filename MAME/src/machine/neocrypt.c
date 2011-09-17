@@ -59,6 +59,7 @@ analyzed, quickly leading to the algorithm.
 #include "driver.h"
 #include "neogeo.h"
 
+#include <xtl.h>
 
 const unsigned char *type0_t03;
 const unsigned char *type0_t12;
@@ -473,12 +474,148 @@ static void decrypt(unsigned char *r0, unsigned char *r1,
 	}
 }
 
+
+#ifdef _XBOX
+
 static void neogeo_gfx_decrypt(int extra_xor)
 {
 	int rom_size;
 	UINT8 *buf;
 	UINT8 *rom;
-	int rpos;
+	int rpos, iter, cbank, rombank;
+	unsigned char c1, c2, c3, c4 ;
+	FILE *outfile, *infile ;
+	unsigned int boundhigh, boundlow, rpositer ;
+	char msg[60] ;
+
+	rom_size = memory_region_length(REGION_GFX3);
+
+	buf = osd_malloc(0x800000);
+
+	if (!buf) return;
+
+	outfile = fopen( "z:\\neodecrypt.rom", "wb" ) ;
+	if ( !outfile )
+	{
+		free(buf) ;
+		return ;
+	}
+
+	for ( cbank = 0 ; cbank < ( rom_size / 0x800000 ) ; cbank++ )
+	{
+
+		rom = memory_region(REGION_GFX3);
+		rom += ( 0x800000 * cbank ) ;
+
+		// Data xor
+		for (rpos = 0;rpos < (0x800000/4)  ;rpos++)
+		{
+			c1 = rom[4*rpos+0] ;
+			c2 = rom[4*rpos+3] ;
+			c3 = rom[4*rpos+1] ;
+			c4 = rom[4*rpos+2] ;
+
+			decrypt(buf+4*rpos+0, buf+4*rpos+3, c1, c2, type0_t03, type0_t12, type1_t03, rpos, (rpos>>8) & 1);
+			decrypt(buf+4*rpos+1, buf+4*rpos+2, c3, c4, type0_t12, type0_t03, type1_t12, rpos, ((rpos>>16) ^ address_16_23_xor2[(rpos>>8) & 0xff]) & 1);
+		}
+
+		fwrite( buf, 0x800000, 1, outfile ) ;
+	}
+
+	fclose( outfile ) ;
+
+	infile = fopen( "z:\\neodecrypt.rom", "rb" ) ;
+	if ( !infile )
+	{
+		free(buf) ;
+		return ;
+	}
+
+	for ( rombank = 0 ; rombank < 4 ; rombank++ )
+	{
+		rom = ( memory_region(REGION_GFX3) ) + ( (rom_size/4) * rombank ) ;
+		fseek( infile, 0, SEEK_SET ) ;
+
+
+		for ( cbank = 0 ; cbank < ( rom_size / 0x800000 ) ; cbank++ )
+		{
+			fread( buf, 0x800000, 1, infile ) ;
+
+			boundlow = 0x200000*cbank ;
+			boundhigh = boundlow + 0x1FFFFF ;
+
+			rpositer = ( (rom_size/16) * rombank ) ;
+
+			// Address xor
+			for (rpos = 0;rpos < rom_size/16;rpos++)
+			{
+				int baser;
+
+				baser = rpositer;
+
+				baser ^= extra_xor;
+
+				baser ^= address_8_15_xor1[(baser >> 16) & 0xff] << 8;
+				baser ^= address_8_15_xor2[baser & 0xff] << 8;
+				baser ^= address_16_23_xor1[baser & 0xff] << 16;
+				baser ^= address_16_23_xor2[(baser >> 8) & 0xff] << 16;
+				baser ^= address_0_7_xor[(baser >> 8) & 0xff];
+
+				/* special handling for preisle2 */
+				if (rom_size == 0x3000000)
+				{
+					if (rpositer < 0x2000000/4)
+						baser &= (0x2000000/4)-1;
+					else
+						baser = 0x2000000/4 + (baser & ((0x1000000/4)-1));
+				}
+				else	/* Clamp to the real rom size */
+					baser &= (rom_size/4)-1;
+
+				if ( ( baser < boundlow ) || ( baser > boundhigh ) )
+				{
+					rpositer++ ;
+					continue ;
+				}
+
+
+				((UINT32*)rom)[rpos] = ((UINT32*)buf)[baser-boundlow];
+
+				rpositer++ ;
+				//rom[4*rpos+0] = buf[4*(baser-boundlow)+0];
+				//rom[4*rpos+1] = buf[4*(baser-boundlow)+1];
+				//rom[4*rpos+2] = buf[4*(baser-boundlow)+2];
+				//rom[4*rpos+3] = buf[4*(baser-boundlow)+3];
+
+			}
+
+
+		}
+	}
+
+	free(buf);
+
+	/* the S data comes from the end fo the C data */
+	{
+		int i;
+		int tx_size = memory_region_length(REGION_GFX1);
+		UINT8 *src = memory_region(REGION_GFX3)+rom_size-tx_size;
+		UINT8 *dst = memory_region(REGION_GFX1);
+
+		for (i = 0;i < tx_size;i++)
+			dst[i] = src[(i & ~0x1f) + ((i & 7) << 2) + ((~i & 8) >> 2) + ((i & 0x10) >> 4)];
+	}
+}
+
+#else 
+
+static void neogeo_gfx_decrypt(int extra_xor)
+{
+	int rom_size;
+	UINT8 *buf;
+	UINT8 *rom;
+	int rpos, iter;
+	unsigned char c1, c2, c3, c4 ;
 
 	rom_size = memory_region_length(REGION_GFX3);
 
@@ -542,6 +679,7 @@ static void neogeo_gfx_decrypt(int extra_xor)
 	}
 }
 
+#endif //_XBOX
 
 /* CMC42 protection chip */
 void kof99_neogeo_gfx_decrypt(int extra_xor)

@@ -1,11 +1,11 @@
-#pragma code_seg("C330")
-#pragma data_seg("D330")
-#pragma bss_seg("B330")
-#pragma const_seg("K330")
-#pragma comment(linker, "/merge:D330=330")
-#pragma comment(linker, "/merge:C330=330")
-#pragma comment(linker, "/merge:B330=330")
-#pragma comment(linker, "/merge:K330=330")
+#pragma code_seg("C344")
+#pragma data_seg("D344")
+#pragma bss_seg("B344")
+#pragma const_seg("K344")
+#pragma comment(linker, "/merge:D344=344")
+#pragma comment(linker, "/merge:C344=344")
+#pragma comment(linker, "/merge:B344=344")
+#pragma comment(linker, "/merge:K344=344")
 /***************************************************************************
   Goindol
 
@@ -85,7 +85,7 @@ VIDEO_START( goindol )
 
 ***************************************************************************/
 
-WRITE_HANDLER( goindol_fg_videoram_w )
+WRITE8_HANDLER( goindol_fg_videoram_w )
 {
 	if (goindol_fg_videoram[offset] != data)
 	{
@@ -94,7 +94,7 @@ WRITE_HANDLER( goindol_fg_videoram_w )
 	}
 }
 
-WRITE_HANDLER( goindol_bg_videoram_w )
+WRITE8_HANDLER( goindol_bg_videoram_w )
 {
 	if (goindol_bg_videoram[offset] != data)
 	{

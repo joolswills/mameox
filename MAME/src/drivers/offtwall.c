@@ -1,11 +1,11 @@
-#pragma code_seg("C507")
-#pragma data_seg("D507")
-#pragma bss_seg("B507")
-#pragma const_seg("K507")
-#pragma comment(linker, "/merge:D507=507")
-#pragma comment(linker, "/merge:C507=507")
-#pragma comment(linker, "/merge:B507=507")
-#pragma comment(linker, "/merge:K507=507")
+#pragma code_seg("C536")
+#pragma data_seg("D536")
+#pragma bss_seg("B536")
+#pragma const_seg("K536")
+#pragma comment(linker, "/merge:D536=536")
+#pragma comment(linker, "/merge:C536=536")
+#pragma comment(linker, "/merge:B536=536")
+#pragma comment(linker, "/merge:K536=536")
 /***************************************************************************
 
 	Atari "Round" hardware
@@ -48,9 +48,9 @@ static void update_interrupts(void)
 		newstate = 6;
 
 	if (newstate)
-		cpu_set_irq_line(0, newstate, ASSERT_LINE);
+		cpunum_set_input_line(0, newstate, ASSERT_LINE);
 	else
-		cpu_set_irq_line(0, 7, CLEAR_LINE);
+		cpunum_set_input_line(0, 7, CLEAR_LINE);
 }
 
 
@@ -91,7 +91,7 @@ static WRITE16_HANDLER( io_latch_w )
 	if (ACCESSING_LSB)
 	{
 		/* bit 4 resets the sound CPU */
-		cpu_set_reset_line(1, (data & 0x10) ? CLEAR_LINE : ASSERT_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_RESET, (data & 0x10) ? CLEAR_LINE : ASSERT_LINE);
 		if (!(data & 0x10)) atarijsa_reset();
 	}
 
@@ -504,12 +504,11 @@ static DRIVER_INIT( offtwall )
 {
 	atarigen_eeprom_default = default_eeprom;
 	atarijsa_init(1, 2, 3, 0x0040);
-	atarigen_init_6502_speedup(1, 0x41dd, 0x41f5);
 
 	/* install son-of-slapstic workarounds */
-	spritecache_count = install_mem_read16_handler(0, 0x3fde42, 0x3fde43, spritecache_count_r);
-	bankswitch_base = install_mem_read16_handler(0, 0x037ec2, 0x037f39, bankswitch_r);
-	unknown_verify_base = install_mem_read16_handler(0, 0x3fdf1e, 0x3fdf1f, unknown_verify_r);
+	spritecache_count = memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x3fde42, 0x3fde43, 0, 0, spritecache_count_r);
+	bankswitch_base = memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x037ec2, 0x037f39, 0, 0, bankswitch_r);
+	unknown_verify_base = memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x3fdf1e, 0x3fdf1f, 0, 0, unknown_verify_r);
 }
 
 
@@ -517,12 +516,11 @@ static DRIVER_INIT( offtwalc )
 {
 	atarigen_eeprom_default = default_eeprom;
 	atarijsa_init(1, 2, 3, 0x0040);
-	atarigen_init_6502_speedup(1, 0x41dd, 0x41f5);
 
 	/* install son-of-slapstic workarounds */
-	spritecache_count = install_mem_read16_handler(0, 0x3fde42, 0x3fde43, spritecache_count_r);
-	bankswitch_base = install_mem_read16_handler(0, 0x037eca, 0x037f43, bankswitch_r);
-	unknown_verify_base = install_mem_read16_handler(0, 0x3fdf24, 0x3fdf25, unknown_verify_r);
+	spritecache_count = memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x3fde42, 0x3fde43, 0, 0, spritecache_count_r);
+	bankswitch_base = memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x037eca, 0x037f43, 0, 0, bankswitch_r);
+	unknown_verify_base = memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x3fdf24, 0x3fdf25, 0, 0, unknown_verify_r);
 }
 
 

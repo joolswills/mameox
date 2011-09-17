@@ -1,11 +1,11 @@
-#pragma code_seg("C165")
-#pragma data_seg("D165")
-#pragma bss_seg("B165")
-#pragma const_seg("K165")
-#pragma comment(linker, "/merge:D165=165")
-#pragma comment(linker, "/merge:C165=165")
-#pragma comment(linker, "/merge:B165=165")
-#pragma comment(linker, "/merge:K165=165")
+#pragma code_seg("C166")
+#pragma data_seg("D166")
+#pragma bss_seg("B166")
+#pragma const_seg("K166")
+#pragma comment(linker, "/merge:D166=166")
+#pragma comment(linker, "/merge:C166=166")
+#pragma comment(linker, "/merge:B166=166")
+#pragma comment(linker, "/merge:K166=166")
 /***************************************************************************
 
 Blades of Steel(GX797) (c) 1987 Konami
@@ -44,20 +44,20 @@ int bladestl_spritebank;
 VIDEO_START( bladestl );
 VIDEO_UPDATE( bladestl );
 PALETTE_INIT( bladestl );
-WRITE_HANDLER( bladestl_vreg_w );
+WRITE8_HANDLER( bladestl_vreg_w );
 
 static INTERRUPT_GEN( bladestl_interrupt )
 {
 	if (cpu_getiloops() == 0){
 		if (K007342_is_INT_enabled())
-			cpu_set_irq_line(0, HD6309_FIRQ_LINE, HOLD_LINE);
+			cpunum_set_input_line(0, HD6309_FIRQ_LINE, HOLD_LINE);
 	}
 	else if (cpu_getiloops() % 2){
-		cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 	}
 }
 
-static READ_HANDLER( trackball_r )
+static READ8_HANDLER( trackball_r )
 {
 	static int last[4];
 	int curr,delta;
@@ -69,7 +69,7 @@ static READ_HANDLER( trackball_r )
 	return (delta & 0x80) | (curr >> 1);
 }
 
-static WRITE_HANDLER( bladestl_bankswitch_w )
+static WRITE8_HANDLER( bladestl_bankswitch_w )
 {
 	unsigned char *RAM = memory_region(REGION_CPU1);
 	int bankaddress;
@@ -93,19 +93,19 @@ static WRITE_HANDLER( bladestl_bankswitch_w )
 
 }
 
-static WRITE_HANDLER( bladestl_sh_irqtrigger_w )
+static WRITE8_HANDLER( bladestl_sh_irqtrigger_w )
 {
 	soundlatch_w(offset, data);
-	cpu_set_irq_line(1, M6809_IRQ_LINE, HOLD_LINE);
+	cpunum_set_input_line(1, M6809_IRQ_LINE, HOLD_LINE);
 	//logerror("(sound) write %02x\n", data);
 }
 
-static WRITE_HANDLER( bladestl_port_B_w ){
+static WRITE8_HANDLER( bladestl_port_B_w ){
 	/* bit 1, 2 unknown */
 	UPD7759_set_bank_base(0, ((data & 0x38) >> 3)*0x20000);
 }
 
-static WRITE_HANDLER( bladestl_speech_ctrl_w ){
+static WRITE8_HANDLER( bladestl_speech_ctrl_w ){
 	UPD7759_reset_w(0, data & 1);
 	UPD7759_start_w(0, data & 2);
 }

@@ -1,11 +1,11 @@
-#pragma code_seg("C555")
-#pragma data_seg("D555")
-#pragma bss_seg("B555")
-#pragma const_seg("K555")
-#pragma comment(linker, "/merge:D555=555")
-#pragma comment(linker, "/merge:C555=555")
-#pragma comment(linker, "/merge:B555=555")
-#pragma comment(linker, "/merge:K555=555")
+#pragma code_seg("C587")
+#pragma data_seg("D587")
+#pragma bss_seg("B587")
+#pragma const_seg("K587")
+#pragma comment(linker, "/merge:D587=587")
+#pragma comment(linker, "/merge:C587=587")
+#pragma comment(linker, "/merge:B587=587")
+#pragma comment(linker, "/merge:K587=587")
 /***************************************************************************
 
   vidhrdw.c
@@ -296,7 +296,7 @@ VIDEO_START( armwrest )
 
 
 
-WRITE_HANDLER( punchout_videoram2_w )
+WRITE8_HANDLER( punchout_videoram2_w )
 {
 	if (punchout_videoram2[offset] != data)
 	{
@@ -306,7 +306,7 @@ WRITE_HANDLER( punchout_videoram2_w )
 	}
 }
 
-WRITE_HANDLER( punchout_bigsprite1ram_w )
+WRITE8_HANDLER( punchout_bigsprite1ram_w )
 {
 	if (punchout_bigsprite1ram[offset] != data)
 	{
@@ -316,7 +316,7 @@ WRITE_HANDLER( punchout_bigsprite1ram_w )
 	}
 }
 
-WRITE_HANDLER( punchout_bigsprite2ram_w )
+WRITE8_HANDLER( punchout_bigsprite2ram_w )
 {
 	if (punchout_bigsprite2ram[offset] != data)
 	{
@@ -328,7 +328,7 @@ WRITE_HANDLER( punchout_bigsprite2ram_w )
 
 
 
-WRITE_HANDLER( punchout_palettebank_w )
+WRITE8_HANDLER( punchout_palettebank_w )
 {
 	*punchout_palettebank = data;
 

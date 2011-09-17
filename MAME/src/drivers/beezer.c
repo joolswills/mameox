@@ -1,11 +1,11 @@
-#pragma code_seg("C158")
-#pragma data_seg("D158")
-#pragma bss_seg("B158")
-#pragma const_seg("K158")
-#pragma comment(linker, "/merge:D158=158")
-#pragma comment(linker, "/merge:C158=158")
-#pragma comment(linker, "/merge:B158=158")
-#pragma comment(linker, "/merge:K158=158")
+#pragma code_seg("C159")
+#pragma data_seg("D159")
+#pragma bss_seg("B159")
+#pragma const_seg("K159")
+#pragma comment(linker, "/merge:D159=159")
+#pragma comment(linker, "/merge:C159=159")
+#pragma comment(linker, "/merge:B159=159")
+#pragma comment(linker, "/merge:K159=159")
 /*
 
   Beezer - (c) 1982 Tong Electronic
@@ -23,11 +23,11 @@
 extern UINT8 *videoram;
 INTERRUPT_GEN( beezer_interrupt );
 VIDEO_UPDATE( beezer );
-WRITE_HANDLER( beezer_ram_w );
+WRITE8_HANDLER( beezer_ram_w );
 
 /* from machine/beezer.c */
 DRIVER_INIT( beezer );
-WRITE_HANDLER( beezer_bankswitch_w );
+WRITE8_HANDLER( beezer_bankswitch_w );
 
 static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0x0000, 0xbfff) AM_READ(MRA8_RAM)

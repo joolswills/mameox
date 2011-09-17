@@ -1,11 +1,11 @@
-#pragma code_seg("C244")
-#pragma data_seg("D244")
-#pragma bss_seg("B244")
-#pragma const_seg("K244")
-#pragma comment(linker, "/merge:D244=244")
-#pragma comment(linker, "/merge:C244=244")
-#pragma comment(linker, "/merge:B244=244")
-#pragma comment(linker, "/merge:K244=244")
+#pragma code_seg("C252")
+#pragma data_seg("D252")
+#pragma bss_seg("B252")
+#pragma const_seg("K252")
+#pragma comment(linker, "/merge:D252=252")
+#pragma comment(linker, "/merge:C252=252")
+#pragma comment(linker, "/merge:B252=252")
+#pragma comment(linker, "/merge:K252=252")
 /***************************************************************************
 
   vidhrdw.c
@@ -43,7 +43,7 @@ PALETTE_INIT( ddrible )
 		COLOR(3,i) = (*(color_prom++) & 0x0f);
 }
 
-WRITE_HANDLER( K005885_0_w )
+WRITE8_HANDLER( K005885_0_w )
 {
 	switch (offset){
 		case 0x03:	/* char bank selection for set 1 */
@@ -60,7 +60,7 @@ WRITE_HANDLER( K005885_0_w )
 	ddribble_vregs[0][offset] = data;
 }
 
-WRITE_HANDLER( K005885_1_w )
+WRITE8_HANDLER( K005885_1_w )
 {
 	switch (offset){
 		case 0x03:	/* char bank selection for set 2 */
@@ -138,7 +138,7 @@ VIDEO_START( ddrible )
 
 ***************************************************************************/
 
-WRITE_HANDLER( ddrible_fg_videoram_w )
+WRITE8_HANDLER( ddrible_fg_videoram_w )
 {
 	if (ddrible_fg_videoram[offset] != data)
 	{
@@ -147,7 +147,7 @@ WRITE_HANDLER( ddrible_fg_videoram_w )
 	}
 }
 
-WRITE_HANDLER( ddrible_bg_videoram_w )
+WRITE8_HANDLER( ddrible_bg_videoram_w )
 {
 	if (ddrible_bg_videoram[offset] != data)
 	{

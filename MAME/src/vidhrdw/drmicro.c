@@ -1,11 +1,11 @@
-#pragma code_seg("C267")
-#pragma data_seg("D267")
-#pragma bss_seg("B267")
-#pragma const_seg("K267")
-#pragma comment(linker, "/merge:D267=267")
-#pragma comment(linker, "/merge:C267=267")
-#pragma comment(linker, "/merge:B267=267")
-#pragma comment(linker, "/merge:K267=267")
+#pragma code_seg("C277")
+#pragma data_seg("D277")
+#pragma bss_seg("B277")
+#pragma const_seg("K277")
+#pragma comment(linker, "/merge:D277=277")
+#pragma comment(linker, "/merge:C277=277")
+#pragma comment(linker, "/merge:B277=277")
+#pragma comment(linker, "/merge:K277=277")
 /*******************************************************************************
 
 Dr. Micro (c) 1983 Sanritsu
@@ -32,7 +32,7 @@ void drmicro_flip_w( int flip )
 	flip_screen_set(flip);
 }
 
-WRITE_HANDLER( drmicro_videoram_w )
+WRITE8_HANDLER( drmicro_videoram_w )
 {
 	drmicro_videoram[offset] = data;
 
@@ -42,7 +42,7 @@ WRITE_HANDLER( drmicro_videoram_w )
 		tilemap_mark_tile_dirty(drmicro_bg1,(offset & 0x3ff));
 }
 
-READ_HANDLER( drmicro_videoram_r )
+READ8_HANDLER( drmicro_videoram_r )
 {
 	return drmicro_videoram[offset];
 }

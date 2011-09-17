@@ -1,11 +1,11 @@
-#pragma code_seg("C538")
-#pragma data_seg("D538")
-#pragma bss_seg("B538")
-#pragma const_seg("K538")
-#pragma comment(linker, "/merge:D538=538")
-#pragma comment(linker, "/merge:C538=538")
-#pragma comment(linker, "/merge:B538=538")
-#pragma comment(linker, "/merge:K538=538")
+#pragma code_seg("C569")
+#pragma data_seg("D569")
+#pragma bss_seg("B569")
+#pragma const_seg("K569")
+#pragma comment(linker, "/merge:D569=569")
+#pragma comment(linker, "/merge:C569=569")
+#pragma comment(linker, "/merge:B569=569")
+#pragma comment(linker, "/merge:K569=569")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/ppu2c03b.h"
@@ -18,7 +18,7 @@ extern int pc10_int_detect;
 
 static struct tilemap *bg_tilemap;
 
-WRITE_HANDLER( playch10_videoram_w )
+WRITE8_HANDLER( playch10_videoram_w )
 {
 	if (pc10_sdcs)
 	{
@@ -74,7 +74,7 @@ PALETTE_INIT( playch10 )
 
 static void ppu_irq( int num, int *ppu_regs )
 {
-	cpu_set_nmi_line( 1, PULSE_LINE );
+	cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE );
 	pc10_int_detect = 1;
 }
 

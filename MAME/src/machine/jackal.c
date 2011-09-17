@@ -1,11 +1,11 @@
-#pragma code_seg("C372")
-#pragma data_seg("D372")
-#pragma bss_seg("B372")
-#pragma const_seg("K372")
-#pragma comment(linker, "/merge:D372=372")
-#pragma comment(linker, "/merge:C372=372")
-#pragma comment(linker, "/merge:B372=372")
-#pragma comment(linker, "/merge:K372=372")
+#pragma code_seg("C387")
+#pragma data_seg("D387")
+#pragma bss_seg("B387")
+#pragma const_seg("K387")
+#pragma comment(linker, "/merge:D387=387")
+#pragma comment(linker, "/merge:C387=387")
+#pragma comment(linker, "/merge:B387=387")
+#pragma comment(linker, "/merge:K387=387")
 /***************************************************************************
 
   machine.c
@@ -21,10 +21,11 @@
 #include "vidhrdw/generic.h"
 #include "cpu/m6809/m6809.h"
 
-extern unsigned char jackal_interrupt_enable;
+extern UINT8 jackal_interrupt_enable;
+extern void jackal_mark_tile_dirty(int offset);
 
-unsigned char *jackal_rambank = 0;
-unsigned char *jackal_spritebank = 0;
+UINT8 *jackal_rambank = 0;
+UINT8 *jackal_spritebank = 0;
 
 
 MACHINE_INIT( jackal )
@@ -36,37 +37,25 @@ MACHINE_INIT( jackal )
 
 
 
-READ_HANDLER( jackal_zram_r )
+READ8_HANDLER( jackal_zram_r )
 {
 	return jackal_rambank[0x0020+offset];
 }
 
 
-READ_HANDLER( jackal_commonram_r )
-{
-	return jackal_rambank[0x0060+offset];
-}
-
-
-READ_HANDLER( jackal_commonram1_r )
-{
-	return (memory_region(REGION_CPU1))[0x0060+offset];
-}
-
-
-READ_HANDLER( jackal_voram_r )
+READ8_HANDLER( jackal_voram_r )
 {
 	return jackal_rambank[0x2000+offset];
 }
 
 
-READ_HANDLER( jackal_spriteram_r )
+READ8_HANDLER( jackal_spriteram_r )
 {
 	return jackal_spritebank[0x3000+offset];
 }
 
 
-WRITE_HANDLER( jackal_rambank_w )
+WRITE8_HANDLER( jackal_rambank_w )
 {
 if (data & 0xc4) usrintf_showmessage("jackal_rambank_w %02x",data);
 	coin_counter_w(0,data & 0x01);
@@ -77,36 +66,23 @@ if (data & 0xc4) usrintf_showmessage("jackal_rambank_w %02x",data);
 }
 
 
-WRITE_HANDLER( jackal_zram_w )
+WRITE8_HANDLER( jackal_zram_w )
 {
 	jackal_rambank[0x0020+offset] = data;
 }
 
 
-WRITE_HANDLER( jackal_commonram_w )
-{
-	jackal_rambank[0x0060+offset] = data;
-}
-
-
-WRITE_HANDLER( jackal_commonram1_w )
-{
-	(memory_region(REGION_CPU1))[0x0060+offset] = data;
-	(memory_region(REGION_CPU2))[0x6060+offset] = data;
-}
-
-
-WRITE_HANDLER( jackal_voram_w )
+WRITE8_HANDLER( jackal_voram_w )
 {
 	if ((offset & 0xF800) == 0)
 	{
-		dirtybuffer[offset & 0x3FF] = 1;
+		jackal_mark_tile_dirty(offset & 0x3ff);
 	}
 	jackal_rambank[0x2000+offset] = data;
 }
 
 
-WRITE_HANDLER( jackal_spriteram_w )
+WRITE8_HANDLER( jackal_spriteram_w )
 {
 	jackal_spritebank[0x3000+offset] = data;
 }

@@ -1,11 +1,11 @@
-#pragma code_seg("C628")
-#pragma data_seg("D628")
-#pragma bss_seg("B628")
-#pragma const_seg("K628")
-#pragma comment(linker, "/merge:D628=628")
-#pragma comment(linker, "/merge:C628=628")
-#pragma comment(linker, "/merge:B628=628")
-#pragma comment(linker, "/merge:K628=628")
+#pragma code_seg("C664")
+#pragma data_seg("D664")
+#pragma bss_seg("B664")
+#pragma const_seg("K664")
+#pragma comment(linker, "/merge:D664=664")
+#pragma comment(linker, "/merge:C664=664")
+#pragma comment(linker, "/merge:B664=664")
+#pragma comment(linker, "/merge:K664=664")
 /***************************************************************************
 
 	Atari Sky Diver hardware
@@ -128,7 +128,7 @@ static PALETTE_INIT( skydiver )
  *
  *************************************/
 
-static WRITE_HANDLER( skydiver_nmion_w )
+static WRITE8_HANDLER( skydiver_nmion_w )
 {
 	skydiver_nmion = offset;
 }
@@ -144,7 +144,7 @@ static INTERRUPT_GEN( skydiver_interrupt )
 	discrete_sound_w(3,  skydiver_videoram[0x396] & 0x0f);	// NAM - Noise Amplitude
 
 	if (skydiver_nmion)
-		cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 }
 
 
@@ -155,22 +155,22 @@ static INTERRUPT_GEN( skydiver_interrupt )
  *
  *************************************/
 
-static WRITE_HANDLER( skydiver_sound_enable_w )
+static WRITE8_HANDLER( skydiver_sound_enable_w )
 {
 	discrete_sound_w(9, offset);
 }
 
-static WRITE_HANDLER( skydiver_whistle_w )
+static WRITE8_HANDLER( skydiver_whistle_w )
 {
 	discrete_sound_w(5 + (offset / 2), offset & 0x01);
 }
 
-static WRITE_HANDLER( skydiver_oct_w )
+static WRITE8_HANDLER( skydiver_oct_w )
 {
 	discrete_sound_w(7 + (offset / 2), offset & 0x01);
 }
 
-static WRITE_HANDLER( skydiver_noise_reset_w )
+static WRITE8_HANDLER( skydiver_noise_reset_w )
 {
 	discrete_sound_w(4, !offset);
 }
@@ -328,6 +328,12 @@ INPUT_PORTS_START( skydiver )
 	PORT_BIT (0x3f, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT (0x40, IP_ACTIVE_LOW, IPT_TILT )
 	PORT_BIT (0x80, IP_ACTIVE_LOW, IPT_UNUSED )
+
+	PORT_START
+	PORT_ADJUSTER( 67, "Whistle 1 Freq" )
+
+	PORT_START
+	PORT_ADJUSTER( 75, "Whistle 2 Freq" )
 INPUT_PORTS_END
 
 
@@ -378,7 +384,14 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 /* Jan 2004, Derrick Renaud                                             */
 /************************************************************************/
 
-int skydiverWhistl555 = DISC_555_ASTBL_SQW | DISC_555_ASTBL_AC;
+const struct discrete_555_astbl_desc skydiverWhistl555 =
+{
+	DISC_555_OUT_SQW | DISC_555_OUT_AC,
+	5,		// B+ voltage of 555
+	5.0 - 1.7,	// High output voltage of 555 (Usually v555 - 1.7)
+	5.0 * 2.0 /3.0,	// normally 2/3 of v555
+	5.0 / 3.0	// normally 1/3 of v555
+};
 
 const struct discrete_lfsr_desc skydiver_lfsr={
 	16,				/* Bit Length */
@@ -492,17 +505,19 @@ static DISCRETE_SOUND_START(skydiver_sound_interface)
 	/* frequency, then decays at the rate set by    */
 	/* a 68k resistor and 22uf capacitor.           */
 	/************************************************/
-	DISCRETE_ADJUSTMENT(NODE_30, 1, 50000, 250000, 185000, DISC_LINADJ, "Whistle 1 Freq")	/* R66 */
-	DISCRETE_MULTADD(NODE_31, 1, SKYDIVER_WHISTLE1_EN, ((3.05-0.33)/5.0)*519.4, (0.33/5.0)*519.4)
+	DISCRETE_ADJUSTMENT(NODE_30, 1, 50000, 250000, DISC_LINADJ, 15)	/* R66 */
+	DISCRETE_MULTADD(NODE_31, 1, SKYDIVER_WHISTLE1_EN, 3.05-0.33, 0.33)
 	DISCRETE_RCDISC2(NODE_32, SKYDIVER_WHISTLE1_EN, NODE_31, 1.0, NODE_31, 68000.0, 2.2e-5)	/* CV */
 	DISCRETE_SWITCH(NODE_33, 1, SKYDIVER_OCT1_EN, 1e-8, 1e-8 + 3.3e-9)	/* Cap C73 & C58 */
-	DISCRETE_555_ASTABLE(SKYDIVER_WHISTLE1_SND, SKYDIVER_WHISTLE1_EN, 228.5, 100000, NODE_30, NODE_33, NODE_32, &skydiverWhistl555)
+	DISCRETE_555_ASTABLE(NODE_34, SKYDIVER_WHISTLE1_EN, 100000, NODE_30, NODE_33, NODE_32, &skydiverWhistl555)
+	DISCRETE_MULTIPLY(SKYDIVER_WHISTLE1_SND, SKYDIVER_WHISTLE1_EN, NODE_34, 228.5/3.3)
 
-	DISCRETE_ADJUSTMENT(NODE_35, 1, 50000, 250000, 200000, DISC_LINADJ, "Whistle 2 Freq")	/* R65 */
-	DISCRETE_MULTADD(NODE_36, 1, SKYDIVER_WHISTLE2_EN, ((3.05-0.33)/5.0)*519.4, (0.33/5.0)*519.4)
+	DISCRETE_ADJUSTMENT(NODE_35, 1, 50000, 250000, DISC_LINADJ, 14)	/* R65 */
+	DISCRETE_MULTADD(NODE_36, 1, SKYDIVER_WHISTLE2_EN, 3.05-0.33, 0.33)
 	DISCRETE_RCDISC2(NODE_37, SKYDIVER_WHISTLE2_EN, NODE_36, 1.0, NODE_36, 68000.0, 2.2e-5)	/* CV */
 	DISCRETE_SWITCH(NODE_38, 1, SKYDIVER_OCT2_EN, 1e-8, 1e-8 + 3.3e-9)	/* Cap C72 & C59 */
-	DISCRETE_555_ASTABLE(SKYDIVER_WHISTLE2_SND, SKYDIVER_WHISTLE2_EN, 228.5, 100000, NODE_35, NODE_38, NODE_37, &skydiverWhistl555)
+	DISCRETE_555_ASTABLE(NODE_39, SKYDIVER_WHISTLE2_EN, 100000, NODE_35, NODE_38, NODE_37, &skydiverWhistl555)
+	DISCRETE_MULTIPLY(SKYDIVER_WHISTLE2_SND, SKYDIVER_WHISTLE2_EN, NODE_39, 228.5/3.3)
 
 	/************************************************/
 	/* Final gain and ouput.                        */

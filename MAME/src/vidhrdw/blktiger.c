@@ -1,11 +1,11 @@
-#pragma code_seg("C166")
-#pragma data_seg("D166")
-#pragma bss_seg("B166")
-#pragma const_seg("K166")
-#pragma comment(linker, "/merge:D166=166")
-#pragma comment(linker, "/merge:C166=166")
-#pragma comment(linker, "/merge:B166=166")
-#pragma comment(linker, "/merge:K166=166")
+#pragma code_seg("C167")
+#pragma data_seg("D167")
+#pragma bss_seg("B167")
+#pragma const_seg("K167")
+#pragma comment(linker, "/merge:D167=167")
+#pragma comment(linker, "/merge:C167=167")
+#pragma comment(linker, "/merge:B167=167")
+#pragma comment(linker, "/merge:K167=167")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -110,7 +110,7 @@ VIDEO_START( blktiger )
 
 ***************************************************************************/
 
-WRITE_HANDLER( blktiger_txvideoram_w )
+WRITE8_HANDLER( blktiger_txvideoram_w )
 {
 	if (blktiger_txvideoram[offset] != data)
 	{
@@ -119,12 +119,12 @@ WRITE_HANDLER( blktiger_txvideoram_w )
 	}
 }
 
-READ_HANDLER( blktiger_bgvideoram_r )
+READ8_HANDLER( blktiger_bgvideoram_r )
 {
 	return scroll_ram[offset + blktiger_scroll_bank];
 }
 
-WRITE_HANDLER( blktiger_bgvideoram_w )
+WRITE8_HANDLER( blktiger_bgvideoram_w )
 {
 	offset += blktiger_scroll_bank;
 
@@ -136,13 +136,13 @@ WRITE_HANDLER( blktiger_bgvideoram_w )
 	}
 }
 
-WRITE_HANDLER( blktiger_bgvideoram_bank_w )
+WRITE8_HANDLER( blktiger_bgvideoram_bank_w )
 {
 	blktiger_scroll_bank = (data % BGRAM_BANKS) * BGRAM_BANK_SIZE;
 }
 
 
-WRITE_HANDLER( blktiger_scrolly_w )
+WRITE8_HANDLER( blktiger_scrolly_w )
 {
 	static unsigned char scroll[2];
 	int scrolly;
@@ -153,7 +153,7 @@ WRITE_HANDLER( blktiger_scrolly_w )
 	tilemap_set_scrolly(bg_tilemap4x8,0,scrolly);
 }
 
-WRITE_HANDLER( blktiger_scrollx_w )
+WRITE8_HANDLER( blktiger_scrollx_w )
 {
 	static unsigned char scroll[2];
 	int scrollx;
@@ -165,14 +165,14 @@ WRITE_HANDLER( blktiger_scrollx_w )
 }
 
 
-WRITE_HANDLER( blktiger_video_control_w )
+WRITE8_HANDLER( blktiger_video_control_w )
 {
 	/* bits 0 and 1 are coin counters */
 	coin_counter_w(0,data & 1);
 	coin_counter_w(1,data & 2);
 
 	/* bit 5 resets the sound CPU */
-	cpu_set_reset_line(1,(data & 0x20) ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1, INPUT_LINE_RESET, (data & 0x20) ? ASSERT_LINE : CLEAR_LINE);
 
 	/* bit 6 flips screen */
 	flip_screen_set(data & 0x40);
@@ -181,7 +181,7 @@ WRITE_HANDLER( blktiger_video_control_w )
 	chon = ~data & 0x80;
 }
 
-WRITE_HANDLER( blktiger_video_enable_w )
+WRITE8_HANDLER( blktiger_video_enable_w )
 {
 	/* not sure which is which, but I think that bit 1 and 2 enable background and sprites */
 	/* bit 1 enables bg ? */
@@ -191,7 +191,7 @@ WRITE_HANDLER( blktiger_video_enable_w )
 	objon = ~data & 0x04;
 }
 
-WRITE_HANDLER( blktiger_screen_layout_w )
+WRITE8_HANDLER( blktiger_screen_layout_w )
 {
 	screen_layout = data;
 	tilemap_set_enable(bg_tilemap8x4, screen_layout);

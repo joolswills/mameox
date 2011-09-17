@@ -1,11 +1,11 @@
-#pragma code_seg("C128")
-#pragma data_seg("D128")
-#pragma bss_seg("B128")
-#pragma const_seg("K128")
-#pragma comment(linker, "/merge:D128=128")
-#pragma comment(linker, "/merge:C128=128")
-#pragma comment(linker, "/merge:B128=128")
-#pragma comment(linker, "/merge:K128=128")
+#pragma code_seg("C129")
+#pragma data_seg("D129")
+#pragma bss_seg("B129")
+#pragma const_seg("K129")
+#pragma comment(linker, "/merge:D129=129")
+#pragma comment(linker, "/merge:C129=129")
+#pragma comment(linker, "/merge:B129=129")
+#pragma comment(linker, "/merge:K129=129")
 /***************************************************************************
 
 Asterix
@@ -126,7 +126,7 @@ static WRITE16_HANDLER( control2_w )
 static INTERRUPT_GEN( asterix_interrupt )
 {
 	if (K054157_is_IRQ_enabled())
-		cpu_set_irq_line(0, 5, HOLD_LINE); /* ??? All irqs have the same vector, and the
+		cpunum_set_input_line(0, 5, HOLD_LINE); /* ??? All irqs have the same vector, and the
                                               mask used is 0 or 7 */
 }
 
@@ -137,18 +137,18 @@ static READ16_HANDLER( asterix_sound_r )
 
 static void nmi_callback(int param)
 {
-	cpu_set_nmi_line(1,ASSERT_LINE);
+	cpunum_set_input_line(1, INPUT_LINE_NMI, ASSERT_LINE);
 }
 
-static WRITE_HANDLER( sound_arm_nmi_w )
+static WRITE8_HANDLER( sound_arm_nmi_w )
 {
-	cpu_set_nmi_line(1,CLEAR_LINE);
+	cpunum_set_input_line(1, INPUT_LINE_NMI, CLEAR_LINE);
 	timer_set(TIME_IN_USEC(5),0,nmi_callback);
 }
 
 static WRITE16_HANDLER( sound_irq_w )
 {
-	cpu_set_irq_line(1, 0, HOLD_LINE);
+	cpunum_set_input_line(1, 0, HOLD_LINE);
 }
 
 // Check the routine at 7f30 in the ead version.
@@ -285,8 +285,8 @@ INPUT_PORTS_END
 static struct YM2151interface ym2151_interface =
 {
 	1,			/* 1 chip */
-	3579545,	/* ??? */
-	{ YM3012_VOL(50,MIXER_PAN_LEFT,50,MIXER_PAN_RIGHT) },
+	4000000,	/* ??? */
+	{ YM3012_VOL(100,MIXER_PAN_LEFT,100,MIXER_PAN_RIGHT) },
 	{ 0 }
 };
 
@@ -294,9 +294,9 @@ static struct YM2151interface ym2151_interface =
 static struct K053260_interface k053260_interface =
 {
 	1,
-	{ 3579545 },
+	{ 4000000 },
 	{ REGION_SOUND1 }, /* memory region */
-	{ { MIXER(70,MIXER_PAN_LEFT), MIXER(70,MIXER_PAN_RIGHT) } },
+	{ { MIXER(75,MIXER_PAN_LEFT), MIXER(75,MIXER_PAN_RIGHT) } },
 	{ 0 }
 };
 

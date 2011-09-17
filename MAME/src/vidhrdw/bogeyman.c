@@ -1,11 +1,11 @@
-#pragma code_seg("C174")
-#pragma data_seg("D174")
-#pragma bss_seg("B174")
-#pragma const_seg("K174")
-#pragma comment(linker, "/merge:D174=174")
-#pragma comment(linker, "/merge:C174=174")
-#pragma comment(linker, "/merge:B174=174")
-#pragma comment(linker, "/merge:K174=174")
+#pragma code_seg("C176")
+#pragma data_seg("D176")
+#pragma bss_seg("B176")
+#pragma const_seg("K176")
+#pragma comment(linker, "/merge:D176=176")
+#pragma comment(linker, "/merge:C176=176")
+#pragma comment(linker, "/merge:B176=176")
+#pragma comment(linker, "/merge:K176=176")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -46,7 +46,7 @@ PALETTE_INIT( bogeyman )
 	}
 }
 
-WRITE_HANDLER( bogeyman_videoram_w )
+WRITE8_HANDLER( bogeyman_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -55,7 +55,7 @@ WRITE_HANDLER( bogeyman_videoram_w )
 	}
 }
 
-WRITE_HANDLER( bogeyman_colorram_w )
+WRITE8_HANDLER( bogeyman_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -64,7 +64,7 @@ WRITE_HANDLER( bogeyman_colorram_w )
 	}
 }
 
-WRITE_HANDLER( bogeyman_videoram2_w )
+WRITE8_HANDLER( bogeyman_videoram2_w )
 {
 	if (bogeyman_videoram2[offset] != data)
 	{
@@ -73,7 +73,7 @@ WRITE_HANDLER( bogeyman_videoram2_w )
 	}
 }
 
-WRITE_HANDLER( bogeyman_colorram2_w )
+WRITE8_HANDLER( bogeyman_colorram2_w )
 {
 	if (bogeyman_colorram2[offset] != data)
 	{
@@ -82,7 +82,7 @@ WRITE_HANDLER( bogeyman_colorram2_w )
 	}
 }
 
-WRITE_HANDLER( bogeyman_paletteram_w )
+WRITE8_HANDLER( bogeyman_paletteram_w )
 {
 	/* RGB output is inverted */
 	paletteram_BBGGGRRR_w(offset, ~data);

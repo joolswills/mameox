@@ -1,11 +1,11 @@
-#pragma code_seg("C468")
-#pragma data_seg("D468")
-#pragma bss_seg("B468")
-#pragma const_seg("K468")
-#pragma comment(linker, "/merge:D468=468")
-#pragma comment(linker, "/merge:C468=468")
-#pragma comment(linker, "/merge:B468=468")
-#pragma comment(linker, "/merge:K468=468")
+#pragma code_seg("C494")
+#pragma data_seg("D494")
+#pragma bss_seg("B494")
+#pragma const_seg("K494")
+#pragma comment(linker, "/merge:D494=494")
+#pragma comment(linker, "/merge:C494=494")
+#pragma comment(linker, "/merge:B494=494")
+#pragma comment(linker, "/merge:K494=494")
 /***************************************************************************
 
   vidhrdw.c
@@ -69,7 +69,7 @@ PALETTE_INIT( mrjong )
   Display control parameter.
 
 ***************************************************************************/
-WRITE_HANDLER( mrjong_videoram_w )
+WRITE8_HANDLER( mrjong_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -78,7 +78,7 @@ WRITE_HANDLER( mrjong_videoram_w )
 	}
 }
 
-WRITE_HANDLER( mrjong_colorram_w )
+WRITE8_HANDLER( mrjong_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -87,7 +87,7 @@ WRITE_HANDLER( mrjong_colorram_w )
 	}
 }
 
-WRITE_HANDLER( mrjong_flipscreen_w )
+WRITE8_HANDLER( mrjong_flipscreen_w )
 {
 	if (flip_screen != (data & 0x01))
 	{

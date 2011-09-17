@@ -1,11 +1,11 @@
-#pragma code_seg("C385")
-#pragma data_seg("D385")
-#pragma bss_seg("B385")
-#pragma const_seg("K385")
-#pragma comment(linker, "/merge:D385=385")
-#pragma comment(linker, "/merge:C385=385")
-#pragma comment(linker, "/merge:B385=385")
-#pragma comment(linker, "/merge:K385=385")
+#pragma code_seg("C400")
+#pragma data_seg("D400")
+#pragma bss_seg("B400")
+#pragma const_seg("K400")
+#pragma comment(linker, "/merge:D400=400")
+#pragma comment(linker, "/merge:C400=400")
+#pragma comment(linker, "/merge:B400=400")
+#pragma comment(linker, "/merge:K400=400")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -150,7 +150,7 @@ PALETTE_INIT( ringking )
 	}
 }
 
-WRITE_HANDLER( kingofb_videoram_w )
+WRITE8_HANDLER( kingofb_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -159,7 +159,7 @@ WRITE_HANDLER( kingofb_videoram_w )
 	}
 }
 
-WRITE_HANDLER( kingofb_colorram_w )
+WRITE8_HANDLER( kingofb_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -168,7 +168,7 @@ WRITE_HANDLER( kingofb_colorram_w )
 	}
 }
 
-WRITE_HANDLER( kingofb_videoram2_w )
+WRITE8_HANDLER( kingofb_videoram2_w )
 {
 	if (kingofb_videoram2[offset] != data)
 	{
@@ -177,7 +177,7 @@ WRITE_HANDLER( kingofb_videoram2_w )
 	}
 }
 
-WRITE_HANDLER( kingofb_colorram2_w )
+WRITE8_HANDLER( kingofb_colorram2_w )
 {
 	if (kingofb_colorram2[offset] != data)
 	{
@@ -186,7 +186,7 @@ WRITE_HANDLER( kingofb_colorram2_w )
 	}
 }
 
-WRITE_HANDLER( kingofb_f800_w )
+WRITE8_HANDLER( kingofb_f800_w )
 {
 	kingofb_nmi_enable = data & 0x20;
 

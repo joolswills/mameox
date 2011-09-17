@@ -1,11 +1,11 @@
-#pragma code_seg("C493")
-#pragma data_seg("D493")
-#pragma bss_seg("B493")
-#pragma const_seg("K493")
-#pragma comment(linker, "/merge:D493=493")
-#pragma comment(linker, "/merge:C493=493")
-#pragma comment(linker, "/merge:B493=493")
-#pragma comment(linker, "/merge:K493=493")
+#pragma code_seg("C522")
+#pragma data_seg("D522")
+#pragma bss_seg("B522")
+#pragma const_seg("K522")
+#pragma comment(linker, "/merge:D522=522")
+#pragma comment(linker, "/merge:C522=522")
+#pragma comment(linker, "/merge:B522=522")
+#pragma comment(linker, "/merge:K522=522")
 /******************************************************************************
 
 	Video Hardware for Nichibutsu Mahjong series.
@@ -65,12 +65,12 @@ static void mscoutm_gfxdraw(int vram);
 
 
 ******************************************************************************/
-READ_HANDLER( sailorws_palette_r )
+READ8_HANDLER( sailorws_palette_r )
 {
 	return sailorws_palette[offset];
 }
 
-WRITE_HANDLER( sailorws_palette_w )
+WRITE8_HANDLER( sailorws_palette_w )
 {
 	int r, g, b;
 
@@ -92,12 +92,12 @@ WRITE_HANDLER( sailorws_palette_w )
 	}
 }
 
-READ_HANDLER( mscoutm_palette_r )
+READ8_HANDLER( mscoutm_palette_r )
 {
 	return mscoutm_palette[offset];
 }
 
-WRITE_HANDLER( mscoutm_palette_w )
+WRITE8_HANDLER( mscoutm_palette_w )
 {
 	int r, g, b;
 	int offs_h, offs_l;
@@ -249,12 +249,12 @@ void sailorws_paltblnum_w(int data)
 	sailorws_paltblnum = data;
 }
 
-WRITE_HANDLER( sailorws_paltbl_0_w )
+WRITE8_HANDLER( sailorws_paltbl_0_w )
 {
 	sailorws_paltbl0[((sailorws_paltblnum & 0xff) * 0x10) + (offset & 0x0f)] = data;
 }
 
-WRITE_HANDLER( sailorws_paltbl_1_w )
+WRITE8_HANDLER( sailorws_paltbl_1_w )
 {
 	sailorws_paltbl1[((sailorws_paltblnum & 0xff) * 0x10) + (offset & 0x0f)] = data;
 }
@@ -667,28 +667,28 @@ static void mscoutm_gfxdraw(int vram)
 
 
 ******************************************************************************/
-WRITE_HANDLER( sailorws_gfxflag_0_w ) { sailorws_gfxflag_w(0, offset, data); }
-WRITE_HANDLER( sailorws_scrollx_0_w ) { sailorws_scrollx_w(0, offset, data); }
-WRITE_HANDLER( sailorws_scrolly_0_w ) { sailorws_scrolly_w(0, offset, data); }
-WRITE_HANDLER( sailorws_radr_0_w ) { sailorws_radr_w(0, offset, data); }
-WRITE_HANDLER( sailorws_sizex_0_w ) { sailorws_sizex_w(0, offset, data); }
-WRITE_HANDLER( sailorws_sizey_0_w ) { sailorws_sizey_w(0, offset, data); }
-WRITE_HANDLER( sailorws_drawx_0_w ) { sailorws_drawx_w(0, offset, data); }
-WRITE_HANDLER( sailorws_drawy_0_w ) { sailorws_drawy_w(0, offset, data); }
+WRITE8_HANDLER( sailorws_gfxflag_0_w ) { sailorws_gfxflag_w(0, offset, data); }
+WRITE8_HANDLER( sailorws_scrollx_0_w ) { sailorws_scrollx_w(0, offset, data); }
+WRITE8_HANDLER( sailorws_scrolly_0_w ) { sailorws_scrolly_w(0, offset, data); }
+WRITE8_HANDLER( sailorws_radr_0_w ) { sailorws_radr_w(0, offset, data); }
+WRITE8_HANDLER( sailorws_sizex_0_w ) { sailorws_sizex_w(0, offset, data); }
+WRITE8_HANDLER( sailorws_sizey_0_w ) { sailorws_sizey_w(0, offset, data); }
+WRITE8_HANDLER( sailorws_drawx_0_w ) { sailorws_drawx_w(0, offset, data); }
+WRITE8_HANDLER( sailorws_drawy_0_w ) { sailorws_drawy_w(0, offset, data); }
 
-WRITE_HANDLER( sailorws_gfxflag_1_w ) { sailorws_gfxflag_w(1, offset, data); }
-WRITE_HANDLER( sailorws_scrollx_1_w ) { sailorws_scrollx_w(1, offset, data); }
-WRITE_HANDLER( sailorws_scrolly_1_w ) { sailorws_scrolly_w(1, offset, data); }
-WRITE_HANDLER( sailorws_radr_1_w ) { sailorws_radr_w(1, offset, data); }
-WRITE_HANDLER( sailorws_sizex_1_w ) { sailorws_sizex_w(1, offset, data); }
-WRITE_HANDLER( sailorws_sizey_1_w ) { sailorws_sizey_w(1, offset, data); }
-WRITE_HANDLER( sailorws_drawx_1_w ) { sailorws_drawx_w(1, offset, data); }
-WRITE_HANDLER( sailorws_drawy_1_w ) { sailorws_drawy_w(1, offset, data); }
+WRITE8_HANDLER( sailorws_gfxflag_1_w ) { sailorws_gfxflag_w(1, offset, data); }
+WRITE8_HANDLER( sailorws_scrollx_1_w ) { sailorws_scrollx_w(1, offset, data); }
+WRITE8_HANDLER( sailorws_scrolly_1_w ) { sailorws_scrolly_w(1, offset, data); }
+WRITE8_HANDLER( sailorws_radr_1_w ) { sailorws_radr_w(1, offset, data); }
+WRITE8_HANDLER( sailorws_sizex_1_w ) { sailorws_sizex_w(1, offset, data); }
+WRITE8_HANDLER( sailorws_sizey_1_w ) { sailorws_sizey_w(1, offset, data); }
+WRITE8_HANDLER( sailorws_drawx_1_w ) { sailorws_drawx_w(1, offset, data); }
+WRITE8_HANDLER( sailorws_drawy_1_w ) { sailorws_drawy_w(1, offset, data); }
 
-READ_HANDLER( sailorws_gfxbusy_0_r ) { return sailorws_gfxbusy_r(0, offset); }
-READ_HANDLER( sailorws_gfxbusy_1_r ) { return sailorws_gfxbusy_r(1, offset); }
-READ_HANDLER( sailorws_gfxrom_0_r ) { return sailorws_gfxrom_r(0, offset); }
-READ_HANDLER( sailorws_gfxrom_1_r ) { return sailorws_gfxrom_r(1, offset); }
+READ8_HANDLER( sailorws_gfxbusy_0_r ) { return sailorws_gfxbusy_r(0, offset); }
+READ8_HANDLER( sailorws_gfxbusy_1_r ) { return sailorws_gfxbusy_r(1, offset); }
+READ8_HANDLER( sailorws_gfxrom_0_r ) { return sailorws_gfxrom_r(0, offset); }
+READ8_HANDLER( sailorws_gfxrom_1_r ) { return sailorws_gfxrom_r(1, offset); }
 
 /******************************************************************************
 

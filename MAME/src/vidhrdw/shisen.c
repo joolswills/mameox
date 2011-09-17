@@ -13,7 +13,7 @@ static int gfxbank;
 
 static struct tilemap *bg_tilemap;
 
-WRITE_HANDLER( sichuan2_videoram_w )
+WRITE8_HANDLER( sichuan2_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -22,7 +22,7 @@ WRITE_HANDLER( sichuan2_videoram_w )
 	}
 }
 
-WRITE_HANDLER( sichuan2_bankswitch_w )
+WRITE8_HANDLER( sichuan2_bankswitch_w )
 {
 	int bankaddress;
 	int bank;
@@ -46,7 +46,7 @@ WRITE_HANDLER( sichuan2_bankswitch_w )
 	/* bits 6-7 unknown */
 }
 
-WRITE_HANDLER( sichuan2_paletteram_w )
+WRITE8_HANDLER( sichuan2_paletteram_w )
 {
 	int r, g, b;
 

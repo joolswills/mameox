@@ -1,11 +1,11 @@
-#pragma code_seg("C642")
-#pragma data_seg("D642")
-#pragma bss_seg("B642")
-#pragma const_seg("K642")
-#pragma comment(linker, "/merge:D642=642")
-#pragma comment(linker, "/merge:C642=642")
-#pragma comment(linker, "/merge:B642=642")
-#pragma comment(linker, "/merge:K642=642")
+#pragma code_seg("C678")
+#pragma data_seg("D678")
+#pragma bss_seg("B678")
+#pragma const_seg("K678")
+#pragma comment(linker, "/merge:D678=678")
+#pragma comment(linker, "/merge:C678=678")
+#pragma comment(linker, "/merge:B678=678")
+#pragma comment(linker, "/merge:K678=678")
 /***************************************************************************
 
 							Speed Buggy / Buggy Boy
@@ -52,10 +52,10 @@ unsigned char *spdbuggy_bgram, *spdbuggy_fgram;
 unsigned char *spdbuggy_ram, *spdbuggy_ram2;
 
 /* Functions defined in vidhrdw */
-WRITE_HANDLER( spdbuggy_bgram_w );
-WRITE_HANDLER( spdbuggy_fgram_w );
+WRITE8_HANDLER( spdbuggy_bgram_w );
+WRITE8_HANDLER( spdbuggy_fgram_w );
 
-WRITE_HANDLER( spdbuggy_scrollregs_w );
+WRITE8_HANDLER( spdbuggy_scrollregs_w );
 
 VIDEO_START( spdbuggy );
 VIDEO_UPDATE( spdbuggy );
@@ -70,8 +70,8 @@ VIDEO_UPDATE( spdbuggy );
 
 ***************************************************************************/
 #if 0
-static READ_HANDLER ( sharedram_r )	{ return sharedram[offset]; }
-static WRITE_HANDLER( sharedram_w )	{ sharedram[offset] = data; }
+static READ8_HANDLER ( sharedram_r )	{ return sharedram[offset]; }
+static WRITE8_HANDLER( sharedram_w )	{ sharedram[offset] = data; }
 #endif
 
 /*
@@ -97,7 +97,7 @@ static WRITE_HANDLER( sharedram_w )	{ sharedram[offset] = data; }
 	a400		shared with sub 1800
 
 */
-READ_HANDLER( spdbuggy_ram_r )
+READ8_HANDLER( spdbuggy_ram_r )
 {
 	switch (offset)
 	{
@@ -149,7 +149,7 @@ ADDRESS_MAP_END
 ***************************************************************************/
 
 
-READ_HANDLER( spdbuggy_ram2_r )
+READ8_HANDLER( spdbuggy_ram2_r )
 {
 	switch (offset)
 	{
@@ -551,12 +551,12 @@ static struct tilemap *bg_tilemap, *fg_tilemap;
 
 /* Useful defines - for debug */
 #define KEY(_k_,_action_) \
-	if (keyboard_pressed(KEYCODE_##_k_))	{ while (keyboard_pressed(KEYCODE_##_k_)); _action_ }
+	if (code_pressed(KEYCODE_##_k_))	{ while (code_pressed(KEYCODE_##_k_)); _action_ }
 #define KEY_SHIFT(_k_,_action_) \
-	if ( (keyboard_pressed(KEYCODE_LSHIFT)||keyboard_pressed(KEYCODE_RSHIFT)) && \
-	      keyboard_pressed(KEYCODE_##_k_) )	{ while (keyboard_pressed(KEYCODE_##_k_)); _action_ }
+	if ( (code_pressed(KEYCODE_LSHIFT)||code_pressed(KEYCODE_RSHIFT)) && \
+	      code_pressed(KEYCODE_##_k_) )	{ while (code_pressed(KEYCODE_##_k_)); _action_ }
 #define KEY_FAST(_k_,_action_) \
-	if (keyboard_pressed(KEYCODE_##_k_))	{ _action_ }
+	if (code_pressed(KEYCODE_##_k_))	{ _action_ }
 
 
 
@@ -580,7 +580,7 @@ static void spdbuggy_get_bg_tile_info( int tile_index )
 	SET_TILE_INFO(BG_GFX, code & 0x0fff, code >> 12, 0 );	// $3000 tiles!
 }
 
-WRITE_HANDLER( spdbuggy_bgram_w )
+WRITE8_HANDLER( spdbuggy_bgram_w )
 {
 	if (data != spdbuggy_bgram[offset])
 	{
@@ -605,7 +605,7 @@ static void spdbuggy_get_fg_tile_info( int tile_index )
 	SET_TILE_INFO(FG_GFX, code & 0x07ff, code >> 12, 0 );
 }
 
-WRITE_HANDLER( spdbuggy_fgram_w )
+WRITE8_HANDLER( spdbuggy_fgram_w )
 {
 	if (data != spdbuggy_fgram[offset])
 	{
@@ -695,14 +695,14 @@ VIDEO_UPDATE( spdbuggy )
 
 #ifdef MAME_DEBUG
 {
-	if (keyboard_pressed(KEYCODE_Z))
+	if (code_pressed(KEYCODE_Z))
 	{
 		int msk = 0;
-		if (keyboard_pressed(KEYCODE_Q))	{ msk |= 1;}
-		if (keyboard_pressed(KEYCODE_W))	{ msk |= 2;}
-		if (keyboard_pressed(KEYCODE_E))	{ msk |= 4;}
-		if (keyboard_pressed(KEYCODE_A))	{ msk |= 8;}
-		if (keyboard_pressed(KEYCODE_R))	{ msk |= 16;}
+		if (code_pressed(KEYCODE_Q))	{ msk |= 1;}
+		if (code_pressed(KEYCODE_W))	{ msk |= 2;}
+		if (code_pressed(KEYCODE_E))	{ msk |= 4;}
+		if (code_pressed(KEYCODE_A))	{ msk |= 8;}
+		if (code_pressed(KEYCODE_R))	{ msk |= 16;}
 		if (msk != 0) layers_ctrl &= msk;
 	}
 }

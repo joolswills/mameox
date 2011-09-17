@@ -1,11 +1,11 @@
-#pragma code_seg("C339")
-#pragma data_seg("D339")
-#pragma bss_seg("B339")
-#pragma const_seg("K339")
-#pragma comment(linker, "/merge:D339=339")
-#pragma comment(linker, "/merge:C339=339")
-#pragma comment(linker, "/merge:B339=339")
-#pragma comment(linker, "/merge:K339=339")
+#pragma code_seg("C353")
+#pragma data_seg("D353")
+#pragma bss_seg("B353")
+#pragma const_seg("K353")
+#pragma comment(linker, "/merge:D353=353")
+#pragma comment(linker, "/merge:C353=353")
+#pragma comment(linker, "/merge:B353=353")
+#pragma comment(linker, "/merge:K353=353")
 /* IGS - The Great Wall */
 
 /* hardware is probably very similar to China Dragon / Dragon World */

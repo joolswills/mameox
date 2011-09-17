@@ -1,11 +1,11 @@
-#pragma code_seg("C290")
-#pragma data_seg("D290")
-#pragma bss_seg("B290")
-#pragma const_seg("K290")
-#pragma comment(linker, "/merge:D290=290")
-#pragma comment(linker, "/merge:C290=290")
-#pragma comment(linker, "/merge:B290=290")
-#pragma comment(linker, "/merge:K290=290")
+#pragma code_seg("C301")
+#pragma data_seg("D301")
+#pragma bss_seg("B301")
+#pragma const_seg("K301")
+#pragma comment(linker, "/merge:D301=301")
+#pragma comment(linker, "/merge:C301=301")
+#pragma comment(linker, "/merge:B301=301")
+#pragma comment(linker, "/merge:K301=301")
 /***************************************************************************
 
 Finalizer (GX523) (c) 1985 Konami
@@ -30,7 +30,7 @@ int finalizr_T1_line;
 
 PALETTE_INIT( finalizr );
 VIDEO_START( finalizr );
-WRITE_HANDLER( finalizr_videoctrl_w );
+WRITE8_HANDLER( finalizr_videoctrl_w );
 VIDEO_UPDATE( finalizr );
 
 
@@ -40,27 +40,27 @@ static INTERRUPT_GEN( finalizr_interrupt )
 	if (cpu_getiloops() == 0)
 	{
 		if (*finalizr_interrupt_enable & 2)
-			cpu_set_irq_line(0, M6809_IRQ_LINE, HOLD_LINE);
+			cpunum_set_input_line(0, M6809_IRQ_LINE, HOLD_LINE);
 	}
 	else if (cpu_getiloops() % 2)
 	{
 		if (*finalizr_interrupt_enable & 1)
-			cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);
+			cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 	}
 }
 
-static WRITE_HANDLER( finalizr_coin_w )
+static WRITE8_HANDLER( finalizr_coin_w )
 {
 	coin_counter_w(0,data & 0x01);
 	coin_counter_w(1,data & 0x02);
 }
 
-WRITE_HANDLER( finalizr_i8039_irq_w )
+WRITE8_HANDLER( finalizr_i8039_irq_w )
 {
-	cpu_set_irq_line(1, 0, ASSERT_LINE);
+	cpunum_set_input_line(1, 0, ASSERT_LINE);
 }
 
-static WRITE_HANDLER( i8039_irqen_w )
+static WRITE8_HANDLER( i8039_irqen_w )
 {
 	/*  bit 0x80 goes active low, indicating that the
 		external IRQ being serviced is complete
@@ -68,10 +68,10 @@ static WRITE_HANDLER( i8039_irqen_w )
 	*/
 
 	if ((data & 0x80) == 0)
-		cpu_set_irq_line(1, 0, CLEAR_LINE);
+		cpunum_set_input_line(1, 0, CLEAR_LINE);
 }
 
-static READ_HANDLER( i8039_T1_r )
+static READ8_HANDLER( i8039_T1_r )
 {
 	/*  I suspect the clock-out from the I8039 T0 line should be connected
 		here (See the i8039_T0_w handler below).
@@ -96,7 +96,7 @@ static READ_HANDLER( i8039_T1_r )
 	return 0;
 }
 
-static WRITE_HANDLER( i8039_T0_w )
+static WRITE8_HANDLER( i8039_T0_w )
 {
 	/*	This becomes a clock output at a frequency of 3.072MHz (derived
 		by internally dividing the main xtal clock input by a factor of 3).

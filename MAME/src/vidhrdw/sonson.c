@@ -1,11 +1,11 @@
-#pragma code_seg("C638")
-#pragma data_seg("D638")
-#pragma bss_seg("B638")
-#pragma const_seg("K638")
-#pragma comment(linker, "/merge:D638=638")
-#pragma comment(linker, "/merge:C638=638")
-#pragma comment(linker, "/merge:B638=638")
-#pragma comment(linker, "/merge:K638=638")
+#pragma code_seg("C674")
+#pragma data_seg("D674")
+#pragma bss_seg("B674")
+#pragma const_seg("K674")
+#pragma comment(linker, "/merge:D674=674")
+#pragma comment(linker, "/merge:C674=674")
+#pragma comment(linker, "/merge:B674=674")
+#pragma comment(linker, "/merge:K674=674")
 /***************************************************************************
 
   vidhrdw.c
@@ -94,7 +94,7 @@ PALETTE_INIT( sonson )
 		COLOR(1,i) = (*(color_prom++) & 0x0f) + 0x10;
 }
 
-WRITE_HANDLER( sonson_videoram_w )
+WRITE8_HANDLER( sonson_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -103,7 +103,7 @@ WRITE_HANDLER( sonson_videoram_w )
 	}
 }
 
-WRITE_HANDLER( sonson_colorram_w )
+WRITE8_HANDLER( sonson_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -112,7 +112,7 @@ WRITE_HANDLER( sonson_colorram_w )
 	}
 }
 
-WRITE_HANDLER( sonson_scroll_w )
+WRITE8_HANDLER( sonson_scroll_w )
 {
 	int row;
 
@@ -122,7 +122,7 @@ WRITE_HANDLER( sonson_scroll_w )
 	}
 }
 
-WRITE_HANDLER( sonson_flipscreen_w )
+WRITE8_HANDLER( sonson_flipscreen_w )
 {
 	if (flip_screen != (~data & 0x01))
 	{

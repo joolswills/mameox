@@ -45,7 +45,6 @@ struct star
 static struct star stars[MAX_STARS];
 static int    total_stars;
 static int    scroll[8];
-static int    CollisionRegister=0;
 static int    stars_on=0;
 static int 	  character_mode=0;
 static int    character_page=0;
@@ -68,9 +67,11 @@ struct mame_bitmap *collision_bitmap;
 struct mame_bitmap *collision_background;
 struct mame_bitmap *scrolled_background;
 
-static unsigned char s2636_1_dirty[4];
-static unsigned char s2636_2_dirty[4];
-static unsigned char s2636_3_dirty[4];
+unsigned char s2636_1_dirty[4];
+unsigned char s2636_2_dirty[4];
+unsigned char s2636_3_dirty[4];
+
+int CollisionRegister=0;
 
 static int ModeOffset[4] = {223,191,255,127};
 
@@ -144,7 +145,7 @@ PALETTE_INIT( cvs )
     scroll[7]=0;
 }
 
-WRITE_HANDLER( cvs_video_fx_w )
+WRITE8_HANDLER( cvs_video_fx_w )
 {
 	logerror("%4x : Data Port = %2x\n",activecpu_get_pc(),data);
 
@@ -163,7 +164,7 @@ WRITE_HANDLER( cvs_video_fx_w )
     set_led_status(2,data & 32);	/* Lamp 2 */
 }
 
-READ_HANDLER( cvs_character_mode_r )
+READ8_HANDLER( cvs_character_mode_r )
 {
 	/* Really a write - uses address info */
 
@@ -181,18 +182,18 @@ READ_HANDLER( cvs_character_mode_r )
     return 0;
 }
 
-READ_HANDLER( cvs_collision_r )
+READ8_HANDLER( cvs_collision_r )
 {
 	return CollisionRegister;
 }
 
-READ_HANDLER( cvs_collision_clear )
+READ8_HANDLER( cvs_collision_clear )
 {
 	CollisionRegister=0;
     return 0;
 }
 
-WRITE_HANDLER( cvs_scroll_w )
+WRITE8_HANDLER( cvs_scroll_w )
 {
 	scroll_reg = 255 - data;
 
@@ -203,7 +204,7 @@ WRITE_HANDLER( cvs_scroll_w )
     scroll[5]=scroll_reg;
 }
 
-WRITE_HANDLER( cvs_videoram_w )
+WRITE8_HANDLER( cvs_videoram_w )
 {
 	if(!activecpu_get_reg(S2650_FO))
     {
@@ -219,7 +220,7 @@ WRITE_HANDLER( cvs_videoram_w )
     }
 }
 
-READ_HANDLER( cvs_videoram_r )
+READ8_HANDLER( cvs_videoram_r )
 {
 	if(!activecpu_get_reg(S2650_FO))
     {
@@ -235,7 +236,7 @@ READ_HANDLER( cvs_videoram_r )
     }
 }
 
-WRITE_HANDLER( cvs_bullet_w )
+WRITE8_HANDLER( cvs_bullet_w )
 {
 	if(!activecpu_get_reg(S2650_FO))
     {
@@ -251,7 +252,7 @@ WRITE_HANDLER( cvs_bullet_w )
     }
 }
 
-READ_HANDLER( cvs_bullet_r )
+READ8_HANDLER( cvs_bullet_r )
 {
 	if(!activecpu_get_reg(S2650_FO))
     {
@@ -267,7 +268,7 @@ READ_HANDLER( cvs_bullet_r )
     }
 }
 
-WRITE_HANDLER( cvs_2636_1_w )
+WRITE8_HANDLER( cvs_2636_1_w )
 {
 	if(!activecpu_get_reg(S2650_FO))
     {
@@ -287,7 +288,7 @@ WRITE_HANDLER( cvs_2636_1_w )
 	}
 }
 
-READ_HANDLER( cvs_2636_1_r )
+READ8_HANDLER( cvs_2636_1_r )
 {
 	if(!activecpu_get_reg(S2650_FO))
     {
@@ -303,7 +304,7 @@ READ_HANDLER( cvs_2636_1_r )
     }
 }
 
-WRITE_HANDLER( cvs_2636_2_w )
+WRITE8_HANDLER( cvs_2636_2_w )
 {
 	if(!activecpu_get_reg(S2650_FO))
     {
@@ -323,7 +324,7 @@ WRITE_HANDLER( cvs_2636_2_w )
     }
 }
 
-READ_HANDLER( cvs_2636_2_r )
+READ8_HANDLER( cvs_2636_2_r )
 {
 	if(!activecpu_get_reg(S2650_FO))
     {
@@ -339,7 +340,7 @@ READ_HANDLER( cvs_2636_2_r )
     }
 }
 
-WRITE_HANDLER( cvs_2636_3_w )
+WRITE8_HANDLER( cvs_2636_3_w )
 {
 	if(!activecpu_get_reg(S2650_FO))
     {
@@ -359,7 +360,7 @@ WRITE_HANDLER( cvs_2636_3_w )
     }
 }
 
-READ_HANDLER( cvs_2636_3_r )
+READ8_HANDLER( cvs_2636_3_r )
 {
 	if(!activecpu_get_reg(S2650_FO))
     {
@@ -447,8 +448,8 @@ INTERRUPT_GEN( cvs_interrupt )
 {
 	stars_scroll++;
 
-	cpu_irq_line_vector_w(0,0,0x03);
-	cpu_set_irq_line(0,0,PULSE_LINE);
+	cpunum_set_input_line_vector(0,0,0x03);
+	cpunum_set_input_line(0,0,PULSE_LINE);
 }
 
 INLINE void plot_star(struct mame_bitmap *bitmap, int x, int y)

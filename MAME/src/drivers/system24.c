@@ -1,11 +1,11 @@
-#pragma code_seg("C690")
-#pragma data_seg("D690")
-#pragma bss_seg("B690")
-#pragma const_seg("K690")
-#pragma comment(linker, "/merge:D690=690")
-#pragma comment(linker, "/merge:C690=690")
-#pragma comment(linker, "/merge:B690=690")
-#pragma comment(linker, "/merge:K690=690")
+#pragma code_seg("C729")
+#pragma data_seg("D729")
+#pragma bss_seg("B729")
+#pragma const_seg("K729")
+#pragma comment(linker, "/merge:D729=729")
+#pragma comment(linker, "/merge:C729=729")
+#pragma comment(linker, "/merge:B729=729")
+#pragma comment(linker, "/merge:K729=729")
 /*
  * Sega System 24
  *
@@ -432,10 +432,10 @@ static void reset_reset(void)
 	int changed = resetcontrol ^ prev_resetcontrol;
 	if(changed & 2) {
 		if(resetcontrol & 2) {
-			cpu_set_halt_line(1, CLEAR_LINE);
-			cpu_set_reset_line(1, PULSE_LINE);
+			cpunum_set_input_line(1, INPUT_LINE_HALT, CLEAR_LINE);
+			cpunum_set_input_line(1, INPUT_LINE_RESET, PULSE_LINE);
 		} else
-			cpu_set_halt_line(1, ASSERT_LINE);
+			cpunum_set_input_line(1, INPUT_LINE_HALT, ASSERT_LINE);
 	}
 	if(changed & 4)
 		YM2151ResetChip(0);
@@ -557,9 +557,9 @@ static void irq_timer_cb(int param)
 {
 	irq_timer_pend0 = irq_timer_pend1 = 1;
 	if(irq_allow0 & (1 << IRQ_TIMER))
-		cpu_set_irq_line(0, IRQ_TIMER+1, ASSERT_LINE);
+		cpunum_set_input_line(0, IRQ_TIMER+1, ASSERT_LINE);
 	if(irq_allow1 & (1 << IRQ_TIMER))
-		cpu_set_irq_line(1, IRQ_TIMER+1, ASSERT_LINE);
+		cpunum_set_input_line(1, IRQ_TIMER+1, ASSERT_LINE);
 }
 
 static void irq_init(void)
@@ -602,13 +602,13 @@ static WRITE16_HANDLER(irq_w)
 		break;
 	case 2:
 		irq_allow0 = data;
-		cpu_set_irq_line(0, IRQ_TIMER+1, irq_timer_pend0 && (irq_allow0 & (1 << IRQ_TIMER)) ? ASSERT_LINE : CLEAR_LINE);
-		cpu_set_irq_line(0, IRQ_YM2151+1, irq_yms && (irq_allow0 & (1 << IRQ_YM2151)) ? ASSERT_LINE : CLEAR_LINE);
+		cpunum_set_input_line(0, IRQ_TIMER+1, irq_timer_pend0 && (irq_allow0 & (1 << IRQ_TIMER)) ? ASSERT_LINE : CLEAR_LINE);
+		cpunum_set_input_line(0, IRQ_YM2151+1, irq_yms && (irq_allow0 & (1 << IRQ_YM2151)) ? ASSERT_LINE : CLEAR_LINE);
 		break;
 	case 3:
 		irq_allow1 = data;
-		cpu_set_irq_line(1, IRQ_TIMER+1, irq_timer_pend1 && (irq_allow1 & (1 << IRQ_TIMER)) ? ASSERT_LINE : CLEAR_LINE);
-		cpu_set_irq_line(1, IRQ_YM2151+1, irq_yms && (irq_allow1 & (1 << IRQ_YM2151)) ? ASSERT_LINE : CLEAR_LINE);
+		cpunum_set_input_line(1, IRQ_TIMER+1, irq_timer_pend1 && (irq_allow1 & (1 << IRQ_TIMER)) ? ASSERT_LINE : CLEAR_LINE);
+		cpunum_set_input_line(1, IRQ_YM2151+1, irq_yms && (irq_allow1 & (1 << IRQ_YM2151)) ? ASSERT_LINE : CLEAR_LINE);
 		break;
 	}
 }
@@ -618,11 +618,11 @@ static READ16_HANDLER(irq_r)
 	switch(offset) {
 	case 2:
 		irq_timer_pend0 = 0;
-		cpu_set_irq_line(0, IRQ_TIMER+1, CLEAR_LINE);
+		cpunum_set_input_line(0, IRQ_TIMER+1, CLEAR_LINE);
 		break;
 	case 3:
 		irq_timer_pend1 = 0;
-		cpu_set_irq_line(1, IRQ_TIMER+1, CLEAR_LINE);
+		cpunum_set_input_line(1, IRQ_TIMER+1, CLEAR_LINE);
 		break;
 	}
 	return 0xffff;
@@ -634,10 +634,10 @@ static INTERRUPT_GEN(irq_vbl)
 	int mask = 1 << irq;
 
 	if(irq_allow0 & mask)
-		cpu_set_irq_line(0, 1+irq, HOLD_LINE);
+		cpunum_set_input_line(0, 1+irq, HOLD_LINE);
 
 	if(irq_allow1 & mask)
-		cpu_set_irq_line(1, 1+irq, HOLD_LINE);
+		cpunum_set_input_line(1, 1+irq, HOLD_LINE);
 
 	if(!cpu_getiloops()) {
 		// Ensure one index pulse every 20 frames
@@ -652,8 +652,8 @@ static INTERRUPT_GEN(irq_vbl)
 static void irq_ym(int irq)
 {
 	irq_yms = irq;
-	cpu_set_irq_line(0, IRQ_YM2151+1, irq_yms && (irq_allow0 & (1 << IRQ_YM2151)) ? ASSERT_LINE : CLEAR_LINE);
-	cpu_set_irq_line(1, IRQ_YM2151+1, irq_yms && (irq_allow1 & (1 << IRQ_YM2151)) ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(0, IRQ_YM2151+1, irq_yms && (irq_allow0 & (1 << IRQ_YM2151)) ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1, IRQ_YM2151+1, irq_yms && (irq_allow1 & (1 << IRQ_YM2151)) ? ASSERT_LINE : CLEAR_LINE);
 }
 
 
@@ -868,7 +868,7 @@ static NVRAM_HANDLER(system24)
 
 static MACHINE_INIT(system24)
 {
-	cpu_set_halt_line(1, ASSERT_LINE);
+	cpunum_set_input_line(1, INPUT_LINE_HALT, ASSERT_LINE);
 	prev_resetcontrol = resetcontrol = 0x06;
 	fdc_init();
 	curbank = 0;
@@ -1003,6 +1003,67 @@ INPUT_PORTS_START( bnzabros )
 	PORT_DIPSETTING(    0x80, "4" )
 	PORT_DIPSETTING(    0x40, "2" )
 	PORT_DIPSETTING(    0x00, "1" )
+INPUT_PORTS_END
+
+INPUT_PORTS_START( sspirits )
+	PORT_START
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON3 | IPF_PLAYER1 )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON1 | IPF_PLAYER1 )
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON2 | IPF_PLAYER1 )
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  | IPF_8WAY | IPF_PLAYER1 )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    | IPF_8WAY | IPF_PLAYER1 )
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_8WAY | IPF_PLAYER1 )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  | IPF_8WAY | IPF_PLAYER1 )
+
+	PORT_START
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON3 | IPF_PLAYER2 )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON1 | IPF_PLAYER2 )
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON2 | IPF_PLAYER2 )
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  | IPF_8WAY | IPF_PLAYER2 )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    | IPF_8WAY | IPF_PLAYER2 )
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_8WAY | IPF_PLAYER2 )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  | IPF_8WAY | IPF_PLAYER2 )
+
+	PORT_START
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN1 )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_COIN2 )
+	PORT_BITX(0x04, IP_ACTIVE_LOW, IPT_SERVICE, DEF_STR( Service_Mode ), KEYCODE_F2, IP_JOY_NONE )
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE1 )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_START1 )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START2 )
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
+
+	SYS16_COINAGE
+
+	PORT_START
+	PORT_DIPNAME( 0x01, 0x01, "Monitor flip" )
+	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	
+	PORT_DIPNAME( 0x02, 0x00, DEF_STR( Demo_Sounds ) )
+	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	
+	PORT_DIPNAME( 0x0c, 0x0c, DEF_STR( Lives ) )
+	PORT_DIPSETTING(    0x0c, "3" )
+	PORT_DIPSETTING(    0x08, "4" )
+	PORT_DIPSETTING(    0x04, "5" )
+	PORT_DIPSETTING(    0x00, "2" )
+	
+	PORT_DIPNAME( 0x30, 0x30, DEF_STR( Bonus_Life ) )
+	PORT_DIPSETTING(    0x30, "600K" )
+	PORT_DIPSETTING(    0x20, "500K" )
+	PORT_DIPSETTING(    0x10, "800K" )
+	PORT_DIPSETTING(    0x00, "None" )
+	
+	PORT_DIPNAME( 0xc0, 0xc0, DEF_STR( Difficulty ) )
+	PORT_DIPSETTING(    0xc0, "Normal" )
+	PORT_DIPSETTING(    0x80, "Easy" )
+	PORT_DIPSETTING(    0x40, "Hard" )
+	PORT_DIPSETTING(    0x00, "Hardest" )
 INPUT_PORTS_END
 
 
@@ -1462,13 +1523,13 @@ GAME( 1994, qgh,      0,        system24, qgh,      qgh,      ROT0,   "Sega", "Q
 GAME( 1994, quizmeku, 0,        system24, quizmeku, quizmeku, ROT0,   "Sega", "Quiz Mekurumeku Story")
 GAME( 1994, qrouka,   0,        system24, qgh,      qrouka,   ROT0,   "Sega", "Quiz Rouka Ni Tattenasai")
 GAME( 1994, mahmajn2, 0,        system24, mahmajn,  mahmajn2, ROT0,   "Sega", "Tokoro San no MahMahjan 2")
-GAME( 1988, sspirits, 0,        system24, bnzabros, sspirits, ROT270, "Sega", "Scramble Spirits" )
+GAME( 1988, sspirits, 0,        system24, sspirits, sspirits, ROT270, "Sega", "Scramble Spirits" )
 
 /* Encrypted */
-GAMEX( ????, sgmast,   0, system24, bnzabros, sgmast,   ROT0, "Sega", "Super Masters Golf", GAME_NOT_WORKING|GAME_UNEMULATED_PROTECTION)
-GAMEX( ????, qsww,     0, system24, bnzabros, qsww,     ROT0, "Sega", "Quiz Syukudai wo Wasuremashita", GAME_NOT_WORKING|GAME_UNEMULATED_PROTECTION)
-GAMEX( ????, gground,  0, system24, bnzabros, gground,  ROT0, "Sega", "Gain Ground", GAME_NOT_WORKING|GAME_UNEMULATED_PROTECTION)
-GAMEX( ????, crkdown,  0, system24, bnzabros, crkdown,  ROT0, "Sega", "Crackdown", GAME_NOT_WORKING|GAME_UNEMULATED_PROTECTION)
+GAMEX( ????, sgmast,   0, system24, bnzabros, sgmast,   ROT0,	"Sega", "Super Masters Golf", GAME_NOT_WORKING|GAME_UNEMULATED_PROTECTION)
+GAMEX( ????, qsww,     0, system24, bnzabros, qsww,     ROT0, 	"Sega", "Quiz Syukudai wo Wasuremashita", GAME_NOT_WORKING|GAME_UNEMULATED_PROTECTION)
+GAMEX( ????, gground,  0, system24, bnzabros, gground,  ROT270, "Sega", "Gain Ground", GAME_NOT_WORKING|GAME_UNEMULATED_PROTECTION)
+GAMEX( ????, crkdown,  0, system24, bnzabros, crkdown,  ROT0,	"Sega", "Crackdown", GAME_NOT_WORKING|GAME_UNEMULATED_PROTECTION)
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

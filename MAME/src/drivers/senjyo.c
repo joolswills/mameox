@@ -1,11 +1,11 @@
-#pragma code_seg("C605")
-#pragma data_seg("D605")
-#pragma bss_seg("B605")
-#pragma const_seg("K605")
-#pragma comment(linker, "/merge:D605=605")
-#pragma comment(linker, "/merge:C605=605")
-#pragma comment(linker, "/merge:B605=605")
-#pragma comment(linker, "/merge:K605=605")
+#pragma code_seg("C641")
+#pragma data_seg("D641")
+#pragma bss_seg("B641")
+#pragma const_seg("K641")
+#pragma comment(linker, "/merge:D641=641")
+#pragma comment(linker, "/merge:C641=641")
+#pragma comment(linker, "/merge:B641=641")
+#pragma comment(linker, "/merge:K641=641")
 /***************************************************************************
 
 Senjyo / Star Force / Baluba-louk
@@ -90,12 +90,12 @@ extern UINT8 *senjyo_fgvideoram,*senjyo_fgcolorram;
 extern UINT8 *senjyo_bg1videoram,*senjyo_bg2videoram,*senjyo_bg3videoram;
 extern UINT8 *senjyo_radarram;
 extern UINT8 *senjyo_bgstripesram;
-WRITE_HANDLER( senjyo_fgvideoram_w );
-WRITE_HANDLER( senjyo_fgcolorram_w );
-WRITE_HANDLER( senjyo_bg1videoram_w );
-WRITE_HANDLER( senjyo_bg2videoram_w );
-WRITE_HANDLER( senjyo_bg3videoram_w );
-WRITE_HANDLER( senjyo_bgstripes_w );
+WRITE8_HANDLER( senjyo_fgvideoram_w );
+WRITE8_HANDLER( senjyo_fgcolorram_w );
+WRITE8_HANDLER( senjyo_bg1videoram_w );
+WRITE8_HANDLER( senjyo_bg2videoram_w );
+WRITE8_HANDLER( senjyo_bg3videoram_w );
+WRITE8_HANDLER( senjyo_bgstripes_w );
 
 DRIVER_INIT( starforc );
 DRIVER_INIT( starfore );
@@ -108,15 +108,15 @@ int senjyo_sh_start(const struct MachineSound *msound);
 void senjyo_sh_stop(void);
 void senjyo_sh_update(void);
 
-WRITE_HANDLER( senjyo_sh_0_w );
-WRITE_HANDLER( senjyo_sh_1_w );
-WRITE_HANDLER( senjyo_sh_2_w );
+WRITE8_HANDLER( senjyo_sh_0_w );
+WRITE8_HANDLER( senjyo_sh_1_w );
+WRITE8_HANDLER( senjyo_sh_2_w );
 
-WRITE_HANDLER( starforc_pio_w );
-READ_HANDLER( starforc_pio_r );
+WRITE8_HANDLER( starforc_pio_w );
+READ8_HANDLER( starforc_pio_r );
 
 #if 1
-WRITE_HANDLER( senjyo_volume_w );
+WRITE8_HANDLER( senjyo_volume_w );
 #endif
 
 
@@ -134,11 +134,11 @@ MACHINE_INIT( senjyo )
 
 INTERRUPT_GEN( senjyo_interrupt )
 {
-	if (int_delay_kludge == 0) cpu_set_irq_line(0, 0, HOLD_LINE);
+	if (int_delay_kludge == 0) cpunum_set_input_line(0, 0, HOLD_LINE);
 	else int_delay_kludge--;
 }
 
-static WRITE_HANDLER( flip_screen_w )
+static WRITE8_HANDLER( flip_screen_w )
 {
 	flip_screen_set(data);
 }

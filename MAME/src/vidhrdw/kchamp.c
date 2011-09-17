@@ -1,11 +1,11 @@
-#pragma code_seg("C383")
-#pragma data_seg("D383")
-#pragma bss_seg("B383")
-#pragma const_seg("K383")
-#pragma comment(linker, "/merge:D383=383")
-#pragma comment(linker, "/merge:C383=383")
-#pragma comment(linker, "/merge:B383=383")
-#pragma comment(linker, "/merge:K383=383")
+#pragma code_seg("C398")
+#pragma data_seg("D398")
+#pragma bss_seg("B398")
+#pragma const_seg("K398")
+#pragma comment(linker, "/merge:D398=398")
+#pragma comment(linker, "/merge:C398=398")
+#pragma comment(linker, "/merge:B398=398")
+#pragma comment(linker, "/merge:K398=398")
 /***************************************************************************
 
   vidhrdw.c
@@ -38,7 +38,7 @@ PALETTE_INIT( kchamp )
 	}
 }
 
-WRITE_HANDLER( kchamp_videoram_w )
+WRITE8_HANDLER( kchamp_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -47,7 +47,7 @@ WRITE_HANDLER( kchamp_videoram_w )
 	}
 }
 
-WRITE_HANDLER( kchamp_colorram_w )
+WRITE8_HANDLER( kchamp_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -56,7 +56,7 @@ WRITE_HANDLER( kchamp_colorram_w )
 	}
 }
 
-WRITE_HANDLER( kchamp_flipscreen_w )
+WRITE8_HANDLER( kchamp_flipscreen_w )
 {
 	flip_screen_set(data & 0x01);
 }

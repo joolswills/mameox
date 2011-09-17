@@ -1,11 +1,11 @@
-#pragma code_seg("C603")
-#pragma data_seg("D603")
-#pragma bss_seg("B603")
-#pragma const_seg("K603")
-#pragma comment(linker, "/merge:D603=603")
-#pragma comment(linker, "/merge:C603=603")
-#pragma comment(linker, "/merge:B603=603")
-#pragma comment(linker, "/merge:K603=603")
+#pragma code_seg("C639")
+#pragma data_seg("D639")
+#pragma bss_seg("B639")
+#pragma const_seg("K639")
+#pragma comment(linker, "/merge:D639=639")
+#pragma comment(linker, "/merge:C639=639")
+#pragma comment(linker, "/merge:B639=639")
+#pragma comment(linker, "/merge:K639=639")
 /***************************************************************************
 
   vidhrdw.c
@@ -65,7 +65,7 @@ PALETTE_INIT( seicross )
 	}
 }
 
-WRITE_HANDLER( seicross_videoram_w )
+WRITE8_HANDLER( seicross_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -74,7 +74,7 @@ WRITE_HANDLER( seicross_videoram_w )
 	}
 }
 
-WRITE_HANDLER( seicross_colorram_w )
+WRITE8_HANDLER( seicross_colorram_w )
 {
 	if (colorram[offset] != data)
 	{

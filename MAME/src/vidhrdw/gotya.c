@@ -1,11 +1,11 @@
-#pragma code_seg("C334")
-#pragma data_seg("D334")
-#pragma bss_seg("B334")
-#pragma const_seg("K334")
-#pragma comment(linker, "/merge:D334=334")
-#pragma comment(linker, "/merge:C334=334")
-#pragma comment(linker, "/merge:B334=334")
-#pragma comment(linker, "/merge:K334=334")
+#pragma code_seg("C348")
+#pragma data_seg("D348")
+#pragma bss_seg("B348")
+#pragma const_seg("K348")
+#pragma comment(linker, "/merge:D348=348")
+#pragma comment(linker, "/merge:C348=348")
+#pragma comment(linker, "/merge:B348=348")
+#pragma comment(linker, "/merge:K348=348")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -75,7 +75,7 @@ PALETTE_INIT( gotya )
 	}
 }
 
-WRITE_HANDLER( gotya_videoram_w )
+WRITE8_HANDLER( gotya_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -84,7 +84,7 @@ WRITE_HANDLER( gotya_videoram_w )
 	}
 }
 
-WRITE_HANDLER( gotya_colorram_w )
+WRITE8_HANDLER( gotya_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -93,7 +93,7 @@ WRITE_HANDLER( gotya_colorram_w )
 	}
 }
 
-WRITE_HANDLER( gotya_video_control_w )
+WRITE8_HANDLER( gotya_video_control_w )
 {
 	/* bit 0 - scroll bit 8
 	   bit 1 - flip screen

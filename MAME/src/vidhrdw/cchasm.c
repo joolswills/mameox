@@ -1,11 +1,11 @@
-#pragma code_seg("C197")
-#pragma data_seg("D197")
-#pragma bss_seg("B197")
-#pragma const_seg("K197")
-#pragma comment(linker, "/merge:D197=197")
-#pragma comment(linker, "/merge:C197=197")
-#pragma comment(linker, "/merge:B197=197")
-#pragma comment(linker, "/merge:K197=197")
+#pragma code_seg("C200")
+#pragma data_seg("D200")
+#pragma bss_seg("B200")
+#pragma const_seg("K200")
+#pragma comment(linker, "/merge:D200=200")
+#pragma comment(linker, "/merge:C200=200")
+#pragma comment(linker, "/merge:B200=200")
+#pragma comment(linker, "/merge:K200=200")
 /***************************************************************************
 
 	Cinematronics Cosmic Chasm hardware
@@ -31,7 +31,7 @@ static int xcenter, ycenter;
 
 static void cchasm_refresh_end (int dummy)
 {
-    cpu_set_irq_line (0, 2, ASSERT_LINE);
+    cpunum_set_input_line (0, 2, ASSERT_LINE);
 }
 
 static void cchasm_refresh (void)
@@ -122,7 +122,7 @@ WRITE16_HANDLER( cchasm_refresh_control_w )
 			cchasm_refresh();
 			break;
 		case 0xf7:
-			cpu_set_irq_line (0, 2, CLEAR_LINE);
+			cpunum_set_input_line (0, 2, CLEAR_LINE);
 			break;
 		}
 	}

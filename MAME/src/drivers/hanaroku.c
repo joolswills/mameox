@@ -1,11 +1,11 @@
-#pragma code_seg("C350")
-#pragma data_seg("D350")
-#pragma bss_seg("B350")
-#pragma const_seg("K350")
-#pragma comment(linker, "/merge:D350=350")
-#pragma comment(linker, "/merge:C350=350")
-#pragma comment(linker, "/merge:B350=350")
-#pragma comment(linker, "/merge:K350=350")
+#pragma code_seg("C364")
+#pragma data_seg("D364")
+#pragma bss_seg("B364")
+#pragma const_seg("K364")
+#pragma comment(linker, "/merge:D364=364")
+#pragma comment(linker, "/merge:C364=364")
+#pragma comment(linker, "/merge:B364=364")
+#pragma comment(linker, "/merge:K364=364")
 /* Hanaroku */
 
 /*
@@ -80,7 +80,7 @@ VIDEO_UPDATE(hanaroku)
 	hanaroku_draw_sprites(bitmap, cliprect);
 }
 
-static WRITE_HANDLER( hanaroku_out_0_w )
+static WRITE8_HANDLER( hanaroku_out_0_w )
 {
 	/*
 		bit		description
@@ -102,7 +102,7 @@ static WRITE_HANDLER( hanaroku_out_0_w )
 	coin_counter_w(4, data & 0x80);
 }
 
-static WRITE_HANDLER( hanaroku_out_1_w )
+static WRITE8_HANDLER( hanaroku_out_1_w )
 {
 	/*
 		bit		description
@@ -118,7 +118,7 @@ static WRITE_HANDLER( hanaroku_out_1_w )
 	*/
 }
 
-static WRITE_HANDLER( hanaroku_out_2_w )
+static WRITE8_HANDLER( hanaroku_out_2_w )
 {
 	// unused
 }

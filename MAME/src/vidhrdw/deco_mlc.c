@@ -1,11 +1,11 @@
-#pragma code_seg("C249")
-#pragma data_seg("D249")
-#pragma bss_seg("B249")
-#pragma const_seg("K249")
-#pragma comment(linker, "/merge:D249=249")
-#pragma comment(linker, "/merge:C249=249")
-#pragma comment(linker, "/merge:B249=249")
-#pragma comment(linker, "/merge:K249=249")
+#pragma code_seg("C259")
+#pragma data_seg("D259")
+#pragma bss_seg("B259")
+#pragma const_seg("K259")
+#pragma comment(linker, "/merge:D259=259")
+#pragma comment(linker, "/merge:C259=259")
+#pragma comment(linker, "/merge:B259=259")
+#pragma comment(linker, "/merge:K259=259")
 /*
 	The MLC graphics hardware is quite complicated - the usual method of having 'object ram' that
 	controls sprites is expanded into object ram that controls sprite blocks that may be stored
@@ -371,9 +371,9 @@ VIDEO_UPDATE( avengrgs )
 //	static int base=0x40000;
 //	int o=0;
 
-//	if (keyboard_pressed_memory(KEYCODE_X))
+//	if (code_pressed_memory(KEYCODE_X))
 //		base+=0x200;
-//	if (keyboard_pressed_memory(KEYCODE_Z))
+//	if (code_pressed_memory(KEYCODE_Z))
 //		base-=0x200;
 
 // 22a65c0 == linescroll

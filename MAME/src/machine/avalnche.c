@@ -1,11 +1,11 @@
-#pragma code_seg("C143")
-#pragma data_seg("D143")
-#pragma bss_seg("B143")
-#pragma const_seg("K143")
-#pragma comment(linker, "/merge:D143=143")
-#pragma comment(linker, "/merge:C143=143")
-#pragma comment(linker, "/merge:B143=143")
-#pragma comment(linker, "/merge:K143=143")
+#pragma code_seg("C144")
+#pragma data_seg("D144")
+#pragma bss_seg("B144")
+#pragma const_seg("K144")
+#pragma comment(linker, "/merge:D144=144")
+#pragma comment(linker, "/merge:C144=144")
+#pragma comment(linker, "/merge:B144=144")
+#pragma comment(linker, "/merge:K144=144")
 /***************************************************************************
 
 	Atari Avalanche hardware
@@ -20,7 +20,7 @@
   avalnche_input_r
 ***************************************************************************/
 
-READ_HANDLER( avalnche_input_r )
+READ8_HANDLER( avalnche_input_r )
 {
 	switch (offset & 0x03)
 	{
@@ -36,7 +36,7 @@ READ_HANDLER( avalnche_input_r )
   avalnche_output_w
 ***************************************************************************/
 
-WRITE_HANDLER( avalnche_output_w )
+WRITE8_HANDLER( avalnche_output_w )
 {
 	switch (offset & 0x07)
 	{
@@ -80,14 +80,14 @@ WRITE_HANDLER( avalnche_output_w )
   avalnche_noise_amplitude_w
 ***************************************************************************/
 
-WRITE_HANDLER( avalnche_noise_amplitude_w )
+WRITE8_HANDLER( avalnche_noise_amplitude_w )
 {
 	discrete_sound_w(3, data & 0x3f);
 }
 
 INTERRUPT_GEN( avalnche_interrupt )
 {
-		cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 }
 #pragma code_seg()
 #pragma data_seg()

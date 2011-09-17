@@ -1,11 +1,11 @@
-#pragma code_seg("C201")
-#pragma data_seg("D201")
-#pragma bss_seg("B201")
-#pragma const_seg("K201")
-#pragma comment(linker, "/merge:D201=201")
-#pragma comment(linker, "/merge:C201=201")
-#pragma comment(linker, "/merge:B201=201")
-#pragma comment(linker, "/merge:K201=201")
+#pragma code_seg("C204")
+#pragma data_seg("D204")
+#pragma bss_seg("B204")
+#pragma const_seg("K204")
+#pragma comment(linker, "/merge:D204=204")
+#pragma comment(linker, "/merge:C204=204")
+#pragma comment(linker, "/merge:B204=204")
+#pragma comment(linker, "/merge:K204=204")
 /***************************************************************************
 
 Championship Baseball
@@ -51,10 +51,10 @@ The second CPU plays speech
 
 
 
-extern WRITE_HANDLER( champbas_videoram_w );
-extern WRITE_HANDLER( champbas_colorram_w );
-extern WRITE_HANDLER( champbas_gfxbank_w );
-extern WRITE_HANDLER( champbas_flipscreen_w );
+extern WRITE8_HANDLER( champbas_videoram_w );
+extern WRITE8_HANDLER( champbas_colorram_w );
+extern WRITE8_HANDLER( champbas_gfxbank_w );
+extern WRITE8_HANDLER( champbas_flipscreen_w );
 
 extern PALETTE_INIT( champbas );
 extern VIDEO_START( champbas );
@@ -62,7 +62,7 @@ extern VIDEO_UPDATE( champbas );
 
 
 
-WRITE_HANDLER( champbas_dac_w )
+WRITE8_HANDLER( champbas_dac_w )
 {
 	DAC_signed_data_w(0,data<<2);
 }

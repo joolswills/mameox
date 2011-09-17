@@ -1,11 +1,11 @@
-#pragma code_seg("C806")
-#pragma data_seg("D806")
-#pragma bss_seg("B806")
-#pragma const_seg("K806")
-#pragma comment(linker, "/merge:D806=806")
-#pragma comment(linker, "/merge:C806=806")
-#pragma comment(linker, "/merge:B806=806")
-#pragma comment(linker, "/merge:K806=806")
+#pragma code_seg("C848")
+#pragma data_seg("D848")
+#pragma bss_seg("B848")
+#pragma const_seg("K848")
+#pragma comment(linker, "/merge:D848=848")
+#pragma comment(linker, "/merge:C848=848")
+#pragma comment(linker, "/merge:B848=848")
+#pragma comment(linker, "/merge:K848=848")
 /*
 
 	SEGA Zaxxon Hardware - Video
@@ -99,7 +99,7 @@ PALETTE_INIT( zaxxon )
 		COLOR(0,i) = i;
 }
 
-WRITE_HANDLER( zaxxon_videoram_w )
+WRITE8_HANDLER( zaxxon_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -108,7 +108,7 @@ WRITE_HANDLER( zaxxon_videoram_w )
 	}
 }
 
-WRITE_HANDLER( congo_colorram_w )
+WRITE8_HANDLER( congo_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -567,7 +567,6 @@ VIDEO_UPDATE( futspy )
 	futspy_draw_sprites(bitmap, cliprect);
 	tilemap_draw(bitmap, cliprect, fg_tilemap, 0, 0);
 }
-
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

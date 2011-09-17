@@ -1,11 +1,11 @@
-#pragma code_seg("C314")
-#pragma data_seg("D314")
-#pragma bss_seg("B314")
-#pragma const_seg("K314")
-#pragma comment(linker, "/merge:D314=314")
-#pragma comment(linker, "/merge:C314=314")
-#pragma comment(linker, "/merge:B314=314")
-#pragma comment(linker, "/merge:K314=314")
+#pragma code_seg("C326")
+#pragma data_seg("D326")
+#pragma bss_seg("B326")
+#pragma const_seg("K326")
+#pragma comment(linker, "/merge:D326=326")
+#pragma comment(linker, "/merge:C326=326")
+#pragma comment(linker, "/merge:B326=326")
+#pragma comment(linker, "/merge:K326=326")
 /***************************************************************************
 
 TODO:
@@ -39,18 +39,18 @@ Driver by Takahiro Nogi (nogi@kt.rim.or.jp) 1999/12/17 -
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
-WRITE_HANDLER( galivan_scrollx_w );
-WRITE_HANDLER( galivan_scrolly_w );
-WRITE_HANDLER( galivan_videoram_w );
-WRITE_HANDLER( galivan_colorram_w );
-WRITE_HANDLER( galivan_gfxbank_w );
+WRITE8_HANDLER( galivan_scrollx_w );
+WRITE8_HANDLER( galivan_scrolly_w );
+WRITE8_HANDLER( galivan_videoram_w );
+WRITE8_HANDLER( galivan_colorram_w );
+WRITE8_HANDLER( galivan_gfxbank_w );
 PALETTE_INIT( galivan );
 VIDEO_START( galivan );
 VIDEO_UPDATE( galivan );
 
-WRITE_HANDLER( ninjemak_scrollx_w );
-WRITE_HANDLER( ninjemak_scrolly_w );
-WRITE_HANDLER( ninjemak_gfxbank_w );
+WRITE8_HANDLER( ninjemak_scrollx_w );
+WRITE8_HANDLER( ninjemak_scrolly_w );
+WRITE8_HANDLER( ninjemak_gfxbank_w );
 VIDEO_START( ninjemak );
 VIDEO_UPDATE( ninjemak );
 
@@ -64,12 +64,12 @@ static MACHINE_INIT( galivan )
 //	layers = 0x60;
 }
 
-static WRITE_HANDLER( galivan_sound_command_w )
+static WRITE8_HANDLER( galivan_sound_command_w )
 {
 	soundlatch_w(offset,(data << 1) | 1);
 }
 
-static READ_HANDLER( galivan_sound_command_r )
+static READ8_HANDLER( galivan_sound_command_r )
 {
 	int data;
 
@@ -78,14 +78,14 @@ static READ_HANDLER( galivan_sound_command_r )
 	return data;
 }
 
-static READ_HANDLER( IO_port_c0_r )
+static READ8_HANDLER( IO_port_c0_r )
 {
   return (0x58); /* To Avoid Reset on Ufo Robot dangar */
 }
 
 
 /* the scroll registers are memory mapped in ninjemak, I/O ports in the others */
-static WRITE_HANDLER( ninjemak_videoreg_w )
+static WRITE8_HANDLER( ninjemak_videoreg_w )
 {
 	switch (offset)
 	{

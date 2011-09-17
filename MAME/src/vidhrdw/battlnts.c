@@ -1,11 +1,11 @@
-#pragma code_seg("C154")
-#pragma data_seg("D154")
-#pragma bss_seg("B154")
-#pragma const_seg("K154")
-#pragma comment(linker, "/merge:D154=154")
-#pragma comment(linker, "/merge:C154=154")
-#pragma comment(linker, "/merge:B154=154")
-#pragma comment(linker, "/merge:K154=154")
+#pragma code_seg("C155")
+#pragma data_seg("D155")
+#pragma bss_seg("B155")
+#pragma const_seg("K155")
+#pragma comment(linker, "/merge:D155=155")
+#pragma comment(linker, "/merge:C155=155")
+#pragma comment(linker, "/merge:B155=155")
+#pragma comment(linker, "/merge:K155=155")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/konamiic.h"
@@ -39,7 +39,7 @@ static void sprite_callback(int *code,int *color)
 	*color = 0;
 }
 
-WRITE_HANDLER( battlnts_spritebank_w )
+WRITE8_HANDLER( battlnts_spritebank_w )
 {
 	spritebank = 1024 * (data & 1);
 }

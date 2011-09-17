@@ -1,11 +1,11 @@
-#pragma code_seg("C438")
-#pragma data_seg("D438")
-#pragma bss_seg("B438")
-#pragma const_seg("K438")
-#pragma comment(linker, "/merge:D438=438")
-#pragma comment(linker, "/merge:C438=438")
-#pragma comment(linker, "/merge:B438=438")
-#pragma comment(linker, "/merge:K438=438")
+#pragma code_seg("C460")
+#pragma data_seg("D460")
+#pragma bss_seg("B460")
+#pragma const_seg("K460")
+#pragma comment(linker, "/merge:D460=460")
+#pragma comment(linker, "/merge:C460=460")
+#pragma comment(linker, "/merge:B460=460")
+#pragma comment(linker, "/merge:K460=460")
 /***************************************************************************
 
 	Meadows S2650 driver
@@ -151,7 +151,7 @@ static UINT8 minferno_sense;
  *
  *************************************/
 
-static READ_HANDLER( hsync_chain_r )
+static READ8_HANDLER( hsync_chain_r )
 {
 	/* horizontal sync divider chain */
 	UINT8 val = (cycles_currently_ran() - cycles_at_vsync) & 0xff;
@@ -159,7 +159,7 @@ static READ_HANDLER( hsync_chain_r )
 }
 
 
-static READ_HANDLER( vsync_chain_hi_r )
+static READ8_HANDLER( vsync_chain_hi_r )
 {
 	/* vertical sync divider chain */
 	UINT8 val = cpu_getscanline();
@@ -167,7 +167,7 @@ static READ_HANDLER( vsync_chain_hi_r )
 }
 
 
-static READ_HANDLER( vsync_chain_lo_r )
+static READ8_HANDLER( vsync_chain_lo_r )
 {
 	/* vertical sync divider chain */
 	UINT8 val = cpu_getscanline();
@@ -182,7 +182,7 @@ static READ_HANDLER( vsync_chain_lo_r )
  *
  *************************************/
 
-static WRITE_HANDLER( meadows_sound_w )
+static WRITE8_HANDLER( meadows_sound_w )
 {
 	switch (offset)
 	{
@@ -222,7 +222,7 @@ static INTERRUPT_GEN( meadows_interrupt )
 
     /* fake something toggling the sense input line of the S2650 */
 	main_sense_state ^= 1;
-	cpu_set_irq_line(0, 1, main_sense_state ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(0, 1, main_sense_state ? ASSERT_LINE : CLEAR_LINE);
 
 	/* check the fake coin input */
 	if (readinputport(3) & 0x01)
@@ -230,7 +230,7 @@ static INTERRUPT_GEN( meadows_interrupt )
 		if (!coin1_state)
 		{
 			coin1_state = 1;
-			cpu_set_irq_line_and_vector(0, 0, PULSE_LINE, 0x82);
+			cpunum_set_input_line_and_vector(0, 0, PULSE_LINE, 0x82);
 		}
 	}
 	else
@@ -250,7 +250,7 @@ static INTERRUPT_GEN( minferno_interrupt )
 	/* preserve the actual cycle count */
 	cycles_at_vsync = cycles_currently_ran();
 	minferno_sense++;
-	cpu_set_irq_line(0, 1, (minferno_sense & 0x40) ? ASSERT_LINE : CLEAR_LINE );
+	cpunum_set_input_line(0, 1, (minferno_sense & 0x40) ? ASSERT_LINE : CLEAR_LINE );
 }
 
 
@@ -261,7 +261,7 @@ static INTERRUPT_GEN( minferno_interrupt )
  *
  *************************************/
 
-static WRITE_HANDLER( sound_hardware_w )
+static WRITE8_HANDLER( sound_hardware_w )
 {
 	switch (offset & 3)
 	{
@@ -303,7 +303,7 @@ static WRITE_HANDLER( sound_hardware_w )
  *
  *************************************/
 
-static READ_HANDLER( sound_hardware_r )
+static READ8_HANDLER( sound_hardware_r )
 {
 	int data = 0;
 
@@ -332,7 +332,7 @@ static INTERRUPT_GEN( sound_interrupt )
 {
     /* fake something toggling the sense input line of the S2650 */
 	sound_sense_state ^= 1;
-	cpu_set_irq_line(1, 1, sound_sense_state ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1, 1, sound_sense_state ? ASSERT_LINE : CLEAR_LINE);
 }
 
 

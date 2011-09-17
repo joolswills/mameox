@@ -1,11 +1,11 @@
-#pragma code_seg("C535")
-#pragma data_seg("D535")
-#pragma bss_seg("B535")
-#pragma const_seg("K535")
-#pragma comment(linker, "/merge:D535=535")
-#pragma comment(linker, "/merge:C535=535")
-#pragma comment(linker, "/merge:B535=535")
-#pragma comment(linker, "/merge:K535=535")
+#pragma code_seg("C566")
+#pragma data_seg("D566")
+#pragma bss_seg("B566")
+#pragma const_seg("K566")
+#pragma comment(linker, "/merge:D566=566")
+#pragma comment(linker, "/merge:C566=566")
+#pragma comment(linker, "/merge:B566=566")
+#pragma comment(linker, "/merge:K566=566")
 /*---
 
 Pirates      (c)1994 NIX  (DEC 14 1994 17:32:29) displayed in cabinet test mode
@@ -507,7 +507,7 @@ static DRIVER_INIT( genix )
 
 	/* If this value is increased then something has gone wrong and the protection failed */
 	/* Write-protect it for now */
-	install_mem_read16_handler (0, 0x109e98, 0x109e9b, genix_prot_r );
+	memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x109e98, 0x109e9b, 0, 0, genix_prot_r );
 }
 
 

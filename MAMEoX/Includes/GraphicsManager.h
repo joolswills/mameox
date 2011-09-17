@@ -26,7 +26,7 @@ public:
 		//------------------------------------------------------
 		//	Create
 		//------------------------------------------------------
-	BOOL Create( BOOL enableVSYNC ) {
+	BOOL Create( BOOL enableVSYNC, BOOL smallFootprint ) {
 		if( m_created )
 			return FALSE;
 
@@ -46,7 +46,7 @@ public:
 		m_backBufferWidth = 640;
 		m_backBufferHeight = 480;
 
-    params.BackBufferFormat				= D3DFMT_X8R8G8B8;
+	params.BackBufferFormat				= smallFootprint ? D3DFMT_R5G6B5 : D3DFMT_X8R8G8B8 ;
     params.BackBufferCount				= 1;
     params.EnableAutoDepthStencil = FALSE;
     params.AutoDepthStencilFormat = D3DFMT_D24S8;

@@ -1,11 +1,11 @@
-#pragma code_seg("C615")
-#pragma data_seg("D615")
-#pragma bss_seg("B615")
-#pragma const_seg("K615")
-#pragma comment(linker, "/merge:D615=615")
-#pragma comment(linker, "/merge:C615=615")
-#pragma comment(linker, "/merge:B615=615")
-#pragma comment(linker, "/merge:K615=615")
+#pragma code_seg("C651")
+#pragma data_seg("D651")
+#pragma bss_seg("B651")
+#pragma const_seg("K651")
+#pragma comment(linker, "/merge:D651=651")
+#pragma comment(linker, "/merge:C651=651")
+#pragma comment(linker, "/merge:B651=651")
+#pragma comment(linker, "/merge:K651=651")
 /***************************************************************************
 
   vidhrdw.c
@@ -102,7 +102,7 @@ PALETTE_INIT( shaolins )
 	}
 }
 
-WRITE_HANDLER( shaolins_videoram_w )
+WRITE8_HANDLER( shaolins_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -111,7 +111,7 @@ WRITE_HANDLER( shaolins_videoram_w )
 	}
 }
 
-WRITE_HANDLER( shaolins_colorram_w )
+WRITE8_HANDLER( shaolins_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -120,7 +120,7 @@ WRITE_HANDLER( shaolins_colorram_w )
 	}
 }
 
-WRITE_HANDLER( shaolins_palettebank_w )
+WRITE8_HANDLER( shaolins_palettebank_w )
 {
 	if (palettebank != (data & 0x07))
 	{
@@ -129,7 +129,7 @@ WRITE_HANDLER( shaolins_palettebank_w )
 	}
 }
 
-WRITE_HANDLER( shaolins_scroll_w )
+WRITE8_HANDLER( shaolins_scroll_w )
 {
 	int col;
 
@@ -139,7 +139,7 @@ WRITE_HANDLER( shaolins_scroll_w )
 	}
 }
 
-WRITE_HANDLER( shaolins_nmi_w )
+WRITE8_HANDLER( shaolins_nmi_w )
 {
 	shaolins_nmi_enable = data;
 

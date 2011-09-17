@@ -1,11 +1,11 @@
-#pragma code_seg("C631")
-#pragma data_seg("D631")
-#pragma bss_seg("B631")
-#pragma const_seg("K631")
-#pragma comment(linker, "/merge:D631=631")
-#pragma comment(linker, "/merge:C631=631")
-#pragma comment(linker, "/merge:B631=631")
-#pragma comment(linker, "/merge:K631=631")
+#pragma code_seg("C667")
+#pragma data_seg("D667")
+#pragma bss_seg("B667")
+#pragma const_seg("K667")
+#pragma comment(linker, "/merge:D667=667")
+#pragma comment(linker, "/merge:C667=667")
+#pragma comment(linker, "/merge:B667=667")
+#pragma comment(linker, "/merge:K667=667")
 /***************************************************************************
 
 Atari Sky Raider driver
@@ -52,19 +52,19 @@ static PALETTE_INIT( skyraid )
 }
 
 
-static READ_HANDLER( skyraid_zeropage_r )
+static READ8_HANDLER( skyraid_zeropage_r )
 {
 	return memory_region(REGION_CPU1)[offset & 0xff];
 }
 
 
-static READ_HANDLER( skyraid_alpha_num_r)
+static READ8_HANDLER( skyraid_alpha_num_r)
 {
 	return skyraid_alpha_num_ram[offset & 0x7f];
 }
 
 
-static READ_HANDLER( skyraid_port_0_r )
+static READ8_HANDLER( skyraid_port_0_r )
 {
 	UINT8 val = readinputport(0);
 
@@ -77,19 +77,19 @@ static READ_HANDLER( skyraid_port_0_r )
 }
 
 
-static WRITE_HANDLER( skyraid_zeropage_w )
+static WRITE8_HANDLER( skyraid_zeropage_w )
 {
 	memory_region(REGION_CPU1)[offset & 0xff] = data;
 }
 
 
-static WRITE_HANDLER( skyraid_alpha_num_w )
+static WRITE8_HANDLER( skyraid_alpha_num_w )
 {
 	skyraid_alpha_num_ram[offset & 0x7f] = data;
 }
 
 
-static WRITE_HANDLER( skyraid_sound_w )
+static WRITE8_HANDLER( skyraid_sound_w )
 {
 	/* BIT0 => PLANE SWEEP */
 	/* BIT1 => MISSILE     */
@@ -102,19 +102,19 @@ static WRITE_HANDLER( skyraid_sound_w )
 }
 
 
-static WRITE_HANDLER( skyraid_range_w )
+static WRITE8_HANDLER( skyraid_range_w )
 {
 	analog_range = data & 0x3f;
 }
 
 
-static WRITE_HANDLER( skyraid_offset_w )
+static WRITE8_HANDLER( skyraid_offset_w )
 {
 	analog_offset = data & 0x3f;
 }
 
 
-static WRITE_HANDLER( skyraid_scroll_w )
+static WRITE8_HANDLER( skyraid_scroll_w )
 {
 	skyraid_scroll = data;
 }

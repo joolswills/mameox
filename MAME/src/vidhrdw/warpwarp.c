@@ -1,11 +1,11 @@
-#pragma code_seg("C775")
-#pragma data_seg("D775")
-#pragma bss_seg("B775")
-#pragma const_seg("K775")
-#pragma comment(linker, "/merge:D775=775")
-#pragma comment(linker, "/merge:C775=775")
-#pragma comment(linker, "/merge:B775=775")
-#pragma comment(linker, "/merge:K775=775")
+#pragma code_seg("C817")
+#pragma data_seg("D817")
+#pragma bss_seg("B817")
+#pragma const_seg("K817")
+#pragma comment(linker, "/merge:D817=817")
+#pragma comment(linker, "/merge:C817=817")
+#pragma comment(linker, "/merge:B817=817")
+#pragma comment(linker, "/merge:K817=817")
 /***************************************************************************
 
   vidhrdw.c
@@ -295,7 +295,6 @@ VIDEO_UPDATE( warpwarp )
 
 	draw_ball(bitmap,cliprect,0xf6);
 }
-
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

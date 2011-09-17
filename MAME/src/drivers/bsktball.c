@@ -1,11 +1,11 @@
-#pragma code_seg("C180")
-#pragma data_seg("D180")
-#pragma bss_seg("B180")
-#pragma const_seg("K180")
-#pragma comment(linker, "/merge:D180=180")
-#pragma comment(linker, "/merge:C180=180")
-#pragma comment(linker, "/merge:B180=180")
-#pragma comment(linker, "/merge:K180=180")
+#pragma code_seg("C182")
+#pragma data_seg("D182")
+#pragma bss_seg("B182")
+#pragma const_seg("K182")
+#pragma comment(linker, "/merge:D182=182")
+#pragma comment(linker, "/merge:C182=182")
+#pragma comment(linker, "/merge:B182=182")
+#pragma comment(linker, "/merge:K182=182")
 /***************************************************************************
 
 	Atari Basketball hardware
@@ -34,21 +34,21 @@
 
 extern UINT8 *bsktball_motion;
 
-extern WRITE_HANDLER( bsktball_videoram_w );
+extern WRITE8_HANDLER( bsktball_videoram_w );
 
 extern VIDEO_START( bsktball );
 extern VIDEO_UPDATE( bsktball );
 
-extern WRITE_HANDLER( bsktball_nmion_w );
+extern WRITE8_HANDLER( bsktball_nmion_w );
 extern INTERRUPT_GEN( bsktball_interrupt );
-extern WRITE_HANDLER( bsktball_ld1_w );
-extern WRITE_HANDLER( bsktball_ld2_w );
-extern READ_HANDLER( bsktball_in0_r );
-extern WRITE_HANDLER( bsktball_led1_w );
-extern WRITE_HANDLER( bsktball_led2_w );
-extern WRITE_HANDLER( bsktball_bounce_w );
-extern WRITE_HANDLER( bsktball_note_w );
-extern WRITE_HANDLER( bsktball_noise_reset_w );
+extern WRITE8_HANDLER( bsktball_ld1_w );
+extern WRITE8_HANDLER( bsktball_ld2_w );
+extern READ8_HANDLER( bsktball_in0_r );
+extern WRITE8_HANDLER( bsktball_led1_w );
+extern WRITE8_HANDLER( bsktball_led2_w );
+extern WRITE8_HANDLER( bsktball_bounce_w );
+extern WRITE8_HANDLER( bsktball_note_w );
+extern WRITE8_HANDLER( bsktball_noise_reset_w );
 
 /*************************************
  *

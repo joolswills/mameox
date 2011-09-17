@@ -1,11 +1,11 @@
-#pragma code_seg("C354")
-#pragma data_seg("D354")
-#pragma bss_seg("B354")
-#pragma const_seg("K354")
-#pragma comment(linker, "/merge:D354=354")
-#pragma comment(linker, "/merge:C354=354")
-#pragma comment(linker, "/merge:B354=354")
-#pragma comment(linker, "/merge:K354=354")
+#pragma code_seg("C368")
+#pragma data_seg("D368")
+#pragma bss_seg("B368")
+#pragma const_seg("K368")
+#pragma comment(linker, "/merge:D368=368")
+#pragma comment(linker, "/merge:C368=368")
+#pragma comment(linker, "/merge:B368=368")
+#pragma comment(linker, "/merge:K368=368")
 /***************************************************************************
 
 Hexion (GX122) (c) 1992 Konami
@@ -93,15 +93,15 @@ Notes:
 VIDEO_START( hexion );
 VIDEO_UPDATE( hexion );
 
-WRITE_HANDLER( hexion_bankswitch_w );
-READ_HANDLER( hexion_bankedram_r );
-WRITE_HANDLER( hexion_bankedram_w );
-WRITE_HANDLER( hexion_bankctrl_w );
-WRITE_HANDLER( hexion_gfxrom_select_w );
+WRITE8_HANDLER( hexion_bankswitch_w );
+READ8_HANDLER( hexion_bankedram_r );
+WRITE8_HANDLER( hexion_bankedram_w );
+WRITE8_HANDLER( hexion_bankctrl_w );
+WRITE8_HANDLER( hexion_gfxrom_select_w );
 
 
 
-static WRITE_HANDLER( coincntr_w )
+static WRITE8_HANDLER( coincntr_w )
 {
 //logerror("%04x: coincntr_w %02x\n",activecpu_get_pc(),data);
 
@@ -298,9 +298,9 @@ static INTERRUPT_GEN( hexion_interrupt )
 {
 	/* NMI handles start and coin inputs, origin unknown */
 	if (cpu_getiloops())
-		cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 	else
-		cpu_set_irq_line(0, 0, HOLD_LINE);
+		cpunum_set_input_line(0, 0, HOLD_LINE);
 }
 
 static MACHINE_DRIVER_START( hexion )

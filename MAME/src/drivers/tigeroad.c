@@ -1,11 +1,11 @@
-#pragma code_seg("C724")
-#pragma data_seg("D724")
-#pragma bss_seg("B724")
-#pragma const_seg("K724")
-#pragma comment(linker, "/merge:D724=724")
-#pragma comment(linker, "/merge:C724=724")
-#pragma comment(linker, "/merge:B724=724")
-#pragma comment(linker, "/merge:K724=724")
+#pragma code_seg("C766")
+#pragma data_seg("D766")
+#pragma bss_seg("B766")
+#pragma const_seg("K766")
+#pragma comment(linker, "/merge:D766=766")
+#pragma comment(linker, "/merge:C766=766")
+#pragma comment(linker, "/merge:B766=766")
+#pragma comment(linker, "/merge:K766=766")
 /***************************************************************************
 
 Tiger Road (C) 1987 Romstar/Capcom USA
@@ -168,7 +168,7 @@ static WRITE16_HANDLER( tigeroad_soundcmd_w )
 		soundlatch_w(offset,data >> 8);
 }
 
-static WRITE_HANDLER( msm5205_w )
+static WRITE8_HANDLER( msm5205_w )
 {
 	MSM5205_reset_w(offset,(data>>7)&1);
 	MSM5205_data_w(offset,data);
@@ -534,7 +534,7 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 /* handler called by the 2203 emulator when the internal timers cause an IRQ */
 static void irqhandler(int irq)
 {
-	cpu_set_irq_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 static struct YM2203interface ym2203_interface =
@@ -757,12 +757,12 @@ ROM_END
 
 DRIVER_INIT( tigeroad )
 {
-	install_mem_write16_handler(0, 0xfe4002, 0xfe4003, tigeroad_soundcmd_w);
+	memory_install_write16_handler(0, ADDRESS_SPACE_PROGRAM, 0xfe4002, 0xfe4003, 0, 0, tigeroad_soundcmd_w);
 }
 
 DRIVER_INIT( f1dream )
 {
-	install_mem_write16_handler(0, 0xfe4002, 0xfe4003, f1dream_control_w);
+	memory_install_write16_handler(0, ADDRESS_SPACE_PROGRAM, 0xfe4002, 0xfe4003, 0, 0, f1dream_control_w);
 }
 
 

@@ -1,11 +1,11 @@
-#pragma code_seg("C337")
-#pragma data_seg("D337")
-#pragma bss_seg("B337")
-#pragma const_seg("K337")
-#pragma comment(linker, "/merge:D337=337")
-#pragma comment(linker, "/merge:C337=337")
-#pragma comment(linker, "/merge:B337=337")
-#pragma comment(linker, "/merge:K337=337")
+#pragma code_seg("C351")
+#pragma data_seg("D351")
+#pragma bss_seg("B351")
+#pragma const_seg("K351")
+#pragma comment(linker, "/merge:D351=351")
+#pragma comment(linker, "/merge:C351=351")
+#pragma comment(linker, "/merge:B351=351")
+#pragma comment(linker, "/merge:K351=351")
 /*************************************************************************
 
 	Basic Gridlee sound driver
@@ -80,7 +80,7 @@ int gridlee_sh_start(const struct MachineSound *msound)
 
 
 
-WRITE_HANDLER( gridlee_sound_w )
+WRITE8_HANDLER( gridlee_sound_w )
 {
 static UINT8 sound_data[24];
 

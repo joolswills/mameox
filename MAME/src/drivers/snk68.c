@@ -1,11 +1,11 @@
-#pragma code_seg("C635")
-#pragma data_seg("D635")
-#pragma bss_seg("B635")
-#pragma const_seg("K635")
-#pragma comment(linker, "/merge:D635=635")
-#pragma comment(linker, "/merge:C635=635")
-#pragma comment(linker, "/merge:B635=635")
-#pragma comment(linker, "/merge:K635=635")
+#pragma code_seg("C671")
+#pragma data_seg("D671")
+#pragma bss_seg("B671")
+#pragma const_seg("K671")
+#pragma comment(linker, "/merge:D671=671")
+#pragma comment(linker, "/merge:C671=671")
+#pragma comment(linker, "/merge:B671=671")
+#pragma comment(linker, "/merge:K671=671")
 /***************************************************************************
 
 	POW - Prisoners Of War (US) 		A7008	SNK 1988
@@ -133,7 +133,7 @@ static WRITE16_HANDLER( protection_w )
 static WRITE16_HANDLER( sound_w )
 {
 	soundlatch_w(0,(data>>8)&0xff);
-	cpu_set_irq_line(1,IRQ_LINE_NMI,PULSE_LINE);
+	cpunum_set_input_line(1,INPUT_LINE_NMI,PULSE_LINE);
 }
 
 /*******************************************************************************/
@@ -208,7 +208,7 @@ static ADDRESS_MAP_START( sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0xf000, 0xf7ff) AM_WRITE(MWA8_RAM)
 ADDRESS_MAP_END
 
-static WRITE_HANDLER( D7759_write_port_0_w )
+static WRITE8_HANDLER( D7759_write_port_0_w )
 {
 	UPD7759_port_w(offset,data);
 	UPD7759_start_w (0,0);
@@ -795,7 +795,7 @@ static struct GfxDecodeInfo ikari3_gfxdecodeinfo[] =
 
 static void irqhandler(int irq)
 {
-	cpu_set_irq_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 static struct YM3812interface ym3812_interface =

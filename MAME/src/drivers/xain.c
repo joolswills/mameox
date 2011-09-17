@@ -1,11 +1,11 @@
-#pragma code_seg("C790")
-#pragma data_seg("D790")
-#pragma bss_seg("B790")
-#pragma const_seg("K790")
-#pragma comment(linker, "/merge:D790=790")
-#pragma comment(linker, "/merge:C790=790")
-#pragma comment(linker, "/merge:B790=790")
-#pragma comment(linker, "/merge:K790=790")
+#pragma code_seg("C832")
+#pragma data_seg("D832")
+#pragma bss_seg("B832")
+#pragma const_seg("K832")
+#pragma comment(linker, "/merge:D832=832")
+#pragma comment(linker, "/merge:C832=832")
+#pragma comment(linker, "/merge:B832=832")
+#pragma comment(linker, "/merge:K832=832")
 /***************************************************************************
 Xain'd Sleena (TECHNOS), Solar Warrior (TAITO).
 By Carlos A. Lozano & Rob Rosenbrock & Phil Stroffolino
@@ -30,24 +30,24 @@ static unsigned char *xain_sharedram;
 
 VIDEO_UPDATE( xain );
 VIDEO_START( xain );
-WRITE_HANDLER( xain_scrollxP0_w );
-WRITE_HANDLER( xain_scrollyP0_w );
-WRITE_HANDLER( xain_scrollxP1_w );
-WRITE_HANDLER( xain_scrollyP1_w );
-WRITE_HANDLER( xain_charram_w );
-WRITE_HANDLER( xain_bgram0_w );
-WRITE_HANDLER( xain_bgram1_w );
-WRITE_HANDLER( xain_flipscreen_w );
+WRITE8_HANDLER( xain_scrollxP0_w );
+WRITE8_HANDLER( xain_scrollyP0_w );
+WRITE8_HANDLER( xain_scrollxP1_w );
+WRITE8_HANDLER( xain_scrollyP1_w );
+WRITE8_HANDLER( xain_charram_w );
+WRITE8_HANDLER( xain_bgram0_w );
+WRITE8_HANDLER( xain_bgram1_w );
+WRITE8_HANDLER( xain_flipscreen_w );
 
 extern unsigned char *xain_charram, *xain_bgram0, *xain_bgram1;
 
 
-static READ_HANDLER( xain_sharedram_r )
+static READ8_HANDLER( xain_sharedram_r )
 {
 	return xain_sharedram[offset];
 }
 
-static WRITE_HANDLER( xain_sharedram_w )
+static WRITE8_HANDLER( xain_sharedram_w )
 {
 	/* locations 003d and 003e are used as a semaphores between CPU A and B, */
 	/* so let's resync every time they are changed to avoid deadlocks */
@@ -57,7 +57,7 @@ static WRITE_HANDLER( xain_sharedram_w )
 	xain_sharedram[offset] = data;
 }
 
-static WRITE_HANDLER( xainCPUA_bankswitch_w )
+static WRITE8_HANDLER( xainCPUA_bankswitch_w )
 {
 	unsigned char *RAM = memory_region(REGION_CPU1);
 
@@ -65,7 +65,7 @@ static WRITE_HANDLER( xainCPUA_bankswitch_w )
 	else {cpu_setbank(1,&RAM[0x4000]);}
 }
 
-static WRITE_HANDLER( xainCPUB_bankswitch_w )
+static WRITE8_HANDLER( xainCPUB_bankswitch_w )
 {
 	unsigned char *RAM = memory_region(REGION_CPU2);
 
@@ -73,44 +73,44 @@ static WRITE_HANDLER( xainCPUB_bankswitch_w )
 	else {cpu_setbank(2,&RAM[0x4000]);}
 }
 
-static WRITE_HANDLER( xain_sound_command_w )
+static WRITE8_HANDLER( xain_sound_command_w )
 {
 	soundlatch_w(offset,data);
-	cpu_set_irq_line(2,M6809_IRQ_LINE,HOLD_LINE);
+	cpunum_set_input_line(2,M6809_IRQ_LINE,HOLD_LINE);
 }
 
-static WRITE_HANDLER( xain_irqA_assert_w )
+static WRITE8_HANDLER( xain_irqA_assert_w )
 {
-	cpu_set_irq_line(0,M6809_IRQ_LINE,ASSERT_LINE);
+	cpunum_set_input_line(0,M6809_IRQ_LINE,ASSERT_LINE);
 }
 
-static WRITE_HANDLER( xain_irqA_clear_w )
+static WRITE8_HANDLER( xain_irqA_clear_w )
 {
-	cpu_set_irq_line(0,M6809_IRQ_LINE,CLEAR_LINE);
+	cpunum_set_input_line(0,M6809_IRQ_LINE,CLEAR_LINE);
 }
 
-static WRITE_HANDLER( xain_firqA_clear_w )
+static WRITE8_HANDLER( xain_firqA_clear_w )
 {
-	cpu_set_irq_line(0,M6809_FIRQ_LINE,CLEAR_LINE);
+	cpunum_set_input_line(0,M6809_FIRQ_LINE,CLEAR_LINE);
 }
 
-static WRITE_HANDLER( xain_irqB_assert_w )
+static WRITE8_HANDLER( xain_irqB_assert_w )
 {
-	cpu_set_irq_line(1,M6809_IRQ_LINE,ASSERT_LINE);
+	cpunum_set_input_line(1,M6809_IRQ_LINE,ASSERT_LINE);
 }
 
-static WRITE_HANDLER( xain_irqB_clear_w )
+static WRITE8_HANDLER( xain_irqB_clear_w )
 {
-	cpu_set_irq_line(1,M6809_IRQ_LINE,CLEAR_LINE);
+	cpunum_set_input_line(1,M6809_IRQ_LINE,CLEAR_LINE);
 }
 
-static READ_HANDLER( xain_68705_r )
+static READ8_HANDLER( xain_68705_r )
 {
 //	logerror("read 68705\n");
 	return 0x4d;	/* fake P5 checksum test pass */
 }
 
-static WRITE_HANDLER( xain_68705_w )
+static WRITE8_HANDLER( xain_68705_w )
 {
 //	logerror("write %02x to 68705\n",data);
 }
@@ -121,9 +121,9 @@ static INTERRUPT_GEN( xainA_interrupt )
 	/* waits for the vblank bit to be clear and there are other places in the code */
 	/* that wait for it to be set */
 	if (cpu_getiloops() == 2)
-		cpu_set_nmi_line(0,PULSE_LINE);
+		cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 	else
-		cpu_set_irq_line(0,M6809_FIRQ_LINE,ASSERT_LINE);
+		cpunum_set_input_line(0,M6809_FIRQ_LINE,ASSERT_LINE);
 }
 
 
@@ -312,7 +312,7 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 /* handler called by the 2203 emulator when the internal timers cause an IRQ */
 static void irqhandler(int irq)
 {
-	cpu_set_irq_line(2,M6809_FIRQ_LINE,irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(2,M6809_FIRQ_LINE,irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 static struct YM2203interface ym2203_interface =

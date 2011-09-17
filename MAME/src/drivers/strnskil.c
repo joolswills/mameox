@@ -1,11 +1,11 @@
-#pragma code_seg("C671")
-#pragma data_seg("D671")
-#pragma bss_seg("B671")
-#pragma const_seg("K671")
-#pragma comment(linker, "/merge:D671=671")
-#pragma comment(linker, "/merge:C671=671")
-#pragma comment(linker, "/merge:B671=671")
-#pragma comment(linker, "/merge:K671=671")
+#pragma code_seg("C709")
+#pragma data_seg("D709")
+#pragma bss_seg("B709")
+#pragma const_seg("K709")
+#pragma comment(linker, "/merge:D709=709")
+#pragma comment(linker, "/merge:C709=709")
+#pragma comment(linker, "/merge:B709=709")
+#pragma comment(linker, "/merge:K709=709")
 /*****************************************************************************
 
 Strength & Skill (c) 1984 Sun Electronics
@@ -23,25 +23,25 @@ static UINT8 *strnskil_sharedram;
 
 /****************************************************************************/
 
-extern WRITE_HANDLER( strnskil_videoram_w );
-extern WRITE_HANDLER( strnskil_scroll_x_w );
-extern WRITE_HANDLER( strnskil_scrl_ctrl_w );
+extern WRITE8_HANDLER( strnskil_videoram_w );
+extern WRITE8_HANDLER( strnskil_scroll_x_w );
+extern WRITE8_HANDLER( strnskil_scrl_ctrl_w );
 
 extern PALETTE_INIT( strnskil );
 extern VIDEO_START( strnskil );
 extern VIDEO_UPDATE( strnskil );
 
-WRITE_HANDLER( strnskil_sharedram_w )
+WRITE8_HANDLER( strnskil_sharedram_w )
 {
 	strnskil_sharedram[offset] = data;
 }
 
-READ_HANDLER( strnskil_sharedram_r )
+READ8_HANDLER( strnskil_sharedram_r )
 {
 	return strnskil_sharedram[offset];
 }
 
-READ_HANDLER( strnskil_d800_r )
+READ8_HANDLER( strnskil_d800_r )
 {
 /* bit0: interrupt type?, bit1: CPU2 busack? */
 
@@ -52,7 +52,7 @@ READ_HANDLER( strnskil_d800_r )
 
 /****************************************************************************/
 
-static READ_HANDLER( protection_r )
+static READ8_HANDLER( protection_r )
 {
 	int res;
 
@@ -71,7 +71,7 @@ static READ_HANDLER( protection_r )
 	return res;
 }
 
-static WRITE_HANDLER( protection_w )
+static WRITE8_HANDLER( protection_w )
 {
 	logerror("%04x: protection_w %02x\n",activecpu_get_pc(),data);
 }

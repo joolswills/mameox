@@ -1,11 +1,11 @@
-#pragma code_seg("C360")
-#pragma data_seg("D360")
-#pragma bss_seg("B360")
-#pragma const_seg("K360")
-#pragma comment(linker, "/merge:D360=360")
-#pragma comment(linker, "/merge:C360=360")
-#pragma comment(linker, "/merge:B360=360")
-#pragma comment(linker, "/merge:K360=360")
+#pragma code_seg("C375")
+#pragma data_seg("D375")
+#pragma bss_seg("B375")
+#pragma const_seg("K375")
+#pragma comment(linker, "/merge:D375=375")
+#pragma comment(linker, "/merge:C375=375")
+#pragma comment(linker, "/merge:B375=375")
+#pragma comment(linker, "/merge:K375=375")
 /*
  Moero Pro Yakyuu Homerun - (c) 1988 Jaleco
  Driver by Tomasz Slanina
@@ -31,15 +31,15 @@ extern int homerun_gc_down;
 extern int homerun_xpa,homerun_xpb,homerun_xpc;
 extern data8_t *homerun_videoram;
 
-WRITE_HANDLER( homerun_videoram_w );
-WRITE_HANDLER( homerun_color_w );
-WRITE_HANDLER( homerun_banking_w );
+WRITE8_HANDLER( homerun_videoram_w );
+WRITE8_HANDLER( homerun_color_w );
+WRITE8_HANDLER( homerun_banking_w );
 VIDEO_START(homerun);
 VIDEO_UPDATE(homerun);
 
-static WRITE_HANDLER(pa_w){homerun_xpa=data;}
-static WRITE_HANDLER(pb_w){homerun_xpb=data;}
-static WRITE_HANDLER(pc_w){homerun_xpc=data;}
+static WRITE8_HANDLER(pa_w){homerun_xpa=data;}
+static WRITE8_HANDLER(pb_w){homerun_xpb=data;}
+static WRITE8_HANDLER(pc_w){homerun_xpc=data;}
 
 static ppi8255_interface ppi8255_intf =
 {
@@ -107,7 +107,7 @@ static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 8 )
 ADDRESS_MAP_END
 
 
-static READ_HANDLER(homerun_40_r)
+static READ8_HANDLER(homerun_40_r)
 {
 	if(cpu_getscanline()>116)
 		return input_port_0_r(0)|0x40;

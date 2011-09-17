@@ -1,11 +1,11 @@
-#pragma code_seg("C803")
-#pragma data_seg("D803")
-#pragma bss_seg("B803")
-#pragma const_seg("K803")
-#pragma comment(linker, "/merge:D803=803")
-#pragma comment(linker, "/merge:C803=803")
-#pragma comment(linker, "/merge:B803=803")
-#pragma comment(linker, "/merge:K803=803")
+#pragma code_seg("C845")
+#pragma data_seg("D845")
+#pragma bss_seg("B845")
+#pragma const_seg("K845")
+#pragma comment(linker, "/merge:D845=845")
+#pragma comment(linker, "/merge:C845=845")
+#pragma comment(linker, "/merge:B845=845")
+#pragma comment(linker, "/merge:K845=845")
 /***************************************************************************
 
 						  -= Yun Sung 8 Bit Games =-
@@ -55,13 +55,13 @@ static int yunsung8_videobank;
 
 ***************************************************************************/
 
-WRITE_HANDLER( yunsung8_videobank_w )
+WRITE8_HANDLER( yunsung8_videobank_w )
 {
 	yunsung8_videobank = data;
 }
 
 
-READ_HANDLER( yunsung8_videoram_r )
+READ8_HANDLER( yunsung8_videoram_r )
 {
 	int bank;
 
@@ -76,7 +76,7 @@ READ_HANDLER( yunsung8_videoram_r )
 }
 
 
-WRITE_HANDLER( yunsung8_videoram_w )
+WRITE8_HANDLER( yunsung8_videoram_w )
 {
 	if (offset < 0x0800)		// c000-c7ff	Banked Palette RAM
 	{
@@ -113,7 +113,7 @@ WRITE_HANDLER( yunsung8_videoram_w )
 }
 
 
-WRITE_HANDLER( yunsung8_flipscreen_w )
+WRITE8_HANDLER( yunsung8_flipscreen_w )
 {
 	tilemap_set_flip(ALL_TILEMAPS, (data & 1) ? (TILEMAP_FLIPX|TILEMAP_FLIPY) : 0);
 }
@@ -207,11 +207,11 @@ VIDEO_UPDATE( yunsung8 )
 	int layers_ctrl = (~yunsung8_layers_ctrl) >> 4;
 
 #ifdef MAME_DEBUG
-if (keyboard_pressed(KEYCODE_Z))
+if (code_pressed(KEYCODE_Z))
 {
 	int msk = 0;
-	if (keyboard_pressed(KEYCODE_Q))	msk |= 1;
-	if (keyboard_pressed(KEYCODE_W))	msk |= 2;
+	if (code_pressed(KEYCODE_Q))	msk |= 1;
+	if (code_pressed(KEYCODE_W))	msk |= 2;
 	if (msk != 0) layers_ctrl &= msk;
 }
 #endif

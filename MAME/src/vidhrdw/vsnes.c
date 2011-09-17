@@ -1,11 +1,11 @@
-#pragma code_seg("C771")
-#pragma data_seg("D771")
-#pragma bss_seg("B771")
-#pragma const_seg("K771")
-#pragma comment(linker, "/merge:D771=771")
-#pragma comment(linker, "/merge:C771=771")
-#pragma comment(linker, "/merge:B771=771")
-#pragma comment(linker, "/merge:K771=771")
+#pragma code_seg("C813")
+#pragma data_seg("D813")
+#pragma bss_seg("B813")
+#pragma const_seg("K813")
+#pragma comment(linker, "/merge:D813=813")
+#pragma comment(linker, "/merge:C813=813")
+#pragma comment(linker, "/merge:B813=813")
+#pragma comment(linker, "/merge:K813=813")
 #include "driver.h"
 #include "vidhrdw/ppu2c03b.h"
 
@@ -26,7 +26,7 @@ PALETTE_INIT( vsdual )
 
 static void ppu_irq( int num, int *ppu_regs )
 {
-	cpu_set_nmi_line( num, PULSE_LINE );
+	cpunum_set_input_line(num, INPUT_LINE_NMI, PULSE_LINE );
 }
 
 /* our ppu interface											*/

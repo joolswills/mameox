@@ -1,11 +1,11 @@
-#pragma code_seg("C592")
-#pragma data_seg("D592")
-#pragma bss_seg("B592")
-#pragma const_seg("K592")
-#pragma comment(linker, "/merge:D592=592")
-#pragma comment(linker, "/merge:C592=592")
-#pragma comment(linker, "/merge:B592=592")
-#pragma comment(linker, "/merge:K592=592")
+#pragma code_seg("C626")
+#pragma data_seg("D626")
+#pragma bss_seg("B626")
+#pragma const_seg("K626")
+#pragma comment(linker, "/merge:D626=626")
+#pragma comment(linker, "/merge:C626=626")
+#pragma comment(linker, "/merge:B626=626")
+#pragma comment(linker, "/merge:K626=626")
 /**********************************************************
 Strike Bowling  (c)1982 Taito
 
@@ -77,7 +77,7 @@ static void plot_pixel_sbw(int x, int y, int col)
 	plot_pixel(tmpbitmap,x,y,Machine->pens[col]);
 }
 
-static WRITE_HANDLER( sbw_videoram_w )
+static WRITE8_HANDLER( sbw_videoram_w )
 {
 	int x,y,i,v1,v2;
 
@@ -113,16 +113,16 @@ VIDEO_START(sbowling)
 	return 0;
 }
 
-static WRITE_HANDLER( pix_shift_w )
+static WRITE8_HANDLER( pix_shift_w )
 {
 	pix_sh = data;
 }
-static WRITE_HANDLER( pix_data_w )
+static WRITE8_HANDLER( pix_data_w )
 {
 	pix[0] = pix[1];
 	pix[1] = data;
 }
-static READ_HANDLER( pix_data_r )
+static READ8_HANDLER( pix_data_r )
 {
 	UINT32 p1, p0;
 	int res;
@@ -142,10 +142,10 @@ static INTERRUPT_GEN( sbw_interrupt )
 {
 	int vector = cpu_getvblank() ? 0xcf : 0xd7;	/* RST 08h/10h */
 
-	cpu_set_irq_line_and_vector(0, 0, HOLD_LINE, vector);
+	cpunum_set_input_line_and_vector(0, 0, HOLD_LINE, vector);
 }
 
-static WRITE_HANDLER (system_w)
+static WRITE8_HANDLER (system_w)
 {
 	/*
 		76543210
@@ -165,7 +165,7 @@ static WRITE_HANDLER (system_w)
 	sbw_system = data;
 }
 
-static WRITE_HANDLER(graph_control_w)
+static WRITE8_HANDLER(graph_control_w)
 {
 	/*
 		76543210
@@ -181,7 +181,7 @@ static WRITE_HANDLER(graph_control_w)
 	tilemap_mark_all_tiles_dirty(sb_tilemap);
 }
 
-static READ_HANDLER (controls_r)
+static READ8_HANDLER (controls_r)
 {
 	if(sbw_system&2)
 		return input_port_2_r(0);

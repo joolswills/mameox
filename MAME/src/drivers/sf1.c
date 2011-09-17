@@ -1,11 +1,11 @@
-#pragma code_seg("C608")
-#pragma data_seg("D608")
-#pragma bss_seg("B608")
-#pragma const_seg("K608")
-#pragma comment(linker, "/merge:D608=608")
-#pragma comment(linker, "/merge:C608=608")
-#pragma comment(linker, "/merge:B608=608")
-#pragma comment(linker, "/merge:K608=608")
+#pragma code_seg("C644")
+#pragma data_seg("D644")
+#pragma bss_seg("B644")
+#pragma const_seg("K644")
+#pragma comment(linker, "/merge:D644=644")
+#pragma comment(linker, "/merge:C644=644")
+#pragma comment(linker, "/merge:B644=644")
+#pragma comment(linker, "/merge:K644=644")
 /***************************************************************************
 
   Street Fighter 1
@@ -61,7 +61,7 @@ static WRITE16_HANDLER( soundcmd_w )
 	if (ACCESSING_LSB)
 	{
 		soundlatch_w(offset,data & 0xff);
-		cpu_set_irq_line(1,IRQ_LINE_NMI,PULSE_LINE);
+		cpunum_set_input_line(1,INPUT_LINE_NMI,PULSE_LINE);
 	}
 }
 
@@ -182,13 +182,13 @@ static READ16_HANDLER( button2_r )
 }
 
 
-static WRITE_HANDLER( sound2_bank_w )
+static WRITE8_HANDLER( sound2_bank_w )
 {
 	cpu_setbank(1,memory_region(REGION_CPU3)+0x8000*(data+1));
 }
 
 
-static WRITE_HANDLER( msm5205_w )
+static WRITE8_HANDLER( msm5205_w )
 {
 	MSM5205_reset_w(offset,(data>>7)&1);
 	/* ?? bit 6?? */
@@ -808,7 +808,7 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 
 static void irq_handler(int irq)
 {
-	cpu_set_irq_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 static struct YM2151interface ym2151_interface =

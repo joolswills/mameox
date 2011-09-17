@@ -1,11 +1,11 @@
-#pragma code_seg("C651")
-#pragma data_seg("D651")
-#pragma bss_seg("B651")
-#pragma const_seg("K651")
-#pragma comment(linker, "/merge:D651=651")
-#pragma comment(linker, "/merge:C651=651")
-#pragma comment(linker, "/merge:B651=651")
-#pragma comment(linker, "/merge:K651=651")
+#pragma code_seg("C687")
+#pragma data_seg("D687")
+#pragma bss_seg("B687")
+#pragma const_seg("K687")
+#pragma comment(linker, "/merge:D687=687")
+#pragma comment(linker, "/merge:C687=687")
+#pragma comment(linker, "/merge:B687=687")
+#pragma comment(linker, "/merge:K687=687")
 /***************************************************************************
 
 Atari Sprint 4 driver
@@ -21,7 +21,7 @@ extern VIDEO_EOF( sprint4 );
 extern VIDEO_START( sprint4 );
 extern VIDEO_UPDATE( sprint4 );
 
-extern WRITE_HANDLER( sprint4_video_ram_w );
+extern WRITE8_HANDLER( sprint4_video_ram_w );
 
 extern UINT8* sprint4_video_ram;
 
@@ -101,7 +101,7 @@ static void nmi_callback(int scanline)
 
 	if (readinputport(2) & 0x40)
 	{
-		cpu_set_nmi_line(0, PULSE_LINE);
+		cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 	}
 
 	timer_set(cpu_getscanlinetime(scanline), scanline, nmi_callback);
@@ -116,13 +116,13 @@ static MACHINE_INIT( sprint4 )
 }
 
 
-static READ_HANDLER( sprint4_wram_r )
+static READ8_HANDLER( sprint4_wram_r )
 {
 	return sprint4_video_ram[0x380 + offset % 0x80];
 }
 
 
-static READ_HANDLER( sprint4_analog_r )
+static READ8_HANDLER( sprint4_analog_r )
 {
 	int n = (offset >> 1) & 3;
 
@@ -141,13 +141,13 @@ static READ_HANDLER( sprint4_analog_r )
 }
 
 
-static READ_HANDLER( sprint4_coin_r )
+static READ8_HANDLER( sprint4_coin_r )
 {
 	return (readinputport(1) << ((offset & 7) ^ 7)) & 0x80;
 }
 
 
-static READ_HANDLER( sprint4_gas_r )
+static READ8_HANDLER( sprint4_gas_r )
 {
 	UINT8 val = readinputport(0);
 
@@ -160,45 +160,45 @@ static READ_HANDLER( sprint4_gas_r )
 }
 
 
-static READ_HANDLER( sprint4_dip_r )
+static READ8_HANDLER( sprint4_dip_r )
 {
 	return (readinputport(4) >> (2 * (offset & 3))) & 3;
 }
 
 
-static WRITE_HANDLER( sprint4_wram_w )
+static WRITE8_HANDLER( sprint4_wram_w )
 {
 	sprint4_video_ram[0x380 + offset % 0x80] = data;
 }
 
 
-static WRITE_HANDLER( sprint4_collision_reset_w )
+static WRITE8_HANDLER( sprint4_collision_reset_w )
 {
 	sprint4_collision[(offset >> 1) & 3] = 0;
 }
 
 
-static WRITE_HANDLER( sprint4_analog_w )
+static WRITE8_HANDLER( sprint4_analog_w )
 {
 	analog = data & 15;
 }
 
 
-static WRITE_HANDLER( sprint4_lamp_w )
+static WRITE8_HANDLER( sprint4_lamp_w )
 {
 	set_led_status((offset >> 1) & 3, offset & 1);
 }
 
 
-static WRITE_HANDLER( sprint4_attract_w )
+static WRITE8_HANDLER( sprint4_attract_w )
 {
 	/* sound */
 }
-static WRITE_HANDLER( sprint4_crash_w )
+static WRITE8_HANDLER( sprint4_crash_w )
 {
 	/* sound */
 }
-static WRITE_HANDLER( sprint4_skid_w )
+static WRITE8_HANDLER( sprint4_skid_w )
 {
 	/* sound */
 }

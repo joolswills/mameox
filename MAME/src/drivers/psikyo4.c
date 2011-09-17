@@ -1,11 +1,11 @@
-#pragma code_seg("C552")
-#pragma data_seg("D552")
-#pragma bss_seg("B552")
-#pragma const_seg("K552")
-#pragma comment(linker, "/merge:D552=552")
-#pragma comment(linker, "/merge:C552=552")
-#pragma comment(linker, "/merge:B552=552")
-#pragma comment(linker, "/merge:K552=552")
+#pragma code_seg("C583")
+#pragma data_seg("D583")
+#pragma bss_seg("B583")
+#pragma const_seg("K583")
+#pragma comment(linker, "/merge:D583=583")
+#pragma comment(linker, "/merge:C583=583")
+#pragma comment(linker, "/merge:B583=583")
+#pragma comment(linker, "/merge:K583=583")
 /*----------------------------------------------------------------
    Psikyo PS4 SH-2 Based Systems
    driver by David Haywood (+ Paul Priest)
@@ -170,7 +170,7 @@ static READ32_HANDLER( ps4_eeprom_r )
 
 static INTERRUPT_GEN(psikyosh_interrupt)
 {
-	cpu_set_irq_line(0, 4, HOLD_LINE);
+	cpunum_set_input_line(0, 4, HOLD_LINE);
 }
 
 static READ32_HANDLER(hotgmck_io32_r) /* used by hotgmck/hgkairak */
@@ -394,9 +394,9 @@ ADDRESS_MAP_END
 static void irqhandler(int linestate)
 {
 	if (linestate)
-		cpu_set_irq_line(0, 12, ASSERT_LINE);
+		cpunum_set_input_line(0, 12, ASSERT_LINE);
 	else
-		cpu_set_irq_line(0, 12, CLEAR_LINE);
+		cpunum_set_input_line(0, 12, CLEAR_LINE);
 }
 
 static struct YMF278B_interface ymf278b_interface =
@@ -903,22 +903,22 @@ static DRIVER_INIT( hotgmck )
 {
 	unsigned char *RAM = memory_region(REGION_CPU1);
 	cpu_setbank(1,&RAM[0x100000]);
-	install_mem_read32_handler (0, 0x5800000, 0x5800007, hotgmck_io32_r ); // Different Inputs
+	memory_install_read32_handler(0, ADDRESS_SPACE_PROGRAM, 0x5800000, 0x5800007, 0, 0, hotgmck_io32_r ); // Different Inputs
 }
 
 static DRIVER_INIT( loderndf )
 {
-	install_mem_read32_handler(0, 0x6000020, 0x6000023, loderndf_speedup_r );
+	memory_install_read32_handler(0, ADDRESS_SPACE_PROGRAM, 0x6000020, 0x6000023, 0, 0, loderndf_speedup_r );
 }
 
 static DRIVER_INIT( loderdfa )
 {
-	install_mem_read32_handler(0, 0x6000020, 0x6000023, loderdfa_speedup_r );
+	memory_install_read32_handler(0, ADDRESS_SPACE_PROGRAM, 0x6000020, 0x6000023, 0, 0, loderdfa_speedup_r );
 }
 
 static DRIVER_INIT( hotdebut )
 {
-	install_mem_read32_handler(0, 0x600001c, 0x600001f, hotdebut_speedup_r );
+	memory_install_read32_handler(0, ADDRESS_SPACE_PROGRAM, 0x600001c, 0x600001f, 0, 0, hotdebut_speedup_r );
 }
 
 

@@ -109,7 +109,7 @@ static void update_background( void )
  These are used to index a color triplet of RGB.  The triplet is read
  from RAM, and output to R0-R4, G0-G4, and B0-B4.
  **************************************************************************/
-WRITE_HANDLER( vigilant_paletteram_w )
+WRITE8_HANDLER( vigilant_paletteram_w )
 {
 	int bank,r,g,b;
 
@@ -134,7 +134,7 @@ WRITE_HANDLER( vigilant_paletteram_w )
  horiz_scroll_low  = HSPL, an 8-bit register
  horiz_scroll_high = HSPH, a 1-bit register
  **************************************************************************/
-WRITE_HANDLER( vigilant_horiz_scroll_w )
+WRITE8_HANDLER( vigilant_horiz_scroll_w )
 {
 	if (offset==0)
 		horiz_scroll_low = data;
@@ -148,7 +148,7 @@ WRITE_HANDLER( vigilant_horiz_scroll_w )
  rear_horiz_scroll_low  = RHSPL, an 8-bit register
  rear_horiz_scroll_high = RHSPH, an 8-bit register but only 3 bits are saved
 ***************************************************************************/
-WRITE_HANDLER( vigilant_rear_horiz_scroll_w )
+WRITE8_HANDLER( vigilant_rear_horiz_scroll_w )
 {
 	if (offset==0)
 		rear_horiz_scroll_low = data;
@@ -171,7 +171,7 @@ WRITE_HANDLER( vigilant_rear_horiz_scroll_w )
  palette.  However, the top four bits of the palette inputs are labelled:
  "RCC3", "RCC2", "V256E", "RCC0".  Methinks there's a typo.
  **************************************************************************/
-WRITE_HANDLER( vigilant_rear_color_w )
+WRITE8_HANDLER( vigilant_rear_color_w )
 {
 	rear_disable = data & 0x40;
 	rear_color = (data & 0x0d);

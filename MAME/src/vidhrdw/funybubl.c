@@ -1,11 +1,11 @@
-#pragma code_seg("C306")
-#pragma data_seg("D306")
-#pragma bss_seg("B306")
-#pragma const_seg("K306")
-#pragma comment(linker, "/merge:D306=306")
-#pragma comment(linker, "/merge:C306=306")
-#pragma comment(linker, "/merge:B306=306")
-#pragma comment(linker, "/merge:K306=306")
+#pragma code_seg("C317")
+#pragma data_seg("D317")
+#pragma bss_seg("B317")
+#pragma const_seg("K317")
+#pragma comment(linker, "/merge:D317=317")
+#pragma comment(linker, "/merge:C317=317")
+#pragma comment(linker, "/merge:B317=317")
+#pragma comment(linker, "/merge:K317=317")
 /* Funny Bubble Video hardware
 
 todo - convert to tilemap
@@ -19,7 +19,7 @@ data8_t* funybubl_banked_videoram;
 data8_t *funybubl_paletteram;
 
 
-WRITE_HANDLER ( funybubl_paldatawrite )
+WRITE8_HANDLER ( funybubl_paldatawrite )
 {
 	int colchanged ;
 
@@ -114,7 +114,7 @@ VIDEO_UPDATE(funybubl)
 	funybubl_drawsprites(bitmap,cliprect);
 
 /*
-	if ( keyboard_pressed_memory(KEYCODE_W) )
+	if ( code_pressed_memory(KEYCODE_W) )
 	{
 		FILE *fp;
 

@@ -1,11 +1,11 @@
-#pragma code_seg("C740")
-#pragma data_seg("D740")
-#pragma bss_seg("B740")
-#pragma const_seg("K740")
-#pragma comment(linker, "/merge:D740=740")
-#pragma comment(linker, "/merge:C740=740")
-#pragma comment(linker, "/merge:B740=740")
-#pragma comment(linker, "/merge:K740=740")
+#pragma code_seg("C782")
+#pragma data_seg("D782")
+#pragma bss_seg("B782")
+#pragma const_seg("K782")
+#pragma comment(linker, "/merge:D782=782")
+#pragma comment(linker, "/merge:C782=782")
+#pragma comment(linker, "/merge:B782=782")
+#pragma comment(linker, "/merge:K782=782")
 /***************************************************************************
 
 Atari Triple Hunt Driver
@@ -46,7 +46,7 @@ void triplhnt_hit_callback(int code)
 {
 	triplhnt_hit_code = code;
 
-	cpu_set_irq_line(0, 0, HOLD_LINE);
+	cpunum_set_input_line(0, 0, HOLD_LINE);
 }
 
 
@@ -84,28 +84,32 @@ static void triplhnt_update_misc(int offset)
 
 	coin_lockout_w(0, !(triplhnt_misc_flags & 0x08));
 	coin_lockout_w(1, !(triplhnt_misc_flags & 0x08));
+
+	discrete_sound_w(3, (triplhnt_misc_flags >> 2) & 1);	// screech
+	discrete_sound_w(4, (~triplhnt_misc_flags >> 1) & 1);	// Lamp is used to reset noise
+	discrete_sound_w(1, (~triplhnt_misc_flags >> 7) & 1);	// bear
 }
 
 
-WRITE_HANDLER( triplhnt_misc_w )
+WRITE8_HANDLER( triplhnt_misc_w )
 {
 	triplhnt_update_misc(offset);
 }
 
 
-WRITE_HANDLER( triplhnt_zeropage_w )
+WRITE8_HANDLER( triplhnt_zeropage_w )
 {
 	memory_region(REGION_CPU1)[offset & 0xff] = data;
 }
 
 
-READ_HANDLER( triplhnt_zeropage_r )
+READ8_HANDLER( triplhnt_zeropage_r )
 {
 	return memory_region(REGION_CPU1)[offset & 0xff];
 }
 
 
-READ_HANDLER( triplhnt_cmos_r )
+READ8_HANDLER( triplhnt_cmos_r )
 {
 	triplhnt_cmos_latch = offset;
 
@@ -113,7 +117,7 @@ READ_HANDLER( triplhnt_cmos_r )
 }
 
 
-READ_HANDLER( triplhnt_input_port_4_r )
+READ8_HANDLER( triplhnt_input_port_4_r )
 {
 	watchdog_reset_w(0, 0);
 
@@ -121,7 +125,7 @@ READ_HANDLER( triplhnt_input_port_4_r )
 }
 
 
-READ_HANDLER( triplhnt_misc_r )
+READ8_HANDLER( triplhnt_misc_r )
 {
 	triplhnt_update_misc(offset);
 
@@ -129,7 +133,7 @@ READ_HANDLER( triplhnt_misc_r )
 }
 
 
-READ_HANDLER( triplhnt_da_latch_r )
+READ8_HANDLER( triplhnt_da_latch_r )
 {
 	int cross_x = readinputport(8);
 	int cross_y = readinputport(9);
@@ -222,6 +226,9 @@ INPUT_PORTS_START( triplhnt )
 
 	PORT_START
 	PORT_ANALOG( 0xff, 0x78, IPT_LIGHTGUN_Y, 25, 15, 0x00, 0xef)
+
+	PORT_START		/* 10 */
+	PORT_ADJUSTER( 50, "Bear Roar Frequency" )
 INPUT_PORTS_END
 
 
@@ -318,6 +325,178 @@ static PALETTE_INIT( triplhnt )
 }
 
 
+/************************************************************************/
+/* triplhnt Sound System Analog emulation                               */
+/* Feb 2004, Derrick Renaud                                             */
+/************************************************************************/
+const struct discrete_lfsr_desc triplhnt_lfsr={
+	16,			/* Bit Length */
+	0,			/* Reset Value */
+	0,			/* Use Bit 0 as XOR input 0 */
+	14,			/* Use Bit 14 as XOR input 1 */
+	DISC_LFSR_XNOR,		/* Feedback stage1 is XNOR */
+	DISC_LFSR_OR,		/* Feedback stage2 is just stage 1 output OR with external feed */
+	DISC_LFSR_REPLACE,	/* Feedback stage3 replaces the shifted register contents */
+	0x000001,		/* Everything is shifted into the first bit only */
+	0,			/* Output not inverted */
+	15			/* Output bit */
+};
+
+const struct discrete_dac_r1_ladder triplhnt_bear_roar_v_dac =
+{
+	4,		// size of ladder
+	{1000000, 470000, 220000, 2200000, 0,0,0,0},	// R47, R50, R48, R51
+	5,		// vBias
+	68000,		// R44
+	0,		// no rGnd
+	0		// no smoothing cap
+};
+
+const struct discrete_dac_r1_ladder triplhnt_bear_roar_out_dac =
+{
+	3,		// size of ladder
+	{100000, 33000, 100000, 0,0,0,0,0},	// R56, R58, R57
+	0,		// no vBias
+	0,		// no rBias
+	0,		// no rGnd
+	0		// no smoothing cap
+};
+
+const struct discrete_dac_r1_ladder triplhnt_shot_dac =
+{
+	4,		// size of ladder
+	{8200, 3900, 2200, 1000, 0,0,0,0},	// R53, R54, R55, R52
+	0,		// no vBias
+	0,		// no rBias
+	0,		// no rGnd
+	0		// no smoothing cap
+};
+
+const struct discrete_555_cc_desc triplhnt_bear_roar_vco =
+{
+	DISC_555_OUT_DC | DISC_555_OUT_SQW,
+	5,		// B+ voltage of 555
+	5.0 - 1.7,	// High output voltage of 555 (Usually v555 - 1.7)
+	5.0 * 2 / 3,	// threshold
+	5.0 /3,		// trigger
+	5,		// B+ voltage of the Constant Current source
+	0.7		// Q2 junction voltage
+};
+
+const struct discrete_schmitt_osc_desc triplhnt_screech_osc =
+{
+	2200,	// R84
+	330,	// R85
+	1.e-6,	// C59
+	1.7,	// Rise Threshold of 7414
+	0.9,	// Fall Threshold of 7414
+	3.4,	// Output high voltage of 7414
+	1	// invert output using 7400 gate E7
+};
+
+const struct discrete_mixer_desc triplhnt_mixer =
+{
+	DISC_MIXER_IS_RESISTOR,
+	3,					// 3 inputs
+	{3300 + 19879.5, 47000, 27000 + 545.6, 0,0,0,0,0},	// R59 + (R56||R57||R58), R60 + (R52||R53||R54||R55), R61
+	{0,0,0,0,0,0,0,0},			// No variable resistor nodes
+	{0, 0, 0, 0, 0,0,0,0},			// No caps
+	0,					// No rI
+	1000,					// R78
+	1e-7,					// C72
+	1e-7,					// C44
+	0,					// vBias not used for resistor network
+	150000
+};
+
+/* Nodes - Inputs */
+#define TRIPLHNT_BEAR_ROAR_DATA	NODE_01
+#define TRIPLHNT_BEAR_EN	NODE_02
+#define TRIPLHNT_SHOT_DATA	NODE_03
+#define TRIPLHNT_SCREECH_EN	NODE_04
+#define TRIPLHNT_LAMP_EN	NODE_05
+/* Nodes - Sounds */
+#define TRIPLHNT_NOISE		NODE_10
+#define TRIPLHNT_BEAR_ROAR_SND	NODE_11
+#define TRIPLHNT_SHOT_SND	NODE_12
+#define TRIPLHNT_SCREECH_SND	NODE_13
+#define POOLSHRK_SCORE_SND	NODE_14
+
+static DISCRETE_SOUND_START(triplhnt_sound_interface)
+	/************************************************/
+	/* Input register mapping for triplhnt          */
+	/************************************************/
+	/*              NODE                    ADDR  MASK     GAIN      OFFSET  INIT */
+	DISCRETE_INPUT(TRIPLHNT_BEAR_ROAR_DATA, 0x00, 0x000f,                    15.0)
+	DISCRETE_INPUT(TRIPLHNT_BEAR_EN,        0x01, 0x000f,                     1.0)
+	DISCRETE_INPUT(TRIPLHNT_SHOT_DATA,      0x02, 0x000f,                     0.0)	// should init to 15 when hooked up
+	DISCRETE_INPUT(TRIPLHNT_SCREECH_EN,     0x03, 0x000f,                     0.0)
+	DISCRETE_INPUT(TRIPLHNT_LAMP_EN,        0x04, 0x000f,                     1.0)
+	/************************************************/
+
+	DISCRETE_LFSR_NOISE(TRIPLHNT_NOISE,			// Output A7 pin 13
+				TRIPLHNT_LAMP_EN, TRIPLHNT_LAMP_EN,	// From gate A8 pin 10
+				12096000.0/2/256,		// 256H signal
+				3.4, 0, 3.4/2, &triplhnt_lfsr)	// TTL voltage level
+
+	/************************************************/
+	/* Bear Roar is a VCO with noise mixed in.      */
+	/************************************************/
+	DISCRETE_ADJUSTMENT(NODE_20, 1,
+				10000,	// R86 + R88 @ 0
+				260000,	// R86 + R88 @ max
+				DISC_LOGADJ, 10)
+	DISCRETE_DAC_R1(NODE_21, 1,			// base of Q2
+			TRIPLHNT_BEAR_ROAR_DATA,	// IC B10, Q0-Q3
+			3.4,				// TTL ON level
+			&triplhnt_bear_roar_v_dac)
+	DISCRETE_555_CC(NODE_22, 1,	// IC C11 pin 3, always enabled
+			NODE_21,	// vIn
+			NODE_20,	// current adjust
+			1.e-8,		// C58
+			0, 390000, 0,	// no rBias, R87, no rDis
+			&triplhnt_bear_roar_vco)
+	DISCRETE_COUNTER(NODE_23, 1, TRIPLHNT_BEAR_EN,	// IC B6, QB-QD
+			NODE_22,			// from IC C11, pin 3
+			5, 1, 0, 1)			// /6 counter on rising edge
+	DISCRETE_TRANSFORM2(NODE_24, 1, NODE_23, 2, "01>")	// IC B6, pin 8
+	DISCRETE_LOGIC_INVERT(NODE_25, 1, NODE_22)	// IC D9, pin 3
+	DISCRETE_LOGIC_NAND(NODE_26, 1, NODE_25, TRIPLHNT_NOISE)	// IC D9, pin 11
+	DISCRETE_LOGIC_XOR(NODE_27, 1, NODE_24, NODE_26)	// IC B8, pin 6
+	DISCRETE_COUNTER(NODE_28, 1, TRIPLHNT_BEAR_EN,	// IC B6, pin 12
+			NODE_27,	// from IC B8, pin 6
+			1, 1, 0, 1)	// /2 counter on rising edge
+	DISCRETE_TRANSFORM5(NODE_29, 1, NODE_24, NODE_28, NODE_26, 2, 4, "13*24*+0+")	// Mix the mess together in binary
+	DISCRETE_DAC_R1(TRIPLHNT_BEAR_ROAR_SND, 1, NODE_29,
+			3.4,				// TTL ON level
+			&triplhnt_bear_roar_out_dac)
+
+	/************************************************/
+	/* Shot is just the noise amplitude modulated   */
+	/* by an R1 DAC.                                */
+	/************************************************/
+	DISCRETE_SWITCH(NODE_40, 1,	// Gate A9, pins 6, 8, 11, 3
+			TRIPLHNT_NOISE,	// noise enables the data which is then inverted
+			1, TRIPLHNT_SHOT_DATA)	// the data has been previously inverted for ease of use
+	DISCRETE_DAC_R1(TRIPLHNT_SHOT_SND, 1,
+			NODE_40,
+			3.4,			// TTL ON level
+			&triplhnt_shot_dac)
+
+	/************************************************/
+	/* Screech is just the noise modulating a       */
+	/* Schmitt VCO.                                 */
+	/************************************************/
+	DISCRETE_SCHMITT_OSCILLATOR(TRIPLHNT_SCREECH_SND, TRIPLHNT_SCREECH_EN, TRIPLHNT_NOISE, 3.4, &triplhnt_screech_osc)
+
+	/************************************************/
+	/* Final gain and ouput.                        */
+	/************************************************/
+	DISCRETE_MIXER3(NODE_90, 1, TRIPLHNT_BEAR_ROAR_SND, TRIPLHNT_SHOT_SND, TRIPLHNT_SCREECH_SND, &triplhnt_mixer)
+	DISCRETE_OUTPUT(NODE_90, 100)
+DISCRETE_SOUND_END
+
+
 static MACHINE_DRIVER_START( triplhnt )
 
 	/* basic machine hardware */
@@ -341,6 +520,7 @@ static MACHINE_DRIVER_START( triplhnt )
 	MDRV_VIDEO_UPDATE(triplhnt)
 
 	/* sound hardware */
+	MDRV_SOUND_ADD_TAG("discrete", DISCRETE, triplhnt_sound_interface)
 MACHINE_DRIVER_END
 
 
@@ -367,7 +547,7 @@ ROM_START( triplhnt )
 ROM_END
 
 
-GAMEX( 1977, triplhnt, 0, triplhnt, triplhnt, triplhnt, 0, "Atari", "Triple Hunt", GAME_NO_SOUND )
+GAMEX( 1977, triplhnt, 0, triplhnt, triplhnt, triplhnt, 0, "Atari", "Triple Hunt", GAME_IMPERFECT_SOUND )
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

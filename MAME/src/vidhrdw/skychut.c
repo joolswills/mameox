@@ -1,11 +1,11 @@
-#pragma code_seg("C627")
-#pragma data_seg("D627")
-#pragma bss_seg("B627")
-#pragma const_seg("K627")
-#pragma comment(linker, "/merge:D627=627")
-#pragma comment(linker, "/merge:C627=627")
-#pragma comment(linker, "/merge:B627=627")
-#pragma comment(linker, "/merge:K627=627")
+#pragma code_seg("C663")
+#pragma data_seg("D663")
+#pragma bss_seg("B663")
+#pragma const_seg("K663")
+#pragma comment(linker, "/merge:D663=663")
+#pragma comment(linker, "/merge:C663=663")
+#pragma comment(linker, "/merge:B663=663")
+#pragma comment(linker, "/merge:K663=663")
 /***************************************************************************
 
   vidhrdw.c
@@ -25,7 +25,7 @@ UINT8 *iremm15_chargen;
 static int bottomline;
 
 
-WRITE_HANDLER( skychut_colorram_w )
+WRITE8_HANDLER( skychut_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -35,7 +35,7 @@ WRITE_HANDLER( skychut_colorram_w )
 	}
 }
 
-WRITE_HANDLER( skychut_ctrl_w )
+WRITE8_HANDLER( skychut_ctrl_w )
 {
 //usrintf_showmessage("%02x",data);
 

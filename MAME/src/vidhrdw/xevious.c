@@ -1,11 +1,11 @@
-#pragma code_seg("C791")
-#pragma data_seg("D791")
-#pragma bss_seg("B791")
-#pragma const_seg("K791")
-#pragma comment(linker, "/merge:D791=791")
-#pragma comment(linker, "/merge:C791=791")
-#pragma comment(linker, "/merge:B791=791")
-#pragma comment(linker, "/merge:K791=791")
+#pragma code_seg("C324")
+#pragma data_seg("D324")
+#pragma bss_seg("B324")
+#pragma const_seg("K324")
+#pragma comment(linker, "/merge:D324=324")
+#pragma comment(linker, "/merge:C324=324")
+#pragma comment(linker, "/merge:B324=324")
+#pragma comment(linker, "/merge:K324=324")
 /***************************************************************************
 
   vidhrdw.c
@@ -18,11 +18,9 @@
 #include "vidhrdw/generic.h"
 
 
-unsigned char *xevious_fg_videoram,*xevious_fg_colorram;
-unsigned char *xevious_bg_videoram,*xevious_bg_colorram;
-
-extern unsigned char *spriteram,*spriteram_2,*spriteram_3;
-extern size_t spriteram_size;
+data8_t *xevious_fg_videoram,*xevious_fg_colorram;
+data8_t *xevious_bg_videoram,*xevious_bg_colorram;
+data8_t *xevious_sr1,*xevious_sr2,*xevious_sr3;
 
 static struct tilemap *fg_tilemap,*bg_tilemap;
 
@@ -197,11 +195,17 @@ PALETTE_INIT( battles )
 static void get_fg_tile_info(int tile_index)
 {
 	unsigned char attr = xevious_fg_colorram[tile_index];
+
+	/* the hardware has two character sets, one normal and one x-flipped. When
+	   screen is flipped, character y flip is done by the hardware inverting the
+	   timing signals, while x flip is done by selecting the 2nd character set.
+	   We reproduce this here, but since the tilemap system automatically flips
+	   characters when screen is flipped, we have to flip them back. */
 	SET_TILE_INFO(
 			0,
-			xevious_fg_videoram[tile_index],
+			xevious_fg_videoram[tile_index] | (flip_screen ? 0x100 : 0),
 			((attr & 0x03) << 4) | ((attr & 0x3c) >> 2),
-			TILE_FLIPYX((attr & 0xc0) >> 6))
+			TILE_FLIPYX((attr & 0xc0) >> 6) ^ (flip_screen ? TILE_FLIPX : 0))
 }
 
 static void get_bg_tile_info(int tile_index)
@@ -231,9 +235,15 @@ VIDEO_START( xevious )
 	if (!bg_tilemap || !fg_tilemap)
 		return 1;
 
-	tilemap_set_scrolldx(fg_tilemap,0,-160);
-	tilemap_set_scrolldy(fg_tilemap,0,8);
+	tilemap_set_scrolldx(bg_tilemap,-20,288+27);
+	tilemap_set_scrolldy(bg_tilemap,-16,-16);
+	tilemap_set_scrolldx(fg_tilemap,-32,288+32);
+	tilemap_set_scrolldy(fg_tilemap,-18,-10);
 	tilemap_set_transparent_pen(fg_tilemap,0);
+
+	spriteram_2 = xevious_sr1 + 0x780;
+	spriteram_3 = xevious_sr2 + 0x780;
+	spriteram   = xevious_sr3 + 0x780;
 
 	return 0;
 }
@@ -246,7 +256,27 @@ VIDEO_START( xevious )
 
 ***************************************************************************/
 
-WRITE_HANDLER( xevious_fg_videoram_w )
+READ8_HANDLER( xevious_fg_videoram_r )
+{
+	return xevious_fg_videoram[offset];
+}
+
+READ8_HANDLER( xevious_fg_colorram_r )
+{
+	return xevious_fg_colorram[offset];
+}
+
+READ8_HANDLER( xevious_bg_videoram_r )
+{
+	return xevious_bg_videoram[offset];
+}
+
+READ8_HANDLER( xevious_bg_colorram_r )
+{
+	return xevious_bg_colorram[offset];
+}
+
+WRITE8_HANDLER( xevious_fg_videoram_w )
 {
 	if (xevious_fg_videoram[offset] != data)
 	{
@@ -255,7 +285,7 @@ WRITE_HANDLER( xevious_fg_videoram_w )
 	}
 }
 
-WRITE_HANDLER( xevious_fg_colorram_w )
+WRITE8_HANDLER( xevious_fg_colorram_w )
 {
 	if (xevious_fg_colorram[offset] != data)
 	{
@@ -264,7 +294,7 @@ WRITE_HANDLER( xevious_fg_colorram_w )
 	}
 }
 
-WRITE_HANDLER( xevious_bg_videoram_w )
+WRITE8_HANDLER( xevious_bg_videoram_w )
 {
 	if (xevious_bg_videoram[offset] != data)
 	{
@@ -273,7 +303,7 @@ WRITE_HANDLER( xevious_bg_videoram_w )
 	}
 }
 
-WRITE_HANDLER( xevious_bg_colorram_w )
+WRITE8_HANDLER( xevious_bg_colorram_w )
 {
 	if (xevious_bg_colorram[offset] != data)
 	{
@@ -282,7 +312,7 @@ WRITE_HANDLER( xevious_bg_colorram_w )
 	}
 }
 
-WRITE_HANDLER( xevious_vh_latch_w )
+WRITE8_HANDLER( xevious_vh_latch_w )
 {
 	int reg;
 	int scroll = data + ((offset&0x01)<<8);   /* A0 -> D8 */
@@ -292,19 +322,16 @@ WRITE_HANDLER( xevious_vh_latch_w )
 	switch (reg)
 	{
 	case 0:
-		if (flip_screen)
-			tilemap_set_scrollx(bg_tilemap,0,scroll-312);
-		else
-			tilemap_set_scrollx(bg_tilemap,0,scroll+20);
+		tilemap_set_scrollx(bg_tilemap,0,scroll);
 		break;
 	case 1:
-		tilemap_set_scrollx(fg_tilemap,0,scroll+32);
+		tilemap_set_scrollx(fg_tilemap,0,scroll);
 		break;
 	case 2:
-		tilemap_set_scrolly(bg_tilemap,0,scroll+16);
+		tilemap_set_scrolly(bg_tilemap,0,scroll);
 		break;
 	case 3:
-		tilemap_set_scrolly(fg_tilemap,0,scroll+18);
+		tilemap_set_scrolly(fg_tilemap,0,scroll);
 		break;
 	case 7:
 		flip_screen_set(scroll & 1);
@@ -316,6 +343,57 @@ WRITE_HANDLER( xevious_vh_latch_w )
 }
 
 
+static int xevious_bs[2];
+
+/* emulation for schematic 9B */
+WRITE8_HANDLER( xevious_bs_w )
+{
+	xevious_bs[offset & 1] = data;
+}
+
+READ8_HANDLER( xevious_bb_r )
+{
+	data8_t *rom2a = memory_region(REGION_GFX4);
+	data8_t *rom2b = memory_region(REGION_GFX4)+0x1000;
+	data8_t *rom2c = memory_region(REGION_GFX4)+0x3000;
+	int adr_2b,adr_2c;
+	int dat1,dat2;
+
+	/* get BS to 12 bit data from 2A,2B */
+	adr_2b = ((xevious_bs[1] & 0x7e) << 6) | ((xevious_bs[0] & 0xfe) >> 1);
+
+	if (adr_2b & 1)
+	{
+		/* high bits select */
+		dat1 = ((rom2a[adr_2b >> 1] & 0xf0) << 4) | rom2b[adr_2b];
+	}
+	else
+	{
+	    /* low bits select */
+	    dat1 = ((rom2a[adr_2b >> 1] & 0x0f) << 8) | rom2b[adr_2b];
+	}
+
+	adr_2c = ((dat1 & 0x1ff) << 2) | ((xevious_bs[1] & 1) << 1) | (xevious_bs[0] & 1);
+	if (dat1 & 0x400) adr_2c ^= 1;
+	if (dat1 & 0x200) adr_2c ^= 2;
+
+	if (offset & 1)
+	{
+		/* return BB1 */
+		dat2 = rom2c[adr_2c | 0x800];
+	}
+	else
+	{
+		/* return BB0 */
+		dat2 = rom2c[adr_2c];
+		/* swap bit 6 & 7 */
+		dat2 = BITSWAP8(dat2, 6,7,5,4,3,2,1,0);
+		/* flip x & y */
+		if (dat1 & 0x400) dat2 ^= 0x40;
+		if (dat1 & 0x200) dat2 ^= 0x80;
+	}
+	return dat2;
+}
 
 
 /*
@@ -332,23 +410,23 @@ c000-cfff background pattern name
 
 seet 8A
 										2	  +-------+
-COL0,1 --------------------------------------->|backg. |
+COL0,1 -------------------------------------->|backg. |
 										1	  |color  |
-PP7------------------------------------------->|replace|
+PP7------------------------------------------>|replace|
 										4	  | ROM   |  6
-AN0-3 ---------------------------------------->|  4H   |-----> color code 6 bit
-		1  +-----------+	  +--------+	   |  4F   |
-COL0  ---->|B8   ROM 3C| 16   |custom  |  2	|	   |
-		8  |		   |----->|shifter |------>|	   |
-PP0-7 ---->|B0-7 ROM 3D|	  |16->2*8 |	   |	   |
-		   +-----------+	  +--------+	   +-------+
+AN0-3 --------------------------------------->|  4H   |-----> color code 6 bit
+		1  +-----------+	  +--------+      |  4F   |
+COL0  ---->|B8   ROM 3C| 16   |custom  |  2   |       |
+		8  |		   |----->|shifter |----->|       |
+PP0-7 ---->|B0-7 ROM 3D|	  |16->2*8 |      |       |
+		   +-----------+	  +--------+      +-------+
 
 font rom controller
-	   1  +--------+	 +--------+
-ANF   --->| ROM	|  8  |shift   |  1
-	   8  | 3B	 |---->|reg	 |-----> font data
-PP0-7 --->|		|	 |8->1*8  |
-		  +--------+	 +--------+
+	   1  +-----+     +--------+
+ANF   --->| ROM |  8  |shift   |  1
+	   8  | 3B  |---->|reg     |-----> font data
+PP0-7 --->|     |     |8->1*8  |
+		  +-----+     +--------+
 
 font color ( not use color map )
 		2  |
@@ -358,9 +436,7 @@ AN0-3  --->|
 
 sprite
 
-ROM 3M,3L color reprace table for sprite
-
-
+ROM 3M,3L color replace table for sprite
 
 */
 
@@ -378,7 +454,7 @@ static void draw_sprites(struct mame_bitmap *bitmap,const struct rectangle *clip
 	int offs,sx,sy;
 
 
-	for (offs = 0;offs < spriteram_size;offs += 2)
+	for (offs = 0;offs < 0x80;offs += 2)
 	{
 		if ((spriteram[offs + 1] & 0x40) == 0)  /* I'm not sure about this one */
 		{
@@ -387,13 +463,13 @@ static void draw_sprites(struct mame_bitmap *bitmap,const struct rectangle *clip
 
 			if (spriteram_3[offs] & 0x80)
 			{
-				bank = 4;
-				code = spriteram[offs] & 0x3f;
+				bank = 2;
+				code = (spriteram[offs] & 0x3f) + 0x100;
 			}
 			else
 			{
-				bank = 2 + ((spriteram[offs] & 0x80) >> 7);
-				code = spriteram[offs] & 0x7f;
+				bank = 2;
+				code = spriteram[offs];
 			}
 
 			color = spriteram[offs + 1] & 0x7f;
@@ -410,7 +486,7 @@ static void draw_sprites(struct mame_bitmap *bitmap,const struct rectangle *clip
 			{
 				if (spriteram_3[offs] & 1)  /* double width, double height */
 				{
-					code &= 0x7c;
+					code &= ~3;
 					drawgfx(bitmap,Machine->gfx[bank],
 							code+3,color,flipx,flipy,
 							flipx ? sx : sx+16,flipy ? sy-16 : sy,
@@ -420,7 +496,7 @@ static void draw_sprites(struct mame_bitmap *bitmap,const struct rectangle *clip
 							flipx ? sx : sx+16,flipy ? sy : sy-16,
 							cliprect,TRANSPARENCY_COLOR,0x80);
 				}
-				code &= 0x7d;
+				code &= ~2;
 				drawgfx(bitmap,Machine->gfx[bank],
 						code+2,color,flipx,flipy,
 						flipx ? sx+16 : sx,flipy ? sy-16 : sy,
@@ -432,7 +508,7 @@ static void draw_sprites(struct mame_bitmap *bitmap,const struct rectangle *clip
 			}
 			else if (spriteram_3[offs] & 1) /* double width */
 			{
-				code &= 0x7e;
+				code &= ~1;
 				drawgfx(bitmap,Machine->gfx[bank],
 						code,color,flipx,flipy,
 						flipx ? sx+16 : sx,flipy ? sy-16 : sy,

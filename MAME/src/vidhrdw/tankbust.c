@@ -1,11 +1,11 @@
-#pragma code_seg("C704")
-#pragma data_seg("D704")
-#pragma bss_seg("B704")
-#pragma const_seg("K704")
-#pragma comment(linker, "/merge:D704=704")
-#pragma comment(linker, "/merge:C704=704")
-#pragma comment(linker, "/merge:B704=704")
-#pragma comment(linker, "/merge:K704=704")
+#pragma code_seg("C745")
+#pragma data_seg("D745")
+#pragma bss_seg("B745")
+#pragma const_seg("K745")
+#pragma comment(linker, "/merge:D745=745")
+#pragma comment(linker, "/merge:C745=745")
+#pragma comment(linker, "/merge:B745=745")
+#pragma comment(linker, "/merge:K745=745")
 /*
 *	Video Driver for Tank Busters
 */
@@ -113,7 +113,7 @@ VIDEO_START( tankbust )
 
 ***************************************************************************/
 
-WRITE_HANDLER( tankbust_background_videoram_w )
+WRITE8_HANDLER( tankbust_background_videoram_w )
 {
 	if( videoram[offset]!=data )
 	{
@@ -121,12 +121,12 @@ WRITE_HANDLER( tankbust_background_videoram_w )
 		tilemap_mark_tile_dirty(bg_tilemap, offset);
 	}
 }
-READ_HANDLER( tankbust_background_videoram_r )
+READ8_HANDLER( tankbust_background_videoram_r )
 {
 	return videoram[offset];
 }
 
-WRITE_HANDLER( tankbust_background_colorram_w )
+WRITE8_HANDLER( tankbust_background_colorram_w )
 {
 	if( colorram[offset]!=data )
 	{
@@ -134,12 +134,12 @@ WRITE_HANDLER( tankbust_background_colorram_w )
 		tilemap_mark_tile_dirty(bg_tilemap, offset);
 	}
 }
-READ_HANDLER( tankbust_background_colorram_r )
+READ8_HANDLER( tankbust_background_colorram_r )
 {
 	return colorram[offset];
 }
 
-WRITE_HANDLER( tankbust_txtram_w )
+WRITE8_HANDLER( tankbust_txtram_w )
 {
 	if( txt_ram[offset]!=data )
 	{
@@ -147,7 +147,7 @@ WRITE_HANDLER( tankbust_txtram_w )
 		tilemap_mark_tile_dirty(txt_tilemap, offset);
 	}
 }
-READ_HANDLER( tankbust_txtram_r )
+READ8_HANDLER( tankbust_txtram_r )
 {
 	return txt_ram[offset];
 }
@@ -155,7 +155,7 @@ READ_HANDLER( tankbust_txtram_r )
 
 static UINT8 xscroll[2];
 
-WRITE_HANDLER( tankbust_xscroll_w )
+WRITE8_HANDLER( tankbust_xscroll_w )
 {
 	if( xscroll[offset] != data )
 	{
@@ -172,7 +172,7 @@ WRITE_HANDLER( tankbust_xscroll_w )
 
 static UINT8 yscroll[2];
 
-WRITE_HANDLER( tankbust_yscroll_w )
+WRITE8_HANDLER( tankbust_yscroll_w )
 {
 	if( yscroll[offset] != data )
 	{

@@ -1,11 +1,11 @@
-#pragma code_seg("C546")
-#pragma data_seg("D546")
-#pragma bss_seg("B546")
-#pragma const_seg("K546")
-#pragma comment(linker, "/merge:D546=546")
-#pragma comment(linker, "/merge:C546=546")
-#pragma comment(linker, "/merge:B546=546")
-#pragma comment(linker, "/merge:K546=546")
+#pragma code_seg("C577")
+#pragma data_seg("D577")
+#pragma bss_seg("B577")
+#pragma const_seg("K577")
+#pragma comment(linker, "/merge:D577=577")
+#pragma comment(linker, "/merge:C577=577")
+#pragma comment(linker, "/merge:B577=577")
+#pragma comment(linker, "/merge:K577=577")
 /***************************************************************************
 
   vidhrdw.c
@@ -197,7 +197,7 @@ static void set_background_palette(int bank)
 	}
 }
 
-WRITE_HANDLER( popeye_videoram_w )
+WRITE8_HANDLER( popeye_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -206,7 +206,7 @@ WRITE_HANDLER( popeye_videoram_w )
 	}
 }
 
-WRITE_HANDLER( popeye_colorram_w )
+WRITE8_HANDLER( popeye_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -215,7 +215,7 @@ WRITE_HANDLER( popeye_colorram_w )
 	}
 }
 
-WRITE_HANDLER( popeye_bitmap_w )
+WRITE8_HANDLER( popeye_bitmap_w )
 {
 	int sx,sy,x,y,colour;
 
@@ -257,7 +257,7 @@ WRITE_HANDLER( popeye_bitmap_w )
 	}
 }
 
-WRITE_HANDLER( skyskipr_bitmap_w )
+WRITE8_HANDLER( skyskipr_bitmap_w )
 {
 	offset = ((offset & 0xfc0) << 1) | (offset & 0x03f);
 	if (data & 0x80)

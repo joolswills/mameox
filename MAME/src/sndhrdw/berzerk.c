@@ -1,11 +1,11 @@
-#pragma code_seg("C159")
-#pragma data_seg("D159")
-#pragma bss_seg("B159")
-#pragma const_seg("K159")
-#pragma comment(linker, "/merge:D159=159")
-#pragma comment(linker, "/merge:C159=159")
-#pragma comment(linker, "/merge:B159=159")
-#pragma comment(linker, "/merge:K159=159")
+#pragma code_seg("C160")
+#pragma data_seg("D160")
+#pragma bss_seg("B160")
+#pragma const_seg("K160")
+#pragma comment(linker, "/merge:D160=160")
+#pragma comment(linker, "/merge:C160=160")
+#pragma comment(linker, "/merge:B160=160")
+#pragma comment(linker, "/merge:K160=160")
 /*
  * Berzerk/Frenzy Soundhardware Driver
  * Copyright Alex Judd 1997/98
@@ -116,7 +116,7 @@ static int berzerk_sh_start(const struct MachineSound *msound)
 	return 0;
 }
 
-WRITE_HANDLER( berzerk_sound_control_a_w )
+WRITE8_HANDLER( berzerk_sound_control_a_w )
 {
 	int noise = 0;
 	int voice = 0;
@@ -295,7 +295,7 @@ logerror("Trying death sound");
 	} /* End of berzerknoisemulate */
 }
 
-WRITE_HANDLER( berzerk_sound_control_b_w )
+WRITE8_HANDLER( berzerk_sound_control_b_w )
 {
 	logerror("B Data value %d and offset %d at %d\n", data, offset, lastfreq);
 }
@@ -308,7 +308,7 @@ static void berzerk_sh_update(void)
 }
 
 
-READ_HANDLER( berzerk_voiceboard_r )
+READ8_HANDLER( berzerk_voiceboard_r )
 {
    if (!voice_playing)
       return 0x00;

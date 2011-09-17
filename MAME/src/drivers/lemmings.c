@@ -1,11 +1,11 @@
-#pragma code_seg("C401")
-#pragma data_seg("D401")
-#pragma bss_seg("B401")
-#pragma const_seg("K401")
-#pragma comment(linker, "/merge:D401=401")
-#pragma comment(linker, "/merge:C401=401")
-#pragma comment(linker, "/merge:B401=401")
-#pragma comment(linker, "/merge:K401=401")
+#pragma code_seg("C418")
+#pragma data_seg("D418")
+#pragma bss_seg("B418")
+#pragma const_seg("K418")
+#pragma comment(linker, "/merge:D418=418")
+#pragma comment(linker, "/merge:C418=418")
+#pragma comment(linker, "/merge:B418=418")
+#pragma comment(linker, "/merge:K418=418")
 /***************************************************************************
 
 	Lemmings				(c) 1991 Data East USA (DE-0357)
@@ -81,12 +81,12 @@ static WRITE16_HANDLER( lemmings_palette_24bit_w )
 static WRITE16_HANDLER( lemmings_sound_w )
 {
 	soundlatch_w(0,data&0xff);
-	cpu_set_irq_line(1,1,HOLD_LINE);
+	cpunum_set_input_line(1,1,HOLD_LINE);
 }
 
-static WRITE_HANDLER( lemmings_sound_ack_w )
+static WRITE8_HANDLER( lemmings_sound_ack_w )
 {
-	cpu_set_irq_line(1,1,CLEAR_LINE);
+	cpunum_set_input_line(1,1,CLEAR_LINE);
 }
 
 /******************************************************************************/
@@ -278,7 +278,7 @@ static struct OKIM6295interface okim6295_interface =
 
 static void sound_irq(int state)
 {
-	cpu_set_irq_line(1,0,state);
+	cpunum_set_input_line(1,0,state);
 }
 
 static struct YM2151interface ym2151_interface =

@@ -1,11 +1,11 @@
-#pragma code_seg("C515")
-#pragma data_seg("D515")
-#pragma bss_seg("B515")
-#pragma const_seg("K515")
-#pragma comment(linker, "/merge:D515=515")
-#pragma comment(linker, "/merge:C515=515")
-#pragma comment(linker, "/merge:B515=515")
-#pragma comment(linker, "/merge:K515=515")
+#pragma code_seg("C545")
+#pragma data_seg("D545")
+#pragma bss_seg("B545")
+#pragma const_seg("K545")
+#pragma comment(linker, "/merge:D545=545")
+#pragma comment(linker, "/merge:C545=545")
+#pragma comment(linker, "/merge:B545=545")
+#pragma comment(linker, "/merge:K545=545")
 /***************************************************************************
 
 Atari Orbit video emulation
@@ -22,7 +22,7 @@ static struct tilemap* tilemap;
 static int orbit_flip_screen;
 
 
-WRITE_HANDLER( orbit_playfield_w )
+WRITE8_HANDLER( orbit_playfield_w )
 {
 	tilemap_mark_tile_dirty(tilemap, offset);
 
@@ -30,7 +30,7 @@ WRITE_HANDLER( orbit_playfield_w )
 }
 
 
-WRITE_HANDLER( orbit_sprite_w )
+WRITE8_HANDLER( orbit_sprite_w )
 {
 	orbit_sprite_ram[offset] = data;
 }

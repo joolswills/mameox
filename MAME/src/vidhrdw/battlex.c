@@ -1,11 +1,11 @@
-#pragma code_seg("C153")
-#pragma data_seg("D153")
-#pragma bss_seg("B153")
-#pragma const_seg("K153")
-#pragma comment(linker, "/merge:D153=153")
-#pragma comment(linker, "/merge:C153=153")
-#pragma comment(linker, "/merge:B153=153")
-#pragma comment(linker, "/merge:K153=153")
+#pragma code_seg("C154")
+#pragma data_seg("D154")
+#pragma bss_seg("B154")
+#pragma const_seg("K154")
+#pragma comment(linker, "/merge:D154=154")
+#pragma comment(linker, "/merge:C154=154")
+#pragma comment(linker, "/merge:B154=154")
+#pragma comment(linker, "/merge:K154=154")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -42,7 +42,7 @@ PALETTE_INIT( battlex )
 	}
 }
 
-WRITE_HANDLER( battlex_palette_w )
+WRITE8_HANDLER( battlex_palette_w )
 {
 	int g = ((data & 1) >> 0) * 0xff;
 	int b = ((data & 2) >> 1) * 0xff;
@@ -51,17 +51,17 @@ WRITE_HANDLER( battlex_palette_w )
 	palette_set_color(16*8 + offset,r,g,b);
 }
 
-WRITE_HANDLER( battlex_scroll_x_lsb_w )
+WRITE8_HANDLER( battlex_scroll_x_lsb_w )
 {
 	battlex_scroll_lsb = data;
 }
 
-WRITE_HANDLER( battlex_scroll_x_msb_w )
+WRITE8_HANDLER( battlex_scroll_x_msb_w )
 {
 	battlex_scroll_msb = data;
 }
 
-WRITE_HANDLER( battlex_videoram_w )
+WRITE8_HANDLER( battlex_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -70,7 +70,7 @@ WRITE_HANDLER( battlex_videoram_w )
 	}
 }
 
-WRITE_HANDLER( battlex_flipscreen_w )
+WRITE8_HANDLER( battlex_flipscreen_w )
 {
 	/* bit 4 is used, but for what? */
 

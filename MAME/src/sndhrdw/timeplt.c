@@ -20,8 +20,8 @@
 
 #include "driver.h"
 
-static READ_HANDLER( timeplt_portB_r );
-static WRITE_HANDLER( timeplt_filter_w );
+static READ8_HANDLER( timeplt_portB_r );
+static WRITE8_HANDLER( timeplt_filter_w );
 
 ADDRESS_MAP_START( timeplt_sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0x0000, 0x1fff) AM_READ(MRA8_ROM)
@@ -40,6 +40,23 @@ ADDRESS_MAP_START( timeplt_sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0x6000, 0x6000) AM_WRITE(AY8910_write_port_1_w)
 	AM_RANGE(0x7000, 0x7000) AM_WRITE(AY8910_control_port_1_w)
 	AM_RANGE(0x8000, 0x8fff) AM_WRITE(timeplt_filter_w)
+ADDRESS_MAP_END
+
+ADDRESS_MAP_START( locomotn_sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x1fff) AM_READ(MRA8_ROM)
+	AM_RANGE(0x2000, 0x23ff) AM_READ(MRA8_RAM)
+	AM_RANGE(0x4000, 0x4000) AM_READ(AY8910_read_port_0_r)
+	AM_RANGE(0x6000, 0x6000) AM_READ(AY8910_read_port_1_r)
+ADDRESS_MAP_END
+
+ADDRESS_MAP_START( locomotn_sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x1fff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x2000, 0x23ff) AM_WRITE(MWA8_RAM)
+	AM_RANGE(0x3000, 0x3fff) AM_WRITE(timeplt_filter_w)
+	AM_RANGE(0x4000, 0x4000) AM_WRITE(AY8910_write_port_0_w)
+	AM_RANGE(0x5000, 0x5000) AM_WRITE(AY8910_control_port_0_w)
+	AM_RANGE(0x6000, 0x6000) AM_WRITE(AY8910_write_port_1_w)
+	AM_RANGE(0x7000, 0x7000) AM_WRITE(AY8910_control_port_1_w)
 ADDRESS_MAP_END
 
 
@@ -77,7 +94,7 @@ static int timeplt_timer[10] =
 	0x00, 0x10, 0x20, 0x30, 0x40, 0x90, 0xa0, 0xb0, 0xa0, 0xd0
 };
 
-static READ_HANDLER( timeplt_portB_r )
+static READ8_HANDLER( timeplt_portB_r )
 {
 	/* need to protect from totalcycles overflow */
 	static int last_totalcycles = 0;
@@ -105,7 +122,7 @@ static void filter_w(int chip, int channel, int data)
 	set_RC_filter(3*chip + channel,1000,5100,0,C);
 }
 
-static WRITE_HANDLER( timeplt_filter_w )
+static WRITE8_HANDLER( timeplt_filter_w )
 {
 	filter_w(0, 0, (offset >>  6) & 3);
 	filter_w(0, 1, (offset >>  8) & 3);
@@ -116,14 +133,14 @@ static WRITE_HANDLER( timeplt_filter_w )
 }
 
 
-WRITE_HANDLER( timeplt_sh_irqtrigger_w )
+WRITE8_HANDLER( timeplt_sh_irqtrigger_w )
 {
 	static int last;
 
 	if (last == 0 && data)
 	{
 		/* setting bit 0 low then high triggers IRQ on the sound CPU */
-		cpu_set_irq_line_and_vector(1,0,HOLD_LINE,0xff);
+		cpunum_set_input_line_and_vector(1,0,HOLD_LINE,0xff);
 	}
 
 	last = data;

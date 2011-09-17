@@ -1,11 +1,11 @@
-#pragma code_seg("C464")
-#pragma data_seg("D464")
-#pragma bss_seg("B464")
-#pragma const_seg("K464")
-#pragma comment(linker, "/merge:D464=464")
-#pragma comment(linker, "/merge:C464=464")
-#pragma comment(linker, "/merge:B464=464")
-#pragma comment(linker, "/merge:K464=464")
+#pragma code_seg("C490")
+#pragma data_seg("D490")
+#pragma bss_seg("B490")
+#pragma const_seg("K490")
+#pragma comment(linker, "/merge:D490=490")
+#pragma comment(linker, "/merge:C490=490")
+#pragma comment(linker, "/merge:B490=490")
+#pragma comment(linker, "/merge:K490=490")
 /*******************************************************************************
 
      Mouser - Video Hardware:
@@ -51,17 +51,17 @@ PALETTE_INIT( mouser )
 	}
 }
 
-WRITE_HANDLER( mouser_flip_screen_x_w )
+WRITE8_HANDLER( mouser_flip_screen_x_w )
 {
 	flip_screen_x_set(~data & 1);
 }
 
-WRITE_HANDLER( mouser_flip_screen_y_w )
+WRITE8_HANDLER( mouser_flip_screen_y_w )
 {
 	flip_screen_y_set(~data & 1);
 }
 
-WRITE_HANDLER( mouser_spriteram_w )
+WRITE8_HANDLER( mouser_spriteram_w )
 {
 	/* Mark the entire row as dirty if row scrollram is written */
 	/* Only used by the MOUSER logo */
@@ -76,7 +76,7 @@ WRITE_HANDLER( mouser_spriteram_w )
 	spriteram_w(offset, data);
 }
 
-WRITE_HANDLER( mouser_colorram_w )
+WRITE8_HANDLER( mouser_colorram_w )
 {
 	dirtybuffer[offset] = 1;
 	colorram_w(offset, data);

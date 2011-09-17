@@ -1,11 +1,11 @@
-#pragma code_seg("C571")
-#pragma data_seg("D571")
-#pragma bss_seg("B571")
-#pragma const_seg("K571")
-#pragma comment(linker, "/merge:D571=571")
-#pragma comment(linker, "/merge:C571=571")
-#pragma comment(linker, "/merge:B571=571")
-#pragma comment(linker, "/merge:K571=571")
+#pragma code_seg("C605")
+#pragma data_seg("D605")
+#pragma bss_seg("B605")
+#pragma const_seg("K605")
+#pragma comment(linker, "/merge:D605=605")
+#pragma comment(linker, "/merge:C605=605")
+#pragma comment(linker, "/merge:B605=605")
+#pragma comment(linker, "/merge:K605=605")
 /***************************************************************************
 
 Irem Red Alert Driver
@@ -28,28 +28,28 @@ extern unsigned char *redalert_spriteram2;
 extern unsigned char *redalert_spriteram3;
 extern unsigned char *redalert_characterram;
 extern unsigned char *redalert_characterram2;
-WRITE_HANDLER( redalert_backram_w );
-WRITE_HANDLER( redalert_spriteram1_w );
-WRITE_HANDLER( redalert_spriteram2_w );
-WRITE_HANDLER( redalert_spriteram3_w );
-WRITE_HANDLER( redalert_spriteram4_w );
-WRITE_HANDLER( redalert_characterram_w );
-WRITE_HANDLER( redalert_characterram2_w );
+WRITE8_HANDLER( redalert_backram_w );
+WRITE8_HANDLER( redalert_spriteram1_w );
+WRITE8_HANDLER( redalert_spriteram2_w );
+WRITE8_HANDLER( redalert_spriteram3_w );
+WRITE8_HANDLER( redalert_spriteram4_w );
+WRITE8_HANDLER( redalert_characterram_w );
+WRITE8_HANDLER( redalert_characterram2_w );
 extern VIDEO_UPDATE( redalert );
-WRITE_HANDLER( redalert_c040_w );
-WRITE_HANDLER( demoneye_c040_w );
-WRITE_HANDLER( redalert_backcolor_w );
+WRITE8_HANDLER( redalert_c040_w );
+WRITE8_HANDLER( demoneye_c040_w );
+WRITE8_HANDLER( redalert_backcolor_w );
 
 
 /* sndhrdw/redalert.c */
-WRITE_HANDLER( redalert_c030_w );
-READ_HANDLER( redalert_voicecommand_r );
-WRITE_HANDLER( redalert_soundlatch_w );
-READ_HANDLER( redalert_AY8910_A_r );
-WRITE_HANDLER( redalert_AY8910_B_w );
-WRITE_HANDLER( redalert_AY8910_w );
-READ_HANDLER( redalert_sound_register_IC1_r );
-WRITE_HANDLER( redalert_sound_register_IC2_w );
+WRITE8_HANDLER( redalert_c030_w );
+READ8_HANDLER( redalert_voicecommand_r );
+WRITE8_HANDLER( redalert_soundlatch_w );
+READ8_HANDLER( redalert_AY8910_A_r );
+WRITE8_HANDLER( redalert_AY8910_B_w );
+WRITE8_HANDLER( redalert_AY8910_w );
+READ8_HANDLER( redalert_sound_register_IC1_r );
+WRITE8_HANDLER( redalert_sound_register_IC2_w );
 
 
 static ADDRESS_MAP_START( redalert_readmem, ADDRESS_SPACE_PROGRAM, 8 )
@@ -348,11 +348,11 @@ static INTERRUPT_GEN( redalert_interrupt )
 {
 	if( readinputport(3) )
 	{
-		cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 	}
 	else
 	{
-		cpu_set_irq_line(0, 0, HOLD_LINE);
+		cpunum_set_input_line(0, 0, HOLD_LINE);
 	}
 }
 

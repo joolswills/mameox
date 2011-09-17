@@ -1,11 +1,11 @@
-#pragma code_seg("C588")
-#pragma data_seg("D588")
-#pragma bss_seg("B588")
-#pragma const_seg("K588")
-#pragma comment(linker, "/merge:D588=588")
-#pragma comment(linker, "/merge:C588=588")
-#pragma comment(linker, "/merge:B588=588")
-#pragma comment(linker, "/merge:K588=588")
+#pragma code_seg("C622")
+#pragma data_seg("D622")
+#pragma bss_seg("B622")
+#pragma const_seg("K622")
+#pragma comment(linker, "/merge:D622=622")
+#pragma comment(linker, "/merge:C622=622")
+#pragma comment(linker, "/merge:B622=622")
+#pragma comment(linker, "/merge:K622=622")
 #define RNG_DEBUG 0
 
 /*
@@ -172,7 +172,7 @@ static WRITE16_HANDLER( rng_sysregs_w )
 			}
 
 			if (!(data & 0x40))
-				cpu_set_irq_line(0, MC68000_IRQ_5, CLEAR_LINE);
+				cpunum_set_input_line(0, MC68000_IRQ_5, CLEAR_LINE);
 		break;
 
 		case 0x0c/2:
@@ -202,7 +202,7 @@ static WRITE16_HANDLER( sound_cmd2_w )
 static WRITE16_HANDLER( sound_irq_w )
 {
 	if (ACCESSING_MSB)
-		cpu_set_irq_line(1, 0, HOLD_LINE);
+		cpunum_set_input_line(1, 0, HOLD_LINE);
 }
 
 static READ16_HANDLER( sound_status_msb_r )
@@ -216,7 +216,7 @@ static READ16_HANDLER( sound_status_msb_r )
 static INTERRUPT_GEN(rng_interrupt)
 {
 	if (rng_sysreg[0x0c/2] & 0x09)
-		cpu_set_irq_line(0, MC68000_IRQ_5, ASSERT_LINE);
+		cpunum_set_input_line(0, MC68000_IRQ_5, ASSERT_LINE);
 }
 
 static ADDRESS_MAP_START( rngreadmem, ADDRESS_SPACE_PROGRAM, 16 )
@@ -263,26 +263,26 @@ ADDRESS_MAP_END
 
 /**********************************************************************************/
 
-static WRITE_HANDLER( sound_status_w )
+static WRITE8_HANDLER( sound_status_w )
 {
 	rng_sound_status = data;
 }
 
-static WRITE_HANDLER( z80ctrl_w )
+static WRITE8_HANDLER( z80ctrl_w )
 {
 	rng_z80_control = data;
 
 	cpu_setbank(2, memory_region(REGION_CPU2) + 0x10000 + (data & 0x07) * 0x4000);
 
 	if (data & 0x10)
-		cpu_set_nmi_line(1, CLEAR_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_NMI, CLEAR_LINE);
 }
 
 static INTERRUPT_GEN(audio_interrupt)
 {
 	if (rng_z80_control & 0x80) return;
 
-	cpu_set_nmi_line(1, ASSERT_LINE);
+	cpunum_set_input_line(1, INPUT_LINE_NMI, ASSERT_LINE);
 }
 
 /* sound (this should be split into sndhrdw/xexex.c or pregx.c or so someday) */

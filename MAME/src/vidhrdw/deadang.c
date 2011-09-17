@@ -1,11 +1,11 @@
-#pragma code_seg("C245")
-#pragma data_seg("D245")
-#pragma bss_seg("B245")
-#pragma const_seg("K245")
-#pragma comment(linker, "/merge:D245=245")
-#pragma comment(linker, "/merge:C245=245")
-#pragma comment(linker, "/merge:B245=245")
-#pragma comment(linker, "/merge:K245=245")
+#pragma code_seg("C253")
+#pragma data_seg("D253")
+#pragma bss_seg("B253")
+#pragma const_seg("K253")
+#pragma comment(linker, "/merge:D253=253")
+#pragma comment(linker, "/merge:C253=253")
+#pragma comment(linker, "/merge:B253=253")
+#pragma comment(linker, "/merge:K253=253")
 #include "vidhrdw/generic.h"
 
 static struct tilemap *pf3_layer,*pf2_layer,*pf1_layer,*text_layer;
@@ -14,19 +14,19 @@ data8_t *deadang_video_data,*deadang_scroll_ram;
 
 /******************************************************************************/
 
-WRITE_HANDLER( deadang_foreground_w )
+WRITE8_HANDLER( deadang_foreground_w )
 {
 	deadang_video_data[offset]=data;
 	tilemap_mark_tile_dirty( pf1_layer, offset/2 );
 }
 
-WRITE_HANDLER( deadang_text_w )
+WRITE8_HANDLER( deadang_text_w )
 {
 	videoram[offset]=data;
 	tilemap_mark_tile_dirty( text_layer, offset/2 );
 }
 
-WRITE_HANDLER( deadang_bank_w )
+WRITE8_HANDLER( deadang_bank_w )
 {
 	deadangle_tilebank = data&1;
 	if (deadangle_tilebank!=deadangle_oldtilebank) {

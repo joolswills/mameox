@@ -1,11 +1,11 @@
-#pragma code_seg("C224")
-#pragma data_seg("D224")
-#pragma bss_seg("B224")
-#pragma const_seg("K224")
-#pragma comment(linker, "/merge:D224=224")
-#pragma comment(linker, "/merge:C224=224")
-#pragma comment(linker, "/merge:B224=224")
-#pragma comment(linker, "/merge:K224=224")
+#pragma code_seg("C229")
+#pragma data_seg("D229")
+#pragma bss_seg("B229")
+#pragma const_seg("K229")
+#pragma comment(linker, "/merge:D229=229")
+#pragma comment(linker, "/merge:C229=229")
+#pragma comment(linker, "/merge:B229=229")
+#pragma comment(linker, "/merge:K229=229")
 /***************************************************************************
 
  COSMIC.C
@@ -26,7 +26,7 @@ static int magspot_pen_mask;
 
 
 
-WRITE_HANDLER( cosmic_color_register_w )
+WRITE8_HANDLER( cosmic_color_register_w )
 {
 	color_registers[offset] = data ? 1 : 0;
 }
@@ -259,7 +259,7 @@ PALETTE_INIT( nomnlnd )
 }
 
 
-WRITE_HANDLER( cosmic_background_enable_w )
+WRITE8_HANDLER( cosmic_background_enable_w )
 {
 	background_enable = data;
 }

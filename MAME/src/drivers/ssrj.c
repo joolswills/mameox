@@ -1,11 +1,11 @@
-#pragma code_seg("C660")
-#pragma data_seg("D660")
-#pragma bss_seg("B660")
-#pragma const_seg("K660")
-#pragma comment(linker, "/merge:D660=660")
-#pragma comment(linker, "/merge:C660=660")
-#pragma comment(linker, "/merge:B660=660")
-#pragma comment(linker, "/merge:K660=660")
+#pragma code_seg("C697")
+#pragma data_seg("D697")
+#pragma bss_seg("B697")
+#pragma const_seg("K697")
+#pragma comment(linker, "/merge:D697=697")
+#pragma comment(linker, "/merge:C697=697")
+#pragma comment(linker, "/merge:B697=697")
+#pragma comment(linker, "/merge:K697=697")
 /***********************************
  Super Speed Race Jr (c) 1985 Taito
  driver by  Tomasz Slanina
@@ -41,12 +41,12 @@ HW info :
 
 extern unsigned char *ssrj_vram1,*ssrj_vram2,*ssrj_vram3,*ssrj_vram4,*ssrj_scrollram;
 
-WRITE_HANDLER(ssrj_vram1_w);
-WRITE_HANDLER(ssrj_vram2_w);
-WRITE_HANDLER(ssrj_vram4_w);
-READ_HANDLER(ssrj_vram1_r);
-READ_HANDLER(ssrj_vram2_r);
-READ_HANDLER(ssrj_vram4_r);
+WRITE8_HANDLER(ssrj_vram1_w);
+WRITE8_HANDLER(ssrj_vram2_w);
+WRITE8_HANDLER(ssrj_vram4_w);
+READ8_HANDLER(ssrj_vram1_r);
+READ8_HANDLER(ssrj_vram2_r);
+READ8_HANDLER(ssrj_vram4_r);
 
 VIDEO_START( ssrj );
 VIDEO_UPDATE( ssrj );
@@ -61,7 +61,7 @@ MACHINE_INIT(ssrj)
 	oldport=0x80;
 }
 
-static READ_HANDLER(ssrj_wheel_r)
+static READ8_HANDLER(ssrj_wheel_r)
 {
 	int port= input_port_1_r(0) -0x80;
 	int retval=port-oldport;

@@ -1,11 +1,11 @@
-#pragma code_seg("C571")
-#pragma data_seg("D571")
-#pragma bss_seg("B571")
-#pragma const_seg("K571")
-#pragma comment(linker, "/merge:D571=571")
-#pragma comment(linker, "/merge:C571=571")
-#pragma comment(linker, "/merge:B571=571")
-#pragma comment(linker, "/merge:K571=571")
+#pragma code_seg("C605")
+#pragma data_seg("D605")
+#pragma bss_seg("B605")
+#pragma const_seg("K605")
+#pragma comment(linker, "/merge:D605=605")
+#pragma comment(linker, "/merge:C605=605")
+#pragma comment(linker, "/merge:B605=605")
+#pragma comment(linker, "/merge:K605=605")
 /***************************************************************************
 
   vidhrdw.c
@@ -55,7 +55,7 @@ static unsigned char color_lookup[] = {
 
 static int backcolor, flip=0;
 
-WRITE_HANDLER( redalert_c040_w )
+WRITE8_HANDLER( redalert_c040_w )
 {
 	/* Only seems to load D0-D3 into a flip-flop. */
 	/* D0/D1 seem to head off to unconnected circuits */
@@ -69,14 +69,14 @@ WRITE_HANDLER( redalert_c040_w )
 	flip = !(data & 0x04);
 }
 
-WRITE_HANDLER( redalert_backcolor_w )
+WRITE8_HANDLER( redalert_backcolor_w )
 {
 	/* Only seems to load D0-D2 into a flip-flop. */
 	/* Outputs feed into RAM which seems to feed to RGB lines. */
 	backcolor = data & 0x07;
 }
 
-WRITE_HANDLER( demoneye_c040_w )
+WRITE8_HANDLER( demoneye_c040_w )
 {
 	/*
 		D0 == 1				-> 1 player
@@ -89,7 +89,7 @@ WRITE_HANDLER( demoneye_c040_w )
 redalert_backram_w
 ***************************************************************************/
 
-WRITE_HANDLER( redalert_backram_w )
+WRITE8_HANDLER( redalert_backram_w )
 {
 	int charnum;
 
@@ -110,7 +110,7 @@ WRITE_HANDLER( redalert_backram_w )
 redalert_spriteram1_w
 ***************************************************************************/
 
-WRITE_HANDLER( redalert_spriteram1_w )
+WRITE8_HANDLER( redalert_spriteram1_w )
 {
 	if (redalert_spriteram1[offset] != data)
 	{
@@ -124,7 +124,7 @@ WRITE_HANDLER( redalert_spriteram1_w )
 redalert_spriteram2_w
 ***************************************************************************/
 
-WRITE_HANDLER( redalert_spriteram2_w )
+WRITE8_HANDLER( redalert_spriteram2_w )
 {
 	if (redalert_spriteram2[offset] != data)
 	{
@@ -139,7 +139,7 @@ WRITE_HANDLER( redalert_spriteram2_w )
 redalert_characterram_w
 ***************************************************************************/
 
-WRITE_HANDLER( redalert_characterram_w )
+WRITE8_HANDLER( redalert_characterram_w )
 {
 	if (redalert_characterram[offset] != data)
 	{
@@ -149,7 +149,7 @@ WRITE_HANDLER( redalert_characterram_w )
 	}
 }
 
-WRITE_HANDLER( redalert_characterram2_w )
+WRITE8_HANDLER( redalert_characterram2_w )
 {
 	if (redalert_characterram2[offset] != data)
 	{
@@ -159,7 +159,7 @@ WRITE_HANDLER( redalert_characterram2_w )
 	}
 }
 
-WRITE_HANDLER( redalert_spriteram3_w )
+WRITE8_HANDLER( redalert_spriteram3_w )
 {
 	if (redalert_spriteram3[offset] != data)
 	{

@@ -1,11 +1,11 @@
-#pragma code_seg("C663")
-#pragma data_seg("D663")
-#pragma bss_seg("B663")
-#pragma const_seg("K663")
-#pragma comment(linker, "/merge:D663=663")
-#pragma comment(linker, "/merge:C663=663")
-#pragma comment(linker, "/merge:B663=663")
-#pragma comment(linker, "/merge:K663=663")
+#pragma code_seg("C701")
+#pragma data_seg("D701")
+#pragma bss_seg("B701")
+#pragma const_seg("K701")
+#pragma comment(linker, "/merge:D701=701")
+#pragma comment(linker, "/merge:C701=701")
+#pragma comment(linker, "/merge:B701=701")
+#pragma comment(linker, "/merge:K701=701")
 /***************************************************************************
 
 	Stadium Hero (Japan)			(c) 1988 Data East Corporation
@@ -57,7 +57,7 @@ static WRITE16_HANDLER( stadhero_control_w )
 			break;
 		case 6: /* 6502 sound cpu */
 			soundlatch_w(0,data & 0xff);
-			cpu_set_irq_line(1,IRQ_LINE_NMI,PULSE_LINE);
+			cpunum_set_input_line(1,INPUT_LINE_NMI,PULSE_LINE);
 			break;
 		default:
 			logerror("CPU #0 PC %06x: warning - write %02x to unmapped memory address %06x\n",activecpu_get_pc(),data,0x30c010+offset);
@@ -100,7 +100,7 @@ ADDRESS_MAP_END
 
 /******************************************************************************/
 
-static WRITE_HANDLER( YM3812_w )
+static WRITE8_HANDLER( YM3812_w )
 {
 	switch (offset) {
 	case 0:
@@ -112,7 +112,7 @@ static WRITE_HANDLER( YM3812_w )
 	}
 }
 
-static WRITE_HANDLER( YM2203_w )
+static WRITE8_HANDLER( YM2203_w )
 {
 	switch (offset) {
 	case 0:
@@ -274,7 +274,7 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 
 static void irqhandler(int linestate)
 {
-	cpu_set_irq_line(1,0,linestate);
+	cpunum_set_input_line(1,0,linestate);
 }
 
 static struct YM2203interface ym2203_interface =

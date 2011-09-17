@@ -1,11 +1,11 @@
-#pragma code_seg("C368")
-#pragma data_seg("D368")
-#pragma bss_seg("B368")
-#pragma const_seg("K368")
-#pragma comment(linker, "/merge:D368=368")
-#pragma comment(linker, "/merge:C368=368")
-#pragma comment(linker, "/merge:B368=368")
-#pragma comment(linker, "/merge:K368=368")
+#pragma code_seg("C383")
+#pragma data_seg("D383")
+#pragma bss_seg("B383")
+#pragma const_seg("K383")
+#pragma comment(linker, "/merge:D383=383")
+#pragma comment(linker, "/merge:C383=383")
+#pragma comment(linker, "/merge:B383=383")
+#pragma comment(linker, "/merge:K383=383")
 /***************************************************************************
 
 IronHorse
@@ -22,11 +22,11 @@ driver by Mirko Buffoni
 extern UINT8 *ironhors_scroll;
 static UINT8 *ironhors_interrupt_enable;
 
-extern WRITE_HANDLER( ironhors_videoram_w );
-extern WRITE_HANDLER( ironhors_colorram_w );
-extern WRITE_HANDLER( ironhors_palettebank_w );
-extern WRITE_HANDLER( ironhors_charbank_w );
-extern WRITE_HANDLER( ironhors_flipscreen_w );
+extern WRITE8_HANDLER( ironhors_videoram_w );
+extern WRITE8_HANDLER( ironhors_colorram_w );
+extern WRITE8_HANDLER( ironhors_palettebank_w );
+extern WRITE8_HANDLER( ironhors_charbank_w );
+extern WRITE8_HANDLER( ironhors_flipscreen_w );
 
 extern PALETTE_INIT( ironhors );
 extern VIDEO_START( ironhors );
@@ -38,21 +38,21 @@ static INTERRUPT_GEN( ironhors_interrupt )
 	if (cpu_getiloops() == 0)
 	{
 		if (*ironhors_interrupt_enable & 4)
-			cpu_set_irq_line(0, M6809_FIRQ_LINE, HOLD_LINE);
+			cpunum_set_input_line(0, M6809_FIRQ_LINE, HOLD_LINE);
 	}
 	else if (cpu_getiloops() % 2)
 	{
 		if (*ironhors_interrupt_enable & 1)
-			cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);
+			cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 	}
 }
 
-static WRITE_HANDLER( ironhors_sh_irqtrigger_w )
+static WRITE8_HANDLER( ironhors_sh_irqtrigger_w )
 {
-	cpu_set_irq_line_and_vector(1,0,HOLD_LINE,0xff);
+	cpunum_set_input_line_and_vector(1,0,HOLD_LINE,0xff);
 }
 
-static WRITE_HANDLER( ironhors_filter_w )
+static WRITE8_HANDLER( ironhors_filter_w )
 {
 	set_RC_filter(0,1000,2200,1000,data & 0x04 ? 220000 : 0); /* YM2203-SSG-A */
 	set_RC_filter(1,1000,2200,1000,data & 0x02 ? 220000 : 0); /* YM2203-SSG-B */
@@ -60,68 +60,50 @@ static WRITE_HANDLER( ironhors_filter_w )
 }
 
 
-static ADDRESS_MAP_START( ironhors_readmem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0020, 0x003f) AM_READ(MRA8_RAM)
-	AM_RANGE(0x0900, 0x0900) AM_READ(input_port_5_r)	/* Dipswitch settings 2 */
-	AM_RANGE(0x0a00, 0x0a00) AM_READ(input_port_3_r)	/* Dipswitch settings 0 */
-	AM_RANGE(0x0b00, 0x0b00) AM_READ(input_port_4_r)	/* Dipswitch settings 1 */
-	AM_RANGE(0x0b01, 0x0b01) AM_READ(input_port_2_r)	/* player 2 controls */
-	AM_RANGE(0x0b02, 0x0b02) AM_READ(input_port_1_r)	/* player 1 controls */
-	AM_RANGE(0x0b03, 0x0b03) AM_READ(input_port_0_r)	/* coins + selftest */
-	AM_RANGE(0x2000, 0x2fff) AM_READ(MRA8_RAM)
-	AM_RANGE(0x3000, 0x3fff) AM_READ(MRA8_RAM)
-	AM_RANGE(0x4000, 0xffff) AM_READ(MRA8_ROM)
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( ironhors_writemem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0003, 0x0003) AM_WRITE(ironhors_charbank_w)
-	AM_RANGE(0x0004, 0x0004) AM_WRITE(MWA8_RAM) AM_BASE(&ironhors_interrupt_enable)
-	AM_RANGE(0x0020, 0x003f) AM_WRITE(MWA8_RAM) AM_BASE(&ironhors_scroll)
+static ADDRESS_MAP_START( master_map, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x0002) AM_RAM
+	AM_RANGE(0x0003, 0x0003) AM_RAM AM_WRITE(ironhors_charbank_w)
+	AM_RANGE(0x0004, 0x0004) AM_RAM AM_BASE(&ironhors_interrupt_enable)
+	AM_RANGE(0x0005, 0x001f) AM_RAM
+	AM_RANGE(0x0020, 0x003f) AM_RAM AM_BASE(&ironhors_scroll)
+	AM_RANGE(0x0040, 0x005f) AM_RAM
+	AM_RANGE(0x0060, 0x00df) AM_RAM
 	AM_RANGE(0x0800, 0x0800) AM_WRITE(soundlatch_w)
-	AM_RANGE(0x0900, 0x0900) AM_WRITE(ironhors_sh_irqtrigger_w)  /* cause interrupt on audio CPU */
-	AM_RANGE(0x0a00, 0x0a00) AM_WRITE(ironhors_palettebank_w)	/* + coin counters */
-	AM_RANGE(0x0b00, 0x0b00) AM_WRITE(ironhors_flipscreen_w)
-	AM_RANGE(0x2000, 0x23ff) AM_WRITE(ironhors_colorram_w) AM_BASE(&colorram)
-	AM_RANGE(0x2400, 0x27ff) AM_WRITE(ironhors_videoram_w) AM_BASE(&videoram)
-	AM_RANGE(0x2800, 0x2fff) AM_WRITE(MWA8_RAM)
-	AM_RANGE(0x3000, 0x30ff) AM_WRITE(MWA8_RAM) AM_BASE(&spriteram_2)
-	AM_RANGE(0x3100, 0x37ff) AM_WRITE(MWA8_RAM)
-	AM_RANGE(0x3800, 0x38ff) AM_WRITE(MWA8_RAM) AM_BASE(&spriteram) AM_SIZE(&spriteram_size)
-	AM_RANGE(0x3900, 0x3fff) AM_WRITE(MWA8_RAM)
-	AM_RANGE(0x4000, 0xffff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x0900, 0x0900) AM_READWRITE(input_port_5_r, ironhors_sh_irqtrigger_w)
+	AM_RANGE(0x0a00, 0x0a00) AM_READWRITE(input_port_3_r, ironhors_palettebank_w)
+	AM_RANGE(0x0b00, 0x0b00) AM_READWRITE(input_port_4_r, ironhors_flipscreen_w)
+	AM_RANGE(0x0b01, 0x0b01) AM_READ(input_port_2_r)
+	AM_RANGE(0x0b02, 0x0b02) AM_READ(input_port_1_r)
+	AM_RANGE(0x0b03, 0x0b03) AM_READ(input_port_0_r)
+	AM_RANGE(0x1800, 0x1800) AM_WRITENOP // ???
+	AM_RANGE(0x1a00, 0x1a01) AM_WRITENOP // ???
+	AM_RANGE(0x1c00, 0x1dff) AM_WRITENOP // ???
+	AM_RANGE(0x2000, 0x23ff) AM_RAM AM_WRITE(ironhors_colorram_w) AM_BASE(&colorram)
+	AM_RANGE(0x2400, 0x27ff) AM_RAM AM_WRITE(ironhors_videoram_w) AM_BASE(&videoram)
+	AM_RANGE(0x2800, 0x2fff) AM_RAM
+	AM_RANGE(0x3000, 0x30ff) AM_RAM AM_BASE(&spriteram_2)
+	AM_RANGE(0x3100, 0x37ff) AM_RAM
+	AM_RANGE(0x3800, 0x38ff) AM_RAM AM_BASE(&spriteram) AM_SIZE(&spriteram_size)
+	AM_RANGE(0x3900, 0x3fff) AM_RAM
+	AM_RANGE(0x4000, 0xffff) AM_ROM
 ADDRESS_MAP_END
 
-static ADDRESS_MAP_START( ironhors_sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0x3fff) AM_READ(MRA8_ROM)
-	AM_RANGE(0x4000, 0x43ff) AM_READ(MRA8_RAM)
+static ADDRESS_MAP_START( slave_map, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x3fff) AM_ROM
+	AM_RANGE(0x4000, 0x43ff) AM_RAM
 	AM_RANGE(0x8000, 0x8000) AM_READ(soundlatch_r)
 ADDRESS_MAP_END
 
-static ADDRESS_MAP_START( ironhors_sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0x3fff) AM_WRITE(MWA8_ROM)
-	AM_RANGE(0x4000, 0x43ff) AM_WRITE(MWA8_RAM)
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( ironhors_sound_readport, ADDRESS_SPACE_IO, 8 )
-	AM_RANGE(0x00, 0x00) AM_READ(YM2203_status_port_0_r)
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( ironhors_sound_writeport, ADDRESS_SPACE_IO, 8 )
-	AM_RANGE(0x00, 0x00) AM_WRITE(YM2203_control_port_0_w)
+static ADDRESS_MAP_START( slave_io_map, ADDRESS_SPACE_IO, 8 )
+	AM_RANGE(0x00, 0x00) AM_READWRITE(YM2203_status_port_0_r, YM2203_control_port_0_w)
 	AM_RANGE(0x01, 0x01) AM_WRITE(YM2203_write_port_0_w)
 ADDRESS_MAP_END
 
 
-static ADDRESS_MAP_START( farwest_sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0x3fff) AM_READ(MRA8_ROM)
-	AM_RANGE(0x4000, 0x43ff) AM_READ(MRA8_RAM)
-	AM_RANGE(0x8000, 0x8000) AM_READ(soundlatch_r)
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( farwest_sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0x3fff) AM_WRITE(MWA8_ROM)
-	AM_RANGE(0x4000, 0x43ff) AM_WRITE(MWA8_RAM)
-	AM_RANGE(0x8000, 0x8000) AM_WRITE(YM2203_control_port_0_w)
+static ADDRESS_MAP_START( farwest_slave_map, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x3fff) AM_ROM
+	AM_RANGE(0x4000, 0x43ff) AM_RAM
+	AM_RANGE(0x8000, 0x8000) AM_READWRITE(soundlatch_r, YM2203_control_port_0_w)
 	AM_RANGE(0x8001, 0x8001) AM_WRITE(YM2203_write_port_0_w)
 ADDRESS_MAP_END
 
@@ -134,9 +116,7 @@ INPUT_PORTS_START( ironhors )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE1 )
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_START2 )
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0xe0, IP_ACTIVE_LOW, IPT_UNUSED )
 
 	PORT_START	/* IN1 */
 	/* note that button 3 for player 1 and 2 are exchanged */
@@ -147,7 +127,7 @@ INPUT_PORTS_START( ironhors )
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON3 | IPF_COCKTAIL )
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNUSED )
 
 	PORT_START	/* IN2 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  | IPF_4WAY | IPF_COCKTAIL )
@@ -157,7 +137,7 @@ INPUT_PORTS_START( ironhors )
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 | IPF_COCKTAIL )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 | IPF_COCKTAIL )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON3 )
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNUSED )
 
 	PORT_START	/* DSW0 */
 	PORT_DIPNAME( 0x03, 0x02, DEF_STR( Lives ) )
@@ -169,15 +149,15 @@ INPUT_PORTS_START( ironhors )
 	PORT_DIPSETTING(    0x00, DEF_STR( Upright ) )
 	PORT_DIPSETTING(    0x04, DEF_STR( Cocktail ) )
 	PORT_DIPNAME( 0x18, 0x18, DEF_STR( Bonus_Life ) )
-	PORT_DIPSETTING(    0x18, "30000 70000" )
-	PORT_DIPSETTING(    0x10, "40000 80000" )
-	PORT_DIPSETTING(    0x08, "40000" )
-	PORT_DIPSETTING(    0x00, "50000" )
-	PORT_DIPNAME( 0x60, 0x60, DEF_STR( Difficulty ) )
+	PORT_DIPSETTING(    0x18, "30K 70K+" )
+	PORT_DIPSETTING(    0x10, "40K 80K+" )
+	PORT_DIPSETTING(    0x08, "40K" )
+	PORT_DIPSETTING(    0x00, "50K" )
+	PORT_DIPNAME( 0x60, 0x40, DEF_STR( Difficulty ) )
 	PORT_DIPSETTING(    0x60, "Easy" )
 	PORT_DIPSETTING(    0x40, "Normal" )
 	PORT_DIPSETTING(    0x20, "Hard" )
-	PORT_DIPSETTING(    0x00, "Hardest" )
+	PORT_DIPSETTING(    0x00, "Very Hard" )
 	PORT_DIPNAME( 0x80, 0x00, DEF_STR( Demo_Sounds ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -216,7 +196,6 @@ INPUT_PORTS_START( ironhors )
 	PORT_DIPSETTING(    0xb0, DEF_STR( 1C_5C ) )
 	PORT_DIPSETTING(    0xa0, DEF_STR( 1C_6C ) )
 	PORT_DIPSETTING(    0x90, DEF_STR( 1C_7C ) )
-/* 	PORT_DIPSETTING(    0x00, "Invalid" ) */
 
 	PORT_START
 	PORT_DIPNAME( 0x01, 0x00, DEF_STR( Flip_Screen ) )
@@ -226,8 +205,8 @@ INPUT_PORTS_START( ironhors )
 	PORT_DIPSETTING(    0x02, "Single" )
 	PORT_DIPSETTING(    0x00, "Dual" )
 	PORT_DIPNAME( 0x04, 0x04, "Button Layout" )
-	PORT_DIPSETTING(    0x04, "Power Atk Squat" )
-	PORT_DIPSETTING(    0x00, "Squat Atk Power" )
+	PORT_DIPSETTING(    0x04, "Power Attack Squat" )
+	PORT_DIPSETTING(    0x00, "Squat Attack Power" )
 	PORT_BIT( 0xf8, IP_ACTIVE_LOW, IPT_UNUSED )
 INPUT_PORTS_END
 
@@ -238,9 +217,7 @@ INPUT_PORTS_START( dairesya )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE1 )
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_START2 )
-	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0xe0, IP_ACTIVE_LOW, IPT_UNUSED )
 
 	PORT_START	/* IN1 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  | IPF_4WAY )
@@ -250,7 +227,7 @@ INPUT_PORTS_START( dairesya )
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON3 )
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNUSED )
 
 	PORT_START	/* IN2 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  | IPF_4WAY | IPF_COCKTAIL )
@@ -260,7 +237,7 @@ INPUT_PORTS_START( dairesya )
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 | IPF_COCKTAIL )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 | IPF_COCKTAIL )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON3 | IPF_COCKTAIL )
-	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNUSED )
 
 	PORT_START	/* DSW0 */
 	PORT_DIPNAME( 0x03, 0x02, DEF_STR( Lives ) )
@@ -272,15 +249,15 @@ INPUT_PORTS_START( dairesya )
 	PORT_DIPSETTING(    0x00, DEF_STR( Upright ) )
 	PORT_DIPSETTING(    0x04, DEF_STR( Cocktail ) )
 	PORT_DIPNAME( 0x18, 0x18, DEF_STR( Bonus_Life ) )
-	PORT_DIPSETTING(    0x18, "30000 70000" )
-	PORT_DIPSETTING(    0x10, "40000 80000" )
-	PORT_DIPSETTING(    0x08, "40000" )
-	PORT_DIPSETTING(    0x00, "50000" )
+	PORT_DIPSETTING(    0x18, "30K 70K+" )
+	PORT_DIPSETTING(    0x10, "40K 80K+" )
+	PORT_DIPSETTING(    0x08, "40K" )
+	PORT_DIPSETTING(    0x00, "50K" )
 	PORT_DIPNAME( 0x60, 0x60, DEF_STR( Difficulty ) )
 	PORT_DIPSETTING(    0x60, "Easy" )
 	PORT_DIPSETTING(    0x40, "Normal" )
 	PORT_DIPSETTING(    0x20, "Hard" )
-	PORT_DIPSETTING(    0x00, "Hardest" )
+	PORT_DIPSETTING(    0x00, "Very Hard" )
 	PORT_DIPNAME( 0x80, 0x00, DEF_STR( Demo_Sounds ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -319,7 +296,6 @@ INPUT_PORTS_START( dairesya )
 	PORT_DIPSETTING(    0xb0, DEF_STR( 1C_5C ) )
 	PORT_DIPSETTING(    0xa0, DEF_STR( 1C_6C ) )
 	PORT_DIPSETTING(    0x90, DEF_STR( 1C_7C ) )
-/* 	PORT_DIPSETTING(    0x00, "Invalid" ) */
 
 	PORT_START
 	PORT_DIPNAME( 0x01, 0x00, DEF_STR( Flip_Screen ) )
@@ -329,8 +305,8 @@ INPUT_PORTS_START( dairesya )
 	PORT_DIPSETTING(    0x02, "Single" )
 	PORT_DIPSETTING(    0x00, "Dual" )
 	PORT_DIPNAME( 0x04, 0x04, "Button Layout" )
-	PORT_DIPSETTING(    0x04, "Power Atk Squat" )
-	PORT_DIPSETTING(    0x00, "Squat Atk Power" )
+	PORT_DIPSETTING(    0x04, "Power Attack Squat" )
+	PORT_DIPSETTING(    0x00, "Squat Attack Power" )
 	PORT_BIT( 0xf8, IP_ACTIVE_LOW, IPT_UNUSED )
 INPUT_PORTS_END
 
@@ -429,13 +405,13 @@ static MACHINE_DRIVER_START( ironhors )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M6809,18432000/6)        /* 3.072 MHz??? mod by Shingo Suzuki 1999/10/15 */
-	MDRV_CPU_PROGRAM_MAP(ironhors_readmem,ironhors_writemem)
+	MDRV_CPU_PROGRAM_MAP(master_map, 0)
 	MDRV_CPU_VBLANK_INT(ironhors_interrupt,8)
 
 	MDRV_CPU_ADD_TAG("sound",Z80,18432000/6)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)        /* 3.072 MHz */
-	MDRV_CPU_PROGRAM_MAP(ironhors_sound_readmem,ironhors_sound_writemem)
-	MDRV_CPU_IO_MAP(ironhors_sound_readport,ironhors_sound_writeport)
+	MDRV_CPU_PROGRAM_MAP(slave_map, 0)
+	MDRV_CPU_IO_MAP(slave_io_map, 0)
 
 	MDRV_FRAMES_PER_SECOND(30)
 	MDRV_VBLANK_DURATION(DEFAULT_30HZ_VBLANK_DURATION)
@@ -461,7 +437,8 @@ static MACHINE_DRIVER_START( farwest )
 	MDRV_IMPORT_FROM(ironhors)
 
 	MDRV_CPU_MODIFY("sound")
-	MDRV_CPU_PROGRAM_MAP(farwest_sound_readmem, farwest_sound_writemem)
+	MDRV_CPU_PROGRAM_MAP(farwest_slave_map, 0)
+	MDRV_CPU_IO_MAP(0, 0)
 
 	MDRV_GFXDECODE(farwest_gfxdecodeinfo)
 MACHINE_DRIVER_END

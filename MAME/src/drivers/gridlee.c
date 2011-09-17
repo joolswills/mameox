@@ -1,11 +1,11 @@
-#pragma code_seg("C337")
-#pragma data_seg("D337")
-#pragma bss_seg("B337")
-#pragma const_seg("K337")
-#pragma comment(linker, "/merge:D337=337")
-#pragma comment(linker, "/merge:C337=337")
-#pragma comment(linker, "/merge:B337=337")
-#pragma comment(linker, "/merge:K337=337")
+#pragma code_seg("C351")
+#pragma data_seg("D351")
+#pragma bss_seg("B351")
+#pragma const_seg("K351")
+#pragma comment(linker, "/merge:D351=351")
+#pragma comment(linker, "/merge:C351=351")
+#pragma comment(linker, "/merge:B351=351")
+#pragma comment(linker, "/merge:K351=351")
 /***************************************************************************
 
 	Videa Gridlee hardware
@@ -118,7 +118,7 @@ static void poly17_init(void);
 
 static void irq_off(int param)
 {
-	cpu_set_irq_line(0, M6809_IRQ_LINE, CLEAR_LINE);
+	cpunum_set_input_line(0, M6809_IRQ_LINE, CLEAR_LINE);
 }
 
 
@@ -131,7 +131,7 @@ static void irq_timer(int param)
 		timer_set(cpu_getscanlinetime(param + 64), param + 64, irq_timer);
 
 	/* IRQ starts on scanline 0, 64, 128, etc. */
-	cpu_set_irq_line(0, M6809_IRQ_LINE, ASSERT_LINE);
+	cpunum_set_input_line(0, M6809_IRQ_LINE, ASSERT_LINE);
 
 	/* it will turn off on the next HBLANK */
 	timer_set(cpu_getscanlineperiod() * 0.9, 0, irq_off);
@@ -140,7 +140,7 @@ static void irq_timer(int param)
 
 static void firq_off(int param)
 {
-	cpu_set_irq_line(0, M6809_FIRQ_LINE, CLEAR_LINE);
+	cpunum_set_input_line(0, M6809_FIRQ_LINE, CLEAR_LINE);
 }
 
 
@@ -150,7 +150,7 @@ static void firq_timer(int param)
 	timer_set(cpu_getscanlinetime(FIRQ_SCANLINE), 0, firq_timer);
 
 	/* IRQ starts on scanline FIRQ_SCANLINE? */
-	cpu_set_irq_line(0, M6809_FIRQ_LINE, ASSERT_LINE);
+	cpunum_set_input_line(0, M6809_FIRQ_LINE, ASSERT_LINE);
 
 	/* it will turn off on the next HBLANK */
 	timer_set(cpu_getscanlineperiod() * 0.9, 0, firq_off);
@@ -175,7 +175,7 @@ static MACHINE_INIT( gridlee )
  *
  *************************************/
 
-static READ_HANDLER( analog_port_r )
+static READ8_HANDLER( analog_port_r )
 {
 	int delta, sign, magnitude;
 	UINT8 newval;
@@ -257,7 +257,7 @@ static void poly17_init(void)
  *
  *************************************/
 
-static READ_HANDLER( random_num_r )
+static READ8_HANDLER( random_num_r )
 {
 	unsigned int cc;
 
@@ -277,21 +277,21 @@ static READ_HANDLER( random_num_r )
  *
  *************************************/
 
-static WRITE_HANDLER( led_0_w )
+static WRITE8_HANDLER( led_0_w )
 {
 	set_led_status(0, data & 1);
 	logerror("LED 0 %s\n", (data & 1) ? "on" : "off");
 }
 
 
-static WRITE_HANDLER( led_1_w )
+static WRITE8_HANDLER( led_1_w )
 {
 	set_led_status(1, data & 1);
 	logerror("LED 1 %s\n", (data & 1) ? "on" : "off");
 }
 
 
-static WRITE_HANDLER( gridlee_coin_counter_w )
+static WRITE8_HANDLER( gridlee_coin_counter_w )
 {
 	coin_counter_w(0, data & 1);
 	logerror("coin counter %s\n", (data & 1) ? "on" : "off");

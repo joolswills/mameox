@@ -1,14 +1,15 @@
-#pragma code_seg("C291")
-#pragma data_seg("D291")
-#pragma bss_seg("B291")
-#pragma const_seg("K291")
-#pragma comment(linker, "/merge:D291=291")
-#pragma comment(linker, "/merge:C291=291")
-#pragma comment(linker, "/merge:B291=291")
-#pragma comment(linker, "/merge:K291=291")
+#pragma code_seg("C302")
+#pragma data_seg("D302")
+#pragma bss_seg("B302")
+#pragma const_seg("K302")
+#pragma comment(linker, "/merge:D302=302")
+#pragma comment(linker, "/merge:C302=302")
+#pragma comment(linker, "/merge:B302=302")
+#pragma comment(linker, "/merge:K302=302")
 /***************************************************************************
 
 Find Out    (c) 1987
+Trivia		(c) 1984 / 1986
 
 driver by Nicola Salmoria
 
@@ -28,23 +29,30 @@ VIDEO_UPDATE( findout )
 
 static data8_t drawctrl[3];
 
-static WRITE_HANDLER( findout_drawctrl_w )
+static WRITE8_HANDLER( findout_drawctrl_w )
 {
 	drawctrl[offset] = data;
 }
 
-static WRITE_HANDLER( findout_bitmap_w )
+static WRITE8_HANDLER( findout_bitmap_w )
 {
 	int sx,sy;
 	int fg,bg,mask,bits;
+	static int prevoffset, yadd;
+
+	videoram[offset] = data;
+
+	yadd = (offset==prevoffset) ? (yadd+1):0;
+	prevoffset = offset;
 
 	fg = drawctrl[0] & 7;
 	bg = 2;
 	mask = 0xff;//drawctrl[2];
 	bits = drawctrl[1];
 
-	sx = 8*(offset % 64);
+	sx = 8 * (offset % 64);
 	sy = offset / 64;
+	sy = (sy + yadd) & 0xff;
 
 //if (mask != bits)
 //	usrintf_showmessage("color %02x bits %02x mask %02x\n",fg,bits,mask);
@@ -60,13 +68,13 @@ static WRITE_HANDLER( findout_bitmap_w )
 }
 
 
-static READ_HANDLER( portC_r )
+static READ8_HANDLER( portC_r )
 {
 	return 4;
 //	return (rand()&2);
 }
 
-static WRITE_HANDLER( lamps_w )
+static WRITE8_HANDLER( lamps_w )
 {
 	set_led_status(0,data & 0x01);
 	set_led_status(1,data & 0x02);
@@ -75,7 +83,7 @@ static WRITE_HANDLER( lamps_w )
 	set_led_status(4,data & 0x10);
 }
 
-static WRITE_HANDLER( sound_w )
+static WRITE8_HANDLER( sound_w )
 {
 	/* bit 3 used but unknown */
 
@@ -106,7 +114,7 @@ MACHINE_INIT( findout )
 }
 
 
-static READ_HANDLER( catchall )
+static READ8_HANDLER( catchall )
 {
 	int pc = activecpu_get_pc();
 
@@ -116,27 +124,27 @@ static READ_HANDLER( catchall )
 	return 0xff;
 }
 
-static WRITE_HANDLER( banksel_main_w )
+static WRITE8_HANDLER( banksel_main_w )
 {
 	cpu_setbank(1,memory_region(REGION_CPU1) + 0x8000);
 }
-static WRITE_HANDLER( banksel_1_w )
+static WRITE8_HANDLER( banksel_1_w )
 {
 	cpu_setbank(1,memory_region(REGION_CPU1) + 0x10000);
 }
-static WRITE_HANDLER( banksel_2_w )
+static WRITE8_HANDLER( banksel_2_w )
 {
 	cpu_setbank(1,memory_region(REGION_CPU1) + 0x18000);
 }
-static WRITE_HANDLER( banksel_3_w )
+static WRITE8_HANDLER( banksel_3_w )
 {
 	cpu_setbank(1,memory_region(REGION_CPU1) + 0x20000);
 }
-static WRITE_HANDLER( banksel_4_w )
+static WRITE8_HANDLER( banksel_4_w )
 {
 	cpu_setbank(1,memory_region(REGION_CPU1) + 0x28000);
 }
-static WRITE_HANDLER( banksel_5_w )
+static WRITE8_HANDLER( banksel_5_w )
 {
 	cpu_setbank(1,memory_region(REGION_CPU1) + 0x30000);
 }
@@ -145,12 +153,12 @@ static WRITE_HANDLER( banksel_5_w )
 /* This signature is used to validate the question ROMs. Simple protection check? */
 static int signature_answer,signature_pos;
 
-static READ_HANDLER( signature_r )
+static READ8_HANDLER( signature_r )
 {
 	return signature_answer;
 }
 
-static WRITE_HANDLER( signature_w )
+static WRITE8_HANDLER( signature_w )
 {
 	if (data == 0) signature_pos = 0;
 	else
@@ -191,7 +199,7 @@ static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0x6200, 0x6200) AM_WRITE(signature_w)
 	AM_RANGE(0x7800, 0x7fff) AM_WRITE(MWA8_ROM)	/* space for diagnostic ROM? */
 	AM_RANGE(0x8000, 0x8002) AM_WRITE(findout_drawctrl_w)
-	AM_RANGE(0xc000, 0xffff) AM_WRITE(findout_bitmap_w)
+	AM_RANGE(0xc000, 0xffff) AM_WRITE(findout_bitmap_w)  AM_BASE(&videoram)
 	AM_RANGE(0x8000, 0xffff) AM_WRITE(MWA8_ROM)	/* overlapped by the above */
 ADDRESS_MAP_END
 
@@ -258,7 +266,7 @@ static struct DACinterface dac_interface =
 static MACHINE_DRIVER_START( findout )
 
 	/* basic machine hardware */
-	MDRV_CPU_ADD(Z80,4000000)	/* 4 MHz ?????? (affects sound pitch) */
+	MDRV_CPU_ADD(Z80,4000000)	/* 4 MHz */
 	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
 	MDRV_CPU_VBLANK_INT(nmi_line_pulse,1)
 
@@ -303,9 +311,108 @@ ROM_START( findout )
 	ROM_LOAD( "82s147.bin",   0x0000, 0x0200, CRC(f3b663bb) SHA1(5a683951c8d3a2baac4b49e379d6e10e35465c8a) )	/* unknown */
 ROM_END
 
+ROM_START( gt507uk )
+	ROM_REGION( 0x38000, REGION_CPU1, 0 )
+	ROM_LOAD( "triv_3_2.bin",    0x00000, 0x4000, CRC(2d72a081) SHA1(8aa32acf335d027466799b097e0de66bcf13247f) )
+	ROM_LOAD( "rom_ad.bin",      0x08000, 0x2000, CRC(c81cc847) SHA1(057b7b75a2fe1abf88b23e7b2de230d9f96139f5) )
+	ROM_LOAD( "aerospace",       0x10000, 0x8000, CRC(cb555d46) SHA1(559ae05160d7893ff96311a2177eba039a4cf186) )
+	ROM_LOAD( "english_sport_4", 0x18000, 0x8000, CRC(6ae8a63d) SHA1(c6018141d8bbe0ed7619980bf7da89dd91d7fcc2) )
+	ROM_LOAD( "general_facts",   0x20000, 0x8000, CRC(f921f108) SHA1(fd72282df5cee0e6ab55268b40785b3dc8e3d65b) )
+	ROM_LOAD( "horrors",         0x28000, 0x8000, CRC(5f7b262a) SHA1(047480d6bf5c6d0603d538b84c996bd226f07f77) )
+	ROM_LOAD( "pop_music",       0x30000, 0x8000, CRC(884fec7c) SHA1(b389216c17f516df4e15eee46246719dd4acb587) )
+ROM_END
 
+ROM_START( gt103 )
+	ROM_REGION( 0x38000, REGION_CPU1, 0 )
+	ROM_LOAD( "trvmast3.bin",    0x00000, 0x4000, CRC(9ea277bc) SHA1(f813de572a3b5e2ad601dc6559dc93c30bb7a38c) )
+	ROM_LOAD( "comics-cartoons", 0x10000, 0x8000, CRC(193c868e) SHA1(75f18eb6cc6467e927961271374bedaf7736e20b) )
+	ROM_LOAD( "general_3",       0x18000, 0x8000, CRC(b0376464) SHA1(d1812d6dd42cd7f3753fcc0d2647b56a91bfcc9d) )
+	ROM_LOAD( "science_2",       0x20000, 0x8000, CRC(3c8bc603) SHA1(5e8c1d27fc8ffb9a2a26b749328e09c548da4fca) )
+	ROM_LOAD( "soccer",          0x28000, 0x8000, CRC(f821f860) SHA1(b0437ef5d31c507c6499c1fb732d2ba3b9beb151) )
+	ROM_LOAD( "sports_alt",      0x30000, 0x8000, CRC(02712bc7) SHA1(a07a87c2c37f34a188d7c00acc0d977acc850f00) )
+ROM_END
 
-GAMEX( 1987, findout, 0, findout, findout, 0, ROT0, "Elettronolo", "Find Out", GAME_WRONG_COLORS | GAME_IMPERFECT_SOUND )
+ROM_START( gt5 )
+	ROM_REGION( 0x38000, REGION_CPU1, 0 )
+	ROM_LOAD( "prog3_right",   0x00000, 0x2000, CRC(e2bd11f6) SHA1(217019bc9c2bb09279cfed4b82b1f5907aa7c1b1) )
+	ROM_LOAD( "prog3_left",    0x02000, 0x2000, BAD_DUMP CRC(218bd5c5) SHA1(1321188ca3befb5a20434759718d4935fabcc383) )
+	ROM_LOAD( "entertainment", 0x10000, 0x8000, CRC(07068c9f) SHA1(1aedc78d071281ec8b08488cd82655d41a77cf6b) )
+	ROM_LOAD( "vices",         0x18000, 0x8000, CRC(e6069955) SHA1(68f7453f21a4ce1be912141bbe947fbd81d918a3) )
+	ROM_LOAD( "war_and_peace", 0x20000, 0x8000, CRC(bc709383) SHA1(2fba4c80773abea7bbd826c39378b821cddaa255) )
+ROM_END
+
+ROM_START( gt103a )
+	ROM_REGION( 0x38000, REGION_CPU1, 0 )
+	ROM_LOAD( "t_3a-8_1.bin", 0x00000, 0x4000, CRC(02aef306) SHA1(1ffc10c79a55d41ea36bcaab13cb3f02cb3f9712) )
+	ROM_LOAD( "rich-famous",  0x10000, 0x8000, CRC(39e07e4a) SHA1(6e5a0bcefaa1169f313e8818cf50919108b3e121) )
+	ROM_LOAD( "rock-n-roll",  0x18000, 0x8000, CRC(1be036b1) SHA1(0b262906044950319dd911b956ac2e0b433f6c7f) )
+	ROM_LOAD( "adult_sex_3",  0x20000, 0x8000, CRC(2c46e355) SHA1(387ab389abaaea8e870b00039dd884237f7dd9c6) )
+	ROM_LOAD( "sports",       0x28000, 0x8000, CRC(6bd1ba9a) SHA1(7caac1bd438a9b1d11fb33e11814b5d76951211a) )
+	ROM_LOAD( "tv_comedies",  0x30000, 0x8000, CRC(992ae38e) SHA1(312780d651a85a1c433f587ff2ede579456d3fd9) )
+ROM_END
+
+ROM_START( gt103a1 )
+	ROM_REGION( 0x38000, REGION_CPU1, 0 )
+	ROM_LOAD( "prog1_versiona",  0x00000, 0x4000, CRC(537d6566) SHA1(282a33e4a9fc54d34094393c00026bf31ccd6ab5) )
+	ROM_LOAD( "general_1",       0x10000, 0x8000, CRC(1efa01c3) SHA1(801ef5ab55184e488b08ef99ebd641ea4f7edb24) )
+	ROM_LOAD( "new_science_2",   0x18000, 0x8000, CRC(3bd80fb8) SHA1(9a196595bc5dc6ed5ee5853786839ed4847fa436) )
+	ROM_LOAD( "nfl_football",    0x20000, 0x8000, CRC(d676b7cd) SHA1(d652d2441adb500f7af526d110d0335ea453d75b) )
+	ROM_LOAD( "potpourri",       0x28000, 0x8000, CRC(f2968a28) SHA1(87c08c59dfee71e7bf071f09c3017c750a1c5694) )
+	ROM_LOAD( "rock_music",      0x30000, 0x8000, CRC(7f11733a) SHA1(d4d0dee75518edf986cb1241ade45ccb4840f088) )
+ROM_END
+	
+ROM_START( gt103a2 )
+	ROM_REGION( 0x38000, REGION_CPU1, 0 )
+	ROM_LOAD( "prog1_versionc", 0x00000, 0x4000, CRC(340246a4) SHA1(d655e1cf2b1e87a05e87ff6af4b794e6d54a2a52) )
+	ROM_LOAD( "cars-women",     0x10000, 0x8000, CRC(4c5dd1df) SHA1(f3e2146eeab07ec71617c7614c6e8f6bc844e6e3) )
+	ROM_LOAD( "cops_&_robbers", 0x18000, 0x8000, CRC(8b367c33) SHA1(013468157bf469c9cf138809fdc45b3ba60a423b) )
+	ROM_LOAD( "facts",          0x20000, 0x8000, CRC(21bd6181) SHA1(609ae1097a4011e90d03d4c4f03140fbe84c084a) )
+	ROM_LOAD( "famous_couples", 0x28000, 0x8000, CRC(e0618218) SHA1(ff64fcd6dec83a2271b63c3ae64dc932a3954ec5) )
+	ROM_LOAD( "famous_quotes",  0x30000, 0x8000, CRC(0a27d8ae) SHA1(427e6ae25e47da7f7f7c3e92a37e330d711da90c) )
+ROM_END
+	
+ROM_START( gt103asx )
+	ROM_REGION( 0x38000, REGION_CPU1, 0 )
+	ROM_LOAD( "t_3a-8_1.bin",    0x00000, 0x4000, CRC(02aef306) SHA1(1ffc10c79a55d41ea36bcaab13cb3f02cb3f9712) )
+	ROM_LOAD( "adult_sex_2",     0x10000, 0x8000, CRC(0d683f21) SHA1(f47ce3c31c4c5ed02247fa280303e6ae760315df) )
+	ROM_LOAD( "adult_sex_2_alt", 0x18000, 0x8000, CRC(8c0eacc8) SHA1(ddaa25548d161394b41c65a2db57a9fcf793062b) )
+	ROM_LOAD( "adult_sex_3_alt", 0x20000, 0x8000, CRC(63cbd1d6) SHA1(8dcd5546dc8688d6b8404d5cf63d8a59acc9bf4c) )
+	ROM_LOAD( "adult_sex_4",     0x28000, 0x8000, CRC(36a75071) SHA1(f08d31f241e1dc9b94b940cd2872a692f6f8475b) )
+	ROM_LOAD( "adult_sex_5",     0x30000, 0x8000, CRC(fdbc3729) SHA1(7cb7cec4439ddc39de2f7f62c25623cfb869f493) )
+ROM_END
+
+ROM_START( gt103asa )
+	ROM_REGION( 0x38000, REGION_CPU1, 0 )
+	ROM_LOAD( "t_3a-8_1.bin",    0x00000, 0x4000, CRC(02aef306) SHA1(1ffc10c79a55d41ea36bcaab13cb3f02cb3f9712) )
+	ROM_LOAD( "rock-n-roll_alt", 0x10000, 0x8000, CRC(8eb83052) SHA1(93e3c1ae6c2048fb44ecafe1013b6a96da38fa84) )
+	ROM_LOAD( "science",         0x18000, 0x8000, CRC(9eaebd18) SHA1(3a4d787cb006dbb23ce346577cb1bb5e543ba52c) )
+	ROM_LOAD( "the_sixties",     0x20000, 0x8000, CRC(8cfa854e) SHA1(81428c12f99841db1c61b471ac8d00f0c411883b) )
+	ROM_LOAD( "television",      0x28000, 0x8000, CRC(731d4cc0) SHA1(184b6e48edda24f50e377a473a1a4709a218181b) )
+	ROM_LOAD( "usa_trivia",      0x30000, 0x8000, CRC(829543b4) SHA1(deb0a4132852643ad884cf194b0a2e6671aa2b4e) )
+ROM_END
+
+/*
+
+When game is first run a RAM error will occur because the nvram needs initialising.
+
+gt507uk - Press F2 to get into test mode, then press control/fire1 to continue
+gt103 - When RAM Error appears press F3 to reset and the game will start
+gt103a - When ERROR appears, press F2, then F3 to reset, then F2 again and the game will start
+
+*/
+
+GAMEX( 1986, gt507uk,  0,        findout, findout, 0, ROT0, "Grayhound Electronics", "Trivia (UK Version 5.07)",               GAME_WRONG_COLORS | GAME_IMPERFECT_SOUND )
+GAMEX( 1986, gt103,    0,        findout, findout, 0, ROT0, "Grayhound Electronics", "Trivia (Version 1.03)",                  GAME_WRONG_COLORS | GAME_IMPERFECT_SOUND )
+GAMEX( 1984, gt5,      0,        findout, findout, 0, ROT0, "Grayhound Electronics", "Trivia (Version 5)",                     GAME_WRONG_COLORS | GAME_IMPERFECT_SOUND | GAME_NOT_WORKING )
+
+GAMEX( 1984, gt103a,   0,        findout, findout, 0, ROT0, "Greyhound Electronics", "Trivia (Version 1.03a)",                 GAME_WRONG_COLORS | GAME_IMPERFECT_SOUND )
+GAMEX( 1984, gt103a1,  gt103a, findout, findout, 0, ROT0, "Greyhound Electronics", "Trivia (Version 1.03a) (alt 1)",         GAME_WRONG_COLORS | GAME_IMPERFECT_SOUND )
+GAMEX( 1984, gt103a2,  gt103a, findout, findout, 0, ROT0, "Greyhound Electronics", "Trivia (Version 1.03a) (alt 2)",         GAME_WRONG_COLORS | GAME_IMPERFECT_SOUND )
+GAMEX( 1984, gt103asx, gt103a, findout, findout, 0, ROT0, "Greyhound Electronics", "Trivia (Version 1.03a Sex questions)",   GAME_WRONG_COLORS | GAME_IMPERFECT_SOUND )
+GAMEX( 1984, gt103asa, gt103a, findout, findout, 0, ROT0, "Greyhound Electronics", "Trivia (Version 1.03a Alt questions 1)", GAME_WRONG_COLORS | GAME_IMPERFECT_SOUND )
+
+GAMEX( 1987, findout,  0,        findout, findout, 0, ROT0, "Elettronolo",           "Find Out (Version 4.04)",                GAME_WRONG_COLORS | GAME_IMPERFECT_SOUND )
+
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

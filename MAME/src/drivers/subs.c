@@ -1,11 +1,11 @@
-#pragma code_seg("C675")
-#pragma data_seg("D675")
-#pragma bss_seg("B675")
-#pragma const_seg("K675")
-#pragma comment(linker, "/merge:D675=675")
-#pragma comment(linker, "/merge:C675=675")
-#pragma comment(linker, "/merge:B675=675")
-#pragma comment(linker, "/merge:K675=675")
+#pragma code_seg("C713")
+#pragma data_seg("D713")
+#pragma bss_seg("B713")
+#pragma const_seg("K713")
+#pragma comment(linker, "/merge:D713=713")
+#pragma comment(linker, "/merge:C713=713")
+#pragma comment(linker, "/merge:B713=713")
+#pragma comment(linker, "/merge:K713=713")
 /***************************************************************************
 
 	Atari Subs hardware
@@ -301,7 +301,8 @@ static DISCRETE_SOUND_START(subs_sound_interface)
 	DISCRETE_ADDER4(NODE_91, 1, 0, SUBS_LAUNCH_SND, SUBS_CRASH_SND, SUBS_EXPLODE_SND)
 	DISCRETE_GAIN(NODE_92, NODE_90, 65534.0/(320.8+77.5+149.2+1000.0))
 	DISCRETE_GAIN(NODE_93, NODE_91, 65534.0/(320.8+77.5+149.2+1000.0))
-	DISCRETE_OUTPUT_STEREO(NODE_92, NODE_93, 100)
+	DISCRETE_OUTPUT(NODE_92, MIXER(100,MIXER_PAN_LEFT))
+	DISCRETE_OUTPUT(NODE_93, MIXER(100,MIXER_PAN_RIGHT))
 DISCRETE_SOUND_END
 
 

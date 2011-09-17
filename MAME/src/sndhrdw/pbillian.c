@@ -1,11 +1,11 @@
-#pragma code_seg("C528")
-#pragma data_seg("D528")
-#pragma bss_seg("B528")
-#pragma const_seg("K528")
-#pragma comment(linker, "/merge:D528=528")
-#pragma comment(linker, "/merge:C528=528")
-#pragma comment(linker, "/merge:B528=528")
-#pragma comment(linker, "/merge:K528=528")
+#pragma code_seg("C559")
+#pragma data_seg("D559")
+#pragma bss_seg("B559")
+#pragma const_seg("K559")
+#pragma comment(linker, "/merge:D559=559")
+#pragma comment(linker, "/merge:C559=559")
+#pragma comment(linker, "/merge:B559=559")
+#pragma comment(linker, "/merge:K559=559")
 #include "driver.h"
 
 static int channel;
@@ -24,7 +24,7 @@ int pbillian_sh_start(const struct MachineSound *msound)
 
 #define pb_play_s(start,end) mixer_play_sample(channel,samplebuf + (start<<8),	(end-start)<<8,5000,0) // 5khz ?
 
-WRITE_HANDLER(data_41a_w)
+WRITE8_HANDLER(data_41a_w)
 {
 	/* 
 	 i/o port $41a wrties are sample related

@@ -1,11 +1,11 @@
-#pragma code_seg("C670")
-#pragma data_seg("D670")
-#pragma bss_seg("B670")
-#pragma const_seg("K670")
-#pragma comment(linker, "/merge:D670=670")
-#pragma comment(linker, "/merge:C670=670")
-#pragma comment(linker, "/merge:B670=670")
-#pragma comment(linker, "/merge:K670=670")
+#pragma code_seg("C708")
+#pragma data_seg("D708")
+#pragma bss_seg("B708")
+#pragma const_seg("K708")
+#pragma comment(linker, "/merge:D708=708")
+#pragma comment(linker, "/merge:C708=708")
+#pragma comment(linker, "/merge:B708=708")
+#pragma comment(linker, "/merge:K708=708")
 /* vidhrdw/stlforce.c - see main driver for other notes */
 
 #include "driver.h"

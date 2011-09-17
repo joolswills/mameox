@@ -1,11 +1,11 @@
-#pragma code_seg("C304")
-#pragma data_seg("D304")
-#pragma bss_seg("B304")
-#pragma const_seg("K304")
-#pragma comment(linker, "/merge:D304=304")
-#pragma comment(linker, "/merge:C304=304")
-#pragma comment(linker, "/merge:B304=304")
-#pragma comment(linker, "/merge:K304=304")
+#pragma code_seg("C315")
+#pragma data_seg("D315")
+#pragma bss_seg("B315")
+#pragma const_seg("K315")
+#pragma comment(linker, "/merge:D315=315")
+#pragma comment(linker, "/merge:C315=315")
+#pragma comment(linker, "/merge:B315=315")
+#pragma comment(linker, "/merge:K315=315")
 /***************************************************************************
 
 Funky Bee/Sky Lancer memory map (preliminary)
@@ -55,24 +55,24 @@ Known issues:
 #include "vidhrdw/generic.h"
 
 
-extern WRITE_HANDLER( funkybee_videoram_w );
-extern WRITE_HANDLER( funkybee_colorram_w );
-extern WRITE_HANDLER( funkybee_gfx_bank_w );
-extern WRITE_HANDLER( funkybee_scroll_w );
-extern WRITE_HANDLER( funkybee_flipscreen_w );
+extern WRITE8_HANDLER( funkybee_videoram_w );
+extern WRITE8_HANDLER( funkybee_colorram_w );
+extern WRITE8_HANDLER( funkybee_gfx_bank_w );
+extern WRITE8_HANDLER( funkybee_scroll_w );
+extern WRITE8_HANDLER( funkybee_flipscreen_w );
 
 extern PALETTE_INIT( funkybee );
 extern VIDEO_START( funkybee );
 extern VIDEO_UPDATE( funkybee );
 
 
-static READ_HANDLER( funkybee_input_port_0_r )
+static READ8_HANDLER( funkybee_input_port_0_r )
 {
 	watchdog_reset_r(0);
 	return input_port_0_r(offset);
 }
 
-static WRITE_HANDLER( funkybee_coin_counter_w )
+static WRITE8_HANDLER( funkybee_coin_counter_w )
 {
 	coin_counter_w(offset,data);
 }

@@ -1,11 +1,11 @@
-#pragma code_seg("C421")
-#pragma data_seg("D421")
-#pragma bss_seg("B421")
-#pragma const_seg("K421")
-#pragma comment(linker, "/merge:D421=421")
-#pragma comment(linker, "/merge:C421=421")
-#pragma comment(linker, "/merge:B421=421")
-#pragma comment(linker, "/merge:K421=421")
+#pragma code_seg("C443")
+#pragma data_seg("D443")
+#pragma bss_seg("B443")
+#pragma const_seg("K443")
+#pragma comment(linker, "/merge:D443=443")
+#pragma comment(linker, "/merge:C443=443")
+#pragma comment(linker, "/merge:B443=443")
+#pragma comment(linker, "/merge:K443=443")
 /***************************************************************************
 
   The Main Event, (c) 1988 Konami
@@ -50,7 +50,7 @@ static INTERRUPT_GEN( mainevt_interrupt )
 
 static int nmi_enable;
 
-static WRITE_HANDLER( dv_nmienable_w )
+static WRITE8_HANDLER( dv_nmienable_w )
 {
 	nmi_enable = data;
 }
@@ -62,7 +62,7 @@ static INTERRUPT_GEN( dv_interrupt )
 }
 
 
-WRITE_HANDLER( mainevt_bankswitch_w )
+WRITE8_HANDLER( mainevt_bankswitch_w )
 {
 	unsigned char *RAM = memory_region(REGION_CPU1);
 	int bankaddress;
@@ -82,7 +82,7 @@ WRITE_HANDLER( mainevt_bankswitch_w )
 	/* other bits unused */
 }
 
-WRITE_HANDLER( mainevt_coin_w )
+WRITE8_HANDLER( mainevt_coin_w )
 {
 	coin_counter_w(0,data & 0x10);
 	coin_counter_w(1,data & 0x20);
@@ -92,12 +92,12 @@ WRITE_HANDLER( mainevt_coin_w )
 	set_led_status(3,data & 0x08);
 }
 
-WRITE_HANDLER( mainevt_sh_irqtrigger_w )
+WRITE8_HANDLER( mainevt_sh_irqtrigger_w )
 {
-	cpu_set_irq_line_and_vector(1,0,HOLD_LINE,0xff);
+	cpunum_set_input_line_and_vector(1,0,HOLD_LINE,0xff);
 }
 
-WRITE_HANDLER( mainevt_sh_irqcontrol_w )
+WRITE8_HANDLER( mainevt_sh_irqcontrol_w )
 {
 	UPD7759_reset_w(0, data & 2);
 	UPD7759_start_w(0, data & 1);
@@ -105,12 +105,12 @@ WRITE_HANDLER( mainevt_sh_irqcontrol_w )
 	interrupt_enable_w(0,data & 4);
 }
 
-WRITE_HANDLER( devstor_sh_irqcontrol_w )
+WRITE8_HANDLER( devstor_sh_irqcontrol_w )
 {
 interrupt_enable_w(0,data & 4);
 }
 
-WRITE_HANDLER( mainevt_sh_bankswitch_w )
+WRITE8_HANDLER( mainevt_sh_bankswitch_w )
 {
 	int bank_A,bank_B;
 
@@ -125,7 +125,7 @@ WRITE_HANDLER( mainevt_sh_bankswitch_w )
 	UPD7759_set_bank_base(0, ((data >> 4) & 0x03) * 0x20000);
 }
 
-WRITE_HANDLER( dv_sh_bankswitch_w )
+WRITE8_HANDLER( dv_sh_bankswitch_w )
 {
 	int bank_A,bank_B;
 

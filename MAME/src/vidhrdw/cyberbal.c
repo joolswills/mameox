@@ -1,11 +1,11 @@
-#pragma code_seg("C234")
-#pragma data_seg("D234")
-#pragma bss_seg("B234")
-#pragma const_seg("K234")
-#pragma comment(linker, "/merge:D234=234")
-#pragma comment(linker, "/merge:C234=234")
-#pragma comment(linker, "/merge:B234=234")
-#pragma comment(linker, "/merge:K234=234")
+#pragma code_seg("C240")
+#pragma data_seg("D240")
+#pragma bss_seg("B240")
+#pragma const_seg("K240")
+#pragma comment(linker, "/merge:D240=240")
+#pragma comment(linker, "/merge:C240=240")
+#pragma comment(linker, "/merge:B240=240")
+#pragma comment(linker, "/merge:K240=240")
 /***************************************************************************
 
 	Atari Cyberball hardware

@@ -1,11 +1,11 @@
-#pragma code_seg("C210")
-#pragma data_seg("D210")
-#pragma bss_seg("B210")
-#pragma const_seg("K210")
-#pragma comment(linker, "/merge:D210=210")
-#pragma comment(linker, "/merge:C210=210")
-#pragma comment(linker, "/merge:B210=210")
-#pragma comment(linker, "/merge:K210=210")
+#pragma code_seg("C214")
+#pragma data_seg("D214")
+#pragma bss_seg("B214")
+#pragma const_seg("K214")
+#pragma comment(linker, "/merge:D214=214")
+#pragma comment(linker, "/merge:C214=214")
+#pragma comment(linker, "/merge:B214=214")
+#pragma comment(linker, "/merge:K214=214")
 /***************************************************************************
 
 
@@ -18,15 +18,15 @@
 extern data8_t *citycon_videoram;
 extern data8_t *citycon_scroll;
 extern data8_t *citycon_linecolor;
-WRITE_HANDLER( citycon_videoram_w );
-WRITE_HANDLER( citycon_linecolor_w );
-WRITE_HANDLER( citycon_background_w );
+WRITE8_HANDLER( citycon_videoram_w );
+WRITE8_HANDLER( citycon_linecolor_w );
+WRITE8_HANDLER( citycon_background_w );
 
 VIDEO_UPDATE( citycon );
 VIDEO_START( citycon );
 
 
-READ_HANDLER( citycon_in_r )
+READ8_HANDLER( citycon_in_r )
 {
 	return readinputport(flip_screen ? 1 : 0);
 }

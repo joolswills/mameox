@@ -1,11 +1,11 @@
-#pragma code_seg("C629")
-#pragma data_seg("D629")
-#pragma bss_seg("B629")
-#pragma const_seg("K629")
-#pragma comment(linker, "/merge:D629=629")
-#pragma comment(linker, "/merge:C629=629")
-#pragma comment(linker, "/merge:B629=629")
-#pragma comment(linker, "/merge:K629=629")
+#pragma code_seg("C665")
+#pragma data_seg("D665")
+#pragma bss_seg("B665")
+#pragma const_seg("K665")
+#pragma comment(linker, "/merge:D665=665")
+#pragma comment(linker, "/merge:C665=665")
+#pragma comment(linker, "/merge:B665=665")
+#pragma comment(linker, "/merge:K665=665")
 /***************************************************************************
 
 						-= Sky Fox / Exerizer =-
@@ -31,8 +31,8 @@ extern int skyfox_bg_pos, skyfox_bg_ctrl;
 
 /* Functions defined in vidhrdw: */
 
-READ_HANDLER( skyfox_vregs_r );
-WRITE_HANDLER( skyfox_vregs_w );
+READ8_HANDLER( skyfox_vregs_r );
+WRITE8_HANDLER( skyfox_vregs_w );
 
 PALETTE_INIT( skyfox );
 
@@ -258,7 +258,7 @@ static INTERRUPT_GEN( skyfox_interrupt )
 	skyfox_bg_pos += (skyfox_bg_ctrl >> 1) & 0x7;	// maybe..
 
 	/* Check coin 1 & 2 */
-	if ((readinputport(4) & 3) != 3) cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);
+	if ((readinputport(4) & 3) != 3) cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 }
 
 static struct YM2203interface skyfox_ym2203_interface =

@@ -1,11 +1,11 @@
-#pragma code_seg("C766")
-#pragma data_seg("D766")
-#pragma bss_seg("B766")
-#pragma const_seg("K766")
-#pragma comment(linker, "/merge:D766=766")
-#pragma comment(linker, "/merge:C766=766")
-#pragma comment(linker, "/merge:B766=766")
-#pragma comment(linker, "/merge:K766=766")
+#pragma code_seg("C808")
+#pragma data_seg("D808")
+#pragma bss_seg("B808")
+#pragma const_seg("K808")
+#pragma comment(linker, "/merge:D808=808")
+#pragma comment(linker, "/merge:C808=808")
+#pragma comment(linker, "/merge:B808=808")
+#pragma comment(linker, "/merge:K808=808")
 /*************************************************************************
 
 	Atari Video Pinball video emulation
@@ -115,14 +115,14 @@ VIDEO_UPDATE( videopin )
 }
 
 
-WRITE_HANDLER( videopin_ball_w )
+WRITE8_HANDLER( videopin_ball_w )
 {
 	ball_x = data & 15;
 	ball_y = data >> 4;
 }
 
 
-WRITE_HANDLER( videopin_video_ram_w )
+WRITE8_HANDLER( videopin_video_ram_w )
 {
 	if (videopin_video_ram[offset] != data)
 	{

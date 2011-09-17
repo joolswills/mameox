@@ -1,11 +1,11 @@
-#pragma code_seg("C701")
-#pragma data_seg("D701")
-#pragma bss_seg("B701")
-#pragma const_seg("K701")
-#pragma comment(linker, "/merge:D701=701")
-#pragma comment(linker, "/merge:C701=701")
-#pragma comment(linker, "/merge:B701=701")
-#pragma comment(linker, "/merge:K701=701")
+#pragma code_seg("C740")
+#pragma data_seg("D740")
+#pragma bss_seg("B740")
+#pragma const_seg("K740")
+#pragma comment(linker, "/merge:D740=740")
+#pragma comment(linker, "/merge:C740=740")
+#pragma comment(linker, "/merge:B740=740")
+#pragma comment(linker, "/merge:K740=740")
 /***************************************************************************
 
 Taito Air System
@@ -215,7 +215,7 @@ static WRITE16_HANDLER( system_control_w )
 
 	dsp_HOLD_signal = (data & 4) ? CLEAR_LINE : ASSERT_LINE;
 
-	cpu_set_reset_line(2,(data & 1) ? CLEAR_LINE : ASSERT_LINE);
+	cpunum_set_input_line(2, INPUT_LINE_RESET, (data & 1) ? CLEAR_LINE : ASSERT_LINE);
 
 	logerror("68K:%06x writing %04x to TMS32025.  %s HOLD , %s RESET\n",activecpu_get_previouspc(),data,((data & 4) ? "Clear" : "Assert"),((data & 1) ? "Clear" : "Assert"));
 }
@@ -322,7 +322,7 @@ static void reset_sound_region(void)
 	cpu_setbank(1, memory_region(REGION_CPU2) + (banknum * 0x4000) + 0x10000);
 }
 
-static WRITE_HANDLER( sound_bankswitch_w )
+static WRITE8_HANDLER( sound_bankswitch_w )
 {
 	banknum = (data - 1) & 3;
 	reset_sound_region();
@@ -628,7 +628,7 @@ static struct GfxDecodeInfo airsys_gfxdecodeinfo[] =
 /* Handler called by the YM2610 emulator when the internal timers cause an IRQ */
 static void irqhandler(int irq)
 {
-	cpu_set_irq_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 static struct YM2610interface airsys_ym2610_interface =

@@ -638,7 +638,7 @@ int cli_frontend_init (int argc, char **argv)
 
 	if( statename )
 	{
-		options.savegame = *( statename );
+		options.savegame = statename;
 	}
 
 	/* need a decent default for debug width/height */
@@ -851,6 +851,7 @@ void CLIB_DECL osd_die(const char *text,...)
 	/* standard vfprintf stuff here */
 	va_start(arg, text);
 	vlogerror(text, arg);
+	vprintf(text, arg);
 	va_end(arg);
 
 	exit(-1);

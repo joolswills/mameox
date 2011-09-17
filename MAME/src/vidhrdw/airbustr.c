@@ -1,11 +1,11 @@
-#pragma code_seg("C111")
-#pragma data_seg("D111")
-#pragma bss_seg("B111")
-#pragma const_seg("K111")
-#pragma comment(linker, "/merge:D111=111")
-#pragma comment(linker, "/merge:C111=111")
-#pragma comment(linker, "/merge:B111=111")
-#pragma comment(linker, "/merge:K111=111")
+#pragma code_seg("C112")
+#pragma data_seg("D112")
+#pragma bss_seg("B112")
+#pragma const_seg("K112")
+#pragma comment(linker, "/merge:D112=112")
+#pragma comment(linker, "/merge:C112=112")
+#pragma comment(linker, "/merge:B112=112")
+#pragma comment(linker, "/merge:K112=112")
 /**************************************************************************
 
 								Air Buster
@@ -92,7 +92,7 @@ VIDEO_START( airbustr )
 }
 
 
-WRITE_HANDLER( airbustr_fgram_w )
+WRITE8_HANDLER( airbustr_fgram_w )
 {
 	if (airbustr_fgram[offset] != data)
 	{
@@ -101,7 +101,7 @@ WRITE_HANDLER( airbustr_fgram_w )
 	}
 }
 
-WRITE_HANDLER( airbustr_bgram_w )
+WRITE8_HANDLER( airbustr_bgram_w )
 {
 	if (airbustr_bgram[offset] != data)
 	{
@@ -123,7 +123,7 @@ WRITE_HANDLER( airbustr_bgram_w )
 			Bg Y	Bg X	Fg Y	Fg X	<-Scroll High Bits (complemented!)
 */
 
-WRITE_HANDLER( airbustr_scrollregs_w )
+WRITE8_HANDLER( airbustr_scrollregs_w )
 {
 static int bg_scrollx, bg_scrolly, fg_scrollx, fg_scrolly, highbits;
 int xoffs, yoffs;
@@ -231,7 +231,7 @@ VIDEO_UPDATE( airbustr )
 	bankswitch reg cpu 0, 1, 2 [& 0xf8!] and sub cpu port 28
 */
 
-	if (keyboard_pressed(KEYCODE_Z))
+	if (code_pressed(KEYCODE_Z))
 	{
 	char buf[80];
 		sprintf(buf,"%02X %02X %02X %02X", u1,u2,u3,u4);

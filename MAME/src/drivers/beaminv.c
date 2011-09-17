@@ -1,11 +1,11 @@
-#pragma code_seg("C156")
-#pragma data_seg("D156")
-#pragma bss_seg("B156")
-#pragma const_seg("K156")
-#pragma comment(linker, "/merge:D156=156")
-#pragma comment(linker, "/merge:C156=156")
-#pragma comment(linker, "/merge:B156=156")
-#pragma comment(linker, "/merge:K156=156")
+#pragma code_seg("C157")
+#pragma data_seg("D157")
+#pragma bss_seg("B157")
+#pragma const_seg("K157")
+#pragma comment(linker, "/merge:D157=157")
+#pragma comment(linker, "/merge:C157=157")
+#pragma comment(linker, "/merge:B157=157")
+#pragma comment(linker, "/merge:K157=157")
 /***************************************************************************
 
 	Tekunon Kougyou Beam Invader hardware
@@ -31,7 +31,7 @@
  *
  ****************************************************************/
 
-static READ_HANDLER( beaminv_input_port_3_r )
+static READ8_HANDLER( beaminv_input_port_3_r )
 {
 	return (input_port_3_r(offset) & 0xfe) | ((cpu_getscanline() >> 7) & 0x01);
 }

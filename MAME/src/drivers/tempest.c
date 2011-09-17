@@ -1,11 +1,11 @@
-#pragma code_seg("C714")
-#pragma data_seg("D714")
-#pragma bss_seg("B714")
-#pragma const_seg("K714")
-#pragma comment(linker, "/merge:D714=714")
-#pragma comment(linker, "/merge:C714=714")
-#pragma comment(linker, "/merge:B714=714")
-#pragma comment(linker, "/merge:K714=714")
+#pragma code_seg("C756")
+#pragma data_seg("D756")
+#pragma bss_seg("B756")
+#pragma const_seg("K756")
+#pragma comment(linker, "/merge:D756=756")
+#pragma comment(linker, "/merge:C756=756")
+#pragma comment(linker, "/merge:B756=756")
+#pragma comment(linker, "/merge:K756=756")
 /***************************************************************************
 
 	Atari Tempest hardware
@@ -196,7 +196,7 @@
  *
  *************************************/
 
-static READ_HANDLER( tempest_IN0_r )
+static READ8_HANDLER( tempest_IN0_r )
 {
 	int res = readinputport(0);
 
@@ -211,13 +211,13 @@ static READ_HANDLER( tempest_IN0_r )
 }
 
 
-static READ_HANDLER( input_port_1_bit_r )
+static READ8_HANDLER( input_port_1_bit_r )
 {
 	return (readinputport(1) & (1 << offset)) ? 0 : 228;
 }
 
 
-static READ_HANDLER( input_port_2_bit_r )
+static READ8_HANDLER( input_port_2_bit_r )
 {
 	return (readinputport(2) & (1 << offset)) ? 0 : 228;
 }
@@ -230,7 +230,7 @@ static READ_HANDLER( input_port_2_bit_r )
  *
  *************************************/
 
-static WRITE_HANDLER( tempest_led_w )
+static WRITE8_HANDLER( tempest_led_w )
 {
 	set_led_status(0, ~data & 0x02);
 	set_led_status(1, ~data & 0x01);
@@ -238,7 +238,7 @@ static WRITE_HANDLER( tempest_led_w )
 }
 
 
-static WRITE_HANDLER( tempest_coin_w )
+static WRITE8_HANDLER( tempest_coin_w )
 {
 	coin_counter_w(0, (data & 0x01));
 	coin_counter_w(1, (data & 0x02));

@@ -158,7 +158,10 @@ public:
 		}
 		else
 		{
+			const char codes[] = { ' ', '\t', '\b', '\r', '\n', 10, 1, 0 };
+
 			ret = s.substr( 0, headIdx );
+			KillCharactersStr( ret, codes ) ;
 			std::string tmp = s.substr( headIdx + 1 );
 			s = KillLeadingWhitespaceStr( tmp );
 		}

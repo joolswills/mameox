@@ -1,11 +1,11 @@
-#pragma code_seg("C650")
-#pragma data_seg("D650")
-#pragma bss_seg("B650")
-#pragma const_seg("K650")
-#pragma comment(linker, "/merge:D650=650")
-#pragma comment(linker, "/merge:C650=650")
-#pragma comment(linker, "/merge:B650=650")
-#pragma comment(linker, "/merge:K650=650")
+#pragma code_seg("C686")
+#pragma data_seg("D686")
+#pragma bss_seg("B686")
+#pragma const_seg("K686")
+#pragma comment(linker, "/merge:D686=686")
+#pragma comment(linker, "/merge:C686=686")
+#pragma comment(linker, "/merge:B686=686")
+#pragma comment(linker, "/merge:K686=686")
 /***************************************************************************
 
 	Atari Sprint 2 hardware
@@ -27,12 +27,12 @@
 
 #include "driver.h"
 
-extern READ_HANDLER( sprint2_collision1_r );
-extern READ_HANDLER( sprint2_collision2_r );
+extern READ8_HANDLER( sprint2_collision1_r );
+extern READ8_HANDLER( sprint2_collision2_r );
 
-extern WRITE_HANDLER( sprint2_collision_reset1_w );
-extern WRITE_HANDLER( sprint2_collision_reset2_w );
-extern WRITE_HANDLER( sprint2_video_ram_w );
+extern WRITE8_HANDLER( sprint2_collision_reset1_w );
+extern WRITE8_HANDLER( sprint2_collision_reset2_w );
+extern WRITE8_HANDLER( sprint2_video_ram_w );
 
 extern VIDEO_UPDATE( sprint2 );
 extern VIDEO_START( sprint2 );
@@ -100,7 +100,7 @@ static INTERRUPT_GEN( sprint2 )
 	discrete_sound_w(3, sprint2_video_ram[0x395] & 15);
 	discrete_sound_w(4, sprint2_video_ram[0x396] & 15);
 
-	cpu_set_nmi_line(0, PULSE_LINE);
+	cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 }
 
 
@@ -127,19 +127,19 @@ static PALETTE_INIT( sprint2 )
 }
 
 
-static READ_HANDLER( sprint2_wram_r )
+static READ8_HANDLER( sprint2_wram_r )
 {
 	return sprint2_video_ram[0x380 + offset % 0x80];
 }
 
 
-static READ_HANDLER( sprint2_dip_r )
+static READ8_HANDLER( sprint2_dip_r )
 {
 	return (readinputport(0) << (2 * ((offset & 3) ^ 3))) & 0xc0;
 }
 
 
-static READ_HANDLER( sprint2_input_A_r )
+static READ8_HANDLER( sprint2_input_A_r )
 {
 	UINT8 val = readinputport(1);
 
@@ -157,7 +157,7 @@ static READ_HANDLER( sprint2_input_A_r )
 }
 
 
-static READ_HANDLER( sprint2_input_B_r )
+static READ8_HANDLER( sprint2_input_B_r )
 {
 	UINT8 val = readinputport(2);
 
@@ -172,7 +172,7 @@ static READ_HANDLER( sprint2_input_B_r )
 }
 
 
-static READ_HANDLER( sprint2_sync_r )
+static READ8_HANDLER( sprint2_sync_r )
 {
 	UINT8 val = 0;
 
@@ -197,33 +197,33 @@ static READ_HANDLER( sprint2_sync_r )
 }
 
 
-static READ_HANDLER( sprint2_steering1_r )
+static READ8_HANDLER( sprint2_steering1_r )
 {
 	return steering[0];
 }
-static READ_HANDLER( sprint2_steering2_r )
+static READ8_HANDLER( sprint2_steering2_r )
 {
 	return steering[1];
 }
 
 
-static WRITE_HANDLER( sprint2_steering_reset1_w )
+static WRITE8_HANDLER( sprint2_steering_reset1_w )
 {
 	steering[0] |= 0x80;
 }
-static WRITE_HANDLER( sprint2_steering_reset2_w )
+static WRITE8_HANDLER( sprint2_steering_reset2_w )
 {
 	steering[1] |= 0x80;
 }
 
 
-static WRITE_HANDLER( sprint2_wram_w )
+static WRITE8_HANDLER( sprint2_wram_w )
 {
 	sprint2_video_ram[0x380 + offset % 0x80] = data;
 }
 
 
-static WRITE_HANDLER( sprint2_attract_w )
+static WRITE8_HANDLER( sprint2_attract_w )
 {
 	attract = offset & 1;
 
@@ -231,27 +231,27 @@ static WRITE_HANDLER( sprint2_attract_w )
 }
 
 
-static WRITE_HANDLER( sprint2_noise_reset_w )
+static WRITE8_HANDLER( sprint2_noise_reset_w )
 {
 	discrete_sound_w(6, 0);
 }
 
 
-static WRITE_HANDLER( sprint2_skid1_w )
+static WRITE8_HANDLER( sprint2_skid1_w )
 {
 	discrete_sound_w(0, offset & 1);
 }
-static WRITE_HANDLER( sprint2_skid2_w )
+static WRITE8_HANDLER( sprint2_skid2_w )
 {
 	discrete_sound_w(1, offset & 1);
 }
 
 
-static WRITE_HANDLER( sprint2_lamp1_w )
+static WRITE8_HANDLER( sprint2_lamp1_w )
 {
 	set_led_status(0, offset & 1);
 }
-static WRITE_HANDLER( sprint2_lamp2_w )
+static WRITE8_HANDLER( sprint2_lamp2_w )
 {
 	set_led_status(1, offset & 1);
 }
@@ -358,6 +358,12 @@ INPUT_PORTS_START( sprint2 )
 
 	PORT_START
 	PORT_ANALOG( 0xff, 0x00, IPT_DIAL | IPF_PLAYER2, 100, 10, 0, 0 )
+
+	PORT_START
+	PORT_ADJUSTER( 20, "Motor 1 RPM" )
+
+	PORT_START
+	PORT_ADJUSTER( 30, "Motor 2 RPM" )
 INPUT_PORTS_END
 
 
@@ -413,6 +419,8 @@ INPUT_PORTS_START( sprint1 )
 
 	PORT_START
 
+	PORT_START
+	PORT_ADJUSTER( 20, "Motor RPM" )
 INPUT_PORTS_END
 
 
@@ -459,6 +467,8 @@ INPUT_PORTS_START( dominos )
 	PORT_BIT ( 0x40, IP_ACTIVE_LOW, IPT_COIN1 )
 	PORT_BIT ( 0x80, IP_ACTIVE_LOW, IPT_COIN2 )
 
+	PORT_START
+	PORT_ADJUSTER( 20, "Tone Freq" )
 INPUT_PORTS_END
 
 
@@ -595,7 +605,7 @@ static DISCRETE_SOUND_START(sprint2_sound_interface)
 	/* 0k = 214Hz.   250k = 4416Hz                  */
 	/************************************************/
 	DISCRETE_RCFILTER(NODE_20, 1, SPRINT2_MOTORSND1_DATA, 123000, 10e-6)
-	DISCRETE_ADJUSTMENT(NODE_21, 1, (214.0-27.0)/12/15, (4416.0-27.0)/12/15, (382.0-27.0)/12/15, DISC_LOGADJ, "Motor 1 RPM")
+	DISCRETE_ADJUSTMENT(NODE_21, 1, (214.0-27.0)/12/15, (4416.0-27.0)/12/15, DISC_LOGADJ, 8)
 	DISCRETE_MULTIPLY(NODE_22, 1, NODE_20, NODE_21)
 
 	DISCRETE_MULTADD(NODE_23, 1, NODE_22, 2, 27.0/6)	/* F1 = /12*2 = /6 */
@@ -618,7 +628,7 @@ static DISCRETE_SOUND_START(sprint2_sound_interface)
 	/* it to sound different from car1.             */
 	/************************************************/
 	DISCRETE_RCFILTER(NODE_40, 1, SPRINT2_MOTORSND2_DATA, 123000, 10e-6)
-	DISCRETE_ADJUSTMENT(NODE_41, 1, (214.0-27.0)/12/15, (4416.0-27.0)/12/15, (522.0-27.0)/12/15, DISC_LOGADJ, "Motor 2 RPM")
+	DISCRETE_ADJUSTMENT(NODE_41, 1, (214.0-27.0)/12/15, (4416.0-27.0)/12/15, DISC_LOGADJ, 9)
 	DISCRETE_MULTIPLY(NODE_42, 1, NODE_40, NODE_41)
 
 	DISCRETE_MULTADD(NODE_43, 1, NODE_42, 2, 27.0/6)	/* F1 = /12*2 = /6 */
@@ -679,7 +689,8 @@ static DISCRETE_SOUND_START(sprint2_sound_interface)
 	DISCRETE_GAIN(SPRINT2_FINAL_MIX1, NODE_90, 65534.0/(846.9+1000.0+407.8))
 	DISCRETE_GAIN(SPRINT2_FINAL_MIX2, NODE_91, 65534.0/(846.9+1000.0+407.8))
 
-	DISCRETE_OUTPUT_STEREO(SPRINT2_FINAL_MIX2, SPRINT2_FINAL_MIX1, 100)
+	DISCRETE_OUTPUT(SPRINT2_FINAL_MIX2, MIXER(100,MIXER_PAN_LEFT))
+	DISCRETE_OUTPUT(SPRINT2_FINAL_MIX1, MIXER(100,MIXER_PAN_RIGHT))
 DISCRETE_SOUND_END
 
 static DISCRETE_SOUND_START(sprint1_sound_interface)
@@ -735,7 +746,7 @@ static DISCRETE_SOUND_START(sprint1_sound_interface)
 	/* 0k = 214Hz.   250k = 4416Hz                  */
 	/************************************************/
 	DISCRETE_RCFILTER(NODE_20, 1, SPRINT2_MOTORSND1_DATA, 123000, 10e-6)
-	DISCRETE_ADJUSTMENT(NODE_21, 1, (214.0-27.0)/12/15, (4416.0-27.0)/12/15, (382.0-27.0)/12/15, DISC_LOGADJ, "Motor RPM")
+	DISCRETE_ADJUSTMENT(NODE_21, 1, (214.0-27.0)/12/15, (4416.0-27.0)/12/15, DISC_LOGADJ, 8)
 	DISCRETE_MULTIPLY(NODE_22, 1, NODE_20, NODE_21)
 
 	DISCRETE_MULTADD(NODE_23, 1, NODE_22, 2, 27.0/6)	/* F1 = /12*2 = /6 */
@@ -831,7 +842,7 @@ static DISCRETE_SOUND_START(dominos_sound_interface)
 	/* Note: True freq range has not been tested    */
 	/************************************************/
 	DISCRETE_RCFILTER(NODE_20, 1, DOMINOS_FREQ_DATA, 123000, 1e-7)
-	DISCRETE_ADJUSTMENT(NODE_21, 1, (289.0-95.0)/3/15, (4500.0-95.0)/3/15, (458.0-95.0)/3/15, DISC_LOGADJ, "Tone Freq")
+	DISCRETE_ADJUSTMENT(NODE_21, 1, (289.0-95.0)/3/15, (4500.0-95.0)/3/15, DISC_LOGADJ, 4)
 	DISCRETE_MULTIPLY(NODE_22, 1, NODE_20, NODE_21)
 
 	DISCRETE_ADDER2(NODE_23, 1, NODE_22, 95.0/3)

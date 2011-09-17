@@ -1,11 +1,11 @@
-#pragma code_seg("C725")
-#pragma data_seg("D725")
-#pragma bss_seg("B725")
-#pragma const_seg("K725")
-#pragma comment(linker, "/merge:D725=725")
-#pragma comment(linker, "/merge:C725=725")
-#pragma comment(linker, "/merge:B725=725")
-#pragma comment(linker, "/merge:K725=725")
+#pragma code_seg("C767")
+#pragma data_seg("D767")
+#pragma bss_seg("B767")
+#pragma const_seg("K767")
+#pragma comment(linker, "/merge:D767=767")
+#pragma comment(linker, "/merge:C767=767")
+#pragma comment(linker, "/merge:B767=767")
+#pragma comment(linker, "/merge:K767=767")
 /***************************************************************************
 
 Time Limit (c) 1983 Chuo
@@ -26,11 +26,11 @@ extern VIDEO_START( timelimt );
 extern PALETTE_INIT( timelimt );
 extern VIDEO_UPDATE( timelimt );
 
-extern WRITE_HANDLER( timelimt_videoram_w );
-extern WRITE_HANDLER( timelimt_bg_videoram_w );
-extern WRITE_HANDLER( timelimt_scroll_y_w );
-extern WRITE_HANDLER( timelimt_scroll_x_msb_w );
-extern WRITE_HANDLER( timelimt_scroll_x_lsb_w );
+extern WRITE8_HANDLER( timelimt_videoram_w );
+extern WRITE8_HANDLER( timelimt_bg_videoram_w );
+extern WRITE8_HANDLER( timelimt_scroll_y_w );
+extern WRITE8_HANDLER( timelimt_scroll_x_msb_w );
+extern WRITE8_HANDLER( timelimt_scroll_x_lsb_w );
 
 extern data8_t *timelimt_bg_videoram;
 extern size_t timelimt_bg_videoram_size;
@@ -45,15 +45,15 @@ static MACHINE_INIT( timelimt )
 	nmi_enabled = 0;
 }
 
-static WRITE_HANDLER( nmi_enable_w )
+static WRITE8_HANDLER( nmi_enable_w )
 {
 	nmi_enabled = data & 1;	/* bit 0 = nmi enable */
 }
 
-static WRITE_HANDLER( sound_reset_w )
+static WRITE8_HANDLER( sound_reset_w )
 {
 	if ( data & 1 )
-		cpu_set_reset_line( 1, PULSE_LINE );
+		cpunum_set_input_line(1, INPUT_LINE_RESET, PULSE_LINE );
 }
 
 
@@ -261,7 +261,7 @@ static struct AY8910interface ay8910_interface =
 
 static INTERRUPT_GEN( timelimt_irq ) {
 	if ( nmi_enabled )
-		cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 }
 
 /***************************************************************************/

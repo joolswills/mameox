@@ -1,11 +1,11 @@
-#pragma code_seg("C208")
-#pragma data_seg("D208")
-#pragma bss_seg("B208")
-#pragma const_seg("K208")
-#pragma comment(linker, "/merge:D208=208")
-#pragma comment(linker, "/merge:C208=208")
-#pragma comment(linker, "/merge:B208=208")
-#pragma comment(linker, "/merge:K208=208")
+#pragma code_seg("C212")
+#pragma data_seg("D212")
+#pragma bss_seg("B212")
+#pragma const_seg("K212")
+#pragma comment(linker, "/merge:D212=212")
+#pragma comment(linker, "/merge:C212=212")
+#pragma comment(linker, "/merge:B212=212")
+#pragma comment(linker, "/merge:K212=212")
 /***************************************************************************
 
   vidhrdw.c
@@ -134,7 +134,7 @@ VIDEO_START( circusc )
 
 ***************************************************************************/
 
-WRITE_HANDLER( circusc_videoram_w )
+WRITE8_HANDLER( circusc_videoram_w )
 {
 	if (circusc_videoram[offset] != data)
 	{
@@ -143,7 +143,7 @@ WRITE_HANDLER( circusc_videoram_w )
 	}
 }
 
-WRITE_HANDLER( circusc_colorram_w )
+WRITE8_HANDLER( circusc_colorram_w )
 {
 	if (circusc_colorram[offset] != data)
 	{
@@ -152,7 +152,7 @@ WRITE_HANDLER( circusc_colorram_w )
 	}
 }
 
-WRITE_HANDLER( circusc_flipscreen_w )
+WRITE8_HANDLER( circusc_flipscreen_w )
 {
 	flip_screen_set(data & 1);
 }

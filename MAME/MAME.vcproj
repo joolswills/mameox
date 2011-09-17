@@ -222,6 +222,12 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="src\cdrom.c">
+			</File>
+			<File
+				RelativePath="src\cdrom.h">
+			</File>
+			<File
 				RelativePath="src\chd.c">
 				<FileConfiguration
 					Name="Debug|Xbox">
@@ -244,6 +250,12 @@
 			</File>
 			<File
 				RelativePath="src\chd.h">
+			</File>
+			<File
+				RelativePath="src\chdcd.c">
+			</File>
+			<File
+				RelativePath="src\chdcd.h">
 			</File>
 			<File
 				RelativePath="src\chdman.c">
@@ -803,13 +815,15 @@
 			<File
 				RelativePath="src\network.c">
 				<FileConfiguration
-					Name="Debug|Xbox">
+					Name="Debug|Xbox"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						ObjectFile="./debug_obj//"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Xbox">
+					Name="Release|Xbox"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						ObjectFile="./release_obj//"/>
@@ -972,28 +986,10 @@
 				RelativePath="src\sndintrf.h">
 			</File>
 			<File
-				RelativePath="src\state.c">
-				<FileConfiguration
-					Name="Debug|Xbox">
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="./debug_obj//"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Xbox">
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="./release_obj//"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Xbox">
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="./profile_obj//"/>
-				</FileConfiguration>
+				RelativePath="src\state.h">
 			</File>
 			<File
-				RelativePath="src\state.h">
+				RelativePath="src\state_xbox.c">
 			</File>
 			<File
 				RelativePath="src\tilemap.c">
@@ -3483,6 +3479,21 @@
 						</FileConfiguration>
 					</File>
 					<File
+						RelativePath="src\cpu\mips\mdrcold.c">
+						<FileConfiguration
+							Name="Debug|Xbox"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Xbox"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
+					</File>
+					<File
 						RelativePath="src\cpu\mips\mips3.c">
 						<FileConfiguration
 							Name="Debug|Xbox"
@@ -5407,6 +5418,89 @@
 						</FileConfiguration>
 					</File>
 				</Filter>
+				<Filter
+					Name="i386"
+					Filter="">
+					<File
+						RelativePath="src\cpu\i386\i386.c">
+					</File>
+					<File
+						RelativePath="src\cpu\i386\i386.h">
+					</File>
+					<File
+						RelativePath="src\cpu\i386\i386dasm.c">
+					</File>
+					<File
+						RelativePath="src\cpu\i386\i386intf.h">
+					</File>
+					<File
+						RelativePath="src\cpu\i386\i386op16.c">
+						<FileConfiguration
+							Name="Debug|Xbox"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Xbox"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath="src\cpu\i386\i386op16.h">
+					</File>
+					<File
+						RelativePath="src\cpu\i386\i386op32.c">
+						<FileConfiguration
+							Name="Debug|Xbox"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Xbox"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath="src\cpu\i386\i386op32.h">
+					</File>
+					<File
+						RelativePath="src\cpu\i386\i386ops.c">
+						<FileConfiguration
+							Name="Debug|Xbox"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Xbox"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
+					</File>
+				</Filter>
+				<Filter
+					Name="i960"
+					Filter="">
+					<File
+						RelativePath="src\cpu\i960\i960.c">
+					</File>
+					<File
+						RelativePath="src\cpu\i960\i960.h">
+					</File>
+					<File
+						RelativePath="src\cpu\i960\i960dis.c">
+					</File>
+					<File
+						RelativePath="src\cpu\i960\i960dis.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="dbgfonts"
@@ -5456,6 +5550,9 @@
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/drivers/"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\drivers\1945kiii.c">
 				</File>
 				<File
 					RelativePath="src\drivers\40love.c">
@@ -6991,6 +7088,9 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\drivers\bmcbowl.c">
+				</File>
+				<File
 					RelativePath="src\drivers\bogeyman.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -7013,27 +7113,6 @@
 				</File>
 				<File
 					RelativePath="src\drivers\bombjack.c">
-					<FileConfiguration
-						Name="Debug|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./debug_obj/drivers/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./release_obj/drivers/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./profile_obj/drivers/"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="src\drivers\bosco.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
 						<Tool
@@ -7411,6 +7490,9 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\drivers\cball.c">
+				</File>
+				<File
 					RelativePath="src\drivers\cbasebal.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -7577,6 +7659,9 @@
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/drivers/"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\drivers\changela.c">
 				</File>
 				<File
 					RelativePath="src\drivers\cheekyms.c">
@@ -7873,6 +7958,9 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\drivers\cntsteer.c">
+				</File>
+				<File
 					RelativePath="src\drivers\cojag.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -8102,6 +8190,9 @@
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/drivers/"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\drivers\cps3.c">
 				</File>
 				<File
 					RelativePath="src\drivers\crbaloon.c">
@@ -8356,6 +8447,9 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\drivers\dcheese.c">
+				</File>
+				<File
 					RelativePath="src\drivers\dcon.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -8396,6 +8490,9 @@
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/drivers/"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\drivers\ddayjlc.c">
 				</File>
 				<File
 					RelativePath="src\drivers\ddenlovr.c">
@@ -8545,6 +8642,12 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\drivers\deco102.c">
+				</File>
+				<File
+					RelativePath="src\drivers\deco156.c">
+				</File>
+				<File
 					RelativePath="src\drivers\deco32.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -8630,27 +8733,6 @@
 				</File>
 				<File
 					RelativePath="src\drivers\destroyr.c">
-					<FileConfiguration
-						Name="Debug|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./debug_obj/drivers/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./release_obj/drivers/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./profile_obj/drivers/"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="src\drivers\digdug.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
 						<Tool
@@ -8963,6 +9045,9 @@
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/drivers/"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\drivers\dynadice.c">
 				</File>
 				<File
 					RelativePath="src\drivers\dynax.c">
@@ -9868,6 +9953,9 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\drivers\gaelco3d.c">
+				</File>
+				<File
 					RelativePath="src\drivers\gaiden.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -9971,6 +10059,9 @@
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/drivers/"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\drivers\galpani3.c">
 				</File>
 				<File
 					RelativePath="src\drivers\galpanic.c">
@@ -10139,6 +10230,9 @@
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/drivers/"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\drivers\getrivia.c">
 				</File>
 				<File
 					RelativePath="src\drivers\gijoe.c">
@@ -10855,6 +10949,9 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\drivers\hng64.c">
+				</File>
+				<File
 					RelativePath="src\drivers\holeland.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -11551,6 +11648,9 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\drivers\konamigv.c">
+				</File>
+				<File
 					RelativePath="src\drivers\konamigx.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -11591,6 +11691,9 @@
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/drivers/"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\drivers\ksayakyu.c">
 				</File>
 				<File
 					RelativePath="src\drivers\kyugo.c">
@@ -11824,6 +11927,9 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\drivers\lethal.c">
+				</File>
+				<File
 					RelativePath="src\drivers\lethalj.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -11908,7 +12014,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="src\drivers\locomotn.c">
+					RelativePath="src\drivers\looping.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
 						<Tool
@@ -11929,25 +12035,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="src\drivers\looping.c">
-					<FileConfiguration
-						Name="Debug|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./debug_obj/drivers/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./release_obj/drivers/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./profile_obj/drivers/"/>
-					</FileConfiguration>
+					RelativePath="src\drivers\lordgun.c">
 				</File>
 				<File
 					RelativePath="src\drivers\lsasquad.c">
@@ -11990,6 +12078,9 @@
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/drivers/"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\drivers\lvcards.c">
 				</File>
 				<File
 					RelativePath="src\drivers\lwings.c">
@@ -12161,6 +12252,12 @@
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/drivers/"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\drivers\macs.c">
+				</File>
+				<File
+					RelativePath="src\drivers\madalien.c">
 				</File>
 				<File
 					RelativePath="src\drivers\madmotor.c">
@@ -12625,6 +12722,9 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\drivers\meijinsn.c">
+				</File>
+				<File
 					RelativePath="src\drivers\mermaid.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -12709,6 +12809,9 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\drivers\mgolf.c">
+				</File>
+				<File
 					RelativePath="src\drivers\mhavoc.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -12728,6 +12831,9 @@
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/drivers/"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\drivers\micro3d.c">
 				</File>
 				<File
 					RelativePath="src\drivers\midtunit.c">
@@ -13001,6 +13107,9 @@
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/drivers/"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\drivers\model1.c">
 				</File>
 				<File
 					RelativePath="src\drivers\mogura.c">
@@ -13405,6 +13514,12 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\drivers\n8080.c">
+				</File>
+				<File
+					RelativePath="src\drivers\namcofl.c">
+				</File>
+				<File
 					RelativePath="src\drivers\namcoic.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -13634,6 +13749,9 @@
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/drivers/"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\drivers\namcos23.c">
 				</File>
 				<File
 					RelativePath="src\drivers\namcos86.c">
@@ -14182,6 +14300,9 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\drivers\onetwo.c">
+				</File>
+				<File
 					RelativePath="src\drivers\opwolf.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -14474,6 +14595,9 @@
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/drivers/"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\drivers\pbchmp95.c">
 				</File>
 				<File
 					RelativePath="src\drivers\pbillian.c">
@@ -14814,13 +14938,15 @@
 				<File
 					RelativePath="src\drivers\pong.c">
 					<FileConfiguration
-						Name="Debug|Xbox">
+						Name="Debug|Xbox"
+						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
 							ObjectFile="./debug_obj/drivers/"/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Xbox">
+						Name="Release|Xbox"
+						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
 							ObjectFile="./release_obj/drivers/"/>
@@ -15064,6 +15190,9 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\drivers\pturn.c">
+				</File>
+				<File
 					RelativePath="src\drivers\punchout.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -15106,6 +15235,9 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\drivers\qdrmfgp.c">
+				</File>
+				<File
 					RelativePath="src\drivers\qix.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -15146,6 +15278,9 @@
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/drivers/"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\drivers\quasar.c">
 				</File>
 				<File
 					RelativePath="src\drivers\quizdna.c">
@@ -15925,6 +16060,9 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\drivers\scotrsht.c">
+				</File>
+				<File
 					RelativePath="src\drivers\scramble.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -16070,6 +16208,9 @@
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/drivers/"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\drivers\seibuspi.c">
 				</File>
 				<File
 					RelativePath="src\drivers\seicross.c">
@@ -17206,6 +17347,9 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\drivers\ssingles.c">
+				</File>
+				<File
 					RelativePath="src\drivers\sslam.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -17309,6 +17453,9 @@
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/drivers/"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\drivers\st0016.c">
 				</File>
 				<File
 					RelativePath="src\drivers\stactics.c">
@@ -17794,6 +17941,9 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\drivers\suprridr.c">
+				</File>
+				<File
 					RelativePath="src\drivers\suprslam.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -18151,6 +18301,9 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\drivers\taitojc.c">
+				</File>
+				<File
 					RelativePath="src\drivers\taitosj.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -18170,6 +18323,9 @@
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/drivers/"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\drivers\talbot.c">
 				</File>
 				<File
 					RelativePath="src\drivers\tankbatt.c">
@@ -18317,6 +18473,9 @@
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/drivers/"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\drivers\tcl.c">
 				</File>
 				<File
 					RelativePath="src\drivers\tecmo.c">
@@ -20020,27 +20179,6 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="src\drivers\xevious.c">
-					<FileConfiguration
-						Name="Debug|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./debug_obj/drivers/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./release_obj/drivers/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./profile_obj/drivers/"/>
-					</FileConfiguration>
-				</File>
-				<File
 					RelativePath="src\drivers\xexex.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -20615,6 +20753,12 @@
 					RelativePath="src\includes\funkyjet.h">
 				</File>
 				<File
+					RelativePath="src\includes\gaelco3d.h">
+				</File>
+				<File
+					RelativePath="src\includes\galaga.h">
+				</File>
+				<File
 					RelativePath="src\includes\galaxian.h">
 				</File>
 				<File
@@ -20828,6 +20972,9 @@
 					RelativePath="src\includes\subs.h">
 				</File>
 				<File
+					RelativePath="src\includes\suprridr.h">
+				</File>
+				<File
 					RelativePath="src\includes\system16.h">
 				</File>
 				<File
@@ -20862,6 +21009,9 @@
 				</File>
 				<File
 					RelativePath="src\includes\turbo.h">
+				</File>
+				<File
+					RelativePath="src\includes\twincobr.h">
 				</File>
 				<File
 					RelativePath="src\includes\unico.h">
@@ -21273,6 +21423,12 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\machine\at28c16.c">
+				</File>
+				<File
+					RelativePath="src\machine\at28c16.h">
+				</File>
+				<File
 					RelativePath="src\machine\atari_vg.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -21489,27 +21645,6 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="src\machine\bosco.c">
-					<FileConfiguration
-						Name="Debug|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./debug_obj/machine/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./release_obj/machine/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./profile_obj/machine/"/>
-					</FileConfiguration>
-				</File>
-				<File
 					RelativePath="src\machine\bsktball.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -21574,27 +21709,6 @@
 				</File>
 				<File
 					RelativePath="src\machine\buggychl.c">
-					<FileConfiguration
-						Name="Debug|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./debug_obj/machine/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./release_obj/machine/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./profile_obj/machine/"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="src\machine\capbowl.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
 						<Tool
@@ -21828,7 +21942,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="src\machine\digdug.c">
+					RelativePath="src\machine\docastle.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
 						<Tool
@@ -21849,25 +21963,10 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="src\machine\docastle.c">
-					<FileConfiguration
-						Name="Debug|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./debug_obj/machine/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./release_obj/machine/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./profile_obj/machine/"/>
-					</FileConfiguration>
+					RelativePath="src\machine\ds2404.c">
+				</File>
+				<File
+					RelativePath="src\machine\ds2404.h">
 				</File>
 				<File
 					RelativePath="src\machine\eeprom.c">
@@ -21978,27 +22077,6 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="src\machine\galaga.c">
-					<FileConfiguration
-						Name="Debug|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./debug_obj/machine/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./release_obj/machine/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./profile_obj/machine/"/>
-					</FileConfiguration>
-				</File>
-				<File
 					RelativePath="src\machine\gaplus.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -22084,6 +22162,12 @@
 				</File>
 				<File
 					RelativePath="src\machine\idectrl.h">
+				</File>
+				<File
+					RelativePath="src\machine\intelfsh.c">
+				</File>
+				<File
+					RelativePath="src\machine\intelfsh.h">
 				</File>
 				<File
 					RelativePath="src\machine\irem_cpu.c">
@@ -22413,6 +22497,12 @@
 					RelativePath="src\machine\mathbox.h">
 				</File>
 				<File
+					RelativePath="src\machine\mb3773.c">
+				</File>
+				<File
+					RelativePath="src\machine\mb3773.h">
+				</File>
+				<File
 					RelativePath="src\machine\mb87078.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -22608,6 +22698,27 @@
 						<Tool
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/machine/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\machine\model1.c">
+					<FileConfiguration
+						Name="Debug|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -22953,27 +23064,6 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="src\machine\polepos.c">
-					<FileConfiguration
-						Name="Debug|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./debug_obj/machine/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./release_obj/machine/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./profile_obj/machine/"/>
-					</FileConfiguration>
-				</File>
-				<File
 					RelativePath="src\machine\psx.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -23238,6 +23328,27 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\machine\seibuspi.c">
+					<FileConfiguration
+						Name="Debug|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="src\machine\simpsons.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -23322,6 +23433,12 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\machine\smc91c9x.c">
+				</File>
+				<File
+					RelativePath="src\machine\smc91c9x.h">
+				</File>
+				<File
 					RelativePath="src\machine\snes.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -23362,6 +23479,21 @@
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/machine/"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\machine\spisprit.c">
+				</File>
+				<File
+					RelativePath="src\machine\spisprit.h">
+				</File>
+				<File
+					RelativePath="src\machine\spistab1.c">
+				</File>
+				<File
+					RelativePath="src\machine\spistab2.c">
+				</File>
+				<File
+					RelativePath="src\machine\spistab3.c">
 				</File>
 				<File
 					RelativePath="src\machine\stactics.c">
@@ -23861,6 +23993,12 @@
 				<File
 					RelativePath="src\machine\z80fmly.h">
 				</File>
+				<File
+					RelativePath="src\machine\znsec.c">
+				</File>
+				<File
+					RelativePath="src\machine\znsec.h">
+				</File>
 			</Filter>
 			<Filter
 				Name="sndhrdw"
@@ -23971,6 +24109,9 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\sndhrdw\ataridis.c">
+				</File>
+				<File
 					RelativePath="src\sndhrdw\atarijsa.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -24017,27 +24158,6 @@
 				</File>
 				<File
 					RelativePath="src\sndhrdw\berzerk.c">
-					<FileConfiguration
-						Name="Debug|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./debug_obj/sndhrdw/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./release_obj/sndhrdw/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./profile_obj/sndhrdw/"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="src\sndhrdw\bosco.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
 						<Tool
@@ -24724,6 +24844,27 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\sndhrdw\n8080.c">
+					<FileConfiguration
+						Name="Debug|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="src\sndhrdw\pbillian.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -25261,6 +25402,9 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\sndhrdw\turbo.c">
+				</File>
+				<File
 					RelativePath="src\sndhrdw\warpwarp.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -25736,6 +25880,12 @@
 					RelativePath="src\sound\c6280.h">
 				</File>
 				<File
+					RelativePath="src\sound\cdda.c">
+				</File>
+				<File
+					RelativePath="src\sound\cdda.h">
+				</File>
+				<File
 					RelativePath="src\sound\cem3394.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -25952,6 +26102,12 @@
 					RelativePath="src\sound\discrete.h">
 				</File>
 				<File
+					RelativePath="src\sound\dmadac.c">
+				</File>
+				<File
+					RelativePath="src\sound\dmadac.h">
+				</File>
+				<File
 					RelativePath="src\sound\es5506.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -26094,6 +26250,12 @@
 				</File>
 				<File
 					RelativePath="src\sound\hc55516.h">
+				</File>
+				<File
+					RelativePath="src\sound\ics2115.c">
+				</File>
+				<File
+					RelativePath="src\sound\ics2115.h">
 				</File>
 				<File
 					RelativePath="src\sound\iremga20.c">
@@ -26336,6 +26498,12 @@
 					RelativePath="src\sound\multipcm.h">
 				</File>
 				<File
+					RelativePath="src\sound\n63701x.c">
+				</File>
+				<File
+					RelativePath="src\sound\n63701x.h">
+				</File>
+				<File
 					RelativePath="src\sound\namco.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -26358,6 +26526,18 @@
 				</File>
 				<File
 					RelativePath="src\sound\namco.h">
+				</File>
+				<File
+					RelativePath="src\sound\namco52.c">
+				</File>
+				<File
+					RelativePath="src\sound\namco52.h">
+				</File>
+				<File
+					RelativePath="src\sound\namco54.c">
+				</File>
+				<File
+					RelativePath="src\sound\namco54.h">
 				</File>
 				<File
 					RelativePath="src\sound\namcona.c">
@@ -26697,6 +26877,30 @@
 				</File>
 				<File
 					RelativePath="src\sound\sp0250.h">
+				</File>
+				<File
+					RelativePath="src\sound\st0016.c">
+					<FileConfiguration
+						Name="Debug|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\sound\st0016.h">
 				</File>
 				<File
 					RelativePath="src\sound\streams.c">
@@ -31323,6 +31527,27 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\vidhrdw\gaelco3d.c">
+					<FileConfiguration
+						Name="Debug|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="src\vidhrdw\gaiden.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -32187,27 +32412,6 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="src\vidhrdw\hitme.c">
-					<FileConfiguration
-						Name="Debug|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./debug_obj/vidhrdw/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./release_obj/vidhrdw/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./profile_obj/vidhrdw/"/>
-					</FileConfiguration>
-				</File>
-				<File
 					RelativePath="src\vidhrdw\hnayayoi.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -32826,27 +33030,6 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="src\vidhrdw\kinst.c">
-					<FileConfiguration
-						Name="Debug|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./debug_obj/vidhrdw/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./release_obj/vidhrdw/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Xbox">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="./profile_obj/vidhrdw/"/>
-					</FileConfiguration>
-				</File>
-				<File
 					RelativePath="src\vidhrdw\klax.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -32952,6 +33135,27 @@
 						<Tool
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/vidhrdw/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\vidhrdw\ksayakyu.c">
+					<FileConfiguration
+						Name="Debug|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -33189,6 +33393,27 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\vidhrdw\lethal.c">
+					<FileConfiguration
+						Name="Debug|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="src\vidhrdw\lethalj.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -33291,6 +33516,27 @@
 						<Tool
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/vidhrdw/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\vidhrdw\lvcards.c">
+					<FileConfiguration
+						Name="Debug|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -34182,6 +34428,27 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\vidhrdw\model1.c">
+					<FileConfiguration
+						Name="Debug|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)2.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)2.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)2.obj"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="src\vidhrdw\mole.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -34536,6 +34803,48 @@
 						<Tool
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/vidhrdw/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\vidhrdw\n8080.c">
+					<FileConfiguration
+						Name="Debug|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)2.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)2.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)2.obj"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\vidhrdw\namcofl.c">
+					<FileConfiguration
+						Name="Debug|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -36081,6 +36390,27 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\vidhrdw\qdrmfgp.c">
+					<FileConfiguration
+						Name="Debug|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="src\vidhrdw\qix.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -36099,6 +36429,27 @@
 						<Tool
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/vidhrdw/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\vidhrdw\quasar.c">
+					<FileConfiguration
+						Name="Debug|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -36696,6 +37047,27 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\vidhrdw\scotrsht.c">
+					<FileConfiguration
+						Name="Debug|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="src\vidhrdw\sega.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -36801,6 +37173,27 @@
 						<Tool
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/vidhrdw/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\vidhrdw\seibuspi.c">
+					<FileConfiguration
+						Name="Debug|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)2.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)2.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)2.obj"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -37917,6 +38310,27 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="src\vidhrdw\st0016.c">
+					<FileConfiguration
+						Name="Debug|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)2.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)2.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)2.obj"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="src\vidhrdw\stactics.c">
 					<FileConfiguration
 						Name="Debug|Xbox">
@@ -38292,6 +38706,27 @@
 						<Tool
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/vidhrdw/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\vidhrdw\suprridr.c">
+					<FileConfiguration
+						Name="Debug|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Xbox">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -39526,6 +39961,9 @@
 							Name="VCCLCompilerTool"
 							ObjectFile="./profile_obj/vidhrdw/"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\vidhrdw\tryout.c">
 				</File>
 				<File
 					RelativePath="src\vidhrdw\tsamurai.c">

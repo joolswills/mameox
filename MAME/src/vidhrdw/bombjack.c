@@ -1,11 +1,11 @@
-#pragma code_seg("C175")
-#pragma data_seg("D175")
-#pragma bss_seg("B175")
-#pragma const_seg("K175")
-#pragma comment(linker, "/merge:D175=175")
-#pragma comment(linker, "/merge:C175=175")
-#pragma comment(linker, "/merge:B175=175")
-#pragma comment(linker, "/merge:K175=175")
+#pragma code_seg("C177")
+#pragma data_seg("D177")
+#pragma bss_seg("B177")
+#pragma const_seg("K177")
+#pragma comment(linker, "/merge:D177=177")
+#pragma comment(linker, "/merge:C177=177")
+#pragma comment(linker, "/merge:B177=177")
+#pragma comment(linker, "/merge:K177=177")
 /***************************************************************************
 
   vidhrdw.c
@@ -21,7 +21,7 @@ static int background_image;
 
 static struct tilemap *fg_tilemap, *bg_tilemap;
 
-WRITE_HANDLER( bombjack_videoram_w )
+WRITE8_HANDLER( bombjack_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -30,7 +30,7 @@ WRITE_HANDLER( bombjack_videoram_w )
 	}
 }
 
-WRITE_HANDLER( bombjack_colorram_w )
+WRITE8_HANDLER( bombjack_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -39,7 +39,7 @@ WRITE_HANDLER( bombjack_colorram_w )
 	}
 }
 
-WRITE_HANDLER( bombjack_background_w )
+WRITE8_HANDLER( bombjack_background_w )
 {
 	if (background_image != data)
 	{
@@ -48,7 +48,7 @@ WRITE_HANDLER( bombjack_background_w )
 	}
 }
 
-WRITE_HANDLER( bombjack_flipscreen_w )
+WRITE8_HANDLER( bombjack_flipscreen_w )
 {
 	if (flip_screen != (data & 0x01))
 	{

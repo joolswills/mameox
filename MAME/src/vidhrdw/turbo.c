@@ -1,11 +1,11 @@
-#pragma code_seg("C750")
-#pragma data_seg("D750")
-#pragma bss_seg("B750")
-#pragma const_seg("K750")
-#pragma comment(linker, "/merge:D750=750")
-#pragma comment(linker, "/merge:C750=750")
-#pragma comment(linker, "/merge:B750=750")
-#pragma comment(linker, "/merge:K750=750")
+#pragma code_seg("C792")
+#pragma data_seg("D792")
+#pragma bss_seg("B792")
+#pragma const_seg("K792")
+#pragma comment(linker, "/merge:D792=792")
+#pragma comment(linker, "/merge:C792=792")
+#pragma comment(linker, "/merge:B792=792")
+#pragma comment(linker, "/merge:K792=792")
 /*************************************************************************
 
 	Sega Z80-3D system
@@ -1014,7 +1014,7 @@ VIDEO_UPDATE( buckrog )
 
 ***************************************************************************/
 
-WRITE_HANDLER( buckrog_bitmap_w )
+WRITE8_HANDLER( buckrog_bitmap_w )
 {
 	buckrog_bitmap_ram[offset] = data & 1;
 }

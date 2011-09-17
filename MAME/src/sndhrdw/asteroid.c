@@ -1,11 +1,11 @@
-#pragma code_seg("C129")
-#pragma data_seg("D129")
-#pragma bss_seg("B129")
-#pragma const_seg("K129")
-#pragma comment(linker, "/merge:D129=129")
-#pragma comment(linker, "/merge:C129=129")
-#pragma comment(linker, "/merge:B129=129")
-#pragma comment(linker, "/merge:K129=129")
+#pragma code_seg("C130")
+#pragma data_seg("D130")
+#pragma bss_seg("B130")
+#pragma const_seg("K130")
+#pragma comment(linker, "/merge:D130=130")
+#pragma comment(linker, "/merge:C130=130")
+#pragma comment(linker, "/merge:B130=130")
+#pragma comment(linker, "/merge:K130=130")
 /*****************************************************************************
  *
  * Asteroids Analog Sound system interface into discrete sound emulation
@@ -275,7 +275,7 @@ DISCRETE_SOUND_START(astdelux_sound_interface)
 DISCRETE_SOUND_END
 
 
-WRITE_HANDLER( asteroid_explode_w )
+WRITE8_HANDLER( asteroid_explode_w )
 {
 	discrete_sound_w(0x20,(data&0x3c)>>2);				// Volume
 	/* We will modify the pitch data to send the divider value. */
@@ -297,26 +297,26 @@ WRITE_HANDLER( asteroid_explode_w )
 	discrete_sound_w(0x21, data);
 }
 
-WRITE_HANDLER( asteroid_thump_w )
+WRITE8_HANDLER( asteroid_thump_w )
 {
 	discrete_sound_w(0x10,data&0x10);		//Thump enable
 	discrete_sound_w(0x11,(data&0x0f)^0x0f);	//Thump frequency
 	discrete_sound_w(0x12,data&0x0f);		//Thump duty
 }
 
-WRITE_HANDLER( asteroid_sounds_w )
+WRITE8_HANDLER( asteroid_sounds_w )
 {
 	discrete_sound_w(0x00+offset,(data&0x80)?1:0);
 }
 
-WRITE_HANDLER( astdelux_sounds_w )
+WRITE8_HANDLER( astdelux_sounds_w )
 {
 	/* Only ever activates the thrusters in Astdelux */
 //	discrete_sound_w(0x03,(data&0x80)?0:1);
 	discrete_sound_w(0x03,(data&0x80)?1:0);
 }
 
-WRITE_HANDLER( asteroid_noise_reset_w )
+WRITE8_HANDLER( asteroid_noise_reset_w )
 {
 	discrete_sound_w(6, 0);
 }

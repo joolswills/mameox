@@ -138,15 +138,15 @@ static data8_t *toypop_m68000_sharedram;
 
 READ8_HANDLER( toypop_sound_sharedram_r )
 {
-	return mappy_soundregs[offset];
+	return namco_soundregs[offset];
 }
 
 WRITE8_HANDLER( toypop_sound_sharedram_w )
 {
 	if (offset < 0x40)
-		mappy_sound_w(offset,data);
+		namco_15xx_w(offset,data);
 	else
-		mappy_soundregs[offset] = data;
+		namco_soundregs[offset] = data;
 }
 
 READ16_HANDLER( toypop_m68000_sharedram_r )
@@ -169,7 +169,7 @@ READ8_HANDLER( toypop_main_interrupt_enable_r )
 WRITE8_HANDLER( toypop_main_interrupt_enable_w )
 {
 	cpu_interrupt_enable(0,1);
-	cpu_set_irq_line(0, 0, CLEAR_LINE);
+	cpunum_set_input_line(0, 0, CLEAR_LINE);
 }
 
 WRITE8_HANDLER( toypop_main_interrupt_disable_w )
@@ -180,7 +180,7 @@ WRITE8_HANDLER( toypop_main_interrupt_disable_w )
 WRITE8_HANDLER( toypop_sound_interrupt_enable_acknowledge_w )
 {
 	cpu_interrupt_enable(1,1);
-	cpu_set_irq_line(1, 0, CLEAR_LINE);
+	cpunum_set_input_line(1, 0, CLEAR_LINE);
 }
 
 WRITE8_HANDLER( toypop_sound_interrupt_disable_w )
@@ -191,7 +191,7 @@ WRITE8_HANDLER( toypop_sound_interrupt_disable_w )
 INTERRUPT_GEN( toypop_main_interrupt )
 {
 	irq0_line_assert();	// this also checks if irq is enabled - IMPORTANT!
-						// so don't replace with cpu_set_irq_line(0, 0, ASSERT_LINE);
+						// so don't replace with cpunum_set_input_line(0, 0, ASSERT_LINE);
 
 	namcoio_set_irq_line(0,PULSE_LINE);
 	namcoio_set_irq_line(1,PULSE_LINE);
@@ -200,43 +200,43 @@ INTERRUPT_GEN( toypop_main_interrupt )
 
 WRITE8_HANDLER( toypop_sound_clear_w )
 {
-	cpu_set_reset_line(1, CLEAR_LINE);
+	cpunum_set_input_line(1, INPUT_LINE_RESET, CLEAR_LINE);
 }
 
 WRITE8_HANDLER( toypop_sound_assert_w )
 {
-	cpu_set_reset_line(1, ASSERT_LINE);
+	cpunum_set_input_line(1, INPUT_LINE_RESET, ASSERT_LINE);
 }
 
 WRITE8_HANDLER( toypop_m68000_clear_w )
 {
-	cpu_set_reset_line(2, CLEAR_LINE);
+	cpunum_set_input_line(2, INPUT_LINE_RESET, CLEAR_LINE);
 }
 
 WRITE8_HANDLER( toypop_m68000_assert_w )
 {
-	cpu_set_reset_line(2, ASSERT_LINE);
+	cpunum_set_input_line(2, INPUT_LINE_RESET, ASSERT_LINE);
 }
 
 MACHINE_INIT( toypop )
 {
 	cpu_interrupt_enable(0,0);
-	cpu_set_irq_line(0, 0, CLEAR_LINE);
+	cpunum_set_input_line(0, 0, CLEAR_LINE);
 	cpu_interrupt_enable(1,0);
-	cpu_set_irq_line(1, 0, CLEAR_LINE);
+	cpunum_set_input_line(1, 0, CLEAR_LINE);
 	interrupt_enable_68k = 0;
 }
 
 INTERRUPT_GEN( toypop_m68000_interrupt )
 {
 	if (interrupt_enable_68k)
-		cpu_set_irq_line(2, 6, HOLD_LINE);
+		cpunum_set_input_line(2, 6, HOLD_LINE);
 }
 
 static WRITE8_HANDLER( toypop_68k_irq_trigger_w )
 {
 	if (interrupt_enable_68k)
-		cpu_set_irq_line(2, 6, HOLD_LINE);
+		cpunum_set_input_line(2, 6, HOLD_LINE);
 }
 
 WRITE16_HANDLER( toypop_m68000_interrupt_enable_w )
@@ -611,7 +611,7 @@ static MACHINE_DRIVER_START( liblrabl )
 	MDRV_VIDEO_UPDATE(toypop)
 
 	/* sound hardware */
-	MDRV_SOUND_ADD(NAMCO, namco_interface)
+	MDRV_SOUND_ADD(NAMCO_15XX, namco_interface)
 MACHINE_DRIVER_END
 
 static MACHINE_DRIVER_START( toypop )
@@ -689,7 +689,6 @@ ROM_START( toypop )
 	ROM_REGION( 0x0100, REGION_SOUND1, 0 )	/* sound prom */
 	ROM_LOAD( "lr1-4.3d", 0x0000, 0x0100, CRC(16a9166a) SHA1(847cbaf7c88616576c410177e066ae1d792ac0ba) )
 ROM_END
-
 
 
 

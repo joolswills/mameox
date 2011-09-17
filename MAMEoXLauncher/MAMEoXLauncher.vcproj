@@ -162,6 +162,9 @@
 				RelativePath="..\MAMEoX\Sources\Keyboard.cpp">
 			</File>
 			<File
+				RelativePath="..\MAMEoX\Sources\Lightgun.cpp">
+			</File>
+			<File
 				RelativePath="Sources\main.cpp">
 			</File>
 			<File

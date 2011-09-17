@@ -1,11 +1,11 @@
-#pragma code_seg("C679")
-#pragma data_seg("D679")
-#pragma bss_seg("B679")
-#pragma const_seg("K679")
-#pragma comment(linker, "/merge:D679=679")
-#pragma comment(linker, "/merge:C679=679")
-#pragma comment(linker, "/merge:B679=679")
-#pragma comment(linker, "/merge:K679=679")
+#pragma code_seg("C717")
+#pragma data_seg("D717")
+#pragma bss_seg("B717")
+#pragma const_seg("K717")
+#pragma comment(linker, "/merge:D717=717")
+#pragma comment(linker, "/merge:C717=717")
+#pragma comment(linker, "/merge:B717=717")
+#pragma comment(linker, "/merge:K717=717")
 /*
  Super Draw Poker (c) Stern 1983
 
@@ -37,7 +37,7 @@ A3-1J
 static struct tilemap *fg_tilemap;
 static unsigned char *char_bank;
 
-WRITE_HANDLER( supdrapo_videoram_w )
+WRITE8_HANDLER( supdrapo_videoram_w )
 {
 	if( videoram[offset] != data )
 	{
@@ -46,7 +46,7 @@ WRITE_HANDLER( supdrapo_videoram_w )
 	}
 }
 
-WRITE_HANDLER( supdrapo_char_bank_w )
+WRITE8_HANDLER( supdrapo_char_bank_w )
 {
 	if( char_bank[offset] != data )
 	{

@@ -1,11 +1,11 @@
-#pragma code_seg("C275")
-#pragma data_seg("D275")
-#pragma bss_seg("B275")
-#pragma const_seg("K275")
-#pragma comment(linker, "/merge:D275=275")
-#pragma comment(linker, "/merge:C275=275")
-#pragma comment(linker, "/merge:B275=275")
-#pragma comment(linker, "/merge:K275=275")
+#pragma code_seg("C286")
+#pragma data_seg("D286")
+#pragma bss_seg("B286")
+#pragma const_seg("K286")
+#pragma comment(linker, "/merge:D286=286")
+#pragma comment(linker, "/merge:C286=286")
+#pragma comment(linker, "/merge:B286=286")
+#pragma comment(linker, "/merge:K286=286")
 /***************************************************************************
 
 						  -= ESD 16 Bit Games =-
@@ -312,11 +312,11 @@ VIDEO_UPDATE( esd16 )
 	tilemap_set_scrolly(esdtilemap_1, 0, esd16_scroll_1[1]);
 
 #ifdef MAME_DEBUG
-if ( keyboard_pressed(KEYCODE_Z) )
+if ( code_pressed(KEYCODE_Z) )
 {	int msk = 0;
-	if (keyboard_pressed(KEYCODE_Q))	msk |= 1;
-	if (keyboard_pressed(KEYCODE_W))	msk |= 2;
-	if (keyboard_pressed(KEYCODE_A))	msk |= 4;
+	if (code_pressed(KEYCODE_Q))	msk |= 1;
+	if (code_pressed(KEYCODE_W))	msk |= 2;
+	if (code_pressed(KEYCODE_A))	msk |= 4;
 	if (msk != 0) layers_ctrl &= msk;	}
 #endif
 
@@ -338,11 +338,11 @@ VIDEO_UPDATE( hedpanic )
 
 
 #ifdef MAME_DEBUG
-if ( keyboard_pressed(KEYCODE_Z) )
+if ( code_pressed(KEYCODE_Z) )
 {	int msk = 0;
-	if (keyboard_pressed(KEYCODE_Q))	msk |= 1;
-	if (keyboard_pressed(KEYCODE_W))	msk |= 2;
-	if (keyboard_pressed(KEYCODE_A))	msk |= 4;
+	if (code_pressed(KEYCODE_Q))	msk |= 1;
+	if (code_pressed(KEYCODE_W))	msk |= 2;
+	if (code_pressed(KEYCODE_A))	msk |= 4;
 	if (msk != 0) layers_ctrl &= msk;	}
 #endif
 

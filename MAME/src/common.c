@@ -16,6 +16,8 @@
 
 #define LOG_LOAD
 
+
+
 /***************************************************************************
 
 	Constants
@@ -307,11 +309,7 @@ unsigned char *memory_region(int num)
 		for (i = 0;i < MAX_MEMORY_REGIONS;i++)
 		{
 			if (Machine->memory_region[i].type == num)
-      {
-        // [EBA] Load the address if it happens to be virtual
-//        osd_vmm_accessaddress( Machine->memory_region[i].base );
 				return Machine->memory_region[i].base;
-      }
 		}
 	}
 
@@ -354,13 +352,9 @@ int new_memory_region(int num, size_t length, UINT32 flags)
 
     if (num < MAX_MEMORY_REGIONS)
     {
-        // [EBA]: Put GFX regions into virtual ram
-      Machine->memory_region[num].length = length;
-//      if( num == REGION_GFX1 )
-//        Machine->memory_region[num].base = osd_vmm_malloc(length);
-//      else
+        Machine->memory_region[num].length = length;
         Machine->memory_region[num].base = osd_malloc(length);
-      return (Machine->memory_region[num].base == NULL) ? 1 : 0;
+        return (Machine->memory_region[num].base == NULL) ? 1 : 0;
     }
     else
     {
@@ -371,12 +365,7 @@ int new_memory_region(int num, size_t length, UINT32 flags)
                 Machine->memory_region[i].length = length;
                 Machine->memory_region[i].type = num;
                 Machine->memory_region[i].flags = flags;
-
-                  // [EBA]: Put GFX regions into virtual ram
-//                if( num == REGION_GFX1 )
-//                  Machine->memory_region[i].base = osd_vmm_malloc(length);
-//                else
-                  Machine->memory_region[i].base = osd_malloc(length);
+                Machine->memory_region[i].base = osd_malloc(length);
                 return (Machine->memory_region[i].base == NULL) ? 1 : 0;
             }
         }
@@ -648,8 +637,6 @@ void bitmap_free(struct mame_bitmap *bitmap)
 
 void *auto_malloc(size_t size)
 {
-    // EBA: Since the switch to osd_malloc, this actually doesn't need to be
-    //  tested for failure, but do it anyway
 	void *result = osd_malloc(size);
 	if (result)
 	{
@@ -658,7 +645,7 @@ void *auto_malloc(size_t size)
 		/* make sure we have space */
 		if (malloc_list_index >= MAX_MALLOCS)
 		{
-			log( "Out of malloc tracking slots!\n" );
+			//log(stderr, "Out of malloc tracking slots!\n");
 			return result;
 		}
 
@@ -667,8 +654,10 @@ void *auto_malloc(size_t size)
 		info->tag = get_resource_tag();
 		info->ptr = result;
 	}
-  else
-    fatalerror( "Malloc failed! (Out of Memory)" );
+	else
+	{
+		fatalerror( "Malloc failed! (Out of memory)" ) ;
+	}
 	return result;
 }
 
@@ -1009,10 +998,8 @@ void CLIB_DECL debugload(const char *string, ...)
 	va_list arg;
 	FILE *f;
 
-//	f = fopen("romload.log", opened++ ? "a" : "w");
-
-	f = fopen("D:\\debug.log", "a");
-  if (f)
+	f = fopen("d:\\debug.log",  "a" );
+	if (f)
 	{
 		va_start(arg, string);
 		vfprintf(f, string, arg);
@@ -1260,9 +1247,8 @@ static int display_rom_load_results(struct rom_load_data *romdata)
 
 		/* display the result */
 		printf("%s", romdata->errorbuf);
-    osd_print_error( "%s", romdata->errorbuf );
-
-#if 0    // [EBA] Don't wait for the user to bail out, just play
+		osd_print_error("%s", romdata->errorbuf);
+#if 0  // [EBA] Don't wait for the user to bail out, just play
 		/* if we're not getting out of here, wait for a keypress */
 		if (!options.gui_host && !options.skip_warnings && !bailing)
 		{
@@ -1277,7 +1263,7 @@ static int display_rom_load_results(struct rom_load_data *romdata)
 			while (k == CODE_NONE || k == KEYCODE_LCONTROL);
 
 			/* bail on a control + C */
-			if (keyboard_pressed(KEYCODE_LCONTROL) && keyboard_pressed(KEYCODE_C))
+			if (code_pressed(KEYCODE_LCONTROL) && code_pressed(KEYCODE_C))
 				return 1;
 		}
 #endif
@@ -1602,7 +1588,8 @@ static int process_rom_entries(struct rom_load_data *romdata, const struct RomMo
 	{
 		/* if this is a continue entry, it's invalid */
 		if (ROMENTRY_ISCONTINUE(romp))
-		{      
+		{
+			printf("Error in RomModule definition: ROM_CONTINUE not preceded by ROM_LOAD\n");
 			osd_print_error("Error in RomModule definition: ROM_CONTINUE not preceded by ROM_LOAD\n");
 			goto fatalerror;
 		}
@@ -1610,6 +1597,7 @@ static int process_rom_entries(struct rom_load_data *romdata, const struct RomMo
 		/* if this is a reload entry, it's invalid */
 		if (ROMENTRY_ISRELOAD(romp))
 		{
+			printf("Error in RomModule definition: ROM_RELOAD not preceded by ROM_LOAD\n");
 			osd_print_error("Error in RomModule definition: ROM_RELOAD not preceded by ROM_LOAD\n");
 			goto fatalerror;
 		}
@@ -1856,7 +1844,7 @@ int rom_load(const struct RomModule *romp)
 		if (new_memory_region(regiontype, ROMREGION_GETLENGTH(region), ROMREGION_GETFLAGS(region)))
 		{
 			printf("Error: unable to allocate memory for region %d\n", regiontype);
-      osd_print_error( "Error: unable to allocate memory for region %d\n", regiontype );
+			osd_print_error("Error: unable to allocate memory for region %d\n", regiontype);
 			return 1;
 		}
 
@@ -1883,18 +1871,18 @@ int rom_load(const struct RomModule *romp)
 		if (ROMREGION_ISROMDATA(region))
 		{
 			if (!process_rom_entries(&romdata, region + 1))
-      {
-        osd_print_error( "Error: process_rom_entries failed\n" );
+			{
+				osd_print_error("Error: process_rom_entries failed\n" ) ;
 				return 1;
-      }
+			}
 		}
 		else if (ROMREGION_ISDISKDATA(region))
 		{
 			if (!process_disk_entries(&romdata, region + 1))
-      {
-        osd_print_error( "Error: process_disk_entries failed\n" );
+			{
+				osd_print_error("Error: process_disk_entries failed\n" ) ;
 				return 1;
-      }
+			}
 		}
 
 		/* add this region to the list */

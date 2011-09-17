@@ -1,11 +1,11 @@
-#pragma code_seg("C275")
-#pragma data_seg("D275")
-#pragma bss_seg("B275")
-#pragma const_seg("K275")
-#pragma comment(linker, "/merge:D275=275")
-#pragma comment(linker, "/merge:C275=275")
-#pragma comment(linker, "/merge:B275=275")
-#pragma comment(linker, "/merge:K275=275")
+#pragma code_seg("C286")
+#pragma data_seg("D286")
+#pragma bss_seg("B286")
+#pragma const_seg("K286")
+#pragma comment(linker, "/merge:D286=286")
+#pragma comment(linker, "/merge:C286=286")
+#pragma comment(linker, "/merge:B286=286")
+#pragma comment(linker, "/merge:K286=286")
 /***************************************************************************
 
 						  -= ESD 16 Bit Games =-
@@ -84,7 +84,7 @@ WRITE16_HANDLER( esd16_sound_command_w )
 	if (ACCESSING_LSB)
 	{
 		soundlatch_w(0,data & 0xff);
-		cpu_set_irq_line(1,0,ASSERT_LINE);		// Generate an IRQ
+		cpunum_set_input_line(1,0,ASSERT_LINE);		// Generate an IRQ
 		cpu_spinuntil_time(TIME_IN_USEC(50));	// Allow the other CPU to reply
 	}
 }
@@ -210,7 +210,7 @@ ADDRESS_MAP_END
 
 ***************************************************************************/
 
-static WRITE_HANDLER( esd16_sound_rombank_w )
+static WRITE8_HANDLER( esd16_sound_rombank_w )
 {
 	int bank = data & 0xf;
 	if (data != bank)	logerror("CPU #1 - PC %04X: unknown bank bits: %02X\n",activecpu_get_pc(),data);
@@ -230,10 +230,10 @@ static ADDRESS_MAP_START( multchmp_sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0xf800, 0xffff) AM_WRITE(MWA8_RAM		)	// RAM
 ADDRESS_MAP_END
 
-READ_HANDLER( esd16_sound_command_r )
+READ8_HANDLER( esd16_sound_command_r )
 {
 	/* Clear IRQ only after reading the command, or some get lost */
-	cpu_set_irq_line(1,0,CLEAR_LINE);
+	cpunum_set_input_line(1,0,CLEAR_LINE);
 	return soundlatch_r(0);
 }
 

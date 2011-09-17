@@ -1,11 +1,11 @@
-#pragma code_seg("C365")
-#pragma data_seg("D365")
-#pragma bss_seg("B365")
-#pragma const_seg("K365")
-#pragma comment(linker, "/merge:D365=365")
-#pragma comment(linker, "/merge:C365=365")
-#pragma comment(linker, "/merge:B365=365")
-#pragma comment(linker, "/merge:K365=365")
+#pragma code_seg("C380")
+#pragma data_seg("D380")
+#pragma bss_seg("B380")
+#pragma const_seg("K380")
+#pragma comment(linker, "/merge:D380=380")
+#pragma comment(linker, "/merge:C380=380")
+#pragma comment(linker, "/merge:B380=380")
+#pragma comment(linker, "/merge:K380=380")
 /******************************************************************************
 
 	Video Hardware for Video System Games.
@@ -116,16 +116,16 @@ static WRITE16_HANDLER( inufuku_soundcommand_w )
 
 		pending_command = 1;
 		soundlatch_w(0, data & 0xff);
-		cpu_set_irq_line(1, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 	}
 }
 
-static WRITE_HANDLER( pending_command_clear_w )
+static WRITE8_HANDLER( pending_command_clear_w )
 {
 	pending_command = 0;
 }
 
-static WRITE_HANDLER( inufuku_soundrombank_w )
+static WRITE8_HANDLER( inufuku_soundrombank_w )
 {
 	unsigned char *ROM = memory_region(REGION_CPU2) + 0x10000;
 
@@ -385,7 +385,7 @@ static struct GfxDecodeInfo inufuku_gfxdecodeinfo[] =
 
 static void irqhandler(int irq)
 {
-	cpu_set_irq_line(1, 0, irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1, 0, irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 static struct YM2610interface ym2610_interface =

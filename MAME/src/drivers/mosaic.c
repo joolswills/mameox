@@ -1,11 +1,11 @@
-#pragma code_seg("C463")
-#pragma data_seg("D463")
-#pragma bss_seg("B463")
-#pragma const_seg("K463")
-#pragma comment(linker, "/merge:D463=463")
-#pragma comment(linker, "/merge:C463=463")
-#pragma comment(linker, "/merge:B463=463")
-#pragma comment(linker, "/merge:K463=463")
+#pragma code_seg("C489")
+#pragma data_seg("D489")
+#pragma bss_seg("B489")
+#pragma const_seg("K489")
+#pragma comment(linker, "/merge:D489=489")
+#pragma comment(linker, "/merge:C489=489")
+#pragma comment(linker, "/merge:B489=489")
+#pragma comment(linker, "/merge:K489=489")
 /***************************************************************************
 
 Mosaic (c) 1990 Space
@@ -21,8 +21,8 @@ Notes:
 
 extern data8_t *mosaic_fgvideoram;
 extern data8_t *mosaic_bgvideoram;
-WRITE_HANDLER( mosaic_fgvideoram_w );
-WRITE_HANDLER( mosaic_bgvideoram_w );
+WRITE8_HANDLER( mosaic_fgvideoram_w );
+WRITE8_HANDLER( mosaic_bgvideoram_w );
 VIDEO_START( mosaic );
 VIDEO_UPDATE( mosaic );
 
@@ -30,7 +30,7 @@ VIDEO_UPDATE( mosaic );
 
 static int prot_val;
 
-static WRITE_HANDLER( protection_w )
+static WRITE8_HANDLER( protection_w )
 {
 	if ((data & 0x80) == 0)
 	{
@@ -54,7 +54,7 @@ static WRITE_HANDLER( protection_w )
 	}
 }
 
-static READ_HANDLER( protection_r )
+static READ8_HANDLER( protection_r )
 {
 	int res = (prot_val >> 8) & 0xff;
 
@@ -65,7 +65,7 @@ static READ_HANDLER( protection_r )
 	return res;
 }
 
-static WRITE_HANDLER( gfire2_protection_w )
+static WRITE8_HANDLER( gfire2_protection_w )
 {
 	logerror("%06x: protection_w %02x\n",activecpu_get_pc(),data);
 
@@ -92,7 +92,7 @@ static WRITE_HANDLER( gfire2_protection_w )
 	}
 }
 
-static READ_HANDLER( gfire2_protection_r )
+static READ8_HANDLER( gfire2_protection_r )
 {
 	int res = prot_val & 0xff;
 

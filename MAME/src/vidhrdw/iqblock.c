@@ -1,11 +1,11 @@
-#pragma code_seg("C366")
-#pragma data_seg("D366")
-#pragma bss_seg("B366")
-#pragma const_seg("K366")
-#pragma comment(linker, "/merge:D366=366")
-#pragma comment(linker, "/merge:C366=366")
-#pragma comment(linker, "/merge:B366=366")
-#pragma comment(linker, "/merge:K366=366")
+#pragma code_seg("C381")
+#pragma data_seg("D381")
+#pragma bss_seg("B381")
+#pragma const_seg("K381")
+#pragma comment(linker, "/merge:D381=381")
+#pragma comment(linker, "/merge:C381=381")
+#pragma comment(linker, "/merge:B381=381")
+#pragma comment(linker, "/merge:K381=381")
 #include "driver.h"
 #include "iqblock.h"
 
@@ -75,24 +75,24 @@ VIDEO_START( iqblock )
 
 ***************************************************************************/
 
-WRITE_HANDLER( iqblock_fgvideoram_w )
+WRITE8_HANDLER( iqblock_fgvideoram_w )
 {
 	iqblock_fgvideoram[offset] = data;
 	tilemap_mark_tile_dirty(fg_tilemap,offset);
 }
 
-WRITE_HANDLER( iqblock_bgvideoram_w )
+WRITE8_HANDLER( iqblock_bgvideoram_w )
 {
 	iqblock_bgvideoram[offset] = data;
 	tilemap_mark_tile_dirty(bg_tilemap,offset & 0x7ff);
 }
 
-READ_HANDLER( iqblock_bgvideoram_r )
+READ8_HANDLER( iqblock_bgvideoram_r )
 {
 	return iqblock_bgvideoram[offset];
 }
 
-WRITE_HANDLER( iqblock_fgscroll_w )
+WRITE8_HANDLER( iqblock_fgscroll_w )
 {
 	tilemap_set_scrolly(fg_tilemap,offset,data);
 }
@@ -112,6 +112,7 @@ VIDEO_UPDATE( iqblock )
 	tilemap_draw(bitmap,cliprect,bg_tilemap,0,0);
 	tilemap_draw(bitmap,cliprect,fg_tilemap,0,0);
 }
+
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

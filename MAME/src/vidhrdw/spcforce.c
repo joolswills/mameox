@@ -1,11 +1,11 @@
-#pragma code_seg("C641")
-#pragma data_seg("D641")
-#pragma bss_seg("B641")
-#pragma const_seg("K641")
-#pragma comment(linker, "/merge:D641=641")
-#pragma comment(linker, "/merge:C641=641")
-#pragma comment(linker, "/merge:B641=641")
-#pragma comment(linker, "/merge:K641=641")
+#pragma code_seg("C677")
+#pragma data_seg("D677")
+#pragma bss_seg("B677")
+#pragma const_seg("K677")
+#pragma comment(linker, "/merge:D677=677")
+#pragma comment(linker, "/merge:C677=677")
+#pragma comment(linker, "/merge:B677=677")
+#pragma comment(linker, "/merge:K677=677")
 /***************************************************************************
 
   vidhrdw.c
@@ -21,7 +21,7 @@
 unsigned char *spcforce_scrollram;
 
 
-WRITE_HANDLER( spcforce_flip_screen_w )
+WRITE8_HANDLER( spcforce_flip_screen_w )
 {
 	flip_screen_set(~data & 0x01);
 }

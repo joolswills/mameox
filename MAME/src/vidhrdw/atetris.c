@@ -1,11 +1,11 @@
-#pragma code_seg("C142")
-#pragma data_seg("D142")
-#pragma bss_seg("B142")
-#pragma const_seg("K142")
-#pragma comment(linker, "/merge:D142=142")
-#pragma comment(linker, "/merge:C142=142")
-#pragma comment(linker, "/merge:B142=142")
-#pragma comment(linker, "/merge:K142=142")
+#pragma code_seg("C143")
+#pragma data_seg("D143")
+#pragma bss_seg("B143")
+#pragma const_seg("K143")
+#pragma comment(linker, "/merge:D143=143")
+#pragma comment(linker, "/merge:C143=143")
+#pragma comment(linker, "/merge:B143=143")
+#pragma comment(linker, "/merge:K143=143")
 /***************************************************************************
 
 	Atari Tetris hardware
@@ -42,7 +42,7 @@ static void get_tile_info(int tile_index)
  *
  *************************************/
 
-WRITE_HANDLER( atetris_videoram_w )
+WRITE8_HANDLER( atetris_videoram_w )
 {
 	videoram[offset] = data;
 	tilemap_mark_tile_dirty(tilemap, offset / 2);

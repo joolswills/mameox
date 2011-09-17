@@ -1,11 +1,11 @@
-#pragma code_seg("C502")
-#pragma data_seg("D502")
-#pragma bss_seg("B502")
-#pragma const_seg("K502")
-#pragma comment(linker, "/merge:D502=502")
-#pragma comment(linker, "/merge:C502=502")
-#pragma comment(linker, "/merge:B502=502")
-#pragma comment(linker, "/merge:K502=502")
+#pragma code_seg("C531")
+#pragma data_seg("D531")
+#pragma bss_seg("B531")
+#pragma const_seg("K531")
+#pragma comment(linker, "/merge:D531=531")
+#pragma comment(linker, "/merge:C531=531")
+#pragma comment(linker, "/merge:B531=531")
+#pragma comment(linker, "/merge:K531=531")
 /********************************************************************
 
 Urashima Mahjong         UPL        68000 <unknown cpu> OKIM6295
@@ -148,6 +148,7 @@ If someone could fix the protection it'd be fully playable with sound and music.
 
 extern data16_t *nmk_bgvideoram,*nmk_fgvideoram,*nmk_txvideoram;
 extern data16_t *gunnail_scrollram;
+extern data16_t tharrier_scroll;
 
 READ16_HANDLER( nmk_bgvideoram_r );
 WRITE16_HANDLER( nmk_bgvideoram_w );
@@ -180,6 +181,7 @@ VIDEO_UPDATE( strahl );
 VIDEO_UPDATE( macross );
 VIDEO_UPDATE( gunnail );
 VIDEO_UPDATE( bjtwin );
+VIDEO_UPDATE( tharrier );
 VIDEO_EOF( nmk );
 
 static int respcount; // used with mcu function
@@ -201,17 +203,17 @@ WRITE16_HANDLER ( ssmissin_sound_w )
 	if (ACCESSING_LSB)
 	{
 		soundlatch_w(0,data & 0xff);
-		cpu_set_irq_line(1,0, ASSERT_LINE);
+		cpunum_set_input_line(1,0, ASSERT_LINE);
 	}
 
 	if (ACCESSING_MSB)
 		if ((data >> 8) & 0x80)
-			cpu_set_irq_line(1,0, CLEAR_LINE);
+			cpunum_set_input_line(1,0, CLEAR_LINE);
 }
 
 
 
-WRITE_HANDLER ( ssmissin_soundbank_w )
+WRITE8_HANDLER ( ssmissin_soundbank_w )
 {
 	unsigned char *rom = memory_region(REGION_SOUND1);
 	int bank;
@@ -361,6 +363,21 @@ logerror("%04x: mcu_r %02x\n",activecpu_get_pc(),res);
 	return res;
 }
 
+static WRITE16_HANDLER( tharrier_shared_w )
+{
+	if(offset==0xf00/2)
+		COMBINE_DATA(&tharrier_scroll);
+	COMBINE_DATA(&ram[offset]);
+}
+
+static READ16_HANDLER( tharrier_shared_r )
+{
+	if (ACCESSING_MSB && ACCESSING_LSB && (offset==0  || offset==0x6c/2 ))
+		return (ram[offset]>>8)|(ram[offset]&0xff00);
+
+	return ram[offset];
+}
+
 static WRITE16_HANDLER( tharrier_mcu_control_w )
 {
 //	logerror("%04x: mcu_control_w %02x\n",activecpu_get_pc(),data);
@@ -387,14 +404,14 @@ static READ16_HANDLER( macross2_sound_result_r )
 	return soundlatch2_r(0);
 }
 
-static WRITE_HANDLER( macross2_sound_bank_w )
+static WRITE8_HANDLER( macross2_sound_bank_w )
 {
 	UINT8 *rom = memory_region(REGION_CPU2) + 0x10000;
 
 	cpu_setbank(1,rom + (data & 0x07) * 0x4000);
 }
 
-static WRITE_HANDLER( macross2_oki6295_bankswitch_w )
+static WRITE8_HANDLER( macross2_oki6295_bankswitch_w )
 {
 	/* The OKI6295 ROM space is divided in four banks, each one indepentently
 	   controlled. The sample table at the beginning of the addressing space is
@@ -566,14 +583,14 @@ static ADDRESS_MAP_START( tharrier_readmem, ADDRESS_SPACE_PROGRAM, 16 )
 	AM_RANGE(0x000000, 0x03ffff) AM_READ(MRA16_ROM)
 	AM_RANGE(0x080000, 0x080001) AM_READ(logr)//input_port_0_word_r },
 	AM_RANGE(0x080002, 0x080003) AM_READ(tharrier_mcu_r) //input_port_1_word_r },
-//	AM_RANGE(0x080004, 0x080005) AM_READ(input_port_2_word_r)
+	AM_RANGE(0x080004, 0x080005) AM_READ(input_port_2_word_r)
 	AM_RANGE(0x08000e, 0x08000f) AM_READ(soundlatch2_word_r)	/* from Z80 */
 	AM_RANGE(0x088000, 0x0883ff) AM_READ(MRA16_RAM)
 	AM_RANGE(0x090000, 0x093fff) AM_READ(nmk_bgvideoram_r)
 	AM_RANGE(0x09d000, 0x09d7ff) AM_READ(nmk_txvideoram_r)
 	AM_RANGE(0x0f0000, 0x0f7fff) AM_READ(MRA16_RAM)
 	AM_RANGE(0x0f8000, 0x0f8fff) AM_READ(MRA16_RAM)
-	AM_RANGE(0x0f9000, 0x0fffff) AM_READ(MRA16_RAM)
+	AM_RANGE(0x0f9000, 0x0fffff) AM_READ(tharrier_shared_r)//MRA16_RAM)
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( tharrier_writemem, ADDRESS_SPACE_PROGRAM, 16 )
@@ -590,7 +607,7 @@ static ADDRESS_MAP_START( tharrier_writemem, ADDRESS_SPACE_PROGRAM, 16 )
 	AM_RANGE(0x09d000, 0x09d7ff) AM_WRITE(nmk_txvideoram_w) AM_BASE(&nmk_txvideoram)
 	AM_RANGE(0x0f0000, 0x0f7fff) AM_WRITE(MWA16_RAM)	/* Work RAM */
 	AM_RANGE(0x0f8000, 0x0f8fff) AM_WRITE(MWA16_RAM) AM_BASE(&spriteram16) AM_SIZE(&spriteram_size)
-	AM_RANGE(0x0f9000, 0x0fffff) AM_WRITE(MWA16_RAM) AM_BASE(&ram)	/* Work RAM again (fe000-fefff is shared with the sound CPU) */
+	AM_RANGE(0x0f9000, 0x0fffff) AM_WRITE(tharrier_shared_w) AM_BASE(&ram)	/* Work RAM again (fe000-fefff is shared with the sound CPU) */
 ADDRESS_MAP_END
 
 //Read input port 1 030c8/  BAD
@@ -1255,28 +1272,28 @@ INPUT_PORTS_START( tharrier )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON1 )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON1 )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_BUTTON1 )
-	PORT_BIT( 0x0100, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_8WAY | IPF_PLAYER2 )
-	PORT_BIT( 0x0200, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  | IPF_8WAY | IPF_PLAYER2 )
-	PORT_BIT( 0x0400, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  | IPF_8WAY | IPF_PLAYER2 )
-	PORT_BIT( 0x0800, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    | IPF_8WAY | IPF_PLAYER2 )
+	PORT_BIT( 0x0100, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_8WAY  )
+	PORT_BIT( 0x0200, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  | IPF_8WAY  )
+	PORT_BIT( 0x0400, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  | IPF_8WAY  )
+	PORT_BIT( 0x0800, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    | IPF_8WAY  )
 	PORT_BIT( 0x1000, IP_ACTIVE_LOW, IPT_BUTTON1 | IPF_PLAYER2 )
 	PORT_BIT( 0x2000, IP_ACTIVE_LOW, IPT_BUTTON2 | IPF_PLAYER2 )
 	PORT_BIT( 0x4000, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x8000, IP_ACTIVE_HIGH, IPT_SPECIAL ) /* Mcu status? */
 
 	PORT_START      /* IN1 */
-	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_8WAY | IPF_PLAYER1 )
-	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  | IPF_8WAY | IPF_PLAYER1 )
+	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_START1)//IPT_JOYSTICK_RIGHT | IPF_8WAY | IPF_PLAYER1 )
+	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_START2)//IPT_JOYSTICK_LEFT  | IPF_8WAY | IPF_PLAYER1 )
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  | IPF_8WAY | IPF_PLAYER1 )
 	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    | IPF_8WAY | IPF_PLAYER1 )
-	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_COIN1 )
+	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_UNKNOWN) //IPT_COIN1 )
 	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_COIN2 )
-	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_UNKNOWN )
-	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_BUTTON3 | IPF_PLAYER1 )
-	PORT_BIT( 0x0100, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_8WAY | IPF_PLAYER2 )
-	PORT_BIT( 0x0200, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  | IPF_8WAY | IPF_PLAYER2 )
-	PORT_BIT( 0x0400, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  | IPF_8WAY | IPF_PLAYER2 )
-	PORT_BIT( 0x0800, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    | IPF_8WAY | IPF_PLAYER2 )
+	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_BUTTON3 )//COIN ? SERVICE ?
+	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_COIN1 )//BUTTON3 | IPF_PLAYER1 )
+	PORT_BIT( 0x0100, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT | IPF_8WAY  )
+	PORT_BIT( 0x0200, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  | IPF_8WAY  )
+	PORT_BIT( 0x0400, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  | IPF_8WAY  )
+	PORT_BIT( 0x0800, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    | IPF_8WAY  )
 	PORT_BIT( 0x1000, IP_ACTIVE_LOW, IPT_BUTTON1 | IPF_PLAYER2 )
 	PORT_BIT( 0x2000, IP_ACTIVE_LOW, IPT_BUTTON2 | IPF_PLAYER2 )
 	PORT_BIT( 0x4000, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -2601,7 +2618,7 @@ static struct GfxDecodeInfo strahl_gfxdecodeinfo[] =
 
 static void ym2203_irqhandler(int irq)
 {
-	cpu_set_irq_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 static struct YM2203interface ym2203_interface_15 =
@@ -2634,9 +2651,10 @@ static struct OKIM6295interface okim6295_interface_ssmissin =
 
 static INTERRUPT_GEN( nmk_interrupt )
 {
-	if (cpu_getiloops() == 0) cpu_set_irq_line(0, 4, HOLD_LINE);
-	else cpu_set_irq_line(0, 2, HOLD_LINE);
+	if (cpu_getiloops() == 0) cpunum_set_input_line(0, 4, HOLD_LINE);
+	else cpunum_set_input_line(0, 2, HOLD_LINE);
 }
+
 
 /* Parameters: YM3812 frequency, Oki frequency, Oki memory region */
 SEIBU_SOUND_SYSTEM_YM3812_HARDWARE(14318180/4, 8000, REGION_SOUND1);
@@ -2723,7 +2741,7 @@ static MACHINE_DRIVER_START( tharrier )
 
 	MDRV_VIDEO_START(macross)
 	MDRV_VIDEO_EOF(nmk)
-	MDRV_VIDEO_UPDATE(macross)
+	MDRV_VIDEO_UPDATE(tharrier)
 
 	/* sound hardware */
 	MDRV_SOUND_ADD(YM2203, ym2203_interface_15)
@@ -3982,6 +4000,27 @@ ROM_START( sabotenb )
 	ROM_LOAD( "ic27.sb7",    0x040000, 0x100000, CRC(43e33a7e) SHA1(51068b63f4415712eaa25dcf1ee6b0cc2850974e) )	/* all banked */
 ROM_END
 
+ROM_START( sabotnba )
+	ROM_REGION( 0x80000, REGION_CPU1, 0 )		/* 68000 code */
+	ROM_LOAD16_BYTE( "sb1.76",  0x00000, 0x40000, CRC(df6f65e2) SHA1(6ad9e9f13539310646895c5e7992c6546e75684b) )
+	ROM_LOAD16_BYTE( "sb2.75",  0x00001, 0x40000, CRC(0d2c1ab8) SHA1(abb43a8c5398195c0ad48d8d772ef47635bf25c2) )
+
+	ROM_REGION( 0x010000, REGION_GFX1, ROMREGION_DISPOSE )
+	ROM_LOAD( "ic35.sb3",		0x000000, 0x010000, CRC(eb7bc99d) SHA1(b3063afd58025a441d4750c22483e9129da402e7) )	/* 8x8 tiles */
+
+	ROM_REGION( 0x200000, REGION_GFX2, ROMREGION_DISPOSE )
+	ROM_LOAD( "ic32.sb4",		0x000000, 0x200000, CRC(24c62205) SHA1(3ab0ca5d7c698328d91421ccf6f7dafc20df3c8d) )	/* 16x16 tiles */
+
+	ROM_REGION( 0x200000, REGION_GFX3, ROMREGION_DISPOSE )
+	ROM_LOAD16_WORD_SWAP( "ic100.sb5",	0x000000, 0x200000, CRC(b20f166e) SHA1(074d770fd6d233040a80a92f4467d81f961c650b) )	/* Sprites */
+
+	ROM_REGION( 0x140000, REGION_SOUND1, 0 )	/* OKIM6295 samples */
+	ROM_LOAD( "ic30.sb6",    0x040000, 0x100000, CRC(288407af) SHA1(78c08fae031337222681c593dc86a08df6a34a4b) )	/* all banked */
+
+	ROM_REGION( 0x140000, REGION_SOUND2, 0 )	/* OKIM6295 samples */
+	ROM_LOAD( "ic27.sb7",    0x040000, 0x100000, CRC(43e33a7e) SHA1(51068b63f4415712eaa25dcf1ee6b0cc2850974e) )	/* all banked */
+ROM_END
+
 ROM_START( bjtwin )
 	ROM_REGION( 0x80000, REGION_CPU1, 0 )  /* 68000 code */
 	ROM_LOAD16_BYTE( "93087-1.bin",  0x00000, 0x20000, CRC(93c84e2d) SHA1(ad0755cabfef78e7e689856379d6f8c88a9b27c1) )
@@ -4341,7 +4380,7 @@ static DRIVER_INIT( blkheart )
    	RAM[0x23dc/2] = 0x0300;
    	RAM[0x3dea/2] = 0x0300;
 
-	install_mem_write16_handler(0, 0xf902a, 0xf902b, test_2a_w );
+	memory_install_write16_handler(0, ADDRESS_SPACE_PROGRAM, 0xf902a, 0xf902b, 0, 0, test_2a_w );
 }
 
 static DRIVER_INIT( mustang )
@@ -4358,7 +4397,7 @@ static DRIVER_INIT( mustang )
   	RAM[0xc00/2] = 0x0300;
   	RAM[0x30b2/2] = 0x0300;
 
-	install_mem_write16_handler(0, 0xf902a, 0xf902b, test_2a_mustang_w );
+	memory_install_write16_handler(0, ADDRESS_SPACE_PROGRAM, 0xf902a, 0xf902b, 0, 0, test_2a_mustang_w );
 }
 
 static DRIVER_INIT( bjtwin )
@@ -4386,11 +4425,9 @@ static DRIVER_INIT( bjtwin )
 //	rom[0x08f74/2] = 0x4e71);
 }
 
-
-
 GAMEX( 1989, urashima, 0,       urashima, macross,  0,        ROT0,   "UPL",							"Urashima Mahjong", GAME_UNEMULATED_PROTECTION | GAME_NOT_WORKING ) /* Similar Hardware? */
-GAMEX( 1989, tharrier, 0,       tharrier, tharrier, 0,        ROT270, "UPL (American Sammy license)",	"Task Force Harrier", GAME_UNEMULATED_PROTECTION | GAME_NOT_WORKING )
-GAMEX( 1989, tharierj, tharrier,tharrier, tharrier, 0,        ROT270, "UPL",	                        "Task Force Harrier (Japan)", GAME_UNEMULATED_PROTECTION | GAME_NOT_WORKING )
+GAMEX( 1989, tharrier, 0,       tharrier, tharrier, 0, 		  ROT270, "UPL (American Sammy license)",	"Task Force Harrier", GAME_UNEMULATED_PROTECTION | GAME_NOT_WORKING )
+GAMEX( 1989, tharierj, tharrier,tharrier, tharrier, 0, 		  ROT270, "UPL",	                        "Task Force Harrier (Japan)", GAME_UNEMULATED_PROTECTION | GAME_NOT_WORKING )
 GAMEX( 1990, mustang,  0,       mustang,  mustang,  mustang,  ROT0,   "UPL",							"US AAF Mustang (Japan)", GAME_UNEMULATED_PROTECTION | GAME_NO_SOUND) // Playable but there are Still Protection Problems
 GAMEX( 1990, mustangs, mustang, mustang,  mustang,  mustang,  ROT0,   "UPL (Seoul Trading license)",	"US AAF Mustang (Seoul Trading)", GAME_UNEMULATED_PROTECTION | GAME_NO_SOUND ) // Playable but there are Still Protection Problems
 GAMEX( 1990, mustangb, mustang, mustangb, mustang,  mustang,  ROT0,   "bootleg",						"US AAF Mustang (bootleg)", GAME_UNEMULATED_PROTECTION ) // Playable but there are Still Protection Problems
@@ -4414,7 +4451,8 @@ GAMEX( 1993, tdragon2, 0,       tdragon2, tdragon2, 0,        ROT270, "NMK",				
 GAMEX( 1993, bigbang,  tdragon2,tdragon2, tdragon2, 0,        ROT270, "NMK",				         	"Big Bang", GAME_NO_COCKTAIL )
 GAMEX( 1994, raphero,  0,       raphero,  tdragon2, 0,        ROT270, "Media Trading Corp",             "Rapid Hero (Japan?)", GAME_NO_SOUND ) // 23rd July 1993 in test mode, (c)1994 on title screen
 
-GAMEX( 1992, sabotenb, 0,       bjtwin,   sabotenb, nmk,      ROT0,   "NMK / Tecmo",					"Saboten Bombers", GAME_NO_COCKTAIL )
+GAMEX( 1992, sabotenb, 0,       bjtwin,   sabotenb, nmk,      ROT0,   "NMK / Tecmo",					"Saboten Bombers (set 1)", GAME_NO_COCKTAIL )
+GAMEX( 1992, sabotnba, sabotenb,bjtwin,   sabotenb, nmk,      ROT0,   "NMK / Tecmo",					"Saboten Bombers (set 2)", GAME_NO_COCKTAIL )
 GAMEX( 1993, bjtwin,   0,       bjtwin,   bjtwin,   bjtwin,   ROT270, "NMK",							"Bombjack Twin", GAME_NO_COCKTAIL )
 GAMEX( 1995, nouryoku, 0,       bjtwin,   nouryoku, nmk,      ROT0,   "Tecmo",							"Nouryoku Koujou Iinkai", GAME_NO_COCKTAIL )
 #pragma code_seg()

@@ -368,6 +368,9 @@ void *osd_calloc_retail( size_t num, size_t size );
 void *osd_realloc_retail( void *memblock, size_t size );
 #endif
 
+/* called to allocate/free memory that can contain executable code */
+void *osd_alloc_executable(size_t size);
+void osd_free_executable(void *ptr);
 
 /* called while loading ROMs. It is called a last time with name == 0 to signal */
 /* that the ROM loading process is finished. */
@@ -386,34 +389,15 @@ void osd_print_error( const char *fmt, ... );
 /* aborts the program in some unexpected fatal way */
 #ifdef __GNUC__
 void CLIB_DECL osd_die(const char *text,...)
-      __attribute__ ((format (printf, 1, 2)));
+#if (__GNUC__ > 2) || (__GNUC__ == 2 && __GNUC_MINOR__ >= 5)
+	__attribute__((noreturn))
+#endif
+	__attribute__ ((format (printf, 1, 2)));
 #else
 void CLIB_DECL osd_die(const char *text,...);
 #endif
 
 
-
-#if defined MAME_NET || defined XMAME_NET
-/* network */
-int osd_net_init(void);
-#ifdef XMAME_NET
-int osd_net_active(void);
-#endif
-int osd_net_send(int player, unsigned char buf[], int *size);
-int osd_net_recv(int player, unsigned char buf[], int *size);
-#ifdef MAME_NET
-int osd_net_sync(void);
-#elif defined XMAME_NET
-void osd_net_sync(unsigned short input_port_values[MAX_INPUT_PORTS],
-		unsigned short input_port_defaults[MAX_INPUT_PORTS]);
-#endif
-int osd_net_input_sync(void);
-int osd_net_exit(void);
-int osd_net_add_player(void);
-int osd_net_remove_player(int player);
-int osd_net_game_init(void);
-int osd_net_game_exit(void);
-#endif /* MAME_NET */
 
 #ifdef MESS
 /* this is here to follow the current mame file hierarchy style */

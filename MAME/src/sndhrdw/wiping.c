@@ -215,7 +215,7 @@ void wiping_sh_stop(void)
 
 /********************************************************************************/
 
-WRITE_HANDLER( wiping_sound_w )
+WRITE8_HANDLER( wiping_sound_w )
 {
 	sound_channel *voice;
 	int base;

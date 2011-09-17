@@ -1,11 +1,11 @@
-#pragma code_seg("C527")
-#pragma data_seg("D527")
-#pragma bss_seg("B527")
-#pragma const_seg("K527")
-#pragma comment(linker, "/merge:D527=527")
-#pragma comment(linker, "/merge:C527=527")
-#pragma comment(linker, "/merge:B527=527")
-#pragma comment(linker, "/merge:K527=527")
+#pragma code_seg("C557")
+#pragma data_seg("D557")
+#pragma bss_seg("B557")
+#pragma const_seg("K557")
+#pragma comment(linker, "/merge:D557=557")
+#pragma comment(linker, "/merge:C557=557")
+#pragma comment(linker, "/merge:B557=557")
+#pragma comment(linker, "/merge:K557=557")
 /***************************************************************************
 
 Pinball Action memory map (preliminary)
@@ -48,21 +48,21 @@ Notes:
 
 extern UINT8 *pbaction_videoram2,*pbaction_colorram2;
 
-extern WRITE_HANDLER( pbaction_videoram_w );
-extern WRITE_HANDLER( pbaction_colorram_w );
-extern WRITE_HANDLER( pbaction_videoram2_w );
-extern WRITE_HANDLER( pbaction_colorram2_w );
-extern WRITE_HANDLER( pbaction_flipscreen_w );
-extern WRITE_HANDLER( pbaction_scroll_w );
+extern WRITE8_HANDLER( pbaction_videoram_w );
+extern WRITE8_HANDLER( pbaction_colorram_w );
+extern WRITE8_HANDLER( pbaction_videoram2_w );
+extern WRITE8_HANDLER( pbaction_colorram2_w );
+extern WRITE8_HANDLER( pbaction_flipscreen_w );
+extern WRITE8_HANDLER( pbaction_scroll_w );
 
 extern VIDEO_START( pbaction );
 extern VIDEO_UPDATE( pbaction );
 
 
-static WRITE_HANDLER( pbaction_sh_command_w )
+static WRITE8_HANDLER( pbaction_sh_command_w )
 {
 	soundlatch_w(offset,data);
-	cpu_set_irq_line_and_vector(1,0,HOLD_LINE,0x00);
+	cpunum_set_input_line_and_vector(1,0,HOLD_LINE,0x00);
 }
 
 
@@ -274,7 +274,7 @@ static struct AY8910interface ay8910_interface =
 
 INTERRUPT_GEN( pbaction_interrupt )
 {
-	cpu_set_irq_line_and_vector(1, 0, HOLD_LINE, 0x02);	/* the CPU is in Interrupt Mode 2 */
+	cpunum_set_input_line_and_vector(1, 0, HOLD_LINE, 0x02);	/* the CPU is in Interrupt Mode 2 */
 }
 
 

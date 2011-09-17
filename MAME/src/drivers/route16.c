@@ -1,11 +1,11 @@
-#pragma code_seg("C584")
-#pragma data_seg("D584")
-#pragma bss_seg("B584")
-#pragma const_seg("K584")
-#pragma comment(linker, "/merge:D584=584")
-#pragma comment(linker, "/merge:C584=584")
-#pragma comment(linker, "/merge:B584=584")
-#pragma comment(linker, "/merge:K584=584")
+#pragma code_seg("C618")
+#pragma data_seg("D618")
+#pragma bss_seg("B618")
+#pragma const_seg("K618")
+#pragma comment(linker, "/merge:D618=618")
+#pragma comment(linker, "/merge:C618=618")
+#pragma comment(linker, "/merge:B618=618")
+#pragma comment(linker, "/merge:K618=618")
 /***************************************************************************
 
  Route 16/Stratovox memory map (preliminary)
@@ -88,20 +88,20 @@ DRIVER_INIT( route16b );
 DRIVER_INIT( stratvox );
 PALETTE_INIT( route16 );
 VIDEO_START( route16 );
-WRITE_HANDLER( route16_out0_w );
-WRITE_HANDLER( route16_out1_w );
-WRITE_HANDLER( route16_videoram1_w );
-WRITE_HANDLER( route16_videoram2_w );
-READ_HANDLER( route16_videoram1_r );
-READ_HANDLER( route16_videoram2_r );
-WRITE_HANDLER( route16_sharedram_w );
-READ_HANDLER( route16_sharedram_r );
+WRITE8_HANDLER( route16_out0_w );
+WRITE8_HANDLER( route16_out1_w );
+WRITE8_HANDLER( route16_videoram1_w );
+WRITE8_HANDLER( route16_videoram2_w );
+READ8_HANDLER( route16_videoram1_r );
+READ8_HANDLER( route16_videoram2_r );
+WRITE8_HANDLER( route16_sharedram_w );
+READ8_HANDLER( route16_sharedram_r );
 VIDEO_UPDATE( route16 );
-WRITE_HANDLER( stratvox_sn76477_w );
-READ_HANDLER ( speakres_in3_r );
-WRITE_HANDLER ( speakres_out2_w );
+WRITE8_HANDLER( stratvox_sn76477_w );
+READ8_HANDLER ( speakres_in3_r );
+WRITE8_HANDLER ( speakres_out2_w );
 
-READ_HANDLER( routex_prot_read )
+READ8_HANDLER( routex_prot_read )
 {
 	if (activecpu_get_pc()==0x2f) return 0xFB;
 

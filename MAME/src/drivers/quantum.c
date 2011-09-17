@@ -1,11 +1,11 @@
-#pragma code_seg("C558")
-#pragma data_seg("D558")
-#pragma bss_seg("B558")
-#pragma const_seg("K558")
-#pragma comment(linker, "/merge:D558=558")
-#pragma comment(linker, "/merge:C558=558")
-#pragma comment(linker, "/merge:B558=558")
-#pragma comment(linker, "/merge:K558=558")
+#pragma code_seg("C591")
+#pragma data_seg("D591")
+#pragma bss_seg("B591")
+#pragma const_seg("K591")
+#pragma comment(linker, "/merge:D591=591")
+#pragma comment(linker, "/merge:C591=591")
+#pragma comment(linker, "/merge:B591=591")
+#pragma comment(linker, "/merge:K591=591")
 /***************************************************************************
 
 	Atari Quantum hardware
@@ -75,13 +75,13 @@ static READ16_HANDLER( trackball_r )
 }
 
 
-static READ_HANDLER( input_1_r )
+static READ8_HANDLER( input_1_r )
 {
 	return (readinputport(1) << (7 - (offset - POT0_C))) & 0x80;
 }
 
 
-static READ_HANDLER( input_2_r )
+static READ8_HANDLER( input_2_r )
 {
 	return (readinputport(2) << (7 - (offset - POT0_C))) & 0x80;
 }

@@ -51,7 +51,7 @@ INTERRUPT_GEN( m72_interrupt )
 	if (line == 255)	/* vblank */
 	{
 		rastersplit = 0;
-		cpu_set_irq_line_and_vector(0, 0, HOLD_LINE, irqbase+0);
+		cpunum_set_input_line_and_vector(0, 0, HOLD_LINE, irqbase+0);
 	}
 	else
 	{
@@ -66,7 +66,7 @@ INTERRUPT_GEN( m72_interrupt )
 		   multiple times, by changing the interrupt line register in the
 		   interrupt handler).
 		 */
-		cpu_set_irq_line_and_vector(0, 0, HOLD_LINE, irqbase+2);
+		cpunum_set_input_line_and_vector(0, 0, HOLD_LINE, irqbase+2);
 	}
 }
 
@@ -313,7 +313,7 @@ VIDEO_START( hharry )
 
 ***************************************************************************/
 
-READ_HANDLER( m72_palette1_r )
+READ8_HANDLER( m72_palette1_r )
 {
 	/* only D0-D4 are connected */
 	if (offset & 1) return 0xff;
@@ -324,7 +324,7 @@ READ_HANDLER( m72_palette1_r )
 	return paletteram[offset] | 0xe0;	/* only D0-D4 are connected */
 }
 
-READ_HANDLER( m72_palette2_r )
+READ8_HANDLER( m72_palette2_r )
 {
 	/* only D0-D4 are connected */
 	if (offset & 1) return 0xff;
@@ -344,7 +344,7 @@ INLINE void changecolor(int color,int r,int g,int b)
 	palette_set_color(color,r,g,b);
 }
 
-WRITE_HANDLER( m72_palette1_w )
+WRITE8_HANDLER( m72_palette1_w )
 {
 	/* only D0-D4 are connected */
 	if (offset & 1) return;
@@ -360,7 +360,7 @@ WRITE_HANDLER( m72_palette1_w )
 			paletteram[offset + 0x800]);
 }
 
-WRITE_HANDLER( m72_palette2_w )
+WRITE8_HANDLER( m72_palette2_w )
 {
 	/* only D0-D4 are connected */
 	if (offset & 1) return;
@@ -376,17 +376,17 @@ WRITE_HANDLER( m72_palette2_w )
 			paletteram_2[offset + 0x800]);
 }
 
-READ_HANDLER( m72_videoram1_r )
+READ8_HANDLER( m72_videoram1_r )
 {
 	return m72_videoram1[offset];
 }
 
-READ_HANDLER( m72_videoram2_r )
+READ8_HANDLER( m72_videoram2_r )
 {
 	return m72_videoram2[offset];
 }
 
-WRITE_HANDLER( m72_videoram1_w )
+WRITE8_HANDLER( m72_videoram1_w )
 {
 	if (m72_videoram1[offset] != data)
 	{
@@ -395,7 +395,7 @@ WRITE_HANDLER( m72_videoram1_w )
 	}
 }
 
-WRITE_HANDLER( m72_videoram2_w )
+WRITE8_HANDLER( m72_videoram2_w )
 {
 	if (m72_videoram2[offset] != data)
 	{
@@ -404,13 +404,13 @@ WRITE_HANDLER( m72_videoram2_w )
 	}
 }
 
-WRITE_HANDLER( m72_irq_line_w )
+WRITE8_HANDLER( m72_irq_line_w )
 {
 	offset *= 8;
 	splitline = (splitline & (0xff00 >> offset)) | (data << offset);
 }
 
-WRITE_HANDLER( m72_scrollx1_w )
+WRITE8_HANDLER( m72_scrollx1_w )
 {
 	int i;
 
@@ -421,7 +421,7 @@ WRITE_HANDLER( m72_scrollx1_w )
 		scrollx1[i] = scrollx1[rastersplit];
 }
 
-WRITE_HANDLER( m72_scrollx2_w )
+WRITE8_HANDLER( m72_scrollx2_w )
 {
 	int i;
 
@@ -432,7 +432,7 @@ WRITE_HANDLER( m72_scrollx2_w )
 		scrollx2[i] = scrollx2[rastersplit];
 }
 
-WRITE_HANDLER( m72_scrolly1_w )
+WRITE8_HANDLER( m72_scrolly1_w )
 {
 	int i;
 
@@ -443,7 +443,7 @@ WRITE_HANDLER( m72_scrolly1_w )
 		scrolly1[i] = scrolly1[rastersplit];
 }
 
-WRITE_HANDLER( m72_scrolly2_w )
+WRITE8_HANDLER( m72_scrolly2_w )
 {
 	int i;
 
@@ -454,7 +454,7 @@ WRITE_HANDLER( m72_scrolly2_w )
 		scrolly2[i] = scrolly2[rastersplit];
 }
 
-WRITE_HANDLER( m72_dmaon_w )
+WRITE8_HANDLER( m72_dmaon_w )
 {
 	if (offset == 0)
 	{
@@ -463,7 +463,7 @@ WRITE_HANDLER( m72_dmaon_w )
 }
 
 
-WRITE_HANDLER( m72_port02_w )
+WRITE8_HANDLER( m72_port02_w )
 {
 	if (offset != 0)
 	{
@@ -484,14 +484,14 @@ WRITE_HANDLER( m72_port02_w )
 
 	/* bit 4 resets sound CPU (active low) */
 	if (data & 0x10)
-		cpu_set_reset_line(1,CLEAR_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_RESET, CLEAR_LINE);
 	else
-		cpu_set_reset_line(1,ASSERT_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_RESET, ASSERT_LINE);
 
 	/* bit 5 = "bank"? */
 }
 
-WRITE_HANDLER( rtype2_port02_w )
+WRITE8_HANDLER( rtype2_port02_w )
 {
 	if (offset != 0)
 	{
@@ -517,7 +517,7 @@ WRITE_HANDLER( rtype2_port02_w )
 static int majtitle_rowscroll;
 
 /* the following is mostly a kludge. This register seems to be used for something else */
-WRITE_HANDLER( majtitle_gfx_ctrl_w )
+WRITE8_HANDLER( majtitle_gfx_ctrl_w )
 {
 	if (offset == 1)
 	{

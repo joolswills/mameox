@@ -1,11 +1,11 @@
-#pragma code_seg("C559")
-#pragma data_seg("D559")
-#pragma bss_seg("B559")
-#pragma const_seg("K559")
-#pragma comment(linker, "/merge:D559=559")
-#pragma comment(linker, "/merge:C559=559")
-#pragma comment(linker, "/merge:B559=559")
-#pragma comment(linker, "/merge:K559=559")
+#pragma code_seg("C593")
+#pragma data_seg("D593")
+#pragma bss_seg("B593")
+#pragma const_seg("K593")
+#pragma comment(linker, "/merge:D593=593")
+#pragma comment(linker, "/merge:C593=593")
+#pragma comment(linker, "/merge:B593=593")
+#pragma comment(linker, "/merge:K593=593")
 /******************************************************************************
 
 Quiz DNA no Hanran (c) 1992 Face
@@ -78,7 +78,7 @@ VIDEO_START( quizdna )
 	return 0;
 }
 
-WRITE_HANDLER( quizdna_bg_ram_w )
+WRITE8_HANDLER( quizdna_bg_ram_w )
 {
 	data8_t *RAM = memory_region(REGION_CPU1);
 	quizdna_bg_ram[offset] = data;
@@ -87,7 +87,7 @@ WRITE_HANDLER( quizdna_bg_ram_w )
 	tilemap_mark_tile_dirty(quizdna_bg_tilemap, (offset & 0xfff) / 2 );
 }
 
-WRITE_HANDLER( quizdna_fg_ram_w )
+WRITE8_HANDLER( quizdna_fg_ram_w )
 {
 	int i;
 	int offs = offset & 0xfff;
@@ -101,12 +101,12 @@ WRITE_HANDLER( quizdna_fg_ram_w )
 		tilemap_mark_tile_dirty(quizdna_fg_tilemap, ((offs/2) & 0x1f) + i*0x20 );
 }
 
-WRITE_HANDLER( quizdna_bg_yscroll_w )
+WRITE8_HANDLER( quizdna_bg_yscroll_w )
 {
 	tilemap_set_scrolldy( quizdna_bg_tilemap, 255-data, 255-data+1 );
 }
 
-WRITE_HANDLER( quizdna_bg_xscroll_w )
+WRITE8_HANDLER( quizdna_bg_xscroll_w )
 {
 	int x;
 	quizdna_bg_xscroll[offset] = data;
@@ -115,7 +115,7 @@ WRITE_HANDLER( quizdna_bg_xscroll_w )
 	tilemap_set_scrolldx( quizdna_bg_tilemap, x+64, x-64+10 );
 }
 
-WRITE_HANDLER( quizdna_screen_ctrl_w )
+WRITE8_HANDLER( quizdna_screen_ctrl_w )
 {
 	int tmp = (data & 0x10) >> 4;
 	quizdna_video_enable = data & 0x20;
@@ -131,7 +131,7 @@ WRITE_HANDLER( quizdna_screen_ctrl_w )
 	tilemap_set_scrolldx( quizdna_fg_tilemap, 64, -64 +16);
 }
 
-WRITE_HANDLER( paletteram_xBGR_RRRR_GGGG_BBBB_w )
+WRITE8_HANDLER( paletteram_xBGR_RRRR_GGGG_BBBB_w )
 {
 	int r,g,b,d0,d1;
 	int offs = offset & ~1;

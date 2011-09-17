@@ -1,11 +1,11 @@
-#pragma code_seg("C431")
-#pragma data_seg("D431")
-#pragma bss_seg("B431")
-#pragma const_seg("K431")
-#pragma comment(linker, "/merge:D431=431")
-#pragma comment(linker, "/merge:C431=431")
-#pragma comment(linker, "/merge:B431=431")
-#pragma comment(linker, "/merge:K431=431")
+#pragma code_seg("C453")
+#pragma data_seg("D453")
+#pragma bss_seg("B453")
+#pragma const_seg("K453")
+#pragma comment(linker, "/merge:D453=453")
+#pragma comment(linker, "/merge:C453=453")
+#pragma comment(linker, "/merge:B453=453")
+#pragma comment(linker, "/merge:K453=453")
 /******************************************************************************
 
 Kikiippatsu Mayumi-chan (c) 1988 Victory L.L.C.
@@ -40,14 +40,14 @@ VIDEO_START( mayumi )
 	return 0;
 }
 
-WRITE_HANDLER( mayumi_videoram_w )
+WRITE8_HANDLER( mayumi_videoram_w )
 {
 	mayumi_videoram[offset] = data;
 
 	tilemap_mark_tile_dirty(mayumi_tilemap, offset & 0x7ff );
 }
 
-READ_HANDLER( mayumi_videoram_r )
+READ8_HANDLER( mayumi_videoram_r )
 {
 	return mayumi_videoram[offset];
 }

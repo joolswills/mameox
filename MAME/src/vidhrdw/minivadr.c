@@ -1,11 +1,11 @@
-#pragma code_seg("C452")
-#pragma data_seg("D452")
-#pragma bss_seg("B452")
-#pragma const_seg("K452")
-#pragma comment(linker, "/merge:D452=452")
-#pragma comment(linker, "/merge:C452=452")
-#pragma comment(linker, "/merge:B452=452")
-#pragma comment(linker, "/merge:K452=452")
+#pragma code_seg("C477")
+#pragma data_seg("D477")
+#pragma bss_seg("B477")
+#pragma const_seg("K477")
+#pragma comment(linker, "/merge:D477=477")
+#pragma comment(linker, "/merge:C477=477")
+#pragma comment(linker, "/merge:B477=477")
+#pragma comment(linker, "/merge:K477=477")
 /***************************************************************************
 
 Minivader (Space Invaders's mini game)
@@ -38,7 +38,7 @@ PALETTE_INIT( minivadr )
 	Draw Pixel.
 
 *******************************************************************/
-WRITE_HANDLER( minivadr_videoram_w )
+WRITE8_HANDLER( minivadr_videoram_w )
 {
 	int i;
 	int x, y;

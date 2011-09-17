@@ -1,11 +1,11 @@
-#pragma code_seg("C292")
-#pragma data_seg("D292")
-#pragma bss_seg("B292")
-#pragma const_seg("K292")
-#pragma comment(linker, "/merge:D292=292")
-#pragma comment(linker, "/merge:C292=292")
-#pragma comment(linker, "/merge:B292=292")
-#pragma comment(linker, "/merge:K292=292")
+#pragma code_seg("C303")
+#pragma data_seg("D303")
+#pragma bss_seg("B303")
+#pragma const_seg("K303")
+#pragma comment(linker, "/merge:D303=303")
+#pragma comment(linker, "/merge:C303=303")
+#pragma comment(linker, "/merge:B303=303")
+#pragma comment(linker, "/merge:K303=303")
 /***************************************************************************
 
 Fire Trap memory map
@@ -74,13 +74,13 @@ extern unsigned char *firetrap_bg1videoram;
 extern unsigned char *firetrap_bg2videoram;
 extern unsigned char *firetrap_fgvideoram;
 
-WRITE_HANDLER( firetrap_fgvideoram_w );
-WRITE_HANDLER( firetrap_bg1videoram_w );
-WRITE_HANDLER( firetrap_bg2videoram_w );
-WRITE_HANDLER( firetrap_bg1_scrollx_w );
-WRITE_HANDLER( firetrap_bg1_scrolly_w );
-WRITE_HANDLER( firetrap_bg2_scrollx_w );
-WRITE_HANDLER( firetrap_bg2_scrolly_w );
+WRITE8_HANDLER( firetrap_fgvideoram_w );
+WRITE8_HANDLER( firetrap_bg1videoram_w );
+WRITE8_HANDLER( firetrap_bg2videoram_w );
+WRITE8_HANDLER( firetrap_bg1_scrollx_w );
+WRITE8_HANDLER( firetrap_bg1_scrolly_w );
+WRITE8_HANDLER( firetrap_bg2_scrollx_w );
+WRITE8_HANDLER( firetrap_bg2_scrolly_w );
 VIDEO_START( firetrap );
 PALETTE_INIT( firetrap );
 VIDEO_UPDATE( firetrap );
@@ -89,12 +89,12 @@ VIDEO_UPDATE( firetrap );
 static int firetrap_irq_enable = 0;
 static int firetrap_nmi_enable;
 
-static WRITE_HANDLER( firetrap_nmi_disable_w )
+static WRITE8_HANDLER( firetrap_nmi_disable_w )
 {
 	firetrap_nmi_enable=~data & 1;
 }
 
-static WRITE_HANDLER( firetrap_bankselect_w )
+static WRITE8_HANDLER( firetrap_bankselect_w )
 {
 	int bankaddress;
 	unsigned char *RAM = memory_region(REGION_CPU1);
@@ -103,7 +103,7 @@ static WRITE_HANDLER( firetrap_bankselect_w )
 	cpu_setbank(1,&RAM[bankaddress]);
 }
 
-static READ_HANDLER( firetrap_8751_bootleg_r )
+static READ8_HANDLER( firetrap_8751_bootleg_r )
 {
 	/* Check for coin insertion */
 	/* the following only works in the bootleg version, which doesn't have an */
@@ -119,13 +119,13 @@ static MACHINE_INIT( firetrap )
 	i8751_current_command=0;
 }
 
-static READ_HANDLER( firetrap_8751_r )
+static READ8_HANDLER( firetrap_8751_r )
 {
 	//logerror("PC:%04x read from 8751\n",activecpu_get_pc());
 	return i8751_return;
 }
 
-static WRITE_HANDLER( firetrap_8751_w )
+static WRITE8_HANDLER( firetrap_8751_w )
 {
 	static int i8751_init_ptr=0;
 	static const data8_t i8751_init_data[]={
@@ -153,7 +153,7 @@ static WRITE_HANDLER( firetrap_8751_w )
 	if (data==0x26) {
 		i8751_current_command=0;
 		i8751_return=0xff; /* This value is XOR'd and must equal 0 */
-		cpu_set_irq_line_and_vector(0,0,HOLD_LINE,0xff);
+		cpunum_set_input_line_and_vector(0,0,HOLD_LINE,0xff);
 		return;
 	}
 
@@ -200,23 +200,23 @@ static WRITE_HANDLER( firetrap_8751_w )
 	}
 
 	/* Signal main cpu task is complete */
-	cpu_set_irq_line_and_vector(0,0,HOLD_LINE,0xff);
+	cpunum_set_input_line_and_vector(0,0,HOLD_LINE,0xff);
 	i8751_current_command=data;
 }
 
-static WRITE_HANDLER( firetrap_sound_command_w )
+static WRITE8_HANDLER( firetrap_sound_command_w )
 {
 	soundlatch_w(offset,data);
-	cpu_set_irq_line(1,IRQ_LINE_NMI,PULSE_LINE);
+	cpunum_set_input_line(1,INPUT_LINE_NMI,PULSE_LINE);
 }
 
-static WRITE_HANDLER( firetrap_sound_2400_w )
+static WRITE8_HANDLER( firetrap_sound_2400_w )
 {
 	MSM5205_reset_w(offset,~data & 0x01);
 	firetrap_irq_enable = data & 0x02;
 }
 
-static WRITE_HANDLER( firetrap_sound_bankselect_w )
+static WRITE8_HANDLER( firetrap_sound_bankselect_w )
 {
 	int bankaddress;
 	unsigned char *RAM = memory_region(REGION_CPU2);
@@ -236,15 +236,15 @@ static void firetrap_adpcm_int (int data)
 
 	toggle ^= 1;
 	if (firetrap_irq_enable && toggle)
-		cpu_set_irq_line (1, M6502_IRQ_LINE, HOLD_LINE);
+		cpunum_set_input_line (1, M6502_IRQ_LINE, HOLD_LINE);
 }
 
-static WRITE_HANDLER( firetrap_adpcm_data_w )
+static WRITE8_HANDLER( firetrap_adpcm_data_w )
 {
 	msm5205next = data;
 }
 
-static WRITE_HANDLER( flip_screen_w )
+static WRITE8_HANDLER( flip_screen_w )
 {
 	flip_screen_set(data);
 }
@@ -575,19 +575,19 @@ static INTERRUPT_GEN( firetrap )
 			definitely doesn't expect them as it locks out the coin routine */
 		if (coin_command_pending && !i8751_current_command) {
 			i8751_return=coin_command_pending;
-			cpu_set_irq_line_and_vector(0,0,HOLD_LINE,0xff);
+			cpunum_set_input_line_and_vector(0,0,HOLD_LINE,0xff);
 			coin_command_pending=0;
 		}
 	}
 
 	if (firetrap_nmi_enable && !cpu_getiloops())
-		cpu_set_irq_line (0, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line (0, INPUT_LINE_NMI, PULSE_LINE);
 }
 
 static INTERRUPT_GEN( bootleg )
 {
 	if (firetrap_nmi_enable)
-		cpu_set_irq_line (0, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line (0, INPUT_LINE_NMI, PULSE_LINE);
 }
 
 static MACHINE_DRIVER_START( firetrap )

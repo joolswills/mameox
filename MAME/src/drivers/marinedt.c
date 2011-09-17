@@ -1,11 +1,11 @@
-#pragma code_seg("C426")
-#pragma data_seg("D426")
-#pragma bss_seg("B426")
-#pragma const_seg("K426")
-#pragma comment(linker, "/merge:D426=426")
-#pragma comment(linker, "/merge:C426=426")
-#pragma comment(linker, "/merge:B426=426")
-#pragma comment(linker, "/merge:K426=426")
+#pragma code_seg("C448")
+#pragma data_seg("D448")
+#pragma bss_seg("B448")
+#pragma const_seg("K448")
+#pragma comment(linker, "/merge:D448=448")
+#pragma comment(linker, "/merge:C448=448")
+#pragma comment(linker, "/merge:B448=448")
+#pragma comment(linker, "/merge:K448=448")
 /*
 ---------------------------
 Marine Date by TAITO (1981)
@@ -120,7 +120,7 @@ static ADDRESS_MAP_START( marinedt_writemem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0x4c00, 0x4c00) AM_WRITE(MWA8_NOP)	//?? maybe off by one error
 ADDRESS_MAP_END
 
-static READ_HANDLER( marinedt_port1_r )
+static READ8_HANDLER( marinedt_port1_r )
 {
 //might need to be reversed for cocktail stuff
 
@@ -128,7 +128,7 @@ static READ_HANDLER( marinedt_port1_r )
 	return readinputport(3 + ((marinedt_pf&0x08)>>3));
 }
 
-static READ_HANDLER( marinedt_coll_r )
+static READ8_HANDLER( marinedt_coll_r )
 {
 	//76543210
 	//x------- obj1 to obj2 collision
@@ -136,8 +136,8 @@ static READ_HANDLER( marinedt_coll_r )
     //----x--- obj1 to playfield collision
 	//-----xxx unused
 
-	if (keyboard_pressed(KEYCODE_X)) return 0x80;
-	if (keyboard_pressed(KEYCODE_Z)) return 0x08;
+	if (code_pressed(KEYCODE_X)) return 0x80;
+	if (code_pressed(KEYCODE_Z)) return 0x08;
 
 	return coll | collh;
 }
@@ -146,7 +146,7 @@ static READ_HANDLER( marinedt_coll_r )
 //id imagine they are returning the pf char where the collission took place?
 //what about where there is lots of colls?
 //maybe the first on a scanline basis
-static READ_HANDLER( marinedt_obj1_x_r )
+static READ8_HANDLER( marinedt_obj1_x_r )
 {
 	//76543210
 	//xxxx---- unknown
@@ -158,7 +158,7 @@ if(RAM[0x430e]) --cx; else ++cx;
 	return cx | (cxh<<4);
 }
 
-static READ_HANDLER( marinedt_obj1_yr_r )
+static READ8_HANDLER( marinedt_obj1_yr_r )
 {
 	//76543210
 	//xxxx---- unknown
@@ -169,7 +169,7 @@ if (cx==0x10) cyr++;
 	return cyr | (cyrh<<4);
 }
 
-static READ_HANDLER( marinedt_obj1_yq_r )
+static READ8_HANDLER( marinedt_obj1_yq_r )
 {
 	//76543210
 	//xx------ unknown
@@ -191,16 +191,16 @@ static ADDRESS_MAP_START( marinedt_readport, ADDRESS_SPACE_IO, 8 )
 	AM_RANGE(0x0e, 0x0e) AM_READ(marinedt_coll_r)
 ADDRESS_MAP_END
 
-static WRITE_HANDLER( marinedt_obj1_a_w ) {	marinedt_obj1_a = data; }
-static WRITE_HANDLER( marinedt_obj1_x_w ) {	marinedt_obj1_x = data; }
-static WRITE_HANDLER( marinedt_obj1_y_w ) {	marinedt_obj1_y = data; }
-static WRITE_HANDLER( marinedt_obj2_a_w ) {	marinedt_obj2_a = data; }
-static WRITE_HANDLER( marinedt_obj2_x_w ) {	marinedt_obj2_x = data; }
-static WRITE_HANDLER( marinedt_obj2_y_w ) {	marinedt_obj2_y = data; }
+static WRITE8_HANDLER( marinedt_obj1_a_w ) {	marinedt_obj1_a = data; }
+static WRITE8_HANDLER( marinedt_obj1_x_w ) {	marinedt_obj1_x = data; }
+static WRITE8_HANDLER( marinedt_obj1_y_w ) {	marinedt_obj1_y = data; }
+static WRITE8_HANDLER( marinedt_obj2_a_w ) {	marinedt_obj2_a = data; }
+static WRITE8_HANDLER( marinedt_obj2_x_w ) {	marinedt_obj2_x = data; }
+static WRITE8_HANDLER( marinedt_obj2_y_w ) {	marinedt_obj2_y = data; }
 
-static WRITE_HANDLER( marinedt_music_w ){	marinedt_music = data; }
+static WRITE8_HANDLER( marinedt_music_w ){	marinedt_music = data; }
 
-static WRITE_HANDLER( marinedt_sound_w )
+static WRITE8_HANDLER( marinedt_sound_w )
 {
 	//76543210
 	//xx------ ??
@@ -214,7 +214,7 @@ static WRITE_HANDLER( marinedt_sound_w )
 	marinedt_sound = data;
 }
 
-static WRITE_HANDLER( marinedt_pd_w )
+static WRITE8_HANDLER( marinedt_pd_w )
 {
 	//76543210
 	//xxx----- ?? unused
@@ -227,7 +227,7 @@ static WRITE_HANDLER( marinedt_pd_w )
 	marinedt_pd = data;
 }
 
-static WRITE_HANDLER( marinedt_pf_w )
+static WRITE8_HANDLER( marinedt_pf_w )
 {
 	//76543210
 	//xxxx---- ?? unused (will need to understand table of written values)

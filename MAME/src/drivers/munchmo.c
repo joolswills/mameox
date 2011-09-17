@@ -1,11 +1,11 @@
-#pragma code_seg("C473")
-#pragma data_seg("D473")
-#pragma bss_seg("B473")
-#pragma const_seg("K473")
-#pragma comment(linker, "/merge:D473=473")
-#pragma comment(linker, "/merge:C473=473")
-#pragma comment(linker, "/merge:B473=473")
-#pragma comment(linker, "/merge:K473=473")
+#pragma code_seg("C499")
+#pragma data_seg("D499")
+#pragma bss_seg("B499")
+#pragma const_seg("K499")
+#pragma comment(linker, "/merge:D499=499")
+#pragma comment(linker, "/merge:C499=499")
+#pragma comment(linker, "/merge:B499=499")
+#pragma comment(linker, "/merge:K499=499")
 /***************************************************************************
   Munch Mobile
   (C) 1982 SNK
@@ -35,16 +35,16 @@ extern UINT8 *mnchmobl_sprite_tile;
 
 PALETTE_INIT( mnchmobl );
 VIDEO_START( mnchmobl );
-WRITE_HANDLER( mnchmobl_palette_bank_w );
-WRITE_HANDLER( mnchmobl_flipscreen_w );
-READ_HANDLER( mnchmobl_sprite_xpos_r );
-WRITE_HANDLER( mnchmobl_sprite_xpos_w );
-READ_HANDLER( mnchmobl_sprite_attr_r );
-WRITE_HANDLER( mnchmobl_sprite_attr_w );
-READ_HANDLER( mnchmobl_sprite_tile_r );
-WRITE_HANDLER( mnchmobl_sprite_tile_w );
-READ_HANDLER( mnchmobl_videoram_r );
-WRITE_HANDLER( mnchmobl_videoram_w );
+WRITE8_HANDLER( mnchmobl_palette_bank_w );
+WRITE8_HANDLER( mnchmobl_flipscreen_w );
+READ8_HANDLER( mnchmobl_sprite_xpos_r );
+WRITE8_HANDLER( mnchmobl_sprite_xpos_w );
+READ8_HANDLER( mnchmobl_sprite_attr_r );
+WRITE8_HANDLER( mnchmobl_sprite_attr_w );
+READ8_HANDLER( mnchmobl_sprite_tile_r );
+WRITE8_HANDLER( mnchmobl_sprite_tile_w );
+READ8_HANDLER( mnchmobl_videoram_r );
+WRITE8_HANDLER( mnchmobl_videoram_w );
 VIDEO_UPDATE( mnchmobl );
 
 
@@ -52,7 +52,7 @@ VIDEO_UPDATE( mnchmobl );
 
 static int mnchmobl_nmi_enable = 0;
 
-static WRITE_HANDLER( mnchmobl_nmi_enable_w )
+static WRITE8_HANDLER( mnchmobl_nmi_enable_w )
 {
 	mnchmobl_nmi_enable = data;
 }
@@ -61,19 +61,19 @@ static INTERRUPT_GEN( mnchmobl_interrupt )
 {
 	static int which;
 	which = !which;
-	if( which ) cpu_set_irq_line(0, 0, HOLD_LINE);
-	else if( mnchmobl_nmi_enable ) cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);
+	if( which ) cpunum_set_input_line(0, 0, HOLD_LINE);
+	else if( mnchmobl_nmi_enable ) cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 }
 
-WRITE_HANDLER( mnchmobl_soundlatch_w )
+WRITE8_HANDLER( mnchmobl_soundlatch_w )
 {
 	soundlatch_w( offset, data );
-	cpu_set_irq_line( 1, 0, HOLD_LINE );
+	cpunum_set_input_line( 1, 0, HOLD_LINE );
 }
 
-WRITE_HANDLER( sound_nmi_ack_w )
+WRITE8_HANDLER( sound_nmi_ack_w )
 {
-	cpu_set_nmi_line(1, CLEAR_LINE);
+	cpunum_set_input_line(1, INPUT_LINE_NMI, CLEAR_LINE);
 }
 
 static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )

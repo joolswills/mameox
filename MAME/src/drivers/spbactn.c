@@ -1,11 +1,11 @@
-#pragma code_seg("C640")
-#pragma data_seg("D640")
-#pragma bss_seg("B640")
-#pragma const_seg("K640")
-#pragma comment(linker, "/merge:D640=640")
-#pragma comment(linker, "/merge:C640=640")
-#pragma comment(linker, "/merge:B640=640")
-#pragma comment(linker, "/merge:K640=640")
+#pragma code_seg("C676")
+#pragma data_seg("D676")
+#pragma bss_seg("B676")
+#pragma const_seg("K676")
+#pragma comment(linker, "/merge:D676=676")
+#pragma comment(linker, "/merge:C676=676")
+#pragma comment(linker, "/merge:B676=676")
+#pragma comment(linker, "/merge:K676=676")
 /*******************************************************************************
  Super Pinball Action (c) 1991 Tecmo
 ********************************************************************************
@@ -145,7 +145,7 @@ static WRITE16_HANDLER( soundcommand_w )
 	if (ACCESSING_LSB)
 	{
 		soundlatch_w(offset,data & 0xff);
-		cpu_set_irq_line(1,IRQ_LINE_NMI,PULSE_LINE);
+		cpunum_set_input_line(1,INPUT_LINE_NMI,PULSE_LINE);
 	}
 }
 
@@ -351,7 +351,7 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 
 static void irqhandler(int linestate)
 {
-	cpu_set_irq_line(1,0,linestate);
+	cpunum_set_input_line(1,0,linestate);
 }
 
 static struct YM3812interface ym3812_interface =

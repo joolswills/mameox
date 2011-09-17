@@ -1,11 +1,11 @@
-#pragma code_seg("C466")
-#pragma data_seg("D466")
-#pragma bss_seg("B466")
-#pragma const_seg("K466")
-#pragma comment(linker, "/merge:D466=466")
-#pragma comment(linker, "/merge:C466=466")
-#pragma comment(linker, "/merge:B466=466")
-#pragma comment(linker, "/merge:K466=466")
+#pragma code_seg("C492")
+#pragma data_seg("D492")
+#pragma bss_seg("B492")
+#pragma const_seg("K492")
+#pragma comment(linker, "/merge:D492=492")
+#pragma comment(linker, "/merge:C492=492")
+#pragma comment(linker, "/merge:B492=492")
+#pragma comment(linker, "/merge:K492=492")
 /***************************************************************************
 
   vidhrdw.c
@@ -182,7 +182,7 @@ VIDEO_START( mrdo )
 
 ***************************************************************************/
 
-WRITE_HANDLER( mrdo_bgvideoram_w )
+WRITE8_HANDLER( mrdo_bgvideoram_w )
 {
 	if (mrdo_bgvideoram[offset] != data)
 	{
@@ -191,7 +191,7 @@ WRITE_HANDLER( mrdo_bgvideoram_w )
 	}
 }
 
-WRITE_HANDLER( mrdo_fgvideoram_w )
+WRITE8_HANDLER( mrdo_fgvideoram_w )
 {
 	if (mrdo_fgvideoram[offset] != data)
 	{
@@ -201,12 +201,12 @@ WRITE_HANDLER( mrdo_fgvideoram_w )
 }
 
 
-WRITE_HANDLER( mrdo_scrollx_w )
+WRITE8_HANDLER( mrdo_scrollx_w )
 {
 	tilemap_set_scrollx(bg_tilemap,0,data);
 }
 
-WRITE_HANDLER( mrdo_scrolly_w )
+WRITE8_HANDLER( mrdo_scrolly_w )
 {
 	/* This is NOT affected by flipscreen (so stop it happening) */
 
@@ -215,7 +215,7 @@ WRITE_HANDLER( mrdo_scrolly_w )
 }
 
 
-WRITE_HANDLER( mrdo_flipscreen_w )
+WRITE8_HANDLER( mrdo_flipscreen_w )
 {
 	/* bits 1-3 control the playfield priority, but they are not used by */
 	/* Mr. Do! so we don't emulate them */

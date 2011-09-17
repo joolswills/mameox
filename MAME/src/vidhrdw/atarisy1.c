@@ -1,11 +1,11 @@
-#pragma code_seg("C139")
-#pragma data_seg("D139")
-#pragma bss_seg("B139")
-#pragma const_seg("K139")
-#pragma comment(linker, "/merge:D139=139")
-#pragma comment(linker, "/merge:C139=139")
-#pragma comment(linker, "/merge:B139=139")
-#pragma comment(linker, "/merge:K139=139")
+#pragma code_seg("C140")
+#pragma data_seg("D140")
+#pragma bss_seg("B140")
+#pragma const_seg("K140")
+#pragma comment(linker, "/merge:D140=140")
+#pragma comment(linker, "/merge:C140=140")
+#pragma comment(linker, "/merge:B140=140")
+#pragma comment(linker, "/merge:K140=140")
 /***************************************************************************
 
 	Atari System 1 hardware
@@ -242,7 +242,7 @@ WRITE16_HANDLER( atarisy1_bankselect_w )
 	/* sound CPU reset */
 	if (diff & 0x0080)
 	{
-		cpu_set_reset_line(1, (newselect & 0x0080) ? CLEAR_LINE : ASSERT_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_RESET, (newselect & 0x0080) ? CLEAR_LINE : ASSERT_LINE);
 		if (!(newselect & 0x0080)) atarigen_sound_reset();
 	}
 

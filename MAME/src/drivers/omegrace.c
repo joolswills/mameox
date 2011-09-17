@@ -1,11 +1,11 @@
-#pragma code_seg("C512")
-#pragma data_seg("D512")
-#pragma bss_seg("B512")
-#pragma const_seg("K512")
-#pragma comment(linker, "/merge:D512=512")
-#pragma comment(linker, "/merge:C512=512")
-#pragma comment(linker, "/merge:B512=512")
-#pragma comment(linker, "/merge:K512=512")
+#pragma code_seg("C541")
+#pragma data_seg("D541")
+#pragma bss_seg("B541")
+#pragma const_seg("K541")
+#pragma comment(linker, "/merge:D541=541")
+#pragma comment(linker, "/merge:C541=541")
+#pragma comment(linker, "/merge:B541=541")
+#pragma comment(linker, "/merge:K541=541")
 /***************************************************************************
 
 	Midway Omega Race hardware
@@ -250,14 +250,14 @@ static MACHINE_INIT( omegrace )
  *
  *************************************/
 
-static READ_HANDLER( omegrace_vg_go_r )
+static READ8_HANDLER( omegrace_vg_go_r )
 {
 	avgdvg_go_w(0,0);
 	return 0;
 }
 
 
-static READ_HANDLER( omegrace_vg_status_r )
+static READ8_HANDLER( omegrace_vg_status_r )
 {
 	return avgdvg_done() ? 0x00 : 0x80;
 }
@@ -295,7 +295,7 @@ static unsigned char spinnerTable[64] =
 };
 
 
-READ_HANDLER( omegrace_spinner1_r )
+READ8_HANDLER( omegrace_spinner1_r )
 {
 	return (spinnerTable[readinputport(4) & 0x3f]);
 }
@@ -308,7 +308,7 @@ READ_HANDLER( omegrace_spinner1_r )
  *
  *************************************/
 
-WRITE_HANDLER( omegrace_leds_w )
+WRITE8_HANDLER( omegrace_leds_w )
 {
 	/* bits 0 and 1 are coin counters */
 	coin_counter_w(0,data & 0x01);
@@ -324,10 +324,10 @@ WRITE_HANDLER( omegrace_leds_w )
 }
 
 
-WRITE_HANDLER( omegrace_soundlatch_w )
+WRITE8_HANDLER( omegrace_soundlatch_w )
 {
 	soundlatch_w (offset, data);
-	cpu_set_irq_line(1, 0, HOLD_LINE);
+	cpunum_set_input_line(1, 0, HOLD_LINE);
 }
 
 

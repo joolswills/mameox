@@ -1,11 +1,11 @@
-#pragma code_seg("C243")
-#pragma data_seg("D243")
-#pragma bss_seg("B243")
-#pragma const_seg("K243")
-#pragma comment(linker, "/merge:D243=243")
-#pragma comment(linker, "/merge:C243=243")
-#pragma comment(linker, "/merge:B243=243")
-#pragma comment(linker, "/merge:K243=243")
+#pragma code_seg("C251")
+#pragma data_seg("D251")
+#pragma bss_seg("B251")
+#pragma const_seg("K251")
+#pragma comment(linker, "/merge:D251=251")
+#pragma comment(linker, "/merge:C251=251")
+#pragma comment(linker, "/merge:B251=251")
+#pragma comment(linker, "/merge:K251=251")
 /***************************************************************************
 
   Video Hardware for Double Dragon 3

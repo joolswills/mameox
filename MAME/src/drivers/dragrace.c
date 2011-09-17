@@ -1,11 +1,11 @@
-#pragma code_seg("C264")
-#pragma data_seg("D264")
-#pragma bss_seg("B264")
-#pragma const_seg("K264")
-#pragma comment(linker, "/merge:D264=264")
-#pragma comment(linker, "/merge:C264=264")
-#pragma comment(linker, "/merge:B264=264")
-#pragma comment(linker, "/merge:K264=264")
+#pragma code_seg("C274")
+#pragma data_seg("D274")
+#pragma bss_seg("B274")
+#pragma const_seg("K274")
+#pragma comment(linker, "/merge:D274=274")
+#pragma comment(linker, "/merge:C274=274")
+#pragma comment(linker, "/merge:B274=274")
+#pragma comment(linker, "/merge:K274=274")
 /***************************************************************************
 
 Atari Drag Race Driver
@@ -101,7 +101,7 @@ static void dragrace_update_misc_flags(void)
 	discrete_sound_w(0x03, (dragrace_misc_flags & 0x20000000) ? 1: 0);	// HiTone enable
 }
 
-WRITE_HANDLER( dragrace_misc_w )
+WRITE8_HANDLER( dragrace_misc_w )
 {
 	/* Set/clear individual bit */
 	UINT32 mask = 1 << offset;
@@ -113,7 +113,7 @@ WRITE_HANDLER( dragrace_misc_w )
 	dragrace_update_misc_flags();
 	}
 
-WRITE_HANDLER( dragrace_misc_clear_w )
+WRITE8_HANDLER( dragrace_misc_clear_w )
 {
 	/* Clear 8 bits */
 	UINT32 mask = 0xff << (((offset >> 3) & 0x03) * 8);
@@ -122,7 +122,7 @@ WRITE_HANDLER( dragrace_misc_clear_w )
 	dragrace_update_misc_flags();
 }
 
-READ_HANDLER( dragrace_input_r )
+READ8_HANDLER( dragrace_input_r )
 {
 	int val = readinputport(2);
 
@@ -150,7 +150,7 @@ READ_HANDLER( dragrace_input_r )
 }
 
 
-READ_HANDLER( dragrace_steering_r )
+READ8_HANDLER( dragrace_steering_r )
 {
 	int bitA[2];
 	int bitB[2];
@@ -171,7 +171,7 @@ READ_HANDLER( dragrace_steering_r )
 }
 
 
-READ_HANDLER( dragrace_scanline_r )
+READ8_HANDLER( dragrace_scanline_r )
 {
 	return (cpu_getscanline() ^ 0xf0) | 0x0f;
 }
@@ -256,6 +256,12 @@ INPUT_PORTS_START( dragrace )
 	PORT_BITX(0x04, IP_ACTIVE_HIGH, IPT_BUTTON4 | IPF_PLAYER2, "Player 2 Gear 3",  IP_KEY_DEFAULT, IP_JOY_DEFAULT )
 	PORT_BITX(0x08, IP_ACTIVE_HIGH, IPT_BUTTON5 | IPF_PLAYER2, "Player 2 Gear 4",  IP_KEY_DEFAULT, IP_JOY_DEFAULT )
 	PORT_BITX(0x10, IP_ACTIVE_HIGH, IPT_BUTTON6 | IPF_PLAYER2, "Player 2 Neutral", IP_KEY_DEFAULT, IP_JOY_DEFAULT )
+
+	PORT_START
+	PORT_ADJUSTER( 81, "Motor 1 RPM" )
+
+	PORT_START
+	PORT_ADJUSTER( 85, "Motor 2 RPM" )
 INPUT_PORTS_END
 
 
@@ -424,7 +430,7 @@ static DISCRETE_SOUND_START(dragrace_sound_interface)
 	/* NOTE: freqs are ripped from Sprint for now.  */
 	/************************************************/
 	DISCRETE_RCFILTER(NODE_20, 1, DRAGRACE_MOTOR1_DATA, 119898, 2.2e-6)
-	DISCRETE_ADJUSTMENT(NODE_21, 1, (214.0-27.0)/12/31, (4416.0-27.0)/12/31, (2500.0-27.0)/12/31, DISC_LOGADJ, "Motor 1 RPM")
+	DISCRETE_ADJUSTMENT(NODE_21, 1, (214.0-27.0)/12/31, (4416.0-27.0)/12/31, DISC_LOGADJ, 7)
 	DISCRETE_MULTIPLY(NODE_22, 1, NODE_20, NODE_21)
 
 	DISCRETE_MULTADD(NODE_23, 1, NODE_22, 2, 27.0/6)	/* F1 = /12*2 = /6 */
@@ -447,7 +453,7 @@ static DISCRETE_SOUND_START(dragrace_sound_interface)
 	/* it to sound different from car1.             */
 	/************************************************/
 	DISCRETE_RCFILTER(NODE_40, 1, DRAGRACE_MOTOR2_DATA, 119898, 2.2e-6)
-	DISCRETE_ADJUSTMENT(NODE_41, 1, (214.0-27.0)/12/31, (4416.0-27.0)/12/31, (2800.0-27.0)/12/31, DISC_LOGADJ, "Motor 2 RPM")
+	DISCRETE_ADJUSTMENT(NODE_41, 1, (214.0-27.0)/12/31, (4416.0-27.0)/12/31, DISC_LOGADJ, 8)
 	DISCRETE_MULTIPLY(NODE_42, 1, NODE_40, NODE_41)
 
 	DISCRETE_MULTADD(NODE_43, 1, NODE_42, 2, 27.0/6)	/* F1 = /12*2 = /6 */
@@ -520,7 +526,8 @@ static DISCRETE_SOUND_START(dragrace_sound_interface)
 	DISCRETE_GAIN(NODE_92, NODE_90, 65534.0/(593.8+581.6+1000.0+57.6))
 	DISCRETE_GAIN(NODE_93, NODE_91, 65534.0/(593.8+581.6+1000.0+57.6))
 
-	DISCRETE_OUTPUT_STEREO(NODE_92, NODE_93, 100)
+	DISCRETE_OUTPUT(NODE_92, MIXER(100,MIXER_PAN_LEFT))
+	DISCRETE_OUTPUT(NODE_93, MIXER(100,MIXER_PAN_RIGHT))
 DISCRETE_SOUND_END
 
 

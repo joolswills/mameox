@@ -1,11 +1,11 @@
-#pragma code_seg("C762")
-#pragma data_seg("D762")
-#pragma bss_seg("B762")
-#pragma const_seg("K762")
-#pragma comment(linker, "/merge:D762=762")
-#pragma comment(linker, "/merge:C762=762")
-#pragma comment(linker, "/merge:B762=762")
-#pragma comment(linker, "/merge:K762=762")
+#pragma code_seg("C804")
+#pragma data_seg("D804")
+#pragma bss_seg("B804")
+#pragma const_seg("K804")
+#pragma comment(linker, "/merge:D804=804")
+#pragma comment(linker, "/merge:C804=804")
+#pragma comment(linker, "/merge:B804=804")
+#pragma comment(linker, "/merge:K804=804")
 /***************************************************************************
 
   Video Hardware for Championship V'ball by Paul Hampson
@@ -68,7 +68,7 @@ VIDEO_START( vb )
 	return 0;
 }
 
-WRITE_HANDLER( vb_videoram_w )
+WRITE8_HANDLER( vb_videoram_w )
 {
 	if (vb_videoram[offset] != data)
 	{
@@ -77,12 +77,12 @@ WRITE_HANDLER( vb_videoram_w )
 	}
 }
 
-READ_HANDLER( vb_attrib_r )
+READ8_HANDLER( vb_attrib_r )
 {
 	return vb_attribram[offset];
 }
 
-WRITE_HANDLER( vb_attrib_w )
+WRITE8_HANDLER( vb_attrib_w )
 {
 	if( vb_attribram[offset] != data ){
 		vb_attribram[offset] = data;
@@ -199,9 +199,9 @@ INTERRUPT_GEN( vball_interrupt )
 {
 	int line = 31 - cpu_getiloops();
 	if (line < 13)
-		cpu_set_irq_line(0, M6502_IRQ_LINE, HOLD_LINE);
+		cpunum_set_input_line(0, M6502_IRQ_LINE, HOLD_LINE);
 	else if (line == 13)
-		cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 	//save the scroll x register value
 	if(line<32) scrollx[31-line] = (vb_scrollx_hi + vb_scrollx_lo+4);
 }

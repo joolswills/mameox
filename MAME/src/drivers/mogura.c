@@ -1,11 +1,11 @@
-#pragma code_seg("C459")
-#pragma data_seg("D459")
-#pragma bss_seg("B459")
-#pragma const_seg("K459")
-#pragma comment(linker, "/merge:D459=459")
-#pragma comment(linker, "/merge:C459=459")
-#pragma comment(linker, "/merge:B459=459")
-#pragma comment(linker, "/merge:K459=459")
+#pragma code_seg("C485")
+#pragma data_seg("D485")
+#pragma bss_seg("B485")
+#pragma const_seg("K485")
+#pragma comment(linker, "/merge:D485=485")
+#pragma comment(linker, "/merge:C485=485")
+#pragma comment(linker, "/merge:B485=485")
+#pragma comment(linker, "/merge:K485=485")
 /* Mogura Desse */
 
 #include "driver.h"
@@ -86,7 +86,7 @@ VIDEO_UPDATE( mogura )
 
 }
 
-WRITE_HANDLER( mogura_tileram_w )
+WRITE8_HANDLER( mogura_tileram_w )
 {
 	mogura_tileram[offset] = data;
 	tilemap_mark_tile_dirty(mogura_tilemap,offset&0x7ff);
@@ -103,7 +103,7 @@ static ADDRESS_MAP_START( readport, ADDRESS_SPACE_IO, 8 )
 ADDRESS_MAP_END
 
 
-static WRITE_HANDLER(dac_w)
+static WRITE8_HANDLER(dac_w)
 {
 	DAC_0_data_w(0, data & 0xf0 );	/* left */
 	DAC_1_data_w(0, (data & 0x0f)<<4 );	/* right */
@@ -116,7 +116,7 @@ static ADDRESS_MAP_START( writeport, ADDRESS_SPACE_IO, 8 )
 ADDRESS_MAP_END
 
 
-WRITE_HANDLER ( mogura_gfxram_w )
+WRITE8_HANDLER ( mogura_gfxram_w )
 {
 	mogura_gfxram[offset] = data ;
 

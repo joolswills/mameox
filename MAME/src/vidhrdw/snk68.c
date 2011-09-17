@@ -1,11 +1,11 @@
-#pragma code_seg("C635")
-#pragma data_seg("D635")
-#pragma bss_seg("B635")
-#pragma const_seg("K635")
-#pragma comment(linker, "/merge:D635=635")
-#pragma comment(linker, "/merge:C635=635")
-#pragma comment(linker, "/merge:B635=635")
-#pragma comment(linker, "/merge:K635=635")
+#pragma code_seg("C671")
+#pragma data_seg("D671")
+#pragma bss_seg("B671")
+#pragma const_seg("K671")
+#pragma comment(linker, "/merge:D671=671")
+#pragma comment(linker, "/merge:C671=671")
+#pragma comment(linker, "/merge:B671=671")
+#pragma comment(linker, "/merge:K671=671")
 /***************************************************************************
 
 	SNK 68000 video routines

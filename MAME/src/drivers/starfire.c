@@ -1,11 +1,11 @@
-#pragma code_seg("C665")
-#pragma data_seg("D665")
-#pragma bss_seg("B665")
-#pragma const_seg("K665")
-#pragma comment(linker, "/merge:D665=665")
-#pragma comment(linker, "/merge:C665=665")
-#pragma comment(linker, "/merge:B665=665")
-#pragma comment(linker, "/merge:K665=665")
+#pragma code_seg("C703")
+#pragma data_seg("D703")
+#pragma bss_seg("B703")
+#pragma const_seg("K703")
+#pragma comment(linker, "/merge:D703=703")
+#pragma comment(linker, "/merge:C703=703")
+#pragma comment(linker, "/merge:B703=703")
+#pragma comment(linker, "/merge:K703=703")
 /***************************************************************************
 
 	Star Fire/Fire One system
@@ -61,12 +61,12 @@ VIDEO_UPDATE( starfire );
 extern VIDEO_START( starfire );
 extern void starfire_video_update(int scanline, int count);
 
-WRITE_HANDLER( starfire_videoram_w );
-READ_HANDLER( starfire_videoram_r );
-WRITE_HANDLER( starfire_colorram_w );
-READ_HANDLER( starfire_colorram_r );
-WRITE_HANDLER( starfire_vidctrl_w );
-WRITE_HANDLER( starfire_vidctrl1_w );
+WRITE8_HANDLER( starfire_videoram_w );
+READ8_HANDLER( starfire_videoram_r );
+WRITE8_HANDLER( starfire_colorram_w );
+READ8_HANDLER( starfire_colorram_r );
+WRITE8_HANDLER( starfire_vidctrl_w );
+WRITE8_HANDLER( starfire_vidctrl1_w );
 
 
 
@@ -110,7 +110,7 @@ MACHINE_INIT( starfire )
  *
  *************************************/
 
-static WRITE_HANDLER( starfire_scratch_w )
+static WRITE8_HANDLER( starfire_scratch_w )
 {
 	/* A12 and A3 select video control registers */
 	if ((offset & 0x1008) == 0x1000)
@@ -132,7 +132,7 @@ static WRITE_HANDLER( starfire_scratch_w )
 }
 
 
-static READ_HANDLER( starfire_scratch_r )
+static READ8_HANDLER( starfire_scratch_r )
 {
 	/* A11 selects input ports */
 	if (offset & 0x800)
@@ -151,7 +151,7 @@ static READ_HANDLER( starfire_scratch_r )
  *
  *************************************/
 
-static READ_HANDLER( starfire_input_r )
+static READ8_HANDLER( starfire_input_r )
 {
 	switch (offset & 15)
 	{
@@ -165,7 +165,7 @@ static READ_HANDLER( starfire_input_r )
 }
 
 
-static READ_HANDLER( fireone_input_r )
+static READ8_HANDLER( fireone_input_r )
 {
 	static const UINT8 fireone_paddle_map[64] =
 	{

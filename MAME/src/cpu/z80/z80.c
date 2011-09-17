@@ -272,10 +272,10 @@ static const UINT8 cc_ed[0x100] = {
  8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
  8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
  8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
-12,12,15,20, 8, 8, 8, 9,12,12,15,20, 8, 8, 8, 9,
-12,12,15,20, 8, 8, 8, 9,12,12,15,20, 8, 8, 8, 9,
-12,12,15,20, 8, 8, 8,18,12,12,15,20, 8, 8, 8,18,
-12,12,15,20, 8, 8, 8, 8,12,12,15,20, 8, 8, 8, 8,
+12,12,15,20, 8,14, 8, 9,12,12,15,20, 8,14, 8, 9,
+12,12,15,20, 8,14, 8, 9,12,12,15,20, 8,14, 8, 9,
+12,12,15,20, 8,14, 8,18,12,12,15,20, 8,14, 8,18,
+12,12,15,20, 8,14, 8, 8,12,12,15,20, 8,14, 8, 8,
  8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
  8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
 16,16,16,16, 8, 8, 8, 8,16,16,16,16, 8, 8, 8, 8,
@@ -340,7 +340,7 @@ static const UINT8 cc_ex[0x100] = {
  6, 0, 0, 0, 7, 0, 0, 2, 6, 0, 0, 0, 7, 0, 0, 2,
  6, 0, 0, 0, 7, 0, 0, 2, 6, 0, 0, 0, 7, 0, 0, 2};
 
-static const UINT8 *cc[6] = { cc_op, cc_cb, cc_ed, cc_xy, cc_xycb, cc_ex };
+static const UINT8 *cc[6];
 #define Z80_TABLE_dd	Z80_TABLE_xy
 #define Z80_TABLE_fd	Z80_TABLE_xy
 
@@ -4004,6 +4004,15 @@ static void z80_init(void)
 {
 	int cpu = cpu_getactivecpu();
 	int i, p;
+
+	/* setup cycle tables */
+	cc[Z80_TABLE_op] = cc_op;
+	cc[Z80_TABLE_cb] = cc_cb;
+	cc[Z80_TABLE_ed] = cc_ed;
+	cc[Z80_TABLE_xy] = cc_xy;
+	cc[Z80_TABLE_xycb] = cc_xycb;
+	cc[Z80_TABLE_ex] = cc_ex;
+
 #if BIG_FLAGS_ARRAY
 	if( !SZHVC_add || !SZHVC_sub )
 	{
@@ -4228,7 +4237,7 @@ static void z80_set_context (void *src)
  ****************************************************************************/
 static void set_irq_line(int irqline, int state)
 {
-	if (irqline == IRQ_LINE_NMI)
+	if (irqline == INPUT_LINE_NMI)
 	{
 		if( Z80.nmi_state == state ) return;
 
@@ -4315,8 +4324,8 @@ static void z80_set_info(UINT32 state, union cpuinfo *info)
 	switch (state)
 	{
 		/* --- the following bits of info are set as 64-bit signed integers --- */
-		case CPUINFO_INT_IRQ_STATE + IRQ_LINE_NMI:		set_irq_line(IRQ_LINE_NMI, info->i);	break;
-		case CPUINFO_INT_IRQ_STATE + 0:					set_irq_line(0, info->i);				break;
+		case CPUINFO_INT_INPUT_STATE + INPUT_LINE_NMI:	set_irq_line(INPUT_LINE_NMI, info->i);	break;
+		case CPUINFO_INT_INPUT_STATE + 0:				set_irq_line(0, info->i);				break;
 
 		case CPUINFO_INT_PC:							_PC = info->i; change_pc(_PCD);		break;
 		case CPUINFO_INT_REGISTER + Z80_PC:				Z80.PC.w.l = info->i;					break;
@@ -4342,7 +4351,7 @@ static void z80_set_info(UINT32 state, union cpuinfo *info)
 		case CPUINFO_INT_REGISTER + Z80_DC1:			Z80.int_state[1] = info->i;				break;
 		case CPUINFO_INT_REGISTER + Z80_DC2:			Z80.int_state[2] = info->i;				break;
 		case CPUINFO_INT_REGISTER + Z80_DC3:			Z80.int_state[3] = info->i;				break;
-		
+
 		/* --- the following bits of info are set as pointers to data or functions --- */
 		case CPUINFO_PTR_IRQ_CALLBACK:					Z80.irq_callback = info->irqcallback;	break;
 		case CPUINFO_PTR_Z80_CYCLE_TABLE + Z80_TABLE_op: cc[Z80_TABLE_op] = info->p;			break;
@@ -4366,7 +4375,7 @@ void z80_get_info(UINT32 state, union cpuinfo *info)
 	{
 		/* --- the following bits of info are returned as 64-bit signed integers --- */
 		case CPUINFO_INT_CONTEXT_SIZE:					info->i = sizeof(Z80);					break;
-		case CPUINFO_INT_IRQ_LINES:						info->i = 1;							break;
+		case CPUINFO_INT_INPUT_LINES:					info->i = 1;							break;
 		case CPUINFO_INT_DEFAULT_IRQ_VECTOR:			info->i = 0xff;							break;
 		case CPUINFO_INT_ENDIANNESS:					info->i = CPU_IS_LE;					break;
 		case CPUINFO_INT_CLOCK_DIVIDER:					info->i = 1;							break;
@@ -4374,7 +4383,7 @@ void z80_get_info(UINT32 state, union cpuinfo *info)
 		case CPUINFO_INT_MAX_INSTRUCTION_BYTES:			info->i = 4;							break;
 		case CPUINFO_INT_MIN_CYCLES:					info->i = 1;							break;
 		case CPUINFO_INT_MAX_CYCLES:					info->i = 16;							break;
-		
+
 		case CPUINFO_INT_DATABUS_WIDTH + ADDRESS_SPACE_PROGRAM:	info->i = 8;					break;
 		case CPUINFO_INT_ADDRBUS_WIDTH + ADDRESS_SPACE_PROGRAM: info->i = 16;					break;
 		case CPUINFO_INT_ADDRBUS_SHIFT + ADDRESS_SPACE_PROGRAM: info->i = 0;					break;
@@ -4385,8 +4394,8 @@ void z80_get_info(UINT32 state, union cpuinfo *info)
 		case CPUINFO_INT_ADDRBUS_WIDTH + ADDRESS_SPACE_IO: 		info->i = 16;					break;
 		case CPUINFO_INT_ADDRBUS_SHIFT + ADDRESS_SPACE_IO: 		info->i = 0;					break;
 
-		case CPUINFO_INT_IRQ_STATE + IRQ_LINE_NMI:		info->i = Z80.nmi_state;				break;
-		case CPUINFO_INT_IRQ_STATE + 0:					info->i = Z80.irq_state;				break;
+		case CPUINFO_INT_INPUT_STATE + INPUT_LINE_NMI:	info->i = Z80.nmi_state;				break;
+		case CPUINFO_INT_INPUT_STATE + 0:				info->i = Z80.irq_state;				break;
 
 		case CPUINFO_INT_PREVIOUSPC:					info->i = Z80.PREPC.w.l;				break;
 

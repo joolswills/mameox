@@ -27,9 +27,9 @@ WRITE16_HANDLER( rastan_spritectrl_w );
 VIDEO_START( rastan );
 VIDEO_UPDATE( rastan );
 
-WRITE_HANDLER( rastan_adpcm_trigger_w );
-WRITE_HANDLER( rastan_c000_w );
-WRITE_HANDLER( rastan_d000_w );
+WRITE8_HANDLER( rastan_adpcm_trigger_w );
+WRITE8_HANDLER( rastan_c000_w );
+WRITE8_HANDLER( rastan_d000_w );
 
 
 static READ16_HANDLER( rastan_cycle_r )
@@ -73,7 +73,7 @@ static ADDRESS_MAP_START( rastan_writemem, ADDRESS_SPACE_PROGRAM, 16 )
 ADDRESS_MAP_END
 
 
-static WRITE_HANDLER( rastan_bankswitch_w )
+static WRITE8_HANDLER( rastan_bankswitch_w )
 {
 	cpu_setbank( 5, memory_region(REGION_CPU2) + ((data ^1) & 0x01) * 0x4000 + 0x10000 );
 }
@@ -296,7 +296,7 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 /* handler called by the YM2151 emulator when the internal timers cause an IRQ */
 static void irqhandler(int irq)
 {
-	cpu_set_irq_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 static struct YM2151interface ym2151_interface =

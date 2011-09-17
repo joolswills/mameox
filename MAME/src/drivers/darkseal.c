@@ -47,7 +47,7 @@ static WRITE16_HANDLER( darkseal_control_w )
 		return;
     case 8: /* Sound CPU write */
 		soundlatch_w(0,data & 0xff);
-		cpu_set_irq_line(1,0,HOLD_LINE);
+		cpunum_set_input_line(1,0,HOLD_LINE);
     	return;
   	case 0xa: /* IRQ Ack (VBL) */
 		return;
@@ -103,7 +103,7 @@ ADDRESS_MAP_END
 
 /******************************************************************************/
 
-static WRITE_HANDLER( YM2151_w )
+static WRITE8_HANDLER( YM2151_w )
 {
 	switch (offset) {
 	case 0:
@@ -115,7 +115,7 @@ static WRITE_HANDLER( YM2151_w )
 	}
 }
 
-static WRITE_HANDLER( YM2203_w )
+static WRITE8_HANDLER( YM2203_w )
 {
 	switch (offset) {
 	case 0:
@@ -302,7 +302,7 @@ static struct YM2203interface ym2203_interface =
 
 static void sound_irq(int state)
 {
-	cpu_set_irq_line(1,1,state); /* IRQ 2 */
+	cpunum_set_input_line(1,1,state); /* IRQ 2 */
 }
 
 static struct YM2151interface ym2151_interface =

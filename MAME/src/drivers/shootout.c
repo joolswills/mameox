@@ -1,11 +1,11 @@
-#pragma code_seg("C618")
-#pragma data_seg("D618")
-#pragma bss_seg("B618")
-#pragma const_seg("K618")
-#pragma comment(linker, "/merge:D618=618")
-#pragma comment(linker, "/merge:C618=618")
-#pragma comment(linker, "/merge:B618=618")
-#pragma comment(linker, "/merge:K618=618")
+#pragma code_seg("C654")
+#pragma data_seg("D654")
+#pragma bss_seg("B654")
+#pragma const_seg("K654")
+#pragma comment(linker, "/merge:D654=654")
+#pragma comment(linker, "/merge:C654=654")
+#pragma comment(linker, "/merge:B654=654")
+#pragma comment(linker, "/merge:K654=654")
 /*******************************************************************************
 
 	Shoot Out (USA) 			(c) 1985 Data East USA		DE-0219
@@ -51,8 +51,8 @@
 
 UINT8 *shootout_textram;
 
-extern WRITE_HANDLER( shootout_videoram_w );
-extern WRITE_HANDLER( shootout_textram_w );
+extern WRITE8_HANDLER( shootout_videoram_w );
+extern WRITE8_HANDLER( shootout_textram_w );
 
 extern PALETTE_INIT( shootout );
 extern VIDEO_START( shootout );
@@ -61,7 +61,7 @@ extern VIDEO_UPDATE( shootouj );
 
 /*******************************************************************************/
 
-static WRITE_HANDLER( shootout_bankswitch_w )
+static WRITE8_HANDLER( shootout_bankswitch_w )
 {
 	int bankaddress;
 	UINT8 *RAM;
@@ -72,18 +72,18 @@ static WRITE_HANDLER( shootout_bankswitch_w )
 	cpu_setbank(1,&RAM[bankaddress]);
 }
 
-static WRITE_HANDLER( sound_cpu_command_w )
+static WRITE8_HANDLER( sound_cpu_command_w )
 {
 	soundlatch_w( offset, data );
-	cpu_set_irq_line( 1, IRQ_LINE_NMI, PULSE_LINE );
+	cpunum_set_input_line( 1, INPUT_LINE_NMI, PULSE_LINE );
 }
 
-static WRITE_HANDLER( shootout_flipscreen_w )
+static WRITE8_HANDLER( shootout_flipscreen_w )
 {
 	flip_screen_set(data & 0x01);
 }
 
-static WRITE_HANDLER( shootout_coin_counter_w )
+static WRITE8_HANDLER( shootout_coin_counter_w )
 {
 	coin_counter_w(0, data);
 }
@@ -264,12 +264,12 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 
 static void shootout_snd_irq(int linestate)
 {
-	cpu_set_irq_line(1,0,linestate);
+	cpunum_set_input_line(1,0,linestate);
 }
 
 static void shootout_snd2_irq(int linestate)
 {
-	cpu_set_irq_line(0,0,linestate);
+	cpunum_set_input_line(0,0,linestate);
 }
 
 static struct YM2203interface ym2203_interface =

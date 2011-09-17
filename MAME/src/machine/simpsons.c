@@ -1,11 +1,11 @@
-#pragma code_seg("C624")
-#pragma data_seg("D624")
-#pragma bss_seg("B624")
-#pragma const_seg("K624")
-#pragma comment(linker, "/merge:D624=624")
-#pragma comment(linker, "/merge:C624=624")
-#pragma comment(linker, "/merge:B624=624")
-#pragma comment(linker, "/merge:K624=624")
+#pragma code_seg("C660")
+#pragma data_seg("D660")
+#pragma bss_seg("B660")
+#pragma const_seg("K660")
+#pragma comment(linker, "/merge:D660=660")
+#pragma comment(linker, "/merge:C660=660")
+#pragma comment(linker, "/merge:B660=660")
+#pragma comment(linker, "/merge:K660=660")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 #include "vidhrdw/konamiic.h"
@@ -56,7 +56,7 @@ NVRAM_HANDLER( simpsons )
 	}
 }
 
-READ_HANDLER( simpsons_eeprom_r )
+READ8_HANDLER( simpsons_eeprom_r )
 {
 	int res;
 
@@ -74,7 +74,7 @@ READ_HANDLER( simpsons_eeprom_r )
 	return res;
 }
 
-WRITE_HANDLER( simpsons_eeprom_w )
+WRITE8_HANDLER( simpsons_eeprom_w )
 {
 	if ( data == 0xff )
 		return;
@@ -94,7 +94,7 @@ WRITE_HANDLER( simpsons_eeprom_w )
 
 ***************************************************************************/
 
-WRITE_HANDLER( simpsons_coin_counter_w )
+WRITE8_HANDLER( simpsons_coin_counter_w )
 {
 	/* bit 0,1 coin counters */
 	coin_counter_w(0,data & 0x01);
@@ -107,13 +107,13 @@ WRITE_HANDLER( simpsons_coin_counter_w )
 	K053246_set_OBJCHA_line((~data & 0x20) ? ASSERT_LINE : CLEAR_LINE);
 }
 
-READ_HANDLER( simpsons_sound_interrupt_r )
+READ8_HANDLER( simpsons_sound_interrupt_r )
 {
-	cpu_set_irq_line_and_vector( 1, 0, HOLD_LINE, 0xff );
+	cpunum_set_input_line_and_vector( 1, 0, HOLD_LINE, 0xff );
 	return 0x00;
 }
 
-READ_HANDLER( simpsons_sound_r )
+READ8_HANDLER( simpsons_sound_r )
 {
 	/* If the sound CPU is running, read the status, otherwise
 	   just make it pass the test */
@@ -133,7 +133,7 @@ READ_HANDLER( simpsons_sound_r )
 
 ***************************************************************************/
 
-READ_HANDLER( simpsons_speedup1_r )
+READ8_HANDLER( simpsons_speedup1_r )
 {
 	unsigned char *RAM = memory_region(REGION_CPU1);
 
@@ -162,7 +162,7 @@ READ_HANDLER( simpsons_speedup1_r )
 	return RAM[0x4942];
 }
 
-READ_HANDLER( simpsons_speedup2_r )
+READ8_HANDLER( simpsons_speedup2_r )
 {
 	int data = memory_region(REGION_CPU1)[0x4856];
 

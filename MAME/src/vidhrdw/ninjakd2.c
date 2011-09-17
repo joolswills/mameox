@@ -1,11 +1,11 @@
-#pragma code_seg("C497")
-#pragma data_seg("D497")
-#pragma bss_seg("B497")
-#pragma const_seg("K497")
-#pragma comment(linker, "/merge:D497=497")
-#pragma comment(linker, "/merge:C497=497")
-#pragma comment(linker, "/merge:B497=497")
-#pragma comment(linker, "/merge:K497=497")
+#pragma code_seg("C526")
+#pragma data_seg("D526")
+#pragma bss_seg("B526")
+#pragma const_seg("K526")
+#pragma comment(linker, "/merge:D526=526")
+#pragma comment(linker, "/merge:C526=526")
+#pragma comment(linker, "/merge:B526=526")
+#pragma comment(linker, "/merge:K526=526")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -46,7 +46,7 @@ VIDEO_START( ninjakd2 )
 	return 0;
 }
 
-WRITE_HANDLER( ninjakd2_bgvideoram_w )
+WRITE8_HANDLER( ninjakd2_bgvideoram_w )
 {
 	if (ninjakd2_background_videoram[offset] != data)
 	{
@@ -55,13 +55,13 @@ WRITE_HANDLER( ninjakd2_bgvideoram_w )
 	}
 }
 
-WRITE_HANDLER( ninjakd2_fgvideoram_w )
+WRITE8_HANDLER( ninjakd2_fgvideoram_w )
 {
 	if (ninjakd2_foreground_videoram[offset] != data)
 		ninjakd2_foreground_videoram[offset] = data;
 }
 
-WRITE_HANDLER( ninjakd2_background_enable_w )
+WRITE8_HANDLER( ninjakd2_background_enable_w )
 {
 	if (bg_enable!=data)
 	{
@@ -74,7 +74,7 @@ WRITE_HANDLER( ninjakd2_background_enable_w )
 	}
 }
 
-WRITE_HANDLER( ninjakd2_sprite_overdraw_w )
+WRITE8_HANDLER( ninjakd2_sprite_overdraw_w )
 {
 	if (sp_overdraw!=data)
 	{

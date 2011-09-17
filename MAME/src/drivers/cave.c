@@ -1,11 +1,11 @@
-#pragma code_seg("C193")
-#pragma data_seg("D193")
-#pragma bss_seg("B193")
-#pragma const_seg("K193")
-#pragma comment(linker, "/merge:D193=193")
-#pragma comment(linker, "/merge:C193=193")
-#pragma comment(linker, "/merge:B193=193")
-#pragma comment(linker, "/merge:K193=193")
+#pragma code_seg("C195")
+#pragma data_seg("D195")
+#pragma bss_seg("B195")
+#pragma const_seg("K195")
+#pragma comment(linker, "/merge:D195=195")
+#pragma comment(linker, "/merge:C195=195")
+#pragma comment(linker, "/merge:B195=195")
+#pragma comment(linker, "/merge:K195=195")
 /***************************************************************************
 
 							  -= Cave Hardware =-
@@ -73,9 +73,9 @@ static UINT8 agallet_vblank_irq;
 static void update_irq_state(void)
 {
 	if (vblank_irq || sound_irq || unknown_irq)
-		cpu_set_irq_line(0, 1, ASSERT_LINE);
+		cpunum_set_input_line(0, 1, ASSERT_LINE);
 	else
-		cpu_set_irq_line(0, 1, CLEAR_LINE);
+		cpunum_set_input_line(0, 1, CLEAR_LINE);
 }
 
 static void cave_vblank_start(int param)
@@ -172,7 +172,7 @@ struct
 
 //static data8_t sound_flag1, sound_flag2;
 
-static READ_HANDLER( soundflags_r )
+static READ8_HANDLER( soundflags_r )
 {
 	// bit 2 is low: can read command (lo)
 	// bit 3 is low: can read command (hi)
@@ -197,19 +197,19 @@ static WRITE16_HANDLER( sound_cmd_w )
 //	sound_flag1 = 1;
 //	sound_flag2 = 1;
 	soundlatch_word_w(offset,data,mem_mask);
-	cpu_set_nmi_line(1, PULSE_LINE);
+	cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 	cpu_spinuntil_time(TIME_IN_USEC(50));	// Allow the other cpu to reply
 }
 
 /* Sound CPU: read the low 8 bits of the 16 bit sound latch */
-static READ_HANDLER( soundlatch_lo_r )
+static READ8_HANDLER( soundlatch_lo_r )
 {
 //	sound_flag1 = 0;
 	return soundlatch_word_r(offset,0) & 0xff;
 }
 
 /* Sound CPU: read the high 8 bits of the 16 bit sound latch */
-static READ_HANDLER( soundlatch_hi_r )
+static READ8_HANDLER( soundlatch_hi_r )
 {
 //	sound_flag2 = 0;
 	return soundlatch_word_r(offset,0) >> 8;
@@ -232,7 +232,7 @@ static READ16_HANDLER( soundlatch_ack_r )
 
 
 /* Sound CPU: write latch for the main CPU (acknowledge) */
-static WRITE_HANDLER( soundlatch_ack_w )
+static WRITE8_HANDLER( soundlatch_ack_w )
 {
 	soundbuf.data[soundbuf.len] = data;
 	if (soundbuf.len<32)
@@ -269,6 +269,7 @@ static READ16_HANDLER( cave_sound_r )
 ***************************************************************************/
 
 static data8_t cave_default_eeprom_type1[16] =	{0x00,0x0C,0x11,0x0D,0xFF,0xFF,0xFF,0xFF,0x00,0x00,0x11,0x11,0xFF,0xFF,0xFF,0xFF};  /* DFeveron, Guwange */
+static data8_t cave_default_eeprom_type1feversos[18] =	{0x00,0x0C,0x16,0x27,0xFF,0xFF,0xFF,0xFF,0x00,0x00,0x11,0x11,0xFF,0xFF,0xFF,0xFF,0x05,0x19};  /* Fever SOS (code checks for the 0x0519 or it won't boot) */
 static data8_t cave_default_eeprom_type2[16] =	{0x00,0x0C,0xFF,0xFB,0xFF,0xFF,0xFF,0xFF,0x00,0x00,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};  /* Esprade, DonPachi, DDonPachi */
 static data8_t cave_default_eeprom_type3[16] =	{0x00,0x03,0x08,0x00,0xFF,0xFF,0xFF,0xFF,0x08,0x00,0x00,0x00,0xFF,0xFF,0xFF,0xFF};  /* UoPoko */
 static data8_t cave_default_eeprom_type4[16] =	{0xF3,0xFE,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};  /* Hotdog Storm */
@@ -1059,7 +1060,7 @@ ADDRESS_MAP_END
 								Hotdog Storm
 ***************************************************************************/
 
-WRITE_HANDLER( hotdogst_rombank_w )
+WRITE8_HANDLER( hotdogst_rombank_w )
 {
 	data8_t *RAM = memory_region(REGION_CPU2);
 	int bank = data & 0x0f;
@@ -1068,7 +1069,7 @@ WRITE_HANDLER( hotdogst_rombank_w )
 	cpu_setbank(2, &RAM[ 0x4000 * bank ]);
 }
 
-WRITE_HANDLER( hotdogst_okibank_w )
+WRITE8_HANDLER( hotdogst_okibank_w )
 {
 	data8_t *RAM = memory_region(REGION_SOUND1);
 	int bank1 = (data >> 0) & 0x3;
@@ -1111,7 +1112,7 @@ ADDRESS_MAP_END
 								Mazinger Z
 ***************************************************************************/
 
-WRITE_HANDLER( mazinger_rombank_w )
+WRITE8_HANDLER( mazinger_rombank_w )
 {
 	data8_t *RAM = memory_region(REGION_CPU2);
 	int bank = data & 0x07;
@@ -1153,7 +1154,7 @@ ADDRESS_MAP_END
 								Metamoqester
 ***************************************************************************/
 
-WRITE_HANDLER( metmqstr_rombank_w )
+WRITE8_HANDLER( metmqstr_rombank_w )
 {
 	data8_t *ROM = memory_region(REGION_CPU2);
 	int bank = data & 0xf;
@@ -1162,7 +1163,7 @@ WRITE_HANDLER( metmqstr_rombank_w )
 	cpu_setbank(1, &ROM[ 0x4000 * bank ]);
 }
 
-WRITE_HANDLER( metmqstr_okibank0_w )
+WRITE8_HANDLER( metmqstr_okibank0_w )
 {
 	data8_t *ROM = memory_region(REGION_SOUND1);
 	int bank1 = (data >> 0) & 0x7;
@@ -1172,7 +1173,7 @@ WRITE_HANDLER( metmqstr_okibank0_w )
 	memcpy(ROM + 0x20000 * 1, ROM + 0x40000 + 0x20000 * bank2, 0x20000);
 }
 
-WRITE_HANDLER( metmqstr_okibank1_w )
+WRITE8_HANDLER( metmqstr_okibank1_w )
 {
 	data8_t *ROM = memory_region(REGION_SOUND2);
 	int bank1 = (data >> 0) & 0x7;
@@ -1217,7 +1218,7 @@ ADDRESS_MAP_END
 ***************************************************************************/
 
 // TODO : FIX SAMPLES TABLE BEING OVERWRITTEN IN DONPACHI
-static WRITE_HANDLER( pwrinst2_okibank_w )
+static WRITE8_HANDLER( pwrinst2_okibank_w )
 {
 	/* The OKI6295 ROM space is divided in four banks, each one indepentently
 	   controlled. The sample table at the beginning of the addressing space is
@@ -1253,7 +1254,7 @@ logerror("CPU #1 - PC %06X: chip %d bank %X<-%02X\n",activecpu_get_pc(),chip,ban
 	memcpy(rom,rom + 0x40000 + bankaddr,TABLESIZE);
 }
 
-WRITE_HANDLER( pwrinst2_rombank_w )
+WRITE8_HANDLER( pwrinst2_rombank_w )
 {
 	data8_t *ROM = memory_region(REGION_CPU2);
 	int bank = data & 0x07;
@@ -1300,16 +1301,16 @@ ADDRESS_MAP_END
 ***************************************************************************/
 
 static data8_t *mirror_ram;
-static READ_HANDLER( mirror_ram_r )
+static READ8_HANDLER( mirror_ram_r )
 {
 	return mirror_ram[offset];
 }
-static WRITE_HANDLER( mirror_ram_w )
+static WRITE8_HANDLER( mirror_ram_w )
 {
 	mirror_ram[offset] = data;
 }
 
-WRITE_HANDLER( sailormn_rombank_w )
+WRITE8_HANDLER( sailormn_rombank_w )
 {
 	data8_t *RAM = memory_region(REGION_CPU2);
 	int bank = data & 0x1f;
@@ -1318,7 +1319,7 @@ WRITE_HANDLER( sailormn_rombank_w )
 	cpu_setbank(1, &RAM[ 0x4000 * bank ]);
 }
 
-WRITE_HANDLER( sailormn_okibank0_w )
+WRITE8_HANDLER( sailormn_okibank0_w )
 {
 	data8_t *RAM = memory_region(REGION_SOUND1);
 	int bank1 = (data >> 0) & 0xf;
@@ -1328,7 +1329,7 @@ WRITE_HANDLER( sailormn_okibank0_w )
 	memcpy(RAM + 0x20000 * 1, RAM + 0x40000 + 0x20000 * bank2, 0x20000);
 }
 
-WRITE_HANDLER( sailormn_okibank1_w )
+WRITE8_HANDLER( sailormn_okibank1_w )
 {
 	data8_t *RAM = memory_region(REGION_SOUND2);
 	int bank1 = (data >> 0) & 0xf;
@@ -1983,7 +1984,7 @@ static struct OKIM6295interface okim6295_intf_8kHz =
 
 static void irqhandler(int irq)
 {
-	cpu_set_irq_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
 static struct YM2151interface ym2151_intf_4MHz =
@@ -3629,13 +3630,25 @@ DRIVER_INIT( agallet )
 	time_vblank_irq = 100;
 
 //	Speed Hack
-	install_mem_read16_handler(0, 0xb80000, 0xb80001, agallet_irq_cause_r);
+	memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0xb80000, 0xb80001, 0, 0, agallet_irq_cause_r);
 }
 
 DRIVER_INIT( dfeveron )
 {
 	cave_default_eeprom = cave_default_eeprom_type1;
 	cave_default_eeprom_length = sizeof(cave_default_eeprom_type1);
+	cave_region_byte = -1;
+
+	unpack_sprites();
+	cave_spritetype = 0;	// "normal" sprites
+	cave_kludge = 2;
+	time_vblank_irq = 100;
+}
+
+DRIVER_INIT( feversos )
+{
+	cave_default_eeprom = cave_default_eeprom_type1feversos;
+	cave_default_eeprom_length = sizeof(cave_default_eeprom_type1feversos);
 	cave_region_byte = -1;
 
 	unpack_sprites();
@@ -3852,7 +3865,7 @@ GAME( 1996, hotdogst, 0,        hotdogst, cave,     hotdogst, ROT90,  "Marble", 
 GAME( 1997, ddonpach, 0,        ddonpach, cave,     ddonpach, ROT270, "Atlus/Cave",                           "DoDonPachi (International)" )
 GAME( 1997, ddonpchj, ddonpach, ddonpach, cave,     ddonpach, ROT270, "Atlus/Cave",                           "DoDonPachi (Japan)"         )
 GAME( 1998, dfeveron, 0,        dfeveron, cave,     dfeveron, ROT270, "Cave (Nihon System license)",          "Dangun Feveron (Japan)"     )
-GAMEX( 1998, feversos, dfeveron, dfeveron, cave,     dfeveron, ROT270, "Cave (Nihon System license)",          "Fever SOS (International)", GAME_NOT_WORKING     )
+GAME( 1998, feversos, dfeveron, dfeveron, cave,     feversos, ROT270, "Cave (Nihon System license)",          "Fever SOS (International)"  )
 GAME( 1998, esprade,  0,        esprade,  cave,     esprade,  ROT270, "Atlus/Cave",                           "ESP Ra.De. (International Ver 1998 4/22)" )
 GAME( 1998, espradej, esprade,  esprade,  cave,     esprade,  ROT270, "Atlus/Cave",                           "ESP Ra.De. (Japan Ver 1998 4/21)" )
 GAME( 1998, espradeo, esprade,  esprade,  cave,     esprade,  ROT270, "Atlus/Cave",                           "ESP Ra.De. (Japan Ver 1998 4/14)" )

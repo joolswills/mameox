@@ -75,11 +75,12 @@
 			<Tool
 				Name="XboxImageTool"
 				AdditionalOptions="@..\imagebld.switch"
-				StackSize="0x20000"
+				StackSize="0xc0000"
 				LimitAvailableMemoryTo64MB="FALSE"
 				SuppressStartupBanner="TRUE"
-				FormatUD="FALSE"
+				FormatUD="TRUE"
 				NoLibWarn="TRUE"
+				UDCluster="3"
 				TitleID="0x4D414D45"
 				TitleName="&quot;MAMEoX Util (Don&apos;t Run)&quot;"
 				TitleImage="..\Media\mox-icon.xpr"
@@ -140,7 +141,7 @@
 			<Tool
 				Name="XboxImageTool"
 				AdditionalOptions="/testid:0x4D414D45"
-				StackSize="0x10400"
+				StackSize="0xC0500"
 				IncludeDebugInfo="TRUE"
 				LimitAvailableMemoryTo64MB="FALSE"
 				SuppressStartupBanner="TRUE"
@@ -333,6 +334,9 @@
 				RelativePath="..\VCPPMame.h">
 			</File>
 			<File
+				RelativePath="Includes\virtualmemory.h">
+			</File>
+			<File
 				RelativePath=".\Includes\VirtualMemoryManager.h">
 			</File>
 			<File
@@ -410,6 +414,9 @@
 			</File>
 			<File
 				RelativePath=".\Sources\Keyboard.cpp">
+			</File>
+			<File
+				RelativePath="Sources\Lightgun.cpp">
 			</File>
 			<File
 				RelativePath="Sources\MAMEoXUtil.cpp">

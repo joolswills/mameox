@@ -1,11 +1,11 @@
-#pragma code_seg("C664")
-#pragma data_seg("D664")
-#pragma bss_seg("B664")
-#pragma const_seg("K664")
-#pragma comment(linker, "/merge:D664=664")
-#pragma comment(linker, "/merge:C664=664")
-#pragma comment(linker, "/merge:B664=664")
-#pragma comment(linker, "/merge:K664=664")
+#pragma code_seg("C702")
+#pragma data_seg("D702")
+#pragma bss_seg("B702")
+#pragma const_seg("K702")
+#pragma comment(linker, "/merge:D702=702")
+#pragma comment(linker, "/merge:C702=702")
+#pragma comment(linker, "/merge:B702=702")
+#pragma comment(linker, "/merge:K702=702")
 /***************************************************************************
 
 Ramtek Star Cruiser Driver
@@ -22,19 +22,19 @@ palazzol@home.com
 #include "cpu/i8085/i8085.h"
 
 /* included from vidhrdw/starcrus.c */
-WRITE_HANDLER( starcrus_s1_x_w );
-WRITE_HANDLER( starcrus_s1_y_w );
-WRITE_HANDLER( starcrus_s2_x_w );
-WRITE_HANDLER( starcrus_s2_y_w );
-WRITE_HANDLER( starcrus_p1_x_w );
-WRITE_HANDLER( starcrus_p1_y_w );
-WRITE_HANDLER( starcrus_p2_x_w );
-WRITE_HANDLER( starcrus_p2_y_w );
-WRITE_HANDLER( starcrus_ship_parm_1_w );
-WRITE_HANDLER( starcrus_ship_parm_2_w );
-WRITE_HANDLER( starcrus_proj_parm_1_w );
-WRITE_HANDLER( starcrus_proj_parm_2_w );
-READ_HANDLER( starcrus_coll_det_r );
+WRITE8_HANDLER( starcrus_s1_x_w );
+WRITE8_HANDLER( starcrus_s1_y_w );
+WRITE8_HANDLER( starcrus_s2_x_w );
+WRITE8_HANDLER( starcrus_s2_y_w );
+WRITE8_HANDLER( starcrus_p1_x_w );
+WRITE8_HANDLER( starcrus_p1_y_w );
+WRITE8_HANDLER( starcrus_p2_x_w );
+WRITE8_HANDLER( starcrus_p2_y_w );
+WRITE8_HANDLER( starcrus_ship_parm_1_w );
+WRITE8_HANDLER( starcrus_ship_parm_2_w );
+WRITE8_HANDLER( starcrus_proj_parm_1_w );
+WRITE8_HANDLER( starcrus_proj_parm_2_w );
+READ8_HANDLER( starcrus_coll_det_r );
 extern VIDEO_START( starcrus );
 extern VIDEO_UPDATE( starcrus );
 extern int p1_sprite;

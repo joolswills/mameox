@@ -20,7 +20,7 @@
 
 //= D E F I N E S ======================================================
 
-#define USE_HACKEDLIGHTGUN
+//#define USE_HACKEDLIGHTGUN
 
   //! The value of the analog axis must exceed this deadzone
   //!  when being treated as a digital control (valid values are from [0,32767])
@@ -365,8 +365,9 @@ void osd_lightgun_read(int player, int *deltax, int *deltay)
   assert( deltax && deltay );
 #ifndef USE_HACKEDLIGHTGUN
   GetLightgunCalibratedPosition( player, deltax, deltay );
-#endif
+#else
   *deltax = *deltay = 0;
+#endif
 }
 
 //---------------------------------------------------------------------

@@ -1,11 +1,11 @@
-#pragma code_seg("C474")
-#pragma data_seg("D474")
-#pragma bss_seg("B474")
-#pragma const_seg("K474")
-#pragma comment(linker, "/merge:D474=474")
-#pragma comment(linker, "/merge:C474=474")
-#pragma comment(linker, "/merge:B474=474")
-#pragma comment(linker, "/merge:K474=474")
+#pragma code_seg("C500")
+#pragma data_seg("D500")
+#pragma bss_seg("B500")
+#pragma const_seg("K500")
+#pragma comment(linker, "/merge:D500=500")
+#pragma comment(linker, "/merge:C500=500")
+#pragma comment(linker, "/merge:B500=500")
+#pragma comment(linker, "/merge:K500=500")
 /***************************************************************************
 
 	Mustache Boy
@@ -53,7 +53,7 @@ PALETTE_INIT(mustache)
   }
 }
 
-WRITE_HANDLER( mustache_videoram_w )
+WRITE8_HANDLER( mustache_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -62,7 +62,7 @@ WRITE_HANDLER( mustache_videoram_w )
 	}
 }
 
-WRITE_HANDLER (mustache_video_control_w)
+WRITE8_HANDLER (mustache_video_control_w)
 {
 	if (flip_screen != (data & 0x01))
 	{
@@ -79,7 +79,7 @@ WRITE_HANDLER (mustache_video_control_w)
 	}
 }
 
-WRITE_HANDLER( mustache_scroll_w )
+WRITE8_HANDLER( mustache_scroll_w )
 {
 	tilemap_set_scrollx(bg_tilemap, 0, 0x100 - data);
 	tilemap_set_scrollx(bg_tilemap, 1, 0x100 - data);

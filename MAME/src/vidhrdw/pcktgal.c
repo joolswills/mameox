@@ -1,11 +1,11 @@
-#pragma code_seg("C529")
-#pragma data_seg("D529")
-#pragma bss_seg("B529")
-#pragma const_seg("K529")
-#pragma comment(linker, "/merge:D529=529")
-#pragma comment(linker, "/merge:C529=529")
-#pragma comment(linker, "/merge:B529=529")
-#pragma comment(linker, "/merge:K529=529")
+#pragma code_seg("C560")
+#pragma data_seg("D560")
+#pragma bss_seg("B560")
+#pragma const_seg("K560")
+#pragma comment(linker, "/merge:D560=560")
+#pragma comment(linker, "/merge:C560=560")
+#pragma comment(linker, "/merge:B560=560")
+#pragma comment(linker, "/merge:K560=560")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -39,7 +39,7 @@ PALETTE_INIT( pcktgal )
 	}
 }
 
-WRITE_HANDLER( pcktgal_videoram_w )
+WRITE8_HANDLER( pcktgal_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -48,7 +48,7 @@ WRITE_HANDLER( pcktgal_videoram_w )
 	}
 }
 
-WRITE_HANDLER( pcktgal_flipscreen_w )
+WRITE8_HANDLER( pcktgal_flipscreen_w )
 {
 	if (flip_screen != (data & 0x80))
 	{

@@ -1,11 +1,11 @@
-#pragma code_seg("C200")
-#pragma data_seg("D200")
-#pragma bss_seg("B200")
-#pragma const_seg("K200")
-#pragma comment(linker, "/merge:D200=200")
-#pragma comment(linker, "/merge:C200=200")
-#pragma comment(linker, "/merge:B200=200")
-#pragma comment(linker, "/merge:K200=200")
+#pragma code_seg("C203")
+#pragma data_seg("D203")
+#pragma bss_seg("B203")
+#pragma const_seg("K203")
+#pragma comment(linker, "/merge:D203=203")
+#pragma comment(linker, "/merge:C203=203")
+#pragma comment(linker, "/merge:B203=203")
+#pragma comment(linker, "/merge:K203=203")
 /*
  *	Chack'n Pop (C) 1983 TAITO Corp.
  *	emulate video hardware
@@ -104,12 +104,12 @@ static void tx_tilemap_mark_all_dirty(void)
 	tilemap_set_flip(tx_tilemap, flip_x | flip_y);
 }
 
-READ_HANDLER( chaknpop_gfxmode_r )
+READ8_HANDLER( chaknpop_gfxmode_r )
 {
 	return gfxmode;
 }
 
-WRITE_HANDLER( chaknpop_gfxmode_w )
+WRITE8_HANDLER( chaknpop_gfxmode_w )
 {
 	if (gfxmode != data)
 	{
@@ -135,7 +135,7 @@ WRITE_HANDLER( chaknpop_gfxmode_w )
 	}
 }
 
-WRITE_HANDLER( chaknpop_txram_w )
+WRITE8_HANDLER( chaknpop_txram_w )
 {
 	if (chaknpop_txram[offset] != data)
 	{
@@ -144,7 +144,7 @@ WRITE_HANDLER( chaknpop_txram_w )
 	}
 }
 
-WRITE_HANDLER( chaknpop_attrram_w )
+WRITE8_HANDLER( chaknpop_attrram_w )
 {
 	if (chaknpop_attrram[offset] != data)
 	{

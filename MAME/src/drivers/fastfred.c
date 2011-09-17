@@ -1,11 +1,11 @@
-#pragma code_seg("C287")
-#pragma data_seg("D287")
-#pragma bss_seg("B287")
-#pragma const_seg("K287")
-#pragma comment(linker, "/merge:D287=287")
-#pragma comment(linker, "/merge:C287=287")
-#pragma comment(linker, "/merge:B287=287")
-#pragma comment(linker, "/merge:K287=287")
+#pragma code_seg("C298")
+#pragma data_seg("D298")
+#pragma bss_seg("B298")
+#pragma const_seg("K298")
+#pragma comment(linker, "/merge:D298=298")
+#pragma comment(linker, "/merge:C298=298")
+#pragma comment(linker, "/merge:B298=298")
+#pragma comment(linker, "/merge:K298=298")
 /***************************************************************************
 
   Fast Freddie/Jump Coaster hardware
@@ -22,7 +22,7 @@
 // These values were derived based on disassembly of the code. Usually, it
 // was pretty obvious what the values should be. Of course, this will have
 // to change if a different ROM set ever surfaces.
-static READ_HANDLER( fastfred_custom_io_r )
+static READ8_HANDLER( fastfred_custom_io_r )
 {
     switch (activecpu_get_pc())
     {
@@ -54,7 +54,61 @@ static READ_HANDLER( fastfred_custom_io_r )
     return 0x00;
 }
 
-static READ_HANDLER( jumpcoas_custom_io_r )
+static READ8_HANDLER( flyboy_custom1_io_r )
+{
+
+	switch (activecpu_get_pc())
+	{
+	 case 0x049d: return 0xad;	/* compare */
+	 case 0x04b9:			/* compare with 0x9e ??? When ??? */
+	 case 0x0563: return 0x03;	/* $c085 compare - starts game */
+	 case 0x069b: return 0x69;	/* $c086 compare         */
+	 case 0x076b: return 0xbb;	/* $c087 compare         */
+	 case 0x0852: return 0xd9;	/* $c096 compare         */
+	 case 0x09d5: return 0xa4;	/* $c099 compare         */
+	 case 0x0a83: return 0xa4;	/* $c099 compare         */
+	 case 0x1028:			/* $c08a  bit 0  compare */
+	 case 0x1051:			/* $c08a  bit 3  compare */
+	 case 0x107d:			/* $c08c  bit 5  compare */
+	 case 0x10a7:			/* $c08e  bit 1  compare */
+	 case 0x10d0:			/* $c08d  bit 2  compare */
+	 case 0x10f6:			/* $c090  bit 0  compare */
+	 case 0x3fb6:			/* lddr */
+
+	 return 0x00;
+	}
+
+	logerror("Uncaught custom I/O read %04X at %04X\n", 0xc085+offset, activecpu_get_pc());
+	return 0x00;
+}
+
+static READ8_HANDLER( flyboy_custom2_io_r )
+{
+
+	switch (activecpu_get_pc())
+	{
+	 case 0x0395: return 0xf7;	/* $C900 compare         */
+	 case 0x03f5:			/* $c8fd                 */
+	 case 0x043d:			/* $c8fd                 */
+	 case 0x0471:			/* $c900                 */
+	 case 0x1031: return 0x01;	/* $c8fe  bit 0  compare */
+	 case 0x1068: return 0x04;	/* $c8fe  bit 2  compare */
+	 case 0x1093: return 0x20;	/* $c8fe  bit 5  compare */
+	 case 0x10bd: return 0x80;	/* $c8fb  bit 7  compare */
+	 case 0x103f:			/* $c8fe                 */
+	 case 0x10e4:			/* $c900                 */
+	 case 0x110a:			/* $c900                 */
+	 case 0x3fc8:			/* ld a with c8fc-c900   */
+
+	 return 0x00;
+	}
+
+	logerror("Uncaught custom I/O read %04X at %04X\n", 0xc8fb+offset, activecpu_get_pc());
+	return 0x00;
+}
+
+
+static READ8_HANDLER( jumpcoas_custom_io_r )
 {
 	if (offset == 0x100)  return 0x63;
 
@@ -62,27 +116,16 @@ static READ_HANDLER( jumpcoas_custom_io_r )
 }
 
 
-static ADDRESS_MAP_START( fastfred_readmem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0xbfff) AM_READ(MRA8_ROM)
-	AM_RANGE(0xc000, 0xc7ff) AM_READ(MRA8_RAM)
-	AM_RANGE(0xd000, 0xd3ff) AM_READ(MRA8_RAM)
-	AM_RANGE(0xd800, 0xd8ff) AM_READ(MRA8_RAM)
-	AM_RANGE(0xe000, 0xe000) AM_READ(input_port_0_r)
+static ADDRESS_MAP_START( fastfred_map, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0xbfff) AM_ROM
+	AM_RANGE(0xc000, 0xc7ff) AM_RAM
+	AM_RANGE(0xd000, 0xd3ff) AM_MIRROR(0x400) AM_READWRITE(MRA8_RAM, fastfred_videoram_w) AM_BASE(&fastfred_videoram)
+	AM_RANGE(0xd800, 0xd83f) AM_READWRITE(MRA8_RAM, fastfred_attributes_w) AM_BASE(&fastfred_attributesram)
+	AM_RANGE(0xd840, 0xd85f) AM_RAM AM_BASE(&fastfred_spriteram) AM_SIZE(&fastfred_spriteram_size)
+	AM_RANGE(0xd860, 0xdbff) AM_RAM // Unused, but initialized
+	AM_RANGE(0xe000, 0xe000) AM_READWRITE(input_port_0_r, fastfred_background_color_w)
 	AM_RANGE(0xe800, 0xe800) AM_READ(input_port_1_r)
-	AM_RANGE(0xf000, 0xf000) AM_READ(input_port_2_r)
-	AM_RANGE(0xf800, 0xf800) AM_READ(watchdog_reset_r)
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( fastfred_writemem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0xbfff) AM_WRITE(MWA8_ROM)
-	AM_RANGE(0xc000, 0xc7ff) AM_WRITE(MWA8_RAM)
-	AM_RANGE(0xd000, 0xd3ff) AM_WRITE(fastfred_videoram_w) AM_BASE(&fastfred_videoram)
-	AM_RANGE(0xd400, 0xd7ff) AM_WRITE(fastfred_videoram_w)  // Mirrored for above
-	AM_RANGE(0xd800, 0xd83f) AM_WRITE(fastfred_attributes_w) AM_BASE(&fastfred_attributesram)
-	AM_RANGE(0xd840, 0xd85f) AM_WRITE(MWA8_RAM) AM_BASE(&fastfred_spriteram) AM_SIZE(&fastfred_spriteram_size)
-	AM_RANGE(0xd860, 0xdbff) AM_WRITE(MWA8_RAM) // Unused, but initialized
-	AM_RANGE(0xe000, 0xe000) AM_WRITE(fastfred_background_color_w)
-	AM_RANGE(0xf000, 0xf000) AM_WRITE(MWA8_NOP) // Unused, but initialized
+	AM_RANGE(0xf000, 0xf000) AM_READWRITE(input_port_2_r, MWA8_NOP)
 	AM_RANGE(0xf001, 0xf001) AM_WRITE(interrupt_enable_w)
 	AM_RANGE(0xf002, 0xf002) AM_WRITE(fastfred_colorbank1_w)
 	AM_RANGE(0xf003, 0xf003) AM_WRITE(fastfred_colorbank2_w)
@@ -92,33 +135,22 @@ static ADDRESS_MAP_START( fastfred_writemem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0xf007, 0xf007) AM_WRITE(fastfred_flip_screen_y_w)
 	AM_RANGE(0xf116, 0xf116) AM_WRITE(fastfred_flip_screen_x_w)
 	AM_RANGE(0xf117, 0xf117) AM_WRITE(fastfred_flip_screen_y_w)
-	AM_RANGE(0xf800, 0xf800) AM_WRITE(soundlatch_w)
+	AM_RANGE(0xf800, 0xf800) AM_READWRITE(watchdog_reset_r, soundlatch_w)
 ADDRESS_MAP_END
 
 
-static ADDRESS_MAP_START( jumpcoas_readmem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0x7fff) AM_READ(MRA8_ROM)
-	AM_RANGE(0xc000, 0xc7ff) AM_READ(MRA8_RAM)
-	AM_RANGE(0xd000, 0xd3ff) AM_READ(MRA8_RAM)
-	AM_RANGE(0xd800, 0xdbff) AM_READ(MRA8_RAM)
+static ADDRESS_MAP_START( jumpcoas_map, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x7fff) AM_ROM
+	AM_RANGE(0xc000, 0xc7ff) AM_RAM
+	AM_RANGE(0xd000, 0xd03f) AM_READWRITE(MRA8_RAM, fastfred_attributes_w) AM_BASE(&fastfred_attributesram)
+	AM_RANGE(0xd040, 0xd05f) AM_RAM AM_BASE(&fastfred_spriteram) AM_SIZE(&fastfred_spriteram_size)
+	AM_RANGE(0xd060, 0xd3ff) AM_RAM
+	AM_RANGE(0xd800, 0xdbff) AM_MIRROR(0x400) AM_READWRITE(MRA8_RAM, fastfred_videoram_w) AM_BASE(&fastfred_videoram)
+	AM_RANGE(0xe000, 0xe000) AM_WRITE(fastfred_background_color_w)
 	AM_RANGE(0xe800, 0xe800) AM_READ(input_port_0_r)
 	AM_RANGE(0xe801, 0xe801) AM_READ(input_port_1_r)
 	AM_RANGE(0xe802, 0xe802) AM_READ(input_port_2_r)
 	AM_RANGE(0xe803, 0xe803) AM_READ(input_port_3_r)
-	//AM_RANGE(0xf800, 0xf800) AM_READ(watchdog_reset_r)  // Why doesn't this work???
-	AM_RANGE(0xf800, 0xf800) AM_READ(MRA8_NOP)
-ADDRESS_MAP_END
-
-
-static ADDRESS_MAP_START( jumpcoas_writemem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0x7fff) AM_WRITE(MWA8_ROM)
-	AM_RANGE(0xc000, 0xc7ff) AM_WRITE(MWA8_RAM)
-	AM_RANGE(0xd000, 0xd03f) AM_WRITE(fastfred_attributes_w) AM_BASE(&fastfred_attributesram)
-	AM_RANGE(0xd040, 0xd05f) AM_WRITE(MWA8_RAM) AM_BASE(&fastfred_spriteram) AM_SIZE(&fastfred_spriteram_size)
-	AM_RANGE(0xd060, 0xd3ff) AM_WRITE(MWA8_NOP)
-	AM_RANGE(0xd800, 0xdbff) AM_WRITE(fastfred_videoram_w) AM_BASE(&fastfred_videoram)
-	AM_RANGE(0xdc00, 0xdfff) AM_WRITE(fastfred_videoram_w)	/* mirror address, used in the name entry screen */
-	AM_RANGE(0xe000, 0xe000) AM_WRITE(fastfred_background_color_w)
 	AM_RANGE(0xf000, 0xf000) AM_WRITE(MWA8_NOP) // Unused, but initialized
 	AM_RANGE(0xf001, 0xf001) AM_WRITE(interrupt_enable_w)
 	AM_RANGE(0xf002, 0xf002) AM_WRITE(fastfred_colorbank1_w)
@@ -129,35 +161,25 @@ static ADDRESS_MAP_START( jumpcoas_writemem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0xf007, 0xf007) AM_WRITE(fastfred_flip_screen_y_w)
 	AM_RANGE(0xf116, 0xf116) AM_WRITE(fastfred_flip_screen_x_w)
 	AM_RANGE(0xf117, 0xf117) AM_WRITE(fastfred_flip_screen_y_w)
-	AM_RANGE(0xf800, 0xf800) AM_WRITE(AY8910_control_port_0_w)
+	//AM_RANGE(0xf800, 0xf800) AM_READ(watchdog_reset_r)  // Why doesn't this work???
+	AM_RANGE(0xf800, 0xf800) AM_READWRITE(MRA8_NOP, AY8910_control_port_0_w)
 	AM_RANGE(0xf801, 0xf801) AM_WRITE(AY8910_write_port_0_w)
 ADDRESS_MAP_END
 
-static ADDRESS_MAP_START( imago_readmem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0x0fff) AM_READ(MRA8_ROM)
-	AM_RANGE(0x2000, 0x6fff) AM_READ(MRA8_ROM)
-	AM_RANGE(0xb000, 0xb3ff) AM_READ(MRA8_RAM)
-	AM_RANGE(0xc000, 0xc7ff) AM_READ(MRA8_RAM)
-	AM_RANGE(0xc800, 0xcbff) AM_READ(MRA8_RAM)
-	AM_RANGE(0xd000, 0xd3ff) AM_READ(MRA8_RAM)
-	AM_RANGE(0xd800, 0xd8ff) AM_READ(MRA8_RAM)
+
+static ADDRESS_MAP_START( imago_map, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x0fff) AM_ROM
+	AM_RANGE(0x2000, 0x6fff) AM_ROM
+	AM_RANGE(0xb000, 0xb3ff) AM_RAM
+	AM_RANGE(0xc000, 0xc7ff) AM_RAM
+	AM_RANGE(0xc800, 0xcbff) AM_MIRROR(0x400) AM_READWRITE(MRA8_RAM, imago_fg_videoram_w) AM_BASE(&imago_fg_videoram)
+	AM_RANGE(0xd000, 0xd3ff) AM_MIRROR(0x400) AM_READWRITE(MRA8_RAM, fastfred_videoram_w) AM_BASE(&fastfred_videoram)
+	AM_RANGE(0xd800, 0xd83f) AM_READWRITE(MRA8_RAM, fastfred_attributes_w) AM_BASE(&fastfred_attributesram)
+	AM_RANGE(0xd840, 0xd85f) AM_RAM AM_BASE(&fastfred_spriteram) AM_SIZE(&fastfred_spriteram_size)
+	AM_RANGE(0xd860, 0xd8ff) AM_RAM // Unused, but initialized
 	AM_RANGE(0xe000, 0xe000) AM_READ(input_port_0_r)
 	AM_RANGE(0xe800, 0xe800) AM_READ(input_port_1_r)
-	AM_RANGE(0xf000, 0xf000) AM_READ(input_port_2_r)
-	AM_RANGE(0xf800, 0xf800) AM_READ(MRA8_NOP)
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( imago_writemem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0x0fff) AM_WRITE(MWA8_ROM)
-	AM_RANGE(0x2000, 0x6fff) AM_WRITE(MWA8_ROM)
-	AM_RANGE(0xb000, 0xb3ff) AM_WRITE(MWA8_RAM)
-	AM_RANGE(0xc000, 0xc7ff) AM_WRITE(MWA8_RAM)
-	AM_RANGE(0xc800, 0xcbff) AM_WRITE(imago_fg_videoram_w) AM_BASE(&imago_fg_videoram)
-	AM_RANGE(0xd000, 0xd3ff) AM_WRITE(fastfred_videoram_w) AM_BASE(&fastfred_videoram)
-	AM_RANGE(0xd800, 0xd83f) AM_WRITE(fastfred_attributes_w) AM_BASE(&fastfred_attributesram)
-	AM_RANGE(0xd840, 0xd85f) AM_WRITE(MWA8_RAM) AM_BASE(&fastfred_spriteram) AM_SIZE(&fastfred_spriteram_size)
-	AM_RANGE(0xd860, 0xd8ff) AM_WRITE(MWA8_RAM) // Unused, but initialized
-	AM_RANGE(0xf000, 0xf000) AM_WRITE(MWA8_NOP) // writes 1 when level starts, 0 when game over
+	AM_RANGE(0xf000, 0xf000) AM_READWRITE(input_port_2_r, MWA8_NOP) // writes 1 when level starts, 0 when game over
 	AM_RANGE(0xf001, 0xf001) AM_WRITE(interrupt_enable_w)
 	AM_RANGE(0xf002, 0xf002) AM_WRITE(fastfred_colorbank1_w)
 	AM_RANGE(0xf003, 0xf003) AM_WRITE(fastfred_colorbank2_w)
@@ -165,26 +187,20 @@ static ADDRESS_MAP_START( imago_writemem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0xf005, 0xf005) AM_WRITE(imago_charbank_w)
 	AM_RANGE(0xf006, 0xf006) AM_WRITE(MWA8_NOP) // always 0
 	AM_RANGE(0xf007, 0xf007) AM_WRITE(MWA8_NOP) // always 0
-	AM_RANGE(0xf800, 0xf800) AM_WRITE(soundlatch_w)
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0x1fff) AM_READ(MRA8_ROM)
-	AM_RANGE(0x2000, 0x23ff) AM_READ(MRA8_RAM)
-	AM_RANGE(0x3000, 0x3000) AM_READ(soundlatch_r)
-	AM_RANGE(0x7000, 0x7000) AM_READ(MRA8_NOP) // only for Imago, read but not used
+	AM_RANGE(0xf800, 0xf800) AM_READWRITE(MRA8_NOP, soundlatch_w)
 ADDRESS_MAP_END
 
 
-static ADDRESS_MAP_START( sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0x1fff) AM_WRITE(MWA8_ROM)
-	AM_RANGE(0x2000, 0x23ff) AM_WRITE(MWA8_RAM)
-	AM_RANGE(0x3000, 0x3000) AM_WRITE(interrupt_enable_w)
+static ADDRESS_MAP_START( sound_map, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x1fff) AM_ROM
+	AM_RANGE(0x2000, 0x23ff) AM_RAM
+	AM_RANGE(0x3000, 0x3000) AM_READWRITE(soundlatch_r, interrupt_enable_w)
 	AM_RANGE(0x4000, 0x4000) AM_WRITE(MWA8_RAM)  // Reset PSG's
 	AM_RANGE(0x5000, 0x5000) AM_WRITE(AY8910_control_port_0_w)
 	AM_RANGE(0x5001, 0x5001) AM_WRITE(AY8910_write_port_0_w)
 	AM_RANGE(0x6000, 0x6000) AM_WRITE(AY8910_control_port_1_w)
 	AM_RANGE(0x6001, 0x6001) AM_WRITE(AY8910_write_port_1_w)
+	AM_RANGE(0x7000, 0x7000) AM_READ(MRA8_NOP) // only for Imago, read but not used
 ADDRESS_MAP_END
 
 
@@ -481,7 +497,7 @@ INPUT_PORTS_START( imago )
 	PORT_DIPSETTING(    0x00, DEF_STR( 1C_1C ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( 1C_2C ) )
 	PORT_DIPSETTING(    0x10, DEF_STR( 1C_3C ) )
-	PORT_DIPSETTING(    0x30, DEF_STR( 1C_4C ) )	
+	PORT_DIPSETTING(    0x30, DEF_STR( 1C_4C ) )
 	PORT_DIPNAME( 0x40, 0x00, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -565,12 +581,12 @@ static MACHINE_DRIVER_START( fastfred )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD_TAG("main", Z80, CLOCK/6)     /* 3.072 MHz */
-	MDRV_CPU_PROGRAM_MAP(fastfred_readmem,fastfred_writemem)
+	MDRV_CPU_PROGRAM_MAP(fastfred_map,0)
 	MDRV_CPU_VBLANK_INT(nmi_line_pulse,1)
 
 	MDRV_CPU_ADD_TAG("audio", Z80, CLOCK/12)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)    /* 1.536 MHz */
-	MDRV_CPU_PROGRAM_MAP(sound_readmem,sound_writemem)
+	MDRV_CPU_PROGRAM_MAP(sound_map,0)
 	MDRV_CPU_VBLANK_INT(nmi_line_pulse,4)
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -597,7 +613,7 @@ static MACHINE_DRIVER_START( jumpcoas )
 	/* basic machine hardware */
 	MDRV_IMPORT_FROM(fastfred)
 	MDRV_CPU_MODIFY("main")
-	MDRV_CPU_PROGRAM_MAP(jumpcoas_readmem,jumpcoas_writemem)
+	MDRV_CPU_PROGRAM_MAP(jumpcoas_map,0)
 
 	MDRV_CPU_REMOVE("audio")
 
@@ -609,11 +625,11 @@ static MACHINE_DRIVER_START( jumpcoas )
 MACHINE_DRIVER_END
 
 static MACHINE_DRIVER_START( imago )
-	
+
 	/* basic machine hardware */
 	MDRV_IMPORT_FROM(fastfred)
 	MDRV_CPU_MODIFY("main")
-	MDRV_CPU_PROGRAM_MAP(imago_readmem,imago_writemem)
+	MDRV_CPU_PROGRAM_MAP(imago_map,0)
 
 	/* video hardware */
 	MDRV_GFXDECODE(imago_gfxdecodeinfo)
@@ -805,29 +821,29 @@ ROM_END
 
 ROM_START( imago )
 	ROM_REGION( 0x10000, REGION_CPU1, 0 )     /* 64k for main CPU */
-	ROM_LOAD( "11",    0x0000, 0x1000, CRC(3cce69b4) SHA1(e7d52e388e09e86abb597493f5807ee088cf7a40) ) 
+	ROM_LOAD( "11",    0x0000, 0x1000, CRC(3cce69b4) SHA1(e7d52e388e09e86abb597493f5807ee088cf7a40) )
 	ROM_CONTINUE(	   0x2000, 0x1000 )
-	ROM_LOAD( "12",    0x3000, 0x2000, CRC(8dff98c0) SHA1(e7311d9ca4544f1263e894e6d93ca52c87fc83bf) ) 
-	ROM_LOAD( "13",    0x5000, 0x2000, CRC(f0f14b4d) SHA1(92b82080575a9c95df926c404c19875ac66c2b00) ) 
+	ROM_LOAD( "12",    0x3000, 0x2000, CRC(8dff98c0) SHA1(e7311d9ca4544f1263e894e6d93ca52c87fc83bf) )
+	ROM_LOAD( "13",    0x5000, 0x2000, CRC(f0f14b4d) SHA1(92b82080575a9c95df926c404c19875ac66c2b00) )
 
 	ROM_REGION( 0x10000, REGION_CPU2, 0 )     /* 64k for audio CPU */
-	ROM_LOAD( "8",	   0x0000, 0x1000, CRC(4f77c2c9) SHA1(1e046786fbad7fb8c7c462b7bd5d80152c6b8779) ) 
-	
-	ROM_REGION( 0x3000, REGION_GFX1, ROMREGION_DISPOSE )
-	ROM_LOAD( "2",     0x0000, 0x1000, CRC(71354480) SHA1(f5f5e1cc336cae1778b7f6c744eb1bdc4226f138) ) 
-	ROM_LOAD( "3",     0x1000, 0x1000, CRC(7aba3d98) SHA1(5d058f39bf1339d523fe015b67083d44ff6a81d4) ) 
-	ROM_FILL(	       0x2000, 0x1000, 0 )
-	
-	ROM_REGION( 0x6000, REGION_GFX2, ROMREGION_DISPOSE )
-	ROM_LOAD( "4",     0x0000, 0x1000, CRC(ed987b3e) SHA1(2f88a0463b4323adb27467fb3d022144a4943793) ) 
-	ROM_LOAD( "5",     0x1000, 0x1000, CRC(77ee68ce) SHA1(a47af1bec81977d0f47463bd88e9f526fd2d6611) ) 
-	ROM_LOAD( "7",     0x2000, 0x1000, CRC(48b35190) SHA1(3a000264aad03f55fe67eed7c868acf87e804c0f) ) 
-	ROM_LOAD( "6",     0x3000, 0x1000, CRC(136990fc) SHA1(f3ecba92db25fbeb7df83c26667b7447c2d03b58) ) 
-	ROM_LOAD( "9",     0x4000, 0x1000, CRC(9efb806d) SHA1(504cc27cf071873714ec61835d9da676884fe1c8) ) 	
-	ROM_LOAD( "10",    0x5000, 0x1000, CRC(801a18d3) SHA1(f798978a47124f50be25ab4e5c6a4974d9003634) ) 
+	ROM_LOAD( "8",	   0x0000, 0x1000, CRC(4f77c2c9) SHA1(1e046786fbad7fb8c7c462b7bd5d80152c6b8779) )
 
-	ROM_REGION( 0x3000, REGION_GFX3, ROMREGION_DISPOSE ) 
-	ROM_LOAD( "14",    0x0000, 0x1000, CRC(eded37f6) SHA1(c2ff5d4c1b001740ec4453467f879035db196a9b) ) 
+	ROM_REGION( 0x3000, REGION_GFX1, ROMREGION_DISPOSE )
+	ROM_LOAD( "2",     0x0000, 0x1000, CRC(71354480) SHA1(f5f5e1cc336cae1778b7f6c744eb1bdc4226f138) )
+	ROM_LOAD( "3",     0x1000, 0x1000, CRC(7aba3d98) SHA1(5d058f39bf1339d523fe015b67083d44ff6a81d4) )
+	ROM_FILL(	       0x2000, 0x1000, 0 )
+
+	ROM_REGION( 0x6000, REGION_GFX2, ROMREGION_DISPOSE )
+	ROM_LOAD( "4",     0x0000, 0x1000, CRC(ed987b3e) SHA1(2f88a0463b4323adb27467fb3d022144a4943793) )
+	ROM_LOAD( "5",     0x1000, 0x1000, CRC(77ee68ce) SHA1(a47af1bec81977d0f47463bd88e9f526fd2d6611) )
+	ROM_LOAD( "7",     0x2000, 0x1000, CRC(48b35190) SHA1(3a000264aad03f55fe67eed7c868acf87e804c0f) )
+	ROM_LOAD( "6",     0x3000, 0x1000, CRC(136990fc) SHA1(f3ecba92db25fbeb7df83c26667b7447c2d03b58) )
+	ROM_LOAD( "9",     0x4000, 0x1000, CRC(9efb806d) SHA1(504cc27cf071873714ec61835d9da676884fe1c8) )
+	ROM_LOAD( "10",    0x5000, 0x1000, CRC(801a18d3) SHA1(f798978a47124f50be25ab4e5c6a4974d9003634) )
+
+	ROM_REGION( 0x3000, REGION_GFX3, ROMREGION_DISPOSE )
+	ROM_LOAD( "14",    0x0000, 0x1000, CRC(eded37f6) SHA1(c2ff5d4c1b001740ec4453467f879035db196a9b) )
 	ROM_FILL(		   0x1000, 0x2000, 0 )
 
 	ROM_REGION( 0x0300, REGION_PROMS, 0 )
@@ -835,7 +851,7 @@ ROM_START( imago )
 	ROM_LOAD( "green", 0x0100, 0x0100, NO_DUMP )
 	ROM_LOAD( "blue",  0x0200, 0x0100, NO_DUMP )
 
-	ROM_REGION( 0x2000, REGION_USER1, 0 )	
+	ROM_REGION( 0x2000, REGION_USER1, 0 )
 	ROM_LOAD( "1",      0x0000, 0x1000, CRC(b0a1fb54) SHA1(fbc746748947a7aa35a428dc862ff4ad53516d38) ) //contains the same 2 bytes
 	ROM_LOAD( "15",     0x1000, 0x1000, CRC(85fcc195) SHA1(a76f24201c037d1e6f909fb0ea4ad59b1d6ddd57) ) //unknown
 ROM_END
@@ -844,27 +860,34 @@ extern int fastfred_hardware_type;
 
 static DRIVER_INIT( flyboy )
 {
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xc085, 0xc099, 0, 0, flyboy_custom1_io_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xc8fb, 0xc900, 0, 0, flyboy_custom2_io_r);
+	fastfred_hardware_type = 1;
+}
+
+static DRIVER_INIT( flyboyb )
+{
 	fastfred_hardware_type = 1;
 }
 
 static DRIVER_INIT( fastfred )
 {
-	install_mem_write_handler(0, 0xc800, 0xcfff, MWA8_NOP );
-	install_mem_read_handler( 0, 0xc800, 0xcfff, fastfred_custom_io_r);
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0xc800, 0xcfff, 0, 0, MWA8_NOP );
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xc800, 0xcfff, 0, 0, fastfred_custom_io_r);
 	fastfred_hardware_type = 1;
 }
 
 static DRIVER_INIT( jumpcoas )
 {
-	install_mem_write_handler(0, 0xc800, 0xcfff, MWA8_NOP );
-	install_mem_read_handler(0,  0xc800, 0xcfff, jumpcoas_custom_io_r);
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0xc800, 0xcfff, 0, 0, MWA8_NOP );
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xc800, 0xcfff, 0, 0, jumpcoas_custom_io_r);
 	fastfred_hardware_type = 0;
 }
 
 static DRIVER_INIT( boggy84 )
 {
-	install_mem_write_handler(0, 0xc800, 0xcfff, MWA8_NOP );
-	install_mem_read_handler(0,  0xc800, 0xcfff, jumpcoas_custom_io_r);
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0xc800, 0xcfff, 0, 0, MWA8_NOP );
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xc800, 0xcfff, 0, 0, jumpcoas_custom_io_r);
 	fastfred_hardware_type = 2;
 }
 
@@ -873,12 +896,12 @@ static DRIVER_INIT( imago )
 	fastfred_hardware_type = 3;
 }
 
-GAMEX(1982, flyboy,   0,      fastfred, flyboy,   flyboy,   ROT90, "Kaneko", "Fly-Boy", GAME_NOT_WORKING )	/* protection */
-GAME( 1982, flyboyb,  flyboy, fastfred, flyboy,   flyboy,   ROT90, "Kaneko", "Fly-Boy (bootleg)" )
+GAME( 1982, flyboy,   0,      fastfred, flyboy,   flyboy,   ROT90, "Kaneko", "Fly-Boy" )
+GAME( 1982, flyboyb,  flyboy, fastfred, flyboy,   flyboyb,  ROT90, "Kaneko", "Fly-Boy (bootleg)" )
 GAME( 1982, fastfred, flyboy, fastfred, fastfred, fastfred, ROT90, "Atari", "Fast Freddie" )
 GAME( 1983, jumpcoas, 0,      jumpcoas, jumpcoas, jumpcoas, ROT90, "Kaneko", "Jump Coaster" )
 GAME( 1983, boggy84,  0,      jumpcoas, boggy84,  boggy84,  ROT90, "bootleg", "Boggy '84" )
-GAME( 1986, redrobin, 0,      fastfred, redrobin, flyboy,   ROT90, "Elettronolo", "Red Robin" )
+GAME( 1986, redrobin, 0,      fastfred, redrobin, flyboyb,  ROT90, "Elettronolo", "Red Robin" )
 GAMEX(1983, imago,	  0,	  imago,	imago,	  imago,	ROT90, "Acom", "Imago", GAME_IMPERFECT_GRAPHICS | GAME_WRONG_COLORS )
 #pragma code_seg()
 #pragma data_seg()

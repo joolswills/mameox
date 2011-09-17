@@ -118,6 +118,7 @@
 #include "palette.h"
 #include "harddisk.h"
 
+
 /***************************************************************************
 
 	Constants
@@ -235,6 +236,7 @@ static int init_buffered_spriteram(void);
 #define handle_user_interface	handle_mess_user_interface
 #endif
 
+void xbox_distribute_vmm() ;
 
 /***************************************************************************
 
@@ -253,14 +255,14 @@ INLINE void bail_and_print(const char *message)
 	if (!bailing)
 	{
 		bailing = 1;
-    logerror( "%s\n", message );
-    //osd_print_error( "%s\n", message );
+		logerror( "%s\n", message );
+		//osd_print_error( "%s\n", message );
 
-      // If we're bailing, just bail. No need to reclaim memory
-      // as it'll just get free'd automatically when we jump
-      // back to the launcher. This fixes a problem with namcos2 games
-      // crashing on shutdown in release mode [EBA]
-    fatalerror( "%s", message );
+		// If we're bailing, just bail. No need to reclaim memory
+		// as it'll just get free'd automatically when we jump
+		// back to the launcher. This fixes a problem with namcos2 games
+		// crashing on shutdown in release mode [EBA]
+		fatalerror( "%s", message );
 	}
 }
 
@@ -311,7 +313,12 @@ int run_game(int game)
 
 	/* if we're coming in with a savegame request, process it now */
 	if (options.savegame)
-		cpu_loadsave_schedule(LOADSAVE_LOAD, options.savegame);
+	{
+		if (strlen(options.savegame) == 1)
+			cpu_loadsave_schedule(LOADSAVE_LOAD, options.savegame[0]);
+		else
+			cpu_loadsave_schedule_file(LOADSAVE_LOAD, options.savegame);
+	}
 	else
 		cpu_loadsave_reset();
 
@@ -335,6 +342,9 @@ int run_game(int game)
 				bail_and_print("Unable to start machine emulation");
 			else
 				err = 0;
+
+			return 0 ; //for xbox, we don't need to worry about exiting gracefully - and there are times when 
+					   //it will crash during cleanup, so just skip all that
 
 			/* shutdown the local machine */
 			shutdown_machine();
@@ -372,10 +382,10 @@ static int init_machine(void)
 	}
 
 	/* if we have inputs, process them now */
-	if (gamedrv->input_ports)
+	if (gamedrv->construct_ipt)
 	{
 		/* allocate input ports */
-		Machine->input_ports = input_port_allocate(gamedrv->input_ports);
+		Machine->input_ports = input_port_allocate(gamedrv->construct_ipt);
 		if (!Machine->input_ports)
 		{
 			logerror("could not allocate Machine->input_ports\n");
@@ -383,7 +393,7 @@ static int init_machine(void)
 		}
 
 		/* allocate default input ports */
-		Machine->input_ports_default = input_port_allocate(gamedrv->input_ports);
+		Machine->input_ports_default = input_port_allocate(gamedrv->construct_ipt);
 		if (!Machine->input_ports_default)
 		{
 			logerror("could not allocate Machine->input_ports_default\n");
@@ -448,10 +458,8 @@ static int init_machine(void)
 
 cant_init_memory:
 cant_load_roms:
-	input_port_free(Machine->input_ports_default);
 	Machine->input_ports_default = 0;
 cant_allocate_input_ports_default:
-	input_port_free(Machine->input_ports);
 	Machine->input_ports = 0;
 cant_allocate_input_ports:
 	code_close();
@@ -568,14 +576,17 @@ void run_machine_core(void)
 						mame_fclose(nvram_file);
 				}
 
-          // [EBA] Autoboot a save state
-        osd_autobootsavestate( Machine->gamedrv->name );
+				// [EBA] Autoboot a save state
+				osd_autobootsavestate( Machine->gamedrv->name );
+				
+				/* If we are using VMM, distribute all remaining physical memory intelligently to the VMM-allocated chunks */
+				xbox_distribute_vmm() ;
 
 				/* run the emulation! */
 				cpu_run();
 
-          // [EBA] mute the sound to keep it from skipping
-        osd_sound_enable( 0 );
+				// [EBA] mute the sound to keep it from skipping
+				osd_sound_enable( 0 );
 
 				/* save the NVRAM */
 				if (Machine->drv->nvram_handler)
@@ -627,10 +638,6 @@ static void shutdown_machine(void)
 
 	/* reset the CPU system */
 	cpu_exit();
-
-	/* free the memory allocated for input ports definition */
-	input_port_free(Machine->input_ports);
-	input_port_free(Machine->input_ports_default);
 
 	/* close down the input system */
 	code_close();
@@ -984,8 +991,8 @@ static int decode_graphics(const struct GfxDecodeInfo *gfxdecodeinfo)
 		if ((Machine->gfx[i] = decodegfx(region_base + gfxdecodeinfo[i].start, &glcopy)) == 0)
 		{
 			bailing = 1;
-      logerror( "Out of memory decoding gfx\n" );
-      osd_print_error( "Out of memory decoding gfx\n" );
+			logerror( "Out of memory decoding gfx\n" );
+			osd_print_error( "Out of memory decoding gfx\n" );
 			return 1;
 		}
 
@@ -1417,16 +1424,6 @@ int mame_highscore_enabled(void)
 	if (he_did_cheat != 0)
 		return 0;
 
-	/* disable high score when playing network game */
-	/* (this forces all networked machines to start from the same state!) */
-#ifdef MAME_NET
-	if (net_active())
-		return 0;
-#elif defined XMAME_NET
-	if (osd_net_active())
-		return 0;
-#endif
-
 	return 1;
 }
 
@@ -1712,6 +1709,8 @@ static int validitychecks(void)
 	int i,j,cpu;
 	UINT8 a,b;
 	int error = 0;
+	const struct InputPort *inp;
+	const char *s;
 
 
 	a = 0xff;
@@ -1731,7 +1730,6 @@ static int validitychecks(void)
 	{
 		struct InternalMachineDriver drv;
 		const struct RomModule *romp;
-		const struct InputPortTiny *inp;
 
 		expand_machine_driver(drivers[i]->drv, &drv);
 
@@ -1759,6 +1757,17 @@ static int validitychecks(void)
 			error = 1;
 		}
 #endif
+
+		s = drivers[i]->year;
+		for (j = 0; s[j]; j++)
+		{
+			if (!isdigit(s[j]) && s[j] != '?' && s[j] != '+')
+			{
+				logerror("%s: %s has an invalid year '%s'\n", drivers[i]->source_file,drivers[i]->name,s);
+				error = 1;
+				break;
+			}
+		}
 
 		for (j = i+1;drivers[j];j++)
 		{
@@ -1810,6 +1819,7 @@ static int validitychecks(void)
 				region_length[j] = 0;
 			}
 
+			/* consistency checks on ROMs */
 			while (!ROMENTRY_ISEND(romp))
 			{
 				const char *c;
@@ -1843,11 +1853,10 @@ static int validitychecks(void)
 						c++;
 					}
 
-
 					hash = ROM_GETHASHDATA(romp);
 					if (!hash_verify_string(hash))
 					{
-						printf("%s: rom '%s' has an invalid hash string '%s'\n", drivers[i]->name, ROM_GETNAME(romp), hash);
+						logerror("%s: rom '%s' has an invalid hash string '%s'\n", drivers[i]->name, ROM_GETNAME(romp), hash);
 						error = 1;
 					}
 				}
@@ -1872,16 +1881,74 @@ static int validitychecks(void)
 			}
 
 
+			/* consistency checks on CPUs */
 			for (cpu = 0;cpu < MAX_CPU;cpu++)
 			{
 				if (drv.cpu[cpu].cpu_type)
 				{
-
 					int space,mapnum;
+					extern void dummy_get_info(UINT32 state, union cpuinfo *info);
+
+					/* checks to see if this driver is using a dummy CPU */
+					if (cputype_get_interface(drv.cpu[cpu].cpu_type)->get_info == dummy_get_info)
+					{
+						logerror("%s: %s uses non-present CPU\n",drivers[i]->source_file,drivers[i]->name);
+						error = 1;
+					}
+					else
+					{
+#ifdef MESS
+						/* check to make sure that this CPU core has the necessities filled out */
+						const struct cpu_interface *cpuintrf;
+						union cpuinfo info;
+						const INT8 *reg;
+						int incomplete_cpu_core = 0;
+						static const int required_info[] =
+						{
+							CPUINFO_STR_NAME, CPUINFO_STR_CORE_FAMILY, CPUINFO_STR_CORE_FILE,
+							CPUINFO_PTR_REGISTER_LAYOUT
+						};
+
+						cpuintrf = cputype_get_interface(drv.cpu[cpu].cpu_type);
+						for (j = 0; j < sizeof(required_info) / sizeof(required_info[0]); j++)
+						{
+							memset(&info, 0, sizeof(info));
+							cpuintrf->get_info(required_info[j], &info);
+							if (!info.s)
+								incomplete_cpu_core = 1;
+						}
+
+						memset(&info, 0, sizeof(info));
+						cpuintrf->get_info(CPUINFO_PTR_REGISTER_LAYOUT, &info);
+						reg = (const INT8 *) info.p;
+						if (reg)
+						{
+							for (j = 0; reg[j]; j++)
+							{
+								if (reg[j] != -1)
+								{
+									memset(&info, 0, sizeof(info));
+									cpuintrf->get_info(CPUINFO_STR_REGISTER + reg[j], &info);
+									if (!info.s)
+										incomplete_cpu_core = 1;
+								}
+							}
+						}
+
+						if (incomplete_cpu_core)
+						{
+							memset(&info, 0, sizeof(info));
+							cpuintrf->get_info(CPUINFO_STR_NAME, &info);
+							logerror("%s: %s uses incomplete CPU core %s\n",drivers[i]->source_file, drivers[i]->name,
+								info.s);
+							error = 1;
+						}
+#endif /* MESS */
+					}
+
 					for (space = 0;space < ADDRESS_SPACES;space++)
 						for (mapnum = 0;mapnum < 2;mapnum++)
 						{
-
 							int alignunit,databus_width,addr_shift;
 
 							databus_width = cputype_databus_width(drv.cpu[cpu].cpu_type, space);
@@ -1904,7 +1971,7 @@ static int validitychecks(void)
 									continue;
 								if (!IS_AMENTRY_EXTENDED(map))
 								{
-									printf("%s: %s wrong MEMORY_READ_START\n",drivers[i]->source_file,drivers[i]->name);
+									logerror("%s: %s wrong MEMORY_READ_START\n",drivers[i]->source_file,drivers[i]->name);
 									error = 1;
 								}
 
@@ -1915,7 +1982,7 @@ static int validitychecks(void)
 									val = (val + 1) * 8;
 									if (val != databus_width)
 									{
-										printf("%s: %s cpu #%d uses wrong data width memory handlers! (width = %d, memory = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,AM_EXTENDED_FLAGS(map));
+										logerror("%s: %s cpu #%d uses wrong data width memory handlers! (width = %d, memory = %08x)\n",drivers[i]->source_file,drivers[i]->name,cpu,databus_width,AM_EXTENDED_FLAGS(map));
 										error = 1;
 									}
 								}
@@ -1928,12 +1995,12 @@ static int validitychecks(void)
 										{
 											if (map->end < map->start)
 											{
-												printf("%s: %s wrong memory read handler start = %08x > end = %08x\n",drivers[i]->source_file,drivers[i]->name,map->start,map->end);
+												logerror("%s: %s wrong memory read handler start = %08x > end = %08x\n",drivers[i]->source_file,drivers[i]->name,map->start,map->end);
 												error = 1;
 											}
 											if ((SPACE_SHIFT(map->start) & (alignunit-1)) != 0 || (SPACE_SHIFT_END(map->end) & (alignunit-1)) != (alignunit-1))
 											{
-												printf("%s: %s wrong memory read handler start = %08x, end = %08x ALIGN = %d\n",drivers[i]->source_file,drivers[i]->name,map->start,map->end,alignunit);
+												logerror("%s: %s wrong memory read handler start = %08x, end = %08x ALIGN = %d\n",drivers[i]->source_file,drivers[i]->name,map->start,map->end,alignunit);
 												error = 1;
 											}
 										}
@@ -1946,6 +2013,7 @@ static int validitychecks(void)
 			}
 
 
+			/* consistency chekcs on GfxDecodeInfo */
 			if (drv.gfxdecodeinfo)
 			{
 				for (j = 0;j < MAX_GFX_ELEMENTS && drv.gfxdecodeinfo[j].memory_region != -1;j++)
@@ -1957,7 +2025,7 @@ static int validitychecks(void)
 /*
 					if (type && (type >= REGION_MAX || type <= REGION_INVALID))
 					{
-						logerror("%s: %s has invalid memory region for gfx[%d]\n",drivers[i]->source_file,drivers[i]->name,j);
+						printf("%s: %s has invalid memory region for gfx[%d]\n",drivers[i]->source_file,drivers[i]->name,j);
 						error = 1;
 					}
 */
@@ -1986,10 +2054,12 @@ static int validitychecks(void)
 		}
 
 
-		inp = drivers[i]->input_ports;
-
-		if (inp)
+		if (drivers[i]->construct_ipt)
 		{
+			begin_resource_tracking();
+			
+			inp = input_port_allocate(drivers[i]->construct_ipt);
+
 			while (inp->type != IPT_END)
 			{
 				if (inp->name && inp->name != IP_NAME_DEFAULT)
@@ -2006,16 +2076,28 @@ static int validitychecks(void)
 						}
 					}
 
-					if (inp->name == DEF_STR( On ) && (inp+1)->name == DEF_STR( Off ))
+					if (inp->type == IPT_DIPSWITCH_SETTING && (inp+1)->type == IPT_DIPSWITCH_SETTING)
 					{
-						logerror("%s: %s has inverted Off/On dipswitch order\n",drivers[i]->source_file,drivers[i]->name);
-						error = 1;
+						if (inp->name == DEF_STR( On ) && (inp+1)->name == DEF_STR( Off ))
+						{
+							logerror("%s: %s has inverted Off/On dipswitch order\n",drivers[i]->source_file,drivers[i]->name);
+							error = 1;
+						}
+
+						if (inp->name == DEF_STR( Yes ) && (inp+1)->name == DEF_STR( No ))
+						{
+							logerror("%s: %s has inverted No/Yes dipswitch order\n",drivers[i]->source_file,drivers[i]->name);
+							error = 1;
+						}
 					}
 
-					if (inp->name == DEF_STR( Yes ) && (inp+1)->name == DEF_STR( No ))
+					if (inp->type > IPT_ANALOG_START && inp->type < IPT_ANALOG_END)
 					{
-						logerror("%s: %s has inverted No/Yes dipswitch order\n",drivers[i]->source_file,drivers[i]->name);
-						error = 1;
+						if (inp->u.analog.sensitivity == 0)
+						{
+							logerror("%s: %s has an analog port with zero sensitivity\n",drivers[i]->source_file,drivers[i]->name);
+							error = 1;
+						}
 					}
 
 					if (!my_stricmp(inp->name,"table"))
@@ -2067,6 +2149,7 @@ static int validitychecks(void)
 
 				inp++;
 			}
+			end_resource_tracking();
 		}
 	}
 

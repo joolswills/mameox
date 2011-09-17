@@ -1,11 +1,11 @@
-#pragma code_seg("C154")
-#pragma data_seg("D154")
-#pragma bss_seg("B154")
-#pragma const_seg("K154")
-#pragma comment(linker, "/merge:D154=154")
-#pragma comment(linker, "/merge:C154=154")
-#pragma comment(linker, "/merge:B154=154")
-#pragma comment(linker, "/merge:K154=154")
+#pragma code_seg("C155")
+#pragma data_seg("D155")
+#pragma bss_seg("B155")
+#pragma const_seg("K155")
+#pragma comment(linker, "/merge:D155=155")
+#pragma comment(linker, "/merge:C155=155")
+#pragma comment(linker, "/merge:B155=155")
+#pragma comment(linker, "/merge:K155=155")
 /***************************************************************************
 
 Battlantis(GX777) (c) 1987 Konami
@@ -22,22 +22,22 @@ Preliminary driver by:
 #include "vidhrdw/konamiic.h"
 
 /* from vidhrdw */
-WRITE_HANDLER( battlnts_spritebank_w );
+WRITE8_HANDLER( battlnts_spritebank_w );
 VIDEO_START( battlnts );
 VIDEO_UPDATE( battlnts );
 
 static INTERRUPT_GEN( battlnts_interrupt )
 {
 	if (K007342_is_INT_enabled())
-		cpu_set_irq_line(0, HD6309_IRQ_LINE, HOLD_LINE);
+		cpunum_set_input_line(0, HD6309_IRQ_LINE, HOLD_LINE);
 }
 
-WRITE_HANDLER( battlnts_sh_irqtrigger_w )
+WRITE8_HANDLER( battlnts_sh_irqtrigger_w )
 {
-	cpu_set_irq_line_and_vector(1, 0, HOLD_LINE, 0xff);
+	cpunum_set_input_line_and_vector(1, 0, HOLD_LINE, 0xff);
 }
 
-static WRITE_HANDLER( battlnts_bankswitch_w )
+static WRITE8_HANDLER( battlnts_bankswitch_w )
 {
 	unsigned char *RAM = memory_region(REGION_CPU1);
 	int bankaddress;

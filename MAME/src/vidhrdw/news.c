@@ -1,11 +1,11 @@
-#pragma code_seg("C496")
-#pragma data_seg("D496")
-#pragma bss_seg("B496")
-#pragma const_seg("K496")
-#pragma comment(linker, "/merge:D496=496")
-#pragma comment(linker, "/merge:C496=496")
-#pragma comment(linker, "/merge:B496=496")
-#pragma comment(linker, "/merge:K496=496")
+#pragma code_seg("C525")
+#pragma data_seg("D525")
+#pragma bss_seg("B525")
+#pragma const_seg("K525")
+#pragma comment(linker, "/merge:D525=525")
+#pragma comment(linker, "/merge:C525=525")
+#pragma comment(linker, "/merge:B525=525")
+#pragma comment(linker, "/merge:K525=525")
 #include "driver.h"
 #include "news.h"
 
@@ -76,19 +76,19 @@ VIDEO_START( news )
 
 ***************************************************************************/
 
-WRITE_HANDLER( news_fgram_w )
+WRITE8_HANDLER( news_fgram_w )
 {
 	news_fgram[offset] = data;
 	tilemap_mark_tile_dirty(fg_tilemap,offset/2);
 }
 
-WRITE_HANDLER( news_bgram_w )
+WRITE8_HANDLER( news_bgram_w )
 {
 	news_bgram[offset] = data;
 	tilemap_mark_tile_dirty(bg_tilemap,offset/2);
 }
 
-WRITE_HANDLER( news_bgpic_w )
+WRITE8_HANDLER( news_bgpic_w )
 {
 	if (bgpic != data)
 	{

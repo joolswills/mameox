@@ -1,11 +1,11 @@
-#pragma code_seg("C373")
-#pragma data_seg("D373")
-#pragma bss_seg("B373")
-#pragma const_seg("K373")
-#pragma comment(linker, "/merge:D373=373")
-#pragma comment(linker, "/merge:C373=373")
-#pragma comment(linker, "/merge:B373=373")
-#pragma comment(linker, "/merge:K373=373")
+#pragma code_seg("C388")
+#pragma data_seg("D388")
+#pragma bss_seg("B388")
+#pragma const_seg("K388")
+#pragma comment(linker, "/merge:D388=388")
+#pragma comment(linker, "/merge:C388=388")
+#pragma comment(linker, "/merge:B388=388")
+#pragma comment(linker, "/merge:K388=388")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -56,7 +56,7 @@ PALETTE_INIT( jailbrek )
 		COLOR(1,i) = *color_prom++;
 }
 
-WRITE_HANDLER( jailbrek_videoram_w )
+WRITE8_HANDLER( jailbrek_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -65,7 +65,7 @@ WRITE_HANDLER( jailbrek_videoram_w )
 	}
 }
 
-WRITE_HANDLER( jailbrek_colorram_w )
+WRITE8_HANDLER( jailbrek_colorram_w )
 {
 	if (colorram[offset] != data)
 	{

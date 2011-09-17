@@ -1,11 +1,11 @@
-#pragma code_seg("C148")
-#pragma data_seg("D148")
-#pragma bss_seg("B148")
-#pragma const_seg("K148")
-#pragma comment(linker, "/merge:D148=148")
-#pragma comment(linker, "/merge:C148=148")
-#pragma comment(linker, "/merge:B148=148")
-#pragma comment(linker, "/merge:K148=148")
+#pragma code_seg("C149")
+#pragma data_seg("D149")
+#pragma bss_seg("B149")
+#pragma const_seg("K149")
+#pragma comment(linker, "/merge:D149=149")
+#pragma comment(linker, "/merge:C149=149")
+#pragma comment(linker, "/merge:B149=149")
+#pragma comment(linker, "/merge:K149=149")
 /***************************************************************************
 
   vidhrdw.c
@@ -95,12 +95,12 @@ PALETTE_INIT( bankp )
 	/* the bottom half of the PROM seems to be not used */
 }
 
-WRITE_HANDLER( bankp_scroll_w )
+WRITE8_HANDLER( bankp_scroll_w )
 {
 	scroll_x = data;
 }
 
-WRITE_HANDLER( bankp_videoram_w )
+WRITE8_HANDLER( bankp_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -109,7 +109,7 @@ WRITE_HANDLER( bankp_videoram_w )
 	}
 }
 
-WRITE_HANDLER( bankp_colorram_w )
+WRITE8_HANDLER( bankp_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -118,7 +118,7 @@ WRITE_HANDLER( bankp_colorram_w )
 	}
 }
 
-WRITE_HANDLER( bankp_videoram2_w )
+WRITE8_HANDLER( bankp_videoram2_w )
 {
 	if (bankp_videoram2[offset] != data)
 	{
@@ -127,7 +127,7 @@ WRITE_HANDLER( bankp_videoram2_w )
 	}
 }
 
-WRITE_HANDLER( bankp_colorram2_w )
+WRITE8_HANDLER( bankp_colorram2_w )
 {
 	if (bankp_colorram2[offset] != data)
 	{
@@ -136,7 +136,7 @@ WRITE_HANDLER( bankp_colorram2_w )
 	}
 }
 
-WRITE_HANDLER( bankp_out_w )
+WRITE8_HANDLER( bankp_out_w )
 {
 	/* bits 0-1 are playfield priority */
 	/* TODO: understand how this works */
@@ -148,11 +148,7 @@ WRITE_HANDLER( bankp_out_w )
 	interrupt_enable_w(0,(data & 0x10)>>4);
 
 	/* bit 5 controls screen flip */
-	if (flip_screen != (data & 0x20))
-	{
-		flip_screen_set(data & 0x20);
-		tilemap_mark_all_tiles_dirty(ALL_TILEMAPS);
-	}
+	flip_screen_set(data & 0x20);
 
 	/* bits 6-7 unknown */
 }
@@ -214,18 +210,18 @@ VIDEO_UPDATE( bankp )
 	switch (priority)
 	{
 	case 0:
-		tilemap_draw(bitmap, &Machine->visible_area, bg_tilemap, TILEMAP_IGNORE_TRANSPARENCY, 0); // just a guess
+		tilemap_draw(bitmap, cliprect, bg_tilemap, TILEMAP_IGNORE_TRANSPARENCY, 0); // just a guess
 		break;
 	case 1:
-		tilemap_draw(bitmap, &Machine->visible_area, bg_tilemap, TILEMAP_IGNORE_TRANSPARENCY, 0);
-		tilemap_draw(bitmap, &Machine->visible_area, fg_tilemap, 0, 0);
+		tilemap_draw(bitmap, cliprect, bg_tilemap, TILEMAP_IGNORE_TRANSPARENCY, 0);
+		tilemap_draw(bitmap, cliprect, fg_tilemap, 0, 0);
 		break;
 	case 2:
-		tilemap_draw(bitmap, &Machine->visible_area, fg_tilemap, TILEMAP_IGNORE_TRANSPARENCY, 0);
-		tilemap_draw(bitmap, &Machine->visible_area, bg_tilemap, 0, 0);
+		tilemap_draw(bitmap, cliprect, fg_tilemap, TILEMAP_IGNORE_TRANSPARENCY, 0);
+		tilemap_draw(bitmap, cliprect, bg_tilemap, 0, 0);
 		break;
 	case 3:
-		tilemap_draw(bitmap, &Machine->visible_area, fg_tilemap, TILEMAP_IGNORE_TRANSPARENCY, 0); // just a guess
+		tilemap_draw(bitmap, cliprect, fg_tilemap, TILEMAP_IGNORE_TRANSPARENCY, 0); // just a guess
 		break;
 	}
 }

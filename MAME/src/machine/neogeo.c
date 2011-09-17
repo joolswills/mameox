@@ -1,11 +1,11 @@
-#pragma code_seg("C495")
-#pragma data_seg("D495")
-#pragma bss_seg("B495")
-#pragma const_seg("K495")
-#pragma comment(linker, "/merge:D495=495")
-#pragma comment(linker, "/merge:C495=495")
-#pragma comment(linker, "/merge:B495=495")
-#pragma comment(linker, "/merge:K495=495")
+#pragma code_seg("C524")
+#pragma data_seg("D524")
+#pragma bss_seg("B524")
+#pragma const_seg("K524")
+#pragma comment(linker, "/merge:D524=524")
+#pragma comment(linker, "/merge:C524=524")
+#pragma comment(linker, "/merge:B524=524")
+#pragma comment(linker, "/merge:K524=524")
 #include "driver.h"
 #include "machine/pd4990a.h"
 #include "neogeo.h"
@@ -20,8 +20,6 @@ extern void *record;
 extern void *playback;
 
 extern int neogeo_rng;
-
-data8_t *neogeo_game_vectors;
 
 data16_t *neogeo_ram16;
 data16_t *neogeo_sram16;
@@ -371,7 +369,7 @@ static WRITE16_HANDLER( kof99_bankswitch_w )
 		0x42e800, 0x52e800, 0x431800, 0x531800,
 		0x54d000, 0x551000, 0x567000, 0x592800,
 		0x588800, 0x581800, 0x599800, 0x594800,
-		0x200000,	/* rest not used? */
+		0x598000,	/* rest not used? */
 	};
 
 	/* unscramble bank number */
@@ -548,51 +546,51 @@ static void neogeo_custom_memory(void)
 	if (!Machine->sample_rate &&
 			!strcmp(Machine->gamedrv->name,"popbounc"))
 	/* the game hangs after a while without this patch */
-		install_mem_read16_handler(0, 0x104fbc, 0x104fbd, popbounc_sfix_16_r);
+		memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x104fbc, 0x104fbd, 0, 0, popbounc_sfix_16_r);
 
 	if (!strcmp(Machine->gamedrv->name,"kof99") || !strcmp(Machine->gamedrv->name,"kof99a") || !strcmp(Machine->gamedrv->name,"kof99e"))
 	{
 		/* special ROM banking handler */
-		install_mem_write16_handler(0, 0x2ffff0, 0x2ffff1, kof99_bankswitch_w);
+		memory_install_write16_handler(0, ADDRESS_SPACE_PROGRAM, 0x2ffff0, 0x2ffff1, 0, 0, kof99_bankswitch_w);
 
 		/* additional protection */
-		install_mem_read16_handler(0, 0x2fe446, 0x2fe447, prot_9a37_r);
+		memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x2fe446, 0x2fe447, 0, 0, prot_9a37_r);
 	}
 
 	if (!strcmp(Machine->gamedrv->name,"garou"))
 	{
 		/* special ROM banking handler */
-		install_mem_write16_handler(0, 0x2fffc0, 0x2fffc1, garou_bankswitch_w);
+		memory_install_write16_handler(0, ADDRESS_SPACE_PROGRAM, 0x2fffc0, 0x2fffc1, 0, 0, garou_bankswitch_w);
 
 		/* additional protection */
-		install_mem_read16_handler(0, 0x2fe446, 0x2fe447, prot_9a37_r);
+		memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x2fe446, 0x2fe447, 0, 0, prot_9a37_r);
 	}
 
 	if (!strcmp(Machine->gamedrv->name,"garouo"))
 	{
 		/* special ROM banking handler */
-		install_mem_write16_handler(0, 0x2fffc0, 0x2fffc1, garouo_bankswitch_w);
+		memory_install_write16_handler(0, ADDRESS_SPACE_PROGRAM, 0x2fffc0, 0x2fffc1, 0, 0, garouo_bankswitch_w);
 
 		/* additional protection */
-		install_mem_read16_handler(0, 0x2fe446, 0x2fe447, prot_9a37_r);
+		memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x2fe446, 0x2fe447, 0, 0, prot_9a37_r);
 	}
 
 	if (!strcmp(Machine->gamedrv->name,"mslug3"))
 	{
 		/* special ROM banking handler */
-		install_mem_write16_handler(0, 0x2fffe4, 0x2fffe5, mslug3_bankswitch_w);
+		memory_install_write16_handler(0, ADDRESS_SPACE_PROGRAM, 0x2fffe4, 0x2fffe5, 0, 0, mslug3_bankswitch_w);
 
 		/* additional protection */
-		install_mem_read16_handler(0, 0x2fe446, 0x2fe447, prot_9a37_r);
+		memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x2fe446, 0x2fe447, 0, 0, prot_9a37_r);
 	}
 
 	if (!strcmp(Machine->gamedrv->name,"kof2000"))
 	{
 		/* special ROM banking handler */
-		install_mem_write16_handler(0, 0x2fffec, 0x2fffed, kof2000_bankswitch_w);
+		memory_install_write16_handler(0, ADDRESS_SPACE_PROGRAM, 0x2fffec, 0x2fffed, 0, 0, kof2000_bankswitch_w);
 
 		/* additional protection */
-		install_mem_read16_handler(0, 0x2fe446, 0x2fe447, prot_9a37_r);
+		memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x2fe446, 0x2fe447, 0, 0, prot_9a37_r);
 	}
 
 	/* hacks to make the games which do protection checks run in arcade mode */
@@ -600,6 +598,7 @@ static void neogeo_custom_memory(void)
 	sram_protection_hack = ~0;
 	if (	!strcmp(Machine->gamedrv->name,"fatfury3") ||
 			!strcmp(Machine->gamedrv->name,"samsho3") ||
+			!strcmp(Machine->gamedrv->name,"samsho3a") ||
 			!strcmp(Machine->gamedrv->name,"samsho4") ||
 			!strcmp(Machine->gamedrv->name,"aof3") ||
 			!strcmp(Machine->gamedrv->name,"rbff1") ||
@@ -659,8 +658,8 @@ static void neogeo_custom_memory(void)
 
 		/* again, the protection involves reading and writing addresses in the */
 		/* 0x2xxxxx range. There are several checks all around the code. */
-		install_mem_read16_handler(0, 0x200000, 0x2fffff, fatfury2_protection_16_r);
-		install_mem_write16_handler(0, 0x200000, 0x2fffff, fatfury2_protection_16_w);
+		memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x200000, 0x2fffff, 0, 0, fatfury2_protection_16_r);
+		memory_install_write16_handler(0, ADDRESS_SPACE_PROGRAM, 0x200000, 0x2fffff, 0, 0, fatfury2_protection_16_w);
 	}
 
 	if (!strcmp(Machine->gamedrv->name,"fatfury3"))

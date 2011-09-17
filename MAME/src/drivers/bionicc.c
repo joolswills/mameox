@@ -1,11 +1,11 @@
-#pragma code_seg("C162")
-#pragma data_seg("D162")
-#pragma bss_seg("B162")
-#pragma const_seg("K162")
-#pragma comment(linker, "/merge:D162=162")
-#pragma comment(linker, "/merge:C162=162")
-#pragma comment(linker, "/merge:B162=162")
-#pragma comment(linker, "/merge:K162=162")
+#pragma code_seg("C163")
+#pragma data_seg("D163")
+#pragma bss_seg("B163")
+#pragma const_seg("K163")
+#pragma comment(linker, "/merge:D163=163")
+#pragma comment(linker, "/merge:C163=163")
+#pragma comment(linker, "/merge:B163=163")
+#pragma comment(linker, "/merge:K163=163")
 /********************************************************************
 
 			  Bionic Commando
@@ -127,9 +127,9 @@ static READ16_HANDLER( hacked_soundcommand_r )
 INTERRUPT_GEN( bionicc_interrupt )
 {
 	if (cpu_getiloops() == 0) 
-		cpu_set_irq_line(0, 2, HOLD_LINE);
+		cpunum_set_input_line(0, 2, HOLD_LINE);
 	else
-		cpu_set_irq_line(0, 4, HOLD_LINE);
+		cpunum_set_input_line(0, 4, HOLD_LINE);
 }
 
 static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 16 )

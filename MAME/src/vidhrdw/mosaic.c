@@ -1,11 +1,11 @@
-#pragma code_seg("C463")
-#pragma data_seg("D463")
-#pragma bss_seg("B463")
-#pragma const_seg("K463")
-#pragma comment(linker, "/merge:D463=463")
-#pragma comment(linker, "/merge:C463=463")
-#pragma comment(linker, "/merge:B463=463")
-#pragma comment(linker, "/merge:K463=463")
+#pragma code_seg("C489")
+#pragma data_seg("D489")
+#pragma bss_seg("B489")
+#pragma const_seg("K489")
+#pragma comment(linker, "/merge:D489=489")
+#pragma comment(linker, "/merge:C489=489")
+#pragma comment(linker, "/merge:B489=489")
+#pragma comment(linker, "/merge:K489=489")
 /***************************************************************************
 
   vidhrdw.c
@@ -79,13 +79,13 @@ VIDEO_START( mosaic )
 
 ***************************************************************************/
 
-WRITE_HANDLER( mosaic_fgvideoram_w )
+WRITE8_HANDLER( mosaic_fgvideoram_w )
 {
 	mosaic_fgvideoram[offset] = data;
 	tilemap_mark_tile_dirty(fg_tilemap,offset/2);
 }
 
-WRITE_HANDLER( mosaic_bgvideoram_w )
+WRITE8_HANDLER( mosaic_bgvideoram_w )
 {
 	mosaic_bgvideoram[offset] = data;
 	tilemap_mark_tile_dirty(bg_tilemap,offset/2);

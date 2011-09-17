@@ -1,11 +1,11 @@
-#pragma code_seg("C145")
-#pragma data_seg("D145")
-#pragma bss_seg("B145")
-#pragma const_seg("K145")
-#pragma comment(linker, "/merge:D145=145")
-#pragma comment(linker, "/merge:C145=145")
-#pragma comment(linker, "/merge:B145=145")
-#pragma comment(linker, "/merge:K145=145")
+#pragma code_seg("C146")
+#pragma data_seg("D146")
+#pragma bss_seg("B146")
+#pragma const_seg("K146")
+#pragma comment(linker, "/merge:D146=146")
+#pragma comment(linker, "/merge:C146=146")
+#pragma comment(linker, "/merge:B146=146")
+#pragma comment(linker, "/merge:K146=146")
 /***************************************************************************
 
 	Atari Bad Lands hardware
@@ -135,9 +135,9 @@ static void update_interrupts(void)
 		newstate = 2;
 
 	if (newstate)
-		cpu_set_irq_line(0, newstate, ASSERT_LINE);
+		cpunum_set_input_line(0, newstate, ASSERT_LINE);
 	else
-		cpu_set_irq_line(0, 7, CLEAR_LINE);
+		cpunum_set_input_line(0, 7, CLEAR_LINE);
 }
 
 
@@ -222,7 +222,7 @@ static READ16_HANDLER( pedal_1_r )
  *
  *************************************/
 
-static READ_HANDLER( audio_io_r )
+static READ8_HANDLER( audio_io_r )
 {
 	int result = 0xff;
 
@@ -270,7 +270,7 @@ static READ_HANDLER( audio_io_r )
 }
 
 
-static WRITE_HANDLER( audio_io_w )
+static WRITE8_HANDLER( audio_io_w )
 {
 	switch (offset & 0x206)
 	{

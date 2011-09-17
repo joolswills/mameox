@@ -1,11 +1,11 @@
-#pragma code_seg("C314")
-#pragma data_seg("D314")
-#pragma bss_seg("B314")
-#pragma const_seg("K314")
-#pragma comment(linker, "/merge:D314=314")
-#pragma comment(linker, "/merge:C314=314")
-#pragma comment(linker, "/merge:B314=314")
-#pragma comment(linker, "/merge:K314=314")
+#pragma code_seg("C326")
+#pragma data_seg("D326")
+#pragma bss_seg("B326")
+#pragma const_seg("K326")
+#pragma comment(linker, "/merge:D326=326")
+#pragma comment(linker, "/merge:C326=326")
+#pragma comment(linker, "/merge:B326=326")
+#pragma comment(linker, "/merge:K326=326")
 /***************************************************************************
 
   vidhrdw.c
@@ -233,7 +233,7 @@ VIDEO_START( ninjemak )
 
 ***************************************************************************/
 
-WRITE_HANDLER( galivan_videoram_w )
+WRITE8_HANDLER( galivan_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -242,7 +242,7 @@ WRITE_HANDLER( galivan_videoram_w )
 	}
 }
 
-WRITE_HANDLER( galivan_colorram_w )
+WRITE8_HANDLER( galivan_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -252,7 +252,7 @@ WRITE_HANDLER( galivan_colorram_w )
 }
 
 /* Written through port 40 */
-WRITE_HANDLER( galivan_gfxbank_w )
+WRITE8_HANDLER( galivan_gfxbank_w )
 {
 	/* bits 0 and 1 coin counters */
 	coin_counter_w(0,data & 1);
@@ -274,7 +274,7 @@ WRITE_HANDLER( galivan_gfxbank_w )
 /*	logerror("Address: %04X - port 40 = %02x\n",activecpu_get_pc(),data); */
 }
 
-WRITE_HANDLER( ninjemak_gfxbank_w )
+WRITE8_HANDLER( ninjemak_gfxbank_w )
 {
 	/* bits 0 and 1 coin counters */
 	coin_counter_w(0,data & 1);
@@ -334,7 +334,7 @@ logerror("%04x: write %02x to port 80\n",activecpu_get_pc(),data);
 
 
 /* Written through port 41-42 */
-WRITE_HANDLER( galivan_scrollx_w )
+WRITE8_HANDLER( galivan_scrollx_w )
 {
 	static int up = 0;
 	if (offset == 1) {
@@ -349,18 +349,18 @@ WRITE_HANDLER( galivan_scrollx_w )
 }
 
 /* Written through port 43-44 */
-WRITE_HANDLER( galivan_scrolly_w )
+WRITE8_HANDLER( galivan_scrolly_w )
 {
 	scrolly[offset] = data;
 }
 
 
-WRITE_HANDLER( ninjemak_scrollx_w )
+WRITE8_HANDLER( ninjemak_scrollx_w )
 {
 	scrollx[offset] = data;
 }
 
-WRITE_HANDLER( ninjemak_scrolly_w )
+WRITE8_HANDLER( ninjemak_scrolly_w )
 {
 	scrolly[offset] = data;
 }

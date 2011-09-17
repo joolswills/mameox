@@ -1,11 +1,11 @@
-#pragma code_seg("C373")
-#pragma data_seg("D373")
-#pragma bss_seg("B373")
-#pragma const_seg("K373")
-#pragma comment(linker, "/merge:D373=373")
-#pragma comment(linker, "/merge:C373=373")
-#pragma comment(linker, "/merge:B373=373")
-#pragma comment(linker, "/merge:K373=373")
+#pragma code_seg("C388")
+#pragma data_seg("D388")
+#pragma bss_seg("B388")
+#pragma const_seg("K388")
+#pragma comment(linker, "/merge:D388=388")
+#pragma comment(linker, "/merge:C388=388")
+#pragma comment(linker, "/merge:B388=388")
+#pragma comment(linker, "/merge:K388=388")
 /***************************************************************************
 
 Jailbreak - (c) 1986 Konami
@@ -33,8 +33,8 @@ void konami1_decode(void);
 extern UINT8 *jailbrek_scroll_x;
 extern UINT8 *jailbrek_scroll_dir;
 
-extern WRITE_HANDLER( jailbrek_videoram_w );
-extern WRITE_HANDLER( jailbrek_colorram_w );
+extern WRITE8_HANDLER( jailbrek_videoram_w );
+extern WRITE8_HANDLER( jailbrek_colorram_w );
 
 extern PALETTE_INIT( jailbrek );
 extern VIDEO_START( jailbrek );
@@ -44,7 +44,7 @@ extern VIDEO_UPDATE( jailbrek );
 static int irq_enable,nmi_enable;
 
 
-static WRITE_HANDLER( ctrl_w )
+static WRITE8_HANDLER( ctrl_w )
 {
 	nmi_enable = data & 0x01;
 	irq_enable = data & 0x02;
@@ -54,63 +54,49 @@ static WRITE_HANDLER( ctrl_w )
 static INTERRUPT_GEN( jb_interrupt )
 {
 	if (irq_enable)
-		cpu_set_irq_line(0, 0, HOLD_LINE);
+		cpunum_set_input_line(0, 0, HOLD_LINE);
 }
 
 static INTERRUPT_GEN( jb_interrupt_nmi )
 {
 	if (nmi_enable)
-		cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 }
 
 
-static READ_HANDLER( jailbrek_speech_r ) {
+static READ8_HANDLER( jailbrek_speech_r ) {
 	return ( VLM5030_BSY() ? 1 : 0 );
 }
 
-static WRITE_HANDLER( jailbrek_speech_w ) {
+static WRITE8_HANDLER( jailbrek_speech_w ) {
 	/* bit 0 could be latch direction like in yiear */
 	VLM5030_ST( ( data >> 1 ) & 1 );
 	VLM5030_RST( ( data >> 2 ) & 1 );
 }
 
-static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0x07ff) AM_READ(MRA8_RAM)
-	AM_RANGE(0x0800, 0x0fff) AM_READ(MRA8_RAM)
-	AM_RANGE(0x1000, 0x10bf) AM_READ(MRA8_RAM) /* sprites */
-	AM_RANGE(0x10c0, 0x14ff) AM_READ(MRA8_RAM) /* ??? */
-	AM_RANGE(0x1500, 0x1fff) AM_READ(MRA8_RAM) /* work ram */
-	AM_RANGE(0x2000, 0x203f) AM_READ(MRA8_RAM) /* scroll registers */
-	AM_RANGE(0x3000, 0x307f) AM_READ(MRA8_NOP) /* related to sprites? */
-	AM_RANGE(0x3100, 0x3100) AM_READ(input_port_4_r) /* DSW1 */
-	AM_RANGE(0x3200, 0x3200) AM_READ(input_port_5_r) /* DSW2 */
-	AM_RANGE(0x3300, 0x3300) AM_READ(input_port_0_r) /* coins, start */
+static ADDRESS_MAP_START( jailbrek_map, ADDRESS_SPACE_PROGRAM, 8 )
+	AM_RANGE(0x0000, 0x07ff) AM_RAM AM_WRITE(jailbrek_colorram_w) AM_BASE(&colorram)
+    AM_RANGE(0x0800, 0x0fff) AM_RAM AM_WRITE(jailbrek_videoram_w) AM_BASE(&videoram)
+    AM_RANGE(0x1000, 0x10bf) AM_RAM AM_BASE(&spriteram) AM_SIZE(&spriteram_size)
+	AM_RANGE(0x10c0, 0x14ff) AM_RAM /* ??? */
+	AM_RANGE(0x1500, 0x1fff) AM_RAM /* work ram */
+    AM_RANGE(0x2000, 0x203f) AM_RAM AM_BASE(&jailbrek_scroll_x)
+    AM_RANGE(0x2040, 0x2040) AM_WRITENOP /* ??? */
+    AM_RANGE(0x2041, 0x2041) AM_WRITENOP /* ??? */
+    AM_RANGE(0x2042, 0x2042) AM_RAM AM_BASE(&jailbrek_scroll_dir) /* bit 2 = scroll direction */
+    AM_RANGE(0x2043, 0x2043) AM_WRITENOP /* ??? */
+    AM_RANGE(0x2044, 0x2044) AM_WRITE(ctrl_w) /* irq, nmi enable, screen flip */
+	AM_RANGE(0x3000, 0x307f) AM_RAM /* related to sprites? */
+	AM_RANGE(0x3100, 0x3100) AM_READWRITE(input_port_4_r, SN76496_0_w) /* DSW1 */
+	AM_RANGE(0x3200, 0x3200) AM_READ(input_port_5_r) AM_WRITENOP /* DSW2 */ /* mirror of the previous? */
+	AM_RANGE(0x3300, 0x3300) AM_READWRITE(input_port_0_r, watchdog_reset_w) /* coins, start */
 	AM_RANGE(0x3301, 0x3301) AM_READ(input_port_1_r) /* joy1 */
 	AM_RANGE(0x3302, 0x3302) AM_READ(input_port_2_r) /* joy2 */
 	AM_RANGE(0x3303, 0x3303) AM_READ(input_port_3_r) /* DSW0 */
-	AM_RANGE(0x6000, 0x6000) AM_READ(jailbrek_speech_r)
-	AM_RANGE(0x8000, 0xffff) AM_READ(MRA8_ROM)
-ADDRESS_MAP_END
-
-static ADDRESS_MAP_START( writemem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0x07ff) AM_WRITE(jailbrek_colorram_w) AM_BASE(&colorram)
-    AM_RANGE(0x0800, 0x0fff) AM_WRITE(jailbrek_videoram_w) AM_BASE(&videoram)
-    AM_RANGE(0x1000, 0x10bf) AM_WRITE(MWA8_RAM) AM_BASE(&spriteram) AM_SIZE(&spriteram_size) /* sprites */
-    AM_RANGE(0x10c0, 0x14ff) AM_WRITE(MWA8_RAM) /* ??? */
-	AM_RANGE(0x1500, 0x1fff) AM_WRITE(MWA8_RAM) /* work ram */
-    AM_RANGE(0x2000, 0x203f) AM_WRITE(MWA8_RAM) AM_BASE(&jailbrek_scroll_x) /* scroll registers */
-    AM_RANGE(0x2040, 0x2040) AM_WRITE(MWA8_NOP) /* ??? */
-    AM_RANGE(0x2041, 0x2041) AM_WRITE(MWA8_NOP) /* ??? */
-    AM_RANGE(0x2042, 0x2042) AM_WRITE(MWA8_RAM) AM_BASE(&jailbrek_scroll_dir) /* bit 2 = scroll direction */
-    AM_RANGE(0x2043, 0x2043) AM_WRITE(MWA8_NOP) /* ??? */
-    AM_RANGE(0x2044, 0x2044) AM_WRITE(ctrl_w) /* irq, nmi enable, screen flip */
-    AM_RANGE(0x3000, 0x307f) AM_WRITE(MWA8_RAM) /* ??? */
-	AM_RANGE(0x3100, 0x3100) AM_WRITE(SN76496_0_w) /* SN76496 data write */
-	AM_RANGE(0x3200, 0x3200) AM_WRITE(MWA8_NOP)	/* mirror of the previous? */
-    AM_RANGE(0x3300, 0x3300) AM_WRITE(watchdog_reset_w) /* watchdog */
 	AM_RANGE(0x4000, 0x4000) AM_WRITE(jailbrek_speech_w) /* speech pins */
 	AM_RANGE(0x5000, 0x5000) AM_WRITE(VLM5030_data_w) /* speech data */
-    AM_RANGE(0x8000, 0xffff) AM_WRITE(MWA8_ROM)
+	AM_RANGE(0x6000, 0x6000) AM_READ(jailbrek_speech_r)
+	AM_RANGE(0x8000, 0xffff) AM_ROM
 ADDRESS_MAP_END
 
 
@@ -188,8 +174,8 @@ INPUT_PORTS_START( jailbrek )
 	PORT_DIPSETTING(    0x00, DEF_STR( Upright ) )
 	PORT_DIPSETTING(    0x04, DEF_STR( Cocktail ) )
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Bonus_Life ) )
-	PORT_DIPSETTING(    0x08, "30K 70K" )
-	PORT_DIPSETTING(    0x00, "40K 80K" )
+	PORT_DIPSETTING(    0x08, "30K 70K+" )
+	PORT_DIPSETTING(    0x00, "40K 80K+" )
 	PORT_DIPNAME( 0x30, 0x10, DEF_STR( Difficulty ) )
 	PORT_DIPSETTING(    0x30, "Easy" )
 	PORT_DIPSETTING(    0x20, "Normal" )
@@ -263,7 +249,7 @@ static MACHINE_DRIVER_START( jailbrek )
 
 	/* basic machine hardware */
 	MDRV_CPU_ADD(M6809, 3000000)        /* 3 MHz ??? */
-	MDRV_CPU_PROGRAM_MAP(readmem,writemem)
+	MDRV_CPU_PROGRAM_MAP(jailbrek_map, 0)
 	MDRV_CPU_VBLANK_INT(jb_interrupt,1)
 	MDRV_CPU_PERIODIC_INT(jb_interrupt_nmi,500) /* ? */
 

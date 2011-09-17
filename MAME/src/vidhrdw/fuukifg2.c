@@ -1,11 +1,11 @@
-#pragma code_seg("C307")
-#pragma data_seg("D307")
-#pragma bss_seg("B307")
-#pragma const_seg("K307")
-#pragma comment(linker, "/merge:D307=307")
-#pragma comment(linker, "/merge:C307=307")
-#pragma comment(linker, "/merge:B307=307")
-#pragma comment(linker, "/merge:K307=307")
+#pragma code_seg("C318")
+#pragma data_seg("D318")
+#pragma bss_seg("B318")
+#pragma const_seg("K318")
+#pragma comment(linker, "/merge:D318=318")
+#pragma comment(linker, "/merge:C318=318")
+#pragma comment(linker, "/merge:B318=318")
+#pragma comment(linker, "/merge:K318=318")
 /***************************************************************************
 
 						  -= Fuuki 16 Bit Games (FG-2) =-
@@ -234,7 +234,7 @@ static void fuuki16_draw_sprites(struct mame_bitmap *bitmap, const struct rectan
 
 #ifdef MAME_DEBUG
 #if 0
-if (keyboard_pressed(KEYCODE_X))
+if (code_pressed(KEYCODE_X))
 {	/* Display some info on each sprite */
 	struct DisplayText dt[2];	char buf[10];
 	sprintf(buf, "%Xx%X %X",xnum,ynum,(attr>>6)&3);

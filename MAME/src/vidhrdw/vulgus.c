@@ -1,11 +1,11 @@
-#pragma code_seg("C772")
-#pragma data_seg("D772")
-#pragma bss_seg("B772")
-#pragma const_seg("K772")
-#pragma comment(linker, "/merge:D772=772")
-#pragma comment(linker, "/merge:C772=772")
-#pragma comment(linker, "/merge:B772=772")
-#pragma comment(linker, "/merge:K772=772")
+#pragma code_seg("C814")
+#pragma data_seg("D814")
+#pragma bss_seg("B814")
+#pragma const_seg("K814")
+#pragma comment(linker, "/merge:D814=814")
+#pragma comment(linker, "/merge:C814=814")
+#pragma comment(linker, "/merge:B814=814")
+#pragma comment(linker, "/merge:K814=814")
 /***************************************************************************
 
   vidhrdw.c
@@ -147,20 +147,20 @@ VIDEO_START( vulgus )
 
 ***************************************************************************/
 
-WRITE_HANDLER( vulgus_fgvideoram_w )
+WRITE8_HANDLER( vulgus_fgvideoram_w )
 {
 	vulgus_fgvideoram[offset] = data;
 	tilemap_mark_tile_dirty(fg_tilemap,offset & 0x3ff);
 }
 
-WRITE_HANDLER( vulgus_bgvideoram_w )
+WRITE8_HANDLER( vulgus_bgvideoram_w )
 {
 	vulgus_bgvideoram[offset] = data;
 	tilemap_mark_tile_dirty(bg_tilemap,offset & 0x3ff);
 }
 
 
-WRITE_HANDLER( vulgus_c804_w )
+WRITE8_HANDLER( vulgus_c804_w )
 {
 	/* bits 0 and 1 are coin counters */
 	coin_counter_w(0, data & 0x01);
@@ -171,7 +171,7 @@ WRITE_HANDLER( vulgus_c804_w )
 }
 
 
-WRITE_HANDLER( vulgus_palette_bank_w )
+WRITE8_HANDLER( vulgus_palette_bank_w )
 {
 	if (vulgus_palette_bank != (data & 3))
 	{

@@ -1,11 +1,11 @@
-#pragma code_seg("C781")
-#pragma data_seg("D781")
-#pragma bss_seg("B781")
-#pragma const_seg("K781")
-#pragma comment(linker, "/merge:D781=781")
-#pragma comment(linker, "/merge:C781=781")
-#pragma comment(linker, "/merge:B781=781")
-#pragma comment(linker, "/merge:K781=781")
+#pragma code_seg("C823")
+#pragma data_seg("D823")
+#pragma bss_seg("B823")
+#pragma const_seg("K823")
+#pragma comment(linker, "/merge:D823=823")
+#pragma comment(linker, "/merge:C823=823")
+#pragma comment(linker, "/merge:B823=823")
+#pragma comment(linker, "/merge:K823=823")
 #include "driver.h"
 #include "state.h"
 #include "vidhrdw/generic.h"
@@ -720,25 +720,25 @@ VIDEO_UPDATE( wgp )
 #endif
 
 #ifdef MAME_DEBUG
-	if (keyboard_pressed_memory (KEYCODE_V))
+	if (code_pressed_memory (KEYCODE_V))
 	{
 		dislayer[0] ^= 1;
 		usrintf_showmessage("piv0: %01x",dislayer[0]);
 	}
 
-	if (keyboard_pressed_memory (KEYCODE_B))
+	if (code_pressed_memory (KEYCODE_B))
 	{
 		dislayer[1] ^= 1;
 		usrintf_showmessage("piv1: %01x",dislayer[1]);
 	}
 
-	if (keyboard_pressed_memory (KEYCODE_N))
+	if (code_pressed_memory (KEYCODE_N))
 	{
 		dislayer[2] ^= 1;
 		usrintf_showmessage("piv2: %01x",dislayer[2]);
 	}
 
-	if (keyboard_pressed_memory (KEYCODE_M))
+	if (code_pressed_memory (KEYCODE_M))
 	{
 		dislayer[3] ^= 1;
 		usrintf_showmessage("TC0100SCN top bg layer: %01x",dislayer[3]);

@@ -1,11 +1,11 @@
-#pragma code_seg("C288")
-#pragma data_seg("D288")
-#pragma bss_seg("B288")
-#pragma const_seg("K288")
-#pragma comment(linker, "/merge:D288=288")
-#pragma comment(linker, "/merge:C288=288")
-#pragma comment(linker, "/merge:B288=288")
-#pragma comment(linker, "/merge:K288=288")
+#pragma code_seg("C299")
+#pragma data_seg("D299")
+#pragma bss_seg("B299")
+#pragma const_seg("K299")
+#pragma comment(linker, "/merge:D299=299")
+#pragma comment(linker, "/merge:C299=299")
+#pragma comment(linker, "/merge:B299=299")
+#pragma comment(linker, "/merge:K299=299")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 #include "vidhrdw/generic.h"
@@ -116,7 +116,7 @@ VIDEO_START( fastlane )
 
 ***************************************************************************/
 
-WRITE_HANDLER( fastlane_vram1_w )
+WRITE8_HANDLER( fastlane_vram1_w )
 {
 	if (fastlane_videoram1[offset] != data)
 	{
@@ -125,7 +125,7 @@ WRITE_HANDLER( fastlane_vram1_w )
 	}
 }
 
-WRITE_HANDLER( fastlane_vram2_w )
+WRITE8_HANDLER( fastlane_vram2_w )
 {
 	if (fastlane_videoram2[offset] != data)
 	{

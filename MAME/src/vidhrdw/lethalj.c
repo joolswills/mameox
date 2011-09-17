@@ -77,25 +77,8 @@ READ16_HANDLER( lethalj_gun_r )
 			result = guny + 4;
 			break;
 	}
-	logerror("%08X:lethalj_gun_r(%d) = %04X\n", activecpu_get_pc(), offset, result);
+/*	logerror("%08X:lethalj_gun_r(%d) = %04X\n", activecpu_get_pc(), offset, result); */
 	return result;
-}
-
-
-
-/*************************************
- *
- *	Palette init (standard 5-5-5 RGB)
- *
- *************************************/
-
-PALETTE_INIT( lethalj )
-{
-	int i, r, g, b;
-	for (r = i = 0; r < 32; r++)
-		for (g = 0; g < 32; g++)
-			for (b = 0; b < 32; b++, i++)
-				palette_set_color(i, (r << 3) | (r >> 2), (g << 3) | (g >> 2), (b << 3) | (b >> 2));
 }
 
 
@@ -129,7 +112,7 @@ VIDEO_START( lethalj )
 
 static void gen_ext1_int(int param)
 {
-	cpu_set_irq_line(0, 0, ASSERT_LINE);
+	cpunum_set_input_line(0, 0, ASSERT_LINE);
 }
 
 
@@ -189,7 +172,7 @@ WRITE16_HANDLER( lethalj_blitter_w )
 
 	/* clear the IRQ on offset 0 */
 	else if (offset == 0)
-		cpu_set_irq_line(0, 0, CLEAR_LINE);
+		cpunum_set_input_line(0, 0, CLEAR_LINE);
 }
 
 

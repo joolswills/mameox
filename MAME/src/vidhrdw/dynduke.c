@@ -1,11 +1,12 @@
-#pragma code_seg("C269")
-#pragma data_seg("D269")
-#pragma bss_seg("B269")
-#pragma const_seg("K269")
-#pragma comment(linker, "/merge:D269=269")
-#pragma comment(linker, "/merge:C269=269")
-#pragma comment(linker, "/merge:B269=269")
-#pragma comment(linker, "/merge:K269=269")
+#pragma code_seg("C280")
+#pragma data_seg("D280")
+#pragma bss_seg("B280")
+#pragma const_seg("K280")
+#pragma comment(linker, "/merge:D280=280")
+#pragma comment(linker, "/merge:C280=280")
+#pragma comment(linker, "/merge:B280=280")
+#pragma comment(linker, "/merge:K280=280")
+
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -17,7 +18,7 @@ static int back_enable,fore_enable,sprite_enable;
 
 /******************************************************************************/
 
-WRITE_HANDLER( dynduke_paletteram_w )
+WRITE8_HANDLER( dynduke_paletteram_w )
 {
 	int r,g,b;
 	int color;
@@ -43,29 +44,29 @@ WRITE_HANDLER( dynduke_paletteram_w )
 	}
 }
 
-READ_HANDLER( dynduke_background_r )
+READ8_HANDLER( dynduke_background_r )
 {
 	return dynduke_back_data[offset];
 }
 
-READ_HANDLER( dynduke_foreground_r )
+READ8_HANDLER( dynduke_foreground_r )
 {
 	return dynduke_fore_data[offset];
 }
 
-WRITE_HANDLER( dynduke_background_w )
+WRITE8_HANDLER( dynduke_background_w )
 {
 	dynduke_back_data[offset]=data;
 	tilemap_mark_tile_dirty(bg_layer,offset/2);
 }
 
-WRITE_HANDLER( dynduke_foreground_w )
+WRITE8_HANDLER( dynduke_foreground_w )
 {
 	dynduke_fore_data[offset]=data;
 	tilemap_mark_tile_dirty(fg_layer,offset/2);
 }
 
-WRITE_HANDLER( dynduke_text_w )
+WRITE8_HANDLER( dynduke_text_w )
 {
 	videoram[offset]=data;
 	tilemap_mark_tile_dirty(tx_layer,offset/2);
@@ -125,7 +126,7 @@ VIDEO_START( dynduke )
 	return 0;
 }
 
-WRITE_HANDLER( dynduke_gfxbank_w )
+WRITE8_HANDLER( dynduke_gfxbank_w )
 {
 	static int old_back,old_fore;
 
@@ -141,7 +142,7 @@ WRITE_HANDLER( dynduke_gfxbank_w )
 	old_fore=fore_bankbase;
 }
 
-WRITE_HANDLER( dynduke_control_w )
+WRITE8_HANDLER( dynduke_control_w )
 {
 	static int old_bpal;
 
@@ -172,7 +173,6 @@ static void draw_sprites(struct mame_bitmap *bitmap,const struct rectangle *clip
 	{
 		/* Don't draw empty sprite table entries */
 		if (buffered_spriteram[offs+7]!=0xf) continue;
-		if (buffered_spriteram[offs+0]==0xf0f) continue;
 		if (((buffered_spriteram[offs+5]>>5)&3)!=pri) continue;
 
 		fx= buffered_spriteram[offs+1]&0x20;

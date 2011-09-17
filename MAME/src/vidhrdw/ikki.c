@@ -1,11 +1,11 @@
-#pragma code_seg("C364")
-#pragma data_seg("D364")
-#pragma bss_seg("B364")
-#pragma const_seg("K364")
-#pragma comment(linker, "/merge:D364=364")
-#pragma comment(linker, "/merge:C364=364")
-#pragma comment(linker, "/merge:B364=364")
-#pragma comment(linker, "/merge:K364=364")
+#pragma code_seg("C379")
+#pragma data_seg("D379")
+#pragma bss_seg("B379")
+#pragma const_seg("K379")
+#pragma comment(linker, "/merge:D379=379")
+#pragma comment(linker, "/merge:C379=379")
+#pragma comment(linker, "/merge:B379=379")
+#pragma comment(linker, "/merge:K379=379")
 /******************************************************************************
 
 Ikki (c) 1985 Sun Electronics
@@ -61,12 +61,12 @@ PALETTE_INIT( ikki )
 
 }
 
-WRITE_HANDLER( ikki_scroll_w )
+WRITE8_HANDLER( ikki_scroll_w )
 {
 	ikki_scroll[offset] = data;
 }
 
-WRITE_HANDLER( ikki_scrn_ctrl_w )
+WRITE8_HANDLER( ikki_scrn_ctrl_w )
 {
 	ikki_flipscreen = (data >> 2) & 1;
 }

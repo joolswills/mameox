@@ -1,11 +1,11 @@
-#pragma code_seg("C565")
-#pragma data_seg("D565")
-#pragma bss_seg("B565")
-#pragma const_seg("K565")
-#pragma comment(linker, "/merge:D565=565")
-#pragma comment(linker, "/merge:C565=565")
-#pragma comment(linker, "/merge:B565=565")
-#pragma comment(linker, "/merge:K565=565")
+#pragma code_seg("C599")
+#pragma data_seg("D599")
+#pragma bss_seg("B599")
+#pragma const_seg("K599")
+#pragma comment(linker, "/merge:D599=599")
+#pragma comment(linker, "/merge:C599=599")
+#pragma comment(linker, "/merge:B599=599")
+#pragma comment(linker, "/merge:K599=599")
 /*******************************************************************************
 
 Raiders5 (c) 1985 Taito / UPL
@@ -25,30 +25,30 @@ static UINT8 raiders5_xscroll,raiders5_yscroll;
 static UINT8 flipscreen;
 
 
-WRITE_HANDLER( raiders5_scroll_x_w )
+WRITE8_HANDLER( raiders5_scroll_x_w )
 {
 	raiders5_xscroll = data;
 }
-WRITE_HANDLER( raiders5_scroll_y_w )
+WRITE8_HANDLER( raiders5_scroll_y_w )
 {
 	raiders5_yscroll = data;
 }
 
-WRITE_HANDLER( raiders5_flipscreen_w )
+WRITE8_HANDLER( raiders5_flipscreen_w )
 {
 	flipscreen = data & 0x01;
 }
 
-READ_HANDLER( raiders5_fgram_r )
+READ8_HANDLER( raiders5_fgram_r )
 {
 	return raiders5_fgram[offset];
 }
-WRITE_HANDLER( raiders5_fgram_w )
+WRITE8_HANDLER( raiders5_fgram_w )
 {
 	raiders5_fgram[offset] = data;
 }
 
-WRITE_HANDLER( raiders5_videoram_w )
+WRITE8_HANDLER( raiders5_videoram_w )
 {
 	int y = (offset + ((raiders5_yscroll & 0xf8) << 2) ) & 0x3e0;
 	int x = (offset + (raiders5_xscroll >> 3) ) & 0x1f;
@@ -56,7 +56,7 @@ WRITE_HANDLER( raiders5_videoram_w )
 
 	videoram[offs] = data;
 }
-READ_HANDLER( raiders5_videoram_r )
+READ8_HANDLER( raiders5_videoram_r )
 {
 	int y = (offset + ((raiders5_yscroll & 0xf8) << 2) ) & 0x3e0;
 	int x = (offset + (raiders5_xscroll >> 3) ) & 0x1f;
@@ -65,7 +65,7 @@ READ_HANDLER( raiders5_videoram_r )
 	return videoram[offs];
 }
 
-WRITE_HANDLER( raiders5_paletteram_w )
+WRITE8_HANDLER( raiders5_paletteram_w )
 {
 	int i;
 

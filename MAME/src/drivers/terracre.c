@@ -1,11 +1,11 @@
-#pragma code_seg("C715")
-#pragma data_seg("D715")
-#pragma bss_seg("B715")
-#pragma const_seg("K715")
-#pragma comment(linker, "/merge:D715=715")
-#pragma comment(linker, "/merge:C715=715")
-#pragma comment(linker, "/merge:B715=715")
-#pragma comment(linker, "/merge:K715=715")
+#pragma code_seg("C757")
+#pragma data_seg("D757")
+#pragma bss_seg("B757")
+#pragma const_seg("K757")
+#pragma comment(linker, "/merge:D757=757")
+#pragma comment(linker, "/merge:C757=757")
+#pragma comment(linker, "/merge:B757=757")
+#pragma comment(linker, "/merge:K757=757")
 /******************************************************************
 Terra Cresta (preliminary)
 Nichibutsu 1985
@@ -167,7 +167,7 @@ static WRITE16_HANDLER( amazon_sound_w )
 	soundlatch_w(0,((data & 0x7f) << 1) | 1);
 }
 
-static READ_HANDLER( soundlatch_clear_r )
+static READ8_HANDLER( soundlatch_clear_r )
 {
 	soundlatch_clear_w(0,0);
 	return 0;
@@ -962,7 +962,7 @@ DRIVER_INIT( amatelas )
 DRIVER_INIT( horekid )
 {
 	mpProtData = mHoreKidProtData;
-	install_mem_read16_handler(0, 0x44004, 0x44005, horekid_IN2_r);
+	memory_install_read16_handler(0, ADDRESS_SPACE_PROGRAM, 0x44004, 0x44005, 0, 0, horekid_IN2_r);
 }
 
 /*    YEAR, NAME,   PARENT,     MACHINE, INPUT,    INIT,     MONITOR,  COMPANY,      FULLNAME, FLAGS */

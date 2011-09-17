@@ -1,11 +1,11 @@
-#pragma code_seg("C223")
-#pragma data_seg("D223")
-#pragma bss_seg("B223")
-#pragma const_seg("K223")
-#pragma comment(linker, "/merge:D223=223")
-#pragma comment(linker, "/merge:C223=223")
-#pragma comment(linker, "/merge:B223=223")
-#pragma comment(linker, "/merge:K223=223")
+#pragma code_seg("C228")
+#pragma data_seg("D228")
+#pragma bss_seg("B228")
+#pragma const_seg("K228")
+#pragma comment(linker, "/merge:D228=228")
+#pragma comment(linker, "/merge:C228=228")
+#pragma comment(linker, "/merge:B228=228")
+#pragma comment(linker, "/merge:K228=228")
 /***************************************************************************
 
 	Atari Cops'n Robbers hardware
@@ -23,7 +23,7 @@ static int gun_mask[] = {0x7e, 0x7d, 0x7b, 0x77, 0x6f, 0x5f, 0x3f};
 // I read out the current gun position via the sprite image locations,
 // and then decrement/increment it if the up/down keys are pressed.
 
-READ_HANDLER( copsnrob_gun_position_r )
+READ8_HANDLER( copsnrob_gun_position_r )
 {
     int keys, current_car_image, current_gun_pos = 0;
 

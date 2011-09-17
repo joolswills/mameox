@@ -145,7 +145,7 @@ VIDEO_START( chinagat )
 
 ***************************************************************************/
 
-WRITE_HANDLER( ddragon_bgvideoram_w )
+WRITE8_HANDLER( ddragon_bgvideoram_w )
 {
 	if (ddragon_bgvideoram[offset] != data)
 	{
@@ -154,7 +154,7 @@ WRITE_HANDLER( ddragon_bgvideoram_w )
 	}
 }
 
-WRITE_HANDLER( ddragon_fgvideoram_w )
+WRITE8_HANDLER( ddragon_fgvideoram_w )
 {
 	if (ddragon_fgvideoram[offset] != data)
 	{

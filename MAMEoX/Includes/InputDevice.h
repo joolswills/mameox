@@ -169,13 +169,13 @@ public:
     return NULL;
   }
 
+	HANDLE					    m_deviceHandle;	          //!<	Input handle for this device
   protected:
 
   CInputManager       *m_inputManager;
 
   DWORD               m_portIndex;              //!<  Port this device is connected to
 	DWORD               m_portMask, m_portName;
-	HANDLE					    m_deviceHandle;	          //!<	Input handle for this device
 
 
 	XINPUT_STATE		    m_state;	      //!<	device device state struct

@@ -1,11 +1,11 @@
-#pragma code_seg("C370")
-#pragma data_seg("D370")
-#pragma bss_seg("B370")
-#pragma const_seg("K370")
-#pragma comment(linker, "/merge:D370=370")
-#pragma comment(linker, "/merge:C370=370")
-#pragma comment(linker, "/merge:B370=370")
-#pragma comment(linker, "/merge:K370=370")
+#pragma code_seg("C385")
+#pragma data_seg("D385")
+#pragma bss_seg("B385")
+#pragma const_seg("K385")
+#pragma comment(linker, "/merge:D385=385")
+#pragma comment(linker, "/merge:C385=385")
+#pragma comment(linker, "/merge:B385=385")
+#pragma comment(linker, "/merge:K385=385")
 /***************************************************************************
 
   vidhrdw.c
@@ -145,7 +145,7 @@ VIDEO_START( slikshot )
  *
  *************************************/
 
-WRITE_HANDLER( itech8_palette_w )
+WRITE8_HANDLER( itech8_palette_w )
 {
 	tlc34076_w(offset/2, data);
 }
@@ -631,7 +631,7 @@ static void blitter_done(int param)
  *
  *************************************/
 
-READ_HANDLER( itech8_blitter_r )
+READ8_HANDLER( itech8_blitter_r )
 {
 	int result = blitter_data[offset / 2];
 
@@ -650,12 +650,16 @@ READ_HANDLER( itech8_blitter_r )
 		else
 			result &= 0x7f;
 	}
+	
+	/* a read from offsets 12-15 return input port values */
+	if (offset >= 12 && offset <= 15)
+		result = readinputport(3 + offset - 12);
 
 	return result;
 }
 
 
-WRITE_HANDLER( itech8_blitter_w )
+WRITE8_HANDLER( itech8_blitter_w )
 {
 	/* low bit seems to be ignored */
 	offset /= 2;
@@ -710,7 +714,7 @@ WRITE_HANDLER( itech8_blitter_w )
  *
  *************************************/
 
-WRITE_HANDLER( itech8_tms34061_w )
+WRITE8_HANDLER( itech8_tms34061_w )
 {
 	int func = (offset >> 9) & 7;
 	int col = offset & 0xff;
@@ -725,7 +729,7 @@ WRITE_HANDLER( itech8_tms34061_w )
 }
 
 
-READ_HANDLER( itech8_tms34061_r )
+READ8_HANDLER( itech8_tms34061_r )
 {
 	int func = (offset >> 9) & 7;
 	int col = offset & 0xff;

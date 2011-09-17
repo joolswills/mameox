@@ -1,11 +1,11 @@
-#pragma code_seg("C132")
-#pragma data_seg("D132")
-#pragma bss_seg("B132")
-#pragma const_seg("K132")
-#pragma comment(linker, "/merge:D132=132")
-#pragma comment(linker, "/merge:C132=132")
-#pragma comment(linker, "/merge:B132=132")
-#pragma comment(linker, "/merge:K132=132")
+#pragma code_seg("C133")
+#pragma data_seg("D133")
+#pragma bss_seg("B133")
+#pragma const_seg("K133")
+#pragma comment(linker, "/merge:D133=133")
+#pragma comment(linker, "/merge:C133=133")
+#pragma comment(linker, "/merge:B133=133")
+#pragma comment(linker, "/merge:K133=133")
 /*
     Driver For DECO   ASTRO FIGHTER/TOMAHAWK 777
 
@@ -52,14 +52,14 @@ extern unsigned char *tomahawk_protection;
 PALETTE_INIT( astrof );
 VIDEO_START( astrof );
 VIDEO_UPDATE( astrof );
-WRITE_HANDLER( astrof_videoram_w );
-WRITE_HANDLER( tomahawk_videoram_w );
-WRITE_HANDLER( astrof_video_control1_w );
-WRITE_HANDLER( astrof_video_control2_w );
-WRITE_HANDLER( tomahawk_video_control2_w );
-READ_HANDLER( tomahawk_protection_r );
-WRITE_HANDLER( astrof_sample1_w );
-WRITE_HANDLER( astrof_sample2_w );
+WRITE8_HANDLER( astrof_videoram_w );
+WRITE8_HANDLER( tomahawk_videoram_w );
+WRITE8_HANDLER( astrof_video_control1_w );
+WRITE8_HANDLER( astrof_video_control2_w );
+WRITE8_HANDLER( tomahawk_video_control2_w );
+READ8_HANDLER( tomahawk_protection_r );
+WRITE8_HANDLER( astrof_sample1_w );
+WRITE8_HANDLER( astrof_sample2_w );
 
 extern struct Samplesinterface astrof_samples_interface;
 extern struct Samplesinterface tomahawk_samples_interface;
@@ -105,7 +105,7 @@ ADDRESS_MAP_END
 static INTERRUPT_GEN( astrof_interrupt )
 {
 	if (readinputport(2) & 1)	/* Coin */
-		cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 }
 
 

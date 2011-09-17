@@ -1,11 +1,11 @@
-#pragma code_seg("C186")
-#pragma data_seg("D186")
-#pragma bss_seg("B186")
-#pragma const_seg("K186")
-#pragma comment(linker, "/merge:D186=186")
-#pragma comment(linker, "/merge:C186=186")
-#pragma comment(linker, "/merge:B186=186")
-#pragma comment(linker, "/merge:K186=186")
+#pragma code_seg("C188")
+#pragma data_seg("D188")
+#pragma bss_seg("B188")
+#pragma const_seg("K188")
+#pragma comment(linker, "/merge:D188=188")
+#pragma comment(linker, "/merge:C188=188")
+#pragma comment(linker, "/merge:B188=188")
+#pragma comment(linker, "/merge:K188=188")
 /*****************************************************************************
 
 B-Wings  (c) 1984 Data East Corporation
@@ -70,11 +70,11 @@ struct GfxLayout bwing_tilelayout =
 };
 
 
-WRITE_HANDLER( bwing_spriteram_w ) { buffered_spriteram[offset] = data; }
-WRITE_HANDLER( bwing_videoram_w )  { videoram[offset] = data; tilemap_mark_tile_dirty(charmap, offset); }
+WRITE8_HANDLER( bwing_spriteram_w ) { buffered_spriteram[offset] = data; }
+WRITE8_HANDLER( bwing_videoram_w )  { videoram[offset] = data; tilemap_mark_tile_dirty(charmap, offset); }
 
 
-READ_HANDLER ( bwing_scrollram_r )
+READ8_HANDLER ( bwing_scrollram_r )
 {
 	if (!srbank) offset = srxlat[offset];
 
@@ -82,7 +82,7 @@ READ_HANDLER ( bwing_scrollram_r )
 }
 
 
-WRITE_HANDLER( bwing_scrollram_w )
+WRITE8_HANDLER( bwing_scrollram_w )
 {
 	if (!srbank)
 	{
@@ -95,7 +95,7 @@ WRITE_HANDLER( bwing_scrollram_w )
 }
 
 
-WRITE_HANDLER( bwing_scrollreg_w )
+WRITE8_HANDLER( bwing_scrollreg_w )
 {
 	static unsigned bp_ready=0;
 	unsigned i;
@@ -137,7 +137,7 @@ WRITE_HANDLER( bwing_scrollreg_w )
 }
 
 
-WRITE_HANDLER( bwing_paletteram_w )
+WRITE8_HANDLER( bwing_paletteram_w )
 {
 	const float rgb[4][3]={{0.85,0.95,1.00},{0.90,1.00,1.00},{0.80,1.00,1.00},{0.75,0.90,1.10}};
 	int r, g, b, i;

@@ -1,11 +1,11 @@
-#pragma code_seg("C179")
-#pragma data_seg("D179")
-#pragma bss_seg("B179")
-#pragma const_seg("K179")
-#pragma comment(linker, "/merge:D179=179")
-#pragma comment(linker, "/merge:C179=179")
-#pragma comment(linker, "/merge:B179=179")
-#pragma comment(linker, "/merge:K179=179")
+#pragma code_seg("C181")
+#pragma data_seg("D181")
+#pragma bss_seg("B181")
+#pragma const_seg("K181")
+#pragma comment(linker, "/merge:D181=181")
+#pragma comment(linker, "/merge:C181=181")
+#pragma comment(linker, "/merge:B181=181")
+#pragma comment(linker, "/merge:K181=181")
 /***************************************************************************
 Break Thru Doc. Data East (1986)
 
@@ -62,9 +62,9 @@ unsigned char *brkthru_nmi_enable; /* needs to be tracked down */
 extern unsigned char *brkthru_videoram;
 extern size_t brkthru_videoram_size;
 
-WRITE_HANDLER( brkthru_1800_w );
-WRITE_HANDLER( brkthru_bgram_w );
-WRITE_HANDLER( brkthru_fgram_w );
+WRITE8_HANDLER( brkthru_1800_w );
+WRITE8_HANDLER( brkthru_bgram_w );
+WRITE8_HANDLER( brkthru_fgram_w );
 VIDEO_START( brkthru );
 PALETTE_INIT( brkthru );
 VIDEO_UPDATE( brkthru );
@@ -72,14 +72,14 @@ VIDEO_UPDATE( brkthru );
 
 static int nmi_enable;
 
-WRITE_HANDLER( brkthru_1803_w )
+WRITE8_HANDLER( brkthru_1803_w )
 {
 	/* bit 0 = NMI enable */
 	nmi_enable = ~data & 1;
 
 	/* bit 1 = ? maybe IRQ acknowledge */
 }
-WRITE_HANDLER( darwin_0803_w )
+WRITE8_HANDLER( darwin_0803_w )
 {
 	/* bit 0 = NMI enable */
 	/*nmi_enable = ~data & 1;*/
@@ -88,10 +88,10 @@ WRITE_HANDLER( darwin_0803_w )
 	/* bit 1 = ? maybe IRQ acknowledge */
 }
 
-WRITE_HANDLER( brkthru_soundlatch_w )
+WRITE8_HANDLER( brkthru_soundlatch_w )
 {
 	soundlatch_w(offset,data);
-	cpu_set_irq_line(1,IRQ_LINE_NMI,PULSE_LINE);
+	cpunum_set_input_line(1,INPUT_LINE_NMI,PULSE_LINE);
 }
 
 
@@ -170,13 +170,13 @@ INTERRUPT_GEN( brkthru_interrupt )
 	if (cpu_getiloops() == 0)
 	{
 		if (nmi_enable)
-			cpu_set_irq_line(0, IRQ_LINE_NMI, PULSE_LINE);
+			cpunum_set_input_line(0, INPUT_LINE_NMI, PULSE_LINE);
 	}
 	else
 	{
 		/* generate IRQ on coin insertion */
 		if ((readinputport(2) & 0xe0) != 0xe0)
-			cpu_set_irq_line(0, 0, HOLD_LINE);
+			cpunum_set_input_line(0, 0, HOLD_LINE);
 	}
 }
 
@@ -207,16 +207,15 @@ INPUT_PORTS_START( brkthru )
 	PORT_DIPSETTING(    0x03, "3" )
 	PORT_DIPSETTING(    0x01, "5" )
 	PORT_BITX(0,        0x00, IPT_DIPSWITCH_SETTING | IPF_CHEAT, "99", IP_KEY_NONE, IP_JOY_NONE )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x0c, 0x0c, DEF_STR( Bonus_Life ) )
+	PORT_DIPSETTING(    0x00, "20000 Points Only" )
+	PORT_DIPSETTING(    0x04, "10000/20000 Points" )
+	PORT_DIPSETTING(    0x0c, "20000/30000 Points" )
+	PORT_DIPSETTING(    0x08, "20000/40000 Points" )
 	PORT_DIPNAME( 0x10, 0x10, "Allow Continue" )
 	PORT_DIPSETTING(    0x00, DEF_STR( No ) )
 	PORT_DIPSETTING(    0x10, DEF_STR( Yes ) )
-	PORT_BIT_IMPULSE( 0x20, IP_ACTIVE_LOW, IPT_COIN1, 2 )
+	PORT_BIT_IMPULSE( 0x20, IP_ACTIVE_LOW, IPT_COIN1, 2 )	/* Manual says Pitcure Flip=On, Normal=Off */
 	PORT_BIT_IMPULSE( 0x40, IP_ACTIVE_LOW, IPT_COIN2, 2 )
 	PORT_BIT_IMPULSE( 0x80, IP_ACTIVE_LOW, IPT_SERVICE1, 2 )
 
@@ -231,17 +230,18 @@ INPUT_PORTS_START( brkthru )
 	PORT_DIPSETTING(    0x0c, DEF_STR( 1C_1C ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( 1C_2C ) )
 	PORT_DIPSETTING(    0x04, DEF_STR( 1C_3C ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0xc0, 0x00, DEF_STR( Cabinet ) )
-	PORT_DIPSETTING(    0x00, "Upright 1 Player" )
-	PORT_DIPSETTING(    0x40, "Upright 2 Players" )
-//	PORT_DIPSETTING(    0x80, DEF_STR( Cocktail ) )		// "Cocktail 1 Player" - IMPOSSIBLE !
-	PORT_DIPSETTING(    0xc0, DEF_STR( Cocktail ) )		// "Cocktail 2 Players"
+	PORT_DIPNAME( 0x10, 0x10, "Enemy Vehicles" )
+	PORT_DIPSETTING(    0x10, "Slow" )
+	PORT_DIPSETTING(    0x00, "Fast" )
+	PORT_DIPNAME( 0x20, 0x20, "Enemy Bullets" )
+	PORT_DIPSETTING(    0x20, "Slow" )
+	PORT_DIPSETTING(    0x00, "Fast" )
+	PORT_DIPNAME( 0x40, 0x00, "Control Panel" )
+	PORT_DIPSETTING(    0x40, DEF_STR( Upright ) )  /* 1 Player  */
+	PORT_DIPSETTING(    0x00, DEF_STR( Cocktail ) ) /* 2 Players */
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Cabinet ) )
+	PORT_DIPSETTING(    0x80, DEF_STR( Upright ) )
+	PORT_DIPSETTING(    0xc0, DEF_STR( Cocktail ) )
 INPUT_PORTS_END
 
 INPUT_PORTS_START( brkthruj )
@@ -271,14 +271,13 @@ INPUT_PORTS_START( brkthruj )
 	PORT_DIPSETTING(    0x03, "3" )
 	PORT_DIPSETTING(    0x01, "5" )
 	PORT_BITX(0,        0x00, IPT_DIPSWITCH_SETTING | IPF_CHEAT, "99", IP_KEY_NONE, IP_JOY_NONE )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x0c, 0x0c, DEF_STR( Bonus_Life ) )
+	PORT_DIPSETTING(    0x00, "20000 Points Only" )
+	PORT_DIPSETTING(    0x04, "10000/20000 Points" )
+	PORT_DIPSETTING(    0x0c, "20000/30000 Points" )
+	PORT_DIPSETTING(    0x08, "20000/40000 Points" )
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )
-	PORT_BIT_IMPULSE( 0x20, IP_ACTIVE_LOW, IPT_COIN1, 2 )
+	PORT_BIT_IMPULSE( 0x20, IP_ACTIVE_LOW, IPT_COIN1, 2 )	/* Manual says Pitcure Flip=On, Normal=Off */
 	PORT_BIT_IMPULSE( 0x40, IP_ACTIVE_LOW, IPT_COIN2, 2 )
 	PORT_BIT_IMPULSE( 0x80, IP_ACTIVE_LOW, IPT_SERVICE1, 2 )
 
@@ -293,17 +292,18 @@ INPUT_PORTS_START( brkthruj )
 	PORT_DIPSETTING(    0x0c, DEF_STR( 1C_1C ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( 1C_2C ) )
 	PORT_DIPSETTING(    0x04, DEF_STR( 1C_3C ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0xc0, 0x00, DEF_STR( Cabinet ) )
-	PORT_DIPSETTING(    0x00, "Upright 1 Player" )
-	PORT_DIPSETTING(    0x40, "Upright 2 Players" )
-//	PORT_DIPSETTING(    0x80, DEF_STR( Cocktail ) )		// "Cocktail 1 Player" - IMPOSSIBLE !
-	PORT_DIPSETTING(    0xc0, DEF_STR( Cocktail ) )		// "Cocktail 2 Players"
+	PORT_DIPNAME( 0x10, 0x10, "Enemy Vehicles" )
+	PORT_DIPSETTING(    0x10, "Slow" )
+	PORT_DIPSETTING(    0x00, "Fast" )
+	PORT_DIPNAME( 0x20, 0x20, "Enemy Bullets" )
+	PORT_DIPSETTING(    0x20, "Slow" )
+	PORT_DIPSETTING(    0x00, "Fast" )
+	PORT_DIPNAME( 0x40, 0x00, "Control Panel" )
+	PORT_DIPSETTING(    0x40, DEF_STR( Upright ) )  /* 1 Player  */
+	PORT_DIPSETTING(    0x00, DEF_STR( Cocktail ) ) /* 2 Players */
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Cabinet ) )
+	PORT_DIPSETTING(    0x80, DEF_STR( Upright ) )
+	PORT_DIPSETTING(    0xc0, DEF_STR( Cocktail ) )
 INPUT_PORTS_END
 
 INPUT_PORTS_START( darwin )
@@ -440,7 +440,7 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 /* handler called by the 3812 emulator when the internal timers cause an IRQ */
 static void irqhandler(int linestate)
 {
-	cpu_set_irq_line(1,M6809_IRQ_LINE,linestate);
+	cpunum_set_input_line(1,M6809_IRQ_LINE,linestate);
 }
 
 static struct YM2203interface ym2203_interface =

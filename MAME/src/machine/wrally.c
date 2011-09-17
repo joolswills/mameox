@@ -1,11 +1,11 @@
-#pragma code_seg("C787")
-#pragma data_seg("D787")
-#pragma bss_seg("B787")
-#pragma const_seg("K787")
-#pragma comment(linker, "/merge:D787=787")
-#pragma comment(linker, "/merge:C787=787")
-#pragma comment(linker, "/merge:B787=787")
-#pragma comment(linker, "/merge:K787=787")
+#pragma code_seg("C829")
+#pragma data_seg("D829")
+#pragma bss_seg("B829")
+#pragma const_seg("K829")
+#pragma comment(linker, "/merge:D829=829")
+#pragma comment(linker, "/merge:C829=829")
+#pragma comment(linker, "/merge:B829=829")
+#pragma comment(linker, "/merge:K829=829")
 /***************************************************************************
 
 	World Rally

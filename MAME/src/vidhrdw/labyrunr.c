@@ -1,11 +1,11 @@
-#pragma code_seg("C393")
-#pragma data_seg("D393")
-#pragma bss_seg("B393")
-#pragma const_seg("K393")
-#pragma comment(linker, "/merge:D393=393")
-#pragma comment(linker, "/merge:C393=393")
-#pragma comment(linker, "/merge:B393=393")
-#pragma comment(linker, "/merge:K393=393")
+#pragma code_seg("C410")
+#pragma data_seg("D410")
+#pragma bss_seg("B410")
+#pragma const_seg("K410")
+#pragma comment(linker, "/merge:D410=410")
+#pragma comment(linker, "/merge:C410=410")
+#pragma comment(linker, "/merge:B410=410")
+#pragma comment(linker, "/merge:K410=410")
 #include "driver.h"
 #include "vidhrdw/konamiic.h"
 #include "vidhrdw/generic.h"
@@ -127,7 +127,7 @@ VIDEO_START( labyrunr )
 
 ***************************************************************************/
 
-WRITE_HANDLER( labyrunr_vram1_w )
+WRITE8_HANDLER( labyrunr_vram1_w )
 {
 	if (labyrunr_videoram1[offset] != data)
 	{
@@ -136,7 +136,7 @@ WRITE_HANDLER( labyrunr_vram1_w )
 	}
 }
 
-WRITE_HANDLER( labyrunr_vram2_w )
+WRITE8_HANDLER( labyrunr_vram2_w )
 {
 	if (labyrunr_videoram2[offset] != data)
 	{

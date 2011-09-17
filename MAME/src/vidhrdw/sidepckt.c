@@ -1,11 +1,11 @@
-#pragma code_seg("C622")
-#pragma data_seg("D622")
-#pragma bss_seg("B622")
-#pragma const_seg("K622")
-#pragma comment(linker, "/merge:D622=622")
-#pragma comment(linker, "/merge:C622=622")
-#pragma comment(linker, "/merge:B622=622")
-#pragma comment(linker, "/merge:K622=622")
+#pragma code_seg("C658")
+#pragma data_seg("D658")
+#pragma bss_seg("B658")
+#pragma const_seg("K658")
+#pragma comment(linker, "/merge:D658=658")
+#pragma comment(linker, "/merge:C658=658")
+#pragma comment(linker, "/merge:B658=658")
+#pragma comment(linker, "/merge:K658=658")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -94,7 +94,7 @@ VIDEO_START( sidepckt )
 
 ***************************************************************************/
 
-WRITE_HANDLER( sidepckt_videoram_w )
+WRITE8_HANDLER( sidepckt_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -103,7 +103,7 @@ WRITE_HANDLER( sidepckt_videoram_w )
 	}
 }
 
-WRITE_HANDLER( sidepckt_colorram_w )
+WRITE8_HANDLER( sidepckt_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -112,7 +112,7 @@ WRITE_HANDLER( sidepckt_colorram_w )
 	}
 }
 
-WRITE_HANDLER( sidepckt_flipscreen_w )
+WRITE8_HANDLER( sidepckt_flipscreen_w )
 {
 	flipscreen = data;
 	tilemap_set_flip(ALL_TILEMAPS,flipscreen ? TILEMAP_FLIPY : TILEMAP_FLIPX);

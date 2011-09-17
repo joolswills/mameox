@@ -1,11 +1,11 @@
-#pragma code_seg("C174")
-#pragma data_seg("D174")
-#pragma bss_seg("B174")
-#pragma const_seg("K174")
-#pragma comment(linker, "/merge:D174=174")
-#pragma comment(linker, "/merge:C174=174")
-#pragma comment(linker, "/merge:B174=174")
-#pragma comment(linker, "/merge:K174=174")
+#pragma code_seg("C176")
+#pragma data_seg("D176")
+#pragma bss_seg("B176")
+#pragma const_seg("K176")
+#pragma comment(linker, "/merge:D176=176")
+#pragma comment(linker, "/merge:C176=176")
+#pragma comment(linker, "/merge:B176=176")
+#pragma comment(linker, "/merge:K176=176")
 /***************************************************************************
 
 	Bogey Manor               (c) 1985 Technos Japan
@@ -22,11 +22,11 @@
 
 extern UINT8 *bogeyman_videoram2, *bogeyman_colorram2;
 
-extern WRITE_HANDLER( bogeyman_videoram_w );
-extern WRITE_HANDLER( bogeyman_colorram_w );
-extern WRITE_HANDLER( bogeyman_videoram2_w );
-extern WRITE_HANDLER( bogeyman_colorram2_w );
-extern WRITE_HANDLER( bogeyman_paletteram_w );
+extern WRITE8_HANDLER( bogeyman_videoram_w );
+extern WRITE8_HANDLER( bogeyman_colorram_w );
+extern WRITE8_HANDLER( bogeyman_videoram2_w );
+extern WRITE8_HANDLER( bogeyman_colorram2_w );
+extern WRITE8_HANDLER( bogeyman_paletteram_w );
 
 extern PALETTE_INIT( bogeyman );
 extern VIDEO_START( bogeyman );
@@ -38,12 +38,12 @@ extern VIDEO_UPDATE( bogeyman );
 
 static int psg_latch;
 
-static WRITE_HANDLER( bogeyman_8910_latch_w )
+static WRITE8_HANDLER( bogeyman_8910_latch_w )
 {
 	psg_latch = data;
 }
 
-static WRITE_HANDLER( bogeyman_8910_control_w )
+static WRITE8_HANDLER( bogeyman_8910_control_w )
 {
 	static int last;
 

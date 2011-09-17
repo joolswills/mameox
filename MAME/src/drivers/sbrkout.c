@@ -1,11 +1,11 @@
-#pragma code_seg("C593")
-#pragma data_seg("D593")
-#pragma bss_seg("B593")
-#pragma const_seg("K593")
-#pragma comment(linker, "/merge:D593=593")
-#pragma comment(linker, "/merge:C593=593")
-#pragma comment(linker, "/merge:B593=593")
-#pragma comment(linker, "/merge:K593=593")
+#pragma code_seg("C627")
+#pragma data_seg("D627")
+#pragma bss_seg("B627")
+#pragma const_seg("K627")
+#pragma comment(linker, "/merge:D627=627")
+#pragma comment(linker, "/merge:C627=627")
+#pragma comment(linker, "/merge:B627=627")
+#pragma comment(linker, "/merge:K627=627")
 /***************************************************************************
 
 	Atari Super Breakout hardware
@@ -40,18 +40,18 @@
 #include "artwork.h"
 #include "vidhrdw/generic.h"
 
-extern WRITE_HANDLER( sbrkout_serve_led_w );
-extern WRITE_HANDLER( sbrkout_start_1_led_w );
-extern WRITE_HANDLER( sbrkout_start_2_led_w );
-extern READ_HANDLER( sbrkout_read_DIPs_r );
+extern WRITE8_HANDLER( sbrkout_serve_led_w );
+extern WRITE8_HANDLER( sbrkout_start_1_led_w );
+extern WRITE8_HANDLER( sbrkout_start_2_led_w );
+extern READ8_HANDLER( sbrkout_read_DIPs_r );
 extern INTERRUPT_GEN( sbrkout_interrupt );
-extern READ_HANDLER( sbrkout_select1_r );
-extern READ_HANDLER( sbrkout_select2_r );
+extern READ8_HANDLER( sbrkout_select1_r );
+extern READ8_HANDLER( sbrkout_select2_r );
 
 extern UINT8 *sbrkout_horiz_ram;
 extern UINT8 *sbrkout_vert_ram;
 
-extern WRITE_HANDLER( sbrkout_videoram_w );
+extern WRITE8_HANDLER( sbrkout_videoram_w );
 
 extern VIDEO_START( sbrkout );
 extern VIDEO_UPDATE( sbrkout );
@@ -83,7 +83,7 @@ OVERLAY_END
 
 static UINT8 *sbrkout_sound;
 
-static WRITE_HANDLER( sbrkout_dac_w )
+static WRITE8_HANDLER( sbrkout_dac_w )
 {
 	sbrkout_sound[offset]=data;
 }

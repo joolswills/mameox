@@ -1,11 +1,11 @@
-#pragma code_seg("C125")
-#pragma data_seg("D125")
-#pragma bss_seg("B125")
-#pragma const_seg("K125")
-#pragma comment(linker, "/merge:D125=125")
-#pragma comment(linker, "/merge:C125=125")
-#pragma comment(linker, "/merge:B125=125")
-#pragma comment(linker, "/merge:K125=125")
+#pragma code_seg("C126")
+#pragma data_seg("D126")
+#pragma bss_seg("B126")
+#pragma const_seg("K126")
+#pragma comment(linker, "/merge:D126=126")
+#pragma comment(linker, "/merge:C126=126")
+#pragma comment(linker, "/merge:B126=126")
+#pragma comment(linker, "/merge:K126=126")
 /**********************************************************************
 
 Legion
@@ -369,7 +369,7 @@ static ADDRESS_MAP_START( cclimbr2_soundwritemem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0xc000, 0xffff) AM_WRITE(MWA8_RAM)
 ADDRESS_MAP_END
 
-static READ_HANDLER( soundlatch_clear_r )
+static READ8_HANDLER( soundlatch_clear_r )
 {
 	soundlatch_clear_w(0,0);
 	return 0;

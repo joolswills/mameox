@@ -1,11 +1,11 @@
-#pragma code_seg("C357")
-#pragma data_seg("D357")
-#pragma bss_seg("B357")
-#pragma const_seg("K357")
-#pragma comment(linker, "/merge:D357=357")
-#pragma comment(linker, "/merge:C357=357")
-#pragma comment(linker, "/merge:B357=357")
-#pragma comment(linker, "/merge:K357=357")
+#pragma code_seg("C371")
+#pragma data_seg("D371")
+#pragma bss_seg("B371")
+#pragma const_seg("K371")
+#pragma comment(linker, "/merge:D371=371")
+#pragma comment(linker, "/merge:C371=371")
+#pragma comment(linker, "/merge:B371=371")
+#pragma comment(linker, "/merge:K371=371")
 /***************************************************************************
 
 First version of the Dynax blitter.
@@ -102,7 +102,7 @@ static UINT8 blit_layer;
 static UINT16 blit_dest;
 static UINT32 blit_src;
 
-WRITE_HANDLER( dynax_blitter_rev1_param_w )
+WRITE8_HANDLER( dynax_blitter_rev1_param_w )
 {
 	switch (offset)
 	{
@@ -129,7 +129,7 @@ static void copy_pixel(int x,int y,int pen)
 	}
 }
 
-WRITE_HANDLER( dynax_blitter_rev1_start_w )
+WRITE8_HANDLER( dynax_blitter_rev1_start_w )
 {
 	data8_t *rom = memory_region(REGION_GFX1);
 	int romlen = memory_region_length(REGION_GFX1);
@@ -204,7 +204,7 @@ WRITE_HANDLER( dynax_blitter_rev1_start_w )
 	usrintf_showmessage("GFXROM OVER %06x",blit_src);
 }
 
-WRITE_HANDLER( dynax_blitter_rev1_clear_w )
+WRITE8_HANDLER( dynax_blitter_rev1_clear_w )
 {
 	int pen = data >> 4;
 	int i;
@@ -217,7 +217,7 @@ WRITE_HANDLER( dynax_blitter_rev1_clear_w )
 }
 
 
-WRITE_HANDLER( hnayayoi_palbank_w )
+WRITE8_HANDLER( hnayayoi_palbank_w )
 {
 	offset *= 8;
 	palbank = (palbank & (0xff00 >> offset)) | (data << offset);

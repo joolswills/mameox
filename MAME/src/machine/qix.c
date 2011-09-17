@@ -1,11 +1,11 @@
-#pragma code_seg("C557")
-#pragma data_seg("D557")
-#pragma bss_seg("B557")
-#pragma const_seg("K557")
-#pragma comment(linker, "/merge:D557=557")
-#pragma comment(linker, "/merge:C557=557")
-#pragma comment(linker, "/merge:B557=557")
-#pragma comment(linker, "/merge:K557=557")
+#pragma code_seg("C590")
+#pragma data_seg("D590")
+#pragma bss_seg("B590")
+#pragma const_seg("K590")
+#pragma comment(linker, "/merge:D590=590")
+#pragma comment(linker, "/merge:C590=590")
+#pragma comment(linker, "/merge:B590=590")
+#pragma comment(linker, "/merge:K590=590")
 /***************************************************************************
 
 	Taito Qix hardware
@@ -34,26 +34,26 @@ static UINT8 qix_coinctrl;
 
 
 /* Prototypes */
-static READ_HANDLER( qixmcu_coin_r );
-static WRITE_HANDLER( qixmcu_coinctrl_w );
-static WRITE_HANDLER( qixmcu_coin_w );
+static READ8_HANDLER( qixmcu_coin_r );
+static WRITE8_HANDLER( qixmcu_coinctrl_w );
+static WRITE8_HANDLER( qixmcu_coin_w );
 
-static WRITE_HANDLER( qix_dac_w );
-static WRITE_HANDLER( sync_pia_4_porta_w );
+static WRITE8_HANDLER( qix_dac_w );
+static WRITE8_HANDLER( sync_pia_4_porta_w );
 
-static WRITE_HANDLER( qix_inv_flag_w );
+static WRITE8_HANDLER( qix_inv_flag_w );
 
-static WRITE_HANDLER( qix_coinctl_w );
-static WRITE_HANDLER( slither_coinctl_w );
+static WRITE8_HANDLER( qix_coinctl_w );
+static WRITE8_HANDLER( slither_coinctl_w );
 
 static void qix_pia_sint(int state);
 static void qix_pia_dint(int state);
 
-static WRITE_HANDLER( slither_76489_0_w );
-static WRITE_HANDLER( slither_76489_1_w );
+static WRITE8_HANDLER( slither_76489_0_w );
+static WRITE8_HANDLER( slither_76489_1_w );
 
-static READ_HANDLER( slither_trak_lr_r );
-static READ_HANDLER( slither_trak_ud_r );
+static READ8_HANDLER( slither_trak_lr_r );
+static READ8_HANDLER( slither_trak_ud_r );
 
 
 
@@ -290,13 +290,13 @@ INTERRUPT_GEN( qix_vblank_start )
  *
  *************************************/
 
-READ_HANDLER( qix_sharedram_r )
+READ8_HANDLER( qix_sharedram_r )
 {
 	return qix_sharedram[offset];
 }
 
 
-WRITE_HANDLER( qix_sharedram_w )
+WRITE8_HANDLER( qix_sharedram_w )
 {
 	qix_sharedram[offset] = data;
 }
@@ -309,7 +309,7 @@ WRITE_HANDLER( qix_sharedram_w )
  *
  *************************************/
 
-WRITE_HANDLER( zoo_bankswitch_w )
+WRITE8_HANDLER( zoo_bankswitch_w )
 {
 	UINT8 *RAM = memory_region(REGION_CPU2);
 
@@ -327,28 +327,28 @@ WRITE_HANDLER( zoo_bankswitch_w )
  *
  *************************************/
 
-WRITE_HANDLER( qix_data_firq_w )
+WRITE8_HANDLER( qix_data_firq_w )
 {
-	cpu_set_irq_line(0, M6809_FIRQ_LINE, ASSERT_LINE);
+	cpunum_set_input_line(0, M6809_FIRQ_LINE, ASSERT_LINE);
 }
 
 
-WRITE_HANDLER( qix_data_firq_ack_w )
+WRITE8_HANDLER( qix_data_firq_ack_w )
 {
-	cpu_set_irq_line(0, M6809_FIRQ_LINE, CLEAR_LINE);
+	cpunum_set_input_line(0, M6809_FIRQ_LINE, CLEAR_LINE);
 }
 
 
-READ_HANDLER( qix_data_firq_r )
+READ8_HANDLER( qix_data_firq_r )
 {
-	cpu_set_irq_line(0, M6809_FIRQ_LINE, ASSERT_LINE);
+	cpunum_set_input_line(0, M6809_FIRQ_LINE, ASSERT_LINE);
 	return 0xff;
 }
 
 
-READ_HANDLER( qix_data_firq_ack_r )
+READ8_HANDLER( qix_data_firq_ack_r )
 {
-	cpu_set_irq_line(0, M6809_FIRQ_LINE, CLEAR_LINE);
+	cpunum_set_input_line(0, M6809_FIRQ_LINE, CLEAR_LINE);
 	return 0xff;
 }
 
@@ -360,28 +360,28 @@ READ_HANDLER( qix_data_firq_ack_r )
  *
  *************************************/
 
-WRITE_HANDLER( qix_video_firq_w )
+WRITE8_HANDLER( qix_video_firq_w )
 {
-	cpu_set_irq_line(1, M6809_FIRQ_LINE, ASSERT_LINE);
+	cpunum_set_input_line(1, M6809_FIRQ_LINE, ASSERT_LINE);
 }
 
 
-WRITE_HANDLER( qix_video_firq_ack_w )
+WRITE8_HANDLER( qix_video_firq_ack_w )
 {
-	cpu_set_irq_line(1, M6809_FIRQ_LINE, CLEAR_LINE);
+	cpunum_set_input_line(1, M6809_FIRQ_LINE, CLEAR_LINE);
 }
 
 
-READ_HANDLER( qix_video_firq_r )
+READ8_HANDLER( qix_video_firq_r )
 {
-	cpu_set_irq_line(1, M6809_FIRQ_LINE, ASSERT_LINE);
+	cpunum_set_input_line(1, M6809_FIRQ_LINE, ASSERT_LINE);
 	return 0xff;
 }
 
 
-READ_HANDLER( qix_video_firq_ack_r )
+READ8_HANDLER( qix_video_firq_ack_r )
 {
-	cpu_set_irq_line(1, M6809_FIRQ_LINE, CLEAR_LINE);
+	cpunum_set_input_line(1, M6809_FIRQ_LINE, CLEAR_LINE);
 	return 0xff;
 }
 
@@ -393,7 +393,7 @@ READ_HANDLER( qix_video_firq_ack_r )
  *
  *************************************/
 
-static WRITE_HANDLER( qix_dac_w )
+static WRITE8_HANDLER( qix_dac_w )
 {
 	DAC_data_w(0, data);
 }
@@ -405,7 +405,7 @@ static void deferred_pia_4_porta_w(int data)
 }
 
 
-static WRITE_HANDLER( sync_pia_4_porta_w )
+static WRITE8_HANDLER( sync_pia_4_porta_w )
 {
 	/* we need to synchronize this so the sound CPU doesn't drop anything important */
 	timer_set(TIME_NOW, data, deferred_pia_4_porta_w);
@@ -422,14 +422,14 @@ static WRITE_HANDLER( sync_pia_4_porta_w )
 static void qix_pia_dint(int state)
 {
 	/* DINT is connected to the data CPU's IRQ line */
-	cpu_set_irq_line(0, M6809_IRQ_LINE, state ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(0, M6809_IRQ_LINE, state ? ASSERT_LINE : CLEAR_LINE);
 }
 
 
 static void qix_pia_sint(int state)
 {
 	/* SINT is connected to the sound CPU's IRQ line */
-	cpu_set_irq_line(2, M6802_IRQ_LINE, state ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(2, M6802_IRQ_LINE, state ? ASSERT_LINE : CLEAR_LINE);
 }
 
 
@@ -440,13 +440,13 @@ static void qix_pia_sint(int state)
  *
  *************************************/
 
-READ_HANDLER( qixmcu_coin_r )
+READ8_HANDLER( qixmcu_coin_r )
 {
 	return qix_68705_port_out[0];
 }
 
 
-static WRITE_HANDLER( qixmcu_coin_w )
+static WRITE8_HANDLER( qixmcu_coin_w )
 {
 	/* this is a callback called by pia_0_w(), so I don't need to synchronize */
 	/* the CPUs - they have already been synchronized by qix_pia_0_w() */
@@ -454,16 +454,16 @@ static WRITE_HANDLER( qixmcu_coin_w )
 }
 
 
-static WRITE_HANDLER( qixmcu_coinctrl_w )
+static WRITE8_HANDLER( qixmcu_coinctrl_w )
 {
 	if (data & 0x04)
 	{
-		cpu_set_irq_line(3, M6809_IRQ_LINE, ASSERT_LINE);
+		cpunum_set_input_line(3, M6809_IRQ_LINE, ASSERT_LINE);
 		/* spin for a while to let the 68705 write the result */
 		cpu_spinuntil_time(TIME_IN_USEC(50));
 	}
 	else
-		cpu_set_irq_line(3, M6809_IRQ_LINE, CLEAR_LINE);
+		cpunum_set_input_line(3, M6809_IRQ_LINE, CLEAR_LINE);
 
 	/* this is a callback called by pia_0_w(), so I don't need to synchronize */
 	/* the CPUs - they have already been synchronized by qix_pia_0_w() */
@@ -478,7 +478,7 @@ static WRITE_HANDLER( qixmcu_coinctrl_w )
  *
  *************************************/
 
-READ_HANDLER( qix_68705_portA_r )
+READ8_HANDLER( qix_68705_portA_r )
 {
 	UINT8 ddr = qix_68705_ddr[0];
 	UINT8 out = qix_68705_port_out[0];
@@ -487,7 +487,7 @@ READ_HANDLER( qix_68705_portA_r )
 }
 
 
-READ_HANDLER( qix_68705_portB_r )
+READ8_HANDLER( qix_68705_portB_r )
 {
 	UINT8 ddr = qix_68705_ddr[1];
 	UINT8 out = qix_68705_port_out[1];
@@ -496,7 +496,7 @@ READ_HANDLER( qix_68705_portB_r )
 }
 
 
-READ_HANDLER( qix_68705_portC_r )
+READ8_HANDLER( qix_68705_portC_r )
 {
 	UINT8 ddr = qix_68705_ddr[2];
 	UINT8 out = qix_68705_port_out[2];
@@ -512,13 +512,13 @@ READ_HANDLER( qix_68705_portC_r )
  *
  *************************************/
 
-WRITE_HANDLER( qix_68705_portA_w )
+WRITE8_HANDLER( qix_68705_portA_w )
 {
 	qix_68705_port_out[0] = data;
 }
 
 
-WRITE_HANDLER( qix_68705_portB_w )
+WRITE8_HANDLER( qix_68705_portB_w )
 {
 	qix_68705_port_out[1] = data;
 	coin_lockout_w(0, (~data >> 6) & 1);
@@ -526,7 +526,7 @@ WRITE_HANDLER( qix_68705_portB_w )
 }
 
 
-WRITE_HANDLER( qix_68705_portC_w )
+WRITE8_HANDLER( qix_68705_portC_w )
 {
 	qix_68705_port_out[2] = data;
 }
@@ -545,7 +545,7 @@ static void pia_0_w_callback(int param)
 }
 
 
-WRITE_HANDLER( qix_pia_0_w )
+WRITE8_HANDLER( qix_pia_0_w )
 {
 	/* make all the CPUs synchronize, and only AFTER that write the command to the PIA */
 	/* otherwise the 68705 will miss commands */
@@ -560,7 +560,7 @@ WRITE_HANDLER( qix_pia_0_w )
  *
  *************************************/
 
-WRITE_HANDLER( zookeep_pia_0_w )
+WRITE8_HANDLER( zookeep_pia_0_w )
 {
 	/* Hack: Kram and Zoo Keeper for some reason (protection?) leave the port A */
 	/* DDR set to 0xff, so they cannot read the player 1 controls. Here we force */
@@ -571,7 +571,7 @@ WRITE_HANDLER( zookeep_pia_0_w )
 }
 
 
-WRITE_HANDLER( zookeep_pia_2_w )
+WRITE8_HANDLER( zookeep_pia_2_w )
 {
 	/* Hack: Zoo Keeper for some reason (protection?) leaves the port A */
 	/* DDR set to 0xff, so they cannot read the player 2 controls. Here we force */
@@ -589,7 +589,7 @@ WRITE_HANDLER( zookeep_pia_2_w )
  *
  *************************************/
 
-static WRITE_HANDLER( qix_inv_flag_w )
+static WRITE8_HANDLER( qix_inv_flag_w )
 {
 	qix_cocktail_flip = data;
 }
@@ -602,14 +602,14 @@ static WRITE_HANDLER( qix_inv_flag_w )
  *
  *************************************/
 
-static WRITE_HANDLER( qix_coinctl_w )
+static WRITE8_HANDLER( qix_coinctl_w )
 {
 	coin_lockout_w(0, (~data >> 2) & 1);
 	coin_counter_w(0, (data >> 1) & 1);
 }
 
 
-static WRITE_HANDLER( slither_coinctl_w )
+static WRITE8_HANDLER( slither_coinctl_w )
 {
 	coin_lockout_w(0, (~data >> 6) & 1);
 	coin_counter_w(0, (data >> 5) & 1);
@@ -623,7 +623,7 @@ static WRITE_HANDLER( slither_coinctl_w )
  *
  *************************************/
 
-static WRITE_HANDLER( slither_76489_0_w )
+static WRITE8_HANDLER( slither_76489_0_w )
 {
 	/* write to the sound chip */
 	SN76496_0_w(0, data);
@@ -634,7 +634,7 @@ static WRITE_HANDLER( slither_76489_0_w )
 }
 
 
-static WRITE_HANDLER( slither_76489_1_w )
+static WRITE8_HANDLER( slither_76489_1_w )
 {
 	/* write to the sound chip */
 	SN76496_1_w(0, data);
@@ -652,13 +652,13 @@ static WRITE_HANDLER( slither_76489_1_w )
  *
  *************************************/
 
-static READ_HANDLER( slither_trak_lr_r )
+static READ8_HANDLER( slither_trak_lr_r )
 {
 	return readinputport(qix_cocktail_flip ? 6 : 4);
 }
 
 
-static READ_HANDLER( slither_trak_ud_r )
+static READ8_HANDLER( slither_trak_ud_r )
 {
 	return readinputport(qix_cocktail_flip ? 5 : 3);
 }

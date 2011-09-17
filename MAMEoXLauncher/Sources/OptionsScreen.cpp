@@ -21,6 +21,7 @@
 extern "C" {
 #include "osdepend.h"
 #include "driver.h"
+#include "virtualmemory.h"
 }
 
 
@@ -122,6 +123,11 @@ COptionsScreen::COptionsScreen( LPDIRECT3DDEVICE8	displayDevice,
   m_pageData[OPTPAGE_ROMLIST].m_drawFunct = ::DrawROMListPage;
   m_pageData[OPTPAGE_ROMLIST].m_changeFunct = ::ChangeROMListPage;
   m_pageData[OPTPAGE_ROMLIST].m_numItems = 10;
+
+  wcscpy( m_pageData[OPTPAGE_VMM].m_title, L"Virtual Memory Options" );
+  m_pageData[OPTPAGE_VMM].m_drawFunct = ::DrawVMMPage;
+  m_pageData[OPTPAGE_VMM].m_changeFunct = ::ChangeVMMPage;
+  m_pageData[OPTPAGE_VMM].m_numItems = 4;
 
   RECT area = { 320 - (VIRTUALKEYBOARD_WIDTH>>1), 240 - (VIRTUALKEYBOARD_HEIGHT >> 1), 
                 320 + (VIRTUALKEYBOARD_WIDTH>>1), 240 + (VIRTUALKEYBOARD_HEIGHT >> 1) };
@@ -422,6 +428,42 @@ void COptionsScreen::DrawSoundPage( void )
 
   ENDPAGE();
 }
+
+
+//---------------------------------------------------------------------
+//	DrawVMMPage
+//---------------------------------------------------------------------
+void COptionsScreen::DrawVMMPage( void )
+{
+/*
+	g_forcevmem =                    iniFile.GetProfileInt( "VMMOptions", "ForceVMM", FALSE );
+
+	if ( g_forcevmem )
+	{
+		g_vmemThreshold =                    iniFile.GetProfileInt( "VMMOptions", "Threshold", 0x400000 );
+		g_vmemCommitSize =                    iniFile.GetProfileInt( "VMMOptions", "Threshold", 0x100000 );
+		g_vmemDistribute =                    iniFile.GetProfileInt( "VMMOptions", "Threshold", 0xFFFF );
+	}
+*/
+
+  WCHAR text[256] = {0};
+
+  STARTPAGE();
+
+  DRAWITEM( L"Force VMM?", g_forcevmem ? L"Yes" : L"No" );
+
+  swprintf( text, L"%lu MB", g_vmemThreshold / 0x100000 );
+  DRAWITEM( L"Threshold", text );
+
+  swprintf( text, L"%lu KB", g_vmemCommitSize / 1024 );
+  DRAWITEM( L"Commit Size", text );
+
+  swprintf( text, L"%lu", g_vmemDistribute );
+  DRAWITEM( L"Distribute", text );
+
+  ENDPAGE();
+}
+
 
 //---------------------------------------------------------------------
 //	DrawVideoPage
@@ -836,6 +878,80 @@ void COptionsScreen::ChangeSoundPage( BOOL movingRight )
     // Audio Filter
   case 3:
     options.use_filter = !options.use_filter;
+    break;
+  }
+}
+
+
+//---------------------------------------------------------------------
+//  ChangeVMMPage
+//---------------------------------------------------------------------
+void COptionsScreen::ChangeVMMPage( BOOL movingRight )
+{
+/*
+	g_forcevmem =                    iniFile.GetProfileInt( "VMMOptions", "ForceVMM", FALSE );
+
+	if ( g_forcevmem )
+	{
+		g_vmemThreshold =                    iniFile.GetProfileInt( "VMMOptions", "Threshold", 0x400000 );
+		g_vmemCommitSize =                    iniFile.GetProfileInt( "VMMOptions", "Threshold", 0x100000 );
+		g_vmemDistribute =                    iniFile.GetProfileInt( "VMMOptions", "Threshold", 0xFFFF );
+	}
+*/
+  switch( (DWORD)m_cursorPosition )
+  {
+    // Force VMM
+  case 0:
+    g_forcevmem = !g_forcevmem;
+    break;
+
+    // Threshold
+  case 1:
+	  if ( !movingRight )
+	  {
+		  if ( g_vmemThreshold > 0x100000 )
+			  g_vmemThreshold -= 0x100000 ;
+	  }
+	  else
+	  {
+		  g_vmemThreshold += 0x100000 ;
+	  }
+    break;
+
+    // Commit size
+  case 2:
+	  if ( !movingRight )
+	  {
+		  if ( g_vmemCommitSize > 0x40000 )
+			  g_vmemCommitSize -= 0x10000 ;
+	  }
+	  else
+	  {
+		  g_vmemCommitSize += 0x10000 ;
+	  }
+    break;
+
+    // Distribute
+  case 3:
+	  if ( !movingRight )
+	  {
+		  if ( g_vmemDistribute == 1 )
+			  g_vmemDistribute = 0xFFFF ;
+		  else if ( g_vmemDistribute == 0xFFFF )
+			  g_vmemDistribute = 31 ;
+		  else
+			  g_vmemDistribute-- ;
+
+	  }
+	  else
+	  {
+		  if ( g_vmemDistribute == 31 )
+			  g_vmemDistribute = 0xFFFF ;
+		  else if ( g_vmemDistribute == 0xFFFF )
+			  g_vmemDistribute = 1 ;
+		  else
+			  g_vmemDistribute++ ;
+	  }
     break;
   }
 }
@@ -1579,6 +1695,14 @@ void DrawSoundPage( COptionsScreen *ptr )
 }
 
 //---------------------------------------------------------------------
+//  DrawVMMPage
+//---------------------------------------------------------------------
+void DrawVMMPage( COptionsScreen *ptr )
+{
+  ptr->DrawVMMPage();
+}
+
+//---------------------------------------------------------------------
 //  DrawVideoPage
 //---------------------------------------------------------------------
 void DrawVideoPage( COptionsScreen *ptr )
@@ -1642,6 +1766,14 @@ void ChangeGeneralPage( COptionsScreen *ptr, BOOL movingRight )
 void ChangeSoundPage( COptionsScreen *ptr, BOOL movingRight )
 {
   ptr->ChangeSoundPage( movingRight );
+}
+
+//---------------------------------------------------------------------
+//  ChangeVMMPage
+//---------------------------------------------------------------------
+void ChangeVMMPage( COptionsScreen *ptr, BOOL movingRight )
+{
+  ptr->ChangeVMMPage( movingRight );
 }
 
 //---------------------------------------------------------------------

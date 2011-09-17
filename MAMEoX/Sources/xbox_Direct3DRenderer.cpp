@@ -1066,6 +1066,7 @@ extern "C" struct mame_bitmap *osd_override_snapshot(struct mame_bitmap *bitmap,
 		  newbounds.max_y = t;
 	  }
 
+	*bounds = newbounds;
     return copy;
   }
 

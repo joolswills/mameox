@@ -1,11 +1,11 @@
-#pragma code_seg("C284")
-#pragma data_seg("D284")
-#pragma bss_seg("B284")
-#pragma const_seg("K284")
-#pragma comment(linker, "/merge:D284=284")
-#pragma comment(linker, "/merge:C284=284")
-#pragma comment(linker, "/merge:B284=284")
-#pragma comment(linker, "/merge:K284=284")
+#pragma code_seg("C295")
+#pragma data_seg("D295")
+#pragma bss_seg("B295")
+#pragma const_seg("K295")
+#pragma comment(linker, "/merge:D295=295")
+#pragma comment(linker, "/merge:C295=295")
+#pragma comment(linker, "/merge:B295=295")
+#pragma comment(linker, "/merge:K295=295")
 /***************************************************************************
 
 Functions to emulate the video hardware of the machine.
@@ -33,49 +33,49 @@ size_t  exzisus_objectram_size1;
   Memory handlers
 ***************************************************************************/
 
-READ_HANDLER ( exzisus_videoram_0_r )
+READ8_HANDLER ( exzisus_videoram_0_r )
 {
 	return exzisus_videoram0[offset];
 }
 
 
-READ_HANDLER ( exzisus_videoram_1_r )
+READ8_HANDLER ( exzisus_videoram_1_r )
 {
 	return exzisus_videoram1[offset];
 }
 
 
-READ_HANDLER ( exzisus_objectram_0_r )
+READ8_HANDLER ( exzisus_objectram_0_r )
 {
 	return exzisus_objectram0[offset];
 }
 
 
-READ_HANDLER ( exzisus_objectram_1_r )
+READ8_HANDLER ( exzisus_objectram_1_r )
 {
 	return exzisus_objectram1[offset];
 }
 
 
-WRITE_HANDLER( exzisus_videoram_0_w )
+WRITE8_HANDLER( exzisus_videoram_0_w )
 {
 	exzisus_videoram0[offset] = data;
 }
 
 
-WRITE_HANDLER( exzisus_videoram_1_w )
+WRITE8_HANDLER( exzisus_videoram_1_w )
 {
 	exzisus_videoram1[offset] = data;
 }
 
 
-WRITE_HANDLER( exzisus_objectram_0_w )
+WRITE8_HANDLER( exzisus_objectram_0_w )
 {
 	exzisus_objectram0[offset] = data;
 }
 
 
-WRITE_HANDLER( exzisus_objectram_1_w )
+WRITE8_HANDLER( exzisus_objectram_1_w )
 {
 	exzisus_objectram1[offset] = data;
 }

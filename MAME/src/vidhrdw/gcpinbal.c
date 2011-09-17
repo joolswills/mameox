@@ -1,11 +1,11 @@
-#pragma code_seg("C323")
-#pragma data_seg("D323")
-#pragma bss_seg("B323")
-#pragma const_seg("K323")
-#pragma comment(linker, "/merge:D323=323")
-#pragma comment(linker, "/merge:C323=323")
-#pragma comment(linker, "/merge:B323=323")
-#pragma comment(linker, "/merge:K323=323")
+#pragma code_seg("C336")
+#pragma data_seg("D336")
+#pragma bss_seg("B336")
+#pragma const_seg("K336")
+#pragma comment(linker, "/merge:D336=336")
+#pragma comment(linker, "/merge:C336=336")
+#pragma comment(linker, "/merge:B336=336")
+#pragma comment(linker, "/merge:K336=336")
 #include "driver.h"
 #include "state.h"
 #include "vidhrdw/generic.h"
@@ -303,19 +303,19 @@ VIDEO_UPDATE( gcpinbal )
 #endif
 
 #ifdef MAME_DEBUG
-	if (keyboard_pressed_memory (KEYCODE_V))
+	if (code_pressed_memory (KEYCODE_V))
 	{
 		dislayer[0] ^= 1;
 		usrintf_showmessage("bg0: %01x",dislayer[0]);
 	}
 
-	if (keyboard_pressed_memory (KEYCODE_B))
+	if (code_pressed_memory (KEYCODE_B))
 	{
 		dislayer[1] ^= 1;
 		usrintf_showmessage("bg1: %01x",dislayer[1]);
 	}
 
-	if (keyboard_pressed_memory (KEYCODE_N))
+	if (code_pressed_memory (KEYCODE_N))
 	{
 		dislayer[2] ^= 1;
 		usrintf_showmessage("fg: %01x",dislayer[2]);

@@ -1,11 +1,11 @@
-#pragma code_seg("C554")
-#pragma data_seg("D554")
-#pragma bss_seg("B554")
-#pragma const_seg("K554")
-#pragma comment(linker, "/merge:D554=554")
-#pragma comment(linker, "/merge:C554=554")
-#pragma comment(linker, "/merge:B554=554")
-#pragma comment(linker, "/merge:K554=554")
+#pragma code_seg("C585")
+#pragma data_seg("D585")
+#pragma bss_seg("B585")
+#pragma const_seg("K585")
+#pragma comment(linker, "/merge:D585=585")
+#pragma comment(linker, "/merge:C585=585")
+#pragma comment(linker, "/merge:B585=585")
+#pragma comment(linker, "/merge:K585=585")
 /***************************************************************************
   Psychic 5
 
@@ -47,17 +47,17 @@ MACHINE_INIT( psychic5 )
 	flip_screen_set(0);
 }
 
-WRITE_HANDLER( psychic5_vram_page_select_w )
+WRITE8_HANDLER( psychic5_vram_page_select_w )
 {
 	ps5_vram_page = data;
 }
 
-READ_HANDLER( psychic5_vram_page_select_r )
+READ8_HANDLER( psychic5_vram_page_select_r )
 {
 	return ps5_vram_page;
 }
 
-WRITE_HANDLER( psychic5_title_screen_w )
+WRITE8_HANDLER( psychic5_title_screen_w )
 {
 	title_screen = data & 0x01;
 }
@@ -167,7 +167,7 @@ void set_background_palette_intensity(void)
 }
 
 
-WRITE_HANDLER( psychic5_bg_videoram_w )
+WRITE8_HANDLER( psychic5_bg_videoram_w )
 {
 	if (psychic5_bg_videoram[offset] != data)
 	{
@@ -176,7 +176,7 @@ WRITE_HANDLER( psychic5_bg_videoram_w )
 	}
 }
 
-WRITE_HANDLER( psychic5_fg_videoram_w )
+WRITE8_HANDLER( psychic5_fg_videoram_w )
 {
 	if (psychic5_fg_videoram[offset] != data)
 	{
@@ -185,7 +185,7 @@ WRITE_HANDLER( psychic5_fg_videoram_w )
 	}
 }
 
-READ_HANDLER( psychic5_paged_ram_r )
+READ8_HANDLER( psychic5_paged_ram_r )
 {
 	int val;
 
@@ -235,7 +235,7 @@ READ_HANDLER( psychic5_paged_ram_r )
 	return 0;
 }
 
-WRITE_HANDLER( psychic5_paged_ram_w )
+WRITE8_HANDLER( psychic5_paged_ram_w )
 {
 	if (!ps5_vram_page)
 	{

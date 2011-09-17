@@ -1,11 +1,11 @@
-#pragma code_seg("C431")
-#pragma data_seg("D431")
-#pragma bss_seg("B431")
-#pragma const_seg("K431")
-#pragma comment(linker, "/merge:D431=431")
-#pragma comment(linker, "/merge:C431=431")
-#pragma comment(linker, "/merge:B431=431")
-#pragma comment(linker, "/merge:K431=431")
+#pragma code_seg("C453")
+#pragma data_seg("D453")
+#pragma bss_seg("B453")
+#pragma const_seg("K453")
+#pragma comment(linker, "/merge:D453=453")
+#pragma comment(linker, "/merge:C453=453")
+#pragma comment(linker, "/merge:B453=453")
+#pragma comment(linker, "/merge:K453=453")
 /*****************************************************************************
 
 Kikiippatsu Mayumi-chan (c) 1988 Victory L.L.C.
@@ -22,8 +22,8 @@ Kikiippatsu Mayumi-chan (c) 1988 Victory L.L.C.
 VIDEO_START( mayumi );
 VIDEO_UPDATE( mayumi );
 
-WRITE_HANDLER( mayumi_videoram_w );
-READ_HANDLER( mayumi_videoram_r );
+WRITE8_HANDLER( mayumi_videoram_w );
+READ8_HANDLER( mayumi_videoram_r );
 
 static int int_enable;
 static int input_sel;
@@ -33,10 +33,10 @@ static int input_sel;
 static INTERRUPT_GEN( mayumi_interrupt )
 {
 	if (int_enable)
-		 cpu_set_irq_line(0, 0, HOLD_LINE);
+		 cpunum_set_input_line(0, 0, HOLD_LINE);
 }
 
-static WRITE_HANDLER( bank_sel_w )
+static WRITE8_HANDLER( bank_sel_w )
 {
 	data8_t *BANKROM = memory_region(REGION_CPU1);
 	int bank = ((data & 0x80)) >> 7 | ((data & 0x40) >> 5);
@@ -52,12 +52,12 @@ static MACHINE_INIT( mayumi )
 	bank_sel_w(0,0);
 }
 
-static WRITE_HANDLER( input_sel_w )
+static WRITE8_HANDLER( input_sel_w )
 {
 	input_sel = data;
 }
 
-static READ_HANDLER( key_matrix_r )
+static READ8_HANDLER( key_matrix_r )
 {
 	int p,i,ret;
 

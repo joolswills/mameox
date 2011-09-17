@@ -1,11 +1,11 @@
-#pragma code_seg("C262")
-#pragma data_seg("D262")
-#pragma bss_seg("B262")
-#pragma const_seg("K262")
-#pragma comment(linker, "/merge:D262=262")
-#pragma comment(linker, "/merge:C262=262")
-#pragma comment(linker, "/merge:B262=262")
-#pragma comment(linker, "/merge:K262=262")
+#pragma code_seg("C272")
+#pragma data_seg("D272")
+#pragma bss_seg("B272")
+#pragma const_seg("K272")
+#pragma comment(linker, "/merge:D272=272")
+#pragma comment(linker, "/merge:C272=272")
+#pragma comment(linker, "/merge:B272=272")
+#pragma comment(linker, "/merge:K272=272")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -47,7 +47,7 @@ const static int fakecols[]= /* fake color map , based on screenshots */
 
 int dorachan_ctrl; /* bit 6 - screen flip */
 
-WRITE_HANDLER( dorachan_videoram_w )
+WRITE8_HANDLER( dorachan_videoram_w )
 {
 	if (videoram[offset] != data)
 	{

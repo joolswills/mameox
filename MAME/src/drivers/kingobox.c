@@ -1,11 +1,11 @@
-#pragma code_seg("C385")
-#pragma data_seg("D385")
-#pragma bss_seg("B385")
-#pragma const_seg("K385")
-#pragma comment(linker, "/merge:D385=385")
-#pragma comment(linker, "/merge:C385=385")
-#pragma comment(linker, "/merge:B385=385")
-#pragma comment(linker, "/merge:K385=385")
+#pragma code_seg("C400")
+#pragma data_seg("D400")
+#pragma bss_seg("B400")
+#pragma const_seg("K400")
+#pragma comment(linker, "/merge:D400=400")
+#pragma comment(linker, "/merge:C400=400")
+#pragma comment(linker, "/merge:B400=400")
+#pragma comment(linker, "/merge:K400=400")
 /***************************************************************************
 
 King of Boxer - (c) 1985 Woodplace Inc.
@@ -31,12 +31,12 @@ extern UINT8 *kingofb_videoram2;
 extern UINT8 *kingofb_colorram2;
 extern UINT8 *kingofb_scroll_y;
 
-extern WRITE_HANDLER( kingofb_videoram_w );
-extern WRITE_HANDLER( kingofb_colorram_w );
-extern WRITE_HANDLER( kingofb_videoram2_w );
-extern WRITE_HANDLER( kingofb_colorram2_w );
+extern WRITE8_HANDLER( kingofb_videoram_w );
+extern WRITE8_HANDLER( kingofb_colorram_w );
+extern WRITE8_HANDLER( kingofb_videoram2_w );
+extern WRITE8_HANDLER( kingofb_colorram2_w );
 
-extern WRITE_HANDLER( kingofb_f800_w );
+extern WRITE8_HANDLER( kingofb_f800_w );
 
 extern PALETTE_INIT( kingofb );
 extern VIDEO_START( kingofb );
@@ -50,38 +50,38 @@ static UINT8 *video_shared;
 static UINT8 *sprite_shared;
 int kingofb_nmi_enable = 0;
 
-static READ_HANDLER( video_shared_r ) {
+static READ8_HANDLER( video_shared_r ) {
 	return video_shared[offset];
 }
 
-static WRITE_HANDLER( video_shared_w ) {
+static WRITE8_HANDLER( video_shared_w ) {
 	video_shared[offset] = data;
 }
 
-static READ_HANDLER( sprite_shared_r ) {
+static READ8_HANDLER( sprite_shared_r ) {
 	return sprite_shared[offset];
 }
 
-static WRITE_HANDLER( sprite_shared_w ) {
+static WRITE8_HANDLER( sprite_shared_w ) {
 	sprite_shared[offset] = data;
 }
 
-static WRITE_HANDLER( video_interrupt_w ) {
-	cpu_set_irq_line_and_vector( 1, 0, HOLD_LINE, 0xff );
+static WRITE8_HANDLER( video_interrupt_w ) {
+	cpunum_set_input_line_and_vector( 1, 0, HOLD_LINE, 0xff );
 }
 
-static WRITE_HANDLER( sprite_interrupt_w ) {
-	cpu_set_irq_line_and_vector( 2, 0, HOLD_LINE, 0xff );
+static WRITE8_HANDLER( sprite_interrupt_w ) {
+	cpunum_set_input_line_and_vector( 2, 0, HOLD_LINE, 0xff );
 }
 
-static WRITE_HANDLER( scroll_interrupt_w ) {
+static WRITE8_HANDLER( scroll_interrupt_w ) {
 	sprite_interrupt_w( offset, data );
 	*kingofb_scroll_y = data;
 }
 
-static WRITE_HANDLER( sound_command_w ) {
+static WRITE8_HANDLER( sound_command_w ) {
 	soundlatch_w( 0, data );
-	cpu_set_irq_line_and_vector( 3, 0, HOLD_LINE, 0xff );
+	cpunum_set_input_line_and_vector( 3, 0, HOLD_LINE, 0xff );
 }
 
 
@@ -563,7 +563,7 @@ static struct DACinterface dac_interface =
 static INTERRUPT_GEN( kingofb_interrupt ) {
 
 	if ( kingofb_nmi_enable )
-		cpu_set_irq_line(cpu_getactivecpu(), IRQ_LINE_NMI, PULSE_LINE);
+		cpunum_set_input_line(cpu_getactivecpu(), INPUT_LINE_NMI, PULSE_LINE);
 }
 
 static MACHINE_DRIVER_START( kingofb )

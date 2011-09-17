@@ -105,7 +105,7 @@ VIDEO_START( ataxx )
  *
  *************************************/
 
-WRITE_HANDLER( leland_gfx_port_w )
+WRITE8_HANDLER( leland_gfx_port_w )
 {
 	/* adjust the proper scroll value */
     switch (offset)
@@ -362,7 +362,7 @@ static void leland_vram_port_w(int offset, int data, int num)
  *
  *************************************/
 
-WRITE_HANDLER( leland_master_video_addr_w )
+WRITE8_HANDLER( leland_master_video_addr_w )
 {
     leland_video_addr_w(offset, data, 0);
 }
@@ -377,7 +377,7 @@ static void leland_delayed_mvram_w(int param)
 }
 
 
-WRITE_HANDLER( leland_mvram_port_w )
+WRITE8_HANDLER( leland_mvram_port_w )
 {
 	if (sync_next_write)
 	{
@@ -389,7 +389,7 @@ WRITE_HANDLER( leland_mvram_port_w )
 }
 
 
-READ_HANDLER( leland_mvram_port_r )
+READ8_HANDLER( leland_mvram_port_r )
 {
     return leland_vram_port_r(offset, 0);
 }
@@ -402,19 +402,19 @@ READ_HANDLER( leland_mvram_port_r )
  *
  *************************************/
 
-WRITE_HANDLER( leland_slave_video_addr_w )
+WRITE8_HANDLER( leland_slave_video_addr_w )
 {
     leland_video_addr_w(offset, data, 1);
 }
 
 
-WRITE_HANDLER( leland_svram_port_w )
+WRITE8_HANDLER( leland_svram_port_w )
 {
     leland_vram_port_w(offset, data, 1);
 }
 
 
-READ_HANDLER( leland_svram_port_r )
+READ8_HANDLER( leland_svram_port_r )
 {
     return leland_vram_port_r(offset, 1);
 }
@@ -427,7 +427,7 @@ READ_HANDLER( leland_svram_port_r )
  *
  *************************************/
 
-WRITE_HANDLER( ataxx_mvram_port_w )
+WRITE8_HANDLER( ataxx_mvram_port_w )
 {
 	offset = ((offset >> 1) & 0x07) | ((offset << 3) & 0x08) | (offset & 0x10);
 	if (sync_next_write)
@@ -440,7 +440,7 @@ WRITE_HANDLER( ataxx_mvram_port_w )
 }
 
 
-WRITE_HANDLER( ataxx_svram_port_w )
+WRITE8_HANDLER( ataxx_svram_port_w )
 {
 	offset = ((offset >> 1) & 0x07) | ((offset << 3) & 0x08) | (offset & 0x10);
 	leland_vram_port_w(offset, data, 1);
@@ -454,14 +454,14 @@ WRITE_HANDLER( ataxx_svram_port_w )
  *
  *************************************/
 
-READ_HANDLER( ataxx_mvram_port_r )
+READ8_HANDLER( ataxx_mvram_port_r )
 {
 	offset = ((offset >> 1) & 0x07) | ((offset << 3) & 0x08) | (offset & 0x10);
     return leland_vram_port_r(offset, 0);
 }
 
 
-READ_HANDLER( ataxx_svram_port_r )
+READ8_HANDLER( ataxx_svram_port_r )
 {
 	offset = ((offset >> 1) & 0x07) | ((offset << 3) & 0x08) | (offset & 0x10);
     return leland_vram_port_r(offset, 1);

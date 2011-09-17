@@ -13,6 +13,10 @@
 extern "C" {
 #endif
 
+void osd_free( void *ptr ) ;
+
+#define free osd_free
+
 #define HASH_INFO_NO_DUMP	0
 #define HASH_INFO_BAD_DUMP	1
 
@@ -44,7 +48,8 @@ int hash_data_extract_printable_checksum(const char* d, unsigned int function, c
 //  with another const char* (e.g. the expected checksums). Returns 0 in case of error, 1 if the checksum
 //  was added correctly, 2 if the checksum was added overwriting a previously existing checksum for the
 //  the same function
-int hash_data_insert_binary_checksum(char* d, unsigned int function, unsigned char* checksum);
+int hash_data_insert_binary_checksum(char* d, unsigned int function, const unsigned char* checksum);
+int hash_data_insert_printable_checksum(char* d, unsigned int function, const char* checksum);
 
 // Check if the hash data contains the requested info
 int hash_data_has_info(const char* d, unsigned int info);

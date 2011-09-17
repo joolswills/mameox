@@ -103,7 +103,7 @@ static UINT8 wacko_mux_select;
  *
  *************************************/
 
-static READ_HANDLER( kroozr_dial_r )
+static READ8_HANDLER( kroozr_dial_r )
 {
 	int dial = readinputport(7);
 	int val = readinputport(1);
@@ -115,7 +115,7 @@ static READ_HANDLER( kroozr_dial_r )
 }
 
 
-static READ_HANDLER( kroozr_trakball_x_r )
+static READ8_HANDLER( kroozr_trakball_x_r )
 {
 	int val = readinputport(6);
 
@@ -127,7 +127,7 @@ static READ_HANDLER( kroozr_trakball_x_r )
 }
 
 
-static READ_HANDLER( kroozr_trakball_y_r )
+static READ8_HANDLER( kroozr_trakball_y_r )
 {
 	int val = readinputport(6);
 
@@ -146,13 +146,13 @@ static READ_HANDLER( kroozr_trakball_y_r )
  *
  *************************************/
 
-static WRITE_HANDLER( wacko_mux_select_w )
+static WRITE8_HANDLER( wacko_mux_select_w )
 {
 	wacko_mux_select = data & 1;
 }
 
 
-static READ_HANDLER( wacko_trackball_r )
+static READ8_HANDLER( wacko_trackball_r )
 {
 	if (!wacko_mux_select)
 		return readinputport(1 + offset);
@@ -168,7 +168,7 @@ static READ_HANDLER( wacko_trackball_r )
  *
  *************************************/
 
-static READ_HANDLER( twotigra_yoke1_r )
+static READ8_HANDLER( twotigra_yoke1_r )
 {
 	int p1_yoke = readinputport(6);
 	if (p1_yoke & 0x10)
@@ -186,7 +186,7 @@ static READ_HANDLER( twotigra_yoke1_r )
 }
 
 
-static READ_HANDLER( twotigra_yoke2_r )
+static READ8_HANDLER( twotigra_yoke2_r )
 {
 	int p1_yoke = readinputport(6);
 	if (p1_yoke & 0x10)
@@ -979,7 +979,7 @@ ROM_END
 static DRIVER_INIT( mcr2 )
 {
 	MCR_CONFIGURE_SOUND(MCR_SSIO);
-	install_port_write_handler(0, 0x00, 0x00, mcr_control_port_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x00, 0x00, 0, 0, mcr_control_port_w);
 
 	mcr12_sprite_xoffs = 0;
 	mcr12_sprite_xoffs_flip = 0;
@@ -989,7 +989,7 @@ static DRIVER_INIT( mcr2 )
 static DRIVER_INIT( domino )
 {
 	MCR_CONFIGURE_SOUND(MCR_SSIO);
-	install_port_write_handler(0, 0x01, 0x01, mcr_control_port_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x01, 0x01, 0, 0, mcr_control_port_w);
 
 	mcr12_sprite_xoffs = 0;
 	mcr12_sprite_xoffs_flip = 0;
@@ -999,8 +999,8 @@ static DRIVER_INIT( domino )
 static DRIVER_INIT( wacko )
 {
 	MCR_CONFIGURE_SOUND(MCR_SSIO);
-	install_port_write_handler(0, 0x04, 0x04, wacko_mux_select_w);
-	install_port_read_handler(0, 0x01, 0x02, wacko_trackball_r);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x04, 0x04, 0, 0, wacko_mux_select_w);
+	memory_install_read8_handler(0, ADDRESS_SPACE_IO, 0x01, 0x02, 0, 0, wacko_trackball_r);
 
 	mcr12_sprite_xoffs = 0;
 	mcr12_sprite_xoffs_flip = 0;
@@ -1010,9 +1010,9 @@ static DRIVER_INIT( wacko )
 static DRIVER_INIT( kroozr )
 {
 	MCR_CONFIGURE_SOUND(MCR_SSIO);
-	install_port_read_handler(0, 0x01, 0x01, kroozr_dial_r);
-	install_port_read_handler(0, 0x02, 0x02, kroozr_trakball_x_r);
-	install_port_read_handler(0, 0x04, 0x04, kroozr_trakball_y_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_IO, 0x01, 0x01, 0, 0, kroozr_dial_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_IO, 0x02, 0x02, 0, 0, kroozr_trakball_x_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_IO, 0x04, 0x04, 0, 0, kroozr_trakball_y_r);
 
 	mcr12_sprite_xoffs = 0;
 	mcr12_sprite_xoffs_flip = 0;
@@ -1022,11 +1022,11 @@ static DRIVER_INIT( kroozr )
 static DRIVER_INIT( twotigra )
 {
 	MCR_CONFIGURE_SOUND(MCR_SSIO);
-	install_port_write_handler(0, 0x00, 0x00, mcr_control_port_w);
-	install_port_read_handler(0, 0x01, 0x01, twotigra_yoke2_r);
-	install_port_read_handler(0, 0x02, 0x02, twotigra_yoke1_r);
+	memory_install_write8_handler(0, ADDRESS_SPACE_IO, 0x00, 0x00, 0, 0, mcr_control_port_w);
+	memory_install_read8_handler(0, ADDRESS_SPACE_IO, 0x01, 0x01, 0, 0, twotigra_yoke2_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_IO, 0x02, 0x02, 0, 0, twotigra_yoke1_r);
 
-	install_mem_write_handler(0, 0xf800, 0xffff, twotigra_videoram_w);
+	memory_install_write8_handler(0, ADDRESS_SPACE_PROGRAM, 0xf800, 0xffff, 0, 0, twotigra_videoram_w);
 
 	mcr12_sprite_xoffs = 0;
 	mcr12_sprite_xoffs_flip = 0;

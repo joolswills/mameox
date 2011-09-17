@@ -1,11 +1,11 @@
-#pragma code_seg("C586")
-#pragma data_seg("D586")
-#pragma bss_seg("B586")
-#pragma const_seg("K586")
-#pragma comment(linker, "/merge:D586=586")
-#pragma comment(linker, "/merge:C586=586")
-#pragma comment(linker, "/merge:B586=586")
-#pragma comment(linker, "/merge:K586=586")
+#pragma code_seg("C620")
+#pragma data_seg("D620")
+#pragma bss_seg("B620")
+#pragma const_seg("K620")
+#pragma comment(linker, "/merge:D620=620")
+#pragma comment(linker, "/merge:C620=620")
+#pragma comment(linker, "/merge:B620=620")
+#pragma comment(linker, "/merge:K620=620")
 /***************************************************************************
 
   vidhrdw/rpunch.c
@@ -86,7 +86,7 @@ static void get_bg1_tile_info(int tile_index)
 
 static void crtc_interrupt_gen(int param)
 {
-	cpu_set_irq_line(0, 1, HOLD_LINE);
+	cpunum_set_input_line(0, 1, HOLD_LINE);
 	if (param != 0)
 		timer_adjust(crtc_timer, TIME_IN_HZ(Machine->drv->frames_per_second * param), 0, TIME_IN_HZ(Machine->drv->frames_per_second * param));
 }

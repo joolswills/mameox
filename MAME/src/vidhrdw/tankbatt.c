@@ -1,11 +1,11 @@
-#pragma code_seg("C703")
-#pragma data_seg("D703")
-#pragma bss_seg("B703")
-#pragma const_seg("K703")
-#pragma comment(linker, "/merge:D703=703")
-#pragma comment(linker, "/merge:C703=703")
-#pragma comment(linker, "/merge:B703=703")
-#pragma comment(linker, "/merge:K703=703")
+#pragma code_seg("C744")
+#pragma data_seg("D744")
+#pragma bss_seg("B744")
+#pragma const_seg("K744")
+#pragma comment(linker, "/merge:D744=744")
+#pragma comment(linker, "/merge:C744=744")
+#pragma comment(linker, "/merge:B744=744")
+#pragma comment(linker, "/merge:K744=744")
 /***************************************************************************
 
   vidhrdw.c
@@ -74,7 +74,7 @@ PALETTE_INIT( tankbatt )
 	}
 }
 
-WRITE_HANDLER( tankbatt_videoram_w )
+WRITE8_HANDLER( tankbatt_videoram_w )
 {
 	if (videoram[offset] != data)
 	{

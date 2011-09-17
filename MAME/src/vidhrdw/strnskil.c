@@ -1,11 +1,11 @@
-#pragma code_seg("C671")
-#pragma data_seg("D671")
-#pragma bss_seg("B671")
-#pragma const_seg("K671")
-#pragma comment(linker, "/merge:D671=671")
-#pragma comment(linker, "/merge:C671=671")
-#pragma comment(linker, "/merge:B671=671")
-#pragma comment(linker, "/merge:K671=671")
+#pragma code_seg("C709")
+#pragma data_seg("D709")
+#pragma bss_seg("B709")
+#pragma const_seg("K709")
+#pragma comment(linker, "/merge:D709=709")
+#pragma comment(linker, "/merge:C709=709")
+#pragma comment(linker, "/merge:B709=709")
+#pragma comment(linker, "/merge:K709=709")
 /******************************************************************************
 
 Strength & Skill (c) 1984 Sun Electronics
@@ -51,7 +51,7 @@ PALETTE_INIT( strnskil )
 
 }
 
-WRITE_HANDLER( strnskil_videoram_w )
+WRITE8_HANDLER( strnskil_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -60,12 +60,12 @@ WRITE_HANDLER( strnskil_videoram_w )
 	}
 }
 
-WRITE_HANDLER( strnskil_scroll_x_w )
+WRITE8_HANDLER( strnskil_scroll_x_w )
 {
 	strnskil_xscroll[offset] = data;
 }
 
-WRITE_HANDLER( strnskil_scrl_ctrl_w )
+WRITE8_HANDLER( strnskil_scrl_ctrl_w )
 {
 	strnskil_scrl_ctrl = data >> 5;
 

@@ -1,11 +1,11 @@
-#pragma code_seg("C325")
-#pragma data_seg("D325")
-#pragma bss_seg("B325")
-#pragma const_seg("K325")
-#pragma comment(linker, "/merge:D325=325")
-#pragma comment(linker, "/merge:C325=325")
-#pragma comment(linker, "/merge:B325=325")
-#pragma comment(linker, "/merge:K325=325")
+#pragma code_seg("C339")
+#pragma data_seg("D339")
+#pragma bss_seg("B339")
+#pragma const_seg("K339")
+#pragma comment(linker, "/merge:D339=339")
+#pragma comment(linker, "/merge:C339=339")
+#pragma comment(linker, "/merge:B339=339")
+#pragma comment(linker, "/merge:K339=339")
 /**************************************************************************
 
 							Ginga NinkyouDen
@@ -197,7 +197,7 @@ WRITE16_HANDLER( ginganin_vregs16_w )
 		break;
 	case 7:
 		soundlatch_w(0,data);
-		cpu_set_nmi_line(1,PULSE_LINE);
+		cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 		break;
 	default:
 		logerror("CPU #0 PC %06X : Warning, videoreg %04X <- %04X\n",activecpu_get_pc(),offset,data);
@@ -266,15 +266,15 @@ VIDEO_UPDATE( ginganin )
 	layers_ctrl1 = layers_ctrl;
 
 #ifdef MAME_DEBUG
-if (keyboard_pressed(KEYCODE_Z))
+if (code_pressed(KEYCODE_Z))
 {
 	int msk = 0;
 	static int posx,posy;
 
-	if (keyboard_pressed(KEYCODE_Q)) { msk |= 0xfff1;}
-	if (keyboard_pressed(KEYCODE_W)) { msk |= 0xfff2;}
-	if (keyboard_pressed(KEYCODE_E)) { msk |= 0xfff4;}
-	if (keyboard_pressed(KEYCODE_A))	{ msk |= 0xfff8;}
+	if (code_pressed(KEYCODE_Q)) { msk |= 0xfff1;}
+	if (code_pressed(KEYCODE_W)) { msk |= 0xfff2;}
+	if (code_pressed(KEYCODE_E)) { msk |= 0xfff4;}
+	if (code_pressed(KEYCODE_A))	{ msk |= 0xfff8;}
 	if (msk != 0) layers_ctrl1 &= msk;
 
 #define SETSCROLL \
@@ -284,11 +284,11 @@ if (keyboard_pressed(KEYCODE_Z))
 	tilemap_set_scrolly(fg_tilemap, 0, posy); \
 	usrintf_showmessage("B>%04X:%04X F>%04X:%04X",posx%(BG_NX*16),posy%(BG_NY*16),posx%(FG_NX*16),posy%(FG_NY*16));
 
-	if (keyboard_pressed(KEYCODE_L))	{ posx +=8; SETSCROLL }
-	if (keyboard_pressed(KEYCODE_J))	{ posx -=8; SETSCROLL }
-	if (keyboard_pressed(KEYCODE_K))	{ posy +=8; SETSCROLL }
-	if (keyboard_pressed(KEYCODE_I))	{ posy -=8; SETSCROLL }
-	if (keyboard_pressed(KEYCODE_H))	{ posx = posy = 0;	SETSCROLL }
+	if (code_pressed(KEYCODE_L))	{ posx +=8; SETSCROLL }
+	if (code_pressed(KEYCODE_J))	{ posx -=8; SETSCROLL }
+	if (code_pressed(KEYCODE_K))	{ posy +=8; SETSCROLL }
+	if (code_pressed(KEYCODE_I))	{ posy -=8; SETSCROLL }
+	if (code_pressed(KEYCODE_H))	{ posx = posy = 0;	SETSCROLL }
 
 }
 #endif

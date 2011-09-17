@@ -1,11 +1,11 @@
-#pragma code_seg("C744")
-#pragma data_seg("D744")
-#pragma bss_seg("B744")
-#pragma const_seg("K744")
-#pragma comment(linker, "/merge:D744=744")
-#pragma comment(linker, "/merge:C744=744")
-#pragma comment(linker, "/merge:B744=744")
-#pragma comment(linker, "/merge:K744=744")
+#pragma code_seg("C786")
+#pragma data_seg("D786")
+#pragma bss_seg("B786")
+#pragma const_seg("K786")
+#pragma comment(linker, "/merge:D786=786")
+#pragma comment(linker, "/merge:C786=786")
+#pragma comment(linker, "/merge:B786=786")
+#pragma comment(linker, "/merge:K786=786")
 /*
 **	Video Driver for Taito Samurai (1985)
 */
@@ -83,22 +83,22 @@ VIDEO_START( tsamurai )
 
 ***************************************************************************/
 
-WRITE_HANDLER( tsamurai_scrolly_w )
+WRITE8_HANDLER( tsamurai_scrolly_w )
 {
 	tilemap_set_scrolly( background, 0, data );
 }
 
-WRITE_HANDLER( tsamurai_scrollx_w )
+WRITE8_HANDLER( tsamurai_scrollx_w )
 {
 	tilemap_set_scrollx( background, 0, data );
 }
 
-WRITE_HANDLER( tsamurai_bgcolor_w )
+WRITE8_HANDLER( tsamurai_bgcolor_w )
 {
 	bgcolor = data;
 }
 
-WRITE_HANDLER( tsamurai_textbank1_w )
+WRITE8_HANDLER( tsamurai_textbank1_w )
 {
 	if( textbank1!=data )
 	{
@@ -107,7 +107,7 @@ WRITE_HANDLER( tsamurai_textbank1_w )
 	}
 }
 
-WRITE_HANDLER( tsamurai_textbank2_w )
+WRITE8_HANDLER( tsamurai_textbank2_w )
 {
 	if( textbank2!=data )
 	{
@@ -116,7 +116,7 @@ WRITE_HANDLER( tsamurai_textbank2_w )
 	}
 }
 
-WRITE_HANDLER( tsamurai_bg_videoram_w )
+WRITE8_HANDLER( tsamurai_bg_videoram_w )
 {
 	if( tsamurai_videoram[offset]!=data )
 	{
@@ -125,7 +125,7 @@ WRITE_HANDLER( tsamurai_bg_videoram_w )
 		tilemap_mark_tile_dirty(background,offset);
 	}
 }
-WRITE_HANDLER( tsamurai_fg_videoram_w )
+WRITE8_HANDLER( tsamurai_fg_videoram_w )
 {
 	if( videoram[offset]!=data )
 	{
@@ -133,7 +133,7 @@ WRITE_HANDLER( tsamurai_fg_videoram_w )
 		tilemap_mark_tile_dirty(foreground,offset);
 	}
 }
-WRITE_HANDLER( tsamurai_fg_colorram_w )
+WRITE8_HANDLER( tsamurai_fg_colorram_w )
 {
 	if( colorram[offset]!=data )
 	{
@@ -250,7 +250,7 @@ VS Gong Fight runs on older hardware
 
 int vsgongf_color;
 
-WRITE_HANDLER( vsgongf_color_w )
+WRITE8_HANDLER( vsgongf_color_w )
 {
 	if( vsgongf_color != data )
 	{
@@ -283,8 +283,8 @@ VIDEO_UPDATE( vsgongf )
 {
 	#ifdef MAME_DEBUG
 	static int k;
-	if( keyboard_pressed( KEYCODE_Q ) ){
-		while( keyboard_pressed( KEYCODE_Q ) ){
+	if( code_pressed( KEYCODE_Q ) ){
+		while( code_pressed( KEYCODE_Q ) ){
 			k++;
 			vsgongf_color = k;
 			tilemap_mark_all_tiles_dirty( foreground );

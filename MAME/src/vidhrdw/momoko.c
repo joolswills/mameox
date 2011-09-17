@@ -1,11 +1,11 @@
-#pragma code_seg("C461")
-#pragma data_seg("D461")
-#pragma bss_seg("B461")
-#pragma const_seg("K461")
-#pragma comment(linker, "/merge:D461=461")
-#pragma comment(linker, "/merge:C461=461")
-#pragma comment(linker, "/merge:B461=461")
-#pragma comment(linker, "/merge:K461=461")
+#pragma code_seg("C487")
+#pragma data_seg("D487")
+#pragma bss_seg("B487")
+#pragma const_seg("K487")
+#pragma comment(linker, "/merge:D487=487")
+#pragma comment(linker, "/merge:C487=487")
+#pragma comment(linker, "/merge:B487=487")
+#pragma comment(linker, "/merge:K487=487")
 /*******************************************************************************
 
 Momoko 120% (c) 1986 Jaleco
@@ -33,45 +33,45 @@ data8_t momoko_flipscreen;
 
 /****************************************************************************/
 
-WRITE_HANDLER ( momoko_fg_scrollx_w )
+WRITE8_HANDLER ( momoko_fg_scrollx_w )
 {
 	momoko_fg_scrollx = data;
 }
-WRITE_HANDLER ( momoko_fg_scrolly_w )
+WRITE8_HANDLER ( momoko_fg_scrolly_w )
 {
 	momoko_fg_scrolly = data;
 }
-WRITE_HANDLER ( momoko_fg_select_w )
+WRITE8_HANDLER ( momoko_fg_select_w )
 {
 	momoko_fg_select = data & 0x0f;
 	momoko_fg_mask = data & 0x10;
 }
-WRITE_HANDLER ( momoko_text_scrolly_w )
+WRITE8_HANDLER ( momoko_text_scrolly_w )
 {
 	momoko_text_scrolly = data;
 }
-WRITE_HANDLER ( momoko_text_mode_w )
+WRITE8_HANDLER ( momoko_text_mode_w )
 {
 	momoko_text_mode = data;
 }
-WRITE_HANDLER ( momoko_bg_scrollx_w )
+WRITE8_HANDLER ( momoko_bg_scrollx_w )
 {
 	momoko_bg_scrollx[ offset ] = data;
 }
-WRITE_HANDLER ( momoko_bg_scrolly_w )
+WRITE8_HANDLER ( momoko_bg_scrolly_w )
 {
 	momoko_bg_scrolly[ offset ] = data;
 }
-WRITE_HANDLER( momoko_bg_select_w )
+WRITE8_HANDLER( momoko_bg_select_w )
 {
 	momoko_bg_select = data & 0x0f;
 	momoko_bg_mask = data & 0x10;
 }
-WRITE_HANDLER( momoko_bg_priority_w )
+WRITE8_HANDLER( momoko_bg_priority_w )
 {
 	momoko_bg_priority = data & 0x01;
 }
-WRITE_HANDLER( momoko_flipscreen_w )
+WRITE8_HANDLER( momoko_flipscreen_w )
 {
 	momoko_flipscreen = data & 0x01;
 }

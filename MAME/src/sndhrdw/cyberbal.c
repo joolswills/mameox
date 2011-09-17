@@ -1,11 +1,11 @@
-#pragma code_seg("C234")
-#pragma data_seg("D234")
-#pragma bss_seg("B234")
-#pragma const_seg("K234")
-#pragma comment(linker, "/merge:D234=234")
-#pragma comment(linker, "/merge:C234=234")
-#pragma comment(linker, "/merge:B234=234")
-#pragma comment(linker, "/merge:K234=234")
+#pragma code_seg("C240")
+#pragma data_seg("D240")
+#pragma bss_seg("B240")
+#pragma const_seg("K240")
+#pragma comment(linker, "/merge:D240=240")
+#pragma comment(linker, "/merge:C240=240")
+#pragma comment(linker, "/merge:B240=240")
+#pragma comment(linker, "/merge:K240=240")
 /***************************************************************************
 
 	Cyberball 68000 sound simulator
@@ -46,7 +46,7 @@ void cyberbal_sound_reset(void)
  *
  *************************************/
 
-READ_HANDLER( cyberbal_special_port3_r )
+READ8_HANDLER( cyberbal_special_port3_r )
 {
 	int temp = readinputport(3);
 	if (!(readinputport(0) & 0x8000)) temp ^= 0x80;
@@ -56,7 +56,7 @@ READ_HANDLER( cyberbal_special_port3_r )
 }
 
 
-READ_HANDLER( cyberbal_sound_6502_stat_r )
+READ8_HANDLER( cyberbal_sound_6502_stat_r )
 {
 	int temp = 0xff;
 	if (sound_data_from_6502_ready) temp ^= 0x80;
@@ -65,25 +65,25 @@ READ_HANDLER( cyberbal_sound_6502_stat_r )
 }
 
 
-WRITE_HANDLER( cyberbal_sound_bank_select_w )
+WRITE8_HANDLER( cyberbal_sound_bank_select_w )
 {
 	cpu_setbank(8, &bank_base[0x1000 * ((data >> 6) & 3)]);
 	coin_counter_w(1, (data >> 5) & 1);
 	coin_counter_w(0, (data >> 4) & 1);
-	cpu_set_reset_line(3, (data & 0x08) ? CLEAR_LINE : ASSERT_LINE);
+	cpunum_set_input_line(3, INPUT_LINE_RESET, (data & 0x08) ? CLEAR_LINE : ASSERT_LINE);
 	if (!(data & 0x01)) YM2151_sh_reset();
 
 }
 
 
-READ_HANDLER( cyberbal_sound_68k_6502_r )
+READ8_HANDLER( cyberbal_sound_68k_6502_r )
 {
 	sound_data_from_68k_ready = 0;
 	return sound_data_from_68k;
 }
 
 
-WRITE_HANDLER( cyberbal_sound_68k_6502_w )
+WRITE8_HANDLER( cyberbal_sound_68k_6502_w )
 {
 	sound_data_from_6502 = data;
 	sound_data_from_6502_ready = 1;
@@ -113,9 +113,9 @@ static void update_sound_68k_interrupts(void)
 		newstate |= 2;
 
 	if (newstate)
-		cpu_set_irq_line(3, newstate, ASSERT_LINE);
+		cpunum_set_input_line(3, newstate, ASSERT_LINE);
 	else
-		cpu_set_irq_line(3, 7, CLEAR_LINE);
+		cpunum_set_input_line(3, 7, CLEAR_LINE);
 }
 
 

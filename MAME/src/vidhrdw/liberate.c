@@ -1,11 +1,11 @@
-#pragma code_seg("C404")
-#pragma data_seg("D404")
-#pragma bss_seg("B404")
-#pragma const_seg("K404")
-#pragma comment(linker, "/merge:D404=404")
-#pragma comment(linker, "/merge:C404=404")
-#pragma comment(linker, "/merge:B404=404")
-#pragma comment(linker, "/merge:K404=404")
+#pragma code_seg("C422")
+#pragma data_seg("D422")
+#pragma bss_seg("B422")
+#pragma const_seg("K422")
+#pragma comment(linker, "/merge:D422=422")
+#pragma comment(linker, "/merge:C422=422")
+#pragma comment(linker, "/merge:B422=422")
+#pragma comment(linker, "/merge:K422=422")
 /*******************************************************************************
 
 	Todo:
@@ -95,7 +95,7 @@ static void get_fix_tile_info( int tile_index )
 
 /***************************************************************************/
 
-WRITE_HANDLER( deco16_io_w )
+WRITE8_HANDLER( deco16_io_w )
 {
 	deco16_io_ram[offset]=data;
 	if (offset>1 && offset<6)
@@ -114,16 +114,16 @@ WRITE_HANDLER( deco16_io_w )
 			/* Todo */
 			break;
 		case 8: /* Irq ack */
-			cpu_set_irq_line(0,DECO16_IRQ_LINE,CLEAR_LINE);
+			cpunum_set_input_line(0,DECO16_IRQ_LINE,CLEAR_LINE);
 			break;
 		case 9: /* Sound */
 			soundlatch_w(0,data);
-			cpu_set_irq_line(1,M6502_IRQ_LINE,HOLD_LINE);
+			cpunum_set_input_line(1,M6502_IRQ_LINE,HOLD_LINE);
 			break;
 	}
 }
 
-WRITE_HANDLER( liberate_videoram_w )
+WRITE8_HANDLER( liberate_videoram_w )
 {
 	videoram[offset]=data;
 	tilemap_mark_tile_dirty(fix_tilemap,offset&0x3ff);
@@ -173,7 +173,7 @@ VIDEO_START( liberate )
 
 /***************************************************************************/
 
-WRITE_HANDLER( prosport_paletteram_w )
+WRITE8_HANDLER( prosport_paletteram_w )
 {
 	/* RGB output is inverted */
 	paletteram_BBGGGRRR_w(offset,~data);
@@ -231,8 +231,7 @@ static void liberate_drawsprites(struct mame_bitmap *bitmap)
 //		if (pri==1 && color==0) continue;
 
 		fx = spriteram[offs+0] & 0x04;
-		fy = spriteram[offs+0] & 0x08;//2;//8;
-//if (fy) fy=0; else fy=1;
+		fy = spriteram[offs+0] & 0x08; // or 0x02 ?
 		multi = spriteram[offs+0] & 0x10;
 
 
@@ -242,6 +241,7 @@ static void liberate_drawsprites(struct mame_bitmap *bitmap)
 			sy=240-sy;
 			sx=240-sx;
 			if (fx) fx=0; else fx=1;
+			if (fy) fy=0; else fy=1;
 			sy2=sy-16;
 		}
 		else sy2=sy+16;

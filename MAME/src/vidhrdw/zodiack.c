@@ -26,7 +26,7 @@ extern int percuss_hardware;
 
 static struct tilemap *bg_tilemap, *fg_tilemap;
 
-WRITE_HANDLER( zodiack_videoram_w )
+WRITE8_HANDLER( zodiack_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -35,7 +35,7 @@ WRITE_HANDLER( zodiack_videoram_w )
 	}
 }
 
-WRITE_HANDLER( zodiack_videoram2_w )
+WRITE8_HANDLER( zodiack_videoram2_w )
 {
 	if (zodiack_videoram2[offset] != data)
 	{
@@ -44,7 +44,7 @@ WRITE_HANDLER( zodiack_videoram2_w )
 	}
 }
 
-WRITE_HANDLER( zodiack_attributes_w )
+WRITE8_HANDLER( zodiack_attributes_w )
 {
 	if ((offset & 1) && zodiack_attributesram[offset] != data)
 	{
@@ -60,7 +60,7 @@ WRITE_HANDLER( zodiack_attributes_w )
 	zodiack_attributesram[offset] = data;
 }
 
-WRITE_HANDLER( zodiack_flipscreen_w )
+WRITE8_HANDLER( zodiack_flipscreen_w )
 {
 	if (flip_screen != (~data & 0x01))
 	{

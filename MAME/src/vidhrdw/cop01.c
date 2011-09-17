@@ -1,11 +1,11 @@
-#pragma code_seg("C222")
-#pragma data_seg("D222")
-#pragma bss_seg("B222")
-#pragma const_seg("K222")
-#pragma comment(linker, "/merge:D222=222")
-#pragma comment(linker, "/merge:C222=222")
-#pragma comment(linker, "/merge:B222=222")
-#pragma comment(linker, "/merge:K222=222")
+#pragma code_seg("C227")
+#pragma data_seg("D227")
+#pragma bss_seg("B227")
+#pragma const_seg("K227")
+#pragma comment(linker, "/merge:D227=227")
+#pragma comment(linker, "/merge:C227=227")
+#pragma comment(linker, "/merge:B227=227")
+#pragma comment(linker, "/merge:K227=227")
 /***************************************************************************
 
   vidhrdw.c
@@ -143,7 +143,7 @@ VIDEO_START( cop01 )
 
 ***************************************************************************/
 
-WRITE_HANDLER( cop01_background_w )
+WRITE8_HANDLER( cop01_background_w )
 {
 	if (cop01_bgvideoram[offset] != data)
 	{
@@ -152,7 +152,7 @@ WRITE_HANDLER( cop01_background_w )
 	}
 }
 
-WRITE_HANDLER( cop01_foreground_w )
+WRITE8_HANDLER( cop01_foreground_w )
 {
 	if (cop01_fgvideoram[offset] != data)
 	{
@@ -161,7 +161,7 @@ WRITE_HANDLER( cop01_foreground_w )
 	}
 }
 
-WRITE_HANDLER( cop01_vreg_w )
+WRITE8_HANDLER( cop01_vreg_w )
 {
 	/*	0x40: --xx---- sprite bank, coin counters, flip screen
 	 *	      -----x-- flip screen

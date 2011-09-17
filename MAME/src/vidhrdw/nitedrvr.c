@@ -1,11 +1,11 @@
-#pragma code_seg("C500")
-#pragma data_seg("D500")
-#pragma bss_seg("B500")
-#pragma const_seg("K500")
-#pragma comment(linker, "/merge:D500=500")
-#pragma comment(linker, "/merge:C500=500")
-#pragma comment(linker, "/merge:B500=500")
-#pragma comment(linker, "/merge:K500=500")
+#pragma code_seg("C529")
+#pragma data_seg("D529")
+#pragma bss_seg("B529")
+#pragma const_seg("K529")
+#pragma comment(linker, "/merge:D529=529")
+#pragma comment(linker, "/merge:C529=529")
+#pragma comment(linker, "/merge:B529=529")
+#pragma comment(linker, "/merge:K529=529")
 /***************************************************************************
 
 	Atari Night Driver hardware
@@ -19,7 +19,7 @@ UINT8 *nitedrvr_hvc;
 
 static struct tilemap *bg_tilemap;
 
-WRITE_HANDLER( nitedrvr_videoram_w )
+WRITE8_HANDLER( nitedrvr_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -28,7 +28,7 @@ WRITE_HANDLER( nitedrvr_videoram_w )
 	}
 }
 
-WRITE_HANDLER( nitedrvr_hvc_w )
+WRITE8_HANDLER( nitedrvr_hvc_w )
 {
 	nitedrvr_hvc[offset & 0x3f] = data;
 
@@ -114,7 +114,6 @@ static void nitedrvr_draw_hacks( struct mame_bitmap *bitmap )
 				0,0,(offs+26)*8,31*8,
 				&Machine->visible_area,TRANSPARENCY_NONE,0);
 }
-
 
 VIDEO_UPDATE( nitedrvr )
 {

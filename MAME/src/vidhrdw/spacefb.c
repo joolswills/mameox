@@ -1,11 +1,11 @@
-#pragma code_seg("C639")
-#pragma data_seg("D639")
-#pragma bss_seg("B639")
-#pragma const_seg("K639")
-#pragma comment(linker, "/merge:D639=639")
-#pragma comment(linker, "/merge:C639=639")
-#pragma comment(linker, "/merge:B639=639")
-#pragma comment(linker, "/merge:K639=639")
+#pragma code_seg("C675")
+#pragma data_seg("D675")
+#pragma bss_seg("B675")
+#pragma const_seg("K675")
+#pragma comment(linker, "/merge:D675=675")
+#pragma comment(linker, "/merge:C675=675")
+#pragma comment(linker, "/merge:B675=675")
+#pragma comment(linker, "/merge:K675=675")
 /***************************************************************************
 
   vidhrdw.c
@@ -80,7 +80,7 @@ PALETTE_INIT( spacefb )
 }
 
 
-WRITE_HANDLER( spacefb_video_control_w )
+WRITE8_HANDLER( spacefb_video_control_w )
 {
 	flip_screen_set(data & 0x01);
 
@@ -88,7 +88,7 @@ WRITE_HANDLER( spacefb_video_control_w )
 }
 
 
-WRITE_HANDLER( spacefb_port_2_w )
+WRITE8_HANDLER( spacefb_port_2_w )
 {
 logerror("Port #2 = %02d\n",data);
 	colour_control = data;

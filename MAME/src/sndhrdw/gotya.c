@@ -1,11 +1,11 @@
-#pragma code_seg("C334")
-#pragma data_seg("D334")
-#pragma bss_seg("B334")
-#pragma const_seg("K334")
-#pragma comment(linker, "/merge:D334=334")
-#pragma comment(linker, "/merge:C334=334")
-#pragma comment(linker, "/merge:B334=334")
-#pragma comment(linker, "/merge:K334=334")
+#pragma code_seg("C348")
+#pragma data_seg("D348")
+#pragma bss_seg("B348")
+#pragma const_seg("K348")
+#pragma comment(linker, "/merge:D348=348")
+#pragma comment(linker, "/merge:C348=348")
+#pragma comment(linker, "/merge:B348=348")
+#pragma comment(linker, "/merge:K348=348")
 #include "driver.h"
 
 struct gotya_sample
@@ -44,7 +44,7 @@ static struct gotya_sample gotya_samples[] =
 	{   -1, 0, 0 }		/* end of array */
 };
 
-WRITE_HANDLER( gotya_soundlatch_w )
+WRITE8_HANDLER( gotya_soundlatch_w )
 {
 	static int theme_playing;
 	int sample_number;

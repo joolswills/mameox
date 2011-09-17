@@ -1,11 +1,11 @@
-#pragma code_seg("C433")
-#pragma data_seg("D433")
-#pragma bss_seg("B433")
-#pragma const_seg("K433")
-#pragma comment(linker, "/merge:D433=433")
-#pragma comment(linker, "/merge:C433=433")
-#pragma comment(linker, "/merge:B433=433")
-#pragma comment(linker, "/merge:K433=433")
+#pragma code_seg("C455")
+#pragma data_seg("D455")
+#pragma bss_seg("B455")
+#pragma const_seg("K455")
+#pragma comment(linker, "/merge:D455=455")
+#pragma comment(linker, "/merge:C455=455")
+#pragma comment(linker, "/merge:B455=455")
+#pragma comment(linker, "/merge:K455=455")
 /******************************************************************************
 
   'Face' LINDA board
@@ -91,7 +91,7 @@ static READ16_HANDLER( mcatadv_dsw_r )
 static WRITE16_HANDLER( mcat_soundlatch_w )
 {
 	soundlatch_w(0, data);
-	cpu_set_nmi_line(1,PULSE_LINE);
+	cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 }
 
 static WRITE16_HANDLER( mcat_coin_w )
@@ -163,7 +163,7 @@ ADDRESS_MAP_END
 
 /*** Sound ***/
 
-static WRITE_HANDLER ( mcatadv_sound_bw_w )
+static WRITE8_HANDLER ( mcatadv_sound_bw_w )
 {
 	data8_t *rom = memory_region(REGION_CPU2) + 0x10000;
 
@@ -411,7 +411,7 @@ static struct GfxDecodeInfo mcatadv_gfxdecodeinfo[] =
 /* Stolen from Psikyo.c */
 static void sound_irq( int irq )
 {
-	cpu_set_irq_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
 }
 struct YM2610interface mcatadv_ym2610_interface =
 {

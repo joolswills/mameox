@@ -1,11 +1,11 @@
-#pragma code_seg("C645")
-#pragma data_seg("D645")
-#pragma bss_seg("B645")
-#pragma const_seg("K645")
-#pragma comment(linker, "/merge:D645=645")
-#pragma comment(linker, "/merge:C645=645")
-#pragma comment(linker, "/merge:B645=645")
-#pragma comment(linker, "/merge:K645=645")
+#pragma code_seg("C681")
+#pragma data_seg("D681")
+#pragma bss_seg("B681")
+#pragma const_seg("K681")
+#pragma comment(linker, "/merge:D681=681")
+#pragma comment(linker, "/merge:C681=681")
+#pragma comment(linker, "/merge:B681=681")
+#pragma comment(linker, "/merge:K681=681")
  /****************************************************************************
  *									  *
  * vidhrdw.c								*
@@ -120,13 +120,13 @@ VIDEO_START( speedbal )
  *				   *
  *************************************/
 
-WRITE_HANDLER( speedbal_foreground_videoram_w )
+WRITE8_HANDLER( speedbal_foreground_videoram_w )
 {
    ch_dirtybuffer[offset] = 1;
    speedbal_foreground_videoram[offset]=data;
 }
 
-READ_HANDLER( speedbal_foreground_videoram_r )
+READ8_HANDLER( speedbal_foreground_videoram_r )
 {
    return speedbal_foreground_videoram[offset];
 }
@@ -139,13 +139,13 @@ READ_HANDLER( speedbal_foreground_videoram_r )
  *				   *
  *************************************/
 
-WRITE_HANDLER( speedbal_background_videoram_w )
+WRITE8_HANDLER( speedbal_background_videoram_w )
 {
    bg_dirtybuffer[offset] = 1;
    speedbal_background_videoram[offset] = data;
 }
 
-READ_HANDLER( speedbal_background_videoram_r )
+READ8_HANDLER( speedbal_background_videoram_r )
 {
    return speedbal_background_videoram[offset];
 }

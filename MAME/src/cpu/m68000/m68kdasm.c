@@ -86,15 +86,16 @@
 
 /* These are the CPU types understood by this disassembler */
 #define TYPE_68000 1
-#define TYPE_68010 2
-#define TYPE_68020 4
-#define TYPE_68030 8
-#define TYPE_68040 16
+#define TYPE_68008 2
+#define TYPE_68010 4
+#define TYPE_68020 8
+#define TYPE_68030 16
+#define TYPE_68040 32
 
-#define M68000_ONLY		TYPE_68000
+#define M68000_ONLY		(TYPE_68000 | TYPE_68008)
 
 #define M68010_ONLY		TYPE_68010
-#define M68010_LESS		(TYPE_68000 | TYPE_68010)
+#define M68010_LESS		(TYPE_68000 | TYPE_68008 | TYPE_68010)
 #define M68010_PLUS		(TYPE_68010 | TYPE_68020 | TYPE_68030 | TYPE_68040)
 
 #define M68020_ONLY 	TYPE_68020
@@ -362,6 +363,7 @@ static char* get_ea_mode_str(uint instruction, uint size)
 	uint postindex;
 	uint comma = 0;
 	uint temp_value;
+	char invalid_mode = 0;
 
 	/* Switch buffers so we don't clobber on a double-call to this function */
 	mode = mode == b1 ? b2 : b1;
@@ -396,13 +398,26 @@ static char* get_ea_mode_str(uint instruction, uint size)
 		/* address register indirect with index */
 			extension = read_imm_16();
 
+			if((g_cpu_type & M68010_LESS) && EXT_INDEX_SCALE(extension))
+			{
+				invalid_mode = 1;
+				break;
+			}
+
 			if(EXT_FULL(extension))
 			{
+				if(g_cpu_type & M68010_LESS)
+				{
+					invalid_mode = 1;
+					break;
+				}
+
 				if(EXT_EFFECTIVE_ZERO(extension))
 				{
 					strcpy(mode, "0");
 					break;
 				}
+
 				base = EXT_BASE_DISPLACEMENT_PRESENT(extension) ? (EXT_BASE_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
 				outer = EXT_OUTER_DISPLACEMENT_PRESENT(extension) ? (EXT_OUTER_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
 				if(EXT_BASE_REGISTER_PRESENT(extension))
@@ -488,8 +503,20 @@ static char* get_ea_mode_str(uint instruction, uint size)
 		/* program counter with index */
 			extension = read_imm_16();
 
+			if((g_cpu_type & M68010_LESS) && EXT_INDEX_SCALE(extension))
+			{
+				invalid_mode = 1;
+				break;
+			}
+
 			if(EXT_FULL(extension))
 			{
+				if(g_cpu_type & M68010_LESS)
+				{
+					invalid_mode = 1;
+					break;
+				}
+
 				if(EXT_EFFECTIVE_ZERO(extension))
 				{
 					strcpy(mode, "0");
@@ -567,8 +594,12 @@ static char* get_ea_mode_str(uint instruction, uint size)
 			sprintf(mode, "%s", get_imm_str_u(size));
 			break;
 		default:
-			sprintf(mode, "INVALID %x", instruction & 0x3f);
+			invalid_mode = 1;
 	}
+
+	if(invalid_mode)
+		sprintf(mode, "INVALID %x", instruction & 0x3f);
+
 	return mode;
 }
 
@@ -3253,6 +3284,10 @@ unsigned int m68k_disassemble(char* str_buff, unsigned int pc, unsigned int cpu_
 			g_cpu_type = TYPE_68000;
 			g_address_mask = 0x00ffffff;
 			break;
+		case M68K_CPU_TYPE_68008:
+			g_cpu_type = TYPE_68008;
+			g_address_mask = 0x003fffff;
+			break;
 		case M68K_CPU_TYPE_68010:
 			g_cpu_type = TYPE_68010;
 			g_address_mask = 0x00ffffff;
@@ -3309,6 +3344,7 @@ unsigned int m68k_is_valid_instruction(unsigned int instruction, unsigned int cp
 	switch(cpu_type)
 	{
 		case M68K_CPU_TYPE_68000:
+		case M68K_CPU_TYPE_68008:
 			if(g_instruction_table[instruction] == d68010_bkpt)
 				return 0;
 			if(g_instruction_table[instruction] == d68010_move_fr_ccr)

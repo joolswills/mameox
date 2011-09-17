@@ -1,11 +1,11 @@
-#pragma code_seg("C131")
-#pragma data_seg("D131")
-#pragma bss_seg("B131")
-#pragma const_seg("K131")
-#pragma comment(linker, "/merge:D131=131")
-#pragma comment(linker, "/merge:C131=131")
-#pragma comment(linker, "/merge:B131=131")
-#pragma comment(linker, "/merge:K131=131")
+#pragma code_seg("C132")
+#pragma data_seg("D132")
+#pragma bss_seg("B132")
+#pragma const_seg("K132")
+#pragma comment(linker, "/merge:D132=132")
+#pragma comment(linker, "/merge:C132=132")
+#pragma comment(linker, "/merge:B132=132")
+#pragma comment(linker, "/merge:K132=132")
 /**************************************************************************
 
 	WOW/Votrax SC-01 Emulator
@@ -131,7 +131,7 @@ int wow_sh_start(const struct MachineSound *msound)
 	return 0;
 }
 
-READ_HANDLER( wow_speech_r )
+READ8_HANDLER( wow_speech_r )
 {
 	int Phoneme,Intonation;
 	int i = 0;
@@ -207,7 +207,7 @@ int wow_status_r(void)
 
 /* Read from port 2 (0x12) returns speech status as 0x80 */
 
-READ_HANDLER( wow_port_2_r )
+READ8_HANDLER( wow_port_2_r )
 {
 	int Ans;
 

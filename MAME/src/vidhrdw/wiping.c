@@ -71,7 +71,7 @@ PALETTE_INIT( wiping )
 
 
 
-WRITE_HANDLER( wiping_flipscreen_w )
+WRITE8_HANDLER( wiping_flipscreen_w )
 {
 	if (flipscreen != (data & 1))
 	{

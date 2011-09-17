@@ -1,11 +1,11 @@
-#pragma code_seg("C722")
-#pragma data_seg("D722")
-#pragma bss_seg("B722")
-#pragma const_seg("K722")
-#pragma comment(linker, "/merge:D722=722")
-#pragma comment(linker, "/merge:C722=722")
-#pragma comment(linker, "/merge:B722=722")
-#pragma comment(linker, "/merge:K722=722")
+#pragma code_seg("C764")
+#pragma data_seg("D764")
+#pragma bss_seg("B764")
+#pragma const_seg("K764")
+#pragma comment(linker, "/merge:D764=764")
+#pragma comment(linker, "/merge:C764=764")
+#pragma comment(linker, "/merge:B764=764")
+#pragma comment(linker, "/merge:K764=764")
 /***************************************************************************
 
 Super Contra / Thunder Cross
@@ -38,12 +38,12 @@ extern int debug_key_pressed;
 static INTERRUPT_GEN( scontra_interrupt )
 {
 	if (K052109_is_IRQ_enabled())
-		cpu_set_irq_line(0, KONAMI_IRQ_LINE, HOLD_LINE);
+		cpunum_set_input_line(0, KONAMI_IRQ_LINE, HOLD_LINE);
 }
 
 static void thunderx_firq_callback(int x)
 {
-	cpu_set_irq_line(0, KONAMI_FIRQ_LINE, HOLD_LINE);
+	cpunum_set_input_line(0, KONAMI_FIRQ_LINE, HOLD_LINE);
 }
 
 
@@ -51,7 +51,7 @@ static int palette_selected;
 static int rambank,pmcbank;
 static unsigned char *ram,*pmcram;
 
-static READ_HANDLER( scontra_bankedram_r )
+static READ8_HANDLER( scontra_bankedram_r )
 {
 	if (palette_selected)
 		return paletteram_r(offset);
@@ -59,7 +59,7 @@ static READ_HANDLER( scontra_bankedram_r )
 		return ram[offset];
 }
 
-static WRITE_HANDLER( scontra_bankedram_w )
+static WRITE8_HANDLER( scontra_bankedram_w )
 {
 	if (palette_selected)
 		paletteram_xBBBBBGGGGGRRRRR_swap_w(offset,data);
@@ -67,7 +67,7 @@ static WRITE_HANDLER( scontra_bankedram_w )
 		ram[offset] = data;
 }
 
-static READ_HANDLER( thunderx_bankedram_r )
+static READ8_HANDLER( thunderx_bankedram_r )
 {
 	if (rambank & 0x01)
 		return ram[offset];
@@ -88,7 +88,7 @@ static READ_HANDLER( thunderx_bankedram_r )
 		return paletteram_r(offset);
 }
 
-static WRITE_HANDLER( thunderx_bankedram_w )
+static WRITE8_HANDLER( thunderx_bankedram_w )
 {
 	if (rambank & 0x01)
 		ram[offset] = data;
@@ -296,7 +296,7 @@ static void calculate_collisions( void )
 	run_collisions(X0,Y0,X1,Y1,CM,HM);
 }
 
-static WRITE_HANDLER( thunderx_1f98_w )
+static WRITE8_HANDLER( thunderx_1f98_w )
 {
 // logerror("%04x: 1f98_w %02x\n",activecpu_get_pc(),data);
 
@@ -318,7 +318,7 @@ static WRITE_HANDLER( thunderx_1f98_w )
 	unknown_enable = data;
 }
 
-WRITE_HANDLER( scontra_bankswitch_w )
+WRITE8_HANDLER( scontra_bankswitch_w )
 {
 	unsigned char *RAM = memory_region(REGION_CPU1);
 	int offs;
@@ -340,7 +340,7 @@ WRITE_HANDLER( scontra_bankswitch_w )
 	scontra_priority = data & 0x80;
 }
 
-static WRITE_HANDLER( thunderx_videobank_w )
+static WRITE8_HANDLER( thunderx_videobank_w )
 {
 //logerror("%04x: select video ram bank %02x\n",activecpu_get_pc(),data);
 	/* 0x01 = work RAM at 4000-5fff */
@@ -356,12 +356,12 @@ static WRITE_HANDLER( thunderx_videobank_w )
 	scontra_priority = data & 0x08;
 }
 
-static WRITE_HANDLER( thunderx_sh_irqtrigger_w )
+static WRITE8_HANDLER( thunderx_sh_irqtrigger_w )
 {
-	cpu_set_irq_line_and_vector(1,0,HOLD_LINE,0xff);
+	cpunum_set_input_line_and_vector(1,0,HOLD_LINE,0xff);
 }
 
-static WRITE_HANDLER( scontra_snd_bankswitch_w )
+static WRITE8_HANDLER( scontra_snd_bankswitch_w )
 {
 	/* b3-b2: bank for chanel B */
 	/* b1-b0: bank for chanel A */

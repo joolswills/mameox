@@ -1,11 +1,11 @@
-#pragma code_seg("C342")
-#pragma data_seg("D342")
-#pragma bss_seg("B342")
-#pragma const_seg("K342")
-#pragma comment(linker, "/merge:D342=342")
-#pragma comment(linker, "/merge:C342=342")
-#pragma comment(linker, "/merge:B342=342")
-#pragma comment(linker, "/merge:K342=342")
+#pragma code_seg("C356")
+#pragma data_seg("D356")
+#pragma bss_seg("B356")
+#pragma const_seg("K356")
+#pragma comment(linker, "/merge:D356=356")
+#pragma comment(linker, "/merge:C356=356")
+#pragma comment(linker, "/merge:B356=356")
+#pragma comment(linker, "/merge:K356=356")
 /* Gumbo Vidhrdw */
 
 #include "driver.h"

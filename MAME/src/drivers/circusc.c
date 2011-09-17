@@ -1,11 +1,11 @@
-#pragma code_seg("C208")
-#pragma data_seg("D208")
-#pragma bss_seg("B208")
-#pragma const_seg("K208")
-#pragma comment(linker, "/merge:D208=208")
-#pragma comment(linker, "/merge:C208=208")
-#pragma comment(linker, "/merge:B208=208")
-#pragma comment(linker, "/merge:K208=208")
+#pragma code_seg("C212")
+#pragma data_seg("D212")
+#pragma bss_seg("B212")
+#pragma const_seg("K212")
+#pragma comment(linker, "/merge:D212=212")
+#pragma comment(linker, "/merge:C212=212")
+#pragma comment(linker, "/merge:B212=212")
+#pragma comment(linker, "/merge:K212=212")
 /***************************************************************************
 
 Based on drivers from Juno First emulator by Chris Hardy (chrish@kcbbs.gen.nz)
@@ -25,18 +25,18 @@ extern unsigned char *circusc_spritebank;
 extern unsigned char *circusc_scroll;
 extern unsigned char *circusc_videoram,*circusc_colorram;
 
-WRITE_HANDLER( circusc_videoram_w );
-WRITE_HANDLER( circusc_colorram_w );
+WRITE8_HANDLER( circusc_videoram_w );
+WRITE8_HANDLER( circusc_colorram_w );
 
 VIDEO_START( circusc );
-WRITE_HANDLER( circusc_flipscreen_w );
+WRITE8_HANDLER( circusc_flipscreen_w );
 PALETTE_INIT( circusc );
-WRITE_HANDLER( circusc_sprite_bank_select_w );
+WRITE8_HANDLER( circusc_sprite_bank_select_w );
 VIDEO_UPDATE( circusc );
 
 
 
-static READ_HANDLER( circusc_sh_timer_r )
+static READ8_HANDLER( circusc_sh_timer_r )
 {
 	int clock;
 #define CIRCUSCHALIE_TIMER_RATE (14318180/6144)
@@ -46,17 +46,17 @@ static READ_HANDLER( circusc_sh_timer_r )
 	return clock & 0xF;
 }
 
-static WRITE_HANDLER( circusc_sh_irqtrigger_w )
+static WRITE8_HANDLER( circusc_sh_irqtrigger_w )
 {
-	cpu_set_irq_line_and_vector(1,0,HOLD_LINE,0xff);
+	cpunum_set_input_line_and_vector(1,0,HOLD_LINE,0xff);
 }
 
-static WRITE_HANDLER( circusc_dac_w )
+static WRITE8_HANDLER( circusc_dac_w )
 {
 	DAC_data_w(0,data);
 }
 
-static WRITE_HANDLER( circusc_coin_counter_w )
+static WRITE8_HANDLER( circusc_coin_counter_w )
 {
 	coin_counter_w(offset,data);
 }

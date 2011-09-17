@@ -1,11 +1,11 @@
-#pragma code_seg("C742")
-#pragma data_seg("D742")
-#pragma bss_seg("B742")
-#pragma const_seg("K742")
-#pragma comment(linker, "/merge:D742=742")
-#pragma comment(linker, "/merge:C742=742")
-#pragma comment(linker, "/merge:B742=742")
-#pragma comment(linker, "/merge:K742=742")
+#pragma code_seg("C784")
+#pragma data_seg("D784")
+#pragma bss_seg("B784")
+#pragma const_seg("K784")
+#pragma comment(linker, "/merge:D784=784")
+#pragma comment(linker, "/merge:C784=784")
+#pragma comment(linker, "/merge:B784=784")
+#pragma comment(linker, "/merge:K784=784")
 /*
 
   Truco-Tron - (c) 198? Playtronic SRL, Argentina
@@ -143,7 +143,7 @@ static INTERRUPT_GEN( truco_interrupt )
 	{
 		if ( trigger == 0 )
 		{
-			cpu_set_irq_line( 0, M6809_IRQ_LINE, PULSE_LINE );
+			cpunum_set_input_line( 0, M6809_IRQ_LINE, PULSE_LINE );
 			trigger++;
 		}
 	} else

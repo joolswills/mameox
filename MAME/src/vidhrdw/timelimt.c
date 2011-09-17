@@ -1,11 +1,11 @@
-#pragma code_seg("C725")
-#pragma data_seg("D725")
-#pragma bss_seg("B725")
-#pragma const_seg("K725")
-#pragma comment(linker, "/merge:D725=725")
-#pragma comment(linker, "/merge:C725=725")
-#pragma comment(linker, "/merge:B725=725")
-#pragma comment(linker, "/merge:K725=725")
+#pragma code_seg("C767")
+#pragma data_seg("D767")
+#pragma bss_seg("B767")
+#pragma const_seg("K767")
+#pragma comment(linker, "/merge:D767=767")
+#pragma comment(linker, "/merge:C767=767")
+#pragma comment(linker, "/merge:B767=767")
+#pragma comment(linker, "/merge:K767=767")
 #include "vidhrdw/generic.h"
 
 /* globals */
@@ -99,7 +99,7 @@ VIDEO_START( timelimt )
 
 /***************************************************************************/
 
-WRITE_HANDLER( timelimt_videoram_w )
+WRITE8_HANDLER( timelimt_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -108,7 +108,7 @@ WRITE_HANDLER( timelimt_videoram_w )
 	}
 }
 
-WRITE_HANDLER( timelimt_bg_videoram_w )
+WRITE8_HANDLER( timelimt_bg_videoram_w )
 {
 	if (timelimt_bg_videoram[offset] != data)
 	{
@@ -117,19 +117,19 @@ WRITE_HANDLER( timelimt_bg_videoram_w )
 	}
 }
 
-WRITE_HANDLER( timelimt_scroll_x_lsb_w )
+WRITE8_HANDLER( timelimt_scroll_x_lsb_w )
 {
 	scrollx &= 0x100;
 	scrollx |= data & 0xff;
 }
 
-WRITE_HANDLER( timelimt_scroll_x_msb_w )
+WRITE8_HANDLER( timelimt_scroll_x_msb_w )
 {
 	scrollx &= 0xff;
 	scrollx |= ( data & 1 ) << 8;
 }
 
-WRITE_HANDLER( timelimt_scroll_y_w )
+WRITE8_HANDLER( timelimt_scroll_y_w )
 {
 	scrolly = data;
 }

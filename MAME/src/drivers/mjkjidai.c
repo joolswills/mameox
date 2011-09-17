@@ -1,11 +1,11 @@
-#pragma code_seg("C456")
-#pragma data_seg("D456")
-#pragma bss_seg("B456")
-#pragma const_seg("K456")
-#pragma comment(linker, "/merge:D456=456")
-#pragma comment(linker, "/merge:C456=456")
-#pragma comment(linker, "/merge:B456=456")
-#pragma comment(linker, "/merge:K456=456")
+#pragma code_seg("C481")
+#pragma data_seg("D481")
+#pragma bss_seg("B481")
+#pragma const_seg("K481")
+#pragma comment(linker, "/merge:D481=481")
+#pragma comment(linker, "/merge:C481=481")
+#pragma comment(linker, "/merge:B481=481")
+#pragma comment(linker, "/merge:K481=481")
 /***************************************************************************
 
 Mahjong Kyou Jidai     (c)1986 Sanritsu
@@ -37,12 +37,12 @@ extern data8_t *mjkjidai_videoram;
 
 VIDEO_START( mjkjidai );
 VIDEO_UPDATE( mjkjidai );
-WRITE_HANDLER( mjkjidai_videoram_w );
-WRITE_HANDLER( mjkjidai_ctrl_w );
+WRITE8_HANDLER( mjkjidai_videoram_w );
+WRITE8_HANDLER( mjkjidai_ctrl_w );
 
 
 
-static WRITE_HANDLER( adpcm_w )
+static WRITE8_HANDLER( adpcm_w )
 {
 	ADPCM_play(0,(data & 0x07) * 0x1000,0x1000*2);
 }
@@ -50,7 +50,7 @@ static WRITE_HANDLER( adpcm_w )
 
 static int keyb,nvram_init_count;
 
-static READ_HANDLER( keyboard_r )
+static READ8_HANDLER( keyboard_r )
 {
 	int res = 0x3f,i;
 
@@ -76,7 +76,7 @@ static READ_HANDLER( keyboard_r )
 	return res;
 }
 
-static WRITE_HANDLER( keyboard_select_w )
+static WRITE8_HANDLER( keyboard_select_w )
 {
 //	logerror("%04x: keyboard_select %d = %02x\n",activecpu_get_pc(),offset,data);
 

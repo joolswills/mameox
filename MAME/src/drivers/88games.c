@@ -1,11 +1,11 @@
-#pragma code_seg("C104")
-#pragma data_seg("D104")
-#pragma bss_seg("B104")
-#pragma const_seg("K104")
-#pragma comment(linker, "/merge:D104=104")
-#pragma comment(linker, "/merge:C104=104")
-#pragma comment(linker, "/merge:B104=104")
-#pragma comment(linker, "/merge:K104=104")
+#pragma code_seg("C105")
+#pragma data_seg("D105")
+#pragma bss_seg("B105")
+#pragma const_seg("K105")
+#pragma comment(linker, "/merge:D105=105")
+#pragma comment(linker, "/merge:C105=105")
+#pragma comment(linker, "/merge:B105=105")
+#pragma comment(linker, "/merge:K105=105")
 /***************************************************************************
 
 88 Games (c) 1988 Konami
@@ -38,7 +38,7 @@ static INTERRUPT_GEN( k88games_interrupt )
 
 static int zoomreadroms;
 
-static READ_HANDLER( bankedram_r )
+static READ8_HANDLER( bankedram_r )
 {
 	if (videobank) return ram[offset];
 	else
@@ -50,13 +50,13 @@ static READ_HANDLER( bankedram_r )
 	}
 }
 
-static WRITE_HANDLER( bankedram_w )
+static WRITE8_HANDLER( bankedram_w )
 {
 	if (videobank) ram[offset] = data;
 	else K051316_0_w(offset,data);
 }
 
-static WRITE_HANDLER( k88games_5f84_w )
+static WRITE8_HANDLER( k88games_5f84_w )
 {
 	/* bits 0/1 coin counters */
 	coin_counter_w(0,data & 0x01);
@@ -70,13 +70,13 @@ static WRITE_HANDLER( k88games_5f84_w )
 		usrintf_showmessage("5f84 = %02x",data);
 }
 
-static WRITE_HANDLER( k88games_sh_irqtrigger_w )
+static WRITE8_HANDLER( k88games_sh_irqtrigger_w )
 {
-	cpu_set_irq_line_and_vector(1, 0, HOLD_LINE, 0xff);
+	cpunum_set_input_line_and_vector(1, 0, HOLD_LINE, 0xff);
 }
 
 /* handle fake button for speed cheat for players 1 and 2 */
-static READ_HANDLER( cheat1_r )
+static READ8_HANDLER( cheat1_r )
 {
 	int res;
 	static int cheat = 0;
@@ -94,7 +94,7 @@ static READ_HANDLER( cheat1_r )
 }
 
 /* handle fake button for speed cheat for players 3 and 4 */
-static READ_HANDLER( cheat2_r )
+static READ8_HANDLER( cheat2_r )
 {
 	int res;
 	static int cheat = 0;
@@ -112,14 +112,14 @@ static READ_HANDLER( cheat2_r )
 }
 
 static int speech_chip;
-static WRITE_HANDLER( speech_control_w )
+static WRITE8_HANDLER( speech_control_w )
 {
 	speech_chip = ( data & 4 ) ? 1 : 0;
 	UPD7759_reset_w( speech_chip, data & 2 );
 	UPD7759_start_w( speech_chip, data & 1 );
 }
 
-static WRITE_HANDLER( speech_msg_w )
+static WRITE8_HANDLER( speech_msg_w )
 {
 	UPD7759_port_w( speech_chip, data );
 }

@@ -1,11 +1,11 @@
-#pragma code_seg("C334")
-#pragma data_seg("D334")
-#pragma bss_seg("B334")
-#pragma const_seg("K334")
-#pragma comment(linker, "/merge:D334=334")
-#pragma comment(linker, "/merge:C334=334")
-#pragma comment(linker, "/merge:B334=334")
-#pragma comment(linker, "/merge:K334=334")
+#pragma code_seg("C348")
+#pragma data_seg("D348")
+#pragma bss_seg("B348")
+#pragma const_seg("K348")
+#pragma comment(linker, "/merge:D348=348")
+#pragma comment(linker, "/merge:C348=348")
+#pragma comment(linker, "/merge:B348=348")
+#pragma comment(linker, "/merge:K348=348")
 /****************************************************************************
 
 	Gotya / The Hand driver by Zsolt Vasvari
@@ -42,17 +42,17 @@ TODO: Emulated sound
 extern UINT8 *gotya_scroll;
 extern UINT8 *gotya_videoram2;
 
-extern WRITE_HANDLER( gotya_videoram_w );
-extern WRITE_HANDLER( gotya_colorram_w );
-extern WRITE_HANDLER( gotya_videoram2_w );
+extern WRITE8_HANDLER( gotya_videoram_w );
+extern WRITE8_HANDLER( gotya_colorram_w );
+extern WRITE8_HANDLER( gotya_videoram2_w );
 
 extern PALETTE_INIT( gotya );
 extern VIDEO_START( gotya );
 extern VIDEO_UPDATE( gotya );
 
-extern WRITE_HANDLER( gotya_video_control_w );
+extern WRITE8_HANDLER( gotya_video_control_w );
 
-extern WRITE_HANDLER( gotya_soundlatch_w );
+extern WRITE8_HANDLER( gotya_soundlatch_w );
 
 
 static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )
@@ -117,9 +117,9 @@ INPUT_PORTS_START( gotya )
 	PORT_DIPNAME( 0x40, 0x00, DEF_STR( Lives ) )
 	PORT_DIPSETTING(    0x00, "3" )
 	PORT_DIPSETTING(    0x40, "5" )
-	PORT_DIPNAME( 0x80, 0x00, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( On ) )
+	PORT_DIPNAME( 0x80, 0x80, "Game Type" )	/* Manual Says:  Before main switch on: Test Pattern */
+	PORT_DIPSETTING(    0x80, "Normal" )	/*                After main switch on: Endless game */
+	PORT_DIPSETTING(    0x00, "Endless" )
 
 INPUT_PORTS_END
 

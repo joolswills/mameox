@@ -1,11 +1,11 @@
-#pragma code_seg("C250")
-#pragma data_seg("D250")
-#pragma bss_seg("B250")
-#pragma const_seg("K250")
-#pragma comment(linker, "/merge:D250=250")
-#pragma comment(linker, "/merge:C250=250")
-#pragma comment(linker, "/merge:B250=250")
-#pragma comment(linker, "/merge:K250=250")
+#pragma code_seg("C260")
+#pragma data_seg("D260")
+#pragma bss_seg("B260")
+#pragma const_seg("K260")
+#pragma comment(linker, "/merge:D260=260")
+#pragma comment(linker, "/merge:C260=260")
+#pragma comment(linker, "/merge:B260=260")
+#pragma comment(linker, "/merge:K260=260")
 /***********************************************************************
 
 	DECO Cassette System driver
@@ -76,7 +76,7 @@ INLINE int swap_bits_5_6(int data)
 	return (data & 0x9f) | ((data & 0x20) << 1) | ((data & 0x40) >> 1);
 }
 
-WRITE_HANDLER( decocass_w )
+WRITE8_HANDLER( decocass_w )
 {
 	unsigned char *rom = memory_region(REGION_CPU1);
 	int diff = memory_region_length(REGION_CPU1) / 2;

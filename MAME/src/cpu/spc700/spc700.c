@@ -1,11 +1,11 @@
-#pragma code_seg("CC50")
-#pragma data_seg("CD50")
-#pragma bss_seg("CB50")
-#pragma const_seg("CK50")
-#pragma comment(linker, "/merge:CD50=CPU50")
-#pragma comment(linker, "/merge:CC50=CPU50")
-#pragma comment(linker, "/merge:CB50=CPU50")
-#pragma comment(linker, "/merge:CK50=CPU50")
+#pragma code_seg("CC52")
+#pragma data_seg("CD52")
+#pragma bss_seg("CB52")
+#pragma const_seg("CK52")
+#pragma comment(linker, "/merge:CD52=CPU52")
+#pragma comment(linker, "/merge:CC52=CPU52")
+#pragma comment(linker, "/merge:CB52=CPU52")
+#pragma comment(linker, "/merge:CK52=CPU52")
 /* ======================================================================== */
 /* =============================== COPYRIGHT ============================== */
 /* ======================================================================== */
@@ -1790,8 +1790,8 @@ static void spc700_set_info(UINT32 state, union cpuinfo *info)
 	switch (state)
 	{
 		/* --- the following bits of info are set as 64-bit signed integers --- */
-		case CPUINFO_INT_IRQ_STATE + 0:					spc700_set_irq_line(0, info->i);		break;
-		case CPUINFO_INT_IRQ_STATE + IRQ_LINE_NMI:		spc700_set_nmi_line(info->i);			break;
+		case CPUINFO_INT_INPUT_STATE + 0:				spc700_set_irq_line(0, info->i);		break;
+		case CPUINFO_INT_INPUT_STATE + INPUT_LINE_NMI:	spc700_set_nmi_line(info->i);			break;
 
 		case CPUINFO_INT_PC:
 		case CPUINFO_INT_REGISTER + SPC700_PC:			REG_PC = MAKE_UINT_16(info->i);			break;
@@ -1828,7 +1828,7 @@ void spc700_get_info(UINT32 state, union cpuinfo *info)
 	{
 		/* --- the following bits of info are returned as 64-bit signed integers --- */
 		case CPUINFO_INT_CONTEXT_SIZE:					info->i = sizeof(spc700i_cpu);			break;
-		case CPUINFO_INT_IRQ_LINES:						info->i = 1;							break;
+		case CPUINFO_INT_INPUT_LINES:					info->i = 1;							break;
 		case CPUINFO_INT_DEFAULT_IRQ_VECTOR:			info->i = 0;							break;
 		case CPUINFO_INT_ENDIANNESS:					info->i = CPU_IS_LE;					break;
 		case CPUINFO_INT_CLOCK_DIVIDER:					info->i = 1;							break;
@@ -1847,7 +1847,7 @@ void spc700_get_info(UINT32 state, union cpuinfo *info)
 		case CPUINFO_INT_ADDRBUS_WIDTH + ADDRESS_SPACE_IO: 		info->i = 0;					break;
 		case CPUINFO_INT_ADDRBUS_SHIFT + ADDRESS_SPACE_IO: 		info->i = 0;					break;
 
-		case CPUINFO_INT_IRQ_STATE + 0:					info->i = (LINE_IRQ == IRQ_SET) ? ASSERT_LINE : CLEAR_LINE; break;
+		case CPUINFO_INT_INPUT_STATE + 0:				info->i = (LINE_IRQ == IRQ_SET) ? ASSERT_LINE : CLEAR_LINE; break;
 
 		case CPUINFO_INT_PREVIOUSPC:					info->i = REG_PPC;						break;
 

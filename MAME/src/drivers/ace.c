@@ -1,11 +1,11 @@
-#pragma code_seg("C106")
-#pragma data_seg("D106")
-#pragma bss_seg("B106")
-#pragma const_seg("K106")
-#pragma comment(linker, "/merge:D106=106")
-#pragma comment(linker, "/merge:C106=106")
-#pragma comment(linker, "/merge:B106=106")
-#pragma comment(linker, "/merge:K106=106")
+#pragma code_seg("C107")
+#pragma data_seg("D107")
+#pragma bss_seg("B107")
+#pragma const_seg("K107")
+#pragma comment(linker, "/merge:D107=107")
+#pragma comment(linker, "/merge:C107=107")
+#pragma comment(linker, "/merge:B107=107")
+#pragma comment(linker, "/merge:K107=107")
 /****************************************************************************
 
 Ace by Allied Leisure
@@ -55,13 +55,13 @@ static unsigned char *ace_characterram;
 
 static int objpos[8];
 
-static WRITE_HANDLER( ace_objpos_w )
+static WRITE8_HANDLER( ace_objpos_w )
 {
 	objpos[offset]=data;
 }
 
 #if 0
-static READ_HANDLER( ace_objpos_r )
+static READ8_HANDLER( ace_objpos_r )
 {
 	return objpos[offset];
 }
@@ -124,12 +124,12 @@ static PALETTE_INIT( ace )
 }
 
 
-static READ_HANDLER( ace_characterram_r )
+static READ8_HANDLER( ace_characterram_r )
 {
 	return ace_characterram[offset];
 }
 
-static WRITE_HANDLER( ace_characterram_w )
+static WRITE8_HANDLER( ace_characterram_w )
 {
 	if (ace_characterram[offset] != data)
 	{
@@ -143,7 +143,7 @@ static WRITE_HANDLER( ace_characterram_w )
 }
 
 
-static READ_HANDLER( unk_r )
+static READ8_HANDLER( unk_r )
 {
 	return rand()&0xff;
 }

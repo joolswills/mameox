@@ -1,11 +1,11 @@
-#pragma code_seg("C304")
-#pragma data_seg("D304")
-#pragma bss_seg("B304")
-#pragma const_seg("K304")
-#pragma comment(linker, "/merge:D304=304")
-#pragma comment(linker, "/merge:C304=304")
-#pragma comment(linker, "/merge:B304=304")
-#pragma comment(linker, "/merge:K304=304")
+#pragma code_seg("C315")
+#pragma data_seg("D315")
+#pragma bss_seg("B315")
+#pragma const_seg("K315")
+#pragma comment(linker, "/merge:D315=315")
+#pragma comment(linker, "/merge:C315=315")
+#pragma comment(linker, "/merge:B315=315")
+#pragma comment(linker, "/merge:K315=315")
 /***************************************************************************
 
   vidhrdw.c
@@ -51,7 +51,7 @@ PALETTE_INIT( funkybee )
 	}
 }
 
-WRITE_HANDLER( funkybee_videoram_w )
+WRITE8_HANDLER( funkybee_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -60,7 +60,7 @@ WRITE_HANDLER( funkybee_videoram_w )
 	}
 }
 
-WRITE_HANDLER( funkybee_colorram_w )
+WRITE8_HANDLER( funkybee_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -69,7 +69,7 @@ WRITE_HANDLER( funkybee_colorram_w )
 	}
 }
 
-WRITE_HANDLER( funkybee_gfx_bank_w )
+WRITE8_HANDLER( funkybee_gfx_bank_w )
 {
 	if (gfx_bank != (data & 0x01))
 	{
@@ -78,12 +78,12 @@ WRITE_HANDLER( funkybee_gfx_bank_w )
 	}
 }
 
-WRITE_HANDLER( funkybee_scroll_w )
+WRITE8_HANDLER( funkybee_scroll_w )
 {
 	tilemap_set_scrollx(bg_tilemap, 0, flip_screen ? -data : data);
 }
 
-WRITE_HANDLER( funkybee_flipscreen_w )
+WRITE8_HANDLER( funkybee_flipscreen_w )
 {
 	if (flip_screen != (data & 0x01))
 	{

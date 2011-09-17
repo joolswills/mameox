@@ -1,11 +1,11 @@
-#pragma code_seg("C371")
-#pragma data_seg("D371")
-#pragma bss_seg("B371")
-#pragma const_seg("K371")
-#pragma comment(linker, "/merge:D371=371")
-#pragma comment(linker, "/merge:C371=371")
-#pragma comment(linker, "/merge:B371=371")
-#pragma comment(linker, "/merge:K371=371")
+#pragma code_seg("C386")
+#pragma data_seg("D386")
+#pragma bss_seg("B386")
+#pragma const_seg("K386")
+#pragma comment(linker, "/merge:D386=386")
+#pragma comment(linker, "/merge:C386=386")
+#pragma comment(linker, "/merge:B386=386")
+#pragma comment(linker, "/merge:K386=386")
 /***************************************************************************
 
   vidhrdw/jack.c
@@ -19,7 +19,7 @@
 
 static struct tilemap *bg_tilemap;
 
-WRITE_HANDLER( jack_videoram_w )
+WRITE8_HANDLER( jack_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -28,7 +28,7 @@ WRITE_HANDLER( jack_videoram_w )
 	}
 }
 
-WRITE_HANDLER( jack_colorram_w )
+WRITE8_HANDLER( jack_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -37,19 +37,19 @@ WRITE_HANDLER( jack_colorram_w )
 	}
 }
 
-WRITE_HANDLER( jack_paletteram_w )
+WRITE8_HANDLER( jack_paletteram_w )
 {
 	/* RGB output is inverted */
 	paletteram_BBGGGRRR_w(offset,~data);
 }
 
-READ_HANDLER( jack_flipscreen_r )
+READ8_HANDLER( jack_flipscreen_r )
 {
 	flip_screen_set(offset);
 	return 0;
 }
 
-WRITE_HANDLER( jack_flipscreen_w )
+WRITE8_HANDLER( jack_flipscreen_w )
 {
 	flip_screen_set(offset);
 }

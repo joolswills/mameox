@@ -1,11 +1,11 @@
-#pragma code_seg("C805")
-#pragma data_seg("D805")
-#pragma bss_seg("B805")
-#pragma const_seg("K805")
-#pragma comment(linker, "/merge:D805=805")
-#pragma comment(linker, "/merge:C805=805")
-#pragma comment(linker, "/merge:B805=805")
-#pragma comment(linker, "/merge:K805=805")
+#pragma code_seg("C847")
+#pragma data_seg("D847")
+#pragma bss_seg("B847")
+#pragma const_seg("K847")
+#pragma comment(linker, "/merge:D847=847")
+#pragma comment(linker, "/merge:C847=847")
+#pragma comment(linker, "/merge:B847=847")
+#pragma comment(linker, "/merge:K847=847")
 /***************************************************************************
 
   vidhrdw.c
@@ -178,7 +178,7 @@ VIDEO_START( zaccaria )
 
 ***************************************************************************/
 
-WRITE_HANDLER( zaccaria_videoram_w )
+WRITE8_HANDLER( zaccaria_videoram_w )
 {
 	if (zaccaria_videoram[offset] != data)
 	{
@@ -187,7 +187,7 @@ WRITE_HANDLER( zaccaria_videoram_w )
 	}
 }
 
-WRITE_HANDLER( zaccaria_attributes_w )
+WRITE8_HANDLER( zaccaria_attributes_w )
 {
 	if (offset & 1)
 	{
@@ -205,12 +205,12 @@ WRITE_HANDLER( zaccaria_attributes_w )
 	zaccaria_attributesram[offset] = data;
 }
 
-WRITE_HANDLER( zaccaria_flip_screen_x_w )
+WRITE8_HANDLER( zaccaria_flip_screen_x_w )
 {
 	flip_screen_x_set(data & 1);
 }
 
-WRITE_HANDLER( zaccaria_flip_screen_y_w )
+WRITE8_HANDLER( zaccaria_flip_screen_y_w )
 {
 	flip_screen_y_set(data & 1);
 }

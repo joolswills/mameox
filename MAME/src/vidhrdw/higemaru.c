@@ -1,17 +1,17 @@
-#pragma code_seg("C355")
-#pragma data_seg("D355")
-#pragma bss_seg("B355")
-#pragma const_seg("K355")
-#pragma comment(linker, "/merge:D355=355")
-#pragma comment(linker, "/merge:C355=355")
-#pragma comment(linker, "/merge:B355=355")
-#pragma comment(linker, "/merge:K355=355")
+#pragma code_seg("C369")
+#pragma data_seg("D369")
+#pragma bss_seg("B369")
+#pragma const_seg("K369")
+#pragma comment(linker, "/merge:D369=369")
+#pragma comment(linker, "/merge:C369=369")
+#pragma comment(linker, "/merge:B369=369")
+#pragma comment(linker, "/merge:K369=369")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
 static struct tilemap *bg_tilemap;
 
-WRITE_HANDLER( higemaru_videoram_w )
+WRITE8_HANDLER( higemaru_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -20,7 +20,7 @@ WRITE_HANDLER( higemaru_videoram_w )
 	}
 }
 
-WRITE_HANDLER( higemaru_colorram_w )
+WRITE8_HANDLER( higemaru_colorram_w )
 {
 	if (colorram[offset] != data)
 	{
@@ -78,7 +78,7 @@ PALETTE_INIT( higemaru )
 		COLOR(1,i) = (*(color_prom++) & 0x0f) + 0x10;
 }
 
-WRITE_HANDLER( higemaru_c800_w )
+WRITE8_HANDLER( higemaru_c800_w )
 {
 	if (data & 0x7c) logerror("c800 = %02x\n",data);
 

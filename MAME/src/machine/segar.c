@@ -20,13 +20,13 @@ void (*sega_decrypt)(int,unsigned int *);
 
 UINT8 *segar_mem;
 
-WRITE_HANDLER( segar_characterram_w );
-WRITE_HANDLER( segar_characterram2_w );
-WRITE_HANDLER( segar_colortable_w );
-WRITE_HANDLER( segar_bcolortable_w );
+WRITE8_HANDLER( segar_characterram_w );
+WRITE8_HANDLER( segar_characterram2_w );
+WRITE8_HANDLER( segar_colortable_w );
+WRITE8_HANDLER( segar_bcolortable_w );
 
 
-WRITE_HANDLER( segar_w )
+WRITE8_HANDLER( segar_w )
 {
 	int pc,op,page,off;
 	unsigned int bad;
@@ -428,6 +428,8 @@ void sega_security(int chip)
 			break;
 	}
 }
+
+
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

@@ -1,11 +1,11 @@
-#pragma code_seg("C194")
-#pragma data_seg("D194")
-#pragma bss_seg("B194")
-#pragma const_seg("K194")
-#pragma comment(linker, "/merge:D194=194")
-#pragma comment(linker, "/merge:C194=194")
-#pragma comment(linker, "/merge:B194=194")
-#pragma comment(linker, "/merge:K194=194")
+#pragma code_seg("C197")
+#pragma data_seg("D197")
+#pragma bss_seg("B197")
+#pragma const_seg("K197")
+#pragma comment(linker, "/merge:D197=197")
+#pragma comment(linker, "/merge:C197=197")
+#pragma comment(linker, "/merge:B197=197")
+#pragma comment(linker, "/merge:K197=197")
 /***************************************************************************
 
   Capcom Baseball
@@ -30,19 +30,19 @@ void pang_decode(void);
 
 
 VIDEO_START( cbasebal );
-WRITE_HANDLER( cbasebal_textram_w );
-READ_HANDLER( cbasebal_textram_r );
-WRITE_HANDLER( cbasebal_scrollram_w );
-READ_HANDLER( cbasebal_scrollram_r );
-WRITE_HANDLER( cbasebal_gfxctrl_w );
-WRITE_HANDLER( cbasebal_scrollx_w );
-WRITE_HANDLER( cbasebal_scrolly_w );
+WRITE8_HANDLER( cbasebal_textram_w );
+READ8_HANDLER( cbasebal_textram_r );
+WRITE8_HANDLER( cbasebal_scrollram_w );
+READ8_HANDLER( cbasebal_scrollram_r );
+WRITE8_HANDLER( cbasebal_gfxctrl_w );
+WRITE8_HANDLER( cbasebal_scrollx_w );
+WRITE8_HANDLER( cbasebal_scrolly_w );
 VIDEO_UPDATE( cbasebal );
 
 
 static int rambank;
 
-static WRITE_HANDLER( cbasebal_bankswitch_w )
+static WRITE8_HANDLER( cbasebal_bankswitch_w )
 {
 	int bankaddress;
 	unsigned char *RAM = memory_region(REGION_CPU1);
@@ -59,7 +59,7 @@ static WRITE_HANDLER( cbasebal_bankswitch_w )
 }
 
 
-static READ_HANDLER( bankedram_r )
+static READ8_HANDLER( bankedram_r )
 {
 	if (rambank == 2)
 		return cbasebal_textram_r(offset);	/* VRAM */
@@ -75,7 +75,7 @@ static READ_HANDLER( bankedram_r )
 	}
 }
 
-static WRITE_HANDLER( bankedram_w )
+static WRITE8_HANDLER( bankedram_w )
 {
 	if (rambank == 2)
 		cbasebal_textram_w(offset,data);
@@ -88,7 +88,7 @@ static WRITE_HANDLER( bankedram_w )
 		cbasebal_scrollram_w(offset,data);
 }
 
-static WRITE_HANDLER( cbasebal_coinctrl_w )
+static WRITE8_HANDLER( cbasebal_coinctrl_w )
 {
 	coin_lockout_w(0,~data & 0x04);
 	coin_lockout_w(1,~data & 0x08);
@@ -127,7 +127,7 @@ static NVRAM_HANDLER( cbasebal )
 	}
 }
 
-static READ_HANDLER( eeprom_r )
+static READ8_HANDLER( eeprom_r )
 {
 	int bit;
 
@@ -136,17 +136,17 @@ static READ_HANDLER( eeprom_r )
 	return (input_port_2_r(0) & 0x7f) | bit;
 }
 
-static WRITE_HANDLER( eeprom_cs_w )
+static WRITE8_HANDLER( eeprom_cs_w )
 {
 	EEPROM_set_cs_line(data ? CLEAR_LINE : ASSERT_LINE);
 }
 
-static WRITE_HANDLER( eeprom_clock_w )
+static WRITE8_HANDLER( eeprom_clock_w )
 {
 	EEPROM_set_clock_line(data ? CLEAR_LINE : ASSERT_LINE);
 }
 
-static WRITE_HANDLER( eeprom_serial_w )
+static WRITE8_HANDLER( eeprom_serial_w )
 {
 	EEPROM_write_bit(data);
 }

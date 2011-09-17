@@ -1,11 +1,11 @@
-#pragma code_seg("C575")
-#pragma data_seg("D575")
-#pragma bss_seg("B575")
-#pragma const_seg("K575")
-#pragma comment(linker, "/merge:D575=575")
-#pragma comment(linker, "/merge:C575=575")
-#pragma comment(linker, "/merge:B575=575")
-#pragma comment(linker, "/merge:K575=575")
+#pragma code_seg("C609")
+#pragma data_seg("D609")
+#pragma bss_seg("B609")
+#pragma const_seg("K609")
+#pragma comment(linker, "/merge:D609=609")
+#pragma comment(linker, "/merge:C609=609")
+#pragma comment(linker, "/merge:B609=609")
+#pragma comment(linker, "/merge:K609=609")
 /***************************************************************************
 
   vidhrdw.c
@@ -110,34 +110,34 @@ VIDEO_START( retofinv )
 	return 0;
 }
 
-WRITE_HANDLER( retofinv_flip_screen_w )
+WRITE8_HANDLER( retofinv_flip_screen_w )
 {
 	flipscreen = data;
 	memset(bg_dirtybuffer,1,retofinv_videoram_size);
 	fillbitmap(bitmap_bg,Machine->pens[0],0);
 }
 
-READ_HANDLER( retofinv_bg_videoram_r )
+READ8_HANDLER( retofinv_bg_videoram_r )
 {
 	return retofinv_bg_videoram[offset];
 }
 
-READ_HANDLER( retofinv_fg_videoram_r )
+READ8_HANDLER( retofinv_fg_videoram_r )
 {
 	return retofinv_fg_videoram[offset];
 }
 
-READ_HANDLER( retofinv_bg_colorram_r )
+READ8_HANDLER( retofinv_bg_colorram_r )
 {
 	return retofinv_bg_colorram[offset];
 }
 
-READ_HANDLER( retofinv_fg_colorram_r )
+READ8_HANDLER( retofinv_fg_colorram_r )
 {
 	return retofinv_fg_colorram[offset];
 }
 
-WRITE_HANDLER( retofinv_bg_videoram_w )
+WRITE8_HANDLER( retofinv_bg_videoram_w )
 {
 	if (retofinv_bg_videoram[offset] != data)
 	{
@@ -146,13 +146,13 @@ WRITE_HANDLER( retofinv_bg_videoram_w )
 	}
 }
 
-WRITE_HANDLER( retofinv_fg_videoram_w )
+WRITE8_HANDLER( retofinv_fg_videoram_w )
 {
 	if (retofinv_fg_videoram[offset] != data)
 		retofinv_fg_videoram[offset] = data;
 }
 
-WRITE_HANDLER( retofinv_bg_colorram_w )
+WRITE8_HANDLER( retofinv_bg_colorram_w )
 {
 	if (retofinv_bg_colorram[offset] != data)
 	{
@@ -161,7 +161,7 @@ WRITE_HANDLER( retofinv_bg_colorram_w )
 	}
 }
 
-WRITE_HANDLER( retofinv_fg_colorram_w )
+WRITE8_HANDLER( retofinv_fg_colorram_w )
 {
 	if (retofinv_fg_colorram[offset] != data)
 		retofinv_fg_colorram[offset] = data;

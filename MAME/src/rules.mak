@@ -241,6 +241,17 @@ else
 CPUDEFS += -DHAS_I286=0
 endif
 
+CPU=$(strip $(findstring I386@,$(CPUS)))
+ifneq ($(CPU),)
+OBJDIRS += $(OBJ)/cpu/i386
+CPUDEFS += -DHAS_I386=1
+CPUOBJS += $(OBJ)/cpu/i386/i386.o
+DBGOBJS += $(OBJ)/cpu/i386/i386dasm.o
+$(OBJ)/cpu/i386/i386.o: i386.c i386.h i386intf.h i386op16.c i386op16.h i386op32.c i386op32.h i386ops.c
+else
+CPUDEFS += -DHAS_I386=0
+endif
+
 CPU=$(strip $(findstring V20@,$(CPUS)))
 ifneq ($(CPU),)
 OBJDIRS += $(OBJ)/cpu/nec
@@ -524,6 +535,25 @@ else
 CPUDEFS += -DHAS_M68000=0
 endif
 
+CPU=$(strip $(findstring M68008@,$(CPUS)))
+ifneq ($(CPU),)
+OBJDIRS += $(OBJ)/cpu/m68000
+CPUDEFS += -DHAS_M68008=1
+ifdef X86_ASM_68000
+CPUOBJS += $(OBJ)/cpu/m68000/asmintf.o $(OBJ)/cpu/m68000/68000.o
+ASMDEFS += -DA68K0
+$(OBJ)/cpu/m68000/68kem.o: $(OBJ)/cpu/m68000/68kem.asm make68k.c
+else
+M68000_GENERATED_OBJS = \
+$(OBJ)/cpu/m68000/m68kops.o $(OBJ)/cpu/m68000/m68kopac.o \
+$(OBJ)/cpu/m68000/m68kopdm.o $(OBJ)/cpu/m68000/m68kopnz.o
+CPUOBJS += $(M68000_GENERATED_OBJS) $(OBJ)/cpu/m68000/m68kcpu.o $(OBJ)/cpu/m68000/m68kmame.o
+endif
+DBGOBJS += $(OBJ)/cpu/m68000/m68kdasm.o
+else
+CPUDEFS += -DHAS_M68008=0
+endif
+
 CPU=$(strip $(findstring M68010@,$(CPUS)))
 ifneq ($(CPU),)
 OBJDIRS += $(OBJ)/cpu/m68000
@@ -693,6 +723,17 @@ else
 CPUDEFS += -DHAS_TMS9995=0
 endif
 
+CPU=$(strip $(findstring TMS9900@,$(CPUS)))
+ifneq ($(CPU),)
+OBJDIRS += $(OBJ)/cpu/tms9900
+CPUDEFS += -DHAS_TMS99000=1
+CPUOBJS += $(OBJ)/cpu/tms9900/tms9900.o
+DBGOBJS += $(OBJ)/cpu/tms9900/9900dasm.o
+$(OBJ)/cpu/tms9900/tms9900.o: tms9900.c tms9900.h 99xxcore.h 9900stat.h
+else
+CPUDEFS += -DHAS_TMS99000=0
+endif
+
 CPU=$(strip $(findstring TMS99010@,$(CPUS)))
 ifneq ($(CPU),)
 OBJDIRS += $(OBJ)/cpu/tms9900
@@ -847,6 +888,17 @@ else
 CPUDEFS += -DHAS_ADSP2115=0
 endif
 
+CPU=$(strip $(findstring ADSP2181@,$(CPUS)))
+ifneq ($(CPU),)
+OBJDIRS += $(OBJ)/cpu/adsp2100
+CPUDEFS += -DHAS_ADSP2181=1
+CPUOBJS += $(OBJ)/cpu/adsp2100/adsp2100.o
+DBGOBJS += $(OBJ)/cpu/adsp2100/2100dasm.o
+$(OBJ)/cpu/adsp2100/adsp2100.o: adsp2100.c adsp2100.h 2100ops.c
+else
+CPUDEFS += -DHAS_ADSP2181=0
+endif
+
 CPU=$(strip $(findstring PSXCPU@,$(CPUS)))
 ifneq ($(CPU),)
 OBJDIRS += $(OBJ)/cpu/mips
@@ -940,6 +992,22 @@ else
 CPUDEFS += -DHAS_R4600=0
 endif
 
+CPU=$(strip $(findstring R4700@,$(CPUS)))
+ifneq ($(CPU),)
+OBJDIRS += $(OBJ)/cpu/mips
+CPUDEFS += -DHAS_R4700=1
+ifdef X86_MIPS3_DRC
+CPUOBJS += $(OBJ)/cpu/mips/mips3drc.o
+$(OBJ)/cpu/mips/mips3drc.o: mips3drc.c mips3.h
+else
+CPUOBJS += $(OBJ)/cpu/mips/mips3.o
+$(OBJ)/cpu/mips/mips3.o: mips3.c mips3.h
+endif
+DBGOBJS += $(OBJ)/cpu/mips/mips3dsm.o
+else
+CPUDEFS += -DHAS_R4700=0
+endif
+
 CPU=$(strip $(findstring R5000@,$(CPUS)))
 ifneq ($(CPU),)
 OBJDIRS += $(OBJ)/cpu/mips
@@ -954,6 +1022,38 @@ endif
 DBGOBJS += $(OBJ)/cpu/mips/mips3dsm.o
 else
 CPUDEFS += -DHAS_R5000=0
+endif
+
+CPU=$(strip $(findstring QED5271@,$(CPUS)))
+ifneq ($(CPU),)
+OBJDIRS += $(OBJ)/cpu/mips
+CPUDEFS += -DHAS_QED5271=1
+ifdef X86_MIPS3_DRC
+CPUOBJS += $(OBJ)/cpu/mips/mips3drc.o
+$(OBJ)/cpu/mips/mips3drc.o: mips3drc.c mips3.h
+else
+CPUOBJS += $(OBJ)/cpu/mips/mips3.o
+$(OBJ)/cpu/mips/mips3.o: mips3.c mips3.h
+endif
+DBGOBJS += $(OBJ)/cpu/mips/mips3dsm.o
+else
+CPUDEFS += -DHAS_QED5271=0
+endif
+
+CPU=$(strip $(findstring RM7000@,$(CPUS)))
+ifneq ($(CPU),)
+OBJDIRS += $(OBJ)/cpu/mips
+CPUDEFS += -DHAS_RM7000=1
+ifdef X86_MIPS3_DRC
+CPUOBJS += $(OBJ)/cpu/mips/mips3drc.o
+$(OBJ)/cpu/mips/mips3drc.o: mips3drc.c mips3.h
+else
+CPUOBJS += $(OBJ)/cpu/mips/mips3.o
+$(OBJ)/cpu/mips/mips3.o: mips3.c mips3.h
+endif
+DBGOBJS += $(OBJ)/cpu/mips/mips3dsm.o
+else
+CPUDEFS += -DHAS_RM7000=0
 endif
 
 CPU=$(strip $(findstring SH2@,$(CPUS)))
@@ -1078,6 +1178,25 @@ else
 CPUDEFS += -DHAS_E132XS=0
 endif
 
+CPU=$(strip $(findstring I960@,$(CPUS)))
+ifneq ($(CPU),)
+OBJDIRS += $(OBJ)/cpu/i960
+CPUDEFS += -DHAS_I960=1
+CPUOBJS += $(OBJ)/cpu/i960/i960.o
+CPUOBJS += $(OBJ)/cpu/i960/i960dis.o
+$(OBJ)/cpu/i960/i960.o: i960.c i960.h
+else
+CPUDEFS += -DHAS_I960=0
+endif
+
+SOUND=$(strip $(findstring CDDA@,$(SOUNDS)))
+ifneq ($(SOUND),)
+SOUNDDEFS += -DHAS_CDDA=1
+SOUNDOBJS += $(OBJ)/sound/cdda.o
+else
+SOUNDDEFS += -DHAS_CDDA=0
+endif
+
 SOUND=$(strip $(findstring CUSTOM@,$(SOUNDS)))
 ifneq ($(SOUND),)
 SOUNDDEFS += -DHAS_CUSTOM=1
@@ -1101,13 +1220,21 @@ else
 SOUNDDEFS += -DHAS_DAC=0
 endif
 
+SOUND=$(strip $(findstring DMADAC@,$(SOUNDS)))
+ifneq ($(SOUND),)
+SOUNDDEFS += -DHAS_DMADAC=1
+SOUNDOBJS += $(OBJ)/sound/dmadac.o
+else
+SOUNDDEFS += -DHAS_DMADAC=0
+endif
+
 SOUND=$(strip $(findstring DISCRETE@,$(SOUNDS)))
 ifneq ($(SOUND),)
 SOUNDDEFS += -DHAS_DISCRETE=1
 SOUNDOBJS += $(OBJ)/sound/discrete.o
 $(OBJ)/sound/discrete.o: src/sound/discrete.c src/sound/discrete.h \
 		src/sound/disc_dev.c src/sound/disc_flt.c src/sound/disc_inp.c \
-		src/sound/disc_mth.c src/sound/disc_out.c src/sound/disc_wav.c
+		src/sound/disc_mth.c src/sound/disc_wav.c
 else
 SOUNDDEFS += -DHAS_DISCRETE=0
 endif
@@ -1282,6 +1409,46 @@ SOUNDDEFS += -DHAS_NAMCO=1
 SOUNDOBJS += $(OBJ)/sound/namco.o
 else
 SOUNDDEFS += -DHAS_NAMCO=0
+endif
+
+SOUND=$(strip $(findstring NAMCO_15XX@,$(SOUNDS)))
+ifneq ($(SOUND),)
+SOUNDDEFS += -DHAS_NAMCO_15XX=1
+SOUNDOBJS += $(OBJ)/sound/namco.o
+else
+SOUNDDEFS += -DHAS_NAMCO_15XX=0
+endif
+
+SOUND=$(strip $(findstring NAMCO_CUS30@,$(SOUNDS)))
+ifneq ($(SOUND),)
+SOUNDDEFS += -DHAS_NAMCO_CUS30=1
+SOUNDOBJS += $(OBJ)/sound/namco.o
+else
+SOUNDDEFS += -DHAS_NAMCO_CUS30=0
+endif
+
+SOUND=$(strip $(findstring NAMCO_52XX@,$(SOUNDS)))
+ifneq ($(SOUND),)
+SOUNDDEFS += -DHAS_NAMCO_52XX=1
+SOUNDOBJS += $(OBJ)/sound/namco52.o
+else
+SOUNDDEFS += -DHAS_NAMCO_52XX=0
+endif
+
+SOUND=$(strip $(findstring NAMCO_54XX@,$(SOUNDS)))
+ifneq ($(SOUND),)
+SOUNDDEFS += -DHAS_NAMCO_54XX=1
+SOUNDOBJS += $(OBJ)/sound/namco54.o
+else
+SOUNDDEFS += -DHAS_NAMCO_54XX=0
+endif
+
+SOUND=$(strip $(findstring NAMCO_63701X@,$(SOUNDS)))
+ifneq ($(SOUND),)
+SOUNDDEFS += -DHAS_NAMCO_63701X=1
+SOUNDOBJS += $(OBJ)/sound/n63701x.o
+else
+SOUNDDEFS += -DHAS_NAMCO_63701X=0
 endif
 
 SOUND=$(strip $(findstring NAMCONA@,$(SOUNDS)))
@@ -1578,4 +1745,20 @@ SOUNDDEFS += -DHAS_YMF271=1
 SOUNDOBJS += $(OBJ)/sound/ymf271.o
 else
 SOUNDDEFS += -DHAS_YMF271=0
+endif
+
+SOUND=$(strip $(findstring ICS2115@,$(SOUNDS)))
+ifneq ($(SOUND),)
+SOUNDDEFS += -DHAS_ICS2115=1
+SOUNDOBJS += $(OBJ)/sound/ics2115.o
+else
+SOUNDDEFS += -DHAS_ICS2115=0
+endif
+
+SOUND=$(strip $(findstring ST0016@,$(SOUNDS)))
+ifneq ($(SOUND),)
+SOUNDDEFS += -DHAS_ST0016=1
+SOUNDOBJS += $(OBJ)/sound/st0016.o
+else
+SOUNDDEFS += -DHAS_ST0016=0
 endif

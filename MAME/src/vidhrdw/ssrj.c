@@ -1,11 +1,11 @@
-#pragma code_seg("C660")
-#pragma data_seg("D660")
-#pragma bss_seg("B660")
-#pragma const_seg("K660")
-#pragma comment(linker, "/merge:D660=660")
-#pragma comment(linker, "/merge:C660=660")
-#pragma comment(linker, "/merge:B660=660")
-#pragma comment(linker, "/merge:K660=660")
+#pragma code_seg("C697")
+#pragma data_seg("D697")
+#pragma bss_seg("B697")
+#pragma const_seg("K697")
+#pragma comment(linker, "/merge:D697=697")
+#pragma comment(linker, "/merge:C697=697")
+#pragma comment(linker, "/merge:B697=697")
+#pragma comment(linker, "/merge:K697=697")
 #include "vidhrdw/generic.h"
 
 static struct tilemap *tilemap1,*tilemap2,*tilemap4;
@@ -13,13 +13,13 @@ unsigned char *ssrj_vram1,*ssrj_vram2,*ssrj_vram3,*ssrj_vram4,*ssrj_scrollram;
 
 /* tilemap 1 */
 
-WRITE_HANDLER(ssrj_vram1_w)
+WRITE8_HANDLER(ssrj_vram1_w)
 {
 	ssrj_vram1[offset]=data;
 	tilemap_mark_tile_dirty(tilemap1,offset>>1);
 }
 
-READ_HANDLER(ssrj_vram1_r)
+READ8_HANDLER(ssrj_vram1_r)
 {
 	return ssrj_vram1[offset];
 }
@@ -37,13 +37,13 @@ static void get_tile_info1(int tile_index)
 
 /* tilemap 2 */
 
-WRITE_HANDLER(ssrj_vram2_w)
+WRITE8_HANDLER(ssrj_vram2_w)
 {
 	ssrj_vram2[offset]=data;
 	tilemap_mark_tile_dirty(tilemap2,offset>>1);
 }
 
-READ_HANDLER(ssrj_vram2_r)
+READ8_HANDLER(ssrj_vram2_r)
 {
 	return ssrj_vram2[offset];
 }
@@ -61,13 +61,13 @@ static void get_tile_info2(int tile_index)
 
 /* tilemap 4 */
 
-WRITE_HANDLER(ssrj_vram4_w)
+WRITE8_HANDLER(ssrj_vram4_w)
 {
 	ssrj_vram4[offset]=data;
 	tilemap_mark_tile_dirty(tilemap4,offset>>1);
 }
 
-READ_HANDLER(ssrj_vram4_r)
+READ8_HANDLER(ssrj_vram4_r)
 {
 	return ssrj_vram4[offset];
 }

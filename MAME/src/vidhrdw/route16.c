@@ -1,11 +1,11 @@
-#pragma code_seg("C584")
-#pragma data_seg("D584")
-#pragma bss_seg("B584")
-#pragma const_seg("K584")
-#pragma comment(linker, "/merge:D584=584")
-#pragma comment(linker, "/merge:C584=584")
-#pragma comment(linker, "/merge:B584=584")
-#pragma comment(linker, "/merge:K584=584")
+#pragma code_seg("C618")
+#pragma data_seg("D618")
+#pragma bss_seg("B618")
+#pragma const_seg("K618")
+#pragma comment(linker, "/merge:D618=618")
+#pragma comment(linker, "/merge:C618=618")
+#pragma comment(linker, "/merge:B618=618")
+#pragma comment(linker, "/merge:K618=618")
 /***************************************************************************
 
   vidhrdw.c
@@ -76,7 +76,7 @@ VIDEO_START( route16 )
 /***************************************************************************
   route16_out0_w
 ***************************************************************************/
-WRITE_HANDLER( route16_out0_w )
+WRITE8_HANDLER( route16_out0_w )
 {
 	static int last_write = 0;
 
@@ -95,7 +95,7 @@ WRITE_HANDLER( route16_out0_w )
 /***************************************************************************
   route16_out1_w
 ***************************************************************************/
-WRITE_HANDLER( route16_out1_w )
+WRITE8_HANDLER( route16_out1_w )
 {
 	static int last_write = 0;
 
@@ -118,7 +118,7 @@ WRITE_HANDLER( route16_out1_w )
   Handle Stratovox's extra sound effects.
 
 ***************************************************************************/
-WRITE_HANDLER( stratvox_sn76477_w )
+WRITE8_HANDLER( stratvox_sn76477_w )
 {
 	/* get out for Route 16 */
 	if (route16_hardware) return;
@@ -143,7 +143,7 @@ WRITE_HANDLER( stratvox_sn76477_w )
 /***************************************************************************
   route16_sharedram_r
 ***************************************************************************/
-READ_HANDLER( route16_sharedram_r )
+READ8_HANDLER( route16_sharedram_r )
 {
 	return route16_sharedram[offset];
 }
@@ -151,7 +151,7 @@ READ_HANDLER( route16_sharedram_r )
 /***************************************************************************
   route16_sharedram_w
 ***************************************************************************/
-WRITE_HANDLER( route16_sharedram_w )
+WRITE8_HANDLER( route16_sharedram_w )
 {
 	route16_sharedram[offset] = data;
 
@@ -173,7 +173,7 @@ WRITE_HANDLER( route16_sharedram_w )
 ***************************************************************************/
 static int speakres_vrx;
 
-READ_HANDLER ( speakres_in3_r )
+READ8_HANDLER ( speakres_in3_r )
 {
 	int bit2=4, bit1=2, bit0=1;
 
@@ -188,7 +188,7 @@ READ_HANDLER ( speakres_in3_r )
 	return 0xf8|bit2|bit1|bit0;
 }
 
-WRITE_HANDLER ( speakres_out2_w )
+WRITE8_HANDLER ( speakres_out2_w )
 {
 	speakres_vrx=0;
 }
@@ -197,7 +197,7 @@ WRITE_HANDLER ( speakres_out2_w )
 /***************************************************************************
   route16_videoram1_r
 ***************************************************************************/
-READ_HANDLER( route16_videoram1_r )
+READ8_HANDLER( route16_videoram1_r )
 {
 	return route16_videoram1[offset];
 }
@@ -205,7 +205,7 @@ READ_HANDLER( route16_videoram1_r )
 /***************************************************************************
   route16_videoram2_r
 ***************************************************************************/
-READ_HANDLER( route16_videoram2_r )
+READ8_HANDLER( route16_videoram2_r )
 {
 	return route16_videoram1[offset];
 }
@@ -213,7 +213,7 @@ READ_HANDLER( route16_videoram2_r )
 /***************************************************************************
   route16_videoram1_w
 ***************************************************************************/
-WRITE_HANDLER( route16_videoram1_w )
+WRITE8_HANDLER( route16_videoram1_w )
 {
 	route16_videoram1[offset] = data;
 
@@ -223,7 +223,7 @@ WRITE_HANDLER( route16_videoram1_w )
 /***************************************************************************
   route16_videoram2_w
 ***************************************************************************/
-WRITE_HANDLER( route16_videoram2_w )
+WRITE8_HANDLER( route16_videoram2_w )
 {
 	route16_videoram2[offset] = data;
 

@@ -1,11 +1,11 @@
-#pragma code_seg("C442")
-#pragma data_seg("D442")
-#pragma bss_seg("B442")
-#pragma const_seg("K442")
-#pragma comment(linker, "/merge:D442=442")
-#pragma comment(linker, "/merge:C442=442")
-#pragma comment(linker, "/merge:B442=442")
-#pragma comment(linker, "/merge:K442=442")
+#pragma code_seg("C465")
+#pragma data_seg("D465")
+#pragma bss_seg("B465")
+#pragma const_seg("K465")
+#pragma comment(linker, "/merge:D465=465")
+#pragma comment(linker, "/merge:C465=465")
+#pragma comment(linker, "/merge:B465=465")
+#pragma comment(linker, "/merge:K465=465")
 /***************************************************************************
 
 							  -= Metal Clash =-
@@ -40,7 +40,7 @@ data8_t *metlclsh_bgram, *metlclsh_fgram, *metlclsh_scrollx;
 
 /* Functions that driver has access to: */
 
-WRITE_HANDLER( metlclsh_rambank_w )
+WRITE8_HANDLER( metlclsh_rambank_w )
 {
 	if (data & 1)
 	{
@@ -55,7 +55,7 @@ WRITE_HANDLER( metlclsh_rambank_w )
 }
 
 static data8_t metlclsh_gfxbank;
-WRITE_HANDLER( metlclsh_gfxbank_w )
+WRITE8_HANDLER( metlclsh_gfxbank_w )
 {
 	if (!(data & 4) && (metlclsh_gfxbank != data))
 	{
@@ -91,7 +91,7 @@ static void get_bg_tile_info(int tile_index)
 	SET_TILE_INFO(1, metlclsh_bgram[tile_index] + (metlclsh_gfxbank << 7),0,0)
 }
 
-WRITE_HANDLER( metlclsh_bgram_w )
+WRITE8_HANDLER( metlclsh_bgram_w )
 {
 	/*	This ram is banked: it's either the tilemap (e401 = 1)
 		or bit n of another area (e401 = n << 1)? (that I don't understand) */
@@ -138,7 +138,7 @@ static void get_fg_tile_info(int tile_index)
 	tile_info.priority = ((attr & 0x80) ? 1 : 2);
 }
 
-WRITE_HANDLER( metlclsh_fgram_w )
+WRITE8_HANDLER( metlclsh_fgram_w )
 {
 	if (metlclsh_fgram[offset] != data)
 	{

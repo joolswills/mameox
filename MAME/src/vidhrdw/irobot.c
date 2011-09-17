@@ -1,11 +1,11 @@
-#pragma code_seg("C367")
-#pragma data_seg("D367")
-#pragma bss_seg("B367")
-#pragma const_seg("K367")
-#pragma comment(linker, "/merge:D367=367")
-#pragma comment(linker, "/merge:C367=367")
-#pragma comment(linker, "/merge:B367=367")
-#pragma comment(linker, "/merge:K367=367")
+#pragma code_seg("C382")
+#pragma data_seg("D382")
+#pragma bss_seg("B382")
+#pragma const_seg("K382")
+#pragma comment(linker, "/merge:D382=382")
+#pragma comment(linker, "/merge:C382=382")
+#pragma comment(linker, "/merge:B382=382")
+#pragma comment(linker, "/merge:K382=382")
 /***************************************************************************
 
 	Atari I, Robot hardware
@@ -98,7 +98,7 @@ PALETTE_INIT( irobot )
 }
 
 
-WRITE_HANDLER( irobot_paletteram_w )
+WRITE8_HANDLER( irobot_paletteram_w )
 {
     int r,g,b;
 	int bits,intensity;

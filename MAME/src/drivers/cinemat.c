@@ -1007,6 +1007,16 @@ static MACHINE_DRIVER_START( starcas )
 MACHINE_DRIVER_END
 
 
+static MACHINE_DRIVER_START( tailg )
+
+	/* basic machine hardware */
+	MDRV_IMPORT_FROM(cinemat)
+
+	/* sound hardware */
+	MDRV_SOUND_ADD(SAMPLES, tailg_samples_interface)
+MACHINE_DRIVER_END
+
+
 static MACHINE_DRIVER_START( ripoff )
 
 	/* basic machine hardware */
@@ -1304,7 +1314,7 @@ static DRIVER_INIT( starcas )
 static DRIVER_INIT( tailg )
 {
 	ccpu_Config(0, CCPU_MEMSIZE_8K, CCPU_MONITOR_BILEV);
-	cinemat_sound_handler = 0;
+	cinemat_sound_handler = tailg_sound_w;
 	artwork_set_overlay(tailg_overlay);
 }
 
@@ -1321,7 +1331,7 @@ static DRIVER_INIT( speedfrk )
 	ccpu_Config(0, CCPU_MEMSIZE_8K, CCPU_MONITOR_BILEV);
 	cinemat_sound_handler = 0;
 
-	install_port_read16_handler(0, CCPU_PORT_IOINPUTS, CCPU_PORT_IOINPUTS+1, speedfrk_input_port_1_r);
+	memory_install_read16_handler(0, ADDRESS_SPACE_IO, CCPU_PORT_IOINPUTS, CCPU_PORT_IOINPUTS+1, 0, 0, speedfrk_input_port_1_r);
 }
 
 
@@ -1331,7 +1341,7 @@ static DRIVER_INIT( sundance )
 	cinemat_sound_handler = sundance_sound_w;
 	artwork_set_overlay(sundance_overlay);
 
-	install_port_read16_handler(0, CCPU_PORT_IOINPUTS, CCPU_PORT_IOINPUTS+1, sundance_input_port_1_r);
+	memory_install_read16_handler(0, ADDRESS_SPACE_IO, CCPU_PORT_IOINPUTS, CCPU_PORT_IOINPUTS+1, 0, 0, sundance_input_port_1_r);
 }
 
 
@@ -1394,7 +1404,7 @@ static DRIVER_INIT( boxingb )
 	ccpu_Config(1, CCPU_MEMSIZE_32K, CCPU_MONITOR_WOWCOL);
 	cinemat_sound_handler = 0;
 
-	install_port_read16_handler(0, CCPU_PORT_IOINPUTS, CCPU_PORT_IOINPUTS+1, boxingb_input_port_1_r);
+	memory_install_read16_handler(0, ADDRESS_SPACE_IO, CCPU_PORT_IOINPUTS, CCPU_PORT_IOINPUTS+1, 0, 0, boxingb_input_port_1_r);
 }
 
 
@@ -1413,14 +1423,14 @@ GAME( 1980, starcas1, starcas, starcas,  starcas,  starcas,  ROT0,   "Cinematron
 GAME( 1980, starcasp, starcas, starcas,  starcas,  starcas,  ROT0,   "Cinematronics", "Star Castle (prototype)" )
 GAME( 1980, starcase, starcas, starcas,  starcas,  starcas,  ROT0,   "Cinematronics (Mottoeis license)", "Star Castle (Mottoeis)" )
 GAME( 1980, stellcas, starcas, starcas,  starcas,  starcas,  ROT0,   "bootleg", "Stellar Castle (Elettronolo)" )
-GAMEX(1979, tailg,    0,       cinemat,  tailg,    tailg,    ROT0,   "Cinematronics", "Tailgunner", GAME_NO_SOUND )
+GAME( 1979, tailg,    0,       tailg,    tailg,    tailg,    ROT0,   "Cinematronics", "Tailgunner" )
 GAME( 1979, ripoff,   0,       ripoff,   ripoff,   ripoff,   ROT0,   "Cinematronics", "Rip Off" )
 GAMEX(1979, speedfrk, 0,       cinemat,  speedfrk, speedfrk, ROT0,   "Vectorbeam", "Speed Freak", GAME_NO_SOUND )
-GAME(1979, sundance, 0,       sundance,  sundance, sundance, ROT270, "Cinematronics", "Sundance" )
+GAME( 1979, sundance, 0,       sundance, sundance, sundance, ROT270, "Cinematronics", "Sundance" )
 GAME( 1978, warrior,  0,       warrior,  warrior,  warrior,  ROT0,   "Vectorbeam", "Warrior" )
-GAME(1980, armora,   0,       armora,   armora,   armora,   ROT0,   "Cinematronics", "Armor Attack")
-GAME(1980, armorap,  armora,  armora,   armora,   armora,   ROT0,   "Cinematronics", "Armor Attack (prototype)")
-GAME(1980, armorar,  armora,  armora,   armora,   armorar,  ROT0,  "Cinematronics (Rock-ola license)", "Armor Attack (Rock-ola)" )
+GAME( 1980, armora,   0,       armora,   armora,   armora,   ROT0,   "Cinematronics", "Armor Attack")
+GAME( 1980, armorap,  armora,  armora,   armora,   armora,   ROT0,   "Cinematronics", "Armor Attack (prototype)")
+GAME( 1980, armorar,  armora,  armora,   armora,   armorar,  ROT0,  "Cinematronics (Rock-ola license)", "Armor Attack (Rock-ola)" )
 GAME( 1981, solarq,   0,       solarq,   solarq,   solarq,   ORIENTATION_FLIP_X, "Cinematronics", "Solar Quest" )
 GAME( 1982, demon,    0,       demon,    demon,    demon,    ROT0,   "Rock-ola", "Demon" )
 GAMEX(1981, wotw,     0,       cincolor, wotw,     wotw,     ROT0,   "Cinematronics", "War of the Worlds", GAME_IMPERFECT_COLORS | GAME_NO_SOUND )

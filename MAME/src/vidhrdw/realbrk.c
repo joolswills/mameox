@@ -1,11 +1,11 @@
-#pragma code_seg("C570")
-#pragma data_seg("D570")
-#pragma bss_seg("B570")
-#pragma const_seg("K570")
-#pragma comment(linker, "/merge:D570=570")
-#pragma comment(linker, "/merge:C570=570")
-#pragma comment(linker, "/merge:B570=570")
-#pragma comment(linker, "/merge:K570=570")
+#pragma code_seg("C604")
+#pragma data_seg("D604")
+#pragma bss_seg("B604")
+#pragma const_seg("K604")
+#pragma comment(linker, "/merge:D604=604")
+#pragma comment(linker, "/merge:C604=604")
+#pragma comment(linker, "/merge:B604=604")
+#pragma comment(linker, "/merge:K604=604")
 /***************************************************************************
 
 					  -= Billiard Academy Real Break =-
@@ -351,12 +351,12 @@ VIDEO_UPDATE(realbrk)
 	tilemap_set_scrollx(tilemap_1, 0, realbrk_vregs[0x6/2]);
 
 #ifdef MAME_DEBUG
-if ( keyboard_pressed(KEYCODE_Z) )
+if ( code_pressed(KEYCODE_Z) )
 {	int msk = 0;
-	if (keyboard_pressed(KEYCODE_Q))	msk |= 1;
-	if (keyboard_pressed(KEYCODE_W))	msk |= 2;
-	if (keyboard_pressed(KEYCODE_E))	msk |= 4;
-	if (keyboard_pressed(KEYCODE_A))	msk |= 8;
+	if (code_pressed(KEYCODE_Q))	msk |= 1;
+	if (code_pressed(KEYCODE_W))	msk |= 2;
+	if (code_pressed(KEYCODE_E))	msk |= 4;
+	if (code_pressed(KEYCODE_A))	msk |= 8;
 	if (msk != 0) layers_ctrl &= msk;	}
 #endif
 

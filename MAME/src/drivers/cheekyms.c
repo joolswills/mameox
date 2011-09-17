@@ -1,11 +1,11 @@
-#pragma code_seg("C202")
-#pragma data_seg("D202")
-#pragma bss_seg("B202")
-#pragma const_seg("K202")
-#pragma comment(linker, "/merge:D202=202")
-#pragma comment(linker, "/merge:C202=202")
-#pragma comment(linker, "/merge:B202=202")
-#pragma comment(linker, "/merge:K202=202")
+#pragma code_seg("C206")
+#pragma data_seg("D206")
+#pragma bss_seg("B206")
+#pragma const_seg("K206")
+#pragma comment(linker, "/merge:D206=206")
+#pragma comment(linker, "/merge:C206=206")
+#pragma comment(linker, "/merge:B206=206")
+#pragma comment(linker, "/merge:K206=206")
 /*************************************************************************
  Universal Cheeky Mouse Driver
  (c)Lee Taylor May/June 1998, All rights reserved.
@@ -22,9 +22,9 @@
 
 PALETTE_INIT( cheekyms );
 VIDEO_UPDATE( cheekyms );
-WRITE_HANDLER( cheekyms_sprite_w );
-WRITE_HANDLER( cheekyms_port_40_w );
-WRITE_HANDLER( cheekyms_port_80_w );
+WRITE8_HANDLER( cheekyms_sprite_w );
+WRITE8_HANDLER( cheekyms_port_40_w );
+WRITE8_HANDLER( cheekyms_port_80_w );
 
 
 static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )

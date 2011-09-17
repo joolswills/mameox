@@ -1,11 +1,11 @@
-#pragma code_seg("C251")
-#pragma data_seg("D251")
-#pragma bss_seg("B251")
-#pragma const_seg("K251")
-#pragma comment(linker, "/merge:D251=251")
-#pragma comment(linker, "/merge:C251=251")
-#pragma comment(linker, "/merge:B251=251")
-#pragma comment(linker, "/merge:K251=251")
+#pragma code_seg("C261")
+#pragma data_seg("D261")
+#pragma bss_seg("B261")
+#pragma const_seg("K261")
+#pragma comment(linker, "/merge:D261=261")
+#pragma comment(linker, "/merge:C261=261")
+#pragma comment(linker, "/merge:B261=261")
+#pragma comment(linker, "/merge:K261=261")
 /***************************************************************************
 
 Deniam games
@@ -64,11 +64,11 @@ static WRITE16_HANDLER( sound_command_w )
 	if (ACCESSING_MSB)
 	{
 		soundlatch_w(offset,(data >> 8) & 0xff);
-		cpu_set_irq_line(1,IRQ_LINE_NMI,PULSE_LINE);
+		cpunum_set_input_line(1,INPUT_LINE_NMI,PULSE_LINE);
 	}
 }
 
-static WRITE_HANDLER( deniam16b_oki_rom_bank_w )
+static WRITE8_HANDLER( deniam16b_oki_rom_bank_w )
 {
 	OKIM6295_set_bank_base(0,(data & 0x40) ? 0x40000 : 0x00000);
 }
@@ -318,7 +318,7 @@ static void irqhandler(int linestate)
 {
 	/* system 16c doesn't have the sound CPU */
 	if (Machine->drv->cpu[1].cpu_type)
-		cpu_set_irq_line(1,0,linestate);
+		cpunum_set_input_line(1,0,linestate);
 }
 
 static struct YM3812interface ym3812_interface =

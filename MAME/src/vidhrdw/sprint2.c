@@ -1,11 +1,11 @@
-#pragma code_seg("C650")
-#pragma data_seg("D650")
-#pragma bss_seg("B650")
-#pragma const_seg("K650")
-#pragma comment(linker, "/merge:D650=650")
-#pragma comment(linker, "/merge:C650=650")
-#pragma comment(linker, "/merge:B650=650")
-#pragma comment(linker, "/merge:K650=650")
+#pragma code_seg("C686")
+#pragma data_seg("D686")
+#pragma bss_seg("B686")
+#pragma const_seg("K686")
+#pragma comment(linker, "/merge:D686=686")
+#pragma comment(linker, "/merge:C686=686")
+#pragma comment(linker, "/merge:B686=686")
+#pragma comment(linker, "/merge:K686=686")
 /***************************************************************************
 
 	Atari Sprint 2 video emulation
@@ -50,27 +50,27 @@ VIDEO_START( sprint2 )
 }
 
 
-READ_HANDLER( sprint2_collision1_r )
+READ8_HANDLER( sprint2_collision1_r )
 {
 	return collision[0];
 }
-READ_HANDLER( sprint2_collision2_r )
+READ8_HANDLER( sprint2_collision2_r )
 {
 	return collision[1];
 }
 
 
-WRITE_HANDLER( sprint2_collision_reset1_w )
+WRITE8_HANDLER( sprint2_collision_reset1_w )
 {
 	collision[0] = 0;
 }
-WRITE_HANDLER( sprint2_collision_reset2_w )
+WRITE8_HANDLER( sprint2_collision_reset2_w )
 {
 	collision[1] = 0;
 }
 
 
-WRITE_HANDLER( sprint2_video_ram_w )
+WRITE8_HANDLER( sprint2_video_ram_w )
 {
 	if (data != sprint2_video_ram[offset])
 	{

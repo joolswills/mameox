@@ -1,11 +1,11 @@
-#pragma code_seg("C160")
-#pragma data_seg("D160")
-#pragma bss_seg("B160")
-#pragma const_seg("K160")
-#pragma comment(linker, "/merge:D160=160")
-#pragma comment(linker, "/merge:C160=160")
-#pragma comment(linker, "/merge:B160=160")
-#pragma comment(linker, "/merge:K160=160")
+#pragma code_seg("C161")
+#pragma data_seg("D161")
+#pragma bss_seg("B161")
+#pragma const_seg("K161")
+#pragma comment(linker, "/merge:D161=161")
+#pragma comment(linker, "/merge:C161=161")
+#pragma comment(linker, "/merge:B161=161")
+#pragma comment(linker, "/merge:K161=161")
 /***************************************************************************
 
   vidhrdw.c
@@ -28,7 +28,7 @@ static UINT8 *vidram;
 
 static struct mame_bitmap *tmp_bitmap[4];
 
-WRITE_HANDLER(beg_palette_w)
+WRITE8_HANDLER(beg_palette_w)
 {
 	int color;
 
@@ -37,7 +37,7 @@ WRITE_HANDLER(beg_palette_w)
 	palette_set_color(offset&0x3ff, color&0xf0, (color&0xf)<<4, (color&0xf00)>>4);
 }
 
-WRITE_HANDLER( beg_gfxcontrol_w )
+WRITE8_HANDLER( beg_gfxcontrol_w )
 {
 /* bits used: 0,1,2,3
  0 and 2 select plane,
@@ -47,12 +47,12 @@ WRITE_HANDLER( beg_gfxcontrol_w )
 	plane_visible =((data & 8)>>2) | ((data&2)>>1);
 }
 
-WRITE_HANDLER( bigevglf_vidram_addr_w )
+WRITE8_HANDLER( bigevglf_vidram_addr_w )
 {
 	vidram_bank = (data & 0xff) * 0x100;
 }
 
-WRITE_HANDLER( bigevglf_vidram_w )
+WRITE8_HANDLER( bigevglf_vidram_w )
 {
 	UINT32 x,y,o;
 	o = vidram_bank + offset;
@@ -62,7 +62,7 @@ WRITE_HANDLER( bigevglf_vidram_w )
 	plot_pixel(tmp_bitmap[plane_selected],x,y,data );
 }
 
-READ_HANDLER( bigevglf_vidram_r )
+READ8_HANDLER( bigevglf_vidram_r )
 {
 	return vidram[ 0x10000 * plane_selected + vidram_bank + offset];
 }

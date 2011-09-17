@@ -1,11 +1,11 @@
-#pragma code_seg("C669")
-#pragma data_seg("D669")
-#pragma bss_seg("B669")
-#pragma const_seg("K669")
-#pragma comment(linker, "/merge:D669=669")
-#pragma comment(linker, "/merge:C669=669")
-#pragma comment(linker, "/merge:B669=669")
-#pragma comment(linker, "/merge:K669=669")
+#pragma code_seg("C707")
+#pragma data_seg("D707")
+#pragma bss_seg("B707")
+#pragma const_seg("K707")
+#pragma comment(linker, "/merge:D707=707")
+#pragma comment(linker, "/merge:C707=707")
+#pragma comment(linker, "/merge:B707=707")
+#pragma comment(linker, "/merge:K707=707")
 /***************************************************************************
 
   vidhrdw.c
@@ -183,7 +183,7 @@ VIDEO_START( stfight )
 
 ***************************************************************************/
 
-WRITE_HANDLER( stfight_text_char_w )
+WRITE8_HANDLER( stfight_text_char_w )
 {
 	if (stfight_text_char_ram[offset] != data)
 	{
@@ -192,7 +192,7 @@ WRITE_HANDLER( stfight_text_char_w )
 	}
 }
 
-WRITE_HANDLER( stfight_text_attr_w )
+WRITE8_HANDLER( stfight_text_attr_w )
 {
 	if (stfight_text_attr_ram[offset] != data)
 	{
@@ -201,13 +201,13 @@ WRITE_HANDLER( stfight_text_attr_w )
 	}
 }
 
-WRITE_HANDLER( stfight_sprite_bank_w )
+WRITE8_HANDLER( stfight_sprite_bank_w )
 {
 	stfight_sprite_base = ( ( data & 0x04 ) << 7 ) |
 				          ( ( data & 0x01 ) << 8 );
 }
 
-WRITE_HANDLER( stfight_vh_latch_w )
+WRITE8_HANDLER( stfight_vh_latch_w )
 {
 	int scroll;
 

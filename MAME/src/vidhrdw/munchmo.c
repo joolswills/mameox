@@ -1,11 +1,11 @@
-#pragma code_seg("C473")
-#pragma data_seg("D473")
-#pragma bss_seg("B473")
-#pragma const_seg("K473")
-#pragma comment(linker, "/merge:D473=473")
-#pragma comment(linker, "/merge:C473=473")
-#pragma comment(linker, "/merge:B473=473")
-#pragma comment(linker, "/merge:K473=473")
+#pragma code_seg("C499")
+#pragma data_seg("D499")
+#pragma bss_seg("B499")
+#pragma const_seg("K499")
+#pragma comment(linker, "/merge:D499=499")
+#pragma comment(linker, "/merge:C499=499")
+#pragma comment(linker, "/merge:B499=499")
+#pragma comment(linker, "/merge:K499=499")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -46,7 +46,7 @@ PALETTE_INIT( mnchmobl )
 	}
 }
 
-WRITE_HANDLER( mnchmobl_palette_bank_w )
+WRITE8_HANDLER( mnchmobl_palette_bank_w )
 {
 	if( mnchmobl_palette_bank!=(data&0x3) )
 	{
@@ -55,7 +55,7 @@ WRITE_HANDLER( mnchmobl_palette_bank_w )
 	}
 }
 
-WRITE_HANDLER( mnchmobl_flipscreen_w )
+WRITE8_HANDLER( mnchmobl_flipscreen_w )
 {
 	if( flipscreen!=data )
 	{
@@ -65,14 +65,14 @@ WRITE_HANDLER( mnchmobl_flipscreen_w )
 }
 
 
-READ_HANDLER( mnchmobl_sprite_xpos_r ){ return mnchmobl_sprite_xpos[offset]; }
-WRITE_HANDLER( mnchmobl_sprite_xpos_w ){ mnchmobl_sprite_xpos[offset] = data; }
+READ8_HANDLER( mnchmobl_sprite_xpos_r ){ return mnchmobl_sprite_xpos[offset]; }
+WRITE8_HANDLER( mnchmobl_sprite_xpos_w ){ mnchmobl_sprite_xpos[offset] = data; }
 
-READ_HANDLER( mnchmobl_sprite_attr_r ){ return mnchmobl_sprite_attr[offset]; }
-WRITE_HANDLER( mnchmobl_sprite_attr_w ){ mnchmobl_sprite_attr[offset] = data; }
+READ8_HANDLER( mnchmobl_sprite_attr_r ){ return mnchmobl_sprite_attr[offset]; }
+WRITE8_HANDLER( mnchmobl_sprite_attr_w ){ mnchmobl_sprite_attr[offset] = data; }
 
-READ_HANDLER( mnchmobl_sprite_tile_r ){ return mnchmobl_sprite_tile[offset]; }
-WRITE_HANDLER( mnchmobl_sprite_tile_w ){ mnchmobl_sprite_tile[offset] = data; }
+READ8_HANDLER( mnchmobl_sprite_tile_r ){ return mnchmobl_sprite_tile[offset]; }
+WRITE8_HANDLER( mnchmobl_sprite_tile_w ){ mnchmobl_sprite_tile[offset] = data; }
 
 VIDEO_START( mnchmobl )
 {
@@ -86,12 +86,12 @@ VIDEO_START( mnchmobl )
 	return 1;
 }
 
-READ_HANDLER( mnchmobl_videoram_r )
+READ8_HANDLER( mnchmobl_videoram_r )
 {
 	return videoram[offset];
 }
 
-WRITE_HANDLER( mnchmobl_videoram_w )
+WRITE8_HANDLER( mnchmobl_videoram_w )
 {
 	offset = offset&0xff; /* mirror the two banks? */
 	if( videoram[offset]!=data )

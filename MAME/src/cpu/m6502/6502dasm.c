@@ -82,7 +82,7 @@ enum addr_mode {
 
 enum opcodes {
 	adc,  and, asl,  bcc,  bcs,  beq,  bit,  bmi,
-	bne,  bpl, brk,  bvc,  bvs,  clc,  cld,  cli,
+	bne,  bpl, m6502_brk,  bvc,  bvs,  clc,  cld,  cli,
 	clv,  cmp, cpx,  cpy,  dec,  dex,  dey,  eor,
 	inc,  inx, iny,  jmp,  jsr,  lda,  ldx,  ldy,
 	lsr,  nop, ora,  pha,  php,  pla,  plp,  rol,
@@ -108,7 +108,7 @@ enum opcodes {
 /* 4510 mnemonics */
 	map,
 
-/* Deco CPU15 mnemonics */
+/* Deco CPU16 mnemonics */
 	vbl,  u13,  u8F,  uAB,  u87,  u0B,  uA3,  u4B,
 	u3F,  uBB,  u23
 };
@@ -117,7 +117,7 @@ enum opcodes {
 static const char *token[]=
 {
 	"adc", "and", "asl", "bcc", "bcs", "beq", "bit", "bmi",
-	"bne", "bpl", "brk", "bvc", "bvs", "clc", "cld", "cli",
+	"bne", "bpl", "m6502_brk", "bvc", "bvs", "clc", "cld", "cli",
 	"clv", "cmp", "cpx", "cpy", "dec", "dex", "dey", "eor",
 	"inc", "inx", "iny", "jmp", "jsr", "lda", "ldx", "ldy",
 	"lsr", "nop", "ora", "pha", "php", "pla", "plp", "rol",
@@ -143,7 +143,7 @@ static const char *token[]=
 /* 4510 mnemonics */
 	"map",
 
-/* Deco CPU15 mnemonics */
+/* Deco CPU16 mnemonics */
 	"VBL", "u13", "u8F", "uAB", "u87", "u0B", "uA3", "u4B",
 	"u3F", "uBB", "u23"
 };
@@ -166,7 +166,7 @@ static const char *token[]=
 #define ZRW2 EA_ZPG_RDWR
 
 static const UINT8 op6502[256][3] = {
-	{brk,imm,VAL},{ora,idx,MRD},{ill,non,0	},{ill,non,0 },/* 00 */
+	{m6502_brk,imm,VAL},{ora,idx,MRD},{ill,non,0	},{ill,non,0 },/* 00 */
 	{ill,non,0	},{ora,zpg,ZRD},{asl,zpg,ZRW},{ill,non,0 },
 	{php,imp,0	},{ora,imm,VAL},{asl,acc,0	},{ill,non,0 },
 	{ill,non,0	},{ora,aba,MRD},{asl,aba,MRW},{ill,non,0 },
@@ -233,7 +233,7 @@ static const UINT8 op6502[256][3] = {
 };
 
 static const UINT8 op65c02[256][3] = {
-	{brk,imm,VAL},{ora,idx,MRD},{ill,non,0	},{ill,non,0 },/* 00 */
+	{m6502_brk,imm,VAL},{ora,idx,MRD},{ill,non,0	},{ill,non,0 },/* 00 */
 	{tsb,zpg,0	},{ora,zpg,ZRD},{asl,zpg,ZRW},{rmb,zpg,ZRW},
 	{php,imp,0	},{ora,imm,VAL},{asl,acc,MRW},{ill,non,0 },
 	{tsb,aba,MRD},{ora,aba,MRD},{asl,aba,MRW},{bbr,zpb,ZRD},
@@ -301,7 +301,7 @@ static const UINT8 op65c02[256][3] = {
 
 /* only bsr additional to 65c02 yet */
 static const UINT8 op65sc02[256][3] = {
-	{brk,imm,VAL},{ora,idx,MRD},{ill,non,0	},{ill,non,0 },/* 00 */
+	{m6502_brk,imm,VAL},{ora,idx,MRD},{ill,non,0	},{ill,non,0 },/* 00 */
 	{tsb,zpg,0	},{ora,zpg,ZRD},{asl,zpg,ZRW},{rmb,zpg,ZRW},
 	{php,imp,0	},{ora,imm,VAL},{asl,acc,MRW},{ill,non,0 },
 	{tsb,aba,MRD},{ora,aba,MRD},{asl,aba,MRW},{bbr,zpb,ZRD},
@@ -368,7 +368,7 @@ static const UINT8 op65sc02[256][3] = {
 };
 
 static const UINT8 op6510[256][3] = {
-	{brk,imm,VAL},{ora,idx,MRD},{kil,non,0	},{slo,idx,MRW},/* 00 */
+	{m6502_brk,imm,VAL},{ora,idx,MRD},{kil,non,0	},{slo,idx,MRW},/* 00 */
 	{dop,imm,VAL},{ora,zpg,ZRD},{asl,zpg,ZRW},{slo,zpg,ZRW},
 	{php,imp,0	},{ora,imm,VAL},{asl,acc,0	},{anc,imm,VAL},
 	{top,iw2,VAL},{ora,aba,MRD},{asl,aba,MRW},{slo,aba,MRW},
@@ -436,7 +436,7 @@ static const UINT8 op6510[256][3] = {
 
 #if (HAS_M65CE02)
 static const UINT8 op65ce02[256][3] = {
-	{brk,imm,VAL},{ora,idx,MRD},{cle,imp,0	},{see,imp,0  },/* 00 */
+	{m6502_brk,imm,VAL},{ora,idx,MRD},{cle,imp,0	},{see,imp,0  },/* 00 */
 	{tsb,zpg,0	},{ora,zpg,ZRD},{asl,zpg,ZRW},{rmb,zpg,ZRW},
 	{php,imp,0	},{ora,imm,VAL},{asl,acc,MRW},{tsy,imp,0  },
 	{tsb,aba,MRD},{ora,aba,MRD},{asl,aba,MRW},{bbr,zpb,ZRD},
@@ -506,7 +506,7 @@ static const UINT8 op65ce02[256][3] = {
 #if (HAS_M4510)
 // only map instead of aug and 20 bit memory management
 static const UINT8 op4510[256][3] = {
-	{brk,imm,VAL},{ora,idx,MRD},{cle,imp,0	},{see,imp,0  },/* 00 */
+	{m6502_brk,imm,VAL},{ora,idx,MRD},{cle,imp,0	},{see,imp,0  },/* 00 */
 	{tsb,zpg,0	},{ora,zpg,ZRD},{asl,zpg,ZRW},{rmb,zpg,ZRW},
 	{php,imp,0	},{ora,imm,VAL},{asl,acc,MRW},{tsy,imp,0  },
 	{tsb,aba,MRD},{ora,aba,MRD},{asl,aba,MRW},{bbr,zpb,ZRD},
@@ -576,7 +576,7 @@ static const UINT8 op4510[256][3] = {
 #if (HAS_DECO16)
 static const UINT8 opdeco16[256][3] =
 {
-	{brk,imp,0  },{ora,idx,MRD},{ill,non,0  },{ill,non,0	},/* 00 */
+	{m6502_brk,imp,0  },{ora,idx,MRD},{ill,non,0  },{ill,non,0	},/* 00 */
 	{ill,non,0  },{ora,zpg,ZRD},{asl,zpg,ZRW},{ill,non,0	},
 	{php,imp,0  },{ora,imm,VAL},{asl,acc,0  },{u0B,zpg,0	},
 	{ill,non,0  },{ora,aba,MRD},{asl,aba,MRW},{ill,non,0	},
@@ -890,7 +890,7 @@ static CPU_TYPE type_m65ce02 = {
 };
 #endif
 #if (HAS_M4510)
-static READ_HANDLER(m4510_readmem)
+static READ8_HANDLER(m4510_readmem)
 {
 	return program_read_byte_8( m4510_get_reg(M4510_MEM0+(offset>>13))+offset );
 }

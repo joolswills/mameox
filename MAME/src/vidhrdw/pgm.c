@@ -1,11 +1,11 @@
-#pragma code_seg("C531")
-#pragma data_seg("D531")
-#pragma bss_seg("B531")
-#pragma const_seg("K531")
-#pragma comment(linker, "/merge:D531=531")
-#pragma comment(linker, "/merge:C531=531")
-#pragma comment(linker, "/merge:B531=531")
-#pragma comment(linker, "/merge:K531=531")
+#pragma code_seg("C562")
+#pragma data_seg("D562")
+#pragma bss_seg("B562")
+#pragma const_seg("K562")
+#pragma comment(linker, "/merge:D562=562")
+#pragma comment(linker, "/merge:C562=562")
+#pragma comment(linker, "/merge:B562=562")
+#pragma comment(linker, "/merge:K562=562")
 /*** Video *******************************************************************/
 /* see drivers/pgm.c for notes on where improvements can be made */
 

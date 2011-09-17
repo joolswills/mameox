@@ -1,11 +1,11 @@
-#pragma code_seg("C702")
-#pragma data_seg("D702")
-#pragma bss_seg("B702")
-#pragma const_seg("K702")
-#pragma comment(linker, "/merge:D702=702")
-#pragma comment(linker, "/merge:C702=702")
-#pragma comment(linker, "/merge:B702=702")
-#pragma comment(linker, "/merge:K702=702")
+#pragma code_seg("C742")
+#pragma data_seg("D742")
+#pragma bss_seg("B742")
+#pragma const_seg("K742")
+#pragma comment(linker, "/merge:D742=742")
+#pragma comment(linker, "/merge:C742=742")
+#pragma comment(linker, "/merge:B742=742")
+#pragma comment(linker, "/merge:K742=742")
 /***************************************************************************
 
   vidhrdw.c
@@ -154,7 +154,7 @@ PALETTE_INIT( taitosj )
 
 
 
-WRITE_HANDLER( taitosj_paletteram_w )
+WRITE8_HANDLER( taitosj_paletteram_w )
 {
 	int bit0,bit1,bit2;
 	int r,g,b,val;
@@ -242,7 +242,7 @@ VIDEO_START( taitosj )
 
 
 
-READ_HANDLER( taitosj_gfxrom_r )
+READ8_HANDLER( taitosj_gfxrom_r )
 {
 	int offs;
 
@@ -258,7 +258,7 @@ READ_HANDLER( taitosj_gfxrom_r )
 }
 
 
-WRITE_HANDLER( taitosj_videoram2_w )
+WRITE8_HANDLER( taitosj_videoram2_w )
 {
 	if (taitosj_videoram2[offset] != data)
 	{
@@ -270,7 +270,7 @@ WRITE_HANDLER( taitosj_videoram2_w )
 
 
 
-WRITE_HANDLER( taitosj_videoram3_w )
+WRITE8_HANDLER( taitosj_videoram3_w )
 {
 	if (taitosj_videoram3[offset] != data)
 	{
@@ -282,7 +282,7 @@ WRITE_HANDLER( taitosj_videoram3_w )
 
 
 
-WRITE_HANDLER( taitosj_colorbank_w )
+WRITE8_HANDLER( taitosj_colorbank_w )
 {
 	if (taitosj_colorbank[offset] != data)
 	{
@@ -297,7 +297,7 @@ logerror("colorbank %d = %02x\n",offset,data);
 
 
 
-WRITE_HANDLER( taitosj_videoenable_w )
+WRITE8_HANDLER( taitosj_videoenable_w )
 {
 	if (taitosj_video_enable != data)
 	{
@@ -319,7 +319,7 @@ logerror("videoenable = %02x\n",data);
 
 
 
-WRITE_HANDLER( taitosj_characterram_w )
+WRITE8_HANDLER( taitosj_characterram_w )
 {
 	if (taitosj_characterram[offset] != data)
 	{
@@ -338,7 +338,7 @@ WRITE_HANDLER( taitosj_characterram_w )
 	}
 }
 
-WRITE_HANDLER( junglhbr_characterram_w )
+WRITE8_HANDLER( junglhbr_characterram_w )
 {
 	taitosj_characterram_w(offset, data ^ 0xfc);
 }
@@ -349,12 +349,12 @@ WRITE_HANDLER( junglhbr_characterram_w )
   collision detection.
 
 ***************************************************************************/
-READ_HANDLER( taitosj_collision_reg_r )
+READ8_HANDLER( taitosj_collision_reg_r )
 {
 	return taitosj_collision_reg[offset];
 }
 
-WRITE_HANDLER( taitosj_collision_reg_clear_w )
+WRITE8_HANDLER( taitosj_collision_reg_clear_w )
 {
 	taitosj_collision_reg[0] = 0;
 	taitosj_collision_reg[1] = 0;

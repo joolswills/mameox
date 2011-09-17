@@ -1,11 +1,11 @@
-#pragma code_seg("C127")
-#pragma data_seg("D127")
-#pragma bss_seg("B127")
-#pragma const_seg("K127")
-#pragma comment(linker, "/merge:D127=127")
-#pragma comment(linker, "/merge:C127=127")
-#pragma comment(linker, "/merge:B127=127")
-#pragma comment(linker, "/merge:K127=127")
+#pragma code_seg("C128")
+#pragma data_seg("D128")
+#pragma bss_seg("B128")
+#pragma const_seg("K128")
+#pragma comment(linker, "/merge:D128=128")
+#pragma comment(linker, "/merge:C128=128")
+#pragma comment(linker, "/merge:B128=128")
+#pragma comment(linker, "/merge:K128=128")
 /***************************************************************************
 
 Ashita no Joe (Success Joe) [Wave]
@@ -109,7 +109,7 @@ static WRITE16_HANDLER( ashnojoe_soundlatch_w )
 	{
 		soundlatch_w(0,data & 0xff);
 		//needed?
-		cpu_set_irq_line(1,0,HOLD_LINE);
+		cpunum_set_input_line(1,0,HOLD_LINE);
 	}
 }
 
@@ -144,7 +144,7 @@ static ADDRESS_MAP_START( ashnojoe_writemem, ADDRESS_SPACE_PROGRAM, 16 )
 	AM_RANGE(0x080000, 0x0bffff) AM_WRITE(MWA16_ROM)
 ADDRESS_MAP_END
 
-static READ_HANDLER(fake_6_r)
+static READ8_HANDLER(fake_6_r)
 {
 	// if it returns 0 the cpu doesn't read from port $4 ?
 	int ret = 0;
@@ -155,7 +155,7 @@ static READ_HANDLER(fake_6_r)
 	return rand();
 }
 
-static WRITE_HANDLER( adpcm_data_w )
+static WRITE8_HANDLER( adpcm_data_w )
 {
 	MSM5205_data_w(0, data & 0xf);
 	MSM5205_data_w(0, data>>4);
@@ -309,24 +309,24 @@ static struct GfxDecodeInfo ashnojoe_gfxdecodeinfo[] =
 
 static void irqhandler(int irq)
 {
-	cpu_set_irq_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
 }
 
-static WRITE_HANDLER(writeA)
+static WRITE8_HANDLER(writeA)
 {
 	if (data == 0xff) return;	// this gets called at 8910 startup with 0xff before the 5205 exists, causing a crash
 
 	MSM5205_reset_w(0, !(data & 0x01));
 }
 
-static WRITE_HANDLER(writeB)
+static WRITE8_HANDLER(writeB)
 {
 	cpu_setbank(4, memory_region(REGION_SOUND1) + ((data & 0xf) * 0x8000));
 }
 
 static void ashnojoe_adpcm_int (int data)
 {
-	cpu_set_nmi_line(1, PULSE_LINE);
+	cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 }
 
 static struct MSM5205interface msm5205_interface =

@@ -1,11 +1,11 @@
-#pragma code_seg("C266")
-#pragma data_seg("D266")
-#pragma bss_seg("B266")
-#pragma const_seg("K266")
-#pragma comment(linker, "/merge:D266=266")
-#pragma comment(linker, "/merge:C266=266")
-#pragma comment(linker, "/merge:B266=266")
-#pragma comment(linker, "/merge:K266=266")
+#pragma code_seg("C276")
+#pragma data_seg("D276")
+#pragma bss_seg("B276")
+#pragma const_seg("K276")
+#pragma comment(linker, "/merge:D276=276")
+#pragma comment(linker, "/merge:C276=276")
+#pragma comment(linker, "/merge:B276=276")
+#pragma comment(linker, "/merge:K276=276")
 /***************************************************************************
 
 	Model Racing Dribbling hardware
@@ -51,7 +51,7 @@ PALETTE_INIT( dribling )
  *
  *************************************/
 
-WRITE_HANDLER( dribling_colorram_w )
+WRITE8_HANDLER( dribling_colorram_w )
 {
 	/* it is very important that we mask off the two bits here */
 	colorram[offset & 0x1f9f] = data;

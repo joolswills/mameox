@@ -344,9 +344,9 @@ int png_read_file(mame_file *fp, struct png_info *p)
 }
 
 #ifdef _XBOX
-  int XB_png_read_info(void *fp, struct png_info *p)
+  int XB_png_read_info(mame_file *fp, struct png_info *p)
 #else
-  int png_read_info(void *fp, struct png_info *p)
+  int png_read_info(mame_file *fp, struct png_info *p)
 #endif
 {
 	UINT32 chunk_length, chunk_type=0, chunk_crc, crc;
@@ -877,11 +877,7 @@ int png_write_bitmap(mame_file *fp, struct mame_bitmap *bitmap)
 {
 	char text[1024];
 
-#ifdef MESS
-	sprintf (text, "MESS %s", build_version);
-#else
-	sprintf (text, "MAME %s", build_version);
-#endif
+	sprintf (text, APPNAME " %s", build_version);
 	png_add_text("Software", text);
 	sprintf (text, "%s %s", Machine->gamedrv->manufacturer, Machine->gamedrv->description);
 	png_add_text("System", text);

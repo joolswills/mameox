@@ -1,11 +1,11 @@
-#pragma code_seg("C549")
-#pragma data_seg("D549")
-#pragma bss_seg("B549")
-#pragma const_seg("K549")
-#pragma comment(linker, "/merge:D549=549")
-#pragma comment(linker, "/merge:C549=549")
-#pragma comment(linker, "/merge:B549=549")
-#pragma comment(linker, "/merge:K549=549")
+#pragma code_seg("C580")
+#pragma data_seg("D580")
+#pragma bss_seg("B580")
+#pragma const_seg("K580")
+#pragma comment(linker, "/merge:D580=580")
+#pragma comment(linker, "/merge:C580=580")
+#pragma comment(linker, "/merge:B580=580")
+#pragma comment(linker, "/merge:K580=580")
 /***************************************************************************
 
 						  -= Power Instinct =-
@@ -75,7 +75,7 @@ static WRITE16_HANDLER( powerins_okibank_w )
 	}
 }
 
-static WRITE_HANDLER( powerina_okibank_w )
+static WRITE8_HANDLER( powerina_okibank_w )
 {
 	/* The OKI6295 ROM space is divided in four banks, each one indepentently
 	   controlled. The sample table at the beginning of the addressing space is
@@ -118,7 +118,7 @@ static WRITE16_HANDLER( powerina_soundlatch_w )
 		soundlatch_w(0, data & 0xff);
 	}
 }
-static READ_HANDLER( powerina_fake_ym2203_r )
+static READ8_HANDLER( powerina_fake_ym2203_r )
 {
 	return 0x01;
 }
@@ -384,7 +384,7 @@ static struct OKIM6295interface powerina_okim6295_interface =
 #if 0
 static void irqhandler(int irq)
 {
-	cpu_set_irq_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
+	cpunum_set_input_line(1,0,irq ? ASSERT_LINE : CLEAR_LINE);
 }
 static struct YM2203interface ym2203_interface =
 {

@@ -1,11 +1,11 @@
-#pragma code_seg("C422")
-#pragma data_seg("D422")
-#pragma bss_seg("B422")
-#pragma const_seg("K422")
-#pragma comment(linker, "/merge:D422=422")
-#pragma comment(linker, "/merge:C422=422")
-#pragma comment(linker, "/merge:B422=422")
-#pragma comment(linker, "/merge:K422=422")
+#pragma code_seg("C444")
+#pragma data_seg("D444")
+#pragma bss_seg("B444")
+#pragma const_seg("K444")
+#pragma comment(linker, "/merge:D444=444")
+#pragma comment(linker, "/merge:C444=444")
+#pragma comment(linker, "/merge:B444=444")
+#pragma comment(linker, "/merge:K444=444")
 #include "driver.h"
 
 static unsigned char bg_color,  old_bg_color;
@@ -16,7 +16,7 @@ data8_t *me_fgram;
 data8_t *me_bgram;
 static int me_gfx_ctrl;
 
-WRITE_HANDLER(me_c600_w)
+WRITE8_HANDLER(me_c600_w)
 {
 	bg_color = data&0xf;
 	me_gfx_ctrl=data;
@@ -79,13 +79,13 @@ static void update_palette( int type )
 }
 
 
-READ_HANDLER( me_fgram_r )
+READ8_HANDLER( me_fgram_r )
 {
 	return me_fgram[offset];
 }
 
 
-WRITE_HANDLER( me_fgram_w )
+WRITE8_HANDLER( me_fgram_w )
 {
 	me_fgram[offset] = data;
 	tilemap_mark_tile_dirty(me_fg_tilemap,offset);
@@ -104,13 +104,13 @@ static void get_me_bg_tile_info(int tile_index)
 }
 
 
-READ_HANDLER( me_bgram_r )
+READ8_HANDLER( me_bgram_r )
 {
 	return me_bgram[offset];
 
 }
 
-WRITE_HANDLER( me_bgram_w )
+WRITE8_HANDLER( me_bgram_w )
 {
 	me_bgram[offset] = data;
 	tilemap_mark_tile_dirty(me_bg_tilemap,offset);

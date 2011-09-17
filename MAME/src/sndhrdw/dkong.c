@@ -11,15 +11,15 @@
 
 static int walk = 0; /* used to determine if dkongjr is walking or climbing? */
 
-WRITE_HANDLER( dkong_sh_w )
+WRITE8_HANDLER( dkong_sh_w )
 {
 	if (data)
-		cpu_set_irq_line(1, 0, ASSERT_LINE);
+		cpunum_set_input_line(1, 0, ASSERT_LINE);
 	else
-		cpu_set_irq_line(1, 0, CLEAR_LINE);
+		cpunum_set_input_line(1, 0, CLEAR_LINE);
 }
 
-WRITE_HANDLER( dkong_sh1_w )
+WRITE8_HANDLER( dkong_sh1_w )
 {
 	static int state[8];
 
@@ -31,7 +31,7 @@ WRITE_HANDLER( dkong_sh1_w )
 	}
 }
 
-WRITE_HANDLER( dkongjr_sh_death_w )
+WRITE8_HANDLER( dkongjr_sh_death_w )
 {
 	static int death = 0;
 
@@ -44,7 +44,7 @@ WRITE_HANDLER( dkongjr_sh_death_w )
 	}
 }
 
-WRITE_HANDLER( dkongjr_sh_drop_w )
+WRITE8_HANDLER( dkongjr_sh_drop_w )
 {
 	static int drop = 0;
 
@@ -56,7 +56,7 @@ WRITE_HANDLER( dkongjr_sh_drop_w )
 	}
 }
 
-WRITE_HANDLER( dkongjr_sh_roar_w )
+WRITE8_HANDLER( dkongjr_sh_roar_w )
 {
 	static int roar = 0;
 
@@ -68,7 +68,7 @@ WRITE_HANDLER( dkongjr_sh_roar_w )
 	}
 }
 
-WRITE_HANDLER( dkongjr_sh_jump_w )
+WRITE8_HANDLER( dkongjr_sh_jump_w )
 {
 	static int jump = 0;
 
@@ -80,7 +80,7 @@ WRITE_HANDLER( dkongjr_sh_jump_w )
 	}
 }
 
-WRITE_HANDLER( dkongjr_sh_land_w )
+WRITE8_HANDLER( dkongjr_sh_land_w )
 {
 	static int land = 0;
 
@@ -93,7 +93,7 @@ WRITE_HANDLER( dkongjr_sh_land_w )
 	}
 }
 
-WRITE_HANDLER( dkongjr_sh_climb_w )
+WRITE8_HANDLER( dkongjr_sh_climb_w )
 {
 	static int climb = 0;
 
@@ -111,7 +111,7 @@ WRITE_HANDLER( dkongjr_sh_climb_w )
 	}
 }
 
-WRITE_HANDLER( dkongjr_sh_snapjaw_w )
+WRITE8_HANDLER( dkongjr_sh_snapjaw_w )
 {
 	static int snapjaw = 0;
 
@@ -124,7 +124,7 @@ WRITE_HANDLER( dkongjr_sh_snapjaw_w )
 	}
 }
 
-WRITE_HANDLER( dkongjr_sh_walk_w )
+WRITE8_HANDLER( dkongjr_sh_walk_w )
 {
 	if (walk != data )
 	{

@@ -1,11 +1,11 @@
-#pragma code_seg("C194")
-#pragma data_seg("D194")
-#pragma bss_seg("B194")
-#pragma const_seg("K194")
-#pragma comment(linker, "/merge:D194=194")
-#pragma comment(linker, "/merge:C194=194")
-#pragma comment(linker, "/merge:B194=194")
-#pragma comment(linker, "/merge:K194=194")
+#pragma code_seg("C197")
+#pragma data_seg("D197")
+#pragma bss_seg("B197")
+#pragma const_seg("K197")
+#pragma comment(linker, "/merge:D197=197")
+#pragma comment(linker, "/merge:C197=197")
+#pragma comment(linker, "/merge:B197=197")
+#pragma comment(linker, "/merge:K197=197")
 #include "driver.h"
 #include "vidhrdw/generic.h"
 
@@ -81,7 +81,7 @@ VIDEO_START( cbasebal )
 
 ***************************************************************************/
 
-WRITE_HANDLER( cbasebal_textram_w )
+WRITE8_HANDLER( cbasebal_textram_w )
 {
 	if (cbasebal_textram[offset] != data)
 	{
@@ -90,12 +90,12 @@ WRITE_HANDLER( cbasebal_textram_w )
 	}
 }
 
-READ_HANDLER( cbasebal_textram_r )
+READ8_HANDLER( cbasebal_textram_r )
 {
 	return cbasebal_textram[offset];
 }
 
-WRITE_HANDLER( cbasebal_scrollram_w )
+WRITE8_HANDLER( cbasebal_scrollram_w )
 {
 	if (cbasebal_scrollram[offset] != data)
 	{
@@ -104,12 +104,12 @@ WRITE_HANDLER( cbasebal_scrollram_w )
 	}
 }
 
-READ_HANDLER( cbasebal_scrollram_r )
+READ8_HANDLER( cbasebal_scrollram_r )
 {
 	return cbasebal_scrollram[offset];
 }
 
-WRITE_HANDLER( cbasebal_gfxctrl_w )
+WRITE8_HANDLER( cbasebal_gfxctrl_w )
 {
 	/* bit 0 is unknown - toggles continuously */
 
@@ -139,7 +139,7 @@ WRITE_HANDLER( cbasebal_gfxctrl_w )
 	/* other bits unknown, but used */
 }
 
-WRITE_HANDLER( cbasebal_scrollx_w )
+WRITE8_HANDLER( cbasebal_scrollx_w )
 {
 	static unsigned char scroll[2];
 
@@ -147,7 +147,7 @@ WRITE_HANDLER( cbasebal_scrollx_w )
 	tilemap_set_scrollx(bg_tilemap,0,scroll[0] + 256 * scroll[1]);
 }
 
-WRITE_HANDLER( cbasebal_scrolly_w )
+WRITE8_HANDLER( cbasebal_scrolly_w )
 {
 	static unsigned char scroll[2];
 

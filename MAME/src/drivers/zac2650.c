@@ -1,11 +1,11 @@
-#pragma code_seg("C804")
-#pragma data_seg("D804")
-#pragma bss_seg("B804")
-#pragma const_seg("K804")
-#pragma comment(linker, "/merge:D804=804")
-#pragma comment(linker, "/merge:C804=804")
-#pragma comment(linker, "/merge:B804=804")
-#pragma comment(linker, "/merge:K804=804")
+#pragma code_seg("C846")
+#pragma data_seg("D846")
+#pragma bss_seg("B846")
+#pragma const_seg("K846")
+#pragma comment(linker, "/merge:D846=846")
+#pragma comment(linker, "/merge:C846=846")
+#pragma comment(linker, "/merge:B846=846")
+#pragma comment(linker, "/merge:K846=846")
 /*
  * Signetics 2650 CPU Games
  *
@@ -23,11 +23,11 @@
 
 extern UINT8 *s2636ram;
 
-extern WRITE_HANDLER( tinvader_videoram_w );
-extern WRITE_HANDLER( zac_s2636_w );
-extern WRITE_HANDLER( tinvader_sound_w );
-extern READ_HANDLER( zac_s2636_r );
-extern READ_HANDLER( tinvader_port_0_r );
+extern WRITE8_HANDLER( tinvader_videoram_w );
+extern WRITE8_HANDLER( zac_s2636_w );
+extern WRITE8_HANDLER( tinvader_sound_w );
+extern READ8_HANDLER( zac_s2636_r );
+extern READ8_HANDLER( tinvader_port_0_r );
 
 extern VIDEO_START( tinvader );
 extern VIDEO_UPDATE( tinvader );
@@ -353,7 +353,7 @@ static MACHINE_DRIVER_START( tinvader )
 	/* sound hardware */
 MACHINE_DRIVER_END
 
-WRITE_HANDLER( tinvader_sound_w )
+WRITE8_HANDLER( tinvader_sound_w )
 {
     /* sounds are NOT the same as space invaders */
 

@@ -1,11 +1,11 @@
-#pragma code_seg("C211")
-#pragma data_seg("D211")
-#pragma bss_seg("B211")
-#pragma const_seg("K211")
-#pragma comment(linker, "/merge:D211=211")
-#pragma comment(linker, "/merge:C211=211")
-#pragma comment(linker, "/merge:B211=211")
-#pragma comment(linker, "/merge:K211=211")
+#pragma code_seg("C215")
+#pragma data_seg("D215")
+#pragma bss_seg("B215")
+#pragma const_seg("K215")
+#pragma comment(linker, "/merge:D215=215")
+#pragma comment(linker, "/merge:C215=215")
+#pragma comment(linker, "/merge:B215=215")
+#pragma comment(linker, "/merge:K215=215")
 /***************************************************************************
 
 	Atari Clay Shoot hardware
@@ -28,7 +28,7 @@ static data8_t analog_port_val;
  *
  *************************************/
 
-static WRITE_HANDLER( input_port_select_w )
+static WRITE8_HANDLER( input_port_select_w )
 {
 	input_port_select = data;
 }
@@ -52,7 +52,7 @@ static data8_t difficulty_input_port_r(int bit)
 }
 
 
-static READ_HANDLER( input_port_r )
+static READ8_HANDLER( input_port_r )
 {
 	data8_t ret = 0;
 
@@ -113,7 +113,7 @@ static double compute_duration(int analog_pos)
 }
 
 
-WRITE_HANDLER( clayshoo_analog_reset_w )
+WRITE8_HANDLER( clayshoo_analog_reset_w )
 {
 	/* reset the analog value, and start two times that will fire
 	   off in a short period proportional to the position of the
@@ -126,7 +126,7 @@ WRITE_HANDLER( clayshoo_analog_reset_w )
 }
 
 
-READ_HANDLER( clayshoo_analog_r )
+READ8_HANDLER( clayshoo_analog_r )
 {
 	return analog_port_val;
 }

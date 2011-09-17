@@ -1,11 +1,11 @@
-#pragma code_seg("C281")
-#pragma data_seg("D281")
-#pragma bss_seg("B281")
-#pragma const_seg("K281")
-#pragma comment(linker, "/merge:D281=281")
-#pragma comment(linker, "/merge:C281=281")
-#pragma comment(linker, "/merge:B281=281")
-#pragma comment(linker, "/merge:K281=281")
+#pragma code_seg("C292")
+#pragma data_seg("D292")
+#pragma bss_seg("B292")
+#pragma const_seg("K292")
+#pragma comment(linker, "/merge:D292=292")
+#pragma comment(linker, "/merge:C292=292")
+#pragma comment(linker, "/merge:B292=292")
+#pragma comment(linker, "/merge:K292=292")
 /***************************************************************************
 
 	Exidy 440 sound system
@@ -378,10 +378,10 @@ static void channel_update(int ch, INT16 **buffer, int length)
  *
  *************************************/
 
-READ_HANDLER( exidy440_sound_command_r )
+READ8_HANDLER( exidy440_sound_command_r )
 {
 	/* clear the FIRQ that got us here and acknowledge the read to the main CPU */
-	cpu_set_irq_line(1, 1, CLEAR_LINE);
+	cpunum_set_input_line(1, 1, CLEAR_LINE);
 	exidy440_sound_command_ack = 1;
 
 	return exidy440_sound_command;
@@ -395,7 +395,7 @@ READ_HANDLER( exidy440_sound_command_r )
  *
  *************************************/
 
-WRITE_HANDLER( exidy440_sound_volume_w )
+WRITE8_HANDLER( exidy440_sound_volume_w )
 {
 	if (SOUND_LOG && debuglog)
 		fprintf(debuglog, "Volume %02X=%02X\n", offset, data);
@@ -415,9 +415,9 @@ WRITE_HANDLER( exidy440_sound_volume_w )
  *
  *************************************/
 
-WRITE_HANDLER( exidy440_sound_interrupt_clear_w )
+WRITE8_HANDLER( exidy440_sound_interrupt_clear_w )
 {
-	cpu_set_irq_line(1, 0, CLEAR_LINE);
+	cpunum_set_input_line(1, 0, CLEAR_LINE);
 }
 
 
@@ -459,7 +459,7 @@ void m6844_finished(int ch)
  *
  *************************************/
 
-READ_HANDLER( exidy440_m6844_r )
+READ8_HANDLER( exidy440_m6844_r )
 {
 	int result = 0;
 
@@ -540,7 +540,7 @@ READ_HANDLER( exidy440_m6844_r )
 }
 
 
-WRITE_HANDLER( exidy440_m6844_w )
+WRITE8_HANDLER( exidy440_m6844_w )
 {
 	int i;
 

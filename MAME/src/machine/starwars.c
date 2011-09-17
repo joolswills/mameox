@@ -1,11 +1,11 @@
-#pragma code_seg("C667")
-#pragma data_seg("D667")
-#pragma bss_seg("B667")
-#pragma const_seg("K667")
-#pragma comment(linker, "/merge:D667=667")
-#pragma comment(linker, "/merge:C667=667")
-#pragma comment(linker, "/merge:B667=667")
-#pragma comment(linker, "/merge:K667=667")
+#pragma code_seg("C705")
+#pragma data_seg("D705")
+#pragma bss_seg("B705")
+#pragma const_seg("K705")
+#pragma comment(linker, "/merge:D705=705")
+#pragma comment(linker, "/merge:C705=705")
+#pragma comment(linker, "/merge:B705=705")
+#pragma comment(linker, "/merge:K705=705")
 /***************************************************************************
 
 	Atari Star Wars hardware
@@ -68,7 +68,7 @@ static void run_mbox(void);
  *
  *************************************/
 
-WRITE_HANDLER( starwars_out_w )
+WRITE8_HANDLER( starwars_out_w )
 {
 	unsigned char *RAM = memory_region(REGION_CPU1);
 
@@ -125,7 +125,7 @@ WRITE_HANDLER( starwars_out_w )
  *
  *************************************/
 
-READ_HANDLER( starwars_input_1_r )
+READ8_HANDLER( starwars_input_1_r )
 {
 	int x = readinputport(1);
 
@@ -151,7 +151,7 @@ READ_HANDLER( starwars_input_1_r )
  *
  *************************************/
 
-READ_HANDLER( starwars_adc_r )
+READ8_HANDLER( starwars_adc_r )
 {
 	/* pitch */
 	if (control_num == kPitch)
@@ -167,7 +167,7 @@ READ_HANDLER( starwars_adc_r )
 }
 
 
-WRITE_HANDLER( starwars_adc_select_w )
+WRITE8_HANDLER( starwars_adc_select_w )
 {
 	control_num = offset;
 }
@@ -299,7 +299,10 @@ void run_mbox(void)
 		if (IP15_8 & LDC)
 		{
 			C = RAMWORD;
-			ACC=ACC+(  ( (long)((A-B)*C) )>>14  );
+			/* TODO: this next line is accurate to the schematics, but doesn't seem to work right */
+			/* ACC=ACC+(  ( (long)((A-B)*C) )>>14  ); */
+			/* round the result - this fixes bad trench vectors in Star Wars */
+			ACC += ((((long)((A - B) * C)) >> 13) + 1) >> 1;
 		}
 
 		/* 0x40 - LDB */
@@ -331,7 +334,7 @@ void run_mbox(void)
  *
  *************************************/
 
-READ_HANDLER( swmathbx_prng_r )
+READ8_HANDLER( swmathbx_prng_r )
 {
 	PRN = (int)((PRN + 0x2364) ^ 2); /* This is a total bodge for now, but it works!*/
 	return PRN;
@@ -345,19 +348,19 @@ READ_HANDLER( swmathbx_prng_r )
  *
  *************************************/
 
-READ_HANDLER( swmathbx_reh_r )
+READ8_HANDLER( swmathbx_reh_r )
 {
 	return (div_result & 0xff00) >> 8;
 }
 
 
-READ_HANDLER( swmathbx_rel_r )
+READ8_HANDLER( swmathbx_rel_r )
 {
 	return div_result & 0x00ff;
 }
 
 
-WRITE_HANDLER( swmathbx_w )
+WRITE8_HANDLER( swmathbx_w )
 {
 	data &= 0xff;	/* ASG 971002 -- make sure we only get bytes here */
 	switch (offset)

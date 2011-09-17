@@ -1,11 +1,11 @@
-#pragma code_seg("C378")
-#pragma data_seg("D378")
-#pragma bss_seg("B378")
-#pragma const_seg("K378")
-#pragma comment(linker, "/merge:D378=378")
-#pragma comment(linker, "/merge:C378=378")
-#pragma comment(linker, "/merge:B378=378")
-#pragma comment(linker, "/merge:K378=378")
+#pragma code_seg("C393")
+#pragma data_seg("D393")
+#pragma bss_seg("B393")
+#pragma const_seg("K393")
+#pragma comment(linker, "/merge:D393=393")
+#pragma comment(linker, "/merge:C393=393")
+#pragma comment(linker, "/merge:B393=393")
+#pragma comment(linker, "/merge:K393=393")
 /***************************************************************************
 
 	Bally/Midway Jr. Pac-Man

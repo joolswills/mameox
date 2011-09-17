@@ -1,11 +1,11 @@
-#pragma code_seg("C543")
-#pragma data_seg("D543")
-#pragma bss_seg("B543")
-#pragma const_seg("K543")
-#pragma comment(linker, "/merge:D543=543")
-#pragma comment(linker, "/merge:C543=543")
-#pragma comment(linker, "/merge:B543=543")
-#pragma comment(linker, "/merge:K543=543")
+#pragma code_seg("C574")
+#pragma data_seg("D574")
+#pragma bss_seg("B574")
+#pragma const_seg("K574")
+#pragma comment(linker, "/merge:D574=574")
+#pragma comment(linker, "/merge:C574=574")
+#pragma comment(linker, "/merge:B574=574")
+#pragma comment(linker, "/merge:K574=574")
 /***************************************************************************
 
   Poly-Play

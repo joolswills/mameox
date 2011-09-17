@@ -1,11 +1,11 @@
-#pragma code_seg("C240")
-#pragma data_seg("D240")
-#pragma bss_seg("B240")
-#pragma const_seg("K240")
-#pragma comment(linker, "/merge:D240=240")
-#pragma comment(linker, "/merge:C240=240")
-#pragma comment(linker, "/merge:B240=240")
-#pragma comment(linker, "/merge:K240=240")
+#pragma code_seg("C247")
+#pragma data_seg("D247")
+#pragma bss_seg("B247")
+#pragma const_seg("K247")
+#pragma comment(linker, "/merge:D247=247")
+#pragma comment(linker, "/merge:C247=247")
+#pragma comment(linker, "/merge:B247=247")
+#pragma comment(linker, "/merge:K247=247")
 /***************************************************************************
 
 D-Day
@@ -67,14 +67,14 @@ extern unsigned char *dday_colorram;
 PALETTE_INIT( dday );
 VIDEO_START( dday );
 VIDEO_UPDATE( dday );
-WRITE_HANDLER( dday_bgvideoram_w );
-WRITE_HANDLER( dday_fgvideoram_w );
-WRITE_HANDLER( dday_textvideoram_w );
-WRITE_HANDLER( dday_colorram_w );
-READ_HANDLER( dday_colorram_r );
-WRITE_HANDLER( dday_control_w );
-WRITE_HANDLER( dday_sl_control_w );
-READ_HANDLER( dday_countdown_timer_r );
+WRITE8_HANDLER( dday_bgvideoram_w );
+WRITE8_HANDLER( dday_fgvideoram_w );
+WRITE8_HANDLER( dday_textvideoram_w );
+WRITE8_HANDLER( dday_colorram_w );
+READ8_HANDLER( dday_colorram_r );
+WRITE8_HANDLER( dday_control_w );
+WRITE8_HANDLER( dday_sl_control_w );
+READ8_HANDLER( dday_countdown_timer_r );
 
 
 static ADDRESS_MAP_START( readmem, ADDRESS_SPACE_PROGRAM, 8 )

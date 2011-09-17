@@ -1,11 +1,11 @@
-#pragma code_seg("C178")
-#pragma data_seg("D178")
-#pragma bss_seg("B178")
-#pragma const_seg("K178")
-#pragma comment(linker, "/merge:D178=178")
-#pragma comment(linker, "/merge:C178=178")
-#pragma comment(linker, "/merge:B178=178")
-#pragma comment(linker, "/merge:K178=178")
+#pragma code_seg("C180")
+#pragma data_seg("D180")
+#pragma bss_seg("B180")
+#pragma const_seg("K180")
+#pragma comment(linker, "/merge:D180=180")
+#pragma comment(linker, "/merge:C180=180")
+#pragma comment(linker, "/merge:B180=180")
+#pragma comment(linker, "/merge:K180=180")
 /***************************************************************************
 
 Atari Boxer (prototype) video emulation

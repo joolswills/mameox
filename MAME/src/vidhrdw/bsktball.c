@@ -1,11 +1,11 @@
-#pragma code_seg("C180")
-#pragma data_seg("D180")
-#pragma bss_seg("B180")
-#pragma const_seg("K180")
-#pragma comment(linker, "/merge:D180=180")
-#pragma comment(linker, "/merge:C180=180")
-#pragma comment(linker, "/merge:B180=180")
-#pragma comment(linker, "/merge:K180=180")
+#pragma code_seg("C182")
+#pragma data_seg("D182")
+#pragma bss_seg("B182")
+#pragma const_seg("K182")
+#pragma comment(linker, "/merge:D182=182")
+#pragma comment(linker, "/merge:C182=182")
+#pragma comment(linker, "/merge:B182=182")
+#pragma comment(linker, "/merge:K182=182")
 /***************************************************************************
 
 	Atari Basketball hardware
@@ -20,7 +20,7 @@ unsigned char *bsktball_motion;
 
 static struct tilemap *bg_tilemap;
 
-WRITE_HANDLER( bsktball_videoram_w )
+WRITE8_HANDLER( bsktball_videoram_w )
 {
 	if (videoram[offset] != data)
 	{

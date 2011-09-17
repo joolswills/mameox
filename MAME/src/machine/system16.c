@@ -53,7 +53,7 @@ READ16_HANDLER( SYS16_CPU3ROM16_r ){
 	return pMem[offset];
 }
 READ16_HANDLER( SYS16_CPU2_RESET_HACK ){
-	cpu_set_reset_line(2,PULSE_LINE);
+	cpunum_set_input_line(2, INPUT_LINE_RESET, PULSE_LINE);
 	return 0;
 }
 
@@ -2150,7 +2150,7 @@ void aurail_decode_opcode2(data16_t *dest,data16_t *source,int size)
 
 static void sound_cause_nmi( int chip ){
 	/* upd7759 callback */
-	cpu_set_nmi_line(1, PULSE_LINE);
+	cpunum_set_input_line(1, INPUT_LINE_NMI, PULSE_LINE);
 }
 
 struct SEGAPCMinterface sys16_segapcm_interface_15k = {
@@ -2210,6 +2210,7 @@ struct DACinterface sys16_7751_dac_interface =
 	{ 100 }
 };
 
+
 struct UPD7759_interface sys16_upd7759_interface =
 {
 	1,			/* 1 chip */
@@ -2226,8 +2227,7 @@ struct YM2413interface sys16_ym2413_interface= {
 };
 
 struct RF5C68interface sys18_rf5c68_interface = {
-  //3580000 * 2,
-  3579545*2,
+  8000000,
   100
 };
 
@@ -2239,6 +2239,9 @@ struct YM2612interface sys18_ym3438_interface =
 			YM3012_VOL(40,MIXER_PAN_CENTER,40,MIXER_PAN_CENTER) },	/* Volume */
 	{ 0 },	{ 0 },	{ 0 },	{ 0 }
 };
+
+int sys18_sound_info[4*2];
+
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

@@ -1,11 +1,11 @@
-#pragma code_seg("C124")
-#pragma data_seg("D124")
-#pragma bss_seg("B124")
-#pragma const_seg("K124")
-#pragma comment(linker, "/merge:D124=124")
-#pragma comment(linker, "/merge:C124=124")
-#pragma comment(linker, "/merge:B124=124")
-#pragma comment(linker, "/merge:K124=124")
+#pragma code_seg("C125")
+#pragma data_seg("D125")
+#pragma bss_seg("B125")
+#pragma const_seg("K125")
+#pragma comment(linker, "/merge:D125=125")
+#pragma comment(linker, "/merge:C125=125")
+#pragma comment(linker, "/merge:B125=125")
+#pragma comment(linker, "/merge:K125=125")
 /***************************************************************************
 
   vidhrdw.c
@@ -22,7 +22,7 @@ extern int arkanoid_paddle_select;
 
 static struct tilemap *bg_tilemap;
 
-WRITE_HANDLER( arkanoid_videoram_w )
+WRITE8_HANDLER( arkanoid_videoram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -31,7 +31,7 @@ WRITE_HANDLER( arkanoid_videoram_w )
 	}
 }
 
-WRITE_HANDLER( arkanoid_d008_w )
+WRITE8_HANDLER( arkanoid_d008_w )
 {
 	int bank;
 

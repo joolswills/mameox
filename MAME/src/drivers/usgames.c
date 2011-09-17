@@ -1,11 +1,11 @@
-#pragma code_seg("C758")
-#pragma data_seg("D758")
-#pragma bss_seg("B758")
-#pragma const_seg("K758")
-#pragma comment(linker, "/merge:D758=758")
-#pragma comment(linker, "/merge:C758=758")
-#pragma comment(linker, "/merge:B758=758")
-#pragma comment(linker, "/merge:K758=758")
+#pragma code_seg("C800")
+#pragma data_seg("D800")
+#pragma bss_seg("B800")
+#pragma const_seg("K800")
+#pragma comment(linker, "/merge:D800=800")
+#pragma comment(linker, "/merge:C800=800")
+#pragma comment(linker, "/merge:B800=800")
+#pragma comment(linker, "/merge:K800=800")
 /* US Games - Trivia / Quiz / 'Amusement Only' Gambling Games */
 
 /*
@@ -35,8 +35,8 @@ Sound: AY-3-8912
 #include "vidhrdw/crtc6845.h"
 
 /* vidhrdw */
-WRITE_HANDLER( usg_videoram_w );
-WRITE_HANDLER( usg_charram_w );
+WRITE8_HANDLER( usg_videoram_w );
+WRITE8_HANDLER( usg_charram_w );
 VIDEO_START(usg);
 PALETTE_INIT(usg);
 VIDEO_UPDATE(usg);
@@ -46,7 +46,7 @@ extern struct tilemap *usg_tilemap;
 extern data8_t *usg_videoram,*usg_charram;
 
 
-static WRITE_HANDLER( usg_rombank_w )
+static WRITE8_HANDLER( usg_rombank_w )
 {
 	unsigned char *RAM = memory_region(REGION_CPU1);
 
@@ -56,7 +56,7 @@ static WRITE_HANDLER( usg_rombank_w )
 	cpu_setbank( 1,&RAM[ 0x10000 + 0x4000 * data] );
 }
 
-static WRITE_HANDLER( lamps1_w )
+static WRITE8_HANDLER( lamps1_w )
 {
 	/* button lamps */
 	set_led_status(0,data & 0x01);
@@ -68,7 +68,7 @@ static WRITE_HANDLER( lamps1_w )
 	/* bit 5 toggles all the time - extra lamp? */
 }
 
-static WRITE_HANDLER( lamps2_w )
+static WRITE8_HANDLER( lamps2_w )
 {
 	/* bit 5 toggles all the time - extra lamp? */
 }
@@ -147,27 +147,82 @@ static ADDRESS_MAP_START( usg185_writemem, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE(0x8000, 0xffff) AM_WRITE(MWA8_ROM)
 ADDRESS_MAP_END
 
+#define USGPC1\
+	PORT_BITX(0x01, IP_ACTIVE_LOW, IPT_BUTTON1, "Button 1", KEYCODE_Z, IP_JOY_DEFAULT )\
+	PORT_BITX(0x02, IP_ACTIVE_LOW, IPT_BUTTON2, "Button 2", KEYCODE_X, IP_JOY_DEFAULT )\
+	PORT_BITX(0x04, IP_ACTIVE_LOW, IPT_BUTTON3, "Button 3", KEYCODE_C, IP_JOY_DEFAULT )\
+	PORT_BITX(0x08, IP_ACTIVE_LOW, IPT_BUTTON4, "Button 4", KEYCODE_V, IP_JOY_DEFAULT )\
+	PORT_BITX(0x10, IP_ACTIVE_LOW, IPT_BUTTON5, "Button 5", KEYCODE_B, IP_JOY_DEFAULT )\
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )\
+	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )\
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )\
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_COIN1 )\
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )\
+	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )\
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+
+#define USGPC2 \
+	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )\
+	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )\
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )\
+	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )\
+	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )\
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )\
+	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )\
+	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )\
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )\
+	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )\
+	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )\
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )\
+	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )\
+	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )\
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )\
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )\
+	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )\
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )\
+	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )\
+	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )\
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )\
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )\
+	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )\
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	
+	#define USGPC3\
+	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )\
+	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )\
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )\
+	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )\
+	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )\
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )\
+	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )\
+	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )\
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )\
+	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )\
+	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )\
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )\
+	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )\
+	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )\
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )\
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )\
+	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )\
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )\
+	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )\
+	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )\
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )\
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )\
+	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )\
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 
-INPUT_PORTS_START( usg )
+INPUT_PORTS_START( usg32 )
+
+PORT_START
+USGPC1
+	
 	PORT_START
-	PORT_BITX(0x01, IP_ACTIVE_LOW, IPT_BUTTON1, "Button 1", KEYCODE_Z, IP_JOY_DEFAULT )
-	PORT_BITX(0x02, IP_ACTIVE_LOW, IPT_BUTTON2, "Button 2", KEYCODE_X, IP_JOY_DEFAULT )
-	PORT_BITX(0x04, IP_ACTIVE_LOW, IPT_BUTTON3, "Button 3", KEYCODE_C, IP_JOY_DEFAULT )
-	PORT_BITX(0x08, IP_ACTIVE_LOW, IPT_BUTTON4, "Button 4", KEYCODE_V, IP_JOY_DEFAULT )
-	PORT_BITX(0x10, IP_ACTIVE_LOW, IPT_BUTTON5, "Button 5", KEYCODE_B, IP_JOY_DEFAULT )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_COIN1 )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-
-	PORT_START
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x01, 0x01, "Service Keyboard Attached?" )
+	PORT_DIPSETTING(    0x01, DEF_STR( No ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( Yes ) )
 	PORT_BITX(0x02, IP_ACTIVE_HIGH, IPT_SERVICE, DEF_STR( Service_Mode ), KEYCODE_F2, IP_JOY_NONE )
 	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
@@ -175,66 +230,54 @@ INPUT_PORTS_START( usg )
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, "Service Keyboard Attached?" )
-	PORT_DIPSETTING(    0x10, DEF_STR( No ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( Yes ) )
-	PORT_DIPNAME( 0x20, 0x20, "Test Switch" )
+	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_SPECIAL ) // +12 Volts?
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_VBLANK )
 
+PORT_START
+	USGPC2
+	
+PORT_START
+USGPC3
+INPUT_PORTS_END
+
+
+INPUT_PORTS_START( usg83 )
+	
 	PORT_START
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
+    USGPC1
+	
+	PORT_START	
+	PORT_DIPNAME( 0x01, 0x01, "Service Keyboard Attached?" )
+	PORT_DIPSETTING(    0x01, DEF_STR( No ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( Yes ) )
+	PORT_BITX(0x02, IP_ACTIVE_HIGH, IPT_SERVICE, DEF_STR( Service_Mode ), KEYCODE_F2, IP_JOY_NONE )
+	PORT_DIPNAME( 0x04, 0x04, "Test_Switch" )
 	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPSETTING(    0x10, DEF_STR( No ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( Yes ) )
 	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_SPECIAL ) // +12 Volts?
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_VBLANK )
+    
+    PORT_START
+    USGPC2
 
 	PORT_START
-	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
-	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
-	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
-	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	USGPC3
+	
 INPUT_PORTS_END
 
 
@@ -386,12 +429,12 @@ ROM_END
 
 
 
-GAME( 1987, usg32,  0,     usg,    usg, 0, ROT0, "U.S. Games", "Super Duper Casino (California V3.2)" )
-GAME( 1988, usg83,  0,     usg,    usg, 0, ROT0, "U.S. Games", "Super Ten V8.3" )
-GAME( 1988, usg83x, usg83, usg,    usg, 0, ROT0, "U.S. Games", "Super Ten V8.3X" )
-GAME( 1988, usg82,  usg83, usg,    usg, 0, ROT0, "U.S. Games", "Super Ten V8.2" )	// "Feb.08,1988"
-GAME( 1991, usg185, 0,     usg185, usg, 0, ROT0, "U.S. Games", "Games V18.7C" )
-GAME( 1992, usg252, 0,     usg185, usg, 0, ROT0, "U.S. Games", "Games V25.4X" )
+GAME( 1987, usg32,  0,     usg,  usg32, 0, ROT0, "U.S. Games", "Super Duper Casino (California V3.2)" )
+GAME( 1988, usg83,  0,     usg,  usg83, 0, ROT0, "U.S. Games", "Super Ten V8.3" )
+GAME( 1988, usg83x, usg83, usg,  usg83, 0, ROT0, "U.S. Games", "Super Ten V8.3X" )
+GAME( 1988, usg82,  usg83, usg,  usg83, 0, ROT0, "U.S. Games", "Super Ten V8.2" )	// "Feb.08,1988"
+GAME( 1991, usg185, 0,     usg185, usg83, 0, ROT0, "U.S. Games", "Games V18.7C" )
+GAME( 1992, usg252, 0,     usg185, usg83, 0, ROT0, "U.S. Games", "Games V25.4X" )
 #pragma code_seg()
 #pragma data_seg()
 #pragma bss_seg()

@@ -22,11 +22,13 @@
 #include "xbox_Direct3DRenderer.h"
 #include "xbox_FileIO.h"
 #include "xbox_Network.h"
+#include "lightgun.h"
 
 extern "C" {
 #include "osd_cpu.h"
 #include "driver.h"
 #include "mame.h"
+#include "virtualmemory.h"
 }
 
 //= D E F I N E S =====================================================
@@ -50,6 +52,7 @@ CInputManager			    g_inputManager;
 CGraphicsManager	    g_graphicsManager;
 CFontSet              g_fontSet;          // The global font manager
 CVirtualMemoryManager g_vmManager;        // The global memory manager
+CLightgun g_lightgunGame ;
 
 extern BOOL           g_soundEnabled;   // Sound processing override (defined in xbox_Main.cpp)
 
@@ -321,6 +324,19 @@ void LoadOptions( void )
 
 		//-- Skin Options ------------------------------------------------------------------------
 	g_skinOptions.m_currentSkin = iniFile.GetProfileString( "SkinOptions", "SelectedSkin", "Original" );
+
+
+	//-- VMM Options ------------------------------------------------------------------------
+
+	g_forcevmem =                    iniFile.GetProfileInt( "VMMOptions", "ForceVMM", FALSE );
+
+	if ( g_forcevmem )
+	{
+		g_vmemThreshold =                    iniFile.GetProfileInt( "VMMOptions", "Threshold", 0x400000 );
+		g_vmemCommitSize =                    iniFile.GetProfileInt( "VMMOptions", "CommitSize", 0x100000 );
+		g_vmemDistribute =                    iniFile.GetProfileInt( "VMMOptions", "Distribute", 0xFFFF );
+	}
+
 }
 
 
@@ -461,6 +477,18 @@ void SaveOptions( void )
 
 		//-- Skin Options ------------------------------------------------------------------------
 	iniFile.WriteProfileString( "SkinOptions", "SelectedSkin", g_skinOptions.m_currentSkin );
+
+
+	//-- VMM Options ------------------------------------------------------------------------
+
+	iniFile.WriteProfileInt( "VMMOptions", "ForceVMM", g_forcevmem );
+	iniFile.WriteProfileInt( "VMMOptions", "Threshold", g_vmemThreshold );
+	iniFile.WriteProfileInt( "VMMOptions", "CommitSize", g_vmemCommitSize );
+	iniFile.WriteProfileInt( "VMMOptions", "Distribute", g_vmemDistribute );
+
+
+
+
 }
 
 //-------------------------------------------------------------
@@ -589,6 +617,101 @@ void WaitForNoInput( void )
 //	GetLightgunCalibratedPosition
 //-------------------------------------------------------------
 void GetLightgunCalibratedPosition( UINT32 player, INT32 *deltax, INT32 *deltay )
+{
+	static int waspressed = 0 ;
+	BOOL bShotFired;
+	BOOL bShotHitScreen;
+	BOOL bShotMissedScreen;
+
+  if( !deltax || !deltay || player > 3 )
+    return;
+
+  lightgunCalibration_t &calibData = g_calibrationData[player];
+  CGamepad *gp = g_inputManager.GetGamepad(player);
+
+    // Don't bother if we're not pointing at the screen
+  if( !gp || !gp->IsLightgunPointedAtScreen() )
+  {
+    *deltax = *deltay = 0;
+    return;
+  }
+
+	g_lightgunGame.hDevice = gp->m_deviceHandle ;
+	g_lightgunGame.sThumbLX = gp->GetAnalogAxisState( GP_ANALOG_LEFT, GP_AXIS_X ) ;
+	g_lightgunGame.sThumbLY = gp->GetAnalogAxisState( GP_ANALOG_LEFT, GP_AXIS_Y ) ;
+	g_lightgunGame.wButtons = gp->GetGamepadDeviceState()->wButtons ;
+
+	if ( gp->IsButtonPressed( GP_A ) )
+	{
+		if ( waspressed )
+		{
+			g_lightgunGame.bPressedAnalogButtons[XINPUT_GAMEPAD_A] = FALSE ;
+		}
+		else
+		{
+			g_lightgunGame.bPressedAnalogButtons[XINPUT_GAMEPAD_A] = TRUE ;
+		}
+		waspressed = 1;
+	}
+	else
+	{
+		g_lightgunGame.bPressedAnalogButtons[XINPUT_GAMEPAD_A] = FALSE ;
+		waspressed = 0 ;
+	}
+
+
+	g_lightgunGame.VerifyCalibrationState( FALSE );
+
+	g_lightgunGame.Update( &bShotFired, &bShotHitScreen, &bShotMissedScreen );
+
+
+	if ( bShotFired )
+	{
+		if ( bShotMissedScreen )
+		{
+		}
+	}
+
+
+
+	FLOAT fWidth = 640.0f ;
+	FLOAT fHeight = 480.0f ;
+    //FLOAT fThumbLX = (fWidth/2) + (fWidth/2)*(g_lightgun.sThumbLX+0.5f)/32767.5f;
+    //FLOAT fThumbLY = (fHeight/2) - (fHeight/2)*(g_lightgun.sThumbLY+0.5f)/32767.5f;
+    FLOAT fThumbLX = (g_lightgunGame.sThumbLX+0.5f)/255.5f;
+    FLOAT fThumbLY = (g_lightgunGame.sThumbLY+0.5f)/-255.5f;
+
+
+	*deltax = fThumbLX ;
+	*deltay = fThumbLY ;
+
+
+    // Lock to the expected range
+  if( *deltax > 128 )
+    *deltax = 128;
+  else if( *deltax < -128 )
+    *deltax = -128;
+
+  if( *deltay > 128 )
+    *deltay = 128;
+  else if( *deltay < -128 )
+    *deltay = -128;
+
+
+
+  //PRINTMSG_TO_CONSOLE((  T_INFO, 
+                        //"x: %d:%d y: %d:%d", 
+                        //*deltax, 
+                        //gp->GetAnalogAxisState( GP_ANALOG_LEFT, GP_AXIS_X ),
+                        //*deltay,
+                        //gp->GetAnalogAxisState( GP_ANALOG_LEFT, GP_AXIS_Y )));
+}
+
+
+//-------------------------------------------------------------
+//	GetLightgunCalibratedPosition
+//-------------------------------------------------------------
+void GetLightgunCalibratedPositionOld( UINT32 player, INT32 *deltax, INT32 *deltay )
 {
   if( !deltax || !deltay || player > 3 )
     return;

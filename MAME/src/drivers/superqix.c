@@ -1,11 +1,11 @@
-#pragma code_seg("C681")
-#pragma data_seg("D681")
-#pragma bss_seg("B681")
-#pragma const_seg("K681")
-#pragma comment(linker, "/merge:D681=681")
-#pragma comment(linker, "/merge:C681=681")
-#pragma comment(linker, "/merge:B681=681")
-#pragma comment(linker, "/merge:K681=681")
+#pragma code_seg("C719")
+#pragma data_seg("D719")
+#pragma bss_seg("B719")
+#pragma const_seg("K719")
+#pragma comment(linker, "/merge:D719=719")
+#pragma comment(linker, "/merge:C719=719")
+#pragma comment(linker, "/merge:B719=719")
+#pragma comment(linker, "/merge:K719=719")
 /***************************************************************************
 
 Super QIX memory map (preliminary)
@@ -26,14 +26,14 @@ Notes:
 #include "vidhrdw/generic.h"
 
 
-extern WRITE_HANDLER( superqix_videoram_w );
-extern WRITE_HANDLER( superqix_colorram_w );
-extern READ_HANDLER( superqix_bitmapram_r );
-extern WRITE_HANDLER( superqix_bitmapram_w );
-extern READ_HANDLER( superqix_bitmapram2_r );
-extern WRITE_HANDLER( superqix_bitmapram2_w );
-extern WRITE_HANDLER( superqix_0410_w );
-extern WRITE_HANDLER( superqix_flipscreen_w );
+extern WRITE8_HANDLER( superqix_videoram_w );
+extern WRITE8_HANDLER( superqix_colorram_w );
+extern READ8_HANDLER( superqix_bitmapram_r );
+extern WRITE8_HANDLER( superqix_bitmapram_w );
+extern READ8_HANDLER( superqix_bitmapram2_r );
+extern WRITE8_HANDLER( superqix_bitmapram2_w );
+extern WRITE8_HANDLER( superqix_0410_w );
+extern WRITE8_HANDLER( superqix_flipscreen_w );
 
 extern VIDEO_START( superqix );
 extern VIDEO_UPDATE( superqix );

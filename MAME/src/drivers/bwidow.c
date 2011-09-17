@@ -252,7 +252,7 @@ Typically, only the high 2 bits are read.
 
 */
 
-static READ_HANDLER( spacduel_IN3_r )
+static READ8_HANDLER( spacduel_IN3_r )
 {
 	int res;
 	int res1;
@@ -306,7 +306,7 @@ static READ_HANDLER( spacduel_IN3_r )
  *
  *************************************/
 
-WRITE_HANDLER( bwidow_misc_w )
+WRITE8_HANDLER( bwidow_misc_w )
 {
 	/*
 		0x10 = p1 led

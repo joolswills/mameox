@@ -1,11 +1,11 @@
-#pragma code_seg("C179")
-#pragma data_seg("D179")
-#pragma bss_seg("B179")
-#pragma const_seg("K179")
-#pragma comment(linker, "/merge:D179=179")
-#pragma comment(linker, "/merge:C179=179")
-#pragma comment(linker, "/merge:B179=179")
-#pragma comment(linker, "/merge:K179=179")
+#pragma code_seg("C181")
+#pragma data_seg("D181")
+#pragma bss_seg("B181")
+#pragma const_seg("K181")
+#pragma comment(linker, "/merge:D181=181")
+#pragma comment(linker, "/merge:C181=181")
+#pragma comment(linker, "/merge:B181=181")
+#pragma comment(linker, "/merge:K181=181")
 /***************************************************************************
 
 	breakthru:vidhrdw.c
@@ -105,7 +105,7 @@ static void get_bg_tile_info(int tile_index)
 	SET_TILE_INFO(region, code & 0x7f,colour,0)
 }
 
-WRITE_HANDLER( brkthru_bgram_w )
+WRITE8_HANDLER( brkthru_bgram_w )
 {
 	if (videoram[offset] != data)
 	{
@@ -121,7 +121,7 @@ static void get_fg_tile_info(int tile_index)
 	SET_TILE_INFO(0, code, 0, 0)
 }
 
-WRITE_HANDLER( brkthru_fgram_w )
+WRITE8_HANDLER( brkthru_fgram_w )
 {
 	if (brkthru_videoram[offset] != data)
 	{
@@ -149,7 +149,7 @@ VIDEO_START( brkthru )
 
 
 
-WRITE_HANDLER( brkthru_1800_w )
+WRITE8_HANDLER( brkthru_1800_w )
 {
 	if (offset == 0)	/* low 8 bits of scroll */
 		bgscroll = (bgscroll & 0x100) | data;

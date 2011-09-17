@@ -1,11 +1,11 @@
-#pragma code_seg("C474")
-#pragma data_seg("D474")
-#pragma bss_seg("B474")
-#pragma const_seg("K474")
-#pragma comment(linker, "/merge:D474=474")
-#pragma comment(linker, "/merge:C474=474")
-#pragma comment(linker, "/merge:B474=474")
-#pragma comment(linker, "/merge:K474=474")
+#pragma code_seg("C500")
+#pragma data_seg("D500")
+#pragma bss_seg("B500")
+#pragma const_seg("K500")
+#pragma comment(linker, "/merge:D500=500")
+#pragma comment(linker, "/merge:C500=500")
+#pragma comment(linker, "/merge:B500=500")
+#pragma comment(linker, "/merge:K500=500")
 /***************************************************************************
 
 	Mustache Boy
@@ -81,9 +81,9 @@ Based on sketch made by Tormod
 #include "vidhrdw/generic.h"
 #include "sndhrdw/seibu.h"
 
-WRITE_HANDLER( mustache_videoram_w );
-WRITE_HANDLER( mustache_scroll_w );
-WRITE_HANDLER ( mustache_video_control_w);
+WRITE8_HANDLER( mustache_videoram_w );
+WRITE8_HANDLER( mustache_scroll_w );
+WRITE8_HANDLER ( mustache_video_control_w);
 VIDEO_START( mustache );
 VIDEO_UPDATE( mustache );
 PALETTE_INIT( mustache );
@@ -91,7 +91,7 @@ PALETTE_INIT( mustache );
 
 static int read_coins=0;
 
-READ_HANDLER ( mustache_coin_hack_r )
+READ8_HANDLER ( mustache_coin_hack_r )
 {
 	return (read_coins)?((offset&1	)?(input_port_5_r(0)<<5)|(input_port_5_r(0)<<7):(input_port_5_r(0)<<4)):0;
 }
@@ -228,7 +228,7 @@ static struct GfxDecodeInfo gfxdecodeinfo[] =
 INTERRUPT_GEN( mustache_interrupt)
 {
 	read_coins^=1;
-	cpu_set_irq_line(0, 0, PULSE_LINE);
+	cpunum_set_input_line(0, 0, PULSE_LINE);
 }
 
 
@@ -326,7 +326,7 @@ static DRIVER_INIT( mustache )
 
 	seibu_sound_decrypt(REGION_CPU1,0x8000);
 
-	install_mem_read_handler( 0, 0xd400, 0xd401, mustache_coin_hack_r);
+	memory_install_read8_handler(0, ADDRESS_SPACE_PROGRAM, 0xd400, 0xd401, 0, 0, mustache_coin_hack_r);
 }
 
 
